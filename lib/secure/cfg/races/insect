@@ -1,0 +1,25 @@
+insect
+20:80
+Insectish
+SHOCK:high
+BLUNT:medium
+COLD:low
+WATER:low
+charisma:1:5
+durability:1:5
+intelligence:1:5
+luck:43:1
+agility:31:2
+wisdom:1:5
+charsima:1:5
+speed:43:1
+strength:1:5
+coordination:21:3
+torso:0:1:A_ARMOUR,A_BODY_ARMOUR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
+head:torso:1:A_BODY_ARMOUR,A_VISOR,A_HELMET,A_CLOAK
+4th leg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+6th leg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+5th leg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+1st leg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+3rd leg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+2nd leg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK

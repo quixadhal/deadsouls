@@ -1,0 +1,32 @@
+kobold
+20:80
+Koboldish
+SHOCK:high
+BLADE:medium
+BLUNT:medium
+KNIFE:medium
+COLD:medium
+HEAT:medium
+WATER:low
+charisma:10:4
+durability:43:1
+intelligence:10:4
+luck:21:3
+agility:21:3
+wisdom:10:4
+charsima:1:5
+speed:21:3
+strength:43:1
+coordination:31:2
+torso:0:1:A_ARMOUR,A_BODY_ARMOUR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
+head:torso:1:A_BODY_ARMOUR,A_VISOR,A_HELMET,A_CLOAK
+left leg:torso:2:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+left arm:torso:2:A_LONG_GLOVE,A_SHIRT,A_ARMOUR,A_BODY_ARMOUR,A_SHIELD
+right arm:torso:2:A_LONG_GLOVE,A_SHIRT,A_ARMOUR,A_BODY_ARMOUR,A_SHIELD
+right leg:torso:2:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+left hand:left arm:4:A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
+right hand:right arm:4:A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
+left hoof:left leg:4::
+right hoof:right leg:4::
+right hand:5
+left hand:5

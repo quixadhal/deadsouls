@@ -1,0 +1,22 @@
+		      The Dead Souls Mud Library
+		       Released 1 February 1998
+
+The Dead Souls Mud Library is a special compilation of files from the
+old Nightmare Mudlib that have been released into the public domain.
+This code is provided as-is without any offering of support or
+guarantees of suitability for any specific use.  The existence of this
+code in the public domain pertains only to the code in this
+distribution.  It does not imply or suggest permission to use other
+code by the authors of this work or related works by other authors.
+
+This code is known to work with MudOS v22b25.  You should download and
+install whatever version of MudOS you desire.  Be warned, however,
+that newer versions may or may not work with this release.  You may
+have to modify the code in this distribution to get things to work.
+Do not, under any circumstances, email the author of this distribution
+for support.  Your email will be deleted unread.  If you have
+questions, subscribe to the nightmare-mudlib mailing list by visiting
+http://list.imaginary.com/mailman/listinfo/nightmare-mudlib.
+
+George Reese
+1 February 1997

@@ -1,0 +1,22 @@
+bird
+20:80
+Birdish
+SHOCK:high
+COLD:low
+charisma:31:2
+durability:1:5
+intelligence:1:5
+luck:21:3
+agility:43:1
+wisdom:10:4
+speed:43:1
+strength:10:4
+coordination:10:4
+torso:0:1:A_ARMOUR,A_BODY_ARMOUR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
+head:torso:1:A_BODY_ARMOUR,A_VISOR,A_HELMET,A_CLOAK
+left leg:torso:2:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+right leg:torso:2:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+left foot:left leg:4:A_SOCK,A_LONG_SOCK,A_BOOT,A_LONG_BOOT
+right foot:right leg:4:A_SOCK,A_LONG_SOCK,A_BOOT,A_LONG_BOOT
+right wing:torso:4::
+left wing:torso:4::

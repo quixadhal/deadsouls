@@ -1,0 +1,48 @@
+1) make the directory where all mud files will reside. Called $MUDHOME
+   in the rest of this document.
+
+2) download MudOS v22pre8
+
+3) download ds1.1.tar.gz
+
+4) uncompress and tar MudOS and DS in $MUDHOME
+
+
+5) Modify the following local_options the main concern being:
+#define CONFIG_FILE_DIR 
+which should be "$MUDHOME/cfg"
+
+6) copy local_options $MUDHOME/v22pre8/src/
+
+7) type ./build.MudOS
+
+8) in sh or bash type make 1> good.out 2> bad.out
+
+9) at this point more bad.out  the following is what I got:
+Writing build options to option_defs.c ...
+unlink malloc.c: No such file or directory
+unlink mallocwrapper.c: No such file or directory
+link mallocwrapper.c: No such file or directory
+Building compiler files ...
+Creating 'grammar.y' from 'grammar.y.pre' ...
+Creating 'packages/Makefile' from 'packages/Makefile.pre' ...
+Creating 'packages/GNUmakefile' from 'packages/GNUmakefile.pre' ...
+Creating 'mudlib/Makefile' from 'mudlib/Makefile.pre' ...
+Creating 'mudlib/GNUmakefile' from 'mudlib/GNUmakefile.pre' ...
+Building efun tables ...
+mv: driver: No such file or directory
+make: [driver] Error 1 (ignored)
+
+10) cp -r $MUDHOME/v22pre8/bin $MUDHOME/
+
+11) edit $MUDHOME/cfg/DeadSouls (provided) the two to change are:
+mudlib directory and binary directory
+
+12) edit $MUDHOME/bin/startmud (provided) and change the $MUDHOME
+    stuff.
+
+13) manually run the mud %MUDHOME/bin/driver $MUDHOME/cfg/DeadSouls
+
+15) debug the lib
+    report any bugs where out-of-box provided code does not function
+    to the Nightmare MudLib mailing list.

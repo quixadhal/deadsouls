@@ -1,0 +1,31 @@
+centaur
+20:80
+Centaurish
+SHOCK:high
+COLD:low
+charisma:21:3
+durability:43:1
+intelligence:21:3
+luck:43:1
+agility:21:3
+wisdom:31:2
+speed:31:2
+strength:31:2
+coordination:10:4
+torso:0:1:A_ARMOUR,A_BODY_ARMOUR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
+head:torso:1:A_BODY_ARMOUR,A_VISOR,A_HELMET,A_CLOAK
+lower torso:head:1::
+right arm:torso:2::
+left arm::torso:2::
+right foreleg:lower torso:3::
+left foreleg:lower torso:3::
+right back leg:lower torso:3::
+left back leg:lower torso:3::
+right hand:right arm:4::
+left hand:left arm:4::
+right forehoof:right foreleg:4::
+left forehoof:left foreleg:4::
+right back hoof:right back leg:4::
+left back hoof:left back leg:4::
+right hand:5
+left hand:5

@@ -1,0 +1,30 @@
+rodent
+20:80
+Rodentish
+SHOCK:high
+COLD:medium
+HEAT:medium
+BLADE:low
+BLUNT:low
+KNIFE:low
+WATER:low
+charisma:1:5
+durability:10:4
+intelligence:1:5
+luck:1:5
+agility:21:3
+wisdom:10:4
+charsima:1:5
+speed:31:2
+strength:1:5
+coordination:10:4
+torso:0:1:A_ARMOUR,A_BODY_ARMOUR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
+head:torso:1:A_BODY_ARMOUR,A_VISOR,A_HELMET,A_CLOAK
+left rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+right rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+right foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+left foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+left forepaw:left foreleg:4::
+right forepaw:right foreleg:4::
+left rear paw:left rear leg:4::
+right rear paw:right rear leg:4::

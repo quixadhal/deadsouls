@@ -1,0 +1,19 @@
+fighter
+priest:druid
+blade attack:1:1
+multi-hand:1:1
+multi-weapon:1:1
+blade defense:1:1
+melee attack:0:2
+blunt attack:1:3
+knife attack:1:2
+projectile attack:1:3
+melee defense:1:2
+blunt defense:1:2
+knife defense:1:3
+projectile defense:1:4
+magic defense:0:5
+healing:0:5
+bargaining:0:4
+murder:0:5
+

@@ -1,0 +1,30 @@
+---- Version 1.1pre released ----
+7   added Dvarsks improved Virtual Libs.  Who knows we may provide 
+    examples in the next revision.
+6   added ftpd support within the mud.  This is courtesy of Dvarsk and
+    Lima.  You must read and comply to the Lima USAGE document.  
+    After you read that document you can start the ftpd using
+    something like
+    call /secure/daemon/inet->AddService("ftp", PORT_FTP,
+    "/secure/lib/net/ftp.c", DATAGRAM)  if my feable memory is working.
+5   added /lib/std/story.c  (read the lib to find out how to use it)
+4   lib/comp/container GetRadientLight() to GetRadientLight(ambient)
+3   mkdir 0-9 in $MUDHOME/lib/secure/save/postal
+2   in /lib/living.c remove arguments to direct_smell_obj() line 128
+       129
+1   in /secure/daemon/master.c edit the lines 194-204 to be:
+        if( (tmp = base_name(ob)) == LIB_PLAYER || tmp == LIB_CREATOR) {
+            if( !PlayerName ) i = sizeof(stack = ({ob})+previous_object(-1));
+            else if( file == DIR_PLAYERS+"/"+PlayerName[0..0]+"/"+
+                     PlayerName + __SAVE_EXTENSION__ )
+              return 1;
+            else if( file == DIR_CRES+"/"+PlayerName[0..0]+"/"+
+                     PlayerName + __SAVE_EXTENSION__ )
+              return 1;
+            else i = sizeof(stack = ({ ob }));
+        }
+        else if( tmp + __SAVE_EXTENSION__ == file ) return 1;
+
+---- Version 1.0 released ----
+     This was the orriginal
+     unversioned version.

@@ -1,0 +1,478 @@
+/*    /secure/lib/connect.c
+ *    from the Nightmare IVr2 Object Library
+ *    the object a user connects to before determining their real body
+ *    created by Descartes of Borg 951103
+ *    Version: @(#) connect.c 1.2@(#)
+ *    Last Modified: 96/05/28
+ */
+
+#include <lib.h>
+#include <news.h>
+#include <flags.h>
+#include <config.h>
+#include <daemons.h>
+#include <message_class.h>
+#include "include/connect.h"
+
+inherit LIB_PAGER;
+
+static private int CrackCount, NetDead; 
+static private string Name, Terminal; 
+static private object Player; 
+static private mapping LastError;
+static private int *Screen;
+ 
+static void create(int binary) {
+    CrackCount = 0;
+    Name = "";
+    Player = 0;
+    NetDead = 0;
+}
+
+static void logon() {
+    string welcome;
+    
+    call_out((: eventTimeout :), LOGON_TIMEOUT);
+    welcome = read_file(NEWS_WELCOME) || "Welcome to " + mud_name() + "!";
+    receive(welcome);
+    receive("\n" + center("Driver: " + version() + "               Mudlib: "+
+			  mudlib() + " " + mudlib_version()) + "\n");
+    receive("\nWhat name do you wish? ");
+    input_to((: InputName :), I_NOESC); 
+} 
+
+static void InputName(string name, string kill_me) {
+    string news;
+    mixed tmp;
+    
+    if( !name || name == "" ) {
+	if( kill_me ) {
+	    receive("\nPerhaps try another time then?\n");
+	    Destruct();
+	    return;
+	}
+	else {
+	    receive("\nYou must enter a name in order to join!\n");
+	    receive("\nWhat name do you wish? ");
+	    input_to((: InputName :), I_NOESC, "kill me");
+	    return;
+	}
+    }
+    Name = convert_name(name);
+    name = capitalize(name);
+    if( (int)master()->is_locked() ) {
+	news = read_file(NEWS_LOCKED) || "No reason logged.";
+	receive("\n" + mud_name() + " is locked.  Reason:\n" + news + "\n");
+	if( CanLogin() ) receive("\n        >>> Access allowed <<<\n");
+	else {
+	    receive("\n        >>> Access denied <<<\n");
+	    Destruct();
+	    return;
+	}
+    }
+    if( !user_exists(Name) ) {
+	eventCreatePlayer(name);
+	return;
+    }
+    if( !((int)BANISH_D->eventConnect(Name, query_ip_number())) ) {
+	news = read_file(NEWS_BANISHED) || "You are not allowed here.";
+	receive("\n" + news + "\n");
+	Destruct();
+        return; 
+    }
+    if( (tmp = (mixed)CHARACTER_D->eventConnect(Name)) != 1 ) {
+	if( tmp ) receive(tmp + "\n");
+	else receive("One of your characters was recently logged in.\n"
+		     "You must wait a little longer before logging in.\n");
+	Destruct();
+	return;
+    }
+    if( find_player(Name) ) NetDead = 1;
+    Player = (object)master()->player_object(Name);
+    if( !Player ) {
+	receive("\nIt seems some work is being done right now, try later.\n");
+	Destruct();
+	return;
+    }
+    if( (string)Player->GetRace() == "blob" ) {
+	string sf;
+
+	NetDead = 0;
+	sf = save_file(Name);
+	unguarded( (: rm, sf + __SAVE_EXTENSION__ :) );
+	Player->eventDestruct();
+	eventCreatePlayer(name);
+	return;
+    }
+    receive("Password: ");
+    input_to((: InputPassword :), I_NOECHO | I_NOESC, name);
+} 
+
+static void InputPassword(string pass, string cap) {
+    string control;
+    
+    if( !pass || pass == "" ) {
+	receive("\nYou must enter a password.  Please try again later.\n");
+	Destruct();
+	return;
+    }
+    control = (string)Player->GetPassword();
+    if( control != crypt(pass, control) ) {
+	receive("\nInvalid password.\n");
+	if( ++CrackCount > MAX_PASSWORD_TRIES ) {
+	    receive("\nNo more attempts allowed\n");
+	    log_file("security", "Maximum password tries exceeded by " +
+		     Name + " from " + query_ip_number() + "\n");
+	    filter(users(), (: archp :))->eventPrint("System %^MAGENTA%^"
+					 "<error>%^RESET%^ Maximum password "
+					 "attempts exceeded by " + cap +
+					 " from " + query_ip_number() + ".",
+						     MSG_ERROR);
+	    Destruct();
+	    return;
+	}
+	receive("Password: ");
+	input_to( (: InputPassword :), I_NOECHO | I_NOESC, cap);
+	return;
+    }
+    if( !NetDead ) eventEnterGame();
+    else eventReEnterGame(cap);
+}
+
+static void eventCreatePlayer(string cap) {
+    if( !((int)BANISH_D->valid_name(Name)) ) {
+	receive(capitalize(cap) + " is not a valid name.\n");
+	receive(mud_name() + " requires that all names meet the following "
+		"requirements:\n");
+	receive("\tAll characters must be:\n");
+	receive("\t\tA-Z\n\t\ta-z\n\t\t'\n\t\t-\n");
+	receive("\tMinimum length: " + MIN_USER_NAME_LENGTH + "\n");
+	receive("\tMaximum length: " + MAX_USER_NAME_LENGTH + "\n");
+	receive("\nPlease enter a new name: ");
+	input_to( (: InputName :), I_NOESC );
+	return;
+    }
+    if( !((int)BANISH_D->eventConnect(Name, query_ip_number())) ) {
+	string news;
+
+	news = read_file(NEWS_REGISTER) || "No registration info.";
+	receive(news);
+	Destruct();
+	return;
+    }
+    receive("Do you really wish to be known as " + cap + "? (y/n) ");
+    input_to((: ConfirmName :), I_NOESC, cap);
+}
+
+static void ConfirmName(string ans, string cap) {
+    if( !ans || ans == "" || lower_case(ans)[0..0] != "y" ) {
+	receive("\nOk, then enter the name you really want: ");
+	input_to( (: InputName :), I_NOESC );
+	return;
+    }
+    log_file("new_players", Name + " from " + query_ip_number() + " (" +
+	     ctime(time()) + ")\n");
+    receive("\nCreate a password of at least 5 letters: ");
+    input_to((: CreatePassword :), I_NOECHO | I_NOESC, cap);
+} 
+    
+static void eventReEnterGame(string cap) {
+    if( interactive(Player) ) {
+	receive("\nAn interactive copy of you currently exists.\n");
+	receive("Do you wish to take over this copy? (y/n) ");
+        input_to((: ConfirmReconnect :), I_NOESC, cap);
+	return;
+    }
+    if( exec(Player, this_object()) ) {
+	log_file("enter", cap + " (exec): " + ctime(time()) + "\n"); 
+	Player->eventReconnect();
+    }
+    receive("\nProblem reconnecting.\n");
+    Destruct();
+}
+
+static void ConfirmReconnect(string ans, string cap) {
+    object tmp; 
+
+    if( !stringp(ans) || ans == "" || lower_case(ans)[0..0] != "y" ) {
+	receive("\nThen please try again later!\n");
+	Destruct();
+	return;
+    }
+    exec(tmp = new(LIB_PLAYER), Player); 
+    exec(Player, this_object()); 
+    destruct(tmp);
+    Player->eventPrint("\nAllowing login.\n", MSG_SYSTEM);
+    Destruct();
+}
+
+static int CanLogin() {
+    string group;
+    
+    if( (int)BANISH_D->GetGuest(Name) ) return 1;
+    foreach(group in LOCKED_ACCESS_ALLOWED)
+      if( member_group(Name, group) ) return 1;
+    return 0;
+}
+ 
+static private void eventEnterGame() { 
+    if(!exec(Player, this_object())) { 
+	receive("\nProblem connecting.\n"); 
+        Player->eventDestruct();
+        destruct(this_object());
+        return; 
+    } 
+    if( Terminal ) Player->SetTerminal(Terminal);
+    if( Screen ) Player->SetScreen(Screen[0], Screen[1]);
+    Player->Setup();
+    destruct(this_object()); 
+} 
+ 
+static void CreatePassword(string pass, string cap) {
+    if( strlen(pass) < 5) {
+	receive("\nYour password must be at least 5 letters in length.\n");
+	receive("Please choose another password: ");
+	input_to( (: CreatePassword :), I_NOECHO | I_NOESC, cap);
+	return;
+    }
+    receive("\nPlease confirm your password: ");
+    input_to( (: ConfirmPassword :), I_NOECHO | I_NOESC, cap, pass);
+}
+ 
+static void ConfirmPassword(string control, string cap, string pass) {
+    if( control == pass ) {
+	Player = (object)master()->player_object(Name);
+        Player->SetPassword(pass = crypt(pass, 0));
+	receive("\n\nPlease choose an interesting gender (male or female): ");
+	input_to((: InputGender :), I_NOESC, cap);
+        return; 
+    } 
+    receive("\nPassword entries do not match, re-choose password: ");
+    input_to((: CreatePassword :), I_NOECHO | I_NOESC, cap);
+    return; 
+} 
+ 
+static void InputGender(string str, string cap) {
+    if( str != "male" && str != "female" ) { 
+       receive("\nCute, but pretend to be either male or female instead.\n");
+       receive("Gender: ");
+       input_to((: InputGender :), I_NOESC, cap);
+       return;
+    }
+    Player->SetGender(str);
+    receive("\nYou may format " + cap + " to appear however you wish using "
+	    "spaces, ', or -.\nEnter a display name (default: " + cap +"): ");
+    input_to((: InputCapName :), I_NOESC, cap);
+}
+
+static void InputCapName(string name, string cap) {
+    if( !name || name == "" ) name = cap;
+    if( !((int)BANISH_D->valid_cap_name(name, Name)) ) {
+	receive("\nThat was not a valid name format, choose again: ");
+	input_to((: InputCapName :), I_NOESC, cap);
+        return;
+    }
+    Player->SetCapName(cap = capitalize(name));
+    receive("\nFor security reasons, " + mud_name() + " requires a valid "
+	    "email.\nYou can restrict this information as being admin only "
+	    "by preceeding it\nwith a '#' character (e.g. #user@host).\n"
+	    "Email: ");
+    input_to((: InputEmail :), I_NOESC);
+} 
+ 
+static void InputEmail(string email) {
+    string user, host; 
+
+    if( !email || sscanf(email, "%s@%s", user, host) != 2 ) {
+	receive("\nThat is not a valid email address.\n");
+	receive("Please enter a valid email address: ");
+	input_to( (: InputEmail :), I_NOESC );
+        return; 
+    } 
+    Player->SetEmail(email);
+    receive("\nIf you do not mind, please enter your real name (optional): ");
+    input_to( (: InputRealName :), I_NOESC );
+}
+ 
+static void InputRealName(string rname) {
+    if( !rname || rname == "" ) rname = "Unknown";
+    Player->SetRealName(rname);
+    receive("\n\nYou must now pick a race.\n");
+    receive("Picking a race influences what physical traits your character "
+	    "will have.\n");
+    receive("\nYou may issue the following commands:\n");
+    receive("\tlist - lists all races from which you can choose\n");
+    receive("\thelp - get help on what races mean\n");
+    receive("\thelp RACE - (e.g. \"help human\") gives you information on "
+	    "a race\n");
+    receive("\tpick RACE - pick a particular race for yourself\n");
+    receive("\nRace: ");
+    input_to((: InputRace :), I_NOESC);
+}
+
+static void InputRace(string str) {
+    string cmd, args;
+
+    if( str == "" || !str ) {
+	receive("\nRace: ");
+	input_to((: InputRace :), I_NOESC);
+	return;
+    }
+    if( sscanf(str, "%s %s", cmd, args) != 2 ) {
+	cmd = str;
+	args = 0;
+    }
+    switch(cmd) {
+	case "list":
+	cmdList();
+	return;
+
+	case "help":
+	cmdHelp(args);
+	return;
+
+	case "pick":
+	cmdPick(args);
+	return;
+
+	default:
+	receive("\nInvalid command.\nRace: ");
+	input_to((: InputRace :), I_NOESC);
+	return;
+    }
+}
+
+static void cmdHelp(string args) {
+    function f;
+    string array races = (string array)RACES_D->GetRaces(1);
+    string help;
+
+    f = function(string str) {
+	receive("\nRace: ");
+	input_to((: InputRace :), I_NOESC);
+    };
+    if( !args ) {
+	help = read_file(DIR_PLAYER_HELP + "/races") ||
+	  "Error reading help file.\n";
+	eventPage(explode(help, "\n"), MSG_HELP, f);
+	return;
+    }
+    if( member_array(args = lower_case(args), races) == -1 ) {
+	receive("No such race exists.\n\nRace: ");
+	input_to((: InputRace :), I_NOESC);
+	return;
+    }
+    help = (string)RACES_D->GetHelp(args);
+    eventPage(explode(help, "\n"), MSG_HELP, f);
+}
+
+static void cmdList() {
+    string list;
+
+    list = format_page((string array)RACES_D->GetRaces(1), 5);
+    receive(list);
+    receive("\nRace: ");
+    input_to((: InputRace :), I_NOESC);
+}
+
+static void cmdPick(string args) {
+    if( !args || args == "" ) {
+	receive("You must specify a race to pick.\n\nRace: ");
+	input_to((: InputRace :), I_NOESC);
+	return;
+    }
+    if( member_array(args = lower_case(args),
+		     (string array)RACES_D->GetRaces(1)) == -1 ) {
+	receive("No such race.\nRace: ");
+	input_to((: InputRace :), I_NOESC);
+	return;
+    }
+    Player->SetRace(args);
+    eventEnterGame();
+} 
+ 
+static void eventTimeout() {
+    if( !interactive(this_object()) ) {
+	Destruct();
+    }
+    else if( query_idle(this_object()) > LOGON_TIMEOUT ) {
+	receive("\nLogin timed out.\n");
+	Destruct();
+    }
+    else call_out( (: eventTimeout :), LOGON_TIMEOUT );
+}
+
+varargs int eventPrint(string msg, mixed cl, mixed arg3) {
+    if( !cl || !intp(cl) ) return 0;
+    if( cl & MSG_NOWRAP ) receive(strip_colours(msg));
+   else receive(wrap(strip_colours(msg), GetScreen()[0]));
+    return 1;
+}
+
+static private void Destruct() {
+    if( Player && !NetDead ) destruct(Player);
+    remove_call_out();
+    destruct(this_object());
+}
+
+void eventDestruct() {
+    Destruct();
+}
+
+string GetKeyName() {
+    if(!interactive(this_object())) return 0;
+    else if(Name) return Name;
+    else return "";
+}
+
+string GetCapName() {
+    string tmp;
+
+    tmp = GetKeyName();
+    return (tmp ? capitalize(tmp) : "");
+}
+
+static void terminal_type(string str) {
+    if( !stringp(str) ) return;
+    else Terminal = lower_case(str);
+}
+
+static void window_size(int width, int height) {
+    Screen = ({ width, height });
+}
+
+static void CreateGuest() {
+    receive("Enter the name you wish to use: ");
+    input_to( (: GetGuestName :), I_NOESC );
+}
+
+static void GetGuestName(string nom) {
+    object ob;
+
+    return;
+    if( !nom || nom == "" || user_exists(convert_name(nom)) ) {
+	receive("Illegal name choice, try again: ");
+	return;
+    }
+//    ob = new(LIB_GUEST);
+    ob->SetCapName(nom);
+    exec(ob, this_object());
+    ob->Setup();
+}
+
+int *GetScreen() {
+   if( Screen ) return Screen;
+   else return ({ 79, 24 });
+}
+
+void SetLastError(mapping m) {
+    if (previous_object() != master()) return;
+    LastError = m;
+}
+
+mapping GetLastError() {
+    string caller = file_name(previous_object());
+    if( caller[0..23] == "/secure/cmds/creator/dbx" ||
+       caller[0..22]  == "/secure/cmds/player/bug" ) return LastError;
+    error("Privilege Violation: " + caller);
+}

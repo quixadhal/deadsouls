@@ -1,0 +1,22 @@
+tree
+20:80
+Treeish
+SHOCK:high
+COLD:medium
+HEAT:medium
+BLADE:low
+BLUNT:low
+KNIFE:low
+WATER:low
+charisma:21:3
+durability:43:1
+intelligence:1:5
+luck:43:1
+agility:1:5
+wisdom:10:4
+charsima:1:5
+speed:1:5
+strength:21:3
+coordination:1:5
+trunk:0:1::
+1st branch:trunk:3::

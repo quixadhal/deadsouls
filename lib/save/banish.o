@@ -1,0 +1,9 @@
+#/daemon/banish.c
+__Names ({})
+__Sites ({})
+__WatchNames ({})
+__WatchSites ({})
+__Allowed ({})
+__Guests ({})
+__IllegalSubStrings ({})
+__TmpBanish ([])

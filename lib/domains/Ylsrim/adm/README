@@ -1,0 +1,14 @@
+			 /domains/Ylsrim/adm
+	       The Administrative Directory for Ylsrim
+
+This directory contains all files necessary for domain
+administration.  The following files are required for any standard
+domain, but not for secondary domains or realms:
+
+void.c - The place people go when their environment is destructed
+freezer.c - The place people go when they go net-dead
+cache.c - The place hidden items go to hide
+
+The access object is used in any realm or domain which is giving out
+access which is nonstandard.  This is traditionally handled through
+the 'grant' command.

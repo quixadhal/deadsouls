@@ -1,0 +1,28 @@
+griffin
+20:80
+Griffinish
+COLD:high
+SHOCK:high
+BLUNT:medium
+WATER:low
+charisma:1:5
+durability:43:1
+intelligence:1:5
+luck:43:1
+agility:31:2
+wisdom:10:4
+speed:31:2
+strength:43:1
+coordination:31:2
+torso:0:1:A_ARMOUR,A_BODY_ARMOUR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
+head:torso:1:A_BODY_ARMOUR,A_VISOR,A_HELMET,A_CLOAK
+right rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+left foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+left rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+left wing:torso:3::
+right wing:torso:3::
+right foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+left forepaw:left foreleg:4::
+left rear paw:left rear leg:4::
+right forepaw:right foreleg:4::
+right rear paw:right rear leg:4::

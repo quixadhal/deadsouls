@@ -1,0 +1,20 @@
+		       /domains/Ylsrim/virtual
+		 Virtual Rooms for the Ylsrim Domain
+
+The Nightmare Object Library ships with a virtual desert to the east
+of the main town of Ylsrim.  It is 25 rooms by 25 rooms in which
+people can get lost.  What happens is when some objects references an
+object in /domains/Ylsrim/virtual/desert/ but finds no file there, it
+calls compile_object() in /domains/Ylsrim/virtual/server.c.  That
+function returns an object which serves as the non-existent object.
+
+The virtual server looks at the file name like:
+/domains/Ylsrim/virtual/desert/15,12
+
+That tells it to clone /domains/Ylsrim/virtual/desert.c and pass it
+15, 12 as the argument to create().  Thus desert.c is able to set up
+exits and such for its location at 15, 12 on the virtual desert grid.
+
+You can thus write your own virtual grid, say for a forest, simply by
+writing a forest.c like the desert.c given here.
+

@@ -1,0 +1,32 @@
+pegasus
+20:80
+Pegasusish
+SHOCK:high
+COLD:medium
+HEAT:medium
+BLADE:low
+BLUNT:low
+KNIFE:low
+WATER:low
+charisma:43:1
+durability:31:2
+intelligence:21:3
+luck:43:1
+agility:43:1
+wisdom:31:2
+charsima:1:5
+speed:31:2
+strength:31:2
+coordination:31:2
+torso:0:1:A_ARMOUR,A_BODY_ARMOUR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
+head:torso:1:A_BODY_ARMOUR,A_VISOR,A_HELMET,A_CLOAK
+left foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+left wing:torso:3::
+right rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+right foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+left rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+right wing:torso:3::
+right rear hoof:right rear leg:4::
+left fore-hoof:left foreleg:4::
+left rear hoof:left rear leg:4::
+right fore-hoof:right foreleg:4::

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+count=1
+
+umask 007
+
+ulimit -n 120
+
+while [ true ]; do
+        /www01/tempbill/bin/driver /www01/tempbill/cfg/DeadSouls 2>/www01/tempbill/lib/log/driver
+        count=$(($count+1))
+        if [ $count -gt 20 ]
+        then count=1
+        fi
+done

@@ -1,0 +1,32 @@
+gargoyle
+20:80
+Gargoyleish
+SHOCK:high
+BLUNT:low
+COLD:low
+WATER:low
+charisma:1:5
+durability:43:1
+intelligence:10:4
+luck:10:4
+agility:1:5
+wisdom:31:2
+speed:10:4
+strength:43:1
+coordination:31:2
+torso:0:1:A_ARMOUR,A_BODY_ARMOUR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
+head:torso:1:A_BODY_ARMOUR,A_VISOR,A_HELMET,A_CLOAK
+left arm:torso:3:A_LONG_GLOVE,A_SHIRT,A_ARMOUR,A_BODY_ARMOUR,A_SHIELD
+right rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+right arm:torso:3:A_LONG_GLOVE,A_SHIRT,A_ARMOUR,A_BODY_ARMOUR,A_SHIELD
+left foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+left rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+left wing:torso:3::
+right wing:torso:3::
+right foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+left forepaw:left foreleg:4::
+left hand:left arm:4:A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
+right forepaw:right foreleg:4::
+right hand:right arm:4:A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
+left rear paw:left rear leg:4::
+right rear paw:right rear leg:4::

@@ -1,0 +1,22 @@
+plant
+20:80
+Plantish
+SHOCK:high
+COLD:medium
+HEAT:medium
+BLADE:low
+BLUNT:low
+KNIFE:low
+WATER:low
+charisma:21:3
+durability:21:3
+intelligence:1:5
+luck:21:3
+agility:1:5
+wisdom:1:5
+charsima:1:5
+speed:1:5
+strength:21:3
+coordination:1:5
+trunk:0:1::
+1st branch:trunk:3::

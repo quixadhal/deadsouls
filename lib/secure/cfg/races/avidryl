@@ -1,0 +1,42 @@
+# Nightmare race configuration file
+# To add a race, make one of these files where the race name equals
+# the file name, and type <addrace race> or <addrace race 1>.  The
+# 1 means the race is a player race.  This file has the following
+# format:
+# line 1: race name
+# line 2: min sight value:max sight value
+# line 3: language (case sensitive)
+# line 4..n: damage type:resistance level
+# line n+1..o: stat:average value:stat class
+# line o+1..p: limb:parent limb:limb class:comma separated armour types
+# line p+1..q: hand:number of fingers
+# damage types come from /include/damage_types.h
+# armour types come from /include/armour_types.h
+# Note that you may in fact have no resistances, thus line 4 would be
+# the first stat.
+avidryl
+15:85
+Avidryl
+agility:50:1
+charisma:20:3
+coordination:30:1
+durability:20:2
+intelligence:15:4
+luck:2:5
+speed:20:3
+strength:40:2
+wisdom:10:5
+torso:0:1:A_SHIRT,A_CLOAK,A_VEST,A_SHIELD,A_ARMOUR,A_BODY_ARMOUR,A_BELT
+head:torso:1:A_HELMET,A_VISOR,A_AMULET
+right leg:torso:2:A_LONG_BOOT,A_LONG_SOCK,A_PANTS,A_BODY_ARMOUR,A_CLOAK
+left leg:torso:2:A_LONG_BOOT,A_LONG_SOCK,A_PANTS,A_BODY_ARMOUR,A_CLOAK
+right foot:right leg:4:A_BOOT,A_LONG_BOOT,A_SOCK,A_LONG_SOCK
+left foot:left leg:4:A_BOOT,A_LONG_BOOT,A_SOCK,A_LONG_SOCK
+right arm:torso:2:A_LONG_GLOVE,A_SHIELD,A_CLOAK,A_ARMOUR,A_BODY_ARMOUR
+left arm:torso:2:A_LONG_GLOVE,A_SHIELD,A_CLOAK,A_ARMOUR,A_BODY_ARMOUR
+right hand:right arm:4:A_RING,A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
+left hand:left arm:4:A_RING,A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
+right wing:torso:4::
+left wing:torso:4::
+right hand:5
+left hand:5
