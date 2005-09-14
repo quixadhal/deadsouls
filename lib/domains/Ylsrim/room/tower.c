@@ -11,7 +11,6 @@ inherit LIB_JUMP;
 
 void create() { 
     room::create();
-    jump::create();
     SetClimate("indoors");
     SetTown("Ylsrim");
     SetAmbientLight(28);
@@ -22,11 +21,21 @@ void create() {
     SetItems( ([ ({ "road", "kaliid road" }) :
 	       "You could probably jump down into the road from here.",
 	       "bazaar" : "It looks like it is bustling.",
+	       "tower" : "The tower you are on.",
 	       ({ "stairs", "staircase" }) : "They lead down into the "
 	       "heart of the hall." ]) );
     SetObviousExits("d");
-    SetExits( ([ "down" : __DIR__ "adv_hall" ]) );
-    AddJump("road", __DIR__ "kaliid4", JUMP_INTO);
-    AddJump("kaliid road", __DIR__ "kaliid4", JUMP_INTO);
-    AddJump("tower", __DIR__ "kaliid4", JUMP_FROM);
+    SetExits( ([ "down" : "/domains/Ylsrim/room/"+ "adv_hall" ]) );
+
+    //AddJump("road", "/domains/Ylsrim/room/"+ "kaliid4", JUMP_INTO);
+    //AddJump("kaliid road", "/domains/Ylsrim/room/"+ "kaliid4", JUMP_INTO);
+    //AddJump("tower", "/domains/Ylsrim/room/"+ "kaliid4", JUMP_FROM);
+SetJump( ([
+"road" : ({ "/domains/Ylsrim/room/kaliid4", JUMP_INTO }),
+"kaliid road" : ({ "/domains/Ylsrim/room/kaliid4", JUMP_INTO }),
+"tower" : ({ "/domains/Ylsrim/room/kaliid4", JUMP_FROM }),
+]) );
 } 
+void init(){
+::init();
+}

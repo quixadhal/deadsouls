@@ -23,7 +23,10 @@ static void create() {
 	    ({ "toral" }));
     SetInventory(([ "/domains/Ylsrim/npc/traveller" : -1 ]));
     SetObviousExits("n, enter pub, enter restaurant");
-    SetExits( ([ "north" : __DIR__ "bazaar" ]) );
-    SetEnters( ([ "restaurant" : __DIR__ "restaurant",
-		"pub" : __DIR__ "pub" ]) );
+    SetExits( ([ "north" : "/domains/Ylsrim/room/"+ "bazaar" ]) );
+    SetEnters( ([ "restaurant" : "/domains/Ylsrim/room/"+ "restaurant",
+		"pub" : "/domains/Ylsrim/room/"+ "pub" ]) );
+}
+void init(){
+::init();
 }

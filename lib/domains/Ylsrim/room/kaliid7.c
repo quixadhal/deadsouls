@@ -24,6 +24,9 @@ static void create() {
     AddItem("road", "The main street in Ylsrim.", "kaliid");
     SetInventory(([ "/domains/Ylsrim/weapon/stick" : 1 ]));
     SetObviousExits("e, w");
-    SetExits( ([ "east" : __DIR__ "kaliid6",
-		"west" : __DIR__ "sand_room" ]));
+    SetExits( ([ "east" : "/domains/Ylsrim/room/"+ "kaliid6",
+		"west" : "/domains/Ylsrim/room/"+ "sand_room" ]));
+}
+void init(){
+::init();
 }

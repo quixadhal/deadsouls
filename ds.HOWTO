@@ -1,48 +1,44 @@
-1) make the directory where all mud files will reside. Called $MUDHOME
+
+1) cd to the directory where all mud files reside. Called $MUDHOME
    in the rest of this document.
 
-2) download MudOS v22pre8
+2) cd to v22.2b14
 
-3) download ds1.1.tar.gz
+3) type ./build.MudOS develop
 
-4) uncompress and tar MudOS and DS in $MUDHOME
+4) type: make 
 
+5) type: make install
+	If this fails, just manually copy the "driver" file
+	into $MUDHOME/bin/
 
-5) Modify the following local_options the main concern being:
-#define CONFIG_FILE_DIR 
-which should be "$MUDHOME/cfg"
+6) edit $MUDHOME/cfg/mudos.cfg (provided). The two to change are:
+mudlib directory and binary directory. For example, if your $MUDHOME
+is /home/joe/mud, then the mudlib directory line will look like this:
 
-6) copy local_options $MUDHOME/v22pre8/src/
+/home/joe/mud/lib
 
-7) type ./build.MudOS
+and bin:
 
-8) in sh or bash type make 1> good.out 2> bad.out
+/home/joe/mud/bin
 
-9) at this point more bad.out  the following is what I got:
-Writing build options to option_defs.c ...
-unlink malloc.c: No such file or directory
-unlink mallocwrapper.c: No such file or directory
-link mallocwrapper.c: No such file or directory
-Building compiler files ...
-Creating 'grammar.y' from 'grammar.y.pre' ...
-Creating 'packages/Makefile' from 'packages/Makefile.pre' ...
-Creating 'packages/GNUmakefile' from 'packages/GNUmakefile.pre' ...
-Creating 'mudlib/Makefile' from 'mudlib/Makefile.pre' ...
-Creating 'mudlib/GNUmakefile' from 'mudlib/GNUmakefile.pre' ...
-Building efun tables ...
-mv: driver: No such file or directory
-make: [driver] Error 1 (ignored)
-
-10) cp -r $MUDHOME/v22pre8/bin $MUDHOME/
-
-11) edit $MUDHOME/cfg/DeadSouls (provided) the two to change are:
-mudlib directory and binary directory
-
-12) edit $MUDHOME/bin/startmud (provided) and change the $MUDHOME
+7) edit $MUDHOME/bin/startmud (provided) and change the $MUDHOME
     stuff.
 
-13) manually run the mud %MUDHOME/bin/driver $MUDHOME/cfg/DeadSouls
+8) manually run the mud $MUDHOME/bin/driver $MUDHOME/cfg/mudos.cfg
 
-15) debug the lib
-    report any bugs where out-of-box provided code does not function
-    to the Nightmare MudLib mailing list.
+9)  telnet to your machine, using the port specified in mudos.cfg. For
+example: telnet localhost 6666
+
+10) Create a new user. Just answer the questions. Make sure you are
+the first person to log in, because that person is automatically
+given admin privileges.
+
+11) You'll get booted out. Telnet back in, and you're now running Your
+Very Own MUD.
+
+12) If this doesn't work, please refer to the mudos.org documentation at their website. This procedure works perfectly on SuSE Linux 9.3, Solaris 8 and Solaris 10, but we can't possibly vouch for every unix flavor and compiler suite out there.
+
+13) If there is something actually wrong with this documentation, please
+visit Frontiers MUD and mudmail Cratylus. Details on this are in the
+/doc/SUPPORT file.

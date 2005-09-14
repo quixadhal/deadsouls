@@ -34,3 +34,6 @@ static void create() {
     // this is the hole people can jump into
     AddItem(new("/domains/Ylsrim/etc/hole"));
 }
+void init(){
+::init();
+}

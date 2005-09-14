@@ -1,22 +1,39 @@
 		      The Dead Souls Mud Library
-		       Released 1 February 1998
+		    Re-Released 12 September 2005
 
-The Dead Souls Mud Library is a special compilation of files from the
-old Nightmare Mudlib that have been released into the public domain.
-This code is provided as-is without any offering of support or
-guarantees of suitability for any specific use.  The existence of this
-code in the public domain pertains only to the code in this
-distribution.  It does not imply or suggest permission to use other
-code by the authors of this work or related works by other authors.
+	The Frontiers LPC Foundation is pleased to present the
+re-release of Dead Souls, after many years of neglect. This
+distribution is updated with the latest current version of MudOS,
+and has had various essential lib fixes applied.
 
-This code is known to work with MudOS v22b25.  You should download and
-install whatever version of MudOS you desire.  Be warned, however,
-that newer versions may or may not work with this release.  You may
-have to modify the code in this distribution to get things to work.
-Do not, under any circumstances, email the author of this distribution
-for support.  Your email will be deleted unread.  If you have
-questions, subscribe to the nightmare-mudlib mailing list by visiting
-http://list.imaginary.com/mailman/listinfo/nightmare-mudlib.
+	Please read /doc/SUPPORT for details on the supportability
+of this software. Note that the Frontiers LPC Foundation does not take
+the responsibility for getting you up and running, or fixing bugs.
+This code is available to you as-is.
 
-George Reese
-1 February 1997
+	Some years ago, Descartes @ Nightmare chose to retire his
+Nightmare mudlib from distribution. Despite various disputes over
+the years, this embargo has stood quite firm. Yet some folks felt
+that, however personally unpleasant he may be, Descartes had overseen
+the development of a fine lib, and many were sorry to see it go.
+
+	This mudlib is based on that old warhorse. It is entirely
+free from copyright problems, and can be freely shared.
+
+	We felt that too many substandard libs were starting to
+pop up, and that there was a need to bring back some of the old
+LPC magic. In accordance with this wish to cater to the elite, we have
+disabled intermud channels by default. To enable them, all you
+need to do is change your MUD's name, by editing the mudos.cfg file.	
+
+	If you want to contribute to the Dead Souls Lib Resurrection
+project, please visit Frontiers MUD and leave some mudmail for
+Cratylus. You can also request to sign up as a lib developer at
+http://sourceforge.net/projects/dead-souls/
+
+	Please review /doc/old/README for more historical background.
+
+	Have fun!
+
+					- Cratylus @ Frontiers
+					  12 September 2005

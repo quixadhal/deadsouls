@@ -99,8 +99,7 @@
 #define REALMS_DIRS             "/realms"
 
 #define DOMAINS_DIRS            "/domains"
-#define DIR_STANDARD_DOMAIN     DOMAINS_DIRS "/Ylsrim"
-#define DIR_UNDERWORLD_DOMAIN   DOMAINS_DIRS "/Underworld"
+#define DIR_STANDARD_DOMAIN     DOMAINS_DIRS "/default"
 
 #define ESTATES_DIRS            "/estates"
 

@@ -51,6 +51,7 @@
 #include "/secure/sefun/user_exists.c"
 #include "/secure/sefun/user_path.c"
 #include "/secure/sefun/visible.c"
+#include "/secure/sefun/tail.c"
 
 int destruct(object ob) {
     string *privs;

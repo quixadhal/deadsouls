@@ -3,6 +3,8 @@
  *    created by Descartes of Borg 960302
  */
 
+#define __DIR__ "/your/dir/here/"
+
 object compile_object(string file) {
     string *path;
     object ob;

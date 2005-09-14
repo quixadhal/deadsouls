@@ -114,7 +114,7 @@ static void InputEmail(string str) {
     tmp = read_file(CFG_GROUPS);
     rm(CFG_GROUPS);
     mkdir(REALMS_DIRS "/" + Name);
-    cp(DIR_STANDARD_DOMAIN "/xtra/workroom.c", REALMS_DIRS "/" + Name +
+    cp(REALMS_DIRS "/workroom.c", REALMS_DIRS "/" + Name +
        "/workroom.c");
     tmp = replace_string(tmp, "ADMIN", Name);
     write_file(CFG_GROUPS, tmp);

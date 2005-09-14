@@ -27,6 +27,9 @@ static void create() {
     // here is the thing that can be climbed, have a look at it!
     AddItem(new("/domains/Ylsrim/etc/wall"));
     SetObviousExits("e, w");
-    SetExits( ([ "east" : __DIR__ "kaliid5",
-		"west" : __DIR__ "kaliid7" ]));
+    SetExits( ([ "east" : "/domains/Ylsrim/room/"+ "kaliid5",
+		"west" : "/domains/Ylsrim/room/"+ "kaliid7" ]));
+}
+void init(){
+::init();
 }

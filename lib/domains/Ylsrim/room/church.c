@@ -37,8 +37,11 @@ static void create() {
 	    "church is very bright.", ({ "dim" }));
     AddItem(new("/domains/Ylsrim/etc/church_button"));
     SetObviousExits("s, n");
-    SetExits(([ "north" : ({ __DIR__ "priest", (: CheckPriest :) }),
-	      "south" : __DIR__ "kaliid3"]));
+    SetExits(([ 
+	      "south" : "/domains/Ylsrim/room/"+ "kaliid3"]));
     SetDoor("south", "/domains/Ylsrim/etc/church_door");
     SetInventory(([ "/domains/Ylsrim/npc/priest" : 1 ]));
+}
+void init(){
+::init();
 }

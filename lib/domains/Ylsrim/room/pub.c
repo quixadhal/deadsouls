@@ -51,10 +51,13 @@ static void create() {
 		"languages, and in many pens and many hands covers much of "
 		"each wall.");
     SetObviousExits("e");
-    SetExits(([ "east" : __DIR__ "s_bazaar" ]));
+    SetExits(([ "east" : "/domains/Ylsrim/room/"+ "s_bazaar" ]));
     // Bring in the Bar Keep
-    SetInventory(([ DIR_STANDARD_DOMAIN "/npc/lars" : 1 ]));
+    SetInventory(([ "/domains/Ylsrim"+ "/npc/lars" : 1 ]));
     // make the writing and the menu readable
     SetRead("writing", (: readMenu :));
     SetRead("menu", (: readMenu :));
+}
+void init(){
+::init();
 }

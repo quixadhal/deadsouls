@@ -4,6 +4,7 @@
  */
 
 #include <lib.h>
+#define __DIR__ "/domains/Ylsrim/virtual/"
 
 inherit LIB_ROOM;
 
@@ -61,7 +62,7 @@ static void SetLongAndItems() {
 		  object ob;
 		  string thing2;
 
-		  if( !(ob = new(DIR_STANDARD_DOMAIN "/etc/pole")) )
+		  if( !(ob = new("/domains/Ylsrim"+ "/etc/pole")) )
 		    return 0;
 		  who->eventPrint("You find a fishing pole!");
 		  eventPrint((string)who->GetName() + " finds a fishing pole "
@@ -81,7 +82,7 @@ static void SetLongAndItems() {
     else if( !random(10) ) 
       SetSmell("default", "You smell a distant camp fire.");
     if( !random(25) )
-      inv[DIR_STANDARD_DOMAIN "/npc/traveller"] = random(3) + 1;
+      inv["/domains/Ylsrim"+ "/npc/traveller"] = random(3) + 1;
     else if( !random(4) ) 
       SetListen("default", "You hear voices whispering in the distance.");
     SetLong(str);

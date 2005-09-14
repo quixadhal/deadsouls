@@ -82,7 +82,6 @@ static int eventClose(mixed sock) {
 
 int eventCreateSocket(int port) {
     int x;
-
     Listen = new(class server);
     Listen->Blocking = 0; /* servers are not blocking to start */
     x = socket_create(SocketType,
@@ -129,11 +128,11 @@ int eventDestruct() {
 
 static void eventNewConnection(object socket) {
     class server s = new(class server);
-    
     s->Descriptor = socket->GetDescriptor();
     s->Blocking = 0;
     s->Owner = socket;
     Sockets[s->Descriptor] = s;
+    socket->StartService(); // added for welcome
 }
 
 static void eventServerAbortCallback(int fd) {
@@ -245,7 +244,7 @@ varargs int eventWrite(object owner, mixed val, int close) {
     if( owner != sock->Owner ) {
 	return 0;
     }
-    if( SocketType != STREAM ) {
+    if( SocketType != STREAM || stringp(val)) {
 	if( sock->Buffer ) {
 	    sock->Buffer += ({ val });
 	}
@@ -276,6 +275,7 @@ varargs int eventWrite(object owner, mixed val, int close) {
 	    sock->Buffer = ({ sock->Buffer..., b });
 	}
     }
+
     sock->Closing = close;
     if( !sock->Blocking ) {
 	eventServerWriteCallback(sock->Descriptor);
@@ -287,6 +287,7 @@ varargs int eventWrite(object owner, mixed val, int close) {
 varargs static void create(int port, int type, string socket_obj) {
     daemon::create();
     SetNoClean(1);
+
     if( socket_obj ) {
 	SocketObject = socket_obj;
     }

@@ -17,9 +17,12 @@ static void create() {
     SetLong("Fighters sort of lounge around in here.");
     SetObviousExits("s");
     SetExits( ([
-		"south" : __DIR__ "fighter_hall",
+		"south" : "/domains/Ylsrim/room/"+ "fighter_hall",
     ]) );
     SetItems( ([
 	]) );
     SetDoor( "south", "/domains/Ylsrim/etc/fighter_door.c");
+}
+void init(){
+::init();
 }

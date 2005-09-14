@@ -31,7 +31,7 @@ static void create() {
     Password = 0;
     Tries = 0;
     Banned = ([]);
-    Nameservers = ({ ({ "*gjs", "208.192.43.105 9000" }) });
+    Nameservers = ({ ({ "*gjs", "198.144.203.194 9000" }) });
     MudList = new(class list);
     ChannelList = new(class list);
     MudList->ID = -1;
@@ -43,7 +43,7 @@ static void create() {
     SetNoClean(1);
     SetDestructOnClose(1);
     SetSocketType(MUD);
-    call_out( (: Setup :), 2);
+    if(mud_name() != "DeadSouls") call_out( (: Setup :), 2);
 }
 
 static void Setup() {

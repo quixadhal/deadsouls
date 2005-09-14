@@ -22,8 +22,8 @@ static void create() {
 	    "fighters into the fold.  A magnificent oak door stands north.");
     SetObviousExits("s, n");
     SetExits( ([
-		"north" : ({ __DIR__ "fighter", (: CheckFighter :) }),
-		"south" : __DIR__ "kaliid5"
+		"north" : ({ "/domains/Ylsrim/room/"+ "fighter", (: CheckFighter :) }),
+		"south" : "/domains/Ylsrim/room/"+ "kaliid5"
     ]) );
     SetInventory(([ "/domains/Ylsrim/npc/fighter" : 1 ]));
     SetItems( ([
@@ -47,3 +47,6 @@ int CheckFighter(string dir) {
     else return 1;
 }
 
+void init(){
+::init();
+}

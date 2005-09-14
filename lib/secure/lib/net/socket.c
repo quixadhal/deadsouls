@@ -1,5 +1,5 @@
 /*    /lib/net/socket.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Handles individual socket I/O
  *    Created by Descartes of Borg 961218
  *    Version: @(#) socket.c 1.1@(#)
@@ -14,6 +14,10 @@ private static int    Descriptor = -1;
 private static object Owner      = 0;
 
 /* *********************** socket.c attributes ********************* */
+string GetAddress() {
+    return socket_address(Descriptor);
+}
+
 int GetDescriptor() {
     return Descriptor;
 }
@@ -38,7 +42,7 @@ int eventSocketClosed() {
     return 1;
 }
 
-static int eventWrite(mixed data, int close) {
+varargs static int eventWrite(mixed data, int close) {
     return Owner->eventWrite(this_object(), data, close);
 }
 

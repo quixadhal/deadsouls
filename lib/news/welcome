@@ -1,10 +1,14 @@
-		     The Nightmare Object Library
-		     Version 4.6 for MudOS v22b25
-		 Copyright (c) 1992-1997 George Reese
+                    The Dead Souls Object Library
 
-      Please read the license agreement in /doc/mudlib/Agreement
-Use of the Nightmare Object Library signifies acceptance of these terms
+                   Version 1 for MudOS v22.2b14
 
-Nightmare documentation is located at http://www.imaginary.com/LPC/Nightmare
+          Released 12 SEP 2005 by the Frontiers LPC Foundation,
+            dedicated to the preservation of Old School Code.
+
+        This software is public domain and copyright-free. 
+
+      For copyright reasons, lib documentation is not included.
+      Please visit Frontiers MUD and pick up a Creator's Manual,
+          if you need support. See /doc/SUPPORT for details.
 
 		     NOTE: This is a beta product

@@ -22,10 +22,13 @@ static void create() {
 	     "tower" : "You can't see much in the darkness into which the "
 	     "stairs disappear." ]));
   SetExits( ([
-	      "up" : __DIR__ "tower",
-	      "south" : __DIR__ "kaliid4" ]) );
+	      "up" : "/domains/Ylsrim/room/"+ "tower",
+	      "south" : "/domains/Ylsrim/room/"+ "kaliid4" ]) );
   SetObviousExits("u, s");
   ob = new("/domains/Ylsrim/etc/adv_board");
   ob->set_max_posts(30);
   ob->eventMove(this_object());
+}
+void init(){
+::init();
 }

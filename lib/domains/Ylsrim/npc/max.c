@@ -21,7 +21,7 @@ static void create() {
     SetMorality(40);
     AddCurrency("electrum", random(200));
     // Define the place where he stores stuff to sell
-    SetStorageRoom(DIR_STANDARD_DOMAIN "/room/armoury_storage");
+    SetStorageRoom("/domains/Ylsrim"+ "/room/armoury_storage");
     // How good a vendor is he? Should be 100+
     SetSkill("bargaining", 110);
     // He should stay in his shop

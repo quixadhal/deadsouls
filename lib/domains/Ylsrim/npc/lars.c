@@ -31,5 +31,5 @@ static void create() {
     // He takes electrum
     SetLocalCurrency("electrum");
     // What he sells
-    SetMenuItems(([ "ale" : DIR_STANDARD_DOMAIN "/meal/ale" ]));
+    SetMenuItems(([ "ale" : "/domains/Ylsrim"+ "/meal/ale" ]));
 }

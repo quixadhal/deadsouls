@@ -69,7 +69,7 @@ static void create() {
     SetGender("male");
     SetMorality(-200);
     AddCurrency("electrum", 1 + random(100));
-    SetInventory(([ DIR_STANDARD_DOMAIN "/armour/artrell_armour" : "wear" ]));
+    SetInventory(([ "/domains/Ylsrim"+ "/armour/artrell_armour" : "wear" ]));
     // Check if he can steal at a 5% chance/heart beat
     SetAction(5, (: Steal :));
     // Don't want him getting cloned all over the place

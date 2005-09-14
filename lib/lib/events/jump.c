@@ -12,25 +12,30 @@
 private mapping Jumps = ([]);
 
 mapping GetJumps() {
-    Jumps;
+    return Jumps;
 }
 
-varargs mixed SetJump(mixed dest, int type) {
-    if( !type ) {
-	type = JUMP_INTO;
-    }
-    Jumps[type] = dest;
-    return Jumps[type];
+varargs mixed SetJump(mixed args) {
+if(!mapp(args)) return "Bad argument to SetJump.";
+foreach(mixed key, mixed val in args) {
+if(!stringp(key)) return "Bad key value in SetJump";
+if(!arrayp(val)) return "Bad element to SetJump key \""+key+"\". An array is required.";
+if(!stringp(val[0]) && !functionp(val[0])) return "Bad element 0 in array for key \""+key+"\". A string or function is required.";
+if(!intp(val[1])) return "Bad element 1 in array for key \""+key+"\". A jump type is required.";
+}
+
+return Jumps = args;
+
 }
 
 mixed CanJump(object who, string id, int type) {
-    if( Jumps[type] ) {
+    if( Jumps[id] && Jumps[id][1] == type ) {
 	return 1;
     }
     if( !sizeof(Jumps) ) {
 	return 0;
     }
-    type = keys(Jumps)[0];
+    type = Jumps[keys(Jumps)[0]][1];
     switch(type) {
 	case JUMP_INTO:
 	return "Perhaps you mean to jump into it?";
@@ -53,8 +58,8 @@ mixed CanJump(object who, string id, int type) {
 mixed eventJump(object who, string id, int type) {
     mixed dest;
     
-    if( Jumps[type] ) {
-	dest = Jumps[type];
+    if( Jumps[id] && Jumps[id][1] == type ) {
+	dest = Jumps[id][0];
     }
     else {
 	return 0;

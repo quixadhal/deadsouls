@@ -102,6 +102,7 @@ varargs int visibility(object ob);
 varargs int visible(object detectee_obj, object detector_obj);
 varargs string wrap(string str, int width);
 void write(string str);
+int tail(string file);
 
 #endif /* l_sefun_h */
 

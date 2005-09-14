@@ -126,7 +126,7 @@ mixed CanUnlock(object who, string id, object key) {
 	return 0;
     }
     else {
-	return seal::CanUnlock(who, id, key);
+	return ::CanUnlock(who, id, key);
     }
 }
 
@@ -141,7 +141,7 @@ void create() {
     AddSave( ({ "CanClose", "CanLock" }) );
     holder::create();
     item::create();
-    seal::create();
+    ::create();
     SetPreventPut("You can't put this in there.");
 }
 

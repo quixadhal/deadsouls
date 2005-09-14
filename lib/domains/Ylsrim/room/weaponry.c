@@ -22,8 +22,8 @@ static void create() {
       "bazaar" : "People from all about are wandering around, looking "
       "for a bargain." ]) );
     SetObviousExits("e");
-    SetExits( ([ "east" : __DIR__ "bazaar" ]) );
-    SetInventory( ([ DIR_STANDARD_DOMAIN "/npc/shiela" : 1 ]) );
+    SetExits( ([ "east" : "/domains/Ylsrim/room/"+ "bazaar" ]) );
+    SetInventory( ([ "/domains/Ylsrim"+ "/npc/shiela" : 1 ]) );
 }
 
 string CheckOpen(string str) {
@@ -56,3 +56,6 @@ string CheckItem(string str) {
     }
 }
 	
+void init(){
+::init();
+}

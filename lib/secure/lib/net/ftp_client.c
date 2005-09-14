@@ -1,5 +1,5 @@
 /*    /secure/lib/ftp_client.c
- *    From the Nightmare V Object Library
+ *    From the Dead Souls Object Library
  *    a TCP client object
  *    Created by Descartes of Borg 950428
  *    Modified by Dvarsk to add read,write and close settable functions.

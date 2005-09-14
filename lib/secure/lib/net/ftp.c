@@ -478,7 +478,7 @@ private void do_list( string arg, int ltype){
     }
     if(strsrch(flags,'1') > -1)
         output=implode(map(files,(:sprintf("%s",$1[0]) :)),"\n");
-    eventWrite("150 Opening ascii mode data connection for file list\n",0);
+    eventWrite("150 Opening ASCII mode data connection for file list.\r\n",0);
     Session->dataPipe->eventWrite(implode(explode(output,"\n"), "\r\n")+"\r\n");
     return;
 }

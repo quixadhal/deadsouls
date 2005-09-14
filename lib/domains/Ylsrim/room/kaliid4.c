@@ -29,8 +29,13 @@ static void create() {
     AddItem("vendor", "Thre are many vendors wandering about the bazaar.");
     AddItem("road", "The main street for Ylsrim.", ({ "kaliid" }));
     SetObviousExits("e, w, s, enter hall");
-    SetExits( ([ "east" : __DIR__ "kaliid3",
-	       "west" : __DIR__ "kaliid5",
-	       "south" : __DIR__ "bazaar" ]) );
-    SetEnters( ([ "hall" : __DIR__ "adv_hall" ]));
+    SetExits( ([ "east" : "/domains/Ylsrim/room/"+ "kaliid3",
+	       "west" : "/domains/Ylsrim/room/"+ "kaliid5",
+	       "south" : "/domains/Ylsrim/room/"+ "bazaar" ]) );
+    SetEnters( ([ "hall" : "/domains/Ylsrim/room/"+ "adv_hall" ]));
 }
+
+void init(){
+::init();
+}
+

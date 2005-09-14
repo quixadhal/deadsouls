@@ -20,7 +20,7 @@ static void create() {
 	    "appetite.");
     SetMass(100); 
     SetFight(40);
-    SetFood(DIR_STANDARD_DOMAIN "/meal/shark");
+    SetFood("/domains/Ylsrim"+ "/meal/shark");
 }
 
 int eventCatch(object who, object pole) { 

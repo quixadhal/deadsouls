@@ -11,15 +11,18 @@ static void create() {
     room::create();
     SetNoClean(1);
     SetTown("Ylsrim");
-    SetProperties( ([ "login" : __DIR__ "weaponry" ]) );
+    SetProperties( ([ "login" : "/domains/Ylsrim/room/"+ "weaponry" ]) );
     SetClimate("indoors");
     SetShort("weaponry storage");
     SetLong("Weaponry storage.");
     SetObviousExits("e");
-    SetExits( ([ "west" : __DIR__ "weaponry" ]) );
+    SetExits( ([ "west" : "/domains/Ylsrim/room/"+ "weaponry" ]) );
 }
 
 int CanReceive(object ob) {
     if( !living(ob) || creatorp(ob) ) return room::CanReceive(ob);
     else return 0;
+}
+void init(){
+::init();
 }

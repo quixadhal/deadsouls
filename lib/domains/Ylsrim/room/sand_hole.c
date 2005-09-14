@@ -15,7 +15,10 @@ static void create() {
     SetLong("You are in a very dark, sandy hole in the desert.");
     AddItem("sand", "It is everywhere.");
     SetObviousExits("");
-    SetExits( ([ "up" : __DIR__ "sand_room" ]));
+    SetExits( ([ "up" : "/domains/Ylsrim/room/"+ "sand_room" ]));
     // use a door to act as a hole, as that is what the hole really is
     SetDoor("up", "/domains/Ylsrim/etc/dug_hole");
+}
+void init(){
+::init();
 }

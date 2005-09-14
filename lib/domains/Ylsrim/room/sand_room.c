@@ -61,12 +61,15 @@ static void create() {
     AddItem("sand", "Boring stretches of sand extend to the horizon.");
     AddItem("ylsrim", "It is east of here.");
     SetObviousExits("e");
-    SetExits( ([ "east" : __DIR__ "kaliid7",
-	       "down" : __DIR__ "sand_hole" ]));
+    SetExits( ([ "east" : "/domains/Ylsrim/room/"+ "kaliid7",
+	       "down" : "/domains/Ylsrim/room/"+ "sand_hole" ]));
     // use a door to act as a hole, as that is what the hole really is
     SetDoor("down", "/domains/Ylsrim/etc/dug_hole");
     // this tells the room to call this function when a player digs
     SetDig((: digHole :));
     // this tells the room what to call when a player buries the hole
     SetBury((: buryHole :));
+}
+void init(){
+::init();
 }

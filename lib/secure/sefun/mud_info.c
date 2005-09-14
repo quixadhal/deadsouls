@@ -27,8 +27,19 @@ string architecture() { return __ARCH__; }
  * Object Library License Agreement and will result in the loss of
  * your right to use Dead Souls
  */
+
+/* Interestingly, the warning above seems to forbid the attempt
+ * to seek permission. Isn't that odd? Anyway, Dead Souls as released
+ * was public domain, and is now GPL, so you do what you want. 
+ * I'm leaving that there as a
+ * reminder of how totalitarian and narrow-minded some people can
+ * be. It would be nice if you left the mudlib name and revision
+ * alone, though, so we can count you among our brother muds.
+ * - Cratylus @ Frontiers
+ */
+
 string mudlib() { return "Dead Souls"; }
 
-string mudlib_version() { return "1.1pre"; }
+string mudlib_version() { return "1.1r4"; }
 
 int query_host_port() { return __PORT__; }

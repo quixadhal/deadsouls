@@ -15,7 +15,7 @@ mixed ReadList();
 
 static void create() {
     ::create();
-    SetTown("Praxis");
+    SetTown("Ylsrim");
     SetClimate("indoors");
     SetProperties( ([ "no kill" : 1, "no attack" : 1, "no steal" : 1,
       "no magic" : 1, "light" : 3, "no bump" : 1, "no teleport" : 1 ]) );
@@ -26,7 +26,7 @@ static void create() {
     SetItems( ([ "list" : "This is the list of candidates." ]) );
     SetRead( "list", (: ReadList :) );
     SetObviousExits("d");
-    SetExits( ([ "down" : "/domains/Praxis/room/town_hall" ]) );
+    SetExits( ([ "down" : "/domains/Ylsrim/room/bazaar" ]) );
 }
 
 mixed ReadList() {
@@ -159,4 +159,7 @@ now!");
     }
 
     return 1;
+}
+void init(){
+::init();
 }

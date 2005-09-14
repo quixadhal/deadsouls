@@ -24,9 +24,13 @@ static void create() {
     AddItem("desert", "The town does all it can to keep from being swallowed "
 	    "by it.");
     AddItem(new("/domains/Ylsrim/etc/church_button"));
-    SetObviousExits("e, w, enter church");
-    SetExits( ([ "east" : __DIR__ "kaliid2",
-	       "west" : __DIR__ "kaliid4" ]));
-    SetEnters( ([ "church" : __DIR__ "church" ]));
+    SetObviousExits("w, enter church");
+    SetExits( ([ 
+	       "west" : "/domains/Ylsrim/room/"+ "kaliid4" ]));
+SetEnters( ([ "church" : "/domains/Ylsrim/room/"+ "church" ]));
     SetDoor("church", "/domains/Ylsrim/etc/church_door");
+}
+
+void init(){
+::init();
 }

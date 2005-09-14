@@ -58,7 +58,7 @@ static void create() {
 		 }
 	     }, ({ "armour" }));
     // set it so when people 'enter armoury', they move to the armoury
-    ob->SetEnter(__DIR__ "armoury");
+    ob->SetEnter("/domains/Ylsrim/room/"+ "armoury");
     // now add it as an item
     AddItem(ob);
     // do the same stuff for the weaponry
@@ -71,9 +71,12 @@ static void create() {
 		     return "It is open.";
 		 }
 	     }, ({ "weapon" }));
-    ob->SetEnter(__DIR__ "weaponry");
+    ob->SetEnter("/domains/Ylsrim/room/"+ "weaponry");
     AddItem(ob);
     // set the directional exits
-    SetExits( ([ "north" : __DIR__ "kaliid4",
-		"south" : __DIR__ "s_bazaar" ]) );
+    SetExits( ([ "north" : "/domains/Ylsrim/room/"+ "kaliid4",
+		"south" : "/domains/Ylsrim/room/"+ "s_bazaar" ]) );
+}
+void init(){
+::init();
 }
