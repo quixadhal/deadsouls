@@ -23,7 +23,10 @@ static void create() {
 
 int AddCurrency(string type, int amount) { 
     if( amount > 0 ) {
-	if( !CanCarry(currency_mass(amount, type)) ) {
+	int curr_mass;
+	curr_mass = to_int(currency_mass(amount, type));
+	if(curr_mass < 1 ) curr_mass = 1;
+	if( !CanCarry(curr_mass) ) {
 	    return -1;
 	}
     }
@@ -53,16 +56,16 @@ int AddBank(string bank, string type, int amount) {
 	if( amount < 1 ) return -1;
 	Bank[bank] = ([ "open" : time(), type : amount, "last time" : time(),
 	  "last trans" : "opened account", 
-          "audit" : identify(previous_object(-1)) ]);
-	return amount;
-    }
-    if( Bank[bank][type] + amount < 0 ) return -1;
-    Bank[bank][type] += amount;
-    Bank[bank]["last time"] = time();
-    if( amount > 0 ) Bank[bank]["last trans"] = "deposit";
-    else Bank[bank]["last trans"] = "withdrawal";
-    Bank[bank]["audit"] = identify(previous_object(-1));
-    return Bank[bank][type];
+	  "audit" : identify(previous_object(-1)) ]);
+    return amount;
+}
+if( Bank[bank][type] + amount < 0 ) return -1;
+Bank[bank][type] += amount;
+Bank[bank]["last time"] = time();
+if( amount > 0 ) Bank[bank]["last trans"] = "deposit";
+else Bank[bank]["last trans"] = "withdrawal";
+Bank[bank]["audit"] = identify(previous_object(-1));
+return Bank[bank][type];
 }
 
 int GetBank(string bank, string type) {
@@ -75,32 +78,34 @@ mapping GetAccountInfo(string bank) {
     else return copy(Bank[bank]);
 }
 
-int GetNetWorth() {
+varargs int GetNetWorth(string benjamins) {
     string curr;
     float net_worth;
     int amt;
 
     foreach(curr, amt in Currency) {
 	float tmp;
-	
+
 	if( (tmp = currency_rate(curr)) < 1 ) continue;
-	net_worth += amt / tmp;
+	net_worth += amt * tmp;
     }
     foreach(string bank, mapping balance in Bank) {
 	foreach(curr, amt in balance) {
 	    float tmp;
-	    
+
 	    switch(curr) {
-                case "last trans": case "last time": case "audit": case "open":
-		  break;
-                default:
-		  if( (tmp = currency_rate(curr)) < 1 ) break;
-		  net_worth += amt / tmp;
-		  break;
+	    case "last trans": case "last time": case "audit": case "open":
+		break;
+	    default:
+		if( (tmp = currency_rate(curr)) < 1 ) break;
+		net_worth += amt * tmp;
+		break;
 	    }
 	}
     }
-    return net_worth;
+    if(!benjamins || benjamins == ""||!stringp(benjamins)) benjamins = "gold";
+    if(member_array(benjamins,mud_currencies()) == -1) benjamins = "gold";
+    return net_worth / currency_rate(benjamins);
 }
 
 string array GetCurrencies() { return keys(Currency); }

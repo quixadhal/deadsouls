@@ -1,5 +1,5 @@
 /*    /lib/events/wear.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    An object that can be worn
  *    Created by Descartes of Borg 970101
  *    Version: @(#) wear.c 1.1@(#)
@@ -14,24 +14,24 @@ mixed CanUnequip(object who);
 
 mixed direct_remove_obj() {
     mixed tmp;
- 
-    if( environment() != this_player() ) {
+
+    if( environment(this_object()) != this_player() ) {
 	return "#You don't have that!";
     }
     return CanUnequip(this_player());
 }
- 
+
 mixed direct_wear_obj() {
-    if( environment() != this_player() ) {
+    if( environment(this_object()) != this_player() ) {
 	return "#You don't have that!";
     }
     return CanEquip(this_player(), GetRestrictLimbs());
 }
- 
+
 mixed direct_wear_obj_on_str(object target, string str) {
-    if( environment() != this_player() ) {
+    if( environment(this_object()) != this_player() ) {
 	return "#You don't have that!";
     }
     return CanEquip(this_player(), ({ remove_article(lower_case(str)) }));
 }
- 
+

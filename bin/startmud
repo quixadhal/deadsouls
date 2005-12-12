@@ -9,7 +9,7 @@ umask 007
 ulimit -n 120
 
 while [ true ]; do
-        $MUDHOME/bin/driver $MUDHOME/cfg/mudos.cfg 2>/tmp/mud/lib/log/driver
+        $MUDHOME/bin/driver $MUDHOME/bin/mudos.cfg 
         count=$(($count+1))
         if [ $count -gt 20 ]
         then count=1

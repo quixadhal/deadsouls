@@ -1,5 +1,5 @@
 /*    /lib/props/radiance.c
- *    From the Dead Souls V LPC Library
+ *    From the Dead Souls LPC Library
  *    Radiance is the capacity of one object to radiate light
  *    Created by Descartes of Borg 961221
  *    Version: @(#) radiance.c 1.1@(#)
@@ -13,7 +13,8 @@ int GetRadiantLight(int ambient) {
 	return RadiantLight;
     }
     else {
-	return (RadiantLight * 20)/(ambient);
+	//return (RadiantLight * 20)/(ambient);
+	return RadiantLight;
     }
 }
 

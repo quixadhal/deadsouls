@@ -14,17 +14,17 @@ int cmd(string str) {
 
     if(!archp(previous_object())) return 0;
     if(!sizeof(noms = (string *)BANISH_D->query_allowed())) {
-        write("No one is currently allowed to login from a restricted site.\n");
-        return 1;
+	write("No one is currently allowed to login from a restricted site.\n");
+	return 1;
     }
     if(str) {
-        if(member_array(lower_case(str), noms) != -1)
-          write("You have already allowed "+capitalize(str)+" in.\n");
-        else write("That name is not currently setup for registration login.\n");
+	if(member_array(lower_case(str), noms) != -1)
+	    write("You have already allowed "+capitalize(str)+" in.\n");
+	else write("That name is not currently setup for registration login.\n");
     }
     else {
-        write("These names may be used by people from restricted sites:\n");
-        write(format_page(noms, 5)+"\n");
+	write("These names may be used by people from restricted sites:\n");
+	write(format_page(noms, 5)+"\n");
     }
     return 1;
 }

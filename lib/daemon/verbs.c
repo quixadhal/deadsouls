@@ -22,6 +22,7 @@ varargs void eventReloadVerbs(mixed val) {
     string verb;
     int i;
 
+    //tc("/daemon/verbs: eventReloadVerbs");
     if( arrayp(val) ) verbs = filter(val, (: GetValidVerb($1) :));
     else if( stringp(val) ) {
 	if( strlen(val) > 2 && val[<2..] == ".c" ) val = val[0..<3];
@@ -32,11 +33,11 @@ varargs void eventReloadVerbs(mixed val) {
 	    if( this_player() && cwd = (string)this_player()->query_cwd() ) {
 		tmp = absolute_path(cwd, val);
 		if( file_exists(tmp + ".c") && GetValidVerb(tmp)  ) 
-		  verbs = ({ tmp });
+		    verbs = ({ tmp });
 	    }
 	    if( !verbs ) {
 		if( file_size(tmp) == -2 && GetValidVerb(tmp) ) 
-		  verbs = map(get_dir(tmp+"/*.c"), (: $(tmp) + "/" + $1 :));
+		    verbs = map(get_dir(tmp+"/*.c"), (: $(tmp) + "/" + $1 :));
 	    }
 	    else {
 		string dir;
@@ -60,23 +61,23 @@ varargs void eventReloadVerbs(mixed val) {
 	foreach(dir in get_dir(DIR_VERBS + "/")) { 
 	    dir = DIR_VERBS + "/" + dir;
 	    if( file_size(dir) == -2 ) 
-	      verbs += map(get_dir(dir + "/*.c"), (: $(dir) + "/" + $1 :));
+		verbs += map(get_dir(dir + "/*.c"), (: $(dir) + "/" + $1 :));
 	}
     }
     i = 0;
     foreach(verb in verbs) {
 	object ob;
 	string *verb_list;
-	
+
 	if( ob = find_object(verb) ) ob->eventDestruct();
 	if( ob = load_object(verb) ) {
 	    i++;
 	    if( !(verb_list = (string *)ob->GetVerbs()) ) 
-	      verb_list = ({ explode(verb, "/")[<1][0..<3] });
+		verb_list = ({ explode(verb, "/")[<1][0..<3] });
 	    else {
 		verb_list += (string *)ob->GetSynonyms();
 		verb_list =distinct_array(map(verb_list,
-					      (: explode($1," ")[0] :)));
+		    (: explode($1," ")[0] :)));
 	    }
 	    Verbs += expand_keys(([ verb_list : verb ]));
 	}
@@ -85,12 +86,15 @@ varargs void eventReloadVerbs(mixed val) {
 }
 
 string GetErrorMessage(string verb) {
+    //tc("/daemon/verbs: GetErrorMessage");
     if( !Verbs[verb] ) return 0;
     else return (string)Verbs[verb]->GetErrorMessage();
 }
 
 int GetValidVerb(string verb) {
+    //tc("/daemon/verbs:  GetValidVerb: verb: "+verb);
     return !strsrch(verb, DIR_VERBS);
+    //key_arr = keys(GetVerbs());
 }
 
 mapping GetVerbs() { return copy(Verbs); }

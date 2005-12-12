@@ -9,15 +9,26 @@
 #include <lib.h>
 
 inherit LIB_ITEM;
+inherit "/lib/props/getlivings";
 
 private int             Communicable  = 1;
-private static mixed    Cure          = 0;
+mixed    Cure          = 0;
 private static function Infect        = 0;
 private static int      LastHeartBeat = time();
 private int             LifeSpan      = 60;
+private int             CannotInfect  = 0;
 private string          Type          = "cold";
+private string array    ImmuneRaces   = ({ "android", "tree", 
+  "plant", "elemental", "fish", "gargoyle", "god", "golem", "insect", 
+  "slug", "snake", "wraith", "zombie" }); 
 
 mixed eventMultiply();
+
+void init(){
+    ::init();
+    set_heart_beat(1);
+
+}
 
 /* ***************  /lib/germ.c data functions  *************** */
 int isGerm() {
@@ -26,6 +37,10 @@ int isGerm() {
 
 int GetCommunicable() {
     return Communicable;
+}
+
+int GetCannotInfect(){
+    return CannotInfect;
 }
 
 /*
@@ -41,7 +56,7 @@ int GetCommunicable() {
  * returns the degree to which it is communicable
  */
 int SetCommunicable(int x) {
-    if( x > 50 ) x = 50;
+    if( x > 100 ) x = 100;
     return (Communicable = x);
 }
 
@@ -65,6 +80,10 @@ mixed GetCure() {
  * returns the successfully set value
  */
 mixed SetCure(mixed val) {
+    if(intp(val)){
+	Cure=val;
+	return;
+    }
     return (Cure = val);
 }
 
@@ -85,7 +104,8 @@ function GetInfect() {
  * returns the function to be called
  */
 function SetInfect(function f) {
-    return (Infect = f);
+    Infect = f;
+    return f;
 }
 
 int GetLifeSpan() {
@@ -119,11 +139,14 @@ string GetType() {
  * valid values are:
  *     viral
  *     bacterial
- *
+ *     parasite
  * returns the new germ type
  */
 string SetType(string type) {
-    return (Type = type);
+    //return (Type = type);
+    Type=type;
+    if(!Type || Type == "") Type = "foo";
+    return Type;
 }
 
 /* ***************  /lib/germ.c events  *************** */
@@ -140,7 +163,7 @@ mixed eventCure(object who, int x, string type) {
     }
     if( functionp(Cure) ) {
 	mixed tmp = evaluate(Cure, who, x, type);
-	
+
 	if( tmp != 1 ) {
 	    return tmp;
 	}
@@ -156,7 +179,7 @@ mixed eventCure(object who, int x, string type) {
 	return 0;
     }
     set_heart_beat(0);
-    Destruct();
+    eventDestruct();
     return 1;
 }
 
@@ -165,63 +188,93 @@ mixed eventEncounter(object who) {
 	return 1;
     }
     if( !query_heart_beat() ) {
-	eventMultiply();
+	//	eventMultiply();
 	set_heart_beat(5);
     }
+    eventMultiply();
     return 1;
 }
 
 mixed eventInfect(object ob) {
     mixed tmp;
-    
+    object presbane;
+    string race;
+    string *bane;
+    if(!ob) return;
+
+    race = ob->GetRace();
+
+    presbane = present("bane",ob);
+    if(presbane) bane = presbane->QueryBane();
+    if(bane){
+	if(member_array(GetKeyName(),bane) != -1) return 0;
+	if(member_array("all",bane) != -1) return 0;
+	foreach(string foo in GetId()){
+	    if(member_array(foo,bane) != -1) return 0;
+	}
+    }
+
+    if(present(this_object()->GetKeyName(),ob) ) return 0;
+    if(race && member_array(race, ImmuneRaces) != -1) return 0; 
+    if(ob->GetUndead() == 1) return 0;
+    if(ob->GetAquatic() == 1) return 0;
+    if(ob->GetNonCarbonBased() == 1) return 0;
+
     if( functionp(Infect) ) {
 	tmp = evaluate(Infect, ob);
-	if( tmp != 1 ) {
-	    Destruct();
+	if( tmp == 1 ) {
+	    eventMove(ob);
 	    return tmp;
 	}
     }
-    if( !query_heart_beat() ) {
-	set_heart_beat(5);
-    }
-    eventMove(ob);
+    //if( !query_heart_beat() ) {
+    set_heart_beat(5);
+    //	}
+
+    if(!eventMove(ob)) eventMove("/domains/default/room/furnace");
     return 1;
 }
+
 
 mixed eventMultiply() {
     object ob;
 
-    if( Communicable > random(3000) ) {
-	object array germs = filter(deep_inventory(environment()),
-				    (: $1->isGerm() :));
+    if( Communicable > random(100) ) {
+	//object array germs = filter(deep_inventory(environment()),
+	// (: $1->isGerm() :));
 	object germ;
 
-	if( sizeof(germs) > 5 ) {
-	    return 0;
-	}
+	//if( sizeof(germs) > 5 ) {
+	//    return 0;
+	//}
 	germ = new(base_name(this_object()));
 	if( !germ ) {
 	    return 0;
 	}
-        if( (ob = environment()) && random(100) > 50 ) {
+	if( (ob = environment()) && random(100) > 50 ) {
 	    ob = (environment(ob) || ob);
 	}
-	if( living(ob) ) {
+	if( ob ) {
+	    if(present(base_name(this_object()),ob) ) {
+		return 1;
+	    }
+	    if(ob && ob->GetRace()=="android") return 2;
+	    if(ob && ob->GetUndead() == 1) return 3;
 	    if( ob->eventInfect(germ) != 1 ) {
-		germ->eventDestruct();
+		germ->eventMove("/domains/default/room/furnace");
 	    }
 	}
 	else {
-	    germ->eventMove(ob);
+	    if(germ && ob && !germ->eventMove(ob)) germ->eventMove("/domains/default/room/furnace");
 	}
-        return 1;
+	return 4;
     }
-    return 0;
+    return 5;
 }
 
 void eventSuffer(object ob) {
 }
-   
+
 /* ***************  /lib/germ.c driver applies  *************** */
 
 static void create() {
@@ -234,84 +287,122 @@ static void create() {
     SetPreventGet("");
     SetPreventPut("");
     call_out(function() { // Start up the HB if cloned into living thing
-	         object env = environment();
+	  object env = environment();
 
-		 if( !env || !living(env) ) {
-		     return;
-		 }
-		 set_heart_beat(5);
-             }, 2);
+	  if( !env || !living(env) ) {
+	      return;
+	  }
+	  set_heart_beat(5);
+      }, 2);
 }
 
 static void heart_beat() {
     object array victims;
-    object env = environment();
-    int interval;
+    object env,presbane;
+    string *bane;
+    string env2;
+    int interval,lucky;
+
+    env=environment();
+    env2=base_name(environment(env));
+    if(!env2 || env2 == "") env2 = "/domains/default/room/furnace";
+
+    presbane = present("bane",env);
+    if(presbane) bane = presbane->QueryBane();
+    if(bane && living(env)){
+	if(member_array(GetKeyName(),bane) != -1) { this_object()->eventMove(env2); return; }
+	if(member_array("all",bane) != -1) { this_object()->eventMove(env2); return; }
+	foreach(string foo in GetId()){
+	    if(member_array(foo,bane) != -1) { this_object()->eventMove(env2); return; }
+	}
+    }
+    //if(Communicable && environment(env) && !present(base_name(),environment(env))){
+    //	new(base_name())->eventMove(environment(env));
+    //			}
+
 
     interval = time() - LastHeartBeat;
     LastHeartBeat = time();
     if( !env ) {
-	set_heart_beat(0);
+	//set_heart_beat(0);
 	if( clonep() ) {
-	    Destruct();
+	    eventDestruct();
 	}
 	return;
     }
+    if(env->GetUndead()==1){
+	this_object()->eventDestruct();
+	return;
+    }
+
     if( living(env) && environment(env) ) {
-        eventSuffer(env);
+	eventSuffer(env);
 	if( !this_object() ) {
 	    return;
 	}
-        if( !env ) {
+	if( !env ) {
 	    if( this_object() ) {
-		Destruct();
+		eventDestruct();
 	    }
-            return;
-        }
-        if( Communicable ) {
-	    eventMultiply();
-	}
-        victims = filter(all_inventory(environment(env)),
-			 (: living :)) - ({ env });
-    }
-    else {
-        LifeSpan -= interval;
-        if( LifeSpan < 1 ) {
-            Destruct();
-            return;
-        }
-        victims = filter(all_inventory(env), (: living :));
-        if( !sizeof(victims) ) {
-            set_heart_beat(0);
-            return;
-        }
-        if( Communicable ) {
-	    eventMultiply();
-	}
-    }
-    if( Communicable > random(1000) ) {
-	object target, germ;
-	
-	victims = sort_array(victims,
-			     function(object one, object two) {
-	                         if( one->GetHealthPoints() >
-				     two->GetHealthPoints() ) {
-				     return -1;
-				 }
-				 else {
-				     return 1;
-				 }
-	                     });
-        if( sizeof(victims) ) {
-	    target = victims[0];
-	}
-        else {
 	    return;
 	}
+	if( Communicable ) {
+	    eventMultiply();
+	}
+	//victims = filter(all_inventory(environment(env)),
+	// (: living :)) - ({ env });
+	victims=get_livings(environment(env));
+    }
+    else {
+	LifeSpan -= interval;
+	if( LifeSpan < 1 ) {
+	    eventDestruct();
+	    return;
+	}
+	//victims = filter(all_inventory(env), (: living :));
+	victims=get_livings(env);
+	if(!sizeof(victims) && environment(env)) victims=get_livings(environment(env));
+	if( !sizeof(victims) ) {
+	    //set_heart_beat(5);
+	    return;
+	}
+	if( Communicable ) {
+	    eventMultiply();
+	}
+    }
+    if( Communicable > random(100) ) {
+	object target, germ;
+
+	/* this code was great, pre /lib/bane.
+	 * now infection is halting here when victims[0]
+	 * has bane. 
+	 *
+	 *
+	 *		victims = sort_array(victims,
+	 *				function(object one, object two) {
+	 *				if( one->GetHealthPoints() >
+	 *					two->GetHealthPoints() ) {
+	 *				return -1;
+	 *				}
+	 *				else {
+	 *				return 1;
+	 *				}
+	 *				});
+	 *		if( sizeof(victims) ) {
+	 *			target = victims[0];
+	 *		}
+	 *		else {
+	 *			return;
+	 *		}
+	 */
+
+	lucky=random(sizeof(victims));
+	target=victims[lucky];
+
 	germ = new(base_name(this_object()));
 	if( germ ) {
 	    if( target->eventInfect(germ) != 1 ) {
-		germ->eventDestruct();
+		if(objectp(germ)) germ->eventMove("/domains/default/room/furnace");
 	    }
 	}
     }

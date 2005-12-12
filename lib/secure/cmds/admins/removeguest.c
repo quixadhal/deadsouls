@@ -14,8 +14,8 @@ int cmd(string str) {
 
     if(!archp(previous_object())) return 0;
     if(!str) {
-        notify_fail("Correct syntax: removeguest [guestlist]\n");
-        return 0;
+	notify_fail("Correct syntax: removeguest [guestlist]\n");
+	return 0;
     }
     i = sizeof(guests = explode(str, " "));
     while(i--) BANISH_D->remove_guest(guests[i]);

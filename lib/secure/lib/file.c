@@ -42,7 +42,7 @@ buffer GetBuffer() {
     }
     for(int i=0; i<count; i++) {
 	int length, ptr;
-	
+
 	ptr = i * MaxBytes;
 	if( size - ptr > MaxBytes ) {
 	    length = MaxBytes;
@@ -128,7 +128,7 @@ string GetString() {
     }
     for(int i=0; i<count; i++) {
 	int length, ptr;
-	
+
 	ptr = i * MaxFile;
 	if( size - ptr > MaxFile ) {
 	    length = MaxFile;
@@ -190,10 +190,10 @@ int eventDestruct() {
 varargs mixed eventRename(string name, int clobber) {
     object file = new(LIB_FILE, name);
     object tmpfile = 0;
-    
+
     if( file->isFile() || file->isDirectory() ) {
 	mixed tmp;
-	
+
 	if( !clobber ) {
 	    return "File or directory already exists.";
 	}
@@ -240,7 +240,7 @@ mixed eventWrite(mixed val) {
     }
     for(int i = 0; i<count; i++) {
 	int ptr = i * max;
-        int length;
+	int length;
 
 	if( size - ptr > max ) {
 	    length = max;
@@ -260,7 +260,7 @@ mixed eventWrite(mixed val) {
 
 varargs static void create(string file) {
     if( !clonep() ) {
-        return;
+	return;
     }
     if( FileName ) {
 	error("Odd, but illegal file name rename attempt.\n");
@@ -268,7 +268,7 @@ varargs static void create(string file) {
     if( !file ) {
 	int t = time();
 	int count = 0;
-	
+
 	file = DIR_TMP "/" + t;
 	while( file_size(file) != -1 ) {
 	    if( count++ > 100 ) {

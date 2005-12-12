@@ -14,9 +14,9 @@ intelligence:10:4
 luck:43:1
 agility:31:2
 wisdom:31:2
-charsima:1:5
+charisma:1:5
 speed:21:3
 strength:21:3
 coordination:31:2
-torso:0:1:A_ARMOUR,A_BODY_ARMOUR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
-head:torso:1:A_BODY_ARMOUR,A_VISOR,A_HELMET,A_CLOAK
+torso:0:1:A_ARMOR,A_BODY_ARMOR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
+head:torso:1:A_BODY_ARMOR,A_VISOR,A_HELMET,A_CLOAK

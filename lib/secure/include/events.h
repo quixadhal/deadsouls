@@ -32,5 +32,11 @@
 #define LIB_TOUCH        DIR_EVENTS "/touch"
 #define LIB_WEAR         DIR_EVENTS "/wear"
 #define LIB_WIELD        DIR_EVENTS "/wield"
+#define LIB_SHOOT        DIR_EVENTS "/shoot"
+#define LIB_TURN         DIR_EVENTS "/turn"
+#define LIB_MANIPULATE   DIR_EVENTS "/manipulate"
+#define LIB_CRAWL        DIR_EVENTS "/crawl"
+#define LIB_LIE          DIR_EVENTS "/lie"
+
 
 #endif /* s_events_h */

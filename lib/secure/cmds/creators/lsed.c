@@ -17,7 +17,7 @@ mixed cmd(string args) {
 
     if( args == "" || !args ) return "Syntax: <lsed [script] [filelist]>";
     if( (maxi = sizeof(files = explode(args, " "))) == 1 )
-      return "You must specify the name of a file to run the script on.";
+	return "You must specify the name of a file to run the script on.";
     pwd = (string)this_player()->query_cwd();
     script = absolute_path( pwd, files[0] );
     files = files[1..];
@@ -35,12 +35,12 @@ mixed cmd(string args) {
 	y = file_size(files[i]);
 	if( y == -2 ) {
 	    message("system", "lsed: File " + files[i] + " is a directory.",
-		    this_player());
+	      this_player());
 	    continue;
 	}
 	else if( y == -1 ) {
 	    message("system", "lsed: File " + files[i] + " does not exist.",
-		    this_player());
+	      this_player());
 	    continue;
 	}
 	LsedFile(files[i], lines, x);
@@ -61,8 +61,8 @@ static void LsedFile(string file, string *cmds, int num_cmds) {
 	ret = ed_cmd(cmds[i]);
 	if( query_ed_mode() == -1 ) {
 	    message("system", "lsed: Script quit unexpectedly on line " +
-		    (i+1) + " for file " + file + " with message: " + ret, 
-		    this_player());
+	      (i+1) + " for file " + file + " with message: " + ret, 
+	      this_player());
 	    return;
 	}
     }
@@ -70,7 +70,7 @@ static void LsedFile(string file, string *cmds, int num_cmds) {
     if( query_ed_mode() != -1 ) {
 	ed_cmd("Q");
 	message("system", "lsed: permission denied for " + file,
-		this_player());
+	  this_player());
 	return;
     }
     message("system", ret, this_player());
@@ -78,20 +78,20 @@ static void LsedFile(string file, string *cmds, int num_cmds) {
 
 void help() {
     message("system", "Syntax: <lsed [script] [filelist]>\n\n"
-	    "Allows you to perform editor commands on a file or set of files "
-	    "from a script.  You simply write a script of editor commands "
-	    "and save it to a file.  For example, say that you wanted to "
-	    "change set_item_functions() to SetItems() and "
-	    "set_search_function() to SetSearch() in every file in your home "
-	    "directory.  You would write a script that looks like:\n\n"
-	    "s/set_item_functions/SetItems/g\n"
-	    "s/set_search_function/SetSearch/g\n\n"
-	    "save it as convert.lsed, and then at the command line type: "
-	    "\"lsed sconvert.lsed *\".  Keep in mind that the MudOS "
-	    "driver will only let an execution thread run so long "
-	    "before automatically terminating it with a too long evaluation "
-	    "error, so avoid running lsed on a large number of files at "
-	    "once.\n\n"
-	    "See also: ed", this_player());
+      "Allows you to perform editor commands on a file or set of files "
+      "from a script.  You simply write a script of editor commands "
+      "and save it to a file.  For example, say that you wanted to "
+      "change set_item_functions() to SetItems() and "
+      "set_search_function() to SetSearch() in every file in your home "
+      "directory.  You would write a script that looks like:\n\n"
+      "s/set_item_functions/SetItems/g\n"
+      "s/set_search_function/SetSearch/g\n\n"
+      "save it as convert.lsed, and then at the command line type: "
+      "\"lsed sconvert.lsed *\".  Keep in mind that the MudOS "
+      "driver will only let an execution thread run so long "
+      "before automatically terminating it with a too long evaluation "
+      "error, so avoid running lsed on a large number of files at "
+      "once.\n\n"
+      "See also: ed", this_player());
 }
-	    
+

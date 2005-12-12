@@ -12,21 +12,21 @@ static void create() {
     room::create();
     SetTown("Ylsrim");
     SetClimate("arid");
-    SetNightLight(15);
+    SetAmbientLight(30);
     SetShort("The south end of the Ylsrim Bazaar");
     SetLong("Along the south end of the Ylsrim Bazaar stands a restaurant "
-	    "and a pub.  The central area of the Bazaar is just north of "
-	    "here.");
+      "and a pub.  The central area of the Bazaar is just north of "
+      "here.");
     AddItem("pub", "You can buy yourself an ale from one of Ylsrim's most "
-	    "respected residents.", ({ "lars" }));
+      "respected residents.", ({ "lars" }));
     AddItem("restaurant", "This restaurant is known for its stew.",
-	    ({ "toral" }));
+      ({ "toral" }));
     SetInventory(([ "/domains/Ylsrim/npc/traveller" : -1 ]));
-    SetObviousExits("n, enter pub, enter restaurant");
+    SetObviousExits("n, enter pub");
     SetExits( ([ "north" : "/domains/Ylsrim/room/"+ "bazaar" ]) );
-    SetEnters( ([ "restaurant" : "/domains/Ylsrim/room/"+ "restaurant",
-		"pub" : "/domains/Ylsrim/room/"+ "pub" ]) );
+    SetEnters( ([ 
+	"pub" : "/domains/Ylsrim/room/"+ "pub" ]) );
 }
 void init(){
-::init();
+    ::init();
 }

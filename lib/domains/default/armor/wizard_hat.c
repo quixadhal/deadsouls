@@ -1,9 +1,9 @@
 #include <lib.h>
-#include <armour_types.h>
+#include <armor_types.h>
 #include <damage_types.h>
-inherit LIB_ARMOUR;
+inherit LIB_ARMOR;
 static void create(){
-    armour::create();
+    armor::create();
     SetKeyName("wizard hat");
     SetId(({"hat","headgear"}));
     SetAdjectives(({"wizard","wizard's"}));
@@ -13,7 +13,7 @@ static void create(){
       "and is decorated with pictures of yellow moons and stars.");
     SetMass(50);
     SetDamagePoints(100);
-    SetArmourType(A_HELMET);
+    SetArmorType(A_HELMET);
     SetProtection(BLUNT, 20);
     SetProtection(BLADE, 20);
     SetProtection(KNIFE, 20);

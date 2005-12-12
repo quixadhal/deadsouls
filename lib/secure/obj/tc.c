@@ -13,7 +13,7 @@ static void create()
     SetShort( "a telnet client" ) ;
     SetId(({"client","telnet client"}));
     SetLong( "It's a small pocket sized telnet terminal.\n"
-"It appears customized to connect to Frontiers MUD only.\n"
+      "It appears customized to connect to Frontiers MUD only.\n"
       "Use 'telnet' or 'connect' to begin.\n\nCommands:\n"
       "[connect|telnet] : start telnet session.\nreset [client]"
       " : reset the telnet client.\nreconnect : reconnect to session"
@@ -87,7 +87,7 @@ int do_connect(string args)
     int new_socket, sc_result, port ;
     string error, ip_address ;
 
-args = "149.152.218.102 5050";
+    args = "149.152.218.102 5050";
 
     if( !args || args == "" )
     {

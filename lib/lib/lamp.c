@@ -1,5 +1,5 @@
 /*    /lib/lamp.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Object Library
  *    a lamp-like inheritable that burns and such
  *    created by Descartes of Borg 960513
  */

@@ -1,5 +1,5 @@
 /*    /lib/events/dig_with.c
- *    From the Dead Soulsr2 Object Library
+ *    From the Dead Souls Object Library
  *    handles functions to allow something to dig
  *    Created by Descartes of Borg 951030
  *    Version: @(#) dig_with.c 1.3@(#)

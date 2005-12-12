@@ -61,7 +61,7 @@ string GetSkillModifier(string skill) { return SkillModifiers[skill]; }
 string SetClass(string class_name) {
     mixed array args = allocate(3);
     mixed array tmp;
-    
+
     CLASSES_D->SetClass(class_name, args);
     if( Class ) {
 	string multi;
@@ -71,8 +71,8 @@ string SetClass(string class_name) {
 	}
 	if( !args[0] ) { // No such secondary class
 	    return Class;
-        }
-        multi = args[0][Class];
+	}
+	multi = args[0][Class];
 	if( !multi ) { // Can't multi-class in this combo
 	    return Class;
 	}
@@ -97,7 +97,7 @@ string ChangeClass(string class_name)  {
     mixed array tmp;
     string cl;
     foreach(cl in GetSkills())  {
-        RemoveSkill(cl);
+	RemoveSkill(cl);
     }
     Class = 0;
     return SetClass(class_name);
@@ -118,7 +118,7 @@ int GetBaseStatLevel(string stat) { return 0; }
 int SetMorality(int x) { return (Morality = x); }
 
 int GetMorality() { return Morality; }
- 
+
 string GetMoralityDescription() {
     string str;
     int x;

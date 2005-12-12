@@ -2,13 +2,13 @@
  *    from the Dead Souls V Object Library
  *    created by Descartes of Borg 951009
  */
- 
+
 #include <lib.h>
 #include <vendor_types.h>
- 
+
 inherit LIB_POLE;
 inherit LIB_ITEM;
- 
+
 static void create() {
     pole::create();
     item::create();

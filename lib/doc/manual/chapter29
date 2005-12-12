@@ -1,0 +1,212 @@
+			   Building Weapons
+		     The Nightmare IV LPC Library
+		 written by Descartes of Borg 950429
+
+All items in the Nightmare LPC Library (descendants of /lib/item.c)
+are weapons.  A player can, for example, use a can of spam as a
+weapon.  However, they are set up as extremely pathetic weapons.  This
+document describes in detail how to make an object into a real weapon.
+
+I. Basic Stuff
+The basic weapon is exactly the same as the basic item.  You can do
+anything to it that can be done to other items.  For details on items,
+see /doc/build/Items.  The simple weapon should look like this:
+
+#include <lib.h>
+#include <damage_types.h>
+#include <vendor_types.h>
+
+inherit LIB_ITEM;
+
+static void create() {
+    item::create();
+    SetKeyName("short sword");
+    SetId( ({ "sword", "short sword", "a short sword" }) );
+    SetAdjectives( ({ "short" }) );
+    SetShort("a short sword");
+    SetLong("A rusty short sword with specs of blood on it.");
+    SetVendorType(VT_WEAPON);
+    SetDamagePoints(1500);
+    SetClass(12);
+    SetValue(150);
+    SetMass(100);
+    SetWeaponType("blade");
+    SetDamageType(BLADE);
+}
+
+The last part is what differs from regular items.  Note the functions:
+
+SetVendorType()
+SetClass()
+SetWeaponType()
+SetDamageType()
+
+The available vendor types can be found by reading the file
+/include/vendor_types.h.  Similarly, damage types may be found by
+reading /include/damage_types.h.  The vendor type states what sort of
+stores can carry this item.  VT_WEAPON should almost ALWAYS be the
+vendor type you give for weapons.
+
+SetClass()
+The class is the basic weapon strength.  It is how much damage gets
+done without any modification.  This number ranges between 1 and 100,
+where 1 is a pathetic weapon (the class for basic items) and 100 is
+probably bordering on illegal.
+
+SetWeaponType()
+This sets what sort of attack skill the player needs to use this
+weapon.  The weapon types are:
+blade
+knife
+blunt
+projectile
+
+SetDamageType()
+Damage types, again, are found in /include/damage_types.h.  This sets
+what type of damage is done by this weapon to its victims.
+
+II. Wield Functions
+
+mixed SetWield(string | function) 
+Examples:
+	SetWield("The short sword feels dull as you wield it.");
+	SetWield( (: WieldMe :) );
+
+If you pass a string to SetWield(), then the player sees that string
+whenever they wield the weapon.  If, on the other hand, you pass a
+function, then that function will get called just before the weapon is
+wielded when the player issues the wield command.  The function you
+pass should be written in the form of:
+
+int WieldMe();
+
+If the function returns 1, then the player can wield the weapon.  If
+it returns 0, then the player cannot wield the weapon.  Note that if
+you have a wield function, you are responsible for all messaging to
+the player to let the player know that they can/cannot wield the
+weapon.  Example:
+
+int WieldMe() {
+    if( (int)this_player()->ClassMember("fighter") ) {
+        write("The short sword gives you power as you wield it.");
+        say((string)this_player()->GetName() + " wields a short sword.");
+        return 1;
+    }
+    else {
+        write("You are not worthy of this short sword.");
+        return 0;
+    }
+}
+
+
+III. Modifying Stats and Skills
+A common thing people like to do with weapons is temporarily modify a
+player's skills.  This is done by making use of the function
+AddStatBonus() and AddSkillBonus().  Most of the time this is done
+through a SetWield() function.
+
+void AddStatBonus(string stat, function f);
+void AddSkillBonus(string stat, function f);
+
+Examples:
+	this_player()->AddStatBonus("wisdom", (: CheckStat :));
+	this_player()->AddSkillBonus("blade attack", (: CheckSkill :));
+
+The functions then have the format:
+
+int CheckWhatever(string stat_or_skill);
+
+NOTE: You should always check whether the bonus is still in effect.
+For example, make sure the weapon is still wielded if it results from
+wielding the weapon.  For example:
+
+#include <lib.h>
+
+inherit LIB_ITEM;
+
+int DoWield()
+int CheckBlade(string skill);
+
+static void create() {
+...
+    SetWield((: DoWield :));
+...
+}
+
+int DoWield() { 
+    this_player()->AddSkillBonus("blade attack", (: CheckBlade :) );
+    write("You wield the short sword.");
+    say((string)this_player()->GetName() + " wields a short sword.");
+    return 1;
+}
+
+int CheckBlade(string skill) {
+    if( !GetWorn() ) {
+        previous_object()->RemoveSkillBonus("blade", this_object());
+        return 0;
+    }
+    else return 5;
+}
+
+
+In other words, this weapon will give its wielder a blade attack bonus
+of 5.  Note that you must use previous_object() in CheckBlade() and
+NOT this_player() because there is no way of knowing who this_player()
+is at the time.  You do know, however, that the object calling
+CheckBlade() is always the player for whom the skill bonus is made.
+Always remember to remove bonuses.
+
+IV. Modifying Hits
+The Nightmare IV LPC Library uses an event driven combat system.  With
+respect to weapons, a round of combat is broken down into the
+following events:
+
+1. The person wielding the weapon uses it.
+2. If they cannot hit a motionless target, the round ends.
+3. If the target dodges the attack, the round ends.
+4. eventStrike() is called in the weapon to determine how much damage
+the weapon can do.
+5. eventReceiveDamage() is called in the target object.  This in turn:
+	a. Calls eventReceiveDamage() in all armour objects, which each:
+		i. Calls eventReceiveDamage() in the weapon
+		ii. The weapon wears down a bit
+	b. The armour wears down a bit
+	c. The amount of armour damage absorbed is returned
+	d. The target objects loses health points.
+	f. The amount of damage done is returned.
+6. Skill and stat points are added.
+
+Note the two important functions which get called in weapon.c:
+
+	int eventStrike(object ob);
+	int eventReceiveDamage(int type, int amount, int unused, mixed limbs);
+
+By default, eventStrike() returns the value of GetClass().  However,
+you can modify this value by overriding the eventStrike().  For
+example:
+
+int eventStrike(object target) {
+    if( (string)target->GetRace() != "orc" ) return item::eventStrike(target);
+    message("environment", "The orc slayer makes a nasty sound!",
+      environment(target));
+    return item::eventStrike(target) + random(10);
+}
+
+NOTE: You should always use item::eventStrike() rather than hard coded
+values since weapon class deteriorates over time.
+
+In this example, a random(10) points of extra damage gets done to
+orcs.  This would be the orc slayer weapon of ancient fame.
+
+For those familiar with hit functions in the old Nightmare Mudlibs,
+this would be roughly equivalent to that.
+
+Another place where you can make things happen is in
+eventDeteriorate() which gets called by eventReceieveDamage().  This is
+where a weapon wears down from the shock which armour has absorbed
+from it.  For weapons, there is not much which can be done here, but
+this document points it out for the creative who feel they might be able to do
+somthing with it.
+
+	Descartes of Borg
+	borg@imaginary.com

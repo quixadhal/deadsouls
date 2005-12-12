@@ -16,31 +16,31 @@ int cmd(string str) {
     notify_fail("Correct syntax: <grep '[pattern]' [file] (> [output])>\n");
     if(!str) return 0;
     if(sscanf(str, "%s > %s", tmp, output) == 2) {
-        if(output[0] != '/')
-          output = (string)previous_object()->get_path()+"/"+output;
-        str = tmp;
+	if(output[0] != '/')
+	    output = (string)previous_object()->get_path()+"/"+output;
+	str = tmp;
     }
     else output = 0;
     if(sscanf(str, "'%s' %s", exp, file) != 2 &&
       sscanf(str, "%s %s", exp, file) != 2) return 0;
     if(!(max = sizeof(files = (string *)previous_object()->wild_card(file)))) { 
-        message("system", "File not found.", this_player());
-        return 1;
+	message("system", "File not found.", this_player());
+	return 1;
     }
     for(i=0, borg = ([]); i<max; i++) {
-        if(!(txt = read_file(files[i]))) continue;
-        borg[files[i]] = regexp(explode(txt, "\n"), exp);
-        if(!sizeof(borg[files[i]])) map_delete(borg, files[i]);
+	if(!(txt = read_file(files[i]))) continue;
+	borg[files[i]] = regexp(explode(txt, "\n"), exp);
+	if(!sizeof(borg[files[i]])) map_delete(borg, files[i]);
     }
     if(!(max = sizeof(files = keys(borg)))) str = "No matches found.\n";
     else {
-        for(i=0, str = ""; i<max; i++)
-          str += sprintf("%s:\n%s\n\n", files[i], implode(borg[files[i]],"\n"));
+	for(i=0, str = ""; i<max; i++)
+	    str += sprintf("%s:\n%s\n\n", files[i], implode(borg[files[i]],"\n"));
     }
     if(output) {
-        if(!write_file(output, str)) 
-          message("system", "Failed to write to: "+output, this_player());
-        else message("system", "Grep sent to: "+output, this_player());
+	if(!write_file(output, str)) 
+	    message("system", "Failed to write to: "+output, this_player());
+	else message("system", "Grep sent to: "+output, this_player());
     }
     else message("Nsystem", str, this_player());
     return 1;

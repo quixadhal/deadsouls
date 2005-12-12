@@ -1,27 +1,17 @@
-/*    /lib/move.c
- *    From the Dead Souls Object Library
- *    Functions for basic movement
- *    Created by Descartes of Borg 950209
- *    Version: @(#) move.c 1.4@(#)
- *    Last modified: 96/12/31
- */
-
 #include <message_class.h>
 
 private static object LastEnvironment = 0;
 
-// abstract methods
 varargs void eventPrint(string str, mixed args...);
-// end abstract methods
 
-/* ******************  /lib/move.c attributes  ******************** */
 object GetLastEnvironment() {
     return LastEnvironment;
 }
 
-/* ********************  /lib/move.c events  ********************** */
 int eventMove(mixed dest) {
-    object ob;
+    object ob,to;
+    int depth;
+    to=this_object();
 
     if( !this_object() ) {
 	return 0;
@@ -30,22 +20,22 @@ int eventMove(mixed dest) {
 	int x;
 
 	x = (int)environment()->CanRelease(this_object());
-        if( !x && !archp() ) {
+	if( !x && !archp() ) {
 	    return 0;
 	}
     }
     if( stringp(dest) ) {
-        if( !(ob = find_object(dest)) ) {
+	if( !(ob = find_object(dest)) ) {
 	    string str;
 
-            if( str = catch(call_other(dest, "???")) ) {
-                if( creatorp() ) {
+	    if( str = catch(call_other(dest, "???")) ) {
+		if( creatorp() ) {
 		    eventPrint(str, MSG_ERROR);
 		}
-                return 0;
-            }
-            ob = find_object(dest);
-        }
+		return 0;
+	    }
+	    ob = find_object(dest);
+	}
     }
     else {
 	ob = dest;
@@ -54,14 +44,22 @@ int eventMove(mixed dest) {
 	return 0;
     }
     if( living(this_object()) && living(ob) ) {
-	return 0;
+	if(!ob->GetMount()) return 0;
     }
     if( !ob->CanReceive(this_object()) ) {
 	return 0;
     }
-    if( LastEnvironment = environment() ) {
+    if( objectp(to) && LastEnvironment = environment() ) {
 	environment()->eventReleaseObject(this_object());
+	if(inherits("/lib/std/storage",to) && inherits("/lib/std/storage",environment() ) ) {
+	    depth = to->GetRecurseDepth();
+	    depth += 1;
+	    if(depth) environment()->AddRecurseDepth(-depth);
+	    if(environment()->GetRecurseDepth() < 1) environment()->SetRecurseDepth(1);
+	}
+
     }
+    if(!objectp(to) ) return 0; 
     move_object(ob);
     environment()->eventReceiveObject(this_object());
     if( environment() ) {

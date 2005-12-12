@@ -16,26 +16,26 @@ void create() {
     SetAmbientLight(28);
     SetShort("Ylsrim Tower");
     SetLong("The tower looks out over Kaliid Road.  South of the road is "
-	     "the always busy Ylsrim bazaar.  A spiraling staircase leads "
-	     "down into the heart of the adventurer's hall.");
+      "the always busy Ylsrim bazaar.  A spiraling staircase leads "
+      "down into the heart of the adventurer's hall.");
     SetItems( ([ ({ "road", "kaliid road" }) :
-	       "You could probably jump down into the road from here.",
-	       "bazaar" : "It looks like it is bustling.",
-	       "tower" : "The tower you are on.",
-	       ({ "stairs", "staircase" }) : "They lead down into the "
-	       "heart of the hall." ]) );
+	"You could probably jump down into the road from here.",
+	"bazaar" : "It looks like it is bustling.",
+	"tower" : "The tower you are on.",
+	({ "stairs", "staircase" }) : "They lead down into the "
+	"heart of the hall." ]) );
     SetObviousExits("d");
     SetExits( ([ "down" : "/domains/Ylsrim/room/"+ "adv_hall" ]) );
 
     //AddJump("road", "/domains/Ylsrim/room/"+ "kaliid4", JUMP_INTO);
     //AddJump("kaliid road", "/domains/Ylsrim/room/"+ "kaliid4", JUMP_INTO);
     //AddJump("tower", "/domains/Ylsrim/room/"+ "kaliid4", JUMP_FROM);
-SetJump( ([
-"road" : ({ "/domains/Ylsrim/room/kaliid4", JUMP_INTO }),
-"kaliid road" : ({ "/domains/Ylsrim/room/kaliid4", JUMP_INTO }),
-"tower" : ({ "/domains/Ylsrim/room/kaliid4", JUMP_FROM }),
-]) );
+    SetJump( ([
+	"road" : ({ "/domains/Ylsrim/room/kaliid4", JUMP_INTO }),
+	"kaliid road" : ({ "/domains/Ylsrim/room/kaliid4", JUMP_INTO }),
+	"tower" : ({ "/domains/Ylsrim/room/kaliid4", JUMP_FROM }),
+      ]) );
 } 
 void init(){
-::init();
+    ::init();
 }

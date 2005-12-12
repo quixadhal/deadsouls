@@ -30,12 +30,12 @@ varargs int RemovePlayer(string str) {
 
 	if( !user_exists(str) ) return 0;
 	if( member_group(str, PRIV_SECURE) || member_group(str, PRIV_ASSIST) )
-	  return 0;
+	    return 0;
 	who = find_player(str);
 	file = save_file(str) + __SAVE_EXTENSION__;
 	if( who ) {
 	    message("system", "You have been removed from " + mud_name() + ".",
-		    who);
+	      who);
 	    who->eventDestruct();
 	}
 	return rm(file); 

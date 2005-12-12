@@ -18,7 +18,7 @@ static void create() {
     SetMealType(MEAL_DRINK | MEAL_ALCOHOL);
     SetStrength(10);
     SetMealMessages("You drink a wonderful bottle of Ylsrim Ale.",
-		    "$N drinks a wonderful bottle of Ylsrim Ale.");
+      "$N drinks a wonderful bottle of Ylsrim Ale.");
     SetEmptyName("bottle");
     SetEmptyShort("an empty bottle of Ylsrim Ale");
     SetEmptyLong("It is an empty brown bottle that once held some ale.");

@@ -1,5 +1,5 @@
 /*    /lib/fuel.c
- *    from the Dead Souls V object Library
+ *    from the Dead Souls object Library
  *    fuel for things which need fuel
  *    this could be battery charge, gas, whatever
  *    created by Descartes of Borg 960512

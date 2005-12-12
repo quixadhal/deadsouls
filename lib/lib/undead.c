@@ -1,5 +1,5 @@
 /*    /lib/undead.c
- *    From Dead Souls V Object Library
+ *    From Dead Souls Object Library
  *    This differs from the NM LPmud version
  *    copyright (c) 1995 Dead Souls LPMud
  *    Created by Descartes of Borg 961025
@@ -17,7 +17,7 @@ private string        UndeadType  = 0;
 string GetName();
 varargs string eventPrint(string message, mixed args...);
 varargs int eventReceiveDamage(object agent, int type, int amt, int ins,
-			       mixed limbs);
+  mixed limbs);
 int eventCompleteHeal(int x);
 int GetHealthPoints();
 int eventMoralAct(int x);
@@ -68,13 +68,13 @@ mixed eventBite(object target) {
 mixed eventTurn(object who) {
     if( who ) {
 	environment()->eventPrint(GetName() + " is turned from the world of "
-				  "the living.", this_object());
+	  "the living.", this_object());
 	eventPrint(who->GetName() +" turns you from the world of the living.");
 	who->eventDestroyEnemy(this_object());
     }
     else {
 	environment()->eventPrint(GetName() + " is turned from the world "
-				  "of the living.", this_object());
+	  "of the living.", this_object());
 	eventPrint("You have been turned from the world of the living.");
     }
     return 1;
@@ -82,7 +82,7 @@ mixed eventTurn(object who) {
 
 static void heart_beat() {
     string type;
-    
+
     if( !GetUndead() ) {
 	return;
     }
@@ -91,13 +91,18 @@ static void heart_beat() {
 	if( type == "ghost" || type == "phantom" ) {
 	    eventPrint("You wail mournfully.");
 	    environment()->eventPrint(GetName() + " wails mournfully.",
-				      this_object());
+	      this_object());
 	}
 	else if( type == "zombie" || type == "ghoul" ) {
 	    eventPrint("You groan painfully.");
 	    environment()->eventPrint(GetName() + " groans painfully.",
-				      this_object());
+	      this_object());
 	}
     }
+}
+
+int GetGhost(){
+    if(GetUndeadType() == "ghost") return 1;
+    else return 0;
 }
 

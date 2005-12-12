@@ -1,5 +1,5 @@
 /*    /lib/enter.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Allows objects to provide an entry portal into another place
  *    Created by Descartes of Borg 961015
  *    Version: @(#) enter.c 1.4@(#)
@@ -22,12 +22,12 @@ string ResolveObjectName(string file) {
 }
 
 mixed direct_close_obj(object target) {
-  if( !Door ) {
-      return 0;
-  }
-  else {
-      return Door->CanClose(this_player());
-  }
+    if( !Door ) {
+	return 0;
+    }
+    else {
+	return Door->CanClose(this_player());
+    }
 }
 
 mixed direct_enter_obj() {
@@ -75,7 +75,7 @@ mixed direct_pick_str_on_obj(string str, object ob, string id1, string id2) {
 }
 
 mixed direct_pick_str_on_obj_with_obj(string str, object ob, object w,
-				      string id1, string id2, string id3) {
+  string id1, string id2, string id3) {
     return direct_pick_str_on_obj(str, ob, id1, id2);
 }
 
@@ -92,31 +92,39 @@ mixed eventClose(object who) {
     return Door->eventClose(who);
 }
 
-mixed eventEnter(object who, string what) {
+varargs mixed eventEnter(object who, string what, string verb) {
+    string dowhat;
+    if(!verb) verb = "NOVERB";
     if( Door && Door->GetClosed() ) {
 	who->eventPrint("You bump into " + Door->GetShort(what) + ".");
 	environment(who)->eventPrint(who->GetName() + " bumps into " +
-				     Door->GetShort(what) + ".", who);
+	  Door->GetShort(what) + ".", who);
 	return 1;
     }
     if( who->GetPosition() != POSITION_STANDING ) {
-	who->eventStand();
-	if( who->GetPosition() != POSITION_STANDING ) {
+	if(verb != "crawl") who->eventStand();
+	if( who->GetPosition() != POSITION_STANDING && verb != "crawl") {
+	    who->eventPrint("weird.");
 	    return 0;
 	}
     }
     if( Enter["pre"] && !evaluate(Enter["pre"], what) ) {
 	return 1;
     }
-    who->eventMoveLiving(Enter["room"], "$N enters into the " + what + ".");
+    if(verb == "crawl") who->eventMoveLiving(Enter["room"],"into the " + what );
+    else who->eventMoveLiving(Enter["room"], "$N enters into the " + what + ".");
     if( Enter["post"] ) {
 	evaluate(Enter["post"], what);
     }
     return 1;
 }
 
-mixed eventLock(object who, object key) {
-    Door->eventLock(who, key);
+varargs mixed eventLock(object who, mixed arg1, mixed arg2) {
+    object key;
+    if(arg1 && objectp(arg1)) key = arg1;
+    else if(arg2 && objectp(arg2)) key = arg2;
+    else return 0;
+    return Door->eventLock(who, key);
 }
 
 varargs mixed eventOpen(object who, object tool) {

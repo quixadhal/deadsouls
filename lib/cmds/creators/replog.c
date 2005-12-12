@@ -11,12 +11,12 @@ int cmd(string str) {
     if(!str) str = (string)this_player()->GetKeyName();
     str = "/log/reports/"+str;
     if(!file_exists(str)) {
-        notify_fail("No such file: "+str+".\n");
-        return 0;
+	notify_fail("No such file: "+str+".\n");
+	return 0;
     }
     if(!tail(str)) {
-        notify_fail("Failed to read file: "+str+".\n");
-        return 0;
+	notify_fail("Failed to read file: "+str+".\n");
+	return 0;
     }
     return 1;
 }

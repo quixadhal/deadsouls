@@ -13,7 +13,7 @@ void eventInventory();
 
 mixed cmd(string args) {
     if( (int)this_player()->GetInCombat() )
-      this_player()->SetAttack(0, (: eventInventory :), ROUND_OTHER);
+	this_player()->SetAttack(0, (: eventInventory :), ROUND_OTHER);
     else eventInventory();
     return 1;
 }
@@ -25,8 +25,8 @@ void eventInventory() {
     int i;
 
     shorts = map(filter(all_inventory(this_player()), 
-			(: !((int)$1->GetInvis(this_player())) :)),
-		 (: (string)$1->GetEquippedShort() :));
+	(: !((int)$1->GetInvis(this_player())) :)),
+      (: (string)$1->GetEquippedShort() :));
     borg = ([]);
     if( !(i = sizeof(shorts)) ) {
 	message("system", "You are carrying nothing.", this_player());
@@ -39,13 +39,13 @@ void eventInventory() {
     while(i--) ret += capitalize(consolidate(borg[shorts[i]], shorts[i]))+"\n";
     message("look", ret, this_player());
     message("other_action", (string)this_player()->GetName() + " checks " +
-	    possessive(this_player()) + " possessions.", 
-	    environment(this_player()), ({ this_player() }));
+      possessive(this_player()) + " possessions.", 
+      environment(this_player()), ({ this_player() }));
 }
 
 void help() {
     message("help", "Syntax: <inventory>\n\n"
-	    "Lists all items you are carrying currently.  This command "
-	    "will take up one round of combat if you happen to be in "
-	    "combat.", this_player());
+      "Lists all items you are carrying currently.  This command "
+      "will take up one round of combat if you happen to be in "
+      "combat.", this_player());
 }

@@ -1,6 +1,6 @@
 /*    /lib/bboard.c
  *    /lib/bboard.c
- *    from Dead Souls 3.3
+ *    from Nightmare 3.3
  *    the Dead Souls bulletin board system
  *    created by Descartes of Borg 940920
  */
@@ -32,7 +32,6 @@ void init() {
     add_action("cmd_remove", "remove");
     add_action("cmd_edit", "edit");
     if(!creatorp(this_player())) return;
-    add_action("cmd_save", "save");
 }
 
 static private int valid_edit(string author) {
@@ -51,10 +50,10 @@ int cmd_post(string str) {
 
     if(!str) return notify_fail("You must specify a subject.\n");
     if(file_exists(file = DIR_TMP+"/"+(string)this_player()->GetKeyName())) {
-        message("system", "You have an abandoned post waiting.",this_player());
-        message("system", "        e)dit it, or start n)ew", this_player());
-        message("prompt", "\nCommand (default 'n'): ", this_player());
-        input_to("begin_post", str, file, (: continue_post :));
+	message("system", "You have an abandoned post waiting.",this_player());
+	message("system", "        e)dit it, or start n)ew", this_player());
+	message("prompt", "\nCommand (default 'n'): ", this_player());
+	input_to("begin_post", str, file, (: continue_post :));
     }
     else begin_post("n", str, file, (: continue_post :));
     return 1;
@@ -64,8 +63,8 @@ static void begin_post(string cmd, string subj, string file, function f) {
     if(cmd == "" || !cmd) cmd = "n";
     else cmd = cmd[0..0];
     if(cmd != "n" && cmd != "e") {
-        message("system", "Invalid bulletin board command.", this_player());
-        return;
+	message("system", "Invalid bulletin board command.", this_player());
+	return;
     }
     if(cmd == "n" && file_exists(file)) rm(file);
     (*f)(subj, file);
@@ -80,16 +79,16 @@ void end_post(string subj, string mail) {
 
     file = DIR_TMP "/" + (string)this_player()->GetKeyName();
     if(!(msg = read_file(file))) {
-        message("system", "No file read!", this_player());
-        if(file_exists(file)) rm(file);
-        return;
+	message("system", "No file read!", this_player());
+	if(file_exists(file)) rm(file);
+	return;
     }
     else rm(file);
-       if( !mail )
-      BBOARD_D->add_post(query_board_id(),
-        (string)this_player()->GetCapName(), subj, msg);
+    if( !mail )
+	BBOARD_D->add_post(query_board_id(),
+	  (string)this_player()->GetCapName(), subj, msg);
     else {
-        int foo;
+	int foo;
     }
     message("system", "Message posted!", this_player());
 }
@@ -100,24 +99,24 @@ int cmd_read(string str) {
 
     maxi = sizeof(posts = (mapping *)BBOARD_D->query_posts(query_board_id()));
     if(!str) {
-        for(i=0, x = -1; i<maxi; i++)
-          if(member_array((string)this_player()->GetKeyName(),
-            posts[i]["read"]) == -1) {
-              x = i;
-              break;
-          }
-        if(x == -1) return notify_fail("No unread posts.\n");
+	for(i=0, x = -1; i<maxi; i++)
+	    if(member_array((string)this_player()->GetKeyName(),
+		posts[i]["read"]) == -1) {
+		x = i;
+		break;
+	    }
+	if(x == -1) return notify_fail("No unread posts.\n");
     }
     else if(!(x = to_int(str))) return notify_fail("Read what?\n");
     else x--;
     if(x < 0 || x >= sizeof(posts))
-      return notify_fail("Invalid post number.\n");
+	return notify_fail("Invalid post number.\n");
     str = "Post #%^YELLOW%^" + (x+1) + "%^RESET%^ by %^YELLOW%^" +
-          posts[x]["author"] + "%^RESET%^\nSubject: %^CYAN%^" +
-          posts[x]["subject"] + "%^RESET%^\n\n";
+    posts[x]["author"] + "%^RESET%^\nSubject: %^CYAN%^" +
+    posts[x]["subject"] + "%^RESET%^\n\n";
     str += posts[x]["post"];
 
-BBOARD_D->mark_read(query_board_id(),x,(string)this_player()->GetKeyName());
+    BBOARD_D->mark_read(query_board_id(),x,(string)this_player()->GetKeyName());
     this_player()->eventPage(explode(str, "\n"), "system");
     return 1;
 }
@@ -231,6 +230,7 @@ string GetExternalDesc() {
 
     msg = item::GetExternalDesc();
     maxi = sizeof(posts = (mapping *)BBOARD_D->query_posts(query_board_id()));
+    msg += "\n";
     if(!maxi) msg += "There are currently no posts.\n";
     else for(i=0; i < maxi; i++) {
         int lu;

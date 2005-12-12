@@ -1,0 +1,367 @@
+			  Building Any Item
+		     The Nightmare IV LPC Library
+		 written by Descartes of Borg 950430
+
+Each object you build has a certain common make-up no matter what type
+of object it is.  This is because all of your objects actually are
+based upon the same object, the object called /lib/object.c.  That
+object contains functions such as SetShort() and SetLong() which you
+use in almost every single object you will build.  This document
+details how to set up any possible object you will use.  The only
+exceptions will be for rooms, which do not have key names or id's.
+
+Beyond that, most of the every day objects you will code like armours,
+weapons, drinks, foods, etc. all derive from a common object called
+/lib/item.c.  This document attempts to detail what is involved in
+building any object on the MUD through /lib/item.c and its ancestor
+/lib/object.c.
+
+This document is in three sections
+
+I.  	List of Mandatory Function Calls
+II.	Basic Functions
+III.	Extras
+IV.	Events
+
+** ***************  List of Mandatory Function Calls  **************  **
+
+SetKeyName("red bag");
+SetId( ({ "bag", "red bag" }) );
+SetAdjectives( ({ "red" }) );
+SetShort("a red bag");
+SetLong("A small red bag with no distinguishing marks.");
+SetMass(90);
+SetValue(50);
+SetVendorType(VT_BAG);
+
+You also need to include vendor_types.h.
+
+      **  ***************  Basic Functions  ***************  **
+
+*****
+SetKeyName()
+*****
+
+string SetKeyName(string key_name);
+
+Example: SetKeyName("red bag");
+
+Notes: 
+	Mandatory for all objects except rooms.  
+	Not used for rooms.
+
+The key name is the central name by which the object is referred to in
+sentences where no article is required.  For example, the sentence
+"You pick up your red bag" makes use of the key name to complete the
+sentence.  This is much like the short description, except the short
+description will include an article.  For this object, SetShort("a red
+bag") would be used.
+
+*****
+SetId()
+*****
+
+string *SetId(string *id);
+
+Example: SetId( ({ "bag", "red bag" }) );
+
+Notes: 
+	Mandatory for all objects except rooms.  
+	Not used in rooms.
+	Must be all lower case.
+
+The id is an array of strings by which the object may be referred to by a
+player.  For example, if the player wants to get this bag, the player
+can type "get bag" or "get red bag".  The id is used purely for
+identification purposes, so if you have something you need to sneak in
+a unique way of identifying it, you may add an id only you know about.
+
+*****
+SetAdjectives()
+*****
+
+string *SetAdjectives(string *adjs);
+
+Example: SetAdjectives( ({ "red" }) );
+
+Notes:
+	Planned for future use in Zork style command parsing.
+	Not used in rooms.
+
+The adjectives are descriptive terms used to describe the object.
+This is not currently being used, however, it will be part of the new
+style command parsing we will be building.  This will allow the player
+to type things like "get the red one" and pick up the red bag.  Even
+though it is not used, it is requested you place it in your objects to
+make upgrading down the road a simpler task.
+
+*****
+SetShort()
+*****
+
+string SetShort(string description | function desc_func);
+
+Examples: 
+	SetShort("a red bag");
+	SetShort((: DescribeBag :));
+
+The short description is a brief description of the object.  Only
+names and proper nouns should be capitalized, the rest should be lower
+case, as if it were appearing in the middle of a sentence.  In rooms,
+the player sees the short description when in brief mode and when they
+glance at the room.  For objects, the player sees the short when it is
+described in the room or in their inventory.
+
+If you pass a function instead of a string, then that function is used
+to create the description.  You can use this to do something like make
+the object change its short description depending on who is looking at
+it.  The function that you build should therefore return a string
+that will be used as the short description.  For example...
+
+string DescribeBag() {
+    if( query_night() ) return "a bag";
+    else return "a red bag";
+}
+
+*****
+SetLong()
+*****
+
+string SetLong(string description | function desc_func);
+
+Examples:
+	SetLong("A red bag with no markings on it whatsoever.");
+	SetLong((: BagLong :));
+
+Creates a verbose way to present the object to the player.  You should
+be much more descriptive than I have been in the example.  Being a
+text game, descriptions are 90% of what make the game.  The more
+creative you are with your descriptions, the more interesting the game
+is to players.  The long description of a room is seen by players in
+verbose mode and when the player uses the "look" command.  For
+objects, the long description is seen when the player looks at the
+object.  Functions work in exactly the same fashion as short
+functions.
+
+*****
+SetMass()
+*****
+
+int SetMass(int mass);
+
+Example: SetMass(100);
+
+Notes:
+	Mandatory for all visible objects.
+	Not needed for non-tangible objects and rooms.
+
+Sets the mass for the object.  In conjunction with the gravity of the
+room it is in, this works to determine the weight of the object.
+
+*****
+SetValue()
+*****
+
+int SetValue(int value);
+
+Example: SetValue(50);
+
+Notes:
+	Mandatory for all sellable objects.
+	Not used in rooms.
+
+Sets the base economic value of an object.  This has no meaning in any
+currencies, and in fact the actual value in any given currency may
+vary.
+
+*****
+SetVendorType()
+*****
+
+int SetVendorType(int vt);
+
+Example: SetVendorType(VT_BAG);
+
+Note:
+	Mandatory for all objects except rooms.
+	Preset to VT_ARMOUR for objects which inherit LIB_ARMOUR.
+	Preset to VT_TREASURE for objects which inherit LIB_ITEM.
+	Preset to VT_LIGHT for objects which inherit LIB_LIGHT.
+	Not valid for room objects.
+	Values are found in /include/vendor_types.h.
+
+You must do:
+#include <vendor_types.h>
+to use the VT_* macros (i.e. VT_ARMOUR, VT_TREASURE, VT_WEAPON).
+
+The vendor type determines which shops will buy the item.  For
+example, things with VT_BAG as the vendor type can be bought and sold
+in bag stores.  For items which cross the line, for example a flaming
+sword, you can combine vendor types in the following manner:
+	SetVendorType(VT_WEAPON | VT_LIGHT);
+
+*****
+SetDamagePoints()
+*****
+
+int SetDamagePoints(int pts);
+
+Example: SetDamagePoints(500)
+
+Sets the amount of damage an object can take before descreasing in
+value.  With armours and weapons, damage is taken quite often.  Damage
+is more rare with other kinds of objects.  With this example object
+which has 500 damage points, whenever 500 points has been done to it,
+its value is cut in half and eventDeteriorate() is called for the
+object.  See the events section on using eventDeteriorate().  The
+points are then reset to 500 and damage is done from that.
+ 
+	   **  ***************  Extras  ***************  **
+
+*****
+SetProperty()
+*****
+
+mixed SetProperty(string property, mixed value);
+
+Example: SetProperty("no pick", 1);
+
+Allows you to store information in an object which may not have been
+intended by the designer of the object, or which is fleeting in
+nature.  See /doc/build/Properties for a list of common properties.
+*****
+SetProperties()
+*****
+
+mapping SetProperties(mapping props);
+
+Example: SetProperties( ([ "light" : 1, "no attack" : 1 ]) );
+
+Allows you to set any properties you want all in one shot.
+
+*****
+SetDestroyOnSell() 
+*****
+
+int SetDestroyOnSell(int true_or_false);
+
+Example: SetDestroyOnSell(1);
+
+For mundane objects, or objects which should not be resold, allows you
+to set it so that the object gets destroyed when sold instead of
+allowing it to be resold.
+
+*****
+SetPreventGet()
+*****
+
+mixed SetPreventGet(mixed val);
+
+Examples:
+	SetPreventGet("You cannot get that!");
+	SetPreventGet( (: check_get :) );
+
+Allows you to make an object un-gettable by a player.  If you pass a
+string, the player will see that string any time they try to get the
+item.  If you pass a function, that function will be called to see if
+you want to allow the get. Your function gets the person trying to get
+the object as an argument:
+
+int check_get(object who) {
+    if( (int)who->GetRave() == "ogre" ) {
+	message("my_action", "Ogres cannot get this thing!", who);
+	return 0;
+    }
+    else return 1;
+}
+
+*****
+SetPreventPut()
+*****
+
+mixed SetPreventPut(mixed val);
+
+Examples:
+	SetPreventPut("You cannot put that in there!");
+	SetPreventPut( (: check_put :) );
+
+The same as SetPreventGet(), except this is used when the object is
+being put into another object.
+
+*****
+SetPreventDrop()
+*****
+
+mixed SetPreventDrop(mixed val);
+
+Examples:
+	SetPreventDrop("You cannot drop that!");
+	SetPreventDrop( (: check_drop :) );
+
+The same as SetPreventGet(), except this is used when a player tries
+to drop the object.
+
+
+       **  ***************  General Events  **************  **
+
+*****
+eventDeteriorate()
+*****
+
+void eventDeteriorate(int type);
+
+Example: ob->eventDeteriorate(COLD);
+
+Notes:
+	Damage types can be found in /include/damage_types.h
+
+This function gets called periodically in objects whenever they wear
+down a bit.  The type passed to the function is the type of damage
+which triggered the deterioration.
+
+*****
+eventMove()
+*****
+
+int eventMove(mixed dest);
+
+Example: 
+	ob->eventMove(this_player());
+	ob->eventMove("/domains/Praxis/square");
+
+The eventMove event is called in an object when it is being moved from
+one place to the next.  You can either pass it the file name of a room
+to which it should be moved or an object into which it should be
+moved.  It will return true if the object gets moved, false if it
+cannot move for some reason.  For objects which are being dropped,
+gotten, or put, it is generally a good idea to check CanDrop(),
+CanClose(), or CanGet() for the object in question since eventMove()
+does not know the context of the move and therefore will allow a drop
+since it does not check CanDrop().
+
+*****
+eventReceiveDamage()
+*****
+
+varargs int eventReceiveDamage(int type, int amount, int unused, mixed limbs);
+
+Example: ob->eventReceiveDamage(BLUNT, 30, 0, "right hand");
+
+This function gets called in an object whenever any damage is done to
+it.  Most frequently this gets called in monsters and armour.  In
+armour you can use it to modify the amount of damage which gets done.
+The return value of this function is the amount of damage done to the
+object.  For example, if you have a piece of armour that absorbs 5 of
+the 30 points listed above, then you return 5.  
+
+NOTE:
+	For monsters there is an extra arg at the front called
+	agent.  The agent is the being responsible for doing
+	the damage.  It may be zero if something like the weather
+	is causing the damage.  It looks like:
+
+varargs int eventReceiveDamage(object agent, int type, int strength, 
+	int internal, mixed limbs);
+
+	For more detailed information, see /doc/build/NPC.
+

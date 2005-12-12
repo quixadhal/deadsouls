@@ -10,36 +10,37 @@
 #include <message_class.h>
 
 inherit LIB_STORAGE;
+inherit LIB_SURFACE;
 inherit LIB_SMELL;
 
-private int DecayLife, Count, CallOut, Fresh;
-private string Owner, Race;
+int DecayLife, Count, CallOut, Fresh;
+string Owner, Race;
 
 int eventDecay() {
     if( !environment() ) {
-        Destruct();
-        return 0;
+	Destruct();
+	return 0;
     }
-   Fresh = 0;
+    Fresh = 0;
     switch(Count) {
-        case 1:
-	    environment()->eventPrint(possessive_noun(Owner) + " corpse " +
-				      "is starting to stink.", MSG_ROOMDESC);
-	    SetId(GetId()..., "corpse", "remains");
-	    SetAdjectives(GetAdjectives()..., "stinky", "rotting");
-            SetShort("the stinky remains of a rotting corpse");
-	    SetSmell("This corpse is beginning to stink up the entire area.");
-            break;
-        case 2:
-	    environment()->eventPrint("A rotting stench fills the entire "
-				      "area.", MSG_ROOMDESC);
-	    SetId(GetId()..., "flesh", "pile", "pile of flesh");
-            SetShort("a pile of rotting flesh");
-	    SetSmell("Its smell is nearly unbearable.");
-            break;
-        case 3:
-            Destruct();
-            return 0;
+    case 1:
+	environment()->eventPrint(possessive_noun(Owner) + " corpse " +
+	  "is starting to stink.", MSG_ROOMDESC);
+	SetId(GetId()..., "corpse", "remains","flesh","pile","pile of flesh");
+	SetAdjectives(GetAdjectives()..., "stinky", "rotting");
+	SetShort("the stinky remains of a rotting corpse");
+	SetSmell("This corpse is beginning to stink up the entire area.");
+	break;
+    case 2:
+	environment()->eventPrint("A rotting stench fills the entire "
+	  "area.", MSG_ROOMDESC);
+	SetId(GetId()..., "flesh", "pile", "pile of flesh");
+	SetShort("a pile of rotting flesh");
+	SetSmell("Its smell is nearly unbearable.");
+	break;
+    case 3:
+	Destruct();
+	return 0;
     }
     Count++;
     CallOut = call_out((: eventDecay :), DecayLife/3);
@@ -50,27 +51,33 @@ static int Destruct() {
     if( CallOut ) {
 	remove_call_out(CallOut);
     }
-    return storage::Destruct();
+    return ::Destruct();
 }
 
 int SetDecayLife(int x) { return (DecayLife = x); }
 
 int GetDecayLife() { return DecayLife; }
 
+//void init(){
+//	::init();
+//	SetId(({ "body","corpse",who->GetId()... }) );
+//}
+
 void SetCorpse(object who) {
     if( DecayLife < 100 ) {
-	DecayLife = 100;
+	DecayLife = 500;
     }
     SetKeyName(who->GetKeyName());
-    SetId(who->GetId()...);
+    //SetId(who->GetId()...);
+    SetId(({ "body","corpse",who->GetId()... }) );
     Owner = who->GetCapName();
     Race = who->GetRace();
     Count = 1;
     Fresh = 1;
     SetShort((string)who->GetShort());
     SetLong("As you look closely at " + who->GetCapName() +
-	    ", you notice that " +  nominative(who) +
-	    " does not appear to be moving.");
+      ", you notice that " +  nominative(who) +
+      " does not appear to be moving.");
     CallOut = call_out((: eventDecay :), DecayLife/3);
 }
 
@@ -92,7 +99,7 @@ int CanReceive(object ob) { return 1; }
 
 
 static void create() {
-    storage::create();
+    ::create();
     SetId( ({ "corpse", "flesh", "remains" }) );
     SetAdjectives( ({"pile of", "rotting", "stinky"}) );
     Count = 0;
@@ -100,6 +107,7 @@ static void create() {
     DecayLife = 100;
     Owner = 0;
     Race = 0;
+    SetNoCondition(1);
 }
 
 int direct_animate_obj() {
@@ -110,3 +118,4 @@ int direct_offer_obj() {
     return 1;
 }
 
+string GetItemCondition() { return "";}

@@ -17,12 +17,12 @@ static void create() {
     SetRules("STR from LIV");
     SetErrorMessage("Buy what from whom?");
     SetHelp("Syntax: <buy ITEM from VENDOR>\n\n"
-	    "When in the presence of vendors, you may buy and sell goods "
-	    "which match the type of goods the vendor in question trades in.  "
-	    "The \"buy\" command naturally allows you to buy the items "
-	    "the vendor has for sale.\n\n"
-	    "Synonyms: purchase\n\n"
-	    "See also: ask, sell, vendors");
+      "When in the presence of vendors, you may buy and sell goods "
+      "which match the type of goods the vendor in question trades in.  "
+      "The \"buy\" command naturally allows you to buy the items "
+      "the vendor has for sale.\n\n"
+      "Synonyms: purchase\n\n"
+      "See also: ask, sell, vendors");
 }
 
 mixed can_buy_str_from_liv(string str) {

@@ -19,5 +19,5 @@ int cmd() {
 
 void help() {
     write("Syntax: <tellblock>\n\n"+
-        "Toggles the blocking of tells on and off.");
+      "Toggles the blocking of tells on and off.");
 }

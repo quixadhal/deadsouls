@@ -1,5 +1,5 @@
 /*    /lib/get.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Object Library
  *    handles the picking up of objects
  *    created by Descartes of Borg 960114
  *    Version: @(#) get.c 1.3@(#)
@@ -29,16 +29,16 @@ mixed CanGet(object who) {
     if( !((int)who->CanCarry(GetMass())) ) return "It is too heavy for you!";
     if( !PreventGet && !GetProperty("keep") ) return 1;
     if( stringp(GetProperty("keep")) ) {
-        if( (string)who->GetKeyName() == GetProperty("keep") ) {
+	if( (string)who->GetKeyName() == GetProperty("keep") ) {
 	    if( !PreventGet ) return 1;
 	}
-        else return "Mystical forces prevent you from getting " + GetShort() + ".";
+	else return "Mystical forces prevent you from getting " + GetShort() + ".";
     }
     if( intp(PreventGet) ) return 0;
     if( stringp(PreventGet) ) return PreventGet;
     if( objectp(PreventGet) ) {
 	if( PreventGet == who )
-	  return capitalize(GetShort()) + " simply will not be taken.";
+	    return capitalize(GetShort()) + " simply will not be taken.";
 	else return 1;
     }
     else return evaluate(PreventGet, who);
@@ -51,7 +51,7 @@ mixed eventGet(object who) {
     }
     who->eventPrint("You get " + GetShort() + ".");
     environment(who)->eventPrint((string)who->GetName() + " gets " +
-				 GetShort() + ".", who);
+      GetShort() + ".", who);
     return 1;
 }
 
@@ -61,11 +61,11 @@ static void create() {
 
 mixed direct_get_obj(object target) {
     if( environment() != environment(this_player()) ) {
-        string str = GetShort();
+	string str = GetShort();
 
-        if( !str ) str = "It";
-        else str = capitalize(str);
-        return "#" + str + " is out of your reach.";
+	if( !str ) str = "It";
+	else str = capitalize(str);
+	return "# You are unable to do that right now.";
     }
     return CanGet(this_player());
 }
@@ -78,7 +78,7 @@ mixed direct_get_obj_out_of_obj(object target, object src) {
     if( !(str = GetShort()) ) str = "It";
     else str = capitalize(str);
     if( env==this_player() || env ==environment(this_player()) || living(env) )
-	return "#" + str + " is out of your reach.";
+	return "#You can't do that right now.";
     return CanGet(this_player());
 }
 

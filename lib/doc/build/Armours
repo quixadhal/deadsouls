@@ -1,0 +1,180 @@
+			   Building Armours
+		     The Nightmare IV LPC Library
+		 written by Descartes of Borg 950430
+
+Armour has changed quite a bit from the days of armour class.  The
+Nightmare IV LPC Library now uses damage types, which means armour that
+is great against one attack may be pathetic against another.  In fact,
+in building armour, it is important that you keep in mind weaknesses.
+Fortunately, armour is by default absolutely pathetic.  If you go
+making it awesome, chances are that it will not make it through the
+approval process.  This document is designed to get you started
+building armour as well introduce you to the features available to
+make unique and interesting armour.
+
+I. Basic Armour
+You should be familiar with /doc/build/Items, as armour is just a
+special type of item.  It therefore has all of the features of regular
+items. 
+
+
+
+The basic armour looks like this:
+
+#include <lib.h>              /* see this everywhere */
+#include <armour_types.h>     /* a listing of armour types */
+#include <damage_types.h>     /* a listing of damage types */
+
+inherit LIB_ARMOUR;           /* the armour inheritable */
+
+static void create() {
+    armour::create();         /* call create() in armour.c */
+    SetKeyName("rusty helm");
+    SetId( ({ "helm", "rusty helm", "a rusty helm" }) );
+    SetAdjectives( ({ "rusty" }) );
+    SetShort("a rusty helm");
+    SetLong("A rusty helmet which will be better than nothing on your head.");
+    SetMass(75);
+    SetValue(200);
+    SetDamagePoints(1000);    
+    SetProtection(BLUNT, 4);   /* SetProtection() sets the sort of */
+    SetProtection(BLADE, 3);   /* protection for a given damage type */
+    SetProtection(KNIFE, 3);
+    SetArmourType(A_HELMET);     /* set what kind of armour this is */
+}
+
+As you can see, there is very little that you have to do specific to
+armour.  The only armour specific call you MUST make is
+SetArmourType().  Everything else is fluff.
+
+int SetArmourType(int type)
+Armour types are found in /include/armour_types.h.  The armour type
+basically determines where the armour is worn.  Each monster,
+depending on its race, has for each limb a list of armour types which
+may be worn on that limb.  For example, most monsters have heads.
+Some have two heads.  You do not have to worry about this.  They know
+that they can wear anything that is A_HELMET on their heads.  What if
+you have something that may not be wearable on all monsters?  Like,
+for example, you have body armour which should only go on two armed
+beings?  See SetRestrictLimbs() later.  It allows you to restrict
+exactly which kinds of limbs can wear the armour.
+
+int SetProtection(int type, int amount);
+Without this call, armour is nothing.  Just something you wear.  This
+allows you to make clothes, which may protect against COLD, but do not
+do a thing when struck with a sword.  Protection is a number between 0
+and 100.  Refer to approval documentation for details on what levels
+are appropriate, as well as for information on mass and value levels.
+
+That's it for the basics!
+
+II. Advanced Function Calls
+The Nightmare IV LPC Library armour object is fairly flexible for
+allowing you to do interesting things with your armours.  In this
+section, you will learn about other function calls you can make to
+customize your armour.
+
+string *SetRestrictLimbs(string *limbs);
+Example:
+	SetRestrictLimbs( ({ "right arm", "left arm", "torso" }) );
+
+For armours which can only be on certain body configurations, for
+example regular armour (A_ARMOUR) should only be worn on people with
+the same number of hands, this function allows you to restrict the
+armour to being worn only on the limbs you name.  If the person trying
+to wear the armour does not have one of those limbs, any attempt to
+wear fails.
+
+int SetFingers(int num);
+Example:
+	SetFingers(5);
+
+Used for the glove types.  If a person has more fingers on the limb on
+which they are trying to wear a glove type than the glove has spaces
+for, the wear fails.
+
+mixed SetWear(string | function val);
+Examples:
+	SetWear("The cloak feels all yucky on you.");
+	SetWear( (: CheckArtrell :) );
+
+Allows you to create a special message seen by the person wearing the
+item when they wear it if you pass a string.  On the other hand, if
+you pass a function, it will call that function to see if the person
+can wear the item.  The function should be of the form:
+	int WearFunc();
+
+For example:
+
+int CheckArtrell() {
+    if( (string)this_player()->GetRace() == "artrell" ) {
+        write("The rusty helm makes you feel safe.");
+        say((string)this_player()->GetName() + " wears a rusty helm.");
+        return 1;
+    }
+    else {
+        write("You cannot wear that you bum!");
+        return 1;
+    }
+}
+
+III. Function Overrides
+The only function of interest that you might want to override is a
+function called eventReceiveDamage().  This function is called every
+time the armour is hit to see how much of the damage it absorbs.  It
+looks like this:
+
+int eventReceiveDamage(int type, int strength, int unused, mixed limbs);
+
+This function is called by combat to determine how much damage the
+armour absorbs for a given bit of damage being done.  It thus should
+return how much damage it takes.  
+
+You should always at some point call item::eventReceiveDamage() so
+that it can do its processing.  You do not want to call it, however,
+until you determine how much damage you are absorbing unnaturally.
+Here is a sample one for an armour that does extra protection for fighters:
+
+int eventReceiveDamage(int type, int strength, int blah, mixed limbs) {
+    object who_is_wearing;
+    int x;
+
+    if( !(who_is_wearing = environment()) ) /* eek! no one wearing */
+	return 0;
+    if( (int)who_is_wearing->ClassMember("fighter") ) /* reduce strength */
+        x = strength - random(5); 
+    if( x < 1 ) return strength; /* protect against all the damage */
+    return armour::eventReceiveDamage(type, x, blah, limbs);
+}
+
+Keep in mind what eventReceiveDamage() in armour.c is doing.  First,
+it is modifying the strength of the blow based on the protections you
+set with SetProtection().  Then, it is having the armour take damage
+based on how much it absorbed.  So you need to call
+eventReceiveDamage() in armour at the point where you have a value you
+want the armour to do its normal stuff with.  In the example above, we
+wanted to magically protect fighters against a random(5) points of
+damage without having the armour take any damage for that.  Then if
+there is still strength left in the blow, the armour does its normal
+protection. 
+
+What else can you do with this?  Imagine an armour that turns all cold
+damage back on the attacker?
+
+int eventReceiveDamage(int type, int strength, int unused, mixed limbs) {
+    object who_wearing, enemy;
+
+    enemy = (object)(who_wearing = previous_object())->GetCurrentEnemy();
+    if( !enemy || !(type & COLD) ) 
+      return armour::eventReceiveDamage(type, strength, unused, limbs);
+    limbs = enemy->GetTargetLimb(0);
+    message("environment", "Your anti-cold throws the frost in your "
+      "enemy's face!", who_wearing);
+    message("environment", "Your cold attack is turned back upon you!",
+        enemy);
+    enemy->eventReceiveDamage(COLD, strength, unused, limbs);
+    return strength; /* we absorb all of the strength but take no damage */
+}
+
+	Descartes of Borg
+	borg@imaginary.com

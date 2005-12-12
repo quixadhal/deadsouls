@@ -16,8 +16,6 @@ int ambassadorp(object ob) {
 }
 
 int archp(object ob) {
-    string str;
-
     if(!ob) ob = previous_object();
     if(!creatorp(ob)) return 0;
     return (member_group(ob, "ASSIST") || member_group(ob, "SECURE"));
@@ -44,7 +42,7 @@ int councilp(object ob) {
 
     if(!ob) ob = previous_object();
     if( ! catch( val = (int)VOTING_D->IsCouncilMember(ob) ) )
-        return (!creatorp(ob) && ( val ));
+	return (!creatorp(ob) && ( val ));
     return 0;
 }
 

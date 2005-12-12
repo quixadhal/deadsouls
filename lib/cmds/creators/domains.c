@@ -17,7 +17,7 @@ mixed cmd(string args) {
     mapping stats = ([]);
     string array domains;
     mixed array tmp;
-    
+
     foreach(string domain, mixed data in domain_stats()) {
 	if( !data ) {
 	    continue;
@@ -31,29 +31,29 @@ mixed cmd(string args) {
 	stats[domain] = data;
     }
     domains = sort_array(keys(stats), function(string a, string b, mapping mp) {
-                                          if( mp[a]["moves"] > mp[b]["moves"] ) {
-					      return -1;
-					  }
-					  else {
-					      return 1;
-					  }
-                                      }, stats); 
+	  if( mp[a]["moves"] > mp[b]["moves"] ) {
+	      return -1;
+	  }
+	  else {
+	      return 1;
+	  }
+      }, stats); 
     tmp = ({ sprintf("%:-15s %:-11s %:-11s %:-11s %:-11s %s", "Domain",
-		     "Moves", "Objects", "Errors", "Heart Beats",
-		     "Array Size"), sprintf("%'-'" + (width-1) + "s", "") });
+	"Moves", "Objects", "Errors", "Heart Beats",
+	"Array Size"), sprintf("%'-'" + (width-1) + "s", "") });
     foreach(string domain in domains)  {
 	tmp += ({ sprintf("%:-15s %:-11d %:-11d %:-11d %:-11d %d",
-			capitalize(domain), stats[domain]["moves"],
-			stats[domain]["objects"], stats[domain]["errors"],
-			stats[domain]["heart_beats"],
-			stats[domain]["array_size"]) });
+	    capitalize(domain), stats[domain]["moves"],
+	    stats[domain]["objects"], stats[domain]["errors"],
+	    stats[domain]["heart_beats"],
+	    stats[domain]["array_size"]) });
     }
     who->eventPage(tmp, MSG_SYSTEM);
     return 1;
 }
- 
+
 string GetHelp() {
     return ("Syntax: <domains>\n\n"
-	    "Prints out domain statistics for the mud's domains.\n\n"
-	    "See also: realms");
+      "Prints out domain statistics for the mud's domains.\n\n"
+      "See also: realms");
 }

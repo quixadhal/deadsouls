@@ -14,13 +14,13 @@ static void create() {
     verb::create();
     SetVerb("pray");
     SetRules("for STR", "for STR against STR", "for STR against STR for LIV",
-	     "for STR for OBJ");
+      "for STR for OBJ");
     SetErrorMessage("Pray for what?");
     SetHelp("Syntax: <pray for PRAYER>\n"
-	    "        <pray for PRAYER against SOMETHING>\n"
-	    "        <pray for PRAYER against SOMETHING for SOMEONE>\n\n"
-	    "Allows you to say a prayer to whatever deity you believe in.\n\n"
-	    "See also: prayers");
+      "        <pray for PRAYER against SOMETHING>\n"
+      "        <pray for PRAYER against SOMETHING for SOMEONE>\n\n"
+      "Allows you to say a prayer to whatever deity you believe in.\n\n"
+      "See also: prayers");
 }
 
 mixed can_pray_for_str(string spell) {

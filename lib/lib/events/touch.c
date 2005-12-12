@@ -1,5 +1,5 @@
 /*    /lib/touch.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    for touching things 
  *    created by Descartes of Borg 951008
  *    Version: @(#) touch.c 1.8@(#)
@@ -17,7 +17,7 @@ string GetShort();
 
 varargs string GetTouch(string str, object who) {
     mixed val;
-    
+
     if( !str || str == "default" ) {
 	val = Touch;
     }
@@ -90,7 +90,7 @@ varargs mixed SetTouch(mixed array args...) {
     }
     else {
 	error("Wrong number of arguments to SetTouch():\n\t"
-	      "Expected 1 or 2, got " + sizeof(args) + "\n");
+	  "Expected 1 or 2, got " + sizeof(args) + "\n");
     }
 }
 
@@ -101,7 +101,7 @@ varargs mixed eventTouch(object who, string str) {
 	return 1;
     }
     environment(who)->eventPrint(who->GetName() + " touches " + GetShort() +
-				 ".", who);
+      ".", who);
     who->eventPrint(str);
     return 1;
 }

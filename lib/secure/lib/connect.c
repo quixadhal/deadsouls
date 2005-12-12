@@ -15,10 +15,10 @@ static void InputName(string str);
 
 static void logon() {
     receive("Welcome to the Dead Souls " + mudlib_version() +
-	    " installation process!!\n\n");
+      " installation process!!\n\n");
     receive("You will be asked a series of questions for creating an "
-	    "admin character.\n\n");
-    receive("What is your MUD name? ");
+      "admin character.\n\n");
+    receive("What is your MUD admin username? ");
     input_to((: InputName :), I_NOESC);
 }
 
@@ -110,12 +110,17 @@ static void InputEmail(string str) {
 
     if( !str || str == "" ) str = "Unknown";
     Admin->SetEmail(str);
+    Admin->SetRace("human");
+    new("/domains/default/armor/jeans")->eventMove(Admin);
+    new("/domains/default/armor/shirt")->eventMove(Admin);
+    Admin->AddCurrency("silver",random(100)+57);
+    Admin->SetWimpy(20);
+    Admin->SetTerminal("ansi");
     Admin->save_player(Name);
+
     tmp = read_file(CFG_GROUPS);
     rm(CFG_GROUPS);
-    mkdir(REALMS_DIRS "/" + Name);
-    cp(REALMS_DIRS "/workroom.c", REALMS_DIRS "/" + Name +
-       "/workroom.c");
+    make_workroom(Admin);
     tmp = replace_string(tmp, "ADMIN", Name);
     write_file(CFG_GROUPS, tmp);
     if( ob = find_object(LIB_CONNECT) ) destruct(ob);
@@ -123,10 +128,15 @@ static void InputEmail(string str) {
     destruct(Admin);
     mkdir(DIR_CRES "/" + Name[0..0]);
     rename(DIR_PLAYERS "/" + Name[0..0] + "/" + Name + __SAVE_EXTENSION__,
-	   DIR_CRES "/" + Name[0..0] + "/" + Name + __SAVE_EXTENSION__);
+      DIR_CRES "/" + Name[0..0] + "/" + Name + __SAVE_EXTENSION__);
+    make_workroom(this_player());
     destruct(master());
-    receive("You will be disconnected. Login again as the admin character.\n");
+    receive("\nYou will be disconnected and the MUD will shut down.\n");
+    receive("Restart the MUD and login again as the admin character.\n");
+    load_object("/secure/cmds/admins/admintool")->eventChangeName("Dead_Souls_"+Name);
+    shutdown();
     destruct(this_object());
+
 }
 
 string GetKeyName() { return Name; }

@@ -1,5 +1,5 @@
 /*    /verbs/players/stand.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Object Library
  *    created by Descartes of Borg 960711
  *    Version: @(#) stand.c 1.5@(#)
  *    Last Modified: 96/12/21
@@ -17,9 +17,9 @@ static void create() {
     SetErrorMessage("Stand up?");
     SetSynonyms("get");
     SetHelp("Syntax: <stand up>\n"
-	    "When sitting down or lying down, you can get up in this "
-	    "most intuitive manner.\n\n"
-	    "See also: lie, sit");
+      "When sitting down or lying down, you can get up in this "
+      "most intuitive manner.\n\n"
+      "See also: lie, sit");
 }
 
 mixed can_stand_up() {
@@ -32,6 +32,15 @@ mixed can_stand_up() {
     return "You are already standing up!";
 }
 
+mixed can_stand(){
+    return can_stand_up();
+}
+
 mixed do_stand_up() {
     return (mixed)this_player()->eventStand();
 }
+
+mixed do_stand() {
+    return (mixed)this_player()->eventStand();
+}
+

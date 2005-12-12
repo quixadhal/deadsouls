@@ -34,11 +34,11 @@ int Setup() {
 
 nomask void restore_inventory() {
     if( Inventory ) {
-        foreach(string obdata in Inventory) {
+	foreach(string obdata in Inventory) {
 	    object ob;
 	    mixed tmp;
-	    
-            tmp = restore_variable(obdata);
+
+	    tmp = restore_variable(obdata);
 	    if( arrayp(tmp) ) {
 		ob = new(tmp[0]);
 		if( ob ) ob->eventConvertObject(tmp, 1);
@@ -50,7 +50,7 @@ nomask void restore_inventory() {
 		    }
 		}
 	    }
-        }
+	}
     }
     Inventory = 0;
 }
@@ -72,7 +72,7 @@ nomask void save_player(string nom) {
 	return;
     }
     Inventory = filter(map(all_inventory(), (: $1->GetSaveString() :)),
-		       (: $1 :));
+      (: $1 :));
     file = save_file(GetKeyName());
     unguarded((: save_object, file, 1 :));
     Inventory = 0;

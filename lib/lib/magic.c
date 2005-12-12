@@ -96,7 +96,7 @@ varargs mixed eventPrepareCast(string verb, mixed array args...) {
     if( spell->GetAutoHeal() == 0 ) {
 	if( !sizeof(args) ) {
 	    object array existing = filter(targets, (: $1 :));
-	    
+
 	    if( sizeof(existing) != 1 ) {
 		error("This spell was poorly constructed.");
 	    }
@@ -127,18 +127,18 @@ varargs mixed eventPrepareCast(string verb, mixed array args...) {
 	send_to = 0;
     }
     send_messages(({ "close", "begin" }),
-		  "$agent_name $agent_verb $agent_possessive eyes and "
-		  "$agent_verb uttering " + special + ".", this_object(),
-		  send_to, environment());
+      "$agent_name $agent_verb $agent_possessive eyes and "
+      "$agent_verb uttering " + special + ".", this_object(),
+      send_to, environment());
     type = spell->GetSpellType();
     if( GetInCombat() || (type == SPELL_COMBAT) ) {
 	if( type == SPELL_COMBAT ) {
 	    SetAttack(targets, (: eventCast($(spell), $(arg), $(targets)) :),
-		      ROUND_MAGIC);
+	      ROUND_MAGIC);
 	}
 	else {
 	    SetAttack(0, (: eventCast($(spell), $(arg), $(targets)) :),
-		      ROUND_MAGIC);
+	      ROUND_MAGIC);
 	}
     }
     else {
@@ -149,7 +149,7 @@ varargs mixed eventPrepareCast(string verb, mixed array args...) {
 
 static varargs void eventCast(object spell, string limb, object array targs) {
     string name = spell->GetSpell();
-    
+
     if( SpellBook[name] < 100 ) {
 	eventTrainSpell(spell);
     }
@@ -175,7 +175,7 @@ mixed eventLearnSpell(string spell) {
 static void eventTrainSpell(object spell) {
     string name = spell->GetSpell();
     int x = SpellBook[name] + 1;
-    
+
     foreach(string skill in spell->GetSkills() ) {
 	if( (5 * GetSkillLevel(skill)) < x ) {
 	    return;

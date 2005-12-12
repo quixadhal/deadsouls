@@ -20,23 +20,23 @@ mixed cmd(string unused) {
 
     str = mud_name() + " has been up for %^ORANGE%^";
     if (x = (tm / WEEK)) {
-        str += x + "w ";
-        tm -= x * WEEK;
+	str += x + "w ";
+	tm -= x * WEEK;
     }
     if (x = (tm / DAY)) {
-        str += x +"d ";
-        tm -= x * DAY;
+	str += x +"d ";
+	tm -= x * DAY;
     }
     if (x = (tm / HOUR)) {
-        str += x + "h ";
-        tm -= x * HOUR;
+	str += x + "h ";
+	tm -= x * HOUR;
     }
     if (x = (tm / MIN)) {
-        str += x + "m ";
-        tm -= x * MIN;
+	str += x + "m ";
+	tm -= x * MIN;
     }
     if (tm) {
-        str += tm + "s ";
+	str += tm + "s ";
     }
     str = str[0..<2] + "%^RESET%^.";
     write(str);

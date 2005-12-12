@@ -1,5 +1,5 @@
 /*    /lib/events/get_from.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Handles get from/put in
  *    Created by Descartes of Borg 961221
  *    Version: @(#) get_from.c 1.1@(#)
@@ -16,10 +16,10 @@ mixed CanGetFrom(object who, object item) {
 	return 1;
     }
     if( environment(item) != this_object() ) {
-	return "#It is not in there!";
+	return "#You can't right now.";
     }
     if( (environment() != environment(this_player())) &&
-	(environment() != this_player()) ) {
+      (environment() != this_player()) ) {
 	return "#" + capitalize(GetShort()) + " is not in reach.";
     }
     return 1;
@@ -27,7 +27,27 @@ mixed CanGetFrom(object who, object item) {
 
 mixed CanPutInto(object who, object item) {
     object env;
-    
+
+    if( item == this_object() ) {
+	return "#You cannot change the laws of physics.";
+    }
+    env = environment();
+    if( env != this_player() && env != environment(this_player()) ) {
+	return "#It is not within reach.";
+    }
+
+    if( this_object()->GetClosed() ){
+	return "#It's closed!";
+    }
+    return 1;
+}
+
+mixed CanPutOnto(object who, object item) {
+    object env;
+
+    if(!inherits( "/lib/comp/surface", item ) ){
+	return "#That isn't a load-bearing surface.";
+    }
     if( item == this_object() ) {
 	return "#You cannot change the laws of physics.";
     }
@@ -38,6 +58,7 @@ mixed CanPutInto(object who, object item) {
     return 1;
 }
 
+
 mixed eventGetFrom(object who, object array what) {
     object array fin = ({});
     string array shorts;
@@ -46,9 +67,9 @@ mixed eventGetFrom(object who, object array what) {
     int i, maxi;
 
     foreach(object ob in what ) {
-        if( environment(ob) != this_object() ) {
-            continue;
-        }
+	if( environment(ob) != this_object() ) {
+	    continue;
+	}
 	if( ob->CanGet(who) != 1 ) {
 	    continue;
 	}
@@ -57,7 +78,7 @@ mixed eventGetFrom(object who, object array what) {
 	}
 	if( !ob->eventMove(who) ) {
 	    who->eventPrint("You have a problem getting " +
-			    ob->GetShort() + ".");
+	      ob->GetShort() + ".");
 	    continue;
 	}
 	AddCarriedMass( -(ob->GetMass()) );
@@ -87,13 +108,18 @@ mixed eventGetFrom(object who, object array what) {
 	}
     }
     send_messages("get", "$agent_name $agent_verb " + msg +
-		  " from $target_name.", who, this_object(), environment(who));
+      " from $target_name.", who, this_object(), environment(who));
     return 1;
 }
 
 mixed eventPutInto(object who, object what) {
     return what->eventPut(who, this_object());
 }
+
+mixed eventPutOnto(object who, object what) {
+    return what->eventPut(who, this_object()," onto ");
+}
+
 
 int inventory_accessible() {
     return 1;

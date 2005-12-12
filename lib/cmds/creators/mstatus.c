@@ -9,7 +9,7 @@ mixed cmd(string arg) {
 }
 
 string GetHelp(string str) {
-return (@EndText
+    return (@EndText
 Syntax: mstatus [<arg>]
 Effect: Give you statistics on the driver and mudlib
 If the optional argument is given, you also get:

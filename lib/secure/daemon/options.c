@@ -26,10 +26,10 @@ void create() {
 
 static private int valid_access() {
     switch(base_name(previous_object(0))) {
-        case OBJ_POST: case FOLDERS_D: case LETTERS_D:
-        case LOCALPOST_D: case REMOTEPOST_D: case OPTIONS_D:
-          return 1;
-        default: return 0;
+    case OBJ_POST: case FOLDERS_D: case LETTERS_D:
+    case LOCALPOST_D: case REMOTEPOST_D: case OPTIONS_D:
+	return 1;
+    default: return 0;
     }
 }
 
@@ -56,12 +56,12 @@ static private void load_options(string who) {
     if(who == __Owner) return;
     this_object()->assure_box_exists(who);
     if(__Owner == who) {
-        return;
-      }
+	return;
+    }
     __Owner = who;
     file = DIR_POSTAL+"/"+who[0..0]+"/"+who+"/postalrc";
     unguarded((: restore_object, file :));
-  }
+}
 
 static private void save_options() {
     string file;
@@ -76,7 +76,7 @@ void set_option(string who, string option, mixed value) {
     __Options[option] = value;
     save_options();
 }
-                                                                             
+
 mixed query_option(string who, string option) {
     string tmp;
 
@@ -101,16 +101,16 @@ void set_group(string who, string group, string *members) {
     if(!members) map_delete(__MyGroups, group);
     else __MyGroups[group] = members;
     save_options();
-  }
+}
 
 string *query_group(string who, string group) {
     if(!valid_access()) return ({});
     load_options(who);
     return copy(__MyGroups[group]);
-  }
+}
 
 mapping query_groups(string who) {
     if(!valid_access()) return ([]);
     load_options(who);
     return copy(__MyGroups);
-  }
+}

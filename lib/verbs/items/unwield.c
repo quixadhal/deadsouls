@@ -1,5 +1,5 @@
 /*    /verbs/items/unwield.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Allows players to stop wielding a weapon
  *    Created by Descartes of Borg 960207
  *    Version: @(#) unwield.c 1.2@(#)
@@ -15,11 +15,11 @@ static void create() {
     SetVerb("unwield");
     SetRules("OBS");
     SetErrorMessage("Unwield what?");
-    SetHelp("Syntax: <unwield ARMOUR>\n"
-	    "        <unwield all [of WEAPON]>\n\n"
-	    "This verb allows you to unwield a weapon which you are "
-	    "currently wielding.\n\n"
-	    "See also: get, remove, wear, wield");
+    SetHelp("Syntax: <unwield ARMOR>\n"
+      "        <unwield all [of WEAPON]>\n\n"
+      "This verb allows you to unwield a weapon which you are "
+      "currently wielding.\n\n"
+      "See also: get, remove, wear, wield");
 }
 
 mixed can_unwield_obj(string verb) {
@@ -37,13 +37,13 @@ mixed do_unwield_obs(mixed array targs) {
     object array obs;
 
     if( !sizeof(targs) ) {
-        this_player()->eventPrint("There is no such thing to be unwielded.");
+	this_player()->eventPrint("There is no such thing to be unwielded.");
 	return 1;
     }
     obs = filter(targs, (: objectp :));
     if( !sizeof(obs) ) {
 	mapping messages = unique_mapping(targs, (: $1 :));
-	
+
 	foreach(string msg in keys(messages)) {
 	    this_player()->eventPrint(msg);
 	}

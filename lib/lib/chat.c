@@ -4,7 +4,7 @@
  *    created by Descartes of Borg 950323
  */
 
-
+#include <lib.h>
 #include <daemons.h>
 #include "include/chat.h"
 
@@ -12,8 +12,12 @@ private string *RestrictedChannels;
 private static mapping Channels;
 
 static void create() {
-    Channels = ([ ]);
     RestrictedChannels = ({ });
+    Channels = ([ ]);
+}
+
+mapping returnChannels(){
+    return Channels;
 }
 
 static string chat_command(string str) {
@@ -31,8 +35,8 @@ static string chat_command(string str) {
     if( cmd == "list" && (int)CHAT_D->cmdChannel(cmd, arg) ) return "";
     else if( Channels[cmd] && (int)CHAT_D->cmdChannel(cmd, arg) ) return "";
     else if( sscanf(cmd, "%semote", cmd) == 1 && Channels[cmd] ) {
-        if( (int)CHAT_D->cmdChannel(cmd+"emote", arg) ) return "";
-        else return str;
+	if( (int)CHAT_D->cmdChannel(cmd+"emote", arg) ) return "";
+	else return str;
     }
     else return str;
 }
@@ -46,8 +50,8 @@ void eventReconnect() {
 }
 
 int eventDestruct() {
-    catch(CHAT_D->eventRemoveMember(keys(Channels)));
-    return 1;
+    if(CHAT_D->eventRemoveMember(keys(Channels))) return 1;
+    else return 0;
 }
 
 string *AddChannel(mixed val) {
@@ -57,6 +61,13 @@ string *AddChannel(mixed val) {
     if( stringp(val) ) val = ({ val });
     else if( !pointerp(val) ) error("Bad argument 1 to AddChannel().\n");
     val = val - RestrictedChannels;
+    if(arrayp(val)){
+	foreach(string channel in val){
+	    if(member_array(channel,this_player()->GetExtraChannels()) == -1){
+		this_player()->AddExtraChannels( ({ channel }) );
+	    }
+	}
+    }
     tmp = (string *)CHAT_D->eventRegisterMember(val);
     for(i=0, maxi = sizeof(tmp); i < maxi; i++) Channels[tmp[i]] = 1;
     return keys(Channels);
@@ -68,6 +79,13 @@ string *RemoveChannel(mixed val) {
 
     if( stringp(val) ) val = ({ val });
     else if( !pointerp(val) ) error("Bad argument 1 to RemoveChannel().\n");
+    if(arrayp(val)){
+	foreach(string channel in val){
+	    if(member_array(channel,this_player()->GetExtraChannels()) != -1){
+		this_player()->RemoveExtraChannels( ({ channel }) );
+	    }
+	}
+    }
     tmp = (string *)CHAT_D->eventRemoveMember(val);
     for(i=0, maxi = sizeof(tmp); i < maxi; i++) map_delete(Channels, tmp[i]);
     return keys(Channels);

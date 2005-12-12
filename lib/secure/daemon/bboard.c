@@ -1,5 +1,5 @@
 /*    /secure/daemon/bboard.c
- *    from Dead Souls 3.3
+ *    from Nightmare 3.3
  *    bulletin board daemon
  *    created by Descartes of Borg 940920
  */
@@ -14,6 +14,7 @@ inherit LIB_DAEMON;
 private string __Owner;
 private mapping *__Posts;
 static private string __CurrentID;
+string list_new_posts(string id);
 
 void create() {
     daemon::create();
@@ -26,13 +27,13 @@ void create() {
 static private void save_board() {
     if(!__CurrentID) return;
     if(!unguarded((: file_exists,DIR_BOARDS+"/"+__CurrentID+__SAVE_EXTENSION__ :))){
-        int i;
-        
-        if(!sizeof(__Posts)) return;
-        i = strlen(__CurrentID);
-        while(i--) 
-          if((__CurrentID[i] < 'a' || __CurrentID[i] > 'z') && __CurrentID[i] != '_')
-            error("Illegal bulletin board id.");
+	int i;
+
+	if(!sizeof(__Posts)) return;
+	i = strlen(__CurrentID);
+	while(i--) 
+	    if((__CurrentID[i] < 'a' || __CurrentID[i] > 'z') && __CurrentID[i] != '_')
+		error("Illegal bulletin board id.");
     }
     unguarded((: save_object, DIR_BOARDS+"/"+__CurrentID :));
 }
@@ -40,8 +41,8 @@ static private void save_board() {
 static private void restore_board() {
     if(!__CurrentID) return;
     if(!unguarded((: file_exists, DIR_BOARDS+"/"+__CurrentID+__SAVE_EXTENSION__ :))) {
-        __Owner = query_privs(previous_object(0));
-        __Posts = ({});
+	__Owner = query_privs(previous_object(0));
+	__Posts = ({});
     }
     else unguarded((: restore_object, DIR_BOARDS+"/"+__CurrentID :));
 }
@@ -50,7 +51,7 @@ static private int valid_access() {
     string str;
 
     if(__Owner == PRIV_SECURE && !((int)master()->valid_access(({}))))
-      return 0;
+	return 0;
     str = query_privs(previous_object(0));
     if(member_array(PRIV_SECURE, explode(str, ":")) != -1) return 1;
     return (__Owner == str);
@@ -58,22 +59,22 @@ static private int valid_access() {
 
 void add_post(string id, string who, string subj, string msg) {
     if(__CurrentID != id) {
-        __CurrentID = id;
-        restore_board();
+	__CurrentID = id;
+	restore_board();
     }
     if(!valid_access()) return;
     if(!stringp(who)) return;
     if(!subj || subj == "") subj = "[No Subject]";
     if(!msg || msg == "") return;
     __Posts += ({ ([ "author" : who, "subject" : subj, "time" : time(),
-      "post" : msg, "read" : ({ convert_name(who) }) ]) });
+	"post" : msg, "read" : ({ convert_name(who) }) ]) });
     save_board();
 }
 
 void remove_post(string id, int post) {
     if(__CurrentID != id) {
-        __CurrentID = id;
-        restore_board();
+	__CurrentID = id;
+	restore_board();
     }
     if(!valid_access()) return;
     if(post < 0 || post >= sizeof(__Posts)) return;
@@ -85,20 +86,20 @@ void remove_post(string id, int post) {
 
 void mark_read(string id, int post, string reader) {
     if(__CurrentID != id) {
-        __CurrentID = id;
-        restore_board();
+	__CurrentID = id;
+	restore_board();
     }
     if(!valid_access()) return;
     if(post < 0 || post > sizeof(__Posts)) return;
     if(reader && reader != "")
-      __Posts[post]["read"] = distinct_array(__Posts[post]["read"]+({reader}));
+	__Posts[post]["read"] = distinct_array(__Posts[post]["read"]+({reader}));
     save_board();
 }
 
 mapping query_post(string id, int post) {
     if(__CurrentID != id) {
-        __CurrentID = id;
-        restore_board();
+	__CurrentID = id;
+	restore_board();
     }
     if(!valid_access()) return 0;
     if(post < 0 || post > sizeof(__Posts)) return 0;
@@ -107,8 +108,8 @@ mapping query_post(string id, int post) {
 
 mapping *query_posts(string id) { 
     if(__CurrentID != id) {
-        __CurrentID = id;
-        restore_board();
+	__CurrentID = id;
+	restore_board();
     }
     if(!valid_access()) return 0;
     return copy(__Posts);
@@ -116,9 +117,34 @@ mapping *query_posts(string id) {
 
 int query_number_posts(string id) {
     if(__CurrentID != id) {
-        __CurrentID = id;
-        restore_board();
+	__CurrentID = id;
+	restore_board();
     }
     if(!valid_access()) return 0;
     return sizeof(__Posts);
 }
+
+string list_new_posts(string id){
+    string mag;
+    int i, count;
+
+    if(__CurrentID != id) {
+	__CurrentID = id;
+	restore_board();
+    }
+
+    count = 0;
+
+    for(i = 0; i < sizeof(__Posts); i++){
+	if(member_array(convert_name(this_player()->GetKeyName()),
+	    __Posts[i]["read"]) == -1) count++;
+    }
+
+    id = replace_string(id, "_", " ");
+    mag = "";
+    mag += capitalize(id) + " has "+(count ? count : "no") + " new message"+
+    (count == 1 ? "" : "s")+ " posted.";
+    return mag;
+}
+
+

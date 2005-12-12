@@ -19,36 +19,36 @@ static void create() {
     SetRules("LIV to LIV");
     SetErrorMessage("Marry whom to whom?");
     SetHelp("Syntax: <marry PLAYER to PLAYER>\n\n"
-	    "Allows people of great faith to join to souls in marriage.  "
-	    "In order to marry to people, you must however be in a place "
-	    "which you find holy.\n\n"
-	    "See also: divorce");
+      "Allows people of great faith to join to souls in marriage.  "
+      "In order to marry to people, you must however be in a place "
+      "which you find holy.\n\n"
+      "See also: divorce");
 }
 
 mixed can_marry_liv_to_liv() {
     mixed tmp;
-    
-    if( (int)this_player()->GetSkillLevel("faith") < 15 )
-      return "You do not have enough faith to join to people.";
+
+    if( (int)this_player()->GetSkillLevel("faith") < 5 )
+	return "You do not have enough faith to join to people.";
     return 1;;
 }
 
 mixed do_marry_liv_to_liv(object spouse1, object spouse2) {
     mixed tmp;
     if( this_player() == spouse1 || this_player() == spouse2 )
-        return "You may not perform a marriage on yourself.";
+	return "You may not perform a marriage on yourself.";
     tmp = (mixed)environment(this_player())->CanMarry(this_player(),
-                                              spouse1, spouse2);
+      spouse1, spouse2);
     if( !tmp ) {
-        this_player()->eventPrint("This place is not holy to you.");
-        return 1;
+	this_player()->eventPrint("This place is not holy to you.");
+	return 1;
     }
-     else if( stringp(tmp) ) {
-        this_player()->eventPrint(tmp);
-        return 1;
+    else if( stringp(tmp) ) {
+	this_player()->eventPrint(tmp);
+	return 1;
     }
     tmp = (mixed)environment(this_player())->eventMarry(this_player(),
-							 spouse1, spouse2);
+      spouse1, spouse2);
     if( tmp == 1 ) {
 	object ring;
 

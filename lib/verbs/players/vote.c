@@ -18,7 +18,7 @@ static void create() {
     SetRules("for STR");
     SetErrorMessage("Who would you like to vote for?");
     SetHelp("Syntax: <vote for STR>\n"
-            "Casts your vote for a candidate");
+      "Casts your vote for a candidate");
 }
 
 mixed can_vote_for_str() {
@@ -35,5 +35,5 @@ mixed do_vote_for_str( string str ) {
     object env;
 
     if( !str || !(env = environment(this_player())) ) return 0;
-        return (mixed)env->eventVote( this_player(), str );
+    return (mixed)env->eventVote( this_player(), str );
 }

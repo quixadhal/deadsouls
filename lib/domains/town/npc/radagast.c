@@ -1,0 +1,32 @@
+#include <lib.h>
+#include <objects.h>
+
+inherit  LIB_TRAINER;
+void create(){
+    trainer::create();
+    SetKeyName("radagast");
+    SetId("radagast the brown","wizard","mage","trainer");
+    SetAdjectives("friendly");
+    SetGender("male");
+    SetRace("human");
+    SetShort("Radagast the Brown");
+    SetLong("This is a tall, thin old man. Not much is known of "+
+      "this mysterious wizard, other than his legendary kindness "+
+      "to animals and his controversial reputation as a seditious "+
+      "rebel. He can train you in the arts of magic defense, magic "+
+      "attack, and conjuring. You may, for example, \"ask radagast "+
+      "to teach conjuring\". If you lack training points, then "+
+      "do some adventuring and earn a promotion from Dirk. You will "+
+      "then be awarded training points."); 
+    SetClass("mage");
+    SetLevel(40);
+    AddTrainingSkills( "magic defense", "magic attack", "conjuring");
+    SetSpellBook( ([ "buffer" : 100, "meditate" : 100, "missile" : 100, "fireball" : 100 ]) );
+}
+void init() {
+    trainer::init();
+    SetSmell(([  "default" : "A rather odd, musty smell."]));
+    SetListen(([  "default" : "Radagast seems to be constantly "+
+	"humming a quiet tune to himself."]));
+    //eventForce("cast buffer");
+}

@@ -1,0 +1,67 @@
+		   Building Food and Drink Sellers
+		     The Nightmare IV LPC Library
+		 written by Descartes of Borg 950528
+
+This document details the building of barkeeps, waiters, and other
+such people who sell food and drink.  Barkeeps are NPC's, and
+therefore everythign which applies to NPC's applies to barkeeps.  
+
+To build a barkeep, you should inherit LIB_BARKEEP.
+
+Beyond the functions specific to NPC's barkeeps also make use of the
+following functions:
+
+mapping SetMenuItems(mapping menu);
+mapping AddMenuItem(string item, string file);
+mapping RemoveMenuItem(string item);
+mapping GetMenuItems();
+string SetLocalCurrency(string curr);
+
+When building a barkeep, you must add some mechanism in the room in
+which the barkeep is placed for people to view a list of things for
+sale.
+
+*****
+mapping SetMenuItems(mapping menu);
+*****
+
+Example: SetMenuItems( ([ "coffee" : "/realms/descartes/coffee" ]) );
+
+Sets which menu items are found in which file.  This is a mapping with
+the name of the item as a key and the file in which it is located as
+the value.
+
+*****
+mapping AddMenuItem(string item, string file);
+*****
+
+Example: AddMenuItem("lobster", "/realms/descartes/lobster");
+
+Adds one menu item at a time to the list of menu items.
+
+*****
+mapping RemoveMenuItem(string item);
+*****
+
+Example: RemoveMenuItem("coffee");
+
+Removes the named item from the menu.
+
+*****
+mapping GetMenuItems();
+*****
+
+Returns all the menu items for this barkeep.  Useful in building your
+menu list.
+
+*****
+string SetLocalCurrency(string curr);
+*****
+
+Example: SetLocalCurrency("khucha");
+
+Sets the currency in which the barkeep does business.
+
+
+
+

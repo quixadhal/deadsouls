@@ -13,7 +13,7 @@ inherit LIB_DAEMON;
 
 mixed cmd(string args) {
     string array adverbs;
-    
+
     if( !args || args == "" ) {
 	return "Add which adverb?";
     }
@@ -28,8 +28,8 @@ mixed cmd(string args) {
 
 string GetHelp(string args) {
     return ("Syntax: <addadverb ADVERB1,..,ADVERBn>\n\n"
-	    "Allows you to add 1 or more adverbs separated by commas to "
-	    "the system adverbs that can be used as adverbs in most soul "
-	    "commands.\n\n"
-	    "See also: addemote,removeadverb,removeemote");
+      "Allows you to add 1 or more adverbs separated by commas to "
+      "the system adverbs that can be used as adverbs in most soul "
+      "commands.\n\n"
+      "See also: addemote,removeadverb,removeemote");
 }

@@ -1,0 +1,35 @@
+parse error
+Variable <str> not declared !
+Illegal LHS
+Illegal RHS
+Undefined function <str>
+Wrong number of arguments to <str>
+syntax error
+Illegal character (hex 2e)
+Illegal character (hex 5c)
+Illegal character constant
+Redeclaration of function <str>
+End of file in string
+Function <str> undefined
+Newline in string
+Illegal terminator
+Text block exceeded maximum length
+Bad arg 1 to <str>
+Return type not matching: <type>
+Cannot #include <str>
+Could not load description for <str>
+Indexing on illegal type
+Bad type argument to .+ 16 4
+Casts are only legal for type mixed, or when unknown: <type>
+Redefinition of #define <str>
+Bad argument number <int> to <str>: <type>
+Invalid simulated efunction <str>
+Missing type for argument
+Bad type for argument <int> ( <type> vs <type> )
+Illegal to redeclare local name
+Bad argument 1 type to efun <str>
+Illegal to redefine 'nomask' function <str>
+Must return a value for a function declared: <type>
+Too many arguments to buffer
+Internal error in <str>
+Divide by zero in constant

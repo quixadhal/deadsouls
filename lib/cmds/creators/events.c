@@ -24,7 +24,7 @@ int cmd(string str) {
 	message("info", "The following events are pending:", this_player());
 	while(i--) {
 	    message("info", arrange_string(obs[i], 30) +
-	    arrange_string(mp[obs[i]]["function"], 15) +
+	      arrange_string(mp[obs[i]]["function"], 15) +
 	      ctime(mp[obs[i]]["time"])+" Mud Time", this_player());
 	}
 	return 1;
@@ -51,7 +51,7 @@ int cmd(string str) {
 			for (k = 2; k < sizeof(st2); k++)
 			    st3 += "/" + st2[k];
 			message("info", arrange_string(st3, 30) +
-			arrange_string(mp[obs[i]]["function"], 15) +
+			  arrange_string(mp[obs[i]]["function"], 15) +
 			  ctime(mp[obs[i]]["time"])+" Mud Time", this_player());
 		    }
 	}

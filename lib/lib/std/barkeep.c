@@ -7,7 +7,7 @@
  */
 
 #include <lib.h>
- 
+
 inherit LIB_SENTIENT;
 inherit LIB_BUY;
 
@@ -17,41 +17,48 @@ private mapping MenuItems     = ([]);
 string GetLocalCurrency();
 mixed eventSell(object who, string args);
 
+int indirect_sell_obj_to_liv() { 
+    write("Your offer is refused.");
+    say(this_player()->GetName()+"'s sell offer is refused.");
+    return 0;
+}
+
+
 /* ******************* barkeep.c attributes *********************** */
 int GetCost(string item) {
     float f = currency_rate(GetLocalCurrency());
-    
+
     if( !MenuItems[item] ) {
 	return 0;
     }
     if( f < 0.1 ) {
 	f = 1.0;
     }
-    return to_int(to_float(MenuItems[item]->GetValue()) * f);
+    return query_value(MenuItems[item]->GetBaseCost(),query_base_currency(),this_object()->GetLocalCurrency());
 }
 
 string GetLocalCurrency() {
     return LocalCurrency;
 }
- 
+
 string SetLocalCurrency(string str) {
     return (LocalCurrency = str);
 }
- 
+
 mapping AddMenuItem(string item, string file) {
     MenuItems[item] = file;
     return MenuItems;
 }
- 
+
 mapping GetMenuItems() {
     return MenuItems;
 }
- 
+
 mapping RemoveMenuItem(string item) {
     map_delete(MenuItems, item);
     return MenuItems;
 }
- 
+
 mapping SetMenuItems(mapping mp) {
     return (MenuItems = mp);
 }
@@ -71,10 +78,10 @@ mixed CanSell(object who, string what) {
 /* *********************** barkeep.c events *********************** */
 mixed eventBuyItem(object who, string cmd, string args) {
     mixed tmp;
-    
+
     if( !args || args == "" ) {
-        eventForce("speak err, what do you want me to sell?");
-        return 1;
+	eventForce("speak err, what do you want me to sell?");
+	return 1;
     }
     args = remove_article(lower_case(args));
     tmp = CanSell(who, args);
@@ -93,37 +100,37 @@ mixed eventBuyItem(object who, string cmd, string args) {
 mixed eventSell(object who, string args) {
     object ob;
     int x;
- 
+
     if( !(ob = load_object(MenuItems[args])) ) {
-        eventForce("speak I am having a problem with that item right now.");
-        return 1;
+	eventForce("speak I am having a problem with that item right now.");
+	return 1;
     }
-    x = GetCost(args);
+    x = query_value(ob->GetBaseCost(),query_base_currency(),GetLocalCurrency());
     if( x > (int)who->GetCurrency(GetLocalCurrency()) ) {
-        eventForce("speak You do not have that much in " + GetLocalCurrency());
-        return 1;
+	eventForce("speak You do not have that much in " + GetLocalCurrency());
+	return 1;
     }
     ob = new(MenuItems[args]);
     if( !ob ) {
-        eventForce("speak I seem to be having some troubles.");
-        return 1;
+	eventForce("speak I seem to be having some troubles.");
+	return 1;
     }
     if( !((int)ob->eventMove(this_object())) ) {
-        eventForce("speak Sorry, today is just not my day");
-        return 1;
+	eventForce("speak Sorry, today is just not my day");
+	return 1;
     }
     eventForce("give " + (string)ob->GetKeyName() + " to " +
-               (string)who->GetKeyName());
+      (string)who->GetKeyName());
     if( environment(ob) == this_object() ) {
-        eventForce("speak heh, you cannot carry that.  I will drop it.");
-        eventForce("drop " + (string)ob->GetKeyName());
-        if( environment(ob) == this_object()) {
+	eventForce("speak heh, you cannot carry that.  I will drop it.");
+	eventForce("drop " + (string)ob->GetKeyName());
+	if( environment(ob) == this_object()) {
 	    ob->eventMove(environment());
 	}
     }
     who->AddCurrency(GetLocalCurrency(), -x);
     eventForce("speak Thank you for your business, " +
-               (string)who->GetName());
+      (string)who->GetName());
     return 1;
 }
 
@@ -132,13 +139,13 @@ int eventList(object who, string cmd, string args) {
     string drink;
 
     if( !sizeof(keys(MenuItems)) ) {
-        eventForce("speak I have nothing to serve right now.");
-        return 1;
+	eventForce("speak I have nothing to serve right now.");
+	return 1;
     }
     foreach(drink in keys(MenuItems)) {
 	string array adjectives = MenuItems[drink]->GetAdjectives();
 	string adj = "";
-	
+
 	if( sizeof(adjectives) ) {
 	    adj = adjectives[random(sizeof(adjectives))] + " ";
 	}
@@ -153,7 +160,7 @@ int eventList(object who, string cmd, string args) {
 static void create() {
     sentient::create();
     SetCommandResponses( ([
-         ({ "list", "show", "browse" }) : (: eventList :),
-         ({ "sell", "serve" }) : (: eventBuyItem :),
-     ]) );
+	({ "list", "show", "browse" }) : (: eventList :),
+	({ "sell", "serve" }) : (: eventBuyItem :),
+      ]) );
 }

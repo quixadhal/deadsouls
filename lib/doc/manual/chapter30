@@ -1,0 +1,204 @@
+                                       The Natural Language Parser
+
+The Problem
+A gut reaction to this entire system is to be overwhelmed by its apparent complexity, comparing it to the good-old days of using add_action(). A discussion of the natural language parsing system therefore needs to start by answering the question, "Why bother?".
+
+The old way of handling user input was to define commands and tie them to functions using add_action. Each user object kept track which commands it had available to it, and of which functions each command would trigger. The list of commands changed each time the player object (really, any object which had enable_commands() called in it) moved. In addition, each time an object moved inside the player object or left its inventory, this list changed.
+
+This led to two basic problems:
+
+   1. The same command might have slightly different uses in different parts of the mud. Or worse, the player could have two similar objects which define the same command in slightly different ways.
+   2. The complexity of syntax varied based on creator abilities and was limited by CPU. 
+
+For example, one creator could have created a rock in their area that added the 'throw' command. This creator is a newbie creator, and thus simply put the following code in their throw_rock() function:
+
+int throw_rock(string str) {
+    object ob;
+
+    if( !str ) return 0;
+    ob = present(str, this_player());
+    if( !ob ) {
+        notify_fail("You have no rock!");
+        return 0;
+    }
+    if( ob != this_object() ) return 0;
+    if( (int)ob->move(environment(this_player())) != MOVE_OK ) {
+        write("You cannot throw it for some reason.");
+        return 1;
+    }
+    write("You throw the rock.");
+    say((string)this_player()->query_cap_name() + " throws the rock.");
+    return 1;
+}
+
+In this case, "throw rock" will work, but "throw the granite rock at tommy" will not. But another creator also defined a throw command in their spear. This creator however, is a good coder and codes their throw_spear() command to handle 'throw the red spear at tommy' as well as 'throw spear'. Explain to a player why both syntaxes only work for the spear, and not for the rock. Then explain to that player why 'throw rock' for a rock built in yet another area yields 'What?'.
+
+An early attempt to get around this problem was the parse_command(). Unfortunately it was buggy spaghetti that was way too complex for anyone to understand. The MudOS attempt to solve this problem is its new natural language command parser. The parser is based on the following assumptions:
+
+All commands should behave in a consistent manner across the mud.
+Similar objects should respond as expected to the same command line.
+A player should only see 'What?' (or its equivalent) when they make a typo.
+It should enable creators to handle the complex command processing required by the above assumption.
+
+Overview of the MudOS System
+The MudOS natural language parser is based on a philosophy of centralized command parsing. In other words, creators have no control over which commands exist nor over what syntax rules existing commands follow. Instead, creators are tasked with defining what those commands mean to their objects. Unlike with add_action() where commands are registered to the driver, the MudOS system registers verbs (the command) and rules with the driver. In this example, a simple "smile" verb is registered with a single rule, "at LIV".
+
+With the old way of doing things, commands were executed either when a player entered in a command or when the command() efun was called. With this new system, a command may be executed at any time via either the parse_sentence() or parse_my_rules() efuns.
+
+When one of those efuns is called, the driver searches through the list of verbs for a verb and rule which matches the command string. In order to do that, however, it needs to make several calls of all the objects involved to determine what the sentence means. For any given command string, the following objects are relevant to the parsing of that command string:
+
+the verb handler
+    This object contains the functions used to see if the command is valid and to execute it. It is also the one that creates the rules for the verb. 
+
+the subject
+    This is the object from which parse_sentence() is called, or the object mentioned as the first argument in parse_my_rules(). It is the object considered to be executing the command in questin, the logical subject of the sentence. 
+
+the master object
+    This object keeps track of global information, such was what literals (mistakenly referred to as prepositions) exist across the mud. In general, a literal is a preposition.
+ 
+the direct object
+    This is not the logical direct object of the sentence. Rather, this is the first object at which the verb action is targetted. 
+
+the indirect object
+    Again, this is not the logical indirect object of the sentence. Rather, it is the second object at which the verb action is targetted. For example, in "give the book to the elf", the elf will be both the logical indirect object and the parser indirect object. But if you allow "give the elf the book", the elf naturally still remains the logical indirect object, but the book is the indirect object to the parser since it is the second object targetted by the verb (the first being the elf). 
+
+Each object involved in he parsing of a sentence, except the subject, is responsible for handling certain driver applies that help the driver in parsing the sentence. The subject, unlike the other objects, is responsible for initiating the command. Although this document treats all of these objects as if they were completely distinct, it is possible to have the same object performing multiple roles for the same command. For example, your subject could also be direct object and verb handler. The next section discusses the objects and the applies they are responsible for in detail.
+
+The Objects
+Before studying each object in detail, it is important to keep in mind that each object which can be involved in any role must call parse_init() before doing anything related to verb parsing. The only exception is the master object.
+
+The subject
+The subject is simply the initiator of a command. A command is typically initiated by a call to parse_sentence() inside the object's process_input() apply. This example shows how a player object might use parse_sentence() to initiate a command. This efun will return 1 if the command successfully matched a known verb and rule and successfully executed it. If it found the verb in question, but it did not match any rule, then 0 is returned. If it found the verb in question and matched a rule, but the execution of the rule failed, it will return an errorstring describing why it failed. Finally, if no verb matched the command, then -1 is returned.
+
+Take for example a mud with this one rule:
+
+parse_add_rule("smile", "at LIV")
+
+The efun parse_sentence() would return the following values for the following command lines:
+
+smile at descartes
+    Returns: 1 
+smile happily
+    Returns: 0 
+smile at the red box
+    Returns: "The Box is not a living thing!" 
+eat the red box
+    Returns: -1 
+
+The master object
+The master object is responsible for a single apply, parse_command_prepos_list(). This apply returns a list of literal strings which may be used in a rule. A literal string is simply one that appears in the rule exactly as a player types it. In the smile example above, "at" is a literal. In most all cases, literals are prepositions, thus the name of the apply.
+
+The verb handler
+The verb handler object is responsible for setting up the rules for a verb and handling the test and execution of those rules. This example demonstrates a simple verb handler for the smile verb described above. As you can see, each rule is divided up into three parts:
+
+   1. initialization
+   2. testing
+   3. execution 
+
+The intialization is the call to parse_add_rule(). This associates a rule with a verb. The first argument is the verb (this verb may have spaces in it, like "look at") and the second argument is one of the rules being handled by this verb handler. This list defines the valid tokens for a rule.
+
+The testing portion is a "can" apply. In testing a rule, the driver calls the applies can_<verb_rule> to determine if the execution of the verb even makes sense in this situation. The test apply is called when the driver has valid arguments to a rule, but it wants to see if those valid arguments make sense right now. For example, you might check a player here to see if they have enough magic points for casting the spell this verb/rule represents. If not, you might return "You are too tired right now.". If the rule match up in question makes completely no sense at all, like for example, they tried to throw a house for the ("throw", "OBJ") rule, you should return 0. The parser will guess well an error message from the situation. In this case, it will have parse_sentence() return "You cannot throw the thing.".
+
+Finally execution is where the verb actually happens. You know you have a verb/rule match and you know all the arguments to it are valid. Now it is time to do something. You almost always want to return 1 from this function except in extreme circumstances.
+
+The direct and indirect objects
+As stated above, the directness or indirectness of an object has nothing to do with the linguistic meaning of those terms. Instead it has to do with what position in the token list the object takes. The direct object is the first object in the token list, and the indirect object is the second object in the token list.
+
+These objects basically answer the question "Can I be the direct/indirect object for this verb and rule?". Like the testing and execution applies for verb handlers, the applies that answer this question may return 1, 0, or an error string. Also like the testing and execution applies for the verb handler, these come in the form of (in)direct_<verb>_<rule>(). This example is from somewhere inside the living object heirarchy. Note the is_living() apply which lets the parser know that the object matches a LIV token.
+
+Inventory visibility
+Some objects are subjects, direct objects, or indirect objects of verbs which require access to things in their inventory. For example, living things, bags, chests, etc. all need to allow other things access to their inventories for some commands. Two applies handle this situation:
+
+   1. inventory_accessible()
+   2. inventory_visible() 
+
+The first returns 1 if verbs can have access to an object's inventory, the second returns 1 if verbs simply can take into account an object's inventory. An example of the difference might be a glass chest. When closed, you want its inventory to be visible, but not accessible.
+
+It is important to remember that is the return value for any of these special applies, including is_living(), you need to make an explicit call to the parse_refresh() efun. Unless the parse_refresh() efun is called, these special applies are only called once with no guarantee as to when that one call will actually occur.
+
+Creating a New Verb
+Currently, the Lima and Nightmare mudlibs use this parser system. Both mudlibs provide inheritable objects which make it simpler to interface with the MudOS parser system. Nightmare specifically has the inheritable LIB_VERB with methods for defining a new verb.
+
+This verb example comes from the Nightmare mudlib. The simple Nightmare verb requires the following steps:
+
+   1. Name the verb
+   2. State the verb rules
+   3. Name any synonyms
+   4. Set an error message for display when the command is wrongly used
+   5. Create help text for the command 
+
+Naming the verb is done through the SetVerb() method. You simply specify the name of the verb.
+
+The rules are passed to the SetRules() method. You may specify as many rules as are needed for the verb.
+
+Like rules, synonyms are set as a list for the SetSynonyms() method. A synonym is simply any verb which is exactly synonymous with any possible rule for the verb in question. The player is able to access help for the verb and get error messages for the verb through the verb or any of its synonyms.
+
+The error message is a string displayed to the user when they use the verb in an incorrect manner. For example, if I typed 'eat' when the rule is 'eat OBJ', the error message would be 'Eat what?'.
+
+Finally, like with any object, the help text can be set through the SetHelp() method. Help is very important for verbs.
+
+All of these methods only are able to take care of verb initalization. It is up to the verb creator to give meaning to a new verb. This is done first off by writing can_*() and do_*() applies in the verb handler. These methods should be very simplistic in nature. For example, a can method almost always simply returns 1. A do method generally finds its target and triggers some sort of event in that object. The event does the real command handling.
+
+In addition to can and do applies, you need also to write any direct and indirect applies in approperiate objects. Nightmare centralizes this sort of processing through inheritables geared towards responding to particular verbs. A good example of this is LIB_PRESS which responds to the "press" command. Thus any object which should be pressable needs only to inherit this object to become a pressable object.
+
+The can, do, direct, and indirect applies all have the same argument set for the same verb/rule pair, but it is important to know when the parser knows certan things. Take for example the verb/rule "press OBJ on OBJ". The parser takes the following actions:
+
+   1. Call can_press_obj_on_obj() in verb handler
+   2. Call direct_press_obj_on_obj() in all accessible and visible objects
+   3. Call indirect_press_obj_on_obj() in all accessible and visible objects
+   4. Call do_press_obj_on_obj() in the verb handler 
+
+The arguments to all methods called in this process are:
+
+   1. object direct_object
+   2. object indirect_object
+   3. string direct_object_as_entered_on_command_line
+   4. string indirect_object_as_entered_on_command_line 
+
+But how can can_press_obj_on_obj() know what the direct and indirect objects are if they have not been identified yet? The answer is that it cannot. For the command "push the button on the wall", in a room with me and you in it and we carry nothing, the sequence looks like this (return in parens):
+
+   1. verb->can_press_obj_on_obj(0, 0, "the button", "the wall"); (1)
+   2. me->direct_press_obj_on_obj(0, 0, "the button", the wall"); (0)
+   3. you->direct_press_obj_on_obj(0, 0, "the button", "the wall"); (0)
+   4. room->direct_press_obj_on_obj(0, 0, "the button", "the wall"); (1)
+   5. me->indirect_press_obj_on_obj(room, 0, "the button", "the wall"); (0)
+   6. you->indirect_press_obj_on_obj(room, 0, "the button", "the wall"); (0)
+   7. room->indirect_press_obj_on_obj(room, 0, "the button", "the wall"); (1)
+   8. verb->do_press_obj_on_obj(room, room, "the buton", "the wall"); (1) 
+
+This assumes, of course, that the room responds positively with the id's "button" and "wall".
+
+People familiar with the parser might say, "Hey, wait, there is a lot more that happens than just that." In fact, there are many more possible permutations of this sequence. The most interesting is the ability to simply ignore the difference between prepositions like "in" and "into" which are often used interchangeably in colloquial speech. For example, if you had "put OBJ in OBJ" and "put OBJ into OBJ" verb/rules, you could handle them in a single place for each of the applies respectively liek this:
+
+can_put_obj_word_obj()
+direct_put_obj_word_obj()
+indirect_put_obj_word_obj()
+do_put_obj_word_obj()
+
+If the parser found no can_put_obj_in_obj() defined, it then searches for a more generic handler, can_put_obj_word_obj(). In fact the real order it searches for a can handler is:
+
+   1. can_put_obj_in_obj()
+   2. can_put_obj_word_obj()
+   3. can_put_rule()
+   4. can_verb_rule() 
+---------------------
+
+Last example:
+
+static void create() {
+    parse_init();
+    parse_add_rule("smile", "at LIV");
+}
+
+mixed can_smile_at_liv(object target) { 
+    return 1;
+}
+
+mixed do_smile_at_liv(object target) {
+    previous_object()->eventPrint("You smile at " +
+      (string)target->GetName() + ".");
+    target->eventPrint((string)previous_object()->GetName() +
+      " smiles at you.");
+    return 1;
+}
+

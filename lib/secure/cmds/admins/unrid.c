@@ -14,14 +14,14 @@ mixed cmd(string str) {
     str = convert_name(str);
     file = DIR_RID + "/" + str + __SAVE_EXTENSION__;
     if( !file_exists(file) ) 
-      return (file + ": file not found.  Cannot unrid.");
+	return (file + ": file not found.  Cannot unrid.");
     if( rename(file, save_file(str) + __SAVE_EXTENSION__) ) {
-        this_player()->eventPrint("Unrid failed, security "
-                       "violation logged.");
-        log_file("security", "\n**** Unrid violation attempted\n"
-                 "Target: " + file + "\nCall Stack: " +
-                 sprintf("%O", previous_object(-1)));
-        return 1;
+	this_player()->eventPrint("Unrid failed, security "
+	  "violation logged.");
+	log_file("security", "\n**** Unrid violation attempted\n"
+	  "Target: " + file + "\nCall Stack: " +
+	  sprintf("%O", previous_object(-1)));
+	return 1;
     }
     this_player()->eventPrint("Unrid successful.");
     return 1;
@@ -29,7 +29,7 @@ mixed cmd(string str) {
 
 string GetHelp(string str) {
     return "Syntax: unrid <user name>\n\n"
-           "This command restores a character that was "
-           "banished via the \"rid\" command.";
+    "This command restores a character that was "
+    "banished via the \"rid\" command.";
 }
 

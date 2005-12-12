@@ -17,8 +17,8 @@ int eventStrike(object ob);
 mixed eventWield(object who, string *limbs);
 mixed eventUnequip(object who);
 
-int SetArmourType(int x);
-int GetArmourType();
+int SetArmorType(int x);
+int GetArmorType();
 int SetClass(int x);
 mixed GetProperty(string foo);
 int GetClass();

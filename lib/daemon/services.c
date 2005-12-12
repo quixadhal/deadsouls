@@ -25,7 +25,6 @@ mapping GetServices();
 #include "/daemon/services/locate.c"
 #include "/daemon/services/tell.c"
 #include "/daemon/services/who.c"
-#include "/daemon/services/ucache.c"
 
 static void create() {
     SetSaveFile(SAVE_SERVICES);
@@ -44,54 +43,54 @@ int eventDestruct() {
 mapping GetServices() {
     return ([
 #ifdef SERVICE_AUTH
-	     "auth" : 1,
+      "auth" : 1,
 #endif
 #ifdef SERVICE_CHANNEL
-	     "channel" : 1,
+      "channel" : 1,
 #endif
 #ifdef SERVICE_EMOTETO
-	     "emoteto" : 1,
+      "emoteto" : 1,
 #endif
 #ifdef SERVICE_FILE
-	     "file" : 1,
+      "file" : 1,
 #endif
 #ifdef SERVICE_FINGER
-	     "finger" : 1,
+      "finger" : 1,
 #endif
 #ifdef SERVICE_LOCATE
-	     "locate" : 1,
+      "locate" : 1,
 #endif
 #ifdef SERVICE_MAIL
-	     "mail" : 1,
+      "mail" : 1,
 #endif
 #ifdef SERVICE_NEWS
-	     "news" : 1,
+      "news" : 1,
 #endif
 #ifdef SERVICE_TELL
-	     "tell" : 1,
+      "tell" : 1,
 #endif
 #ifdef SERVICE_UCACHE
-	     "ucache" : 1,
+      "ucache" : 1,
 #endif
 #ifdef SERVICE_WHO
-	     "who" : 1,
+      "who" : 1,
 #endif
 #ifdef PORT_FTP
-	     "ftp" : PORT_FTP,
+      "ftp" : PORT_FTP,
 #endif
 #ifdef PORT_HTTP
-	     "http" : PORT_HTTP,
+      "http" : PORT_HTTP,
 #endif
 #ifdef PORT_NNTP
-	     "nntp" : PORT_NNTP,
+      "nntp" : PORT_NNTP,
 #endif
 #ifdef PORT_RCP
-	     "rcp" : PORT_RCP,
+      "rcp" : PORT_RCP,
 #endif
 #ifdef PORT_SMTP
-	     "smtp" : PORT_SMTP,
+      "smtp" : PORT_SMTP,
 #endif
-	     ]);
+    ]);
 }
 
 #endif /* __PACKAGE_SOCKETS__ */

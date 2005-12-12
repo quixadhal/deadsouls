@@ -15,7 +15,7 @@ mixed cmd(string str) {
     string func, file;
 
     if( !str || str == "" )
-      return "Syntax: <showtree FILE> or <showtree FUNCTION in FILE>";
+	return "Syntax: <showtree FILE> or <showtree FUNCTION in FILE>";
     if( sscanf(str, "%s in %s", func, file) != 2 ) {
 	if( sscanf(str, "%s %s", func, file) != 2 ) {
 	    func = 0;
@@ -33,7 +33,7 @@ string ShowTree(string file, string func, int indent) {
     object ob;
     string str;
     int found;
-    
+
     if( strlen(file) > 2 && file[<2..] == ".c" ) file = file[0..<3];
     if( file[0] != '/' ) file = "/" + file;
     if( !(ob = load_object(file)) ) {
@@ -61,11 +61,11 @@ string ShowTree(string file, string func, int indent) {
 
 string GetHelp(string str) {
     return ("Syntax: <showtree FILE>\n"
-	    "        <showtree FUNC in FILE>\n\n"
-	    "In its first version, shows you the full inheritance "
-	    "tree for the named object.  In its second form, it shows "
-	    "you all files in the inheritance tree which contain the "
-	    "function you name, specifically noting those objects which "
-	    "have definitions for the function.\n\n"
-	    "See also: help");
+      "        <showtree FUNC in FILE>\n\n"
+      "In its first version, shows you the full inheritance "
+      "tree for the named object.  In its second form, it shows "
+      "you all files in the inheritance tree which contain the "
+      "function you name, specifically noting those objects which "
+      "have definitions for the function.\n\n"
+      "See also: help");
 }

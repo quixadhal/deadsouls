@@ -76,11 +76,11 @@ mixed CanGo(object who, string dir) {
 
 mixed eventFly(object who, string dir) {
     mapping exit = GetExitData(dir);
-    
+
     if( GetDoor(dir) && GetDoor(dir)->GetClosed() ) {
 	who->eventPrint("You fly into " + GetDoor(dir)->GetShort(dir) + ".");
 	eventPrint(who->GetName() + " flies into " +
-		   GetDoor(dir)->GetShort(dir) + ".", who);
+	  GetDoor(dir)->GetShort(dir) + ".", who);
 	return 1;
     }
     if( exit["pre"] && !evaluate(exit["pre"], dir) ) {
@@ -104,7 +104,7 @@ mixed eventGo(object who, string dir) {
 mixed eventReceiveObject(object ob) {
     int x = ob->GetLift();
     mixed rtn;
-    
+
     rtn = virt_land::eventReceiveObject(ob);
     if(GetMedium() != MEDIUM_AIR) return rtn;
     if( !ob->CanFly() ) { // Things that cannot fly fall down
@@ -117,10 +117,10 @@ mixed eventReceiveObject(object ob) {
 	    }
 	    else {
 		string short;
-		
+
 		if( !ob->GetInvis() && (short = ob->GetShort()) ) {
 		    GetGround()->eventPrint(capitalize(short) + " comes raining "
-					    "down from the sky.");
+		      "down from the sky.");
 		}
 		ob->eventMove(GetGround());
 	    }

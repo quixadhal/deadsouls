@@ -14,7 +14,7 @@ inherit LIB_DAEMON;
 mixed cmd(string args) {
     mixed array callouts;
     string tmp;
-    
+
     callouts = call_out_info();
     if( !sizeof(callouts) ) {
 	previous_object()->eventPrint("No pending callouts.", MSG_SYSTEM);
@@ -22,7 +22,7 @@ mixed cmd(string args) {
     }
     tmp = sprintf("%:-40s %:-25s Delay\n", "Object", "Function");
     tmp += "--------------------------------------------------"
-      "-------------------------\n";
+    "-------------------------\n";
     foreach(mixed array callout in callouts) {
 	tmp += sprintf("%:-40O %:-25s %d\n", callout...);
     }
@@ -32,6 +32,6 @@ mixed cmd(string args) {
 
 string GetHelp() {
     return ("Syntax: <callouts>\n\n"
-	    "Lists all pending callouts.\n\n"
-	    "See also: events, mstatus, netstat");
+      "Lists all pending callouts.\n\n"
+      "See also: events, mstatus, netstat");
 }

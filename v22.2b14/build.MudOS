@@ -21,6 +21,8 @@ else
     echo Preparing to build standard MudOS driver ...
 fi
 
+\cp -f ../bin/mudos.cfg.orig ../lib/secure/cfg/mudos.cfg
+
 # If this is uncommented, the specified 'make' is used instead of looking for
 # one 
 #MAKE=make

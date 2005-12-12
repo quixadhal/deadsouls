@@ -8,13 +8,13 @@ inherit LIB_DAEMON;
 
 varargs int cmd(string str)
 {
-   if((int)this_player()->GetInvis()) {
+    if((int)this_player()->GetInvis()) {
 	notify_fail("You are already invisible.\n");
 	return 0;
     }
     this_player()->SetInvis(1);
     message("my_action", "You fade into the shadows.", this_player());
-   return 1;
+    return 1;
 }
 
 void help()

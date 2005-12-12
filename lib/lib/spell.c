@@ -142,7 +142,7 @@ string GetErrorMessage() {
 	else {
 	    return "Cast against what?";
 	}
-	
+
     case "against STR for LIV":
 	return "Pray against what for whom?";
     }
@@ -336,7 +336,7 @@ varargs object array GetTargets(object who, mixed args...) {
 	    }
 	    if( stringp(args[0]) ) { // on STR
 		int which = member_array("against STR", Rules);
-		
+
 		if( which == -1 && member_array("STR", Rules) == -1 ) {
 		    return 0;
 		}
@@ -439,13 +439,13 @@ static int CanAttack(object who, object array enemies, int power) {
     int hit_con = 0;
     int miss_con = 0;
     int con, bonus;
-    
+
     if( !maxi ) {
 	return -1;
     }
     for(i=0; i<maxi; i++) {
 	mixed area;
-	
+
 	if( !enemies[i] ) {
 	    continue;
 	}
@@ -471,8 +471,8 @@ static int CanAttack(object who, object array enemies, int power) {
 	    miss_count++;
 	    miss_con += enemies[i]->GetMagicResistance();
 	    send_messages("repel", "$target_name $target_verb "
-			  "$agent_possessive_noun magic attack.", who,
-			  enemies[i], area);
+	      "$agent_possessive_noun magic attack.", who,
+	      enemies[i], area);
 	    enemies[i] = 0;
 	}
 	else {
@@ -483,10 +483,10 @@ static int CanAttack(object who, object array enemies, int power) {
     }
     if( miss_count > 0 ) {
 	bonus = who->GetCombatBonus(misses/miss_count);
-      bonus *= GetTrainingModifier();
+	bonus *= GetTrainingModifier();
 	foreach(string skill in GetSkills()) {
 	    who->eventTrainSkill(skill, power/(hit_count+miss_count),
-				 miss_con/miss_count, 0, bonus);
+	      miss_con/miss_count, 0, bonus);
 	}			 
     }
     if( hit_count < 1 ) {
@@ -496,7 +496,7 @@ static int CanAttack(object who, object array enemies, int power) {
     bonus *= GetTrainingModifier();	
     foreach(string skill in GetSkills()) {
 	who->eventTrainSkill(skill, power/(hit_count+miss_count),
-			     hit_con/hit_count, 1, bonus);
+	  hit_con/hit_count, 1, bonus);
     }
     return 1;
 }
@@ -525,14 +525,14 @@ varargs int CanCast(object who, int level, string limb, object array targets) {
 
 	for(i=0; i<maxi; i++) {
 	    int hp, max_hp;
-	    
+
 	    if( !targets[i] ) {
 		continue;
 	    }
 	    if( limb ) {
 		if( member_array(limb, targets[i]->GetLimbs()) == -1 ) {
 		    send_messages("have", "$target_name $target_verb no " +
-				  limb + ".", who, targets[i]);
+		      limb + ".", who, targets[i]);
 		    targets[i] = 0;
 		    continue;
 		}
@@ -542,11 +542,11 @@ varargs int CanCast(object who, int level, string limb, object array targets) {
 	    if( max_hp - hp < (Healing[0]+Healing[1])/10 + 1 ) {
 		if( limb ) {
 		    send_messages("", "$target_possessive_noun " + limb +
-				  " needs no healing.", who, targets[i]);
+		      " needs no healing.", who, targets[i]);
 		}
 		else {
 		    send_messages("need", "$target_name $target_verb no "
-				  "healing.", who, targets[i]);
+		      "healing.", who, targets[i]);
 		}
 		targets[i] = 0;
 		continue;
@@ -564,7 +564,7 @@ varargs int CanCast(object who, int level, string limb, object array targets) {
     if( x < GetDifficulty() ) { // Can't even cast it...
 	foreach(string skill in skills) {
 	    who->eventTrainSkill(skill, level, GetDifficulty(),
-					 0, GetTrainingModifier());
+	      0, GetTrainingModifier());
 	}
 	who->eventPrint("You must have gotten the words wrong.");
 	return 0;
@@ -581,7 +581,7 @@ varargs int CanCast(object who, int level, string limb, object array targets) {
 	}
 	foreach(string skill in skills) {
 	    who->eventTrainSkill(skill, level, GetDifficulty(), 
-					 1, GetTrainingModifier());
+	      1, GetTrainingModifier());
 	}
     }
     return 1;
@@ -603,8 +603,8 @@ varargs int eventCast(object who, int level, mixed limb, object array targets) {
 	send_messages(Messages[0][0], Messages[0][1], who, 0,environment(who));
 	if( !ob->eventMove(who) ) {
 	    send_messages("drop", "$agent_name could not carry " +
-			  ob->GetShort() + " and $agent_verb it!", who, 0,
-			  environment(who));
+	      ob->GetShort() + " and $agent_verb it!", who, 0,
+	      environment(who));
 	    ob->eventMove(environment(who));
 	}
 	return 1;
@@ -639,7 +639,7 @@ varargs int eventCast(object who, int level, mixed limb, object array targets) {
 	foreach(string message, mapping tmp in messages) {
 	    foreach(string verb, object array obs in tmp) {
 		send_messages(verb, message, who, obs,
-			      environment(who), ([ "$limb" : limb ]));
+		  environment(who), ([ "$limb" : limb ]));
 	    }
 	}
 	if( sizeof(targets) ) {
@@ -662,7 +662,7 @@ varargs int eventCast(object who, int level, mixed limb, object array targets) {
 	    }
 	    damage = (GetDamage() * level)/100;
 	    damage = target->eventReceiveDamage(who, GetDamageType(), damage,
-						AutoDamage, limb);
+	      AutoDamage, limb);
 	    total_damage += damage;
 	    tmp = GetMessage(damage);
 	    if( !messages[tmp[1]] ) {
@@ -680,7 +680,7 @@ varargs int eventCast(object who, int level, mixed limb, object array targets) {
 	foreach(string message, mapping tmp in messages) {
 	    foreach(string verb, object array obs in tmp) {
 		send_messages(verb, message, who, obs,
-			      environment(who), ([ "$limb" : limb ]));
+		  environment(who), ([ "$limb" : limb ]));
 	    }
 	}
 	if( sizeof(targets) ) {
@@ -718,7 +718,7 @@ varargs mixed eventParse(object who, mixed array args...) {
 	    }
 	    if( stringp(args[0]) ) {
 		int which = member_array("against STR", Rules);
-		
+
 		if( which == -1 && member_array("STR", Rules) == -1 ) {
 		    return GetErrorMessage();
 		}

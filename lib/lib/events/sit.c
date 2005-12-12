@@ -1,5 +1,5 @@
 /*    /lib/sit.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Handles people sitting down in it
  *    Created by Descartes of Borg 961221
  *    Version: @(#) sit.c 1.1@(#)
@@ -37,6 +37,9 @@ mixed direct_sit_word_obj() {
     Sitters = filter(Sitters, (: $1 && $1->GetPosition()==POSITION_SITTING :));
     if( sizeof(Sitters) >= MaxSitters ) {
 	return "There is no room to sit there.";
+    }
+    if(environment() != environment(this_player())) {
+	return "That's not available for sitting right now.";
     }
     return 1;
 }

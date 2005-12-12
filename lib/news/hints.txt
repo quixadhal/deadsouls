@@ -1,0 +1,81 @@
+CREATOR TIPS
+
+* Edit .plan in your homedir to let others 
+know what you're working on. You can see other 
+people's plans when you finger them.
+
+* You can test how functions work without having to 
+code a command or object. The "eval" command will let 
+you evaluate functions. For example:
+------------------------
+eval return this_player()->GetName()
+eval find_player("cratylus")
+eval present("sword",find_player("testylus"))->GetClass()
+------------------------
+
+* The "boards" command will tell you which chat boards 
+have posts you have not read.
+
+
+* Navigate and manipulate your files and directories 
+with the standard unix commands: ls, cd, cp, mv, more, 
+ed, grep. Be careful: just like in unix, if you delete 
+a mud file, it is gone for good.
+
+
+* To toggle chat channels on and off, just type the 
+channel name. If you're listening to intergossip, for 
+example, you can turn it off by just typing: intergossip
+
+
+* Creators do not have bodies like players do. If you 
+want to test your code, you need to create another 
+character besides your creator charater. Just make 
+sure it has the word "test" somewhere in its name. For 
+example, the test players Cratylus uses is "Testylus".
+
+
+* To create good code, you should look at what people 
+have already done. Look in /domains/town and 
+/domains/default and you'll find some examples. Copy some 
+to your home directory and use them as templates for 
+your own creations.
+
+
+* Remember that once you finish editing a file, you 
+have to use the "update" command to load it into memory. 
+If you change a file you've already updated, you have 
+to update it again for the changes to take effect. 
+
+
+* If you get errors when you try to update a file, use 
+the "elog" command to get clues as to what is wrong. 
+Most of the time it is something simple, like using "=" 
+where you meant to use "==" or forgetting a semicolon. 
+The LPC programming language does not forgive typoes any 
+more than any other programming language.
+
+
+* Before changing a file, make a backup copy, for 
+example: cp file.c file.bak This way, if your changes 
+really cause a problem, you can easily restore things 
+to the way they used to be.
+
+
+* The admins and elders are here to help and answer 
+questions. But remember: if your request is basically 
+"fix my workroom!" or "fix my code!", your request will 
+probably wind up at the bottom of the priority list. We 
+want you to learn to solve coding problems, and fixing 
+your code for you isn't the best way to make that happen. 
+However, we're happy to look over your code and make suggestions.
+
+
+* Permissions and privileges: For security reasons, you do 
+not have read/write access to everything. You can read and 
+write any file in your home directory. You only have write 
+permissions within your home directory and the /tmp 
+directory. You can read everything outside the /realms and 
+/secure directories. You can't read anything 
+in other creators' home dirs. Your read access to some items 
+in the /secure directory is limited.

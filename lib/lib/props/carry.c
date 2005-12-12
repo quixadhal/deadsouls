@@ -8,8 +8,8 @@
 
 #include <config.h>
 
-private static int CarriedMass = 0;
-private static int MaxCarry    = 0;
+int CarriedMass = 0;
+int MaxCarry    = 0;
 
 int CanCarry(int amount);
 
@@ -39,6 +39,10 @@ int GetCarriedWeight() {
 }
 
 int GetMaxCarry() {
+    return MaxCarry;
+}
+
+int GetLivingMaxCarry() {
     return MaxCarry;
 }
 

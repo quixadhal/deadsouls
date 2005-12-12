@@ -8,22 +8,26 @@
 
 inherit LIB_DAEMON;
 
-mixed cmd(string str) {
-    string tzone;
+mixed cmd(string form) {
+    string tzone, str;
     int x;
 
     x = (int)EVENTS_D->GetRebootInterval() * 3600;
     x = (time() - uptime()) + x;
     if( tzone = (string)this_player()->GetTimeZone() )
-      x += (int)TIME_D->GetOffset(tzone) * 3600;
+	x += (int)TIME_D->GetOffset(tzone) * 3600;
+    else if(query_tz()){
+	tzone = query_tz();
+    }
     else tzone = "CST";
     str = tzone + " " + ctime(x);
-    message("system", "The next reboot will occur " + str + ".",this_player());
+    if(form && form == "string") return "The next reboot will occur " + str + ".";
+    else message("system", "The next reboot will occur " + str + ".",this_player());
     return 1;
 }
 
 string GetHelp(string str) {
     return ("Syntax: <nextreboot>\n\n"
-	    "Tells you when the next regularly scheduled reboot for " +
-	    mud_name() + " will occur.");
+      "Tells you when the next regularly scheduled reboot for " +
+      mud_name() + " will occur.");
 }

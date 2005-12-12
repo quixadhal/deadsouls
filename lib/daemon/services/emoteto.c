@@ -16,10 +16,10 @@ void eventReceiveEmote(mixed *packet) {
     who = convert_name(packet[5]);
     if( !(ob = find_player(who)) || (int)ob->GetInvis() ) {
 	INTERMUD_D->eventWrite(({ "error", 5, mud_name(), 0, packet[2],
-				  packet[3], "unk-user", 
-				  capitalize(packet[5]) + " is nowhere to "
-				    "be found on " + mud_name() + ".",
-				  packet }));
+	    packet[3], "unk-user", 
+	    capitalize(packet[5]) + " is nowhere to "
+	    "be found on " + mud_name() + ".",
+	    packet }));
 	return;
     }
     packet[7] = replace_string(packet[7], "$N", packet[6] + "@" + packet[2]);
@@ -28,14 +28,14 @@ void eventReceiveEmote(mixed *packet) {
 
 void eventSendEmote(string who, string where, string msg) {
     string pl, plc;
-    
+
     pl = (string)this_player(1)->GetKeyName();
     plc = (string)this_player(1)->GetCapName();
     where = (string)INTERMUD_D->GetMudName(where);
     INTERMUD_D->eventWrite(({ "emoteto", 5, mud_name(), pl, where, 
-			      convert_name(who), plc, msg }));
+	convert_name(who), plc, msg }));
 }
 
-    
 
-    
+
+

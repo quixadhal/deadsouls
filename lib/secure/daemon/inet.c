@@ -41,7 +41,7 @@ int AddService(string name, int port_offset, string socket_class, int type) {
 	return 0;
     }
     Servers[name] = new(LIB_SERVER, query_host_port()+port_offset, type,
-			socket_class);
+      socket_class);
     return 1;
 }
 
@@ -81,7 +81,7 @@ int eventStartServer(string svc) {
 	return 0;
     }
     ob = new(LIB_SERVER, query_host_port()+s->PortOffset, s->SocketType,
-	     s->SocketClass);
+      s->SocketClass);
     if( ob ) {
 	Servers[svc] = ob;
 	return 1;
@@ -116,6 +116,6 @@ static void create() {
     SetNoClean(1);
     foreach(string svc, class service s in Services) {
 	Servers[svc] = new(LIB_SERVER, query_host_port() + s->PortOffset,
-			   s->SocketType,  s->SocketClass);
+	  s->SocketType,  s->SocketClass);
     }
 }

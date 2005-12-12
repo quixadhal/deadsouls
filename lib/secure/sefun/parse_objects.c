@@ -13,7 +13,7 @@ object parse_objects(object where, string str) {
     inv = all_inventory(where);
     for(i=0, skip = 0; i<sizeof(inv); i++) {
 	if(inv[i]->id(what)) skip ++;
- 	if(skip == which) return inv[i];
+	if(skip == which) return inv[i];
     }
     return 0;
 }

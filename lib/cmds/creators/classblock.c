@@ -12,7 +12,7 @@
 #include <message_class.h>
 
 inherit LIB_DAEMON;
- 
+
 mixed cmd(string args) {
     if( !args || (args != "on" && args != "off") ) {
 	return "Syntax: <classblock on|off>";
@@ -24,7 +24,7 @@ mixed cmd(string args) {
 	    }
 	}
 	previous_object()->eventPrint("You are now blocking all class lines.",
-				      MSG_SYSTEM);
+	  MSG_SYSTEM);
     }
     else {
 	foreach(string class_name in CLASSES_D->GetClasses()) {
@@ -33,14 +33,14 @@ mixed cmd(string args) {
 	    }
 	}
 	previous_object()->eventPrint("You are no longer blocking any class "
-				      "lines.", MSG_SYSTEM);
+	  "lines.", MSG_SYSTEM);
     }
     return 1;
 }
- 
+
 string GetHelp() {
     return ("Syntax: <classblock on|off>\n\n"
-	    "Allows you to make sure that you are blocking all or no "
-	    "class chat lines.\n\n"
-	    "See also: codeblock");
+      "Allows you to make sure that you are blocking all or no "
+      "class chat lines.\n\n"
+      "See also: codeblock");
 }

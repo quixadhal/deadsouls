@@ -8,10 +8,10 @@
 # line 3: language (case sensitive)
 # line 4..n: damage type:resistance level
 # line n+1..o: stat:average value:stat class
-# line o+1..p: limb:parent limb:limb class:comma separated armour types
+# line o+1..p: limb:parent limb:limb class:comma separated armor types
 # line p+1..q: hand:number of fingers
 # damage types come from /include/damage_types.h
-# armour types come from /include/armour_types.h
+# armor types come from /include/armor_types.h
 # Note that you may in fact have no resistances, thus line 4 would be
 # the first stat.
 faerie
@@ -27,14 +27,15 @@ luck:30:2
 speed:40:2
 strength:5:5
 wisdom:15:2
-torso:0:1:A_SHIRT,A_CLOAK,A_VEST,A_SHIELD,A_ARMOUR,A_BODY_ARMOUR,A_BELT
-head:torso:1:A_HELMET,A_VISOR,A_AMULET
-right leg:torso:2:A_LONG_BOOT,A_LONG_SOCK,A_PANTS,A_BODY_ARMOUR
-left leg:torso:2:A_LONG_BOOT,A_LONG_SOCK,A_PANTS,A_BODY_ARMOUR
+torso:0:1:A_SHIRT,A_CLOAK,A_VEST,A_SHIELD,A_ARMOR,A_BODY_ARMOR,A_BELT,A_AMULET
+neck:torso:1:A_COLLAR,A_AMULET
+head:neck:1:A_HELMET,A_VISOR,A_AMULET
+right leg:torso:2:A_LONG_BOOT,A_LONG_SOCK,A_PANTS,A_BODY_ARMOR
+left leg:torso:2:A_LONG_BOOT,A_LONG_SOCK,A_PANTS,A_BODY_ARMOR
 right foot:right leg:4:A_BOOT,A_LONG_BOOT,A_SOCK,A_LONG_SOCK
 left foot:left leg:4:A_BOOT,A_LONG_BOOT,A_SOCK,A_LONG_SOCK
-left arm:torso:3:A_LONG_GLOVE,A_SHIELD,A_CLOAK,A_ARMOUR,A_BODY_ARMOUR
-right arm:torso:3:A_LONG_GLOVE,A_SHIELD,A_CLOAK,A_ARMOUR,A_BODY_ARMOUR
+left arm:torso:3:A_LONG_GLOVE,A_SHIELD,A_CLOAK,A_ARMOR,A_BODY_ARMOR
+right arm:torso:3:A_LONG_GLOVE,A_SHIELD,A_CLOAK,A_ARMOR,A_BODY_ARMOR
 right wing:torso:3
 left wing:torso:3
 left hand:left arm:4:A_RING,A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD

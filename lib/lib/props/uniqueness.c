@@ -1,5 +1,5 @@
 /*    /lib/props/uniqueness.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Allows certain objects to be made rareor unique
  *    Created by Descartes of Borg 961222
  *    Version: @(#) uniqueness.c 1.1@(#)

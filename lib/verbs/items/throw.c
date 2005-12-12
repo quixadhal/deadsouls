@@ -20,15 +20,15 @@ static void create() {
     SetRules("OBJ", "OBJ at OBJ", "OBJ into OBJ");
     SetErrorMessage("Throw what?");
     SetHelp("Syntax: <throw OBJ>\n"
-	    "        <throw OBJ at OBJ>\n"
-	    "        <throw OBJ into OBJ>\n\n"
-	    "Allows you to throw an object.  Some object you may also "
-	    "use offensively by throwing them.  Other places may simply "
-	    "allow you to throw objects into them, say like throwing "
-	    "equipment down to a friend in a chasm.\n"
-	    "Note that throwing a weapon at someone will initiate "
-	    "combat.\n\n"
-	    "Synonyms: toss");
+      "        <throw OBJ at OBJ>\n"
+      "        <throw OBJ into OBJ>\n\n"
+      "Allows you to throw an object.  Some object you may also "
+      "use offensively by throwing them.  Other places may simply "
+      "allow you to throw objects into them, say like throwing "
+      "equipment down to a friend in a chasm.\n"
+      "Note that throwing a weapon at someone will initiate "
+      "combat.\n\n"
+      "Synonyms: toss");
 }
 
 mixed can_throw_obj() {
@@ -57,10 +57,10 @@ mixed do_throw_obj_word_obj(object what, string word, object where) {
     }
     if( this_player()->GetInCombat() || enemy ) {
 	this_player()->eventPrint("You prepare to throw " +
-				  (string)what->GetShort() + ".");
+	  (string)what->GetShort() + ".");
 	this_player()->SetAttack(enemy, (: eventThrow, this_player(), what,
-					 where :), (enemy ? ROUND_WEAPON :
-						    ROUND_OTHER));
+	    where :), (enemy ? ROUND_WEAPON :
+	    ROUND_OTHER));
 	return 1;
     }
     eventThrow(this_player(), what, where);

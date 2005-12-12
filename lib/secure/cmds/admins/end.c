@@ -22,8 +22,8 @@ mixed cmd(string args) {
 
 void help() {
     message("help", "Syntax: <end [delay]>\n\n"
-	    "Initiates a reboot sequence which will end in a reboot after "
-	    "the specified delay period.  The delay must be specified in "
-	    "minutes and it must be of at least two minutes.\n\n"
-	    "See also: nextreboot, setreboot, shutdown", this_player());
+      "Initiates a reboot sequence which will end in a reboot after "
+      "the specified delay period.  The delay must be specified in "
+      "minutes and it must be of at least two minutes.\n\n"
+      "See also: nextreboot, setreboot, shutdown", this_player());
 }

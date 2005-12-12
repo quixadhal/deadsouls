@@ -18,10 +18,10 @@ mixed cmd(string args) {
 
 void help() {
     message("help", "Syntax: <locate [person]>\n\n"
-	    "This command allows you to know on which MUDs connected "
-	    "through the Intermud 3 network have someone using the "
-	    "name you specify.  Note that this person may not actually be "
-	    "the person you think it is, as nothing prevents two different "
-	    "people from using the same name on different MUDs.\n\n"
-	    "See also: mail, mudlist, rwho, tell", this_player());
+      "This command allows you to know on which MUDs connected "
+      "through the Intermud 3 network have someone using the "
+      "name you specify.  Note that this person may not actually be "
+      "the person you think it is, as nothing prevents two different "
+      "people from using the same name on different MUDs.\n\n"
+      "See also: mail, mudlist, rwho, tell", this_player());
 }

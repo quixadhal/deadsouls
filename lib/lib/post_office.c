@@ -1,5 +1,5 @@
 /*    /lib/post_office.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    an inheritable post office
  *    created by Descartes of Borg 951007
  */
@@ -19,13 +19,13 @@ static void create() {
 mixed CanMail(object who, string args) {
     if( !interactive(who) ) return 0;
     if( GetTown() != (string)who->GetTown() )
-      return "Any mail you might have will be at your home post office.";
+	return "Any mail you might have will be at your home post office.";
     return 1;
 }
 
 mixed eventMail(object who, string args) {
     object ob;
-    
+
     if( !(ob = new(OBJ_POST)) ) {
 	who->eventPrint("Failed to load postal object!");
 	return 1;

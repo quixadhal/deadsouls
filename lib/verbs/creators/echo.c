@@ -1,5 +1,5 @@
 /*    /verbs/creators/echo.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    echo
  *    echo STR
  *    echo to LIV STR
@@ -63,11 +63,11 @@ mixed do_echo_str(string str) {
 
 void eventEcho(object *targs, string str) {
     object ob;
-    
+
     foreach(ob in targs) {
 	if( archp(ob) )
-	  ob->eventPrint((string)this_player()->GetCapName() +
-			 " echoes: " + str, MSG_CONV);
+	    ob->eventPrint((string)this_player()->GetCapName() +
+	      " echoes: " + str, MSG_CONV);
 	else ob->eventPrint(str, MSG_CONV);
     }
     this_player()->eventPrint("You echo: " + str, MSG_CONV);
@@ -75,13 +75,13 @@ void eventEcho(object *targs, string str) {
 
 string GetHelp(string str) {
     return ("Syntax: <echo MESSAGE>\n"
-	    "        <echo to LIVING MESSAGE>\n"
-	    "        <echo to all MESSAGE>\n\n"
-	    "Sends a message without prefixing around to everyone in the "
-	    "room if you fail to specify to whom you are echoing.  You "
-	    "may echo to everyone in the game as well.  Abuse of this "
-	    "command is a severe violation of MUD ethics.\n\n"
-	    "See also: say, tell");
+      "        <echo to LIVING MESSAGE>\n"
+      "        <echo to all MESSAGE>\n\n"
+      "Sends a message without prefixing around to everyone in the "
+      "room if you fail to specify to whom you are echoing.  You "
+      "may echo to everyone in the game as well.  Abuse of this "
+      "command is a severe violation of MUD ethics.\n\n"
+      "See also: say, tell");
 }
 
-	    
+

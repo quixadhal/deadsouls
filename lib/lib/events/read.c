@@ -1,11 +1,3 @@
-/*    /lib/read.c
- *    from the Dead Soulsr2 Object Library
- *    handles sounds and such
- *    created by Descartes of Borg 951107
- *    Version: @(#) read.c 1.6@(#)
- *    Last modified: 97/01/01
- */
-
 #include <function.h>
 
 static private mixed Read    = 0;
@@ -64,6 +56,21 @@ varargs mixed SetRead(mixed arg1, mixed desc) {
     }
     return Reads;
 }
+varargs mixed SetDefaultRead(mixed arg1, mixed desc) {
+    if( mapp(arg1) ) {
+	return 0;
+    }
+    if( !desc ) {
+	Read = arg1;
+	return Read;
+    }
+    if( !arg1 || arg1 == "default" ) {
+	Read = desc;
+	return Read;
+    }
+}
+
+
 
 varargs mixed eventRead(object who, string str) {
     mixed val = GetRead(str);
@@ -76,10 +83,12 @@ varargs mixed eventRead(object who, string str) {
 	    who->eventPrint("There was a problem with the read.");
 	    return 1;
 	}
-	return evaluate(val, who, str);
+	//The funtion being evaluated, GetRead, only takes one arg.
+	//return evaluate(val, who, str);
+	return evaluate(val, str);
     }
     environment(who)->eventPrint(who->GetName() + " reads " + GetShort() + ".",
-				 who);
+      who);
     if( !val ) {
 	who->eventPrint("There is nothing to read.");
 	return 1;
@@ -93,7 +102,12 @@ mixed direct_read_obj() {
 	return 0;
     }
     else {
-	return 1;
+	if( environment() != this_player()  && environment(this_player()) !=
+	  environment()) {
+	    return "#You don't have that!";
+	}
+	else return 1;
+
     }
 }
 
@@ -103,7 +117,12 @@ mixed direct_read_str_word_obj(string str) {
 	return 0;
     }
     else {
-	return 1;
+	if( environment() != this_player()  && environment(this_player()) !=
+	  environment()) {
+	    return "#You don't have that!";
+	}
+	else return 1;
+
     }
 }
 

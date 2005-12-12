@@ -2,30 +2,30 @@
  *    from Dead Souls LPMud
  *    created by Descartes of Borg 951211
  */
- 
+
 #include <lib.h>
-#include <armour_types.h>
+#include <armor_types.h>
 #include <damage_types.h>
 #include <vendor_types.h>
- 
-inherit LIB_ARMOUR;
- 
+
+inherit LIB_ARMOR;
+
 private string Spouse;
- 
+
 mixed eventMove(mixed dest);
 string SetSpouse(string str);
 string GetSpouse();
 string RealLong();
- 
+
 static void create() {
-    armour::create();
+    armor::create();
     AddSave( ({ "Spouse" }) );
     SetKeyName("wedding ring");
-    SetId( ({ "ring", "wedding ring" }) );
+    SetId( ({ "ring", "official wedding ring" }) );
     SetAdjectives( ({ "golden", "gold" }) );
     SetShort("a wedding ring of gold");
     SetLong( (:RealLong:) );
-    SetVendorType(VT_ARMOUR | VT_MAGIC);
+    SetVendorType(VT_ARMOR | VT_MAGIC);
     SetMass(10);
     SetValue(0);
     SetPreventDrop("You may not drop your wedding ring!");
@@ -34,29 +34,31 @@ static void create() {
     SetProtection(BLUNT, 3);
     SetProtection(BLADE, 3);
     SetProtection(KNIFE, 3);
-    SetArmourType(A_AMULET);
+    SetArmorType(A_RING);
+    SetRestrictLimbs( ({"left hand"}) );
 }
- 
+
 mixed eventMove(mixed dest) {
     mixed tmp;
- 
+
+    if(archp(this_player())) return armor::eventMove(dest);
     if( !environment() ) {
-tmp = armour::eventMove(dest);
-//if( tmp == 1 ) environment()->eventForce("wear wedding ring");
-return tmp;
+	tmp = armor::eventMove(dest);
+	//if( tmp == 1 ) environment()->eventForce("wear wedding ring");
+	return tmp;
     }
     else return 0;
 }
- 
+
 string SetSpouse(string str) {
     if( Spouse ) return Spouse;
     else return Spouse = str;
 }
- 
+
 string GetSpouse() { return Spouse; }
- 
+
 string RealLong() {
     return ("This beautiful golden band was given to you by " +
-    GetSpouse() + " to capture your eternal love.");
+      GetSpouse() + " to capture your eternal love.");
 }
- 
+

@@ -19,32 +19,32 @@ mixed cmd(string args) {
     int i, maxi;
 
     if(!member_group(previous_object(), PRIV_SECURE)) {
-      log_file("adm/call", query_privs(previous_object())
-        +" ("+ctime(time())+"): call "+args+"\n");
+	log_file("adm/call", query_privs(previous_object())
+	  +" ("+ctime(time())+"): call "+args+"\n");
     }
     if( !args || args == "" ) return "Call ob->func(arg1, arg2)\n";
     if( sscanf(args, "%s->%s(%s", arg_targ, arg_func, args) != 3 )
-      return "Call ob->func(arg1, arg2)\n";
+	return "Call ob->func(arg1, arg2)\n";
     args = trim(args);
     if( args != ")" ) args = args[0..<2];
     else args = "";
     if( !(target = to_object(arg_targ)) )
-      return "Cannot identify any object as \"" + arg_targ + "\".";
+	return "Cannot identify any object as \"" + arg_targ + "\".";
     if( !function_exists(arg_func, target) )
-      return "The function " + arg_func +"() is not in " +
+	return "The function " + arg_func +"() is not in " +
 	identify(target) + "\n";
     f = (: call_other, target, arg_func :);
     if( args == "" ) {
 	err = catch(val = evaluate(f));
 	if( err) {
 	    message("error", identify(target) + " -> " + arg_func + "()",
-		    this_player());
+	      this_player());
 	    message("error", "Error in execution: " + err, this_player());
 	    return 1;
 	}
 	else {
 	    message("system", identify(target) + " -> " + arg_func + "() = " +
-		    identify(val), this_player());
+	      identify(val), this_player());
 	    return 1;
 	}
     }
@@ -67,12 +67,12 @@ mixed cmd(string args) {
 
 void help() {
     message("help", "Syntax: <call [object]->[function](([args]))>\n\n"
-	    "Examples:\n\tcall me->GetName()\n"
-	    "\tcall \"/realms/descartes/workroom\"->GetProperty(\"light\")\n\n"
-	    "Allows you to call any function in any object with any set of "
-	    "arguments from the command line.  The syntax is identical to "
-	    "that you would use inside LPC code, except that you can refer "
-	    "to objects by their names or by pronouns in addition to the "
-	    "usual manners.\n\n"
-	    "See also: eval, gauge", this_player());
+      "Examples:\n\tcall me->GetName()\n"
+      "\tcall \"/realms/descartes/workroom\"->GetProperty(\"light\")\n\n"
+      "Allows you to call any function in any object with any set of "
+      "arguments from the command line.  The syntax is identical to "
+      "that you would use inside LPC code, except that you can refer "
+      "to objects by their names or by pronouns in addition to the "
+      "usual manners.\n\n"
+      "See also: eval, gauge", this_player());
 }

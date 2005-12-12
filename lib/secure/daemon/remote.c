@@ -22,15 +22,15 @@ static void create() {
 
 static void Setup() {
     if( eventCreateSocket(PORT_RCP) < 0 ) {
-        if( this_object() ) Destruct();
-        return;
+	if( this_object() ) Destruct();
+	return;
     }
 }
 
 static void eventSocketClosed(int fd) {
     map_delete(Connections, fd);
 }
-    
+
 static void eventRead(int fd, string str) {
     if( !str ) {
 	eventWrite(fd, "50 Invalid command.\n", 1);
@@ -56,7 +56,7 @@ static private void eventProcess(int fd, string str) {
 	if( !(len = strlen(Connections[fd]["buffer"])) ) return;
 	if( len == Connections[fd]["in edit"] ) {
 	    tmp =  Connections[fd]["object"]->eventWriteFile(Connections[fd]["file"],
-							     Connections[fd]["buffer"]);
+	      Connections[fd]["buffer"]);
 	    eventWrite(fd, tmp + "\n");
 	    Connections[fd]["in edit"] = 0;
 	    Connections[fd]["file"] = "";
@@ -65,7 +65,7 @@ static private void eventProcess(int fd, string str) {
 	}
 	else if( len > Connections[fd]["in edit"] ) {
 	    string tmp1, tmp2;
-	    
+
 	    tmp1 =Connections[fd]["buffer"][0..(Connections[fd]["in edit"]-1)];
 	    tmp2 =Connections[fd]["buffer"][Connections[fd]["in edit"]..];
 	    Connections[fd]["buffer"] = "";
@@ -80,7 +80,7 @@ static private void eventProcess(int fd, string str) {
     if( (x = strsrch(Connections[fd]["buffer"], "\n")) == -1 ) return;
     str = Connections[fd]["buffer"][0..(x-1)];
     if( x != strlen(Connections[fd]["buffer"]) - 1 ) 
-      Connections[fd]["buffer"] = Connections[fd]["buffer"][(x+1)..];
+	Connections[fd]["buffer"] = Connections[fd]["buffer"][(x+1)..];
     else Connections[fd]["buffer"] = "";
     if( sscanf(str, "%s %s", cmd, arg) != 2) {
 	cmd = replace_string(str, "\r", "");
@@ -100,23 +100,23 @@ static private void eventProcess(int fd, string str) {
 	    map_delete(Connections, fd);
 	    return;
 	}
-        username = convert_name(username);
+	username = convert_name(username);
 	if( !user_exists(username) ) {
 	    eventWrite(fd, "50 Login failed.\n", 1);
 	    map_delete(Connections, fd);
 	    return;
 	}
 	unguarded( (: restore_object, DIR_CRES "/" + username[0..0] + "/" +
-		    username :) );
+	    username :) );
 	if( Password != crypt(password, Password) ) {
 	    log_file("remote", "Failed attempt to login as " + username 
-		     + "\n");
+	      + "\n");
 	    eventWrite(fd, "50 Login failed.\n", 1);
 	    map_delete(Connections, fd);
 	    return;
 	}
 	if( !(Connections[fd]["object"] = 
-	      load_object(user_path(username) + "adm/remote")) ) {
+	    load_object(user_path(username) + "adm/remote")) ) {
 	    eventWrite(fd, "50 Failed to load remote object.\n", 1);
 	    map_delete(Connections, fd);
 	    return;
@@ -127,35 +127,35 @@ static private void eventProcess(int fd, string str) {
 	int sz;
 
 	if( sscanf(arg, "%d %s", sz, Connections[fd]["file"]) != 2 ) 
-	  eventWrite(fd, "50 Bad file send command.\n");
+	    eventWrite(fd, "50 Bad file send command.\n");
 	else {
 	    if( !sz ) eventWrite(fd, "110 No changes sent orwritten.\n");
 	    else Connections[fd]["in edit"] = sz;
 	}
     }
     else switch( cmd ) {
-        case "edit":
-	  file = (string)Connections[fd]["object"]->eventReadFile(arg);
-	  if( file[<1] != '\n' ) file += "\n";
-          tmp = sprintf( "%-14s\n", "100 " + strlen(file));
-          eventWrite(fd, tmp[0..15]);
-          eventWrite(fd, file);
-	  break;
-        case "ls":
-	  val = (string)Connections[fd]["object"]->eventCommand(cmd, arg);
-	  if( val ) eventWrite(fd, "500 " + val + "\n");
-	  else eventWrite(fd, "50 " +cmd+ " " +arg+ ": Permission denied.\n");
-	  break;
-        case "update":
-          val = (string)Connections[fd]["object"]->eventCommand(cmd, arg);
-          if( val ) eventWrite(fd, "510 " + val + "\n");
-          else eventWrite(fd, "50 Update attempt went off into nowhere.\n");
-          break;
-        default:
-	  val = (string)Connections[fd]["object"]->eventCommand(cmd, arg);
-	  if( val ) eventWrite(fd, "400 " + val + "\n");
-	  else eventWrite(fd, "50 "+cmd+" "+arg+": Command not supported.\n");
-	  break;
+    case "edit":
+	file = (string)Connections[fd]["object"]->eventReadFile(arg);
+	if( file[<1] != '\n' ) file += "\n";
+	tmp = sprintf( "%-14s\n", "100 " + strlen(file));
+	eventWrite(fd, tmp[0..15]);
+	eventWrite(fd, file);
+	break;
+    case "ls":
+	val = (string)Connections[fd]["object"]->eventCommand(cmd, arg);
+	if( val ) eventWrite(fd, "500 " + val + "\n");
+	else eventWrite(fd, "50 " +cmd+ " " +arg+ ": Permission denied.\n");
+	break;
+    case "update":
+	val = (string)Connections[fd]["object"]->eventCommand(cmd, arg);
+	if( val ) eventWrite(fd, "510 " + val + "\n");
+	else eventWrite(fd, "50 Update attempt went off into nowhere.\n");
+	break;
+    default:
+	val = (string)Connections[fd]["object"]->eventCommand(cmd, arg);
+	if( val ) eventWrite(fd, "400 " + val + "\n");
+	else eventWrite(fd, "50 "+cmd+" "+arg+": Command not supported.\n");
+	break;
     }
     eventProcess(fd, "");
 }

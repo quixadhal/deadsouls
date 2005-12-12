@@ -1,5 +1,5 @@
 /*    /lib/events/press.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Object Library
  *    handles people pressing things
  *    created by Descartes of Borg 960114
  *    Version: @(#) press.c 1.3@(#)
@@ -50,7 +50,7 @@ varargs mapping SetPress(mixed key, mixed desc) {
 
 varargs mixed CanPress(object who, string component) {
     mixed val;
-    
+
     if( !component ) {
 	component = "default";
     }
@@ -61,7 +61,7 @@ varargs mixed CanPress(object who, string component) {
 	}
 	else {
 	    return "#There is no " + component + " on " +
-		GetDefiniteShort() + ".";
+	    GetDefiniteShort() + ".";
 	}
     }
     else return 1;
@@ -69,7 +69,7 @@ varargs mixed CanPress(object who, string component) {
 
 varargs mixed eventPress(object who, string component) {
     mixed val;
-    
+
     if( !component ) {
 	val = Press["default"];
     }
@@ -86,11 +86,11 @@ varargs mixed eventPress(object who, string component) {
 	who->eventPrint(val);
 	if( component ) {
 	    env->eventPrint(who->GetName() + " presses the " + component +
-			    " on " + GetDefiniteShort() + ".", who);
+	      " on " + GetDefiniteShort() + ".", who);
 	}
 	else {
 	    env->eventPrint(who->GetName() + " presses " +
-			    GetDefiniteShort() + ".", who);
+	      GetDefiniteShort() + ".", who);
 	}
 	return 1;
     }
@@ -101,11 +101,11 @@ varargs mixed eventPress(object who, string component) {
 	return evaluate(val, who, component);
     }
 }
-	  
+
 mixed direct_press_obj(object target) {
     return CanPress(this_player());
 }
-    
+
 mixed direct_press_str_on_obj(string str, object target) {
     return CanPress(this_player(), remove_article(lower_case(str)));
 }

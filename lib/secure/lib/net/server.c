@@ -85,8 +85,8 @@ int eventCreateSocket(int port) {
     Listen = new(class server);
     Listen->Blocking = 0; /* servers are not blocking to start */
     x = socket_create(SocketType,
-		      "eventServerReadCallback", 
-		      "eventServerAbortCallback");
+      "eventServerReadCallback", 
+      "eventServerAbortCallback");
     if( x < 0 ) {
 	eventSocketError("Error in socket_create().", x);
 	return x;
@@ -151,8 +151,8 @@ static void eventServerListenCallback(int fd) {
     int x;
 
     x = socket_accept(fd,
-		      "eventServerReadCallback", 
-		      "eventServerWriteCallback");
+      "eventServerReadCallback", 
+      "eventServerWriteCallback");
     if( x < 0 ) {
 	eventSocketError("Error in socket_accept().", x);
 	return;
@@ -196,21 +196,21 @@ static void eventServerWriteCallback(int fd) {
     x = EESUCCESS;
     while( sock->Buffer && x == EESUCCESS ) {
 	switch( x = socket_write(sock->Descriptor, sock->Buffer[0]) ) {
-            case EESUCCESS:
-	        break;
-	    case EECALLBACK:
-		sock->Blocking = 1;
-		break;
-	    case EEWOULDBLOCK: 
-		call_out( (: eventServerWriteCallback :), 0, fd);
-		return;
-	    case EEALREADY:
-		sock->Blocking = 1;
-		return;
-	    default:
-		eventClose(sock);
-		eventSocketError("Error in socket_write().", x);
-		return;
+	case EESUCCESS:
+	    break;
+	case EECALLBACK:
+	    sock->Blocking = 1;
+	    break;
+	case EEWOULDBLOCK: 
+	    call_out( (: eventServerWriteCallback :), 0, fd);
+	    return;
+	case EEALREADY:
+	    sock->Blocking = 1;
+	    return;
+	default:
+	    eventClose(sock);
+	    eventSocketError("Error in socket_write().", x);
+	    return;
 	}
 	if( sizeof(sock->Buffer) == 1 ) {
 	    sock->Buffer = 0;
@@ -256,14 +256,14 @@ varargs int eventWrite(object owner, mixed val, int close) {
 	buffer data = val;
 	int size = sizeof(data);
 	int count = (size/MaxBytes) + 1;
-	
+
 	if( !sock->Buffer ) {
 	    sock->Buffer = ({});
 	}
 	for(int i=0; i<count; i++) {
 	    int length, ptr;
 	    buffer b;
-	    
+
 	    ptr = count * MaxBytes;
 	    if( size - ptr > MaxBytes ) {
 		length = MaxBytes;

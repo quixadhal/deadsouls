@@ -1,0 +1,487 @@
+			    Building Rooms
+		     The Nightmare IV LPC Library
+		 written by Descartes of Borg 950420
+
+This document details how to build rooms using the Nightmare IV LPC
+Library's inheritable room object.  This document is divided into
+simple room building and complex room building.  The first part
+teaches you about basic rooms.  The second part tells you what
+features are there to allow you to do creative things with the room object.
+
+	   ************************************************
+		     Part 1: Basic Room Building
+	   ************************************************
+
+I. The Simple Room
+The simple room minimally looks like this:
+
+#include <lib.h>
+
+inherit LIB_ROOM;
+
+static void create() {
+    room::create();
+    SetProperty("light", 2);
+    SetClimate("indoors");
+    SetShort("an empty room");
+    SetLong("An empty room with no exits leading anywhere.  It is "
+            "completely barren with nothing to describe.");
+}
+
+#include <lib.h>
+This first line is one you need in any object.  It defines the exact
+location of objects which you inherit.  In this case, the object is
+LIB_ROOM.  It is currently located at /lib/room.c.  If we wanted to
+change that location, however, we could do it easily since you only
+reference LIB_ROOM.  So lib.h is a file that says that LIB_ROOM is
+"/lib/room".  
+
+inherit LIB_ROOM;
+The third line, the inherit line, says that this object will inherit
+/lib/room.c. 
+
+static void create() {
+The fifth line begins the meat of any object you will write.  This is
+the beginning of a function.  This one is called create().  If you are
+curious, the static means no one can use the call command to call the
+function.  Do not worry about that too much, however, as it is always
+something you put there for the create() function.
+
+The "void" part simply says that you are returning no value from the
+function.  See the LPC Basics textbook for more information on
+functions.
+
+room::create();
+Inside the create() function are the calls which define what the
+object will do.  The first call calls the function create() in
+/lib/room.c, the object you just inherited.  /lib/room.c has its own
+create() function which does some things needed in order to set up
+your object.  You need to make sure it gets called through this line.
+
+SetProperty("light", 2);
+This sets the light in the room to be 2.  In outdoors rooms, this is
+the average light during day time.  In indoor rooms, it is the average
+light all the time.
+
+SetClimate("indoors")
+Every room has a climate.  An indoors room, among other things, is not
+affected by weather or the time of day.
+
+SetShort("an empty room")
+This is the description that the player sees when in brief mode.  In
+addition, in brief mode, obvious exit abbreviations are automatically
+added.  This is done through the SetObviousExits() function described
+later.  However, the short should be phrased in such a way that it
+makes sense from something like a scry command which would say
+something like: "You see Descartes in an empty room."
+
+SetLong("An empty room with no exits leading anywhere.  It is "
+            "completely barren with nothing to describe.");
+This sets the long description seen by the player when in verbose
+mode.   Note that items in the room as well as scents and sounds are
+added to what the player sees automatically.
+
+That's it! You now have a room which no one can leave!
+
+II.  Adding items
+Approval on any decent MUD will eat you for lunch if you do not
+describe your items.  This is likely the most tedious part of area
+building, however, it is also the part that largely makes the
+difference between a dull area and a fun one.  You must be sure to
+make it so that anything a player might logically want to see in
+detail in a room is described in detail.  For example, say you have
+the following long description for a room:
+
+You are in Monument Square, once known as Krasna Square. The two main
+roads of Praxis intersect here, where all of Nightmare's people gather
+in joy and sorrow.  The road running north and south is called Centre
+Path, while Boc La Road is the name of the road running east and west.
+A magnificent monument rises above the square.
+
+You should have descriptions for the following items placed in your
+room:
+
+square, monument, monument square, krasna square, roads, road,
+intersection, people, centre path, boc la road, magnificent monument
+
+How to do this with a minimum of hassle:
+
+SetItems( ([ ({ "square", "monument square", "krasna square" }) :
+	"The central square of Praxis where citizens and adventurers "
+        "gather to chat and trade.  Formerly known as Krasna Square, "
+        "is now known as Monument Square as thanks to those who helped "
+        "to build the town",
+        ({ "monument", "magnificent monument" }) : "A giant monolith "
+        "rising above Monument Square",
+        ({ "intersection", "road", "roads" }) : "The two main roads of Praxis "
+        "intersect in Monument Square.  The one to the north and south "
+        "is called Centre Path, while the other is Boc La Road.",
+        ({ "people", "adventurers", "citizens" }) : "A varied group of "       
+        "people from countless realms hanging about talking and trading.",
+        "centre path" : "The main road leading north to the North Forest "
+        "from Praxis, and south to the sea.",
+        "boc la road" : "The main east-west road through Praxis, going "     
+        "east towards the jungle, and west towards the Daroq Mountains." ]) );
+
+That may seem like a mouthful, but it is easier to break down into
+smaller points and see what is going on.  The SetItems() prototype
+looks like this:
+
+mapping SetItems(mapping items);
+
+That means it accepts a data type called a mapping as the argument and
+returns a new mapping of items.  A mapping is a special data type in
+LPC that allows you to associate two values together, for example, to
+associate an item with its description.  For example, above we wanted
+to associate the items "monument" and "magnificent monument" with the
+description "A giant monolith rising above Monument Square".  To do
+that, a mapping looks like this:
+
+([ value1 : assoc_value1 ])
+
+where assoc_value1 is the value associated with value1.  In this case,
+we might have something like:
+
+([ "monument" : "A giant monolith rising above Monument Square." ])
+
+But, we also wanted to associate "magnificent monument" with this
+description.  One way, which is perfectly legitimate, would be:
+
+([ "monument" : "A giant monolith rising above Monument Square",
+   "magnificent monument" : "A giant monolith rising above Monument Square" ])
+
+But that would be damned annoying, especially with long descriptions
+or things with a lot of synonyms.  You can therefore group values
+which have the same description together using array notation:
+({ value1, value2, value3 })
+
+And thus, make that mapping look like:
+
+([ ({ "monument", "magnificent monument" }) : "A giant monolith rising " 
+  "above Monument Square." ])
+
+To complete setting the items, you simply add other item/description
+pairs separated by commas:
+
+([ ({ "monument", "monument square" }) : "A giant monolith rising "
+  "above Monument Square.",
+   "house" : "A little white house with white picket fences." ])
+
+Mappings are a rather difficult concept to grasp, but once grasped
+they are very powerful.  You should take a look at some sample code
+from /domains/Examples/room to get a good idea of what proper code
+looks like.  In addition, there is a chapter in Intermediate LPC
+dedicated to the concept.  Finally, you can always mail
+borg@imaginary.com to ask questions.
+
+III. Adding Exits and Enters
+If you understand the section above, exits and enters are simple.
+They too use mappings, but less complicated ones:
+
+SetExits( ([ "north" : "/domains/Praxis/n_centre1",
+             "south" : "/domains/Praxis/s_centre1",
+             "east" : "/domains/Praxis/e_boc_la1",
+             "west" : "/domains/Praxis/w_boc_la1" ]) );
+
+SetEnters( ([ "hall" : "/domains/Praxis/town_hall",
+              "pub" : "/domains/Praxis/pub" ]) );
+
+With an exit mapping, you simply match the direction to the room to
+which it leads.  With an enter mapping, you match a thing being
+entered with the room to which it leads.
+
+Unlike other LPC Libraries, the Nightmare IV LPC Library distinguishes
+between the concept of motion towards and motion into.  Motion towards
+is exemplified by the "go" command, which is affected by SetExits().
+For example, to go east, you type "go east".  You are simply going
+towards the east (Note that "go east" is by default aliased to "e").
+
+Motion into is exemplified by the "enter" command, which is affected
+by SetEnters().  Enter marks anything you enter into, for example a
+building or bushes or the like.  In the above example, a player would
+issue the command "enter pub" to enter the pub.
+
+IV. Adding Objects
+If you want to add physical objects into your room, you use the
+SetInventory() function.  For example, if you wanted to place a balrog
+in the room:
+
+    SetInventory(([ "/domains/Praxis/npc/balrog" : 1 ]);
+
+Every reset, the room will then check to see if any balrogs are in the
+room.  If no balrogs are in the room it will clone 1.  Again, this is
+another function using a mapping.  In this case it is associating the
+file name of an object with how many of that object should be in the
+room at every reset.  If you wanted 5 balrogs in the room, you would
+have changed the 1 to 5.
+
+V.  Adding Smells, Listens, and Searches
+
+The functions:
+SetSmell()
+SetSearch()
+SetListen()
+
+All work identically to the SetItems() function.  That is they match
+things you can smell, listen, search to descriptions which the player
+sees when they smell, listen, search the item.
+
+For example:
+
+SetSmell( ([ "monument" : "It smells of obsidian.", 
+             "road" : "It smells dusty.",
+             ({ "pub", "bar" }) : "It smells of alcohol." ]) );
+
+If a player types:
+"smell monument"
+then they see
+"It smells of obsidian."
+
+One unique thing about these three functions, however, is that you can
+use the special thing "default" to set a smell, listen, or search that
+occurs when no object is specified.  For example, 
+
+SetSmell(([ "default" : "It really stinks here." ]) );
+
+Will have the player see "It really stinks here." when they simply
+type "smell".  In addition, this is the smell the player sees when
+they simply walk into a room.
+
+VI. Miscellaneous stuff
+
+SetObviousExits("n, s, e")
+Sets an obvious exits string which gets seen in brief mode and by
+newbies in verbose mode.  Generally, this should consist of the
+abbreviations for the room's obvious exits only.
+
+SetTown("Praxis")
+For rooms which are considered part of a town, you must specify that
+they are part of the town through this function.  In this example, the
+room is set to be in the town of Praxis.  See the document
+/doc/build/Towns for more information on towns.
+
+SetDayLong("The sky lights up the endless fields of wheat which stand "
+           "before you.");
+SetNightLong("You are standing in a pitch black field of wheat.");
+Instead of using SetLong(), you can call both of these functions to
+give different long descriptions for day and night.
+
+SetGravity(2.0)
+This makes things in the room twice as heavy as normal.
+
+SetDoor("east", "/domains/Praxis/doors/red_door");
+Sets a door to the east which is the file
+"/domains/Praxis/doors/red_door.c".  You should have an exit to the
+east, and you should do this AFTER you have called SetItems().  See
+the document /doc/build/Doors for detailed information on door
+building.
+
+VII.  Summary
+
+Here is a room that uses everything described above:
+
+#include <lib.h>
+
+inherit LIB_ROOM;
+
+static void create() {
+    room::create();
+    SetProperty("light", 2);
+    SetClimate("temperate");
+    SetTown("Praxis");
+    SetShort("a peaceful park");
+    SetDayLong("The light of the sun shines down upon an open field "
+               "in the middle of Praxis known as Kronos Park.  In spite "
+               "of the time of day, no one is around.  East Boc La "
+               "Road is to the south.");
+    SetNightLong("Kronos Park is a poorly lit haven for rogues in the "
+                 "cover of night.  It is safest to head back south "
+                 "towards the lights of East Boc La Road");
+    SetItems( ([ ({ "field", "park" }) : "A wide open park in the "
+                 "center of Praxis." ]) );
+    SetSearch( ([ "field" : "You get dirt all over your hands." ]) );
+    SetSmell( ([ "default" : "You smell grass after a fresh rain.",
+                 "dirt" : "It smells like... dirt!" ]) );
+    SetExits( ([ "south" : "/domains/Praxis/e_boc_la3" ]) );
+    SetInventory( ([ "/domains/Praxis/npc/rogue" : 2 ]) );
+}
+
+	   ************************************************
+		    Part 2: Advanced Room Building
+	   ************************************************
+I. Functionals
+MudOS has a data type called a functional.  Most room functions take a
+functional as an argument instead of a string.  What this does is
+allow you to specify a function to get called in order to determine
+the value rather than set it as a string which cannot be changed.  For
+example, if you wanted to set a long description that varied depending the
+status of a door:
+
+#include <lib.h>
+
+inherit LIB_ROOM;
+
+string CheckDoor(string useless);
+
+static void create() {
+    room::create();
+    SetProperty("light", 2);
+    SetClimate("indoors");
+    SetShort("an indoor room with a door");
+    SetLong( (: CheckDoor :) );
+    SetExits( ([ "east" : "/domains/Praxis/east_room" ]) );
+    SetDoor("east", "/domains/Praxis/doors/red_door");
+}
+
+string CheckDoor(string useless) {
+    string tmp;
+
+    tmp = "You are in a plain indoor room with a door.  ";
+    if( (int)"/domains/Praxis/doors/red_door"->GetOpen() )
+      tmp += "The door is open.";
+    else tmp += "The door is closed.";
+    return tmp;
+}
+
+In this example, a function called CheckDoor() was written to
+determine exactly what the long description should be.  This is done
+because in create(), you have no idea what the status of the door will
+be from moment to moment.  Using a function, you can therefore
+determine what the long description is at the time it is needed.
+
+Functionals can reference any function anywhere on the MUD, including
+efuns.  See /doc/lpc/data_types/functionals for details on them.  For
+the sake of this document however, you note a functional using smileys
+:).
+
+(: CheckDoor :) means the function CheckDoor() in this object.  You
+can also specify function in other objects, for example:
+(: call_other, this_player(), "GetName" :) would refer to GetName() in
+the person who was this_player() AT THE TIME THE FUNCTIONAL WAS
+CREATED.
+
+Notice at the top of the file that CheckDoor() was prototyped.  You
+must prototype any function you reference inside your objects. The
+expression (: CheckDoor :) constitutes as a reference, and thus makes
+you need to prototype the function.
+
+The rest of this portion describes individual function calls using
+functionals.  The functional prototype part is how your functional
+should be declared.:
+
+SetShort(string | function)
+Functional prototype: string ShortFunc();
+Example: SetShort( (: MyShort :) );
+If you pass it a function, then this function gets called to determine
+the short description.  The function should return a string which will
+be used as the short description.
+
+SetLong(string | function)
+Functional prototype: string LongFunc(string unused)
+Example: SetLong( (: MyLong :) );
+This function should return a string which will be used as the long
+description for the room.  The argument "unused" is just that, unused
+in this context.  It is something used for other objects.
+
+SetItems(mapping mp);
+Functional prototype: string ItemFunc(string item);
+Example: SetItems( ([ "house" : (: LookHouse :) ]) );
+This function should return a string to be used for the item
+description.  The argument is passed the name of the item being looked
+at, so you can use the same function for multiple items.
+
+SetSearch(mapping mp)
+Alternate: SetSearch(string item, string | function desc)
+Functional prototype: string SearchFunc(string item);
+Examples: SetSearch( ([ "grass" : (: SearchGrass :) ]) );
+          SetSearch("grass", (: SearchGrass :));
+Note that there are two forms to SetSearch(), useful depending on how
+many searches you are setting at once.  If you have a search function, 
+then that function should return a string which is what they will see.
+The argument passed is the item being searched.
+
+SetSmell()
+SetListem()
+see SetSearch()
+
+II. Advanced Exits
+SetExits() is fairly straight forward.  However, there exists another
+function for exits called AddExit().  It allows you to add one exit at
+a time (useful if say a player searches and finds a new exit) as well
+as give functional power to exits.  The prototype for AddExit() is:
+
+varargs mapping AddExit(string dir, string dest, function pre, function post);
+
+The varargs part of the prototype simply means you can call it using
+less than the full number of arguments specified.  In this case, the
+minimum call is:
+
+AddExit("east", "/domains/Praxis/square");
+
+The last two arguments are called pre-exit functions and post exit
+functions.  The pre-exit function gets called when a player issues a
+command to leave the room, but before the player is allowed to leave.
+Depending on the return value of the function, the player is allowed
+or denied the right to leave.  For example:
+
+AddExit("north", "/domains/Praxis/square", (: PreExit :));
+
+int PreExit(string dir) {
+    if( !avatarp(this_player()) ) {
+        write("You are too lowly to go that way!");
+        return 0;
+    }
+    else return 1;
+}
+
+In other words, if the player is an avatar, they can go north.
+Otherwise they cannot.  The prototype is:
+
+int PreExit(string dir);
+
+where the return value is 1 or 0 for can or cannot leave, and the
+argument dir is the direction in which the player is exiting.
+
+Post exit functions work a little differently since it makes no sense
+to prevent someone from leaving once they have left.  The prototype
+looks like:
+
+void PostExit(string dir);
+
+This simply allows you to do processing once the player is gone.  If
+you wish a post exit without a pre exit, then:
+
+AddExit("north", "/domains/Praxis/square"", 0, (: PostExit :));
+
+Enters work exactly the same way.
+
+Please read about the events CanReceive() and CanRelease(), as those
+may be more appropriate places to do what you want.  Remember, this
+only prevents a player from using the "go" command to go in that
+direction.  CanReceive() in the other room would be better if your
+desire is to keep non-avatars out of the square at any cost.
+
+III.  Other Functions
+
+AddExit()
+RemoveExit()
+AddEnter()
+RemoveEnter()
+RemoveSearch()
+RemoveSmell()
+RemoveListen()
+AddItem()
+RemoveItem()
+
+All of the above Remove*() functions take a single string argument
+specifying what it is that is being removed.  For example:
+
+RemoveExit("east")
+
+removes the exit to the east.
+
+AddItem(string item, mixed val)
+Adds a single item.  Val can be a string or function.
+
+	Descartes of Borg
+	borg@imaginary.com

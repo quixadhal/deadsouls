@@ -8,25 +8,25 @@
 #include <lib.h>
 
 inherit LIB_DAEMON;
- 
+
 mixed cmd(string str) {
     object ob;
 
     if(!str) return "Goto where?";
     if((ob = find_living(lower_case(str))) && 
       (!ob->GetInvis() || !archp(ob)) && ob=environment(ob)) {
-        if(ob == environment(this_player())) {
-            message("my_action", "You twitch.", this_player());
-            if(hiddenp(this_player())) return 1;
-            message("other_action", (string)this_player()->GetName()+
-              " twitches.", ob, ({ this_player() }));
-            return 1;
-        }
+	if(ob == environment(this_player())) {
+	    message("my_action", "You twitch.", this_player());
+	    if(hiddenp(this_player())) return 1;
+	    message("other_action", (string)this_player()->GetName()+
+	      " twitches.", ob, ({ this_player() }));
+	    return 1;
+	}
     }
     if(ob && ob->GetInvis() && creatorp(ob) && !archp(this_player())) ob = 0;
     if(!ob) str = absolute_path((string)this_player()->query_cwd(), str);
     if(ob) this_player()->eventMoveLiving(ob, "");
-      else this_player()->eventMoveLiving(str, "");
+    else this_player()->eventMoveLiving(str, "");
     return 1;
 }
 

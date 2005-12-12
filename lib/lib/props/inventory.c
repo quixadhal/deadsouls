@@ -1,58 +1,28 @@
-/*    /lib/props/inventory.c
- *    From the Dead Souls V Object Library
- *    Inheritable for objects that manage inventories
- *    Created by Descartes of Borg 961222
- *    Version: @(#) inventory.c 1.2@(#)
- *    Last modified: 96/12/31
- */
-
 private static mapping Inventory = ([]);
 
 static void eventLoadInventory();
+
 static void eventLoadItem(string file, mixed args, int count);
 
 mapping GetInventory() {
     return Inventory;
 }
 
-mapping SetInventory(mapping mp) {
-    foreach(string key, mixed val in mp) {
-         if( key[<2..] == ".c" ) {
-	     key = key[0..<3];
-	 }
-	 if( key[0] != '/' ) {
-	     key = "/" + key;
-	 }
-         Inventory[key] = val;
-    }
-    eventLoadInventory();
-    return Inventory;
-}
-
-static void eventLoadInventory() {
-    object array items = map(all_inventory(this_object()), (: base_name :));
-    
-    foreach(string file, mixed args in Inventory) {
-	eventLoadItem(file, args, sizeof(filter(items, (: $1 == $(file) :))));
-    }
-}
-
 static void eventLoadItem(string file, mixed args, int count) {
-    if( intp(args) ) { // Number of items to clone or unique
-	if( args < 0 ) { // Unique item
-	    object ob;
+    object ob;
+
+    if( intp(args) ) { 
+	if( args < 0 ) { 
 
 	    ob = unique(file, -args);
 	    if( ob ) {
 		ob->eventMove(this_object());
 	    }
 	}
-	else { // Clone up to #
+	else { 
 	    args = args - count;
 	    while( args > 0 ) {
 		int u = file->GetUnique();
-		object ob;
-		
 		if( u ) {
 		    ob = unique(file, u);
 		}
@@ -66,6 +36,41 @@ static void eventLoadItem(string file, mixed args, int count) {
 	    }
 	}
     }
+}
+
+static void eventLoadInventory() {
+    int filtersize, i;
+    object array stuff,items,tmp;
+
+    stuff=all_inventory(this_object());
+    items = ({});
+
+    for(i=0; i<sizeof(stuff);i++){
+	if(tmp = ({ base_name(stuff[i]) }) ) items += tmp;
+    }
+    filtersize=0;
+    foreach(string file, mixed args in Inventory) {
+	for(i=0; i<sizeof(items); i++) {
+	    if (base_name(items[i]) == file ) filtersize++;
+	}
+	eventLoadItem(file, args, filtersize);
+	filtersize=0;
+    }
+}
+
+
+mapping SetInventory(mapping mp) {
+    foreach(string key, mixed val in mp) {
+	if( key[<2..] == ".c" ) {
+	    key = key[0..<3];
+	}
+	if( key[0] != '/' ) {
+	    key = "/" + key;
+	}
+	Inventory[key] = val;
+    }
+    eventLoadInventory();
+    return Inventory;
 }
 
 varargs void reset(int count) {

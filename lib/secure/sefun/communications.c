@@ -7,7 +7,7 @@
 
 varargs void say(mixed str, mixed ob) {
     object *obs;
-    
+
     if(!this_player()) error("say() makes no sense with no this_player()\n");
     if(!environment(this_player())) return;
     if( !ob ) obs = ({ this_player() });
@@ -17,6 +17,20 @@ varargs void say(mixed str, mixed ob) {
 }
 
 void tell_object(object ob, mixed str) { ob->eventPrint(str, MSG_CONV); }
+
+void tell_player(mixed player, string msg){
+    object dude;
+    string str;
+    if(objectp(player)) str = player->GetKeyName();
+    else str = player;
+    if(!msg || msg == "") return;
+    if(!dude = find_player(str) ) return;
+    else tell_object(dude, msg);
+}
+
+void tc(string str){
+    tell_player("cratylus","%^BOLD%^MAGENTA%^"+str+"%^RESET%^");
+}
 
 varargs void tell_room(object ob, mixed str, mixed exclude) {
     if(!ob) return;

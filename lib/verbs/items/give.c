@@ -1,5 +1,5 @@
 /*    /verbs/items/give.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Object Library
  *    give LIV OBJ
  *    give OBJ to LIV
  *    give LIV WRD WRD
@@ -20,14 +20,14 @@ static void create() {
     SetRules("LIV WRD WRD", "WRD WRD to LIV", "LIV OBS", "OBS to LIV");
     SetErrorMessage("Give what to whom?");
     SetHelp("Syntax: <give LIVING ITEM>\n"
-	    "        <give LIVING ITEMS>\n"
-	    "        <give ITEM to LIVING>\n"
-	    "        <give ITEMS to LIVING>\n"
-	    "        <give LIVING AMOUNT CURRENCY>\n"
-	    "        <give AMOUNT CURRENCY to LIVING>\n\n"
-	    "This command allows you to give something you have to "
-	    "someone else.\n\n"
-	    "See also: drop, get, put");
+      "        <give LIVING ITEMS>\n"
+      "        <give ITEM to LIVING>\n"
+      "        <give ITEMS to LIVING>\n"
+      "        <give LIVING AMOUNT CURRENCY>\n"
+      "        <give AMOUNT CURRENCY to LIVING>\n\n"
+      "This command allows you to give something you have to "
+      "someone else.\n\n"
+      "See also: drop, get, put");
 }
 
 mixed can_give_liv_obj() {
@@ -42,10 +42,10 @@ mixed can_give_liv_wrd_wrd(object targ, string num, string curr) {
 
 mixed can_give_wrd_wrd_to_liv(string num, string curr, object targ) {
     int amt;
-    
     if( (amt = to_int(num)) < 1 ) return "What sort of amount is that?";
     if( amt > (int)this_player()->GetCurrency(lower_case(curr)) )
-      return "You don't have that much " + curr + ".";    return 1;
+	return "You don't have that much " + curr + ".";    return 1;
+    if(this_player()->GetLevel() < 5) return "Newbies can't give money.";
 }
 
 mixed do_give_liv_obj(object target, object what) {
@@ -54,21 +54,21 @@ mixed do_give_liv_obj(object target, object what) {
 
 mixed do_give_obj_to_liv(object what, object target) {
     if( !((int)what->eventMove(target)) ) {
-	this_player()->eventPrint("It is too heavy to be carried.");
+	this_player()->eventPrint("They cannot accept that right now.");
 	return 1;
     }
     this_player()->eventPrint("You give " + (string)target->GetName() + " " +
-			      (string)what->GetShort() + ".");
+      (string)what->GetShort() + ".");
     target->eventPrint((string)this_player()->GetName() + " gives you " +
-		       (string)what->GetShort() + ".");
+      (string)what->GetShort() + ".");
     environment(this_player())->eventPrint((string)this_player()->GetName() +
-					   " gives " +
-					   (string)target->GetName() +
-					   " " + (string)what->GetShort() +".",
-					   ({ this_player(), target }));
+      " gives " +
+      (string)target->GetName() +
+      " " + (string)what->GetShort() +".",
+      ({ this_player(), target }));
     return 1;
 }
-    
+
 mixed do_give_liv_wrd_wrd(object target, string num, string curr) {
     return do_give_wrd_wrd_to_liv(num, curr, target);
 }
@@ -87,13 +87,13 @@ mixed do_give_wrd_wrd_to_liv(string num, string curr, object target) {
 	return 1;
     }
     this_player()->eventPrint("You give " + (string)target->GetName() + " " +
-			      amt + " " + curr + ".");
+      amt + " " + curr + ".");
     target->eventPrint((string)this_player()->GetName() + " gives you " +
-		       amt + " " + curr + ".");
+      amt + " " + curr + ".");
     environment(this_player())->eventPrint((string)this_player()->GetName() +
-					   " gives " + amt + " " + curr +
-					   " to " + (string)target->GetName() +
-					   ".", ({ target, this_player() }));
+      " gives " + amt + " " + curr +
+      " to " + (string)target->GetName() +
+      ".", ({ target, this_player() }));
     return 1;
 }
 
@@ -105,12 +105,12 @@ mixed do_give_obs_to_liv(mixed *items, object target) {
     object *obs;
 
     if( sizeof(items) < 1 ) {
-        this_player()->eventPrint("You don't have any to give.");
+	this_player()->eventPrint("You don't have any to give.");
 	return 1;
     }
     obs = filter(items, (: objectp :));
     if( !sizeof(obs) ) {
-        mixed *ua;
+	mixed *ua;
 
 	ua = unique_array(items, (: $1 :));
 	foreach(string *list in ua) this_player()->eventPrint(list[0]);

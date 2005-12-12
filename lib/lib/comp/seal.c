@@ -1,5 +1,5 @@
 /*    /lib/comp/seal.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Object Library
  *    Composite component of a closeable and lockable thing
  *    Created by Descartes of Borg 961221
  *    Version: @(#) seal.c 1.2@(#)
@@ -44,13 +44,13 @@ varargs mixed eventOpen(object who, object tool) {
     }
     if( GetLocked() ) {
 	send_messages(({ "attempt", "find" }), "$agent_name $agent_verb to "
-	              "open $target_name, but $agent_nominative $agent_verb "
-	              "it locked.", who, this_object(), environment(who));
+	  "open $target_name, but $agent_nominative $agent_verb "
+	  "it locked.", who, this_object(), environment(who));
 	return 1;
     }
     return close::eventOpen(who, tool);
 }
 
-static private void create() {
+void create() {
     AddSave(close::GetSave() + lock::GetSave());
 }

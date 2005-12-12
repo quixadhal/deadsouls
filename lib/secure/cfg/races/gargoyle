@@ -14,16 +14,17 @@ wisdom:31:2
 speed:10:4
 strength:43:1
 coordination:31:2
-torso:0:1:A_ARMOUR,A_BODY_ARMOUR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
-head:torso:1:A_BODY_ARMOUR,A_VISOR,A_HELMET,A_CLOAK
-left arm:torso:3:A_LONG_GLOVE,A_SHIRT,A_ARMOUR,A_BODY_ARMOUR,A_SHIELD
-right rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
-right arm:torso:3:A_LONG_GLOVE,A_SHIRT,A_ARMOUR,A_BODY_ARMOUR,A_SHIELD
-left foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
-left rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+torso:0:1:A_ARMOR,A_BODY_ARMOR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
+neck:torso:1:A_COLLAR,A_AMULET
+head:neck:1:A_HELMET,A_VISOR,A_AMULET
+left arm:torso:3:A_LONG_GLOVE,A_SHIRT,A_ARMOR,A_BODY_ARMOR,A_SHIELD
+right rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
+right arm:torso:3:A_LONG_GLOVE,A_SHIRT,A_ARMOR,A_BODY_ARMOR,A_SHIELD
+left foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
+left rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
 left wing:torso:3::
 right wing:torso:3::
-right foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOUR,A_PANTS,A_LONG_SOCK
+right foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
 left forepaw:left foreleg:4::
 left hand:left arm:4:A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
 right forepaw:right foreleg:4::

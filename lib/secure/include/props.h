@@ -16,7 +16,12 @@
 #define LIB_MOVE          DIR_PROPS "/move"
 #define LIB_PROPERTIES    DIR_PROPS "/properties"
 #define LIB_RADIANCE      DIR_PROPS "/radiance"
+#define LIB_SAVE          DIR_PROPS "/save"
 #define LIB_UNIQUENESS    DIR_PROPS "/uniqueness"
 #define LIB_VALUE         DIR_PROPS "/value"
+#define LIB_COST          DIR_PROPS "/cost"
+#define LIB_ADDSTUFF      DIR_PROPS "/addstuff"
+#define LIB_EXTRA_PARSE   DIR_PROPS "/extra_parse"
+
 
 #endif /* s_props_h */

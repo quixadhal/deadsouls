@@ -1,0 +1,262 @@
+		   Creating Doors between Two Rooms
+		     The Nightmare IV LPC Library
+		 created by Descartes of Borg 950419
+
+This document describes how to build door-type objects which link two
+rooms.  These door-type objects do not need to be doors, but in fact
+can be windows or boulders or any other such object.  The Nightmare IV
+LPC Library door object, unlike the old way of doing doors, is an
+object separate from the rooms it connects.  In other words, in order
+to build a door, you have three objects (just as you would visualize):
+two rooms and a door.
+
+The door object is /lib/door.c.  To inherit it, #include <lib.h> and
+inherit LIB_DOOR;.  An example door may be found in
+/domains/Examples/etc/door.c as well as the rooms
+/domains/Examples/room/doorroom1.c and /domains/Examples/room/doorroom2.c.
+
+Setting up the door object
+The first thing you must do is create the door object.  You must
+visualize this door object just like a door connecting two rooms in
+real life.  You have a room on each side with a single door with two
+sides.  Technically, a door object may have any number of sides.
+Practically speaking, most people using this object will be using it
+as a door, which means it will have two sides.
+
+To create a door object, you simply describe each side of the door.
+The easiest way to do this is through the SetSide() function.
+
+mapping SetSide(string side, mapping mp);
+
+Example:
+
+	SetSide("east", ([ "id" : "red door", "short" : "a red door",
+	                  "long" : "A freshly painted red door.",
+                          "lockable" : 0 ]) );
+
+The name of the side is simply the exit used by the room which sees
+that side.  For example, if in one room the door is at the east exit,
+then the side is identified as east.  The mapping consists of the
+following data:
+
+"id"
+What a person on that side calls the door.  For example, you can have a
+door blue on one side and red on the other.  On one side, you go east
+to go through the door, and from that room the door appears red.  The
+id for that side might be "red door".  The id for the other side might
+be "blue door".
+
+"short" 
+The short description for the door as seen from the side in question.
+This can be a function or a string.
+
+"long"
+The long description for the door as seen from the side in question.
+Whether the door is open or not will be added to the long if the long
+is a string.  This can be either a string or function.  If it is a
+function, you must specify whether the door is open or close on your
+own.
+
+"lockable"
+0 if the door cannot be locked (and unlocked) from that side, 1 if it
+can.
+
+"keys"
+An array of id's of objects which can be used to unlock it if it is
+lockable.  Lockable doors do not need keys.
+
+II.  Setting up the rooms
+After you have called SetItems() and SetExits() in the room
+(remembering to set the exit for the exit with the door), call the
+function SetDoor().
+
+string SetDoor(string dir, string doorfile);
+
+Example: SetDoor("east", "/realms/descartes/doors/red_door");
+
+Sets the exit named to be blocked by a door object when that door
+object is closed.
+
+This is all you need to do in the room.  Note that the exit name
+corresponds to the side name mentioned in the door.
+
+III. Advanced Door Stuff
+At this point, you should know how to do the minimum stuff to build a
+door.  This section goes into detail about door functions and how you
+can do advanced things with doors by manipulating door events.  This
+section has two parts, door data functions and door events.
+
+a. Door Data Functions
+
+*****
+SetSide()
+*****
+mapping SetSide(string side, mapping mp);
+
+As described above.
+
+*****
+SetClosed()
+*****
+static int SetClosed(int x)
+
+Example: SetClosed(1);
+
+This function can only be called from inside the door object.
+Generally you use it to set the initial state of the door.  If you
+want to close the door at any other time, or to close it from another
+object, use eventClose() or eventOpen().
+
+*****
+SetLocked()
+*****
+
+static int SetLocked(int x)
+
+Example: SetLocked(1);
+
+Like SetClosed(), this function should only be used from create()
+inside the door object to set the initial state of the door.  At other
+times, use eventLock() or eventUnlock().
+
+*****
+SetLockable()
+*****
+
+int SetLockable(string side, int x)
+
+Example: SetLockable("east", 1);
+
+Sets a side as being able to be locked or unlocked.  Since it is done
+by sides, this means you can have one side not be lockable with the
+other side being lockable.  The first argument is the side being set
+lockable or not lockable, the second argument is 1 for lockable and 0
+for not lockable.
+
+*****
+SetId()
+*****
+
+string SetId(string side, string id)
+
+Example: SetId("west", "blue door");
+
+This is not like your traditional SetId() function.  Instead, it sets
+a single way of identifying the door from a given side.  It is what
+the player might use to open the door or look at it.
+
+*****
+SetShort()
+*****
+
+mixed SetShort(string side, string | function desc)
+
+Examples:
+	SetShort("north", "a red door");
+	SetShort("west", (: GetWestShort :) );
+
+Sets the short description for a given side of a door.  If the second
+argument is a function, it gets passed as an argument the name of the
+side for which the function serves as a description.  That function
+should return a string.  For the above:
+
+string GetWestShort(string dir) {
+    if( query_night() ) return "a shadowy door";
+    else return "a red door";
+}
+
+*****
+SetLong()
+*****
+
+mixed SetLong(string side, string | function desc)
+
+Examples:
+	SetLong("south", "An old, dusty door covered in cobwebs.");
+	SetLong("east", (: GetEastLong :))
+
+This works much like the SetShort() function, except it handles the
+long description.  It is important to note that if the second argument
+is a string, that the state of the door will be added onto the long
+description automatically.  In other words "It is open." will appear
+as the second line.  This will *not* be done if you use a function for
+your long description.
+
+*****
+SetKeys()
+*****
+
+string *SetKeys(string side, string *keys)
+
+Example: SetKeys("east", ({ "skeleton key", "special key" }));
+
+Builds an array of id's which can be used to unlock the door if it is
+lockable from this side. In other words, a person can only unlock the
+door if that person has an object which has one of the id's you
+specify for its id.
+
+b. Events
+
+*****
+eventOpen()
+*****
+
+varargs int eventOpen(object by, object agent)
+
+Examples:
+
+"/realms/descartes/etc/red_door"->eventOpen(this_object());
+
+int eventOpen(object by, object agent) {
+    if( query_night() ) return 0; /* Can't open it at night */
+    else return door::eventOpen(by, agent);
+}
+
+The function that actually allows the door to be opened externally.
+It returns 1 if the door is successfully opened.  It returns 0 if it
+fails.  The first argument is the room object from which the door is
+being opened.  The second argument, which is optional, is the living
+thing responsible for opening the door.
+
+The first example above is an example of what you might do from
+reset() inside a room in order to have the door start open at every
+reset.
+
+The second example above is an example of how you might conditionally
+prevent the door from opening by overriding the Open event.  In this
+case, if it is night, you cannot open this door.  If it is day, you
+can. 
+
+*****
+eventClose()
+*****
+
+varargs int eventClose(object by, object agent)
+
+Example: See eventOpen()
+
+This function works just like eventOpen(), except it does the closing
+of the door.
+
+*****
+eventLock()
+*****
+
+varargs int eventLock(object by, object agent)
+
+Example: see eventOpen()
+
+This function works just like eventOpen(), except that it gets called
+for locking the door.
+
+*****
+eventUnlock()
+*****
+
+varargs int eventUnlock(object by, object agent)
+
+Example: See eventOpen()
+
+This function works just like eventOpen(), except that it gets called
+for unlocking the door.
+

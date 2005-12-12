@@ -13,7 +13,7 @@ mixed cmd(string args) {
     string rname;
 
     message("system", "Changing user information for " +
-	    (string)previous_object()->GetCapName() + ": ", previous_object());
+      (string)previous_object()->GetCapName() + ": ", previous_object());
     rname = (string)previous_object()->GetRealName();
     message("prompt", "Real name [" + rname + "] ", previous_object());
     f = function(string str, string old, object ob) {
@@ -27,10 +27,10 @@ mixed cmd(string args) {
 	else message("system", "Real name unchanged.", ob);
 	str = (string)ob->GetEmail();
 	message("prompt", "Email (preceed with # to make admin only) ["
-		+ str + "] ", ob);
+	  + str + "] ", ob);
 	g = function(string str, string old, object ob) {
 	    function h;
-	    
+
 	    if( !str || str == "" ) str = old;
 	    if( str != old ) {
 		string a, b;
@@ -46,27 +46,27 @@ mixed cmd(string args) {
 	    str = (ob->GetWebPage() || "");
 	    message("prompt", "Home Page [" + str + "]: ", ob);
 	    h = function(string str, object who) {
-		    if( str == "" ) {
-			str = 0;
-		    }
-		    else if( str ) {
-			if( strlen(str) < 5 ) {
-			    str = "http://" + str;
-			}
-			else {
-			    if( str[0..3] != "http" ) {
-				str = "http://" + str;
-			    }
-			}
-		    }
-		    if( !str ) {
-			message("system", "Home paged unchanged.", who);
+		if( str == "" ) {
+		    str = 0;
+		}
+		else if( str ) {
+		    if( strlen(str) < 5 ) {
+			str = "http://" + str;
 		    }
 		    else {
-			who->SetWebPage(str);
-		    message("system", "Home page changed.", who);
+			if( str[0..3] != "http" ) {
+			    str = "http://" + str;
+			}
 		    }
-	        };
+		}
+		if( !str ) {
+		    message("system", "Home paged unchanged.", who);
+		}
+		else {
+		    who->SetWebPage(str);
+		    message("system", "Home page changed.", who);
+		}
+	    };
 	    input_to(h, 0, ob);
 	};
 	input_to(g, 0, str, ob);
@@ -77,6 +77,6 @@ mixed cmd(string args) {
 
 void help() {
     message("help", "Syntax: <chfn>\n\n"
-	    "Allows you to change your real life information.\n\n"
-	    "See also: passwd", this_player());
+      "Allows you to change your real life information.\n\n"
+      "See also: passwd", this_player());
 }

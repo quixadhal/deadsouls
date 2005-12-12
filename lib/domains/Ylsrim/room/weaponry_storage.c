@@ -24,5 +24,5 @@ int CanReceive(object ob) {
     else return 0;
 }
 void init(){
-::init();
+    ::init();
 }

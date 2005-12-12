@@ -23,7 +23,7 @@ mixed cmd(string args) {
 
     if( !args || args == "" ) return "Mfinger whom?";
     if( !(ob = find_player(args)) ) 
-      return "No one around " + mud_name() + " by that name.";
+	return "No one around " + mud_name() + " by that name.";
     ip = query_ip_number(ob);
     args = (string)ob->GetCapName();
     ob = new(LIB_CLIENT);
@@ -37,7 +37,7 @@ mixed cmd(string args) {
     ob->SetRead( (: ReadSocket :) );
     ob->eventWrite("\n");
     message("system", "Finger sent to " + possessive_noun(args) + " site " +
-	    ip + ".", this_player());
+      ip + ".", this_player());
     return 1;
 }
 
@@ -47,12 +47,12 @@ void ReadSocket(string str) {
     if( !Waiting[ob = previous_object()] ) return;
     if( !Waiting[ob]["who"] ) return;
     message("system", "Information from " + Waiting[ob]["ip"] + " for " + 
-	    Waiting[ob]["player"] + ":", Waiting[ob]["who"]);
+      Waiting[ob]["player"] + ":", Waiting[ob]["who"]);
     message("system", str, Waiting[ob]["who"]);
 }
 
 void help() {
     message("help", "Syntax: <mfinger [player]>\n\n"
-	    "Allows you to get finger information from a player's site.",
-	    this_player());
+      "Allows you to get finger information from a player's site.",
+      this_player());
 }

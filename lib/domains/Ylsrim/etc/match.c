@@ -4,9 +4,9 @@
  */
 
 #include <lib.h>
- 
+
 inherit LIB_MATCH;
- 
+
 static void create() {
     match::create();
     SetKeyName("match");

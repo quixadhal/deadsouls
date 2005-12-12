@@ -1,0 +1,44 @@
+
+
+The ed editor
+
+
+  There's two modes in the editor: the input
+mode and the command mode. While in the input
+mode, what you type is added to the file
+you're editing. While in command mode, you
+can view or make modifications to the file.
+
+  To edit a new file called joe.c you would
+type "ed joe.c", which puts you right into
+input mode. You'd then write whatever code
+you want. When finished, on a blank line you
+would enter a single period, then hit enter.
+This exits from input mode and puts you in
+command mode.
+
+  When in command mode, you can modify the
+file (like deleting lines, for example), 
+exit without saving your code, or exit and
+save the code. To delete line 1, you'd hit
+"1d" while in command mode.
+  To add a line after line 5, you'd hit
+"5a", which would put you in input mode
+right after line 5. To replace line 5 you'd
+"5c" while in command mode.
+
+  For a full list of commands available in
+command mode, hit "h" and enter while in the
+editor command mode.
+
+  To exit the editor and save the file
+as modified, issue the "x" command at
+the editor. To exit without saving, 
+use "Q".
+
+  For your new object to be loaded into memory,
+you must update it after you've edited it.
+"update joe.c" will load the changes into memory.
+
+   Don't forget to post questions on the
+Creator Bulletin Board if you're confused!

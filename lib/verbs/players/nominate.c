@@ -18,7 +18,7 @@ static void create() {
     SetRules("STR");
     SetErrorMessage("Who would you like to nominate?");
     SetHelp("Syntax: <nominate STR>\n"
-            "Nominates a candidate");
+      "Nominates a candidate");
 }
 
 mixed can_nominate_str() {
@@ -35,5 +35,5 @@ mixed do_nominate_str( string str ) {
     object env;
 
     if( !str || !(env = environment(this_player())) ) return 0;
-        return (mixed)env->eventNominate( this_player(), str );
+    return (mixed)env->eventNominate( this_player(), str );
 }

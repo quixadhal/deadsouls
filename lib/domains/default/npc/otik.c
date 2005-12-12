@@ -18,7 +18,7 @@ static void create() {
     AddCurrency("electrum", random(200));
     SetSkill("bargaining", 1);
     SetProperty("no bump", 1);
-    SetLocalCurrency("dollars");
+    SetLocalCurrency("silver");
     SetStorageRoom("/domains/default/room/shop2");
     SetMaxItems(10000);
     SetVendorType(VT_ALL);

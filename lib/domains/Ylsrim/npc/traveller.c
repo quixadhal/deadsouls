@@ -22,7 +22,7 @@ static void Steal() {
     }
     // Find all living things that are not me in the same room as me
     obs = filter(all_inventory(environment()),
-		 (: living($1) && $1 != this_object() :));
+      (: living($1) && $1 != this_object() :));
     i = sizeof(obs);
     if( i == 0 ) { // no one to steal from
 	return;
@@ -37,7 +37,7 @@ static void Steal() {
     target = obs[i];
     // Find all items on the target that can be stolen
     obs = filter(all_inventory(target), 
-		 (: !($1->GetProperty("no steal")) :));
+      (: !($1->GetProperty("no steal")) :));
     i = sizeof(obs);
     if( i == 0 ) { // no goods, let's try to get some cash
 	cmd = "pick " + target->GetKeyName();
@@ -51,7 +51,7 @@ static void Steal() {
 	    i = 0;
 	}
 	cmd = "steal " + obs[i]->GetKeyName() + " from " +
-	    target->GetKeyName();
+	target->GetKeyName();
     }
     // now do the steal or pick
     eventForce(cmd);
@@ -69,7 +69,7 @@ static void create() {
     SetGender("male");
     SetMorality(-200);
     AddCurrency("electrum", 1 + random(100));
-    SetInventory(([ "/domains/Ylsrim"+ "/armour/artrell_armour" : "wear" ]));
+    SetInventory(([ "/domains/Ylsrim"+ "/armor/artrell_armor" : "wear" ]));
     // Check if he can steal at a 5% chance/heart beat
     SetAction(5, (: Steal :));
     // Don't want him getting cloned all over the place

@@ -1,0 +1,19 @@
+explorer
+blade attack:1:1
+multi-hand:0:1
+multi-weapon:0:1
+blade defense:1:1
+melee attack:0:1
+blunt attack:1:2
+knife attack:1:2
+projectile attack:0:1
+melee defense:1:2
+blunt defense:1:2
+knife defense:1:2
+projectile defense:1:1
+magic attack:1:1
+magic defense:1:1
+healing:1:5
+bargaining:1:4
+murder:1:5
+

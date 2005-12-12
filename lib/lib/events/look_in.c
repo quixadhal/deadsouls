@@ -1,5 +1,5 @@
 /*    /lib/events/look_in.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Something that can be seen in
  *    Created by Descartes of Borg 961222
  *    Version :@(#) look_in.c 1.2@(#)
@@ -48,7 +48,18 @@ static int SetOpacity(int x) {
 
 varargs mixed CanShowInterior(object who, object target) {
     int x;
-    
+
+    if( environment() != this_player()  && environment(this_player()) !=
+      environment()) {
+	return "#You don't have that!";
+    }
+
+    if(living()) {
+	//write("You can't look inside of a living being.");
+	//return 1;
+	return "You can't look inside of a living being.";
+    }
+
     if( target ) {
 	x = 66;
     }
@@ -62,26 +73,41 @@ varargs mixed CanShowInterior(object who, object target) {
 }
 
 mixed eventShowInterior(object who, object target) {
-    if( target ) {
-	return target->eventShow(who);
-    }
-    else {
-	string str = GetInternalDesc();
+    object here,me,imhere,dabei;
+    string this,str;
+    here=environment(this_object());
+    me=this_object();
+    this=me->GetKeyName();
+    str=me->GetInternalDesc();
+    imhere=present(this,environment(who));
+    dabei=present(this,who);
 
-	if( !str || str == "" ) {
-	    return 0;
-	}
-	environment(who)->eventPrint(who->GetName() + " looks inside " +
-				     GetShort() + ".", who);
-	who->eventPrint(str);
+    if( target ) {
+	//return target->eventShow(who);
+	return "well, well, well.";
     }
+
+    if(!imhere && !dabei) {
+	who->eventPrint("That is not here.");
+	return 0;
+    }
+
+    if( !str || str == "" ) {
+	return 0;
+    }
+    if(!inherits("/lib/comp/surface",this_object())) environment(who)->eventPrint(who->GetName() + " looks inside " +
+	  GetShort() + ".", who);
+    who->eventPrint(str);
+
 }
 
 mixed direct_look_in_obj() {
+    if(inherits("/lib/comp/surface",this_object())) return 0;
     return CanShowInterior(this_player());
 }
 
 mixed direct_look_inside_obj() {
+    if(inherits("/lib/comp/surface",this_object())) return 0;
     return CanShowInterior(this_player());
 }
 

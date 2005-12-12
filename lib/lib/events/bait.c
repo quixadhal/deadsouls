@@ -1,5 +1,5 @@
 /*    /lib/events/bait.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Handles the bait event
  *    Created by Descartes of Borg 970103
  *    Version: @(#) bait.c 1.1@(#)
@@ -15,11 +15,11 @@ string GetDefiniteShort();
 int AddBait(int x) {
     return (Bait += x);
 }
- 
+
 int GetBait() {
     return Bait;
 }
- 
+
 int SetBait(int x) {
     return (Bait = x);
 }
@@ -34,12 +34,12 @@ mixed CanBait(object who) {
     }
     return 1;
 }
-    
+
 int eventBait(object who, object bait) {
     AddBait(bait->GetBaitStrength());
     return 1;
 }
- 
+
 mixed direct_bait_obj_with_obj() { 
     if( environment() != this_player() ) {
 	return "#You don't have that!";

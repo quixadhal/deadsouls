@@ -20,8 +20,8 @@ int eventRemoveItem(object ob);
 int eventWear(object ob, mixed limbs);
  
 void NewBody(string race);
-mixed CanWear(object armour, string *limbs);
-varargs int AddLimb(string limb, string parent, int classes, int *armours);
+mixed CanWear(object armor, string *limbs);
+varargs int AddLimb(string limb, string parent, int classes, int *armors);
 int RestoreLimb(string str);
 int RemoveLimb(string limb, object agent);
 mapping GetLimb(string limb);

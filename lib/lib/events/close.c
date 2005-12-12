@@ -1,12 +1,12 @@
 /*    /lib/events/close.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Object Library
  *    handles closing and opening events
  *    created by Descartes of Borg 960115
  *    Version: @(#) close.c 1.5@(#)
  *    Last modified: 96/12/23
  */
 
-private int Closed;
+int Closed;
 
 // abstract methods
 string GetDefiniteShort();
@@ -14,6 +14,11 @@ string GetDefiniteShort();
 
 int GetClosed() {
     return Closed;
+}
+
+int GetOpen(){
+    if(GetClosed()) return 0;
+    else return 1;
 }
 
 int SetClosed(int x) { 
@@ -45,7 +50,7 @@ mixed eventClose(object who) {
 	return 0;
     }
     send_messages("close", "$agent_name $agent_verb $target_name.",
-		  who, this_object(), environment(who));
+      who, this_object(), environment(who));
     return 1;
 }
 
@@ -54,7 +59,7 @@ varargs mixed eventOpen(object who, object tool) {
 	return 0;
     }
     send_messages("open", "$agent_name $agent_verb $target_name.",
-		  who, this_object(), environment(who));
+      who, this_object(), environment(who));
     return 1;
 }
 

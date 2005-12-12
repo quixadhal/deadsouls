@@ -1,5 +1,5 @@
 /*    /verbs/items/bury.c
- *    From the Dead Soulsr2 Object Library
+ *    From the Dead Souls Object Library
  *    Buries objects where no one can find them
  *    Created by Descartes of Borg 951030
  */
@@ -23,11 +23,11 @@ static void eventBury(object who, object tool, object what, object check) {
 
 varargs static void eventPrepareBury(object who, object tool, object what) {
     function f = (: eventBury($(who), $(tool), $(what),environment($(who))) :);
-    
+
     if( who->GetInCombat() ) {
 	send_messages("start", "$agent_name $agent_verb to bury " +
-		      "with " + tool->GetShort() + ".", who, 0,
-		      environment(who));
+	  "with " + tool->GetShort() + ".", who, 0,
+	  environment(who));
 	who->SetAttack(0, f, ROUND_OTHER);
     }
     else {
@@ -41,8 +41,8 @@ static void create() {
     SetErrorMessage("Bury what with what?");
     SetRules("OBJ with OBJ", "STR with OBJ");
     SetHelp("Syntax: <bury ITEM with TOOL>\n\n"
-	    "Allows you to use a digging tool to bury things.\n\n"
-	    "See also: dig");
+      "Allows you to use a digging tool to bury things.\n\n"
+      "See also: dig");
 }
 
 mixed can_bury_str_with_obj() {

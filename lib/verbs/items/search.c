@@ -1,5 +1,5 @@
 /*    /verbs/items/search.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Object Library
  *    created by Descartes of Borg 960121
  *    Version: @(#) search.c 1.2@(#)
  *    Last modified: 96/10/15
@@ -8,23 +8,23 @@
 #include <lib.h>
 #include <daemons.h>
 #include <function.h>
- 
+
 inherit LIB_VERB;
- 
+
 static void create() {
     verb::create();
     SetVerb("search");
     SetRules("", "OBJ", "STR on OBJ", "STR of OBJ");
     SetErrorMessage("Search something?");
     SetHelp("Syntax: <search>\n"
-            "        <search ITEM>\n"
-	    "        <search THING on ITEM>\n\n"
-	    "Without any arguments, this command allows you to search "
-	    "your general surroundings.  You may, however, concentrate "
-	    "your searching on any target.\n\n"
-	    "See also: listen, look, read, smell, touch");
+      "        <search ITEM>\n"
+      "        <search THING on ITEM>\n\n"
+      "Without any arguments, this command allows you to search "
+      "your general surroundings.  You may, however, concentrate "
+      "your searching on any target.\n\n"
+      "See also: listen, look, read, smell, touch");
 }
- 
+
 mixed can_search() {
     if( !environment(this_player()) ) {
 	return "You are nowhere.";
@@ -56,7 +56,7 @@ mixed do_search() {
 	val = "You don't find a thing.";
     }
     environment(this_player())->eventPrint(this_player()->GetName() +
-                                           " searches around.", this_player());
+      " searches around.", this_player());
     this_player()->eventPrint(val);
     return 1;
 }

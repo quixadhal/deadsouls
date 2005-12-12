@@ -1,0 +1,284 @@
+		    Building Non-Player Characters
+		   The Nightmare IV Object Library
+		 written by Descartes of Borg 951201
+
+This document outlines the creation of non-player characters (NPC's).
+On other muds, NPC's are sometimes referred to as monsters.  Like the
+rooms document, this document is divided up into two sections: basic
+NPC building and complex NPC building.  NPC's are living things which
+inherit all the behaviours of living things.  Documentation on living
+specific functionality may be found in /doc/build/Livings.
+
+           ************************************************
+		      Part 1: Basic NPC Building
+           ************************************************
+
+*****
+I. The simplest NPC
+*****
+
+#include <lib.h>
+
+inherit LIB_NPC;
+
+static void create() {
+    npc::create();
+    SetKeyName("praxis peasant");
+    SetId( ({ "peasant", "praxis peasant" }) );
+    SetShort("a local peasant");
+    SetLong("Dirty and totally disheveled, this poor inhabitant of Praxis "
+	    "still somehow maintains an air of dignity that nothing can "
+	    "break.");
+    SetLevel(1);
+    SetRace("elf");
+    SetClass("fighter");
+    SetGender("male");
+}
+
+There are two things you should note.  The first is that an NPC is
+also a general object, meaning that you have available to you all the
+things you can do with general objects, like setting descriptions and
+ID's.  The second is that a basic NPC does not require a heck of a lot
+more.  I will cover the NPC specific functions here.
+
+SetLevel(1)
+SetRace("elf")
+SetClass("fighter")
+Level, race, and class are the three most important settings in any
+NPC.  Together they determine how powerful the NPC is.  You are
+absolutely required to set a level and a race.  For those who
+absolutely do not want to give the NPC a class, you do not have to.
+But, you must instead manually set the NPC's skill levels, which is
+described in the second part of this document.  In general, however,
+you always want to set the class.
+
+Together, the class and race and level determine which skills and
+stats are considered important for the monster, and how good at those
+skills and stats the monster is.  The order in which you call these
+functions is irrelevant, as everything is recalculated any time one of
+the above changes.
+
+Also, note that SetRace() may only be called with a race listed in the
+mraces command with simple NPC's.  If you wish to build an NPC with a
+unique race, you need to do some limb manipulation, which is described
+in the advanced section.
+
+SetGender("male")
+While not required, you will normally want to give an NPC a gender.
+The default is neutral.  However, in this world, very little is
+neuter.  Your choices for this function are male, female, and neuter.
+
+*****
+II. Other NPC Configuration Functions
+*****
+
+Function: int SetMorality(int amount);
+Example: SetMorality(100);
+
+This is a number between -2000 and 2000 which determines the morality
+of an individual with respect to good and evil.  -2000 is absolute
+evil, and 2000 is absolute good.  The actions of players determine
+their morality, and often those actions are relative to a target.
+Thus killing an evil being can be considered good, while killing a bad
+one evil.
+
+Function: int SetUnique(int x);
+Example: SetUnique(1)
+
+Marks the NPC as a unique monster.  This allows the room which clones
+your NPC to use the negative values to SetInventory() (see
+/doc/build/Rooms) to make sure the NPC only gets cloned every few
+days.
+
+           ************************************************
+		    Part 2: Advanced NPC Building
+           ************************************************
+
+*****
+I. Functions
+*****
+
+You may use these functions to make your NPC's a bit more interesting
+than the simple variety.
+
+Function: void SetAction(int chance, mixed val);
+Examples: SetAction(5, (: DoSomething :));
+          SetAction(5, ({ "!smile", "!frown" }));
+          SetAction(5, ({ "The peasant looks unhappy." }));
+
+Sets something to randomly happen every few heart beats while the NPC
+is not in combat.  In the above examples, the NPC has a 5% chance each
+heart beat of performing the action you provided with the second
+argument.  The action can be a call to a function, a list of potential
+commands, or a list of strings to be echoed to the room.
+
+If you pass a function, that function will be called each time an
+action is supposed to occur.  If you pass a list of strings, one of
+those strings will be randomly chosen as the target action for this
+heart beat.  If the chosen string begins with a !, it is treated as a
+command.  Otherwise, it is simply echoed to the room.  Note that you
+can mix commands and echo strings.
+
+*****
+
+Function: void SetCombatAction(int chance, mixed val);
+Examples: SetCombatAction(5, (: DoSomething :));
+          SetCombatAction(5, ({ "!missile", "!fireball" }));
+          SetAction(5, ({ "The peasant looks angry." }));
+
+This function works exactly the same as SetAction(), except that these
+actions only get triggered while the NPC is in combat.  This is the
+best place to have the NPC cast spells.
+
+*****
+
+Function: varargs void SetCurrency(mixed val, int amount); 
+Examples: SetCurrency("gold", 100);
+          SetCurrency( ([ "gold" : 100, "electrum" : 1000 ]) );
+
+This function allows you to set how much money an NPC is carrying.
+The first syntax allows you to set one currency at a time.  The second
+allows you to set multiple currencies at once.  Not that if you use
+the second syntax, it will blow away any currencies the NPC might
+already be carrying.
+
+*****
+
+Function: mixed SetDie(mixed val);
+Examples: SetDie("The black knight bleeds on you as he drops dead.");
+          SetDie((: CheckDie :));
+
+If you pass a string, that string will be echoed as the NPC's death
+message when it dies.  If you pass a function, that function gets
+called with the agent doing the killing, if any, as an argument.  For
+example, with the above example, the function that you write:
+
+int CheckDie(object killer);
+
+gets called.  If you return 1, the NPC goes on to die.  If you return
+0, the NPC does not die.  In the event you prevent death, you need to
+make some arrangements with the NPC's health points and such to make
+sure it really is still alive.
+
+*****
+
+Function: mixed SetEncounter(mixed val);
+Examples: SetEncounter(40);
+          SetEncounter( (: CheckDwarf :) );
+          SetEncounter( ({ str1, str2 }) );
+
+This allows you to set up e behaviour for an NPC upon encountering
+another living thing.  Note that this behaviour occurrs for both
+players and other NPC's.  Using the first syntax, the NPC will simply
+attack any other living thing with a charisma less than 40.  The
+second syntax calls the function you specify.  You may have it do any
+number of things, however, you must also return a 1 or a 0 from that
+function.  A 1 means that after the function is called, the NPC should
+initiate combat against the thing it just encountered.  A 0 means
+carry on as usual.
+
+Finally, the third syntax is likely to be used in places other than
+the create() funciton in the NPC.  This syntax lets you set a list
+names which are simply enemies to the NPC.  More likely, you will be
+using AddEncounter() and RemoveEncounter() for this.
+
+*****
+
+Function: string *AddEncounter(string name);
+Example: AddEncounter((string)this_player()->GetKeyName());
+
+Adds a name to the list of names an NPC will attack on sight.
+
+*****
+
+Function: string *RemoveEncounter(string name);
+Example: RemoveEncounter((string)this_player()->GetKeyName());
+
+Removes a name from the list of names an NPC will attack on sight.
+
+*****
+
+Function: SetInventory(mapping inventory);
+Examples:
+	SetInventory( ([ "/domains/Praxis/weapon/sword" : "wield sword" ]) );
+	SetInventory( ([ "/domains/Praxix/etc/ruby" : 1 ]) );
+	SetInventory( ([ "/domains/Praxis/etc/emerald" : -10 ]) );
+
+This functions behaves almost identically to SetInventory() for rooms
+(see /doc/build/Rooms).  The big difference is that you may pass a
+string in addition to a number as the value for any item you want in
+the inventory.  In the first example above, that string is the command
+the NPC issues when the sword is cloned into its inventory.  In other
+words, if you want an NPC to do something special with an item it has
+in its inventory, in this case wield the sword, you pass the command
+string as the value instead of a number.
+
+Note that this means only one of such item will be cloned, and it
+cannot be unique.
+
+*****
+II. Events
+*****
+
+The following events exist in NPC's.  You should have a good grasp of
+function overriding before overriding these functions.
+
+Event: varargs int eventDie(object target);
+
+This event is triggered any time the NPC is killed.  The event returns
+1 if the NPC dies, 0 if it fails to die, and -1 on error.  If you
+intend to allow the NPC to die, you should call npc::eventDie(target)
+and make sure it returns 1.
+
+*****
+
+Event: int eventFollow(object dest, int chance);
+
+This event is triggered whenever an NPC is following another living
+thing and that thing leaves the room.  Returnung 1 means that the NPC
+successfully followed the other being, and 0 means the NPC did not.
+
+*****
+3. Manipulating limbs
+*****
+
+The basic set of limbs an NPC gets is generally set when you set its
+race.  You can get a list of supported NPC races through the mraces
+command.  Occassionally, however, you may want to create NPCs of
+unique races, or with unique body structures.  Or perhaps you want a
+human whose right hand is already amputated.  This section deals with
+doing those things.
+
+Amputating a limb is simple.  Call RemoveLimb("limb").  Note that that
+is not useful for removing a limb that should not be there.  Instead,
+it is used for amputating a limb that looks amputated.
+
+If, on the other hand, you wish to remove a limb which simply should
+not have been there in the first place, call DestLimb("limb").
+
+The most simple case of actual limb manipulation, however, is to
+change the basic structure of an individual NPC around for some
+reason.  For example, perhaps you wanted to add a tail to a human.
+For this, you use the AddLimb() function.
+
+Function: varargs int AddLimb(string limb, string parent, int class, int *armours);
+Examples: AddLimb("tail", "torso", 4)
+          AddLimb("head", "torso", 1, ({ A_HELMET, A_VISOR, A_AMULET }));
+       
+This function adds a new limb to the NPC's body.  The first argument
+is the name of the limb to be added.  The second argument is the name
+of the limb to which it is attached.  The third argument is the limb
+class.  Limb class is a number between 1 and 5.  The lower the number,
+the harder the limb is to remove.  A limb class of 1 also means that
+removal of the limb is fatal.  The fourth, optional argument is a list
+of armour types which may be worn on that limb.
+
+In some cases, you may wish to create a new race from scratch.  This
+requires adding every single limb manually.  You first call SetRace()
+with a special second argument to note that you are creating a new
+race:
+
+SetRace("womble", 1);
+
+Then, you add the limbs for that race one by one.  Make sure you call
+SetRace() first.

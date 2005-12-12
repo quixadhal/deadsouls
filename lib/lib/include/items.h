@@ -7,7 +7,7 @@ mixed direct_look_at_str_on_obj(string str, object target);
 varargs mixed eventShow(object who, string component);
 
 mapping SetItems(mapping items);
-mixed AddItem(mixed item, mixed val);
+varargs mixed AddItem(mixed item, mixed val);
 mapping RemoveItem(mixed item);
 varargs mixed GetLong(string item);
 

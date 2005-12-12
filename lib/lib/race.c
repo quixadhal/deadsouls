@@ -8,7 +8,7 @@
 
 #include <lib.h>
 #include <daemons.h>
-#include <armour_types.h>
+#include <armor_types.h>
 #include <damage_types.h>
 #include <meal_types.h>
 #include "include/race.h"
@@ -29,7 +29,7 @@ static void create() {
     genetics::create();
     Race = "blob";
     Gender = "neuter";
-    Town = "Praxis";
+    Town = "Town";
 }
 
 mixed CanDrink(object ob) {
@@ -39,19 +39,19 @@ mixed CanDrink(object ob) {
     strength = (int)ob->GetStrength();
     type = (int)ob->GetMealType();
     if( (type & MEAL_ALCOHOL) && ((strength + GetAlcohol()) >
-                                GetStatLevel("durability")) )
-      return "You are way too drunk to coordinate another drink.";
+	GetStatLevel("durability")) )
+	return "That drink is too strong for you right now.";
     if( (type & MEAL_CAFFEINE) && ((strength + GetCaffeine()) >
-                                   GetStatLevel("durability")) )
-      return "Any more caffeine and your heart will burst.";
+	GetStatLevel("durability")) )
+	return "That is too much caffeine for you right now.";
     if( (type & MEAL_DRINK) && ((strength + GetDrink()) > 100) )
-      return "You are too bloated to drink any more!";
+	return "You can't drink any more fluids right now.";
     return 1;
 }
 
 mixed CanEat(object ob) {
     if( ((int)ob->GetStrength() + GetFood()) > 100 )
-      return "One more bite, and you would explode!";
+	return "This is more food than you can handle right now.";
     else return 1;
 }
 
@@ -77,14 +77,14 @@ mixed eventDrink(object ob) {
 mixed eventEat(object ob) {
     AddFood((int)ob->GetStrength());
     if( (int)ob->GetMealType() & MEAL_POISON )
-      AddPoison((int)ob->GetStrength());
+	AddPoison((int)ob->GetStrength());
     return 1;
 }
 
 varargs string SetRace(string race, mixed extra) {
     mixed array args = ({ ({}), ({}), ({}), ({}) });
     mixed array tmp;
-    
+
     RACES_D->SetCharacterRace(race, args);
     foreach(tmp in args[0]) SetResistance(tmp...);
     foreach(tmp in args[1]) AddStat(tmp...);
@@ -106,27 +106,27 @@ varargs void SetStat(string stat, int level, int classes) {
 
     genetics::SetStat(stat, level, classes);
     switch(stat) {
-        case "durability":
-            eventCompleteHeal(healthPoints = GetMaxHealthPoints());
-            eventHealDamage(healthPoints);
-            break;
-        case "intelligence":
-            AddMagicPoints(GetMaxMagicPoints());
-            break;
-        case "agility":
-            AddStaminaPoints(GetMaxStaminaPoints());
-            break;
+    case "durability":
+	eventCompleteHeal(healthPoints = GetMaxHealthPoints());
+	eventHealDamage(healthPoints);
+	break;
+    case "intelligence":
+	AddMagicPoints(GetMaxMagicPoints());
+	break;
+    case "agility":
+	AddStaminaPoints(GetMaxStaminaPoints());
+	break;
     }
 }
 
 varargs int GetMaxHealthPoints(string limb) {
     if(!limb) return ( 50 + (GetStatLevel("durability") * 10) );
     else {
-        int x;
+	int x;
 
-        x = GetLimbClass(limb);
-        if(!x) x = 5;
-        return ( (1 + GetStatLevel("durability")/x) * 10 );
+	x = GetLimbClass(limb);
+	if(!x) x = 5;
+	return ( (1 + GetStatLevel("durability")/x) * 10 );
     }
 }
 
@@ -141,7 +141,7 @@ float GetMaxStaminaPoints() {
 void NewBody(string race) {
     mixed array args = allocate(2);
     mixed array tmp;
-    
+
     body::NewBody(race);
     if(!race) return;
     RACES_D->SetCharacterLimbs(race, args);
@@ -161,34 +161,39 @@ int GetLuck() {
     x = random(GetStatLevel("luck")) / 20;
     x = ((x > 4) ? 4 : x);
     if( newbiep() ) x += random(7);
-   return (x + random(4));
+    return (x + random(4));
 }
 
 int GetMobility() {
-   int max = GetMaxCarry();
-   int encum, mob;
+    int max = GetMaxCarry();
+    int encum, mob;
 
-   if( GetParalyzed() ) {
-       return 0;
-   }
-   if( max < 1 ) {
-       max = 1;
-   }
-   encum = (GetCarriedMass() * 100)/max;
-   encum -= (encum * GetStatLevel("agility"))/200;
-   mob = 100 - encum;
-   if( mob > 100 ) {
-       mob = 100;
-   }
-   else if( mob < 1 ) {
-       mob = 0;
-   }
-   return mob;
+    if( GetParalyzed() ) {
+	return 0;
+    }
+    if( max < 1 ) {
+	max = 1;
+    }
+    encum = (GetCarriedMass() * 100)/max;
+    encum -= (encum * GetStatLevel("agility"))/200;
+    mob = 100 - encum;
+    if( mob > 100 ) {
+	mob = 100;
+    }
+    else if( mob < 1 ) {
+	mob = 0;
+    }
+    return mob;
 }
 
 int GetCarriedMass() { return 0; }
 
-int GetMaxCarry() { return ((2 + GetStatLevel("strength")) * 100); }
+int GetMaxCarry() { 
+    int carry_max;
+    carry_max = this_object()->GetLivingMaxCarry();
+    if(carry_max) return carry_max;
+    else return ((2 + GetStatLevel("strength")) * 100); 
+}
 
 int GetHeartRate() {
     int x, y;

@@ -1,5 +1,5 @@
 /*    /lib/props/properties.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    The properties property
  *    Created by Descartes of Borg 961222
  *    Version: @(#) properties.c 1.1@(#)

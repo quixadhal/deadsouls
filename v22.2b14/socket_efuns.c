@@ -1188,16 +1188,18 @@ char *socket_error P1(int, error)
  */
 int get_socket_address P4(int, fd, char *, addr, int *, port, int, local)
 {
-    struct sockaddr_in *addr_in;
+    struct sockaddr_in *addy_in;
 
     if (fd < 0 || fd >= max_lpc_socks) {
 	addr[0] = '\0';
 	*port = 0;
 	return EEFDRANGE;
     }
-    addr_in = &(local ? lpc_socks[fd].l_addr : lpc_socks[fd].r_addr);
-    *port = (int) ntohs(addr_in->sin_port);
-    strcpy(addr, inet_ntoa(addr_in->sin_addr));
+    /* addy_in =  &(local ? lpc_socks[fd].l_addr : lpc_socks[fd].r_addr); */
+local ? lpc_socks[fd].l_addr : lpc_socks[fd].r_addr;
+addy_in =  &local;
+    *port = (int) ntohs(addy_in->sin_port);
+    strcpy(addr, inet_ntoa(addy_in->sin_addr));
     return EESUCCESS;
 }
 

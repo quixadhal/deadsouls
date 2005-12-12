@@ -1,0 +1,235 @@
+	       Building Sentient Non-Player Characters
+		   The Nightmare IV Object Library
+		 written by Descartes of Borg 951127
+
+One thing most everyone wants to see are monsters that react more
+intelligently to user input.  The fact is, however, that most monsters
+in the game only need a small, basic behaviour set.  Nevertheless, in
+order to make an area interesting, there should be some monsters which
+stand out as unique and purposeful.  The problem about building such
+monsters is that they use a lot of processing time.
+
+In order to make sure most monsters which do not need such
+intelligence do not waste processing time on such activities, the
+Nightmare Object Library separates non-player characters into two
+classes: dumb monsters, which are basic mindless automata and
+sentients, monsters which react more intelligently to their
+environment.
+
+This document describes sentients.  Before looking at this document,
+it is highly recommended that you be familiar with the document
+/doc/build/NPC which details non-player characters.  Sentients are
+non-player characters, so everthing which applies to non-player
+characters also applies to sentients.
+
+				*****
+
+Currently, a few basic behaviours distinguish sentients from normal
+npcs.  Those behaviours are the ability to intelligently move about
+the mud and to react to user speech.  Nightmare thus provides the
+following functions to allow you to easily have an sentient enact
+those behaviours:
+
+	mapping SetTalkResponses(mapping mp);
+	mixed AddTalkResponse(string str, mixed val);
+	int RemoveTalkResponse(string str);
+
+	mapping SetCommandResponses(mapping mp);
+	mixed AddCommandResponse(string str, mixed val);
+	int RemoveCommandResponse(string str);
+
+	varargs int SetWander(int speed, string *path, int recurse);
+	string *SetWanderPath(string *path);
+
+	int SetWanderRecurse(int x);
+
+	int SetWanderSpeed(int x);
+
+				*****
+
+Making NPCs react to user speech
+
+You may want to have NPCs react to things players say.  To that end,
+the following functions exist:
+
+	mapping SetTalkResponses(mapping mp);
+	mixed AddTalkResponse(string str, mixed val);
+	int RemoveTalkResponse(string str);
+
+Function: mapping SetTalkResponses(mapping mp)
+Example: SetTalkResponses( ([ "square" : "The square is east of here.",
+            "house" : "Isn't that an ugly house?" ]) );
+
+This function allows you to set a list of responses to given phrases.
+For example, if you put this code in a sentient and a player said
+"Where is the square?" or "Your frog is certainly square.", your NPC
+would have said "The square is east of here.".  Note therefore that
+the NPC is only looking for the keys you place in there.  You could
+have restricted it to "where is the square" instead of "square", but
+then someone asking "Where's the square" would be missed.  
+
+Also note that phrases should be in lower case.  It will match to
+upper case words automatically.
+
+Finally, you can either give a string or a function as the match to a
+phrase.  If the match is a string, the NPC simply says the string in
+the NPC's native tongue.  If, however, the match is a function, that
+function will get called.
+
+*****
+
+Function: mixed AddTalkResponse(string str, mixed val);
+Example: AddTalkResponse("in the house", (: HouseFunc :));
+
+Matches an individual phrase to a string or function.  As with
+SetTalkResponses(), if the match is a string, the NPC simply says the
+string in response to the phrase.  If it is a function, that function
+gets called.
+
+*****
+
+Function: int RemoveTalkResponse(string str);
+Example: RemoveTalkResponse("house");
+
+Removes the previous set or added talk response from the NPC.
+
+				*****
+
+Making NPCs react to user directives
+
+Nightmare supports a special command, the "ask" command.  A player may
+use the ask command to ask an NPC to perform a certain task.  For
+example, "ask the healer to mend my right leg".  There is a special
+event in NPC's which responds to this called eventAsk().  In order to
+make responding to this easier, however, Nightmare has the
+CommandResponse functions.  The command response functions allow NPC's
+to respond based on commands, like "mend".  
+
+*****
+
+Function: mapping SetCommandResponses(mapping mp);
+Example: SetCommandResponses( ([ "heal", "I cannot heal people" ]) );
+
+Allows you to match commands to either strings or functions.  Matched
+functions get called with the command as the first argument, and
+command arguments as the second argument.  For example, if you had:
+	SetCommandResponses("give", (: give :));
+Your give() function would get called with "give" as the first
+argument and "me the sword" as the second argument in response to a
+player issuing the command "ask the monster to give me the sword".
+
+*****
+
+Function: mixed AddCommandResponse(string str, mixed val);
+Example: AddCommandResponse("give", (: give :));
+
+This allows you to add to the list of commands to which the NPC
+responds.  The NPC responds to those commands as outlined for
+SetCommandResponses().
+
+*****
+
+Function: int RemoveCommandResponse(string str);
+Example: RemoveCommandResponse("give")
+
+Removes a previously set command response.
+
+				*****
+
+Making NPCs move about the game intelligently
+
+A sticky subject on most muds is that of wandering monsters.  When
+done poorly, they can waste resources to a great degree.  Nightmare,
+however, works to avoid wasting resources while getting the most out
+of allowing monsters to move about.
+
+Nightmare supports two types of wandering monsters: those which have
+pre-determined paths and others which are true wanderers.  True
+wanderers, those who simply randomly choose paths are subject to the
+following restrictions:
+	They may not move into rooms not yet loaded in memory.
+	They will not try to open closed doors.
+The first restriction is the most important to note.  This means that
+the NPC will not wander into rooms that have not been recently visited
+by some player.  This avoids the problem NPCs cause on many muds of
+uselessly loading rooms that only the monster will ever see.
+
+Monsters given specific paths to wander are not subject to the above
+restrictions.  Of course, they cannot wander through closed doors.
+But you can make part of their path to open a closed door.  In
+addition, since such monsters have very specific sets of rooms into
+which they can travel, they are not in danger of needlessly loading a
+zillion rooms.
+
+*****
+
+Function: varargs int SetWander(int speed, string *path, int recurse);
+Examples:
+	SetWander(5);
+	SetWander(5, ({ "go north", "open door", "enter hut", "go west" }));
+	SetWander(5, ({ "go north", "open door", "enter hut", "go west",
+                       "go south" }), 1);
+
+This is the function you will almost always use in create() to make a
+sentient wander.  Only one of the three possible arguments is
+mandatory, that being the speed.  The speed is simply the number of
+heart beats between attempts to move.  Thus, the higher the number,
+the slower the movement of the monster.
+
+The second argument, if given, is a list of commands which will be
+executed in order by the monster.  If it is not given, the monster
+will be assumed to be a true wanderer.  In other words, the first time
+the monster tries to wander, the monster will "go north".  The second
+time, he will "open door".  The third, he will "enter hut", etc.  
+
+The third argument is either 1 or 0.  If 1, that means once the
+monster has completed the path, it will use the first command in the
+list the next time it tries to wander.  If 0, it will cease to issue
+commands once it has cycled through the list.
+
+You might note that between the time the above monster opens the door
+and enters the hut, somebody could come along and shut the door.  How
+can you deal with that?  You could do:
+	SetWander(5, ({ "go north", ({ "open door", "enter hut" }) }));
+You will notice here that the second member of the command array is
+itself an array instead of a string.  In that case, all members of
+that array get executed as part of that wander.  In this case it helps
+make sure no one closes the door between when the monster tries to
+open it and when it tries to pass through the door.
+
+For even more flexibility, you can make elements of the array into
+functions.  Instead of executing a command in a wander turn, the
+function you provide instead gets called.  For example:
+	SetWander(5, ({ "go north", (: kill_anyone :), "go south" }), 1);
+Where the function kill_anyone() has the monster kill any players in
+that room.  Thus, this monster sits in its room and occasionally pops
+its head one room to the north to kill anyone sitting there.
+
+*****
+
+Function: string *SetWanderPath(string *path);
+Example: SetWanderPath(({ "go north", "go south" }))
+
+Allows you to set the monster's wander path independent of other
+settings.  The wander path will never get executed, however, unless
+the monster's wander speed is greater than 0.
+
+*****
+
+Function: int SetWanderRecurse(int x);
+Example: SetWanderRecurse(1);
+
+Allows you to make the monster's wander path recurse independent of
+other settings.  This is meaningless, however, unless the monster's
+wander speed is greater than 0 and a wander path is set for it.
+
+*****
+
+Function: int SetWanderSpeed(int x);
+Example: SetWanderSpeed(5);
+
+Allows you to set the monster's wander speed independent of other
+settings.  This is NOT the same as SetWander(5).  SetWander() will
+clear out any previous wander path and wander recurse settings.  This
+function has no effect on the monster's wander path or wander recurse.
+

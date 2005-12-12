@@ -1,0 +1,146 @@
+	      Introduction to Building Nightmare Objects
+		     Nightmare IV Object Library
+		 written by Descartes of Borg 951204
+
+If you are anything like I was when I became a creator for the first
+time, then your knowledge of computers consists of how to write a
+paper using WordPerfect and how to play the games you like to play.
+It probably seems like a long distance between that and actually
+writing programs to run on a computer.  And the truth is, many years
+ago it was.
+
+Programming a computer is no longer really programming.  It is more
+like playing with Legos.  Whereas you used to feed into a computer
+step by step instructions on how the program is supposed to work,
+today instead you fit objects together like pieces of a puzzle and
+define their basic characteristics.  The object library handles the
+rest.
+
+Of course, that begs the question, what is an object?
+
+It is easiest to understand the concept if you get out of the computer
+mindset.  Just think about things like you do in every day life.
+Objects simply are things.  Your house is an object, your car is an
+object, your floor is an object, your cat is an object, and you are an
+object.  Programming for an LPMud is simply about defining what
+objects exist in the world.
+
+What distinguishes you from your cat?  What distinguishes your cat
+from your neighbour's cat?  Each object has two defining pieces, its
+attributes and its behaviour.  An attribute is simply something that
+is true of the object, for example, your cat has green eyes, while
+your neighbours has blue.  Things such as name, eye colour, fur
+length, tail length, mass, intelligence, etc. are all attributes.  In
+building on muds, you will often hear attributes referred to as global
+variables.
+
+The other part of an object is its behaviour.  In the real world,
+things happen to objects, and objects react.  Your cat sees a bird.
+Seeing the bird causes the cat to salivate.  The cat in turn hunts the
+bird.  The chain of events really goes on and on with no identifiable
+beginning or end, except in the way you describe the event.  For
+example, you could take the cat seeing the bird as being caused by the
+bird landing, which was caused by its migration south, which was
+caused by the change of seasons...
+
+The bottom line is that the world is full of objects which behave in
+response to events according to their attributes and built-in nature.
+Building objects on a mud therefore is about setting the attributes
+for specific objects and defining they way they react to certain
+events.  Fortunately, the LPC language has built-in mechanism to make
+this easy.  It is called inheritance.
+
+Going back to the cat example, let's say you were going to build a
+cat.  You could go and rewrite every piece of behaviour common to your
+first cat and your neghbour's cat.  If you were going to build ten
+cats, that would get tedious.  LPC allows you to build a generic cat,
+then customize an instance of that generic class and make it your cat.
+
+The Nightmare Object Library is what its name implies, a library of
+objects that object-oriented terminology refers to as "abstract
+classes".  An abstract class is a type of object you never see running
+around the mud.  Instead, it is a building block used in the objects
+you see running around the mud.  In other words, the object library
+builds the concept of cat, and you use this to build individual cats.
+Another analogy is that of the object library being like a Lego set.
+You take the pieces it gives you to build specific objects.
+
+In building an area, you know understand your task is to build the
+objects which make up that area.  Building an object simply means
+using the abstract classes the object library gives you to create
+specific instances of those abstract classes.  You do this by defining
+the specific attributes of the new objects, and defining new
+behaviours.
+
+You have probably heard me refer to the terms behaviour and event
+interchangeably.  In philosophy, they are not interchangeable.  A
+behaviour is a type of event which is defined as being caused by
+something that meant to cause the event.  In other words, the cat
+chasing the bird is behaviour, while the cat seeing the bird is simply
+an event.  Both are considered events.  With respect to objects, you
+are really defining events, since some events are actually
+unintentional responses to other events.  The Nightmare Object Library
+therefore refers to what you define in objects as events.
+
+Writing an event in LPC is nothing more that providing step by step
+instructions for what happens when a given event occurs.  The LPC term
+for an event is a function (sometimes you will hear people refer to
+functions as methods).  The Nightmare Object Library uses four types of
+events:
+
+#1 MudOS initiated events, sometimes called an "apply"
+The names of these events are all lower case.  The most common apply
+is the create() event.  It is caused by the creation of the object.
+
+#2 Attribute manipulation events
+These are the SetXXX() and GetXXX() events.  They exist basically to
+allow other objects to find out about an object's attributes, or to do
+initial setup for an object's attributes.
+
+#3 Modal events
+These are the CanXXX() events.  They get called often just prior to a
+behaviour type of an event.  For example, I am trying to leave a room,
+so my leave behaviour asks the room if I can leave.  This would be
+CanLeave() in the room.  If CanLeave() says I can leave, then the
+leave event is triggered in the room.
+
+#4 True events
+A true event is identified by eventXXX().  These type of events are
+the meat of what is happening in the game.  Any given true event is
+generally in turn triggered by some other true event.  The chain
+generally can be traced as starting with a player or NPC command at
+some point.
+
+There are also two other types of functions which are not really
+events, but instead simple routines that perform complex operations,
+like the absolute_value() function.  These functions belong to no
+particular object since they are not really events.  Instead any
+object in the game may refer to them.  You will hear them referred to
+sefuns (simul efuns) and efuns respectively.
+
+So, an object in the Nightmare Object Library consists of all of these
+events.  That sounds like you have a lot to do?  Not really.  The
+object library itself defines almost all of the events needed for any
+particular object.  Most often, you will be defining only one event
+for any object, the creation event (create()).  
+
+The event create() is triggered by MudOS for every single object when
+it is first created.  This is therefore the ideal place for defining
+what the attributes are for an object, so your create() generally ends
+up being a series of SetXXX() calls.  In addition, if you add any
+attributes, you will want to give them values in create().
+
+Take for example an NPC.  Any NPC you build will have to have a name.
+Thus, when it gets created, you want to be sure to set its name.  You
+do this through the SetKeyName() event.
+
+The documents in this directory primarily describe for you what
+SetXXX() functions exist in objects to allow you to define your own
+unique objects.  Once you are feeling comfortable with building simple
+objects that only have create() behaviours, you can then start adding
+other behaviours to objects.  For example, one type of behaviour you
+can add to some rooms is to respond to someone digging in the room.
+You thus define CanDig() and eventDig() events in addition to your
+create() event.  In the event, whatever events you end up defining,
+they end up being nothing more than modifying attributes of the object
+in question, or causing events in other objects.

@@ -17,7 +17,7 @@ class Race {
     string Language;
 };
 
-int GetArmour(string str);
+int GetArmor(string str);
 int GetResistance(string str);
 
 #endif /* l_races_h */

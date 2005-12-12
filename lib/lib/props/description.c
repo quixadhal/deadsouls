@@ -1,15 +1,56 @@
 /*    /lib/props/description.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Handles the describing of objects
  *    Created by Descartes of Borg 961222
  *    Version: @(#) description.c 1.1@(#)
  *    Last modified: 96/12/22
  */
 
+#include <lib.h>
 #include <function.h>
 
 private int   ProperNoun = 0;
 private mixed Short      = 0;
+
+mixed direct_modify_obj_str() {
+    return 1;
+}
+
+mixed direct_modify_word_str() {
+    return 1;
+}
+
+mixed direct_initfix_obj() {
+    return 1;
+}
+
+mixed direct_initfix() {
+    return 1;
+}
+
+mixed direct_copy_obj_to_obj() { return 1; }
+mixed direct_copy_obj_str() { return 1; }
+
+mixed direct_add_obj_to_obj() { return 1; }
+mixed indirect_add_obj_to_obj() { return 1; }
+mixed indirect_add_obj_to_here() { return 1; }
+mixed direct_add_obj_to_here() { return 1; }
+
+mixed direct_delete_obj(){
+    return 1;
+}
+
+mixed indirect_delete_obj(){
+    return 1;
+}
+
+mixed direct_delete_obj_from_obj(){
+    return 1;
+}
+
+mixed indirect_delete_obj_from_obj(){
+    return 1;
+}
 
 string GetShort();
 
@@ -26,7 +67,7 @@ string GetDefiniteShort() {
 	return add_article(tmp, 1);
     }
 }
-    
+
 string GetShort() {
     if( !Short ) {
 	return 0;
@@ -65,5 +106,26 @@ varargs mixed SetShort(mixed val, int proper) {
 	}
     }
     return (Short = val);
+}
+
+object array GetDummyItems() {
+    object *DummyItems = ({});
+    foreach(object item in all_inventory(this_object())){
+	if(base_name(item) == LIB_DUMMY){
+	    DummyItems += ({ item });
+	}
+    }
+    return DummyItems;
+}
+
+mapping GetItemsMap(){
+    mixed cle, val;
+    mapping ret =([]);
+    foreach(object ob in GetDummyItems()){
+	cle = ob->GetId();
+	val = ob->GetLong();
+	ret[cle] = val;
+    }
+    return copy(ret);
 }
 

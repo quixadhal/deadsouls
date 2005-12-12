@@ -22,7 +22,7 @@ int GetStatLevel(string stat);
 
 int GetNextLevel(string lang, int curr_level);
 
-varargs static void SetLanguage(string lang, int level, int native) {
+varargs void SetLanguage(string lang, int level, int native) {
     string key;
 
     key = convert_name(lang);
@@ -71,12 +71,12 @@ string GetLanguageName(string lang) {
 int AddLanguagePoints(string lang, int points) {
     string key;
     int y;
- 
+
     key = convert_name(lang);
     if( !Languages[key] ) SetLanguage(lang, 0, 0);
     Languages[key]["points"] += points;
     while( Languages[key]["points"] > 
-	  (y = GetNextLevel(key, Languages[key]["level"])) ) {
+      (y = GetNextLevel(key, Languages[key]["level"])) ) {
 	Languages[key]["points"] -= y;
 	Languages[key]["level"]++;
     }
@@ -115,7 +115,7 @@ string GetNativeLanguage() {
     string lang;
 
     foreach(lang, val in Languages)
-      if( val["native"] ) return Languages[lang]["name"];
+    if( val["native"] ) return Languages[lang]["name"];
 }
 
 static void heart_beat() {

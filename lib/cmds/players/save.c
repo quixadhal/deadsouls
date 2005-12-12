@@ -21,11 +21,11 @@ cmd(string str) {
 
 int
 help() {
-   message("help", "Command: save\nSyntax: save\n\nThis command saves the"
-           " present status of your character to disk.  This is important as"
-           " it is this file that will be used to set your character back "
-           "up if the mud should crash.  Your character is automatically "
-           "saved if you quit.", this_player());
-  return 1;
+    message("help", "Command: save\nSyntax: save\n\nThis command saves the"
+      " present status of your character to disk.  This is important as"
+      " it is this file that will be used to set your character back "
+      "up if the mud should crash.  Your character is automatically "
+      "saved if you quit.", this_player());
+    return 1;
 }
 /* EOF */

@@ -15,17 +15,18 @@ inherit LIB_VERB;
 static void create() {
     verb::create();
     SetVerb("attack");
-    SetRules("LVS");
+    SetRules("LVS", "only LVS","LVS only");
+    SetSynonyms("kill", "smite", "waste", "hit");
     SetErrorMessage("Attack whom?");
     SetHelp("Syntax: <attack LIVING>\n"
-	    "        <attack all of LIVING>\n"
-	    "        <attack all>\n\n"
-	    "This command initiates combat with a living being or group "
-	    "of living beings using any wielded weapons or your bare hands.  "
-	    "Be very careful not to issue the \"attack all\" with other "
-	    "players in the room or you will be guilty of attempted player "
-	    "killing.\n\n"
-	    "See also: wimpy");
+      "        <attack all of LIVING>\n"
+      "        <attack all>\n\n"
+      "This command initiates combat with a living being or group "
+      "of living beings using any wielded weapons or your bare hands.  "
+      "Be very careful not to issue the \"attack all\" with other "
+      "players in the room or you will be guilty of attempted player "
+      "killing.\n\n"
+      "See also: wimpy, ignore");
 }
 
 mixed can_attack_liv(object target) {
@@ -39,34 +40,58 @@ mixed can_attack_liv(object target) {
     }
     if( (int)environment(this_player())->GetProperty("no attack") ) {
 	message("environment", "A mystical force prevents your malice.",
-		this_player());
+	  this_player());
 	return 1;
     }
     return 1;
+}
+
+mixed can_attack_only_liv(object target){
+    return can_attack_liv(target);
+}
+
+mixed can_attack_liv_only(object target){
+    return can_attack_liv(target);
 }
 
 mixed do_attack_liv(object target) {
     return do_attack_lvs(({ target }));
 }
 
-mixed do_attack_lvs(mixed *targets) {
+mixed do_attack_only_liv(object target){
+    return do_attack_lvs(({ target }), 1);
+}
+
+mixed do_attack_liv_only(object target){
+    return do_attack_lvs(({ target }), 1);
+}
+
+varargs mixed do_attack_lvs(mixed *targets, int exclusive) {
     object *obs;
+    object *noattack;
     string tmp;
 
+    noattack = ({});
     obs = filter(targets, (: objectp :));
     if( !sizeof(obs) ) {
-        mixed *ua;
+	mixed *ua;
 
 	ua = unique_array(targets, (: $1 :));
 	foreach(string *lines in ua) this_player()->eventPrint(lines[0]);
 	return 1;
     }
+    if(exclusive){
+	foreach(object entity in get_livings(environment(this_player()))){
+	    if(member_array(entity,obs) == -1) noattack += ({ entity });
+	}
+	if(sizeof(noattack)) this_player()->AddNonTargets(noattack);
+    }
     this_player()->SetAttack(obs);
     tmp = item_list(obs);
     obs->eventPrint((string)this_player()->GetName() + " attacks you!");
     environment(this_player())->eventPrint((string)this_player()->GetName() +
-					   " attacks " + tmp + "!",
-					   ({ this_player(), obs... }));
+      " attacks " + tmp + "!",
+      ({ this_player(), obs... }));
     this_player()->eventPrint("You advance towards " + tmp + ".");
     return 1;
 }

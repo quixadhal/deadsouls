@@ -1,5 +1,5 @@
 /*    /lib/light.c
- *    from the Dead Souls V LPC Library
+ *    from the Dead Souls LPC Library
  *    a standard lighting object
  *    created by Descartes of Borg 960512
  *    Version: @(#) light.c 1.2@(#)
@@ -33,7 +33,7 @@ string GetShort() {
     if(!(str = item::GetShort()) || str == "") return str;
     return sprintf("%s%s", str, (GetLit() ? " (lit)" : ""));
     */
-    if( GetLit() ) return " (lit)";
+    if( GetLit() && query_verb() != "light" && query_verb() != "strike") return " (%^BOLD%^YELLOW%^lit%^RESET%^)";
     else return "";
 }
 
@@ -50,12 +50,12 @@ mixed direct_light_obj() {
 
 mixed eventDarken() {
     object env;
-    
+
     if( env = environment() ) {
 	env->eventPrint("The " + GetKeyName() + " goes dark.");
 	if( living(env) ) {
 	    environment(env)->eventPrint(possessive_noun(env) + " " +
-					 GetKeyName() + " goes dark.", env);
+	      GetKeyName() + " goes dark.", env);
 	}
     }
     SetLit(0);

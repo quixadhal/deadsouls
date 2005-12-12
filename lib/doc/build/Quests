@@ -1,0 +1,35 @@
+			   Building Quests
+		  from the Nightmare IV LPC Library
+		 written by Descartes of Borg 950716
+
+Unlike previous Nightmare versions, Nightmare IV has no support for
+centralized quest administration.  This was done under the belief that
+coercive questing was among the least favourite features players have
+mentioned about the MUDs I have encountered.  Nevertheless, the
+presence of quests is still an extrememly important part of any MUD.
+Since the coercive nature (needing to complete quest X to raise to
+level Y) has been removed, other ways to make questing worthwhile need
+to be found.
+
+The first, and most obvious, is to properly reward the player with
+money, items, and skill and stat points.  The other bit of support is
+for a title list.  Each quest, or accomplishment, is added to a list
+of accomplishments the player has.  The player may display any of
+those at any time as part of their title.
+
+The interface to this is simple:
+
+player_object->AddQuest(string title, string description);
+
+Example:
+
+this_player()->AddQuest("the slayer of frogs", 
+	"You viciously slayed the evil frogs of Wernmeister that "
+	"threatened the peaceful town with warts and unabated fly murder.");
+
+In the player's biography, they will see the description along with
+the date they accomplished the task.  From their title list, they will
+now be able to choose this title.
+
+Descartes of Borg
+950716

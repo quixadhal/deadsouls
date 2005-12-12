@@ -7,11 +7,15 @@
 
 inherit LIB_DAEMON;
 
+void ShutDown(){
+    shutdown();
+}
+
 int cmd(string str) {
     if(this_player()->GetForced()) return 0;
     if(!archp(previous_object())) {
-	    notify_fail("You are not permitted to shutdown the game.\n");
-	    return 0;
+	notify_fail("You are not permitted to shutdown the game.\n");
+	return 0;
     }
     if(!str) {
 	notify_fail("You must give a shutdown reason as argument.\n");
@@ -19,8 +23,12 @@ int cmd(string str) {
     }
     shout("Game is shut down by " + this_player()->GetKeyName() + ".\n");
     log_file("game_log", ctime(time())+" Game shutdown by "+
-	this_player()->GetKeyName()+"("+str+")\n");
+      this_player()->GetKeyName()+"("+str+")\n");
+    foreach(object dude in users()){
+	if(sizeof(base_name(dude)) && !archp(dude)) dude->eventForce("quit");
+    }
     shutdown();
+
     return 1;
 }
 

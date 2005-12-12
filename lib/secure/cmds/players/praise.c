@@ -3,12 +3,12 @@
  *    makes a praisereport
  *    created by Descartes of Borg 950427
  */
- 
+
 #include <lib.h>
 #include <dirs.h>
- 
+
 inherit LIB_DAEMON;
- 
+
 void eventEndEdit(object ob);
 string GetCreator(object ob);
 
@@ -42,11 +42,11 @@ mixed cmd(string text) {
     if( text != "" ) {
 	if( ob ) {
 	    tmp = (string)this_player()->GetCapName() + " reports praise in: " +
-	      identify(ob) + "\non " + ctime(time()) + "\n";
+	    identify(ob) + "\non " + ctime(time()) + "\n";
 	    secondary = GetCreator(ob);
 	}
 	else 
-	  tmp = (string)this_player()->GetCapName() + " reports praise on: " +
+	    tmp = (string)this_player()->GetCapName() + " reports praise on: " +
 	    ctime(time()) + ":\n";
 	log_file("praise", tmp + text + "\n\n");
 	if( secondary ) log_file("reports/" + secondary, tmp + text + "\n\n");
@@ -60,7 +60,7 @@ mixed cmd(string text) {
 
 void eventEndEdit(object ob) {
     string tmp, text, file, secondary;
-    
+
     file = DIR_TMP "/" + (string)this_player()->GetKeyName();
     if( !file_exists(file) || !(text = read_file(file)) ) {
 	message("system", "Praise report aborted.", this_player());
@@ -69,11 +69,11 @@ void eventEndEdit(object ob) {
     rm(file);
     if( ob ) {
 	tmp = (string)this_player()->GetCapName() + " reports praise in: " +
-	  identify(ob) + "\non: " + ctime(time()) + "\n";
+	identify(ob) + "\non: " + ctime(time()) + "\n";
 	secondary = GetCreator(ob);
     }
     else 
-      tmp = (string)this_player()->GetCapName() + " reports praise on " +
+	tmp = (string)this_player()->GetCapName() + " reports praise on " +
 	ctime(time()) + ":\n";
     log_file("praise", tmp + text + "\n\n");
     if( secondary ) log_file("reports/" + secondary, tmp + text + "\n\n"); 
@@ -91,12 +91,12 @@ string GetCreator(object ob) {
 
 void help() {
     message("help", "Syntax: <praise ([object]) ([praise message])>\n\n"
-	    "Allows you to praise things in the MUD to both the MUD "
-	    "administrators as well as to the creator of the object you "
-	    "are referencing (if any).  If you do not specify an object, "
-	    "then the report will be sent to the creator of the room in which "
-	    "you are located in addition to the MUD administrators.  If you "
-	    "fail to specify text on the command line, then you will be put "
-	    "into the editor in order to compose the report.\n\n"
-	    "See also: bug, idea", this_player());
+      "Allows you to praise things in the MUD to both the MUD "
+      "administrators as well as to the creator of the object you "
+      "are referencing (if any).  If you do not specify an object, "
+      "then the report will be sent to the creator of the room in which "
+      "you are located in addition to the MUD administrators.  If you "
+      "fail to specify text on the command line, then you will be put "
+      "into the editor in order to compose the report.\n\n"
+      "See also: bug, idea", this_player());
 }

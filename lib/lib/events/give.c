@@ -1,5 +1,5 @@
 /*    /lib/events/give.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Give event handler
  *    Created by Descartes of Borg 970101
  *    Version: @(#) give.c 1.1@(#)
@@ -28,10 +28,10 @@ mixed indirect_give_liv_obj(object target) {
     }
     return 1;
 }
- 
+
 mixed direct_give_obj_to_liv() {
     mixed tmp;
- 
+
     if( environment() != this_player() ) {
 	return "#You cannot give what is not yours.";
     }

@@ -8,6 +8,6 @@ mixed *distinct_array(mixed *arr) {
     int i, maxi;
 
     for(i = 0, tmp = allocate_mapping(maxi = sizeof(arr)); i<maxi; i++)
-      tmp[arr[i]] = 1;
+	tmp[arr[i]] = 1;
     return keys(tmp);
 }

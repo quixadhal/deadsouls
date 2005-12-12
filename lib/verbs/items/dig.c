@@ -1,5 +1,5 @@
 /*    /verbs/items/dig.c
- *    From the Dead Soulsr2 Object Library
+ *    From the Dead Souls Object Library
  *    Verb for digging things
  *    Created by Descartes of Borg 951030
  *    Version: @(#) dig.c 1.2@(#)
@@ -25,10 +25,10 @@ static void eventDig(object who, object tool, object what, object check) {
 
 varargs static void eventPrepareDig(object who, object tool, object what) {
     function f = (: eventDig($(who), $(tool), $(what), environment($(who))) :);
-    
+
     if( (int)this_player()->GetInCombat() ) {
 	send_messages("start", "$agent_name $agent_verb to dig with " +
-		      tool->GetShort() + ".", who, 0, environment(who));
+	  tool->GetShort() + ".", who, 0, environment(who));
 	who->SetAttack(0, f, ROUND_OTHER);
     }
     else {
@@ -42,12 +42,12 @@ static void create() {
     SetRules("with OBJ", "STR with OBJ", "OBJ with OBJ");
     SetErrorMessage("Dig with what?  Is there anything in particular to dig?");
     SetHelp("Syntax: <dig with TOOL>\n"
-	    "        <dig THING with TOOL>\n\n"
-	    "Allows you to dig with digging tools.  Sometimes you may "
-	    "be required to specify what it is you wish to dig.  In "
-	    "that case, you can use the thing field to specify what it is "
-	    "you wish to dig.\n\n"
-	    "See also: bury");
+      "        <dig THING with TOOL>\n\n"
+      "Allows you to dig with digging tools.  Sometimes you may "
+      "be required to specify what it is you wish to dig.  In "
+      "that case, you can use the thing field to specify what it is "
+      "you wish to dig.\n\n"
+      "See also: bury");
 }
 
 mixed can_dig_with_obj() {

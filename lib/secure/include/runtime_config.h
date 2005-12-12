@@ -23,6 +23,7 @@
  */
 
 #define __MUD_NAME__                CFG_STR(0)
+/* #define __MUD_NAME__                "Dead Soles" */
 
 #define __ADDR_SERVER_IP__          CFG_STR(1)
 

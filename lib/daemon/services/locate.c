@@ -29,8 +29,8 @@ void eventReceiveLocateRequest(mixed array packet) {
     }
     else status = "link-dead";
     INTERMUD_D->eventWrite( ({ "locate-reply", 5, mud_name(), 0, packet[2], 
-				packet[3], mud_name(),
-				(string)ob->GetName(), idl, status }) );
+	packet[3], mud_name(),
+	(string)ob->GetName(), idl, status }) );
 }
 
 void eventReceiveLocateReply(mixed array packet) {

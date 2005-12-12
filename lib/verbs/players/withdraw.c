@@ -17,7 +17,7 @@ static void create() {
     SetVerb("withdraw");
     SetRules("");
     SetHelp("Syntax: <withdraw>\n"
-            "Allows you to withdraw from the elections");
+      "Allows you to withdraw from the elections");
 }
 
 mixed can_withdraw() {
@@ -34,5 +34,5 @@ mixed do_withdraw() {
     object env;
 
     if( !(env = environment(this_player())) ) return 0;
-        return (mixed)env->eventWithdraw( this_player() );
+    return (mixed)env->eventWithdraw( this_player() );
 }

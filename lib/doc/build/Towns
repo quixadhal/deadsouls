@@ -1,0 +1,90 @@
+			    Building Towns
+		     The Nightmare IV LPC Library
+		 written by Descartes of Borg 950429
+
+The Nightmare IV LPC Library contains support for towns, which is in
+fact very minimal from the mudlib level.  If, however, you wish to
+structure your MUD to be centered around the concept as Nightmare LPMud
+is, then you need to understand how to build a town.  This document
+describes the building of towns using the Nightmare IV LPC Library.
+
+I. What Is a Town?
+A town is simply a collection of rooms which have the same value set
+for Town.  If done poorly, this is all it is.  If done right, however,
+a town becomes the center of the games' social structure.  If you
+decide to build a town in your area, the first thing you need to do is
+isolate it.  All towns should be surrounded by vast, vast areas of
+wilderness of some sort.  This may mean desert, forest, jungle, or
+whatever.  You may or may not want to have a road which links it to
+the rest of civilization.
+
+Rooms are considered "wilderness" by default.  That is, if you never
+set the town in them, they are considered wilderness.  To make a room
+part of a town, you need to call SetTown() from create() of the room:
+
+	SetTown("Praxis");
+
+Capitalize your town name properly.
+
+Next you need to decide how many estates may be built in the room.
+Ideally, towns are expanding and changing things.  Upper level players
+have the ability to build estates in their home towns.  Of course, ten
+estates in one room is crowded.  Generally you should limit the number
+of estates to what would logically fit in a given room.  For example,
+if you are on a road at the edge of town with nothing about, then
+allowing two estates makes sense.  On the other hand, in the middle of
+an intersection of two roads, there is hardly any room for an estate
+to be built.  To allow estates to be built in a room:
+
+	SetProperty("estates", 2);
+
+This allows two estates to be built off of this room.
+
+As stated above, towns are expanding.  This is why they should be
+situated far apart.  Too close together it is hard for them to expand
+without changing the overall map of the game.  Therefore, when your
+town has gotten as full as can be handled, then you simply move to
+outlying rooms and make them part of the town by setting their town.
+In addition, give them the capacity for estates.  Do not forget to
+change room descriptions and allow for needed roads!
+
+II. What do I put in towns?
+The first section described what is minimally needed for a town from a
+code point of view.  This section describes what sorts of things you
+should put in your towns.  Most are optional, however, you do need to
+add something called an adventurer's hall.  An adventurer's hall is
+the default start room for the town for anyone who chooses the town as
+their home town.  In order to make it their home town, they go to the
+adventurer's hall and pay a fee (generally determined by approval) to
+move to this town.  Until that person builds an estate in the town,
+the adventurer's hall is their default starting point.
+
+Beyond that, the only other thing required is a real estate office for
+selling estates.  This is an inheritable from /lib/sales.c
+(LIB_SALES).  Approval determines what your local land value is, and
+you fill in the descriptions.  For information on advanced coding of
+sales offices, see the document /doc/build/Sales.
+
+Nothing else is required.  Of course, your land value (the amount
+people pay to live and build in your town) is determined by the sorts
+of services your town offers.  No town should offer all services.  And
+certainly, the services your town offers should reflect the nature of
+the region in which you are building.  Are you an isolated, small
+town?  Then few services will be available.  Are you a central, large
+town?  Then a majority of services should be available.
+
+Services include:
+	shops of different types
+	bars and pubs
+	restaurants
+	libraries for learning languages
+	class halls
+	town council rooms
+
+This list will probably expand over time, but it provides a good
+starting point for common services.
+
+	Descartes of Borg
+	borg@imaginary.com
+
+	

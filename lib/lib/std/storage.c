@@ -12,8 +12,33 @@ inherit LIB_HOLDER;
 inherit LIB_ITEM;
 inherit LIB_SEAL;
 
-private int CanClose = 1;
+private int CanClose = 0;
 private int CanLock  = 0;
+private int MaxRecurseDepth  = 3;
+private int RecurseDepth  = 1;
+
+int GetMaxRecurseDepth(){
+    return MaxRecurseDepth;
+}
+
+int GetRecurseDepth(){
+    return RecurseDepth;
+}
+
+int SetMaxRecurseDepth(int i){
+    MaxRecurseDepth =i;
+    return 1;
+}
+
+int SetRecurseDepth(int i){
+    RecurseDepth=i;
+    return 1;
+}
+
+int AddRecurseDepth(int i){
+    RecurseDepth += i;
+    return 1;
+}
 
 int GetCanClose() {
     return CanClose;
@@ -31,7 +56,7 @@ int SetCanLock(int x) {
     return SetCanClose(CanLock = x);
 }
 
-void SetKey(string key) { /* for backwards compat */
+void SetKey(string key) { 
     SetKeys(key);
 } 
 
@@ -103,14 +128,41 @@ mixed CanPick(object who, string id) {
 }
 
 mixed CanPutInto(object who, object what) {
-    mixed tmp = holder::CanPutInto(who, what);
+    mixed tmp;
+    int mydepth,yourdepth,total,indirectp,indirectpp;
+    string wherefrom,stackstring;
+    string *callstack;
+
+    if(!tmp = holder::CanPutInto(who, what)){
+	if(GetClosed()) return capitalize(GetDefiniteShort()) + " is closed right now.";
+	else return "You can't do that right now.";
+    }
+
+    wherefrom=origin();
+    callstack=call_stack(2);
+    stackstring=implode(callstack," ");
+    indirectp=member_array("indirect_put_obj_word_obj",callstack);
+    indirectpp=member_array("indirect_put_objs_word_obj",callstack);
+
 
     if( tmp != 1 ) {
-	return tmp;
+	if( GetClosed() ) return capitalize(GetDefiniteShort()) + " is closed.";
+	else return "You can't do that at this time.";
+	//if( GetClosed() ) write("It is closed.");
+	//else write("You can't do that at this time.");
+	//return tmp;
     }
     if( GetClosed() ) {
 	return capitalize(GetDefiniteShort()) + " is closed.";
     }
+
+    if(inherits("/lib/std/storage",what) ) {
+	yourdepth = what->GetRecurseDepth();
+	mydepth = this_object()->GetRecurseDepth();
+	if(yourdepth && mydepth) total = yourdepth + mydepth;
+	if(total && total > this_object()->GetMaxRecurseDepth()) return "Doesn't fit.";
+    }
+
     return 1;
 }
 
@@ -126,23 +178,34 @@ mixed CanUnlock(object who, string id, object key) {
 	return 0;
     }
     else {
-	return ::CanUnlock(who, id, key);
+	return seal::CanUnlock(who, id, key);
     }
 }
 
 int eventReceiveObject(object ob) {
+    int mydepth,yourdepth,total;
     if( GetClosed() ) {
 	return 0;
     }
+
     return holder::eventReceiveObject(ob);
 }
 
+void PutCheck(){
+
+    if(RecurseDepth >= MaxRecurseDepth) {
+	SetPreventPut("You have enough containers inside containers there. This one will have to stay out.");
+    }
+
+
+}
+
 void create() {
-    AddSave( ({ "CanClose", "CanLock" }) );
+    AddSave( ({ "CanClose", "CanLock", "RecurseDepth" , "MaxRecurseDepth" }) );
     holder::create();
     item::create();
-    ::create();
-    SetPreventPut("You can't put this in there.");
+    seal::create();
+    PutCheck();
 }
 
 int inventory_accessible() {

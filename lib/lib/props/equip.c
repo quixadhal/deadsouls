@@ -1,5 +1,5 @@
 /*    /lib/props/equip.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Handles the property of being something that is equipped to a limb
  *    The word worn is used instead of equipped for historical reasons
  *    Created by Descartes of Borg 970101
@@ -7,25 +7,25 @@
  *    Last modified: 97/01/01
  */
 
-#include <armour_types.h>
+#include <armor_types.h>
 
-private int          ArmourType  = A_WEAPON;
+private int          ArmorType  = A_WEAPON;
 private string array Worn        = 0;
 
 // abstract methods
 string GetDefiniteShort();
 // end abstract methods
 
-int GetArmourType() {
-    return ArmourType;
+int GetArmorType() {
+    return ArmorType;
 }
 
-int SetArmourType(int x) {
+int SetArmorType(int x) {
     if( !intp(x) ) {
-	error("Bad argument to SetArmourType().\n\tExpected value from "
-	      "/include/armour_types.h, Got: " + typeof(x) + "\n");
+	error("Bad argument to SetArmorType().\n\tExpected value from "
+	  "/include/armor_types.h, Got: " + typeof(x) + "\n");
     }
-    return (ArmourType = x);
+    return (ArmorType = x);
 }
 
 string array GetSave() {
@@ -66,7 +66,7 @@ mixed eventEquip(object who, string array limbs) {
 
 static void eventRestoreEquip(string array limbs) {
     mixed tmp;
- 
+
     if( !limbs || !environment() ) {
 	return;
     }
@@ -78,7 +78,7 @@ static void eventRestoreEquip(string array limbs) {
 	environment()->eventPrint(tmp);
     }
 }
- 
+
 mixed eventUnequip(object who) {
     mixed tmp = who->eventRemoveItem(this_object());
 

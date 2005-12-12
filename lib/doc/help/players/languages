@@ -1,0 +1,27 @@
+			 Dead Souls Languages
+
+Languages are essential to the way interaction occurs among players
+and non-player characters.  Every discussion you will have with an npc
+will be done through that npc's native tongue generally (although some
+npc's are more aware of other languages).  
+
+When starting as a newbie, you will not much notice this.  Newbies are
+given full knowledge of all languages.  This, however, does not last.
+Once you cease to be a newbie, you only know your native language,
+which you learn based on your race.  
+
+As time goes on, you may wish to learn new languages.  Certain npc's
+across Dead Souls specialize in teaching people other languages.  In
+order to learn a new language, use the "ask" command to ask the npc to
+teach you the language.  The syntax is <ask LCampusING to teach me LANGUAGE>.
+For example:
+	ask the sage to teach me nymal
+
+Not all teachers may know all languages.  The teacher must naturally
+know the language in order to teach it.
+
+The teacher will generally start spouting phrases in the language,
+asking you to repeat them.  It is to your advantage to try and repeat
+what the teacher is saying in the language it is being said.
+
+See also: ask, shout, speak

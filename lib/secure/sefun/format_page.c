@@ -8,11 +8,11 @@ string format_page(string *items, int columns) {
     else width = 75;
     width = width/columns;
     for(i=0, x = sizeof(items); i<x; i+=columns) {
-        for(j=0; j<columns; j++) {
-            if(i+j >= x) break;
-            ret += arrange_string(items[i+j], width);
-        }
-        ret += "\n";
+	for(j=0; j<columns; j++) {
+	    if(i+j >= x) break;
+	    ret += arrange_string(items[i+j], width);
+	}
+	ret += "\n";
     }
     return ret;
 }

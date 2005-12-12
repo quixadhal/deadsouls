@@ -16,9 +16,9 @@ mixed CreateVirtualObject(string fname) {
     int i, j;
 
     if(fname == recursed){
-        recursed = "";
-        error("Recursion error in CreateVirtualObject()");    
-        return 0;
+	recursed = "";
+	error("Recursion error in CreateVirtualObject()");    
+	return 0;
     }
 
     i = strsrch(fname, "/", -1);
@@ -27,16 +27,16 @@ mixed CreateVirtualObject(string fname) {
     }
     tmp = fname[(i+1)..];
     if( sscanf(tmp, "%d,%d,%d,%d", x, y, z, s) != 4 ) {
-        if( sscanf(tmp, "%d,%d,%d", x, y, z) != 3 ) {
-            if( sscanf(tmp, "%d,%d", x, y) != 2 ) {
-	        vname = tmp;
+	if( sscanf(tmp, "%d,%d,%d", x, y, z) != 3 ) {
+	    if( sscanf(tmp, "%d,%d", x, y) != 2 ) {
+		vname = tmp;
 	    }
 	    else {
-	        vname = 0;
-	        z = 0;
+		vname = 0;
+		z = 0;
 	    }
-        }
-        s = 0;
+	}
+	s = 0;
     }
     else {
 	vname = 0;
@@ -50,8 +50,8 @@ mixed CreateVirtualObject(string fname) {
 	return daemon->CreateNamedObject(vname);
     }
     else {
-        if(!s) return daemon->CreateGridObject(x, y, z);
-        else return daemon->CreateGridObject(x, y, z, s);
+	if(!s) return daemon->CreateGridObject(x, y, z);
+	else return daemon->CreateGridObject(x, y, z, s);
     }
 }
 

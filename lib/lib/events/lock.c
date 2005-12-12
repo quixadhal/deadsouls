@@ -1,5 +1,5 @@
 /*    /lib/events/lock.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Object Library
  *    Handles lock/unlock/pick events
  *    Created by Descartes of Borg 961221
  *    Version: @(#) lock.c 1.4@(#)
@@ -22,7 +22,7 @@ string array AddKey(string key) {
 varargs string array GetKeys(string unused) {
     return Keys;
 }
-    
+
 varargs string array SetKeys(mixed array args...) {
     if( !args ) {
 	error("Bad argument 1 to SetKeys().\n");
@@ -94,17 +94,21 @@ mixed CanUnlock(object who, string id) {
 mixed eventLock(object who, object key) {
     string array ids = key->GetId();
 
+    if(key->LockFun(1,key,lower_case(this_object()->GetName()))){
+	return 1;
+    }
+
     if( !sizeof(ids & GetKeys()) ) {
 	send_messages("try", "$agent_name $agent_verb to lock $target_name "
-		      "with " + key->GetShort() + ", but it does not work.",
-		      who, this_object(), environment(who));
+	  "with " + key->GetShort() + ", but it does not work.",
+	  who, this_object(), environment(who));
     }
     else {
 	mixed tmp;
 
 	send_messages("attempt", "$agent_name $agent_verb to lock "
-		      "$target_name with " + key->GetShort() + ".",
-		      who, this_object(), environment(who));
+	  "$target_name with " + key->GetShort() + ".",
+	  who, this_object(), environment(who));
 	tmp = key->eventLockLock(who, this_object());
 	if( tmp != 1 ) {
 	    if( tmp ) {
@@ -116,7 +120,7 @@ mixed eventLock(object who, object key) {
 	    return 0;
 	}
 	environment(who)->eventPrint(capitalize(GetDefiniteShort()) +
-				     " locks.");
+	  " locks.");
     }
     return 1;
 }
@@ -161,16 +165,16 @@ varargs mixed eventPick(object who, string id, object tool) {
 	    return 0;
 	}
 	send_messages("pick", "$agent_name $agent_verb the lock on "
-		      "$target_name!", who, this_object(), environment(who));
+	  "$target_name!", who, this_object(), environment(who));
 	return 1;
     }
     send_messages("fail", "$agent_name $agent_verb in $agent_possessive "
-		  "attempt to pick the lock on $target_name.",
-		  who, this_object(), environment(who));
+      "attempt to pick the lock on $target_name.",
+      who, this_object(), environment(who));
     if( random(100) > strength ) {
 	send_messages("cut", "$agent_name $agent_verb $agent_reflexive "
-		      "on the lock.", who, this_object(), environment(who));
-         who->eventReceiveDamage(this_object(), 8, random(10) + 1);
+	  "on the lock.", who, this_object(), environment(who));
+	who->eventReceiveDamage(this_object(), 8, random(10) + 1);
     }
     return 1;
 }
@@ -178,17 +182,21 @@ varargs mixed eventPick(object who, string id, object tool) {
 mixed eventUnlock(object who, object key) {
     string array ids = key->GetId();;
 
+    if(key->UnLockFun(1,key,lower_case(this_object()->GetName()))){
+	return 1;
+    }
+
     if( !sizeof(ids & GetKeys()) ) {
 	send_messages("attempt", "$agent_name $agent_verb to unlock "
-		      "$target_name with " + key->GetShort() + ", but it "
-		      "does not work.", who, this_object(), environment(who));
+	  "$target_name with " + key->GetShort() + ", but it "
+	  "does not work.", who, this_object(), environment(who));
     }
     else {
 	mixed tmp;
 
 	send_messages("attempt", "$agent_name $agent_verb $target_name with "+
-		      key->GetShort() + ".", who, this_object(),
-		      environment(who));
+	  key->GetShort() + ".", who, this_object(),
+	  environment(who));
 	tmp = key->eventUnlockLock(who, this_object());
 	if( tmp != 1 ) {
 	    if( tmp ) {
@@ -200,7 +208,7 @@ mixed eventUnlock(object who, object key) {
 	    return 0;
 	}
 	environment(who)->eventPrint(capitalize(GetDefiniteShort()) +
-				     " comes unlocked.");
+	  " comes unlocked.");
     }
     return 1;
 }
@@ -210,7 +218,7 @@ mixed direct_lock_obj_with_obj(object target, object key, string id) {
 }
 
 mixed direct_pick_str_on_obj(string str, object target, string str2,
-			     string id) {
+  string id) {
     if( remove_article(lower_case(str)) != "lock" ) {
 	return "Pick the what?";
     }
@@ -218,14 +226,14 @@ mixed direct_pick_str_on_obj(string str, object target, string str2,
 }
 
 mixed direct_pick_str_on_obj_with_obj(string str, object target, object tool,
-				      string str2, string targ_id) {
+  string str2, string targ_id) {
     if( remove_article(lower_case(str)) != "lock" ) {
 	return "Pick the what?";
     }
     targ_id = remove_article(lower_case(targ_id));
     return CanPick(this_player(), targ_id);
 }
-  
+
 mixed direct_unlock_obj_with_obj(object target, object key, string id) {
     return CanUnlock(this_player(), remove_article(lower_case(id)));
 }

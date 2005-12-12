@@ -1,10 +1,12 @@
 /*    /lib/events/sell.c
- *    From the Dead Souls V Objecdt Library
+ *    From the Dead Souls Objecdt Library
  *    Handles the buying and selling of items
  *    Created by Descartes of Borg 970101
  *    Version: @(#) sell.c 1.1@(#)
  *    Last modified: 97/01/01
  */
+
+//inherit LIB_COST;
 
 mixed CanSell(object seller) {
     return 1;

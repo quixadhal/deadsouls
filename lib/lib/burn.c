@@ -1,5 +1,5 @@
 /*    /lib/burn.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Object Library
  *    inheritable for things that burn
  *    created by Descartes of Borg 960512
  *    Version: @(#) burn.c 1.3@(#)
@@ -28,8 +28,8 @@ static void create() {
     light::create();
     this_object()->AddSave(({ "Heat" }));
     call_out(function() {
-	         if( GetBurning() ) set_heart_beat(BurnRate);
-             }, 0);
+	  if( GetBurning() ) set_heart_beat(BurnRate);
+      }, 0);
 }
 
 int GetBurning() {
@@ -78,7 +78,7 @@ static int SetMinHeat(int x) {
 
 mixed CanBurn(object who) {
     if( environment() != this_player() &&
-	environment() != environment(this_player()) ) {
+      environment() != environment(this_player()) ) {
 	return "#That is not within your reach!";
     }
     if( FuelRequired && !GetFuelAmount() )
@@ -125,6 +125,25 @@ mixed indirect_light_obj_with_obj(object target, object source) {
 
 mixed indirect_light_obs_with_obj(object *targets, object source) {
     return indirect_burn_obs_with_obj(targets, source);
+}
+
+mixed CanExtinguish(object who) {
+    if( environment() != this_player() &&
+      environment() != environment(this_player()) ) {
+	return "#That is not within your reach!";
+    }
+    if( !GetBurning() ) return "It is not burning!";
+    return 1;
+}
+
+mixed direct_extinguish_obj(){
+    return CanExtinguish(this_player());
+}
+
+mixed eventExtinguish(){
+    eventDarken();
+    set_heart_beat(Heat = 0);
+    return 1;
 }
 
 mixed eventBurnOut() {

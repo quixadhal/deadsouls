@@ -170,7 +170,7 @@ int SetWanderSpeed(int x) {
 /* ******************    /lib/sentient.c events      **************** */
 mixed eventAsk(object who, string str) {
     string cmd, args;
-    
+
     if( !str || str == "" ) return 0;
     if( sscanf(str, "%s %s", cmd, args) != 2 ) {
 	cmd = str;
@@ -193,7 +193,7 @@ mixed eventAsk(object who, string str) {
 
 varargs mixed eventReceiveEmote(object who, string verb, string info) {
     mixed val = EmoteResponses[verb];
-    
+
     if( !val ) {
 	return 0;
     }
@@ -223,7 +223,7 @@ mixed eventRequest(object who, string str) {
 
 mixed eventTalkRespond(object who, object targ, int cls, string msg, string lang) {
     string resp;
-    
+
     foreach(resp in keys(TalkResponses)) {
 	if( resp == "default" ) continue;
 	if( strsrch(lower_case(msg), resp) > -1 ) {
@@ -232,12 +232,12 @@ mixed eventTalkRespond(object who, object targ, int cls, string msg, string lang
 		return 1;
 	    }
 	    else if( evaluate(TalkResponses[resp], who, targ, msg, lang, cls) )
-	      return 1;
+		return 1;
 	}
     }
     if( TalkResponses["default"] ) {
 	if( stringp(TalkResponses["default"]) )
-	  eventForce("speak " + TalkResponses["default"]);
+	    eventForce("speak " + TalkResponses["default"]);
 	else evaluate(TalkResponses["default"], who, targ, msg, lang, cls);
 	return 1;
     }
@@ -246,7 +246,7 @@ mixed eventTalkRespond(object who, object targ, int cls, string msg, string lang
 
 mixed eventWander() {
     int fp;
-    
+
     if( !sizeof(WanderPath) ) {
 	string *sorties;
 	string tmp;
@@ -254,20 +254,20 @@ mixed eventWander() {
 	sorties = ({});
 	foreach(tmp in (string *)environment()->GetExits()) {
 	    string dest, door;
-	    
+
 	    if( !find_object(dest = (string)environment()->GetExit(tmp)) )
-	      continue;
+		continue;
 	    if( (door = (string)environment()->GetDoor(tmp)) &&
-	       (int)door->GetClosed() ) continue;
+	      (int)door->GetClosed() ) continue;
 	    sorties += ({ "go " + tmp });
 	}
 	foreach(tmp in (string *)environment()->GetEnters()) {
 	    string dest, door;
-	    
+
 	    if( !find_object(dest = (string)environment()->GetEnter(tmp)) )
-	      continue;
+		continue;
 	    if( (door = (string)environment()->GetDoor(tmp)) &&
-	       (int)door->GetClosed() ) continue;
+	      (int)door->GetClosed() ) continue;
 	    sorties += ({ "enter " + tmp });
 	}
 	if( sizeof(sorties) ) {
@@ -277,12 +277,12 @@ mixed eventWander() {
 	else return 0;
     }
     if( arrayp(WanderPath[WanderMarker]) ) 
-      foreach(mixed cmd in WanderPath[WanderMarker]) {
-	  if( fp = functionp(cmd) ) {
-	      if( fp != FP_OWNER_DESTED ) evaluate(cmd);
-	  }
-	  else eventForce(cmd);
-      }
+	foreach(mixed cmd in WanderPath[WanderMarker]) {
+	if( fp = functionp(cmd) ) {
+	    if( fp != FP_OWNER_DESTED ) evaluate(cmd);
+	}
+	else eventForce(cmd);
+    }
     else if( fp = functionp(WanderPath[WanderMarker]) ) {
 	if( fp != FP_OWNER_DESTED ) evaluate(WanderPath[WanderMarker]);
     }

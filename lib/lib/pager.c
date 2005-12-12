@@ -1,5 +1,5 @@
 /*    /lib/pager.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    a system pager for interactive objects
  *    created by Descartes of Borg 951104
  *    Version: @(#) pager.c 1.3@(#)
@@ -20,14 +20,14 @@ mixed more(mixed val, string cl, function f, mixed args) {
 varargs mixed eventPage(mixed val, mixed msg_class, function f,mixed args...) {
     class page_file *files;
     int maxi;
-    
+
     if( InPager ) return "You are already in the pager.";
     if( !stringp(val) && !arrayp(val) )
-      error("Bad argument 1 to eventPage().\n");
+	error("Bad argument 1 to eventPage().\n");
     if( stringp(msg_class) || !msg_class ) msg_class = MSG_SYSTEM;
     if( arrayp(val) ) {
 	class page_file file;
-	
+
 	file = new(class page_file);
 	if( !(file->Size = sizeof(val)) ) return 1;
 	file->MessageClass = msg_class;
@@ -42,7 +42,7 @@ varargs mixed eventPage(mixed val, mixed msg_class, function f,mixed args...) {
     }
     else {
 	string tmp;
-	
+
 	val = wild_card(val);
 	if( !val || !sizeof(val) ) return "File not found.";
 	files = ({});
@@ -80,11 +80,11 @@ varargs mixed eventPage(mixed val, mixed msg_class, function f,mixed args...) {
 	}
     }
     if( ((class page_file)files[<1])->Args )
-      ((class page_file)files[<1])->Args =
+	((class page_file)files[<1])->Args =
 	({ ((class page_file)files[<1])->Callback }) +
-	  ((class page_file)files[<1])->Args;
+	((class page_file)files[<1])->Args;
     else ((class page_file)files[<1])->Args =
-      ({ ((class page_file)files[<1])->Callback });
+	({ ((class page_file)files[<1])->Callback });
     ((class page_file)files[<1])->Callback = (: RazzleDazzle :);
     Page(files[0]);
     return 1;
@@ -103,7 +103,7 @@ static void Page(class page_file file) {
     else prompt = "";
     if( endline < file->Size - 1 ) {
 	prompt += "(" + (file->CurrentLine+1) + "-" + (endline+1) + " ";
-	prompt += ((endline * 100)/(file->Size - 1)) + "%): ";
+	prompt += ((endline * 100)/(file->Size - 1)) + "%) press enter: ";
 	prompt = "%^BOLD%^" + prompt + "%^RESET%^";
 	file->CurrentLine = endline + 1;
 	eventPrint(prompt, MSG_PROMPT);
@@ -111,7 +111,7 @@ static void Page(class page_file file) {
     }
     else {
 	int fp;
-	
+
 	file->CurrentLine = endline;
 	fp = functionp(file->Callback);
 	if( !fp || (fp == FP_OWNER_DESTED) ) return;
@@ -124,7 +124,7 @@ static void cmdPage(string str, class page_file file) {
     string *tmp;
     string cmd, args;
     int fp, x, scrlen;
-    
+
     if( !str || trim(str) == "" ) {
 	if( file->CurrentLine >= (file->Size - 1) ) {
 	    fp = functionp(file->Callback);
@@ -139,7 +139,7 @@ static void cmdPage(string str, class page_file file) {
     if( strlen(str) > 1 ) args = str[1..];
     else args = 0;
     switch(cmd) {
-	case ",":
+    case ",":
 	if( !args || !(file->Marks[args]) ) {
 	    receive("\a");
 	    input_to((: cmdPage :), file);
@@ -148,7 +148,7 @@ static void cmdPage(string str, class page_file file) {
 	else cmdPage("g" + file->Marks[args], file);
 	return;
 
-	case "/":
+    case "/":
 	if( file->CurrentLine >= (file->Size - 1) ) {
 	    eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
 	    input_to((: cmdPage :), file);
@@ -179,7 +179,7 @@ static void cmdPage(string str, class page_file file) {
 	Page(file);
 	return;
 
-	case "?":
+    case "?":
 	x = file->CurrentLine - GetScreen()[1] - 3;
 	if( x < 1 ) {
 	    eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
@@ -212,7 +212,7 @@ static void cmdPage(string str, class page_file file) {
 	Page(file);
 	return;
 
-	case "b": 
+    case "b": 
 	scrlen = GetScreen()[1];
 	if( (file->CurrentLine - (2*(scrlen-3))) < 1 ) {
 	    eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
@@ -225,7 +225,7 @@ static void cmdPage(string str, class page_file file) {
 	}
 	return;
 
-	case "g": case "<": case "G": case ">":
+    case "g": case "<": case "G": case ">":
 	if( cmd == "g" || cmd == "<" ) x = 1;
 	else {
 	    x = (file->Size - (GetScreen()[1] - 3));
@@ -245,13 +245,13 @@ static void cmdPage(string str, class page_file file) {
 	Page(file);
 	return;
 
-	case "h": case "H":
+    case "h": case "H":
 	eventPrint(GetHelp("pager"), MSG_HELP);
 	eventPrint(GetPagerPrompt(file), MSG_PROMPT);
 	input_to((: cmdPage :), file);
 	return;
-	
-	case "m":
+
+    case "m":
 	if( !args ) {
 	    eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
 	    input_to((: cmdPage :), file);
@@ -259,12 +259,12 @@ static void cmdPage(string str, class page_file file) {
 	}
 	file->Marks[args] = file->CurrentLine;
 	eventPrint("Mark " + args + " set to line " +
-		   (file->CurrentLine + 1) + ".", file->MessageClass);
+	  (file->CurrentLine + 1) + ".", file->MessageClass);
 	eventPrint(GetPagerPrompt(file), MSG_PROMPT);
 	input_to((: cmdPage :), file);
 	return;
 
-	case "n":
+    case "n":
 	fp = functionp(file->Callback);
 	if( !fp || (fp == FP_OWNER_DESTED) ) {
 	    eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
@@ -274,8 +274,8 @@ static void cmdPage(string str, class page_file file) {
 	if( file->Args ) evaluate(file->Callback, file->Args...);
 	else evaluate(file->Callback);
 	return;
-	
-	case "p": case "%":
+
+    case "p": case "%":
 	if( args ) x = to_int(args);
 	if( !args || x < 1 || x > 100 ) {
 	    eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
@@ -285,26 +285,26 @@ static void cmdPage(string str, class page_file file) {
 	x = ((file->Size - 1) * x)/100 - 1;
 	if( x < 0 ) x = 0;
 	else if( x > ((file->Size - 1) - (GetScreen()[1] - 3)) )
-	  x = ((file->Size - 1) - (GetScreen()[1] - 3));
+	    x = ((file->Size - 1) - (GetScreen()[1] - 3));
 	file->CurrentLine = x;
 	Page(file);
 	return;
-	
-	case "q":
+
+    case "q":
 	fp = functionp(file->Callback);
 	if( !fp || (fp == FP_OWNER_DESTED) ) return;
 	if( file->Args ) evaluate(file->Callback, file->Args...);
 	else evaluate(file->Callback);
 	return;
 
-	case "v":
+    case "v":
 	eventPrint("Dead Souls Pager v3.0 by Descartes of Borg 951104",
-		   MSG_HELP);
+	  MSG_HELP);
 	eventPrint(GetPagerPrompt(file), MSG_PROMPT);
 	input_to((: cmdPage :), file);
 	return;
 
-	default:
+    default:
 	eventPrint("\a'h' for help", MSG_ERROR);
 	eventPrint(GetPagerPrompt(file), MSG_PROMPT);
 	input_to((: cmdPage :), file);
@@ -314,7 +314,7 @@ static void cmdPage(string str, class page_file file) {
 
 varargs static private void RazzleDazzle(mixed args...) {
     function f;
-	  
+
     InPager = 0;
     f = args[0];
     if( !functionp(f) || functionp(f) == FP_OWNER_DESTED ) return;
@@ -326,9 +326,9 @@ varargs static private void RazzleDazzle(mixed args...) {
 
 static private string GetPagerPrompt(class page_file file) {
     int x;
-    
+
     if( creatorp() && file->Name != "" )
-      return "%^BOLD%^" + file->Name + ":%^RESET%^ ";
+	return "%^BOLD%^" + file->Name + ":%^RESET%^ ";
     if( file->CurrentLine >= (file->Size - 1) ) return "END: ";
     x = ((100 * file->CurrentLine)/(file->Size - 1));
     if( x < 0 ) x = 0;
@@ -339,26 +339,26 @@ static private string GetPagerPrompt(class page_file file) {
 string GetHelp(string str) {
     if( str != "pager" ) return 0;
     return ("/<pattern>, ?<pattern>\n"
-	    "The pattern is optional.  / searches forward for a pattern.  "
-	    "If no pattern is specified, the last search pattern is "
-	    "repeated.  ? does the same, except searching backwards.\n"
-	    "b\n"
-	    "Move back one page.\n"
-	    "<return>\n"
-	    "Move ahead one page.\n"
-	    "n\n"
-	    "Move to the next file in the group of files being paged.\n"
-	    "m<tag>\n"
-	    "Mark the current line and asociate it with tag.  You can mark "
-	    "any number of lines.\n"
-	    ",<tag>\n"
-	    "Move to the named tag.\n"
-	    "g<line>, G<line>\n"
-	    "Go to the named line.  If no line is named, 'g' goes to the "
-	    "beginning of the file.  In contras, 'G' will go to the end.\n"
-	    "p<percent>\n"
-	    "Move to the line <percent> lines into the file.\n"
-	    "q\n"
-	    "Quit out of the pager.");
+      "The pattern is optional.  / searches forward for a pattern.  "
+      "If no pattern is specified, the last search pattern is "
+      "repeated.  ? does the same, except searching backwards.\n"
+      "b\n"
+      "Move back one page.\n"
+      "<return>\n"
+      "Move ahead one page.\n"
+      "n\n"
+      "Move to the next file in the group of files being paged.\n"
+      "m<tag>\n"
+      "Mark the current line and asociate it with tag.  You can mark "
+      "any number of lines.\n"
+      ",<tag>\n"
+      "Move to the named tag.\n"
+      "g<line>, G<line>\n"
+      "Go to the named line.  If no line is named, 'g' goes to the "
+      "beginning of the file.  In contras, 'G' will go to the end.\n"
+      "p<percent>\n"
+      "Move to the line <percent> lines into the file.\n"
+      "q\n"
+      "Quit out of the pager.");
 }
 

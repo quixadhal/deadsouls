@@ -1,5 +1,5 @@
 /*    /lib/props/ambiance.c
- *    From the Dead Souls V LPC Library
+ *    From the Dead Souls LPC Library
  *    Ambiance is natural light in an area
  *    Created by Descartes of Borg 961221
  *    Version: @(#) ambiance.c 1.1@(#)

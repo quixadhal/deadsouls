@@ -11,9 +11,12 @@
 #define GAS                (1 << 8)
 #define ACID               (1 << 9)
 #define MAGIC              (1 << 10)
+#define POISON             (1 << 11)
+#define DISEASE            (1 << 12)
+#define TRAUMA             (1 << 13)
 
-#define MAX_DAMAGE_BIT     MAGIC
+#define MAX_DAMAGE_BIT     TRAUMA
 
-#define ALL_DAMAGE  BLUNT | BLADE | KNIFE | WATER | SHOCK | COLD | HEAT | GAS | ACID | MAGIC
+#define ALL_DAMAGE  BLUNT | BLADE | KNIFE | WATER | SHOCK | COLD | HEAT | GAS | ACID | MAGIC | POISON | DISEASE | TRAUMA
 
 #endif /* s_damage_types_h */

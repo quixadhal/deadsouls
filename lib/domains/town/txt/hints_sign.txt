@@ -1,0 +1,64 @@
+HELPFUL HINTS
+
+- This is a special sample area of places, objects and creatures. It is not a mud. It is a set of examples that can be used in making a mud. If you are reading this, it's because you are in a mud that is under construction.
+
+- Since this is a sample area, the mud creators may have changed things so much that the stuff below might not all apply to you.
+
+- The wimpy command will make you automatically run away from combat when your health hits the percentage you specify.
+
+- Carrying a lot of stuff makes it harder to fight well.
+
+- Armor is very important. Without it, it is very easy to lose life and limb.
+
+- If you can't carry all your money, deposit some in the bank.
+
+- "wear all" is a quick way to equip, but don't forget to "wield", too.
+
+- If you're hurt, go to Clepius for healing. He can also cure diseases, restore severed limbs, and extract foreign objects.
+
+- Make sure to read any signs or lists you see. They contain important instructions.
+
+- Advancing in levels improves your statistics and enhances your abilities. See Dirk in the Adventurer's Hall for details.
+
+- Once you choose a class, such as fighter or mage, it is hard to switch again, and expensive.
+
+- Anyone can learn spells, but it's easier for mages and they get more bang for the buck. However, mages are pretty weak, physically.
+
+- Fighters are big and tough, but being dumb and clumsy has drawbacks.
+
+- Getting drunk and sleeping enhances healing rate, but once you are asleep you have to wait to wake up. It can be anywhere between two and ten minutes.
+
+- Avoiding hunger and thirst enhances healing.
+
+- Bags and packs to put things in make it easier to carry a lot of stuff around.
+
+- Without a weapon, humanoids are quite vulnerable in combat.
+
+- If your foot or leg is severed, you cannot stand or walk. To go anywhere while lying down, you must "crawl". For example, "crawl south".
+
+- If you are lying down or sitting, you cannot fight.
+
+- Your skills improve with use. For example, spellcasting, combat, defense, and stealing, all get better the more you do it.
+
+- If you are badly overmatched in a fight, try hiring mercenaries or finding magical items to enhance your abilities. Or heck, ask a friend to connect and help you fight.
+
+- Room lighting can be deceptive. You might be able to see enough to make out what a room looks like, but not enough to see all the exits or all the stuff in a room. If in doubt, use a light source, like a torch or flashlight.
+
+- Even if you can see the room well, some items may be hidden. "search" is a useful command for finding hidden items.
+
+- Sometimes having many similar objects can be confusing. Or you might have armor that can be worn on different limbs. You may have to be specific. Examples:
+	- sell first boot to otik
+	- buy large flashlight from otik
+	- put small knife in leather pack
+	- wield short sword in right hand
+	- wear badge on torso
+	- shoot second orc with water pistol
+	- read inscription on ring (instead of read ring)
+	- push second button
+	- eat my first ham sandwich
+	- articulate grand unification theory (doesn't work quite yet)
+
+- South of the church is a newbie mansion, with lots of treasure and stuff for newbies. There's even a quest or two to solve. Just don't expect to get past the guard after reaching non-newbie status.
+
+- This mud is under construction, so you may get stuck or find a bad bug. Don't get mad. Just report the bug or ask for help.
+

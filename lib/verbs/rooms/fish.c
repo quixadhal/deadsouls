@@ -1,5 +1,5 @@
 /*    /verbs/rooms/fish.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    fish with OBJ
  *    created by Descartes of Borg 951016
  */
@@ -17,9 +17,9 @@ static void create() {
     SetRules("with OBJ");
     SetErrorMessage("Fish with what?");
     SetHelp("Syntax: <fish with OBJ>\n\n"
-	    "Starts you fishing so long as OBJ is something you can fish "
-	    "with and you are in a place that allows fishing.\n\n"
-	    "See also: cast, stop");
+      "Starts you fishing so long as OBJ is something you can fish "
+      "with and you are in a place that allows fishing.\n\n"
+      "See also: cast, stop");
 }
 
 mixed can_fish_with_obj() {

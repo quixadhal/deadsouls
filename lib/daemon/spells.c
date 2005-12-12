@@ -27,7 +27,7 @@ void eventReloadSpells() {
     spells = get_dir(DIR_SPELLS "/*.c");
     foreach(string spell in spells) {
 	object ob = find_object(DIR_SPELLS "/" + spell);
-	
+
 	if( ob ) {
 	    ob->eventDestruct();
 	}

@@ -39,12 +39,13 @@ static void create() {
     ChannelList->ID = -1;
     ChannelList->List = ([]);
     if( file_size( SAVE_INTERMUD __SAVE_EXTENSION__ ) > 0 )
-      unguarded( (: restore_object, SAVE_INTERMUD, 1 :) );
+	unguarded( (: restore_object, SAVE_INTERMUD, 1 :) );
     SetNoClean(1);
     SetDestructOnClose(1);
     SetSocketType(MUD);
-    if(mud_name() != "DeadSouls") call_out( (: Setup :), 2);
+    call_out( (: Setup :), 2);
 }
+
 
 static void Setup() {
     string ip;
@@ -54,11 +55,11 @@ static void Setup() {
     sscanf(Nameservers[0][1], "%s %d", ip, port);
     if( eventCreateSocket(ip, port) < 0 ) return;
     eventWrite( ({ "startup-req-3", 5, mud_name(), 0, Nameservers[0][0], 0,
-		   Password, MudList->ID, ChannelList->ID, query_host_port(),
-		   PORT_OOB, PORT_UDP, mudlib() + " " + mudlib_version(), 
-		   mudlib() + " " + mudlib_version(), version(), "LPMud",
-		   MUD_STATUS, ADMIN_EMAIL,
-		   (mapping)SERVICES_D->GetServices(), ([]) }) );
+	Password, MudList->ID, ChannelList->ID, query_host_port(),
+	PORT_OOB, PORT_UDP, mudlib() + " " + mudlib_version(), 
+	mudlib() + " " + mudlib_version(), version(), "LPMud",
+	MUD_STATUS, ADMIN_EMAIL,
+	(mapping)SERVICES_D->GetServices(), ([]) }) );
 }
 
 static void eventRead(mixed *packet) {
@@ -72,113 +73,113 @@ static void eventRead(mixed *packet) {
 	string reason = Banned[packet[2]];
 
 	eventWrite(({ "error", 5, mud_name(), 0, packet[2],
-			  packet[3], "unk-user", 
-			  "Your mud is not allowed to send to Dead Souls.",
-			  packet }));
-	
+	    packet[3], "unk-user", 
+	    "Your mud is not allowed to send to Dead Souls.",
+	    packet }));
+
 	return;
     }
     switch(packet[0]) {
-	case "startup-reply":
-	  if( sizeof(packet) != 8 ) return;  /* should send error */
-	  if( !sizeof(packet[6]) ) return;
-	  if( packet[6][0][0] == Nameservers[0][0] ) {
-	      Nameservers = packet[6];
-	      Connected = Nameservers[0][0];
-	      Password = packet[7];
-	      save_object(SAVE_INTERMUD);
-	  }
-	  else {
-	      Nameservers = packet[6];
-	      Setup();
-	  }
-	  return;
-        case "mudlist":
-	  if( sizeof(packet) != 8 ) return;
-	  if( packet[6] == MudList->ID ) return; 
-	  if( packet[2] != Nameservers[0][0] ) return;
-	  MudList->ID = packet[6];
-	  foreach(cle, val in packet[7]) {
-	      if( !val && MudList->List[cle] != 0 ) 
+    case "startup-reply":
+	if( sizeof(packet) != 8 ) return;  /* should send error */
+	if( !sizeof(packet[6]) ) return;
+	if( packet[6][0][0] == Nameservers[0][0] ) {
+	    Nameservers = packet[6];
+	    Connected = Nameservers[0][0];
+	    Password = packet[7];
+	    save_object(SAVE_INTERMUD);
+	}
+	else {
+	    Nameservers = packet[6];
+	    Setup();
+	}
+	return;
+    case "mudlist":
+	if( sizeof(packet) != 8 ) return;
+	if( packet[6] == MudList->ID ) return; 
+	if( packet[2] != Nameservers[0][0] ) return;
+	MudList->ID = packet[6];
+	foreach(cle, val in packet[7]) {
+	    if( !val && MudList->List[cle] != 0 ) 
 		map_delete(MudList->List, cle);
-	      else if( val ) MudList->List[cle] = val;
-	  }
-	  save_object(SAVE_INTERMUD);
-	  return;
-        case "channel-t":
-	  SERVICES_D->eventReceiveChannelTargettedEmote(packet);
-	  break;
-        case "channel-e":
-	  SERVICES_D->eventReceiveChannelEmote(packet);
-	  break;
-	case "channel-m":
-	  SERVICES_D->eventReceiveChannelMessage(packet);
-	  break;
-	case "chan-who-reply":
-	  SERVICES_D->eventReceiveChannelWhoReply(packet);
-	  break;
-	case "chan-who-req":
-	  SERVICES_D->eventReceiveChannelWhoRequest(packet);
-	  break;
-        case "chan-user-req":
-	  SERVICES_D->eventReceiveChannelUserRequest(packet);
-	  break;
-        case "chanlist-reply":
-//	  if( packet[6] == ChannelList->ID ) return; 
-	  if( packet[2] != Nameservers[0][0] ) return;
-	  ChannelList->ID = packet[6];
-	  foreach(cle, val in packet[7]) { 
-	      if( !val && ChannelList->List != 0 ) 
+	    else if( val ) MudList->List[cle] = val;
+	}
+	save_object(SAVE_INTERMUD);
+	return;
+    case "channel-t":
+	SERVICES_D->eventReceiveChannelTargettedEmote(packet);
+	break;
+    case "channel-e":
+	SERVICES_D->eventReceiveChannelEmote(packet);
+	break;
+    case "channel-m":
+	SERVICES_D->eventReceiveChannelMessage(packet);
+	break;
+    case "chan-who-reply":
+	SERVICES_D->eventReceiveChannelWhoReply(packet);
+	break;
+    case "chan-who-req":
+	SERVICES_D->eventReceiveChannelWhoRequest(packet);
+	break;
+    case "chan-user-req":
+	SERVICES_D->eventReceiveChannelUserRequest(packet);
+	break;
+    case "chanlist-reply":
+	//	  if( packet[6] == ChannelList->ID ) return; 
+	if( packet[2] != Nameservers[0][0] ) return;
+	ChannelList->ID = packet[6];
+	foreach(cle, val in packet[7]) { 
+	    if( !val && ChannelList->List != 0 ) 
 		map_delete(ChannelList->List, cle);
-	      else if( val ) ChannelList->List[cle] = val;
-	  } 
-	  save_object(SAVE_INTERMUD);
-	  SERVICES_D->eventRegisterChannels(packet[7]);
-	  return;
-        case "emoteto":
-	  SERVICES_D->eventReceiveEmote(packet);
-	  break;
-	case "finger-req":
-	  SERVICES_D->eventReceiveFingerRequest(packet);
-	  break;
-	case "finger-reply":
-	  SERVICES_D->eventReceiveFingerReply(packet);
-	  break;
-        case "locate-req":
-	  SERVICES_D->eventReceiveLocateRequest(packet);
-	  break;
-        case "locate-reply":
-	  SERVICES_D->eventReceiveLocateReply(packet);
-	  break;
-        case "tell":
-	  SERVICES_D->eventReceiveTell(packet);
-	  break;
-        case "chan-user-reply":
-        case "ucache-update":
-	  SERVICES_D->eventReceiveUcacheUpdate(packet);
-	  break;
-        case "who-req":
-	  SERVICES_D->eventReceiveWhoRequest(packet);
-	  break;
-        case "who-reply":
-	  SERVICES_D->eventReceiveWhoReply(packet);
-	  break;
-        case "news":
-	  SERVICES_D->eventReceiveNews(packet);
-	  break;
-        case "mail":
-	  SERVICES_D->eventReceiveMail(packet);
-	  break;
-        case "mail-ok":
-	  SERVICES_D->eventReceiveMailOk(packet);
-	  break;
-        case "file":
-	  break;
-        case "error":
-	  SERVICES_D->eventReceiveError(packet);
-	  break;
-        default:
-	  break;
+	    else if( val ) ChannelList->List[cle] = val;
+	} 
+	save_object(SAVE_INTERMUD);
+	SERVICES_D->eventRegisterChannels(packet[7]);
+	return;
+    case "emoteto":
+	SERVICES_D->eventReceiveEmote(packet);
+	break;
+    case "finger-req":
+	SERVICES_D->eventReceiveFingerRequest(packet);
+	break;
+    case "finger-reply":
+	SERVICES_D->eventReceiveFingerReply(packet);
+	break;
+    case "locate-req":
+	SERVICES_D->eventReceiveLocateRequest(packet);
+	break;
+    case "locate-reply":
+	SERVICES_D->eventReceiveLocateReply(packet);
+	break;
+    case "tell":
+	SERVICES_D->eventReceiveTell(packet);
+	break;
+    case "chan-user-reply":
+    case "ucache-update":
+	SERVICES_D->eventReceiveUcacheUpdate(packet);
+	break;
+    case "who-req":
+	SERVICES_D->eventReceiveWhoRequest(packet);
+	break;
+    case "who-reply":
+	SERVICES_D->eventReceiveWhoReply(packet);
+	break;
+    case "news":
+	SERVICES_D->eventReceiveNews(packet);
+	break;
+    case "mail":
+	SERVICES_D->eventReceiveMail(packet);
+	break;
+    case "mail-ok":
+	SERVICES_D->eventReceiveMailOk(packet);
+	break;
+    case "file":
+	break;
+    case "error":
+	SERVICES_D->eventReceiveError(packet);
+	break;
+    default:
+	break;
     }
 }
 
@@ -206,43 +207,43 @@ string GetMudName(string mud) {
 
     if( MudList->List[mud] ) return mud;
     lc = map(uc = keys(MudList->List), function(string str) {
-      if( !str ) return "";
-      else return lower_case(str);
-    });
-    x = member_array(lower_case(mud), lc);
-    if( x < 0 ) return 0;
-    else return uc[x];
-}
+	  if( !str ) return "";
+	  else return lower_case(str);
+	});
+      x = member_array(lower_case(mud), lc);
+      if( x < 0 ) return 0;
+      else return uc[x];
+  }
 
-mapping GetMudList() { return copy(MudList->List); }
+    mapping GetMudList() { return copy(MudList->List); }
 
-string *GetMuds() { return keys(MudList->List); }
+    string *GetMuds() { return keys(MudList->List); }
 
-mapping GetChannelList() { return copy(ChannelList->List); }
+    mapping GetChannelList() { return copy(ChannelList->List); }
 
-string *GetChannels() { return keys(ChannelList->List); }
+    string *GetChannels() { return keys(ChannelList->List); }
 
-string *GetMatch(string mud) {
-    string *uc, *lc;
+    string *GetMatch(string mud) {
+	string *uc, *lc;
 
-    mud = lower_case(mud);
-    lc = map(uc = keys(MudList->List), (: lower_case :));
-    return map(filter(regexp(lc, "^"+mud, 1), (: intp :)), (: $(uc)[$1] :));
-}
-
-string GetNameserver() { return Nameservers[0][0]; }
-
-int AddBanned(string mud, string reason) {
-    if( !master()->valid_apply(({})) ) {
-    	return 0;
+	mud = lower_case(mud);
+	lc = map(uc = keys(MudList->List), (: lower_case :));
+	return map(filter(regexp(lc, "^"+mud, 1), (: intp :)), (: $(uc)[$1] :));
     }
-    if( !(mud = GetMudName(mud)) ) {
-	return 0;
+
+    string GetNameserver() { return Nameservers[0][0]; }
+
+    int AddBanned(string mud, string reason) {
+	if( !master()->valid_apply(({})) ) {
+	    return 0;
+	}
+	if( !(mud = GetMudName(mud)) ) {
+	    return 0;
+	}
+	Banned[mud] = reason;
+	save_object(SAVE_INTERMUD);
+	return 1;
     }
-    Banned[mud] = reason;
-    save_object(SAVE_INTERMUD);
-    return 1;
-}
 
 #endif /* __PACKAGE_SOCKETS__ */
 

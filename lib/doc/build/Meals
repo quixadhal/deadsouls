@@ -1,0 +1,150 @@
+		   Building Food and Drink Objects
+		     The Nightmare IV LPC Library
+		 written by Descartes of Borg 950603
+
+This document details the creation of food and drinks using the
+Nightmare LPC Library.  The creation of barkeeper objects requires you
+to be able to build these objects, so make sure you understand what is
+going on in here before moving on to barkeepers.
+
+To create food or drink, you inherit from the standard meal object
+/lib/meal.c  For example:
+
+#include <lib.h>
+
+inherit LIB_MEAL;
+
+You have access to the same functions you have in generic items when
+you build food and drinks.  In particular, you should be sure to call
+the following:
+
+SetKeyName()
+SetId()
+SetShort()
+SetLong()
+SetMass()
+
+Note that SetValue() does NOTHING for food and drinks.  Value is
+automatically determined by the strength of the item.
+
+The following function calls are specific to "meal" objects:
+
+int SetMealType(int types);
+int SetStrength(int strength);
+
+mixed *SetMealMessages(function f);
+OR
+mixed *SetMealmessages(string mymsg, string othermsg);
+
+string SetEmptyName(string str);
+string SetEmptyShort(string str);
+string SetEmptyLong(string str);
+string SetEmptyItem(string str);
+
+You must call SetMealType(), SetStrength(), and SetMealMessages().
+If you call SetEmptyItem(), you do not need to call the functions
+SetEmptyName(), SetEmptyShort(), SetEmptyLong().  On the other hand,
+if you do not call SetEmptyItem(), you do need to set the other three.
+
+*****
+int SetMealType(int types)
+*****
+
+Example: SetMealType(MEAL_FOOD);
+
+For meal objects, you must do:
+
+#include <meal_types.h>
+
+This includes all od the definitions for the meal types in
+/include/meal_types.h into your food or drink.  You need these
+definitions when setting what type of meal object this is.  The types
+are:
+
+MEAL_FOOD       
+MEAL_DRINK      
+MEAL_CAFFEINE    
+MEAL_ALCOHOL     
+MEAL_POISON      
+
+In general, almost anything you create will be at least either
+MEAL_FOOD or MEAL_DRINK.  You can add onto it using the | operator.
+For example, to make an alcoholic drink:
+
+SetMealType(MEAL_DRINK | MEAL_ALCOHOL);
+
+This makes something a drink and an alcoholic drink.  You want to
+stick poison in it?
+
+SetMealType(MEAL_DRINK | MEAL_ALCOHOL | MEAL_POISON);
+
+*****
+int SetStrength(int x)
+*****
+
+Example: SetStrength(20);
+
+This sets how strong your food or drink is.  It affects things like
+which people can drink or eat it and how much the drink or food costs.
+Refer to balance documents to see what is good.
+
+*****
+varargs mixed *SetMealMessages(function|string, string)
+*****
+
+Examples:
+	SetMealMessages((: call_other(find_object("/some/object"),"drink") :));
+	SetMealmessages("You drink your beer.", "$N drinks $P beer.");
+
+You can pass a single argument, which is a function to be called.
+This function will be called after the person has drank or eaten the
+meal.  It gives you a chance to do some bizarre messaging and such.
+
+If you pass two strings, the first string is used as a message to send
+to the player doing the drinking, and the second is what everyone else
+sees.  To make the message versatile, you can put in the following
+place holders:
+
+$N the name of the drinker/eater
+$P his/her/its
+
+For example:
+$N drinks $P beer.
+might resolve to:
+Descartes drinks his beer.
+
+*****
+string SetEmptyName(string str)
+*****
+
+Example: SetEmptyName("bottle");
+
+Sets an id from the empty container of drinks.  This need not be set
+for food.
+
+*****
+string SetEmptyShort(string str)
+*****
+
+Example: SetEmptyShort("an empty bottle")
+
+Sets what the short description of the empty container is for anything
+that is of type MEAL_DRINK.
+
+*****
+string SetEmptyLong(string str)
+*****
+
+Example: SetEmptyLong("A brown bottle that used to contain beer.");
+
+Sets the long description for the empty container for drink objects.
+
+*****
+string SetEmptyItem(string str)
+*****
+
+Example: SetEmptyItem("/domains/Praxis/etc/empty_bottle")
+
+Instead of cloning a generic empty object and setting the other empty
+functions, you can create a special empty container which gets given
+to the player after they drink a drink object.  Not relevant to food.

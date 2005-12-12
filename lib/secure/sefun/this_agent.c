@@ -16,4 +16,4 @@ varargs object this_agent(mixed val) {
     else Agent = val;
     return old_agent;
 }
-    
+

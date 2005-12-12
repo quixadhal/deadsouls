@@ -1,5 +1,5 @@
 /*    /verbs/players/speak.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    speak
  *    speak STR
  *    speak in WRD STR
@@ -32,7 +32,7 @@ mixed can_speak_in_wrd(string str) {
 
 mixed can_speak_str(string str) {
     string lang;
-    
+
     if( !str ) return 0;
     if( strlen(str) > 3 && str[0..2] == "in " ) return 0;
     lang = (string)this_player()->GetNativeLanguage() || "english";
@@ -58,19 +58,19 @@ mixed do_speak_str(string str) {
 
 mixed do_speak_in_wrd_str(string lang, string str) {
     if( str[<1] != '.' && str[<1] != '?' && str[<1] != '!' )
-      str = capitalize(str) + ".";
+	str = capitalize(str) + ".";
     else str = capitalize(str);
     return (mixed)this_player()->eventSpeak(0, TALK_LOCAL, str, lang);
 }
 
 string GetHelp(string str) {
     return ("Syntax: <speak MESSAGE>\n"
-	    "        <speak in LANGUAGE MESSAGE>\n\n"
-	    "Sends the message you specify to all people in the same room "
-	    "as you.  If you are an avatar, you have the ability to customize "
-	    "the way these messages come out through the \"message\" "
-	    "command.  If you fail to specify a language, your native "
-	    "language will be used.\n\n"
-	    "See also: message, say, shout, speak, tell");
+      "        <speak in LANGUAGE MESSAGE>\n\n"
+      "Sends the message you specify to all people in the same room "
+      "as you.  If you are an avatar, you have the ability to customize "
+      "the way these messages come out through the \"message\" "
+      "command.  If you fail to specify a language, your native "
+      "language will be used.\n\n"
+      "See also: message, say, shout, speak, tell");
 }
 

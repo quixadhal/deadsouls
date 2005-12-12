@@ -4,9 +4,9 @@
  */
 
 #include <lib.h>
- 
+
 inherit LIB_TORCH;
- 
+
 static void create() {
     torch::create();
     SetKeyName("torch");

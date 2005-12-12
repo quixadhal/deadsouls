@@ -1,9 +1,9 @@
 #include <lib.h>
-#include <armour_types.h>
+#include <armor_types.h>
 #include <damage_types.h>
-inherit LIB_ARMOUR;
+inherit LIB_ARMOR;
 static void create(){
-    armour::create();
+    armor::create();
     SetKeyName("damp towel");
     SetId(({"towel"}));
     SetAdjectives(({"damp","bath","ordinary", "bathtowel"}));
@@ -14,5 +14,5 @@ static void create(){
     SetProtection(BLUNT,1);
     SetProtection(BLADE,1);
     SetProtection(KNIFE,1);
-    SetArmourType(A_PANTS);
+    SetArmorType(A_PANTS);
 }

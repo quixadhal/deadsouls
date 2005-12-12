@@ -22,7 +22,7 @@ static void create() {
 
     daemon::create();
     if( file_size(SAVE_BUGS __SAVE_EXTENSION__) > 0 )
-      unguarded( (: restore_object, SAVE_BUGS :));
+	unguarded( (: restore_object, SAVE_BUGS :));
     if( NextID < 1 || !Bugs ) {
 	NextID = 1;
 	Bugs = ([]);
@@ -31,10 +31,10 @@ static void create() {
     foreach(bug_id, bug in Bugs) {
 	if( !bug["date assigned"] ) continue;
 	if( t - bug["date assigned"] > UNCOMPLETED_LIFE ) 
-	  map_delete(Bugs, bug_id);
+	    map_delete(Bugs, bug_id);
 	else if( bug["date assigned"] && bug["date fixed"] ) {
 	    if( t - bug["date fixed"] > COMPLETED_LIFE )
-	      map_delete(Bugs, bug_id);
+		map_delete(Bugs, bug_id);
 	}
     }
     unguarded( (: save_object, SAVE_BUGS :));
@@ -79,7 +79,7 @@ int eventReport(string who, string type, string bug, string data) {
 
     x = NextID++;
     Bugs[x] = ([ "who" : who, "type" : type, "bug" : bug, "data" : data, 
-		"assigned" : 0, "date fixed" : 0, "resolution" : 0 ]);
+      "assigned" : 0, "date fixed" : 0, "resolution" : 0 ]);
     if( unguarded( (: save_object, SAVE_BUGS :) ) ) return x;
     else {
 	map_delete(Bugs, x);
@@ -92,8 +92,8 @@ int GetAssignedBugs(string who) {
     int id, x = 0;
 
     foreach( id, rep in Bugs) 
-      if( rep["assigned"] && !rep["date fixed"] &&
-        (convert_name(rep["assigned"]) == who) ) x++;
+    if( rep["assigned"] && !rep["date fixed"] &&
+      (convert_name(rep["assigned"]) == who) ) x++;
     return x;
 }
 

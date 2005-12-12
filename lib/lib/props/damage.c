@@ -1,5 +1,5 @@
 /*    /lib/props/damage.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Things that do damage to other things
  *    Created by Descartes of Borg 970101
  *    Version: @(#) damage.c 1.1@(#)
@@ -51,4 +51,4 @@ string array GetSave() {
 int eventStrike(object ob) {
     return GetClass();
 }
- 
+

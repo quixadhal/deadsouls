@@ -24,14 +24,14 @@ int cmd(string str) {
     str = absolute_path((string)this_player()->get_path(), str);
     if(file_size(str) == -1) return notify_fail("Invalid path.\n");
     if(file_size(file = str) != -2) {
-        i = sizeof(tmp = explode(str, "/"));
-        if(i < 2) str = "/";
-        else str = "/"+implode(tmp[0..i-2], "/");
+	i = sizeof(tmp = explode(str, "/"));
+	if(i < 2) str = "/";
+	else str = "/"+implode(tmp[0..i-2], "/");
     }
     if(str[strlen(str)-1] != '/') str += "/";
     str += CHANGELOG;
     message("system", "Logging changes to "+str+"...", this_player());
-     this_player()->eventEdit(TMP_FILE, (: post_change, ({ file, str }) :));
+    this_player()->eventEdit(TMP_FILE, (: post_change, ({ file, str }) :));
     return 1;
 }
 
@@ -52,7 +52,7 @@ void post_change(mixed *args) {
     maxi = sizeof(tmp = explode(wrap(str, 60), "\n"));
     str = "-  "+ change+"\n";
     str += "   "+ctime(time())+" by "+(string)previous_object()->GetCapName()+
-      "("+(string)previous_object()->query_rname()+"):\n";
+    "("+(string)previous_object()->query_rname()+"):\n";
     for(i=0; i<maxi; i++) str += "     * "+tmp[i]+"\n";
     if(str2 = read_file(file)) str2 = str+"\n\n"+str2;
     else str2 = str;
@@ -66,9 +66,9 @@ void post_change(mixed *args) {
 void help()
 {
     message( "help",
-	"Syntax: changelog <directory>\n"
-        "Lets you enter documentation on changes you have made to files in "
-        "directory <directory>\n"
-	, this_player()
+      "Syntax: changelog <directory>\n"
+      "Lets you enter documentation on changes you have made to files in "
+      "directory <directory>\n"
+      , this_player()
     );
 }

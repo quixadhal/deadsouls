@@ -14,7 +14,7 @@ mixed cmd(string args) {
     string cmd = args;
     object who;
     int i;
-	
+
     if( !cmd || cmd == "" ) {
 	return "Syntax: <force LIVING COMMAND>";
     }
@@ -38,10 +38,10 @@ mixed cmd(string args) {
 	return "You cannot do that!";
     }
     previous_object()->eventPrint("You force " + who->GetName() +
-				  " to " + cmd + ".");
+      " to " + cmd + ".");
     if( !archp(previous_object()) ) {
 	who->eventPrint("WARNING: " + previous_object()->GetCapName() +
-			" forces you to: " + cmd);
+	  " forces you to: " + cmd);
     }
     who->eventForce(cmd);
     return 1;
@@ -49,8 +49,8 @@ mixed cmd(string args) {
 
 string GetHelp(string topic) {
     return ("Syntax: <force LIVING COMMAND>\n\n"
-	    "Allows you to force some living being to do something.  "
-	    "Abuse of this command is grounds for removal from "
-	    "%^I%^" + mud_name() + "%^/I%^.  Creators should only ever "
-	    "use this command on test characters and NPC's in unopen areas.");
+      "Allows you to force some living being to do something.  "
+      "Abuse of this command is grounds for removal from "
+      "%^I%^" + mud_name() + "%^/I%^.  Creators should only ever "
+      "use this command on test characters and NPC's in unopen areas.");
 }

@@ -1,5 +1,5 @@
 /*    /verbs/rooms/cast.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    cast OBJ in STR
  *    cast OBJ
  *    created by Descartes of Borg 951016
@@ -25,7 +25,7 @@ mixed can_cast_obj(object ob) {
 
     if( !ob ) return 0;
     if( (err = (int)ob->CanCast(this_player())) != 1 )
-      return (err || "You can't cast " + (string)ob->GetShort() + ".");
+	return (err || "You can't cast " + (string)ob->GetShort() + ".");
     if( !(env = environment(this_player())) ) return 0;
     err = (mixed)env->CanCast(this_player(), ob);
     if( err == 1 ) return 1;
@@ -43,7 +43,7 @@ mixed do_cast_obj(object ob) {
 
 string GetHelp(string str) {
     return "Syntax: <cast OBJ>\n\n"
-      "Starts you fishing so long as OBJ is something you can fish with  "
-      "and you are in a place that allows fishing.\n\n"
-      "See also: fish, stop";
+    "Starts you fishing so long as OBJ is something you can fish with  "
+    "and you are in a place that allows fishing.\n\n"
+    "See also: fish, stop";
 }

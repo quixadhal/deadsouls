@@ -8,9 +8,8 @@
 
 inherit LIB_DAEMON;
 
-int cmd(string unused) {
-    check_memory();
-    return 1;
+string cmd(string unused) {
+    return check_memory();
 }
 
 void help() {

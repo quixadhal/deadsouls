@@ -38,7 +38,7 @@ mixed eventKill(object target) {
 
 mapping GetKills(string who) {
     string file;
-    
+
     who = convert_name(who);
     file = DIR_KILLS "/" + who[0..0] + "/" + who;
     if( unguarded((: file_size, file :)) < 1 ) return ([]);

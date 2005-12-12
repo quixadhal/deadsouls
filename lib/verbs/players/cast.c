@@ -14,16 +14,16 @@ static void create() {
     verb::create();
     SetVerb("cast");
     SetRules("STR", "STR on OBJ", "STR on STR", "STR on STR of OBJ",
-	     "STR against STR");
+      "STR against STR");
     SetErrorMessage("Cast what spell? On whom?");
     SetHelp("Syntax: <cast SPELL>\n"
-	    "        <cast SPELL on LIMB>\n"
-	    "        <cast SPELL against STRING>\n"
-	    "        <cast SPELL on TARGET>\n"
-	    "        <cast SPELL on LIMB of TARGET>\n\n"
-	    "Allows you to cast any spell using whatever syntax the "
-	    "spell in question requires.  To heal someone, for example, "
-	    "\"cast heal on descartes\".");
+      "        <cast SPELL on LIMB>\n"
+      "        <cast SPELL against STRING>\n"
+      "        <cast SPELL on TARGET>\n"
+      "        <cast SPELL on LIMB of TARGET>\n\n"
+      "Allows you to cast any spell using whatever syntax the "
+      "spell in question requires.  To heal someone, for example, "
+      "\"cast heal on descartes\".");
 }
 
 mixed can_cast_str(string spell) {

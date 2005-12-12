@@ -37,7 +37,7 @@ static string eventHistory(string str) {
     }
     else {
 	int x;
-	    
+
 	if( str[1] == '-' ) {
 	    sscanf(str, "!-%d%s", x, args);
 	    if( !x ) cmd = "";
@@ -61,7 +61,7 @@ static string eventHistory(string str) {
     len = strlen(args);
     if( args[0] != '^' && args[0] != 's' ) {
 	if( len > 1 && args[0] == '\\' && (args[1] == '^' || args[1] == 's') )
-	  args = args[1..];
+	    args = args[1..];
 	return Push(cmd + args);
     }
     if( len < 3 ) {
@@ -155,7 +155,7 @@ private string GetHistory(mixed val) {
     }
     else if( stringp(val) ) {
 	int i, x;
-	
+
 	x = (CommandNumber-2) % sizeof(History);
 	for(i = x; i>=0; i--) {
 	    if( !History[i] ) continue;
@@ -177,7 +177,7 @@ string *GetHistoryList() {
 
 int SetHistorySize(int x) {
     if( !((int)master()->valid_apply(({ GetKeyName() }))) )
-      return HistorySize;    
+	return HistorySize;    
     if( x == HistorySize ) return HistorySize;
     if( x > MAX_HISTORY_SIZE ) return HistorySize;
     else if( x < MIN_HISTORY_SIZE ) return HistorySize;

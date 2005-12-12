@@ -1,5 +1,5 @@
 /*    /lib/fish.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    fish objects which get caught
  *    created by Descartes of Borg 951009
  */
@@ -8,13 +8,13 @@
 #include <lib.h>
 #include "include/fish.h"
 
-inherit LIB_OBJECT;
+inherit LIB_MEAL;
 
 static private int Mass, Fight;
 static private string Food;
 
 static void create() {
-    object::create();
+    meal::create();
     Mass = 0;
     Food = 0;
     Fight = 0;

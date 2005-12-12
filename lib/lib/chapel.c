@@ -41,20 +41,21 @@ mixed CanMarry(object who, object spouse1, object spouse2) {
     if( archp(who) ) {
 	return 1;
     }
-    if( (string)who->GetReligion(1) == Religion[1] ) {
-	foreach(cls in Classes)
-	  if( (int)who->ClassMember(cls) ) return 1;
-    }
-    return "You are not allowed to perform marriages here.";
+    //if( (string)who->GetReligion(1) == Religion[1] ) {
+    //	foreach(cls in Classes)
+    //	  if( (int)who->ClassMember(cls) ) return 1;
+    //   }
+    //  return "You are not allowed to perform marriages here.";
+    return 1;
 }
 
 mixed CanSacrifice(object who, object what, string deus) {
     if( (string)who->GetReligion(1) != Religion[1] )
-      return "You must hold the beliefs of " + Religion[1] + " to do that.";
+	return "You must hold the beliefs of " + Religion[1] + " to do that.";
     if( !((int)what->GetVendorType() & SacrificeType) )
-      return "You cannot sacrifice that here.";
+	return "You cannot sacrifice that here.";
     if( member_array(deus, DeityIds) == -1 )
-      return "You do not worship anything called \"" + deus + "\".";
+	return "You do not worship anything called \"" + deus + "\".";
     return AllowSacrifice;
 }
 
@@ -66,18 +67,18 @@ mixed eventMarry(object who, object spouse1, object spouse2) {
 	spouse1->SetMarried(0);
 	return tmp;
     }
-   spouse1->eventPrint((string)who->GetName() + " weds you to " +
-		       (string)spouse2->GetName() + ".");
-   spouse2->eventPrint((string)who->GetName() + " weds you to " +
-		       (string)spouse1->GetName() + ".");
-   who->eventPrint("You join " + (string)spouse1->GetName() + " to " +
-		   (string)spouse2->GetName() + " in marriage.");
-   this_object()->eventPrint((string)who->GetName() + " joins " +
-			     (string)spouse1->GetName() + " and " +
-			     (string)spouse2->GetName() + ".",
-			     ({ spouse1, spouse2, who }));
-   who->AddSkillPoints("faith", random(100));
-   return 1;
+    spouse1->eventPrint((string)who->GetName() + " weds you to " +
+      (string)spouse2->GetName() + ".");
+    spouse2->eventPrint((string)who->GetName() + " weds you to " +
+      (string)spouse1->GetName() + ".");
+    who->eventPrint("You join " + (string)spouse1->GetName() + " to " +
+      (string)spouse2->GetName() + " in marriage.");
+    this_object()->eventPrint((string)who->GetName() + " joins " +
+      (string)spouse1->GetName() + " and " +
+      (string)spouse2->GetName() + ".",
+      ({ spouse1, spouse2, who }));
+    who->AddSkillPoints("faith", random(100));
+    return 1;
 }
 
 mixed eventSacrifice(object who, object what, string deus) {
@@ -96,10 +97,10 @@ string *GetClasses() { return Classes; }
 
 string *SetDeities(string *deities) {
     string *ids = ({});
-    
+
     Deities = deities;
     foreach(string deus in deities)
-      ids += explode(lower_case(deus), " ");
+    ids += explode(lower_case(deus), " ");
     DeityIds = ids;
     return Deities;
 }

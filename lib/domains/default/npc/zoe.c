@@ -11,21 +11,21 @@ static void create() {
     SetShort("Zoe the bank teller");
     SetLevel(12);
     SetLong("Zoe is an attractive young blonde woman with "
-	"a French accent. She is dressed in a conservative, "
-	"executive style, and has a friendly and efficient air "
-	"about her.");
+      "a French accent. She is dressed in a conservative, "
+      "executive style, and has a friendly and efficient air "
+      "about her.");
     SetGender("female");
     SetMorality(40);
     SetRace("human");
-    AddCurrency("dollars", random(100));
+    AddCurrency("silver", random(100));
     SetProperty("no bump", 1);
-    SetLocalCurrency("dollars");
+    SetLocalCurrency("silver");
     SetBankName("First Village Bank");
-    SetLocalCurrency("dollars");
+    SetLocalCurrency("silver");
     SetLocalFee(1);
     SetOpenFee(5);
     SetExchangeFee(2);
-    SetCurrencies( ({ "dollars", "copper", "silver", "electrum", "gold", "platinum" }) );
-    
+    SetCurrencies( ({ "copper", "silver", "electrum", "gold", "platinum" }) );
+
 
 }

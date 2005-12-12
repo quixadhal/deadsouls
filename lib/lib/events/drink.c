@@ -1,5 +1,5 @@
 /*    /lib/events/drink.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Handles drinking in the form of OBJ and SUBSTANCE from OBJ
  *    Created by descartes of Borg 961221
  *    Version: %A%
@@ -25,4 +25,4 @@ mixed direct_drink_from_obj() {
 mixed direct_drink_str_from_obj(string str) {
     return CanDrink(this_player(), remove_article(lower_case(str)));
 }
- 
+

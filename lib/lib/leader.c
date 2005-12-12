@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/npc/leader.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    class leader inheritable
  *    created by Descartes of Borg 951115
  *    Version: @(#) leader.c 1.5@(#)
@@ -22,7 +22,7 @@ static void create() {
 mixed eventAsk(object who, string str) {
     string cmd, args;
     mixed tmp;
-    
+
     if( (tmp = sentient::eventAsk(who, str)) == 1 ) return 1;
     if( !str || str == "" ) {
 	eventForce("speak ask me to what? To describe " + GetClass() + "s?");
@@ -33,30 +33,30 @@ mixed eventAsk(object who, string str) {
 	args = 0;
     }
     switch(cmd) {
-	case "describe": case "preview": case "explain":
+    case "describe": case "preview": case "explain":
 	eventPreview(who, args);
 	break;
 
-	case "convert":
+    case "convert":
 	eventConvert(who, args);
 	break;
 
-	case "join": case "become": case "be":
+    case "join": case "become": case "be":
 	eventJoin(who, args);
 	break;
 
-        case "teach":
+    case "teach":
 	eventTeachPlayer(who, args);
 	break;
-	    
-	default:
+
+    default:
 	eventForce("speak I am not sure what you want");
 	if( who->GetClass() ) {
 	    eventForce("speak do you mean to ask me to teach a spell?");
 	}
 	else {
 	    eventForce("speak do you mean to ask me to describe " +
-		       pluralize(GetClass()) + "?");
+	      pluralize(GetClass()) + "?");
 	}
 	break;
     }
@@ -87,7 +87,7 @@ void eventConvert(object who, string args) {
 	}
 	if( ob != who ) {
 	    eventForce("speak " + (string)ob->GetName() + " must request "
-		       "conversion of " + possessive(ob) + " own free will.");
+	      "conversion of " + possessive(ob) + " own free will.");
 	    return;
 	}
     }
@@ -110,14 +110,14 @@ void eventPreview(object who, string args) {
 void eventJoin(object who, string args) {
     if( !args || args == "" ) {
 	eventForce("speak Do you mean you wish to become " +
-		   add_article(GetClass()) + "?");
+	  add_article(GetClass()) + "?");
 	return;
     }
     args = remove_article(lower_case(args));
     if( args != GetClass() && args[0..<2] != GetClass() && args != pluralize(GetClass()) ) {
 	eventForce("speak you want me to make you a what?");
 	eventForce("speak people only ask me to join the " +
-		   pluralize(GetClass()));
+	  pluralize(GetClass()));
 	return;
     }
     if( (int)who->ClassMember(GetClass()) ) {
@@ -130,14 +130,14 @@ void eventJoin(object who, string args) {
 	return;
     }
     if( !((string)who->GetReligion()) && GetReligion() )
-      who->SetReligion(GetReligion(0), GetReligion(1));
+	who->SetReligion(GetReligion(0), GetReligion(1));
     environment()->eventPrint(GetName() + " makes " + (string)who->GetName() +
-			      " " + add_article(GetClass()) + ".",
-			      ({ who, this_object() }));
+      " " + add_article(GetClass()) + ".",
+      ({ who, this_object() }));
     eventForce("speak welcome new " + GetClass() + "!");
     eventForce("speak Inside this hall, you will find sanctuary.");
     eventForce(GetClass() + " " + (string)who->GetName() +
-	       " just joined our ranks!");
+      " just joined our ranks!");
     who->SetShort("foo");  /* reset title */
     return;
 }
@@ -145,7 +145,7 @@ void eventJoin(object who, string args) {
 int eventPreAttack(object ob) {
     if( member_array(ob, GetEnemies()) > -1 ) return sentient::eventPreAttack(ob);
     eventForce(GetClass() + " " + pluralize(GetClass()) + "! Our home is " 
-	       "being raided by " + (string)ob->GetName() + "!");
+      "being raided by " + (string)ob->GetName() + "!");
     return sentient::eventPreAttack(ob);
 }
 
@@ -160,16 +160,16 @@ int eventTeachPlayer(object who, string spell) {
 	    }
 	}
 	if( !who->eventLearnSpell(spell) ) {
-	    eventForce("speak You are no prepared for that spell!");
+	    eventForce("speak You are not prepared for that spell!");
 	    return 1;
 	}
 	who->eventPrint(GetName() + " touches your forehead and gives "
-			"you knowledge of " + spell + ".");
+	  "you knowledge of " + spell + ".");
 	environment()->eventPrint(GetName() + " touches " +
-				  possessive_noun(who) +
-				  " forehead and gives " +
-				  objective(who) + " knowledge of " +
-				  spell + ".", who);
+	  possessive_noun(who) +
+	  " forehead and gives " +
+	  objective(who) + " knowledge of " +
+	  spell + ".", who);
 	return 1;
     }
     else {

@@ -1,5 +1,5 @@
 /*    /lib/comp/holder.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    A composite object that holds inanimate items
  *    Created by Descartes of Borg 960113
  *    Version: @(#) holder.c 1.6@(#)
@@ -22,20 +22,32 @@ int isBag() {
 varargs string GetInternalDesc() {
     object array items = all_inventory();
     string desc;
+    int surfacep;
+
+    surfacep = inherits(LIB_SURFACE , this_object());
 
     desc = (container::GetInternalDesc() || "");
-    desc = desc + "\n" + capitalize(add_article(GetShort(), 1));
+    if(this_object()->CanClose()){
+	if(this_object()->GetClosed()) desc += " It is closed. ";
+	else desc += " It is open. ";
+    }
+    if(!surfacep) desc = desc + capitalize(add_article(GetShort(), 1));
+    if(surfacep) desc = "On "+add_article(GetShort(), 1);
     items = filter(items, (: !($1->isDummy()) && !($1->GetInvis()) :));
     if( sizeof(items) ) {
-	if( GetOpacity() > 33 ) {
+	if( GetOpacity() > 33 && !surfacep) {
 	    desc = desc + " contains something.";
 	}
 	else {
-	    desc = desc + " contains " + item_list(items) + ".";
+	    if(surfacep){ 
+		desc = desc+" you see " + item_list(items) + ".";
+	    }
+	    else desc = desc + " contains " + item_list(items) + ".";
 	}
     }
     else {
-	desc = desc + " is completely empty.";
+	if(!surfacep) desc = desc + " is completely empty.";
+	else desc = desc + " you see nothing.";
     }
     return desc;
 }

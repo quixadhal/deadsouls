@@ -10,26 +10,26 @@ int cmd(string str) {
     if( !str ) {
 	string *tmp;
 	string curr;
-	
+
 	tmp = ({ "Currency        Rate    Infl    Mass" });
 	foreach( curr in (string *)ECONOMY_D->__QueryCurrencies() )
-	  tmp += ({ sprintf("%:-15s %:-7s %:-7s %f",
-			    curr, currency_rate(curr) + "" ,
-			    currency_inflation(curr) + "",
-			    (float)ECONOMY_D->__Query(curr, "weight")) });
+	tmp += ({ sprintf("%:-15s %:-7s %:-7s %f",
+	    curr, currency_rate(curr) + "" ,
+	    currency_inflation(curr) + "",
+	    (float)ECONOMY_D->__Query(curr, "weight")) });
 	this_player()->more(tmp, "system");
 	return 1;
     }
     if(!archp(previous_object())) return 0;
     log_file("economy", (string)previous_object()->GetCapName()+": " +
-	     str+" ("+ctime(time())+")\n");
+      str+" ("+ctime(time())+")\n");
     if(sscanf(str, "add %s %f %f %f", type, rate, infl, wt) == 4) {
-        ECONOMY_D->add_currency(type, rate, infl, wt);
-        message("info", "Currency "+type+" added!", this_player());
+	ECONOMY_D->add_currency(type, rate, infl, wt);
+	message("info", "Currency "+type+" added!", this_player());
     }
     else if(sscanf(str, "change %s for %s to %f", key, type, wt) == 3) {
-        ECONOMY_D->change_currency(type, key, wt);
-        message("info", "Changed: "+key+" for "+type+" to "+wt, this_player());
+	ECONOMY_D->change_currency(type, key, wt);
+	message("info", "Changed: "+key+" for "+type+" to "+wt, this_player());
     }
     else return 0;
     return 1;

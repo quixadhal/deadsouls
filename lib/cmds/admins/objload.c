@@ -30,7 +30,7 @@ mixed cmd(string args) {
     }
     foreach(string who, mixed array data in vals) {
 	mapping mp = ([]);
-	
+
 	output += ({ who + ": " + data[0] });
 	foreach(object ob in data[1]) {
 	    mp[base_name(ob)]++;
@@ -45,8 +45,8 @@ mixed cmd(string args) {
 
 string GetHelp(string unused) {
     return ("Syntax: <objload>\n\n"
-	    "Provides you with information about how many objects "
-	    "each creator has in the game.");
+      "Provides you with information about how many objects "
+      "each creator has in the game.");
 }
-    
-    
+
+

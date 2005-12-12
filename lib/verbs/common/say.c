@@ -56,12 +56,12 @@ mixed do_say_str(string str) { return do_say_to_liv_str(0, str); }
 
 string GetHelp(string str) {
     return ("Syntax: <say MESSAGE>\n"
-	    "        <say to LIVING MESSAGE>\n\n"
-	    "Sends out a message that everyone in the room can see.  If you "
-	    "specify a target, the target person is shown as being the target "
-	    "of the message.\n\n"
-	    "See also: shout, speak, reply, tell, whisper");
+      "        <say to LIVING MESSAGE>\n\n"
+      "Sends out a message that everyone in the room can see.  If you "
+      "specify a target, the target person is shown as being the target "
+      "of the message.\n\n"
+      "See also: shout, speak, reply, tell, whisper");
 }
-	    
-    
-		     
+
+
+

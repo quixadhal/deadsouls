@@ -29,9 +29,9 @@ static void clean_room() {
     object ob;
 
     foreach(ob in filter(all_inventory(), (: !living($1) :)))
-      ob->eventDestruct();
+    ob->eventDestruct();
     if( !sizeof(filter(all_inventory(), (: living :))) ) {
-        Old = ({});
+	Old = ({});
 	call_out((: clean_room :), MAX_NET_DEAD_TIME);
 	return;
     }

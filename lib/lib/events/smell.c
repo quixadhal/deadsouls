@@ -17,7 +17,7 @@ string GetShort();
 
 varargs string GetSmell(string str, object who) {
     mixed val;
-    
+
     if( !str || str == "default" ) {
 	val = Smell;
     }
@@ -97,7 +97,7 @@ varargs mixed SetSmell(mixed array args...) {
     }
     else {
 	error("Wrong number of arguments to SetSmell():\n\t"
-	      "Expected 1 or 2, got " + sizeof(args) + "\n");
+	  "Expected 1 or 2, got " + sizeof(args) + "\n");
     }
 }
 
@@ -108,11 +108,11 @@ varargs mixed eventSmell(object who, string str) {
 	return 1;
     }
     environment(who)->eventPrint(who->GetName() + " smells " + GetShort() +
-				 ".", who);
+      ".", who);
     who->eventPrint(str);
     return 1;
 }
-		   
+
 mixed direct_smell_obj() {
     if( !Smell ) {
 	return "You notice no unusual odor.";
@@ -131,3 +131,16 @@ mixed direct_smell_str_word_obj(string str) {
 	return 1;
     }
 }
+
+mapping GetSmellMap(){
+    mapping Smells = ([]);
+    foreach(object ob in this_object()->GetDummyItems()) {
+	if( ob->GetSmell() ) {
+	    Smells[ob->GetId()] = ob->GetSmell();
+	}
+    }
+    if(this_object()->GetSmell()) Smells["default"] = this_object()->GetSmell();
+    return copy(Smells);
+
+}
+

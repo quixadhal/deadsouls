@@ -31,19 +31,34 @@ mixed CanGo(object who, string str) {
 }
 
 mixed eventGo(object who, string str) {
-    if( who->GetPosition() != POSITION_STANDING ) {
-	who->eventStand();
+    if(query_verb() == "go"){	
 	if( who->GetPosition() != POSITION_STANDING ) {
+	    if(stringp(hobbled(this_player()))) who->eventStand();
+	    if( who->GetPosition() != POSITION_STANDING ) {
+		return 0;
+	    }
+	}
+    }
+    else if(query_verb() == "crawl") {
+	if( who->GetPosition() != POSITION_LYING &&
+	  who->GetPosition() != POSITION_SITTING ) {
 	    return 0;
 	}
     }
+
+
     if( Doors[str] && (int)Doors[str]->GetClosed() ) {
 	message("my_action", "You bump into " + 
-		(string)Doors[str]->GetShort(str) + ".", who);
+	  (string)Doors[str]->GetShort(str) + ".", who);
 	return 1;
     }
-    if( Exits[str]["pre"] && !((int)evaluate(Exits[str]["pre"], str)) )
-      return 1;
+    if( Exits[str] && Exits[str]["pre"] && 
+      !((int)evaluate(Exits[str]["pre"], str)) )
+	return 1;
+    if(!Exits[str]){
+	write("You can't go that way.");
+	return 0;
+    }
     who->eventMoveLiving(Exits[str]["room"], str);
     if( Exits[str]["post"] ) evaluate(Exits[str]["post"], str);
     return 1;
@@ -87,19 +102,26 @@ string GetDirection(string dest) {
 }
 
 object GetDummyItem(mixed id) {
-    object array items = filter(all_inventory(), (: $1->isDummy() :));
-    
+    int i;
+    object array dummies,all_inv;
+
+    all_inv=all_inventory();
+    dummies = ({});
+
+    for(i=0; i<sizeof(all_inv); i++) {
+	if ( (mixed)all_inv[i]->isDummy() )  dummies += ({ all_inv[i] });
+    }
     if( stringp(id) ) {
 	id = ({ id });
     }
-    foreach(object item in items) {
-	if( sizeof(item->GetId() & id) ) {
-	    return item;
+    foreach(object dummy in dummies) {
+	if( sizeof(dummy->GetId() & id) ) {
+	    return dummy;
 	}
     }
     return 0;
 }
-    
+
 varargs void AddEnter(string dir, string dest, function pre, function post) {
     object ob = GetDummyItem(dir);
 
@@ -129,8 +151,17 @@ static mapping GetEnterData(string dir) {
 }
 
 string array GetEnters() {
-    object array obs = filter(all_inventory(), (: $1->isDummy() :));
-    string array ids = ({});
+    object *obs;
+    string *ids;
+
+    obs = ({});
+    ids = ({});
+
+    foreach(object item in all_inventory(this_object())){
+	if(base_name(item) == LIB_DUMMY){
+	    obs += ({ item });
+	}
+    }
 
     foreach(object ob in obs) {
 	if( ob->GetEnter() ) {
@@ -138,6 +169,25 @@ string array GetEnters() {
 	}
     }
     return ids;
+}
+
+mapping GetEnterMap(){
+    mixed schlussel;
+    mapping EnterMap = ([]);
+    object *obs = ({});
+    foreach(object item in all_inventory(this_object())){
+	if(base_name(item) == LIB_DUMMY){
+	    obs += ({ item });
+	}
+    }
+    if(!sizeof(obs)) return ([]);
+    foreach(object ob in obs) {
+	if( ob->GetEnter() ) {
+	    schlussel = ob->GetId();
+	    EnterMap[schlussel] = ob->GetEnter();
+	}
+    }
+    return copy(EnterMap);
 }
 
 void RemoveEnter(string dir) {
@@ -182,8 +232,21 @@ string GetExit(string str) {
     else return Exits[str]["room"];
 }
 
-static mapping GetExitData(string str) {
+mapping GetExitData(string str) {
     return Exits[str];
+}
+
+mapping GetFullExitData() {
+    return Exits;
+}
+
+mapping GetExitMap() {
+    mapping ret = ([]);
+    foreach(string key in keys(Exits)){
+	ret[key] = Exits[key]["room"];
+    }  
+
+    return ret;
 }
 
 string array GetExits() {

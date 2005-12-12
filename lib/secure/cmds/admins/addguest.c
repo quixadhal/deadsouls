@@ -15,15 +15,15 @@ int cmd(string str) {
 
     if(!archp(previous_object())) return 0;
     if(!str) {
-        notify_fail("Correct syntax: addguest [guestlist]\n");
-        return 0;
+	notify_fail("Correct syntax: addguest [guestlist]\n");
+	return 0;
     }
     i = sizeof(guests = explode(str, " "));
     while(i--) {
-        if(!guests[i] || guests[i] == "") continue;
-        if(res = catch(call_other(BANISH_D, "add_guest", guests[i]))) 
-          message("admin", sprintf("Error in adding guest %s: %s",
-            guests[i], res), this_player());
+	if(!guests[i] || guests[i] == "") continue;
+	if(res = catch(call_other(BANISH_D, "add_guest", guests[i]))) 
+	    message("admin", sprintf("Error in adding guest %s: %s",
+		guests[i], res), this_player());
     }
     message("admin", "Guests added.", this_player());
     return 1;
@@ -36,6 +36,6 @@ void help() {
       "allowed onto the mud when it is locked.  This is generally used to "
       "allow people in who are not in any of the groups defined in "
       "LOCKED_ACCESS_ALLOWED or to allow on player testers.\n\n"
-    "See also: removeguests, whoguests", this_player()
+      "See also: removeguests, whoguests", this_player()
     );
 }

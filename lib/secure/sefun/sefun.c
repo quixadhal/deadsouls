@@ -4,8 +4,6 @@
  *    created by Descartes of Borg 940213
  */
 
-#pragma save_binary
-
 #include <lib.h>
 #include <daemons.h>
 #include <commands.h>
@@ -52,6 +50,25 @@
 #include "/secure/sefun/user_path.c"
 #include "/secure/sefun/visible.c"
 #include "/secure/sefun/tail.c"
+#include "/secure/sefun/dump_socket_status.c"
+#include "/secure/sefun/local_time.c"
+#include "/secure/sefun/get_livings.c"
+#include "/secure/sefun/get_verbs.c"
+#include "/secure/sefun/get_cmds.c"
+#include "/secure/sefun/get_stack.c"
+#include "/secure/sefun/timestamp.c"
+#include "/secure/sefun/duplicates.c"
+#include "/secure/sefun/reaper.c"
+#include "/secure/sefun/custom_path.c"
+#include "/secure/sefun/flat_map.c"
+#include "/secure/sefun/dummy.c"
+#include "/secure/sefun/disable.c"
+#include "/secure/sefun/make_workroom.c"
+#include "/secure/sefun/query_invis.c"
+#include "/secure/sefun/rooms.c"
+#include "/secure/sefun/generic.c"
+#include "/secure/sefun/singular_array.c"
+
 
 int destruct(object ob) {
     string *privs;
@@ -60,34 +77,35 @@ int destruct(object ob) {
     if(previous_object(0) == ob) return efun::destruct(ob);
     if(!(tmp = query_privs(previous_object(0)))) return 0;
     if(member_array(PRIV_SECURE, explode(tmp, ":")) != -1)
-      return efun::destruct(ob);
+	return efun::destruct(ob);
     privs = ({ file_privs(file_name(ob)) });
     if((int)master()->valid_apply(({ "ASSIST" }) + privs))
-      return efun::destruct(ob);
+	return efun::destruct(ob);
     else return 0;
 }
 
 varargs void shutdown(int code) {
     if(!((int)master()->valid_apply(({})))) return;
     if(this_player())
-      log_file("shutdowns", (string)this_player()->GetCapName()+
-        " shutdown "+mud_name()+" at "+ctime(time())+"\n");
+	log_file("shutdowns", (string)this_player()->GetCapName()+
+	  " shutdown "+mud_name()+" at "+ctime(time())+"\n");
     else log_file("shutdowns", "Game shutdown by "+
-      file_name(previous_object(0))+" at "+ctime(time())+"\n");
+	  file_name(previous_object(0))+" at "+ctime(time())+"\n");
     efun::shutdown(code);
 }
 
 varargs object snoop(object who, object target) {
     if(!target) return efun::snoop(who);
-    if(!creatorp(who)) return 0;
+    //if(!creatorp(who)) return 0;
+    if(!creatorp(who) && who->GetKeyName() != "s_bot" ) return 0;
     if(!((int)master()->valid_apply(({ "ASSIST" })))) {
-        if(!((int)target->query_snoopable())) return 0;
-        else return efun::snoop(who, target);
+	if(!((int)target->query_snoopable())) return 0;
+	else return efun::snoop(who, target);
     }
     else if(member_group(target, PRIV_SECURE)) {
-        message("system", (string)who->GetCapName()+" is now snooping "
-          "you.", target);
-        return efun::snoop(who, target);
+	message("system", (string)who->GetCapName()+" is now snooping "
+	  "you.", target);
+	return efun::snoop(who, target);
     }
     else return efun::snoop(who, target);
 }
@@ -106,7 +124,7 @@ int exec(object target, object src) {
     string tmp;
 
     tmp = base_name(previous_object());
-    if(tmp != LIB_CONNECT && tmp != CMD_ENCRE && tmp != CMD_DECRE) return 0;
+    if(tmp != LIB_CONNECT && tmp != CMD_ENCRE && tmp != CMD_DECRE && tmp != SU) return 0;
     return efun::exec(target, src);
 }
 
@@ -136,7 +154,7 @@ void notify_fail(string str) {
 string capitalize(string str) {
     string *words, *tmp;
     int i;
-    
+
     /* error condition, let it look like an efun */
     if( !str || str == "" ) return efun::capitalize(str);
     /* most strings are not colour strings */

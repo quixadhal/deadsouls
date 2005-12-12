@@ -1,5 +1,5 @@
 /*    /lib/verb.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    An inheritable for creating verbs
  *    Created by Descartes of Borg 960116
  *    Version: @(#) verb.c 1.2@(#)
@@ -38,7 +38,7 @@ varargs static string *SetRules(mixed *args...) {
     if( Verb ) {
 	foreach(string rule in Rules) parse_add_rule(Verb, rule);
 	if( sizeof(Synonyms) ) 
-	  foreach(string cmd in Synonyms) parse_add_synonym(cmd, Verb);
+	    foreach(string cmd in Synonyms) parse_add_synonym(cmd, Verb);
     }
     return Rules;
 }
@@ -52,7 +52,7 @@ varargs static string *SetSynonyms(mixed *args...) {
 	else Synonyms += arg;
     }
     if( Verb && sizeof(Rules) )
-      foreach(string cmd in Synonyms) parse_add_synonym(cmd, Verb);
+	foreach(string cmd in Synonyms) parse_add_synonym(cmd, Verb);
     return Synonyms;
 }
 
@@ -62,9 +62,9 @@ static string SetVerb(string str) {
     if( !stringp(str) ) error("Bad argument 1 to SetVerb().\n");
     Verb = str;
     if( sizeof(Rules) )
-      foreach(string rule in Rules) parse_add_rule(Verb, rule);
+	foreach(string rule in Rules) parse_add_rule(Verb, rule);
     if( sizeof(Synonyms) )
-      foreach(string cmd in Synonyms) parse_add_synonym(cmd, Verb);
+	foreach(string cmd in Synonyms) parse_add_synonym(cmd, Verb);
     return Verb;
 }
 

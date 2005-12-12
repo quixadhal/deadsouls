@@ -9,9 +9,10 @@
 #include <lib.h>
 
 inherit LIB_STORAGE;
+inherit LIB_SURFACE;
 
 private int Count          = 0;
-private int DecayLife      = 100;
+private int DecayLife      = 500;
 private string Limb        = 0;
 private string Owner       = 0;
 private string Race        = 0;
@@ -30,10 +31,13 @@ int SetDecayLife(int x) {
 string GetLimb() {
     return Limb;
 }
+string GetItemCondition(){
+    return "";
+}
 
 void SetLimb(string limb, string owner, string race) {
     SetKeyName("limb");
-    SetId( ({ "limb", Limb = limb }) );
+    SetId( ({ "flesh","pile", "limb", Limb = limb }) );
     Owner = owner;
     Race = race;
     Count = 1;
@@ -81,19 +85,19 @@ int eventDecay() {
 	return 0;
     }
     switch(Count) {
-        case 1:
-	    message("smell", "The "+Limb+" really stinks.", environment());
-	    SetShort("the stinky remains of a rotting " + Limb);
-	    break;
-	case 2:
-	    message("smell", "A rotting stench fills the entire area.",
-		    environment());
-	    SetShort("a pile of rotting flesh");
-	    break;
-	case 3:
-	    CallOut = -1;
-	    Destruct();
-	    return 0;
+    case 1:
+	message("smell", "The "+Limb+" really stinks.", environment());
+	SetShort("the stinky remains of a rotting " + Limb);
+	break;
+    case 2:
+	message("smell", "A rotting stench fills the entire area.",
+	  environment());
+	SetShort("a pile of rotting flesh");
+	break;
+    case 3:
+	CallOut = -1;
+	Destruct();
+	return 0;
     }
     Count++;
     CallOut = call_out((: eventDecay :), DecayLife/3);

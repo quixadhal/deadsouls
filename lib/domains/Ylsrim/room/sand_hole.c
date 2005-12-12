@@ -11,6 +11,7 @@ inherit LIB_ROOM;
 static void create() {
     room::create();
     SetClimate("indoors");
+    SetAmbientLight(25);
     SetShort("a dark hole in the sand");
     SetLong("You are in a very dark, sandy hole in the desert.");
     AddItem("sand", "It is everywhere.");
@@ -20,5 +21,5 @@ static void create() {
     SetDoor("up", "/domains/Ylsrim/etc/dug_hole");
 }
 void init(){
-::init();
+    ::init();
 }

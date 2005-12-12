@@ -1,0 +1,30 @@
+#include <lib.h>
+#include <meal_types.h>
+
+inherit LIB_MEAL;
+inherit "/lib/poison";
+
+static void create() {
+    ::create();
+    SetKeyName("poison");
+    SetId( ({ "vial", "poison", "vial of poison" }) );
+    SetAdjectives("glass","small");
+    SetShort("a vial of poison");
+    SetLong("A small glas vial of poison.");
+    SetMass(60);
+    SetMealType(MEAL_DRINK);
+    SetStrength(1);
+    SetMealMessages("You drink the vial of poison.",
+      "$N drinks a vial of poison.");
+    SetEmptyName("vial");
+    SetEmptyShort("an empty vial");
+    SetEmptyLong("It is an empty brown bottle that once held some ale.");
+    SetBaseCost("silver",10);
+    SetPoisonStrength(70);
+    SetPoisonUses(3);
+}
+
+mixed eventDrink(object who) {
+    who->AddPoison(this_object()->GetPoisonStrength() * this_object()->GetPoisonUses());
+    return ::eventDrink(who);
+}

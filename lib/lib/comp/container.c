@@ -10,11 +10,12 @@
 
 inherit LIB_LOOK_IN;
 inherit LIB_RADIANCE;
+inherit LIB_ADDSTUFF;
 
 int GetRadiantLight(int ambient) {
     int r = radiance::GetRadiantLight(ambient);
     int o = GetOpacity();
-    
+
     if( o > 99 ) {
 	if( r < 1 ) {
 	    return 0;
@@ -35,7 +36,7 @@ int GetRadiantLight(int ambient) {
     }
     if( ambient > 0 ) {
 	int y;
-	
+
 	y = (r*10)/ambient;
 	if( y > r ) {
 	    y = r;

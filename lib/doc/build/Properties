@@ -1,0 +1,93 @@
+			 Supported Properties
+		     The Nightmare IV LPC Library
+		 written by Descartes of Borg 950429
+
+The Nightmare IV LPC Library allows creators to set dynamic variables in
+objects which do not get saved when the object saves.  The variables are
+called properties.  A property is an attribute of an object which is
+considered fleeting.  This document serves to list the properties
+commonly used and their purpose.  It is by no means complete, as the
+point of having properties is to allow creators to build their own on the
+fly.
+
+Note: All properties are 0 by default unless otherwise stated.
+
+Property: light
+Values: integer between -6 and 6
+Light is a value generally between -6 and 6 which, for rooms,
+determines how much light is naturally available in a room in daytime.
+For other objects, it determines the degree to which the object is
+able to modify the amount of light that exists in the room.  If the
+room is indoors, the light does not change based on the time of day.
+
+Property: no attack
+Values: 1 to prevent attacks, 0 to allow them
+Things cannot begin combat from inside a room with this property.
+
+Property: no bump
+Values: 1 to prevent bumping, 0 to allow it
+If a room, then nothing can be bumped from this room.  If a living
+thing, then it cannot be bumped.
+
+Property: no steal
+Values: 1 to prevent stealing, 0 to allow it
+This prevents stealing inside a room with this property.
+
+Property: no magic
+Values: 1 to prevent magic, 0 to allow it
+This prevents any magic from being used inside the room if set.
+
+Property: no paralyze
+Values: 1 prevents paralysis from occurring in a room, 0 allows it
+Stops any sort of thing which might cause paralysis from occurring in
+a room.
+
+Property: no teleport
+Values: 1 if teleporting is prohibited, 0 if allowed
+Prevents people from teleporting to or from the room.
+
+Property: no clear
+Values: 1 to prevent clearing, 0 to allow it
+If set this prevents an avatar from clearing a wilderness room in
+order to build a town.  Not relevant to rooms in towns.
+
+Property: estates
+Values: any non-negative number
+Sets the number of estates which can be built in an area.  No estates
+may be built outside of towns.
+
+Property: magic item
+Values: an array of strings describing the magic contained in an object
+Allows you to mark specific objects as magic.  For example, if a sword
+has a magical lighting ability, you might do: 
+	SetProperty("magic item", ({ "light" }));
+
+Property: lockpicking tool
+Values: any integer marking how well lockpicking is enhanced
+When picking a lock, the value of this property is calculated for each
+object and added to the overall chance to pick the lock.
+
+Property: keep
+Values: the name of whomever the object is kept for
+While set, this object may only be picked up by the person whose name
+matches the value of this property.  If 0, anyone can pick it up
+assuming it is normally gettable.
+
+Property: magic hold
+Value: any integer
+Is subtracted from the chance of success of anyone trying to pick a
+lock.
+
+Property: enchantment
+Value: any integer
+Enchants any object to boost (or degrade) its performance of its
+natural functions.
+
+Property: login
+Value: a string representing a file name
+Sets which room a player should login to at next login if they quit
+from the room that has this property.  For example, if you have a
+treasure room that is protected, and therefore you do not want people
+logging into it, you can call:
+	SetProperty("login", "/file/name/outside/this/room");
+to have the players login to the room outside.

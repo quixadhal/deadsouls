@@ -20,14 +20,14 @@ static void create() {
     SetNoClean(1);
     Links = ([]);
     if( unguarded( (: file_size(SAVE_CHARACTER __SAVE_EXTENSION__) :)) > 0 )
-      unguarded((: restore_object, SAVE_CHARACTER :));
+	unguarded((: restore_object, SAVE_CHARACTER :));
 }
 
 mixed eventConnect(string who) {
     class char_link c;
     string prime;
     int min_wait;
-    
+
     if( base_name(previous_object()) != LIB_CONNECT ) return 0;
     if( !(c = Links[prime = who]) ) {
 	foreach(string pl, class char_link cl in Links) {
@@ -43,7 +43,7 @@ mixed eventConnect(string who) {
 	if( find_player(ind) )  {
 	    if( who == ind ) return 1;
 	    if(member_group(who, PRIV_SECURE) || member_group(who,PRIV_ASSIST))
-	      return 1;
+		return 1;
 	    else if( archp(find_player(ind)) ) return 1;
 	    else return "You have a linked character currently logged in.\n";
 	}
@@ -59,7 +59,7 @@ mixed eventConnect(string who) {
 	if( x < 60 ) tmp = consolidate(x, "a second");
 	else tmp = consolidate(x/60, "a minute");
 	if( !(member_group(who, PRIV_SECURE) || member_group(who,PRIV_ASSIST)))
-	  return "\nYour character " + capitalize(c->LastOnWith) +
+	    return "\nYour character " + capitalize(c->LastOnWith) +
 	    " recently logged in at " + ctime(c->LastOnDate) + ".\n" +
 	    "You must wait another " + tmp + ".\n";
     }
@@ -68,14 +68,14 @@ mixed eventConnect(string who) {
     save_object(SAVE_CHARACTER);
     return 1;
 }
-	
+
 mixed eventLink(string primary, string secondary, string email) {
     class char_link ch;
 
     if( !((int)master()->valid_apply(({ PRIV_LAW }))) )
-      return "Permission denied.";
+	return "Permission denied.";
     if( !user_exists(primary = convert_name(primary)) )
-      return "No such user: primary";
+	return "No such user: primary";
     if( !email ) return "Email is required for linking.";
     secondary = convert_name(secondary);
     if( Links[primary] ) {
@@ -117,7 +117,7 @@ mixed eventSaveTime() {
     class char_link c;
     object ob;
     string who;
-    
+
     if( !userp(ob = previous_object()) ) return 0;
     who = (string)ob->GetKeyName();
     if( !(c = Links[who]) ) {
@@ -137,9 +137,9 @@ mixed eventSaveTime() {
 
 mixed eventUnlink(string primary, string who) {
     class char_link ch;
-    
+
     if( !((int)master()->valid_apply(({ PRIV_ASSIST }))) )
-      return "Permission denied.";
+	return "Permission denied.";
     primary = convert_name(primary);
     who = convert_name(who);
     if( !(ch = Links[primary]) ) return "No such primary character.";
@@ -157,7 +157,7 @@ mixed eventUnlink(string primary, string who) {
 	return 1;
     }
     if( member_array(who, ch->Secondaries) == -1 )
-      return "Invalid secondary character for " + primary + ".";
+	return "Invalid secondary character for " + primary + ".";
     ch->Secondaries -= ({ who });
     Links[primary] = ch;
     save_object(SAVE_CHARACTER);
@@ -177,7 +177,7 @@ mapping GetLink(string who) {
     else {
 	class char_link l;
 	string pl;
-	
+
 	foreach(pl, l in Links) {
 	    if( member_array(who, l->Secondaries) != -1 ) {
 		ch = l;
@@ -188,5 +188,5 @@ mapping GetLink(string who) {
 	if( !ch ) return 0;
     }
     return ([ "primary" : who, "last char" : ch->LastOnWith,
-	   "secondaries" : ch->Secondaries, "last on" : ch->LastOnDate ]);
+      "secondaries" : ch->Secondaries, "last on" : ch->LastOnDate ]);
 }

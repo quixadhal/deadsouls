@@ -1,5 +1,5 @@
 /*    /verbs/items/open.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Object Library
  *    created by Descartes of Borg 960115
  *    Version: @(#) open.c 1.2@(#)
  *    Last modified: 96/10/15
@@ -16,11 +16,11 @@ static void create() {
     SetRules("OBJ", "OBJ with OBJ");
     SetErrorMessage("Open what? Or open what with what?");
     SetHelp("Syntax: <open OBJECT>\n"
-	    "        <open OBJECT with ITEM>\n\n"
-	    "Opens a door or chest or some other such object.  Some things "
-	    "may be opened by force using items capable of forcing things "
-	    "to open.\n\n"
-	    "See also: close, lock, pick, unlock");
+      "        <open OBJECT with ITEM>\n\n"
+      "Opens a door or chest or some other such object.  Some things "
+      "may be opened by force using items capable of forcing things "
+      "to open.\n\n"
+      "See also: close, lock, pick, unlock");
 }
 
 mixed can_open_obj(string verb, string id) {

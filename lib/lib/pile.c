@@ -1,5 +1,5 @@
 /*    /lib/pile.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    basically a pile of precious coinses
  *    created by Descartes of Borg 951029
  *    Version: @(#) pile.c 1.2@(#)
@@ -66,7 +66,7 @@ mixed eventGetMoney(object who, int amount, string curr) {
 	return 1;
     }
     send_messages("get", "$agent_name $agent_verb " + amount + " " +
-		  curr + " " + GetShort() + ".", who, 0, environment(who));
+      curr + " " + GetShort() + ".", who, 0, environment(who));
     PileAmount -= amount;
     if( PileAmount < 1 ) {
 	call_out((: Destruct :), 0);
@@ -84,6 +84,7 @@ int eventMove(mixed dest) {
 	return x;
     }
     environment()->AddCurrency(PileType, PileAmount);
+    environment()->AddCarriedMass(-this_object()->GetMass());
     SetShort("a pile of " + PileAmount + " " + PileType);
     PileAmount = 0;
     call_out((: Destruct :), 0);
@@ -92,7 +93,7 @@ int eventMove(mixed dest) {
 
 mixed direct_get_wrd_wrd_out_of_obj(string num, string curr) {
     int amt;
-    
+
     if( environment() != environment(this_player()) ) {
 	return "#You cannot reach the pile!";
     }

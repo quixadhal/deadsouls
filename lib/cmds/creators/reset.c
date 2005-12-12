@@ -26,6 +26,6 @@ int cmd(string str) {
 
 void help() {
     write("Syntax: <reset [(object)]> or <reset [(file)]> or <reset>\n\n"+
-	"Resets the object named or the environment you are in if no object\n"+
-	"is named.\n");
+      "Resets the object named or the environment you are in if no object\n"+
+      "is named.\n");
 }

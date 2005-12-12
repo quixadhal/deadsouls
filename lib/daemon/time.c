@@ -21,12 +21,12 @@ static void create() {
 
     daemon::create();
     Zones = ([]);
-    tmp = localtime(time());
+    tmp = local_time(time());
     LocalZone = tmp[LT_ZONE];
     x = tmp[LT_GMTOFF] / 3600;
     if( file_size(CFG_TIME) < 1 ) return;
     i = sizeof(lines = filter(explode(read_file(CFG_TIME), "\n"),
-			      (: $1 && $1 != "" && $1[0] != '#' :)));
+	(: $1 && $1 != "" && $1[0] != '#' :)));
     while(i--) {
 	string *words;
 

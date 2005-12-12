@@ -25,12 +25,12 @@ static int Destruct() {
     int x;
 
     if( env = environment() ) {
-        env->eventReleaseObject(this_object());
+	env->eventReleaseObject(this_object());
 	x = clean::Destruct();
 	if( !x ) {
 	    env->eventReceiveObject(this_object());
 	}
-        return x;
+	return x;
     }
     else return clean::Destruct();
 }

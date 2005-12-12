@@ -16,8 +16,9 @@ static void create() {
     SetId("roof");
     SetAdjectives("adobe", "bank");
     SetShort("a roof");
-    SetLong("The bank roof looks over the road below.  "
-	    "The adobe wall looks like you could climb down it.  "
-	    "A hole in the center of the roof opens into the bank.");
-    SetJump("/domains/Ylsrim/room/bank", JUMP_FROM);
+    SetLong("The bank roof looks over the road below. "
+      "Maybe you could jump into it."
+      "The adobe wall looks like you could climb down it.  ");
+    //"A hole in the center of the roof opens into the bank.");
+    AddJump("roof","/domains/Ylsrim/room/bank", JUMP_FROM);
 }

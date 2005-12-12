@@ -12,6 +12,7 @@
 
 inherit LIB_DAEMON;
 inherit LIB_SEAL;
+//inherit LIB_LOCK_WITH;
 
 private mapping Sides;
 
@@ -86,7 +87,7 @@ mixed CanUnlock(object who) {
 varargs mixed eventClose(object who) {
     object room;
     string tmp;
-    
+
     SetClosed(1);
     room = environment(who);
     foreach(string side, class door_side val in Sides) {
@@ -95,7 +96,7 @@ varargs mixed eventClose(object who) {
     }
     who->eventPrint("You close " + GetShort(tmp) + ".");
     room->eventPrint((string)who->GetName() + " closes " + GetShort(tmp) + ".",
-		     who);
+      who);
     return 1;
 }
 
@@ -109,10 +110,11 @@ varargs mixed eventClose(object who) {
  * object by is required here
  */
 
-mixed eventLock(object who, object key) {
+varargs mixed eventLock(object who, mixed key, mixed foo) {
     object room;
-    
+
     room = environment(who);
+
     foreach(string side, class door_side val in Sides) {
 	if( member_array(room, val->Rooms) != -1 ) {
 	    string tmp;
@@ -121,14 +123,14 @@ mixed eventLock(object who, object key) {
 	    if( !(sizeof(key->GetId() & GetKeys(side))) ) {
 		who->eventPrint("You fail to lock " + tmp + ".");
 		room->eventPrint((string)who->GetName() + " attempts to " 
-				 "lock " + tmp + " with " +
-				 (string)key->GetShort() + ", but fails.",who);
+		  "lock " + tmp + " with " +
+		  (string)key->GetShort() + ", but fails.",who);
 		return 1;
 	    }
 	    SetLocked(1);
 	    who->eventPrint("You lock " + tmp + ".");
 	    room->eventPrint((string)who->GetName() + " locks " + tmp +
-			     " with " + (string)key->GetShort() + ".", who);
+	      " with " + (string)key->GetShort() + ".", who);
 	    return 1;
 	}
     }
@@ -149,8 +151,8 @@ mixed eventLock(object who, object key) {
 varargs int eventOpen(object who, object tool) {
     object room;
     string tmp;
-    
-    if( tool ) return seal::eventOpen(who, tool);
+
+    //if( tool ) return seal::eventOpen(who, tool);
     SetClosed(0);
     room = environment(who);
     foreach(string side, class door_side val in Sides) {
@@ -159,7 +161,7 @@ varargs int eventOpen(object who, object tool) {
     }
     who->eventPrint("You open " + GetShort(tmp) + ".");
     room->eventPrint((string)who->GetName() + " opens " + GetShort(tmp) + ".",
-		     who);
+      who);
     return 1;
 }
 
@@ -173,14 +175,14 @@ varargs int eventOpen(object who, object tool) {
  * this is called by SetDoor() in exits.c to tell the door there is a room
  * which is observing it
  */
- 
+
 int eventRegisterSide(string side) {
     string array id = GetId(side);
-    
+
     if( !Sides[side] ) return 0;
     ((class door_side)Sides[side])->Rooms = 
-      distinct_array(((class door_side)Sides[side])->Rooms +
-		     ({ previous_object() }));
+    distinct_array(((class door_side)Sides[side])->Rooms +
+      ({ previous_object() }));
     previous_object()->AddItem(id, (: GetLong($(side)) :));
     foreach(object ob in all_inventory(previous_object())) {
 	if( !ob->isDummy() ) {
@@ -206,7 +208,7 @@ int eventRegisterSide(string side) {
  */
 mixed eventUnlock(object who, object key) {
     object room;
-    
+
     room = environment(who);
     foreach(string side, class door_side val in Sides) {
 	if( member_array(room, val->Rooms) != -1 ) {
@@ -216,14 +218,14 @@ mixed eventUnlock(object who, object key) {
 	    if( !sizeof((string *)key->GetId() & GetKeys(side)) ) {
 		who->eventPrint("You fail to unlock " + tmp + ".");
 		room->eventPrint((string)who->GetName() + " attempts to "
-				 "unlock " + tmp + " with " +
-				 (string)key->GetShort() + ", but fails.",who);
+		  "unlock " + tmp + " with " +
+		  (string)key->GetShort() + ", but fails.",who);
 		return 1;
 	    }
 	    SetLocked(0);
 	    who->eventPrint("You unlock " + tmp + ".");
 	    room->eventPrint((string)who->GetName() + " unlocks " + tmp +
-			     " with " + (string)key->GetShort() + ".", who);
+	      " with " + (string)key->GetShort() + ".", who);
 	    return 1;
 	}
     }
@@ -234,7 +236,7 @@ mixed eventUnlock(object who, object key) {
 
 void SetSide(string side, mapping mp) {
     class door_side new_side;
-    
+
     new_side = new(class door_side);
     new_side->Rooms = ({});
     if( stringp(mp["id"]) ) new_side->Ids = ({ mp["id"] });
@@ -249,7 +251,7 @@ void SetSide(string side, mapping mp) {
 
 int SetLockable(string side, int x) {
     if( !Sides[side] )
-      Sides[side] = new(class door_side, Rooms : ({}));
+	Sides[side] = new(class door_side, Rooms : ({}));
     return (((class door_side)Sides[side])->Lockable = x); 
 }
 
@@ -271,7 +273,7 @@ string *GetId(string side) { return ((class door_side)Sides[side])->Ids; }
 
 mixed SetShort(string side, mixed short) {
     if( !Sides[side] )
-      Sides[side] = new(class door_side, Rooms : ({}));
+	Sides[side] = new(class door_side, Rooms : ({}));
     return (((class door_side)Sides[side])->Short = short);
 }
 
@@ -287,7 +289,7 @@ varargs string GetShort(string side) {
 	}
     }
     if( stringp(((class door_side)Sides[side])->Short) )
-      return ((class door_side)Sides[side])->Short;
+	return ((class door_side)Sides[side])->Short;
     else return (string)evaluate(((class door_side)Sides[side])->Short, side);
 }
 
@@ -299,7 +301,7 @@ string GetDefiniteShort() {
 
 mixed SetLong(string side, mixed long) {
     if( !Sides[side] )
-      Sides[side] = new(class door_side, Rooms : ({}));
+	Sides[side] = new(class door_side, Rooms : ({}));
     return (((class door_side)Sides[side])->Long = long);
 }
 
@@ -309,7 +311,7 @@ string GetLong(string side) {
     if( GetClosed() ) tmp = "It is closed.";
     else tmp = "It is open.";
     if( stringp(((class door_side)Sides[side])->Long) )
-      return ((class door_side)Sides[side])->Long + "\n" + tmp;
+	return ((class door_side)Sides[side])->Long + "\n" + tmp;
     else return (string)evaluate(((class door_side)Sides[side])->Long, side);
 }
 
@@ -326,3 +328,5 @@ varargs string *SetKeys(string side, mixed *args...) {
 string *GetKeys(string side) { return ((class door_side)Sides[side])->Keys; }
 
 object *GetRooms(string side) { return ((class door_side)Sides[side])->Rooms; }
+
+int get_closed() { return GetClosed(); }

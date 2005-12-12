@@ -8,5 +8,6 @@
 #define PRIV_MUDLIB		"MUDLIBPRIV"
 #define PRIV_PLAYER		"PLAYER"
 #define PRIV_SECURE		"SECURE"
+#define PRIV_ELDER              "ELDER"
 
 #endif /* __PRIVS_H */

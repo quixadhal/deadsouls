@@ -12,11 +12,11 @@ inherit LIB_DAEMON;
 mixed cmd(string args) {
     string primary, secondary;
     mixed tmp;
-    
+
     if( !archp(previous_object()) ) return 0;
     if( !args || args == "" ) return "Unlink whom from whom?";
     if( sscanf(args, "%s from %s", secondary, primary) != 2 )
-      return "Unlink whom from whom?";
+	return "Unlink whom from whom?";
     tmp = (mixed)CHARACTER_D->eventUnlink(primary, secondary);
     if( !tmp ) return "Unlink failed.";
     else if( tmp == 1 ){
@@ -28,9 +28,9 @@ mixed cmd(string args) {
 
 string GetHelp(string str) {
     return ("Syntax: <unlink CHARACTER from PRIMARY>\n\n"
-	    "Unlinks the named primary or secondary player from its "
-	    "primary character.  If the player you are unlinking is "
-	    "is itself a primary and has more than two secondaries, the "
-	    "first secondary will become a primary.  Otherwise the entire "
-	    "link will be removed.\n\n");
+      "Unlinks the named primary or secondary player from its "
+      "primary character.  If the player you are unlinking is "
+      "is itself a primary and has more than two secondaries, the "
+      "first secondary will become a primary.  Otherwise the entire "
+      "link will be removed.\n\n");
 }

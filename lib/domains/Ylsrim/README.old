@@ -1,0 +1,14 @@
+			   /domains/Ylsrim
+	The Standard Domain for the Nightmare V Object Library
+
+This domain is designed to provide examples of all Nightmare V Object
+Library inheritables.  It also serves as the standard distribution
+domain and should serve as an adequate area for people wanting to open
+up a mud quickly with minimum hassle.  We do recommend, if you have
+the resources, that you use this stuff only for examples and write
+your own, unique standard domain.  To do so, you will need in your new
+standard domain all of the files in /domains/Ylsrim/adm and you will
+also need a start room (which here is /domains/Ylsrim/room/bazaar).
+Then go into /secure/include/dirs.h and change DIR_STANDARD_DOMAIN to
+point to your new domain directory, and /secure/include/rooms.h to
+point to your new start room.

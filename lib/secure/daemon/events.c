@@ -20,7 +20,7 @@ static void create() {
     daemon::create();
     SetNoClean(1);
     if( file_exists(SAVE_EVENTS __SAVE_EXTENSION__) )
-      unguarded((: restore_object, SAVE_EVENTS :));
+	unguarded((: restore_object, SAVE_EVENTS :));
     if( !RebootInterval ) RebootInterval = 24;
     if( !Events ) Events = ([]);
     eventSave();
@@ -37,11 +37,11 @@ varargs static int eventSave(int ung) {
 
 void eventReboot(int x) {
     if( previous_object() && !((int)master()->valid_apply(({ PRIV_ASSIST }))) )
-      return;
+	return;
     if( x < 1 ) x = 1;
     x *= 60;
     message("broadcast", mud_name() + " will reboot in " +
-	    consolidate(x/60, "a minute") + ".", users());
+      consolidate(x/60, "a minute") + ".", users());
     if( x < 61 ) call_out( (: eventAnnounceReboot, 10 :), x - 10);
     else {
 	int y;
@@ -59,7 +59,7 @@ static void eventAnnounceReboot(int x) {
     }
     else if( x < 61 ) {
 	message("broadcast", mud_name() + " will reboot in a minute.",
-		users());
+	  users());
 	call_out( (: eventAnnounceReboot, 10 :), 50);
     }
     else {
@@ -78,7 +78,7 @@ void eventShutdown() {
 
 static void Shutdown() {
     message("broadcast", "Shutting down " + mud_name() + " immediately!",
-	    users());
+      users());
     map(users(), (: catch($1->cmdQuit()) :));
     shutdown();
 }
@@ -91,7 +91,7 @@ static void eventPollEvents() {
     x = time();
     i = sizeof(events = keys(Events));
     while(i--) {
-        if( events[i] <= x ) {
+	if( events[i] <= x ) {
 	    object ob;
 	    function f;
 
@@ -100,17 +100,17 @@ static void eventPollEvents() {
 		continue;
 	    }
 	    f = (: call_other, Events[events[i]]["object"],
-		 Events[events[i]]["func"] :);
+	      Events[events[i]]["func"] :);
 	    f = bind(f, ob);
-            catch(evaluate(f, Events[events[i]]["args"]...));
-            if( Events[events[i]]["regular"] > 3599 )
-              Events[x + Events[events[i]]["regular"]] = Events[events[i]];
+	    catch(evaluate(f, Events[events[i]]["args"]...));
+	    if( Events[events[i]]["regular"] > 3599 )
+		Events[x + Events[events[i]]["regular"]] = Events[events[i]];
 	    map_delete(Events, events[i]);
-        }
+	}
     }
     if( (uptime() > RebootInterval*3600) && !InReboot ) {
 	InReboot = 1;
-        eventReboot(MINUTES_REBOOT_WARNING);
+	eventReboot(MINUTES_REBOOT_WARNING);
     }
     eventSave();
 }
@@ -129,8 +129,8 @@ int GetRebootInterval() { return RebootInterval; }
 void AddEvent(string c, string s, string f, mixed *a, int w, int r) {
     if( file_name(previous_object()) != SEFUN ) return;
     Events[time() + w] = ([ "object" : s, "function" : f, "args" : a,
-			      "creator" : c,  "regular" : (r ? w : 0) ]);
-    eventSave(1);
+      "creator" : c,  "regular" : (r ? w : 0) ]);
+eventSave(1);
 }
 
 mapping GetEvents() { return copy(Events); }

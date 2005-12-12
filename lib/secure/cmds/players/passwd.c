@@ -15,19 +15,19 @@ mixed cmd(string args) {
     object ob;
 
     if( (int)previous_object()->GetForced() )
-      return "You cannot be forced to change your password.";
+	return "You cannot be forced to change your password.";
     if( args && args != "" ) {
 	if( !archp(previous_object()) )
-	  return "You may not change other people's passwords.";
+	    return "You may not change other people's passwords.";
 	if( !user_exists(args = convert_name(args)) )
-	  return "No such user exists.";
+	    return "No such user exists.";
 	ob = find_player(args);
     }
     else ob = previous_object();
     previous_object()->eventPrint("Changing password for " +
-				  (ob ? (string)ob->GetCapName() :
-				   capitalize(args)) + " on " +
-				  mud_name() + ".", MSG_SYSTEM);
+      (ob ? (string)ob->GetCapName() :
+	capitalize(args)) + " on " +
+      mud_name() + ".", MSG_SYSTEM);
     if( previous_object() == ob ) {
 	ob->eventPrint("Old password: ", MSG_PROMPT);
 	input_to( (: OldPass :), I_NOECHO | I_NOESC, ob);
@@ -41,7 +41,7 @@ mixed cmd(string args) {
 
 static void OldPass(string pass, object who) {
     string oldpass;
-    
+
     if( who != this_player() ) return;
     if( !pass || pass == "" ) {
 	who->eventPrint("\nPassword change failed.", MSG_SYSTEM);
@@ -59,8 +59,8 @@ static void OldPass(string pass, object who) {
 static void NewPass(string pass, mixed who) {
     if( !pass || strlen(pass) < 5 ) {
 	this_player()->eventPrint("Password must be at least 5 "
-				      "characters, password change failed.",
-				      MSG_SYSTEM);
+	  "characters, password change failed.",
+	  MSG_SYSTEM);
 	return;
     }
     this_player()->eventPrint("\nConfirm: ", MSG_PROMPT);
@@ -81,9 +81,9 @@ static void ConfirmPass(string str, mixed who, string newpass) {
 	unguarded((: rm, who :));
 	foreach(string line in lines) {
 	    string val;
-	    
+
 	    if( sscanf(line, "Password %s", val) )
-	      line = "Password \"" + crypt(newpass, 0) + "\"";
+		line = "Password \"" + crypt(newpass, 0) + "\"";
 	    unguarded((: write_file, who, line + "\n" :));
 	}
     }	    
@@ -92,9 +92,9 @@ static void ConfirmPass(string str, mixed who, string newpass) {
 
 string GetHelp(string str) {
     return ("Syntax: <passwd>\n"
-	    "        <passwd PLAYER>\n\n"
-	    "If you are not an arch, then the second syntax is not available "
-	    "to you.  This command allows you to change your password.\n\n"
-	    "See also: chfn");
+      "        <passwd PLAYER>\n\n"
+      "If you are not an arch, then the second syntax is not available "
+      "to you.  This command allows you to change your password.\n\n"
+      "See also: chfn");
 }
-	    
+

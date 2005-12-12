@@ -1,5 +1,5 @@
 /*    /lib/comp/weapon.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    This object combines the ability to be wielded with damage doing
  *    Created by Descartes of Borg 960211
  *    Version: @(#) weapon.c 1.13@(#)
@@ -26,8 +26,8 @@ string GetShort();
 
 varargs string GetEquippedDescription(object who) {
     if( GetWorn() ) {
-	string tmp = "It is wielded in ";
-	
+	string tmp = " It is wielded in ";
+
 	if( !who ) {
 	    who = this_player();
 	}
@@ -39,8 +39,8 @@ varargs string GetEquippedDescription(object who) {
 	}
 	tmp += " " + item_list(GetWorn()) + ".";
 	return tmp;
-  }
-  return 0;
+    }
+    return 0;
 }
 
 
@@ -48,13 +48,13 @@ string GetEquippedShort() {
     object env = environment();
     string ret = GetShort();
     string array limbs;
- 
+
     if( !env || !living(env) ) {
 	return ret;
     }
     limbs = GetWorn();
     if( sizeof(limbs) > 0 ) {
-	ret += " (wielded in " + item_list(limbs) + ")";
+	ret += " (%^RED%^wielded in " + item_list(limbs) + "%^RESET%^)";
     }
     return ret;
 }
@@ -74,23 +74,23 @@ string array GetSave() {
 string GetWeaponType() {
     return WeaponType;
 }
- 
+
 string SetWeaponType(string str) {
     if( !stringp(str) ) {
 	error("Bad argument 1 to SetWeaponType().\n\tExpected: string, Got: " +
-	      typeof(str) + "\n");
+	  typeof(str) + "\n");
     }
     return (WeaponType = str);
 }
- 
+
 mixed GetWield() {
     return Wield;
 }
- 
+
 mixed SetWield(mixed val) {
     return (Wield = val);
 }
- 
+
 mixed CanEquip(object who, string array limbs) {
     mixed tmp = equip::CanEquip(who, limbs);
 
@@ -99,7 +99,7 @@ mixed CanEquip(object who, string array limbs) {
     }
     if( GetHands() != sizeof(limbs) ) {
 	return "#You must use " + cardinal(Hands) + " to wield " +
-	    GetDefiniteShort() + ".";
+	GetDefiniteShort() + ".";
     }
     if( Hands > sizeof(who->GetWieldingLimbs()) ) {
 	return "#You do not have enough limbs for that weapon!";
@@ -112,24 +112,24 @@ mixed CanEquip(object who, string array limbs) {
 
 int eventDeteriorate(int type) {
     int x = GetClass();
- 
+
     if( x ) {
-        object env = environment();
- 
-        if( living(env) ) {
-            if( x > 1 ) {
+	object env = environment();
+
+	if( living(env) ) {
+	    if( x > 1 ) {
 		env->eventPrint(capitalize(GetDefiniteShort()) +
-				" is wearing down.");
+		  " is wearing down.");
 	    }
-            else {
+	    else {
 		env->eventPrint(capitalize(GetDefiniteShort()) +
-				" is completely worn.");
+		  " is completely worn.");
 	    }
-        }
+	}
 	if( GetProperty("blessed") ) {
 	    SetClass(x-2);
 	}
-        else {
+	else {
 	    SetClass(x-1);
 	}
     }
@@ -138,7 +138,7 @@ int eventDeteriorate(int type) {
 
 mixed eventEquip(object who, string array limbs) {
     mixed tmp;
-    
+
     if( functionp(Wield) ) {
 	if( functionp(Wield) & FP_OWNER_DESTED ) {
 	    return "Function pointer owner destructed.";
@@ -161,23 +161,23 @@ mixed eventEquip(object who, string array limbs) {
 	who->eventPrint("You wield " + GetShort() + ".");
     }
     environment(who)->eventPrint(who->GetName() + " wields " + GetShort() +
-				 ".", who);
+      ".", who);
     return 1;
 }
- 
+
 int eventStrike(object target) {
     int poison = GetPoison();
- 
+
     if( poison > 0 ) {
 	int x = random(poison) + 1;
-	
-        if( x > 0 ) {
+
+	if( x > 0 ) {
 	    send_messages("", "$agent_possessive_noun " + GetKeyName() +
-			  " poisons $target_name.", environment(), target,
-			  environment(environment()));
-            target->AddPoison(x);
-            AddPoison(-x);
-        }
+	      " poisons $target_name.", environment(), target,
+	      environment(environment()));
+	    target->AddPoison(x);
+	    AddPoison(-x);
+	}
     }
     return damage::eventStrike(target);
 }
@@ -189,7 +189,7 @@ mixed eventUnequip(object who) {
 	return tmp;
     }
     send_messages("unwield", "$agent_name $agent_verb $target_name.",
-		  who, this_object(), environment(who));
+      who, this_object(), environment(who));
     return 1;
 }
 

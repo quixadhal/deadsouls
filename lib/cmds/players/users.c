@@ -13,15 +13,15 @@ cmd() {
     user_ob = users();
     user_name = ({ });
     for (i = 0; i < sizeof(user_ob); i++) {
-        if( user_ob[i]->GetInvis() )
+	if( user_ob[i]->GetInvis() )
 	    continue;
 	name = (string)user_ob[i]->GetKeyName();
 	if (stringp(name))
 	    user_name += ({ capitalize(name) });
     }
     user_name = sort_array(user_name, "sort_names");
-	write(format_page(user_name, 4));
-	write(sprintf("Total : %d", sizeof(user_name)));
+    write(format_page(user_name, 4));
+    write(sprintf("Total : %d", sizeof(user_name)));
     return 1;
 }
 
@@ -37,13 +37,13 @@ sort_names(string name1, string name2) {
 
 int help()
 {
-  write( @EndText
+    write( @EndText
 Syntax: users
 Effect: Lists the names of player logged in. 
         A shorter and quicker version of "who"
 See also: who, where
 See also: say, tell, class
 EndText
-  );
-  return 1;
+    );
+    return 1;
 }

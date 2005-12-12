@@ -15,7 +15,7 @@ static void create() {
     daemon::create();
     Objects = ([]);
     if( file_size(SAVE_UNIQUE __SAVE_EXTENSION__) > 0 )
-      unguarded( (: restore_object, SAVE_UNIQUE :) );
+	unguarded( (: restore_object, SAVE_UNIQUE :) );
 }
 
 void eventTouchObject() {

@@ -27,9 +27,9 @@ static void create() {
     SetDifficulty(50);
     SetMorality(10);
     SetHelp("Syntax: <cast buffer>\n"
-	    "	     <cast buffer on LIV>\n\n"
-	    "A magical defense spell that allows the caster to create "
-          "a glowing shield around the LIVing object named.\n\n");
+      "	     <cast buffer on LIV>\n\n"
+      "A magical defense spell that allows the caster to create "
+      "a glowing shield around the LIVing object named.\n\n");
 }
 
 int eventCast(object who, int level, string race, object array targets) {
@@ -53,39 +53,39 @@ int eventCast(object who, int level, string race, object array targets) {
     target->AddMagicProtection(protection);
     if( target == who ) {
 	send_messages("", "A %^BOLD%^CYAN%^translucent magical shield%^RESET%^ "
-	   "suddenly appears around $agent_possessive_noun body.", who, 0,
-          environment(target));
+	  "suddenly appears around $agent_possessive_noun body.", who, 0,
+	  environment(target));
     }
     else {
 	send_messages("", "A %^BOLD%^CYAN%^translucent magical shield%^RESET%^ "
-		 "suddenly appears around $target_possessive_noun body.", who,
-		  target, environment(target));
+	  "suddenly appears around $target_possessive_noun body.", who,
+	  target, environment(target));
     }
     return 1;
 }
 
 int hitCallback(object who, object agent, int x, class MagicProtection cl) {
-   string str;
-   object Caster = cl->caster;
- 
-   if( (int)agent->GetUndead() ) return 0;
-   str = (string)agent->GetName() || (string)agent->GetShort();
-   if( who == Caster ) {
-      who->eventTrainSkill("magic defense",cl->args,x,1);
+    string str;
+    object Caster = cl->caster;
+
+    if( (int)agent->GetUndead() ) return 0;
+    str = (string)agent->GetName() || (string)agent->GetShort();
+    if( who == Caster ) {
+	who->eventTrainSkill("magic defense",cl->args,x,1);
     }
-   else if( Caster && playerp(who) && Caster != who ) {
-      Caster->eventTrainSkill("magic defense",cl->args,0,1);
+    else if( Caster && playerp(who) && Caster != who ) {
+	Caster->eventTrainSkill("magic defense",cl->args,0,1);
     } 
 
-  send_messages("", "The %^YELLOW%^magical shield%^RESET%^ around "
-		  "$agent_name wavers as $target_name strikes it.",
-		  who, agent, environment(who));
-  return x;
+    send_messages("", "The %^YELLOW%^magical shield%^RESET%^ around "
+      "$agent_name wavers as $target_name strikes it.",
+      who, agent, environment(who));
+    return x;
 }
- 
+
 void endCallback(object who) {
     if( who ) {
 	send_messages("", "The %^BOLD%^CYAN%^magical shield%^RESET%^ around "
-       "$agent_name shatters into nothingness.", who, 0, environment(who));
+	  "$agent_name shatters into nothingness.", who, 0, environment(who));
     }
 }

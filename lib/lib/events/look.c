@@ -10,13 +10,22 @@
 
 private mixed   ExternalDesc = 0;
 private int     Invisible    = 0;
-private mapping Items        = ([]);
+//private mapping Items        = ([]);
+mapping Items        = ([]);
 
 // abstract methods
 string GetShort();
 // end abstract methods
 
 varargs string GetExternalDesc(object who) {
+    string openstate;
+
+    if(this_object()->CanClose()){
+	if(this_object()->GetClosed()) openstate = " It is closed.";
+	else openstate = " It is open.";
+    }
+    else openstate = "";
+
     if( !ExternalDesc ) {
 	return "";
     }
@@ -27,10 +36,10 @@ varargs string GetExternalDesc(object who) {
 	return evaluate(ExternalDesc, who);
     }
     else if( arrayp(ExternalDesc) ) {
-	return ExternalDesc[query_night()];
+	return ExternalDesc[query_night()] + openstate;;
     }
     else {
-	return ExternalDesc;
+	return ExternalDesc + openstate;
     }
 }
 
@@ -49,7 +58,16 @@ varargs int GetInvis(object ob) {
 }
 
 mixed SetInvis(mixed val) {
-    if( intp(val) ) {
+    if( !val || intp(val) ) {
+	if(!val || val == 0){
+	    Invisible = 0;
+	    if(sizeof(get_livings(environment(this_object()),2))){
+		foreach(object ob in get_livings(environment(this_object()),2)){
+		    ob->CheckEncounter();
+		}
+	    }
+	    return 1;
+	}
 	return (Invisible = val);
     }
     else if( functionp(val) && !Invisible ) {
@@ -60,7 +78,11 @@ mixed SetInvis(mixed val) {
     }
 }
 
-mixed AddItem(mixed item, mixed val) {
+varargs mixed AddItem(mixed item, mixed val) {
+    if( objectp(item) ) {
+	item->eventMove(this_object());
+	return 1;
+    }
     if( functionp(val) || stringp(val) || arrayp(val) ) {
 	if( stringp(item) ) {
 	    Items[item] = val;
@@ -123,7 +145,6 @@ mapping SetItems(mapping items) {
     return (Items = expand_keys(items));
 }
 
-// This method should no longer be used
 varargs string GetLong(string str) {
     if( str && Items[str] ) {
 	return GetItem(str);
@@ -133,34 +154,41 @@ varargs string GetLong(string str) {
     }
 }
 
-// This method should no longer be used
 string SetLong(string str) {
     return SetExternalDesc(str);
 }
 
 varargs mixed eventShow(object who, string component) {
-    string desc;
+    string desc,tempdesc;
 
     if( component ) {
 	component = remove_article(lower_case(component));
 	desc = GetItem(component, who);
 	environment(who)->eventPrint(who->GetName() + " looks at the " +
-				     component + " on " + GetShort() + ".",
-				     ({ who, this_object() }));
+	  component + " on " + GetShort() + ".",
+	  ({ who, this_object() }));
     }
     else {
 	desc = GetExternalDesc(who);
 	environment(who)->eventPrint(who->GetName() + " looks at " +
-				     GetShort() + ".",
-				     ({ who, this_object() }));
+	  GetShort() + ".",
+	  ({ who, this_object() }));
     }
-    who->eventPrint(desc);
+    if(inherits("/lib/comp/surface",this_object())){
+	//tempdesc = this_object()->eventShowInterior(who);
+	who->eventPrint(desc);
+	this_object()->eventShowInterior(who);
+    }
+
+    else {
+	who->eventPrint(desc);
+    }
     return 1;
 }
 
 mixed direct_look_obj() {
     object env = environment();
-    
+
     if( env != this_player() && env != environment(this_player()) ) {
 	return "#You can't get to it to look at it.";
     }
@@ -170,11 +198,11 @@ mixed direct_look_obj() {
 mixed direct_look_at_obj() {
     return direct_look_obj();
 }
- 
+
 mixed direct_look_at_obj_word_obj() {
     return direct_look_obj();
 }
- 
+
 mixed direct_look_at_str_on_obj(string str, object target) {
     str = remove_article(lower_case(str));
     if( !Items[str] ) {

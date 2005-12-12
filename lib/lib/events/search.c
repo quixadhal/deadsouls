@@ -1,5 +1,5 @@
 /*    /lib/search.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    allows people to search things
  *    created by Descartes of Borg 951008
  *    Version: @(#) search.c 1.7@(#)
@@ -17,7 +17,7 @@ string GetShort();
 
 varargs string GetSearch(string str, object who) {
     mixed val;
-    
+
     if( !str || str == "default" ) {
 	val = Search;
     }
@@ -90,7 +90,7 @@ varargs mixed SetSearch(mixed array args...) {
     }
     else {
 	error("Wrong number of arguments to SetSearch():\n\t"
-	      "Expected 1 or 2, got " + sizeof(args) + "\n");
+	  "Expected 1 or 2, got " + sizeof(args) + "\n");
     }
 }
 
@@ -100,12 +100,14 @@ varargs mixed eventSearch(object who, string str) {
 	who->eventPrint("There is nothing to search.");
 	return 1;
     }
-    environment(who)->eventPrint(who->GetName() + " searches " + GetShort() +
-				 ".", who);
+    //environment(who)->eventPrint(who->GetName() + " searches " + GetShort() +
+    //				 ".", who);
+    environment(who)->eventPrint(who->GetName() + " searches "
+      "for something.", who);
     who->eventPrint(str);
     return 1;
 }
-		   
+
 mixed direct_search_obj() {
     if( !Search ) {
 	return 0;

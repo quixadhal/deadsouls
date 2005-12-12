@@ -18,7 +18,7 @@ mixed cmd(string args) {
 
 void help() {
     message("help", "Syntax: <netstat>\n\n"
-	    "Gives you information about sockets being used by the LPC "
-	    "server through the MudOS socket efuns.\n\n"
-	    "See also: callouts, dumpallobj, mstatus", this_player());
+      "Gives you information about sockets being used by the LPC "
+      "server through the MudOS socket efuns.\n\n"
+      "See also: callouts, dumpallobj, mstatus", this_player());
 }

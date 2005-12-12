@@ -1,5 +1,5 @@
 /*    /lib/trap.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Allows living things to be trapped and stored across reboots
  *    Created by Descartes of Borg 961010
  *    Version: @(#) trap.c 1.5@(#)
@@ -72,7 +72,7 @@ mixed CanFree(object who, object target) {
     }
     if( GetClosed() ) {
 	return "You must open " + GetShort() + " before you can free "
-	    "things from it.";
+	"things from it.";
     }
     return 1;
 }
@@ -85,10 +85,10 @@ mixed eventCapture(object who, object target) {
 	return target->GetShort() + " will not fit!";
     }
     who->eventPrint("You capture " + target->GetName() + " in " +
-		    GetShort() + "!");
+      GetShort() + "!");
     environment(who)->eventPrint(who->GetName() + " captures " +
-				 target->GetName() + " in " + GetShort() +
-				 ".", ({ who, target }));
+      target->GetName() + " in " + GetShort() +
+      ".", ({ who, target }));
     target->eventPrint(who->GetName() + " captures you in " + GetShort() +".");
     set_heart_beat(2);
     return 1;
@@ -97,7 +97,7 @@ mixed eventCapture(object who, object target) {
 mixed eventEscape() {
     object array captives;
     object captive, env;
-    
+
     if( GetClosed() ) {
 	return 0;
     }
@@ -126,10 +126,10 @@ mixed eventEscape() {
 mixed eventFree(object who, string target) {
     target->eventMove(environment(who));
     who->eventPrint("You release " + target->GetName() + " from " +
-		    GetShort() + ".");
+      GetShort() + ".");
     environment(who)->eventPrint(who->GetName() + " releases " +
-				 target->GetName() + " from " + GetShort()+".",
-				 ({ who, target }));
+      target->GetName() + " from " + GetShort()+".",
+      ({ who, target }));
     target->eventPrint(who->GetName() + " releases you from " + GetShort() +".");
     return 1;
 }

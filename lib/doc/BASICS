@@ -1,0 +1,56 @@
+Handling Files: the Basics
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+1) The "more" prompt:
+   Text generally scrolls with the "more" system, which
+reads a page, then prompts you to read further. In Frontiers,
+the way to advance to the next page is to hit <return>.
+This will take you to the next page of text. To
+scroll backward, hit the "b" key, then <return>.
+   To stop reading the file,
+hit the "q" key, and return.
+
+2) The file/directory structure:
+   Information is stored in files. Files are organized in
+directories. Directories are organized in other directories.
+This text, for example, is in the file 
+/doc/BASICS
+   If you wanted to look at this file without the manual, you
+could type: more /doc/BASICS
+and you would get to read this file again.
+
+3) Handling files and directories:
+   The /domains directory contains a bunch of other directories
+which contain more directories and files. This way of organizing
+information helps keep similar or related information together.
+   To look at the contents of the /domains directory, you type:
+cd /domains
+and then type:
+ls
+   The "ls" command lets you see a list of the contents of the
+directory you've specified. To go to your home directory, issue
+the "cd" command by itself, then "ls". You will then see the
+contents of your own directory. The top level directory of the
+mud is accessed through "cd /" without quotations. If you "ls"
+then, you'll see the directories in which *everything* in the
+mud is kept. You may explore from there.
+
+4) Common file/directory commands:
+
+ls     - Lists your current working directory
+cd     - Changes directory to whatever you specify. If there is
+         a directory called joe in your current working directory,
+         "cd joe" without quotations will change your current
+         working directory to joe, and "ls" will list the contents
+         of that directory. 
+cd ..  - Moves you up one directory.
+more   - Displays the contents of a file. Doesn't work with
+         directories. If schmoe is a file in your current working
+         directory, then "more schmoe" will display the contents
+         of that file. If it's a directory, you'll need to "ls".
+ed     - Lets you edit the specified file, if it belongs to you.
+         If in your home directory there is a file called 
+         workroom.c, then "ed workroom.c" will allow you to edit
+         that file and change it to what you want. Read Chapter
+         2 of this manual section for details on the editor.
+
+

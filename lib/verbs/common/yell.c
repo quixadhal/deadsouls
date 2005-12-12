@@ -49,15 +49,15 @@ mixed do_yell_str(string str) {
 
 mixed do_yell_in_wrd_str(string lang, string str) {
     if( str[<1] != '!' && str[<1] != '?' && str[<1] != '.' )
-      str = capitalize(str) + ".";
+	str = capitalize(str) + ".";
     else str = capitalize(str);
     return (mixed)this_player()->eventSpeak(0, TALK_AREA, str, lang);
 }
 
 string GetHelp(string str) {
     return ("Syntax: <yell MESSAGE>\n"
-	    "        <yell in LANGUAGE MESSAGE>\n\n"
-	    "Sends a message to the area around you.  If you fail to "
-	    "specify a language, your native language is used.\n\n"
-	    "See also: reply, say, shout, speak, tell, whisper");
+      "        <yell in LANGUAGE MESSAGE>\n\n"
+      "Sends a message to the area around you.  If you fail to "
+      "specify a language, your native language is used.\n\n"
+      "See also: reply, say, shout, speak, tell, whisper");
 }

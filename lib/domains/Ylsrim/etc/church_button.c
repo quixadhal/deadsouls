@@ -13,7 +13,7 @@ int openDoor(object who) {
     object door = find_object("/domains/Ylsrim/etc/church_door");
 
     send_messages("press", "$agent_name $agent_verb the button.",
-		  who, 0, environment(who));
+      who, 0, environment(who));
     if( !door->GetClosed() ) {
 	return 1;
     }

@@ -44,7 +44,7 @@ nomask int check_access(object ob, string fun, string file, string oper) {
     int x;
 
     if( oper == "read" ) {
-        if( functionp(ReadFunction) ) {
+	if( functionp(ReadFunction) ) {
 	    if( !(functionp(ReadFunction) & FP_OWNER_DESTED) ) {
 		if( evaluate(ReadFunction, ob, fun, file) ) {
 		    return 1;
@@ -54,14 +54,14 @@ nomask int check_access(object ob, string fun, string file, string oper) {
 	access = ReadAccess;
     }
     else {
-        if( functionp(WriteFunction) ) {
+	if( functionp(WriteFunction) ) {
 	    if( !(functionp(WriteFunction) & FP_OWNER_DESTED) ) {
 		if( evaluate(WriteFunction, ob, fun, file) ) {
 		    return 1;
 		}
 	    }
 	}
-        access = WriteAccess;
+	access = WriteAccess;
     }
     if( !arrayp(who = match_path(access, file)) ) {
 	return 0;
@@ -71,17 +71,17 @@ nomask int check_access(object ob, string fun, string file, string oper) {
 
 nomask int grant_access(string type, string file, string who) {
     if( type == "read" ) {
-        if( ReadAccess[file] ) {
+	if( ReadAccess[file] ) {
 	    ReadAccess[file] = distinct_array(ReadAccess[file] + ({ who }));
 	}
-        else {
+	else {
 	    ReadAccess[file] = ({ who });
 	}
 	if( !eventSave() ) {
 	    Destruct();
 	    return 0;
 	}
-        return 1;
+	return 1;
     }
     else if( type != "write" ) {
 	return 0;
@@ -101,17 +101,17 @@ nomask int grant_access(string type, string file, string who) {
 
 nomask int remove_access(string type, string file, string who) {
     if( type == "read" ) {
-        if( !ReadAccess[file] ) {
+	if( !ReadAccess[file] ) {
 	    return 0;
 	}
-        else {
+	else {
 	    ReadAccess[file] -= ({ who });
 	}
 	if( !eventSave() ) {
 	    Destruct();
 	    return 0;
 	}
-        return 1;
+	return 1;
     }
     else if( type != "write" ) {
 	return 0;

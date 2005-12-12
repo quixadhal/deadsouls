@@ -16,11 +16,11 @@ void abort();
 int cmd(string str) {
     if(!archp(this_player())) return 0;
     if(!str) {
-      notify_fail("Syntax: register <site-ip>\n\n");
-      return 0;
+	notify_fail("Syntax: register <site-ip>\n\n");
+	return 0;
     }
     write("%^RED%^Enter all applicable information, including names, "
-        "offenses and email addresses.");
+      "offenses and email addresses.");
     rm(DIR_TMP+"/"+this_player()->GetKeyName()+".tmp");
     this_player()->eventEdit( DIR_TMP "/" + (string)this_player()->GetKeyName(),
       (: end_edit($(str)) :));
@@ -28,30 +28,30 @@ int cmd(string str) {
 }
 
 void end_edit(string site) {
-  string *lines;
-  string tmpfile, res, str;
-  int x, num;
-  
-  tmpfile = read_file(DIR_TMP+"/"+this_player()->GetKeyName());
-  rm(DIR_TMP+"/"+this_player()->GetKeyName());
-  tmpfile = replace_string(tmpfile, "\n", " ");
-  num = sizeof(lines = explode(wrap(tmpfile, 60), "\n"));
-  str = " - "+site+" placed on Registration\n";
-  str += "   by "+(string)previous_object()->GetName()+": "+
-      ctime(time())+"\n";
-  for(x=0; x<num; x++) 
-    str +=  "      * "+lines[x]+"\n";
-  
-  if(res = catch(call_other(BANISH_D, "register_site", site))) 
-    write("Error in registering site: "+res+"\n");
-  
-  log_file("watch/register", "\n" + str);
-  write("%^RED%^%^BOLD%^"+site+" is now on registeration!");
+    string *lines;
+    string tmpfile, res, str;
+    int x, num;
+
+    tmpfile = read_file(DIR_TMP+"/"+this_player()->GetKeyName());
+    rm(DIR_TMP+"/"+this_player()->GetKeyName());
+    tmpfile = replace_string(tmpfile, "\n", " ");
+    num = sizeof(lines = explode(wrap(tmpfile, 60), "\n"));
+    str = " - "+site+" placed on Registration\n";
+    str += "   by "+(string)previous_object()->GetName()+": "+
+    ctime(time())+"\n";
+    for(x=0; x<num; x++) 
+	str +=  "      * "+lines[x]+"\n";
+
+    if(res = catch(call_other(BANISH_D, "register_site", site))) 
+	write("Error in registering site: "+res+"\n");
+
+    log_file("watch/register", "\n" + str);
+    write("%^RED%^%^BOLD%^"+site+" is now on registeration!");
 }
 
 void abort() {
-  rm(DIR_TMP+"/"+this_player()->GetKeyName()+".tmp");
-  write("%^RED%^Site not registered!");
+    rm(DIR_TMP+"/"+this_player()->GetKeyName()+".tmp");
+    write("%^RED%^Site not registered!");
 }
 
 void help() {

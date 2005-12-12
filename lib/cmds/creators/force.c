@@ -14,40 +14,28 @@ mixed cmd(string args) {
     object target;
     string name, cmd;
 
-    if( sscanf(args, "%s to %s", name, cmd) != 1 ) {
-	int i = strsrch(args, " ");
-
-	name = "";
-	while( i != -1 ) {
-	    name += args[0..(i-1)];
-	    if( strlen(args) < i-1 ) {
-		args = args[(i+1)..];
-	    }
-	    else {
-		args = "";
-	    }
-	    if( target = find_living(lower_case(name)) ) {
-		break;
-	    }
-	    if( target = find_living(convert_string(name)) ) {
-		break;
-	    }
-	}
-	if( !target ) {
-	    who->eventPrint("Cannot find any living thing called: " + name);
-	    return 1;
-	}
-	cmd = args;
+    if(!args || args==""){
+	who->eventPrint("Force whom to do what?");
+	return 1;
     }
-    else {
-	target = find_living(lower_case(name));
-	if( !target ) {
-	    target = find_living(convert_string(name));
-	}
-	if( !target ) {
-	    who->eventPrint("Cannot find any living thing called: " + name);
+    if( sscanf(args, "%s to %s", name, cmd) < 1 ) {
+	if(sscanf(args, "%s %s", name,cmd) < 1) {
+	    who->eventPrint("Force whom to do what?");
 	    return 1;
 	}
+    }
+    target = present(lower_case(name),environment(who));
+    if( !target ) {
+	who->eventPrint("Cannot find any living thing called: " + name);
+	return 1;
+    }
+    if(archp(target) && !archp(who)){
+	who->eventPrint(target->GetName()+" shakes "+possessive(target)+
+	  " head and forces you to dest yourself.");
+	tell_room(environment(who), who->GetName()+" dests "+objective(who)+
+	  "self while trying to pull a foolish joke on "+target->GetName()+".", who);
+	who->eventDestruct();
+	return 1;
     }
     target->eventPrint(who->GetName() + " forces you to: " + cmd);
     who->eventPrint("You force " + target->GetShort() + " to: " + cmd);
@@ -56,10 +44,10 @@ mixed cmd(string args) {
 }
 
 string GetErorMessage() {
-    "Force whom to do what?";
+    return "Force whom to do what?";
 }
 
 string GetHelp() {
     return ("Syntax: <force LIVING to COMMAND>\n\n"
-	    "Allows you to force a living object to take a certain action.");
+      "Allows you to force a living object to take a certain action.");
 }

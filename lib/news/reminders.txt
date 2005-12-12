@@ -1,0 +1,70 @@
+CREATOR CHEAT SHEET
+
+make a new room named test1.c south of here:
+create room south test1
+
+make a new weapon named hammer_5.c:
+create weapon hammer_5.c
+
+make the new weapon respond to the name "hammer":
+modify weapon keyname hammer
+
+change the hammer's short description to "The Silver Hammer of Thor":
+modify hammer short The Silver Hammer of Thor
+
+Edit a file:
+ed <file>
+
+Load a file:
+update <file>
+
+Copy a file:
+cp <filename1> <filename2>
+
+Rename a file:
+mv <filename1> <filename2>
+
+Delete a file:
+rm <file>
+
+Make an object appear in your inventory:
+clone <file>
+example: clone /domains/campus/obj/key.c
+
+Look at the contents of a file:
+more <file>
+example: more /domains/campus/obj/key.c
+
+Destroy an object:
+dest <object>
+example: dest key
+NOTE: Desting players or other creators is extrememly rude.
+
+Look in your current directory (your current folder):
+ls
+
+Find out what directory you're in:
+pwd
+
+Change to a different directory:
+cd <directory>
+example: cd /domains/town/room
+
+Go to your workroom:
+home
+
+Go to the Creators' Hall
+wiz
+
+Go to another person or place
+goto <person>
+goto <filename>
+examples:
+goto cratylus
+goto /domains/town/room/basement
+
+Get details about other people's location and activity:
+people
+
+Bring another person to your location:
+trans <person>

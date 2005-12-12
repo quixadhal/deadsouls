@@ -1,5 +1,5 @@
 /*    /verbs/rooms/stop.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    stop STR
  *    created by Descartes of Borg 951016
  */
@@ -37,6 +37,6 @@ mixed do_stop_str(string str) {
 
 string GetHelp(string str) {
     return ("Syntax: <stop fishing>\n\n"
-	    "If you are fishing, this command will stop you from fishing.\n\n"
-	    "See also: cast, fish");
+      "If you are fishing, this command will stop you from fishing.\n\n"
+      "See also: cast, fish");
 }

@@ -45,7 +45,7 @@ int GetBlind() {
 
 static void RemoveBlindness() {
     mixed val = Blind->end;
-    
+
     Blind = 0;
     if( arrayp(val) ) {
 	send_messages(val[0], val[1], this_object());
@@ -68,10 +68,10 @@ varargs mixed eventBlind(object who, int amt, mixed end) {
 mixed eventCustomizeStat(string stat, int amount) {
     if( amount < 1 ) return "That is not a valid amount.";
     if( amount > CustomStats )
-      return "You do not have enough points to spend on customization.";
+	return "You do not have enough points to spend on customization.";
     if( !Stats[stat] ) return "You have no such stat.";
     if( Stats[stat]["level"] + amount > 100 )
-      return "You cannot make a stat exceed 100.";
+	return "You cannot make a stat exceed 100.";
     Stats[stat]["level"] += amount;
     Stats[stat]["points"] = 0;
     CustomStats -= amount;
@@ -129,7 +129,7 @@ int GetStatLevel(string stat) {
 
     x = (GetBaseStatLevel(stat) + GetStatBonus(stat));
     switch(stat) {
-	case "coordination": case "wisdom":
+    case "coordination": case "wisdom":
 	x -= GetAlcohol();
     }
     return x;
@@ -150,7 +150,7 @@ int AddStatPoints(string stat, int x) {
 	}
     }
     while(Stats[stat]["points"] > (y = GetMaxStatPoints(stat,
-      Stats[stat]["level"]))) {
+	  Stats[stat]["level"]))) {
 	if(Stats[stat]["level"] >= GetLevel()*4) Stats[stat]["points"] = y;
 	else {
 	    Stats[stat]["level"]++;
@@ -193,8 +193,8 @@ int GetStatBonus(string stat) {
     if( !StatsBonus[stat] ) return 0;
     i = sizeof(obs = keys(StatsBonus[stat]));
     while(i--) {
-        if( !obs[i] ) map_delete(StatsBonus[stat], obs[i]);
-        else x += (int)evaluate(StatsBonus[stat][obs[i]], stat);
+	if( !obs[i] ) map_delete(StatsBonus[stat], obs[i]);
+	else x += (int)evaluate(StatsBonus[stat][obs[i]], stat);
     }
     return x;
 }
@@ -244,8 +244,7 @@ int GetEffectiveVision() {
 	x = GetRadiantLight(0);
     }
     else {
-	int a = (int)env->GetAmbientLight();
-
+	int a = env->GetAmbientLight();
 	foreach(object ob in all_inventory(env)) {
 	    if( ob == this_object() ) continue;
 	    x += (int)ob->GetRadiantLight(a);
@@ -275,7 +274,7 @@ varargs static int array SetLightSensitivity(mixed array val...) {
     if( !val ) error("Null argument to SetLightSensitivity().\n");
     if( sizeof(val) == 1 ) val = val[0];
     if( sizeof(val) != 2 )
-      error(sprintf("Invalid arguments to SetLightSensitivity(): %O\n",  val));
+	error(sprintf("Invalid arguments to SetLightSensitivity(): %O\n",  val));
     return (LightSensitivity = val);
 }
 

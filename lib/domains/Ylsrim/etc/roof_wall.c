@@ -17,6 +17,6 @@ static void create() {
     SetAdjectives("adobe", "bank");
     SetShort("an adobe wall");
     SetLong("It has enough holes that you can get a good foot hold and "
-	    "climb down it!");
+      "climb down it!");
     SetClimb("/domains/Ylsrim/room/kaliid6", CLIMB_DOWN);
 }

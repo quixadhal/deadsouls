@@ -1,5 +1,5 @@
 /*    /lib/props/mass.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Handles object massiveness and weight
  *    Created by Descartes of Borg 970101
  *    Version: @(#) mass.c 1.1@(#)
@@ -19,7 +19,7 @@ int AddMass(int x) {
     }
     return (Mass -= x);
 }
- 
+
 int GetMass() {
     return Mass;
 }
@@ -30,14 +30,14 @@ int SetMass(int x) {
     }
     return (Mass = x);
 }
- 
+
 string array GetSave() {
     return ({ "Mass" });
 }
 
 int GetWeight() {
     float h;
- 
+
     if( environment() ) {
 	h = environment()->GetGravity();
     }
@@ -46,4 +46,4 @@ int GetWeight() {
     }
     return to_int(GetMass() * h);
 }
- 
+

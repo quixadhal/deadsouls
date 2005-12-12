@@ -1,5 +1,5 @@
 /*    /lib/obj/dummy.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    A dummy item object that handles item descriptions and such
  *    Created by Descartes of Borg 961014
  *    Version: @(#) dummy.c 1.18@(#)
@@ -47,12 +47,12 @@ static int Destruct() {
     int x;
 
     if( env = environment() ) {
-        env->eventReleaseObject(this_object());
+	env->eventReleaseObject(this_object());
 	x = clean::Destruct();
 	if( !x ) {
 	    env->eventReceiveObject(this_object());
 	}
-        return x;
+	return x;
     }
     else return clean::Destruct();
 }
@@ -74,7 +74,7 @@ mixed eventMove(mixed dest) {
 	return 1;
     }
 }
-    
+
 /* ******************* dummy.c driver applies ******************** */
 varargs static void create(string array id, mixed long, string array adj) {
     enter::create();

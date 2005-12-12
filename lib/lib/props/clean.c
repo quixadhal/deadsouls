@@ -7,7 +7,7 @@
  */
 
 #include <clean_up.h>
- 
+
 private static int NoClean = 0; 
 
 /* ******************* clean.c attributes ************************* */
@@ -48,7 +48,7 @@ static int Destruct() {
     destruct(this_object()); 
     return !(this_object()); 
 }
- 
+
 int eventDestruct() {
     return Destruct();
 }
@@ -57,7 +57,7 @@ int eventDestruct() {
 int clean_up(int ref_exists) { 
     object array inv; 
     object env;
- 
+
     if( NoClean || ref_exists ) {
 	return NEVER_AGAIN;
     }
@@ -66,10 +66,10 @@ int clean_up(int ref_exists) {
     }
     env = environment();
     if( env ) { 
-        if( env->isBag() ) {
+	if( env->isBag() ) {
 	    return TRY_AGAIN_LATER;
 	}
-        if( env->GetProperty("storage room") ) {
+	if( env->GetProperty("storage room") ) {
 	    return TRY_AGAIN_LATER;
 	}
     } 
@@ -78,14 +78,14 @@ int clean_up(int ref_exists) {
 	return TRY_AGAIN_LATER;
     }
     if( !env ) { 
-        catch(inv->eventDestruct());
-        if( this_object() ) {
+	catch(inv->eventDestruct());
+	if( this_object() ) {
 	    Destruct();
 	}
-        if( this_object() ) {
+	if( this_object() ) {
 	    destruct(this_object());
 	}
-        return NEVER_AGAIN; 
+	return NEVER_AGAIN; 
     } 
     if( userp(env) ) {
 	return TRY_AGAIN_LATER;

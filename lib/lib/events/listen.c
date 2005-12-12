@@ -17,7 +17,7 @@ string GetShort();
 
 varargs string GetListen(string str, object who) {
     mixed val;
-    
+
     if( !str || str == "default" ) {
 	val = Listen;
     }
@@ -90,7 +90,7 @@ varargs mixed SetListen(mixed array args...) {
     }
     else {
 	error("Wrong number of arguments to SetListen():\n\t"
-	      "Expected 1 or 2, got " + sizeof(args) + "\n");
+	  "Expected 1 or 2, got " + sizeof(args) + "\n");
     }
 }
 
@@ -101,11 +101,11 @@ varargs mixed eventListen(object who, string str) {
 	return 1;
     }
     environment(who)->eventPrint(who->GetName() + " listens to " + GetShort() +
-				 ".", who);
+      ".", who);
     who->eventPrint(str);
     return 1;
 }
-		   
+
 mixed direct_listen_obj() {
     if( !Listen ) {
 	return "You hear nothing unusual.";
@@ -127,4 +127,15 @@ mixed direct_listen_to_str_word_obj(string str) {
     else {
 	return 1;
     }
+}
+
+mapping GetListenMap(){
+    mapping Listens = ([]);
+    foreach(object ob in this_object()->GetDummyItems()) {
+	if( ob->GetListen() ) {
+	    Listens[ob->GetId()] = ob->GetListen();
+	}
+    }
+    if(this_object()->GetListen()) Listens["default"] = this_object()->GetListen();
+    return copy(Listens);
 }

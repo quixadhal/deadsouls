@@ -13,7 +13,7 @@ void create() {
     monsters = ({});
     player_list = ({});
     if(unguarded((: file_exists, SAVE_PLAYER_LIST+__SAVE_EXTENSION__ :)))
-      unguarded((: restore_object, SAVE_PLAYER_LIST :));
+	unguarded((: restore_object, SAVE_PLAYER_LIST :));
 }
 
 mapping *query_player_list() { return player_list; }
@@ -25,31 +25,31 @@ void add_player_info() {
 
     if(!(ob = previous_object()) || !userp(ob)) return;
     if(creatorp(ob)) {
-      i = sizeof(player_list);
-      while(i--)
-        if(player_list[i]["name"] == (string)ob->GetKeyName() && creatorp(ob))
-          player_list -= ({ player_list[i] });
-      return;
+	i = sizeof(player_list);
+	while(i--)
+	    if(player_list[i]["name"] == (string)ob->GetKeyName() && creatorp(ob))
+		player_list -= ({ player_list[i] });
+	return;
     }
     x = -1;
     i = sizeof(player_list);
     while(i--) if(player_list[i]["name"] == (string)ob->GetKeyName()) x = i;
     if((sizeof(player_list) == 20) && (x == -1) &&
       (((int)ob->query_exp()) < player_list[19]["experience"]))
-        return;
+	return;
     if(x > -1) player_list -= ({ player_list[x] });
     player_list += ({ ([ "name":(string)ob->GetKeyName(), "experience":(int)ob->query_exp(),
-      "kills":sizeof((string *)ob->query_kills()),
-      "deaths": sizeof((mixed *)ob->query_deaths()),
-      "quests": sizeof((string *)ob->query_quests()),
-      "major accomplishments": sizeof((mixed *)ob->query_mini_quests()),
-      "level": (int)ob->query_level(),
-      "class": (string)ob->query_class(),
-      "guild": (string)ob->query_guild()
-    ]) });
-    player_list = sort_array(player_list, "sort_list", this_object());
-    if(sizeof(player_list) > 20) player_list = player_list[0..19];
-    unguarded((: save_object, SAVE_PLAYER_LIST :));
+	"kills":sizeof((string *)ob->query_kills()),
+	"deaths": sizeof((mixed *)ob->query_deaths()),
+	"quests": sizeof((string *)ob->query_quests()),
+	"major accomplishments": sizeof((mixed *)ob->query_mini_quests()),
+	"level": (int)ob->query_level(),
+	"class": (string)ob->query_class(),
+	"guild": (string)ob->query_guild()
+      ]) });
+player_list = sort_array(player_list, "sort_list", this_object());
+if(sizeof(player_list) > 20) player_list = player_list[0..19];
+unguarded((: save_object, SAVE_PLAYER_LIST :));
 }
 
 int sort_list(mapping alpha, mapping beta) {
@@ -64,9 +64,9 @@ int add_kill(string str) {
     if(!userp(previous_object(0)) || !stringp(str)) return -1;
     if(!monsters) monsters = ({});
     if((x=member_array(str, monsters)) == -1) {
-        monsters += ({ str });
-        x = member_array(str, monsters);
-        unguarded((: save_object, SAVE_PLAYER_LIST :));
+	monsters += ({ str });
+	x = member_array(str, monsters);
+	unguarded((: save_object, SAVE_PLAYER_LIST :));
     }
     return x;
 }

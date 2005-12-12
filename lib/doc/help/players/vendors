@@ -1,0 +1,35 @@
+			  Dead Souls Vendors
+
+As with other non-player characters, vendors respond to certain
+requests people make using the "ask" command.  Dead Souls vendors
+respond to at least the following requests:
+
+ask VENDOR to appraise ITEM    
+ask VENDOR to browse
+ask VENDOR to buy ITEM         (identical to sell ITEM to VENDOR)
+ask VENDOR to price ITEM
+ask VENDOR to sell ITEM        (identical to buy ITEM from VENDOR)
+ask VENDOR to show ITEM
+
+Appraise allows you to get an offer from the vendor for an item you
+might wish to sell.
+
+Browse allows you to browse through what the vendor has to sell.  You
+may also specify specific types of things to browse, for example:
+	ask VENDOR to browse helms
+	ask vendor to browse torches
+
+Buy requests that the vendor buy from you the item you specify.  This is
+identical to the sell command, so see "help sell".
+
+Price allows you to get the price of an item that the vendor has to
+sell.
+
+Sell requests that the vendor sell you the specified item.  This is
+identical to the "buy" command, so see "help buy".
+
+Show allows you to look at an item which the vendor has for sale.
+
+See also: ask, buy, sell
+
+

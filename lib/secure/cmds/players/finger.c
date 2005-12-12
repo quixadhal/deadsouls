@@ -20,7 +20,7 @@ mixed cmd(string str) {
 	return 1;
     }
     else if(sscanf(str, "%s@%s", wer, wo)) 
-      remote_finger(this_player(), (wer ? wer : ""), wo);
+	remote_finger(this_player(), (wer ? wer : ""), wo);
     else {
 	string ret;
 
@@ -30,19 +30,19 @@ mixed cmd(string str) {
     }
     return 1;
 }
- 
+
 void remote_finger(object ob, string who, string mud) {
     int tc_flag, ud_flag, id;
 
     if( !(mud = (string)INTERMUD_D->GetMudName(mud)) ) {
 	message("system", mud_name() + " is blissfully unaware of the MUD " 
-		"you seek.", this_player());
+	  "you seek.", this_player());
 	return;
     }
     SERVICES_D->eventSendFingerRequest(convert_name(who), mud);
     message("system", "Remote finger sent to " + mud + ".", this_player());
 }
- 
+
 void help() {
     message("help",
       "Syntax: <finger (([player])(@)([mud]))>\n\n"

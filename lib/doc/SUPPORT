@@ -1,32 +1,22 @@
-            Documentation and Support for Dead Souls
+            Documentation and Support for Dead Souls 2
 
 
-	Due to copyright problems, this mudlib distribution
-does not include any of the original Nightmare IV or Nightmare V
-lib documentation files. 
+	As of this writing, the Dead Souls project has received
+permission to include the old Nightmare docs we'd been missing.
 
-	Naturally this is an inconvenience, and perhaps in
-the future Descartes will explicitly permit the redistribution
-of those docs.
-
-	In the meantime, you can access this documentation
-by logging onto Frontiers MUD and reading the Creator's Manual
-that's available for a small fee at the Campus Bookstore.
-
-	As of this writing, Frontiers is at
-frontiers.wcsu.ctstateu.edu port 5050, or if that is inaccessible
-you may try rugose.com 5050.
+	You can now browse through the build documentation in
+the /doc directory. These docs are also conveniently packaged in 
+a "manual" format. You can find the Creator's Manual in the
+chest in your workroom, and it contains this documentation.
 
 	For your convenience, a telnet room has been added to your
-mud that can help you connect to us. Just enter the telnet room
+mud that can help you connect to Frontiers, so that you may ask
+for help if you run into trouble. Just enter the telnet room
 north of the default start room, and type: connect
 
 	You may ask questions of creators there, but
 don't be offended if they are more interested in building
 their mud than helping you with yours.
 
-	However, the driver documentation files do not
-have this problem, and you can find them in the /docs directory.
-
 				- Cratylus @ Frontiers
-				  September 2005
+				  November 2005

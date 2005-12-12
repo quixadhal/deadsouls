@@ -1,0 +1,12 @@
+WARNING!
+
+The area south of here is Kaliid. It is part of the old,
+broken version of Dead Souls. It has been mostly unbroken,
+so that for example the desert and bank roof work properly.
+
+However, you will note obvious differences in design
+between Kaliid and the town north of here. Remember, neither
+Kaliid nor the northern town are intended to *be* a mud.
+They are only examples of places and things that you can
+examine to guide you in building your own mud.
+

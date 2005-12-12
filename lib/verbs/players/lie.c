@@ -1,5 +1,5 @@
 /*    /verbs/players/lie.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Object Library
  *    created by Descartes of Borg 960711
  *    Version: @(#) lie.c 1.4@(#)
  *    Last Modified: 96/12/21
@@ -18,18 +18,18 @@ static void create() {
     SetErrorMessage("Lie down?");
     SetSynonyms("lay");
     SetHelp("Syntax: <lie down>\n"
-	    "        <lie down in OBJECT>\n\n"
-	    "Allows you to lie down on the ground or in a bed.  "
-	    "It can be really exciting.\n\n"
-	    "Synonyms: lay (bad english)\n\n"
-	    "See also: sit, stand");
+      "        <lie down in OBJECT>\n\n"
+      "Allows you to lie down on the ground or in a bed.  "
+      "It can be really exciting.\n\n"
+      "Synonyms: lay (bad english)\n\n"
+      "See also: sit, stand");
 }
 
 mixed can_lie_down() {
     if( this_player()->GetParalyzed() ) {
 	return "You cannot do anything.";
     }
-    if( this_player()->GetPosition() != POSITION_STANDING ) {
+    if( this_player()->GetPosition() == POSITION_LYING ) {
 	return "You are already lying down!";
     }
     return 1;

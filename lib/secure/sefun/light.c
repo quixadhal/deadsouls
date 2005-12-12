@@ -30,13 +30,13 @@ varargs int total_light(object ob) {
     while(i--) x += (int)inv[i]->GetProperty("light");
     if( (int)env->GetProperty("indoors") ) return x;
     switch((string)SEASONS_D->query_time_of_day()) {
-        case "day": return x;
-        case "night":
-	  x += (int)SEASONS_D->GetMoonLight();
-          x += (int)env->GetProperty("night light") - 4;
-          return x;
-        case "dawn": case "twilight": return (x-1);
-        default: return x;
+    case "day": return x;
+    case "night":
+	x += (int)SEASONS_D->GetMoonLight();
+	x += (int)env->GetProperty("night light") - 4;
+	return x;
+    case "dawn": case "twilight": return (x-1);
+    default: return x;
     }
 }
 

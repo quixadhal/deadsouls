@@ -9,21 +9,21 @@ void create() {
     SetAmbientLight(30);
     SetShort("the telnet room");
     SetLong("From this room, you can attempt "+
-      "to connect to Frontiers MUD. This is useful to you because "+
-      "Dead Souls lib documentation is only available on Frontiers, "+
-      "for copyright reasons beyond our control. If the connection "+
+      "to connect to Frontiers MUD. This was once useful to you because "+
+      "Dead Souls lib documentation was only available on Frontiers, "+
+      "for copyright reasons beyond our control. These days, the docs "+
+      "are available to you in the creator's manual in the chest in "+
+      "your workroom. You're still welcome to visit Frontiers, though. "+
+      "\n\tIf the connection "+
       "fails, email cratylus@users.sourceforge.com to ask for help. "+
-      "On Frontiers, visit the Campus Bookstore and buy a Creator's "+
-      "Manual from Kim. This contains all the documentation you "+
-      "need to build a great MUD. \n"+
       "Once you connect to Frontiers, type \"dcon\" to "+
       "return to your own mud. \n\n"+
       "To connect type \"connect\" \n"+
-      "The default start room is south of here.");
+      "The Creators' Hall is east  of here.");
     SetExits( ([
-	"south" : "/domains/default/room/start"
+	"east" : "/domains/default/room/wiz_hall"
       ]) );
-    SetObviousExits("s");
+    SetObviousExits("e");
 }
 
 void init(){

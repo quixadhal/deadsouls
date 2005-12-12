@@ -24,7 +24,7 @@ private static void eventError(string name) {
 private static mixed eventGetFile(string name) {
     string array parts;
     object file;
-    
+
     name = explode(name, " ")[0];
     if( name[0] != '/' ) {
 	name = "/" + name;
@@ -47,7 +47,7 @@ private static mixed eventGetFile(string name) {
     if( !strsrch(name, DIR_WWW_GATEWAYS) ) {
 	string id, args, str;
 	buffer b;
-	
+
 	if( sscanf(name, DIR_WWW_GATEWAYS "/%s?%s", id, args) != 2 ) {
 	    args = 0;
 	    sscanf(name, DIR_WWW_GATEWAYS "/%s", id);
@@ -76,7 +76,7 @@ private static mixed eventGetFile(string name) {
 int eventRead(buffer data) {
     string cmd, args;
     string str = read_buffer(data);
-    
+
     if( !socket::eventRead(str) ) {
 	return 0;
     }
@@ -87,12 +87,12 @@ int eventRead(buffer data) {
     args = explode(replace_string(str, "\r", ""), "\n")[0];
     sscanf(args, "%s %s", cmd, args);
     switch(lower_case(cmd)) {
-        case "get":
-	    eventGetFile(args);
-	    return 1;
-	    
-	default:
-	    eventError(FILE_BAD_CMD);
-	    return 1;
+    case "get":
+	eventGetFile(args);
+	return 1;
+
+    default:
+	eventError(FILE_BAD_CMD);
+	return 1;
     }
 }

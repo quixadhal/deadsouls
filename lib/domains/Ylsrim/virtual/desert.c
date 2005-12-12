@@ -4,25 +4,27 @@
  */
 
 #include <lib.h>
+#include <dirs.h>
+#include <virtual.h>
 #define __DIR__ "/domains/Ylsrim/virtual/"
 
-inherit LIB_ROOM;
+inherit LIB_VIRT_LAND;
 
 static private int XPosition, YPosition;
 
-static void SetLongAndItems();
+varargs void SetLongAndItems(int x, int y, int z);
 
 varargs static void create(int x, int y) {
     string n, s, e, w;
 
     SetNoReplace(1);
-    room::create();
+    virt_land::create();
     XPosition = x;
     YPosition = y;
     SetClimate("arid");
-    SetProperties( ([ "light" : (x == 25 ? 2 : 3 ) ]) );
-    SetShort(x == 25 ? "the edge of a desert" : "deep within a desert");
+    SetAmbientLight(30);
     SetLongAndItems();
+    SetShort(x == 25 ? "the edge of a desert" : "deep within a desert");
     if( x == 25 ) e = "desert/" + random(25) + "," + y;
     else e = "desert/" + (x+1) + "," + y;
     if( x == 1 ) w = "desert/" + random(25) + "," + y;
@@ -36,56 +38,60 @@ varargs static void create(int x, int y) {
     if( s ) AddExit("south", __DIR__ + s);
     if( e ) AddExit("east", __DIR__ + e);
     if( w ) AddExit("west", __DIR__ + w);
+    if(x == 7 && y == 7){
+	RemoveExit("east");
+	AddExit("east","/domains/Ylsrim/room/sand_room");
+    }
 }
-    
-static void SetLongAndItems() {
+
+varargs void SetLongAndItems(int x, int y, int z) {
     mapping inv, items;
     string str;
+    ::SetLongAndItems(x, y, z);
 
     inv = ([]);
     str = "You are at the heart of a vast desert.  The emptiness of endless "
-      "sand cuts at your morale with the strength of a scimitar.  No path "
-      "marks your way.";
-    items = ([ "desert" : "It is so vast." ]);
+    "sand cuts at your morale with the strength of a scimitar.  No path "
+    "marks your way.";
+    SetItems( ([ "desert" : "It is so vast." ]) );
     if( !random(50) ) {
 	str += "  Burnt wood, scattered rocks and twigs, and other signs "
-	  "of an abandoned camp site are scattered about.";
-	items[({ "twigs", "sticks", "kindling", "wood", "burnt wood" })] = 
-	      "Though long since burnt to nothing, scattered kindling "
-	      "and burnt wood lie about as a memory of travellers who have "
-	      "passed through";
+	"of an abandoned camp site are scattered about.";
+	AddItem( ({ "twigs", "sticks", "kindling", "wood", "burnt wood" }) , 
+	  "Though long since burnt to nothing, scattered kindling "
+	  "and burnt wood lie about as a memory of travellers who have "
+	  "passed through");
 	if( random(2) ) {
 	    string thing;
 
 	    foreach(thing in ({ "twigs", "sticks", "kindling", "wood" })) 
-	      SetSearch(thing, function(object who, string str) {
+	    SetSearch(thing, function(object who, string str) {
 		  object ob;
 		  string thing2;
 
 		  if( !(ob = new("/domains/Ylsrim"+ "/etc/pole")) )
-		    return 0;
+		      return 0;
 		  who->eventPrint("You find a fishing pole!");
 		  eventPrint((string)who->GetName() + " finds a fishing pole "
-			     "among the abandoned campsite.", who);
+		    "among the abandoned campsite.", who);
 		  foreach(thing2 in ({ "twigs", "sticks", "kindling", "wood"}))
-		    RemoveSearch(thing2);
+		  RemoveSearch(thing2);
 		  if( !((int)ob->eventMove(this_player())) ) {
 		      who->eventPrint("You drop the pole!");
 		      eventPrint((string)who->GetName() + " drops the pole.",
-				 who);
+			who);
 		      ob->eventMove(this_object());
 		  }
-		  return 1;
-	      });
+		  return;
+		});
+	  }
 	}
+	else if( !random(10) ) 
+	    SetSmell("default", "You smell a distant camp fire.");
+	if( !random(25) )
+	    inv["/domains/Ylsrim"+ "/npc/traveller"] = random(3) + 1;
+	else if( !random(4) ) 
+	    SetListen("default", "You hear voices whispering in the distance.");
+	SetLong(str);
+	SetInventory(inv);
     }
-    else if( !random(10) ) 
-      SetSmell("default", "You smell a distant camp fire.");
-    if( !random(25) )
-      inv["/domains/Ylsrim"+ "/npc/traveller"] = random(3) + 1;
-    else if( !random(4) ) 
-      SetListen("default", "You hear voices whispering in the distance.");
-    SetLong(str);
-    SetItems(items);
-    SetInventory(inv);
-}

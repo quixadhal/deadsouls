@@ -7,7 +7,7 @@
 #include "include/persist.h"
 
 private int SaveRecurse;
-private mixed *Saved = ({});
+mixed *Saved = ({});
 
 string GetShort();
 
@@ -27,7 +27,7 @@ static int eventConvertObject(mixed val, int recurse) {
     if( sizeof(val) == 3 ) {
 	foreach(string obdata in val[2]) {
 	    object ob;
-	    
+
 	    val = restore_variable(obdata);
 	    ob = new(val[0]);
 	    ob->eventLoadObject(val, 1);
@@ -46,7 +46,7 @@ int eventLoadObject(mixed val, int recurse) {
     /* This converst NM IV - IVr2.2 data into NM  data */
     if( arrayp(data) ) return eventConvertObject(data, recurse);
     if( data["#base_name#"] != base_name(this_object()) )
-      error("Invalid save string.\n");
+	error("Invalid save string.\n");
     tmp = map(Saved, (: functionp($1) ? evaluate($1, "loading") : $1 :));
     foreach(mixed elem in tmp) {
 	if( arrayp(elem) ) flat += elem;
@@ -60,7 +60,7 @@ int eventLoadObject(mixed val, int recurse) {
     if( data["#inventory#"] ) {
 	foreach(mixed obdata in data["#inventory#"]) {
 	    object ob;
-	    
+
 	    val = restore_variable(obdata);
 	    if( arrayp(val) ) {
 		catch(ob = new(val[0]));
@@ -75,19 +75,19 @@ int eventLoadObject(mixed val, int recurse) {
     }
     if( recurse ) {
 	object prev = previous_object();
-	
+
 	if( !eventMove(prev) ) {
 	    call_out(function(object p) {
-		object env = environment(p);
-		
-		if( !env ) {
-		    p->eventPrint("You lose " + GetShort() + ".");
-		}
-		else {
-		    p->eventPrint("You drop " + GetShort() + ".");
-		    eventMove(env);
-		}
-	    }, 1, prev);
+		  object env = environment(p);
+
+		  if( !env ) {
+		      p->eventPrint("You lose " + GetShort() + ".");
+		  }
+		  else {
+		      p->eventPrint("You drop " + GetShort() + ".");
+		      eventMove(env);
+		  }
+	      }, 1, prev);
 	}
     }
 }
@@ -112,6 +112,6 @@ string GetSaveString() {
     foreach(string var in flat) mp[var] = fetch_variable(var);
     mp["#base_name#"] = base_name(this_object());
     if( SaveRecurse )
-      mp["#inventory#"] = (string *)all_inventory()->GetSaveString() - ({ 0 });
+	mp["#inventory#"] = (string *)all_inventory()->GetSaveString() - ({ 0 });
     return save_variable(mp);
 }

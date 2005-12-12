@@ -1,5 +1,5 @@
 /*    /lib/events/bury.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Handles objects which can be buried
  *    Created by Descartes of Borg 961231
  *    Version: @(#) bury.c 1.1@(#)

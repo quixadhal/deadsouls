@@ -1,5 +1,5 @@
 /*    /verbs/items/get.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Object Library
  *    created by Descartes of Borg 950113
  *    Version: @(#) get.c 1.5@(#)
  *    Last Modified: 96/11/12
@@ -13,33 +13,33 @@ static void create() {
     verb::create();
     SetVerb("get");
     SetRules("WRD WRD from OBJ", "WRD WRD out of OBJ", "OBS",
-	     "OBS out of OBJ", "OBS from OBJ");
+      "OBS out of OBJ", "OBS from OBJ");
     SetSynonyms("take");
     SetErrorMessage("Get what?  Or perhaps get something from somewhere?");
     SetHelp("Syntax: <get ITEM>\n"
-	    "        <get ITEM from OBJECT>\n"
-	    "        <get ITEM out of OBJECT>\n"
-	    "        <get AMOUNT CURRENCY from pile>\n"
-	    "        <get AMOUNT CURRENCY out of pile>\n\n"
-	    "This allows you to get items in the same room as you, or "
-	    "contained inside other items so that you are carrying them.  "
-	    "In addition, you can specify partial amounts of currency to "
-	    "pick up from a pile lying around.\n\n"
-	    "Synonyms: take\n\n"
-	    "See also: drop, give, put");
+      "        <get ITEM from OBJECT>\n"
+      "        <get ITEM out of OBJECT>\n"
+      "        <get AMOUNT CURRENCY from pile>\n"
+      "        <get AMOUNT CURRENCY out of pile>\n\n"
+      "This allows you to get items in the same room as you, or "
+      "contained inside other items so that you are carrying them.  "
+      "In addition, you can specify partial amounts of currency to "
+      "pick up from a pile lying around.\n\n"
+      "Synonyms: take\n\n"
+      "See also: drop, give, put");
 }
 
 mixed eventCheckLight(object who) {
     int light;
-    
+
     if( (light = effective_light(who)) < 0 ) {
 	if( 100 + (10*light) < random(100) )
-	  return "You fumble around in the darkness.";
+	    return "You fumble around in the darkness.";
 	else return 1;
     }
     else if( light > 4 ) {
 	if( 100 - (10*light) < random(100) )
-	  return "You fumble around in the blinding light.";
+	    return "You fumble around in the blinding light.";
 	else return 1;
     }
     else return 1;
@@ -89,13 +89,13 @@ mixed do_get_obs(mixed *targs) {
     object *obs;
 
     if( !sizeof(targs) ) {
-        this_player()->eventPrint("There is no such thing to be taken.");
+	this_player()->eventPrint("There is no such thing to be taken.");
 	return 1;
     }
     obs = filter(targs, (: objectp :));
     if( !sizeof(obs) ) {
 	mapping messages = unique_mapping(targs, (: $1 :));
-	
+
 	foreach(string msg in keys(messages)) {
 	    this_player()->eventPrint(msg);
 	}
@@ -113,7 +113,7 @@ mixed do_get_obs_out_of_obj(mixed *targs, object storage) {
     object *obs;
 
     if( !sizeof(targs) ) {
-        this_player()->eventPrint("There is no such thing to be taken.");
+	this_player()->eventPrint("There is no such thing to be taken.");
 	return 1;
     }
     obs = filter(targs, (: objectp :));

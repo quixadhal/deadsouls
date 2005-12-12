@@ -1,0 +1,12 @@
+
+The Creator's Manual: Instructions
+
+Commands:
+^^^^^^^^^
+index            - lists the chapters of the section selected
+
+chapter <number> - reads the desired chapter
+
+Example: To read chapter 27, type: 
+
+chapter 27

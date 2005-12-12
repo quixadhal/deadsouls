@@ -1,5 +1,5 @@
 /*    /lib/events/lock_with.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    The indirect object of locks and unlocks (a key)
  *    Created by Descartes of Borg 960121
  */
@@ -39,7 +39,7 @@ mixed eventUnlockLock(object who, object what) {
     if( GetDisableChance() > random(100) ) {
 	SetDisabled(1);
 	who->eventPrint(capitalize(GetDefiniteShort()) + " gets twisted "
-			"slightly out of shape as you try to use it..");
+	  "slightly out of shape as you try to use it.");
 	return 1;
     }
     return 1;

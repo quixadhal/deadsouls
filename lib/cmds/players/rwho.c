@@ -12,7 +12,7 @@ inherit LIB_DAEMON;
 mixed cmd(string str) {
     if( !str ) return "Get a remote who from where?";
     if( !(str = (string)INTERMUD_D->GetMudName(str)) )
-      return mud_name() + " is not aware of such a place.";
+	return mud_name() + " is not aware of such a place.";
     SERVICES_D->eventSendWhoRequest(str);
     message("system", "Remote who query sent to " + str + ".", this_player());
     return 1;

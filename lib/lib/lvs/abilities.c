@@ -1,5 +1,5 @@
 /*    /lib/abilities.c
- *    From the Dead Souls V LPC Library
+ *    From the Dead Souls LPC Library
  *    Handles learned traits
  *    Created by Descartes of Borg 950122
  *    Version: @(#) abilities.c 1.22@(#)
@@ -115,7 +115,7 @@ string array GetPrimarySkills() {
 varargs int AddSkill(string skill, int cls) {
     if( !stringp(skill) ) {
 	error("Bad argument 1 to AddSkill().\n\tExpected: string, Got: " +
-	      typeof(skill) + "\n");
+	  typeof(skill) + "\n");
     }
     if( !nullp(Skills[skill]) ) {
 	return 0;
@@ -160,13 +160,13 @@ void RemoveSkill(string skill) {
 varargs void SetSkill(string skill, int level, int cls) {
     if( !stringp(skill) ) {
 	error("Bad argument 1 to SetSkill().\n\tExpected: string, Got: " +
-	      typeof(skill) + "\n");
+	  typeof(skill) + "\n");
     }
     if( !cls ) {
-        if( Skills[skill] ) {
+	if( Skills[skill] ) {
 	    cls = Skills[skill]["class"];
 	}
-        else {
+	else {
 	    cls = 1;
 	}
     }
@@ -275,8 +275,8 @@ int AddSkillPoints(string name, int x) {
 	    Skills[name]["points"] = y;
 	}
 	else {
-            eventPrint("%^YELLOW%^You are a bit more adept with your " +
-		       name + ".");
+	    eventPrint("%^YELLOW%^You are a bit more adept with your " +
+	      name + ".");
 	    Skills[name]["level"]++;
 	    Skills[name]["points"] -= y;
 	    if( Skills[name]["class"] == 1 ) {
@@ -338,7 +338,7 @@ varargs void  eventTrainSkill(string skill, int pro, int con, int array a...) {
     val = (con - pro + (200*success) + 100)/8;
     AddSkillPoints(skill, (bonus * val * level * level) + 1);
 }
-    
+
 /* ****************** abilities.c driver applies **************** */
 static void create() {
 }

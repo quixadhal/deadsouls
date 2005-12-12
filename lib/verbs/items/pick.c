@@ -1,5 +1,5 @@
 /*    /verbs/items/pick.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Object Library
  *    created by Descartes of Borg 951220
  *    Version: @(#) pick.c 1.4@(#)
  *    Last modified: 96/10/15
@@ -16,18 +16,18 @@ static void create() {
     SetVerb("pick");
     SetRules("STR on OBJ", "STR on OBJ with OBJ", "OBJ");
     SetErrorMessage("You might pick a flower or perhaps pick the lock on "
-		    "something?");
+      "something?");
     SetHelp("Syntax: <pick OBJECT>\n"
-	    "        <pick lock on OBJECT>\n"
-	    "        <pick lock on OBJECT with TOOL>\n\n"
-	    "Depending on what you are doing, this command captures two "
-	    "different senses of the verb \"pick\".  In the first sense, "
-	    "<pick OBJECT>, pick allows you to pick things like flowers or "
-	    "strawberries (not your nose).\n\n"
-	    "The second conext allows you to open locked things without a key.  "
-	    "Some tools can help you stealthfully pick a lock, while "
-	    "others may help you pick it through brute force.\n\n"
-	    "See also: close, lock, open, unlock");
+      "        <pick lock on OBJECT>\n"
+      "        <pick lock on OBJECT with TOOL>\n\n"
+      "Depending on what you are doing, this command captures two "
+      "different senses of the verb \"pick\".  In the first sense, "
+      "<pick OBJECT>, pick allows you to pick things like flowers or "
+      "strawberries (not your nose).\n\n"
+      "The second conext allows you to open locked things without a key.  "
+      "Some tools can help you stealthfully pick a lock, while "
+      "others may help you pick it through brute force.\n\n"
+      "See also: close, lock, open, unlock");
 }
 
 mixed can_pick_obj() {
@@ -65,19 +65,19 @@ mixed do_pick_str_on_obj(string wrd, object ob, mixed *args...) {
     wrd = remove_article(lower_case(args[1]));
     this_player()->eventPrint("You eye the lock for weaknesses.");
     if( (int)this_player()->GetInCombat() )
-      this_player()->SetAttack(0, (: $(ob)->eventPick(this_player(), $(wrd)):),
-			       ROUND_OTHER);
+	this_player()->SetAttack(0, (: $(ob)->eventPick(this_player(), $(wrd)):),
+	  ROUND_OTHER);
     else ob->eventPick(this_player(), wrd);
     return 1;
 }
 
 mixed do_pick_str_on_obj_with_obj(string wrd, object ob, object tool,
-					  mixed *args...) {
+  mixed *args...) {
     wrd = remove_article(lower_case(args[1]));
     this_player()->eventPrint("You eye the lock for weaknesses.");
     if( (int)this_player()->GetInCombat() )
-      this_player()->SetAttack(0, (: $(ob)->eventPick(this_player(), $(wrd),
-						      $(tool)) :),ROUND_OTHER);
+	this_player()->SetAttack(0, (: $(ob)->eventPick(this_player(), $(wrd),
+	      $(tool)) :),ROUND_OTHER);
     else ob->eventPick(this_player(), wrd, tool);
     return 1;
 }

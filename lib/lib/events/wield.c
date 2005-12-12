@@ -1,5 +1,5 @@
 /*    /lib/events/wield.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Handles the wielding of things
  *    Created by Descartes of Borg 970101
  *    Version: @(#) wield.c 1.1@(#)
@@ -18,11 +18,11 @@ mixed direct_unwield_obj() {
     }
     return CanUnequip(this_player());
 }
- 
+
 mixed direct_wield_obj() {
     int hands = GetHands();
     string array limbs;
- 
+
     if( environment() != this_player() ) {
 	return "#You don't have that!";
     }
@@ -36,7 +36,7 @@ mixed direct_wield_obj() {
     }
     return CanEquip(this_player(), limbs);
 }
- 
+
 mixed direct_wield_obj_word_str(object target, string wrd, string limb) {
     if( environment() != this_player() ) {
 	return "#You don't have that!";

@@ -1,0 +1,63 @@
+			Building Store Vendors
+		     The Nightmare IV LPC Library
+		 written by Descartes of Borg 950528
+
+This document details the creation of vendor objects, NPC's which buy
+and sell items.  Note that vendors are NPC's, so everything in the
+document on building NPC's applies to vendors.  It is recommended that
+you be completely familiar with that document before moving on to this
+one.
+
+Building vendors is actually quite simple, with very little required
+beyond the NPC requirements.  In fact, only the following function
+calls are unique to vendors:
+
+string SetLocalCurrency(string currency);
+string SetStorageRoom(string room);
+int SetMaxItems(int num);
+int SetVendorType(int vt);
+
+One special note, however, is that the skill "bargaining" is extremely
+important to vendors.  Namely, the higher the bargaining, the harder
+it is for players to get decent prices.
+
+*****
+string SetLocalCurrency(string curr);
+*****
+
+Example: SetLocalCurrency("electrum");
+
+Sets the currency which the vendor will use for doing business.  The
+currencies should be approved by the approval team.
+
+*****
+string SetStorageRoom(string room);
+*****
+
+Example: SetStorageRoom("/domains/Praxis/horace_storage");
+
+Identifies the file name of the room in which the vendor will be
+storing items for sale.  This room should never be accessible to
+players.
+
+*****
+int SetMaxItems(int num);
+*****
+
+Example: SetMaxItems(60);
+
+Sets the maximum number of items a vendor can keep in storage at any
+given time.  Refer to approval documentation for proper numbers for
+this.
+
+*****
+int SetVendorType(int type);
+*****
+
+Examples: 
+	SetVendorType(VT_WEAPON);
+	SetVendorType(VT_ARMOUR | VT_WEAPON);
+
+Sets which types of items a vendor will buy and sell.  A list of all
+vendor types is in /include/vendor_types.h.  You may allow a vendor to
+sell multiple types using the | operator.

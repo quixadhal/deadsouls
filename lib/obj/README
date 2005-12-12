@@ -1,0 +1,4 @@
+The /obj directory contains files required by lib
+systems. Removing this directory or its contents,
+or modifying its contents may generate unexpected
+behavior from your mud.

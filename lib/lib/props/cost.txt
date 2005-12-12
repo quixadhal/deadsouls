@@ -1,0 +1,14 @@
+private int cost;
+
+int GetDollarCost(){
+	if(cost) return cost;
+	return 0;
+}
+
+int SetDollarCost(int i){
+	if(i && i > -1) cost = i;
+	else cost = 0;
+	return i;
+}
+
+

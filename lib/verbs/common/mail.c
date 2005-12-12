@@ -1,5 +1,5 @@
 /*    /verbs/common/mail.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Object Library
  *    mail
  *    mail STR
  *    created by Descartes of Borg 950113
@@ -40,16 +40,16 @@ mixed do_mail() { return do_mail_str(0); }
 
 mixed do_mail_str(string str) {
     object ob;
-    
+
     if( !creatorp(this_player()) )
-      return (mixed)environment(this_player())->eventMail(this_player(), str);
+	return (mixed)environment(this_player())->eventMail(this_player(), str);
     if( !(ob = new(OBJ_POST)) ) {
 	this_player()->eventPrint("Failed to load postal object!");
 	return 1;
     }
     if( !((int)ob->eventMove(this_player())) ) {
 	this_player()->eventPrint("You can't seem to carry the postal "
-				  "object.");
+	  "object.");
 	return 1;
     }
     ob->start_post(str);
@@ -58,15 +58,15 @@ mixed do_mail_str(string str) {
 
 string GetHelp(string str) {
     return ("Syntax: <mail>\n"
-	    "        <mail PLAYER>\n"
-	    "        <mail GROUP>\n\n"
-	    "        <mail PLAYER@MUD>\n\n"
-	    "Allows you to send mail to another player on this game or "
-	    "to a player on another game connected to the Intermud 3 "
-	    "system.  Without arguments, you are simply set to read your "
-	    "mail.  With arguments, you are creating mail to be sent.  "
-	    "You may only read mail in your home town.  The mailer will "
-	    "properly route any mail you send to the proper home town "
-	    "for the player or players you intend it to go to.\n\n"
-	    "See also: mudlist");
+      "        <mail PLAYER>\n"
+      "        <mail GROUP>\n\n"
+      "        <mail PLAYER@MUD>\n\n"
+      "Allows you to send mail to another player on this game or "
+      "to a player on another game connected to the Intermud 3 "
+      "system.  Without arguments, you are simply set to read your "
+      "mail.  With arguments, you are creating mail to be sent.  "
+      "You may only read mail in your home town.  The mailer will "
+      "properly route any mail you send to the proper home town "
+      "for the player or players you intend it to go to.\n\n"
+      "See also: mudlist");
 }

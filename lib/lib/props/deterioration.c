@@ -1,5 +1,5 @@
 /*    /lib/props/deterioriation.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Handles the deterioration of objects
  *    Created by Descartes of Borg 970101
  *    Version: @(#) deterioration.c 1.1@(#)
@@ -18,19 +18,19 @@ void eventDeteriorate(int type);
 int GetBroken() {
     return Broken;
 }
- 
+
 int SetBroken(int x) {
     return (Broken = x);
 }
- 
+
 int SetDamagePoints(int x) {
     return (MaxDamagePoints = DamagePoints = x);
 }
- 
+
 int GetDamagePoints() {
     return DamagePoints;
 }
- 
+
 int GetDeterioration() {
     return Deterioration;
 }
@@ -52,9 +52,9 @@ string array GetSave() {
 int eventReceiveDamage(object agent, int type, int amt, int d, mixed array l) {
     DamagePoints -= (amt * 5);
     if( DamagePoints < 1 ) {
-        Deterioration++;
-        DamagePoints = MaxDamagePoints;
-        eventDeteriorate(type);
+	Deterioration++;
+	DamagePoints = MaxDamagePoints;
+	eventDeteriorate(type);
     }
     return amt;
 }

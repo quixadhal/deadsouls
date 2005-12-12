@@ -1,5 +1,5 @@
 /*    /lib/drop.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    Makes an object something which can be dropped
  *    Created by Descartes of Borg 960113
  *    Version: @(#) drop.c 1.2@(#)
@@ -39,7 +39,7 @@ mixed CanDrop(object who) {
     if( objectp(PreventDrop) ) {
 	if( PreventDrop == who ) {
 	    return capitalize(GetDefiniteShort()) +
-		" simply will not leave your grasp.";
+	    " simply will not leave your grasp.";
 	}
 	else {
 	    return 1;
@@ -55,21 +55,21 @@ mixed CanDrop(object who) {
 
 mixed eventDrop(object who) {
     mixed tmp;
-    
+
     if( who != environment() ) {
 	return 0;
     }
     tmp = eventMove(environment(who));
     if( !tmp ) {
 	who->eventPrint("Something prevents you from dropping "
-			+ GetDefiniteShort() + ".");
+	  + GetDefiniteShort() + ".");
 	return 1;
     }
     if( tmp != 1 ) {
 	return tmp;
     }
     send_messages("drop", "$agent_name $agent_verb $target_name.",
-		  who, this_object(), environment(who));
+      who, this_object(), environment(who));
     return 1;
 }
 

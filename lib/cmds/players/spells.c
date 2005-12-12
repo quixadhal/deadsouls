@@ -14,11 +14,7 @@ mixed cmd(string args) {
     string array spells = ({});
     string tmp;
     int len;
-    
-    if( creatorp(who) ) {
-	who->eventPrint("Creators know no spells.");
-	return 1;
-    }
+
     tmp = "You know the following spells:\n";
     foreach(string spell, int val in who->GetSpellBook()) {
 	spells += ({ sprintf("%:-20s: %:-3d%%", spell, val) });
@@ -29,7 +25,7 @@ mixed cmd(string args) {
     else {
 	foreach(string spell in spells) {
 	    int i = strlen(spell);
-	    
+
 	    if( i > len ) {
 		len = i;
 	    }
@@ -43,7 +39,7 @@ mixed cmd(string args) {
 
 string GetHelp() {
     return ("Syntax: <spells>\n\n"
-	    "Lists all of your spells in your spell book with your "
-	    "proficiency in each spell.\n\n"
-	    "See also: skills, stats, status");
+      "Lists all of your spells in your spell book with your "
+      "proficiency in each spell.\n\n"
+      "See also: skills, stats, status");
 }

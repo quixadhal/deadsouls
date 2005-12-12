@@ -13,7 +13,7 @@ inherit LIB_DAEMON;
 
 mixed cmd(string args) {
     string verb, rule;
-    
+
     if( !args || args == "" ) {
 	return "Remove which emote?";
     }
@@ -40,8 +40,8 @@ mixed cmd(string args) {
 
 string GetHelp(string args) {
     return ("Syntax: <removeemote EMOTE (RULE)>\n\n"
-	    "Allows you to remove an emote or a rule for an emote from "
-	    "the soul.  If you specify a rule, only that rule gets removed.  "
-	    "If you fail to specify a rule, the entire emote is removed.\n\n"
-	    "See also: addadverb, addemote, removeadverb");
+      "Allows you to remove an emote or a rule for an emote from "
+      "the soul.  If you specify a rule, only that rule gets removed.  "
+      "If you fail to specify a rule, the entire emote is removed.\n\n"
+      "See also: addadverb, addemote, removeadverb");
 }
