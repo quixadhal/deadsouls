@@ -47,3 +47,7 @@ int ReadSheet(){
     this_player()->eventPage("/news/reminders.txt");
     return 1;
 }
+
+void init(){
+    ::init();
+}

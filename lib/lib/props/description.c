@@ -35,6 +35,10 @@ mixed direct_add_obj_to_obj() { return 1; }
 mixed indirect_add_obj_to_obj() { return 1; }
 mixed indirect_add_obj_to_here() { return 1; }
 mixed direct_add_obj_to_here() { return 1; }
+mixed indirect_add_obj_to_room() { return 1; }
+mixed direct_add_obj_to_room() { return 1; }
+mixed indirect_add_obj() { return 1; }
+mixed direct_add_obj() { return 1; }
 
 mixed direct_delete_obj(){
     return 1;

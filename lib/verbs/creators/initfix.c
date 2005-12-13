@@ -11,7 +11,7 @@ static void create() {
     SetVerb("initfix");
     SetRules("OBJ", "here");
     SetErrorMessage("initfix what?");
-    SetHelp("Syntax: <initfix OBJ SETTING VALUE>\n\n"
+    SetHelp("Syntax: <initfix OBJ>\n\n"
       "If you have write permissions to the file of the object "
       "specified, this command adds an init(){} function. Lacking "
       "this function makes many objects break or behave unpredictably."
@@ -29,7 +29,8 @@ mixed do_initfix_obj(object ob) {
     if(load_object(MODULES_FILE)->eventAddInit(base_name(ob)+".c") == 2) {
 	return "File already has a working init function.";
     }
-    else return "Done.";
+    else write("Done.");
+    return 1;
 }
 
 mixed do_initfix_word(string wrd) {

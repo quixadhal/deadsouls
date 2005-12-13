@@ -88,7 +88,9 @@ mixed eventModify(object ob, string str){
 	return 1;
     }
 
-    cp(filename, tmpfile);
+    global1 = filename;
+    global2 = tmpfile;
+    unguarded( (: cp(global1,global2) :) );
 
     inheritance = "";
     if(inherits(LIB_ROOM,ob)) inheritance += " room";
@@ -206,6 +208,8 @@ mixed eventModify(object ob, string str){
     case "setweapontype" : out = "SetWeaponType";break;
     case "damagetypes" : out = "SetDamageTypes";break;
     case "setdamagetypes" : out = "SetDamageTypes";break;
+    case "damagetype" : out = "SetDamageType";break;
+    case "setdamagetype" : out = "SetDamageType";break;
     case "hands" : out = "SetHands";break;
     case "sethands" : out = "SetHands";break;
     case "stuff" : out = "AddStuff";break;
@@ -320,14 +324,13 @@ mixed eventModify(object ob, string str){
 	return 1;
     }
     load_object(MODULES_GENERIC)->eventGeneralStuff(tmpfile);
-    if(!(cp(tmpfile,filename))) {
-	write("You do not have write access to that file. Aborting modification.");
-	return 1;
-    }
+    global1 = tmpfile;
+    global2 = filename;
+    unguarded( (: cp(global1,global2) :) );
     players = get_livings(environment(this_player()),1);
     load_object("/secure/cmds/creators/update")->cmd("-a "+filename);
     furnace = load_object(ROOM_FURNACE);
-    if(inheritance == "room") {
+    if(grepp(inheritance,"room")) {
 	players->eventMove(load_object(filename));
     }
     else ob->eventMove(furnace);
@@ -355,7 +358,9 @@ int eventDelete(object ob, string value){
 	return 1;
     }
 
-    cp(filename,tmpfile);
+    global1 = filename;
+    global2 = tmpfile;
+    unguarded( (: cp(global1,global2) :) );
     mixed_tmp = load_object("/secure/cmds/creators/update")->cmd("-a "+tmpfile);
     if(!mixed_tmp || !intp(mixed_tmp)) {
 	write("Target file is screwed up. Aborting delete.");
@@ -370,13 +375,17 @@ int eventDelete(object ob, string value){
 	return 1;
     }
     if(inherits(LIB_ROOM,load_object(filename))){
-	cp(tmpfile,filename);
+	global1 = tmpfile;
+	global2 = filename;
+	unguarded( (: cp(global1, global2) :) );
 	players = get_livings(environment(this_player()),1);
 	load_object("/secure/cmds/creators/update")->cmd("-a "+filename);
 	players->eventMoveLiving(load_object(filename));
     }
     else {
-	cp(tmpfile,filename);
+	global1 = tmpfile;
+	global2 = filename;
+	unguarded( (: cp(global1, global2) :) );
 	ob->eventMove(load_object(ROOM_FURNACE));
 	load_object("/secure/cmds/creators/update")->cmd("-a "+filename);
 	new(filename)->eventMove(environment(this_player()));
@@ -394,10 +403,9 @@ int eventResumeArrayMod(object target, string tmpfile, string *NewArr, string fu
 	write("You do not appear to have access to this file. Modification aborted.");
 	return 1;
     }
-    if(!cp(filename, tmpfile)) {
-	write("oops! You don't have read access to that file. So sorry.");
-	return 1;
-    }
+    global2 = tmpfile;
+    global1 = filename;
+    unguarded( (: cp(global1, global2) :) );
     array_string = func + "( ({";
     foreach(string foo in NewArr){
 	array_string += "\""+foo+"\", ";
@@ -419,10 +427,9 @@ int eventResumeArrayMod(object target, string tmpfile, string *NewArr, string fu
 	write("This change would screw up the object. Aborting.");
 	return 1;
     }
-    if(!cp(tmpfile, filename)){
-	write("You don't have write permission to that. Sorry.");
-	return 1;
-    }
+    global1 = tmpfile;
+    global2 = filename;
+    unguarded( (: cp(global1, global2) :) );
     load_object(CMD_UPDATE)->cmd(filename);
     if(inherits(LIB_ROOM,load_object(filename))) this_player()->eventMoveLiving(filename);    else{
 	target->eventMove(load_object(ROOM_FURNACE));
@@ -448,10 +455,9 @@ int eventResumeMappingChange(object target, string tmpfile, mapping NewMap, stri
 	return 1;
     }
 
-    if(!cp(filename, tmpfile)) {
-	write("oops! You don't have read access to that file. So sorry.");
-	return 1;
-    }
+    global2 = tmpfile;
+    global1 = filename;
+    unguarded( (: cp(global1, global2) :) );
 
     ret = remove_matching_line(read_file(tmpfile),func);
     switch(func){
@@ -471,10 +477,9 @@ int eventResumeMappingChange(object target, string tmpfile, mapping NewMap, stri
 	return 1;
     }
     load_object(MODULES_GENERIC)->eventGeneralStuff(tmpfile);
-    if(!cp(tmpfile, filename)){
-	write("You don't have write permission to that. Sorry.");
-	return 1;
-    }
+    global1 = tmpfile;
+    global2 = filename;
+    unguarded( (: cp(global1, global2) :) );
     load_object(CMD_UPDATE)->cmd(filename);
     if(inherits(LIB_ROOM,load_object(filename))) this_player()->eventMoveLiving(filename);
     else{

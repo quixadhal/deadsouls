@@ -257,7 +257,7 @@ varargs mixed eventProcessExits(string filename, string dir, string location){
     globalstr = filename; 
     tmpexit = generate_tmp(load_object(filename));
 
-    new_file = load_object(MODULES_FILE)->eventAppend(new_file,({"SetLong","SetDayLong","SetNightLong","SetShort","create()","create"}),"\n"+map_str);
+    new_file = load_object(MODULES_FILE)->eventAppend(new_file,({"SetLong","SetDayLong","SetNightLong","SetShort","create()","create"}),"\n"+map_str+"\n");
     write_file(tmpexit,new_file,1);
     cp(tmpexit,globalstr);
     load_object("/secure/cmds/creators/update")->cmd("-a "+filename);

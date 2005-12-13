@@ -13,10 +13,10 @@ mixed do_add_obj_to_obj(object ob, object ob2);
 static void create() {
     verb::create();
     SetVerb("add");
-    SetRules("OBJ to OBJ", "OBJ to here");
+    SetRules("OBJ", "OBJ to OBJ", "OBJ to here", "OBJ to room");
     SetErrorMessage("Add what?");
     SetHelp("Syntax: <add [OBJ] to [OBJ]>\n"
-      "        <add [OBJ] to here>\n"
+      "        <add [OBJ]>\n"
       "This command adds the first object to the permanent "
       "inventory of the second object, if you have access "
       "privileges to both files. You will be prompted for input. "
@@ -34,9 +34,19 @@ mixed can_add_obj_to_obj(string one, string two){
     return 1; 
 }
 mixed can_add_obj_to_here(string one) { return 1; }
+mixed can_add_obj(string one) { return 1; }
+mixed can_add_obj_to_room(string one) { return 1; }
 
 
 mixed do_add_obj_to_here(object ob){
+    return do_add_obj_to_obj(ob, environment(this_player()));
+}
+
+mixed do_add_obj_to_room(object ob){
+    return do_add_obj_to_obj(ob, environment(this_player()));
+}
+
+mixed do_add_obj(object ob){
     return do_add_obj_to_obj(ob, environment(this_player()));
 }
 
@@ -44,10 +54,15 @@ mixed do_add_obj_to_obj(object ob, object ob2) {
     string str = base_name(ob2)+".c";
     string sourcefile = base_name(ob)+".c";
 
+    write("ob2: "+str);
+    write("ob: "+sourcefile);
+
     if(!inherits(LIB_NPC,ob2) &&
       !inherits(LIB_STORAGE,ob2) &&
       !inherits(LIB_ROOM,ob2)){
 	write("That object is not intended to contain other objects. Addition halted.");
+	write("If you are sure this is incorrect, then the target object may be ");
+	write("missing a working init function. Fix it with the initfix command.");
 	return 0;
     }
 

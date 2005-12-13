@@ -211,6 +211,7 @@ int eventGeneralStuff(string str){
     unguarded( (: load_object(MODULES_FILE)->eventAddInit(globalstr) :) );
     //changing customdefs
     unguarded( (: globalstr = replace_line(read_file(globalstr) ,({"customdefs.h"}), "#include \""+homedir(this_player())+"/customdefs.h\"") :) );
+    globalstr = replace_string(globalstr,"\n\n\n","\n\n");
     unguarded( (: write_file(globalstr2, globalstr, 1) :) );
     return 1;
 }

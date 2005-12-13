@@ -322,6 +322,8 @@ varargs int eventModString(string file, string param, mixed replace, string *par
     else ret = eventAppend(file,where_append,"\n"+globalstr3+"("+globalmixed+");\n");
     ret = replace_line(ret,({"customdefs.h"}), "#include \""+homedir(this_player())+"/customdefs.h\"");
     write_file(tmpfile,ret,1);
+    //tc("ret: "+ret);
+    //tc(tmpfile+": "+read_file(tmpfile));
     unguarded( (: cp(globalstr2, globalstr) :) );
     rm(tmpfile);
     return 1;

@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -19,12 +20,16 @@ static void create() {
 	({"ceiling","high ceiling"}) : "The high, vaulted ceiling "+
 	"provides plenty of headroom." 
       ]) );
+    SetInventory(([
+	"/domains/town/npc/radagast" : 1,
+	"/domains/town/obj/bbucket" : 1,
+      ]));
     SetExits( ([ "east" : "/domains/town/room/adv_guild"
       ]) );
     AddExit("west" , "/domains/town/room/test.c");
-    SetInventory(([
-	"/domains/town/obj/bbucket" :1
-      ]));
     SetObviousExits("e");
     SetPlayerKill(1);
+}
+void init(){
+    ::init();
 }

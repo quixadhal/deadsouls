@@ -27,7 +27,6 @@ static void create() {
 	"no teleport":0]));
     SetInventory(([
       ]));
-    SetObviousExits("e");
     AddExit("west", "/domains/town/room/thall");
     //funs
     //snuf

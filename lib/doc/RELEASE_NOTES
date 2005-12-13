@@ -1,8 +1,7 @@
----- 1.9r16 ---
+---- 1.9r18 ---
+- Creation system bugfixes.
 - Connection bugfixes.
-
----- 1.9r14 ---
-- Many creation system bugfixes.
+- Template bugfix.
 
 ---- 1.9r12 ---
 - The roommaker is now obsolete, but is not being removed, as
