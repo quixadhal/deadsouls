@@ -1,8 +1,20 @@
 CREATOR TIPS
 
+* For details on the Quick Creation System:
+http://dead-souls.sourceforge.net/example.html
+
+
+* Admins: there is a new command: admintool
+It is a menu-driven system that will make your
+life easier and simplify tasks like locking
+the mud, changing the mud's name, creating new
+currency, the works.
+
+
 * Edit .plan in your homedir to let others 
 know what you're working on. You can see other 
 people's plans when you finger them.
+
 
 * You can test how functions work without having to 
 code a command or object. The "eval" command will let 
@@ -12,6 +24,7 @@ eval return this_player()->GetName()
 eval find_player("cratylus")
 eval present("sword",find_player("testylus"))->GetClass()
 ------------------------
+
 
 * The "boards" command will tell you which chat boards 
 have posts you have not read.
@@ -28,11 +41,8 @@ channel name. If you're listening to intergossip, for
 example, you can turn it off by just typing: intergossip
 
 
-* Creators do not have bodies like players do. If you 
-want to test your code, you need to create another 
-character besides your creator charater. Just make 
-sure it has the word "test" somewhere in its name. For 
-example, the test players Cratylus uses is "Testylus".
+* Use test characters. If you test stuff on yourself and
+screw up your character file, you will be sad. 
 
 
 * To create good code, you should look at what people 
@@ -71,11 +81,12 @@ your code for you isn't the best way to make that happen.
 However, we're happy to look over your code and make suggestions.
 
 
-* Permissions and privileges: For security reasons, you do 
-not have read/write access to everything. You can read and 
+* Permissions and privileges: For security reasons,  all creators
+do not have read/write access to everything. You can read and 
 write any file in your home directory. You only have write 
 permissions within your home directory and the /tmp 
 directory. You can read everything outside the /realms and 
 /secure directories. You can't read anything 
 in other creators' home dirs. Your read access to some items 
 in the /secure directory is limited.
+  If you're admin, of course, you have full access to everything.

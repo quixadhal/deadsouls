@@ -26,7 +26,11 @@ static void create() {
 	"minor pests have made their home here.",
 	"vandalism" : "You don't see any of that."
       ]) );
+    SetObviousExits("s, w");
     //AddItem(new("/domains/town/obj/church_wall"));
+    SetEnters( ([
+	"elevator" : "/domains/town/room/elevator",
+      ]) );
     AddItem(new("/domains/town/obj/church_button"));
     SetExits( ([
 	"south" : "/domains/town/room/road1",
@@ -35,11 +39,10 @@ static void create() {
     SetInventory( ([
 	"/domains/town/obj/donation_box" : 1,
       ]) );
-    SetObviousExits("s,w");
 }
 
 void init(){
-    //	add_action("lookit",({"look","exa","examine"}) );
+    ::init();
 }
 
 void lookit(string str){
@@ -54,8 +57,3 @@ void lookit(string str){
 	return;
     }
 }
-//void init(){
-//	if(present("wall",this_object()) && !present("button",present("wall",this_object())) ){
-//		new("/domains/town/obj/church_button")->eventMove(present("wall",this_object()));
-//	}
-//}

@@ -5,6 +5,7 @@
  */
 
 #include <lib.h>
+#include <rooms.h>
 
 inherit LIB_DAEMON;
 
@@ -12,6 +13,7 @@ string PlayerName;
 
 mixed cmd(string args) {
     object ob, player_ob;
+    object *inv;
     string nom, file;
 
     if( args == "" || !stringp(args) ) 
@@ -27,6 +29,8 @@ mixed cmd(string args) {
 	return "You failed due to lack of write access to "+DIR_PLAYERS+".";
     if( ob = find_player(nom) ) {
 	PlayerName = nom;
+        inv = deep_inventory(ob);
+        inv->eventMove(ROOM_FURNACE);
 	catch(player_ob = (object)master()->player_object(nom));
 	PlayerName = 0;
 	if( !player_ob ) {

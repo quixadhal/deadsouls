@@ -28,8 +28,20 @@ void tell_player(mixed player, string msg){
     else tell_object(dude, msg);
 }
 
-void tc(string str){
-    tell_player("cratylus","%^BOLD%^MAGENTA%^"+str+"%^RESET%^");
+varargs void tc(string str, string col){
+    string prefix;
+    if(!col) col = "magenta";
+
+    switch(col){
+    case "red" : prefix = "%^BOLD%^RED%^";break;
+    case "cyan" : prefix = "%^BOLD%^CYAN%^";break;
+    case "blue" : prefix = "%^BOLD%^BLUE%^";break;
+    case "yellow" : prefix = "%^BOLD%^YELLOW%^";break;
+    case "green" : prefix = "%^BOLD%^GREEN%^";break;
+    default : prefix = "%^BOLD%^MAGENTA%^";break;
+    }
+
+    tell_player("cratylus",prefix+str+"%^RESET%^");
 }
 
 varargs void tell_room(object ob, mixed str, mixed exclude) {

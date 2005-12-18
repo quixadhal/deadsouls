@@ -558,7 +558,7 @@ private static void load_access(string cfg, mapping ref) {
 	return ({ "in", "with", "without", "into", "for", "on", "under", "against",
 	  "out", "within", "of", "from", "between", "at", "to", "over", "near",
 	  "inside", "onto", "off", "through", "across", "up", "down",
-	  "around", "about", "only", "here", "room", "exit"});
+	  "around", "about", "only", "here", "room", "exit", "enter"});
     }
 
     string parse_command_all_word() { return "all"; }

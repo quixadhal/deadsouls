@@ -10,6 +10,7 @@ void create() {
       "incinerated. You probably shouldn't be here. Go down to get out.");
     SetExits( ([ "down" : ROOM_START ]) );
     call_out((: reload_room :), 360, load_object(base_name(this_object())));
+    SetNoModify(1);
 }
 
 int CanReceive(object ob){

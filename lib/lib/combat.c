@@ -1,5 +1,5 @@
 /*    /lib/combat.c
- *    from the Dead Souls IV LPC Library
+ *    from the Dead Souls LPC Library
  *    combat events and data
  *    created by Descartes of Borg 950124
  *    Version: @(#) combat.c 1.40@(#)

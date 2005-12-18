@@ -1,0 +1,10 @@
+Extras directory
+
+- local_options.*  On at least one system, the local_options version
+  included in ds1.9r8 and up causes driver compilation to fail. This 
+  older local_options file is included as a courtesy for those who
+  run into this problem. From the extras directory, just type:
+  cp local_options.* ../v22.2b14/local_options
+
+- restore_cfg If you screw up your mudos.cfg file, you can use this to
+  get it back.

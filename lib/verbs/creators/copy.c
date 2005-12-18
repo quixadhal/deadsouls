@@ -33,6 +33,15 @@ mixed can_copy_obj_str(object ob, string str) { return 1; }
 mixed can_copy_str(string str) { return 1; }
 
 mixed do_copy_obj_str(object ob, string str) {
+    object staff;
+    staff = present("tanstaafl",this_player());
+    if(!staff) {
+	write("You must be holding the creator staff in order to use this command.");
+	write("If you don't know where you put it, get another one from the chest ");
+	write("in your workroom.");
+	return 1;
+    }
+
     success = 0;
     sourcefile = "";
     targetfile = "";
@@ -42,7 +51,6 @@ mixed do_copy_obj_str(object ob, string str) {
 
     sourcefile = base_name(ob)+".c";
     targetfile = str;
-
     if(!check_privs(this_player(),str) || 
       !check_privs(this_player(),sourcefile)){
 	write("You lack sufficient privileges for this operation. Copy failed.");
@@ -64,12 +72,22 @@ mixed do_copy_obj_str(object ob, string str) {
 mixed do_copy_str(string str) {
     string tmp, new_room;
     mixed source_update;
+    object staff;
+    staff = present("tanstaafl",this_player());
+    if(!staff) {
+	write("You must be holding the creator staff in order to use this command.");
+	write("If you don't know where you put it, get another one from the chest ");
+	write("in your workroom.");
+	return 1;
+    }
 
     if(last(str,2) != ".c") str += ".c";
     str = absolute_path((string)this_player()->query_cwd(), str);
     if( !file_exists(str) ) return "File " + str + " not found.";
-    else if( !(tmp = read_file(str)) )
-	return "Unable to read file " + str + ".";
+    else if( !(tmp = read_file(str)) || !tmp || tmp == ""){
+	write("Unable to read file " + str + ".");
+	return 1;
+    }
 
     if(!check_privs(this_player(),str) || 
       !check_privs(this_player(),base_name(environment(this_player()))+".c")){
@@ -94,7 +112,7 @@ mixed do_copy_str(string str) {
     write("restore "+last_string_element(new_room,"/"));
     write("Then: update");
 
-    load_object(MODULES_ROOM)->eventCopyRoom(str,new_room+".c");
+    staff->eventCopyRoom(str,new_room+".c");
     load_object("/secure/cmds/creators/update")->cmd("-a "+new_room);
     this_player()->eventMoveLiving(new_room);
     write("Room copy complete.");

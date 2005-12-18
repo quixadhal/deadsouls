@@ -96,8 +96,9 @@ mixed cmd(string args) {
 	    if( !eventUpdate(args, flags ^ U_RECURSIVE) ) return 0;
 	    if( !(ob = find_object(args)) ) return 0;
 	    ancestors = deep_inherit_list(ob);
-	    this_player()->eventPrint("(%^CYAN%^Recursive "
-	      "update: " + args + "%^RESET%^)\n");
+	    if(identify(flags ^ U_AUTOMATED) == "8")  
+		this_player()->eventPrint("(%^CYAN%^Recursive "
+		  "update: " + args + "%^RESET%^)\n");
 	    i = sizeof(ancestors);
 	    while(i--) if( !eventUpdate(ancestors[i], flags ^ U_RECURSIVE) ) {
 		    this_player()->eventPrint("Recursive update failed.");

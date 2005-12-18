@@ -14,7 +14,7 @@ void create() {
     SetExits( ([ 
 	"down" : "/domains/town/room/road",
       ]) );
-
+    SetNoModify(1);
 }
 void init(){
     ::init();

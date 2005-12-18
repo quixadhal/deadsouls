@@ -10,6 +10,7 @@
 #include <function.h>
 
 private int   ProperNoun = 0;
+private int   Modify     = 1;
 private mixed Short      = 0;
 
 mixed direct_modify_obj_str() {
@@ -28,25 +29,16 @@ mixed direct_initfix() {
     return 1;
 }
 
+mixed direct_reload_obj() { return 1; }
+mixed indirect_reload_obj() { return 1; }
+mixed direct_reload() { return 1; }
+mixed indirect_reload() { return 1; }
+
 mixed direct_copy_obj_to_obj() { return 1; }
 mixed direct_copy_obj_str() { return 1; }
 
 mixed direct_add_obj_to_obj() { return 1; }
 mixed indirect_add_obj_to_obj() { return 1; }
-mixed indirect_add_obj_to_here() { return 1; }
-mixed direct_add_obj_to_here() { return 1; }
-mixed indirect_add_obj_to_room() { return 1; }
-mixed direct_add_obj_to_room() { return 1; }
-mixed indirect_add_obj() { return 1; }
-mixed direct_add_obj() { return 1; }
-
-mixed direct_delete_obj(){
-    return 1;
-}
-
-mixed indirect_delete_obj(){
-    return 1;
-}
 
 mixed direct_delete_obj_from_obj(){
     return 1;
@@ -56,6 +48,40 @@ mixed indirect_delete_obj_from_obj(){
     return 1;
 }
 
+mixed indirect_delete_obj_from_here() { return 1; }
+mixed direct_delete_obj_from_here() { return 1; }
+mixed direct_delete_obj_from_room() { return 1; }
+mixed indirect_delete_obj_from_room() { return 1; }
+
+mixed indirect_add_obj_to_here() { return 1; }
+mixed direct_add_obj_to_here() { return 1; }
+mixed indirect_add_obj_to_room() { return 1; }
+mixed direct_add_obj_to_room() { return 1; }
+
+mixed indirect_add_obj() { return 1; }
+mixed direct_add_obj() { return 1; }
+
+mixed indirect_delete_obj() { return 1; }
+mixed direct_delete_obj() { return 1; }
+
+int SetNoModify(int i){
+    if(i) Modify = 0;
+    else Modify = 1;
+}
+
+int SetModify(int i){
+    if(i) Modify = 1;
+    else Modify = 0;
+}
+
+int GetModify(){
+    return Modify;
+}
+
+int GetNoModify(){
+    if(Modify) return 0;
+    else return 1;
+}
 string GetShort();
 
 string GetDefiniteShort() {

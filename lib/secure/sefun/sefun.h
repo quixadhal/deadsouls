@@ -160,6 +160,7 @@ mixed homedir(object ob);
 string generate_tmp(mixed arg);
 string newline_trim(string str);
 int directory_exists(string str);
+mixed reload(object ob);
 
 #endif /* l_sefun_h */
 

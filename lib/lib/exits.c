@@ -150,7 +150,7 @@ static mapping GetEnterData(string dir) {
     }
 }
 
-string array GetEnters() {
+varargs string array GetEnters(int i) {
     object *obs;
     string *ids;
 
@@ -165,7 +165,8 @@ string array GetEnters() {
 
     foreach(object ob in obs) {
 	if( ob->GetEnter() ) {
-	    ids += ob->GetId();
+	    if(i) ids += ({ ob->GetId()[0] });
+	    else ids += ob->GetId();
 	}
     }
     return ids;

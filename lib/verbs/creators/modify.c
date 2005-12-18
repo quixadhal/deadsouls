@@ -3,6 +3,7 @@
 #include <lib.h>
 #include <daemons.h>
 #include <rooms.h>
+#include <modules.h>
 
 inherit LIB_VERB;
 
@@ -20,37 +21,54 @@ static void create() {
       "To modify an orc npc's desciption (if he's in your current room):\n "
       "modify orc long a polite, well-groomed orc.\n\n"
       "Available settings are: \n----\n"
-      "room: "+CREATE_D->GetSettings("room")+"\n--\n"
-      "npc: "+CREATE_D->GetSettings("npc")+"\n--\n"
-      "weapon: "+CREATE_D->GetSettings("weapon")+"\n--\n"
-      "item: "+CREATE_D->GetSettings("item")+"\n--\n"
-      "armor: "+CREATE_D->GetSettings("armor")+"\n--\n"
-      //"chair: "+CREATE_D->GetSettings("chair")+"\n--\n"
-      //"bed: "+CREATE_D->GetSettings("bed")+"\n--\n"
-      //"table: "+CREATE_D->GetSettings("table")+"\n--\n"
-      //"container: "+CREATE_D->GetSettings("storage")+"\n----\n"
+      "room: "+MODULES_CREATE->GetSettings("room")+"\n--\n"
+      "npc: "+MODULES_CREATE->GetSettings("npc")+"\n--\n"
+      "weapon: "+MODULES_CREATE->GetSettings("weapon")+"\n--\n"
+      "item: "+MODULES_CREATE->GetSettings("item")+"\n--\n"
+      "armor: "+MODULES_CREATE->GetSettings("armor")+"\n--\n"
+      "chair: "+MODULES_CREATE->GetSettings("chair")+"\n--\n"
+      "bed: "+MODULES_CREATE->GetSettings("bed")+"\n--\n"
+      "table: "+MODULES_CREATE->GetSettings("table")+"\n--\n"
+      "container: "+MODULES_CREATE->GetSettings("storage")+"\n----\n"
       "\nSee also: create, delete, copy");
 }
 
 mixed can_modify_obj_str(string str) { 
     if(!creatorp(this_player())) return "This command is only available to builders and creators.";
-    //    if(last_string_element(base_name(environment(this_player())),"/") == "start")
-    //	return "The start room should probably be edited by hand. Change cancelled.";
-    //write(base_name(environment(this_player())));
-    //write(ROOM_START);
-    if(base_name(environment(this_player())) == ROOM_START)
-	return "The start room should probably be edited by hand. Change cancelled.";
     else return 1;
 }
 
 mixed can_modify_word_str(string str) { return can_modify_obj_str("foo"); }
 
 mixed do_modify_obj_str(object ob, string str) {
+    object staff;
+    staff = present("tanstaafl",this_player());
+    if(!staff) {
+	write("You must be holding the creator staff in order to use this command.");
+	write("If you don't know where you put it, get another one from the chest ");
+	write("in your workroom.");
+	return 1;
+    }
+
+    if(ob->GetNoModify()) {
+	write("This needs to be edited by hand.");
+	return 1;
+    }
+
     if(base_name(ob) == LIB_DUMMY) ob = environment(this_player());
-    return CREATE_D->eventModify(ob, str);
+    return staff->eventModify(ob, str);
 }
 
 mixed do_modify_word_str(string wrd, string str) {
-    object ob = environment(this_player());
-    return CREATE_D->eventModify(ob, str);
+    object staff, ob;
+    staff = present("tanstaafl",this_player());
+    if(!staff) {
+	write("You must be holding the creator staff in order to use this command.");
+	write("If you don't know where you put it, get another one from the chest ");
+	write("in your workroom.");
+	return 1;
+    }
+
+    ob = environment(this_player());
+    return do_modify_obj_str(ob, str);
 }

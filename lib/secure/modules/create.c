@@ -10,29 +10,23 @@
 #include <commands.h>
 #include <rooms.h>
 
-inherit LIB_DAEMON;
 
 int eventDelete(object ob, string value);
-string global1, global2;
+string global1, global2, globaltmp;
 
-string *base_arr = ({"SetLong","SetShort","SetItems","SetListen","SetSmell"});
-string *item_arr = base_arr + ({"SetKeyName", "SetId", "SetMass","SetCost","SetValue","SetAdjectives","SetDamagePoints" });
+string *base_arr = ({"SetProperties","SetLong","SetShort","SetItems","SetListen","SetSmell"});
+string *item_arr = base_arr + ({"SetVendorType","SetNoCondition","SetMoney","SetKeyName", "SetId", "SetMass","SetCost","SetValue","SetAdjectives","SetDamagePoints","SetBaseCost" });
+string *meal_arr = item_arr + ({ "SetMealType", "SetStrength"});
 string *storage_arr = item_arr + ({"SetMaxCarry","SetInventory", "SetCanClose", "SetCanLock","SetMaxRecurse","SetLocked","SetClosed","SetKey"});
 string *room_arr = base_arr + ({"SetTown","SetNightLong","SetDayLong","SetClimate","SetAmbientLight","SetNightLight","SetDayLight","SetObviousExits", "SetInventory", "SetEnters"});
-string *npc_arr = base_arr + ({"SetLevel","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives"});
+string *npc_arr = base_arr + ({"SetCurrency","SetSkills","SetStats","SetLevel","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives"});
 string *armor_arr = item_arr +({"SetRestrictLimbs","SetProtection","SetArmorType"});
 string *weapon_arr = item_arr + ({"SetClass","SetWeaponType","SetDamageType","SetHands"});
 string *chair_arr = item_arr + ({"SetMaxSitters","SetMaxCarry","SetInventory"});
 string *bed_arr = chair_arr + ({"SetMaxLiers"});
 string *table_arr = storage_arr + bed_arr;
 
-string *all_arr = room_arr + npc_arr + armor_arr + weapon_arr + bed_arr;
-
-
-static void create() {
-    daemon::create();
-    SetNoClean(1);
-}
+string *all_arr = room_arr + npc_arr + armor_arr + weapon_arr + bed_arr +meal_arr;
 
 string GetSettings(string str){
     string ret;
@@ -42,6 +36,7 @@ string GetSettings(string str){
     case "room" : name = room_arr; break;
     case "npc" : name = npc_arr; break;
     case "armor" : name = armor_arr; break;
+    case "armour" : name = armor_arr; break;
     case "weapon" : name = weapon_arr; break;
     case "item" : name = item_arr; break;
     default : name = room_arr;
@@ -72,11 +67,12 @@ mixed eventModify(object ob, string str){
     object furnace;
     object *players;
     mapping temp_map;
-    string *p_array, *array_props;
+    string *p_array, *array_props, *special_map_array;;
 
     invalid = 1;
     filename = base_name(ob)+".c";
-    tmpfile = generate_tmp(ob);
+    tmpfile = generate_tmp();
+    special_map_array = ({ "SetProperties", "SetStats", "SetSkills"});
 
     if(!check_privs(this_player(),filename)){
 	write("You do not appear to have access to this file. Modification aborted.");
@@ -88,6 +84,13 @@ mixed eventModify(object ob, string str){
 	return 1;
     }
 
+    global1 = filename;
+    global2 = filename;
+
+    unguarded( (: global1 = replace_line(read_file(global1) ,({"customdefs.h"}), "#include \""+homedir(this_player())+"/customdefs.h\"") :) );
+    global1 = replace_string(global1,"//extras","");
+    global1 = replace_string(global1,"\n\n\n","\n\n");
+    unguarded( (: write_file(global2, global1, 1) :) );
     global1 = filename;
     global2 = tmpfile;
     unguarded( (: cp(global1,global2) :) );
@@ -102,6 +105,7 @@ mixed eventModify(object ob, string str){
     if(inherits(LIB_CHAIR,ob)) inheritance += " chair";
     if(inherits(LIB_BED,ob)) inheritance += " bed";
     if(inherits(LIB_TABLE,ob)) inheritance += " table";
+    if(inherits(LIB_MEAL,ob)) inheritance += " meal";
 
     if(!inheritance || inheritance == ""){
 	write("The object you want to modify lacks an init() function.");
@@ -112,15 +116,15 @@ mixed eventModify(object ob, string str){
     //tc("LIB_ROOM is: "+LIB_ROOM);
     //tc("inherits: "+inheritance);
 
-    //if(sscanf(str,"%s %s %d",mode, metamode, value) != 3) sscanf(str,"%s %s %s",mode, metamode, value);
-    //if(!value){
-    if(sscanf(str,"%s %d",mode, value) != 2) sscanf(str,"%s %s",mode, value); 
-    //}
+    if(sscanf(str,"%s %s %d",mode, metamode, value) != 3) sscanf(str,"%s %s %s",mode, metamode, value);
+    if(member_array(mode,special_map_array) == -1){
+	if(sscanf(str,"%s %d",mode, value) != 2) sscanf(str,"%s %s",mode, value); 
+    }
     if(!value) mode = str;
-    if(!value) value = 0;
+    //if(!value) value = 0;
 
     if(mode == "delete") {
-	mode = value;
+	if(value) mode = value;
 	value = "delete";
     }
 
@@ -186,8 +190,6 @@ mixed eventModify(object ob, string str){
     case "setadjectives" : out = "SetAdjectives";break;
     case "adj" : out = "SetAdjectives";break;
     case "setadj" : out = "SetAdjectives";break;
-    case "adjects" : out = "SetAdjectives";break;
-    case "setadjects" : out = "SetAdjectives";break;
     case "adjs" : out = "SetAdjectives";break;
     case "setadjs" : out = "SetAdjectives";break;
     case "damage" : out = "SetDamagePoints";break;
@@ -196,8 +198,6 @@ mixed eventModify(object ob, string str){
     case "setdamagepoints" : out = "SetDamagePoints";break;
     case "restrictlimbs" : out = "SetRestrictLimbs";break;
     case "setrestrictlimbs" : out = "SetRestrictLimbs";break;
-    case "limbs" : out = "SetRestrictLimbs";break;
-    case "setlimbs" : out = "SetRestrictLimbs";break;
     case "protection" : out = "SetProtection";break;
     case "setprotection" : out = "SetProtection";break;
     case "setprotections" : out = "SetProtection";break;
@@ -206,15 +206,13 @@ mixed eventModify(object ob, string str){
     case "setarmortype" : out = "SetArmorType";break;
     case "weapontype" : out = "SetWeaponType";break;
     case "setweapontype" : out = "SetWeaponType";break;
-    case "damagetypes" : out = "SetDamageTypes";break;
-    case "setdamagetypes" : out = "SetDamageTypes";break;
     case "damagetype" : out = "SetDamageType";break;
     case "setdamagetype" : out = "SetDamageType";break;
     case "hands" : out = "SetHands";break;
     case "sethands" : out = "SetHands";break;
-    case "stuff" : out = "AddStuff";break;
-    case "addstuff" : out = "AddStuff";break;
-    case "setstuff" : out = "AddStuff";break;
+	//case "stuff" : out = "AddStuff";break;
+	//case "addstuff" : out = "AddStuff";break;
+	//case "setstuff" : out = "AddStuff";break;
     case "carry" : out = "SetMaxCarry";break;
     case "maxcarry" : out = "SetMaxCarry";break;
     case "setmaxcarry" : out = "SetMaxCarry";break;
@@ -253,14 +251,108 @@ mixed eventModify(object ob, string str){
     case "enters" : out = "SetEnters";setmap = 1;break;
     case "setenters" : out = "SetEnters";setmap = 1;break;
     case "setenter" : out = "SetEnters";setmap = 1;break;
+    case "exit" : out = "SetExits";setmap = 1;break;
+    case "exits" : out = "SetExits";setmap = 1;break;
+    case "setexits" : out = "SetExits";setmap = 1;break;
+    case "setexit" : out = "SetExits";setmap = 1;break;
+    case "setproperty" : out = "SetProperties";break;
+    case "property" : out = "SetProperties";break;
+    case "setproperties" : out = "SetProperties";break;
+    case "properties" : out = "SetProperties";break;
+	//case "prop" : out = "SetProperties";break;
+	//case "setprop" : out = "SetProperties";break;
+    case "props" : out = "SetProperties";break;
+    case "setprops" : out = "SetProperties";break;
+    case "setskill" : out = "SetSkills";break;
+    case "skill" : out = "SetSkills";break;
+    case "skills" : out = "SetSkills";break;
+    case "setskills" : out = "SetSkills";break;
+    case "setstats" : out = "SetStats";break;
+    case "stats" : out = "SetStats";break;
+    case "stat" : out = "SetStats";break;
+    case "setstat" : out = "SetStats";break;
+    case "value" : out = "SetBaseCost";break;
+    case "setvalue" : out = "SetBaseCost";break;
+    case "val" : out = "SetBaseCost";break;
+    case "setval" : out = "SetBaseCost";break;
+    case "cost" : out = "SetBaseCost";break;
+    case "setcost" : out = "SetBaseCost";break;
+    case "basecost" : out = "SetBaseCost";break;
+    case "setbasecost" : out = "SetBaseCost";break;
+    case "setcurrency" : out = "SetCurrency";break;
+    case "currency" : out = "SetCurrency";break;
+    case "setcurr" : out = "SetCurrency";break;
+    case "curr" : out = "SetCurrency";break;
+    case "setmoney" : out = "SetMoney";break;
+    case "money" : out = "SetMoney";break;
+	//case "cond" : out = "SetNoCondition";break;
+	//case "setcond" : out = "SetNoCondition";break;
+	//case "setnocond" : out = "SetNoCondition";break;
+    case "setnocondition" : out = "SetNoCondition";break;
+	//case "condition" : out = "SetNoCondition";break;
+	//case "nocondition" : out = "SetNoCondition";break;
+	//case "cond" : out = "SetNoCondition";break;
+	//case "nocond" : out = "SetNoCondition";break;
+    case "mealtype" : out = "SetMealType";break;
+    case "setmealtype" : out = "SetMealType";break;
+    case "strength" : out = "SetStrength";break;
+    case "setstrength" : out = "SetStrength";break;
+    case "setmealstrength" : out = "SetStrength";break;
+    case "mealstrength" : out = "SetStrength";break;
+    case "vendor" : out = "SetVendorType";break;
+    case "setvendor" : out = "SetVendorType";break;
+    case "setvendortype" : out = "SetVendorType";break;
+    case "vendortype" : out = "SetVendorType";break;
     default : out = mode;
     }
 
     if(value == "delete") {
 	eventDelete(ob, out);
-	rm(tmpfile);
+	unguarded( (: rm(global2) :) );
 	return 1;
     }
+
+    if(out == "SetExits") {
+	write("SetExits is a special setting, which isn't modified like others.");
+	write("To make an exit to a room, or to create a new room, type:\n");
+	write("create room DIRECTION FILE");
+	write("For example : create room east test_room1");
+	write("To get rid of an exit, it's: delete exit DIRECTION");
+	write("For example: delete exit east");
+	return 1;
+    }
+
+    if(out == "SetEnters") {
+	write("SetExits is a special setting, which isn't modified like others.");
+	write("To make an Enter, first identify an item that already exists ");
+	write("in SetItems. For example, if SetItems contains a pub:\n");
+	write("create enter pub test_pub1\n");
+	write("To get rid of that enter: delete enter pub");
+	write("Please note that if the \"thing to be entered\" isn't already ");
+	write("in SetItems, things won't work right.");
+	return 1;
+    }
+
+    if(out == "SetInventory"){
+	write("SetInventory is a special setting, which isn't modified like others.");
+	write("To add something to something else's inventory, the \"thing ");
+	write("to be added\" has to be in your environment, or carried by you.");
+	write("So if you want to add a chair to your sample room:\n");
+	write("home");
+	write("go east");
+	write("cd /domains/town/obj");
+	write("clone chair");
+	write("add chair to room\n");
+	write("If you want to add a bag to your fighter: \n");
+	write("clone bag");
+	write("add bag to fighter");
+	write("1\n");
+	write("To remove items from a thing's permanent inventory:");
+	write("delete chair");
+	write("delete bag from fighter");
+	return 1;
+    }
+
 
     if(grepp(inheritance,"room") && member_array(out,room_arr) != -1) invalid = 0;
     if(grepp(inheritance,"npc") && member_array(out,npc_arr) != -1) invalid = 0;
@@ -270,6 +362,7 @@ mixed eventModify(object ob, string str){
     if(grepp(inheritance,"chair") && member_array(out,chair_arr) != -1) invalid = 0;
     if(grepp(inheritance,"bed") && member_array(out,bed_arr) != -1) invalid = 0;
     if(grepp(inheritance,"table") && member_array(out,table_arr) != -1) invalid = 0;
+    if(grepp(inheritance,"meal") && member_array(out,meal_arr) != -1) invalid = 0;
     else if(grepp(inheritance,"item") && member_array(out,item_arr) != -1) invalid = 0;
 
     if(invalid) {
@@ -278,19 +371,33 @@ mixed eventModify(object ob, string str){
     }
 
     if(out == "SetProtection"){
-	load_object(MODULES_ARMOR)->eventStartQuestions(value,ob);
+	this_object()->eventStartArmorQuestions(value,ob);
+	return 1;
+    }
+
+    if(out == "SetBaseCost"){
+	this_object()->eventModCost(ob, metamode, value);
+	return 1;
+    }
+
+    if(member_array(out,special_map_array) != -1) {
+	this_object()->eventSpecialMapHandler(ob,out,metamode,value);
+	return 1;
+    }
+    if(out == "SetMoney" || out == "SetCurrency"){
+	this_object()->eventModMoney(ob, metamode, value);
 	return 1;
     }
 
     if(setmap == 1) {
 	temp_map = QueryMap(out, ob);
-	temp_map = load_object(MODULES_MAPPING)->eventStartQuestions(temp_map, ob, tmpfile, out);
+	temp_map = this_object()->eventStartMappingQuestions(temp_map, ob, tmpfile, out);
 	return 1;
     }
 
     array_props = ({"SetId","SetAdjectives","SetRestrictLimbs"});
     if(member_array(out,array_props) != -1){
-	load_object(MODULES_GENERIC)->eventStartQuestions(ob, tmpfile, ({value}), out);
+	this_object()->eventStartGenericQuestions(ob, tmpfile, ({value}), out);
 	return 1;
     }
 
@@ -316,14 +423,14 @@ mixed eventModify(object ob, string str){
 	default : p_array = ({"SetItems","SetLong","SetDayLong","SetNightLong","SetShort"});
 	}
 
-	load_object(MODULES_FILE)->eventModString(tmpfile, out, value, p_array);
+	this_object()->eventModString(tmpfile, out, value, p_array);
     }
     mixed_tmp = load_object("/secure/cmds/creators/update")->cmd("-a "+tmpfile);
     if(!mixed_tmp || !intp(mixed_tmp)) {
 	write("This would screw up your file. Aborting modification.");
 	return 1;
     }
-    load_object(MODULES_GENERIC)->eventGeneralStuff(tmpfile);
+    this_object()->eventGeneralStuff(tmpfile);
     global1 = tmpfile;
     global2 = filename;
     unguarded( (: cp(global1,global2) :) );
@@ -337,7 +444,7 @@ mixed eventModify(object ob, string str){
     new(filename)->eventMove(environment(this_player()));
 
     rm(tmpfile);
-    return CREATE_D+" Done.";
+    return MODULES_CREATE+" Done.";
 }
 
 int eventDelete(object ob, string value){
@@ -346,7 +453,9 @@ int eventDelete(object ob, string value){
     object *players;
 
     filename = base_name(ob)+".c";
-    tmpfile = generate_tmp(filename);
+    tmpfile = generate_tmp();
+    //tc("tmpfile: "+tmpfile);
+    //write("it is: "+read_file(tmpfile));
 
     if(!check_privs(this_player(),filename)){
 	write("You do not appear to have access to this file. Modification aborted.");
@@ -360,6 +469,8 @@ int eventDelete(object ob, string value){
 
     global1 = filename;
     global2 = tmpfile;
+    //tc("global1 :"+global1);
+    //tc("global2 :"+global2);
     unguarded( (: cp(global1,global2) :) );
     mixed_tmp = load_object("/secure/cmds/creators/update")->cmd("-a "+tmpfile);
     if(!mixed_tmp || !intp(mixed_tmp)) {
@@ -368,7 +479,8 @@ int eventDelete(object ob, string value){
     }
 
     ret = remove_matching_line(read_file(tmpfile),value,1);
-    write_file(tmpfile,ret,1);
+    globaltmp = ret;
+    unguarded( (: write_file(global2,globaltmp,1) :) );
     mixed_tmp = load_object("/secure/cmds/creators/update")->cmd("-a "+tmpfile);
     if(!mixed_tmp || !intp(mixed_tmp)) {
 	write("This change would screw up your file. Aborting delete.");
@@ -390,7 +502,7 @@ int eventDelete(object ob, string value){
 	load_object("/secure/cmds/creators/update")->cmd("-a "+filename);
 	new(filename)->eventMove(environment(this_player()));
     }
-    rm(tmpfile);
+    unguarded( (: rm(global1) :) );
     write("Setting deleted.");
     return 1;
 }
@@ -419,9 +531,10 @@ int eventResumeArrayMod(object target, string tmpfile, string *NewArr, string fu
     default : p_array = ({"SetLong","SetShort","SetDayLong","SetNightLong"});
     }
     ret = remove_matching_line(read_file(tmpfile),func);
-    ret = load_object(MODULES_FILE)->eventAppend(ret,p_array,"\n"+array_string+"\n");
-    write_file(tmpfile,ret,1);
-    load_object(MODULES_GENERIC)->eventGeneralStuff(tmpfile);
+    ret = this_object()->eventAppend(ret,p_array,"\n"+array_string+"\n");
+    globaltmp = ret;
+    unguarded( (: write_file(global2,globaltmp,1) :) );
+    this_object()->eventGeneralStuff(tmpfile);
     catch( mx = load_object(CMD_UPDATE)->cmd(tmpfile) );
     if(!mx || !intp(mx)){
 	write("This change would screw up the object. Aborting.");
@@ -436,19 +549,17 @@ int eventResumeArrayMod(object target, string tmpfile, string *NewArr, string fu
 	new(filename)->eventMove(environment(this_player()));
     }
     write(func+" modification complete.");
-    rm(tmpfile);
+    unguarded( (: rm(global1) :) );
     return 1;
 }
-
 
 int eventResumeMappingChange(object target, string tmpfile, mapping NewMap, string func){
     string map_string, filename, ret;
     mixed mx;
     string *p_array;
-    map_string = load_object(MODULES_MAPPING)->eventStringifyMap(NewMap);
+    map_string = this_object()->eventStringifyMap(NewMap);
     map_string = func+"("+map_string+");";
     filename = base_name(target)+".c";
-    write_file("/tmp/map.txt",map_string,1);
 
     if(!check_privs(this_player(),filename)){
 	write("You do not appear to have access to this file. Modification aborted.");
@@ -467,7 +578,7 @@ int eventResumeMappingChange(object target, string tmpfile, mapping NewMap, stri
     case "SetListen" : p_array = ({"SetItems","SetInventory","SetSmell","SetLong","SetDayLong","SetNightLong","SetShort"});break;
     default : p_array = ({"SetItems","SetLong","SetDayLong","SetNightLong","SetShort"});
     }
-    ret = load_object(MODULES_FILE)->eventAppend(ret,p_array,"\n"+map_string+"\n");
+    ret = this_object()->eventAppend(ret,p_array,"\n"+map_string+"\n");
     global1 = tmpfile;
     global2 = ret;
     unguarded( (: write_file(global1,global2,1) :) );
@@ -476,18 +587,42 @@ int eventResumeMappingChange(object target, string tmpfile, mapping NewMap, stri
 	write("This change would screw up the object. Aborting.");
 	return 1;
     }
-    load_object(MODULES_GENERIC)->eventGeneralStuff(tmpfile);
+    this_object()->eventGeneralStuff(tmpfile);
     global1 = tmpfile;
     global2 = filename;
     unguarded( (: cp(global1, global2) :) );
-    load_object(CMD_UPDATE)->cmd(filename);
-    if(inherits(LIB_ROOM,load_object(filename))) this_player()->eventMoveLiving(filename);
-    else{
-	target->eventMove(load_object(ROOM_FURNACE));
-	new(filename)->eventMove(environment(this_player()));
-    }
+    reload(target);
     write(func+" modification complete.");
-    rm(tmpfile);
+    unguarded( (: rm(global1) :) ); 
+    return 1;
+}
+
+int eventAddSettings(object ob, string tmp, mapping NewMap, string func){
+    string filename, new_lines;
+
+    filename = base_name(ob)+".c";
+
+    if(!check_privs(this_player(),filename)){
+	write("You do not have sufficient privileges to perform this action.");
+	return 1;
+    }
+    global2 = filename;
+    unguarded( (: global1 = read_file(global2) :) );
+
+    global1 = remove_matching_line(global1, func , 1);
+    global2 = tmp;
+    new_lines = "\n";
+    foreach(string key, mixed val in NewMap){
+	if(intp(val)) new_lines += func+"(\""+key+"\", "+val+");\n";
+	else new_lines += func+"(\""+key+"\", \""+val+"\");\n";
+    }
+    global1 = this_object()->eventAppend(global1,({func,"SetItems","SetInventory","SetLong"}),new_lines);
+    unguarded( (: write_file(global2, global1,1) :) );
+    this_object()->eventGeneralStuff(global2);
+    global1 = filename;
+    unguarded( (: cp(global2, global1) :) );
+    unguarded( (: rm(global2) :) );
+    reload(ob);
     return 1;
 }
 

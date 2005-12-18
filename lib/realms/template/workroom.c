@@ -31,11 +31,13 @@ static void create() {
       ]) );
     SetInventory( ([
 	"/domains/default/obj/chest" : 1,
+        "/domains/default/obj/bbucket" :1,
       ]) );
     SetObviousExits("e,d");
     SetExits( ([ "down" : "/domains/default/room/wiz_hall.c",
 	"east" : MY_ROOM "/sample_room"
       ]) );
+    SetNoModify(1);
 }
 
 int ReadSign(){

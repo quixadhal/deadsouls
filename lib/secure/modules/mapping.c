@@ -2,7 +2,7 @@
 #include <daemons.h>
 #include <modules.h>
 
-string func, data, temporary;
+string globaltmp, globalstr, globalstr2, func, data, temporary;
 int automated;
 object target;
 mixed newval;
@@ -22,7 +22,7 @@ int eventStoreMapping(string savefile, mapping plan){
     store_variable("data", plan);
 }
 
-varargs int eventStartQuestions(mapping oldmap, object ob, string tmpfile, string auto){
+varargs int eventStartMappingQuestions(mapping oldmap, object ob, string tmpfile, string auto){
     if(ob) target = ob;
     if(tmpfile) temporary = tmpfile;
     if(auto && auto != "") {
@@ -119,8 +119,8 @@ varargs mapping GetValue(string str, object targ, string tempy, string k1, strin
     else NewMap[key_arr[0]] = newval;
     if(automated){
 	automated = 0;
-	if(func) load_object(CREATE_D)->eventResumeMappingChange(target, temporary, NewMap, func);
-	else load_object(CREATE_D)->eventResumeMappingChange(target, temporary, NewMap);
+	if(func) this_object()->eventResumeMappingChange(target, temporary, NewMap, func);
+	else this_object()->eventResumeMappingChange(target, temporary, NewMap);
     }
     return copy(NewMap);
 }
@@ -134,7 +134,12 @@ varargs string eventStringifyMap(mapping source, string key_excl, string val_exc
     map_str = "([\n";
 
     foreach( key, val in source){
-	map_str += identify(key) + " : " + identify(val) +",\n";
+	if(stringp(val) && last(val,1) == "'" && first(val,1) == "'"){
+	    val = replace_string(val,"'","");
+	    map_str += identify(key) + " : " + val +",\n";
+	}
+	else
+	    map_str += identify(key) + " : " + identify(val) +",\n";
     }
     map_str += "])";
     return map_str;
@@ -205,6 +210,110 @@ string eventReadThing(string map){
     new_string += "])";
 
     return new_string;
+}
+
+int eventSpecialMapHandler(object ob, string func, mixed mode, mixed value){
+    string tmp, filename, func2;
+    string *plural_maps;
+    mapping NewMap = ([]);
+    mapping FirstMap = ([]);
+    mapping SecondMap = ([]);
+
+    plural_maps = ({ "SetProperties" });
+
+    filename = base_name(ob)+".c";
+    if(!check_privs(this_player(),filename)){
+	write("You do not appear to have access to this file. Modification aborted.");
+	return 1;
+    }
+    if(!mode || !value){
+	write("Invalid entry. Modification cancelled.");
+	return 1;
+    }
+
+    globalstr = filename;
+    unguarded( (: globalstr2 = read_file(globalstr) :) );
+
+
+    switch(func){
+    case "SetProperties" : func2 = "SetProperty";break;
+    case "SetSkills" : func2 = "SetSkill";break;
+    case "SetStats" : func2 = "SetStat";break;
+    }
+
+    FirstMap = this_object()->eventReadPair(filename, func2, 1);
+    SecondMap = this_object()->eventReadMapping(filename, ({ func }), 1);
+    NewMap = add_maps(FirstMap, SecondMap);
+    NewMap[mode] = value;
+    //write("mapping: "+identify(NewMap));
+    globaltmp = generate_tmp();
+    globalstr = filename;
+    unguarded( (: globalstr2 = read_file(globalstr) :) );
+    unguarded( (: write_file(globaltmp,globalstr2) :) );
+
+    if(member_array(func,plural_maps) != -1) 
+	this_object()->eventResumeMappingChange(ob,tmp,copy(NewMap),func);
+    else this_object()->eventAddSettings(ob,tmp,copy(NewMap),func2);
+    //write("hmm.");
+    //unguarded( (: tc("new file: "+read_file(globalstr)) :) );
+    return 1;
+}
+
+mapping eventReadPair(string filename, string param, int destructive){
+    mixed numerator, denominator;
+    int integer;
+    string s1, junk, contents, tmp;
+    string *file_arr, *line_arr;
+    mapping NewMap = ([]);
+
+    if(file_exists(filename) && !check_privs(this_player(),filename)){
+	write("You do not appear to have access to this file. Modification aborted.");
+	return ([]);
+    }
+
+    globalstr = filename;
+    if(file_exists(filename)) {
+	unguarded( (: globalstr2 = read_file(globalstr) :) );
+    }
+    contents = globalstr2;
+    file_arr = explode(contents,"\n");
+    line_arr = ({});
+
+    foreach(string line in file_arr){
+	if(grepp(line,param)) line_arr += ({ line });
+    }
+
+    if(!sizeof(line_arr)) return ([]);
+
+    foreach(string element in line_arr){
+	element = trim(element);
+	if(sscanf(element,param+"(%s);",s1) != -1) sscanf(element,param+"(%s) ;",s1); 
+	if(!s1) sscanf(element,param+" (%s);",s1,junk);
+	sscanf(s1,"%s,%s",denominator,numerator);
+	numerator = trim(numerator);
+	denominator = trim(denominator);
+	if(sscanf(denominator,"\"%s\"",junk) == 1) denominator = junk;
+	if(sscanf(numerator,"%d",integer) == 1) numerator = integer;
+	else if(sscanf(numerator,"\"%s\"",junk) == 1) numerator = junk;
+	if(stringp(numerator)) numerator = trim(numerator);
+	denominator = trim(denominator);
+	NewMap[denominator] = numerator;
+    }
+
+    if(destructive) {
+	globalstr2 = remove_matching_line(globalstr2, param, 1);
+	globalstr = generate_tmp();
+	unguarded( (: write_file(globalstr,globalstr2) :) );
+	tmp = globalstr;
+	//tc(tmp+" is: "+read_file(tmp));
+	globalstr = filename;
+	globalstr2 = tmp;
+	//tc("globalstr2: "+globalstr2);
+	//tc("globalstr: "+globalstr);
+	unguarded( (: cp(globalstr2, globalstr) :) );
+	rm(tmp);
+    }
+    return copy(NewMap);
 }
 
 

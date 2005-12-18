@@ -64,7 +64,6 @@ mixed indirect_delete_exit_str(){
     return 1;
 }
 
-
 varargs int eventPrint(string msg, mixed arg2, mixed arg3);
 
 /***********      /lib/room.c data manipulation functions      **********/
@@ -839,11 +838,11 @@ int GenerateObviousExits(){
     normals += ({ "northeast", "southeast", "northwest", "southwest" });
     dir_string = "";
 
-    if(sizeof(GetEnters())){
-	foreach(string enter in this_object()->GetEnters()){
+    if(sizeof(GetEnters(1)-({0}))){
+	foreach(string enter in this_object()->GetEnters(1)){
 	    enters += "enter "+enter;
-	    if(member_array(enter,this_object()->GetEnters()) != 
-	      sizeof(this_object()->GetEnters()) -1) {
+	    if(member_array(enter,this_object()->GetEnters(1)) != 
+	      sizeof(this_object()->GetEnters(1)) -1) {
 		enters +=", ";
 	    }
 	}
@@ -859,11 +858,12 @@ int GenerateObviousExits(){
     if(member_array("southwest",exits) != -1) dir_string += "sw, ";
     if(member_array("up",exits) != -1) dir_string += "u, ";
     if(member_array("down",exits) != -1) dir_string += "d, ";
-    if(sizeof(this_object()->GetEnters())) {
+    if(sizeof(this_object()->GetEnters(1) - ({0}) )) {
 	dir_string += ", ";
 	dir_string += enters;
     }
     if(last(dir_string,2) == ", ") dir_string = truncate(dir_string,2);
+    dir_string = replace_string(dir_string,", , ",", ");
     SetObviousExits(dir_string);
     return 1;
 }

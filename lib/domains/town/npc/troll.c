@@ -3,13 +3,13 @@
 inherit LIB_NPC;
 object gdude;
 
+
 int nasty(object dude){
     gdude = dude;
     eventForce("look at "+gdude->GetKeyName());
     eventForce("drool");
     return 1;
 }
-
 int CheckHuman(mixed val){
     if(!val) return 0;
     if(!objectp(val)) return 0;
@@ -20,7 +20,6 @@ int CheckHuman(mixed val){
     }
     return 1;
 }
-
 static void create() {
     npc::create();
     SetKeyName("troll");
@@ -42,4 +41,7 @@ static void create() {
     SetStat("coordination",50,1);
     SetStat("speed",50,1);
     AddCurrency("silver",221+random(157));
+}
+void init(){
+    ::init();
 }

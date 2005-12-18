@@ -1,2 +1,14 @@
 			      Admin news
 			     /news/admin
+
+ADMIN: 
+
+* To change your mud's name, use the command: admintool
+  and select the "driver" menu. Do the same for port number.
+
+* To make someone else an assistant admin also use admintool.
+  Select groups, and modify the assist group.
+
+* DO NOT try to modify mudos.cfg or groups.cfg unless you know
+  what you're doing. IF you do try, be sure to back up the originals.
+

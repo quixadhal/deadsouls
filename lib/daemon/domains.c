@@ -1,5 +1,5 @@
 /*    /daemon/domains.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    A daemon for handling domain stat information
  *    Created by Descartes of Borg 961110
  *    Version: %A%

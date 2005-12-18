@@ -861,6 +861,10 @@ varargs int eventChangeName(string newname, int automated){
 	return 0;
     }
 
+    if(automated){
+	if(name != "DeadSoulsWin" && name != "DeadSouls" &&
+	  name != "Dead Souls") newname = name;
+    }
     newline = junk + " : " + newname;
     //write("newline is: "+newline);
     newfile = replace_string(line_string, nameline, newline);

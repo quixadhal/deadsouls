@@ -1,0 +1,25 @@
+                      Dead Souls Magical Wooden Staff
+
+   The Dead Souls Quick Creation System is a big, complicated mess
+for a number of reasons, mostly having to do with the necessity of
+interpreting potentially unusual code.
+
+   Among the compromises made to get the system working is that it is
+bound to a specific object that must be carried. The original plan
+had called for a daemon, but the modular design and need for global
+variables meant either a mind-numbingly complex workaround, or individuating
+the daemon functions. 
+
+   Making the QCS work through a special object simplifies the 
+interaction between modules, and limits the memory overhead to the
+few characters that have a need to use it.
+
+   Thus, in order to use QCS, you must be carrying the creator's staff,
+which is /secure/obj/staff.c
+
+   It doesn't have to be a staff. If you prefer it to be a hat, or a
+gold watch, or whatever, feel free to make it so. Just remember that
+the creation object must inherit the modules that the staff inherits, and
+it must answer to the id "tanstaafl".
+
+

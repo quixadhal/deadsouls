@@ -161,6 +161,7 @@ int AddStatPoints(string stat, int x) {
 }
 
 string *GetStats() { return keys(Stats); }
+mapping GetStatsMap() { return copy(Stats); }
 
 int GetMaxStatPoints(string stat, int level) {
     if( !Stats[stat] ) return 0;

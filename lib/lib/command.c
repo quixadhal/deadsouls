@@ -40,8 +40,10 @@ static int cmdAll(string args) {
     //write("verb: "+verb);
 
     if(this_player()->GetSleeping() > 0) {
-	this_player()->eventPrint("You are asleep.");
-	return 1;
+	if(verb != "wake") {
+	    this_player()->eventPrint("You are asleep.");
+	    return 1;
+	}
     }
 
     if(GetCustomCommand(verb) && GetCustomCommand(verb) != "" && !creatorp(this_player()) ){

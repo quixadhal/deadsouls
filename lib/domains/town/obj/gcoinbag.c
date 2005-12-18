@@ -2,6 +2,7 @@
 
 inherit LIB_STORAGE;
 
+
 void create() {
     ::create();
     SetKeyName("bag");
@@ -21,4 +22,7 @@ void create() {
 	"platinum" : 1,
 	"silver" : 20,
       ]) );
+}
+void init(){
+    ::init();
 }

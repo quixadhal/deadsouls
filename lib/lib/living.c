@@ -98,6 +98,9 @@ mixed direct_free_liv_from_obj() {
     return 1;
 }
 
+mixed direct_resurrect_obj() { return 1; }
+mixed indirect_resurrect_obj() { return 1; }
+
 mixed direct_get_obj() {
     return "You can't get a living thing!";
 }

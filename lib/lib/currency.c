@@ -37,6 +37,7 @@ int AddCurrency(string type, int amount) {
 }
 
 int GetCurrency(string type) { return Currency[type]; }
+mapping GetCurrencyMap() { return copy(Currency); }
 
 varargs int GetCurrencyMass(string type) {
     int total;

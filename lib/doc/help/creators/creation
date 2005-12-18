@@ -3,7 +3,7 @@
 One of the biggest obstacles to creating a large area is the tedious nature
 of coding every last detail by hand, using the ed editor.
 
-    This new creation system will help relieve the tedium by providing
+    This new creation system helps relieve the tedium by providing
 a way to quickly create working stuff, which you can then conveniently modify
 without having to continually muck about in ed.
 
@@ -16,6 +16,6 @@ quickly using the new system.
 In the meantime, take a look below at the commands in actual use, with a
 few added comments:
 
-
+http://dead-souls.sourceforge.net/example.html
 
 

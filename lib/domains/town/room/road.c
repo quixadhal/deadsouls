@@ -9,13 +9,13 @@ static void create() {
       " through the village.  To the east is the entrance to the " 
       "Village Pub, a time-honored traditional gathering place for "
       "adventurers of every race and creed.  To the west is "
-      "The Healers' Guild. Far to the north, through the clouds, "
+      "The Healers Guild. Far to the north, through the clouds, "
       "you see a mountain range; to the south is a major intersection.");
     SetItems( ([
 	({"pub","tavern","village pub"}) : "The is the town's "
 	"legendary watering hole, where refreshments are served "
 	"and tall tales are swapped.",
-	({"guild","healers' guild"}) : "In this building is "
+	({"guild","healers guild"}) : "In this building is "
 	"the office of the only doctor in town.",
 	"clouds" : "Little puffy clouds surround the "
 	"peaks of the northern mountains.",
@@ -37,8 +37,13 @@ static void create() {
     SetEnters( ([
 	"pub" : "/domains/town/room/tavern",
 	"guild" : "/domains/town/room/healer",
-	"healers' guild" : "/domains/town/room/healer"
+	"healers guild" : "/domains/town/room/healer"
       ]) );
-    SetObviousExits("s,e,w");
+    SetObviousExits("s, e, w");
+    SetNoModify(1);
 
+}
+
+void init(){
+    ::init();
 }

@@ -17,7 +17,7 @@ void create() {
 	"/secure/obj/medtric" : 1,
 	"/secure/obj/control" : 1,
 	"/secure/obj/roommaker" : 1,
-	//"/secure/obj/thingmaker" : 1,
+	"/secure/obj/staff" : 1,
 	"/secure/obj/machine" : 1,
 	"/domains/default/armor/badge" : 1,
 	"/domains/default/obj/manual" : 1,

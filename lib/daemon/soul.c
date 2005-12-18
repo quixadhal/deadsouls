@@ -1,5 +1,5 @@
 /*    /daemon/emote.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Object Library
  *    A centralized soul handler
  *    Created by Descartes of Borg 961207
  *    Version: @(#) soul.c 1.11@(#)

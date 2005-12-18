@@ -10,6 +10,9 @@ static void create() {
     SetShort("a dirty beggar");
     SetLong("This beggar has something strangely noble about his aspect. "
       "He certainly doesn't look like he has always been a beggar.");
+    SetInventory(([
+	"/domains/town/obj/map" : 1,
+      ]));
     SetLevel(1);
     SetRace("human");
     SetGender("male");

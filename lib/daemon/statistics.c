@@ -1,5 +1,5 @@
 /*    /daemon/statistics.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Object Library
  *    Keeps track of RAM intensive data on players
  *    created by Descartes of Borg 951217
  *    Version: @(#) statistics.c 1.2@(#)

@@ -51,11 +51,20 @@ mixed do_add_obj(object ob){
 }
 
 mixed do_add_obj_to_obj(object ob, object ob2) {
-    string str = base_name(ob2)+".c";
-    string sourcefile = base_name(ob)+".c";
+    object staff;
+    string str, sourcefile;
+    staff = present("tanstaafl",this_player());
+    if(!staff) {
+	write("You must be holding the creator staff in order to use this command.");
+	write("If you don't know where you put it, get another one from the chest ");
+	write("in your workroom.");
+	return 1;
+    }
+    str = base_name(ob2)+".c";
+    sourcefile = base_name(ob)+".c";
 
-    write("ob2: "+str);
-    write("ob: "+sourcefile);
+    //write("ob2: "+str);
+    //write("ob: "+sourcefile);
 
     if(!inherits(LIB_NPC,ob2) &&
       !inherits(LIB_STORAGE,ob2) &&
@@ -81,6 +90,7 @@ mixed do_add_obj_to_obj(object ob, object ob2) {
 	write("That's not the kind of thing you can add to something.");
 	return 1;
     }
-    load_object(MODULES_GENERIC)->eventAddItem(ob2, base_name(ob));
+    staff->eventAddItem(ob2, base_name(ob));
+    if(ob) ob->eventMove(ROOM_FURNACE);
     return 1;
 }

@@ -164,8 +164,3 @@ string GetEnter() {
 	return Enter["room"];
     }
 }
-
-mapping GetEnterData() {
-    return Enter;
-}
-

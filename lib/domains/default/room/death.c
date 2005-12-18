@@ -16,6 +16,7 @@ static void create() {
     SetLong( (:FunkyPic:) );
     SetObviousExits("no exit");
     set_heart_beat(10);
+    SetNoModify(1);
 }
 
 void init(){

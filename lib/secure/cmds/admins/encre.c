@@ -4,13 +4,14 @@
  */
 
 #include <lib.h>
+#include <rooms.h>
 
 inherit LIB_DAEMON;
 
 string PlayerName;
 
 mixed cmd(string args) {
-    object ob, cre_ob;
+    object ob, cre_ob, jeans, shirt, robe, hat, book, staff;
     string file, nom;
     string cdir, tdir, dir_line;
 
@@ -44,6 +45,26 @@ mixed cmd(string args) {
 	make_workroom(cre_ob);
 	cre_ob->eventForce("home");
 	cre_ob->eventForce("cd");
+	jeans = present("jeans",cre_ob);
+	shirt = present("t-shirt",cre_ob);
+	if(jeans) jeans->eventMove(ROOM_FURNACE);
+	if(shirt) shirt->eventMove(ROOM_FURNACE);
+        jeans = present("jeans",cre_ob);
+        shirt = present("t-shirt",cre_ob);
+        if(jeans) jeans->eventMove(ROOM_FURNACE);
+        if(shirt) shirt->eventMove(ROOM_FURNACE);
+        robe = new("/domains/default/armor/robe");
+        if(robe) robe->eventMove(cre_ob);
+        hat = new("/domains/default/armor/wizard_hat");
+        if(hat) hat->eventMove(cre_ob);
+        robe = present("robe",cre_ob);
+        if(robe) cre_ob->eventForce("wear robe");
+        hat  =  present("wizard hat",cre_ob);
+        if(hat) cre_ob->eventForce("wear wizard hat");
+        staff = new("/secure/obj/staff");
+        if(staff) staff->eventMove(cre_ob);
+        book = new("/domains/default/obj/manual");
+        if(book) book->eventMove(cre_ob);
     }
     return 1;
 }

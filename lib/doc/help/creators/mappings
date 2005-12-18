@@ -4,8 +4,7 @@ A mapping is an organization of data that makes it possible to associate
 data elements together in a human-understandable way.
 
 For a builder with no coding experience, mappings can be a challenge to
-understand. However, you must grasp at least the very basics of this data type in
-order to be an effective builder.
+understand. However, you must grasp at least the very basics of this data type in order to be an effective builder.
 
 The Dead Souls mudlib has three kinds of objects that normally have other
 objects inside of them: NPC's, rooms, and containers. When the mud loads
@@ -14,7 +13,7 @@ as a teasure chest with jewels, an orc with an axe, or a room with an orc
 guarding a treasure chest.
 
 In such a circumstance, each of these objects is loaded from a file that 
-conatins information about the contents of the object. This is called the
+contains information about the contents of the object. This is called the
 object's inventory, and it is determined by the SetInventory directive in that
 file.
 

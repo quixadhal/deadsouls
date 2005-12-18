@@ -1,9 +1,7 @@
 #include <lib.h>
 #include <modules.h>
 #include <daemons.h>
-
-
-inherit LIB_DAEMON;
+#include <rooms.h>
 
 int eventGetArray(string str);
 int eventDoAddition(string str);
@@ -14,7 +12,7 @@ string *NewArr = ({});
 string *array_val = ({});
 mapping InvMap = ([]);
 
-mixed make(string str) {
+mixed gmake(string str) {
     string thingy, filename, dir, curr_dir, area_dir, local_area_dir, working_dir;
     string creation;
     string *legal_dirs;
@@ -106,7 +104,7 @@ mixed make(string str) {
     return 1;
 }
 
-varargs int eventStartQuestions(object ob, string tempfile, string *new_arr, string what){
+varargs int eventStartGenericQuestions(object ob, string tempfile, string *new_arr, string what){
     target = ob;
     temporary = tempfile;
     NewArr -= ({ 0 });
@@ -136,7 +134,7 @@ int eventGetArray(string str){
 	    write("Blank array. Modification cancelled.");
 	    return 1;
 	}
-	load_object(CREATE_D)->eventResumeArrayMod(target, temporary, NewArr, func);
+	this_object()->eventResumeArrayMod(target, temporary, NewArr, func);
 	array_val = ({});
 	return 1;
     }
@@ -164,7 +162,7 @@ int eventDeleteItem(object ob1, object ob2){
     }
 
     tmpname = generate_tmp();
-    Inventory = load_object(CREATE_D)->QueryMap("SetInventory",ob2);
+    Inventory = this_object()->QueryMap("SetInventory",ob2);
     if(sizeof(Inventory[name])) map_delete(Inventory,name); 
     else if(sizeof(Inventory[name+".c"])) map_delete(Inventory,name+".c"); 
     map_delete(Inventory,name);
@@ -173,7 +171,7 @@ int eventDeleteItem(object ob1, object ob2){
     globalstr2 = base_name(ob2)+".c";
     unguarded( (: cp(globalstr2, globalstr) :) );
     //tc("sending to eventResumeMappingChange: "+ob2->GetName()+", "+identify(Inventory));
-    load_object(CREATE_D)->eventResumeMappingChange(ob2, tmpname, Inventory, "SetInventory");
+    this_object()->eventResumeMappingChange(ob2, tmpname, Inventory, "SetInventory");
     unguarded( (: rm(globalstr) :) );
     return 1;
 }
@@ -186,7 +184,7 @@ int eventAddItem(object ob, string addendum){
 	return 1;
     }
 
-    InvMap = load_object(CREATE_D)->QueryMap("SetInventory",ob);
+    InvMap = this_object()->QueryMap("SetInventory",ob);
     if(!inherits(LIB_NPC,ob)){
 	write("Please enter the number of these that you want to add:");
     }
@@ -198,7 +196,7 @@ int eventAddItem(object ob, string addendum){
 }
 
 int eventDoAddition(string str){
-    load_object(MODULES_MAPPING)->GetValue("AUTOMATED",target, generate_tmp(target), v2, str, InvMap, "SetInventory");
+    this_object()->GetValue("AUTOMATED",target, generate_tmp(target), v2, str, InvMap, "SetInventory");
     return 1;
 }
 
@@ -208,10 +206,13 @@ int eventGeneralStuff(string str){
     write("Indenting file...");
     unguarded( (: indent_file(globalstr) :) );
     //Checking for valid init
-    unguarded( (: load_object(MODULES_FILE)->eventAddInit(globalstr) :) );
+    unguarded( (: this_object()->eventAddInit(globalstr) :) );
     //changing customdefs
     unguarded( (: globalstr = replace_line(read_file(globalstr) ,({"customdefs.h"}), "#include \""+homedir(this_player())+"/customdefs.h\"") :) );
     globalstr = replace_string(globalstr,"\n\n\n","\n\n");
+    globalstr = replace_string(globalstr,"//funs","");
+    globalstr = replace_string(globalstr,"//snuf","");
+    globalstr = replace_string(globalstr,"//extra","");
     unguarded( (: write_file(globalstr2, globalstr, 1) :) );
     return 1;
 }

@@ -180,6 +180,10 @@ string array GetSkills() {
     return keys(Skills);
 }
 
+mapping GetSkillsMap(){
+    return copy(Skills);
+}
+
 void AddSkillBonus(string skill, function f) {
     if( !SkillsBonus[skill] ) {
 	SkillsBonus[skill] = ([]);

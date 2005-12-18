@@ -24,6 +24,7 @@ void create() {
 	"east" : "/domains/default/room/wiz_hall"
       ]) );
     SetObviousExits("e");
+    SetNoModify(1);
 }
 
 void init(){

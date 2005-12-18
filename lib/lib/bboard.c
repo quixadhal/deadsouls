@@ -94,8 +94,16 @@ void end_post(string subj, string mail) {
 }
 
 int cmd_read(string str) {
+    string junk;
     mapping *posts;
     int x, i, maxi;
+
+    if(str == "board" || sscanf(str,"board %s",junk) ) {
+	write("To read the first post, type: read 1");
+	write("To read the second one: read 2");
+	write("And so on.");
+	return 1;
+    }
 
     maxi = sizeof(posts = (mapping *)BBOARD_D->query_posts(query_board_id()));
     if(!str) {

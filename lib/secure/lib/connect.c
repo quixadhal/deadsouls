@@ -105,14 +105,25 @@ static void InputRealName(string str) {
 }
 
 static void InputEmail(string str) {
-    object ob;
+    object ob, staff, robe, hat;
     string tmp;
 
     if( !str || str == "" ) str = "Unknown";
     Admin->SetEmail(str);
     Admin->SetRace("human");
-    new("/domains/default/armor/jeans")->eventMove(Admin);
-    new("/domains/default/armor/shirt")->eventMove(Admin);
+
+    staff = new("/secure/obj/staff");
+    if(staff) staff->eventMove(Admin);
+
+    robe = new("/domains/default/armor/robe");
+    if(robe) robe->eventMove(Admin);
+    hat = new("/domains/default/armor/wizard_hat");
+    if(hat) hat->eventMove(Admin);
+    robe = present("robe",Admin);
+    if(robe) Admin->eventForce("wear robe");
+    hat  =  present("wizard hat",Admin);
+    if(hat) Admin->eventForce("wear wizard hat");
+
     Admin->AddCurrency("silver",random(100)+57);
     Admin->SetWimpy(20);
     Admin->SetTerminal("ansi");

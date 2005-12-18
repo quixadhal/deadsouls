@@ -56,6 +56,16 @@ string trim(string str) {
     return str[i..j];
 }
 
+string space_trim(string str) {
+    string whitespace;
+
+    whitespace = "  " ;
+    while(grepp(str, whitespace)) {
+	str = replace_string(str,"  "," ");
+    }
+    return str;
+}
+
 string newline_trim(string str) {
     string *whitespace;
     int j, i = 0;
@@ -458,29 +468,40 @@ mixed homedir(object ob){
 
 string generate_tmp(mixed arg){
     string ret;
+    string randy = replace_string(replace_string(crypt(""+random(88)+11,""+random(88)+11),"/","XXX"),".","YYY");
 
     if(!arg) return "/open/"+time()+".c";
 
+
     if(objectp(arg) && this_player() && creatorp(this_player()))
-	ret = homedir(this_player())+"/tmp/"+last_string_element(base_name(arg),"/")+time()+".c";
+	ret = homedir(this_player())+"/tmp/"+last_string_element(base_name(arg),"/")+randy+time()+".c";
 
     else if(objectp(arg) && this_player())
-	ret = "/tmp/"+last_string_element(base_name(arg),"/")+time()+".c";
+	ret = "/tmp/"+last_string_element(base_name(arg),"/")+randy+time()+".c";
 
     else if(stringp(arg) && this_player() && creatorp(this_player())) {
-	if(file_exists(arg)) ret = homedir(this_player())+"/tmp/"+last_string_element(arg,"/")+time()+".c";
-	else ret = homedir(this_player())+"/tmp/"+arg+time()+".c";
-	//ret = homedir(this_player())+"/tmp/"+last_string_element(arg,"/")+time()+".c";
+	if(file_exists(arg)) ret = homedir(this_player())+"/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
+	else ret = homedir(this_player())+"/tmp/"+randy+time()+".c";
+	//ret = homedir(this_player())+"/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
     }
 
     else if(stringp(arg) && this_player()) {
-	if(objectp(load_object(arg))) ret = "/tmp/"+last_string_element(arg,"/")+time()+".c";
-	else ret = "/open/"+last_string_element(arg,"/")+time()+".tmp";
+	if(objectp(load_object(arg))) ret = "/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
+	else ret = "/open/"+last_string_element(arg,"/")+randy+time()+".tmp";
     }
 
-    else if(creatorp(this_player())) ret = homedir(this_player())+"/tmp/"+time()+".tmp";
+    else if(creatorp(this_player())) ret = homedir(this_player())+"/tmp/"+randy+time()+".tmp";
 
-    else ret = "/open/"+time()+".c";
+    else ret = "/open/"+randy+time()+".c";
     return ret;
 }
 
+int alphap(mixed arg){
+    string *alphabet = ({ "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" });
+    alphabet += ({ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" });
+    if(!stringp(arg)) return 0;
+    foreach(string element in alphabet){
+	if(grepp(arg,element)) return 1;
+    }
+    return 0;
+}

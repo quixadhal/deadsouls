@@ -7,7 +7,6 @@
 #include <damage_types.h>
 
 
-inherit LIB_DAEMON;
 int GetProts(string str);
 int eventProcessValues();
 int eventStartQuery(string str);
@@ -23,7 +22,7 @@ mapping ProtectionsMap = ([]);
 string array Protections = ({ "BLUNT" ,"BLADE", "KNIFE", "WATER", "SHOCK", "COLD", "HEAT", "GAS", "ACID", "MAGIC", "POISON", "DISEASE", "TRAUMA" });
 
 
-varargs int eventStartQuestions(string what, object ob){
+varargs int eventStartArmorQuestions(string what, object ob){
     string filename;
     mixed tempvar;
 
@@ -95,8 +94,6 @@ int eventProcessValues(){
 	eventStartQuery(current);
 	return 1;
     }
-    write("This is where the mapping gets sent somewhere.");
-    write("ProtectionsMap is: "+identify(ProtectionsMap));
     eventModifyProtections(ProtectionsMap, base_name(armor_item)+".c", armor_item);
     return 1;
 }
@@ -143,7 +140,7 @@ mixed eventReadProtectionSettings(string str){
 	}
     }
 
-    fun_array = load_object(MODULES_FILE)->eventReadFunctions(str);   
+    fun_array = this_object()->eventReadFunctions(str);   
     if(!sizeof(fun_array)) {
 	write("Unknown error.");
 	return 1;
@@ -187,9 +184,9 @@ varargs int eventModifyProtections(mapping Protecciones, string filename, object
     foreach(string key, string val in ProtectionsMap){
 	new_lines += "SetProtection("+key+", "+val+");\n";
     }
-    globalstr = load_object(MODULES_FILE)->eventAppend(globalstr,({"SetArmorType","SetRestrictLimbs","SetLong"}),new_lines);
-    unguarded( (: write_file(globaltmp, globalstr) :) );
-    load_object(MODULES_GENERIC)->eventGeneralStuff(globaltmp);
+    globalstr = this_object()->eventAppend(globalstr,({"SetArmorType","SetRestrictLimbs","SetLong"}),new_lines);
+    unguarded( (: write_file(globaltmp, globalstr,1) :) );
+    this_object()->eventGeneralStuff(globaltmp);
     globalstr = filename;
     unguarded( (: cp(globaltmp, globalstr) :) );
     rm(globaltmp);

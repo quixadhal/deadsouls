@@ -60,7 +60,7 @@
 #include "/secure/sefun/duplicates.c"
 #include "/secure/sefun/reaper.c"
 #include "/secure/sefun/custom_path.c"
-#include "/secure/sefun/flat_map.c"
+#include "/secure/sefun/mappings.c"
 #include "/secure/sefun/dummy.c"
 #include "/secure/sefun/disable.c"
 #include "/secure/sefun/make_workroom.c"
@@ -68,6 +68,7 @@
 #include "/secure/sefun/rooms.c"
 #include "/secure/sefun/generic.c"
 #include "/secure/sefun/singular_array.c"
+#include "/secure/sefun/reload.c"
 
 
 int destruct(object ob) {

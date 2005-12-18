@@ -1,5 +1,5 @@
 		      The Dead Souls Mud Library
-		    Re-Released 12 September 2005
+		      Released 18 December 2005
 
 UPGRADE NOTE: If you are upgrading from an older version of
 Dead Souls, you have to copy your old /secure/cfg/mudos.cfg somewhere
@@ -12,12 +12,10 @@ ADMIN FAQ: http://dead-souls.sourceforge.net/ds-admin-faq.html
 
 ED TUTORIAL: http://dead-souls.sourceforge.net/editor.html
 
-NEW CREATION EXAMPLE: http://dead-souls.sourceforge.net/example.html
+NEW CREATION SYSEM: http://dead-souls.sourceforge.net/example.html
 
 	The Frontiers LPC Foundation is pleased to present the
-re-release of Dead Souls, after many years of neglect. This
-distribution is updated with the latest current version of MudOS,
-and has had various essential lib fixes applied.
+re-release of Dead Souls 2.
 
 	Please read /doc/SUPPORT for details on the supportability
 of this software. Note that the Frontiers LPC Foundation does not take
@@ -27,11 +25,10 @@ This code is available to you as-is.
 	Some years ago, Descartes @ Nightmare chose to retire his
 Nightmare mudlib from distribution. Despite various disputes over
 the years, this embargo has stood quite firm. Yet some folks felt
-that, however personally unpleasant he may be, Descartes had overseen
-the development of a fine lib, and many were sorry to see it go.
+that it was a fine lib, and many were sorry to see it go.
 
 	This mudlib is based on that old warhorse. It is entirely
-free from thoe copyright problems, and can be shared.
+free from those copyright problems, and can be shared.
 
 	We felt that too many substandard libs were starting to
 pop up, and that there was a need to bring back some of the old
@@ -53,5 +50,4 @@ http://sourceforge.net/projects/dead-souls/
 	Have fun!
 
 					- Cratylus @ Frontiers
-					  12 September 2005
-					  revised 07NOV05
+					  18 December 2005

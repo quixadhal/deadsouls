@@ -1,3 +1,16 @@
+---- 2.0 ---
+- It is done.
+
+---- 1.9r21 ---
+- Typo fixes, cosmetic changes.
+
+---- 1.9r19 ---
+- Creation system fixes and overhaul: you now need to be holding the
+  creator staff to use the Quick Creation System.
+- Some QCS docs added.
+- Added commands reload, wake, resurrect.
+- Added sefuns reload, add_maps, alphap.
+
 ---- 1.9r18 ---
 - Creation system bugfixes.
 - Connection bugfixes.

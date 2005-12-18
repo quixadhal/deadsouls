@@ -1,12 +1,11 @@
 #include <lib.h>
 #include <modules.h>
 
-inherit LIB_DAEMON;
-
 string eventReadFunctions(string source);
 int eventModString(string file, string param, string replace);
 
 string first_arg, globalstr, globalstr2, globalstr3;
+string *global_array;
 mixed globalmixed;
 
 string eventAppend(string file, string *params, string addendum){
@@ -70,11 +69,12 @@ string eventAppend(string file, string *params, string addendum){
 }
 
 varargs mapping eventReadMapping(string file, string *params, int destructive){
-    int line_range, numm, count, found, primary_line, secondary_line;
+    int numero, line_range, numm, count, found, primary_line, secondary_line;
     string *file_arr;
     string *mapping_array;
     string new_file, filename, new_string, search_str, mapping_string, junk1, junk2;
     mapping new_mapping = ([]);
+    mixed mixed_var;
 
     if(file_exists(file) && !check_privs(this_player(),file)){
 	write("You do not appear to have access to this file. Modification aborted.");
@@ -127,6 +127,7 @@ varargs mapping eventReadMapping(string file, string *params, int destructive){
 	write("It's a null mapping");
 	return ([]);
     }
+    //tc("map: "+mapping_string);
     mapping_array = explode(mapping_string,",");
     foreach(string foo in mapping_array){
 	string *sub_array;
@@ -134,19 +135,30 @@ varargs mapping eventReadMapping(string file, string *params, int destructive){
 	if(strsrch(foo,":") == -1) break;
 	sub_array = explode(foo,":");
 	if(sub_array[0] && sub_array[1]) {
-	    new_mapping[sub_array[0]] = sub_array[1];
+	    sub_array[0] = trim(replace_string(replace_string(sub_array[0]," \t",""),"\"",""));
+	    sub_array[1] = trim(replace_string(replace_string(sub_array[1]," \t",""),"\"",""));
+	    if(sscanf(sub_array[1],"%d",numero) == 1) mixed_var = numero;
+	    else  mixed_var = sub_array[1];
+	    new_mapping[sub_array[0]] = mixed_var;
 	}
     }
 
     if(!first_arg) first_arg = "NULL";
 
-    new_file = "";
     found = 0;
 
-    new_file = remove_matching_line(read_file(first_arg),search_str);
+    globalstr3 = search_str;
+    unguarded( (: globalstr = remove_matching_line(read_file(first_arg),globalstr3,1) :) );
+    globalstr2 = generate_tmp(file);
+    //write("globalstr2: "+globalstr2);
     if(destructive) {
-	write_file("/realms/"+this_player()->GetKeyName()+"/tmp/mapping_destructive."+this_player()->GetKeyName(),new_file,1);
-	unguarded( (: cp("/realms/"+this_player()->GetKeyName()+"/tmp/mapping_destructive."+this_player()->GetKeyName(),first_arg) :) );
+	//write("first arg: "+first_arg);
+	//unguarded( (: write_file("/realms/"+this_player()->GetKeyName()+"/tmp/mapping_destructive."+this_player()->GetKeyName(),globalstr,1) :) );
+	//unguarded( (: cp("/realms/"+this_player()->GetKeyName()+"/tmp/mapping_destructive."+this_player()->GetKeyName(),first_arg) :) );
+	unguarded( (: write_file(globalstr2, globalstr,1) :) );
+	unguarded( (: cp(globalstr2, first_arg) :) );
+	//unguarded( (: tc("read_file(globalstr2): "+read_file(globalstr2)) :) );
+	//unguarded( (: write("read_file(first_arg): "+read_file(first_arg)) :) );
     }
     if(sizeof(new_mapping)) return copy(new_mapping);
     else return ([]);
@@ -176,8 +188,9 @@ string array eventReadFunctions(string source){
 	write("You do not appear to have access to this file. Modification aborted.");
 	return ({});
     }
-
-    cp(source, tmpsource);
+    globalstr3 = tmpsource;
+    globalstr = source;
+    unguarded( (: cp(globalstr, globalstr3) :) );
     if(!file_exists(source)) return ({"Source read failed."});
     if(!file_exists(tmpsource)) return ({"Read failed."});
 
@@ -262,7 +275,10 @@ int eventAddInit(string file){
 		}
 	    }
 	    contents[memnum] = implode(temparray2,"\n");
-	    write_file(tmpfile,implode(contents,""));
+	    global_array = contents;
+	    globalstr3 = tmpfile;
+	    unguarded( (: write_file(globalstr3,implode(global_array,"\n"),1) :) );
+	    //write_file(tmpfile,implode(contents,""));
 	}
 
 	else {
@@ -273,12 +289,14 @@ int eventAddInit(string file){
 
     else {
 	contents += ({ "void init(){\n::init();\n}" });
-	write_file(tmpfile,implode(contents,"\n"));
+	global_array = contents;
+	globalstr3 = tmpfile;
+	unguarded( (: write_file(globalstr3,implode(global_array,"\n"),1) :) );
     }
     globalstr = tmpfile;
     globalstr2 = file;
     done = unguarded( (: cp(globalstr, globalstr2) :) );
-    rm(tmpfile);
+    unguarded( (: rm(globalstr) :) );
     return done;
 }
 
@@ -321,10 +339,11 @@ varargs int eventModString(string file, string param, mixed replace, string *par
 	ret = unguarded( (: replace_matching_line(read_file(globalstr), globalstr3, globalstr3+"("+globalmixed+");") :) );
     else ret = eventAppend(file,where_append,"\n"+globalstr3+"("+globalmixed+");\n");
     ret = replace_line(ret,({"customdefs.h"}), "#include \""+homedir(this_player())+"/customdefs.h\"");
-    write_file(tmpfile,ret,1);
+    globalstr3 = ret;
+    unguarded( (:  write_file(globalstr2, globalstr3, 1) :) );
     //tc("ret: "+ret);
     //tc(tmpfile+": "+read_file(tmpfile));
     unguarded( (: cp(globalstr2, globalstr) :) );
-    rm(tmpfile);
+    unguarded( (: rm(globalstr2) :) );
     return 1;
 }

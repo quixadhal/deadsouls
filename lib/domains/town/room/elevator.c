@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+
 int doorcounter,callfloor,closed,floor,counter,moving;
 string floorname;
 static void create() {
@@ -28,11 +29,10 @@ static void create() {
     AddItem(new("/domains/town/obj/ebutton1"));
     set_heart_beat(1);
 }
-
 void init(){
+    ::init();
     set_heart_beat(1);
 }
-
 int CallMe(int i){
     if(i == floor && moving == 0) {
 	this_object()->SetDoor(0);
@@ -41,7 +41,6 @@ int CallMe(int i){
     else callfloor = i;
     return 1;
 }
-
 int SetDoor(int i){
     if(i && i == closed) return i;
     if(!i && closed == 0) return i;
@@ -63,7 +62,6 @@ int SetDoor(int i){
     }
     return closed;
 }
-
 int SetFloor(int i){
     if(floor == i) return 0;
     RemoveExit("east");
@@ -72,8 +70,6 @@ int SetFloor(int i){
     if(i == 2) AddExit("east", "/domains/town/room/basement");
     return 1;
 }
-
-
 int CanReceive(object ob) {
     if(closed > 0){
 	message("info","The elevator door is closed.", ob);
@@ -81,7 +77,6 @@ int CanReceive(object ob) {
     }
     return 1;
 }
-
 int CanRelease(object ob){
     if(closed > 0 && !creatorp(ob)){
 	message("info","The elevator door is closed.", ob);
@@ -89,7 +84,6 @@ int CanRelease(object ob){
     }
     return 1;
 }
-
 varargs int eventRoll(int i){
     if(!i) i = 10;
     moving = 1;
@@ -97,7 +91,6 @@ varargs int eventRoll(int i){
     counter = i;
     return i;
 }
-
 void heart_beat(){
     if(doorcounter > 0){
 	doorcounter--;
@@ -126,4 +119,3 @@ void heart_beat(){
 	}
     }
 }
-

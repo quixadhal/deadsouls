@@ -19,7 +19,7 @@ static void create() {
 	"west" : "/domains/default/room/telnet_room",
 	"east" : "/domains/town/room/arena" ]) );
     SetDoor("east","/domains/town/doors/steel_door");
-
+    SetNoModify(1);
     SetObviousExits("n, s, e, w");
     SetProperty("no attack", 1);
     SetProperty("nopeer",1);

@@ -8,6 +8,7 @@
 #include <dirs.h>
 #include <flags.h>
 #include <privs.h>
+#include <rooms.h>
 #include <message_class.h>
 
 inherit LIB_DAEMON;
@@ -105,6 +106,7 @@ static private void EndSuicide(string who) {
     if( sizeof( ob = filter(users(), (: archp :)) ) )
 	ob->eventPrint("["+(string)this_player()->GetName()+" has "
 	  "comitted suicide]");
+    this_player()->eventMove(ROOM_FURNACE);
     this_player()->eventDestruct();
     return;
 }

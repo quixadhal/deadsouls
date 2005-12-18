@@ -26,7 +26,16 @@ mixed can_initfix_obj(string str) {
 mixed can_initfix_word(string str) { return can_initfix_obj("foo"); }
 
 mixed do_initfix_obj(object ob) {
-    if(load_object(MODULES_FILE)->eventAddInit(base_name(ob)+".c") == 2) {
+    object staff;
+    staff = present("tanstaafl",this_player());
+    if(!staff) {
+	write("You must be holding the creator staff in order to use this command.");
+	write("If you don't know where you put it, get another one from the chest ");
+	write("in your workroom.");
+	return 1;
+    }
+
+    if(staff->eventAddInit(base_name(ob)+".c") == 2) {
 	return "File already has a working init function.";
     }
     else write("Done.");

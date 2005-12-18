@@ -10,6 +10,7 @@ static void create(){
     SetShort("a robe");
     SetLong("This is a large, comfortable-looking robe, like a wizard might wear. ");
     SetMass(200);
+    SetBaseCost("silver",100);
     SetDamagePoints(100);
     SetProtection(BLUNT,100);
     SetProtection(BLADE,100);
