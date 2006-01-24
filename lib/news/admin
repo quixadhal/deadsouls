@@ -12,3 +12,29 @@ ADMIN:
 * DO NOT try to modify mudos.cfg or groups.cfg unless you know
   what you're doing. IF you do try, be sure to back up the originals.
 
+* To know what players can do, type:
+
+read handbook
+
+* To know what creators can do, type:
+
+read manual
+
+* And you really, really have to read chapters 31 through 38 of the
+  manual. They are not long chapters, and you will be very happy
+  you did.
+
+* You now have an intermud channel available by default. If you
+  see something like:
+
+Cratylus@Dead Souls %^BLUE%^<ds>%^RESET%^ Hi there!
+
+  Don't be surprised. "ds" is an intermud communication channel
+  between Dead Souls muds. To chat, type: 
+
+ds blah blah
+
+  It's new, so don't expect an answer right away.
+
+* To read this information again, type: news admin
+

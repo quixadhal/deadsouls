@@ -16,8 +16,4 @@ static void create()  {
     SetBaseCost("silver",2);
     SetMealMessages("You drink your water, and feel refreshed.", "$N drinks "+
       "$P water.");
-    SetEmptyName("bottle");
-    SetEmptyShort("an empty bottle of water");
-    SetEmptyLong("A little bottle that once held "+
-      "spring water.");
 }

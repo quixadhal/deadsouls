@@ -24,7 +24,7 @@ static void create() {
 }
 
 mixed can_capture_liv_word_obj() {
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed do_capture_liv_word_obj(object target, string word, object tool) {

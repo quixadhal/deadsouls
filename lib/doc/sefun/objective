@@ -1,0 +1,30 @@
+
+STD_ITEMIVE(1)                                         OBJECTIVE(1)
+
+NNAAMMEE
+       _o_b_j_e_c_t_i_v_e_(_) - returns the objective pronoun for a gender
+
+SSYYNNOOPPSSIISS
+       string objective(string|object val)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given an object or a gender string, this function will
+       return the appropriate objective pronoun ("him", "her", or
+       "it") for the gender passed, or for the gender of the
+       object in question.
+
+EEXXAAMMPPLLEESS
+       _o_b_j_e_c_t_i_v_e(find_player("lassondra")) returns "her"
+
+       head1 LOCATION
+
+       /secure/SimulEfun/english.c
+
+SSEEEE AALLSSOO
+       _n_o_m_i_n_a_t_i_v_e_(_), _p_o_s_s_e_s_s_i_v_e_(_), _p_o_s_s_e_s_s_i_v_e___n_o_u_n_(_), _r_e_f_l_e_x_i_v_e_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

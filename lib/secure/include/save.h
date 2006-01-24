@@ -24,5 +24,6 @@
 #define SAVE_SERVICES      DIR_SAVE "/services"
 #define SAVE_SOUL          DIR_SAVE "/soul"
 #define SAVE_UNIQUE        DIR_SAVE "/unique"
+#define SAVE_IMC2          DIR_SAVE "/imc2"
 
 #endif /* s_save_h */

@@ -399,7 +399,7 @@ private static void load_access(string cfg, mapping ref) {
     }
 
     string error_handler(mapping mp, int caught) {
-	string ret, file, elog;
+	string ret, file;
 
 	ret = "---\n" + standard_trace(mp);
 	if( caught ) write_file(file = "/log/catch", ret);
@@ -558,7 +558,7 @@ private static void load_access(string cfg, mapping ref) {
 	return ({ "in", "with", "without", "into", "for", "on", "under", "against",
 	  "out", "within", "of", "from", "between", "at", "to", "over", "near",
 	  "inside", "onto", "off", "through", "across", "up", "down",
-	  "around", "about", "only", "here", "room", "exit", "enter"});
+	  "around", "about", "only", "here", "room", "exit", "enter", "-r"});
     }
 
     string parse_command_all_word() { return "all"; }

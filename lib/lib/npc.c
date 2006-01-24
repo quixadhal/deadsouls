@@ -52,6 +52,10 @@ static void create() {
     AutoStand = 1;
 }
 
+//string TestFun(){
+//return "Feep!";
+//}
+
 void CheckEncounter(){
     string *enemies;
 
@@ -112,9 +116,13 @@ static void heart_beat() {
 
 	if( functionp(Action) ) evaluate(Action);
 	else if( pointerp(Action) && (x = sizeof(Action)) ) {
-	    string act;
+	    mixed act;
 
 	    act = Action[random(x)];
+	    if(functionp(act)) {
+		evaluate(act);
+		return;
+	    }
 	    if( act && act != "" && act[0] == '!' && act != "!" ) {
 		act = act[1..];
 		eventForce(act);
@@ -257,7 +265,7 @@ void eventDescribeEnvironment(int brief) {
       }
 	i = GetEffectiveVision();
 	if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM ) {
-	    mapping lying = ([]), sitting = ([]), standing = ([]);
+	    mapping lying = ([]), sitting = ([]), standing = ([]), flying = ([]);
 	    object *obs;
 	    string key;
 	    int val;
@@ -274,10 +282,11 @@ void eventDescribeEnvironment(int brief) {
 		  int pos = (int)liv->GetPosition();
 
 		  if( !s ) continue;
-		  if( creatorp(liv) || pos == POSITION_STANDING) standing[s]++;
+		  if( pos == POSITION_STANDING) standing[s]++;
 		  else if( pos == POSITION_LYING || (int)liv->isFreshCorpse() )
 		      lying[s]++;
 		  else if( pos == POSITION_SITTING ) sitting[s]++;
+		  else if( pos == POSITION_FLYING ) flying[s]++;
 		  else lying[s]++;
 	      }
 	      if( !desc ) {
@@ -305,6 +314,13 @@ void eventDescribeEnvironment(int brief) {
 		      desc += capitalize(key) + "%^RESET%^ is standing here.";
 		  else desc += capitalize(consolidate(val, key)) +
 		      "%^RESET%^ are standing here.";
+		  desc += "\n";
+	      }
+	      foreach(key, val in flying) {
+		  if( val<2 )
+		      desc += capitalize(key) + "%^RESET%^ is hovering here.";
+		  else desc += capitalize(consolidate(val, key)) +
+		      "%^RESET%^ are hovering here.";
 		  desc += "\n";
 	      }
 	  }
@@ -385,8 +401,8 @@ void eventDescribeEnvironment(int brief) {
 	    }
 	    else if( functionp(Die) && !evaluate(Die, agent) ) return 0;
 	    else {
-		message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " drops dead.",
-		  environment(), ({ this_object() }) );
+		if(GetPosition() == POSITION_STANDING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " drops dead.", environment(), ({ this_object() }) );
+		else message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " finally dies.", environment(), ({ this_object() }) );
 		if( agent ) message("my_action", "You kill " + GetName() + ".", agent);
 	    }
 	    set_heart_beat(0);
@@ -412,13 +428,13 @@ void eventDescribeEnvironment(int brief) {
 	    int ret;
 
 	    ret = eventCompleteMove(dest);
-	    if(environment(this_object())) eventMoveFollowers(environment(this_object()));
+	    //if(environment(this_object())) eventMoveFollowers(environment(this_object()));
 	    return ret;
 	}
 
 	varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
 	    object *inv;
-	    object prev, env;
+	    object prev;
 	    string msgclass;
 
 	    if( prev = environment() ) {
@@ -439,7 +455,10 @@ void eventDescribeEnvironment(int brief) {
 		if( !omsg || omsg == "" ) omsg = GetMessage("telout");
 		else if(GetPosition() == POSITION_SITTING ||
 		  GetPosition() == POSITION_LYING ){
-		    omsg = "crawls "+omsg;
+		    omsg = this_object()->GetName()+" crawls "+omsg+".";
+		}
+		else if(GetPosition() == POSITION_FLYING ){
+		    omsg = this_object()->GetName()+" flies "+omsg+".";
 		}
 
 		else omsg = GetMessage("leave", omsg);
@@ -455,7 +474,10 @@ void eventDescribeEnvironment(int brief) {
 		imsg = GetMessage(msgclass = "telin");
 	    else if(GetPosition() == POSITION_SITTING ||
 	      GetPosition() == POSITION_LYING ){
-		imsg = "crawls "+imsg;
+		imsg = this_object()->GetName()+" crawls in";
+	    }
+	    else if(GetPosition() == POSITION_FLYING ){
+		imsg = this_object()->GetName()+" flies in.";
 	    }
 
 	    else if( !imsg || imsg == "" ) imsg = GetMessage(msgclass = "come", imsg);
@@ -648,7 +670,6 @@ void eventDescribeEnvironment(int brief) {
 	varargs string GetLong(string str) {
 	    mapping counts;
 	    string item, what;
-	    float h;
 
 	    str = object::GetLong() + "\n";
 	    what = "The "+GetGender()+" "+GetRace();

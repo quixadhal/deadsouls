@@ -17,7 +17,30 @@ inherit LIB_HELP;
 #define U_INTERACTIVE     (1 << 2)
 #define U_AUTOMATED       (1 << 3)
 
-static void eventUpdate(string args, int flags);
+mapping LocationsMap = ([]);
+
+static int eventUpdate(string args, int flags);
+
+static void CacheAndCarry(object *obs){
+    if(!sizeof(obs)) return;
+    foreach(object fellow in obs){
+	string ubi = fellow->GetProperty("LastLocation");
+	if(ubi) LocationsMap[fellow->GetKeyName()] = ubi;
+    }
+    obs->eventMove(ROOM_VOID);
+}
+
+static void ReturnAndRelease(object *dudes, string file){
+    if(!sizeof(dudes)) return;
+    if(!file) return;
+    dudes->eventMove(file);
+    foreach(object fellow in dudes){
+	if(sizeof(LocationsMap[fellow->GetKeyName()])){
+	    fellow->SetProperty("LastLocation",LocationsMap[fellow->GetKeyName()]);
+	}
+    }
+}
+
 
 static void create() {
     SetHelp("Syntax: <update [-r] [file list]>\n"
@@ -53,14 +76,16 @@ mixed cmd(string args) {
 	file = base_name(ob);
 	this_player()->eventPrint("Updating environment");
 	obs = filter(all_inventory(ob), (: userp :));
-	if( sizeof(obs) ) obs->eventMove(ROOM_VOID);
+	//if( sizeof(obs) ) obs->eventMove(ROOM_VOID);
+	if( sizeof(obs) ) CacheAndCarry(obs);
 	if( !eventUpdate(base_name(ob), flags) ) {
 	    obs->eventPrint("You are thrown into the void as your "
 	      "surroundings violently destruct.");
 	    return "Error in reloading environment.";
 	}
 	obs = filter(obs, (: $1 :));
-	if( sizeof(obs) ) obs->eventMove(file);
+	//if( sizeof(obs) ) obs->eventMove(file);
+	if( sizeof(obs) ) ReturnAndRelease(obs, file);
 	return 1;
     }
     tmpfiles = map(explode(args, " "),
@@ -106,7 +131,9 @@ mixed cmd(string args) {
 		}        
 	}
 	if( args[<2..] == ".c" ) args = args[0..<3];
-	if( ob = find_object(args) ) {
+	ob = find_object(args);
+	if(!ob) ob = load_object(args);
+	if( ob ) {
 	    if( tmp = catch( ob->eventDestruct()) )
 		this_player()->eventPrint(args + ": error in eventDestruct()");
 	    if( ob ) destruct(ob);

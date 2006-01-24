@@ -1,6 +1,7 @@
 #include <lib.h>
 inherit LIB_ROOM;
 inherit "/lib/props/ambiance";
+
 static void create() {
     room::create();
     SetClimate("outdoors");
@@ -29,4 +30,7 @@ static void create() {
 	"town" : "A town, far in the eastern distance."
       ]) );
 
+}
+void init(){
+    ::init();
 }

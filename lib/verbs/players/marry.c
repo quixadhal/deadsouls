@@ -26,7 +26,6 @@ static void create() {
 }
 
 mixed can_marry_liv_to_liv() {
-    mixed tmp;
 
     if( (int)this_player()->GetSkillLevel("faith") < 5 )
 	return "You do not have enough faith to join to people.";

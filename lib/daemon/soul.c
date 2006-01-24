@@ -277,9 +277,7 @@ string GetRaceAdverb(mixed who) {
     if( objectp(who) ) {
 	res = who->GetRace();
     }
-    else {
-	res == who;
-    }
+
     if( !res ) {
 	return "godly";
     }
@@ -321,7 +319,6 @@ int CanTarget(object who, string verb, object target, string rule) {
 mixed can_verb_rule(string verb, string rle) {
     class emote e = Emotes[verb];
     class rule r;
-    mixed array msg;
 
     if( !e ) {
 	return 0;

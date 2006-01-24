@@ -1,7 +1,11 @@
 #include <function.h>
+#include <message_class.h>
 
 static private mixed Read    = 0;
 static private mapping Reads = ([]);
+
+string tmpfile, globalval;
+object globalwho;
 
 // abstract methods
 string GetShort();
@@ -56,6 +60,13 @@ varargs mixed SetRead(mixed arg1, mixed desc) {
     }
     return Reads;
 }
+
+void SetReads(mapping ReadMap){
+    foreach(mixed key, mixed val in ReadMap){
+	SetRead(key, val);
+    }
+}
+
 varargs mixed SetDefaultRead(mixed arg1, mixed desc) {
     if( mapp(arg1) ) {
 	return 0;
@@ -69,8 +80,6 @@ varargs mixed SetDefaultRead(mixed arg1, mixed desc) {
 	return Read;
     }
 }
-
-
 
 varargs mixed eventRead(object who, string str) {
     mixed val = GetRead(str);
@@ -93,7 +102,15 @@ varargs mixed eventRead(object who, string str) {
 	who->eventPrint("There is nothing to read.");
 	return 1;
     }
-    who->eventPrint(val);
+    tmpfile = generate_tmp();
+    globalwho = who;
+    globalval = val;
+    unguarded( (: write_file(tmpfile, globalval) :) );
+    unguarded( (: globalwho->eventPage(tmpfile) :) );
+    //unguarded( (: globalwho->eventPage(globalval) :) );
+    //if(!file_exists(tmpfile))  who->eventPrint(val);
+    unguarded( (: rm(tmpfile) :) );
+    //who->eventPrint(val);
     return 1;
 }
 

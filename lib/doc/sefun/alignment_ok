@@ -1,0 +1,28 @@
+
+ALIGNMENT_OK(1)                                   ALIGNMENT_OK(1)
+
+NNAAMMEE
+       _a_l_i_g_n_m_e_n_t___o_k_(_) - returns true if a player is inside
+       alignment restrictions
+
+SSYYNNOOPPSSIISS
+       int alignment_ok(object ob)
+
+DDEESSCCRRIIPPTTIIOONN
+       If the object passed as the argument is within alignment
+       restrictions for the player's class, then the function
+       returns true.  Otherwise it returns false.
+
+EEXXAAMMPPLLEESS
+       +o   _a_l_i_g_n_m_e_n_t___o_k(_t_h_i_s___p_l_a_y_e_r_(_)) returns false if I am an
+           evil cleric, or true if I am a good monk, or always
+           true as a fighter
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/alignment.c
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

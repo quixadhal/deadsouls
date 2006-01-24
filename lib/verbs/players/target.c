@@ -32,9 +32,9 @@ mixed can_target_liv(object target) {
     if( (int)environment(this_player())->GetProperty("no target") ) {
 	message("environment", "A mystical force prevents your malice.",
 	  this_player());
-	return 1;
+	return this_player()->CanManipulate();
     }
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed can_target_only_liv(object target){

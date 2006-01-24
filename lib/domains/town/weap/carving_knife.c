@@ -20,9 +20,11 @@ static void create() {
     SetVendorType(VT_WEAPON);
     SetClass(30);
     SetDamageType(BLADE);
-    SetWeaponType("blade");
+    SetWeaponType("knife");
 }
-
 int GetFancy(){
     return 1;
+}
+void init(){
+    ::init();
 }

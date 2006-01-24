@@ -123,9 +123,8 @@ mixed eventTalkRespond(object who, object targ, int cls, string msg, string lang
 }
 
 varargs mixed eventSpeak(object target, int cls, string msg, string lang) {
-    object *bystanders;
     string verb, tmp;
-    int x, cols;
+    int cols;
 
     if( lang ) {
 	msg = translate(msg, GetLanguageLevel(lang));

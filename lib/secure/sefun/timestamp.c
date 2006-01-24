@@ -1,3 +1,5 @@
+#include <config.h>
+
 string timestamp(string str){
     string *rawstr;
     string stamp,rawtz,tzone,l_time;
@@ -8,11 +10,13 @@ string timestamp(string str){
     tzone = rawtz[0..2];
     if(!tzone) return "Problem resolving timezone";
     offset = "/daemon/time"-> GetOffset(tzone);
+    offset += EXTRA_TIME_OFFSET;
     if(!offset && tzone !="GMT") return "Problem calculating timezone offset";
     // the following appears to be necessary for linux
     //offset +=10;
     timediff = offset * 3600;
-    l_time=ctime(time() + timediff);
+    if(query_os_type() != "windows" ) l_time=ctime(time() + timediff);
+    else l_time=ctime(time());
     if( sscanf(l_time,"%s  %s",foo,bar) ) l_time = foo+" 0"+bar;
     rawstr=explode(l_time," ");
     stamp=rawstr[2]+rawstr[1]+rawstr[4]+"-"+rawstr[3];

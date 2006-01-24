@@ -27,7 +27,7 @@ mixed can_close_obj(string verb) {
     if( this_player()->GetParalyzed() ) {
 	return "You are unable to do anything.";
     }
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 varargs mixed do_close_obj(object ob, mixed *args...) {

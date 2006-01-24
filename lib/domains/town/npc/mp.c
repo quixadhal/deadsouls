@@ -1,6 +1,7 @@
 #include <lib.h>
 inherit LIB_NPC;
 
+
 static void create(){
     npc::create();
     SetKeyName("gate guard");
@@ -21,4 +22,6 @@ static void create(){
 	"/domains/town/armor/bdu" : "wear bdu"
       ]));
 }
-
+void init(){
+    ::init();
+}

@@ -9,6 +9,7 @@
 #define SERVICE_FINGER
 
 #include <daemons.h>
+#include <rooms.h>
 #include <message_class.h>
 
 void eventReceiveFingerRequest(mixed array packet) {
@@ -24,6 +25,8 @@ void eventReceiveFingerRequest(mixed array packet) {
     }
     ret = ({ "finger-reply", 5, mud_name(), 0, packet[2], packet[3] }) + ret;
     INTERMUD_D->eventWrite(ret);
+tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"+capitalize(packet[3])+" at "+packet[2]+" has requested finger information about "+capitalize(ret[5])+".%^RESET%^\"");
+
 }
 
 void eventReceiveFingerReply(mixed array packet) {

@@ -1,0 +1,31 @@
+
+PATH_FILE(1)                                         PATH_FILE(1)
+
+NNAAMMEE
+       _p_a_t_h___f_i_l_e_(_) - returns an array of files associated with an
+       array of files
+
+SSYYNNOOPPSSIISS
+       mixed *path_file(string|string * full_path)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given a path or an array of paths, this function separates
+       the file name from its path and returns an array with them
+       separated, or an array of such arrays in the event the
+       argument passed is an array.
+
+EEXXAAMMPPLLEESS
+       +o   _p_a_t_h___f_i_l_e("/secure/cfg/write.cfg") returns ({
+           "/secure/cfg", "write.cfg" })
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/path_file.c
+
+SSEEEE AALLSSOO
+       _a_b_s_o_l_u_t_e___p_a_t_h_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

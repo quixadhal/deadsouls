@@ -1,0 +1,25 @@
+
+EVENT_PENDING(1)                                 EVENT_PENDING(1)
+
+NNAAMMEE
+       _e_v_e_n_t___p_e_n_d_i_n_g_(_) - returns true if an event is pending for
+       an object
+
+SSYYNNOOPPSSIISS
+       int event_pending(object ob)
+
+DDEESSCCRRIIPPTTIIOONN
+       If an event is pending for the object which you pass, then
+       the function returns 1.  Otherwise it returns 0.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/events.c
+
+SSEEEE AALLSSOO
+       _c_a_l_l___o_u_t_(_), _e_v_e_n_t_(_), _r_e_m_o_v_e___c_a_l_l___o_u_t_(_), _s_e_t___h_e_a_r_t___b_e_a_t_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

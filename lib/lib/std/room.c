@@ -48,7 +48,10 @@ private static mixed    Smell         = 0;
 private static mixed    Touch         = 0;
 private string          Town          = "wilderness";
 private int		DefaultExits  = 1;
+private int		Flying        = 1;
 mapping			ItemsMap      = ([]);
+//private static object  *dummies       = ({});
+private static mixed    global_item;
 
 string GetClimate();
 int GetNightLight();
@@ -75,7 +78,7 @@ int GetAmbientLight() {
     nightset = this_object()->GetNightLight();
 
     if(dayset == -1970 && nightset == -1970 ) {
-	return ambiance::GetAmbientLight();
+	a = ambiance::GetAmbientLight();
     }
 
     else if( query_night() && nightset != -1970 ) {
@@ -85,11 +88,16 @@ int GetAmbientLight() {
 	a = dayset;
     }
     else {
-	a = GetAmbientLight();
+	a = ambiance::GetAmbientLight();
     }
     if( GetClimate() != "indoors" ) {
-	a += SEASONS_D->GetRadiantLight() - GetShade();
+	//a += SEASONS_D->GetRadiantLight() - GetShade();
     }
+
+    foreach(object ob in all_inventory()){
+	a += ob->GetRadiantLight();
+    }
+
     return a;
 }
 
@@ -121,7 +129,6 @@ static string GetExtraLong() {
 
 string GetInternalDesc() {
     string ret, tmp;
-    object ob;
 
     if( DayLong && !query_night() ) {
 	ret = DayLong;
@@ -182,9 +189,13 @@ object array GetDummyItems() {
 }
 
 varargs void AddItem(mixed item, mixed val, mixed adjectives) {
-    object ob;
+    object ob, same_dummy;
+    object *dummies = filter(all_inventory(this_object()), (: base_name(LIB_DUMMY) :) );
+    global_item = item;
 
     if( objectp(item) ) {
+	same_dummy = filter(dummies,(: ($1->GetId())[0] == (global_item->GetId())[0] :));
+	if(sizeof(same_dummy)) return;
 	ob = item;
     }
     else {
@@ -194,6 +205,8 @@ varargs void AddItem(mixed item, mixed val, mixed adjectives) {
 	if( stringp(adjectives) ) {
 	    adjectives = ({ adjectives });
 	}
+	same_dummy = filter(dummies,(: member_array(global_item[0],$1->GetId()) != -1 :));
+	if(sizeof(same_dummy)) return;
 	ob = new(LIB_DUMMY, item, val, adjectives);
     }
     ob->eventMove(this_object());
@@ -750,46 +763,29 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
 
 int eventMove(mixed dest) { return 0; }
 
-object array MySpecialPurpose(object *ob){
-    object *temparr,*stuff,*lstuff;
-    int i;
-    stuff=all_inventory();
-    lstuff = ({});
-    for(i=0;i<sizeof(stuff);i++){
-	temparr= ({ stuff[i] });
-	if(sizeof(temparr) && member_array(stuff[i],ob) != -1 )  stuff[i]=new("/lib/std/dummy");
-	if(living(stuff[i]) && !sizeof(lstuff)) lstuff = ({stuff[i]});
-	if(living(stuff[i]) && sizeof(lstuff) > 0 && member_array(stuff[i],lstuff) == -1) lstuff += ({stuff[i]});
-    }
-    if(sizeof(lstuff) > 0)	return lstuff;
-    if(!sizeof(lstuff)) return 0;
-}
-
-
 varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
     object *targs;
     int msg_class,i;
+
     if( !arg2 && !arg3 ) {
-	targs=MySpecialPurpose( ({ new("/lib/std/dummy") }) );
+	targs = filter(all_inventory(), (: (int)$1->is_living() :));
 	msg_class = MSG_ENV;
     }
     else if( objectp(arg2) || arrayp(arg2) ) {
 	if( objectp(arg2) ) arg2 = ({ arg2 });
-	targs=MySpecialPurpose(arg2);
+	targs = (filter(all_inventory(), (: (int)$1->is_living() :)) - arg2);
 	msg_class = MSG_ENV;
     }
     else if( !arg3 ) {
-	targs=MySpecialPurpose(({ new("/lib/std/dummy") }));
+	targs = filter(all_inventory(), (: (int)$1->is_living() :));
 	msg_class = arg2;
     }
     else if( objectp(arg3) || arrayp(arg3) ) {
 	if( objectp(arg3) ) arg3 = ({ arg3 });
-	targs=MySpecialPurpose(arg3);
+	targs = (filter(all_inventory(), (: (int)$1->is_living() :)) - arg3);
 	msg_class = arg2;
     }
-    for(i=0; i<sizeof(targs); i++) {
-	targs[i]->eventPrint(msg, msg_class);
-    }
+    targs->eventPrint(msg, msg_class);
     return 1;
 }
 
@@ -803,6 +799,19 @@ static void create() {
 	    replace_program(tmp[0]);
 	}
     }
+}
+
+int CanReceive(object ob){
+    if(!GetProperty("no teleport")) return container::CanReceive(ob);
+    else {
+	string verb = query_verb();
+	string *allowed = ({ "go", "climb", "jump", "enter", "fly", "crawl" });
+	if(member_array(verb, allowed) == -1 && !archp(this_player())) {
+	    write("Your teleportation is prevented.");
+	    return 0;
+	}
+    }
+    return container::CanReceive(ob);
 }
 
 varargs void reset(int count) {
@@ -825,8 +834,24 @@ int inventory_visible() {
 
 int SetNoDefaultExits(int i){
     if(i && i > 0) DefaultExits = 0;
+    else DefaultExits = 1;
     return DefaultExits;
 }
+
+int SetDefaultExits(int i){
+    if(!i || i < 0) DefaultExits = 0;
+    else DefaultExits = 1;
+}
+
+int SetCanFly(int i){
+    if(i && i > 0) Flying = 1;
+    else Flying = 0;
+}
+
+varargs int CanFly(mixed ob, mixed dir){
+    return Flying;
+}
+
 
 int GenerateObviousExits(){
     string *normals;
@@ -836,6 +861,7 @@ int GenerateObviousExits(){
     enters = "";
     normals = ({ "north", "south", "east", "west", "up", "down" });
     normals += ({ "northeast", "southeast", "northwest", "southwest" });
+    normals += ({ "out" });
     dir_string = "";
 
     if(sizeof(GetEnters(1)-({0}))){
@@ -858,6 +884,7 @@ int GenerateObviousExits(){
     if(member_array("southwest",exits) != -1) dir_string += "sw, ";
     if(member_array("up",exits) != -1) dir_string += "u, ";
     if(member_array("down",exits) != -1) dir_string += "d, ";
+    if(member_array("out",exits) != -1) dir_string += "out, ";
     if(sizeof(this_object()->GetEnters(1) - ({0}) )) {
 	dir_string += ", ";
 	dir_string += enters;

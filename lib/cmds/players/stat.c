@@ -29,13 +29,13 @@ mixed cmd(string args) {
     ", level " + (int)ob->GetLevel() + " " + (string)ob->GetGender();
     if( !(tmp2 = (string)ob->GetRace()) ) tmp2 = "blob";
     tmp1 += " " + tmp2;
-    if( !(tmp2 = (string)ob->GetClass()) ) tmp2 = "drifter";
+    if( !(tmp2 = (string)ob->GetClass())  || !stringp(tmp2)) tmp2 = "drifter";
     tmp1 += " " + capitalize(tmp2);
     if( tmp2 = (string)ob->GetSpouse() )
 	tmp1 += " (spouse: " + tmp2 + ")";
     lines = ({ center(tmp1, cols) });
-    if( (int)ob->GetUndead() ) tmp1 = "Undead";
-    else tmp1 = "Alive";
+    if( (int)ob->GetUndead() ) tmp1 = "%^BOLD%^RED%^UNDEAD%^RESET%^";
+    else tmp1 = "%^BOLD%^GREEN%^Alive%^RESET%^";
     if( (int)ob->GetSleeping() ) tmp1 += " / Sleeping";
     else tmp1 += " / Awake";
     if( (int)ob->GetParalyzed() ) tmp1 += " / Paralyzed";
@@ -62,12 +62,12 @@ mixed cmd(string args) {
     });
     lines += ({ "", "Limbs:" });
     limbs = (string *)ob->GetWieldingLimbs();
-    arr = map((string *)ob->GetLimbs(),
-      (: sprintf("%:-14s%s (%d) %d/%d", $1,
-	  ((member_array($1, $(limbs)) == -1) ? " " : "*"),
-	  (int)($(ob))->GetLimbClass($1),
-	  (int)($(ob))->GetHealthPoints($1),
-	  (int)($(ob))->GetMaxHealthPoints($1)) :));
+    if(!ob->GetGhost()) arr = map((string *)ob->GetLimbs(),
+	  (: sprintf("%:-14s%s (%d) %d/%d", $1,
+	      ((member_array($1, $(limbs)) == -1) ? " " : "*"),
+	      (int)($(ob))->GetLimbClass($1),
+	      (int)($(ob))->GetHealthPoints($1),
+	      (int)($(ob))->GetMaxHealthPoints($1)) :));
     i = sizeof(arr);
     while(i--) if( (y = strlen(arr[i])) > x ) x = y;
     x = cols/(x+2);

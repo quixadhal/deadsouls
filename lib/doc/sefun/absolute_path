@@ -1,0 +1,51 @@
+
+ABSOLUTE_PATH(1)                                 ABSOLUTE_PATH(1)
+
+NNAAMMEE
+       _a_b_s_o_l_u_t_e___p_a_t_h_(_) - returns the full path starting at root
+
+SSYYNNOOPPSSIISS
+       string absolute_path(string curr, string new)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given any relative path, this function returns the full
+       path from /.  The first argument is the base directory,
+       and the second is the relative path you wish to make
+       absolute.  If the second argument cannot be made absolute
+       on its own, it is made absolute relative to the base
+       directory, which is usually the current working directory.
+       It understands special things like:
+
+       +o   ~/ represents the home directory of the command giver
+
+       +o   ~user represents the home directory of the user named
+
+       +o   ^domains represents the home directory of the domain
+           named
+
+       +o
+
+            .. rreepprreesseennttss tthhee ccuurrrreenntt wwoorrkkiinngg ddiirreeccttoorryy
+
+       +o
+
+            .... rreepprreesseennttss tthhee ppaarreenntt ooff tthhee ccuurrrreenntt wwoorrkkiinngg ddiirreeccttoorryy
+
+EEXXAAMMPPLLEESS
+       +o   absolute_path("/realms/descartes", "monster.c")
+           returns "/realms/descartes/monster.c"
+
+       +o   absolute_path("/std", "~workroom.c") returns
+           "/realms/descartes/workroom.c"
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/absolute_path.c
+
+SSEEEE AALLSSOO
+       _b_a_s_e___n_a_m_e_(_), _p_a_t_h___f_i_l_e_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

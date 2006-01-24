@@ -69,13 +69,16 @@
 #include "/secure/sefun/generic.c"
 #include "/secure/sefun/singular_array.c"
 #include "/secure/sefun/reload.c"
+#include "/secure/sefun/wipe_inv.c"
+#include "/secure/sefun/numbers.c"
+#include "/secure/sefun/query_carrying.c"
 
 
 int destruct(object ob) {
     string *privs;
     string tmp;
 
-    if(previous_object(0) == ob) return efun::destruct(ob);
+    if(previous_object(0) && previous_object(0) == ob) return efun::destruct(ob);
     if(!(tmp = query_privs(previous_object(0)))) return 0;
     if(member_array(PRIV_SECURE, explode(tmp, ":")) != -1)
 	return efun::destruct(ob);

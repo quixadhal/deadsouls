@@ -1,0 +1,27 @@
+
+CENTER(1)                                               CENTER(1)
+
+NNAAMMEE
+       _c_e_n_t_e_r_(_) - centers a given string in a field
+
+SSYYNNOOPPSSIISS
+       varargs string center(string str, int x)
+
+DDEESSCCRRIIPPTTIIOONN
+       This function will center the string given as the first
+       argument in a string field as wide as specified by the
+       second argument.  The second argument is optional.  If the
+       second argument is not supplied, a string width of 80 is
+       assumed.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/strings.c
+
+SSEEEE AALLSSOO
+       _a_r_r_a_n_g_e___s_t_r_i_n_g_(_), _w_r_a_p_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

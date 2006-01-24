@@ -1,0 +1,28 @@
+
+POSSESSIVE_NOUN(1)                             POSSESSIVE_NOUN(1)
+
+NNAAMMEE
+       _p_o_s_s_e_s_s_i_v_e___n_o_u_n_(_) - returns the possessive form of a noun
+
+SSYYNNOOPPSSIISS
+       string possessive_noun(string|object val)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given a string, this function will return the possessive
+       form of it.  Given an object, it will return the
+       possessive form of that object's short description.
+
+EEXXAAMMPPLLEESS
+       +o   _p_o_s_s_e_s_s_i_v_e___n_o_u_n("Descartes") returns "Descartes'"
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/english.c
+
+SSEEEE AALLSSOO
+       _n_o_m_i_n_a_t_i_v_e_(_), _o_b_j_e_c_t_i_v_e_(_), _p_o_s_s_e_s_s_i_v_e_(_), _r_e_f_l_e_x_i_v_e_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

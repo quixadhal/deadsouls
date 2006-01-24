@@ -113,8 +113,8 @@ string *get_verbs();
 varargs object array get_livings(object ob,int foo);
 string local_time(string str);
 void reap_dummies();
-void reap_other(string str);
-string reap_list();
+varargs void reap_other(string str);
+mixed reap_list();
 string timestamp(string str);
 object *get_dupes(object ob, object where);
 string get_stack();
@@ -157,11 +157,16 @@ int starts_with_arr(string primary, string *sub);
 int starts_with(string primary, string sub);
 string reverse_string(string str);
 mixed homedir(object ob);
-string generate_tmp(mixed arg);
+varargs string generate_tmp(mixed arg);
 string newline_trim(string str);
 int directory_exists(string str);
 mixed reload(object ob);
+string query_os_type();
+varargs mixed read_matching_line(string target, string substring, int i, string exclude);
+int abs(int x);
+int wipe_inv(mixed dude);
+int bool_reverse(mixed arg);
+mixed check_light(object who);
+int query_carrying(object who, mixed thing);
 
 #endif /* l_sefun_h */
-
-

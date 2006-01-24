@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+
 static void create() {
     room::create();
     SetClimate("outdoors");
@@ -7,10 +8,10 @@ static void create() {
     SetShort("East Village Road");
     SetLong("You are on a long road. The "
       "general store is north. The road stretches "
-      "east and west through the town. The Adventurers' "
+      "east and west through the town. The Adventurers "
       "Guild is south.");
     SetItems( ([
-	({"guild","adventurers' guild"}) : "This small "
+	({"adventurers guild","guild"}) : "This small "
 	"building on the southern side of the road is where "
 	"adventurers, great and small, come to record "
 	"their exploits and seek advancement.",
@@ -28,10 +29,12 @@ static void create() {
       ]) );
     SetEnters( ([
 	"guild" : "/domains/town/room/adv_guild",
-	"adventurers' guild" : "/domains/town/room/adv_guild",
+	"adventurers guild" : "/domains/town/room/adv_guild",
 	"shop" : "/domains/town/room/shop",
 	"store" : "/domains/town/room/shop",
 	"general store" : "/domains/town/room/shop",
       ]) );
-    SetObviousExits("n,s,e,w");
+}
+void init(){
+    ::init();
 }

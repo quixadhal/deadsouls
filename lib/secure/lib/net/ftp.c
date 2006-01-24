@@ -48,11 +48,13 @@
 **
 */
 
+#define LIB_FTP_CLIENT	"/secure/lib/net/ftp_client"
+
 #include <lib.h>
 #include <dirs.h>
 #include <network.h>
 #include <runtime_config.h>
-#include <include/ftp.h>
+#include "include/ftp.h"
 
 inherit LIB_SOCKET;
 
@@ -61,7 +63,7 @@ private        string      Password  = 0;
 private        mixed       outfile   = ([]);
 private static int         MaxBuffer = get_config(__MAX_BYTE_TRANSFER__);
 private static int         MaxFile   = get_config(__MAX_READ_FILE_SIZE__);
-private nosave mapping     dispatch  = ([
+private static mapping     dispatch  = ([
   "user" : (: eventCmdUser :), "pass" : (: eventCmdPass :),
   "retr" : (: eventCmdRetr :), "stor" : (: eventCmdStor :),
   "nlst" : (: eventCmdNlst :), "list" : (: eventCmdList :),
@@ -249,8 +251,6 @@ private void eventCmdUser(string arg){
 }
 
 private void eventCmdPswd(string arg){
-    string password;
-    mixed	array userinfo;
 
     if(!arg){ 
 	eventWrite("500 command not understood.\n",0); 

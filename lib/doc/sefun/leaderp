@@ -1,0 +1,25 @@
+
+LEADERP(1)                                             LEADERP(1)
+
+NNAAMMEE
+       _l_e_a_d_e_r_p_(_) - returns true if the player is an elected
+       leader
+
+SSYYNNOOPPSSIISS
+       int leaderp(object ob)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given an object as an argument, _l_e_a_d_e_r_p_(_) will return true
+       if that player is an elected leader.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/pointers.c
+
+SSEEEE AALLSSOO
+       _a_m_b_a_s_s_a_d_o_r_p_(_), _a_r_c_h_p_(_), _h_i_g_h___m_o_r_t_a_l_p_(_), _u_s_e_r_p_(_), _w_i_z_a_r_d_p_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

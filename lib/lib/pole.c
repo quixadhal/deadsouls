@@ -12,9 +12,10 @@ inherit LIB_BAIT;
 static private int PoleStrength, CatchChance;
 
 static void create() {
+    string *bait_save = bait::GetSave();
     PoleStrength = 0;
     CatchChance = 0;
-    AddSave( ({ "PoleStrength", "CatchChance" }) + bait::GetSave() );
+    AddSave( ({ "PoleStrength", "CatchChance" }) +  bait_save );
 }
 
 mixed direct_cast_obj() {

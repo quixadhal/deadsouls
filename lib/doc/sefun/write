@@ -1,0 +1,25 @@
+
+WRITE(1)                                                 WRITE(1)
+
+NNAAMMEE
+       _w_r_i_t_e_(_) - sends a message to the current command giver
+
+SSYYNNOOPPSSIISS
+       void write(string str)
+
+DDEESSCCRRIIPPTTIIOONN
+       This function is simply redefined as:
+
+               mmeessssaaggee((""mmyy__aaccttiioonn"",, ssttrr,, tthhiiss__ppllaayyeerr(())));;
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/communication.c
+
+SSEEEE AALLSSOO
+       _m_e_s_s_a_g_e_(_), _s_a_y_(_), _s_h_o_u_t_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

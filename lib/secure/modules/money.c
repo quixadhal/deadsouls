@@ -13,7 +13,7 @@ mapping LoadMap = ([]);
 int eventModCost(object ob, string type, mixed val);
 
 int eventModMoney(object ob, string type, mixed val){
-    string new_line, junk1, junk2, tmp;
+    string junk1;
     int amount, npc;
     mapping NewMap;
 

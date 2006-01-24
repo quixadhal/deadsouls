@@ -1,0 +1,26 @@
+
+LOAD_STD_ITEM(1)                                     LOAD_OBJECT(1)
+
+NNAAMMEE
+       _l_o_a_d___o_b_j_e_c_t_(_) - returns an object, loads it if not already
+       loaded
+
+SSYYNNOOPPSSIISS
+       object load_object(string str)
+
+DDEESSCCRRIIPPTTIIOONN
+       Much like the _f_i_n_d___o_b_j_e_c_t_(_) efun, this SimulEfun will try
+       to load the object in question if it is unable to find one
+       already loaded.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/load_object.c
+
+SSEEEE AALLSSOO
+       _f_i_n_d___o_b_j_e_c_t_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

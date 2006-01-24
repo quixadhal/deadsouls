@@ -1,8 +1,11 @@
 #include <lib.h>
 #include <vendor_types.h>
+inherit LIB_ITEM;
 inherit LIB_DONATE;
+
 void create(){
-    ::create();
+    donate::create();
+    item::create();
     SetKeyName("donation box");
     SetId( ({"box","donation box"}) );
     SetAdjectives( ({"small","wood","wooden"}) );
@@ -15,5 +18,13 @@ void create(){
     SetBaseCost("silver",10);
     SetVendorType(VT_TREASURE);
     SetLocalCurrency("silver");
-    SetOwner("Seventh Day Atheist");
+    SetOwner("The Seventh Day Atheist Congregation");
+}
+string GetLong(){
+    string extra = donate::GetLong();
+    string base = item::GetLong();
+    return base+extra;
+}
+void init(){
+    ::init();
 }

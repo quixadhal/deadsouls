@@ -123,7 +123,6 @@ mixed eventCreateParty(object who, string name) {
 
 mixed eventInviteMember(object who, object targ) {
     class party this_party;
-    mixed tmp;
     string name;
 
     name = (string)who->GetParty();

@@ -63,14 +63,11 @@ static void Setup() {
 }
 
 static void eventRead(mixed *packet) {
-    string *cles;
     mixed val;
-    string ns, cle;
-    int i, maxi;
+    string cle;
 
     if( !packet || sizeof(packet) < 6 ) return; /* should send error */
     if( Banned[packet[2]] ) {
-	string reason = Banned[packet[2]];
 
 	eventWrite(({ "error", 5, mud_name(), 0, packet[2],
 	    packet[3], "unk-user", 
@@ -218,6 +215,16 @@ string GetMudName(string mud) {
     mapping GetMudList() { return copy(MudList->List); }
 
     string *GetMuds() { return keys(MudList->List); }
+
+    string *GetLCMuds() {
+	string *orig_arr, *new_arr;
+	orig_arr = GetMuds();
+	new_arr = ({});
+	foreach(string namen in orig_arr){
+	    new_arr += ({ lower_case(namen) });
+	}
+	return new_arr;
+    }
 
     mapping GetChannelList() { return copy(ChannelList->List); }
 

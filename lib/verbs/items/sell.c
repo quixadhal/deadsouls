@@ -27,7 +27,7 @@ mixed can_sell_obj_to_liv() {
     if( this_player()->GetParalyzed() ) {
 	return "You cannot do anything.";
     }
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed can_sell_liv_obs() {

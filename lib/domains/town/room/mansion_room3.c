@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -26,4 +27,7 @@ static void create() {
 	"shower" : "/domains/town/room/shower"
       ]) );
     SetObviousExits("w");
+}
+void init(){
+    ::init();
 }

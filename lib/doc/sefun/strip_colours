@@ -1,0 +1,24 @@
+
+STRIP_COLOURS(1)                                 STRIP_COLOURS(1)
+
+NNAAMMEE
+       _s_t_r_i_p___c_o_l_o_u_r_s_(_) - strips all colour codes from a string
+
+SSYYNNOOPPSSIISS
+       string strip_colours(string str)
+
+DDEESSCCRRIIPPTTIIOONN
+       Returns a string free of colour codes.
+
+EEXXAAMMPPLLEESS
+       +o   strip_colours("%^RED%^Descartes tells you:%^RESET%^
+           hi!") returns "Descartes tells you: hi!"
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/strings.c
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

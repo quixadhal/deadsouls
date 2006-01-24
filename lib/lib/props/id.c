@@ -6,6 +6,8 @@
  *    Last modified: 96/12/22
  */
 
+#include <lib.h>
+
 private static string array Adjectives   = ({});
 private string              CapName      = 0;
 private static string array Id           = ({});
@@ -49,7 +51,9 @@ string SetCapName(string str) {
 }
 
 string array GetId() {
-    string tmp = GetKeyName();
+    string tmp;
+    //if(!inherits(LIB_GERM,this_object())) tmp = GetKeyName();
+    tmp = GetKeyName();
 
     if( tmp ) {
 	return distinct_array(({ Id..., tmp }));

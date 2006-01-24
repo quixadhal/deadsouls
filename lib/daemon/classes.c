@@ -132,8 +132,6 @@ void AddClass(string file) {
     string GetHelp(string class_name) {
 	class Class cls = Classes[class_name];
 	string help = "Class: " + class_name + "\n\n";
-	string tmp;
-	int x;
 
 	if( !cls ) return 0;
 	if( !sizeof(cls->Multis) ) {

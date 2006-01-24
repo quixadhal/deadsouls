@@ -1,0 +1,25 @@
+
+FILE_EXISTS(1)                                     FILE_EXISTS(1)
+
+NNAAMMEE
+       _f_i_l_e___e_x_i_s_t_s_(_) - returns true if the string passed is a
+       file
+
+SSYYNNOOPPSSIISS
+       int file_exists(string str)
+
+DDEESSCCRRIIPPTTIIOONN
+       Allows you to test to see if a file by the name passed as
+       an argument exists.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/files.c
+
+SSEEEE AALLSSOO
+       _f_i_l_e___s_i_z_e_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

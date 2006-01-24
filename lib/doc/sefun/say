@@ -1,0 +1,35 @@
+
+SAY(1)                                                     SAY(1)
+
+NNAAMMEE
+       _s_a_y_(_) - sends a message to objects in the same room as
+       command giver
+
+SSYYNNOOPPSSIISS
+       varargs void say(mixed str, object ob)
+
+DDEESSCCRRIIPPTTIIOONN
+       This function sends a message, the first argument, to all
+       users in the same room as the command giver other than the
+       command giver (_t_h_i_s___p_l_a_y_e_r_(_)).  The message is sent as
+       message class "other_action".  If a second argument is
+       given, that object is excluded from hearing the message.
+
+NNOOTTEESS
+       This is an override of the MudOS efun by the same name.
+       In order to be AMCP compliant, all messages need to go
+       through _r_e_c_e_i_v_e___m_e_s_s_a_g_e_(_).  This function allows creators
+       to continuing using the oldstyle messaging while remaining
+       compliant.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/communications.c
+
+SSEEEE AALLSSOO
+       _m_e_s_s_a_g_e_(_), _w_r_i_t_e_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

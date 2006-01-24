@@ -1,0 +1,28 @@
+
+REMOVE_SKY_EVENT(1)                           REMOVE_SKY_EVENT(1)
+
+NNAAMMEE
+       _r_e_m_o_v_e___s_k_y___e_v_e_n_t_(_) - removes a sky event set up by
+       _a_d_d___s_k_y___e_v_e_n_t_(_)
+
+SSYYNNOOPPSSIISS
+       void remove_sky_event(function f)
+
+DDEESSCCRRIIPPTTIIOONN
+       Removes a sky event set up by the add_sky_event function.
+
+NNOOTTEESS
+       This function will not work under the new function pointer
+       structure.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/time.c
+
+SSEEEE AALLSSOO
+       _a_d_d___s_k_y___e_v_e_n_t_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

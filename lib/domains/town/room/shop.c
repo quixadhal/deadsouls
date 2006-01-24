@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_SHOP;
+
 int read_sign();
 static void create() {
     ::create();
@@ -23,7 +24,6 @@ static void create() {
 	"south" : "/domains/town/room/vill_road2",
 	"north" : "/domains/town/room/shop2",
       ]) );
-    SetObviousExits("n,s");
     SetProperty("no attack", 1);
 }
 int read_sign(){
@@ -35,4 +35,7 @@ int read_sign(){
     write("\nbuy <item> from otik\nsell <item> to otik\n");
     write("Cash only!");
     return 1;
+}
+void init(){
+    ::init();
 }

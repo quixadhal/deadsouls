@@ -78,8 +78,6 @@ mixed CanFree(object who, object target) {
 }
 
 mixed eventCapture(object who, object target) {
-    object env = environment(target);
-    mixed tmp;
 
     if( !target->eventMove(this_object()) ) {
 	return target->GetShort() + " will not fit!";

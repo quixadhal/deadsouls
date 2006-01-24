@@ -1,0 +1,31 @@
+
+DOMAIN_MASTER(1)                                 DOMAIN_MASTER(1)
+
+NNAAMMEE
+       _d_o_m_a_i_n___m_a_s_t_e_r_(_) - returns the master object for a given
+       domain
+
+SSYYNNOOPPSSIISS
+       object domain_master(string|object val)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given a file name or an object, this function will return
+       the object which controls the functions of the domain from
+       which it comes.
+
+EEXXAAMMPPLLEESS
+       +o   _d_o_m_a_i_n___m_a_s_t_e_r("/realms/descartes/NorthForest/room/entrance")
+           will return the object
+           "/domains/NorthForest/adm/master"
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/domains.c
+
+SSEEEE AALLSSOO
+       _d_o_m_a_i_n_(_), _d_o_m_a_i_n___e_x_i_s_t_s_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

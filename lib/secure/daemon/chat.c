@@ -98,15 +98,21 @@ varargs int eventAddLast(string feep, string str, string pchan, string pmsg, str
     if(sizeof(chanlast[chan]) == 50)
 	chanlast[chan] = chanlast[chan][1..sizeof(chanlast[chan])];
     chanlast[chan] += ({ str });
+    if(!pchan || pchan == "") pchan = "foo";
+    plainmsg = "bar";
+    if(pchan) plainmsg = "<" + pchan + "> ";
+    if(pmsg) plainmsg += pmsg;
+    if(pwho && pwho !="") plainmsg = pwho+" "+plainmsg;
     if(pchan && pchan != "admin"){
-	if(!pchan || pchan == "") pchan = "foo";
-	plainmsg = "bar";
-	if(pchan) plainmsg = "<" + pchan + "> ";
-	if(pmsg) plainmsg += pmsg;
-	if(pwho && pwho !="") plainmsg = pwho+" "+plainmsg;
-	unguarded( (: write_file("/log/chan/"+chan,"["+timestamp("est")+"] "+plainmsg+"\n") :) );
+	unguarded( (: write_file("/log/chan/"+chan,"["+timestamp()+"] "+plainmsg+"\n") :) );
 	if( file_size("/log/chan/"+chan) > 200000) {
 	    unguarded( (: rename("/log/chan/"+chan,"/log/chan/"+chan+"."+timestamp("est") ) :) );
+	}
+    }
+    else {
+	unguarded( (: write_file("/secure/log/"+chan,"["+timestamp()+"] "+plainmsg+"\n") :) );
+	if( file_size("/secure/log/"+chan) > 200000) {
+	    unguarded( (: rename("/secure/log/"+chan,"/secure/log/"+chan+"."+timestamp() ) :) );
 	}
     }
     return 1;
@@ -116,10 +122,6 @@ int cmdChannel(string verb, string str) {
     string msg, name, rc, target, targetkey, target_msg;
     object ob = 0;
     int emote;
-
-    write(query_verb());
-
-    if(verb == "chat") verb = "gossip";
 
     if( verb == "hist" ) {
 	if( !Channels[str] ) return 0;
@@ -134,6 +136,8 @@ int cmdChannel(string verb, string str) {
 
 	if( !str ) return 0;
 	if( sscanf(str, "%s@%s", ch, mud) == 2 ) {
+	    mud = trim(mud);
+	    if(!alphap(last(mud,1))) mud = truncate(mud,1);
 	    if( !Channels[ch] ) return 0;
 	    if( member_array(this_player(), Channels[ch]) == -1 ) return 0;
 	    if( ch == (ch = GetRemoteChannel(ch)) ) return 0;
@@ -160,7 +164,6 @@ int cmdChannel(string verb, string str) {
 	    string emote_cmd, remains;
 	    mixed array msg_data;
 	    int i;
-
 	    if( !Channels[verb] ) {
 		return 0;
 	    }
@@ -176,6 +179,7 @@ int cmdChannel(string verb, string str) {
 		    str = "$N " + str;
 		}
 	    }
+
 	    else {
 		if( ob = find_living(target = convert_name(remains)) ) {
 		    msg_data = SOUL_D->GetChannelEmote(emote_cmd, "LIV");
@@ -186,7 +190,6 @@ int cmdChannel(string verb, string str) {
 		}
 		else if( strsrch(target, "@") == -1 || rc == verb ) {
 		    string array words = explode(remains, " ");
-
 		    target = "";
 		    for(i=0; i<sizeof(words); i++) {
 			target += lower_case(words[i]);
@@ -215,7 +218,6 @@ int cmdChannel(string verb, string str) {
 		}
 		else if( rc != verb ) {
 		    string array words;
-
 		    i = strsrch(remains, "@", -1);
 		    if( i >= strlen(remains)-1 ) {
 			msg_data = SOUL_D->GetChannelEmote(emote_cmd, "STR",
@@ -224,13 +226,14 @@ int cmdChannel(string verb, string str) {
 		    }
 		    else {
 			string mud;
-			int test = 3;
 
 			words = explode(remains[(i+1)..], " ");
 			target = remains[0..i];
 			remains = "";
 			while(sizeof(words)) {
 			    mud = implode(words, " ");
+			    mud = trim(mud);
+			    if(!alphap(last(mud,1))) mud = truncate(mud,1);
 			    mud = INTERMUD_D->GetMudName(lower_case(mud));
 			    if( mud ) {
 				target += mud;
@@ -327,6 +330,8 @@ int cmdChannel(string verb, string str) {
     if( target_msg ) {
 	target_msg = replace_string(target_msg, "$O's", "your");
     }
+    if(!grepp(str,"$N") && emote) str = "$N "+str;
+
     eventSendChannel(name, verb, str, emote, target, target_msg);
     if( rc != verb ) {
 	if( ob ) {
@@ -345,23 +350,28 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
   string target, string targmsg) {
     string pchan,pmsg,pwho;
     pchan=ch;
+
+    //tc("previous objects: "+identify(previous_object(-1)));
+    //tc("verb: "+query_verb());
     if( file_name(previous_object()) == SERVICES_D) {
 	ch = GetLocalChannel(ch);
-	if( emote ) msg = replace_string(msg, "$N", who);
+	if( emote && sizeof(who)) msg = replace_string(msg, "$N", who);
     }
     else if( origin() != ORIGIN_LOCAL && previous_object() != master() &&
-      file_name(previous_object()) != PARTY_D ) return;
+      file_name(previous_object()) != PARTY_D && ch != "death") return;
     if( !Channels[ch] ) return;
     if( emote ) {
 	object *obs;
 	object ob;
 	string this_msg, tmp;
-	int len;
 	if( target && (ob = find_player(convert_name(target))) ) {
 	    target = (string)ob->GetName();
 	}
 	switch(ch)
 	{
+	case "death":
+	    this_msg = "%^RED%^";
+	    break;
 	case "cre":
 	    this_msg = "%^GREEN%^";
 	    break;
@@ -393,6 +403,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	}
 	obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
 	tmp = this_msg + msg;
+	//ch = GetLocalChannel(ch);
 	eventAddLast(ch, tmp, pchan, msg);
 	foreach(object listener in obs) {
 	    if( listener == ob ) continue;
@@ -414,6 +425,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	{
 	case "cre":
 	    tmsg += "%^GREEN%^";
+	    break;
+	case "death":
+	    tmsg += "%^RED%^";
 	    break;
 	case "admin":
 	    tmsg += "%^MAGENTA%^";
@@ -437,8 +451,8 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	tmsg += "<"+ch+">%^RESET%^ " + msg;
 	pmsg = msg;
 	pwho = who;
-	//msg = who + " %^MAGENTA%^<" + ch + ">%^RESET%^ " + msg;
 	msg = tmsg;
+	//ch = GetLocalChannel(ch);
 	eventAddLast(ch, msg, pchan, pmsg, pwho);
 	obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
 	obs->eventPrint(msg, MSG_CONV);
@@ -448,8 +462,6 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 string *GetChannelList(string ch) {
     string *ret;
     object who;
-    string list;
-    int i;
 
     if( file_name(previous_object()) == SERVICES_D ) ch = GetLocalChannel(ch);
     else if( origin() != ORIGIN_LOCAL ) return ({});
@@ -474,6 +486,12 @@ string GetLocalChannel(string ch) {
     case "dutch":
 	return "dutch";
 
+    case "dead_test4":
+	return "ds_test";
+
+    case "dead_souls":
+	return "ds";
+
     }
     return ch;
 }
@@ -492,6 +510,11 @@ string GetRemoteChannel(string ch) {
     case "dutch":
 	return "dutch";
 
+    case "ds_test":
+	return "dead_test4";
+
+    case "ds":
+	return "dead_souls";
 
     }
     return ch;

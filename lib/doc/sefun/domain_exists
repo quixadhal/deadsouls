@@ -1,0 +1,29 @@
+
+DOMAIN_EXISTS(1)                                 DOMAIN_EXISTS(1)
+
+NNAAMMEE
+       _d_o_m_a_i_n___e_x_i_s_t_s_(_) - returns true if the given string is a
+       valid domain
+
+SSYYNNOOPPSSIISS
+       int domain_exists(string dmn)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given any string, this function will return true if the
+       string is the name of a valid domain.
+
+EEXXAAMMPPLLEESS
+       _d_o_m_a_i_n___e_x_i_s_t_s("Praxis") returns true if there is a
+       directory called "/domains/Praxis"
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/domain_exists.c
+
+SSEEEE AALLSSOO
+       _d_o_m_a_i_n_(_), _d_o_m_a_i_n___m_a_s_t_e_r_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

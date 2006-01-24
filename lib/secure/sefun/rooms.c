@@ -6,7 +6,10 @@ int reload_room(object ob) {
     name=base_name(ob);
     stuff = deep_inventory(ob);
     foreach(object item in stuff){
-	if(!interactive(item)) item->eventDestruct();
+	if(!interactive(item) &&
+	  !interactive(environment(item)) &&
+	  !interactive(environment(environment(item))) )  
+	    item->eventDestruct();
     }
     ob->eventDestruct();
     load_object(name);
@@ -49,6 +52,7 @@ string opposite_dir(string str){
     case "southwest" : ret = "northeast";break;
     case "up" : ret = "down";break;
     case "down" : ret = "up";break;
+    default : ret = "";break;
     }
     return ret;
 }

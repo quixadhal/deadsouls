@@ -1,0 +1,30 @@
+
+CONVERT_NAME(1)                                   CONVERT_NAME(1)
+
+NNAAMMEE
+       _c_o_n_v_e_r_t___n_a_m_e_(_) - creates a unique identifier for a name
+       string
+
+SSYYNNOOPPSSIISS
+       string convert_name(string str)
+
+DDEESSCCRRIIPPTTIIOONN
+       This function takes a capitalized name and returns the
+       real name any player using that cap name must have.
+
+EEXXAAMMPPLLEESS
+       +o   convert_name("Descartes of Borg") returns
+           "descartesofborg"
+
+NNOOTTEESS
+       The value of _c_o_n_v_e_r_t___n_a_m_e((string)player->_q_u_e_r_y___C_a_p_N_a_m_e_(_))
+       always equals (string)player->_q_u_e_r_y___n_a_m_e_(_).
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/convert_name.c
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

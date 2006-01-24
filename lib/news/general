@@ -1,6 +1,12 @@
 			     General news
 			    /news/general
 
-To enable colored text, type: terminal ansi
+* To enable colored text, type: 
 
+terminal ansi
+
+* New characters have the new Players Handbook. It's not that
+long, and it's super helpful. To get started, type:
+
+read handbook
 

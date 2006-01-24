@@ -2,14 +2,6 @@
 
 inherit LIB_NPC;
 
-int CheckOrc(mixed val){
-    if(!val) return 0;
-    if(!objectp(val)) return 0;
-    if(val->GetRace() == "orc") return 0;
-    else eventForce("growl at "+val->GetKeyName());
-    return 1;
-}
-
 static void create() {
     npc::create();
     SetKeyName("orc");
@@ -24,9 +16,12 @@ static void create() {
     //SetClass("fighter");
     SetGender("male");
     SetMaxHealthPoints(100);
-    SetEncounter(  (: CheckOrc :) );
+    SetEncounter(0);
     SetInventory(([
 	"/domains/default/weap/axe":"wield axe",
       ]) );
 
+}
+void init(){
+    ::init();
 }

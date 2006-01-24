@@ -34,7 +34,8 @@ mixed can_steal_wrd_from_liv(string wrd) {
 	return "Mystical forces prevent your thievery.";
     if( (int)this_player()->GetStaminaPoints() < 10 )
 	return "You are too tired for such skullduggery.";
-    return 1;
+    if(intp(check_light())) return this_player()->CanManipulate();
+    else return check_light();
 }
 
 mixed can_steal_obj_from_liv() {
@@ -44,7 +45,8 @@ mixed can_steal_obj_from_liv() {
 	return "Mystical forces prevent your thievery.";
     if( (int)this_player()->GetStaminaPoints() < 20 )
 	return "You are too tired for such skullduggery.";
-    return 1;
+    if(intp(check_light())) return this_player()->CanManipulate();
+    else return check_light();
 }
 
 mixed do_steal_wrd_from_liv(string wrd, object liv) {
@@ -95,5 +97,9 @@ mixed do_steal_obs_from_liv(mixed *res, object liv) {
 }
 
 static void eventSteal(object who, mixed what, object target) {
+    if(objectp(what) && what->GetProperty("no steal")){
+	write("That item cannot be stolen.");
+	return;
+    }
     who->eventSteal(who, what, target);
 }

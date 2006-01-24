@@ -15,7 +15,7 @@ mixed cmd(string str) {
 }
 
 void help() {
-    message("help", "Syntax: <center>\n\n"
+    message("help", "Syntax: wiz\n\n"
       "This command will move you to the Creators' Hall.\n\n",
       this_player());
 }                                                    

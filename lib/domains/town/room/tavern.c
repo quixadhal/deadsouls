@@ -24,6 +24,8 @@ static void create() {
 	"west" : "/domains/town/room/road",
 	"out" : "/domains/town/room/road",
       ]) );
-    SetObviousExits("w");
     SetProperty("no attack", 1);		    
+}
+void init(){
+    ::init();
 }

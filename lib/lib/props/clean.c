@@ -30,8 +30,6 @@ static int SetNoClean(int x) {
  */
 static int Destruct() {
     object env; 
-    object *inv; 
-    int i; 
 
     if( !this_object() ) {
 	return 1;

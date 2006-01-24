@@ -55,7 +55,7 @@ static void heart_beat() {
 	object who;
 	string fish;
 	int chance, x, y, i;
-	int pro, con;
+	int pro;
 
 	who = present(fisher, this_object());
 	/* if this room is impossible to fish, or if using a non-fishing 
@@ -111,7 +111,6 @@ mixed CanStop(object who, string str) {
 }
 
 mixed eventCast(object who, object pole, string str) {
-    mixed err;
 
     send_messages(({ "cast", "start" }),
       "$agent_name $agent_verb $agent_possessive " +

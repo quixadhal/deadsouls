@@ -1,0 +1,27 @@
+
+MOON_LIGHT(1)                                       MOON_LIGHT(1)
+
+NNAAMMEE
+       _m_o_o_n___l_i_g_h_t_(_) - returns the amount of light the moons are
+       providing
+
+SSYYNNOOPPSSIISS
+       int _m_o_o_n___l_i_g_h_t_(_)
+
+DDEESSCCRRIIPPTTIIOONN
+       Since moons necessarily reflect different levels of light
+       for their different phases, this function will return the
+       total amount of light currently being reflected by all
+       moons.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/light.c
+
+SSEEEE AALLSSOO
+       _e_f_f_e_c_t_i_v_e___l_i_g_h_t_(_), _t_o_t_a_l___l_i_g_h_t_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

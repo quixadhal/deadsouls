@@ -25,7 +25,7 @@ mixed can_ring_obj() {
     if( this_player()->GetParalized() > 0 ) {
 	return "You cannot do anything.";
     }
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed can_ring_str_on_obj() {

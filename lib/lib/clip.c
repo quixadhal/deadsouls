@@ -17,7 +17,6 @@ void create(){
     SetVendorType(VT_TREASURE);
 }
 int CanReceive(object ob){
-    object id;
     string *namen;
     namen=ob->GetId();
     if(member_array("bullet",namen) == -1){

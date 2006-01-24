@@ -4,14 +4,19 @@
 */
 
 #include <lib.h>
+#include <config.h>
 #include <daemons.h>
 #include <localtime.h>
 
 mixed cmd(string unused) {
-    string *parts, year, date, time;
-    int x, hour, min, sec;
+    string *parts, year, time;
+    int offset, x, hour, min, sec;
 
-    x = (int)TIME_D->GetOffset(local_time()[9]) * 3600;
+    offset = (int)TIME_D->GetOffset(local_time()[9]);
+    offset += EXTRA_TIME_OFFSET;
+    if(query_os_type() != "windows" ) 
+	x = offset * 3600;
+    else x = 0;
     time = ctime( time() + x );
     x = sizeof(parts = explode(time, " "));
     year = parts[x - 1];

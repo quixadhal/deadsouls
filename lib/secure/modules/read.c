@@ -2,9 +2,21 @@
 #include <modules.h>
 string globalstr, globalstr2, globalstr3;
 
+mixed eventReadValue(string str, string method){
+    string val, junk1, junk2;
+    int value, quid;
+    string substr = this_object()->ReadMatchingLine(str,method);
+    quid = sscanf(substr,"%s"+last(method,2)+"("+"%s"+")%s",junk1, val, junk2);
+    if(quid < 3) return 0;
+    val = trim(val);
+    sscanf(val,"%d",value);
+    if(value) return value;
+    else return this_object()->eventCleanString(val);
+}
+
 varargs string ReadMatchingLine(string target, string substring, string exclude){
     int omit, done, tail_search, i;
-    string contents, line, filename, new_file;
+    string line, filename, new_file;
     globalstr = "";
     globalstr2 = "";
     globalstr3 = "";
@@ -19,7 +31,6 @@ varargs string ReadMatchingLine(string target, string substring, string exclude)
     if(!exclude) exclude = filename;
 
     write_file(filename,target);
-
 
     omit = 1;
     for(i=1; !done; i++){

@@ -6,3 +6,7 @@
 int absolute_value(int x) {
     return ( (x>-1) ? x : -x);
 }
+
+int abs(int x) {
+    return absolute_value(x);
+}

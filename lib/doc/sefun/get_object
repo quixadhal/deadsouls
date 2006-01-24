@@ -1,0 +1,27 @@
+
+GET_STD_ITEM(1)                                       GET_OBJECT(1)
+
+NNAAMMEE
+       _g_e_t___o_b_j_e_c_t_(_) - returns an object represented by a string
+
+SSYYNNOOPPSSIISS
+       varargs object get_object(string str, object player)
+
+DDEESSCCRRIIPPTTIIOONN
+       Returns an object which is represented by the string
+       passed as the first argument.  If the second argument is
+       given, the string is resolved with respect to that player
+       object.  Otherwise the string is resolved with respect to
+       the value of _t_h_i_s___p_l_a_y_e_r_(_).
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/get_object.c
+
+SSEEEE AALLSSOO
+       _f_i_n_d___o_b_j_e_c_t_(_), _g_e_t___o_b_j_e_c_t_s_(_), _l_o_a_d___o_b_j_e_c_t_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

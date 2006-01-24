@@ -78,6 +78,11 @@ int AdvanceDude(mixed arg){
 
     statlist = this_player()->GetStats();
 
+    if(this_player()->GetKeyName() == "guest"){
+	this_object()->eventForce("say I don't promote temporary players.");
+	return 1;
+    }
+
     if(!level = this_player()->GetLevel()){
 	this_object()->eventForce("say You are confusing me.");
 	return 1;

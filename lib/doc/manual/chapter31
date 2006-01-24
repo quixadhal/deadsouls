@@ -1,0 +1,47 @@
+chapter 31 "Overview of the Quick Creation System"
+
+    First, let me clarify that the QCS is not intended to replace
+good coding habits. It is also not designed to handle every possible
+need of a builder. The QCS is just a handy tool for making the
+most tedious parts of building easier.
+
+    The amount of time it takes to hand-code an area of 100 rooms
+(a small area, that is), with all the appropriate descriptions and
+monsters and weapons and such is just mind-boggling. As a grown-up,
+I just don't have time for building stuff line by excruciating line
+in raw LPC, because I also need to work, maintain my house, say hello
+to my family on occasion, etc.
+
+    At the same time, I would need a team of dedicated LPC code
+fetishists to make a creation system that covers every last possible
+thing you could do in LPC. The QCS is somewhere in between those
+two extremes.
+   
+    Therefore please view the QCS as a quick way to get bulk building
+done, and not as a be-all end-all solution. You still need to learn
+LPC to do really cool stuff. But to hammer out an area with a quest,
+QCS lets you sail through the process of thingmaking with little hassle.
+
+    The design philosophy of the system itself involves object files
+stored in /secure/modules. These files are inherited by an object which
+you need to carry with you in order to use the QCS system. The code
+for these creation modules is fairly messy and inelegant, but the
+result is clean, indented code that compiles, so let's keep the
+mockery to a minimum, shall we?
+
+    It is important to keep in mind the QCS isn't an editing system.
+It's real live on-line modification, meaning that to modify a thing,
+it actually has to be in the same room you are in, or it has to be that
+room itself.
+    Once you modify something, it will typically update, so that if
+you change the name of an npc, you're going to need to use the new name
+to modify it further.
+
+    The next few chapters in this manual are nominally QCS specific, 
+but in reality this is pretty much my only chance to document some
+of the changes in Dead Souls since version 1, so even if you never
+intend to use QCS, it's worth poking through these chapters.
+
+- Cratylus @ Frontiers
+2 January 2006
+

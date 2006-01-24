@@ -1,0 +1,50 @@
+chapter 1 "Introduction"
+
+    If you are unfamiliar with LPC based muds in general or Dead Souls
+mudlib in particular, you will find this handbook valuable in 
+orienting you around what you can do and how you can do it.
+
+    Keep in mind that this handbook describes the features of a mud
+running an unmodifed version of the lib. The mud you are on may
+differ somewhat, though probably not extremely so.
+
+    To advance a page in a chapter, just hit "return".
+
+   Let's start with just navigating this book. Once you are done
+reading this chapter, you can read the next chapter by typing:
+
+read chapter 2 in handbook
+
+    Make sure you wait until you are done reading this chapter,
+though. The reason you should wait is that you are now in "reading
+mode", which means that anything you type and send to the mud
+is actually a command to the editing system that is displaying this
+text.
+
+    To leave reading mode (or more accurately, pager, or ed mode)
+you can hit "return" a bunch of times to complete the chapter, thus
+automatically exiting the pager. Another way is to enter the
+letter "q" (without the quotes) and then "return". That will also
+make you stop reading.
+
+    When you are not in reading mode, you can find out the chapter
+titles by typing:
+
+read index in handbook
+
+   You really should read the whole thing, but in case you don't, the
+chapter titles will help as a reference to find the information you
+need. 
+
+    Something to watch out for is that if you or your environment 
+contain another handbook, the mud may not know which one you are
+trying to read. If you get a message like "Which of the two handbooks
+would you like to read?", you can try one or more of the following:
+
+read index in first handbook
+
+read index in my handbook
+
+read index in my first player handbook
+
+

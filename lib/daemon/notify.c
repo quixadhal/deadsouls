@@ -33,7 +33,6 @@ static int eventSaveNotices() {
 
 int eventAddNotice(object who, string msg) {
     object * obs;
-    int x = time();
     if( !who || !sizeof(msg) ) return 0;
     Notes += ({ ({ time(), (string)who->GetName(), msg }) });
     if( sizeof(obs = filter(users() - ({ who }), (: creatorp :))) )

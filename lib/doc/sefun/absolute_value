@@ -1,0 +1,29 @@
+
+ABSOLUTE_VALUE(1)                               ABSOLUTE_VALUE(1)
+
+NNAAMMEE
+       _a_b_s_o_l_u_t_e___v_a_l_u_e_(_) - returns the absolute value of a give
+       number
+
+SSYYNNOOPPSSIISS
+       int absolute_value(int x)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given any integer argument, it returns its absolute value.
+
+EEXXAAMMPPLLEESS
+       _a_b_s_o_l_u_t_e___v_a_l_u_e(-5) returns 5
+
+       +o   _a_b_s_o_l_u_t_e___v_a_l_u_e(5) returns 5
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/absolute_value.c
+
+SSEEEE AALLSSOO
+       _p_e_r_c_e_n_t_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

@@ -34,7 +34,7 @@ mixed can_pick_obj() {
     if( this_player()->GetParalyzed() ) {
 	return "You cannot do anything.";
     }
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed can_pick_str_on_obj(string str) {
@@ -44,7 +44,7 @@ mixed can_pick_str_on_obj(string str) {
     if( (int)this_player()->GetStaminaPoints() < 20 ) {
 	return "You are too tired.";
     }
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed can_pick_str_on_obj_with_obj(string str) {
@@ -54,7 +54,7 @@ mixed can_pick_str_on_obj_with_obj(string str) {
     if( (int)this_player()->GetStaminaPoints() < 30 ) {
 	return "You are too tired.";
     }
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed do_pick_obj(object ob, string id) {

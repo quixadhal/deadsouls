@@ -29,6 +29,7 @@
 #define PARTY_D              DIR_DAEMONS "/party"
 #define PLAYERS_D            DIR_SECURE_DAEMONS "/players"
 #define RACES_D              DIR_DAEMONS "/races"
+#define REAPER_D             DIR_DAEMONS "/reaper"
 #define REMOTE_D             DIR_SECURE_DAEMONS "/remote"
 #define REMOTEPOST_D         DIR_SECURE_DAEMONS "/remotepost"
 #define SEASONS_D            DIR_DAEMONS "/seasons"

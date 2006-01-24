@@ -25,5 +25,4 @@ static void create() {
 	"south" : "/domains/Ylsrim/room/kaliid4"
       ]) );
 
-    SetObviousExits("n,s");
 }

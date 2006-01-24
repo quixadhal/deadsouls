@@ -14,6 +14,7 @@
 inherit LIB_DAEMON;
 
 private static int CurrentDay, CurrentYear, Dawn, Morning, Twilight, Night;
+private static int ticktock;
 private static string CurrentSeason, TimeOfDay;
 private static mapping Moons;
 private static class month CurrentMonth;
@@ -21,6 +22,20 @@ private static string *Days;
 private static function *DawnCalls, *MorningCalls, *TwilightCalls;
 private static function *NightCalls, *MidnightCalls;
 private static class month *Months;
+
+int eventTickTock(int tick){
+    if(!tick) tick = 0;
+    ticktock = tick;
+    eventConfigure();
+    return GetCurrentTime()/1200;
+}
+
+int GetTickTock(){ return ticktock; }
+
+int *GetMudTime(){
+    return ({ GetHour(GetCurrentTime()), GetMinutes(GetCurrentTime()) });
+}
+
 
 static void create() {
     string *lines;
@@ -32,6 +47,7 @@ static void create() {
     TwilightCalls = ({});
     NightCalls = ({});
     MidnightCalls = ({});
+    ticktock = 0;
     maxi = sizeof(lines = filter(explode(read_file(CFG_MONTHS), "\n"),
 	(: $1 && $1 != "" && $1[0] != '#' :)));
     Months = allocate(maxi);
@@ -80,7 +96,7 @@ static void eventConfigure() {
 	else days -= ((class month)Months[i])->Days;
     }
     x = CurrentMonth->DaylightHours * HOUR_LENGTH;
-    Morning = ((DAY_LENGTH * HOUR_LENGTH) - x) / 2;
+    Morning = ((((DAY_LENGTH + 4) * HOUR_LENGTH) - x) / 3) * 2;
     Twilight = Morning + x;
     if( Morning < HOUR_LENGTH ) {
 	Dawn = Morning/2;
@@ -201,7 +217,7 @@ string GetCurrentMonth() { return CurrentMonth->Name; }
 
 string GetCurrentSeason() { return CurrentSeason; }
 
-int GetCurrentTime() { return (time()- DAY_ONE) % (DAY_LENGTH * HOUR_LENGTH); }
+int GetCurrentTime() { return (time()- DAY_ONE) % (DAY_LENGTH * HOUR_LENGTH) + ticktock; }
 
 int GetCurrentYear() { return CurrentYear; }
 

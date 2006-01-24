@@ -29,8 +29,8 @@ mixed cmd(string args) {
 	return "You failed due to lack of write access to "+DIR_PLAYERS+".";
     if( ob = find_player(nom) ) {
 	PlayerName = nom;
-        inv = deep_inventory(ob);
-        inv->eventMove(ROOM_FURNACE);
+	inv = deep_inventory(ob);
+	inv->eventMove(ROOM_FURNACE);
 	catch(player_ob = (object)master()->player_object(nom));
 	PlayerName = 0;
 	if( !player_ob ) {

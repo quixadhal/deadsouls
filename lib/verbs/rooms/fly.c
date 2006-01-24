@@ -8,6 +8,8 @@
 
 #include <lib.h>
 #include <medium.h>
+#include <daemons.h>
+#include <position.h>
 #include "include/fly.h"
 
 inherit LIB_VERB;
@@ -29,13 +31,14 @@ mixed can_fly() {
     object env = environment(this_player());
 
     if( !env ) {
-	return "You are nowhere tobegin with!";
+	return "You are nowhere to begin with!";
     }
+
     switch( env->GetMedium() ) {
     case MEDIUM_LAND:
-	return env->CanFly(this_player());
+	if(env->CanFly(this_player())) return this_player()->CanFly();
     case MEDIUM_AIR:
-	return "Fly where?";
+	return this_player()->CanFly();
     default:
 	return "You can't fly here.";
     }
@@ -47,7 +50,13 @@ mixed can_fly_str(string str) {
     }
     if( (int)this_player()->GetStaminaPoints() < 15 )
 	return "You are too tired to fly anywhere right now.";
-    return (mixed)environment(this_player())->CanFly(this_player(), str);
+    if(this_player()->GetPosition() != POSITION_FLYING){
+	return "You are not flying.";
+    }
+    if((mixed)environment(this_player())->CanFly(this_player(), str)){
+	return this_player()->CanFly();
+    }
+    else return 0;
 }
 
 mixed can_fly_into_str(string str) {
@@ -56,17 +65,25 @@ mixed can_fly_into_str(string str) {
     }
     if( (int)this_player()->GetStaminaPoints() < 3 )
 	return "You are too tired right now.";
-    return (mixed)environment(this_player())->CanEnter(this_player(), str);
+    if(this_player()->GetPosition() != POSITION_FLYING){
+	return "You are not flying.";
+    }
+    if((mixed)environment(this_player())->CanEnter(this_player(), str)){
+	return this_player()->CanFly();
+    }
+    else return 0;
 }
 
 mixed do_fly() {
-    return environment(this_player())->eventFly(this_player());
+    return this_player()->eventFly();
 }
 
 mixed do_fly_str(string str) {
-    return (mixed)environment(this_player())->eventFly(this_player(), str);
+    this_player()->AddStaminaPoints(-1);
+    return (mixed)environment(this_player())->eventGo(this_player(), str);
 }
 
 mixed do_fly_into_str(string str) {
+    this_player()->AddStaminaPoints(-1);
     return (mixed)environment(this_player())->eventEnter(this_player(), str);
 }

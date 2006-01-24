@@ -8,7 +8,7 @@
 inherit LIB_DAEMON;
 
 mixed cmd(string str) {
-    string file, dest;
+    string file;
 
     if( !sizeof(str) ) return "Unrid whom?";
     str = convert_name(str);

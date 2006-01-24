@@ -35,7 +35,6 @@ void init() {
 }
 
 static private int valid_edit(string author) {
-    string *allowed;
     string who;
 
     who = (string)this_player()->GetKeyName();
@@ -87,9 +86,6 @@ void end_post(string subj, string mail) {
     if( !mail )
 	BBOARD_D->add_post(query_board_id(),
 	  (string)this_player()->GetCapName(), subj, msg);
-    else {
-	int foo;
-    }
     message("system", "Message posted!", this_player());
 }
 

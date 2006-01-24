@@ -45,15 +45,16 @@ mixed cmd(string args) {
     if( interactive(target) && !archp(who) ) {
 	return "You are not permitted to do that.";
     }
-    msg = who->GetMessage("dest", target);
-    who->eventPrint("You dest " + target->GetShort() + ".", MSG_SYSTEM);
-    if( interactive(target) ) {
-	target->eventPrint(who->GetName() + " dests you.", MSG_SYSTEM);
-    }
-    environment(who)->eventPrint(msg, MSG_SYSTEM, ({ who, target }));
-    target->eventDestruct();
-    if( target ) {
-	destruct(target);
+
+    if(target){
+	msg = who->GetMessage("dest", target);
+	who->eventPrint("You dest " + target->GetShort() + ".", MSG_SYSTEM);
+	if( interactive(target) ) {
+	    target->eventPrint(who->GetName() + " dests you.", MSG_SYSTEM);
+	}
+	environment(who)->eventPrint(msg, MSG_SYSTEM, ({ who, target }));
+	target->eventDestruct();
+	if(target) 	destruct(target);
     }
     return 1;
 }

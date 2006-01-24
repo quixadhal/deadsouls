@@ -25,7 +25,15 @@ mixed cmd(string str) {
     }
     if(ob && ob->GetInvis() && creatorp(ob) && !archp(this_player())) ob = 0;
     if(!ob) str = absolute_path((string)this_player()->query_cwd(), str);
-    if(ob) this_player()->eventMoveLiving(ob, "");
+    if(ob) {
+	this_player()->eventMoveLiving(ob, "");
+	return 1;
+    }
+    if(!file_exists(str)) str += ".c";
+    if(!file_exists(str)) {
+	write("Location not found.");
+	return 1;
+    }
     else this_player()->eventMoveLiving(str, "");
     return 1;
 }

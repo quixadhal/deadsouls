@@ -1,0 +1,28 @@
+
+PERCENT(1)                                             PERCENT(1)
+
+NNAAMMEE
+       _p_e_r_c_e_n_t_(_) - returns the percent of one number that another
+       is
+
+SSYYNNOOPPSSIISS
+       float percent(int|float numerator, int|float denominator)
+
+DDEESSCCRRIIPPTTIIOONN
+       Returns what percent of the second argument that the first
+       argument is.
+
+EEXXAAMMPPLLEESS
+       +o   percent(23, 99) returns 23.232323
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/percent.c
+
+SSEEEE AALLSSOO
+       _a_b_s_o_l_u_t_e___v_a_l_u_e_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

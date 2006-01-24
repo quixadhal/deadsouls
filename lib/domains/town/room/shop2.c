@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -9,20 +10,17 @@ static void create() {
       "keeps his goods. The main store "
       "is south.");
     SetInventory(([
-	//"/domains/town/obj/bag" : 3,
-	"/domains/town/obj/pack" : 10,
-	"/domains/town/obj/rayovac" : 10,
-	"/domains/town/obj/maglite" : 3,
-	//"/domains/town/obj/223clip" : 30,
-	//"/domains/town/obj/9mmclip" : 30,
 	"/domains/town/obj/dcell_std" : 30,
+	"/domains/town/obj/watch" : 10,
+	"/domains/town/armor/helmet" : 3,
+	"/domains/town/obj/pack" : 10,
+	"/domains/town/obj/maglite" : 3,
+	"/domains/town/weap/sword" : 30,
+	"/domains/town/armor/chainmail" : 3,
 	"/domains/town/obj/torch" : 15,
 	"/domains/town/obj/match" : 15,
+	"/domains/town/obj/rayovac" : 10,
 	"/domains/town/weap/dagger" : 30,
-	//"/domains/town/weap/sharpsword" : 30,
-	"/domains/town/weap/sword" : 30,
-	"/domains/town/armor/helmet" : 3,
-	"/domains/town/armor/chainmail" : 3,
       ]));
 
     SetExits( ([
@@ -37,5 +35,6 @@ int CanReceive(object ob) {
     }
     return 1;
 }
-
-
+void init(){
+    ::init();
+}

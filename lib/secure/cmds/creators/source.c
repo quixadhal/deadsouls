@@ -36,6 +36,8 @@ mixed cmd(string args) {
 	if(line && line != "") write("sourcing command: "+line);
 	this_player()->eventForce(line);
     }
+
+    write("Sourcing complete.");
     return 1;
 
 }

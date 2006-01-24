@@ -17,9 +17,18 @@ private int shells;
 private int mag,cloned;
 private int autohit;
 private int dam;
+
 static void create(){
-    AddSave( ({ "loaded", "rounds", "shells" , "mag" , "cloned" }) );
+    string *s_save, *w_save, *a_save;
+
     ::create();
+
+    s_save = storage::GetSave();
+    w_save = weapon::GetSave();
+    a_save = s_save + w_save;
+
+    AddSave( a_save );
+    AddSave( ({ "loaded", "rounds", "shells" , "mag" , "cloned" }) );
     MaxAmmo=6;
     AmmoFile="/domains/town/obj/round";
     PistolType="revolver";
@@ -133,7 +142,7 @@ int eventShoot(object ob, string str){
 
 int eventFire(string str){
     object ob;
-    int tempclass, i, x,dex;
+    int tempclass, i, dex;
     int TorsoNum, NumLimbs;
     mixed dexmap;
     string tempshort,templong;
@@ -229,7 +238,7 @@ int eventFire(string str){
 }
 int missed_shot(){
     object ob,maghere,magstuff;
-    string str, junk;
+    string str;
     int i;
     object *inv;
     string *arr;

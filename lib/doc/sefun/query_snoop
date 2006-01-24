@@ -1,0 +1,26 @@
+
+QUERY_SNOOP(1)                                     QUERY_SNOOP(1)
+
+NNAAMMEE
+       _q_u_e_r_y___s_n_o_o_p_(_) - returns whoever is snooping an object
+
+SSYYNNOOPPSSIISS
+       object query_snoop(object snoopee)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given a player as an argument, this function will return
+       the player object, if any, which is snooping the object
+       argument.  This is an override of a MudOS efun to provide
+       some protection against global use.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/SimulEfun.c
+
+SSEEEE AALLSSOO
+       the _q_u_e_r_y___s_n_o_o_p_(_) efun
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

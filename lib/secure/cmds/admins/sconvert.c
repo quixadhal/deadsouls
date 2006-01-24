@@ -33,7 +33,7 @@ string ConvertLine(string str, int change, int line, string search)
 void Convert(string s, int change) {
     string args, file, str;
     string *files, *tmp;
-    int i, skill;
+    int i;
 
     if( !sizeof(s) ) args = "*.c";
     else args = s;

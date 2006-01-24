@@ -1,0 +1,31 @@
+
+REFLEXIVE(1)                                         REFLEXIVE(1)
+
+NNAAMMEE
+       _r_e_f_l_e_x_i_v_e_(_) - returns the reflexive pronoun for a gender
+
+SSYYNNOOPPSSIISS
+       string reflexive(string|object val)
+
+DDEESSCCRRIIPPTTIIOONN
+       This function returns a reflexive pronoun ("himself",
+       "herself", or "itself") based on the gender passed as the
+       first argument if the first argument is a string, or based
+       on the gender of the first argument if it is an object.
+
+EEXXAAMMPPLLEESS
+       +o   _r_e_f_l_e_x_i_v_e(_t_h_i_s___p_l_a_y_e_r_(_)) returns "himself" for
+           Descartes
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/english.c
+
+SSEEEE AALLSSOO
+       _n_o_m_i_n_a_t_i_v_e_(_), _o_b_j_e_c_t_i_v_e_(_), _p_o_s_s_e_s_s_i_v_e_(_),
+       _p_o_s_s_e_s_s_i_v_e___p_r_o_n_o_u_n_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

@@ -35,7 +35,7 @@ mixed can_eat_obj() {
     if( this_player()->GetParalyzed() ) {
 	return "You cannot do anything.";
     }
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed do_eat_obj(object ob) {

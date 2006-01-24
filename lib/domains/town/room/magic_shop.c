@@ -1,7 +1,7 @@
 #include <lib.h>
 inherit LIB_SHOP;
-int read_sign();
 
+int read_sign();
 static void create() {
     ::create();
     SetClimate("indoors");
@@ -22,13 +22,11 @@ static void create() {
 	"south" : "/domains/town/room/magic_guild",
 	"west" : "/domains/town/room/magic_shop2",
       ]) );
-    SetObviousExits("s,e,w");
     SetInventory( ([
 	"/domains/town/npc/oana" : 1,
 	"/domains/town/obj/bbucket" : 1,
       ]) );
 }
-
 int read_sign(){
     write("HOW TO CONDUCT BUSINESS HERE\n");
     write("list : Get a list of all the items Oana has for sale");
@@ -42,4 +40,7 @@ int read_sign(){
     write("south to the mage's guild and join up!");
 
     return 1;
+}
+void init(){
+    ::init();
 }

@@ -29,10 +29,12 @@ static void create() {
     SetExits( ([
 	"south" : "/domains/town/room/orc_fortress",
       ]) );
-    SetObviousExits("s");
     SetInventory(([
 	"/domains/town/obj/altar" : 1,
 	"/domains/town/npc/orc_shaman" : 1,
       ]));
 
+}
+void init(){
+    ::init();
 }

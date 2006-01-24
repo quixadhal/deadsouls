@@ -28,7 +28,6 @@ static void create() {
 /*     **********  /lib/chapel.c modal methods  **********     */
 mixed CanMarry(object who, object spouse1, object spouse2) {
     mixed tmp;
-    string cls;
 
     if( (tmp = spouse1->CanMarry(who, spouse2)) != 1 ) {
 	if( tmp ) return tmp;
@@ -41,11 +40,6 @@ mixed CanMarry(object who, object spouse1, object spouse2) {
     if( archp(who) ) {
 	return 1;
     }
-    //if( (string)who->GetReligion(1) == Religion[1] ) {
-    //	foreach(cls in Classes)
-    //	  if( (int)who->ClassMember(cls) ) return 1;
-    //   }
-    //  return "You are not allowed to perform marriages here.";
     return 1;
 }
 

@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -21,5 +22,7 @@ static void create() {
 	"/domains/town/armor/boot_l" :1,
 	"/domains/town/armor/boot_r" :1,
       ]) );
-    SetObviousExits("w");
+}
+void init(){
+    ::init();
 }

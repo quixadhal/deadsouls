@@ -1,0 +1,50 @@
+chapter 32 "QCS: Commands"
+
+    What with muds being text only, QCS has no fancy windowing system.
+Using a menu-driven creation system was ruled out quickly due to the
+vast complexity of the menus that would be required. Instead, QCS
+relies on a few powerful commands.
+
+create 
+    This is the command that gets the ball rolling. This command
+is what lets you bring a new thing into existence. The things you can 
+create can be seen by typing "help create". Examples are rooms, weapons,
+doors, and so on. We will be reviewing each of those in later chapters.
+    When you issue this command a generic version of the item you
+wish to create appears (or, in the case of a room, appears in the
+direction you specify). Once that generic copy materializes, you can
+change it to suit your needs using the "modify" command.
+
+modify 
+    I tend to regard this command as the heart and soul of QCS. It's
+this tool that lets you make your world your own. Your new generic 
+things are not useful or fun until you modify them. A "generic weapon"
+isn't very interesting, but a "mithrilite poleaxe" might be just the
+thing to deal with a pesky dragon.
+
+add
+    Creatures, rooms, and containers are capable of storing other
+things. Once you make an ogre, you may want to give him a hammer to 
+wield. After you make that hammer, you use the add command to let
+the ogre have that wepon in his permanent inventory.
+
+delete
+    On the other hand, you may be tired of that ogre after a while. If
+he is a part of the permanent inventory of a room, you can use the
+delete command to remove him permanently. Or if you'd rather he have 
+a Kill-O-Zap Frogstar blaster rather than a hammer, get rid of the
+hammer in his inventory  with this command.
+ 
+copy
+    This is a room-specific command. Rather than write multiple,
+nearly identical rooms for large areas, you can use the copy command to
+make the room you are almost exactly like any other room you choose,
+except for the exits, which remain the same. Handy for big forests,
+cell-blocks, twisty mazes of little passages, etc.
+
+initfix
+    If a thing isn't working right, try to initfix it. "init()" is 
+an object function that many items need in order to work properly. If
+you've run into something that is behaving unexpectedly, run initfix on 
+it. The trouble just might clear up.
+

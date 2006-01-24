@@ -19,7 +19,7 @@ void create() {
 mapping *query_player_list() { return player_list; }
 
 void add_player_info() {
-    int exp, x;
+    int x;
     object ob;
     int i;
 

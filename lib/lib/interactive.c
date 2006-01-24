@@ -155,7 +155,6 @@ static void net_dead() {
 }
 
 void eventReconnect() {
-    string dead_ed;
 
     interface::eventReconnect();
     LastAge = time();
@@ -236,7 +235,7 @@ void eventDescribeEnvironment(int brief) {
 	shorts = map(filter(all_inventory(env),
 	    function(object ob) {
 		if( living(ob) ) return 0;
-		if( (int)ob->GetInvis(this_object()) )
+		if( (int)ob->GetInvis(this_object()) && !ob->GetDoor())
 		    return 0;
 		if( (int)ob->isFreshCorpse() ) return 0;
 		return 1;
@@ -246,6 +245,7 @@ void eventDescribeEnvironment(int brief) {
 		  lying[s]++;
 	      }
 	  }
+	  //tc(identify(shorts));
 	  for(i=0, desc = 0, maxi = sizeof(shorts = keys(lying)); i<maxi; i++) {
 	      string key = shorts[i];
 	      int val = lying[shorts[i]];
@@ -280,7 +280,7 @@ void eventDescribeEnvironment(int brief) {
       }
 	i = GetEffectiveVision();
 	if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM ) {
-	    mapping lying = ([]), sitting = ([]), standing = ([]);
+	    mapping lying = ([]), sitting = ([]), standing = ([]), flying = ([]);
 	    object *obs;
 	    string key;
 	    int val;
@@ -297,10 +297,11 @@ void eventDescribeEnvironment(int brief) {
 		  int pos = (int)liv->GetPosition();
 
 		  if( !s ) continue;
-		  if( creatorp(liv) || pos == POSITION_STANDING) standing[s]++;
+		  if( pos == POSITION_STANDING) standing[s]++;
 		  else if( pos == POSITION_LYING || (int)liv->isFreshCorpse() )
 		      lying[s]++;
 		  else if( pos == POSITION_SITTING ) sitting[s]++;
+		  else if( pos == POSITION_FLYING ) flying[s]++;
 		  else lying[s]++;
 	      }
 	      if( !desc ) {
@@ -330,6 +331,14 @@ void eventDescribeEnvironment(int brief) {
 		      "%^RESET%^ are standing here.";
 		  desc += "\n";
 	      }
+	      foreach(key, val in flying) {
+		  if( val<2 )
+		      desc += capitalize(key) + "%^RESET%^ is hovering here.";
+		  else desc += capitalize(consolidate(val, key)) +
+		      "%^RESET%^ are hovering here.";
+		  desc += "\n";
+	      }
+
 	  }
 	    if( tmp ) {
 		desc = tmp + desc;
@@ -341,7 +350,6 @@ void eventDescribeEnvironment(int brief) {
 
 	int eventDestruct() {
 	    object ob;
-	    int i;
 
 	    interface::eventDestruct();
 	    foreach(ob in deep_inventory(this_object())) {

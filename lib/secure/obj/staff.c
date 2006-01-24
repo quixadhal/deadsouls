@@ -12,6 +12,7 @@ inherit MODULES_ROOM;
 inherit MODULES_FILE;
 inherit MODULES_MONEY;
 inherit MODULES_READ;
+inherit MODULES_DOOR;
 
 static void create(){
     item::create();
@@ -22,6 +23,9 @@ static void create(){
     SetLong("This staff is old, weathered, "+
       "and lumpy. However, it feels quite sturdy "+
       "and solid. For more info: help staff");
+    SetProperties(([
+	"no steal" : 1,
+      ]));
     SetVendorType(VT_WEAPON);
     SetDamagePoints(50);
     SetClass(100);

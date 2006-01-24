@@ -1,0 +1,25 @@
+
+SHOUT(1)                                                 SHOUT(1)
+
+NNAAMMEE
+       _s_h_o_u_t_(_) - sends a message to all users online
+
+SSYYNNOOPPSSIISS
+       varargs void shout(string|int str, object|object *exclude)
+
+DDEESSCCRRIIPPTTIIOONN
+       Sends the message specified by the first argument to all
+       users online.  If a second argument is give, it is an
+       object or array of objects which will be excluded from
+       hearing the message.  The message class _s_h_o_u_t_(_) uses is
+       "shout".
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/communications.c
+
+SSEEEE AALLSSOO _m_e_s_s_a_g_e_(_), _s_a_y_(_), _w_r_i_t_e_(_)
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

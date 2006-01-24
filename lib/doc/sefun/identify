@@ -1,0 +1,28 @@
+
+IDENTIFY(1)                                           IDENTIFY(1)
+
+NNAAMMEE
+       _i_d_e_n_t_i_f_y_(_) - returns a string version of any data type
+
+SSYYNNOOPPSSIISS
+       string identify(mixed a)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given any argument passed, this function will return a
+       string which represents that argument.
+
+EEXXAAMMPPLLEESS
+       _i_d_e_n_t_i_f_y(_t_h_i_s___p_l_a_y_e_r_(_)) returns OBJ("descartes",
+       "/secure/save/users/d/descartes")
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/identify.c
+
+SSEEEE AALLSSOO
+       _s_p_r_i_n_t_f_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

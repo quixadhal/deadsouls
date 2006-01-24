@@ -24,22 +24,22 @@ static void create() {
 	"almost purple from here.",
 	"intersection" : "The main town crossroads is south."
       ]) );
+    SetExits( ([ 
+	"east" : "/domains/town/room/tavern",
+	"south" : "/domains/town/room/vill_road1",
+	"west" : "/domains/town/room/healer",
+	"north" : "/domains/town/room/mountain_road",
+      ]) );
     SetInventory(([
 	"/domains/town/weap/knife" :1,
 	"/domains/town/npc/beggar" :1
       ]) );
 
-    SetExits( ([
-	"east" : "/domains/town/room/tavern",
-	"west" : "/domains/town/room/healer",
-	"north" : "/domains/town/room/mountain_road",
-	"south" : "/domains/town/room/vill_road1",]) );
     SetEnters( ([
 	"pub" : "/domains/town/room/tavern",
 	"guild" : "/domains/town/room/healer",
 	"healers guild" : "/domains/town/room/healer"
       ]) );
-    SetObviousExits("s, e, w");
     SetNoModify(1);
 
 }

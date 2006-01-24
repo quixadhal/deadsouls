@@ -1,0 +1,27 @@
+
+LOG_FILE(1)                                           LOG_FILE(1)
+
+NNAAMMEE
+       _l_o_g___f_i_l_e_(_) - logs a string to a file
+
+SSYYNNOOPPSSIISS
+       void log_file(string fl, string msg)
+
+DDEESSCCRRIIPPTTIIOONN
+       Will write the string passed as the second argument to the
+       file passed as the second argument under the log
+       directory.  If the object doing the logging is not an
+       approved secure object, then the log goes under the etc
+       sub-directory of the log directory.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/log_file.c
+
+SSEEEE AALLSSOO
+       _r_e_a_d___f_i_l_e_(_), _w_r_i_t_e___f_i_l_e_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

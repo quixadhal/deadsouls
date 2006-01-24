@@ -1,0 +1,29 @@
+
+EFFECTIVE_LIGHT(1)                             EFFECTIVE_LIGHT(1)
+
+NNAAMMEE
+       _e_f_f_e_c_t_i_v_e___l_i_g_h_t_(_) - returns the amount of light available
+       to an object
+
+SSYYNNOOPPSSIISS
+       int effective_light(object ob)
+
+DDEESSCCRRIIPPTTIIOONN
+       Passed an object, this function returns the amount of
+       light available specifically for that object.  This
+       differs from _t_o_t_a_l___l_i_g_h_t_(_) in that _t_o_t_a_l___l_i_g_h_t_(_) returns
+       the total amount of light available for any user in an
+       environment, whereas _e_f_f_e_c_t_i_v_e___l_i_g_h_t_(_) takes into account
+       individual factors such as night vision, sunglasses, etc.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/light.c
+
+SSEEEE AALLSSOO
+       _m_o_o_n___l_i_g_h_t_(_), _t_o_t_a_l___l_i_g_h_t_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

@@ -1,0 +1,34 @@
+
+CONSOLIDATE(1)                                     CONSOLIDATE(1)
+
+NNAAMMEE
+       _c_o_n_s_o_l_i_d_a_t_e_(_) - consolidates a string with a number
+
+SSYYNNOOPPSSIISS
+       string consolidate(int x, string str)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given a number of singularly described items, this
+       function returns a string which describes them in the
+       plural, reflecting the number of them that exist.  The
+       first argument is the number of things which have the same
+       singular description.  The second argument is their
+       singular description.
+
+EEXXAAMMPPLLEESS
+       +o   consolidate(5, "a fish") returns "five fish"
+
+       +o   consolidate(2, "a knight") returns "two knights"
+
+       head1 LOCATION
+
+       /secure/SimulEfun/english.c
+
+SSEEEE AALLSSOO
+       _p_l_u_r_a_l_i_z_e_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

@@ -12,7 +12,6 @@ int PreExit(){
     }
     return 1;
 }
-
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -32,10 +31,12 @@ static void create() {
 	"south" : "/domains/town/room/valley",
       ]) );
     AddExit("north", "/domains/town/room/orc_temple", (: PreExit :));
-    SetObviousExits("n,s");
     SetInventory(([
 	"/domains/town/npc/orc" : 2,
 	"/domains/town/npc/orc2" : 1,
 	"/domains/town/npc/orc_boss" : 1,
       ]));
+}
+void init(){
+    ::init();
 }

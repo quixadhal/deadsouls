@@ -1,0 +1,43 @@
+	WELCOME TO THE ADVENTURERS' GUILD!
+
+   Things are pretty straightforward here. You can advance
+to higher levels by possessing enough experience and having
+completed enough quests. 
+
+   Type "status" to see how many xp's you have. Those are
+experience points, and with enough of them, you can advance
+to the next level. 
+
+   After level 4, you must have enough quest points, as
+well. Read the scroll here to see what quests are available.
+You only get points the first time you complete a quest.
+
+The advancement requirements break down like this:
+
+Level   Title                       XP                QP
+  1     the utter novice            0                 0               
+  2     the simple novice           1000              0               
+  3     the beginner                1500              0               
+  4     the adventurer              2300              0               
+  5     the experienced adventurer  3500              5               
+  6     the expert adventurer       5100              12              
+  7     the great adventurer        7700              21              
+  8     the master adventurer       12000             32              
+  9     the Freeman                 17000             45              
+  10    the Citizen                 26000             60              
+  11    the Knight                  39000             77              
+  12    the Baron                   59000             96              
+  13    the Count                   88000             117             
+  14    the Earl                    130000            140             
+  15    the Marquis                 198000            165             
+  16    the Duke                    297000            192             
+  17    the Arch Duke               444444            221             
+  18    Praetor                     666667            252             
+  19    Quaestor                    1000000           285             
+  20    Caesar                      2000000           450
+  21+   <See Trans-Human Elder Guildmaster for information>
+
+To advance, ask the guildmaster. 
+Example:
+
+ask dirk to advance

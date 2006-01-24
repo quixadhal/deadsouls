@@ -1798,7 +1798,6 @@ void add_map_to_mapping (mapping room_map, string inputstring) {
 int get_items(string str) {
     string strItems, key, val;
     string *elements;
-    mapping foo;
     if(sscanf(str, "%*sSetItems(([%s]));%*s", strItems) < 1) {
 	return 1;
     }

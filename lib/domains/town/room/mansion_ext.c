@@ -29,6 +29,7 @@ static void create() {
 	"south" : "/domains/town/room/mansion_int",
       ]) );
     SetDoor("south","/domains/town/doors/mansion");
-    SetObviousExits("n,s,w");
 }
-
+void init(){
+    ::init();
+}

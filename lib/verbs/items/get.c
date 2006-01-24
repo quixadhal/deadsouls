@@ -32,17 +32,17 @@ static void create() {
 mixed eventCheckLight(object who) {
     int light;
 
-    if( (light = effective_light(who)) < 0 ) {
+    if( (light = who->GetEffectiveVision()) < 2 ) {
 	if( 100 + (10*light) < random(100) )
 	    return "You fumble around in the darkness.";
-	else return 1;
+	else return this_player()->CanManipulate();
     }
-    else if( light > 4 ) {
+    else if( light > 5 ) {
 	if( 100 - (10*light) < random(100) )
 	    return "You fumble around in the blinding light.";
-	else return 1;
+	else return this_player()->CanManipulate();
     }
-    else return 1;
+    else return this_player()->CanManipulate();
 }
 
 mixed can_get_obj(string verb) {

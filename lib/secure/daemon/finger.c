@@ -37,7 +37,7 @@ varargs string GetFinger(string who, int html) {
 	object array people;
 	string array lines = ({});
 	object person;
-	int i, maxi;
+	int i;
 	int array screen;
 
 	screen = (int array)this_player()->GetScreen();

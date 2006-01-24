@@ -1,0 +1,22 @@
+
+SNOOP(1)                                                 SNOOP(1)
+
+NNAAMMEE
+       _s_n_o_o_p_(_) - sets one player to snoop another
+
+SSYYNNOOPPSSIISS
+       varargs object snoop(object who, object target)
+
+DDEESSCCRRIIPPTTIIOONN   TThhiiss ffuunnccttiioonn pprroovviiddeess sseeccuurriittyy ffoorr tthhee MMuuddOOSS eeffuunn
+       _s_n_o_o_p_(_).
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/SimulEfun.c
+
+SSEEEE AALLSSOO
+       the _s_n_o_o_p_(_) efun
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

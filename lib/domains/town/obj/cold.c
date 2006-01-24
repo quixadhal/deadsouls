@@ -8,14 +8,8 @@ int damage3();
 int damage4();
 int damage5();
 int DangerLevel();
-object victim,disease,where;
+object victim,where;
 string victimname;
-int busy;
-
-void whoami(){
-    disease=this_object();
-    return;
-}
 
 int InfectMess(object ob){
     victim=ob;
@@ -28,15 +22,15 @@ int InfectMess(object ob){
 void create(){
     germ::create();
     SetKeyName("tc2");
-    SetId(({"tc1"}));
+    SetGermName("cold virus");
+    SetId(({"tc2"}));
     SetLong("Test Cold version 2.1");
     SetCure(20);
     SetVendorType(VT_TREASURE);
-    SetCommunicable(50);
+    SetCommunicable(5);
     SetLifeSpan(2000);
     SetType("viral");
     SetInfect((: InfectMess :));
-    //set_heart_beat(8);
 }
 
 void bonuses(){
@@ -57,32 +51,18 @@ void bonuses(){
 void init(){
     object player;
     germ::init();
-    germ::heart_beat();
-    whoami();
     bonuses();
-}
-
-
-void reset(){
-    busy=0;
-    init();
-    whoami();
 }
 
 int eventSuffer(){
     int x;
-    whoami();
-    x=random(100);
+    x=random(10000);
     if(x < 2) environment()->eventForce("sneeze");
     else if(x < 5) damage1();
     else if(x < 10) damage2();
     else if(x < 15) damage3();
     else if(x < 20) damage4();
     else if(x > 98) damage5();
-    if(!busy){
-	busy=1;
-	call_out("reset",60);
-    }
     return 1;
 }
 

@@ -1,0 +1,35 @@
+chapter 2 "Player Management"
+
+
+Snooping:
+--------
+
+    One of the most powerful and most easily abused tools
+in your administrative arsenal is the snoop command. When
+you "snoop <person>", you get to see everything they
+say and do.
+    Players usually find this intrusive and objectionable,
+and it is ethically shaky to do this without their 
+knowledge and consent. The only circumstances under which
+snooping is unambiguously ethical are:
+
+* Snooping one of your own test characters.
+
+* Snooping a player (with their consent) for the purposes of
+troubleshooting a bug.
+
+* Snooping a player (without their consent) to investigate
+a legitimate suspicion of cheating.
+
+    Secretly snooping people for your personal amusement is
+pretty much just flat wrong. 
+
+    By default, only admins can snoop. Admins are players who
+are members of one or both of the groups SECURE and ASSIST. 
+    An assistant admin *can* snoop a full admin. When this
+occurs, the full admin receives the message that he or she is being
+snooped.
+    When an assistant admin is snooped by full admin, they
+do not receive this message.
+
+

@@ -126,7 +126,8 @@ varargs mapping GetValue(string str, object targ, string tempy, string k1, strin
 }
 
 varargs string eventStringifyMap(mapping source, string key_excl, string val_excl){
-    string map_str, key, val;
+    string map_str, key;
+    mixed val;
 
     if(!key_excl) key_excl = ""+time();
     if(!val_excl) val_excl = ""+time();
@@ -134,7 +135,10 @@ varargs string eventStringifyMap(mapping source, string key_excl, string val_exc
     map_str = "([\n";
 
     foreach( key, val in source){
-	if(stringp(val) && last(val,1) == "'" && first(val,1) == "'"){
+	if(intp(val)){
+	    map_str += identify(key) + " : " + val +",\n";
+	}
+	else if(stringp(val) && last(val,1) == "'" && first(val,1) == "'"){
 	    val = replace_string(val,"'","");
 	    map_str += identify(key) + " : " + val +",\n";
 	}
@@ -213,13 +217,41 @@ string eventReadThing(string map){
 }
 
 int eventSpecialMapHandler(object ob, string func, mixed mode, mixed value){
-    string tmp, filename, func2;
+    string tmp, filename, func2, junk, junk2;
     string *plural_maps;
+    int integer;
     mapping NewMap = ([]);
     mapping FirstMap = ([]);
     mapping SecondMap = ([]);
 
     plural_maps = ({ "SetProperties" });
+    //tc("mode: "+mode,"red");
+    if(stringp(value)) value = trim(replace_string(value,mode,""));
+    //tc("value: "+value,"red");
+
+    if(stringp(value) && !grepp(lower_case(func),"prop") ){
+	if(sscanf(value,"%d",integer) != 1 && 
+	  sscanf(value,"%d %s",integer,junk) != 2) {
+	    sscanf(value,"%s %s",tmp,junk);
+	    if(!tmp || !junk) value = 0;
+	    else if(sscanf(junk,"%d",integer) != 1) sscanf(junk,"%d %s",integer,junk2);
+	    //tc("tmp: "+tmp);
+	    if(tmp) mode += " "+tmp;
+	} 
+	if(integer) value = integer;
+	else value = 0;
+	if(!intp(value)) value = 0;
+    }
+
+    else {
+	if(sscanf(value,"%s %s",tmp, junk) == 2){
+	    mode += " "+tmp;
+	    value = trim(junk);
+	}
+    }
+
+    //tc("mode: "+mode,"green");
+    //tc("value: "+value,"green");
 
     filename = base_name(ob)+".c";
     if(!check_privs(this_player(),filename)){
@@ -244,16 +276,26 @@ int eventSpecialMapHandler(object ob, string func, mixed mode, mixed value){
     FirstMap = this_object()->eventReadPair(filename, func2, 1);
     SecondMap = this_object()->eventReadMapping(filename, ({ func }), 1);
     NewMap = add_maps(FirstMap, SecondMap);
-    NewMap[mode] = value;
+    if(stringp(value) && sscanf(value,"%d",integer) == 1) {
+	//integer = value;
+	//NewMap[mode] = 0;
+	//NewMap[mode] += integer;
+	//NewMap[mode] += integer;
+	NewMap[mode] = integer;
+    }
+    else NewMap[mode] = value;
     //write("mapping: "+identify(NewMap));
-    globaltmp = generate_tmp();
-    globalstr = filename;
-    unguarded( (: globalstr2 = read_file(globalstr) :) );
-    unguarded( (: write_file(globaltmp,globalstr2) :) );
+    globaltmp = generate_tmp(ob);
+    //globalstr = filename;
+    //unguarded( (: globalstr2 = read_file(globalstr) :) );
+    //tc("globalstr: "+globalstr,"yellow");
+    //tc("globaltmp: "+globaltmp,"yellow");
+    //tc("globalstr2: "+globalstr2,"blue");
+    unguarded( (: write_file(globaltmp,globalstr2,1) :) );
 
     if(member_array(func,plural_maps) != -1) 
-	this_object()->eventResumeMappingChange(ob,tmp,copy(NewMap),func);
-    else this_object()->eventAddSettings(ob,tmp,copy(NewMap),func2);
+	this_object()->eventResumeMappingChange(ob,globaltmp,copy(NewMap),func);
+    else this_object()->eventAddSettings(ob,globaltmp,copy(NewMap),func2);
     //write("hmm.");
     //unguarded( (: tc("new file: "+read_file(globalstr)) :) );
     return 1;
@@ -303,7 +345,7 @@ mapping eventReadPair(string filename, string param, int destructive){
     if(destructive) {
 	globalstr2 = remove_matching_line(globalstr2, param, 1);
 	globalstr = generate_tmp();
-	unguarded( (: write_file(globalstr,globalstr2) :) );
+	unguarded( (: write_file(globalstr,globalstr2,1) :) );
 	tmp = globalstr;
 	//tc(tmp+" is: "+read_file(tmp));
 	globalstr = filename;

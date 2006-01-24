@@ -8,3 +8,8 @@ Extras directory
 
 - restore_cfg If you screw up your mudos.cfg file, you can use this to
   get it back.
+
+- To rebuild the driver with maximum warning verbosity, use the 
+  noisy.local_options provided here.
+
+

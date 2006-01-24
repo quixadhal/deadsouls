@@ -28,11 +28,15 @@ int cmd( string a )
     file =
     ""+
     "#include <lib.h>\n"+
+    "#include <save.h>\n"+
+    "#include <rooms.h>\n"+
+    "#include <config.h>\n"+
     "#include <daemons.h>\n"+
     "#include <objects.h>\n"+
     "#include <commands.h>\n"+
     "#include <armor_types.h>\n"+
     "#include <damage_types.h>\n"+
+    "#include <position.h>\n"+
     "inherit LIB_ITEM;\n"+
     "mixed eval() { " + a + "; }\n"+
     "";
@@ -42,6 +46,7 @@ int cmd( string a )
 	return 0;
     }
     filename += "CMD_EVAL_TMP_FILE.c";
+    if(archp(previous_object())) filename = "/secure/tmp/"+previous_object()->GetKeyName()+"_CMD_EVAL_TMP_FILE.c";
     // long name so won't coincide with file already in your directory by accident
     rm( filename );
     if( ret = find_object( filename ) ) destruct( ret );

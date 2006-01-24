@@ -60,7 +60,6 @@ int ResetLevel() {
 
 int SetLevel(int x) {
     string array skills = GetPrimarySkills();
-    int i;
 
     foreach(string skill in skills) {
 	SetSkill(skill, 2*x);

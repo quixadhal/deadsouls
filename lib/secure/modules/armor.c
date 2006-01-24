@@ -191,8 +191,7 @@ varargs int eventModifyProtections(mapping Protecciones, string filename, object
     unguarded( (: cp(globaltmp, globalstr) :) );
     rm(globaltmp);
     if(ob && grepp(filename,base_name(ob))){
-	ob->eventMove(ROOM_FURNACE);
-	new(filename)->eventMove(environment(this_player()));
+	reload(ob);
     }
     return 1;
 }

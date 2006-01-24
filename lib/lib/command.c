@@ -58,6 +58,7 @@ static int cmdAll(string args) {
 	    if( args ) cmd = verb + " " + args;
 	    else cmd = verb;
 	    if( (int)this_object()->GetProperty("parse debug") ) dbg = 1;
+	    if( (int)this_object()->GetProperty("debug") ) dbg = 1;
 	    else dbg = 0;
 	    if( (err = parse_sentence(cmd, dbg)) == 1 ) {
 		this_agent(old_agent || 1);

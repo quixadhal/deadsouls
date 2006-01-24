@@ -1,0 +1,49 @@
+
+DOMAIN(1)                                               DOMAIN(1)
+
+NNAAMMEE
+       _d_o_m_a_i_n_(_) - returns the domain to which an object belongs
+
+SSYYNNOOPPSSIISS
+       string domain(object|string val)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given an object as an argument, _d_o_m_a_i_n_(_) will return the
+       domain to which the object belongs based on its file name.
+       If a string is passed, the string is assumed to be the
+       file name of an object and the function will return the
+       domain associated with that file name.
+
+       Domains are determined based on the following criteria:
+
+       +o the return from query_domain() in the object if that
+           value is a valid domain and the first argument is an
+           object or a loadable file
+
+       +o the domain from which the object comes if its file name
+           is from the mudlib domains directory
+
+       +o if the object is from a creator home directory, it
+           checks the sub-directory of that home directory from
+           which it came and returns it if it is a valid domain
+           =back
+
+EEXXAAMMPPLLEESS
+       +o   _d_o_m_a_i_n(ob) will return "NorthForest" if the file name
+           is "/domains/NorthForest/sword" and ob->_q_u_e_r_y___d_o_m_a_i_n_(_)
+           returns 0
+
+       +o   _d_o_m_a_i_n("/realms/descartes/Orlith/entrance") returns
+           "Orlith"
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/domains.c
+
+SSEEEE AALLSSOO
+       _d_o_m_a_i_n___m_a_s_t_e_r_(_), _d_o_m_a_i_n___e_x_i_s_t_s_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

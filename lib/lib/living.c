@@ -142,6 +142,7 @@ mixed direct_give_wrd_wrd_to_liv(string num, string curr) {
     if( (amt = to_int(num)) < 1 ) return "What sort of amount is that?";
     tmp = CanCarry(currency_mass(amt, curr));
     if( tmp != 1 ) return GetName() + " cannot carry that much "+ curr+ ".";
+    return 1;
 }
 
 mixed direct_look_obj() { return 1; }
@@ -155,9 +156,9 @@ mixed direct_smell_obj(object ob, string id) {
 mixed direct_steal_wrd_from_liv(string wrd) {
     if( wrd != "money" ) return 0;
     if( this_player() == this_object() ) return "Are you fool?";
-    if( !GetPK() ) return "You cannot act like a jerk today.";
-    if( userp(this_object()) && !((int)this_player()->GetPK()) )
-	return "You do not have your player killer flag set.";
+    //if( !GetPK() ) return "You cannot act like a jerk today.";
+    //if( userp(this_object()) && !((int)this_player()->GetPK()) )
+    //	return "You do not have your player killer flag set.";
     if( this_player()->GetInCombat() )
 	return "You are too busy fighting at the moment.";
     return 1;
@@ -171,9 +172,9 @@ mixed indirect_steal_obj_from_liv(object item, mixed args...) {
     if( !item ) return 1;
     if( environment(item) != this_object() ) return 0;
     if( this_player() == this_object() ) return "Are you a fool?";
-    if( !GetPK() ) return "You cannot act like a jerk today.";
-    if( userp(this_object()) && !((int)this_player()->GetPK()) )
-	return "You do not have your player killer flag set.";    
+    //   if( !GetPK() ) return "You cannot act like a jerk today.";
+    //  if( userp(this_object()) && !((int)this_player()->GetPK()) )
+    //	return "You do not have your player killer flag set.";    
     if( this_player()->GetInCombat() )
 	return "You are too busy fighting at the moment.";
     tmp = (mixed)item->CanDrop(this_object());
@@ -447,12 +448,13 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill) {
 	mixed tmp;
 	int amt, skill2;
 
-	skill2 = GetSkillLevel("stealing")*2.5;
+	skill2 = to_int(to_float(GetSkillLevel("stealing"))*2.5);
 	skill2 += GetMobility();
 	skill2 += GetStatLevel("coordination");
 	skill2 += GetStatLevel("charisma");
-	skill2 += GetStatLevel("luck")/2;
+	skill2 += to_int(GetStatLevel("luck")/2);
 	if( ClassMember("rogue") ) skill2 += (int)GetLevel();
+	if( ClassMember("thief") ) skill2 += (int)GetLevel();
 
 	if( !stringp(what) ) {
 	    int x;
@@ -460,8 +462,10 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill) {
 	    x = sizeof(what);
 	    if( GetStaminaPoints() < 20.0*x ) {
 		eventPrint("You are clumsy in your fatigue.");
-		target->SetAttack(this_object());
-		target->eventExecuteAttack(this_object());
+		if(target->GetRace() != "kender"){
+		    target->SetAttack(this_object());
+		    target->eventExecuteAttack(this_object());
+		}
 		return 1;
 	    }
 	    AddStaminaPoints(-20);
@@ -474,7 +478,6 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill) {
 
 	    /* Steal from target was succesful */
 	    else if( tmp == 1 ) {
-		string itstr = "";
 
 		what = filter(what, (: $1 :));
 		AddSkillPoints("stealing", implode(map(what,
@@ -536,15 +539,15 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill) {
 	who->eventPrint(GetName() + " is busy in combat.");
 	return 0;
     }
-    skill -= GetMobility()/2;
+    skill -= to_int(GetMobility()/2);
     skill -= GetStatLevel("agility");
     skill -= GetStatLevel("wisdom");
-    skill -= GetStatLevel("luck")/3;
+    skill -= to_int(GetStatLevel("luck")/3);
 
     if( objectp(what) ) sr = 100 * sizeof(what);
     else sr = 100;
     if( random(sr) > skill ) {
-	eventPrint("You notice " + (string)who->GetName() + " trying "
+	target->eventPrint("You notice " + (string)who->GetName() + " trying "
 	  "to steal from you!");
 	if( !userp(this_object()) ) {
 	    who->eventPrint("%^RED%^" + (string)GetName() + "%^RED%^ "

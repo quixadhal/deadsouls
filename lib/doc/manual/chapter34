@@ -1,0 +1,185 @@
+chapter 34 "QCS: Modification of NPC's"
+
+    In the previous chapter we learned how to make a generic object.
+Now that we have it, what to do with it?
+
+    It's important to keep in mind that the generic thing now in
+front of you isn't just a clone from a template file. If the command
+you used was "create npc cowboy", there is now a file (probably)
+called /realms/you/area/npc/cowboy.c that contains the code for the
+creature in front of you.
+    However, this poor beast has the most uninteresting of features.
+It is in fact so boring that it responds only to its generic type.
+Such that "examine cowboy" or "kill tex" won't work. You'll need to
+"look at npc".
+
+    Accordingly, any modification commands need to be made referring
+to the new thing with an it responds to, until such a time as you
+change the id to suit your tastes. Let's carry on with the example
+of our generic npc. To make a cowboy out of him, we can either
+change his name, or his id, or both. Let's start with his name:
+
+modify npc name cowboy
+
+    This makes the SetKeyName() directive in cowboy.c use "cowboy"
+as its argument, effectively allowing you to address this npc as "cowboy"
+from now on. Now you can "look at cowboy" with some results.
+    Obviously our NPC isn't *just* a cowboy. He's also a human, a dude,
+and his name is Tex. How do we make him respond to all of these nouns?
+
+modify cowboy id
+
+    You'll notice there are no arguments following the word "id". Setting
+a thing's id is different from most other settings. If you'll think back
+to the LPC datatypes chapter of this manual (you did read the LPC
+chapters, didn't you?) you'll remember that some information about 
+objects is in the form of strings ("cowboy"), some is in the form of
+integers (the cowboy's health points, for example) and some is in the
+form of arrays, which are a group of data points. In this example we
+want the cowboy's id to be an array, because of the many ways we might
+want to address him. Therefore, we want the SetId directive in his
+file to look like this:
+
+SetId( ({"human", "dude", "tex" }) );
+
+    You might think that QCS should be able to accept multiple values
+like this on a line, perhaps with "modify cowboy id human dude tex" as
+the command. 
+    But what if you want this npc to be a "Boy Named Sue"? How would
+you accommodate id's that contain spaces? In designing QCS, I considered
+having escape characters to allow for such things, but ultimately
+reasoned that this was just way too much mess. Instead, SetId, and
+other directives that take arrays as arguments, are handled by entering
+a query session. Below is an example of what it might look like. The
+example is necessarily messy because I am including both the queries
+and the responses.
+
+---------------------------------------------------
+> modify npc name cowboy
+Indenting file...
+"/tmp/indent.1136206130.tmp.dat" 15 lines 420 bytes
+Exit from ed.
+
+> modify cowboy id
+This setting takes multiple values. If you have no more values to enter, then
+enter a dot on a blank line. To cancel, enter a single q on a blank line.
+You may now enter the next value. So far, it is blank.
+If you're done entering values, enter a dot on a blank line.
+dude
+You may now enter the next value. So far, we have: ({ "dude" })
+If you're done entering values, enter a dot on a blank line.
+human
+You may now enter the next value. So far, we have: ({ "dude", "human" })
+If you're done entering values, enter a dot on a blank line.
+tex
+You may now enter the next value. So far, we have: ({ "dude", "human", "tex" })
+If you're done entering values, enter a dot on a blank line.
+boy named sue
+You may now enter the next value. So far, we have: ({ "dude", "human", "tex",
+"boy named sue" })
+If you're done entering values, enter a dot on a blank line.
+.
+Entries complete. Final array is: ({ "dude", "human", "tex", "boy named sue" })
+Indenting file...
+"/tmp/indent.1136206156.tmp.dat" 19 lines 459 bytes
+Exit from ed.
+
+/open/1136206138: Ok
+/realms/cratylus/area/npc/cowboy: Ok
+SetId modification complete.
+> exa tex
+Other than being human, this npc is entirely unremarkable.
+The male human is in top condition.
+---------------------------------------------------
+
+    If you were now to examine Tex's code (with the command "about tex")
+you'd see that his SetId directive now looks like this:
+
+SetId( ({"dude", "human", "tex", "boy named sue"}) );
+
+    Other NPC features take arrays also. SetAdjectives is one. You
+might enter this (mud output omitted for clarity):
+
+modify tex adjectives
+dusty
+hardy
+.
+look at dusty cowboy
+
+    There are two other directives that require queries. Things and
+NPC's can be looked at, but they can also be smelled and listened
+to, if you add SetSmell and SetListen. The syntax is:
+
+modify tex smell
+
+   And you will then be asked a question about keys and mappings.
+Understanding mappings is important, but for now you just need to
+understand that you are being asked *two* separate questions: 
+1) What on the cowboy is being smelled/listened to?
+2) What is the smell/sound?
+
+    What this means is that your input will look something like
+this:
+
+modify tex smell
+default
+.
+Tex smells of sweat and manure.
+
+    What happens is this:
+- You enter the modify command.
+- You enter the word "default" to indicate this is Tex's general smell.
+- You enter a dot to indicate that you are done specifying what
+  part of Tex is being smelled.
+- You then specify the smell.
+
+    This may seem odd until you realize you can also add smells/listens to
+parts of things. Not on NPC's, though. We'll look at this more closely in
+later chapters. For now, just use the syntax as shown above. For adding
+a listen to the cowboy, it works the same way:
+
+modify tex listen
+default
+.
+Tex seems to be humming a jaunty melody.
+
+    Other features of an NPC do not take arrays, so one-line commands
+will do. For example:
+
+modify cowboy long This is a cowboy who calls himself Tex, but is in fact a Boy Named Sue.
+
+modify cowboy short a cowboy
+
+modify cowboy level 5
+
+modify cowboy class fighter
+
+modify tex currency gold 1
+
+modify tex currency silver 12
+
+modify tex skill bargaining 5
+
+modify tex skill projectile attack 7
+
+modify tex stat strength 33
+
+modify tex property nice guy 1
+
+modify tex healthpoints 150
+
+modify tex maxhealthpoints 170
+
+modify tex melee 0
+
+    If you now issue the "about tex" command you will see that all
+the changes you made have been put into the file.
+
+    You may have noticed the "melee" keyword. Dead Souls 2 NPC's come
+in various shapes and sizes, and some of them shouldn't wield weapons. A
+wolf with a battle axe would be a strange sight indeed. However, the
+default combat system makes unarmed creatures extremely vulnerable in
+combat.
+    To make an NPC combat-capable without weapons, use the new SetMelee
+directive. SetMelee(1) makes the NPC capable of proper unarmed combat.
+SetMelee(0) makes the NPC a weak opponent if unarmed. 

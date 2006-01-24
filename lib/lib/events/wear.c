@@ -13,7 +13,6 @@ mixed CanUnequip(object who);
 // end abstract methods
 
 mixed direct_remove_obj() {
-    mixed tmp;
 
     if( environment(this_object()) != this_player() ) {
 	return "#You don't have that!";

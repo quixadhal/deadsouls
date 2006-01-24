@@ -1,0 +1,32 @@
+
+ALIGNMENT_STRING(1)                           ALIGNMENT_STRING(1)
+
+NNAAMMEE
+       _a_l_i_g_n_m_e_n_t___s_t_r_i_n_g_(_) - returns a string describing a
+       living's alignment
+
+SSYYNNOOPPSSIISS
+       string alignment_string(object|int val)
+
+DDEESSCCRRIIPPTTIIOONN
+       The function can be passed either a living object or an
+       integer representing an alignment value.  The return value
+       is a string which describes the alignment of the object or
+       the alignment value passed.
+
+EEXXAAMMPPLLEESS
+       +o   _a_l_i_g_n_m_e_n_t___s_t_r_i_n_g(0) returns "neutral"
+
+       +o   _a_l_i_g_n_m_e_n_t___s_t_r_i_n_g(_t_h_i_s___p_l_a_y_e_r_(_)) returns "evil"
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/alignment.c
+
+SSEEEE AALLSSOO
+       _a_l_i_g_n_m_e_n_t___o_k_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

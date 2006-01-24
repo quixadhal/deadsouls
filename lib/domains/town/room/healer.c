@@ -4,9 +4,9 @@ inherit LIB_AMBIANCE;
 
 int ReadList(){
     write("AVAILABLE PROCEDURES:\n"
-      "\texcision, cost 1000:\tcut away foreign material\n"
+      //"\texcision, cost 1000:\tcut away foreign material\n"
       "\thealing, cost 200:\tfacilitate rapid recovery from wounds\n"
-      "\tcuring, cost 1500:\t\tremove infections and infestations\n"
+      //"\tcuring, cost 1500:\t\tremove infections and infestations\n"
       "\tregeneration, cost 1200:\tgrow back severed limbs\n"
       "\n"
       "Example: If you are badly hurt and need healing:\n\n"
@@ -18,7 +18,6 @@ int ReadList(){
     );
     return 1;
 }
-
 static void create() {
     ::create();
     SetClimate("indoors");
@@ -46,7 +45,9 @@ static void create() {
 	"out" : "/domains/town/room/road",
 	"west" : "/domains/town/room/chamber",
       ]) );
-    SetObviousExits("e,w");
     SetProperty("no attack", 1);
 
+}
+void init(){
+    ::init();
 }

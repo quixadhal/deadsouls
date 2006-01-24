@@ -35,7 +35,8 @@ mixed can_throw_obj() {
     if( this_player()->GetParalyzed() ) {
 	return "You cannot do anything.";
     }
-    return 1;
+    if(intp(check_light())) return this_player()->CanManipulate();
+    else return check_light();
 }
 
 mixed can_throw_obj_word_obj() {
@@ -68,7 +69,6 @@ mixed do_throw_obj_word_obj(object what, string word, object where) {
 }
 
 void eventThrow(object who, object what, object where) {
-    mixed tmp;
 
     if( !who ) {
 	return;

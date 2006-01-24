@@ -1,0 +1,26 @@
+
+YEAR(1)                                                   YEAR(1)
+
+NNAAMMEE
+       _y_e_a_r_(_) - returns the year for a given time
+
+SSYYNNOOPPSSIISS
+       int year(int x)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given a time integer as an argument, this function returns
+       the MUD year for that time.
+
+EEXXAAMMPPLLEESS
+       +o   _y_e_a_r(_t_i_m_e_(_)) returns the MUD year today, which at the
+           time of this document happens to be 14.
+
+SSEEEE AALLSSOO
+       _d_a_t_e_(_), _d_a_y_(_), _h_o_u_r_(_), _m_i_n_u_t_e_s_(_), _m_o_n_t_h_(_), _q_u_e_r_y___n_i_g_h_t_(_),
+       _s_e_a_s_o_n_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

@@ -1,10 +1,10 @@
 #include <lib.h>
+#include <damage_types.h>
 
 inherit LIB_DAEMON;
 
 mixed cmd(string str) {
     object thing;
-    string name, tmp;
     int mhp;
     if( !str || str == "" ) return "Syntax: <zap OBJECT>";
     if(!present(str, this_player()) &&
@@ -23,8 +23,11 @@ mixed cmd(string str) {
     if(!mhp) mhp = 99999;
     write("You zap "+thing->GetName()+".");
     say(this_player()->GetName()+" raises a hand and %^RED%^ZAPS%^RESET%^"+
-      " "+thing->GetName()+"!"); 
-    return thing->AddHP(-mhp - 100);
+      " "+thing->GetName()+"!",({thing})); 
+    tell_object(thing,this_player()->GetName()+" raises a hand and %^RED%^ZAPS%^RESET%^ you!");
+    //return thing->AddHP(-mhp - 100);
+    thing->eventReceiveDamage(this_player(),BLUNT,(mhp * 5),0,({"torso"}));
+    return 1;
 }
 
 string GetHelp(string str) {

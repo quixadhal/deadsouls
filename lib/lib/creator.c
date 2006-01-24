@@ -108,7 +108,7 @@ void eventDescribeEnvironment(int verbose) {
 
 varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
     object *inv;
-    object prev, env;
+    object prev;
 
     if( prev = environment() ) {
 	if( stringp(dest) ) {
@@ -126,6 +126,14 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
 	inv = filter(all_inventory(prev), (: (!GetInvis($1) && living($1) &&
 	      ($1 != this_object())) :));
 	if( !omsg || omsg == "" ) omsg = GetMessage("telout");
+	else if(GetPosition() == POSITION_SITTING ||
+	  GetPosition() == POSITION_LYING ){
+	    omsg = GetName()+" crawls "+omsg+".";
+	}
+	else if(GetPosition() == POSITION_FLYING ){
+	    omsg = GetName()+" flies "+omsg+".";
+	}
+
 	else omsg = GetMessage("leave", omsg);
 	inv->eventPrint(omsg, MSG_ENV);
     }
@@ -137,6 +145,14 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
       (: (!GetInvis($1) && living($1) && ($1 != this_object())) :));
     if( (!imsg || imsg == "") && (!omsg || omsg == "") )
 	imsg = GetMessage("telin");
+    else if(GetPosition() == POSITION_SITTING ||
+      GetPosition() == POSITION_LYING ){
+	imsg = GetName()+" crawls in.";
+    }
+    else if(GetPosition() == POSITION_FLYING){
+	imsg = GetName()+" flies in.";
+    }
+
     else if( !imsg || imsg == "" ) imsg = GetMessage("come", imsg);
     else imsg = replace_string(imsg, "$N", GetName());
     inv->eventPrint(imsg, MSG_ENV);
@@ -162,7 +178,7 @@ int Setup() {
 
     laston = GetLoginTime();
     if( !player::Setup() ) return 0;
-    AddChannel(({"cre", "newbie", "avatar", "hm", "gossip" }));
+    AddChannel(({"cre", "newbie", "gossip", "ds", "death" }));
     AddChannel((string array)CLASSES_D->GetClasses());
     if( archp() ) AddChannel( ({ "admin", "error" }) );
     AddSearchPath( ({ DIR_CREATOR_CMDS, DIR_SECURE_CREATOR_CMDS }) );

@@ -6,7 +6,6 @@ int readSign() {
     return 1;
 }
 
-
 static void create() {
     room::create();
     SetClimate("outdoors");
@@ -21,6 +20,11 @@ static void create() {
     SetItems( ([
 	"sign":"A large sign on the road. To read it, 'read sign'.",
       ]) );
+    SetEnters( ([
+      ]) );
+    SetInventory(([
+	"/domains/town/obj/clocktower" : 1,
+      ]));
     SetRead("sign", (: readSign :) );
     SetExits( ([
 	"north" : "/domains/town/room/road",
@@ -28,11 +32,8 @@ static void create() {
 	"west" : "/domains/town/room/road1",
 	"south" : "/domains/town/room/south_road1",
       ]) );
-    AddStuff( ({ "/domains/town/obj/trash" }) );
-    SetObviousExits("n,s,e,w");
 }
 
 void init(){
     ::init();
 }
-

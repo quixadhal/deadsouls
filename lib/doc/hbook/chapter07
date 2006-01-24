@@ -1,0 +1,71 @@
+chapter 7 "Hints and tips"
+
+* The "wimpy" command helps you avoid death due to inattention or
+  network lag. If you "wimpy 20", you will automatically try to escape
+  combat if your health goes below 20% of your maximum.
+
+* "target" and "ignore" are extremely useful when fighting more than
+  one enemy. You should always target the toughest npc first, and
+  always ignore any npc who can't get up because their foot or leg
+  is severed.
+    But if they collapse due to exhaustion, it's a good idea to keep
+  beating on them, otherwise they may get back up and get healthy sooner
+  than you expect.
+
+* By default, different races speak different languages. If someone
+  says something to you and you see no words in the same language as
+  the rest of the mud, it means they are speaking a language you do
+  not understand. 
+    For example, if you are an elf, and you ask Radagast to teach
+  magic attack, you might get something like this:
+
+Radagast exclaims in English, "embleer con boltehe oota goota nehi auch"
+
+      Even though in the real world you may speak English fluently, in
+  the mud world, you do not speak English fluently. As an elf, your
+  native tongue is Edhellen, and you may find human speech incomprehensible.
+
+      If you find a trainer to teach you English, your skills in that
+  language will need time to improve. As you get better at a language, 
+  you will see fewer gibberish words.
+      
+      If you are a "newbie", this does not apply to you. A newbie in the
+  default Dead Souls distribution is a player at level 4 or below. This
+  definition may be changed by your admin.
+      Newbies need all the help they can get just to survive, so they 
+  are magically granted understanding of all languages, until they outgrow
+  their naivete.
+
+      If you are a student of languages in the Real World, you may 
+  recognize many of the "gibberish" words used by Dead Souls to represent
+  a foreign tongue. Your understanding of these words is not useful in
+  the context of the game, however, because they are not intended to
+  convey meaning other than "non-comprehensible words".
+
+
+* Your ability to see is affected by various things:
+
+  - A room's ambient light level
+  - Time of day
+  - Local light sources (flashlights, torches, etc)
+  - Your race's light sensitivity
+  - Magical effects
+  - Exposure to a excessive-light event
+
+      It's important to remember that a room may be too dark for
+you to see everything in it. You might be able to see the description
+of a room with no problem, but it may be necessary for you to
+light a torch in order to see the treasure chest there.
+
+      In the same way that darkness can impair vision, brightness
+can do the same. For elves, an outdoor area in bright sunlight that
+contains additional light sources can be just as hostile to
+vision as a dark cave with no torch would be for a human.
+      Regardless of race, a sufficiently adverse event, such as 
+a bright flash or special spell, can render you temporarily blind.
+
+      As with languages, newbies have some exemption to light-level
+limitations. 
+
+* Mages can wield knives but are pretty much helpless with any other
+vind of edged weapon.

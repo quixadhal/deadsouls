@@ -68,7 +68,13 @@ int SetHands(int x) {
 }
 
 string array GetSave() {
-    return (damage::GetSave() + equip::GetSave() + poison::GetSave());
+    string *d_save, *e_save, *p_save, *a_save;
+
+    d_save = damage::GetSave();
+    e_save = equip::GetSave();
+    p_save = poison::GetSave();
+    a_save = d_save + e_save + p_save;
+    return a_save; 
 }
 
 string GetWeaponType() {

@@ -1,0 +1,25 @@
+
+SEASON(1)                                               SEASON(1)
+
+NNAAMMEE
+       _s_e_a_s_o_n_(_) - returns the season at a given time
+
+SSYYNNOOPPSSIISS
+       string season(int x)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given an integer time, this function returns the name of
+       the season for that time.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/time.c
+
+SSEEEE AALLSSOO
+       _d_a_t_e_(_), _d_a_y_(_), _h_o_u_r_(_), _m_i_n_u_t_e_s_(_), _m_o_n_t_h_(_), _q_u_e_r_y___n_i_g_h_t_(_),
+       _y_e_a_r_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

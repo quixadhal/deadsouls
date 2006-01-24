@@ -23,8 +23,6 @@ nomask void restore_inventory();
 nomask void save_player(string nom);
 
 int Setup() {
-    object ob;
-    int i;
 
     master()->create_save();
     call_out( (: save_player, GetKeyName() :), 2 );

@@ -5,6 +5,7 @@
 inherit LIB_STORAGE;
 inherit LIB_ARMOR;
 
+
 static void create() {
     ::create();
     SetKeyName("backpack");
@@ -21,4 +22,7 @@ static void create() {
     SetMaxCarry(500);
     SetDamagePoints(100);
     SetArmorType(A_CLOAK);
+}
+void init(){
+    ::init();
 }

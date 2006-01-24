@@ -31,6 +31,13 @@ mixed direct_initfix() {
 
 mixed direct_reload_obj() { return 1; }
 mixed indirect_reload_obj() { return 1; }
+mixed direct_reload_word_obj() { return 1; }
+mixed indirect_reload_word_obj() { return 1; }
+mixed direct_reload_str_obj() { return 1; }
+mixed indirect_reload_str_obj() { return 1; }
+mixed direct_reload_str_word() { return 1; }
+mixed indirect_reload_str_word() { return 1; }
+
 mixed direct_reload() { return 1; }
 mixed indirect_reload() { return 1; }
 
@@ -67,11 +74,6 @@ mixed direct_delete_obj() { return 1; }
 int SetNoModify(int i){
     if(i) Modify = 0;
     else Modify = 1;
-}
-
-int SetModify(int i){
-    if(i) Modify = 1;
-    else Modify = 0;
 }
 
 int GetModify(){

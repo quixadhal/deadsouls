@@ -97,6 +97,21 @@ varargs mixed eventSit(object target) {
     return 1;
 }
 
+mixed eventFly(){
+    write("You lift up off the ground.");
+    say(this_player()->GetName()+" begins flying and rises up off the ground.");
+    Position = POSITION_FLYING;
+    return 1;
+}
+
+mixed eventLand(){
+    if(! Position == POSITION_FLYING ) return 0;
+    write("You stop flying and land gracefully.");
+    say(this_player()->GetName()+" stops flying and lands gracefully.");
+    Position = POSITION_STANDING;
+    return 1;
+}
+
 mixed eventStand() {
     if(!stringp(hobbled(this_player()))){
 	eventPrint("Your injuries prevent you from standing.");
@@ -106,6 +121,10 @@ mixed eventStand() {
 	eventPrint("You are already standing!");
 	return 1;
     }
+    if( Position == POSITION_FLYING){
+	return eventLand();
+    }
+
     if( Chair ) {
 	mixed tmp = Chair->eventReleaseStand(this_object());
 

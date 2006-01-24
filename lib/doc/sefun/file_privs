@@ -1,0 +1,26 @@
+
+FILE_PRIVS(1)                                       FILE_PRIVS(1)
+
+NNAAMMEE
+       _f_i_l_e___p_r_i_v_s_(_) - returns the level of protection for a file
+
+SSYYNNOOPPSSIISS
+       string file_privs(string file)
+
+DDEESSCCRRIIPPTTIIOONN
+       Returns a string which represents the level of protection
+       which is enjoyed by the file.  With the exception of use
+       objects, objects which derive from the file name passed
+       will also have access which at least matches these privs.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/security.c
+
+SSEEEE AALLSSOO
+       _m_e_m_b_e_r___g_r_o_u_p_(_), _u_n_g_u_a_r_d_e_d_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

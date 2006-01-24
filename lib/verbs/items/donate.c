@@ -5,14 +5,18 @@ inherit LIB_VERB;
 static void create() {
     verb::create();
     SetVerb("donate");
-    SetRules("STR STR");
+    SetRules("STR STR", "STR STR to STR");
     SetErrorMessage("Donate <AMOUNT> <CURRENCY>");
     SetHelp("Syntax: donate <AMOUNT> <CURRENCY>\n\n"
       "The donate command is used to donate money.");
 }
 
 mixed can_donate_str_str(string amount, string currency){
-    return 1;
+    return this_player()->CanManipulate();
+}
+
+mixed can_donate_str_str_to_str(string amount, string currency, string foo){
+    return can_donate_str_str(amount, currency);
 }
 
 mixed do_donate_str_str(string amount, string currency) {
@@ -38,3 +42,6 @@ mixed do_donate_str_str(string amount, string currency) {
     return 1;
 }
 
+mixed do_donate_str_str_to_str(string amount, string currency, string foo){
+    return do_donate_str_str(amount, currency);
+}

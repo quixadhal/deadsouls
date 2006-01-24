@@ -1,0 +1,33 @@
+
+MEMBER_GROUP(1)                                   MEMBER_GROUP(1)
+
+NNAAMMEE
+       _m_e_m_b_e_r___g_r_o_u_p_(_) - returns true if a person is a member of
+       the group passed
+
+SSYYNNOOPPSSIISS
+       int member_group(string|object who, string grp)
+
+DDEESSCCRRIIPPTTIIOONN
+       The first argument, either a user object or the name of a
+       user, is tested to see if the user is a member of the
+       group which goes by the name passed as the second
+       argument.  If the user is a member of that group, then the
+       function returns true.  Otherwise the function will return
+       false.
+
+EEXXAAMMPPLLEESS
+       +o   member_group("descartes", "SUPERUSER") would return
+           true on Nightmare LPMud
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/security.c
+
+SSEEEE AALLSSOO
+       _f_i_l_e___p_r_i_v_s_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

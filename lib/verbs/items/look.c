@@ -37,9 +37,7 @@ static void create() {
 
 mixed can_look() {
     if( !environment(this_player()) ) return "You are nowhere.";
-    if( effective_light(this_player()) < -1 )
-	return "It is way too dark for you to see.";
-    else return 1;
+    else return check_light();
 }
 
 mixed can_look_str(string str, string verb) {
@@ -51,18 +49,17 @@ mixed can_look_obj(string verb, string id) {
 }
 
 mixed can_look_at_str(string str, string verb) {
+
     if( !environment(this_player()) ) return "You are nowhere.";
     if( SEASONS_D->GetLong(str) == 0 ) {
 	return "There is no " + remove_article(str) + " here.";
     }
     else {
-	return 1;
+	return check_light();
     }
 }
 mixed can_look_at_obj(string verb, string id) {
-    if( effective_light(this_player()) < -1 )
-	return "It is way too dark for you to see anything.";
-    return 1;
+    return check_light();
 }
 
 mixed can_look_in_obj(string verb, string id) {
@@ -70,21 +67,15 @@ mixed can_look_in_obj(string verb, string id) {
 }
 
 mixed can_look_inside_obj(string verb, string id) {
-    if( effective_light(this_player()) < -1 )
-	return "It is way too dark for you to see here.";
-    return 1;
+    return can_look();
 }
 
 mixed can_look_at_obj_word_obj(string verb, string targ, string store) {
-    if( effective_light(this_player()) < -1 )
-	return "It is way too dark for you to see here.";
-    return 1;
+    return can_look();
 }
 
 mixed can_look_at_str_on_obj(string targ, string verb, string id1, string id2){
-    if( effective_light(this_player()) < -1 )
-	return "It is way too dark for you to see here.";
-    return 1;
+    return can_look();
 }
 
 mixed do_look() {

@@ -1,0 +1,25 @@
+
+USER_EXISTS(1)                                     USER_EXISTS(1)
+
+NNAAMMEE
+       _u_s_e_r___e_x_i_s_t_s_(_) - returns true if a given user exists
+
+SSYYNNOOPPSSIISS
+       int user_exists(string str)
+
+DDEESSCCRRIIPPTTIIOONN
+       If the argument passed is an existing player, this
+       function returns true.  Otherwise the function returns
+       false.
+
+EEXXAAMMPPLLEESS
+       _u_s_e_r___e_x_i_s_t_s("descartes") returns true on Nightmare
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/user_exists.c
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

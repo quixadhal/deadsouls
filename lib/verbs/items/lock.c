@@ -28,7 +28,7 @@ mixed can_lock_obj_with_obj(string verb) {
     if( this_player()->GetParalyzed() ) {
 	return "You cannot do anything.";
     }
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 varargs mixed do_lock_obj_with_obj(object target, object key, mixed *words...) {

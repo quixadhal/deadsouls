@@ -13,14 +13,16 @@ string *array_val = ({});
 mapping InvMap = ([]);
 
 mixed gmake(string str) {
-    string thingy, filename, dir, curr_dir, area_dir, local_area_dir, working_dir;
+    string thingy, filename, val, dir, area_dir;
     string creation;
     string *legal_dirs;
     object template;
 
-    if(sscanf(str,"%s %s",thingy, filename) !=2) thingy = str;
+    if(sscanf(str, "%s %s %s",thingy, val, filename) == 3) true();
+    else if(sscanf(str,"%s %s",thingy, filename) !=2) thingy = str;
     switch(thingy){
     case "item" : creation = "thing"; dir = "obj";break;
+    case "book" : creation = "book"; dir = "obj";break;
     case "thing" : creation = "thing"; dir = "obj";break;
     case "weap" : creation = "weapon"; dir = "weap";break;
     case "weapon" : creation = "weapon"; dir = "weap";break;
@@ -37,13 +39,16 @@ mixed gmake(string str) {
     case "mon" : creation = "npc"; dir = "npc";break;
     case "monst" : creation = "npc"; dir = "npc";break;
     case "monster" : creation = "npc"; dir = "npc";break;
+    case "meal" : creation = "meal"; dir = "meals";break;
+    case "food" : creation = "meal"; dir = "meals";break;
+    case "drink" : creation = "drink"; dir = "meals";break;
     default : true();
     }
 
-    legal_dirs = ({"obj","armor","weap","npc"});
+    legal_dirs = ({"meals","doors", "obj","armor","weap","npc"});
     if(member_array(dir, legal_dirs) == -1) {
 	write("That is not a valid argument. You may create the following: room, npc, "+
-	  "weapon, armor, container, item, table, chair, bed.");
+	  "door, weapon, armor, container, item, table, chair, bed, meal.");
 	return 1;
     }
 
@@ -97,10 +102,18 @@ mixed gmake(string str) {
 	return 1;
     }
 
-    template = new(filename);
-    template->eventMove(environment(this_player()));
-    write("You wave your hand mysteriously and "+template->GetShort()+" materializes!");
-    say(this_player()->GetCapName()+" waves "+possessive(this_player())+" hand mysteriously and "+template->GetShort()+" materializes!");
+    if(thingy != "door") {
+	template = new(filename);
+	template->eventMove(environment(this_player()));
+	write("You wave your hand mysteriously and "+template->GetShort()+" materializes!");
+	say(this_player()->GetCapName()+" waves "+possessive(this_player())+" hand mysteriously and "+template->GetShort()+" materializes!");
+    }
+
+    else {
+	write("You wave your hand mysteriously and a new door begins to materialize.");
+	say(this_player()->GetCapName()+" waves "+possessive(this_player())+" hand mysteriously and a new door begins to materialize.");
+	this_object()->eventCreateDoor(val, filename);
+    }
     return 1;
 }
 
@@ -134,7 +147,10 @@ int eventGetArray(string str){
 	    write("Blank array. Modification cancelled.");
 	    return 1;
 	}
-	this_object()->eventResumeArrayMod(target, temporary, NewArr, func);
+	if(target->GetDoor() || inherits(LIB_DOOR,target)){
+	    this_object()->eventReceiveId(target, NewArr);
+	}
+	else this_object()->eventResumeArrayMod(target, temporary, NewArr, func);
 	array_val = ({});
 	return 1;
     }
@@ -170,7 +186,6 @@ int eventDeleteItem(object ob1, object ob2){
     globalstr = tmpname;
     globalstr2 = base_name(ob2)+".c";
     unguarded( (: cp(globalstr2, globalstr) :) );
-    //tc("sending to eventResumeMappingChange: "+ob2->GetName()+", "+identify(Inventory));
     this_object()->eventResumeMappingChange(ob2, tmpname, Inventory, "SetInventory");
     unguarded( (: rm(globalstr) :) );
     return 1;

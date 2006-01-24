@@ -23,7 +23,7 @@ static void create() {
 }
 
 mixed can_free_liv_from_obj() {
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed do_free_liv_from_obj(object target, object tool) {

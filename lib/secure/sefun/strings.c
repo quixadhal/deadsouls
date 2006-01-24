@@ -88,7 +88,15 @@ varargs string wrap(string str, int x) {
 	    else x = 79;
 	}
     }
-    return sprintf("%-=" + x + "s\n", str);
+    if(sizeof(str) < 7900) return sprintf("%-=" + x + "s\n", str);
+    else {
+	string tmpfile = generate_tmp();
+	write_file(tmpfile,str);
+	str = read_bytes(tmpfile,0,7900);
+	rm(tmpfile);
+	str += "\n*** TRUNCATED ***\n";
+	return sprintf("%-=" + x + "s\n", str);
+    } 
 }
 
 varargs mixed convert_string(string str, int flag) {
@@ -250,7 +258,10 @@ int starts_with(string primary, string sub){
     rev = trim(rev);
     if(!rev) return 0;
     primary = reverse_string(rev);
-    if(sscanf(primary,sub+" %s",junk) > 0) return 1;
+    if(!sscanf(primary,sub+" %s",junk) > 0) 
+	sscanf(primary,sub+"%s",junk);
+    if(junk) return 1;
+
     else return 0;
 }
 
@@ -332,6 +343,50 @@ varargs mixed remove_matching_line(string target, string substring, int i, strin
     rm(filename);
     return new_file;
 }
+
+varargs mixed read_matching_line(string target, string substring, int i, string exclude){
+    string *ret_array;
+    int omit, done, tail_search;
+    string wtf, line, filename, new_file;
+
+    if(i && i > 0) wtf = "wtf";
+    if(!target || !file_exists(target)) true();
+    else target = read_file(target);
+    if(!target) return 0;
+    if(strsrch(target,substring) == -1) return target;
+    if(strsrch(target,"\n") == -1) return 0;
+    filename = "/tmp/"+random(time())+time()+".tmp";
+    new_file = "";
+    if(!exclude) exclude = filename;
+
+    write_file(filename,target);
+
+    for(i=1; !done; i++){
+	line = read_file(filename, i, 1);
+	if(!line) break;
+	if(strsrch(line,substring) != -1 && strsrch(line,exclude) == -1) omit =1;
+	if(omit && last(line[0..strlen(line)-2],1,1) != ";") {
+	    tail_search = 1;
+	}
+	else tail_search = 0;
+
+	if(omit || tail_search) {
+	    new_file += line;
+	}
+
+
+	if(!tail_search) omit = 0;
+	if(!line) done = 100;
+	if(i == 999) done = 100;
+    }
+
+    rm(filename);
+    ret_array = explode(new_file,"\n");
+    //return ret_array[0];
+    if(wtf) return new_file;
+    else return ret_array[0];
+}
+
 
 varargs mixed replace_matching_line(string target, string substring, string replace, int i, string exclude){
     int omit, done, tail_search, tag_it;
@@ -466,7 +521,7 @@ mixed homedir(object ob){
     else return 0;
 }
 
-string generate_tmp(mixed arg){
+varargs string generate_tmp(mixed arg){
     string ret;
     string randy = replace_string(replace_string(crypt(""+random(88)+11,""+random(88)+11),"/","XXX"),".","YYY");
 

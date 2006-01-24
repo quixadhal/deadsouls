@@ -4,23 +4,25 @@
  */
 
 #include <lib.h>
+#include <config.h>
 #include <daemons.h>
 
 inherit LIB_DAEMON;
 
 mixed cmd(string form) {
-    string tzone, str;
-    int x;
+    string str;
+    int x, offset;
+
+    offset = (int)TIME_D->GetOffset(local_time()[9]);
+    offset += EXTRA_TIME_OFFSET;
 
     x = (int)EVENTS_D->GetRebootInterval() * 3600;
     x = (time() - uptime()) + x;
-    if( tzone = (string)this_player()->GetTimeZone() )
-	x += (int)TIME_D->GetOffset(tzone) * 3600;
-    else if(query_tz()){
-	tzone = query_tz();
-    }
-    else tzone = "CST";
-    str = tzone + " " + ctime(x);
+    if(query_os_type() != "windows" ) 
+	x += offset * 3600;
+    str = query_tz()+ " " + ctime(x);
+    message("system", "Current "+query_tz()+" system time is "+timestamp(),
+      this_player());
     if(form && form == "string") return "The next reboot will occur " + str + ".";
     else message("system", "The next reboot will occur " + str + ".",this_player());
     return 1;

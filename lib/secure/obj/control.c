@@ -19,6 +19,9 @@ void create(){
       "it, and also \"release\" it. To command your "+
       "remote servant, you evidently have to preface the command "+
       "with the ] character (example: ] look at menu).");
+    SetProperties(([
+	"no steal" : 1,
+      ]));
     SetMass(20);
     SetValue(10);
     SetVendorType(VT_TREASURE);

@@ -39,11 +39,9 @@ mixed can_attack_liv(object target) {
 	return "You cannot attack in that position!";
     }
     if( (int)environment(this_player())->GetProperty("no attack") ) {
-	message("environment", "A mystical force prevents your malice.",
-	  this_player());
-	return 1;
+	return "A mystical force prevents your malice.";
     }
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed can_attack_only_liv(object target){

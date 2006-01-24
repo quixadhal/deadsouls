@@ -1,0 +1,26 @@
+
+MUDLIB(1)                                               MUDLIB(1)
+
+NNAAMMEE
+       _m_u_d_l_i_b_(_) - returns the name of the mudlib
+
+SSYYNNOOPPSSIISS
+       string _m_u_d_l_i_b_(_)
+
+DDEESSCCRRIIPPTTIIOONN
+       If you are using this documentation, then this function
+       should return the string "Nightmare", unless, of course,
+       you are claiming the work of others as your own?
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/mud_info.c
+
+SSEEEE AALLSSOO
+       _a_r_c_h_i_t_e_c_t_u_r_e_(_), _m_u_d___n_a_m_e_(_), _m_u_d_l_i_b___v_e_r_s_i_o_n_(_),
+       _q_u_e_r_y___h_o_s_t___p_o_r_t_(_), _v_e_r_s_i_o_n_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

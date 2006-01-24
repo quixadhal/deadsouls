@@ -1,0 +1,41 @@
+
+ARRANGE_STRING(1)                               ARRANGE_STRING(1)
+
+NNAAMMEE
+       _a_r_r_a_n_g_e___s_t_r_i_n_g_(_) - arranges a string to a given length
+
+SSYYNNOOPPSSIISS
+       string arrange_string(string str, int x)
+
+DDEESSCCRRIIPPTTIIOONN
+       Passed a string and a length, this function returns the
+       original string either cut to or extended to the length
+       specified by the second argument.  If the length of the
+       original string is longer than the length specified, then
+       all characters beyond the length specified are cut off.
+       If the length is less than the original string's length,
+       then the original string is padded with spaces so that it
+       ends up being as long as the length specified.
+
+EEXXAAMMPPLLEESS
+       +o   arrange_string("resistence is futile", 25) returns
+           "resistence is futile     "
+
+       +o   arrange_string("gurble", 2) returns "gu"
+
+NNOOTTEESS
+       Do not use this function inside the mudlib, as it is slow.
+       Instead use _s_p_r_i_n_t_f_(_).  This SimulEfun exists to make life
+       easy on creators.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/strings.c
+
+SSEEEE AALLSSOO
+       _c_e_n_t_e_r_(_), _w_r_a_p_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

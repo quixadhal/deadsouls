@@ -1,0 +1,52 @@
+
+UNGUARDED(1)                                         UNGUARDED(1)
+
+NNAAMMEE
+       _u_n_g_u_a_r_d_e_d_(_) - calls a function relying only on the
+       object's security
+
+SSYYNNOOPPSSIISS
+       mixed unguarded(function f)
+
+DDEESSCCRRIIPPTTIIOONN
+       This function allows an object to make a function call
+       based solely its own access.  Normally, when an object
+       makes a function call, the access of all objects invloved
+       in the object chain are checked to see if there is proper
+       access.  For example, if you have a guild object which
+       needs to read a help file in your home directory, under
+       normal circumstances this will fail.  Even though your
+       guild object has proper permissions to read your files,
+       the person executing the command does not.  So, the guild
+       object passes the security check, the player fails.  Since
+       the player fails, the entire read fails.  This system is
+       useful for preventing people from using other objects to
+       gain illegal access.  However, in the case outlined above,
+       this can be a pain.  The _u_n_g_u_a_r_d_e_d_(_) function call directs
+       the mudlib only to check to see if your guild object has
+       the proper permission.  The argument to _u_n_g_u_a_r_d_e_d_(_) is the
+       function to be called.
+
+EEXXAAMMPPLLEESS
+       In the above example, there would be code like this:
+
+               iinntt ccmmdd__hheellpp((ssttrriinngg ssttrr)) {{
+                   iiff((ssttrr !!== ""gguuiilldd"")) rreettuurrnn 00;;
+                   ttxxtt == uunngguuaarrddeedd((((:: rreeaadd__ffiillee,, HHEELLPP__FFIILLEE ::))));;
+                   mmeessssaaggee((""hheellpp"",, ttxxtt,, tthhiiss__ppllaayyeerr(())));;
+                   rreettuurrnn 11;;
+               }}
+
+       The function unguarded((: read_file, HELP_FILE :)) acts
+       just like _r_e_a_d___f_i_l_e(HELP_FILE) except that the security
+       only checks your object with the first call, but checks
+       all objects in the call stack on the second call.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/security.c
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

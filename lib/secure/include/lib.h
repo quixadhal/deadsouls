@@ -98,5 +98,6 @@
 #define LIB_MONEY          DIR_LIB        "/money"
 #define LIB_MAYOR          DIR_LIB        "/mayor"
 #define LIB_CLERK          DIR_LIB        "/clerk"
+#define LIB_CLAY          DIR_LIB         "/clay"
 
 #endif /* s_lib_h */

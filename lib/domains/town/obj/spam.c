@@ -13,6 +13,7 @@ void create(){
     SetAdjectives(({"can of","can","spam"}));
     SetShort("a can of spam");
     SetLong( (: SpamSpam :) );
+    SetNoCondition(1);
     SetMass(20);
     SetBaseCost("silver",10);
     SetVendorType(VT_TREASURE);
@@ -24,7 +25,7 @@ void init(){
 
 string SpamSpam(string spamspam){
     string spamspamspam;
-    spamspamspam=read_file("/domain/town/txt/spam.txt");
+    spamspamspam=read_file("/domains/town/txt/spam.txt");
     return spamspamspam;
 }
 int SpamSpamSpamSpam(string spam){
@@ -47,7 +48,7 @@ int SpamSpamSpamSpam(string spam){
 	return 1;
     }
     if(!living(ob)){
-	write(ob->GetShort()+" is not impressed by spam.\n");
+	write("That thing is not impressed by spam.\n");
 	say(this_player()->GetName()+" spams around foolishly.\n");
 	return 1;
     }

@@ -1,0 +1,40 @@
+
+COPY(1)                                                   COPY(1)
+
+NNAAMMEE
+       _c_o_p_y_(_) - returns a secure copy of any data type
+
+SSYYNNOOPPSSIISS
+       mixed copy(mixed val)
+
+DDEESSCCRRIIPPTTIIOONN
+       In LPC, mappings and arrays are pointers.  This means that
+       if you set one mapping equal to another, making a change
+       in one will reflect a change in the other.  To understand
+       this better, read up on these data types.  Nevertheless,
+       there are times when you do not want to be passing around
+       these pointers.  For example, if someone queries your
+       groups from the master object, you do not want them to get
+       your groups mapping and be able to modify it.  Thus, you
+       return a copy of that mapping.  This SimulEfun makes such
+       a safe copy.
+
+EEXXAAMMPPLLEESS
+       +o   given two mappings, mapping a and b, a = ([ "borg" : 1
+           ]); b = a; the expression a == b is true.  b = _c_o_p_y(a)
+           sets b equal to ([ "borg" : 1]), but a == b is false.
+
+       head1 NOTES
+
+       Use this only where absolutely needed for security
+       reasons.  It is an expensive SimulEfun as far as CPU
+       resources are concerned.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/copy.c
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

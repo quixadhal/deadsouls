@@ -23,7 +23,7 @@ static void create() {
       "must be some sort of fishing bait.");
 }
 
-mixed can_bait_obj_with_obj(string verb) { return 1; }
+mixed can_bait_obj_with_obj(string verb) { return this_player()->CanManipulate(); }
 
 mixed do_bait_obj_with_obj(object pole, object bait) {
     if( pole == bait ) {

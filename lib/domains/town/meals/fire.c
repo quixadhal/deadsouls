@@ -15,7 +15,4 @@ static void create() {
     SetStrength(100);
     SetMealMessages("You finish off the bourbon and gasp! WHOOT!! Mean stuff!",
       "$N finishes off a bottle of Firebreather bourbon and lets loose a rebel yell!");
-    SetEmptyName("bottle");
-    SetEmptyShort("an empty bottle of bourbon");
-    SetEmptyLong("This is an empty green bottle that once held bourbon.");
 }

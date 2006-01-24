@@ -8,14 +8,8 @@ int damage3();
 int damage4();
 int damage5();
 int DangerLevel();
-object victim,disease,where;
+object victim,where;
 string victimname;
-int busy;
-
-void whoami(){
-    disease=this_object();
-    return;
-}
 
 int GetHeartbeat(){
     return query_heart_beat();
@@ -38,10 +32,11 @@ int InfectMess(object ob){
 void create(){
     germ::create();
     SetKeyName("tf1");
+    SetGermName("flu virus");
     SetId(({"tf2"}));
     SetLong("Test Flu version 1");
     SetCure(20);
-    SetCommunicable(50);
+    SetCommunicable(5);
     SetLifeSpan(2000);
     SetType("viral");
     SetInfect((: InfectMess :));
@@ -63,34 +58,20 @@ void bonuses(){
 
 
 void init(){
-    object player;
     germ::init();
-    whoami();
     bonuses();
-    set_heart_beat(1);
 }
 
-
-void reset(){
-    busy=0;
-    init();
-    whoami();
-}
 
 int eventSuffer(){
     int x;
-    whoami();
-    x=random(100);
+    x=random(10000);
     if(x < 2) environment()->eventForce("sneeze");
     else if(x < 5) damage1();
     else if(x < 10) damage2();
     else if(x < 15) damage3();
     else if(x < 20) damage4();
     else if(x > 98) damage5();
-    if(!busy){
-	busy=1;
-	call_out("reset",60);
-    }
     return 1;
 }
 

@@ -19,16 +19,17 @@ static void create() {
     SetRequiredMagic(5);
     SetSkills(([ "conjuring" : 0, "magic attack" : 0 ]));
     SetMagicCost(5, 3);
+    SetStaminaCost(5, 3);
     SetDifficulty(0);
     SetMorality(-1);
-    SetAutoDamage(0);
-    SetDamage(MAGIC|BLUNT, 10, 5);
+    SetAutoDamage(3);
+    SetDamage(MAGIC|BLUNT, ({15, 15}) );
     SetMessages(({ ({ "are", "$target_name $target_verb "
 	  "unharmed by $agent_possessive "
 	  "missile." }),
-	({ "sting", "$agent_possessive_noun missile "
+	({ "stings", "$agent_possessive_noun missile "
 	  "$agent_verb $target_name." }),
-	({ "slam", "$agent_possessive_noun missile "
+	({ "slams", "$agent_possessive_noun missile "
 	  "$agent_verb $target_name." }) }));
     SetHelp("Syntax: <cast missile>\n"
       "        <cast missile on LIVING>\n\n"

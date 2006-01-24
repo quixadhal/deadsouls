@@ -4,6 +4,7 @@
 #include "/lib/include/post_office.h"
 
 inherit LIB_ROOM;
+
 static void create(){
     room::create();
     SetTown("Town");
@@ -23,12 +24,14 @@ static void create(){
 	"implements" : "Ink, paper, etc.",
 	"instructions" : "Try reading them.",
 	"counter" : "A counter folks use to lean on while writing messages." ]) );
-    SetObviousExits("n");
     SetExits( ([
-	"north" : "/domains/town/room/vill_road3" ]) );
+	"north" : "/domains/town/room/vill_road3",
+	"out" : "/domains/town/room/vill_road3.c",
+      ]) );
     SetProperty("no attack", 1);
 }
 void init(){
+    ::init();
     add_action("instr","read");
 }
 int instr(string str){
@@ -47,7 +50,6 @@ mixed CanMail(object who, string args) {
 	return "Any mail you might have will be at your home post office.";
     return 1;
 }
-
 mixed eventMail(object who, string args) {
     object ob;
 
@@ -62,13 +64,11 @@ mixed eventMail(object who, string args) {
     ob->start_post(args);
     return 1;
 }
-
 int CanReceive(object ob) {
     if( !ob && !(ob = previous_object()) ) return 0;
     if( living(ob) && !interactive(ob) ) return 0;
     else return room::CanReceive(ob);
 }
-
 int eventReleaseObject() {
     object ob;
 

@@ -5,22 +5,27 @@
  */
 
 #include <lib.h>
+#include <config.h>
 #include <daemons.h>
 #include <localtime.h>
 
 inherit LIB_DAEMON;
 
 int cmd(string str) {
-    string tz, tmp;
-    int x, scr, nr;
+    string tz, tmp, extra;
+    int offset, x, scr, nr;
 
-    tz = (string)this_player()->GetTimeZone() || local_time(time())[LT_ZONE];
-    x = (int)TIME_D->GetOffset(tz) * 3600;
+    if(sizeof(query_os_type())) extra = " for "+query_os_type();
+    tz = query_tz();
+    offset = (int)TIME_D->GetOffset(tz);
+    offset += EXTRA_TIME_OFFSET;
+    if(query_os_type() != "windows" ) x = offset * 3600;
+    else x = 0;
     scr = ((int *)this_player()->GetScreen())[0];
     nr = (time() - uptime()) + ((int)EVENTS_D->GetRebootInterval() * 3600);
     tmp = center(mud_name(), scr) + "\n";
     tmp += sprintf("%:-"+(scr/2)+"s%"+(scr/2)+"s\n", "Driver: " + version(),
-      "Library: " + mudlib() + " " + mudlib_version());
+      "Library: " + mudlib() + " " + mudlib_version()+extra);
     tmp += sprintf("%:-" + (scr/2) + "s%" + (scr/2) + "s\n",
       "Up since: " + ctime((time() - uptime()) +x),
       "Next reboot: " + ctime(nr + x));

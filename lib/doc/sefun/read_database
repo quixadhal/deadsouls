@@ -1,0 +1,27 @@
+
+READ_DATABASE(1)                                 READ_DATABASE(1)
+
+NNAAMMEE
+       _r_e_a_d___d_a_t_a_b_a_s_e_(_) - returns an array of non-commented file
+       lines
+
+SSYYNNOOPPSSIISS
+       string *read_database(string file)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given a file to read, this function will read the file and
+       return an array of lines without any comments or blank
+       lines.  Commented lines start with a # sign.
+
+NNOOTTEESS
+       This function is an immensely inefficient way to handle
+       this.  I must have been on drugs when I wrote it.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/read_database.c
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

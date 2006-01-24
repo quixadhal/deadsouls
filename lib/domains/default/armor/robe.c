@@ -1,14 +1,20 @@
 #include <lib.h>
 #include <armor_types.h>
 #include <damage_types.h>
+inherit LIB_STORAGE;
 inherit LIB_ARMOR;
+
 static void create(){
-    armor::create();
+    ::create();
     SetKeyName("wizard's robe");
     SetId(({"robe","cloak","duster"}));
     SetAdjectives(({"wizard","wizard's","soft"}));
     SetShort("a robe");
     SetLong("This is a large, comfortable-looking robe, like a wizard might wear. ");
+    SetMaxCarry(500);
+    SetProperties(([
+	"no steal" : 1,
+      ]));
     SetMass(200);
     SetBaseCost("silver",100);
     SetDamagePoints(100);
@@ -16,4 +22,7 @@ static void create(){
     SetProtection(BLADE,100);
     SetProtection(KNIFE,100);
     SetArmorType(A_CLOAK);
+}
+void init(){
+    ::init();
 }

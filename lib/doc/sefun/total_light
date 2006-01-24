@@ -1,0 +1,26 @@
+
+TOTAL_LIGHT(1)                                     TOTAL_LIGHT(1)
+
+NNAAMMEE
+       _t_o_t_a_l___l_i_g_h_t_(_) - returns the independent light value for a
+       room
+
+SSYYNNOOPPSSIISS
+       int total_light(object ob)
+
+DDEESSCCRRIIPPTTIIOONN
+       Returns the light value for a room.  This SimulEfun does
+       not say how much light may be available to any given
+       player.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/light.c
+
+SSEEEE AALLSSOO
+       _e_f_f_e_c_t_i_v_e___l_i_g_h_t_(_), _m_o_o_n___l_i_g_h_t_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

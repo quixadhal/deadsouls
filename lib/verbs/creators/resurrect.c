@@ -14,10 +14,8 @@ static void create() {
     SetRules("OBJ", "here");
     SetErrorMessage("resurrect what?");
     SetHelp("Syntax: <resurrect OBJ>\n\n"
-      "If you have write permissions to the file of the object "
-      "specified, this command adds an init(){} function. Lacking "
-      "this function makes many objects break or behave unpredictably."
-      "\nSee also: modify, create, delete, copy");
+      "Bring back to life a dead player or creator.\n"
+      "\nSee also: zap");
 }
 
 mixed can_resurrect_obj(string str) { 

@@ -8,7 +8,6 @@ inherit LIB_DAEMON;
 void remote_finger(object me, string target, string mud);
 
 mixed cmd(string str) {
-    object ob;
     string wer, wo;
 
     if(!str) {
@@ -32,7 +31,6 @@ mixed cmd(string str) {
 }
 
 void remote_finger(object ob, string who, string mud) {
-    int tc_flag, ud_flag, id;
 
     if( !(mud = (string)INTERMUD_D->GetMudName(mud)) ) {
 	message("system", mud_name() + " is blissfully unaware of the MUD " 

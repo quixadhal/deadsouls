@@ -26,7 +26,7 @@ static void create() {
       "POISON is what you wish to use to poison it with.");
 }
 
-mixed can_poison_obj_with_obj(string verb) { return 1; }
+mixed can_poison_obj_with_obj(string verb) { return this_player()->CanManipulate(); }
 
 mixed do_poison_obj_with_obj(object target, object agent) {
     if( (int)this_player()->GetInCombat() )

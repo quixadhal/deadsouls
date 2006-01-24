@@ -16,18 +16,19 @@ static void create() {
 	"no paralyze":0, 
 	"no teleport":0]));
     SetItems(([]));
+    SetExits( ([
+	"north" : "/domains/town/room/mayor",
+	"east" : "/domains/town/room/voters",
+	"south" : "/domains/town/room/vill_road3",
+	"west" : "/domains/town/room/clerk",
+	"out" : "/domains/town/room/vill_road3.c",
+      ]) );
     SetInventory(([]));
-    SetObviousExits("n, s, e, w");
-    AddExit("west",  "/domains/town/room/clerk");
-    AddExit("east",  "/domains/town/room/voters");
-    AddExit("north", "/domains/town/room/mayor");
-    AddExit("south", "/domains/town/room/vill_road3");
-    //funs
-    //snuf
+
+
 }
 void init() {
     ::init();
     SetSmell(([]));
     SetListen(([]));
 }
-//extras

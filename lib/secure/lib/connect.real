@@ -7,6 +7,7 @@
  */
 
 #include <lib.h>
+#include <rooms.h>
 #include <news.h>
 #include <flags.h>
 #include <config.h>
@@ -17,10 +18,11 @@
 inherit LIB_PAGER;
 
 static private int CrackCount, NetDead; 
-static private string Name, Terminal; 
+static private string name, Name, Terminal; 
 static private object Player, pile; 
 static private mapping LastError;
 static private int *Screen;
+static private int rescue;
 
 static void create(int binary) {
     CrackCount = 0;
@@ -41,9 +43,10 @@ static void logon() {
     input_to((: InputName :), I_NOESC); 
 } 
 
-static void InputName(string name, string kill_me) {
-    string news;
+static void InputName(string namen, string kill_me) {
+    string temp_name, news;
     mixed tmp;
+    name = namen;
 
     if( !name || name == "" ) {
 	if( kill_me ) {
@@ -57,6 +60,10 @@ static void InputName(string name, string kill_me) {
 	    input_to((: InputName :), I_NOESC, "kill me");
 	    return;
 	}
+    }
+    if(sscanf(name,"%s_rescue",temp_name) == 1) {
+	name = temp_name;
+	rescue = 1;
     }
     Name = convert_name(name);
     name = capitalize(name);
@@ -87,6 +94,7 @@ static void InputName(string name, string kill_me) {
 	Destruct();
 	return;
     }
+    if(rescue) unguarded( (: wipe_inv(name) :) );
     if( find_player(Name) ) NetDead = 1;
     Player = (object)master()->player_object(Name);
     if( !Player ) {
@@ -104,6 +112,7 @@ static void InputName(string name, string kill_me) {
     }
     receive("Password: \n");
     input_to((: InputPassword :), I_NOECHO | I_NOESC, name);
+    name = "";
 } 
 
 static void InputPassword(string pass, string cap) {
@@ -182,6 +191,8 @@ static void eventReEnterGame(string cap) {
 	return;
     }
     if( exec(Player, this_object()) ) {
+	if(rescue) 
+	    if(sizeof(deep_inventory(Player))) deep_inventory(Player)->eventMove(ROOM_FURNACE);
 	log_file("enter", cap + " (exec): " + ctime(time()) + "\n"); 
 	Player->eventReconnect();
     }
@@ -197,6 +208,8 @@ static void ConfirmReconnect(string ans, string cap) {
 	Destruct();
 	return;
     }
+    if(rescue)
+	if(sizeof(deep_inventory(Player))) deep_inventory(Player)->eventMove(ROOM_FURNACE);
     exec(tmp = new(LIB_PLAYER), Player); 
     exec(Player, this_object()); 
     destruct(tmp);
@@ -213,16 +226,6 @@ static int CanLogin() {
     return 0;
 }
 
-int eventDress(){
-    object jeans, shirt;
-    jeans = present("jeans",Player);
-    shirt = present("shirt",Player);
-    if(creatorp(Player)) return 1;
-    //if(jeans && !jeans->GetWorn()) Player->eventForce("wear jeans");
-    //if(shirt && !shirt->GetWorn()) Player->eventForce("wear shirt");
-    return 1;
-}
-
 static private void eventEnterGame() { 
     if(!exec(Player, this_object())) { 
 	receive("\nProblem connecting.\n"); 
@@ -233,7 +236,6 @@ static private void eventEnterGame() {
     if( Terminal ) Player->SetTerminal(Terminal);
     if( Screen ) Player->SetScreen(Screen[0], Screen[1]);
     Player->Setup();
-    eventDress();
     if(creatorp(Player) && 
       file_size(user_path(Player->GetKeyName())+".profile") > 0){
 	Player->eventForce("source "+user_path(Player->GetKeyName())+".profile");
@@ -403,8 +405,7 @@ static void cmdPick(string args) {
 	return;
     }
     Player->SetRace(args);
-    new("/domains/default/armor/jeans")->eventMove(Player);
-    new("/domains/default/armor/shirt")->eventMove(Player);
+    Player->SetProperty("brand_spanking_new",1);
     Player->AddCurrency("silver",random(100)+57);
     this_player()->SetWimpy(20);
     this_player()->SetTerminal("ansi");

@@ -80,7 +80,6 @@ mixed eventEndVoting() {
 
 mixed eventAddCandidate( string sClass, string sWho ) {
     object ob;
-    string sOldClass;
 
     sWho = convert_name( sWho );
     ob = find_player( sWho );

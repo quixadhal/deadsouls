@@ -1,7 +1,7 @@
 #include <lib.h>
 inherit LIB_ROOM;
-int found;
 
+int found;
 string SearchFun(){
     string result;
     if(found == 0){
@@ -15,7 +15,6 @@ string SearchFun(){
     }
     return "You find nothing special.";
 }
-
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -39,7 +38,7 @@ static void create() {
     SetSearch( ([ "default"  : (: SearchFun :)  ]) );
     found = 0;
 }
-
 void init(){
+    ::init();
     AddSearch( ({"here","area","place","room"})  , (: SearchFun :)  );
 }

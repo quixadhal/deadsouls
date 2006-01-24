@@ -29,23 +29,16 @@ mixed can_remove_obj() {
     if( this_player()->GetParalyzed() ) {
 	return "You cannot do anything.";
     }
-    return 1;
+    if(intp(check_light())) return this_player()->CanManipulate();
+    else return check_light();
+
 }
 
 mixed can_remove_obj_out_of_obj() {
     int light;
 
-    if( (light = effective_light(this_player())) < 0 ) {
-	if( 100 + (10*light) < random(100) )
-	    return "You fumble around in the darkness.";
-	else return 1;
-    }
-    else if( light > 4 ) {
-	if( 100 - (10*light) < random(100) )
-	    return "You fumble around in the blinding light.";
-	else return 1;
-    }
-    else return 1;
+    if(intp(check_light())) return this_player()->CanManipulate();
+    else return check_light();
 }
 
 mixed can_remove_obj_from_obj() {

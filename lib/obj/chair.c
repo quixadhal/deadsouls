@@ -2,6 +2,7 @@
 
 inherit LIB_CHAIR;
 
+
 static void create() {
     chair::create();
     SetKeyName("chair");
@@ -12,4 +13,7 @@ static void create() {
     SetMass(150);
     SetDollarCost(15);
     SetMaxSitters(1);
+}
+void init(){
+    ::init();
 }

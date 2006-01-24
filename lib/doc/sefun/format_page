@@ -1,0 +1,39 @@
+
+FORMAT_PAGE(1)                                     FORMAT_PAGE(1)
+
+NNAAMMEE
+       _f_o_r_m_a_t___p_a_g_e_(_) - returns a string of formatted columns from
+       an array
+
+SSYYNNOOPPSSIISS
+       string format_page(string *items, int columns)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given an array of strings and a number of columns as
+       arguments, this function formats the array into a single
+       string with the elements put into the number of columns
+       specified.  Unfortunately, as this SimulEfun predates
+       Nightmare terminal support, this SimulEfun only supports
+       80 character screen widths.
+
+EEXXAAMMPPLLEESS
+       format_page(({ "house", "car", "cat", "mouse", "dog" }),
+       3) returns "house                       car
+       cat
+        mouse                       dog"
+
+NNOOTTEESS
+       This SimulEfun is pretty much out of date and useless for
+       new uses.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/strings.c
+
+SSEEEE AALLSSOO
+       _a_r_r_a_n_g_e___s_t_r_i_n_g_(_), _c_e_n_t_e_r_(_), _f_o_r_m_a_t___s_t_r_i_n_g_(_), _w_r_a_p_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+
 int ReadList(){
     write("AVAILABLE SPELLS:\n\n"
       "\tfireball, cost 1000:\tput the hurt on an opponent\n"
@@ -17,7 +18,6 @@ int ReadList(){
     );
     return 1;
 }
-
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -39,4 +39,7 @@ static void create() {
     SetObviousExits("n");
     AddStuff( ({ "/domains/town/npc/herkimer" }) );
 
+}
+void init(){
+    ::init();
 }

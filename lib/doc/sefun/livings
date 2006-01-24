@@ -1,0 +1,25 @@
+
+LIVINGS(1)                                             LIVINGS(1)
+
+NNAAMMEE
+       _l_i_v_i_n_g_s_(_) - returns an array of all living objects
+
+SSYYNNOOPPSSIISS
+       object *_l_i_v_i_n_g_s_(_)
+
+DDEESSCCRRIIPPTTIIOONN
+       A security mask for the _l_i_v_i_n_g_s_(_) efun.  Filters out
+       hidden objects for non-priveledged objects making the
+       call.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/SimulEfun.c
+
+SSEEEE AALLSSOO
+       the _l_i_v_i_n_g_s_(_) efun
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

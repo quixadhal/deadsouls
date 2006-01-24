@@ -1,0 +1,28 @@
+
+WRAP(1)                                                   WRAP(1)
+
+NNAAMMEE
+       _w_r_a_p_(_) - returns a string wrapped to a specified terminal
+       width
+
+SSYYNNOOPPSSIISS
+       varargs string wrap(string str, int width)
+
+DDEESSCCRRIIPPTTIIOONN
+       If a second argument is passed, the first argument is
+       fitted with carriage returns to wrap the string for
+       display on a terminal as wide as the second argument.  If
+       no second argument is given, a terminal width of 80 is
+       assumed.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/strings.c
+
+SSEEEE AALLSSOO
+       _a_r_r_a_n_g_e___s_t_r_i_n_g_(_), _f_o_r_m_a_t___p_a_g_e_(_), _s_p_r_i_n_t_f_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

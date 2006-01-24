@@ -16,7 +16,4 @@ static void create()  {
     SetBaseCost("silver",5);
     SetMealMessages("The wonderful drink is invigorating." , 
       "$N drinks $P coffee, and looks invigorated.");
-    SetEmptyName("cup");
-    SetEmptyShort("an empty coffee cup");
-    SetEmptyLong("A cup which once held coffee.");
 }

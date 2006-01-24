@@ -1,8 +1,8 @@
 #include <lib.h>
 inherit LIB_ROOM;
 
-int ReadSign();
 
+int ReadSign();
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -41,7 +41,6 @@ static void create() {
     SetObviousExits("w");
     SetProperty("no attack", 1);
 }
-
 int ReadSign(){
     write( @EndText
     - This bank requires a minimum balance to open an account.
@@ -79,4 +78,6 @@ EndText
 //	    }
 //	        return 1;
 //		    }
-
+void init(){
+    ::init();
+}

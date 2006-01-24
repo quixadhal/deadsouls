@@ -16,8 +16,7 @@ static void create() {
     SetId( ({ "armor", "leather armor" }) );
     SetAdjectives( ({ "leather" }) );
     SetShort("a suit of leather armor");
-    SetLong("This suit of leather armor is made specifically for the "
-      "artrell physique.");
+    SetLong("An ordinary suit of leather armor. It is worn on one's arms, torso and legs.");
     SetVendorType(VT_ARMOR);
     SetMass(750);
     SetValue(150);
@@ -28,7 +27,8 @@ static void create() {
     SetProtection(HEAT, 7);
     SetProtection(COLD, 4);
     SetProtection(SHOCK, 15);
-    SetRestrictLimbs( ({ "torso", "first arm", "second arm", "third arm",
-	"fourth arm" }) );
     SetArmorType(A_ARMOR);
+}
+void init(){
+    ::init();
 }

@@ -159,7 +159,7 @@ string SetLong(string str) {
 }
 
 varargs mixed eventShow(object who, string component) {
-    string desc,tempdesc;
+    string desc;
 
     if( component ) {
 	component = remove_article(lower_case(component));

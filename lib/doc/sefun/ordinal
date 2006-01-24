@@ -1,0 +1,27 @@
+
+ORDINAL(1)                                             ORDINAL(1)
+
+NNAAMMEE
+       _o_r_d_i_n_a_l_(_) - returns the ordinal suffix for a number
+
+SSYYNNOOPPSSIISS
+       string ordinal(int x)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given an integer, this function returns the ordinal suffix
+       for the number.
+
+EEXXAAMMPPLLEESS
+       +o   _o_r_d_i_n_a_l(7) returns "th"
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/english.c
+
+SSEEEE AALLSSOO
+       _c_a_r_d_i_n_a_l_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

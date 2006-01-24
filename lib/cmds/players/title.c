@@ -14,7 +14,7 @@ static void GetDest(string which, string *titles, int i, int maxi);
 
 mixed cmd(string args) {
     string *titles;
-    int i, maxi;
+    int maxi;
 
     if( creatorp(this_player()) || avatarp(this_player()) ) {
 	if( !args || args == "" ) return "Change your title to what?";

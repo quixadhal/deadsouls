@@ -20,7 +20,6 @@ int PreExit(){
 
 
 
-
 static void create() {
     room::create();
     SetClimate("outdoors");
@@ -60,7 +59,5 @@ static void create() {
 	"/domains/town/npc/mp" 
       }) );
 
-    SetObviousExits("n,s");
     SetProperty("no attack", 1);
 }
-

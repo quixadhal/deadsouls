@@ -29,7 +29,7 @@ mixed can_buy_str_from_liv(string str) {
     if( this_player()->GetParalyzed() ) {
 	return "You cannot do anything.";
     }
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed do_buy_str_from_liv(string str, object vendor) {

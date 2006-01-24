@@ -1,0 +1,27 @@
+
+CARDINAL(1)                                           CARDINAL(1)
+
+NNAAMMEE
+       _c_a_r_d_i_n_a_l_(_) - returns the string description of a number
+
+SSYYNNOOPPSSIISS
+       string cardinal(int x)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given any integer number, this function will return the
+       number written out in English.
+
+EEXXAAMMPPLLEESS
+       +o   _c_a_r_d_i_n_a_l(5) returns "five"
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/english.c
+
+SSEEEE AALLSSOO
+       _o_r_d_i_n_a_l_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

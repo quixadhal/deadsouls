@@ -41,7 +41,7 @@ mixed can_climb_obj() {
 	return "You must be standing in order to climb.";
     }
     if(!stringp(hobbled(this_player()))) return "Your injuries prevent that movement.";
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed can_climb_word_obj() {

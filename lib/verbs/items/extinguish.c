@@ -15,7 +15,7 @@ static void create() {
 }
 
 mixed can_extinguish_obj() {
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed do_extinguish_obj(object target) {

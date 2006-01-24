@@ -37,9 +37,6 @@ static void create() {
 }
 
 static void heart_beat() {
-    object *inv;
-    string *cns;
-    int i;
 
     if(!interactive(this_object())) {
 	set_heart_beat(0);
@@ -156,7 +153,6 @@ varargs int eventDie(object agent) {
 	interactive::eventMove(ROOM_DEATH);
 	this_object()->AddExperiencePoints(-subexpee);
 	this_object()->save_player((string)this_object()->GetKeyName());
-	this_object()->eventMove("/domains/town/adm/death");
 	this_object()->eventForce("look");
     }
     return 1;
@@ -201,18 +197,23 @@ void eventRevive() {
     }
     NewBody(GetRace());
     eventCompleteHeal(GetMaxHealthPoints());
+    SetSpecialTarget( ({}) );
     AddMagicPoints(-(GetMaxMagicPoints()/2));
+    AddStaminaPoints(-(GetMaxStaminaPoints()/2));
+    AddHealthPoints(-(GetMaxHealthPoints()/2));
     if(creatorp()) interactive::SetShort("$N the reborn");
 }
 
 int eventMove(mixed dest) {
     int ret;
-    string last_loc;
 
     if(environment(this_player()) && base_name(environment(this_player()))) {
 	this_player()->SetProperty("LastLocation",
 	  base_name(environment(this_player())));
     }
+
+    if(this_player()->GetProperty("debug")) 
+	tell_player(this_player(),"Calling stack for move: "+get_stack());
 
     ret = interactive::eventMove(dest);
     eventMoveFollowers(environment(this_object()));
@@ -221,7 +222,7 @@ int eventMove(mixed dest) {
 
 varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
     object *inv;
-    object prev, env;
+    object prev;
     string prevclim, newclim;
 
     if( prev = environment() ) {
@@ -246,6 +247,10 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
 	  GetPosition() == POSITION_LYING ){
 	    omsg = GetName()+" crawls "+omsg+".";
 	}
+	else if(GetPosition() == POSITION_FLYING ){
+	    omsg = GetName()+" flies "+omsg+".";
+	}
+
 	else omsg = GetMessage("leave", omsg);
 	inv->eventPrint(omsg, MSG_ENV);
     }
@@ -262,6 +267,10 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
       GetPosition() == POSITION_LYING ){
 	imsg = GetName()+" crawls in.";
     }
+    else if(GetPosition() == POSITION_FLYING){
+	imsg = GetName()+" flies in.";
+    }
+
     else if( !imsg || imsg == "" ) imsg = GetMessage("come", imsg);
     else imsg = replace_string(imsg, "$N", GetName());
     inv->eventPrint(imsg, MSG_ENV);
@@ -427,6 +436,49 @@ int Setup() {
     if(sizeof(GetExtraChannels())) AddChannel(GetExtraChannels());
     set_heart_beat(GetHeartRate());
 
+    if(GetProperty("brand_spanking_new")){
+	object jeans, shirt, book;
+	jeans = new("/domains/default/armor/jeans");
+	shirt = new("/domains/default/armor/shirt");
+	book = new("/domains/default/obj/handbook");
+
+	if(jeans) jeans->eventMove(this_object());
+	if(shirt) shirt->eventMove(this_object());
+	if(book)  book->eventMove(this_object());
+
+	if(jeans) this_object()->eventForce("wear jeans");
+	if(shirt) this_object()->eventForce("wear shirt");
+    }
+
+    if(this_object()->GetTown() == "FirstAdmin"){
+	object robe, hat, staff, book, book2;
+	string home;
+
+	this_object()->SetTown("World");
+
+	robe = new("/domains/default/armor/robe");
+	hat = new("/domains/default/armor/wizard_hat");
+	staff = new("/secure/obj/staff");
+	book = new("/domains/default/obj/manual");
+	book2 = new("/domains/default/obj/handbook");
+
+	if(robe) robe->eventMove(this_object());
+	if(hat) hat->eventMove(this_object());
+	if(staff) staff->eventMove(this_object());
+	if(book) book->eventMove(this_object());
+	if(book2) book2->eventMove(this_object());
+
+	if(robe) this_object()->eventForce("wear robe");
+	if(hat) this_object()->eventForce("wear hat");
+
+	home = "/realms/"+this_player()->GetKeyName()+"/workroom";
+
+	if(file_exists(home+".c")) 
+	    this_object()->eventMoveLiving(home);
+
+	SetShort("First Admin $N");
+    }
+
     return 1;
 }
 
@@ -574,11 +626,11 @@ mixed *GetQuests() {
 	  ((class quest)$1)->Description }) :));
 }
 
-mixed GetQuest(string str){
+int GetQuest(string str){
     foreach(mixed component in GetQuests()){
-	if(str == component[1]) return "hit";
+	if(str == component[1]) return 1;
     }
-    return "nohit";
+    return 0;
 }
 
 string SetShort(string irrelevant) {
@@ -615,7 +667,6 @@ string GetName() {
 varargs string GetLong(string str) {
     mapping counts;
     string item;
-    float h;
 
     str = GetShort() + "\n";
     str += interactive::GetLong() + "\n";
@@ -676,14 +727,14 @@ string SetClass(string str) {
     return GetClass();
 }
 
-int GetEffectiveVision() {
+varargs mixed GetEffectiveVision(int raw_score) {
     if( newbiep(this_object()) ) return VISION_CLEAR;
+    else if(raw_score) return living::GetEffectiveVision(raw_score);
     else return living::GetEffectiveVision();
 }
 
 varargs static int AddHealthPoints(int x, string limb, object agent) {
-    string str;
-    int hp, mp, sp, max_hp, max_mp, max_sp, ret, undead;
+    int hp, ret, undead;
 
     hp = GetHealthPoints();
     undead = GetUndead();

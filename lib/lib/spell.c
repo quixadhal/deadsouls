@@ -61,11 +61,16 @@ static string SetConjure(string str) {
 }
 
 int GetDamage() {
+    int tmp;
     int damage = Damage[0];
 
     if( Damage[1] ) {
 	damage += random(Damage[1]);
     }
+    tmp = this_player()->GetSkill("magic attack")["level"];
+    tmp = tmp/this_player()->GetSkill("magic attack")["class"];
+    damage += tmp;
+    //tc("spell damage: "+identify(damage));
     return damage;
 }
 
@@ -438,7 +443,7 @@ static int CanAttack(object who, object array enemies, int power) {
     int miss_count = 0;
     int hit_con = 0;
     int miss_con = 0;
-    int con, bonus;
+    int bonus;
 
     if( !maxi ) {
 	return -1;
@@ -661,6 +666,10 @@ varargs int eventCast(object who, int level, mixed limb, object array targets) {
 		continue;
 	    }
 	    damage = (GetDamage() * level)/100;
+	    //damage = GetDamage();
+	    if(!limb) limb = "torso";
+	    //tc("limb: "+identify(limb));
+	    if(grepp(identify(limb),"leg") || grepp(identify(limb),"foot")) limb = "torso";
 	    damage = target->eventReceiveDamage(who, GetDamageType(), damage,
 	      AutoDamage, limb);
 	    total_damage += damage;

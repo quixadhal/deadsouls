@@ -1,0 +1,23 @@
+
+QUERY_NIGHT(1)                                     QUERY_NIGHT(1)
+
+NNAAMMEE
+       _q_u_e_r_y___n_i_g_h_t_(_) - returns true if it is night on the MUD
+
+SSYYNNOOPPSSIISS
+       int _q_u_e_r_y___n_i_g_h_t_(_)
+
+DDEESSCCRRIIPPTTIIOONN
+       Returns true if it is night on the MUD.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/time.c
+
+SSEEEE AALLSSOO
+       _d_a_t_e_(_), _d_a_y_(_), _h_o_u_r_(_), _m_i_n_u_t_e_s_(_), _m_o_n_t_h_(_), _y_e_a_r_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

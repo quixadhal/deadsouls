@@ -10,7 +10,7 @@
 inherit LIB_DAEMON;
 
 int cmd(string str) {
-    string reply,a,b,who,msg,tmp,machine_message,frm;
+    string reply,a,b,msg,machine_message,frm;
     object ob, machine;
     mixed err;
 

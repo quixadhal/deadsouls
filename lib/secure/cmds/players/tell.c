@@ -18,13 +18,16 @@ mixed cmd(string str) {
     string who, msg, tmp, machine_message;
 
     if(!str) return notify_fail("Syntax: <tell [who] [message]>\n");
+    if(this_player()->GetMagicPoints() < 5) {
+	write("You lack sufficient magic to tell to anyone right now.");
+	return 1;
+    }
     mud = 0;
     if((maxi=sizeof(words = explode(str, "@"))) > 1) {
 	who = convert_name(words[0]);
 	if(maxi > 2) words[1] = implode(words[1..maxi-1], "@");
 	maxi = sizeof(words = explode(words[1], " "));
 	for(i=0; i<maxi; i++) {
-	    string *mts;
 	    tmp = lower_case(implode(words[0..i], " "));
 
 	    if( (string)INTERMUD_D->GetMudName(tmp) ) {
@@ -55,6 +58,7 @@ mixed cmd(string str) {
 	if(msg == "") return notify_fail("What do you wish to tell?\n");
     }
     else {
+	this_player()->AddMagicPoints(-5);
 	SERVICES_D->eventSendTell(who, mud, msg);
 	return 1;
     }
@@ -65,6 +69,7 @@ mixed cmd(string str) {
 	machine=present("cratylus' answering machine",ob);
 	if(archp(ob)) frm = (string)this_player()->GetCapName();
 	else frm = (string)this_player()->GetName();
+	if(ob && !creatorp(ob)) this_player()->AddMagicPoints(-5);
 	if(machine){
 	    int parse_it;
 	    parse_it=machine->query_answer();
@@ -75,8 +80,10 @@ mixed cmd(string str) {
 		return 1;
 	    }
 	}
-	if( (err = (mixed)this_player()->CanSpeak(ob, "tell", msg)) != 1)
+	if( (err = (mixed)this_player()->CanSpeak(ob, "tell", msg)) != 1){
+	    if(ob && !creatorp(ob)) this_player()->AddMagicPoints(5);
 	    return err || "Tell whom what?";
+	}
 	if( ob->GetInvis() && creatorp(ob) && !archp(this_player()) ) {
 	    ob->eventPrint("%^BLUE%^%^BOLD%^" +
 	      (string)this_player()->GetName() + " unknowingly "
@@ -95,8 +102,8 @@ mixed cmd(string str) {
     return 1;
 }
 
-string GetHelp(string str) {
-    return ("help",
+void help(string str) {
+    message("help",
       "Syntax: <tell [player] [message]>\n"
       "        <tell [player]@[mud] [message]>\n\n"
       "Sends the message to the player named either on this mud if no "
@@ -104,7 +111,7 @@ string GetHelp(string str) {
       "another mud is specified.  For muds with more than one word in their "
       "names, use . (periods) to take place of spaces.  Example: tell "
       "descartes@realms.of.chaos hi\n\n"
-      "See also: say, shout, yell, emote");
+      "See also: say, shout, yell, emote",this_player());
 }
 
 string morse(string msg) {

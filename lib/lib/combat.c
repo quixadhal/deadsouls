@@ -167,6 +167,11 @@ object array GetSpecialTarget() {
     return SpecialTargets;
 }
 
+object array SetSpecialTarget(object *cibles) {
+    if(cibles) SpecialTargets = cibles;
+    return SpecialTargets;
+}
+
 varargs int SetParalyzed(int count, function f) {
     if(count < 1) {
 	count = cParalyzed = 0;
@@ -483,7 +488,7 @@ int eventExecuteAttack(mixed target) {
     fNextRound = 0;
     tNextRound = ROUND_UNDEFINED;
     if( position == POSITION_LYING || position == POSITION_SITTING ) {
-	eventPrint("You can't fight unless you are standing up!");
+	eventPrint("You can't fight unless you are up!");
 	return 0;
     }
     if( arrayp(target) ) {
@@ -660,7 +665,6 @@ int eventExecuteAttack(mixed target) {
     }
 
     void eventMeleeAttack(object target, string limb) {
-	string array limbs;
 	int pro, con;
 	int chance;
 
@@ -789,7 +793,7 @@ int eventExecuteAttack(mixed target) {
     }
 
     varargs int eventReceiveAttack(int speed, string def, object agent) {
-	int x, y, pro, level, bonus;
+	int x, pro, level, bonus;
 
 	if( !agent ) {
 	    agent = previous_object();
@@ -985,7 +989,6 @@ int eventExecuteAttack(mixed target) {
 
 	    if( SpecialTargets ) {
 		foreach(object target in SpecialTargets) {
-		    object tmp;
 
 		    if( objectp(SetCurrentEnemy(target)) ) {
 			break;

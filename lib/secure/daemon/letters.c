@@ -159,7 +159,7 @@ static void manage_letters() {
 	if(++__LetterPtr[0] >= x) __LetterPtr = ({ 0, 0 });
 	else __LetterPtr[1] = 0;
     }
-    sscanf(__LettersDir[__LetterPtr[0]][__LetterPtr[1]], "%s\.%s", str, ext); 
+    sscanf(__LettersDir[__LetterPtr[0]][__LetterPtr[1]], "%s.%s", str, ext); 
     __LetterPtr[1]++;
     if(!restore_letter(str)) { 
 	return; 
@@ -197,7 +197,7 @@ static void manage_postal() {
 	__PostalPtr[1]++;
 	return;
     }
-    sscanf(__PostalDir[__PostalPtr[0]][__PostalPtr[1]], "%s\.%s", pl, ext); 
+    sscanf(__PostalDir[__PostalPtr[0]][__PostalPtr[1]], "%s.%s", pl, ext); 
     file = DIR_POSTAL+"/"+pl[0..0]+"/"+pl+__SAVE_EXTENSION__;
     if(!unguarded((: file_exists, file :))) {
 	__PostalPtr[1]++;

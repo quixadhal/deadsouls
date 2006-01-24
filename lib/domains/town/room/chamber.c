@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -27,7 +28,6 @@ static void create() {
 	"east" : "/domains/town/room/healer",
 	"west" : "/domains/town/room/healer2",
       ]) );
-    SetObviousExits("e,w");
     SetProperty("busy",0);
 
 }
@@ -38,4 +38,7 @@ int CanReceive(object ob) {
 	return 0;
     }
     return 1;
+}
+void init(){
+    ::init();
 }

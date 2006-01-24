@@ -111,7 +111,9 @@ object to_object(mixed var) {
 		return 0;
 	    }
 	    var = absolute_path(this_player()->query_cwd(), var);
-	    if( ob = load_object(var) ) {
+	    if(!file_exists(var)) var += ".c";
+	    if(!file_exists(var)) var = "";
+	    if( sizeof(var) && ob = load_object(var) ) {
 		return ob;
 	    }
 	}

@@ -1,12 +1,12 @@
-
 #include <lib.h>
 
 inherit LIB_SENTIENT;
 
 static void create() {
     sentient::create();
-    SetKeyName("a mangy little rat");
-    SetId(({"rat","dirty rat"}));
+    SetKeyName("rat");
+    SetAdjectives( ({"mangy", "little", "dirty"}) );
+    SetId( ({"rat"}) );
     SetShort("a rat");
     SetLong("A scruffy little dirty rat.");
     SetLevel(3);
@@ -22,4 +22,7 @@ static void create() {
 	"The rat squeaks.", "You hear a rat scuttling about.", 
 	"A scruffy little rat brushes against your leg.",
 	"You hear tiny munching sounds."}));
+}
+void init(){
+    ::init();
 }

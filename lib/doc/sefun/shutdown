@@ -1,0 +1,24 @@
+
+SHUTDOWN(1)                                           SHUTDOWN(1)
+
+NNAAMMEE
+       _s_h_u_t_d_o_w_n_(_) - shuts down the mud
+
+SSYYNNOOPPSSIISS
+       varargs void shutdown(int code)
+
+DDEESSCCRRIIPPTTIIOONN
+       The MudOS _s_h_u_t_d_o_w_n_(_) efun has no security.  This SimulEfun
+       overrides the MudOS _s_h_u_t_d_o_w_n_(_) efun to provide security.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/SimulEfun.c
+
+SSEEEE AALLSSOO
+       the _s_h_u_t_d_o_w_n_(_) efun
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

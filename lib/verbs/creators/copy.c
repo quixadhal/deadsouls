@@ -26,7 +26,7 @@ static void create() {
       "When you specify an object and provide a filename, this "
       "command makes a copy of the object's file and gives it "
       "the name you provide.\n\n"
-      "\nSee also: create, delete, modify");
+      "\nSee also: create, delete, modify, reload, initfix, add" );
 }
 
 mixed can_copy_obj_str(object ob, string str) { return 1; }

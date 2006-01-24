@@ -7,6 +7,7 @@
 #define SERVICE_WHO
 
 #include <daemons.h>
+#include <rooms.h>
 
 void eventReceiveWhoReply(mixed *packet) {
     string *list, *who;
@@ -22,13 +23,19 @@ void eventReceiveWhoReply(mixed *packet) {
 
 void eventReceiveWhoRequest(mixed *packet) {
     mixed *msg;
-
+    string ret = "";
     if( file_name(previous_object()) != INTERMUD_D ) return;
     msg = map(filter(users(), (: !((int)$1->GetInvis()) :)),
       (: ({ (string)$1->GetCapName(), query_idle($1),
 	  (string)$1->GetShort() }) :));
     INTERMUD_D->eventWrite(({ "who-reply", 5, mud_name(), 0, packet[2],
 	packet[3], msg }));
+foreach(string *entry in msg){
+ret += entry[0]+", ";
+}
+ret = truncate(ret,2);
+
+tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"+capitalize(packet[3])+" at "+packet[2]+" has requested a list of users currently logged on. Replying with: %^BOLD%^YELLOW%^"+ret+".%^RESET%^\"");
 }
 
 void eventSendWhoRequest(string mud) {

@@ -24,7 +24,6 @@ mixed SetPreventGet(mixed val) {
 }
 
 mixed CanGet(object who) {
-    mixed val;
 
     if( !((int)who->CanCarry(GetMass())) ) return "It is too heavy for you!";
     if( !PreventGet && !GetProperty("keep") ) return 1;

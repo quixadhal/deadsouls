@@ -21,6 +21,7 @@ inherit LIB_PERSIST;
 inherit LIB_POSITION;
 inherit LIB_UNDEAD;
 inherit LIB_CRAWL;
+inherit LIB_FLY;
 
 #define COLLAPSE_AT            10.0
 
@@ -119,6 +120,7 @@ static void heart_beat() {
     }
     eventCheckHealing();
     if(!stringp(hobbled(this_player()))) eventFall();
+    if(GetPosition() == POSITION_FLYING && !this_object()->CanFly()) eventFall();
 }
 
 void eventReconnect() {
@@ -548,6 +550,14 @@ mixed eventReceiveThrow(object who, object what) {
  */
 varargs int eventDie(object agent) {
     int x;
+    string killer, death_annc;
+
+    if(!agent) killer = "UNKNOWN";
+    else killer = agent->GetName();
+
+    death_annc = killer + " has slain "+ this_object()->GetName()+".";
+
+    CHAT_D->eventSendChannel("SYSTEM","death",death_annc,0);
 
     if( Sleeping > 0 ) Sleeping = 0;
 
@@ -562,8 +572,11 @@ varargs int eventDie(object agent) {
 	string curr;
 	int i;
 
-	ob = new(LIB_CORPSE);
-	ob->SetCorpse(this_object());
+	if(GetRace() == "golem") ob = new(LIB_CLAY); 
+	else { 
+	    ob = new(LIB_CORPSE);
+	    ob->SetCorpse(this_object());
+	}
 	ob->eventMove(environment());
 	obs = filter(all_inventory(), (: !((int)$1->GetRetainOnDeath()) :));
 	i = sizeof(obs);
@@ -665,7 +678,6 @@ void NewBody(string race) {
  */
 mixed CanWear(object ob, string *limbs) {
     string limb, verb_pr, verb_pt, short;
-    int *types;
     int type, bad_types, i, maxi;
 
     if( !ob ) return 0;
@@ -869,6 +881,30 @@ mixed CanWear(object ob, string *limbs) {
     return 1; /* ok */
 }
 
+mixed CanManipulate(){
+    string *prehensile_limbs = this_object()->GetWieldingLimbs();
+    if(!sizeof(prehensile_limbs)){
+	say(this_object()->GetName()+" looks helpless without prehensile appendages.");
+	return "You lack prehensile limbs with which to do that.";
+    }
+    return 1;
+}
+
+int CanFly(){
+    string clipped = identify(this_player()->GetMissingLimbs());
+
+    if(creatorp(this_player())) return 1;
+
+    if(!RACES_D->CanFly(this_player()->GetRace())) {
+	return 0;
+    }
+
+    if(!clipped || !sizeof(clipped)) return 1;
+    if(!grepp(lower_case(clipped),"wing")) return 1;
+    return 0;
+}
+
+
 /* int AddLimb(string limb, string parent, int classes, int *armors)
  * string limb - the limb being added (required)
  * string parent - the limb to which this one is being attached (required)
@@ -967,9 +1003,12 @@ int RemoveLimb(string limb, object agent) {
 	message("environment", "Your "+ limb + " is severed!", this_object());
 
 
-	objict = new("/lib/std/limb");
-	objict->SetLimb(limb, GetCapName(), GetRace());
-	objict->SetId( ({ limb, limbname }));
+	if(GetRace() == "golem") objict = new(LIB_CLAY);
+	else {
+	    objict = new(LIB_LIMB);
+	    objict->SetLimb(limb, GetCapName(), GetRace());
+	    objict->SetId( ({ limb, limbname }));
+	}
 	objict->eventMove(environment());
 	i = sizeof(WornItems[limb]);
 	while(i--) {
@@ -997,9 +1036,12 @@ int RemoveLimb(string limb, object agent) {
 	message("environment", possessive_noun(GetName()) + " " + limb +
 	  " is severed!", environment(), ({ this_object() }));
 	message("environment", "Your "+ limb + " is severed!", this_object());
-	ob = new("/lib/std/limb");
-	ob->SetLimb(limb, GetCapName(), GetRace());
-	ob->SetId( ({ limb, limbname }));
+	if(GetRace() == "golem") ob = new(LIB_CLAY);
+	else {
+	    ob = new(LIB_LIMB);
+	    ob->SetLimb(limb, GetCapName(), GetRace());
+	    ob->SetId( ({ limb, limbname }));
+	}
 	ob->eventMove(environment());
 	i = sizeof(WornItems[limb]);
 	while(i--) {

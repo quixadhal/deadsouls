@@ -183,7 +183,6 @@ mixed CanUnlock(object who, string id, object key) {
 }
 
 int eventReceiveObject(object ob) {
-    int mydepth,yourdepth,total;
     if( GetClosed() ) {
 	return 0;
     }
@@ -201,7 +200,13 @@ void PutCheck(){
 }
 
 void create() {
+    string *i_save, *s_save, *a_save;
+    i_save = item::GetSave();
+    s_save = seal::GetSave();
+    a_save = i_save + s_save;
+
     AddSave( ({ "CanClose", "CanLock", "RecurseDepth" , "MaxRecurseDepth" }) );
+    AddSave( a_save );
     holder::create();
     item::create();
     seal::create();

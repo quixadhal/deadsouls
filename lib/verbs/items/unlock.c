@@ -27,7 +27,7 @@ mixed can_unlock_obj_with_obj() {
     if( this_player()->GetParalyzed() ) {
 	return "You cannot do anything.";
     }
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed do_unlock_obj_with_obj(object target, object key) {

@@ -36,7 +36,7 @@ mixed can_cast_str(string spell) {
 	    return "That is not a spell you cast.";
 	}
     }
-    return this_player()->CanCast(tmp);
+    if(intp(this_player()->CanManipulate())) return this_player()->CanCast(tmp);
 }
 
 mixed can_cast_str_on_obj(string spell) {

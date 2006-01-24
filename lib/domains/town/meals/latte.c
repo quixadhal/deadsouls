@@ -16,8 +16,4 @@ static void create()  {
     SetValue(2);
     SetMealMessages("The wonderful drink is invigorating." , 
       "$N drinks $P latte, and looks invigorated.");
-    SetEmptyName("glass");
-    SetEmptyShort("an empty latte glass");
-    SetEmptyLong("The glass, which once held a world-famous, Seattle "
-      "Espresso latte, is now empty.");
 }

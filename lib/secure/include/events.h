@@ -37,6 +37,7 @@
 #define LIB_MANIPULATE   DIR_EVENTS "/manipulate"
 #define LIB_CRAWL        DIR_EVENTS "/crawl"
 #define LIB_LIE          DIR_EVENTS "/lie"
+#define LIB_FLY          DIR_EVENTS "/fly"
 
 
 #endif /* s_events_h */

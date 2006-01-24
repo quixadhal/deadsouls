@@ -1,6 +1,7 @@
 #include <lib.h>
 #include <vendor_types.h>
 inherit LIB_ITEM;
+
 int state;
 int blocked, short, logged;
 string message;
@@ -17,12 +18,16 @@ void create(){
     SetShort("an answering machine");
     SetLong("This is a portable answering machine. There is a label on "
       "it you can read.");
+    SetProperties(([
+	"no steal" : 1,
+      ]));
     SetMass(1);
     SetValue(1);
     SetVendorType(VT_TREASURE);
     state=0;
 }
 void init(){
+    ::init();
     add_action("toggle_answer","answer");
     add_action("check_it","check");
     add_action("set_ann","announce");

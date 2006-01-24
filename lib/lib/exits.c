@@ -31,7 +31,7 @@ mixed CanGo(object who, string str) {
 }
 
 mixed eventGo(object who, string str) {
-    if(query_verb() == "go"){	
+    if(query_verb() == "go" && interactive(this_player())){	
 	if( who->GetPosition() != POSITION_STANDING ) {
 	    if(stringp(hobbled(this_player()))) who->eventStand();
 	    if( who->GetPosition() != POSITION_STANDING ) {
@@ -45,7 +45,10 @@ mixed eventGo(object who, string str) {
 	    return 0;
 	}
     }
-
+    else if(query_verb() == "fly") {
+	if( who->GetPosition() != POSITION_FLYING )
+	    return 0;
+    }
 
     if( Doors[str] && (int)Doors[str]->GetClosed() ) {
 	message("my_action", "You bump into " + 
@@ -83,8 +86,6 @@ string SetDoor(string dir, string file) {
 }
 
 string GetDirection(string dest) {
-    string *cles;
-    int i;
 
     foreach(string dir, mapping data in Exits) {
 	if( data["room"] == dest ) {

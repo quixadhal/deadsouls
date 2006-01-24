@@ -1,0 +1,33 @@
+
+MUD_NAME(1)                                           MUD_NAME(1)
+
+NNAAMMEE
+       _m_u_d___n_a_m_e_(_) - returns the name of the MUD
+
+SSYYNNOOPPSSIISS
+       string _m_u_d___n_a_m_e_(_)
+
+DDEESSCCRRIIPPTTIIOONN
+       Returns the official name of the MUD.  This information is
+       taken from the driver config file.
+
+NNOOTTEESS
+       If you are pretty stable with your MUD's name, then you
+       really do not need to use this function.  It is used
+       through the mudlib, since the mudlib may be used on many
+       MUDs.  Using this once your MUD is relatively stable will
+       server to slow things down when you do not need the
+       flexibility.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/mud_info.c
+
+SSEEEE AALLSSOO
+       _a_r_c_h_i_t_e_c_t_u_r_e_(_), _m_u_d_l_i_b_(_), _m_u_d_l_i_b___v_e_r_s_i_o_n_(_),
+       _q_u_e_r_y___h_o_s_t___p_o_r_t_(_), _v_e_r_s_i_o_n_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

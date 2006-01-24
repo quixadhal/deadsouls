@@ -135,7 +135,7 @@ mixed GetCombatMove(string type, int skill) {
 varargs void
 SendMeleeMessages(object target, int x, string targlimb, string limb) {
     int i;
-    string adverb, str;
+    string adverb;
     mixed verb, ptr, moves;
     if( x < 0 ) {
 	eventSendMissMessages(target, x, limb);

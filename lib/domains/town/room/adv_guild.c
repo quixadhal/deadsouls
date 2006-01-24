@@ -2,9 +2,9 @@
 inherit LIB_ROOM;
 
 object ob;
+
 int ReadSign();
 int ReadScroll();
-
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -28,6 +28,10 @@ static void create() {
 	({"building","small building","here"}) : "You are in the "
 	"Adventurers' Guild.",
       ]) );
+    SetInventory(([
+	"/domains/town/obj/bin" : 1,
+	"/domains/town/obj/table" : 1,
+      ]));
     SetRead( ([
 	({"list","scroll"}) : (: ReadScroll :),
 	({"instructions","sign"}) : (: ReadSign :)
@@ -53,80 +57,15 @@ static void create() {
       "When finished writing, enter a single period on a blank line, then at the "
       "colon prompt (:) type a lower-case x and return. \n");
     ob->eventMove(this_object());
+    SetNoClean(1);
+}
+mixed ReadSign(){
+    return (mixed)this_player()->eventPage("/domains/town/txt/advancement.txt");
 }
 
-int ReadSign(){
-    write( @EndText
-
-	WELCOME TO THE ADVENTURERS' GUILD!
-
-   Things are pretty straightforward here. You can advance
-to higher levels by possessing enough experience and having
-completed enough quests. 
-
-   Type "status" to see how many xp's you have. Those are
-experience points, and with enough of them, you can advance
-to the next level. 
-
-   After level 4, you must have enough quest points, as
-well. Read the scroll here to see what quests are available.
-You only get points the first time you complete a quest.
-
-The advancement requirements break down like this:
-
-Level   Title                       XP                QP
-  1     the utter novice            0                 0               
-  2     the simple novice           1000              0               
-  3     the beginner                1500              0               
-  4     the adventurer              2300              0               
-  5     the experienced adventurer  3500              5               
-  6     the expert adventurer       5100              12              
-  7     the great adventurer        7700              21              
-  8     the master adventurer       12000             32              
-  9     the Freeman                 17000             45              
-  10    the Citizen                 26000             60              
-  11    the Knight                  39000             77              
-  12    the Baron                   59000             96              
-  13    the Count                   88000             117             
-  14    the Earl                    130000            140             
-  15    the Marquis                 198000            165             
-  16    the Duke                    297000            192             
-  17    the Arch Duke               444444            221             
-  18    Praetor                     666667            252             
-  19    Quaestor                    1000000           285             
-  20    Caesar                      2000000           450
-  21+   <See Trans-Human Elder Guildmaster for information>
-
-
-To advance, ask the guildmaster. 
-Example:
-
-ask dirk to advance
-
-EndText
-    );
-    return 1;
+mixed ReadScroll(){
+    return (mixed)this_player()->eventPage("/domains/town/txt/quests.txt");
 }
-
-int ReadScroll(){
-    write( @EndText
-
-The scroll is stained, old, and tattered. It seems that only
-a few lines can be read:
-
-* Old Mansion: Legend has it that there are secrets in
-the old abandoned mansion south of the church.
-Quest Points: 2
-
-* Orcslayer: Find the famed Orcslayer sword and return it to
-Leo the archwizard. Leo was last seen going into the church.
-Quest Points: 10
-
-
-EndText
-    );
-    return 1;
+void init(){
+    ::init();
 }
-
-
-

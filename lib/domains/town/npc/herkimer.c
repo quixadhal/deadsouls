@@ -87,10 +87,16 @@ int JoinGuild(object ob, string verb, string what){
 	return 1;
     }
     eventForce("say Hmm...want to join our guild, do you?");
+
+    if(!this_player()->GetQuest("Orc Slayer Quest")){
+	eventForce("say First you must prove yourself worthy. Help my brother Leo find the Orcslayer and I will happily welcome you into our family. Until then, you may not join the mages.");
+	return 1;
+    }
     if(ob->GetClass() == "explorer" || !ob->GetClass()){
 	eventForce("say very well, "+ob->GetName()+".");
 	eventForce("say Welcome to the mages' guild! You are now officially a mage. You must practice your magic often, since you are now physically weaker than before. The stronger your magic, the stronger you are!");
 	ob->ChangeClass("mage");
+	eventForce("say you have been demoted to a Level 1 player. However, you still retain your experience and your questing history, so just ask Dirk to promote you again a few times.");
 	return 1;
     }
     eventForce("say I'm sorry, it looks to me like you have already chosen your specialty. As a member of the Guildmasters' Guild, I am forbidden from removing you from the "+capitalize(ob->GetClass())+"'s Guild.");
@@ -120,7 +126,7 @@ int TeachSpell(object who, string verb, string spell){
     }
     cost = AvailableSpells[spell];
     onhand = who->GetCurrency("silver");
-    if(onhand < cost) {
+    if(who->GetClass() != "mage" && onhand < cost) {
 	eventForce("say You lack enough silver coins to pay for that spell.");
 	eventForce("say "+spell+" costs "+cost+" silver and you "+
 	  "only have "+onhand+".");
@@ -135,7 +141,7 @@ int TeachSpell(object who, string verb, string spell){
     }
     eventForce("smile");
     eventForce("say Congratulations. You now possess the mystical knowledge of the "+spell+" spell. Use it wisely.");
-    who->AddCurrency("silver",-cost);
+    if(who->GetClass() != "mage") who->AddCurrency("silver",-cost);
     return 1;
 }
 

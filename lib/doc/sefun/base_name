@@ -1,0 +1,32 @@
+
+BASE_NAME(1)                                         BASE_NAME(1)
+
+NNAAMMEE
+       _b_a_s_e___n_a_m_e_(_) - returns the name of the object's original
+       file
+
+SSYYNNOOPPSSIISS
+       string base_name(mixed val)
+
+DDEESSCCRRIIPPTTIIOONN
+       If you pass an object name (returned by the _f_i_l_e___n_a_m_e_(_)
+       efun) or an object itself, this function will return the
+       name of the original file from which the object was loaded
+       or cloned.  For master copies, the _b_a_s_e___n_a_m_e_(_) will equal
+       the _f_i_l_e___n_a_m_e_(_).  For clones, the _f_i_l_e___n_a_m_e_(_) will be the
+       _b_a_s_e___n_a_m_e_(_) plus an extension.
+
+EEXXAAMMPPLLEESS
+       _b_a_s_e___n_a_m_e(find_living("orc")) might return "/std/monster"
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/base_name.c
+
+SSEEEE AALLSSOO
+       _f_i_l_e___n_a_m_e_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

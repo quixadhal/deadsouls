@@ -18,11 +18,12 @@ static void create() {
     SetSpellType(SPELL_COMBAT);
     SetRequiredMagic(50);
     SetSkills(([ "conjuring" : 8, "magic attack" : 0 ]));
-    SetMagicCost(10, 8);
+    SetMagicCost(30, 24);
+    SetStaminaCost(20, 16);
     SetDifficulty(10);
     SetMorality(-20);
     SetAutoDamage(0);
-    SetDamage(MAGIC|HEAT, 20, 15);
+    SetDamage(MAGIC|HEAT, ({ 20, 15 }) );
     SetMessages(({ ({ "accept", "$target_name $target_verb "
 	  "$agent_possessive_noun fireball with a "
 	  "smile." }),

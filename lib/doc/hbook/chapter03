@@ -1,0 +1,255 @@
+chapter 3 "Your Health and Abilities"
+
+    In the previous chapter you learned the basics of getting 
+around and taking care of yourself. It's important also to care
+*for* yourself, and this chapter describes the various aspects of
+your body's state and what abilities you may have.
+
+
+    The command that tells you almost everything you need to
+know is "stat". This diplays a whole lot of stuff, perhaps some of
+it completely unfamiliar. Let's start at the top, using my output
+as an example.
+
+First line:
+----------
+Cratylus aka Cratylus the unaccomplished, level 10 male human Explorer
+
+    Here you see my short name, my name with title, my level, my
+gender, my race, and my class. Let's go over each.
+
+* short name: What a person would use to address you. "look at cratylus",
+for example.
+
+* name with title: This displays my title. Creators can have whatever title
+they want. Players can only have the titles they earn. As a player, a
+title is usually earned when you are promoted a level or complete a
+quest, though it is not always so on every mud.
+
+* level: This is a measure of your overall experience, expertise, and
+all-around game status. Being promoted a level means your skills,
+health, and vital statistics increase. This often means you can handle
+tougher monsters, for example, or tackle more challenging quests, learn
+new spells, and so on.
+
+* gender: This has no effect on your status. It is a cosmetic feature
+of your body that is only useful to you in the social context of your
+fellow mud players.
+
+* race: In Dead Souls, race has nothing to do with your local genetic
+makeup on planet Earth. In the mud, "race" refers to what one typically
+would call "species" in real-life. An example of a race other than human
+might be "orc" or "feline". Not all races are available for players. Once
+you have chosen a race to play, it is in theory possible to change it, but
+there is a nonzero chance you'll hose up your player file and lose your
+character forever. Besides, it's up to your local admins whether race
+changing is permitted on your mud. Different races have different
+abilities. Elves see better in darkness, for example. Orcs are stronger
+than some other humanoids, but dumber, too (which does affect gameplay).
+
+* class: This can be considered an occupational specialty. In the real
+world you have plumbers, doctors, soldiers, etc. In the mud world, 
+we can have explorers, fighters, mages, and the like. Each class brings
+its own unique advantages and disadvantages to your gameplay. A fighter
+can really kick more butt in melee combat than a mage, but a mage 
+gets to cast powerful spells. Explorers are a middle of the road class
+that gives you a bit of everything without specializing in anything.
+
+
+
+Next line:
+----------
+
+Alive / Awake
+
+    It is indeed possible for your virtual body to cease life functions.
+When this happens your spirit speeds off to the land of the dead,
+where you drift until you decide to "regenerate" and regain your
+physical form. Except for some special magical items, anything you
+were carrying when you died is with that dead body, so it's a good
+idea to rush your new body back to the scene of the fatality and get
+your stuff back before someone else grabs it. Death is not only
+inconvenient, it also incurs major penalties on your statistics, so it
+should be avoided.
+    It is also possible to sleep. If you are drunk and asleep, your 
+injuries will heal more quickly. It's magic, don't worry about the
+logic behind it.
+    If you are attacked while sleeping, you will wake up. You can
+force yourself awake, too, but it's a bit tedious.
+
+
+Next line:
+---------
+
+Health: 350/350   Magic: 560/560   Stamina: 400/400   Carry: 1184/1300
+
+    In each case, the number on the left of the slash indicates the
+current level, and the number on the right indicates what the maximum is.
+
+health: When I am 100% healthy, I have a total of 350 hp. If my hp ever
+reach 0 or less (!), I die. Poison and illness can cause hp's to
+gradually decrease, and although with time my hp's will normally
+return to 350 as I heal, poison and illness can slow down that healing
+or even cause me to die. Injury in combat is the most common source
+of hp loss, though spells, falls, and other adverse events can cause
+you injury or death.
+
+magic: I cast magic missile! Spell casting takes a toll on your magical
+abilities, and mp measure how much magic you've got left in you at
+any given point. Like hp, mp gradually grow back to your max if you
+avoid spellcasting for a while.
+
+stamina: Fighting is tough work, and swinging around swords while
+getting bashed with hammers really takes a lot out of a guy. Therefore
+keep an eye on this stat while you're fighting, because if it gets too
+low you will collapse and be unable to do anything for a while.
+
+carry: Objects have mass, and your body is of limited size and strength.
+My carry capacity is 0 when I carry nothing, and 1300 when I can 
+carry no more. Creators are allowed to exceed their bodies' carry
+capacity, but players cannot.
+
+
+Next line:
+---------
+
+Food: 0    Drink: 0    Alcohol: 0    Caffeine: 0    Poison: 0 
+
+    These are pretty self-explanatory. Alcohol is good for healing,
+bad for fighting. Food and drink also help speed healing. Poison
+has the opposite effect. Caffeine can speed up your combat slightly,
+but tends to prevent full rest. 
+    You will not die from lack of food or lack of drink, but you
+will do better with a body not starved for nutrients. 
+    Your maximum load for any of these is not fixed, and varies
+depending on many factors, such as level, endurance, etc. 
+
+
+Next line:
+---------
+
+Training Points: 0    Quest Points: 0    Experience Points: 50 
+
+    Training points can be cashed in with special NPC's called
+trainers, who can help you improve some skills. A trainer that
+specializes in fighting might be able to raise your "blade attack"
+skill, for example. you earn training points when you are
+promoted a level.
+
+    Quest points are awarded when you complete a quest. In
+the default version of Dead Souls, you cannot advance past a
+certain player level unless you earn some qp's. Read the sign
+in the adventurers guild for more details on this.
+
+    Experience points can be awarded for various reasons: completing
+a quest, solving a puzzle, winning a contest. Most often you
+will receive xp after killing an NPC. The amount of xp awarded
+will depend on the level of the NPC. Like qp, xp are needed to
+quilify for level advancement.
+
+
+
+Limb section:
+------------
+
+    Remember how wearing armor requires the right body parts?
+Well here they are, and this is their health. You can issue the
+"body" command for a quicker self-check.
+    Let's look at what the numbers mean with an example:
+
+left leg        (2) 160/160
+
+   Obviously the first item identifies the limb in question.
+
+   The (2) is a kind of "importance score", indicating how critical
+a body part is. If this number is (1), like the head, it means that
+losing that limb causes immediate death.
+
+   The number on the right side of the slash indicates the hit point
+damage you may receive on that limb before it is severed. The number
+on the left is how many of those hits you have left.
+   It doesn't mean my leg has 160 of my hitpoints. If that were true,
+my hit points would add up to a heck of a lot more than 350.
+    This means that if I've lost, say, 200hp fighting a troll, and
+159hp of those hits were on my left leg, getting hit there again means I
+lose my left leg.
+    I would then collapse and have to crawl away to seek medical attention.
+Wearing armor on your limbs is a great way to minimize the danger of
+this happening.
+
+
+Skills section:
+--------------
+
+    Let's review skills by examining one of mine:
+
+blade attack  (1) 00% - 20/24
+
+    This measures how likely I am to hit an opponent when I
+use a blade, and how good a hit it was. The number (1) means
+that this is a skill critical to my class. If an explorer can't 
+swing a sword, he oughta think about another line
+of work. 
+    The 00% means I have thus far earned no blade  attack
+experience toward achieving the next level of this skill.
+    The 20 is my current proficiency level.
+    The 24 is the maximum level I can reach at my current
+player level and with my current stats.
+
+    What's all this mean? Well, if I practice a lot of blade
+attacking, that 00% will gradually climb up to 99, and one more
+point causes me to go from a level 20 slicer of things to a
+level 21 slicer of things. This increases my likelihood of
+hitting my target in the future.
+
+    Meaning, in short, practice a skill, and you'll get
+better at it.
+
+    Of course, if my blade attack level reaches 24, I can advance
+my blade attack skills no further until my player level rises.
+
+
+Stats section:
+-------------
+
+    Remember these from Dungeons & Dragons? No? Well these vital
+statistics measure your general giftedness in that feature of your
+body. Let's look at one of mine:
+
+coordination (2) 42/42
+
+    Coordination is one of those important stats for fighting and
+such. The more coordinated you are, the more likely you are to hit your 
+target. The (2) indicates that this stat is important to my class,
+but not critical. This influences its effect on my skills.
+    42/42 means that my coordination is not currently impaired. If
+someone cast a "stumble" spell on me, for example, this might look more
+like 30/42, and if I were drunk, it would look very shabby indeed.
+
+Last section:
+------------
+
+"Cratylus has amassed a net worth of 11 gold." means that when you
+add up the money in my bank accounts and the money I'm carrying,
+converted to gold, I have 11 gold to my name. It looks bad, but gold
+is actually quite valuable in the default Dead Souls economy.
+
+"Money on hand: 79 dollars, 34 silver" means that this is the amount of
+money I'm carrying. Don't forget that the amount of money you are carrying
+affects your overall carry capacity. Gold is an especially heavy
+currency.
+
+
+Final notes:
+-----------
+
+    "stat" is a great command to get thorough information about
+yourself. It is, however, quite a screenful. Briefer reports can be
+viewed with the following commands:
+
+body
+skills
+stats
+score
+status
+

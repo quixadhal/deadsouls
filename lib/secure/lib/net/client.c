@@ -76,14 +76,13 @@ static void eventRead(mixed val) { }
 
 static void eventWriteCallback(int fd) {
     int x;
-
     if( !Socket ) return;
     Socket->Blocking = 0;
     x = EESUCCESS;
     while( Socket->Buffer && x == EESUCCESS ) {
 	switch( x = socket_write(Socket->Descriptor, Socket->Buffer[0]) ) {
 	case EESUCCESS:
-	    break;
+            break;
 	case EECALLBACK:
 	    Socket->Blocking = 1;
 	    break;
@@ -98,19 +97,26 @@ static void eventWriteCallback(int fd) {
 	    eventSocketError("Error in socket_write().", x);
 	    return;
 	}
-	if( sizeof(Socket->Buffer) == 1 ) Socket->Buffer = 0;
-	else Socket->Buffer = Socket->Buffer[1..];
+	if( sizeof(Socket->Buffer) == 1 ) {
+Socket->Buffer = 0;
+}
+	else {
+Socket->Buffer = Socket->Buffer[1..];
+}
     }
 }
 
 void eventWrite(mixed val) {
-    int x;
 
     if( !Socket ) return;
     if( Socket->Buffer ) Socket->Buffer += ({ val });
     else Socket->Buffer = ({ val });
-    if( Socket->Blocking ) return;
-    else eventWriteCallback(Socket->Descriptor);
+    if( Socket->Blocking ) {
+return;
+}
+    else {
+eventWriteCallback(Socket->Descriptor);
+}
 }
 
 static void eventClose(class client sock) {

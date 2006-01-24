@@ -25,7 +25,7 @@ mixed can_backstab_liv() {
     if( !environment(this_player()) ) return 0;
     if( this_player()->GetInCombat() )
 	return "You are too busy with combat!";
-    else return 1;
+    else return this_player()->CanManipulate();
 }
 
 mixed do_backstab_liv(object ob) {

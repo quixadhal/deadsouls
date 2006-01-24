@@ -27,9 +27,9 @@ static void create() {
       "See also: bait, cast, eat, fish");
 }
 
-mixed can_drink_obj(string verb) { return 1; }
+mixed can_drink_obj(string verb) { return this_player()->CanManipulate(); }
 
-mixed can_drink_from_obj(string verb) { return 1; }
+mixed can_drink_from_obj(string verb) { return this_player()->CanManipulate(); }
 
 mixed do_drink_obj(object ob) {
     if( (int)this_player()->GetInCombat() )

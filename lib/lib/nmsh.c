@@ -298,7 +298,6 @@ nomask string write_prompt() {
 } 
 
 string process_input(string str) { 
-    mixed err;
     string tmp, xtra, request; 
 
     if(!str || str == "") return ""; 
@@ -403,7 +402,7 @@ nomask private static string do_nickname(string str) {
 nomask private static string do_alias(string str) { 
     string *words; 
     string tmp; 
-    int x, i; 
+    int x; 
 
     if(!sizeof(words = explode(str, " "))) return "";
     if((x = strlen(words[0])) && (tmp = Xverbs[words[0][0..0]])) {

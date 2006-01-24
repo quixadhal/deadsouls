@@ -15,11 +15,12 @@ static void create() {
       "If you have write permissions to the file of the object "
       "specified, this command adds an init(){} function. Lacking "
       "this function makes many objects break or behave unpredictably."
-      "\nSee also: modify, create, delete, copy");
+      "\nSee also: copy, create, delete, modify, reload, add");
 }
 
 mixed can_initfix_obj(string str) { 
-    if(!creatorp(this_player())) return "This command is only available to builders and creators.";
+    if(!creatorp(this_player())) 
+	return "This command is only available to builders and creators.";
     else return 1;
 }
 
@@ -35,10 +36,19 @@ mixed do_initfix_obj(object ob) {
 	return 1;
     }
 
-    if(staff->eventAddInit(base_name(ob)+".c") == 2) {
-	return "File already has a working init function.";
+    if(ob->GetDoor()) ob = load_object(ob->GetDoor());
+
+    if(first(base_name(ob),5) == "/lib/") {
+	write("This appears to be a lib file. Aborting modification.");
+	return 1;
     }
+
+    if(staff->eventAddInit(base_name(ob)+".c") == 2) {
+	write("File already has a working init function.");
+    }
+
     else write("Done.");
+    reload(ob);
     return 1;
 }
 

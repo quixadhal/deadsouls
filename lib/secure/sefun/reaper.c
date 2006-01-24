@@ -22,9 +22,9 @@ void  reap_dummies(){
     }
 }
 
-void reap_other(string str){
+varargs void reap_other(string str){
     //
-    // destroys any cloned objects with base_name of str that
+    // destroys any cloned objects that
     // do not have an environment
     //
     string s1,s2;
@@ -41,13 +41,13 @@ void reap_other(string str){
     }
 
     foreach(object thingy in others){
-	if(str == base_name(thingy) && !environment(thingy)) {
+	if(!userp(thingy) && !environment(thingy)) {
 	    thingy->eventDestruct();
 	}
     }
 }
 
-string reap_list(){
+mixed reap_list(){
     //
     // returns a list of cloned objects without an environment
     //
@@ -65,13 +65,11 @@ string reap_list(){
 	}
     }
 
+    rm("/tmp/lost_object_list.txt");
     foreach(object clone in clones){
-	if(!clone->GetName()){
-	    list += "ERROR "+file_name(clone)+"\n";
-	}
-	else list += clone->GetName()+" "+file_name(clone)+"\n";
+	write_file("/tmp/lost_object_list.txt", file_name(clone)+"\n");
     }
-
-    return list;
+    write("Total size of list: "+sizeof(clones)+" lost objects.");
+    return this_player()->eventPage("/tmp/lost_object_list.txt");
 }
 

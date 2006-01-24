@@ -20,6 +20,7 @@ static private int  WanderMarker     = 0;
 private mixed array WanderPath       = ({});
 private int         WanderRecurse    = 0;
 private int         WanderSpeed      = 0;
+private int         permit_load      = 0;
 
 /* ******************  /lib/sentient.c data manipulation  **************** */
 /**
@@ -167,6 +168,15 @@ int SetWanderSpeed(int x) {
     return (WanderSpeed = x);
 }
 
+int SetPermitLoad(mixed i){
+    permit_load = i;
+    return permit_load;
+}
+
+int GetPermitLoad(){
+    return permit_load;
+}
+
 /* ******************    /lib/sentient.c events      **************** */
 mixed eventAsk(object who, string str) {
     string cmd, args;
@@ -255,7 +265,7 @@ mixed eventWander() {
 	foreach(tmp in (string *)environment()->GetExits()) {
 	    string dest, door;
 
-	    if( !find_object(dest = (string)environment()->GetExit(tmp)) )
+	    if( !permit_load && !find_object(dest = (string)environment()->GetExit(tmp)) )
 		continue;
 	    if( (door = (string)environment()->GetDoor(tmp)) &&
 	      (int)door->GetClosed() ) continue;

@@ -242,10 +242,14 @@ static string map_info(object ob, string formatString) {
 
 static private string query_time() {
     string tzone;
-    int x;
+    int x, offset;
 
-    tzone = (string)this_player()->GetTimeZone() || local_time(time())[LT_ZONE];
-    x = (int)TIME_D->GetOffset(tzone) * 3600;
+    //tzone = (string)this_player()->GetTimeZone() || local_time(time())[LT_ZONE];
+    tzone = query_tz();
+    offset = (int)TIME_D->GetOffset(tzone);
+    offset += EXTRA_TIME_OFFSET;
+    if(query_os_type() != "windows" ) x = offset * 3600;
+    else x = 0;
     return tzone + " time is: " + ctime(time() + x);
 }
 

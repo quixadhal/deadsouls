@@ -16,6 +16,16 @@ inherit LIB_SEAL;
 
 private mapping Sides;
 
+
+string *GetSides(){
+    //string ret, tmp;
+    //ret = "";
+    //foreach(string key, class door_side val in Sides){
+    //ret += key +"\n";
+    //ret += save_variable(val);
+    return keys(Sides);
+}
+
 /*  ***************  /lib/door.c driver applies  ***************  */
 
 static void create() {
@@ -189,7 +199,7 @@ int eventRegisterSide(string side) {
 	    continue;
 	}
 	if( sizeof(id & ob->GetId()) ) {
-	    ob->SetDoor(file_name(this_object()));
+	    if(!ob->GetDoor()) ob->SetDoor(file_name(this_object()));
 	}
     }
     return 1;
@@ -248,6 +258,19 @@ void SetSide(string side, mapping mp) {
     new_side->Lockable = mp["lockable"];
     Sides[side] = new_side;
 }
+
+mapping GetSide(string side){
+    mapping RetMap = ([]);
+    if(!sizeof(Sides[side])) return ([]);
+    RetMap["id"] = Sides[side]->Ids;
+    RetMap["short"] = Sides[side]->Short;
+    RetMap["long"] = Sides[side]->Long;
+    RetMap["keys"] = Sides[side]->Keys;
+    RetMap["lockable"] = Sides[side]->Lockable;
+    return copy(RetMap);
+}
+
+
 
 int SetLockable(string side, int x) {
     if( !Sides[side] )
@@ -330,3 +353,6 @@ string *GetKeys(string side) { return ((class door_side)Sides[side])->Keys; }
 object *GetRooms(string side) { return ((class door_side)Sides[side])->Rooms; }
 
 int get_closed() { return GetClosed(); }
+
+void init(){
+}

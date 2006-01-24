@@ -17,6 +17,8 @@ private mapping Races = ([]);
 static private mapping Resistances = ([]);
 static private mapping Armors = ([]);
 
+static private string array FlyingRaces = ({"avidryl","bat","demon","dragon","faerie","gargoyle","griffin","insect","pegasus","bird", "wraith"});
+
 static void create() {
     string array lines;
 
@@ -67,6 +69,13 @@ static private void validate() {
     if( !((int)master()->valid_apply(({ PRIV_ASSIST }))) )
 	error("Illegal attempt to modify race data");
 }
+
+int CanFly(string str){
+    if( !Races[str] ) return 0;
+    if(member_array(str, FlyingRaces) != -1) return 1;
+    else return 0;
+}
+
 
 void AddRace(string file, int player) {
     class Race res;

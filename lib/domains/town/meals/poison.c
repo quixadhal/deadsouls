@@ -18,7 +18,7 @@ static void create() {
       "$N drinks a vial of poison.");
     SetEmptyName("vial");
     SetEmptyShort("an empty vial");
-    SetEmptyLong("It is an empty brown bottle that once held some ale.");
+    SetEmptyLong("It is an empty brown bottle that once held some liquid.");
     SetBaseCost("silver",10);
     SetPoisonStrength(70);
     SetPoisonUses(3);

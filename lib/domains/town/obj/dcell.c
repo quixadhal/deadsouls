@@ -1,6 +1,7 @@
 #include <lib.h>
 #include <vendor_types.h>
 inherit "/lib/battery";
+
 void create(){
     ::create();
     SetKeyName("d-cell");
@@ -17,4 +18,7 @@ void create(){
     SetRechargeable(0);
     SetDrainable(1);
     SetDrainRate(1);
+}
+void init(){
+    ::init();
 }

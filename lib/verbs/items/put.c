@@ -32,7 +32,8 @@ mixed can_put_obs_word_obj(mixed *res, string wrd, object storage) {
     if(storage && storage->GetClosed()){
 	return "#That's closed.";
     }
-    return eventCheckLight(this_player());
+    if(intp(check_light())) return this_player()->CanManipulate();
+    else return check_light();
 }
 
 mixed can_put_obj_word_obj(object target, string wrd, object storage) {
@@ -73,17 +74,5 @@ mixed do_put_obs_word_obj(mixed *res, string wrd, object storage) {
 }
 
 mixed eventCheckLight(object who) {
-    int light;
-
-    if( (light = effective_light(who)) < 0 ) {
-	if( 100 + (10*light) < random(100) )
-	    return "You fumble around in the darkness.";
-	else return 1;
-    }
-    else if( light > 4 ) {
-	if( 100 - (10*light) < random(100) )
-	    return "You fumble around in the blinding light.";
-	else return 1;
-    }
-    else return 1;
+    return check_light(who);
 }

@@ -3,6 +3,7 @@
 #include <armor_types.h>
 #include <damage_types.h>
 inherit LIB_ARMOR;
+
 static void create(){
     armor::create();
     SetKeyName("visitor pass");
@@ -12,6 +13,9 @@ static void create(){
       "some areas typically restricted to creator staff only. Abuse of this "+
       "pass is grounds for disciplinary action. A small scribble "+
       "at the bottom of the pass reads: click heels");
+    SetProperties(([
+	"no steal" : 1,
+      ]));
     SetMass(10);
     SetBaseCost(5000);
     SetDamagePoints(100);
@@ -20,6 +24,7 @@ static void create(){
     SetRestrictLimbs( ({ "torso" }) );
 }
 void init(){
+    ::init();
     add_action("nplh","click");
 }
 int nplh(string str){
@@ -36,7 +41,6 @@ int nplh(string str){
 	return 1;
     }
 }
-
 string GetAffectLong(object ob) {
     if(!ob || !living(ob)) return 0;
     return ob->GetName() + " is an authorized Test Character.";

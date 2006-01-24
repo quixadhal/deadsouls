@@ -24,7 +24,6 @@ static string SetSaveFile(string str) {
 
 /* ********************* daemon.c events ************************* */
 int eventDestruct() {
-    string str;
 
     if( !master()->valid_apply(({ PRIV_ASSIST })) ) {
 	return 0;

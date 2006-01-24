@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+
 static void create() {
     room::create();
     SetClimate("outdoors");
@@ -35,6 +36,8 @@ static void create() {
 	"west" : "/domains/town/room/forest_path1",
 	"down" : "/domains/town/room/riverbank",
       ]) );
-    SetObviousExits("d, e, w");
     SetRead(({"writing","scrawl","grafitti","grafitto"}),"HVMANES EVNT DOMVS");
+}
+void init(){
+    ::init();
 }

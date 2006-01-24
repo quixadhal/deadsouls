@@ -7,9 +7,9 @@
  */
 
 #include <lib.h>
+#include <rooms.h>
 
 inherit LIB_ITEM;
-inherit "/lib/props/getlivings";
 
 private int             Communicable  = 1;
 mixed    Cure          = 0;
@@ -18,6 +18,7 @@ private static int      LastHeartBeat = time();
 private int             LifeSpan      = 60;
 private int             CannotInfect  = 0;
 private string          Type          = "cold";
+private string          GermName      = "generic germ";
 private string array    ImmuneRaces   = ({ "android", "tree", 
   "plant", "elemental", "fish", "gargoyle", "god", "golem", "insect", 
   "slug", "snake", "wraith", "zombie" }); 
@@ -41,6 +42,21 @@ int GetCommunicable() {
 
 int GetCannotInfect(){
     return CannotInfect;
+}
+
+int SetCannotInfect(int i){
+    if(!i) i = 0;
+    CannotInfect = i;
+    return CannotInfect;
+}
+
+int SetGermName(string str){
+    if(str) GermName = str;
+    return 1;
+}
+
+string GetGermName(){
+    return GermName;
 }
 
 /*
@@ -85,10 +101,6 @@ mixed SetCure(mixed val) {
 	return;
     }
     return (Cure = val);
-}
-
-string array GetId() {
-    return ({ item::GetId()..., "germ" });
 }
 
 function GetInfect() {
@@ -143,7 +155,6 @@ string GetType() {
  * returns the new germ type
  */
 string SetType(string type) {
-    //return (Type = type);
     Type=type;
     if(!Type || Type == "") Type = "foo";
     return Type;
@@ -188,7 +199,6 @@ mixed eventEncounter(object who) {
 	return 1;
     }
     if( !query_heart_beat() ) {
-	//	eventMultiply();
 	set_heart_beat(5);
     }
     eventMultiply();
@@ -223,53 +233,44 @@ mixed eventInfect(object ob) {
     if( functionp(Infect) ) {
 	tmp = evaluate(Infect, ob);
 	if( tmp == 1 ) {
-	    eventMove(ob);
+	    if(!eventMove(ob)) eventMove(ROOM_FURNACE);
+	    set_heart_beat(5);
 	    return tmp;
 	}
     }
-    //if( !query_heart_beat() ) {
-    set_heart_beat(5);
-    //	}
 
-    if(!eventMove(ob)) eventMove("/domains/default/room/furnace");
+    if(!eventMove(ob)) eventMove(ROOM_FURNACE);
+    set_heart_beat(5);
     return 1;
 }
 
 
 mixed eventMultiply() {
-    object ob;
+    object ob, germ, winner;
+    object *targs;
 
-    if( Communicable > random(100) ) {
-	//object array germs = filter(deep_inventory(environment()),
-	// (: $1->isGerm() :));
-	object germ;
+    if( Communicable > random(1000) && !CannotInfect) {
 
-	//if( sizeof(germs) > 5 ) {
-	//    return 0;
-	//}
-	germ = new(base_name(this_object()));
-	if( !germ ) {
-	    return 0;
+	if( (ob = environment()) && living(ob) ) {
+	    if(environment(environment())) ob = environment(environment());
 	}
-	if( (ob = environment()) && random(100) > 50 ) {
-	    ob = (environment(ob) || ob);
+
+	if(!ob) return 0;
+
+	//move to the host's environment
+	if(!present(this_object()->GetName(),ob) ) {
+	    germ = new(base_name(this_object()));
+	    if( living(ob)  ) germ->eventInfect(ob);
+	    else if(!germ->eventMove(ob)) germ->eventMove(ROOM_FURNACE);
 	}
-	if( ob ) {
-	    if(present(base_name(this_object()),ob) ) {
-		return 1;
-	    }
-	    if(ob && ob->GetRace()=="android") return 2;
-	    if(ob && ob->GetUndead() == 1) return 3;
-	    if( ob->eventInfect(germ) != 1 ) {
-		germ->eventMove("/domains/default/room/furnace");
-	    }
-	}
-	else {
-	    if(germ && ob && !germ->eventMove(ob)) germ->eventMove("/domains/default/room/furnace");
-	}
-	return 4;
+
+	//find someone to infect
+	if(!sizeof(get_livings(ob))) return 0;
+	targs = filter(get_livings(ob), (: !query_carrying($1,base_name(this_object())) :) );
+	winner = targs[random(sizeof(targs))-1];
+	if(winner) new(base_name(this_object()))->eventInfect(winner);
     }
-    return 5;
+    return 1; 
 }
 
 void eventSuffer(object ob) {
@@ -278,132 +279,36 @@ void eventSuffer(object ob) {
 /* ***************  /lib/germ.c driver applies  *************** */
 
 static void create() {
-    AddSave(({ "Communicable", "LifeSpan", "Type" }));
     item::create();
+    AddSave(({ "Communicable", "LifeSpan", "Type" }));
     SetInvis(1);
     SetMass(0);
     SetValue(0);
     SetPreventDrop("");
     SetPreventGet("");
     SetPreventPut("");
-    call_out(function() { // Start up the HB if cloned into living thing
-	  object env = environment();
-
-	  if( !env || !living(env) ) {
-	      return;
-	  }
-	  set_heart_beat(5);
-      }, 2);
 }
 
 static void heart_beat() {
-    object array victims;
-    object env,presbane;
-    string *bane;
-    string env2;
-    int interval,lucky;
+    object env;
+    int interval;
 
-    env=environment();
-    env2=base_name(environment(env));
-    if(!env2 || env2 == "") env2 = "/domains/default/room/furnace";
-
-    presbane = present("bane",env);
-    if(presbane) bane = presbane->QueryBane();
-    if(bane && living(env)){
-	if(member_array(GetKeyName(),bane) != -1) { this_object()->eventMove(env2); return; }
-	if(member_array("all",bane) != -1) { this_object()->eventMove(env2); return; }
-	foreach(string foo in GetId()){
-	    if(member_array(foo,bane) != -1) { this_object()->eventMove(env2); return; }
-	}
-    }
-    //if(Communicable && environment(env) && !present(base_name(),environment(env))){
-    //	new(base_name())->eventMove(environment(env));
-    //			}
-
+    if(!env = environment()) eventMove(ROOM_FURNACE);
 
     interval = time() - LastHeartBeat;
     LastHeartBeat = time();
-    if( !env ) {
-	//set_heart_beat(0);
-	if( clonep() ) {
-	    eventDestruct();
-	}
-	return;
-    }
-    if(env->GetUndead()==1){
-	this_object()->eventDestruct();
-	return;
+
+    if( Communicable ) {
+	eventMultiply();
     }
 
-    if( living(env) && environment(env) ) {
+    if( env && living(env) && environment(env)  && member_array(env->GetRace(),ImmuneRaces) == -1) {
 	eventSuffer(env);
-	if( !this_object() ) {
-	    return;
-	}
-	if( !env ) {
-	    if( this_object() ) {
-		eventDestruct();
-	    }
-	    return;
-	}
-	if( Communicable ) {
-	    eventMultiply();
-	}
-	//victims = filter(all_inventory(environment(env)),
-	// (: living :)) - ({ env });
-	victims=get_livings(environment(env));
     }
-    else {
-	LifeSpan -= interval;
-	if( LifeSpan < 1 ) {
-	    eventDestruct();
-	    return;
-	}
-	//victims = filter(all_inventory(env), (: living :));
-	victims=get_livings(env);
-	if(!sizeof(victims) && environment(env)) victims=get_livings(environment(env));
-	if( !sizeof(victims) ) {
-	    //set_heart_beat(5);
-	    return;
-	}
-	if( Communicable ) {
-	    eventMultiply();
-	}
-    }
-    if( Communicable > random(100) ) {
-	object target, germ;
 
-	/* this code was great, pre /lib/bane.
-	 * now infection is halting here when victims[0]
-	 * has bane. 
-	 *
-	 *
-	 *		victims = sort_array(victims,
-	 *				function(object one, object two) {
-	 *				if( one->GetHealthPoints() >
-	 *					two->GetHealthPoints() ) {
-	 *				return -1;
-	 *				}
-	 *				else {
-	 *				return 1;
-	 *				}
-	 *				});
-	 *		if( sizeof(victims) ) {
-	 *			target = victims[0];
-	 *		}
-	 *		else {
-	 *			return;
-	 *		}
-	 */
-
-	lucky=random(sizeof(victims));
-	target=victims[lucky];
-
-	germ = new(base_name(this_object()));
-	if( germ ) {
-	    if( target->eventInfect(germ) != 1 ) {
-		if(objectp(germ)) germ->eventMove("/domains/default/room/furnace");
-	    }
-	}
+    LifeSpan -= interval;
+    if( LifeSpan < 1 ) {
+	eventDestruct();
+	return;
     }
 }

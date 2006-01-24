@@ -12,21 +12,23 @@
 
 
 int eventDelete(object ob, string value);
-string global1, global2, globaltmp;
+string global1, global2, globaltmp, globalvalue;
 
-string *base_arr = ({"SetProperties","SetLong","SetShort","SetItems","SetListen","SetSmell"});
-string *item_arr = base_arr + ({"SetVendorType","SetNoCondition","SetMoney","SetKeyName", "SetId", "SetMass","SetCost","SetValue","SetAdjectives","SetDamagePoints","SetBaseCost" });
-string *meal_arr = item_arr + ({ "SetMealType", "SetStrength"});
+string *base_arr = ({"SetNoModify","SetProperties","SetLong","SetShort","SetItems","SetListen","SetSmell"});
+string *item_arr = base_arr + ({"SetDisableChance", "SetDamagePoints", "SetVendorType","SetNoCondition","SetMoney","SetKeyName", "SetId", "SetMass","SetCost","SetValue","SetAdjectives","SetDamagePoints","SetBaseCost" });
+string *meal_arr = item_arr + ({ "SetMealType", "SetStrength"}) -({"SetDamagePoints"});
 string *storage_arr = item_arr + ({"SetMaxCarry","SetInventory", "SetCanClose", "SetCanLock","SetMaxRecurse","SetLocked","SetClosed","SetKey"});
 string *room_arr = base_arr + ({"SetTown","SetNightLong","SetDayLong","SetClimate","SetAmbientLight","SetNightLight","SetDayLight","SetObviousExits", "SetInventory", "SetEnters"});
-string *npc_arr = base_arr + ({"SetCurrency","SetSkills","SetStats","SetLevel","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives"});
+string *npc_arr = base_arr - ({"SetItems"}) + ({"SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat"});
 string *armor_arr = item_arr +({"SetRestrictLimbs","SetProtection","SetArmorType"});
 string *weapon_arr = item_arr + ({"SetClass","SetWeaponType","SetDamageType","SetHands"});
 string *chair_arr = item_arr + ({"SetMaxSitters","SetMaxCarry","SetInventory"});
 string *bed_arr = chair_arr + ({"SetMaxLiers"});
 string *table_arr = storage_arr + bed_arr;
+string *door_arr = ({"SetLong","SetShort","SetLocked","SetClosed","SetCanLock","SetKey","SetId"});
+string *book_arr = item_arr + ({"SetTitle","SetSource"});
 
-string *all_arr = room_arr + npc_arr + armor_arr + weapon_arr + bed_arr +meal_arr;
+string *all_arr = storage_arr + door_arr + room_arr + npc_arr + armor_arr + weapon_arr + bed_arr +meal_arr;
 
 string GetSettings(string str){
     string ret;
@@ -39,6 +41,13 @@ string GetSettings(string str){
     case "armour" : name = armor_arr; break;
     case "weapon" : name = weapon_arr; break;
     case "item" : name = item_arr; break;
+    case "door" : name = door_arr; break;
+    case "meal" : name = meal_arr; break;
+    case "storage" : name = storage_arr; break;
+    case "table" : name = table_arr; break;
+    case "bed" : name = bed_arr; break;
+    case "chair" : name = chair_arr; break;
+    case "book" : name = book_arr; break;
     default : name = room_arr;
     }
     foreach(string thing in name){
@@ -64,14 +73,20 @@ mixed eventModify(object ob, string str){
     string inheritance, out, tmpfile, filename, mode, metamode;
     mixed value, mixed_tmp;
     int invalid, setmap;
-    object furnace;
-    object *players;
     mapping temp_map;
     string *p_array, *array_props, *special_map_array;;
 
     invalid = 1;
+
+    inheritance = "";
+
+    if(ob->GetDoor()) {
+	inheritance = "door";
+	ob = load_object(ob->GetDoor());
+    }
+
     filename = base_name(ob)+".c";
-    tmpfile = generate_tmp();
+    tmpfile = generate_tmp(ob);
     special_map_array = ({ "SetProperties", "SetStats", "SetSkills"});
 
     if(!check_privs(this_player(),filename)){
@@ -95,9 +110,9 @@ mixed eventModify(object ob, string str){
     global2 = tmpfile;
     unguarded( (: cp(global1,global2) :) );
 
-    inheritance = "";
     if(inherits(LIB_ROOM,ob)) inheritance += " room";
     if(inherits(LIB_NPC,ob)) inheritance += " npc";
+    if(inherits(LIB_SENTIENT,ob)) inheritance += " npc";
     if(inherits(LIB_WEAPON,ob)) inheritance += " weapon";
     if(inherits(LIB_ARMOR,ob)) inheritance += " armor";
     if(inherits(LIB_ITEM,ob)) inheritance += " item";
@@ -106,22 +121,23 @@ mixed eventModify(object ob, string str){
     if(inherits(LIB_BED,ob)) inheritance += " bed";
     if(inherits(LIB_TABLE,ob)) inheritance += " table";
     if(inherits(LIB_MEAL,ob)) inheritance += " meal";
+    if(inherits(LIB_BOOK,ob)) inheritance += " book";
+    if(inherits(LIB_DOOR,ob)) inheritance += " door";
 
     if(!inheritance || inheritance == ""){
 	write("The object you want to modify lacks an init() function.");
 	write("Please correct this by issuing the initfix command, then try again.");
 	return 1;
     }
-    //tc("ob is: "+identify(ob));
-    //tc("LIB_ROOM is: "+LIB_ROOM);
-    //tc("inherits: "+inheritance);
 
     if(sscanf(str,"%s %s %d",mode, metamode, value) != 3) sscanf(str,"%s %s %s",mode, metamode, value);
     if(member_array(mode,special_map_array) == -1){
 	if(sscanf(str,"%s %d",mode, value) != 2) sscanf(str,"%s %s",mode, value); 
     }
-    if(!value) mode = str;
-    //if(!value) value = 0;
+    if(!value) {
+	value = 0;
+	if(!mode) mode = str;
+    }
 
     if(mode == "delete") {
 	if(value) mode = value;
@@ -174,8 +190,6 @@ mixed eventModify(object ob, string str){
     case "sethealthpoints" : out = "SetHealthPoints";break;
     case "gender" : out = "SetGender";break;
     case "setgender" : out = "SetGender";break;
-    case "sex" : out = "SetGender";break;
-    case "setsex" : out = "SetGender";break;
     case "mass" : out = "SetMass";break;
     case "setmass" : out = "SetMass";break;
     case "weight" : out = "SetMass";break;
@@ -210,9 +224,6 @@ mixed eventModify(object ob, string str){
     case "setdamagetype" : out = "SetDamageType";break;
     case "hands" : out = "SetHands";break;
     case "sethands" : out = "SetHands";break;
-	//case "stuff" : out = "AddStuff";break;
-	//case "addstuff" : out = "AddStuff";break;
-	//case "setstuff" : out = "AddStuff";break;
     case "carry" : out = "SetMaxCarry";break;
     case "maxcarry" : out = "SetMaxCarry";break;
     case "setmaxcarry" : out = "SetMaxCarry";break;
@@ -259,8 +270,6 @@ mixed eventModify(object ob, string str){
     case "property" : out = "SetProperties";break;
     case "setproperties" : out = "SetProperties";break;
     case "properties" : out = "SetProperties";break;
-	//case "prop" : out = "SetProperties";break;
-	//case "setprop" : out = "SetProperties";break;
     case "props" : out = "SetProperties";break;
     case "setprops" : out = "SetProperties";break;
     case "setskill" : out = "SetSkills";break;
@@ -285,14 +294,8 @@ mixed eventModify(object ob, string str){
     case "curr" : out = "SetCurrency";break;
     case "setmoney" : out = "SetMoney";break;
     case "money" : out = "SetMoney";break;
-	//case "cond" : out = "SetNoCondition";break;
-	//case "setcond" : out = "SetNoCondition";break;
-	//case "setnocond" : out = "SetNoCondition";break;
     case "setnocondition" : out = "SetNoCondition";break;
-	//case "condition" : out = "SetNoCondition";break;
-	//case "nocondition" : out = "SetNoCondition";break;
-	//case "cond" : out = "SetNoCondition";break;
-	//case "nocond" : out = "SetNoCondition";break;
+    case "nocondition" : out = "SetNoCondition";break;
     case "mealtype" : out = "SetMealType";break;
     case "setmealtype" : out = "SetMealType";break;
     case "strength" : out = "SetStrength";break;
@@ -303,8 +306,55 @@ mixed eventModify(object ob, string str){
     case "setvendor" : out = "SetVendorType";break;
     case "setvendortype" : out = "SetVendorType";break;
     case "vendortype" : out = "SetVendorType";break;
-    default : out = mode;
+    case "settitle" : out = "SetTitle";break;
+    case "title" : out = "SetTitle";break;
+    case "source" : out = "SetSource";break;
+    case "setsource" : out = "SetSource";break;
+    case "melee" : out = "SetMelee";break;
+    case "setmelee" : out = "SetMelee";break;
     }
+
+    if(!out){
+	switch(mode){
+	case "position" : out = "SetPosition";break;
+	case "setposition" : out = "SetPosition";break;
+	case "autostand" : out = "SetAutoStand";break;
+	case "setautostand" : out = "SetAutoStand";break;
+	case "damagepoints" : out = "SetDamagePoints";break;
+	case "setdamagepoints" : out = "SetDamagePoints";break;
+	case "wanderspeed" : out = "SetWanderSpeed";break;
+	case "setwanderspeed" : out = "SetWanderSpeed";break;
+	case "encounter" : out = "SetEncounter";break;
+	case "setencounter" : out = "SetEncounter";break;
+	case "sethostile" : out = "SetEncounter";break;
+	case "hostile" : out = "SetEncounter";break;
+	case "aggressive" : out = "SetEncounter";break;
+	case "setaggressive" : out = "SetEncounter";break;
+	case "morality" : out = "SetMorality";break;
+	case "setmorality" : out = "SetMorality";break;
+	case "setheartbeat" : out = "SetHeartBeat";break;
+	case "heartbeat" : out = "SetHeartBeat";break;
+	case "include" : out = "include";break;
+	case "inherit" : out = "inherit";break;
+	case "load" : out = "SetPermitLoad";break;
+	case "permitload" : out = "SetPermitLoad";break;
+	case "setpermitload" : out = "SetPermitLoad";break;
+	case "modify" : if(value && intp(value)) value = bool_reverse(value);out = "SetNoModify";break;
+	case "setmodify" : if(value && intp(value)) value = bool_reverse(value); out = "SetNoModify";break;
+	case "setnomodify" : out = "SetNoModify";break;
+	case "nomodify" : out = "SetNoModify";break;
+	case "sleep" : out = "SetSleeping";break;
+	case "setsleep" : out = "SetSleeping";break;
+	case "sleeping" : out = "SetSleeping";break;
+	case "setsleeping" : out = "SetSleeping";break;
+	case "disable" : out = "SetDisableChance";break;
+	case "disablechance" : out = "SetDisableChance";break;
+	case "setdisable" : out = "SetDisableChance";break;
+	case "setdisablechance" : out = "SetDisableChance";break;
+	default : out = mode;
+	}
+    }
+    if(!value) value = 0;
 
     if(value == "delete") {
 	eventDelete(ob, out);
@@ -353,6 +403,11 @@ mixed eventModify(object ob, string str){
 	return 1;
     }
 
+    if(out == "include" || out == "inherit"){
+	this_object()->eventModHeader(ob, out,value);
+	return 1;
+    }
+
 
     if(grepp(inheritance,"room") && member_array(out,room_arr) != -1) invalid = 0;
     if(grepp(inheritance,"npc") && member_array(out,npc_arr) != -1) invalid = 0;
@@ -363,13 +418,14 @@ mixed eventModify(object ob, string str){
     if(grepp(inheritance,"bed") && member_array(out,bed_arr) != -1) invalid = 0;
     if(grepp(inheritance,"table") && member_array(out,table_arr) != -1) invalid = 0;
     if(grepp(inheritance,"meal") && member_array(out,meal_arr) != -1) invalid = 0;
+    if(grepp(inheritance,"door") && member_array(out,door_arr) != -1) invalid = 0;
+    if(grepp(inheritance,"book") && member_array(out,book_arr) != -1) invalid = 0;
     else if(grepp(inheritance,"item") && member_array(out,item_arr) != -1) invalid = 0;
 
     if(invalid) {
 	write("Invalid Property.");
 	return 1;
     }
-
     if(out == "SetProtection"){
 	this_object()->eventStartArmorQuestions(value,ob);
 	return 1;
@@ -401,12 +457,18 @@ mixed eventModify(object ob, string str){
 	return 1;
     }
 
+    if(grepp(inheritance,"door")){
+	string cote = this_object()->eventEvaluateDoorSide(ob);
+	if(cote) this_object()->eventProcessDoor(ob, out, value, cote);
+	else this_object()->eventProcessDoor(ob, out, value);
+	return 1;
+    }
 
     else {
-	if(!value || value == "" ) {
-	    write("This setting requires a value.");
-	    return 1;
-	}
+	//if(!value || value == "" ) {
+	//   write("This setting requires a value.");
+	//  return 1;
+	//	}
 	switch(out){
 	case "SetLong" : p_array = ({"SetShort","SetAmbientLight","SetDayLight","SetNightLight","create()","create ()","create"}); break;
 	case "SetDayLong" : p_array = ({"SetShort","SetAmbientLight","SetDayLight","SetNightLight","SetNightLong","SetLong","create()","create ()","create"}); break;
@@ -425,7 +487,7 @@ mixed eventModify(object ob, string str){
 
 	this_object()->eventModString(tmpfile, out, value, p_array);
     }
-    mixed_tmp = load_object("/secure/cmds/creators/update")->cmd("-a "+tmpfile);
+    mixed_tmp = reload(tmpfile);
     if(!mixed_tmp || !intp(mixed_tmp)) {
 	write("This would screw up your file. Aborting modification.");
 	return 1;
@@ -434,28 +496,18 @@ mixed eventModify(object ob, string str){
     global1 = tmpfile;
     global2 = filename;
     unguarded( (: cp(global1,global2) :) );
-    players = get_livings(environment(this_player()),1);
-    load_object("/secure/cmds/creators/update")->cmd("-a "+filename);
-    furnace = load_object(ROOM_FURNACE);
-    if(grepp(inheritance,"room")) {
-	players->eventMove(load_object(filename));
-    }
-    else ob->eventMove(furnace);
-    new(filename)->eventMove(environment(this_player()));
+    reload(ob);
 
     rm(tmpfile);
     return MODULES_CREATE+" Done.";
 }
 
 int eventDelete(object ob, string value){
-    string ret, tmpfile, filename;
+    string tmpfile, filename;
     mixed mixed_tmp;
-    object *players;
 
     filename = base_name(ob)+".c";
-    tmpfile = generate_tmp();
-    //tc("tmpfile: "+tmpfile);
-    //write("it is: "+read_file(tmpfile));
+    tmpfile = generate_tmp(ob);
 
     if(!check_privs(this_player(),filename)){
 	write("You do not appear to have access to this file. Modification aborted.");
@@ -469,43 +521,27 @@ int eventDelete(object ob, string value){
 
     global1 = filename;
     global2 = tmpfile;
-    //tc("global1 :"+global1);
-    //tc("global2 :"+global2);
     unguarded( (: cp(global1,global2) :) );
-    mixed_tmp = load_object("/secure/cmds/creators/update")->cmd("-a "+tmpfile);
+    mixed_tmp = reload(tmpfile);
     if(!mixed_tmp || !intp(mixed_tmp)) {
 	write("Target file is screwed up. Aborting delete.");
 	return 1;
     }
-
-    ret = remove_matching_line(read_file(tmpfile),value,1);
-    globaltmp = ret;
+    globalvalue = value;
+    unguarded( (: globaltmp = remove_matching_line(read_file(global2),globalvalue,1) :) );
     unguarded( (: write_file(global2,globaltmp,1) :) );
-    mixed_tmp = load_object("/secure/cmds/creators/update")->cmd("-a "+tmpfile);
+    mixed_tmp = reload(tmpfile);
     if(!mixed_tmp || !intp(mixed_tmp)) {
 	write("This change would screw up your file. Aborting delete.");
 	return 1;
     }
-    if(inherits(LIB_ROOM,load_object(filename))){
-	global1 = tmpfile;
-	global2 = filename;
-	unguarded( (: cp(global1, global2) :) );
-	players = get_livings(environment(this_player()),1);
-	load_object("/secure/cmds/creators/update")->cmd("-a "+filename);
-	players->eventMoveLiving(load_object(filename));
-    }
-    else {
-	global1 = tmpfile;
-	global2 = filename;
-	unguarded( (: cp(global1, global2) :) );
-	ob->eventMove(load_object(ROOM_FURNACE));
-	load_object("/secure/cmds/creators/update")->cmd("-a "+filename);
-	new(filename)->eventMove(environment(this_player()));
-    }
-    unguarded( (: rm(global1) :) );
+    else unguarded( (: cp(global2, global1) :) );
+    reload(ob);
+    unguarded( (: rm(global2) :) );
     write("Setting deleted.");
     return 1;
 }
+
 int eventResumeArrayMod(object target, string tmpfile, string *NewArr, string func){
     string filename, ret, array_string;
     string *p_array;
@@ -535,7 +571,7 @@ int eventResumeArrayMod(object target, string tmpfile, string *NewArr, string fu
     globaltmp = ret;
     unguarded( (: write_file(global2,globaltmp,1) :) );
     this_object()->eventGeneralStuff(tmpfile);
-    catch( mx = load_object(CMD_UPDATE)->cmd(tmpfile) );
+    mx = reload(tmpfile);
     if(!mx || !intp(mx)){
 	write("This change would screw up the object. Aborting.");
 	return 1;
@@ -543,11 +579,7 @@ int eventResumeArrayMod(object target, string tmpfile, string *NewArr, string fu
     global1 = tmpfile;
     global2 = filename;
     unguarded( (: cp(global1, global2) :) );
-    load_object(CMD_UPDATE)->cmd(filename);
-    if(inherits(LIB_ROOM,load_object(filename))) this_player()->eventMoveLiving(filename);    else{
-	target->eventMove(load_object(ROOM_FURNACE));
-	new(filename)->eventMove(environment(this_player()));
-    }
+    reload(target);
     write(func+" modification complete.");
     unguarded( (: rm(global1) :) );
     return 1;
@@ -582,7 +614,7 @@ int eventResumeMappingChange(object target, string tmpfile, mapping NewMap, stri
     global1 = tmpfile;
     global2 = ret;
     unguarded( (: write_file(global1,global2,1) :) );
-    catch(mx = load_object(CMD_UPDATE)->cmd("-a "+tmpfile));
+    mx = reload(tmpfile);
     if(!mx || !intp(mx)){
 	write("This change would screw up the object. Aborting.");
 	return 1;
@@ -591,7 +623,7 @@ int eventResumeMappingChange(object target, string tmpfile, mapping NewMap, stri
     global1 = tmpfile;
     global2 = filename;
     unguarded( (: cp(global1, global2) :) );
-    reload(target);
+    if(target) reload(target);
     write(func+" modification complete.");
     unguarded( (: rm(global1) :) ); 
     return 1;
@@ -613,10 +645,16 @@ int eventAddSettings(object ob, string tmp, mapping NewMap, string func){
     global2 = tmp;
     new_lines = "\n";
     foreach(string key, mixed val in NewMap){
+	//if(func != "SetSkill"){
 	if(intp(val)) new_lines += func+"(\""+key+"\", "+val+");\n";
 	else new_lines += func+"(\""+key+"\", \""+val+"\");\n";
+	//}
+	//else {
+	// if(intp(val)) new_lines += func+"(\""+key+"\", 0, "+val+");\n";
+	//else new_lines += func+"(\""+key+"\", 0, \""+val+"\");\n";
+	//}    
     }
-    global1 = this_object()->eventAppend(global1,({func,"SetItems","SetInventory","SetLong"}),new_lines);
+    global1 = this_object()->eventAppend(global1,({func,"SetClass","SetRace","SetLevel","SetItems","SetInventory","SetLong"}),new_lines);
     unguarded( (: write_file(global2, global1,1) :) );
     this_object()->eventGeneralStuff(global2);
     global1 = filename;

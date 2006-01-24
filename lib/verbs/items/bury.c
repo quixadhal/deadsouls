@@ -52,7 +52,7 @@ mixed can_bury_str_with_obj() {
     if( this_player()->GetPosition() != POSITION_STANDING ) {
 	return "You can only bury things while standing!";
     }
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed can_bury_obj_with_obj() {
@@ -61,7 +61,7 @@ mixed can_bury_obj_with_obj() {
 
 mixed do_bury_str_with_obj(string str, object tool) {
     eventPrepareBury(this_player(), tool);
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed do_bury_obj_with_obj(object what, object tool) {

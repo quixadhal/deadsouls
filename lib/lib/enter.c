@@ -93,7 +93,6 @@ mixed eventClose(object who) {
 }
 
 varargs mixed eventEnter(object who, string what, string verb) {
-    string dowhat;
     if(!verb) verb = "NOVERB";
     if( Door && Door->GetClosed() ) {
 	who->eventPrint("You bump into " + Door->GetShort(what) + ".");
@@ -102,8 +101,9 @@ varargs mixed eventEnter(object who, string what, string verb) {
 	return 1;
     }
     if( who->GetPosition() != POSITION_STANDING ) {
-	if(verb != "crawl") who->eventStand();
-	if( who->GetPosition() != POSITION_STANDING && verb != "crawl") {
+	if(verb != "crawl" && verb != "fly") who->eventStand();
+	if( who->GetPosition() != POSITION_STANDING && verb != "crawl" 
+	  && verb != "fly") {
 	    who->eventPrint("weird.");
 	    return 0;
 	}

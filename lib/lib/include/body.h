@@ -76,7 +76,7 @@ int GetHeartRate();
 int GetHealRate();
 /* pure virtual */ string GetShort();
 /* pure virtual */ varargs mixed eventPrint(mixed msg, mixed cl, mixed three);
-/* pure virtual */ varargs void SetParalyzed(int x, function f);
+/* pure virtual */ varargs int SetParalyzed(int x, function f);
 /* pure virtual */ varargs mixed eventMoveLiving(mixed dest, string omsg,
 						 string imsg);
 

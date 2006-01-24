@@ -3,7 +3,7 @@
 
 #define DEFAULT_PROMPT           "> "
 #define MUD_STATUS               "mudlib development"
-#define ADMIN_EMAIL              "USER@host"
+#define ADMIN_EMAIL              "admin@here"
 #define LOCAL_NEWS_PREFIX        "nm"
 
 #define MUD_IS_LOCKED            0
@@ -34,5 +34,7 @@
 
 #define DEFAULT_GRAVITY          1.0
 #define DEFAULT_ITEM_MESSAGE     "You do not see that here."
+
+#define EXTRA_TIME_OFFSET	 0
 
 #endif /* s_config_h */

@@ -1,11 +1,11 @@
 #include <lib.h>
 inherit LIB_ROOM;
-int CheckQuest(object ob);
 
+int CheckQuest(object ob);
 static void create() {
     room::create();
     SetClimate("indoors");
-    SetAmbientLight(20);
+    SetAmbientLight(30);
     SetShort("Secret Chamber");
     SetLong("You are in a secret underground chamber beneath the "
       "mansion.");
@@ -18,11 +18,10 @@ static void create() {
       ]) );
     SetDoor("up", "/domains/town/doors/trapdoor");
 }
-
 void init(){
+    ::init();
     CheckQuest(this_player());
 }
-
 int CheckQuest(object ob){
     string *quests;
     quests = ob->GetQuests();
@@ -40,4 +39,3 @@ int CheckQuest(object ob){
     }
     return 1;
 }
-

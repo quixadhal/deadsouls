@@ -59,24 +59,49 @@ static int Destruct() {
 
 mixed eventMove(mixed dest) {
     object ob;
+    string str;
+
+    str = "I am "+file_name(this_object())+", named "+identify(GetId())+", ";
+    str += "and I have been asked to move ";
+    str += "by "+identify(previous_object());
+
+    if(previous_object(-1)) str += " at the request of "+identify(previous_object(-1));
+    str += ". ";
+    if(environment()) str += "\nMy current environment is "+file_name(environment())+".";
+    else str += "\nI currently have no environment.";
 
     if( stringp(dest) ) {
 	ob = load_object(dest);
+
     }
     else {
 	ob = dest;
     }
+    str += "\nMy intended destination is "+file_name(ob)+". ";
     move_object(ob);
     if( environment() != ob ) {
+	str += "\nThe move was not successful";
+	//tc(str,"red");
 	return 0;
     }
     else {
+	str += "\nThe move was successful.";
+	//tc(str,"red");
 	return 1;
     }
 }
 
 /* ******************* dummy.c driver applies ******************** */
 varargs static void create(string array id, mixed long, string array adj) {
+    string str;
+    str = "I am "+file_name(this_object())+" and I have been created ";
+    str += "by "+identify(previous_object(-1));
+
+    if(environment()) str += "\nMy current environment is "+file_name(environment())+".";
+    else str += "\nI currently have no environment.";
+    str += "\nCall stack: "+get_stack();
+    //tc(str,"blue");
+
     enter::create();
     parse_init();
     if( adj ) {

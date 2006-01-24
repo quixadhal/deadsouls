@@ -4,8 +4,9 @@
 #include <dirs.h>
 
 #define LIB_ACCESS       DIR_SSTD "/access"
-#define LIB_ARMOR       DIR_STD  "/armor"
+#define LIB_ARMOR        DIR_STD  "/armor"
 #define LIB_BARKEEP      DIR_STD  "/barkeep"
+#define LIB_BOOK         DIR_STD  "/book"
 #define LIB_CHAIR        DIR_STD  "/chair"
 #define LIB_CORPSE       DIR_STD  "/corpse"
 #define LIB_DAEMON       DIR_STD  "/daemon"

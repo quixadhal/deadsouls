@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <rooms.h>
 
 inherit LIB_STORAGE;
 
@@ -10,7 +11,7 @@ void create() {
     SetShort("a recycling bin");
     SetLong("This is a blue trash can, marked with "+
       "the letters \"/dev/null\".");
-    SetMass(274);
+    SetMass(200);
     SetBaseCost("silver",50);
     SetMaxCarry(999999);
 }
@@ -19,7 +20,7 @@ int tidy_up(){
     object *inv;
     inv = all_inventory(this_object());
     foreach(object thing in inv){
-	if(thing) thing->eventMove(load_object("/domains/town/room/furnace"));
+	if(thing) thing->eventMove(ROOM_FURNACE);
     }
     return 1;
 }
@@ -32,4 +33,5 @@ int eventReceiveObject(object ob){
 mixed CanGet(object ob) { return "The bucket does not budge.";}
 
 void init(){
+    ::init();
 }

@@ -1,7 +1,7 @@
 #include <lib.h>
 inherit LIB_ROOM;
-int open;
 
+int open;
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -24,7 +24,6 @@ static void create() {
     SetObviousExits("n");
     open = 0;
 }
-
 int OpenPassage(){
     string desc;
     if(open == 1) return 1;
@@ -39,4 +38,7 @@ int OpenPassage(){
 	"secret passageway" : "/domains/town/room/mansion_room11"
       ]) );
     return 1;
+}
+void init(){
+    ::init();
 }

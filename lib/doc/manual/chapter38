@@ -1,0 +1,79 @@
+chapter 38 "QCS: Final notes"
+
+    I think you're getting the idea of how this works. Here's 
+an example of armor creation:
+
+create armor jeans
+
+modify jeans id
+
+pants
+
+trousers
+
+.
+
+modify jeans short a pair of denim jeans
+ 
+modify jeans  long Worn jeans, frayed and stained.
+
+modify jeans adj
+
+pair of
+
+denim
+
+frayed
+
+worn
+
+stained
+
+.
+
+
+    To know what directives QCS can change on an object, type:
+
+help modify
+
+    This provides a list of modifiable things and the directives
+that can be modified on them. 
+
+    Ultimately the Quick Creation System generates LPC code, so
+you'll want to review the earlier chapters of this handbook to
+get a base of understanding of the code that comprises your new
+creations.
+
+Some notes and tips:
+
+* The SetNoCondition directive makes it so an item does not report
+  its physical status when examined. Weapons and armor wear down in
+  combat, and most objects let you know their condition when you
+  examine them. However, in some cases (a sandwich for example) 
+  this is inappropriate, so the SetNoCondition directive may be
+  useful.
+
+* Doors aren't like normal objects. They have to be modified *twice*.
+  Once for each side of the door. If this sounds unnecessarily 
+  tedious, remember that a door leading south is also a door
+  leading north from the other room.
+
+* SetCurrency is for adding money to NPC's. SetMoney is for adding
+  money to non-living containers (bags, etc).
+
+* Item subtypes are listed in /include. To know what kinds of vendors 
+  are available, for example, look in /include/vendor_types.h
+
+* Books need a "source directory", which must contain one file per
+  chapter. The SetSource for this manual, for example, is /doc/manual
+  The first line of each file must follow the same format as
+  the files you see in /doc/manual
+
+* SetObviousExits is usually no longer needed: rooms report
+  obvious exits automatically. However, if you don't want an exit
+  to show up by default, use the SetObviousExits directive 
+  to specify only those that you want seen. This will override the
+  room's default exit display.
+
+
+

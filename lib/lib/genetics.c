@@ -232,13 +232,13 @@ string GetResistance(int type) {
 
 int GetCustomStats() { return CustomStats; }
 
-int GetEffectiveVision() {
+varargs mixed GetEffectiveVision(int raw_score) {
     int array l;
     object env;
     int bonus = GetVisionBonus();
     int y, x = 0;
 
-    if( Blind ) {
+    if( Blind && !raw_score) {
 	return VISION_BLIND;
     }
     if( !(env = environment()) ) {
@@ -246,15 +246,15 @@ int GetEffectiveVision() {
     }
     else {
 	int a = env->GetAmbientLight();
-	foreach(object ob in all_inventory(env)) {
-	    if( ob == this_object() ) continue;
-	    x += (int)ob->GetRadiantLight(a);
-	}
 	x = x/2 + GetRadiantLight(a) + a;
     }
     l = GetLightSensitivity();
     l[0] -= bonus;
     l[1] += bonus;
+
+    if(raw_score){
+	return "Low: "+l[0]+", High: "+l[1];
+    } 
     if( x >= l[0] && x <= l[1] ) return VISION_CLEAR;
     y = l[0]/3;
     if( x < y ) return VISION_TOO_DARK;

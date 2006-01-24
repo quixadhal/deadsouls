@@ -1,0 +1,25 @@
+
+FORMAT_STRING(1)                                 FORMAT_STRING(1)
+
+NNAAMMEE
+       _f_o_r_m_a_t___s_t_r_i_n_g_(_) - returns a formatted string like
+       _s_p_r_i_n_t_f_(_)
+
+SSYYNNOOPPSSIISS
+       string format_string(string format, mixed *variables)
+
+DDEESSCCRRIIPPTTIIOONN
+       Boggle me why this exists.  It comes from the Portals
+       Mudlib, so I must have brought it over when sockets first
+       came out so the example code would not break.  Don't use
+       it, it is slow and pointless.
+
+SSEEEE AALLSSOO
+       _a_r_r_a_n_g_e___s_t_r_i_n_g_(_), _c_e_n_t_e_r_(_), _f_o_r_m_a_t___p_a_g_e_(_), _p_r_i_n_t_f_(_),
+       _s_p_r_i_n_t_f_(_), _w_r_a_p_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

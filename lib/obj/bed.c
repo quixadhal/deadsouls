@@ -3,6 +3,7 @@
 
 inherit LIB_BED;
 
+
 static void create() {
     ::create();
     SetKeyName("bed");
@@ -14,4 +15,7 @@ static void create() {
     SetBaseCost("silver",150);
     SetMaxSitters(2);
     SetMaxLiers(1);
+}
+void init(){
+    ::init();
 }

@@ -93,8 +93,6 @@ string SetClass(string class_name) {
 }
 
 string ChangeClass(string class_name)  {
-    mixed array args = allocate(3);
-    mixed array tmp;
     string cl;
     foreach(cl in GetSkills())  {
 	RemoveSkill(cl);

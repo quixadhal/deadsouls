@@ -12,16 +12,30 @@ int eventDeleteObject(object ob1, object ob2);
 static void create() {
     verb::create();
     SetVerb("delete");
-    SetRules("enter STR", "exit STR", "OBJ", "OBJ from OBJ", "OBJ from here", "OBJ from room");
+    SetRules("enter STR", "room STR", "enter STR", "exit STR", "OBJ", "OBJ from OBJ", "OBJ from here", "OBJ from room");
     SetErrorMessage("Delete what?");
     SetHelp("Syntax: <delete exit DIRECTION>\n"
       "        <delete OBJECT>\n"
       "        <delete OBJECT from OBJECT>\n"
-      "See also: copy, create, delete, modify");
+      "  This command removes an object from the permanent "
+      "inventory of another object. When only one object is specified, "
+      "this command assumes you mean to remove an object from the "
+      "inventory of the room you are in.\n"
+      "  If the \"exit\" keyword is used, this command attempts to "
+      "remove the exit in the direction you specify.\n"
+      "See also: add, copy, create, delete, modify, reload, initfix");
 }
 
 
 mixed can_delete_exit_str(string str) {
+    return 1;
+}
+
+mixed can_delete_enter_str(string str) {
+    return 1;
+}
+
+mixed can_delete_room_str(string str) {
     return 1;
 }
 
@@ -45,6 +59,14 @@ mixed do_delete_exit_str(string str) {
     return eventDeleteExit(str);
 }
 
+mixed do_delete_enter_str(string str) {
+    return do_delete_exit_str(str);
+}
+
+mixed do_delete_room_str(string str) {
+    return do_delete_exit_str(str);
+}
+
 mixed do_delete_obj(object ob){
     return eventDeleteObject(ob, environment(this_player()));
 }
@@ -62,6 +84,7 @@ mixed do_delete_obj_from_here(object ob){
 }
 
 int eventDeleteObject(object ob1, object ob2){
+    string door;
     object staff;
     staff = present("tanstaafl",this_player());
     if(!staff) {
@@ -75,6 +98,23 @@ int eventDeleteObject(object ob1, object ob2){
 	write("That doesn't exist there.");
 	return 1;
     }
+
+    door = ob1->GetDoor();
+    if(door){
+	staff->eventDeleteDoor(door);
+	return 1;
+    }
+
+    if(starts_with(base_name(ob2),"/lib/")) {
+	write("This appears to be a library object. Canceling modification.");
+	return 1;
+    }
+
+    if(ob2->GetNoModify()){
+	write("This object must be modified by hand.");
+	return 1;
+    }
+
     staff->eventDeleteItem(ob1, ob2);
     return 1;
 }

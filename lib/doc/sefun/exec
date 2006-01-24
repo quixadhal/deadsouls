@@ -1,0 +1,25 @@
+
+EXEC(1)                                                   EXEC(1)
+
+NNAAMMEE
+       _e_x_e_c_(_) - provides security for the MudOS _e_x_e_c_(_) efun
+
+SSYYNNOOPPSSIISS
+       int exec(object target, object src)
+
+DDEESSCCRRIIPPTTIIOONN
+       Since MudOS appropriately provides no security for this
+       efun, the mudlib must decide what security it wants in an
+       efun override.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/SimulEfun.c
+
+SSEEEE AALLSSOO
+       the _e_x_e_c_(_) efun
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

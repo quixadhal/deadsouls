@@ -11,3 +11,8 @@ void create() {
     SetShort("a blank room");
     SetLong("A featureless area.");
 }
+
+void init(){
+    ::init();
+}
+

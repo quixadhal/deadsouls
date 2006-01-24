@@ -14,16 +14,17 @@ static void create() {
 
 
 mixed can_shoot_obj_at_str(object shooter, string target) { 
-    return 1;
+    if(intp(check_light())) return this_player()->CanManipulate();
+    else return check_light();
 } 
 
 mixed can_shoot_wrd_with_wrd(mixed target,mixed shooter) {
-    return 1;
+    if(intp(check_light())) return this_player()->CanManipulate();
+    else return check_light();
 }
 
 
 varargs mixed do_shoot_obj_at_str(object shooter, string target) {
-    string what;
     return (mixed)shooter->CanShoot(shooter,target);
     return 1;
 }

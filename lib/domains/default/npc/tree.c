@@ -19,7 +19,7 @@ void init(){
 }
 int make_money(string str){
     int d1;
-    string s1,s2,s3;
+    string s1,s2;
     if(!str){ write("Get what?\n"); return 1; }
     if(sscanf(str,"%d %s from %s",d1,s1,s2) > 0){
 	if(s1 !="electrum" && s1 != "platinum" &&

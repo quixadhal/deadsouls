@@ -145,7 +145,6 @@ int eventList(object who, string cmd, string args) {
     foreach(drink in keys(MenuItems)) {
 	string array adjectives = MenuItems[drink]->GetAdjectives();
 	string adj = "";
-
 	if( sizeof(adjectives) ) {
 	    adj = adjectives[random(sizeof(adjectives))] + " ";
 	}

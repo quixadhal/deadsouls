@@ -26,7 +26,7 @@ private static function Write;
 private static function Close;
 private static class client Socket;
 
-varargs static void eventClose(class client sock, int aboted);
+varargs static int eventClose(class client sock, int aborted);
 static void eventRead(mixed val);
 static void eventSocketClose();
 static void eventSocketError(string str, int x);
@@ -135,8 +135,6 @@ static void eventWriteCallback(int fd) {
 }
 
 void eventWrite(mixed val) {
-    int x;
-
     if( !Socket ) return;
     if( Socket->Buffer ) Socket->Buffer += ({ val });
     else Socket->Buffer = ({ val });

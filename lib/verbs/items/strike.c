@@ -16,7 +16,7 @@ static void create() {
 }
 
 mixed can_strike_obj() {
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed do_strike_obj(object ob) {

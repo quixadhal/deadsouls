@@ -2,6 +2,7 @@
 
 inherit LIB_STORAGE;
 
+
 void create() {
     ::create();
     SetKeyName("container");
@@ -13,4 +14,7 @@ void create() {
     SetMass(274);
     SetBaseCost("silver",1);
     SetMaxCarry(500);
+}
+void init(){
+    ::init();
 }

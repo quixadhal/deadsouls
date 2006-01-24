@@ -1,0 +1,261 @@
+chapter 2 "Command Syntax: Doing Stuff"
+
+
+Section 1: Manipulating Objects 
+----------
+
+    You've already noticed that Dead Souls, like most modern LP muds,
+uses natural-like command syntax, like:
+
+read first handbook
+
+rather than:
+
+read handbook 1
+
+    This is because Dead Souls uses a natural language parser. It isn't
+perfect, of course. If you try to "put all apples from box in my bag after
+opening them" you won't see much success, but this will work:
+
+open box
+
+open bag
+
+get apples from box
+
+put apples in bag
+
+    The parser will understand "the first box" or "my second bag",
+assuming those objects exist in your inventory or in your environment.
+
+    If you want to know what is in the box, the command is:
+
+look in box
+
+    The command "look at box" or "examine box" will usually *not* show
+you the contents of that box. This is because normally, boxes are
+opaque, and in the real world, just looking at a box is rarely enough
+to see what it contains as well.
+    An exception to this rule are transparent containers (a glass
+trophy case, perhaps) whose interior is always visible from the
+outside.
+
+    Sometimes looking at an object reveals its contents because of
+the nature of the object. A table, for example, can have things on it,
+and typing:
+
+look at table 
+
+    ...will usually let you know what is on it. It is also possible to
+see what other players are carrying by just looking at them, 
+unless what they have is inside a container.
+    You'll want to remember that while you can "put apple in bag",
+if you want to put that apple on a surface like a table, you'll
+need to:
+
+put apple on table
+
+    You can give things to people, and they will automatically
+accept them. However, you may not "take" or "get" things from living
+beings. It's theirs, and it's up to them if they want to share.
+    You can try to "steal sword from fighter" if you dare, but unless
+you have trained a lot, this is unlikely to succeed. We'll talk
+more about training and skills in a later chapter.
+    Naturally you may also drop things you no longer need, though
+it's nicer to your fellow mudders (and the mud's memory) to put
+them in recycling bins so the bits can be reused.
+   Some other common object manipulation commands are:
+
+   close, donate, attack, eat, drink, listen, smell, search,
+   shoot, touch, turn.
+
+   There are many others you may find useful, but these will be
+the ones you use most often to handle simple objects.
+
+
+Section 2: Navigation
+---------
+
+    Moving around here is probably much like any other mud. You
+can expect to move mostly in cardinal directions (like north and
+northwest), but you may sometimes need to go up, down, or out.
+    Strictly speaking, the way to do this is:
+
+go south
+
+go out
+
+    ...and so on, but this can get tedious after a while. Instead
+of having to type in "go" plus the entire direction, the mud allows
+you to enter shortcuts like "sw" for "go southwest" or "u" for
+"go up".
+
+    When you enter a room, very often you will see letters in
+brackets above the room description, like this: [n, u, out]
+    These are the "obvious exits" of that room, and help you
+quickly find your way around without having to go through each
+description. But remember! Just because a room has obvious exits
+doesn't mean those are the only exits. Sometimes a room must
+be searched to discover an exit, or there may be an exit available
+that just doesn't happen to be very obvious.
+    If a room is dark, obvious exits may not be visible at all.
+
+    Aside from those ordinary means of travel, there are situations
+that require more specific locomotion than just "go". These are
+examples of the use of some other commands to get around:
+
+jump onto road
+
+enter window
+
+climb ladder
+
+crawl east   (if you are lying down and can't get up)
+
+fly up
+
+follow thief
+
+evade hunter
+
+
+Section 3: Armor
+-------
+
+    Now that you can manipulate objects and move around, you'll want
+to be able to defend yourself, should the need arise. The special
+object categories of "weapons" and "armor" should help.
+
+    Armor is an item that can be worn. That means that a pair of
+blue jeans is considered armor, and a suit of chainmail is considered
+armor as well. Basically, if you can wear it, it's "armor", because
+whether it's a lot or a little, it protects you.
+    Assuming you are humanoid, you have the following limbs:
+
+    head, neck, torso, right arm, right hand, left arm,
+    left hand, right leg, right foot, left leg, left foot.
+
+    Properly coded armor must be worn on the corect limbs. Usually
+a command like:
+
+wear chainmail
+
+or
+
+wear all
+
+    ...will cause you to automatically wear armor where it makes 
+most sense. However, it is possible to find armor that,
+for example, can be worn either on your neck or your torso, like
+an amulet. If this is so, you'll need to specify where you want it.
+    There are various types of armor, like cloak, pants, glove,
+etc. Many of them overlap. You can wear a shirt on your torso as
+well as a cloak and combat armor, but you may noy wear two of
+the same type. If you have a robe and a cape that are both cloaks,
+you'll have to decide which one is going on.
+    You will find that shoes and gloves are often for one of your
+hands but not the other. Sometimes you will find shoes, or gloves
+that don't care which appendage they occupy, but usually these
+are simply incorrectly coded.
+
+    If you are of some exotic or non-humanoid race, you may have
+additional limbs to consider, and humanoid armor may not work for you.
+
+
+Section 4: Weapons
+---------
+
+   You may be surprised to learn that almost any manipulable object
+can be wielded as a weapon, or thrown as a missile. You can wield
+a can of Spam and try to kill an orc with it...and you may even succeed,
+if you are strong and tough enough. Don't count on it, though,
+and instead go for items that are made specifically with personal
+security in mind.
+
+    There are four main types of weapons:
+
+    blade: like swords, knives, and spears
+    blunt: like clubs, staves, and shillelaghs
+    projectile: like guns and bows
+    missile: things designed to be thrown, like darts or grenades
+
+    Unless it is a special device or magical item, weapons
+must be wielded in order to be of use in combat. Some weapons,
+like staves or pikes, may require the use of both hands. If this
+is the case, wearing a shield may not be possible at the same time.
+    Like armor, weapons differ in quality and effectiveness. A
+"well-crafted sword" is probably a better choice than a "small
+rusty knife", but then again, you never know. Maybe rusty knives
+are exactly what some monster is most vulnerable to.
+
+    Note also that, like armor, weapons wear down with use.
+Examples of commands that involve weapons or fighting:
+
+wield sword
+
+wield hammer in left hand
+
+wield staff in left hand and right hand
+
+unwield dagger
+
+shoot gun at otik
+
+throw dart at beggar
+
+kill all  (this makes an enemy of everyone in the room)
+
+ignore first orc (lets you concentrate on the other orcs)
+
+ignore all (don't fight anyone in the room, even if they are attacking you)
+
+target boss orc (this makes you ignore attacks from anyone else)
+
+wimpy 30 (this makes you run away if your health points drop below 30%)
+
+
+Section 5: Miscellaneous Things to to with Things
+---------
+
+turn on flashlight
+
+turn off flashlight
+
+strike match
+
+light torch with match
+
+extinguish match
+
+dig hole with shovel
+
+move bed
+
+search  (by default searches the room)
+
+search rocks
+
+unlock east door with silver key
+
+bait pole with worm
+
+fish with pole
+
+stop fishing
+
+drop all
+
+donate 2 silver
+
+get all
+
+get all from corpse
+
+sell first right glove to otik
+
+sell all to otik
+
+buy sword from otik
+
+buy 8 from otik
+

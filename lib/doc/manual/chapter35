@@ -1,0 +1,210 @@
+chapter 35 "QCS: Modifying rooms"
+
+    Suppose you are in your sample room and you issued the
+command: 
+
+create room south testroom1
+
+    You then travel south and see that you are in a room that is
+almost exactly like the sample room except for the exits. Well, 
+probably you don't want to have a mud with nothing but identical
+rooms, so let's modify it:
+
+modify here short Test Room One
+
+modify here long This is the first test room. The walls are rather blank.
+
+modify here climate indoors
+
+modify here light 30
+
+
+    Ok, so far so good. Standard interior. However, a good mud has
+rooms with details. Let's add some detail to this room.
+    I've omitted the system output for clarity. This is just what you
+would input.
+
+
+modify here item
+
+wall
+
+walls
+
+blank wall
+
+blank walls
+
+.
+
+These are just blank walls.
+
+
+    Let's review what we've done here:
+1) You issued the modify command specifying your current room as the
+   target, and the SetItems directive as the argument.
+2) You entered a query session, and were asked to enter each element
+   of the item's key.
+3) You entered a single dot to indicate you were done entering 
+   key elements.
+4) You entered the value for the key, which is the description of the
+   item.
+
+    The result of all this is that now you can issue these commands:
+
+exa wall
+look at blank walls
+examine walls
+
+    And the output will be:
+
+These are just blank walls.
+
+    Let's add a floor while we're at it:
+
+modify here item
+
+floor
+
+.
+
+A floor like any other.
+
+    In this case, you didn't feel like adding extra synonyms for "floor",
+so you entered the final dot rather than entering another key element.
+Then you added the description, and now if you "exa floor", you'll get
+that description.
+    "about here" will display to you the file you have modified.
+
+    Well, that's enough fun with indoor rooms. There's not much more
+to them. Let's go outdoors now:
+
+create room south exterior_room
+
+create door south test_door
+
+open door
+
+go south
+
+modify here short a small lawn
+
+modify here daylong A small, well groomed lawn on a lovely sunny day. There is a small building north of here.
+
+modify here nightlong This is a small lawn. Stars twinkle in the night sky above, and some light is coming from a small building to the north.
+
+modify here daylight 30
+
+modify here nightlight 20
+
+modify here light delete
+
+modify here long delete
+
+modify here items delete
+
+modify here items
+
+building
+
+small building
+
+.
+
+A small building, rather ramshackle as if hastily put together.
+
+modify here climate temperate
+
+    Ok! A few new things here. A neat thing about outdoor rooms is that
+typically they are subject to the time of day. A SetClimate directive
+that indicates an exterior environment causes the room to receive
+messages about the sun setting, rising, etc. 
+    The SetDayLong and SetNightLong directives allow you to more
+sensibly describe the area depending on the time of day. To avoid
+confusion, I deleted the SetLong directive. It is not mandatory to
+have different day and night descriptions, but players appreciate the
+effort.
+    It is also possible to have differing ambient light levels depending
+on the time of day, so we've added SetDayLight and SetNightLight, and
+we deleted the SetAmbientLight directive.
+
+    Let's continue to add detail:
+
+modify here item
+
+lawn
+
+grass
+
+.
+
+Healthy, well groomed and freshly cut grass.
+
+modify here smell
+
+default
+
+.
+
+You can smell the refreshing scent of freshly cut grass.
+
+modify here smell
+
+lawn
+
+grass
+
+.
+
+Yep, it's got that new lawn smell.
+
+modify here listen
+
+building
+
+.
+
+Sounds like someone's fumbling about in there, making a mess. New creators can be so noisy.
+
+modify here item
+
+garden
+
+.
+
+You may enter the garden from here.
+
+create room garden garden_room
+
+
+
+    You now have a room with lots of charm and detail. You can "smell grass"
+and "listen to small building", if you like. Neat, huh? But there's something 
+very important to keep in mind:
+
+ Enters, listens and smells don't work properly if there is no item defined
+for that smell. For example, if you want to be able to listen to the sea,
+you must "modify here item" and add a "sea" item. Otherwise, "listen
+to the sea" will respond with "There is no sea here."
+    The only exception to this rule is the "default" smell.
+
+    Enters behave similarly. If you want to be able to "enter" something,
+you'll need to create the corresponding item first, as in the example above.
+
+    You can use the SetProperties directive to make the room 
+conform to some presets, like:
+
+modify here property no attack 1
+
+    Read chapter 23 in the Creator's Manual for details on room properties.
+ 
+    Also, please note that indoor rooms can also have differing
+descriptions and light levels for night and day. It's just that
+indoor rooms don't get notification of daytime changes.
+
+    Finally, the SetTown directive allows the room to participate in
+area-wide events, and is useful for security purposes as well:
+
+modify here town MyTown
+
+    

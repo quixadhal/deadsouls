@@ -1,0 +1,37 @@
+
+EXCLUDE_ARRAY(1)                                 EXCLUDE_ARRAY(1)
+
+NNAAMMEE
+       _e_x_c_l_u_d_e___a_r_r_a_y_(_) - excludes 1 or more elements from an
+       array
+
+SSYYNNOOPPSSIISS
+       varargs mixed *exclude_array(mixed *array, int from, int
+       to)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given any type of an array as a first argument, this
+       SimulEfun will return a different array with the elements
+       from the element in the second argument up to the elements
+       in the third argument removed from the original.  If the
+       third argument is omitted, then only the element in the
+       second argument will be omitted.
+
+EEXXAAMMPPLLEESS
+       +o   exclude_array(({ "a", "b", "c" }), 1) returns ({ "a",
+           "c" })
+
+       +o   exclude_array(({ "a", "b", "c", "d" }), 1, 2) returns
+           ({ "a", "d" })
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/exclude_array.c
+
+SSEEEE AALLSSOO
+       _d_i_s_t_i_n_c_t___a_r_r_a_y_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

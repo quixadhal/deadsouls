@@ -11,6 +11,9 @@ void create() {
     SetAdjectives( ({ "wood","wooden", "simple", "medium-sized" "medium sized" }) );
     SetShort("a wooden table");
     SetLong("It is a simple, medium-sized table made of wood.");
+    SetInventory(([
+	"/domains/default/obj/handbook" : 1,
+      ]));
     SetMass(274);
     SetBaseCost("silver",1);
     SetBaseCost("silver",1);
@@ -18,4 +21,7 @@ void create() {
     inventory_visible();
     inventory_accessible();
 
+}
+void init(){
+    ::init();
 }

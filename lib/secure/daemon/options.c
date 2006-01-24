@@ -34,7 +34,7 @@ static private int valid_access() {
 }
 
 void assure_box_exists(string who) {
-    string tmp, file;
+    string file;
 
     if(!valid_access()) return;
     if(__Owner == who) return;

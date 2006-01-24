@@ -117,7 +117,6 @@ string query_temp_site_info() {
 }
 
 void manual_temp_unregister(string str) {
-    string *sites;
 
     if(!valid_access(previous_object())) return;
     if(member_array(str, keys(__TmpBanish))==-1) return;

@@ -126,7 +126,8 @@ int query_number_posts(string id) {
 
 string list_new_posts(string id){
     string mag;
-    int i, count;
+    int i;
+    mixed count;
 
     if(__CurrentID != id) {
 	__CurrentID = id;

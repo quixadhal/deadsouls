@@ -1,9 +1,8 @@
-
 #include <lib.h>
 
 inherit LIB_SENTIENT;
-int give_it(string str);
 
+int give_it(string str);
 int WieldStaff(){
     if(!present("staff",this_object())){
 	new("/domains/town/weap/leostaff")->eventMove(this_object());
@@ -14,7 +13,6 @@ int WieldStaff(){
     }
     return 1;
 }
-
 static void create() {
     sentient::create();
     SetKeyName("leo");
@@ -24,16 +22,16 @@ static void create() {
     SetLong("Leo is a large, friendly-looking wizard with a big "+
       "beard and a huge belly. He seems pretty busy and "+
       "somewhat preoccupied.");
+    SetInventory(([
+	"/domains/town/armor/wizard_hat" : "wear hat",
+	"/domains/town/armor/robe" : "wear robe",
+	"/domains/town/obj/pipe" : 1,
+      ]));
     SetLevel(300);
     SetUnique(1);
     SetRace("human");
     SetGender("male");
     SetClass("mage");
-    SetInventory(([
-	"/domains/town/armor/robe":"wear robe",
-	"/domains/town/armor/wizard_hat":"wear hat",
-
-      ]));
     SetAction(25, ({
 	"Leo scratches his beard thoughtfully.",
 	"Leo seems to be trying to remember something.", "Leo ponders.",
@@ -44,11 +42,10 @@ static void create() {
       }));
     SetCombatAction(100, (: WieldStaff :));
 }
-
 int CompleteQuest(object ob){
     string *quests;
     quests = ob->GetQuests();
-    if(ob->GetQuest("Orc Slayer Quest") == "nohit"){
+    if(!ob->GetQuest("Orc Slayer Quest")){
 	ob->AddQuest("the Orc Slayer","Orc Slayer Quest");
 	eventForce("say You have solved the Orc Slayer Quest. Congratulations!");
 	eventForce("say I hereby award you 10 quest points, and 2000 experience points!");
@@ -57,7 +54,6 @@ int CompleteQuest(object ob){
     }
     return 1;
 }
-
 int eventReceiveObject() {
     object ob, player;
     ob = previous_object();
@@ -68,4 +64,7 @@ int eventReceiveObject() {
 
     AddCarriedMass((int)ob->GetMass());
     return 1;
+}
+void init(){
+    ::init();
 }

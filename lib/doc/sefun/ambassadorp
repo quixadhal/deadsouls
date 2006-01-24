@@ -1,0 +1,30 @@
+
+AMBASSADORP(1)                                     AMBASSADORP(1)
+
+NNAAMMEE
+       _a_m_b_a_s_s_a_d_o_r_p_(_) - returns true if the object is an
+       ambassador
+
+SSYYNNOOPPSSIISS
+       int ambassadorp(object ob)
+
+DDEESSCCRRIIPPTTIIOONN
+       Returns true if the argument passed is an ambassador.  An
+       ambassador is a user who is listed in the AMBASSADOR group
+       in /secure/cfg/groups.cfg.
+
+EEXXAAMMPPLLEESS
+       +o   _a_m_b_a_s_s_a_d_o_r_p(_t_h_i_s___p_l_a_y_e_r_(_)) returns true if
+           _t_h_i_s___p_l_a_y_e_r_(_) is an ambassador
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/pointers.c
+
+SSEEEE AALLSSOO
+       _a_r_c_h_p_(_), _h_i_g_h___m_o_r_t_a_l_p_(_), _l_e_a_d_e_r_p_(_), _u_s_e_r_p_(_), _w_i_z_a_r_d_p_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

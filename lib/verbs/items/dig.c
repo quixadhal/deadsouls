@@ -57,7 +57,7 @@ mixed can_dig_with_obj() {
     if( this_player()->GetPosition() != POSITION_STANDING ) {
 	return "Dig when you are not standing?";
     }
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed can_dig_str_with_obj() {

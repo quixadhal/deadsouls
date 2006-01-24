@@ -1,3 +1,126 @@
+---- 2.0r10 ---
+- Fixed a problem in the death system that allowed creators to
+  be undead without quite realizing it.
+- Fixed miscellaneous minor gotchas in the sample town.
+- Added commands: lightme, quests.
+- Tweaked miscellaneous commands.
+- Fixed germs, added germ testing lab east of the wiz hall.
+
+---- 2.0r9 ---
+- Added a <death> channel for kills notices.
+- Miscellaneous fixes, tweak, etc.
+- Fixed channels bug that changed lognames if someone was listening
+  to a channel. Now both log.
+- Encre now forces the new creator to quit. This is necessary in order
+  to enable certain characteristics of their new body.
+- Fixed a truly vile room bug that leaked objects and memory.
+- Added reaper daemon to clean up junk from memory.
+- Fixed multiple bugs in lighting system.
+- Added light meter to creators' chest.
+- Removed roommaker from creators' chest.
+- Fixed remaining goto command problem.
+- Set EXTRA_TIME_OFFSET in /secure/include/config.h to 0.
+- Fixed bug in rescue login. Creators now can use it.
+- Reorganized efun man pages and added missing efun and sefun docs.
+- Added flying system.
+- QCS feature add: you can now add includes and inherits.
+- QCS fix: modify <thing> delete <directive>  now works properly.
+- Added numerous new directives to QCS.
+- Added lib object check and NoModify checks to QCS verbs.
+- Fixed object manipulation: creatures without prehensile appendages can 
+  no longer accept or manipulate objects. If a creator somehow
+  manages to lose both hands they can use the "heal" command to fully
+  restore themselves.
+- Fixed a variety of body related issues with races, created a
+  menagerie of sample npc's for testing.
+- Fixed stealing system, added thief class.
+- Miscellaneous lib object fixes and additions (eg SetAction now 
+  takes mixed arrays, new SetPermitLoad lfun on npc's, some npc move
+  messages fixed, etc).
+
+---- 2.0r8 ---
+- Added intermud announcements to arch room (/secure/room/arch).
+- Fixed bug in targeted intermud emotes.
+- Channels now log without needing to have a player listening.
+- Admin channel now logs to /secure/log
+- Fixed lib/std/book.c bug that failed horribly if there was a hidden
+  file in the text source directory.
+- Extensive code cleanup of unused variables.
+- Miscellaneous tweaks to sample domain.
+- Added tighter restriction to "no teleport" property in rooms.
+- Miscellaneous fixes of verb code.
+- Modified wrap() sefun to output truncated text rather than just
+  error out when buffer overflows.
+- Added arch command.
+- Added EXTRA_TIME_OFFSET parameter to /secure/include/config.h to
+  accommodate OS'es with peculiar timekeeping.
+- Changed local_options to avoid exessive warning messages in /log/errors.
+  This is only useful if doing a new install of Dead Souls, or
+  if you copy local_options from the full distribution and recompile
+  the driver. For the Windows version, all that is needed is to
+  copy the new driver.exe over the old one, if you're doing an upgrade.
+- Rescue login feature added. If when you try to log in, everything
+  goes to hell, try logging in adding "_rescue" to your name, which
+  in my case is: cratylus_rescue
+- For admins, eval now writes the temp file to /secure, to avoid 
+  annoying /realms dir permission conflicts.
+- Cleaned up goto and dest command ugliness.
+- Modified reload command and reload() sefun not to perform recursive
+  updates by default. This should speed up QCS response time and cut
+  down on mud-wide lag.
+- Added some directives to QCS.
+
+---- 2.0r7 ---
+- Added sample virtual forest to town area.
+- Added intermud list of Dead Souls muds to arch room ("read screen").
+- Added mudtime and ticktock commands, and tweaked the time system.
+- Updated documentation.
+- Added Tim's imc2 client. Doesn't quite work yet. Suggestions welcome.
+- Created ds intermud channels ds and ds_test. Enabled ds for cres
+  by default (i3 names: dead_souls, dead_test4).
+- Balanced/fixed attack spells a bit.
+- Fixed QCS bug that prevented barkeeps from having stuff added
+  to their inventories.
+- Made it harder to join the mages (The game is too hard for a
+  first level mage).
+- Fixed a bug that made Herkimer a cheat.
+- Applied workaround for a bug in Clepius.
+
+---- 2.0r6 ---
+- Added manuals and such to first admin logon.
+- Cleaned up miscellaneous login quirks.
+- Got rid of that pesky elog message at startup.
+- Updated news files.
+
+---- 2.0r5 ---
+- Fixed problem with loading a working handbook on first login.
+- Fixed QCS bug of reloading files instead of objects.
+- Added CREDITS file.
+
+---- 2.0r4 ---
+- Nailed down nasty bug that overwrote rooms when creating an enter.
+- Fixed a bug in "give" code that prevented giving of money.
+- Fixed door bug that prevented proper setting of SetLocked and SetClosed.
+- Updated some minor documentation unclarities.
+- Modified reload() sefun and update command, as well as LastLocation
+  settings to avoid unnecesary teleportation when reloading objects.
+- Modified donate verb and lib object to behave more sanely.
+- QCS code cleanup and tightening, also added inits to templates.
+- Tightened up sample town code.
+- Added Players Handbook
+
+---- 2.0r3 ---
+- Added workaround for Windows time-of-day problem.
+- Fixed minor QCS issues.
+
+---- 2.0r2 ---
+- Many QCS fixes and updates.
+- Added doors and meals to QCS.
+- Added thorough QCS documentation: /doc/manual/chapter31 and above.
+
+---- 2.0r1 ---
+- Fixed peculiar "multiple doors in a room" bug.
+
 ---- 2.0 ---
 - It is done.
 

@@ -1,0 +1,29 @@
+
+MINUTES(1)                                             MINUTES(1)
+
+NNAAMMEE
+       _m_i_n_u_t_e_s_(_) - returns the number of minutes past the MUD
+       hour
+
+SSYYNNOOPPSSIISS
+       int minutes(int x)
+
+DDEESSCCRRIIPPTTIIOONN
+       Given an integer time as an argument, this function will
+       return the number of minutes past the hour at the time
+       which was given.
+
+EEXXAAMMPPLLEESS
+       +o   _m_i_n_u_t_e_s(_t_i_m_e_(_)) at this moment returns 19
+
+LLOOCCAAIITTOONN
+       /secure/SimulEfun/time.c
+
+SSEEEE AALLSSOO
+       _d_a_t_e_(_), _d_a_y_(_), _h_o_u_r_(_), _m_o_n_t_h_(_), _q_u_e_r_y___n_i_g_h_t_(_), _y_e_a_r_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

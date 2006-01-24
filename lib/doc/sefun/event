@@ -1,0 +1,41 @@
+
+EVENT(1)                                                 EVENT(1)
+
+NNAAMMEE
+       _e_v_e_n_t_(_) - sets up an event to occur regularly
+
+SSYYNNOOPPSSIISS
+       varargs void event(string fun, int when, mixed *args, int
+       reg)
+
+DDEESSCCRRIIPPTTIIOONN
+       This function is exactly like the _c_a_l_l___o_u_t_(_) efun, except
+       in that this SimulEfun works across reboots.  This is
+       useful for setting up long terms events, such as monthly
+       goblin raids or lunar based lycanthropy.  The first
+       argument is a string representing the name of the function
+       to be called.  The second argument is how long after
+       _e_v_e_n_t_(_) is called that the first event should happen.  The
+       third and fourth arguments are optional.  If given, the
+       third argument is an array of arguments to be passed to
+       the function when it is called.  In addition, the fourth
+       argument, is a flag.  If given and 1, it flags the event
+       to be recurring.  If not give or 0, the event will only
+       happen the first time.
+
+EEXXAAMMPPLLEESS
+       +o   event("call_war", MONTH) will set the function
+           _c_a_l_l___w_a_r_(_) to be called one mud month from now
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/events.c
+
+SSEEEE AALLSSOO
+       _c_a_l_l___o_u_t_(_), _e_v_e_n_t___p_e_n_d_i_n_g_(_), _r_e_m_o_v_e___c_a_l_l___o_u_t_(_),
+       _s_e_t___h_e_a_r_t___b_e_a_t_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

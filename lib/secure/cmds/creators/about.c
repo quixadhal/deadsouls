@@ -19,6 +19,7 @@ mixed cmd(string str) {
     if(str == "here") thing = environment(this_player());
     else thing = present( str, this_player());
     if(!thing) thing = present(str, environment(this_player()));
+    if(thing->GetDoor()) thing = load_object(thing->GetDoor());
     if(!thing) return notify_fail("Uh oh, error.\n");
     name = base_name(thing) + ".c";
     message( "info", name + "\n", this_player() );

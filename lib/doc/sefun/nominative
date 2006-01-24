@@ -1,0 +1,31 @@
+
+NOMINATIVE(1)                                       NOMINATIVE(1)
+
+NNAAMMEE
+       _n_o_m_i_n_a_t_i_v_e_(_) - returns the nominative pronoun for an
+       object
+
+SSYYNNOOPPSSIISS
+       string nominative(string|object val)
+
+DDEESSCCRRIIPPTTIIOONN
+       This function takes either a string representing the
+       gender of a living object or a living object as an
+       argument.  It returns the nominative pronoun ("he", "she",
+       or "it") depending on the gender.
+
+EEXXAAMMPPLLEESS
+       _n_o_m_i_n_a_t_i_v_e(_t_h_i_s___p_l_a_y_e_r_(_)) returns "he" for me, at least on
+       Nightmare.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/english.c
+
+SSEEEE AALLSSOO
+       _o_b_j_e_c_t_i_v_e_(_), _p_o_s_s_e_s_s_i_v_e_(_), _p_o_s_s_e_s_s_i_v_e___n_o_u_n_(_), _r_e_f_l_e_x_i_v_e_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

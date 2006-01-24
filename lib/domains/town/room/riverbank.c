@@ -21,7 +21,6 @@ static void create() {
 	"/domains/town/npc/troll" : 1,
 	"/domains/town/obj/rocks" : 1,
       ]));
-    SetObviousExits("u");
     AddExit("up", "/domains/town/room/bridge");
     SetChance(90);
     SetFish( ([
@@ -35,4 +34,3 @@ void init() {
     SetSmell(([]));
     SetListen(([  "default" : "You can hear the roar of the river rushing by."]));
 }
-//extras

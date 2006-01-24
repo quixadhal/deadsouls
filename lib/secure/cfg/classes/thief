@@ -1,0 +1,15 @@
+thief
+melee attack:0:3
+blunt attack:1:2
+knife attack:0:0
+projectile attack:0:1
+melee defense:0:2
+blade defense:1:2
+knife defense:0:3
+projectile defense:0:0
+bargaining:0:0
+stealth:0:0
+stealing:0:0
+fishing:0:1
+murder:0:2
+blunt defense:1:1

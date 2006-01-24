@@ -31,7 +31,7 @@ mixed can_wear_obj() {
     if( this_player()->GetParalyzed() ) {
 	return "You cannot do anything.";
     }
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed can_wear_obj_on_str(string str) {

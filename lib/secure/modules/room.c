@@ -2,8 +2,10 @@
 #include <modules.h>
 
 string globalstr, globalstr2, globaltmp;
+string globalroom, globalfile;
 
 varargs int eventCreateExit(string dir, string room, string file, int remote);
+varargs int eventCreateEnter(string dir, string room, string file, int remote);
 int eventRemoveExit(string dir, string filename);
 varargs mixed eventProcessExits(string filename, string dir, string location);
 varargs mixed eventProcessEnters(string filename, string dir, string location, object room);
@@ -51,15 +53,11 @@ mixed make(string str) {
     new_room = read_file("/obj/room.c");
 
 
-    if(sscanf(str," enter %s %s", s1, s2) == 2){ 
+    if(sscanf(str," %s %s", s1, s2) == 2){ 
 	arg1 = s1;
 	arg2 = s2;
-	enter = 1;
-    }
-    else if(sscanf(str," %s %s", s1, s2) == 2){ 
-	arg1 = s1;
-	arg2 = s2;
-	enter = 0;
+	if(sizeof(opposite_dir(arg1))) enter = 0;
+	else enter = 1;
     }
     else {
 	write("Usage: create room <direction> <file>");
@@ -88,26 +86,26 @@ mixed make(string str) {
 	new_file = room_dir +"/"+ arg2;
     }
 
-
     if(new_file[0..7] == "/realms/" && strsrch(new_file,"/area/") != -1){
-	if(file_size(new_file) < 0) cp("/obj/area_room.c",new_file);
+	if(!file_exists(new_file)) cp("/obj/area_room.c",new_file);
     }
-    else if(file_size(new_file) < 0) cp("/obj/room.c",new_file);
+    else {
+	if(!file_exists(new_file)) cp("/obj/room.c",new_file);
+    }
 
-    eventCreateExit(arg1, current_room+".c", new_file);
+    if(enter == 0) eventCreateExit(arg1, current_room+".c", new_file);
+    else eventCreateEnter(arg1, current_room+".c", new_file);
     if(file_exists(new_file) &&
       grepp(read_file(new_file),"SetShort(\"a blank room\");") ) {
 	eventCopyRoom(current_room+".c", new_file);
-	load_object("/secure/cmds/creators/update")->cmd("-a "+new_file);
+	reload(new_file);
     }
-    //write("You mutter an incantation and a new room appears!");
     return 1;
 }
 
 varargs int eventCreateExit(string dir, string room, string file, int remote){
-    string this_room, param, line, newfile;
+    string param;
     string *file_arr;
-    object *players;
 
     if(member_array(dir,cardinal_dirs) == -1) {
 	this_object()->eventCreateEnter(dir, room, file, remote);
@@ -128,21 +126,16 @@ varargs int eventCreateExit(string dir, string room, string file, int remote){
     else if(strsrch(globaltmp,"AddExit") != -1) param = "AddExit";
     else if(strsrch(globaltmp,"SetLong") != -1) param = "SetLong";
     else {
-	write("The room you are in is screwed up. Creation process halted.");
+	//write("The room you are in is screwed up. Creation process halted.");
     }
     globaltmp = remove_matching_line(globaltmp,"SetObviousExits",1);
     globaltmp = remove_matching_line(globaltmp,"//extras",1);
-    ////tc("globalstr: "+globalstr);
-    //write("globaltmp: "+globaltmp);
     unguarded( (: write_file(globalstr,globaltmp,1) :) );
-    players = get_livings(environment(this_player()),1);
-    load_object("/secure/cmds/creators/update")->cmd("-a "+room);
+    reload(room);
     eventProcessExits(room, dir, file);
 
     if(!remote) {
-	//call_out( (: eventCreateExit, opposite_dir(dir), file, room, 1 :), 1 );
 	eventCreateExit(opposite_dir(dir), file, room, 1 );
-	players->eventMove(load_object(room));
 	write("You begin uttering a magical incantation.");
 	say(this_player()->GetCapName()+" begins uttering a magical incantation.");
 	this_object()->eventGeneralStuff(room);
@@ -159,7 +152,6 @@ varargs int eventCreateExit(string dir, string room, string file, int remote){
 int eventRemoveExit(string dir, string filename){
     string contents, search_str, map_str, key, val, new_file, tmpfile;
     string *file_arr;
-    object *players;
     mapping PointlessMap;
     mapping ExitsMap = load_object(filename)->GetExitMap();
 
@@ -208,21 +200,18 @@ int eventRemoveExit(string dir, string filename){
 	contents = globalstr2;
 
 	new_file = remove_matching_line(contents, "SetExits", 1); 
-	new_file = this_object()->eventAppend(new_file,({"SetLong"}),"\n"+map_str+"\n");
+	new_file = this_object()->eventAppend(new_file,({"SetItems","SetLong","SetDayLong","SetNightLong"}),"\n"+map_str+"\n");
 	new_file = remove_matching_line(new_file,"SetObviousExits");
 	new_file = remove_matching_line(new_file,"//extras");
 	new_file = remove_matching_line(new_file,"AddExit(", 1, ":)");
-	//write("new_file: "+new_file);
 	globalstr2 = new_file;
 	unguarded( (: write_file(globaltmp,globalstr2,1) :) );
 	this_object()->eventGeneralStuff(tmpfile);
 	globalstr = tmpfile;
 	globalstr2 = filename;
 	unguarded( (: cp(globalstr, globalstr2) :) );
-	players = get_livings(environment(this_player()),1);
-	load_object("/secure/cmds/creators/update")->cmd("-a "+filename);
-	players->eventMove(load_object(filename));
-	//rm(tmpfile);
+	reload(filename);
+	rm(tmpfile);
 	write("With a puff of smoke, an exit vanishes!");
 	return 1;
     }
@@ -242,10 +231,8 @@ int eventRemoveExit(string dir, string filename){
 	globaltmp = remove_matching_line(new_file, search_str);
 	unguarded( (: write_file(globalstr,globaltmp,1) :) );
 	unguarded( (: cp(globalstr, globalstr2) :) );
-	players = get_livings(environment(this_player()),1);
-	load_object("/secure/cmds/creators/update")->cmd("-a "+filename);
 	eventProcessExits(filename);
-	players->eventMove(load_object(filename));
+	reload(filename);
 	rm(tmpfile);
 	write("With a puff of smoke, an exit vanishes!");
 	return 1;
@@ -256,9 +243,7 @@ int eventRemoveExit(string dir, string filename){
 }
 
 varargs mixed eventProcessExits(string filename, string dir, string location){
-    string tmpexit, search_str, map_str, key, val, new_file;
-    string *file_arr;
-    object *players;
+    string map_str, key, val, new_file;
     mapping PointlessMap;
 
     mapping ExitsMap = load_object(filename)->GetExitMap();
@@ -288,19 +273,17 @@ varargs mixed eventProcessExits(string filename, string dir, string location){
     globalstr = filename; 
     globaltmp = generate_tmp();
 
-    globalstr2 = this_object()->eventAppend(new_file,({"SetLong","SetDayLong","SetNightLong","SetShort","create()","create"}),"\n"+map_str+"\n");
+    globalstr2 = this_object()->eventAppend(new_file,({"SetItems","SetLong","SetDayLong","SetNightLong","SetShort","create()","create"}),"\n"+map_str+"\n");
     unguarded( (: write_file(globaltmp,globalstr2,1) :) );
     unguarded( (: cp(globaltmp,globalstr) :) );
-    load_object("/secure/cmds/creators/update")->cmd("-a "+filename);
+    reload(filename);
     rm(globaltmp);
     return 1;
 }
 
 string eventCopyRoom(string source, string dest){
-    string homedir, areadir, tmpsource, map_str, new_file, foo;
+    string homedir, areadir, tmpsource, map_str, new_file;
     mapping DestExits;
-    //write("source: "+source);
-    //write("dest: "+dest);
 
     if(file_exists(source) && !check_privs(this_player(),source)){
 	write("You do not appear to have access to this file. Modification aborted.");
@@ -317,7 +300,7 @@ string eventCopyRoom(string source, string dest){
     globalstr = tmpsource;
     unguarded( (: cp(globalstr2, globalstr) :) );
     globalstr2 = dest;
-    if(!file_exists(source)) return "Source read failed.";
+    if(!file_exists(source)) return "Source read has failed.";
     if(!file_exists(tmpsource)) return "Read failed.";
     if(!file_exists(dest)) return "Destination read failed.";
     homedir = "/realms/"+this_player()->GetKeyName();
@@ -334,9 +317,10 @@ string eventCopyRoom(string source, string dest){
 
     //write("DestExitS: "+identify(DestExits));
     map_str = "SetExits("+this_object()->eventStringifyMap(DestExits)+");\n";
-    new_file = this_object()->eventAppend(globaltmp,({"SetLong"}),"\n"+map_str+"\n");
+    new_file = this_object()->eventAppend(globaltmp,({"SetItems","SetLong","SetDayLong"}),"\n"+map_str+"\n");
     new_file = replace_line(new_file,({"SetShort(",");"}),"SetShort(\"copy of "+last_string_element(source,"/")+"\");");
     replace_string(new_file,"\n\n\n","\n\n");
+    new_file = remove_matching_line(new_file, "SetDoor", 1);
 
     //tc("new_file: "+new_file);
     //tc("\n--------\n");
@@ -356,8 +340,6 @@ string eventCopyRoom(string source, string dest){
 }
 
 varargs int eventCreateEnter(string dir, string room, string file, int remote){
-    string this_room, line, newfile;
-    object *players;
 
     if(file_exists(room) && !check_privs(this_player(),room)){
 	write("You do not appear to have access to this room file. Modification aborted.");
@@ -370,24 +352,41 @@ varargs int eventCreateEnter(string dir, string room, string file, int remote){
 	return 1;
     }
 
-    globalstr = room;
-    unguarded( (: globaltmp = read_file(globalstr) :) );
+    globalroom = room;
+    globalfile = file;
+    globaltmp = "";
+
+    if(remote) unguarded( (: globaltmp = read_file(globalroom) :) );
+    else unguarded( (: globaltmp = read_file(globalfile) :) );
 
     if(remote && member_array("out",load_object(room)->GetExits()) != -1) return 0;
 
-    globaltmp = remove_matching_line(globaltmp,"SetObviousEnters",1);
+    globaltmp = remove_matching_line(globaltmp,"SetObviousExits",1);
+    globaltmp = remove_matching_line(globaltmp,"SetExits",1);
+    globaltmp = remove_matching_line(globaltmp,"SetDoor",1);
+    globaltmp = remove_matching_line(globaltmp,"SetEnters",1);
     globaltmp = remove_matching_line(globaltmp,"//extras",1);
-    //tc("globalstr: "+globalstr);
-    //write("globaltmp: "+globaltmp);
-    unguarded( (: write_file(globalstr,globaltmp,1) :) );
-    players = get_livings(environment(this_player()),1);
-    load_object("/secure/cmds/creators/update")->cmd("-a "+room);
+    //tc("remote: "+remote,"yellow");
+    //tc("globalroom: "+globalroom);
+    //tc("globalfile: "+globalfile);
+    //tc("globaltmp: "+read_matching_line(globaltmp,"Long"));
+    //unguarded( (: tc("globalfile is: "+read_matching_line(read_file(globalfile),"Long"),"red") :) );
+    //unguarded( (: tc("globalroom is: "+read_matching_line(read_file(globalroom),"Long"),"red") :) );
+    unguarded( (: write_file(globalfile,globaltmp,1) :) );
+    //players = get_livings(environment(this_player()),1);
+    //load_object("/secure/cmds/creators/update")->cmd("-a "+room);
+    //unguarded( (: tc("globalfile is: "+read_matching_line(read_file(globalfile),"Long"),"red") :) );
+    //unguarded( (: tc("globalroom is: "+read_matching_line(read_file(globalroom),"Long"),"red") :) );
 
     if(!remote) {
-	//call_out( (: this_object()->eventCreateExit, "out", file, room, 1 :), 1 );
+	//tc("size of globalroom: "+sizeof(read_file(globalroom)));
+	//tc("size of globalfile: "+sizeof(read_file(globalfile)));
+	//tc("");
 	eventProcessEnters(room, dir, file);
+	//tc("size of globalroom: "+sizeof(read_file(globalroom)));
+	//tc("size of globalfile: "+sizeof(read_file(globalfile)));
 	this_object()->eventCreateExit("out", file, room, 1 );
-	players->eventMove(load_object(room));
+	//players->eventMove(load_object(room));
 	say(this_player()->GetCapName()+" waves "+possessive(this_player())+" hand and a new enter appears.");
 	this_object()->eventGeneralStuff(room);
     }
@@ -397,7 +396,15 @@ varargs int eventCreateEnter(string dir, string room, string file, int remote){
 	write("You begin uttering a magical incantation.");
 	write("You wave your hand, and a new enter appears.");
 	say(this_player()->GetCapName()+" begins uttering a magical incantation.");
+
     }
+    reload(room);
+    reload(file);
+    room = "";
+    file = "";
+    globalroom = "";
+    globalfile = "";
+    globaltmp ="";
     return 1;
 }
 
@@ -407,7 +414,6 @@ int eventRemoveEnter(string dir, string filename){
     mixed val;
     string *file_arr;
     mixed *key_arr;
-    object *players;
     mapping PointlessMap;
     mapping EntersMap = load_object(filename)->GetEnterMap();
 
@@ -468,17 +474,14 @@ int eventRemoveEnter(string dir, string filename){
 	new_file = remove_matching_line(new_file,"SetObviousEnters");
 	new_file = remove_matching_line(new_file,"//extras");
 	new_file = remove_matching_line(new_file,"AddEnter(", 1);
-	//write("new_file: "+new_file);
 	globalstr2 = new_file;
 	unguarded( (: write_file(globaltmp,globalstr2,1) :) );
 	this_object()->eventGeneralStuff(tmpfile);
 	globalstr = tmpfile;
 	globalstr2 = filename;
 	unguarded( (: cp(globalstr, globalstr2) :) );
-	players = get_livings(environment(this_player()),1);
-	load_object("/secure/cmds/creators/update")->cmd("-a "+filename);
-	players->eventMove(load_object(filename));
-	//rm(tmpfile);
+	rm(tmpfile);
+	reload(filename);
 	write("With a puff of smoke, an enter vanishes!");
 	return 1;
     }
@@ -498,10 +501,8 @@ int eventRemoveEnter(string dir, string filename){
 	globaltmp = remove_matching_line(new_file, search_str);
 	unguarded( (: write_file(globalstr,globaltmp,1) :) );
 	unguarded( (: cp(globalstr, globalstr2) :) );
-	players = get_livings(environment(this_player()),1);
-	load_object("/secure/cmds/creators/update")->cmd("-a "+filename);
 	eventProcessEnters(filename);
-	players->eventMove(load_object(filename));
+	reload(filename);
 	rm(tmpfile);
 	write("With a puff of smoke, an enter vanishes!");
 	return 1;
@@ -512,9 +513,9 @@ int eventRemoveEnter(string dir, string filename){
 }
 
 varargs mixed eventProcessEnters(string filename, string dir, string location, object room) {
-    string tmpenter, search_str, map_str, key, val, new_file;
+    string map_str, key, val, new_file;
     string *id_array;
-    object *players, *dummies;
+    object *dummies;
     mapping PointlessMap;
 
     mapping EntersMap = load_object(filename)->GetEnterMap();
@@ -551,9 +552,6 @@ varargs mixed eventProcessEnters(string filename, string dir, string location, o
 	//if(present(key[0],load_object(filename)) ) map_str += "\""+key[0]+"\" : \""+val+"\",\n";
 	map_str += "\""+key[0]+"\" : \""+val+"\",\n";
     }
-    //tc("dir: "+dir);
-    //write("location: "+location);
-    //tc("id_array: "+identify(id_array));
 
     if(dir && location && member_array(dir,id_array) != -1){
 	map_str += "\""+dir+"\" : \""+location+"\",\n";
@@ -566,7 +564,7 @@ varargs mixed eventProcessEnters(string filename, string dir, string location, o
     globalstr2 = this_object()->eventAppend(new_file,({"AddItem","SetItems","SetExits","AddExit"}),"\n"+map_str+"\n");
     unguarded( (: write_file(globaltmp,globalstr2,1) :) );
     unguarded( (: cp(globaltmp,globalstr) :) );
-    load_object("/secure/cmds/creators/update")->cmd("-a "+filename);
+    reload(filename);
     rm(globaltmp);
     return 1;
 }

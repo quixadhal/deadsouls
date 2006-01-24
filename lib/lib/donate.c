@@ -6,21 +6,15 @@
 #include "include/donate.h"
 #include <lib.h>
 
-inherit LIB_ITEM;
-
 private int TotalAssets;
 private string LocalCurrency, Owner;
 
 static void create() {
-    item::create();
     this_object()->AddSave( ({ "TotalAssets" }) );
     TotalAssets = 0;
-    SetPreventGet(1);
-    SetMass(99999);
 }
 
 static void init() {
-    item::init();
     if( (string)this_player()->ClassMember((string)GetOwner()) ||
       (string)this_player()->GetGuild() == (string)GetOwner() ) {
 	add_action( (: eventDonate :) , "donate" );
@@ -28,11 +22,10 @@ static void init() {
 }
 
 string GetLong(string str) {
-    string ret;
-    ret = item::GetLong();
-    ret += "\nIt currently contains "+TotalAssets+" " +
-    (string)GetLocalCurrency() + ".";
-    return ret;
+    string ret = "\nIt currently contains "+TotalAssets+" " +
+    "coins and bills.";
+    if(TotalAssets) return ret;
+    else return "";
 }
 
 string SetLocalCurrency(string currency) {
@@ -74,20 +67,21 @@ int eventDonate(string amt, string type) {
 	tp->eventPrint("Nice try!\n");
 	return 0;
     }
-    if(type != GetLocalCurrency()) {
-	tp->eventPrint("The " + pluralize(GetOwner()) +
-	  " only deal in " + GetLocalCurrency() +
-	  ".\n");
-	return 0;
-    }
+    //if(type != GetLocalCurrency()) {
+    //	tp->eventPrint("The " + pluralize(GetOwner()) +
+    //	  " only deal in " + GetLocalCurrency() +
+    //	  ".\n");
+    //	return 0;
+    //   }
     if((int)tp->GetCurrency(type) < amount) {
 	tp->eventPrint("You don't have that much " + type + "!\n");
 	return 0;
     }
     tp->AddCurrency(type, -amount);
     AddAssets(amount);
-    tp->eventPrint("The " + pluralize(GetOwner()) + " are grateful "
+    tp->eventPrint(GetOwner() + " is grateful "
       "for your donation.");
+    if(living(this_object())) this_object()->eventForce("say Thank you!");
     return 1;
 }
 

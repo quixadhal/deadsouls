@@ -9,6 +9,7 @@
 #define SERVICE_LOCATE
 
 #include <daemons.h>
+#include <rooms.h>
 #include <message_class.h>
 
 void eventReceiveLocateRequest(mixed array packet) {
@@ -17,6 +18,7 @@ void eventReceiveLocateRequest(mixed array packet) {
     object ob;
 
     if( file_name(previous_object()) != INTERMUD_D ) return;
+tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"+capitalize(packet[3])+" at "+packet[2]+" has issued a locate request for %^BOLD%^YELLOW%^"+capitalize(packet[6])+".%^RESET%^\"");
     if( !(ob = find_player(packet[6])) || ob->GetInvis()) return;
     if( interactive(ob) ) {
 	string array tmp = ({ });

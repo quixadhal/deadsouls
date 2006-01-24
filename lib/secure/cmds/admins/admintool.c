@@ -36,7 +36,7 @@ int CurrencyRate(string str);
 int CurrencyWeight(string str);
 int CurrencyInflation(string str);
 int RemoveCurrency();
-int eventRemoveCurrency();
+int eventRemoveCurrency(string str);
 int EncrePlayer();
 int eventEncrePlayer(string str);
 int DecreCreator();
@@ -255,7 +255,10 @@ int GroupsMenu(){
 
 string GetHelp(string str) {
     return ("Syntax: <admintool>\n\n"
-      "Menu-driven tool used to edit the MUD's configuration.");
+      "Menu-driven tool used to edit the MUD's configuration.\n"
+      "To change mud name or port number, choose the Driver menu.\n"
+      "Use the Users menu for promoting a player to creator status.\n"
+      "Use the Groups menu to make someone an assistant admin.\n");
 }
 
 int ToggleMudLock(){
@@ -532,7 +535,7 @@ int AddCurrency(){
 }
 
 int eventAddCurrency(string str){
-    string currencypath, query;
+    string query;
 
     currency = str;
     if(!str) {
@@ -655,9 +658,8 @@ int eventDecreCreator(string str){
 }
 
 mixed EnCre(string args) {
-    object ob, cre_ob;
-    string file, nom, PlayerName;
-    string cdir, tdir, dir_line;
+    object ob;
+    string file, nom;
 
     nom = convert_name(args);
     if( !user_exists(nom) ){
@@ -688,8 +690,8 @@ mixed EnCre(string args) {
 }
 
 mixed DeCre(string args) {
-    object ob, player_ob;
-    string nom, file, PlayerName;
+    object ob;
+    string nom, file;
     nom = convert_name(args);
     if( !user_exists(nom) ){
 	write(capitalize(nom) + " is not a member of " +
@@ -843,10 +845,21 @@ varargs int eventChangeName(string newname, int automated){
 	return 1;
     }
 
+    if(automated){
+	if(mud_name() != "DeadSoulsNew" &&
+	  mud_name() != "DeadSoulsWin")
+	    return 0;
+    }
+
     line_string = read_file("/secure/cfg/mudos.cfg");
     if(!sizeof(line_string)) write("Couldn't read file.");
     line_array = explode(line_string, "\n");
     if(!sizeof(line_array)) write("Array is zero length.");
+
+    if(!sizeof(line_array) || !sizeof(line_string)) {
+	if(!automated) Menu();
+	return 0;
+    }
 
     foreach(string line in line_array){
 	if(strsrch(line,"name :") != -1){
@@ -863,12 +876,14 @@ varargs int eventChangeName(string newname, int automated){
 
     if(automated){
 	if(name != "DeadSoulsWin" && name != "DeadSouls" &&
-	  name != "Dead Souls") newname = name;
+	  name != "Dead Souls" && name != "DeadSoulsNew") newname = name;
+	cp("/secure/cfg/mudos.cfg","/secure/cfg/mudos.orig");
     }
+
     newline = junk + " : " + newname;
-    //write("newline is: "+newline);
     newfile = replace_string(line_string, nameline, newline);
     write_file("/secure/cfg/mudos.cfg",newfile,1);
+    cp("/secure/cfg/mudos.cfg","/secure/cfg/mudos.autobak");
     write("\n");
     if(!automated)  {
 	write("\nMUD's name changed. Reboot the MUD to activate new name.\n");
@@ -877,6 +892,7 @@ varargs int eventChangeName(string newname, int automated){
     }
     return 1;
 }
+
 int ChangePort(){
     write("Current MUD network port is "+query_host_port());
     write("Please enter the new network port for your MUD:\n");

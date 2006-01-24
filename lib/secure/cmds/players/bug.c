@@ -342,8 +342,6 @@ static void Assign(string *args) {
 	    varargs static void View(string *args, int print) {
 		mapping bugs;
 		function f;
-		string whose;
-		int x;
 
 		f = function() { 
 		    message("prompt", "\nHit return: ", this_player());

@@ -1,0 +1,31 @@
+
+MUDLIB_VERSION(1)                               MUDLIB_VERSION(1)
+
+NNAAMMEE
+       _m_u_d_l_i_b___v_e_r_s_i_o_n_(_) - returns the current version of this
+       mudlib
+
+SSYYNNOOPPSSIISS
+       string _m_u_d_l_i_b___v_e_r_s_i_o_n_(_)
+
+DDEESSCCRRIIPPTTIIOONN
+       Returns the currenct version of the mudlib you are using.
+       If you have made local modifications to the mudlib, you
+       should change this definition in /secure/include/config.h
+       to reflect your deviation.
+
+EEXXAAMMPPLLEESS
+       +o   _m_u_d_l_i_b___v_e_r_s_i_o_n_(_) as of this document will return "3.3"
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/mud_info.c
+
+SSEEEE AALLSSOO
+       _a_r_c_h_i_t_e_c_t_u_r_e_(_), _m_u_d___n_a_m_e_(_), _m_u_d_l_i_b_(_), _q_u_e_r_y___h_o_s_t___p_o_r_t_(_),
+       _v_e_r_s_i_o_n_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

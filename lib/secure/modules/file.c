@@ -1,12 +1,42 @@
 #include <lib.h>
 #include <modules.h>
 
-string eventReadFunctions(string source);
+string array eventReadFunctions(string source);
 int eventModString(string file, string param, string replace);
 
 string first_arg, globalstr, globalstr2, globalstr3;
 string *global_array;
 mixed globalmixed;
+
+string eventAppendLast(string file, string fun, string addendum){
+    int done;
+    string *source;
+    string junk1, junk2, junk3, junk4, junk5;
+    string ret = "";
+    globalstr = file;
+
+    if(unguarded( (: file_exists(globalstr):) ) && !check_privs(this_player(),globalstr)){
+	write("You do not appear to have access to this file. Modification aborted.");
+	return "";
+    }
+    if(unguarded( (: file_exists(globalstr):) )) {
+	file = unguarded( (: read_file(globalstr) :) );
+    }
+
+    unguarded( (: global_array  = this_object()->eventReadFunctions(globalstr) :) );
+    source = global_array;
+    foreach(string func in source){
+	if(sscanf(func,"%s"+fun+"%s(%s)%s\n%s",junk1, junk2, junk3, junk4, junk5) == 5 && !done){
+	    func = reverse_string(func);
+	    func = replace_string(func,"}","SIHT_ECALPER",1);
+	    func = reverse_string(func);
+	    func = replace_string(func,"REPLACE_THIS",addendum+"\n}");
+	    done = 1;
+	}
+	ret += func + "\n";
+    }
+    return ret;
+}
 
 string eventAppend(string file, string *params, string addendum){
     int found, count, primary_line, secondary_line;
@@ -21,14 +51,10 @@ string eventAppend(string file, string *params, string addendum){
 	write("You do not appear to have access to this file. Modification aborted.");
 	return "";
     }
-
-
     if(unguarded( (: file_exists(globalstr):) )) {
 	file = unguarded( (: read_file(globalstr) :) );
     }
-
     foreach(string param in params){
-
 	if(!found && param && sizeof(param) && param != "" && stringp(param)){
 	    if(strsrch(file,param) != -1){ 
 		search_str = param;
@@ -69,10 +95,10 @@ string eventAppend(string file, string *params, string addendum){
 }
 
 varargs mapping eventReadMapping(string file, string *params, int destructive){
-    int numero, line_range, numm, count, found, primary_line, secondary_line;
+    int numero, count, found, primary_line, secondary_line;
     string *file_arr;
     string *mapping_array;
-    string new_file, filename, new_string, search_str, mapping_string, junk1, junk2;
+    string filename, new_string, search_str, mapping_string, junk1, junk2;
     mapping new_mapping = ([]);
     mixed mixed_var;
 
@@ -127,7 +153,6 @@ varargs mapping eventReadMapping(string file, string *params, int destructive){
 	write("It's a null mapping");
 	return ([]);
     }
-    //tc("map: "+mapping_string);
     mapping_array = explode(mapping_string,",");
     foreach(string foo in mapping_array){
 	string *sub_array;
@@ -157,17 +182,25 @@ varargs mapping eventReadMapping(string file, string *params, int destructive){
 	//unguarded( (: cp("/realms/"+this_player()->GetKeyName()+"/tmp/mapping_destructive."+this_player()->GetKeyName(),first_arg) :) );
 	unguarded( (: write_file(globalstr2, globalstr,1) :) );
 	unguarded( (: cp(globalstr2, first_arg) :) );
-	//unguarded( (: tc("read_file(globalstr2): "+read_file(globalstr2)) :) );
-	//unguarded( (: write("read_file(first_arg): "+read_file(first_arg)) :) );
     }
     if(sizeof(new_mapping)) return copy(new_mapping);
     else return ([]);
 }
 
+string array eventReadLines(string source){
+    if(file_exists(source) && !check_privs(this_player(),source)){
+	write("You do not appear to have access to this file. Modification aborted.");
+	return ({});
+    }
+    globalstr = source;
+    unguarded( (: global_array = explode(globalstr,"\n") :) );
+    return global_array;
+}
+
 string array eventReadFunctions(string source){
-    string tmpsource, fun_str, new_file, headers;
+    string tmpsource, headers;
     string *ret, *types, *primitives, *beginners, *fun_arr;
-    int kickoff, i, element, infunc;
+    int i, element, infunc;
     mixed line;
     element = -1;
     headers = "";
@@ -176,6 +209,13 @@ string array eventReadFunctions(string source){
     primitives = ({"private","static","nomask","varargs"});
     types = ({"int","void","buffer","mapping","mixed","string","array","float"});
     beginners = primitives + types;
+
+    if(!file_exists(source)) {
+	globalstr2 = source;
+	globalstr = generate_tmp(this_player());
+	unguarded( (: write_file(globalstr, globalstr2,1) :) );
+	source = globalstr;
+    }
 
     tmpsource = generate_tmp(source);
 
@@ -316,21 +356,28 @@ varargs int eventModString(string file, string param, mixed replace, string *par
     globalstr2 = tmpfile;
     globalstr3 = param;
     globalmixed = replace;
-    //write("grepp(read_file(file),globalstr3): "+ unguarded( (: grepp(read_file(globalstr),globalstr3) :) ));
 
     if(stringp(replace)) { 
-	if(globalstr3 == "SetArmorType" || 
+	if(globalstr3 == "SetArmorType" || globalstr3 == "SetMealType" || 
+	  globalstr3 == "SetPosition" ||
 	  globalstr3 == "SetVendorType" || globalstr3 == "SetDamageType"){
 	    replace = upper_case(replace);
 	    if(globalstr3 == "SetArmorType") check_include = "/include/armor_types.h";
 	    if(globalstr3 == "SetVendorType") check_include = "/include/vendor_types.h";
 	    if(globalstr3 == "SetDamageType") check_include = "/include/damage_types.h";
+	    if(globalstr3 == "SetMealType") check_include = "/include/meal_types.h";
+	    if(globalstr3 == "SetPosition") check_include = "/include/position.h";
 	    if(globalstr3 == "SetVendorType" && !grepp(replace,"VT_")) replace = "VT_"+replace;
 	    if(globalstr3 == "SetArmorType" && !grepp(replace,"A_")) replace = "A_"+replace;
+	    if(globalstr3 == "SetMealType" && !grepp(replace,"MEAL_")) replace = "MEAL_"+replace;
+	    if(globalstr3 == "SetPosition" && !grepp(replace,"POSITION_")) replace = "POSITION_"+replace;
 	    if(!grepp(read_file(check_include),replace)) {
 		write("Invalid type. Please review "+check_include+" for valid types.");
 		return 1;
 	    }
+	    if(grepp(replace,"MEAL_ALCOHOL")) replace = "MEAL_DRINK | MEAL_ALCOHOL";
+	    if(grepp(replace,"MEAL_CAFFEINE")) replace = "MEAL_DRINK | MEAL_CAFFEINE";
+
 	    globalmixed = replace;
 	}
 	else globalmixed = "\""+replace+"\"";
@@ -341,9 +388,70 @@ varargs int eventModString(string file, string param, mixed replace, string *par
     ret = replace_line(ret,({"customdefs.h"}), "#include \""+homedir(this_player())+"/customdefs.h\"");
     globalstr3 = ret;
     unguarded( (:  write_file(globalstr2, globalstr3, 1) :) );
-    //tc("ret: "+ret);
-    //tc(tmpfile+": "+read_file(tmpfile));
     unguarded( (: cp(globalstr2, globalstr) :) );
     unguarded( (: rm(globalstr2) :) );
     return 1;
 }
+
+int eventModHeader(object ob, string what, string value){
+    string newcontents, newline;
+    string tmpfile = generate_tmp(ob);
+    globalstr = tmpfile;
+    globalstr2 = base_name(ob)+".c";
+
+    unguarded( (: cp(globalstr2, globalstr) :) );
+    unguarded( (: globalstr3 = read_file(globalstr) :) );
+
+    if(what == "include") {
+	what = "#include <";
+	if(!grepp(value,".h")) value += ".h>";
+	else value += ">";
+	newline = "\n"+what + value+"\n";
+    }
+
+    if(what == "inherit") {
+	value = upper_case(value);
+	if(!grepp(value,"LIB_")) value = "LIB_"+value;
+	newline = "\n"+what +" "+value+";\n";
+    }
+
+    if(grepp(globalstr3,value)) {
+	write("That object already contains that line.");
+	return 1;
+    }
+    if(what == "inherit"){
+	globalstr3 = this_object()->eventAppend(tmpfile,({"inherit "}),newline);
+    }
+
+    else {
+	if(grepp(globalstr3,what)){
+	    globalstr3  =  replace_string(globalstr3,".h>\n",".h>;\n");
+	    globalstr3  =  replace_string(globalstr3,".h\"\n",".h\";\n");
+	    unguarded( (: write_file(globalstr,globalstr3,1) :) );
+
+	    globalstr3 = this_object()->eventAppend(tmpfile,({"#include "}),newline);
+	    globalstr3  =  replace_string(globalstr3,".h>;\n",".h>\n");
+	    globalstr3  =  replace_string(globalstr3,".h\";\n",".h\"\n");
+
+	}
+	else {
+	    globalstr3 = this_object()->eventAppend(tmpfile,({"inherit "}),newline);
+	}
+    }
+
+    unguarded( (: write_file(globalstr,globalstr3,1) :) );
+
+    if( catch(load_object(globalstr))){
+	write("This change would hose up the object. Modification aborted.");
+	return 1;
+    }
+    unguarded( (: cp(globalstr, globalstr2) :) );
+    reload(ob);
+    rm(tmpfile);
+    return 1;
+}
+
+
+
+
+

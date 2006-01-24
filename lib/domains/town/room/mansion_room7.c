@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -16,4 +17,7 @@ static void create() {
 	"/domains/town/obj/rack" : 1,
 	"/domains/town/obj/stove" : 1,
       ]) );
+}
+void init(){
+    ::init();
 }

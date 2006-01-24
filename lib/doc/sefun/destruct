@@ -1,0 +1,27 @@
+
+DESTRUCT(1)                                           DESTRUCT(1)
+
+NNAAMMEE
+       _d_e_s_t_r_u_c_t_(_) - provides security for the _d_e_s_t_r_u_c_t_(_) efun
+
+SSYYNNOOPPSSIISS
+       int destruct(object ob)
+
+DDEESSCCRRIIPPTTIIOONN
+       Since the MudOS efun _d_e_s_t_r_u_c_t_(_) appropriately has no
+       security tied to it, and the Nightmare Mudlib wished
+       destructions to be tied to security, the Nightmare Mudlib
+       overrides the MudOS _d_e_s_t_r_u_c_t_(_) efun.  The _d_e_s_t_r_u_c_t_(_) efun
+       removes the object passed from memory.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/SimulEfun.c
+
+SSEEEE AALLSSOO
+       _d_e_s_t_r_u_c_t_(_) efun
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

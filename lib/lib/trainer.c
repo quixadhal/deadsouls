@@ -16,7 +16,6 @@ private mapping Students;
 
 
 int eventDude(){
-    tc("w00t");
     return 1;
 }
 
@@ -107,13 +106,9 @@ int eventTrain(object who, string verb, string skill) {
 	    return 1;
 	}
     }
+
     skill = lower_case(skill);
-    tc("skill: "+skill);
-    tc("this_object()->GetTrainingSkills(): "+identify(this_object()->GetTrainingSkills()));
-    //if( creatorp(who) ) {
-    //	who->eventPrint("Creators do not have skills, get a life.");
-    //	return 1;
-    //   }
+
     if( Students[ (string)who->GetKeyName() ] ) {
 	eventForce("speak I am already training you!");
 	return 0;

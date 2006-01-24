@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -10,12 +11,15 @@ static void create() {
       "it is obvious nobody has done much gardening "
       "around here lately.");
     SetExits( ([
-	"south" : "/domains/town/room/garden"
+	"south" : "/domains/town/room/garden",
+	"out" : "/domains/town/room/garden.c",
       ]) );
     SetInventory(([
 	"/domains/town/obj/rayovac" : 1,
 	"/domains/town/obj/ladder" : 1,
       ]) );
 
-    SetObviousExits("s");
+}
+void init(){
+    ::init();
 }

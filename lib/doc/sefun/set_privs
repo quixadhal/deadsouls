@@ -1,0 +1,21 @@
+
+SET_PRIVS(1)                                         SET_PRIVS(1)
+
+NNAAMMEE
+       _s_e_t___p_r_i_v_s_(_) - prevents anyone from using the _s_e_t___p_r_i_v_s_(_)
+       efun
+
+SSYYNNOOPPSSIISS
+       void set_privs(object ob, string str)
+
+DDEESSCCRRIIPPTTIIOONN
+       The Nightmare Mudlib security system does not allow for
+       setting of privs after object creation, so the MudOS efun
+       _s_e_t___p_r_i_v_s_(_) needs to be overriidden to prevent this from
+       happening.
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

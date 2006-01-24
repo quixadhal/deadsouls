@@ -30,7 +30,11 @@ static void create() {
       "bed: "+MODULES_CREATE->GetSettings("bed")+"\n--\n"
       "table: "+MODULES_CREATE->GetSettings("table")+"\n--\n"
       "container: "+MODULES_CREATE->GetSettings("storage")+"\n----\n"
-      "\nSee also: create, delete, copy");
+      "meal: "+MODULES_CREATE->GetSettings("meal")+"\n----\n"
+      "drink: "+MODULES_CREATE->GetSettings("meal")+"\n----\n"
+      "door: "+MODULES_CREATE->GetSettings("door")+"\n----\n"
+      "book: "+MODULES_CREATE->GetSettings("book")+"\n----\n"
+      "\nSee also: copy, create, delete, reload, initfix, add");
 }
 
 mixed can_modify_obj_str(string str) { 
@@ -50,12 +54,20 @@ mixed do_modify_obj_str(object ob, string str) {
 	return 1;
     }
 
-    if(ob->GetNoModify()) {
+    if(ob->GetNoModify() && !grepp(lower_case(str),"modify")) {
 	write("This needs to be edited by hand.");
 	return 1;
     }
 
-    if(base_name(ob) == LIB_DUMMY) ob = environment(this_player());
+    if(base_name(ob) == LIB_DUMMY &&
+      !ob->GetDoor()) ob = environment(this_player());
+    else if(base_name(ob) == LIB_DUMMY) ob = load_object(ob->GetDoor());
+
+    if(starts_with(base_name(ob),"/lib/")) {
+	write("This appears to be a library object. Canceling modification.");
+	return 1;
+    }
+
     return staff->eventModify(ob, str);
 }
 
@@ -70,5 +82,11 @@ mixed do_modify_word_str(string wrd, string str) {
     }
 
     ob = environment(this_player());
+
+    if(starts_with(base_name(ob),"/lib/")) {
+	write("This appears to be a library object. Canceling modification.");
+	return 1;
+    }
+
     return do_modify_obj_str(ob, str);
 }

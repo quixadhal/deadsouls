@@ -1,0 +1,24 @@
+
+USER_PATH(1)                                         USER_PATH(1)
+
+NNAAMMEE
+       _u_s_e_r___p_a_t_h_(_) - returns the home directory of the user named
+
+SSYYNNOOPPSSIISS
+       string user_path(string name)
+
+DDEESSCCRRIIPPTTIIOONN
+       This function returns the home directory of the user named
+       as an argument.
+
+EEXXAAMMPPLLEESS
+       _u_s_e_r___p_a_t_h("descartes") returns "/realms/descartes"
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/user_path.c
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

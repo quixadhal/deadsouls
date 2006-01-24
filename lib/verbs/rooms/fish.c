@@ -28,7 +28,7 @@ mixed can_fish_with_obj() {
 
     if( !(env = environment(this_player())) ) return 0;
     err = (mixed)env->CanCast(this_player());
-    if( err == 1 ) return 1;
+    if( err == 1 ) return this_player()->CanManipulate();
     else if( !err ) return "It doesn't look like there is much fishing here.";
     else return err;
 }

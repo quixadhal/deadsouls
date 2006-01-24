@@ -1,0 +1,30 @@
+
+ARCHP(1)                                                 ARCHP(1)
+
+NNAAMMEE
+       _a_r_c_h_p_(_) - returns true for arches
+
+SSYYNNOOPPSSIISS
+       int archp(object ob)
+
+DDEESSCCRRIIPPTTIIOONN
+       For any object which is passed which is a user object and
+       in either the SUPERUSER or ASSIST groups, this function
+       returns true.
+
+EEXXAAMMPPLLEESS
+       _a_r_c_h_p(_t_h_i_s___p_l_a_y_e_r_(_)) will return true if _t_h_i_s___p_l_a_y_e_r_(_) is
+       in the SUPERUSER or ASSIST groups.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/pointers.c
+
+SSEEEE AALLSSOO
+       _a_m_b_a_s_s_a_d_o_r_p_(_), _h_i_g_h___m_o_r_t_a_l_p_(_), _l_e_a_d_e_r_p_(_), _u_s_e_r_p_(_),
+       _w_i_z_a_r_d_p_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

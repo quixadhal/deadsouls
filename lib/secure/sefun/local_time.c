@@ -1,3 +1,6 @@
+#include <lib.h>
+#include <config.h>
+
 string tz;
 
 string query_tz(){
@@ -9,25 +12,21 @@ string query_tz(){
 
 mixed local_time(mixed val){
     string *zonearray;
-    string rawtz,tzone,l_time, str;
+    string tzone,l_time, os;
     int timediff,offset;
 
+    os = query_os_type();
+
     if(stringp(val)) {
-	str = val;
-	if( file_size("/cfg/timezone.cfg") > 0 ) rawtz = read_file("/cfg/timezone.cfg");
-	if(str && str != "") rawtz = upper_case(str);
-	if(sizeof(rawtz) < 3) return "Please use a valid timezone, e.g. 'PDT'";
-	tzone = rawtz[0..2];
-	//write(tzone);
+	tzone =  upper_case(val);
 	zonearray = explode(read_file("/cfg/timezones.cfg"),"\n");
-	if(member_array(tzone,zonearray) == -1) return "Invalid time zone.";
-	if(!tzone || tzone == "") return "Problem resolving null timezone";
+	if(member_array(tzone,zonearray) == -1) tzone = query_tz();
+	if(!tzone || tzone == "") tzone = query_tz();
 	offset = "/daemon/time"-> GetOffset(tzone);
-	if(!offset && tzone !="GMT") return "Problem calculating timezone offset";
-	// the following appears to be necessary for linux
-	//offset +=10;
+	offset += EXTRA_TIME_OFFSET;
 	timediff = offset * 3600;
-	l_time=ctime(time() + timediff);
+	if(os != "windows") l_time=ctime(time() + timediff);
+	else l_time=ctime(time());
 	return l_time;
     }
     if(intp(val)){

@@ -1,5 +1,5 @@
 /*    /verbs/common/help.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    created by Descartes of Borg 951021
  *    Version: @(#) help.c 1.15@(#)
  *    Last Modified: 96/12/14
@@ -150,11 +150,8 @@ static private void LoadIndices() {
 		"available player commands.\n "
 		"For creators, \"help creator commands\" provides an "
 		"index of available creator commands.\n\n "
-		"Due to copyright issues, some of the categories in the "
-		"\"help index\" menu are empty, so try \"help commands\" "
+		"Try \"help commands\" "
 		"and \"help creator commands\" first. \n\n"
-		"If you're really stumped, visit Frontiers at "
-		"frontiers.wcsu.ctstateu.edu 5050 for full docs.\n"
 		" ");
 	  }
 	  if( sscanf(str, "adverbs %s", topic) || str == "adverbs" ) {
@@ -258,7 +255,8 @@ static private void LoadIndices() {
 		  }
 		  if( !sizeof(syn) ) {
 		      if( function_exists("help", load_object(file)) ) {
-			  Error = "This help may be out of date.";
+			  //Error = "This help may be out of date.";
+			  Error = " ";
 			  file->help();
 			  return 0;
 		      }

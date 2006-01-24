@@ -1,7 +1,7 @@
 #include <lib.h>
 inherit LIB_ROOM;
-int revealed;
 
+int revealed;
 int PreExit(){
     object ob = present("thief in a bathtowel",this_object());
     if(ob && base_name(ob) != "/lib/std/corpse"){
@@ -10,7 +10,6 @@ int PreExit(){
     }
     return 1;
 }
-
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -32,15 +31,12 @@ static void create() {
     SetExits( ([
 	"west" : "/domains/town/room/mansion_dhall2"
       ]) );
-    SetObviousExits("w");
     revealed = 0;
 }
-
 int TellRevealed(){
     if(revealed) return revealed;
     else return 0;
 }
-
 int RevealDoor(){
     if(revealed == 1) {
 	tell_room(this_object(),"The trapdoor is already visible.");	
@@ -51,6 +47,8 @@ int RevealDoor(){
     tell_room(this_object(),"A trapdoor is revealed!");
     AddExit("down","/domains/town/room/mansion_room12", (: PreExit :));
     SetDoor("down","/domains/town/doors/trapdoor");
-    SetObviousExits("w,d");
     return 1;
+}
+void init(){
+    ::init();
 }

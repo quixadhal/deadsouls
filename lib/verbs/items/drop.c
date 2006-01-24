@@ -28,7 +28,7 @@ static void create() {
       "See also: get, put");
 }
 
-mixed can_drop_obj(object ob) { return 1; }
+mixed can_drop_obj(object ob) { return this_player()->CanManipulate(); }
 
 mixed can_drop_wrd_wrd(string num, string curr) {
     int amt;
@@ -38,7 +38,7 @@ mixed can_drop_wrd_wrd(string num, string curr) {
     if( (int)this_player()->GetCurrency(curr) < amt )
 	return "You don't have that much " + curr + ".";
     if(this_player()->GetLevel() < 4) return "Newbies can't drop money.";
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed do_drop_obj(object ob) {

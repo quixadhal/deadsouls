@@ -7,14 +7,17 @@ inherit LIB_ITEM;
 static void create() {
     item::create();
     SetKeyName("sharp sword");
-    SetId( ({ "sword", "short sword", "shortsword"}));
+    SetId( ({"sword"}) );
     SetAdjectives( ({ "short","sharp","fine"}));
     SetShort("a sharp sword");
-    SetLong("A fine, sharp, short sword.");
+    SetLong("A fine, sharp sword. It is solidly crafted and well balanced.");
     SetMass(300);
-    SetBaseCost("silver",50);
+    SetBaseCost("silver", 1100);
     SetVendorType(VT_WEAPON);
-    SetClass(150);
+    SetClass(50);
     SetDamageType(BLADE);
     SetWeaponType("blade");
+}
+void init(){
+    ::init();
 }

@@ -19,8 +19,6 @@ mixed cmd(string arg) {
     string help;
 
     if( !arg || arg == "" || arg == "help") {
-	//help = center("Dead Souls System Help", screen[0]);
-	//help += wrap(HELP_D->GetHelp(), screen[0]);
 	help = HELP_D->GetHelp("help");
 	write(help);
 	return 1;
@@ -36,7 +34,7 @@ mixed cmd(string arg) {
     if( !(help = HELP_D->GetHelp(arg)) ) {
 	return HELP_D->GetLastError();
     }
-    help = center("Dead Souls System Help", screen[0]) + help;
+    help = center(mud_name()+" System Help", screen[0]) + help;
     help = wrap(help, screen[0]);
     who->eventPage(explode(help, "\n"), MSG_HELP);
     return 1;
@@ -54,7 +52,7 @@ varargs void HelpMenu(string index) {
     int y = 0;
 
     scr = this_player()->GetScreen() || ({ 80, 25 });
-    tmp = center("Dead Souls System Help", scr[0]);
+    tmp = center(mud_name()+" System Help", scr[0]);
     if( !index ) {
 	tmp += "Index: %^GREEN%^main index%^RESET%^\n\n";
 	indices = filter(HELP_D->GetIndices(),
@@ -141,7 +139,7 @@ varargs void HelpMenu(string index) {
 			  input_to(function(string str) { HelpMenu(); });
 			    return;
 			}
-			  ret = center("Dead Souls System Help", scr[0])+wrap(ret, scr[0]);
+			  ret = center(mud_name()+" System Help", scr[0])+wrap(ret, scr[0]);
 			  this_player()->eventPage(explode(ret, "\n"), "help",
 			    function(string ind) {
 				message("prompt", "\n\nHit <return>: ",

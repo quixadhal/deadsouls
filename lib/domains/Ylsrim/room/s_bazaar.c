@@ -17,11 +17,13 @@ static void create() {
     SetLong("Along the south end of the Ylsrim Bazaar stands a restaurant "
       "and a pub.  The central area of the Bazaar is just north of "
       "here.");
+    SetInventory(([
+	"/domains/Ylsrim/npc/traveler" : -1,
+      ]));
     AddItem("pub", "You can buy yourself an ale from one of Ylsrim's most "
       "respected residents.", ({ "lars" }));
     AddItem("restaurant", "This restaurant is known for its stew.",
       ({ "toral" }));
-    SetInventory(([ "/domains/Ylsrim/npc/traveller" : -1 ]));
     SetObviousExits("n, enter pub");
     SetExits( ([ "north" : "/domains/Ylsrim/room/"+ "bazaar" ]) );
     SetEnters( ([ 

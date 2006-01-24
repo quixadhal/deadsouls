@@ -1,6 +1,7 @@
 #include <lib.h>
 #include <vendor_types.h>
 inherit LIB_ITEM;
+
 void analyze(string butt);
 object scanner,tricorder,person;
 object *gstuff,*ngstuff;
@@ -46,11 +47,15 @@ void create(){
       "* infect: introduce disease into patient\t%^GREEN%^ONLINE%^RESET%^\n"+
       "* inoculate: raise immunity to a disease\t%^RED%^offline%^RESET%^\n"+
       "* posture: change your own posture.\t\t%^RED%^offline%^RESET%^\n");
+    SetProperties(([
+	"no steal" : 1,
+      ]));
     SetMass(12);
     SetValue(10);
     SetVendorType(VT_TREASURE);
 }
 void init(){
+    ::init();
     add_action("fscan","fscan");
     add_action("assess","assess");
     add_action("assess","diagnose");
@@ -77,7 +82,6 @@ void init(){
     add_action("deshadow","deshadow");
     add_action("TestFun","HEINEKEN");
 }
-
 int TestFun(){
     write("WOOHOO");
     return 1;
@@ -228,9 +232,7 @@ int germ_scan(mixed strob ){
 }
 int germ_squash(string str){
     int i,bar,c;
-    object ob;
     object array whom;
-    string variety,a,b;
     allowed=preAction();
     if(allowed == 2) return 1;
     if(!str || str == "") {
@@ -1017,7 +1019,7 @@ int addhp(string str, int hp){
 }
 int extract(string str){
     string what,whom;
-    object person,thing,slug;
+    object person, slug;
     int rifleshot_wounds,firearms_wounds,wounds;
     allowed=preAction();
     if(allowed==2) return 1;

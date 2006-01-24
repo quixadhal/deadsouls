@@ -24,19 +24,19 @@ static void create() {
 }
 
 mixed can_turn() {
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed can_turn_obj(mixed foo) {
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed can_turn_on_obj(mixed foo) {
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed can_turn_off_obj(mixed foo) {
-    return 1;
+    return this_player()->CanManipulate();
 }
 
 mixed do_turn() {

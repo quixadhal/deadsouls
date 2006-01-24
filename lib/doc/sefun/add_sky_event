@@ -1,0 +1,43 @@
+
+ADD_SKY_EVENT(1)                                 ADD_SKY_EVENT(1)
+
+NNAAMMEE
+       _a_d_d___s_k_y___e_v_e_n_t_(_) - sets a function to be called every
+       change of time of day
+
+SSYYNNOOPPSSIISS
+       void add_sky_event(function f)
+
+DDEESSCCRRIIPPTTIIOONN
+       This functions sets the mudlib to call the function you
+       specify every time the time of day changes.  With the
+       Nightmare Mudlib time system, there are four changes in
+       time of day: dawn, morning, twilight, night.  If you call
+       _a_d_d___s_k_y___e_v_e_n_t_(_), then any time the time of day changes,
+       the function you specified will be called with the time of
+       day as an argument.
+
+EEXXAAMMPPLLEESS
+       add_sky_event((: howl :)) will have the function: void
+       howl(string str); get called in your object every change
+       in the time of day.  The string argument is the time of
+       day, which will be one of dawn, morning, twilight, night.
+
+NNOOTTEESS
+       In general, this should be called only from _c_r_e_a_t_e_(_) in an
+       object.  It definitely should only be called once for each
+       function to be called in an object.  Also, it is
+       recommended that you _s_e_t___n_o___c_l_e_a_n(1) in any object which
+       does have functions set by this function to be called.
+
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/time.c
+
+SSEEEE AALLSSOO
+       _r_e_m_o_v_e___s_k_y___e_v_e_n_t_(_)
+
+AAuutthhoorr
+       Descartes of Borg
+
+                                                                1
+

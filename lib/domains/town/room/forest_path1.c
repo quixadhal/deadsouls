@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+
 static void create() {
     room::create();
     SetClimate("outdoors");
@@ -23,6 +24,18 @@ static void create() {
     SetExits( ([
 	"east" : "/domains/town/room/bridge",
 	"west" : "/domains/town/room/clearing",
+	"north" : "/domains/town/virtual/forest/24,1" ,
       ]) );
-    SetObviousExits("e,w");
 }
+void init(){
+    ::init();
+}
+
+int CanReceive(object ob){
+    if(!interactive(ob) && starts_with(base_name(environment(ob)),"/domains/town/virtual")){
+	write("You find yourself unable to leave the forest.");
+	return 0;
+    }
+    return ::CanReceive();
+}
+
