@@ -66,6 +66,7 @@ mixed can_get_wrd_wrd_from_obj(string num, string curr) {
 }
 
 mixed do_get_obj(object ob) {
+    //tc("hit do_get_obj");
     return ob->eventGet(this_player());
 }
 
@@ -78,16 +79,30 @@ mixed do_get_wrd_wrd_from_obj(string num, string curr, object pile) {
 }
 
 mixed do_get_obj_out_of_obj(object ob, object storage) {
+    //tc("entered do_get_obj_out_of_obj");
+    //tc("ob: "+identify(ob));
+    if(!ob) return "No object";
+    //tc("storage: "+identify(storage));
+    if(!(environment(ob) == storage)){
+	//tc("we noticed it isn't in there.");
+	ob = present(ob->GetKeyName(), storage);
+	//tc("ob: "+identify(ob));
+	if(!ob){
+	    write("That's not in there.");
+	    return "";
+	}
+    }
     return (mixed)storage->eventGetFrom(this_player(), ({ ob }));
 }
 
 mixed do_get_obj_from_obj(object ob, object storage) {
+    //tc("hit do_get_obj_from_obj");
     return do_get_obj_out_of_obj(ob, storage);
 }
 
 mixed do_get_obs(mixed *targs) {
     object *obs;
-
+    //tc("do_get_obs");
     if( !sizeof(targs) ) {
 	this_player()->eventPrint("There is no such thing to be taken.");
 	return 1;
@@ -111,7 +126,7 @@ mixed do_get_obs(mixed *targs) {
 
 mixed do_get_obs_out_of_obj(mixed *targs, object storage) {
     object *obs;
-
+    //tc("do_get_obs_out_of_obj");
     if( !sizeof(targs) ) {
 	this_player()->eventPrint("There is no such thing to be taken.");
 	return 1;
@@ -129,5 +144,6 @@ mixed do_get_obs_out_of_obj(mixed *targs, object storage) {
 }
 
 mixed do_get_obs_from_obj(mixed *obs, object storage) {
+    //tc("hit do_get_obs_from_obj");
     return do_get_obs_out_of_obj(obs, storage);
 }

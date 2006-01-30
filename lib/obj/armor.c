@@ -11,11 +11,9 @@ static void create(){
     SetShort("generic armor");
     SetLong("A generic piece of armor of indeterminate proportions.");
     SetMass(50);
-    SetDamagePoints(100);
-    SetArmorType(A_BODY_ARMOR);
-    SetProtection(BLUNT, 20);
-    SetProtection(BLADE, 20);
-    SetProtection(KNIFE, 20);
+    SetArmorType(A_SHIRT);
+    SetProtection(KNIFE, 5);
+    SetProtection(COLD, 5);
 }
 void init(){
     ::init();

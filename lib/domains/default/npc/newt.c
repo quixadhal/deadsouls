@@ -9,6 +9,7 @@ static void create() {
     SetId(({"npc","mob","character","mobile"}));
     SetShort("a newt");
     SetLong("A slimy amphibian.");
+    SetWimpy(80);
     SetWanderSpeed(3);
     SetMelee(1);
     SetLevel(1);

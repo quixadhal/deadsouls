@@ -8,6 +8,7 @@ void create() {
     SetAmbientLight(30);
     SetShort("Menagerie, east");
     SetLong("This is the eastern annex of the menagerie.");
+    SetNoClean(1);
     SetInventory(([
 	"/domains/default/npc/foochy" : 1,
 	"/domains/default/npc/satyr" : 1,

@@ -15,9 +15,17 @@ mixed CanGetFrom(object who, object item) {
     if( !item ) {
 	return 1;
     }
+    //    if( environment(item) != this_object() ) {
+    //tc("stack: "+get_stack());
+    //tc("previous: "+identify(previous_object(-1)));
+    //
+    //	return "#You can't do that.";
+    //  }
     if( environment(item) != this_object() ) {
-	return "#You can't right now.";
+	item = present(item->GetKeyName(),this_object());
+	if(!item) return 0;
     }
+
     if( (environment() != environment(this_player())) &&
       (environment() != this_player()) ) {
 	return "#" + capitalize(GetShort()) + " is not in reach.";
@@ -130,6 +138,13 @@ int inventory_visible() {
 }
 
 mixed indirect_get_obj_from_obj(object item) {
+    if(!item){
+	//write("That's not there.");
+	return 0;
+    }
+    if(!(environment(item) == this_object())){
+	item = present(item->GetKeyName(),this_object());
+    }
     return CanGetFrom(this_player(), item);
 }
 

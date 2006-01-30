@@ -233,8 +233,12 @@ mixed eventInfect(object ob) {
     if( functionp(Infect) ) {
 	tmp = evaluate(Infect, ob);
 	if( tmp == 1 ) {
-	    if(!eventMove(ob)) eventMove(ROOM_FURNACE);
-	    set_heart_beat(5);
+	    eventMove(ob);
+	    if(environment() != ob) {
+		eventMove(ROOM_FURNACE);
+		set_heart_beat(0);
+	    }
+	    else set_heart_beat(5);
 	    return tmp;
 	}
     }
@@ -306,8 +310,9 @@ static void heart_beat() {
 	eventSuffer(env);
     }
 
+    if(LifeSpan == -1) return;
     LifeSpan -= interval;
-    if( LifeSpan < 1 ) {
+    if( LifeSpan < 5 ) {
 	eventDestruct();
 	return;
     }

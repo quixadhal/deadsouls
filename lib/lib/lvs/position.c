@@ -7,6 +7,7 @@
  */
 
 #include <position.h>
+#include <daemons.h>
 
 private int           Position = POSITION_STANDING;
 private static object Chair    = 0;
@@ -108,13 +109,18 @@ mixed eventLand(){
     if(! Position == POSITION_FLYING ) return 0;
     write("You stop flying and land gracefully.");
     say(this_player()->GetName()+" stops flying and lands gracefully.");
-    Position = POSITION_STANDING;
+    if(stringp(hobbled(this_player()))) Position = POSITION_STANDING;
+    else Position = POSITION_LYING;
     return 1;
 }
 
 mixed eventStand() {
     if(!stringp(hobbled(this_player()))){
 	eventPrint("Your injuries prevent you from standing.");
+	return 1;
+    }
+    if(RACES_D->GetLimblessRace(this_player()->GetRace()) ){
+	eventPrint("You aren't endowed with limbs with which to stand.");
 	return 1;
     }
     if( Position == POSITION_STANDING ) {

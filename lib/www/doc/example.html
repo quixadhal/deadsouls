@@ -1,0 +1,865 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>creation example page</title></head>
+
+<body>
+This is a log of the creation of some items using the Dead Souls
+creation system. It has<br>
+not been modified in any way except to highlight the command lines and
+adding comments.<br>
+<hr style="width: 100%; height: 2px;"><br>
+<br>
+<br>
+Dead Souls has been up for 2h 25m 38s.<br>
+<big style="color: rgb(255, 0, 0);">home</big><br>
+/realms/testycre/workroom<br>
+Testycre's workroom [e,d]<br>
+You are standing in the workroom of the mighty Testycre! &nbsp;<br>
+You may return to the Creators' Hall by going down.<br>
+A sample room is east.<br>
+There is a sign here you can read.<br>
+There is a sheet here you can read.<br>
+A wooden chest is here.<br>
+<br>
+<big style="color: rgb(255, 0, 0);"><big><br>
+e<br>
+</big></big>/realms/testycre/area/room/sample_room<br>
+Sample Room [w]<br>
+This is a room you can use as a template.<br>
+A simple table is here.<br>
+A fighter is standing here.<br>
+<br>
+<big style="color: rgb(255, 0, 0);"><big><small style="color: rgb(0, 0, 0); text-decoration: underline;">//// This is
+the standard sample room. We're about to create a new room to the east
+of it.</small></big></big><br>
+<big><span style="color: rgb(255, 0, 0);">create room east test1<br>
+</span></big>It appears you have write access to this area.<br>
+It's a null mapping<br>
+Indenting file...<br>
+"/tmp/indent.1134436511.tmp.dat" 20 lines 330 bytes<br>
+Exit from ed.<br>
+<br>
+You wave your hand, and a new exit appears.<br>
+You begin uttering a magical incantation.<br>
+Indenting file...<br>
+"/tmp/indent.1134436511.tmp.dat" 27 lines 543 bytes<br>
+Exit from ed.<br>
+<br>
+Indenting file...<br>
+"/tmp/indent.1134436511.tmp.dat" 27 lines 544 bytes<br>
+Exit from ed.<br>
+<br>
+<big style="color: rgb(255, 0, 0);">e<br>
+<span style="color: rgb(0, 0, 0); text-decoration: underline;"></span></big>/realms/testycre/area/room/test1<br>
+Copy of /realms/testycre/area/room/sample_room.c [w]<br>
+This is a room you can use as a template.<br>
+A simple table is here.<br>
+A fighter is standing here.<br>
+<br>
+<big style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0); text-decoration: underline;">//// We go
+into the new room and see it is a copy of the old one. Let's change the
+short description to avoid confusion:</span></big><br>
+<big><span style="color: rgb(255, 0, 0);">modify here short Room One</span></big><br>
+Indenting file...<br>
+"/tmp/indent.1134436526.tmp.dat" 27 lines 515 bytes<br>
+Exit from ed.<br>
+<br>
+<big style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0); text-decoration: underline;">//// We don't
+need the fighter from the other room here, so we remove him from this
+new room's inventory.</span></big><br>
+<big style="color: rgb(255, 0, 0);">delete fighter<br>
+<span style="color: rgb(0, 0, 0); text-decoration: underline;"></span></big>Indenting
+file...<br>
+"/tmp/indent.1134436532.tmp.dat" 26 lines 507 bytes<br>
+Exit from ed.<br>
+<br>
+/realms/testycre/area/room/test1: Ok<br>
+/realms/testycre/area/room/test1<br>
+Room One [w]<br>
+This is a room you can use as a template.<br>
+A simple table is here.<br>
+<br>
+<br>
+SetInventory modification complete.<br>
+<big style="text-decoration: underline;">//// Let's make another room.</big><br>
+<big><span style="color: rgb(255, 0, 0);">create room east test2</span></big><br>
+It appears you have write access to this area.<br>
+It's a null mapping<br>
+Indenting file...<br>
+"/tmp/indent.1134436578.tmp.dat" 20 lines 324 bytes<br>
+Exit from ed.<br>
+<br>
+You wave your hand, and a new exit appears.<br>
+You begin uttering a magical incantation.<br>
+Indenting file...<br>
+"/tmp/indent.1134436578.tmp.dat" 27 lines 557 bytes<br>
+Exit from ed.<br>
+<br>
+Indenting file...<br>
+"/tmp/indent.1134436578.tmp.dat" 27 lines 525 bytes<br>
+Exit from ed.<br>
+<big style="color: rgb(255, 0, 0);"><br>
+e</big><br>
+/realms/testycre/area/room/test2<br>
+Copy of /realms/testycre/area/room/test1.c [w]<br>
+This is a room you can use as a template.<br>
+A simple table is here.<br>
+<br>
+<br>
+<big style="color: rgb(255, 0, 0);">modify here short Room 2</big><br>
+Indenting file...<br>
+"/tmp/indent.1134436590.tmp.dat" 26 lines 499 bytes<br>
+Exit from ed.<br>
+<br>
+<big><span style="color: rgb(255, 0, 0);">modify here long This is the
+second test room.</span></big><br>
+Indenting file...<br>
+"/tmp/indent.1134436608.tmp.dat" 26 lines 487 bytes<br>
+Exit from ed.<br>
+<br>
+<big style="text-decoration: underline;">//// We don't need that table
+here.</big><br>
+<big style="color: rgb(255, 0, 0);">delete table</big><br>
+Indenting file...<br>
+"/tmp/indent.1134436612.tmp.dat" 25 lines 447 bytes<br>
+Exit from ed.<br>
+<br>
+/realms/testycre/area/room/test2: Ok<br>
+/realms/testycre/area/room/test2<br>
+Room 2 [w]<br>
+This is the second test room.<br>
+SetInventory modification complete.<br>
+<br>
+<big style="text-decoration: underline;">//// We look at the file
+contents to make sure what we're doing really is being written into the
+room's code:</big><br>
+<big><span style="color: rgb(255, 0, 0);">more here</span></big><br>
+#include &lt;lib.h&gt;<br>
+#include "/realms/testycre/customdefs.h"<br>
+<br>
+inherit LIB_ROOM;<br>
+<br>
+static void create() {<br>
+&nbsp;&nbsp;&nbsp; room::create();<br>
+&nbsp;&nbsp;&nbsp; SetClimate("indoors");<br>
+&nbsp;&nbsp;&nbsp; SetAmbientLight(30);<br>
+&nbsp;&nbsp;&nbsp; SetShort("Room 2");<br>
+&nbsp;&nbsp;&nbsp; SetLong("This is the second test room.");<br>
+&nbsp;&nbsp;&nbsp; SetExits(([<br>
+&nbsp;&nbsp; &nbsp;"west" : "/realms/testycre/area/room/test1",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]));<br>
+<br>
+&nbsp;&nbsp;&nbsp; SetItems( ([<br>
+&nbsp;&nbsp; &nbsp;"template" : "That's what this is.",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]) );<br>
+<br>
+&nbsp;&nbsp;&nbsp; SetInventory(([<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]));<br>
+}<br>
+<br>
+void init(){<br>
+&nbsp;&nbsp;&nbsp; ::init();<br>
+}<br>
+<br>
+<big style="text-decoration: underline;">//// Let's make a new guy.
+"guy" will be the filename.</big><br>
+<big style="color: rgb(255, 0, 0);">create npc guy</big><br>
+I'm going to go with the appropriate area directory:<br>
+/realms/testycre/area/npc/guy.c<br>
+You wave your hand mysteriously and a generic npc materializes!<br>
+<big><span style="color: rgb(255, 0, 0);">l</span></big><br>
+/realms/testycre/area/room/test2<br>
+Room 2 [w]<br>
+This is the second test room.<br>
+A generic npc is standing here.<br>
+<br>
+<big style="text-decoration: underline;">//// This is the first thing
+you should do, in order to avoid confusion.</big><br>
+<big><span style="color: rgb(255, 0, 0);">modify npc name guy</span></big><br>
+Indenting file...<br>
+"/tmp/indent.1134436801.tmp.dat" 15 lines 417 bytes<br>
+Exit from ed.<br>
+<br>
+<big><span style="color: rgb(255, 0, 0);">modify npc id</span></big><br>
+This setting takes multiple values. If you have no more values to
+enter, then<br>
+enter a dot on a blank line. To cancel, enter a single q on a blank
+line.<br>
+You may now enter the next value. So far, it is blank.<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big style="color: rgb(255, 0, 0);">dude</big><br>
+You may now enter the next value. So far, we have: ({ "dude" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big style="color: rgb(255, 0, 0);">fellow</big><br>
+You may now enter the next value. So far, we have: ({ "dude", "fellow"
+})<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big><span style="color: rgb(255, 0, 0);">fella</span></big><br>
+You may now enter the next value. So far, we have: ({ "dude", "fellow",
+"fella"<br>
+})<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<br>
+Entries complete. Final array is: ({ "dude", "fellow", "fella" })<br>
+Indenting file...<br>
+"/tmp/indent.1134436831.tmp.dat" 19 lines 442 bytes<br>
+Exit from ed.<br>
+<br>
+/realms/testycre/tmp/guy1134436805: Ok<br>
+/realms/testycre/area/npc/guy: Ok<br>
+SetId modification complete.<br>
+<big style="color: rgb(255, 0, 0);">modify guy short The Dude</big><br>
+Indenting file...<br>
+"/tmp/indent.1134436855.tmp.dat" 19 lines 437 bytes<br>
+Exit from ed.<br>
+<br>
+<big style="color: rgb(255, 0, 0);">modify guy long This is just some
+random guy.</big><br>
+Indenting file...<br>
+"/tmp/indent.1134436904.tmp.dat" 19 lines 408 bytes<br>
+Exit from ed.<br>
+<br>
+<big style="color: rgb(255, 0, 0);">modify guy adj</big><br>
+This setting takes multiple values. If you have no more values to
+enter, then<br>
+enter a dot on a blank line. To cancel, enter a single q on a blank
+line.<br>
+You may now enter the next value. So far, it is blank.<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big><span style="color: rgb(255, 0, 0);">just some</span></big><br>
+You may now enter the next value. So far, we have: ({ "just some" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big><span style="color: rgb(255, 0, 0);">random</span></big><br>
+You may now enter the next value. So far, we have: ({ "just some",
+"random" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big style="color: rgb(255, 0, 0);">some</big><br>
+You may now enter the next value. So far, we have: ({ "just some",
+"random",<br>
+"some" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<br>
+Entries complete. Final array is: ({ "just some", "random", "some" })<br>
+Indenting file...<br>
+"/tmp/indent.1134436924.tmp.dat" 19 lines 402 bytes<br>
+Exit from ed.<br>
+<br>
+/realms/testycre/tmp/guy1134436912: Ok<br>
+/realms/testycre/area/npc/guy: Ok<br>
+SetAdjectives modification complete.<br>
+<big style="color: rgb(255, 0, 0);">l</big><br>
+/realms/testycre/area/room/test2<br>
+Room 2 [w]<br>
+This is the second test room.<br>
+The Dude is standing here.<br>
+<br>
+<big><br style="color: rgb(255, 0, 0);">
+<span style="color: rgb(255, 0, 0);">about dude</span></big><br>
+/realms/testycre/area/npc/guy.c<br>
+<br>
+#include &lt;lib.h&gt;<br>
+<br>
+inherit LIB_SENTIENT;<br>
+<br>
+static void create() {<br>
+&nbsp;&nbsp;&nbsp; sentient::create();<br>
+&nbsp;&nbsp;&nbsp; SetKeyName("guy");<br>
+&nbsp;&nbsp;&nbsp; SetAdjectives( ({"just some", "random", "some"}) );<br>
+&nbsp;&nbsp;&nbsp; SetId( ({"dude", "fellow", "fella"}) );<br>
+&nbsp;&nbsp;&nbsp; SetShort("The Dude");<br>
+&nbsp;&nbsp;&nbsp; SetLong("This is just some random guy.");<br>
+&nbsp;&nbsp;&nbsp; SetLevel(1);<br>
+&nbsp;&nbsp;&nbsp; SetRace("human");<br>
+&nbsp;&nbsp;&nbsp; SetClass("explorer");<br>
+&nbsp;&nbsp;&nbsp; SetGender("male");<br>
+}<br>
+void init(){<br>
+&nbsp;&nbsp;&nbsp; ::init();<br>
+<br>
+<big style="text-decoration: underline;">//// Now a weapon for our new
+guy. "hammer" is the filename.</big><br>
+<big><span style="color: rgb(255, 0, 0);">create weapon hammer</span></big><br>
+I'm going to go with the appropriate area directory:<br>
+/realms/testycre/area/weap/hammer.c<br>
+You wave your hand mysteriously and a generic weapon materializes!<br>
+<big style="color: rgb(255, 0, 0);">modify weapon id hammer</big><br>
+This setting takes multiple values. If you have no more values to
+enter, then<br>
+enter a dot on a blank line. To cancel, enter a single q on a blank
+line.<br>
+You may now enter the next value. So far, we have: ({ "hammer" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big style="color: rgb(255, 0, 0);">warhammer</big><br>
+You may now enter the next value. So far, we have: ({ "hammer",
+"warhammer" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<br>
+Entries complete. Final array is: ({ "hammer", "warhammer" })<br>
+Indenting file...<br>
+"/tmp/indent.1134437181.tmp.dat" 19 lines 453 bytes<br>
+Exit from ed.<br>
+<br>
+/realms/testycre/tmp/hammer1134437165: Ok<br>
+/realms/testycre/area/weap/hammer: Ok<br>
+SetId modification complete.<br>
+<big style="color: rgb(255, 0, 0);">modify weapon name hammer</big><br>
+There is no weapon here.<br>
+<big><span style="color: rgb(255, 0, 0);">l</span></big><br>
+/realms/testycre/area/room/test2<br>
+Room 2 [w]<br>
+This is the second test room.<br>
+A generic weapon is here.<br>
+The Dude is standing here.<br>
+<br>
+<big><span style="text-decoration: underline;">//// I accidentally
+changed the id before the name. Oops! Easy enough to fix:</span></big><br>
+<big style="color: rgb(255, 0, 0);">modify hammer name hammer</big><br>
+Indenting file...<br>
+"/tmp/indent.1134437205.tmp.dat" 22 lines 474 bytes<br>
+Exit from ed.<br>
+<br>
+<big style="color: rgb(255, 0, 0);">about hammer</big><br>
+/realms/testycre/area/weap/hammer.c<br>
+<br>
+#include &lt;lib.h&gt;<br>
+#include &lt;damage_types.h&gt;<br>
+#include &lt;vendor_types.h&gt;<br>
+<br>
+inherit LIB_ITEM;<br>
+<br>
+static void create() {<br>
+&nbsp;&nbsp;&nbsp; item::create();<br>
+&nbsp;&nbsp;&nbsp; SetKeyName("hammer");<br>
+&nbsp;&nbsp;&nbsp; SetId( ({"hammer", "warhammer"}) );<br>
+&nbsp;&nbsp;&nbsp; SetAdjectives( ({ "generic" }));<br>
+&nbsp;&nbsp;&nbsp; SetShort("a generic weapon");<br>
+&nbsp;&nbsp;&nbsp; SetLong("A weapon of indeterminate proportions.");<br>
+&nbsp;&nbsp;&nbsp; SetMass(50);<br>
+&nbsp;&nbsp;&nbsp; SetVendorType(VT_WEAPON);<br>
+&nbsp;&nbsp;&nbsp; SetClass(30);<br>
+&nbsp;&nbsp;&nbsp; SetDamageType(BLADE);<br>
+&nbsp;&nbsp;&nbsp; SetWeaponType("blade");<br>
+<br>
+}<br>
+void init(){<br>
+&nbsp;&nbsp;&nbsp; ::init();<br>
+}<br>
+<big><span style="color: rgb(255, 0, 0);">modify hammer damagetype blunt</span></big><br>
+Indenting file...<br>
+"/tmp/indent.1134437392.tmp.dat" 22 lines 474 bytes<br>
+Exit from ed.<br>
+<br>
+<big><span style="color: rgb(255, 0, 0);">modify hammer weapontype blunt</span></big><br>
+Indenting file...<br>
+"/tmp/indent.1134437398.tmp.dat" 22 lines 474 bytes<br>
+Exit from ed.<br>
+<br>
+<big><span style="color: rgb(255, 0, 0);">modify hammer mass 700</span></big><br>
+Indenting file...<br>
+"/tmp/indent.1134437414.tmp.dat" 22 lines 475 bytes<br>
+Exit from ed.<br>
+<br>
+<big><span style="color: rgb(255, 0, 0);">modify hammer hands 2</span></big><br>
+Indenting file...<br>
+"/tmp/indent.1134437422.tmp.dat" 23 lines 492 bytes<br>
+Exit from ed.<br>
+<br>
+<big style="text-decoration: underline;">//// Let's see if all that
+stuff really did go into the file:</big><br>
+<big><span style="color: rgb(255, 0, 0);">about hammer</span></big><br>
+/realms/testycre/area/weap/hammer.c<br>
+<br>
+#include &lt;lib.h&gt;<br>
+#include &lt;damage_types.h&gt;<br>
+#include &lt;vendor_types.h&gt;<br>
+<br>
+inherit LIB_ITEM;<br>
+<br>
+static void create() {<br>
+&nbsp;&nbsp;&nbsp; item::create();<br>
+&nbsp;&nbsp;&nbsp; SetKeyName("hammer");<br>
+&nbsp;&nbsp;&nbsp; SetId( ({"hammer", "warhammer"}) );<br>
+&nbsp;&nbsp;&nbsp; SetAdjectives( ({ "generic" }));<br>
+&nbsp;&nbsp;&nbsp; SetShort("a generic weapon");<br>
+&nbsp;&nbsp;&nbsp; SetLong("A weapon of indeterminate proportions.");<br>
+&nbsp;&nbsp;&nbsp; SetHands(2);<br>
+&nbsp;&nbsp;&nbsp; SetMass(700);<br>
+&nbsp;&nbsp;&nbsp; SetVendorType(VT_WEAPON);<br>
+&nbsp;&nbsp;&nbsp; SetClass(30);<br>
+&nbsp;&nbsp;&nbsp; SetDamageType(BLUNT);<br>
+<br>
+&nbsp;&nbsp;&nbsp; SetWeaponType("blunt");<br>
+}<br>
+void init(){<br>
+&nbsp;&nbsp;&nbsp; ::init();<br>
+}<br>
+<big><span style="color: rgb(255, 0, 0);">modify hammer short a heavy
+war hammer</span></big><br>
+Indenting file...<br>
+"/tmp/indent.1134437450.tmp.dat" 23 lines 494 bytes<br>
+Exit from ed.<br>
+<br>
+<big><span style="color: rgb(255, 0, 0);">modify hammer long This is an
+extremely large and heavy hammer designed to be wielded in both hands
+and used to hurt people very badly indeed.</span></big><br>
+Indenting file...<br>
+"/tmp/indent.1134437509.tmp.dat" 23 lines 579 bytes<br>
+Exit from ed.<br>
+<br>
+<big><span style="color: rgb(255, 0, 0);">modify hammer adj</span></big><br>
+This setting takes multiple values. If you have no more values to
+enter, then<br>
+enter a dot on a blank line. To cancel, enter a single q on a blank
+line.<br>
+You may now enter the next value. So far, it is blank.<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big style="color: rgb(255, 0, 0);">large</big><br>
+You may now enter the next value. So far, we have: ({ "large" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big><span style="color: rgb(255, 0, 0);">heavy</span></big><br>
+You may now enter the next value. So far, we have: ({ "large", "heavy"
+})<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big style="color: rgb(255, 0, 0);">war</big><br>
+You may now enter the next value. So far, we have: ({ "large", "heavy",
+"war" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<br>
+Entries complete. Final array is: ({ "large", "heavy", "war" })<br>
+Indenting file...<br>
+"/tmp/indent.1134437531.tmp.dat" 23 lines 592 bytes<br>
+Exit from ed.<br>
+<br>
+/realms/testycre/tmp/hammer1134437521: Ok<br>
+/realms/testycre/area/weap/hammer: Ok<br>
+SetAdjectives modification complete.<br>
+<big style="color: rgb(255, 0, 0);">about hammer</big><br>
+/realms/testycre/area/weap/hammer.c<br>
+<br>
+#include &lt;lib.h&gt;<br>
+#include &lt;damage_types.h&gt;<br>
+#include &lt;vendor_types.h&gt;<br>
+<br>
+inherit LIB_ITEM;<br>
+<br>
+static void create() {<br>
+&nbsp;&nbsp;&nbsp; item::create();<br>
+&nbsp;&nbsp;&nbsp; SetKeyName("hammer");<br>
+&nbsp;&nbsp;&nbsp; SetAdjectives( ({"large", "heavy", "war"}) );<br>
+&nbsp;&nbsp;&nbsp; SetId( ({"hammer", "warhammer"}) );<br>
+&nbsp;&nbsp;&nbsp; SetShort("a heavy war hammer");<br>
+&nbsp;&nbsp;&nbsp; SetLong("This is an extremely large and heavy hammer
+designed to be wielded<br>
+in both hands and used to hurt people very badly indeed.");<br>
+&nbsp;&nbsp;&nbsp; SetHands(2);<br>
+&nbsp;&nbsp;&nbsp; SetMass(700);<br>
+&nbsp;&nbsp;&nbsp; SetVendorType(VT_WEAPON);<br>
+&nbsp;&nbsp;&nbsp; SetClass(30);<br>
+&nbsp;&nbsp;&nbsp; SetDamageType(BLUNT);<br>
+<br>
+&nbsp;&nbsp;&nbsp; SetWeaponType("blunt");<br>
+}<br>
+void init(){<br>
+&nbsp;&nbsp;&nbsp; ::init();<br>
+}<br>
+<br>
+<big style="text-decoration: underline;">//// It's a pretty heavy
+hammer, so let's make sure our guy can wield it.</big><br>
+<big><span style="color: rgb(255, 0, 0);">modify guy level 10</span></big><br>
+Indenting file...<br>
+"/tmp/indent.1134437557.tmp.dat" 19 lines 403 bytes<br>
+Exit from ed.<br>
+<br>
+<big style="text-decoration: underline;">//// With this simple command
+we add the hammer to the permanent inventory of our guy.</big><br>
+<big><span style="color: rgb(255, 0, 0);">add hammer to guy</span></big><br>
+ob2: /realms/testycre/area/npc/guy.c<br>
+ob: /realms/testycre/area/weap/hammer.c<br>
+Please enter a command for the NPC to perform with this item. If you
+have no<br>
+such command to enter, enter the number of these items you want to add:<br>
+<big><span style="color: rgb(255, 0, 0);">wield hammer</span></big><br>
+Indenting file...<br>
+"/tmp/indent.1134437569.tmp.dat" 22 lines 489 bytes<br>
+Exit from ed.<br>
+<br>
+/realms/testycre/area/npc/guy: Ok<br>
+Guy wields a heavy war hammer.<br>
+SetInventory modification complete.<br>
+<big><span style="color: rgb(255, 0, 0);">exa guy</span></big><br>
+This is just some random guy.<br>
+The male human is in top condition.<br>
+Guy is carrying:<br>
+A heavy war hammer (wielded in left hand and right hand)<br>
+<br>
+<big><span style="color: rgb(255, 0, 0);">about guy</span></big><br>
+/realms/testycre/area/npc/guy.c<br>
+<br>
+#include &lt;lib.h&gt;<br>
+<br>
+inherit LIB_SENTIENT;<br>
+<br>
+static void create() {<br>
+&nbsp;&nbsp;&nbsp; sentient::create();<br>
+&nbsp;&nbsp;&nbsp; SetKeyName("guy");<br>
+&nbsp;&nbsp;&nbsp; SetAdjectives( ({"just some", "random", "some"}) );<br>
+&nbsp;&nbsp;&nbsp; SetId( ({"dude", "fellow", "fella"}) );<br>
+&nbsp;&nbsp;&nbsp; SetShort("The Dude");<br>
+&nbsp;&nbsp;&nbsp; SetLong("This is just some random guy.");<br>
+&nbsp;&nbsp;&nbsp; SetInventory(([<br>
+&nbsp;&nbsp; &nbsp;"/realms/testycre/area/weap/hammer" : "wield hammer",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]));<br>
+&nbsp;&nbsp;&nbsp; SetLevel(10);<br>
+&nbsp;&nbsp;&nbsp; SetRace("human");<br>
+&nbsp;&nbsp;&nbsp; SetClass("explorer");<br>
+&nbsp;&nbsp;&nbsp; SetGender("male");<br>
+<br>
+}<br>
+void init(){<br>
+&nbsp;&nbsp;&nbsp; ::init();<br>
+}<br>
+<br>
+<big style="text-decoration: underline;">//// Making armor is just as
+easy:</big><br>
+<big><span style="color: rgb(255, 0, 0);">create armor helmet</span></big><br>
+I'm going to go with the appropriate area directory:<br>
+/realms/testycre/area/armor/helmet.c<br>
+You wave your hand mysteriously and generic armor materializes!<br>
+<big style="color: rgb(255, 0, 0);">modify armor name helmet</big><br>
+Indenting file...<br>
+"/tmp/indent.1134437645.tmp.dat" 18 lines 483 bytes<br>
+Exit from ed.<br>
+<br>
+<big style="color: rgb(255, 0, 0);">modify helmet id</big><br>
+This setting takes multiple values. If you have no more values to
+enter, then<br>
+enter a dot on a blank line. To cancel, enter a single q on a blank
+line.<br>
+You may now enter the next value. So far, it is blank.<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big style="color: rgb(255, 0, 0);">helm</big><br>
+You may now enter the next value. So far, we have: ({ "helm" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big><span style="color: rgb(255, 0, 0);">headgear</span></big><br>
+You may now enter the next value. So far, we have: ({ "helm",
+"headgear" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big style="color: rgb(255, 0, 0);">cover</big><br>
+You may now enter the next value. So far, we have: ({ "helm",
+"headgear",<br>
+"cover" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<br>
+Entries complete. Final array is: ({ "helm", "headgear", "cover" })<br>
+Indenting file...<br>
+"/tmp/indent.1134437661.tmp.dat" 22 lines 535 bytes<br>
+Exit from ed.<br>
+<br>
+/realms/testycre/tmp/helmet1134437649: Ok<br>
+/realms/testycre/area/armor/helmet: Ok<br>
+SetId modification complete.<br>
+<big style="color: rgb(255, 0, 0);">modify helmet short a horned viking
+helmet</big><br>
+Indenting file...<br>
+"/tmp/indent.1134437692.tmp.dat" 22 lines 544 bytes<br>
+Exit from ed.<br>
+<br>
+<big><span style="color: rgb(255, 0, 0);">modify helmet long Vikings
+didn't really wear horned helmets into combat, but this one does look
+formidable with its large bull horns and thick iron construction. It
+should prove very protective.</span></big><br>
+Indenting file...<br>
+"/tmp/indent.1134437772.tmp.dat" 22 lines 666 bytes<br>
+Exit from ed.<br>
+<br>
+<big><span style="color: rgb(255, 0, 0);">modify helmet adj</span></big><br>
+This setting takes multiple values. If you have no more values to
+enter, then<br>
+enter a dot on a blank line. To cancel, enter a single q on a blank
+line.<br>
+You may now enter the next value. So far, it is blank.<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big><span style="color: rgb(255, 0, 0);">iron</span></big><br>
+You may now enter the next value. So far, we have: ({ "iron" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big><span style="color: rgb(255, 0, 0);">thick</span></big><br>
+You may now enter the next value. So far, we have: ({ "iron", "thick" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big><span style="color: rgb(255, 0, 0);">viking</span></big><br>
+You may now enter the next value. So far, we have: ({ "iron", "thick",
+"viking"<br>
+})<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big><span style="color: rgb(255, 0, 0);">horned</span></big><br>
+You may now enter the next value. So far, we have: ({ "iron", "thick",
+"viking",<br>
+"horned" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big><span style="color: rgb(255, 0, 0);">formidable</span></big><br>
+You may now enter the next value. So far, we have: ({ "iron", "thick",
+"viking",<br>
+"horned", "formidable" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big><span style="color: rgb(255, 0, 0);">protective</span></big><br>
+You may now enter the next value. So far, we have: ({ "iron", "thick",
+"viking",<br>
+"horned", "formidable", "protective" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<br>
+Entries complete. Final array is: ({ "iron", "thick", "viking",
+"horned",<br>
+"formidable", "protective" })<br>
+Indenting file...<br>
+"/tmp/indent.1134437802.tmp.dat" 22 lines 722 bytes<br>
+Exit from ed.<br>
+<br>
+/realms/testycre/tmp/helmet1134437782: Ok<br>
+/realms/testycre/area/armor/helmet: Ok<br>
+SetAdjectives modification complete.<br>
+<big><span style="color: rgb(255, 0, 0);">about helmet</span></big><br>
+/realms/testycre/area/armor/helmet.c<br>
+<br>
+#include &lt;lib.h&gt;<br>
+#include &lt;armor_types.h&gt;<br>
+#include &lt;damage_types.h&gt;<br>
+inherit LIB_ARMOR;<br>
+<br>
+static void create(){<br>
+&nbsp;&nbsp;&nbsp; armor::create();<br>
+&nbsp;&nbsp;&nbsp; SetKeyName("helmet");<br>
+&nbsp;&nbsp;&nbsp; SetAdjectives( ({"iron", "thick", "viking",
+"horned", "formidable",<br>
+"protective"}) );<br>
+&nbsp;&nbsp;&nbsp; SetId( ({"helm", "headgear", "cover"}) );<br>
+&nbsp;&nbsp;&nbsp; SetShort("a horned viking helmet");<br>
+&nbsp;&nbsp;&nbsp; SetLong("Vikings didn't really wear horned helmets
+into combat, but this<br>
+one does look formidable with its large bull horns and thick iron
+construction.<br>
+It should prove very protective.");<br>
+&nbsp;&nbsp;&nbsp; SetMass(50);<br>
+&nbsp;&nbsp;&nbsp; SetDamagePoints(100);<br>
+&nbsp;&nbsp;&nbsp; SetArmorType(A_BODY_ARMOR);<br>
+&nbsp;&nbsp;&nbsp; SetProtection(BLUNT, 20);<br>
+&nbsp;&nbsp;&nbsp; SetProtection(BLADE, 20);<br>
+&nbsp;&nbsp;&nbsp; SetProtection(KNIFE, 20);<br>
+<br>
+}<br>
+void init(){<br>
+&nbsp;&nbsp;&nbsp; ::init();<br>
+}<br>
+<big><span style="color: rgb(255, 0, 0);">modify helmet armortype helmet</span></big><br>
+Indenting file...<br>
+"/tmp/indent.1134437818.tmp.dat" 22 lines 718 bytes<br>
+Exit from ed.<br>
+<br>
+<big><span style="color: rgb(255, 0, 0);">modify helmet mass 200</span></big><br>
+Indenting file...<br>
+"/tmp/indent.1134437830.tmp.dat" 22 lines 719 bytes<br>
+Exit from ed.<br>
+<br>
+<big><span style="color: rgb(255, 0, 0);">modify helmet protection</span></big><br>
+Your armor can protect against one or more of the following types of
+damage: <br>
+blunt, blade, knife, water, shock, cold, heat, gas, acid, magic, poison,<br>
+disease, trauma, ..<br>
+<br>
+Please enter which ones your armor should protect from, one at a time. <br>
+When you are done, please type a dot on a blank line.<br>
+<big><span style="color: rgb(255, 0, 0);">blunt</span></big><br>
+You may now enter the next value. So far, we have: ({ "blunt" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big><span style="color: rgb(255, 0, 0);">blade</span></big><br>
+You may now enter the next value. So far, we have: ({ "blunt", "blade"
+})<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big><span style="color: rgb(255, 0, 0);">knife</span></big><br>
+You may now enter the next value. So far, we have: ({ "blunt", "blade",
+"knife"<br>
+})<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<big><span style="color: rgb(255, 0, 0);">trauma</span></big><br>
+You may now enter the next value. So far, we have: ({ "blunt", "blade",
+"knife",<br>
+"trauma" })<br>
+If you're done entering values, enter a dot on a blank line.<br>
+<br>
+Protections list complete.<br>
+Please enter the protection value for: BLUNT<br>
+<big><span style="color: rgb(255, 0, 0);">15</span></big><br>
+Please enter the protection value for: BLADE<br>
+<big><span style="color: rgb(255, 0, 0);">20</span></big><br>
+Please enter the protection value for: KNIFE<br>
+<big><span style="color: rgb(255, 0, 0);">25</span></big><br>
+Please enter the protection value for: TRAUMA<br>
+<big style="color: rgb(255, 0, 0);">10</big><br>
+This is where the mapping gets sent somewhere.<br>
+ProtectionsMap is: ([ "BLADE" : 20, "BLUNT" : 15, "TRAUMA" : 10,
+"KNIFE" : 25 ])<br>
+Indenting file...<br>
+"/tmp/indent.1134437901.tmp.dat" 23 lines 750 bytes<br>
+Exit from ed.<br>
+<br>
+<big><span style="color: rgb(255, 0, 0);">about helmet</span></big><br>
+/realms/testycre/area/armor/helmet.c<br>
+<br>
+#include &lt;lib.h&gt;<br>
+#include &lt;armor_types.h&gt;<br>
+#include &lt;damage_types.h&gt;<br>
+inherit LIB_ARMOR;<br>
+<br>
+static void create(){<br>
+&nbsp;&nbsp;&nbsp; armor::create();<br>
+&nbsp;&nbsp;&nbsp; SetKeyName("helmet");<br>
+&nbsp;&nbsp;&nbsp; SetAdjectives( ({"iron", "thick", "viking",
+"horned", "formidable",<br>
+"protective"}) );<br>
+&nbsp;&nbsp;&nbsp; SetId( ({"helm", "headgear", "cover"}) );<br>
+&nbsp;&nbsp;&nbsp; SetShort("a horned viking helmet");<br>
+&nbsp;&nbsp;&nbsp; SetLong("Vikings didn't really wear horned helmets
+into combat, but this<br>
+one does look formidable with its large bull horns and thick iron
+construction.<br>
+It should prove very protective.");<br>
+&nbsp;&nbsp;&nbsp; SetMass(200);<br>
+&nbsp;&nbsp;&nbsp; SetDamagePoints(100);<br>
+&nbsp;&nbsp;&nbsp; SetArmorType(A_HELMET);<br>
+&nbsp;&nbsp;&nbsp; SetProtection(BLADE, 20);<br>
+&nbsp;&nbsp;&nbsp; SetProtection(BLUNT, 15);<br>
+&nbsp;&nbsp;&nbsp; SetProtection(TRAUMA, 10);<br>
+<br>
+&nbsp;&nbsp;&nbsp; SetProtection(KNIFE, 25);<br>
+}<br>
+void init(){<br>
+&nbsp;&nbsp;&nbsp; ::init();<br>
+}<br>
+<big><span style="color: rgb(255, 0, 0);">l</span></big><br>
+/realms/testycre/area/room/test2<br>
+Room 2 [w]<br>
+This is the second test room.<br>
+A horned viking helmet and a heavy war hammer are here.<br>
+The Dude is standing here.<br>
+<br>
+<br>
+<big><span style="color: rgb(255, 0, 0);">exa dude</span></big><br>
+This is just some random guy.<br>
+The male human is in top condition.<br>
+Guy is carrying:<br>
+A heavy war hammer (wielded in left hand and right hand)<br>
+<br>
+<big><span style="color: rgb(255, 0, 0);">add helmet to dude</span></big><br>
+ob2: /realms/testycre/area/npc/guy.c<br>
+ob: /realms/testycre/area/armor/helmet.c<br>
+Please enter a command for the NPC to perform with this item. If you
+have no<br>
+such command to enter, enter the number of these items you want to add:<br>
+<big style="color: rgb(255, 0, 0);">wear helmet</big><br>
+Indenting file...<br>
+"/tmp/indent.1134437927.tmp.dat" 23 lines 544 bytes<br>
+Exit from ed.<br>
+<br>
+/realms/testycre/area/npc/guy: Ok<br>
+Guy wields a heavy war hammer.<br>
+Guy wears a horned viking helmet.<br>
+SetInventory modification complete.<br>
+<big><span style="color: rgb(255, 0, 0);">exa dude</span></big><br>
+This is just some random guy.<br>
+The male human is in top condition.<br>
+Guy is carrying:<br>
+A heavy war hammer (wielded in left hand and right hand)<br>
+A horned viking helmet (worn)<br>
+<big style="text-decoration: underline;"><br>
+//// Ok our dude is done. Let's clean up the room by updating it:</big><br>
+<big><span style="color: rgb(255, 0, 0);">update</span></big><br>
+Updating environment<br>
+/realms/testycre/area/room/test2: Ok<br>
+<big><span style="color: rgb(255, 0, 0);">l</span></big><br>
+/realms/testycre/area/room/test2<br>
+Room 2 [w]<br>
+This is the second test room.<br>
+<big><span style="color: rgb(255, 0, 0);">pwd</span></big><br>
+/realms/testycre:<br>
+<big><span style="color: rgb(255, 0, 0);">cd area/npc</span></big><br>
+/realms/testycre/area/npc:<br>
+<big style="text-decoration: underline;">//// We need to have the guy
+present in order to add him to the room:</big><br>
+<big><span style="color: rgb(255, 0, 0);">clone guy</span></big><br>
+Guy wields a heavy war hammer.<br>
+Guy wears a horned viking helmet.<br>
+You clone The Dude (/realms/testycre/area/npc/guy.c).<br>
+<big style="color: rgb(255, 0, 0);">add guy to room</big><br>
+ob2: /realms/testycre/area/room/test2.c<br>
+ob: /realms/testycre/area/npc/guy.c<br>
+Please enter the number of these that you want to add:<br>
+<big style="color: rgb(255, 0, 0);">1</big><br>
+Indenting file...<br>
+"/tmp/indent.1134437999.tmp.dat" 26 lines 485 bytes<br>
+Exit from ed.<br>
+<br>
+/realms/testycre/area/room/test2: Ok<br>
+/realms/testycre/area/room/test2<br>
+Room 2 [w]<br>
+This is the second test room.<br>
+The Dude is standing here.<br>
+<br>
+<br>
+SetInventory modification complete.<br>
+<big style="color: rgb(255, 0, 0);">update</big><br>
+Updating environment<br>
+/realms/testycre/area/room/test2: Ok<br>
+<big><span style="text-decoration: underline;">//// That's it. Easy,
+huh? Think of how much slogging through ed this would save you when
+making a large area.</span></big><br>
+<big style="color: rgb(255, 0, 0);">l</big><br>
+/realms/testycre/area/room/test2<br>
+Room 2 [w]<br>
+This is the second test room.<br>
+The Dude is standing here.<br>
+<br>
+<br>
+<big style="color: rgb(255, 0, 0);">exa dude</big><br>
+This is just some random guy.<br>
+The male human is in top condition.<br>
+Guy is carrying:<br>
+A heavy war hammer (wielded in left hand and right hand)<br>
+A horned viking helmet (worn)<br>
+<br>
+<big style="color: rgb(255, 0, 0);">more here</big><br>
+#include &lt;lib.h&gt;<br>
+#include "/realms/testycre/customdefs.h"<br>
+<br>
+inherit LIB_ROOM;<br>
+<br>
+static void create() {<br>
+&nbsp;&nbsp;&nbsp; room::create();<br>
+&nbsp;&nbsp;&nbsp; SetClimate("indoors");<br>
+&nbsp;&nbsp;&nbsp; SetAmbientLight(30);<br>
+&nbsp;&nbsp;&nbsp; SetShort("Room 2");<br>
+&nbsp;&nbsp;&nbsp; SetLong("This is the second test room.");<br>
+&nbsp;&nbsp;&nbsp; SetExits(([<br>
+&nbsp;&nbsp; &nbsp;"west" : "/realms/testycre/area/room/test1",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]));<br>
+<br>
+&nbsp;&nbsp;&nbsp; SetItems( ([<br>
+&nbsp;&nbsp; &nbsp;"template" : "That's what this is.",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]) );<br>
+<br>
+&nbsp;&nbsp;&nbsp; SetInventory(([<br>
+&nbsp;&nbsp; &nbsp;"/realms/testycre/area/npc/guy" : 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]));<br>
+}<br>
+<br>
+void init(){<br>
+&nbsp;&nbsp;&nbsp; ::init();<br>
+}<br>
+<br>
+<big style="color: rgb(255, 0, 0);">quit</big><br>
+Please come back another time!<br>
+<br>
+<hr style="width: 100%; height: 2px;"><big>Obviously you still need to
+code some LPC in ed for complex stuff. But knocking out rooms and NPC's
+and objects quickly helps you avoid getting bogged down in mechanics
+when what you really want to do is build.</big><br>
+<br>
+<a href="http://dead-souls.sourceforge.net/">Dead Souls Homepage</a><br>
+</body></html>

@@ -18,6 +18,9 @@ static private mapping Resistances = ([]);
 static private mapping Armors = ([]);
 
 static private string array FlyingRaces = ({"avidryl","bat","demon","dragon","faerie","gargoyle","griffin","insect","pegasus","bird", "wraith"});
+static private string array LimblessCombatRaces = ({"snake","slug","god","android","elemental","fish","tree","plant"});
+static private string array LimblessRaces = ({"snake","slug","elemental","fish"});
+static private string array NonBitingRaces = ({"golem","android","cow","deer","elemental","god"});
 
 static void create() {
     string array lines;
@@ -76,6 +79,28 @@ int CanFly(string str){
     else return 0;
 }
 
+int GetLimblessCombatRace(string str){
+    if(member_array(str,LimblessCombatRaces) == -1) return 0;
+    else return 1;
+}
+
+string *LimblessCombatRaces(){
+    return LimblessCombatRaces;
+}
+
+int GetLimblessRace(string str){
+    if(member_array(str,LimblessRaces) == -1) return 0;
+    else return 1;
+}
+
+string *LimblessRaces(){
+    return LimblessRaces;
+}
+
+int GetBitingRace(string str){
+    if(member_array(str,NonBitingRaces) == -1) return 1;
+    else return 0;
+}
 
 void AddRace(string file, int player) {
     class Race res;

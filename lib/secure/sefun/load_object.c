@@ -6,7 +6,7 @@
 
 object load_object(string str) {
     object ob;
-
+    if(!str) return 0;
     if(!stringp(str)) error("Bad argument 1 to load_object().\n");
     if(ob = find_object(str)) return ob;
     catch(call_other(str, "???"));

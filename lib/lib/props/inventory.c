@@ -13,8 +13,11 @@ static void eventLoadItem(string file, mixed args, int count) {
 
     if( intp(args) ) { 
 	if( args < 0 ) { 
-
-	    ob = unique(file, -args);
+	    foreach(object guy in findobs(file)){
+		if(environment(guy)) return;
+	    }
+	    //ob = unique(file, -args);
+	    ob = new(file);
 	    if( ob ) {
 		ob->eventMove(this_object());
 	    }
@@ -24,7 +27,11 @@ static void eventLoadItem(string file, mixed args, int count) {
 	    while( args > 0 ) {
 		int u = file->GetUnique();
 		if( u ) {
-		    ob = unique(file, u);
+		    foreach(object guy in findobs(file)){
+			if(environment(guy)) return;
+		    }
+		    //ob = unique(file, u);
+		    ob = new(file);
 		}
 		else {
 		    ob = new(file);

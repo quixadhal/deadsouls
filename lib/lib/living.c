@@ -277,6 +277,9 @@ mixed direct_scry_liv() {
     return CanReceiveMagic(0, "scry");
 }
 
+mixed indirect_zap_liv() { return 1; }
+mixed direct_zap_liv() { return 1; }
+
 /* hostile spells */
 
 int direct_rockwhip_liv() { return CanReceiveMagic(1, "rockwhip"); }

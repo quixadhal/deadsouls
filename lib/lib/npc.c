@@ -108,8 +108,8 @@ static void heart_beat() {
     eventExtraAction();
     position = GetPosition();
     if( position == POSITION_LYING || position == POSITION_SITTING ) {
-	if(AutoStand) eventForce("stand up");
-	if(GetInCombat()) eventForce("stand up");
+	if(AutoStand && !RACES_D->GetLimblessRace(this_object()->GetRace())) eventForce("stand up");
+	if(GetInCombat() && !RACES_D->GetLimblessRace(this_object()->GetRace()) ) eventForce("stand up");
     }
     if( !GetInCombat() && ActionChance > random(100) ) {
 	int x;
@@ -143,6 +143,7 @@ static void heart_beat() {
 	    x--;
 	    mact = CombatAction[random(x)];
 	    if( functionp(mact) ) {
+
 		evaluate(mact);
 		return;
 	    }

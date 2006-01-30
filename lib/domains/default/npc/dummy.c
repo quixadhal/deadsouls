@@ -1,6 +1,7 @@
 #include <lib.h>
 #include <damage_types.h>
 inherit LIB_NPC;
+
 static void create(){
     npc::create();
     SetKeyName("dummy");
@@ -10,17 +11,17 @@ static void create(){
       "logs, cut to the proportions of a human's "+
       "head, torso, and limbs. The logs are held "+
       "together by joints made of chains.");
+    SetPacifist(1);
+    SetBodyComposition("wood");
+    SetInventory(([
+      ]));
     SetLevel(10);
-    SetRace("human");
+    SetRace("golem");
     SetClass("fighter");
-    SetGender("male");
+    SetGender("neuter");
     SetMaxHealthPoints(9000);
     SetHealthPoints(9000);
-    SetInventory(([
-	"/domains/default/armor/chainmail.c" : "wear chainmail",
-      ]));
 }
-
 varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixed limbs) {
     int hp, damage, damdiff;
     string evidence, limb_string;
@@ -76,6 +77,6 @@ varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixe
     eventForce("say actual damage done: "+damdiff);
     AddHealthPoints(damdiff+1);
 }
-
-
-
+void init(){
+    ::init();
+}

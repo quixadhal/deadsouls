@@ -14,12 +14,12 @@
 int eventDelete(object ob, string value);
 string global1, global2, globaltmp, globalvalue;
 
-string *base_arr = ({"SetNoModify","SetProperties","SetLong","SetShort","SetItems","SetListen","SetSmell"});
+string *base_arr = ({"SetUnique", "SetNoClean","SetNoModify","SetProperties","SetLong","SetShort","SetItems","SetListen","SetSmell"});
 string *item_arr = base_arr + ({"SetDisableChance", "SetDamagePoints", "SetVendorType","SetNoCondition","SetMoney","SetKeyName", "SetId", "SetMass","SetCost","SetValue","SetAdjectives","SetDamagePoints","SetBaseCost" });
 string *meal_arr = item_arr + ({ "SetMealType", "SetStrength"}) -({"SetDamagePoints"});
 string *storage_arr = item_arr + ({"SetMaxCarry","SetInventory", "SetCanClose", "SetCanLock","SetMaxRecurse","SetLocked","SetClosed","SetKey"});
-string *room_arr = base_arr + ({"SetTown","SetNightLong","SetDayLong","SetClimate","SetAmbientLight","SetNightLight","SetDayLight","SetObviousExits", "SetInventory", "SetEnters"});
-string *npc_arr = base_arr - ({"SetItems"}) + ({"SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat"});
+string *room_arr = base_arr - ({"SetUnique"}) + ({"SetTown","SetNightLong","SetDayLong","SetClimate","SetAmbientLight","SetNightLight","SetDayLight","SetObviousExits", "SetInventory", "SetEnters"});
+string *npc_arr = base_arr - ({"SetItems"}) + ({"SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat"});
 string *armor_arr = item_arr +({"SetRestrictLimbs","SetProtection","SetArmorType"});
 string *weapon_arr = item_arr + ({"SetClass","SetWeaponType","SetDamageType","SetHands"});
 string *chair_arr = item_arr + ({"SetMaxSitters","SetMaxCarry","SetInventory"});
@@ -27,6 +27,7 @@ string *bed_arr = chair_arr + ({"SetMaxLiers"});
 string *table_arr = storage_arr + bed_arr;
 string *door_arr = ({"SetLong","SetShort","SetLocked","SetClosed","SetCanLock","SetKey","SetId"});
 string *book_arr = item_arr + ({"SetTitle","SetSource"});
+string *worn_storage_arr = armor_arr + storage_arr;
 
 string *all_arr = storage_arr + door_arr + room_arr + npc_arr + armor_arr + weapon_arr + bed_arr +meal_arr;
 
@@ -48,6 +49,9 @@ string GetSettings(string str){
     case "bed" : name = bed_arr; break;
     case "chair" : name = chair_arr; break;
     case "book" : name = book_arr; break;
+    case "worn storage" : name = worn_storage_arr; break;
+    case "wornstorage" : name = worn_storage_arr; break;
+    case "worn_storage" : name = worn_storage_arr; break;
     default : name = room_arr;
     }
     foreach(string thing in name){
@@ -123,10 +127,14 @@ mixed eventModify(object ob, string str){
     if(inherits(LIB_MEAL,ob)) inheritance += " meal";
     if(inherits(LIB_BOOK,ob)) inheritance += " book";
     if(inherits(LIB_DOOR,ob)) inheritance += " door";
+    if(inherits(LIB_WORN_STORAGE,ob)) inheritance += " worn_storage";
 
     if(!inheritance || inheritance == ""){
 	write("The object you want to modify lacks an init() function.");
 	write("Please correct this by issuing the initfix command, then try again.");
+	write("\nIf you are certain the object has a working init(), then");
+	write("This error indicates that its library object type is not");
+	write("currently supported by the Quick Creation System.");
 	return 1;
     }
 
@@ -343,6 +351,8 @@ mixed eventModify(object ob, string str){
 	case "setmodify" : if(value && intp(value)) value = bool_reverse(value); out = "SetNoModify";break;
 	case "setnomodify" : out = "SetNoModify";break;
 	case "nomodify" : out = "SetNoModify";break;
+	case "open" : if(value && intp(value)) value = bool_reverse(value);out = "SetClosed";break;
+	case "setopen" : if(value && intp(value)) value = bool_reverse(value);out = "SetClosed";break;
 	case "sleep" : out = "SetSleeping";break;
 	case "setsleep" : out = "SetSleeping";break;
 	case "sleeping" : out = "SetSleeping";break;
@@ -351,6 +361,19 @@ mixed eventModify(object ob, string str){
 	case "disablechance" : out = "SetDisableChance";break;
 	case "setdisable" : out = "SetDisableChance";break;
 	case "setdisablechance" : out = "SetDisableChance";break;
+	case "noclean" : out = "SetNoClean";break;
+	case "setnoclean" : out = "SetNoClean";break;
+	case "bodycomp" : out = "SetBodyComposition";break;
+	case "bodycomposition" : out = "SetBodyComposition";break;
+	case "setbodycomposition" : out = "SetBodyComposition";break;
+	case "setpacifist" : out = "SetPacifist";break;
+	case "pacifist" : out = "SetPacifist";break;
+	case "unique" : out = "SetUnique";break;
+	case "setunique" : out = "SetUnique";break;
+	case "setwimpy" : out = "SetWimpy";break;
+	case "wimpy" : out = "SetWimpy";break;
+	case "wimpycommand" : out = "SetWimpyCommand";break;
+	case "setwimpycommand" : out = "SetWimpyCommand";break;
 	default : out = mode;
 	}
     }
@@ -392,14 +415,15 @@ mixed eventModify(object ob, string str){
 	write("go east");
 	write("cd /domains/town/obj");
 	write("clone chair");
-	write("add chair to room\n");
-	write("If you want to add a bag to your fighter: \n");
-	write("clone bag");
-	write("add bag to fighter");
+	write("add chair to room");
 	write("1\n");
+	write("If you want to add a sword to your fighter: \n");
+	write("clone sword");
+	write("add sword to fighter");
+	write("wield sword\n");
 	write("To remove items from a thing's permanent inventory:");
 	write("delete chair");
-	write("delete bag from fighter");
+	write("delete sword from fighter");
 	return 1;
     }
 
@@ -420,6 +444,7 @@ mixed eventModify(object ob, string str){
     if(grepp(inheritance,"meal") && member_array(out,meal_arr) != -1) invalid = 0;
     if(grepp(inheritance,"door") && member_array(out,door_arr) != -1) invalid = 0;
     if(grepp(inheritance,"book") && member_array(out,book_arr) != -1) invalid = 0;
+    if(grepp(inheritance,"worn_storage") && member_array(out,worn_storage_arr) != -1) invalid = 0;
     else if(grepp(inheritance,"item") && member_array(out,item_arr) != -1) invalid = 0;
 
     if(invalid) {

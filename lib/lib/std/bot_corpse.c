@@ -3,18 +3,10 @@
 
 inherit LIB_CORPSE;
 
-private int DecayLife, Count, CallOut, Fresh;
-private string Owner, Race;
-
 void create() {
-    ::create();
+    corpse::create();
     SetId(({"chassis","body","synthetics"}));
     SetAdjectives(({"melting","corroding"}));
-    Count = 0;
-    CallOut = 0;
-    DecayLife = 100;
-    Owner = 0;
-    Race = 0;
 }
 
 int eventDecay() {
@@ -47,12 +39,4 @@ int eventDecay() {
     CallOut = call_out((: eventDecay :), DecayLife/3);
     return Count;
 }
-
-
-
-
-
-
-
-
 

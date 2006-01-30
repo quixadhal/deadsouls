@@ -1,7 +1,8 @@
 #include <lib.h>
+#include <rooms.h>
 #include <vendor_types.h>
 #include <damage_types.h>
-inherit "/lib/std/germ";
+inherit LIB_GERM;
 int damage1();
 int damage2();
 int damage3();
@@ -27,43 +28,58 @@ void create(){
     SetLong("Test Cold version 2.1");
     SetCure(20);
     SetVendorType(VT_TREASURE);
-    SetCommunicable(5);
-    SetLifeSpan(2000);
+    SetCommunicable(15);
+    SetLifeSpan(900000);
     SetType("viral");
     SetInfect((: InfectMess :));
 }
 
 void bonuses(){
-    object player;
-    if(!player=victim) return;
-    player->AddStatBonus("intelligence", -5);
-    player->AddStatBonus("strength", -15);
-    player->AddStatBonus("charisma", -35);
-    player->AddStatBonus("durability", -15);
-    player->AddStatBonus("agility", -15);
-    player->AddStatBonus("coordination", -5);
-    player->AddStatBonus("speed", -5);
-    player->AddStatBonus("wisdom", -1);
+    if(victim && environment(this_object()) == victim){
+	victim->AddStatBonus("intelligence", -5);
+	victim->AddStatBonus("strength", -15);
+	victim->AddStatBonus("charisma", -35);
+	victim->AddStatBonus("durability", -15);
+	victim->AddStatBonus("agility", -15);
+	victim->AddStatBonus("coordination", -5);
+	victim->AddStatBonus("speed", -5);
+	victim->AddStatBonus("wisdom", -1);
+    }
+    else if(victim) {
+	foreach( string stat in ({"intelligence", "strength",
+	    "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
+	    victim->RemoveStatBonus(stat);
+	}
+    }
     return;
 }
 
 
 void init(){
-    object player;
     germ::init();
+    bonuses();
+}
+
+int eventDestruct(){
+    this_object()->eventMove(ROOM_FURNACE);
+    return ::eventDestruct();
+}
+
+int eventMove(mixed dest){
+    ::eventMove(dest);
     bonuses();
 }
 
 int eventSuffer(){
     int x;
-    x=random(10000);
-    if(x < 2) environment()->eventForce("sneeze");
+    x=random(70);
+    if(x < 8) environment()->eventForce("sneeze");
     else if(x < 5) damage1();
     else if(x < 10) damage2();
     else if(x < 15) damage3();
     else if(x < 20) damage4();
-    else if(x > 98) damage5();
-    return 1;
+    else if(x < 2) damage5();
+    return 1; 
 }
 
 int DangerLevel(){

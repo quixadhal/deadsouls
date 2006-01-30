@@ -9,6 +9,7 @@ static void create() {
     SetId(({"npc","mob","character","mobile"}));
     SetShort("a huge spider");
     SetLong("This is a humongous hairy spider about the size of a housecat. It looks absolutely vile and it has some kind of viscous fluid is dripping from its mouthparts.");
+    SetWimpy(80);
     SetMelee(1);
     SetLevel(1);
     SetRace("arachnid");

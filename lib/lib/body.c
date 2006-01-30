@@ -29,7 +29,7 @@ private int HealthPoints, MagicPoints, ExperiencePoints, QuestPoints;
 private int melee;
 private int Alcohol, Caffeine, Food, Drink, Poison, Sleeping;
 private float StaminaPoints;
-private string Torso;
+private string Torso, Biter;
 private mapping Fingers, Limbs, MissingLimbs;
 private static int Dying, LastHeal;
 private static function Protect;
@@ -37,12 +37,12 @@ private static mapping WornItems;
 private static class MagicProtection *Protection;
 static private int HeartModifier = 0;
 float MoJo;
-string PoliticalParty;
-int rifleshot_wounds, gunshot_wounds, globalint1;
+private static string PoliticalParty, BodyComposition;
+private static int Pacifist, rifleshot_wounds, gunshot_wounds, globalint1;
 string *ExtraChannels;
 
 static void create() {
-    AddSave( ({ "HealthPoints", "MagicPoints", "ExperiencePoints", "QuestPoints","StaminaPoints", "Undead",
+    AddSave( ({ "Pacifist", "BodyComposition", "HealthPoints", "MagicPoints", "ExperiencePoints", "QuestPoints","StaminaPoints", "Undead",
 	"Limbs", "MissingLimbs", "WornItems" }) );
     AddSave(({"ExtraChannels","MoJo", "PoliticalParty", "rifleshot_wounds", "gunshot_wounds" }));
     MoJo = 0;
@@ -64,6 +64,40 @@ static void create() {
     LastHeal = time();
     Protection = ({});
     ExtraChannels = ({});
+}
+
+string SetBodyComposition(string str){
+    if(!str) return "";
+    else BodyComposition = str;
+    return BodyComposition;
+}
+
+string GetBodyComposition(){
+    return BodyComposition;
+}
+
+int GetPacifist(){
+    return Pacifist;
+}
+
+int SetPacifist(int i){
+    if(!i) Pacifist = 0;
+    else Pacifist = 1;
+    return Pacifist;
+}
+
+int SetCanBite(int i){
+    if(!i) Biter = "yes";
+    else Biter = "no";
+    return i;
+}
+
+int CanBite(){
+    if(sizeof(Biter)){
+	if(Biter == "yes") return 1;
+	else return 0;
+    }
+    else return RACES_D->GetBitingRace(this_object()->GetRace());
 }
 
 string *AddExtraChannels(string *chans){
@@ -120,7 +154,7 @@ static void heart_beat() {
     }
     eventCheckHealing();
     if(!stringp(hobbled(this_player()))) eventFall();
-    if(GetPosition() == POSITION_FLYING && !this_object()->CanFly()) eventFall();
+    if(this_object()->GetPosition() == POSITION_FLYING && !this_object()->CanFly()) eventFall();
 }
 
 void eventReconnect() {
@@ -180,7 +214,7 @@ void eventCheckHealing() {
 
     if(dude->GetInCombat()){
 	if(dude->GetInvis()) dude->SetInvis(0);
-	if(!interactive(dude)) {
+	if(!interactive(dude) && !RACES_D->GetLimblessRace(dude->GetRace())) {
 	    dude->SetAutoStand(1);
 	}
     }
@@ -572,9 +606,13 @@ varargs int eventDie(object agent) {
 	string curr;
 	int i;
 
-	if(GetRace() == "golem") ob = new(LIB_CLAY); 
+	if(GetRace() == "golem") {
+	    ob = new(LIB_CLAY); 
+	    if(GetBodyComposition()) ob->SetComposition(GetBodyComposition());
+	}
 	else { 
-	    ob = new(LIB_CORPSE);
+	    if(GetRace() == "android") ob = new(LIB_BOT_CORPSE);
+	    else ob = new(LIB_CORPSE);
 	    ob->SetCorpse(this_object());
 	}
 	ob->eventMove(environment());
@@ -1003,9 +1041,13 @@ int RemoveLimb(string limb, object agent) {
 	message("environment", "Your "+ limb + " is severed!", this_object());
 
 
-	if(GetRace() == "golem") objict = new(LIB_CLAY);
+	if(GetRace() == "golem") {
+	    objict = new(LIB_CLAY);
+	    if(GetBodyComposition()) objict->SetComposition(GetBodyComposition());
+	}
 	else {
-	    objict = new(LIB_LIMB);
+	    if(GetRace() == "android") objict = new(LIB_BOT_LIMB);
+	    else objict = new(LIB_LIMB);
 	    objict->SetLimb(limb, GetCapName(), GetRace());
 	    objict->SetId( ({ limb, limbname }));
 	}
@@ -1036,9 +1078,13 @@ int RemoveLimb(string limb, object agent) {
 	message("environment", possessive_noun(GetName()) + " " + limb +
 	  " is severed!", environment(), ({ this_object() }));
 	message("environment", "Your "+ limb + " is severed!", this_object());
-	if(GetRace() == "golem") ob = new(LIB_CLAY);
+	if(GetRace() == "golem") {
+	    ob = new(LIB_CLAY);
+	    if(GetBodyComposition()) ob->SetComposition(GetBodyComposition());
+	}
 	else {
-	    ob = new(LIB_LIMB);
+	    if(GetRace() == "android") ob = new(LIB_BOT_LIMB);
+	    else ob = new(LIB_LIMB);
 	    ob->SetLimb(limb, GetCapName(), GetRace());
 	    ob->SetId( ({ limb, limbname }));
 	}

@@ -9,6 +9,7 @@ static void create() {
     SetAmbientLight(30);
     SetShort("Menagerie Annex");
     SetLong("This area was added to the menagerie to allow a little leg room for creatures that like to wander.");
+    SetNoClean(1);
     SetInventory(([
 	"/domains/default/npc/wraith" : 1,
 	"/domains/default/npc/ogre" : 1,

@@ -173,6 +173,18 @@ private static void load_access(string cfg, mapping ref) {
 	return check_access(ob, fun, file, ok, "read");
     }
 
+    int valid_link(string from, string to) {
+	object ob = previous_object();
+	if(!interactive(ob)) ob = previous_object(1);
+	if(!interactive(ob)) ob = previous_object(2);
+	if(!interactive(ob)) ob = previous_object(3);
+	if(!interactive(ob)) {return 0;}
+	if(ob->GetForced()) { tell_player(ob,"Someone's fucking with you."); return 0;}
+	if(!valid_write(from, ob, "link")) {return 0;}
+	if(!valid_write(to, ob, "link")) {return 0;}
+	return 1;
+    }
+
     int valid_apply(string *ok) {
 	return check_access(previous_object(1),0,previous_object(0), ok, "apply");
     }

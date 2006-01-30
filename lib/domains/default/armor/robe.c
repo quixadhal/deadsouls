@@ -1,8 +1,7 @@
 #include <lib.h>
 #include <armor_types.h>
 #include <damage_types.h>
-inherit LIB_STORAGE;
-inherit LIB_ARMOR;
+inherit LIB_WORN_STORAGE;
 
 static void create(){
     ::create();
@@ -10,7 +9,8 @@ static void create(){
     SetId(({"robe","cloak","duster"}));
     SetAdjectives(({"wizard","wizard's","soft"}));
     SetShort("a robe");
-    SetLong("This is a large, comfortable-looking robe, like a wizard might wear. ");
+    SetLong("This is a large, comfortable-looking robe, like a wizard might wear. It has many pockets and compartments for holding things.");
+    SetCanClose(1);
     SetMaxCarry(500);
     SetProperties(([
 	"no steal" : 1,
@@ -18,10 +18,9 @@ static void create(){
     SetMass(200);
     SetBaseCost("silver",100);
     SetDamagePoints(100);
-    SetProtection(BLUNT,100);
-    SetProtection(BLADE,100);
-    SetProtection(KNIFE,100);
     SetArmorType(A_CLOAK);
+    SetProtection(MAGIC, 10);
+    SetProtection(COLD, 10);
 }
 void init(){
     ::init();

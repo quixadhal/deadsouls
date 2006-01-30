@@ -21,5 +21,8 @@
 #define LIB_GERM         DIR_STD  "/germ"
 #define LIB_BED          DIR_STD  "/bed"
 #define LIB_TABLE        DIR_STD  "/table"
+#define LIB_BOT_CORPSE   DIR_STD  "/bot_corpse"
+#define LIB_BOT_LIMB     DIR_STD  "/bot_limb"
+#define LIB_WORN_STORAGE DIR_STD  "/worn_storage"
 
 #endif /* s_std_h */

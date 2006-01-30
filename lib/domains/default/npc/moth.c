@@ -10,6 +10,7 @@ static void create() {
     SetAdjectives(({"non-player", "non player"}));
     SetShort("a tiny moth");
     SetLong("An ordinary flying insect which has a particular taste for old clothes.");
+    SetWimpy(80);
     SetPosition(POSITION_FLYING);
     SetLevel(1);
     SetMelee(1);

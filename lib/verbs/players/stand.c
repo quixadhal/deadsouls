@@ -6,6 +6,7 @@
  */
 
 #include <lib.h>
+#include <daemons.h>
 #include <position.h>
 
 inherit LIB_VERB;
@@ -26,6 +27,10 @@ mixed can_stand_up() {
     if( this_player()->GetParalyzed() ) {
 	return "You cannot do anything.";
     }
+    if(RACES_D->GetLimblessRace(this_player()->GetRace()) ){
+	return "You aren't endowed with limbs with which to stand.";
+    }
+
     if( this_player()->GetPosition() != POSITION_STANDING ) {
 	return 1;
     }

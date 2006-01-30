@@ -11,12 +11,12 @@
 inherit LIB_STORAGE;
 inherit LIB_SURFACE;
 
-private int Count          = 0;
-private int DecayLife      = 500;
-private string Limb        = 0;
-private string Owner       = 0;
-private string Race        = 0;
-private static int CallOut = -1;
+int Count          = 0;
+int DecayLife      = 500;
+string Limb        = 0;
+string Owner       = 0;
+string Race        = 0;
+int CallOut = -1;
 
 int eventDecay();
 

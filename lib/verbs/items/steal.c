@@ -65,6 +65,10 @@ mixed do_steal_obj_from_liv(object item, object liv) {
 	this_player()->eventPrint((string)liv->GetName() + " does not have that.");
 	return 1;
     }
+    if(item->GetProperty("no steal")){
+	this_player()->eventPrint("that item cannot be stolen.");
+	return 1;
+    }
     this_player()->eventPrint("You eye " + (string)liv->GetName() +
       " with thoughts on " + possessive(liv) + " " +
       remove_article((string)item->GetShort()) + ".");
@@ -85,6 +89,14 @@ mixed do_steal_obs_from_liv(mixed *res, object liv) {
 	ua = unique_array(res, (: $1 :));
 	foreach(mixed *lines in ua) this_player()->eventPrint(lines[0]);
 	return 1;
+    }
+
+    foreach(mixed thing in res){
+	if(objectp(thing) && thing->GetProperty("no steal")){
+	    this_player()->eventPrint("One of those items cannot be stolen, causing "+
+	      "you to be distracted from stealing any of the others.");
+	    return 1;
+	}
     }
     this_player()->eventPrint("You eye " + (string)liv->GetName() +
       " with thoughts on " + possessive(liv) +

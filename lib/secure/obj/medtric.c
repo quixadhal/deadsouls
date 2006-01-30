@@ -317,6 +317,7 @@ int infect(string str){
     else if(what == "flu") disease  = "/domains/town/obj/flu";
     else if(what == "fleas") disease  = "/domains/town/obj/fleas";
     else if(what == "lice") disease  = "/domains/town/obj/lice";
+    else if(what == "rage") disease  = "/domains/town/obj/rage";
     else if(what != "") {
 	write("That isn't a valid disease.");
 	return 1;
@@ -329,7 +330,8 @@ int infect(string str){
 	}
     }
     ob=new(disease);
-    ob->eventInfect(person);
+    if(ob) ob->eventInfect(person);
+    else write("There's a problem with that parasite.");
     return 1;
 }
 int amputate(string str){

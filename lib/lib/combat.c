@@ -487,8 +487,18 @@ int eventExecuteAttack(mixed target) {
 
     fNextRound = 0;
     tNextRound = ROUND_UNDEFINED;
-    if( position == POSITION_LYING || position == POSITION_SITTING ) {
-	eventPrint("You can't fight unless you are up!");
+    if( position == POSITION_LYING || position == POSITION_SITTING &&
+      RACES_D->GetLimblessCombatRace(this_object()->GetRace()) != 1) {
+	if(this_object()->CanFly()) {
+	    this_object()->eventFly();
+	}
+	else if(RACES_D->GetLimblessCombatRace(GetRace()) != 1){
+	    eventPrint("You can't fight unless you are up!");
+	    return 0;
+	}
+    }
+    if(this_object()->GetPacifist()) {
+	write("As a pacifist, you choose not to fight.");
 	return 0;
     }
     if( arrayp(target) ) {
@@ -646,8 +656,12 @@ int eventExecuteAttack(mixed target) {
 	int count = sizeof(limbs);
 	int attacks;
 
-	if( count < 1 ) {
-	    return 0;
+	if( count < 2 ) {
+	    if(RACES_D->GetLimblessCombatRace(this_object()->GetRace())){
+		limbs = GetLimbs();
+		count = sizeof(limbs);
+	    }
+	    else return 0;
 	}
 	if( !f || (functionp(f) & FP_OWNER_DESTED) ) {
 	    attacks = 1 + random(GetSkillLevel("melee attack"))/50;
@@ -671,6 +685,12 @@ int eventExecuteAttack(mixed target) {
 	if( target->GetDying() ) {
 	    return;
 	}
+
+	if(limb == "head" && this_object()->CanBite()) {
+	    eventBite(target);
+	    return;
+	}
+
 	pro = CanMelee(target);
 	con = target->GetDefenseChance(target->GetSkillLevel("melee defense"));
 	chance = random(pro);
@@ -726,7 +746,7 @@ int eventExecuteAttack(mixed target) {
 	}
 	if( TargetLimb ) {
 	    if( target->eventReceiveAttack(x, "melee", this_object()) ) { 
-		x = GetDamage(pro/4, "melee attack");
+		x = GetDamage(pro*2, "melee attack");
 		x = target->eventReceiveDamage(this_object(), KNIFE, x, 0,
 		  TargetLimb);
 		if( x < 1 ) {
@@ -744,7 +764,7 @@ int eventExecuteAttack(mixed target) {
 		    eventPrint("You bite " + target->GetName() + " in the " +
 		      TargetLimb + "!");
 		    environment()->eventPrint(GetName() + " bites " +
-		      target->GetName() + "in the " +
+		      target->GetName() + " in the " +
 		      TargetLimb + "!",
 		      ({ target, this_object() }));
 		}

@@ -1,7 +1,8 @@
 #include <lib.h>
+#include <rooms.h>
 #include <vendor_types.h>
 #include <damage_types.h>
-inherit "/lib/std/germ";
+inherit LIB_GERM;
 int damage1();
 int damage2();
 int damage3();
@@ -10,16 +11,6 @@ int damage5();
 int DangerLevel();
 object victim,where;
 string victimname;
-
-int GetHeartbeat(){
-    return query_heart_beat();
-}
-
-int SetHeartbeat(int i){
-    if(i) set_heart_beat(i);
-    if(i) return i;
-    else return 0;
-}
 
 int InfectMess(object ob){
     victim=ob;
@@ -31,41 +22,55 @@ int InfectMess(object ob){
 
 void create(){
     germ::create();
-    SetKeyName("tf1");
+    SetKeyName("tf2");
     SetGermName("flu virus");
     SetId(({"tf2"}));
-    SetLong("Test Flu version 1");
+    SetLong("Test Flu version 2");
     SetCure(20);
-    SetCommunicable(5);
-    SetLifeSpan(2000);
+    SetCommunicable(15);
+    SetLifeSpan(900000);
     SetType("viral");
     SetInfect((: InfectMess :));
 }
 
 void bonuses(){
-    object player;
-    if(!player=victim) return;
-    player->AddStatBonus("intelligence", -15);
-    player->AddStatBonus("strength", -25);
-    player->AddStatBonus("charisma", -45);
-    player->AddStatBonus("durability", -25);
-    player->AddStatBonus("agility", -25);
-    player->AddStatBonus("coordination", -15);
-    player->AddStatBonus("speed", -15);
-    player->AddStatBonus("wisdom", -2);
+    if(victim && environment(this_object()) == victim){
+	victim->AddStatBonus("intelligence", -15);
+	victim->AddStatBonus("strength", -25);
+	victim->AddStatBonus("charisma", -45);
+	victim->AddStatBonus("durability", -25);
+	victim->AddStatBonus("agility", -25);
+	victim->AddStatBonus("coordination", -15);
+	victim->AddStatBonus("speed", -15);
+	victim->AddStatBonus("wisdom", -2);
+    }
+    else if(victim) {
+	foreach( string stat in ({"intelligence", "strength",
+	    "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
+	    victim->RemoveStatBonus(stat);
+	}
+    }
     return;
 }
-
 
 void init(){
     germ::init();
     bonuses();
 }
 
+int eventDestruct(){
+    this_object()->eventMove(ROOM_FURNACE);
+    return ::eventDestruct();
+}
+
+int eventMove(mixed dest){
+    ::eventMove(dest);
+    bonuses();
+}
 
 int eventSuffer(){
     int x;
-    x=random(10000);
+    x=random(500);
     if(x < 2) environment()->eventForce("sneeze");
     else if(x < 5) damage1();
     else if(x < 10) damage2();
@@ -100,7 +105,7 @@ int damage1(){
 int damage2(){
     tell_object(victim,"You are racked by a fit of gruesome-sounding, hacking coughs.");
     tell_room(environment(victim),victimname+" is racked by a fit of gruesome-sounding, hacking coughs.", ({victim}) );
-    if(DangerLevel() != 100) victim->eventReceiveDamage(this_object(),DISEASE,random(10)+10,0,"torso");
+    if(DangerLevel() != 100) victim->eventReceiveDamage(this_object(),DISEASE,random(20)+10,0,"torso");
     if(FatigueLevel() > 10) victim->AddStaminaPoints(random(-10)-5);
     return 1;
 }
@@ -115,7 +120,7 @@ int damage3(){
 int damage4(){
     tell_room(environment(victim),victimname+" gags violently, then chokes out a thick rope of vomit onto the ground.", ({victim}) );
     tell_object(victim,"You gag violently, then choke out a thick rope of vomit onto the ground.");
-    if(DangerLevel() != 100) victim->eventReceiveDamage(this_object(),DISEASE,random(20)+4,0,"head");
+    if(DangerLevel() != 100) victim->eventReceiveDamage(this_object(),DISEASE,random(30)+15,0,"head");
     if(FatigueLevel() > 10) victim->AddStaminaPoints(random(-25)-20);
     return 1;
 }
@@ -130,8 +135,8 @@ int damage5(){
 	tell_room(environment(victim),victimname+" makes a horrendous flatulent noise as "+nominative(this_player())+" lies helplessly on the ground.");
 	tell_object(victim,"You make a horrendous flatulent noise as you lie helplessly on the ground.");
     }
-    if(DangerLevel() != 100) victim->eventReceiveDamage(this_object(),DISEASE,random(30)+20,0,"head");
-    if(FatigueLevel() > 10) victim->AddStaminaPoints(random(-25)-25);
+    if(DangerLevel() != 100) victim->eventReceiveDamage(this_object(),DISEASE,random(40)+20,0,"head");
+    if(FatigueLevel() > 10) victim->AddStaminaPoints(random(-35)-25);
     return 1;
 }
 

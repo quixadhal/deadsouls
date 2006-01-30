@@ -82,6 +82,10 @@ varargs mapping GetValue(string str, object targ, string tempy, string k1, strin
     int i;
     string repl_key;
     string *mapkeys;
+
+    if(!str && !targ && !tempy && !k1 && !v1){
+	return 0;
+    }
     if(str == "AUTOMATED"){
 	NewMap = ([]);
 	automated = 1;

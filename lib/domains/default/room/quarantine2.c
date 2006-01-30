@@ -9,6 +9,7 @@ static void create() {
     SetAmbientLight(30);
     SetShort("Disease Lab");
     SetLong("This room is designed for testing the effects and transmissibility of disease. Another testing area is east.");
+    SetNoClean(1);
     SetExits( ([
 	"south" : "/domains/default/room/quarantine1",
 	"east" : "/domains/default/room/quarantine3.c",
@@ -25,10 +26,9 @@ static void create() {
 	"/domains/default/npc/quarantine/cor" : 1,
 	"/domains/default/npc/quarantine/kip" : 1,
 	"/domains/default/npc/quarantine/job" : 1,
-	"/domains/default/npc/quarantine/ton" : 1,
+	"/domains/default/npc/quarantine/ton" : 1
       ]));
-
-    SetProperty("no attack", 1);
+    AddItem(new("/domains/default/obj/reset_button"));
 
 }
 int CanReceive(object ob) {

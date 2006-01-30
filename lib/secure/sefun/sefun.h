@@ -168,5 +168,7 @@ int wipe_inv(mixed dude);
 int bool_reverse(mixed arg);
 mixed check_light(object who);
 int query_carrying(object who, mixed thing);
+mixed *findobs(mixed arg);
+int atoi(string str);
 
 #endif /* l_sefun_h */

@@ -44,3 +44,12 @@ object GetUniqueCopy(string fn, int rare) {
     unguarded( (: save_object, SAVE_UNIQUE :) );
     return ob;
 }
+
+mapping GetUniques(){
+    return copy(Objects);
+}
+
+mapping ResetUniques(){
+    Objects = ([]);
+    unguarded( (: save_object, SAVE_UNIQUE :) );
+}

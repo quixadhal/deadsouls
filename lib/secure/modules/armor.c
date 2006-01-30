@@ -124,6 +124,7 @@ mixed eventReadProtectionSettings(string str){
     int val;
     string *temp_array = ({});
     string *fun_array = ({});
+    string tmp_str = "";
     if(file_exists(str+".c")) str += ".c";
     if(file_exists(str)) {
 	if(!check_privs(this_player(),str)) {
@@ -146,22 +147,23 @@ mixed eventReadProtectionSettings(string str){
 	return 1;
     }
     foreach(string element in fun_array){
-	if(grepp(element,"SetProtection(")) temp_array += ({ element });
+	if(grepp(element,"SetProtection(")) tmp_str +=  element ;
     }
 
+    temp_array = explode(tmp_str,"\n");
+    tc("temp_array: "+identify(temp_array));
     if(!sizeof(temp_array)){
 	return ([]);
     }
-
     else {
 	foreach(string element in temp_array){
-	    sscanf(element,"SetProtection(%s)%s",s1,junk);
-	    sscanf(s1,"%s,%s",prot,num);
-	    num = trim(num);
-	    prot = trim(prot);
-	    sscanf(num,"%d",val);
-
-	    ProtectionsMap[prot] = val;
+	    if(sscanf(element,"SetProtection(%s)%s",s1,junk) == 2){
+		sscanf(s1,"%s,%s",prot,num);
+		num = trim(num);
+		prot = trim(prot);
+		sscanf(num,"%d",val);
+		ProtectionsMap[prot] = val;
+	    }
 	}
     }
 

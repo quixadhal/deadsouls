@@ -7,6 +7,7 @@
  */
 
 #include <lib.h>
+#include <daemons.h>
 #include <position.h>
 #include "include/attack.h"
 
@@ -35,13 +36,14 @@ mixed can_attack_liv(object target) {
     if( (int)this_player()->GetParalyzed() ) {
 	return "You cannot move!";
     }
-    if( pos == POSITION_SITTING || pos == POSITION_LYING ) {
+    if( pos == POSITION_SITTING || pos == POSITION_LYING &&
+      !RACES_D->GetLimblessCombatRace(this_player()->GetRace()) ){
 	return "You cannot attack in that position!";
     }
     if( (int)environment(this_player())->GetProperty("no attack") ) {
 	return "A mystical force prevents your malice.";
     }
-    return this_player()->CanManipulate();
+    return 1;
 }
 
 mixed can_attack_only_liv(object target){

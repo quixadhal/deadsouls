@@ -9,6 +9,7 @@ static void create() {
     SetId( ({"lizard"}) );
     SetShort("a gecko");
     SetLong("This is a small lizard, about four inches in length. It has green skin, and unusually large eyes.");
+    SetWimpy(80);
     SetLevel(1);
     SetMelee(1);
     SetRace("lizard");

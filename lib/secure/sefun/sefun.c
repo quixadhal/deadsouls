@@ -72,6 +72,7 @@
 #include "/secure/sefun/wipe_inv.c"
 #include "/secure/sefun/numbers.c"
 #include "/secure/sefun/query_carrying.c"
+#include "/secure/sefun/findobs.c"
 
 
 int destruct(object ob) {

@@ -1,3 +1,36 @@
+---- 2.0r12 ---
+- Fixed function conflict that made "scan -i" fail.
+- Tightened up "get" lib code.
+- Verbified "zap".
+- Added atoi sefun.
+- Added LIB_WORN_STORAGE to more gracefully handle wearable containers
+  like backpacks and such, also added it to QCS.
+- QCS: fixed a bug that hosed up armor protection settings.
+
+---- 2.0r11 ---
+- Added findobs sefun and findobj command.
+- Fixed "no steal" item property so thieves can't steal such things.
+- Android corpses and severed limbs now decay in their own special way.
+- Fixed up the sample flu and cold so they don't permanently affect a 
+  a player's stats. Added a very nasty rage virus.
+- Ftpd and httpd now work (Thanks to Duuk @ Haven). To enable them, uncomment
+  inet in /secure/cfg/preload.cfg. They are UNSUPPORTED, and if they ruin
+  your life, it's not my problem. System security is on you.
+- Added valid_link() to master.c so that link() efun works. An interactive,
+  privileged, nonforced object is required in the previous_object() stack
+  to avoid abuse. Do NOT use this functionality unless you know EXACTLY
+  what you're doing. It probably doesn't work the way you think it does.
+  Be especially careful not to link privileged files to directories that
+  unprivileged users have write access to.
+- Verbified dest command. Peculiar "desting of nonexistent things" bug
+  should be dead at long last.
+- Golems can have their composition specified. As an example, the combat
+  dummy is now a wood golem.
+- Creatures born without limbs are now able to fight while in their
+  natural prone position. Creatures who used to have limbs and no longer
+  do have more limited options.
+- SetUnique() now does what common sense requires.
+
 ---- 2.0r10 ---
 - Fixed a problem in the death system that allowed creators to
   be undead without quite realizing it.

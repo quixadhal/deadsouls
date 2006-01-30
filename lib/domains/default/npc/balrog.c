@@ -9,7 +9,7 @@ static void create() {
     SetAdjectives(({"non-player", "non player"}));
     SetShort("a fierce balrog");
     SetLong("This is the terrifying demon of your worst Nightmare!");
-    SetWanderSpeed(20);
+    SetWanderSpeed(5);
     SetClass("fighter");
     SetMelee(1);
     SetLevel(50);

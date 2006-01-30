@@ -12,6 +12,8 @@ static void create() {
     SetShort("a dirty beggar");
     SetLong("This beggar has something strangely noble about his aspect. "
       "He certainly doesn't look like he has always been a beggar.");
+    SetWimpy(90);
+    SetPacifist(1);
     SetInventory(([
 	"/domains/town/obj/map" : 1,
 	//"/domains/town/obj/cold" : 1,

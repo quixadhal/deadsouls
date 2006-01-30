@@ -9,6 +9,7 @@ static void create() {
     SetAmbientLight(30);
     SetShort("The Menagerie");
     SetLong("There are more creatures to the south, east, and west.");
+    SetNoClean(1);
     SetInventory(([
 	"/domains/default/npc/horse" : 1,
 	"/domains/default/npc/bird" : 1,

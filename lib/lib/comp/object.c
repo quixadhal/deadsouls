@@ -19,6 +19,9 @@ inherit LIB_SEARCH;
 inherit LIB_SMELL;
 inherit LIB_TOUCH;
 
+mixed indirect_dest_obj() { return 1; }
+mixed direct_dest_obj() { return 1; }
+
 /* ************************ object.c events ********************* */
 static int Destruct() {
     object env;

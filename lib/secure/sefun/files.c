@@ -6,7 +6,11 @@
 
 string gtempname, gfilename;
 
-int file_exists(string str) { return (file_size(str) > -1); }
+int file_exists(string str) { 
+    if(!str) return 0;
+    return (file_size(str) > -1);
+}
+
 int directory_exists(string str) { return (file_size(str) == -2); }
 
 string save_file(string who) {

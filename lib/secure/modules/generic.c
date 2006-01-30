@@ -42,13 +42,16 @@ mixed gmake(string str) {
     case "meal" : creation = "meal"; dir = "meals";break;
     case "food" : creation = "meal"; dir = "meals";break;
     case "drink" : creation = "drink"; dir = "meals";break;
+    case "worn" : creation = "worn_storage"; dir = "armor";break;
+    case "wornstorage" : creation = "worn_storage"; dir = "armor";break;
+    case "worn_storage" : creation = "worn_storage"; dir = "armor";break;
     default : true();
     }
 
     legal_dirs = ({"meals","doors", "obj","armor","weap","npc"});
     if(member_array(dir, legal_dirs) == -1) {
 	write("That is not a valid argument. You may create the following: room, npc, "+
-	  "door, weapon, armor, container, item, table, chair, bed, meal.");
+	  "door, weapon, armor, container, item, table, chair, bed, meal, worn_storage.");
 	return 1;
     }
 
@@ -227,7 +230,7 @@ int eventGeneralStuff(string str){
     globalstr = replace_string(globalstr,"\n\n\n","\n\n");
     globalstr = replace_string(globalstr,"//funs","");
     globalstr = replace_string(globalstr,"//snuf","");
-    globalstr = replace_string(globalstr,"//extra","");
+    globalstr = replace_string(globalstr,"//extras","");
     unguarded( (: write_file(globalstr2, globalstr, 1) :) );
     return 1;
 }
