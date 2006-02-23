@@ -442,7 +442,6 @@ varargs mixed replace_matching_line(string target, string substring, string repl
     return new_file;
 }
 
-
 int grepp(string primary, string sub){
     if(!primary || ! sub) return 0;
     if(strsrch(primary,sub) != -1) return 1;

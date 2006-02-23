@@ -19,7 +19,7 @@ int cmd(string args) {
     obs=users();
 
     for (int i=0; i<sizeof(users()); i++) {
-	if(!environment(obs[i])) continue;
+	if(!obs[i] || !environment(obs[i])) continue;
 	if(!obs[i]->GetInvis()) {
 	    if(archp(obs[i])) tmp+="[%^BLUE%^ARCH%^RESET%^]";
 	    else if(creatorp(obs[i]) ) tmp+="[%^CYAN%^WIZ%^RESET%^]";

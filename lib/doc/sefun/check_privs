@@ -1,0 +1,29 @@
+
+CHECK_PRIVS(1)                               CHECK_PRIVS(1)
+
+NAME
+       check_privs() - Determines write privileges to a directory.
+
+SYNOPSIS
+       int check_privs(object player, string str)
+
+DESCRIPTION
+       Checks whether a player should have write access to a file based
+on arch status and home directory. 
+
+EXAMPLES
+       check_privs(this_player(),"/realms/cratylus") returns 1 if
+this_player() is cratylus.
+
+
+LOCATION
+       /secure/sefun/secure.c
+
+SEE ALSO
+       
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

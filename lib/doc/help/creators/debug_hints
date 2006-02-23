@@ -1,0 +1,48 @@
+There is another LPC debugging technique that provides a good supplement
+to the debug(x,y) macro provided by debug.h.
+
+Suppose that your object won't load and the logfile isn't specifying where
+the error is.  You can use the #if 0 preprocessor directive to selectively
+temporarily remove suspect pieces of your code.  Note that using #if 0 is much
+cleaner than commenting the code out using /* and */.  One reason its cleaner
+is that it is possible to nest #if directives but not comments.  Another
+reason is that you can add the code back simply by changing #if 0 to #if 1.
+
+Suppose you had the following function that was giving you problems:
+
+void xyz()
+{
+        statement_1();   /* statement 1 does blah blah */
+        statement_2();   /* statement 2 does blah blah */
+}
+
+Suppose you suspected that statement_2() was causing the error.  You could
+temporarily remove that line by changed xyz to read:
+
+void xyz()
+{
+        statement_1();   /* statement 1 does blah blah */
+#if 0
+        statement_2();   /* statement 2 does blah blah */
+#endif
+        statement_3();   /* statement 3 does blah blah */
+}
+
+Suppose that you had used comments instead of #if 0 to remove statement_2().
+
+Suppose you tried it like this:
+
+/*
+        statement_2();   /* statement 2 does blah blah */
+*/
+
+This method would cause a compile error because of the nested comments.
+
+Therefore, it would have to look something like this:
+
+/*      statement_2(); */  /* statement 2 does blah blah */
+
+But this method is bad because its a royal pain to insert and remove comments
+within a line using the ed line editor (IMHO).
+
+--Truilkan@TMI

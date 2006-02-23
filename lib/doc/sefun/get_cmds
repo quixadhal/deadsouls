@@ -1,0 +1,23 @@
+
+GET_CMDS(1)                               GET_CMDS(1)
+
+NAME
+       get_cmds() - Returns a list of available commands.
+
+SYNOPSIS
+       string *get_cmds()
+
+DESCRIPTION
+       Provides an array of available commands in /cmds and /secure/cmds.
+
+LOCATION
+       /secure/sefun/get_cmds.c
+
+SEE ALSO
+      get_cmds() 
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

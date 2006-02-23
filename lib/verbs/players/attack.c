@@ -30,7 +30,7 @@ static void create() {
       "See also: wimpy, ignore");
 }
 
-mixed can_attack_liv(object target) {
+varargs mixed can_attack_liv(object target) {
     int pos = this_player()->GetPosition();
 
     if( (int)this_player()->GetParalyzed() ) {
@@ -67,11 +67,12 @@ mixed do_attack_liv_only(object target){
 }
 
 varargs mixed do_attack_lvs(mixed *targets, int exclusive) {
-    object *obs;
+    object *obs, *tmpobs;
     object *noattack;
     string tmp;
 
     noattack = ({});
+    tmpobs = ({});
     obs = filter(targets, (: objectp :));
     if( !sizeof(obs) ) {
 	mixed *ua;
@@ -86,6 +87,15 @@ varargs mixed do_attack_lvs(mixed *targets, int exclusive) {
 	}
 	if(sizeof(noattack)) this_player()->AddNonTargets(noattack);
     }
+    foreach(object subobj in obs){
+	if(member_array(this_player(),subobj->GetEnemies()) != -1){
+	    write("You are already fighting "+subobj->GetName()+"!");
+	}
+	else tmpobs += ({ subobj });
+    }
+    obs = tmpobs;
+    if(!sizeof(obs)) return 1;
+
     this_player()->SetAttack(obs);
     tmp = item_list(obs);
     obs->eventPrint((string)this_player()->GetName() + " attacks you!");

@@ -263,6 +263,19 @@ static void create() {
     object::create();
 }
 
+varargs mixed direct_get_obj_from_obj(object item, mixed gamma,mixed alfa, mixed beta, mixed epsilon){
+    //tc("stack: "+get_stack(),"yellow");
+    //tc("i am: "+this_object()->GetName(),"yellow");
+    //tc("item: "+identify(item),"yellow");
+    //tc("alfa: "+identify(alfa),"yellow");
+    //tc("beta: "+identify(beta),"yellow");
+    //tc("gamma: "+identify(gamma),"yellow");
+    //tc("type of gamma: "+typeof(gamma),"yellow");
+    //tc("epsilon: "+identify(epsilon),"yellow");
+    if(answers_to(beta,environment(this_object()))) return 1;
+    return 0;
+}
+
 mixed direct_cast_str_on_obj() {
     return 1;
 }

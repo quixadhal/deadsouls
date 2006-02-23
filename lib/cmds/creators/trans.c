@@ -16,6 +16,11 @@ mixed cmd(string args) {
 	return "No such being exists anywhere presently.";
     if( environment(ob) == environment(this_player()) ) 
 	return (string)ob->GetCapName() + " is right here.";
+    if(archp(ob) && !archp(this_player())){
+	write("You can't trans an admin.");
+	tell_player(ob, this_player()->GetName()+" just tried to trans you.");
+	return 1;
+    }
     ob->SetProperty("ReturnSite",base_name(environment(ob)));
     message("system", "You have been summoned by " + 
       (string)this_player()->GetName() + ".", ob);

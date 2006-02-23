@@ -20,6 +20,7 @@ inherit LIB_INTERACTIVE;
 inherit LIB_LIVING;
 
 private string *Titles;
+string *Muffed = ({});
 private class quest *Quests;
 private class death *Deaths;
 private int TrainingPoints, TitleLength;
@@ -27,7 +28,7 @@ private int TrainingPoints, TitleLength;
 /* *****************  /lib/player.c driver applies  ***************** */
 
 static void create() {
-    AddSave( ({ "CarriedMass" }) );
+    AddSave( ({ "CarriedMass", "Muffed" }) );
     interactive::create();
     living::create();
 
@@ -444,10 +445,12 @@ int Setup() {
 
 	if(jeans) jeans->eventMove(this_object());
 	if(shirt) shirt->eventMove(this_object());
-	if(book)  book->eventMove(this_object());
+	if(book && !present("handbook",this_object()))  book->eventMove(this_object());
+	else if(book) book->eventMove(ROOM_FURNACE);
 
 	if(jeans) this_object()->eventForce("wear jeans");
 	if(shirt) this_object()->eventForce("wear shirt");
+	SetProperty("brand_spanking_new",0);
     }
 
     if(this_object()->GetTown() == "FirstAdmin"){
@@ -498,6 +501,31 @@ int AddBank(string bank, string type, int amount) {
 	  identify(previous_object(-1))+"\n");
     return living::AddBank(bank, type, amount);
 }
+
+string *GetMuffed(){
+    return Muffed;
+}
+
+string *SetMuffed(string *muffed){
+    if(sizeof(muffed)) Muffed = muffed;
+    else Muffed = ({});
+    return Muffed;
+}
+
+string *AddMuffed(string muffed){
+    if(muffed) muffed = lower_case(muffed);
+    else return Muffed;
+    if(member_array(muffed,Muffed) == -1) Muffed += ({ muffed });
+    return Muffed;
+}
+
+string *RemoveMuffed(string unmuffed){
+    if(unmuffed) unmuffed = lower_case(unmuffed);
+    else return Muffed;
+    if(member_array(unmuffed,Muffed) != -1) Muffed -= ({ unmuffed });
+    return Muffed;
+}
+
 
 string *SetTitles(string *titles) {
     if( sizeof(distinct_array(titles)) != sizeof(titles) ) return Titles;

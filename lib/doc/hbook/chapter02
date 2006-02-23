@@ -72,6 +72,18 @@ them in recycling bins so the bits can be reused.
    There are many others you may find useful, but these will be
 the ones you use most often to handle simple objects.
 
+* A note about articles:
+
+   Dead Souls understands both definite and indefinite articles.
+This means that you can refer to a specific apple, like so:
+
+get the apple
+
+   But you can also be unspecific. If there are a dozen
+apples in a crate and you don't care which one you pick up:
+
+get an apple from the crate
+
 
 Section 2: Navigation
 ---------

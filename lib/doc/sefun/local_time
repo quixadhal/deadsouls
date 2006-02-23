@@ -1,0 +1,27 @@
+
+LOCAL_TIME(1)                               LOCAL_TIME(1)
+
+NAME
+       local_time() - Provides information about the time of day.
+
+SYNOPSIS
+       string local_time(string str)
+
+DESCRIPTION
+       Without an argument, local_time() returns an array in the
+format of the localtime() efun with information about the local time
+in the current timezone. With a valid timezone as an argument, it
+returns a string in the format of ctime() with the local time for
+the specified timezone.
+
+EXAMPLES
+       local_time("PST")
+
+LOCATION
+       /secure/sefun/local_time.c
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

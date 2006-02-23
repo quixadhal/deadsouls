@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_NPC;
+
 static void create(){
     npc::create();
     SetKeyName("fighter");
@@ -17,4 +18,7 @@ static void create(){
 	"/domains/default/weap/sharpsword.c" : "wield sword"
       ]));
     SetMaxHealthPoints(550);
+}
+void init(){
+    ::init();
 }

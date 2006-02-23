@@ -8,60 +8,60 @@ explanations about directives and concepts explained previously.
 be handled, sold, thrown, etc. They are manipulable objects. As such,
 we will see new directives:
 
-create weapon hammer
+%^GREEN%^create weapon hammer%^RESET%^
 
     You may be familiar with this example from the example webpage.
 Let's go ahead and plow through the commands:
 
-modify weapon id hammer
+%^GREEN%^modify weapon id hammer%^RESET%^
 
-warhammer
+%^GREEN%^warhammer%^RESET%^
 
-.
+%^GREEN%^.%^RESET%^
 
-modify hammer name hammer
+%^GREEN%^modify hammer name hammer%^RESET%^
 
-modify hammer damagetype blunt
+%^GREEN%^modify hammer damagetype blunt%^RESET%^
 
-modify hammer weapontype blunt
+%^GREEN%^modify hammer weapontype blunt%^RESET%^
 
-modify hammer mass 700
+%^GREEN%^modify hammer mass 700%^RESET%^
 
-modify hammer hands 2
+%^GREEN%^modify hammer hands 2%^RESET%^
 
-modify hammer short a heavy war hammer
+%^GREEN%^modify hammer short a heavy war hammer%^RESET%^
 
-modify hammer long This is an extremely large and heavy hammer designed to be wielded in both hands and used to hurt people very badly indeed.
+%^GREEN%^modify hammer long This is an extremely large and heavy hammer designed to be wielded in both hands and used to hurt people very badly indeed.%^RESET%^
 
-modify hammer adj
+%^GREEN%^modify hammer adj%^RESET%^
 
-large
+%^GREEN%^large%^RESET%^
 
-heavy
+%^GREEN%^heavy%^RESET%^
 
-war
+%^GREEN%^war%^RESET%^
 
-.
+%^GREEN%^.%^RESET%^
 
-modify hammer basecost silver 750
+%^GREEN%^modify hammer basecost silver 750%^RESET%^
 
-about hammer
+%^GREEN%^about hammer%^RESET%^
 
 
     Like a room and unlike an NPC, you can also modify the SetItems on
 manipulable objects like weapons, so you could do something like this:
 
-modify hammer item
+%^GREEN%^modify hammer item%^RESET%^
 
-shaft
+%^GREEN%^shaft%^RESET%^
 
-handle
+%^GREEN%^handle%^RESET%^
 
-.
+%^GREEN%^.%^RESET%^
 
-A thick, reinforced steel shaft with leather bands for a strong grip.
+%^GREEN%^A thick, reinforced steel shaft with leather bands for a strong grip.%^RESET%^
 
-exa shaft on hammer
+%^GREEN%^exa shaft on hammer%^RESET%^
 
     
     

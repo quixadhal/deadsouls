@@ -9,11 +9,11 @@ static void create() {
     SetAmbientLight(30);
     SetShort("Creators' Hall");
     SetLong("Immortals come here to communicate with each other about the world they are building. The Adventurer's Guild is north. The Arch Room is south. To visit Frontiers, go west. The test lab facilities are east.");
-    SetExits( ([
-	"north" : "/domains/town/room/adv_guild",
+    SetExits( ([ 
+	"east" : "/domains/default/room/wiz_corr1",
 	"south" : "/secure/room/arch",
 	"west" : "/domains/default/room/telnet_room",
-	"east" : "/domains/default/room/wiz_corr1.c",
+	"north" : "/domains/town/room/adv_guild",
       ]) );
     SetProperty("no attack", 1);
     SetProperty("nopeer",1);

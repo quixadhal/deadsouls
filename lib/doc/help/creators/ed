@@ -1,0 +1,372 @@
+
+
+			     The Ed Primer
+				 --or--
+	Your Introduction To The Wonderful World Of Programming With Ed!
+
+0. A Prelude:
+   (How to read the author's peculiar notation)
+
+In all examples:
+
+Words in angle brackets <like this> are not to be typed literally, but rather
+to be substituted for.  For example, '<number>p' could be '4p' or '27p', etc.
+[Anything in square brackets] is optional.
+<x|y> represents <x> OR <y>, but not both.
+> is assumed to be the standard lpmud prompt.
+: is assumed to be the ed command mode prompt.
+* is assumed to be the ed insert mode prompt.
+
+--The author/editor
+
+I. A Beginning:
+   (The 'ed', 'a', 'i', 'w', and 'q' commands)
+
+First, the command to enter ed from lpmud can take one of two basic forms:
+> ed <filename>
+    or
+> ed <dummy filename>.
+
+The first is used to edit an existing file.  The second is used to create a new
+file.  The dummy filename can be any string that isn't already the name of a
+file.  Short strings like 'a' work well for this.
+
+Once you are in ed, your prompt will become ':'.  From this prompt you enter
+ed commands.  If you are beginning a new file, you can use one of two commands
+to enter insert mode: 'a' or 'i'.  The difference between these two will become
+significant later on.  In insert mode, your prompt will become '*'.  From here
+you type in the body of your file.  You can leave insert mode at any time by
+typing a single '.' on a line by itself.
+
+Once you are finished entering your text and have returned to command mode 
+(':' prompt), you can save your file with the 'w' command, specifying a
+filename:
+
+:w myfile.c
+
+          Then you can use 'q' to exit ed, and return to your normal propmt.
+
+Summary:
+
+> ed <file | dummy file>  takes you into ed.
+'a' and 'i' in command mode begin insert mode.
+   ---> Implicit assumtion from now on: all commands will be from command mode
+   ---> unless it is stated otherwise.
+'.' in insert mode returns you to command mode.
+'w <file>' saves your file.
+'q' takes you out of ed.
+
+
+II. Editing existing files:
+    (The 'ed', 'a', 'c', 'd', 'i', 'l', 'p', 'w', 'z', and '=' commands.)
+
+To edit an existing file (a reminder from section I), use:
+
+> ed <filename>
+
+This again puts you in command mode, with the difference from starting a new 
+file that there are already lines in the buffer.  Use the command '.p' to
+see the line you are presently on.
+
+The command 'p' will print out a line or range of lines.  Its syntax is this:
+'p' or '.p'* will print out the line you are presently on.  '<number>p' will
+print out line number <number>.  '<number1>,<number2>p' will print out the
+range of lines from <number1> to <number2>.  In this case, <number1> must be
+less than or equal to <number2>.  In both cases, all numbered lines must exist,
+or the command will fail.  The command 'l' is similar to 'p' in most respects,
+except that it also makes visible some 'invisible' characters, like newline
+(which shows up as $).  Tabs become completely invisible.  'z' will display
+21 lines in 'p' fashion (i.e., ctrl characters remain invisible).  'z' can
+be prepended by a line number to start at.
+
+The command <number> will take you to the line of the same number.
+
+The commands 'i' and 'a' are the commands introduced in section I.  The
+difference between these two commands now takes on a significance; 'i' starts
+inserting before the line you are presently on, while 'a' starts inserting
+after the line you are on.  (Use '.' or '.p' to display the line you are on.)
+Also, 'i' and 'a' can both be prepended by a <number>, ('<number>i' and
+'<number>a'), which sets your present line at <number> before beginning insert
+mode.
+
+The command '=' can be used to discover the number of the line you are on.
+
+The command 'd' deletes the current line you are on.  'd' can, like 'p' and
+'l', be used with a single line number, or a range of them for arguments.
+
+The command 'c' is used to change lines.  It is essentially similar to 'd'
+in its usage, except that instead of leaving you in command mode, you are
+put into insert mode, inserting text to 'replace' what was removed.
+
+Finally, 'w' without being followed by '<file>' will save the file under the
+name you began editing it as, provided that that file already existed.
+
+Footnote: * As a number, '.' refers to the present line; '$' refers to the last
+          line of the file.
+
+An example encompassing what we've done so far:
+> ed a
+:a
+*This is line 1.
+*This is line @.
+*This is line 3.
+*This is line 5.
+*This is too many lines.
+*.
+:1,3p
+This is line 1.
+This is line @.
+This is line 3.
+:=
+3
+:5l
+This is too many lines.$
+:5d
+:1,$p
+This is line 1.
+This is line @.
+This is line 3.
+This is line 5.
+:2c
+*This is line 2.
+*.
+:1z
+This is line 1.
+This is line 2.
+This is line 3.
+This is line 5.
+:4i
+This is line 4.
+:1,$p
+This is line 1.
+This is line 2.
+This is line 3.
+This is line 4.
+This is line 5.
+:w file.txt
+:q
+> ls
+  Total 1
+    1 file.txt
+>
+
+Summary:
+
+'p' and 'l' are used to display ranges of lines.  'l' displays some invisible
+	characters.
+'z' displays 21 lines in 'p' format.
+'=' displays the current line number.
+'d' deletes a line.
+'c' changes a line by deleting it and putting you into insert mode.
+--As numbers, '.' refers to the present line, and '$' to the last line of the
+	file.
+
+III. More Advanced Editing: 
+	(The 's' command)
+
+The 's' command is used for substitutions. The general format is this:
+
+:[<number1>[,<number2>]]s<delimiter><pattern><delimiter><sub>[<delimiter>gp]
+
+The command may look intimidating at first, but it turns out to be one of the
+most powerful commands in ed.
+
+An explanation of all the angle-brackets:
+<number1> and <number2> are the range of substitution.  If ',<number2>' is
+omitted, the range of effect is merely line <number1>.  If '<number1>' is also
+omitted, the substitution defaults to the present line.
+
+<delimiter> is simply a character used as a separator.  Care should be taken
+that '<delimiter>' does not occur in either <pattern> or <sub>.  The most 
+common choices for <delimiter> are '/' and '!', although any character can be
+used.
+
+<pattern> is the string that will be changed. <sub> is the string that it will
+be changed to.  If <pattern> begins with a '^', that is taken to mean 'beginning
+of line.'  Similarly, if it ends with '$', it signifies 'end of line.'
+
+The final optional [gp] are used, respectively, to make the substitution global
+throughout the line (instead of just affecting the first occurrence), and to
+display the newly-changed line immediately afterwards.  Note that g must come
+before p, if both are used.
+
+Some examples:
+
+:.
+This is line nubmer 3.
+:s/bm/mb/p        <--- Note that '/' is used as the delimiter here.
+This is line number 3.
+:
+
+:.
+Thsi si line 3.
+:s!si!is!p        <--- The delimiter here is '!'.
+This si line 3.   <--- Note that only the 1st occurrence of 'si' was changed
+:
+
+:.
+Thsi si line number 3.
+:s!si!is!gp       <--- Here, the delimiter is '!', again.
+This is line number 3.
+:
+
+:3,5p
+This is lize 3.
+This is lize 4.
+This is lize 5.
+:3,5sqzqnqp      <--- Here, to confuse matters, the delimiter is 'q'.
+This is line 3.
+This is line 4.
+This is line 5.
+:
+
+General notes:
+For a global substitution, use:
+:1,$s/<pattern>/<sub>/g
+
+Beware of special characters in <pattern>.  '.', '(', ')', '&', '*', '|', '[',
+'^', and ']' should all be prepended by backslashes ('\') if they are used. 
+'\' is, although possible to use in <sub> and <pattern>, very tricky to use. 
+The author recommends beginners use the 'c' command to do sunstitutions for
+this character instead.
+
+Some of these special characters that can be used in <pattern>:
+.	Match any character.
+x*	Match any numbers of x (0 or more).
+[abc]	Match 'a', 'b' or 'c'.
+[0-9]	Match any digit 0 - 9.
+[a-z]	Match any lowercase letter.
+[^0-9]  Match anything except a digit 0 - 9.
+
+The & can be used in the replacement to represent the text being replaced.
+
+Example:
+:.
+This is a lazy line, lying abed.  It is also silly; abcd.
+:s/ab.d/ABCD/gp
+This is a lazy line, lying ABCD.  It is also silly; ABCD.
+:
+
+Example:
+:.
+This is a long line that is being used to demonstrate a silly example.
+:s/l.n./&foo/
+This is a longfoo linefoo that is being used to demonstrate a silly example.
+
+III-I/II. (3.5, for those who can't figure that out.) Author's Interjection:
+         (The '<range>' notation)
+
+What was formerly referred to as <number1>,<number2><command> will, from here
+on out, be referred to as <range><commmand>, for the author's typing ease.
+Thank you.
+
+Campus. Still More Advanced Commands, and Related Shortcuts:
+    (The 'e', 'E', 'f', 'j', 'k', 'Q', 'm', 'r', 't', 'x', and '!' commands)
+
+The 'e', 'E', and 'r' commands can all be used to read external files into the
+buffer.  'e <file>' reads <file> into the buffer, deleting everything in the
+buffer.  Because it is destructive, the exact buffer contents must be saved
+before this command can be executed.  'E <file>' works exactly as 'e <file>',
+except that it ignores the saved status of the present buffer.
+'<number>r <file>' reads in the contents of <file>, placing them after line
+<number>.  As usual, if <number> is omitted, it defaults to the current line.
+
+'Q' and 'x' can, like 'q', be used to exit ed.  'q' can only be used to exit
+ed if the exact contents of the buffer are saved.  'Q' can be used to exit 
+regardless of the saved status of the buffer.  'x' saves the buffer to the
+default file name and exits ed.  Note that if there is no default file name, 
+'x' will fail.
+
+'<range>j' will join all of the lines in <range> together into one line.
+
+'<number>k<marker>' will assign <marker> to line <number>.  <marker> can be
+any lowercase letter.  A line marked is referred to as "'<marker>".  For
+example, the commands:
+:5kd
+:1,'dp
+                       will mark line 5 as "d" and then print out lines 1-5.
+
+'f <file>' sets the default name of the file (used for the 'w' and 'x'
+commands) to <file>.
+
+'t' and 'm' are both used to move sections of text.  The format is:
+:<range>t|m<number>
+where <range> is the text to be moved, and <number> the line it is to be
+inserted after.  't' is 'transfer' and leaves a copy of the text to be moved
+at the original site; it is basically a 'copy' command.  'm' is 'move' and 
+moves the text from its original site to its new site.
+
+'!' is used to execute lpmud commands from within ed, and can be used in either
+the command or the insert mode.  For example:
+:!'Wait, please; I'm in ed.
+Guest says: But I want to talk.
+:i
+*!'I said wait, please.
+*
+
+
+A summary:
+'e', 'E', and 'r' are used to retrieve external files to the buffer.
+'Q' is used to exit, regardless of save status.
+'x' is used to save and exit in one step.
+'f' changes the default name of the file.
+'j' joins lines together.
+'k' marks lines.
+'t' is used to transfer, or copy lines.
+'m' is used to move lines.
+'!' in command and insert modes, is used to execute an lpmud command.
+
+Campus. Seek, and Ye Shall Find
+   (The 'g', 'v', '?', and '/' commands)
+
+'/' and '?' are used to find expressions in the buffer.  '/<string>' does a
+forward search for <string>, while '?<string>' does a backward search.
+'/' and '?' with no arguments default to the previous argument.  If no argument
+was given prior, an error occurs.
+
+'g' and 'v' use similar formats for operation:
+:<range>g|v/<string>/<command>
+
+Both 'g' and 'v' search through <range> for lines that contain <string>.
+'g' executes <command> on all lines in <range> that contain <string>, while
+'v' executes <command> on all lines that do not contain <string>.
+
+<command> may be one of the following commands: 's', 'l', 'p', 'd', 'm', or
+'r'.  Arguments for these commands work normally.
+
+'/' and '?' may be used similarly to operate on the first occurrence of
+<string> found.  For example:
+:/foo/s/x/ox/gp
+
+                will replace all instances of 'x' on the next line containing
+'foo' with 'ox' and set your current line there.  Similarly, 
+:?bar?=
+                                                             will give you the
+number of the first previous line containing the string 'bar', and set your
+current line there.
+Exapmles:
+
+:1,$p
+This is a test.
+This is line two of the test.
+There are more than two lines.
+This is the last line.
+:1,$g/two/l
+This is line two of the test.$
+There are more than two lines.$
+:1,$v/two/d
+:1,$p
+This is line two of the test.
+There are more than two lines.
+:?test
+This is line two of the test.
+:.p
+This is line two of the test.
+:/There
+There are more than two lines.
+:Q
+>
+
+--Mishael, author/editor.
+David "Mishael" Green
+dgreen@jarthur.claremont.edu

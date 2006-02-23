@@ -49,12 +49,19 @@ mixed can_get_obj(string verb) {
     return eventCheckLight(this_player());
 }
 
-mixed can_get_obj_out_of_obj(string verb) {
+varargs mixed can_get_obj_out_of_obj(string verb, string rule, object item, object container, mixed poo) {
+    //tc("hit can_get_obj_out_of_obj","blue");
+    //tc("verb: "+verb,"blue");
+    //tc("rule: "+rule,"blue");
+    //tc("item: "+identify(item),"blue");
+    //tc("container: "+identify(container),"blue");
+    //tc("container type: "+typeof(container),"blue");
+    //tc("poo: "+identify(poo),"blue");
     return eventCheckLight(this_player());
 }
 
-mixed can_get_obj_from_obj(string verb) {
-    return can_get_obj_out_of_obj(verb);
+mixed can_get_obj_from_obj(string verb, string rule, object item, object container) {
+    return can_get_obj_out_of_obj(verb, rule, item, container);
 }
 
 mixed can_get_wrd_wrd_out_of_obj(string num, string curr) {
@@ -79,14 +86,14 @@ mixed do_get_wrd_wrd_from_obj(string num, string curr, object pile) {
 }
 
 mixed do_get_obj_out_of_obj(object ob, object storage) {
-    //tc("entered do_get_obj_out_of_obj");
-    //tc("ob: "+identify(ob));
+    //tc("entered do_get_obj_out_of_obj","blue");
+    //tc("ob: "+identify(ob),"blue");
     if(!ob) return "No object";
-    //tc("storage: "+identify(storage));
+    //tc("storage: "+identify(storage),"blue");
     if(!(environment(ob) == storage)){
-	//tc("we noticed it isn't in there.");
+	//tc("we noticed it isn't in there.","blue");
 	ob = present(ob->GetKeyName(), storage);
-	//tc("ob: "+identify(ob));
+	//tc("ob: "+identify(ob),"blue");
 	if(!ob){
 	    write("That's not in there.");
 	    return "";
@@ -96,7 +103,7 @@ mixed do_get_obj_out_of_obj(object ob, object storage) {
 }
 
 mixed do_get_obj_from_obj(object ob, object storage) {
-    //tc("hit do_get_obj_from_obj");
+    //tc("hit do_get_obj_from_obj","blue");
     return do_get_obj_out_of_obj(ob, storage);
 }
 

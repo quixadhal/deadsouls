@@ -73,6 +73,7 @@
 #include "/secure/sefun/numbers.c"
 #include "/secure/sefun/query_carrying.c"
 #include "/secure/sefun/findobs.c"
+#include "/secure/sefun/query_names.c"
 
 
 int destruct(object ob) {

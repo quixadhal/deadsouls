@@ -1,0 +1,27 @@
+
+MEMBERP(1)                               MEMBERP(1)
+
+NAME
+       memberp() - Determines whether a thing is a member of an array.
+
+SYNOPSIS
+       int memberp(mixed *primary, mixed sub)
+
+DESCRIPTION
+       If sub is a member of primary, returns 1. Otherwise, returns 0. It
+is basically a prettification of member_array, which is the preferred way
+of doing it. This sefun is much more expensive to use than the member_array
+efun, but it's easier to read.
+
+EXAMPLES
+       memberp(({"foo","bar","baz"}), "baz")  would return 1
+       memberp(({"foo","bar","baz"}), "shiz")  would return 0
+
+
+LOCATION
+       /secure/sefun/strings.c
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1

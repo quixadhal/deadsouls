@@ -498,7 +498,7 @@ int eventExecuteAttack(mixed target) {
 	}
     }
     if(this_object()->GetPacifist()) {
-	write("As a pacifist, you choose not to fight.");
+	tell_object(this_object(),"As a pacifist, you choose not to fight.");
 	return 0;
     }
     if( arrayp(target) ) {
@@ -664,7 +664,7 @@ int eventExecuteAttack(mixed target) {
 	    else return 0;
 	}
 	if( !f || (functionp(f) & FP_OWNER_DESTED) ) {
-	    attacks = 1 + random(GetSkillLevel("melee attack"))/50;
+	    attacks = 1 + random(GetSkillLevel("melee attack"))/30;
 	    while( attacks-- ) {
 		if( target->GetDying() ) {
 		    break;
@@ -686,7 +686,7 @@ int eventExecuteAttack(mixed target) {
 	    return;
 	}
 
-	if(limb == "head" && this_object()->CanBite()) {
+	if(limb == "head" && this_object()->GetCanBite()) {
 	    eventBite(target);
 	    return;
 	}

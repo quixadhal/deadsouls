@@ -1,0 +1,135 @@
+---- 2.0 ---
+- It is done.
+
+---- 1.9r21 ---
+- Typo fixes, cosmetic changes.
+
+---- 1.9r19 ---
+- Creation system fixes and overhaul: you now need to be holding the
+  creator staff to use the Quick Creation System.
+- Some QCS docs added.
+- Added commands reload, wake, resurrect.
+- Added sefuns reload, add_maps, alphap.
+
+---- 1.9r18 ---
+- Creation system bugfixes.
+- Connection bugfixes.
+- Template bugfix.
+
+---- 1.9r12 ---
+- The roommaker is now obsolete, but is not being removed, as
+  a convenience to those who've gotten used to it. Instead of
+  the roommaker, use the create command, then the modify command
+  to adjust the new room to your preferences.
+- The thingmaker is now obsolete and has been removed. On-line
+  object making and editing is done using the new commands: create,
+  modify, delete. 
+- admintool now edits groups. Use it in order to ensure you don't
+  munge the groups.cfg formatting.
+- Users in the TEST group are now allowed to log in when the mud is
+  locked.
+- ~/.profile will now be processed when creators log in, and commands
+  included in it will be automatically executed.
+- Added answering machine (for intercepting inconvenient tells).
+- Fixed the sample virtual desert.
+- Removed the prior intermud restrictions. Rather than requiring
+  name changes to get onto i3, creators have to add intermud
+  channels to themselves before talking on them. To do this:
+  call me->AddChannel("intergossip")
+  call me->AddChannel("intercre")
+
+---- Version 1.9r5 ---
+
+- Fixes and tweaks to town/ domain.
+- Updated commands: stat, who, afk.
+- Tweaks to body.c and player.c.
+
+---- Version 1.9r2 ---
+
+- Added some default SetRestrictLimbs() in armor init() so
+  that wearing items over the same body parts doesn't
+  create a crisis.
+- Fixed GetNetWorth().
+- Minor tweaks to /lib objects.
+- Minor tweaks to town domain.
+- Added meditate spell.
+
+
+---- Version 1.9 ---
+
+- Fixed shoot verb.
+- Tweaked body to include messages of drunkenness or sleep.
+- Fixed sleeping.
+- Fixed economy, including vendors, tellers, and barkeeps.
+- Removed daemons: combat, underworld, war.
+- Added about command.
+- Added string replacer.
+- Modified give and drop for newbies to discourage cheating.
+
+---- Version 1.8r1 ---
+
+- Added souls (smile, wink, etc).
+
+---- Version 1.8 ---
+
+- Fixed lib obs: put, look_in, get_from
+  to work with surfaces and recursing containers.
+- Fixed verb put to work with surfaces and recursing containers.
+- Fixed /lib/std/germ to work properly and handle bane.
+- Fixed verb read to properly handle readable things
+  on objects.
+- Updated enter, jump, and go verbs to handle hobbling.
+- Numerous minor fixes and updates to verbs and lib objects.
+- Added crawl verb.
+- Fixed armor conflicts.
+- Added intermud requirement to change ADMIN_EMAIL.
+
+---- Version 1.7r1 ---
+
+- Fixed some minor login bugs.
+- Updated the make_workroom sefun.
+
+---- Version 1.7 ---
+
+- Added template creator setup for first admin and encre.
+- Fixed and tweaked help: help works properly now.
+- Fixed "force".
+- Added roommaker.
+- Added (default) explorer and mage classes.
+- Tweaked connect.real.
+- Fixed numerous armor bugs: armor works properly now.
+- Changed the pointlessly affected "armor" spelling to "armor"
+- Stopped numbering items in the changelog
+
+---- Version 1.6 ---
+11 Added large, functional sample area based on Larstown
+
+10 Major changes to many many lib files and sefuns
+
+---- Version 1.1r5 ---
+9 Fixed library inheritables: inventory, move, container
+
+8 Added library inheritables: shop, shadow, getlivings, addstuff
+
+7 Added sefuns: tell_player(), GetCustomPath(), GetCustomCommand(),
+  dump_socket_status(), flat_map(), get_cmds(), get_verbs(),
+  get_livings(), local_time(), reap_dummies(), reap_other(),
+  reap_list(), tail(), timestamp(), get_dupes() 
+
+---- Version 1.1r4 ---
+6 Added license.txt
+
+5 Added telnet client and telnet room
+
+4 Applied ftpd fixes
+
+---- Version 1.1r3 ---
+3 Fixed /domains/Ylsrim, and most items work
+
+---- Version 1.1r2 ---
+2 We know there are still many many bugs left in the lib.
+  This is a preliminary release. An update is already in the works.
+
+1 W00t! It's finally free!
+
+

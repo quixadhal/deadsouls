@@ -32,6 +32,7 @@ static void create() {
     SetRace("human");
     SetGender("male");
     SetClass("mage");
+    SetSkill("multi-hand", 9);
     SetAction(25, ({
 	"Leo scratches his beard thoughtfully.",
 	"Leo seems to be trying to remember something.", "Leo ponders.",

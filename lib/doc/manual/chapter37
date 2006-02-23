@@ -1,70 +1,97 @@
-chapter 37 "QCS: Adding and deleting"
+chapter 37 "QCS: Modifying things and stuff"
 
-    Rooms, containers and NPC's all are capable of holding
-items, and often it is convenient to have them already holding certain
-items upon creation.
-    The SetInventory directive in an object's file provides us with
-a list of that object's "permanent inventory". To modify an object's
-inventory, we use the add and delete commands.
+    You should have a firm grasp now on how QCS works
+in relation to manipulable objects. Let's look at the
+settings for a few special kinds of items:
 
-    Let's say that we want our cowboy to be wielding a
-hammer when he appears...
+chairs
+------
 
-clone cowboy
+%^GREEN%^modify stool maxsitters 1%^RESET%^
 
-cd ../weap
+%^GREEN%^modify stool setmaxcarry 200%^RESET%^
 
-clone hammer
 
-add hammer to cowboy
+beds
+----
 
-wield hammer
+%^GREEN%^modify sofa maxsitters 2%^RESET%^
 
-    Believe it or not, it's that simple. The add command will ask
-you a question after you issue it. What it wants to know is if you
-want the NPC to do anything special when the hammer appears on him.
-In this case, yes, we wanted him to wield it.
-    However, if you want to add something to an NPC and don't
-have anything interesting for him to do with it, respond to the
-question with the number of items that you want to appear. For
-example, if I want the cowboy to be carrying a key:
+%^GREEN%^modify sofa maxliers 1%^RESET%^
 
-cd ../obj
+%^GREEN%^modify sofa maxcarry 400%^RESET%^
 
-clone key
 
-add key to cowboy
+containers 
+----------
 
-1
+%^GREEN%^modify box canclose 1%^RESET%^
 
-    And that's it. Now if I want the cowboy to be a permanent 
-resident of this room:
+%^GREEN%^modify box closed 1%^RESET%^
 
-add cowboy
+%^GREEN%^modify box locked 1%^RESET%^
 
-1
+%^GREEN%^modify box key magic_skeleton_key%^RESET%^
 
-    The add command understands that if you don't specify a
-target argument, you must mean the room. You can also be specific:
+%^GREEN%^modify box maxcarry 200%^RESET%^
 
-add cowboy to room
+%^GREEN%^modify box setmoney gold 15%^RESET%^
 
-1
 
-    The delete command works the opposite way. It removes items from
-an object's permanent inventory:
+tables
+------
 
-delete hammer from cowboy
+%^GREEN%^modify altar maxcarry 300%^RESET%^
 
-delete cowboy
+%^GREEN%^modify altar maxliers 1%^RESET%^
 
-    The delete command is also the way to get rid of rooms. You won't
-be removing the file from disk, you'll just be deleting that exit
-from the room:
 
-delete exit garden
+meals/drinks
+------------
 
-NOTE: When you delete an exit, only the connection from your room to
-the other room is removed. The connection from the other room to
-your room remains. This is not a bug, it's a feature. There are plenty
-of circumstances where one-way travel is desirable.
+%^GREEN%^modify burger mealtype food%^RESET%^
+
+%^GREEN%^modify schlitz mealtype alcohol%^RESET%^
+
+%^GREEN%^modify apple mealstrength 10%^RESET%^
+
+
+books
+-----
+
+%^GREEN%^modify journal title The Orc Within%^RESET%^
+
+%^GREEN%^modify journal source /domains/Orcland/etc/books/journal%^RESET%^
+
+
+Miscellaneous:
+--------------
+
+To make a key have a 50% chance of breaking when it's used:
+
+%^GREEN%^modify golden key disablechance 50%^RESET%^
+
+
+To make a room or object immune to resets:
+
+%^GREEN%^modify sentry noclean 1%^RESET%^
+
+
+To make sure there is only one instance of an object or
+NPC loaded at any given time:
+
+%^GREEN%^modify tiamat unique 1%^RESET%^
+
+
+To make a thing or room immune to the QCS (except for this
+command):
+
+%^GREEN%^modify workroom nomodify 1%^RESET%^
+
+
+To specify what kind of vendor should be allowed to traffic
+in this item:
+
+%^GREEN%^modify necklace vendortype treasure%^RESET%^
+
+

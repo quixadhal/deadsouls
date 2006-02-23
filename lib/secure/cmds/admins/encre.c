@@ -25,6 +25,7 @@ mixed cmd(string args) {
     if(rename(file+__SAVE_EXTENSION__, DIR_CRES+"/"+nom[0..0]+"/"+nom+__SAVE_EXTENSION__))
 	return "You failed due to lack of write access to "+DIR_CRES+".";
     if( ob = find_player(nom) ) {
+	ob->SetProperty("brand_spanking_new",0);
 	PlayerName = nom;
 	catch(cre_ob = (object)master()->player_object(nom));
 	PlayerName = 0;
@@ -34,7 +35,7 @@ mixed cmd(string args) {
 	    return 1;
 	}
 	exec(cre_ob, ob);
-	all_inventory(ob)->eventMove(cre_ob);
+	cre_ob->SetProperty("brand_spanking_new",0);
 	cre_ob->Setup();
 	ob->eventDestruct();
 	message("system", "You are now a creator.", cre_ob);
@@ -44,10 +45,6 @@ mixed cmd(string args) {
 	make_workroom(cre_ob);
 	cre_ob->eventForce("home");
 	cre_ob->eventForce("cd");
-	jeans = present("jeans",cre_ob);
-	shirt = present("t-shirt",cre_ob);
-	if(jeans) jeans->eventMove(ROOM_FURNACE);
-	if(shirt) shirt->eventMove(ROOM_FURNACE);
 	jeans = present("jeans",cre_ob);
 	shirt = present("t-shirt",cre_ob);
 	if(jeans) jeans->eventMove(ROOM_FURNACE);
@@ -63,10 +60,11 @@ mixed cmd(string args) {
 	staff = new("/secure/obj/staff");
 	if(staff) staff->eventMove(cre_ob);
 	book = new("/domains/default/obj/manual");
-	if(book) book->eventMove(cre_ob);
-	message("system", "You will now be logged off.", cre_ob);
-	message("system", "Please log back in to use your new powers.", cre_ob);
-	cre_ob->eventForce("quit");
+	if(book && !present("manual",cre_ob))  book->eventMove(cre_ob);
+	else if(book) book->eventMove(ROOM_FURNACE);
+	//message("system", "You will now be logged off.", cre_ob);
+	//message("system", "Please log back in to use your new powers.", cre_ob);
+	//cre_ob->eventForce("quit");
     }
     return 1;
 }

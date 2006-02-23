@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_NPC;
+
 static void create(){
     npc::create();
     SetKeyName("money tree");
@@ -10,11 +11,13 @@ static void create(){
       "pods are full to bursting with coins of all kinds. It would be no "+
       "trouble at all to get <amount> <currency> from tree...looks like "+
       "you've hit the jackpot!");
+    SetCanBite(0);
     SetLevel(99);
     SetRace("tree");
     SetMaxHealthPoints(99999);
 }
 void init(){
+    ::init();
     add_action("make_money","get");
 }
 int make_money(string str){

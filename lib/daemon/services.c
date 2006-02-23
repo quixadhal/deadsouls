@@ -25,6 +25,7 @@ mapping GetServices();
 #include "/daemon/services/locate.c"
 #include "/daemon/services/tell.c"
 #include "/daemon/services/who.c"
+#include "/daemon/services/auth.c"
 
 static void create() {
     SetSaveFile(SAVE_SERVICES);

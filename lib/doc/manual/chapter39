@@ -1,148 +1,85 @@
-chapter 39 "Useful Creator Commands"
+chapter 39 "QCS: Final notes"
 
-Moving around:
--------------
+* Remember that QCS commands work on objects, not files. To
+load a file into memory, use the update command. To reload an
+already existing object, like a cloned orc or a book, use
+the reload command. To use modify, delete, and add, you have
+to specify a cloned object that is on you or in your environment.
 
-* To go to your workroom:
-home
+    I think you're getting the idea of how this works. Here's 
+an example of armor creation:
 
-* To go to someone else's workroom, "home <person>", for example:
-home cratylus
+%^GREEN%^create armor jeans%^RESET%^
 
-* To go to the town pub:
-goto /domains/town/room/tavern
+%^GREEN%^modify jeans id%^RESET%^
 
-* Or:
-cd /domains/town/room
-goto tavern
+%^GREEN%^pants%^RESET%^
 
-* To return to where you were before you went somewhere else:
-return
+%^GREEN%^trousers%^RESET%^
 
-* To bring someone to you, "trans <person>". For example:
-trans cratylus
+%^GREEN%^.%^RESET%^
 
-* To send them back when you're done with them:
-return cratylus
+%^GREEN%^modify jeans short a pair of denim jeans%^RESET%^
+ 
+%^GREEN%^modify jeans  long Worn jeans, frayed and stained.%^RESET%^
 
+%^GREEN%^modify jeans adj%^RESET%^
 
-Dealing with living beings:
----------------------------
+%^GREEN%^pair of%^RESET%^
 
-* To force everyone in a room to stop fighting:
-quell
+%^GREEN%^denim%^RESET%^
 
-* To let them resume combat:
-unquell
+%^GREEN%^frayed%^RESET%^
 
-* To insta-kill a living being, "zap <thing>". For example:
-zap orc
+%^GREEN%^worn%^RESET%^
 
-* To bring to life a player who somehow left the death
-room without regenerating, "resurrect <person>", For example:
-resurrect cratylus
+%^GREEN%^stained%^RESET%^
 
-* To make a living being do something you want, "force <thing>
-<command>". For example:
-force thief drop towel
-force thief go west
-
-* For complex management of a living being's vital statistics,
-skills, health, score, and satiety levels, use the medical
-tricorder in the chest in your workroom.
-
-* For a detailed report of a living being's physical status:
-stat orc
-stat cratylus
+%^GREEN%^.%^RESET%^
 
 
-Handling objects in general:
----------------------------
+    To know what directives QCS can change on an object, type:
 
-* To destroy an object, "dest <thing>". Note that the object's
-inventory will probably move to the room it was occupying.
-For example, if you:
+%^GREEN%^help modify%^RESET%^
 
-dest fighter
+    This provides a list of modifiable things and the directives
+that can be modified on them. 
 
-  You may find that the room now contains a sword, shield, and
-chainmail shirt, but no fighter.
+    Ultimately the Quick Creation System generates LPC code, so
+you'll want to review the earlier chapters of this handbook to
+get a base of understanding of the code that comprises your new
+creations.
 
-* To reset an object to its original state, "reload <thing>". Note
-that this also makes the object incorporate any changes you
-made to its file. For example:
-reload fighter
-reload here
+Some notes and tips:
 
-* To load a file into memory, "update file". This is used when you
-have edited an object's file, and want the mud to use the new
-stuff you created. For example, if you edited the fighter's file
-and wanted to know if it will load properly into memory, you'd
-type:
-update /realms/you/area/npc/fighter.c
+* The SetNoCondition directive makes it so an item does not report
+  its physical status when examined. Weapons and armor wear down in
+  combat, and most objects let you know their condition when you
+  examine them. However, in some cases (a sandwich for example) 
+  this is inappropriate, so the SetNoCondition directive may be
+  useful.
 
-Or:
-cd /realms/you/area/npc/
-update fighter
+* Doors aren't like normal objects. They have to be modified *twice*.
+  Once for each side of the door. If this sounds unnecessarily 
+  tedious, remember that a door leading south is also a door
+  leading north from the other room.
 
-  If you do not specify an object to update, the mud assumes you
-want to update the room you are in. If there is a problem with the
-room's code, and it does not load, you will be dropped into the
-"void". 
-  If the room's code is ok and it updates, anything in the room 
-that isn't part of its permanent inventory (except for players) will
-disappear from the room.
+* SetCurrency is for adding money to NPC's. SetMoney is for adding
+  money to non-living containers (bags, etc).
 
-* To make a copy of an object appear, "clone <file>". For example:
-clone /realms/you/area/npc/fighter
+* Item subtypes are listed in /include. To know what kinds of vendors 
+  are available, for example, look in /include/vendor_types.h
 
-Or:
-cd /realms/you/area/npc/
-clone fighter
+* Books need a "source directory", which must contain one file per
+  chapter. The SetSource for this manual, for example, is /doc/manual
+  The first line of each file must follow the same format as
+  the files you see in /doc/manual
 
-* To know the precise contents of an object, use scan:
-scan fighter
-scan here
-
-  If you want to know not only what the fighter has, but 
-also what any containers he is carrying have, use the "-d" flag:
-scan -d fighter
-scan -d here
-
-Debugging commands:
---------------------
-
-* elog: This will report back to you the last few lines of
-your error log. Usually this is very helpful in nailing down
-which lines of a file contain errors. If you are admin, you
-may be working on files other than your home dir. If those
-files fail to update, you can supply elog with a directory name
-to specify where to look for an error report:
-elog secure
-elog cmds
-elog lib
-
-* dbxwhere: provides a list of the chain of messages caught
-in your last runtime error.
-
-* dbxframe <number>: Using the list number from dbxwhere, 
-dbxframe can pinpoint exactly where in that link the error
-came from.
+* SetObviousExits is usually no longer needed: rooms report
+  obvious exits automatically. However, if you don't want an exit
+  to show up by default, use the SetObviousExits directive 
+  to specify only those that you want seen. This will override the
+  room's default exit display.
 
 
-miscellaneous useful commands:
------------------------------
-
-* people: reports who is logged on, what site they logged
-in from, and what room they are in.
-
-* mudtime: reports the time of day in the mud (nothing to
-do with the time of day anywhere in the real world).
-
-* bk <thing or file>: makes a unique copy of that thing
-or file and puts it in /realms/you/bak
-
-* restore <filename>: copies the last backup of the
-filename from your bak/ directory into where it used
-to be.
 

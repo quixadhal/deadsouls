@@ -1,0 +1,23 @@
+
+STARTS_WITH(1)                        STARTS_WITH(1)
+
+NAME
+       starts_with() - Whether a string begins with the specified substring.
+
+SYNOPSIS
+       int starts_with(string primary, string sub)
+
+DESCRIPTION
+       If primary begins with sub, returns 1. Otherwise returns 0.
+
+EXAMPLES
+       starts_with(string primary, string sub)
+
+LOCATION
+       /secure/sefun/strings.c
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

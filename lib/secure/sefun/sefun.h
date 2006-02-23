@@ -131,7 +131,7 @@ string admin_email();
 int query_night_light(object ob);
 int query_day_light(object ob);
 int query_ambient_light(object ob);
-int reload_room(object ob);
+int reload_room(object ob, int recursive);
 void tc(string str);
 string opposite_dir(string str);
 mixed *singular_array(mixed *arr);
@@ -170,5 +170,11 @@ mixed check_light(object who);
 int query_carrying(object who, mixed thing);
 mixed *findobs(mixed arg);
 int atoi(string str);
+string *query_names(object whom);
+int answers_to(string name, object what);
+varargs void add_event(string source, string ob, string fun, mixed *args, int when, int repeat);
+varargs void remove_event(int i);
+object update(string str);
+mixed local_ctime(int i);
 
 #endif /* l_sefun_h */

@@ -30,12 +30,12 @@ void eventReceiveWhoRequest(mixed *packet) {
 	  (string)$1->GetShort() }) :));
     INTERMUD_D->eventWrite(({ "who-reply", 5, mud_name(), 0, packet[2],
 	packet[3], msg }));
-foreach(string *entry in msg){
-ret += entry[0]+", ";
-}
-ret = truncate(ret,2);
+    foreach(string *entry in msg){
+	ret += entry[0]+", ";
+    }
+    ret = truncate(ret,2);
 
-tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"+capitalize(packet[3])+" at "+packet[2]+" has requested a list of users currently logged on. Replying with: %^BOLD%^YELLOW%^"+ret+".%^RESET%^\"");
+    tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"+capitalize(packet[3])+" at "+packet[2]+" has requested a list of users currently logged on. Replying with: %^BOLD%^YELLOW%^"+ret+".%^RESET%^\"");
 }
 
 void eventSendWhoRequest(string mud) {

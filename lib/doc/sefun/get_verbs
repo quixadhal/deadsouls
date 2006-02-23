@@ -1,0 +1,23 @@
+
+GET_VERBS(1)                               GET_VERBS(1)
+
+NAME
+       get_verbs() - Returns a list of available verbs.
+
+SYNOPSIS
+       string *get_verbs()
+
+DESCRIPTION
+       Provides an array of files in the /verbs/* directories.
+
+LOCATION
+       /secure/sefun/get_verbs.c
+
+SEE ALSO
+      get_cmds() 
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

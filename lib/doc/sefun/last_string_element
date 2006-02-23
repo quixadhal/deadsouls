@@ -1,0 +1,29 @@
+
+LAST_STRING_ELEMENT(1)               LAST_STRING_ELEMENT(1)
+
+NAME
+       last_string_element() - Extracts the contents of a string after the last delimiter.
+
+SYNOPSIS
+       string last_string_element(string path, string delimiter)
+
+DESCRIPTION
+       The opposite of first_string_element, this function returns the end of
+a string after the last delimiter.
+
+EXAMPLES
+       last_string_element("/realms/cratylus/workroom.c","/") 
+
+returns "workroom.c".
+
+LOCATION
+       /secure/sefun/strings.c
+
+SEE ALSO
+       first_string_element       
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

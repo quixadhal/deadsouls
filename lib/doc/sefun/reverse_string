@@ -1,0 +1,27 @@
+
+REVERSE_STRING(1)                               REVERSE_STRING(1)
+
+NAME
+       reverse_string() - Reverses a string.
+
+SYNOPSIS
+       string reverse_string(string str)
+
+DESCRIPTION
+       Returns a string whose characters are arranged in a
+manner inverse to the original string.
+
+EXAMPLES
+       reverse_string("MXLPLX") returns "XLPLXM" 
+
+LOCATION
+       /secure/sefun/strings.c
+
+SEE ALSO
+       
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

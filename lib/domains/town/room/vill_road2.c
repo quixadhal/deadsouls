@@ -6,10 +6,7 @@ static void create() {
     SetClimate("outdoors");
     SetAmbientLight(30);
     SetShort("East Village Road");
-    SetLong("You are on a long road. The "
-      "general store is north. The road stretches "
-      "east and west through the town. The Adventurers "
-      "Guild is south.");
+    SetLong("You are on a long road. The general store is north. The road stretches east and west through the town. The Adventurers' Guild is south.");
     SetItems( ([
 	({"adventurers guild","guild"}) : "This small "
 	"building on the southern side of the road is where "
@@ -21,6 +18,7 @@ static void create() {
 	({"road","long road"}) : "An east-west cobblestone "
 	"road through town.",
       ]) );
+    SetObviousExits("n, s, e, 2, enter store, enter guild");
     SetExits( ([
 	"north" : "/domains/town/room/shop",
 	"south" : "/domains/town/room/adv_guild",
@@ -28,8 +26,8 @@ static void create() {
 	"west" : "/domains/town/room/vill_road1",
       ]) );
     SetEnters( ([
-	"guild" : "/domains/town/room/adv_guild",
 	"adventurers guild" : "/domains/town/room/adv_guild",
+	"guild" : "/domains/town/room/adv_guild",
 	"shop" : "/domains/town/room/shop",
 	"store" : "/domains/town/room/shop",
 	"general store" : "/domains/town/room/shop",

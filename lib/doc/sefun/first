@@ -1,0 +1,25 @@
+
+FIRST(1)                        FIRST(1)
+
+NAME
+       first() - Outputs the specified first N characters of a string.
+
+SYNOPSIS
+       string first(string str, int i)
+
+DESCRIPTION
+       Provided a string and integer i, it will return the first i
+characters in the string.
+
+EXAMPLES
+       first("DeadSouls",4) returns "Dead"
+       first("platypus",1) returns "p"
+
+LOCATION
+       /secure/sefun/strings.c
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

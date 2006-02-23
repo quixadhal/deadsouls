@@ -14,15 +14,20 @@ inherit LIB_EQUIP;
 inherit LIB_POISON;
 inherit LIB_WIELD;
 
-private int          Hands      = 1;
-private string       WeaponType = "blunt";
-private static mixed Wield      = 0;
+private int          	Hands      = 1;
+int			Wielded    = 0;
+private string       	WeaponType = "blunt";
+private static mixed 	Wield      = 0;
 
 // abstract methods
 string GetDefiniteShort();
 string GetKeyName();
 string GetShort();
 // end abstract methods
+
+int GetWielded(){
+    return Wielded;
+}
 
 varargs string GetEquippedDescription(object who) {
     if( GetWorn() ) {
@@ -73,7 +78,7 @@ string array GetSave() {
     d_save = damage::GetSave();
     e_save = equip::GetSave();
     p_save = poison::GetSave();
-    a_save = d_save + e_save + p_save;
+    a_save = d_save + e_save + p_save + ({"Wielded"});
     return a_save; 
 }
 
@@ -153,11 +158,14 @@ mixed eventEquip(object who, string array limbs) {
 	    return 1;
 	}
 	else {
+	    Wielded = 1;
 	    return equip::eventEquip(who, limbs);
 	}
     }
+    Wielded = 1;
     tmp = equip::eventEquip(who, limbs);
     if( tmp != 1 ) {
+	Wielded = 0;
 	return tmp;
     }
     if( stringp(Wield) ) {
@@ -192,8 +200,10 @@ mixed eventUnequip(object who) {
     mixed tmp = equip::eventUnequip(who);
 
     if( tmp != 1 ) {
+	Wielded = 1;
 	return tmp;
     }
+    Wielded = 0;
     send_messages("unwield", "$agent_name $agent_verb $target_name.",
       who, this_object(), environment(who));
     return 1;

@@ -25,7 +25,7 @@ int indirect_sell_obj_to_liv() {
 
 
 /* ******************* barkeep.c attributes *********************** */
-int GetCost(string item) {
+int GetCost(string *item) {
     float f = currency_rate(GetLocalCurrency());
 
     if( !MenuItems[item] ) {
@@ -45,8 +45,11 @@ string SetLocalCurrency(string str) {
     return (LocalCurrency = str);
 }
 
-mapping AddMenuItem(string item, string file) {
-    MenuItems[item] = file;
+mapping AddMenuItem(mixed item, string file) {
+    string *item_arr;
+    if(stringp(item)) item_arr = ({ item });
+    else item_arr = item;
+    MenuItems[item_arr] = file;
     return MenuItems;
 }
 
@@ -55,12 +58,27 @@ mapping GetMenuItems() {
 }
 
 mapping RemoveMenuItem(string item) {
-    map_delete(MenuItems, item);
+    string *item_arr;
+    if(!sizeof(MenuItems)) return MenuItems;
+    foreach(string *key, string arr in MenuItems){
+	if(member_array(item,key) != -1) item_arr = key;
+    }
+    if(sizeof(item_arr)) map_delete(MenuItems, item_arr);
     return MenuItems;
 }
 
 mapping SetMenuItems(mapping mp) {
-    return (MenuItems = mp);
+    mapping mp2 = ([]);
+    //tc("mp: "+identify(mp));
+    foreach(mixed key, mixed val in mp){
+	string *key2;
+	if(stringp(key)) key2 = ({ key });
+	else key2 = key;
+	mp2[key2] = val;
+    }
+    //tc("mp2: "+identify(mp2));
+    //tc("copy(mp2): "+identify(copy(mp2)));
+    return (MenuItems = copy(mp2));
 }
 
 /* *********************** barkeep.c modals ************************ */
@@ -68,23 +86,31 @@ int CanCarry(int cmt) {
     return 1;
 }
 
-mixed CanSell(object who, string what) {
+mixed CanSell(object who, string item) {
+    string *what = ({});
+    foreach(string *key, string val in MenuItems){
+	if(member_array(item,key) != -1) what = key;
+    }
     if( !MenuItems[what] ) {
 	return "There is no such thing for sale.";
     }
-    return buy::CanSell(who, what);
+    //return buy::CanSell(who, what);
+    return 1;
 }
 
 /* *********************** barkeep.c events *********************** */
-mixed eventBuyItem(object who, string cmd, string args) {
+mixed eventBuyItem(object who, string cmd, string item) {
     mixed tmp;
-
-    if( !args || args == "" ) {
+    string *what = ({});
+    if( !item || item == "" ) {
 	eventForce("speak err, what do you want me to sell?");
 	return 1;
     }
-    args = remove_article(lower_case(args));
-    tmp = CanSell(who, args);
+    item = remove_article(lower_case(item));
+    foreach(string *key, string val in MenuItems){
+	if(member_array(item,key) != -1) what = key;
+    }
+    tmp = CanSell(who, item);
     if( tmp != 1 ) {
 	if( tmp ) {
 	    who->eventPrint(tmp);
@@ -94,14 +120,18 @@ mixed eventBuyItem(object who, string cmd, string args) {
 	}
 	return 1;
     }
-    return eventSell(who, args);
+    return eventSell(who, item);
 }
 
 mixed eventSell(object who, string args) {
     object ob;
     int x;
-
-    if( !(ob = load_object(MenuItems[args])) ) {
+    string *what;
+    foreach(string *key, string val in MenuItems){
+	if(member_array(args,key) != -1) what = key;
+    }
+    //tc("what: "+identify(what));
+    if( !(ob = load_object(MenuItems[what])) ) {
 	eventForce("speak I am having a problem with that item right now.");
 	return 1;
     }
@@ -110,7 +140,7 @@ mixed eventSell(object who, string args) {
 	eventForce("speak You do not have that much in " + GetLocalCurrency());
 	return 1;
     }
-    ob = new(MenuItems[args]);
+    ob = new(MenuItems[what]);
     if( !ob ) {
 	eventForce("speak I seem to be having some troubles.");
 	return 1;
@@ -136,7 +166,7 @@ mixed eventSell(object who, string args) {
 
 int eventList(object who, string cmd, string args) {
     string array drinks = ({});
-    string drink;
+    string *drink;
 
     if( !sizeof(keys(MenuItems)) ) {
 	eventForce("speak I have nothing to serve right now.");
@@ -148,7 +178,7 @@ int eventList(object who, string cmd, string args) {
 	if( sizeof(adjectives) ) {
 	    adj = adjectives[random(sizeof(adjectives))] + " ";
 	}
-	drinks += ({ adj + drink + " for " + GetCost(drink) });
+	drinks += ({ adj + drink[0] + " for " + GetCost(drink) });
     }
     eventForce("speak I currently supply " + item_list(drinks) + ".");
     eventForce("speak Prices are in " + GetLocalCurrency() + " of course.");

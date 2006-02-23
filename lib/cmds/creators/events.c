@@ -15,7 +15,7 @@ int cmd(string str) {
     string *obs;
     string *st2;
     string st3;
-    int i,j,k;
+    int i,j,k,l;
     string name;
 
     if(!str && archp(previous_object())) {
@@ -23,9 +23,10 @@ int cmd(string str) {
 	i = sizeof(obs = keys(mp));
 	message("info", "The following events are pending:", this_player());
 	while(i--) {
-	    message("info", arrange_string(obs[i], 30) +
+	    l=atoi(""+obs[i]);
+	    message("info", arrange_string(""+l, 30) +
 	      arrange_string(mp[obs[i]]["function"], 15) +
-	      ctime(mp[obs[i]]["time"])+" Mud Time", this_player());
+	      local_ctime(l)+" "+query_tz(), this_player());
 	}
 	return 1;
     } else if((archp(previous_object()) && str) || creatorp(previous_object())) {
@@ -38,7 +39,7 @@ int cmd(string str) {
 	i = sizeof(obs = keys(mp));
 	if (i) {
 	    while(i--)
-		if((st2 = explode(obs[i], "/")))
+		if((st2 = explode(""+obs[i], "/")))
 		    if (st2[0] == "realms" && st2[1] == name) {
 			if (j == 0) {
 			    if (archp(previous_object()))

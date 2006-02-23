@@ -87,12 +87,12 @@ int SetPacifist(int i){
 }
 
 int SetCanBite(int i){
-    if(!i) Biter = "yes";
+    if(i) Biter = "yes";
     else Biter = "no";
     return i;
 }
 
-int CanBite(){
+int GetCanBite(){
     if(sizeof(Biter)){
 	if(Biter == "yes") return 1;
 	else return 0;

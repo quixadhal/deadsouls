@@ -10,6 +10,8 @@ void remote_finger(object me, string target, string mud);
 mixed cmd(string str) {
     string wer, wo;
 
+    if(!str) return "Finger whom?";
+
     if(!str) {
 	string ret;
 

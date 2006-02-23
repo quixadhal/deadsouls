@@ -4,14 +4,15 @@ inherit LIB_BOOK;
 
 void create(){
     ::create();
-    SetKeyName("coder manual");
-    SetId( ({"manual","book"}) );
-    SetAdjectives( ({"coder","coders","coder's", "coders'" }) );
-    SetShort("a Coders Manual");
+    SetKeyName("creator's manual");
+    SetAdjectives( ({"creator", "creators", "coder", "coders"}) );
+    SetId( ({"manual", "book"}) );
+    SetShort("a Creator's Manual");
     SetLong("This is a manual for creators and admins. "
       "To read it, you must read the chapters in it. For example, \"read "
       "chapter 1 in manual\".\n If you are new to coding, you should "
       "start with chapter 31.");
+    SetNoCondition(1);
     SetProperties(([
 	"no steal" : 1,
       ]));

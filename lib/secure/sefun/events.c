@@ -16,6 +16,16 @@ varargs void create_event(string f, int when, mixed *args, int reg) {
     EVENTS_D->AddEvent(fn, fn, f, when, args, reg);
 }
 
+varargs void add_event(string source, string ob, string fun, mixed *args, int when, int repeat){
+    if(!archp(this_player())) return;
+    EVENTS_D->AddEvent(source, ob, fun, args, when, repeat);
+}
+
+varargs void remove_event(int i){
+    if(!archp(this_player())) return;
+    EVENTS_D->RemoveEvent(i);
+}
+
 int event_pending(object ob) {
     mapping tmp;
     int *cles;

@@ -1,0 +1,27 @@
+
+GET_LIVINGS(1)                               GET_LIVINGS(1)
+
+NAME
+       get_livings() - Lists living things in a container.
+
+SYNOPSIS
+       varargs object array get_livings(object container, int foo)
+
+DESCRIPTION
+       Without a second argument, a list of all living things in
+"container" is returned in array form. If the second argument is the
+integer 1, only interactive living things (players and creators) are
+returned. If the integer is 2, only non-interactive living things are
+returned.
+
+EXAMPLES
+       get_livings(environment(this_player()), 1)
+
+LOCATION
+       /secure/sefun/get_livings.c
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

@@ -403,6 +403,7 @@ void eventDescribeEnvironment(int brief) {
 	    else if( functionp(Die) && !evaluate(Die, agent) ) return 0;
 	    else {
 		if(GetPosition() == POSITION_STANDING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " drops dead.", environment(), ({ this_object() }) );
+		else if(GetPosition() == POSITION_FLYING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " falls dead.", environment(), ({ this_object() }) );
 		else message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " finally dies.", environment(), ({ this_object() }) );
 		if( agent ) message("my_action", "You kill " + GetName() + ".", agent);
 	    }

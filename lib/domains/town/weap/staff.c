@@ -3,6 +3,7 @@
 #include <vendor_types.h>
 
 inherit LIB_ITEM;
+
 static void create(){
     item::create();
     SetKeyName("staff");
@@ -14,10 +15,13 @@ static void create(){
       "and solid.");
     SetVendorType(VT_WEAPON);
     SetDamagePoints(50);
-    SetClass(100);
+    SetClass(20);
     SetBaseCost("silver",250);
     SetMass(100);
     SetWeaponType("blunt");
     SetHands(2);
     SetDamageType(BLUNT);
+}
+void init(){
+    ::init();
 }

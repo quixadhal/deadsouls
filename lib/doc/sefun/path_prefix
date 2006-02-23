@@ -1,0 +1,26 @@
+
+PATH_PREFIX(1)                               CHECK_PRIVS(1)
+
+NAME
+       path_prefix() - A file's or directory's path without the last element.
+
+SYNOPSIS
+       string path_prefix(string filename)
+
+DESCRIPTION
+       If given a path, it returns a string with the last path element removed.
+
+EXAMPLES
+       path_prefix("/realms/cratylus/workroom.c") 
+  
+       would return "/realms/cratylus"
+
+
+LOCATION
+       /secure/sefun/strings.c
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

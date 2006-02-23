@@ -1,0 +1,152 @@
+chapter 40 "Useful Creator Commands"
+
+Moving around:
+-------------
+
+* To go to your workroom:
+%^GREEN%^home%^RESET%^
+
+* To go to someone else's workroom, "home <person>", for example:
+%^GREEN%^home cratylus%^RESET%^
+
+* To go to the town pub:
+%^GREEN%^goto /domains/town/room/tavern%^RESET%^
+
+* Or:
+%^GREEN%^cd /domains/town/room%^RESET%^
+%^GREEN%^goto tavern%^RESET%^
+
+* To return to where you were before you went somewhere else:
+%^GREEN%^return%^RESET%^
+
+* To bring someone to you, "trans <person>". For example:
+%^GREEN%^trans cratylus%^RESET%^
+
+* To send them back when you're done with them:
+%^GREEN%^return cratylus%^RESET%^
+
+
+Dealing with living beings:
+---------------------------
+
+* To force everyone in a room to stop fighting:
+%^GREEN%^quell%^RESET%^
+
+* To let them resume combat:
+%^GREEN%^unquell%^RESET%^
+
+* To insta-kill a living being, "zap <thing>". For example:
+%^GREEN%^zap orc%^RESET%^
+
+* To bring to life a player who somehow left the death
+room without regenerating, "resurrect <person>", For example:
+%^GREEN%^resurrect cratylus%^RESET%^
+
+* To make a living being do something you want, "force <thing>
+<command>". For example:
+%^GREEN%^force thief drop towel%^RESET%^
+%^GREEN%^force thief go west%^RESET%^
+
+* For complex management of a living being's vital statistics,
+skills, health, score, and satiety levels, use the medical
+tricorder in the chest in your workroom.
+
+* For a detailed report of a living being's physical status:
+%^GREEN%^stat orc%^RESET%^
+%^GREEN%^stat cratylus%^RESET%^
+
+
+Handling objects in general:
+---------------------------
+
+* To destroy an object, "dest <thing>". Note that the object's
+inventory will probably move to the room it was occupying.
+For example, if you:
+
+%^GREEN%^dest fighter%^RESET%^
+
+  You may find that the room now contains a sword, shield, and
+chainmail shirt, but no fighter.
+
+* To reset an object to its original state, "reload <thing>". Note
+that this also makes the object incorporate any changes you
+made to its file. For example:
+%^GREEN%^reload fighter%^RESET%^
+%^GREEN%^reload here%^RESET%^
+
+* To load a file into memory, "update file". This is used when you
+have edited an object's file, and want the mud to use the new
+stuff you created. For example, if you edited the fighter's file
+and wanted to know if it will load properly into memory, you'd
+type:
+%^GREEN%^update /realms/you/area/npc/fighter.c%^RESET%^
+
+Or:
+%^GREEN%^cd /realms/you/area/npc/%^RESET%^
+%^GREEN%^update fighter%^RESET%^
+
+  If you do not specify an object to update, the mud assumes you
+want to update the room you are in. If there is a problem with the
+room's code, and it does not load, you will be dropped into the
+"void". 
+  If the room's code is ok and it updates, anything in the room 
+that isn't part of its permanent inventory (except for players) will
+disappear from the room.
+
+* To make a copy of an object appear, "clone <file>". For example:
+%^GREEN%^clone /realms/you/area/npc/fighter%^RESET%^
+
+Or:
+%^GREEN%^cd /realms/you/area/npc/%^RESET%^
+%^GREEN%^clone fighter%^RESET%^
+
+* To know the precise contents of an object, use scan:
+%^GREEN%^scan fighter%^RESET%^
+%^GREEN%^scan here%^RESET%^
+
+  If you want to know not only what the fighter has, but 
+also what any containers he is carrying have, use the "-d" flag:
+%^GREEN%^scan -d fighter%^RESET%^
+%^GREEN%^scan -d here%^RESET%^
+
+Debugging commands:
+--------------------
+
+* elog: This will report back to you the last few lines of
+your error log. Usually this is very helpful in nailing down
+which lines of a file contain errors. If you are admin, you
+may be working on files other than your home dir. If those
+files fail to update, you can supply elog with a directory name
+to specify where to look for an error report:
+%^GREEN%^elog secure%^RESET%^
+%^GREEN%^elog cmds%^RESET%^
+%^GREEN%^elog lib%^RESET%^
+
+* dbxwhere: provides a list of the chain of messages caught
+in your last runtime error.
+
+* dbxframe <number>: Using the list number from dbxwhere, 
+dbxframe can pinpoint exactly where in that link the error
+came from.
+
+%^GREEN%^tail /log/runtime%^RESET%^
+%^GREEN%^tail /log/catch%^RESET%^
+%^GREEN%^tail /log/player_errors%^RESET%^
+
+
+miscellaneous useful commands:
+-----------------------------
+
+* %^GREEN%^people%^RESET%^: reports who is logged on, what site they logged
+in from, and what room they are in.
+
+* %^GREEN%^mudtime%^RESET%^: reports the time of day in the mud (nothing to
+do with the time of day anywhere in the real world).
+
+* %^GREEN%^bk <thing or file>%^RESET%^: makes a unique copy of that thing
+or file and puts it in /realms/you/bak
+
+*%^GREEN%^ restore <filename>%^RESET%^: copies the last backup of the
+filename from your bak/ directory into where it used
+to be.
+

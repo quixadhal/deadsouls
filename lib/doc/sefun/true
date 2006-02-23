@@ -1,0 +1,24 @@
+
+TRUE(1)                               TRUE(1)
+
+NAME
+       true() - Always returns a 1.
+
+SYNOPSIS
+       int true()
+
+DESCRIPTION
+       This function is mostly just cosmetic. There are circumstances where 
+I feel wrong not having SOMETHING happen, so there is this.
+
+LOCATION
+       /secure/sefun/generic.c
+
+SEE ALSO
+      false() 
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

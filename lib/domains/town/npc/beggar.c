@@ -12,6 +12,7 @@ static void create() {
     SetShort("a dirty beggar");
     SetLong("This beggar has something strangely noble about his aspect. "
       "He certainly doesn't look like he has always been a beggar.");
+    SetCanBite(0);
     SetWimpy(90);
     SetPacifist(1);
     SetInventory(([
@@ -22,7 +23,6 @@ static void create() {
     SetAutoStand(0);
     SetRace("human");
     SetGender("male");
-    SetMaxHealthPoints(40);
     SetOwner("The LPC Preservation Foundation");
     SetPosition(POSITION_SITTING);
 }
@@ -34,7 +34,8 @@ string GetLong(){
 int GiveMap(object ob){
     object map;
     if(present(ob->GetKeyName(),environment(this_object()))
-      && !this_object()->GetInCombat()){
+      && !this_object()->GetInCombat() &&
+      !stringp(ob->CanManipulate()) ){
 	eventForce("say here, you might need this");
 	eventForce("give my first map to "+ob->GetKeyName());
     }
@@ -60,5 +61,8 @@ void init(){
     if(!present("town map",this_player())){
 	new("/domains/town/obj/map")->eventMove(this_object());
 	call_out((: GiveMap, this_player() :), 4);
+    }
+    if(!present("cold virus",this_object())){
+	new("/domains/town/obj/cold")->eventInfect(this_object());
     }
 }

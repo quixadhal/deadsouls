@@ -19,7 +19,7 @@ mixed make(string str) {
     string *exits;
     string *enters;
     string foo, current_dir, current_room, this_room, new_room, room_dir;
-    string new_file, arg1, arg2, s1, s2;
+    string tmp_path, new_file, arg1, arg2, s1, s2;
     object room;
 
     if(!str || str == "") {
@@ -81,9 +81,29 @@ mixed make(string str) {
     if(strsrch(arg2," ") != -1) arg2 = replace_string(arg2," ","");
 
     if(file_exists(arg2)) new_file = arg2;
-    else{
-	if(strsrch(arg2,"/") != -1) arg2 = replace_string(arg2,"/","");
+    else if(strsrch(arg2,"./") != -1) {
+	//tc("found dotslash");
+	arg2 = replace_string(arg2,"./","");
+	new_file = absolute_path((string)this_player()->query_cwd(), arg2);
+	//tc("new_file: "+new_file);
+    }
+    else if(directory_exists(path_prefix(arg2))){
+	//tc("new_file: "+new_file,"red");
+	new_file  = arg2;
+    }
+    else if(grepp(arg2,"/")){
+	new_file = room_dir +"/"+ last_string_element(arg2,"/");
+	//tc("new_file: "+new_file,"green");
+    }
+
+    else {
 	new_file = room_dir +"/"+ arg2;
+	//tc("new_file: "+new_file,"blue");
+    }
+
+    if(!check_privs(this_player(),new_file)){
+	write("Invalid directory.");
+	return 1;
     }
 
     if(new_file[0..7] == "/realms/" && strsrch(new_file,"/area/") != -1){

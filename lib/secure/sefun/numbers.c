@@ -10,3 +10,8 @@ int atoi(string str){
     if(!sscanf(str, "%d", integer)) return 0;
     return integer;
 }
+
+string itoa(int i){
+    return ""+i;
+}
+

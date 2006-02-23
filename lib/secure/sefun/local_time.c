@@ -1,5 +1,6 @@
 #include <lib.h>
 #include <config.h>
+#include <daemons.h>
 
 string tz;
 
@@ -8,6 +9,10 @@ string query_tz(){
     zone = read_file("/cfg/timezone.cfg")[0..2];
     if(!zone) zone = "GMT";
     return zone;
+}
+
+mixed local_ctime(int i){
+    return ctime(i + ((TIME_D->GetOffset(query_tz()) ) * 3600));
 }
 
 mixed local_time(mixed val){

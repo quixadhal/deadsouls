@@ -69,7 +69,7 @@ mixed reap_list(){
     foreach(object clone in clones){
 	write_file("/tmp/lost_object_list.txt", file_name(clone)+"\n");
     }
-    write("Total size of list: "+sizeof(clones)+" lost objects.");
+    //write("Total size of list: "+sizeof(clones)+" lost objects.");
     return this_player()->eventPage("/tmp/lost_object_list.txt");
 }
 

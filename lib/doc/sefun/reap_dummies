@@ -1,0 +1,25 @@
+
+REAP_DUMMIES(1)                               REAP_DUMMIES(1)
+
+NAME
+       reap_dummies() - Destructs dummy objects without an environment.
+
+SYNOPSIS
+       void reap_dummies()
+
+DESCRIPTION
+       Early versions of Dead Souls were prone to memory leaks in the
+form of dummy items failing to be destructed. The sefun is part of
+the effort to address the symptoms of that issue.
+
+LOCATION
+       /secure/sefun/reaper.c
+
+SEE ALSO
+      reap_other(), reap_list() 
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

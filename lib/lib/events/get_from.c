@@ -12,16 +12,28 @@ string GetShort();
 // end abstract methods
 
 mixed CanGetFrom(object who, object item) {
+    //tc("hit CanGetFrom");
+    //tc("who: "+identify(who));
+    //tc("item: "+identify(item));
+    //tc("this_object: "+this_object()->GetName());
+
     if( !item ) {
-	return 1;
+	//tc("no item. about to return 0");
+	return 0;
+    }
+    if( environment(item) != this_object() ) {
+	//tc("this item isnt in my inventory. returning 0");
+	return 0;
     }
     //    if( environment(item) != this_object() ) {
-    //tc("stack: "+get_stack());
+    ////tc("stack: "+get_stack());
     //tc("previous: "+identify(previous_object(-1)));
     //
     //	return "#You can't do that.";
     //  }
+    //tc("survicved test");
     if( environment(item) != this_object() ) {
+	//tc("oddness");
 	item = present(item->GetKeyName(),this_object());
 	if(!item) return 0;
     }
@@ -74,6 +86,7 @@ mixed eventGetFrom(object who, object array what) {
     string msg;
     int i, maxi;
 
+    //tc("hit eventGetFrom. item is: " +identify(what),"red");
     foreach(object ob in what ) {
 	if( environment(ob) != this_object() ) {
 	    continue;
@@ -137,19 +150,30 @@ int inventory_visible() {
     return 1;
 }
 
-mixed indirect_get_obj_from_obj(object item) {
+mixed indirect_get_obj_from_obj(object item, object container) {
+    //tc("stack: "+get_stack());
+    //tc("item is: " +identify(item));
+    //tc("container is: " +identify(container));
+    //tc("this object is: "+identify(this_object()));
+    //if(item) tc("item's environment is: "+identify(environment(item)));
     if(!item){
 	//write("That's not there.");
 	return 0;
     }
-    if(!(environment(item) == this_object())){
-	item = present(item->GetKeyName(),this_object());
-    }
+
+    if(environment(item) != this_object()) return 0;
+
+    //   if(!(environment(item) == this_object())){
+    //	item = present(item->GetKeyName(),this_object());
+    //tc("item is now: " +identify(item));
+    //return 0;
+    //   }
+    //tc("about to return CanGetFrom");
     return CanGetFrom(this_player(), item);
 }
 
-mixed indirect_get_obj_out_of_obj(object item) {
-    return indirect_get_obj_from_obj(item);
+mixed indirect_get_obj_out_of_obj(object item, object container) {
+    return indirect_get_obj_from_obj(item, container);
 }
 
 mixed indirect_get_obs_from_obj(object array items, object storage) {

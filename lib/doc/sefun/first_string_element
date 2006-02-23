@@ -1,0 +1,33 @@
+
+FIRST_STRING_ELEMENT(1)               FIRST_STRING_ELEMENT(1)
+
+NAME
+       first_string_element() - Extracts the contents of a string before a delimiter.
+
+SYNOPSIS
+       string first_string_element(string path, string delimiter, int stripfirst)
+
+DESCRIPTION
+       Pretty much just tries to figure out what the top-level subdirectory
+is of a file. It can be used with delimiters other than "/" if need be. If
+used with a full pathname, the "stripfirst" flag should be set. If you don't
+set the stripfirst flag and your string's first character is a delimiter, it
+will return a null string.
+
+EXAMPLES
+       first_string_element("/realms/cratylus/workroom.c","/",1) 
+
+returns "realms".
+
+
+LOCATION
+       /secure/sefun/strings.c
+
+SEE ALSO
+       last_string_element       
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

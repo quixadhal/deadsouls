@@ -1,0 +1,44 @@
+The debug.h include file provides a very simple yet suprisingly powerful
+debugging mechanism.  The benefits provided by debug.h include:
+
+1) conditional compilation - meaning that debug(x,y) expands to an empty
+statement (;) if DEBUG_MACRO is not #defined.  This lets you leave in debug
+statements in case something goes wrong at a later time (in which case
+you simply #define DEBUG_MACRO once again).
+
+2) Lets one define sets of debug statements that are turned on or off as
+a group.  In the normal course of debugging a program, one adds several write
+(or tell) statements in an attempt to track down an current error.  After
+fixing these errors, the debug statements get deleted and its on to
+tracking down the next error in the program (adding a new set of debug
+statements).  The problem is that sometimes the original error comes back
+(under a different set of circumstances) and gee wouldn't it be nice if that original set of debug statements was still there.  The debug.h
+include file provides a convenient way to do this.  Returning to the
+concept of turning sets of statements on or off as a group.  It is
+also possible turn sets of sets on or off as a group.
+
+debug(x,y) is defined to be something like:
+
+if (x & _debug_level) write(y);
+
+Note the use of the bitwise/and operator.  This operator is what gives
+the debug macro its flexibility.  The write statement gets executed only
+when one of the bits set in the integer _debug_level is also set in the
+variable x (the first argument to debug(x,y)).  As an example of how this
+might be used: in the early stages of debugging a program you might
+set_debug_level(1) and use debug macros of the form debug(1,y).  After
+a period of debugging you might feel that the debug(1,y) statements have
+served their purpose.  At that point, you can change the set_debug_level
+call to be set_debug_level(2).  Now, the debug(1,y) statements will no
+longer cause anything to be printed.  However, debug(2,y) statements would
+be printed.  Suppose that an old error crops up because of a new set of
+inputs that you didn't encounter before.  If the debug(1,y) statements
+would again be helpful in debugging this old error, you could
+call set_debug_level(3) instead of set_debug_level(2).  This would cause
+BOTH debug(1,y) and debug(2,y) statements to issue writes.  This is because
+the binary representaton of three (3) contains a one (1) AND a two (2).
+
+See /obj/debug.c and /usr/include/debug.h for a concrete example of how
+this works.
+
+--Truilkan@TMI

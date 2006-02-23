@@ -1,0 +1,47 @@
+
+REPLACE_LINE(1)                               REPLACE_LINE(1)
+
+NAME
+       replace_line() - Reads a string and replaces a line with substitute text.
+
+SYNOPSIS
+       string replace_line(string file, string *params, string repl)
+
+DESCRIPTION
+       Provided a string, search parameter(s), and replacement text, this
+function finds every matching line and replaces it with the supplied substitution.
+
+EXAMPLES
+       replace_line(read_file("/realms/cratylus/workroom.c",({"Add","Monkey"}),
+              "SetFoo(\"Donkey\");")
+
+If my workroom contains the line:
+
+AddFoo("Monkey");
+
+Then this function will return the full text of my workroom file, but
+with the above string replaced by the one below:
+
+SetFoo("Donkey");
+
+The line must match *all* of the parameters, or the replacement does not
+occur. For example, the line:
+
+SetMoo("Monkey");
+
+would be left unchanged, because it doesn't contain "Add".
+
+NOTE: This does not modify files. To do so, you'll need to use the output
+of this funtion as the second argument in the write_file efun.
+
+LOCATION
+       /secure/sefun/strings.c
+
+SEE ALSO
+       
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

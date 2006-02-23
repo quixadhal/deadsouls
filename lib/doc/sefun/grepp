@@ -1,0 +1,30 @@
+
+GREPP(1)                               GREPP(1)
+
+NAME
+       grepp() - Whether a given substring is in a string.
+
+SYNOPSIS
+      grepp(string primary, string sub)
+
+DESCRIPTION
+       If sub is a member of primary, returns 1. Otherwise, returns 0. It
+is basically a prettification of strsrch, which is the preferred way
+of doing it. This sefun is much more expensive to use than the strsrch
+efun, but it's easier to read.
+
+EXAMPLES
+       grepp("foo, barbaz", "baz")  would return 1
+       grepp("foo, barbaz", "shiz")  would return 0
+
+SEE ALSO
+       strsrch
+
+
+LOCATION
+       /secure/sefun/strings.c
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1

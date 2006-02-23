@@ -29,6 +29,11 @@ mixed do_dest_obj(object ob){
 	write(capitalize(ob->GetShort())+" isn't a normal destable item. It remains in place.");
 	return 1;
     }
+    if(archp(ob) && !archp(this_player())){
+	write("You can't dest an admin.");
+	tell_player(ob, this_player()->GetName()+" just tried to dest you.");
+	return 1;
+    }
     if(!living(ob)) name = ob->GetShort();
     else name = ob->GetName();
     ob->eventDestruct();

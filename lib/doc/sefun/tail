@@ -1,0 +1,28 @@
+
+TAIL(1)                               TAIL(1)
+
+NAME
+       tail() - Displays the last lines of a specified file.
+
+SYNOPSIS
+       int tail(string file)
+
+DESCRIPTION
+       Displays the last few lines (1024 bytes) of a file to 
+this_player().
+
+EXAMPLES
+       tail("/realms/cratylus/workroom.c") 
+
+
+LOCATION
+       /secure/sefun/tail.c
+
+SEE ALSO
+      write(), say() 
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

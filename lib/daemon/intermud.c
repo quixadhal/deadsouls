@@ -103,6 +103,12 @@ static void eventRead(mixed *packet) {
 	}
 	save_object(SAVE_INTERMUD);
 	return;
+    case "auth-mud-req":
+	SERVICES_D->eventReceiveAuthRequest(packet);
+	break;
+    case "auth-mud-reply":
+	SERVICES_D->eventReceiveAuthReply(packet);
+	break;
     case "channel-t":
 	SERVICES_D->eventReceiveChannelTargettedEmote(packet);
 	break;

@@ -1,0 +1,51 @@
+
+REPLACE_MATCHING_LINE(1)         REPLACE_MATCHING_LINE(1)
+
+NAME
+       replace_matching_line() - Focused string replacement.
+
+SYNOPSIS
+       varargs mixed replace_matching_line(string target, string substring, string replace, int i, string exclude)
+
+DESCRIPTION
+      This monstrosity is quite different from 
+replace_line. Rather than keying on 
+newlines to determine where a line ends, it attempts 
+to parse the code to identify
+the entire LPC instruction. 
+     
+target:	This can be a string or a filename. If it is a filename, the
+	file will be read and treated as a string.
+
+substring: The string used to determine a match.
+
+replace: The replacement line.
+
+i:	Whether it should replace one matching line or all matching lines.
+
+exclude: If the line matches but it also contains this string, do not replace.
+
+
+EXAMPLES
+       replace_matching_line("/realms/cratylus/workroom.c", "AddMeep",
+"SetMeep(([\"feep\":\"Meepos\",\n\"meep\":\"Feepos\",\n]));", "Balky");
+
+       This line would read my workroom into a string, and if it has a line 
+that contains "AddMeep" that *doesn't* contain "Balky", it will remove that line
+from the string and replace it with my SetMeep substitute.
+
+NOTE: This will not change my workroom. It will return a string that I
+can overwrite my workroom with, or that I can write to some other file.
+
+
+LOCATION
+       /secure/sefun/strings.c
+
+SEE ALSO
+      write_file 
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

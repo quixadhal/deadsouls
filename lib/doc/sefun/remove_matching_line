@@ -1,0 +1,49 @@
+
+REMOVE_MATCHING_LINE(1)         REMOVE_MATCHING_LINE(1)
+
+NAME
+       remove_matching_line() - Focused string removal.
+
+SYNOPSIS
+       varargs mixed remove_matching_line(string target, string substring, int i, string exclude)
+
+DESCRIPTION
+       Like replace_matching_line, rather than keying on 
+newlines to determine where a line ends, this attempts 
+to parse the code to identify the entire LPC instruction.
+       Unlike replace_matching_line, this function only
+deletes, it doesn't replace.
+     
+target:	This can be a string or a filename. If it is a filename, the
+	file will be read and treated as a string.
+
+substring: The string used to determine a match.
+
+i:	Whether it should remove one matching line or all matching lines.
+
+exclude: If the line matches but it also contains this string, do not remove.
+
+
+EXAMPLES
+       remove_matching_line("/realms/cratylus/workroom.c", "AddMeep",
+       "Balky");
+
+       This line would read my workroom into a string, and if it has a line 
+that contains "AddMeep" that *doesn't* contain "Balky", it will remove that line
+from the string.
+
+NOTE: This will not change my workroom. It will return a string that I
+can overwrite my workroom with, or that I can write to some other file.
+
+
+LOCATION
+       /secure/sefun/strings.c
+
+SEE ALSO
+      write_file 
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

@@ -34,6 +34,8 @@ mixed gmake(string str) {
     case "container" : creation = "container"; dir = "obj";break;
     case "table" : creation = "table"; dir = "obj";break;
     case "door" : creation = "door"; dir = "doors";break;
+    case "barkeep" : creation = "barkeep"; dir = "npc";break;
+    case "vendor" : creation = "vendor"; dir = "npc";break;
     case "npc" : creation = "npc"; dir = "npc";break;
     case "mob" : creation = "npc"; dir = "npc";break;
     case "mon" : creation = "npc"; dir = "npc";break;

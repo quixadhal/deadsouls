@@ -95,16 +95,17 @@ static void eventPollEvents() {
 	    object ob;
 	    function f;
 
-	    if( !(ob = load_object(Events[events[i]]["creator"])) ) {
+	    if( !(ob = find_object(Events[events[i]]["creator"]) )
+	      && !(ob = load_object(Events[events[i]]["creator"])) ) {
 		map_delete(Events, events[i]);
 		continue;
 	    }
 	    f = (: call_other, Events[events[i]]["object"],
-	      Events[events[i]]["func"] :);
+	      Events[events[i]]["function"] :);
 	    f = bind(f, ob);
 	    catch(evaluate(f, Events[events[i]]["args"]...));
-	    if( Events[events[i]]["regular"] > 3599 )
-		Events[x + Events[events[i]]["regular"]] = Events[events[i]];
+	    if( Events[events[i]]["regular"] > 0 )
+		Events[x + Events[events[i]]["interval"]] = Events[events[i]];
 	    map_delete(Events, events[i]);
 	}
     }
@@ -129,8 +130,18 @@ int GetRebootInterval() { return RebootInterval; }
 void AddEvent(string c, string s, string f, mixed *a, int w, int r) {
     if( file_name(previous_object()) != SEFUN ) return;
     Events[time() + w] = ([ "object" : s, "function" : f, "args" : a,
-      "creator" : c,  "regular" : (r ? w : 0) ]);
-eventSave(1);
+      "creator" : c,  "regular" : (r ? w : 0), "interval" : w ]);
+    eventSave(1);
+}
+
+void RemoveEvent(int i){
+    if( file_name(previous_object()) != SEFUN ) return;
+    if(sizeof(Events[i])){
+	tc("Events: "+identify(Events));
+	map_delete(Events, i);
+	tc("Events: "+identify(Events));
+	eventSave(1);
+    }
 }
 
 mapping GetEvents() { return copy(Events); }

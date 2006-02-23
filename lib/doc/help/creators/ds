@@ -1,0 +1,39 @@
+		The dead_souls intermud channel
+
+	There is an internet communication protocol that
+allows muds to send and receive information from each other. This
+is called the Intermud network, of which there are several
+versions and subnets.
+
+	By default, your mud is connected to the Intermud3
+network, or I3 (see intermud.org for specs). On this
+network there are numerous channels available: some are
+friendly, some are hostile, some are invitation-only, and
+some are open to all.
+
+	Unless your admins have disabled intermud, or you
+are tightly firewalled, or channels have been restricted, 
+you probably are listening to a channel called "dead_souls". 
+This channel exists to allow creators on Dead Souls muds
+on the internet to talk, ask questions, share ideas, etc.
+
+	Random chat is not exactly discouraged, but code
+questions and discussions always have priority on this
+channel. It can be used socially, but its primary purpose
+is as a support system for the Dead Souls community.
+Accordingly, muds that spam the channel, or subject it
+to malicious data or metadata, are likely to be permanently
+banned from it, regardless of whether it was the fault of
+just one jerk. Messages of an offensive nature also
+qualify as bannable material, and this is at the discretion
+of the owner of the channel, which is the Dead Souls mud.
+
+	If you need to perform channel testing, please avoid
+using the dead_souls channel ( also known as <ds> ) for
+this. A special testing channel has been set up for that
+purpose. It is called ds_test, and you can add it to
+yourself by typing:
+
+call me->AddChannel("ds_test")
+
+

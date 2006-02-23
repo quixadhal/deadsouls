@@ -38,7 +38,10 @@ mixed cmd(string str) {
 int help() {
     message("system", "Syntax: create room DIRECTION FILE\n"
       "        create npc FILE\n"
+      "        create barkeep FILE\n"
+      "        create vendor FILE\n"
       "        create armor FILE\n"
+      "        create worn_storage FILE\n"
       "        create weapon FILE\n"
       "        create item FILE\n"
       "        create container FILE\n"

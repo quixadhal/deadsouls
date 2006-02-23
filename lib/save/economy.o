@@ -1,3 +1,3 @@
 #/secure/daemon/economy.c
-Currencies (["silver":(["inflation":0.000000,"rate":100,"weight":0.800000,]),"gold":(["inflation":0.000000,"rate":1000,"weight":0.100000,]),"copper":(["inflation":0.000000,"rate":1,"weight":0.010000,]),"platinum":(["inflation":0.000000,"rate":10000,"weight":0.200000,]),"electrum":(["inflation":0.000000,"rate":500,"weight":0.004000,]),])
-LastInflation 1131770640
+Currencies (["gold":(["rate":1000,"weight":0.100000,"inflation":0.000000,]),"silver":(["rate":100,"weight":0.800000,"inflation":0.000000,]),"electrum":(["rate":500,"weight":0.004000,"inflation":0.000000,]),"copper":(["rate":1,"weight":0.010000,"inflation":0.000000,]),"platinum":(["rate":10000,"weight":0.200000,"inflation":0.000000,]),])
+LastInflation 1140637513

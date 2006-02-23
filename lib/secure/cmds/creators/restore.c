@@ -11,7 +11,8 @@ mixed cmd(string str) {
     string line, s1, bkname, bkcontents;
     int number;
 
-    if(sscanf(str,"%s %d",s1, number) > 1) str = s1;
+    if( !str ) return "You must specify a file to restore.";
+    if(str && sscanf(str,"%s %d",s1, number) > 1) str = s1;
     else false();
 
     new_arr = ({});

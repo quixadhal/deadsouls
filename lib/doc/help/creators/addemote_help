@@ -1,0 +1,50 @@
+[ Addemote General Help ]
+ 
+Note: All examples are from the 'emoter' perspective.
+  Basic emote:  $N smile $A.
+    - $N is the name of the emoter.  $N *must* be used in both
+      (emote) and (environment) fields to preserve functionality.
+      This means do not enter 'You smile $A.'.
+ 
+    - $A field means the user can specify any adverb from the soul's
+      pool of adverbs.  (This also applies to any specific adverbs
+      (assigned to the emote). If the user does not specify an adverb,
+      and no default adverb is set, this field is ignored.
+ 
+  Targeted Emote: $N smile $A at $T
+    - $T field displays the name of the target (player).  If no
+      target is found, A 'no target' emote will be used in place
+      of targeted.
+ 
+  Locations: $N pokes $A $T $X
+    - $X acts the same as $A, only it searches through a list
+      of locations assigned to the emote in question.  If no
+      location is specified by user, and a default setting exists,
+      it will be used automatically.  Otherwise, $X is simply ignored.
+      Note that all locations are prepended with an assigned
+      preposition (if used).  (example: locations set to 'nose, head,
+      ear', preposition set to 'on the'.
+ 
+  Extra Field: $N scratch $*
+    - If the $* field is used, all lefteover arguments will be
+      put here.
+ 
+[ List of valid fields ]
+ 
+    $N  - Name of the 'emoter'
+    $T  - Name of target
+    $NP - emoter possessive (his)
+    $TP - target possessive
+    $NO - emoter objective (him)
+    $TO - target objective
+    $NR - emoter reflexive (himself)
+    $TR - target reflexive
+    $NA - possessive form (name's)
+    $TA - target possessive name
+    $A  - display adverb (ignored if
+          none is specified by user)
+    $X  - display defined location
+          (prepended with preposition if used)
+    $*  - display any extra arguments passed by user
+ 
+ 

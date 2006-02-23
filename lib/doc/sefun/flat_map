@@ -1,0 +1,30 @@
+
+FLAT_MAP(1)                               FLAT_MAP(1)
+
+NAME
+       flat_map() - returns a string that describes the contents of a mapping.
+
+SYNOPSIS
+       string flat_map(mapping mp)
+
+DESCRIPTION
+       Each member of an array is read and to a limited degree it
+is stringified and returned. This efun is of limited use and is being
+kept for historical and sentimental reasons only. The identify() sefun
+is the preferred method for stringifying mappings.
+
+EXAMPLES
+       flat_map(this_user()->GetSkill("bargaining"))
+
+
+LOCATION
+       /secure/sefun/mappings.c
+
+SEE ALSO
+       identify() 
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

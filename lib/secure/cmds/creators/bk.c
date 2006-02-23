@@ -6,14 +6,26 @@ inherit LIB_DAEMON;
 mixed cmd(string str) {
     string *arr;
     string *file_arr;
-    string tmp, filename;
+    string tmp, filename, str2, orig;
     int time;
+    object ob;
 
+    orig = str;
     if( !str ) return "You must specify a file to backup.";
     else str = absolute_path((string)this_player()->query_cwd(), str);
-    if( !file_exists(str) ) str += ".c";
-    if( !file_exists(str) ) return "File not found.";
-    else if( !(tmp = read_file(str)) )
+    if( !file_exists(str) ) str2 = str+".c";
+    if( !file_exists(str) && !file_exists(str2)) {
+	if(str == "here" || str == "room") ob = environment(this_player());
+	else {
+	    ob = present(orig,environment(this_player()));
+	    if(!ob) ob = present(orig, this_player());
+	    if(!ob) return "File not found.";
+	}
+	str2 = base_name(ob)+".c";
+    }
+    if(str2 && !file_exists(str2)) return "File unfound.";
+    else if(str2) str = str2;
+    if( !(tmp = read_file(str)) )
 	return "Unable to read file " + str + ".";
 
     else {

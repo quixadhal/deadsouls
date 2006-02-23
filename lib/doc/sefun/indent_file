@@ -1,0 +1,27 @@
+
+INDENT_FILE(1)                               INDENT_FILE(1)
+
+NAME
+       indent_file() - Make a file more readable.
+
+SYNOPSIS
+       int indent_file(string file)
+
+DESCRIPTION
+       Provided a filename, it makes a temporary copy, indents the copy,
+then copies the indented version over the original.
+
+EXAMPLES
+       indent_file("/home/cratylus/workroom")
+
+LOCATION
+       /secure/sefun/files.c
+
+SEE ALSO
+      save_file, file_exists, directory exists
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

@@ -1,0 +1,122 @@
+The best way to do messaging these days is through a single simul
+efun:
+			    send_message()
+
+varargs void send_message(mixed verb, string message, object agent,
+                          mixed targets, mixed observers, mapping special);
+
+Example:
+
+send_message("cast", "$agent_name $agent_verb $agent_possessive pole in "
+                     "order to fish.", this_player(), 0,
+                     environment(this_player()));
+
+replaces BOTH:
+this_player()->eventPrint("You cast your pole in order to fish.");
+environment(this_player())->eventPrint(this_player()->GetName() +
+                                       " casts " +
+                                       possessive(this_player()) +
+                                       " pole in order to fish.",
+                                       this_player());
+
+AND
+the write()/say() equivalent.
+
+First, let's go over the arguments to send_message():
+
+* mixed verb
+This will normally be a single verb that you want conjugated in the
+sentence for different viewers.  In the above example, "cast" needed
+to be displayed as "cast" for the caster and "casts" for observers.
+In some sentences, you made need more than one verb.  Take for
+example:
+"You rock and roll."
+"Descartes rocks and rolls."
+
+This is done by using an array instead of a single string.  The rock
+and roll example would look like:
+send_message(({ "rock", "roll" }), "$agent_name $agent_verb and $agent_verb.",
+             this_player(), 0, environment(this_player()));
+
+For each verb mentioned in the message, there must be a corresponding
+verb in the verb array.
+
+The verb should be expressed in second person singular format.
+
+* string message
+A message containing tokens that will be replaced when the message is
+displayed.  Campusalid tokens are:
+$agent_name - replaced with the name of the agent
+$agent_nominative - replaced with the nominative pronoun for the
+                    agent (he, she, or it)
+$agent_objective - replaced with the objective pronoun for the agent
+$agent_possessive - the agent's possessive pronoun
+$agent_possessive_noun - the possessive version of the agent's name
+$agent_reflexive - the reflexive pronoun for the agent
+
+For each of the agent tokens, there also exist target tokens:
+$target_name, $target_nominative, $target_objective,
+$target_possessive, $target_possessive_noun, $target_reflexive
+
+And finally, $agent_verb and $target_verb.
+
+You have to associate a verb with a person so that the system knows
+how to conjugate the verb for each viewer.  Take for example:
+
+"Horace is struck by Descartes' sword."
+"Descartes strikes Horace."
+
+In both instances, Descartes is the agent.  The verb in the first
+sentence is "are" and in the second sentence "strike".  But the
+subject of the sentence in the first sentence is NOT the agent.  It is
+the target.  The corresponding send_message() would look like:
+
+send_messages("are", "$target_name $target_verb struck by "
+              "$agent_possessive_noun sword.", this_player(), enemy,
+              environment(this_player());
+
+send_messages("strike", "$agent_name $agent_verb $target_name.",
+              this_player(), enemy, environment(this_player()));
+
+Using just this knowledge, you can now send something like:
+send_message(({ "miss", "sidestep" }), "$agent_name $agent_verb "
+             "$target_name as $target_nominative $target_verb "
+             "$agent_possessive_noun attack.", this_player(), enemy,
+             environment(this_player()));
+This will show me:
+"You miss Horace as he sidesteps your attack."
+And Horace:
+"Descartes misses you as you sidestep Descartes' attack."
+And other people in the room:
+"Descartes misses Horace as he sidesteps Descartes' attack."
+
+All done in a single line of code.
+
+* object agent
+The agent is the person who is considered to be doing the action.  It
+can only be a single object.
+
+* mixed targets
+You can have one or more targets.  Traditionally, you will have only
+one.  The above examples have dealt with a single target.  You could
+however have:
+send_message("get", "$agent_name $agent_verb $target_name.",
+             this_player(), all_inventory(environment(this_player())),
+             environment(this_player()));
+To show:
+"You get two swords and a fish."
+And to the room:
+"Descartes gets two swords and a fish."
+
+On a completely uninteresting side-note, the message also gets sent to
+the two swords and a fish.
+
+* mixed observers
+Any objects which might be observing this action.  It is most often
+the room in which the agents and object are located.
+
+* mapping special
+Some library objects may wish to add their own tokens to the token
+list for parsing.  For examples, spells send ([ "$limb" : "right hand"])
+
+You will almost never need that last argument.

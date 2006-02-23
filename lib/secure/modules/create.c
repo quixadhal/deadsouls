@@ -19,7 +19,9 @@ string *item_arr = base_arr + ({"SetDisableChance", "SetDamagePoints", "SetVendo
 string *meal_arr = item_arr + ({ "SetMealType", "SetStrength"}) -({"SetDamagePoints"});
 string *storage_arr = item_arr + ({"SetMaxCarry","SetInventory", "SetCanClose", "SetCanLock","SetMaxRecurse","SetLocked","SetClosed","SetKey"});
 string *room_arr = base_arr - ({"SetUnique"}) + ({"SetTown","SetNightLong","SetDayLong","SetClimate","SetAmbientLight","SetNightLight","SetDayLight","SetObviousExits", "SetInventory", "SetEnters"});
-string *npc_arr = base_arr - ({"SetItems"}) + ({"SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat"});
+string *npc_arr = base_arr - ({"SetItems"}) + ({"SetCanBite", "SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat"});
+string *barkeep_arr = npc_arr + ({"SetLocalCurrency","SetMenuItems"});
+string *vendor_arr = npc_arr + ({"SetLocalCurrency","SetStorageRoom","SetMaxItems","SetVendorType"});
 string *armor_arr = item_arr +({"SetRestrictLimbs","SetProtection","SetArmorType"});
 string *weapon_arr = item_arr + ({"SetClass","SetWeaponType","SetDamageType","SetHands"});
 string *chair_arr = item_arr + ({"SetMaxSitters","SetMaxCarry","SetInventory"});
@@ -29,7 +31,7 @@ string *door_arr = ({"SetLong","SetShort","SetLocked","SetClosed","SetCanLock","
 string *book_arr = item_arr + ({"SetTitle","SetSource"});
 string *worn_storage_arr = armor_arr + storage_arr;
 
-string *all_arr = storage_arr + door_arr + room_arr + npc_arr + armor_arr + weapon_arr + bed_arr +meal_arr;
+string *all_arr = storage_arr + door_arr + room_arr + barkeep_arr + armor_arr + weapon_arr + bed_arr +meal_arr + vendor_arr;
 
 string GetSettings(string str){
     string ret;
@@ -38,6 +40,9 @@ string GetSettings(string str){
     switch(str){
     case "room" : name = room_arr; break;
     case "npc" : name = npc_arr; break;
+    case "mob" : name = npc_arr; break;
+    case "barkeep" : name = barkeep_arr; break;
+    case "vendor" : name = vendor_arr; break;
     case "armor" : name = armor_arr; break;
     case "armour" : name = armor_arr; break;
     case "weapon" : name = weapon_arr; break;
@@ -68,6 +73,7 @@ mapping QueryMap(string str,object ob){
     case "SetListen" : return ob->GetListenMap();break;
     case "SetInventory" : return ob->GetInventory();break;
     case "SetEnters" : return ob->GetEnterMap();break;
+    case "SetMenuItems" : return ob->GetMenuItems();break;
     default : return ([]);
     }
 
@@ -117,6 +123,8 @@ mixed eventModify(object ob, string str){
     if(inherits(LIB_ROOM,ob)) inheritance += " room";
     if(inherits(LIB_NPC,ob)) inheritance += " npc";
     if(inherits(LIB_SENTIENT,ob)) inheritance += " npc";
+    if(inherits(LIB_BARKEEP,ob)) inheritance += " barkeep";
+    if(inherits(LIB_VENDOR,ob)) inheritance += " vendor";
     if(inherits(LIB_WEAPON,ob)) inheritance += " weapon";
     if(inherits(LIB_ARMOR,ob)) inheritance += " armor";
     if(inherits(LIB_ITEM,ob)) inheritance += " item";
@@ -374,6 +382,17 @@ mixed eventModify(object ob, string str){
 	case "wimpy" : out = "SetWimpy";break;
 	case "wimpycommand" : out = "SetWimpyCommand";break;
 	case "setwimpycommand" : out = "SetWimpyCommand";break;
+	case "setcanbite" : out = "SetCanBite";break;
+	case "canbite" : out = "SetCanBite";break;
+	case "localcurrency" : out = "SetLocalCurrency";break;
+	case "setlocalcurrency" : out = "SetLocalCurrency";break;
+	case "menuitems" : out = "SetMenuItems";setmap = 1;break;
+	case "setmenuitems" : out = "SetMenuItems";setmap = 1;break;
+	case "menu" : out = "SetMenuItems";setmap = 1;break;
+	case "maxitems" : out = "SetMaxItems";break;
+	case "setmaxitems" : out = "SetMaxItems";break;
+	case "setstorageroom" : out = "SetStorageRoom";break;
+	case "storageroom" : out = "SetStorageRoom";break;
 	default : out = mode;
 	}
     }
@@ -434,6 +453,8 @@ mixed eventModify(object ob, string str){
 
 
     if(grepp(inheritance,"room") && member_array(out,room_arr) != -1) invalid = 0;
+    if(grepp(inheritance,"barkeep") && member_array(out,barkeep_arr) != -1) invalid = 0;
+    if(grepp(inheritance,"vendor") && member_array(out,vendor_arr) != -1) invalid = 0;
     if(grepp(inheritance,"npc") && member_array(out,npc_arr) != -1) invalid = 0;
     if(grepp(inheritance,"weapon") && member_array(out,weapon_arr) != -1) invalid = 0;
     if(grepp(inheritance,"armor") && member_array(out,armor_arr) != -1) invalid = 0;
@@ -465,6 +486,7 @@ mixed eventModify(object ob, string str){
 	this_object()->eventSpecialMapHandler(ob,out,metamode,value);
 	return 1;
     }
+
     if(out == "SetMoney" || out == "SetCurrency"){
 	this_object()->eventModMoney(ob, metamode, value);
 	return 1;

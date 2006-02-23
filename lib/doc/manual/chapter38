@@ -1,79 +1,70 @@
-chapter 38 "QCS: Final notes"
+chapter 38 "QCS: Adding and deleting"
 
-    I think you're getting the idea of how this works. Here's 
-an example of armor creation:
+    Rooms, containers and NPC's all are capable of holding
+items, and often it is convenient to have them already holding certain
+items upon creation.
+    The SetInventory directive in an object's file provides us with
+a list of that object's "permanent inventory". To modify an object's
+inventory, we use the add and delete commands.
 
-create armor jeans
+    Let's say that we want our cowboy to be wielding a
+hammer when he appears...
 
-modify jeans id
+%^GREEN%^clone cowboy%^RESET%^
 
-pants
+%^GREEN%^cd ../weap%^RESET%^
 
-trousers
+%^GREEN%^clone hammer%^RESET%^
 
-.
+%^GREEN%^add hammer to cowboy%^RESET%^
 
-modify jeans short a pair of denim jeans
- 
-modify jeans  long Worn jeans, frayed and stained.
+%^GREEN%^wield hammer%^RESET%^
 
-modify jeans adj
+    Believe it or not, it's that simple. The add command will ask
+you a question after you issue it. What it wants to know is if you
+want the NPC to do anything special when the hammer appears on him.
+In this case, yes, we wanted him to wield it.
+    However, if you want to add something to an NPC and don't
+have anything interesting for him to do with it, respond to the
+question with the number of items that you want to appear. For
+example, if I want the cowboy to be carrying a key:
 
-pair of
+%^GREEN%^cd ../obj%^RESET%^
 
-denim
+%^GREEN%^clone key%^RESET%^
 
-frayed
+%^GREEN%^add key to cowboy%^RESET%^
 
-worn
+%^GREEN%^1%^RESET%^
 
-stained
+    And that's it. Now if I want the cowboy to be a permanent 
+resident of this room:
 
-.
+%^GREEN%^add cowboy%^RESET%^
 
+%^GREEN%^1%^RESET%^
 
-    To know what directives QCS can change on an object, type:
+    The add command understands that if you don't specify a
+target argument, you must mean the room. You can also be specific:
 
-help modify
+%^GREEN%^add cowboy to room%^RESET%^
 
-    This provides a list of modifiable things and the directives
-that can be modified on them. 
+%^GREEN%^1%^RESET%^
 
-    Ultimately the Quick Creation System generates LPC code, so
-you'll want to review the earlier chapters of this handbook to
-get a base of understanding of the code that comprises your new
-creations.
+    The delete command works the opposite way. It removes items from
+an object's permanent inventory:
 
-Some notes and tips:
+%^GREEN%^delete hammer from cowboy%^RESET%^
 
-* The SetNoCondition directive makes it so an item does not report
-  its physical status when examined. Weapons and armor wear down in
-  combat, and most objects let you know their condition when you
-  examine them. However, in some cases (a sandwich for example) 
-  this is inappropriate, so the SetNoCondition directive may be
-  useful.
+%^GREEN%^delete cowboy%^RESET%^
 
-* Doors aren't like normal objects. They have to be modified *twice*.
-  Once for each side of the door. If this sounds unnecessarily 
-  tedious, remember that a door leading south is also a door
-  leading north from the other room.
+    The delete command is also the way to get rid of rooms. You won't
+be removing the file from disk, you'll just be deleting that exit
+from the room:
 
-* SetCurrency is for adding money to NPC's. SetMoney is for adding
-  money to non-living containers (bags, etc).
+%^GREEN%^delete exit garden%^RESET%^
 
-* Item subtypes are listed in /include. To know what kinds of vendors 
-  are available, for example, look in /include/vendor_types.h
-
-* Books need a "source directory", which must contain one file per
-  chapter. The SetSource for this manual, for example, is /doc/manual
-  The first line of each file must follow the same format as
-  the files you see in /doc/manual
-
-* SetObviousExits is usually no longer needed: rooms report
-  obvious exits automatically. However, if you don't want an exit
-  to show up by default, use the SetObviousExits directive 
-  to specify only those that you want seen. This will override the
-  room's default exit display.
-
-
-
+NOTE: When you delete an exit, only the connection from your room to
+the other room is removed. The connection from the other room to
+your room remains. This is not a bug, it's a feature. There are plenty
+of circumstances where one-way travel is desirable.

@@ -1,0 +1,21 @@
+
+TELL_PLAYER(1)                                     TELL_PLAYER(1)
+
+NAME
+       tell_player() - sends a message to a player
+
+SYNOPSIS
+       void tell_player(object player, string str)
+
+DESCRIPTION
+       This function sends a message of the message class
+       "environment" to the player named.
+
+LOCATION
+       /secure/sefun/communications.c
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

@@ -12,3 +12,18 @@ object load_object(string str) {
     catch(call_other(str, "???"));
     return find_object(str);
 }
+
+int update(string file){
+    object ob;
+    if(!file_exists(file)) file += ".c";
+    if(!file_exists(file)) return 1;
+    if(ob = find_object(file)) ob->eventDestruct();
+    if(find_object(file)) destruct(ob);
+    if(find_object(file)) reap_other();
+    if(find_object(file)) return 2;
+    catch(call_other(file, "???"));
+    if(!find_object(file)) load_object(file);
+    if(!find_object(file)) return 3;
+    return 4;
+}
+

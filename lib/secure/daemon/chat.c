@@ -351,8 +351,6 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
     string pchan,pmsg,pwho;
     pchan=ch;
 
-    //tc("previous objects: "+identify(previous_object(-1)));
-    //tc("verb: "+query_verb());
     if( file_name(previous_object()) == SERVICES_D) {
 	ch = GetLocalChannel(ch);
 	if( emote && sizeof(who)) msg = replace_string(msg, "$N", who);
@@ -406,13 +404,25 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	//ch = GetLocalChannel(ch);
 	eventAddLast(ch, tmp, pchan, msg);
 	foreach(object listener in obs) {
+	    int ignore;
 	    if( listener == ob ) continue;
-	    listener->eventPrint(tmp, MSG_CONV);
+	    foreach(string jerk in listener->GetMuffed()){
+		if(jerk && grepp(lower_case(this_msg),lower_case(jerk))) ignore = 1;
+	    }
+	    //tc("red","red");
+	    if(!ignore) listener->eventPrint(tmp, MSG_CONV);
+	    ignore = 0;
 	}
 	if( member_array(ob, obs) != -1 ) {
 	    if( ob && !((int)ob->GetBlocked(ch)) ) {
+		int ignore;
 		tmp = this_msg + targmsg;
-		ob->eventPrint(tmp, MSG_CONV);
+		foreach(string jerk in ob->GetMuffed()){
+		    if(jerk && grepp(lower_case(this_msg),lower_case(jerk))) ignore = 1;
+		}
+		//tc("green","green");
+		if(!ignore) ob->eventPrint(tmp, MSG_CONV);
+		ignore = 0;
 	    }
 	}
     }
@@ -455,7 +465,16 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	//ch = GetLocalChannel(ch);
 	eventAddLast(ch, msg, pchan, pmsg, pwho);
 	obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
-	obs->eventPrint(msg, MSG_CONV);
+	foreach(object ob in obs){
+	    int ignore;
+	    foreach(string jerk in ob->GetMuffed()){
+		if(jerk && grepp(lower_case(tmsg),lower_case(jerk))) ignore = 1;
+	    }
+	    //tc("blue","blue");
+	    if(!ignore) ob->eventPrint(msg, MSG_CONV);
+	    ignore = 0;
+	}
+
     }
 }
 

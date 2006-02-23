@@ -1,0 +1,28 @@
+
+LAST(1)                        LAST(1)
+
+NAME
+       last() - Outputs the specified last N characters of a string.
+
+SYNOPSIS
+       string last(string str, int i, int significant)
+
+DESCRIPTION
+       Provided a string and integer i, it will 
+return the last i characters in the string. If the
+"significant" flag is set, blank spaces at the end 
+of the string are ignored.
+
+EXAMPLES
+       last("platypus",3) returns "pus"
+       last("echidna ",1) returns " "
+       last("sassafras   ",2,1) returns "as"
+
+LOCATION
+       /secure/sefun/strings.c
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

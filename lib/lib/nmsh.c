@@ -30,7 +30,9 @@ static void create() {
       "n" : "go north", "s" : "go south", "e" : "go east", "w" : "go west",
       "ne" : "go northeast", "nw" : "go northwest", "se" : "go southeast",
       "sw" : "go southwest", "d" : "go down", "u" : "go up", "out": "go out",
-      "exa" : "look at $*", "p" : "people",
+      "exa" : "look at $*", "p" : "people", "sc" : "status", "inf" : "score",
+      "eq" : "inventory", "where" : "people", "prac" : "skills", 
+      "practice" : "skills", "trophy" : "kills"
     ]);
     Xverbs = (["'":"say $*",":":"emote $*","\"":"say $*",]);
 } 
