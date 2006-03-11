@@ -31,6 +31,8 @@ static void create() {
     Password = 0;
     Tries = 0;
     Banned = ([]);
+    // There is only one known I3 router as of
+    // Feb 2006: us-1.i3.intermud.org
     Nameservers = ({ ({ "*gjs", "198.144.203.194 9000" }) });
     MudList = new(class list);
     ChannelList = new(class list);
@@ -43,7 +45,10 @@ static void create() {
     SetNoClean(1);
     SetDestructOnClose(1);
     SetSocketType(MUD);
-    call_out( (: Setup :), 2);
+    if(DISABLE_INTERMUD == 1){
+	call_out( (: eventDestruct :), 2);
+    }
+    else call_out( (: Setup :), 2);
 }
 
 
@@ -78,6 +83,7 @@ static void eventRead(mixed *packet) {
     }
     switch(packet[0]) {
     case "startup-reply":
+	log_file("intermud",identify(packet));
 	if( sizeof(packet) != 8 ) return;  /* should send error */
 	if( !sizeof(packet[6]) ) return;
 	if( packet[6][0][0] == Nameservers[0][0] ) {
@@ -245,6 +251,8 @@ string GetMudName(string mud) {
     }
 
     string GetNameserver() { return Nameservers[0][0]; }
+
+    mixed *GetNameservers() { return copy(Nameservers); }
 
     int AddBanned(string mud, string reason) {
 	if( !master()->valid_apply(({})) ) {

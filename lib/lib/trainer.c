@@ -48,8 +48,11 @@ static void init() {
 
 /**** data manipulation ****/
 
-mixed AddTrainingSkills(string *args...) {
-    if( !args || !arrayp(args) ) 
+//mixed AddTrainingSkills(string *args...) {
+//mixed AddTrainingSkills(string *args...) {
+//varargs mixed AddTrainingSkills(string *args, string *strs...) {
+mixed AddTrainingSkills(string *args){
+    if( !args ) 
 	error("Bad argument 1 to AddTrainingSkills.");
     return (TrainingSkills = distinct_array(TrainingSkills + args));
 }
@@ -63,17 +66,36 @@ mixed RemoveTrainingSkills(string *args...) {
 
 string array GetTrainingSkills() { return copy(TrainingSkills); }
 
+string Expertise(){
+    string tmp, expertises;
+    if(!sizeof(GetTrainingSkills())) return "none";
+    else if(sizeof(GetTrainingSkills()) == 1) {
+	return GetTrainingSkills()[0];
+    }
+    expertises = implode(GetTrainingSkills(), ", ");
+    if(sizeof(GetTrainingSkills()) == 2){
+	expertises = replace_string(expertises,", "," and ");
+    }
+    else if(sizeof(GetTrainingSkills()) > 2){
+	tmp = last_string_element(expertises,",");
+	expertises = replace_string(expertises, tmp, " and"+tmp);
+    }
+    return expertises;
+}
+
 mapping GetStudents() { return copy(Students); }
 
 /**** high-level events ****/
 
 int eventHelp(object who, string unused) {
     eventForce("speak I am not sure of what you are "
-      "asking " + (string)who->GetName() + ".");
-    eventForce("speak My area of expertise covers " +
-      consolidate(TrainingSkills) + ".");
-    eventForce("speak You can \"ask "+GetKeyName()+" to teach "
-      "<SKILL>\" if you have training points.");
+      "asking, " + (string)who->GetName() + ".");
+    if(sizeof( GetTrainingSkills() )){
+	eventForce("speak My area of expertise covers " +
+	  Expertise() + ".");
+	eventForce("speak You can \"ask "+GetKeyName()+" to teach "
+	  "<SKILL>\" if you have training points.");
+    }
     return 1;
 }
 

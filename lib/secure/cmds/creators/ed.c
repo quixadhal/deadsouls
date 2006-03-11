@@ -30,7 +30,8 @@ mixed cmd(string args) {
 }
 
 void help() {
-    message("help", "Syntax: <ed ([filename])>\n\n"
-      "Enters the editor editing the file you name.\n\n"
-      "See also: led", this_player());
+    message("help", "Syntax: <ed ([filename])>\n\n", this_player());
+    tell_player(this_player(),"For a briefer walkthrough, quit this help doc by typing: %^GREEN%^q%^RESET%^");
+    tell_player(this_player(),"Then type: %^GREEN%^faq ed%^RESET%^\n\n");
+    this_player()->eventPage(explode(read_file("/doc/help/creators/editor"), "\n"), "help");
 }

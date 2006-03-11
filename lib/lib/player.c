@@ -44,7 +44,7 @@ static void heart_beat() {
 	return;
     }
     interactive::heart_beat();
-    if( query_idle(this_object()) >= 3600 && !creatorp(this_object()) && !present("testchar badge",this_object()) ) {
+    if( query_idle(this_object()) >= IDLE_TIMEOUT && !creatorp(this_object()) && !present("testchar badge",this_object()) ) {
 	cmdQuit(0);
 	return;
     }
@@ -755,8 +755,10 @@ string SetClass(string str) {
     return GetClass();
 }
 
-varargs mixed GetEffectiveVision(int raw_score) {
+varargs mixed GetEffectiveVision(int raw_score, mixed location) {
+    //tc("stack1: "+get_stack(),"cyan");
     if( newbiep(this_object()) ) return VISION_CLEAR;
+    else if(raw_score && location) return living::GetEffectiveVision(raw_score,location);
     else if(raw_score) return living::GetEffectiveVision(raw_score);
     else return living::GetEffectiveVision();
 }

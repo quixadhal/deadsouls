@@ -1,0 +1,824 @@
+%^CYAN%^ What's the QCS? %^RESET%^
+
+
+	QCS stands for Quick Creation System. The QCS is a
+series of commands and modules that lets you create stuff
+easily and quickly. Before the QCS, if you wanted to make
+an orc, you would edit the text file by hand, or copy
+a template file and use an editor to manually change the
+lines you needed to modify. This could be a tiresome
+process, as the standard editor can be a bit awkward, and
+making dozens of objects this way could be real torture for
+beginners.
+
+	The QCS changes all of that. Rather than use an
+editor to meodify files, the QCS gives you commands that
+permit you to modify objects on the fly. This means that
+orc creation for example could involve just the following 
+simple steps (please note "npc" is another word for "mob"):
+
+%^GREEN%^ create npc new_orc %^RESET%^
+
+%^GREEN%^ modify npc name orc %^RESET%^
+
+%^GREEN%^ modify orc short a mean-looking orc %^RESET%^
+
+%^GREEN%^ modify orc long A typical orc: nasty, brutish, and short. %^RESET%^
+
+%^GREEN%^ modify orc race orc %^RESET%^
+
+	And that's it. All your modifications automatically
+get written to new_orc.c (usually in your area directory),
+and you now have an npc you can add to a room. Adding things 
+to rooms is just as easy. Creating weapons, armor, and other
+objects is done the same way.
+
+	For complete details and examples, read the
+QCS chapters in the Creators Manual. The QCS section starts
+in chapter 31.
+
+
+This is a log of the creation of some items using the Dead Souls creation system. It has
+not been modified in any way except to highlight the command lines and adding comments.
+
+
+
+Dead Souls has been up for 2h 25m 38s.
+%^GREEN%^ home %^RESET%^
+/realms/testycre/workroom
+Testycre's workroom [e,d]
+You are standing in the workroom of the mighty Testycre!  
+You may return to the Creators' Hall by going down.
+A sample room is east.
+There is a sign here you can read.
+There is a sheet here you can read.
+A wooden chest is here.
+
+
+%^GREEN%^ e %^RESET%^
+/realms/testycre/area/room/sample_room
+Sample Room [w]
+This is a room you can use as a template.
+A simple table is here.
+A fighter is standing here.
+
+//// This is the standard sample room. We're about to create a new room to the east of it.
+%^GREEN%^ create room east test1 %^RESET%^
+It appears you have write access to this area.
+It's a null mapping
+Indenting file...
+"/tmp/indent.1134436511.tmp.dat" 20 lines 330 bytes
+Exit from ed.
+
+You wave your hand, and a new exit appears.
+You begin uttering a magical incantation.
+Indenting file...
+"/tmp/indent.1134436511.tmp.dat" 27 lines 543 bytes
+Exit from ed.
+
+Indenting file...
+"/tmp/indent.1134436511.tmp.dat" 27 lines 544 bytes
+Exit from ed.
+
+%^GREEN%^ e %^RESET%^
+/realms/testycre/area/room/test1
+Copy of /realms/testycre/area/room/sample_room.c [w]
+This is a room you can use as a template.
+A simple table is here.
+A fighter is standing here.
+
+//// We go into the new room and see it is a copy of the old one. Let's change the short description to avoid confusion:
+%^GREEN%^ modify here short Room One %^RESET%^
+Indenting file...
+"/tmp/indent.1134436526.tmp.dat" 27 lines 515 bytes
+Exit from ed.
+
+//// We don't need the fighter from the other room here, so we remove him from this new room's inventory.
+%^GREEN%^ delete fighter %^RESET%^
+Indenting file...
+"/tmp/indent.1134436532.tmp.dat" 26 lines 507 bytes
+Exit from ed.
+
+/realms/testycre/area/room/test1: Ok
+/realms/testycre/area/room/test1
+Room One [w]
+This is a room you can use as a template.
+A simple table is here.
+
+
+SetInventory modification complete.
+//// Let's make another room.
+%^GREEN%^ create room east test2 %^RESET%^
+It appears you have write access to this area.
+It's a null mapping
+Indenting file...
+"/tmp/indent.1134436578.tmp.dat" 20 lines 324 bytes
+Exit from ed.
+
+You wave your hand, and a new exit appears.
+You begin uttering a magical incantation.
+Indenting file...
+"/tmp/indent.1134436578.tmp.dat" 27 lines 557 bytes
+Exit from ed.
+
+Indenting file...
+"/tmp/indent.1134436578.tmp.dat" 27 lines 525 bytes
+Exit from ed.
+
+%^GREEN%^ e %^RESET%^
+/realms/testycre/area/room/test2
+Copy of /realms/testycre/area/room/test1.c [w]
+This is a room you can use as a template.
+A simple table is here.
+
+
+%^GREEN%^ modify here short Room 2 %^RESET%^
+Indenting file...
+"/tmp/indent.1134436590.tmp.dat" 26 lines 499 bytes
+Exit from ed.
+
+%^GREEN%^ modify here long This is the second test room. %^RESET%^
+Indenting file...
+"/tmp/indent.1134436608.tmp.dat" 26 lines 487 bytes
+Exit from ed.
+
+//// We don't need that table here.
+%^GREEN%^ delete table %^RESET%^
+Indenting file...
+"/tmp/indent.1134436612.tmp.dat" 25 lines 447 bytes
+Exit from ed.
+
+/realms/testycre/area/room/test2: Ok
+/realms/testycre/area/room/test2
+Room 2 [w]
+This is the second test room.
+SetInventory modification complete.
+
+//// We look at the file contents to make sure what we're doing really is being written into the room's code:
+%^GREEN%^ more here %^RESET%^
+#include <lib.h>
+#include "/realms/testycre/customdefs.h"
+
+inherit LIB_ROOM;
+
+static void create() {
+    room::create();
+    SetClimate("indoors");
+    SetAmbientLight(30);
+    SetShort("Room 2");
+    SetLong("This is the second test room.");
+    SetExits(([
+    "west" : "/realms/testycre/area/room/test1",
+      ]));
+
+    SetItems( ([
+    "template" : "That's what this is.",
+      ]) );
+
+    SetInventory(([
+      ]));
+}
+
+void init(){
+    ::init();
+}
+
+//// Let's make a new guy. "guy" will be the filename.
+%^GREEN%^ create npc guy %^RESET%^
+I'm going to go with the appropriate area directory:
+/realms/testycre/area/npc/guy.c
+You wave your hand mysteriously and a generic npc materializes!
+%^GREEN%^ l %^RESET%^
+/realms/testycre/area/room/test2
+Room 2 [w]
+This is the second test room.
+A generic npc is standing here.
+
+//// This is the first thing you should do, in order to avoid confusion.
+%^GREEN%^ modify npc name guy %^RESET%^
+Indenting file...
+"/tmp/indent.1134436801.tmp.dat" 15 lines 417 bytes
+Exit from ed.
+
+%^GREEN%^ modify npc id %^RESET%^
+This setting takes multiple values. If you have no more values to enter, then
+enter a dot on a blank line. To cancel, enter a single q on a blank line.
+You may now enter the next value. So far, it is blank.
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ dude %^RESET%^
+You may now enter the next value. So far, we have: ({ "dude" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ fellow %^RESET%^
+You may now enter the next value. So far, we have: ({ "dude", "fellow" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ fella %^RESET%^
+You may now enter the next value. So far, we have: ({ "dude", "fellow", "fella"
+})
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ . %^RESET%^
+Entries complete. Final array is: ({ "dude", "fellow", "fella" })
+Indenting file...
+"/tmp/indent.1134436831.tmp.dat" 19 lines 442 bytes
+Exit from ed.
+
+/realms/testycre/tmp/guy1134436805: Ok
+/realms/testycre/area/npc/guy: Ok
+SetId modification complete.
+%^GREEN%^ modify guy short The Dude %^RESET%^
+Indenting file...
+"/tmp/indent.1134436855.tmp.dat" 19 lines 437 bytes
+Exit from ed.
+
+%^GREEN%^ modify guy long This is just some random guy. %^RESET%^
+Indenting file...
+"/tmp/indent.1134436904.tmp.dat" 19 lines 408 bytes
+Exit from ed.
+
+%^GREEN%^ modify guy adj %^RESET%^
+This setting takes multiple values. If you have no more values to enter, then
+enter a dot on a blank line. To cancel, enter a single q on a blank line.
+You may now enter the next value. So far, it is blank.
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ just some %^RESET%^
+You may now enter the next value. So far, we have: ({ "just some" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ random %^RESET%^
+You may now enter the next value. So far, we have: ({ "just some", "random" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ some %^RESET%^
+You may now enter the next value. So far, we have: ({ "just some", "random",
+"some" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ . %^RESET%^
+Entries complete. Final array is: ({ "just some", "random", "some" })
+Indenting file...
+"/tmp/indent.1134436924.tmp.dat" 19 lines 402 bytes
+Exit from ed.
+
+/realms/testycre/tmp/guy1134436912: Ok
+/realms/testycre/area/npc/guy: Ok
+SetAdjectives modification complete.
+%^GREEN%^ l %^RESET%^
+/realms/testycre/area/room/test2
+Room 2 [w]
+This is the second test room.
+The Dude is standing here.
+
+
+%^GREEN%^ about dude %^RESET%^
+/realms/testycre/area/npc/guy.c
+
+#include <lib.h>
+
+inherit LIB_SENTIENT;
+
+static void create() {
+    sentient::create();
+    SetKeyName("guy");
+    SetAdjectives( ({"just some", "random", "some"}) );
+    SetId( ({"dude", "fellow", "fella"}) );
+    SetShort("The Dude");
+    SetLong("This is just some random guy.");
+    SetLevel(1);
+    SetRace("human");
+    SetClass("explorer");
+    SetGender("male");
+}
+void init(){
+    ::init();
+
+//// Now a weapon for our new guy. "hammer" is the filename.
+%^GREEN%^ create weapon hammer %^RESET%^
+I'm going to go with the appropriate area directory:
+/realms/testycre/area/weap/hammer.c
+You wave your hand mysteriously and a generic weapon materializes!
+%^GREEN%^ modify weapon id hammer %^RESET%^
+This setting takes multiple values. If you have no more values to enter, then
+enter a dot on a blank line. To cancel, enter a single q on a blank line.
+You may now enter the next value. So far, we have: ({ "hammer" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ warhammer %^RESET%^
+You may now enter the next value. So far, we have: ({ "hammer", "warhammer" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ . %^RESET%^
+Entries complete. Final array is: ({ "hammer", "warhammer" })
+Indenting file...
+"/tmp/indent.1134437181.tmp.dat" 19 lines 453 bytes
+Exit from ed.
+
+/realms/testycre/tmp/hammer1134437165: Ok
+/realms/testycre/area/weap/hammer: Ok
+SetId modification complete.
+%^GREEN%^ modify weapon name hammer %^RESET%^
+There is no weapon here.
+%^GREEN%^ l %^RESET%^
+/realms/testycre/area/room/test2
+Room 2 [w]
+This is the second test room.
+A generic weapon is here.
+The Dude is standing here.
+
+//// I accidentally changed the id before the name. Oops! Easy enough to fix:
+%^GREEN%^ modify hammer name hammer %^RESET%^
+Indenting file...
+"/tmp/indent.1134437205.tmp.dat" 22 lines 474 bytes
+Exit from ed.
+
+%^GREEN%^ about hammer %^RESET%^
+/realms/testycre/area/weap/hammer.c
+
+#include <lib.h>
+#include <damage_types.h>
+#include <vendor_types.h>
+
+inherit LIB_ITEM;
+
+static void create() {
+    item::create();
+    SetKeyName("hammer");
+    SetId( ({"hammer", "warhammer"}) );
+    SetAdjectives( ({ "generic" }));
+    SetShort("a generic weapon");
+    SetLong("A weapon of indeterminate proportions.");
+    SetMass(50);
+    SetVendorType(VT_WEAPON);
+    SetClass(30);
+    SetDamageType(BLADE);
+    SetWeaponType("blade");
+
+}
+void init(){
+    ::init();
+}
+%^GREEN%^ modify hammer damagetype blunt %^RESET%^
+Indenting file...
+"/tmp/indent.1134437392.tmp.dat" 22 lines 474 bytes
+Exit from ed.
+
+%^GREEN%^ modify hammer weapontype blunt %^RESET%^
+Indenting file...
+"/tmp/indent.1134437398.tmp.dat" 22 lines 474 bytes
+Exit from ed.
+
+%^GREEN%^ modify hammer mass 700 %^RESET%^
+Indenting file...
+"/tmp/indent.1134437414.tmp.dat" 22 lines 475 bytes
+Exit from ed.
+
+%^GREEN%^ modify hammer hands 2 %^RESET%^
+Indenting file...
+"/tmp/indent.1134437422.tmp.dat" 23 lines 492 bytes
+Exit from ed.
+
+//// Let's see if all that stuff really did go into the file:
+%^GREEN%^ about hammer %^RESET%^
+/realms/testycre/area/weap/hammer.c
+
+#include <lib.h>
+#include <damage_types.h>
+#include <vendor_types.h>
+
+inherit LIB_ITEM;
+
+static void create() {
+    item::create();
+    SetKeyName("hammer");
+    SetId( ({"hammer", "warhammer"}) );
+    SetAdjectives( ({ "generic" }));
+    SetShort("a generic weapon");
+    SetLong("A weapon of indeterminate proportions.");
+    SetHands(2);
+    SetMass(700);
+    SetVendorType(VT_WEAPON);
+    SetClass(30);
+    SetDamageType(BLUNT);
+
+    SetWeaponType("blunt");
+}
+void init(){
+    ::init();
+}
+%^GREEN%^ modify hammer short a heavy war hammer %^RESET%^
+Indenting file...
+"/tmp/indent.1134437450.tmp.dat" 23 lines 494 bytes
+Exit from ed.
+
+%^GREEN%^ modify hammer long This is an extremely large and heavy hammer designed to be wielded in both hands and used to hurt people very badly indeed. %^RESET%^
+Indenting file...
+"/tmp/indent.1134437509.tmp.dat" 23 lines 579 bytes
+Exit from ed.
+
+%^GREEN%^ modify hammer adj %^RESET%^
+This setting takes multiple values. If you have no more values to enter, then
+enter a dot on a blank line. To cancel, enter a single q on a blank line.
+You may now enter the next value. So far, it is blank.
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ large %^RESET%^
+You may now enter the next value. So far, we have: ({ "large" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ heavy %^RESET%^
+You may now enter the next value. So far, we have: ({ "large", "heavy" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ war %^RESET%^
+You may now enter the next value. So far, we have: ({ "large", "heavy", "war" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ . %^RESET%^
+Entries complete. Final array is: ({ "large", "heavy", "war" })
+Indenting file...
+"/tmp/indent.1134437531.tmp.dat" 23 lines 592 bytes
+Exit from ed.
+
+/realms/testycre/tmp/hammer1134437521: Ok
+/realms/testycre/area/weap/hammer: Ok
+SetAdjectives modification complete.
+%^GREEN%^ about hammer %^RESET%^
+/realms/testycre/area/weap/hammer.c
+
+#include <lib.h>
+#include <damage_types.h>
+#include <vendor_types.h>
+
+inherit LIB_ITEM;
+
+static void create() {
+    item::create();
+    SetKeyName("hammer");
+    SetAdjectives( ({"large", "heavy", "war"}) );
+    SetId( ({"hammer", "warhammer"}) );
+    SetShort("a heavy war hammer");
+    SetLong("This is an extremely large and heavy hammer designed to be wielded
+in both hands and used to hurt people very badly indeed.");
+    SetHands(2);
+    SetMass(700);
+    SetVendorType(VT_WEAPON);
+    SetClass(30);
+    SetDamageType(BLUNT);
+
+    SetWeaponType("blunt");
+}
+void init(){
+    ::init();
+}
+
+//// It's a pretty heavy hammer, so let's make sure our guy can wield it.
+%^GREEN%^ modify guy level 10 %^RESET%^
+Indenting file...
+"/tmp/indent.1134437557.tmp.dat" 19 lines 403 bytes
+Exit from ed.
+
+//// With this simple command we add the hammer to the permanent inventory of our guy.
+%^GREEN%^ add hammer to guy %^RESET%^
+ob2: /realms/testycre/area/npc/guy.c
+ob: /realms/testycre/area/weap/hammer.c
+Please enter a command for the NPC to perform with this item. If you have no
+such command to enter, enter the number of these items you want to add:
+%^GREEN%^ wield hammer %^RESET%^
+Indenting file...
+"/tmp/indent.1134437569.tmp.dat" 22 lines 489 bytes
+Exit from ed.
+
+/realms/testycre/area/npc/guy: Ok
+Guy wields a heavy war hammer.
+SetInventory modification complete.
+%^GREEN%^ exa guy %^RESET%^
+This is just some random guy.
+The male human is in top condition.
+Guy is carrying:
+A heavy war hammer (wielded in left hand and right hand)
+
+%^GREEN%^ about guy %^RESET%^
+/realms/testycre/area/npc/guy.c
+
+#include <lib.h>
+
+inherit LIB_SENTIENT;
+
+static void create() {
+    sentient::create();
+    SetKeyName("guy");
+    SetAdjectives( ({"just some", "random", "some"}) );
+    SetId( ({"dude", "fellow", "fella"}) );
+    SetShort("The Dude");
+    SetLong("This is just some random guy.");
+    SetInventory(([
+    "/realms/testycre/area/weap/hammer" : "wield hammer",
+      ]));
+    SetLevel(10);
+    SetRace("human");
+    SetClass("explorer");
+    SetGender("male");
+
+}
+void init(){
+    ::init();
+}
+
+//// Making armor is just as easy:
+%^GREEN%^ create armor helmet %^RESET%^
+I'm going to go with the appropriate area directory:
+/realms/testycre/area/armor/helmet.c
+You wave your hand mysteriously and generic armor materializes!
+%^GREEN%^ modify armor name helmet %^RESET%^
+Indenting file...
+"/tmp/indent.1134437645.tmp.dat" 18 lines 483 bytes
+Exit from ed.
+
+%^GREEN%^ modify helmet id %^RESET%^
+This setting takes multiple values. If you have no more values to enter, then
+enter a dot on a blank line. To cancel, enter a single q on a blank line.
+You may now enter the next value. So far, it is blank.
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ helm %^RESET%^
+You may now enter the next value. So far, we have: ({ "helm" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ headgear %^RESET%^
+You may now enter the next value. So far, we have: ({ "helm", "headgear" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ cover %^RESET%^
+You may now enter the next value. So far, we have: ({ "helm", "headgear",
+"cover" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ . %^RESET%^
+Entries complete. Final array is: ({ "helm", "headgear", "cover" })
+Indenting file...
+"/tmp/indent.1134437661.tmp.dat" 22 lines 535 bytes
+Exit from ed.
+
+/realms/testycre/tmp/helmet1134437649: Ok
+/realms/testycre/area/armor/helmet: Ok
+SetId modification complete.
+%^GREEN%^ modify helmet short a horned viking helmet %^RESET%^
+Indenting file...
+"/tmp/indent.1134437692.tmp.dat" 22 lines 544 bytes
+Exit from ed.
+
+%^GREEN%^ modify helmet long Vikings didn't really wear horned helmets into combat, but this one does look formidable with its large bull horns and thick iron construction. It should prove very protective. %^RESET%^
+Indenting file...
+"/tmp/indent.1134437772.tmp.dat" 22 lines 666 bytes
+Exit from ed.
+
+%^GREEN%^ modify helmet adj %^RESET%^
+This setting takes multiple values. If you have no more values to enter, then
+enter a dot on a blank line. To cancel, enter a single q on a blank line.
+You may now enter the next value. So far, it is blank.
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ iron %^RESET%^
+You may now enter the next value. So far, we have: ({ "iron" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ thick %^RESET%^
+You may now enter the next value. So far, we have: ({ "iron", "thick" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ viking %^RESET%^
+You may now enter the next value. So far, we have: ({ "iron", "thick", "viking"
+})
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ horned %^RESET%^
+You may now enter the next value. So far, we have: ({ "iron", "thick", "viking",
+"horned" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ formidable %^RESET%^
+You may now enter the next value. So far, we have: ({ "iron", "thick", "viking",
+"horned", "formidable" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ protective %^RESET%^
+You may now enter the next value. So far, we have: ({ "iron", "thick", "viking",
+"horned", "formidable", "protective" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ . %^RESET%^
+Entries complete. Final array is: ({ "iron", "thick", "viking", "horned",
+"formidable", "protective" })
+Indenting file...
+"/tmp/indent.1134437802.tmp.dat" 22 lines 722 bytes
+Exit from ed.
+
+/realms/testycre/tmp/helmet1134437782: Ok
+/realms/testycre/area/armor/helmet: Ok
+SetAdjectives modification complete.
+%^GREEN%^ about helmet %^RESET%^
+/realms/testycre/area/armor/helmet.c
+
+#include <lib.h>
+#include <armor_types.h>
+#include <damage_types.h>
+inherit LIB_ARMOR;
+
+static void create(){
+    armor::create();
+    SetKeyName("helmet");
+    SetAdjectives( ({"iron", "thick", "viking", "horned", "formidable",
+"protective"}) );
+    SetId( ({"helm", "headgear", "cover"}) );
+    SetShort("a horned viking helmet");
+    SetLong("Vikings didn't really wear horned helmets into combat, but this
+one does look formidable with its large bull horns and thick iron construction.
+It should prove very protective.");
+    SetMass(50);
+    SetDamagePoints(100);
+    SetArmorType(A_BODY_ARMOR);
+    SetProtection(BLUNT, 20);
+    SetProtection(BLADE, 20);
+    SetProtection(KNIFE, 20);
+
+}
+void init(){
+    ::init();
+}
+%^GREEN%^ modify helmet armortype helmet %^RESET%^
+Indenting file...
+"/tmp/indent.1134437818.tmp.dat" 22 lines 718 bytes
+Exit from ed.
+
+%^GREEN%^ modify helmet mass 200 %^RESET%^
+Indenting file...
+"/tmp/indent.1134437830.tmp.dat" 22 lines 719 bytes
+Exit from ed.
+
+%^GREEN%^ modify helmet protection %^RESET%^
+Your armor can protect against one or more of the following types of damage:
+blunt, blade, knife, water, shock, cold, heat, gas, acid, magic, poison,
+disease, trauma, ..
+
+Please enter which ones your armor should protect from, one at a time.
+When you are done, please type a dot on a blank line.
+%^GREEN%^ blunt %^RESET%^
+You may now enter the next value. So far, we have: ({ "blunt" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ blade %^RESET%^
+You may now enter the next value. So far, we have: ({ "blunt", "blade" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ knife %^RESET%^
+You may now enter the next value. So far, we have: ({ "blunt", "blade", "knife"
+})
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ trauma %^RESET%^
+You may now enter the next value. So far, we have: ({ "blunt", "blade", "knife",
+"trauma" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^ . %^RESET%^
+Protections list complete.
+Please enter the protection value for: BLUNT
+%^GREEN%^ 15 %^RESET%^
+Please enter the protection value for: BLADE
+%^GREEN%^ 20 %^RESET%^
+Please enter the protection value for: KNIFE
+%^GREEN%^ 25 %^RESET%^
+Please enter the protection value for: TRAUMA
+%^GREEN%^ 10 %^RESET%^
+This is where the mapping gets sent somewhere.
+ProtectionsMap is: ([ "BLADE" : 20, "BLUNT" : 15, "TRAUMA" : 10, "KNIFE" : 25 ])
+Indenting file...
+"/tmp/indent.1134437901.tmp.dat" 23 lines 750 bytes
+Exit from ed.
+
+%^GREEN%^ about helmet %^RESET%^
+/realms/testycre/area/armor/helmet.c
+
+#include <lib.h>
+#include <armor_types.h>
+#include <damage_types.h>
+inherit LIB_ARMOR;
+
+static void create(){
+    armor::create();
+    SetKeyName("helmet");
+    SetAdjectives( ({"iron", "thick", "viking", "horned", "formidable",
+"protective"}) );
+    SetId( ({"helm", "headgear", "cover"}) );
+    SetShort("a horned viking helmet");
+    SetLong("Vikings didn't really wear horned helmets into combat, but this
+one does look formidable with its large bull horns and thick iron construction.
+It should prove very protective.");
+    SetMass(200);
+    SetDamagePoints(100);
+    SetArmorType(A_HELMET);
+    SetProtection(BLADE, 20);
+    SetProtection(BLUNT, 15);
+    SetProtection(TRAUMA, 10);
+
+    SetProtection(KNIFE, 25);
+}
+void init(){
+    ::init();
+}
+%^GREEN%^ l %^RESET%^
+/realms/testycre/area/room/test2
+Room 2 [w]
+This is the second test room.
+A horned viking helmet and a heavy war hammer are here.
+The Dude is standing here.
+
+
+%^GREEN%^ exa dude %^RESET%^
+This is just some random guy.
+The male human is in top condition.
+Guy is carrying:
+A heavy war hammer (wielded in left hand and right hand)
+
+%^GREEN%^ add helmet to dude %^RESET%^
+ob2: /realms/testycre/area/npc/guy.c
+ob: /realms/testycre/area/armor/helmet.c
+Please enter a command for the NPC to perform with this item. If you have no
+such command to enter, enter the number of these items you want to add:
+%^GREEN%^ wear helmet %^RESET%^
+Indenting file...
+"/tmp/indent.1134437927.tmp.dat" 23 lines 544 bytes
+Exit from ed.
+
+/realms/testycre/area/npc/guy: Ok
+Guy wields a heavy war hammer.
+Guy wears a horned viking helmet.
+SetInventory modification complete.
+%^GREEN%^ exa dude %^RESET%^
+This is just some random guy.
+The male human is in top condition.
+Guy is carrying:
+A heavy war hammer (wielded in left hand and right hand)
+A horned viking helmet (worn)
+
+//// Ok our dude is done. Let's clean up the room by updating it:
+%^GREEN%^ update %^RESET%^
+Updating environment
+/realms/testycre/area/room/test2: Ok
+%^GREEN%^ l %^RESET%^
+/realms/testycre/area/room/test2
+Room 2 [w]
+This is the second test room.
+%^GREEN%^ pwd %^RESET%^
+/realms/testycre:
+%^GREEN%^ cd area/npc %^RESET%^
+/realms/testycre/area/npc:
+//// We need to have the guy present in order to add him to the room:
+%^GREEN%^ clone guy %^RESET%^
+Guy wields a heavy war hammer.
+Guy wears a horned viking helmet.
+You clone The Dude (/realms/testycre/area/npc/guy.c).
+%^GREEN%^ add guy to room %^RESET%^
+ob2: /realms/testycre/area/room/test2.c
+ob: /realms/testycre/area/npc/guy.c
+Please enter the number of these that you want to add:
+%^GREEN%^ 1 %^RESET%^
+Indenting file...
+"/tmp/indent.1134437999.tmp.dat" 26 lines 485 bytes
+Exit from ed.
+
+/realms/testycre/area/room/test2: Ok
+/realms/testycre/area/room/test2
+Room 2 [w]
+This is the second test room.
+The Dude is standing here.
+
+
+SetInventory modification complete.
+%^GREEN%^ update %^RESET%^
+Updating environment
+/realms/testycre/area/room/test2: Ok
+//// That's it. Easy, huh? Think of how much slogging through ed this would save you when making a large area.
+%^GREEN%^ l %^RESET%^
+/realms/testycre/area/room/test2
+Room 2 [w]
+This is the second test room.
+The Dude is standing here.
+
+
+%^GREEN%^ exa dude %^RESET%^
+This is just some random guy.
+The male human is in top condition.
+Guy is carrying:
+A heavy war hammer (wielded in left hand and right hand)
+A horned viking helmet (worn)
+
+%^GREEN%^ more here %^RESET%^
+#include <lib.h>
+#include "/realms/testycre/customdefs.h"
+
+inherit LIB_ROOM;
+
+static void create() {
+    room::create();
+    SetClimate("indoors");
+    SetAmbientLight(30);
+    SetShort("Room 2");
+    SetLong("This is the second test room.");
+    SetExits(([
+    "west" : "/realms/testycre/area/room/test1",
+      ]));
+
+    SetItems( ([
+    "template" : "That's what this is.",
+      ]) );
+
+    SetInventory(([
+    "/realms/testycre/area/npc/guy" : 1,
+      ]));
+}
+
+void init(){
+    ::init();
+}
+
+%^GREEN%^ quit %^RESET%^
+Please come back another time!
+
+Obviously you still need to code some LPC in ed for complex stuff. But knocking out rooms and NPC's and objects quickly helps you avoid getting bogged down in mechanics when what you really want to do is build.
+
+

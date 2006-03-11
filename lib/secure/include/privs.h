@@ -9,5 +9,6 @@
 #define PRIV_PLAYER		"PLAYER"
 #define PRIV_SECURE		"SECURE"
 #define PRIV_ELDER              "ELDER"
+#define PRIV_INTERMUD           "INTERMUD"
 
 #endif /* __PRIVS_H */

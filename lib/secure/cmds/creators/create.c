@@ -40,6 +40,7 @@ int help() {
       "        create npc FILE\n"
       "        create barkeep FILE\n"
       "        create vendor FILE\n"
+      "        create trainer FILE\n"
       "        create armor FILE\n"
       "        create worn_storage FILE\n"
       "        create weapon FILE\n"

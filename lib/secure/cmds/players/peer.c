@@ -20,9 +20,9 @@ mixed cmd(string str) {
     if( !file = (string)env->GetExit(str) ) file = (string)env->GetEnter(str);
     if( !sizeof(file) )
 	return "You cannot peer that way.";
-    if( i = effective_light(this_player()) > 6 )
+    if( (i = this_player()->GetEffectiveVision()) > 5 )
 	return "It is too bright to do that.";
-    else if( i < 0 )
+    if( i < 3 )
 	return "It is too dark to attempt that.";
     if( env->GetDoor(str) && ((string)env->GetDoor(str))->GetClosed() ) {
 	message("my_action", sprintf("%s is blocking your view %s.",
@@ -35,11 +35,14 @@ mixed cmd(string str) {
 	message("my_action", "It is not safe to peer "+str+"!", this_player() );
 	return 1;
     }
-    if( (int)env->GetProperty("light") < 0 ||
-      (int)env->GetProperty("light") > 6 ) {
-	message("my_action", "You cannot see "+str+" very well.", this_player());
-	return 1;
+    if(env->GetProperty("no peer")){
+	return "You can't see in that direction.";
     }
+    if( (i = this_player()->GetEffectiveVision(1,file)) > 5 )
+	return "It is too bright in that direction.";
+    else if( i < 3 )
+	return "It is too dark there.";
+
     items = filter(all_inventory(env),
       (: !(int)$1->GetInvis(this_player()) :) );
     items = items - (livings = filter(items, (: living :)));

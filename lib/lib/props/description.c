@@ -150,14 +150,3 @@ object array GetDummyItems() {
     return DummyItems;
 }
 
-mapping GetItemsMap(){
-    mixed cle, val;
-    mapping ret =([]);
-    foreach(object ob in GetDummyItems()){
-	cle = ob->GetId();
-	val = ob->GetLong();
-	ret[cle] = val;
-    }
-    return copy(ret);
-}
-

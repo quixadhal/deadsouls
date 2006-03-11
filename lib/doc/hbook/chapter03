@@ -13,7 +13,7 @@ as an example.
 
 First line:
 ----------
-Cratylus aka Cratylus the unaccomplished, level 10 male human Explorer
+%^CYAN%^Cratylus aka Cratylus the unaccomplished, level 10 male human Explorer%^RESET%^
 
     Here you see my short name, my name with title, my level, my
 gender, my race, and my class. Let's go over each.
@@ -60,7 +60,7 @@ that gives you a bit of everything without specializing in anything.
 Next line:
 ----------
 
-Alive / Awake
+%^CYAN%^Alive / Awake%^RESET%^
 
     It is indeed possible for your virtual body to cease life functions.
 When this happens your spirit speeds off to the land of the dead,
@@ -81,7 +81,7 @@ force yourself awake, too, but it's a bit tedious.
 Next line:
 ---------
 
-Health: 350/350   Magic: 560/560   Stamina: 400/400   Carry: 1184/1300
+%^CYAN%^Health: 350/350   Magic: 560/560   Stamina: 400/400   Carry: 1184/1300%^RESET%^
 
     In each case, the number on the left of the slash indicates the
 current level, and the number on the right indicates what the maximum is.
@@ -113,7 +113,7 @@ capacity, but players cannot.
 Next line:
 ---------
 
-Food: 0    Drink: 0    Alcohol: 0    Caffeine: 0    Poison: 0 
+%^CYAN%^Food: 0    Drink: 0    Alcohol: 0    Caffeine: 0    Poison: 0 %^RESET%^
 
     These are pretty self-explanatory. Alcohol is good for healing,
 bad for fighting. Food and drink also help speed healing. Poison
@@ -128,7 +128,7 @@ depending on many factors, such as level, endurance, etc.
 Next line:
 ---------
 
-Training Points: 0    Quest Points: 0    Experience Points: 50 
+%^CYAN%^Training Points: 0    Quest Points: 0    Experience Points: 50 %^RESET%^
 
     Training points can be cashed in with special NPC's called
 trainers, who can help you improve some skills. A trainer that
@@ -157,7 +157,7 @@ Well here they are, and this is their health. You can issue the
 "body" command for a quicker self-check.
     Let's look at what the numbers mean with an example:
 
-left leg        (2) 160/160
+%^CYAN%^left leg        (2) 160/160%^RESET%^
 
    Obviously the first item identifies the limb in question.
 
@@ -183,7 +183,7 @@ Skills section:
 
     Let's review skills by examining one of mine:
 
-blade attack  (1) 00% - 20/24
+%^CYAN%^blade attack  (1) 00% - 20/24%^RESET%^
 
     This measures how likely I am to hit an opponent when I
 use a blade, and how good a hit it was. The number (1) means
@@ -216,7 +216,7 @@ Stats section:
 statistics measure your general giftedness in that feature of your
 body. Let's look at one of mine:
 
-coordination (2) 42/42
+%^CYAN%^coordination (2) 42/42%^RESET%^
 
     Coordination is one of those important stats for fighting and
 such. The more coordinated you are, the more likely you are to hit your 
@@ -247,9 +247,9 @@ Final notes:
 yourself. It is, however, quite a screenful. Briefer reports can be
 viewed with the following commands:
 
-body
-skills
-stats
-score
-status
+%^GREEN%^body%^RESET%^
+%^GREEN%^skills%^RESET%^
+%^GREEN%^stats%^RESET%^
+%^GREEN%^score%^RESET%^
+%^GREEN%^status%^RESET%^
 

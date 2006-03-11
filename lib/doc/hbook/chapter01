@@ -13,7 +13,7 @@ differ somewhat, though probably not extremely so.
    Let's start with just navigating this book. Once you are done
 reading this chapter, you can read the next chapter by typing:
 
-read chapter 2 in handbook
+%^GREEN%^read chapter 2 in handbook%^RESET%^
 
     Make sure you wait until you are done reading this chapter,
 though. The reason you should wait is that you are now in "reading
@@ -30,7 +30,7 @@ make you stop reading.
     When you are not in reading mode, you can find out the chapter
 titles by typing:
 
-read index in handbook
+%^GREEN%^read index in handbook%^RESET%^
 
    You really should read the whole thing, but in case you don't, the
 chapter titles will help as a reference to find the information you
@@ -41,10 +41,10 @@ contain another handbook, the mud may not know which one you are
 trying to read. If you get a message like "Which of the two handbooks
 would you like to read?", you can try one or more of the following:
 
-read index in first handbook
+%^GREEN%^read index in first handbook%^RESET%^
 
-read index in my handbook
+%^GREEN%^read index in my handbook%^RESET%^
 
-read index in my first player handbook
+%^GREEN%^read index in my first player handbook%^RESET%^
 
 

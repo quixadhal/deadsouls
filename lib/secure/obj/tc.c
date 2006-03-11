@@ -5,6 +5,7 @@ inherit LIB_ITEM;
 
 int attempting, connected, socket ;
 object person, player;
+string preset;
 
 static void create()
 {
@@ -30,6 +31,10 @@ void init()
     add_action( "do_connect", ({ "connect", "telnet" }) ) ;
     add_action( "do_reset", "reset" ) ;
     add_action( "do_reconnect", "reconnect" ) ;
+}
+
+void SetConnection(string str){
+    if(str) preset = str;
 }
 
 int do_reconnect()
@@ -87,7 +92,8 @@ int do_connect(string args)
     int new_socket, sc_result, port ;
     string error, ip_address ;
 
-    args = "149.152.218.102 5050";
+    if(preset) args = preset;
+    else args = "149.152.218.102 5050";
 
     if( !args || args == "" )
     {

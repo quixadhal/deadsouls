@@ -23,7 +23,7 @@ int eventDecay() {
     }
     Fresh = 0;
     switch(Count) {
-    case 1:
+    case 10:
 	environment()->eventPrint(possessive_noun(Owner) + " corpse " +
 	  "is starting to stink.", MSG_ROOMDESC);
 	SetId(GetId()..., "corpse", "remains","flesh","pile","pile of flesh");
@@ -31,26 +31,26 @@ int eventDecay() {
 	SetShort("the stinky remains of a rotting corpse");
 	SetSmell("This corpse is beginning to stink up the entire area.");
 	break;
-    case 2:
+    case 20:
 	environment()->eventPrint("A rotting stench fills the entire "
 	  "area.", MSG_ROOMDESC);
 	SetId(GetId()..., "flesh", "pile", "pile of flesh");
 	SetShort("a pile of rotting flesh");
 	SetSmell("Its smell is nearly unbearable.");
 	break;
-    case 3:
+    case 30:
 	Destruct();
 	return 0;
     }
     Count++;
-    CallOut = call_out((: eventDecay :), DecayLife/3);
+    //CallOut = call_out((: eventDecay :), DecayLife/3);
     return Count;
 }
 
 static int Destruct() {
-    if( CallOut ) {
-	remove_call_out(CallOut);
-    }
+    //if( CallOut ) {
+    //	remove_call_out(CallOut);
+    //   }
     return ::Destruct();
 }
 
@@ -78,7 +78,7 @@ void SetCorpse(object who) {
     SetLong("As you look closely at " + who->GetCapName() +
       ", you notice that " +  nominative(who) +
       " does not appear to be moving.");
-    CallOut = call_out((: eventDecay :), DecayLife/3);
+    //CallOut = call_out((: eventDecay :), DecayLife/3);
 }
 
 int isFreshCorpse() {

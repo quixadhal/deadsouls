@@ -94,35 +94,37 @@ int cmd_read(string str) {
     mapping *posts;
     int x, i, maxi;
 
-    if(str == "board" || sscanf(str,"board %s",junk) ) {
-	write("To read the first post, type: read 1");
-	write("To read the second one: read 2");
-	write("And so on.");
+    if(str){
+	if(str == "board" || sscanf(str,"board %s",junk) ) {
+	    write("To read the first post, type: read 1");
+	    write("To read the second one: read 2");
+	    write("And so on.");
+	    return 1;
+	}
+
+	maxi = sizeof(posts = (mapping *)BBOARD_D->query_posts(query_board_id()));
+	if(!str) {
+	    for(i=0, x = -1; i<maxi; i++)
+		if(member_array((string)this_player()->GetKeyName(),
+		    posts[i]["read"]) == -1) {
+		    x = i;
+		    break;
+		}
+	    if(x == -1) return notify_fail("No unread posts.\n");
+	}
+	else if(!(x = to_int(str))) return notify_fail("Read what?\n");
+	else x--;
+	if(x < 0 || x >= sizeof(posts))
+	    return notify_fail("Invalid post number.\n");
+	str = "Post #%^YELLOW%^" + (x+1) + "%^RESET%^ by %^YELLOW%^" +
+	posts[x]["author"] + "%^RESET%^\nSubject: %^CYAN%^" +
+	posts[x]["subject"] + "%^RESET%^\n\n";
+	str += posts[x]["post"];
+
+	BBOARD_D->mark_read(query_board_id(),x,(string)this_player()->GetKeyName());
+	this_player()->eventPage(explode(str, "\n"), "system");
 	return 1;
     }
-
-    maxi = sizeof(posts = (mapping *)BBOARD_D->query_posts(query_board_id()));
-    if(!str) {
-	for(i=0, x = -1; i<maxi; i++)
-	    if(member_array((string)this_player()->GetKeyName(),
-		posts[i]["read"]) == -1) {
-		x = i;
-		break;
-	    }
-	if(x == -1) return notify_fail("No unread posts.\n");
-    }
-    else if(!(x = to_int(str))) return notify_fail("Read what?\n");
-    else x--;
-    if(x < 0 || x >= sizeof(posts))
-	return notify_fail("Invalid post number.\n");
-    str = "Post #%^YELLOW%^" + (x+1) + "%^RESET%^ by %^YELLOW%^" +
-    posts[x]["author"] + "%^RESET%^\nSubject: %^CYAN%^" +
-    posts[x]["subject"] + "%^RESET%^\n\n";
-    str += posts[x]["post"];
-
-    BBOARD_D->mark_read(query_board_id(),x,(string)this_player()->GetKeyName());
-    this_player()->eventPage(explode(str, "\n"), "system");
-    return 1;
 }
 
 int cmd_followup_and_respond(string str) {

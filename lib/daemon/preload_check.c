@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <daemons.h>
 #include <cfg.h>
 
 inherit LIB_DAEMON;
@@ -7,9 +8,8 @@ string *preloads;
 
 static void checkPreloads(){
     foreach(string daemon in preloads){
-	if(!find_object(daemon)) update(daemon);
-	//if(!find_object(daemon)) tc("can't find: "+daemon,"red");
-	//else tc("found: "+daemon,"green");
+	if(!find_object(daemon) && daemon != INTERMUD_D) 
+	    update(daemon);
     }
     call_out((: checkPreloads :), 300);
 }

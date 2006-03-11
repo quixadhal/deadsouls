@@ -1,0 +1,518 @@
+The ed Editor
+
+
+	This has always been the aspect of coding that new
+creators have most trouble with. It's what discourages most
+people from creating lots of stuff, in fact.
+
+	With Dead Souls, you can get away with avoiding ed
+most of the time, by using the room maker and the thing maker.
+
+	But to add special functions to your code, like 
+magic items, smart NPC's (aka mobs), traps, hidden objects, 
+etc, you need to use ed, if you're going to be editing inside
+the mud.
+
+	ed is a simple editing program. It is designed to
+work on a line-by-line basis, so it is called a "line editor".
+	
+	Let's start by looking at, and editing, a small file.
+We've coded a sword, and we want to change its description
+from "short sword" to "plain sword":
+
+
+
+> %^GREEN%^cd /realms/cratylus/area/weap%^RESET%^ I changed my working directory to my area weapons dir
+/realms/cratylus/area/weap:
+> %^GREEN%^ls%^RESET%^ I listed the contents of that dir:  
+/realms/cratylus/area/weap/:
+ 1   dagger.c        1   nco_sword.c~    1   std_sword.c~   
+ 1   gsword.c        1   sharpsword.c    1   sword.c        
+ 001 gsword.c~       1   staff.c                            
+ 1   nco_sword.c     1   std_sword.c                        
+
+
+> %^GREEN%^ed sword.c%^RESET%^ I ran the ed command on the file sword.c.
+/realms/cratylus/area/weap/sword.c, 641 bytes
+:%^GREEN%^n%^RESET%^ This makes the editor display line numbers next to the lines.
+number on, list off
+:%^GREEN%^1z%^RESET%^ This lists about 20 lines of text
+  1  /*    /domains/Examples/weapon/sword.c
+  2   *    from the Nightmare IV LPC Library
+  3   *    a simple sword example, nothing fancy
+  4   *    created by Descartes of Borg 950402
+  5   */
+  6  
+  7  #include <lib.h>
+  8  #include <damage_types.h>
+  9  #include <vendor_types.h>
+ 10  
+ 11  inherit LIB_ITEM;
+ 12  
+ 13  static void create() {
+ 14      item::create();
+ 15      SetKeyName("short sword");
+ 16      SetId( ({ "sword", "short sword" }) );
+ 17      SetAdjectives( ({ "short" }) );
+ 18      SetShort("a short sword");
+ 19      SetLong("A cheap and rather dull short sword.");
+ 20      SetMass(150);
+ 21      SetDollarCost(50);
+ 22      SetVendorType(VT_WEAPON);
+:%^GREEN%^z%^RESET%^
+ 22      SetVendorType(VT_WEAPON);
+ 23      SetClass(20);
+ 24      SetDamageType(BLADE);
+ 25      SetWeaponType("blade");
+ 26  }
+:%^GREEN%^15%^RESET%^ I displayed line 15
+ 15      SetKeyName("short sword");
+:%^GREEN%^15c%^RESET%^ I used 'c' to replace line 15
+    15. * %^GREEN%^SetKeyName("plain sword");%^RESET%^ I entered my replacement text
+    16. * %^GREEN%^.%^RESET%^ I entered a single dot on a blank line 
+:
+ 16      SetId( ({ "sword", "short sword" }) );
+:%^GREEN%^1z%^RESET%^ I listed about 20 lines, starting from line 1
+  1  /*    /domains/Examples/weapon/sword.c
+  2   *    from the Nightmare IV LPC Library
+  3   *    a simple sword example, nothing fancy
+  4   *    created by Descartes of Borg 950402
+  5   */
+  6  
+  7  #include <lib.h>
+  8  #include <damage_types.h>
+  9  #include <vendor_types.h>
+ 10  
+ 11  inherit LIB_ITEM;
+ 12  
+ 13  static void create() {
+ 14      item::create();
+ 15  SetKeyName("plain sword");
+ 16      SetId( ({ "sword", "short sword" }) );
+ 17      SetAdjectives( ({ "short" }) );
+ 18      SetShort("a short sword");
+ 19      SetLong("A cheap and rather dull short sword.");
+ 20      SetMass(150);
+ 21      SetDollarCost(50);
+ 22      SetVendorType(VT_WEAPON);
+:%^GREEN%^18%^RESET%^ I displayed line 18
+ 18      SetShort("a short sword");
+:%^GREEN%^18c%^RESET%^ I started the replacement of line 18
+    18. * SetShort("a plain sword"); I entered my replacement text
+    19. * . I entered a single dot on a blank line
+:%^GREEN%^1z%^RESET%^ I displayed about 20 lines starting from line 1
+  1  /*    /domains/Examples/weapon/sword.c
+  2   *    from the Nightmare IV LPC Library
+  3   *    a simple sword example, nothing fancy
+  4   *    created by Descartes of Borg 950402
+  5   */
+  6  
+  7  #include <lib.h>
+  8  #include <damage_types.h>
+  9  #include <vendor_types.h>
+ 10  
+ 11  inherit LIB_ITEM;
+ 12  
+ 13  static void create() {
+ 14      item::create();
+ 15  SetKeyName("plain sword");
+ 16      SetId( ({ "sword", "short sword" }) );
+ 17      SetAdjectives( ({ "short" }) );
+ 18  SetShort("a plain sword");
+ 19      SetLong("A cheap and rather dull short sword.");
+ 20      SetMass(150);
+ 21      SetDollarCost(50);
+ 22      SetVendorType(VT_WEAPON);
+:%^GREEN%^x%^RESET%^ I saved and exited
+"/realms/cratylus/area/weap/sword.c" 26 lines 633 bytes
+Exit from ed.
+> %^GREEN%^update sword%^RESET%^ I loaded the file into memory
+/realms/cratylus/area/weap/sword: Ok
+
+
+
+Let's take this step by step:
+
+1) I changed my working directory to my area weapons dir: %^GREEN%^cd /realms/cratylus/area/weap%^RESET%^
+
+2) I listed the contents of that dir:  %^GREEN%^ls%^RESET%^
+
+3) I ran the ed command on the file sword.c: %^GREEN%^ed sword.c%^RESET%^
+
+4) Within the editor, I issued the '%^GREEN%^n%^RESET%^' command. This makes the editor
+   display line numbers next to the lines.
+
+5) Within the editor, I issued the '%^GREEN%^1z%^RESET%^' command. What '%^GREEN%^z%^RESET%^' does is display
+   about 20 lines of the file (the exact number depends on your screen
+   settings. In my case it's 22). If you happen to be looking at line 1, it
+   will display lines 1 through to about 20. If you happen to be looking 
+   at line 40, it will display from line 40 to about 60. 
+   	If you want to start looking at lines starting at line 15, you
+   can issue the '%^GREEN%^15z%^RESET%^' command, which basically means "display about 20
+   lines starting at line 15".
+   	In this case, I wanted to start from the beginning of the file, 
+   so I issued '%^GREEN%^1z%^RESET%^'.
+
+6) '%^GREEN%^1z%^RESET%^' stopped listing the file at line 22, so I entered '%^GREEN%^z%^RESET%^' again to
+    list the rest.
+
+7) Since I want to change "short sword" to "plain sword", I examined each
+   line to find the word "short". I noticed that line 15 has "short" in it,
+   so to get a look at that line alone, I entered '%^GREEN%^15%^RESET%^'.
+
+8) Now that I'm sure line 15 needs to change, I issue the '%^GREEN%^15c%^RESET%^' command.
+   '%^GREEN%^c%^RESET%^' indicates that I want to change a line. '%^GREEN%^15c%^RESET%^' means "delete whatever
+   was in line 15, and replace it with what I am about to type".
+
+9) You can see that my editor prompt changed from ":" to "*". What this
+   means is that I am now in "input mode". Whatever I type now will be
+   added to the file. Since my last command in "command mode" was '%^GREEN%^15c%^RESET%^',
+   I am now replacing that line with what I want the line to contain:
+   %^GREEN%^SetKeyName("plain sword");%^RESET%^
+
+10) Ok, I replaced the line, but I'm still in input mode. To go back to
+    command mode, I type a single period and enter, like this:
+    %^GREEN%^.%^RESET%^
+
+11) I'm back in command mode now. When I list the file contents with
+    '%^GREEN%^1z%^RESET%^' I can see that line 15 now says what I wanted.
+
+12) Now I see another line that needs changing, so I enter '18' to 
+    get a closer look.
+
+13) Sure enough, 18 needs to change, so I issue '%^GREEN%^18c%^RESET%^'.
+
+14) Like I did for line 15, I enter what the line should be.
+
+15) To return to command mode, I enter a single period on a blank line.
+
+16) I list the file contents, and see that my change was successful.
+
+17) I'm finished making my changes, so I issue the '%^GREEN%^x%^RESET%^' command. '%^GREEN%^x%^RESET%^' 
+    means "save the changes I have made, and exit the editor".
+
+18) I am now at my regular command prompt. To load my changes to this
+    file, I type '%^GREEN%^update sword%^RESET%^'.
+
+
+Editor basics, part 2
+
+
+	In the last section you saw what a simple line
+replacement looks like in ed. Next we'll talk about some common
+ed actions.
+
+ADDING STUFF:
+
+	Suppose I want to specify that this sword requires only
+one hand to wield it:
+
+
+> %^GREEN%^ed sword.c%^RESET%^ started the editor
+/realms/cratylus/area/weap/sword.c, 633 bytes
+:%^GREEN%^n%^RESET%^ enabled line number printing
+number on, list off
+:%^GREEN%^15,22%^RESET%^ listed lines 15 to 22
+ 15  SetKeyName("plain sword");
+ 16      SetId( ({ "sword", "short sword" }) );
+ 17      SetAdjectives( ({ "short" }) );
+ 18  SetShort("a plain sword");
+ 19      SetLong("A cheap and rather dull short sword.");
+ 20      SetMass(150);
+ 21      SetDollarCost(50);
+ 22      SetVendorType(VT_WEAPON);
+:%^GREEN%^20a%^RESET%^ appended to the file after line 20
+    21. * %^GREEN%^SetHands(1);%^RESET%^ entered my added text
+    22. * %^GREEN%^.%^RESET%^ single dot on a blank line to exit input mode
+:%^GREEN%^18,22%^RESET%^ displayed line 18 through 22
+ 18  SetShort("a plain sword");
+ 19      SetLong("A cheap and rather dull short sword.");
+ 20      SetMass(150);
+ 21  SetHands(1);
+ 22      SetDollarCost(50);
+:%^GREEN%^x%^RESET%^ exited editor and saved
+"/realms/cratylus/area/weap/sword.c" 27 lines 646 bytes
+Exit from ed.
+
+
+
+	Here you can see that instead of '%^GREEN%^c%^RESET%^', which replaces, I
+used '%^GREEN%^a%^RESET%^', which adds. I decided my new line would go after line
+20, so I issued the command '%^GREEN%^20a%^RESET%^'. Once I was done, I typed
+a single dot on a blank line to exit "input mode". You'll notice
+I didn't use the '%^GREEN%^z%^RESET%^' command. Instead, since I knew where my
+changes would go, I decided to list lines 18 through 22 with
+the command '%^GREEN%^18,22%^RESET%^'. I then issued the '%^GREEN%^x%^RESET%^' command to save my 
+changes and exit the editor.
+	If had I wanted my addition to go in front of line 20, 
+I could have used the '%^GREEN%^20i%^RESET%^' command.
+
+DELETING LINES
+
+	Suppose I'm tired of seeing header lines that no
+longer apply to this file. We can delete a single line, or
+a range of lines, with the '%^GREEN%^d%^RESET%^' commmand:
+
+> %^GREEN%^ed sword.c%^RESET%^
+
+/realms/cratylus/area/weap/sword.c, 646 bytes
+:%^GREEN%^n%^RESET%^ enabled line number printing
+number on, list off
+:%^GREEN%^1,10%^RESET%^ listed lines 1 to 10
+  1  /*    /domains/Examples/weapon/sword.c
+  2   *    from the Nightmare IV LPC Library
+  3   *    a simple sword example, nothing fancy
+  4   *    created by Descartes of Borg 950402
+  5   */
+  6  
+  7  #include <lib.h>
+  8  #include <damage_types.h>
+  9  #include <vendor_types.h>
+ 10  
+:%^GREEN%^1,5d%^RESET%^ deleted lines 1 to 5
+:%^GREEN%^1,5%^RESET%^ listed (the new) lines 1 to 5
+  1  
+  2  #include <lib.h>
+  3  #include <damage_types.h>
+  4  #include <vendor_types.h>
+  5  
+:%^GREEN%^1d%^RESET%^ deleted blank line 1
+:%^GREEN%^1z%^RESET%^ displayed the file starting at line 1
+  1  #include <lib.h>
+  2  #include <damage_types.h>
+  3  #include <vendor_types.h>
+  4  
+  5  inherit LIB_ITEM;
+  6  
+  7  static void create() {
+  8      item::create();
+  9  SetKeyName("plain sword");
+ 10      SetId( ({ "sword", "short sword" }) );
+ 11      SetAdjectives( ({ "short" }) );
+ 12  SetShort("a plain sword");
+ 13      SetLong("A cheap and rather dull short sword.");
+ 14      SetMass(150);
+ 15  SetHands(1);
+ 16      SetDollarCost(50);
+ 17      SetVendorType(VT_WEAPON);
+ 18      SetClass(20);
+ 19      SetDamageType(BLADE);
+ 20      SetWeaponType("blade");
+ 21  }
+:%^GREEN%^x%^RESET%^ exited and saved
+"/realms/cratylus/area/weap/sword.c" 21 lines 476 bytes
+Exit from ed.
+
+
+
+	First I deleted lines 1 through 5 with the command '%^GREEN%^1,5d%^RESET%^'. 
+Then, for good measure, I removed the remaining blank line '%^GREEN%^1d%^RESET%^'.
+	Voila. Cleaner code.
+
+REPLACING STRINGS
+
+	Well now I want to replace all instances of "short" with
+"plain", and I don't feel like editing each matching line
+manually. I can do a search and replace. First I will list which
+lines need to change, then I will change them:
+
+> %^GREEN%^ed sword.c%^RESET%^
+
+/realms/cratylus/area/weap/sword.c, 476 bytes
+:%^GREEN%^n%^RESET%^ enabled line number printing
+number on, list off
+:%^GREEN%^g/short/p%^RESET%^  searched for and displayed lines containing "short"
+ 10      SetId( ({ "sword", "short sword" }) );
+ 11      SetAdjectives( ({ "short" }) );
+ 13      SetLong("A cheap and rather dull short sword.");
+:%^GREEN%^g/short/s/short/plain %^RESET%^ searched for "short" and replaced with "plain"
+:%^GREEN%^g/short/p%^RESET%^  searched for "short" again but found none
+:%^GREEN%^1z%^RESET%^  listed file from line 1
+  1  #include <lib.h>
+  2  #include <damage_types.h>
+  3  #include <vendor_types.h>
+  4  
+  5  inherit LIB_ITEM;
+  6  
+  7  static void create() {
+  8      item::create();
+  9  SetKeyName("plain sword");
+ 10      SetId( ({ "sword", "plain sword" }) );
+ 11      SetAdjectives( ({ "plain" }) );
+ 12  SetShort("a plain sword");
+ 13      SetLong("A cheap and rather dull plain sword.");
+ 14      SetMass(150);
+ 15  SetHands(1);
+ 16      SetDollarCost(50);
+ 17      SetVendorType(VT_WEAPON);
+ 18      SetClass(20);
+ 19      SetDamageType(BLADE);
+ 20      SetWeaponType("blade");
+ 21  }
+:%^GREEN%^1%^RESET%^  moved to line 1
+  1  #include <lib.h>
+:%^GREEN%^I%^RESET%^  ran automatic indentation
+Indenting entire code...
+Indentation complete.
+:%^GREEN%^1z%^RESET%^  listed file from line 1
+#include <lib.h>
+#include <damage_types.h>
+#include <vendor_types.h>
+
+inherit LIB_ITEM;
+
+static void create() {
+    item::create();
+    SetKeyName("plain sword");
+    SetId( ({ "sword", "plain sword" }) );
+    SetAdjectives( ({ "plain" }) );
+    SetShort("a plain sword");
+    SetLong("A cheap and rather dull plain sword.");
+    SetMass(150);
+    SetHands(1);
+    SetDollarCost(50);
+    SetVendorType(VT_WEAPON);
+    SetClass(20);
+    SetDamageType(BLADE);
+    SetWeaponType("blade");
+}
+:%^GREEN%^x%^RESET%^  exited and saved
+"/realms/cratylus/area/weap/sword.c" 21 lines 488 bytes
+Exit from ed.
+
+
+
+	The command %^GREEN%^g/short/p%^RESET%^ showed me all the lines
+that contained the substring "short". Then I ran the global
+search and replace command to substitute "plain" for "short",
+:%^GREEN%^g/short/s/short/plain%^RESET%^
+	Then I searched again for the string "short" and
+nothing came up, because it had been replaced.
+
+	Finally I went to line number 1 and issued the 'I'
+command. This auto-indents the code, making it neater and
+easier to read.
+
+
+Editor basics, part 3
+
+
+Now let's look at some common problems:
+
+
+1) %^CYAN%^Accidental deletion%^RESET%^
+
+
+	If you type %^GREEN%^1,20d%^RESET%^ when you meant to type %^GREEN%^1,2d%^RESET%^ you will end
+up with a file 18 lines shorter than you intended. ed does not
+have an "undo" command, so those lines will never come back.
+	However, if you quit the editor *without saving*, then that
+deletion will not be committed to the file. You can issue the '%^GREEN%^Q%^RESET%^'
+command:
+
+:%^GREEN%^Q%^RESET%^
+
+	To force quit without saving. Of course, if those lines
+weren't already in the file, this won't help much.
+
+
+2) %^CYAN%^Can't leave the editor%^RESET%^
+
+
+	You try to write and exit, but get this:
+
+:%^GREEN%^x%^RESET%^
+File command failed.
+
+	What this means is that for some reason, you can't write
+to the file, so you don't exit the editor. What this usually means is that
+you tried to edit a file that does not belong to you. Since you do not
+have permission to modify the file, ed refuses to commit your changes.
+
+	There are two ways around this. If you don't really care
+whether your changes are saved or not, you can just force quit the 
+editor with '%^GREEN%^Q%^RESET%^':
+
+:%^GREEN%^Q%^RESET%^
+Exit from ed.
+
+	Your changes will be lost, but you'll be out of the editor.
+
+	If you really want to save this file, you'll have to save it
+somewhere other than your current working directory (cwd). You can save
+it to your home directory with the 'w' command, then force quit:
+
+:%^GREEN%^w /realms/cratylus/sword.c%^RESET%^
+"/realms/cratylus/sword.c" 20 lines 478 bytes
+:%^GREEN%^Q%^RESET%^
+Exit from ed.
+
+
+3) %^CYAN%^Indent command fails%^RESET%^
+
+
+	You try to auto-indent your code but get an error like this:
+
+:%^GREEN%^I%^RESET%^
+Indenting entire code...
+Unterminated string in line 13
+Indentation halted.
+
+	This is pretty self explanatory. Indent relies on a certain 
+amount of coherence in your code, and if your syntax is sufficiently
+munged, it can't figure out how to properly do its thing.
+	Examine the line that indent complains about, and also the
+line before it. Sometimes a good line is accused of being bad, just
+because it comes after a bad line.
+
+
+4) %^CYAN%^I need to [something] in ed, but don't know how!%^RESET%^
+
+
+	While in command mode, type '%^GREEN%^h%^RESET%^' and enter. You'll get
+a handy list of ed commands available to you.
+
+
+5)%^CYAN%^ My ability/patience/time is limited. I want not to use ed.%^RESET%^
+
+
+	I feel your pain. The currently available ways around
+this are:
+
+1) Shell account. If you can get shell, or command line access
+to the computer that is running the mud, then you can probably
+use an editor local to that computer (like vim) to edit files.
+	Chances are, though, that if you are a regular rank-and-file
+creator, you will not be given shell access. Most system admins
+consider giving random people off the net shell access 
+an abomination.
+
+2) Server FTP/SFTP. The server that runs the mud might have an
+ftp server or sftpd access. Again, most security-conscious sysadmins
+will not permit Just Some Person Off The Internet to have this
+kind of access.
+
+3) Mud FTP. I don't like this option. Unix FTPD is a security 
+concern as it is. Using unsupported, un-warrantied mud network code
+to provide ftp access to files seems to me to be equivalent to pulling
+down your pants, bending over, and whistling for the Internet to
+come visit. But...it's an option.
+
+4) Client upload. This is actually the most sensible option, if
+you are truly allergic to ed. You still need to use ed, but what
+you can do is write your code in your favorite local editor, like 
+notepad or gvim or whatever. Then use your mud client (most of them
+have an option to "send text") to send the code by running ed,
+entering input mode, copying the code from your editor, and
+pasting it into your client.
+	This is a somewhat awkward system, and ill-suited to 
+making minor changes. But it has the virtue of working well and
+being a widely available option.
+
+5) Suck it up. Really, you need to just get used to it. Don't
+make me tell you stories about how when I was younger I had to
+code using a VT terminal with no cut-and-paste, in an unheated,
+locked computer lab 20'x10' in size, at 9600 bps. In a snowstorm.
+Uphill both ways.
+
+

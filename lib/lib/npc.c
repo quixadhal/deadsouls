@@ -542,6 +542,7 @@ void eventDescribeEnvironment(int brief) {
 	mapping GetInventory() { return copy(Inventory); }
 
 	varargs string SetRace(string race, mixed extra) {
+	    //if(arrayp(extra) && !sizeof(extra)) extra = ({ ({}), ({}), ({}), ({}), ({}) });
 	    race = living::SetRace(race, extra);
 	    eventCompleteHeal(GetMaxHealthPoints());
 	    return race;

@@ -82,18 +82,55 @@ mixed eventEat(object ob) {
 }
 
 varargs string SetRace(string race, mixed extra) {
-    mixed array args = ({ ({}), ({}), ({}), ({}) });
+    mixed array args = allocate(5);
     mixed array tmp;
+    mixed mixt;
+
+    //tc("args: "+identify(args),"cyan");
 
     RACES_D->SetCharacterRace(race, args);
-    foreach(tmp in args[0]) SetResistance(tmp...);
-    foreach(tmp in args[1]) AddStat(tmp...);
-    if( stringp(args[2]) ) SetLanguage(args[2], 100, 1);
-    if( sizeof(args[3]) == 2 ) SetLightSensitivity(args[3]...);
+    //tc("args: "+identify(args),"green");
+
+    tc("args[4]: "+identify(args[4]));
+
+    if(sizeof(args[4])){
+	foreach(mixed key, mixed val in args[4]){
+	    this_object()->AddSkill(key,atoi(val[1]));
+	}
+    }
+
+    foreach(tmp in args[0]) {
+	mixt = copy(args[0]);
+	//tc("mix args[0] t: "+identify(mixt));
+	//tc("tmp: "+identify(tmp));
+	SetResistance(tmp...);
+    }
+    foreach(tmp in args[1]) {
+	mixt = copy(args[1]);
+	//tc("mix args[1] t: "+identify(mixt));
+	//tc("tmp: "+identify(tmp));
+	AddStat(tmp...);
+    }
+    if( stringp(args[2]) ) {
+	mixt = copy(args[2]);
+	//tc("mix args[2] t: "+identify(mixt));
+	//tc("tmp: "+identify(tmp));
+
+	SetLanguage(args[2], 100, 1);
+    }
+    if( sizeof(args[3]) == 2 ) {
+	mixt = copy(args[3]);
+	//tc("mix args[3] t: "+identify(mixt));
+	//tc("tmp: "+identify(tmp));
+
+	SetLightSensitivity(args[3]...);
+    }
     if( extra != 1 ) NewBody(race);
     if( stringp(extra) ) return (Race = extra), race; 
     else return (Race = race);
 }
+
+
 
 string GetRace() { return Race; }
 

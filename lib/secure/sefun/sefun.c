@@ -74,6 +74,7 @@
 #include "/secure/sefun/query_carrying.c"
 #include "/secure/sefun/findobs.c"
 #include "/secure/sefun/query_names.c"
+#include "/secure/sefun/groups.c"
 
 
 int destruct(object ob) {

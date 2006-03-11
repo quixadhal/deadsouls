@@ -35,7 +35,7 @@ mixed cmd(string arg) {
 	return HELP_D->GetLastError();
     }
     help = center(mud_name()+" System Help", screen[0]) + help;
-    help = wrap(help, screen[0]);
+    if(sizeof(help) < 2000)    help = wrap(help, screen[0]);
     who->eventPage(explode(help, "\n"), MSG_HELP);
     return 1;
 }

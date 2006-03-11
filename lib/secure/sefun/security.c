@@ -42,10 +42,6 @@ int member_group(mixed who, string grp) {
 
 int check_privs(mixed pretender, mixed target){
     int x;
-    //if(stringp(pretender)) write("pretender: "+pretender);
-    //if(stringp(target)) write("target: "+target);
-    //if(objectp(pretender)) write("pretender: "+base_name(pretender));
-    //if(objectp(target)) write("target: "+base_name(target));
     if(stringp(pretender)) pretender = load_object(pretender);
     if(objectp(target)) target = base_name(target)+".c";
     if(!stringp(target)) x= 1;
@@ -60,11 +56,6 @@ int check_privs(mixed pretender, mixed target){
       grepp(target,homedir(pretender)) ) x= 17;
     else if(archp(pretender)) x= 18;
     else x= 9;
-    //write("target: "+target);
-    //write("homedir: "+"realms/"+this_player()->GetKeyName());
-    //write("homedir(): "+homedir(this_player()));
-    //write("first_string_element(target,\"/\",1): "+first_string_element(target,"/",1));
-    //write("\nLET X = "+x);
     if(x < 10) return 0;
     if(x > 10) return 1;
 }

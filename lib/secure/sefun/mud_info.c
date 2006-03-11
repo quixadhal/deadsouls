@@ -1,7 +1,7 @@
 //      /adm/simul_efun/mud_info.c
 //      from the Dead Souls Mudlib
 //      gives information simul_efuns about the mud
-//      created by Descartes of Borg 930814
+//      created by Descartes of Borg
 
 #include <config.h>
 
@@ -27,7 +27,7 @@ string architecture() { return __ARCH__; }
 
 string mudlib() { return "Dead Souls"; }
 
-string mudlib_version() { return "2.0r14"; }
+string mudlib_version() { return "2.0r15"; }
 
 int query_host_port() { return __PORT__; }
 

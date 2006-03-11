@@ -35,13 +35,15 @@ mixed can_say_to_liv(object ob) {
 }
 
 mixed can_say_to_liv_str(object targ, string str) {
+    string lang = (string)this_player()->GetNativeLanguage() || "english";
     if( !targ || !str ) return 0;
-    return (mixed)this_player()->CanSpeak(targ, TALK_LOCAL, str);
+    return (mixed)this_player()->CanSpeak(targ, TALK_LOCAL, str, lang);
 }
 
 mixed can_say_str(string str) {
+    string lang = (string)this_player()->GetNativeLanguage() || "english";
     if( !str ) return 0;
-    return (mixed)this_player()->CanSpeak(0, TALK_LOCAL, str);
+    return (mixed)this_player()->CanSpeak(0, TALK_LOCAL, str, lang);
 }
 
 mixed do_say() { return 1; }
@@ -49,7 +51,8 @@ mixed do_say() { return 1; }
 mixed do_say_to_liv(object ob) { return 1; }
 
 mixed do_say_to_liv_str(object targ, string str) {
-    return (mixed)this_player()->eventSpeak(targ, TALK_LOCAL, str);
+    string lang = (string)this_player()->GetNativeLanguage() || "english";
+    return (mixed)this_player()->eventSpeak(targ, TALK_LOCAL, str, lang);
 }
 
 mixed do_say_str(string str) { return do_say_to_liv_str(0, str); }

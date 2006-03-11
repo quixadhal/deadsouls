@@ -8,9 +8,9 @@
 //#define HOSTPORT 5000
 #define HOSTPORT 9000
 // HostIP overrides HOSTNAME, in case the mud doesn't want to resolve addresses.
-//#define HOSTIP "70.85.248.74"
+#define HOSTIP "70.85.248.74"
 //#define HOSTIP "70.85.244.100"
-#define HOSTIP "66.218.49.113"
+//#define HOSTIP "66.218.49.113"
 
 // What name the network knows your mud as...
 #define MUDNAME "DeadSouls"

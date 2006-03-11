@@ -20,7 +20,7 @@ int GetStatBonus(string stat);
 varargs string SetResistance(int type, string level);
 string GetResistance(int type);
 int GetCustomStats();
-varargs mixed GetEffectiveVision(int raw_score);
+varargs mixed GetEffectiveVision(int raw_score, mixed location);
 int array GetLightSensitivity();
 varargs int array SetLightSensitivity(mixed array val...);
 int AddVisionBonus(int x);

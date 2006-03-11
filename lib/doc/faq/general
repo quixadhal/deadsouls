@@ -1,0 +1,180 @@
+Dead Souls FAQ, v2
+
+Written by Cratylus @ Frontiers, October 2005
+Updated January 2006
+
+%^GREEN%^ What is Dead Souls? %^RESET%^ 
+
+	Primarily Dead Souls is a "mudlib". There is also a Dead Souls 
+MUD, but this is not what people generally mean when they refer to Dead Souls as a 
+game. It also happens that a book by the Russian author Nikolai Gogol is named Dead 
+Souls. That book is wholly unrelated to the Dead Souls software.
+
+%^GREEN%^ What is it for? %^RESET%^
+
+	It's for building a game. If what you want to do is play a game, 
+you're looking for something else. 
+
+%^GREEN%^ What is a MUD? %^RESET%^  
+
+	A MUD is a computer program that uses text (very rarely do MUDs 
+use graphics or sound) to describe virtual environments you can manipulate. 
+You enter a command, the program tells you how the virtual world responds 
+around you. Typically there are other people connected to the same program 
+over the Internet, and you can interact with them as well. A MUD can be mostly 
+social, or mostly game oriented, with quests and puzzles to solve or 
+villains to defeat. The name MUD is an acronym that originally stood for 
+"Multi-User Dungeon", in accord with the "Dungeons and Dragons" style of 
+many early MUDs. Now it stands for different things to different people, 
+but the basic concept of operation is the same, whether the game is set 
+on the moon, in Manhattan, or in Middle Earth.
+
+%^GREEN%^ What's a mudlib? %^RESET%^ 
+
+	Generally there are two main parts to the MUD program. First is the 
+"driver". This is an executable program file (in Windows, you'd see the driver 
+has an .EXE extension) that enables the input and output of data, accepts 
+network connections, performs basic calculations, etc. The other part 
+is the mudlib, or, more properly, MUD object library. This is usually a 
+large set of files in plain text that the driver reads and uses as a 
+basis for the game. Some files provide information about rooms and 
+environments, some files provide information about objects or creatures, 
+etc. When players connect, the driver provides them the world that these 
+files describe. 
+
+%^GREEN%^ When I configure Dead Souls, it says it is a MUD. If it is really a mudlib, 
+why would that be? %^RESET%^ 
+
+	Dead Souls is not intended to be a fully-developed MUD when you 
+install it. Instead it provides you with the basic framework you need to 
+make a MUD of your own. After you set up Dead Souls, you should rename it, 
+and customize the lib (that is, library) files to create your own world. When
+ you first run Dead Souls, you will have some rooms available to explore. 
+This is not your mud. It is just a set of sample places and objects to help 
+you understand how to build a MUD of your own. So in a way, Dead Souls provides 
+you a kind of "starter" MUD, but since it's just examples, you can't really 
+consider it a MUD until you change it to suit your creative vision. 
+
+%^GREEN%^ Is Dead Souls really Nightmare in disguise? %^RESET%^ 
+
+	Let's break this question down into its components:
+
+%^GREEN%^ What is Nightmare? %^RESET%^ 
+
+	Nightmare was a mud. It was part of a branching of mud development 
+that occurred early in the days of popularized mudding. Some folks 
+decided to take MUD library development in a particular direction, 
+and eventually made available what is now known as the Nightmare mudlib. 
+Nightmare went through a few major changes, most notably from version 3 
+to version IV. By that time, the development of Nightmare was solely 
+managed by a coder who called himself Descartes.
+
+%^GREEN%^ What is the relationship between Nightmare and Dead Souls? %^RESET%^ 
+
+	It appears that Dead Souls began as a "development" MUD. This means 
+that while Descartes ran his own MUD, he also worked on improving that MUD's 
+lib. It is unwise to make major changes to a MUD that people are playing on, 
+so the Dead Souls development MUD was one which served as a platform to 
+develop, extend, and improve the Nightmare lib without risking harm to active players. 
+Sometime after the release of the Nightmare IV mudlib, Descartes decided to 
+withdraw it from distribution. Based on their interpretation of copyright 
+law, people now do not distribute the Nightmare mudlib on Internet servers. 
+However, somewhat inexplicably, Descartes released the mudlib for his 
+development mud, Dead Souls, into the public domain. This meant that the 
+Dead Souls mudlib was completely free to be used by anyone in any way they 
+chose, be it distribution, modification, spindling or folding. Because Dead 
+Souls was the development mud for Nightmare Mud, which was the base of the 
+Nightmare mudlib, the relationship between the two is an extremely close one.
+
+%^GREEN%^ How close? %^RESET%^
+
+	Frankly, almost identical. A close comparison of the Dead Souls lib 
+that Descartes released (version 1.1pre) against the last released Nightmare 
+lib (IVr6) reveals that they are very nearly the same thing, file for file. 
+The main differences between the two are:
+
+* A small number of Nightmare library files aren't on Dead Souls.
+* Dead Souls doesn't come with the driver or install script the Nightmare had.
+* All documentation files were removed from Dead Souls.
+* "Nightmare" in file headers was changed to say "Dead Souls"
+
+This might sound like a lot of difference, but consider this: not counting 
+documentation, Nightmare IVr6 lib contained 1064 files and directories, and 
+the Dead Souls 1.1pre lib contains 1082. Dead Souls 1.1pre actually had more 
+lib material in it than the last release of Nightmare.
+
+%^GREEN%^ Why mess with Dead Souls, then? %^RESET%^ 
+
+	The main problem was that Dead Souls was a bear to set up. Because 
+driver development had not stopped (the driver is a separate software project), 
+but lib development had, incompatibilities grew in number over time. Using 
+the original driver from 1997 created a MUD that lacked important features 
+of modern muds, and risked instability. Using a modern driver required a 
+modification of fundamental lib systems that required some expertise to 
+perform. People stopped using Nightmare because they couldn't get it, and 
+they didn't use Dead Souls because the damn thing didn't work right. My own 
+Nightmare lib MUD, Frontiers, continued to chug along, quietly fading into 
+obscurity along with all other Nightmare IV based MUDs, while scrappy young 
+newcomers like CoffeeMud lib started elbowing their way into the MUD community. 
+
+	Then a funny thing happened. I really got into lib coding. I mean, full-on 
+lib obsession. I can't really explain it, other than to say that when I was 
+younger it seemed hard and impenetrable, but now that I've been working in a 
+technical field for years, I have the mental tools (and patience) required to 
+disassemble  and understand complex systems. I got turned on by analyzing and 
+understanding stuff that I'd considered over my head in years past. But I 
+realized I was living in the past. I couldn't share my exciting lib ideas 
+and discoveries with anyone else, because the Nightmare LPC community was 
+in the very last stages of extinction. 
+
+	I decided to do something about it. Maybe I'd be whistling into the wind, 
+tilting at windmills, or even worse, just talking to myself. But I decided 
+I'd make Dead Souls a viable lib for people to use, because it would be fun, 
+and because it might be nice to have other people to bounce ideas off of and 
+steal code from. At worst, I'd be doing nothing more pathetic than, say, 
+building model ships in my basement. At best, I might revive a once-thriving 
+MUD development community. Either way, it sounded like an enjoyable project, 
+so I proceeded.
+
+%^GREEN%^ Fine, but what's so special about Nightmare/Dead Souls? Why are you making such a 
+big deal of wanting people to use it? It isn't better than everything else, 
+surely. [insert mudlib name here] is newer and has [insert feature here] and [other feature]! %^RESET%^  
+
+	Yes, that may be. My experience with other libs is limited, and I'm sure 
+that Dead Souls pales in comparison to others in one feature or another. My only 
+answer to that is, go ahead and use the lib you're comfortable with. I make no 
+claims of superiority. Hell, I'll be the first to admit there are still things 
+to fix and systems to implement. But if you are not sure which lib to pick, 
+Dead Souls is an excellent choice as a solid, stable, flexible and powerful platform 
+to build your MUD. You can do anything in a MUD with LPC, and I mean anything. 
+If you happen to have Nightmare experience, Dead Souls will be a homecoming...
+like an old comfortable shoe....but without the holes or the stink.
+
+%^GREEN%^ What's LPC? %^RESET%^ 
+
+	LPC is a kind of programming language. Dead Souls lib files don't 
+just contain descriptions of places and things: they have a format that describes 
+their relationships to the driver and permits you to do fancy stuff...pretty much 
+any text MUD thing you can think of, you can do in LPC.  
+
+%^GREEN%^ How do I get started? %^RESET%^ 
+
+	Download the latest version from http://dead-souls.sourceforge.net/ 
+or http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls and 
+install it. There are versions available for Windows and for Unix. The main 
+difference between the two is the driver. The Windows driver is a Windows 
+executable. The Unix driver is in source code form and must be compiled.
+	The lib files for both versions are identical.
+
+	Once you log in, read the Players Handbook and the Creators Manual.
+
+
+%^GREEN%^ Anything else? %^RESET%^
+
+Read the Dead Souls Admin FAQ.
+ 
+
+The end.
+
+Dead Souls Homepage
+

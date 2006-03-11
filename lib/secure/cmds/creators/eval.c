@@ -46,7 +46,7 @@ int cmd( string a )
 	return 0;
     }
     filename += "CMD_EVAL_TMP_FILE.c";
-    if(archp(previous_object())) filename = "/secure/tmp/"+previous_object()->GetKeyName()+"_CMD_EVAL_TMP_FILE.c";
+    if(securep(previous_object())) filename = "/secure/tmp/"+previous_object()->GetKeyName()+"_CMD_EVAL_TMP_FILE.c";
     // long name so won't coincide with file already in your directory by accident
     rm( filename );
     if( ret = find_object( filename ) ) destruct( ret );

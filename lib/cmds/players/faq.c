@@ -32,8 +32,9 @@ mixed cmd(string args) {
 
 static void GetFAQ(string args) {
     string file;
-
-    if( !args || args == "" ) args = "general";
+    //bugfix courtesy of Manchi
+    if( !args || args == "" || args == "y" || args == "Y" || lower_case(args) == "yes")
+	args = "general";
     if( file_size(file = DIR_FAQS "/" + args) < 0 ) {
 	message("error", "No such FAQ available.", this_player());
 	return;

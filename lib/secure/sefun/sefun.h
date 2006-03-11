@@ -170,11 +170,19 @@ mixed check_light(object who);
 int query_carrying(object who, mixed thing);
 mixed *findobs(mixed arg);
 int atoi(string str);
+int itoa(int i);
 string *query_names(object whom);
 int answers_to(string name, object what);
 varargs void add_event(string source, string ob, string fun, mixed *args, int when, int repeat);
 varargs void remove_event(int i);
 object update(string str);
 mixed local_ctime(int i);
+int numericp(mixed arg);
+int basic_punctuationp(mixed arg);
+mixed mapping_member(mapping Map, string sub);
+mixed find_inheritors(mixed arg);
+mixed find_deep_inheritors(mixed arg);
+int imud_privp(mixed guy);
+int securep(mixed guy);
 
 #endif /* l_sefun_h */

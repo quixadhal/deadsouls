@@ -13,9 +13,10 @@ which you learn based on your race.
 As time goes on, you may wish to learn new languages.  Certain npc's
 across Dead Souls specialize in teaching people other languages.  In
 order to learn a new language, use the "ask" command to ask the npc to
-teach you the language.  The syntax is <ask LCampusING to teach me LANGUAGE>.
+teach you the language.  The syntax is <ask LIVING to teach me LANGUAGE>.
 For example:
-	ask the sage to teach me nymal
+
+	%^GREEN%^ask the sage to teach me nymal%^RESET%^
 
 Not all teachers may know all languages.  The teacher must naturally
 know the language in order to teach it.
@@ -23,5 +24,16 @@ know the language in order to teach it.
 The teacher will generally start spouting phrases in the language,
 asking you to repeat them.  It is to your advantage to try and repeat
 what the teacher is saying in the language it is being said.
+
+To know what languages you speak, type: language
+
+To speak in a language other than your native one, type:
+
+speak in LANGUAGE MESSAGE
+
+example:
+
+%^GREEN%^speak in edhellen hi i speak a little elvish%^RESET%^
+
 
 See also: ask, shout, speak

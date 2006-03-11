@@ -58,3 +58,21 @@ varargs mapping add_maps(mapping FirstMap,mapping  SecondMap, int preference){
     return OutMap;
 }
 
+int mgrepp(string primary, string *sub){
+    foreach(string element in sub){
+	if(strsrch(primary,element) != -1) return 0;
+    }
+    return 1;
+}
+
+mixed mapping_member(mapping Map, string sub){
+    foreach(mixed key, mixed val in Map){
+	if(stringp(key) && key == sub) return key;
+	else if(arrayp(key) && member_array(sub, key) != -1) return key;
+    }
+    return 0;
+}
+
+
+
+

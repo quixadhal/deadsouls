@@ -58,6 +58,6 @@ int GetRadiantLight(int ambient);
 
 void eventLoad(mixed *value, int recurse);
 
-/* pure virtual */ varargs mixed GetEffectiveVision(int raw_score);
+/* pure virtual */ varargs mixed GetEffectiveVision(int raw_score, mixed location);
 
 #endif /* l_interactive_h */

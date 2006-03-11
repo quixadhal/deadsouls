@@ -18,7 +18,7 @@ mixed cmd(string str) {
     string who, msg, tmp, machine_message;
 
     if(!str) return notify_fail("Syntax: <tell [who] [message]>\n");
-    if(this_player()->GetMagicPoints() < 5) {
+    if(this_player()->GetMagicPoints() < 15) {
 	write("You lack sufficient magic to tell to anyone right now.");
 	return 1;
     }
@@ -58,7 +58,7 @@ mixed cmd(string str) {
 	if(msg == "") return notify_fail("What do you wish to tell?\n");
     }
     else {
-	this_player()->AddMagicPoints(-5);
+	this_player()->AddMagicPoints(-15);
 	SERVICES_D->eventSendTell(who, mud, msg);
 	return 1;
     }
@@ -66,11 +66,11 @@ mixed cmd(string str) {
 	string frm;
 	mixed err;
 
-	machine=present("cratylus' answering machine",ob);
+	machine=present("answering machine",ob);
 	if(archp(ob)) frm = (string)this_player()->GetCapName();
 	else frm = (string)this_player()->GetName();
-	if(ob && !creatorp(ob)) this_player()->AddMagicPoints(-5);
-	if(machine){
+	if(ob && !creatorp(ob)) this_player()->AddMagicPoints(-15);
+	if(machine && base_name(machine) == "/secure/obj/machine"){
 	    int parse_it;
 	    parse_it=machine->query_answer();
 	    if(parse_it){
@@ -81,7 +81,7 @@ mixed cmd(string str) {
 	    }
 	}
 	if( (err = (mixed)this_player()->CanSpeak(ob, "tell", msg)) != 1){
-	    if(ob && !creatorp(ob)) this_player()->AddMagicPoints(5);
+	    if(ob && !creatorp(ob)) this_player()->AddMagicPoints(15);
 	    return err || "Tell whom what?";
 	}
 	if( ob->GetInvis() && creatorp(ob) && !archp(this_player()) ) {

@@ -20,14 +20,13 @@ static void create() {
 	({"ceiling","high ceiling"}) : "The high, vaulted ceiling "+
 	"provides plenty of headroom." 
       ]) );
+    SetExits( ([ 
+	"east" : "/domains/town/room/adv_guild",
+      ]) );
     SetInventory(([
 	"/domains/town/npc/radagast" : 1,
 	"/domains/town/obj/bbucket" : 1,
       ]));
-    SetExits( ([ "east" : "/domains/town/room/adv_guild"
-      ]) );
-    AddExit("west" , "/domains/town/room/test.c");
-    SetObviousExits("e");
     SetPlayerKill(1);
 }
 void init(){

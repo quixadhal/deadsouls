@@ -3,7 +3,7 @@
 inherit LIB_STORAGE;
 
 void create(){
-    ::create();
+    storage::create();
 }
 
 int eventPutOn(object player, object item){

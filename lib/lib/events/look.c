@@ -100,25 +100,19 @@ varargs mixed AddItem(mixed item, mixed val) {
 }
 
 varargs mixed GetItem(string item, object who) {
-    mixed val = Items[item];
+    mixed val = mapping_member(Items, item);
 
     if( !val ) {
 	return 0;
     }
-    if( stringp(val) ) {
-	return val;
+    if( stringp(val) || arrayp(val)) {
+	return Items[val];
     }
     else if( functionp(val) ) {
 	if( functionp(val) & FP_OWNER_DESTED ) {
 	    return "An error occurred evaulating a function pointer.";
 	}
 	return evaluate(val, who, item);
-    }
-    else if( arrayp(val) ) {
-	if( sizeof(val) != 2 ) {
-	    return 0;
-	}
-	return val[query_night()];
     }
     else {
 	return 0;
@@ -127,6 +121,10 @@ varargs mixed GetItem(string item, object who) {
 
 string array GetItems() {
     return keys(Items);
+}
+
+mapping GetItemsMap(){
+    return copy(Items);
 }
 
 mapping RemoveItem(mixed item) {
@@ -142,7 +140,7 @@ mapping RemoveItem(mixed item) {
 }
 
 mapping SetItems(mapping items) {
-    return (Items = expand_keys(items));
+    return (Items = copy(items));
 }
 
 varargs string GetLong(string str) {

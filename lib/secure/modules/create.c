@@ -15,12 +15,13 @@ int eventDelete(object ob, string value);
 string global1, global2, globaltmp, globalvalue;
 
 string *base_arr = ({"SetUnique", "SetNoClean","SetNoModify","SetProperties","SetLong","SetShort","SetItems","SetListen","SetSmell"});
-string *item_arr = base_arr + ({"SetDisableChance", "SetDamagePoints", "SetVendorType","SetNoCondition","SetMoney","SetKeyName", "SetId", "SetMass","SetCost","SetValue","SetAdjectives","SetDamagePoints","SetBaseCost" });
+string *item_arr = base_arr + ({"SetLanguage","SetRead","SetDefaultRead","SetDisableChance", "SetDamagePoints", "SetVendorType","SetNoCondition","SetMoney","SetKeyName", "SetId", "SetMass","SetCost","SetValue","SetAdjectives","SetDamagePoints","SetBaseCost" });
 string *meal_arr = item_arr + ({ "SetMealType", "SetStrength"}) -({"SetDamagePoints"});
 string *storage_arr = item_arr + ({"SetMaxCarry","SetInventory", "SetCanClose", "SetCanLock","SetMaxRecurse","SetLocked","SetClosed","SetKey"});
-string *room_arr = base_arr - ({"SetUnique"}) + ({"SetTown","SetNightLong","SetDayLong","SetClimate","SetAmbientLight","SetNightLight","SetDayLight","SetObviousExits", "SetInventory", "SetEnters"});
-string *npc_arr = base_arr - ({"SetItems"}) + ({"SetCanBite", "SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat"});
+string *room_arr = base_arr - ({"SetUnique"}) + ({"SetNoObviousExits","SetDefaultExits","SetTown","SetNightLong","SetDayLong","SetClimate","SetAmbientLight","SetNightLight","SetDayLight","SetObviousExits", "SetInventory", "SetEnters"});
+string *npc_arr = base_arr - ({"SetItems"}) + ({"SetSpellBook", "SetCanBite", "SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat"});
 string *barkeep_arr = npc_arr + ({"SetLocalCurrency","SetMenuItems"});
+string *trainer_arr = npc_arr + ({"AddTrainingSkills"});
 string *vendor_arr = npc_arr + ({"SetLocalCurrency","SetStorageRoom","SetMaxItems","SetVendorType"});
 string *armor_arr = item_arr +({"SetRestrictLimbs","SetProtection","SetArmorType"});
 string *weapon_arr = item_arr + ({"SetClass","SetWeaponType","SetDamageType","SetHands"});
@@ -31,7 +32,7 @@ string *door_arr = ({"SetLong","SetShort","SetLocked","SetClosed","SetCanLock","
 string *book_arr = item_arr + ({"SetTitle","SetSource"});
 string *worn_storage_arr = armor_arr + storage_arr;
 
-string *all_arr = storage_arr + door_arr + room_arr + barkeep_arr + armor_arr + weapon_arr + bed_arr +meal_arr + vendor_arr;
+string *all_arr = storage_arr + door_arr + room_arr + barkeep_arr + armor_arr + weapon_arr + bed_arr +meal_arr + vendor_arr +trainer_arr;
 
 string GetSettings(string str){
     string ret;
@@ -43,6 +44,7 @@ string GetSettings(string str){
     case "mob" : name = npc_arr; break;
     case "barkeep" : name = barkeep_arr; break;
     case "vendor" : name = vendor_arr; break;
+    case "trainer" : name = trainer_arr; break;
     case "armor" : name = armor_arr; break;
     case "armour" : name = armor_arr; break;
     case "weapon" : name = weapon_arr; break;
@@ -74,6 +76,7 @@ mapping QueryMap(string str,object ob){
     case "SetInventory" : return ob->GetInventory();break;
     case "SetEnters" : return ob->GetEnterMap();break;
     case "SetMenuItems" : return ob->GetMenuItems();break;
+    case "SetSpellBook" : return ob->GetSpellBook();break;
     default : return ([]);
     }
 
@@ -125,6 +128,7 @@ mixed eventModify(object ob, string str){
     if(inherits(LIB_SENTIENT,ob)) inheritance += " npc";
     if(inherits(LIB_BARKEEP,ob)) inheritance += " barkeep";
     if(inherits(LIB_VENDOR,ob)) inheritance += " vendor";
+    if(inherits(LIB_TRAINER,ob)) inheritance += " trainer";
     if(inherits(LIB_WEAPON,ob)) inheritance += " weapon";
     if(inherits(LIB_ARMOR,ob)) inheritance += " armor";
     if(inherits(LIB_ITEM,ob)) inheritance += " item";
@@ -173,6 +177,7 @@ mixed eventModify(object ob, string str){
     case "climate" : out = "SetClimate";break;
     case "setclimate" : out = "SetClimate";break;
     case "light" : out = "SetAmbientLight";break;
+    case "ambientlight" : out = "SetAmbientLight";break;
     case "setlight" : out = "SetAmbientLight";break;
     case "nightlight" : out = "SetNightLight";break;
     case "setnightlight" : out = "SetNightLight";break;
@@ -393,6 +398,25 @@ mixed eventModify(object ob, string str){
 	case "setmaxitems" : out = "SetMaxItems";break;
 	case "setstorageroom" : out = "SetStorageRoom";break;
 	case "storageroom" : out = "SetStorageRoom";break;
+	case "defaultread" : out = "SetDefaultRead";break;
+	case "setdefaultread" : out = "SetDefaultRead";break;
+	case "setread" : out = "SetRead";setmap = 1;break;
+	case "read" : out = "SetRead";setmap = 1;break;
+	case "language" : out = "SetLanguage";break;
+	case "lang" : out = "SetLanguage";break;
+	case "setlang" : out = "SetLanguage";break;
+	case "setlanguage" : out = "SetLanguage";break;
+	case "setspellbook" : out = "SetSpellBook";break;
+	case "spellbook" : out = "SetSpellBook";break;
+	case "spells" : out = "SetSpellBook";break;
+	case "addtrainingskills" : out = "AddTrainingSkills";break;
+	case "settrainingskills" : out = "AddTrainingSkills";break;
+	case "trainingskills" : out = "AddTrainingSkills";break;
+	case "training" : out = "AddTrainingSkills";break;
+	case "defaultexits" : out = "SetDefaultExits";break;
+	case "setdefaultexits" : out = "SetDefaultExits";break;
+	case "setnoobviousexits" : out = "SetNoObviousExits";break;
+	case "noobviousexits" : out = "SetNoObviousExits";break;
 	default : out = mode;
 	}
     }
@@ -455,6 +479,7 @@ mixed eventModify(object ob, string str){
     if(grepp(inheritance,"room") && member_array(out,room_arr) != -1) invalid = 0;
     if(grepp(inheritance,"barkeep") && member_array(out,barkeep_arr) != -1) invalid = 0;
     if(grepp(inheritance,"vendor") && member_array(out,vendor_arr) != -1) invalid = 0;
+    if(grepp(inheritance,"trainer") && member_array(out,trainer_arr) != -1) invalid = 0;
     if(grepp(inheritance,"npc") && member_array(out,npc_arr) != -1) invalid = 0;
     if(grepp(inheritance,"weapon") && member_array(out,weapon_arr) != -1) invalid = 0;
     if(grepp(inheritance,"armor") && member_array(out,armor_arr) != -1) invalid = 0;
@@ -498,7 +523,7 @@ mixed eventModify(object ob, string str){
 	return 1;
     }
 
-    array_props = ({"SetId","SetAdjectives","SetRestrictLimbs"});
+    array_props = ({"AddTrainingSkills", "SetId","SetAdjectives","SetRestrictLimbs"});
     if(member_array(out,array_props) != -1){
 	this_object()->eventStartGenericQuestions(ob, tmpfile, ({value}), out);
 	return 1;

@@ -9,23 +9,48 @@
 "scyld", "sweorda", "narthex", "luft", "mit", "folnar",\
 "temba", "temak", "le","la","nous","avec","mais","foutre",\
 "cyning", "thara", "stanas", "seo", "stanum", "res", "ipso","stana",\
-"meh", "nehi", "samastahum", "tora", "kia ab", "boltehe", \
+"meh", "nehi", "samastahum", "tora", "kia-ab", "boltehe", \
 "ata", "mevin", "ivrit", "ktzat", "lo", "ani", "tov","aval", \
 "verstehen", "sie", "bisschen", "sehr", "aber", "etwas", "keinen",\
 "shomo", "mifahmin", "mifahmam", "katalavenete", "hellenika",\
 "spreek", "uw", "vrauw", "nit", "shiz", "se","pericolo",\
 "iskit", "imhud", "halas", "sagud", "imche", "eigoga", "nihongo",\
 "wakarimaska", "wakarimasen", "samastihenh", "iye", "hai",\
-"ni", "huei", "shwa", "potong hwa", "mah", "wa", "ideahr",\
+"ni", "huei", "shwa", "potong-hwa", "mah", "wa", "ideahr",\
 "khairei", "hoc", "propter", "auch", "vielen",\
 "forshtor", "deuw", "noshk", "puedo", "pero", "debajo" , "atras",\
 "mientras", "desde", "nunca", "haka", "silflay", "embleer", "hraka",\
-"mbembe", "mau mau","tiki","meka","leka","hai","haini","ho", \
+"mbembe", "mau-mau","tiki","meka","leka","hai","haini","ho", \
 "chonny","mola","chala","hala","hei","thlon","mey","nikto",\
-"ecgum", "eyne", "sobre","dupa","zum","schlammpe","jodio","con",\
-"narfle", "garthak", "hokanda matuso","oota goota","mafi","makka",\
-"shukran", "akbar",\
+"ecgum", "eyne", "sobre","dupa","zum","schlampe","jodio","con",\
+"narfle", "garthak", "hokanda-matuso","oota-goota","mafi","makka",\
+"shukran", "akbar", "mokele",\
 "curiae", "aethelingas", "eorlas","carajo","oder",\
+"ae","aroha","awarua","atua","tenei",\
+"tangata","koa","kora","hupane","upane",\
+"baardaap","droogkloot","reetketelsteenbeeldhouwer","asbak","haka",\
+"zaadje","verkloten","teef","moffie","shele",\
+"anasi","atouche","ayir","boos","teezee",\
+"durka","haista","vittu","kyrpä","räkä",\
+"suoro","voi","debil","kunel","shinel",\
+"sasikumea","zakila","txakurra","soustat","irrumator",\
+"mentula","koproskilo","malakas","la'a'za'zel","zayin",\
+"ar","ot","ti","fi","na",\
+"ar","ot","ti","fi","na",\
+"ar","ot","ti","fi","na",\
+"ar","ot","ti","fi","na",\
+"ar","ot","ti","fi","na",\
+"ar","ot","ti","fi","na",\
+"o","u","y","e",\
+"o","u","y","e",\
+"o","u","y","e",\
+"o","u","y","e",\
+"o","u","y","e",\
+"o","u","y","e",\
+"ki","ika","ita","ite","ni",\
+"ki","ika","ita","ite","ni",\
+"kii-oto","kii-oto","kii-oto","kii-oto","kii-oto",\
+"kii-ateh","kii-ateh","kii-ateh","kii-ateh","kii-ateh",\
 })
 
 string translate(string str, int prof) {
@@ -36,8 +61,13 @@ string translate(string str, int prof) {
 
 	fs = sizeof(FLUBS);
 	words = explode(str, " ");
-	for(i=0, maxi = sizeof(words); i < maxi; i++)
-	    if( random(100) >= prof ) words[i] = FLUBS[random(fs)];
+	for(i=0, maxi = sizeof(words); i < maxi; i++){
+	    string prefix = "";
+	    string suffix = "";
+	    if(!alphap(first(words[i],1))) prefix = first(words[i],1);
+	    if(!alphap(last(words[i],1))) suffix = last(words[i],1);
+	    if( random(100) >= prof ) words[i] = prefix+FLUBS[random(fs)]+suffix;
+	}
 	return implode(words, " ");
     }
 }

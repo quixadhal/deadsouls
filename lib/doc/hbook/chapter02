@@ -7,30 +7,30 @@ Section 1: Manipulating Objects
     You've already noticed that Dead Souls, like most modern LP muds,
 uses natural-like command syntax, like:
 
-read first handbook
+%^GREEN%^read first handbook%^RESET%^
 
 rather than:
 
-read handbook 1
+%^GREEN%^read handbook 1%^RESET%^
 
     This is because Dead Souls uses a natural language parser. It isn't
 perfect, of course. If you try to "put all apples from box in my bag after
 opening them" you won't see much success, but this will work:
 
-open box
+%^GREEN%^open box%^RESET%^
 
-open bag
+%^GREEN%^open bag%^RESET%^
 
-get apples from box
+%^GREEN%^get apples from box%^RESET%^
 
-put apples in bag
+%^GREEN%^put apples in bag%^RESET%^
 
     The parser will understand "the first box" or "my second bag",
 assuming those objects exist in your inventory or in your environment.
 
     If you want to know what is in the box, the command is:
 
-look in box
+%^GREEN%^look in box%^RESET%^
 
     The command "look at box" or "examine box" will usually *not* show
 you the contents of that box. This is because normally, boxes are
@@ -44,7 +44,7 @@ outside.
 the nature of the object. A table, for example, can have things on it,
 and typing:
 
-look at table 
+%^GREEN%^look at table %^RESET%^
 
     ...will usually let you know what is on it. It is also possible to
 see what other players are carrying by just looking at them, 
@@ -53,7 +53,7 @@ unless what they have is inside a container.
 if you want to put that apple on a surface like a table, you'll
 need to:
 
-put apple on table
+%^GREEN%^put apple on table%^RESET%^
 
     You can give things to people, and they will automatically
 accept them. However, you may not "take" or "get" things from living
@@ -77,12 +77,12 @@ the ones you use most often to handle simple objects.
    Dead Souls understands both definite and indefinite articles.
 This means that you can refer to a specific apple, like so:
 
-get the apple
+%^GREEN%^get the apple%^RESET%^
 
    But you can also be unspecific. If there are a dozen
 apples in a crate and you don't care which one you pick up:
 
-get an apple from the crate
+%^GREEN%^get an apple from the crate%^RESET%^
 
 
 Section 2: Navigation
@@ -93,9 +93,9 @@ can expect to move mostly in cardinal directions (like north and
 northwest), but you may sometimes need to go up, down, or out.
     Strictly speaking, the way to do this is:
 
-go south
+%^GREEN%^go south%^RESET%^
 
-go out
+%^GREEN%^go out%^RESET%^
 
     ...and so on, but this can get tedious after a while. Instead
 of having to type in "go" plus the entire direction, the mud allows
@@ -116,19 +116,19 @@ that just doesn't happen to be very obvious.
 that require more specific locomotion than just "go". These are
 examples of the use of some other commands to get around:
 
-jump onto road
+%^GREEN%^jump onto road%^RESET%^
 
-enter window
+%^GREEN%^enter window%^RESET%^
 
-climb ladder
+%^GREEN%^climb ladder%^RESET%^
 
-crawl east   (if you are lying down and can't get up)
+%^GREEN%^crawl east%^RESET%^   (if you are lying down and can't get up)
 
-fly up
+%^GREEN%^fly up%^RESET%^
 
-follow thief
+%^GREEN%^follow thief%^RESET%^
 
-evade hunter
+%^GREEN%^evade hunter%^RESET%^
 
 
 Section 3: Armor
@@ -150,11 +150,11 @@ whether it's a lot or a little, it protects you.
     Properly coded armor must be worn on the corect limbs. Usually
 a command like:
 
-wear chainmail
+%^GREEN%^wear chainmail%^RESET%^
 
 or
 
-wear all
+%^GREEN%^wear all%^RESET%^
 
     ...will cause you to automatically wear armor where it makes 
 most sense. However, it is possible to find armor that,
@@ -203,71 +203,71 @@ are exactly what some monster is most vulnerable to.
     Note also that, like armor, weapons wear down with use.
 Examples of commands that involve weapons or fighting:
 
-wield sword
+%^GREEN%^wield sword%^RESET%^
 
-wield hammer in left hand
+%^GREEN%^wield hammer in left hand%^RESET%^
 
-wield staff in left hand and right hand
+%^GREEN%^wield staff in left hand and right hand%^RESET%^
 
-unwield dagger
+%^GREEN%^unwield dagger%^RESET%^
 
-shoot gun at otik
+%^GREEN%^shoot gun at otik%^RESET%^
 
-throw dart at beggar
+%^GREEN%^throw dart at beggar%^RESET%^
 
-kill all  (this makes an enemy of everyone in the room)
+%^GREEN%^kill all%^RESET%^  (this makes an enemy of everyone in the room)
 
-ignore first orc (lets you concentrate on the other orcs)
+%^GREEN%^ignore first orc%^RESET%^ (lets you concentrate on the other orcs)
 
-ignore all (don't fight anyone in the room, even if they are attacking you)
+%^GREEN%^ignore all%^RESET%^ (don't fight anyone in the room, even if they are attacking you)
 
-target boss orc (this makes you ignore attacks from anyone else)
+%^GREEN%^target boss orc%^RESET%^ (this makes you ignore attacks from anyone else)
 
-wimpy 30 (this makes you run away if your health points drop below 30%)
+%^GREEN%^wimpy 30%^RESET%^ (this makes you run away if your health points drop below 30%)
 
 
 Section 5: Miscellaneous Things to to with Things
 ---------
 
-turn on flashlight
+%^GREEN%^turn on flashlight%^RESET%^
 
-turn off flashlight
+%^GREEN%^turn off flashlight%^RESET%^
 
-strike match
+%^GREEN%^strike match%^RESET%^
 
-light torch with match
+%^GREEN%^light torch with match%^RESET%^
 
-extinguish match
+%^GREEN%^extinguish match%^RESET%^
 
-dig hole with shovel
+%^GREEN%^dig hole with shovel%^RESET%^
 
-move bed
+%^GREEN%^move bed%^RESET%^
 
-search  (by default searches the room)
+%^GREEN%^search %^RESET%^ (by default searches the room)
 
-search rocks
+%^GREEN%^search rocks%^RESET%^
 
-unlock east door with silver key
+%^GREEN%^unlock east door with silver key%^RESET%^
 
-bait pole with worm
+%^GREEN%^bait pole with worm%^RESET%^
 
-fish with pole
+%^GREEN%^fish with pole%^RESET%^
 
-stop fishing
+%^GREEN%^stop fishing%^RESET%^
 
-drop all
+%^GREEN%^drop all%^RESET%^
 
-donate 2 silver
+%^GREEN%^donate 2 silver%^RESET%^
 
-get all
+%^GREEN%^get all%^RESET%^
 
-get all from corpse
+%^GREEN%^get all from corpse%^RESET%^
 
-sell first right glove to otik
+%^GREEN%^sell first right glove to otik%^RESET%^
 
-sell all to otik
+%^GREEN%^sell all to otik%^RESET%^
 
-buy sword from otik
+%^GREEN%^buy sword from otik%^RESET%^
 
-buy 8 from otik
+%^GREEN%^buy 8 from otik%^RESET%^ (get Otik to sell you item number 8)
 

@@ -2,6 +2,8 @@
 #include <daemons.h>
 inherit LIB_ROOM;
 
+int imud_enabled = 0;
+
 mixed eventReadPrintout(){
     mapping MudMap2;
     string *all_dead_souls = ({});
@@ -41,7 +43,7 @@ mixed eventReadScreen(){
 	write("Intermud3 link down. Stats unavailable.");
 	return 1;
     }
-    if(MudMap["Dead Souls"]) canonical = MudMap["Dead Souls"][5];
+    if(MudMap["Frontiers"]) canonical = MudMap["Frontiers"][5];
     foreach(string key, mixed *val in MudMap){
 	if(!grepp(key,"Dead_Souls_")){ 
 	    if(grepp(val[5],mudlib_version())) 
@@ -83,17 +85,37 @@ mixed eventReadScreen(){
 
 }
 
+void SetImud(int i){
+    if(!i) i = 0;
+    imud_enabled = i;
+}
+
+int GetImud(){
+    return imud_enabled;
+}
+
+string SignRead(){
+    if(imud_enabled) return "\"Intermud connection: %^BOLD%^GREEN%^ONLINE%^RESET%^\"";
+    else return "\"Intermud connection: %^BOLD%^RED%^OFFLINE%^RESET%^\"";
+}
+
+string LongDesc(){
+    string desc = "This is a polished, antiseptic room composed of some "+
+    "white, gleaming material. There is a viewscreen on a wall here, "+
+    "with a control panel alonside it. "+
+    "There is a shimmering portal "+
+    "on the north wall. A long printout hangs from the panel.";
+    desc += "\nA sign on the wall reads: "+SignRead();
+    return desc;
+}
+
 static void create() {
     object ob;
     room::create();
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("Arch Room");
-    SetLong("This is a polished, antiseptic room composed of some "
-      "white, gleaming material. There is a viewscreen on a wall here, "
-      "with a control panel alonside it. "
-      "There is a shimmering portal "
-      "on the north wall. A long printout hangs from the panel.");
+    SetLong( (: LongDesc :) );
     SetItems( ([ ({"wall","walls"}) : "The walls seem composed "
 	"of some advanced polymer. They are extremely clean and highly "
 	"polished.",
@@ -102,6 +124,7 @@ static void create() {
 	//({"screen","viewscreen"}) : "This is a display screen of some sort.",
 	({"screen","viewscreen"}) : (: eventReadScreen :) ,
 	({"printout"}) : (: eventReadPrintout :) ,
+	({"sign"}) : "A sign you can read.",
 	({"panel","control panel"}): "This seems to be the main control "
 	"panel for the mud. It contains a bewildering array of "
 	"keypads, but the most prominent feature of the control panel "
@@ -117,8 +140,12 @@ static void create() {
 	"appears to be an identification plate of some sort, designed "
 	"to accomodate a human hand.",
 	"portal" : "A portal to another place." ]) );
+    SetProperties(([
+	"no peer" : 1,
+      ]));
     SetRead("screen", (: eventReadScreen :) );
     SetRead("printout", (: eventReadPrintout :) );
+    SetRead("sign", (: SignRead :) );
 
     SetExits( ([
 	"north" : "/domains/default/room/wiz_hall.c",

@@ -49,6 +49,7 @@ private static mixed    Touch         = 0;
 private string          Town          = "wilderness";
 private int		DefaultExits  = 1;
 private int		Flying        = 1;
+private int		Obvious       = 1;
 mapping			ItemsMap      = ([]);
 //private static object  *dummies       = ({});
 private static mixed    global_item;
@@ -833,14 +834,17 @@ int inventory_visible() {
 }
 
 int SetNoDefaultExits(int i){
-    if(i && i > 0) DefaultExits = 0;
-    else DefaultExits = 1;
+    if(!i) i = 0;
+    DefaultExits = bool_reverse(i);
+    Obvious = DefaultExits;
     return DefaultExits;
 }
 
 int SetDefaultExits(int i){
-    if(!i || i < 0) DefaultExits = 0;
-    else DefaultExits = 1;
+    if(!i) i = 0;
+    DefaultExits = i;
+    Obvious = DefaultExits;
+    return DefaultExits;
 }
 
 int SetCanFly(int i){
@@ -852,6 +856,12 @@ varargs int CanFly(mixed ob, mixed dir){
     return Flying;
 }
 
+int SetNoObviousExits(int i){
+    if(!i) i = 0;
+    Obvious = bool_reverse(i);
+    DefaultExits = Obvious;
+    return Obvious;
+}
 
 int GenerateObviousExits(){
     string *normals;
@@ -891,11 +901,11 @@ int GenerateObviousExits(){
     }
     if(last(dir_string,2) == ", ") dir_string = truncate(dir_string,2);
     dir_string = replace_string(dir_string,", , ",", ");
-    SetObviousExits(dir_string);
+    if(Obvious) SetObviousExits(dir_string);
     return 1;
 }
 
 static void init() {
-    if(!sizeof(GetObviousExits()) && DefaultExits > 0) GenerateObviousExits();
+    if(!sizeof(GetObviousExits()) && DefaultExits > 0 && Obvious) GenerateObviousExits();
 }
 

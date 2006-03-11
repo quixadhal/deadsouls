@@ -1,21 +1,15 @@
 #include <lib.h>
 #include <vendor_types.h>
 #include <damage_types.h>
-inherit "/lib/std/germ";
+inherit LIB_GERM;
 int damage1();
 int damage2();
 int damage3();
 int damage4();
 int damage5();
 int DangerLevel();
-object victim,disease,where;
+object victim,where;
 string victimname;
-int busy;
-
-void whoami(){
-    disease=this_object();
-    return;
-}
 
 int InfectMess(object ob){
     victim=ob;
@@ -33,52 +27,45 @@ void create(){
     SetCure(20);
     SetVendorType(VT_TREASURE);
     SetCommunicable(50);
-    SetLifeSpan(2000);
+    SetLifeSpan(99999);
     SetType("parasite");
     SetInfect((: InfectMess :));
 }
 
 void bonuses(){
-    object player;
-    if(!player=victim) return;
-    player->AddStatBonus("intelligence", -1);
-    player->AddStatBonus("charisma", -35);
-    player->AddStatBonus("durability", -5);
-    player->AddStatBonus("agility", -5);
-    player->AddStatBonus("coordination", -5);
-    player->AddStatBonus("speed", -5);
-    player->AddStatBonus("wisdom", -1);
+    if(victim && environment(this_object()) == victim){
+	victim->AddStatBonus("intelligence", -15);
+	victim->AddStatBonus("strength", -25);
+	victim->AddStatBonus("charisma", -45);
+	victim->AddStatBonus("durability", -25);
+	victim->AddStatBonus("agility", -25);
+	victim->AddStatBonus("coordination", -15);
+	victim->AddStatBonus("speed", -15);
+	victim->AddStatBonus("wisdom", -2);
+    }
+    else if(victim) {
+	foreach( string stat in ({"intelligence", "strength",
+	    "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
+	    victim->RemoveStatBonus(stat);
+	}
+    }
     return;
 }
 
 
 void init(){
-    object player;
     germ::init();
-    germ::heart_beat();
-    whoami();
     bonuses();
-}
-
-
-void reset(){
-    busy=0;
-    init();
-    whoami();
 }
 
 int eventSuffer(){
     int x;
-    whoami();
-    x=random(100);
-    if(x < 25) damage4();
-    else if(x < 50) damage2();
-    else if(x < 85) damage3();
-    else if(x < 90) damage4();
-    if(!busy){
-	busy=1;
-	call_out("reset",60);
-    }
+    x=random(500);
+    if(x < 2) environment()->eventForce("sneeze");
+    else if(x < 5) damage1();
+    else if(x < 10) damage2();
+    else if(x < 15) damage3();
+    else if(x < 20) damage4();
     return 1;
 }
 
@@ -123,7 +110,5 @@ int damage4(){
     return 1;
 }
 
-
-mixed CanGet(object ob) { return "Your fingers slip on your runny snot.";}
-mixed CanDrop(object ob) { return "Your fingers slip on your runny snot.";}
-
+mixed CanGet(object ob) { return "You just cant get rid of these parasites.";}
+mixed CanDrop(object ob) { return "You just cant get rid of these parasites.";}

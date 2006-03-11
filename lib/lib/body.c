@@ -1049,7 +1049,7 @@ int RemoveLimb(string limb, object agent) {
 	    if(GetRace() == "android") objict = new(LIB_BOT_LIMB);
 	    else objict = new(LIB_LIMB);
 	    objict->SetLimb(limb, GetCapName(), GetRace());
-	    objict->SetId( ({ limb, limbname }));
+	    objict->SetId( ({ limb, limbname, "limb" }));
 	}
 	objict->eventMove(environment());
 	i = sizeof(WornItems[limb]);
@@ -1086,7 +1086,7 @@ int RemoveLimb(string limb, object agent) {
 	    if(GetRace() == "android") ob = new(LIB_BOT_LIMB);
 	    else ob = new(LIB_LIMB);
 	    ob->SetLimb(limb, GetCapName(), GetRace());
-	    ob->SetId( ({ limb, limbname }));
+	    ob->SetId( ({ limb, limbname, "limb" }));
 	}
 	ob->eventMove(environment());
 	i = sizeof(WornItems[limb]);

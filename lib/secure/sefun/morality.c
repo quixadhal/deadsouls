@@ -1,5 +1,5 @@
 /*    /secure/sefun/morality.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    handles moral actions
  *    created by Descartes of Borg 951016
  */

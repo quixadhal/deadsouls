@@ -15,6 +15,7 @@ class Race {
     int Complete;
     int PlayerFlag;
     string Language;
+    mapping Skills;
 }
 
 int GetArmor(string str);

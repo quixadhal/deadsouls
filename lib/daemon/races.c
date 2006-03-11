@@ -127,7 +127,15 @@ void AddRace(string file, int player) {
       res = new(class Race);
       res->Sensitivity = map(explode(lines[1], ":"), (: to_int :));
       res->Language = lines[2];
+      res->Skills = ([]);
       lines = lines[3..];
+      //tc("lines: "+identify(lines),"blue");
+      while(sizeof(tmp = explode(lines[0], ":")) == 5) {
+	  res->Skills[tmp[0]] = ({ tmp[1], tmp[2], tmp[3], tmp[4] });
+	  //tc("skills: "+identify(res->Skills),"red");
+	  lines = lines[1..];
+	  //tc("lines: "+identify(lines),"yellow");
+      }
       res->Resistance = ([]);
       while(sizeof(tmp = explode(lines[0], ":")) == 2) {
 	  int x = to_int(tmp[0]);
@@ -135,16 +143,18 @@ void AddRace(string file, int player) {
 	  if( x == 0 && tmp[0] != "0" ) x = GetResistance(tmp[0]);
 	  res->Resistance[x] = tmp[1];
 	  lines = lines[1..];
+
       }
+      //tc("lines: "+identify(lines),"green");
       res->Stats = ([]);
       while(sizeof(tmp = explode(lines[0], ":")) == 3) {
 	  class Stat s = new (class Stat);
-
 	  s->Average = to_int(tmp[1]);
 	  s->Class = to_int(tmp[2]);
 	  res->Stats[tmp[0]] = s;
 	  lines = lines[1..];
       }
+      //tc("lines: "+identify(lines),"red");
       res->Limbs = ({});
       while(sizeof(tmp = explode(lines[0], ":")) == 4) {
 	  mixed array limb = allocate(4);
@@ -271,8 +281,11 @@ void AddRace(string file, int player) {
       void SetCharacterRace(string race, mixed array args) {
 	  class Race res = Races[race];
 	  mixed array tmp;
+	  // if(!sizeof(args) == 5)
+	  //args = ({ ({}), ({}), ({}), ({}), ({}) });
+	  //tc("args: "+sizeof(args)+", "+identify(args));
 
-	  if( !res || !res->Complete || sizeof(args) != 4 ) return;
+	  if( !res || !res->Complete || sizeof(args) != 5 ) return;
 	  tmp = ({});
 	  foreach(int key, string val in res->Resistance)
 	  tmp = ({ tmp..., ({ key, val }) });
@@ -283,6 +296,7 @@ void AddRace(string file, int player) {
 	  args[1] = tmp;
 	  args[2] = res->Language;
 	  args[3] = ({ res->Sensitivity[0], res->Sensitivity[1] });
+	  args[4] = res->Skills; 
       }
 
       varargs string array GetRaces(int player_only) {

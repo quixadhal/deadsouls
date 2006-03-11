@@ -7,6 +7,9 @@
 #define LOCAL_NEWS_PREFIX        "nm"
 
 #define MUD_IS_LOCKED            0
+#define AUTO_WIZ                 0
+#define RESTRICTED_INTERMUD      0
+#define DISABLE_INTERMUD         0
 #define MINUTES_REBOOT_WARNING   20
 #define TIME_TO_RESET            20000
 
@@ -17,6 +20,7 @@
 #define MAX_HISTORY_SIZE         30
 
 #define LOGON_TIMEOUT            360
+#define IDLE_TIMEOUT             3600
 #define LINK_WAIT_PERIOD         1800
 #define MAX_PASSWORD_TRIES       3
 #define MIN_USER_NAME_LENGTH     2

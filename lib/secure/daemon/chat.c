@@ -5,6 +5,7 @@
  */
 
 #include <lib.h>
+#include <config.h>
 #include <pov.h>
 #include <daemons.h>
 #include <origin.h>
@@ -13,9 +14,11 @@
 
 inherit LIB_DAEMON;
 
-string plainmsg,chan;
+string plainmsg,chan,foo,bar,baz;
 static private mapping Channels;
 static private mapping chanlast;
+
+static private string *local_chans = ({"newbie","cre","gossip","admin"});
 
 
 static void create() {
@@ -34,6 +37,20 @@ static void create() {
 	    Channels[channel] = distinct_array(Channels[channel] + ({ pl }));
 	}
     }
+}
+
+varargs int CanListen(object who, string canal){
+    //tc("CanListen: who: "+identify(who)+", canal: "+canal);
+    if(RESTRICTED_INTERMUD == 0 || !RESTRICTED_INTERMUD) return 1;
+    if(canal && member_array(canal, local_chans) != -1) return 1;
+    else return imud_privp(who);
+} 
+
+varargs int CanTalk(object who, string canal){
+    //tc("CanListen: who: "+identify(who)+", canal: "+canal);
+    if(RESTRICTED_INTERMUD == 0 || !RESTRICTED_INTERMUD) return 1;
+    if(canal && member_array(canal, local_chans) != -1) return 1;
+    else return imud_privp(who);
 }
 
 string *eventRegisterMember(string *chans) {
@@ -123,6 +140,14 @@ int cmdChannel(string verb, string str) {
     object ob = 0;
     int emote;
 
+    //tc("verb: "+verb);
+    //tc("str: "+str);
+
+    if(!CanTalk(this_player(),verb)){
+	write("You lack intermud privileges.");
+	return 1;
+    }
+
     if( verb == "hist" ) {
 	if( !Channels[str] ) return 0;
 	if( member_array(this_player(), Channels[str]) == -1 ) return 0;
@@ -156,6 +181,7 @@ int cmdChannel(string verb, string str) {
 	if( member_array(this_player(), Channels[str]) == -1 ) return 0;
 	who = GetChannelList(str);
 	msg = "Online: " + implode(who, "   ");
+	//tc("msg1");
 	this_player()->eventPrint(msg, MSG_SYSTEM);
 	return 1;
     }
@@ -407,10 +433,14 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	    int ignore;
 	    if( listener == ob ) continue;
 	    foreach(string jerk in listener->GetMuffed()){
-		if(jerk && grepp(lower_case(this_msg),lower_case(jerk))) ignore = 1;
+		//tc("tmp: "+tmp);
+		//tc("pchan: "+pchan);
+		//tc("msg: "+msg);
+		sscanf(tmp,"%s %s %s", foo, bar, baz);
+		if(jerk && grepp(lower_case(bar),lower_case(jerk))) ignore = 1;
 	    }
-	    //tc("red","red");
-	    if(!ignore) listener->eventPrint(tmp, MSG_CONV);
+	    //tc("msg2","red");
+	    if(!ignore && CanListen(listener,ch)) listener->eventPrint(tmp, MSG_CONV);
 	    ignore = 0;
 	}
 	if( member_array(ob, obs) != -1 ) {
@@ -418,10 +448,10 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 		int ignore;
 		tmp = this_msg + targmsg;
 		foreach(string jerk in ob->GetMuffed()){
-		    if(jerk && grepp(lower_case(this_msg),lower_case(jerk))) ignore = 1;
+		    if(jerk && grepp(lower_case(tmp),lower_case(jerk))) ignore = 1;
 		}
-		//tc("green","green");
-		if(!ignore) ob->eventPrint(tmp, MSG_CONV);
+		//tc("msg3","green");
+		if(!ignore && CanListen(ob,ch)) ob->eventPrint(tmp, MSG_CONV);
 		ignore = 0;
 	    }
 	}
@@ -468,10 +498,10 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	foreach(object ob in obs){
 	    int ignore;
 	    foreach(string jerk in ob->GetMuffed()){
-		if(jerk && grepp(lower_case(tmsg),lower_case(jerk))) ignore = 1;
+		if(jerk && grepp(lower_case(msg),lower_case(jerk))) ignore = 1;
 	    }
-	    //tc("blue","blue");
-	    if(!ignore) ob->eventPrint(msg, MSG_CONV);
+	    //tc("msg4","blue");
+	    if(!ignore && CanListen(ob,ch)) ob->eventPrint(msg, MSG_CONV);
 	    ignore = 0;
 	}
 

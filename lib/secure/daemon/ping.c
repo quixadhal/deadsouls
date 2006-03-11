@@ -1,20 +1,37 @@
 #include <lib.h>
+#include <rooms.h>
 #include <daemons.h>
 
 inherit LIB_DAEMON;
 
 int Pinging = 0;
 int OK = 0;
-string *muds = ({ "Frontiers", "Dead Souls" });
+int Retries = 0;
+
+string *muds = ({ "Frontiers", "Carnivore" });
 
 int CheckOK(){
     Pinging = 0;
     if(!OK){
 	//tc("not ok");
+	Retries++;
 	update("/daemon/intermud");
     }
     else {
+	if(Retries > 0){
+	    tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"
+	      "Intermud connection is %^BOLD%^GREEN%^ONLINE%^BOLD%^CYAN%^.%^RESET%^\"");
+	    load_object(ROOM_ARCH)->SetImud(1);
+	}
+
+	Retries = 0;
 	//tc("ok");
+    }
+    if(Retries == 2){
+	tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"
+	  "Intermud connection is %^BOLD%^RED%^OFFLINE%^BOLD%^CYAN%^.%^RESET%^\"");
+	rm("/tmp/muds.txt");
+	load_object(ROOM_ARCH)->SetImud(0);
     }
     return 1;
 }
@@ -42,4 +59,5 @@ int GetPinging(){
 
 int SetOK(){
     OK = 1;
+    load_object(ROOM_ARCH)->SetImud(1);
 }

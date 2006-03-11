@@ -10,8 +10,9 @@
 #include <message_class.h>
 
 void eventReceiveTell(mixed *packet) {
-    object ob;
+    object ob, machine;
     string who;
+    string adverb = "";
 
     if( file_name(previous_object()) != INTERMUD_D ) return;
     who = convert_name(packet[5]);
@@ -21,11 +22,30 @@ void eventReceiveTell(mixed *packet) {
 	    capitalize(packet[5]) + " is nowhere to "
 	    "be found on " + mud_name() + ".",
 	    packet }));
-	return;
+	if(!(ob = find_player(who))) return;
+	adverb = " %^BOLD%^MAGENTA%^unknowingly%^BOLD%^RED%^";
     }
+
+    machine=present("answering machine",ob);
+    if(machine && base_name(machine) == "/secure/obj/machine"){
+	int parse_it;
+	string machine_message;
+	parse_it=machine->query_answer();
+	if(parse_it){
+	    machine->get_message(packet[6] + "@" + packet[2]+
+	      " tells you: "+packet[7]+"\n");
+	    machine_message=machine->send_message();
+	    INTERMUD_D->eventWrite(({ "error", 5, mud_name(), 0, packet[2],
+		packet[3], "unk-user",
+		machine_message,
+		packet }));
+	    return;
+	}
+    }
+
     ob->eventPrint("%^BOLD%^RED%^" + packet[6] + "@" + packet[2] +
-      " tells you:%^RESET%^ " + packet[7], MSG_CONV);
-    ob->SetProperty("reply", packet[6] + "@" + packet[2]);
+      adverb + " tells you:%^RESET%^ " + packet[7], MSG_CONV);
+    if(!sizeof(adverb)) ob->SetProperty("reply", packet[6] + "@" + packet[2]);
 }
 
 void eventSendTell(string who, string where, string msg) {

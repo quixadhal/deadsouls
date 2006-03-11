@@ -1271,7 +1271,7 @@ if(!__TmpPost["to"]) {
     return; 
 } 
 if(!__TmpPost["subject"]) { 
-    message("prompt", "Subject: ", this_player()); 
+    message("prompt", "Subject:\n ", this_player()); 
     input_to("get_subject"); 
     return; 
 } 
@@ -1307,14 +1307,14 @@ static void get_subject(string str) {
     string tmp; 
 
     if(str == "" || !str) { 
-	message("prompt", "No subject given.  Continue (default 'n')? ", 
+	message("prompt", "No subject given.  Continue (default 'n')?\n ", 
 	  this_player()); 
 	input_to("confirm_subject"); 
 	return; 
     } 
     __TmpPost["subject"] = str; 
     if(!__TmpPost["cc"] && __Options["askcc"]) { 
-	message("prompt", "Copies to: ", this_player()); 
+	message("prompt", "Copies to:\n ", this_player()); 
 	input_to("get_cc"); 
 	return; 
     } 

@@ -14,6 +14,7 @@ mixed cmd(string str) {
     string *list;
     mapping borg;
     string mud;
+    int all = 0;
 
     if( str && str != "" && strlen(str) > 3 ) {
 	mapping tmp;
@@ -28,6 +29,9 @@ mixed cmd(string str) {
 	    int x, y, z;
 
 	    switch(opt) {
+	    case "a":
+		all = 1;
+		break;
 	    case "m":
 		x = 5;
 		break;
@@ -52,7 +56,7 @@ mixed cmd(string str) {
     else {
 	borg = ([ ]);
 	foreach( mud, info in (mapping)INTERMUD_D->GetMudList() )
-	if( info[0] == -1 ) borg[mud] = info;
+	if( all == 1 || info[0] == -1 ) borg[mud] = info;
     }
     if( !sizeof(borg) ) {
 	message("system", "No MUDs match your query.", this_player());
@@ -61,6 +65,8 @@ mixed cmd(string str) {
     else if( sizeof(borg) == 1 ) {
 	string msg, svc;
 	int val, comma = 0;
+
+	tc("borg: "+identify(borg));
 
 	mud = keys(borg)[0];
 	msg = "\nDetailed information on %^GREEN%^" + mud + "%^RESET%^:\n";

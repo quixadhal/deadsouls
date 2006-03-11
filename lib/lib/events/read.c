@@ -1,6 +1,7 @@
 #include <function.h>
 #include <message_class.h>
 
+static private string Language;
 static private mixed Read    = 0;
 static private mapping Reads = ([]);
 
@@ -81,12 +82,25 @@ varargs mixed SetDefaultRead(mixed arg1, mixed desc) {
     }
 }
 
+int SetLanguage(string str){
+    if(str) Language = str;
+    return 1;
+}
+
+mixed GetLanguage(){
+    if(Language) return Language;
+    else return 0;
+}
+
 varargs mixed eventRead(object who, string str) {
+    mixed ret;
     mixed val = GetRead(str);
 
     if( arrayp(val) ) {
 	val = val[query_night()];
     }
+    if(mapp(val)) val = val[str];
+
     if( functionp(val) ) {
 	if( functionp(val) & FP_OWNER_DESTED ) {
 	    who->eventPrint("There was a problem with the read.");
@@ -94,10 +108,12 @@ varargs mixed eventRead(object who, string str) {
 	}
 	//The funtion being evaluated, GetRead, only takes one arg.
 	//return evaluate(val, who, str);
-	return evaluate(val, str);
+	ret = evaluate(val, str);
+	if(!stringp(ret)) return 1;
     }
     environment(who)->eventPrint(who->GetName() + " reads " + GetShort() + ".",
       who);
+    if(ret) val = ret;
     if( !val ) {
 	who->eventPrint("There is nothing to read.");
 	return 1;
@@ -105,12 +121,27 @@ varargs mixed eventRead(object who, string str) {
     tmpfile = generate_tmp();
     globalwho = who;
     globalval = val;
+
+    if(Language){
+	write("The language appears to be "+capitalize(Language)+".");
+    }
+
+    if(!globalval){
+	write("You can't read that.");
+	return 0;
+    } 
+
     unguarded( (: write_file(tmpfile, globalval) :) );
+    if(Language && this_player()->GetLanguageLevel(Language) < 100){
+	if(sizeof(globalval) > 4800){
+	    globalval = "It is too long and you are too unfamiliar with the language to make sense of it.";
+
+	}
+	else globalval = translate(val, this_player()->GetLanguageLevel(Language));
+	unguarded( (: write_file(tmpfile, globalval,1) :) );
+    }
     unguarded( (: globalwho->eventPage(tmpfile) :) );
-    //unguarded( (: globalwho->eventPage(globalval) :) );
-    //if(!file_exists(tmpfile))  who->eventPrint(val);
     unguarded( (: rm(tmpfile) :) );
-    //who->eventPrint(val);
     return 1;
 }
 

@@ -34,6 +34,6 @@ this. A special testing channel has been set up for that
 purpose. It is called ds_test, and you can add it to
 yourself by typing:
 
-call me->AddChannel("ds_test")
+%^GREEN%^call me->AddChannel("ds_test")%^RESET%^
 
 

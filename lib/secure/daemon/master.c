@@ -449,7 +449,10 @@ private static void load_access(string cfg, mapping ref) {
 	  sscanf(file, DOMAINS_DIRS+"/%s/%s", nom, tmp) != 2 ) 
 	    sscanf(file, "/%s/%s", nom, tmp);
 	if( !nom ) nom = "log";
-	catch(write_file(DIR_ERROR_LOGS "/" + nom, msg));
+	catch(write_file(DIR_ERROR_LOGS "/" + nom, timestamp()+" "+msg));
+	if(msg && this_player(1) && creatorp(this_player(1))){
+	    catch(tell_player(this_player(1),msg));
+	}
     }
 
     varargs string standard_trace(mapping mp, int flag) {

@@ -1,4 +1,5 @@
 #include <lib.h>
+private static string source;
 
 mixed *findobs(mixed arg){
     object target;
@@ -13,14 +14,7 @@ mixed *findobs(mixed arg){
 	}
 	else {
 	    foreach(object ob in objects()){
-		string tmpname;
-		string *tmpid;
-		if(base_name(ob) == LIB_DOOR || inherits(LIB_DOOR,ob)) tmpid = ({"door"});
-		if(base_name(ob) != LIB_DOOR && !inherits(LIB_DOOR,ob)) tmpid = ob->GetId();
-		if(!tmpid ) tmpid = ({ generate_tmp() });
-		if(! tmpname = ob->GetName() ) tmpname = generate_tmp();
-		if(lower_case(tmpname) == lower_case(arg) ||
-		  member_array(arg, tmpid) != -1) targets += ({ ob });
+		if(answers_to(arg,ob)) targets += ({ ob });
 	    }
 	}
     }
@@ -31,3 +25,35 @@ mixed *findobs(mixed arg){
     }
     return targets;
 }
+
+mixed find_inheritors(mixed arg){
+    object *targets = ({});
+    if(objectp(arg)) source = base_name(arg);
+    else {
+	if(!stringp(arg)) return -2;
+	if(!file_exists(arg)) arg += ".c";
+	if(!file_exists(arg)) return -1;
+	source = truncate(arg,2);
+    }
+    //tc("source: "+source);
+    targets = filter(objects(), (: inherits(source, $1) :) );
+    //tc("targetsize: "+sizeof(targets));
+    if(sizeof(targets)) return targets;
+    else return ({});
+}
+
+mixed find_deep_inheritors(mixed arg){
+    object *targets = ({});
+    if(objectp(arg)) source = base_name(arg)+".c";
+    else {
+	if(!stringp(arg)) return -2;
+	if(!file_exists(arg)) arg += ".c";
+	if(!file_exists(arg)) return -1;
+	source = arg;
+    }
+
+    targets = filter(objects(), (: member_array(source, deep_inherit_list($1)) != -1 :) );
+    if(sizeof(targets)) return targets;
+    else return ({});
+}
+

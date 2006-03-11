@@ -1,5 +1,5 @@
 /*   /secure/sefun/to_object.c
- *   from the Dead Soulsr2.4 Library
+ *   from the Dead Souls.4 Library
  *   recreated by Blitz@Dead Souls
  *
  *   Purpose: Parse passed string argument and

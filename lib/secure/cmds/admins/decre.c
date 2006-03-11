@@ -30,7 +30,7 @@ mixed cmd(string args) {
     if( ob = find_player(nom) ) {
 	PlayerName = nom;
 	inv = deep_inventory(ob);
-	inv->eventMove(ROOM_FURNACE);
+	if(sizeof(inv)) inv->eventMove(ROOM_FURNACE);
 	catch(player_ob = (object)master()->player_object(nom));
 	PlayerName = 0;
 	if( !player_ob ) {
@@ -40,9 +40,12 @@ mixed cmd(string args) {
 	    return 1;
 	}
 	exec(player_ob, ob);
-	all_inventory(ob)->eventMove(player_ob);
+	inv=deep_inventory(ob);
+	if(sizeof(inv)) inv->eventMove(ROOM_FURNACE);
 	player_ob->Setup();
 	ob->eventDestruct();
+	inv=deep_inventory(player_ob);
+	if(sizeof(inv)) inv->eventMove(ROOM_FURNACE);
 	message("system", "You are now a player.", player_ob);
 	message("system", (string)player_ob->GetName() + " is now a player!",
 	  this_player());

@@ -33,6 +33,7 @@ mixed can_news_str(string str) {
 mixed do_news() { return do_news_str("general"); }
 
 mixed do_news_str(string str) {
+    //tc("The moops.");
     this_player()->eventPage(DIR_NEWS + "/" + str);
     return 1;
 }

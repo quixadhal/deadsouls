@@ -232,35 +232,68 @@ string GetResistance(int type) {
 
 int GetCustomStats() { return CustomStats; }
 
-varargs mixed GetEffectiveVision(int raw_score) {
+varargs mixed GetEffectiveVision(mixed raw_score, mixed location) {
     int array l;
     object env;
     int bonus = GetVisionBonus();
-    int y, x = 0;
+    int a, y, x = 0;
 
+    //if(raw_score) tc("raw_score: "+identify(raw_score),"yellow");
+    //if(location) tc("location: "+identify(location),"yellow");
+
+    if(raw_score && !intp(raw_score)){
+	//tc("raw_score: "+identify(raw_score));
+	location = raw_score;
+	raw_score = 0;
+	//tc("location: "+identify(location));
+	//tc("raw_score: "+raw_score);
+    }
+
+
+    //tc("stack2: "+get_stack(),"green");
+    //if(!location) tc("NOLOC","blue");
+    if(location){
+	if(objectp(location)) env = location;
+	//if(env) tc("env: "+identify(env));
+	if(stringp(location)){
+	    if(!file_exists(location)) location += ".c";
+	    if(!file_exists(location)) return 0;
+	    env = load_object(location);
+	    //if(env) tc("env: "+identify(env));
+	    if(!env) return 0;
+	}
+    }
+    //if(env) tc("env: "+identify(env));
     if( Blind && !raw_score) {
 	return VISION_BLIND;
     }
-    if( !(env = environment()) ) {
-	x = GetRadiantLight(0);
-    }
-    else {
-	int a = env->GetAmbientLight();
-	x = x/2 + GetRadiantLight(a) + a;
-    }
+    if( !location ) env = environment();
+    //if(env) tc("env: "+identify(env));
+    x = GetRadiantLight(0);
+    a = env->GetAmbientLight();
+    //tc("x: "+x,"red");
+    //tc("a: "+a);
+    if(x) x = x/2;
+    x += GetRadiantLight(a) + a;
+    //tc("x: "+x,"green");
+    //if(env) tc("env: "+identify(env));
     l = GetLightSensitivity();
+    //tc("l: "+identify(l));
     l[0] -= bonus;
     l[1] += bonus;
 
-    if(raw_score){
+    if(raw_score && !location){
 	return "Low: "+l[0]+", High: "+l[1];
     } 
     if( x >= l[0] && x <= l[1] ) return VISION_CLEAR;
     y = l[0]/3;
+    //tc("y: "+y,"cyan");
+    //tc("x: "+x,"blue");
     if( x < y ) return VISION_TOO_DARK;
     if( x < (2*y) ) return VISION_DARK;
     if( x < l[0] ) return VISION_DIM;
     y = l[1]/3;
+    //tc("y: "+y,"yellow");
     if( x < (l[1] + y) ) return VISION_LIGHT;
     if( x < (l[1] + (2*y)) ) return VISION_BRIGHT;
     return VISION_TOO_BRIGHT;

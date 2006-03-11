@@ -1,3 +1,62 @@
+---- 2.0r15 ---
+- Intermud can be disabled entirely by toggling DISABLE_INTERMUD
+  in /secure/include/config.h.
+- *COMPAT BUSTER* Basic framework for race-based skills in 
+  place. Old races.o files will not work with the new race
+  data file format expected by RACES_D.
+- Fleas and lice examples now unbroken.
+- Peer command unbroken.
+- Fixed miscellaneous i3 services bugs.
+- Tweaked the apostrophe workaround.
+- "cd here" now works.
+- Added intermud link failure/restoration announcement
+  to arch room.
+- Fixed LIB_READ so that receiving a string for a functional's
+  return of a GetRead makes that string the text to be read.
+- Fixed read bug in /lib/bboard.c.
+- Fixed a problem with eval that puked on ASSIST members.
+- Fixes and updates made to answering machine. Intermud
+  tell support added.
+- Intermud tells now reach the player if she is invisible. The
+  tell sender's mud receives an "unknown user" error, and the
+  player receives an "unknowingly tells you" message.
+- Intermud channels can be disabled by toggling 
+  RESTRICTED_INTERMUD in /secure/include/config.h. Exceptions
+  to this restriction can be made by adding users to
+  the INTERMUD group using admintool.
+- Automatic promotion of new characters to creator status can
+  be enabled by editing /secure/include/config.h and 
+  toggling AUTO_WIZ.
+- Update and runtime errors now attempt to display more helpful
+  messages to the user, if the user is a creator (Thx, Brodbane).
+- Error logs now include timestamps.
+- Added trainers to QCS.
+- *COMPAT BUSTER*: Trainer skills now have to be specified with
+  an array, not just a series of strings:
+  RIGHT: AddTrainingSkills( ({ "alpha", "bravo", "charlie" }) );
+  WRONG: AddTrainingSkills( "alpha", "bravo", "charlie" );
+- Fixed error message bug in /lib/trainer.c.
+- Fixed chat.c bug that allowed emotes from earmuffed players
+  to be printed.
+- Added languages to say verb.
+- Added languages to reading.
+- Added commands: language, ping.
+- Updated/added various help files.
+- Added FAQs (/doc/faq...accessed with the faq command).
+- Updated Player's Handbook.
+- Miscellaneous header fixes.
+- Fixed issues in description.c and look.c that interfered with
+  having multiple Item elements in objects and having arrays
+  for keys in Item elements in objects.
+- Added IDLE_TIMEOUT to /secure/include/config.h
+- Added sefuns: imud_privp, find_inheritors, find_deep_inheritors,
+  securep.
+- Overhauled limb and corpse decay. DECAY_D now handles the
+  callouts, reducing the number of decaying callouts to 1, regardless
+  of the number of limbs and corpses lying about.
+- Limb ID bug fixed.
+- Added tweaks to read verb and faq command submitted by Manchi.
+
 ---- 2.0r14 ---
 - Added barkeeps to QCS.
 - Added vendors to QCS.

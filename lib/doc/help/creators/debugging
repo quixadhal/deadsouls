@@ -1,0 +1,166 @@
+Debugging in Dead Souls
+
+So you've made some cool stuff but darn it, it doesn't work. There are various
+tools available in the Dead Souls lib to hunt down the source of the problem:
+
+
+%^GREEN%^elog%^RESET%^
+
+If the file is somewhere in your home directory, just type: elog 
+
+This will provide you a listing of the last few lines of your personal
+error log. Warning lines tell you about code that works but should
+be fixed in some way. Lines that don't contain the word "Warning" are
+error lines: they indicate something about your code that prevents
+it from working. For example:
+
+> %^GREEN%^update sample_room%^RESET%^
+
+---
+*Error in loading object '/realms/cratylus/area/room/sample_room'
+Object: /secure/cmds/creators/update at line 148
+
+'<function>' at /secure/save/creators/c/cratylus (<function>) at /:0
+'cmdAll' at /secure/save/creators/c/cratylus (/lib/command.c) at line 84
+'cmd' at /secure/cmds/creators/update at line 109
+'eventUpdate' at /secure/cmds/creators/update at line 148
+'CATCH' at /secure/cmds/creators/update at line 148
+Trace written to /log/catch
+/realms/cratylus/area/room/sample_room: Error in update
+*Error in loading object '/realms/cratylus/area/room/sample_room'
+
+
+
+	This output lets you know something is wrong, but
+isn't very specific as to exactly what. If you look at your error
+log, you probably will see something more detailed and helpful:
+
+
+> %^GREEN%^elog%^RESET%^
+
+/log/errors/cratylus:
+
+/realms/cratylus/area/room/sample_room.c line 10: Undefined variable 'Sample'
+/realms/cratylus/area/room/sample_room.c line 10: parse error
+
+
+
+	Now you can see that the error is my syntax on
+line 10. I would then use ed to examine the code, and specifically lines 9
+through 11. It turns out that I forgot to put quotes around the room name, 
+so the parser tried to use it as a variable, which, of course, it couldn't.
+
+	If the file in question is in /secure, you'd type elog secure , or if
+it's in /cmds, elog cmds , and so on.
+
+	
+dbxwhere & dbxframe
+
+	Two helpful debugging commands are dbxframe and dbxwhere. Let's
+take a look at my broken sample_room.c file. We'll start with dbxwhere,
+which lists for us the chain of events that led to the error. The
+indivudual steps are called frames.
+
+> %^GREEN%^dbxwhere%^RESET%^
+*Error in loading object '/realms/cratylus/area/room/sample_room'
+Object: /secure/cmds/creators/update at line 148
+
+#0: '<function>' at /secure/save/creators/c/cratylus (<function>) at /:0
+#1: 'cmdAll' at /secure/save/creators/c/cratylus (/lib/command.c) at line 84
+#2: 'cmd' at /secure/cmds/creators/update at line 109
+#3: 'eventUpdate' at /secure/cmds/creators/update at line 148
+#4: 'CATCH' at /secure/cmds/creators/update at line 148
+
+
+The output is similar to the update error we saw above, but in ennumerating the steps, dbxwhere
+lets us use dbxframe to get tighter detail on a given error frame:
+
+> %^GREEN%^dbxframe 4%^RESET%^
+------
+    /secure/cmds/creators/update.c:148 - CATCH(0)
+    ----------------------------------------------------------------
+        if( args == base_name(this_object()) ) {
+            this_player()->eventPrint("Cannot reload update after destruct.\n"
+              "It will be reloaded at next reference.");
+            return 0;
+        }
+    =>  tmp = catch(call_other(args, "???"));
+        if( !tmp ) {
+            if(identify(flags ^ U_AUTOMATED) ==
+    "8")this_player()->eventPrint(args + ": Ok");
+            return 1;
+        } else this_player()->eventPrint(args + ": Error in update\n" + tmp);
+        return 0;
+
+
+    We're now looking at the error context for error frame 4. The output of the command shows
+us part of the file that was performing the evaluation when the error occurred, and even
+points out the offending line using a text arrow: =>
+
+    In this particular case, the information is not that helpful. We are being told that
+the error occurred while we were using the update command, and it failed at the line
+where update does its thing. Duh, we knew that. The elog command was much more helpful.
+
+    Where this kind of tracing comes in handy is when you enounter a runtime error
+when you're not updating a file. For example, if I tried to enter that room, rather than
+update it, I'd get a big pukey error message and not know why. If you run into an
+unexpected error, dbxwhere will help you pinpoint it if elog doesn't provide useful information,
+and dbxframe will help detail the source of the problem.
+
+%^GREEN%^tail%^RESET%^
+
+
+    This is a version of the unix tail command. It displays the last few lines of a file.
+This command is important for examining crucial log files:
+
+%^GREEN%^tail /log/catch%^RESET%^
+%^GREEN%^tail /log/runtime%^RESET%^
+%^GREEN%^tail /log/player_errors%^RESET%^
+
+
+bk & restore
+
+These commands aren't so much for debugging as they are for safe coding. Before you
+edit a file, it is a very good idea to back it up first. The bk command lets you
+quickly and conveniently back up a file before you edit it. When I typed:
+
+%^GREEN%^bk sample_room%^RESET%^
+
+A file with a unique identifying number was created in my bak/ directory. If I
+were to type it again, then sample_room.c would get copied again to bak/, with
+a new unique number added to the name.
+
+    The number is basically the number of seconds elapsed since January 1, 1970.
+Adding this number, we can keep track of which backed up version of a file
+is most recent by looking at the name.
+
+    Suppose I edited a file called sample_npc.c. I use bk to back it up, make some changes,
+then use bk again, make some more changes, but now it won't update. I don't
+feel like debugging, I just need this file working again, so I want to restore from
+backup. The sequence of commands would look something like this:
+
+%^GREEN%^ed sample_npc.c%^RESET%^
+%^GREEN%^bk sample_npc%^RESET%^
+%^GREEN%^ed sample_npc.c%^RESET%^
+%^GREEN%^update sample_npc.c%^RESET%^
+<error occurs here>
+%^GREEN%^restore sample_npc%^RESET%^
+
+    The reason identifying numbers are used is that you can also choose to
+restore the second-to-last backup version of a file, and other previous
+versions.
+    The very last backup version is effectively version 0, so it's not
+necessary to specify a number. If I wanted to restore the version I backed
+up before that one, I would type something like this:
+
+%^GREEN%^restore sample_npc 1%^RESET%^
+
+    And if I wanted the version before that one, I'd specify 2 instead of 1,
+and so on.
+
+    Please note that this is an intentionally simple system. There are
+no menus, no version branches, or diff tracking. The reason for this is
+that it is not a versioning system. It is a backup system. It is a convenient
+tool to back out of screwups, not a development tool to test file versions.
+
+

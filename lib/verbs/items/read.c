@@ -42,10 +42,14 @@ mixed do_read_str_on_obj(string str, object ob) {
 }
 
 mixed do_read_str_in_obj(string str, object ob) {
-    //if(ob && ob->GetTitle() && stringp(ob->GetTitle())) 
     if(ob) return (mixed)ob->eventRead(this_player(), str);
 }
 
 mixed do_read_str_of_obj(string str, object ob) {
+    return do_read_str_in_obj(str, ob);
+}
+
+//This function courtesy of Manchi
+mixed do_read_str_from_obj(string str, object ob) {
     return do_read_str_in_obj(str, ob);
 }

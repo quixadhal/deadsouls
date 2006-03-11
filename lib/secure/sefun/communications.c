@@ -1,5 +1,5 @@
 /*    /secure/sefun/communications.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    some backwards compat sefuns
  */
 

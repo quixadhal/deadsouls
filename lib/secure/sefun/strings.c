@@ -448,13 +448,6 @@ int grepp(string primary, string sub){
     else return 0;
 }
 
-int mgrepp(string primary, string *sub){
-    foreach(string element in sub){
-	if(strsrch(primary,element) != -1) return 0;
-    }
-    return 1;
-}
-
 int memberp(mixed *primary, mixed sub){
     if(member_array(sub,primary) != -1) return 1;
     else return 0;
@@ -559,3 +552,27 @@ int alphap(mixed arg){
     }
     return 0;
 }
+
+int numericp(mixed arg){
+    string *alphabet = ({"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"});
+    if(intp(arg)) arg = itoa(arg);
+    if(!stringp(arg)) return 0;
+    foreach(string element in alphabet){
+	if(grepp(arg,element)) return 1;
+    }
+    return 0;
+}
+
+int basic_punctuationp(mixed arg){
+    string *alphabet = ({",", ".", "-", "_", "+", "#", ";", "^", "&", "(", ")" });
+    alphabet += ({ "@", "!", "$", "%", "=", "{", "}", "[", "]", ":", "<", ">" });
+    if(!stringp(arg)) return 0;
+    foreach(string element in alphabet){
+	if(grepp(arg,element)) return 1;
+    }
+    return 0;
+}
+
+
+
+

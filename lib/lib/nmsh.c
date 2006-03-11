@@ -357,12 +357,15 @@ static string user_names(object ob) {
 
 private static int set_cwd(string str) { 
     int x;
-
+    string tmpstr = str;
     if(str == "~-") str = PreviousWorkingDirectory;
     if(!str || str == "") str = user_path(GetKeyName()); 
     if (str[<1] == '/' && str != "/") str = str[0..<2];
     replace_string(str, "//", "/"); 
     str = absolute_path(query_cwd(), str);
+    if(!directory_exists(str) && tmpstr == "here" && environment(this_player())){
+	str = path_prefix(base_name(environment(this_player())));
+    } 
     if((x=file_size(str)) != -2) { 
 	if(x > -1) { 
 	    message("system", sprintf("%s: Path is a file.", str), this_player()); 

@@ -1,0 +1,74 @@
+		 Nightmare 3.3/Foundation I Security
+		     Created by Descartes of Borg
+
+Nightmare 3.3 has moved to a new style of security called stack
+security.  Stack security differs completely from the old EUID/UID
+method.  This document attempts to detail stack security.
+
+Stack security relies on checking an entire call stack for security
+operations.  With the old style security, the master object would only
+check the to see if the object asking for access had access to perform
+a certain operation.  For example, say object A wanted to write to a
+file.  No matter how it got to desire to write to that file, the
+master object would allow or deny it access based solely on its
+merits.  A good way, therefore, to defeat the old security system
+would be to fake out object A and get it to write to a file using its
+priveledges for you.
+
+With stack security, an object cannot be used to fake out the master
+object.  Instead, the master object traverse the entire call stack to
+be certain that it should allow access.  Take a rm command.
+
+I issue the command rm.  The player object calls the command daemon.
+The player object then calls the rm command.  The rm command tries to
+rm the file.  So you have 3 objects here on the stack, my player
+object two times, and the rm command (the command daemon made no
+external calls, so it is not on the stack).  In order for the rm
+command to succeed, I and the rm command must all have access to rm
+the file.  As an admin, I have the access, and the rm command as well
+has that access, so the command succeeds.  If it had been a regular
+creator however, perhaps trying to rm the master object, the operation
+would have failed.  The rm command still would have had access, but
+the creator's player object would not have.
+
+In order to understand how this works, you must understand the
+difference between file protection and object access.  File protection
+is the level of protection a file has from operations of other
+objects.  File protections are defined in /secure/cfg/read.cfg and
+/secure/cfg/write.cfg.  File protections must ALWAYS be greater than
+or equal to the access an object cloned from that file has.  If not,
+then you have a security leak.
+
+File access is defined through the SimulEfun file_privs().  Upon
+creation, each object gets a privs string which is a list of privs
+separated by a :.  Player objects always have their name as part of
+their privs string.  Privs can never change once set.
+
+By making protection greater than access, what I mean is this:
+Any object which has access to a given file should on its own have
+access to any files which an object created from that file would have
+access to.  For example, /secure has access to everything.  Therefore,
+only SECURE objects should have access to it.  If you allow any priv,
+say an admin priv like descartes, to have access to /secure, you are
+by default giving SECURE access to that outside priv.  So now anything
+which can write to my home directory can become SECURE!
+
+The final key to the stack security system is the unguarded()
+SimulEfun.
+
+mixed unguarded(function f);
+
+Any object can make an old-style, depend on me only operation by
+making that function unguarded.  For example, I am a creator that has
+a guild object which needs to save to my home directory.  My guild
+object has write access to my home directory, but players using it
+would not.  So stack security would make it impossible for you to have
+any such object.  If, in the guild object, you have the following
+call:
+
+unguarded((: save_object, "/realms/descartes/guild/save/obj" :));
+
+The object will saved based SOLELY on the permissions which the guild
+object has.  If the guild object can write to the directory, then the
+operation succeeds regardless of the rest of the stack.  If the guild
+object can't do it, then the operation fails.
