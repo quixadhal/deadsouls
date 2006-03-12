@@ -110,6 +110,7 @@ static void InputEmail(string str) {
     int foo;
 
     if( !str || str == "" ) str = "Unknown";
+    load_object("secure/cmds/admins/admintool")->eventChangeEmail(str,1);
     Admin->SetEmail(str);
     Admin->SetRace("human");
 

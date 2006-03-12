@@ -314,10 +314,12 @@ void AddRace(string file, int player) {
 	  class Race res = Races[race];
 	  string array limbs;
 	  string help = "Race: " + race + "\n\n";
-	  string tmp;
+	  string tmp, h_file;
 	  int x;
 
 	  if( !res ) return 0;
+	  h_file = "/doc/help/races/"+lower_case(race);
+	  if(file_exists(h_file)) return read_file(h_file); 
 	  limbs = map(res->Limbs, (: $1[0] :));
 	  help += "Limbs:\n";
 	  help += capitalize(item_list(map(limbs, (: add_article :)))) + ".\n";

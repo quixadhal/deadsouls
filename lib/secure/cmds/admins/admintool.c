@@ -18,7 +18,7 @@ int ShowLock();
 int SetTZ();
 int eventSetTZ(string str);
 int ChangeEmail();
-int eventChangeEmail(string str);
+varargs int eventChangeEmail(string str, int auto);
 int SetReboot();
 int eventSetReboot(int i);
 int AddClass();
@@ -331,15 +331,15 @@ int ChangeEmail(){
     return 1;
 }
 
-int eventChangeEmail(string str){
+varargs int eventChangeEmail(string str, int auto){
     string *line_array;
     string lockline, newline, newfile, line_string, junk, email;
     if(strsrch(str,"@") == -1 ) {
 	write("That isn't a valid email address.");
-	Menu();
+	if(!auto) Menu();
 	return 0;
     }
-
+    str == replace_string(str, "#", "");
     line_string = read_file("/secure/include/config.h");
     if(!sizeof(line_string)) write("Couldn't read file.");
     line_array = explode(line_string, "\n");
@@ -352,7 +352,7 @@ int eventChangeEmail(string str){
     if(sscanf(lockline,"%s\"%s\"",junk, email) < 2) {
 	write("Operation failed. You need to hand-"+
 	  "edit /secure/include/config.h immediately.");
-	Menu();
+	if(!auto) Menu();
 	return 0;
     }
 
@@ -361,7 +361,7 @@ int eventChangeEmail(string str){
     write_file("/secure/include/config.h",newfile,1);
     load_object("/secure/cmds/creators/update")->cmd("/secure/sefun/sefun");
     write("\n");
-    Menu();
+    if(!auto) Menu();
     return 1;
 }
 
