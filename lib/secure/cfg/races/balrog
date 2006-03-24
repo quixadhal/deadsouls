@@ -1,43 +1,26 @@
-# Nightmare race configuration file
-# To add a race, make one of these files where the race name equals
-# the file name, and type <addrace race> or <addrace race 1>.  The
-# 1 means the race is a player race.  This file has the following
-# format:
-# line 1: race name
-# line 2: min sight value:max sight value
-# line 3: language (case sensitive)
-# line 4..n: damage type:resistance level
-# line n+1..o: stat:average value:stat class
-# line o+1..p: limb:parent limb:limb class:comma separated armor types
-# line p+1..q: hand:number of fingers
-# damage types come from /include/damage_types.h
-# armor types come from /include/armor_types.h
-# Note that you may in fact have no resistances, thus line 4 would be
-# the first stat.
-balrog
-10:67
-Balrog
-HEAT:high
-agility:40:1
-charisma:1:5
-coordination:30:3
-durability:40:1
-intelligence:30:2
-luck:20:3
-speed:30:2
-strength:30:3
-wisdom:10:3
-torso:0:1:A_SHIRT,A_CLOAK,A_VEST,A_SHIELD,A_ARMOR,A_BODY_ARMOR,A_BELT,A_AMULET
-neck:torso:1:A_COLLAR,A_AMULET
-head:neck:1:A_HELMET,A_VISOR,A_AMULET
-right leg:torso:2:A_LONG_BOOT,A_LONG_SOCK,A_PANTS,A_BODY_ARMOR
-left leg:torso:2:A_LONG_BOOT,A_LONG_SOCK,A_PANTS,A_BODY_ARMOR
-right foot:right leg:4:A_BOOT,A_LONG_BOOT,A_SOCK,A_LONG_SOCK
-left foot:left leg:4:A_BOOT,A_LONG_BOOT,A_SOCK,A_LONG_SOCK
-right arm:torso:2:A_LONG_GLOVE,A_SHIELD,A_CLOAK,A_ARMOR,A_BODY_ARMOR
-left arm:torso:2:A_LONG_GLOVE,A_SHIELD,A_CLOAK,A_ARMOR,A_BODY_ARMOR
-right hand:right arm:4:A_RING,A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
-left hand:left arm:4:A_RING,A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
-right hand:6
-left hand:6
-
+RACE balrog
+SENSITIVITY 10:67
+LANGUAGE Balrog
+RESISTANCE HEAT:high
+STATS agility:40:1
+STATS charisma:1:5
+STATS coordination:30:3
+STATS durability:40:1
+STATS intelligence:30:2
+STATS luck:20:3
+STATS speed:30:2
+STATS strength:30:3
+STATS wisdom:10:3
+LIMB torso:0:1:A_SHIRT,A_CLOAK,A_VEST,A_SHIELD,A_ARMOR,A_BODY_ARMOR,A_BELT,A_AMULET
+LIMB neck:torso:1:A_COLLAR,A_AMULET
+LIMB head:neck:1:A_HELMET,A_VISOR,A_AMULET
+LIMB right leg:torso:2:A_LONG_BOOT,A_LONG_SOCK,A_PANTS,A_BODY_ARMOR
+LIMB left leg:torso:2:A_LONG_BOOT,A_LONG_SOCK,A_PANTS,A_BODY_ARMOR
+LIMB right foot:right leg:4:A_BOOT,A_LONG_BOOT,A_SOCK,A_LONG_SOCK
+LIMB left foot:left leg:4:A_BOOT,A_LONG_BOOT,A_SOCK,A_LONG_SOCK
+LIMB right arm:torso:2:A_LONG_GLOVE,A_SHIELD,A_CLOAK,A_ARMOR,A_BODY_ARMOR
+LIMB left arm:torso:2:A_LONG_GLOVE,A_SHIELD,A_CLOAK,A_ARMOR,A_BODY_ARMOR
+LIMB right hand:right arm:4:A_RING,A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
+LIMB left hand:left arm:4:A_RING,A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
+HAND right hand:6
+HAND left hand:6

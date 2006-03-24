@@ -2,6 +2,7 @@
 
 inherit LIB_CHAIR;
 
+
 static void create() {
     chair::create();
     SetKeyName("mansion commode");
@@ -13,11 +14,10 @@ static void create() {
     SetBaseCost("silver",15);
     SetMaxSitters(1);
 }
-
 void init(){
+    ::init();
     add_action("flush","flush");
 }
-
 int flush(string str){
     if(!str || str == "" ||str == "toilet"){
 	write("ba-WHOOSH!");
@@ -26,5 +26,4 @@ int flush(string str){
     }
     else return 0;
 }
-
 mixed CanGet(object ob) { return "The toilet does not budge.";}

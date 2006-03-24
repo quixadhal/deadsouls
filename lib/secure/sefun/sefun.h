@@ -1,3 +1,11 @@
+/**
+ *
+ * 2006-03-21, jonez
+ *  - changed prototype for update to return int instead of object
+ *  - changed prototype for reload_room to remove the "recurse" argument
+ *  - changed prototype for itoa to return string instead of int
+ */
+
 #ifndef l_sefun_h
 #define l_sefun_h
 
@@ -131,7 +139,7 @@ string admin_email();
 int query_night_light(object ob);
 int query_day_light(object ob);
 int query_ambient_light(object ob);
-int reload_room(object ob, int recursive);
+int reload_room(object ob);
 void tc(string str);
 string opposite_dir(string str);
 mixed *singular_array(mixed *arr);
@@ -170,12 +178,12 @@ mixed check_light(object who);
 int query_carrying(object who, mixed thing);
 mixed *findobs(mixed arg);
 int atoi(string str);
-int itoa(int i);
+string itoa(int i);
 string *query_names(object whom);
 int answers_to(string name, object what);
 varargs void add_event(string source, string ob, string fun, mixed *args, int when, int repeat);
 varargs void remove_event(int i);
-object update(string str);
+int update(string str);
 mixed local_ctime(int i);
 int numericp(mixed arg);
 int basic_punctuationp(mixed arg);
@@ -184,5 +192,7 @@ mixed find_inheritors(mixed arg);
 mixed find_deep_inheritors(mixed arg);
 int imud_privp(mixed guy);
 int securep(mixed guy);
+string convert_ascii(int i);
+varargs object get_random_living(object room, int foo);
 
 #endif /* l_sefun_h */

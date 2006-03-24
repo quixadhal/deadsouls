@@ -13,7 +13,7 @@ void create() {
 	"no attack" : 1,
       ]));
     SetExits( ([ "down" : ROOM_START ]) );
-    call_out((: reload_room :), 360, load_object(base_name(this_object())));
+    call_out((: reload_room :), 60, load_object(base_name(this_object())));
     SetNoModify(1);
 }
 int CanReceive(object ob){

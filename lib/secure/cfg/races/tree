@@ -1,22 +1,23 @@
-tree
-20:80
-Treeish
-SHOCK:high
-COLD:medium
-HEAT:medium
-BLADE:low
-BLUNT:low
-KNIFE:low
-WATER:low
-charisma:21:3
-durability:43:1
-intelligence:1:5
-luck:43:1
-agility:1:5
-wisdom:10:4
-charisma:1:5
-speed:1:5
-strength:21:3
-coordination:1:5
-trunk:0:1::
-1st branch:trunk:3::
+RACE tree
+SENSITIVITY 20:80
+LANGUAGE Treeish
+RESISTANCE SHOCK:high
+RESISTANCE COLD:medium
+RESISTANCE HEAT:medium
+RESISTANCE BLADE:low
+RESISTANCE BLUNT:low
+RESISTANCE KNIFE:low
+RESISTANCE WATER:low
+STATS charisma:21:3
+STATS durability:43:1
+STATS intelligence:1:5
+STATS luck:43:1
+STATS agility:1:5
+STATS wisdom:10:4
+STATS charisma:1:5
+STATS speed:1:5
+STATS strength:21:3
+STATS coordination:1:5
+LIMB trunk:0:1::
+LIMB 1st branch:trunk:3::
+LIMBLESSCOMBATRACE

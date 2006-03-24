@@ -65,13 +65,21 @@ mixed cmd(string args) {
 		else {
 		    who->SetWebPage(str);
 		    message("system", "Home page changed.", who);
+		    this_player()->save_player((string)this_player()->GetKeyName());
+		    update("/secure/daemon/finger");
 		}
 	    };
 	    input_to(h, 0, ob);
+	    this_player()->save_player((string)this_player()->GetKeyName());
+	    update("/secure/daemon/finger");
 	};
 	input_to(g, 0, str, ob);
+	this_player()->save_player((string)this_player()->GetKeyName());
+	update("/secure/daemon/finger");
     };
     input_to(f, "" + rname, previous_object());
+    this_player()->save_player((string)this_player()->GetKeyName());
+    update("/secure/daemon/finger");
     return 1;
 }
 

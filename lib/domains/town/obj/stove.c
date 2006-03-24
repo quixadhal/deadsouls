@@ -2,6 +2,7 @@
 
 inherit LIB_STORAGE;
 
+
 void create() {
     ::create();
     SetKeyName("stove");
@@ -35,4 +36,7 @@ varargs mixed eventOpen(object who, string id, object tool) {
 	tell_room(environment(this_object()),"A mangy little rat leaps out of the stove!");
     }
     return 1;
+}
+void init(){
+    ::init();
 }

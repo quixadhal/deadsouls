@@ -36,10 +36,10 @@ mixed do_dest_obj(object ob){
     }
     if(!living(ob)) name = ob->GetShort();
     else name = ob->GetName();
+    write("You dest "+name+".");
+    say( this_player()->GetMessage( "dest", ob ) );
     ob->eventDestruct();
     if(ob) destruct(ob);
-    write("You dest "+name+".");
-    say(this_player()->GetName()+" dests "+name+".");
     return 1;
 }
 

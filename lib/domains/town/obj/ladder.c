@@ -5,6 +5,7 @@
 inherit LIB_ITEM;
 inherit LIB_CLIMB; // This makes it climbable
 
+
 int LadderClimb(){
     if(base_name(environment()) == "/domains/town/room/mansion_ext"){
 	write("You climb up the ladder and into the mansion through the second-story window.");
@@ -14,7 +15,6 @@ int LadderClimb(){
     write("This ladder seems made specifically for one place, and it looks like this isn't it.");
     return 0;
 }
-
 static void create() {
     ::create();
     SetKeyName("ladder");
@@ -24,4 +24,7 @@ static void create() {
     SetLong("This is a standard wooden ladder, suitable for climbing.");
     SetClimb( (: LadderClimb :) , CLIMB_UP);
     SetCanClimbCarried(0);
+}
+void init(){
+    ::init();
 }

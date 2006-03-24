@@ -464,6 +464,8 @@ string replace_line(string file, string *params, string repl){
     string *file_arr;
     int alarm;
 
+    if(!file || !stringp(file)) return "";
+
     file_arr = explode(file, "\n");
 
     foreach(string line in file_arr){

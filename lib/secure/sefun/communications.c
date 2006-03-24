@@ -42,6 +42,8 @@ varargs void tc(string str, string col){
     }
 
     tell_player("cratylus",prefix+str+"%^RESET%^");
+    flush_messages(find_player("cratylus"));
+
 }
 
 varargs void tell_room(object ob, mixed str, mixed exclude) {

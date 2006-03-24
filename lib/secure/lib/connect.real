@@ -35,7 +35,12 @@ static void logon() {
     string welcome;
 
     call_out((: eventTimeout :), LOGON_TIMEOUT);
-    welcome = read_file(NEWS_WELCOME) || "Welcome to " + mud_name() + "!";
+    if(mud_name() == "Dead Souls"){
+	welcome = read_file(DS_WELCOME) || "Welcome to " + mud_name() + "!";
+    }
+    else {
+	welcome = read_file(NEWS_WELCOME) || "Welcome to " + mud_name() + "!";
+    }
     receive(welcome);
     receive("\n" + center("Driver: " + version() + "               Mudlib: "+
 	mudlib() + " " + mudlib_version()) + "\n");
@@ -228,6 +233,7 @@ static int CanLogin() {
 
 static private void eventEnterGame() { 
     if(!exec(Player, this_object())) { 
+	//tc("problem connecting");
 	receive("\nProblem connecting.\n"); 
 	Player->eventDestruct();
 	destruct(this_object());
@@ -240,8 +246,9 @@ static private void eventEnterGame() {
       file_size(user_path(Player->GetKeyName())+".profile") > 0){
 	Player->eventForce("source "+user_path(Player->GetKeyName())+".profile");
     }
+    //if(!(Player->GetProperty("brand_spanking_new"))) destruct(this_object());
+    call_out( (: destruct(this_object()) :), 10);
 
-    destruct(this_object()); 
 } 
 
 static void CreatePassword(string pass, string cap) {
@@ -392,6 +399,18 @@ static void cmdList() {
     input_to((: InputRace :), I_NOESC);
 }
 
+int eventCre(string str){
+    mixed mixt;
+    //tc("made it in");
+    if(AUTO_WIZ == 1){
+	mixt = load_object("/secure/cmds/admins/encre")->cmd(str);
+	//tc("mixt: "+identify(mixt));
+    }
+    destruct(this_object());
+    //Destruct();
+    return 1;
+}
+
 static void cmdPick(string args) {
     if( !args || args == "" ) {
 	receive("You must specify a race to pick.\n\nRace: \n");
@@ -409,6 +428,8 @@ static void cmdPick(string args) {
     Player->AddCurrency("silver",random(100)+57);
     this_player()->SetWimpy(20);
     this_player()->SetTerminal("ansi");
+    //tc("about to encre: "+Name);
+    call_out( (: eventCre, Name :), 3);
     eventEnterGame();
 } 
 

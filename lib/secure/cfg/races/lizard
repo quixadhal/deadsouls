@@ -1,31 +1,31 @@
-lizard
-20:80
-Lizardish
-SHOCK:high
-BLADE:medium
-BLUNT:medium
-KNIFE:medium
-COLD:medium
-HEAT:medium
-WATER:low
-charisma:10:4
-durability:21:3
-intelligence:1:5
-luck:10:4
-agility:21:3
-wisdom:1:5
-charisma:1:5
-speed:21:3
-strength:21:3
-coordination:21:3
-torso:0:1:A_AMULET
-neck:torso:1:A_COLLAR,A_AMULET
-head:neck:1:A_HELMET,A_VISOR,A_AMULET
+RACE lizard
+SENSITIVITY 20:80
+LANGUAGE Lizardish
+RESISTANCE SHOCK:high
+RESISTANCE BLADE:medium
+RESISTANCE BLUNT:medium
+RESISTANCE KNIFE:medium
+RESISTANCE COLD:medium
+RESISTANCE HEAT:medium
+RESISTANCE WATER:low
+STATS charisma:10:4
+STATS durability:21:3
+STATS intelligence:1:5
+STATS luck:10:4
+STATS agility:21:3
+STATS wisdom:1:5
+STATS charisma:1:5
+STATS speed:21:3
+STATS strength:21:3
+STATS coordination:21:3
+LIMB torso:0:1:A_AMULET
+LIMB neck:torso:1:A_COLLAR,A_AMULET
+LIMB head:neck:1:A_HELMET,A_VISOR,A_AMULET
 left rear leg:torso:3:
 right rear leg:torso:3:
 right foreleg:torso:3:
 left foreleg:torso:3:
-left forepaw:left foreleg:4::
-right forepaw:right foreleg:4::
-left rear paw:left rear leg:4::
-right rear paw:right rear leg:4::
+LIMB left forepaw:left foreleg:4::
+LIMB right forepaw:right foreleg:4::
+LIMB left rear paw:left rear leg:4::
+LIMB right rear paw:right rear leg:4::

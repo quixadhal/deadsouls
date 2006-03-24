@@ -1,25 +1,25 @@
-cat
-20:80
-Feline
-stealth:1:5:4:6
-charisma:43:1
-durability:10:4
-intelligence:1:5
-luck:43:1
-agility:43:1
-wisdom:10:4
-speed:31:2
-strength:10:4
-coordination:21:3
-torso:0:1:A_ARMOR,A_BODY_ARMOR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
-neck:torso:1:A_COLLAR,A_AMULET
-head:neck:1:A_HELMET,A_VISOR,A_AMULET
-left rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
-right rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
-right foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
-left foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
-left forepaw:left foreleg:4::
-right forepaw:right foreleg:4::
-left rear paw:left rear leg:4::
-right rear paw:right rear leg:4::
-tail:torso:5::
+RACE cat
+SENSITIVITY 20:80
+LANGUAGE Feline
+SKILL stealth:1:5:4:6
+STATS charisma:43:1
+STATS durability:10:4
+STATS intelligence:1:5
+STATS luck:43:1
+STATS agility:43:1
+STATS wisdom:10:4
+STATS speed:31:2
+STATS strength:10:4
+STATS coordination:21:3
+LIMB torso:0:1:A_ARMOR,A_BODY_ARMOR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
+LIMB neck:torso:1:A_COLLAR,A_AMULET
+LIMB head:neck:1:A_HELMET,A_VISOR,A_AMULET
+LIMB left rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
+LIMB right rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
+LIMB right foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
+LIMB left foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
+LIMB left forepaw:left foreleg:4::
+LIMB right forepaw:right foreleg:4::
+LIMB left rear paw:left rear leg:4::
+LIMB right rear paw:right rear leg:4::
+LIMB tail:torso:5::

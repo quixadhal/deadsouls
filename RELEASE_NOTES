@@ -1,3 +1,46 @@
+---- 2.0r17 ---
+- Fixed bug that prevented assistant admins from shutting down.
+- Added Shadyman's emote doc.
+- Tweaked timestamp() (thx, Jonez).
+- Tweaked "dest" code (thx, Cecil).
+- Added convert_ascii() sefun to stringify ascii codes.
+- Added get_random_living() sefun.
+- QCS now sanely stops when the target is virtual.
+- Players can no longer be hosed by being initfixed.
+- Fixed bug that returned conflicting messages if
+  an intermud tell was received while invis with
+  voicemail enabled.
+- timezone.cfg can now be set to blank with admintool.
+- Fixed problem in CHAT_D that restricted local channel
+  emotes when intermud was set to be restricted.
+- Fixed a bug in null currency addition in admintool.
+- Smushed another apostrophe problem. This is really ridiculous, I
+  should just fix the real problem, but it's such a dumb
+  bug, it's easier to pretend it doesn't exist.
+- Added SetCustomXP to /lib/combat so that NPC's can have
+  expee value independent of that calculated from their level.
+- Added SetCustomXP to QCS.
+- Wrapped users() efun in a sefun to exclude users without
+  an environment.
+- Removed old, counterproductive intermud update event.
+- Added log rotation daemon in /secure/daemon/log.c
+- Added a log rotation check every 2 hours.
+- Format of timestamp() sefun changed to prevent screwing the
+  mud when running on Windows and logs rotate.
+- Fixed bug in update() sefun.
+- Prettified devel mud welcome file and added warning about
+  submitted code being automatically GPL.
+- The title and chfn commands now automatically update finger
+  info with current data.
+- *COMPAT BUSTER* RACES_D re-written (Thanks, Ashon). If you've
+  added your own races, you'll need to re-add them using the new format.
+- /www FAQ material updated.
+- Fixed Radagast's training skills, fixed QCS trainer creation.
+- Modified telnet room to not permit recursive logins on the
+  development Dead Souls mud.
+- Removed nonexistent boards from boards command.
+- Added commands: addraces, removeraces, ascii, resetall, flushobs.
+
 ---- 2.0r16 ---
 - Admin email specified at login now gets sent to config.h.
 - New FAQ material added to /www
@@ -120,7 +163,8 @@
   to avoid abuse. Do NOT use this functionality unless you know EXACTLY
   what you're doing. It probably doesn't work the way you think it does.
   Be especially careful not to link privileged files to directories that
-  unprivileged users have write access to.
+  unprivileged users have write access to. Windows users should just 
+  forget they read any of this.
 - Verbified dest command. Peculiar "desting of nonexistent things" bug
   should be dead at long last.
 - Golems can have their composition specified. As an example, the combat

@@ -1,27 +1,28 @@
-dragon
-20:80
-Dragonish
-SHOCK:high
-COLD:low
-charisma:31:2
-durability:43:1
-intelligence:31:2
-luck:43:1
-agility:43:1
-wisdom:43:1
-speed:21:3
-strength:43:1
-coordination:21:3
-torso:0:1:A_ARMOR,A_BODY_ARMOR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
-neck:torso:1:A_COLLAR,A_AMULET
-head:neck:1:A_HELMET,A_VISOR,A_AMULET
-right rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
-left foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
-left rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
-left wing:torso:3::
-right wing:torso:3::
-right foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
-left forepaw:left foreleg:4::
-left rear paw:left rear leg:4::
-right forepaw:right foreleg:4::
-right rear paw:right rear leg:4::
+RACE dragon
+SENSITIVITY 20:80
+LANGUAGE Dragonish
+RESISTANCE SHOCK:high
+RESISTANCE COLD:low
+STATS charisma:31:2
+STATS durability:43:1
+STATS intelligence:31:2
+STATS luck:43:1
+STATS agility:43:1
+STATS wisdom:43:1
+STATS speed:21:3
+STATS strength:43:1
+STATS coordination:21:3
+LIMB torso:0:1:A_ARMOR,A_BODY_ARMOR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
+LIMB neck:torso:1:A_COLLAR,A_AMULET
+LIMB head:neck:1:A_HELMET,A_VISOR,A_AMULET
+LIMB right rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
+LIMB left foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
+LIMB left rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
+LIMB left wing:torso:3::
+LIMB right wing:torso:3::
+LIMB right foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
+LIMB left forepaw:left foreleg:4::
+LIMB left rear paw:left rear leg:4::
+LIMB right forepaw:right foreleg:4::
+LIMB right rear paw:right rear leg:4::
+FLYINGRACE

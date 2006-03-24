@@ -2,6 +2,7 @@
 #include <armor_types.h>
 #include <damage_types.h>
 inherit LIB_ARMOR;
+
 static void create(){
     armor::create();
     SetKeyName("a Def Leppard shirt");
@@ -17,4 +18,7 @@ static void create(){
     SetProtection(KNIFE,1);
     SetArmorType(A_SHIRT);
     //SetRestrictLimbs(({"torso"}));
+}
+void init(){
+    ::init();
 }

@@ -10,7 +10,7 @@ int cmd(string str){
     string *boards;
     int x;
 
-    boards = ({ "realms_board", "immortal_board", "wiz_chat_board" });
+    boards = ({ "immortal_board" });
     if(archp(this_player())) boards += ({ "admin_board" });
 
     for(x = 0; x < sizeof(boards); x++)

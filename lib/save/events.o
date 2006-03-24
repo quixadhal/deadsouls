@@ -1,3 +1,3 @@
 #/secure/daemon/events.c
 RebootInterval 1000
-Events ([1140728339:(["function":"update","object":"/secure/sefun/sefun","args":({"/daemon/intermud",}),"interval":3600,"creator":"/secure/sefun/sefun","regular":3600,]),1140729479:(["function":"update","object":"/secure/sefun/sefun","args":({"/daemon/preload_check",}),"interval":3600,"creator":"/secure/sefun/sefun","regular":3600,]),])
+Events ([1143229968:(["regular":7200,"function":"RotateLogs","args":({}),"interval":7200,"creator":"/secure/daemon/log","object":"/secure/daemon/log",]),])

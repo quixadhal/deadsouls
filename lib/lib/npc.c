@@ -24,7 +24,7 @@ inherit LIB_OBJECT;
 inherit LIB_CRAWL;
 inherit LIB_SAVE;
 
-private int ActionChance, CombatActionChance, AutoStand, Mount;
+private int CustomXP, ActionChance, CombatActionChance, AutoStand, Mount;
 private mixed Encounter;
 private string *EnemyNames;
 private static int Level, Unique;
@@ -48,13 +48,10 @@ static void create() {
     Encounter = 0;
     ActionChance = 0;
     Unique = 0;
+    CustomXP = 0;
     Inventory = ([]);
     AutoStand = 1;
 }
-
-//string TestFun(){
-//return "Feep!";
-//}
 
 void CheckEncounter(){
     string *enemies;
@@ -588,6 +585,16 @@ void eventDescribeEnvironment(int brief) {
 	}
 
 	int GetLevel() { return Level; }
+
+	int SetCustomXP(int i){
+	    if(!i) i = 0;
+	    CustomXP = i;
+	    return CustomXP;
+	}
+
+	int GetCustomXP(){
+	    return CustomXP;
+	}
 
 	int SetHealthPoints(int x) {
 	    if( x > GetMaxHealthPoints() )

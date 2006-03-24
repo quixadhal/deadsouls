@@ -24,7 +24,7 @@ static void create() {
     apostrophe_exceptions = ({ "ed","modify","delete","create","add" });
     apostrophe_exceptions += ({"rwho", "finger","mudlist","tell","eval"});
     apostrophe_exceptions += ({"say","speak","yell","whisper","shout"});
-    apostrophe_exceptions += ({"ping"});
+    apostrophe_exceptions += ({"ping", "repy"});
     SearchPath = ({ DIR_PLAYER_CMDS, DIR_SECURE_PLAYER_CMDS, DIR_GUILD_CMDS,
       DIR_COMMON_CMDS, DIR_SECURE_COMMON_CMDS });
 }

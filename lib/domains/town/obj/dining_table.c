@@ -4,6 +4,7 @@ inherit LIB_STORAGE;
 inherit LIB_CHAIR;
 inherit "/lib/comp/surface";
 
+
 void create() {
     ::create();
     SetKeyName("dining table");
@@ -22,3 +23,6 @@ void create() {
 
 }
 mixed CanGet(object ob) { return "This table is much too large and heavy to go anywhere with you."; }
+void init(){
+    ::init();
+}

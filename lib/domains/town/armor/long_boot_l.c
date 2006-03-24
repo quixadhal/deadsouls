@@ -2,6 +2,7 @@
 #include <armor_types.h>
 #include <damage_types.h>
 inherit LIB_ARMOR;
+
 static void create(){
     armor::create();
     SetKeyName("riding boot");
@@ -18,4 +19,7 @@ static void create(){
     SetProtection(KNIFE,5);
     SetArmorType(A_LONG_BOOT);
     SetRestrictLimbs(({"left foot","left leg"}));
+}
+void init(){
+    ::init();
 }

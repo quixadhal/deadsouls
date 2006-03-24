@@ -3,12 +3,13 @@
  *    handles race configuration and administration
  *    created by Descartes of Borg 960108
  *    Version: @(#) races.c 1.4@(#)
- *    Last modified: 96/11/10
+ *    Fixed by Ashon @ Stargate Atlantis 16 March 2006
  */
 
 #include <lib.h>
 #include <save.h>
 #include <privs.h>
+#include <armor_types.h>
 #include "include/races.h"
 
 inherit LIB_DAEMON;
@@ -16,19 +17,29 @@ inherit LIB_DAEMON;
 private mapping Races = ([]);
 static private mapping Resistances = ([]);
 static private mapping Armors = ([]);
+string array FlyingRaces = ({"wtf"});
+string array LimblessCombatRaces = ({});
+string array LimblessRaces = ({});
+string array NonBitingRaces = ({});
 
-static private string array FlyingRaces = ({"avidryl","bat","demon","dragon","faerie","gargoyle","griffin","insect","pegasus","bird", "wraith"});
-static private string array LimblessCombatRaces = ({"snake","slug","god","android","elemental","fish","tree","plant"});
-static private string array LimblessRaces = ({"snake","slug","elemental","fish"});
-static private string array NonBitingRaces = ({"golem","android","cow","deer","elemental","god"});
+
+string wtf = "/tmp/wtf.txt";
+
 
 static void create() {
     string array lines;
 
     daemon::create();
+
     if( unguarded((: file_size(SAVE_RACES __SAVE_EXTENSION__) :)) > 0 )
 	unguarded((: restore_object(SAVE_RACES) :));
+
     if( !Races ) Races = ([]);
+    if(!FlyingRaces) FlyingRaces = ({});
+    if(!LimblessCombatRaces) LimblessCombatRaces = ({});
+    if(!LimblessRaces) LimblessRaces = ({});
+    if(!NonBitingRaces) NonBitingRaces = ({});
+
     // Hocus pocus to load armor and resistance info
     lines = explode(read_file("/include/armor_types.h"), "\n");
     foreach(string line in lines) {
@@ -40,29 +51,33 @@ static void create() {
 	    if( type == "A_MAX_ARMOR_BIT" ) {
 		continue;
 	    }
+
 	    if( !file_exists(file) ) {
 		unguarded((: write_file($(file), "#include <armor_types.h>\n"
 		      "int armor() { return " +
 		      $(type) + "; }\n") :));
 	    }
+
 	    Armors[type] = call_other(file, "armor");
 	}
     }
+
     lines = explode(read_file("/include/damage_types.h"), "\n");
     foreach(string line in lines) {
 	string type;
 
 	if( sscanf(line, "#define %s %*s", type) == 2 ) {
 	    string file = DIR_DAEMONS "/tmp/" + type + ".c";
-
 	    if( type == "MAX_DAMAGE_BIT" ) {
 		continue;
 	    }
+
 	    if( !file_exists(file) ) {
 		unguarded((: write_file($(file), "#include <damage_types.h>\n"
 		      "int damage() { return " +
 		      $(type) + "; }\n") :));
 	    }
+
 	    Resistances[type] = call_other(file, "damage");
 	}
     }
@@ -84,17 +99,45 @@ int GetLimblessCombatRace(string str){
     else return 1;
 }
 
-string *LimblessCombatRaces(){
-    return LimblessCombatRaces;
-}
-
 int GetLimblessRace(string str){
     if(member_array(str,LimblessRaces) == -1) return 0;
     else return 1;
 }
 
-string *LimblessRaces(){
+int SetLimblessCombatRace(string str){
+    if(member_array(str,LimblessCombatRaces) != -1) return 0;
+    LimblessCombatRaces += ({ lower_case(str) });
+    return 1;
+}
+
+int SetLimblessRace(string str){
+    if(member_array(str,LimblessRaces) != -1) return 0;
+    LimblessRaces += ({ lower_case(str) });
+    return 1;
+}
+
+int SetFlyingRace(string str){
+    //if(member_array(str,FlyingRaces) != -1) return 0;
+    FlyingRaces += ({ str });
+    return 1;
+}
+
+int SetNonBitingRace(string str){
+    //if(member_array(str,FlyingRaces) != -1) return 0;
+    NonBitingRaces += ({ str });
+    return 1;
+}
+
+string *GetLimblessCombatRaces(){
+    return LimblessCombatRaces;
+}
+
+string *GetLimblessRaces(){
     return LimblessRaces;
+}
+
+string *GetFlyingRaces(){
+    return FlyingRaces;
 }
 
 int GetBitingRace(string str){
@@ -104,12 +147,32 @@ int GetBitingRace(string str){
 
 void AddRace(string file, int player) {
     class Race res;
-    string array lines, tmp;
-    string race;
+    string array lines, tmp, parts;
+    string race, test_string;
+    int i, x;
+    mixed array limb = allocate(4);
+    mixed array tmp_limb = allocate(4);
+    class Stat s; 
+
+    //tc("hello.");
+    //tc("hellow");
+
+    res = new(class Race);
+    s = new (class Stat);
+
+    res->Resistance = ([]);
+    res->Skills = ([]);
+    res->Stats = ([]);
+    res->Limbs = ({});
 
     validate();
+
     if( !file_exists(file) ) error("No such file: " + file);
+    race = last_string_element(file,"/");
+    //tc("race: "+race);
+
     lines = explode(read_file(file), "\n");
+
     lines = filter(lines, function(string str) {
 	  if( strlen(str) == 0 ) {
 	      return 0;
@@ -122,84 +185,137 @@ void AddRace(string file, int player) {
 	  }
 	  return 1;
 	});
-      race = lines[0];
-      if( Races[race] ) error("Race already exists");
-      res = new(class Race);
-      res->Sensitivity = map(explode(lines[1], ":"), (: to_int :));
-      res->Language = lines[2];
-      res->Skills = ([]);
-      lines = lines[3..];
-      //tc("lines: "+identify(lines),"blue");
-      while(sizeof(tmp = explode(lines[0], ":")) == 5) {
-	  res->Skills[tmp[0]] = ({ tmp[1], tmp[2], tmp[3], tmp[4] });
-	  //tc("skills: "+identify(res->Skills),"red");
-	  lines = lines[1..];
-	  //tc("lines: "+identify(lines),"yellow");
-      }
-      res->Resistance = ([]);
-      while(sizeof(tmp = explode(lines[0], ":")) == 2) {
-	  int x = to_int(tmp[0]);
 
-	  if( x == 0 && tmp[0] != "0" ) x = GetResistance(tmp[0]);
-	  res->Resistance[x] = tmp[1];
-	  lines = lines[1..];
+      res->Fingers = ([]);
 
-      }
-      //tc("lines: "+identify(lines),"green");
-      res->Stats = ([]);
-      while(sizeof(tmp = explode(lines[0], ":")) == 3) {
-	  class Stat s = new (class Stat);
-	  s->Average = to_int(tmp[1]);
-	  s->Class = to_int(tmp[2]);
-	  res->Stats[tmp[0]] = s;
-	  lines = lines[1..];
-      }
-      //tc("lines: "+identify(lines),"red");
-      res->Limbs = ({});
-      while(sizeof(tmp = explode(lines[0], ":")) == 4) {
-	  mixed array limb = allocate(4);
 
-	  limb[0] = tmp[0];
-	  limb[1] = (tmp[1] == "0" ? 0 : tmp[1]);
-	  limb[2] = to_int(tmp[2]);
-	  limb[3] = map(explode(tmp[3], ","), function(string str) {
-		int x = to_int(str);
+      foreach(string line in explode(read_file(file),"\n")){
+	  //tc("line: "+line,"red");
+	  //tc("first_string_element: "+first_string_element(line," "),"green");
+	  test_string = first_string_element(line," ");
+	  if(!test_string || !sizeof(test_string)) test_string = line;
 
-		if( x == 0 && str != "0" )
-		    return GetArmor(str);
-		return x;
-	      });
-	    res->Limbs = ({ res->Limbs..., limb });
-	    if( sizeof(lines) > 1 ) lines = lines[1..];
-	    else {
-		lines = ({});
+	  //tc("test_string: "+test_string,"green");
+
+	  switch(test_string){
+
+	  case "FLYINGRACE":
+	      //tc("flying","red");
+	      SetFlyingRace(race);
+	      break;
+
+	  case "LIMBLESSRACE":
+	      //tc("limbless","red");
+	      SetLimblessRace(race);
+	      break;
+
+	  case "LIMBLESSCOMBATRACE":
+	      //tc("limblesscombat","red");
+	      SetLimblessCombatRace(race);
+	      break;
+
+	  case "NONBITINGRACE":
+	      //tc("nonbiting","red");
+	      SetNonBitingRace(race);
+	      break;
+
+	  case "RACE":
+	      race = replace_string(line, "RACE ", "");
+	      if( Races[race] ) error("Race already exists");
+	      break;
+
+	  case "SENSITIVITY":
+	      line = replace_string(line, "SENSITIVITY ", "");
+	      res->Sensitivity = map(explode(line, ":"), (: to_int :));
+	      break;
+
+	  case "PLAYER_RACE":
+	      line = replace_string(line, "PLAYER_RACE ", "");
+	      if(!player && to_int(line) > 0) player = 1;
+	      break;
+
+	  case "LANGUAGE":
+	      //TODO: This should be a Language array to handle multiple 
+	      //languages but further research is required first.
+	      res->Language = replace_string(line, "LANGUAGE ", "");
+	      //tc("res->Language "+res->Language,"blue");
+	      break;
+
+	  case "RESISTANCE":			  
+	      tmp = explode(replace_string(line, "RESISTANCE ", ""), ":");
+	      x = to_int(tmp[0]);
+	      if( x == 0 && tmp[0] != "0" ) x = GetResistance(tmp[0]);
+	      res->Resistance[x] = tmp[1];
+	      break;
+
+	  case "SKILL":      
+	      tmp = explode(replace_string(line, "SKILL ", ""), ":");
+	      //tc("tmp: "+identify(tmp));
+	      res->Skills[tmp[0]] = ({ tmp[1], tmp[2], tmp[3], tmp[4] });
+	      break;
+
+	  case "STATS":
+	      tmp = explode(replace_string(line, "STATS ",""), ":");
+	      s->Average = to_int(tmp[1]);
+	      s->Class = to_int(tmp[2]);
+	      res->Stats[tmp[0]] = s;
+	      break;
+
+	  case "LIMB":
+	      limb = ({ ({}), ({}), ({}), ({}) });
+	      tmp_limb = explode(replace_string(line, "LIMB ",""), ":");
+	      //tc("tmp_limb: "+identify(tmp_limb),"cyan");
+	      limb[0] = tmp_limb[0];
+	      limb[1] = (tmp_limb[1] == "0" ? 0 : tmp_limb[1]);
+	      limb[2] = to_int(tmp_limb[2]);
+	      limb[3] = map(explode(tmp_limb[3], ","), function(string str) {
+		    int x = to_int(str);
+		    if( x == 0 && str != "0" ) { return GetArmor(str); }
+		    return x;
+		  });
+		//tc("limb: "+identify(limb),"green");
+
+		res->Limbs = ({ res->Limbs..., limb });
+		res->Limbs += ({limb});
 		break;
-	    }
-	}
-	  res->Fingers = ([]);
-	  if( sizeof(lines) ) {
-	      foreach(string hand in lines) {
-		  string array parts = explode(hand, ":");
 
-		  res->Fingers[parts[0]] = to_int(parts[1]);
-	      }
-	  }
+		case "HAND":
+		parts = explode(replace_string(line, "HAND ",""), ":");
+		res->Fingers[parts[0]] = to_int(parts[1]);
+		break;
+
+		default:
+		break;
+	    } 
+	  }  
+
+	  //tc("ok then.","blue");
+
 	  res->Complete = 1;
+
 	  if( player ) {
 	      res->PlayerFlag = 1;
 	  }
+
 	  else {
 	      res->PlayerFlag = 0;
 	  }
+
 	  Races[race] = res;
+	  wtf = save_variable(Races[race]);
+	  //tc("wtf: "+identify(wtf),"yellow");
 	  save_object(SAVE_RACES);
-      }
+      } 
 
       void RemoveRace(string race) {
 	  validate();
+	  wtf = save_variable(Races[race]);
+	  //tc("wtf: "+identify(wtf),"yellow");
 	  map_delete(Races, race);
-	  save_object(SAVE_RACES);
+	  if(Races[race]) //tc("wtf: "+identify(wtf),"blue");
+	      save_object(SAVE_RACES);
       }
+
 
       int GetArmor(string str) {
 	  string file = DIR_DAEMONS "/tmp/" + str + ".c";
@@ -221,25 +337,32 @@ void AddRace(string file, int player) {
 	  return call_other(file, "damage"); 
       }
 
-      mapping GetRemoteRaces() {
+      varargs mapping GetRemoteRaces(string str) {
 	  mapping mp = ([]);
+	  mapping foo = ([]);
 
-	  foreach(string race, class Race res in Races) {
+	  if(str && Races[str]) foo[str] = Races[str];
+	  else foo = copy(Races);
+
+	  foreach(string race, class Race res in foo) {
 	      mapping stats = ([]);
 
 	      mp[race] = ([]);
 	      mp[race]["limbs"] = res->Limbs;
 	      mp[race]["resistance"] = res->Resistance;
+
 	      foreach(string stat, class Stat st in res->Stats) {
 		  stats[stat] = ([]);
 		  stats[stat]["class"] = st->Class;
 		  stats[stat]["average"] = st->Average;
 	      }
+
 	      mp[race]["stats"] = stats;
 	      mp[race]["fingers"] = res->Fingers;
 	      mp[race]["sensitivity"] = res->Sensitivity;
 	      mp[race]["player"] = res->PlayerFlag;
 	      mp[race]["language"] = res->Language;
+
 	  }
 	  return mp;
       }
@@ -248,6 +371,7 @@ void AddRace(string file, int player) {
 	  class Race res;
 
 	  validate();
+
 	  if( !Races[race] ) error("No such race");
 	  else res = Races[race];
 	  res->Complete = 1;
@@ -258,6 +382,7 @@ void AddRace(string file, int player) {
 	  class Race res;
 
 	  validate();
+
 	  if( !Races[race] ) error("No such race");
 	  else res = Races[race];
 	  if( sensitivity[0] < 1 ) error("Invalid sensitivity value");
@@ -281,9 +406,6 @@ void AddRace(string file, int player) {
       void SetCharacterRace(string race, mixed array args) {
 	  class Race res = Races[race];
 	  mixed array tmp;
-	  // if(!sizeof(args) == 5)
-	  //args = ({ ({}), ({}), ({}), ({}), ({}) });
-	  //tc("args: "+sizeof(args)+", "+identify(args));
 
 	  if( !res || !res->Complete || sizeof(args) != 5 ) return;
 	  tmp = ({});
@@ -295,11 +417,13 @@ void AddRace(string file, int player) {
 	  tmp = ({ tmp..., ({ key, stat->Average, stat->Class }) });
 	  args[1] = tmp;
 	  args[2] = res->Language;
-	  args[3] = ({ res->Sensitivity[0], res->Sensitivity[1] });
+	  //args[3] = ({ res->Sensitivity[0], res->Sensitivity[1] });
+	  args[3] = res->Sensitivity;
 	  args[4] = res->Skills; 
       }
 
       varargs string array GetRaces(int player_only) {
+
 	  return filter(keys(Races), function(string race, int player_only) {
 		class Race res = Races[race];
 
@@ -330,9 +454,11 @@ void AddRace(string file, int player) {
 	  if( sizeof(limbs) ) {
 	      help += "\nFlying\n";
 	  }
+
 	  else {
 	      help += "\nNon-flying\n";
 	  }
+
 	  x = res->Sensitivity[0];
 	  if( x < 11 ) tmp = "excellent";
 	  else if( x < 16 ) tmp = "above average";
@@ -358,6 +484,10 @@ void AddRace(string file, int player) {
 	  return copy(Resistances);
       }
 
+
+
       public mapping GetArmors() {
 	  return copy(Armors);
       }
+
+

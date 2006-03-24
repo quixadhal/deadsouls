@@ -1,22 +1,24 @@
-snake
-20:80
-Snakeish
-SHOCK:high
-COLD:medium
-HEAT:medium
-BLADE:low
-BLUNT:low
-KNIFE:low
-WATER:low
-charisma:1:5
-durability:10:4
-intelligence:10:4
-luck:43:1
-agility:10:4
-wisdom:31:2
-charisma:1:5
-speed:10:4
-strength:1:5
-coordination:1:5
-torso:0:1:A_VEST
-head:torso:1:A_HELMET
+RACE snake
+SENSITIVITY 20:80
+LANGUAGE Snakeish
+RESISTANCE SHOCK:high
+RESISTANCE COLD:medium
+RESISTANCE HEAT:medium
+RESISTANCE BLADE:low
+RESISTANCE BLUNT:low
+RESISTANCE KNIFE:low
+RESISTANCE WATER:low
+STATS charisma:1:5
+STATS durability:10:4
+STATS intelligence:10:4
+STATS luck:43:1
+STATS agility:10:4
+STATS wisdom:31:2
+STATS charisma:1:5
+STATS speed:10:4
+STATS strength:1:5
+STATS coordination:1:5
+LIMB torso:0:1:A_VEST
+LIMB head:torso:1:A_HELMET
+LIMBLESSCOMBATRACE
+LIMBLESSRACE

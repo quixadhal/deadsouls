@@ -13,5 +13,6 @@
 #define NEWS_NEWBIE             DIR_NEWS "/newbie"
 #define NEWS_REGISTER           DIR_NEWS "/register"
 #define NEWS_WELCOME            DIR_NEWS "/welcome"
+#define DS_WELCOME              DIR_NEWS "/deadsouls"
 
 #endif /* s_news_h */

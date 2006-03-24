@@ -1,0 +1,105 @@
+
+    There are many ways to communicate with other players. If
+you're in the same room as your intended listener, you can just 
+use the "say" command, like this:
+
+%^GREEN%^say hi, crat%^RESET%^
+
+    If the message is secret, you can "whisper":
+
+%^GREEN%^whisper to cratylus are you idle?%^RESET%^
+
+    If you want to say something that everyone in the mud can
+hear, use the "shout" command (at the cost of a lot of stamina):
+
+%^GREEN%^shout hey crat, wheredya go?%^RESET%^
+
+    Or, if it's an important secret and the target is not in the 
+same room as you, you can use the magical "tell" command:
+
+%^GREEN%^tell cratylus are you mad at me or something?%^RESET%^
+
+
+    There are also special communication lines on the mud that are
+class or role-specific. For example, if you type:
+
+%^GREEN%^newbie does anyone know what's up with cratylus?%^RESET%^
+
+    All people who are tuned into the newbie line will get
+your message. To see what lines are available to you, type:
+
+%^GREEN%^lines%^RESET%^
+
+To see who is listening to the newbie channel:
+
+%^GREEN%^list newbie%^RESET%^
+
+To see who is listening to some other channel on some other mud:
+
+%^GREEN%^list otherchannel@othermud%^RESET%^
+
+
+    To enable or disable a line, just type the name of it with no message.
+
+    To see a brief history of the past few messages on a line (in
+this case, the newbie line), type:
+
+%^GREEN%^hist newbie%^RESET%^
+
+
+    Spamming lines is rude and probably dangerous to your character, so 
+be sure you comply with your mud's rules on lines. 
+
+
+    Your mud may be on the intermud network. To find out, type the
+command:
+
+%^GREEN%^mudlist%^RESET%^
+
+    If a list of muds comes up, you know your mud is probably
+on the intermud3 communication network. Dead Souls by default restricts
+players from access to intermud channels, but you can "tell" to
+players on other muds, if you want. If you think your friend Xyzzy
+is online on a mud on intermud3, you can issue this command:
+
+%^GREEN%^locate xyzzy%^RESET%^
+
+    If he's logged into a mud on i3, you will get something like:
+
+Xyzzy was just located on Frontiers. (idle 00:03:17) [status: inactive]
+
+    You can then tell to him:
+
+%^GREEN%^tell xyzzy@frontiers dude, what's the deal with crat lately?%^RESET%^
+
+
+    Sometimes a player or NPC does not understand your character's
+native tongue. For example, if you are en elf, your native tongue is
+not English, it is Edhellen. If someone talks to you in English, you
+might see something like this:
+
+Xyzzy says in English, "leka mifahmam, potong-hwa."
+
+    Since your character doesn't speak English, what you see is gibberish.
+If you find a language teacher, your proficiency in the language they
+teach you will allow you to understand more of the words you hear.
+
+    Suppose that your elf character is now 100% fluent in English.
+If you greet a human player named Xyzzy by typing:
+
+%^GREEN%^say hello there, xyzzy%^RESET%^
+
+    Xyzzy will probably see something like:
+
+Noobie says in Edhellen, "pericolo temak, forshtor."
+
+    Instead, if you want to speak to a human, you'll have to type:
+
+%^GREEN%^speak in english hello there, xyzzy%^RESET%^
+
+
+    To find out what languages you speak, type:
+
+%^GREEN%^language%^RESET%^
+
+

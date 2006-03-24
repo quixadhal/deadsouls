@@ -31,7 +31,7 @@ void eventReceiveTell(mixed *packet) {
 	int parse_it;
 	string machine_message;
 	parse_it=machine->query_answer();
-	if(parse_it){
+	if(parse_it && !(int)ob->GetInvis()){
 	    machine->get_message(packet[6] + "@" + packet[2]+
 	      " tells you: "+packet[7]+"\n");
 	    machine_message=machine->send_message();

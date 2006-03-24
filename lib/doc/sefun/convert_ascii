@@ -1,0 +1,25 @@
+
+CONVERT_ASCII(1)                                     CONVERT_ASCII(1)
+
+NAME
+       convert_ascii() - Translates ascii code to string.
+
+SYNOPSIS
+       string convert_ascii(int i)
+
+DESCRIPTION
+       This sefun takes an integer as an argument, and if that integer
+corresponds to an ASCII code that is in its list, that
+ASCII character is returned.
+
+LOCATION
+       /secure/sefun/ascii.c
+
+EXAMPLE
+	convert_ascii(42) returns "*"
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

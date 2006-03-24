@@ -2,6 +2,7 @@
 #include <armor_types.h>
 #include <damage_types.h>
 inherit LIB_ARMOR;
+
 static void create(){
     armor::create();
     SetKeyName("overcoat");
@@ -17,4 +18,7 @@ static void create(){
     SetProtection(BLADE,10);
     SetProtection(KNIFE,10);
     SetArmorType(A_CLOAK);
+}
+void init(){
+    ::init();
 }

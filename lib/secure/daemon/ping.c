@@ -8,7 +8,7 @@ int Pinging = 0;
 int OK = 0;
 int Retries = 0;
 
-string *muds = ({ "Frontiers", "Dead Souls" });
+string *muds = ({ "Frontiers", "Carnivore" });
 
 int CheckOK(){
     Pinging = 0;

@@ -5,6 +5,7 @@
 
 inherit LIB_ARMOR;
 
+
 static void create() {
     armor::create();
     SetKeyName("leather glove");
@@ -24,4 +25,7 @@ static void create() {
     SetProtection(COLD, 7);
     SetFingers(5);
     SetRestrictLimbs(({"right hand"}));
+}
+void init(){
+    ::init();
 }

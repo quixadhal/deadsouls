@@ -1,6 +1,7 @@
 #include <lib.h>
 #include <vendor_types.h>
 inherit LIB_ITEM;
+
 void create(){
     ::create();
     SetKeyName("billiards ball");
@@ -12,4 +13,7 @@ void create(){
     SetMass(100);
     SetBaseCost("silver",10);
     SetVendorType(VT_TREASURE);
+}
+void init(){
+    ::init();
 }

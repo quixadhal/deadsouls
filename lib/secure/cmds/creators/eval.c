@@ -28,6 +28,7 @@ int cmd( string a )
     file =
     ""+
     "#include <lib.h>\n"+
+    "#include <cfg.h>\n"+
     "#include <save.h>\n"+
     "#include <rooms.h>\n"+
     "#include <config.h>\n"+

@@ -3,6 +3,7 @@
 inherit LIB_STORAGE;
 object to;
 
+
 void create() {
     ::create();
     SetKeyName("rack");
@@ -22,11 +23,13 @@ void create() {
     SetCanClose(0);
 }
 mixed CanGet(object ob) { return "The rack does not budge.";}
-
 int CanReceive(object ob) {
     if(!ob->GetFancy()) {
 	write("This is a rack for fine, expensive kitchen knives only.");
 	return 0;
     }
     else return 1;
+}
+void init(){
+    ::init();
 }

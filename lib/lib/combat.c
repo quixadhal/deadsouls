@@ -859,7 +859,8 @@ int eventExecuteAttack(mixed target) {
 
 	if( !ob ) return;
 	level = ob->GetLevel();
-	this_object()->AddExperiencePoints(level * 80);
+	if(ob->GetCustomXP()) this_object()->AddExperiencePoints(ob->GetCustomXP());
+	else this_object()->AddExperiencePoints(level * 80);
 	if( member_array(ob, GetHostiles()) == -1 ) {
 	    int x;
 
@@ -877,7 +878,8 @@ int eventExecuteAttack(mixed target) {
 
 	if( !ob ) return;
 	level = ob->GetLevel();
-	this_object()->AddExperiencePoints(level * 80);
+	if(ob->GetCustomXP()) this_object()->AddExperiencePoints(ob->GetCustomXP());
+	else this_object()->AddExperiencePoints(level * 80);
 	eventTrainSkill("faith", GetLevel(), level, 1, GetCombatBonus(level));
     }
 

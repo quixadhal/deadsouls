@@ -1,45 +1,29 @@
-# Nightmare race configuration file
-# To add a race, make one of these files where the race name equals
-# the file name, and type <addrace race> or <addrace race 1>.  The
-# 1 means the race is a player race.  This file has the following
-# format:
-# line 1: race name
-# line 2: min sight value:max sight value
-# line 3: language (case sensitive)
-# line 4..n: damage type:resistance level
-# line n+1..o: stat:average value:stat class
-# line o+1..p: limb:parent limb:limb class:comma separated armor types
-# line p+1..q: hand:number of fingers
-# damage types come from /include/damage_types.h
-# armor types come from /include/armor_types.h
-# Note that you may in fact have no resistances, thus line 4 would be
-# the first stat.
-faerie
-30:80
-Elcharean
-WATER:low
-agility:60:1
-charisma:30:3
-coordination:40:1
-durability:10:5
-intelligence:10:2
-luck:30:2
-speed:40:2
-strength:5:5
-wisdom:15:2
-torso:0:1:A_SHIRT,A_CLOAK,A_VEST,A_SHIELD,A_ARMOR,A_BODY_ARMOR,A_BELT,A_AMULET
-neck:torso:1:A_COLLAR,A_AMULET
-head:neck:1:A_HELMET,A_VISOR,A_AMULET
-right leg:torso:2:A_LONG_BOOT,A_LONG_SOCK,A_PANTS,A_BODY_ARMOR
-left leg:torso:2:A_LONG_BOOT,A_LONG_SOCK,A_PANTS,A_BODY_ARMOR
-right foot:right leg:4:A_BOOT,A_LONG_BOOT,A_SOCK,A_LONG_SOCK
-left foot:left leg:4:A_BOOT,A_LONG_BOOT,A_SOCK,A_LONG_SOCK
-left arm:torso:3:A_LONG_GLOVE,A_SHIELD,A_CLOAK,A_ARMOR,A_BODY_ARMOR
-right arm:torso:3:A_LONG_GLOVE,A_SHIELD,A_CLOAK,A_ARMOR,A_BODY_ARMOR
+RACE faerie
+SENSITIVITY 30:80
+LANGUAGE Elcharean
+RESISTANCE WATER:low
+STATS agility:60:1
+STATS charisma:30:3
+STATS coordination:40:1
+STATS durability:10:5
+STATS intelligence:10:2
+STATS luck:30:2
+STATS speed:40:2
+STATS strength:5:5
+STATS wisdom:15:2
+LIMB torso:0:1:A_SHIRT,A_CLOAK,A_VEST,A_SHIELD,A_ARMOR,A_BODY_ARMOR,A_BELT,A_AMULET
+LIMB neck:torso:1:A_COLLAR,A_AMULET
+LIMB head:neck:1:A_HELMET,A_VISOR,A_AMULET
+LIMB right leg:torso:2:A_LONG_BOOT,A_LONG_SOCK,A_PANTS,A_BODY_ARMOR
+LIMB left leg:torso:2:A_LONG_BOOT,A_LONG_SOCK,A_PANTS,A_BODY_ARMOR
+LIMB right foot:right leg:4:A_BOOT,A_LONG_BOOT,A_SOCK,A_LONG_SOCK
+LIMB left foot:left leg:4:A_BOOT,A_LONG_BOOT,A_SOCK,A_LONG_SOCK
+LIMB left arm:torso:3:A_LONG_GLOVE,A_SHIELD,A_CLOAK,A_ARMOR,A_BODY_ARMOR
+LIMB right arm:torso:3:A_LONG_GLOVE,A_SHIELD,A_CLOAK,A_ARMOR,A_BODY_ARMOR
 right wing:torso:3
 left wing:torso:3
-left hand:left arm:4:A_RING,A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
-right hand:right arm:4:A_RING,A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
-left hand:5
-right hand:5
-
+LIMB left hand:left arm:4:A_RING,A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
+LIMB right hand:right arm:4:A_RING,A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
+HAND left hand:5
+HAND right hand:5
+FLYINGRACE

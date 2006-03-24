@@ -4,6 +4,7 @@
 #include <damage_types.h>
 inherit "/lib/std/storage";
 
+
 static void create() {
     ::create();
     SetKeyName("overnight");
@@ -25,4 +26,7 @@ static void create() {
 	"/domains/town/armor/glove_r" : 1,
 	"/domains/town/armor/tshirt" : 1,
       ]) );
+}
+void init(){
+    ::init();
 }

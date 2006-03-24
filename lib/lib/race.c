@@ -86,12 +86,9 @@ varargs string SetRace(string race, mixed extra) {
     mixed array tmp;
     mixed mixt;
 
-    //tc("args: "+identify(args),"cyan");
-
     RACES_D->SetCharacterRace(race, args);
-    //tc("args: "+identify(args),"green");
 
-    tc("args[4]: "+identify(args[4]));
+    //tc("meep: "+identify(args[4]));
 
     if(sizeof(args[4])){
 	foreach(mixed key, mixed val in args[4]){
@@ -101,27 +98,19 @@ varargs string SetRace(string race, mixed extra) {
 
     foreach(tmp in args[0]) {
 	mixt = copy(args[0]);
-	//tc("mix args[0] t: "+identify(mixt));
-	//tc("tmp: "+identify(tmp));
 	SetResistance(tmp...);
     }
     foreach(tmp in args[1]) {
 	mixt = copy(args[1]);
-	//tc("mix args[1] t: "+identify(mixt));
-	//tc("tmp: "+identify(tmp));
 	AddStat(tmp...);
     }
     if( stringp(args[2]) ) {
 	mixt = copy(args[2]);
-	//tc("mix args[2] t: "+identify(mixt));
-	//tc("tmp: "+identify(tmp));
 
 	SetLanguage(args[2], 100, 1);
     }
     if( sizeof(args[3]) == 2 ) {
 	mixt = copy(args[3]);
-	//tc("mix args[3] t: "+identify(mixt));
-	//tc("tmp: "+identify(tmp));
 
 	SetLightSensitivity(args[3]...);
     }

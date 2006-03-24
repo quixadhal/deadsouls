@@ -1,0 +1,122 @@
+Emote Name: A name for the emote (Example, "slap")
+
+Error Message: An error for emotes that don't match the parse rules (Example, "Slap who?")
+
+Parse Rule: A rule for the parser to see who to slap (Example, "LVS STR" to allow the user to "slap shadyman hard") 
+
+Verbs: Verbs this applies to (usually just the emote name)
+
+Message: What gets displayed when the emote happens. (Example, "$agent_name $agent_verb $target_name.")
+
+Adverbs: One of 4 choices:
+	1) Any special adverbs that apply to this emote that don't exist already, in a comma delimited list
+	2) '-', to allow only preselected adverbs to be used
+	3) 'none', to allow no adverbs to be used
+	4) '*', to allow any word to be used
+
+
+		Shadyman smiles sweetly at Kira
+Emote Name:	smile
+Error Msg:	none	
+Parse Rule:	at LVS,LVS
+Verbs:	smile
+Message:	$agent_name $agent_verb $adverb at $target_name.
+Adverbs:	*
+
+Once you have that one rule done, you can add more by using "addemote -add"
+You can also edit rules for an emote by using "addemote -edit"
+You can remove a rule by using "removeemote [emotename] [rulename]" (see "addemote -edit" for rules in the emote, ie: "at LIV STR")
+Removing an entire emote is done by "removeemote"
+
+
+				<COMMANDS LIST>
+ 
+Command			You See			Target Sees	Room Sees
+-------			-------			-----------	---------
+$agent_verb		smile			Smile		Smile
+$agent_name		you			Shadyman	Shadyman
+$agent_nominative	you			he/she		he/she	
+$agent_objective	you			him/her/them	him/her/them		
+$agent_possessive_noun	your			Shadyman's	Shadyman's	
+$agent_possessive	your			his/hers	his/hers
+$agent_reflexive	yourself		himself/herself	himself/herself			
+$target_verb		smiles			smiles		smiles
+$target_name		Kira			you		Kira
+$target_nominative	he/she/they		you		he/she/they
+$target_objective	him/her/them		you		him/her/them
+$target_possessive_noun	Kira's			your		Kira's
+$target_possessive	his/hers/theirs		your		his/hers/theirs
+$target_reflexive	him-/her-/themselves	yourself	him-/her-/themselves	
+$adverb			happily			happily		happily
+
+
+				<SAMPLE EMOTE CREATION>
+
+Let's add the emote Snicker. Just simply, an emote that says "You snicker" when you type "snicker".
+Since it will have no arguments, you don't need to add a parser rule or adverbs.
+
+> addemote snicker
+Enter error message: Snicker at whom?
+Enter a parser rule for snicker: 
+Enter the verbs: snicker
+Enter message: $agent_name $agent_verb.
+Enter adverbs: 
+Emote 'snicker' added.
+
+Now let's add a rule to 'snicker' to make it more useful. Let's add "snicker at [someone]", with a living person as a target.
+Since there will still be no adverbs, we'll leave the adverbs blank, but we will be using the parser rule, because we want to snicker AT someone.
+
+> addemote -add
+Enter emote name: snicker
+Enter error message: Snicker at whom?
+Enter a parser rule for snicker: at LIV
+Enter the verbs: snicker
+Enter message: $agent_name $agent_verb at $target_name.
+Enter adverbs: 
+Emote 'snicker' added.
+
+Now let's add the ability to use adverbs with our 'snicker' emotion, like 'snicker at shadyman loudly' and 'snicker loudly at shadyman'. Note we'll be adding two rules at once.
+If you want your users to use their own (non-approved) adverbs or strings of text, you should put '*' in the adverbs section. Otherwise, put '-' to use only pre-approved adverbs.
+
+> addemote -add
+Enter emote name: snicker
+Enter error message: Snicker at whom?
+Enter a parser rule for snicker: at LIV STR,STR at LIV
+Enter the verbs: snicker
+Enter message: $agent_name $agent_verb at $target_name $adverb.
+Enter adverbs: *
+Emote 'snicker' added.
+
+Go ahead and experiment with various types of parsing rules, using LIV, STR, LVS, and prepositions such as 'with', 'as', 'like', etc.
+
+				<SAMPLE EMOTE IN "addemote -edit" MODE>
+Emote: boggle
+Error Message: Boggle!
+Rules:
+[1] "LIV STR": $agent_name $agent_verb $adverb at $target_name.
+  Adverbs: -
+
+[2] "at LIV": $agent_name $agent_verb at $target_name.
+  Adverbs:
+
+[3] "STR at LIV": $agent_name $agent_verb $adverb at $target_name.
+  Adverbs: -
+
+[4] "STR": $agent_name $agent_verb $adverb.
+  Adverbs: -
+
+[5] "LIV": $agent_name $agent_verb at $target_name.
+  Adverbs:
+
+[6] "at LIV STR": $agent_name $agent_verb $adverb at $target_name.
+  Adverbs: -
+
+[7] "STR LIV": $agent_name $agent_verb $adverb at $target_name.
+  Adverbs: -
+
+[8] "": $agent_name $agent_verb.
+  Adverbs:
+
+Revisions:
+----------
+Document Created: [Shadyman, Mar 16, 2006]

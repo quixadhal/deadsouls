@@ -3,6 +3,7 @@
 #include <vendor_types.h>
 
 inherit LIB_ITEM;
+
 static void create(){
     item::create();
     SetKeyName("brush");
@@ -18,4 +19,7 @@ static void create(){
     SetMass(100);
     SetWeaponType("blunt");
     SetDamageType(BLUNT);
+}
+void init(){
+    ::init();
 }

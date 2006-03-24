@@ -25,7 +25,7 @@ int cmd(string str) {
     log_file("game_log", ctime(time())+" Game shutdown by "+
       this_player()->GetKeyName()+"("+str+")\n");
     foreach(object dude in users()){
-	if(sizeof(base_name(dude)) && !archp(dude)) dude->eventForce("quit");
+	if(dude && sizeof(base_name(dude)) && !archp(dude)) dude->eventForce("quit");
     }
     shutdown();
 

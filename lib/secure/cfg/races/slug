@@ -1,22 +1,24 @@
-slug
-20:80
-Slugish
-SHOCK:high
-COLD:medium
-HEAT:medium
-BLADE:low
-BLUNT:low
-KNIFE:low
-WATER:low
-charisma:1:5
-durability:1:5
-intelligence:1:5
-luck:1:5
-agility:1:5
-wisdom:10:4
-charisma:1:5
-speed:1:5
-strength:10:4
-coordination:1:5
-torso:0:1:A_VEST
-head:torso:1:A_HELMET
+RACE slug
+SENSITIVITY 20:80
+LANGUAGE Slugish
+RESISTANCE SHOCK:high
+RESISTANCE COLD:medium
+RESISTANCE HEAT:medium
+RESISTANCE BLADE:low
+RESISTANCE BLUNT:low
+RESISTANCE KNIFE:low
+RESISTANCE WATER:low
+STATS charisma:1:5
+STATS durability:1:5
+STATS intelligence:1:5
+STATS luck:1:5
+STATS agility:1:5
+STATS wisdom:10:4
+STATS charisma:1:5
+STATS speed:1:5
+STATS strength:10:4
+STATS coordination:1:5
+LIMB torso:0:1:A_VEST
+LIMB head:torso:1:A_HELMET
+LIMBLESSCOMBATRACE
+LIMBLESSRACE

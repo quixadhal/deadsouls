@@ -31,7 +31,7 @@ static void create() {
 	string *chans;
 	string channel;
 
-	if( !(chans = (string *)pl->GetChannels()) ) continue;
+	if( pl && !(chans = (string *)pl->GetChannels()) ) continue;
 	foreach(channel in chans) {
 	    if( !Channels[channel] ) Channels[channel] = ({});
 	    Channels[channel] = distinct_array(Channels[channel] + ({ pl }));
@@ -136,15 +136,16 @@ varargs int eventAddLast(string feep, string str, string pchan, string pmsg, str
 }
 
 int cmdChannel(string verb, string str) {
-    string msg, name, rc, target, targetkey, target_msg;
+    string varb, msg, name, rc, target, targetkey, target_msg;
     object ob = 0;
     int emote;
 
-    //tc("verb: "+verb);
-    //tc("str: "+str);
+    if(grepp(verb, "emote")) varb = replace_string(verb,"emote","");
+    else if(grepp(verb, ":")) varb = replace_string(verb,":","");
+    else varb = verb;
 
-    if(!CanTalk(this_player(),verb)){
-	write("You lack intermud privileges.");
+    if(!CanTalk(this_player(),varb)){
+	write("You lack privileges to that channel.");
 	return 1;
     }
 

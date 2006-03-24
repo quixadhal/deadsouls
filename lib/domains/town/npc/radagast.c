@@ -20,7 +20,7 @@ void create(){
       "then be awarded training points."); 
     SetClass("mage");
     SetLevel(40);
-    AddTrainingSkills( "magic defense", "magic attack", "conjuring");
+    AddTrainingSkills( ({ "magic defense", "magic attack", "conjuring" }) );
     SetSpellBook( ([ "buffer" : 100, "meditate" : 100, "missile" : 100, "fireball" : 100 ]) );
 }
 void init() {

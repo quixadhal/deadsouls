@@ -27,6 +27,11 @@ mixed make(string str) {
 	return 1;
     }
 
+    if(environment(this_player())->GetDirectionMap()){
+	write("This is a virtual room. It cannot be modified with the QCS.");
+	return 1;
+    }
+
 
     foo = ""+time();
     room = environment(this_player());

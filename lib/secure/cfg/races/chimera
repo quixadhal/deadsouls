@@ -1,28 +1,28 @@
-chimera
-20:80
-Chimeraish
-SHOCK:high
-COLD:low
-charisma:1:5
-durability:31:2
-intelligence:21:3
-luck:10:4
-agility:31:2
-wisdom:21:3
-speed:43:1
-strength:21:3
-coordination:10:4
-torso:0:1:A_ARMOR,A_BODY_ARMOR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
-lion head:torso:2:A_BODY_ARMOR,A_VISOR,A_HELMET,A_CLOAK
-goat head:torso:2:A_BODY_ARMOR,A_VISOR,A_HELMET,A_CLOAK
-dragon head:torso:2:A_BODY_ARMOR,A_VISOR,A_HELMET,A_CLOAK
-right wing:torso:3::
-left wing:torso:3::
-left rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
-right rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
-left foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
-right foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
-left forepaw:left foreleg:4::
-left rear paw:left rear leg:4::
-right forepaw:right foreleg:4::
-right rear paw:right rear leg:4::
+RACE chimera
+SENSITIVITY 20:80
+LANGUAGE Chimeraish
+RESISTANCE SHOCK:high
+RESISTANCE COLD:low
+STATS charisma:1:5
+STATS durability:31:2
+STATS intelligence:21:3
+STATS luck:10:4
+STATS agility:31:2
+STATS wisdom:21:3
+STATS speed:43:1
+STATS strength:21:3
+STATS coordination:10:4
+LIMB torso:0:1:A_ARMOR,A_BODY_ARMOR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
+LIMB lion head:torso:2:A_BODY_ARMOR,A_VISOR,A_HELMET,A_CLOAK
+LIMB goat head:torso:2:A_BODY_ARMOR,A_VISOR,A_HELMET,A_CLOAK
+LIMB dragon head:torso:2:A_BODY_ARMOR,A_VISOR,A_HELMET,A_CLOAK
+LIMB right wing:torso:3::
+LIMB left wing:torso:3::
+LIMB left rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
+LIMB right rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
+LIMB left foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
+LIMB right foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
+LIMB left forepaw:left foreleg:4::
+LIMB left rear paw:left rear leg:4::
+LIMB right forepaw:right foreleg:4::
+LIMB right rear paw:right rear leg:4::

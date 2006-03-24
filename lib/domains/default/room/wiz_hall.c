@@ -19,13 +19,6 @@ static void create() {
     SetAmbientLight(30);
     SetShort("Creators' Hall");
     SetLong( (: LongDesc :) );
-    SetExits( ([
-	"south" : "/secure/room/arch",
-	"west" : "/domains/default/room/telnet_room",
-	"north" : "/domains/town/room/adv_guild",
-	"east" : "/domains/default/room/wiz_corr1",
-	"up" : "/realms/cratylus/workroom.c",
-      ]) );
     SetProperty("no attack", 1);
     SetProperty("nopeer",1);
     ob = new("/lib/bboard");
@@ -40,6 +33,12 @@ static void create() {
 	"/domains/default/obj/chest.c" : 1 ]));
     SetItems( ([
 	({"sign"}) : "A sign you can read.",
+      ]) );
+    SetExits( ([ 
+	"north" : "/domains/town/room/adv_guild",
+	"east" : "/domains/default/room/wiz_corr1",
+	"south" : "/secure/room/arch",
+	"west" : "/domains/default/room/telnet_room",
       ]) );
     SetRead("sign", (: load_object(ROOM_ARCH)->SignRead() :) );
 }

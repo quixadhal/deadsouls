@@ -13,11 +13,13 @@ cmd() {
     user_ob = users();
     user_name = ({ });
     for (i = 0; i < sizeof(user_ob); i++) {
-	if( user_ob[i]->GetInvis() )
-	    continue;
-	name = (string)user_ob[i]->GetKeyName();
-	if (stringp(name))
-	    user_name += ({ capitalize(name) });
+	if(user_ob[i]){
+	    if( user_ob[i]->GetInvis() )
+		continue;
+	    name = (string)user_ob[i]->GetKeyName();
+	    if (stringp(name))
+		user_name += ({ capitalize(name) });
+	}
     }
     user_name = sort_array(user_name, "sort_names");
     write(format_page(user_name, 4));

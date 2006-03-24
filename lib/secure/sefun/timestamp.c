@@ -1,24 +1,32 @@
 #include <config.h>
+#include <daemons.h>
+#include <localtime.h>
 
-string timestamp(string str){
-    string *rawstr;
-    string stamp,rawtz,tzone,l_time;
-    int timediff,offset,foo,bar;
-    if( file_size("/cfg/timezone.cfg") > 0 ) rawtz = read_file("/cfg/timezone.cfg");
-    if(str && str != "") rawtz = upper_case(str);
-    if(sizeof(rawtz) < 3) return "Please use a valid timezone, e.g. 'PDT'";
-    tzone = rawtz[0..2];
-    if(!tzone) return "Problem resolving timezone";
-    offset = "/daemon/time"-> GetOffset(tzone);
-    offset += EXTRA_TIME_OFFSET;
-    if(!offset && tzone !="GMT") return "Problem calculating timezone offset";
-    // the following appears to be necessary for linux
-    //offset +=10;
-    timediff = offset * 3600;
-    if(query_os_type() != "windows" ) l_time=ctime(time() + timediff);
-    else l_time=ctime(time());
-    if( sscanf(l_time,"%s  %s",foo,bar) ) l_time = foo+" 0"+bar;
-    rawstr=explode(l_time," ");
-    stamp=rawstr[2]+rawstr[1]+rawstr[4]+"-"+rawstr[3];
-    return stamp;
+/**
+ * 2006-03-22, jonez
+ *  - changed prototype so it does not accept an argument since that was not
+ *    used anywhere in the entire lib.
+ */
+
+string timestamp(){
+    string rawtz;
+    int *t, gmtoff, offset;
+
+    gmtoff = localtime(time())[LT_GMTOFF];
+
+    // if the gmtoffset is set to zero by the driver, then we need to
+    // calculate an offset
+    if (gmtoff == 0){
+	// if the timezone.cfg file exists, use it else default to GMT
+	rawtz = query_tz();
+	offset = TIME_D->GetOffset(rawtz);
+	offset += EXTRA_TIME_OFFSET;
+    }
+    else {
+	rawtz = upper_case(localtime(time())[LT_ZONE]);
+	offset = 0;
+    }
+
+    t = localtime(time()+(offset*3600));
+    return sprintf("%04d.%02d.%02d-%02d.%02d", t[LT_YEAR], t[LT_MON], t[LT_MDAY], t[LT_HOUR], t[LT_MIN]);
 }

@@ -1,33 +1,33 @@
-kobold
-20:80
-Koboldish
-SHOCK:high
-BLADE:medium
-BLUNT:medium
-KNIFE:medium
-COLD:medium
-HEAT:medium
-WATER:low
-charisma:10:4
-durability:43:1
-intelligence:10:4
-luck:21:3
-agility:21:3
-wisdom:10:4
-charisma:1:5
-speed:21:3
-strength:43:1
-coordination:31:2
-torso:0:1:A_ARMOR,A_BODY_ARMOR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
-neck:torso:1:A_COLLAR,A_AMULET
-head:neck:1:A_HELMET,A_VISOR,A_AMULET
-left leg:torso:2:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
-left arm:torso:2:A_LONG_GLOVE,A_SHIRT,A_ARMOR,A_BODY_ARMOR,A_SHIELD
-right arm:torso:2:A_LONG_GLOVE,A_SHIRT,A_ARMOR,A_BODY_ARMOR,A_SHIELD
-right leg:torso:2:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
-left hand:left arm:4:A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
-right hand:right arm:4:A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
-left hoof:left leg:4::
-right hoof:right leg:4::
-right hand:5
-left hand:5
+RACE kobold
+SENSITIVITY 20:80
+LANGUAGE Koboldish
+RESISTANCE SHOCK:high
+RESISTANCE BLADE:medium
+RESISTANCE BLUNT:medium
+RESISTANCE KNIFE:medium
+RESISTANCE COLD:medium
+RESISTANCE HEAT:medium
+RESISTANCE WATER:low
+STATS charisma:10:4
+STATS durability:43:1
+STATS intelligence:10:4
+STATS luck:21:3
+STATS agility:21:3
+STATS wisdom:10:4
+STATS charisma:1:5
+STATS speed:21:3
+STATS strength:43:1
+STATS coordination:31:2
+LIMB torso:0:1:A_ARMOR,A_BODY_ARMOR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
+LIMB neck:torso:1:A_COLLAR,A_AMULET
+LIMB head:neck:1:A_HELMET,A_VISOR,A_AMULET
+LIMB left leg:torso:2:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
+LIMB left arm:torso:2:A_LONG_GLOVE,A_SHIRT,A_ARMOR,A_BODY_ARMOR,A_SHIELD
+LIMB right arm:torso:2:A_LONG_GLOVE,A_SHIRT,A_ARMOR,A_BODY_ARMOR,A_SHIELD
+LIMB right leg:torso:2:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK
+LIMB left hand:left arm:4:A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
+LIMB right hand:right arm:4:A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD
+LIMB left hoof:left leg:4::
+LIMB right hoof:right leg:4::
+HAND right hand:5
+HAND left hand:5

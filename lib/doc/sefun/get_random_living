@@ -1,0 +1,28 @@
+
+GET_RANDOM_LIVING(1)                               GET_RANDOM_LIVING(1)
+
+NAME
+       get_random_livings() - Randomly picks a living thing in a container.
+
+SYNOPSIS
+       varargs object get_random_living(object container, int foo)
+
+DESCRIPTION
+       Without a second argument, a living creature in the "container"
+is selected at random. If the second argument is the integer 1, only 
+interactive living things are eligible for the selection. If the
+integer is 2, only non-interactive living things are eligible for the
+selection.
+
+
+EXAMPLES
+       get_random_living(environment(this_player()), 1)
+
+LOCATION
+       /secure/sefun/get_livings.c
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

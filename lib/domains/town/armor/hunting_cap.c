@@ -2,6 +2,7 @@
 #include <armor_types.h>
 #include <damage_types.h>
 inherit LIB_ARMOR;
+
 static void create(){
     armor::create();
     SetKeyName("hunting cap");
@@ -20,4 +21,7 @@ static void create(){
     SetItems( ([
 	({"pheasant","feather"})  : "Looks like a pheasant feather.",
       ]) );
+}
+void init(){
+    ::init();
 }

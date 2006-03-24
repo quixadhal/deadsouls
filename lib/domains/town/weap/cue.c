@@ -3,6 +3,7 @@
 #include <vendor_types.h>
 
 inherit LIB_ITEM;
+
 static void create(){
     item::create();
     SetKeyName("cue");
@@ -19,4 +20,7 @@ static void create(){
     SetWeaponType("blunt");
     SetHands(2);
     SetDamageType(BLUNT);
+}
+void init(){
+    ::init();
 }

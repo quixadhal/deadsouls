@@ -4,6 +4,7 @@
 inherit LIB_BED;
 inherit LIB_SMELL;
 
+
 static void create() {
     ::create();
     SetKeyName("metal cot");
@@ -19,3 +20,6 @@ static void create() {
 
 }
 mixed CanGet(object ob) { return "The cot is bolted to the floor.";}
+void init(){
+    ::init();
+}

@@ -31,8 +31,10 @@ string flat_map(mapping mp) {
 
 }
 
-varargs mapping add_maps(mapping FirstMap,mapping  SecondMap, int preference){
+varargs mapping add_maps(mapping FirstMapping,mapping  SecondMapping, int preference){
     mapping OutMap = ([]);
+    mapping FirstMap = copy(FirstMapping);
+    mapping SecondMap = copy(SecondMapping);
     mixed *schluessel1 = ({});
     mixed *schluessel2 = ({});
 

@@ -5,6 +5,7 @@
  */
 
 #include <lib.h>
+#include <daemons.h>
 
 inherit LIB_DAEMON;
 
@@ -20,6 +21,8 @@ mixed cmd(string args) {
 	if( !args || args == "" ) return "Change your title to what?";
 	else args = (string)this_player()->SetShort(args);
 	message("system", "Title changed to: " + args, this_player());
+	this_player()->save_player((string)this_player()->GetKeyName());
+	update("/secure/daemon/finger");
 	return 1;
     }
     if( !(maxi = sizeof(titles = (string *)this_player()->GetTitles())) ) 
@@ -28,6 +31,8 @@ mixed cmd(string args) {
 	this_player()->SetTitleLength(to_int(args));
 	this_player()->SetShort("foo");
 	this_player()->eventPrint("Number of titles in your descriptions changed to " + args + ".");
+	this_player()->save_player((string)this_player()->GetKeyName());
+	update("/secure/daemon/finger");
 	return 1;
     }
     if( maxi == 1 ) {
@@ -46,6 +51,8 @@ mixed cmd(string args) {
 	    }
 	    this_player()->SetTitles( ({ titles[1], titles[0] }) );
 	    message("system", "Titles reversed.", this_player());
+	    this_player()->save_player((string)this_player()->GetKeyName());
+	    update("/secure/daemon/finger");
 	};
 	message("system", "You have the following titles:\n\t" +
 	  titles[0] + "\n\t" + titles[1], this_player());
@@ -96,6 +103,8 @@ static void GetDest(string which, string *titles, int i, int maxi) {
     if( which == "q" ) {
 	this_player()->SetTitles(titles);
 	message("system", "Done.", this_player());
+	this_player()->save_player((string)this_player()->GetKeyName());
+	update("/secure/daemon/finger");
 	return;
     }
     else if( which == "" || !which ) which = "1";

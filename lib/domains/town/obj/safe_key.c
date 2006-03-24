@@ -2,6 +2,7 @@
 
 inherit LIB_ITEM;
 
+
 static void create() {
     item::create();
     SetKeyName("key");
@@ -13,4 +14,6 @@ static void create() {
     SetBaseCost("silver",1);
     SetDisableChance(100);
 }
-
+void init(){
+    ::init();
+}

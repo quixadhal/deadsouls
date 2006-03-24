@@ -8,7 +8,7 @@ static void create() {
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("Disease Lab Annex");
-    SetLong("This room is designed for testing the effects and transmissibility of disease. Another testing area is east.");
+    SetLong("This room is designed for testing the effects and transmissibility of disease. Another testing area is west.");
     SetInventory(([
 	"/domains/default/npc/quarantine/nigel" : 1,
 	"/domains/default/npc/quarantine/graham" : 1,

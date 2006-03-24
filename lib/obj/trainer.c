@@ -16,7 +16,7 @@ void create(){
       "do some adventuring and earn a level promotion. You will "+
       "then be awarded training points."); 
     SetLevel(1);
-    AddTrainingSkills( "wibbling");
+    AddTrainingSkills( ({"wibbling"}));
 }
 void init() {
     ::init();

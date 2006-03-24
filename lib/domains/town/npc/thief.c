@@ -2,6 +2,7 @@
 
 inherit LIB_NPC;
 
+
 static void create() {
     npc::create();
     SetKeyName("thief");
@@ -23,4 +24,7 @@ static void create() {
 	"/domains/town/weap/brush":"wield brush",
 	"/domains/town/obj/safe_key":1,
       ]) );
+}
+void init(){
+    ::init();
 }

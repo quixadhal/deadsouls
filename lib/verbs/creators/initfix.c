@@ -43,6 +43,11 @@ mixed do_initfix_obj(object ob) {
 	return 1;
     }
 
+    if(interactive(ob)) {
+	write("Players are not initfixable.");
+	return 1;
+    }
+
     if(staff->eventAddInit(base_name(ob)+".c") == 2) {
 	write("File already has a working init function.");
     }

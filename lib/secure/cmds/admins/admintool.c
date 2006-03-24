@@ -538,7 +538,7 @@ int eventAddCurrency(string str){
     string query;
 
     currency = str;
-    if(!str) {
+    if(!str || str == "") {
 	write("Invalid currency name.\n");
 	Menu();
 	return 1;

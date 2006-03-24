@@ -6,18 +6,18 @@
   <title>Dead Souls Installation FAQ</title>
 </head>
 <body>
-<pre style="font-family: times new roman,times,serif;"><big><big><span
- style="font-weight: bold;">Dead Souls Installation FAQ, v1</span></big><br><br>Written by Cratylus @ Frontiers, February 2006<br><br><br
+<pre style="font-family: courier new,courier,monospace;"><big><big><span
+ style="font-weight: bold;">Dead Souls Installation FAQ, v2.2</span></big><br><br>Written by Cratylus @ Frontiers, February 2006<br>Updated March 2006 <br><br><br
  style="text-decoration: underline; font-weight: bold;"><span
  style="text-decoration: underline; font-weight: bold;">Is this FAQ really necessary?</span><br><br><small>Normally, no. If you just follow the instructions included in the<br>Dead Souls packages, you'll be fine 90% of the time. However, a<br>non-trivial number of folks have run into difficult circumstances. For<br>those folks, this document is meant to illuminate how the install<br>process works, why some things are as they are, and suggest some<br>solutions to the more common obstacles.</small><br><br><br><span
- style="font-weight: bold; text-decoration: underline;">Where do I get Dead Souls?</span> <br><small><br>Download the latest version from one of the following:</small><br><br></big><big><a
- href="http://dead-souls.sourceforge.net/">http://dead-souls.sourceforge.net/</a> </big><br><big><br></big><big><a
+ style="font-weight: bold; text-decoration: underline;">Where do I get Dead Souls?</span> <br><small><br>Download the latest version from one of the following:</small><br><br></big><a
+ href="http://sourceforge.net/project/showfiles.php?group_id=148388"><big>http://sourceforge.net/project/showfiles.php?group_id=148388</big></a><br><big><br></big><big><a
  href="http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls">http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls</a></big><br></pre>
-<big style="font-family: times new roman,times,serif;"><small><br>
+<big style="font-family: courier new,courier,monospace;"><small><br>
 <big style="font-weight: bold; text-decoration: underline;">Should I
 apply the available patches during an install?</big><br>
 <br>
-No. Patches are for already installed Dead Souls muds. A new Dead Souls
+No. Patches are for already-installed Dead Souls muds. A new Dead Souls
 install does<br>
 not need and must not use patches. If you're upgrading from one Dead
 Souls<br>
@@ -75,7 +75,7 @@ Start-&gt;Run... and entering: cmd<br>
 <span style="font-weight: bold;">5)</span> connect to your Windows
 computer by telnetting to port 6666. If you are using the command<br>
 &nbsp; &nbsp; window, type:<span style="color: rgb(0, 153, 0);"> <span
- style="font-weight: bold;">telnet localhost 6666</span></span><br>
+ style="font-weight: bold; color: rgb(0, 0, 0);">telnet localhost 6666</span></span><br>
 <br>
 <span style="font-weight: bold;">6)</span> Enter the name you want your
 admin to have, and answer the questions provided. Make sure<br>
@@ -86,7 +86,7 @@ first person is automatically made admin.<br>
 admin's info, the mud will automatically shut down.<br>
 <br>
 <span style="font-weight: bold;">8)</span> </small></big><big
- style="font-family: times new roman,times,serif;"><small> run
+ style="font-family: courier new,courier,monospace;"><small> run
 c:\ds\runmud.bat again<br>
 <br>
 <span style="font-weight: bold;">9)</span> log in as your admin
@@ -100,19 +100,33 @@ the admintool command. Navigate to the "driver" menu<br>
 r). Enter the name desired, allow the mud to shut down.<br>
 <br>
 <span style="font-weight: bold;">11)</span> </small></big><big
- style="font-family: times new roman,times,serif;"><small> </small></big><big
- style="font-family: times new roman,times,serif;"><small> run
+ style="font-family: courier new,courier,monospace;"><small> </small></big><big
+ style="font-family: courier new,courier,monospace;"><small> run
 c:\ds\runmud.bat (that's it for the mud reboots. come on, it's windows.
 you're used to rebooting)<br>
 <br>
-<span style="font-weight: bold;">12)</span> log in, start reading the
-handbook and the manual.<br>
+<span style="font-weight: bold;">12)</span> log in, type: <span
+ style="font-weight: bold;">rm /log/chan/ds</span><br>
 <br>
+</small></big><big style="font-family: courier new,courier,monospace;"><small><span
+ style="font-weight: bold;">13)</span> start reading the
+handbook and the manual.</small></big><br>
+<big style="font-family: courier new,courier,monospace;"><small><br>
 <small style="font-weight: bold;"><br>
 </small><big style="text-decoration: underline; font-weight: bold;">Hold
 up, these Windows instructions aren't working</big><br>
 <br>
 There are a few common reasons for this.<br>
+<br>
+* You need to </small></big><big
+ style="font-family: courier new,courier,monospace;"><small><span
+ style="font-weight: bold;">rm /log/chan/ds </span></small></big><big
+ style="font-family: courier new,courier,monospace;"><small>. Dead
+Souls includes a large sample logfile which gets<br>
+rotated soon after installation. Problem is, the new filename is<br>
+incompatible with your Windows filesystem. If you don't issue this<br>
+command, your mud will soon start crapping out, complaining about<br>
+the /log directory. The fix for this will be in a later release.<br>
 <br>
 * Most Windows PC's these days have firewall software installed. If you
 try to connect but<br>
@@ -138,7 +152,8 @@ server class operating systems and they use technology incompatible
 with the mud's requirements.<br>
 I have no idea if Dead Souls for Windows works on NT. If you try it and
 it works,<br>
-<a href="mailto:cratylus@users.sourceforge.net">please let me know</a>.<br>
+please let me know by emailing me at &lt;my
+name&gt;@users.sourcefore.net .<br>
 <br>
 *&nbsp; If you've made sure you've followed the directions, avoided the
 "don'ts", and it<br>
@@ -189,7 +204,8 @@ fileroller (a GUI based app) to decompress the tarball. If<br>
 you ignore this warning you are very likely to end up with really<br>
 confusing errors and problems. Instead use the normal unix command <br>
 line. For example:<span
- style="font-weight: bold; color: rgb(0, 153, 0);"> tar xzf ds2.0.tar.gz</span><br>
+ style="font-weight: bold; color: rgb(0, 153, 0);"> <span
+ style="color: rgb(0, 0, 0);">tar xzf ds2.0.tar.gz</span></span><br>
 <br>
 <big style="font-weight: bold;">*</big> Don't use an existing driver
 binary, even if its from a previous<br>
@@ -210,11 +226,14 @@ all mud files reside. Called $MUDHOME<br>
 <br>
 <span style="font-weight: bold;">2)</span> cd to v22.2b14<br>
 <br>
-<span style="font-weight: bold;">3)</span> type ./configure<br>
+<span style="font-weight: bold;">3)</span> type: <span
+ style="font-weight: bold;">./configure</span><br>
 <br>
-<span style="font-weight: bold;">4)</span> type: make<br>
+<span style="font-weight: bold;">4)</span> type: <span
+ style="font-weight: bold;">make</span><br>
 <br>
-<span style="font-weight: bold;">5)</span> type: make install<br>
+<span style="font-weight: bold;">5)</span> type: <span
+ style="font-weight: bold;">make install</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If this fails, just manually
 copy the "driver" file<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; into $MUDHOME/bin/<br>
@@ -236,12 +255,13 @@ and bin:<br>
 <span style="font-weight: bold;">8)</span> manually run the mud:
 $MUDHOME/bin/driver $MUDHOME/bin/mudos.cfg .<br>
 &nbsp;&nbsp;&nbsp; If you properly edited the startmud script, you can
-just type: <span style="color: rgb(0, 153, 0); font-weight: bold;">./startmud</span><br>
+just type: <span style="font-weight: bold; color: rgb(0, 0, 0);">./startmud</span><br>
 <br>
 <span style="font-weight: bold;">9)</span>&nbsp; telnet to your
 machine, using the port specified in mudos.cfg. For<br>
-example:<span style="color: rgb(0, 153, 0); font-weight: bold;"> telnet
-localhost 6666</span><br
+example:<span style="color: rgb(0, 153, 0); font-weight: bold;"> <span
+ style="color: rgb(0, 0, 0);">telnet
+localhost 6666</span></span><br
  style="color: rgb(0, 153, 0); font-weight: bold;">
 <br>
 <span style="font-weight: bold;">10)</span> Create a new user. Just
@@ -270,31 +290,37 @@ another<br>
 user (in this example, username: joe), then you'll want to cd to<br>
 the directory that contains the mud directory and issue a chown<br>
 command, like this:<br>
+<br style="color: rgb(0, 0, 0);">
+<span style="font-weight: bold; color: rgb(0, 0, 0);">su - root<br>
 <br>
-<span style="color: rgb(0, 153, 0); font-weight: bold;">su - root<br>
-<br>
-cd /home/joe</span><br style="color: rgb(0, 153, 0); font-weight: bold;">
-<br style="color: rgb(0, 153, 0); font-weight: bold;">
-<span style="color: rgb(0, 153, 0); font-weight: bold;">chown -R joe
+cd /home/joe</span><br style="font-weight: bold; color: rgb(0, 0, 0);">
+<br style="font-weight: bold; color: rgb(0, 0, 0);">
+<span style="font-weight: bold; color: rgb(0, 0, 0);">chown -R joe
 ds2.0</span><br>
 <br>
-* if you don't follow the instructions, and instead use a previously<br>
+* If you don't follow the instructions, and instead use a previously<br>
 compiled driver, you may skip a step which copies a unix-compatible<br>
 mudos.cfg file over the default Windows-compatible mudos.cfg. <br>
 To correct this, copy the template config into the proper<br>
 directory:<br>
-<br>
-<span style="font-weight: bold; color: rgb(0, 153, 0);">cd
+<br style="color: rgb(0, 0, 0);">
+<span style="font-weight: bold; color: rgb(0, 0, 0);">cd
 /home/joe/ds2.0</span><br
- style="font-weight: bold; color: rgb(0, 153, 0);">
-<br style="font-weight: bold; color: rgb(0, 153, 0);">
-<span style="font-weight: bold; color: rgb(0, 153, 0);">cp
+ style="font-weight: bold; color: rgb(0, 0, 0);">
+<br style="font-weight: bold; color: rgb(0, 0, 0);">
+<span style="font-weight: bold; color: rgb(0, 0, 0);">cp
 bin/mudos.cfg.orig lib/secure/cfg/mudos.cfg</span><br>
 <br>
 Then edit </small></big><big
- style="font-family: times new roman,times,serif; color: rgb(51, 51, 0);"><small>lib/secure/cfg/mudos.cfg
+ style="color: rgb(51, 51, 0); font-family: courier new,courier,monospace;"><small>lib/secure/cfg/mudos.cfg
 to point to the correct bin and<br>
 lib directories.<br>
+<br>
+* Another problem that can occur if you use an older driver<br>
+is that the lib may expect options or features that the older<br>
+driver doesn't support. If this is what's happening, you<br>
+need to start over, but this time actually follow the <br>
+instructions exactly, step by step.<br>
 <br>
 * If you get a bunch of errors about a missing log directory, you<br>
 probably used fileroller to uncompress the tarball. Fileroller is<br>
@@ -303,41 +329,77 @@ Linux distros may also use it. Start your installation over and this<br>
 time use the tar command line as directed in the installation<br>
 instructions.<br>
 <br>
+* If the driver compile fails complaining about extra_ref in<br>
+parser.c, then you probably followed older instructions, and<br>
+not the instructions included in the latest package. You<br>
+should no longer use ./build.MudOS (unless you know exactly<br>
+the ramifications fo what you're doing). Instead use the<br>
+./configure script as per the current instructions, which you<br>
+should follow closely.<br>
+<br>
 * If you have trouble logging in and the driver complains about<br>
 "Cost" functions and "economy", then you've run into a very odd<br>
 bug that's still a bit mysterious. Somehow your /save/economy.o<br>
 file has been corrupted. Uncompress the tarball into a temporary<br>
 directory and copy the original economy.o over the corrupt<br>
-one. Then please <a href="mailto:cratylus@users.sourceforge.net">email
-</a>me about this. Only one user has ever had<br>
+one. Then please email
+me about this. Only one user has ever had<br>
 this problem, but apparently it happened twice, so if it happens<br>
 to someone else, I can at least tell him he's not crazy.<br>
 <br>
 * If the driver craps out complaining about a hosed up swap<br>
-file, you're probably running Fedora, and you probably haven't<br>
+file</small></big><big
+ style="font-family: courier new,courier,monospace;"><small>, you're
+probably running Fedora, and you probably haven't<br>
 changed your hostname from the original "localhost.localdomain"<br>
 or whatever nonsense they use.<br>
-&nbsp;&nbsp;&nbsp; The problem is that the MudOS driver expects a swap
-file<br>
-name that includes your hostname (strictly speaking, your<br>
-nodename) and it expects no punctuation in that name. If your<br>
-machine name is localhost.localdomain, this will probably eventually<br>
-generate a mud crash.<br>
-&nbsp;&nbsp;&nbsp; If you're good at C++, you can edit lines 66 and 76
+&nbsp;
+</small></big><span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+What mudos expects is that when it asks your
+</span><br style="font-family: courier new,courier,monospace;">
+<span style="font-family: courier new,courier,monospace;">machine for
+its hostname, that it receive something like
+</span><br style="font-family: courier new,courier,monospace;">
+<span style="font-family: courier new,courier,monospace;">"alpha", and
+not something like "alpha.bravo".</span><span
+ style="font-family: courier new,courier,monospace;"></span><br
+ style="font-family: courier new,courier,monospace;">
+<span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+If
+your machine is under the impression that its
+</span><br style="font-family: courier new,courier,monospace;">
+<span style="font-family: courier new,courier,monospace;">name is
+localhost.localdomain, it will supply that name to
+</span><br style="font-family: courier new,courier,monospace;">
+<span style="font-family: courier new,courier,monospace;">mudos, which
+will eventually choke on it.
+</span><br style="font-family: courier new,courier,monospace;">
+<big
+ style="color: rgb(51, 51, 0); font-family: courier new,courier,monospace;"><small>&nbsp;&nbsp;&nbsp;
+If you're good at C++, you can edit lines 66 and 76
 of<br>
 v22.2b14/swap.c and correct this behavior. But the common sense fix is<br>
-to stop being a noob and give your computer a proper nodename<br>
+to stop being a noob and give your computer a proper hostname<br>
 already.<br>
 <br>
 <br>
 <big><span style="font-weight: bold; text-decoration: underline;">Why
 does compiling MudOS for Dead Souls throw so many warnings?</span></big><br>
-</small></big><big style="font-family: times new roman,times,serif;"><small><br>
+</small></big><big style="font-family: courier new,courier,monospace;"><small><br>
 Beats me. This is one of those complaints I don't really know how <br>
 to respond to. At the end of the compile, you'll have a driver that<br>
 works. It's been tested on GCC 2, 3, and 4. It's worked for Fedora<br>
 Linux, SuSE Linux, and various versions of Solaris.<br>
 &nbsp;&nbsp;&nbsp; It works. Ignore the compile schmutz. End of story.<br>
+<br>
+<br>
+<big><span style="font-weight: bold; text-decoration: underline;">Why
+is there a windows-format mudos.cfg in /secure/cfg? I'm running unix.</span><br>
+<br>
+This is a symptom of my obsession to have the Windows lib distribution<br>
+and the unix lib be absolutely identical. During a fresh install, <br>
+this file is overwritten with a unix version, if you follow the<br>
+install instructions.</big><br>
 <br>
 <br>
 <big><span style="font-weight: bold; text-decoration: underline;">How
@@ -426,23 +488,53 @@ note<br>
 that RELEASE_NOTES contains an overview of major changes. It does not<br>
 document every difference between versions.<br>
 <br>
+</small></big><big style="font-family: courier new,courier,monospace;"><small><br>
+<big style="font-weight: bold; text-decoration: underline;">The UNIX
+patch doesn't work! I'm getting a million errors!</big><br>
+<br>
+If you're getting lots and lots of errors when you try to run after<br>
+patching, it may be that your driver is too old. Some Dead Souls<br>
+releases include tweaks to the driver. If enough time has passed<br>
+since the install of your driver, it may be that the current lib<br>
+expects things of the driver that your old lib didn't, and you<br>
+now can't run.<br>
+<br>
+To get around this you could just do a fresh install of the lib.<br>
+<br>
+Or you could follow these instructions:<br>
+<br>
+1) Download the full version of the latest Dead Souls distribution.<br>
+<br>
+2) Uncompress it to some temporary directory other than your mud dir.<br>
+<br>
+3) Compile the driver as if you were going to do a new install.<br>
+<br>
+4) Copy the new driver binary over your old one.<br>
+<br>
+5) Restart the mud.<br>
+<br>
+</small></big><big style="font-family: courier new,courier,monospace;"><small><br>
 <big style="font-weight: bold; text-decoration: underline;">Ok, it's
 running. Now what?</big><br>
 <br>
 Read the <a href="ds-admin-faq.html">admin FAQ</a>. <br>
 <br>
-Log in and read the Player's Handbook.<br>
+Read the <a href="ds-creator-faq.html">creator's FAQ</a>.<br>
+<br>
+Log in and read the Player's Handbook. <br>
 <br>
 Then read the Creator's Manual.<br>
 <br>
 If you run into problems or have questions not addressed in the docs,
-use the &lt;ds&gt; channel<br>
-to ask for help. For example type:<br>
-<br style="color: rgb(0, 153, 0);">
-</small><span style="color: rgb(0, 153, 0);">ds Hi! I am a nooby and
-would like help understanding the difference between the class data
-type and mappings.<br>
-<br>
+use the &lt;<span style="color: rgb(51, 102, 255);">ds</span>&gt;
+channel<br>
+to ask for help. See the </small></big><big
+ style="font-family: courier new,courier,monospace;"><small><a
+ href="ds-creator-faq.html">creator's FAQ</a></small></big><big
+ style="font-family: courier new,courier,monospace;"><small> for proper
+etiquette and form. <br>
+</small><span style="color: rgb(0, 153, 0);"><span
+ style="color: rgb(0, 0, 0); font-weight: bold;"></span><br>
 </span><a href="index.html"><small>Dead Souls Homepage</small></a><br>
 </big>
 </body>

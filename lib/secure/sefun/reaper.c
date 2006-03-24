@@ -36,7 +36,7 @@ varargs void reap_other(string str){
 
     foreach(object ob in objects){
 	if(sscanf(file_name(ob),"%s#%s",s1,s2) > 0) {
-	    others += ({ ob });
+	    if(base_name(ob) != LIB_CONNECT) others += ({ ob });
 	}
     }
 

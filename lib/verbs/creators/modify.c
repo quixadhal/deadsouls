@@ -57,6 +57,11 @@ mixed do_modify_obj_str(object ob, string str) {
 	return 1;
     }
 
+    if(ob->GetDirectionMap()){
+	write("This is a virtual thing. It cannot be modified with the QCS.");
+	return 1;
+    }
+
     if(ob->GetNoModify() && !grepp(lower_case(str),"modify")) {
 	write("This needs to be edited by hand.");
 	return 1;

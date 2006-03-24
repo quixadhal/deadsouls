@@ -4,6 +4,7 @@ inherit LIB_STORAGE;
 inherit LIB_CHAIR;
 inherit "/lib/comp/surface";
 
+
 void create() {
     ::create();
     SetKeyName("pool table");
@@ -20,4 +21,7 @@ void create() {
 	"/domains/town/weap/cue" : 2,
 	"/domains/town/obj/pool_ball" : 16,
       ]) );
+}
+void init(){
+    ::init();
 }

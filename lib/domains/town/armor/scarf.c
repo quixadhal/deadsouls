@@ -3,6 +3,7 @@
 #include <damage_types.h>
 inherit LIB_ARMOR;
 
+
 static void create(){
     armor::create();
     SetKeyName("scarf");
@@ -15,4 +16,7 @@ static void create(){
     SetBaseCost("silver",50);
     SetDamagePoints(1);
     SetArmorType(A_COLLAR);
+}
+void init(){
+    ::init();
 }

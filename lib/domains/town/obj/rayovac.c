@@ -2,6 +2,7 @@
 #include <vendor_types.h>
 inherit "/lib/flashlight";
 
+
 void create(){
     ::create();
     SetKeyName("flashlight");
@@ -22,4 +23,6 @@ void create(){
       ]));
 
 }
-
+void init(){
+    ::init();
+}

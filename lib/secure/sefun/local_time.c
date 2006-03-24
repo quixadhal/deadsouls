@@ -1,3 +1,7 @@
+/* This file cleane dup by Jonez,
+ * 21Mar06
+*/
+
 #include <lib.h>
 #include <config.h>
 #include <daemons.h>
@@ -6,8 +10,9 @@ string tz;
 
 string query_tz(){
     string zone;
-    zone = read_file("/cfg/timezone.cfg")[0..2];
-    if(!zone) zone = "GMT";
+    if (file_size("/cfg/timezone.cfg") > 0) 
+	zone = read_file("/cfg/timezone.cfg")[0..2];
+    if (!zone) zone = "GMT";
     return zone;
 }
 
@@ -27,7 +32,7 @@ mixed local_time(mixed val){
 	zonearray = explode(read_file("/cfg/timezones.cfg"),"\n");
 	if(member_array(tzone,zonearray) == -1) tzone = query_tz();
 	if(!tzone || tzone == "") tzone = query_tz();
-	offset = "/daemon/time"-> GetOffset(tzone);
+	offset = TIME_D-> GetOffset(tzone);
 	offset += EXTRA_TIME_OFFSET;
 	timediff = offset * 3600;
 	if(os != "windows") l_time=ctime(time() + timediff);
@@ -36,7 +41,7 @@ mixed local_time(mixed val){
     }
     if(intp(val)){
 	mixed *stuff;
-	offset = "/daemon/time"-> GetOffset(query_tz());
+	offset = TIME_D-> GetOffset(query_tz());
 	offset *= 3600;
 	stuff = localtime(time()+offset);
 	stuff[9] = query_tz();
@@ -52,6 +57,7 @@ string set_tz(string str){
 
     tz = upper_case(str)[0..2];
     zonearray = explode(read_file("/cfg/timezones.cfg"),"\n");
+    zonearray += ({""});
     if(member_array(tz,zonearray) == -1) {
 	return "Invalid time zone. Valid zones are: "+ implode(zonearray," ");
     }

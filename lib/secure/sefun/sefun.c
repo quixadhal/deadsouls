@@ -75,7 +75,11 @@
 #include "/secure/sefun/findobs.c"
 #include "/secure/sefun/query_names.c"
 #include "/secure/sefun/groups.c"
+#include "/secure/sefun/ascii.c"
 
+mixed array users(){
+    return filter(efun::users(), (: environment($1) :) );
+}
 
 int destruct(object ob) {
     string *privs;
@@ -92,7 +96,8 @@ int destruct(object ob) {
 }
 
 varargs void shutdown(int code) {
-    if(!((int)master()->valid_apply(({})))) return;
+    if(!((int)master()->valid_apply(({"ASSIST"}))) &&
+      !((int)master()->valid_apply(({"SECURE"})))) return;
     if(this_player())
 	log_file("shutdowns", (string)this_player()->GetCapName()+
 	  " shutdown "+mud_name()+" at "+ctime(time())+"\n");

@@ -2,6 +2,7 @@
 #include <armor_types.h>
 #include <damage_types.h>
 inherit LIB_ARMOR;
+
 static void create(){
     armor::create();
     SetKeyName("bearsuit");
@@ -22,4 +23,7 @@ static void create(){
 string GetAffectLong(object ob) {
     if(!GetWorn()) return 0;
     return ob->GetName() + " looks just like a bear!";
+}
+void init(){
+    ::init();
 }

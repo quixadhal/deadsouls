@@ -9,6 +9,7 @@ static void create(){
     SetLong("This is a large human warrior. His pectoral muscles "+
       "are clearly visible even through his armor. His face is covered in "+
       "bold blue tattoos.");
+    SetCustomXP(350);
     SetLevel(10);
     SetRace("human");
     SetClass("fighter");

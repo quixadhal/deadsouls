@@ -14,5 +14,7 @@
 #define CFG_TIME                DIR_CFG "/time.cfg"
 #define CFG_WHERE               DIR_CFG "/where.cfg"
 #define CFG_WRITE		DIR_SECURE_CFG "/write.cfg"
+#define CFG_RACES		DIR_SECURE_CFG "/races"
+#define CFG_CLASSES		DIR_SECURE_CFG "/classes"
 
 #endif /* __CFG_H__ */

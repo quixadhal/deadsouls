@@ -116,8 +116,8 @@ doesn't provide useful information,<br>
 and <span style="font-weight: bold;">dbxframe</span> will help detail
 the source of the problem.<br>
 <br>
-<pre><big><big><big
- style="text-decoration: underline; font-family: Times New Roman,Times,serif;"><big><big>tail</big></big></big></big></big></pre>
+<pre><big><big
+ style="font-weight: bold; text-decoration: underline; font-family: Times New Roman,Times,serif;"><big><big>Tail</big></big></big></big></pre>
 <br>
 &nbsp;&nbsp;&nbsp; This is a version of the unix tail command. It
 displays the last few lines of a file. <br>
@@ -128,75 +128,6 @@ This command is important for examining crucial log files:<br>
 </small></big><big><small style="font-weight: bold;">tail
 /log/player_errors<br>
 <br>
-<br>
-</small></big><big
- style="text-decoration: underline; font-family: Times New Roman,Times,serif;"><big><big>bk
-&amp; restore<br>
-<br>
-</big></big></big>These commands aren't so much for debugging as they
-are for safe coding. Before you<br>
-edit a file, it is a very good idea to back it up first. The <span
- style="font-weight: bold;">bk</span> command lets you<br>
-quickly and conveniently back up a file before you edit it. When I
-typed:<br>
-<br>
-<span style="font-weight: bold;">bk sample_room</span><br>
-<br>
-A file with a unique identifying number was created in my bak/
-directory. If I<br>
-were to type it again, then sample_room.c would get copied again to
-bak/, with<br>
-a new unique number added to the name.<br>
-<br>
-&nbsp;&nbsp;&nbsp; The number is basically the number of seconds
-elapsed since January 1, 1970.<br>
-Adding this number, we can keep track of which backed up version of a
-file<br>
-is most recent by looking at the name.<br>
-<br>
-&nbsp;&nbsp;&nbsp; Suppose I edited a file called sample_npc.c. I use
-bk to back it up, make some changes,<br>
-then use bk again, make some more changes, but now it won't update. I
-don't<br>
-feel like debugging, I just need this file working again, so I want to
-restore from<br>
-backup. The sequence of commands would look something like this:<br>
-<br>
-<span style="font-weight: bold;">ed sample_npc.c</span><br
- style="font-weight: bold;">
-<span style="font-weight: bold;">bk sample_npc</span><br
- style="font-weight: bold;">
-<span style="font-weight: bold;">ed sample_npc.c</span><br
- style="font-weight: bold;">
-<span style="font-weight: bold;">update sample_npc.c</span><br>
-<span style="color: rgb(204, 0, 0);">&lt;error occurs here&gt;</span><br>
-<span style="font-weight: bold;">restore sample_npc</span><br>
-<br>
-&nbsp;&nbsp;&nbsp; The reason identifying numbers are used is that you
-can also choose to<br>
-restore the second-to-last backup version of a file, and other previous<br>
-versions.<br>
-&nbsp;&nbsp;&nbsp; The very last backup version is effectively version
-0, so it's not<br>
-necessary to specify a number. If I wanted to restore the version I
-backed<br>
-up before that one, I would type something like this:<br>
-<br>
-<span style="font-weight: bold;">restore sample_npc 1</span><br>
-<br>
-&nbsp;&nbsp;&nbsp; And if I wanted the version before that one, I'd
-specify 2 instead of 1, <br>
-and so on.<br>
-<br>
-&nbsp;&nbsp;&nbsp; Please note that this is an intentionally simple
-system. There are<br>
-no menus, no version branches, or diff tracking. The reason for this is<br>
-that it is not a <span style="font-style: italic;">versioning</span>
-system. It is a <span style="font-style: italic;">backup</span>
-system. It is a convenient<br>
-tool to back out of screwups, not a development tool to test file
-versions.<br>
-<big><small style="font-weight: bold;"><br>
 <br>
 </small></big><a href="index.html">Dead Souls Homepage</a><br>
 <big><small style="font-weight: bold;"><br>

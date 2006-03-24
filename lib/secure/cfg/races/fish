@@ -1,18 +1,20 @@
-fish
-20:80
-Fishish
-SHOCK:high
-BLUNT:low
-COLD:low
-WATER:low
-charisma:1:5
-durability:10:4
-intelligence:1:5
-luck:1:5
-agility:31:2
-wisdom:21:3
-speed:21:3
-strength:10:4
-coordination:31:2
-torso:0:1:A_ARMOR,A_BODY_ARMOR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
-head:torso:1:A_BODY_ARMOR,A_VISOR,A_HELMET,A_CLOAK
+RACE fish
+SENSITIVITY 20:80
+LANGUAGE Fishish
+RESISTANCE SHOCK:high
+RESISTANCE BLUNT:low
+RESISTANCE COLD:low
+RESISTANCE WATER:low
+STATS charisma:1:5
+STATS durability:10:4
+STATS intelligence:1:5
+STATS luck:1:5
+STATS agility:31:2
+STATS wisdom:21:3
+STATS speed:21:3
+STATS strength:10:4
+STATS coordination:31:2
+LIMB torso:0:1:A_ARMOR,A_BODY_ARMOR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT
+LIMB head:torso:1:A_BODY_ARMOR,A_VISOR,A_HELMET,A_CLOAK
+LIMBLESSCOMBATRACE
+LIMBLESSRACE

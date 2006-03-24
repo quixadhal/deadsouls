@@ -4,6 +4,7 @@
 inherit LIB_BED;
 inherit LIB_SMELL;
 
+
 static void create() {
     ::create();
     SetKeyName("guest bed");
@@ -16,4 +17,7 @@ static void create() {
     SetMaxSitters(2);
     SetMaxLiers(1);
 
+}
+void init(){
+    ::init();
 }

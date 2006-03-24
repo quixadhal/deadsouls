@@ -45,6 +45,18 @@ varargs object array get_livings(object ob,int foo){
     if(!sizeof(lstuff)) return 0;
 }
 
+varargs object get_random_living(object room, int foo){
+    object *livings;
+
+    if(!foo) foo = 0;
+
+    livings = get_livings(room, foo);
+    foo = random(sizeof(livings));
+
+    return livings[foo];
+}
+
+
 
 
 

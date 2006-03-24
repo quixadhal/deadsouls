@@ -5,11 +5,15 @@
 inherit LIB_ROOM;
 
 string LoadIP(){
-    return INTERMUD_D->GetMudList()["Dead Souls"][1];
+    if(mud_name() != "Dead Souls")
+	return INTERMUD_D->GetMudList()["Dead Souls"][1];
+    else return INTERMUD_D->GetMudList()["Frontiers"][1];
 }
 
 string LoadPort(){
-    return INTERMUD_D->GetMudList()["Dead Souls"][2];
+    if(mud_name() != "Dead Souls")
+	return INTERMUD_D->GetMudList()["Dead Souls"][2];
+    else return INTERMUD_D->GetMudList()["Frontiers"][2];
 }
 
 void create() {
