@@ -145,7 +145,8 @@ void eventRegisterChannels(mapping list) {
     foreach(channel, val in list) {
 	if( !val ) continue;
 	if( channel == (string)CHAT_D->GetLocalChannel(channel) && 
-	  channel != "dead_test4" && channel != "dead_souls") {
+	  channel != "dead_test4" && channel != "dead_souls" &&
+	  channel != "lpuni" && channel != "german" ) {
 	    INTERMUD_D->eventWrite(({ "channel-listen", 5, mud_name(), 0, ns, 
 		0, channel, 0 }));
 	    log_file("channels", "New channel: " + channel + " recognized " +

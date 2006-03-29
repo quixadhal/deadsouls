@@ -12,6 +12,7 @@ static void create() {
     SetLevel(1);
     SetMelee(1);
     SetRace("primate");
+    SetMaxHealthPoints(40);
     SetGender("male");
 }
 void init(){

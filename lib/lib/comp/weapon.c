@@ -109,7 +109,7 @@ mixed CanEquip(object who, string array limbs) {
 	return tmp;
     }
     if( GetHands() != sizeof(limbs) ) {
-	return "#You must use " + cardinal(Hands) + " to wield " +
+	return "#You must use " + cardinal(Hands) + " hands to wield " +
 	GetDefiniteShort() + ".";
     }
     if( Hands > sizeof(who->GetWieldingLimbs()) ) {

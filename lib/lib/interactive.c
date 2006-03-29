@@ -148,6 +148,10 @@ static void net_dead() {
       "a sea of irreality.", MSG_ENV, this_object());
     filter(users(), (: archp :))->eventPrint("[" + GetCapName() +
       " goes net-dead]", MSG_SYSTEM);
+    if(file_exists("/secure/room/control")){
+	get_livings(load_object("/secure/room/control"))->eventPrint("[" + GetKeyName()+
+	  " goes net-dead]", MSG_SYSTEM);
+    }
     eventMove(ROOM_FREEZER);
     if(query_snoop(this_object()))
 	query_snoop(this_object())->eventPrint(GetCapName() + " has gone "

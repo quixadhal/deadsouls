@@ -46,8 +46,10 @@ varargs void tc(string str, string col){
 
 }
 
-varargs void tell_room(object ob, mixed str, mixed exclude) {
-    if(!ob) return;
+varargs void tell_room(mixed ob, mixed str, mixed exclude) {
+    if(!ob ) return;
+    if(stringp(ob) && !file_exists(ob) && !file_exists(ob+".c")) return;
+    if(stringp(ob) &&!(ob = load_object(ob))) return;
     ob->eventPrint(str, MSG_ENV, exclude);
 }
 

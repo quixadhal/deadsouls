@@ -28,5 +28,5 @@ string timestamp(){
     }
 
     t = localtime(time()+(offset*3600));
-    return sprintf("%04d.%02d.%02d-%02d.%02d", t[LT_YEAR], t[LT_MON], t[LT_MDAY], t[LT_HOUR], t[LT_MIN]);
+    return sprintf("%04d.%02d.%02d-%02d.%02d", t[LT_YEAR], (t[LT_MON])+1, t[LT_MDAY], t[LT_HOUR], t[LT_MIN]);
 }

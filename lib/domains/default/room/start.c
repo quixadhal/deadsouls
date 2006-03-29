@@ -3,7 +3,6 @@
 
 inherit LIB_ROOM;
 
-
 void create() {
     room::create();
     SetClimate("indoors");

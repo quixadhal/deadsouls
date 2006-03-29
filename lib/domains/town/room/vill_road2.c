@@ -18,7 +18,7 @@ static void create() {
 	({"road","long road"}) : "An east-west cobblestone "
 	"road through town.",
       ]) );
-    SetObviousExits("n, s, e, 2, enter store, enter guild");
+    SetObviousExits("n, s, e, w, enter store, enter guild");
     SetExits( ([
 	"north" : "/domains/town/room/shop",
 	"south" : "/domains/town/room/adv_guild",

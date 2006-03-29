@@ -179,7 +179,8 @@ int damage5(){
     tell_object(victim,"You cough up a huge glob of phlegm, accidentally inhale it, and choke while coughing it "+
       "back up.");
     victim->eventReceiveDamage(this_object(),DISEASE,random(80)+50,0,"torso");
-    victim->AddStaminaPoints(random(80),50);
+    //Fix below courtesy of Jonez
+    victim->AddStaminaPoints(random(80)+50);
     victim->AddStatBonus("strength", 50);
     victim->AddStatBonus("durability", 50);
     victim->AddStatBonus("agility", 50);

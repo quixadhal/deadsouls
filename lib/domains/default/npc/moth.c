@@ -15,6 +15,7 @@ static void create() {
     SetLevel(1);
     SetMelee(1);
     SetRace("insect");
+    SetMaxHealthPoints(2);
     SetGender("male");
 }
 void init(){

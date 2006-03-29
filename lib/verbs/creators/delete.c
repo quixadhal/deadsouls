@@ -115,6 +115,8 @@ int eventDeleteObject(object ob1, object ob2){
 	return 1;
     }
 
+    staff->eventGeneralStuff(base_name(ob1)+".c");
+    staff->eventGeneralStuff(base_name(ob2)+".c");
     staff->eventDeleteItem(ob1, ob2);
     return 1;
 }

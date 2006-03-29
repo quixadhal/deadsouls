@@ -33,7 +33,8 @@ static void create() {
     Banned = ([]);
     // There is only one known I3 router as of
     // Feb 2006: us-1.i3.intermud.org
-    Nameservers = ({ ({ "*gjs", "198.144.203.194 9000" }) });
+    //Nameservers = ({ ({ "*gjs", "198.144.203.194 9000" }) });
+    Nameservers = ({ ({ "*yatmim", "149.152.218.102 23" }) });
     MudList = new(class list);
     ChannelList = new(class list);
     MudList->ID = -1;
@@ -82,6 +83,7 @@ static void eventRead(mixed *packet) {
 	return;
     }
     switch(packet[0]) {
+	//default :  tc("Packet: "+identify(packet));
     case "startup-reply":
 	log_file("intermud",identify(packet));
 	if( sizeof(packet) != 8 ) return;  /* should send error */

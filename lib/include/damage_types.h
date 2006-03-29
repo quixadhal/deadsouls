@@ -14,9 +14,16 @@
 #define POISON             (1 << 11)
 #define DISEASE            (1 << 12)
 #define TRAUMA             (1 << 13)
+#define PIERCE             (1 << 14)
+#define PSIONIC            (1 << 15)
+#define ANOXIA             (1 << 16)
+#define DEATHRAY           (1 << 17)
+#define EMOTIONAL          (1 << 18)
+#define SONIC              (1 << 19)
+#define OTHER              (1 << 20)
 
-#define MAX_DAMAGE_BIT     TRAUMA
+#define MAX_DAMAGE_BIT     OTHER
 
-#define ALL_DAMAGE  BLUNT | BLADE | KNIFE | WATER | SHOCK | COLD | HEAT | GAS | ACID | MAGIC | POISON | DISEASE | TRAUMA
+#define ALL_DAMAGE  BLUNT | BLADE | KNIFE | WATER | SHOCK | COLD | HEAT | GAS | ACID | MAGIC | POISON | DISEASE | TRAUMA | PIERCE | PSIONIC | ANOXIA | DEATHRAY | EMOTIONAL | SONIC | OTHER
 
 #endif /* s_damage_types_h */

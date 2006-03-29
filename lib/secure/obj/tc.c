@@ -14,7 +14,7 @@ static void create()
     SetShort( "a telnet client" ) ;
     SetId(({"client","telnet client"}));
     SetLong( "It's a small pocket sized telnet terminal.\n"
-      "It appears customized to connect to Frontiers MUD only.\n"
+      "It appears customized to connect to Dead Souls MUD only.\n"
       "Use 'telnet' or 'connect' to begin.\n\nCommands:\n"
       "[connect|telnet] : start telnet session.\nreset [client]"
       " : reset the telnet client.\nreconnect : reconnect to session"
@@ -193,7 +193,7 @@ int parse_comm( string str )
 {
     if(str=="dcon" || str=="quit")
     {
-	write("You return from Frontiers!\n");
+	write("You return from Dead Souls!\n");
 	socket_close( socket ) ;
 	attempting = 0 ;
 	connected = 0 ;

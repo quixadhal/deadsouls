@@ -58,7 +58,8 @@ mixed cmd(string args) {
 	"    " +
 	"Quest Points: "+ (int)ob->GetQuestPoints() +
 	"    " +
-	"Experience Points: "+ (int)ob->GetExperiencePoints()) 
+	//Fix below courtesy of Jonez
+	"Experience Points: "+ (int)ob->GetExperiencePoints()),cols 
     });
     lines += ({ "", "Limbs:" });
     limbs = (string *)ob->GetWieldingLimbs();

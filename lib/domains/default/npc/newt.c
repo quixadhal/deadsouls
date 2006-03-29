@@ -15,6 +15,7 @@ static void create() {
     SetLevel(1);
     SetRace("amphibian");
     SetClass("explorer");
+    SetMaxHealthPoints(10);
     SetGender("male");
 }
 void init(){

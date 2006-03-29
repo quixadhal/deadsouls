@@ -14,6 +14,7 @@ static void create() {
     SetLevel(1);
     SetMelee(1);
     SetRace("faerie");
+    SetMaxHealthPoints(50);
     SetGender("female");
 }
 void init(){

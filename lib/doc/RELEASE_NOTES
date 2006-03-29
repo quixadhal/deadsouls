@@ -1,3 +1,16 @@
+---- 2.0r18 ---
+- Changed default intermud router to 149.152.218.102 port 25
+- Added a sanity check in telnet room.
+- Fixed bug in Newbie Mansion Quest (thx Jonez).
+- Added verb: pulsecheck.
+- Fixed bug in delete verb that broke when deleting an
+  item with a relative include defined.
+- Fixed a wielding bug that let you wield a two-handed
+  weapon AND a one-handed weapon.
+- Added more damage types.
+- Fixed month bug in timestamp.c.
+- Fixed light bug in ROOM_VOID.
+
 ---- 2.0r17 ---
 - Fixed bug that prevented assistant admins from shutting down.
 - Added Shadyman's emote doc.

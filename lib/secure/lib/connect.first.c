@@ -139,11 +139,11 @@ static void InputEmail(string str) {
     tool = load_object("/secure/cmds/admins/admintool");
     if(tool) foo = tool->eventChangeName("Dead_Souls_"+Name, 1); 
     if(foo){
-        receive("\n\nMud name changed. Use admintool to customize it.");
-        receive("\nFor more info, log in and type: help admintool\n");
+	receive("\n\nMud name changed. Use admintool to customize it.");
+	receive("\nFor more info, log in and type: help admintool\n");
     }
     else {
-        receive("Mud name unchanged.\n");
+	receive("Mud name unchanged.\n");
     }
     shutdown();
     destruct(this_object());

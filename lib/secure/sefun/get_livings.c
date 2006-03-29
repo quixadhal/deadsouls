@@ -4,7 +4,6 @@
  *    Give it an integer argument to return interactives only
  *    Created by Cratylus 23JAN2005
  *    Version: @(#) getlivings.c 1.1@(#)
- *    Last modified: 2005/01/23
  */
 
 varargs object array get_livings(object ob,int foo){

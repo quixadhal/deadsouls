@@ -66,7 +66,7 @@ mixed cmd(string str) {
 	string msg, svc;
 	int val, comma = 0;
 
-	tc("borg: "+identify(borg));
+	//tc("borg: "+identify(borg));
 
 	mud = keys(borg)[0];
 	msg = "\nDetailed information on %^GREEN%^" + mud + "%^RESET%^:\n";

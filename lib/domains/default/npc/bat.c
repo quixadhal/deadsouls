@@ -17,6 +17,7 @@ static void create() {
     SetLevel(1);
     SetMelee(1);
     SetRace("bat");
+    SetMaxHealthPoints(20);
     SetGender("male");
     SetMessage("leave","$N scurries $D.");
 }

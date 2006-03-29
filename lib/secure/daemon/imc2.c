@@ -6,7 +6,7 @@
 //#define HOSTNAME "hub01.muddomain.com"
 //#define HOSTPORT 3333
 //#define HOSTPORT 5000
-#define HOSTPORT 9000
+#define HOSTPORT 3333
 // HostIP overrides HOSTNAME, in case the mud doesn't want to resolve addresses.
 #define HOSTIP "70.85.248.74"
 //#define HOSTIP "70.85.244.100"
@@ -16,8 +16,8 @@
 #define MUDNAME "DeadSouls"
 
 // Passwords...
-#define CLIENT_PW "dedsoles"
-#define SERVER_PW "dedsoles"
+#define CLIENT_PW "ClientPass321"
+#define SERVER_PW "ServPass321"
 
 // File to save data to, .o will be added automatically to the end.
 // This will have private stuff in it, don't put this in a directory where your wizards can read it.
@@ -511,6 +511,7 @@ private void resolve_callback( string address, string resolved, int key ) {
     // Figured out what the IP is for the address.
     int error;
     //debug("Resolved to: "+resolved);
+    start_logon();
     write_file("/tmp/imc2.log","address: "+address);
     write_file("/tmp/imc2.log","resolved: "+resolved);
     write_file("/tmp/imc2.log","key: "+key);
@@ -538,7 +539,7 @@ private void resolve_callback( string address, string resolved, int key ) {
 }
 
 private void write_callback(){
-    start_logon();
+    // start_logon();
 }
 
 private void start_logon(){

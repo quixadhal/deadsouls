@@ -27,8 +27,9 @@ static void create() {
     SetPosition(POSITION_SITTING);
 }
 
-string GetLong(){
-    return sentient::GetLong();
+//Fix courtesy of  Jonez
+string GetLong(string str){
+    return sentient::GetLong(str);
 }
 
 int GiveMap(object ob){

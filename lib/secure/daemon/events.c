@@ -137,9 +137,9 @@ void AddEvent(string c, string s, string f, mixed *a, int w, int r) {
 void RemoveEvent(int i){
     if( file_name(previous_object()) != SEFUN ) return;
     if(sizeof(Events[i])){
-	tc("Events: "+identify(Events));
+	//tc("Events: "+identify(Events));
 	map_delete(Events, i);
-	tc("Events: "+identify(Events));
+	//tc("Events: "+identify(Events));
 	eventSave(1);
     }
 }

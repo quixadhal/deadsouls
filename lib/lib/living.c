@@ -279,6 +279,8 @@ mixed direct_scry_liv() {
 
 mixed indirect_zap_liv() { return 1; }
 mixed direct_zap_liv() { return 1; }
+mixed indirect_pulsecheck_liv() { return 1; }
+mixed direct_pulsecheck_liv() { return 1; }
 
 /* hostile spells */
 

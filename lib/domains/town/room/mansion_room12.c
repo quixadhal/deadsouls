@@ -25,7 +25,7 @@ void init(){
 int CheckQuest(object ob){
     string *quests;
     quests = ob->GetQuests();
-    if(ob->GetQuest("Newbie Mansion Chamber Quest") == "nohit"){
+    if(!ob->GetQuest("Newbie Mansion Chamber Quest")){
 	ob->AddQuest("the Finder of Hidden Chambers","Newbie Mansion Chamber Quest");
 	write("\n\nCONGRATULATIONS!\n");
 	write("You have solved the secret quest of the "+

@@ -151,7 +151,7 @@ mixed eventReadProtectionSettings(string str){
     }
 
     temp_array = explode(tmp_str,"\n");
-    tc("temp_array: "+identify(temp_array));
+    //tc("temp_array: "+identify(temp_array));
     if(!sizeof(temp_array)){
 	return ([]);
     }

@@ -13,6 +13,7 @@ static void create() {
     SetLevel(1);
     SetMelee(1);
     SetRace("bird");
+    SetMaxHealthPoints(30);
     SetGender("male");
 }
 void init(){

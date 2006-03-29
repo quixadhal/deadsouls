@@ -678,9 +678,11 @@ int eventWear(object ob, mixed limbs) {
     if( CanWear(ob, limbs) != 1 ) {
 	return 0;
     }
-    foreach(limb in limbs) {
-	if(sscanf(limb,"%s foot",s1) || sscanf(limb,"%s hand",s1) ){
-	    if(!sizeof(GetWorn(limb))) target_limb = ({ limb });
+    if(!inherits(LIB_WEAPON, ob)){
+	foreach(limb in limbs) {
+	    if(sscanf(limb,"%s foot",s1) || sscanf(limb,"%s hand",s1) ){
+		if(!sizeof(GetWorn(limb))) target_limb = ({ limb });
+	    }
 	}
     }
     if(sizeof(target_limb)) limbs = target_limb;
