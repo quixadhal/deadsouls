@@ -14,6 +14,7 @@
 
 void eventReceiveChannelWhoReply(mixed array packet) {
     object ob;
+    tn("eventReceiveChannelWhoReply: "+identify(packet),"green");
 
     if( file_name(previous_object()) != INTERMUD_D ) return;
     if( !(ob = find_player(packet[5])) ) return;
@@ -39,6 +40,7 @@ void eventReceiveChannelWhoRequest(mixed array packet) {
 	ret += entry+", ";
     }
     ret = truncate(ret,2);
+    tn("eventReceiveChannelWhoRequest: "+identify(packet),"green");
 
     tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"+capitalize(packet[3])+" at "+packet[2]+" has requested a list of users listening to channel "+packet[6]+". Replying with: %^BOLD%^GREEN%^"+ret+".%^RESET%^\"");
 }
@@ -48,6 +50,7 @@ void eventReceiveChannelUserRequest(mixed array packet) {
     string visname;
     int gender;
     if( file_name(previous_object()) != INTERMUD_D ) return;
+    tn("eventReceiveChannelUserRequest: "+identify(packet),"green");
     if( !(ob = find_player(packet[6])) ) {
 	INTERMUD_D->eventWrite( ({ "error", 5, mud_name(), 0, packet[2], 0,
 	    "unk-user", packet[6] + " is not a valid "
@@ -65,6 +68,8 @@ void eventReceiveChannelUserRequest(mixed array packet) {
 }
 
 void eventReceiveChannelMessage(mixed array packet) {
+    tn("eventReceiveChannelMessage: "+identify(packet),"green");
+
     if( file_name(previous_object()) != INTERMUD_D ) return;
     if( packet[2] == mud_name() ) return;
 
@@ -75,6 +80,8 @@ void eventReceiveChannelMessage(mixed array packet) {
 }
 
 void eventReceiveChannelEmote(mixed array packet) {
+    tn("eventReceiveChannelEmote: "+identify(packet),"green");
+
     if( file_name(previous_object()) != INTERMUD_D ) return;
     if( packet[2] == mud_name() ) return;
     if( !packet[7] ) return;
@@ -85,6 +92,7 @@ void eventReceiveChannelEmote(mixed array packet) {
 
 void eventReceiveChannelTargettedEmote(mixed array packet) {
     string target;
+    tn("eventReceiveChannelTargettedEmote: "+identify(packet),"green");
 
     if( file_name(previous_object()) != INTERMUD_D ) return;
     if( packet[2] == mud_name() ) return;
@@ -100,6 +108,8 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
     mixed array packet;
 
     string targpl, where;  // targpl is target keyname
+
+    tn("eventSendChannel. ","green");
 
     if( emote ) {
 	if( target && targmsg ) {
@@ -140,6 +150,8 @@ void eventRegisterChannels(mapping list) {
     mixed array val;
     string channel, ns;
 
+    tn("eventRegisterChannels: "+identify(list),"green");
+
     if( file_name(previous_object()) != INTERMUD_D ) return;
     ns = (string)INTERMUD_D->GetNameserver();
     foreach(channel, val in list) {
@@ -159,6 +171,8 @@ void eventRegisterChannels(mapping list) {
 
 int eventAdministerChannel(string channel, string array additions,
   string array subs) {
+    tn("eventAdministerChannel. ","green");
+
     if( !((int)master()->valid_apply( ({}) )) ) return 0;
     if( member_array(channel, (string array)INTERMUD_D->GetChannels()) == -1 )
 	return 0;
@@ -170,6 +184,8 @@ int eventAdministerChannel(string channel, string array additions,
 }
 
 int AddChannel(string channel, int privee) {
+    tn("eventAdministerChannel. ","green");
+
     if( !((int)master()->valid_apply( ({}) )) ){ 
 	return 0;
     }
@@ -185,6 +201,8 @@ int AddChannel(string channel, int privee) {
 
 int RemoveChannel(string channel) {
     //if( !((int)master()->valid_apply( ({}) )) ) return 0;
+    tn("RemoveChannel: "+identify(channel),"green");
+
     if( member_array(channel, (string array)INTERMUD_D->GetChannels()) == -1 ){
 	return 0;
     }

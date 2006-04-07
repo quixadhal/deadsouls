@@ -102,6 +102,8 @@ varargs string wrap(string str, int x) {
 varargs mixed convert_string(string str, int flag) {
     mixed *ret = ({ 0, "" });
 
+    if(!str || !sizeof(str) || str == "") return 0;
+
     if( (str = trim(str)) == "" ) return 0;
     if( str[0] == '(' ) {
 	switch(str[1]) {

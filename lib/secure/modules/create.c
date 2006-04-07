@@ -19,7 +19,7 @@ string *item_arr = base_arr + ({"SetLanguage","SetRead","SetDefaultRead","SetDis
 string *meal_arr = item_arr + ({ "SetMealType", "SetStrength"}) -({"SetDamagePoints"});
 string *storage_arr = item_arr + ({"SetMaxCarry","SetInventory", "SetCanClose", "SetCanLock","SetMaxRecurse","SetLocked","SetClosed","SetKey"});
 string *room_arr = base_arr - ({"SetUnique"}) + ({"SetNoObviousExits","SetDefaultExits","SetTown","SetNightLong","SetDayLong","SetClimate","SetAmbientLight","SetNightLight","SetDayLight","SetObviousExits", "SetInventory", "SetEnters"});
-string *npc_arr = base_arr - ({"SetItems"}) + ({"SetCustomXP", "SetSpellBook", "SetCanBite", "SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat"});
+string *npc_arr = base_arr - ({"SetItems"}) + ({"SetNativeLanguage","SetCustomXP", "SetSpellBook", "SetCanBite", "SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat"});
 string *barkeep_arr = npc_arr + ({"SetLocalCurrency","SetMenuItems"});
 string *trainer_arr = npc_arr + ({"AddTrainingSkills"});
 string *vendor_arr = npc_arr + ({"SetLocalCurrency","SetStorageRoom","SetMaxItems","SetVendorType"});
@@ -421,6 +421,8 @@ mixed eventModify(object ob, string str){
 	case "setxp" : out = "SetCustomXP";break;
 	case "setcustomxp" : out = "SetCustomXP";break;
 	case "customxp" : out = "SetCustomXP";break;
+	case "nativelanguage" : out = "SetNativeLanguage";break;
+	case "setnativelanguage" : out = "SetNativeLanguage";break;
 	default : out = mode;
 	}
     }
@@ -552,6 +554,7 @@ mixed eventModify(object ob, string str){
 	case "SetShort" : p_array = ({"SetAmbientLight","SetDayLight","SetNightLight","create()","create ()","create"}); break;
 	case "SetHealthPoints" : p_array = ({"SetInventory","SetMaxHealhPoints","SetClass","SetRace","SetLong"});break;
 	case "SetMaxHealthPoints" : p_array = ({"SetInventory","SetHealhPoints","SetClass","SetRace","SetLong"});break;
+	case "SetNativeLanguage" : p_array = ({"SetRace"});break;
 	case "SetSmell" : p_array = ({"SetItems","SetInventory","SetListen","SetLong","SetDayLong","SetNightLong","SetShort"});break;
 	case "SetListen" : p_array = ({"SetItems","SetInventory","SetSmell","SetLong","SetDayLong","SetNightLong","SetShort"});break;
 	case "SetItems" : p_array = ({"SetAmbientLight","SetDayLight","SetNightLight","create()","create ()","SetShort","SetLong","SetDayLong","SetNightLong"});break;

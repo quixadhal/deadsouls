@@ -43,7 +43,7 @@ void help() {
       "Syntax: <goto [living thing|file]>\n\n"
       "This command will move you to where the living thing is if it can "
       "be found, otherwise it will search for the file named and try to "
-      "move you into that file.\n\nSee also: home, move, trans.",
+      "move you into that file.\n\nSee also: home, move, trans, expel.",
       this_player()
     );
 }

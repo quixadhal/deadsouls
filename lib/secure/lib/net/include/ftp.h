@@ -24,18 +24,18 @@ private void eventCmdPwd(string arg);
 private void eventCmdRmd(string arg);
 
 class ftp_session {
-   int      connected;
-   string   user;
-   mixed    priv;
-   string   pwd;
-   object   dataPipe;
-   object   cmdPipe;
-   int      idleTime;
-   int      binary;
-   string   targetFile;
-   string   command;
-   int      filepos;
-   string   renamefrom;
+    int      connected;
+    string   user;
+    mixed    priv;
+    string   pwd;
+    object   dataPipe;
+    object   cmdPipe;
+    int      idleTime;
+    int      binary;
+    string   targetFile;
+    string   command;
+    int      filepos;
+    string   renamefrom;
 }
 
 #define LTYPE_LIST      0

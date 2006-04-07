@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+
 static void create() {
     room::create();
     SetClimate("outdoors");
@@ -8,7 +9,9 @@ static void create() {
     SetLong("You are on the shore, at the far eastern end of town. "
       "A road travels west into the heart of town. ");
     SetExits( ([
-	"west" : "/domains/town/room/vill_road3",
+	"west" : "/domains/town/room/vill_road4.c",
       ]) );
-    SetObviousExits("w");
+}
+void init(){
+    ::init();
 }

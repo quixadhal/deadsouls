@@ -104,7 +104,8 @@ static void Page(class page_file file) {
     if( endline < file->Size - 1 ) {
 	prompt += "(" + (file->CurrentLine+1) + "-" + (endline+1) + " ";
 	prompt += ((endline * 100)/(file->Size - 1)) + "%) press enter: ";
-	prompt = "%^BOLD%^" + prompt + "%^RESET%^";
+	// Following fix courtesy of Brodbane
+	prompt = "%^BOLD%^" + prompt + "%^RESET%^\n";
 	file->CurrentLine = endline + 1;
 	eventPrint(prompt, MSG_PROMPT);
 	input_to((: cmdPage :), file);
@@ -126,7 +127,7 @@ static void cmdPage(string str, class page_file file) {
     int fp, x, scrlen;
 
     if( !str || trim(str) == "" ) {
-	if( file->CurrentLine >= (file->Size - 1) ) {
+	if( file->CurrentLine >= (file->Size) ) {
 	    fp = functionp(file->Callback);
 	    if( !fp || (fp == FP_OWNER_DESTED) ) return;
 	    if( file->Args ) evaluate(file->Callback, file->Args...);

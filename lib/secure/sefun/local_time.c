@@ -50,20 +50,24 @@ mixed local_time(mixed val){
 
 }
 
-string set_tz(string str){
+int valid_timezone(string str){
     string *zonearray;
-
-    if(!str) return "Time zone unchanged.";
-
-    tz = upper_case(str)[0..2];
+    if(!str || str == "") return 0;
+    str = upper_case(str)[0..2];
     zonearray = explode(read_file("/cfg/timezones.cfg"),"\n");
     zonearray += ({""});
-    if(member_array(tz,zonearray) == -1) {
-	return "Invalid time zone. Valid zones are: "+ implode(zonearray," ");
+    if(member_array(str,zonearray) == -1) {
+	return 0;
     }
+    else return 1;
+}
 
+string set_tz(string str){
+    if(!str) str = "";
+    if( str != "" && !valid_timezone(str)) {
+	return "Invalid time zone.";
+    }
     if(!archp(this_player())) return "You're not permitted to do this.";
-
     unguarded( (: write_file("/cfg/timezone.cfg",tz,1) :) );
     return "Mud time zone is now "+read_file("/cfg/timezone.cfg");
 }

@@ -93,7 +93,11 @@ mixed do_look_str(string str) {
     return do_look_at_str(str);
 }
 
-varargs mixed do_look_at_obj(object ob) {
+varargs mixed do_look_at_obj(object ob, mixed arg) {
+    if(ob->GetInvis() && !archp(this_player())){
+	write("There is no "+arg+" here.");
+	return 1;
+    }
     return ob->eventShow(this_player());
 }
 

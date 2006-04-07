@@ -14,7 +14,7 @@
 inherit LIB_HISTORY;
 
 #define DIRECTORY_STACK_SIZE     5
-#define MAX_CMD_ALIASES          72
+#define MAX_CMD_ALIASES          128
 
 private string CurrentWorkingDirectory;
 private string PreviousWorkingDirectory;
@@ -32,7 +32,11 @@ static void create() {
       "sw" : "go southwest", "d" : "go down", "u" : "go up", "out": "go out",
       "exa" : "look at $*", "p" : "people", "sc" : "status", "inf" : "score",
       "eq" : "inventory", "where" : "people", "prac" : "skills", 
-      "practice" : "skills", "trophy" : "kills"
+      "practice" : "skills", "trophy" : "kills",
+      "northwest" : "go northwest", "northeast" : "go northeast", 
+      "southwest" : "go southwest", "southeast" : "go southeast",
+      "north" : "go north", "south": "go south", "east" : "go east",
+      "west" : "go west", "up" : "go up", "down": "go down"
     ]);
     Xverbs = (["'":"say $*",":":"emote $*","\"":"say $*",]);
 } 

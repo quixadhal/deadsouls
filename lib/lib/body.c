@@ -693,6 +693,15 @@ int eventWear(object ob, mixed limbs) {
     return 1;
 }
 
+string *GetEquippedLimbs(){
+    string *equipped_limbs = ({});
+    object *wornstuff = filter(all_inventory(this_object()), (: $1->GetWorn() :) );
+
+    foreach(object item in wornstuff){
+	equipped_limbs += item->GetWorn();
+    }
+    return equipped_limbs;
+}
 /************     /lib/body.c Data manipulation functions      *************/
 void NewBody(string race) {
     if(!race)

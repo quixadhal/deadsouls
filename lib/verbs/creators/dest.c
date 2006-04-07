@@ -6,12 +6,13 @@
 #include <rooms.h>
 #include <commands.h>
 
+
 inherit LIB_VERB;
 
 static void create() {
     verb::create();
     SetVerb("dest");
-    SetRules("OBS");
+    SetRules("OBS","STR");
     SetErrorMessage("dest what?");
     SetHelp("Syntax: <dest OBJ>\n\n"
       "Destroy an object.\n"
@@ -21,6 +22,12 @@ static void create() {
 mixed can_dest_obj(string str) { 
     if(!creatorp(this_player())) return "This command is only available to builders and creators.";
     else return 1;
+}
+
+mixed can_dest_str(){
+    //The desting of strings is not yet supported.
+    //return 1;
+    return 0;
 }
 
 mixed do_dest_obj(object ob){
@@ -51,3 +58,21 @@ mixed do_dest_obs(object *obs) {
     return 1;
 }
 
+mixed do_dest_str(string str){
+    object *objects;
+    tc("str: "+str);
+    if(!objects = findobs(str)){
+	write("No such thing was found.");
+	return 1;
+    }
+    if(sizeof(objects) != 1){
+	write("The return list is ambiguous. Nothing was dested.");
+	return 1;
+    }
+
+    objects[0]->eventDestruct();
+    if(objects[0]) destruct(objects[0]);
+    if(objects[0]) write(file_name(objects[0])+" was not destructed.");
+    else write("Desting complete.");
+    return 1;
+}

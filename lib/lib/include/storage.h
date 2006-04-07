@@ -8,7 +8,7 @@ mixed direct_close_obj(object ob, string id);
 mixed indirect_get_obj_out_of_obj(object item);
 mixed direct_look_inside_obj(object target, string id);
 mixed indirect_look_at_obj_word_obj(object target, string wrd, object ob,
-				    string id, string my_id);
+  string id, string my_id);
 int direct_unlock();
 int inventory_accessible();
 int inventory_visible();

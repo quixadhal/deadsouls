@@ -15,8 +15,8 @@
 #undef debug
 #endif /* debug */
 
-#ifdef DEBUG
-#define debug(x, y)      (find_player(x) || master())->eventPrint(x)
-#endif /* DEBUG */
+//#ifdef DEBUG
+//#define debug(x, y)      (find_player(x) || master())->eventPrint(x)
+//#endif /* DEBUG */
 
 #endif /* GLOBAL_H */

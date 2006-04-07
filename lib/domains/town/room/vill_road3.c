@@ -12,15 +12,15 @@ static void create() {
 	({ "building", "buildings" }) : "Structures designed for human occupancy.",
 	({ "hall", "town hall" }) : "This is the modest building where official town business takes place.",
       ]));
+    SetExits( ([
+	"south" : "/domains/town/room/postoffice",
+	"west" : "/domains/town/room/vill_road2",
+	"north" : "/domains/town/room/thall",
+	"east" : "/domains/town/room/vill_road4.c",
+      ]) );
     SetEnters( ([
 	"town hall" : "/domains/town/room/thall",
 	"office" : "/domains/town/room/postoffice.c",
-      ]) );
-    SetExits( ([
-	"east" : "/domains/town/room/shore",
-	"west" : "/domains/town/room/vill_road2",
-	"north" : "/domains/town/room/thall",
-	"south" : "/domains/town/room/postoffice",
       ]) );
 }
 void init(){

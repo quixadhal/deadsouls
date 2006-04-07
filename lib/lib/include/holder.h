@@ -12,7 +12,7 @@ mixed indirect_get_obs_out_of_obj(object *item, object storage);
 mixed direct_look_in_obj(object target, string id);
 mixed direct_look_inside_obj(object target, string id);
 mixed indirect_look_at_obj_word_obj(object target, string wrd, object ob,
-				    string id, string my_id);
+  string id, string my_id);
 mixed indirect_put_obj_word_obj(object what, string word, object storage);
 mixed indirect_put_obs_word_obj(object *items, string word, object storage);
 

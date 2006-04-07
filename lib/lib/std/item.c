@@ -99,6 +99,8 @@ int SetRetainOnDeath(int x) {
 }
 
 static mixed array AddSave(mixed array vars) {
+    if(!vars) vars = ({});
+    vars += ({ "Properties" });
     return persist::AddSave(vars);
 }
 

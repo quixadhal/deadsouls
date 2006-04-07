@@ -39,6 +39,7 @@ string cmd(string str) {
 	if(sizeof(paths)) foreach(string path in paths){
 	    //tc("path: "+path);
 	    load_object("/secure/cmds/creators/lsed")->cmd(rulefile + " "+ path + "/*.c");
+	    load_object("/secure/cmds/creators/lsed")->cmd(rulefile + " "+ path + "/*.h");
 	}
     }
 

@@ -4,6 +4,10 @@
  */
 
 #include <message_class.h>
+#include <config.h>
+#include <rooms.h>
+
+object *global_tmp_ob_arr;
 
 varargs void say(mixed str, mixed ob) {
     object *obs;
@@ -24,26 +28,74 @@ void tell_player(mixed player, string msg){
     if(objectp(player)) str = player->GetKeyName();
     else str = player;
     if(!msg || msg == "") return;
+    //write_file("/tmp/debug.txt",msg+"\n");
     if(!dude = find_player(str) ) return;
     else tell_object(dude, msg);
 }
 
-varargs void tc(string str, string col){
+varargs void tc(string str, string col, object dude){
     string prefix;
     if(!col) col = "magenta";
-
     switch(col){
     case "red" : prefix = "%^BOLD%^RED%^";break;
     case "cyan" : prefix = "%^BOLD%^CYAN%^";break;
     case "blue" : prefix = "%^BOLD%^BLUE%^";break;
     case "yellow" : prefix = "%^BOLD%^YELLOW%^";break;
     case "green" : prefix = "%^BOLD%^GREEN%^";break;
+    case "white" : prefix = "%^BOLD%^WHITE%^";break;
     default : prefix = "%^BOLD%^MAGENTA%^";break;
     }
+    if(!dude) dude = find_player(DEBUGGER);
+    if(!dude) return;
+    tell_player(dude ,prefix+str+"%^RESET%^");
+    flush_messages(dude);
+}
 
-    tell_player("cratylus",prefix+str+"%^RESET%^");
-    flush_messages(find_player("cratylus"));
+varargs int tn(string str, string col){
+    string prefix;
+    if(!col) col = "magenta";
+    switch(col){
+    case "red" : prefix = "%^BOLD%^RED%^";break;
+    case "cyan" : prefix = "%^BOLD%^CYAN%^";break;
+    case "blue" : prefix = "%^BOLD%^BLUE%^";break;
+    case "yellow" : prefix = "%^BOLD%^YELLOW%^";break;
+    case "green" : prefix = "%^BOLD%^GREEN%^";break;
+    case "white" : prefix = "%^BOLD%^WHITE%^";break;
+    default : prefix = "%^BOLD%^MAGENTA%^";break;
+    }
+    tell_object(load_object(ROOM_NETWORK) ,prefix+str+"%^RESET%^");
+}
 
+varargs int debug(mixed msg, mixed val, string color){
+    object *players = filter(users(), (: $1->GetProperty("debug") :) );
+    string ret = "";
+    string prevob = "";
+    if(!sizeof(players)) return 0;
+    prevob = file_name(previous_object());
+    if(msg && stringp(msg) && val) ret += msg;
+    else if(msg && !val) val = msg;
+    ret += " ";
+    if(val) ret += identify(val);
+    if(!color || !sizeof(color)) color = "green";
+    foreach(object guy in players){
+	tc("%^BOLD%^WHITE%^DEBUG: %^RESET%^ "+prevob,color,guy);
+	tc(ret, color, guy);
+    }
+    return 1;
+}
+
+varargs int tell_creators(string msg, string color){
+    object *cres = filter(users(), (: creatorp($1) :) );
+    global_tmp_ob_arr = ({});
+    if(!sizeof(cres)) return 0;
+    global_tmp_ob_arr = sort_array(cres, (: member_array($1,global_tmp_ob_arr) == -1 :) );
+    cres = global_tmp_ob_arr;
+    if(!msg) msg = "";
+    if(!color) color = "red";
+    foreach(object guy in cres){
+	tc(msg, color, guy);
+    }
+    return 1;
 }
 
 varargs void tell_room(mixed ob, mixed str, mixed exclude) {

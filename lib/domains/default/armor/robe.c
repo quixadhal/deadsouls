@@ -10,11 +10,12 @@ static void create(){
     SetAdjectives(({"wizard","wizard's","soft"}));
     SetShort("a robe");
     SetLong("This is a large, comfortable-looking robe, like a wizard might wear. It has many pockets and compartments for holding things.");
-    SetCanClose(1);
-    SetMaxCarry(500);
     SetProperties(([
+	"gamma" : 3,
 	"no steal" : 1,
       ]));
+    SetCanClose(1);
+    SetMaxCarry(500);
     SetMass(200);
     SetBaseCost("silver",100);
     SetDamagePoints(100);

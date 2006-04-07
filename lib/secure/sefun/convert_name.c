@@ -5,6 +5,7 @@
  */
 
 string convert_name(string str) {
+    if(!str || str == "") return "";
     str = replace_string(str, " ", "");
     str = replace_string(str, "'", "");
     return lower_case(replace_string(str, "-", ""));

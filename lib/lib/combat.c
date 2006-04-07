@@ -126,7 +126,12 @@ mixed *AddNonTargets(mixed val){
 }
 
 mixed *RemoveNonTargets(mixed val){
+    if(!val) val = ({});
     if(!arrayp(val)) val = ({ val });
+    if(!sizeof(val)){
+	NonTargets = ({});
+	return NonTargets;
+    }
     foreach(object member in val){
 	if(member_array(member,NonTargets) != -1){
 	    NonTargets -= ({ member });
@@ -887,6 +892,8 @@ int eventExecuteAttack(mixed target) {
 	if( !ob ) return;
 	Enemies -= ({ ob });
 	Hostiles -= ({ ob });
+	if(!sizeof(SpecialTargets) || (!sizeof(Enemies) || !sizeof(Hostiles))) 
+	    NonTargets = ({});
     }
 
     varargs int eventReceiveDamage(object agent, int type, int x, int internal,

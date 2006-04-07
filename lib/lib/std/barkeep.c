@@ -34,7 +34,7 @@ int GetCost(string *item) {
     if( f < 0.1 ) {
 	f = 1.0;
     }
-    return query_value(MenuItems[item]->GetBaseCost(),query_base_currency(),this_object()->GetLocalCurrency());
+    return query_value(load_object(MenuItems[item])->GetBaseCost(),query_base_currency(),this_object()->GetLocalCurrency());
 }
 
 string GetLocalCurrency() {

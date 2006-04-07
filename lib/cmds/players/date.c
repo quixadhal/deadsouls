@@ -8,9 +8,14 @@
 #include <daemons.h>
 #include <localtime.h>
 
-mixed cmd(string unused) {
+mixed cmd(string timezone) {
     string *parts, year, time;
     int offset, x, hour, min, sec;
+
+    if(timezone && timezone != "" && valid_timezone(timezone)){
+	write(local_time(timezone));
+	return 1;
+    }
 
     offset = (int)TIME_D->GetOffset(local_time()[9]);
     offset += EXTRA_TIME_OFFSET;

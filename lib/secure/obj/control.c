@@ -43,6 +43,17 @@ int control(string str){
 	write("There is no such thing to be controlled here.");
 	return 1;
     }
+
+    if(!creatorp(this_player()) && !present("visitor pass",this_player())){
+	write("Your puny mortal mind can't wrap itself around the use "
+	  "of this powerful instrument.");
+	log_file("adm/control",capitalize(this_player()->GetKeyName())+
+	  " attempted to use the remote control on "+str+": "+timestamp()+"\n");
+	tell_creators("SECURITY: "+capitalize(this_player()->GetKeyName())+
+	  " attempted to use the remote control on "+str+".");
+	return 1;
+    }
+
     if(!living(ob)){
 	write(capitalize(ob->GetKeyName())+" is not a living thing.");
 	return 1;

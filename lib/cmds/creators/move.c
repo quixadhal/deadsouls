@@ -51,5 +51,5 @@ string GetHelp() {
     return ("Syntax: <move OBJECT into OBJECT>\n\n"
       "Allows you to move the object you name into the container "
       "you name.\n\n"
-      "See also: trans");
+      "See also: trans, expel, goto, return");
 }

@@ -18,6 +18,7 @@ private static class comprehension Comprehension  = 0;
 // abstract methods
 int GetHeartRate();
 int GetStatLevel(string stat);
+string GetNativeLanguage();
 // end abstract methods
 
 int GetNextLevel(string lang, int curr_level);
@@ -32,8 +33,18 @@ varargs void SetLanguage(string lang, int level, int native) {
 }
 
 mapping RemoveLanguage(string lang) {
-    lang = convert_name(lang);
+    if(lang && sizeof(lang)) lang = convert_name(lang);
+    else return Languages;
     map_delete(Languages, lang);
+    return Languages;
+}
+
+mapping SetNativeLanguage(string lang){
+    string key = convert_name(lang);
+    string old_lang = GetNativeLanguage();
+    RemoveLanguage(old_lang);
+    SetLanguage(old_lang, 100);
+    SetLanguage(lang, 100, 1);
     return Languages;
 }
 
@@ -73,18 +84,12 @@ int AddLanguagePoints(string lang, int points) {
     int y;
 
     key = convert_name(lang);
-    if( !Languages[key] ) SetLanguage(lang, 0, 0);
+    if( !Languages[key] ) SetLanguage(key, 0, 0);
+    //tc("thing1: "+identify(Languages[key]["points"]));
     Languages[key]["points"] += points;
-    while( Languages[key]["points"] > 
-      (y = GetNextLevel(key, Languages[key]["level"])) ) {
-	Languages[key]["points"] -= y;
-	Languages[key]["level"]++;
-    }
-    while( Languages[key]["points"] < 0 ) {
-	y = GetNextLevel(key, Languages[key]["level"] - 1);
-	Languages[key]["points"] = y + Languages[key]["points"];
-	Languages[key]["level"]--;
-    }
+    //tc("thing2: "+identify(Languages[key]["points"]));
+    Languages[key]["level"] = Languages[key]["points"];
+    if(Languages[key]["level"] > 100) Languages[key]["level"] = 100;
     return Languages[key]["points"];
 }
 

@@ -4,9 +4,9 @@
 static void create();
 mixed direct_lock_obj_with_obj(object target, object tool, string id);
 mixed direct_pick_str_on_obj(string str, object target, string str2,
-			     string id);
+  string id);
 mixed direct_pick_str_on_obj_with_obj(string str, object target, object tool,
-				      string str2, string targ_id);
+  string str2, string targ_id);
 mixed direct_unlock_obj_with_obj(object target, object key, string id);
 
 mixed CanLock(object who, string id);

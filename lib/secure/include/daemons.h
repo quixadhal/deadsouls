@@ -5,6 +5,7 @@
 
 #define ADMIN_D              DIR_SECURE_DAEMONS "/admin"
 #define ADVERBS_D            DIR_DAEMONS "/adverbs"
+#define AUTOEXEC_D           DIR_SECURE_DAEMONS "/autoexec"
 #define BANISH_D             DIR_DAEMONS "/banish"
 #define BBOARD_D             DIR_SECURE_DAEMONS "/bboard"
 #define BUGS_D               DIR_DAEMONS "/bugs"
@@ -34,6 +35,7 @@
 #define REAPER_D             DIR_DAEMONS "/reaper"
 #define REMOTE_D             DIR_SECURE_DAEMONS "/remote"
 #define REMOTEPOST_D         DIR_SECURE_DAEMONS "/remotepost"
+#define ROUTER_D             DIR_SECURE_DAEMONS "/i3router/server"
 #define SEASONS_D            DIR_DAEMONS "/seasons"
 #define SERVICES_D           DIR_DAEMONS "/services"
 #define SOUL_D               DIR_DAEMONS "/soul"

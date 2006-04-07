@@ -1,6 +1,6 @@
 #ifndef l_body_h
 #define l_body_h
- 
+
 static void create();
 static void heart_beat();
 void restart_heart();
@@ -13,12 +13,12 @@ mixed eventFall();
 varargs int eventHealDamage(int x, int internal, mixed limbs);
 varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixed limbs);
 int eventCheckProtection(object agent, int type, int damage);
- 
+
 mixed eventReceiveThrow(object who, object what);
 varargs int eventDie(object agent);
 int eventRemoveItem(object ob);
 int eventWear(object ob, mixed limbs);
- 
+
 void NewBody(string race);
 mixed CanWear(object armor, string *limbs);
 varargs int AddLimb(string limb, string parent, int classes, int *armors);
@@ -78,6 +78,6 @@ int GetHealRate();
 /* pure virtual */ varargs mixed eventPrint(mixed msg, mixed cl, mixed three);
 /* pure virtual */ varargs int SetParalyzed(int x, function f);
 /* pure virtual */ varargs mixed eventMoveLiving(mixed dest, string omsg,
-						 string imsg);
+  string imsg);
 
 #endif /* l_body_h */

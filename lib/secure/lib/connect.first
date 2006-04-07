@@ -122,10 +122,22 @@ static void InputEmail(string str) {
     Admin->SetTerminal("ansi");
     Admin->save_player(Name);
     make_workroom(Name);
+
     tmp = read_file(CFG_GROUPS);
     rm(CFG_GROUPS);
     tmp = replace_string(tmp, "ADMIN", Name);
     write_file(CFG_GROUPS, tmp);
+
+    tmp = "";
+
+    tmp = read_file("/secure/include/config.h");
+
+    if(sizeof(tmp)){
+    rm("/secure/include/config.h");
+    tmp = replace_string(tmp, "DEBUG_NAME", Name);
+    write_file("/secure/include/config.h", tmp);
+    }
+
     if( ob = find_object(LIB_CONNECT) ) destruct(ob);
     cp(DIR_SECURE_LIB "/connect.c", DIR_SECURE_LIB "/connect.first");
     rename(DIR_SECURE_LIB "/connect.real", DIR_SECURE_LIB "/connect.c");
@@ -139,11 +151,11 @@ static void InputEmail(string str) {
     tool = load_object("/secure/cmds/admins/admintool");
     if(tool) foo = tool->eventChangeName("Dead_Souls_"+Name, 1); 
     if(foo){
-        receive("\n\nMud name changed. Use admintool to customize it.");
-        receive("\nFor more info, log in and type: help admintool\n");
+	receive("\n\nMud name changed. Use admintool to customize it.");
+	receive("\nFor more info, log in and type: help admintool\n");
     }
     else {
-        receive("Mud name unchanged.\n");
+	receive("Mud name unchanged.\n");
     }
     shutdown();
     destruct(this_object());

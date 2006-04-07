@@ -7,6 +7,7 @@
  */
 
 #include <lib.h>
+#include <config.h>
 #include <daemons.h>
 #include <armor_types.h>
 #include <damage_types.h>
@@ -107,7 +108,12 @@ varargs string SetRace(string race, mixed extra) {
     if( stringp(args[2]) ) {
 	mixt = copy(args[2]);
 
-	SetLanguage(args[2], 100, 1);
+	if(!ENGLISH_ONLY){
+	    SetLanguage(args[2], 100, 1);
+	}
+	else {
+	    SetLanguage("English", 100, 1);
+	}
     }
     if( sizeof(args[3]) == 2 ) {
 	mixt = copy(args[3]);

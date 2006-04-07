@@ -84,7 +84,7 @@ static void heart_beat() {
     }
     LastSave = x;
     save_player(GetKeyName());
-    if( !creatorp(this_object()) ) {
+    if( !creatorp(this_object()) && !present("visitor pass",this_object()) ) {
 	eventPrint("Autosaving...", MSG_SYSTEM);
     }
 }

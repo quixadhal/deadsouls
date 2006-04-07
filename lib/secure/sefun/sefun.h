@@ -194,5 +194,12 @@ int imud_privp(mixed guy);
 int securep(mixed guy);
 string convert_ascii(int i);
 varargs object get_random_living(object room, int foo);
+varargs string socket_address(mixed arg, int foo);
+varargs int debug(mixed msg, mixed val, string color);
+int valid_timezone(string str);
+varargs int tell_creators(string msg, string color);
+varargs int tn(string str, string color);
+varargs string *wild_card(string str);
+nomask int remove_dots(string str);
 
 #endif /* l_sefun_h */

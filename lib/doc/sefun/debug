@@ -1,0 +1,28 @@
+
+DEBUG(1)                                     DEBUG(1)
+
+NAME
+       debug() - Generates messages useful for debugging.
+
+SYNOPSIS
+       varargs void debug(mixed msg, mixed var, string color)
+
+DESCRIPTION
+       This command sends 'msg' to all users() who have
+enabled receipt of debug info with the debug command. The
+optional 'var' is stringified and included in the message.
+The optional 'color' indicates what color the message 
+should be.
+
+EXAMPLE
+
+In a misbehaving npc:
+	debug("This npc's skills are: ",this_object()->GetSkills(),"red");
+
+LOCATION
+       /secure/sefun/communications.c
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1

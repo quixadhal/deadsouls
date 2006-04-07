@@ -38,7 +38,7 @@ void create() {
 	    __LettersDir[i] = unguarded((: get_dir, DIR_LETTERS+"/"+i+"/", 0 :));
     } 
     i = sizeof(tmp = unguarded((: get_dir, DIR_POSTAL+"/", 0 :)));
-    __PostalPtr = ({ tmp[0], 0 }); 
+    if(i) __PostalPtr = ({ tmp[0], 0 }); 
     while(i--) { 
 	if(unguarded((: file_size, DIR_POSTAL+"/"+tmp[i] :)) == -2)
 	    __PostalDir[tmp[i]] = unguarded((: get_dir, DIR_POSTAL+"/"+tmp[i]+"/", 0 :));

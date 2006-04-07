@@ -106,8 +106,8 @@ private void chan_who_in(string fromname, string frommud, mapping data);
 private void send_ice_refresh();
 private void resolve_callback(string address, string resolved, int key);
 
-//private varargs void debug(mixed msg, int x){
-    // Add stuff in here if you want to see messages.
+//private varargs void Debug(mixed msg, int x){
+// Add stuff in here if you want to see messages.
 //}
 
 // Functions for users to change.
@@ -132,22 +132,22 @@ string chan_perm_desc(int i){
     // so you can do groups without having to always do subgroups of higher
     // ones or anything like 'levels'.  BACKLOG_WEB_LEVEL is the only one of
     // significance, as it's the only one that the web backlog thing works on.
-        switch(i){
-                case 2: return "arch";
-                case 1: return "creator";
-                case 0: return "public";
-        }
-        return "invalid";
+    switch(i){
+    case 2: return "arch";
+    case 1: return "creator";
+    case 0: return "public";
+    }
+    return "invalid";
 }
 
 int chan_perm_allowed(object user, string chan){
     // Using the permission level assigned locally to a channel,
     // return 1 if user is allowed to use the channel, 0 if not.
-        switch(localchaninfo[chan]["perm"]){
-                case 2: if(archp(user)) return 1; return 0;
-                case 1: if(creatorp(user)) return 1; return 0;
-                case 0: return 1;
-        }
+    switch(localchaninfo[chan]["perm"]){
+    case 2: if(archp(user)) return 1; return 0;
+    case 1: if(creatorp(user)) return 1; return 0;
+    case 0: return 1;
+    }
 }
 
 
@@ -157,7 +157,7 @@ private int read_callback(object socket, string info){
     // string str, *strs;
     string a,b; int done=0;
     if(!sizeof(info)) return 0;
-    //debug(save_variable(info),DEB_IN);
+    //Debug(save_variable(info),DEB_IN);
 #ifdef DATA_LOG
     log_file(DATA_LOG,"SERVER: "+save_variable(info)+"\n");
 #endif
@@ -167,7 +167,7 @@ private int read_callback(object socket, string info){
     case MODE_WAITING_ACCEPT: // waiting for Hub to send autosetup
 	if(sscanf(info, "autosetup %s accept %s\n\r",
 	    hub_name, network_name)==2){
-	    //debug("Connected, hub is "+hub_name+", network is "+network_name);
+	    //Debug("Connected, hub is "+hub_name+", network is "+network_name);
 	    mode = MODE_CONNECTED;
 	    send_is_alive("*");
 	    send_keepalive_request();
@@ -181,7 +181,7 @@ private int read_callback(object socket, string info){
 	    send_ice_refresh();
 	}
 	else{ // Failed login sends plaintext error message.
-	    //debug("Failed to connect... "+info);
+	    //Debug("Failed to connect... "+info);
 	}
 	buf=""; // clear buffer
 	break;
@@ -216,7 +216,7 @@ private void got_packet(string info){
     mapping data;
     object who;
     if(!sizeof(info)) return;
-    //debug(save_variable(info),DEB_PAK);
+    //Debug(save_variable(info),DEB_PAK);
 
     str = info;
     // messages end with " \n\r" or "\n" or sometimes just a space
@@ -235,12 +235,12 @@ private void got_packet(string info){
 	    sender="*"; origin=a;
 	}
 	data = string_to_mapping(strdata);
-	//			debug("sender="+sender);
-	//			debug("origin="+origin);
-	//			debug("sequence="+sequence);
-	//			debug("route="+route);
-	//			debug("packet_type="+packet_type);
-	//			debug("data="+save_variable(data));
+	//			Debug("sender="+sender);
+	//			Debug("origin="+origin);
+	//			Debug("sequence="+sequence);
+	//			Debug("route="+route);
+	//			Debug("packet_type="+packet_type);
+	//			Debug("data="+save_variable(data));
 	if(!mudinfo[origin]) mudinfo[origin] = ([ ]);
 
 	switch(packet_type){
@@ -251,7 +251,7 @@ private void got_packet(string info){
 	    //mudinfo[origin]["version"]="blah";
 	    mudinfo[origin]+=data;
 	    mudinfo[origin]["online"]=1;
-	    //debug("handled is-alive for mud "+origin);
+	    //Debug("handled is-alive for mud "+origin);
 	    break;
 	case "close-notify": // Someone disconnected.
 	    if(!mudinfo[data["host"]]) mudinfo[data["host"]] = ([]);
@@ -347,19 +347,19 @@ private void got_packet(string info){
 	case "remote-admin": // For controlling the hub
 	case "ice-refresh": // Request data about channels
 	case "ice-msg-p": // Private channel message
-	    //debug("This packet isn't supposed to be incoming: "+packet_type);
+	    //Debug("This packet isn't supposed to be incoming: "+packet_type);
 	    break;
 	default:
 #ifdef UNKNOWN_DATA_LOG
 	    log_file(UNKNOWN_DATA_LOG,"Unknown packet: "+escape(info)+"\n\n");
 #endif
-	    //debug("Unlisted packet type: "+packet_type);
+	    //Debug("Unlisted packet type: "+packet_type);
 	    break;
 	}
     }
     else{
 	buf += info;
-	//debug("Doesn't match incoming pattern, so putting on buffer: "+str);
+	//Debug("Doesn't match incoming pattern, so putting on buffer: "+str);
 #ifdef BAD_PACKET
 	log_file(BAD_PACKET,"Doesn't match incoming pattern: "+str+"\n");
 #endif
@@ -383,8 +383,8 @@ private void send_text(string text){
 #ifdef DATA_LOG
     log_file(DATA_LOG,"CLIENT: "+save_variable(text)+"\n");
 #endif
-    //debug(save_variable(text), DEB_OUT);
-    //	debug("writing to socket: "+socket_num);
+    //Debug(save_variable(text), DEB_OUT);
+    //	Debug("writing to socket: "+socket_num);
     socket_write(socket_num,text);
     //	imc2_socket->send(text);
     return;
@@ -410,7 +410,7 @@ void create(){
     resolve_callback(HOSTIP,HOSTIP,1);
 #else
     if(!resolve(HOSTNAME, "resolve_callback")){
-	//debug("Addr_server is not running, resolve failed.");
+	//Debug("Addr_server is not running, resolve failed.");
 #ifdef DATA_LOG
 	log_file(DATA_LOG,"Addr_server is not running, resolve failed.\n");
 #endif
@@ -418,7 +418,7 @@ void create(){
 	return;
     }
 #endif
-    //debug("creating IMC2 object");
+    //Debug("creating IMC2 object");
 }
 
 void remove(){
@@ -435,7 +435,7 @@ void remove(){
 private void resolve_callback( string address, string resolved, int key ) {
     // Figured out what the IP is for the address.
     int error;
-    //debug("Resolved to: "+resolved);
+    //Debug("Resolved to: "+resolved);
     write_file("/tmp/imc2.log","address: "+address);
     write_file("/tmp/imc2.log","resolved: "+resolved);
     write_file("/tmp/imc2.log","key: "+key);
@@ -449,14 +449,14 @@ private void resolve_callback( string address, string resolved, int key ) {
 	tc("socket_create: " + socket_error(socket_num) + "\n");
 	return;
     }
-    //debug("Created socket descriptor " + socket_num);
+    //Debug("Created socket descriptor " + socket_num);
 
     error = socket_connect(socket_num, resolved+" "+HOSTPORT, "read_callback", "write_callback");
     if (error != EESUCCESS) {
 #ifdef DATA_LOG
 	log_file(DATA_LOG,"socket_connect: " + socket_error(error) + "\n");
 #endif
-	//debug("socket_connect, error="+error+": " + socket_error(error) + "\n");
+	//Debug("socket_connect, error="+error+": " + socket_error(error) + "\n");
 	socket_close(socket_num);
 	return;
     }
@@ -467,7 +467,7 @@ private void write_callback(){
 }
 
 private void start_logon(){
-    //debug("Gonna try logging in, sending the PW thing...");
+    //Debug("Gonna try logging in, sending the PW thing...");
 #if NOT_AUTO
     send_text(sprintf("PW %s %s version=%d\n",
 #else

@@ -28,7 +28,7 @@ private int TrainingPoints, TitleLength;
 /* *****************  /lib/player.c driver applies  ***************** */
 
 static void create() {
-    AddSave( ({ "CarriedMass", "Muffed" }) );
+    AddSave( ({ "Properties", "CarriedMass", "Muffed" }) );
     interactive::create();
     living::create();
 
@@ -212,9 +212,6 @@ int eventMove(mixed dest) {
 	this_player()->SetProperty("LastLocation",
 	  base_name(environment(this_player())));
     }
-
-    if(this_player()->GetProperty("debug")) 
-	tell_player(this_player(),"Calling stack for move: "+get_stack());
 
     ret = interactive::eventMove(dest);
     eventMoveFollowers(environment(this_object()));
@@ -439,6 +436,9 @@ int Setup() {
 
     if(GetProperty("brand_spanking_new")){
 	object jeans, shirt, book;
+
+	if(ENGLISH_ONLY) this_object()->SetNativeLanguage("English");
+
 	jeans = new("/domains/default/armor/jeans");
 	shirt = new("/domains/default/armor/shirt");
 	book = new("/domains/default/obj/handbook");

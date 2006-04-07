@@ -16,6 +16,18 @@ mixed cmd(string str) {
     object env, *livings, *items;
 
     if( !sizeof(str) ) return "Syntax: peer <direction>";
+    switch(str){
+    case "n" : str = "north";break;
+    case "ne" : str = "northeast";break;
+    case "nw" : str = "northwest";break;
+    case "s" : str = "south";break;
+    case "se" : str = "southeast";break;
+    case "sw" : str = "southwest";break;
+    case "e" : str = "east";break;
+    case "w" : str = "west";break;
+    case "u" : str = "up";break;
+    case "d" : str = "down";break;
+    }
     env = environment(this_player());
     if( !file = (string)env->GetExit(str) ) file = (string)env->GetEnter(str);
     if( !sizeof(file) )

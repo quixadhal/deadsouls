@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <config.h>
 #include <rooms.h>
 #include <daemons.h>
 
@@ -8,7 +9,7 @@ int Pinging = 0;
 int OK = 0;
 int Retries = 0;
 
-string *muds = ({ "Frontiers", "Carnivore" });
+string *muds = PINGING_MUDS;
 
 int CheckOK(){
     Pinging = 0;
@@ -39,6 +40,12 @@ int CheckOK(){
 int eventPing(){
     Pinging = 1;
     OK = 0;
+
+    if(!sizeof(muds)) {
+	Pinging = 0;
+	return 0;
+    }
+
     foreach(string mud in muds){
 	INTERMUD_D->eventWrite(({ "auth-mud-req", 5, mud_name(), 0, mud, 0 }));
     }

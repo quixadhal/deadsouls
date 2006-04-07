@@ -89,10 +89,10 @@ string *eventRemoveMember(string *chans) {
     return chans;
 }
 
-int cmdLast(string feep)
-{
-    if(!chanlast||!Channels[feep]||member_array(this_player(), Channels[feep])==-1)
-    {
+int cmdLast(string feep){
+
+    if(!chanlast||!Channels[feep]||member_array(this_player(), Channels[feep])==-1){
+
 	this_player()->eventPrint(mud_name() + " does not have that channel on record.", MSG_ERROR);
 	return 1;
     }
@@ -140,14 +140,19 @@ int cmdChannel(string verb, string str) {
     object ob = 0;
     int emote;
 
+    //tc("verb: "+verb);
+    //tc("str: "+str);
+
+    if(first(str,1) == ":"){
+	if(!grepp(verb,"emote")) verb += "emote";
+	str = trim(replace_string(str,":","",1));
+    }
+
     if(grepp(verb, "emote")) varb = replace_string(verb,"emote","");
     else if(grepp(verb, ":")) varb = replace_string(verb,":","");
     else varb = verb;
 
-    if(!CanTalk(this_player(),varb)){
-	write("You lack privileges to that channel.");
-	return 1;
-    }
+    //tc("varb: "+varb);
 
     if( verb == "hist" ) {
 	if( !Channels[str] ) return 0;
@@ -172,6 +177,10 @@ int cmdChannel(string verb, string str) {
 		  "such a place.", MSG_ERROR);
 		return 1;
 	    }
+	    if(!CanTalk(this_player(),varb)){
+		write("You lack privileges to that channel.");
+		return 1;
+	    }
 	    SERVICES_D->eventSendChannelWhoRequest(ch, mud);
 	    this_player()->eventPrint("Remote listing request sent.",
 	      MSG_SYSTEM);
@@ -191,6 +200,7 @@ int cmdChannel(string verb, string str) {
 	    string emote_cmd, remains;
 	    mixed array msg_data;
 	    int i;
+	    //tc("we seem to think it's an emote");
 	    if( !Channels[verb] ) {
 		return 0;
 	    }

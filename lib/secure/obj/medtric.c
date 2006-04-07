@@ -93,15 +93,22 @@ int preAction(){
 	write("You are not holding the tricorder.");
 	return 2;
     }
-    if(!creatorp(scanner) && !present("testchar badge",scanner)){
-	write("You are not authorized to use this device.");
+    if(!creatorp(scanner) && !present("visitor pass",scanner)){
+	write("Your puny mortal mind can't wrap itself around the use "
+	  "of this powerful instrument.");
+	log_file("adm/tricorder",capitalize(this_player()->GetKeyName())+
+	  " attempted to use the medical tricorder: "+timestamp()+"\n");
+	tell_creators("SECURITY: "+capitalize(this_player()->GetKeyName())+
+	  " attempted to use the medical tricorder.");
 	say(scanner->GetName()+" fumbles with a medical tricorder.",scanner);
 	return 2;
     }
+
     say(scanner->GetName()+" operates a medical tricorder.",scanner);
     write("The tricorder makes a low, warbling sound.");
     return 1;
 }
+
 int posture(int i){
     allowed=preAction();
     if(allowed == 2) return 1;

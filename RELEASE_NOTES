@@ -1,5 +1,47 @@
+---- 2.0r19 (unreleased) ---
+- Fixed menu item bug in LIB_BARKEEP.
+- Fixed Ylsrim pub.
+- Added keepalive pinger tool to wiz chest.
+- Added commands: anglicize, debug, expel, resetpasswd.
+- Fixed first boot problem with /secure/daemon/letters.c.
+- Driver: set heart_beat to approximately one per second.
+- Driver: added locale workaround to startmud script.
+- Added Brodbane's New and Improved cp command.
+- Added Brodbane's sefuns: wild_card, remove_dots.
+- Elision bug in pager.c fixed by Brodbane.
+- Added network troubleshooting room.
+- Fixed bug in invisibility.
+- Made tricorder and remote control emit warnings, logs,
+  and errors when used by a non-creator who does not have a
+  visitor pass.
+- Added colon emote behavior to channels, eg, "ds :smile" works
+  the same as "dsemote smile".
+- Tim's I3 router integrated into the lib. Fixes forthcoming.
+- Object Properties map variable now persists as well.
+- Added Brodbane's dsversion command.
+- Fixed bug in LIB_SENTIENT eventReceiveEmote.
+- Added Shadyman's fix to the imc2 daemon.
+- Added language teacher and schoolhouse to /domains/town.
+- Added LIB_TEACHER.
+- Tweaked interactive.c to omit null obvious exits.
+- Fixed "list" conflict with restricted channels and shops.
+- Added SetNativeLanguage to QCS.
+- Added PINGING_MUDS, ENGLISH_ONLY and HUMANS_ONLY defines to config.h.
+- Added commands: anglicize, debug, expel.
+- Added SetNativeLanguage() to LIB_LANGUAGE.
+- Added GetEquippedLimbs() to LIB_BODY.
+- Visitor's pass now suppresses autosave messages.
+- Full cardinal direction aliases added to players (eg "north").
+- Added direction aliases to 'peer' command.
+- Player Properties map variable now persists across quits and boots.
+  This may or may not be a good thing, and could change in
+  future releases.
+- Added sefuns debug(), tell_creators();
+- Fixed socket_address().
+- Added AUTOEXEC_D.
+
 ---- 2.0r18 ---
-- Changed default intermud router to 149.152.218.102 port 25
+- Changed default intermud router to 149.152.218.102 port 23
 - Added a sanity check in telnet room.
 - Fixed bug in Newbie Mansion Quest (thx Jonez).
 - Added verb: pulsecheck.

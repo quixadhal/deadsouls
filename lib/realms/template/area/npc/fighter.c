@@ -2,6 +2,7 @@
 #include "../../customdefs.h"
 
 inherit LIB_NPC;
+
 static void create(){
     npc::create();
     SetKeyName("fighter");
@@ -18,4 +19,7 @@ static void create(){
 	MY_ARMOR "/leather_boot_l.c" : "wear boot",
 	MY_WEAP "/sword.c" : "wield sword",
       ]));
+}
+void init(){
+::init();
 }

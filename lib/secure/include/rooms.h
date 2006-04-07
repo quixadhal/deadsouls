@@ -10,5 +10,6 @@
 #define ROOM_VOID 	 DIR_STANDARD_DOMAIN "/room/void"
 #define ROOM_WIZ 	 DIR_STANDARD_DOMAIN "/room/wiz_hall"
 #define ROOM_ARCH 	 "/secure/room/arch"
+#define ROOM_NETWORK 	 "/secure/room/network"
 
 #endif /* s_rooms_h */

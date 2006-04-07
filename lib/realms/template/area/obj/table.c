@@ -3,6 +3,7 @@
 
 inherit LIB_TABLE;
 
+
 void create() {
     ::create();
     SetKeyName("sample table");
@@ -15,4 +16,7 @@ void create() {
     SetInventory( ([
 	MY_OBJ "/key" : 1,
       ]) );
+}
+void init(){
+::init();
 }

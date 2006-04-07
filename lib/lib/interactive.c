@@ -203,10 +203,12 @@ void eventDescribeEnvironment(int brief) {
 	break;
     }
     if( !brief ) {
-	if( i == VISION_CLEAR ) {
+	if( i == VISION_CLEAR ){
 	    desc = (string)env->GetObviousExits() || "";
-	    desc = capitalize((string)env->GetShort() || "")
-	    + " [" + desc + "]\n";
+	    if(desc && desc != "")
+		desc = capitalize((string)env->GetShort() || "")
+		+ " [" + desc + "]\n";
+	    else desc = capitalize((string)env->GetShort() || "");
 	}
 	else desc = "";
 	if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM )
@@ -222,7 +224,7 @@ void eventDescribeEnvironment(int brief) {
 	touch = tmp;
     }
     else {
-	if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM ) {
+	if(i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM){
 	    desc = (string)env->GetShort();
 	    if( (tmp = (string)env->GetObviousExits()) && tmp != "" )
 		desc += " [" + tmp + "]";

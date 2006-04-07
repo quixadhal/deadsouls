@@ -76,6 +76,17 @@
 #include "/secure/sefun/query_names.c"
 #include "/secure/sefun/groups.c"
 #include "/secure/sefun/ascii.c"
+#include "/secure/sefun/wild_card.c"
+
+varargs string socket_address(mixed arg, int foo) {
+    string ret, port;
+    if(objectp(arg)) return efun::socket_address(arg);
+    ret = socket_status(arg)[4];
+    port = last_string_element(ret,".");
+    ret = replace_string(ret,"."+port,"");
+    if(!foo) return ret;
+    else return ret+" "+port;
+}
 
 mixed array users(){
     return filter(efun::users(), (: environment($1) :) );

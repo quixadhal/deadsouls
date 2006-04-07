@@ -178,7 +178,7 @@ int Setup() {
 
     laston = GetLoginTime();
     if( !player::Setup() ) return 0;
-    AddChannel(({"cre", "newbie", "gossip", "ds", "death" }));
+    AddChannel(({"cre", "newbie", "gossip", "ds", "death","intergossip","intercre" }));
     AddChannel((string array)CLASSES_D->GetClasses());
     if( archp() ) AddChannel( ({ "admin", "error" }) );
     AddSearchPath( ({ DIR_CREATOR_CMDS, DIR_SECURE_CREATOR_CMDS }) );

@@ -17,15 +17,15 @@ int readMenu(object who, string str) {
     object ob = present("lars");
 
     if( !ob ) { // lars is dead!
-	who->eventPrint("The menu is too bloodstained to read.");
+	this_player()->eventPrint("The menu is too bloodstained to read.");
 	return 1;
     }
-    foreach(string item in keys(ob->GetMenuItems())) {
-	tmp += ({ sprintf("%:-20s %:-7d electrum", capitalize(item),
-	    ob->GetCost(item)) });
+    foreach(string *item in keys(ob->GetMenuItems())) {
+	tmp += ({ sprintf("%:-20s %d electrum", capitalize(item[0]),
+	    to_int(ob->GetCost(item))) });
     }
     // show the menu a page at a time
-    who->eventPage(tmp, MSG_SYSTEM); // MSG_SYSTEM means ignore blocking
+    this_player()->eventPage(tmp, MSG_SYSTEM); // MSG_SYSTEM means ignore blocking
     return 1;
 }
 static void create() {
@@ -40,6 +40,9 @@ static void create() {
       "with a hodge-podge of writing in all different languages "
       "covering the wall.  A menu of drinks is about the only "
       "readable thing on the wall.  If you read Edhellen.");
+    SetInventory(([
+	"/domains/Ylsrim/npc/lars" : 1,
+      ]));
     SetListen("Rowdy party sounds make it hard to hear anything else.");
     SetSmell("The place smells like it is soaked in ale.");
     AddItem(({ "tables", "stools" }), "The tables and stools begin "
@@ -53,7 +56,6 @@ static void create() {
     SetObviousExits("e");
     SetExits(([ "east" : "/domains/Ylsrim/room/"+ "s_bazaar" ]));
     // Bring in the Bar Keep
-    SetInventory(([ "/domains/Ylsrim"+ "/npc/lars" : 1 ]));
     // make the writing and the menu readable
     SetRead("writing", (: readMenu :));
     SetRead("menu", (: readMenu :));

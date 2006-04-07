@@ -1,23 +1,22 @@
 // Tim Johnson
 // Started on May 1, 2004.
 // Use this however you want.
+//
+// Dead Souls tweaks and fixes courtesy of Shadyman
+//
 
 // Connection data...
-//#define HOSTNAME "hub01.muddomain.com"
-//#define HOSTPORT 3333
-//#define HOSTPORT 5000
-#define HOSTPORT 3333
+#define HOSTNAME "server01.intermud.us"
+#define HOSTPORT 5000
 // HostIP overrides HOSTNAME, in case the mud doesn't want to resolve addresses.
 #define HOSTIP "70.85.248.74"
-//#define HOSTIP "70.85.244.100"
-//#define HOSTIP "66.218.49.113"
 
 // What name the network knows your mud as...
-#define MUDNAME "DeadSouls"
+#define MUDNAME "YADSM"
 
 // Passwords...
-#define CLIENT_PW "ClientPass321"
-#define SERVER_PW "ServPass321"
+#define CLIENT_PW "ClientPass"
+#define SERVER_PW "ServPass"
 
 // File to save data to, .o will be added automatically to the end.
 // This will have private stuff in it, don't put this in a directory where your wizards can read it.
@@ -45,7 +44,7 @@
 
 // Your MUD's URL is shared with other muds when building the mud list.
 // This you could also put this in your who reply.
-#define URL "http://dead-souls.sourceforge.net/"
+#define URL "http://qs.bounceme.net"
 
 // ANNOUNCE_LOG is where network announcements get logged to.
 // I suggest you keep this turned on.
@@ -66,15 +65,14 @@
 
 
 // WHO_STR is the code that you want a who request to display.
-#define WHO_STR "/cmds/std/_who.c"->do_who()+URL+ \
-"\ntelnet://www.darkwoodinc.com:3333\n" \
-"______________________________________________________________________________"
+#define WHO_STR "/cmds/std/_who.c"->do_who()+URL+"\ntelnet://qs.bounceme.net 5500\n"+"______________________________________________________________________________"
 
 
 #include <lib.h>
 #include <save.h>
 #include <network.h>
 #include <socket_err.h>
+#include <daemons.h>
 
 
 #ifndef VERSION
@@ -90,6 +88,14 @@ string tmpstr;
 #define MODE_CONNECT_ERROR 3 // Not used yet, I need to see what the hub sends.
 #define MODE_HUB_DOWN 4 // Not used yet either.
 
+
+// What's the file for the channel daemon?
+#ifndef CHANNEL_BOT
+#define CHANNEL_BOT CHAT_D
+#endif
+//#ifndef CHANNEL_BOTS
+//#define CHANNEL_BOTS ([ "local" : CHAT_D ])
+//#endif
 #ifndef STREAM
 #define STREAM 1
 #endif
@@ -228,15 +234,26 @@ int chan_perm_allowed(object user, string chan){
 
 // Shouldn't have to change anything beyond this point.
 
-private int read_callback(object socket, string info){
-    // string str, *strs;
-    string a,b; int done=0;
+void write_callback(int fd){
+#ifdef DATA_LOG
+    log_file(DATA_LOG,"Write_Callback on socket " + fd + "\n");
+#endif
+    start_logon();
+}
+
+
+void read_callback(int socket, mixed info){
+    string a,b;
+    int done=0;
+
+#ifdef DATA_LOG
+    log_file(DATA_LOG,"SERVER: "+info+"\n");
+#endif
+
     if(!sizeof(info)) return 0;
     //debug(save_variable(info),DEB_IN);
-#ifdef DATA_LOG
-    log_file(DATA_LOG,"SERVER: "+save_variable(info)+"\n");
-#endif
     buf += info;
+
     // The hub groups packets, unfortunately.
     switch(mode){
     case MODE_WAITING_ACCEPT: // waiting for Hub to send autosetup
@@ -247,39 +264,29 @@ private int read_callback(object socket, string info){
 	    send_is_alive("*");
 	    send_keepalive_request();
 	    send_ice_refresh();
-	}
-	else if(sscanf(info, "PW %s %s version=%d %s\n",
+	} else if(sscanf(info, "PW %s %s version=%d %s\n",
 	    hub_name, server_pass, server_version, network_name)==4){
 	    mode = MODE_CONNECTED;
 	    send_is_alive("*");
 	    send_keepalive_request();
 	    send_ice_refresh();
-	}
-	else{ // Failed login sends plaintext error message.
+	} else{ // Failed login sends plaintext error message.
 	    //debug("Failed to connect... "+info);
 	}
 	buf=""; // clear buffer
 	break;
-    case MODE_CONNECTED:	
+    case MODE_CONNECTED:
 	while(!done){
 	    if(sscanf(buf,"%s\n\r%s",a,b)==2){ // found a break...
 		got_packet(a);
 		buf=b;
-	    }
-	    else{ // no break...
+	    } else { // no break...
 		done = 1;
 	    }
 	}
-	/*
-				strs = explode(info,"\n\r");
-				foreach(str in strs){
-					got_packet(str);
-				}
-				buf="";
-	*/
 	break;
     }
-    return 1;
+    return;
 }
 
 private void got_packet(string info){
@@ -291,7 +298,10 @@ private void got_packet(string info){
     mapping data;
     object who;
     if(!sizeof(info)) return;
-    //debug(save_variable(info),DEB_PAK);
+    //debug(save_variable(info),DEB_PAK);;
+#ifdef DATA_LOG
+    log_file(DATA_LOG,"GOT PACKET: "+info+"\n");
+#endif
 
     str = info;
     // messages end with " \n\r" or "\n" or sometimes just a space
@@ -465,7 +475,9 @@ private void send_text(string text){
     return;
 }
 
-void create(){ 
+void create(){
+    int temp;
+
 #ifndef NO_UIDS
     seteuid(getuid());
 #endif
@@ -482,18 +494,18 @@ void create(){
     mode = MODE_WAITING_ACCEPT;
 #ifdef HOSTIP
     // We already know the IP, go straight to the connecting, just do callback as if it found the IP.
-    resolve_callback(HOSTIP,HOSTIP,1);
+    //resolve_callback(HOSTIP,HOSTIP,1);
 #else
-    if(!resolve(HOSTNAME, "resolve_callback")){
+    temp = resolve(HOSTNAME, "resolve_callback");
+    if(temp == 0){
 	//debug("Addr_server is not running, resolve failed.");
-#ifdef DATA_LOG
+	#ifdef DATA_LOG
 	log_file(DATA_LOG,"Addr_server is not running, resolve failed.\n");
-#endif
+	#endif
 	remove();
 	return;
     }
 #endif
-    //debug("creating IMC2 object");
 }
 
 void remove(){
@@ -507,14 +519,13 @@ void remove(){
     destruct(this_object());
 }
 
-private void resolve_callback( string address, string resolved, int key ) {
+void resolve_callback( string address, string resolved, int key ) {
     // Figured out what the IP is for the address.
     int error;
     //debug("Resolved to: "+resolved);
-    start_logon();
-    write_file("/tmp/imc2.log","address: "+address);
-    write_file("/tmp/imc2.log","resolved: "+resolved);
-    write_file("/tmp/imc2.log","key: "+key);
+    write_file("/tmp/imc2.log","address: "+address+"\n");
+    write_file("/tmp/imc2.log","resolved: "+resolved+"\n");
+    write_file("/tmp/imc2.log","key: "+key+"\n");
 
     //socket_num = socket_create(STREAM, "close_callback");
     socket_num = socket_create(STREAM, "read_callback", "close_callback");
@@ -525,7 +536,9 @@ private void resolve_callback( string address, string resolved, int key ) {
 	tc("socket_create: " + socket_error(socket_num) + "\n");
 	return;
     }
-    //debug("Created socket descriptor " + socket_num);
+#ifdef DATA_LOG
+    log_file(DATA_LOG,"socket_create: Created Socket " + socket_num + "\n");
+#endif
 
     error = socket_connect(socket_num, resolved+" "+HOSTPORT, "read_callback", "write_callback");
     if (error != EESUCCESS) {
@@ -536,13 +549,14 @@ private void resolve_callback( string address, string resolved, int key ) {
 	socket_close(socket_num);
 	return;
     }
+#ifdef DATA_LOG
+    log_file(DATA_LOG,"socket_connect: connected socket " + socket_num + " to " + resolved+" "+HOSTPORT + "\n");
+#endif
+
+    //write_callback(socket_num);
 }
 
-private void write_callback(){
-    // start_logon();
-}
-
-private void start_logon(){
+void start_logon(){
     //debug("Gonna try logging in, sending the PW thing...");
 #if NOT_AUTO
     send_text(sprintf("PW %s %s version=%d\n",
@@ -642,7 +656,7 @@ private void start_logon(){
 	  return out;
       }
 
-      private void send_packet(string sender, string packet_type, string target, string destination, string data){
+      void send_packet(string sender, string packet_type, string target, string destination, string data){
 	  // Sends a packet in the format that IMC2 uses.
 	  sequence++;
 	  send_text(sprintf("%s@%s %d %s %s %s@%s %s\n",
@@ -668,7 +682,7 @@ private void start_logon(){
 	      VERSION, network_name, URL));
       }
 
-      private int chan_listening(object user, string chan){
+      int chan_listening(object user, string chan){
 	  // Tells if a user is listening to a channel or not.
 	  if(!localchaninfo[chan]) return 0;
 	  if(member_array(GET_NAME(user),localchaninfo[chan]["users"])==-1) return 0;
@@ -684,10 +698,6 @@ private void start_logon(){
 	  int emote=0;
 	  int sz;
 
-	  /*
-	  tell_object(find_player("tim"),("data="+identify(data)+"\n"));
-	  */
-
 	  sender=fromname+"@"+frommud;
 	  if(data["sender"]) sender=data["sender"];
 	  if(data["realfrom"]) sender=data["realfrom"];
@@ -699,11 +709,11 @@ private void start_logon(){
 #ifdef CHANNEL_BOT
 	  // Can define CHANNEL_BOT to something with got_chan(channel,from,text,emote)
 	  // It will be given all channel messages.  Be aware of this.
-	  call_other(CHANNEL_BOT,"got_chan",data["channel"],sender,data["text"],emote);
+	  CHANNEL_BOT->eventSendChannel(sender, data["channel"], data["text"], emote);
 #endif
 #ifdef CHANNEL_BOTS
 	  if(CHANNEL_BOTS[local]){
-	      call_other(CHANNEL_BOTS[local],"got_chan",local,sender,data["text"],emote);	
+	      call_other(CHANNEL_BOTS[local],"got_chan",local,sender,data["text"],emote);
 	  }
 	  else if(CHANNEL_BOTS[data["channel"]]){
 	      call_other(CHANNEL_BOTS[data["channel"]],"got_chan",data["channel"],sender,data["text"],emote);
@@ -976,7 +986,7 @@ private void start_logon(){
       }
 
       private void whois_in(string fromname, string frommud, string targ, mapping data){
-	  if(FIND_PLAYER(lower_case(targ)) 
+	  if(FIND_PLAYER(lower_case(targ))
 #ifdef INVIS
 	    && !INVIS(FIND_PLAYER(lower_case(targ)))
 #endif
@@ -1134,7 +1144,7 @@ private void start_logon(){
 		  x=0; y=0;
 		  output=sprintf("[%s] %-20s %-20s %-20s\n","U/D?","Name","Network","IMC2 Version");
 		  foreach (mud in muds){
-		      if(!mudinfo[mud]) output += "Error on mud: "+mud+"\n"; 
+		      if(!mudinfo[mud]) output += "Error on mud: "+mud+"\n";
 		      else{
 			  if(mudinfo[mud]["online"])
 			      x++; else y++;
@@ -1270,7 +1280,7 @@ EndText,
 	  case "chans":
 	      output="Local setup for "+NETWORK_ID+" channels:\n";
 	      output += sprintf("%-15s %-15s %-15s %-15s\n",
-		"Local Name","Allowed (you?)","Listening","Network Name");  
+		"Local Name","Allowed (you?)","Listening","Network Name");
 	      foreach(a in sort_array(keys(localchaninfo),1)){
 		  output += sprintf("%-15s %s%-15s%%^RESET%%^ %s%-15s%%^RESET%%^ %-15s\n",
 		    a,
@@ -1287,7 +1297,7 @@ EndText,
 	  case "allchans":
 	      output=NETWORK_ID+" channels:\n";
 	      output += sprintf("%-23s %-17s %-7s %-6s %-10s %-10s\n",
-		"Name","Owner","Policy","Level","Suggested","Local Name");  
+		"Name","Owner","Policy","Level","Suggested","Local Name");
 	      foreach(a in sort_array(keys(chaninfo),1)){
 		  output += sprintf("%-23s %-17s %-7s %-6s %-10s %-10s\n",
 		    a,chaninfo[a]["owner"],
@@ -1343,7 +1353,7 @@ EndText,
 		sprintf("channel=%s text=%s emote=%d echo=1",
 		  localchaninfo[a]["name"],escape(pinkfish_to_imc2(b)),emote));
 	      return 1;
-	      break;			
+	      break;
 	  case "reply": // Drop-through
 	  case "replyemote": // Drop-through
 	  case "tellemote": // Drop-through

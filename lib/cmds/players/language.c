@@ -12,7 +12,7 @@ mixed cmd(string str) {
 
     write("You speak:");
     foreach(string key, int val in FluencyMap){
-	write(key+" with "+val+"% proficiency.");
+	write(capitalize(key)+" with "+val+"% proficiency.");
     }
 
     return 1;

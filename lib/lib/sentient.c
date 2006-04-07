@@ -8,6 +8,9 @@
 
 #include <lib.h>
 #include <function.h>
+#include <talk_type.h>
+#include <message_class.h>
+
 
 inherit LIB_NPC;
 
@@ -204,11 +207,16 @@ mixed eventAsk(object who, string str) {
 varargs mixed eventReceiveEmote(object who, string verb, string info) {
     mixed val = EmoteResponses[verb];
 
+    //debug("who",who,"red");
+    //debug("verb",verb,"red");
+    //debug("info",info,"red");
+    //debug("responses",EmoteResponses,"red");
     if( !val ) {
 	return 0;
     }
     if( stringp(val) ) {
-	eventSpeak(val);
+	//debug("val",val,"red");
+	eventSpeak(who,TALK_LOCAL,val);
 	return 1;
     }
     return evaluate(val, this_player(), verb, info);

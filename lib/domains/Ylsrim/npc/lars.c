@@ -31,5 +31,10 @@ static void create() {
     // He takes electrum
     SetLocalCurrency("electrum");
     // What he sells
-    SetMenuItems(([ "ale" : "/domains/Ylsrim"+ "/meal/ale" ]));
+    SetMenuItems(([
+	({ "ale", "beer" }) : "/domains/Ylsrim/meal/ale",
+      ]));
+}
+void init(){
+    ::init();
 }

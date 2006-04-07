@@ -98,7 +98,8 @@
 #define LIB_MONEY          DIR_LIB        "/money"
 #define LIB_MAYOR          DIR_LIB        "/mayor"
 #define LIB_CLERK          DIR_LIB        "/clerk"
-#define LIB_CLAY          DIR_LIB         "/clay"
+#define LIB_CLAY           DIR_LIB        "/clay"
+#define LIB_TEACHER        DIR_LIB        "/teacher"
 #define LIB_FTP_DATA_CONNECTION "/secure/lib/net/ftp_data_connection"
 
 #endif /* s_lib_h */

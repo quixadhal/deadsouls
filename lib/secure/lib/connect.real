@@ -320,18 +320,20 @@ static void InputEmail(string email) {
 static void InputRealName(string rname) {
     if( !rname || rname == "" ) rname = "Unknown";
     Player->SetRealName(rname);
-    receive("\n\nYou must now pick a race.\n");
-    receive("Picking a race influences what physical traits your character "
-      "will have.\n");
-    receive("\nYou may issue the following commands:\n");
-    receive("\tlist - lists all races from which you can choose\n");
-    receive("\thelp - get help on what races mean\n");
-    receive("\thelp RACE - (e.g. \"help human\") gives you information on "
-      "a race\n");
-    receive("\tpick RACE - pick a particular race for yourself\n");
-    receive("\nRace: \n");
-    input_to((: InputRace :), I_NOESC);
-
+    if(!HUMANS_ONLY){
+	receive("\n\nYou must now pick a race.\n");
+	receive("Picking a race influences what physical traits your character "
+	  "will have.\n");
+	receive("\nYou may issue the following commands:\n");
+	receive("\tlist - lists all races from which you can choose\n");
+	receive("\thelp - get help on what races mean\n");
+	receive("\thelp RACE - (e.g. \"help human\") gives you information on "
+	  "a race\n");
+	receive("\tpick RACE - pick a particular race for yourself\n");
+	receive("\nRace: \n");
+	input_to((: InputRace :), I_NOESC);
+    }
+    else InputRace("pick human");
 }
 
 static void InputRace(string str) {

@@ -103,8 +103,8 @@ string LongDesc(){
     string desc = "This is a polished, antiseptic room composed of some "+
     "white, gleaming material. There is a viewscreen on a wall here, "+
     "with a control panel alonside it. "+
-    "There is a shimmering portal "+
-    "on the north wall. A long printout hangs from the panel.";
+    "A long printout hangs from the panel."
+    "\nThe network troubleshooting room is down from here.";
     desc += "\nA sign on the wall reads: "+SignRead();
     return desc;
 }
@@ -140,6 +140,12 @@ static void create() {
 	"appears to be an identification plate of some sort, designed "
 	"to accomodate a human hand.",
 	"portal" : "A portal to another place." ]) );
+    SetExits( ([
+	"north" : "/domains/default/room/wiz_hall",
+	"down" : "/secure/room/network.c",
+      ]) );
+    SetEnters( ([ 
+      ]) );
     SetProperties(([
 	"no peer" : 1,
       ]));
@@ -147,12 +153,8 @@ static void create() {
     SetRead("printout", (: eventReadPrintout :) );
     SetRead("sign", (: SignRead :) );
 
-    SetExits( ([
-	"north" : "/domains/default/room/wiz_hall.c",
-      ]) );
     SetListen("default", "You can faintly hear a low hum coming from the walls.");
     SetListen( ({"wall","walls"}), "You hear a low throbbing sound, as if from machinery.");
-    AddEnter("portal" , "/domains/default/room/wiz_hall");
     ob = new("/lib/bboard");
     ob->SetKeyName("chalkboard");
     ob->SetId( ({ "board", "chalkboard" }));

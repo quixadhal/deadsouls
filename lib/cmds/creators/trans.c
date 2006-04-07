@@ -34,5 +34,5 @@ mixed cmd(string args) {
 void help() {
     message("help", "Syntax: <trans [living]>\n\n"
       "Brings a living thing to your location.\n\n"
-      "See also: return, goto, move", this_player());
+      "See also: return, goto, move, expel", this_player());
 }

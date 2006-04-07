@@ -182,6 +182,8 @@ string array SetRestrictLimbs(string array limbs) {
 }
 
 static mixed array AddSave(mixed array vars) {
+    if(!vars) vars = ({});
+    vars += ({ "Properties" });
     return persist::AddSave(vars);
 }
 

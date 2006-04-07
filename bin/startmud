@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# It has been reported that non-US users have problems
+# with some .o files because their systems default to
+# commas for decimal notation and not periods. The
+# following language exports are fo the benefit of
+# people who run into this problem.
+export LANG=en_US
+export LANGUAGE=en_US
+export LC_ALL=en_US
+
 export MUDHOME=""
 
 count=1

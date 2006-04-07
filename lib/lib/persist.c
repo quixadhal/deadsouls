@@ -15,6 +15,7 @@ static int eventConvertObject(mixed val, int recurse) {
     string *flat = ({});
     mixed *tmp;
 
+    tc("Hit eventConvertObject","red");
     if( val[0] != base_name(this_object()) ) error("Invalid save string.\n");
     tmp = map(Saved, (: functionp($1) ? evaluate($1, "loading") : $1 :));
     foreach(mixed elem in tmp) {
@@ -108,8 +109,12 @@ string GetSaveString() {
 	if( arrayp(elem) ) flat += elem;
 	else flat += ({ elem });
     }
-    flat -= ({ 0 });
-    foreach(string var in flat) mp[var] = fetch_variable(var);
+    if(flat && sizeof(flat)){
+	flat -= ({ 0 });
+	foreach(mixed var in flat) {
+	    if(stringp(var)) mp[var] = fetch_variable(var);
+	}
+    }
     mp["#base_name#"] = base_name(this_object());
     if( SaveRecurse )
 	mp["#inventory#"] = (string *)all_inventory()->GetSaveString() - ({ 0 });
