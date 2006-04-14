@@ -4,6 +4,7 @@
  */
 
 #include <lib.h>
+#include <daemons.h>
 #include <rooms.h>
 
 inherit LIB_DAEMON;
@@ -21,9 +22,22 @@ mixed cmd(string args) {
 	possessive_noun(mud_name()) + " reality.";
     if( !strsrch(file = save_file(nom), DIR_CRES) )
 	return "You cannot make "+capitalize(args)+" a creator.";
+
+    if(!ob=find_player(nom)){
+	if(member_array(nom, PLAYERS_D->GetPendingEncres()) != -1){
+	    write("That person is already pending creatorship.");
+	    return 1;
+	}
+	PLAYERS_D->RemovePendingDecre(lower_case(nom));
+	PLAYERS_D->AddPendingEncre(lower_case(nom));
+	write(capitalize(nom)+" will be a creator next time they log in.");
+	return 1;
+    }
+
     if( file_size(DIR_CRES+"/"+nom[0..0]) != -2) mkdir(DIR_CRES+"/"+nom[0..0]);
     if(rename(file+__SAVE_EXTENSION__, DIR_CRES+"/"+nom[0..0]+"/"+nom+__SAVE_EXTENSION__))
 	return "You failed due to lack of write access to "+DIR_CRES+".";
+    PLAYERS_D->eventEncre(lower_case(nom));
     if( ob = find_player(nom) ) {
 	ob->SetProperty("brand_spanking_new",0);
 	PlayerName = nom;
@@ -62,6 +76,7 @@ mixed cmd(string args) {
 	book = new("/domains/default/obj/manual");
 	if(book && !present("manual",cre_ob))  book->eventMove(cre_ob);
 	else if(book) book->eventMove(ROOM_FURNACE);
+	cre_ob->save_player((string)cre_ob->GetKeyName());
 	//message("system", "You will now be logged off.", cre_ob);
 	//message("system", "Please log back in to use your new powers.", cre_ob);
 	//cre_ob->eventForce("quit");

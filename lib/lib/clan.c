@@ -1,33 +1,30 @@
-
 #include <lib.h>
-#include "include/guild.h"
+#include "include/clan.h"
 
-class GuildClass Guild;
+private class ClanClass Clan;
 
-//private static class GuildClass;
 private int isWelcomed;
-class Guild = new(class GuildClass);
 
 static void create() {
-    Guild = new(class GuildClass);
-    Guild->leader = 0;
-    Guild->name = 0;
-    Guild->objectName = 0;
-    Guild->skill = 0;
+    Clan = new(class ClanClass);
+    Clan->leader = 0;
+    Clan->name = 0;
+    Clan->objectName = 0;
+    Clan->skill = 0;
     isWelcomed = 0;
 }
 
 static void init() {
     if(!present(this_object(), this_player())) return;
-    if((string)this_player()->GetGuild() != (string)GetGuildName()) return;
+    if((string)this_player()->GetClan() != (string)GetClanName()) return;
     if((string)this_player()->GetKeyName() == (string)GetLeader()) {
-	add_action((:eventBring:), "bring");
-	add_action((:eventInitiate:), "initiate");
-	add_action((:eventRetire:), "retire");
+	add_action("eventBring", "bring");
+	add_action("eventInitiate", "initiate");
+	add_action("eventRetire", "retire");
     }
     this_player()->eventPrint("\n");
     if(!isWelcomed) {
-	this_player()->AddChannel(GetGuildName());
+	this_player()->AddChannel(GetClanName());
 	eventWelcome(this_player());
 	isWelcomed = 1;
     }
@@ -38,39 +35,39 @@ mixed CanJoin(object ob) { return 1; }
 string GetAffectLong(object ob) {
     if(!ob || !living(ob)) return 0;
     return ob->GetName() + " is a member of the "
-    + pluralize(GetGuildName()) + ".";
+    + pluralize(GetClanName()) + ".";
 }
 
 string SetLeader(string str) {
     if(!user_exists(str)) error("No such user: " + str
 	  + ". You must have a real leader.");
-    if(!stringp(Guild->leader)) 
-	Guild->leader = str;
-    return Guild->leader;
+    if(!stringp(Clan->leader)) 
+	Clan->leader = str;
+    return Clan->leader;
 }
 
-string GetLeader() { return Guild->leader; }
+string GetLeader() { return Clan->leader; }
 
-string SetGuildName(string str) {
-    if(!stringp(Guild->name)) Guild->name = str;
-    return Guild->name;
+string SetClanName(string str) {
+    if(!stringp(Clan->name)) Clan->name = str;
+    return Clan->name;
 }
 
-string GetGuildName() { return Guild->name; }
+string GetClanName() { return Clan->name; }
 
-string SetGuildObject(string str) {
-    if(!stringp(Guild->objectName)) Guild->objectName = str;
-    return Guild->objectName;
+string SetClanObject(string str) {
+    if(!stringp(Clan->objectName)) Clan->objectName = str;
+    return Clan->objectName;
 }
 
-string GetGuildObject() { return Guild->objectName; }
+string GetClanObject() { return Clan->objectName; }
 
-string SetGuildSkill(string str) {
-    if(!stringp(Guild->skill)) Guild->skill = str;
-    return Guild->skill;
+string SetClanSkill(string str) {
+    if(!stringp(Clan->skill)) Clan->skill = str;
+    return Clan->skill;
 }
 
-string GetGuildSkill() { return Guild->skill; }
+string GetClanSkill() { return Clan->skill; }
 
 int eventBring(string str) {
     object who;
@@ -79,7 +76,7 @@ int eventBring(string str) {
     who = find_player(lower_case(str));
     if(!who)
 	return notify_fail(who->GetName() + " is nowhere to be found.\n");
-    if((string)who->GetGuild() != (string)GetGuildName())
+    if((string)who->GetClan() != (string)GetClanName())
 	return notify_fail(who->GetName() + " is not one of you!\n");
     if(   environment(who)->GetProperty("no teleport")
       || environment(this_player())->GetProperty("no teleport")
@@ -90,7 +87,7 @@ int eventBring(string str) {
     if((int)this_player()->GetMagicPoints() < 70)
 	return notify_fail("Too low on magic power.\n");
     this_player()->AddMagicPoints(-70);
-    who->eventPrint("%^CYAN%^Your guild leader summons you.%^RESET%^");
+    who->eventPrint("%^CYAN%^Your clan leader summons you.%^RESET%^");
     who->eventMoveLiving(environment(this_player()));
     if(!present(who, environment(this_player())))
 	this_player()->eventPrint("%^CYAN%^" + capitalize(str)
@@ -100,7 +97,7 @@ int eventBring(string str) {
 
 int eventInitiate(string str) {
     object initiate;
-    object guildObject;
+    object clanObject;
     mixed ret;
 
     if(!str) return notify_fail("Initiate whom?\n");
@@ -111,13 +108,13 @@ int eventInitiate(string str) {
     else if(!ret) return ret;
     if((int)this_player()->GetMagicPoints() < 300)
 	return notify_fail("Too low on magic power.\n");
-    if(initiate->GetGuild())
-	return notify_fail("You may only initiate people without guild "
+    if(initiate->GetClan())
+	return notify_fail("You may only initiate people without clan "
 	  + "affiliation.\n");
-    initiate->SetGuild((string)GetGuildName());
-    initiate->SetSkill(GetGuildSkill(), 1, 1);
-    if(guildObject = new((string)GetGuildObject()))
-	guildObject->eventMove(initiate);
+    initiate->SetClan((string)GetClanName());
+    initiate->SetSkill(GetClanSkill(), 1, 1);
+    if(clanObject = new((string)GetClanObject()))
+	clanObject->eventMove(initiate);
     this_player()->AddMagicPoints(-300);
     eventJoin(initiate);
     return 1;
@@ -125,41 +122,41 @@ int eventInitiate(string str) {
 
 void eventJoin(object ob) {
     ob->eventPrint("%^YELLOW%^You are now a member of the "
-      + pluralize((string)GetGuildName()) + ".%^RESET%^");
+      + pluralize((string)GetClanName()) + ".%^RESET%^");
     environment(ob)->eventPrint("%^YELLOW%^" +(string)ob->GetName()
       + " is now a member of the "
-      + pluralize((string)GetGuildName()) + ".%^RESET%^", ob);
+      + pluralize((string)GetClanName()) + ".%^RESET%^", ob);
 }
 
 int eventRetire(string str) {
     object retiree;
-    object guildObject;
+    object clanObject;
 
     if(!str) return notify_fail("Retire whom?\n");
     retiree = present(lower_case(str), environment(this_player()));
     if(!retiree || !living(retiree))
 	return notify_fail("No one of that nature here.\n");
-    if((string)retiree->GetGuild() != (string)GetGuildName())
+    if((string)retiree->GetClan() != (string)GetClanName())
 	return notify_fail(retiree->GetName() + " is not one of us!\n");
-    guildObject = present(GetGuildName() + "_guild_object", retiree);
-    if(!guildObject) error("Problem with guild object.");
-    guildObject->eventDestruct();
-    retiree->SetGuild(0);
-    //  retiree->SetSkill(GetGuildSkill(), 1, 1); We need to remove skill here.
+    clanObject = present(GetClanName() + "_clan_object", retiree);
+    if(!clanObject) error("Problem with clan object.");
+    clanObject->eventDestruct();
+    retiree->SetClan(0);
+    //  retiree->SetSkill(GetClanSkill(), 1, 1); We need to remove skill here.
     eventUnjoin(retiree);
     return 1;
 }
 
 void eventUnjoin(object ob) {
     ob->eventPrint("%^RED%^You are no longer a member of the "
-      + pluralize((string)GetGuildName()) + ".%^RESET%^");
+      + pluralize((string)GetClanName()) + ".%^RESET%^");
     environment(ob)->eventPrint("%^RED%^" + (string)ob->GetName()
       + " is no longer a member of the "
-      + pluralize((string)GetGuildName()) + ".%^RESET%^", ob);
+      + pluralize((string)GetClanName()) + ".%^RESET%^", ob);
 }
 
 void eventWelcome(object ob) {
-    ob->eventPrint("%^YELLOW%^Welcome, fellow " + (string)GetGuildName()
+    ob->eventPrint("%^YELLOW%^Welcome, fellow " + (string)GetClanName()
       + ".%^RESET%^");
 }
 

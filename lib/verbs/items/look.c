@@ -79,8 +79,9 @@ mixed can_look_at_str_on_obj(string targ, string verb, string id1, string id2){
 }
 
 mixed do_look() {
-    environment(this_player())->eventPrint((string)this_player()->GetName() +
-      " looks around.", this_player());
+    if(!this_player()->GetInvis()) 
+	environment(this_player())->eventPrint((string)this_player()->GetName() +
+	  " looks around.", this_player());
     this_player()->eventDescribeEnvironment(0);
     return 1;
 }

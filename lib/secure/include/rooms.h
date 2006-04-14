@@ -11,5 +11,6 @@
 #define ROOM_WIZ 	 DIR_STANDARD_DOMAIN "/room/wiz_hall"
 #define ROOM_ARCH 	 "/secure/room/arch"
 #define ROOM_NETWORK 	 "/secure/room/network"
+#define ROOM_ROUTER 	 "/secure/room/router"
 
 #endif /* s_rooms_h */

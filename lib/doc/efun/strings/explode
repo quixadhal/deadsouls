@@ -11,6 +11,7 @@ explode(str," ") will return as an array all of the words (separated
 by spaces) in the string 'str'.
 
 See also:
+ implode,
  sscanf,
  replace_string,
  strsrch

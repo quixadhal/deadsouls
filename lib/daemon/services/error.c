@@ -8,6 +8,8 @@ void eventReceiveError(mixed *packet) {
     object ob;
     string error_code, mud, target, msg;
 
+    tn("ERROR RECEIVED: "+identify(packet));
+
     if( packet[5] ) {
 	target = convert_name(packet[5]);
 	if( !(ob = find_player(target)) ) return;

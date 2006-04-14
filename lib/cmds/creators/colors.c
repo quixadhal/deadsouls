@@ -3,7 +3,7 @@
 
 inherit LIB_DAEMON;
 
-void cmd() {
+int cmd() {
 
     write(
       "%^RED%^RED\n"
@@ -25,11 +25,12 @@ void cmd() {
       "%^B_WHITE%^B_WHITE%^RESET%^\n"
       "%^B_MAGENTA%^B_MAGENTA%^RESET%^\n"
     );
-
+    return 1;
 }
 
 string GetHelp() {
-    return ("Syntax: colors\n\n"
-      "Lists all available colors in the corresponding color.\n\n");
+    return("Syntax: colors\n\n"
+      "Lists all available colors in the corresponding color."
+      "\n\n");
 }
 

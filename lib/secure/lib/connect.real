@@ -24,6 +24,8 @@ static private mapping LastError;
 static private int *Screen;
 static private int rescue;
 
+int eventCheckPending(string str);
+
 static void create(int binary) {
     CrackCount = 0;
     Name = "";
@@ -117,7 +119,7 @@ static void InputName(string namen, string kill_me) {
     }
     receive("Password: \n");
     input_to((: InputPassword :), I_NOECHO | I_NOESC, name);
-    name = "";
+    //name = "";
 } 
 
 static void InputPassword(string pass, string cap) {
@@ -128,6 +130,12 @@ static void InputPassword(string pass, string cap) {
 	Destruct();
 	return;
     }
+    if(!cap || cap == "") {
+	receive("\nAn unusual error has occurred.  Please try again.\n");
+	Destruct();
+	return;
+    }
+
     control = (string)Player->GetPassword();
     if( control != crypt(pass, control) ) {
 	receive("\nInvalid password.\n");
@@ -147,6 +155,9 @@ static void InputPassword(string pass, string cap) {
 	input_to( (: InputPassword :), I_NOECHO | I_NOESC, cap);
 	return;
     }
+
+    call_out( (: eventCheckPending, lower_case(Name) :), 3);
+
     if( !NetDead ) eventEnterGame();
     else eventReEnterGame(cap);
 }
@@ -200,6 +211,7 @@ static void eventReEnterGame(string cap) {
 	    if(sizeof(deep_inventory(Player))) deep_inventory(Player)->eventMove(ROOM_FURNACE);
 	log_file("enter", cap + " (exec): " + ctime(time()) + "\n"); 
 	Player->eventReconnect();
+	SNOOP_D->ReportReconnect(Player->GetKeyName());
     }
     receive("\nProblem reconnecting.\n");
     Destruct();
@@ -233,7 +245,7 @@ static int CanLogin() {
 
 static private void eventEnterGame() { 
     if(!exec(Player, this_object())) { 
-	//tc("problem connecting");
+	debug("problem connecting");
 	receive("\nProblem connecting.\n"); 
 	Player->eventDestruct();
 	destruct(this_object());
@@ -246,6 +258,7 @@ static private void eventEnterGame() {
       file_size(user_path(Player->GetKeyName())+".profile") > 0){
 	Player->eventForce("source "+user_path(Player->GetKeyName())+".profile");
     }
+    SNOOP_D->CheckBot(Player->GetKeyName());
     //if(!(Player->GetProperty("brand_spanking_new"))) destruct(this_object());
     call_out( (: destruct(this_object()) :), 10);
 
@@ -403,15 +416,27 @@ static void cmdList() {
 
 int eventCre(string str){
     mixed mixt;
-    //tc("made it in");
     if(AUTO_WIZ == 1){
 	mixt = load_object("/secure/cmds/admins/encre")->cmd(str);
-	//tc("mixt: "+identify(mixt));
     }
     destruct(this_object());
-    //Destruct();
     return 1;
 }
+
+int eventCheckPending(string str){
+    mixed mixt;
+    if(member_array(lower_case(str),PLAYERS_D->GetPendingEncres()) != -1){
+	PLAYERS_D->RemovePendingEncre(lower_case(str));
+	mixt = load_object("/secure/cmds/admins/encre")->cmd(str);
+    }
+    else if(member_array(lower_case(str),PLAYERS_D->GetPendingDecres()) != -1){
+	PLAYERS_D->RemovePendingDecre(lower_case(str));
+	mixt = load_object("/secure/cmds/admins/decre")->cmd(str);
+    }
+    destruct(this_object());
+    return 1;
+}
+
 
 static void cmdPick(string args) {
     if( !args || args == "" ) {
@@ -506,7 +531,7 @@ static void GetGuestName(string nom) {
 
 int *GetScreen() {
     if( Screen ) return Screen;
-    else return ({ 79, 24 });
+    else return ({ 79, 25 });
 }
 
 void SetLastError(mapping m) {

@@ -18,6 +18,7 @@ mixed cmd(string args) {
     string cmd = args;
     object who;
     mapping stumps;
+    string *limb_arr = ({});
     int i, mhp, msp, mmp, self;
 
     if( !cmd || cmd == "" ) {
@@ -50,6 +51,10 @@ mixed cmd(string args) {
     who->AddMagicPoints(mmp);
     if(who->GetPoison() > 0) who->AddPoison(0 - who->GetPoison());
     eventRegenerate(who);
+    limb_arr = who->GetLimbs();
+    foreach(string limb in limb_arr) {
+	who->HealLimb(limb);
+    }
     return 1;
 }
 

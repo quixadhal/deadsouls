@@ -26,15 +26,10 @@ void create() {
 	"heart of the hall." ]) );
     SetObviousExits("d");
     SetExits( ([ "down" : "/domains/Ylsrim/room/"+ "adv_hall" ]) );
+    SetInventory(([
+	"/domains/Ylsrim/obj/stargate" : 1,
+      ]));
 
-    //AddJump("road", "/domains/Ylsrim/room/"+ "kaliid4", JUMP_INTO);
-    //AddJump("kaliid road", "/domains/Ylsrim/room/"+ "kaliid4", JUMP_INTO);
-    //AddJump("tower", "/domains/Ylsrim/room/"+ "kaliid4", JUMP_FROM);
-    SetJump( ([
-	"road" : ({ "/domains/Ylsrim/room/kaliid4", JUMP_INTO }),
-	"kaliid road" : ({ "/domains/Ylsrim/room/kaliid4", JUMP_INTO }),
-	"tower" : ({ "/domains/Ylsrim/room/kaliid4", JUMP_FROM }),
-      ]) );
 } 
 void init(){
     ::init();

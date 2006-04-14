@@ -109,7 +109,7 @@ int eventCreateSocket(int port) {
 static int Destruct() {
     if( daemon::Destruct() ) {
 	foreach(int fd, class server socket in Sockets) {
-	    tc("server:Destruct: fd: "+fd+", "+socket_address(fd),"green");
+	    trr("server:Destruct: fd: "+fd+", "+socket_address(fd),"green");
 	    socket->Owner->evenShutdown();
 	}
 	eventClose(Listen);
@@ -137,7 +137,7 @@ static void eventNewConnection(object socket) {
 }
 
 static void eventServerAbortCallback(int fd) {
-    tc("server:eventServerAbortCallback: fd: "+fd+", "+socket_address(fd),"green");
+    trr("server:eventServerAbortCallback: fd: "+fd+", "+socket_address(fd),"green");
     eventClose(fd);
 }
 
@@ -152,7 +152,7 @@ int eventShutdown() {
 static void eventServerListenCallback(int fd) {
     int x;
 
-    tc("server:eventServerListenCallback: fd: "+fd+", "+socket_address(fd),"green");
+    trr("server:eventServerListenCallback: fd: "+fd+", "+socket_address(fd),"green");
     x = socket_accept(fd,
       "eventServerReadCallback", 
       "eventServerWriteCallback");
@@ -169,7 +169,7 @@ static void eventServerListenCallback(int fd) {
 static void eventServerReadCallback(int fd, mixed val) {
     class server s = Sockets[fd];
 
-    tc("server:eventServerReadCallback: fd: "+fd+", "+socket_address(fd),"green");
+    trr("server:eventServerReadCallback: fd: "+fd+", "+socket_address(fd),"green");
     if( !s || !s->Owner ) {
 	eventClose(fd);
 	return;
@@ -183,7 +183,7 @@ static void eventServerWriteCallback(int fd) {
     class server sock;
     int x;
 
-    tc("server:eventServerWriteCallback: fd: "+fd+", "+socket_address(fd),"green");
+    trr("server:eventServerWriteCallback: fd: "+fd+", "+socket_address(fd),"green");
     if( Listen && Listen->Descriptor == fd ) {
 	sock = Listen;
     }
@@ -237,7 +237,7 @@ varargs int eventWrite(object owner, mixed val, int close) {
     class server sock;
     int fd = owner->GetDescriptor();
 
-    tc("server:eventWrite: fd: "+fd+", "+socket_address(fd),"green");
+    trr("server:eventWrite: fd: "+fd+", "+socket_address(fd),"green");
 
     if( Listen && Listen->Descriptor == fd ) {
 	sock = Listen;

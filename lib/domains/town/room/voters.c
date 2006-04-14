@@ -28,8 +28,6 @@ static void create() {
     SetInventory(([
       ]));
     AddExit("west", "/domains/town/room/thall");
-    //funs
-    //snuf
 }
 
 mixed ReadList() {
@@ -47,12 +45,12 @@ mixed ReadList() {
 
 
     if( VOTING_D->GetStatus() == VOTE_NOT_RUNNING ) {
-	this_player()->eventPrint("\nSince the elections are not "
-	  "currently running, the list is blank.");
+	this_player()->eventPrint(VOTING_D->GetCurrentCouncil());
 	return 1;
     }
 
-    msg = "\n\tCandidates for Dead Souls Offices\n\n";
+    msg = VOTING_D->GetCurrentCouncil();
+    msg += "\n\tCandidates for Dead Souls Offices\n\n";
 
     foreach( string sClass in CLASSES_D->GetClasses() ) {
 	msg += capitalize( sClass ) + " : ";
@@ -121,8 +119,9 @@ mixed eventVote( object who, string str ) {
 	break;
 
     case VOTE_MODE_CANDIDATES :
-	this_player()->eventPrint("Voting has not yet started, "
-	  "nominate a candidate instead.");
+	this_player()->eventPrint("Voting has not yet started. We are "
+	  "still nominating candidates. Please nominate a candidate "
+	  "instead.");
 	break;
 
     case VOTE_NOT_PRIMARY :

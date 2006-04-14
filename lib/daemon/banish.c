@@ -5,6 +5,7 @@
  */
 
 #include <lib.h>
+#include <privs.h>
 #include <config.h> 
 #include <objects.h>
 #include <daemons.h> 
@@ -67,7 +68,7 @@ void create() {
 } 
 
 static private int valid_access(object ob) { 
-    return (int)master()->valid_apply( ({ "LAW", "SUPERUSER" }) );
+    return (int)master()->valid_apply( ({ "ASSIST" }) );
 } 
 
 int valid_cap_name(string cap, string nom) {

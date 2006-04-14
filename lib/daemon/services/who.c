@@ -19,6 +19,7 @@ void eventReceiveWhoReply(mixed *packet) {
     foreach(who in packet[6]) 
     list += ({ who[0] + " (" + who[1] + " idle): " + who[2] });
     ob->eventPage(list);
+    tn("eventReceiveWhoReply: "+identify(packet),"blue");
 }
 
 void eventReceiveWhoRequest(mixed *packet) {
@@ -34,7 +35,7 @@ void eventReceiveWhoRequest(mixed *packet) {
 	ret += entry[0]+", ";
     }
     ret = truncate(ret,2);
-
+    tn("eventReceiveWhoRequest: "+identify(packet),"blue");
     tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"+capitalize(packet[3])+" at "+packet[2]+" has requested a list of users currently logged on. Replying with: %^BOLD%^YELLOW%^"+ret+".%^RESET%^\"");
 }
 
@@ -43,6 +44,7 @@ void eventSendWhoRequest(string mud) {
 
     who = (string)this_player(1)->GetName();
     INTERMUD_D->eventWrite(({ "who-req", 5, mud_name(), who, mud, 0 }));
+    tn("eventSendWhoRequest: "+identify( ({ "who-req", 5, mud_name(), who, mud, 0 })), "blue");
 }
 
 

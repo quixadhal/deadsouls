@@ -8,11 +8,13 @@ static void process_startup_req(int protocol, mixed info, int fd){
     string site_ip, junk;
     // router name is info[4], I'll just pretend I'm every router though, ha-ha!
     // also, should verify that all the fields are the right type
-    tn("info: "+identify(info));
-    tn("process_startup_req: protocol="+protocol+", mud="+info[2],"green");
+
+    trr("info: "+identify(info));
+    trr("process_startup_req: protocol="+protocol+", mud="+info[2]);
+
     if(sizeof(info)<18){ 
 	// smallest protocol is protocol 1/2 which have size 18
-	tn("THIS SHOULDNT BE HERE");
+	trr("THIS SHOULDNT BE HERE");
 	write_data(fd,({
 	    "error",
 	    5,
@@ -31,15 +33,15 @@ static void process_startup_req(int protocol, mixed info, int fd){
     //site_ip = path_prefix(socket_status(fd)[4],".");
     //if(!site_ip || site_ip == "" || site_ip == "*"){
     //if(true()){
-    tn("bad ip "+site_ip+" from "+info[2]);
+    trr("bad ip "+site_ip+" from "+info[2]);
     //socket_close(fd);
     //return;
     //}
     //junk = "foo";
-    tn("fd is:" +fd);
+    trr("fd is:" +fd);
 
     site_ip=socket_address(fd);
-    tn("site_ip: "+site_ip,"red");
+    trr("site_ip: "+site_ip);
     newinfo = ([
       "ip":site_ip,
       "connect_time":time(),
@@ -58,12 +60,12 @@ static void process_startup_req(int protocol, mixed info, int fd){
       "protocol":protocol,
       "restart_delay":-1,
     ]);
-    tn("newinfo: "+identify(newinfo),"yellow");
+    trr("newinfo: "+identify(newinfo));
     switch(protocol){
     case 1:
     case 2:
 	if(sizeof(info)!=18){
-	    tn("error","red");
+	    trr("error");
 	    write_data(fd,({
 		"error",
 		5,
@@ -83,7 +85,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	break;
     case 3:
 	if(sizeof(info)!=20){
-	    tn("error","blue");
+	    trr("error");
 
 	    write_data(fd,({
 		"error",
@@ -103,7 +105,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	newinfo["other_data"]=info[19];
 	break;
     default:
-	tn("error","green");
+	trr("error");
 
 	write_data(fd,({
 	    "error",
@@ -150,7 +152,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
     }
     if(connected_muds[info[2]]){
 	// if MUD is already connected
-	tn("mud already connected","cyan");
+	trr("mud already connected");
 	write_data(fd,({
 	    "error",
 	    5,
@@ -178,7 +180,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	      }));
 	}
 	else{
-	    tn("wrong password, and from a new IP","yellow");
+	    trr("wrong password, and from a new IP");
 	    write_data(fd,({
 		"error",
 		5,
@@ -199,10 +201,10 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	// Change this maybe... see if the password is supposed to be in a certain range
     }
     // MUD should be okay at this point.
-    Debug("about to update the mudinfo...");
+    trr("about to update the mudinfo...");
     mudinfo[info[2]]=newinfo; // update the mudinfo
     connected_muds[info[2]] = fd; // add this MUD to list of connected muds
-    Debug("about to send the startup reply...");
+    trr("about to send the startup reply...");
     send_startup_reply(info[2]); // reply to MUD
     mudinfo_update_counter++;
     mudinfo_updates[info[2]]=mudinfo_update_counter;

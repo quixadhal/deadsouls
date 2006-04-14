@@ -26,6 +26,7 @@ void eventReceiveFingerRequest(mixed array packet) {
     ret = ({ "finger-reply", 5, mud_name(), 0, packet[2], packet[3] }) + ret;
     INTERMUD_D->eventWrite(ret);
     tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"+capitalize(packet[3])+" at "+packet[2]+" has requested finger information about "+capitalize(ret[6])+".%^RESET%^\"");
+    tn("eventReceiveFingerRequest: "+identify(packet),"cyan");
 
 }
 
@@ -52,6 +53,7 @@ void eventReceiveFingerReply(mixed array packet) {
     fing += "Site: " + (packet[12] ? packet[12] : "Confidential") + "\n";
     fing += (packet[14] ? packet[14] : "\n");
     ob->eventPrint(fing, MSG_SYSTEM);
+    tn("eventReceiveFingerReply: "+identify(packet),"cyan");
 }
 
 void eventSendFingerRequest(string who, string where) {
@@ -60,4 +62,5 @@ void eventSendFingerRequest(string who, string where) {
     if( !(pl = (string)this_player(1)->GetKeyName()) ) return;
     INTERMUD_D->eventWrite( ({ "finger-req", 5, mud_name(), pl, where, 0, 
 	who }) );
+    tn("eventSendFingerRequest: "+identify( ({ "finger-req", 5, mud_name(), pl, where, 0,who }) ),"cyan");
 }

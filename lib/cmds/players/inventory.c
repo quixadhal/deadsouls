@@ -38,9 +38,10 @@ void eventInventory() {
     i = sizeof(shorts = keys(borg));
     while(i--) ret += capitalize(consolidate(borg[shorts[i]], shorts[i]))+"\n";
     message("look", ret, this_player());
-    message("other_action", (string)this_player()->GetName() + " checks " +
-      possessive(this_player()) + " possessions.", 
-      environment(this_player()), ({ this_player() }));
+    if(!this_player()->GetInvis())
+	message("other_action", (string)this_player()->GetName() + " checks " +
+	  possessive(this_player()) + " possessions.", 
+	  environment(this_player()), ({ this_player() }));
 }
 
 void help() {

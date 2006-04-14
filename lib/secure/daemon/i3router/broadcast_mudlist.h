@@ -1,11 +1,11 @@
 // This file written completely by Tim Johnson (Tim@TimMUD)
 
 // broadcast the mudlist when a mud just now got changed...
-static void broadcast_mudlist(string mudname){
+void broadcast_mudlist(string mudname){
     string targ_mudname;
     mixed *packet1; // for muds that use protocol 1 or 2
     mixed *packet3; // for muds that use protocol 3
-    Debug("broadcasting mudlist to let them know about "+mudname);
+    trr("broadcasting mudlist to let them know about "+mudname,"red");
     packet1 = ({ "mudlist", 5, router_name, 0, "dummy", 0, mudinfo_update_counter,([
 	mudname:({
 	  connected_muds[mudname] ? -1 : 0,

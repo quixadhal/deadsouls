@@ -1,4 +1,43 @@
----- 2.0r19 (unreleased) ---
+---- 2.0r20 (unreleased) ---
+- The encre and decre of non-logged-on users now
+  behaves properly.
+- Furnaces now destroy objects almost immediately.
+- Fixed voting system.
+- LIB_GUILD changed to LIB_CLAN. It works, but is
+  not actually useful. Proper clan functionality
+  is planned post-2.1.
+- Heal command now fixes individual limbs as well.
+- Added ENABLE_ENCUMBRANCE define to config.h to
+  toggle the encumbrance combat modifier.
+- Modified combat so it's difficult to fight while
+  carrying stuff. Anything worn or wielded doesn't 
+  affect combat capability. NPC's are unaffected by this.
+- Fixed horrendous carry-capacity leak in all containers.
+- Added "every" token to reload verb, enabling the
+  reload of all loaded objects that inherit the specified
+  library object, eg "reload every npc".
+- Fixed bugs in invisibility.
+- Enabled QCS to work in /domains directories for
+  creators set as domain admins with the 
+  domainadmin command.
+- Fixed error in RACES_D that dramatically distorted stats.
+- Added sefun: domain_admin.
+- Fixed mudlist cache problem.
+- Added command: switchrouter, domainadmin.
+- Added set_heart_beat to QCS.
+- Fixed bugs in commands: banish, anglicize.
+- Integrated most packet data with network room.
+- Added router room for I3 router debugging.
+- Integrated most I3 packets with router room.
+
+---- 2.0r19 ---
+- Fixed menu item bug in LIB_BARKEEP.
+- Fixed Ylsrim pub.
+- Added keepalive pinger tool to wiz chest.
+- Added commands: anglicize, debug, expel, resetpasswd.
+- Fixed first boot problem with /secure/daemon/letters.c.
+- Driver: set heart_beat to approximately one per second.
+- Driver: added locale workaround to startmud script.
 - Added Brodbane's New and Improved cp command.
 - Added Brodbane's sefuns: wild_card, remove_dots.
 - Elision bug in pager.c fixed by Brodbane.

@@ -60,7 +60,7 @@ mixed do_dest_obs(object *obs) {
 
 mixed do_dest_str(string str){
     object *objects;
-    tc("str: "+str);
+    //tc("str: "+str);
     if(!objects = findobs(str)){
 	write("No such thing was found.");
 	return 1;

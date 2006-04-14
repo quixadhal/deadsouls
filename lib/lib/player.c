@@ -438,6 +438,7 @@ int Setup() {
 	object jeans, shirt, book;
 
 	if(ENGLISH_ONLY) this_object()->SetNativeLanguage("English");
+	PLAYERS_D->AddPlayerInfo(this_object());
 
 	jeans = new("/domains/default/armor/jeans");
 	shirt = new("/domains/default/armor/shirt");

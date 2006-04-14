@@ -66,6 +66,9 @@ mixed gmake(string str) {
     }
 
     if(last(filename,2) != ".c") filename += ".c";
+    //tc("thing: "+last_string_element(this_player()->query_cwd(),"/"), "red"); 
+    //tc("filename: "+filename);
+    //tc("check_privs: "+check_privs(this_player(), filename));
 
     if(!this_player()->query_cwd()){
 	write("You have no current working directory. Please type: cd\nthen try again.");

@@ -13,6 +13,7 @@ inherit LIB_ROOM;
 // the menu
 
 int readMenu(object who, string str) {
+    string array tmp2 = ({});
     string array tmp = ({ sprintf("%:-20s %:-7s", "Drink", "Cost") });
     object ob = present("lars");
 
@@ -24,6 +25,11 @@ int readMenu(object who, string str) {
 	tmp += ({ sprintf("%:-20s %d electrum", capitalize(item[0]),
 	    to_int(ob->GetCost(item))) });
     }
+    foreach(string element in tmp){
+	element = translate(element,  this_player()->GetLanguageLevel("Edhellen"));
+	tmp2 += ({ element });
+    }
+    tmp = tmp2;
     // show the menu a page at a time
     this_player()->eventPage(tmp, MSG_SYSTEM); // MSG_SYSTEM means ignore blocking
     return 1;
@@ -40,6 +46,7 @@ static void create() {
       "with a hodge-podge of writing in all different languages "
       "covering the wall.  A menu of drinks is about the only "
       "readable thing on the wall.  If you read Edhellen.");
+    SetLanguage("Edhellen");
     SetInventory(([
 	"/domains/Ylsrim/npc/lars" : 1,
       ]));

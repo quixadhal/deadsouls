@@ -1,6 +1,6 @@
 /*    /lib/classes.c
  *    from the Dead Souls LPC Library
- *    classes and guild handling object
+ *    classes and clan handling object
  *    created by Descartes of Borg 950123
  *    Version: @(#) classes.c 1.4@(#)
  *    Last modified: 96/12/13
@@ -13,7 +13,7 @@
 inherit LIB_ABILITIES;
 
 private int Morality;
-private string Class, Guild;
+private string Class, Clan;
 private mapping SkillModifiers;
 private string *Religion;
 
@@ -22,7 +22,7 @@ static void create() {
     SkillModifiers = ([]);
     Religion = allocate(2);
     Class = 0;
-    Guild = 0;
+    Clan = 0;
     Morality = 0;
 }
 
@@ -107,9 +107,9 @@ int ClassMember(string class_name) {
     return (int)CLASSES_D->ClassMember(Class, class_name);
 }
 
-string SetGuild(string guild) { return (Guild = guild); }
+string SetClan(string clan) { return (Clan = clan); }
 
-string GetGuild() { return Guild; }
+string GetClan() { return Clan; }
 
 int GetBaseStatLevel(string stat) { return 0; }
 

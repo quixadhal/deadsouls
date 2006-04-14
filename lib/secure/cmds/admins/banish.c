@@ -9,11 +9,13 @@
 inherit LIB_DAEMON;
 
 int cmd(string str) {
+    if(!str || str == ""){
+	write("Syntax: banish <string>");
+	return 1;
+    }
     if(!user_exists(str = lower_case(str))) {
 	write(capitalize(str)+" is now banished.\n");
-	//seteuid(UID_BANISH);
 	catch(call_other(BANISH_D, "banish_name", str));
-	//seteuid(getuid());
     }
     else {
 	write("A player by that name already exists.\n");

@@ -198,8 +198,10 @@ varargs string socket_address(mixed arg, int foo);
 varargs int debug(mixed msg, mixed val, string color);
 int valid_timezone(string str);
 varargs int tell_creators(string msg, string color);
-varargs int tn(string str, string color);
+varargs int tn(string str, string col, object room);
+varargs int trr(string str, string col);
 varargs string *wild_card(string str);
 nomask int remove_dots(string str);
+int domain_admin(string pretender, string domain);
 
 #endif /* l_sefun_h */

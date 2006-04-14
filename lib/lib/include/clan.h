@@ -1,10 +1,10 @@
 
 
-#ifndef l_guild_h
-#define l_guild_h
+#ifndef l_clan_h
+#define l_clan_h
 
 
-class GuildClass {
+class ClanClass {
     string leader;
     string name;
     string objectName;
@@ -18,12 +18,12 @@ mixed CanJoin(object ob);
 string GetAffectLong(object ob);
 string SetLeader(string str);
 string GetLeader();
-string SetGuildName(string str);
-string GetGuildName();
-string SetGuildObject(string str);
-string GetGuildObject();
-string SetGuildSkill(string str);
-string GetGuildSkill();
+string SetClanName(string str);
+string GetClanName();
+string SetClanObject(string str);
+string GetClanObject();
+string SetClanSkill(string str);
+string GetClanSkill();
 
 int eventBring(string str);
 int eventInitiate(string str);
@@ -33,6 +33,6 @@ void eventUnjoin(object ob);
 void eventWelcome(object ob);
 
 
-#endif /* l_guild_h */
+#endif /* l_clan_h */
 
 

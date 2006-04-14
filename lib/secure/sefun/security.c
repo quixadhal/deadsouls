@@ -40,8 +40,35 @@ int member_group(mixed who, string grp) {
     return (member_array(who, ppl) != -1);
 }
 
+int domain_admin(mixed pretender, string domain){
+    mapping DomainsMap = ([]);
+    string write_perms = read_file("/secure/cfg/write.cfg");
+    string *tmp_array = explode(write_perms, "\n");
+    string *admin_array = ({});
+    if(objectp(pretender)) pretender = pretender->GetKeyName();
+    foreach(string line in tmp_array){
+	string where, admins;
+	if(sscanf(line,"(/domains/%s/) %s", where, admins)){
+	    DomainsMap[where] = admins;
+	}
+    }
+    //tc("I think pretender is: "+identify(pretender)+", type: "+typeof(pretender),"yellow");
+    if(!sizeof(DomainsMap[domain])) return 0;
+    admin_array = explode(DomainsMap[domain],":");
+    //tc("will I return 0?");
+    if(member_array(lower_case(pretender), admin_array) == -1){
+	//tc("about to return 0");
+	return 0;
+    }
+    else {
+	//tc("about to return 1");
+	return 1;
+    }
+}
+
 int check_privs(mixed pretender, mixed target){
     int x;
+    string domain, junk;
     if(stringp(pretender)) pretender = load_object(pretender);
     if(objectp(target)) target = base_name(target)+".c";
     if(!stringp(target)) x= 1;
@@ -56,6 +83,17 @@ int check_privs(mixed pretender, mixed target){
       grepp(target,homedir(pretender)) ) x= 17;
     else if(archp(pretender)) x= 18;
     else x= 9;
+
+    if(stringp(target) && first_string_element(target,"/",1) == "domains"){
+	//tc("entered new test sub","blue");
+	if(sscanf(target,"/domains/%s/%s", domain, junk) == 2){
+	    //tc("entered subsub","blue");
+	    //tc("pretender: "+identify(pretender),"white");
+	    //tc("domain: "+identify(domain),"white");
+	    if(domain_admin(pretender, domain)) x = 19;
+	}
+    }
+    //tc("x: "+x);
     if(x < 10) return 0;
     if(x > 10) return 1;
 }

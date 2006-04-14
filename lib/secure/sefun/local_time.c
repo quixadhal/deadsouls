@@ -67,6 +67,7 @@ string set_tz(string str){
     if( str != "" && !valid_timezone(str)) {
 	return "Invalid time zone.";
     }
+    tz = str;
     if(!archp(this_player())) return "You're not permitted to do this.";
     unguarded( (: write_file("/cfg/timezone.cfg",tz,1) :) );
     return "Mud time zone is now "+read_file("/cfg/timezone.cfg");

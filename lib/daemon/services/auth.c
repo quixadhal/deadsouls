@@ -34,7 +34,7 @@ void eventReceiveAuthRequest(mixed array packet) {
     if(!grepp(mudlist,packet[2]) || packet[2] == "DeadSoulsNew" ||
       packet[2] == "DeadSoulsWin"){
 	write_file("/tmp/muds.txt",packet[2]+"\n"); 
-	tc("We have a new mud! "+packet[2]+" has joined intermud.","red");
+	//tc("We have a new mud! "+packet[2]+" has joined intermud.","red");
 	tn("We have a new mud! "+packet[2]+" has joined intermud.","red");
     }
 

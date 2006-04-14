@@ -19,6 +19,7 @@ void eventReceiveLocateRequest(mixed array packet) {
 
     if( file_name(previous_object()) != INTERMUD_D ) return;
     tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"+capitalize(packet[3])+" at "+packet[2]+" has issued a locate request for %^BOLD%^YELLOW%^"+capitalize(packet[6])+".%^RESET%^\"");
+    tn("Locate request received: "+identify(packet),"white");
     if( !(ob = find_player(packet[6])) || ob->GetInvis()) return;
     if( interactive(ob) ) {
 	string array tmp = ({ });
@@ -43,6 +44,7 @@ void eventReceiveLocateReply(mixed array packet) {
     if( file_name(previous_object()) != INTERMUD_D ) return;
     if( !stringp(packet[5]) || !(ob = find_player(convert_name(packet[5]))) ) 
 	return;
+    tn("Locate reply received: "+identify(packet),"white");
     m = packet[7] + " was just located on " + packet[6] + ".";
     if( (idl = (int)packet[8]) > 60 )
 	m += sprintf(" (idle %02d:%02d:%02d)", idl/3600, (idl/60)%60, idl%60);
@@ -53,7 +55,8 @@ void eventReceiveLocateReply(mixed array packet) {
 
 void eventSendLocateRequest(string who) {
     string pl;
-
+    mixed *locate_request = ({ "locate-req", 5, mud_name(), pl, 0, 0, who });
     if( !(pl = (string)this_player(1)->GetKeyName()) ) return;
     INTERMUD_D->eventWrite( ({ "locate-req", 5, mud_name(), pl, 0, 0, who }) );
+    tn("Locate request being sent: "+identify(locate_request),"white");
 }

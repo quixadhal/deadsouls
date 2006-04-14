@@ -57,7 +57,7 @@ int GetCarriedMass();
 string GetCapName();
 int ResetLevel();
 string SetClass(string str);
-string SetGuild(string guild);
+string SetClan(string clan);
 varargs static int AddHealthPoints(int x, string limb, object agent);
 int GetLanguageLevel(string lang);
 int is_living();

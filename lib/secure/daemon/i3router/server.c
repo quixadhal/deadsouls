@@ -5,12 +5,12 @@
 #include <lib.h>
 #include <socket.h>
 #include <socket_err.h>
-#define DEB_IN  1	// Debug-Incoming
-#define DEB_OUT 2	// Debug-Outgoing
-#define DEB_INVALID 3	// Debug-Invalid
-#define DEB_OTHER 0	// Debug-Other
+#define DEB_IN  1	// trr-Incoming
+#define DEB_OUT 2	// trr-Outgoing
+#define DEB_INVALID 3	// trr-Invalid
+#define DEB_OTHER 0	// trr-Other
 #define MYSERVER 9000	// Port to accept connections on.
-#define DEBUGGER_GUY "cratylus"	// Name of who to display Debugging info to.
+#define DEBUGGER_GUY "cratylus"	// Name of who to display trrging info to.
 #undef DEBUGGER_GUY
 #define DEBUGGER_GUY "guest"
 #define MAXIMUM_RETRIES 5
@@ -101,7 +101,7 @@ static void broadcast_data(mapping targets, mixed data);
 
 
 
-// Debugging stuff...
+// trrging stuff...
 mapping query_mudinfo(){ return copy(mudinfo); }
 mapping query_mud(string str){ return copy(mudinfo[str]); }
 void get_info() {
@@ -117,6 +117,26 @@ void get_info() {
       "\nmudinfo_updates:"+identify(mudinfo_updates)+
       "\nconnected:"+identify(connected_muds)+"\n");
 }
-void clear(){ string mudname; foreach(mudname in keys(mudinfo)) remove_mud(mudname); }
+void clear(){ string mudname; foreach(mudname in keys(mudinfo)) remove_mud(mudname); 
+}
 
+mapping GetConnectedMuds(){
+    return copy(connected_muds);
+}
+
+
+void clear_discs(){ 
+    string mudname; 
+    foreach(mudname in keys(mudinfo)) {
+	if(query_mud(mudname)["disconnect_time"] &&
+	  time() - query_mud(mudname)["disconnect_time"] > 60 &&
+	  time() - query_mud(mudname)["disconnect_time"] < 80){
+	    //trr("Removing mud: "+identify(mudname),"red");
+	    //remove_mud(mudname);
+	    trr("Broadcasting updated mudlist.","white");
+	    broadcast_mudlist(mudname);
+
+	}
+    }
+}
 

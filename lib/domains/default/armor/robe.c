@@ -15,7 +15,7 @@ static void create(){
 	"no steal" : 1,
       ]));
     SetCanClose(1);
-    SetMaxCarry(500);
+    SetMaxCarry(5000);
     SetMass(200);
     SetBaseCost("silver",100);
     SetDamagePoints(100);

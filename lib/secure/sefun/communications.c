@@ -51,7 +51,7 @@ varargs void tc(string str, string col, object dude){
     flush_messages(dude);
 }
 
-varargs int tn(string str, string col){
+varargs int tn(string str, string col, object room){
     string prefix;
     if(!col) col = "magenta";
     switch(col){
@@ -63,7 +63,14 @@ varargs int tn(string str, string col){
     case "white" : prefix = "%^BOLD%^WHITE%^";break;
     default : prefix = "%^BOLD%^MAGENTA%^";break;
     }
-    tell_object(load_object(ROOM_NETWORK) ,prefix+str+"%^RESET%^");
+    if(!room) tell_object(load_object(ROOM_NETWORK) ,prefix+str+"%^RESET%^");
+    else tell_object(room, prefix+str+"%^RESET%^");
+    return 1;
+}
+
+varargs int trr(string str, string col){
+    tn(str, col, load_object(ROOM_ROUTER));
+    return 1;
 }
 
 varargs int debug(mixed msg, mixed val, string color){

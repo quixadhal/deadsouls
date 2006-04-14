@@ -572,7 +572,7 @@ private static void load_access(string cfg, mapping ref) {
     string *parse_command_prepos_list() {
 	return ({ "in", "with", "without", "into", "for", "on", "under", "against",
 	  "out", "within", "of", "from", "between", "at", "to", "over", "near",
-	  "inside", "onto", "off", "through", "across", "up", "down",
+	  "inside", "onto", "off", "through", "across", "up", "down", "every",
 	  "around", "about", "only", "here", "room", "exit", "enter", "-r"});
     }
 

@@ -407,6 +407,7 @@ int CanWeapon(object target, string type, int hands, int num) {
     else {
 	TargetLimb = limb;
     }
+    //tc("chance: "+chance);
     return chance;
 }
 
@@ -433,6 +434,7 @@ int CanMelee(object target) {
 	else {
 	    TargetLimb = limb;
 	}
+	//tc("chance: "+chance);
 	return chance;
     }
     else {
@@ -455,6 +457,7 @@ int CanMelee(object target) {
 	else {
 	    TargetLimb = limb;
 	}
+	//tc("chance: "+chance);
 	return chance;
     }
 }
@@ -626,14 +629,22 @@ int eventExecuteAttack(mixed target) {
 	    SendWeaponMessages(target, -1, weapon, TargetLimb);
 	}
 	else { // I hit, but how hard did I hit?
-	    int damage_type, damage, weapon_damage, actual_damage;
+	    int damage_type, damage, weapon_damage, actual_damage, encumbrance;
+	    encumbrance = this_object()->GetEncumbrance();
+	    //tc("encumbrance: "+encumbrance,"white");
+	    if(encumbrance > 30){
+		//tc("feep","yellow");
+		tell_object(this_object(),"You struggle to fight while heavily encumbered.");
+	    }
 	    eventTrainSkill(weapon_type + " attack", pro*2, con, 1, bonus);
 	    damage_type = weapon->GetDamageType();
 	    damage = (weapon->eventStrike(target) * pro)/(GetLevel()*2);
 	    damage = GetDamage(damage, weapon_type + " attack");
+	    damage -= encumbrance;
+	    if(damage < 0) damage = 0;
 	    actual_damage = target->eventReceiveDamage(this_object(), damage_type,
 	      damage, 0, TargetLimb);
-	    if( actual_damage < 1 ) {
+	    if( actual_damage < 0 ) {
 		actual_damage = 0;
 	    }
 	    weapon_damage = damage - actual_damage;
@@ -711,13 +722,20 @@ int eventExecuteAttack(mixed target) {
 	      GetCombatBonus(target->GetLevel()));
 	}
 	else {
-	    int x;
-
+	    int x, encumbrance;
+	    encumbrance = this_object()->GetEncumbrance();
+	    //tc("encumbrance: "+encumbrance,"white");
+	    if(encumbrance > 30){
+		//tc("feep","blue");
+		tell_object(this_object(),"You struggle to fight while heavily encumbered.");
+	    }
 	    // I hit, how hard?
 	    eventTrainSkill("melee attack", pro, con, 1,
 	      GetCombatBonus(target->GetLevel()));
 	    if(this_object()->GetMelee()) x = GetDamage(3*chance/4, "melee attack");
 	    else x = GetDamage(3*chance/20, "melee attack");
+	    x -= encumbrance;
+	    if(x < 0) x = 0;
 	    x = target->eventReceiveDamage(this_object(), BLUNT, x, 0,
 	      TargetLimb);
 	    if( !target->GetDying() ) {
@@ -898,8 +916,13 @@ int eventExecuteAttack(mixed target) {
 
     varargs int eventReceiveDamage(object agent, int type, int x, int internal,
       mixed limbs) {
-	int hp;
-
+	int hp,encumbrance;
+	encumbrance = this_object()->GetEncumbrance();
+	//tc("encumbrance: "+encumbrance,"white");
+	if(encumbrance > 30){
+	    //tc("feep","green");
+	    tell_object(this_object(),"You try to dodge while weighed down.");
+	}
 	x = race::eventReceiveDamage(agent, type, x, internal, limbs);
 	if( !Wimpy ) return x;
 	if( (hp = GetHealthPoints()) < 1 ) return x;

@@ -1,19 +1,26 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-  <meta content="text/html; charset=ISO-8859-1"
- http-equiv="content-type">
-  <title>Dead Souls Installation FAQ</title>
-</head>
+<html><head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Dead Souls Installation FAQ</title></head>
+
 <body>
-<pre style="font-family: courier new,courier,monospace;"><big><big><span
- style="font-weight: bold;">Dead Souls Installation FAQ, v2.2</span></big><br><br>Written by Cratylus @ Frontiers, February 2006<br>Updated March 2006 <br><br><br
- style="text-decoration: underline; font-weight: bold;"><span
- style="text-decoration: underline; font-weight: bold;">Is this FAQ really necessary?</span><br><br><small>Normally, no. If you just follow the instructions included in the<br>Dead Souls packages, you'll be fine 90% of the time. However, a<br>non-trivial number of folks have run into difficult circumstances. For<br>those folks, this document is meant to illuminate how the install<br>process works, why some things are as they are, and suggest some<br>solutions to the more common obstacles.</small><br><br><br><span
- style="font-weight: bold; text-decoration: underline;">Where do I get Dead Souls?</span> <br><small><br>Download the latest version from one of the following:</small><br><br></big><a
- href="http://sourceforge.net/project/showfiles.php?group_id=148388"><big>http://sourceforge.net/project/showfiles.php?group_id=148388</big></a><br><big><br></big><big><a
- href="http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls">http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls</a></big><br></pre>
+<pre style="font-family: courier new,courier,monospace;"><big><big><span style="font-weight: bold;">Dead Souls Installation FAQ, v2.5</span></big><br><br>Written by Cratylus @ Frontiers, February 2006<br>Updated April 2006 <br><br><span style="text-decoration: underline; font-weight: bold;">Is this FAQ really necessary?</span><br><br><small>Normally, no. If you just follow the instructions included in the<br>Dead Souls packages, you'll be fine 90% of the time. However, a<br>non-trivial number of folks have run into difficult circumstances. For<br>those folks, this document is meant to illuminate how the install<br>process works, why some things are as they are, and suggest some<br>solutions to the more common obstacles.</small></big><big style="font-family: courier new,courier,monospace;"><small><big><br><br></big></small></big><big><br><span style="font-weight: bold; text-decoration: underline;">Where do I get Dead Souls?</span> <small><br><br>You should only ever download from the sites listed below.<br>Some other sites tend to mirror these or copy data from<br>them, then fail to update their data regularly. The following<br>will always have the most recent version, and they are the<br>only ones officially authorized to distribute Dead Souls.<br><br>Download the latest version from one of the following:<br><br></small></big><big><span style="font-weight: bold;">Mudmagic: </span><a href="http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls">http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls</a><br><br></big><big style="font-weight: bold;">Sourceforge: </big><a href="http://sourceforge.net/project/showfiles.php?group_id=148388"><big>http://sourceforge.net/project/showfiles.php?group_id=148388</big></a><big><span style="font-weight: bold;"></span><br></big></pre>
 <big style="font-family: courier new,courier,monospace;"><small><br>
+<br>
+<big><span style="text-decoration: underline; font-weight: bold;">Where
+do I get older patches?</span></big><br>
+<br>
+<span style="font-weight: bold;">Mudmagic:</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; Windows patches: <a href="http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls/windows_patches">http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls/windows_patches</a><br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; UNIX patches: <a href="http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls/unix_patches">http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls/unix_patches</a><br>
+</small></big><big style="font-family: courier new,courier,monospace;"><small><br>
+<span style="font-weight: bold;">Sourceforge:</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; Both: <a href="http://sourceforge.net/project/showfiles.php?group_id=148388&amp;package_id=175140">http://sourceforge.net/project/showfiles.php?group_id=148388&amp;package_id=175140</a><br>
+<br>
+</small></big><big style="font-family: courier new,courier,monospace;"><small><br>
+<br>
 <big style="font-weight: bold; text-decoration: underline;">Should I
 apply the available patches during an install?</big><br>
 <br>
@@ -24,9 +31,8 @@ Souls<br>
 version to another, please read the upgrade section further down in this<br>
 document.<br>
 <br>
-<br>
-<big style="font-weight: bold;"><span
- style="text-decoration: underline;">What's this Cygwin stuff?</span></big><br>
+<big></big><br>
+<big style="font-weight: bold;"><span style="text-decoration: underline;">What's this Cygwin stuff?</span></big><br>
 <br>
 Don't bother with it. The Cygwin files are there strictly for legal
 reasons, and they<br>
@@ -40,8 +46,7 @@ with their binaries (which the Windows version includes), must also
 provide<br>
 the source code that these binaries came from.<br>
 <br>
-Fortunately, the source code doesn't have to be <span
- style="font-style: italic; font-weight: bold;">in</span> the
+Fortunately, the source code doesn't have to be <span style="font-style: italic; font-weight: bold;">in</span> the
 distribution. Making<br>
 it downloadable from the same page satisfies their licensing. But their<br>
 source code is very unlikely to be useful to you, unless you're very
@@ -50,13 +55,12 @@ in the Cygwin environment and somehow managed to overlook having the<br>
 sources.<br>
 <br>
 So, leave it alone.<br>
-<br>
-<br>
+</small></big><br>
+<big style="font-family: courier new,courier,monospace;"><small><br>
 <big style="font-weight: bold; text-decoration: underline;">How do I
-install the Windows version of Dead Souls?</big><br>
-<br>
-Easy.<br>
-<br>
+install the Windows version of Dead Souls?</big></small></big><br>
+<pre style="font-family: courier new,courier,monospace;"><big><span style="color: rgb(204, 0, 0); font-weight: bold;">NOTE</span>: <span style="font-weight: bold;">If you are using Windows, USE THE WINDOWS VERSION.</span> <br>There is no benefit in trying to download Cygwin and<br>modify the UNIX source code and trying to get it to<br>compile in Windows, unless you know exactly what you're<br>doing. Yes, people have tried to do this and complained.</big></pre>
+<big style="font-family: courier new,courier,monospace;"><small><br>
 First make sure you are running Windows 2000 or above. Then:<br>
 <br>
 <span style="font-weight: bold;">1) </span>unzip the distribution file<br>
@@ -74,8 +78,7 @@ Start-&gt;Run... and entering: cmd<br>
 <br>
 <span style="font-weight: bold;">5)</span> connect to your Windows
 computer by telnetting to port 6666. If you are using the command<br>
-&nbsp; &nbsp; window, type:<span style="color: rgb(0, 153, 0);"> <span
- style="font-weight: bold; color: rgb(0, 0, 0);">telnet localhost 6666</span></span><br>
+&nbsp; &nbsp; window, type:<span style="color: rgb(0, 153, 0);"> <span style="font-weight: bold; color: rgb(0, 0, 0);">telnet localhost 6666</span></span><br>
 <br>
 <span style="font-weight: bold;">6)</span> Enter the name you want your
 admin to have, and answer the questions provided. Make sure<br>
@@ -85,8 +88,7 @@ first person is automatically made admin.<br>
 <span style="font-weight: bold;">7)</span> When you finish entering the
 admin's info, the mud will automatically shut down.<br>
 <br>
-<span style="font-weight: bold;">8)</span> </small></big><big
- style="font-family: courier new,courier,monospace;"><small> run
+<span style="font-weight: bold;">8)</span> </small></big><big style="font-family: courier new,courier,monospace;"><small> run
 c:\ds\runmud.bat again<br>
 <br>
 <span style="font-weight: bold;">9)</span> log in as your admin
@@ -99,36 +101,28 @@ the admintool command. Navigate to the "driver" menu<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (as of this writing, it's option
 r). Enter the name desired, allow the mud to shut down.<br>
 <br>
-<span style="font-weight: bold;">11)</span> </small></big><big
- style="font-family: courier new,courier,monospace;"><small> </small></big><big
- style="font-family: courier new,courier,monospace;"><small> run
+<span style="font-weight: bold;">11)</span> </small></big><big style="font-family: courier new,courier,monospace;"><small> </small></big><big style="font-family: courier new,courier,monospace;"><small> run
 c:\ds\runmud.bat (that's it for the mud reboots. come on, it's windows.
 you're used to rebooting)<br>
 <br>
-<span style="font-weight: bold;">12)</span> log in, type: <span
- style="font-weight: bold;">rm /log/chan/ds</span><br>
-<br>
-</small></big><big style="font-family: courier new,courier,monospace;"><small><span
- style="font-weight: bold;">13)</span> start reading the
+<span style="font-weight: bold;">12)</span> log in, </small></big><big style="font-family: courier new,courier,monospace;"><small>start
+reading the
 handbook and the manual.</small></big><br>
 <big style="font-family: courier new,courier,monospace;"><small><br>
+<span style="font-weight: bold;">*</span> <span style="font-weight: bold;">Note</span>: If you use c:\ds\startmud.bat,
+you won't need to manually restart each time.<br>
+<br>
 <small style="font-weight: bold;"><br>
 </small><big style="text-decoration: underline; font-weight: bold;">Hold
 up, these Windows instructions aren't working</big><br>
 <br>
 There are a few common reasons for this.<br>
 <br>
-* You need to </small></big><big
- style="font-family: courier new,courier,monospace;"><small><span
- style="font-weight: bold;">rm /log/chan/ds </span></small></big><big
- style="font-family: courier new,courier,monospace;"><small>. Dead
-Souls includes a large sample logfile which gets<br>
-rotated soon after installation. Problem is, the new filename is<br>
-incompatible with your Windows filesystem. If you don't issue this<br>
-command, your mud will soon start crapping out, complaining about<br>
-the /log directory. The fix for this will be in a later release.<br>
+* Download only from the sites mentioned above. Those are the only<br>
+ones sure to have the latest version. Other sites can be out of date.<br>
 <br>
-* Most Windows PC's these days have firewall software installed. If you
+</small></big><big style="font-family: courier new,courier,monospace;"><small>*
+Most Windows PC's these days have firewall software installed. If you
 try to connect but<br>
 aren't able to, there's a good chance your connection is being blocked
 by your firewall. Disable<br>
@@ -136,9 +130,9 @@ your firewall temporarily and try to reconnect. If the problem goes
 away, you know now that<br>
 you have to somehow configure your firewall to allow incoming TCP
 connections on port 6666.<br>
-&nbsp; Note: You may also have to permit outbound UDP connections to
-port 9000 on<br>
-IP address 198.144.203.194 if you want your mud to join the Intermud3
+&nbsp; Note: You may also have to permit outbound TCP connections to
+port 23 on<br>
+IP address 149.152.218.102 if you want your mud to join the Intermud3
 network.<br>
 <br>
 *&nbsp; You might not be using c:\ds as your base directory. Make sure
@@ -154,18 +148,6 @@ I have no idea if Dead Souls for Windows works on NT. If you try it and
 it works,<br>
 please let me know by emailing me at &lt;my
 name&gt;@users.sourcefore.net .<br>
-<br>
-*&nbsp; If you've made sure you've followed the directions, avoided the
-"don'ts", and it<br>
-still doesn't work, it may be that you have a Cygwin conflict. If you
-already<br>
-have Cygwin installed on your PC, the dll's provided in the c:\ds\bin
-directory<br>
-might be conflicting with your current version. Try moving the .dll
-files in<br>
-c:\ds\bin to some other folder and see if this fixes the problem. If it
-doesn't, don't forget<br>
-to put them back.<br>
 <br>
 *&nbsp; If the mud starts but you get lots of bizarre errors, there may
 be a couple of<br>
@@ -193,6 +175,19 @@ right, and you are sure<br>
 reinstalling but with a different<br>
 &nbsp;&nbsp;&nbsp; unzip utility.<br>
 <br>
+</small></big><big style="font-family: courier new,courier,monospace;"><small>*&nbsp;
+If you've made sure you've followed the directions, avoided the
+"don'ts", and it<br>
+still doesn't work, it may be that you have a Cygwin conflict. If you
+already<br>
+have Cygwin installed on your PC, the dll's provided in the c:\ds\bin
+directory<br>
+might be conflicting with your current version. Try moving the .dll
+files in<br>
+c:\ds\bin to some other folder and see if this fixes the problem. If it
+doesn't, don't forget<br>
+to put them back.</small></big><br>
+<big style="font-family: courier new,courier,monospace;"><small><br>
 <br>
 <big style="font-weight: bold; text-decoration: underline;">How do I
 install the UNIX version of Dead Souls?</big><br>
@@ -203,12 +198,10 @@ First make sure of a couple of things:<br>
 fileroller (a GUI based app) to decompress the tarball. If<br>
 you ignore this warning you are very likely to end up with really<br>
 confusing errors and problems. Instead use the normal unix command <br>
-line. For example:<span
- style="font-weight: bold; color: rgb(0, 153, 0);"> <span
- style="color: rgb(0, 0, 0);">tar xzf ds2.0.tar.gz</span></span><br>
+line. For example:<span style="font-weight: bold; color: rgb(0, 153, 0);"> <span style="color: rgb(0, 0, 0);">tar xzf ds2.0.tar.gz</span></span><br>
 <br>
 <big style="font-weight: bold;">*</big> Don't use an existing driver
-binary, even if its from a previous<br>
+binary, even if it's from a previous<br>
 (or even the same) Dead Souls distribution. If you're doing a fresh<br>
 install, always, always, always do the complete and exact installation
 procedure,<br>
@@ -226,14 +219,11 @@ all mud files reside. Called $MUDHOME<br>
 <br>
 <span style="font-weight: bold;">2)</span> cd to v22.2b14<br>
 <br>
-<span style="font-weight: bold;">3)</span> type: <span
- style="font-weight: bold;">./configure</span><br>
+<span style="font-weight: bold;">3)</span> type: <span style="font-weight: bold;">./configure</span><br>
 <br>
-<span style="font-weight: bold;">4)</span> type: <span
- style="font-weight: bold;">make</span><br>
+<span style="font-weight: bold;">4)</span> type: <span style="font-weight: bold;">make</span><br>
 <br>
-<span style="font-weight: bold;">5)</span> type: <span
- style="font-weight: bold;">make install</span><br>
+<span style="font-weight: bold;">5)</span> type: <span style="font-weight: bold;">make install</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If this fails, just manually
 copy the "driver" file<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; into $MUDHOME/bin/<br>
@@ -259,10 +249,8 @@ just type: <span style="font-weight: bold; color: rgb(0, 0, 0);">./startmud</spa
 <br>
 <span style="font-weight: bold;">9)</span>&nbsp; telnet to your
 machine, using the port specified in mudos.cfg. For<br>
-example:<span style="color: rgb(0, 153, 0); font-weight: bold;"> <span
- style="color: rgb(0, 0, 0);">telnet
-localhost 6666</span></span><br
- style="color: rgb(0, 153, 0); font-weight: bold;">
+example:<span style="color: rgb(0, 153, 0); font-weight: bold;"> <span style="color: rgb(0, 0, 0);">telnet
+localhost 6666</span></span><br style="color: rgb(0, 153, 0); font-weight: bold;">
 <br>
 <span style="font-weight: bold;">10)</span> Create a new user. Just
 answer the questions. Make sure you are<br>
@@ -278,9 +266,14 @@ restart automatically.<br>
 <big style="font-weight: bold; text-decoration: underline;">I'm having
 trouble getting Dead Souls for UNIX to work</big><br>
 <br>
-* first, stop using Fedora. Ha ha just kidding (not really).<br>
+* first, stop using Fedora. Ha ha just kidding.<br>
 <br>
-* most of the problems with unix installs involve permissions
+</small></big><big style="font-family: courier new,courier,monospace;"><small>*
+Download only from the sites mentioned above. Those are the only<br>
+ones sure to have the latest version. Other sites can be out of date.<br>
+<br>
+</small></big><big style="font-family: courier new,courier,monospace;"><small>*
+most of the problems with unix installs involve permissions
 conflicts. If<br>
 you uncompress the tarball as root user, for example, then try to<br>
 run it as an unprivileged user, the process won't be able to read<br>
@@ -305,14 +298,12 @@ To correct this, copy the template config into the proper<br>
 directory:<br>
 <br style="color: rgb(0, 0, 0);">
 <span style="font-weight: bold; color: rgb(0, 0, 0);">cd
-/home/joe/ds2.0</span><br
- style="font-weight: bold; color: rgb(0, 0, 0);">
+/home/joe/ds2.0</span><br style="font-weight: bold; color: rgb(0, 0, 0);">
 <br style="font-weight: bold; color: rgb(0, 0, 0);">
 <span style="font-weight: bold; color: rgb(0, 0, 0);">cp
 bin/mudos.cfg.orig lib/secure/cfg/mudos.cfg</span><br>
 <br>
-Then edit </small></big><big
- style="color: rgb(51, 51, 0); font-family: courier new,courier,monospace;"><small>lib/secure/cfg/mudos.cfg
+Then edit </small></big><big style="color: rgb(51, 51, 0); font-family: courier new,courier,monospace;"><small>lib/secure/cfg/mudos.cfg
 to point to the correct bin and<br>
 lib directories.<br>
 <br>
@@ -337,19 +328,8 @@ the ramifications fo what you're doing). Instead use the<br>
 ./configure script as per the current instructions, which you<br>
 should follow closely.<br>
 <br>
-* If you have trouble logging in and the driver complains about<br>
-"Cost" functions and "economy", then you've run into a very odd<br>
-bug that's still a bit mysterious. Somehow your /save/economy.o<br>
-file has been corrupted. Uncompress the tarball into a temporary<br>
-directory and copy the original economy.o over the corrupt<br>
-one. Then please email
-me about this. Only one user has ever had<br>
-this problem, but apparently it happened twice, so if it happens<br>
-to someone else, I can at least tell him he's not crazy.<br>
-<br>
 * If the driver craps out complaining about a hosed up swap<br>
-file</small></big><big
- style="font-family: courier new,courier,monospace;"><small>, you're
+file</small></big><big style="font-family: courier new,courier,monospace;"><small>, you're
 probably running Fedora, and you probably haven't<br>
 changed your hostname from the original "localhost.localdomain"<br>
 or whatever nonsense they use.<br>
@@ -361,9 +341,7 @@ What mudos expects is that when it asks your
 its hostname, that it receive something like
 </span><br style="font-family: courier new,courier,monospace;">
 <span style="font-family: courier new,courier,monospace;">"alpha", and
-not something like "alpha.bravo".</span><span
- style="font-family: courier new,courier,monospace;"></span><br
- style="font-family: courier new,courier,monospace;">
+not something like "alpha.bravo".</span><span style="font-family: courier new,courier,monospace;"></span><br style="font-family: courier new,courier,monospace;">
 <span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
 If
 your machine is under the impression that its
@@ -374,8 +352,7 @@ localhost.localdomain, it will supply that name to
 <span style="font-family: courier new,courier,monospace;">mudos, which
 will eventually choke on it.
 </span><br style="font-family: courier new,courier,monospace;">
-<big
- style="color: rgb(51, 51, 0); font-family: courier new,courier,monospace;"><small>&nbsp;&nbsp;&nbsp;
+<big style="color: rgb(51, 51, 0); font-family: courier new,courier,monospace;"><small>&nbsp;&nbsp;&nbsp;
 If you're good at C++, you can edit lines 66 and 76
 of<br>
 v22.2b14/swap.c and correct this behavior. But the common sense fix is<br>
@@ -397,7 +374,8 @@ Linux, SuSE Linux, and various versions of Solaris.<br>
 is there a windows-format mudos.cfg in /secure/cfg? I'm running unix.</span><br>
 <br>
 This is a symptom of my obsession to have the Windows lib distribution<br>
-and the unix lib be absolutely identical. During a fresh install, <br>
+and the unix lib be <span style="font-style: italic; font-weight: bold;">absolutely identical</span>.
+During a fresh install, <br>
 this file is overwritten with a unix version, if you follow the<br>
 install instructions.</big><br>
 <br>
@@ -417,7 +395,7 @@ from your leetness.<br>
 <span style="font-weight: bold;">How do I upgrade from one version of
 Dead Souls to another?</span></big><br>
 <br>
-&nbsp;&nbsp;&nbsp; For the your convenience, patches are available to
+&nbsp;&nbsp;&nbsp; For your convenience, patches are available to
 move from one minor<br>
 revision of Dead Souls to another. But there isn't a patch for every
 possible<br>
@@ -432,7 +410,7 @@ upgrade from one version<br>
 of Dead Souls to another. For example, do not expect a ds2.0 -&gt;
 ds2.1 patch.<br>
 <br>
-&nbsp;&nbsp;&nbsp; The upgrade principle for bot Windows and UNIX is
+&nbsp;&nbsp;&nbsp; The upgrade principle for both Windows and UNIX is
 the same. Basically<br>
 a Dead Souls patch is a pretty unsophisticated upgrade system. In the
 case of<br>
@@ -517,25 +495,14 @@ Or you could follow these instructions:<br>
 <big style="font-weight: bold; text-decoration: underline;">Ok, it's
 running. Now what?</big><br>
 <br>
-Read the <a href="ds-admin-faq.html">admin FAQ</a>. <br>
+Log in and read the in-game Player's Handbook. <br>
+</small></big>
+<pre style="font-family: courier new,courier,monospace;"><big>Read the <a href="http://dead-souls.sourceforge.net/ds-admin-faq.html">Dead Souls Admin FAQ</a>.<br><br>Read the <a href="http://dead-souls.sourceforge.net/ds-creator-faq.html">Dead Souls Creator's FAQ</a>.<br><br>Read the <a href="file:///home/sanchez/ds/ds-inst-faq.html">Dead Souls Installation FAQ</a>.<br><br>Read the <a href="http://dead-souls.sourceforge.net/example.html">Quick Creation System Example Page</a>.<br><br>Read the <a href="http://dead-souls.sourceforge.net/debugging.html">Debugging Guide</a>.<br><br>Read the <a href="http://dead-souls.sourceforge.net/editor.html">Editor Tutorial</a>.<br></big></pre>
+<big style="font-family: courier new,courier,monospace;"><small>Read
+the in-game Creator's Manual.<br>
 <br>
-Read the <a href="ds-creator-faq.html">creator's FAQ</a>.<br>
-<br>
-Log in and read the Player's Handbook. <br>
-<br>
-Then read the Creator's Manual.<br>
-<br>
-If you run into problems or have questions not addressed in the docs,
-use the &lt;<span style="color: rgb(51, 102, 255);">ds</span>&gt;
-channel<br>
-to ask for help. See the </small></big><big
- style="font-family: courier new,courier,monospace;"><small><a
- href="ds-creator-faq.html">creator's FAQ</a></small></big><big
- style="font-family: courier new,courier,monospace;"><small> for proper
-etiquette and form. <br>
-</small><span style="color: rgb(0, 153, 0);"><span
- style="color: rgb(0, 0, 0); font-weight: bold;"></span><br>
-</span><a href="index.html"><small>Dead Souls Homepage</small></a><br>
+</small></big><big style="font-family: courier new,courier,monospace;"><span style="color: rgb(0, 153, 0);"><span style="color: rgb(0, 0, 0); font-weight: bold;"></span><br>
+</span><a href="http://dead-souls.sourceforge.net/index.html"><small>Dead
+Souls Homepage</small></a><br>
 </big>
-</body>
-</html>
+</body></html>

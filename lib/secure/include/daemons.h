@@ -38,9 +38,11 @@
 #define ROUTER_D             DIR_SECURE_DAEMONS "/i3router/server"
 #define SEASONS_D            DIR_DAEMONS "/seasons"
 #define SERVICES_D           DIR_DAEMONS "/services"
+#define SNOOP_D              DIR_SECURE_DAEMONS "/snoop"
 #define SOUL_D               DIR_DAEMONS "/soul"
-#define SPELLS_D              DIR_DAEMONS "/spells"
+#define SPELLS_D             DIR_DAEMONS "/spells"
 #define STATISTICS_D         DIR_DAEMONS "/statistics"
+#define STARGATE_D           DIR_DAEMONS "/stargate"
 #define TERMINAL_D           DIR_DAEMONS "/terminal"
 #define TIME_D               DIR_DAEMONS "/time"
 #ifdef Dead SoulsLPMud

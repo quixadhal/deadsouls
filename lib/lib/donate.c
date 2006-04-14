@@ -16,7 +16,7 @@ static void create() {
 
 static void init() {
     if( (string)this_player()->ClassMember((string)GetOwner()) ||
-      (string)this_player()->GetGuild() == (string)GetOwner() ) {
+      (string)this_player()->GetClan() == (string)GetOwner() ) {
 	add_action( (: eventDonate :) , "donate" );
     }
 }

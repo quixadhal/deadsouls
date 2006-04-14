@@ -42,10 +42,10 @@
 
 #define EXTRA_TIME_OFFSET	 0
 #define RESET_INTERMUD           0
-
 #define ENGLISH_ONLY             0
 #define HUMANS_ONLY              0
-
 #define PINGING_MUDS             ({"Frontiers","Dead Souls"})
+#define ENABLE_ENCUMBRANCE       1
+#define GLOBAL_MONITOR           0
 
 #endif /* s_config_h */

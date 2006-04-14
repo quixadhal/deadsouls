@@ -8,12 +8,14 @@
 
 inherit LIB_VERB;
 
+string libfile = "foo";
+
 static void create() {
     verb::create();
     SetVerb("reload");
-    SetRules("OBJ", "STR OBJ", "STR here", "here");
+    SetRules("OBJ", "STR OBJ", "STR here", "here", "every STR");
     SetErrorMessage("reload what?");
-    SetHelp("Syntax: <reload OBJ>\n\n"
+    SetHelp("Syntax: <reload OBJ>, <reload every OBJ>\n\n"
       "This command loads into memory the file of the object "
       "you specify, and replaces the current copy with a new "
       "copy. If you change something about a sword you are "
@@ -23,10 +25,22 @@ static void create() {
       "inherited by the target object. If any of those objects "
       "or the target object's file fail to load, the object "
       "is not updated.\n"
+      "    If you \"reload every npc\", then any loaded object that "
+      "inherits LIB_NPC gets reloaded. Other valid lib objects "
+      "that can be used this way are: room, sentient, armor, item.\n"
+      "Please note that if there are too many items to reload, "
+      "the command will fail with \"Too long evaluation\" errors.\n"
+      "    Books, due to their processing-intensive load time, "
+      "are excluded from the \"every\" keyword.\n"
       "\nSee also: copy, create, delete, modify, initfix, add");
 }
 
 mixed can_reload_obj(string str) { 
+    if(!creatorp(this_player())) return "This command is only available to builders and creators.";
+    else return 1;
+}
+
+mixed can_reload_every_str(string str){
     if(!creatorp(this_player())) return "This command is only available to builders and creators.";
     else return 1;
 }
@@ -61,3 +75,56 @@ mixed do_reload_str_word(string wrd1, string wrd2) {
     if(wrd1 == "-r" && wrd2 = "here") reload(ob, 1);
     else return "Failed.";
 }
+
+mixed do_reload_every_str(string str){
+    object *ob_pool = ({});
+    //tc("str: "+str);
+
+    if(!archp(this_player())){
+	write("This verb is intended for arches only.");
+	return 1;
+    }
+
+    switch(str){
+    case "npc" : libfile = LIB_NPC; break;
+    case "sentient" : libfile = LIB_SENTIENT; break;
+    case "room" : libfile = LIB_ROOM; break;
+    case "weapon" : libfile = LIB_WEAPON; break;
+    case "item" : libfile = LIB_ITEM; break;
+    case "container" : libfile = LIB_STORAGE; break;
+    case "armor" : libfile = LIB_ARMOR; break;
+    case "worn_storage" : libfile = LIB_WORN_STORAGE; break;
+    default : libfile = "/lib/foo";
+    }
+
+    //tc("libfile: "+libfile);
+
+    if(!file_exists(libfile+".c")){
+	write("There is no such library file.");
+	return 1;
+    }
+
+    load_object("/secure/cmds/creators/update")->cmd("-a -r "+libfile);
+
+    ob_pool = filter(objects(), (: ( inherits(libfile, $1) &&
+	  !inherits(LIB_BOOK, $1) ) :) );
+
+    if(!sizeof(ob_pool)) {
+	write("None found.");
+	return 1;
+    }
+
+    //tc("ob_pool: "+identify(ob_pool));
+
+    foreach(object ob in ob_pool){
+	//if(ob) tc("reloading: "+file_name(ob),"red");
+	if(ob) write("reloading: "+file_name(ob));
+	reload(ob);
+    }
+
+    write("Done.");
+    libfile = "foo";
+    return 1;
+}
+
+

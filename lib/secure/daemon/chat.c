@@ -140,19 +140,14 @@ int cmdChannel(string verb, string str) {
     object ob = 0;
     int emote;
 
-    //tc("verb: "+verb);
-    //tc("str: "+str);
-
-    if(first(str,1) == ":"){
+    if(first(str,1) == ":" && sizeof(str) > 3){
 	if(!grepp(verb,"emote")) verb += "emote";
 	str = trim(replace_string(str,":","",1));
     }
 
     if(grepp(verb, "emote")) varb = replace_string(verb,"emote","");
-    else if(grepp(verb, ":")) varb = replace_string(verb,":","");
+    else if(last(verb, 1) == ":") varb = replace_string(verb,":","");
     else varb = verb;
-
-    //tc("varb: "+varb);
 
     if( verb == "hist" ) {
 	if( !Channels[str] ) return 0;

@@ -158,7 +158,6 @@ void AddRace(string file, int player) {
     //tc("hellow");
 
     res = new(class Race);
-    s = new (class Stat);
 
     res->Resistance = ([]);
     res->Skills = ([]);
@@ -255,10 +254,15 @@ void AddRace(string file, int player) {
 	      break;
 
 	  case "STATS":
+	      tmp = ({});
+	      s = new (class Stat);
 	      tmp = explode(replace_string(line, "STATS ",""), ":");
-	      s->Average = to_int(tmp[1]);
-	      s->Class = to_int(tmp[2]);
+	      //tc("stat: "+identify(tmp),"yellow");
+	      s->Average = copy(to_int(tmp[1]));
+	      s->Class = copy(to_int(tmp[2]));
 	      res->Stats[tmp[0]] = s;
+	      //tc("ihnfcaa: "+(res->Stats[tmp[0]])->Average,"yellow");
+	      //tc("ihnfcaax2: "+(res->Stats[tmp[0]])->Class,"yellow");
 	      break;
 
 	  case "LIMB":
@@ -406,6 +410,8 @@ void AddRace(string file, int player) {
       void SetCharacterRace(string race, mixed array args) {
 	  class Race res = Races[race];
 	  mixed array tmp;
+	  mapping StatMap;
+	  string schluss;
 
 	  if( !res || !res->Complete || sizeof(args) != 5 ) return;
 	  tmp = ({});
@@ -413,8 +419,16 @@ void AddRace(string file, int player) {
 	  tmp = ({ tmp..., ({ key, val }) });
 	  args[0] = tmp;
 	  tmp = ({});
-	  foreach(string key, class Stat stat in res->Stats)
-	  tmp = ({ tmp..., ({ key, stat->Average, stat->Class }) });
+	  //foreach(string key, class Stat stat in res->Stats){
+	  StatMap = copy(res->Stats);
+	  schluss = "";
+	  foreach(schluss in keys(StatMap)){
+	      //tc("key: "+identify(StatMap[schluss]),"green");
+	      //tc("Average: "+identify(StatMap[schluss]->Average),"green");
+	      //tc("Class: "+identify(StatMap[schluss]->Class),"green");
+	      tmp = ({ tmp..., ({ schluss, StatMap[schluss]->Average, StatMap[schluss]->Class }) });
+	      //tc("SetCharacterRace: "+identify(tmp));
+	  }
 	  args[1] = tmp;
 	  args[2] = res->Language;
 	  //args[3] = ({ res->Sensitivity[0], res->Sensitivity[1] });

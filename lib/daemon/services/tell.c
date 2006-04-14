@@ -14,6 +14,7 @@ void eventReceiveTell(mixed *packet) {
     string who;
     string adverb = "";
 
+    tn("eventReceiveTell: "+identify(packet),"yellow");
     if( file_name(previous_object()) != INTERMUD_D ) return;
     who = convert_name(packet[5]);
     if( !(ob = find_player(who)) || (int)ob->GetInvis() ) {
@@ -59,6 +60,7 @@ void eventSendTell(string who, string where, string msg) {
     this_player(1)->eventPrint("%^BOLD%^RED%^You tell " + capitalize(who) +
       "@" +  where + ":%^RESET%^ " + msg,
       MSG_CONV);
+    tn("eventSendTell: "+identify( ({ "tell", 5, mud_name(), pl, where, convert_name(who), plc, msg }) ), "yellow");
 }
 
 

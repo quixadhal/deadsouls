@@ -41,6 +41,9 @@ mixed indirect_reload_str_word() { return 1; }
 mixed direct_reload() { return 1; }
 mixed indirect_reload() { return 1; }
 
+mixed direct_reload_every_str() { return 1; }
+mixed indirect_reload_every_str() { return 1; }
+
 mixed direct_copy_obj_to_obj() { return 1; }
 mixed direct_copy_obj_str() { return 1; }
 

@@ -17,7 +17,7 @@ inherit LIB_DAEMON;
 private int LoginTime, Level, BirthTime, CreatorBirth, WhereBlock;
 private string CurrentUser, Short, CapName, RealName, Email;
 private string Town, Race, Gender, HostSite;
-private string Class, Guild, Long;
+private string Class, Clan, Long;
 private string Rank, WebPage;
 private string array Titles, Religion;
 private class marriage array Marriages;
@@ -100,7 +100,7 @@ varargs string GetFinger(string who, int html) {
 	int yr;
 
 	ret += CapName+" the "+Gender+" "+Race+" "+(Class || "drifter");
-	if( Guild ) ret += " of the " + pluralize(Guild);
+	if( Clan ) ret += " of the " + pluralize(Clan);
 	if( creatorp(this_player()) && Level ) ret += " ("+Level+")";
 	ret += " is a " + Rank+" of " + Town + ".%^BR%^\n";
 	BirthTime = BirthTime - (18 * YEAR);

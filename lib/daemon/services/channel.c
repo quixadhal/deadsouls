@@ -106,10 +106,11 @@ void eventReceiveChannelTargettedEmote(mixed array packet) {
 varargs void eventSendChannel(string who, string ch, string msg, int emote,
   string target, string targmsg) {
     mixed array packet;
+    mixed array packet_thing = ({ who, ch, msg, emote || "", target || "", targmsg || "" });
 
     string targpl, where;  // targpl is target keyname
 
-    tn("eventSendChannel. ","green");
+    tn("eventSendChannel raw: "+identify( packet_thing ),"green");
 
     if( emote ) {
 	if( target && targmsg ) {
@@ -136,6 +137,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
     else packet = ({ "channel-m", 5, mud_name(), convert_name(who), 0, 0, ch, 
 	  who, msg });
     INTERMUD_D->eventWrite(packet);
+    tn("eventSendChannel processed: "+identify(packet),"green");
 }
 
 void eventSendChannelWhoRequest(string channel, string mud) {
@@ -144,13 +146,12 @@ void eventSendChannelWhoRequest(string channel, string mud) {
     pl = (string)this_player(1)->GetKeyName();
     INTERMUD_D->eventWrite(({ "chan-who-req", 5, mud_name(), pl, mud, 0,
 	channel }));
+    tn("eventSendChannelWhoRequest: "+identify( ({ "chan-who-req", 5, mud_name(), pl, mud, 0, channel })) , "green");
 }
 
 void eventRegisterChannels(mapping list) {
     mixed array val;
     string channel, ns;
-
-    tn("eventRegisterChannels: "+identify(list),"green");
 
     if( file_name(previous_object()) != INTERMUD_D ) return;
     ns = (string)INTERMUD_D->GetNameserver();
@@ -167,6 +168,8 @@ void eventRegisterChannels(mapping list) {
 	else INTERMUD_D->eventWrite(({ "channel-listen", 5, mud_name(), 0, ns,
 		0, channel, 1 }));
     }
+    tn("eventRegisterChannels: "+identify(list),"green");
+
 }
 
 int eventAdministerChannel(string channel, string array additions,
@@ -180,11 +183,13 @@ int eventAdministerChannel(string channel, string array additions,
 	(string)this_player(1)->GetKeyName(),
 	(string)INTERMUD_D->GetNameserver(),
 	0, channel, additions, subs }));
+
+    tn("eventAdministerChannel: "+channel+" "+identify(additions)+" "+identify(subs),"green");
     return 1;
 }
 
 int AddChannel(string channel, int privee) {
-    tn("eventAdministerChannel. ","green");
+    tn("eventAdministerChannel: "+channel+", "+privee,"green");
 
     if( !((int)master()->valid_apply( ({}) )) ){ 
 	return 0;

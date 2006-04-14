@@ -133,9 +133,9 @@ static void InputEmail(string str) {
     tmp = read_file("/secure/include/config.h");
 
     if(sizeof(tmp)){
-    rm("/secure/include/config.h");
-    tmp = replace_string(tmp, "DEBUG_NAME", Name);
-    write_file("/secure/include/config.h", tmp);
+	rm("/secure/include/config.h");
+	tmp = replace_string(tmp, "DEBUG_NAME", Name);
+	write_file("/secure/include/config.h", tmp);
     }
 
     if( ob = find_object(LIB_CONNECT) ) destruct(ob);
@@ -157,6 +157,7 @@ static void InputEmail(string str) {
     else {
 	receive("Mud name unchanged.\n");
     }
+    PLAYERS_D->AddPlayerInfo(Name);
     shutdown();
     destruct(this_object());
 

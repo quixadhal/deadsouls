@@ -2,9 +2,9 @@
 
 static void close_callback(int fd){
     string mudname;
-    tn("close_callback: fd="+fd+"\n");
+    trr("close_callback: fd="+fd+"\n");
     foreach(mudname in keys(muds_on_this_fd(fd))){
-	tn("Removing mud from connected_muds list: "+mudname);
+	trr("Removing mud from connected_muds list: "+mudname);
 	mudinfo[mudname]["disconnect_time"] = time();
 	map_delete(connected_muds, mudname);
 	broadcast_mudlist(mudname);
@@ -48,12 +48,12 @@ static void write_data_retry(int fd, mixed data, int counter){
 	break;
     case EESEND:
 	if (counter < MAXIMUM_RETRIES) {
-	    tn("retry hit","cyan");
+	    trr("retry hit");
 	    call_out("retry_write", 2, ({fd, data, counter + 1}));
 	    return;
 	}
     default:
-	tn("write_data_retry: " + socket_error(rc) + "yellow");
+	trr("write_data_retry: " + socket_error(rc));
 	close_connection(fd);
 	break;
     }
@@ -63,7 +63,7 @@ static void close_connection(int fd){
     int sockerr;
     map_delete(sockets, fd);
     sockerr = socket_close(fd);
-    tn("closing sockerr:"+sockerr,"green");
+    trr("closing sockerr:"+sockerr);
 }
 
 static void write_data(int fd, mixed data){

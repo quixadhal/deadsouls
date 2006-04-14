@@ -26,7 +26,7 @@ static void create() {
     apostrophe_exceptions += ({"say","speak","yell","whisper","shout"});
     //Fix here courtesy of Jonez
     apostrophe_exceptions += ({"ping", "reply"});
-    SearchPath = ({ DIR_PLAYER_CMDS, DIR_SECURE_PLAYER_CMDS, DIR_GUILD_CMDS,
+    SearchPath = ({ DIR_PLAYER_CMDS, DIR_SECURE_PLAYER_CMDS, DIR_CLAN_CMDS,
       DIR_COMMON_CMDS, DIR_SECURE_COMMON_CMDS });
 }
 

@@ -100,8 +100,8 @@ string SignRead(){
 }
 
 string LongDesc(){
-    string desc = "This is a polished, antiseptic room composed of some "+
-    "white, gleaming material. There is a viewscreen on a wall here, "+
+    string desc = "This is a polished antiseptic room composed of some "+
+    "white gleaming material. There is a viewscreen on a wall here, "+
     "with a control panel alonside it. "+
     "A long printout hangs from the panel."
     "\nThe network troubleshooting room is down from here.";

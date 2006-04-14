@@ -6,6 +6,7 @@
 
 #include <lib.h>
 #include <rooms.h>
+#include <daemons.h>
 
 inherit LIB_DAEMON;
 
@@ -23,13 +24,24 @@ mixed cmd(string args) {
 	possessive_noun(mud_name()) + " reality.";
     if( !strsrch(file = save_file(nom), DIR_PLAYERS) )
 	return "You cannot make "+capitalize(args)+" a player.";
+
+    if(!ob = find_player(nom)){
+	PLAYERS_D->RemovePendingEncre(lower_case(nom));
+	PLAYERS_D->AddPendingDecre(lower_case(nom));
+	write(capitalize(nom)+" will be demoted on their next login.");
+	return 1;
+    }
+
     if( file_size(DIR_PLAYERS+"/"+nom[0..0]) != -2) 
 	mkdir(DIR_PLAYERS+"/"+nom[0..0]);
     if(rename(file+__SAVE_EXTENSION__, DIR_PLAYERS+"/"+nom[0..0]+"/"+nom+__SAVE_EXTENSION__))
 	return "You failed due to lack of write access to "+DIR_PLAYERS+".";
+    PLAYERS_D->eventDecre(lower_case(nom));
+
     if( ob = find_player(nom) ) {
 	PlayerName = nom;
 	inv = deep_inventory(ob);
+	ob->eventMove(ROOM_FURNACE);
 	if(sizeof(inv)) inv->eventMove(ROOM_FURNACE);
 	catch(player_ob = (object)master()->player_object(nom));
 	PlayerName = 0;
@@ -51,6 +63,7 @@ mixed cmd(string args) {
 	  this_player());
 	if( file_size(file+__SAVE_EXTENSION__) > -1 ) rm(file+__SAVE_EXTENSION__);
     }
+    player_ob->eventMove(ROOM_START);
     return 1;
 }
 

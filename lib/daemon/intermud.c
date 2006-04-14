@@ -31,9 +31,6 @@ static void create() {
     Password = 0;
     Tries = 0;
     Banned = ([]);
-    // There is only one known I3 router as of
-    // Feb 2006: us-1.i3.intermud.org
-    //Nameservers = ({ ({ "*gjs", "198.144.203.194 9000" }) });
     Nameservers = ({ ({ "*yatmim", "149.152.218.102 23" }) });
     MudList = new(class list);
     ChannelList = new(class list);
@@ -44,6 +41,7 @@ static void create() {
     if( file_size( SAVE_INTERMUD __SAVE_EXTENSION__ ) > 0 )
 	unguarded( (: restore_object, SAVE_INTERMUD, 1 :) );
     SetNoClean(1);
+    tn("INTERMUD_D reloaded.");
     SetDestructOnClose(1);
     SetSocketType(MUD);
     if(DISABLE_INTERMUD == 1){
@@ -66,6 +64,13 @@ static void Setup() {
 	mudlib() + " " + mudlib_version(), version(), "LPMud",
 	MUD_STATUS, ADMIN_EMAIL,
 	(mapping)SERVICES_D->GetServices(), ([]) }) );
+    tn("INTERMUD_D setup: "+identify( ({
+	  "startup-req-3", 5, mud_name(), 0, Nameservers[0][0], 0,
+	  Password, MudList->ID, ChannelList->ID, query_host_port(),
+	  PORT_OOB, PORT_UDP, mudlib() + " " + mudlib_version(),
+	  mudlib() + " " + mudlib_version(), version(), "LPMud",
+	  MUD_STATUS, ADMIN_EMAIL,
+	  (mapping)SERVICES_D->GetServices(), ([]) }) ), "red");;
 }
 
 static void eventRead(mixed *packet) {
@@ -86,8 +91,15 @@ static void eventRead(mixed *packet) {
 	//default :  tc("Packet: "+identify(packet));
     case "startup-reply":
 	log_file("intermud",identify(packet));
-	if( sizeof(packet) != 8 ) return;  /* should send error */
-	if( !sizeof(packet[6]) ) return;
+	tn("INTERMUD_D: "+identify(packet),"red");
+	if( sizeof(packet) != 8 ) {
+	    tn("We don't like the mudlist packet size.","red");
+	    return;  
+	}
+	if( !sizeof(packet[6]) ) {
+	    tn("We don't like an absence of packet element 6.","red");
+	    return;
+	}
 	if( packet[6][0][0] == Nameservers[0][0] ) {
 	    Nameservers = packet[6];
 	    Connected = Nameservers[0][0];
@@ -100,11 +112,26 @@ static void eventRead(mixed *packet) {
 	}
 	return;
     case "mudlist":
-	if( sizeof(packet) != 8 ) return;
-	if( packet[6] == MudList->ID ) return; 
-	if( packet[2] != Nameservers[0][0] ) return;
+	tn("INTERMUD_D mudlist received.","red");
+	log_file("mudlist_packet",identify(packet),1);
+	if( sizeof(packet) != 8 ) {
+	    tn("We don't like the mudlist packet size.","red");
+	    return;  
+	}
+	if( packet[6] == MudList->ID )  {
+	    tn("We don't like packet element 6. It is: "+identify(packet[6]),"red");
+	    //return;
+	    tn("We will continue anyway.","red");
+	}
+	if( packet[2] != Nameservers[0][0] ) {
+	    tn("We don't like packet element 2. It is: "+identify(packet[2]),"red");
+	    return;
+	}
+
 	MudList->ID = packet[6];
 	foreach(cle, val in packet[7]) {
+	    if(cle) tn("Procesing cle: "+identify(cle),"cyan");
+	    if(val) tn("Procesing val: "+identify(val)+"\n--\n","cyan");
 	    if( !val && MudList->List[cle] != 0 ) 
 		map_delete(MudList->List, cle);
 	    else if( val ) MudList->List[cle] = val;
@@ -166,6 +193,7 @@ static void eventRead(mixed *packet) {
 	SERVICES_D->eventReceiveTell(packet);
 	break;
     case "chan-user-reply":
+	tn("INTERMUD_D: chan-user-reply received.","red");
     case "ucache-update":
 	SERVICES_D->eventReceiveUcacheUpdate(packet);
 	break;
@@ -185,6 +213,7 @@ static void eventRead(mixed *packet) {
 	SERVICES_D->eventReceiveMailOk(packet);
 	break;
     case "file":
+	tn("INTERMUD_D: file packet received.","red");
 	break;
     case "error":
 	SERVICES_D->eventReceiveError(packet);
@@ -205,6 +234,7 @@ static void eventSocketClose() {
 
 static void eventConnectionFailure() {
     if( Connected ) return;
+    tn("INTERMUD_D: CONNECTION FAILED","red");
     error("Failed to find a useful name server.\n");
 }
 

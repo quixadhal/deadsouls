@@ -8,6 +8,7 @@
  */
 
 #include <lib.h>
+#include <config.h>
 #include <daemons.h>
 #include <function.h>
 #include <medium.h>
@@ -31,7 +32,7 @@ private int Alcohol, Caffeine, Food, Drink, Poison, Sleeping;
 private float StaminaPoints;
 private string Torso, Biter;
 private mapping Fingers, Limbs, MissingLimbs;
-private static int Dying, LastHeal;
+private static int Dying, LastHeal, Encumbrance;
 private static function Protect;
 private static mapping WornItems;
 private static class MagicProtection *Protection;
@@ -64,6 +65,19 @@ static void create() {
     LastHeal = time();
     Protection = ({});
     ExtraChannels = ({});
+}
+
+int GetEncumbrance(){
+    int encumbrance = 0;
+    object *stuff = filter(all_inventory(this_object()), (: !($1->GetWorn()) :) );
+
+    //tc("ENABLE_ENCUMBRANCE: "+ENABLE_ENCUMBRANCE,"cyan");
+    if(!(ENABLE_ENCUMBRANCE) || inherits(LIB_NPC,this_object()) ) return encumbrance;
+    //tc("bad encumbrance","red");
+    if(sizeof(stuff)) foreach(object item in stuff) 
+	encumbrance += item->GetMass();
+    if(sizeof(stuff)) encumbrance *= sizeof(stuff);
+    return encumbrance;
 }
 
 string SetBodyComposition(string str){
@@ -989,6 +1003,11 @@ varargs int AddLimb(string limb, string parent, int classes, int *armors) {
       "armors" : arm ]);
     Limbs[limb]["health"] = GetMaxHealthPoints(limb);
     return 1;
+}
+
+int HealLimb(string limb){
+    Limbs[limb]["health"] = GetMaxHealthPoints(limb);
+    return Limbs[limb]["health"];
 }
 
 int RestoreLimb(string limb) {

@@ -1,22 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-  <meta content="text/html; charset=ISO-8859-1"
- http-equiv="content-type">
-  <title>creation example page</title>
-</head>
+<html><head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>creation example page</title></head>
+
 <body>
 <span style="font-weight: bold; text-decoration: underline;">What's the
 QCS?</span><br>
-<pre><big><br>	QCS stands for Quick Creation System. The QCS is a<br>series of commands and modules that lets you create stuff<br>easily and quickly. Before the QCS, if you wanted to make<br>an orc, you would edit the text file by hand, or copy<br>a template file and use an editor to manually change the<br>lines you needed to modify. This could be a tiresome<br>process, as the standard editor can be a bit awkward, and<br>making dozens of objects this way could be real torture for<br>beginners.<br><br>	The QCS changes all of that. Rather than use an<br>editor to meodify files, the QCS gives you commands that<br>permit you to modify objects on the fly. This means that<br>orc creation for example could involve just the following <br>simple steps (please note "npc" is another word for "mob"):<br><br><span
- style="color: rgb(255, 0, 0);">create npc new_orc</span><br><br><span
- style="color: rgb(255, 0, 0);">modify npc name orc</span><br
- style="color: rgb(255, 0, 0);"><br style="color: rgb(255, 0, 0);"><span
- style="color: rgb(255, 0, 0);">modify orc short a mean-looking orc</span><br
- style="color: rgb(255, 0, 0);"><br style="color: rgb(255, 0, 0);"><span
- style="color: rgb(255, 0, 0);">modify orc long A typical orc: nasty, brutish, and short.</span><br
- style="color: rgb(255, 0, 0);"><br style="color: rgb(255, 0, 0);"><span
- style="color: rgb(255, 0, 0);">modify orc race orc</span><br><br>	And that's it. All your modifications automatically<br>get written to new_orc.c (usually in your area directory),<br>and you now have an npc you can add to a room. Adding things <br>to rooms is just as easy. Creating weapons, armor, and other<br>objects is done the same way.<br><br>	For complete details and examples, read the<br>QCS chapters in the Creators Manual. The QCS section starts<br>in chapter 31.</big></pre>
+<pre><big><br>	QCS stands for Quick Creation System. The QCS is a<br>series of commands and modules that lets you create stuff<br>easily and quickly. Before the QCS, if you wanted to make<br>an orc, you would edit the text file by hand, or copy<br>a template file and use an editor to manually change the<br>lines you needed to modify. This could be a tiresome<br>process, as the standard editor can be a bit awkward, and<br>making dozens of objects this way could be real torture for<br>beginners.<br><br>	The QCS changes all of that. Rather than use an<br>editor to meodify files, the QCS gives you commands that<br>permit you to modify objects on the fly. This means that<br>orc creation for example could involve just the following <br>simple steps (please note "npc" is another word for "mob"):<br><br><span style="color: rgb(255, 0, 0);">create npc new_orc</span><br><br><span style="color: rgb(255, 0, 0);">modify npc name orc</span><br style="color: rgb(255, 0, 0);"><br style="color: rgb(255, 0, 0);"><span style="color: rgb(255, 0, 0);">modify orc short a mean-looking orc</span><br style="color: rgb(255, 0, 0);"><br style="color: rgb(255, 0, 0);"><span style="color: rgb(255, 0, 0);">modify orc long A typical orc: nasty, brutish, and short.</span><br style="color: rgb(255, 0, 0);"><br style="color: rgb(255, 0, 0);"><span style="color: rgb(255, 0, 0);">modify orc race orc</span><br><br>	And that's it. All your modifications automatically<br>get written to new_orc.c (usually in your area directory),<br>and you now have an npc you can add to a room. Adding things <br>to rooms is just as easy. Creating weapons, armor, and other<br>objects is done the same way.<br><br>	For complete details and examples, read the<br>QCS chapters in the Creators Manual. The QCS section starts<br>in chapter 31.</big></pre>
 <br>
 This is a log of the creation of some items using the Dead Souls
 creation system. It has<br>
@@ -44,8 +33,7 @@ This is a room you can use as a template.<br>
 A simple table is here.<br>
 A fighter is standing here.<br>
 <br>
-<big style="color: rgb(255, 0, 0);"><big><small
- style="color: rgb(0, 0, 0); text-decoration: underline;">//// This is
+<big style="color: rgb(255, 0, 0);"><big><small style="color: rgb(0, 0, 0); text-decoration: underline;">//// This is
 the standard sample room. We're about to create a new room to the east
 of it.</small></big></big><br>
 <big><span style="color: rgb(255, 0, 0);">create room east test1<br>
@@ -72,8 +60,7 @@ This is a room you can use as a template.<br>
 A simple table is here.<br>
 A fighter is standing here.<br>
 <br>
-<big style="color: rgb(255, 0, 0);"><span
- style="color: rgb(0, 0, 0); text-decoration: underline;">//// We go
+<big style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0); text-decoration: underline;">//// We go
 into the new room and see it is a copy of the old one. Let's change the
 short description to avoid confusion:</span></big><br>
 <big><span style="color: rgb(255, 0, 0);">modify here short Room One</span></big><br>
@@ -81,8 +68,7 @@ Indenting file...<br>
 "/tmp/indent.1134436526.tmp.dat" 27 lines 515 bytes<br>
 Exit from ed.<br>
 <br>
-<big style="color: rgb(255, 0, 0);"><span
- style="color: rgb(0, 0, 0); text-decoration: underline;">//// We don't
+<big style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0); text-decoration: underline;">//// We don't
 need the fighter from the other room here, so we remove him from this
 new room's inventory.</span></big><br>
 <big style="color: rgb(255, 0, 0);">delete fighter<br>
@@ -879,6 +865,5 @@ code some LPC in ed for complex stuff. But knocking out rooms and NPC's
 and objects quickly helps you avoid getting bogged down in mechanics
 when what you really want to do is build.</big><br>
 <br>
-<a href="index.html">Dead Souls Homepage</a><br>
-</body>
-</html>
+<a href="http://dead-souls.net/index.html">Dead Souls Homepage</a><br>
+</body></html>

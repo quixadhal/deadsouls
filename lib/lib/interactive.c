@@ -152,6 +152,7 @@ static void net_dead() {
 	get_livings(load_object("/secure/room/control"))->eventPrint("[" + GetKeyName()+
 	  " goes net-dead]", MSG_SYSTEM);
     }
+    SNOOP_D->ReportLinkDeath(this_object()->GetKeyName());
     eventMove(ROOM_FREEZER);
     if(query_snoop(this_object()))
 	query_snoop(this_object())->eventPrint(GetCapName() + " has gone "
@@ -208,9 +209,9 @@ void eventDescribeEnvironment(int brief) {
 	    if(desc && desc != "")
 		desc = capitalize((string)env->GetShort() || "")
 		+ " [" + desc + "]\n";
-	    else desc = capitalize((string)env->GetShort() || "");
+	    else desc = capitalize((string)env->GetShort()+"\n" || "\n");
 	}
-	else desc = "";
+	else desc = "\n";
 	if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM )
 	    desc += (string)env->GetLong();
 	if(functionp(tmp = (mixed)env->GetSmell("default")))
@@ -228,8 +229,9 @@ void eventDescribeEnvironment(int brief) {
 	    desc = (string)env->GetShort();
 	    if( (tmp = (string)env->GetObviousExits()) && tmp != "" )
 		desc += " [" + tmp + "]";
+	    else desc += "\n";
 	}
-	else desc = "";
+	else desc = "\n";
     }
     if( desc ) eventPrint(desc, MSG_ROOMDESC);
     if( smell ) eventPrint("%^GREEN%^" + smell, MSG_ROOMDESC);

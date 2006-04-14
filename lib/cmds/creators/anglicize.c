@@ -5,6 +5,9 @@ inherit LIB_DAEMON;
 
 mixed cmd(string str) {
     object target;
+
+    if(!str || str == "") str = "me";
+
     if(str == "me") str = this_player()->GetKeyName();
     if(!target = present(str, environment(this_player()))){
 	write("They're not here.");

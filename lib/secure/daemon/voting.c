@@ -157,7 +157,7 @@ mixed eventCastVote( string sClass, string sVoter, string sVotee ) {
 mixed eventNextDay() {
     mapVoting["daycount"]--;
 
-    if( ! mapVoting["daycount"] ) {
+    if( !mapVoting["daycount"] ) {
 	if( mapVoting["mode"] == VOTE_MODE_CANDIDATES ) {
 	    mapVoting["mode"] = VOTE_MODE_VOTING;
 	    mapVoting["daycount"] = VOTE_DAY_COUNT;
@@ -167,7 +167,7 @@ mixed eventNextDay() {
 	    eventSave();
 	    return VOTE_SUCCESS;
 	}
-
+	//tc("mapVoting[\"daycount\"]: "+mapVoting["daycount"]);
 	eventEndVoting();
 	return VOTE_SUCCESS;
     }
@@ -189,9 +189,15 @@ mixed eventTallyVotes() {
     mapCouncil = ([]);
 
     foreach( string sClass in CLASSES_D->GetClasses() ) {
+	//tc("sClass: "+sClass);
 	mapWho = mapVoting["votes"][lower_case(sClass)];
-	if( ! ( sizeof( asWho = keys( mapWho ) ) ) )
-	    return VOTE_SUCCESS;
+	//tc("mapVoting: "+identify(mapVoting),"red");
+	//tc("mapWho: "+identify(mapWho));
+	if( ! ( sizeof( asWho = keys( mapWho ) ) ) ){
+	    //tc("?");
+	    //return VOTE_SUCCESS;
+	}
+	//tc("asWho: "+identify(asWho));
 
 	while( sizeof( asWho ) >= 2 ) {
 	    string player1, player2;
@@ -204,8 +210,10 @@ mixed eventTallyVotes() {
 	    else
 		asWho -= ({ player1 });
 	}
+	//tc("asWho: "+identify(asWho));
 
-	mapCouncil[lower_case(sClass)] = asWho[0];
+	if(asWho && sizeof(asWho)) mapCouncil[lower_case(sClass)] = asWho[0];
+	//tc("mapCouncil["+lower_case(sClass)+"]: "+identify(mapCouncil[lower_case(sClass)]));
     }
 
     eventSave();
@@ -230,7 +238,21 @@ string *GetCouncil() {
     return asWho;
 }
 
-string GetCouncilMember( string sClass ) { return mapCouncil[sClass]; }
+string GetCouncilMember( string sClass ) { 
+    if(mapCouncil[sClass]) return mapCouncil[sClass];
+    else return "";
+}
+
+string GetCurrentCouncil(){
+    string ret = "Current council:\n";
+    foreach( string sClass in CLASSES_D->GetClasses() ){
+	string councillor;
+	if(mapCouncil[sClass]) councillor = mapCouncil[sClass];
+	else councillor = "NONE";
+	ret += capitalize(sClass)+": "+capitalize(councillor)+"\n";
+    }
+    return ret;
+}
 
 int GetVoteStatus( object ob ) {
     string sVoter;

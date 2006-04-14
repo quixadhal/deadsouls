@@ -61,8 +61,7 @@ void init(){
 int eventSuffer(){
     int x;
     x=random(500);
-    if(x < 2) environment()->eventForce("sneeze");
-    else if(x < 5) damage1();
+    if(x < 5) damage1();
     else if(x < 10) damage2();
     else if(x < 15) damage3();
     else if(x < 20) damage4();
@@ -92,13 +91,13 @@ int damage1(){
 
 int damage2(){
     tell_object(victim,"You involuntarily start scratching at the maddening itch.");
-    tell_room(environment(victim),victimname+" scratches desperately at "+objective(this_player())+"self.", ({victim}) );
+    tell_room(environment(victim),victimname+" scratches desperately at "+reflexive(victim)+".", ({victim}) );
     return 1;
 }
 
 int damage3(){
-    tell_room(environment(victim),victimname+" scratches at "+objective(this_player())+"self in a frenzy, ripping "+
-      possessive(this_player())+" flesh and drawing blood.", ({victim}) );
+    tell_room(environment(victim),victimname+" scratches at "+reflexive(victim)+" in a frenzy, ripping "+
+      possessive(victim)+" flesh and drawing blood.", ({victim}) );
     tell_object(victim,"You scratch at yourself in a mad frenzy, ripping flesh and drawing blood.");
     if(DangerLevel() != 100) victim->eventReceiveDamage(this_object(),DISEASE,random(5)+4,0,"torso");
     return 1;

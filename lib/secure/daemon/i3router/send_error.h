@@ -2,7 +2,7 @@
 
 static void send_error(string mud, string user, string errcode, string errmsg, mixed *info){
     if(!connected_muds[mud]){
-	Debug("Can't send error to "+mud+" because they're not connected.");
+	trr("Can't send error to "+mud+" because they're not connected.");
 	return;
     }
     write_data(connected_muds[mud],({

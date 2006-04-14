@@ -103,6 +103,7 @@ varargs string SetRace(string race, mixed extra) {
     }
     foreach(tmp in args[1]) {
 	mixt = copy(args[1]);
+	//tc("mixt: "+identify(mixt),"blue");
 	AddStat(tmp...);
     }
     if( stringp(args[2]) ) {

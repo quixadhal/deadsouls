@@ -11,10 +11,12 @@ static void create() {
     SetLong("This is where all network messages go. It is an extremely "
       "noisy and uncomfortable location, just like network rooms all around "
       "the world. It is here for debugging and troubleshooting purposes, so "
-      "if that's not what you're doing, you should probably leave." );
-    SetExits(([
+      "if that's not what you're doing, you should probably leave. " 
+      "The arch room is above. The router room is south.");
+    SetExits( ([
 	"up" : "/secure/room/arch",
-      ]));
+	"south" : "/secure/room/router.c",
+      ]) );
 
 }
 int CanReceive(object ob) {

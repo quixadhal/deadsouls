@@ -12,6 +12,7 @@ void eventReceiveEmote(mixed *packet) {
     object ob;
     string who;
 
+    tn("eventReceiveEmote: "+identify(packet), "green");
     if( file_name(previous_object()) != INTERMUD_D ) return;
     who = convert_name(packet[5]);
     if( !(ob = find_player(who)) || (int)ob->GetInvis() ) {
@@ -34,6 +35,7 @@ void eventSendEmote(string who, string where, string msg) {
     where = (string)INTERMUD_D->GetMudName(where);
     INTERMUD_D->eventWrite(({ "emoteto", 5, mud_name(), pl, where, 
 	convert_name(who), plc, msg }));
+    tn("eventSendEmote: "+identify( "emoteto", 5, mud_name(), pl, where,convert_name(who), plc, msg  ),"green");
 }
 
 

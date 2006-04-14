@@ -16,7 +16,7 @@ static void create() {
     verb::create();
     SetVerb("vote");
     SetRules("for STR");
-    SetErrorMessage("Who would you like to vote for?");
+    SetErrorMessage("For whom would you like to vote?");
     SetHelp("Syntax: <vote for STR>\n"
       "Casts your vote for a candidate");
 }

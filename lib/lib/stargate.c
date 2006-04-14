@@ -1,0 +1,244 @@
+#include <lib.h>
+#include <daemons.h>
+#include "/lib/include/stargate.h"
+
+/**
+ * 2006-03-28, jonez
+ *  - based on a suggestion from rhk, changed so that one cannot enter the
+ *    gate unless status is "outbound". this makes the object closer to the
+ *    (theoretical) math and also to what happens on the show.
+ */
+
+/**
+ * based on portal.c by Brodbane - March 2006
+ *
+ * $Id: stargate.c,v 1.1 2006/04/05 05:48:39 jam Exp $
+ *
+ * The desired functionality is much like a "star gate": users dialed
+ * letters or full words that lined up with destinations.  A portal opens to
+ * that destination briefly.  To define destinations you must setup a
+ * constant below then add it to the switch statement in the cmdDial
+ * function.  This object is crude and basic, but gets the job done.
+ *
+ * 2006-03-22, jonez
+ *   - original version of this file is from Daelas@Moraelinost
+ * 2006-03-23, jonez
+ *   - altered so code uses existing verbs (touch, enter) where possible. last add_action is for dial command.
+ *   - added single mapping called "database" and made the "dial" command use it.
+ *   - dial command no longer uses switch/case, making adding a new destination simpler
+ *   - made use of SetPreventGet() / SetPreventPut()
+ *   - made use of new stargate daemon
+ *   - made use of LIB_STARGATE
+ *   - made use of STARGATE_D
+ *
+ * IDEAS:
+ *  - create a daemon that holds the stargate network [DONE]
+ *  - allow for stargate failure
+ *  - add dhd object
+ *  - change the code so that it uses a single mapping of names and
+ *    destinations, perhaps in a database file. currently an update to the
+ *    object requires an update for all the objects. [DONE]
+ *  - dhd skill (thanks plato)
+ *  - delay when dialing gate. destination dhd lights up?
+ *  - player should not be able to dial earth if earth is already connected elsewhere (need daemon) [DONE]
+ *  - make use of existing verbs (enter, touch) instead of doing our own thing. [DONE]
+ *  - daemon should contain a class that maps the various gates to each other. see lib/include/door.h [DONE]
+ *  - shout "off world activation" into the gateroom when the gate engages.
+ *  - track status as "incoming" or "outgoing".. you can only "enter" an outgoing gate (rhk) [DONE]
+ *  - if room is empty, shut down the gate (rhk)
+ *  - change callout time when someone goes through the gate (rhk)
+ */
+
+inherit LIB_ITEM;
+
+static private string origin;
+
+string displayLong();
+string displayShort();
+
+void create() 
+{
+    item::create();
+
+    SetKeyName("stargate");
+    SetId(({"stargate", "gate", "portal", "ring"}));
+    SetAdjectives(({"stargate"}));
+    SetShort( (: displayShort :) );
+
+    SetLong( (: displayLong :) );
+
+    AddItem( "inner ring", "The second ring - the inner ring - is placed "
+      "inside the larger ring and seems to be able to move.");
+    SetMass(1000);
+    SetBaseCost("silver",50);
+    SetPreventGet("The gate is pure naquadah and cannot be moved");
+    SetPreventPut("The gate is pure naquadah and cannot be moved");
+    SetTouch("You feel the stargate beneath your hand humming with energy.");
+}
+
+void init()
+{
+    ::init();
+    add_action( "cmdDial", "dial" );
+    add_action( "cmdEnter", "enter");
+}
+
+
+void setOrigin(string o, string d)
+{
+    if (o == "" || d == "") return;    
+    origin = lower_case(o);
+    STARGATE_D->setStargate(origin, d);
+}
+
+string getOrigin()
+{
+    return origin;
+}
+
+void connect(string destination)
+{
+    int ret;
+
+    destination = lower_case(destination);
+
+    if (origin == destination)
+    {
+	write("You attempt to dial the gate, but the last chevron does not engage");
+	say(this_player()->GetName() + " tries to dial the gate but the last chevron does not engage");
+	return;
+    }
+
+    ret = STARGATE_D->connect(origin, destination);
+    if (ret)
+    {
+	string d = STARGATE_D->getDestination(destination);
+	write("The ancient rings lock into place and a portal forms in an explosion of energy.");
+	say("The ancient rings lock into place and a portal forms in an explosion of energy.");
+	tell_room(d, "The ancient rings lock into place and a portal forms in an explosion of energy");
+	call_out("disconnect", 10+random(5));
+	return;
+    }
+
+    write("You attempt to dial the stargate, but nothing happens.");
+    say(this_player()->GetName() + " tries to dial the gate but fails.");
+
+    return;
+}
+
+int disconnect()
+{
+    string e = STARGATE_D->getEndpoint(origin);
+    string d = STARGATE_D->getDestination(e);
+
+    debug(sprintf("stargate_lib->disconnect(%s), e=%s, d=%s", origin, e, d));
+
+    // FIX: does the player get a message if they come through the gate and then leave the room?
+    write("The chevrons on the stargate disengage and the portal disappears.");
+    say("The chevrons on the stargate disengage and the portal disappears.");
+    tell_room(d, "The chevrons on the stargate disengage and the portal disappears", ({ this_player() }));
+
+    return STARGATE_D->disconnect(origin);
+}
+
+string status()
+{
+    return STARGATE_D->getStatus(origin);  
+}
+
+mixed cmdDial(string s)
+{
+    if (s)
+    {
+	connect(s);
+	return 1;
+    }
+
+    return 0;
+
+}
+
+int cmdEnter(string what)
+{
+    string endpoint, destination;
+    object who;
+
+    if (what != "gate" && what != "stargate")
+    {
+	return 0;
+    }
+
+    if (status() != "outbound")
+    {
+	return 0;
+    }
+
+    who = this_player();
+    endpoint = STARGATE_D->getEndpoint(origin);
+    destination = STARGATE_D->getDestination(endpoint);
+    debug("endpoint=" + endpoint);
+    debug("destination=" + destination);
+    who->eventPrint("You step through the event horizon of the stargate.");
+    who->eventMoveLiving(destination, 
+      "$N steps into the event horizon and disappears", 
+      "$N steps out of the event horizon");
+    return 1;
+
+}
+
+int eventEnter(object who)
+{
+    string endpoint;
+
+    if (!who) return 0;
+
+    endpoint = STARGATE_D->getEndpoint(origin);
+    if (status() == "connected")
+    {
+	who->eventPrint("You step through the event horizon of the stargate.");
+	who->eventMoveLiving(endpoint, 
+	  "$N steps into the event horizon and disappears", 
+	  "$N steps out of the event horizon");
+    }
+    return 1;
+}
+
+string displayLong()
+{
+    string buf, stat;
+
+    buf = "This is the Stargate of legend.  The Stargate was created "
+    "from naquadah ore, similar to black quartz.  It is a perfectly "
+    "circular device approximately ten meters in diameter and "
+    "comprised of two sets of rings and nine chevrons placed "
+    "equidistant along its outer circumfrence.";
+
+    stat = status();
+
+    if (stat == "outbound" || stat == "inbound")
+    {
+	buf += " There is an event horizon in the center of the ring that looks like shimmering water.";
+    }
+    else if (stat == "idle")
+    {
+	buf += " This gate is currently idle.";
+    }
+    return buf;
+}
+
+string displayShort()
+{
+    string stat;
+    stat = status();
+    switch (stat)
+    {
+    case "inbound":
+	return "an inbound stargate";
+    case "outbound":
+	return "an outbound stargate";
+    case "idle":
+	return "an idle stargate";
+    default:
+	return "a broken stargate";
+    }
+}

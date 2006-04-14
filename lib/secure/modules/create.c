@@ -14,11 +14,11 @@
 int eventDelete(object ob, string value);
 string global1, global2, globaltmp, globalvalue;
 
-string *base_arr = ({"SetUnique", "SetNoClean","SetNoModify","SetProperties","SetLong","SetShort","SetItems","SetListen","SetSmell"});
+string *base_arr = ({"set_heart_beat", "SetUnique", "SetNoClean","SetNoModify","SetProperties","SetLong","SetShort","SetItems","SetListen","SetSmell"});
 string *item_arr = base_arr + ({"SetLanguage","SetRead","SetDefaultRead","SetDisableChance", "SetDamagePoints", "SetVendorType","SetNoCondition","SetMoney","SetKeyName", "SetId", "SetMass","SetCost","SetValue","SetAdjectives","SetDamagePoints","SetBaseCost" });
 string *meal_arr = item_arr + ({ "SetMealType", "SetStrength"}) -({"SetDamagePoints"});
 string *storage_arr = item_arr + ({"SetMaxCarry","SetInventory", "SetCanClose", "SetCanLock","SetMaxRecurse","SetLocked","SetClosed","SetKey"});
-string *room_arr = base_arr - ({"SetUnique"}) + ({"SetNoObviousExits","SetDefaultExits","SetTown","SetNightLong","SetDayLong","SetClimate","SetAmbientLight","SetNightLight","SetDayLight","SetObviousExits", "SetInventory", "SetEnters"});
+string *room_arr = base_arr - ({"SetUnique"}) + ({"SetLanguage", "SetRead", "SetDefaultRead", "SetNoObviousExits","SetDefaultExits","SetTown","SetNightLong","SetDayLong","SetClimate","SetAmbientLight","SetNightLight","SetDayLight","SetObviousExits", "SetInventory", "SetEnters"});
 string *npc_arr = base_arr - ({"SetItems"}) + ({"SetNativeLanguage","SetCustomXP", "SetSpellBook", "SetCanBite", "SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat"});
 string *barkeep_arr = npc_arr + ({"SetLocalCurrency","SetMenuItems"});
 string *trainer_arr = npc_arr + ({"AddTrainingSkills"});
@@ -33,6 +33,7 @@ string *book_arr = item_arr + ({"SetTitle","SetSource"});
 string *worn_storage_arr = armor_arr + storage_arr;
 
 string *all_arr = storage_arr + door_arr + room_arr + barkeep_arr + armor_arr + weapon_arr + bed_arr +meal_arr + vendor_arr +trainer_arr;
+
 
 string GetSettings(string str){
     string ret;
@@ -423,6 +424,10 @@ mixed eventModify(object ob, string str){
 	case "customxp" : out = "SetCustomXP";break;
 	case "nativelanguage" : out = "SetNativeLanguage";break;
 	case "setnativelanguage" : out = "SetNativeLanguage";break;
+	case "heartbeat" : out = "set_heart_beat";break;
+	case "setheartbeat" : out = "set_heart_beat";break;
+	case "set_heart_beat" : out = "set_heart_beat";break;
+	case "heart_beat" : out = "set_heart_beat";break;
 	default : out = mode;
 	}
     }

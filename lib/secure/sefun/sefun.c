@@ -8,6 +8,7 @@
 #include <daemons.h>
 #include <commands.h>
 #include <objects.h>
+#include <privs.h>
 #include "sefun.h"
 
 #include "/secure/sefun/absolute_value.c"
@@ -78,6 +79,42 @@
 #include "/secure/sefun/ascii.c"
 #include "/secure/sefun/wild_card.c"
 
+
+object find_object( string str ){
+    if(base_name(efun::find_object(str)) == "/secure/obj/snooper") return 0;
+    else return efun::find_object(str);
+}
+
+varargs mixed objects(mixed arg1, mixed arg2){
+    object array tmp_obs = efun::objects();
+
+    if(base_name(previous_object()) == SNOOP_D || archp(this_player())){
+	return tmp_obs;
+    }
+    if(!arg1){
+	return filter(tmp_obs, (: base_name($1) != "/secure/obj/snooper" :) );
+    }
+
+    if(arg1 && !arg2) {
+	if(!functionp(arg1)) return 0;
+	foreach(object ob in filter(tmp_obs, (: base_name($1) != "/secure/obj/snooper" :) )){
+	    evaluate(arg1, ob);
+	}
+	return 1;
+    }
+
+    if(arg1 && arg2) {
+	if(!functionp(arg1)) return 0;
+	if(!objectp(arg2)) return 0;
+	foreach(object ob in filter(tmp_obs, (: base_name($1) != "/secure/obj/snooper" :) )){
+	    call_other(arg2, arg1, ob);
+	}
+	return 1;
+    }
+
+    else return 0;
+}
+
 varargs string socket_address(mixed arg, int foo) {
     string ret, port;
     if(objectp(arg)) return efun::socket_address(arg);
@@ -117,10 +154,21 @@ varargs void shutdown(int code) {
     efun::shutdown(code);
 }
 
+int valid_snoop(object snooper, object target){
+    if(member_group(target, PRIV_SECURE)) {
+	message("system", (string)snooper->GetCapName()+" is trying to snoop "
+	  "you.", target);
+	if(!member_group(snooper, PRIV_SECURE)) return 0;
+    }
+    if(archp(snooper)) return 1;
+    if( base_name(snooper) == "/secure/obj/snooper" ) return 1;
+    if(creatorp(snooper) && playerp(target)) return 1; 
+    return 0;
+}
+
 varargs object snoop(object who, object target) {
     if(!target) return efun::snoop(who);
-    //if(!creatorp(who)) return 0;
-    if(!creatorp(who) && who->GetKeyName() != "s_bot" ) return 0;
+    if(!creatorp(who) && base_name(who) != "/secure/obj/snooper" ) return 0;
     if(!((int)master()->valid_apply(({ "ASSIST" })))) {
 	if(!((int)target->query_snoopable())) return 0;
 	else return efun::snoop(who, target);

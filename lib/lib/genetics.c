@@ -99,13 +99,14 @@ varargs void SetStat(string stat, int level, int classes) {
 
 varargs void AddStat(string stat, int base, int cls) {
     int level;
-
+    //tc("stat: "+stat+", base: "+base+", cls: "+cls,"red");
     if( userp(this_object()) ) level = 1;
     else level = GetLevel();
     if( !stat || cls < 1 || cls > 5 ) return;
     base += ((5 - cls) * random(10)) + (3 * (level + 1))/(cls * 4);
     if( userp(this_object()) && base > 90 ) base = 90;
     else if( base > 100 ) base = 100;
+    //tc("stat: "+stat+", base: "+base+", cls: "+cls,"green");
     SetStat(stat, base, cls);
 }
 
