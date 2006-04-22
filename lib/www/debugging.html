@@ -13,8 +13,17 @@ various</span><br style="font-family: courier new,courier,monospace;">
 available in the Dead Souls lib to hunt down the source of the
 problem:</span><br style="font-family: courier new,courier,monospace;">
 <br style="font-family: courier new,courier,monospace;">
+<a style="font-family: courier new,courier,monospace;" href="#1">1 elog</a><br style="font-family: courier new,courier,monospace;">
+<a style="font-family: courier new,courier,monospace;" href="#2">2
+dbxframe and dbxwhere</a><br style="font-family: courier new,courier,monospace;">
+<a style="font-family: courier new,courier,monospace;" href="#3">3
+tell_player() and debug()</a><br style="font-family: courier new,courier,monospace;">
+<a style="font-family: courier new,courier,monospace;" href="#4">4 tail</a><br style="font-family: courier new,courier,monospace;">
+<a style="font-family: courier new,courier,monospace;" href="#5">5 bk
+and restore</a><br style="font-family: courier new,courier,monospace;">
+<br>
 <br style="font-family: courier new,courier,monospace;">
-<big style="font-family: courier new,courier,monospace;"><big style="font-weight: bold; text-decoration: underline;"><big>elog</big></big></big><br style="font-family: courier new,courier,monospace;">
+<big style="font-family: courier new,courier,monospace;"><big style="font-weight: bold; text-decoration: underline;"><big><a name="1"></a>elog</big></big></big><br style="font-family: courier new,courier,monospace;">
 <pre style="font-family: courier new,courier,monospace;"><big>If the file is somewhere in your home directory, just type: <span style="font-weight: bold;">elog</span> <br><br>This will provide you a listing of the last few lines of your personal<br>error log. Warning lines tell you about code that works but should<br>be fixed in some way. Lines that don't contain the word "Warning" are<br>error lines: they indicate something about your code that prevents<br>it from working. For example:<br><br></big></pre>
 <hr style="width: 100%; height: 2px; font-family: courier new,courier,monospace;"><span style="font-family: courier new,courier,monospace;">&gt; </span><span style="font-weight: bold; font-family: courier new,courier,monospace;">update
 sample_room</span><br style="font-family: courier new,courier,monospace;">
@@ -24,7 +33,7 @@ sample_room</span><br style="font-family: courier new,courier,monospace;">
 <hr style="width: 100%; height: 2px; font-family: courier new,courier,monospace;"><span style="font-family: courier new,courier,monospace;">&gt; </span><span style="font-weight: bold; font-family: courier new,courier,monospace;">elog</span><br style="font-family: courier new,courier,monospace;">
 <pre style="font-family: courier new,courier,monospace;"><big><span style="font-style: italic;">/log/errors/cratylus:</span><br style="font-style: italic;"><br style="font-style: italic;"><span style="font-style: italic;"></span><span style="font-style: italic;">/realms/cratylus/area/room/sample_room.c line 10: Undefined variable 'Sample'<br>/realms/cratylus/area/room/sample_room.c line 10: parse error<br></span></big></pre>
 <hr style="width: 100%; height: 2px; font-family: courier new,courier,monospace;">
-<pre style="font-family: courier new,courier,monospace;"><big><span style="font-style: italic;"><br></span><br>	Now you can see that the error is my syntax on<br>line 10. I would then use ed to examine the code, and specifically lines 9<br>through 11. It turns out that I forgot to put quotes around the room name, <br>so the parser tried to use it as a variable, which, of course, it couldn't.<br><br>	If the file in question is in /secure, you'd type <span style="font-weight: bold;">elog secure</span> , or if<br>it's in /cmds, <span style="font-weight: bold;">elog cmds</span> , and so on.<br><span style="font-weight: bold;"><br>	</span></big><br><big><span style="font-weight: bold;"></span><big style="font-weight: bold; text-decoration: underline;"><big>dbxwhere</big></big></big><big><big style="font-weight: bold; text-decoration: underline;"><big> &amp; dbxframe</big></big><span style="font-weight: bold;"><br></span></big><big><span style="font-weight: bold;"></span></big><big><span style="font-weight: bold;"><br>	</span>Two<span style="font-weight: bold;"> </span>helpful debugging commands are dbxframe and dbxwhere. Let's<br>take a look at my broken sample_room.c file. We'll start with dbxwhere,<br>which lists for us the chain of events that led to the error. The<br>indivudual steps are called frames.<br><br>&gt; <span style="font-weight: bold;">dbxwhere</span><br>*Error in loading object '/realms/cratylus/area/room/sample_room'<br>Object: /secure/cmds/creators/update at line 148<br><br>#0: '&lt;function&gt;' at /secure/save/creators/c/cratylus (&lt;function&gt;) at /:0<br>#1: 'cmdAll' at /secure/save/creators/c/cratylus (/lib/command.c) at line 84<br>#2: 'cmd' at /secure/cmds/creators/update at line 109<br>#3: 'eventUpdate' at /secure/cmds/creators/update at line 148<br>#4: 'CATCH' at /secure/cmds/creators/update at line 148<br></big></pre>
+<pre style="font-family: courier new,courier,monospace;"><big><span style="font-style: italic;"><br></span><br>	Now you can see that the error is my syntax on<br>line 10. I would then use ed to examine the code, and specifically lines 9<br>through 11. It turns out that I forgot to put quotes around the room name, <br>so the parser tried to use it as a variable, which, of course, it couldn't.<br><br>	If the file in question is in /secure, you'd type <span style="font-weight: bold;">elog secure</span> , or if<br>it's in /cmds, <span style="font-weight: bold;">elog cmds</span> , and so on.<br><span style="font-weight: bold;"><br>	</span></big><br><big><big style="font-weight: bold; text-decoration: underline;"><big><a name="2"></a></big></big></big><big><big style="font-weight: bold; text-decoration: underline;"><big>dbxwhere</big></big></big><big><big style="font-weight: bold; text-decoration: underline;"><big> &amp; dbxframe</big></big><span style="font-weight: bold;"><br></span></big><big><span style="font-weight: bold;"></span></big><big><span style="font-weight: bold;"><br>	</span>Two<span style="font-weight: bold;"> </span>helpful debugging commands are dbxframe and dbxwhere. Let's<br>take a look at my broken sample_room.c file. We'll start with dbxwhere,<br>which lists for us the chain of events that led to the error. The<br>indivudual steps are called frames.<br><br>&gt; <span style="font-weight: bold;">dbxwhere</span><br>*Error in loading object '/realms/cratylus/area/room/sample_room'<br>Object: /secure/cmds/creators/update at line 148<br><br>#0: '&lt;function&gt;' at /secure/save/creators/c/cratylus (&lt;function&gt;) at /:0<br>#1: 'cmdAll' at /secure/save/creators/c/cratylus (/lib/command.c) at line 84<br>#2: 'cmd' at /secure/cmds/creators/update at line 109<br>#3: 'eventUpdate' at /secure/cmds/creators/update at line 148<br>#4: 'CATCH' at /secure/cmds/creators/update at line 148<br></big></pre>
 <br style="font-family: courier new,courier,monospace;">
 <span style="font-family: courier new,courier,monospace;">The output is
 similar to the update error we saw above, but in
@@ -102,7 +111,7 @@ doesn't provide useful information,</span><br style="font-family: courier new,co
 the source of the problem.<br>
 <br>
 <big><big><br>
-<big><span style="font-weight: bold; text-decoration: underline;">tell_player(),
+<big><span style="font-weight: bold; text-decoration: underline;"></span></big></big></big></span><big style="font-family: courier new,courier,monospace;"><big style="font-weight: bold; text-decoration: underline;"><big><a name="3"></a></big></big></big><span style="font-family: courier new,courier,monospace;"><big><big><big><span style="font-weight: bold; text-decoration: underline;">tell_player(),
 debug()</span></big></big></big><br>
 <br>
 &nbsp;&nbsp;&nbsp; Sometimes it's hard to fix code if you don't know
@@ -139,7 +148,7 @@ you need to enable your debugging mode by typing:<br>
 <br>
 &nbsp;&nbsp;&nbsp; debug() is available in 2.0r20 and above.<br>
 </span><br style="font-family: courier new,courier,monospace;">
-<pre style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;"><big><big><big>tail</big></big></big></pre>
+<pre style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;"><big><big style="font-weight: bold; text-decoration: underline;"><big><a name="4"></a></big></big></big><big><big><big>tail</big></big></big></pre>
 <br style="font-family: courier new,courier,monospace;">
 <span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
 This is a version of the unix tail command. It
@@ -154,7 +163,7 @@ is important for examining crucial log files:</span><br style="font-family: cour
 /log/player_errors<br>
 <br>
 <br>
-</small></big><big style="text-decoration: underline; font-family: courier new,courier,monospace;"><big><big><span style="font-weight: bold;">bk
+</small></big><big style="font-family: courier new,courier,monospace;"><big style="font-weight: bold; text-decoration: underline;"><big><a name="5"></a></big></big></big><big style="text-decoration: underline; font-family: courier new,courier,monospace;"><big><big><span style="font-weight: bold;">bk
 &amp; restore</span><br>
 <br>
 </big></big></big><span style="font-family: courier new,courier,monospace;">These commands
@@ -249,7 +258,7 @@ out of screwups, not a development tool to test file
 versions.</span><br style="font-family: courier new,courier,monospace;">
 <big style="font-family: courier new,courier,monospace;"><small style="font-weight: bold;"><br>
 <br>
-</small></big><a style="font-family: courier new,courier,monospace;" href="http://dead-souls.net/index.html">Dead Souls Homepage</a><br style="font-family: courier new,courier,monospace;">
+</small></big><a style="font-family: courier new,courier,monospace;" href="http://dead-souls.sourceforge.net/index.html">Dead Souls Homepage</a><br style="font-family: courier new,courier,monospace;">
 <big style="font-family: courier new,courier,monospace;"><small style="font-weight: bold;"><br>
 <br>
 </small></big>

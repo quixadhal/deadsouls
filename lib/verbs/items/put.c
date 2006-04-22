@@ -11,6 +11,7 @@
 #include "include/put.h"
 
 inherit LIB_VERB;
+string *eligible;
 
 static void create() {
     verb::create();
@@ -24,6 +25,79 @@ static void create() {
       "Allows you to stick objects into other objects.\n\n"
       "Synonyms: place, stick\n\n"
       "See also: get, give, drop");
+}
+
+
+mixed can_put_obs_word_obj(mixed *res, string wrd, object storage) {
+    if(storage && storage->GetClosed()){
+	return "#That's closed.";
+    }
+
+    if(intp(check_light())) return this_player()->CanManipulate();
+    else return check_light();
+}
+
+mixed can_put_obj_word_obj(object target, string wrd, object storage) {
+    object *target_arr;
+    if(target) target_arr = ({ target });
+    return can_put_obs_word_obj(target_arr, wrd, storage);
+}
+
+mixed do_put_obj_word_obj(object what, string wrd, object storage) {
+
+    if(wrd == "in" || wrd == "into") return (mixed)storage->eventPutInto(this_player(), what);
+    if(wrd == "on" || wrd == "onto") return (mixed)storage->eventPutOnto(this_player(), what);
+}
+
+mixed do_put_obs_word_obj(mixed *res, string wrd, object storage) {
+    object *obs;
+
+
+    obs = filter(res, (: objectp :));
+
+    //tc("a");
+    if( !sizeof(obs) ) {
+	mixed *ua;
+
+	ua = unique_array(res, (: $1 :));
+	//tc("b");
+	foreach(string *lines in ua) {
+	    if(storage && storage->GetClosed()) 
+		write(capitalize(storage->GetShort())+" is closed.");
+	    else write("That doesn't seem possible at the moment.");
+	    return 1;
+	}
+	//tc("c");
+	if(storage && storage->GetClosed()) 
+	    write(capitalize(storage->GetShort())+" is closed.");
+	else write("That doesn't seem possible at the moment.");
+	return 1;
+    }
+    //tc("d");
+    if(!sizeof(filter(obs, (: environment($1) == this_player() :)))){
+	write("You don't seem to be in possession of that.");
+	eligible = ({});
+	//tc("1");
+	return 1;
+    }
+    eligible=filter(obs, (: (!($1->GetWorn()) && environment($1) == this_player()) :)); 
+    if(!sizeof(eligible)){
+	write("Remove or unwield items before trying to put them somewhere.");
+	eligible = ({});
+	//tc("2");
+	return 1;
+    }
+    //tc("eligible: "+identify(eligible));
+    if(wrd == "in" || wrd == "into") {
+	foreach(object ob in eligible)
+	storage->eventPutInto(this_player(), ob);
+    }
+    if(wrd == "on" || wrd == "onto") {
+	foreach(object ob in eligible)
+	storage->eventPutOnto(this_player(), ob);
+    }
+    eligible = ({});
+    return 1;
 }
 
 mixed can_put_wrd_wrd_word_obj(string num, string curr,string wrd, mixed container) {
@@ -56,52 +130,6 @@ mixed can_put_wrd_wrd_word_obj(string num, string curr,string wrd, mixed contain
     else return check_light();
 }
 
-
-mixed can_put_obs_word_obj(mixed *res, string wrd, object storage) {
-    if(storage->GetClosed()){
-	return "#That's closed.";
-    }
-
-    if(intp(check_light())) return this_player()->CanManipulate();
-    else return check_light();
-}
-
-mixed can_put_obj_word_obj(object target, string wrd, object storage) {
-    object *target_arr;
-    if(target) target_arr = ({ target });
-    return can_put_obs_word_obj(target_arr, wrd, storage);
-}
-
-mixed do_put_obj_word_obj(object what, string wrd, object storage) {
-
-    if(wrd == "in" || wrd == "into") return (mixed)storage->eventPutInto(this_player(), what);
-    if(wrd == "on" || wrd == "onto") return (mixed)storage->eventPutOnto(this_player(), what);
-}
-
-mixed do_put_obs_word_obj(mixed *res, string wrd, object storage) {
-    object *obs;
-
-
-    obs = filter(res, (: objectp :));
-    if( !sizeof(obs) ) {
-	mixed *ua;
-
-	ua = unique_array(res, (: $1 :));
-	write("That's not possible.");
-	foreach(string *lines in ua) {
-	    write("That doesn't seem possible at the moment.");
-	    this_player()->eventPrint("That doesn't seem possible at the moment.");
-	}
-	return 1;
-    }
-    if(wrd == "in" || wrd == "into") {
-	foreach(object ob in obs) storage->eventPutInto(this_player(), ob);
-    }
-    if(wrd == "on" || wrd == "onto") {
-	foreach(object ob in obs) storage->eventPutOnto(this_player(), ob);
-    }
-    return 1;
-}
 
 mixed do_put_wrd_wrd_word_obj(string num, string curr, mixed wort, object ob) {
     object pile, env;

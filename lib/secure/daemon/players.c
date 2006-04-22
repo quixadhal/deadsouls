@@ -74,6 +74,16 @@ string *GetUserList(){
     return user_list;
 }
 
+int RemoveUser(string str){
+    if(!str || str == "") return 0;
+    str = lower_case(str);
+    if(!user_exists(str)) return 0;
+    if(member_array(str, players) != -1) players -= ({ str });
+    if(member_array(str, creators) != -1) creators -= ({ str });
+    if(member_array(str, user_list) != -1) user_list -= ({ str });
+    return 1;
+}
+
 string *AddPendingEncre(string str){
     if(catch((int)master()->valid_apply()) ||
       !(int)master()->valid_apply(({ "SECURE", "ASSIST", "LIB_CONNECT" })) ){ 

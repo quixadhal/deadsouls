@@ -17,7 +17,6 @@
 #define SAVE_NAMESERVER    DIR_SAVE "/network"
 #define SAVE_NOTIFY        DIR_SAVE "/notify"
 #define SAVE_QUESTS        DIR_SECURE_SAVE "/quests"
-#define SAVE_RACES         DIR_SAVE "/races"
 #define SAVE_PLAYER_LIST   DIR_SAVE "/player_list"
 #define SAVE_POLITICS      DIR_SECURE_SAVE "/politics"
 #define SAVE_RACES         DIR_SAVE "/races"

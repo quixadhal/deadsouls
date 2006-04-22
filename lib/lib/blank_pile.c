@@ -6,7 +6,11 @@ private string PileType   = 0;
 int    PileAmount = 0;
 
 static void create() {
+    string *saveds;
     item::create();
+    saveds = item::GetSave();
+    saveds += ({ "PileType", "PileAmount" });
+    AddSave( saveds );
     SetKeyName("money");
 }
 

@@ -1,7 +1,29 @@
----- 2.0r20 (unreleased) ---
+---- 2.0r21 ---
+- Fixed a bug in "following" code.
+- Fixed a bug in trainer code.
+- Fixed latent SNOOP_D bugs.
+- Lowered log rotation threshold.
+- Corrected stat distortion problem in races.o.
+- Added the domaincreate command.
+- General minor typo/bugfixes.
+- Tidied up interaction between rid, suicide, and 
+  PLAYERS_D.
+- Updated FAQs.
+- Fixed bug in scan when providing all of the flags: -e -d -i
+- Fixed put.c.
+- Fixed unusually generous vendors.
+- Fixed bug in objects() sefun that interfered
+  with resets.
+- Removed clan inheritance from gstaff.c.
+
+---- 2.0r20 ---
+- "put all in <thing>" now ignores worn and wielded
+  items.
+- Added commands: switchrouter, domainadmin,
+  monitor, unmonitor.
 - (hopefully) Fixed rare and peculiar bug that hosed
   up logins unpredictably.
-- Added the Jonez/Brodbane stargate system.
+- Added the Jonez stargate system.
 - Container bug fixed. It is now possible to put 
   amounts of money into containers and onto surfaces.
 - Daemonized snoop system. This permits the logging

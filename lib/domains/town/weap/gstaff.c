@@ -3,7 +3,6 @@
 #include <vendor_types.h>
 
 inherit LIB_ITEM;
-inherit LIB_CLAN;
 static void create(){
     item::create();
     SetKeyName("golden staff");

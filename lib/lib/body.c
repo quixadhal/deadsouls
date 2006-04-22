@@ -1010,11 +1010,37 @@ int HealLimb(string limb){
     return Limbs[limb]["health"];
 }
 
-int RestoreLimb(string limb) {
+// Restore Limb has been bugfixed and modified to 
+// handle missing parents and missing children. To restore
+// a limb, RestoreLimb("right arm") will restore the arm only.
+// To restore the arm plus its children (in this case, a
+// hand) use RestoreLimb("right arm",1) and this will enable
+// the recursive restore of the limb. Trying to restore 
+// a limb will fail if the parent is missing.
+
+varargs int RestoreLimb(string limb, int recurse) {
     if( !MissingLimbs[limb] ) return 0;
+    if(!sizeof(Limbs[MissingLimbs[limb]["parent"]])) return 0;  
     Limbs[limb] = MissingLimbs[limb];
-    Limbs[limb]["health"] = GetMaxHealthPoints(limb);
     map_delete(MissingLimbs, limb);
+    Limbs[limb]["health"] = GetMaxHealthPoints(limb);
+
+    // This ensures that the parent of the current limb has this
+    // limb added to its children array.
+    if(member_array(limb,Limbs[Limbs[limb]["parent"]]["children"]) == -1){
+	Limbs[Limbs[limb]["parent"]]["children"] += ({ limb });
+    }
+
+    if(recurse && sizeof(MissingLimbs)){
+	string *kinder = ({});
+	foreach(string key, mixed val in MissingLimbs){
+	    if(MissingLimbs[key]["parent"] == limb) kinder += ({ key });
+	}
+	if(sizeof(kinder)){
+	    foreach(string element in kinder) this_object()->RestoreLimb(element, 1);
+	}
+    }
+
     return 1;
 }
 
@@ -1177,6 +1203,23 @@ int GetLimbClass(string limb) { return Limbs[limb]["class"]; }
 
 string GetLimbParent(string limb) { return Limbs[limb]["parent"]; }
 
+
+//The following function courtesy of Garfield @ M*U*D
+string GetMissingLimbParent(string limb) { return MissingLimbs[limb]["parent"]; } 
+
+//The following function courtesy of Garfield @ M*U*D
+string *GetMissingLimbParents(string limb) {
+    string *limbs;
+
+    limbs = ({ limb });
+
+    while(memberp(keys(MissingLimbs),GetMissingLimbParent(limbs[0]))){
+	limbs = ({ GetMissingLimbParent(limbs[0]) }) + limbs;
+    }
+
+    return limbs;
+} 
+
 string array GetLimbChildren(string limb) {
     return Limbs[limb]["children"] + ({});
 }
@@ -1185,7 +1228,30 @@ mapping GetMissingLimb(string limb) {
     return (limb ? copy(MissingLimbs[limb]) : 0);
 }
 
-string array GetMissingLimbs() { return keys(MissingLimbs); }
+// This function courtesy of Garfield 
+// and Javelin at M*U*D
+int eventCompareLimbs(string limb1, string limb2){
+    if (memberp(GetMissingLimbParents(limb1), limb2)){
+	return 1;
+    }
+    if (memberp(GetMissingLimbParents(limb2), limb1)){
+	return -1;
+    }
+    return strcmp(limb1, limb2);
+} 
+
+// New comparison functionality courtesy of
+// Garfield and Javelin at M*U*D
+varargs string array GetMissingLimbs(int not_default) {
+    if(not_default) {
+	string *tmp_arr = ({});
+	if(sizeof(keys(MissingLimbs))){ 
+	    tmp_arr = sort_array(keys(MissingLimbs), (: eventCompareLimbs :) );
+	}
+	return tmp_arr;
+    }
+    else return keys(MissingLimbs);
+}
 
 string GetLong(string nom) {
     string *limbs;

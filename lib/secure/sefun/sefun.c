@@ -81,6 +81,7 @@
 
 
 object find_object( string str ){
+    if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return efun::find_object(str);
     if(base_name(efun::find_object(str)) == "/secure/obj/snooper") return 0;
     else return efun::find_object(str);
 }
@@ -96,23 +97,25 @@ varargs mixed objects(mixed arg1, mixed arg2){
     }
 
     if(arg1 && !arg2) {
+	object *ret_arr = ({});
 	if(!functionp(arg1)) return 0;
 	foreach(object ob in filter(tmp_obs, (: base_name($1) != "/secure/obj/snooper" :) )){
-	    evaluate(arg1, ob);
+	    if(evaluate(arg1, ob)) ret_arr += ({ ob });
 	}
-	return 1;
+	return ret_arr;
     }
 
     if(arg1 && arg2) {
+	object *ret_arr = ({});
 	if(!functionp(arg1)) return 0;
 	if(!objectp(arg2)) return 0;
 	foreach(object ob in filter(tmp_obs, (: base_name($1) != "/secure/obj/snooper" :) )){
-	    call_other(arg2, arg1, ob);
+	    if(call_other(arg2, arg1, ob)) ret_arr += ({ ob });
 	}
-	return 1;
+	return ret_arr;
     }
 
-    else return 0;
+    else return ({});
 }
 
 varargs string socket_address(mixed arg, int foo) {

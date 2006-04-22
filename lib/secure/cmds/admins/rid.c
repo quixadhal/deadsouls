@@ -6,6 +6,7 @@
 
 #include <lib.h>
 #include <dirs.h>
+#include <daemons.h>
 #include <privs.h>
 
 inherit LIB_DAEMON;
@@ -62,6 +63,7 @@ static void EndRid(string who) {
     log_file("rid", "\n" + who + " by " + (string)this_player()->GetCapName() +
       "\n" + str + "\n");
     write(who + " has been ridded from " + mud_name() + ".");
+    PLAYERS_D->RemoveUser(lower_case(who));
 }
 
 void help() {

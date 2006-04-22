@@ -95,7 +95,7 @@ string GetDirection(string dest) {
     foreach(string dir in GetEnters()) {
 	mapping data = GetEnterData(dir);
 
-	if( data["room"] == dest ) {
+	if(data["room"] && data["room"] == dest ) {
 	    return "enter " + dir;
 	}
     }

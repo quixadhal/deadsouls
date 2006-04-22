@@ -37,7 +37,7 @@ mixed cmd(string args) {
     if( file_size(DIR_CRES+"/"+nom[0..0]) != -2) mkdir(DIR_CRES+"/"+nom[0..0]);
     if(rename(file+__SAVE_EXTENSION__, DIR_CRES+"/"+nom[0..0]+"/"+nom+__SAVE_EXTENSION__))
 	return "You failed due to lack of write access to "+DIR_CRES+".";
-    PLAYERS_D->eventEncre(lower_case(nom));
+    PLAYERS_D->eventCre(lower_case(nom));
     if( ob = find_player(nom) ) {
 	ob->SetProperty("brand_spanking_new",0);
 	PlayerName = nom;

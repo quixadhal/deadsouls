@@ -1,7 +1,7 @@
 #include <lib.h>
 #include <daemons.h>
 
-inherit LIB_SENTIENT;
+inherit LIB_LEADER;
 int JoinGuild(object ob, string verb, string what);
 int TeachSpell(object who, string verb, string spell);
 
@@ -21,7 +21,7 @@ int WieldStaff(){
 }
 
 static void create() {
-    sentient::create();
+    leader::create();
     SetKeyName("herkimer");
     SetId(({"archwizard","wizard","herkermer","herkirmer"}));
     SetAdjectives(({"old","gentle","kindly"}));

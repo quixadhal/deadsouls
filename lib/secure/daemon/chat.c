@@ -123,7 +123,7 @@ varargs int eventAddLast(string feep, string str, string pchan, string pmsg, str
     if(pchan && pchan != "admin"){
 	unguarded( (: write_file("/log/chan/"+chan,"["+timestamp()+"] "+plainmsg+"\n") :) );
 	if( file_size("/log/chan/"+chan) > 200000) {
-	    unguarded( (: rename("/log/chan/"+chan,"/log/chan/"+chan+"."+timestamp("est") ) :) );
+	    unguarded( (: rename("/log/chan/"+chan,"/log/chan/"+chan+"."+timestamp() ) :) );
 	}
     }
     else {

@@ -3,25 +3,29 @@
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Dead Souls Installation FAQ</title></head>
 
 <body>
-<pre style="font-family: courier new,courier,monospace;"><big><big><span style="font-weight: bold;">Dead Souls Installation FAQ, v2.5</span></big><br><br>Written by Cratylus @ Frontiers, February 2006<br>Updated April 2006 <br><br><span style="text-decoration: underline; font-weight: bold;">Is this FAQ really necessary?</span><br><br><small>Normally, no. If you just follow the instructions included in the<br>Dead Souls packages, you'll be fine 90% of the time. However, a<br>non-trivial number of folks have run into difficult circumstances. For<br>those folks, this document is meant to illuminate how the install<br>process works, why some things are as they are, and suggest some<br>solutions to the more common obstacles.</small></big><big style="font-family: courier new,courier,monospace;"><small><big><br><br></big></small></big><big><br><span style="font-weight: bold; text-decoration: underline;">Where do I get Dead Souls?</span> <small><br><br>You should only ever download from the sites listed below.<br>Some other sites tend to mirror these or copy data from<br>them, then fail to update their data regularly. The following<br>will always have the most recent version, and they are the<br>only ones officially authorized to distribute Dead Souls.<br><br>Download the latest version from one of the following:<br><br></small></big><big><span style="font-weight: bold;">Mudmagic: </span><a href="http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls">http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls</a><br><br></big><big style="font-weight: bold;">Sourceforge: </big><a href="http://sourceforge.net/project/showfiles.php?group_id=148388"><big>http://sourceforge.net/project/showfiles.php?group_id=148388</big></a><big><span style="font-weight: bold;"></span><br></big></pre>
-<big style="font-family: courier new,courier,monospace;"><small><br>
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big><big><span style="font-weight: bold;">Dead Souls Installation FAQ, v2.9</span></big><br><br>Written by Cratylus @ Frontiers, February 2006<br>Updated April 2006 <br><br><span style="font-weight: bold;"><span style="color: rgb(153, 0, 0);">IMPORTANT NOTE:</span> After installation, check the <a href="http://dead-souls.sourceforge.net/hotfix.html">HOTFIX PAGE</a> for late-breaking patches.</span><br><br><a href="#1">1) Is this FAQ really necessary?</a><br><br><a href="#2">2) Where do I get Dead Souls? </a><br><br><a href="#3">3) Where do I get patches?</a><br><br><a href="#4">4) Should I apply the available patches during an install?</a><br><br><a href="#5">5) What's this Cygwin stuff?</a><br><br><a href="#6">6) How do I install the Windows version of Dead Souls?</a><br><br><a href="#7">7) Hold up, these Windows instructions aren't working</a><br><br><a href="#8">8) How do I install the UNIX version of Dead Souls?</a><br><br><a href="#9">9) I'm having trouble getting Dead Souls for UNIX to work</a><br><br><a href="#10">10) Why does compiling MudOS for Dead Souls throw so many warnings?</a><br><br><a href="#11">11) Why is there a windows-format mudos.cfg in /secure/cfg? I'm running unix.</a><br><br><a href="#12">12) How do I enable database support?</a><br><br><a href="#13">13) How do I upgrade from one version of Dead Souls to another?</a><br><br><a href="#14">14) The UNIX patch doesn't work! I'm getting a million errors!</a><br><br><a href="#15">15)Ok, it's running. Now what?</a><br><br><br><span style="text-decoration: underline; font-weight: bold;"><a name="1"></a>Is this FAQ really necessary?</span><br><br><small>Normally, no. If you just follow the instructions included in the<br>Dead Souls packages, you'll be fine 90% of the time. However, a<br>non-trivial number of folks have run into difficult circumstances. For<br>those folks, this document is meant to illuminate how the install<br>process works, why some things are as they are, and suggest some<br>solutions to the more common obstacles.</small></big><big><small><big><br><br></big></small></big><big><br><span style="font-weight: bold; text-decoration: underline;"></span></big><big><span style="text-decoration: underline; font-weight: bold;"><a name="2"></a></span></big><big><span style="font-weight: bold; text-decoration: underline;">Where do I get Dead Souls?</span> <small><br><br>You should only ever download from the sites listed below.<br>Some other sites tend to mirror these or copy data from<br>them, then fail to update their data regularly. The following<br>will always have the most recent version, and they are the<br>only ones officially authorized to distribute Dead Souls.<br><br>Download the latest version from one of the following:<br><br></small></big><big><span style="font-weight: bold;">Mudmagic: </span><a href="http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls">http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls</a><br><br></big><big style="font-weight: bold;">Sourceforge: </big><a href="http://sourceforge.net/project/showfiles.php?group_id=148388"><big>http://sourceforge.net/project/showfiles.php?group_id=148388</big></a><big><span style="font-weight: bold;"></span><br></big></pre>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><br>
 <br>
-<big><span style="text-decoration: underline; font-weight: bold;">Where
-do I get older patches?</span></big><br>
+<big><span style="text-decoration: underline; font-weight: bold;"></span></big></small></big>
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big><span style="text-decoration: underline; font-weight: bold;"><a name="3"></a></span></big></pre>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><big><span style="text-decoration: underline; font-weight: bold;">Where
+do I get patches?</span></big><br>
 <br>
 <span style="font-weight: bold;">Mudmagic:</span><br>
 <br>
 &nbsp;&nbsp;&nbsp; Windows patches: <a href="http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls/windows_patches">http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls/windows_patches</a><br>
 &nbsp;&nbsp;&nbsp; <br>
 &nbsp;&nbsp;&nbsp; UNIX patches: <a href="http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls/unix_patches">http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls/unix_patches</a><br>
-</small></big><big style="font-family: courier new,courier,monospace;"><small><br>
+</small></big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><br>
 <span style="font-weight: bold;">Sourceforge:</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp; Both: <a href="http://sourceforge.net/project/showfiles.php?group_id=148388&amp;package_id=175140">http://sourceforge.net/project/showfiles.php?group_id=148388&amp;package_id=175140</a><br>
 <br>
-</small></big><big style="font-family: courier new,courier,monospace;"><small><br>
+</small></big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><br>
 <br>
-<big style="font-weight: bold; text-decoration: underline;">Should I
+</small></big>
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big><span style="text-decoration: underline; font-weight: bold;"><a name="4"></a></span></big></pre>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><big style="font-weight: bold; text-decoration: underline;">Should I
 apply the available patches during an install?</big><br>
 <br>
 No. Patches are for already-installed Dead Souls muds. A new Dead Souls
@@ -31,8 +35,11 @@ Souls<br>
 version to another, please read the upgrade section further down in this<br>
 document.<br>
 <br>
-<big></big><br>
-<big style="font-weight: bold;"><span style="text-decoration: underline;">What's this Cygwin stuff?</span></big><br>
+<br>
+<big style="font-weight: bold;"><span style="text-decoration: underline;"></span></big></small></big>
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big><span style="text-decoration: underline; font-weight: bold;"><a name="5"></a></span></big></pre>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><big style="font-weight: bold;"><span style="text-decoration: underline;">What's
+this Cygwin stuff?</span></big><br>
 <br>
 Don't bother with it. The Cygwin files are there strictly for legal
 reasons, and they<br>
@@ -55,13 +62,16 @@ in the Cygwin environment and somehow managed to overlook having the<br>
 sources.<br>
 <br>
 So, leave it alone.<br>
-</small></big><br>
-<big style="font-family: courier new,courier,monospace;"><small><br>
-<big style="font-weight: bold; text-decoration: underline;">How do I
-install the Windows version of Dead Souls?</big></small></big><br>
-<pre style="font-family: courier new,courier,monospace;"><big><span style="color: rgb(204, 0, 0); font-weight: bold;">NOTE</span>: <span style="font-weight: bold;">If you are using Windows, USE THE WINDOWS VERSION.</span> <br>There is no benefit in trying to download Cygwin and<br>modify the UNIX source code and trying to get it to<br>compile in Windows, unless you know exactly what you're<br>doing. Yes, people have tried to do this and complained.</big></pre>
-<big style="font-family: courier new,courier,monospace;"><small><br>
-First make sure you are running Windows 2000 or above. Then:<br>
+</small></big><br style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;">
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><br>
+</small></big>
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big><span style="text-decoration: underline; font-weight: bold;"><a name="6"></a></span></big></pre>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><big style="font-weight: bold; text-decoration: underline;">How do I
+install the Windows version of Dead Souls?</big></small></big><br style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;">
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big><span style="font-weight: bold;">NOTE</span>: <span style="font-weight: bold;">If you are using Windows, <span style="text-decoration: underline;">USE THE WINDOWS VERSION</span>.</span> <br>There is no benefit in trying to download Cygwin and<br>modify the UNIX source code and trying to get it to<br>compile in Windows, unless you know exactly what you're<br>doing. Yes, people have tried to do this and complained.</big></pre>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><br>
+First make sure you are running Windows NT 4, Windows 2000 or above.
+Then:<br>
 <br>
 <span style="font-weight: bold;">1) </span>unzip the distribution file<br>
 <br>
@@ -78,7 +88,8 @@ Start-&gt;Run... and entering: cmd<br>
 <br>
 <span style="font-weight: bold;">5)</span> connect to your Windows
 computer by telnetting to port 6666. If you are using the command<br>
-&nbsp; &nbsp; window, type:<span style="color: rgb(0, 153, 0);"> <span style="font-weight: bold; color: rgb(0, 0, 0);">telnet localhost 6666</span></span><br>
+&nbsp; &nbsp; window, type: <span style="font-weight: bold;">telnet
+localhost 6666</span><br>
 <br>
 <span style="font-weight: bold;">6)</span> Enter the name you want your
 admin to have, and answer the questions provided. Make sure<br>
@@ -88,7 +99,8 @@ first person is automatically made admin.<br>
 <span style="font-weight: bold;">7)</span> When you finish entering the
 admin's info, the mud will automatically shut down.<br>
 <br>
-<span style="font-weight: bold;">8)</span> </small></big><big style="font-family: courier new,courier,monospace;"><small> run
+<span style="font-weight: bold;">8)</span> </small></big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small>
+run
 c:\ds\runmud.bat again<br>
 <br>
 <span style="font-weight: bold;">9)</span> log in as your admin
@@ -101,27 +113,40 @@ the admintool command. Navigate to the "driver" menu<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (as of this writing, it's option
 r). Enter the name desired, allow the mud to shut down.<br>
 <br>
-<span style="font-weight: bold;">11)</span> </small></big><big style="font-family: courier new,courier,monospace;"><small> </small></big><big style="font-family: courier new,courier,monospace;"><small> run
+<span style="font-weight: bold;">11)</span> </small></big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small>
+</small></big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small>run
 c:\ds\runmud.bat (that's it for the mud reboots. come on, it's windows.
 you're used to rebooting)<br>
 <br>
-<span style="font-weight: bold;">12)</span> log in, </small></big><big style="font-family: courier new,courier,monospace;"><small>start
+</small></big>
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big><span style="font-weight: bold;">12)</span> check the <a href="http://dead-souls.sourceforge.net/hotfix.html">HOTFIX PAGE</a> for late-breaking fixes.</big></pre>
+<br>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><span style="font-weight: bold;">13)</span> log in, </small></big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small>start
 reading the
-handbook and the manual.</small></big><br>
-<big style="font-family: courier new,courier,monospace;"><small><br>
+handbook and the manual.</small></big><br style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;">
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><br>
 <span style="font-weight: bold;">*</span> <span style="font-weight: bold;">Note</span>: If you use c:\ds\startmud.bat,
 you won't need to manually restart each time.<br>
 <br>
 <small style="font-weight: bold;"><br>
-</small><big style="text-decoration: underline; font-weight: bold;">Hold
+</small></small></big>
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big><span style="text-decoration: underline; font-weight: bold;"><a name="7"></a></span></big></pre>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><big style="text-decoration: underline; font-weight: bold;">Hold
 up, these Windows instructions aren't working</big><br>
 <br>
 There are a few common reasons for this.<br>
 <br>
+<span style="font-family: courier new,courier,monospace;">* A recent
+fix may be available. </span></small></big><big style="font-family: courier new,courier,monospace;">check the <a href="http://dead-souls.sourceforge.net/hotfix.html">HOTFIX PAGE</a> for late-breaking fixes.</big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><span style="font-family: courier new,courier,monospace;">
+</span><br>
+<br>
 * Download only from the sites mentioned above. Those are the only<br>
 ones sure to have the latest version. Other sites can be out of date.<br>
 <br>
-</small></big><big style="font-family: courier new,courier,monospace;"><small>*
+* On at least one occasion, Winzip has somehow corrupted the archive as<br>
+it was extracted. Try using another decompression utility, like winrar.<br>
+<br>
+</small></big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small>*
 Most Windows PC's these days have firewall software installed. If you
 try to connect but<br>
 aren't able to, there's a good chance your connection is being blocked
@@ -144,10 +169,6 @@ run. <br>
 Sorry. Those are not<br>
 server class operating systems and they use technology incompatible
 with the mud's requirements.<br>
-I have no idea if Dead Souls for Windows works on NT. If you try it and
-it works,<br>
-please let me know by emailing me at &lt;my
-name&gt;@users.sourcefore.net .<br>
 <br>
 *&nbsp; If the mud starts but you get lots of bizarre errors, there may
 be a couple of<br>
@@ -175,7 +196,7 @@ right, and you are sure<br>
 reinstalling but with a different<br>
 &nbsp;&nbsp;&nbsp; unzip utility.<br>
 <br>
-</small></big><big style="font-family: courier new,courier,monospace;"><small>*&nbsp;
+</small></big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small>*&nbsp;
 If you've made sure you've followed the directions, avoided the
 "don'ts", and it<br>
 still doesn't work, it may be that you have a Cygwin conflict. If you
@@ -186,10 +207,12 @@ might be conflicting with your current version. Try moving the .dll
 files in<br>
 c:\ds\bin to some other folder and see if this fixes the problem. If it
 doesn't, don't forget<br>
-to put them back.</small></big><br>
-<big style="font-family: courier new,courier,monospace;"><small><br>
+to put them back.</small></big><br style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;">
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><br>
 <br>
-<big style="font-weight: bold; text-decoration: underline;">How do I
+</small></big>
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big><span style="text-decoration: underline; font-weight: bold;"><a name="8"></a></span></big></pre>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><big style="font-weight: bold; text-decoration: underline;">How do I
 install the UNIX version of Dead Souls?</big><br>
 <br>
 First make sure of a couple of things:<br>
@@ -198,7 +221,7 @@ First make sure of a couple of things:<br>
 fileroller (a GUI based app) to decompress the tarball. If<br>
 you ignore this warning you are very likely to end up with really<br>
 confusing errors and problems. Instead use the normal unix command <br>
-line. For example:<span style="font-weight: bold; color: rgb(0, 153, 0);"> <span style="color: rgb(0, 0, 0);">tar xzf ds2.0.tar.gz</span></span><br>
+line. For example:<span style="font-weight: bold;"> tar xzf ds2.0.tar.gz</span><br>
 <br>
 <big style="font-weight: bold;">*</big> Don't use an existing driver
 binary, even if it's from a previous<br>
@@ -245,12 +268,12 @@ and bin:<br>
 <span style="font-weight: bold;">8)</span> manually run the mud:
 $MUDHOME/bin/driver $MUDHOME/bin/mudos.cfg .<br>
 &nbsp;&nbsp;&nbsp; If you properly edited the startmud script, you can
-just type: <span style="font-weight: bold; color: rgb(0, 0, 0);">./startmud</span><br>
+just type: <span style="font-weight: bold;">./startmud</span><br>
 <br>
 <span style="font-weight: bold;">9)</span>&nbsp; telnet to your
 machine, using the port specified in mudos.cfg. For<br>
-example:<span style="color: rgb(0, 153, 0); font-weight: bold;"> <span style="color: rgb(0, 0, 0);">telnet
-localhost 6666</span></span><br style="color: rgb(0, 153, 0); font-weight: bold;">
+example:<span style="font-weight: bold;"> telnet
+localhost 6666</span><br style="font-weight: bold;">
 <br>
 <span style="font-weight: bold;">10)</span> Create a new user. Just
 answer the questions. Make sure you are<br>
@@ -261,18 +284,24 @@ given admin privileges.<br>
 Reboot the MUD, telnet back in, and you're<br>
 now running Your Very Own MUD. If startmud is running, the MUD should<br>
 restart automatically.<br>
+</small></big>
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big><span style="font-weight: bold;">12)</span> check the <a href="http://dead-souls.sourceforge.net/hotfix.html">HOTFIX PAGE</a> for late-breaking fixes.</big></pre>
 <br>
-<br>
-<big style="font-weight: bold; text-decoration: underline;">I'm having
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big><span style="text-decoration: underline; font-weight: bold;"><a name="9"></a></span></big></pre>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><big style="font-weight: bold; text-decoration: underline;">I'm having
 trouble getting Dead Souls for UNIX to work</big><br>
 <br>
 * first, stop using Fedora. Ha ha just kidding.<br>
 <br>
-</small></big><big style="font-family: courier new,courier,monospace;"><small>*
+</small></big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><span style="font-family: courier new,courier,monospace;">* A recent fix may
+be available. </span></small></big><big style="font-family: courier new,courier,monospace;">check the <a href="http://dead-souls.sourceforge.net/hotfix.html">HOTFIX PAGE</a> for late-breaking fixes.</big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><span style="font-family: courier new,courier,monospace;">
+</span></small></big><br>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><br>
+</small></big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small>*
 Download only from the sites mentioned above. Those are the only<br>
 ones sure to have the latest version. Other sites can be out of date.<br>
 <br>
-</small></big><big style="font-family: courier new,courier,monospace;"><small>*
+</small></big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small>*
 most of the problems with unix installs involve permissions
 conflicts. If<br>
 you uncompress the tarball as root user, for example, then try to<br>
@@ -283,12 +312,12 @@ another<br>
 user (in this example, username: joe), then you'll want to cd to<br>
 the directory that contains the mud directory and issue a chown<br>
 command, like this:<br>
-<br style="color: rgb(0, 0, 0);">
-<span style="font-weight: bold; color: rgb(0, 0, 0);">su - root<br>
 <br>
-cd /home/joe</span><br style="font-weight: bold; color: rgb(0, 0, 0);">
-<br style="font-weight: bold; color: rgb(0, 0, 0);">
-<span style="font-weight: bold; color: rgb(0, 0, 0);">chown -R joe
+<span style="font-weight: bold;">su - root<br>
+<br>
+cd /home/joe</span><br style="font-weight: bold;">
+<br style="font-weight: bold;">
+<span style="font-weight: bold;">chown -R joe
 ds2.0</span><br>
 <br>
 * If you don't follow the instructions, and instead use a previously<br>
@@ -296,14 +325,14 @@ compiled driver, you may skip a step which copies a unix-compatible<br>
 mudos.cfg file over the default Windows-compatible mudos.cfg. <br>
 To correct this, copy the template config into the proper<br>
 directory:<br>
-<br style="color: rgb(0, 0, 0);">
-<span style="font-weight: bold; color: rgb(0, 0, 0);">cd
-/home/joe/ds2.0</span><br style="font-weight: bold; color: rgb(0, 0, 0);">
-<br style="font-weight: bold; color: rgb(0, 0, 0);">
-<span style="font-weight: bold; color: rgb(0, 0, 0);">cp
+<br>
+<span style="font-weight: bold;">cd
+/home/joe/ds2.0</span><br style="font-weight: bold;">
+<br style="font-weight: bold;">
+<span style="font-weight: bold;">cp
 bin/mudos.cfg.orig lib/secure/cfg/mudos.cfg</span><br>
 <br>
-Then edit </small></big><big style="color: rgb(51, 51, 0); font-family: courier new,courier,monospace;"><small>lib/secure/cfg/mudos.cfg
+Then edit </small></big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small>lib/secure/cfg/mudos.cfg
 to point to the correct bin and<br>
 lib directories.<br>
 <br>
@@ -329,30 +358,35 @@ the ramifications fo what you're doing). Instead use the<br>
 should follow closely.<br>
 <br>
 * If the driver craps out complaining about a hosed up swap<br>
-file</small></big><big style="font-family: courier new,courier,monospace;"><small>, you're
+file</small></big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small>,
+you're
 probably running Fedora, and you probably haven't<br>
 changed your hostname from the original "localhost.localdomain"<br>
 or whatever nonsense they use.<br>
 &nbsp;
-</small></big><span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+</small></big><span style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
 What mudos expects is that when it asks your
-</span><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">machine for
+</span><br style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;">
+<span style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;">machine
+for
 its hostname, that it receive something like
-</span><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">"alpha", and
-not something like "alpha.bravo".</span><span style="font-family: courier new,courier,monospace;"></span><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+</span><br style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;">
+<span style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;">"alpha",
+and
+not something like "alpha.bravo".</span><br style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;">
+<span style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
 If
 your machine is under the impression that its
-</span><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">name is
+</span><br style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;">
+<span style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;">name
+is
 localhost.localdomain, it will supply that name to
-</span><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">mudos, which
+</span><br style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;">
+<span style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;">mudos,
+which
 will eventually choke on it.
-</span><br style="font-family: courier new,courier,monospace;">
-<big style="color: rgb(51, 51, 0); font-family: courier new,courier,monospace;"><small>&nbsp;&nbsp;&nbsp;
+</span><br style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;">
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small>&nbsp;&nbsp;&nbsp;
 If you're good at C++, you can edit lines 66 and 76
 of<br>
 v22.2b14/swap.c and correct this behavior. But the common sense fix is<br>
@@ -360,9 +394,11 @@ to stop being a noob and give your computer a proper hostname<br>
 already.<br>
 <br>
 <br>
-<big><span style="font-weight: bold; text-decoration: underline;">Why
+<big><span style="font-weight: bold; text-decoration: underline;"></span></big></small></big>
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big><span style="text-decoration: underline; font-weight: bold;"><a name="10"></a></span></big></pre>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><big><span style="font-weight: bold; text-decoration: underline;">Why
 does compiling MudOS for Dead Souls throw so many warnings?</span></big><br>
-</small></big><big style="font-family: courier new,courier,monospace;"><small><br>
+</small></big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><br>
 Beats me. This is one of those complaints I don't really know how <br>
 to respond to. At the end of the compile, you'll have a driver that<br>
 works. It's been tested on GCC 2, 3, and 4. It's worked for Fedora<br>
@@ -370,7 +406,9 @@ Linux, SuSE Linux, and various versions of Solaris.<br>
 &nbsp;&nbsp;&nbsp; It works. Ignore the compile schmutz. End of story.<br>
 <br>
 <br>
-<big><span style="font-weight: bold; text-decoration: underline;">Why
+<big><span style="font-weight: bold; text-decoration: underline;"></span></big></small></big>
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big><span style="text-decoration: underline; font-weight: bold;"><a name="11"></a></span></big></pre>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><big><span style="font-weight: bold; text-decoration: underline;">Why
 is there a windows-format mudos.cfg in /secure/cfg? I'm running unix.</span><br>
 <br>
 This is a symptom of my obsession to have the Windows lib distribution<br>
@@ -380,7 +418,9 @@ this file is overwritten with a unix version, if you follow the<br>
 install instructions.</big><br>
 <br>
 <br>
-<big><span style="font-weight: bold; text-decoration: underline;">How
+<big><span style="font-weight: bold; text-decoration: underline;"></span></big></small></big>
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big><span style="text-decoration: underline; font-weight: bold;"><a name="12"></a></span></big></pre>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><big><span style="font-weight: bold; text-decoration: underline;">How
 do I enable database support?</span></big><br>
 <br>
 I don't know. I don't understand databases at all, so it's pointless
@@ -392,7 +432,10 @@ benefit<br>
 from your leetness.<br>
 <big style="text-decoration: underline;"><br style="font-weight: bold;">
 <br style="font-weight: bold;">
-<span style="font-weight: bold;">How do I upgrade from one version of
+<span style="font-weight: bold;"></span></big></small></big>
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big><span style="text-decoration: underline; font-weight: bold;"><a name="13"></a></span></big></pre>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><big style="text-decoration: underline;"><span style="font-weight: bold;">How
+do I upgrade from one version of
 Dead Souls to another?</span></big><br>
 <br>
 &nbsp;&nbsp;&nbsp; For your convenience, patches are available to
@@ -466,8 +509,10 @@ note<br>
 that RELEASE_NOTES contains an overview of major changes. It does not<br>
 document every difference between versions.<br>
 <br>
-</small></big><big style="font-family: courier new,courier,monospace;"><small><br>
-<big style="font-weight: bold; text-decoration: underline;">The UNIX
+</small></big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><br>
+</small></big>
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big><span style="text-decoration: underline; font-weight: bold;"><a name="14"></a></span></big></pre>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><big style="font-weight: bold; text-decoration: underline;">The UNIX
 patch doesn't work! I'm getting a million errors!</big><br>
 <br>
 If you're getting lots and lots of errors when you try to run after<br>
@@ -491,18 +536,20 @@ Or you could follow these instructions:<br>
 <br>
 5) Restart the mud.<br>
 <br>
-</small></big><big style="font-family: courier new,courier,monospace;"><small><br>
-<big style="font-weight: bold; text-decoration: underline;">Ok, it's
+</small></big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><br>
+</small></big>
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big><span style="text-decoration: underline; font-weight: bold;"><a name="15"></a></span></big></pre>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small><big style="font-weight: bold; text-decoration: underline;">Ok, it's
 running. Now what?</big><br>
 <br>
 Log in and read the in-game Player's Handbook. <br>
 </small></big>
-<pre style="font-family: courier new,courier,monospace;"><big>Read the <a href="http://dead-souls.sourceforge.net/ds-admin-faq.html">Dead Souls Admin FAQ</a>.<br><br>Read the <a href="http://dead-souls.sourceforge.net/ds-creator-faq.html">Dead Souls Creator's FAQ</a>.<br><br>Read the <a href="file:///home/sanchez/ds/ds-inst-faq.html">Dead Souls Installation FAQ</a>.<br><br>Read the <a href="http://dead-souls.sourceforge.net/example.html">Quick Creation System Example Page</a>.<br><br>Read the <a href="http://dead-souls.sourceforge.net/debugging.html">Debugging Guide</a>.<br><br>Read the <a href="http://dead-souls.sourceforge.net/editor.html">Editor Tutorial</a>.<br></big></pre>
-<big style="font-family: courier new,courier,monospace;"><small>Read
+<pre style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><big>Read the <a href="http://dead-souls.sourceforge.net/ds-admin-faq.html">Dead Souls Admin FAQ</a>.<br><br>Read the <a href="http://dead-souls.sourceforge.net/ds-creator-faq.html">Dead Souls Creator's FAQ</a>.<br><br>Read the <a href="http://dead-souls.sourceforge.net/example.html">Quick Creation System Example Page</a>.<br><br>Read the <a href="http://dead-souls.sourceforge.net/debugging.html">Debugging Guide</a>.<br><br>Read the <a href="http://dead-souls.sourceforge.net/editor.html">Editor Tutorial</a>.<br></big></pre>
+<big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><small>Read
 the in-game Creator's Manual.<br>
 <br>
-</small></big><big style="font-family: courier new,courier,monospace;"><span style="color: rgb(0, 153, 0);"><span style="color: rgb(0, 0, 0); font-weight: bold;"></span><br>
-</span><a href="http://dead-souls.sourceforge.net/index.html"><small>Dead
+</small></big><big style="color: rgb(0, 0, 0); font-family: courier new,courier,monospace;"><span style="font-weight: bold;"></span><br>
+<a href="http://dead-souls.sourceforge.net/index.html"><small>Dead
 Souls Homepage</small></a><br>
 </big>
 </body></html>

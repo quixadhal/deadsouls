@@ -63,7 +63,7 @@ string inventory(object ob, int level, int scan) {
 	tmp += sprintf("(%s) - Mass: %d  Value: %d  Class: %d",
 	  capitalize((string)ob->GetKeyName()),
 	  (int)ob->GetMass(), (int)ob->GetValue(),
-	  (int)ob->GetClass() );
+	  intp((int)ob->GetClass()) ? (int)ob->GetClass() : 0 );
 	if( ob->GetWorn() ) tmp += " (worn)";
 	ret += tmp;
     }

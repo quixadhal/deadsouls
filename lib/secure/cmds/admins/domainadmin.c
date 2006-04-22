@@ -123,5 +123,5 @@ string GetHelp(string args) {
       "directories. "
       "Write privileges are listed in /secure/cfg/write.cfg"
       "\n\n"
-      "See also: admintool");
+      "See also: domaincreate, admintool");
 }

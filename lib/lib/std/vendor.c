@@ -7,7 +7,7 @@
 inherit LIB_SENTIENT;
 inherit "/lib/manycoins";
 
-private static int MaxItems, VendorType;
+private static int MaxItems, VendorType, bargain;
 private static string StorageRoom, LocalCurrency;
 private static mapping Costs, Values;
 
@@ -59,7 +59,7 @@ mixed eventBuy(object who, object *obs) {
     }
     tmp = ({});
     foreach(ob in obs) {
-	int value, bargain;
+	int value;
 
 	if( !((string)ob->GetShort()) ) continue;
 	if( !((int)ob->GetVendorType() & GetVendorType()) ) {
@@ -69,8 +69,9 @@ mixed eventBuy(object who, object *obs) {
 	}
 	cost = to_int(ob->GetBaseCost(GetLocalCurrency()));
 	value = to_int(ceil(GetValue(ob, who)));
-	if(cost) bargain = 0;
-	//if(cost && cost > 0) value = cost;
+	if(ob->GetValue()) bargain = 1;
+	else bargain = 0;
+	if(!bargain) value = cost;
 
 	if( !value ) {
 	    eventForce("say " + (string)ob->GetShort() + " is worthless!");
@@ -483,7 +484,7 @@ mixed eventBuy(object who, object *obs) {
 	    eventForce("say you cannot carry that!");
 	    eventForce("drop " + (string)ob->GetKeyName());
 	}
-	if(cost) who->AddSkillPoints("bargaining", random(to_int(floor(cost))));
+	if(bargain) who->AddSkillPoints("bargaining", random(to_int(floor(cost))));
 	//Payment(who, cost);
 	who->AddCurrency(GetLocalCurrency(), -cost);
 	return 1;

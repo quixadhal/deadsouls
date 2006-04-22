@@ -9,12 +9,12 @@ static void create() {
 int RotateLogs(){
     string *contents,*paths;
     string fooname,foopath,temppath;
-    paths = ({"/log/","/log/errors/","/secure/log","/secure/log/bak"});
+    paths = ({"/log/chan/", "/log/","/log/errors/","/secure/log/adm/","/secure/log/"});
     foreach(string path in paths){
 	contents = get_dir(path);
 	foreach(string substr in contents){
 	    temppath = path+substr;
-	    if( file_size(temppath) > 150000) {
+	    if( file_size(temppath) > 50000) {
 		fooname=substr+"-"+timestamp();
 		foopath=path+fooname;
 		rename(temppath,foopath );

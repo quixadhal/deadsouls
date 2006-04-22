@@ -8,6 +8,7 @@
 #include <dirs.h>
 #include <flags.h>
 #include <privs.h>
+#include <daemons.h>
 #include <rooms.h>
 #include <message_class.h>
 
@@ -84,6 +85,8 @@ static private void EndSuicide(string who) {
     string tmp, file, newfile;
     object *ob;
 
+    if(!directory_exists(DIR_TMP + "/suicide/")) mkdir (DIR_TMP + "/suicide/");
+
     file = DIR_TMP + "/" + who;
     newfile = DIR_TMP + "/suicide/" + who;
     if( file_size(file) > 0 ) {
@@ -106,6 +109,7 @@ static private void EndSuicide(string who) {
     if( sizeof( ob = filter(users(), (: archp :)) ) )
 	ob->eventPrint("["+(string)this_player()->GetName()+" has "
 	  "comitted suicide]");
+    PLAYERS_D->RemoveUser((string)this_player()->GetKeyName());
     this_player()->eventMove(ROOM_FURNACE);
     this_player()->eventDestruct();
     return;

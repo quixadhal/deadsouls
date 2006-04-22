@@ -26,29 +26,23 @@ static void create() {
     snoopers = filter(objects(), (: base_name($1) == "/secure/obj/snooper" :) );
 }
 
+void RegisterSnooper(){
+    object registrant = previous_object();
+    if(base_name(registrant) == "/secure/obj/snooper" &&
+      member_array(registrant,snoopers) == -1) snoopers += ({ registrant });
+    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+}
+
+void UnregisterSnooper(){
+    object registrant = previous_object();
+    if(base_name(registrant) == "/secure/obj/snooper" &&
+      member_array(registrant,snoopers) != -1) snoopers -= ({ registrant });
+    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+}
+
 void eventLoadRogues(){
     foreach(string rogue in monitored) this_object()->CheckBot(rogue);
     snoopers = filter(objects(), (: base_name($1) == "/secure/obj/snooper" :) );
-}
-
-int AddSnooper(){
-    if(base_name(previous_object()) == "/secure/obj/snooper" &&
-      member_array(previous_object(), snoopers) == -1){
-	snoopers += ({ previous_object() });
-	unguarded( (: save_object, SAVE_SNOOP, 1 :) );
-	return 1;
-    }
-    return 0;
-}
-
-int RemoveSnooper(){
-    if(base_name(previous_object()) == "/secure/obj/snooper" &&
-      member_array(previous_object(), snoopers) != -1){
-	snoopers -= ({ previous_object() });
-	unguarded( (: save_object, SAVE_SNOOP, 1 :) );
-	return 1;
-    }
-    return 0;
 }
 
 int CheckBot(string str){
@@ -58,9 +52,10 @@ int CheckBot(string str){
     string name;
 
     //tc("str: "+str);
-
-    foreach(object snoopbox in snoopers){
-	if(snoopbox->GetSnooped() == str) foo = find_player(str);
+    if(sizeof(snoopers)){
+	foreach(object snoopbox in snoopers){
+	    if(snoopbox && snoopbox->GetSnooped() == str) foo = find_player(str);
+	}
     }
 
     //if(foo && environment(foo)) tc("environment("+identify(foo)+"): "+identify(environment(foo)));
@@ -77,17 +72,20 @@ int CheckBot(string str){
 }
 
 void CheckSnooped(){
-    object *users;
-    users = users();
+    object *users = users();
     if(users && users != prevusers ){
 	foreach(object user in users){
 	    CheckBot(lower_case(user->GetKeyName()));
 	}
-	prevusers = users;
     }
+    prevusers = users;
 }
 
 void heart_beat(){
+    foreach(object snoopbox in snoopers){
+	if(!snoopbox) snoopers -= ({ snoopbox });
+	if(!sizeof(snoopbox->GetSnooped())) snoopbox->eventDestruct();
+    }
     CheckSnooped();
 }
 

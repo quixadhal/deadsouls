@@ -9,7 +9,7 @@ int seconds;
 object ob;
 
 void create(){
-    ::create();
+    item::create();
 
     SetKeyName("snooper object");
     SetId( ({"thing","item","thang","dingus","snooper","object"}) );
@@ -21,6 +21,7 @@ void create(){
       "be well advised to leave it alone.");
     SetInvis(1);
     set_heart_beat(2);
+    SNOOP_D->RegisterSnooper();
 }
 
 void init(){
@@ -34,7 +35,10 @@ void stamp_time(){
 
 void heart_beat(){
     object dude;
-    if(!(dude = find_player(guy))) eventDestruct();
+    if(!(dude = find_player(guy))) {
+	//tc("I can't find "+guy);
+	eventDestruct();
+    }
     if(base_name(environment(dude)) == ROOM_FREEZER) eventDestruct();
     if(time() - seconds > 600 ) stamp_time();
 }
@@ -56,7 +60,7 @@ int eventStartSnoop(string str){
 
     if(!ob=find_player(str)) { write("Target not found."); return; }
     unguarded((: write_file("/secure/log/adm/s.log",snoop(this_object(), ob)?"":guy+": snoop failed.\n") :));
-    SNOOP_D->AddSnooper();
+    SNOOP_D->RegisterSnooper();
     write_file("/secure/log/adm/"+str+".log","\nNEW SESSION: "+timestamp()+"\n");
     return 1;
 }
@@ -69,12 +73,13 @@ void receive_message(string s1, string s2){
 
 int eventDestruct(){
     if(base_name(previous_object()) != SNOOP_D) return 0;
-    SNOOP_D->RemoveSnooper();
-    ::eventDestruct();
+    SNOOP_D->UnregisterSnooper();
+    return item::eventDestruct();
 }
 
 string GetSnooped(){
     //debug("I am snooping ",guy,"green");
-    if(base_name(previous_object()) != SNOOP_D) return "";
+    if((previous_object() && base_name(previous_object())) != SNOOP_D &&
+      !archp(this_player())) return "";
     else return guy;
 }

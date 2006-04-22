@@ -107,7 +107,7 @@ int eventTrain(object who, string verb, string skill) {
     if( verb == "train" || verb == "teach") {
 	object ob = SPELLS_D->GetSpell(skill);
 
-	if( ob ) {
+	if( ob && ob->GetTrainingSkills()) {
 	    foreach(string sk in ob->GetTrainingSkills()) {
 		if( GetSkillLevel(sk) < ob->GetRequiredSkill(sk) ) {
 		    eventForce("speak I don't know " + skill + ".");
@@ -115,7 +115,7 @@ int eventTrain(object who, string verb, string skill) {
 		}
 	    }
 	    if( !who->eventLearnSpell(skill) ) {
-		eventForce("speak You are no prepared for that spell!");
+		eventForce("speak You are not prepared for that spell!");
 		return 0;
 	    }
 	    who->eventPrint(GetName() + " touches your forehead and gives "
@@ -127,6 +127,10 @@ int eventTrain(object who, string verb, string skill) {
 	      skill + ".", who);
 	    return 1;
 	}
+else {
+eventForce("speak I don't know what you're talking about.");
+return 1;
+}
     }
 
     skill = lower_case(skill);

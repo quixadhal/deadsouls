@@ -5,7 +5,6 @@
 inherit LIB_STORAGE;
 inherit LIB_ARMOR;
 
-
 static void create() {
     ::create();
     SetKeyName("backpack");

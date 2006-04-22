@@ -32,7 +32,7 @@ int GetLimbClass(string limb);
 string GetLimbParent(string limb);
 string *GetLimbChildren(string limb);
 mapping GetMissingLimb(string limb);
-string *GetMissingLimbs();
+varargs string *GetMissingLimbs(int not_default);
 string GetLong(string nom);
 string *GetWieldingLimbs();
 varargs int AddFingers(string limb, int x);

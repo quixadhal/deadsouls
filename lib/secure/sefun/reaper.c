@@ -41,7 +41,8 @@ varargs void reap_other(string str){
     }
 
     foreach(object thingy in others){
-	if(!userp(thingy) && !environment(thingy)) {
+	if(!userp(thingy) && !environment(thingy) && 
+	  base_name(thingy) != "/secure/obj/snooper" ) {
 	    thingy->eventDestruct();
 	}
     }
