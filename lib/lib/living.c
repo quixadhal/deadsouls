@@ -8,6 +8,7 @@
 
 #include <lib.h>
 #include <daemons.h>
+#include <config.h>
 #include "include/living.h"
 
 inherit LIB_CARRY;
@@ -41,10 +42,20 @@ mixed direct_verb_rule(string verb) {
 }
 
 mixed direct_attack_liv() {
+    //tc("got this far.");
+    //tc("this_player(): "+identify(this_player()));
+    //tc("this_object(): "+identify(this_object()));
+    if(PLAYER_KILL) return 1;
     if( userp(this_player()) && userp(this_object()) ) {
+	//tc("further still","green");
 	if( !(int)environment(this_player())->CanAttack(this_object()) ) {
+	    //tc("Well well well.","blue");
 	    return "No player killing!";
 	}
+	if(this_player()->GetPK() && this_object()->GetPK()){
+	    return 1;
+	}
+	else return "No PK!";
     }
     else return 1;
 }

@@ -46,7 +46,7 @@ mixed do_drop_obj(object ob) {
 }
 
 mixed do_drop_obs(mixed *res) {
-    object *obs;
+    object *obs, *eligible;
     mixed tmp;
 
     if( !sizeof(res) ) {
@@ -61,7 +61,13 @@ mixed do_drop_obs(mixed *res) {
 	foreach(string *list in ua) this_player()->eventPrint(list[0]);
 	return 1;
     }
-    foreach(object ob in obs) 
+    eligible=filter(obs, (: (!($1->GetWorn()) && environment($1) == this_player()) :)); 
+    if(!sizeof(eligible)){
+	write("Remove or unwield items before trying to drop them.");
+	eligible = ({});
+	return 1;
+    }
+    foreach(object ob in eligible) 
     if( (tmp = (mixed)ob->eventDrop(this_player())) != 1 ) {
 	if( stringp(tmp) ) this_player()->eventPrint(tmp);
 	else this_player()->eventPrint("You cannot drop " +

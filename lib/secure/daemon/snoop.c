@@ -5,10 +5,14 @@
 
 inherit LIB_DAEMON;
 
+int SnoopClean();
+
 string *snooped = ({});
 object *snoopers = ({});
 string *monitored  = ({}); 
 mapping Watchers = ([]);
+int count = 0;
+int just_loaded = 1;
 object *prevusers;
 
 void eventLoadRogues();
@@ -19,11 +23,13 @@ static void create() {
     if( file_size( SAVE_SNOOP __SAVE_EXTENSION__ ) > 0 )
 	unguarded( (: restore_object, SAVE_SNOOP, 1 :) );
     SetNoClean(1);
-    set_heart_beat(60);
+    SnoopClean();
+    set_heart_beat(1);
     if(GLOBAL_MONITOR == 0 && sizeof(monitored)){
 	call_out( (: eventLoadRogues :), 1);
     }
     snoopers = filter(objects(), (: base_name($1) == "/secure/obj/snooper" :) );
+    prevusers = users();
 }
 
 void RegisterSnooper(){
@@ -47,46 +53,81 @@ void eventLoadRogues(){
 
 int CheckBot(string str){
     object cloan, foo;
-    int allset;
+    int allset, already_watched = 0;
     string *immune;
     string name;
-
-    //tc("str: "+str);
+    if(!str) str = "foo";
+    str = lower_case(str);
+    foo = find_player(str);
     if(sizeof(snoopers)){
 	foreach(object snoopbox in snoopers){
-	    if(snoopbox && snoopbox->GetSnooped() == str) foo = find_player(str);
+	    if(snoopbox && grepp("#",file_name(snoopbox)) ) {
+	    }
+	    else snoopers -= ({snoopbox});
+	    if(snoopbox && snoopbox->GetSnooped() && snoopbox->GetSnooped() == str) {
+		already_watched = 1;
+	    }
+	    if(snoopbox->GetSnooped() && (!find_player(snoopbox->GetSnooped()) ||!(snoopbox->GetSnooped()))) {
+	    }
 	}
     }
-
-    //if(foo && environment(foo)) tc("environment("+identify(foo)+"): "+identify(environment(foo)));
-    if(!foo && GLOBAL_MONITOR > 0){
+    if(!already_watched && foo && (GLOBAL_MONITOR > 0 || member_array(str, monitored) != -1 || member_array(str, snooped) != -1 )){
 	if(archp(find_player(str)) && GLOBAL_MONITOR == 2) return 0;
-	//tc("cloning: ");
+	//tc("already watched: "+already_watched);
 	cloan=new("/secure/obj/snooper");
-	//tc("vloan: "+identify(cloan));
+	//tc("cloning : "+identify(cloan));
 	cloan->eventStartSnoop(str);
-	//tc("cloning: "+identify(cloan)+" to snoop "+str);
     }
+    //tc("query_snooping: "+identify(query_snooping(cloan)));
     unguarded( (: save_object, SAVE_SNOOP, 1 :) );
     return 1;
 }
 
 void CheckSnooped(){
-    object *users = users();
-    if(users && users != prevusers ){
-	foreach(object user in users){
-	    CheckBot(lower_case(user->GetKeyName()));
+    object *lusers = users();
+    if(!compare_array(lusers, prevusers) || just_loaded){
+	just_loaded = 0;
+	foreach(object user in lusers){
+	    CheckBot(user->GetKeyName());
 	}
     }
-    prevusers = users;
+    else CheckBot("tanstaafl");
+    prevusers = lusers;
+}
+
+int SnoopClean(){
+    snoopers = filter(objects(), (: base_name($1) == "/secure/obj/snooper" :) );
+    if(sizeof(snoopers)){
+	foreach(object snoopbox in snoopers){
+	    if(snoopbox && !clonep(snoopbox) ) {
+		snoopers -= ({snoopbox});
+	    }
+	    else {
+		object subject;
+		string dude = snoopbox->GetSnooped();
+		if(dude) subject = find_player(dude);
+		if(!dude || !subject || !query_snooping(snoopbox) || 
+		  (member_array(dude,snooped) == -1 && member_array(dude,monitored) == -1 && GLOBAL_MONITOR < 1 )){
+		    snoopbox->eventDestruct();
+		    snoopers -= ({snoopbox});
+		}
+	    }
+	}
+    }
+    return 1;
 }
 
 void heart_beat(){
-    foreach(object snoopbox in snoopers){
-	if(!snoopbox) snoopers -= ({ snoopbox });
-	if(!sizeof(snoopbox->GetSnooped())) snoopbox->eventDestruct();
+    count++;
+    if( !(count % 5) ) CheckSnooped();
+
+    if( !(count % 10)) {
+	foreach(object snoopbox in snoopers){
+	    if(!snoopbox) snoopers -= ({ snoopbox });
+	}
+	SnoopClean();
     }
-    CheckSnooped();
+    if(count > 100) count = 0;
 }
 
 void reset(){
@@ -95,10 +136,8 @@ void reset(){
 }
 
 int GetSnoop(string target, string msg){
-    //if(target != "cratylus") {
-    //tc(target+" "+msg+"\n\n","green");
-    //tc("snooper: "+identify(previous_object()));
-    //}
+    if(target != "cratylus") {
+    }
     if(base_name(previous_object()) != "/secure/obj/snooper") return 0;
     else if(sizeof(Watchers[target])) {
 	foreach(string watcher in Watchers[target]){
@@ -122,6 +161,8 @@ int AddWatcher(string watcher, string target){
     else {
 	Watchers[target] += ({ watcher });
     }
+    if(member_array(target,snooped) == -1) snooped += ({target});
+    CheckBot(target);
     unguarded( (: save_object, SAVE_SNOOP, 1 :) );
     return 1;
 }
@@ -142,7 +183,11 @@ int RemoveWatcher(string watcher, string target){
 	    if(snoopbox->GetSnooped() == target) snoopbox->eventDestruct(); 
 	}
     }
-    if(Watchers[target] && !sizeof(Watchers[target])) map_delete(Watchers, target);
+    if(!Watchers[target] || !sizeof(Watchers[target])) {
+	snooped -= ({target});
+	if(Watchers[target]) map_delete(Watchers, target);
+    }
+    CheckBot("adsfgrertgrsgnfxmy");
     unguarded( (: save_object, SAVE_SNOOP, 1 :) );
     return 1;
 }
@@ -163,6 +208,7 @@ int RemoveMonitor(object requestor, string target){
 	if(snoopbox->GetSnooped() == target) snoopbox->eventDestruct(); 
     }
     if(Watchers[target] && !sizeof(Watchers[target])) map_delete(Watchers, target);
+    CheckBot("asreg54eqwhtrbsf");
     unguarded( (: save_object, SAVE_SNOOP, 1 :) );
     return 1;
 }
@@ -199,6 +245,8 @@ int Report(){
     tc("Watchers: "+identify(Watchers));
     tc("snoopers: "+identify(snoopers));
     tc("prevusers: "+identify(prevusers));
+    tc("snooped: "+identify(snooped));
+    tc("monitored: "+identify(monitored));
     return 1;
 }
 

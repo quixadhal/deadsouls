@@ -63,8 +63,14 @@ mixed do_add_obj_to_obj(object ob, object ob2) {
     str = base_name(ob2)+".c";
     sourcefile = base_name(ob)+".c";
 
+    if(userp(ob)){
+	write("You can't do that to a player.");
+	return 1;
+    }
+
     if(!living(ob2) &&
       !inherits(LIB_STORAGE,ob2) &&
+      !inherits(LIB_WORN_STORAGE,ob2) &&
       !inherits(LIB_ROOM,ob2)){
 	write("That object is not intended to contain other objects. Addition halted.");
 	write("If you are sure this is incorrect, then the target object may be ");

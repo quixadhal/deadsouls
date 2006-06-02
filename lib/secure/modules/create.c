@@ -17,18 +17,18 @@ string global1, global2, globaltmp, globalvalue;
 string *base_arr = ({"set_heart_beat", "SetUnique", "SetNoClean","SetNoModify","SetProperties","SetLong","SetShort","SetItems","SetListen","SetSmell"});
 string *item_arr = base_arr + ({"SetLanguage","SetRead","SetDefaultRead","SetDisableChance", "SetDamagePoints", "SetVendorType","SetNoCondition","SetMoney","SetKeyName", "SetId", "SetMass","SetCost","SetValue","SetAdjectives","SetDamagePoints","SetBaseCost" });
 string *meal_arr = item_arr + ({ "SetMealType", "SetStrength"}) -({"SetDamagePoints"});
-string *storage_arr = item_arr + ({"SetMaxCarry","SetInventory", "SetCanClose", "SetCanLock","SetMaxRecurse","SetLocked","SetClosed","SetKey"});
+string *storage_arr = item_arr + ({"SetOpacity", "SetMaxCarry","SetInventory", "SetCanClose", "SetCanLock","SetMaxRecurse","SetLocked","SetClosed","SetKey"});
 string *room_arr = base_arr - ({"SetUnique"}) + ({"SetLanguage", "SetRead", "SetDefaultRead", "SetNoObviousExits","SetDefaultExits","SetTown","SetNightLong","SetDayLong","SetClimate","SetAmbientLight","SetNightLight","SetDayLight","SetObviousExits", "SetInventory", "SetEnters"});
 string *npc_arr = base_arr - ({"SetItems"}) + ({"SetNativeLanguage","SetCustomXP", "SetSpellBook", "SetCanBite", "SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat"});
 string *barkeep_arr = npc_arr + ({"SetLocalCurrency","SetMenuItems"});
-string *trainer_arr = npc_arr + ({"AddTrainingSkills"});
+string *trainer_arr = npc_arr + ({"SetNoSpells", "AddTrainingSkills"});
 string *vendor_arr = npc_arr + ({"SetLocalCurrency","SetStorageRoom","SetMaxItems","SetVendorType"});
 string *armor_arr = item_arr +({"SetRestrictLimbs","SetProtection","SetArmorType"});
 string *weapon_arr = item_arr + ({"SetClass","SetWeaponType","SetDamageType","SetHands"});
 string *chair_arr = item_arr + ({"SetMaxSitters","SetMaxCarry","SetInventory"});
 string *bed_arr = chair_arr + ({"SetMaxLiers"});
 string *table_arr = storage_arr + bed_arr;
-string *door_arr = ({"SetLong","SetShort","SetLocked","SetClosed","SetCanLock","SetKey","SetId"});
+string *door_arr = ({"SetHiddenDoor", "SetLong","SetShort","SetLocked","SetClosed","SetCanLock","SetKey","SetId"});
 string *book_arr = item_arr + ({"SetTitle","SetSource"});
 string *worn_storage_arr = armor_arr + storage_arr;
 
@@ -414,6 +414,8 @@ mixed eventModify(object ob, string str){
 	case "settrainingskills" : out = "AddTrainingSkills";break;
 	case "trainingskills" : out = "AddTrainingSkills";break;
 	case "training" : out = "AddTrainingSkills";break;
+	case "nospells" : out = "SetNoSpells";break;
+	case "setnospells" : out = "SetNoSpells";break;
 	case "defaultexits" : out = "SetDefaultExits";break;
 	case "setdefaultexits" : out = "SetDefaultExits";break;
 	case "setnoobviousexits" : out = "SetNoObviousExits";break;
@@ -428,6 +430,10 @@ mixed eventModify(object ob, string str){
 	case "setheartbeat" : out = "set_heart_beat";break;
 	case "set_heart_beat" : out = "set_heart_beat";break;
 	case "heart_beat" : out = "set_heart_beat";break;
+	case "hiddendoor" : out = "SetHiddenDoor";break;
+	case "sethiddendoor" : out = "SetHiddenDoor";break;
+	case "opacity" : out = "SetOpacity";break;
+	case "setopacity" : out = "SetOpacity";break;
 	default : out = mode;
 	}
     }
@@ -540,7 +546,7 @@ mixed eventModify(object ob, string str){
 	return 1;
     }
 
-    if(grepp(inheritance,"door")){
+    if(grepp(inheritance,"door") && out != "SetHiddenDoor" ){
 	string cote = this_object()->eventEvaluateDoorSide(ob);
 	if(cote) this_object()->eventProcessDoor(ob, out, value, cote);
 	else this_object()->eventProcessDoor(ob, out, value);
@@ -566,6 +572,7 @@ mixed eventModify(object ob, string str){
 	case "SetAmbientLight" : p_array = ({"SetDayLight","SetNightLight","create()","create ()","SetShort","SetLong","SetDayLong","SetNightLong"});break;
 	case "SetDayLight" : p_array = ({"SetAmbientLight","SetNightLight","create()","create ()","SetShort","SetLong","SetDayLong","SetNightLong"});break;
 	case "SetNightLight" : p_array = ({"SetAmbientLight","SetDayLight","create()","create ()","SetShort","SetLong","SetDayLong","SetNightLong"});break;
+	case "SetHiddenDoor" : p_array = ({ "SetClosed", "SetLocked" }); break;
 	default : p_array = ({"SetItems","SetLong","SetDayLong","SetNightLong","SetShort"});
 	}
 
@@ -593,7 +600,10 @@ int eventDelete(object ob, string value){
     filename = base_name(ob)+".c";
     tmpfile = generate_tmp(ob);
 
+
+    //tc("stack: "+get_stack());
     if(!check_privs(this_player(),filename)){
+
 	write("You do not appear to have access to this file. Modification aborted.");
 	return 1;
     }
@@ -631,6 +641,8 @@ int eventResumeArrayMod(object target, string tmpfile, string *NewArr, string fu
     string *p_array;
     mixed mx;
     filename = base_name(target)+".c";
+
+    //tc("stack: "+get_stack());
     if(!check_privs(this_player(),filename)){
 	write("You do not appear to have access to this file. Modification aborted.");
 	return 1;
@@ -651,7 +663,9 @@ int eventResumeArrayMod(object target, string tmpfile, string *NewArr, string fu
     default : p_array = ({"SetLong","SetShort","SetDayLong","SetNightLong"});
     }
     ret = remove_matching_line(read_file(tmpfile),func);
+    //tc("ret: "+ret,"red");
     ret = this_object()->eventAppend(ret,p_array,"\n"+array_string+"\n");
+    //tc("ret: "+ret,"green");
     globaltmp = ret;
     unguarded( (: write_file(global2,globaltmp,1) :) );
     this_object()->eventGeneralStuff(tmpfile);
@@ -677,6 +691,8 @@ int eventResumeMappingChange(object target, string tmpfile, mapping NewMap, stri
     map_string = func+"("+map_string+");";
     filename = base_name(target)+".c";
 
+    //tc("stack: "+get_stack());
+
     if(!check_privs(this_player(),filename)){
 	write("You do not appear to have access to this file. Modification aborted.");
 	return 1;
@@ -689,7 +705,7 @@ int eventResumeMappingChange(object target, string tmpfile, mapping NewMap, stri
     ret = remove_matching_line(read_file(tmpfile),func);
     switch(func){
     case "SetHealthPoints" : p_array = ({"SetInventory","SetMaxHealhPoints","SetClass","SetRace","SetLong"});break;
-    case "SetMaxHealthPoints" : p_array = ({"SetInventory","SetHealhPoints","SetClass","SetRace","SetLong"});break;
+    case "SetMaxHealthPoints" : p_array = ({"SetClass","SetRace","SetHealthPoints","SetLong"});break;
     case "SetSmell" : p_array = ({"SetItems","SetInventory","SetListen","SetLong","SetDayLong","SetNightLong","SetShort"});break;
     case "SetListen" : p_array = ({"SetItems","SetInventory","SetSmell","SetLong","SetDayLong","SetNightLong","SetShort"});break;
     default : p_array = ({"SetItems","SetLong","SetDayLong","SetNightLong","SetShort"});
@@ -715,7 +731,7 @@ int eventResumeMappingChange(object target, string tmpfile, mapping NewMap, stri
 
 int eventAddSettings(object ob, string tmp, mapping NewMap, string func){
     string filename, new_lines;
-
+    //tc("stack: "+get_stack());
     filename = base_name(ob)+".c";
 
     if(!check_privs(this_player(),filename)){
@@ -738,7 +754,7 @@ int eventAddSettings(object ob, string tmp, mapping NewMap, string func){
 	//else new_lines += func+"(\""+key+"\", 0, \""+val+"\");\n";
 	//}    
     }
-    global1 = this_object()->eventAppend(global1,({func,"SetClass","SetRace","SetLevel","SetItems","SetInventory","SetLong"}),new_lines);
+    global1 = this_object()->eventAppend(global1,({func,"SetClass","SetRace","SetLevel","SetItems","SetInventory","SetLong", "SetClosed"}),new_lines);
     unguarded( (: write_file(global2, global1,1) :) );
     this_object()->eventGeneralStuff(global2);
     global1 = filename;

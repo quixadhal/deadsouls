@@ -15,10 +15,6 @@ private string array TeachingLanguages;
 private mapping Students;
 
 
-int eventDude(){
-    return 1;
-}
-
 /**** driver applies ****/
 
 static void create() {
@@ -30,7 +26,11 @@ static void create() {
 	"teach" : (: eventTeach :),
 	"teach" : (: eventTeach :),
 	"default" : (: eventHelp :),
-	"dude" : (: eventDude :),
+	"help" : (: eventHelp :),
+      ]) );
+    SetRequestResponses( ([
+	"default" : (: eventHelp :),
+	"help" : (: eventHelp :),
       ]) );
 }
 
@@ -136,7 +136,7 @@ static int ContinueTeaching(object who, string language, int x) {
     if( x > 4 ) {
 	map_delete(Students, (string)who->GetKeyName());
 	eventComplete(who, language);
-	who->AddLanguagePoints(language,(this_player()->GetLevel()*5));
+	who->AddLanguagePoints(language,5+((who->GetStatLevel("intelligence")/10)*2)+random(10));
 	who->AddTrainingPoints(-1);
 	return 1;
     } else {

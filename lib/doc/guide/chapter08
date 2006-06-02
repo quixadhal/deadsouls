@@ -1,0 +1,50 @@
+chapter 8 "Privacy"
+
+    One of the most powerful and most easily abused tools
+in your administrative arsenal is the snoop command. When
+you "snoop <person>", you get to see everything they
+say and do.
+    Players usually find this intrusive and objectionable,
+and it is ethically shaky to do this without their 
+knowledge and consent. The only circumstances under which
+snooping is unambiguously ethical are:
+
+* Snooping one of your own test characters.
+
+* Snooping a player (with their consent) for the purposes of
+troubleshooting a bug.
+
+* Snooping a user (without their consent) to investigate
+a legitimate suspicion of malfeasance.
+
+    Secretly snooping people for your personal amusement is
+just flat wrong. 
+
+    By default, only admins can snoop. Admins are players who
+are members of one or both of the groups SECURE and ASSIST. 
+
+    An assistant admin *cannot* snoop a full admin. However,
+assistant admins have read access to the snoop log directory,
+so if global monitoring is enabled, they can read the
+contents of a full admin's monitor log.
+
+    The new SNOOP_D system allows for the simultaneous
+snooping of multiple people, and allows multiple people to
+snoop the same person. It also permits you to enable 
+monitoring of users without having to snoop, by using the
+monitor command to log i/o to /secure/log/adm.
+
+    The GLOBAL_MONITOR parameter in config.h will take one of three
+arguments. 0 = monitor nobody. 1 = monitor everyone. 2 = monitor
+everyone except admins. After changing it, reboot the mud
+to make sure the change takes effect.
+
+    This functionality isn't here for your entertainment. In
+fact, I had to think long and hard before sharing my snoop
+code with you and putting it in the general lib distribution.
+
+    In the end, though, I believe that the benefits outweigh
+the risk of abuse. As an admin, you have the right to know
+what's going on in your lib, and as a lib coder, it isn't
+my business to interfere with that.
+

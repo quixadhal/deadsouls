@@ -9,13 +9,14 @@ void create(){
     SetAdjectives("friendly");
     SetGender("male");
     SetRace("human");
+    SetNoSpells(1);
     SetShort("Radagast the Brown");
     SetLong("This is a tall, thin old man. Not much is known of "+
       "this mysterious wizard, other than his legendary kindness "+
       "to animals and his controversial reputation as a seditious "+
       "rebel. He can train you in the arts of magic defense, magic "+
       "attack, and conjuring. You may, for example, \"ask radagast "+
-      "to teach conjuring\". If you lack training points, then "+
+      "to train conjuring\". If you lack training points, then "+
       "do some adventuring and earn a promotion from Dirk. You will "+
       "then be awarded training points."); 
     SetClass("mage");

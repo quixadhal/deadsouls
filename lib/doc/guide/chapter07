@@ -1,0 +1,167 @@
+chapter 7 "Advanced Topics"
+
+Section I: Shadows
+------------------
+
+    Shadows are a problematic topic. My first impulse is to warn
+you sternly not to mess with them, they shouldn't be used, etc. In
+his legendary LPC text, Descartes goes so far as to say he hasn't
+seen a shadow do something that couldn't be done better another way.
+
+    So, be aware that the topic of shadows tends to generate 
+strong opinions. 
+
+    Shadows *are* hazardous pretty much by definition. A shadow
+is an object that effectively "wraps" another object, like an
+invisible shadow around it. When a call is made to the shadowed
+object, the shadow intercepts that call. 
+
+    What the shadow does with the call is up to you. It can
+do nothing at all, and simply pass the call along to the
+shadowed object. It could block that call. It could manipulate
+that call and send the modified version to the shadowed
+object.
+
+    You can see an example of a shadow in /secure/npc/drone.c .
+This is the code that enables you to take control of an npc
+with the remote control. The remote control loads /shadows/drone.c
+which inherits /secure/npc/drone.c , and attaches that shadow to 
+the npc that is to be controlled. This is a way of "adding
+functions on the fly" to an already-loaded npc.
+    The drone shadow is in the lib as an example
+of how shadows work, and an example of how to get an object to
+posess functions it did not have when loaded. It is not
+intended to represent shadow advocacy.
+
+    The danger, and the reason some people go ballistic
+when they hear the phrase "I think I'll use a shadow for that"
+is that a lib that allows unrestricted shadow use 
+effectively has no security at all. You can have creators
+enshadow an arch for example, or enshadow other privileged
+objects.
+
+    Dead Souls shadows are pretty tightly restricted. The
+master object does not permit a shadow to be created unless its
+code is in /shadows . This means creators can't hide their
+rootkit shadows in their homedirs and expect them to work.
+
+    Further, because /shadows is outside the /secure dir,
+it serves as an obstacle to defeating the stack security
+model. 
+
+    In any case, I strongly recommend you avoid using them
+except in the extremely unusual case of a task that has
+no other solution. If your mud starts collecting a bunch
+of shadows out of laziness, sadness will likely be the result.
+
+
+Section II: The "class" Data Type
+---------------------------------
+
+    In 1995 Beek added a data type to MudOS: class.
+I have to admit that I'm at a bit of a loss to explain classes,
+because I am not a C guy, I'm an LPC guy. For people who
+grok C, the class data type is a natural and elegant solution
+for organizing related sets of variables.
+
+    I have nothing but respect for Beek and the leet programmers
+who built MudOS, so please don't go running around saying I'm
+dissing them.
+
+    But in my experience, the use of classes generally serves
+the purpose of obscuring code and making it more difficult
+to debug.
+
+    I've seen newbie LPC coders take to classes like fish to water.
+I can't explain it other than to speculate that for some people
+the class data type (I've even had people argue at me that it's
+really a "data structure", like I have the slightest clue what
+the difference is) Just Makes Sense. If you are one of those people,
+then bully for you. I'm serious. I don't understand you, but
+your thing probably works for you, so, right on.
+
+    However, I do not recommend that the average newbie coder
+spend too much time on classes. You'll have plenty of opportunity
+when you start dissecting the lib, but my friendly advice to
+the noob is to use mappings instead. I've yet to see a class
+do something that a mapping couldn't do with greater clarity.
+
+
+Section III: add_action
+-----------------------
+
+    Yet another topic with potential for violence. The passions
+can run high on this one, and in fact, the Lima team felt 
+strongly enough about it that they don't enable it by default.
+No add_actions by default. That's hard core.
+
+    add_action is an efun that LP muds originally depended
+on for most kinds of user input. If you wanted to be able to
+throw a ball, that ball needed an add_action for it. You'd
+have that ball provide a user with the throw command whenever
+the user came in proximity to the ball. You can see the syntax
+for add_action by examining the /lib/shop.c file.
+
+    It's simple. It works. I mean, really, It Just Works, and 
+it's the fastest way to add functionality to any object. People
+used add_action from pretty much the genesis of LP, as far as
+I can tell, and it became just a way of life. That was just
+how it was done. Yes, that wording was intentional ;)
+
+    However, there were serious problems with this parsing
+scheme. Basically it let any creator, regardless of skill
+level, define commands for the mud. Joe's throw add_action for
+his ball could be poorly coded and worded, and was liable to
+behave differently from Jon's version. 
+
+    And suppose you held two or three items that had a throw
+add_action each? Which one took precedence? What if that
+one was bugged?
+
+    Using add_actions for general lib command functionality
+is really problematic for this reason. It fosters a lack
+of uniformity across the lib that can leave users basically
+playing a "guess the syntax" game for any item like this,
+and allows for conflicts by incorrectly coded items. The
+natural language parser was the MudOS solution to this problem,
+implementing the verb system with which you are now so
+familiar.
+
+    The controversy boils down to preference. For some people,
+add_action is just How It Is Done, and you still have
+people starting muds with libs like Skylib and TMI-2 (!!)
+that lack an advanced lib-wide parser. For these people,
+verbs are an overcomplicated mess that they just don't
+have a need to understand.
+
+    Then you have the people who find add_action anathema, and
+simply an unacceptable vestige of a more primitive form of
+mudding. These people view add_actioners as atavistic knuckle-
+draggers, either too dumb or too pig-headed to understand the
+beauty and majesty of natural language parsing.
+
+    My view, predictably, is somewhere in the middle. Verbs
+*can* be exhausting to accommodate when you're just Trying To
+Do One Thing. But add_actions truly are of limited use in
+a modern lib, and allowing their proliferation out of
+laziness is probably a bad idea.
+
+    That isn't to say there isn't a place for add_actions. Dead
+Souls supports them, and you'll see them every now and then. 
+In fact, technically, every command you issue, verb
+or not, is evaluated by an add_action in the mud shell object
+(LIB_NMSH). It is nevertheless better to learn to use verbs, because
+they eliminate many problems you don't need to reinvent the
+wheel for.
+
+    I had one person tell me, as they chose a MudOS lib that
+didn't use verbs, that they planned to write their own natural
+language parser in the lib. I bade him good luck. I wonder
+how he's coming along these days.
+
+
+Section IV: Thoughts on MudOS
+-----------------------------
+
+    Like, wow. MudOS. You know?
+

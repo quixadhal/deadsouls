@@ -39,3 +39,5 @@ static void create(){
 void init(){
     ::init();
 }
+
+int CanSell() { return 0; }

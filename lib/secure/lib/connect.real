@@ -455,7 +455,7 @@ static void cmdPick(string args) {
     Player->AddCurrency("silver",random(100)+57);
     this_player()->SetWimpy(20);
     this_player()->SetTerminal("ansi");
-    //tc("about to encre: "+Name);
+    PLAYERS_D->AddPlayerInfo(Name);
     call_out( (: eventCre, Name :), 3);
     eventEnterGame();
 } 

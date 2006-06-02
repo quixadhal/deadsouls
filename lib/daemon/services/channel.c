@@ -12,6 +12,10 @@
 #include <rooms.h>
 #include <message_class.h>
 
+static private string *local_chans = ({"newbie","cre","gossip","admin","error",
+  "priest", "mage", "explorer", "thief", "fighter", "death" });
+
+
 void eventReceiveChannelWhoReply(mixed array packet) {
     object ob;
     tn("eventReceiveChannelWhoReply: "+identify(packet),"green");
@@ -136,8 +140,10 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
     }
     else packet = ({ "channel-m", 5, mud_name(), convert_name(who), 0, 0, ch, 
 	  who, msg });
-    INTERMUD_D->eventWrite(packet);
-    tn("eventSendChannel processed: "+identify(packet),"green");
+    if(member_array(ch, local_chans) == -1){
+	INTERMUD_D->eventWrite(packet);
+	tn("eventSendChannel processed: "+identify(packet),"green");
+    }
 }
 
 void eventSendChannelWhoRequest(string channel, string mud) {

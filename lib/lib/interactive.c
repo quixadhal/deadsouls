@@ -243,8 +243,9 @@ void eventDescribeEnvironment(int brief) {
 	shorts = map(filter(all_inventory(env),
 	    function(object ob) {
 		if( living(ob) ) return 0;
-		if( (int)ob->GetInvis(this_object()) && !ob->GetDoor())
+		if( (int)ob->GetInvis(this_object()) && !ob->GetDoor() )
 		    return 0;
+		if(ob->GetDoor() && load_object(ob->GetDoor())->GetHiddenDoor()) return 0;
 		if( (int)ob->isFreshCorpse() ) return 0;
 		return 1;
 	      }), (: (string)$1->GetShort() :));

@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -14,11 +15,13 @@ static void create() {
 	"/domains/town/obj/omni" : 1,
       ]) );
 }
-
 int CanReceive(object ob) {
     if( playerp(ob) && !creatorp(ob)  && !present("testchar badge",ob) ) {
 	message("info","The storeroom is for authorized personnel only.",ob);
 	return 0;
     }
     return 1;
+}
+void init(){
+    ::init();
 }

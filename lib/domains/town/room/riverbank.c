@@ -26,11 +26,14 @@ static void create() {
     SetFish( ([
 	"/domains/town/meals/shark" : 10,
       ]) );
-    //funs
-    //snuf
 }
 void init() {
     ::init();
     SetSmell(([]));
     SetListen(([  "default" : "You can hear the roar of the river rushing by."]));
+}
+
+int CanReceive(object ob){
+    if(answers_to("provost",ob)) return 0;
+    return ::CanReceive();
 }

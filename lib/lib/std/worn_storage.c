@@ -622,7 +622,7 @@ mixed CanPutInto(object who, object what) {
 }
 
 varargs mixed CanShowInterior(object who, object target) {
-    if( GetClosed() ) {
+    if( GetClosed() && this_object()->GetOpacity() > 33) {
 	return capitalize(GetDefiniteShort()) + " is closed.";
     }
     else return holder::CanShowInterior();

@@ -20,3 +20,6 @@ static void create() {
     SetMass(87);
     SetValue(50);
 }
+void init(){
+    ::init();
+}

@@ -8,6 +8,7 @@
 
 #include <lib.h>
 #include <rounds.h>
+#include <config.h>
 #include <daemons.h>
 #include <position.h>
 #include <damage_types.h>
@@ -247,7 +248,7 @@ varargs int SetAttack(mixed target, function callback, int type) {
 	else {
 	    int spec_targ_here;
 	    foreach(object t in SpecialTargets){
-		if(present(t->GetKeyName(),environment(this_player()))) spec_targ_here = 1;
+		if(t && present(t->GetKeyName(),environment(this_player()))) spec_targ_here = 1;
 	    }
 	    if(!spec_targ_here) SpecialTargets = target;
 	}
@@ -770,7 +771,7 @@ int eventExecuteAttack(mixed target) {
 	if( TargetLimb ) {
 	    if( target->eventReceiveAttack(x, "melee", this_object()) ) { 
 		x = GetDamage(pro*2, "melee attack");
-		x = target->eventReceiveDamage(this_object(), KNIFE, x, 0,
+		x = target->eventReceiveDamage(this_object(), BITE, x, 0,
 		  TargetLimb);
 		if( x < 1 ) {
 		    target->eventPrint(possessive_noun(this_object()) + " bite "
@@ -824,7 +825,7 @@ int eventExecuteAttack(mixed target) {
 	if( GetDying() ) {
 	    return 0;
 	}
-	if( playerp(this_object()) && playerp(agent) ) { // No PK
+	if( playerp(this_object()) && playerp(agent) && !PLAYER_KILL) { 
 	    if( !environment()->CanAttack( agent, this_object() ) ) {
 		return 0;
 	    }
@@ -921,7 +922,7 @@ int eventExecuteAttack(mixed target) {
 	//tc("encumbrance: "+encumbrance,"white");
 	if(encumbrance > 30){
 	    //tc("feep","green");
-	    tell_object(this_object(),"You try to dodge while weighed down.");
+	    if(GetInCombat()) tell_object(this_object(),"You try to dodge while weighed down.");
 	}
 	x = race::eventReceiveDamage(agent, type, x, internal, limbs);
 	if( !Wimpy ) return x;

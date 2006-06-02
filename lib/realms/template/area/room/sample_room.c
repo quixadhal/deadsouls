@@ -14,8 +14,8 @@ static void create() {
       ]) );
     SetExits( ([
 	"west" : MY_DIR "/workroom",
+	"east" : MY_ROOM "/sample_two.c",
       ]) );
-    SetObviousExits("w");
     SetInventory( ([
 	MY_OBJ "/table" : 1,
 	MY_NPC "/fighter" : 1,
@@ -23,5 +23,5 @@ static void create() {
 }
 
 void init(){
-::init();
+    ::init();
 }

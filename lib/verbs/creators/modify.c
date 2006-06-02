@@ -76,6 +76,11 @@ mixed do_modify_obj_str(object ob, string str) {
 	return 1;
     }
 
+    if(userp(ob)){
+	write("You may not modify a player.");
+	return 1;
+    }
+
     return staff->eventModify(ob, str);
 }
 

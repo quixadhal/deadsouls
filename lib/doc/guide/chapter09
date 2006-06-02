@@ -1,0 +1,67 @@
+chapter 9 "The Future"
+
+    In the late 1990's, Descartes @ Nightmare released
+a public domain version of the Nightmare lib called
+Dead Souls, and pulled the official Nightmare lib from
+distribution. They were very similar, but Dead Souls
+lacked documentation.
+
+    His final realease of Dead Souls was 1.1.
+
+    As you must know by now, from reading the FAQ's (you
+*did* read the FAQ's, right?) at some point I lost my mind
+and decided to dust off that old lib, get it working, and
+get people using it so that I could have other people to
+discuss LPC code with.
+
+    I can honestly say I didn't know what I was getting
+myself into. I mean, when I started, it sure *seemed* like
+things "mostly worked". The hard part was just getting it
+installed, right?
+
+    It's now been slightly over a year since I started
+realizing that fixing A broke B, and fixing B broke A
+and C, etc, ad nauseam. My guiding principle was "get it
+working" with a corollary of "make it work well". My
+main aim was bugfixes, but where a feature gap made it
+obviously difficult for a beginner, I attempted to address
+it with a new system. Hence, admintool, QCS, SNOOP_D, etc.
+
+    In other cases, a new system was trivially easy
+to add and its absence was an unreasonable burden, such
+as SetAction for rooms.
+
+    Sometimes a new system comes from my desire to have
+a tool that makes my own life easier while fixing the
+lib, such as the medical tricorder, remote control, and
+the laboratory facility east of the Creators' Hall.
+
+    For the most part, though, my main focus has been 
+fixing stuff, not adding stuff. The intention has been 
+to release Dead Souls 2.1 as a version that is as free
+of pain as possible, as clear of bugs as reasonable, and
+as fun and useful as 1.1 should have been. Today it is
+May 18 2006, and I think that I am very close
+to that landmark. Today I am at the point where the list
+of bugs consists of minor annoyances, of the kind that
+players would hardly ever take note.
+
+    The future for Dead Souls I see as lots of fun for me.
+I yearn to be free of doing nothing but fix fix fix. As
+great as Dead Souls is, it needs major new systems to make
+it fully competitive with the libs currently out there.
+Adding these new systems is the kind of fun challenge
+I'd really meant to be doing all along, but suckered
+myself out of.
+
+    Post 2.1 I intend to concentrate on things like
+mounts, vehicles, naval/vehicle combat, 3d travel, extending
+virtual rooms, player-independent world persistence, 
+and lots of other fun stuff. I'm not in the habit of
+making promises about the lib. As the Dead Souls community
+knows, I prefer to just *make* a new system than talk
+about it. I wanted to share these plans with you, though,
+so that you know that Dead Souls development continues
+apace, and great things are on the horizon.
+
+

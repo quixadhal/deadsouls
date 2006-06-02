@@ -34,7 +34,7 @@ object *AddFollower(object follower) {
 	if( !follower->IsFollowing(this_object()) ) {
 	    if( follower->SetLeader(this_object()) ) {
 		tmp = new(class FollowerClass);
-		tmp->allowed = 0;
+		tmp->followed = 0;
 		tmp->bonus = 0;
 		tmp->lost = 0;
 		Followers[follower] = tmp;
@@ -55,17 +55,17 @@ object *RemoveFollower(object follower) {
 
 object *GetFollowers() { return filter(keys(Followers), (: $1 :)); }
 
-int SetAllowed(object follower, int allowed) {
-    if( !objectp(follower) ) error("Bad argument 1 to SetAllowed().\n");
-    if( !intp(allowed) ) error("Bad argument 2 to SetAllowed().\n");
+int SetFollowed(object follower, int followed) {
+    if( !objectp(follower) ) error("Bad argument 1 to SetFollowed().\n");
+    if( !intp(followed) ) error("Bad argument 2 to SetFollowed().\n");
     if( !Followers[follower] ) return 0;
-    return(((class FollowerClass)Followers[follower])->allowed = allowed);
+    return(((class FollowerClass)Followers[follower])->followed = followed);
 }
 
-int GetAllowed(object follower) {
+int GetFollowed(object follower) {
     if( !objectp(follower) ) error("Bad argument 1 to GetFollowBonus().\n");
     if( !Followers[follower] ) return 0;
-    return ((class FollowerClass)Followers[follower])->allowed;
+    return ((class FollowerClass)Followers[follower])->followed;
 }
 
 int AddFollowBonus(object follower, int bonus) {
@@ -110,7 +110,7 @@ int eventMoveFollowers(object dest) {
 	follower = Followers[ob];
 
 	followChance = 100;
-	if( !follower->allowed ) followChance -= 20 + this_object()->GetSkillLevel("stealth");
+	if( !follower->followed ) followChance -= 20 + this_object()->GetSkillLevel("stealth");
 	followChance += ob->GetSkillLevel("tracking");
 	followChance += follower->bonus;
 	if( ob->eventFollow(dest, followChance) ) follower->lost = 0;

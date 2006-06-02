@@ -39,9 +39,12 @@ int make_workroom(mixed dude) {
 	write_file(cdir+"/customdefs.h","\n"+dir_line+"\n");
 	write_file(cdir+"/customdefs.h",read_file(tdir+"customdefs.part2"));
 	cp(tdir+"area/room/sample_room.c", cdir+"/area/room/sample_room.c");
+	cp(tdir+"area/room/sample_two.c", cdir+"/area/room/sample_two.c");
 	cp(tdir+"area/weap/sword.c", cdir+"/area/weap/sword.c");
 	cp(tdir+"area/obj/table.c", cdir+"/area/obj/table.c");
 	cp(tdir+"area/obj/key.c", cdir+"/area/obj/key.c");
+	cp(tdir+"area/obj/case.c", cdir+"/area/obj/case.c");
+	cp(tdir+"area/obj/watch.c", cdir+"/area/obj/watch.c");
 	cp(tdir+"area/npc/fighter.c", cdir+"/area/npc/fighter.c");
 	cp(tdir+"area/armor/chainmail.c", cdir+"/area/armor/chainmail.c");
 	cp(tdir+"area/armor/leather_boot_r.c", cdir+"/area/armor/leather_boot_r.c");

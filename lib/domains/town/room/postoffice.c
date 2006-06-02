@@ -24,9 +24,8 @@ static void create(){
 	"implements" : "Ink, paper, etc.",
 	"instructions" : "Try reading them.",
 	"counter" : "A counter folks use to lean on while writing messages." ]) );
-    SetExits( ([
+    SetExits( ([ 
 	"north" : "/domains/town/room/vill_road3",
-	"out" : "/domains/town/room/vill_road3.c",
       ]) );
     SetProperty("no attack", 1);
 }

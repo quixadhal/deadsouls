@@ -5,9 +5,9 @@ inherit LIB_WORN_STORAGE;
 
 static void create(){
     ::create();
-    SetKeyName("wizard's robe");
+    SetKeyName("wizard robe");
+    SetAdjectives( ({"wizards", "wizard's", "soft", "wizard"}) );
     SetId(({"robe","cloak","duster"}));
-    SetAdjectives(({"wizard","wizard's","soft"}));
     SetShort("a robe");
     SetLong("This is a large, comfortable-looking robe, like a wizard might wear. It has many pockets and compartments for holding things.");
     SetProperties(([

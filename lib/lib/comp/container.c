@@ -12,6 +12,14 @@ inherit LIB_LOOK_IN;
 inherit LIB_RADIANCE;
 inherit LIB_ADDSTUFF;
 
+int SetOpacity(int x){
+    return look_in::SetOpacity(x);
+}
+
+int GetOpacity(){
+    return look_in::GetOpacity();
+}
+
 int GetRadiantLight(int ambient) {
     int r = radiance::GetRadiantLight(ambient);
     int o = GetOpacity();

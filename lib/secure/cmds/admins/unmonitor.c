@@ -16,7 +16,7 @@ int cmd(string str) {
     else if(!user_exists(str))
 	write(str+": no such player.\n");
     else{
-	SNOOP_D->RemoveMonitor(this_player()->GetKeyName(), str);
+	SNOOP_D->RemoveMonitor(this_player(), str);
 	write("The snoop daemon has received your request.");
     }
     return 1;

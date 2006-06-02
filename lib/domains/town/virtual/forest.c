@@ -108,8 +108,8 @@ varargs void SetLongAndItems(int x, int y, int z) {
 	"a road that leads north to a high plateau.";
     if(y == 25) str+= " A steep cliff rises north of here, making "
 	"travel north into the mountains impossible.";
-    if(x == 1) str += "The forest is impassably thick to the west.";
-    if(y == 1) str += "The forest is impassably thick southward.";
+    if(x == 1) str += " The forest is impassably thick to the west.";
+    if(y == 1) str += " The forest is impassably thick southward.";
     if(x == 24 && y == 1) str += "\n%^GREEN%^There is a sign here you can read.%^RESET%^";
     if(x == 24 && y == 25) str += "\n%^GREEN%^There is a cave entrance in the cliff wall.%^RESET%^";
     SetItems( ([ "forest" : "It is so vast.",

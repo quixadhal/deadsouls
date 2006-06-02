@@ -2,7 +2,7 @@
 #include <meal_types.h>
 
 inherit LIB_MEAL;
-inherit "/lib/poison";
+inherit LIB_MEAL_POISON;
 
 static void create() {
     ::create();
@@ -10,7 +10,7 @@ static void create() {
     SetId( ({ "vial", "poison", "vial of poison" }) );
     SetAdjectives("glass","small");
     SetShort("a vial of poison");
-    SetLong("A small glas vial of poison.");
+    SetLong("A small glass vial of poison.");
     SetMass(60);
     SetMealType(MEAL_DRINK);
     SetStrength(1);

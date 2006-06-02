@@ -1,3 +1,59 @@
+---- 2.0r23 (unreleased) ---
+- Fixed a bug that sent local channel data to the i3
+  router. Sorry about this, guys. As soon as I found
+  this, I killed it. It appears to have affected r22 only.
+- Fixed a conflict between room SetActions and LIB_FISHING.
+- It is no longer possible to fish while asleep.
+- Admins can no longer decre themselves.
+- Modified MudOS source to compile on IRIX using Nekoware.
+- Fixed PK bug. Added PLAYER_KILL to config.h .
+- Fixed problem with monitor failures and runaway
+  snooper generation.
+- Fixed gate command, renamed it stargate.c.
+- Added Administrator's Guidebook. Initial draft available
+  at http://dead-souls.net/guide/
+- Added downloads.html to doc pages.
+- Added verbs.html to doc pages.
+- Added i3who command to list who data on all muds.
+- Fixed a germ bug that triggered a combat message.
+- Fixed an invalid index bug in STARGATE_D and
+  in LIB_STARGATE.
+
+---- 2.0r22 ---
+- Changed UNIX config and start scripts to assume
+  Bourne shell rather than bash.
+- Fixed "look in" bug in transparent containers.
+- Added stargate lab east of the Creators' Hall.
+- Added sefun: compare_array.
+- Fixed divide-by-zero bug in net worth calculator.
+- Fixed "look in" bug in opaque containers.
+- Fixed snoop and monitoring bugs.
+- Added SetAction to rooms, for time-based events. See
+  /domains/town/room/shore.c for an example.
+- Fixed plural limb problem in RACES_D help.
+- Worn/wielded items must be removed/unwielded before they can be dropped with "drop all".
+- Worn/wielded items must be removed/unwielded before they can be sold with "sell all".
+- Consolidated Windows and UNIX distributions into a 
+  single download file.
+- Converted class variables in STARGATE_D to mappings,
+  and fixed "inbound/idle gate" bug, as well as room
+  message bug.
+- Updated FAQs and miscellaneous documentation.
+- Fixed bug in RESTRICTED_CHANNELS.
+- Cleaned up odd function names in LIB_LEAD.
+- Tightened up earmuffing, added muffing of entire muds.
+- Fixed a bug in look verb that prevented looking
+  at dummy items.
+- Fixed a few bugs in trainers. Added a SetNoSpells() lfun
+  to control whether a trainer automatically can teach the
+  spells she knows.
+- Fixed noisy index error in LIB_GERM.
+- Fixed CHAT_D bug that prevented talking on some channels.
+- Fixed problem in LIB_FISHING that made one's catch disappear.
+- Fixed opacity for containers. If an item's opacity is about
+  33 or below, its contents are visible on casual examination.
+  Otherwise, you have to "look in" it.
+
 ---- 2.0r21 ---
 - Fixed a bug in "following" code.
 - Fixed a bug in trainer code.

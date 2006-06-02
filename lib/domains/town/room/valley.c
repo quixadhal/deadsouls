@@ -38,3 +38,8 @@ static void create() {
 void init(){
     ::init();
 }
+
+int CanReceive(object ob){
+    if(answers_to("provost",ob)) return 0;
+    return ::CanReceive();
+}

@@ -1,26 +1,35 @@
-#!/bin/bash
+#!/bin/sh
+
+# Specify your mud dir here.
+MUDHOME=""
 
 # It has been reported that non-US users have problems
 # with some .o files because their systems default to
 # commas for decimal notation and not periods. The
-# following language exports are fo the benefit of
+# following language exports are for the benefit of
 # people who run into this problem.
-export LANG=en_US
-export LANGUAGE=en_US
-export LC_ALL=en_US
 
-export MUDHOME=""
-
-count=1
+LANG=en_US
+LANGUAGE=en_US
+LC_ALL=en_US
+export LANG LANGUAGE LC_ALL MUDHOME
 
 umask 007
 
 ulimit -n 120
 
 while [ true ]; do
+
+    if [ $MUDHOME ] && [ -f $MUDHOME/bin/driver ]  && [ -f $MUDHOME/bin/mudos.cfg ]
+        then
         $MUDHOME/bin/driver $MUDHOME/bin/mudos.cfg 
-        count=$(($count+1))
-        if [ $count -gt 20 ]
-        then count=1
+        else
+        if [ -f ./driver ]  && [ -f ./mudos.cfg ] 
+            then
+            ./driver ./mudos.cfg
+            else
+            break
         fi
+    fi
+
 done

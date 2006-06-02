@@ -21,6 +21,7 @@ void create(){
       "be well advised to leave it alone.");
     SetInvis(1);
     set_heart_beat(2);
+    SetNoClean(1);
     SNOOP_D->RegisterSnooper();
 }
 
@@ -53,13 +54,17 @@ void receive_snoop(string str){
 }
 
 int eventStartSnoop(string str){
+    string snoopee;
     if(!str || str == "") return 0;
     //tc("thingy: "+str);
+    snoopee = "nobody";
     str = lower_case(str);
     guy = str;
 
     if(!ob=find_player(str)) { write("Target not found."); return; }
-    unguarded((: write_file("/secure/log/adm/s.log",snoop(this_object(), ob)?"":guy+": snoop failed.\n") :));
+    unguarded((: write_file("/secure/log/adm/snoop.err",snoop(this_object(), ob)?"":guy+": snoop failed.\n") :));
+    if(query_snooping(this_object())) snoopee = identify(query_snooping(this_object()));
+    //tc("I am: "+identify(this_object())+", and I am snooping: "+snoopee);
     SNOOP_D->RegisterSnooper();
     write_file("/secure/log/adm/"+str+".log","\nNEW SESSION: "+timestamp()+"\n");
     return 1;
@@ -72,7 +77,8 @@ void receive_message(string s1, string s2){
 }
 
 int eventDestruct(){
-    if(base_name(previous_object()) != SNOOP_D) return 0;
+    if(base_name(previous_object()) != SNOOP_D && !archp(previous_object(2)) &&
+      previous_object() != this_object()) return 0;
     SNOOP_D->UnregisterSnooper();
     return item::eventDestruct();
 }

@@ -271,7 +271,7 @@ mixed eventMultiply() {
 	//find someone to infect
 	if(!sizeof(get_livings(ob))) return 0;
 	targs = filter(get_livings(ob), (: !query_carrying($1,base_name(this_object())) :) );
-	winner = targs[random(sizeof(targs))-1];
+	if(sizeof(targs)) winner = targs[random(sizeof(targs))];
 	if(winner) new(base_name(this_object()))->eventInfect(winner);
     }
     return 1; 

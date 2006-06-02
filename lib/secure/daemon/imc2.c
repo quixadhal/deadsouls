@@ -533,7 +533,7 @@ void resolve_callback( string address, string resolved, int key ) {
 #ifdef DATA_LOG
 	log_file(DATA_LOG,"socket_create: " + socket_error(socket_num) + "\n");
 #endif
-	tc("socket_create: " + socket_error(socket_num) + "\n");
+	//debug("socket_create: " + socket_error(socket_num) + "\n");
 	return;
     }
 #ifdef DATA_LOG

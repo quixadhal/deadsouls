@@ -21,7 +21,9 @@ a box) you have to look *in* it. Example: look in bag
 - The wimpy command will make you automatically run away from 
 combat when your health hits the percentage you specify.
 
-- Carrying a lot of stuff makes it harder to fight well.
+- Anything you carry that isn't worn or wielded makes it almost
+impossible to fight well. Get a backpack to keep your stuff in
+while in combat.
 
 - Armor is very important. Without it, it is very easy to lose life 
 and limb.

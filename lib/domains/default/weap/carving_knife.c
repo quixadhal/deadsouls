@@ -4,6 +4,7 @@
 
 inherit LIB_ITEM;
 
+
 static void create() {
     item::create();
     SetKeyName("carving knife");
@@ -21,4 +22,6 @@ static void create() {
     SetDamageType(BLADE);
     SetWeaponType("blade");
 }
-
+void init(){
+    ::init();
+}

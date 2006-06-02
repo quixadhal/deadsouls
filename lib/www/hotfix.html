@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Dead Souls Mudlib - Hotfixes</title>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=ISO-8859-1">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link href="style.css" media="screen" rel="stylesheet" type="text/css">
+  <meta name="Keywords"
+ content="mudos,lpmud,dead souls,dead,souls,mud,installation">
+  <meta name="Description" content="Dead Souls hotfixes.">
+</head>
+<body>
+<!-- Begin: Header -->
+<div id="header">
+<p id="headertext">Dead Souls - Hotfixes</p>
+</div>
+<!-- End: Header -->
+<p>Nothing's prefect. This is
+most certainly true of anything <span style="font-style: italic;">I've</span>
+touched.</p>
+<p>This page contains the late-breaking bugfixes found between Dead
+Souls releases. Only important bugs are addressed here. Feature
+enhancements and minor bugfixes become available on full release.</p>
+<p>All of the fixes listed here will be included in the next release.
+They
+are provided here early in order to address potential problems.</p>
+<p>For Dead Souls <span style="color: red; font-weight: bold;">2.0r22</span>,
+the
+following fixes are available:
+</p>
+<ul>
+  <li>snooper bug: Right before releases, I comment out debug
+statements. Unfortunately, this one spanned more than one line. Replace
+your existing /secure/obj/snooper.c with <a
+ href="http://dead-souls.net/code/snooper.c">this
+one</a>.</li>
+  <li>stargate bug: The stargate system underwent a major revamp, and a
+couple of bugs snuck in. When a non-existent gate is dialed, it now
+fails ungracefully. Replace /lib/stargate.c with <a
+ href="http://dead-souls.net/code/LIB_STARGATE.c">this file</a> and
+replace /daemon/stargate.c with <a
+ href="http://dead-souls.net/code/STARGATE_D.c">this file</a>.</li>
+  <li><span
+ style="font-weight: bold; text-decoration: underline; color: rgb(255, 0, 0);">channel
+bug</span>: It appears that r22 introduced a bug that sends local
+channels to the i3 router. I wasn't able to reproduce this with an r21
+mud, but that isn't definitive. In the meantime, rest assured I have
+not been snooping on anyone, and please copy <a
+ href="http://dead-souls.net/code/channel.c">this
+file</a> over your current /daemon/services/channel.c then: <span
+ style="font-weight: bold;">update /daemon/services/channel.c</span>
+and then: <span style="font-weight: bold;">update /daemon/services.c</span>
+. Please accept my apologies for the appearance of privacy intrusion. <br>
+  </li>
+</ul>
+<div id="footer">
+<p style="text-align: center;"><a href="index.html">Return to Dead
+Souls Homepage</a></p>
+</div>
+</body>
+</html>

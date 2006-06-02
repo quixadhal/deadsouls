@@ -7,7 +7,7 @@ mixed cmd(string str) {
     else if(!str || str == "") return "Please be more specific.";
     else {
 	string *iglist = this_player()->GetMuffed();
-	if(member_array(lower_case(str),iglist) == -1) return "You aren't ignoring that person.";
+	if(member_array(lower_case(str),iglist) == -1) return "You aren't ignoring them.";
 	iglist -= ({ lower_case(str) });
 	this_player()->SetMuffed(iglist);
 	write("You remove "+capitalize(str)+" from your earmuffed list.");

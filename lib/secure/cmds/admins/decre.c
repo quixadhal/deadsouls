@@ -17,6 +17,10 @@ mixed cmd(string args) {
     object *inv;
     string nom, file;
 
+    if(!archp(this_player())){
+	return "Don't be a fool.";
+    }
+
     if( args == "" || !stringp(args) ) 
 	return "Who do you want to make a player?";
     nom = convert_name(args);
@@ -30,6 +34,10 @@ mixed cmd(string args) {
 	PLAYERS_D->AddPendingDecre(lower_case(nom));
 	write(capitalize(nom)+" will be demoted on their next login.");
 	return 1;
+    }
+
+    if(ob == this_player()){
+	return "Nonsense.";
     }
 
     if( file_size(DIR_PLAYERS+"/"+nom[0..0]) != -2) 
@@ -68,3 +76,15 @@ mixed cmd(string args) {
 }
 
 string GetKeyName() { return PlayerName; }
+void help() {
+    message("help",
+      "Syntax: decre <person>\n\n"
+      "Demotes the specified creator to player status. "
+      "If the target is not "
+      "logged in, they will be made a player when "
+      "they next log in."
+      "\n\n"
+      "See also: encre, rid", this_player()
+    );
+}
+

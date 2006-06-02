@@ -1,2 +1,70 @@
-chapter 4 "Lib design"
+chapter 4 "Gaining Experience"
 
+    Now you must prepare for the
+technical demands of your creators.
+
+    Your creators will expect you to have 
+answers to their questions. For the most part,
+they'll find these answers in the Creator's FAQ,
+at http://dead-souls.net/ds-creator-faq.html .
+
+    But you're going to get questions not on
+that FAQ. You'll get stuff like:
+
+* How many quest points should the Issa Quest award?
+
+* What's the maximum player level on this mud?
+
+* Can I make a player class called "Swiper"? 
+
+* What's a good weapon type for The Bouncy Ball?
+
+    These are questions that depend strictly on you
+and what your vision for the mud is. Dead Souls is
+a starting point. The classes, levels, systems,
+*everything*, is open to modification. 
+    
+    It is normal and natural not to have all of
+these answers at first. I suggest you concentrate on
+making an "area", perhaps a quest, consisting of
+perhaps 15 to 20 rooms  and a few npc's, weapons,
+pieces of armor and general items.
+
+    Test your weapons and armor in the arena. To
+get to the arena, first go to the Creators' Hall
+by typing: wiz
+
+    Then go east, then north.
+
+    You can have the dummy wear armor like this:
+
+give mithril shirt to dummy
+force dummy to wear shirt
+
+    And you can test your weapons by beating on the
+dummy:
+
+force fighter to drop sword
+clone hammer
+give hammer to fighter
+force fighter to wield hammer
+force fighter to kill dummy
+
+    The dummy will very helpfully blurt out the amount
+and type of damage it receives.
+
+    You can get ideas for your npc's by visiting the
+ menagerie. It is east and south of the Creators' Hall.
+
+    By creating your first quest, and putting test
+characters through it, you will gain the experience
+you need to be able to tell your players things like:
+
+"The Issa Quest is supposed to be easy, so make it 2qp."
+
+"Level 50 explorers are way too strong. I'm capping
+player advancement at level 40."
+
+"No, there is already a thief class."
+
+"Make it a projectile weapon."

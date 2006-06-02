@@ -463,7 +463,7 @@ int Setup() {
 	robe = new("/domains/default/armor/robe");
 	hat = new("/domains/default/armor/wizard_hat");
 	staff = new("/secure/obj/staff");
-	book = new("/domains/default/obj/manual");
+	book = new("/domains/default/obj/guide");
 	book2 = new("/domains/default/obj/handbook");
 
 	if(robe) robe->eventMove(this_object());

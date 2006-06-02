@@ -1,0 +1,43 @@
+                   Dead Souls Administration
+
+    Being a successful MUD admin is heavily dependent
+on how well you can get stuff done. It also depends on
+your ability to manage people, resolve conflict, articulate
+direction, enforce guidelines, and inspire loyalty.
+    But those other things I can't help you with. What
+I can help you with is having the tools you need to get
+stuff done.
+
+    Your most valuable tools will be the Dead Souls FAQs:
+
+http://dead-souls.sourceforge.net/ds-admin-faq.html
+
+http://dead-souls.sourceforge.net/ds-creator-faq.html
+
+    Almost everything else will flow from your 
+familiarity and understanding of the information there.
+
+    Navigate to the /secure/cmds/admins directory. This
+is where your commands are. Know them. Understand them.
+In particular, pay close attention to the command:
+
+admintool
+
+    It is a valuable tool for new admins to get important
+stuff done before they are 100% familiar with everything
+they need.
+
+    Finally, the intermud Dead Souls community is a
+vital resource. They are (thus far) friendly and helpful,
+and if the Player's Handbook, Creator's Manual, and
+the (upcoming) Admin's Guide don't have the answer, use
+the <ds> channel to ask for help.
+
+    As to the qualities of leadership, determination,
+humility, responsibility, fairness, and selflessness you'll
+need to make a successful mud, you are on your own.
+
+    Good luck.
+
+- Cratylus @ Dead Souls
+05 May 2006

@@ -64,6 +64,7 @@
 #define LIB_MATCH          DIR_LIB        "/match"
 #define LIB_MAYOR          DIR_LIB        "/mayor"
 #define LIB_MEAL           DIR_LIB        "/meal"
+#define LIB_MEAL_POISON    DIR_LIB        "/poison"
 #define LIB_MESSAGES       DIR_LIB        "/messages"
 #define LIB_MONEY          DIR_LIB        "/money"
 #define LIB_NMSH           DIR_LIB        "/nmsh"

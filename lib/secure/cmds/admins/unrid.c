@@ -24,6 +24,7 @@ mixed cmd(string str) {
 	return 1;
     }
     this_player()->eventPrint("Unrid successful.");
+    PLAYERS_D->AddPlayerInfo(str);
     return 1;
 }
 

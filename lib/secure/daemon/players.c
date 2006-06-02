@@ -14,6 +14,13 @@ string player_save_file;
 void create() {
     if(unguarded((: file_exists, SAVE_PLAYER_LIST+__SAVE_EXTENSION__ :)))
 	unguarded((: restore_object, SAVE_PLAYER_LIST :));
+    PendingEncres = singular_array(PendingEncres);
+    PendingDecres = singular_array(PendingDecres);
+    players = singular_array(players);
+    creators = singular_array(creators);
+    user_list = singular_array(user_list);
+    unguarded((: save_object, SAVE_PLAYER_LIST :));
+
 }
 
 string *eventCre(string str){
@@ -57,7 +64,7 @@ void AddPlayerInfo(mixed arg) {
 	if(!file_exists(player_save_file)) return;
     }
 
-    tc("player_save_file: "+player_save_file);
+    //tc("player_save_file: "+player_save_file);
     user_list += ({ replace_string(last_string_element(player_save_file,"/"),".o","") }) ; 
     unguarded((: save_object, SAVE_PLAYER_LIST :));
 }

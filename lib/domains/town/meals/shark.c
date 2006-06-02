@@ -20,9 +20,10 @@ static void create() {
       "appetite.");
     SetMealType(MEAL_FOOD);
     SetMass(100); 
+    SetStrength(50);
     SetBaseCost("silver", 10);
     SetFight(40);
-    //SetFood("/domains/town/meals/shark");
+    SetFood("/domains/town/meals/shark");
 }
 int eventCatch(object who, object pole) { 
     call_out((: BiteMe, who :), 0);
@@ -32,7 +33,7 @@ void BiteMe(object who) {
     who->eventPrint("The shark bites you before it dies!");
     environment(who)->eventPrint("The shark bites " + (string)who->GetName() +
       " before it dies!", who);
-    who->eventReceiveDamage(this_object(), KNIFE, random(20), 0,
+    who->eventReceiveDamage(this_object(), BITE, random(30), 0,
       (string)who->GetRandomLimb("right hand"));
 }
 void init(){

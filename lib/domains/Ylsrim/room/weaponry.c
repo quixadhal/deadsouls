@@ -48,12 +48,10 @@ string CheckOpen(string str) {
       "is east.");
 }
 
-string CheckItem(string str) {
-    if( str == "case" || str == "cases" ) {
-	if( query_night() ) return "They are empty.";
-	else if ( present("vendor") ) return "They are filled with weapons.";
-	else return "They are broken and covered in blood.";
-    }
+string CheckItem(object ob) {
+    if( query_night() ) return "They are empty.";
+    else if ( present("vendor") ) return "They are filled with weapons.";
+    else return "They are broken and covered in blood.";
 }
 
 void init(){

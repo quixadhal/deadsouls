@@ -23,11 +23,10 @@ static void create() {
 	({"road","cobblestone road"}) : "A "
 	"cobblestone road running north and south."
       ]) );
-    SetExits( ([
-	"north" : "/domains/town/room/vill_road1",
-	"south" : "/domains/town/room/south_road2",
-	"east" : "/domains/town/room/bank",
+    SetExits( ([ 
 	"west" : "/domains/town/room/magic_shop",
+	"north" : "/domains/town/room/vill_road1",
+	"east" : "/domains/town/room/bank",
       ]) );
     SetEnters( ([
 	"bank" : "/domains/town/room/bank",

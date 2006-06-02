@@ -20,10 +20,11 @@
 #define DEATHRAY           (1 << 17)
 #define EMOTIONAL          (1 << 18)
 #define SONIC              (1 << 19)
-#define OTHER              (1 << 20)
+#define BITE               (1 << 20)
+#define OTHER              (1 << 21)
 
 #define MAX_DAMAGE_BIT     OTHER
 
-#define ALL_DAMAGE  BLUNT | BLADE | KNIFE | WATER | SHOCK | COLD | HEAT | GAS | ACID | MAGIC | POISON | DISEASE | TRAUMA | PIERCE | PSIONIC | ANOXIA | DEATHRAY | EMOTIONAL | SONIC | OTHER
+#define ALL_DAMAGE  BLUNT | BLADE | KNIFE | WATER | SHOCK | COLD | HEAT | GAS | ACID | MAGIC | POISON | DISEASE | TRAUMA | PIERCE | PSIONIC | ANOXIA | DEATHRAY | EMOTIONAL | SONIC | BITE | OTHER
 
 #endif /* s_damage_types_h */

@@ -203,5 +203,8 @@ varargs int trr(string str, string col);
 varargs string *wild_card(string str);
 nomask int remove_dots(string str);
 int domain_admin(string pretender, string domain);
+int compare_array(mixed *arr1, mixed *arr2);
+int arrcmp(mixed *arr1, mixed *arr2);
+string append_line(string file, string *params, string repl);
 
 #endif /* l_sefun_h */

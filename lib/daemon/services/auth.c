@@ -14,6 +14,7 @@ void eventReceiveAuthReply(mixed array packet) {
 	}
     }
     tn("Auth reply received from "+packet[2]+".","white");
+    tn("Ping packet: "+identify(packet),"white");
     if(sizeof(pingers)){
 	foreach(object dude in pingers){
 	    tell_player(dude, packet[2]+" has just replied to a ping request from "+
@@ -34,7 +35,7 @@ void eventReceiveAuthRequest(mixed array packet) {
     if(!grepp(mudlist,packet[2]) || packet[2] == "DeadSoulsNew" ||
       packet[2] == "DeadSoulsWin"){
 	write_file("/tmp/muds.txt",packet[2]+"\n"); 
-	//tc("We have a new mud! "+packet[2]+" has joined intermud.","red");
+	tc("We have a new mud! "+packet[2]+" has joined intermud.","red");
 	tn("We have a new mud! "+packet[2]+" has joined intermud.","red");
     }
 

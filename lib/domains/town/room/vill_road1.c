@@ -20,11 +20,11 @@ static void create() {
     SetItems( ([
 	"sign":"A large sign on the road. To read it, 'read sign'.",
       ]) );
-    SetEnters( ([
-      ]) );
     SetInventory(([
 	"/domains/town/obj/clocktower" : 1,
       ]));
+    SetEnters( ([
+      ]) );
     SetRead("sign", (: readSign :) );
     SetExits( ([
 	"north" : "/domains/town/room/road",

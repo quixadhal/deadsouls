@@ -1,11 +1,11 @@
 #include <lib.h>
 inherit LIB_ROOM;
 
+
 int readSign() {
     this_player()->more("/domains/town/txt/warning_sign.txt");
     return 1;
 }
-
 static void create() {
     room::create();
     SetClimate("outdoors");
@@ -25,4 +25,7 @@ static void create() {
 	"south" : "/domains/Ylsrim/room/kaliid4"
       ]) );
 
+}
+void init(){
+    ::init();
 }

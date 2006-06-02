@@ -24,6 +24,7 @@ mixed cmd(string args) {
 	if( !(ob = find_player(convert_name(args))) &&
 	  !(ob = find_living(lower_case(args))) )
 	    return capitalize(args) + " is nowhere to be found.";
+    if(!living(ob)) return capitalize(args) + " is not alive.";
     cols = ((int *)this_player()->GetScreen())[0];
     tmp1 = (string)ob->GetCapName() + " aka " + (string)ob->GetShort() +
     ", level " + (int)ob->GetLevel() + " " + (string)ob->GetGender();
@@ -63,7 +64,7 @@ mixed cmd(string args) {
     });
     lines += ({ "", "Limbs:" });
     limbs = (string *)ob->GetWieldingLimbs();
-    if(!ob->GetGhost()) arr = map((string *)ob->GetLimbs(),
+    if(ob && !ob->GetGhost()) arr = map((string *)ob->GetLimbs(),
 	  (: sprintf("%:-14s%s (%d) %d/%d", $1,
 	      ((member_array($1, $(limbs)) == -1) ? " " : "*"),
 	      (int)($(ob))->GetLimbClass($1),

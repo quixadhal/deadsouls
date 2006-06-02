@@ -122,6 +122,7 @@ static void InputEmail(string str) {
     Admin->SetTerminal("ansi");
     Admin->save_player(Name);
     make_workroom(Name);
+    PLAYERS_D->AddPlayerInfo(Name);
 
     tmp = read_file(CFG_GROUPS);
     rm(CFG_GROUPS);
@@ -140,7 +141,9 @@ static void InputEmail(string str) {
 
     if( ob = find_object(LIB_CONNECT) ) destruct(ob);
     cp(DIR_SECURE_LIB "/connect.c", DIR_SECURE_LIB "/connect.first");
-    rename(DIR_SECURE_LIB "/connect.real", DIR_SECURE_LIB "/connect.c");
+    //rename(DIR_SECURE_LIB "/connect.real", DIR_SECURE_LIB "/connect.c");
+    rm(DIR_SECURE_LIB "/connect.c");
+    cp(DIR_SECURE_LIB "/connect.real", DIR_SECURE_LIB "/connect.c");
     destruct(Admin);
     mkdir(DIR_CRES "/" + Name[0..0]);
     rename(DIR_PLAYERS "/" + Name[0..0] + "/" + Name + __SAVE_EXTENSION__,

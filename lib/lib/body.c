@@ -211,6 +211,7 @@ int eventCollapse() {
     }
     send_messages("collapse", "$agent_name $agent_verb to the ground.",
       this_object(), 0, environment());
+    //this_object()->eventCollapse();
     SetPosition(POSITION_LYING);
     return 1;
 }
@@ -306,7 +307,8 @@ mixed eventFall() {
     if( !dest ) {
 	send_messages(({ "fall", "die" }), "$agent_name $agent_verb into a "
 	  "dark abyss and $agent_verb.", this_object(), 0, env);
-	SetPosition(POSITION_LYING);
+	//SetPosition(POSITION_LYING);
+	this_object()->eventCollapse();
 	eventDie();
     }
     else {
@@ -318,7 +320,8 @@ mixed eventFall() {
 	eventMove(dest);
 	environment()->eventPrint(GetName() + " comes falling in from above.",
 	  this_object());
-	SetPosition(POSITION_LYING);
+	//SetPosition(POSITION_LYING);
+	this_object()->eventCollapse();
 	foreach(string limb in GetLimbs()) {
 	    int hp = GetHealthPoints(limb);
 
@@ -549,8 +552,8 @@ mixed eventReceiveThrow(object who, object what) {
 	int mod = who->GetSkillLevel("projectile attack") +
 	who->GetStatLevel("strength");
 
-	mod = mod/2;
-	x = what->eventStrike(this_object()) * 2;
+	//mod = mod/2;
+	x = what->eventStrike(this_object()) * 3;
 	x = (x*mod)/100;
 	if( what->GetWeaponType() != "projectile" ) {
 	    x = x/4;
@@ -1614,7 +1617,7 @@ int GetHeartRate() {
 int GetHealRate() {
     int heal;
 
-    heal = 1 - (GetPoison() / 10);
+    heal = 1 - (GetPoison() / 5);
     heal += (GetDrink() + GetFood()) / 10;
     heal *= (1 + (GetSleeping() > 1) + (GetAlcohol() > 10));
     return heal;

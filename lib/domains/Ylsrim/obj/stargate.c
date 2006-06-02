@@ -4,13 +4,13 @@
 
 inherit LIB_STARGATE;
 
-int readScreen();
+int ReadScreen();
 
 void create() 
 {
     ::create();
-    setOrigin("tower", "/domains/Ylsrim/room/tower");
-    SetRead(([ ({ "screen" }) : (: readScreen :) ]) );
+    SetOrigin("tower", "/domains/Ylsrim/room/tower");
+    SetRead(([ ({ "screen" }) : (: ReadScreen :) ]) );
     SetItems(([ ({ "screen" }) : "a computer screen which shows the status of the gate network" ]) );
 }
 
@@ -19,7 +19,7 @@ void init()
     ::init();
 }
 
-int readScreen()
+int ReadScreen()
 {
     write("stargate network status\n");
     write("-----------------------\n");

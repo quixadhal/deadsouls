@@ -64,6 +64,11 @@ Some notes and tips:
   tedious, remember that a door leading south is also a door
   leading north from the other room.
 
+* Doors generally are not visible in the same way that regular
+  objects are. To make a door especially obvious and noticeable,
+  do something like:
+%^GREEN%^modify door sethiddendoor 0%^RESET%^
+
 * SetCurrency is for adding money to NPC's. SetMoney is for adding
   money to non-living containers (bags, etc).
 

@@ -7,6 +7,7 @@
  */
 
 #include <function.h>
+#include <lib.h>
 
 private mixed   ExternalDesc = 0;
 private int     Invisible    = 0;
@@ -172,7 +173,8 @@ varargs mixed eventShow(object who, string component) {
 	  GetShort() + ".",
 	  ({ who, this_object() }));
     }
-    if(inherits("/lib/comp/surface",this_object())){
+    if(inherits(LIB_SURFACE,this_object()) ||
+      this_object()->GetOpacity() < 33){
 	//tempdesc = this_object()->eventShowInterior(who);
 	who->eventPrint(desc);
 	this_object()->eventShowInterior(who);

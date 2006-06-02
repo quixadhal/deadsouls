@@ -28,13 +28,12 @@ static void create() {
 }
 
 
-mixed can_put_obs_word_obj(mixed *res, string wrd, object storage) {
-    if(storage && storage->GetClosed()){
-	return "#That's closed.";
-    }
-
-    if(intp(check_light())) return this_player()->CanManipulate();
-    else return check_light();
+mixed can_put_obs_word_obj(object *foo1, string wrd, object foo2) {
+    tc("1");
+    tc("foo1: "+identify(foo1));
+    tc("foo2: "+identify(foo2));
+    if(check_light()) return this_player()->CanManipulate();
+    else return 0;
 }
 
 mixed can_put_obj_word_obj(object target, string wrd, object storage) {
@@ -53,6 +52,7 @@ mixed do_put_obs_word_obj(mixed *res, string wrd, object storage) {
     object *obs;
 
 
+    tc("2");
     obs = filter(res, (: objectp :));
 
     //tc("a");

@@ -10,10 +10,10 @@ static void create() {
     SetShort("a rat");
     SetLong("A scruffy little dirty rat.");
     SetLevel(3);
-    SetMaxHealthPoints(50);
     SetRace("rodent");
     SetGender("male");
     SetClass("fighter");
+    SetMaxHealthPoints(5);
     SetWanderSpeed(1);
     SetEncounter(100);
     SetMessage("come","$N scurries in.");
@@ -24,5 +24,6 @@ static void create() {
 	"You hear tiny munching sounds."}));
 }
 void init(){
+    SetMaxHealthPoints(3);
     ::init();
 }

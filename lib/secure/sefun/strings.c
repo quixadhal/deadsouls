@@ -251,7 +251,6 @@ string reverse_string(string str) {
     return newstring;
 }
 
-
 int starts_with(string primary, string sub){
     string rev, junk; 
     //primary = replace_string(primary,"\t"," ");
@@ -336,7 +335,6 @@ varargs mixed remove_matching_line(string target, string substring, int i, strin
 	    new_file += line;
 	}
 
-
 	if(!tail_search) omit = 0;
 	if(!line) done = 100;
 	if(i == 999) done = 100;
@@ -390,6 +388,12 @@ varargs mixed read_matching_line(string target, string substring, int i, string 
 }
 
 
+//If you try to use replace_matching_line and it doesn't work,
+//it may be that the file in question is not a .c file. This sefun
+//keys on .c file syntax to know where lines begin and end. If the
+//string you're editing doesn't have, for example, semicolons, 
+//your line replacememnt probably won't work well. Instead use the 
+//sefun replace_line.
 varargs mixed replace_matching_line(string target, string substring, string replace, int i, string exclude){
     int omit, done, tail_search, tag_it;
     string line, filename, new_file;
@@ -462,16 +466,16 @@ int reverse_memberp(string primary, string *sub){
     return 0;
 }
 
+//This sefun is for non-code text. To replace lines in an LPC-code
+//formatted string, use replace_matching_line instead.
 string replace_line(string file, string *params, string repl){
     string *file_arr;
     int alarm;
 
     if(!file || !stringp(file)) return "";
-
     file_arr = explode(file, "\n");
 
     foreach(string line in file_arr){
-
 	alarm = 0;
 
 	foreach(string element in params){
@@ -481,8 +485,30 @@ string replace_line(string file, string *params, string repl){
 	if(alarm == sizeof(params)){
 	    file_arr[member_array(line,file_arr)] = repl;
 	}
-    }
 
+    }
+    return implode(file_arr,"\n");
+}
+
+string append_line(string file, string *params, string repl){
+    string *file_arr;
+    int alarm;
+
+    if(!file || !stringp(file)) return "";
+    file_arr = explode(file, "\n");
+
+    foreach(string line in file_arr){
+	alarm = 0;
+
+	foreach(string element in params){
+	    if(grepp(line,element)) alarm++;
+	}
+
+	if(alarm == sizeof(params)){
+	    file_arr[member_array(line,file_arr)] += ("\n"+repl);
+	}
+
+    }
     return implode(file_arr,"\n");
 }
 

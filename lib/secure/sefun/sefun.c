@@ -75,9 +75,9 @@
 #include "/secure/sefun/query_carrying.c"
 #include "/secure/sefun/findobs.c"
 #include "/secure/sefun/query_names.c"
-#include "/secure/sefun/groups.c"
 #include "/secure/sefun/ascii.c"
 #include "/secure/sefun/wild_card.c"
+#include "/secure/sefun/compare_array.c"
 
 
 object find_object( string str ){
@@ -129,12 +129,16 @@ varargs string socket_address(mixed arg, int foo) {
 }
 
 mixed array users(){
-    return filter(efun::users(), (: environment($1) :) );
+    return filter(efun::users(), (: ($1) && environment($1) :) );
 }
 
 int destruct(object ob) {
     string *privs;
     string tmp;
+    //tc("destruct sefun being called. ob is: "+identify(ob)+".","red");
+    //tc("this_object is: "+identify(this_object())+".","red");
+    //tc("previous objects are: "+identify(previous_object(-1))+".","yellow");
+    //tc("calling stack is: "+get_stack()+".","red");
 
     if(previous_object(0) && previous_object(0) == ob) return efun::destruct(ob);
     if(!(tmp = query_privs(previous_object(0)))) return 0;
@@ -185,7 +189,8 @@ varargs object snoop(object who, object target) {
 }
 
 object query_snoop(object ob) {
-    if(!userp(previous_object(0))) return 0;
+    if(base_name(previous_object()) != SNOOP_D)
+	return 0;
     return efun::query_snoop(ob);
 }
 

@@ -21,6 +21,9 @@ static void create() {
       "you to begin trailing the living being as it moves "
       "through Dead Souls.\n"
       "Otherwise, your following status is reported.\n"
+      "If the living being is interested in having you "
+      "follow them, they can issue the \"lead\" command "
+      "in order to avoid accidentally evading you.\n"
       "\n"
       "See also: evade, lead, tracking, stealth\n");
 }

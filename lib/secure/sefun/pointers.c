@@ -21,6 +21,18 @@ int archp(object ob) {
     return (member_group(ob, "ASSIST") || member_group(ob, "SECURE"));
 }
 
+int imud_privp(mixed guy) {
+    if(member_group(guy, "INTERMUD")) return 1;
+    else return 0;
+}
+
+int securep(mixed guy) {
+    if(!guy) guy = previous_object();
+    if(!creatorp(guy)) return 0;
+    if(member_group(guy, "SECURE")) return 1;
+    else return 0;
+}
+
 varargs int creatorp(object ob) {
     if(!ob) ob = previous_object();
     if(!ob || !userp(ob)) return 0;

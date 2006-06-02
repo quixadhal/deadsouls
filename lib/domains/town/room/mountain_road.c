@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+
 static void create() {
     room::create();
     SetClimate("outdoors");
@@ -10,9 +11,6 @@ static void create() {
       "the process of being built. Far in the distance, beautiful "
       "snow-capped mountains can be seen. The road runs south into "
       "the heart of the town.");
-    SetExits( ([
-	"south" : "/domains/town/room/road",
-      ]) );
     SetItems( ([
 	({"rubble","stone","stones","road"}) : "Looks like "
 	"the road is still being built. Further travel north "
@@ -20,6 +18,12 @@ static void create() {
 	({"mountains","beautiful","snow-capped mountains"}) : "Beautiful "
 	"mountains, far off in the northern distance."
       ]) );
+    SetExits( ([
+	"south" : "/domains/town/room/road",
+	"north" : "/domains/test/room/start.c",
+      ]) );
 
-    SetObviousExits("s");
+}
+void init(){
+    ::init();
 }

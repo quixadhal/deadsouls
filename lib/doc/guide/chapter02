@@ -1,35 +1,113 @@
-chapter 2 "Player Management"
+chapter 2 "The Vision Thing"
 
+    Are you sure you want to run a mud? I mean, are
+you *really* sure?
 
-Snooping:
---------
+    Most newbie admins have no idea what a difficult
+task lays before them. I started my own mud in 1995.
+It's still around today, in fact. Back then, I'd 
+been coding on a mud that had its hosting pulled. I
+finagled access to my university's systems and 
+told the old mud's admin "Hey, let's host it here!"
+    He didn't want to, so it was just me and my
+new Nightmare IV mud. I figured "what the heck, maybe
+I can run my own," and the rest is history.
 
-    One of the most powerful and most easily abused tools
-in your administrative arsenal is the snoop command. When
-you "snoop <person>", you get to see everything they
-say and do.
-    Players usually find this intrusive and objectionable,
-and it is ethically shaky to do this without their 
-knowledge and consent. The only circumstances under which
-snooping is unambiguously ethical are:
+    I hadn't a clue how to manage people, and things
+just wouldn't come together. I had literally dozens of 
+creators come and go, and I could never figure
+out why they'd build a few things and leave. The
+problem was me, obviously. There was nothing about
+the mud people disliked: Nightmare was a very popular
+lib at the time.
+    The problem was that people wanted leadership 
+from me, and I didn't even know it, much less know
+how to provide it. 
 
-* Snooping one of your own test characters.
+    Creators ("builders") are your most precious resource.
+Without them you don't have a mud, you have a lib. Sure,
+you can try building everything yourself...and with
+Dead Souls, that's not so farfetched an idea. But 
+after a few months of toil, you'll see that you have
+weaknesses, you are not the perfect builder, and you
+will wish for the help and support of others.
+    If you don't carefully cultivate your relationships
+with these people, you will fail. Your mud will be a
+failed mud, and your self-expression squelched.
 
-* Snooping a player (with their consent) for the purposes of
-troubleshooting a bug.
+    This is why I ask you if you're *really* sure you
+want to run a mud. Running a mud isn't about lording
+it over puny mortal players. It isn't about being
+the sharpest lib coder logged in. It isn't about 
+bossing your staff, or making long lists of rules
+and job titles and meeting schedules.
 
-* Snooping a player (without their consent) to investigate
-a legitimate suspicion of cheating.
+    Your job as an administrator is to manage 
+people, and guide them toward a single vision, over
+which you yourself may not have full control. People
+will listen to the admin at first because, well, she's
+the admin. But if you can't demonstrate the qualities
+of leadership they expect, they will stop respecting
+you, and they will leave. Or worse, they will hang
+around and be difficult.
 
-    Secretly snooping people for your personal amusement is
-pretty much just flat wrong. 
+    What's this about a "vision"? People will work for
+a variety of reasons, mostly money, fun, recognition,
+etc. Rewards. When your new coders show up, they
+will need motivation to work. Since you probably
+won't be offering much in the way of money or
+recognition, you'll need to find a way to motivate
+your coders by making it fun to work with you.
 
-    By default, only admins can snoop. Admins are players who
-are members of one or both of the groups SECURE and ASSIST. 
-    An assistant admin *can* snoop a full admin. When this
-occurs, the full admin receives the message that he or she is being
-snooped.
-    When an assistant admin is snooped by full admin, they
-do not receive this message.
+    Obviously I don't mean you need to be jolly and
+wear funny hats. In fact, you can be quite boring a
+person and still be good to work with. When I mean it
+has to be fun for your creators, I mean that they
+have to be inspired to do stuff...they have to *want*
+to build because they are expressing themselves in
+a way they enjoy.
 
+    This means you'd be unwise to start parceling out
+"missions" and "assignments". Find out what your new
+creator *wants* to do, then do your best to
+accommodate them. It's that simple. If they're working
+on what they *want* to do, you don't need to actively
+motivate them...you just need to make sure they
+have what they need, and that they understand what 
+is expected of them.
+
+    These expectations are the other part of the 
+individual management of creators. Just as is it
+fatal to give creators "homework", it is just as
+counterproductive to say "do whatever you want, man,
+you're free to do anything." Part of the fun of
+work is knowing what the standards are, and how your
+work will be judged. If your creator feels like you
+don't actually care what she builds, she won't
+care much about doing a job that's up to any standards
+but her own. After a while of this, she's going to
+figure out she might as well just run her *own* mud.
+
+    You therefore have to have a strong sense of what
+your mud will look like, and what each creator's role
+in that mud will be. If you don't know, or it seems like
+you don't know, you'll lose them.
+
+    You don't run the mud because you have the admin
+password. You run it because people think you run it.
+If they stop thinking it, you stop running it. 
+
+    So I ask again. Do you know what you want out of
+this mud? Have you planned out what you want people
+to be doing? When a talented coder shows up, will
+you be prepared to negotiate their proper role,
+and persuade them that the mud will succeed? 
+
+    Do you *really* want to be a mud admin? Or are
+you just looking to be someone's boss?
+
+    First, find your vision. Everything else will be
+hard work, but if you know what your mud will be, 
+and what you need from other people, then you
+just might have a chance to succeed.
 

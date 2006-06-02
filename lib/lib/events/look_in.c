@@ -9,7 +9,7 @@
 #include <function.h>
 
 private string InternalDesc = 0;
-private int    Opacity = 100;
+int    Opacity = 100;
 
 // abstract methods
 string GetShort();
@@ -40,7 +40,7 @@ int GetOpacity() {
     return Opacity;
 }
 
-static int SetOpacity(int x) {
+int SetOpacity(int x) {
     Opacity = x;
     parse_refresh();
     return Opacity;
@@ -64,15 +64,15 @@ varargs mixed CanShowInterior(object who, object target) {
 	x = 66;
     }
     else {
-	x = 34;
+	x = 33;
     }
-    if( GetOpacity() > x ) {
+    if( this_object()->GetClosed() && this_object()->GetOpacity() > x ) {
 	return 0;
     }
     return 1;
 }
 
-mixed eventShowInterior(object who, object target) {
+varargs mixed eventShowInterior(object who, object target) {
     object here,me,imhere,dabei;
     string this,str;
     here=environment(this_object());

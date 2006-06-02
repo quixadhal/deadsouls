@@ -162,7 +162,7 @@ for example, can be worn either on your neck or your torso, like
 an amulet. If this is so, you'll need to specify where you want it.
     There are various types of armor, like cloak, pants, glove,
 etc. Many of them overlap. You can wear a shirt on your torso as
-well as a cloak and combat armor, but you may noy wear two of
+well as a cloak and combat armor, but you may not wear two of
 the same type. If you have a robe and a cape that are both cloaks,
 you'll have to decide which one is going on.
     You will find that shoes and gloves are often for one of your
@@ -186,10 +186,10 @@ security in mind.
 
     There are four main types of weapons:
 
-    blade: like swords, knives, and spears
+    knife: knives, daggers
+    blade: like swords, and spears
     blunt: like clubs, staves, and shillelaghs
-    projectile: like guns and bows
-    missile: things designed to be thrown, like darts or grenades
+    projectile: things designed to be thrown, like darts or grenades
 
     Unless it is a special device or magical item, weapons
 must be wielded in order to be of use in combat. Some weapons,

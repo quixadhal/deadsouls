@@ -29,7 +29,7 @@ mixed do_lead_liv(object ob) {
 	this_player()->eventPrint(ob->GetName() + " is not following you.");
 	return 1;
     }
-    if( this_player()->SetAllowed(ob, 1) ) {
+    if( this_player()->SetFollowed(ob, 1) ) {
 	ob->eventPrint((string)this_player()->GetName() + " is now leading you.");
 	this_player()->eventPrint("You are now leading " + ob->GetName() + ".");
     }

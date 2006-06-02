@@ -2,7 +2,7 @@
 #define l_lead_h
 
 class FollowerClass {
-    int allowed;
+    int followed;
     int bonus;
     int lost;
 }
@@ -12,8 +12,8 @@ object *AddFollower(object follower);
 object *RemoveFollower(object follower);
 object *GetFollowers();
 
-int SetAllowed(object follower, int allowed);
-int GetAllowed(object follower);
+int SetFollowed(object follower, int followed);
+int GetFollowed(object follower);
 int AddFollowBonus(object follower, int bonus);
 int GetFollowBonus(object follower);
 

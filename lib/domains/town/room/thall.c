@@ -16,15 +16,13 @@ static void create() {
 	"no paralyze":0, 
 	"no teleport":0]));
     SetItems(([]));
-    SetExits( ([
-	"north" : "/domains/town/room/mayor",
-	"east" : "/domains/town/room/voters",
+    SetExits( ([ 
 	"south" : "/domains/town/room/vill_road3",
 	"west" : "/domains/town/room/clerk",
-	"out" : "/domains/town/room/vill_road3.c",
+	"north" : "/domains/town/room/mayor",
+	"east" : "/domains/town/room/voters",
       ]) );
     SetInventory(([]));
-
 
 }
 void init() {

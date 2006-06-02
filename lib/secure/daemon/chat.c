@@ -14,11 +14,12 @@
 
 inherit LIB_DAEMON;
 
-string plainmsg,chan,foo,bar,baz;
+string suspect,site,plainmsg,chan,foo,bar,baz;
 static private mapping Channels;
 static private mapping chanlast;
 
-static private string *local_chans = ({"newbie","cre","gossip","admin"});
+static private string *local_chans = ({"newbie","cre","gossip","admin","error",
+  "priest", "mage", "explorer", "thief", "fighter", "death" });
 
 
 static void create() {
@@ -101,6 +102,10 @@ int cmdLast(string feep){
 	this_player()->eventPrint("That channel has no backlog.", MSG_ERROR);
 	return 1;
     }
+    if(!CanListen(this_player(),feep)){
+	write("You lack privileges to that channel.");
+	return 1;
+    }
     this_player()->eventPrint(implode(chanlast[feep], "\n"));
     return 1;
 }
@@ -172,7 +177,7 @@ int cmdChannel(string verb, string str) {
 		  "such a place.", MSG_ERROR);
 		return 1;
 	    }
-	    if(!CanTalk(this_player(),varb)){
+	    if(!CanTalk(this_player(),verb)){
 		write("You lack privileges to that channel.");
 		return 1;
 	    }
@@ -190,6 +195,11 @@ int cmdChannel(string verb, string str) {
 	this_player()->eventPrint(msg, MSG_SYSTEM);
 	return 1;
     }
+    if(!CanTalk(this_player(),verb)){
+	write("You lack privileges to that channel.");
+	return 1;
+    }
+
     if( !Channels[verb] ) {
 	if( sscanf(verb, "%semote", verb) || sscanf(verb, "%s:", verb) ) {
 	    string emote_cmd, remains;
@@ -365,22 +375,20 @@ int cmdChannel(string verb, string str) {
     if(!grepp(str,"$N") && emote) str = "$N "+str;
 
     eventSendChannel(name, verb, str, emote, target, target_msg);
-    if( rc != verb ) {
-	if( ob ) {
-	    SERVICES_D->eventSendChannel(name, rc, str, emote, target,
-	      target_msg);
-	}
-	else {
-	    SERVICES_D->eventSendChannel(name, rc, str, emote, targetkey,
-	      target_msg);          
-	}
+    if( ob ) {
+	SERVICES_D->eventSendChannel(name, rc, str, emote, target,
+	  target_msg);
+    }
+    else {
+	SERVICES_D->eventSendChannel(name, rc, str, emote, targetkey,
+	  target_msg);          
     }
     return 1;
 }
 
 varargs void eventSendChannel(string who, string ch, string msg, int emote,
   string target, string targmsg) {
-    string pchan,pmsg,pwho;
+    string pchan,pmsg;
     pchan=ch;
 
     if( file_name(previous_object()) == SERVICES_D) {
@@ -423,7 +431,6 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	default:
 	    this_msg = "%^BLUE%^";
 	}
-
 	this_msg += "<" + ch + ">%^RESET%^ ";
 	msg = replace_string(msg, "$N", who);
 	if( target ) {
@@ -437,13 +444,21 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	eventAddLast(ch, tmp, pchan, msg);
 	foreach(object listener in obs) {
 	    int ignore;
+	    if(sscanf(who,"%s@%s",suspect,site) < 2) {
+		suspect = who;
+		site = "@"+mud_name();
+	    }
+	    else site = "@"+site;
 	    if( listener == ob ) continue;
 	    foreach(string jerk in listener->GetMuffed()){
-		//tc("tmp: "+tmp);
-		//tc("pchan: "+pchan);
+		//tc("suspect: "+suspect);
+		//tc("site: "+site);
+		//tc("jerk: "+jerk);
 		//tc("msg: "+msg);
-		sscanf(tmp,"%s %s %s", foo, bar, baz);
-		if(jerk && grepp(lower_case(bar),lower_case(jerk))) ignore = 1;
+		//sscanf(tmp,"%s %s %s", foo, bar, baz);
+		//if(jerk && grepp(lower_case(bar),lower_case(jerk))) ignore = 1;
+		if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
+		if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 	    }
 	    //tc("msg2","red");
 	    if(!ignore && CanListen(listener,ch)) listener->eventPrint(tmp, MSG_CONV);
@@ -454,13 +469,16 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 		int ignore;
 		tmp = this_msg + targmsg;
 		foreach(string jerk in ob->GetMuffed()){
-		    if(jerk && grepp(lower_case(tmp),lower_case(jerk))) ignore = 1;
+		    if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
+		    if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 		}
 		//tc("msg3","green");
 		if(!ignore && CanListen(ob,ch)) ob->eventPrint(tmp, MSG_CONV);
 		ignore = 0;
 	    }
 	}
+	suspect = "";
+	site = "";
     }
     else {
 	object *obs;
@@ -496,19 +514,31 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 
 	tmsg += "<"+ch+">%^RESET%^ " + msg;
 	pmsg = msg;
-	pwho = who;
 	msg = tmsg;
 	//ch = GetLocalChannel(ch);
-	eventAddLast(ch, msg, pchan, pmsg, pwho);
+	eventAddLast(ch, msg, pchan, pmsg, who);
 	obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
 	foreach(object ob in obs){
 	    int ignore;
+	    if(sscanf(who,"%s@%s",suspect,site) < 2) {
+		suspect = who;
+		site = "@"+mud_name();
+	    }
+	    else site = "@"+site;
+
 	    foreach(string jerk in ob->GetMuffed()){
-		if(jerk && grepp(lower_case(msg),lower_case(jerk))) ignore = 1;
+		//if(jerk) tc("jerk: "+jerk,"red");
+		if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
+		if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 	    }
 	    //tc("msg4","blue");
+	    //tc("who: "+who);
+	    //tc("suspect: "+suspect);
+	    //tc("site: "+site);
 	    if(!ignore && CanListen(ob,ch)) ob->eventPrint(msg, MSG_CONV);
 	    ignore = 0;
+	    suspect ="";
+	    site = "";
 	}
 
     }

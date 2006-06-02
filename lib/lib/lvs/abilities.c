@@ -153,7 +153,7 @@ void RemoveSkill(string skill) {
  * sets the skill "skill" to the level "level"
  * if a classes is given, its class is set to it, otherwise the class is
  * set to 1
- * usefule mostly for monster types, probably should have override
+ * useful mostly for monster types, probably should have override
  * protections in the user object (should use AddSkill() for users)
  */
 varargs void SetSkill(string skill, int level, int cls) {

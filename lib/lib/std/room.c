@@ -50,9 +50,13 @@ private string          Town          = "wilderness";
 private int		DefaultExits  = 1;
 private int		Flying        = 1;
 private int		Obvious       = 1;
+private int		ActionChance  = 10;
 mapping			ItemsMap      = ([]);
 //private static object  *dummies       = ({});
 private static mixed    global_item;
+private static mixed	Action;
+private int		tick_resolution	= 5;
+
 
 string GetClimate();
 int GetNightLight();
@@ -71,6 +75,49 @@ mixed indirect_delete_exit_str(){
 varargs int eventPrint(string msg, mixed arg2, mixed arg3);
 
 /***********      /lib/room.c data manipulation functions      **********/
+
+void CheckActions(){
+    if( ActionChance > random(100) ) {
+	int x;
+
+	if( functionp(Action) ) evaluate(Action);
+	else if( pointerp(Action) && (x = sizeof(Action)) ) {
+	    mixed act;
+
+	    act = Action[random(x)];
+	    if(functionp(act)) {
+		evaluate(act);
+		return;
+	    }
+	    else message("other_action", act, this_object());
+	}
+    }
+}
+
+void heart_beat(){
+    CheckActions();
+}
+
+void SetAction(int chance, mixed val) {
+    ActionChance = chance;
+    if( stringp(val) ) val = ({ val });
+    else if( !functionp(val) && !pointerp(val) )
+	error("Bad argument 2 to SetAction()\n");
+    Action = val;
+}
+
+mixed GetAction() { return Action; }
+
+int SetFrequency(int tick){
+    if(tick) tick_resolution = tick;
+    else tick_resolution = 5;
+    set_heart_beat(0);
+    return tick_resolution;
+}
+
+int GetFrequency(){
+    return tick_resolution;
+}
 
 int GetAmbientLight() {
     int a, dayset, nightset;
@@ -793,6 +840,7 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
 static void create() {
     exits::create();
     reset(query_reset_number());
+    set_heart_beat(0);
     if( replaceable(this_object()) && !GetNoReplace() ) {
 	string array tmp= inherit_list(this_object());
 
@@ -907,5 +955,6 @@ int GenerateObviousExits(){
 
 static void init() {
     if(!sizeof(GetObviousExits()) && DefaultExits > 0 && Obvious) GenerateObviousExits();
+    if(Action && sizeof(Action)) set_heart_beat(tick_resolution);
 }
 

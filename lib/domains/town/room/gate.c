@@ -1,6 +1,7 @@
 #include <lib.h>
 inherit LIB_ROOM;
 
+
 int PreExit(){
     if(this_player()->GetLevel() > 3 && !creatorp(this_player())){
 	if(present("gate guard",this_object())){
@@ -17,9 +18,6 @@ int PreExit(){
     }
     return 1;
 }	
-
-
-
 static void create() {
     room::create();
     SetClimate("outdoors");
@@ -60,4 +58,7 @@ static void create() {
       }) );
 
     SetProperty("no attack", 1);
+}
+void init(){
+    ::init();
 }

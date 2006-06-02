@@ -81,15 +81,18 @@ mapping GetAccountInfo(string bank) {
 
 varargs int GetNetWorth(string benjamins) {
     string curr;
-    float net_worth;
+    float net_worth = 0.0;
     int amt;
-
+    //tc("Currency: "+identify(Currency));
     foreach(curr, amt in Currency) {
-	float tmp;
+	//tc("curr: "+identify(curr),"blue");
+	//tc("amt: "+identify(amt),"blue");
+	if(valid_currency(curr))
+	    net_worth += amt * currency_rate(curr);
+	//tc("net_worth: "+net_worth,"blue");
 
-	if( (tmp = currency_rate(curr)) < 1 ) continue;
-	net_worth += amt * tmp;
     }
+    //tc("net_worth: "+net_worth);
     foreach(string bank, mapping balance in Bank) {
 	foreach(curr, amt in balance) {
 	    float tmp;
@@ -106,7 +109,8 @@ varargs int GetNetWorth(string benjamins) {
     }
     if(!benjamins || benjamins == ""||!stringp(benjamins)) benjamins = "gold";
     if(member_array(benjamins,mud_currencies()) == -1) benjamins = "gold";
-    return net_worth / currency_rate(benjamins);
+    if(benjamins && net_worth) return to_int(net_worth / currency_rate(benjamins));
+    else return to_int(0);
 }
 
 string array GetCurrencies() { return keys(Currency); }

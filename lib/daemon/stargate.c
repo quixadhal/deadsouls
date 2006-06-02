@@ -16,170 +16,138 @@
 
 inherit LIB_DAEMON;
 
-private mapping stargates = ([]);
+private mapping Stargates = ([]);
 
-static void create()
-{
+static void create(){
     daemon::create();
     SetNoClean(1);
-    load();
-    if (!stargates) stargates = ([]);
+    eventLoad();
+    if (!Stargates) Stargates = ([]);
 }
 
-void save()
-{
+void eventSave(){
     unguarded( (: save_object, SAVE_STARGATE, 1 :) );
-    tell_player("jonez", "stargate daemon saved itself");
+    //tc("stargate daemon saved itself");
     return;
 }
 
-void load()
-{
-    if (file_size(SAVE_STARGATE __SAVE_EXTENSION__) > 0)
-    {
-	tc("stargate save file exists");
+void eventLoad(){
+    if (file_size(SAVE_STARGATE __SAVE_EXTENSION__) > 0){
+	//tc("stargate save file exists");
 	unguarded( (: restore_object, SAVE_STARGATE :) );
     }
-    tell_player("jonez", "stargate daemon loaded itself");
+    //tc("stargate daemon loaded itself");
+    //tc("Stargates: "+identify(Stargates),"red");
     return;
 }
 
-int setStargate(string address, string destination)
-{
-    class stargate s = new(class stargate);
-
+int SetStargate(string address, string destination){
+    mapping tmp = ([]);
+    Stargates[address] = tmp;
+    //tc("Stargates: "+identify(Stargates),"yellow");
     if (address == "" || destination == "") return 1;
-
-    s->status = "idle";
-    s->destination = destination;
-    s->endpoint = 0;
-    stargates[address] = s;
-    save();
+    if(sizeof(Stargates[address])) return 1;
+    Stargates[address]["status"] = "idle";
+    Stargates[address]["destination"] = destination;
+    Stargates[address]["endpoint"] = "";
+    eventSave();
     return 0;
 }
 
-class stargate getStargate(string address)
-{
-    class stargate s = stargates[address];
-    if (!s) return 0;
-
-    tell_player("jonez", sprintf("get: address=%s, status=%s destination=%s endpoint=%s", address, s->status, s->destination, s->endpoint));
-    return (class stargate)stargates[address];
+mapping GetStargate(string address){
+    //tc("Stargates: "+identify(Stargates),"blue");
+    return copy(Stargates[address]);
 }
 
-int delStargate(string address)
-{
-    map_delete(stargates, address);
-    save();
+int RemoveStargate(string address){
+    //tc("Stargates: "+identify(Stargates),"red");
+    map_delete(Stargates, address);
+    //tc("Stargates: "+identify(Stargates),"cyan");
+    eventSave();
     return 0;
 }
 
-mapping getStargates()
-{
-    /*
-      string buf = "";
-
-      foreach(string n, class stargate g in stargates)  
-      {
-	buf += sprintf("name=%s, status=%s, destination=%s, endpoint=%s; ", n, g->status, g->destination, g->endpoint);
-      }
-      return buf;
-    */
-    return copy(stargates);
+mapping GetStargates(){
+    //tc("Stargates: "+identify(Stargates),"blue");
+    return copy(Stargates);
 }
 
-int setStatus(string address, string status)
-{
-    class stargate s;
-    s = stargates[address];
-    if (!s) return 1;
-
-    s->status = status;
-    save();
+int SetStatus(string address, string status){
+    //tc("Setting status of "+status+" on "+address+".");
+    Stargates[address]["status"] = status;
+    eventSave();
     return 0;
 }
 
-string getStatus(string address)
-{
-    class stargate s = stargates[address];
-    if (!s) return "";
-
-    return s->status;
+string GetStatus(string address){
+    //tc("Stargates: "+identify(Stargates),"red");
+    return Stargates[address]["status"];
 }
 
-string getDestination(string address)
-{
-    class stargate s = stargates[address];
-    if (!s) return "";
-    return s->destination;
+string GetDestination(string address){
+    string ret = Stargates[address];
+    //tc("Stargates: "+identify(Stargates),"white");
+    if(sizeof(Stargates[address]) && sizeof(Stargates[address]["destination"]))
+	return Stargates[address]["destination"];
+    else return "";
 }
 
-string getEndpoint(string address)
-{
-    class stargate s = stargates[address];
-    if (!s) return "";
-    return s->endpoint;
+string GetEndpoint(string address){
+    //tc("Stargates: "+identify(Stargates),"blue");
+    return Stargates[address]["endpoint"];
 }
 
-// return 1 on success, 0 on error
-int connect(string from, string to)
-{
-    class stargate t, f;
-
-    tell_player("jonez", sprintf("stargate_d->connect(%s, %s)", from, to));
+int eventConnect(string from, string to){
+    //tc("Stargates: "+identify(Stargates),"red");
+    //tc("STARGATE_D, from: "+from+", to: "+to,"green");
 
     if (from == to) return 0;
 
-    f = stargates[from];
-    if (!f) 
-    {
-	tell_player("jonez", "failed to lookup status of outbound gate");
+    if (!Stargates[from] || !sizeof(Stargates[from])){ 
+	//tc("failed to lookup status of outbound gate");
 	return 0;
     }
 
-    t = stargates[to];
-    if (!t) 
-    {
-	tell_player("jonez", "failed to lookup status of inbound gate");
+    if (!Stargates[to] || !sizeof(Stargates[to])){ 
+	//tc("failed to lookup status of inbound gate");
 	return 0;
     }
 
-    tell_player("jonez", sprintf("%s->status=%s, %s->status=%s", from, f->status, to, t->status));
+    if (Stargates[from]["status"] == "idle" && Stargates[to]["status"] == "idle"){
+	//tc("situation normal");
 
-    if (f->status == "idle" && t->status == "idle")
-    {
-	f->endpoint = to;
-	f->status = "outbound";
+	Stargates[from]["endpoint"] = to;
+	Stargates[from]["status"] = "outbound";
 
-	t->endpoint = from;
-	t->status = "inbound";
-
-	save();
+	Stargates[to]["endpoint"] = from;
+	Stargates[to]["status"] = "inbound";
+	//tc("Stargates: "+identify(Stargates));
+	eventSave();
 
 	return 1;
     }
+    //tc("exception");
     return 0;
 }
 
-// return 1 on success, 0 on error
-int disconnect(string from)
-{
-    class stargate f;
+int eventDisconnect(string from){
     string endpoint;
+    if(!from || from == "") return 0;
+    //tc("Stargates: "+identify(Stargates),"blue");
 
-    tell_player("jonez", sprintf("stargate_d->disconnect(%s)", from));
+    if (!Stargates[from] || !sizeof(Stargates[from])) return 0;
 
-    f = stargates[from];
-    if (!f) return 0;
-
-    endpoint = stargates[from]->endpoint;
+    endpoint = Stargates[from]["endpoint"];
     if (!endpoint) return 0;
 
-    stargates[endpoint]->endpoint = "";
-    stargates[endpoint]->status = "idle";
+    if(sizeof(Stargates[endpoint])){
+	Stargates[endpoint]["endpoint"] = "";
+	Stargates[endpoint]["status"] = "idle";
+    }
 
-    stargates[from]->endpoint = "";
-    stargates[from]->status = "idle";
-    save();
+    Stargates[from]["endpoint"] = "";
+    Stargates[from]["status"] = "idle";
+
+    eventSave();
     return 1;
 }

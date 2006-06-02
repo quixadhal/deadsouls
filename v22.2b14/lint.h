@@ -75,7 +75,8 @@
 /* SGI is missing some prototypes in the .h files */
 #ifdef PEDANTIC
 #  ifdef sgi
-     void ualarm PROT((int, int));
+/* If using some old-ass IRIX and it won't compile, uncomment the next line */
+/*     void ualarm PROT((int, int)); */
 #  endif
 #endif
 

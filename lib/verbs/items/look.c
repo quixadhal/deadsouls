@@ -95,7 +95,8 @@ mixed do_look_str(string str) {
 }
 
 varargs mixed do_look_at_obj(object ob, mixed arg) {
-    if(ob->GetInvis() && !archp(this_player())){
+    if(ob->GetInvis() && !archp(this_player()) && 
+      base_name(ob) != LIB_DUMMY ){
 	write("There is no "+arg+" here.");
 	return 1;
     }

@@ -187,12 +187,15 @@ mixed eventThrow(object who, object target) {
 	  GetShort() + " at " + target->GetName() +
 	  ".", ({ who, target }) );
 	skill = (who->GetSkillLevel("projectile attack") +
-	  who->GetStatLevel("coordination"))/2;
+	  who->GetStatLevel("coordination"));
+	tc("skill: "+skill);
 	skill -= (target->GetSkillLevel("projectile defense") +
-	  target->GetStatLevel("agility"))/4;
+	  target->GetStatLevel("agility"))/2;
+	tc("skill: "+skill);
 	if( GetWeaponType() != "projectile" ) {
-	    skill = skill/4;
+	    skill = skill/2;
 	}
+	tc("skill: "+skill);
 	if( skill > random(100) + 1 ) {
 	    who->AddSkillPoints("projectile attack",
 	      target->GetSkillLevel("projectile defense") *
@@ -206,8 +209,9 @@ mixed eventThrow(object who, object target) {
 	      who->GetLevel() + 10);
 	    who->AddSkillPoints("projectile attack", 10);
 	    environment(who)->eventPrint(capitalize(GetShort()) + " does not "
-	      "come close to hitting " +
-	      target->GetName() + ".");
+	      "hit "+target->GetName() + ".",({ target, who }));
+	    write("Your throw misses its mark.");
+	    tell_object(target, capitalize(GetShort()) + " does not hit you.");
 	    eventMove(environment(who));
 	}
 	return 1;
@@ -217,7 +221,9 @@ mixed eventThrow(object who, object target) {
 	  target->GetShort() + ".");
 	environment(who)->eventPrint(who->GetName() + " throws " +
 	  GetShort() + " at " + target->GetShort() +
-	  ".", who);	
+	  ".", ({ who, target }));	
+	tell_object(target, capitalize(GetShort()) + " throws " +
+	  GetShort() + " at you.");
 	return target->eventReceiveThrow(who, this_object());
     }
     if( !eventMove(environment(who)) ) {

@@ -36,7 +36,8 @@ static void create() {
       "northwest" : "go northwest", "northeast" : "go northeast", 
       "southwest" : "go southwest", "southeast" : "go southeast",
       "north" : "go north", "south": "go south", "east" : "go east",
-      "west" : "go west", "up" : "go up", "down": "go down"
+      "west" : "go west", "up" : "go up", "down": "go down", 
+      "ig" : "intergossip $*"
     ]);
     Xverbs = (["'":"say $*",":":"emote $*","\"":"say $*",]);
 } 

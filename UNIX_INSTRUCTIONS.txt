@@ -8,7 +8,7 @@ Then perform the following steps:
 
 2) cd to v22.2b14
 
-3) type ./build.MudOS develop
+3) type ./configure
 
 4) type: make 
 

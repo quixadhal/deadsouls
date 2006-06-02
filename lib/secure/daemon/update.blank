@@ -2,8 +2,6 @@
 
 inherit LIB_DAEMON;
 
-string *deleta;
-
 static void eventUpdate() {
 }
 

@@ -94,6 +94,11 @@ int eventDeleteObject(object ob1, object ob2){
 	return 1;
     }
 
+    if(userp(ob1) || userp(ob2)){
+	write("No.");
+	return 1;
+    }
+
     if(environment(ob1) != ob2) {
 	write("That doesn't exist there.");
 	return 1;

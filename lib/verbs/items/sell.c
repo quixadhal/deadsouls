@@ -43,7 +43,7 @@ mixed do_sell_liv_obj(object vendor, object item) {
 }
 
 mixed do_sell_obs_to_liv(object array items, object vendor) {
-    object array obs;
+    object *obs, *eligible;
 
     obs = filter(items, (: objectp :));
     if( !sizeof(obs) ) {
@@ -55,7 +55,14 @@ mixed do_sell_obs_to_liv(object array items, object vendor) {
 	}
 	return 1;
     }
-    return vendor->eventBuy(this_player(), obs);
+    eligible=filter(obs, (: (!($1->GetWorn()) && environment($1) == this_player()) :)); 
+    if(!sizeof(eligible)){
+	write("Remove or unwield items before trying to sell them.");
+	eligible = ({});
+	return 1;
+    }
+
+    return vendor->eventBuy(this_player(), eligible);
 }
 
 mixed do_sell_liv_obs(object vendor, object array items) {

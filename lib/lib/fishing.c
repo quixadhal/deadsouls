@@ -11,25 +11,31 @@
 
 inherit LIB_ROOM;
 
-static private int MaxFishing, Speed, Chance;
+static private int MaxFishing, Speed, Chance, counter;
 static private mapping Fishing, Fish;
 
 static void create() {
     room::create();
     MaxFishing = 10;
-    Speed = 5;
+    Speed = 10;
     Chance = 0;
+    counter = 0;
     Fish = ([]);
     Fishing = ([]);
 }
 
-static void heart_beat() {
+void heart_beat() {
     mapping tmp;
     object pole;
     string fisher;
 
+    room::CheckActions();
+
+    counter++;
+    if(counter < Speed) return;
+    counter = 0;
+
     if( !sizeof(Fishing) ) {
-	set_heart_beat(0);
 	return;
     }
     tmp = Fishing;
@@ -43,12 +49,17 @@ static void heart_beat() {
 	if( (int)pole->GetBroken() ) continue;
 	if( (object)ob->GetInCombat() ) {
 	    message("my_action", "You are no longer fishing.", ob);
+	    RemoveFishing(ob);
+	    continue;
+	}
+	if( (object)ob->GetSleeping() ) {
+	    message("my_action", "You are no longer fishing.", ob);
+	    RemoveFishing(ob);
 	    continue;
 	}
 	Fishing[fisher] = pole;
     }
     if( !sizeof(Fishing) ) {
-	set_heart_beat(0);
 	return;
     }
     foreach(fisher, pole in Fishing) {
@@ -110,6 +121,11 @@ mixed CanStop(object who, string str) {
     return 1;
 }
 
+int CanRelease(object who){
+    if(room::CanRelease()) RemoveFishing(who);
+    return 1;
+}
+
 mixed eventCast(object who, object pole, string str) {
 
     send_messages(({ "cast", "start" }),
@@ -130,7 +146,9 @@ static void eventCatch(object who, string fish, object pole) {
 	return;
     }
     if( !((int)pole->eventCatch(who, fish)) ) return;
-    food = new((string)fish->GetFood());
+    //food = new((string)fish->GetFood());
+    food=new(fish);
+    //tc("new fish: "+identify(food),"yellow");
     RemoveFishing(who);
     who->AddSkillPoints("fishing", (int)fish->GetFight()+(int)fish->GetMass());
     message("my_action", "You find " + (string)fish->GetShort() + " on " +
@@ -139,12 +157,15 @@ static void eventCatch(object who, string fish, object pole) {
       (string)fish->GetShort() + " on " + (string)pole->GetShort() + 
       "!", this_object(), ({ who }));
     if( !((int)food->eventMove(who)) ) {
+	//tc("fish failed to move onto fisherman "+identify(who));
 	message("my_action", "You drop " + (string)food->GetShort() + "!",
 	  who);
 	message("other_action", (string)who->GetName() + " drops " +
 	  (string)food->GetShort() + "!", this_object(), ({ who }) );
 	food->eventMove(this_object());
     }
+    //tc("We weem to think all is well. The environment of "+identify(food)+" is "+
+    //identify(environment(food)));
 }
 
 mixed eventStop(object who, string str) {
@@ -176,7 +197,7 @@ mapping GetFish() { return Fish; }
 
 mapping SetFishing(object who, object pole) {
     if( !living(who) ) return Fishing;
-    if( !query_heart_beat() ) set_heart_beat(Speed);
+    if( !query_heart_beat() ) set_heart_beat(1);
     Fishing[(string)who->GetKeyName()] = pole;
     return Fishing;
 }
@@ -187,7 +208,7 @@ mapping RemoveFishing(object who) {
     if( !who ) return Fishing;
     if( Fishing[str = (string)who->GetKeyName()] ) 
 	map_delete(Fishing, str);
-    if( !sizeof(Fishing) ) set_heart_beat(0);
+    if( !sizeof(Fishing) ) return;
     return Fishing;
 }
 

@@ -15,7 +15,17 @@ inherit LIB_SEAL;
 //inherit LIB_LOCK_WITH;
 
 private mapping Sides;
+private static int Hidden = 1;
 
+int SetHiddenDoor(int i){
+    if(i) Hidden = 1;
+    else Hidden = 0;
+    return Hidden;
+}
+
+int GetHiddenDoor(){
+    return Hidden;
+}
 
 string *GetSides(){
     //string ret, tmp;

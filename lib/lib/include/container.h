@@ -14,7 +14,7 @@ static string SetInternalLong(string str);
 string GetInternalShort();
 static string SetInternalShort(string str);
 int GetOpacity();
-static int SetOpacity(int x);
+int SetOpacity(int x);
 int GetRadiantLight(int ambient);
 
 #endif /* l_container_h */

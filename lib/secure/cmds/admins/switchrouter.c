@@ -11,7 +11,7 @@ mixed cmd(string args) {
 
     if(!archp(this_player())) return "No.";
 
-    find_object(INTERMUD_D)->eventDestruct();
+    if(find_object(INTERMUD_D))find_object(INTERMUD_D)->eventDestruct();
     rm("/save/intermud.o");
 
     if(!args || args == ""){

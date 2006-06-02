@@ -61,14 +61,16 @@ static string SetConjure(string str) {
 }
 
 int GetDamage() {
-    int tmp;
+    int tmp = 0;
     int damage = Damage[0];
 
     if( Damage[1] ) {
 	damage += random(Damage[1]);
     }
-    tmp = this_player()->GetSkill("magic attack")["level"];
-    tmp = tmp/this_player()->GetSkill("magic attack")["class"];
+    if(this_player()->GetSkill("magic attack")){
+	tmp = (this_player()->GetSkill("magic attack")["level"]) * 2;
+	tmp = tmp/this_player()->GetSkill("magic attack")["class"];
+    }
     damage += tmp;
     //tc("spell damage: "+identify(damage));
     return damage;

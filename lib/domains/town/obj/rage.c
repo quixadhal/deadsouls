@@ -91,7 +91,7 @@ int eventMove(mixed dest){
 
 int eventSuffer(){
     int x;
-    x=random(60);
+    x=random(50);
     if(x < 5) damage1();
     else if(x < 10) damage2();
     else if(x < 15) damage3();

@@ -1,3 +1,79 @@
-chapter 3 "Intermud"
+chapter 3 "Getting Started"
 
+    If you've read this far, there's a good chance
+you already like the lib and are eager to get
+going on this whole mud thing. Whether this is
+true or not, this is where you find out for sure.
 
+    Let's assume you're set with the vision thing.
+You're going to make a mud with a Dora the Explorer
+theme. You can practically hear the music even
+now! Let's get this mud written and open! Vamonos!
+
+    The first thing that happens here is you need
+to get real familiar with this mud. If you haven't
+done so already, when you finish this chapter,
+you must do the following:
+
+1) Read the Player's Handbook, cover to cover.
+
+2) Create a test character. Do *not* use your 
+admin character's powers to give her any
+equipment or money. Using the information from the
+Player's Handbook, play this character until she
+solves the Orcslayer Quest. Do not use any creator
+characters to help her in any way.
+
+    It is very important that you do this. It
+is the best way you will know for sure whether you
+have made the right lib choice. 
+    
+    This doesn't mean that I'm asking you if you're
+happy with the questing system, or how the items
+in your inventory get listed, or whatever. Such
+systems and cosmetics can be changed, sometimes with
+trivial work.
+    What you're testing is the feel of the mud, 
+the parser, and that certain "I don't know what"
+that tells you whether this is really a mud lib
+you can live with.
+
+    Don't like quest advancement? That can be removed.
+Want turns-based combat? That can be arranged (though
+not trivially). But if you get a low level discomfort,
+and can't shake the feeling that you can't get 
+anything done, then this is when you'll find out.
+
+    The second advantage to completing the Orcslayer
+Quest is that it helps you see how things are 
+organized. As you proceed along the quest, you should
+be using your admin character to examine the
+files that compose the rooms, items, and npc's you see.
+    You will know where there are working samples of
+doors, locks, hostile npc's, friendly npc's, spells,
+and so on. This information will be valuable to you
+in the next step you take.
+
+    If you complete the Orcslayer Quest and decide 
+you still like the lib, your next step is to create a
+small area. Read the Creator's Manual starting from
+chapter 31. This provides you a detailed set of 
+instructions on how to get stuff built quickly and
+painlessly.
+    Build a few rooms. If you can't think of something
+to build, create a room just like the one you're
+sitting in right now, including desk, door, and
+scruffy mud geek sitting on a chair.
+    Or you might already know exactly what you want
+to build. This is a good time to build a few
+rooms of Dora's Grandma's House, or the tree house
+of Tico the Squirrel.
+
+    It's vitally important that you start using the
+building tools, because just like with the Orcslayer
+Quest, this is the point where you will discover whether
+the build system here is a deal killer.
+
+    Once you're done with your few starter rooms, you'll
+be in a position to know whether you've really made
+the right mudlib choice.

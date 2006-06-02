@@ -42,6 +42,10 @@ mixed do_copy_obj_str(object ob, string str) {
 	return 1;
     }
 
+    if(userp(ob)){
+	write("No.");
+	return 1;
+    }
     success = 0;
     sourcefile = "";
     targetfile = "";

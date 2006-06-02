@@ -56,8 +56,7 @@ static private string origin;
 string displayLong();
 string displayShort();
 
-void create() 
-{
+void create(){ 
     item::create();
 
     SetKeyName("stargate");
@@ -76,47 +75,45 @@ void create()
     SetTouch("You feel the stargate beneath your hand humming with energy.");
 }
 
-void init()
-{
+void init(){
     ::init();
     add_action( "cmdDial", "dial" );
     add_action( "cmdEnter", "enter");
 }
 
 
-void setOrigin(string o, string d)
-{
+void SetOrigin(string o, string d){
     if (o == "" || d == "") return;    
     origin = lower_case(o);
-    STARGATE_D->setStargate(origin, d);
+    if(!sizeof(STARGATE_D->GetStargate(origin))){
+	STARGATE_D->SetStargate(origin, d);
+    }
 }
 
-string getOrigin()
-{
+string GetOrigin(){
     return origin;
 }
 
-void connect(string destination)
-{
+void eventConnect(string destination){
     int ret;
 
     destination = lower_case(destination);
+    //tc("origin: "+origin,"white");
+    //tc("destination: "+destination,"white");
 
-    if (origin == destination)
-    {
+    if (origin == destination){
 	write("You attempt to dial the gate, but the last chevron does not engage");
 	say(this_player()->GetName() + " tries to dial the gate but the last chevron does not engage");
 	return;
     }
 
-    ret = STARGATE_D->connect(origin, destination);
-    if (ret)
-    {
-	string d = STARGATE_D->getDestination(destination);
+    ret = STARGATE_D->eventConnect(origin, destination);
+    if (ret){
+	string d = STARGATE_D->GetDestination(destination);
 	write("The ancient rings lock into place and a portal forms in an explosion of energy.");
 	say("The ancient rings lock into place and a portal forms in an explosion of energy.");
 	tell_room(d, "The ancient rings lock into place and a portal forms in an explosion of energy");
-	call_out("disconnect", 10+random(5));
+	call_out("eventDisconnect", 10+random(5));
 	return;
     }
 
@@ -126,31 +123,51 @@ void connect(string destination)
     return;
 }
 
-int disconnect()
-{
-    string e = STARGATE_D->getEndpoint(origin);
-    string d = STARGATE_D->getDestination(e);
+int eventDisconnect(){
+    string endpoint = STARGATE_D->GetEndpoint(origin);
+    string e = STARGATE_D->GetDestination(origin);
+    string d = STARGATE_D->GetDestination(endpoint);
+    //object e = load_object(STARGATE_D->GetEndpoint(origin));
+    //object d;
+    //if(e) d = load_object(STARGATE_D->GetDestination(STARGATE_D->GetEndpoint(origin)));
 
-    debug(sprintf("stargate_lib->disconnect(%s), e=%s, d=%s", origin, e, d));
+    //debug(sprintf("stargate_lib->eventDisconnect(%s), e=%s, d=%s", origin, e, d));
 
-    // FIX: does the player get a message if they come through the gate and then leave the room?
-    write("The chevrons on the stargate disengage and the portal disappears.");
-    say("The chevrons on the stargate disengage and the portal disappears.");
-    tell_room(d, "The chevrons on the stargate disengage and the portal disappears", ({ this_player() }));
+    // FIX: does the player Get a message if they come through the gate and then leave the room?
+    //write("The chevrons on the stargate disengage and the portal disappears.");
+    //say("The chevrons on the stargate disengage and the portal disappears.");
+    //tell_room(d, "The chevrons on the stargate disengage and the portal disappears", ({ this_player() }));
+    if(d) tell_room(d, "The chevrons on the stargate disengage and the portal disappears.");
+    if(e) tell_room(e, "The chevrons on the stargate disengage and the portal disappears.");
 
-    return STARGATE_D->disconnect(origin);
+    //tc("origin: "+identify(origin));
+
+    return STARGATE_D->eventDisconnect(origin);
 }
 
-string status()
-{
-    return STARGATE_D->getStatus(origin);  
+string status(){
+    //tc("origin: "+origin);
+    //tc("staus: "+STARGATE_D->GetStatus(origin));
+    return STARGATE_D->GetStatus(origin);  
 }
 
-mixed cmdDial(string s)
-{
+mixed cmdDial(string s){
+    object ob;
+    string flipside;
     if (s)
     {
-	connect(s);
+	//tc("s: "+s);
+	if(STARGATE_D->GetDestination(s)) 
+	    flipside = STARGATE_D->GetDestination(s);
+	//tc("flipside: "+flipside);
+	eventConnect(s);
+	//if(sizeof(flipside)) ob = find_object(flipside);
+	if(sizeof(flipside) && !ob) ob = load_object(flipside);
+	if(!ob){
+	    write("The Stargate abruptly begins to shuts down.");
+	    eventDisconnect();
+	}
+	//else if(!present("stargate",find_object(flipside))) tc("wtf");
 	return 1;
     }
 
@@ -158,8 +175,7 @@ mixed cmdDial(string s)
 
 }
 
-int cmdEnter(string what)
-{
+int cmdEnter(string what){
     string endpoint, destination;
     object who;
 
@@ -174,10 +190,10 @@ int cmdEnter(string what)
     }
 
     who = this_player();
-    endpoint = STARGATE_D->getEndpoint(origin);
-    destination = STARGATE_D->getDestination(endpoint);
-    debug("endpoint=" + endpoint);
-    debug("destination=" + destination);
+    endpoint = STARGATE_D->GetEndpoint(origin);
+    destination = STARGATE_D->GetDestination(endpoint);
+    //debug("endpoint=" + endpoint);
+    //debug("destination=" + destination);
     who->eventPrint("You step through the event horizon of the stargate.");
     who->eventMoveLiving(destination, 
       "$N steps into the event horizon and disappears", 
@@ -186,13 +202,12 @@ int cmdEnter(string what)
 
 }
 
-int eventEnter(object who)
-{
+int eventEnter(object who){
     string endpoint;
 
     if (!who) return 0;
 
-    endpoint = STARGATE_D->getEndpoint(origin);
+    endpoint = STARGATE_D->GetEndpoint(origin);
     if (status() == "connected")
     {
 	who->eventPrint("You step through the event horizon of the stargate.");
@@ -203,8 +218,7 @@ int eventEnter(object who)
     return 1;
 }
 
-string displayLong()
-{
+string displayLong(){
     string buf, stat;
 
     buf = "This is the Stargate of legend.  The Stargate was created "
@@ -226,10 +240,10 @@ string displayLong()
     return buf;
 }
 
-string displayShort()
-{
+string displayShort(){
     string stat;
     stat = status();
+    //tc("status: "+stat);
     switch (stat)
     {
     case "inbound":

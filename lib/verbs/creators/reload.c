@@ -56,6 +56,10 @@ mixed can_reload_str_word(string str, string str2) {
     return can_reload_obj("foo"); }
 
 mixed do_reload_obj(object ob) {
+    if(userp(ob)) {
+	write("No.");
+	return 1;
+    }
     return reload(ob);
 }
 

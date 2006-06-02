@@ -1,0 +1,934 @@
+chapter 5 "The Great Heat Radiation Debate, December 1999"
+
+Cast of Characters:
+Cratylus, a self-righteous know-it-all UNIX engineer
+Thorr, some high school kid
+Hermogenes, a wiseacre aerospace computer scientist
+
+
+Part I is seen through the eyes of Cratylus
+in the same room as Hermogenes. During the conversation,
+Thorr interjects some unrelated stuff through 
+the <cre> communications channel.
+
+Part II is again seen through the eyes of
+Cratylus, but this time Hermogenes and Cratylus are
+in different rooms, and communicate through
+the <admin> channel.
+
+
+PART I
+------
+
+Hermogenes says, "Or whatever they call em."
+Hermogenes asks, "But thats defined by the server?"
+You say, "Its mudos dependent."
+Hermogenes asks, "Like, number of cycles per second or something?"
+You say, "Depends what parameters it was compiled with, and what gets passed to it in config and startup."
+You say, "Yeah."
+Hermogenes asks, "Yoou can set it to whatever you want?"
+You say, "I imagine so."
+Hermogenes says, "Like, i want 10 tics per second of processor time."
+Hermogenes says, "Hmm."
+Hermogenes asks, "Why couldnt My Big Game run similarly to a mud?"
+Frontiers has been up for 2w 6d 5h 10m 37s.
+You say, "I dont really understand your question."
+Hermogenes says, "In my game thing..."
+--------------------------------------------------------------------------
+4 people in current sort      Eastern time: Mon Dec 27 14:24:40 1999     
+--------------------------------------------------------------------------
+253 D -  Cratylus          sun-barr.Sun.CO           ~cratylus/workroom    
+100 D -  (Frontiers)       cv                        ~frontiers/workroom   
+24 D  -  Hermogenes             macpub800.gsfc.           ~cratylus/workroom    
+2  h  -  Thorr             sailor.lib.md.u           ^campus/room/wiz_loung
+--------------------------------------------------------------------------
+                                 Frontiers                                
+Hermogenes says, "Could i just have the server listening for commands..."
+Hermogenes asks, "And stuff happens in 'tics'?"
+You say, "You tell me."
+Hermogenes says, "YEAH."
+Hermogenes says, "I WILL."
+You say, "Heh."
+Hermogenes says, "Yeah."
+Hermogenes says, "Doin it."
+You say, "Yeah."
+You say, "Doin it."
+Hermogenes says, "Iiiiii saw YOU."
+Hermogenes says, "Im almost tempted to listen to that right nw."
+Hermogenes  wants to know the diff between convection, conduction, and radiation
+Hermogenes exclaims, "NnnnnNNNNNOW!!!"
+You say, "Hmm."
+Hermogenes takes off his shoe and starts banging it on the table
+You say, "Convection is about temperature-related airflow."
+Hermogenes says, "Classic stalin."
+Hermogenes says, "Or lenin."
+You say, "Kruschev."
+Hermogenes says, "Ohhh yeah."
+Hermogenes says, "I think some older guy did it, too."
+Hermogenes says, "Aaanyways."
+Hermogenes asks, "Convection is ONLY concerned with gaseous heat transfer?"
+You say, "Prolly not."
+Hermogenes says, "B'oh."
+You say, "I imagine liquids have similar properties."
+Hermogenes says, "I could ask on IG..."
+Hermogenes says, "But i dont wanna know THAT bad."
+You ask, "Why not look it up?"
+Hermogenes says, "Pfah."
+Hermogenes says, "Thats yer answer to EVERYthing."
+You say, "Heh."
+Hermogenes says, "Shoot."
+Hermogenes says, "Im so used to stopping the initial loading of my homepage."
+Hermogenes says, "But this time i WANTED it."
+Hermogenes says, "Heh, this keychain has a y2k countdown timer on it..."
+You say, "Anyways convection currents are useful knowledge to aviators and boat people."
+Hermogenes says, "Only 4 days left on it."
+Hermogenes says, "E has a convection oven..."
+You say, "Vultures can ride "thermals" for hours without flapping their wings."
+Hermogenes says, "Fuggin lazy bums."
+You say, "Ans for submarines, thermocline layers are important acoustic landmarks."
+Hermogenes nods solemnly.
+Hermogenes says, "I remember goin out in th boat with my dad."
+Hermogenes says, "Hed drive, id watch the sonar thingie."
+Hermogenes says, "Id occassionally see thermocline layers."
+You say, "Well there ya go."
+Hermogenes says, "Conduction = opaque solids."
+You ask, "Ya heat transfer huh?"
+Hermogenes says, "Convection = solid surface in contact with moving liquid or gases."
+Hermogenes says, "Ya, heat transfer."
+Hermogenes says, "I mean, i KNEW it was heat transfer."
+You say, "And i guess radiation is the transfer of heat energy from solid to gas."
+Hermogenes says, "I just dint know what set them apart."
+Hermogenes says, "Well..."
+You say, "Well u cant radiate heat in aa vacuum."
+Hermogenes says, "Substandces cdont hafta be touching."
+Hermogenes says, "In radiation heat transferrence."
+Hermogenes says, "Actually..."
+Hermogenes says, "I was about to saty...."
+You say, "Well its gotta touch SOMETHING."
+Hermogenes says, "This process is different from both conduction and convection, because the substances exchanging heat need not be touching and can even be
+separated by a vacuum."
+Hermogenes says, "Bplhtplhtlt."
+You say, "Doesnt make sense to me."
+You say, "Explain how u can radiate heat in aa vacuum."
+Hermogenes asks, "Cantcha transmit heat over a vaccuum?"
+You say, "No."
+Hermogenes asks, "What about th sun?"
+You say, "Thats the whole idea behind thermoses."
+You say, "Thats aa different KIND of radiation."
+Hermogenes asks, "Space != complETE vaccuum?"
+You say, "The sun is particle radiation."
+Hermogenes says, "Thermoses dont complETELY stop heat loss."
+You say, "And em."
+You say, "Well cuz theyre not comPLETE vacuums."
+Hermogenes says, "Hmm."
+Hermogenes says, "I cant really argue with ya, since i dont know much about it in the foist place."
+You shrug.
+You say, "No like im aa textbook."
+You say, "I just dont see how you could radiate heat in aa vacuum."
+You say, "Except in electrmagnetic wave form."
+Hermogenes asks, "Microwave?"
+You say, "Like, if i got shot out of an airlock, right."
+Thorr <cre> > what happened to haderach
+Hermogenes <cre> > hmm
+Hermogenes <cre> > hes on here oCASSIOanlly
+Hermogenes <cre> > not all THAT often
+You say, "Im 98.something degrees."
+Thorr <cre> > yeah.. he is not even a character tho
+Hermogenes <cre> > if ya email ed hima and told him other people were interested in workin on the mud, he might show up more frequently
+You say, "If u put aa thermometer RIGHT next to me."
+You say, "Without touching."
+Hermogenes listens
+You say, "I doubt it would be affected."
+Hermogenes asks, "At ALL?"
+You ask, "How could it?"
+You say, "If i was radioactive, sure."
+Hermogenes asks, "The IR energy radiatinfg from yer body?"
+You say, "Like i said, eventually u would cool down through em emmission."
+You say, "But thats not the kind of radiation theyre talkin about."
+Hermogenes says, "A law formulated by German physicist Max Planck in 1900 states, in
+part, that all substances emit radiant energy simply because they have a
+positive absolute temperature."
+You say, "Like i SAID."
+Hermogenes asks, "Er, so ther?"
+You say, "Like i said, eventually u would cool down through em emmission."
+You say, "But thats not the kind of radiation theyre talkin about."
+Hermogenes says, "Electromagnetic emmission?."
+Hermogenes says, "Ymean, in the IR range?."
+Hermogenes says, "Im not tryin to nit pick, im tryin to understand yer explanation."
+You say, "Ok."
+You say, "A warm coal radiates heat."
+You say, "Because its warm."
+You say, "And it warms the air around it."
+Thorr <cre> > i gotta do some actual work.. bbl
+<cre> > Thorr waves.
+You say, "This is the kind of radiation that I mean when i say heat radiation."
+Hermogenes <cre> > see ya
+<cre> > Cratylus waves.
+Hermogenes says, "Right."
+[Thorr quits]
+You say, "Absent air, were talkin about aa different kind of radiation."
+Hermogenes says, "Transmitting of energy in the infrared range = heat."
+You say, "That i would tend NOT to call "heat radiation"."
+You say, "But electromagnetic radiation."
+You say, "Which is aa whole other can o beans."
+Hermogenes says, "Mmm, beans."
+You say, "SO."
+You say, "When u say convection, conduction, radiation."
+You say, "I do not think em radiation."
+You ask, "See my point?"
+Hermogenes asks, "But.. isnt IR within the EM spectrum?"
+You say, "EXACTLY."
+You say, "The coal MAY be radiating ir, but thats not what im talking about."
+Hermogenes says, "'youd NOT call it 'heat radiation', but you WOULD call it 'EM radiation'."
+You say, "Yes."
+Hermogenes says, "Even though, heat radiation == IR radiation."
+You say, "Bullshit."
+Hermogenes says, "Ok ok."
+Hermogenes says, "Sorry."
+You shrug.
+You say, "I disagree with that statement."
+Hermogenes asks, "Yer sayin for het to be radiat4d, there hasta be air, in the example of the coal?"
+You say, "I think u can also see it as patently false."
+You say, "Right."
+Hermogenes says, "No need to jump all over my case, im just tryin to understand how yer percieving the problem."
+You say, "Now, if my definition of heat radiation is mistaken, then thats something else."
+Hermogenes says, "O K then."
+You say, "But i do not equate infrared radiation with heat radiation."
+Hermogenes asks, "Whyzzat?"
+Hermogenes says, "Not that im arguing, im just wonmdering why you say that."
+Hermogenes says, "Sir."
+You emote: Cratylus is confused.
+You ask, "Why WOULD you say that?"
+Hermogenes says, "Mebbe my understanding of "heat" is incorrect."
+You say, "What makes u think heat radiation == IR radiation."
+You say, "Well im curious why u think that."
+Hermogenes breaks down and starts to cry
+You say, "Dont mean to jump all over yer case."
+Hermogenes says, "I thought..."
+You say, "I just dont see where youd think that."
+Hermogenes says, "What as an object transmits more n more energy..."
+Hermogenes says, "It starts to transmit it in different areas of the EM spectrum."
+You say, "Ok."
+You ask, "Why do you equate heat with energy?"
+Hermogenes asks, "Right|wrong?"
+Hermogenes says, "B... b... be-cause..."
+You shrug.
+You say, "Again, i could be dead wrong."
+Hermogenes asks, "Heat is what we perceive IR energy as?"
+You say, "Erm."
+You say, "Well i dont think heat is about perception."
+Hermogenes says, "Or not."
+You say, "I think heat is about molecular motion."
+Hermogenes says, "Right...."
+You say, "And for that to transfer."
+You say, "U need molecules."
+You say, "Hence, no vacuum."
+Hermogenes says, "You cant have a PERFECT vaccuum, though."
+Hermogenes says, "But thats a different topic."
+You say, "So you can see why i would disagree with your source."
+Hermogenes says, "Im still tryin to figure out why (hea == IR) is false."
+You say, "Explain to me why it is true."
+Hermogenes yields
+You hmm.
+Hermogenes says, "Im sorry, i cant argue."
+Hermogenes is at a loss for words currently
+Hermogenes says, "No fense, i mean."
+You say, "Well im sure there is aa relationship between heat and ir, but i do not see these as being the same thing."
+You shrug.
+You say, "You may be right."
+You say, "But i doubt it."
+Hermogenes shrugs.
+Hermogenes says, "Heh."
+You smirk.
+Hermogenes says, "Ya just HAD to throw that disclaimer in tehre, DINT cha."
+Try "help index" for a list of command types.
+You emote: Cratylus snickers.
+Hermogenes says, "Cool page, so far:."
+Hermogenes says, "Http://www.ipac.caltech.edu/Outreach/Edu/infrared.html."
+Hermogenes says, "The primary source of infrared radiation is heat or thermal radiation."
+You say, "So then they are NOT the same thing, right."
+Hermogenes says, "Ok, mebbe i was not conveying my thoughts too well."
+You say, "Just because i arrive in aa car doesnt mean im aa car."
+Hermogenes says, "Ya friggin car."
+Hermogenes says, "For example, hot charcoal may not give off light
+but it does emit infrared  radiation which we feel as heat."
+You ask, "Ok. what does that illustrate?"
+Hermogenes says, "The more energy an object is giving off..."
+Hermogenes says, "The higher up in the em spectrum it can be perceived at."
+You ask, "Mmhmmm?"
+Hermogenes says, "In."
+Hermogenes says, "Of."
+You say, "Ok."
+You ask, "So how does that prove that heat radiation works in aa vacuum?"
+Hermogenes is lookin at the creepy kitty picture on that page
+Hermogenes says, "I."
+Hermogenes says, "Dont."
+Hermogenes says, "KNOW."
+You emote: Cratylus calls off the dogs.
+You say, "Sorry."
+You say, "I get very focused."
+Hermogenes says, "But aPPARRENTLY, with "radiation" heat transfer, objects dont HAFTA be touching."
+You say, "If there is air between them, i agree."
+Hermogenes says, "And yknow."
+Hermogenes says, "Mebbe these 3 types of transference isnt JUST heat transfer."
+Hermogenes says, "Mebbe they mean ENERGY transfer."
+Hermogenes says, "But i think they DO mean heat transferrence."
+You say, "Me too."
+Hermogenes says, "Which doesnt really settle nuttin."
+Hermogenes says, "That DOES it."
+You say, "Well it settles that theyre wrong."
+Hermogenes says, "W."
+Hermogenes says, "We must ask the sages of IG."
+You say, "Heh."
+Hermogenes asks, "Ya want to?"
+You say, "Ohhh mighty oracle..."
+Hermogenes says, "Or, naaah."
+You say, "If u want garbage, go ahead."
+Hermogenes asks, "Didja see the creepy kitty pic yet?"
+You say, "Ya."
+You say, "Blue prolly can say."
+Hermogenes says, "SOMEtimes, ig has some answers."
+Hermogenes says, "Im gunan try it."
+Hermogenes says, "No WAIT."
+Hermogenes says, "Im about to head over to other building."
+Hermogenes says, "Ill try in an hour or so."
+You say, "Well im goin home fairly soonish."
+Hermogenes says, "But i gotta formulate the correct question, foist."
+You say, "If you find credible documentation of yer crackpot theory lemme know."
+Hermogenes asks, ""can heat be transferred in a vaccuum?"  ?"
+You say, "No."
+You say, "That is not quite the question."
+Hermogenes says, "Ok, then what."
+Hermogenes asks, "What IS the question?"
+Hermogenes says, "Say it."
+Hermogenes exclaims, "SAY IT!!!"
+You ask, "Is infrared radiation heat?"
+Hermogenes says, "I THINK it means./..."
+Hermogenes says, "Em radiation transmitting .."
+Hermogenes says, "Phone."
+You say, "Because OBVIOUSLY heat is transferred in aa vacuum."
+You say, "But what were talking about is HEAT RADIATION."
+Hermogenes scribbles in his memo pad.
+You say, "Thats right. you DO yer homework."
+Hermogenes says, "Btplhpbtplbpt."
+Hermogenes says, "Im "writing down" the url to that page."
+Hermogenes says, "With the kitty poicture on it."
+Hermogenes says, "I THINK, its saying..."
+Hermogenes says, "EM radiation transmitting at X frequency is perceived by us as "heat"."
+You say, "That sounds about right yeah."
+Hermogenes says, "Just like something rtansmitting between X and Y nm is perceived as "light"."
+You say, "Sounds right so far."
+Hermogenes says, "So..."
+You ask, "So...?"
+Hermogenes asks, "Would you argue that something transmitting in the visible portion of the em spectrum is|isNOT light?"
+You say, "I find your parallel flawed."
+You say, "The definition of heat and the definition of light are very different."
+Hermogenes says, "Well, of COURSE its flawed."
+Hermogenes says, ""how so?"   :)."
+You say, "Ok, walk through this with me."
+Hermogenes  attempts patience...
+You say, "Heat is molecules moving, aka brownian motion."
+Hermogenes says, "Heat is kinetic energy of molecules in motion, ook."
+You say, "Heat radiation occurs when molecules of aa lower "temperature" touch molecules of aa higher "temperature"."
+You say, "Now."
+Hermogenes says, "So how can they transfer heat when theres no molecules to bump into."
+Hermogenes says, "Ok."
+You say, "If there is aa vacuum between these two objects of differing temperatures."
+You say, "On MAY be warmed up by the other."
+You say, "I dont dispute that."
+You say, "But it would be warmed up not by HEAT radiation, since "HEAT" is not radiated through aa vacuum."
+Hermogenes says, "BUT."
+You say, "It would be warmed up by the effects of ir radiation."
+Hermogenes says, "Theres doesns not exIST a perfect vacuumm."
+You say, "Dude you must join me."
+You say, "We dont have these objects either."
+Hermogenes says, "Mebbe the few molecules in the non-perfect vaccuum are enough to transfer the heat or somerthin."
+You say, "Nor do they possess frickin laser beams."
+Hermogenes asks, "Yer sayin in a THEORHETICAL vaccuum?"
+You say, "In MY world, when u talk about aa vacuum, its aa vacuum."
+You ask, "Yer book...did it specify an imperfect vacuum?"
+Hermogenes says, "I mean, are you arguing on a pure le."
+Hermogenes says, "Ok, you are."
+Hermogenes says, "Yes, it did."
+You say, "Well then its not aa vacuum."
+You say, "Its aa vacuum or its not."
+You say, "U cant have both."
+Hermogenes says, "It said somthin like "a perfect vaccuum cant be created, even with the best equipment, etc etc"."
+You say, "Well fuckin aa DU."
+You say, "DUH if theres shit flyin around in there sure there can be heat transfer."
+Hermogenes says, "So, this brings me back to their assertion of objects not having to touch."
+Hermogenes says, "For heat transfer."
+You say, "But that totally defeats the idea of heat radiation in aa vacuum."
+Hermogenes says, "Ok, point taken."
+You say, "They DO touch, indirectly, through the flying molecules in yer imperfect vacuum."
+Hermogenes asks, "Why bother making up a law of thermal transferrence if the environment will never exist?"
+Try "help index" for a list of command types.
+Hermogenes says, "For such a law."
+You emote: Cratylus blinks.
+[Thorr logs in]
+Hermogenes says, "Okokok,."
+You ask, "U joking?"
+Thorr <cre> > lo
+Hermogenes says, "I hate to do this."
+Cratylus <cre> > oi
+Hermogenes <cre> > ey
+Hermogenes asks, "Can i "pause" this discussion?"
+You say, "I thought we just agreed i was right."
+Hermogenes asks, "Or do i forfeit all claims by leaving the table right now?"
+You shrug.
+You say, "I thought u just agreed with me."
+Thorr <cre> > is it worth creating an area.. or is the new lib gonna cancel out anytyhing i do?
+Hermogenes says, "Lol."
+Cratylus <cre> > hold off
+Thorr <cre> > anything that is
+Thorr <cre> > ok
+Thorr <cre> > what exactly is gonna change ??
+Hermogenes <cre> > you might wanna start PLANNING out an area, but hold off on the actual coding of it
+Cratylus <cre> > everything
+Thorr <cre> > whoa
+Hermogenes <cre> > it will shake the very foundation of life as you know it
+Thorr <cre> > hehe
+Cratylus <cre> > it might even radiate heat in aa vacuum
+Hermogenes <cre> > heat will even transfer over a vaccuum, in the new mud lib
+Hermogenes <cre> > hahahahaha
+Try "help index" for a list of command types.
+Cratylus <cre> >  :) 
+Thorr <cre> > heh
+Hermogenes <cre> > dammit, quit stealin all my material
+Cratylus <cre> > i gotta hit the road ill be back later
+Thorr <cre> > k
+Thorr <cre> > see ya
+Hermogenes <cre> > ya, im goin to new building
+Hermogenes says, "Ill be back round 4pm."
+Cratylus <cre> > ill be back in 20 or, well pick up this convo
+Hermogenes says, "DEFinately."
+Hermogenes waves.
+Thorr <cre> > ok
+<cre> > Cratylus waves.
+Please come back another time!
+
+
+PART II
+-------
+
+Hermogenes <admin> bak
+Hermogenes <admin> btw, ennytime you wanna pick our conversation bout heat transf3errence, lemme know
+Try "help index" for a list of command types.
+Cratylus <admin> i thot u agreed with me
+Hermogenes <admin> i have NO idea ...
+Hermogenes <admin> restate your assertion, please?
+Hermogenes <admin> or do you not wanna open that can o worms again
+<admin> Cratylus wonders why he always has todo all the splainin.
+Hermogenes <admin> or you scaaaared?
+Cratylus <admin> ok
+Cratylus <admin> ready?
+<admin> Hermogenes nods solemnly.
+Cratylus <admin> you said heat radiation can occur even through aa vacuum
+Cratylus <admin> i disagreed
+Hermogenes <admin> i said that cause the web page said that
+Hermogenes <admin> but, go on
+Cratylus <admin> then u said ir waves WERE heat, hence heat radiation DID go through aa vacuum
+Cratylus <admin> i explained that there is aa diff between ir and heat
+Hermogenes <admin> but then i changed my thing...
+Cratylus <admin> im gettin to it
+Hermogenes <admin> to say that 'heat' was how we PERCEIVE ir radiation
+Cratylus <admin> you know theres aa transcript
+Cratylus <admin> check yer email
+Cratylus <admin> go
+Hermogenes <admin> jeez, you didnt
+Cratylus <admin> now
+Hermogenes <admin> ok okok, i will
+Cratylus <admin> i KNEW this would happen
+Hermogenes <admin> ok, i talked to someone
+Hermogenes <admin> hes on one of the...
+<admin> Hermogenes hesitates
+Cratylus <admin> mmhmm
+Hermogenes <admin> science teams
+Cratylus <admin> DON'T SHOOT!
+Hermogenes <admin>  :) 
+Hermogenes <admin> and, aPARRENTly...
+Hermogenes <admin> a molecule can transfer heat to another molecule withOUT tyouching
+Cratylus <admin> yes
+Cratylus <admin> i know
+Cratylus <admin> i said that aa million fuckin times
+Cratylus <admin> the issue here is not wether there is heat transfer dude
+Hermogenes <admin> so, molecule A can heat molecule B without touching
+Cratylus <admin> yes
+Cratylus <admin> agreed
+Cratylus <admin> but not through "heat radiation"
+Hermogenes <admin> IR emmission
+Cratylus <admin> RIGHT
+Hermogenes <admin> or IR radiation or whatEVER you wanna call it
+Cratylus <admin> which is the WHOLE POINBT of my argument
+Cratylus <admin> that you CAN transfer heat thru aa vacuum
+Cratylus <admin> but it ISNT "heat radiation"
+<admin> Hermogenes waits for the punchline...
+Hermogenes <admin> ohhhhh, wait
+Hermogenes <admin> i think i see
+Cratylus <admin> waddaya mean? what word did you have trouble with?
+Hermogenes <admin> your main beef was with the term "heat radiation" as opposed to the more PROPER term of "IR radiation"??
+Cratylus <admin> well yes
+Cratylus <admin> sort of
+<admin> Hermogenes stares at you
+Cratylus <admin> not quite tho
+<admin> Hermogenes stares at you intently
+Cratylus <admin> ok
+Cratylus <admin> question
+Hermogenes <admin> ok, im HOPING this hasnt been a giant battoe of semantics
+Cratylus <admin> do you think ir radiation == heat radiation?
+Hermogenes <admin> now, NO, i dont
+Cratylus <admin> oK then
+Cratylus <admin> that was my point
+Hermogenes <admin> i had my terms jumbled up, and
+Cratylus <admin> so basically we agree
+Hermogenes <admin> aaaahhh
+Hermogenes <admin> yes
+Hermogenes <admin> so, yer whole POINT was to show how i was WRONG in my useage of the terminology?
+Cratylus <admin> you kept sayin stuff that assumed ir == heat, which is not true
+Cratylus <admin> the idea was to point out that yer source was not correct
+Hermogenes <admin> heat is the term we assign to the perception of IR radiation, just as light is how we descripe the process of seeing photon particles interacting with our eyes, etc
+Cratylus <admin> no
+Hermogenes <admin> ah HA
+Cratylus <admin> that also is not correct
+Cratylus <admin> heat is not aa subjective experience
+Cratylus <admin> it is aa measurable state of molecular motion
+Hermogenes <admin> yer assuming my SOURCE is not correct, when in fact, it could very well be (and probably WAS)my INTERPRETATION of my source
+Cratylus <admin> could be
+Hermogenes <admin> wait, heat is not a what?
+Cratylus <admin> heat is not aa subjective experience
+Cratylus <admin> it is aa measurable state of molecular motion
+Hermogenes <admin> riiiight, and light isNT?
+Cratylus <admin> i dont know why u keep bringing light into this
+Hermogenes <admin> i mean, not molecular motion, i mean objectively measurable
+Cratylus <admin> im not concerned with light at the moment
+Hermogenes <admin> because light n heat are on th same EM spectrum, aint they?
+Cratylus <admin> whoa
+<admin> Cratylus sits you down.
+Cratylus <admin> you better cool that walnut off
+Hermogenes <admin> fine fine, IR emmission and visible light emission are
+Cratylus <admin> right
+Cratylus <admin> so what?
+Cratylus <admin> were talkin about heat
+ Hermogenes <admin> so...
+Hermogenes <admin> uh...
+Cratylus <admin> which is NOT on the em spectrum
+Hermogenes <admin> so THERE!
+Hermogenes <admin> WHAT?
+Cratylus <admin> were talkin about heat
+Cratylus <admin> which is NOT on the em spectrum
+Hermogenes <admin> IR is NOT on the em spectrum?
+Cratylus <admin> oh my FUCKING GOD
+Hermogenes <admin> ok, NOW im confused
+Cratylus <admin> are you pullin my leg or what?
+Hermogenes <admin> i must be TOTALLY thinkin of somethin else
+Hermogenes <admin> please, to define "em spectrum"
+Cratylus <admin> ok im sorry if i sound condescending, but damn you deserve it
+Hermogenes <admin> well excuuuUUUuuuuUUuuUuuuse ME for not clearly defineing all th terms from th onset
+Cratylus <admin> when electromagnetic energy is radiated, its measured on what we call the em spectrum
+Hermogenes <admin> ya?
+Cratylus <admin> heat is NOT electromagnetic energy
+Hermogenes <admin> but IR radiation is?
+Cratylus <admin> but when something IS hot, it emits em waves
+Cratylus <admin> somthing that IS hot emits IR
+Cratylus <admin> but the heat itSELF is not the IR
+Cratylus <admin> the heat is aa different kind of energy
+Cratylus <admin> and though the IR waves MAY heat up another object...
+Hermogenes <admin> isnt heat how we describe the perception oof said ir energy?
+Cratylus <admin> this transfer of energy is not what you can call "heat radiation"
+Cratylus <admin> NO DUDE NO
+Cratylus <admin> BAD HERMOGENES
+<admin> Hermogenes goes back to the page with the creepy kitty pic
+Cratylus <admin> define heat please
+Hermogenes <admin> mostly to look at the creepy kitty pic, that is
+Cratylus <admin> i thought YOU were the scientist in the family
+Hermogenes <admin> um, define heat?
+Cratylus <admin> yes. define heat
+Hermogenes <admin> the amount of hotness soemthing has?
+Cratylus <admin> ok let me tell you what webster says heat is
+<admin> Hermogenes notes there are over 20 definitions...
+Hermogenes <admin> but, go on
+Hermogenes <admin> meestor WEBSTER dude
+Cratylus <admin> "the energy associated with the random motions of molecules, atoms, or smaller structural units of which matter is compised"
+Hermogenes <admin> asSOCiated with
+Cratylus <admin> notice there is no mention of electromagnetism
+Cratylus <admin> heat, man, is this molecular motion
+Cratylus <admin> nothing else
+Cratylus <admin> kinetic energy
+Hermogenes <admin> ok
+<admin> Hermogenes snives.
+Cratylus <admin> as it HAPPENS, this energy tends to emit some electromagnetic radiation
+Hermogenes <admin> oooOOo, whatta coiINcidince
+Cratylus <admin> but the em radiation is NOT heat
+Hermogenes <admin> so...
+Hermogenes <admin> yer sayin/....
+Cratylus <admin> it is em radiation, like the color blue or xrays
+Hermogenes <admin> the molecular motion emits the ir stuff?
+Cratylus <admin> well, the heat energy does ya
+Hermogenes <admin> heat energy?
+Cratylus <admin> ya
+Cratylus <admin> i dont know if the motion and the energy are the same thing
+Cratylus <admin> but thats aa diff argument
+<admin> Hermogenes feels sufficiently dumb now, thankyouverywelcome
+Cratylus <admin> so, what im sayin  is:
+Cratylus <admin> when u warm yourself at aa roaring fire
+Hermogenes <admin> ooo, dats toasty
+Cratylus <admin> you are being warmed by "heat radiation"
+Hermogenes <admin> "heat radiation"
+Cratylus <admin> the heat, or rapidly moving air/fuele molecules, are speeding up YOUR molecules through contact
+Hermogenes <admin> as in "conduction, convection, RADIATION"?
+Hermogenes <admin> aaah
+Cratylus <admin> LISTEN
+Cratylus <admin> the heat, or rapidly moving air/fuele molecules, are speeding up YOUR molecules through contact
+Cratylus <admin> it also happens that the fire MAY be causing your molecules to move faster ALSO through some IR radiation, but this amount of heating is insignificant
+Hermogenes <admin> ok,
+Hermogenes <admin> can i interject at this moment?
+Cratylus <admin> sure
+Hermogenes <admin> er, MAY i
+Hermogenes <admin> the scientist dude ALSO said somethin about:
+Cratylus <admin> get that fucking dude in here
+Cratylus <admin> go get him
+Cratylus <admin> ill wait
+Hermogenes <admin> how the earths atomoshpere n crust n stuff arent warmed by particles from the sun hittin them...
+Hermogenes <admin> but from the IR radiation
+Cratylus <admin> ya i know
+Cratylus <admin> go get him
+Hermogenes <admin> he left
+Cratylus <admin> FUCK
+Hermogenes <admin> and like i need MORE people on my case
+Cratylus <admin> seriously dude yer not getting it
+Hermogenes <admin> OR, like i need a coworker gettin into nan argument with you
+Hermogenes <admin> OH MY GOSH!
+Cratylus <admin> for some reason yer unable to separate heat from infrared radiation
+<admin> Hermogenes aGREES with you!
+<admin> Hermogenes is NOT gettin it!
+Cratylus <admin> for some reason yer unable to separate heat from infrared radiation
+Hermogenes <admin> im sorry, man,i really am
+Cratylus <admin> its like saying that because an airplane is flying, it IS flight
+Hermogenes <admin> its just one of those cases...
+Hermogenes <admin> where the one gear is not in place
+Cratylus <admin> I'LL say
+Hermogenes <admin> that ONE little 8-tooth gear has slipped
+Cratylus <admin> well id like to state for the record that i dont think this is some subtle semantic difference
+Cratylus <admin> this is aa fundamental difference in types of energy and radiation
+Cratylus <admin> but we can come back to it later
+Hermogenes <admin> your statement has been entered into the almighty records of whosrighteedness
+Cratylus <admin> ehehehehehe
+Hermogenes <admin> so, its been snowing up tehre?
+Cratylus <admin> very briefly
+Cratylus <admin> none left on the round
+Try "help index" for a list of command types.
+Hermogenes <admin> we havent gotten ANYthing
+Cratylus <admin> musta got it
+Cratylus <admin> the HEAT RADIATION musta got it, that is
+Hermogenes <admin> its sposed to get up in th 50s morrow
+Hermogenes <admin> NOOOOOOO!!!!!
+Cratylus <admin> oooohhhhh wait aa minute
+Hermogenes <admin> im seriously miffed bout this whole heat thing, btw
+Hermogenes <admin> wha
+Cratylus <admin> i get it now
+Hermogenes <admin> do i wanna know?
+Cratylus <admin> i think i see how youre looking at it
+Cratylus <admin> maybe
+Hermogenes <admin> very well could be
+Cratylus <admin> ok
+Hermogenes <admin> ive looked at things "wrong" before...
+Cratylus <admin> tell me if this is what yer thinking:
+Hermogenes <admin> k
+Cratylus <admin> when heat causes radiation, thats "heat radiation"
+Hermogenes <admin> mmmm....
+Cratylus <admin> ok maybe not
+Cratylus <admin> worth aa try
+Hermogenes <admin> when an object is "energized" enough, it begins to radiate in the iR portion of the em spectrum
+Cratylus <admin> yeah
+Cratylus <admin> and thats what u mean by "heat radiation"?
+Hermogenes <admin> energized usually means addding heat or electricity or SOMEthing to it
+<admin> Cratylus nods.
+Hermogenes <admin> well...
+Hermogenes <admin> the IR radiation brought on is then perceived by our senses as "heat"
+Cratylus <admin> ok
+Cratylus <admin> do u mind if i drag this on aa bit longer?
+Hermogenes <admin> if more energy is added, it then begins to transmit in the visible portion of the em spectrum, and we perceive this as ''light'
+Cratylus <admin> i really am interested in understanding our difference here
+Hermogenes <admin> as am i
+Cratylus <admin> see, i dont think that the IR radiation heats up other things all that much
+Hermogenes <admin> actually,
+Cratylus <admin> when i put my hand up to aa light bulb, and its hot,
+Cratylus <admin> i dont think its because of IR, although some IR is present
+Hermogenes <admin> scientist dude sed that IR ardiation is actually quite effective in heating up stuff
+Hermogenes <admin> heh, ardiation
+Cratylus <admin> ok, but just bear with me aa moment
+<admin> Hermogenes bears
+Cratylus <admin> lets assume, for the pure sake of argument, that IR radiation does not exist
+ Hermogenes <admin> heh, sake of argument
+Hermogenes <admin> ok, go on
+Cratylus <admin> IF there is not IR radiation, could you still warm yourself by the fire?
+Hermogenes <admin> uhhh.. yes
+Cratylus <admin> by what process?
+Hermogenes <admin> ummmm
+Hermogenes <admin> light?
+Cratylus <admin> no
+Cratylus <admin> heat radiation
+Cratylus <admin> see i think this is where we went in diff directions
+Cratylus <admin> your brain is bent on seeing the word "radiation" in terms of particles or wavelengths
+Hermogenes <admin> or, the act of transmitting particles or wavelenghths or whatever
+Cratylus <admin> in the context of convection and conductance, this approach to the word "radiation" is not fruitful
+Cratylus <admin> thats where we are having aa communication breakdown
+Cratylus <admin> again for the sake of argument, lets assume there is no electromagnetic or particle radiation
+<admin> Hermogenes likes wavelenghths n particles n stuff...
+Cratylus <admin> again for the sake of argument, lets assume there is no electromagnetic or particle radiation
+Hermogenes <admin> whata a dismal world
+Cratylus <admin> the fireplace is radiating heat
+Cratylus <admin> heat comes from it, hence, it "radiates heat"
+Cratylus <admin> this is "heat radiation"
+Hermogenes <admin> hmmm
+Hermogenes <admin> in a loose definition, ok
+Cratylus <admin> no
+<admin> Hermogenes gasps in shock!
+Cratylus <admin> that is not aa loose definition
+Cratylus <admin> that is the definition of the word radiate
+Cratylus <admin> "to radiate"
+Hermogenes <admin> wait, is THAT all there is to "heat transferrence by radiation"?
+Cratylus <admin> YESSSSSSS
+Cratylus <admin> EXACTLY
+Hermogenes <admin> heat comes from it, hence, it "radiates heat"
+Hermogenes <admin> heat comes from it, hence, it "radiates heat"
+Hermogenes <admin> heat comes from it, hence, it "radiates heat"
+Hermogenes <admin> hmmmmm
+Hermogenes <admin> ok
+<admin> Hermogenes can accept that
+Cratylus <admin> ok back to our dismal theoretical world
+Hermogenes <admin> wait
+Cratylus <admin> which contains no particle or em radiation
+Hermogenes <admin> i thought we were done?
+Cratylus <admin> oh
+Cratylus <admin> ok
+Cratylus <admin> so u see my point?
+Hermogenes <admin> mmmm, sorta
+Cratylus <admin> then we are not donme
+Hermogenes <admin> i was making it way too more complicated than it needed to be?
+Cratylus <admin> you were on aa different train track altogether
+ Hermogenes <admin> i was on one of those hovertrains
+Hermogenes <admin> on magnetic rails
+Cratylus <admin> btw the fireplace does not radiate heat through "light"
+Hermogenes <admin> it dont?
+Cratylus <admin> it radiates heat by contact with molecules which transmit the heat in the form of kinetic energy
+Hermogenes <admin> howcome a black shirt gets hotter than a white shirt, then?
+Cratylus <admin> in front of aa fire?
+Cratylus <admin> ive never noticed any such thing
+Cratylus <admin> in the sun, yeah sure
+Hermogenes <admin> but i thought we already established that molecules dont HAFT bounce off eachother to transfer heat?
+Hermogenes <admin> hmmm
+<admin> Cratylus falls to the floor.
+Hermogenes <admin> so, you think a black tshort and a white tshirt in a non-sun light source would not heat differntly?
+Cratylus <admin> in front of aa fireplace, i dont think there would be aa noticeable differennce
+Hermogenes <admin> im not tryin to argue, im tryin to follow a tangential tracxk for a sec
+Cratylus <admin> i think with delicate instruments u WOULD detect aa diff
+Hermogenes <admin> NOTCEABLE
+Cratylus <admin> this is actually right on track dude
+Cratylus <admin> i think with delicate instruments u WOULD detect aa diff
+Hermogenes <admin> OH, suddenly im allowed to play on YOUR traintrack?
+Hermogenes <admin>  :) 
+Cratylus <admin> because IR radiation DOES in fact play aa role here
+Cratylus <admin> but it is not as substantial as the brownian motion
+Hermogenes <admin> uh uhuhuhu uuhuh
+Hermogenes <admin> sorry
+Cratylus <admin> this must be aa way-homer
+Hermogenes <admin> a 'way-homer'?
+Cratylus <admin> you'll get it on the way home
+Hermogenes <admin> heh
+Hermogenes <admin> is it really that much fun to argue with me?
+Hermogenes <admin> or is it really a chore
+Cratylus <admin> im honestly mystified by this
+Hermogenes <admin> as am i
+Cratylus <admin> i mean, im like...FASCINATED
+Hermogenes <admin> and i wasnt asking sarcsatically or rhetorically
+Cratylus <admin> this is such aa weird miscommunication
+Hermogenes <admin> if it was fun to argue at me
+Cratylus <admin> i dint mean it sarcastically
+<admin> Hermogenes nods solemnly.
+Cratylus <admin> im totally dead serious
+Cratylus <admin> dead sexy, too
+Hermogenes <admin> didnt think you WERE being scarcastic
+Hermogenes <admin> ugh
+Cratylus <admin> heh
+Hermogenes <admin> just watched that last night
+Cratylus <admin> man he is VILE
+Hermogenes <admin> 'e leuks leyek a lit'l BEHbee
+Hermogenes <admin> oye ET a behbee wunce
+Hermogenes <admin> oye sed, OYEM th TOP a th fewd chayn!"
+Hermogenes <admin> GET! EN! MAH! BELLY!
+Cratylus <admin> ok hang on aa sec dont say anything for aa minute, ok?
+Cratylus <admin> ok thx
+<admin> Hermogenes nods solemnly.
+Hermogenes <admin> you ok there?
+Cratylus <admin> ya i had to copy and paste this round
+Hermogenes <admin> or... am i still not spossed to be sayin anything still?
+Hermogenes <admin> heh
+Cratylus <admin> this is just too crazy not to save for posterity
+<admin> Hermogenes hopes he wont regret his conversation, but think he probably will
+Cratylus <admin> heheh yes you definitely will
+Cratylus <admin> well i HOPE you will
+Hermogenes <admin> ill probably wind up being WRONG th whole time and lookin like an IDIOT fer it
+Cratylus <admin> i hope yer gonna slap yer forehead and go HOLY FUCKING DUH!
+Hermogenes <admin> see, th thing is...
+Hermogenes <admin> its kinda hard to be wrong about something you dont know what yer talkin about in th FIRST place
+Cratylus <admin> i guess
+Cratylus <admin> ok
+Cratylus <admin> i touch aa stove
+Cratylus <admin> coalburning stove. black iron
+Hermogenes <admin> like, some 5th grade makin assertions about calculus
+Cratylus <admin> i put my hand right ON it
+Hermogenes <admin> ya?
+Cratylus <admin> my fickin hand is sizzlin n stuff, right
+Cratylus <admin> this is happening not because of IR
+<admin> Hermogenes nods solemnly.
+Hermogenes <admin> but because of....
+Cratylus <admin> see, if it was infrered radiation doin this, then why isnt the whole room in flames?
+Cratylus <admin> why is it limited to RIGHT AT the stive?
+Hermogenes <admin> uh...
+Hermogenes <admin> dissipation?
+Cratylus <admin> explain dissipation please
+Hermogenes <admin> theres so much ari movin roun n stuff, the averagew molecular kinetic energy (motion) can be...uh...averaged out
+Hermogenes <admin> over a wider area
+Hermogenes <admin> n stuff
+Hermogenes <admin> like, the inverse-squared law or something
+Hermogenes <admin> YEAH, THATS it
+Cratylus <admin> ok...so u agree its not infrared energy?
+Hermogenes <admin> burning yer hand?
+Cratylus <admin> right
+Hermogenes <admin> its...
+Hermogenes <admin> the convection of hot air molecules againts yer skin
+Cratylus <admin> well, hot STOVE molecules, and it isnt "convection"
+Hermogenes <admin> oooOOOOo
+Hermogenes <admin> why NOT, mister fancee panse?
+Cratylus <admin> whats happening is the surface of the stove is transferring heat to my hand
+Hermogenes <admin> right
+Cratylus <admin> the mechanics of this heat transfer is simple molecular contact
+Hermogenes <admin> ok, its either the conduction of heat between the solid of the stove into te solid of yer hand...
+Cratylus <admin> the stove molecules are moving real fast
+Hermogenes <admin> ok, now wait
+Cratylus <admin> and they make my hand molecules move real fast
+Hermogenes <admin> so, theres MORE than JUST 3 ways of transferring heat?
+Cratylus <admin> no
+Hermogenes <admin> like in th xflies!
+Cratylus <admin> do u agree with me so far?
+Hermogenes <admin> so, tehre are JUST 3 ways?
+Cratylus <admin> do u agree with me so far?
+Hermogenes <admin> mostly, yah
+Cratylus <admin> ok, what part do u disagree with?
+Hermogenes <admin> hol on a sec...
+Cratylus <admin> and get aa fucking scientist in here NOW
+Hermogenes <admin> no, i had to TEND to work stuff
+Hermogenes <admin> ya big meanie
+Cratylus <admin> well if u see on, grab him
+Cratylus <admin> or her
+Hermogenes <admin> i wasnt goin off to find a scientist dude to be on my sdide or nuttin
+Cratylus <admin> ok so what part did u not agree with?
+Hermogenes <admin> grab her?
+Cratylus <admin> ok so what part did u not agree with?
+Hermogenes <admin> ok, but only cause you insisted...
+Hermogenes <admin> i guess i just wanna establish that theres X ways of heat transferrance, and any examples involving heat transferrence would be put into one or more of these X categories
+Cratylus <admin> ok well fuck the 3 categories
+Cratylus <admin> do you agree or disagree with my statements?
+Hermogenes <admin> YEAH
+Hermogenes <admin> POWER TO THE PEOPLE!
+Cratylus <admin> dude
+Hermogenes <admin> fine
+Hermogenes <admin> stove molecules, movin hand molecules
+Cratylus <admin> right
+Hermogenes <admin> i tells you what my FOOT molecules gunan be movin in a SECOND!
+Cratylus <admin> now, if instead of touching the stove, i had held my had within half aa centimeter, it would scald but not burn. right?
+Hermogenes <admin> whats the diff?
+Hermogenes <admin> its gonna get hot
+Cratylus <admin> it would take longer for my hand to be damaged and it wouldnt be black
+Hermogenes <admin> scald, burn, sear, fry, etc
+Hermogenes <admin> ok, agreed
+Cratylus <admin> ok the first example was conductance
+Hermogenes <admin> as long as yer not actually TOUCHING it
+Hermogenes <admin> ok, 1st = conductance
+Cratylus <admin> the second example was radiation
+Hermogenes <admin> (with a wee bit of convection)
+Hermogenes <admin> hmmmm
+Cratylus <admin> with aa little convection but thats not important i guess
+Cratylus <admin> heh ya
+Hermogenes <admin> second isnt convection?
+Cratylus <admin> no
+Hermogenes <admin> sounds likeit...
+Cratylus <admin> its primarily radiation
+Cratylus <admin> because the stove is heating the air molecules
+Cratylus <admin> and the air molecules are heating my hand
+Cratylus <admin> the heat is being radiated from the surface of the stove, through the air, into my hand
+Hermogenes <admin> but...
+Cratylus <admin> wait
+Cratylus <admin> IR is bad for your eyes right?
+Hermogenes <admin> uh...
+Hermogenes <admin> is it?
+Cratylus <admin> hmmm maybe that uv
+Cratylus <admin> ok never mind
+Hermogenes <admin> uv, yes, deinately
+Cratylus <admin> ok now
+Hermogenes <admin> wait
+Hermogenes <admin> lemme say why i think its convection
+Cratylus <admin> in ADDITION to this molecular heat transfer
+Cratylus <admin> no
+Cratylus <admin> im sorry
+Cratylus <admin> thats irrelevant and aa tangent
+<admin> Hermogenes frowns.
+Hermogenes <admin> ok, go on
+Cratylus <admin> in ADDITION to this molecular heat transfer
+Hermogenes <admin> you n yer up-arrow keys...
+Cratylus <admin> there is ALSO infrared radiation from the stove
+Cratylus <admin> but it is NOT the infrared radiation that burns my hand
+Cratylus <admin> it is the direct molecular contact with rapidly moving molecules
+Hermogenes <admin> cause the IR stuff aint got enough energy to do it, and its the molecular transferrence stuff thats burning it?
+Cratylus <admin> exactly
+Cratylus <admin> do you agree?
+Hermogenes <admin> im not too sure that IR is all THAT low-level energy-wise, but ok...
+Cratylus <admin> so now lets put that stove in outer space
+Hermogenes <admin> outher... SPAAAAAACE
+Cratylus <admin> (with its own fuel and oxy)
+Hermogenes <admin> (of course)
+Cratylus <admin> and im out there with the stove
+Cratylus <admin> and i put my hand .5 centimeters from it
+Hermogenes <admin> (with suit and air supply)
+Cratylus <admin> will my hand be damaged?
+Hermogenes <admin> um...
+Cratylus <admin> bare hand
+Hermogenes <admin> uh...
+Hermogenes <admin> maybe?
+Cratylus <admin> no
+Hermogenes <admin> no
+Cratylus <admin> i think its possible the stove may shed molecules
+Hermogenes <admin> cause the molecules cant transfer the heat as efficiently or quickly
+Cratylus <admin> these molecules might hit some of my hand molecules, but not enough to do damage
+Cratylus <admin> negatron
+Hermogenes <admin> cause theres a near-vaccuum enviroment
+Cratylus <admin> they CAN transfer it efficiently and quickly
+Hermogenes <admin> oh
+Cratylus <admin> if i TOUCH them
+Hermogenes <admin> BAD molecules
+Cratylus <admin> if i touch the stove, will my hand be damaged?
+Hermogenes <admin> yes
+Cratylus <admin> right
+Hermogenes <admin> BAD stove!
+Cratylus <admin> ok, so in aa vacuum, i have to touch the stove to get burned, right?
+Hermogenes <admin> PROBably
+Cratylus <admin> oK then
+Cratylus <admin> that is precisely my point
+Cratylus <admin> the stove does not produce sufficient IR radiation to make any noticeable diff to my hand
+Hermogenes <admin> k...
+Cratylus <admin> only when there is molecule to molecule contact, can the stove do real temp change
+Cratylus <admin> therefore, while the stove radiates infrared waves
+Cratylus <admin> it does not radiate heat
+Hermogenes <admin> funkay
+Cratylus <admin> yer supposed to hear trumpets and flights of angels as the truth rolls in from the sky
+Hermogenes <admin> just cause i accept it, dont mean i understand it...
+Hermogenes <admin> not to bee TOO bog of a pain in th ass
+Hermogenes <admin> big, even
+Cratylus <admin> you WILL young hermogenes. oh yes. you WILL.
+Hellmonger@Trilogy <intergossip> anybody ever fuck with doing Sun consoles on an oldsk00l portmaster 2?
+Hermogenes <admin> my BRAIN hurts
+Cratylus <admin> sorry
+
+
+

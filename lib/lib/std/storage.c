@@ -61,10 +61,14 @@ void SetKey(string key) {
 } 
 
 int GetOpacity() {
-    if( GetClosed() ) {
-	return holder::GetOpacity();
-    }
-    else return 0;
+    //if( GetClosed() ) {
+    return holder::GetOpacity();
+    //}
+    //else return 0;
+}
+
+int SetOpacity(mixed arg){
+    return holder::SetOpacity(arg);
 }
 
 int GetRadiantLight(int ambient) {
@@ -167,7 +171,7 @@ mixed CanPutInto(object who, object what) {
 }
 
 varargs mixed CanShowInterior(object who, object target) {
-    if( GetClosed() ) {
+    if( GetClosed() && this_object()->GetOpacity() > 33) {
 	return capitalize(GetDefiniteShort()) + " is closed.";
     }
     else return holder::CanShowInterior();

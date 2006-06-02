@@ -49,11 +49,9 @@ string CheckOpen(string str) {
 }
 
 string CheckItem(string str) {
-    if( str == "case" || str == "cases" ) {
-	if( query_night() ) return "They are empty.";
-	else if ( present("vendor") ) return "They are filled with armor.";
-	else return "They are broken and covered in blood.";
-    }
+    if( query_night() ) return "They are empty.";
+    else if ( present("vendor") ) return "They are filled with armor.";
+    else return "They are broken and covered in blood.";
 }
 
 void init(){

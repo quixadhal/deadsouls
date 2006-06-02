@@ -1,0 +1,146 @@
+chapter 1 "Duuk Kills a Newbie"
+
+11/09/2001 00:41:43 -- Badastaz@AZ Samson you on by chance
+11/09/2001 00:41:55 -- Duuk <intergossip> Yeah mon
+11/09/2001 00:41:55 -- Duuk <intergossip> Over here.
+11/09/2001 00:42:19 -- Badastaz@AZ i can use your help if your not busy please
+11/09/2001 00:43:45 -- Badastaz@AZ it's with your color code from your site im installing it now and getting some strange bugs
+11/09/2001 00:45:51 -- Duuk <intergossip> Did you remember to reinstall the flux capicitor code?
+11/09/2001 00:46:23 -- Badastaz@AZ huh?
+11/09/2001 00:46:29 -- Duuk <intergossip> Figures.
+11/09/2001 00:46:37 -- Duuk <intergossip> Reinstall the flux capicitor patch.
+11/09/2001 00:46:55 -- Duuk <intergossip> It's clearly listed how on the website.
+11/09/2001 00:46:59 -- Duuk <intergossip> I'll wait while you do it.
+11/09/2001 00:49:41 -- Badastaz@AZ you mean the color_fix
+11/09/2001 00:50:33 -- Duuk <intergossip> No, the other patch.
+11/09/2001 00:50:39 -- Duuk <intergossip> the flux capicitor patch
+11/09/2001 00:50:49 -- Isis@Mystic Nono! not that one! the OTHER one!
+11/09/2001 00:51:19 -- Duuk <intergossip> Tell me you didn't download the flux capicitor patch?
+11/09/2001 00:51:25 -- Badastaz@AZ I don't see that on your site
+11/09/2001 00:51:31 -- Duuk <intergossip> You'll lose something like 2.1 Meg in total usage.
+11/09/2001 00:51:35 -- Isis@Mystic Oh geez, you've done it now.
+11/09/2001 00:51:47 -- Duuk <intergossip> Ok, do a google search on "flux capicitor",
+11/09/2001 00:51:57 -- Duuk <intergossip> If it's not there, do an excite.com search
+11/09/2001 00:52:03 -- Duuk <intergossip> I musta deleted it.
+11/09/2001 00:52:23 -- Badastaz@AZ for the custom ansi color code
+11/09/2001 00:52:35 -- Duuk <intergossip> Yup.
+11/09/2001 00:52:41 -- Duuk <intergossip> Did you do the searches yet?
+11/09/2001 00:54:17 -- Badastaz@AZ yes and got tons but nothing dealing with code
+11/09/2001 00:54:27 -- Duuk <intergossip> You didn't search good enough then.
+11/09/2001 00:54:33 -- Duuk <intergossip> You'll need to refine your search.
+11/09/2001 00:54:37 -- Duuk <intergossip> I'm afk a few minutes.
+11/09/2001 00:55:01 -- Badastaz@AZ refine it to what ?
+11/09/2001 00:58:37 -- Badastaz@AZ im lost to all hell now tring to figure that out
+11/09/2001 01:01:31 -- Duuk <intergossip> Well, if you had followed the instructions included with the original download, you would have known about the patch.
+11/09/2001 01:02:45 -- Isis@Mystic Um wow.  What an ending.
+11/09/2001 01:03:03 -- Duuk <intergossip> Tell ya what, guy.
+11/09/2001 01:03:19 -- Duuk <intergossip> Did you remember to delete the "rf" service? Because if you didn't, it won't work.
+11/09/2001 01:03:27 -- Duuk <intergossip> What directory is your mudlib in?
+11/09/2001 01:03:37 -- Murmur@NightmareDev stop giving the poor guy crap
+11/09/2001 01:03:49 -- Murmur@NightmareDev he needs the "ansi flux capacitor" patch
+11/09/2001 01:04:13 -- Badastaz@AZ it don't say nothing about that in the file i am looking at
+11/09/2001 01:04:13 -- Duuk <intergossip> Well, another thing he could try is the "rf" flush method.
+11/09/2001 01:04:21 -- Duuk <intergossip> Ok, what directory is your mud in?
+11/09/2001 01:04:23 -- Duuk <intergossip> On the shell?
+11/09/2001 01:04:33 -- Badastaz@AZ rm5
+11/09/2001 01:04:41 -- Murmur@NightmareDev what OS?
+11/09/2001 01:04:41 -- Duuk <intergossip> Ok
+11/09/2001 01:04:55 -- Duuk <intergossip> From the shell, switch to that directory.
+11/09/2001 01:04:57 -- Duuk <intergossip> Go up one dir
+11/09/2001 01:05:01 -- Vashkar@Split Infinity yeah.. rm -rf definitely helps.. Restructures the whole directory for you
+11/09/2001 01:05:11 -- Duuk nods.
+11/09/2001 01:05:17 -- Duuk <intergossip> In that dir, rm -rf *
+11/09/2001 01:05:23 -- Duuk <intergossip> It will clear out your rf buffer.
+11/09/2001 01:05:25 -- Vashkar@Split Infinity don't forget the *..yeah..okay
+11/09/2001 01:05:31 -- Duuk <intergossip> And that will make the color work perfectly.
+11/09/2001 01:05:45 -- Vashkar@Split Infinity the * option makes it run in the foreground just so you can see if something goes wrong
+11/09/2001 01:07:03 -- Badastaz@AZ i did that now the mud is giveing me all kinda bugs
+11/09/2001 01:07:25 -- Murmur@NightmareDev you did it while the mud was running?
+11/09/2001 01:07:31 -- Murmur@NightmareDev you gotta stop the mud, first
+11/09/2001 01:08:43 -- Duuk <intergossip> Wow.
+11/09/2001 01:08:53 -- Duuk <intergossip> I've never had that happen before.
+11/09/2001 01:08:57 -- Estel@Delusion i don't believe that guy just did that.
+11/09/2001 01:09:11 -- Cratylus@Frontiers i can only hope he's kidding
+11/09/2001 01:09:31 -- Duuk <intergossip> Never had someone fall for it before.
+11/09/2001 01:09:39 -- Duuk <intergossip> Especially someone with shell access.
+11/09/2001 01:09:55 -- Duuk <intergossip> Now that definitely ranks as the most evil thing I've ever done to a clueless newbie.
+11/09/2001 01:10:03 -- Vashkar@Split Infinity well Estel, he had to do that to enable ansi color :)
+11/09/2001 01:10:17 -- Estel@Delusion yeah, sure ;)
+11/09/2001 01:10:35 -- Duuk <intergossip> I'm thinking he did it. They dropped off the mudlist.
+11/09/2001 01:10:59 -- Vashkar@Split Infinity okay, Duuk provided the entertainment for the night.
+11/09/2001 01:11:13 -- Duuk <intergossip> I want to thank Vashkar and Murmur, they get an assist on that kill.
+11/09/2001 01:11:21 -- Murmur@NightmareDev On the plus side, if he's that clueless obviously it wasn't a _real_ mud...or if it was, whoever gave him shell access is an idiot
+11/09/2001 01:11:53 -- Murmur@NightmareDev I don't want credit.  i'm actually starting to feel guilt. ;)
+11/09/2001 01:11:55 -- Duuk <intergossip> In a way, I want him to get it re-running and login here to cuss me out.  I'd prolly never stop laughing.
+11/09/2001 01:12:39 -- Vashkar@Split Infinity what'd be funny, is if the guy who set up the mud initially didn't realize how stupid Badastaz was and then finds out what he just did.. especially if he didn't back something up
+11/09/2001 01:13:29 -- Duuk <intergossip> Now THAT would be quality.
+11/09/2001 01:13:45 -- Murmur@NightmareDev yep, this is definately guilt. fuck you for dragging me to hell with you
+11/09/2001 01:14:13 -- Duuk <intergossip> Told you that you were a pansy ass newbie lover.
+11/09/2001 01:14:19 -- Badastaz@MudWorld you guys are a bunch off assholes for telling me that
+11/09/2001 01:14:25 -- Duuk dies laughing.
+11/09/2001 01:14:37 -- Vashkar@Split Infinity laughs.
+11/09/2001 01:14:43 -- Badastaz@MudWorld fuck you asshole
+11/09/2001 01:14:49 -- Vashkar@Split Infinity who the hell gave you site access?
+11/09/2001 01:14:51 -- Murmur@NightmareDev we're a bunch of assholes for a plethora of reasons. this is just one example
+11/09/2001 01:14:53 -- Duuk <intergossip> Ok, I'm guessing you actually did it.
+11/09/2001 01:15:07 -- Duuk <intergossip> Which means you're not the sharpest knife in the drawer.
+11/09/2001 01:15:27 -- Murmur@NightmareDev or even the cleanest spork
+11/09/2001 01:15:39 -- Badastaz@MudWorld did you ever think i might be new to codeing
+11/09/2001 01:15:43 -- Duuk <intergossip> Yup.
+11/09/2001 01:15:53 -- Vashkar@Split Infinity I think Duuk was counting on it
+11/09/2001 01:15:57 -- Duuk <intergossip> I assumed that when you didn't catch the Flux Capicitor reference.
+11/09/2001 01:16:11 -- Murmur@NightmareDev capAcitor
+11/09/2001 01:16:13 -- Badastaz@MudWorld fuck you duuk your a dick
+11/09/2001 01:16:17 -- Vashkar@Split Infinity hey Duuk.. that's "Capacitor."
+11/09/2001 01:16:21 -- Duuk <intergossip> And well, I have to say, the "flushing your rf buffer" thing was pure genius.
+11/09/2001 01:16:51 -- Hergrom@NewMoon Holy fucking shit... I just read igossip history. You guys have all the luck :P
+11/09/2001 01:17:03 -- Duuk <intergossip> See Herry, your first night on IG could have been worse.
+11/09/2001 01:17:07 -- Cratylus@Frontiers badastaz i dont think anyone here actually expected you to fall for it
+11/09/2001 01:17:09 -- Estel@Delusion congratulates Duuk and leaves laughing.
+11/09/2001 01:17:11 -- Duuk <intergossip> Oh, I did.
+11/09/2001 01:17:15 -- Vashkar@Split Infinity for future reference.. "r" is recursive.. "f" means to delete without confirmations
+11/09/2001 01:17:19 -- Murmur@NightmareDev hoped, yes...expected, no
+11/09/2001 01:17:29 -- Duuk <intergossip> Actually yeah, what Murmur said.
+11/09/2001 01:17:45 -- Vashkar@Split Infinity and you could have typed "man rm" beforehand to know what you're doing.
+11/09/2001 01:17:53 -- Duuk nods. Prolly would have tipped you off..
+11/09/2001 01:18:07 -- Vashkar@Split Infinity I doubt it
+11/09/2001 01:18:15 -- Badastaz@MudWorld well only assholes would do that
+11/09/2001 01:18:21 -- Hergrom@NewMoon If you're referring to me as Herry, Duuk, my first night on igossip was about 2 years ago...
+11/09/2001 01:18:23 -- Murmur@NightmareDev agrees wholeheartedly.
+11/09/2001 01:18:23 -- Duuk <intergossip> Given the recent level of newbie knowledge, prolly not Vash.
+11/09/2001 01:18:35 -- Duuk <intergossip> And I didn't get you to delete your mud?
+11/09/2001 01:18:35 -- Duuk <intergossip> Damn.
+11/09/2001 01:18:53 -- Duuk writes this down in a book.  I wanna use that one again.
+11/09/2001 01:19:05 -- Hergrom@NewMoon No... but you can still try. I don't have shell access, but I can delete a goodly portion of mages.
+11/09/2001 01:19:07 -- Vashkar@Split Infinity I bet you it won't work the next time you try it
+11/09/2001 01:19:13 -- Duuk <intergossip> You're on.
+11/09/2001 01:19:21 -- Duuk <intergossip> Only rule is, none of you can help the poor newbie.
+11/09/2001 01:19:29 -- Duuk <intergossip> Gotta be totally blind.
+11/09/2001 01:19:35 -- Hergrom@NewMoon Done.
+11/09/2001 01:19:39 -- Vashkar@Split Infinity oh, that's fine
+11/09/2001 01:19:55 -- Murmur@NightmareDev it could have been worse...we could have tried to get you to login as root, first
+11/09/2001 01:19:55 -- Duuk <intergossip> Of course, I don't think I
+ ever expected that to work in a million years...
+11/09/2001 01:20:01 -- Vashkar@Split Infinity you're going DOWN, Duuk.. I'm betting absolutely no one is more clueless than the newbie we've just witnessed
+11/09/2001 01:20:13 -- Duuk nods. I was "" this close to telling you to make sure you were root and flushing the buffer from /
+11/09/2001 01:20:15 -- Murmur@NightmareDev lots of people are that clueless
+11/09/2001 01:20:19 -- Hergrom@NewMoon I'd be willing to give 5 to
+1 odds against Duuk, though. Not possible there could be _another_ newbie that clueless.
+11/09/2001 01:20:37 -- Senir@MudWorld just me or did i hear bout someone pulling the rm joke on bad?
+11/09/2001 01:20:41 -- Hergrom@NewMoon Yeah, what Vashkar said.
+11/09/2001 01:20:43 -- Duuk nods at Senir.
+11/09/2001 01:20:45 -- Duuk <intergossip> Senir.
+11/09/2001 01:20:47 -- Duuk <intergossip> It worked, too.
+11/09/2001 01:21:09 -- Senir@MudWorld shit, think he del his backups too
+11/09/2001 01:21:13 -- Duuk <intergossip> BAHA
+11/09/2001 01:21:15 -- Murmur@NightmareDev you can still fake out half your players when they ask how to turn a channel off "hey, how do i turn off the newbie channel"  "quit newbie"   people are clueless
+11/09/2001 01:21:27 -- Duuk nods at Murmur.  I like that one.
+11/09/2001 01:21:31 -- Vashkar@Split Infinity alright, Senir.. did you give him site access?
+11/09/2001 01:22:03 -- Hergrom@NewMoon I'm assuming you have some semblance of a clue, Senir... how could you give him access?
+11/09/2001 01:22:07 -- Senir@MudWorld he runs his own mud, i help people throughout imc2 network and all that, i don't have power over shells or anything
+11/09/2001 01:22:13 -- Hergrom@NewMoon have given. Whatever.
+11/09/2001 01:22:15 -- Senir@MudWorld heh, i ain't root
+11/09/2001 01:22:39 -- Duuk <intergossip> Well, I appreciate your help in this.  I haven't laughed this hard in days.
+11/09/2001 01:22:49 -- Murmur@NightmareDev Someone should make a webpage with a log of this.  Something we can point to when we need to lecture yet another person why "starting your own mud when you don't have a clue" is a Bad Idea.
+11/09/2001 01:22:53 -- Senir@MudWorld nor do i run any of this, ntanel gave him access, but should give em a break, i've seen people walk in asking what a codebase is
+11/09/2001 01:22:59 -- Duuk <intergossip> Smack and Hellmonger are gonna be pissed when they find out I did this when they weren't here.
