@@ -33,4 +33,4 @@ Steps:
 
 Note: if you want to create a DEBUG version of MudOS you have to define
 DEBUG symbol either in STD.H or in project setting in both EDIT_SOURCE and
-MUDOS.
+MUDOS.

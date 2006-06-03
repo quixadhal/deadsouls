@@ -11,4 +11,4 @@ del mallocwrapper.c
 del opc.h
 del opcodes.h
 del option_defs.*
-del configure.h
+del configure.h

@@ -1,4 +1,8 @@
----- 2.0r23 (unreleased) ---
+---- 2.0r24 ---
+- Ran into some trouble when releasing r23. For
+  technical reasons, it's being re-released as r24.
+
+---- 2.0r23 ---
 - Fixed a bug that sent local channel data to the i3
   router. Sorry about this, guys. As soon as I found
   this, I killed it. It appears to have affected r22 only.
