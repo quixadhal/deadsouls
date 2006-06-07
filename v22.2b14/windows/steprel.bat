@@ -4,4 +4,3 @@
 ren efun_protos.h efun_tmp.h
 sed -f sed.cmd efun_tmp.h > efun_protos.h
 
-

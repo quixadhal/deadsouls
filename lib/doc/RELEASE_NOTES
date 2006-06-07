@@ -1,3 +1,13 @@
+---- 2.0r25 ---
+- r24 had some unfortunate licensing problems attached.
+  r25 includes a Win32 native binary that does not depend
+  on any GPL code to run.
+- This release is hereby dedicated to Saquivor, who was
+  instrumental in getting this binary compiled.
+- r25 lib does not differ from r24 or r23. Unless you
+  need the native Win32 binary, you should skip this
+  release if you have r23 or r24.
+
 ---- 2.0r24 ---
 - Ran into some trouble when releasing r23. For
   technical reasons, it's being re-released as r24.
