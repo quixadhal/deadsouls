@@ -18,7 +18,7 @@ mixed cmd(string str) {
     string who, msg, tmp, machine_message;
 
     if(!str) return notify_fail("Syntax: <tell [who] [message]>\n");
-    if(this_player()->GetMagicPoints() < 15) {
+    if(!creatorp(this_player()) && this_player()->GetMagicPoints() < 15) {
 	write("You lack sufficient magic to tell to anyone right now.");
 	return 1;
     }
@@ -58,7 +58,7 @@ mixed cmd(string str) {
 	if(msg == "") return notify_fail("What do you wish to tell?\n");
     }
     else {
-	this_player()->AddMagicPoints(-15);
+	if(!creatorp(this_player())) this_player()->AddMagicPoints(-15);
 	SERVICES_D->eventSendTell(who, mud, msg);
 	return 1;
     }

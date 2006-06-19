@@ -27,5 +27,4 @@ static void create() {
     SetExchangeFee(2);
     SetCurrencies( ({ "dollars", "copper", "silver", "electrum", "gold", "platinum" }) );
 
-
 }

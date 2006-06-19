@@ -9,7 +9,7 @@ mixed cmd(string args) {
     string ip, name;
     int port, octet1, octet2, octet3, octet4;
 
-    if(!archp(this_player())) return "No.";
+    if(!archp(previous_object())) return "No.";
 
     if(find_object(INTERMUD_D))find_object(INTERMUD_D)->eventDestruct();
     rm("/save/intermud.o");

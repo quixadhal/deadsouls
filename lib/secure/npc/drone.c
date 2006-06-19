@@ -3,16 +3,32 @@
 #include <privs.h>
 #include "/daemon/include/races.h"
 
-int eventReceiveCommand(string butt);
+int eventReceiveCommand(string butt, string munch);
 int SetOwner(string hole);
 string GetOwner();
 int ListenUp(int foo);
 int itemcheck,listening;
 mixed arguments;
 string owner, mm, vv, printvar,owner;
-string mensaje, clase_mensaje,desc;
+string mensaje, clase_mensaje,desc,control_code;
 object dude,ww, ownerob;
 void doPrint(string str1, string str2);
+
+void validate(){
+    //tc("control code: "+control_code,"green");
+    //tc(" previous_object()->GetControlCode(): "+  previous_object()->GetControlCode(),"red");
+    //tc("hmm. previous_object: "+identify(previous_object(-1)));
+    if(base_name(previous_object()) != "/secure/obj/control" || 
+      previous_object()->GetControlCode() != control_code){
+	if(ownerob){
+	    tell_object(ownerob,"%^RED%^Security violation. Someone is attempting to "+
+	      "hijack your drone. Guilty object stack: %^YELLOW%^"+
+	      identify(previous_object(-1))+"%^RESET%^");
+	}
+	error("Illegal control attempt by: "+identify(previous_object(-1))+", "+get_stack());
+    }
+    return;
+}
 
 int doCheckLiving(object ob){
     if(living(ob) && ob->GetInvis() !=1){
@@ -45,9 +61,11 @@ void init(){
     this_object()->set_heart_beat(1);
     this_object()->SetNoClean(1);
 }
+
 void receive_message(string s1, string s2){
     if(ownerob && listening) tell_object(ownerob,"Remote: "+s2);
 }
+
 varargs mixed eventHearTalk(object who, object target, int cls, string verb,
   string msg, string lang) {
     ww=who;
@@ -57,6 +75,7 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
     this_object()->receive_message("me",ww->GetName()+" "+vv+"s: "+mm) ;
     return;
 }
+
 varargs int doPrint(string msg, string msg_class){
     printvar=msg;
     this_object()->receive_message("me again",printvar) ;
@@ -74,16 +93,19 @@ int eventDescribeEnvironment(mixed args){
     dude=this_object()->GetShadowedObject();
     arguments = args;
     //dude->eDE(arguments) ;
-    unguarded((: tell_object(ownerob,this_object()->eDE()) :));
+    unguarded((: tell_object(ownerob,this_object()->eDE()+"\n") :));
     return 1;
 }
 
 int eventReceiveCommand(string str){
     string thing;
+
+    validate();
+
     if(!query_heart_beat(this_object())) this_object()->set_heart_beat(1);
     if(ownerob && str != "look" && str != "l") this_object()->eventForce(str);
     else if(ownerob){
-	tell_object(ownerob,"This is where the env dsc comes in.");
+	//tell_object(ownerob,"This is where the env dsc comes in.");
 	unguarded((: this_object()->eventDescribeEnvironment() :)) ;
 	//ownerob->eventPrint(this_object()->eventDescribeEnvironment(this_object())) ;
     }
@@ -92,6 +114,17 @@ int eventReceiveCommand(string str){
 }
 
 int SetOwner(string str){
+    //tc("control code: "+control_code,"blue");
+    if(sizeof(owner) && this_object()->GetOwner() != "NONE") {
+	validate();
+    }
+    if(str == "NONE") {
+	control_code = "";
+	owner = "NONE";
+	ownerob = 0;
+	listening = 0;
+	return 1;
+    }
     owner=str;
     ownerob=find_player(owner);
     listening=1;
@@ -104,6 +137,19 @@ string GetOwner(){
     else return "NONE";
 }
 
+
+int SetControlCode(string str){
+    if(sizeof(control_code) && GetOwner() != "NONE" ){
+	if(ownerob){
+	    tell_object(ownerob,"%^RED%^Security violation. Someone is attempting to "
+	      "hijack your drone. Guilty object stack: %^YELLOW%^"+
+	      identify(previous_object(-1))+"%^RESET%^");
+	}
+	error("Illegal control attempt by: "+identify(previous_object(-1))+", "+get_stack());
+    }
+    else control_code = str;
+    return 1;
+}
 
 string eDE(int brief) {
     object env;

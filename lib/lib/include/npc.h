@@ -17,7 +17,7 @@ int cmdSmell(string str);
 int cmdTouch(string str);
 static int cmdAll(string arg);
 
-varargs int eventDie(object agent);
+varargs int eventDie(mixed agent);
 int eventMove(mixed dest);
 int eventCompleteMove(mixed dest);
 int eventFollow(object dest, int followChance);

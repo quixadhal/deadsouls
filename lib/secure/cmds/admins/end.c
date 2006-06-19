@@ -12,6 +12,7 @@ inherit LIB_DAEMON;
 mixed cmd(string args) {
     int x;
 
+    if(!archp(previous_object())) return 0;
     if( !args || args == "" ) return "You must specify a delay in minutes.";
     if( !(x = to_int(args)) ) return "You must specify a delay in minutes.";
     if( x < 2 ) return "The delay must be at least 2 minutes.";

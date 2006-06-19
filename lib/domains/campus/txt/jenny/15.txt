@@ -1,0 +1,13 @@
+%^RESET%^Jennybot says, "%^BOLD%^CYAN%^	Well, that about wraps it up for my spiel. Thank you for listening. If you get stuck or confused type "%^RED%^help%^BOLD%^CYAN%^" to enter the system help menus. 
+
+	If other players are in this room, you can communicate by typing: "%^RED%^say blah blah blah%^BOLD%^CYAN%^". Everyone in the same room will hear your conversation.
+
+
+	If you know someone is logged in but they are not in the same room, you can communicate by typing: "%^RED%^tell joey blah blah blah%^BOLD%^CYAN%^". This is a private communication channel and you can also use it if you're in the same room and you want to discuss things you'd rather not share with bystanders.
+
+	Oh, speaking of privacy...you don't have any. The University reserves the right to review, monitor, etc, yakety schmakety.
+
+	Point is, anything that really really needs to stay private, still needs to be discussed face to face, in the real world.
+
+
+	Have fun exploring!%^RESET%^"

@@ -14,7 +14,7 @@ void end_edit(string site);
 void abort();
 
 int cmd(string str) {
-    if(!archp(this_player())) return 0;
+    if(!archp(previous_object())) return 0;
     if(!str) {
 	notify_fail("Syntax: register <site-ip>\n\n");
 	return 0;

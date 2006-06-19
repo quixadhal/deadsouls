@@ -1,0 +1,16 @@
+HHHHHHHHHHH  HHHHHHHHHHH                 HHHHHHH                 ?????????
+H:::::::::H  H:::::::::H                 H:::::H                ?::::::::::?
+H:::::::::H  H:::::::::H                 H:::::H               ?:::??????:::?
+HHH:::::HHH  HHH:::::HHH                 H:::::H               ?:::?    ?:::?
+  H:::::H      H:::::H   UUUUUU  UUUUUU   H::::H HHHHH         ??:??    ?:::?
+  H:::::H      H:::::H   U::::U  U::::U   H::::HH:::::HHH       ???    ?:::?
+  H:::::HHHHHHHH:::::H   U::::U  U::::U   H::::::::::::::HH           ?:::?
+  H::::::::::::::::::H   UU:::U  U::::U   H:::::::HHH::::::H         ?:::?
+  H::::::::::::::::::H    U:::U  U::::U   H::::::H   H::::::H       ?:::?
+  H:::::HHHHHHHH:::::H    U:::U  U::::U   H:::::H     H:::::H       ?:::?
+  H:::::H      H:::::H    U:::U  U::::U   H:::::H     H:::::H       ??:??
+  H:::::H      H:::::H    U:::U  U::::U   H:::::H     H:::::H        ???
+HHH:::::HHH  HHH:::::HHH  U::::UU:::::UU  H:::::H     H:::::H 
+H:::::::::H  H:::::::::H  U::::::::::::U  H:::::H     H:::::H        ???
+H:::::::::H  H:::::::::H   UU:::::UU:::U  H:::::H     H:::::H       ??:??
+HHHHHHHHHHH  HHHHHHHHHHH     UUUUU  UUUU  HHHHHHH     HHHHHHH        ???

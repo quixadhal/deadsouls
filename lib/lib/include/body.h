@@ -15,7 +15,7 @@ varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixe
 int eventCheckProtection(object agent, int type, int damage);
 
 mixed eventReceiveThrow(object who, object what);
-varargs int eventDie(object agent);
+varargs int eventDie(mixed agent);
 int eventRemoveItem(object ob);
 int eventWear(object ob, mixed limbs);
 

@@ -24,7 +24,7 @@ static private string *local_chans = ({"newbie","cre","gossip","admin","error",
 
 static void create() {
     object pl;
-
+    string *tmp_arr = ({});
     daemon::create();
     SetNoClean(1);
     Channels = ([]);
@@ -38,6 +38,11 @@ static void create() {
 	    Channels[channel] = distinct_array(Channels[channel] + ({ pl }));
 	}
     }
+    foreach( string channel in local_chans ){
+	tmp_arr += ({ channel + "emote" });
+    }
+
+    local_chans += tmp_arr;
 }
 
 varargs int CanListen(object who, string canal){
@@ -422,6 +427,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	case "intercre":
 	    this_msg = "%^YELLOW%^";
 	    break;
+	case "ds":
+	    this_msg = "%^YELLOW%^";
+	    break;
 	case "newbie":
 	    this_msg = "%^B_YELLOW%^";
 	    break;
@@ -500,6 +508,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	    tmsg += "%^CYAN%^";
 	    break;
 	case "intercre":
+	    tmsg += "%^YELLOW%^";
+	    break;
+	case "ds":
 	    tmsg += "%^YELLOW%^";
 	    break;
 	case "newbie":

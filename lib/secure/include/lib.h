@@ -1,6 +1,7 @@
 #ifndef s_lib_h
 #define s_lib_h
 
+//#include <lpuni.h>
 #include <dirs.h>
 
 #include <comp.h>
@@ -10,10 +11,13 @@
 #include <std.h>
 #include <user.h>
 
+
 #define LIB_AUTH           DIR_SECURE_LIB "/auth"
 #define LIB_BATTERY        DIR_LIB        "/battery"
 #define LIB_BLANK_PILE     DIR_LIB        "/blank_pile"
+#define LIB_BOARD          DIR_LIB        "/bboard"
 #define LIB_BODY           DIR_LIB        "/body"
+#define LIB_BOT            DIR_LIB        "/bot"
 #define LIB_BURN           DIR_LIB        "/burn"
 #define LIB_CAPTURE        DIR_LIB        "/capture"
 #define LIB_CHAPEL         DIR_LIB        "/chapel"
@@ -74,6 +78,7 @@
 #define LIB_PILE           DIR_LIB        "/pile"
 #define LIB_PISTOL         DIR_LIB        "/pistol"
 #define LIB_PLAYER         DIR_LIB        "/player"
+#define LIB_PLAYERS         DIR_LIB        "/player"
 #define LIB_POLE           DIR_LIB        "/pole"
 #define LIB_POST_OFFICE    DIR_LIB        "/post_office"
 #define LIB_RACE           DIR_LIB        "/race"

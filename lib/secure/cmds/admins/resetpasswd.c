@@ -12,7 +12,7 @@ string savefile;
 
 mixed cmd(string args) {
 
-    if(!archp(this_player())) {
+    if(!archp(previous_object())) {
 	write("No.");
 	return 1;
     }

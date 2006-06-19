@@ -1,0 +1,9 @@
+%^RESET%^Jennybot says, "%^BOLD%^CYAN%^	Ok, we're coming close to the end of my speech here. Whew!
+
+	There are two kinds of living beings you will encounter on LPC University. The first are called "player characters". They are players like you: human beings manipulating their virtual bodies and using the MUD as a way to communicate.
+
+	The other kind are "non-player character". This kind of living being is most often referred to as an "NPC". I am an example of an NPC. Although I am talking to you, this body is under the control of the MUD program. I can't talk to you about the latest reality TV show or your favorite performer...because the MUD is just a program and doesn't understand such things.
+
+	NPC's are a way for the MUD to provide the virtual environment some added realism. If you walk through a forest, you might expect to see birds, or rabbits, or foxes. When NPC's arrive in your environment, or you arrive in theirs, you can interact with them...but only up to a point. There isn't a person controlling their bodies...just the MUD simulating a living being.
+
+	NPC's are sometimes referred to as MOB's or mobiles, because they often can wander from one place to another in this virtual environment.%^RESET%^"

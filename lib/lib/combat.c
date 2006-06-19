@@ -470,7 +470,7 @@ static int Destruct() {
 
 /*  *****************   /lib/combat.c events  ***************** */
 
-varargs int eventDie(object agent) {
+varargs int eventDie(mixed agent) {
     object ob;
     int x;
 

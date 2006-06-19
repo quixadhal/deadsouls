@@ -1,0 +1,7 @@
+%^RESET%^Jennybot says, "%^BOLD%^CYAN%^      The big difference between LPC University and Internet chat programs is that here you can interact with the program itself, not just the people connected to it.
+
+	When you interact with the program, or MUD, the program pretends that you have a body inside the program. That is your virtual body. When you enter a command, the MUD interprets this as your virtual body trying to do something.
+
+	For example, right now the program is pretending that your body is inside a room called the "Admissions office". If you type: "%^RED%^look%^BOLD%^CYAN%^" (without quotation marks) and hit enter, you will be given a description of the room as if your virtual body was looking around.
+
+	"%^RED%^look%^BOLD%^CYAN%^" is a command, and you can use different commands to get your virtual body to do things within this virtual environment. The MUD will tell you how your action affects your environment, and it will also tell you if it didn't understand what you meant.%^RESET%^"

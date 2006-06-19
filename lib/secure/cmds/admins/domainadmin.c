@@ -11,7 +11,7 @@ mixed cmd(string args) {
     mapping DomainsMap = ([]);
 
 
-    if(!archp(this_player()) || this_player()->GetForced()){
+    if(!archp(previous_object()) || this_player()->GetForced()){
 	return "No.";
     }
 
@@ -108,6 +108,7 @@ mixed cmd(string args) {
     //tc("write_perms: "+write_perms,"green");
     write_file("/secure/cfg/write.cfg", write_perms, 1);
     update("/secure/daemon/master");
+    write("Ok.");
     return 1;
 }
 

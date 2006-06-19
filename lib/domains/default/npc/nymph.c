@@ -9,9 +9,6 @@ static void create() {
     SetAdjectives(({"non-player", "non player"}));
     SetShort("Claire Danes");
     SetLong("This slender nature spirit appears quite lost, and probably should be accompanying a lesser goddess through woodland glades.");
-    SetInventory(([
-	"/realms/cratylus/area/obj/mkey" : 1,
-      ]));
     SetLevel(1);
     SetMelee(1);
     SetRace("nymph");

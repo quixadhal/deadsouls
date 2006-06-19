@@ -1,0 +1,37 @@
+Common player commands:
+---------------
+look, l
+inventory, i
+help
+score
+status
+who
+tell		(example: "tell mike where are you?")
+say, '		(example: "' hi", "say nice to meet you!)
+
+Common object commands:
+-----------------------
+look at, look in (example: "l in treasure chest")
+examine, exa
+get, drop	(example: "get bag", "get all from box")
+open, close 	(example: "open door", "open glass case")
+read 		(example: "read writing on cap")
+put		(example: "put red ball in my first bag")
+
+Common Movement commands:
+-------------------------
+n,s,e,w,u,d
+go north, go south, go east, go west, go up, go down
+out, go out
+crawl (example: "crawl south", "crawl into passageway" )
+climb		(example: "climb tree")
+enter		(example: "enter crawlspace")
+
+Vendor commands:
+----------------
+money
+appraise
+price
+show
+buy, sell
+

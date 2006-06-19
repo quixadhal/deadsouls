@@ -37,29 +37,29 @@ int eventMojofy(){
 }
 
 int damage1(){
-    if( victim->GetStaminaPoints() < 50) victim->AddStaminaPoints(random(5)+1);
+    if( victim && victim->GetStaminaPoints() < 50) victim->AddStaminaPoints(random(5)+1);
     return 1;
 }
 
 int damage2(){
-    victim->AddHP(1);
+    if(victim) victim->AddHP(1);
     return 1;
 }
 
 int damage3(){
-    victim->AddHP(2);
+    if(victim) victim->AddHP(2);
     return 1;
 }
 
 int damage4(){
-    victim->AddHP(3);
+    if(victim) victim->AddHP(3);
     return 1;
 }
 
 void heart_beat(){
-    if(!living(environment())) this_object()->eventDestruct();
+    if(environment() && !living(environment())) this_object()->eventDestruct();
     if(counter == 50){
-	tell_object(environment(),"You feel the effects of the healing salve wear off.");
+	if(environment()) tell_object(environment(),"You feel the effects of the healing salve wear off.");
 	this_object()->eventMove("/domains/town/room/furnace");
     }
 

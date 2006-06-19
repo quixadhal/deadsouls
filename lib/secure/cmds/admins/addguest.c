@@ -13,7 +13,11 @@ int cmd(string str) {
     mixed res;
     int i;
 
-    if(!archp(previous_object())) return 0;
+    if(!(int)master()->valid_apply(({ "SECURE", "ASSIST" }))){
+	error("Illegal attempt to add a guest.");
+	//tc("foo");
+    }
+
     if(!str) {
 	notify_fail("Correct syntax: addguest [guestlist]\n");
 	return 0;

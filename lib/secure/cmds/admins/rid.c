@@ -17,6 +17,7 @@ int cmd(string who) {
     object ob;
     string str, file;
 
+    if(!archp(previous_object())) return 0;
     if( !who || who == "" ) {
 	write("Rid whom?");
 	return 1;

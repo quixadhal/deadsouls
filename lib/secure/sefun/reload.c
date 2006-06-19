@@ -14,6 +14,8 @@ varargs mixed reload(mixed ob, int recursive) {
     object env;
     mx = 0;
 
+//tc("ob: "+identify(ob),"red");
+
     if(!ob) return 0;
 
     if(objectp(ob) && environment(ob)) env = environment(ob);
@@ -30,7 +32,8 @@ varargs mixed reload(mixed ob, int recursive) {
 	return 0;
     }
 
-    if(ob->GetDoor()) ob = load_object(ob->GetDoor());
+//tc("ob: "+identify(ob),"green");
+    if(ob->GetDoor() && sizeof(ob->GetDoor())) ob = load_object(ob->GetDoor());
 
     if(!file_exists(base_name(ob))) filename = base_name(ob)+".c";
     else filename = base_name(ob);
@@ -41,6 +44,8 @@ varargs mixed reload(mixed ob, int recursive) {
     if(!grepp(unguarded( (: read_file(filename) :) ),"void init()" || !grepp(unguarded( (: read_file(filename) :) ),"::init()"))) { 
 	write("This object lacks a working init function. Please run initfix on it as soon as possible.");
     }
+
+//tc("ob: "+identify(ob),"blue");
 
     if(inherits(LIB_ROOM,ob)){
 	dudes = get_livings(ob,1);

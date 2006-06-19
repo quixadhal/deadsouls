@@ -94,7 +94,7 @@ mixed eventModify(object ob, string str){
 
     inheritance = "";
 
-    if(ob->GetDoor()) {
+    if(ob->GetDoor() && sizeof(ob->GetDoor())) {
 	inheritance = "door";
 	ob = load_object(ob->GetDoor());
     }

@@ -225,7 +225,7 @@ string displayLong(){
     "from naquadah ore, similar to black quartz.  It is a perfectly "
     "circular device approximately ten meters in diameter and "
     "comprised of two sets of rings and nine chevrons placed "
-    "equidistant along its outer circumfrence.";
+    "equidistant along its outer circumference.";
 
     stat = status();
 

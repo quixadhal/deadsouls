@@ -1,0 +1,3 @@
+%^RESET%^Jennybot says, "%^BOLD%^CYAN%^	Ok! I'm going to try to give you some tips so that you can enjoy your visit to the LPC University Virtual Campus. Please note you can deactivate me at any time by typing: %^RED%^deactivate bot%^BOLD%^CYAN%^ 
+
+	Also, please remember that I am just a machine, so I will not understand anything you try to tell me. I will pause between tips, to give you time to read, or to deactivate me. As I continue, my tips will gain in technical complexity, so even if you are an experienced "MUDder", you may gain some benefit from listening to me.%^RESET%^"

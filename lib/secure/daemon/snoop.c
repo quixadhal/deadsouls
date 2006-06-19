@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <privs.h>
 #include <save.h>
 #include <rooms.h>
 #include <config.h>
@@ -47,6 +48,7 @@ void UnregisterSnooper(){
 }
 
 void eventLoadRogues(){
+    if( !((int)master()->valid_apply(({ PRIV_SECURE }))) ) return;
     foreach(string rogue in monitored) this_object()->CheckBot(rogue);
     snoopers = filter(objects(), (: base_name($1) == "/secure/obj/snooper" :) );
 }
@@ -56,6 +58,7 @@ int CheckBot(string str){
     int allset, already_watched = 0;
     string *immune;
     string name;
+
     if(!str) str = "foo";
     str = lower_case(str);
     foo = find_player(str);
@@ -119,6 +122,8 @@ int SnoopClean(){
 
 void heart_beat(){
     count++;
+
+    //tc("snoop daemon heart_beat","green");
     if( !(count % 5) ) CheckSnooped();
 
     if( !(count % 10)) {
@@ -131,6 +136,7 @@ void heart_beat(){
 }
 
 void reset(){
+    //tc("Snoop daemon reset");
     if(query_heart_beat(this_object()) < 1) set_heart_beat(60);
     CheckSnooped();
 }
@@ -239,7 +245,7 @@ int ReportReconnect(string str){
 }
 
 int Report(){
-    if(!archp(previous_object(2))){
+    if( !((int)master()->valid_apply(({ "PRIV_SECURE" }))) ){
 	return 0;
     }
     tc("Watchers: "+identify(Watchers));

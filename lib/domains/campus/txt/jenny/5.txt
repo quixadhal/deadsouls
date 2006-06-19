@@ -1,0 +1,7 @@
+%^RESET%^Jennybot says, "%^BOLD%^CYAN%^	When you finally do decide to leave this room and explore other areas of LPC University, you will use commands like "%^RED%^go north%^BOLD%^CYAN%^", "%^RED%^open door%^BOLD%^CYAN%^", or "%^RED%^climb tree%^BOLD%^CYAN%^". When you move to a new location, a description of that new place will be provided.
+
+	Right now, because you are new, you are limited to exploring the rooms inside this building, the LPC University Virtual Campus Administration Building. This way, you can move around and get used to your new body without fear of getting lost or injured.
+
+	Yes, your body can sustain injury. In trying to provide the illusion of a virtual reality, the realities of injury, sickness, and even death are possible for your virtual body to experience.
+
+	Not while you're in this building, though.%^RESET%^"

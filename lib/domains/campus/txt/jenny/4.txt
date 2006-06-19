@@ -1,0 +1,5 @@
+%^RESET%^Jennybot says, "%^BOLD%^CYAN%^	I've just given you a list. It is now in the inventory of virtual items your virtual body is carrying. To get a list of items you are carrying, type "%^RED%^inventory%^BOLD%^CYAN%^". I've given you this list so you can read it. It contains various MUD commands you will find useful. Type "%^RED%^read list%^BOLD%^CYAN%^".
+
+	Ok, from now on, when you log on, you will be carrying this list on you, and you can use it as a reference if you get stuck. Of course, if you "%^RED%^drop list%^BOLD%^CYAN%^", then it will fall to the floor, and you will no longer have it. You might be able to read it, or you might not. If you leave the room, you won't be able to read it. 
+
+	Now that you have a general idea of how to do some stuff, let me give you another command that you might find useful. My tips are prerecorded messages, and you might not like the pauses between messages. To skip to the next tip, type "%^RED%^next tip%^BOLD%^CYAN%^".%^RESET%^"

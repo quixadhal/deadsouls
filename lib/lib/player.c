@@ -121,7 +121,7 @@ int eventDisplayStatus() {
 static void eventDestroyUndead(object agent) {
 }
 
-varargs int eventDie(object agent) {
+varargs int eventDie(mixed agent) {
     int x, expee, subexpee;
 
     if( (x = living::eventDie(agent)) != 1 ) return x;

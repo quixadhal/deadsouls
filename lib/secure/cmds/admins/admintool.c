@@ -5,6 +5,11 @@
 
 inherit LIB_DAEMON;
 
+static private void validate() {
+    if( !((int)master()->valid_apply(({ "PRIV_ASSIST", "PRIV_SECURE" }))) )
+	error("Illegal attempt to access admintool: "+get_stack()+" "+identify(previous_object(-1)));
+}
+
 varargs int Menu(string str);
 int MainMenu();
 int MainMenuChoice();
@@ -73,13 +78,16 @@ string *currencies;
 
 float rate, weight, inflation; 
 
+
 mixed InvalidChoice(){
+    validate();
     write("Invalid choice. Try again or choose q to quit.\n");
     Menu();
     return 1;
 }
 
 int PlaceHolder(){
+    validate();
     write("This function has not yet been defined.");
     Menu();
     return 1;
@@ -87,6 +95,7 @@ int PlaceHolder(){
 
 varargs int Menu(string str){
 
+    validate();
     if(str) menu = str;
     if(!menu) menu = "main";
 
@@ -104,6 +113,7 @@ varargs int Menu(string str){
 
 string process_input(string str){
     //write("Input is "+str+".");
+    validate();
     switch (str) {
     case "q" : write("Ok, quitting admintool.\nBye.\n");return " ";
     case "x" : write("Ok, quitting admintool.\nBye.\n");return " ";
@@ -145,6 +155,7 @@ string process_input(string str){
 
 varargs mixed MainMenu(string str) {    
     string tmp;
+    validate();
     tmp = "\tDead Souls Admin Tool\n";
     tmp += "\t=====================\n\n";
     tmp += "\t\t1) general\n";
@@ -163,6 +174,7 @@ varargs mixed MainMenu(string str) {
 static int GeneralMenu() {    
     string tmp;
 
+    validate();
     tmp = "\tDead Souls Admin Tool General Menu\n";
     tmp += "\t\n\n";
     tmp += "\t\ta) toggle mud lock\n";
@@ -182,6 +194,7 @@ static int GeneralMenu() {
 int DaemonMenu() {    
     string tmp;
 
+    validate();
     tmp = "\tDead Souls Admin Tool Daemon Menu\n";
     tmp += "\t\n\n";
     tmp += "\t\tf) add class\n";
@@ -201,7 +214,8 @@ int DaemonMenu() {
 int UsersMenu() {    
     string tmp;
 
-    tmp = "\tDead Souls Admin Tool Daemon Menu\n";
+    validate();
+    tmp = "\tDead Souls Admin Tool Users Menu\n";
     tmp += "\t\n\n";
     tmp += "\t\tl) promote a player to creator\n";
     tmp += "\t\tm) demote a creator to player\n";
@@ -220,6 +234,7 @@ int UsersMenu() {
 int DriverMenu(){
     string tmp;
 
+    validate();
     tmp = "\tDead Souls Admin Tool Driver Menu\n";
     tmp += "\t^^^^^^^^^^^^^^^^^^^^^^*******^^^^^\n";
     tmp += "\t\n\n";
@@ -237,6 +252,7 @@ int DriverMenu(){
 int GroupsMenu(){
     string tmp;
 
+    validate();
     tmp = "\tDead Souls Admin Tool Groups Menu\n";
     tmp += "\t^^^^^^^^^^^^^^^^^^^^^^*******^^^^^\n";
     tmp += "\t\n\n";
@@ -265,6 +281,8 @@ int ToggleMudLock(){
     string *line_array;
     string lockline, newline, newfile, line_string, junk;
     int num;
+
+    validate();
     line_string = read_file("/secure/include/config.h");
     if(!sizeof(line_string)) write("Couldn't read file.");
     line_array = explode(line_string, "\n");
@@ -299,6 +317,7 @@ int ToggleMudLock(){
 }
 
 int ShowLock(){
+    validate();
     if(load_object("/secure/daemon/master")->is_locked()){
 	write("Mud is locked. Only admins and designated personnel can log in.\n");
     }
@@ -309,6 +328,7 @@ int ShowLock(){
 
 
 int SetTZ(){
+    validate();
     write("Please enter the desired time zone: \n");
     input_to( (: eventSetTZ :) );
     return 1;
@@ -317,6 +337,7 @@ int SetTZ(){
 int eventSetTZ(string str){
     string ret;
 
+    validate();
     ret = set_tz(str);
     write(ret+"\n");
     load_object("/secure/cmds/creators/update")->cmd("/daemon/time");
@@ -325,6 +346,7 @@ int eventSetTZ(string str){
 }
 
 int ChangeEmail(){
+    validate();
     write("Current admin email is: "+admin_email());
     write("Please enter the new email address of the mud administrator: \n");
     input_to( (: eventChangeEmail :) );
@@ -334,6 +356,8 @@ int ChangeEmail(){
 varargs int eventChangeEmail(string str, int auto){
     string *line_array;
     string lockline, newline, newfile, line_string, junk, email;
+
+    validate();
     if(strsrch(str,"@") == -1 ) {
 	write("That isn't a valid email address.");
 	if(!auto) Menu();
@@ -366,6 +390,7 @@ varargs int eventChangeEmail(string str, int auto){
 }
 
 int SetReboot(){
+    validate();
     write("Current reboot interval is set to "+EVENTS_D->GetRebootInterval()+" hours.");
     write(load_object("/cmds/players/nextreboot")->cmd("string"));
     write("Please enter the new desired interval in hours:\n");
@@ -375,6 +400,8 @@ int SetReboot(){
 
 int eventSetReboot(mixed i){
     int num;
+
+    validate();
     if(!intp(i) && !sscanf(i,"%d",num)){
 	write("Failed to set new interval.\n");
 	Menu();
@@ -388,6 +415,7 @@ int eventSetReboot(mixed i){
 }
 
 int AddClass(){
+    validate();
     write("Classes currently available: "+implode(load_object(CLASSES_D)->GetClasses()," "));
     write("Please enter the name of the class you'd like to add: \n");
     input_to( (: eventAddClass :) );
@@ -397,6 +425,8 @@ int AddClass(){
 int eventAddClass(string str){
     string classpath;
     array *classes;
+
+    validate();
     if(!str) {
 	write("Invalid class name.\n");
 	Menu();
@@ -427,6 +457,7 @@ int eventAddClass(string str){
 }
 
 int RemoveClass(){
+    validate();
     write("Classes currently available: "+implode(load_object(CLASSES_D)->GetClasses()," "));
     write("Please enter the class you'd like to remove: \n");
     input_to( (: eventRemoveClass :) );
@@ -434,6 +465,7 @@ int RemoveClass(){
 }
 
 int eventRemoveClass(string str){
+    validate();
     if(!str){
 	write("That is not a valid class.\n");
 	Menu();
@@ -453,6 +485,7 @@ int eventRemoveClass(string str){
 }
 
 int AddRace(){
+    validate();
     write("Races currently available: "+implode(load_object(RACES_D)->GetRaces()," "));
     write("Please enter the name of the race you'd like to add: \n");
     input_to( (: eventAddRace :) );
@@ -461,6 +494,8 @@ int AddRace(){
 
 int eventAddRace(string str){
     array *races;
+
+    validate();
     if(!str) {
 	write("Invalid race name.\n");
 	Menu();
@@ -492,6 +527,8 @@ int eventAddRace(string str){
 
 int PlayerRace(string str){
     string *response_array = ({"yes","ok","y","yeah","yes, please"});
+
+    validate();
     if(!str) str = "no";
     if(member_array(str,response_array) != -1) RACES_D->AddRace(racepath, 1);
     else RACES_D->AddRace(racepath);
@@ -502,6 +539,7 @@ int PlayerRace(string str){
 }
 
 int RemoveRace(){
+    validate();
     write("Races currently available: "+implode(load_object(RACES_D)->GetRaces()," "));
     write("Please enter the race you'd like to remove: \n");
     input_to( (: eventRemoveRace :) );
@@ -509,6 +547,7 @@ int RemoveRace(){
 }
 
 int eventRemoveRace(string str){
+    validate();
     if(!str){
 	write("That is not a valid race.\n");
 	Menu();
@@ -528,6 +567,7 @@ int eventRemoveRace(string str){
 }
 
 int AddCurrency(){
+    validate();
     write("Currencies currently available: "+implode(ECONOMY_D->__QueryCurrencies()," "));
     write("Please enter the name of the curency you'd like to add: \n");
     input_to( (: eventAddCurrency :) );
@@ -537,6 +577,7 @@ int AddCurrency(){
 int eventAddCurrency(string str){
     string query;
 
+    validate();
     currency = str;
     if(!str || str == "") {
 	write("Invalid currency name.\n");
@@ -563,6 +604,8 @@ int eventAddCurrency(string str){
 
 int CurrencyRate(string str){
     string query;
+
+    validate();
     if(!str || !sscanf(str,"%f",rate) ){
 	write("Invalid rate. Currency not added.\n");
 	Menu();
@@ -582,6 +625,8 @@ int CurrencyRate(string str){
 
 int  CurrencyWeight(string str){
     string query;
+
+    validate();
     if(!str || !sscanf(str,"%f",weight) ){
 	write("Invalid weight. Currency not added.\n");
 	Menu();
@@ -599,6 +644,7 @@ int  CurrencyWeight(string str){
 }
 
 int CurrencyInflation(string str){
+    validate();
     if(!str || !sscanf(str,"%f",inflation) ){
 	write("Invalid inflation rate. Currency not added.\n");
 	Menu();
@@ -613,7 +659,14 @@ int CurrencyInflation(string str){
 }
 
 int RemoveCurrency(){
+    validate();
     currencies = ECONOMY_D->__QueryCurrencies();
+    if(sizeof(currencies) == 1) {
+	write("Please add a currency before removing this last one.");
+	write("Removing the last currency would cause the mud to "+
+	  "behave unexpectedly.");
+	return 1;
+    }
     write("Available currencies: "+ identify(currencies) +".");
     write("Which currency would you like to remove?\n");
 
@@ -622,6 +675,7 @@ int RemoveCurrency(){
 }
 
 int eventRemoveCurrency(string str){
+    validate();
     if(!str || member_array(str, currencies) == -1) {
 	write("Invalid currency. No currency removed.\n");
 	Menu();
@@ -634,24 +688,28 @@ int eventRemoveCurrency(string str){
 }
 
 int EncrePlayer(){
+    validate();
     write("Please enter the name of the player you'd like to promote: \n");
     input_to( (: eventEncrePlayer :) );
     return 1;
 }
 
 int eventEncrePlayer(string str){
+    validate();
     EnCre(str);
     Menu();
     return 1;
 }
 
 int DecreCreator(){
+    validate();
     write("Please enter the name of the player you'd like to demote: \n");
     input_to( (: eventDecreCreator :) );
     return 1;
 }
 
 int eventDecreCreator(string str){
+    validate();
     DeCre(str);	
     Menu();
     return 1;
@@ -661,6 +719,7 @@ mixed EnCre(string args) {
     object ob;
     string file, nom;
 
+    validate();
     nom = convert_name(args);
     if( !user_exists(nom) ){
 	write(capitalize(nom) + " is not a member of " +
@@ -668,24 +727,8 @@ mixed EnCre(string args) {
 	Menu();
 	return 1;
     }
-    if( !strsrch(file = save_file(nom), DIR_CRES) ) {
-	Menu();
-	write("You cannot make "+capitalize(args)+" a creator.");
-	return 1;
-    }
-
-    if( ob = find_player(nom) ) {
-	tell_player(nom,"You are about to be promoted to creator. This requires a reset of "+
-	  "your character. You will be disconnected from the mud. When you "+
-	  "reconnect, you will be a creator.");
-	make_workroom(ob);
-	ob->eventForce("quit");
-    }
-    else make_workroom(args);
-    if( file_size(DIR_CRES+"/"+nom[0..0]) != -2) mkdir(DIR_CRES+"/"+nom[0..0]);
-    rename(file+__SAVE_EXTENSION__, DIR_CRES+"/"+nom[0..0]+"/"+nom+__SAVE_EXTENSION__);
-    if( file_size(file+__SAVE_EXTENSION__) > -1 ) rm(file+__SAVE_EXTENSION__);
-    write(capitalize(args)+" is now a creator.\n");
+    load_object("/secure/cmds/admins/encre")->cmd(nom);
+    Menu();
     return 1;
 }
 
@@ -699,28 +742,13 @@ mixed DeCre(string args) {
 	Menu();
 	return 1;
     }
-    if( !strsrch(file = save_file(nom), DIR_PLAYERS) ) {
-	Menu();
-	write("You cannot make "+capitalize(args)+" a player.");
-	return 1;
-    }
-    if( ob = find_player(nom) ) {
-	tell_player(nom,"You are about to be demoted to player status. This requires a reset of "+
-	  "your character. You will be disconnected from the mud. When you "+
-	  "reconnect, you will be a player.");
-	ob->eventForce("quit");
-    }
-
-    if( file_size(DIR_PLAYERS+"/"+nom[0..0]) != -2) 
-	mkdir(DIR_PLAYERS+"/"+nom[0..0]);
-    rename(file+__SAVE_EXTENSION__, DIR_PLAYERS+"/"+nom[0..0]+"/"+nom+__SAVE_EXTENSION__);
-
-    if( file_size(file+__SAVE_EXTENSION__) > -1 ) rm(file+__SAVE_EXTENSION__);
-    write(capitalize(args)+" is now a lowly player.");
+    load_object("/secure/cmds/admins/decre")->cmd(nom);
+    Menu();
     return 1;
 }
 
 int RidUser(){
+    validate();
     write("Please enter the name of the player you'd like to erase.\n");
     //write("You will be asked to enter a reason for this ridding.");
     //write("When you have finished, Type a single period on a blank line, ");
@@ -730,6 +758,7 @@ int RidUser(){
 }
 
 int eventRidUser(string str){
+    validate();
     if(!str){
 	write("Invalid entry.\n");
 	Menu();
@@ -747,6 +776,8 @@ int eventRidUser(string str){
 int DoRid(string who) {
     object ob;
     string str;
+
+    validate();
     ridded = lower_case(who);
     str = convert_name(who);
     who = capitalize(who);
@@ -778,6 +809,7 @@ int DoRid(string who) {
 }
 
 int LogRid(string str){
+    validate();
     globalstr = str;
     log_file("rid", "\n" + ridded + " by " + (string)this_player()->GetCapName() + "\n" + str + "\n");
     //unguarded( (: write_file("/log/rid",timestamp()+" "+globalstr) :) );
@@ -787,12 +819,14 @@ int LogRid(string str){
 }
 
 int BanishUser(){
+    validate();
     write("Please enter the name to banish: \n");
     input_to( (: eventBanishUser :) );
     return 1;
 }
 
 int evenBanishUser(string str){
+    validate();
     if(member_array(str,BANISH_D->query_banished()) != -1) {
 	write("That name is already banished.\n");
 	Menu();
@@ -811,12 +845,14 @@ int evenBanishUser(string str){
 }
 
 int UnBanishUser(){
+    validate();
     write("Please enter the name to unbanish: \n");
     input_to( (: eventUnBanishUser :) );
     return 1;
 }
 
 int eventUnBanishUser(string str){
+    validate();
     if(member_array(str,BANISH_D->query_banished()) == -1) {
 	write("That is not a banished name.");
 	Menu();
@@ -829,6 +865,7 @@ int eventUnBanishUser(string str){
 }
 
 int ChangeName(){
+    validate();
     write("Current MUD name is "+mud_name());
     write("Please enter the new name for your MUD:\n");
     input_to( (: eventChangeName :) );
@@ -839,6 +876,7 @@ varargs int eventChangeName(string newname, int automated){
     string *line_array;
     string nameline, newline, newfile, line_string, junk, name;
 
+    validate();
     if(!newname || newname == "") {
 	write("Name change cancelled.\n");
 	Menu();
@@ -894,6 +932,7 @@ varargs int eventChangeName(string newname, int automated){
 }
 
 int ChangePort(){
+    validate();
     write("Current MUD network port is "+query_host_port());
     write("Please enter the new network port for your MUD:\n");
     input_to( (: eventChangePort :) );
@@ -905,6 +944,7 @@ varargs int eventChangePort(string newport, int automated){
     string nameline, newline, newfile, line_string, junk, name;
     int num;
 
+    validate();
     if(!newport || newport == "") {
 	write("Port change cancelled.\n");
 	Menu();
@@ -951,6 +991,7 @@ varargs int eventChangePort(string newport, int automated){
 }
 
 int ShutDownMud(){
+    validate();
     write("Are you sure?");
     input_to( (: eventShutDownMud :) );
     return 1;
@@ -958,6 +999,8 @@ int ShutDownMud(){
 
 int eventShutDownMud(string str){
     string *response_array = ({"yes","ok","y","yeah","yes, please"});
+
+    validate();
     if(!str) str = "no";
     if(member_array(str,response_array) == -1){
 	write("Shutdown cancelled.\n");
@@ -981,6 +1024,7 @@ int eventShutDownMud(string str){
 }
 
 int AddGroup(){
+    validate();
     write("\nCurrent groups file: \n"+read_file("/secure/cfg/groups.cfg")+"\n\n");
     write("\nWhat is the name of the group you'd like to add?\n");
     input_to( (: eventAddGroup :) );
@@ -993,6 +1037,7 @@ int eventAddGroup(string str){
     string *top_array;
     string *bottom_array;
 
+    validate();
     top_array = ({});
     bottom_array = ({});
 
@@ -1044,6 +1089,7 @@ int eventAddGroup(string str){
 }
 
 int RemoveGroup(){
+    validate();
     write("\nCurrent groups file: \n"+read_file("/secure/cfg/groups.cfg")+"\n\n");
     write("\nWhat is the name of the group you'd like to remove?\n");
     input_to( (: eventRemoveGroup :) );
@@ -1056,6 +1102,7 @@ int eventRemoveGroup(string str){
     string *top_array;
     string *bottom_array;
 
+    validate();
     top_array = ({});
     bottom_array = ({});
 
@@ -1113,6 +1160,7 @@ int eventRemoveGroup(string str){
 }
 
 int ModGroup(){
+    validate();
     write("\nCurrent groups file: \n"+read_file("/secure/cfg/groups.cfg")+"\n\n");
     write("\nWhat is the name of the group you'd like to modify?\n");
     input_to( (: eventModGroup :) );
@@ -1122,6 +1170,7 @@ int ModGroup(){
 int eventModGroup(string str){
     string config_file;
 
+    validate();
     if(!str || str == "") {
 	write("\nGroup modification cancelled.\n");
 	Menu();
@@ -1165,6 +1214,7 @@ int eventEditGroup(string members){
     string *bottom_array;
     string *dudes;
 
+    validate();
     top_array = ({});
     bottom_array = ({});
 
@@ -1210,12 +1260,14 @@ int eventEditGroup(string members){
 }
 
 int ShowGroups(){
+    validate();
     write("\nCurrent groups file: \n"+read_file("/secure/cfg/groups.cfg")+"\n\n");
     Menu();
     return 1;
 }
 
 mixed cmd(string args) {
+    validate();
     Menu("main");
     return 1;
 }

@@ -29,7 +29,7 @@ inherit LIB_PAGER;
 inherit LIB_MESSAGES;
 inherit LIB_INTERFACE;
 
-private int Age, WhereBlock, Brief, LoginTime, BirthTime;
+private int Age, WhereBlock, Brief, LoginTime, BirthTime, RescueBit;
 private string Password, Email, RealName, Rank, LoginSite, HostSite, WebPage;
 private mapping News;
 private class marriage *Marriages;
@@ -54,8 +54,14 @@ static void create() {
     BirthTime = time();
     LastAge = time();
     News = ([]);
+    RescueBit = 0;
     SetShort("$N the unaccomplished");
     SetLong("$N is nondescript.");
+}
+
+int SetRescueBit(int i){
+    RescueBit = i;
+    return i;
 }
 
 /* ***************  /lib/interactive.c modal functions  *************** */
@@ -116,8 +122,11 @@ int Setup() {
 	catch(room = load_object(LoginSite));
 	if( room && room->GetMedium() == MEDIUM_AIR ) {
 	}
-	if( !eventMove(LoginSite) ) {
-	    eventMove(LoginSite = ROOM_START);
+	if(!sizeof(LoginSite) || (!file_exists(LoginSite) && !file_exists(LoginSite+".c")) || !load_object(LoginSite) || !eventMove(LoginSite) || RescueBit) {
+	    LoginSite = ROOM_START;
+	    eventMove(ROOM_START);
+	    SetRescueBit(0);
+	    //eventMove(LoginSite = ROOM_START);
 	}
     }
     environment()->eventPrint(tmp, MSG_ENV, this_object());

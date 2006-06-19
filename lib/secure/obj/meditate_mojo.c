@@ -37,32 +37,32 @@ int eventMojofy(){
 }
 
 int damage1(){
-    victim->AddStaminaPoints(random(5)+1);
+    if(victim) victim->AddStaminaPoints(random(5)+1);
     return 1;
 }
 
 int damage2(){
-    victim->AddHP(random(2)+1);
-    victim->AddStaminaPoints(random(5)+1);
+    if(victim) victim->AddHP(random(2)+1);
+    if(victim) victim->AddStaminaPoints(random(5)+1);
     return 1;
 }
 
 int damage3(){
-    victim->AddHP(random(3)+1);
-    victim->AddStaminaPoints(random(5)+1);
+    if(victim) victim->AddHP(random(3)+1);
+    if(victim) victim->AddStaminaPoints(random(5)+1);
     return 1;
 }
 
 int damage4(){
-    victim->AddHP(random(4)+1);
-    victim->AddStaminaPoints(random(5)+1);
+    if(victim) victim->AddHP(random(4)+1);
+    if(victim) victim->AddStaminaPoints(random(5)+1);
     return 1;
 }
 
 void heart_beat(){
-    if(!living(environment())) this_object()->eventDestruct();
+    if(environment() && !living(environment())) this_object()->eventDestruct();
     if(counter == 50){
-	tell_object(environment(),"You feel the effects of your meditation wear off.");
+	if(environment()) tell_object(environment(),"You feel the effects of your meditation wear off.");
 	this_object()->eventMove("/domains/town/room/furnace");
     }
 

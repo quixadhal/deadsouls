@@ -1,0 +1,13 @@
+%^RESET%^Jennybot says, "%^BOLD%^CYAN%^	To examine items more closely, such as a hat, you can type "%^RED%^exa hat%^BOLD%^CYAN%^" or "%^RED%^look at hat%^BOLD%^CYAN%^", or even "%^RED%^l hat%^BOLD%^CYAN%^".
+
+	Some objects can contain other objects, like bags or boxes. If you examine such a container, you will get a description of its exterior. To know what is in it, you must, for example, "%^RED%^look in bag%^BOLD%^CYAN%^".
+
+	To remove something from its container, the command might be "%^RED%^get gun from bag%^BOLD%^CYAN%^"
+
+	Now, we don't promote violence as a positive thing here. That's just a squirt gun in the bag, and nobody can get hurt with it.
+
+	On the outside, you might need a real weapon to defend yourself, as you might in real life. 
+
+	Weapons typically must be wielded to be used. For example "%^RED%^wield squirt gun%^BOLD%^CYAN%^" would enable you to shoot it, and "%^RED%^shoot squirt gun at jennybot%^BOLD%^CYAN%^" would discharge the weapon.
+
+	We strongly discourage the use of lethal force within the administrative building. Attacks are automatically prevented here, and attempted attacks can lead to MUD punishment.%^RESET%^"

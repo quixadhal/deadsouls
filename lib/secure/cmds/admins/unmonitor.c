@@ -6,7 +6,7 @@ inherit LIB_DAEMON;
 int cmd(string str) {
     object ob;
 
-    if(!archp(this_player())) {
+    if(!archp(previous_object())) {
 	write("Only an arch may halt a monitoring process.");
 	return 0;
     }

@@ -1,0 +1,21 @@
+ 
+           N
+           |
+           |  
+     W --------- E    LPC University Virtual Campus Administrative Building
+           |
+           |
+           S  -------------   ------------                  -------------
+              | mail room |   |snack bar |                  | bookstore |
+              -------------   ------------                  -------------
+-----------        |              |                             |
+| Outside |------------------------------------------------------
+-----------        |              |              |              |
+              -------------   -------------  ---------    -------------------
+              | stairwell |   |admissions |  |lounge |    | conference room |
+              -------------   -------------  ---------    -------------------
+
+ Please note that you are safe inside this building, but going
+to The Outside may be hazardous if you are not adequately prepared.
+
+                       

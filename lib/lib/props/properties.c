@@ -21,6 +21,7 @@ mixed AddProperty(string prop, mixed val) {
 
 mixed GetProperty(string prop) {
     return Properties[prop];
+    //else return 0;
 }
 
 mapping GetProperties() {
@@ -42,5 +43,6 @@ mixed SetProperty(string prop, mixed val) {
 }
 
 mapping SetProperties(mapping props) {
-    return (Properties += props);
+    if(sizeof(Properties)) return (Properties += props);
+    else return (Properties = props);
 }

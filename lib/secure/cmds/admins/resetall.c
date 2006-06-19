@@ -12,7 +12,7 @@ int cmd(string str) {
     rooms = filter(objects(), (: inherits(LIB_ROOM, $1) :) );
 
 
-    if(archp(this_player())){
+    if(archp(previous_object())){
 
 	foreach(object room in rooms){
 	    write("Updating: "+base_name(room));

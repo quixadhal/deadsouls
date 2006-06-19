@@ -3,12 +3,11 @@
 inherit LIB_ITEM;
 inherit LIB_READ;
 
+
 int ReadFunc(){
     this_player()->eventPage("/domains/town/txt/map.txt","system");
     return 1;
 }
-
-
 void create(){
     ::create();
     SetKeyName("town map");
@@ -21,4 +20,6 @@ void create(){
     SetVendorType(VT_TREASURE);
     SetRead((: ReadFunc :));
 }
-
+void init(){
+    ::init();
+}

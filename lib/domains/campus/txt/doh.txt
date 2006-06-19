@@ -1,0 +1,16 @@
+   DDDDDDDDDDDDD                            HHHHHHH                  !!!
+   D::::::::::::DDD                         H:::::H                 !:::!
+   D:::::::::::::::DD                       H:::::H                 !:::!
+   DDD:::::DDDDD:::::D                      H:::::H                 !:::! 
+     D:::::D    D:::::D        UUUUUU       H::::H HHHHH            !:::!  
+     D:::::D     D:::::D     UU::::::UU     H::::HH:::::HHH         !:::!
+     D:::::D     D:::::D    U::::::::::U    H::::::::::::::HH       !:::!
+     D:::::D     D:::::D   U:::::UU:::::U   H:::::::HHH::::::H      !:::!
+     D:::::D     D:::::D   U::::U  U::::U   H::::::H   H::::::H     !:::!
+     D:::::D     D:::::D   U::::U  U::::U   H:::::H     H:::::H     !:::!
+     D:::::D     D:::::D   U::::U  U::::U   H:::::H     H:::::H      !:!
+     D:::::D    D:::::D    U::::U  U::::U   H:::::H     H:::::H      !!!
+   DDD:::::DDDDD:::::D     U:::::UU:::::U   H:::::H     H:::::H 
+   D:::::::::::::::DD       U::::::::::U    H:::::H     H:::::H      !!!
+   D::::::::::::DDD          UU::::::UU     H:::::H     H:::::H     !!:!!
+   DDDDDDDDDDDDD               UUUUUU       HHHHHHH     HHHHHHH      !!!

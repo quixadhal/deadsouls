@@ -543,12 +543,36 @@ mixed homedir(object ob){
     else return 0;
 }
 
+varargs mixed alpha_crypt(mixed arg1, mixed arg2){
+    string ret;
+    if(!intp(arg1) && !arg2) return 0;
+    if(intp(arg1)) {
+	if(arg1 > 64) arg1 = 64;
+	ret = crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
+	ret += crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
+	ret = replace_string(ret,"`","");
+	ret = replace_string(ret,"!","");
+	ret = replace_string(ret,"/","");
+	ret = replace_string(ret,".","");
+	return ret[0..(arg1 - 1)];
+    }
+
+    ret = crypt(arg1, arg2);
+    ret = replace_string(ret,"`","");
+    ret = replace_string(ret,"!","");
+    ret = replace_string(ret,"/","");
+    ret = replace_string(ret,".","");
+
+    return ret;
+}
+
+
 varargs string generate_tmp(mixed arg){
     string ret;
-    string randy = replace_string(replace_string(crypt(""+random(88)+11,""+random(88)+11),"/","XXX"),".","YYY");
+    //string randy = replace_string(replace_string(crypt(""+random(88)+11,""+random(88)+11),"/","XXX"),".","YYY");
+    string randy = alpha_crypt(8);
 
     if(!arg) return "/open/"+time()+".c";
-
 
     if(objectp(arg) && this_player() && creatorp(this_player()))
 	ret = homedir(this_player())+"/tmp/"+last_string_element(base_name(arg),"/")+randy+time()+".c";
@@ -570,6 +594,7 @@ varargs string generate_tmp(mixed arg){
     else if(creatorp(this_player())) ret = homedir(this_player())+"/tmp/"+randy+time()+".tmp";
 
     else ret = "/open/"+randy+time()+".c";
+    //tc("generate_tmp ret: "+ret);
     return ret;
 }
 

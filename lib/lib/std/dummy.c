@@ -22,10 +22,10 @@ inherit LIB_SMELL;
 inherit LIB_TOUCH;
 
 /* ***************** dummy.c attributes ***************** */
+
 int isDummy() {
     return 1;
 }
-
 varargs string array SetId(mixed ids...) {
     ids = id::SetId(ids);
     if( sizeof(ids) && !GetKeyName() ) {
@@ -36,7 +36,6 @@ varargs string array SetId(mixed ids...) {
     }
     return ids;
 }
-
 varargs int GetInvis(object ob) {
     return 1;
 }
@@ -56,7 +55,6 @@ static int Destruct() {
     }
     else return clean::Destruct();
 }
-
 mixed eventMove(mixed dest) {
     object ob;
     string str;

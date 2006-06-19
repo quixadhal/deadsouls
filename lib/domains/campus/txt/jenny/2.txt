@@ -1,0 +1,5 @@
+%^RESET%^Jennybot says, "%^BOLD%^CYAN%^	First, the most basic stuff: Your computer is connected to our computer via the Internet. This connection is kind of like the World Wide Web, except, as you see, there are no pictures. Just text.
+
+	When you connected to our computer, you logged on to a program we are running. This program is what the LPC University Virtual Campus is made of.
+
+	LPC University is a MUD, which is kind of like a chat program, where you type stuff and can communicate with other people. When I refer to "the MUD", I'm talking about that program. MUD stands for "Multi User Domain".%^RESET%^"

@@ -188,14 +188,14 @@ mixed eventThrow(object who, object target) {
 	  ".", ({ who, target }) );
 	skill = (who->GetSkillLevel("projectile attack") +
 	  who->GetStatLevel("coordination"));
-	tc("skill: "+skill);
+	//tc("skill: "+skill);
 	skill -= (target->GetSkillLevel("projectile defense") +
 	  target->GetStatLevel("agility"))/2;
-	tc("skill: "+skill);
+	//tc("skill: "+skill);
 	if( GetWeaponType() != "projectile" ) {
 	    skill = skill/2;
 	}
-	tc("skill: "+skill);
+	//tc("skill: "+skill);
 	if( skill > random(100) + 1 ) {
 	    who->AddSkillPoints("projectile attack",
 	      target->GetSkillLevel("projectile defense") *

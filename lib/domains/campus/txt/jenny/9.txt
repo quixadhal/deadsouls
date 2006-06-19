@@ -1,0 +1,7 @@
+%^RESET%^Jennybot says, "%^BOLD%^CYAN%^	The manipulation of these virtual objects is usually a pretty intuitive process. The "%^RED%^examine thing%^BOLD%^CYAN%^" description usually gives you the clues you need to use a thing.
+
+Sometimes, though, you have more than one of a similar object. If you're carrying two apples, for example, you might want to specify which one you want to eat.
+
+You don't want to make yourself sick by eating the rotten apple, but if you just type "%^RED%^eat apple%^BOLD%^CYAN%^", the MUD doesn't know which one you mean. Usually your command won't be executed, and you will be asked which one of the objects you mean. 
+
+In this case, let's get rid of the bad apple. type "%^RED%^put rotten apple in bin%^BOLD%^CYAN%^". There is a recycling bin here, where all kinds of objects can be vaporized and their bits reused. Don't worry, living beings can't enter it.%^RESET%^"

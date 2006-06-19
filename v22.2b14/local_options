@@ -22,7 +22,7 @@
 #undef OLD_RANGE_BEHAVIOR
 #undef OLD_ED
 #undef SENSIBLE_MODIFIERS
-#undef CUSTOM_CRYPT
+#define CUSTOM_CRYPT
 #undef COMPAT_32
 #define STRING_STATS
 #define ARRAY_STATS

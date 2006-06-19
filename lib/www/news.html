@@ -17,7 +17,157 @@
 Dead Souls News
 Page</big></big></big><br>
 </div>
-<hr style="width: 100%; height: 2px;"><br>
+<hr style="width: 100%; height: 2px;">
+<div style="text-align: left;"><br>
+<a name="16jun06"></a><span style="font-weight: bold;">16 June 2006</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; As usual, good news and bad news. The good news
+first. Tacitus<br>
+helped discover a serious security flaw in Dead Souls. Woot!<br>
+Congratulations to him for being clever, and thanks for<br>
+helping secure DS.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The bad news is that all versions of DS are
+affected, so<br>
+you should lock your DS muds (using admintool) and avoid<br>
+promoting anyone to a Creator position until the patch<br>
+is in place. Hopefully I'll be able to cook something up<br>
+this evening.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The other bad news is that I found Tacitus trying<br>
+to delete log files on the dev Dead Souls mud. I think I<br>
+was fortunate that he missed a couple of details in rooting<br>
+me, so he failed. However, until I can account for every<br>
+free inode with recovery software, the dev mud will<br>
+be locked also. Sadface.<br>
+<br>
+&nbsp;&nbsp;&nbsp; For some reason, he also chose to go online and
+announce<br>
+the details of the flaw without giving me a chance to<br>
+address it. This means you are rather exposed, so please<br>
+make sure to only allow <span style="font-weight: bold;">very</span>
+trusted people to Creator postions.<br>
+<br>
+<br>
+<br>
+<span style="font-weight: bold;"><a name="13jun06"></a>13 June 2006</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; The <a href="http://dead-souls.net/router.html">I3
+router box</a> suffered a storage subsystem failure:<br>
+around 8pm the fiber array crapped out and took down the raid volume<br>
+the I3 router mud was on. As of 9:20 I3 is back up.<br>
+<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"><a
+ name="09jun06"></a></span><span style="font-weight: bold;">09 June 2006</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; ROXOR. I discussed with Marius the MudOS bundling<br>
+question. <a
+ href="http://dead-souls.net/articles/copyright.html#Marius">Here's the
+scoop</a>.<br>
+<br>
+<br>
+<br>
+<a name="06jun06"></a><span style="font-weight: bold;">06 June 2006</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; I am so delighted I could pop any moment. Earlier<br>
+today I checked the LPU forums while at a work site, <br>
+and was just blown away to see Saquivor had solved<br>
+the Windows sockets problem. I was all smiles, and<br>
+could barely wait to get to my desk to poke at it.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Then...sadface. It looked like we solved the
+technical<br>
+problem of networking, but the next problem involved GPL<br>
+code. MinGW used libcrypto that I could not be sure<br>
+was not GPL, and the native Win32 binary we made required<br>
+that dll.<br>
+<br>
+&nbsp;&nbsp;&nbsp; In a burst of uncharacteristic optimism, I went<br>
+about seeing if I could obviate the GPL library in<br>
+question, and eventually solved the problem by using<br>
+the MudOS built-in MD5 hash auth mechanism. JOY. I<br>
+had to get pretty violent with the crypto code, but<br>
+it appears to work well, and is far more secure than<br>
+the old system.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The only drawback is that new passwords are not
+compatible<br>
+with old passwords. A driver change will mean some<br>
+pain. Fortunately this is an unusual situation.<br>
+<br>
+&nbsp;&nbsp;&nbsp; In the interest of cross-platform compatibility I <br>
+plan to make the Unix side of the DS distro MD5 auth<br>
+also. This will probably happen in the release following<br>
+the release I plan to make this evening.<br>
+<br>
+<br>
+<br>
+<a name="05jun06"></a><span style="font-weight: bold;">05 June 2006</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; I spent the entire weekend hacking at MudOS to<br>
+try to compile a native Win32 binary. I made a solid<br>
+amount of progress, and I'm almost there, but I<br>
+need help. <a href="http://dead-souls.net/win32/">Please see if you
+can lend a hand</a>.<br>
+<br>
+&nbsp;&nbsp;&nbsp; I called RedHat bright and early today, to get<br>
+in touch with the Cygwin licensing people. Predictably,<br>
+I got no straight answers, and I am now officially waiting<br>
+for a call beck from a Sales Rep named Mike within<br>
+then next two to three business days.<br>
+<br>
+&nbsp;&nbsp;&nbsp; What do you suppose are the chances that a Sales<br>
+representative will offer me what I want for free?<br>
+----<br>
+<br>
+&nbsp;&nbsp;&nbsp; He got back to me! And the verdict is:<br>
+<br>
+<span style="font-style: italic;">" That license costs 25K per
+year.&nbsp; I did not mention it as an option
+because you mentioned you we looking for a free/low cost option. The
+Buyout license doesn't qualify.</span><br style="font-style: italic;">
+<span style="font-style: italic;">Mike "<br>
+----<br>
+<br>
+&nbsp;&nbsp;&nbsp; </span><span style="font-weight: bold;">CASE CLOSED.</span><span
+ style="font-style: italic;"><br>
+</span></div>
+<br>
+<br>
+<div style="text-align: left;"><a name="03jun06"></a><span
+ style="font-weight: bold;">03 June 2006</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; The good news is that version 2.0r24 of Dead Souls<br>
+is now available for <a
+ href="http://sourceforge.net/project/showfiles.php?group_id=148388">download
+from Sourceforge</a>.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The bad news is that thanks to <a
+ href="http://mudconnector.com/discuss/discuss.cgi?mode=MSG2&amp;area=promotions&amp;page=2&amp;message=15212">another
+observation<br>
+from that member of the mud community</a>, it's come to my<br>
+attention that despite my best efforts, the Windows <br>
+version of Dead Souls *still* may violate GPL.<br>
+<br>
+&nbsp;&nbsp;&nbsp; I am erring on the side of caution and have unbundled<br>
+the Windows binary and Cygwin dll's from the Dead Souls<br>
+distribution.<br>
+<br>
+&nbsp;&nbsp;&nbsp; I very much hope to have a Windows solution soon,<br>
+as a substantial number of the Dead Souls userbase<br>
+is on Windows, and presumably there are other folks<br>
+interested in using it.<br>
+<br>
+&nbsp;&nbsp;&nbsp; If you can provide me with instructions on how to<br>
+make a non-license-violating MudOS binary, or if<br>
+you wish to provide me that binary already compiled,<br>
+I'd be delighted to accept that contribution for<br>
+consideration.<br>
+<br>
+Until then, hang tight. We'll figure something out.<br>
+<br>
+</div>
 <br>
 <div style="text-align: left;"><span style="font-weight: bold;"><a
  name="01Jun06"></a>01Jun06</span><br>
@@ -94,36 +244,9 @@ Create a login, and chat a bit. Liven the place up.<br>
 <hr style="width: 100%; height: 2px;"></div>
 </center>
 <center style="font-family: courier new,courier,monospace;"><a
- style="font-weight: bold;" href="index.html"><span
+ style="font-weight: bold;" href="http://dead-souls.net/"><span
  style="text-decoration: underline;">Dead Souls Home</span></a><span
- style="font-weight: bold;"> /&nbsp;</span><a style="font-weight: bold;"
- href="http://www.mudmagic.com/codes/download/lpc/mudos/dead_souls"><span
- style="color: rgb(51, 204, 0);"></span></a><a
- style="font-weight: bold;" href="./ds-faq.html">Dead Souls FAQ</a><span
- style="font-weight: bold;"> /</span><a style="font-weight: bold;"
- href="./ds-admin-faq.html"> Read
-the<span style="font-style: italic;"></span> Admin FAQ</a><span
- style="font-weight: bold;"> / <a style="font-weight: bold;"
- href="ds-creator-faq.html">Creator FA</a><span
- style="font-weight: bold;"><span style="text-decoration: underline;"><a
- href="ds-creator-faq.html">Q</a></span><a href="ds-creator-faq.html"> </a>/</span><span
- style="font-weight: bold;"></span><span style="font-weight: bold;"></span><a
- style="font-weight: bold;" href="example.html"> The Quick Creation
-System</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><big><big><big><small><small
- style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
-</small></small></big></big></big><br>
-<center>
-<div style="text-align: left;">
-<div style="text-align: center;">
-<div style="text-align: left;">
-<hr style="width: 100%; height: 2px;"></div>
-<div style="text-align: left;"><span style="font-weight: bold;"></span></div>
-</div>
-</div>
-</center>
-<font size="+3"><small><small>Standard
-disclaimers about installing
-stuff at your own risk apply.</small></small></font>
+ style="font-weight: bold;">&nbsp;</span>
 </center>
 </body>
 </html>

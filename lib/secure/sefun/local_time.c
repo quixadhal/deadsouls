@@ -3,6 +3,7 @@
 */
 
 #include <lib.h>
+#include <privs.h>
 #include <config.h>
 #include <daemons.h>
 
@@ -68,7 +69,8 @@ string set_tz(string str){
 	return "Invalid time zone.";
     }
     tz = str;
-    if(!archp(this_player())) return "You're not permitted to do this.";
+    if( !((int)master()->valid_apply(({ "PRIV_ASSIST", "PRIV_SECURE" }))) ) 
+	error("Illegal attempt to modify timezone: "+get_stack()+" "+identify(previous_object(-1)));
     unguarded( (: write_file("/cfg/timezone.cfg",tz,1) :) );
     return "Mud time zone is now "+read_file("/cfg/timezone.cfg");
 }

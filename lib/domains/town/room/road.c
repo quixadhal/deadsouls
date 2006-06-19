@@ -4,7 +4,7 @@ static void create() {
     room::create();
     SetClimate("outdoors");
     SetAmbientLight(30);
-    SetShort("Tavern Road");
+    SetShort("Saquivor Road");
     SetLong("You are on a well-traveled road leading north-south "
       " through the village.  To the east is the entrance to the " 
       "Village Pub, a time-honored traditional gathering place for "
@@ -40,7 +40,7 @@ static void create() {
 	"guild" : "/domains/town/room/healer",
 	"healers guild" : "/domains/town/room/healer"
       ]) );
-    SetNoModify(1);
+    SetNoModify(0);
 
 }
 

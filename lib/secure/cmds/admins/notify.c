@@ -12,6 +12,8 @@ varargs private void eventNotify(object who, string text);
 mixed cmd(string str) {
     object ob = previous_object();
     string who;
+
+    if(!archp(previous_object())) return 0;
     if( !ob ) return 0;
     who = (string)ob->GetKeyName();
     if( sizeof(str) ) {

@@ -10,6 +10,7 @@ inherit LIB_DAEMON;
 mixed cmd(string str) {
     string file;
 
+    if(!archp(previous_object())) return 0;
     if( !sizeof(str) ) return "Unrid whom?";
     str = convert_name(str);
     file = DIR_RID + "/" + str + __SAVE_EXTENSION__;
@@ -24,7 +25,7 @@ mixed cmd(string str) {
 	return 1;
     }
     this_player()->eventPrint("Unrid successful.");
-    PLAYERS_D->AddPlayerInfo(str);
+    PLAYER_D->AddPlayerInfo(str);
     return 1;
 }
 

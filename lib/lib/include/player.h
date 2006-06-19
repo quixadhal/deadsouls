@@ -21,7 +21,7 @@ int cmdSearch(string str);
 int cmdTouch(string str);
 
 int eventDisplayStatus();
-varargs int eventDie(object agent);
+varargs int eventDie(mixed agent);
 mixed eventAsk(object who, string what);
 void eventRevive();
 varargs int eventShow(object who, string str);

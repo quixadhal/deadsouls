@@ -71,6 +71,14 @@ int inventory_visible() {
     return !GetClosed();
 }
 
+int SetOpen(int x) {
+    if(x) Closed = 0;
+    else Closed = 1;
+    parse_refresh();
+    return Closed;
+}
+
+
 mixed direct_close_obj(object target) {
     return CanClose(this_player());
 }

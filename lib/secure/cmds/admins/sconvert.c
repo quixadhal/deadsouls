@@ -11,6 +11,7 @@ string ConvertLine(string str, int change, int line, string search)
     string s1, s2, cut, n, tmp;
     int a, b, val;
 
+    if(!archp(previous_object())) return 0;
     while( (a = strsrch(str, search)) > -1 ) {
 	tmp = str[a..];
 	b = strsrch(tmp, ")");
@@ -35,6 +36,7 @@ void Convert(string s, int change) {
     string *files, *tmp;
     int i;
 
+    if(!archp(previous_object())) return 0;
     if( !sizeof(s) ) args = "*.c";
     else args = s;
     files = (string *)this_player()->wild_card(args);
@@ -69,6 +71,8 @@ void Convert(string s, int change) {
 mixed cmd(string str) {
     string files;
     int change;
+
+    if(!archp(previous_object())) return 0;
     if( !sizeof(str) || (sscanf(str, "%s %d", files, change) != 2) || !change) {
 	GetHelp(0);
 	return 1;

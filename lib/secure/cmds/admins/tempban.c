@@ -14,7 +14,7 @@ int cmd(string str) {
     string site;
     int time;
 
-    if(!archp(this_player())) return 0;
+    if(!archp(previous_object())) return 0;
 
     if(!str) {
 	write("The following sites are on temporary registration:\n"+

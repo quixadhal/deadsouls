@@ -45,7 +45,7 @@ void eventReceiveWhoRequest(mixed *packet) {
 void eventSendWhoRequest(string mud) {
     string who;
 
-    who = (string)this_player(1)->GetName();
+    who = (string)this_player(1)->GetKeyName();
     INTERMUD_D->eventWrite(({ "who-req", 5, mud_name(), who, mud, 0 }));
     tn("eventSendWhoRequest: "+identify( ({ "who-req", 5, mud_name(), who, mud, 0 })), "blue");
 }

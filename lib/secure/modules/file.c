@@ -284,6 +284,9 @@ int eventAddInit(string file){
     globalstr = tmpfile;
     globalstr2 = file;
 
+    //if(file == "/lib/std/dummy.c" || file == LIB_DUMMY || (load_object(file) && inherits(LIB_DUMMY, load_object(file))) ) return 0;
+    //if(file == "/lib/std/dummy.c" ) return 0;
+
     if(file_exists(file) && !check_privs(this_player(),file)){
 	write("You do not appear to have access to this file. Modification aborted.");
 	return 1;

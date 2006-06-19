@@ -1,0 +1,24 @@
+/*    /domains/Midian/etc/key.c
+ *    from the Nightmare Object Library
+ *    created by Descartes of Borg 960512
+ */
+
+#include <lib.h>
+
+inherit LIB_ITEM;
+
+
+static void create() {
+    item::create();
+    SetKeyName("key");
+    SetId( ({ "key", "special_key_id" }) );
+    SetAdjectives( ({ "brilliant", "silver" }) );
+    SetShort("a silver key");
+    SetLong("It is a brilliant silver key with no markings.");
+    SetMass(50);
+    SetDollarCost(15);
+    SetDisableChance(90);
+}
+void init(){
+    ::init();
+}

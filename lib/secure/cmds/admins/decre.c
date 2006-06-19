@@ -17,9 +17,8 @@ mixed cmd(string args) {
     object *inv;
     string nom, file;
 
-    if(!archp(this_player())){
-	return "Don't be a fool.";
-    }
+if( !((int)master()->valid_apply(({ "PRIV_ASSIST", "PRIV_SECURE", "LIB_CONNECT" }))) )
+        error("Illegal decre attempt: "+get_stack()+" "+identify(previous_object(-1)));
 
     if( args == "" || !stringp(args) ) 
 	return "Who do you want to make a player?";

@@ -206,5 +206,10 @@ int domain_admin(string pretender, string domain);
 int compare_array(mixed *arr1, mixed *arr2);
 int arrcmp(mixed *arr1, mixed *arr2);
 string append_line(string file, string *params, string repl);
+varargs mixed alpha_crypt(mixed arg1, mixed arg2);
+void set(mixed arg1, mixed arg2);
+void query(mixed arg1, mixed arg2);
+void personal_log(string str);
+void add_sky_event(function f);
 
 #endif /* l_sefun_h */

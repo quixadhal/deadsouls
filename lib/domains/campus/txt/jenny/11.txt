@@ -1,0 +1,3 @@
+%^RESET%^Jennybot says, "%^BOLD%^CYAN%^	Other very common commands are "%^RED%^score%^BOLD%^CYAN%^" to let you know your general condition, and "%^RED%^status%^BOLD%^CYAN%^" to give you a specific readout of your health and stamina. hp are health points, and it they reach zero, your body dies.
+
+	Sp are stamina points. If they reach zero, you will be unable to do anything for a while, until you rest and your strength returns. Mp are mana points, which are a little too complicated for me to explain right now. If you don't already know what they are, you don't have to worry about them. Just trust me on that.%^RESET%^"

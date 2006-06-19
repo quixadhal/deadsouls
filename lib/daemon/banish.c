@@ -156,6 +156,7 @@ string *query_registered() {
 } 
 
 void banish_name(string str) { 
+    if(!valid_access(previous_object())) return;
     unguarded( (: log_file, "banish", 
 	(string)this_player()->GetName() + " banished " + str + "." :) );
     __Names = distinct_array(__Names + ({ lower_case(str) })); 

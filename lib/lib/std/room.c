@@ -27,6 +27,7 @@ inherit LIB_PROPERTIES;
 inherit LIB_AMBIANCE;
 inherit LIB_READ;
 inherit LIB_SAVE;
+inherit LIB_MONEY;
 
 private function        Bury          = 0;
 private string          Climate       = "temperate";
@@ -280,7 +281,7 @@ void RemoveItem(mixed item) {
 }
 
 void SetItems(mixed items) {
-    DummyItems->eventDestruct();
+    if(sizeof(DummyItems)) DummyItems->eventDestruct();
     DummyItems = ({});
     if( arrayp(items) ) {
 	items->eventMove(this_object());
@@ -698,7 +699,7 @@ mixed SetProperty(string prop, mixed val) {
 	if( !val ) return val;
 	if( GetClimate() == "indoors" ) {
 	    if( val < 0 ) return val;
-	    else return SetAmbientLight(val*13);
+	    else return ambiance::SetAmbientLight(val*13);
 	}
 	else {
 	    if( val < 0 ) return SetShade(-val);

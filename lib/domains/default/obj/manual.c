@@ -5,8 +5,8 @@ inherit LIB_BOOK;
 void create(){
     ::create();
     SetKeyName("creator's manual");
+    SetId( ({"manual", "book", "creators manual"}) );
     SetAdjectives( ({"creator", "creators", "coder", "coders"}) );
-    SetId( ({"manual", "book"}) );
     SetShort("a Creator's Manual");
     SetLong("This is a manual for creators and admins. "
       "To read it, you must read the chapters in it. For example, \"read "

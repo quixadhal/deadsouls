@@ -9,6 +9,7 @@ mixed cmd(string str) {
     string ret;
     float x, fraction;
 
+    if(!archp(previous_object())) return 0;
     info = rusage();
     cles = keys(info);
 

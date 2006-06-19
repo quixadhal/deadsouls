@@ -78,6 +78,7 @@
 #include "/secure/sefun/ascii.c"
 #include "/secure/sefun/wild_card.c"
 #include "/secure/sefun/compare_array.c"
+#include "/secure/sefun/legacy.c"
 
 
 object find_object( string str ){

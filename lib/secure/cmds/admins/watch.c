@@ -6,6 +6,7 @@ inherit LIB_DAEMON;
 int cmd(string str) {
     string which, nom;
 
+    if(!archp(previous_object())) return 0;
     if(!str) {
 	notify_fail("Watch which name or site?\n");
 	return 0;

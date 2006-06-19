@@ -155,17 +155,12 @@ static void create() {
 
     SetListen("default", "You can faintly hear a low hum coming from the walls.");
     SetListen( ({"wall","walls"}), "You hear a low throbbing sound, as if from machinery.");
-    ob = new("/lib/bboard");
-    ob->SetKeyName("chalkboard");
-    ob->SetId( ({ "board", "chalkboard" }));
-    ob->set_board_id("admin_board");
-    ob->set_max_posts(30);
-    ob->SetShort("The Arch Board");
-    ob->SetLong("This is the Arch board. You know how to use it.");
-    ob->eventMove(this_object());
+    SetInventory( ([
+	"/secure/obj/arch_board" : 1,
+      ]) );
 }
 int CanReceive(object ob) {
-    if( living(ob) && !archp(ob)  ){
+    if( !archp(ob)  ){
 	message("info","The arch room is available only to "+
 	  "admins, sorry.",ob);
 	return 0;

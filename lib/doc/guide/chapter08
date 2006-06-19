@@ -1,50 +1,346 @@
-chapter 8 "Privacy"
+chapter 8 "Understanding the Lib"
 
-    One of the most powerful and most easily abused tools
-in your administrative arsenal is the snoop command. When
-you "snoop <person>", you get to see everything they
-say and do.
-    Players usually find this intrusive and objectionable,
-and it is ethically shaky to do this without their 
-knowledge and consent. The only circumstances under which
-snooping is unambiguously ethical are:
+    One of the most common questions I get goes something
+like this: "I'd like to change combat so that it is
+turns-based, with actions. How would I do this?" Another 
+example might be "I'm setting up a farming system, with
+livestock and stuff. What should I look at?"
 
-* Snooping one of your own test characters.
+    To me, the questions are the same. Translated into
+my language, this is the meaning: "I have great ideas that
+require advanced knowledge of the lib to implement. How do I do it?" 
 
-* Snooping a player (with their consent) for the purposes of
-troubleshooting a bug.
+    I'm usually at a loss when I get one of these, because
+I want to set people straight, but I don't want to hurt 
+their feelings, either. In the FAQ's, my response is
+something along the lines of:
 
-* Snooping a user (without their consent) to investigate
-a legitimate suspicion of malfeasance.
+"If there's anything in the Creator's Manual you don't
+understand, you aren't ready to try this."
 
-    Secretly snooping people for your personal amusement is
-just flat wrong. 
+    I hate to say that, because I think it's probably discouraging
+to hear. After all, whatever the project, it is very likely
+doable. You can make an LP mud do pretty much anything
+you want...that's the beauty of the flexibility of LPC.
+    However, as they say, with great power comes great responsibility,
+and in this case, it is your responsibility to understand the
+lib, if you want to make major changes to it. Let's take the
+example of farming.
 
-    By default, only admins can snoop. Admins are players who
-are members of one or both of the groups SECURE and ASSIST. 
+Section I: Verbs
+----------------
 
-    An assistant admin *cannot* snoop a full admin. However,
-assistant admins have read access to the snoop log directory,
-so if global monitoring is enabled, they can read the
-contents of a full admin's monitor log.
+    It is critical to understand how verbs work in order to
+do anything in Dead Souls of an advanced nature. Verbs are
+basically commands that do something to your environment, 
+something in your environment, your "body", or something
+in your inventory.
 
-    The new SNOOP_D system allows for the simultaneous
-snooping of multiple people, and allows multiple people to
-snoop the same person. It also permits you to enable 
-monitoring of users without having to snoop, by using the
-monitor command to log i/o to /secure/log/adm.
+    For example, "who" is not a verb. It's a standard command,
+which doesn't act on any cloned items. All it does is communicate
+with the lib to query the list of users logged on, and displays
+it to you in a particular manner.
 
-    The GLOBAL_MONITOR parameter in config.h will take one of three
-arguments. 0 = monitor nobody. 1 = monitor everyone. 2 = monitor
-everyone except admins. After changing it, reboot the mud
-to make sure the change takes effect.
+    Then there's something like "zap". That *is* a verb, and
+it takes cloned items as arguments. When you "zap orc" this
+has a special meaning to the parsing system. The parser is the
+part of the game driver that tries to interpret your input
+and attempts to do something useful with it. When the parser
+catches a verb at the beginning of your input, it gets to
+work on figuring out how the rest of the words in the input
+relate to that verb.
 
-    This functionality isn't here for your entertainment. In
-fact, I had to think long and hard before sharing my snoop
-code with you and putting it in the general lib distribution.
+    This is done through "rules". You can take a look
+at /verbs/creators/zap.c for the specific rules in this case.
+If the word or words (for example "first orc", "orcs", "an orc")
+match one or more objects in the room, the parser then
+sends the arguments to the verb object. The verb object is
+the loaded code from /verbs/creators/zap.c in this case.
 
-    In the end, though, I believe that the benefits outweigh
-the risk of abuse. As an admin, you have the right to know
-what's going on in your lib, and as a lib coder, it isn't
-my business to interfere with that.
+    Depending on how the verb is coded, your command line will
+succeed or fail.
+
+    For your new farming system, you're going to need some new
+verbs, so the first thing you need to do is understand verbs.
+You're going to have to build new verbs like "plow", and "plant",
+and "harvest". Therefore, you'll need to go over the verb
+tutorial, which is at http://dead-souls.net/verbs.html
+
+
+Section II: Lib Event Objects
+-----------------------------
+
+    In the verb tutorial, you read that when a verb acts on
+an object, the parser requires that the object have a function
+that handles that verb. If a chair object lacks a function
+like direct_sit() or something similar, the parser will assume
+your sit verb doesn't apply to chairs, and the command line
+will fail with something like "You can't sit on the chair".
+
+    It would be incredibly tedious to have to code a sit verb
+handler in every piece of furniture you create. Similarly,
+your farmer's field plow *could* have a plow verb handler
+coded in it, but it is much better to create a lib object that
+your plow will inherit. That way, other objects can inherit
+that functionality without having to reinvent the wheel, and
+plowing in general will be a uniform experience across the mud.
+
+    For example, one of the first systems I made when
+I started my lib obsession was the inheritable flashlight 
+system. The original Dead Souls lib had regular old torches
+you'd light with a match, but it seemed to me that not every
+Dead Souls mud would be Sword & Sandals style, and a modern
+illumination system should be available. So I set about
+making a "turn" verb, so that once I had flashlights,
+you could "turn on the flashlight".
+
+    I then created the lib object /lib/events/turn.c (when
+referring to lib objects, I often use the macro name. In
+this case, if I'd said LIB_TURN, it would be the same thing
+as saying /lib/events/turn.c). The lib object doesn't really
+*do* much of anything. That object isn't really where you
+need to be checking for validity of commands. What that
+object does, almost *all* it does, is to have functions that
+correspond to the verb "turn". That's it. It's kind of like
+a socket for a plug. The verb is the plug and you're trying
+to use it on something. If that something has a socket
+that fits your plug, then it'll work.
+
+    Lib event objects come in different flavors, and some
+really do perform a bunch of thinking. But for the most part,
+for simple verbs, all you need is a lib event object that
+says "yes, I understand that verb". 
+
+    LIB_TURN is inherited by LIB_FLASHLIGHT. That means
+that when you clone an object that inherits LIB_FLASHLIGHT,
+it contains all the functions of /lib/flashlight.c plus
+all the functions that LIB_FLASHLIGHT inherits from LIB_TURN.
+
+    Because your flashlight inherits LIB_FLASHLIGHT, 
+which inherits LIB_TURN, when you issue the command line
+"turn on flashlight", the parser checks with the
+flashlight to see if it knows what you're talking about,
+and gets a "yes, I know that verb" response. At that point
+the parser says "fine, here's the rest of what this
+player thinks he can do with you and the turn verb" and now
+it's up to LIB_FLASHLIGHT to figure out whether it has
+enough batteries, of the right kind, with sufficient
+charge, and so on.
+
+    For your new farming system, you'll need to implement
+a similar scheme. Your "plow" and "hoe" verbs will need
+lib event objects that can be inherited by the cloned
+objects you want to plow and hoe with.
+
+    In this case, LIB_FLASHLIGHT and the turn verb
+aren't the best models for your new plowing system. This
+is because your plow is something you plow *with*,
+as opposed to something that *is plowed*. 
+
+    To see how a plowing system might be implemented,
+take a look at the "dig" verb, LIB_DIGGING, and
+LIB_DIG_WITH. This is what a shovel would use, so
+that you can "dig in sand with the shovel". After
+studying the dig system, and lots of trial and error,
+you will hopefully eventually come up with a
+plow system that will let you "plow field with plow",
+for example.
+
+
+Section III: Daemons
+--------------------
+
+    So, now you've created a plow verb, and a plow lib
+event object, it works, and now you're happily plowing
+along. Let's say that the rooms field1.c and field2.c
+are plowable rooms. Presumably, you don't want people
+to be able to plow here all the time. The fields need
+time to do their thing, and constant plowing would
+slow down the growth of your tender young corn stalks.
+
+    Normally, you might deal with this by having
+a local variable in the room, so that "harvest time is
+50 hours, unless someone plows again, which
+makes it take longer", this sort of thing. Let's call
+that variable PlowedTimes. 
+
+    But, oh noes! The mud rebooted! Now all the rooms
+have reset, and the planting and plowing variables
+have reset!
+    You might avoid this problem by just not rebooting,
+but even if you manage never ever to reboot your mud,
+the mud periodically does resets of unused objects,
+retiring them from memory and resetting their values
+to zero.
+    You might avoid *that* problem by setting your
+fields to be "NoClean", to avoid resets, but this is
+very inelegant. Rather than ensuring the integrity
+of your game data, you're just crossing your fingers
+and hoping it doesn't go away.
+
+    The solution is to use a daemon. A daemon is an
+object loaded into memory that acts like an arbiter
+of information. For example, STARGATE_D keeps track
+of where stargates are, and which gates are in 
+what state, and which gates are connected to each
+other. It is important to have one location where
+this data can be accessed, because a new gate must
+be able to know what other valid gates there are, and
+it must be able to know what gates are idle and
+therefore accessible. STARGATE_D is a central
+repository of this data, and serves as a mediator
+for connection requests, keeping things working right.
+
+    In this case, the daemon's job would be to
+keep track of which fields have been plowed, how
+many times, and how long it'll take to get to harvest
+time. Dead Souls daemons typically use object
+persistence files ( http://dead-souls.sourceforge.net/ds-admin-faq.html#80 )
+to avoid losing information during object reloads or
+mud reboots. A FARMING_D is exactly what you need to
+keep track of and manage this kind of data.
+
+
+Section IV: Skills
+------------------
+
+    To what extent should people be able to plow? How
+well should they do it? If you care enough about farming
+to have come this far, you've probably got ideas about
+what good plowing is and what criteria a player should
+have for extracting the most from their land.
+
+    This is where skills can play an important role.
+What you have to understand about skills is that they
+are simply variables in a player's body. Skills don't
+have to be gained by joining a class, guild, or being
+member of a race. Adding a skill to a player is as 
+simple as having an object do something like this:
+
+this_player()->SetSkill("scuba diving",1);
+
+    And if just strapping on a scuba tank does it, then
+now that player has that skill.
+
+    Now, *normally* players are granted skills through
+something more sensible than just picking up an object.
+It makes more sense to have skills granted when a
+player is taught something by an npc, or joins a guild,
+or whatever, which is why traditionally that's how
+it has worked.
+
+    So let's say you have a Farmer's Guild, then. When
+you show up and sign the registry, some npc pops out,
+"teaches" you the farming skills you need (by simply
+adding the skills "farming" and "plowing" and "sowing"
+to the player) and now you have the skills. If you
+want, you can even create a Farmer class, like Fighters,
+but that's up to you and not in the scope of this chapter.
+
+    This plowing skill is totally useless right
+now. It does nothing at all, because you haven't yet
+coded anything that makes use of it. This is the key
+concept of the skills system that you must understand.
+
+    Just giving a player a skill does not mean that
+it has any use. For a skill to be useful, there
+must be lib verbs and/or objects that evaluate the
+skill and perform calculations based on it.
+
+   It is therefore time to add these skill checks to the
+objects that need them. For example, suppose our
+farmer's plowing skill is at level 5. This doesn't
+mean he's a level 5 player necessarily, just that
+at plowing, his skill level is 5.
+    You might have a function in your /verbs/items/plow.c
+verb that checks that skill, and determines how long
+the field will take to grow based on it. Perhaps
+for a level 5 plower, the field will be ready for
+harvest in 45 hours. Perhaps for a level 10 plower,
+it would be 35. You might have either the plow verb
+or the plow lib event object do something like:
+
+int PlowFunction(string field){
+int skill_level = this_player()->GetSkillLevel("plowing");
+
+if(skill_level) skill_level *= 2;
+else skill_level = 1;
+FARMING_D->eventModHarvestTime(field, skill_level);
+return 1;
+}
+
+    It's a silly example, but you get the idea. The
+"plowing" skill is valuable because the lib uses it
+in some way to modify events the player performs. If
+the lib doesn't know about it, the skill has no value.
+
+    In the case of, for example, "blade attack", the
+lib checks for this if you're wielding a sword and
+you're in combat. Based on how good you are at blade
+attack, combat.c will modify how much damage you
+inflict when you hit your opponent.
+
+
+Section V: Special Abilities
+----------------------------
+
+    Perhaps "plant" and "sow" are verbs that should
+only be available to players with the skills "planting"
+and "sowing". 
+    Or, if farming isn't your thing and you want to
+enhance combat, you might want Fighters who are members
+of the Viking Guild to have a special ability called
+"massacre" that can do extra special damage.
+
+    This is best done by simply creating the sow,
+plant, and/or massacre verbs, then coding the verbs to
+work only for those people you designate. If the player
+isn't a Fighter and a Viking, perhaps the massacre
+verb would return something like "You have no idea
+how to do that." and do no more.
+
+    You are, of course, free to implement a Special
+Abilities System along the lines of the existing Dead
+Souls spell system. I encourage you to do so, if
+you're so inclined, and to share that code with me,
+if it works. But it isn't necessary. The existing
+verb system is plenty sophisticated enough to
+handle such special events.
+
+
+Section IV: Summary 
+-------------------
+
+    At this point in my lib coder development, I have
+a hard time distinguishing what is easy and what is
+hard for new people. I have been surprised by people
+who take a long time to grasp simple concepts. I have
+been surprised by people who grasp complex concepts
+so quickly that I can't answer their questions.
+
+    Where you stand in that continuum I can't say.
+What I can say is that if this chapter seems like it
+went mostly over your head, you shouldn't worry too
+much about it. It took me years of coding experience
+and months of obsessed lib analysis to reach my
+current level of understanding. You should not expect
+yourself to grok everything in this guidebook the
+first time around.
+
+    As suggested in the previous chapters, it's best
+to start small, slow, and steady. As you build simple
+things, more complex things will make more sense, and
+you'll eventually reach the level of technical
+expertise you need.
+
+    This chapter was not written to make you feel
+overwhelmed by what you don't know. It was written so
+that you understand what you're asking when you
+say "How do I revamp bodies and limbs so they have
+knees and elbows you can poke people with?"
+
+    Once you understand the lib, it really really isn't
+that hard to do. But if you are a beginner, don't
+set yourself up for failure by taking a leap at a
+project you don't have the experience to tackle.
 

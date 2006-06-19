@@ -11,7 +11,7 @@ mixed cmd(string args) {
     alphabet += ({ "@", "!", "$", "%", "=", "{", "}", "[", "]", ":", "<", ">", "\*" });
     alphabet += ({ "\\", "\/", "\|" });
 
-    if(!archp(this_player()) || this_player()->GetForced()){
+    if(!archp(previous_object()) || this_player()->GetForced()){
 	return "No.";
     }
 

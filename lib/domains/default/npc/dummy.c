@@ -17,6 +17,7 @@ static void create(){
       ]));
     SetLevel(10);
     SetRace("golem");
+    SetNativeLanguage("english");
     SetClass("fighter");
     SetGender("neuter");
     SetMaxHealthPoints(9000);

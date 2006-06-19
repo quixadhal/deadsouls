@@ -12,7 +12,7 @@ static void create() {
     SetAmbientLight(30);
     SetShort("Village Road Intersection");
     SetLong("You are in the main intersection of the village, "
-      "where a well-traveled road extends north and south, and a "
+      "where Saquivor road extends north and south, and a "
       "narrow track intersects the road from the west. The track "
       "is somewhat better kept as it continues eastward as a road.\n"+
       "%^GREEN%^There is a sign here you can read.%^RESET%^");
@@ -20,6 +20,7 @@ static void create() {
     SetItems( ([
 	"sign":"A large sign on the road. To read it, 'read sign'.",
       ]) );
+    SetNoModify(0);
     SetInventory(([
 	"/domains/town/obj/clocktower" : 1,
       ]));

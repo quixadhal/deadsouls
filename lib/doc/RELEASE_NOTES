@@ -1,3 +1,20 @@
+---- 2.0r26 ---
+- Plugged some serious security holes ( http://dead-souls.net/news.html#16jun06 )
+- Cleaned up some unnecessary call_outs in lib objects.
+- Added LIB_PULL.
+- Added Virtual Campus domain.
+- Fixed qcs problem that screwed LIB_DUMMY.
+- Fixed local channel emote problem in RESTRICTED_INTERMUD mode.
+- Added sefun: alpha_crypt.
+- Added conference room east of the Adventurer's Hall.
+- admintool no longer lets you remove the last
+  currency.
+- COMPAT BUSTER: UNIX version now uses MD5 crypt, like the Windows
+  version. Character files created prior to using this driver
+  will not work with this driver.
+- rwho no longer cares if the issuer of the
+  command is invisible.
+
 ---- 2.0r25 ---
 - r24 had some unfortunate licensing problems attached.
   r25 includes a Win32 native binary that does not depend

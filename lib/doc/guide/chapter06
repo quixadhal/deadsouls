@@ -1,111 +1,50 @@
-chapter 6 "Guilds, Classes, and Clans"
+chapter 6 "Privacy"
 
-Section I: Classes
-------------------
+    One of the most powerful and most easily abused tools
+in your administrative arsenal is the snoop command. When
+you "snoop <person>", you get to see everything they
+say and do.
+    Players usually find this intrusive and objectionable,
+and it is ethically shaky to do this without their 
+knowledge and consent. The only circumstances under which
+snooping is unambiguously ethical are:
 
-    I suspect you are already quite familiar with
-the concept of classes. Some people even have very
-strong feelings about classes, specifically, they
-hate them.
+* Snooping one of your own test characters.
 
-    Dead Souls 1 came with a class system, and
-I decided to keep it because it sort of worked, and
-many people are familiar with classes and want to
-have them on their mud.
+* Snooping a player (with their consent) for the purposes of
+troubleshooting a bug.
 
-    However, you don't have to use them.
+* Snooping a user (without their consent) to investigate
+a legitimate suspicion of malfeasance.
 
-    That's right. Using classes is not required. You
-can very easily make your Dead Souls mud completely
-devoid of classes, if that's what you want.
+    Secretly snooping people for your personal amusement is
+just flat wrong. 
 
-    The reason for this is that in Dead Souls, the only
-thing a class does is confer on a player a class title,
-like "Fighter", and load her up with skill settings appropriate
-to that class. That's it. Classes do nothing more.
+    By default, only admins can snoop. Admins are players who
+are members of one or both of the groups SECURE and ASSIST. 
 
-    If you want player X to have all the skills of a
-fighter and all the skills of a mage, just make it so.
-They don't need to have class to have skills. Add
-"kite flying" while you're at it. It doesn't matter. 
-Dead Souls operates on a skill system. The class system
-is incidental to it and can be dispensed with entirely.
+    An assistant admin *cannot* snoop a full admin. However,
+assistant admins have read access to the snoop log directory,
+so if global monitoring is enabled, they can read the
+contents of a full admin's monitor log.
 
-    On the other hand, for those folks who appreciate
-the role play and tactical elements involved in using
-classes, Dead Souls provides you the ability to use
-the existing stock classes, and permits you to create
-your own. The files in /secure/cfg/classes describe them.
-See http://dead-souls.sourceforge.net/ds-creator-faq.html#2.46
-for the exact syntax of these files.
+    The new SNOOP_D system allows for the simultaneous
+snooping of multiple people, and allows multiple people to
+snoop the same person. It also permits you to enable 
+monitoring of users without having to snoop, by using the
+monitor command to log i/o to /secure/log/adm.
 
-    You'll notice that there is a field for "how important"
-a skill is. What this modifier does is determine how
-quickly your player's skill levels rise when her player
-level rises. A fighter's magical ability does not increase
-much when she is promoted a player level, but a mage's
-magical ability certainly does.
+    The GLOBAL_MONITOR parameter in config.h will take one of three
+arguments. 0 = monitor nobody. 1 = monitor everyone. 2 = monitor
+everyone except admins. After changing it, reboot the mud
+to make sure the change takes effect.
 
-    For those who find classes distasteful, this kind
-of "skill hobbling" is just the reason they hate classes:
-they feel they are too restrictive. If you are such
-an admin, just dont use classes, and whenever you award
-a skill to a player, set the "how important" number
-(techninally known as the "skill class" but that's a very
-confusing term) to the same for everyone.
+    This functionality isn't here for your entertainment. In
+fact, I had to think long and hard before sharing my snoop
+code with you and putting it in the general lib distribution.
 
-    Incidentally, you don't *need* player levels either.
-I will leave it as an exercise for the reader to imagine
-a scheme where players do not have advancement levels.
-
-    DS1 allowed players to join more than one class.
-Unfortunately, the system was buggy enough and stripped
-of classes so that it was both meaningless and a bit
-of a problem. Multi-classing is by default not permitted
-on DS2, but it's easy enough to implement on your own.
-Review the header data in the class files to see the
-syntax.
-
-    However, since multiclassing isn't something I
-am interested in working on right now, I will not be
-assisting anyone in getting that to work.
-
-
-Section II: Guilds
-------------------
-
-    The concept of "guilds" carries some baggage for me. I
-learned about mudding by playing on Darker Realms, an LP
-mud where a "guild" was effectively a class. There was
-the mage's guild, the barbarian guild, etc. There were
-also guilds that blurred the distinction between class
-and race, like shapeshifters, cyborg, and dragon.
-
-    When I ran into the Dead Souls 1 conception of guilds,
-then, I was pretty confused. In DS1, a guild was 
-kind of a player-run club. There was a guild object
-that made some sort of determination about who
-was in or out, who was the boss, etc. My presumption is
-that in later iterations of Nightmare V, these guilds
-were fleshed out and worked properly. I presume this
-because in DS1 they didn't, and they seemed to make some
-assumptions about the lib that were not correct.
-
-    I decided to change this for DS2, and the way it now
-works is that guilds are neither classes nor player-run
-clubs. The plan is to have guilds be not-necessarily-class-
-based affiliations a player can have with balanced
-advantages and disadvantages. As of DS2.0 there is no
-working sample of this, but that's the plan for post
-2.1 development.
-
-
-Section III: Clans
-------------------
-
-    Clans serve the purpose that DS1 guilds did. They are
-player-run affiliations, managed by clan objects that
-confer identity and status. As of DS2.0 there is no working
-sample of this, but that's the plan for post 2.1 development.
-
+    In the end, though, I believe that the benefits outweigh
+the risk of abuse. As an admin, you have the right to know
+what's going on in your mud, and as a lib coder, it isn't
+my business to interfere with that.
 

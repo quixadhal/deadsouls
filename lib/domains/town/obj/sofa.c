@@ -21,3 +21,6 @@ static void create() {
     SetMaxSitters(2);
 }
 mixed CanGet(object ob) { return "The bench does not budge.";}
+void init(){
+    ::init();
+}

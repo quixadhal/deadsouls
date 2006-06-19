@@ -25,34 +25,20 @@ enhancements and minor bugfixes become available on full release.</p>
 <p>All of the fixes listed here will be included in the next release.
 They
 are provided here early in order to address potential problems.</p>
-<p>For Dead Souls <span style="color: red; font-weight: bold;">2.0r22</span>,
+<p>For Dead Souls <span style="color: red; font-weight: bold;">2.0r25</span>,
 the
 following fixes are available:
 </p>
 <ul>
-  <li>snooper bug: Right before releases, I comment out debug
-statements. Unfortunately, this one spanned more than one line. Replace
-your existing /secure/obj/snooper.c with <a
- href="http://dead-souls.net/code/snooper.c">this
-one</a>.</li>
-  <li>stargate bug: The stargate system underwent a major revamp, and a
-couple of bugs snuck in. When a non-existent gate is dialed, it now
-fails ungracefully. Replace /lib/stargate.c with <a
- href="http://dead-souls.net/code/LIB_STARGATE.c">this file</a> and
-replace /daemon/stargate.c with <a
- href="http://dead-souls.net/code/STARGATE_D.c">this file</a>.</li>
-  <li><span
- style="font-weight: bold; text-decoration: underline; color: rgb(255, 0, 0);">channel
-bug</span>: It appears that r22 introduced a bug that sends local
-channels to the i3 router. I wasn't able to reproduce this with an r21
-mud, but that isn't definitive. In the meantime, rest assured I have
-not been snooping on anyone, and please copy <a
- href="http://dead-souls.net/code/channel.c">this
-file</a> over your current /daemon/services/channel.c then: <span
- style="font-weight: bold;">update /daemon/services/channel.c</span>
-and then: <span style="font-weight: bold;">update /daemon/services.c</span>
-. Please accept my apologies for the appearance of privacy intrusion. <br>
-  </li>
+  <li>There is a <a href="http://dead-souls.net/news.html#16jun2006"><span
+ style="font-weight: bold;">serious security problem</span></a> that
+affects all versions of Dead Souls. I'll be accelerating the release of
+the next version, and will be trying to get a hotfix out as quickly as
+possible. Until then, do not promote anyone to the position of Creator
+unless you know them very very well. If you already have Creators you
+don't know well, lock the mud (admintool option a) until you can
+upgrade or apply the patch. Sorry, guys. I'm hoping to have it out by
+Saturday, or Sunday at the latest.</li>
 </ul>
 <div id="footer">
 <p style="text-align: center;"><a href="index.html">Return to Dead

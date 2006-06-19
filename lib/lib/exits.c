@@ -50,7 +50,7 @@ mixed eventGo(object who, string str) {
 	    return 0;
     }
 
-    if( Doors[str] && (int)Doors[str]->GetClosed() ) {
+    if( sizeof(Doors) && Doors[str] && (int)Doors[str]->GetClosed() ) {
 	message("my_action", "You bump into " + 
 	  (string)Doors[str]->GetShort(str) + ".", who);
 	return 1;
@@ -68,7 +68,8 @@ mixed eventGo(object who, string str) {
 }
 
 string GetDoor(string dir) {
-    return Doors[dir];
+    if(sizeof(Doors)) return Doors[dir];
+    else return "";
 }
 
 string array GetDoors() {

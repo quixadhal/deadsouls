@@ -23,6 +23,7 @@
 #define LIB_LOOK_IN      DIR_EVENTS "/look_in"
 #define LIB_POISON       DIR_EVENTS "/poison"
 #define LIB_PRESS        DIR_EVENTS "/press"
+#define LIB_PULL         DIR_EVENTS "/pull"
 #define LIB_PUT          DIR_EVENTS "/put"
 #define LIB_READ         DIR_EVENTS "/read"
 #define LIB_SEARCH       DIR_EVENTS "/search"

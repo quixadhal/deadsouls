@@ -20,7 +20,7 @@ void create(){
       "understand it may constitute a security breach. You'd "
       "be well advised to leave it alone.");
     SetInvis(1);
-    set_heart_beat(2);
+    set_heart_beat(10);
     SetNoClean(1);
     SNOOP_D->RegisterSnooper();
 }
@@ -36,11 +36,11 @@ void stamp_time(){
 
 void heart_beat(){
     object dude;
-    if(!(dude = find_player(guy))) {
+    if(!guy || !(dude = find_player(guy))) {
 	//tc("I can't find "+guy);
 	eventDestruct();
     }
-    if(base_name(environment(dude)) == ROOM_FREEZER) eventDestruct();
+    if(dude && environment(dude) && base_name(environment(dude)) == ROOM_FREEZER) eventDestruct();
     if(time() - seconds > 600 ) stamp_time();
 }
 

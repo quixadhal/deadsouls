@@ -4,6 +4,7 @@
 #include <dirs.h>
 
 #define ADMIN_D              DIR_SECURE_DAEMONS "/admin"
+#define ADVANCE_D            DIR_SECURE_DAEMONS "/advance"
 #define ADVERBS_D            DIR_DAEMONS "/adverbs"
 #define AUTOEXEC_D           DIR_SECURE_DAEMONS "/autoexec"
 #define BANISH_D             DIR_DAEMONS "/banish"
@@ -29,8 +30,9 @@
 #define NOTIFY_D             DIR_DAEMONS "/notify"
 #define OPTIONS_D            DIR_SECURE_DAEMONS "/options"
 #define PARTY_D              DIR_DAEMONS "/party"
-#define PLAYERS_D            DIR_SECURE_DAEMONS "/players"
 #define PING_D               DIR_SECURE_DAEMONS "/ping"
+#define PLAYERS_D            DIR_SECURE_DAEMONS "/players"
+#define POLITICS_D           DIR_SECURE_DAEMONS "/politics"
 #define RACES_D              DIR_DAEMONS "/races"
 #define REAPER_D             DIR_DAEMONS "/reaper"
 #define REMOTE_D             DIR_SECURE_DAEMONS "/remote"

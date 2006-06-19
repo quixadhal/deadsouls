@@ -9,6 +9,7 @@ mixed cmd(mixed args) {
     string meridiem = " am";
     string nulle = "";
 
+    if(!archp(previous_object())) return 0;
     if(!args) args = 0;
     if(stringp(args)){
 	if(sscanf(args,"%d",integer) != 1) return "Failed.";

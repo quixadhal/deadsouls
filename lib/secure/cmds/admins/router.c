@@ -6,6 +6,7 @@ inherit LIB_DAEMON;
 mixed cmd(string args) {
     string subcmd, arg1, arg2;
 
+    if(!archp(previous_object())) return 0;
     if(find_object(ROUTER_D))
 	write("I3 router daemon is loaded.");
     else {

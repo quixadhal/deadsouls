@@ -17,7 +17,7 @@ static void eventRun() {
 static void create() {
     daemon::create();
     if(hasrun) return;
-    call_out((: eventRun :), 60);
+    call_out((: eventRun :), 10);
     hasrun = 1;
 }
 

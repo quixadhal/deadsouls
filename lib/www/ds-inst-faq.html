@@ -22,7 +22,13 @@ June 2006.<br>
 </div>
 <!-- End: Header -->
 <p><span>IMPORTANT NOTE:</span> After installation, check the <a
- href="hotfix.html">HOTFIX PAGE</a> for late-breaking patches.</p>
+ href="hotfix.html">HOTFIX PAGE</a> for late-breaking patches.<br>
+</p>
+<p>NOTE: As of June 6
+2006 the Windows version<span style="font-weight: bold;"> IS AVAILABLE
+AGAIN</span>.<span style="font-weight: bold;"><a
+ href="http://dead-souls.net/news.html"></a></span><br>
+</p>
 <h1>FAQ Index</h1>
 <ul>
   <li><a href="#1">Is this FAQ really necessary?</a> </li>
@@ -32,7 +38,6 @@ and Windows versions?</a></li>
   <li><a href="#3">Where do I get patches?</a></li>
   <li><a href="#4">Should I apply the available patches during an
 install?</a></li>
-  <li><a href="#5">What's this Cygwin stuff?</a></li>
   <li><a href="#6">How do I install the Windows version of Dead Souls?</a></li>
   <li><a href="#7">Hold up, these Windows instructions aren't working</a></li>
   <li><a href="#8">How do I install the UNIX version of Dead Souls?</a></li>
@@ -47,8 +52,6 @@ many warnings?</a></li>
 another?</a></li>
   <li><a href="#14">The patch doesn't work! I'm getting a million
 errors!</a></li>
-  <li><a href="#16">The source code you include doesn't compile on
-Cygwin.</a></li>
   <li><a href="#16">Ok, it's running. Now what?</a></li>
 </ul>
 <a name="1"></a>
@@ -107,24 +110,6 @@ Top)</a></h1>
 Souls install does not need and must not use patches. If you're
 upgrading from one Dead Souls version to another, please read the
 upgrade section further down in this document.</p>
-<a name="5"></a>
-<h1>What's this Cygwin stuff? <a class="backtotop" href="#top">(Back
-to Top)</a></h1>
-<p>Don't bother with it. The Cygwin files are there strictly for legal
-reasons, and they provide the average user absolutely no usefulness.
-The deal is that Dead Souls includes a Windows executable file, which
-is made using Cygwin software. Cygwin licensing requires that anything
-ported and packaged with their binaries (which the Dead Souls
-distribution includes), must also provide the source code that these
-binaries came from.</p>
-<p>Fortunately, the source code doesn't have to be in the distribution.
-Making it downloadable from the same page satisfies their licensing.
-But their
-source code is very unlikely to be useful to you, unless you're very
-proficient
-in the Cygwin environment and somehow managed to overlook having the
-sources.
-</p>
 <a name="6"></a>
 <h1>How do I install Dead Souls in Windows? <a class="backtotop"
  href="#top">(Back to Top)</a></h1>
@@ -159,9 +144,10 @@ menu (as of this writing, it's option 4, and then the "change the MUD's
 name" option (as of this writing, it's option r). Enter the name
 desired, allow the mud to shut down.</li>
   <li>log in again after the mud reboots.</li>
-  <li>check the <a href="hotfix.html">HOTFIX PAGE</a> for
+  <li>check the <a href="http://dead-souls.net/hotfix.html">HOTFIX PAGE</a>
+for
 late-breaking fixes.</li>
-  <li>log in, start reading the handbook and the manual.</li>
+  <li>start reading the guide and the handbook and the manual.</li>
 </ol>
 <a name="7"></a>
 <h1>Hold up, these Windows instructions aren't working <a
@@ -169,7 +155,8 @@ late-breaking fixes.</li>
 <p>There are a few common reasons for this.
 </p>
 <ul>
-  <li>A recent fix may be available. Check the <a href="hotfix.html">HOTFIX
+  <li>A recent fix may be available. Check the <a
+ href="http://dead-souls.net/hotfix.html">HOTFIX
 PAGE</a> for late-breaking fixes.</li>
   <li>Download only from the sites mentioned above. Those are the only
 ones sure to have the latest version. Other sites can be out of date.</li>
@@ -217,16 +204,6 @@ that you have read/write access to c:\ds, then try reinstalling but
 with a different unzip utility.</li>
     </ul>
   </li>
-  <li>If you've made sure you've followed the directions, avoided the
-"don'ts", and it still doesn't work, it may be that you have a Cygwin
-conflict. If you
-already have Cygwin installed on your PC, the dll's provided in the
-c:\ds\bin
-directory might be conflicting with your current version. Try moving
-the .dll
-files in c:\ds\bin to some other folder and see if this fixes the
-problem. If it
-doesn't, don't forget to put them back.</li>
 </ul>
 <a name="8"></a>
 <h1>How do I install Dead Souls in a Linux/UNIX box? <a
@@ -258,7 +235,8 @@ in the rest of these UNIX instructions.</li>
   <li>type: <span class="command">./configure</span></li>
   <li>type: <span class="command">make</span></li>
   <li>type: <span class="command">make install</span></li>
-  <li>If this fails, just manually copy the "driver" file into
+  <li>If the previous step fails, just manually copy the "driver" file
+into
 $MUDHOME/bin/</li>
   <li>edit $MUDHOME/bin/mudos.cfg (provided). The two lines to change
 are mudlib directory and binary directory. For example, if your
@@ -271,7 +249,7 @@ and bin: <br>
   <li>edit $MUDHOME/bin/startmud (provided) and change the $MUDHOME
 definition.</li>
   <li>manually run the mud: <span class="command">$MUDHOME/bin/driver
-$MUDHOME/bin/mudos.cfg .</span>
+$MUDHOME/bin/mudos.cfg <span style="color: rgb(0, 0, 0);">.</span></span>
 If you properly edited the startmud script, you can just type: <span
  class="command">./startmud</span></li>
   <li>telnet to your machine, using the port specified in mudos.cfg.
@@ -281,9 +259,10 @@ example: <span class="command">telnet localhost 6666</span></li>
 the first person to log in, because that person is automatically given
 admin privileges.</li>
   <li>You'll get booted out. Reboot the MUD, telnet back in, and you're
-now running Your Very Own MUD. If startmud is running, the MUD shouls
+now running Your Very Own MUD. If startmud is running, the MUD should
 restart automatically.</li>
-  <li>check the <a href="hotfix.html">HOTFIX PAGE</a> for
+  <li>check the <a href="http://dead-souls.net/hotfix.html">HOTFIX PAGE</a>
+for
 late-breaking fixes.</li>
 </ul>
 <a name="9"></a>
@@ -291,7 +270,8 @@ late-breaking fixes.</li>
  class="backtotop" href="#top">(Back to Top)</a></h1>
 <ul>
   <li>first, stop using Fedora. Ha ha just kidding.</li>
-  <li>A recent fix may be available. Check the <a href="hotfix.html">HOTFIX
+  <li>A recent fix may be available. Check the <a
+ href="http://dead-souls.net/hotfix.html">HOTFIX
 PAGE</a> for late-breaking fixes. </li>
   <li>Download only from the sites mentioned above. Those are the only
 ones sure to have the latest version. Other sites can be out of date. </li>
@@ -329,7 +309,7 @@ the command line as directed in the installation instructions.</li>
   <li>If the driver compile fails complaining about extra_ref in
 parser.c, then you probably followed older instructions, and not the
 instructions included in the latest package. You should no longer use
-./build.MudOS (unless you know exactly the ramifications fo what you're
+./build.MudOS (unless you know exactly the ramifications of what you're
 doing). Instead use the ./configure script as per the current
 instructions, which you should follow closely.</li>
   <li>If the driver craps out complaining about a hosed up swap file,
@@ -342,9 +322,18 @@ like "alpha.bravo". If your machine is under the impression that its
 name is localhost.localdomain, it will supply that name to mudos, which
 will eventually choke on it. <br>
     <br>
-If you're good at C++, you can edit lines 66 and 76 of
+If you're good at C, you can edit lines 66 and 76 of
 v22.2b14/swap.c and correct this behavior. But the common sense fix is
 to stop being a noob and give your computer a proper hostname already.</li>
+  <li>Some hosting services may provide you unix shells so tightly
+restricted that you cannot successfully compile the mudos driver.
+Specifically, I have asked Wolfpaw for their assistance in this, but as
+of 2 days since emailing the request, have received no response. You
+may need to submit a problem ticket with your hosting service to
+resolve the issue. Let them know that the source compiles fine on
+various versions of SuSE and Fedora, as well as Solaris 8, 9, and 10,
+various BSD's, and even IRIX.</li>
+  <br>
 </ul>
 <a name="10"></a>
 <h1>Why does compiling MudOS for Dead Souls throw so many warnings?
@@ -369,7 +358,12 @@ for me
 to try to get that MudOS functionality working. If you develop a
 procedure for it, please share it with me and I will document it so
 others can
-benefit from your leetness.</p>
+benefit from your leetness. I might suggest that it's probably easier
+to do this using LPC sockets in the lib, rather than trying to do it
+using driver-level support. If you don't know what that means, you'll
+need to play around with Dead Souls for a while, get the hang of it,
+and then revisit the question.<br>
+</p>
 <a name="13"></a>
 <h1>How do I upgrade from one version of Dead Souls to another?
 <a class="backtotop" href="#top">(Back to Top)</a></h1>
@@ -410,7 +404,7 @@ all your mud files before implementing a patch upgrade. Carefully
 follow the instructions included in the patch releases to ensure
 optimal effect. Because these instructions are not expected to be
 static, the details will not be included in this document. Read the <a
- href="RELEASE_NOTES">/doc/RELEASE_NOTES</a> file
+ href="http://dead-souls.net/RELEASE_NOTES">/doc/RELEASE_NOTES</a> file
 to know what has changed between releases and to determine whether an
 upgrade is worth the risk. Please note that RELEASE_NOTES contains an
 overview of major changes. It does not document every difference
@@ -444,36 +438,30 @@ could follow these instructions:</p>
 c:\ds\win32\driver.exe ).</li>
   <li>Restart the mud.</li>
 </ol>
-<p>The source code you include doesn't compile on Cygwin as of version
-2.0r22, the Dead Souls installation package has been merged into a
-single download file. The v22.2b14 directory contains source code
-optimized for unix, not Cygwin.
-If your aim is to compile your own version of the Win32 binary, you'll
-need to download the MudOS source from <a href="http://mudos.org/">http://mudos.org</a>,
-apply the diff patch in the ds/extra directory, and compile.</p>
-<p>If this sounds inconvenient, it's because there already is a Win32
-binary you can use without having to compile. Just use the runmud.bat
-file to start the Windows executable.</p>
-<p>In the case that you're sufficiently advanced in DS and MudOS to
-need your very own hand-rolled version of the driver, then you're
-sufficiently advanced that the diff patch is all you <a
- href="http://rugose.com/rilly.jpg">rly</a> need, if even that.</p>
 <a name="16"></a>
 <h1>Ok, it's running. Now what? <a class="backtotop" href="#top">(Back
 to Top)</a></h1>
 <p>Log in and read the following: </p>
 <ul>
-  <li>In-game Player's Handbook</li>
-  <li>Read the <a href="ds-admin-faq.html">Dead Souls Admin FAQ</a>.</li>
-  <li>Read the <a href="ds-creator-faq.html">Dead Souls Creator's FAQ</a>.</li>
-  <li>Read the <a href="qcs.html">Quick Creation System Example Page</a>.</li>
-  <li>Read the <a href="debugging.html">Debugging Guide</a>.</li>
-  <li>Read the <a href="editor.html">Editor Tutorial</a>.</li>
-  <li>Read the in-game Creator's Manual.</li>
+  <li>The in-game Player's Handbook</li>
+  <li>Read the <a href="http://dead-souls.net/ds-admin-faq.html">Dead
+Souls Admin FAQ</a>.</li>
+  <li>Read the <a href="http://dead-souls.net/ds-creator-faq.html">Dead
+Souls Creator's FAQ</a>.</li>
+  <li>Read the <a href="http://dead-souls.net/example.html">Quick
+Creation System Example Page</a>.</li>
+  <li>Read the <a href="http://dead-souls.net/debugging.html">Debugging
+Guide</a>.</li>
+  <li>Read the <a href="http://dead-souls.net/editor.html">Editor
+Tutorial</a>.</li>
+  <li>The in-game Creator's Manual.</li>
+  <li>The in-game Administrator's Guidebook.<br>
+  </li>
 </ul>
 <h1>The End <a class="backtotop" href="#top">(Back to Top)</a></h1>
-<p><a href="index.html">Return to Dead Souls Homepage</a></p>
+<p><a href="http://dead-souls.net/index.html">Return to Dead Souls
+Homepage</a></p>
 <hr>
-<p style="text-align: center;">Last Updated May 2006</p>
+<p style="text-align: center;">Last Updated June 2006</p>
 </body>
 </html>

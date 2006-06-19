@@ -1,0 +1,36 @@
+/*    /domains/Examples/armor/glove.c
+ *    from the Nightmare IV LPC Library
+ *    an example glove
+ *    created by Descartes of Borg 950408
+ */
+
+#include <lib.h>
+#include <armor_types.h>
+#include <damage_types.h>
+#include <vendor_types.h>
+
+inherit LIB_ARMOR;
+
+static void create() {
+    armor::create();
+    SetKeyName("white glove");
+    SetId( ({ "glove" }) );
+    SetAdjectives( ({ "left", "white" ,"simple","elegant"}) );
+    SetShort("a white glove");
+    SetLong("A simple, yet elegant white glove with five fingers for the left hand.");
+    SetDamagePoints(75);
+    SetVendorType(VT_ARMOR);
+    SetMass(10);
+    SetDollarCost(10);
+    SetArmorType(A_GLOVE);
+    SetRestrictLimbs( ({"left hand"}) );
+    SetProtection(BLUNT, 1);
+    SetProtection(BLADE, 1);
+    SetProtection(KNIFE, 2);
+    SetProtection(HEAT, 3);
+    SetProtection(COLD, 7);
+    SetFingers(5);
+}
+void init(){
+    ::init();
+}

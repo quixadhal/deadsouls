@@ -1,0 +1,1 @@
+%^BOLD%^CYAN%^! I'm Jenny, the LPC University automated guide bot. If you'd like an orientation on this place, type: %^RESET%^

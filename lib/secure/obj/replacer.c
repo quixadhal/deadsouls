@@ -8,6 +8,12 @@ inherit LIB_TURN;
 
 string a1,a2,a3,line;
 int n, active;
+
+static private void validate() {
+    if( !((int)master()->valid_apply(({ "PRIV_ASSIST", "PRIV_SECURE" }))) )
+	error("Illegal attempt to use replacer: "+get_stack()+" "+identify(previous_object(-1)));
+}
+
 void create(){
     ::create();
     SetKeyName("string replacer");
@@ -21,7 +27,8 @@ void create(){
       "To replace a word in EVERY FILE IN YOUR CURRENT WORKING DIRECTORY:\n autorep <oldword> <newword>\n\n"+
       "It does not handle spaces or special characters well. Using "+
       "strings with parentheses, brackets, or anything other than "+
-      "the english alphabet may have unexpected results.");
+      "the english alphabet may have unexpected results."+
+      "\n%^RED%^%^BOLD%^ADMIN USE ONLY!%^RESET%^");
     SetMass(20);
     SetValue(10);
     SetVendorType(VT_TREASURE);
@@ -33,6 +40,7 @@ void init(){
 }
 
 int eventActivate(){
+    validate();
     write("With an unearthly roar, the string replacer comes "+
       "to life. You sense great danger.");
     write("\n\nWARNING: Your current working directory is:\n\n");
@@ -45,6 +53,7 @@ int eventActivate(){
 }
 
 int eventDeactivate(){
+    validate();
     write("The string replacer powers off with a peculiar "+
       "mechanical whine. You feel safer.");
     say(this_player()->GetName()+"'s string replacer "+
@@ -54,6 +63,7 @@ int eventDeactivate(){
 }
 
 varargs mixed eventTurn(string str){
+    validate();
     if( this_player() != environment() ) { write("You don't have that."); return 0; }
     write("You turn the replacer over in your hands.");
     say(this_player()->GetKeyName()+" turns over a string replacer in "+possessive(this_player())+" hands.");
@@ -61,6 +71,7 @@ varargs mixed eventTurn(string str){
 }
 
 int eventTurnOn(object ob){
+    validate();
 
     if( this_player() != environment() ) { write("You don't have that."); return 0; }
 
@@ -79,6 +90,7 @@ int eventTurnOn(object ob){
 }
 
 varargs mixed eventTurnOff(string str){
+    validate();
     if( this_player() != environment() ) { write("You don't have that."); return 0; }
     if(!active){
 	write("It's already off.");
@@ -93,6 +105,7 @@ int autorep(string str){
     string dir, a1, a2;
     string *listing;
 
+    validate();
     if(!active){
 	write("The string replacer is not turned on.");
 	return 1;
@@ -116,6 +129,7 @@ int rep_string(string str){
     string dir,file,tempfile,backup;
     int valid_line;
 
+    validate();
     if(!active){
 	write("The string replacer is not turned on.");
 	return 1;
@@ -147,7 +161,7 @@ int rep_string(string str){
 	    line=read_file(file, n, 1);
 	    if(!line || line=="") valid_line=0;
 	    this_object()->replace(line);
-	    write_file(tempfile,line);
+	    if(line) write_file(tempfile,line);
 	    n++;
 	}
 	cp(file, backup);
@@ -162,12 +176,15 @@ int rep_string(string str){
     eventDeactivate();
     return 1;
 }
+
 int replace(string str){
     string s1,s2;
-    if(sscanf(str,"%s"+a2+"%s",s1,s2)>1){
+    validate();
+    if(sizeof(str) && sscanf(str,"%s"+a2+"%s",s1,s2)>1){
 	line=s1+a3+s2;
 	write("Found string in line "+n+". Replacing with: "+a3+".\n");
 	this_object()->replace(line);
     }
+    //tc("line: "+line);
     return 1;
 }

@@ -1,0 +1,5 @@
+%^RESET%^Jennybot says, "%^BOLD%^CYAN%^	There are some players who have the title "creator", "wizard", or "arch". These are the people who work on and with the technical parts of the MUD program. They are the folks who use the LPC programming language to create environments and NPC's, and make sure that a box behaves like a box.
+
+	If you think you'd like to learn some LPC programming and join the LPC University staff let us know. Go to the mail room and mail the administrator.
+
+	Be aware that it's fun, but it really is programming, with functions and variables and everything.%^RESET%^"

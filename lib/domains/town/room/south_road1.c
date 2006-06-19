@@ -5,7 +5,7 @@ static void create() {
     room::create();
     SetClimate("outdoors");
     SetAmbientLight(30);
-    SetShort("South Village road");
+    SetShort("Saquivor Road");
     SetLong("This is a cobblestone road, leading "+
       "north into town and south away from it. "+
       "The First Village Bank stands here on "+
@@ -23,16 +23,18 @@ static void create() {
 	({"road","cobblestone road"}) : "A "
 	"cobblestone road running north and south."
       ]) );
-    SetExits( ([ 
-	"west" : "/domains/town/room/magic_shop",
+    SetObviousExits("n, s, e, w");
+    SetExits( ([
+	"south" : "/domains/town/room/south_road2",
 	"north" : "/domains/town/room/vill_road1",
 	"east" : "/domains/town/room/bank",
+	"west" : "/domains/town/room/magic_shop.c",
       ]) );
+    SetNoModify(0);
     SetEnters( ([
-	"bank" : "/domains/town/room/bank",
 	"well" : "/domains/town/room/well1"
       ]) );
 }
 void init(){
-    ::init();
+    room::init();
 }

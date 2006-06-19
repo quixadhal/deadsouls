@@ -1,0 +1,7 @@
+%^RESET%^Jennybot says, "%^BOLD%^CYAN%^	As you can see, there aren't too many rooms available to you right now. There are many other places the MUD can take you to, though, once you know your way around. You might even be able to sneak out of the building, and visit the virtual world outside it.
+
+	The MUD understands some convenient abbreviations. Instead of "%^RED%^go south%^BOLD%^CYAN%^" you can just type "%^RED%^s%^BOLD%^CYAN%^", and your command will be understood. Similarly, "%^RED%^i%^BOLD%^CYAN%^" will show you the inventory of items you are carrying.
+
+Other common commands are "%^RED%^who%^BOLD%^CYAN%^" to see who else is logged on, "%^RED%^quit%^BOLD%^CYAN%^" to leave the mud, "%^RED%^drop%^BOLD%^CYAN%^" and "%^RED%^get%^BOLD%^CYAN%^", as in "%^RED%^drop map%^BOLD%^CYAN%^", and "%^RED%^get map%^BOLD%^CYAN%^". 
+
+If you get articles of clothing or jewelry they can be worn, as in "%^RED%^wear hat%^BOLD%^CYAN%^".%^RESET%^"

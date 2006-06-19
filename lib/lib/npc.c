@@ -389,7 +389,7 @@ void eventDescribeEnvironment(int brief) {
 	    object::eventDestruct();
 	}
 
-	varargs int eventDie(object agent) {
+	varargs int eventDie(mixed agent) {
 	    int x;
 
 	    if( (x = living::eventDie(agent)) != 1 ) return x;
@@ -645,6 +645,12 @@ void eventDescribeEnvironment(int brief) {
 	}
 
 	mixed SetEncounter(mixed val) { return (Encounter = val); }
+
+	mixed SetAggressive(mixed val){
+	    if(sizeof(Encounter)) return Encounter;
+	    else Encounter = 100;
+	}
+
 
 	string *AddEncounter(string nom) {
 	    if( !stringp(nom) ) error("Bad argument 1 to AddEncounter()\n");

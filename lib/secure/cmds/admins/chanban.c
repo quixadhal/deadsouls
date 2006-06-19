@@ -8,6 +8,7 @@ inherit LIB_DAEMON;
 mixed cmd(string args) {
     string chan, mud;
 
+    if(!archp(previous_object())) return 0;
     if( !args || args == "" || sscanf(args,"%s %s",chan,mud) != 2) {
 	return "Huh?";
     }

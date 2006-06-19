@@ -1,0 +1,1 @@
+%^RESET%^Jennybot says, "%^BOLD%^CYAN%^	Here's a map of this building. Type "%^RED%^read map%^BOLD%^CYAN%^"%^RESET%^"

@@ -190,7 +190,17 @@ int eventForce(string cmd) {
 /*  **********  /lib/command.c data manipulation functions  ********** */
 
 string *AddSearchPath(mixed val) {
-    if(stringp(val)) val = ({ val });
+    if(stringp(val)) {
+	if(!strsrch(val,"/secure/cmds/admins") || !strsrch(val,"/cmds/admins")){
+	    if(!(int)master()->valid_apply(({ "SECURE", "ASSIST", "LIB_CONNECT" })) ){
+		tell_creators("Security violation in progress: "+identify(previous_object(-1)) + ", "+get_stack());
+		error("Illegal attempt to modify path data: "+identify(previous_object(-1)) + ", "+get_stack());
+
+	    }
+	}
+	val = ({ val });
+    }
+
     else if(!pointerp(val)) error("Bad argument 1 to AddSearchPath()\n");
     return (SearchPath = distinct_array(SearchPath + val));
 }

@@ -19,7 +19,7 @@ static void create() {
 
 }
 int CanReceive(object ob) {
-    if( living(ob) && !archp(ob)  ){
+    if( !archp(ob)  ){
 	message("info","The router room is available only to "+
 	  "admins, sorry.",ob);
 	return 0;
