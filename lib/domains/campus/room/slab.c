@@ -42,7 +42,8 @@ static void create() {
 
 }
 int CanReceive(object ob) {
-    return room::CanReceive();
+    if(!ob) return 0;
+    return room::CanReceive(ob);
 }
 
 void init(){

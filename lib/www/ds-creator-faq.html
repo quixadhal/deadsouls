@@ -8,8 +8,8 @@
   <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
 </head>
 <body>
-<pre style="font-family: courier new,courier,monospace;"><big><big><span
- style="font-weight: bold;">Dead Souls Creator FAQ, v3.0</span></big><br><br>Written by Cratylus @ Frontiers, March 2006<br>Updated May 2006.<br><span
+<pre style="font-family: monospace;"><big><big><span
+ style="font-weight: bold;">Dead Souls Creator FAQ, v3.2</span></big><br><br>Written by Cratylus @ Frontiers, March 2006<br>Updated July 2006.<br><span
  style="font-weight: bold; text-decoration: underline;"><br></span>Note: commands are displayed in boldface, like this: <span
  style="font-weight: bold;">ls -a</span><span
  style="font-weight: bold; text-decoration: underline;"><br><br>What's this FAQ about?</span><br><br>	There are common issues and questions that crop<br>up for most new creators. This document is intended to<br>ease or at least shorten what can be a steep learning<br>curve.<br><br><br><span
@@ -74,7 +74,10 @@
  href="#2.55">2.55 How do I make an object you can [ jump on | climb | etc ] ?</a><br><br><a
  href="#2.56">2.56 Where is the list of available skills? How do I add skills?</a><br><a
  href="#2.57"><br>2.57 Where is the list of available classes? How do I add a class?</a><br><br><a
- href="#2.58">2.58 Where is the list of available races? </a><br><br><br></big><big><span
+ href="#2.58">2.58 Where is the list of available races? </a><br><br><a
+ href="#2.59">2.59 How do languages work? Is there a list of them?</a><br><br><a
+ href="#2.60">2.60 When I try to call test-&gt;SetLanguage("Bozo", 50), it sets it to 100%</a><br><br><a
+ href="#2.61">2.61 How do I update an .h file?</a><br><br><br></big><big><span
  style="font-weight: bold;">Section 3: Intermud and channel stuff</span><br><br><a
  href="#3.1">3.1 How do I know what other muds are online on intermud?</a><br><br><a
  href="#3.2">3.2 Hey, LeetFooMud is online! How can I tell if Biff is logged on?</a><br><br><a
@@ -112,10 +115,11 @@
  href="#5.3">5.3 How do I build an area?</a><br><br><a href="#5.4">5.4 How do I make a quest?</a><br><br><a
  href="#5.5">5.5 Where's Leo?</a><br><br></big><big><a href="#5.6">5.6 Where are the vehicles and mounts?</a><br><br><a
  href="#5.7">5.7 I'm having trouble adding meals to my barkeep with QCS.</a><br><br><a
- href="#5.8">5.8 I heard DS has stargates. Where's an example?</a></big><br><big><br></big></pre>
-<hr
- style="width: 100%; height: 2px; font-family: courier new,courier,monospace;">
-<pre style="font-family: courier new,courier,monospace;"><big><big><span
+ href="#5.8">5.8 I heard DS has stargates. Where's an example?</a></big><br><big><br><a
+ href="#5.9">5.9 I created a vendor, but he isn't responding to the "list" command.</a><br><br></big><span
+ style="font-family: monospace;"><a href="#5.10">5.10 I gave room with a default smell but I cannot get any other smells in there, <br><br>such as 'smell object' for example</a><br><br></span></pre>
+<hr style="width: 100%; height: 2px; font-family: monospace;">
+<pre style="font-family: monospace;"><big><big><span
  style="font-weight: bold;">Section 1: Getting Started</span></big><br><br
  style="font-weight: bold; text-decoration: underline;"><br
  style="font-weight: bold; text-decoration: underline;"><span
@@ -127,7 +131,7 @@
  style="font-weight: bold;">lines</span><br><br><br><span
  style="font-weight: bold;">2)</span> Your mud is probably on the intermud3 network. If<br>your administrator has not restricted intermud channels,<br>you should be able to ask questions on the Dead Souls<br>intermud channel, with a command like this:<br><br><span
  style="font-weight: bold;">ds hi! can someone tell me what room Leo lives in?</span><br><br><span
- style="font-weight: bold;">3)</span> If intermud is down, or nobody is answering, or<br>you have a bug to report, you can also try emailing<br>me, the author of this doc, at: &lt;my name here&gt;@users.sourceforge.com<br><br><br><span
+ style="font-weight: bold;">3)</span> If intermud is down, or nobody is answering, or<br>you have a bug to report, you can also try emailing<br>me, the author of this doc, at: &lt;my name here&gt;@comcast.net<br><br><br><span
  style="font-weight: bold;">4)</span> If intermud is down, you can also log into the<br>Dead Souls demo mud at <a
  href="telnet://rugose.com:6666">rugose.com 6666</a><br>    This mud automatically promotes users to<br>creator status, allowing guests to get a feel for<br>what developing on Dead Souls is like.<br>    You can try to log into that mud and see if anyone<br>is available to answer your question. Intermud is disabled<br>there, though, so you won't be able to use the ds line<br>to ask questions.<br><br><br><span
  style="font-weight: bold; font-style: italic;">Important note about asking on &lt;<span
@@ -148,7 +152,7 @@
  name="1.3"></a><span
  style="font-weight: bold; text-decoration: underline;">All I did was change one thing in a file, and now it won't update. Help!</span><br><br>	You should make it a habit to make backup copies of files<br>before editing them. That way, if you screw up the code, you can<br>just copy the backup to the original filename.<br><br>	A convenient way to do this is the <span
  style="font-weight: bold;">bk</span> command. See<br>the <a
- href="http://dead-souls.net/debugging.html#5">debugging page</a> for an example of its use.<br><br>	If you are using Windows, you need to be aware of the<br>linefeed problem. unix text files and DOS text files have different<br>formatting. If you edit files in Notepad, then try to update them,<br>you may find that the file no longer updates, no matter what<br>you do. The difference is usually invisible to you, so you can't<br>tell why a file that looks exactly the same as before now won't<br>work.<br><br>	Dead Souls expects unix-formatted text, and if you feed it<br>something else, the results aren't likely to be to your<br>satisfaction. Make sure you use an editor that respects unix<br>text. In Windows 2000, WordPad seems to do a reasonable job of not<br>completely screwing things. It does, however, add carriage<br>returns to your lines, so when you look at them in ed, you'll<br>see a bunch of "<span
+ href="http://dead-souls.net/debugging.html#5">debugging page</a> for an example of its use.<br><br>	If your file is in the /tmp directory, it won't update.<br>The lib uses /tmp for temporary system files, and as<br>a result, it is a security feature that files in /tmp can't<br>be loaded into memory.<br><br>	If you are using Windows, you need to be aware of the<br>linefeed problem. unix text files and DOS text files have different<br>formatting. If you edit files in Notepad, then try to update them,<br>you may find that the file no longer updates, no matter what<br>you do. The difference is usually invisible to you, so you can't<br>tell why a file that looks exactly the same as before now won't<br>work.<br><br>	Dead Souls expects unix-formatted text, and if you feed it<br>something else, the results aren't likely to be to your<br>satisfaction. Make sure you use an editor that respects unix<br>text. In Windows 2000, WordPad seems to do a reasonable job of not<br>completely screwing things. It does, however, add carriage<br>returns to your lines, so when you look at them in ed, you'll<br>see a bunch of "<span
  style="font-weight: bold;">^M</span>"'s all over the place.<br><br>	Take a look at the <a
  href="http://dead-souls.net/downloads.html#1">third party downloads page</a> for<br>some suggestions as to what to use instead of the default<br>Windows editors.<br><span
  style="font-weight: bold;"></span><br>	If you still have trouble, take a look at the <a
@@ -206,7 +210,7 @@
  style="font-weight: bold; text-decoration: underline;">new stuff get compiled?</span><br><br>	Dead Souls can be very strange to people used <br>to non-LPC muds. This is because many other kinds of<br>muds use a system where the mud is written in C++,<br>and to make changes, you need to add C++ code to the<br>source, recompile it, then reboot the mud.<br>	In that kind of system, building is done with<br>tools where you fill in blanks and code is generated<br>for you. I presume that some C++ expertise is <br>required for doing anything unusual or fancy.<br><br>	If you come from this kind of environment,<br>you may be in for a little disorientation. On a Dead<br>Souls mud, there is no need for compiling code. You<br>don't need to reboot the mud for new stuff to<br>be available.<br><br>	You can add your new Orc God of War to the<br>game (after you code him, of course) with two <br>simple commands:<br><br><span
  style="font-weight: bold;">update /realms/&lt;you&gt;/area/npc/grimmash.c</span><br
  style="font-weight: bold;"><br style="font-weight: bold;"><span
- style="font-weight: bold;">clone </span>/realms/&lt;you&gt;/area/npc/grimmash.c<br><br>	You're now face to face with him. This makes<br>Dead Souls, like most LPC muds, very flexible in<br>what can be done, and very stable in terms of<br>needing few reboots. Reboots typically are<br>necessary only when someone breaks important<br>code, or to implement major mud-wide changes.<br><br>	So, just write your code, and update it.<br>It's that simple. There are two main ways to do<br>this. The easiest way is with the QCS, or quick<br>creation system. With the QCS, you don't even need<br>to look at code. You just issue a few commands,<br>and your new whatever is there. <a
+ style="font-weight: bold;">clone /realms/&lt;you&gt;/area/npc/grimmash.c</span><br><br>	You're now face to face with him. This makes<br>Dead Souls, like most LPC muds, very flexible in<br>what can be done, and very stable in terms of<br>needing few reboots. Reboots typically are<br>necessary only when someone breaks important<br>code, or to implement major mud-wide changes.<br><br>	So, just write your code, and update it.<br>It's that simple. There are two main ways to do<br>this. The easiest way is with the QCS, or quick<br>creation system. With the QCS, you don't even need<br>to look at code. You just issue a few commands,<br>and your new whatever is there. <a
  href="example.html">Check out an example<br>of the QCS here.</a><br>	<br>	To learn the QCS, read the Creator's <br>Manual starting on chapter 31.<br><br>	The other way to create on-line is<br>with the ed command. The ed editor is a powerful<br>and flexible way of editing files. Some people<br>find it difficult at first, and you might even<br>be able to avoid it for a while if you mostly<br>just use QCS. However, you'll eventually need to<br>know a little about ed. <a
  href="editor.html">For a tutorial, go here</a>.<br><br>	For more detailed documentation, <br>type: <span
  style="font-weight: bold;">help ed</span><br><br><br><span
@@ -214,11 +218,11 @@
  name="1.8"></a><span
  style="font-weight: bold; text-decoration: underline;">I explored around in /domains/Ylsrim and &lt;XYZ&gt; is broken</span><br><br>Ylsrim is kept in the distribution as a kind of<br>sentimental artifact. It's the demo area that the<br>original Dead Souls shipped with, and although<br>it's mostly been fixed up to work with Dead Souls 2,<br>things can behave unexpectedly. There will be<br>no new fixes to Ylsrim. Please consider it a museum<br>exhibit that stands as-is.<br><br><br><a
  name="1.9"></a><span
- style="font-weight: bold; text-decoration: underline;">I explored around in /domains/town and &lt;XYZ&gt; is broken</span><br><br>Please send me an email and let me know, so I <br>can fix it. Also let me know if something in /domains/default<br>is hosed up.<br><big
+ style="font-weight: bold; text-decoration: underline;">I explored around in /domains/town and &lt;XYZ&gt; is broken</span><br><br>Please send me an email and let me know, so I <br>can fix it. Also let me know if something in the default,<br>campus, or examples domain is hosed up.<br><big
  style="font-weight: bold;"><br></big></big></pre>
 <hr
- style="width: 100%; height: 2px; font-family: courier new,courier,monospace; font-weight: bold;">
-<pre style="font-family: courier new,courier,monospace;"><big><big
+ style="width: 100%; height: 2px; font-weight: bold; font-family: monospace;">
+<pre style="font-family: monospace;"><big><big
  style="font-weight: bold;">Section 2: Code</big><br><br><span
  style="font-weight: bold; text-decoration: underline;"></span><a
  name="2.1"></a><span
@@ -331,8 +335,8 @@
  style="color: rgb(0, 0, 153);">object *stuff = filter(deep_inventory(this_player()), (: inherits(LIB_ARMOR,$1) :) );</span><br
  style="color: rgb(0, 0, 153);"><span style="color: rgb(0, 0, 153);">string *mystuff = filter(stuff, (: base_name($1)+".c" :) );</span><br><br>using foreach:<br><br><span
  style="color: rgb(0, 0, 153);">string *mystuff = ({});</span><br
- style="color: rgb(0, 0, 153);"><span style="color: rgb(0, 0, 153);">foreach( object ob in </span>deep_inventory(this_player())){<br>if( inherits(LIB_ARMOR, ob) ) mystuff += ({ base_name(<span
- style="color: rgb(0, 0, 153);">ob)+".c" });</span><br
+ style="color: rgb(0, 0, 153);"><span style="color: rgb(0, 0, 153);">foreach( object ob in deep_inventory(this_player())){</span><br
+ style="color: rgb(0, 0, 153);"><span style="color: rgb(0, 0, 153);">if( inherits(LIB_ARMOR, ob) ) mystuff += ({ base_name(ob)+".c" });</span><br
  style="color: rgb(0, 0, 153);"><span style="color: rgb(0, 0, 153);">}</span><br><br>There are arguments favoring the use of either. I won't get into <br>it. As far as I can tell, it's really a question of preference. <br>	You can structure these functions more elegantly<br>than shown here, to best suit you. But this is the idea.<br><br><br><span
  style="font-weight: bold; text-decoration: underline;"></span><a
  name="2.26"></a><span
@@ -343,7 +347,8 @@
  style="color: rgb(0, 0, 153);">member_array( "foo", ({ "foo", "bar", "baz" }) ) <span
  style="color: rgb(0, 0, 0);">returns: 0</span></span><br><br>Why does it return 0? Because "foo" is element 0 of the<br>array. If this_array == ({ "foo", "bar", "baz" }), then<br>this_array[0] is "foo". So member_array("foo", this_array)<br>would return 0.<br><br>If the first argument is not a member of the array, member<br>array returns -1. So that:<br><br><span
  style="color: rgb(0, 0, 153);">member_array( "shiz", ({ "foo", "bar", "baz" }) )</span> returns: -1<br><br><br>Example:<br><br>Does this player know how to polka? Return 1 for yes:<br><br>RIGHT: <span
- style="color: rgb(0, 0, 153);">if(member_array("polka dancing", this_player()-&gt;GetSkills()) != -1) return 1;</span><br><br>WRONG: if(member_array("polka dancing", this_player()-&gt;GetSkills()) ) return 1;<br>&nbsp;<br>The first way says "If 'polka dancing' has an element number that isn't -1,<br>then it is a member, so let's return 1"<br><br>The second way says "If 'polka dancing' has an element number that isn't 0,<br>then it is a member, so let's return 1"<br><br>The problem with the second way is that it is possible for "polka dancing"<br>to be element 0 in that array, and if it is, your code will incorrectly<br>tell you that you can't polka dance. But worse than this is that if<br>you actually can't polka dance, this second way will incorrectly tell<br>you that you can. Given random input, the second way would be wrong more than<br>half the time.<br><br><br><span
+ style="color: rgb(0, 0, 153);">if(member_array("polka dancing", this_player()-&gt;GetSkills()) != -1) return 1;</span><br><br>WRONG: <span
+ style="color: rgb(0, 0, 153);">if(member_array("polka dancing", this_player()-&gt;GetSkills()) ) return 1;</span><br>&nbsp;<br>The first way says "If 'polka dancing' has an element number that isn't -1,<br>then it is a member, so let's return 1"<br><br>The second way says "If 'polka dancing' has an element number that isn't 0,<br>then it is a member, so let's return 1"<br><br>The problem with the second way is that it is possible for "polka dancing"<br>to be element 0 in that array, and if it is, your code will incorrectly<br>tell you that you can't polka dance. But worse than this is that if<br>you actually can't polka dance, this second way will incorrectly tell<br>you that you can. Given random input, the second way would be wrong more than<br>half the time.<br><br><br><span
  style="font-weight: bold; text-decoration: underline;"></span><a
  name="2.27"></a><span
  style="font-weight: bold; text-decoration: underline;">I'm trying to add two mappings together and the results are bizarre</span><br><br>Adding mappings together has to be done just so in order for<br>it to work the way one might expect. What can happen in <br>mapping arithmetic is that in the process of trying to<br>add the values of one mapping to another, you can change the<br>values of a mapping you didn't intend to. The deal is a<br>conflict between passing data by reference or by value. To<br>be sure that you don't accidentally modify an innocent<br>bystander, use the add_maps() sefun. For example:<br><br>MyMap = add_maps(HisMap, HerMap);<br><br>or<br><br>MyMap = add_maps(MyMap, HerMap);<br><br><br><span
@@ -398,7 +403,7 @@
  style="font-weight: bold; text-decoration: underline;">My NPC's stats are all hosed up.</span><br
  style="font-weight: bold; text-decoration: underline;"><br>Make sure you have SetLevel() *after* SetRace() and SetClass().<br>Also make sure there's a working ::create() in your create<br>function. Some examples are:<br><br>::create();<br>npc::create();<br>vendor::create();<br><br>And make sure your init() function has an:<br><br>::init();<br><br><br><a
  name="2.42"></a><span
- style="font-weight: bold; text-decoration: underline;">This squirrel is taking *forever* to kill.</span><br><br>The mud is calculating its health points based on level and<br>race. If your squirrel has 340hp, it'll seem unreasonably<br>tough. Use SetMaxHealthPoints() to cap its vitality.<br><br><br><a
+ style="font-weight: bold; text-decoration: underline;">This squirrel is taking *forever* to kill.</span><br><br>The mud is calculating its health points based on level and<br>race. If your squirrel has 340hp, it'll seem unreasonably<br>tough. Use SetMaxHealthPoints() to cap its vitality to<br>something like, say, 5.<br><br><br><a
  name="2.43"></a><span
  style="font-weight: bold; text-decoration: underline;">My room should not be entered/exited by just anyone. How</span><br
  style="font-weight: bold; text-decoration: underline;"><span
@@ -458,7 +463,8 @@
  style="font-weight: bold;">man sscanf<br><br>	</span>If you're looking for lists of library functions,<br>such as SetClass in LIB_WEAPON, your best bet is the help<br>command, like this:<br><br
  style="font-weight: bold;"><span style="font-weight: bold;">help library objects weapon</span><br
  style="font-weight: bold;"><br style="font-weight: bold;"><span
- style="font-weight: bold;">help library objects creator</span><br><br>	That will list the functions in the library object<br>you specify. As of this writing, the documentation on lfuns<br>is not yet as thorough as the documentation on efuns and sefuns,<br>but this documentation is an ongoing project whose output<br>should eventually improve.<br><br><br><a
+ style="font-weight: bold;">help library objects creator</span><br><br>	That will list the functions in the library object<br>you specify. As of this writing, the documentation on lfuns<br>is not yet as thorough as the documentation on efuns and sefuns,<br>but this documentation is an ongoing project whose output<br>should eventually improve.<br><br>	A contributor to the mud community has made<br>available a wikified cross-reference of Dead Souls funs, <br>which you can find here:<br><br><a
+ href="http://lpuni.org/components/com_mambowiki/index.php/DeadSouls_Reference">http://lpuni.org/components/com_mambowiki/index.php/DeadSouls_Reference</a><br><br><br><a
  name="2.55"></a><span
  style="font-weight: bold; text-decoration: underline;">How do I make an object you can [ jump on | climb | etc ] ?</span><br><br>	Look for an example, and copy it. Take a look at the<br>code in the newbie mansion ladder for climb code. Take a look<br>at /domains/Ylsrim/room/bank_roof.c for an example of something<br>you can jump from. Other actions will have similar examples. The<br>sample domains are there for you to explore and find examples<br>of what you want to do.<br><br><br><a
  name="2.56"></a><span
@@ -473,10 +479,19 @@
  name="2.58"></a><span
  style="font-weight: bold; text-decoration: underline;">Where is the list of available races?</span> <br><br>	Type: <span
  style="font-weight: bold;">ls /secure/cfg/races</span><br><br>	For details on adding races, see the <a
- href="ds-admin-faq.html">admin FAQ</a>.<br><br></big><br></pre>
-<hr
- style="width: 100%; height: 2px; font-family: courier new,courier,monospace;">
-<pre style="font-family: courier new,courier,monospace;"><big><big
+ href="ds-admin-faq.html">admin FAQ</a>.<br><br></big><br><span
+ style="font-weight: bold; text-decoration: underline;"><a name="2.59"></a>How do languages work? Is there a list of them?</span><br><br>	There is no list of languages. It doesn't work that way.<br>There is no centralized language database, daemon, or anything<br>like that. Languages are basically like a skill: only useful to<br>the extent that lib objects make use of them.<br><br>	A player might be able to understand Tamarian, but if<br>nobody else in the lib does, it isn't much use. If no written material<br>is in Tamarian besides, then the player's language ability is a waste.<br><br>	On the other hand, if a player wants to be able to<br>understand orcs, all she has to do is find a language teacher<br>that can instruct her in that tongue. After enough lessons,<br>she will be at 100% fluency, and if she encounters written or<br>spoken information in Tangetto, she'll be able to understand<br>all of it.<br><br>	To know what languages you understand, and to what<br>extent, use the command:<br><br><span
+ style="font-weight: bold;">language</span><br><br>	To make yourself fluent in English, type:<br><br><span
+ style="font-weight: bold;">anglicize me</span><br><br>	To make yourself fluent in all languages, type:<br><br><span
+ style="font-weight: bold;">polyglottize me</span><br><br>	Obviously these commands are available only to creators.<br><br><br><a
+ name="2.60"></a><span
+ style="font-weight: bold; text-decoration: underline;">When I try to call test-&gt;SetLanguage("Bozo", 50), it sets it to 100%</span><br><br>	Bozo is probably a newbie. If Bozo's player level is at or below<br>what is defined as newbie in /secure/include/config.h, then he understands<br>all languages at 100%. Raise his level above that, and you should see<br>his proficiency in that language drop to what you specified.<br><br><br><a
+ name="2.61"></a><span
+ style="font-weight: bold; text-decoration: underline;">How do I update an .h file?</span><br><br>	You don't, really. That's a header file, which contains code to<br>be included by a .c file. Only a .c file gets loaded into memory, so<br>to "update" an .h file, you update the .c file that includes it. In<br>the case of a global include, like daemons.h, you would update the<br>master object (also called the master daemon) thusly:<br><br><span
+ style="font-weight: bold;">update /secure/daemon/master</span><br
+ style="font-weight: bold;"><br style="font-weight: bold;"><br></pre>
+<hr style="width: 100%; height: 2px; font-family: monospace;">
+<pre style="font-family: monospace;"><big><big
  style="font-weight: bold;">Section 3: Intermud and channel stuff</big><br><br><br><span
  style="font-weight: bold; text-decoration: underline;"></span><a
  name="3.1"></a><span
@@ -545,46 +560,34 @@
  style="font-weight: bold;"><span style="text-decoration: underline;">This guy keeps hassling me on an intermud channel</span></span><br><br>Sometimes people just can't leave well enough alone,<br>and they spam. Some people just don't have anything<br>to say that you want to hear. For such situation,<br>use the earmuff command. For example:<br><br><span
  style="font-weight: bold;">earmuff tatianna</span><br><br>And you will not receive channel messages from <br>that person. The reverse command is <span
  style="font-weight: bold;">unmuff</span>.<br>	Earmuffing is also good when someone from<br>a non-European-language mud sends well-meaning<br>but garbled, escape-code filled gibberish. If<br>she doesn't understand your English language<br>requests to stop spamming, you can just earmuff her.<br><br></big></pre>
-<hr
- style="width: 100%; height: 2px; font-family: courier new,courier,monospace;"><big><big
- style="font-weight: bold;"><span
- style="font-family: courier new,courier,monospace;">Section
-4: Miscellanea</span></big><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
+<hr style="width: 100%; height: 2px; font-family: monospace;"><big
+ style="font-family: monospace;"><big style="font-weight: bold;">Section
+4: Miscellanea</big><br>
+<br>
 </big>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="4.1"></a><span
+<pre style="font-family: monospace;"><big><a name="4.1"></a><span
  style="font-weight: bold; text-decoration: underline;">I'm fighting the beggar with my staff and he's kicking my ass</span><br></big></pre>
-<big><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
-For one thing, you're a creator. Quit goofing around. If</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">you want to
-fight monsters and stuff, create a test</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">player
-character.</span><br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
-Next, you're probably still a Level 1 character. This</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">makes you a
-wimp. Raise your level with this command:</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; font-family: courier new,courier,monospace;">call
-me-&gt;SetLevel(20)</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
-Now get the medical tricorder from your workroom's</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">chest and
-raise your stats. Give yourself 100 strength.</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">Why not?<br>
+<big style="font-family: monospace;"><br>
+&nbsp;&nbsp;&nbsp;
+For one thing, you're a creator. Quit goofing around. If<br>
+you want to
+fight monsters and stuff, create a test<br>
+player
+character.<br>
+<br>
+&nbsp;&nbsp;&nbsp;
+Next, you're probably still a Level 1 character. This<br>
+makes you a
+wimp. Raise your level with this command:<br>
+<br>
+<span style="font-weight: bold;">call
+me-&gt;SetLevel(20)</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;
+Now get the medical tricorder from your workroom's<br>
+chest and
+raise your stats. Give yourself 100 strength.<br>
+Why not?<br>
 <br>
 &nbsp;&nbsp;&nbsp; If you're carrying a chest, table, chair, and
 everything<br>
@@ -593,184 +596,131 @@ during combat. Try to wield a weapon, hold a couple of<br>
 shopping bags and boxes, and see how well you do against<br>
 a pissed off real-life enemy. You won't last long. So either<br>
 drop all the crap you're lugging around, or put it in <br>
-a backpack and wear the pack.<br
- style="font-family: courier new,courier,monospace;">
-</span><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
-Put the staff in your robe and quit using it as</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">a weapon.
-It's a creating tool. Not only is it a</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">poor weapon,
-by default you lack double-handed</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">weapon
-skills, making you really crappy at using</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">a really
-crappy weapon. No wonder the orcs were </span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">beating you
-like an animal. Get a carving knife</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">from the
-mansion. Or an orcslayer. Or hell, just</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">use the zap
-command and stop wasting time. You</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">should have
-characters for this.</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;"></span></big>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="4.2"></a><span
+a backpack and wear the pack.<br>
+<br>
+&nbsp;&nbsp;&nbsp;
+Put the staff in your robe and quit using it as<br>
+a weapon.
+It's a creating tool. Not only is it a<br>
+poor weapon,
+by default you lack double-handed<br>
+weapon
+skills, making you really crappy at using<br>
+a really
+crappy weapon. No wonder the orcs were <br>
+beating you
+like an animal. Get a carving knife<br>
+from the
+mansion. Or an orcslayer. Or hell, just<br>
+use the zap
+command and stop wasting time. You<br>
+should have
+characters for this.<br>
+<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"></span></big>
+<pre style="font-family: monospace;"><big><a name="4.2"></a><span
  style="font-weight: bold; text-decoration: underline;">Someone amputated all my limbs and I can't do anything!</span><br></big></pre>
-<big><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">If your body
-gets damaged you can restore yourself to your</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">normal
-physical status by typing:</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; font-family: courier new,courier,monospace;">heal
+<big style="font-family: monospace;"><br>
+If your body
+gets damaged you can restore yourself to your<br>
+normal
+physical status by typing:<br>
+<br>
+<span style="font-weight: bold;">heal
 me<br>
 <br>
 <span style="text-decoration: underline;"></span></span></big>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="4.3"></a><span
+<pre style="font-family: monospace;"><big><a name="4.3"></a><span
  style="text-decoration: underline; font-weight: bold;">How do I change my class?</span></big><br></pre>
-<big><span
- style="font-weight: bold; font-family: courier new,courier,monospace;"><br>
-</span><span style="font-family: courier new,courier,monospace;">Again
+<big style="font-family: monospace;"><span style="font-weight: bold;"><br>
+</span>Again
 with the pretending to be a
-player. Seriously,</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">you need a
-test player char so that if you screw something</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">up, you don't
-screw *yourself* up.</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">But, if
-you're determined:</span><span
- style="font-weight: bold; font-family: courier new,courier,monospace;"><br>
+player. Seriously,<br>
+you need a
+test player char so that if you screw something<br>
+up, you don't
+screw *yourself* up.<br>
+<br>
+But, if
+you're determined:<span style="font-weight: bold;"><br>
 <br>
 call me-&gt;ChangeClass("thief")<br>
 <br>
-</span><span style="font-family: courier new,courier,monospace;">Your
-stats and levels will probably be all weird and</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">hosed up.
-Just raise your player level, that will probably</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">fix it.</span><span
- style="font-weight: bold; font-family: courier new,courier,monospace;"><br>
-</span><br style="font-family: courier new,courier,monospace;">
-<br
- style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;"></span></big>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="4.4"></a><span
- style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;">People are talking to me in gibberish, even though it <br>says they're</span><span
- style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;"> speaking English.</span></big><br
- style="font-family: courier new,courier,monospace;"></pre>
-<big><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">If your race
+</span>Your
+stats and levels will probably be all weird and<br>
+hosed up.
+Just raise your player level, that will probably<br>
+fix it.<span style="font-weight: bold;"><br>
+</span><br>
+<br style="font-weight: bold; text-decoration: underline;">
+<span style="font-weight: bold; text-decoration: underline;"></span></big>
+<pre style="font-family: monospace;"><big><a name="4.4"></a><span
+ style="font-weight: bold; text-decoration: underline;">People are talking to me in gibberish, even though it <br>says they're</span><span
+ style="font-weight: bold; text-decoration: underline;"> speaking English.</span></big><br></pre>
+<big style="font-family: monospace;"><br>
+If your race
 is not human, your default language is not English,
-therefore</span><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">someone
-speaking in English would not be understood by you. As a</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">creator, you
-can avoid players' tedious language learning process</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">and simply
-type:</span><br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; font-family: courier new,courier,monospace;">call
-me-&gt;SetLanguage("English",100)</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
-Obviously this will work for other languages too.</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;"></span></big>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="4.5"></a></big></pre>
-<big><span
- style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;">What's
-this about Biff "unknowingly" telling me something?</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">If you are
-invis and a player or someone on another mud tells</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">to you, they
-get an error message about you not being around. So,</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">they told to
-you, but do not know you actually got the message,</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">since you
-don't seem logged on.</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;"></span></big>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="4.6"></a><span
+therefore<br>
+someone
+speaking in English would not be understood by you. As a<br>
+creator, you
+can avoid players' tedious language learning process<br>
+and simply
+type:<br>
+<br>
+<span style="font-weight: bold;">call
+me-&gt;SetLanguage("English",100)</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;
+Obviously this will work for other languages too.<br>
+<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"></span></big>
+<pre style="font-family: monospace;"><big><a name="4.5"></a></big></pre>
+<big style="font-family: monospace;"><span
+ style="font-weight: bold; text-decoration: underline;">What's
+this about Biff "unknowingly" telling me something?</span><br>
+<br>
+If you are
+invis and a player or someone on another mud tells<br>
+to you, they
+get an error message about you not being around. So,<br>
+they told to
+you, but do not know you actually got the message,<br>
+since you
+don't seem logged on.<br>
+<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"></span></big>
+<pre style="font-family: monospace;"><big><a name="4.6"></a><span
  style="font-weight: bold; text-decoration: underline;">How do I find the location of a verb or command?</span><br></big></pre>
-<big><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">Use the which
-command. For example:</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; font-family: courier new,courier,monospace;">which
-zap</span><br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; font-family: courier new,courier,monospace;">which
-update</span><br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">If 'which'
-doesn't find it, the command is probably built into</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">some object
-you inherit, like the command shell or the</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">hooks for the
-chat daemon. Or it may be an add_action bound to a</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">nearby
-object. To see what commands objects or inherited</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">files might
-be providing you, type:</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; font-family: courier new,courier,monospace;">localcmds<br>
+<big style="font-family: monospace;"><br>
+Use the which
+command. For example:<br>
+<br>
+<span style="font-weight: bold;">which
+zap</span><br>
+<br>
+<span style="font-weight: bold;">which
+update</span><br>
+<br>
+If 'which'
+doesn't find it, the command is probably built into<br>
+some object
+you inherit, like the command shell or the<br>
+hooks for the
+chat daemon. Or it may be an add_action bound to a<br>
+nearby
+object. To see what commands objects or inherited<br>
+files might
+be providing you, type:<br>
+<br>
+<span style="font-weight: bold;">localcmds<br>
 <br>
 <br>
-</span><span
- style="text-decoration: underline; font-weight: bold; font-family: courier new,courier,monospace;"></span></big>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="4.7"></a> <span
+</span><span style="text-decoration: underline; font-weight: bold;"></span></big>
+<pre style="font-family: monospace;"><big><a name="4.7"></a> <span
  style="font-weight: bold; text-decoration: underline;">Where are the "exa" and "n" commands?</span><br><br>	When you type some commands, like <span
  style="font-weight: bold;">exa</span>, <span style="font-weight: bold;">n</span>, or <span
  style="font-weight: bold;">i</span>,<br>what happens is that your command shell recognizes<br>them as aliases, and turns the alias into the appropriate<br>command.<br>	An alias is like a nickname, or shorter word,<br>for a command or series of commands. To see the aliases<br>you currently have, type:<br><span
@@ -780,290 +730,206 @@ be providing you, type:</span><br
  style="font-weight: bold;">alias ig<br><br>	</span>After modifying aliases, make sure to type:<br><span
  style="font-weight: bold;">save</span><span
  style="text-decoration: underline; font-weight: bold;"></span>&nbsp;<br></big></pre>
-<big><span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
-</span><br style="font-family: courier new,courier,monospace;">
+<big style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+<br>
 </big>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="4.8"></a> <span
+<pre style="font-family: monospace;"><big><a name="4.8"></a> <span
  style="font-weight: bold; text-decoration: underline;">How do I get something to happen to a random person in a room?</span></big></pre>
-<big><span
- style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;"></span><span
- style="font-family: courier new,courier,monospace;">You can pick a
+<big style="font-family: monospace;"><span
+ style="font-weight: bold; text-decoration: underline;"></span>You can
+pick a
 random winner (or victim) for your action by using the
-get_random_living()</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">sefun. For
-details on its usage:</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; font-family: courier new,courier,monospace;">man
-get_random_living</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">You may also
-find the get_livings() sefun useful.</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
+get_random_living()<br>
+sefun. For
+details on its usage:<br>
+<br>
+<span style="font-weight: bold;">man
+get_random_living</span><br>
+<br>
+You may also
+find the get_livings() sefun useful.<br>
+<br>
+<br>
 </big>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="4.9"></a><span
+<pre style="font-family: monospace;"><big><a name="4.9"></a><span
  style="text-decoration: underline; font-weight: bold;">My wandering monster escaped from my workroom! How can</span><br
  style="text-decoration: underline; font-weight: bold;"><span
  style="text-decoration: underline; font-weight: bold;">I find him?</span><br><br>If its name is jabberwock, try:<br><br><span
  style="font-weight: bold;">findobj jabberwock</span><br><br>You can also probably just:<br><br><span
  style="font-weight: bold;">goto jabberwock</span></big></pre>
-<big><br
- style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;"></span></big>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="4.10"></a><span
+<big style="font-family: monospace;"><br
+ style="font-weight: bold; text-decoration: underline;">
+<span style="font-weight: bold; text-decoration: underline;"></span></big>
+<pre style="font-family: monospace;"><big><a name="4.10"></a><span
  style="font-weight: bold; text-decoration: underline;">I ran findobj on something but it says no environment. Where is it?</span><br></big></pre>
-<big><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">Right where
-it says. Some objects create a "master copy" of themselves</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">when they are
-cloned. This copy remains loaded in memory even if</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">that cloned
-object goes away. You can distinguish between cloned</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">objects and
-master copies by the number sign&nbsp; and number at the end</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">of cloned
-objects. The master copy has no instance number. It is </span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">simply loaded
-code, and does not "exist" in a way accessible to your player</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">object on the
-mud.</span><br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">Sometimes a
-cloned object will lose its environment. This is usually </span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">caused by an
-error and is not a good thing. Dead Souls runs a</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">"reaper"
-daemon that periodically searches memory for cloned</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">objects that
-lack an environment, and they are destroyed.</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;"></span></big>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="4.11"></a><span
+<big style="font-family: monospace;"><br>
+Right where
+it says. Some objects create a "master copy" of themselves<br>
+when they are
+cloned. This copy remains loaded in memory even if<br>
+that cloned
+object goes away. You can distinguish between cloned<br>
+objects and
+master copies by the number sign&nbsp; and number at the end<br>
+of cloned
+objects. The master copy has no instance number. It is <br>
+simply loaded
+code, and does not "exist" in a way accessible to your player<br>
+object on the
+mud.<br>
+<br>
+Sometimes a
+cloned object will lose its environment. This is usually <br>
+caused by an
+error and is not a good thing. Dead Souls runs a<br>
+"reaper"
+daemon that periodically searches memory for cloned<br>
+objects that
+lack an environment, and they are destroyed.<br>
+<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"></span></big>
+<pre style="font-family: monospace;"><big><a name="4.11"></a><span
  style="font-weight: bold; text-decoration: underline;">How do I update everything in a directory?</span><br></big></pre>
-<big><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">You really
-shouldn't. There are very few cases I can think</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">of where
-updating an entire directory is something an average</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">creator needs
-to do. How often do you edit multiple</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">files at once
-without individually updating them? Good</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">coding
-practice is to update the one file you just worked on to know</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">if it works
-at all.</span><br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">I also
-discourage it because when you do this, you lag the mud </span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">considerably.
-I/O is the most resource intensive kind of operation, </span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">and updating
-is on its own quite resource intensive. Updating a </span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">directory
-with dozens of files in it will cause a noticeable hiccup </span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">in the rest
-of the mud.</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">If you are
+<big style="font-family: monospace;"><br>
+You really
+shouldn't. There are very few cases I can think<br>
+of where
+updating an entire directory is something an average<br>
+creator needs
+to do. How often do you edit multiple<br>
+files at once
+without individually updating them? Good<br>
+coding
+practice is to update the one file you just worked on to know<br>
+if it works
+at all.<br>
+<br>
+I also
+discourage it because when you do this, you lag the mud <br>
+considerably.
+I/O is the most resource intensive kind of operation, <br>
+and updating
+is on its own quite resource intensive. Updating a <br>
+directory
+with dozens of files in it will cause a noticeable hiccup <br>
+in the rest
+of the mud.<br>
+<br>
+If you are
 determined to do this, though, the
-command is :</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; font-family: courier new,courier,monospace;">update
-/path/to/dir/*</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;"></span></big>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="4.12"></a><span
+command is :<br>
+<br>
+<span style="font-weight: bold;">update
+/path/to/dir/*</span><br>
+<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"></span></big>
+<pre style="font-family: monospace;"><big><a name="4.12"></a><span
  style="font-weight: bold; text-decoration: underline;">I don't like getting colors on my screen. How do I stop it?</span><br></big></pre>
-<big><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">Type: </span><span
- style="font-weight: bold; font-family: courier new,courier,monospace;">terminal
-unknown</span><br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">then type: </span><span
- style="font-weight: bold; font-family: courier new,courier,monospace;">save</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span
- style="text-decoration: underline; font-weight: bold; font-family: courier new,courier,monospace;"></span></big>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="4.13"></a><span
+<big style="font-family: monospace;"><br>
+Type: <span style="font-weight: bold;">terminal
+unknown</span><br>
+<br>
+then type: <span style="font-weight: bold;">save</span><br>
+<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;"></span></big>
+<pre style="font-family: monospace;"><big><a name="4.13"></a><span
  style="text-decoration: underline; font-weight: bold;">Um...I want colors back now please</span><br></big></pre>
-<big><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">Type: </span><span
- style="font-weight: bold; font-family: courier new,courier,monospace;">terminal
-ansi</span><br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">then type: </span><span
- style="font-weight: bold; font-family: courier new,courier,monospace;">save</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;"></span></big>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="4.14"></a> <span
+<big style="font-family: monospace;"><br>
+Type: <span style="font-weight: bold;">terminal
+ansi</span><br>
+<br>
+then type: <span style="font-weight: bold;">save</span><br>
+<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"></span></big>
+<pre style="font-family: monospace;"><big><a name="4.14"></a> <span
  style="font-weight: bold; text-decoration: underline;">I can type 'n' and move north, but 'north' doesn't work.</span><br></big></pre>
-<big><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">Technically,
-you can't 'n' either. When you type 'n', what</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">it happening
-is that your preset alias turns that 'n'</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">into the
-command line '</span><span
- style="font-weight: bold; font-family: courier new,courier,monospace;">go
-north</span><span style="font-family: courier new,courier,monospace;">'.</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
-Because you do not have an alias 'north' that expands</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">to '</span><span
- style="font-weight: bold; font-family: courier new,courier,monospace;">go
-north</span><span style="font-family: courier new,courier,monospace;">',
+<big style="font-family: monospace;"><br>
+Technically,
+you can't 'n' either. When you type 'n', what<br>
+it happening
+is that your preset alias turns that 'n'<br>
+into the
+command line '<span style="font-weight: bold;">go
+north</span>'.<br>
+&nbsp;&nbsp;&nbsp;
+Because you do not have an alias 'north' that expands<br>
+to '<span style="font-weight: bold;">go
+north</span>',
 'north' doesn't
-take you anywhere. But</span><br
- style="font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; font-family: courier new,courier,monospace;">go
-north</span><span style="font-family: courier new,courier,monospace;">
-will.</span><br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;"></span></big>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="4.15"></a> <span
+take you anywhere. But<br>
+<span style="font-weight: bold;">go
+north</span>
+will.<br>
+<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"></span></big>
+<pre style="font-family: monospace;"><big><a name="4.15"></a> <span
  style="font-weight: bold; text-decoration: underline;">Why is there a bunch of stuff in ROOMS_FURNACE?</span><br></big></pre>
-<big><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">The QCS is
-designed to attempt the graceful handling</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">of unusual
-events. Sloppy code, non-working objects,</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">etc. Part of
-this design is avoiding a situation</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">where an
-object's destruction affects your local </span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">environment
-(and this happens a bit more often than </span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">you might
-think). </span><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
-To avoid some types of unpleasantness, QCS doesn't</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">try to
-immediately destruct objects when replacing them.</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">Instead, they
-are moved, along with whatever problems</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">they might
-have, to ROOMS_FURNACE. That is a room</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">where things
-go to be destructed quietly. Every </span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">second or so,
-the contents of that room are destroyed,</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">and their
-bits recycled.</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
-A few other items in the lib use the furnace,</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">notably the
-recycling bins and the reload command.</span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<a style="font-family: courier new,courier,monospace;" name="4.16"></a><span
- style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;">How
+<big style="font-family: monospace;"><br>
+The QCS is
+designed to attempt the graceful handling<br>
+of unusual
+events. Sloppy code, non-working objects,<br>
+etc. Part of
+this design is avoiding a situation<br>
+where an
+object's destruction affects your local <br>
+environment
+(and this happens a bit more often than <br>
+you might
+think). <br>
+&nbsp;&nbsp;&nbsp;
+To avoid some types of unpleasantness, QCS doesn't<br>
+try to
+immediately destruct objects when replacing them.<br>
+Instead, they
+are moved, along with whatever problems<br>
+they might
+have, to ROOMS_FURNACE. That is a room<br>
+where things
+go to be destructed quietly. Every <br>
+second or so,
+the contents of that room are destroyed,<br>
+and their
+bits recycled.<br>
+&nbsp;&nbsp;&nbsp;
+A few other items in the lib use the furnace,<br>
+notably the
+recycling bins and the reload command.<br>
+<br>
+<br>
+<a name="4.16"></a><span
+ style="font-weight: bold; text-decoration: underline;">How
 do I change
-my screen and terminal settings?</span><br
- style="font-family: courier new,courier,monospace;">
-<br
- style="font-weight: bold; font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; font-family: courier new,courier,monospace;">help
-terminal</span><br
- style="font-weight: bold; font-family: courier new,courier,monospace;">
-<br
- style="font-weight: bold; font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; font-family: courier new,courier,monospace;">help
-screen</span><br
- style="font-weight: bold; font-family: courier new,courier,monospace;">
-<br
- style="font-weight: bold; font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; font-family: courier new,courier,monospace;">screen
-79 24</span><br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span
- style="font-weight: bold; font-family: courier new,courier,monospace;"></span></big>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="4.17"></a> <span
+my screen and terminal settings?</span><br>
+<br style="font-weight: bold;">
+<span style="font-weight: bold;">help
+terminal</span><br style="font-weight: bold;">
+<br style="font-weight: bold;">
+<span style="font-weight: bold;">help
+screen</span><br style="font-weight: bold;">
+<br style="font-weight: bold;">
+<span style="font-weight: bold;">screen
+79 24</span><br>
+<br>
+<span style="font-weight: bold;"></span></big>
+<pre style="font-family: monospace;"><big><a name="4.17"></a> <span
  style="font-weight: bold; text-decoration: underline;">ZOMG this is the best mudlib evar how can I evar thank you?</span><br></big></pre>
-<big><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">No need,
-citizen. Merely doing my job. </span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">Just let me
-know what bugs you find, and how I can</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">make the lib
-better.</span><br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
+<big style="font-family: monospace;"><br>
+No need,
+citizen. Merely doing my job. <br>
+<br>
+Just let me
+know what bugs you find, and how I can<br>
+make the lib
+better.<br>
+<br>
 </big>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="4.18"></a><span
+<pre style="font-family: monospace;"><big><a name="4.18"></a><span
  style="text-decoration: underline; font-weight: bold;">Dude this mudlib sux0rz @ss. What a waste of my time.</span><br><br>I'm sure Dead Souls has lots of things that you don't<br>like, but I can't fix them if I don't know what they are.<br>Email me so that I can understand the lameness, and so <br>others can benefit for your suggestions.<br><br><br></big><big><a
  name="4.19"></a><span
  style="font-weight: bold; text-decoration: underline;">I'm seeing a filename but I can't read it.</span><br><br>	If you try command and you get something like:<br><br>/secure/foo/bar: No such reference.<br><br>	It means you don't have read access to that<br>file or directory. I've someone make a stink about<br>how a file they can't read shouldn't be visible to them<br>or some such thing. However, I think he was just<br>being difficult. Some files you can't read, even<br>though you have access to the directory they're in.<br>That's the story.<br><br><br></big><big><a
@@ -1077,23 +943,20 @@ better.</span><br style="font-family: courier new,courier,monospace;">
  style="font-weight: bold;">cd ^</span><br><br>To go to /domains/default: <span
  style="font-weight: bold;">cd ^default</span><br><br>To go to the directory you were in before the current one: <span
  style="font-weight: bold;">cd ~-</span><br><br></big><br></pre>
-<hr
- style="width: 100%; height: 2px; font-family: courier new,courier,monospace;"><big><br
- style="font-family: courier new,courier,monospace;">
-<big><span
- style="font-family: courier new,courier,monospace; font-weight: bold;">Section
-5: Building</span></big><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
+<hr style="width: 100%; height: 2px; font-family: monospace;"><big
+ style="font-family: monospace;"><br>
+<big><span style="font-weight: bold;">Section
+5: Building</span></big><br>
+<br>
 </big>
-<pre style="font-family: courier new,courier,monospace;"><big><span
+<pre style="font-family: monospace;"><big><span
  style="font-weight: bold; text-decoration: underline;"><a name="5.1"></a>QCS is putting stuff where I don't want it.</span><br><br>	QCS is a way to use simple commands to manipulate<br>complex files. Sometimes the conversion between simple<br>and complex causes unusual compromises and outcomes.<br><br>	When you create a new room, what QCS does<br>is look at the room you're currently in. Let's say<br>you're standing in /realms/you/area/room/test1.c. And<br>you issue the command<br><br
  style="font-weight: bold;"><span style="font-weight: bold;">create room east test2</span><br><br>	In this case, "test2" is considered a "relative path",<br>which means that you didn't provide QCS with *exactly* where<br>you want the file to be. You told QCS to figure out where<br>to put that file.<br>	When QCS has to guess where a new room goes,<br>it simply assumes that the room goes in the same directory<br>as the current room. So, in this case, you're going to <br>make a file with this path:<br><br>/realms/you/area/room/test2.c<br><br>	Suppose that this is not where you want the new<br>room to be. you want it to go into /realms/you/testrooms/.<br>In this case, you need to tell QCS the "full path", like this:<br><br
  style="font-weight: bold;"><span style="font-weight: bold;">create room east /realms/you/testrooms/test2</span><br><br>	When you create non-room objects, also known as<br>tangible items, QCS guesses in a slightly different way.<br>If you provide a relative name, then QCS looks at your<br>current working directory (cwd). Based on the type of item, <br>QCS looks for a directory with the appropriate name. For<br>example, if your cwd is /realms/you/foo, and the type of<br>object is a weapon, then QCS looks for a directory named<br>"/realms/you/foo/weap/". If it exists, it puts your new<br>file there. Otherwise it tries to put it in "/realms/you/weap/".<br>And if that doesn't work, it'll default to your home area<br>weapon directory, which is "/realms/you/area/weap/".<br><br>	If you've been granted domain admin status, and<br>you are using QCS to work on your new domain, it's therefore<br>very important that your cwd be in the right place in the<br>domain directory for it to work. Otherwise, your new stuff may <br>wind up in your default area dir, and you could go nuts<br>trying to find it.<br><br>	Of course, you can avoid all ambiguity by simply<br>using a full path, like:<br><br><span
  style="font-weight: bold;">create weapon /domains/My_Spiffy_Domain/weap/fruitcake</span><br><br>&nbsp;<br><a
  name="5.2"></a><span
  style="font-weight: bold; text-decoration: underline;">How do I make a blank room, instead of copying the current one?</span><br></big></pre>
-<big><span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+<big style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
 You'll always copy the old room, that's just how<br>
 QCS works. But you can quickly change it to a blank<br>
 room by entering the new room and issuing this command:<br>
@@ -1133,22 +996,19 @@ vision, and the language skills to make it evocative,<br>
 immersive, and worth playing in. That's up<br>
 to you...I can't help you with that.<br>
 <br>
-</span></big>
-<pre style="font-family: courier new,courier,monospace;"><big><span
+</big>
+<pre style="font-family: monospace;"><big><span
  style="font-weight: bold; text-decoration: underline;"><a name="5.4"></a>How do I make a quest?</span><br>&nbsp;&nbsp; <br>	Think of a quest in terms of the result. <br>The result of a quest is a player receiving quest<br>points and a quest title. <br>&nbsp;&nbsp;&nbsp;<br>	This means that pretty much anything can <br>be a quest. If you've coded a rock to provide <br>quest points and a quest title when it is<br>picked up, well, there's your Rock Quest. However,<br>you usually want to make things a bit more challenging. <br> <br>	A quest can be as boring as "pick up the red rock" <br>or it can  be a challenging metaphysical inquiry into the <br>nature of consciousness. If quest points and a quest title are<br>at the end of a series of actions, then that series of actions<br>is a quest. What those actions should be are entirely up <br>to your imagination. Review the orcslayer quest in the <br>Player's Handbook for an example. You <span
  style="font-style: italic;">did</span> read the <br>Player's Handbook, right?<br>&nbsp;&nbsp; <br>Take a look at Leo the Archwizard's code for an example of the<br>mechanics of solving a quest.<br></big></pre>
-<big><span
- style="text-decoration: underline; font-weight: bold; font-family: courier new,courier,monospace;"><a
- name="5.5"></a>Where's
-Leo?</span><br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">Read the
-Player's Handbook already, please.</span><br
- style="font-family: courier new,courier,monospace;">
-</big><br>
+<big style="font-family: monospace;"><span
+ style="text-decoration: underline; font-weight: bold;"><a name="5.5"></a>Where's
+Leo?</span><br>
 <br>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="5.6"></a><span
+Read the
+Player's Handbook already, please.<br>
+</big><br style="font-family: monospace;">
+<br style="font-family: monospace;">
+<pre style="font-family: monospace;"><big><a name="5.6"></a><span
  style="font-weight: bold; text-decoration: underline;">Where are the vehicles and mounts?</span><br><br>	There are none yet. After 2.1 is released, I'll<br>be able to concentrate on adding new systems like that.<br>For now, it's just bugfixes and vital functionality<br>I'm working on. However, 2.1 should be released<br>Real Soon Now.<br><br><br><a
  name="5.7"></a><span
  style="font-weight: bold; text-decoration: underline;">I'm having trouble adding meals to my barkeep with QCS.</span><br><br>Cratylus &lt;ds&gt; ok here's the deal<br><br><span
@@ -1160,17 +1020,40 @@ Player's Handbook already, please.</span><br
  name="5.8"></a><span
  style="font-weight: bold; text-decoration: underline;">I heard DS has stargates. Where's an example?</span><br><br>	The following rooms have stargates:<br><br>/domains/Ylsrim/room/tower.c<br><br>/domains/default/room/stargate_lab.c<br><br>	For info on valid gates, type: <span
  style="font-weight: bold;">stargate</span><br></big></pre>
-<br style="font-family: courier new,courier,monospace;">
-<big><br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">-
+<br style="font-family: monospace;">
+<pre style="font-family: monospace;"><big><a name="5.9"></a><span
+ style="font-weight: bold; text-decoration: underline;">I created a vendor, but he isn't responding to the "list" command.</span><br><br>	The list command isn't part of the vendor object. It's<br>part of LIB_SHOP, which is a room that acts as a sort of front-end<br>for the vendor. The commands <span
+ style="font-weight: bold;">list</span>, <span
+ style="font-weight: bold;">show</span>, <span
+ style="font-weight: bold;">price</span>, and <span
+ style="font-weight: bold;">appraise</span> are<br>not in the vendor, but in the shop. To get the appropriate responses<br>from the vendor, you would use the following syntax:<br><br>list: <span
+ style="font-weight: bold;">ask vendor to browse</span><br>show: <span
+ style="font-weight: bold;">ask vendor to show &lt;item&gt;</span><br>price: <span
+ style="font-weight: bold;">ask vendor to price &lt;item&gt;</span><br>appraise: <span
+ style="font-weight: bold;">ask vendor to appraise &lt;item&gt;<br><br></span></big></pre>
+<a style="font-family: monospace;" name="5.10"></a><span
+ style="font-family: monospace; font-weight: bold; text-decoration: underline;">I
+gave room with a default smell but I cannot get any other smells in
+there, <br>
+such as 'smell object' for example</span><br
+ style="font-family: monospace;">
+<br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; SetSmell, like
+SetListen, is in the form of a mapping. When using the<br>
+QCS, the correct formatting is automatically made for you. If coding<br>
+by hand, take a look at /domains/town/room/riverbank.c for what it<br>
+looks like. Note that for each Smell or Listen, you need a corresponding<br>
+SetItems element.<br style="font-family: monospace;">
+</span><br style="font-family: monospace;">
+<br style="font-family: monospace;">
+<big style="font-family: monospace;">-
 Cratylus<br>
 <br>
-&lt;my name here&gt;@users.sourceforge.net<br>
-</span><br style="font-family: courier new,courier,monospace;">
-<a style="font-family: courier new,courier,monospace;" href="index.html">Dead
-Souls Homepage</a><br
- style="font-family: courier new,courier,monospace;">
-</big>
+&lt;my name here&gt;@comcast.net<br>
 <br>
+<a href="index.html">Dead
+Souls Homepage</a><br>
+</big>
+<br style="font-family: monospace;">
 </body>
 </html>

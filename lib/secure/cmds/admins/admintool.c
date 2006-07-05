@@ -6,7 +6,8 @@
 inherit LIB_DAEMON;
 
 static private void validate() {
-    if( !((int)master()->valid_apply(({ "PRIV_ASSIST", "PRIV_SECURE" }))) )
+    if(!this_player()) return 0;
+    if( !((int)master()->valid_apply(({ "ASSIST" }))) )
 	error("Illegal attempt to access admintool: "+get_stack()+" "+identify(previous_object(-1)));
 }
 
@@ -1223,7 +1224,20 @@ int eventEditGroup(string members){
     str = global_group_temp;
     global_group_temp = "";
 
+
+    if(str == "ASSIST" || str == "SECURE" ) {
+	if(!securep(this_player())){
+	    write("Only full admins may do this.");
+	    Menu();
+	    return 1;
+	}
+    }
+
+    //tc("str: "+str);
+    //tc("green","green");
+
     if(str == "SECURE"){
+	validate();
 	if(!members || members == "") {
 	    write("You're not leaving the SECURE group empty. Modification cancelled.\n");
 	    Menu();

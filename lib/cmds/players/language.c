@@ -11,8 +11,15 @@ mixed cmd(string str) {
     }
 
     write("You speak:");
-    foreach(string key, int val in FluencyMap){
-	write(capitalize(key)+" with "+val+"% proficiency.");
+
+    if(this_player()->GetPolyglot()){
+	write("All languages with 100% proficiency.");
+    }
+
+    else {
+	foreach(string key, int val in FluencyMap){
+	    write(capitalize(key)+" with "+val+"% proficiency.");
+	}
     }
 
     return 1;

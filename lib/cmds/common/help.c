@@ -16,10 +16,17 @@ varargs void HelpMenu(string index);
 mixed cmd(string arg) {
     object who = previous_object();
     int array screen = (who->GetScreen() || ({ 80, 24 }));
-    string help;
+    string help = "";
 
-    if( !arg || arg == "" || arg == "help") {
+    if( arg == "help") {
 	help = HELP_D->GetHelp("help");
+	write(help);
+	return 1;
+    }
+    if( !arg || arg == "") {
+	if(creatorp(this_player())) help = read_file("/doc/help/creators/creator_general");
+	else help = read_file("/doc/help/players/player_general");
+	if(!sizeof(help)) help = HELP_D->GetHelp("help");
 	write(help);
 	return 1;
     }

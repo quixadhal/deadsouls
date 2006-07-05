@@ -1,0 +1,55 @@
+    Channels are an out-of-character (OOC) means for users
+to communicate with each other. You may hear the terms 
+"channel" and "line" used interchangeably.
+
+    There are two main types of channels: local and intermud.
+The default Dead Souls distribution uses these channels as
+local:
+
+cre - only creators hear this
+gossip - general offtopic stuff
+newbie - everyone can hear this unless they turn it off
+thief - channel for the thief class
+fighter - channel for the fighter class
+error - system errors
+death - death announcements
+mage - channel for the thief class
+priest - channel for the thief class
+explorer - channel for the thief class
+admin - only admins hear this
+
+The following are intermud channels:
+
+ds - Dead Souls mud code talk
+ds_test - testing testing 1, 2, 3, etc
+intergossip - general offtopic stuff
+lpuni - LPUniversity discussion
+intercre - general technical chatter
+
+
+By default, players do not have access to intermud channels.
+Mud admins are asked to maintain some level of adherence to
+the channel topics from their users. Muds that violate the
+router admin's interpretation of "on-topic" will be asked 
+politely, if possible, to conform to the channel standards.
+
+Continued violations subject the offending mud to potential
+banning.
+
+Hate speech is not tolerated, and flaming is frowned
+upon, though each mud is expected to police itself and
+enforce these standards on their own.
+
+If you don't like these rules, use a router other than the default.
+
+For local channels of course, none of this applies. Whatever
+local rules are in place, that's what must be obeyed.
+
+Some tips:
+---------
+To turn on/off a channel, type its name by itself, like this: newbie
+
+To know who is listening to a channel: list newbie
+
+To see a brief history of channel messages: hist newbie
+

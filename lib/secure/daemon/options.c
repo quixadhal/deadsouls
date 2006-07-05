@@ -20,7 +20,7 @@ void create() {
     daemon::create();
     SetNoClean(1);
     __MyGroups = ([]);
-    __Options = ([]);
+    __Options = (["notify" : 1]);
     __Owner = 0;
 }
 
@@ -45,14 +45,13 @@ void assure_box_exists(string who) {
     file = DIR_POSTAL+"/"+who[0..0]+"/"+who;
     if(unguarded((: file_size, file :)) != -2) unguarded((: mkdir, file :));
     __MyGroups = ([]);
-    __Options = ([]);
+    __Options = (["notify":1]);
     __Owner = who;
     unguarded((: save_object, file+"/postalrc" :));
 }
 
 static private void load_options(string who) {
     string file;
-
     if(who == __Owner) return;
     this_object()->assure_box_exists(who);
     if(__Owner == who) {
@@ -65,7 +64,6 @@ static private void load_options(string who) {
 
 static private void save_options() {
     string file;
-
     file = DIR_POSTAL+"/"+__Owner[0..0]+"/"+__Owner+"/postalrc";
     unguarded((: save_object, file :));
 }

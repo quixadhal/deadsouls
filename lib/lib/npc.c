@@ -406,6 +406,7 @@ void eventDescribeEnvironment(int brief) {
 	    }
 	    set_heart_beat(0);
 	    call_out( (: Destruct :), 0);
+	    flush_messages();
 	    return 1;
 	}
 
@@ -633,13 +634,15 @@ void eventDescribeEnvironment(int brief) {
 	}
 
 	varargs void SetCurrency(mixed val, int amount) {
-	    if( stringp(val) ) AddCurrency(val, amount - GetCurrency(val));
+	    //tc("val: "+identify(val),"red");
+	    //if(amount) tc("amount: "+identify(amount),"red");
+	    if( stringp(val) ) AddCurrency(val, amount);
 	    else if( mapp(val) ) {
 		string *currs;
 		int i;
 
 		i = sizeof(currs = keys(val));
-		while(i--) AddCurrency(currs[i], val[currs[i]]-GetCurrency(currs[i]));
+		while(i--) AddCurrency(currs[i], val[currs[i]]);
 	    }
 	    else error("Bad argument 1 to SetCurrency().");
 	}

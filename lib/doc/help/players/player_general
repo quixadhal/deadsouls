@@ -1,0 +1,23 @@
+Basic player commands:
+
+look      - get a view of your environment
+inventory - take stock of your possessions
+stat      - your health and statistics
+score     - your overall ranking and information
+
+Dealing with objects:
+--------------------
+look at, look in
+get, drop, put, give
+open, close
+read
+wield, unwield, wear, remove
+
+Moving around:
+-------------
+n, s, e, w, ne, nw, se, sw, u, d
+enter, go out, climb up, climb down, jump down
+crawl, fly
+
+See also: help help
+

@@ -43,7 +43,7 @@ int instr(string str){
     }
 }
 mixed CanMail(object who, string args) {
-    if( !interactive(who) ) return 0;
+    if( who && !interactive(who) ) return 0;
     if( GetTown() != (string)who->GetTown() )
 	return "Any mail you might have will be at your home post office.";
     return 1;
@@ -63,13 +63,13 @@ mixed eventMail(object who, string args) {
     return 1;
 }
 int CanReceive(object ob) {
-    if( !ob && !(ob = previous_object()) ) return 0;
-    if( living(ob) && !interactive(ob) ) return 0;
+    if( !ob || (living(ob) && !interactive(ob)) ) return 0;
     else return room::CanReceive(ob);
 }
 int eventReleaseObject() {
     object ob;
 
+    if(!ob) return 0;
     if( !(ob = previous_object()) ) return room::eventReleaseObject();
     if( !room::eventReleaseObject() ) return 0;
     if( (ob = present(POSTAL_ID, ob)) ) ob->eventDestruct();

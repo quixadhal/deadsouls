@@ -6,7 +6,7 @@ static void create() {
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("the Arena");
-    SetLong("You are in a large room with blank cement walls. This room was built so Creators may test their armor, weapons and NPC's in combat.");
+    SetLong("You are in a large room with blank cement walls. This room was built so Creators may test their armor, weapons and NPC's in combat. A large steel door is here, which can be used to prevent wimpy creatures from escaping.");
     SetItems( ([
 	({"wall","walls"}) : "The walls are smooth and cement.",
 	({"floor","ceiling"}) : "The floor and ceiling are, like the walls, made "+

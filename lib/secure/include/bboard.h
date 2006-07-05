@@ -1,5 +1,5 @@
-#define BBOARD_DIR 		"/adm/save/boards/"
-#define BBOARD_EDIT		"/tmp/bb/"
+#define BBOARD_DIR 		"/save/boards/"
+#define BBOARD_EDIT		"/tmp/"
 
 #define BBOARD_OK		0
 #define BAD_DATA		1

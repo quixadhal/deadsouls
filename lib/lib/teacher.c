@@ -13,7 +13,47 @@ inherit LIB_SENTIENT;
 
 private string array TeachingLanguages;
 private mapping Students;
+private int commercial = 0;
+private int teaching_fee = 50;
+private string local_currency = "silver";
 
+int GetCommercial(){
+    return commercial;
+}
+
+int SetCommercial(int i){
+    if(i) {
+	commercial = i;
+	if(!teaching_fee) teaching_fee = 50;
+    }
+    else commercial = 0;
+    return commercial;
+}
+
+string GetLocalCurrency(){
+    return local_currency;
+}
+
+string SetLocalCurrency(string str){
+    local_currency = str;
+    return local_currency;
+}
+
+int GetTeachingFee(){
+    return teaching_fee;
+}
+
+int SetTeachingFee(int i){
+    if(i) {
+	teaching_fee = i;
+	commercial = 1;
+    }
+    else {
+	teaching_fee = 0;
+	commercial = 0;
+    }
+    return teaching_fee;
+}
 
 /**** driver applies ****/
 
@@ -117,8 +157,13 @@ int eventTeach(object who, string verb, string language) {
 	    eventForce("speak I know nothing about the " +capitalize(language)+" language.");
 	    return 0;
 	}
-	if( (int)this_player()->GetTrainingPoints() < 1 ) {
+	if( !commercial && (int)this_player()->GetTrainingPoints() < 1 ) {
 	    eventForce("speak You need more training points.");        
+	    return 0;
+	}
+	if(commercial && this_player()->GetCurrency(GetLocalCurrency()) < teaching_fee){
+	    eventForce("speak I charge "+teaching_fee+" "+GetLocalCurrency()+" per lesson. "+
+	      "You don't seem to have the right amount of the right currency.");
 	    return 0;
 	}
 	Students[ (string)who->GetKeyName() ] = language;
@@ -137,7 +182,8 @@ static int ContinueTeaching(object who, string language, int x) {
 	map_delete(Students, (string)who->GetKeyName());
 	eventComplete(who, language);
 	who->AddLanguagePoints(language,5+((who->GetStatLevel("intelligence")/10)*2)+random(10));
-	who->AddTrainingPoints(-1);
+	if(!commercial) who->AddTrainingPoints(-1);
+	else who->AddCurrency(GetLocalCurrency(),-teaching_fee);
 	return 1;
     } else {
 	eventContinue(who, language, ++x);

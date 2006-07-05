@@ -1111,6 +1111,7 @@ int fscan(string str){
     if(!str || str=="" || str=="here") {
 	ob = environment(this_player());
 	name = ob->GetShort();
+	str = base_name(ob);
     }
     if(str == "me") str = this_player()->GetKeyName();
     if(present(str,this_player())) {

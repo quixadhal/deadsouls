@@ -2,3 +2,11 @@ The /obj directory contains files required by lib
 systems. Removing this directory or its contents,
 or modifying its contents may generate unexpected
 behavior from your mud.
+
+Do not try to use these objects directly, and do not
+copy them into your area directories as templates. 
+QCS uses these rooms in very special ways, and having them
+in your area directories may confuse it and give you
+errors you don't understand.
+
+

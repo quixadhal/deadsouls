@@ -1,0 +1,16 @@
+Example Rooms Index
+===========================================================================
+exroom1: Changing Chats when a quest has been done.
+exroom2: example of a room you can inherit.  All its functions
+         go to the rooms which inherit it.  They can over-write those functions.
+         All three rooms which inherit it manipulate 'pull' in their own
+         rooms.  They don't affect 'pull' or "myvar" in this room.
+exroom2a: inherits exroom2 and ADDS to the object_entered function
+exroom2b: inherits exroom2 and adds nothing to object_entered (but you'll 
+          see that it uses the object_entered from exroom2).
+exroom2c: inherits exroom2 and removes the object_entered from exroom2.
+exroom3:  move_player
+exroom4:  pre/post exits add/remove exits  set/query/remove tempvars
+exroom5:  look_fail & tempvars pt 2.
+exroom6:  pre-exit (sneak)
+exroom7:  two verbs for one add_action

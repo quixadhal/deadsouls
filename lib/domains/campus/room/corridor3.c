@@ -23,9 +23,7 @@ static void create() {
     SetProperty("no attack", 1);
 }
 int CanReceive(object ob){
-    string str;
-    str=file_name(environment(ob));
-    if(ob->GetRace() == "rodent"){
+    if(ob && ob->GetRace() == "rodent"){
 	message("info","You are repelled by rodenticide.",ob);
 	return 0;
     }

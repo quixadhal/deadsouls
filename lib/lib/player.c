@@ -156,6 +156,7 @@ varargs int eventDie(mixed agent) {
 	this_object()->save_player((string)this_object()->GetKeyName());
 	this_object()->eventForce("look");
     }
+    flush_messages();
     return 1;
 }
 

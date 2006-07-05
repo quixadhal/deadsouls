@@ -1,12 +1,13 @@
 #include <lib.h>
+#include <privs.h>
 
-inherit LIB_BOARD;
+inherit LIB_SECURE_BOARD;
 
 void create(){
     ::create();
 
     SetKeyName("chalkboard");
-    SetId( ({ "board", "chalkboard" }));
+    SetId(({ "board", "chalkboard" }));
     set_board_id("admin_board");
     SetShort("The Arch Board");
     SetLong("This is the Arch board. You know how to use it.");
@@ -17,7 +18,7 @@ void init(){
 }
 
 void validate(){
-    if( !((int)master()->valid_apply(({ "PRIV_ASSIST", "PRIV_SECURE" }))) ) 
+    if( !this_player() || !archp(this_player()) ) 
 	error("Illegal attempt to access arch board: "+get_stack()+" "+identify(previous_object(-1)));
 }
 

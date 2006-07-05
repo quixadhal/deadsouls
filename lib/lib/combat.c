@@ -18,7 +18,7 @@ inherit LIB_RACE;
 inherit LIB_CLASSES;
 inherit LIB_COMBATMSG;
 
-private int Wimpy;
+private int Wimpy, Dead;
 private string WimpyCommand;
 private static int cParalyzed, tNextRound;
 private static string TargetLimb, Party;
@@ -57,6 +57,10 @@ static void create() {
 }
 
 /*  *****************  /lib/combat.c data functions  *****************  */
+int GetDead(){
+    return Dead;
+}
+
 object array GetEnemies() {
     return Enemies;
 }
@@ -474,6 +478,9 @@ varargs int eventDie(mixed agent) {
     object ob;
     int x;
 
+    if(Dead) return 1;
+    Dead = 1;
+
     x = race::eventDie(agent);
     if( x != 1 ) {
 	return x;
@@ -485,6 +492,7 @@ varargs int eventDie(mixed agent) {
     }
     environment()->eventLivingDied(this_object(), agent);
     Enemies = ({});
+    flush_messages();
     return 1;
 }
 
@@ -493,6 +501,9 @@ int eventExecuteAttack(mixed target) {
     function f = fNextRound;
     int type = tNextRound;
     int position = GetPosition();
+
+    if(Dead) return 1;
+    if(target->GetDead()) return 1;
 
     fNextRound = 0;
     tNextRound = ROUND_UNDEFINED;
@@ -569,6 +580,9 @@ int eventExecuteAttack(mixed target) {
 	object array weapons = 0;
 	function f = 0;
 
+	if(Dead) return 1;
+	if(target->GetDead()) return 1;
+
 	if( arrayp(val) ) {
 	    weapons = val;
 	}
@@ -600,6 +614,9 @@ int eventExecuteAttack(mixed target) {
 	int level = target->GetLevel();
 	int bonus = GetCombatBonus(level);
 	int power, pro, con;
+
+	if(Dead) return;
+	if(target->GetDead()) return;
 
 	if( target->GetDying() ) {
 	    return;
@@ -633,7 +650,7 @@ int eventExecuteAttack(mixed target) {
 	    int damage_type, damage, weapon_damage, actual_damage, encumbrance;
 	    encumbrance = this_object()->GetEncumbrance();
 	    //tc("encumbrance: "+encumbrance,"white");
-	    if(encumbrance > 30){
+	    if(encumbrance > 200){
 		//tc("feep","yellow");
 		tell_object(this_object(),"You struggle to fight while heavily encumbered.");
 	    }
@@ -673,6 +690,9 @@ int eventExecuteAttack(mixed target) {
 	int count = sizeof(limbs);
 	int attacks;
 
+	if(Dead) return 1;
+	if(target->GetDead()) return 1;
+
 	if( count < 2 ) {
 	    if(RACES_D->GetLimblessCombatRace(this_object()->GetRace())){
 		limbs = GetLimbs();
@@ -699,7 +719,7 @@ int eventExecuteAttack(mixed target) {
 	int pro, con;
 	int chance;
 
-	if( target->GetDying() ) {
+	if( target->GetDead() || Dead || target->GetDying() ) {
 	    return;
 	}
 
@@ -726,7 +746,7 @@ int eventExecuteAttack(mixed target) {
 	    int x, encumbrance;
 	    encumbrance = this_object()->GetEncumbrance();
 	    //tc("encumbrance: "+encumbrance,"white");
-	    if(encumbrance > 30){
+	    if(encumbrance > 200){
 		//tc("feep","blue");
 		tell_object(this_object(),"You struggle to fight while heavily encumbered.");
 	    }
@@ -755,6 +775,7 @@ int eventExecuteAttack(mixed target) {
     }
 
     int eventMagicRound(mixed target, function f) {
+	if(target->GetDead()) return 1;
 	evaluate(f, target);
 	return target->GetDying();
     }
@@ -763,6 +784,8 @@ int eventExecuteAttack(mixed target) {
 	int pro = CanMelee(target);
 	int con = target->GetDefenseChance(target->GetSkillLevel("melee defense"));
 	int x = random(pro);
+
+	if(target->GetDead()) return 1;
 
 	if( environment() != environment(target) ) {
 	    eventPrint(target->GetName() + " has gone away.");
@@ -838,6 +861,8 @@ int eventExecuteAttack(mixed target) {
 
     varargs int eventReceiveAttack(int speed, string def, object agent) {
 	int x, pro, level, bonus;
+
+	if(Dead) return 0;
 
 	if( !agent ) {
 	    agent = previous_object();
@@ -919,8 +944,10 @@ int eventExecuteAttack(mixed target) {
       mixed limbs) {
 	int hp,encumbrance;
 	encumbrance = this_object()->GetEncumbrance();
+
+	if(Dead) return 0;
 	//tc("encumbrance: "+encumbrance,"white");
-	if(encumbrance > 30){
+	if(encumbrance > 200){
 	    //tc("feep","green");
 	    if(GetInCombat()) tell_object(this_object(),"You try to dodge while weighed down.");
 	}

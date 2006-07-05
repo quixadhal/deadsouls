@@ -25,21 +25,40 @@ enhancements and minor bugfixes become available on full release.</p>
 <p>All of the fixes listed here will be included in the next release.
 They
 are provided here early in order to address potential problems.</p>
-<p>For Dead Souls <span style="color: red; font-weight: bold;">2.0r25</span>,
+<p>For Dead Souls <span style="color: red; font-weight: bold;">2.0r25
+and below</span>,
 the
 following fixes are available:
 </p>
 <ul>
-  <li>There is a <a href="http://dead-souls.net/news.html#16jun2006"><span
- style="font-weight: bold;">serious security problem</span></a> that
-affects all versions of Dead Souls. I'll be accelerating the release of
-the next version, and will be trying to get a hotfix out as quickly as
-possible. Until then, do not promote anyone to the position of Creator
-unless you know them very very well. If you already have Creators you
-don't know well, lock the mud (admintool option a) until you can
-upgrade or apply the patch. Sorry, guys. I'm hoping to have it out by
-Saturday, or Sunday at the latest.</li>
+  <li>There is a <a href="http://dead-souls.net/news.html#16jun06">serious
+security problem</a> that
+affects all versions of Dead Souls <span
+ style="text-decoration: underline;">below 2.0r26</span>. The only fix
+is to apply the patch to upgrade to 2.0r26. That patch
+is available now. Try a sourceforege mirror for the <a
+ style="font-weight: bold;"
+ href="http://sourceforge.net/project/showfiles.php?group_id=148388&amp;package_id=175140&amp;release_id=425833">patch
+download</a>. This patch can be applied to any version of Dead Souls
+above 2.0r20.<br>
+  </li>
 </ul>
+<br>
+<p>For Dead Souls <span style="color: red; font-weight: bold;">2.0r26</span>,
+the
+following fixes are available:
+</p>
+<ul>
+  <li>The patch to 2.0r26 had to be done in great haste, to prevent the
+unnecessary exposure of muds to hacking. As a result, I had to drop
+some stuff in the middle. This bug is the result: copy <a
+ href="http://dead-souls.net/code/about.c">this version of about.c</a>
+over <span style="font-weight: bold;">/secure/cmds/creators/about.c</span>
+and the about command will work for rooms again.<br>
+  </li>
+</ul>
+<br>
+<br>
 <div id="footer">
 <p style="text-align: center;"><a href="index.html">Return to Dead
 Souls Homepage</a></p>

@@ -6,7 +6,6 @@
 #include <config.h>
 
 inherit LIB_DAEMON;
-int elderp(object foo);
 
 #define SEP repeat_string("*=",39)+"*\n";
 
@@ -23,8 +22,11 @@ int cmd(string args) {
 	if(!obs[i]->GetInvis()) {
 	    if(archp(obs[i])) tmp+="[%^BLUE%^ARCH%^RESET%^]";
 	    else if(creatorp(obs[i]) ) tmp+="[%^CYAN%^WIZ%^RESET%^]";
+	    else if(avatarp(obs[i]) ) tmp+="[%^GREEN%^AVATAR%^RESET%^]";
+	    else if(high_mortalp(obs[i]) ) tmp+="[%^GREEN%^HIGH MORTAL%^RESET%^]";
 	    else tmp+=sprintf("[%d]", obs[i]->GetLevel() );
-	    if(elderp(obs[i])) tmp+=" [%^GREEN%^ELDER%^RESET%^]";
+	    if(elderp(obs[i])) tmp+=" [%^YELLOW%^ELDER%^RESET%^]";
+	    if(ambassadorp(obs[i])) tmp+=" [%^YELLOW%^AMBASSADOR%^RESET%^]";
 	    if(sizeof(obs[i]->GetShort()) < 50) {
 		tmp+=sprintf(" %s", obs[i]->GetShort());
 	    }
@@ -54,8 +56,3 @@ int cmd(string args) {
     return 1;
 }
 
-int elderp(object ob){
-    string str;
-    str=ob->GetKeyName();
-    return member_group(str, PRIV_ELDER);
-}

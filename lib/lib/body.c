@@ -28,7 +28,7 @@ inherit LIB_FLY;
 
 private int HealthPoints, MagicPoints, ExperiencePoints, QuestPoints;
 private int melee;
-private int Alcohol, Caffeine, Food, Drink, Poison, Sleeping;
+private int Alcohol, Caffeine, Food, Drink, Poison, Sleeping, Deaths;
 private float StaminaPoints;
 private string Torso, Biter;
 private mapping Fingers, Limbs, MissingLimbs;
@@ -72,12 +72,10 @@ int GetEncumbrance(){
     int encumbrance = 0;
     object *stuff = filter(all_inventory(this_object()), (: !($1->GetWorn()) :) );
 
-    //tc("ENABLE_ENCUMBRANCE: "+ENABLE_ENCUMBRANCE,"cyan");
     if(!(ENABLE_ENCUMBRANCE) || inherits(LIB_NPC,this_object()) ) return encumbrance;
-    //tc("bad encumbrance","red");
     if(sizeof(stuff)) foreach(object item in stuff) 
-	encumbrance += item->GetMass();
-    if(sizeof(stuff)) encumbrance *= sizeof(stuff);
+	encumbrance += (item->GetMass())/2;
+    if(sizeof(stuff)) encumbrance += sizeof(stuff);
     return encumbrance;
 }
 
@@ -610,6 +608,10 @@ varargs int eventDie(mixed agent) {
     //tc("stack: "+identify(get_stack()));
 
     //if(!agent) agent = previous_object();
+
+    if(Deaths) return 1;
+    Deaths = 1;
+
     if(agent && stringp(agent)) killer = agent + " ";
     else {
 	//tc("previous: "+identify(previous_object(-1)));
@@ -665,6 +667,7 @@ varargs int eventDie(mixed agent) {
 
     //call_out( function() { Dying = 0; }, 0);
     evaluate( function() { Dying = 0; });
+      flush_messages();
       return 1;
   }
 

@@ -9,7 +9,7 @@ mixed CanGo(object who, string str);
 mixed eventFly(object who, string dir);
 mixed eventGo(object who, string str);
 
-string GetDoor(string dir);
+mixed GetDoor(string dir);
 string array GetDoors();
 string SetDoor(string dir, string file);
 string GetDirection(string dest);

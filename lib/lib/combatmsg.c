@@ -9,6 +9,9 @@
 
 static mixed GetMissData(object targ, int type, string limb) {
     string targ_name = (string)targ->GetName(); 
+
+    if(targ->GetDead() || this_object()->GetDead()) return 0;
+
     if( type == -2 ) switch( random(7) ) {
     case 0:
 	return ({ "%s completely %s %s.",
@@ -91,6 +94,8 @@ static mixed GetMissData(object targ, int type, string limb) {
 
 static void eventSendMissMessages(object target, int x, string limb) {
     mixed data;
+
+    if(target->GetDead() || this_object()->GetDead()) return;
     if( !limb ) limb = "body";
     data = GetMissData(target, x, limb);
     if( sizeof(data) != 4 ) return;
@@ -137,6 +142,8 @@ SendMeleeMessages(object target, int x, string targlimb, string limb) {
     int i;
     string adverb;
     mixed verb, ptr, moves;
+
+    if(target->GetDead() || this_object()->GetDead()) return;
     if( x < 0 ) {
 	eventSendMissMessages(target, x, limb);
 	return;
@@ -167,6 +174,8 @@ SendWeaponMessages(object target, int x, object weapon, string limb) {
     int i;
     string adverb, type, weap;
     mixed verb, ptr, moves;
+
+    if(target->GetDead() || this_object()->GetDead()) return;
     if( x < 0 ) {
 	eventSendMissMessages(target, x, limb);
 	return;

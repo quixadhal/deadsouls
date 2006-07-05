@@ -85,7 +85,7 @@ int eventDestruct(){
 
 string GetSnooped(){
     //debug("I am snooping ",guy,"green");
-    if((previous_object() && base_name(previous_object())) != SNOOP_D &&
-      !archp(this_player())) return "";
+    if( !((int)master()->valid_apply(({ "PRIV_ASSIST", "PRIV_SECURE", "SNOOP_D" }))) ) return "";
     else return guy;
+    //return guy;
 }

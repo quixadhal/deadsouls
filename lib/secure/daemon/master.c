@@ -193,7 +193,7 @@ private static void load_access(string cfg, mapping ref) {
 	object *stack;
 	string *privs;
 	string priv;
-	int i;
+	int i, privcheck;
 
 	if( objectp(file) ) file = base_name(file);
 	if( ok && sizeof(ok) && ok[0] == "all" ) return 1;
@@ -219,20 +219,57 @@ private static void load_access(string cfg, mapping ref) {
 	    else stack = ({ ob }) + previous_object(-1);
 	}
 	else i = sizeof(stack = previous_object(-1) + ({ ob }));
+	//tc("me: "+identify(this_object()), "red");
+	//tc("prevs: "+identify((previous_object(-1)+({ob}))), "red");
+	//tc("get_stack: "+get_stack(), "white");
+	//tc("oper: "+oper, "red");
 	while(i--) {
-	    if(!stack[i] || stack[i] == this_object()) continue;
-	    if(file_name(stack[i]) == SEFUN) continue;
-	    if(!(priv = query_privs(stack[i]))) return 0;
-	    if(!ok && oper == "read") continue;
+	    if(!stack[i] || stack[i] == this_object()) {
+		//tc("stack check true");
+		continue;
+	    }
+	    if(file_name(stack[i]) == SEFUN) {
+		//tc("sefun check true");
+		continue;
+	    }
+	    if(!(priv = query_privs(stack[i]))) {
+		//tc("priv check FALSE");
+		return 0;
+	    }
+	    //tc("priv: "+priv,"yellow");
+	    //tc("prevs: "+identify(previous_object(-1)));
+	    if(!ok && oper == "read") {
+		//tc("trivial read check passed");
+		continue;
+	    }
 	    privs = explode(priv, ":");
-	    if(member_array(PRIV_SECURE, privs) != -1) continue;
-	    if(member_array(file_privs(file), privs) != -1) continue;
+	    if(member_array(PRIV_SECURE, privs) != -1) {
+		//tc("priv secure check true");
+		//tc("prevs: "+identify(previous_object(-1)),"white");
+		//tc("stack: "+get_stack(),"white");
+		continue;
+	    }
+	    if(stringp(file) && member_array(file_privs(file), privs) != -1) {
+		//tc("file: "+file+", checks true");
+		continue;
+	    }
+	    //foreach(string sub_priv in privs){
+	    //   if(sizeof(ok) && member_array(sub_priv, ok) != -1) privcheck = 1;
+	    //}
+	    //if(ok) tc("ok: "+identify(ok));
+	    //tc("current ob: "+identify(stack[i]));
+	    //tc("privcheck: "+privcheck+"\n\n");
+	    //if(privcheck) continue;
 	    if(!ok && oper == "write") {
+		//tc("verde","green");
 		if(userp(stack[i]) && check_user(stack[i], fun, file, oper))
 		    continue;
 		else return 0;
 	    }
-	    if(sizeof(privs & ok)) continue;
+	    if(sizeof(privs & ok)) {
+		//tc("azul","blue");
+		continue;
+	    }
 	    if(userp(stack[i]) && check_user(stack[i], fun, file, oper)) continue;
 	    if(userp(stack[i]) && check_domain(stack[i], fun, file,oper)) continue;
 	    return 0;
@@ -363,6 +400,7 @@ private static void load_access(string cfg, mapping ref) {
 	if( !strsrch(file, DIR_TMP) ) return 0;
 	else if( !strsrch(file, DIR_FTP) ) return 0;
 	else if( !strsrch(file, DIR_LOGS) ) return 0;
+	else if( !strsrch(file, DIR_SECURE_SAVE) ) return 0;
 	else return 1;
     }
 

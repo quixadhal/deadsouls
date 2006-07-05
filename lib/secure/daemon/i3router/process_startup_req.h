@@ -1,5 +1,7 @@
 // This file written completely by Tim Johnson (Tim@TimMUD)
 
+string *banned_muds = ({});
+
 static void process_startup_req(int protocol, mixed info, int fd){
     // Handles startup stuff.
     //  Loads info into newinfo mapping.
@@ -10,7 +12,9 @@ static void process_startup_req(int protocol, mixed info, int fd){
     // also, should verify that all the fields are the right type
 
     trr("info: "+identify(info));
-    trr("process_startup_req: protocol="+protocol+", mud="+info[2]);
+    trr("process_startup_req: protocol="+protocol+", mud="+info[2],"blue");
+
+    if(member_array(info[2], banned_muds) != -1) return;
 
     if(sizeof(info)<18){ 
 	// smallest protocol is protocol 1/2 which have size 18
@@ -28,21 +32,12 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	  }));
 	return;
     }
-    //sscanf(socket_address(fd), "%s %s", site_ip,junk);
-    //socket_bind(fd,random(1000)+10000);
-    //site_ip = path_prefix(socket_status(fd)[4],".");
-    //if(!site_ip || site_ip == "" || site_ip == "*"){
-    //if(true()){
-    trr("bad ip "+site_ip+" from "+info[2]);
-    //socket_close(fd);
-    //return;
-    //}
-    //junk = "foo";
     trr("fd is:" +fd);
 
     site_ip=socket_address(fd);
     trr("site_ip: "+site_ip);
     newinfo = ([
+      "name":info[2],
       "ip":site_ip,
       "connect_time":time(),
       "disconnect_time":0,
@@ -168,10 +163,11 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	  }));
 	return;
     }
-    if(mudinfo[info[2]] && mudinfo[info[2]]["password"] != newinfo["password"]){
+    if(mudinfo[info[2]] && sizeof(mudinfo[info[2]]) && mudinfo[info[2]]["password"] != newinfo["password"]){
 	// if MUD is already known, not connected, and wrong password
 	if(newinfo["ip"]==mudinfo[info[2]]["ip"]){
 	    // same IP as last time... let's just trust 'em...
+	    trr("Wrong password, but right IP","green");
 	    write_data(fd,({
 		"error",5,router_name,0,info[2],0,
 		"warning", // nothing in error summary that seems applicable?
@@ -180,7 +176,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	      }));
 	}
 	else{
-	    trr("wrong password, and from a new IP");
+	    trr("wrong password, and from a new IP","red");
 	    write_data(fd,({
 		"error",
 		5,
@@ -195,11 +191,14 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	    return;
 	}
     }
-    if(!mudinfo[info[2]]){
+    //trr("Right IP.","green");
+    if(!mudinfo[info[2]] || !newinfo["password"] || mudinfo[info[2]]["password"] != newinfo["password"] ){
 	// if new MUD, assign it a password
-	newinfo["password"]=random(10000);
+	newinfo["password"]=random(9999)+1;
+	trr("Assigning password "+newinfo["password"],"white");
 	// Change this maybe... see if the password is supposed to be in a certain range
     }
+    else trr("Right password. Known: "+mudinfo[info[2]]["password"]+", current: "+newinfo["password"],"green");
     // MUD should be okay at this point.
     trr("about to update the mudinfo...");
     mudinfo[info[2]]=newinfo; // update the mudinfo
@@ -210,6 +209,13 @@ static void process_startup_req(int protocol, mixed info, int fd){
     mudinfo_updates[info[2]]=mudinfo_update_counter;
     send_mudlist_updates(info[2], newinfo["old_mudlist_id"]);
     broadcast_mudlist(info[2]);
-    if(member_array("channel", keys(newinfo["services"])))
-	send_chanlist_reply(info[2], newinfo["old_chanlist_id"]);
+    if(member_array("channel", keys(newinfo["services"])) != -1)
+	send_chanlist_reply(info[2], ( newinfo["old_chanlist_id"]) ? newinfo["old_chanlist_id"] : (random(1138) * 1138)  );
+    else {
+	trr("-------------------------------","blue");
+	trr("It looks like "+info[2]+" doesn't have a channel service?!?","blue");
+	trr("These are the services reported: "+identify(newinfo["services"]),"blue");
+	trr("This is what newinfo looks like: "+identify(newinfo),"blue");
+	trr("-------------------------------","blue");
+    }
 }

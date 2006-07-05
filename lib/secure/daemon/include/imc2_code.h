@@ -43,7 +43,7 @@ string tmpstr;
 #define ADMIN(x) archp(x)
 #endif
 
-#define HTML_LOCATION "http://dead-souls.sourceforge.net/"
+#define HTML_LOCATION "http://dead-souls.net/"
 
 // Other things that could be #define'd...
 // INVIS(x) !visible(x)

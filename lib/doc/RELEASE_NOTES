@@ -1,3 +1,43 @@
+---- 2.0r27 --- 
+- Fixed currency problem in dying NPC's.
+- Added commands: env, polyglottize
+- Fixed "about" verb.
+- Tweaked snoop daemon and snoop objects.
+- Added pay-for-lessons feature in language teachers.
+- Fixed bug in LIB_EXITS that hosed various things,
+  including wandering NPC's.
+- mv command no longer overwrites an existing destination file.
+- Fixed campus rooms with hosed CanReceive()'s that horked logins.
+- Turned "move" command into "transfer", to address a conflict with
+  the "move" verb. - Fixed bug in admintool that prevented assistant admins from
+  using it.
+- Fixed bug in eval that prevented assistant admins from using it.
+- i3router: dynamic channel data is now persistent (newly created   
+  channels won't disappear when the router resets).
+- i3router: fixed a bug in chanlist-reply that stopped the   
+  channel list being sent to LPUni lib muds.
+- Modified install process to handle compiling on Wolfpaw servers.
+- Added code example domain that was donated by Daelas @ Moraelinost.
+- Added new podium, conference room, and margins command that were
+  donated by Daelas @ Moraelinost.
+- i3router: correct password is now honored.
+- Fixed help daemon bug that displayed race help twice.
+- QCS: creating an enter no longer wipes exits from an existing
+  target room.
+- Fixed bug in rescue login (Thanks, Nulvect).
+- Fixed bug in tell command that mishandled mud name ambiguity.
+- Fixed bug in CHAT_D that failed to return remote channel listeners.
+- i3router: fixed bug that incorrectly rejected targeted emotes.
+- Killing a creature super-ultra-extremely fast no longer
+  generates multiple corpses. 
+- QCS: Fixed some money problems with both how much things cost and
+  how much money they have.
+- Modified encumbrance to be rather less cumbersome.
+- Mailer default behavior now is to notify you when you receive new   
+  mail. Already created characters do not have this default.
+- Fixed opacity problem in worn storage.
+- Fixed message board in arch room.
+
 ---- 2.0r26 ---
 - Plugged some serious security holes ( http://dead-souls.net/news.html#16jun06 )
 - Cleaned up some unnecessary call_outs in lib objects.

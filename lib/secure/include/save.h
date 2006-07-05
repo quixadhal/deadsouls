@@ -20,6 +20,7 @@
 #define SAVE_PLAYER_LIST   DIR_SAVE "/player_list"
 #define SAVE_POLITICS      DIR_SECURE_SAVE "/politics"
 #define SAVE_RACES         DIR_SAVE "/races"
+#define SAVE_ROUTER        DIR_SECURE_SAVE "/router"
 #define SAVE_SERVICES      DIR_SAVE "/services"
 #define SAVE_SNOOP         DIR_SECURE_SAVE "/snoop"
 #define SAVE_SOUL          DIR_SAVE "/soul"

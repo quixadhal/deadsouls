@@ -5,6 +5,7 @@
  */
 
 #include <lib.h>
+#include <privs.h>
 #include <rooms.h>
 #include <daemons.h>
 
@@ -17,8 +18,8 @@ mixed cmd(string args) {
     object *inv;
     string nom, file;
 
-if( !((int)master()->valid_apply(({ "PRIV_ASSIST", "PRIV_SECURE", "LIB_CONNECT" }))) )
-        error("Illegal decre attempt: "+get_stack()+" "+identify(previous_object(-1)));
+    if( !((int)master()->valid_apply(({ PRIV_ASSIST, PRIV_SECURE, LIB_CONNECT }))) )
+	error("Illegal decre attempt: "+get_stack()+" "+identify(previous_object(-1)));
 
     if( args == "" || !stringp(args) ) 
 	return "Who do you want to make a player?";

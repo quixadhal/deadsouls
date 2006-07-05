@@ -195,7 +195,7 @@ for connection requests, keeping things working right.
 keep track of which fields have been plowed, how
 many times, and how long it'll take to get to harvest
 time. Dead Souls daemons typically use object
-persistence files ( http://dead-souls.sourceforge.net/ds-admin-faq.html#80 )
+persistence files ( http://dead-souls.net/ds-admin-faq.html#80 )
 to avoid losing information during object reloads or
 mud reboots. A FARMING_D is exactly what you need to
 keep track of and manage this kind of data.

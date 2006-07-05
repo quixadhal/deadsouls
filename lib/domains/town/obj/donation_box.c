@@ -28,3 +28,7 @@ string GetLong(){
 void init(){
     ::init();
 }
+
+mixed CanGet(){ 
+    return "This is for the needy, you scum! Earn your keep!";
+}

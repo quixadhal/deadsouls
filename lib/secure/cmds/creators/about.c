@@ -21,6 +21,12 @@ mixed cmd(string str) {
     if(!thing) thing = present(str, environment(this_player()));
     if(thing->GetDoor()) thing = load_object(thing->GetDoor());
     if(!thing) return notify_fail("Uh oh, error.\n");
+    if(interactive(thing)){
+	message( "info","Players do not have files with LPC code. "
+	  "Player save files are not subject to examination with this command.",
+	  this_player());
+	return 1;
+    }
     name = base_name(thing) + ".c";
     message( "info", name + "\n", this_player() );
     return (mixed)this_player()->eventPage(name, MSG_SYSTEM | MSG_NOCOLOUR);

@@ -10,7 +10,8 @@ string a1,a2,a3,line;
 int n, active;
 
 static private void validate() {
-    if( !((int)master()->valid_apply(({ "PRIV_ASSIST", "PRIV_SECURE" }))) )
+    if(!this_player()) return 0;
+    if( !((int)master()->valid_apply(({ "SECURE" }))) || !securep(this_player()))
 	error("Illegal attempt to use replacer: "+get_stack()+" "+identify(previous_object(-1)));
 }
 
@@ -34,6 +35,7 @@ void create(){
     SetVendorType(VT_TREASURE);
     active = 0;
 }
+
 void init(){
     add_action("rep_string","replace");
     add_action("autorep","autorep");

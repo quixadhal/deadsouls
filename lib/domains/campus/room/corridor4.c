@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <rooms.h>
 inherit LIB_ROOM;
 
 static void create() {
@@ -22,10 +23,9 @@ static void create() {
     SetProperty("no attack", 1);
 }
 int CanReceive(object ob){
-    string str;
-    str=file_name(environment(ob));
-    if(ob->GetRace() == "rodent"){
+    if(ob && ob->GetRace() == "rodent"){
 	message("info","You are repelled by rodenticide.",ob);
+	if(!environment(ob) && interactive(ob)) ob->eventMove(ROOM_START);
 	return 0;
     }
     return 1;

@@ -18,6 +18,14 @@ mixed cmd(string args) {
 	  identify(previous_object(-1)), this_player());
 	return 0;
     }
+
+    if(!this_player()->GetProperty("EdWarned")){
+	write("This is the first time you've used ed. If you get stuck, simply "
+	  "hit return a few times, then enter a dot on a blank line, hit return, "
+	  "then type Q, then enter. Then visit this page to learn more about "
+	  "using the ed editor: http://dead-souls.net/editor.html");
+	this_player()->SetProperty("EdWarned", 1);
+    }
     args = absolute_path( (string)this_player()->query_cwd(), args );
     if( (x = file_size(args)) == -2 ) 
 	return "You cannot edit a directory!";

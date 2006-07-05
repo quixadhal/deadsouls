@@ -1,0 +1,21 @@
+Common Creator commands:
+
+File commands:
+-------------
+cp     - copy a file
+mv     - move or rename a file
+cd     - change your working directory
+ls     - list the contents of your directory
+ed     - edit a file (WARNING: if you get stuck, type a 
+         single period on a blank line, then Q, then enter)
+rm     - delete a file
+more   - page through the contents of a file
+cat    - display the entire contents of a file
+update - load a file into memory
+
+Creation commands (used on objects, not files):
+-------------
+create, modify, reload, delete, add, copy
+
+For more information on a command, type: help <commandname>
+See also: help help

@@ -8,10 +8,10 @@ static void create() {
     SetAmbientLight(30);
     SetShort("LPC University Reception");
     SetLong("You are in the small, spare reception area of the Virtual Campus admissions office. A door leads north to the main administration building corridor.");
-    SetNoModify(0);
-    SetExits( ([ 
+    SetExits( ([
 	"north" : "/domains/campus/room/corridor",
       ]) );
+    SetNoModify(1);
     SetDoor("north","/domains/campus/doors/plain_door");
     SetInventory(([
 	"/domains/campus/obj/bbucket" :1,
@@ -25,11 +25,7 @@ void init(){
 }
 
 mixed CanReceive(object ob){
-    if(ob->GetRace() == "verb"){
-	return 0;
-    }
-
-    if(ob->GetRace() == "rodent"){
+    if(ob && ob->GetRace() == "rodent"){
 	message("info","You are repelled by rodenticide.",ob);
 	return 0;
     }

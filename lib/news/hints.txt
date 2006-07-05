@@ -1,7 +1,13 @@
 CREATOR TIPS
 
 * For details on the Quick Creation System:
-http://dead-souls.sourceforge.net/example.html
+http://dead-souls.net/example.html
+
+* If you get stuck in the editor type a single dot on
+a blank line, then enter, then Q, then enter, like this:
+
+.
+Q
 
 
 * Admins: there is a new command: admintool
@@ -21,8 +27,8 @@ code a command or object. The "eval" command will let
 you evaluate functions. For example:
 ------------------------
 eval return this_player()->GetName()
-eval find_player("cratylus")
-eval present("sword",find_player("testylus"))->GetClass()
+eval return find_player("cratylus")
+eval return present("sword",find_player("testylus"))->GetClass()
 ------------------------
 
 
@@ -89,4 +95,4 @@ directory. You can read everything outside the /realms and
 /secure directories. You can't read anything 
 in other creators' home dirs. Your read access to some items 
 in the /secure directory is limited.
-  If you're admin, of course, you have full access to everything.
+  If you're full admin, of course, you have full access to everything.

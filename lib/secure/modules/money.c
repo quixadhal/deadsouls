@@ -24,6 +24,7 @@ int eventModMoney(object ob, string type, mixed val){
     globalstr2 = "";
     globalstr3 = "";
 
+
     if(inherits(LIB_NPC,ob)) npc = 1;
 
     if(!intp(val) ) sscanf(val,"%s %d",junk1,amount);
@@ -66,13 +67,16 @@ int eventModMoney(object ob, string type, mixed val){
     this_object()->eventGeneralStuff(globalstr);
     unguarded( (: cp(globalstr,globalstr3) :) );
     unguarded( (: rm(globalstr) :) );
+    reload(ob);
     return 1;
 }
 
 int eventModCost(object ob, string type, mixed val){
     string new_line, junk;
     int amount;
-    sscanf(val,"%s %d",junk,amount);
+
+    if(stringp(val)) sscanf(val,"%s %d",junk,amount);
+    else amount = val;
     globalstr = base_name(ob)+".c";
     if(!check_privs(this_player(),globalstr)){
 	write("You do not appear to have access to this file. Modification aborted.");
@@ -94,6 +98,8 @@ int eventModCost(object ob, string type, mixed val){
     unguarded( (: write_file(globalstr, globalstr2, 1) :) );
 
     this_object()->eventGeneralStuff(globalstr);
+    reload(ob);
+
 
     return 1;
 }

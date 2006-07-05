@@ -41,11 +41,10 @@ void create() {
       "Once you connect to Dead Souls, type \"dcon\" to "+
       "return to your own mud. \n\n"+
       "To connect type \"connect\" \n"+
-      "The Creators' Hall is east  of here.");
-    SetExits( ([
-	"east" : "/domains/default/room/wiz_hall"
+      "The Creators' Hall west wing is south  of here.");
+    SetExits( ([ 
+	"south" : "/domains/default/room/wiz_hall2",
       ]) );
-    SetObviousExits("e");
     SetNoModify(1);
 }
 

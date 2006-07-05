@@ -23,7 +23,7 @@ static void read_callback(int fd, mixed info){
 
     string mudname;
     int i;
-    trr("Received from fd("+fd+"), fd("+socket_address(fd)+")\n"+identify(info));
+    trr("Received from fd("+fd+"), fd("+socket_address(fd)+")\n"+identify(info),((info[0] == "auth-mud-req" || info[0] == "auth-mud-reply") ? "magenta" : "green"));
     // Base info in a packet is of size 6.
     if(sizeof(info)<6 ||
       !stringp(info[0]) ||
@@ -129,7 +129,7 @@ static void read_callback(int fd, mixed info){
     if(info[4]==router_name) {
 	// Something meant for the router but not handled by now!
 	send_error(info[2],info[3],"not-imp","Unknown command sent to router: "+info[0],info);
-	trr("unhandled command meant for router: "+info[0]);
+	trr("unhandled packet meant for router: "+info[0],"red");
 	log_file("server","UNHANDLED PACKET:\n"+identify(info)+"\n");
 	return;
     }

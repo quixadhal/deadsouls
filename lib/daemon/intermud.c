@@ -11,6 +11,7 @@
 #else
 
 #include <lib.h>
+#include <privs.h>
 #include <save.h>
 #include <config.h>
 #include <daemons.h>
@@ -31,7 +32,6 @@ static void create() {
     Password = 0;
     Tries = 0;
     Banned = ([]);
-    Nameservers = ({ ({ "*yatmim", "149.152.218.102 23" }) });
     MudList = new(class list);
     ChannelList = new(class list);
     MudList->ID = -1;
@@ -40,6 +40,7 @@ static void create() {
     ChannelList->List = ([]);
     if( file_size( SAVE_INTERMUD __SAVE_EXTENSION__ ) > 0 )
 	unguarded( (: restore_object, SAVE_INTERMUD, 1 :) );
+    Nameservers = ({ ({ "*yatmim", "149.152.218.102 23" }) });
     SetNoClean(1);
     tn("INTERMUD_D reloaded.");
     SetDestructOnClose(1);
@@ -71,6 +72,20 @@ static void Setup() {
 	  mudlib() + " " + mudlib_version(), version(), "LPMud",
 	  MUD_STATUS, ADMIN_EMAIL,
 	  (mapping)SERVICES_D->GetServices(), ([]) }) ), "red");;
+}
+
+void eventClearVars(){
+    if( !((int)master()->valid_apply(({ PRIV_ASSIST, INTERMUD_D }))) )
+	error("Illegal attempt to reset intermud: "+get_stack()+" "+identify(previous_object(-1)));
+    Connected = 0;
+    Tries = 0;
+    MudList = new(class list);
+    ChannelList = new(class list);
+    MudList->ID = -1;
+    MudList->List = ([]);
+    ChannelList->ID = -1;
+    ChannelList->List = ([]);
+    save_object(SAVE_INTERMUD);
 }
 
 static void eventRead(mixed *packet) {
@@ -164,6 +179,7 @@ static void eventRead(mixed *packet) {
 	break;
     case "chanlist-reply":
 	//	  if( packet[6] == ChannelList->ID ) return; 
+	tn("chanlist reply: "+identify(packet), "blue");
 	if( packet[2] != Nameservers[0][0] ) return;
 	ChannelList->ID = packet[6];
 	foreach(cle, val in packet[7]) { 

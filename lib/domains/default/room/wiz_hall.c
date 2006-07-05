@@ -34,11 +34,11 @@ static void create() {
     SetItems( ([
 	({"sign"}) : "A sign you can read.",
       ]) );
-    SetExits( ([ 
-	"north" : "/domains/town/room/adv_guild",
+    SetExits( ([
 	"east" : "/domains/default/room/wiz_corr1",
 	"south" : "/secure/room/arch",
-	"west" : "/domains/default/room/telnet_room",
+	"north" : "/domains/town/room/adv_guild",
+	"west" : "/domains/default/room/wiz_hall2.c",
       ]) );
     SetRead("sign", (: load_object(ROOM_ARCH)->SignRead() :) );
 }

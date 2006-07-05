@@ -67,9 +67,9 @@ mixed eventGo(object who, string str) {
     return 1;
 }
 
-string GetDoor(string dir) {
+mixed GetDoor(string dir) {
     if(sizeof(Doors)) return Doors[dir];
-    else return "";
+    else return 0;
 }
 
 string array GetDoors() {

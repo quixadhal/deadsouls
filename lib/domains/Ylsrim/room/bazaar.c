@@ -20,7 +20,6 @@ static void create() {
     // the is the amount of light the street lamps make at night
     SetAmbientLight(30);
     // the obvious exits tell people how to leave the room
-    SetObviousExits("n, s, enter armory, enter weaponry");
     // set the sounds people hear
     SetListen("Vendors are begging you to come look at their goods.");
     // set the short description... should not be capitalized

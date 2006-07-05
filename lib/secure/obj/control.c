@@ -104,6 +104,11 @@ int do_control(string str){
 	return 1;
     }
 
+    if(!str || str == ""){
+	write("Nothing happens.");
+	return 1;
+    }
+
     if(environment() != owner){
 	write("You don't seem to be in possession of the remote control.");
 	tell_object(environment(),"Possible security violation on remote control.");

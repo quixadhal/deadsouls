@@ -11,11 +11,12 @@ mixed cmd(string args) {
 
     if(!archp(previous_object())) return "No.";
 
+    if(find_object(INTERMUD_D))find_object(INTERMUD_D)->eventClearVars();
     if(find_object(INTERMUD_D))find_object(INTERMUD_D)->eventDestruct();
-    rm("/save/intermud.o");
+    //rm("/save/intermud.o");
 
     if(!args || args == ""){
-	write("No argument provided. Reloading intermud daemon.");
+	write("Reloading intermud daemon.");
 	if( load_object(INTERMUD_D) ) write("Intermud daemon reloaded.");
 	else write("Failed to reload intermud daemon.");
 	return 1;

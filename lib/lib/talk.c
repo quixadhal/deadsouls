@@ -10,6 +10,8 @@
 #include <message_class.h>
 #include "include/talk.h"
 
+int GetPolyglot();
+
 int direct_ask_liv_str() { return 1; }
 
 int direct_ask_liv_to_str() { return 1; }
@@ -48,7 +50,7 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
   string msg, string lang) {
     string tmp;
 
-    if( lang && !newbiep() ) msg = translate(msg, GetLanguageLevel(lang));
+    if( lang && !newbiep() && !GetPolyglot() ) msg = translate(msg, GetLanguageLevel(lang));
     switch(cls) {
     case TALK_PRIVATE:
 	if( target != this_object() ) return 0;
@@ -126,7 +128,7 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang) {
     string verb, tmp;
     int cols;
 
-    if( lang ) {
+    if( lang && !GetPolyglot() ) {
 	msg = translate(msg, GetLanguageLevel(lang));
 	lang = GetLanguageName(lang);
     }

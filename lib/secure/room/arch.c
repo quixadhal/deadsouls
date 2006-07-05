@@ -160,7 +160,7 @@ static void create() {
       ]) );
 }
 int CanReceive(object ob) {
-    if( !archp(ob)  ){
+    if( !archp(ob)  && base_name(ob) != "/secure/obj/arch_board"){
 	message("info","The arch room is available only to "+
 	  "admins, sorry.",ob);
 	return 0;

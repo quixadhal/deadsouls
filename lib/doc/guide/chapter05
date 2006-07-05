@@ -36,7 +36,7 @@ the role play and tactical elements involved in using
 classes, Dead Souls provides you the ability to use
 the existing stock classes, and permits you to create
 your own. The files in /secure/cfg/classes describe them.
-See http://dead-souls.sourceforge.net/ds-creator-faq.html#2.46
+See http://dead-souls.net/ds-creator-faq.html#2.46
 for the exact syntax of these files.
 
     You'll notice that there is a field for "how important"

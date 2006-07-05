@@ -7,9 +7,9 @@ inherit LIB_ITEM;
 static void create() {
     item::create();
     SetKeyName("carving knife");
+    SetAdjectives( ({"8-inch", "serrated", "sharp", "razor-sharp", "razor", "steel", "hefty", "stainless", "carving"}) );
     SetId( ({ "knife"}));
-    SetAdjectives( ({ "serrated","sharp","razor sharp","steel","hefty","stainless","carving"}));
-    SetShort("a serrated, 8-inch carving knife");
+    SetShort("a serrated 8-inch carving knife");
     SetLong("This is a serrated, 8-inch carving knife. This razor sharp "+
       "knife has been forged from molded and hammered high-carbon "+
       "stainless steel. It is solid, hefty, and well-balanced. "+

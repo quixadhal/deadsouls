@@ -6,6 +6,8 @@
 
 #include <function.h>
 
+int Polyglot = 0;
+
 class comprehension {
     function check;
     int time;
@@ -121,6 +123,16 @@ string GetNativeLanguage() {
 
     foreach(lang, val in Languages)
     if( val["native"] ) return Languages[lang]["name"];
+}
+
+int SetPolyglot(int i){
+    if(!i) Polyglot = 0;
+    else Polyglot = 1;
+    return Polyglot;
+}
+
+int GetPolyglot(){
+    return Polyglot;
 }
 
 static void heart_beat() {

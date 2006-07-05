@@ -31,12 +31,12 @@ static void create() {
     SetExits( (["north" : "/domains/campus/room/corridor4",
       ]));
     SetObviousExits("n");
-    //    SetInventory((["/domains/campus/obj/podium" : 1,
-    //      ]));
+    SetInventory((["/domains/campus/obj/podium" : 1,
+      ]));
     SetProperty("no attack", 1);
 }
 int CanReceive(object ob) {
-    if(living(ob)){
+    if(ob && living(ob)){
 	if(file_name(environment(ob)) != "/domains/campus/room/corridor4"
 	  && !archp(ob)){
 	    message("info","You must enter the conference room through the normal "+

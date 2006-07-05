@@ -1,0 +1,28 @@
+Syntax: alias <short version> <long version>
+        alias <short version> <long version> $*
+
+This command lets you substitute a short command for a long one.
+For example, rather than type out "get all from corpse" you
+can create this alias:
+
+%^GREEN%^alias gc get all from corpse%^RESET%^
+
+And all you need do is type "gc" to get the same effect.
+You can also use a wildcard, like this:
+
+%^GREEN%^alias gc get all from $* corpse%^RESET%^
+
+So that typing: %^GREEN%^gc first%^RESET%^
+Expands out to: %^GREEN%^get all from first corpse%^RESET%^
+
+The wildcard is also helpful for channel aliases:
+
+%^GREEN%^alias ige intergossipemote $*%^RESET%^
+
+To see your aliases, type: %^GREEN%^alias%^RESET%^
+
+To remove an alias, type alias plus the alias, like so:
+
+%^GREEN%^alias gc%^RESET%^
+
+

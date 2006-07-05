@@ -73,8 +73,10 @@ it is the only one officially authorized to distribute Dead Souls.</p>
 <p>Download the latest version from the following:
 </p>
 <ul>
-  <li><a
- href="http://sourceforge.net/project/showfiles.php?group_id=148388">SourceForge</a></li>
+  <big> </big><li><big><a
+ href="http://dead-souls.net/code/dead_souls.zip"><span
+ style="text-decoration: underline;">http://dead-souls.net/code/dead_souls.zip</span></a></big></li>
+  <big></big>
 </ul>
 <a name="2.1"></a>
 <h1>Why is there only one version? Where are the UNIX and Windows
@@ -100,8 +102,8 @@ Top)</a></h1>
 </p>
 <br>
 <ul>
-  <li><a
- href="http://sourceforge.net/project/showfiles.php?group_id=148388&amp;package_id=175140">SourceForge</a></li>
+  <li><a href="http://dead-souls.net/code/patches/latest.zip"><big><span
+ style="text-decoration: underline;">http://dead-souls.net/code/patches/latest.zip</span></big></a></li>
 </ul>
 <a name="4"></a>
 <h1>Should I apply the available patches during an install? <a
@@ -270,11 +272,17 @@ late-breaking fixes.</li>
  class="backtotop" href="#top">(Back to Top)</a></h1>
 <ul>
   <li>first, stop using Fedora. Ha ha just kidding.</li>
+  <li>Your compiler may be trying to run a distributed "make" by
+default. That's a no-go for MudOS. Try disabling that at compile time
+by using this instead of the normal make command line: <br>
+    <span class="command">make -j 1<br>
+make install<br>
+    </span> </li>
   <li>A recent fix may be available. Check the <a
  href="http://dead-souls.net/hotfix.html">HOTFIX
 PAGE</a> for late-breaking fixes. </li>
   <li>Download only from the sites mentioned above. Those are the only
-ones sure to have the latest version. Other sites can be out of date. </li>
+ones sure to have the latest version. Other sites can be out of date.</li>
   <li>Most of the problems with unix installs involve permissions
 conflicts. If
 you uncompress the package as root user, for example, then try to run
@@ -326,13 +334,14 @@ If you're good at C, you can edit lines 66 and 76 of
 v22.2b14/swap.c and correct this behavior. But the common sense fix is
 to stop being a noob and give your computer a proper hostname already.</li>
   <li>Some hosting services may provide you unix shells so tightly
-restricted that you cannot successfully compile the mudos driver.
-Specifically, I have asked Wolfpaw for their assistance in this, but as
-of 2 days since emailing the request, have received no response. You
+restricted that you cannot successfully compile the mudos driver. You
 may need to submit a problem ticket with your hosting service to
 resolve the issue. Let them know that the source compiles fine on
 various versions of SuSE and Fedora, as well as Solaris 8, 9, and 10,
-various BSD's, and even IRIX.</li>
+various BSD's, and even IRIX (!). If you can get them to give me a free
+temporary account for testing purposes, I'll take a look and see if I
+can help.<br>
+  </li>
   <br>
 </ul>
 <a name="10"></a>

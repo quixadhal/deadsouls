@@ -211,5 +211,8 @@ void set(mixed arg1, mixed arg2);
 void query(mixed arg1, mixed arg2);
 void personal_log(string str);
 void add_sky_event(function f);
+int assistp(mixed guy);
+int elderp(object ob);
+int testp(object ob);
 
 #endif /* l_sefun_h */

@@ -343,7 +343,10 @@ string create_message(int pov, string array verb, string message,
 	    }
 	    switch(words[i]) {
 	    case "$agent_verb":
-		words[i] = pluralize(verb[verb_count++]);
+		//words[i] = pluralize(replace_string(identify(verb),"\"",""));
+		//tc("verb: "+identify(verb));
+		//tc("verb: "+typeof(verb));
+		words[i] = ""+pluralize(verb[0]);
 		break;
 
 	    case "$agent_name":

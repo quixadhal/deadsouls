@@ -1,9 +1,9 @@
 // This file written completely by Tim Johnson (Tim@TimMUD)
 #include <network.h>
+#include <save.h>
 
 static void create(){ 
     SetNoClean(1);
-    //save::create();
     sockets = ([]);
     connected_muds = ([]);
     if(!mudinfo) mudinfo = ([]);
@@ -13,12 +13,13 @@ static void create(){
     if(!channels) channels = ([]);
     if(!channel_updates) channel_updates = ([]);
     if(!channel_update_counter) channel_update_counter = 1;
-    if(!router_name) router_name = "*test";
-    //if(!router_list) router_list = ({ ({"*yatmim", "149.152.218.102 23"}) });
-    if(!router_list) router_list = ({ ({"*test", "192.168.0.201 9000"}) });
+    if(!router_name) router_name = "*crossing";
+    router_list = ({ ({"*crossing", "192.168.0.5 9000"}) });
     log_file("server", "Created when uptime = " + uptime() + "\n");
     trr("server got created");
+    log_file("i3router",timestamp()+" router object created.");
     call_out("setup", 5);
+    call_out("LocalHostedChans", 15);
     set_heart_beat(10);
 }
 
@@ -30,6 +31,8 @@ void heart_beat(){
 
 static void setup(){
     trr("setup got called");
+    if( file_size( SAVE_ROUTER __SAVE_EXTENSION__ ) > 0 )
+	unguarded( (: restore_object, SAVE_ROUTER, 1 :) );
     if ((router_socket = socket_create(MUD, "read_callback", "close_callback")) < 0){
 	log_file("server", "setup: Failed to create socket.\n");
 	trr("setup: Failed to create socket.\n");
@@ -52,7 +55,7 @@ static void setup(){
 void remove(){
     string mudname;
     log_file("server", "Being removed by: "+identify(previous_object())+"\n");
-    trr("Being removed by: "+identify(previous_object())+"\n");
+    trr("Being removed by: "+identify(previous_object())+"\n","red");
     log_file("server", "sockets:"+identify(sockets)+"\n");
     trr("sockets:"+identify(sockets)+"\n");
     log_file("server", "Starting to destruct at uptime = " + uptime() + "\n");

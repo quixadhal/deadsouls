@@ -16,7 +16,11 @@ static void create() {
 	"no paralyze":0, 
 	"no teleport":0]));
     SetItems(([  "river" : "A swift moving river, probably quite deep." ,
-	({"bank","riverbank","here"}) : "This is the edge of a powerful river."]));
+	({"bank","riverbank","here","water"}) : "This is the edge of a powerful river."]));
+    SetListen(([
+	({ "river", "water" }) : "You hear it rushing by.",
+	"default" : "You can hear the roar of the river rushing by.",
+      ]));
     SetInventory(([
 	"/domains/town/npc/troll" : 1,
 	"/domains/town/obj/rocks" : 1,
@@ -30,7 +34,6 @@ static void create() {
 void init() {
     ::init();
     SetSmell(([]));
-    SetListen(([  "default" : "You can hear the roar of the river rushing by."]));
 }
 
 int CanReceive(object ob){

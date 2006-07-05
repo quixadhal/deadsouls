@@ -38,7 +38,7 @@ example: more /domains/campus/obj/key.c
 Destroy an object:
 dest <object>
 example: dest key
-NOTE: Desting players or other creators is extrememly rude.
+NOTE: Desting players or other creators is extremely rude.
 
 Look in your current directory (your current folder):
 ls

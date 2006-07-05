@@ -20,9 +20,7 @@ static void create() {
     SetProperties( ([ "no kill" : 1, "no attack" : 1, "no steal" : 1,
 	"no magic" : 1, "light" : 3, "no bump" : 1, "no teleport" : 1 ]) );
     SetShort("voting hall");
-    SetLong("You are in the voting hall of Dead Souls.  This is where "
-      "people come to nominate candidates for class leader and to "
-      "cast their vote.  There is a list posted on the wall here.");
+    SetLong("You are in the voting hall of Ylsrim. This is where people come to nominate candidates for class leader and to cast their vote.  There is a list posted on the wall here.");
     SetItems( ([ "list" : "This is the list of candidates." ]) );
     SetRead( "list", (: ReadList :) );
     SetObviousExits("d");

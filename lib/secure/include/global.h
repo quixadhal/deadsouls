@@ -1,9 +1,11 @@
 #ifndef __GLOBAL_H
 #define __GLOBAL_H
 
-#define __nightmare__     4.5
-#define __nightmare5__
-#define Dead SoulsLPMud
+#include <config.h>
+
+#if COMPAT_MODE
+#include <compat.h>
+#endif
 
 #define DAY_ONE           720550800
 

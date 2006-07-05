@@ -1,19 +1,12 @@
-YOU MUST READ THIS URL: http://dead-souls.sourceforge.net/ds-inst-faq.html
+YOU MUST READ THIS URL: http://dead-souls.net/ds-inst-faq.html
 
 
 -------------------------------------------------------------
-WARNING: Do NOT modify the "mudlib directory" line in
+WARNING: Do NOT modify the file called
 mudos.cfg. Doing so WILL cause the driver to fail.
 You must use c:\ds as your mud folder. To rename the
 mud, use the admintool command after you log in.
 
-
-Special thanks to Marajin @ Andromeda for compiling MudOS for Win32.
-
-
-WARNING: If you have cygwin installed already (if you don't
-know what it is you probably don't) remove or rename the
-dll's in c:\ds\bin
 
 
 WARNING: This will not work on WinME or Win98 or earlier
@@ -28,6 +21,7 @@ versions of windows.
 3) there should now be a c:\ds folder, containing bin, lib, etc. If
    there isn't one, rename the directory you just created to c:\ds
    If Dead Souls isn't in c:\ds , it won't run.
+   For example, there should be a c:\ds\bin, c:\ds\lib, etc.
 
 4) double-click on runmud.bat
 
@@ -46,4 +40,4 @@ Very Own MUD.
 
 10) If you have connection problems, try again with your firewall disabled.
 
-11) See the FAQ if you still have problems: http://dead-souls.sourceforge.net/ds-inst-faq.html
+11) See the FAQ if you still have problems: http://dead-souls.net/ds-inst-faq.html

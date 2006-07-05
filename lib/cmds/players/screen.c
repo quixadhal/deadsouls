@@ -11,11 +11,14 @@ inherit LIB_DAEMON;
 mixed cmd(string args) {
     int *screen;
     int h, w;
+    string chide = "You need to specify both width and height.\n";
+    string ret = "Your current settings are: "+ this_player()->GetScreen()[0];
+    ret += " "+ this_player()->GetScreen()[1];
 
     if( args == "" || !args ) 
-	return "You need to specify both width and height.";
+	return chide + ret;
     if( sscanf(args, "%d %d", w, h) != 2 )
-	return "You need to specify both width and height.";
+	return chide + ret;
     this_player()->SetScreen(w, h);
     message("system", "Screen set to " + w + " by " + h + ".", this_player());
     return 1;

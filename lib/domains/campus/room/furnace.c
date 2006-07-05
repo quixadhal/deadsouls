@@ -18,7 +18,7 @@ void create() {
     SetNoModify(1);
 }
 int CanReceive(object ob){
-    if(interactive(ob)){
+    if(ob && interactive(ob)){
 	tell_object(ob, "You fail to enter the furnace.");
 	return 0;
     }

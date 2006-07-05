@@ -21,7 +21,7 @@ static void create() {
     SetObviousExits("e");
     SetItems(([
 	"elevator" : "A means of vertical indoors transportation.",
-	"wall" : "The first and second buttons are on the wall.",
+	"wall" : "The buttons are on the wall.",
 	({"elevator door","door"}) : "The door to the outside."
 
       ]) );
@@ -71,14 +71,15 @@ int SetFloor(int i){
     return 1;
 }
 int CanReceive(object ob) {
-    if(closed > 0){
+    //tc("verb: "+query_verb());
+    if(closed > 0 && query_verb() == "go"){
 	message("info","The elevator door is closed.", ob);
 	return 0;
     }
     return 1;
 }
 int CanRelease(object ob){
-    if(closed > 0 && !creatorp(ob)){
+    if(closed > 0 && !creatorp(ob) && query_verb() == "go" ){
 	message("info","The elevator door is closed.", ob);
 	return 0;
     }

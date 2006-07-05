@@ -23,13 +23,13 @@ cmd(string str) {
 	/* We should add checks for flags here. */
 	return help();  
     } else {
-#if 0
+	//#if 0
 	if(file_size(t2=absolute_path((string)this_player()->query_cwd(),t2)) > 0)
 	{
 	    notify_fail("mv: "+t2+" already exists.\n");
 	    return 0;
 	}
-#endif
+	//#endif
 	t2=absolute_path((string)this_player()->query_cwd(),t2);
 	rename(t1=absolute_path(this_player()->query_cwd(),t1),t2);
 	if(file_size(t2) == -2) {

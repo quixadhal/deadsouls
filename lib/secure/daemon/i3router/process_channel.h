@@ -1,4 +1,5 @@
 // This file written completely by Tim Johnson (Tim@TimMUD)
+#include <save.h>
 
 static void process_channel(int fd, mixed *info){
     string mudname;
@@ -14,7 +15,7 @@ static void process_channel(int fd, mixed *info){
 	// ignore the target and save some CPU.
 	// Check if string parts are strings...
 	if(info[0][8..]=="t"){
-	    if(sizeof(info)!=12 || !stringp(info[9]) || !stringp(info[10]) ||
+	    if(sizeof(info)!=13 || !stringp(info[9]) || !stringp(info[10]) ||
 	      !stringp(info[11]) || !stringp(info[12])){
 		send_error(info[2],info[3],"bad-pkt","Bad packet format.",info);
 		return;
@@ -107,7 +108,7 @@ static void process_channel(int fd, mixed *info){
 	channel_update_counter++;
 	channels[info[6]]=({ info[7], info[2], ({}) });
 	channel_updates[info[6]] = channel_update_counter;
-	trr(info[3]+"@"+info[2]+" created the channel: "+info[6]);
+	trr(info[3]+"@"+info[2]+" created the channel: "+info[6],"yellow");
 	// broadcast an update saying that this channel is added or changed now
 	// chanlist-reply packet to everybody (who has a channel service?)
 	broadcast_chanlist(info[6]);
@@ -123,6 +124,7 @@ static void process_channel(int fd, mixed *info){
 	//				0, channel_update_counter,
 	//				([ info[6]:({ info[2], info[7] }) ])
 	//			}));
+	save_object(SAVE_ROUTER);
 	return;
     case "remove":
 	if(!channels[info[6]]){ // error, channel is not registered!
@@ -139,8 +141,9 @@ static void process_channel(int fd, mixed *info){
 	channel_update_counter++;
 	map_delete(channels,info[6]);
 	channel_updates[info[6]] = channel_update_counter;
-	trr(info[3]+"@"+info[2]+" deleted the channel: "+info[6]);
+	trr(info[3]+"@"+info[2]+" deleted the channel: "+info[6],"yellow");
 	// broadcast an update saying that this channel is gone now
+	save_object(SAVE_ROUTER);
 	return;
     case "admin":
 	// add/delete muds from the 2 lists...
@@ -159,6 +162,7 @@ static void process_channel(int fd, mixed *info){
 		// if removed from allow list, unlisten...
 		listening[info[6]] -= info[8];
 	}
+	save_object(SAVE_ROUTER);
 	return;
     case "listen": // mudname=info[2], channame=info[6], on_or_off=info[7]
 	if(!channels[info[6]]){ // error, channel is not registered!
@@ -184,6 +188,7 @@ static void process_channel(int fd, mixed *info){
 		// in list, you're banned...
 		send_error(info[2],0,"not-allowed",
 		  "Banned from "+info[6],info);
+		save_object(SAVE_ROUTER);
 		return;
 	    }
 	    // not in ban list at this point
@@ -191,6 +196,7 @@ static void process_channel(int fd, mixed *info){
 		listening[info[6]] += ({ info[2] });
 	    else
 		listening[info[6]] -= ({ info[2] });
+	    save_object(SAVE_ROUTER);
 	    return;
 	case 1: // selectively allowed
 	    if(member_array(info[2],channels[info[6]][2])==-1 &&
@@ -205,6 +211,7 @@ static void process_channel(int fd, mixed *info){
 		listening[info[6]] += ({ info[2] });
 	    else
 		listening[info[6]] -= ({ info[2] });
+	    save_object(SAVE_ROUTER);
 	    return;
 	case 2: // filtered... act like selectively allowed
 	    if(member_array(info[2],channels[info[6]][2])==-1 &&
@@ -220,12 +227,13 @@ static void process_channel(int fd, mixed *info){
 		listening[info[6]] += ({ info[2] });
 	    else
 		listening[info[6]] -= ({ info[2] });
+	    save_object(SAVE_ROUTER);
 	    return;
 	} // switch
     default: // trying to do "channel-blah"
 	send_error(info[2],info[3],"unk-type","I don't know what "+info[0]+
 	  " means.",info);
-	trr("Don't know what the ["+info[0]+"] packet means.", DEB_INVALID);
+	trr("Don't know what the ["+info[0]+"] packet means.", "yellow");
 	return;
     }
     trr("can't get here?");

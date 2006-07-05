@@ -47,9 +47,7 @@
 #define STARGATE_D           DIR_DAEMONS "/stargate"
 #define TERMINAL_D           DIR_DAEMONS "/terminal"
 #define TIME_D               DIR_DAEMONS "/time"
-#ifdef Dead SoulsLPMud
 #define UNDERWORLD_D         DIR_DAEMONS "/underworld"
-#endif
 #define UNIQUE_D             DIR_DAEMONS "/unique"
 #define USERS_D              DIR_SECURE_DAEMONS "/users"
 #define VERBS_D              DIR_DAEMONS "/verbs"

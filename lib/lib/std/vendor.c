@@ -94,7 +94,7 @@ mixed eventBuy(object who, object *obs) {
 	    eventForce("say " + (string)ob->GetShort() + "! Excellent!");
 	    if(bargain) who->AddSkillPoints("bargaining", value*5);
 	    message("my_action", "You sell " + (string)ob->GetShort() + ".", who);
-	    message("other_action", (string)who->GetKeyName() + " sells " +
+	    message("other_action", capitalize((string)who->GetKeyName()) + " sells " +
 	      (string)ob->GetShort() + ".", environment(),
 	      ({ who, this_object() }));
 	    ob->eventDestruct();
@@ -115,12 +115,12 @@ mixed eventBuy(object who, object *obs) {
 	if(bargain) who->AddSkillPoints("bargaining", value*5);
 	tmp += ({ ob });
 	message("my_action", "You sell " + (string)ob->GetShort() + ".", who);
-	message("other_action", (string)who->GetKeyName() + " sells " +
+	message("other_action", capitalize((string)who->GetKeyName()) + " sells " +
 	  (string)ob->GetShort() + ".", environment(),
 	  ({ who, this_object() }));
     }
     if( !sizeof(tmp) )
-	eventForce("say I am sorry, " + (string)who->GetKeyName() + ", "
+	eventForce("say I am sorry, " + capitalize((string)who->GetKeyName()) + ", "
 	  "that we could not come to a better agreement.");
     else map(tmp, function(object ob) {
 	      if( (int)ob->GetDestroyOnSell() )
@@ -170,7 +170,7 @@ mixed eventBuy(object who, object *obs) {
 	    eventForce("say I have no such thing to show you");
 	    return 1;
 	}
-	message("other_action", GetKeyName()+" shows you "+
+	message("other_action", capitalize(GetKeyName())+" shows you "+
 	  (string)ob->GetShort()+".", who);
 	message("system", (string)ob->GetLong(), who);
 	return 1;
@@ -320,7 +320,7 @@ mixed eventBuy(object who, object *obs) {
 	else cost=to_int(floor(ob->GetBaseCost()));
 	if(cost && cost > 0) x=cost;
 	if(!cost || cost < 0) x = to_int(floor(GetValue(ob, this_player())));
-	eventForce("say " + (string)who->GetKeyName() + ", I will offer "
+	eventForce("say " + capitalize((string)who->GetKeyName()) + ", I will offer "
 	  "you " + x + " " + GetLocalCurrency() + " for " +
 	  (string)ob->GetShort());
 	return 1;
@@ -370,7 +370,7 @@ mixed eventBuy(object who, object *obs) {
 	    eventForce("say that thing has no value!");
 	    return 1;
 	}
-	eventForce("say " + (string)who->GetKeyName() + ", I will take " +
+	eventForce("say " + capitalize((string)who->GetKeyName()) + ", I will take " +
 	  x + " " + GetLocalCurrency() + " for " +
 	  (string)ob->GetShort());
 	return 1;

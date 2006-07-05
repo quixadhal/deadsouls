@@ -2,6 +2,7 @@
 #include <armor_types.h>
 #include <damage_types.h>
 inherit LIB_ARMOR;
+
 static void create(){
     armor::create();
     SetKeyName("visitor pass");
@@ -15,9 +16,11 @@ static void create(){
     SetBaseCost("silver",5000);
     SetDamagePoints(100);
     SetArmorType(A_AMULET);
+    SetRestrictLimbs( ({"torso"}) );
     SetRetainOnDeath(1);
 }
 void init(){
+    ::init();
     add_action("nplh","click");
 }
 int nplh(string str){
@@ -34,7 +37,6 @@ int nplh(string str){
 	return 1;
     }
 }
-
 string GetAffectLong(object ob) {
     if(!ob || !living(ob)) return 0;
     return ob->GetName() + " is an authorized Test Character.";

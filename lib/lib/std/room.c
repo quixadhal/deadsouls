@@ -945,7 +945,7 @@ int GenerateObviousExits(){
     if(member_array("down",exits) != -1) dir_string += "d, ";
     if(member_array("out",exits) != -1) dir_string += "out, ";
     if(sizeof(this_object()->GetEnters(1) - ({0}) )) {
-	dir_string += ", ";
+	if(sizeof(this_object()->GetExits())) dir_string += ", ";
 	dir_string += enters;
     }
     if(last(dir_string,2) == ", ") dir_string = truncate(dir_string,2);

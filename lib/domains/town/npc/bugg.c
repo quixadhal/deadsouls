@@ -1,8 +1,9 @@
 #include <lib.h>
 
 inherit  LIB_TEACHER;
+
 void create(){
-    teacher::create();
+    ::create();
     SetKeyName("bugg");
     SetId( ({"teacher","dwarf","schoolteacher","bugg the schoolteacher"}) );
     SetGender("male");

@@ -170,13 +170,24 @@ int cmdChannel(string verb, string str) {
 	string *who;
 	string ch, mud;
 
-	if( !str ) return 0;
+	if( !str ) {
+	    return 0;
+	}
 	if( sscanf(str, "%s@%s", ch, mud) == 2 ) {
 	    mud = trim(mud);
 	    if(!alphap(last(mud,1))) mud = truncate(mud,1);
-	    if( !Channels[ch] ) return 0;
-	    if( member_array(this_player(), Channels[ch]) == -1 ) return 0;
-	    if( ch == (ch = GetRemoteChannel(ch)) ) return 0;
+	    if( !Channels[ch] ) {
+		return 0;
+	    }
+	    if( member_array(this_player(), Channels[ch]) == -1 ) {
+		return 0;
+	    }
+	    if( ch == (ch = GetRemoteChannel(ch)) ) {
+		if(!creatorp(this_player())){
+		    write("Remote channel information is not available to players.");
+		    return 1;
+		}
+	    }
 	    if( !(mud = (string)INTERMUD_D->GetMudName(mud)) ) {
 		this_player()->eventPrint(mud_name() + " is not aware of " 
 		  "such a place.", MSG_ERROR);
@@ -192,8 +203,12 @@ int cmdChannel(string verb, string str) {
 	    return 1;
 	}
 	else ch = str;
-	if( !Channels[ch] ) return 0;
-	if( member_array(this_player(), Channels[str]) == -1 ) return 0;
+	if( !Channels[ch] ) {
+	    return 0;
+	}
+	if( member_array(this_player(), Channels[str]) == -1 ) {
+	    return 0;
+	}
 	who = GetChannelList(str);
 	msg = "Online: " + implode(who, "   ");
 	//tc("msg1");

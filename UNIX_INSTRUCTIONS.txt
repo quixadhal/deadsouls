@@ -1,4 +1,4 @@
-YOU MUST READ THIS URL: http://dead-souls.sourceforge.net/ds-inst-faq.html 
+YOU MUST READ THIS URL: http://dead-souls.net/ds-inst-faq.html 
 
 
 Then perform the following steps:
@@ -41,7 +41,7 @@ given admin privileges.
 11) You'll get booted out. Reboot the MUD, telnet back in, and you're 
 now running Your Very Own MUD.
 
-12) If you have problems, review the FAQ: http://dead-souls.sourceforge.net/ds-inst-faq.html
+12) If you have problems, review the FAQ: http://dead-souls.net/ds-inst-faq.html
 
 13) If this doesn't help, please refer to the mudos.org documentation at their website. This procedure works perfectly on SuSE 9.3, SuSE 10, Solaris 8 and Solaris 10, but we can't possibly vouch for every unix flavor and compiler suite out there. If the compile fails, try the local_options file in extra/
 

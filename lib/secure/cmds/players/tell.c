@@ -15,7 +15,7 @@ mixed cmd(string str) {
     mixed mud;
     object ob, machine;
     int i, maxi;
-    string who, msg, tmp, machine_message;
+    string who, msg, tmp, tmp2, machine_message;
 
     if(!str) return notify_fail("Syntax: <tell [who] [message]>\n");
     if(!creatorp(this_player()) && this_player()->GetMagicPoints() < 15) {
@@ -29,8 +29,10 @@ mixed cmd(string str) {
 	maxi = sizeof(words = explode(words[1], " "));
 	for(i=0; i<maxi; i++) {
 	    tmp = lower_case(implode(words[0..i], " "));
+	    tmp2 = lower_case(implode(words[0..i+1], " "));
 
-	    if( (string)INTERMUD_D->GetMudName(tmp) ) {
+	    if( (string)INTERMUD_D->GetMudName(tmp) 
+	      && !((string)INTERMUD_D->GetMudName(tmp2)) ) {
 		mud = tmp;
 		if(i+1 < maxi) msg = implode(words[i+1..maxi-1], " ");
 		else msg = "";

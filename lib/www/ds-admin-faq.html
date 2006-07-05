@@ -8,8 +8,8 @@
   <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
 </head>
 <body>
-<pre style="font-family: courier new,courier,monospace;"><big><big><span
- style="font-weight: bold;">Dead Souls Admin FAQ, v3.3</span></big><br><br>Written by Cratylus @ Frontiers, October 2005<br>Updated June 2006<br><span
+<pre style="font-family: monospace;"><big><big><span
+ style="font-weight: bold;">Dead Souls Admin FAQ, v3.4</span></big><br><br>Written by Cratylus @ Frontiers, October 2005<br>Updated June 2006<br><span
  style="font-weight: bold; text-decoration: underline;"><br></span>Note: commands are displayed in boldface, like this: <span
  style="font-weight: bold;">ls -a</span><span
  style="font-weight: bold; text-decoration: underline;"><br><br>What's this FAQ about?</span><br><br>	The point of this document is to orient a new admin in<br>Dead Souls 2. Starting a MUD with a lib that is completely new to<br>you can be confusing and discouraging. Hopefully this FAQ will<br>make the experience less difficult.<br><br><br><a
@@ -94,7 +94,9 @@
  href="#86">86 Where are read/write restrictions kept?</a><br><br><a
  href="#87">87 I need to test day/night descriptions, but I can't wait around all day.</a><br><br><a
  href="#88">88 How can I change the default prompt? Can I make it dynamic?</a><br><br><a
- href="#89">89 What is "unguarded"?</a><br><br><a href="#90">90 Is intermud communication secure?</a><br><br><br></big><big><br><span
+ href="#89">89 What is "unguarded"?</a><br><br><a href="#90">90 Is intermud communication secure?</a><br><br><a
+ href="#91">100 What should I <span
+ style="font-weight: bold; font-style: italic;">not</span> do?</a><br><br></big><big><br><span
  style="font-weight: bold; text-decoration: underline;"><a name="0"></a>How do I start?</span><br><br>	The first thing to do is follow the <a
  href="ds-inst-faq.html">installation FAQ</a><br>to get Dead Souls installed. Then log in, and start reading<br>the administrator's guide, by typing these commands:<br><br><span
  style="font-weight: bold;">read index in guide</span><br
@@ -190,7 +192,8 @@
  style="font-weight: bold;">/secure/cfg/races/bear</big><big><span
  style="font-weight: bold;"> /secure/cfg/races/wampa</span><br><br>Edit the wampa file to reflect what you think a<br>wampa is like. If you want new players to be able<br>to select wampa as their race, make sure the file<br>has this line in it:<br><br>PLAYER_RACE 1<br><br>Make especially sure to change the lines RACE and<br>LANGUAGE. When you're done editing, type:<br><br><span
  style="font-weight: bold;">addrace wampa</span></big><big><span
- style="font-weight: bold;"> </span><br><br><br
+ style="font-weight: bold;"> </span><br><br>For details:<br><span
+ style="font-weight: bold;">help addrace</span><br><br><br
  style="font-weight: bold; text-decoration: underline;"></big><big><span
  style="font-weight: bold; text-decoration: underline;"><a name="11"></a></span></big><big><span
  style="font-weight: bold; text-decoration: underline;">How do I make my friend an admin?</span><br><br>Use the groups menu in admintool, and select <br>"Modify a group". Select the ASSIST or SECURE group,<br>and enter the names of all the members it should have. If<br>I wanted to make xyzzy an assistant admin, I would<br>make him a creator, then I would edit the<br>ASSIST group and make the contents look like this:<br><br><span
@@ -287,7 +290,7 @@
  style="font-weight: bold; text-decoration: underline;"><span
  style="font-weight: bold; text-decoration: underline;"></span></big><big><span
  style="font-weight: bold; text-decoration: underline;"><a name="32"></a></span></big><big><span
- style="font-weight: bold; text-decoration: underline;">I found a bug. For real. Can you please fix it?</span><br><br>Email me: &lt;put my name here&gt;@users.sourceforge.net<br><br>Please include a detailed description of the bug, and the exact<br>error text and commands that produced it. A log file or<br>screencap would be helpful.<br><br><br
+ style="font-weight: bold; text-decoration: underline;">I found a bug. For real. Can you please fix it?</span><br><br>Email me: &lt;put my name here&gt;@comcast.net<br><br>Please include a detailed description of the bug, and the exact<br>error text and commands that produced it. A log file or<br>screencap would be helpful.<br><br><br
  style="font-weight: bold; text-decoration: underline;"><span
  style="font-weight: bold; text-decoration: underline;"></span></big><big><span
  style="font-weight: bold; text-decoration: underline;"><a name="33"></a></span></big><big><span
@@ -440,7 +443,7 @@
  style="font-weight: bold; text-decoration: underline;">The admintool menus let you pick options that aren't visible</span><br><br>I can't decide whether this is a feature or a bug. I'm<br>leaning toward "laziness".<br><br><br><span
  style="font-weight: bold; text-decoration: underline;"></span></big><big><span
  style="font-weight: bold; text-decoration: underline;"><a name="59"></a></span></big><big><span
- style="font-weight: bold; text-decoration: underline;">What does locking the mud do, exactly?</span><br><br>When the mud is locked, only members of the authorized<br>groups are permitted to log in. By default, these<br>groups are SECURE, ASSIST, ELDER, and TEST. Anyone<br>who is not a member of these groups, whether they are<br>a creator or a player, is prevented from logging in.<br><br>	<br><span
+ style="font-weight: bold; text-decoration: underline;">What does locking the mud do, exactly?</span><br><br>When the mud is locked, only members of the authorized<br>groups are permitted to log in. By default, these<br>groups are SECURE, ASSIST, ELDER, and TEST. Anyone<br>who is not a member of these groups, whether they are<br>a creator or a player, is prevented from logging in.<br><br>To lock the mud, use the admintool command, option a.<br>To add people to groups, use the admintool command, option v.<br><br>	<br><span
  style="font-weight: bold; text-decoration: underline;"></span></big><big><span
  style="font-weight: bold; text-decoration: underline;"><a name="60"></a></span></big><big><span
  style="font-weight: bold; text-decoration: underline;">The race help output is inadequate for role-playing. How do I change it?</span><br><br>By default, <span
@@ -449,8 +452,7 @@
  style="font-weight: bold; text-decoration: underline;"><a name="61"></a></span></big><big><span
  style="font-weight: bold; text-decoration: underline;">I need to know what features to expect in the next release so I don't </span><br
  style="font-weight: bold; text-decoration: underline;"><span
- style="font-weight: bold; text-decoration: underline;">waste time duplicating effort</span><br></big><big
- style="font-family: courier new,courier,monospace;"><small><big><span
+ style="font-weight: bold; text-decoration: underline;">waste time duplicating effort</span><br></big><big><small><big><span
  style="text-decoration: underline; font-weight: bold;"></span><br>Visit <a
  href="http://dead-souls.net/RELEASE_NOTES">http://dead-souls.net/RELEASE_NOTES</a> for information on <br>the latest releases and what they contain. The topmost<br>version is usually not yet available for download, and<br>is listed so that folks know what's coming in the<br>next release. If this is so the version name will have<br>"(unreleased)" next to it.<br><br>As of 2.0r19, the dsversion command is available to<br>allow you to query that site from the mud itself.<br><br>To see what I'm working on, see <a
  href="http://dead-souls.net/plan.txt">http://dead-souls.net/plan.txt</a><br></big></small></big><big><br><br><span
@@ -524,15 +526,15 @@
  style="font-weight: bold;">events</span><br><br>The following events are pending:<br>1145159511                    RotateLogs     Sun Apr 16 03:51:51 2006 EDT<br><br><span
  style="font-weight: bold;">eval return remove_event(</span></big><big
  style="font-weight: bold;">1145159511)</big></pre>
-<br>
-<pre style="font-family: courier new,courier,monospace;"><big><a
- name="77"></a><span
+<br style="font-family: monospace;">
+<pre style="font-family: monospace;"><big><a name="77"></a><span
  style="font-weight: bold; text-decoration: underline;">Where does user monitor data go?</span><br><br>	When you monitor someone, or if you enable<br>GLOBAL_MONITOR, monitor data is logged into /secure/log/adm.<br><br><br></big><big><a
  name="78"></a><span
  style="font-weight: bold; text-decoration: underline;">How would you set a race to be selectable by new players?</span><br><br>	Edit the race file and have this line near the top:<br><br>PLAYER_RACE 1<br></big><big><br>	Then use the removerace and addrace commands. For example:<br><br><span
  style="font-weight: bold;">removerace tauren</span><br
  style="font-weight: bold;"><span style="font-weight: bold;">addrace tauren</span><br></big></pre>
-<pre style="font-family: courier new,courier,monospace;"><big><br><span
+<pre style="font-family: monospace;"><big>For details:<br><span
+ style="font-weight: bold;">help addrace<br><br><br></span></big><big><span
  style="font-weight: bold;"><a name="79"></a><span
  style="text-decoration: underline;">Where is emote data kept? Can I edit it by hand?</span></span><br
  style="font-weight: bold;"><br>	Emote data is saved in /save/soul.o<br><br>	You must never, ever, edit an .o file. Period. It<br>is possible to do it without corrupting data, but I do<br>not condone it, I don't recommend it, and if you fux your<br>mud because you did it anyway, I won't support it.<br><br>	If you edit an .o file, and now things don't<br>work, it is your own fault. If you didn't back things up<br>before editing system files, there's nothing anyone can<br>do to retroactively save your data. <br><br><br><a
@@ -573,15 +575,16 @@
  style="font-weight: bold;">3)</span> Any admin on any mud has 100% access to the i3 packet data<br>that comes in and out, meaning they can listen to "private" tells<br>between someone on that mud and someone on another mud.<br><br><span
  style="font-weight: bold;">4)</span> Nobody on any client mud is able to "sniff" or "snoop" data from<br>tells between other muds. If Alice@AlphaMud and Bob@BravoMud are<br>having a heated "tell" discussion, Carol@CharlieMud can't listen in,<br>even if she's an admin on her mud. However, Dave@DeltaMud is<br>the admin on the i3 router mud, and he can "hear" everything.<br><br><span
  style="font-weight: bold;">5)</span> Local channels (cre, admin, newbie, etc) do not get broadcast<br>to the i3 router. There is one exception to this. Dead Souls 2.0r22<br>had a bug that did just this thing. This bug is not<br>seen in earlier versions, and later versions have been fixed to<br>prevent this. However, any local admin has full access to any<br>local channel.<br><br><span
- style="font-weight: bold;">6)</span> Since this is all plaintext, anyone at all along the<br>network stream (you ISP, their ISP, etc) can listen in,<br>whether at the intermud point, or at the point where you<br>or your message target telnetted into their mud.<br><br><br>Therefore: do not tell secrets across intermud.<br><br><br></big></pre>
-<big><span style="font-family: courier new,courier,monospace;">-
-Cratylus</span></big><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<a href="http://dead-souls.net/"><span
- style="font-family: courier new,courier,monospace;">Dead Souls
-Homepage</span></a><br
- style="font-family: courier new,courier,monospace;">
-<br>
+ style="font-weight: bold;">6)</span> Since this is all plaintext, anyone at all along the<br>network stream (you ISP, their ISP, etc) can listen in,<br>whether at the intermud point, or at the point where you<br>or your message target telnetted into their mud.<br><br><br>Therefore: do not tell secrets across intermud.<br><br><br><a
+ name="91"></a><span
+ style="font-weight: bold; text-decoration: underline;">What should I <span
+ style="font-style: italic;">not</span> do?</span><br><br>	There aren't too many "don'ts", but they tend to<br>be important, so try to follow these guidelines:<br><br>- Don't mess with /realms/template/ unless you know exactly<br>what you're doing. Breaking anything there will hose up<br>new creators. The same goes for /secure/sefun/make_workroom.c<br><br>- Don't let just anyone off the street become Creator. You<br>need to know and trust your builders.<br><br>- Don't let a week go by without a full backup of your mud.<br><br><br></big></pre>
+<big style="font-family: monospace;">-
+Cratylus</big><br style="font-family: monospace;">
+<br style="font-family: monospace;">
+<a style="font-family: monospace;" href="http://dead-souls.net/">Dead
+Souls
+Homepage</a><br style="font-family: monospace;">
+<br style="font-family: monospace;">
 </body>
 </html>

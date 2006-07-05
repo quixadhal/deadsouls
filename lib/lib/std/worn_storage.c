@@ -456,7 +456,6 @@ static void create() {
     object::create();
     holder::create();
     seal::create();
-
     PutCheck();
     SetVendorType(VT_ARMOR);
 }
@@ -520,10 +519,7 @@ void SetKey(string key) {
 } 
 
 int GetOpacity() {
-    if( GetClosed() ) {
-	return holder::GetOpacity();
-    }
-    else return 0;
+    return holder::GetOpacity();
 }
 
 int GetRadiantLight(int ambient) {

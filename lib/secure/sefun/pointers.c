@@ -15,6 +15,16 @@ int ambassadorp(object ob) {
     return (userp(ob) && member_group(ob, "AMBASSADOR"));
 }
 
+int elderp(object ob) {
+    if(!ob) ob = previous_object();
+    return (userp(ob) && member_group(ob, "ELDER"));
+}
+
+int testp(object ob) {
+    if(!ob) ob = previous_object();
+    return (userp(ob) && member_group(ob, "TEST"));
+}
+
 int archp(object ob) {
     if(!ob) ob = previous_object();
     if(!creatorp(ob)) return 0;
@@ -27,9 +37,20 @@ int imud_privp(mixed guy) {
 }
 
 int securep(mixed guy) {
+    mixed dude = guy;
     if(!guy) guy = previous_object();
-    if(!creatorp(guy)) return 0;
+    if(!stringp(guy)) guy = guy->GetKeyName();
+    if(!guy || guy == "") guy = base_name(dude);
     if(member_group(guy, "SECURE")) return 1;
+    else return 0;
+}
+
+int assistp(mixed guy) {
+    mixed dude = guy;
+    if(!guy) guy = previous_object();
+    if(!stringp(guy)) guy = guy->GetKeyName();
+    if(!guy || guy == "") guy = base_name(dude);
+    if(member_group(guy, "ASSIST")) return 1;
     else return 0;
 }
 

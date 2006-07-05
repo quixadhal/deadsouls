@@ -23,7 +23,7 @@ static void create() {
     SetDoor("south", "/domains/campus/doors/plain_door");
 }
 int CanReceive(object ob) {
-    if(ob->GetRace() == "rodent"){
+    if(ob && ob->GetRace() == "rodent"){
 	message("info","You are repelled by rodenticide.",ob);
 	return 0;
     }

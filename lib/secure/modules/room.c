@@ -15,7 +15,6 @@ string *cardinal_dirs = ( ({"north","south","east","west", "northeast","northwes
 
 mixed make(string str) {
     int enter;
-    string *dir_array;
     string *exits;
     string *enters;
     string foo, current_dir, current_room, this_room, new_room, room_dir;
@@ -37,9 +36,7 @@ mixed make(string str) {
     room = environment(this_player());
     current_dir = this_player()->query_cwd();
     current_room = base_name(room);
-    dir_array = explode(current_room, "/");
-    dir_array -= ({ dir_array[sizeof(dir_array) - 1] });
-    room_dir = "/"+implode(dir_array,"/");
+    room_dir = path_prefix(current_room);
 
 
     if(file_exists(current_room+".c") && !check_privs(this_player(),current_room+".c")){
@@ -83,7 +80,7 @@ mixed make(string str) {
     }
 
     if(strsrch(arg2,".c") == -1) arg2 += ".c";
-    if(strsrch(arg2," ") != -1) arg2 = replace_string(arg2," ","");
+    if(strsrch(arg2," ") != -1) arg2 = replace_string(arg2," ","_");
 
     if(file_exists(arg2)) new_file = arg2;
     else if(strsrch(arg2,"./") != -1) {
@@ -111,7 +108,7 @@ mixed make(string str) {
 	return 1;
     }
 
-    if(new_file[0..7] == "/realms/" && strsrch(new_file,"/area/") != -1){
+    if(new_file[0..7] == "/realms/" && strsrch(new_file,"/area/room/") != -1){
 	if(!file_exists(new_file)) cp("/obj/area_room.c",new_file);
     }
     else {
@@ -386,9 +383,9 @@ varargs int eventCreateEnter(string dir, string room, string file, int remote){
 
     if(remote && member_array("out",load_object(room)->GetExits()) != -1) return 0;
 
-    globaltmp = remove_matching_line(globaltmp,"SetObviousExits",1);
-    globaltmp = remove_matching_line(globaltmp,"SetExits",1);
-    globaltmp = remove_matching_line(globaltmp,"SetDoor",1);
+    //globaltmp = remove_matching_line(globaltmp,"SetObviousExits",1);
+    //globaltmp = remove_matching_line(globaltmp,"SetExits",1);
+    //globaltmp = remove_matching_line(globaltmp,"SetDoor",1);
     globaltmp = remove_matching_line(globaltmp,"SetEnters",1);
     globaltmp = remove_matching_line(globaltmp,"//extras",1);
     //tc("remote: "+remote,"yellow");

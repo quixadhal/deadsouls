@@ -59,12 +59,16 @@ int CheckBot(string str){
     string *immune;
     string name;
 
+    //tc("hello.");
     if(!str) str = "foo";
     str = lower_case(str);
     foo = find_player(str);
     if(sizeof(snoopers)){
 	foreach(object snoopbox in snoopers){
-	    if(snoopbox && grepp("#",file_name(snoopbox)) ) {
+	    //tc("snooper: "+identify(snoopbox));
+	    //if(snoopbox && grepp("#",file_name(snoopbox)) ) {
+	    if(clonep(snoopbox) ) {
+		//tc("snooped: "+ file_name(snoopbox)+": "+snoopbox->GetSnooped()+"\n","yellow");
 	    }
 	    else snoopers -= ({snoopbox});
 	    if(snoopbox && snoopbox->GetSnooped() && snoopbox->GetSnooped() == str) {
@@ -88,13 +92,13 @@ int CheckBot(string str){
 
 void CheckSnooped(){
     object *lusers = users();
-    if(!compare_array(lusers, prevusers) || just_loaded){
-	just_loaded = 0;
-	foreach(object user in lusers){
-	    CheckBot(user->GetKeyName());
-	}
+    //if(!compare_array(lusers, prevusers) || just_loaded){
+    just_loaded = 0;
+    foreach(object user in lusers){
+	CheckBot(user->GetKeyName());
     }
-    else CheckBot("tanstaafl");
+    //}
+    //else CheckBot("tanstaafl");
     prevusers = lusers;
 }
 
@@ -119,6 +123,13 @@ int SnoopClean(){
     }
     return 1;
 }
+
+int eventDestruct(){
+    if( !((int)master()->valid_apply(({ "SECURE" }))) )
+	error("Illegal attempt to destruct snoop: "+get_stack()+" "+identify(previous_object(-1)));
+    return ::eventDestruct();
+}
+
 
 void heart_beat(){
     count++;

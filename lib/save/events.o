@@ -1,3 +1,3 @@
 #/secure/daemon/events.c
 RebootInterval 1000
-Events ([1150663330:(["function":"RotateLogs","interval":7200,"args":({}),"object":"/secure/daemon/log","creator":"/secure/daemon/log","regular":7200,]),])
+Events ([1151333254:(["interval":7200,"args":({}),"object":"/secure/daemon/log","function":"RotateLogs","regular":7200,"creator":"/secure/daemon/log",]),])

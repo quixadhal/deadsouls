@@ -18,7 +18,6 @@
 #define SEND_WHOLE_MUDLIST
 // SEND_WHOLE_CHANLIST makes it act like the official I3 server instead of like the I3 specs
 #define SEND_WHOLE_CHANLIST
-inherit LIB_SAVE;
 inherit LIB_CLEAN;
 
 // Unsaved variables...
@@ -98,8 +97,7 @@ static void broadcast_data(mapping targets, mixed data);
 #include "./core_stuff.h"
 #include "./funcs.h"
 #include "./socket_stuff.h"
-
-
+#include "./hosted_channels.h"
 
 // trrging stuff...
 mapping query_mudinfo(){ return copy(mudinfo); }
@@ -124,6 +122,21 @@ mapping GetConnectedMuds(){
     return copy(connected_muds);
 }
 
+string *AddBannedMud(string str){
+    if( !((int)master()->valid_apply(({ "SECURE" }))) )
+	error("Illegal attempt to access admintool: "+get_stack()+" "+identify(previous_object(-1)));
+
+    banned_muds += ({ str });
+    return banned_muds;
+}
+
+string *RemoveBannedMud(string str){
+    if( !((int)master()->valid_apply(({ "SECURE" }))) )
+	error("Illegal attempt to access admintool: "+get_stack()+" "+identify(previous_object(-1)));
+
+    banned_muds -= ({ str });
+    return banned_muds;
+}
 
 void clear_discs(){ 
     string mudname; 
