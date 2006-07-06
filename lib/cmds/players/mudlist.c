@@ -100,9 +100,9 @@ mixed cmd(string str) {
     list = ({});
     foreach(mud, info in borg)
     list += ({ sprintf("%:-15s %:-6s %:-15s %:-18s %s %d",
-	mud, info[8], info[7], info[5], info[1], info[2]) });
+	replace_string(mud,"%^","%%^^"), info[8], info[7], info[5], info[1], info[2]) });
     list = sort_array(list, 1);
-    list = ({ mud_name() + " recognizes " + consolidate(sizeof(borg), "a mud")+
+    list = ({ replace_string(mud_name(),"%^","%%^^") + " recognizes " + consolidate(sizeof(borg), "a mud")+
       " matching your query: ", "" }) + list;
     this_player()->eventPage(list);
     return 1;

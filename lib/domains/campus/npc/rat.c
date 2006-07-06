@@ -1,8 +1,6 @@
-
 #include <lib.h>
 
 inherit LIB_SENTIENT;
-
 
 static void create() {
     sentient::create();
@@ -12,7 +10,6 @@ static void create() {
     SetLong("A scruffy little dirty rat.");
     SetLevel(1);
     SetMaxHealthPoints(5);
-    SetUnique(1);
     SetRace("rodent");
     SetGender("male");
     SetWanderSpeed(1);

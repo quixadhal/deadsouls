@@ -22,7 +22,7 @@ inherit LIB_LIVING;
 private string *Titles;
 string *Muffed = ({});
 private class quest *Quests;
-private class death *Deaths;
+private mapping *Deaths;
 private int TrainingPoints, TitleLength;
 
 /* *****************  /lib/player.c driver applies  ***************** */
@@ -125,39 +125,44 @@ varargs int eventDie(mixed agent) {
     int x, expee, subexpee;
 
     if( (x = living::eventDie(agent)) != 1 ) return x;
-    if( !GetUndead() ) {
-	eventDestroyUndead(agent);
+
+    if(!Deaths || !sizeof(Deaths)) 
+	Deaths = ({([ "date" : ctime(time()), "enemy" : ((agent->GetName()) ? agent->GetName() : agent) ])});
+else Deaths += ({ ([ "date" : ctime(time()), "enemy" : agent->GetName() ]) });
+
+if( !GetUndead() ) {
+    eventDestroyUndead(agent);
+}
+else {
+    message("my_action", "Consciousness passes from you after one last "
+      "gasp for air.", this_object());
+    message("my_action", "You awake, but you find your body feels "
+      "different, and the world about you is unfamiliar.",
+      this_object());
+    if( agent ) {
+	message("other_action", GetName() + " drops dead by the hand "
+	  "of " + (string)agent->GetName() + ".",
+	  environment(this_object()), ({ agent, this_object() }));
+	message("other_action", "You send " + GetName() + " into the "
+	  "Underworld.", agent);
     }
-    else {
-	message("my_action", "Consciousness passes from you after one last "
-	  "gasp for air.", this_object());
-	message("my_action", "You awake, but you find your body feels "
-	  "different, and the world about you is unfamiliar.",
-	  this_object());
-	if( agent ) {
-	    message("other_action", GetName() + " drops dead by the hand "
-	      "of " + (string)agent->GetName() + ".",
-	      environment(this_object()), ({ agent, this_object() }));
-	    message("other_action", "You send " + GetName() + " into the "
-	      "Underworld.", agent);
-	}
-	else message("other_action", GetName() + " drops dead.",
-	      environment(), ({ this_object() }) );
+    else message("other_action", GetName() + " drops dead.",
+	  environment(), ({ this_object() }) );
 
-	NewBody(GetRace());
+    NewBody(GetRace());
 
-	expee = this_object()->GetExperiencePoints();
-	subexpee = to_int(expee * 0.25);
+    expee = this_object()->GetExperiencePoints();
+    subexpee = to_int(expee * 0.25);
 
-	eventCompleteHeal(GetMaxHealthPoints()/2);
-	AddMagicPoints(-(random(GetMagicPoints())));
-	interactive::eventMove(ROOM_DEATH);
-	this_object()->AddExperiencePoints(-subexpee);
-	this_object()->save_player((string)this_object()->GetKeyName());
-	this_object()->eventForce("look");
-    }
-    flush_messages();
-    return 1;
+    eventCompleteHeal(GetMaxHealthPoints()/2);
+    AddMagicPoints(-(random(GetMagicPoints())));
+    interactive::eventMove(ROOM_DEATH);
+    this_object()->AddExperiencePoints(-subexpee);
+    this_object()->save_player((string)this_object()->GetKeyName());
+    this_object()->eventForce("look");
+}
+flush_messages();
+return 1;
 }
 
 mixed eventTurn(object who) {
@@ -170,6 +175,9 @@ mixed eventTurn(object who) {
 
 void eventRevive() {
     string skill;
+
+    this_object()->SetDead(0);
+    this_object()->SetDeathEvents(0);
 
     if( !GetUndead() ) return;
     SetUndead(0);
@@ -528,7 +536,6 @@ string *RemoveMuffed(string unmuffed){
     return Muffed;
 }
 
-
 string *SetTitles(string *titles) {
     if( sizeof(distinct_array(titles)) != sizeof(titles) ) return Titles;
     Titles = titles;
@@ -783,48 +790,45 @@ int GetLanguageLevel(string lang) {
 
 mapping *GetDeaths() {
     if( !Deaths ) return ({});
-    return map(Deaths, function(class death morte) {
-	  return ([ "date" : morte->Date,
-	    "enemy" : morte->Enemy ]);
-	});
-  }
+    return copy(Deaths);
+}
 
-    int AddTrainingPoints(int x) {
-	log_file("TrainingPoints", GetName() + " received " + x + " training "
-	  "points at " + ctime(time()) + "\ncall chain: " +
-	  sprintf("%O\n", previous_object(-1)) );
-	return (TrainingPoints += x);
-    }
+int AddTrainingPoints(int x) {
+    log_file("TrainingPoints", GetName() + " received " + x + " training "
+      "points at " + ctime(time()) + "\ncall chain: " +
+      sprintf("%O\n", previous_object(-1)) );
+    return (TrainingPoints += x);
+}
 
-    int RemoveTrainingPoints(int x) {
-	return (TrainingPoints -= x);
-    }
+int RemoveTrainingPoints(int x) {
+    return (TrainingPoints -= x);
+}
 
-    int GetTrainingPoints() { return TrainingPoints; }
+int GetTrainingPoints() { return TrainingPoints; }
 
-    varargs int eventTrain(string skill, int points) {
-	float x = 0;
-	mapping mp;
+varargs int eventTrain(string skill, int points) {
+    float x = 0;
+    mapping mp;
 
-	if( points < 1 ) points = 1;
-	if( !(mp = GetSkill(skill)) ) return 0;
-	if( TrainingPoints < points ) return 0;
-	while( points-- ) {
-	    int max = GetMaxSkillPoints(skill, mp["level"]);
-	    switch( mp["class"] ) {
-	    case 1: x = 50.0; break;
-	    case 2: x = 40.0; break;
-	    case 3: x = 30.0; break;
-	    case 4: x = 20.0; break;
-	    default: return 0;
-	    }
-	    TrainingPoints--;
-	    AddSkillPoints(skill, to_int( (max * x) / 100 ));
+    if( points < 1 ) points = 1;
+    if( !(mp = GetSkill(skill)) ) return 0;
+    if( TrainingPoints < points ) return 0;
+    while( points-- ) {
+	int max = GetMaxSkillPoints(skill, mp["level"]);
+	switch( mp["class"] ) {
+	case 1: x = 50.0; break;
+	case 2: x = 40.0; break;
+	case 3: x = 30.0; break;
+	case 4: x = 20.0; break;
+	default: return 0;
 	}
-	return 1;
+	TrainingPoints--;
+	AddSkillPoints(skill, to_int( (max * x) / 100 ));
     }
+    return 1;
+}
 
-    //string ChangeClass(string cl) {
-    //	error("Players cannot change class.\n");
-    //	return GetClass();
-    //   }
+//string ChangeClass(string cl) {
+//	error("Players cannot change class.\n");
+//	return GetClass();
+//   }

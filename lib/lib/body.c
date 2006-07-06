@@ -28,7 +28,7 @@ inherit LIB_FLY;
 
 private int HealthPoints, MagicPoints, ExperiencePoints, QuestPoints;
 private int melee;
-private int Alcohol, Caffeine, Food, Drink, Poison, Sleeping, Deaths;
+private int Alcohol, Caffeine, Food, Drink, Poison, Sleeping, DeathEvents;
 private float StaminaPoints;
 private string Torso, Biter;
 private mapping Fingers, Limbs, MissingLimbs;
@@ -51,7 +51,7 @@ static void create() {
     PoliticalParty = "UNDECIDED";
     rifleshot_wounds = 0;
     gunshot_wounds = 0;
-
+    DeathEvents = 0;
     NewBody(0);
     Protect = 0;
     WornItems = ([]);
@@ -198,7 +198,7 @@ private void checkCollapse() {
 int eventCollapse() {
     int position = GetPosition();
 
-    foreach(object ob in all_inventory(environment(this_player()))){
+    foreach(object ob in all_inventory(environment(this_object()))){
 	if(inherits(LIB_CHAIR,ob) || inherits(LIB_BED,ob) ){
 	    ob->eventReleaseStand(this_object());
 	}
@@ -609,8 +609,8 @@ varargs int eventDie(mixed agent) {
 
     //if(!agent) agent = previous_object();
 
-    if(Deaths) return 1;
-    Deaths = 1;
+    if(DeathEvents) return 1;
+    DeathEvents = 1;
 
     if(agent && stringp(agent)) killer = agent + " ";
     else {
@@ -1102,7 +1102,7 @@ varargs int eventDie(mixed agent) {
 	string limbname,adjname,templimbname;
 	int i;
 
-	if(limb == "torso") return 0;
+	if(limb == "torso" || limb == "neck") return 0;
 
 	if( sscanf(limb, "%s %s", adjname, templimbname) == 2 ) limbname=templimbname;
 	else limbname=limb;
@@ -1703,5 +1703,15 @@ varargs int eventDie(mixed agent) {
 
 	return ret;
 
+    }
+
+    int GetDeathEvents(){
+	return DeathEvents;
+    }
+
+    int SetDeathEvents(int i){
+	if(!i) DeathEvents = 0;
+	else DeathEvents = 1;
+	return DeathEvents;
     }
 

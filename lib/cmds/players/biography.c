@@ -93,7 +93,7 @@ mixed cmd(string args) {
 	    d2 = ({});
 	}
 	else {
-	    x = x/2;
+	    //x = x/2;
 	    d1 = deaths[0..(x-1)];
 	    d2 = deaths[x..];
 	}
@@ -123,7 +123,7 @@ mixed cmd(string args) {
 	    col3 = npcs[(2*x)..];
 	}
 	for(i=0; i<x; i++)
-	    tmp += ({ sprintf("%:-" + (cols/3) + "s%:-" + (cols/3) + "s%s",
+	    tmp += ({ sprintf("%:-" + (cols/2) + "s%:-" + (cols/2) + "s%s",
 		(i >= sizeof(col1)) ? "" :			
 		col1[i] + " (" + kills[col1[i]] + ")",
 		(i >= sizeof(col2)) ? "" :			

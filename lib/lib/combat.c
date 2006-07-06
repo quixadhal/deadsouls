@@ -61,6 +61,12 @@ int GetDead(){
     return Dead;
 }
 
+int SetDead(int i){
+    if(!i) Dead = 0;
+    else Dead = 1;
+    return Dead;
+}
+
 object array GetEnemies() {
     return Enemies;
 }

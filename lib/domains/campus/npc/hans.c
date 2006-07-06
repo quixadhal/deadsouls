@@ -51,7 +51,6 @@ static void create() {
     SetShort("Hans");
     SetLong("Hans is a foreign exchange student from Germany.");
     SetLevel(5);
-    SetUnique(1);
     SetRace("human");
     SetGender("male");
     SetNoClean(1);

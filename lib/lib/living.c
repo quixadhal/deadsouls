@@ -31,6 +31,10 @@ static void create() {
     isPK = 0;
 }
 
+int SetDead(int i){
+    return combat::SetDead(i);
+}
+
 int is_living() { return 1; }
 
 int inventory_accessible() { return 1; }

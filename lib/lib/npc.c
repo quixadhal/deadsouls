@@ -392,6 +392,8 @@ void eventDescribeEnvironment(int brief) {
 	varargs int eventDie(mixed agent) {
 	    int x;
 
+	    if(this_object()->GetDead() || this_object()->GetDeathEvents()) return 0;
+
 	    if( (x = living::eventDie(agent)) != 1 ) return x;
 	    if( stringp(Die) )  {
 		message("other_action", Die, environment(), ({ this_object() }));

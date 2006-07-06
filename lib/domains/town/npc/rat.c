@@ -9,12 +9,9 @@ static void create() {
     SetId( ({"rat"}) );
     SetShort("a rat");
     SetLong("A scruffy little dirty rat.");
-    SetLevel(3);
+    SetLevel(1);
     SetRace("rodent");
     SetGender("male");
-    SetClass("fighter");
-    SetMaxHealthPoints(5);
-    SetWanderSpeed(1);
     SetEncounter(100);
     SetMessage("come","$N scurries in.");
     SetMessage("leave","$N scurries $D.");

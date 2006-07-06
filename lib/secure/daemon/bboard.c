@@ -49,12 +49,9 @@ static private void restore_board() {
 
 static private int valid_access() {
     string str;
-
-    if(!this_player() && __Owner == PRIV_SECURE && !((int)master()->valid_apply(({PRIV_ASSIST}))))
+    if(this_player() && archp(this_player())) true();
+    else if(__Owner == PRIV_SECURE && !((int)master()->valid_apply(({}))))
 	return 0;
-
-    if(!archp(this_player())) return 0;
-
     str = query_privs(previous_object(0));
     if(member_array(PRIV_SECURE, explode(str, ":")) != -1) return 1;
     return (__Owner == str);

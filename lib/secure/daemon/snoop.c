@@ -256,14 +256,14 @@ int ReportReconnect(string str){
 }
 
 int Report(){
-    if( !((int)master()->valid_apply(({ "PRIV_SECURE" }))) ){
+    if( !((int)master()->valid_apply(({ PRIV_SECURE }))) ){
 	return 0;
     }
-    tc("Watchers: "+identify(Watchers));
-    tc("snoopers: "+identify(snoopers));
-    tc("prevusers: "+identify(prevusers));
-    tc("snooped: "+identify(snooped));
-    tc("monitored: "+identify(monitored));
+    write("Watchers: "+identify(Watchers)+"\n");
+    write("snoopers: "+identify(snoopers)+"\n");
+    //write("prevusers: "+identify(prevusers)+"\n");
+    write("snooped: "+identify(snooped)+"\n");
+    write("monitored: "+identify(monitored)+"\n");
     return 1;
 }
 

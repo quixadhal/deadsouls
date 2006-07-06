@@ -1,3 +1,11 @@
+---- 2.0r28 --- 
+- Fixed minor bug in body.c that interfered with collapsing.
+- Fixed message boards.
+- Added command: snoopreport
+- Fixed bug that caused players to be essentially immortal.
+- Player death history is now accurately recorded.
+- The command mudlist now ignores colors.
+
 ---- 2.0r27 --- 
 - Fixed currency problem in dying NPC's.
 - Added commands: env, polyglottize

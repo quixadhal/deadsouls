@@ -16,10 +16,10 @@ int openDoor(object who) {
 static void create() {
     dummy::create();
     SetKeyName("button");
-    SetId(({"button","one","first","1" }));
-    SetAdjectives("elevator","button","one","first","1");
+    SetId(({"button","one","1" }));
+    SetAdjectives("elevator","button","one","1");
     SetShort("a button");
     SetLong("It is a button that you could probably press. The numeral \"1\" " 
-      "is printed on it.");
+      "is printed on it. Try: press 1 button");
     SetPress((: openDoor :));
 }
