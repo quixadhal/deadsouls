@@ -1,14 +1,11 @@
 #include <lib.h>
 
-inherit LIB_ITEM;
-inherit LIB_SIT;
-inherit LIB_LIE;
-
-inherit LIB_STORAGE;
-inherit LIB_SURFACE;
+inherit LIB_BED;
 
 void create(){
-    storage::create();
+    bed::create();
+    SetShort("A table");
+    SetLong("A table");
     SetMaxSitters(2);
     SetMaxLiers(1);
     SetMaxCarry(500);
@@ -17,4 +14,11 @@ void create(){
     inventory_accessible();
 }
 
+void init(){
+    ::init();
+}
+
+int CanGet(object who){
+    return bed::CanGet(who);
+}
 

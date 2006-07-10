@@ -7,7 +7,7 @@ inherit LIB_ARMOR;
 static void create(){
     armor::create();
     SetKeyName("visitor pass");
-    SetId(({"testchar badge","badge","pass","visitor pass"}));
+    SetId(({"testchar badge","badge","pass","visitor's pass"}));
     SetShort("a test character Visitor's Pass");
     SetLong("This clip-on plastic badge grants the wearer access to "+
       "some areas typically restricted to creator staff only. Abuse of this "+

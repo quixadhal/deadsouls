@@ -57,6 +57,10 @@ static void create() {
 }
 
 /*  *****************  /lib/combat.c data functions  *****************  */
+varargs int GetMaxHealthPoints(string limb){
+    return race::GetMaxHealthPoints(limb);
+}
+
 int GetDead(){
     return Dead;
 }
@@ -656,9 +660,9 @@ int eventExecuteAttack(mixed target) {
 	    int damage_type, damage, weapon_damage, actual_damage, encumbrance;
 	    encumbrance = this_object()->GetEncumbrance();
 	    //tc("encumbrance: "+encumbrance,"white");
-	    if(encumbrance > 200){
+	    if(encumbrance > 20){
 		//tc("feep","yellow");
-		tell_object(this_object(),"You struggle to fight while heavily encumbered.");
+		tell_object(this_object(),"You struggle to fight while carrying stuff.");
 	    }
 	    eventTrainSkill(weapon_type + " attack", pro*2, con, 1, bonus);
 	    damage_type = weapon->GetDamageType();
@@ -752,9 +756,9 @@ int eventExecuteAttack(mixed target) {
 	    int x, encumbrance;
 	    encumbrance = this_object()->GetEncumbrance();
 	    //tc("encumbrance: "+encumbrance,"white");
-	    if(encumbrance > 200){
+	    if(encumbrance > 20){
 		//tc("feep","blue");
-		tell_object(this_object(),"You struggle to fight while heavily encumbered.");
+		tell_object(this_object(),"You struggle to fight while carrying stuff.");
 	    }
 	    // I hit, how hard?
 	    eventTrainSkill("melee attack", pro, con, 1,

@@ -82,6 +82,10 @@ string SetDoor(string dir, string file) {
     if( ob ) {
 	ob->SetDoor(file);
     }
+
+    if(!file_exists(file) && !file_exists(file+".c")){
+	return "Door not found.";
+    }
     file->eventRegisterSide(dir);
     return (Doors[dir] = file); 
 }

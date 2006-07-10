@@ -8,9 +8,7 @@ static void create() {
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("Church Elevator");
-    SetLong("This is the elevator in the village church. The "
-      "elevator door is on the east wall. Two buttons are "
-      "set into the wall next to the door.");
+    SetLong("This is the elevator in the village church. The elevator door is on the east wall. Two buttons are set into the wall next to the door, labeled '1' and 'b'.");
     floor=1;
     moving = 0;
     closed=1;
@@ -79,7 +77,12 @@ int CanReceive(object ob) {
     return 1;
 }
 int CanRelease(object ob){
-    if(closed > 0 && !creatorp(ob) && query_verb() == "go" ){
+    if(archp(ob)) {
+	tell_object(ob,"%^RED%^As archwizard, you are permitted to "
+	  "exit the elevator at any time. Normal creators and "
+	  "players cannot do this.%^RESET%^\n");
+    }
+    if(closed > 0 && query_verb() == "go" ){
 	message("info","The elevator door is closed.", ob);
 	return 0;
     }

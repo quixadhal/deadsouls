@@ -1,11 +1,11 @@
 #include <lib.h>
 
-inherit LIB_STORAGE;
 inherit LIB_CHAIR;
-inherit "/lib/comp/surface";
+inherit LIB_SURFACE;
 
 void create() {
-    ::create();
+    surface::create();
+    chair::create();
     SetKeyName("wooden table");
     SetId( ({ "table" }) );
     SetAdjectives( ({ "wood","wooden", "simple", "medium-sized" "medium sized" }) );

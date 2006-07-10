@@ -608,6 +608,20 @@ int alphap(mixed arg){
     return 0;
 }
 
+string alpha_strip(mixed arg){
+    string raw, ret;
+    string *blown;
+    if(!arg || pointerp(arg)) return "";
+    if(!sscanf(arg,"%s",raw)) return "";
+    if(!sizeof(raw)) return "";
+    blown = explode(raw,"");
+    ret = "";
+    foreach(string element in blown){
+	if(alphap(element)) ret += element;
+    }
+    return ret;
+}
+
 int numericp(mixed arg){
     string *alphabet = ({"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"});
     if(intp(arg)) arg = itoa(arg);

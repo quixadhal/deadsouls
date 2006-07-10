@@ -31,6 +31,7 @@ inherit LIB_INTERFACE;
 
 private int Age, WhereBlock, Brief, LoginTime, BirthTime, RescueBit;
 private string Password, Email, RealName, Rank, LoginSite, HostSite, WebPage;
+private string globaltmp;
 private mapping News;
 private class marriage *Marriages;
 private static int LastAge, Setup;
@@ -263,7 +264,6 @@ void eventDescribeEnvironment(int brief) {
 		  lying[s]++;
 	      }
 	  }
-	  //tc(identify(shorts));
 	  for(i=0, desc = 0, maxi = sizeof(shorts = keys(lying)); i<maxi; i++) {
 	      string key = shorts[i];
 	      int val = lying[shorts[i]];
@@ -280,6 +280,8 @@ void eventDescribeEnvironment(int brief) {
 		  else desc += consolidate(val, key) +
 		      "%^RESET%^MAGENTA%^";
 	      }
+	      //globaltmp = "";
+	      //if(grepp(desc," corpse of ") || grepp(desc," corpses of ")) globaltmp = "lying ";
 	      if( i == maxi - 1 ) {
 		  if( maxi > 1 || val >1 )
 		      desc += " are here.%^RESET%^\n";
@@ -299,6 +301,7 @@ void eventDescribeEnvironment(int brief) {
 	i = GetEffectiveVision();
 	if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM ) {
 	    mapping lying = ([]), sitting = ([]), standing = ([]), flying = ([]);
+	    mapping furniture = ([]);
 	    object *obs;
 	    string key;
 	    int val;
@@ -313,8 +316,15 @@ void eventDescribeEnvironment(int brief) {
 	      foreach(object liv in obs) {
 		  string s = (string)liv->GetHealthShort();
 		  int pos = (int)liv->GetPosition();
-
 		  if( !s ) continue;
+		  if(liv->GetProperty("furniture")) {
+		      s += "BEGIN"+random(999999)+"END";
+		  }
+		  if(liv->GetProperty("furniture")){ 
+		      furniture[s] = liv->GetProperty("furniture");
+		  }
+		  else if(!furniture[s]) furniture[s] = 0;
+
 		  if( pos == POSITION_STANDING) standing[s]++;
 		  else if( pos == POSITION_LYING || (int)liv->isFreshCorpse() )
 		      lying[s]++;
@@ -330,19 +340,68 @@ void eventDescribeEnvironment(int brief) {
 	      }
 	      desc = "";
 	      foreach(key, val in lying) {
-		  if( val<2 ) desc += capitalize(key) + "%^RESET%^ is lying down.";
-		  else desc += capitalize(consolidate(val, key)) +
+		  globaltmp = key;
+		  if(grepp(key,"BEGIN")) {
+		      sscanf(key,"%sBEGIN%*s",key);
+		  }
+
+		  if(lying[globaltmp]>1 && !furniture[globaltmp]){
+		      desc += capitalize(consolidate(val, globaltmp)) +
 		      "%^RESET%^ are lying down.";
+		  }
+		  else if(lying[globaltmp]<2 && !furniture[globaltmp]){
+		      desc += capitalize(key) + "%^RESET%^ is lying down.";
+		  }
+		  else if(furniture[globaltmp]) {
+		      desc += capitalize(key) + "%^RESET%^ is lying down"+
+		      ((furniture[globaltmp]) ? furniture[globaltmp] : "") +".";
+		  }
+		  else if(furniture[key]) {
+		      desc += capitalize(key) + "%^RESET%^ is lying down"+
+		      ((furniture[key]) ? furniture[key] : "") +".";
+		  }
+
+
+		  else {
+		      desc += "wtf. i am "+key+", furniture["+globaltmp+"] is: "+furniture[globaltmp]+"\n"+
+		      "  furniture["+key+"] is: "+furniture[key]+", and val is: "+val;
+		  }
+
 		  desc += "\n";
 	      }
 	      foreach(key, val in sitting) {
-		  if( val<2 )
-		      desc += capitalize(key) + "%^RESET%^ is sitting down.";
-		  else desc += capitalize(consolidate(val, key)) +
+		  globaltmp = key;
+		  if(grepp(key,"BEGIN")) {
+		      sscanf(key,"%sBEGIN%*s",key);
+		  }
+
+		  if(sitting[globaltmp]>1 && !furniture[globaltmp]){
+		      desc += capitalize(consolidate(val, globaltmp)) +
 		      "%^RESET%^ are sitting down.";
+		  }
+		  else if(sitting[globaltmp]<2 && !furniture[globaltmp]){
+		      desc += capitalize(key) + "%^RESET%^ is sitting down.";
+		  }
+		  else if(furniture[globaltmp]) {
+		      desc += capitalize(key) + "%^RESET%^ is sitting down"+
+		      ((furniture[globaltmp]) ? furniture[globaltmp] : "") +".";
+		  }
+		  else if(furniture[key]) {
+		      desc += capitalize(key) + "%^RESET%^ is sitting down"+
+		      ((furniture[key]) ? furniture[key] : "") +".";
+		  }
+
+
+		  else {
+		      desc += "wtf. i am "+key+", furniture["+globaltmp+"] is: "+furniture[globaltmp]+"\n"+
+		      "  furniture["+key+"] is: "+furniture[key]+", and val is: "+val;
+		  }
 		  desc += "\n";
 	      }
 	      foreach(key, val in standing) {
+		  if(grepp(key,"BEGIN")) {
+		      sscanf(key,"%sBEGIN%*s",key);
+		  }
 		  if( val<2 )
 		      desc += capitalize(key) + "%^RESET%^ is standing here.";
 		  else desc += capitalize(consolidate(val, key)) +

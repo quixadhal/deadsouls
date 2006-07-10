@@ -9,6 +9,7 @@
 
 #include <lib.h>
 #include <config.h>
+#include <rooms.h>
 #include <daemons.h>
 #include <function.h>
 #include <medium.h>
@@ -66,6 +67,12 @@ static void create() {
     LastHeal = time();
     Protection = ({});
     ExtraChannels = ({});
+}
+
+varargs mixed eventBuy(mixed arg1, mixed arg2, mixed arg3){
+    //This function will hopefully get overridden where appropriate.
+    write(capitalize(this_object()->GetShort())+" isn't buying anything from you.");
+    return 1;
 }
 
 int GetEncumbrance(){
@@ -198,7 +205,9 @@ private void checkCollapse() {
 int eventCollapse() {
     int position = GetPosition();
 
-    foreach(object ob in all_inventory(environment(this_object()))){
+    if(!this_object() || !environment()) return 0;
+
+    foreach(object ob in all_inventory(environment())){
 	if(inherits(LIB_CHAIR,ob) || inherits(LIB_BED,ob) ){
 	    ob->eventReleaseStand(this_object());
 	}
@@ -604,6 +613,7 @@ mixed eventReceiveThrow(object who, object what) {
 varargs int eventDie(mixed agent) {
     int x;
     string killer, death_annc;
+    object crime_scene;
     //debug(identify(agent));
     //tc("stack: "+identify(get_stack()));
 
@@ -629,13 +639,17 @@ varargs int eventDie(mixed agent) {
 	if( x ) agent->eventDestroyEnemy(this_object());
 	else agent->eventKillEnemy(this_object());
     }
-    if( environment() ) {
+    crime_scene = environment();
+    if( crime_scene ) {
 	object *obs;
 	string *currs;
 	object ob;
 	string curr;
 	int i;
 
+	//I'd like to move the living body out first, but for now this
+	//misfeature stays.
+	//this_object()->eventMove(ROOM_VOID);
 	if(GetRace() == "golem") {
 	    ob = new(LIB_CLAY); 
 	    if(GetBodyComposition()) ob->SetComposition(GetBodyComposition());
@@ -645,7 +659,7 @@ varargs int eventDie(mixed agent) {
 	    else ob = new(LIB_CORPSE);
 	    ob->SetCorpse(this_object());
 	}
-	ob->eventMove(environment());
+	ob->eventMove(crime_scene);
 	obs = filter(all_inventory(), (: !((int)$1->GetRetainOnDeath()) :));
 	i = sizeof(obs);
 	obs->eventMove(ob);

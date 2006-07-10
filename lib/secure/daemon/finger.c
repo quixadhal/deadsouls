@@ -128,7 +128,7 @@ varargs string GetFinger(string who, int html) {
 	else ret += "On since " + ctime(LoginTime);
     }
     else ret += "Last on " + ctime(LoginTime);
-    if( !WhereBlock || (this_player(1) && archp(this_player(1))) )
+    if( this_player(1) && creatorp(this_player(1)) )
 	ret += " from " + HostSite + "%^BR%^\n";
     else ret += "%^BR%^\n";
     mail_stat = (mapping)FOLDERS_D->mail_status(who);
@@ -173,7 +173,7 @@ mixed array GetRemoteFinger(string who) {
     }
     if( !Email ) Email = "#CHANGE";
     tmp = ({ CapName, GetTitle(), RealName, (Email[0] != '#' ? Email : 0),
-      ctime(LoginTime), (ob && interactive(ob) ? query_idle(ob) : -1),
+      ctime(LoginTime), ((ob && interactive(ob) && !(ob->GetInvis())) ? query_idle(ob) : -1),
       0, (creator ? "Creator" : "" + Level), plan });
     return tmp;
 }

@@ -1,3 +1,43 @@
+---- 2.0r29 --- 
+- Fixed finger daemon to not display ip addresses to players.
+- The verb copy now handles relative paths more gracefully.
+- LIB_TEACHER can now know all languages with SetAllLanguages(1)
+- Standard chairs and beds can no longer be taken when someone is using them.
+- Fixed church elevator buttons.
+- Fixed problem with "look at pile".
+- Fixed problem with examining objects on surfaces.
+- It is now also possible to look at things carried by others, 
+  e.g. "look at shirt on fighter".
+- Remote finger no longer betrays invisible people.
+- Added sefun: alpha_strip
+- Room descriptions now indicate which piece of furniture a creature
+  is resting on, if applicable.
+- Objects on surfaces than can be sat or lain in are not visible
+  or accessible if someone is lying or sitting on that surface. e.g.,
+  you can't examine or get the glasses under your butt on the chair.
+- SetMaxHealthPoints now works as one would expect. The kitchen rat
+  is invincible no more.
+- Look at <container> problem fixed.
+- Bank tellers (Zoe) now do a better job of retaining the correct
+  surcharge on currency withdrawals.
+- Added /secure/obj/glasses.c as a creation object. Since you wear them,
+  it's hard to lose them accidentally. Since few things are called "glasses",
+  they won't get in the way of creating objects. New creators will have them
+  automatically added to the table in their sample room.
+- One may now have a smiley in front of a channel message without
+  it turning into an emote.
+- Fixed a conflict in the parsing system.
+- Verbified "force".
+- Fixed vendor bugs: appraising at zero, confusion with similar items.
+- Beefed up the answers_to sefun, to handle adjectives.
+- Fixed a couple of bugs in the lead/follow system.
+- Fixed null error when selling to non-vendors.
+- Fixed a channel log bug that logged to one of two files for
+  some channels, depending on whether someone was logged on (!!).
+- Fixed bug in meals that prevented empty bottles replacing
+  full ones.
+- Fixed a bug in the MudOS parser that screwed up things with apostrophes.
+
 ---- 2.0r28 --- 
 - Fixed minor bug in body.c that interfered with collapsing.
 - Fixed message boards.

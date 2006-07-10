@@ -485,11 +485,11 @@
  style="font-weight: bold;">anglicize me</span><br><br>	To make yourself fluent in all languages, type:<br><br><span
  style="font-weight: bold;">polyglottize me</span><br><br>	Obviously these commands are available only to creators.<br><br><br><a
  name="2.60"></a><span
- style="font-weight: bold; text-decoration: underline;">When I try to call test-&gt;SetLanguage("Bozo", 50), it sets it to 100%</span><br><br>	Bozo is probably a newbie. If Bozo's player level is at or below<br>what is defined as newbie in /secure/include/config.h, then he understands<br>all languages at 100%. Raise his level above that, and you should see<br>his proficiency in that language drop to what you specified.<br><br><br><a
+ style="font-weight: bold; text-decoration: underline;">When I try to call Bozo-&gt;SetLanguage("Clownish", 50), it sets it to 100%</span><br><br>	Bozo is probably a newbie. If Bozo's player level is at or below<br>what is defined as newbie in /secure/include/config.h, then he understands<br>all languages at 100%. Raise his level above that, and you should see<br>his proficiency in that language drop to what you specified.<br><br><br><a
  name="2.61"></a><span
  style="font-weight: bold; text-decoration: underline;">How do I update an .h file?</span><br><br>	You don't, really. That's a header file, which contains code to<br>be included by a .c file. Only a .c file gets loaded into memory, so<br>to "update" an .h file, you update the .c file that includes it. In<br>the case of a global include, like daemons.h, you would update the<br>master object (also called the master daemon) thusly:<br><br><span
  style="font-weight: bold;">update /secure/daemon/master</span><br
- style="font-weight: bold;"><br style="font-weight: bold;"><br></pre>
+ style="font-weight: bold;"><br><br></pre>
 <hr style="width: 100%; height: 2px; font-family: monospace;">
 <pre style="font-family: monospace;"><big><big
  style="font-weight: bold;">Section 3: Intermud and channel stuff</big><br><br><br><span

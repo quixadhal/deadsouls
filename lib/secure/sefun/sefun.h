@@ -214,5 +214,6 @@ void add_sky_event(function f);
 int assistp(mixed guy);
 int elderp(object ob);
 int testp(object ob);
+string alpha_strip(mixed arg);
 
 #endif /* l_sefun_h */

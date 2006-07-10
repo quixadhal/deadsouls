@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <daemons.h>
 #include <position.h>
 
 inherit LIB_SENTIENT;
@@ -36,6 +37,8 @@ int GiveMap(object ob){
     object map;
     if(present(ob->GetKeyName(),environment(this_object()))
       && !this_object()->GetInCombat() &&
+      member_array(ob->GetRace(),RACES_D->GetRaces(1)) != -1 &&
+      !creatorp(ob) &&
       !stringp(ob->CanManipulate()) ){
 	eventForce("say here, you might need this");
 	eventForce("give my first map to "+ob->GetKeyName());
@@ -49,7 +52,8 @@ int GiveMap(object ob){
 
 int SayHi(object ob){
     if(present(ob->GetKeyName(),environment(this_object()))
-      && !this_object()->GetInCombat())
+      && !this_object()->GetInCombat() &&
+      member_array(ob->GetRace(),RACES_D->GetRaces(1)) != -1)
 	eventForce("say Hi, "+this_player()->GetName());
     return 1;
 }

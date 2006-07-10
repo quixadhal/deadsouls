@@ -27,6 +27,7 @@ private static object Unguarded;
 private static string PlayerName, rlog;
 private static object NewPlayer;
 private static mapping Groups, ReadAccess, WriteAccess;
+private static string *ParserDirs = ({ "secure", "verbs", "daemon", "lib", "spells" });
 
 void create() {
     Unguarded = 0;
@@ -219,55 +220,32 @@ private static void load_access(string cfg, mapping ref) {
 	    else stack = ({ ob }) + previous_object(-1);
 	}
 	else i = sizeof(stack = previous_object(-1) + ({ ob }));
-	//tc("me: "+identify(this_object()), "red");
-	//tc("prevs: "+identify((previous_object(-1)+({ob}))), "red");
-	//tc("get_stack: "+get_stack(), "white");
-	//tc("oper: "+oper, "red");
 	while(i--) {
 	    if(!stack[i] || stack[i] == this_object()) {
-		//tc("stack check true");
 		continue;
 	    }
 	    if(file_name(stack[i]) == SEFUN) {
-		//tc("sefun check true");
 		continue;
 	    }
 	    if(!(priv = query_privs(stack[i]))) {
-		//tc("priv check FALSE");
 		return 0;
 	    }
-	    //tc("priv: "+priv,"yellow");
-	    //tc("prevs: "+identify(previous_object(-1)));
 	    if(!ok && oper == "read") {
-		//tc("trivial read check passed");
 		continue;
 	    }
 	    privs = explode(priv, ":");
 	    if(member_array(PRIV_SECURE, privs) != -1) {
-		//tc("priv secure check true");
-		//tc("prevs: "+identify(previous_object(-1)),"white");
-		//tc("stack: "+get_stack(),"white");
 		continue;
 	    }
 	    if(stringp(file) && member_array(file_privs(file), privs) != -1) {
-		//tc("file: "+file+", checks true");
 		continue;
 	    }
-	    //foreach(string sub_priv in privs){
-	    //   if(sizeof(ok) && member_array(sub_priv, ok) != -1) privcheck = 1;
-	    //}
-	    //if(ok) tc("ok: "+identify(ok));
-	    //tc("current ob: "+identify(stack[i]));
-	    //tc("privcheck: "+privcheck+"\n\n");
-	    //if(privcheck) continue;
 	    if(!ok && oper == "write") {
-		//tc("verde","green");
 		if(userp(stack[i]) && check_user(stack[i], fun, file, oper))
 		    continue;
 		else return 0;
 	    }
 	    if(sizeof(privs & ok)) {
-		//tc("azul","blue");
 		continue;
 	    }
 	    if(userp(stack[i]) && check_user(stack[i], fun, file, oper)) continue;
@@ -394,9 +372,17 @@ private static void load_access(string cfg, mapping ref) {
     }
 
     int valid_object(object ob) {
-	string file;
+	string file, contents;
 
 	file = file_name(ob);
+	contents = read_file(base_name(ob)+".c");
+	if(strsrch(contents,"parse_add_rule") != -1 
+	  || strsrch(contents, "SetRules") != -1) {
+	    string prefix;
+	    if(!sscanf(file,"/%s/%*s",prefix)) return 0;
+	    if(member_array(prefix, ParserDirs) == -1) return 0;
+	}
+
 	if( !strsrch(file, DIR_TMP) ) return 0;
 	else if( !strsrch(file, DIR_FTP) ) return 0;
 	else if( !strsrch(file, DIR_LOGS) ) return 0;

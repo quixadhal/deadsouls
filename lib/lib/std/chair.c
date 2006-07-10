@@ -19,4 +19,10 @@ void create(){
     SetMass(500);
 }
 
+int CanGet(object who){
+    if(sit::CanGet(who))
+	return item::CanGet(who);
+    else return 0;
+}
+
 /* Nothing else needs to happen here */

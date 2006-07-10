@@ -1,18 +1,22 @@
-		      The Dead Souls Mud Library
-		      Released 18 December 2005
+		    The Dead Souls Mud Library 2.1
+		         Released July 2006
 
 GENERAL FAQ: http://dead-souls.net/ds-faq.html
 
 ADMIN FAQ: http://dead-souls.net/ds-admin-faq.html
 
+CREATOR FAQ: http://dead-souls.net/ds-creator-faq.html
+
+INSTALL FAQ: http://dead-souls.net/ds-inst-faq.html
+
 ED TUTORIAL: http://dead-souls.net/editor.html
 
-NEW CREATION SYSTEM: http://dead-souls.net/example.html
+CREATION SYSTEM (aka OLC, aka QCS) : http://dead-souls.net/example.html
 
-	Please read /doc/SUPPORT for details on the supportability
-of this software. Note that I do not take
-the responsibility for getting you up and running, or fixing bugs.
-This code is available to you as-is.
+	This software is provided as-is. Getting it running
+and getting it working is on you, not me. make sure you go
+through the install FAQ. There's a version archived here in 
+the ./www subdirectory.
 
 	Some years ago, Descartes @ Nightmare chose to retire his
 Nightmare mudlib from distribution. Despite various disputes over
@@ -20,15 +24,11 @@ the years, this embargo has stood quite firm. Yet some folks felt
 that it was a fine lib, and many were sorry to see it go.
 
 	This mudlib is based on that old warhorse. It is entirely
-free from those licensing problems, and can be shared.
-
-	The latest available files will be at 
-http://sourceforge.net/project/showfiles.php?group_id=148388 
+free from those NM IV licensing problems, and can be shared.
 
 	Please review /doc/old/README for more historical background.
 
 	Have fun!
 
-					- Cratylus @ Frontiers
-					  18 December 2005
-                                          Updated 04 July 2006
+					- Cratylus @ Dead Souls
+                                          

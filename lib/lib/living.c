@@ -613,6 +613,10 @@ int GetNonCurrencyMass(){
     return (carry::GetCarriedMass());
 }
 
+varargs int GetMaxHealthPoints(string limb){
+    return combat::GetMaxHealthPoints(limb);
+}
+
 int GetMaxCarry() { return combat::GetMaxCarry(); }
 
 int SetPK(int x) { return (isPK = x); }

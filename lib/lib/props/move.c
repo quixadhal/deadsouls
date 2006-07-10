@@ -9,7 +9,7 @@ object GetLastEnvironment() {
 }
 
 int eventMove(mixed dest) {
-    object ob,to;
+    object ob,to,furn;
     int depth;
     to=this_object();
 
@@ -77,5 +77,9 @@ int eventMove(mixed dest) {
 	    }
 	}
     }
+
+    if(living(this_object()) && furn = this_object()->GetProperty("furniture_object"))
+	if(objectp(furn)) furn->eventReleaseStand(this_object());
+
     return (LastEnvironment != environment());
 }

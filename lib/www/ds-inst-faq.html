@@ -17,7 +17,7 @@
 <div id="header">
 <p id="headertext">Dead Souls - Installation FAQ</p>
 <p id="subheadertext">By Cratylus @ Frontiers, February 2006. Updated
-June 2006.<br>
+July 2006.<br>
 </p>
 </div>
 <!-- End: Header -->
@@ -329,7 +329,6 @@ hostname, that it receive something like "alpha", and not something
 like "alpha.bravo". If your machine is under the impression that its
 name is localhost.localdomain, it will supply that name to mudos, which
 will eventually choke on it. <br>
-    <br>
 If you're good at C, you can edit lines 66 and 76 of
 v22.2b14/swap.c and correct this behavior. But the common sense fix is
 to stop being a noob and give your computer a proper hostname already.</li>
@@ -340,7 +339,15 @@ resolve the issue. Let them know that the source compiles fine on
 various versions of SuSE and Fedora, as well as Solaris 8, 9, and 10,
 various BSD's, and even IRIX (!). If you can get them to give me a free
 temporary account for testing purposes, I'll take a look and see if I
-can help.<br>
+can help.</li>
+  <li>If you've tried everything but the compile keeps breaking, try
+compiling as root (obviously a last resort, and just for testing).</li>
+  <li>If the problem is that it compiles, but when you run the driver
+no sefuns load and the driver segfaults, it is possible that you
+compiled on a 64-bit x86 box. It seems that MudOS compiled on 64-bit
+x86 Linux doesn't work right. A fix is in the works, but until it is
+available, you can do one of two things: boot into 32-bit mode and then
+compile, or compile it on a 32-bit box and move it to the 64-bit box.<br>
   </li>
   <br>
 </ul>

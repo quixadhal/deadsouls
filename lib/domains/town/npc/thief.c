@@ -2,7 +2,6 @@
 
 inherit LIB_NPC;
 
-
 static void create() {
     npc::create();
     SetKeyName("thief");
@@ -13,17 +12,18 @@ static void create() {
       "is obviously a thief who has snuck into the "+
       "mansion and taken up residence. You seem "+
       "to have caught him just after his shower.");
-    SetLevel(3);
+    SetLevel(1);
     SetRace("human");
-    SetClass("fighter");
+    SetClass("thief");
     SetGender("male");
     SetEncounter(100);
-    SetMaxHealthPoints(100);
+    SetMaxHealthPoints(50);
     SetInventory(([
 	"/domains/town/armor/towel":"wear towel",
 	"/domains/town/weap/brush":"wield brush",
 	"/domains/town/obj/safe_key":1,
       ]) );
+    SetHealthPoints(50);
 }
 void init(){
     ::init();

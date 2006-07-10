@@ -15,6 +15,7 @@ void create() {
     SetMaxCarry(5000);
     SetInventory( ([
 	MY_OBJ "/key" : 1,
+        "/secure/obj/glasses" :1,
       ]) );
 }
 void init(){

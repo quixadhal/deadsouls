@@ -14,8 +14,19 @@ inherit LIB_SENTIENT;
 private string array TeachingLanguages;
 private mapping Students;
 private int commercial = 0;
+private int AllLangs = 0;
 private int teaching_fee = 50;
 private string local_currency = "silver";
+
+int SetAllLanguages(int i){
+    if(!i) AllLangs = 0;
+    else AllLangs = 1;
+    return AllLangs;
+}
+
+int GetAllLanguages(){
+    return AllLangs;
+}
 
 int GetCommercial(){
     return commercial;
@@ -153,7 +164,8 @@ int eventTeach(object who, string verb, string language) {
 	    eventForce("speak I am already teaching you!");
 	    return 0;
 	}
-	if( member_array(language, this_object()->GetTeachingLanguages()) == -1 ) {
+	if( !GetAllLanguages() &&
+	  member_array(language, this_object()->GetTeachingLanguages()) == -1 ) {
 	    eventForce("speak I know nothing about the " +capitalize(language)+" language.");
 	    return 0;
 	}

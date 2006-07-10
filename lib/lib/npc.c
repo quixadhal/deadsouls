@@ -25,6 +25,7 @@ inherit LIB_CRAWL;
 inherit LIB_SAVE;
 
 private int CustomXP, ActionChance, CombatActionChance, AutoStand, Mount;
+private int MaximumHealth = 0;
 private mixed Encounter;
 private string *EnemyNames;
 private static int Level, Unique;
@@ -606,8 +607,14 @@ void eventDescribeEnvironment(int brief) {
 	    return GetHealthPoints();
 	}
 
+	varargs int GetMaxHealthPoints(string limb){
+	    if(MaximumHealth) return MaximumHealth;
+	    else return living::GetMaxHealthPoints(limb);
+	}
+
 	int SetMaxHealthPoints(int x) {
-	    SetStat("durability", to_int((x-50)/10), GetStatClass("durability"));
+	    if(x) MaximumHealth = x;
+	    else SetStat("durability", to_int((x-50)/10), GetStatClass("durability"));
 	    return GetMaxHealthPoints();
 	}
 

@@ -53,6 +53,11 @@ void ReadSocket(string str) {
 
 void help() {
     message("help", "Syntax: <mfinger [player]>\n\n"
-      "Allows you to get finger information from a player's site.",
+      "Allows you to get finger information from a player's site.\n\n"
+      "Note: In 1995, you could reliably expect a UNIX machine to cheerfully "
+      "respond to a finger request. Now, more than 10 years later, everything "
+      "is blocked, firewalled, and hardened. This command is all but useless, "
+      "and is kept as a historical curiosity. Any \"bugs\" it contains will "
+      "not be fixed.",
       this_player());
 }

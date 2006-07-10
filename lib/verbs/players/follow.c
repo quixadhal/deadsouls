@@ -13,7 +13,7 @@ static void create() {
     ::create();
     SetVerb("follow");
     SetRules("", "LIV");
-    SetErrorMessage("Who would you like to follow?");
+    SetErrorMessage("Whom would you like to follow?");
     SetHelp("Syntax: follow\n"
       "        follow LIV\n"
       "\n"
@@ -40,7 +40,7 @@ mixed do_follow() {
     // Format follow string.
     if(this_player()->CanLead() && leader = this_player()->GetLeader()) {
 	tmp = "You are ";
-	if(leader->GetAllowed(this_player())) tmp += "following";
+	if(leader->GetFollowed(this_player())) tmp += "following";
 	else tmp += "trailing";
 	tmp += " " + leader->GetName() + ".\n";
     }
@@ -53,7 +53,7 @@ mixed do_follow() {
     // Format lead string.
     tmp += "You are leading ";
     obs = map(
-      filter(followers, (:this_player()->GetAllowed($1):)),
+      filter(followers, (:this_player()->GetFollowed($1):)),
       (:$1->GetName():));
     size = sizeof(obs);
     if(size) tmp += conjunction(obs);
@@ -63,7 +63,7 @@ mixed do_follow() {
     // Format evasion string.
     tmp += "You are evading ";
     obs = map(
-      filter(followers, (:!this_player()->GetAllowed($1):)),
+      filter(followers, (:!this_player()->GetFollowed($1):)),
       (:$1->GetName():));
     size = sizeof(obs);
     if(size) tmp += conjunction(obs);
@@ -82,6 +82,7 @@ mixed do_follow_liv(object ob) {
     if(leader = this_player()->GetLeader()) {
 	leader->RemoveFollower(this_player());
 	this_player()->eventPrint("You stop trailing " + leader->GetName() + ".");
+	return 1;
     }
 
     if(member_array(this_player(), ob->AddFollower(this_player())) == -1)

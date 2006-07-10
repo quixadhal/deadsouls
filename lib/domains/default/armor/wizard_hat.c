@@ -5,8 +5,8 @@ inherit LIB_ARMOR;
 
 static void create(){
     armor::create();
-    SetKeyName("wizards hat");
-    SetAdjectives( ({"wizards", "floppy", "large", "conical", "blue"}) );
+    SetKeyName("wizard's hat");
+    SetAdjectives( ({"wizard","wizards", "floppy", "large", "conical", "blue"}) );
     SetId( ({"hat"}) );
     SetShort("a wizard's hat");
     SetLong("This is a large, floppy hat with a wide brim all "+

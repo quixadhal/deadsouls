@@ -29,7 +29,7 @@ static int SetNoClean(int x) {
  * another object, call ob->eventDestruct().
  */
 static int Destruct() {
-    object env; 
+    object env, furn; 
 
     if( !this_object() ) {
 	return 1;
@@ -42,6 +42,10 @@ static int Destruct() {
 	    }
 	}
     }
+
+    if(living(this_object()) && furn = this_object()->GetProperty("furniture_object"))
+	if(objectp(furn)) furn->eventReleaseStand(this_object());
+
     remove_call_out();
     destruct(this_object()); 
     return !(this_object()); 

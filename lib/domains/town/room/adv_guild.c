@@ -30,14 +30,13 @@ static void create() {
     SetInventory(([
 	"/domains/town/obj/bin" : 1,
 	"/domains/town/obj/table" : 1,
+	"/domains/town/npc/dirk" : 1
       ]));
     SetRead( ([
 	({"list","scroll"}) : (: ReadScroll :),
 	({"instructions","sign"}) : (: ReadSign :)
       ]) );
 
-    AddStuff( ({ "/domains/town/npc/dirk"
-      }) );
     SetProperty("no attack", 1);
     ob = new("/lib/bboard");
     ob->SetKeyName("chalkboard");

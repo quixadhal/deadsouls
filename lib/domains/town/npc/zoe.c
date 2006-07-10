@@ -3,6 +3,7 @@
 
 inherit LIB_TELLER;
 
+
 static void create() {
     ::create();
     SetKeyName("zoe");
@@ -27,4 +28,7 @@ static void create() {
     SetExchangeFee(2);
     SetCurrencies( ({ "dollars", "copper", "silver", "electrum", "gold", "platinum" }) );
 
+}
+void init(){
+    ::init();
 }

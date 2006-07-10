@@ -11,9 +11,11 @@ static void create(){
       "pods are full to bursting with coins of all kinds. It would be no "+
       "trouble at all to get <amount> <currency> from tree...looks like "+
       "you've hit the jackpot!");
+    SetPacifist(1);
     SetCanBite(0);
     SetLevel(99);
     SetRace("tree");
+    SetHealthPoints(99999);
     SetMaxHealthPoints(99999);
 }
 void init(){

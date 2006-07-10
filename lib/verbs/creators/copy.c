@@ -41,7 +41,8 @@ mixed do_copy_obj_str(object ob, string str) {
 	write("in your workroom.");
 	return 1;
     }
-
+    //debug("str: ",str);
+    //debug("path_prefix(str): ",path_prefix(str));
     if(userp(ob)){
 	write("No.");
 	return 1;
@@ -51,7 +52,12 @@ mixed do_copy_obj_str(object ob, string str) {
     targetfile = "";
     if(last(str,2) != ".c") str += ".c";
     str = absolute_path((string)this_player()->query_cwd(), str);
-    if( !directory_exists(path_prefix(str)) ) return "Directory not found.";
+    //debug("str: ",str);
+    //debug("path_prefix(str): ",path_prefix(str));
+    if( !directory_exists(path_prefix(str)) ) {
+	write("Directory not found.");
+	return 1;
+    }
 
     sourcefile = base_name(ob)+".c";
     targetfile = str;
@@ -74,7 +80,7 @@ mixed do_copy_obj_str(object ob, string str) {
 }
 
 mixed do_copy_str(string str) {
-    string tmp, new_room;
+    string str2, tmp, new_room;
     mixed source_update;
     object staff;
     staff = present("tanstaafl",this_player());
@@ -84,10 +90,26 @@ mixed do_copy_str(string str) {
 	write("in your workroom.");
 	return 1;
     }
+    //debug("str: ",str,"yellow");
+    str2 = str;
+    str = absolute_path((string)this_player()->query_cwd(), str);
+    //debug("str: ",str,"yellow");
+
+    //debug("path_prefix(str): ",path_prefix(str),"green");
 
     if(last(str,2) != ".c") str += ".c";
-    str = absolute_path((string)this_player()->query_cwd(), str);
-    if( !file_exists(str) ) return "File " + str + " not found.";
+    //debug("str: ",str,"yellow");
+
+    if( !file_exists(str) ){
+	str = path_prefix(base_name(environment(this_player())))+"/"+str2;
+	if(last(str,2) != ".c") str += ".c";
+    }
+
+    if( !file_exists(str) ){
+	write("Directory not found.");
+	return 1;
+    }
+
     else if( !(tmp = read_file(str)) || !tmp || tmp == ""){
 	write("Unable to read file " + str + ".");
 	return 1;

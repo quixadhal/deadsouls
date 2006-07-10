@@ -19,6 +19,97 @@ Page</big></big></big><br>
 </div>
 <hr style="width: 100%; height: 2px;">
 <div style="text-align: left;"><br>
+<a name="07jul06"></a><span style="font-weight: bold;">07 July 06</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; A really surprising thing happened today. I<br>
+decided to reorganize my .plan file and remove <br>
+anything that wasn't either an important feature<br>
+enhancement or a bugfix. I wanted to know *exactly*<br>
+how close I am to releasing Dead Souls 2.1.<br>
+<br>
+&nbsp;&nbsp;&nbsp; After slogging through and tearing out pages<br>
+of wishlists and maybes, this is what was left:<br>
+<br>
+- fix /obj/stargate<br>
+- update colors with %%^^ data<br>
+- verbify force<br>
+- can't delete glass case?<br>
+- are people defaulting to the start room?<br>
+- sell machine to cat<br>
+- make an npc's living body go away BEFORE the corpse is moved into the
+room<br>
+- make channels understand ) after : can have non emote messages after<br>
+- SetMaxHealth shouldn't need to be in init()<br>
+- help area<br>
+- help newbie<br>
+- apostrophes<br>
+- add damage types to dummy<br>
+- intergossip logging to two files?<br>
+- review setinventory, is addstuff necessary?<br>
+- Beggar says in English, "Hi, A mangy little rat."<br>
+- shop in the town is confusing the maglite with the cheap one.<br>
+- If a piece of gear is set for a "left foot" attribute, why can I also
+wear it on my right foot? <br>
+- the handbook says that its easier to kill things as a mage,<br>
+- bug: cp sefun.c&nbsp; / <br>
+- delete mfinger<br>
+- SetEmptyName(), SetEmptyLong() and SetEmptyShort(). <br>
+- install faq: if compile problems, try as root, try non 64bit amd<br>
+- wipe the unused tc's<br>
+<br>
+&nbsp;&nbsp;&nbsp; That's it. Now compare the size of this list with<br>
+the size of stuff in the <a href="http://dead-souls.net/RELEASE_NOTES">release
+notes</a>. That's how close<br>
+I am. I was shocked.<br>
+<br>
+&nbsp;&nbsp;&nbsp; So folks, I need your help. Any bugs that have been<br>
+bothering you but you haven't gotten around to telling me,<br>
+this is the time. If you feel like knocking about the code<br>
+trying to break stuff, please log into the demo mud<br>
+at <a href="telnet://rugose.com:6666">rugose.com 6666</a> and have at
+it. <br>
+<br>
+&nbsp;&nbsp;&nbsp; It's ok that you'll make the list longer. That's<br>
+what I *want*. I want to get these bufixes as over with<br>
+as possible. <br>
+<br>
+<br>
+<a name="06jul06"></a><span style="font-weight: bold;">06 July 06</span><br>
+<br>
+<span style="text-decoration: underline;">more update news:</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; I overlooked a couple of important things when<br>
+I released 2.0r27. They have been addressed in <br>
+<a href="http://dead-souls.net/code/ds2.0r28.zip">2.0r28</a>.<br>
+<br>
+&nbsp;&nbsp;&nbsp; There may be a compat buster here. One of the<br>
+things that needed fixing was a peculiar bug that<br>
+would generate extra corpses under unusual circumstances,<br>
+during combat. This bug had some relationship to<br>
+another combat bug that prevented the accurate<br>
+recording of a player's deaths.<br>
+<br>
+&nbsp;&nbsp;&nbsp; In the end, the fixes for these two involved the<br>
+manipulation of persistent player variables. The <br>
+good news is that things now seem to work just fine,<br>
+and the bugs are seemingly gone.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The bad news is that since new player variables<br>
+are involved, you may find that test chars created<br>
+before an upgrade to r28 do weird things in combat...<br>
+like not fight.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The fix is to create new test chars.<br>
+<br>
+&nbsp;&nbsp;&nbsp; If Dead Souls was widespread enough that that<br>
+there were muds out there that were open, with players,<br>
+I'd look into some sort of system for updating <br>
+older player files. Since this is not the case,<br>
+I expect that people will be able to tolerate this<br>
+minor inconvenience with minimal discomfort.<br>
+<br>
+<br>
+<br>
 <a name="05jul06"></a><span style="font-weight: bold;">05 July 2006</span><br>
 <br>
 <span style="text-decoration: underline;">router news:</span><br>
@@ -132,7 +223,7 @@ for a DS template. It should be available soon.<br>
 <a name="18jun06"></a><span style="font-weight: bold;">18 June 2006</span><br>
 <br>
 &nbsp;&nbsp;&nbsp; The <a
- href="http://sourceforge.net/project/showfiles.php?group_id=148388&amp;package_id=175140&amp;release_id=425833">2.0r26
+ href="http://dead-souls.net/code/patches/dspatch_2.0r21_2.0r26.zip">2.0r26
 patch</a> is out. Anyone under that rev is<br>
 subject to having their mud compromised by any creator<br>
 at any time. Please upgrade <span

@@ -4,6 +4,8 @@
  *    created by Descartes of Borg 960114
  */
 
+#include <lib.h>
+
 private mixed PreventPut;
 
 // abstract methods
@@ -51,17 +53,23 @@ mixed CanPut(object who) {
 
 varargs mixed eventPut(object who, object storage, string prep) {
     int depth;
-
     if(!prep || prep == "") prep = " into ";
-    if(prep == " onto " && !inherits( "/lib/comp/surface", previous_object() ) ) {
+    if(prep == " onto " && !inherits( LIB_SURFACE, previous_object() ) ) {
 	who->eventPrint("That isn't a load-bearing surface.");
 	return 0;
     }
 
-    if(prep == " into " && inherits( "/lib/comp/surface", previous_object() ) ) {
+    if(prep == " into " && inherits( LIB_SURFACE, previous_object() ) ) {
 	who->eventPrint("That's a surface. Try \"put on\"");
 	return 0;
     }
+
+    if((inherits(LIB_SIT,storage) && sizeof(storage->GetSitters())) ||
+      (inherits(LIB_LIE,storage) && sizeof(storage->GetLiers()))){
+	write("There appears to be someone blocking your access.");
+	return 0;
+    }
+
 
     if( !eventMove(storage) ) {
 	who->eventPrint("There is not enough room in there!");

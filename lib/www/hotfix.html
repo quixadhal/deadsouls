@@ -39,26 +39,22 @@ is to apply the patch to upgrade to 2.0r26. That patch
 is <a
  href="http://dead-souls.net/code/patches/dspatch_2.0r21_2.0r26.zip">available
 now</a>. This patch can be applied to any version of Dead Souls
-above 2.0r20. If you plan to patch from pre- r26 to r27, you <span
+above 2.0r20. If you plan to patch from pre- r26 to r28, you <span
  style="font-weight: bold;">must</span> reboot the mud between the
 installation of the two separate patches.<br>
   </li>
 </ul>
 <br>
-<p>For Dead Souls <span style="color: red; font-weight: bold;">2.0r27</span>,
+<p>For Dead Souls <span style="color: red; font-weight: bold;">2.0r28</span>,
 the
 following fixes are available:
 </p>
 <ul>
-  <li>Right as I was about to release r27, someone asked an innocent
-question about bulletin boards, and I made a minor change to how they
-work to address a problem. You'd think I'd have learned my lesson about
-this sort of thing. The result is that bulletin boards don't work well
-on 2.0r27. To fix it, copy <a
- href="http://dead-souls.net/code/bboard.c">this file</a> over
-/secure/daemon/bboard.c and <a
- href="http://dead-souls.net/code/arch_board.c">this file</a> over
-/secure/obj/arch_board.c .<br>
+  <li>Some folks are still having trouble with the church elevator
+buttons. If you are one of those people, replace the ones currently in
+/domains/town/obj/ with both <a
+ href="http://dead-souls.net/code/ebutton1.c">this</a> and <a
+ href="http://dead-souls.net/code/ebutton2.c">this</a>.<br>
   </li>
 </ul>
 <br>

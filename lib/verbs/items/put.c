@@ -134,21 +134,22 @@ mixed can_put_wrd_wrd_word_obj(string num, string curr,string wrd, mixed contain
 mixed do_put_wrd_wrd_word_obj(string num, string curr, mixed wort, object ob) {
     object pile, env;
     int amt;
-    //tc("ob: "+identify(ob),"yellow");
-    //tc("wort: "+wort,"yellow");
     if(wort == "on") wort = "onto";
     if(wort == "in") wort = "into";
-    //tc("wort: "+wort,"yellow");
 
     if(wort == "onto" && !inherits( LIB_SURFACE, ob ) ) {
-	//tc("wtf1");
 	write("That isn't a load-bearing surface.");
 	return 1;
     }
     if(wort == "into" && inherits( LIB_SURFACE, ob ) ) {
-	//tc("wtf2");
 	write("That's a surface. Try \"put on\"");
 	return 1;
+    }
+
+    if((inherits(LIB_SIT,ob) && sizeof(ob->GetSitters())) ||
+      (inherits(LIB_LIE,ob) && sizeof(ob->GetLiers()))){
+	write("There appears to be someone blocking your access.");
+	return 0;
     }
 
 

@@ -80,6 +80,13 @@
 #include "/secure/sefun/compare_array.c"
 #include "/secure/sefun/legacy.c"
 
+//void parse_add_rule(string verb, string rule){
+//parse_init();
+//tc("parse_add_rule. verb: "+verb+", rule: "+rule,"white");
+//tell_player("cratylus","parse_add_rule. verb: "+verb+", rule: "+rule);
+//tell_player("cratylus","previous_object(): "+identify(previous_object()));
+//efun::parse_add_rule(verb, rule);
+//}
 
 object find_object( string str ){
     if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return efun::find_object(str);

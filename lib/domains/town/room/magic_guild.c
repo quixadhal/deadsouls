@@ -32,12 +32,14 @@ static void create() {
     SetItems( ([
 	({"list","list on the wall"}) : "A list of available spells",
       ]) );
+    SetInventory(([
+	"/domains/town/npc/herkimer" : 1,
+      ]));
     SetRead(({"list","list on wall"}) , (: ReadList :) );
     SetExits( ([
 	"north" : "/domains/town/room/magic_shop"
       ]) );
     SetObviousExits("n");
-    AddStuff( ({ "/domains/town/npc/herkimer" }) );
 
 }
 void init(){

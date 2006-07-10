@@ -60,6 +60,7 @@ int eventDestruct() { return item::eventDestruct(); }
 mixed eventDrink(object who) {
     mixed tmp;
     int x;
+    object ob;
 
     if( (tmp = (mixed)who->eventDrink(this_object())) != 1 ) return tmp;
     if( (x = functionp(MyMessage)) && !(x & FP_OWNER_DESTED) ) {
@@ -75,26 +76,24 @@ mixed eventDrink(object who) {
 	who->eventPrint( capitalize(mymsg) );
 	environment(who)->eventPrint( capitalize(othermsg), who );
     }
-    if( GetEmptyItem() ) {
-	object ob;
 
-	ob = new(GetEmptyItem() || LIB_ITEM);
-	if( base_name(ob) == LIB_ITEM ) {
-	    ob->SetKeyName(GetEmptyName());
-	    ob->SetId( ({ GetEmptyName(), "container", "empty container" }) );
-	    ob->SetShort(GetEmptyShort());
-	    ob->SetLong(GetEmptyLong());
-	    ob->SetValue(10);
-	    ob->SetMass(100);
-	    ob->SetDestroyOnSell();
-	}
-	if( !((int)ob->eventMove(who)) ) {
-	    who->eventPrint("You drop " + (string)ob->GetShort() + ".");
-	    environment(who)->eventPrint((string)who->GetName() +
-	      " drops " + (string)ob->GetShort() + ".", who);
-	    ob->eventMove(environment(who));
-	}
+    ob = new(GetEmptyItem() || LIB_ITEM);
+    if( base_name(ob) == LIB_ITEM ) {
+	ob->SetKeyName(GetEmptyName());
+	ob->SetId( ({ GetEmptyName(), "container", "empty container" }) );
+	ob->SetShort(GetEmptyShort());
+	ob->SetLong(GetEmptyLong());
+	ob->SetBaseCost(1);
+	ob->SetMass(10);
+	ob->SetDestroyOnSell();
     }
+    if( !((int)ob->eventMove(who)) ) {
+	who->eventPrint("You drop " + (string)ob->GetShort() + ".");
+	environment(who)->eventPrint((string)who->GetName() +
+	  " drops " + (string)ob->GetShort() + ".", who);
+	ob->eventMove(environment(who));
+    }
+
     if( x = GetPoison() ) {
 	if( random((int)who->GetStatLevel("luck")) > 35 )
 	    who->eventPrint("That didn't seem to taste quite right.");

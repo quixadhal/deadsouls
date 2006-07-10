@@ -27,6 +27,33 @@ string *query_names(object whom) {
 }
 
 int answers_to(string name, object what){
+    string *adjs = what->GetAdjectives();
+    string *preargs = ({});
+    string s1,s2,s3,s4;
+    int hits;
     if(member_array(lower_case(name),query_names(what)) != -1) return 1;
-    else return 0;
+    if(!sizeof(adjs)) return 0;
+    hits = sscanf(name,"%s %s %s %s",s1, s2, s3, s4);
+    //tc("hits: "+hits);
+    if(hits < 4) hits = sscanf(name,"%s %s %s",s1, s2, s3);
+    //tc("hits: "+hits);
+    if(hits < 3) hits = sscanf(name,"%s %s",s1, s2);
+    //tc("s1: "+s1);
+    //tc("s2: "+s2);
+    //tc("s3: "+s3);
+    //tc("s4: "+s4);
+    if(!hits) return 0;
+    hits--;
+    if(sizeof(s1)) preargs += ({s1});
+    if(sizeof(s2)) preargs += ({s2});
+    if(sizeof(s3)) preargs += ({s3});
+    if(sizeof(s4)) preargs += ({s4});
+
+    if(member_array(preargs[hits],query_names(what)) == -1) return 0;
+    preargs -= ({ preargs[hits] });
+
+    foreach(string prearg in preargs){
+	if(member_array(prearg, adjs) == -1) return 0;
+    }
+    return 1;
 }

@@ -131,6 +131,7 @@ varargs int eventAddLast(string feep, string str, string pchan, string pmsg, str
     if(pmsg) plainmsg += pmsg;
     if(pwho && pwho !="") plainmsg = pwho+" "+plainmsg;
     if(pchan && pchan != "admin"){
+	chan = GetLocalChannel(chan);
 	unguarded( (: write_file("/log/chan/"+chan,"["+timestamp()+"] "+plainmsg+"\n") :) );
 	if( file_size("/log/chan/"+chan) > 200000) {
 	    unguarded( (: rename("/log/chan/"+chan,"/log/chan/"+chan+"."+timestamp() ) :) );
@@ -150,7 +151,9 @@ int cmdChannel(string verb, string str) {
     object ob = 0;
     int emote;
 
-    if(first(str,1) == ":" && sizeof(str) > 3){
+    if(first(str,1) == ":" && 
+      (member_array(str[1..1], ({ "Q", "O", "P", "D", "I", "X" })) == -1 &&
+	alphap(str[1..1]) && sizeof(str) > 3)){
 	if(!grepp(verb,"emote")) verb += "emote";
 	str = trim(replace_string(str,":","",1));
     }

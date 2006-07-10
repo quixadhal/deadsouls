@@ -22,6 +22,8 @@ static void create() {
     sentient::create();
     BankName = "Town Trust";
     LocalCurrency = "silver";
+    LocalFee = 1;
+    NonLocalFee = 5;
     OpenFee = 5;
     Currencies = ({ "copper", "silver", "electrum", "gold", "platinum" });
     SetCommandResponses( ([
@@ -91,12 +93,13 @@ int AddSurcharge(object who, string currency, int amount) {
 	    "surcharge of %d %s.", type, charge, currency));
 	return amount;
     }
-    else if( (amount + charge) <= (int)who->GetCurrency(currency) ) {
-	who->eventPrint(sprintf("The bank charges you a %s %d %s "
-	    "surcharge.", type, charge, currency));
-	who->AddCurrency(currency, -charge);
-	return amount;
-    } else {
+    //else if( (amount + charge) <= (int)who->GetCurrency(currency) ) {
+    //	who->eventPrint(sprintf("The bank charges you a %s %d %s "
+    //	    "surcharge.", type, charge, currency));
+    //who->AddCurrency(currency, -charge);
+    //	return amount;
+    //    } 
+    else {
 	who->eventPrint(sprintf("You are unable to afford the "
 	    "%s surcharge of %d %s.", type, charge, currency));
 	return 0;
@@ -167,7 +170,7 @@ int eventDeposit(object who, string currency, int amount) {
 }
 
 int eventWithdraw(object who, string currency, int amount) {
-    int i, x;
+    int i, x, charge;
 
     x = amount;
     if( amount < 1 ) {
@@ -186,16 +189,18 @@ int eventWithdraw(object who, string currency, int amount) {
 	return 1;
     }
     if( !(amount = AddSurcharge(who, currency, amount)) ) return 1;
-    if( (int)who->AddCurrency(currency, amount) < 0 ) {
+    charge = x - amount;
+    if( (int)who->AddCurrency(currency, x) < 0 ) {
 	eventForce("speak You are unable to carry that "
 	  "much "+currency+"!");
-	if( x > amount ) {
-	    who->eventPrint("The bank returns the fee.");
-	    who->AddCurrency(currency, (amount - x));
-	}
+	//if( x > amount ) {
+	who->eventPrint("The bank credits your account with the fee.");
+	//who->AddCurrency(currency, (amount - x));
+	//}
 	return 1;
     }
-    who->AddBank(GetBankName(), currency, -amount);
+    who->AddCurrency(currency, -charge);
+    who->AddBank(GetBankName(), currency, -x);
     who->eventPrint(sprintf("You withdraw %d %s from your account.",
 	amount, currency));
     environment()->eventPrint(sprintf("%s withdraws some %s.",

@@ -8,6 +8,7 @@
 
 #include <function.h>
 #include <lib.h>
+#include <vision.h>
 
 private mixed   ExternalDesc = 0;
 private int     Invisible    = 0;
@@ -173,16 +174,17 @@ varargs mixed eventShow(object who, string component) {
 	  GetShort() + ".",
 	  ({ who, this_object() }));
     }
-    if(inherits(LIB_SURFACE,this_object()) ||
-      this_object()->GetOpacity() < 33){
-	//tempdesc = this_object()->eventShowInterior(who);
-	who->eventPrint(desc);
-	this_object()->eventShowInterior(who);
-    }
 
-    else {
-	who->eventPrint(desc);
+    if((!inherits(LIB_SIT,this_object()) && !inherits(LIB_LIE,this_object())) ||
+      (!sizeof(this_object()->GetLiers()) && !sizeof(this_object()->GetSitters()))){
+	if(inherits(LIB_SURFACE,this_object()) ||
+	  this_object()->GetOpacity() < 33){
+	    who->eventPrint(desc);
+	    this_object()->eventShowInterior(who);
+	}
+	else who->eventPrint(desc);
     }
+    else who->eventPrint(desc); 
     return 1;
 }
 
@@ -204,7 +206,21 @@ mixed direct_look_at_obj_word_obj() {
 }
 
 mixed direct_look_at_str_on_obj(string str, object target) {
+    object dingus;
     str = remove_article(lower_case(str));
+
+    if((inherits(LIB_SIT,target) && sizeof(target->GetSitters())) ||
+      (inherits(LIB_LIE,target) && sizeof(target->GetLiers()))){
+	write("There appears to be someone blocking your view.");
+	return 0;
+    }
+
+    if((inherits(LIB_SURFACE,target) || living(target)) && dingus = present(str, target)){
+	if(this_player()->GetEffectiveVision() == VISION_CLEAR){
+	    return dingus->GetExternalDesc();
+	}
+	else return "#You can't quite make out its details.";
+    }
     if( !Items[str] ) {
 	return "#There is no " + str + " on " + GetShort() + ".";
     }

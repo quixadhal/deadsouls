@@ -6,34 +6,22 @@
  *    Last modified: 96/12/22
  */
 
+#include <lib.h>
+
 // abstract methods
 int AddCarriedMass(int amount);
 string GetShort();
 // end abstract methods
 
 mixed CanGetFrom(object who, object item) {
-    //tc("hit CanGetFrom");
-    //tc("who: "+identify(who));
-    //tc("item: "+identify(item));
-    //tc("this_object: "+this_object()->GetName());
 
     if( !item ) {
-	//tc("no item. about to return 0");
 	return 0;
     }
     if( environment(item) != this_object() ) {
-	//tc("this item isnt in my inventory. returning 0");
 	return 0;
     }
-    //    if( environment(item) != this_object() ) {
-    ////tc("stack: "+get_stack());
-    //tc("previous: "+identify(previous_object(-1)));
-    //
-    //	return "#You can't do that.";
-    //  }
-    //tc("survicved test");
     if( environment(item) != this_object() ) {
-	//tc("oddness");
 	item = present(item->GetKeyName(),this_object());
 	if(!item) return 0;
     }
@@ -47,6 +35,12 @@ mixed CanGetFrom(object who, object item) {
 
 mixed CanPutInto(object who, object item) {
     object env;
+
+    if((inherits(LIB_SIT,item) && sizeof(item->GetSitters())) ||
+      (inherits(LIB_LIE,item) && sizeof(item->GetLiers()))){
+	write("There appears to be someone in your way.");
+	return 0;
+    }
 
     if( item == this_object() ) {
 	return "#You cannot change the laws of physics.";
@@ -65,7 +59,13 @@ mixed CanPutInto(object who, object item) {
 mixed CanPutOnto(object who, object item) {
     object env;
 
-    if(!inherits( "/lib/comp/surface", item ) ){
+    if((inherits(LIB_SIT,item) && sizeof(item->GetSitters())) ||
+      (inherits(LIB_LIE,item) && sizeof(item->GetLiers()))){
+	write("There appears to be someone preventing your access.");
+	return 0;
+    }
+
+    if(!inherits( LIB_SURFACE, item ) ){
 	return "#That isn't a load-bearing surface.";
     }
     if( item == this_object() ) {
@@ -86,7 +86,12 @@ mixed eventGetFrom(object who, object array what) {
     string msg;
     int i, maxi;
 
-    //tc("hit eventGetFrom. item is: " +identify(what),"red");
+    if((inherits(LIB_SIT,this_object()) && sizeof(this_object()->GetSitters())) || 
+      (inherits(LIB_LIE,this_object()) && sizeof(this_object()->GetLiers()))){
+	write("There appears to be someone on there.");
+	return 0;
+    }
+
     foreach(object ob in what ) {
 	if( environment(ob) != this_object() ) {
 	    continue;
@@ -138,6 +143,11 @@ mixed eventPutInto(object who, object what) {
 }
 
 mixed eventPutOnto(object who, object what) {
+    if((inherits(LIB_SIT,this_object()) && sizeof(this_object()->GetSitters())) ||
+      (inherits(LIB_LIE,this_object()) && sizeof(this_object()->GetLiers()))){
+	write("There appears to be someone in the way of that.");
+	return 0;
+    }
     return what->eventPut(who, this_object()," onto ");
 }
 
@@ -151,24 +161,12 @@ int inventory_visible() {
 }
 
 mixed indirect_get_obj_from_obj(object item, object container) {
-    //tc("stack: "+get_stack());
-    //tc("item is: " +identify(item));
-    //tc("container is: " +identify(container));
-    //tc("this object is: "+identify(this_object()));
-    //if(item) tc("item's environment is: "+identify(environment(item)));
     if(!item){
-	//write("That's not there.");
 	return 0;
     }
 
     if(environment(item) != this_object()) return 0;
 
-    //   if(!(environment(item) == this_object())){
-    //	item = present(item->GetKeyName(),this_object());
-    //tc("item is now: " +identify(item));
-    //return 0;
-    //   }
-    //tc("about to return CanGetFrom");
     return CanGetFrom(this_player(), item);
 }
 

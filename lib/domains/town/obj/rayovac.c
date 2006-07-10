@@ -2,13 +2,12 @@
 #include <vendor_types.h>
 inherit "/lib/flashlight";
 
-
 void create(){
     ::create();
     SetKeyName("flashlight");
-    SetId( ({"fl","flashlight","light","torch","flashlite"}) );
+    SetId( ({"fl","flashlight","light","torch","flashlite", "rayovac"}) );
     SetAdjectives( ({"plastic","small","cheap","rayovac","Rayovac"}) );
-    SetShort( "a small, plastic flashlight" );
+    SetShort("a small plastic flashlight");
     SetLong("This is a cheap Rayovac brand flashlight.");
     SetMass(20);
     SetBaseCost("silver",10);

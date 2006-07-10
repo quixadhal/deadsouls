@@ -74,7 +74,7 @@ void SetCorpse(object who) {
     Race = who->GetRace();
     Count = 1;
     Fresh = 1;
-    SetShort((string)who->GetShort());
+    SetShort("the corpse of "+(string)who->GetShort());
     SetLong("As you look closely at " + who->GetCapName() +
       ", you notice that " +  nominative(who) +
       " does not appear to be moving.");

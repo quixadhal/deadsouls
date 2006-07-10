@@ -18,6 +18,10 @@ private static string CommandFail;
 private static string *SearchPath;
 private static string *apostrophe_exceptions;
 
+int direct_force_liv_str() { return 1; }
+int direct_force_liv_to_str() { return 1; }
+
+
 /*  ***************  /lib/command.c driver applies  ***************  */
 
 static void create() {
@@ -31,7 +35,6 @@ static void create() {
 }
 
 static string process_input(string cmd) { 
-    //tc(this_object()->GetName()+": "+identify(parse_command(cmd)));
     return cmd;
 }
 
@@ -42,18 +45,8 @@ static int cmdAll(string args) {
     mixed err;
     string verb, file;
 
-    //if(ParseMe(args) == 1) return 1;
-    //tc(this_object()->GetName()+" parse_command_id_list(): "+identify(parse_command_id_list()));
-    //tc(this_object()->GetName()+" parse_command_plural_id_list(): "+identify(parse_command_plural_id_list()));
-    //tc(this_object()->GetName()+" parse_command_adjectiv_id_list(): "+identify(parse_command_adjectiv_id_list()));
-    //tc(this_object()->GetName()+" parse_command_prepos_list(): "+identify(parse_command_prepos_list()));
-
-    if(sizeof(args) && member_array(query_verb(), apostrophe_exceptions) == -1)
-	args = replace_string(args,"'","");
-
     old_agent = this_agent(this_object());
     verb = query_verb();
-    //write("verb: "+verb);
 
     if(this_player()->GetSleeping() > 0) {
 	if(verb != "wake") {
@@ -76,54 +69,42 @@ static int cmdAll(string args) {
 	    if( (int)this_object()->GetProperty("parse debug") ) dbg = 1;
 	    if( (int)this_object()->GetProperty("debug") ) dbg = 1;
 	    else dbg = 0;
-	    //tc("command: checkpoint 1","green");
 	    if( (err = parse_sentence(cmd, dbg)) == 1 ) {
 		this_agent(old_agent || 1);
 		return 1;
 	    }
-	    //tc("command: checkpoint 2","green");
 	    if( err ) {
-		//tc("command: checkpoint 3. err: "+err,"green");
 		if( err == -1 ) {
-		    //tc("command: checkpoint 4","green");
 		    if( !(err = (string)VERBS_D->GetErrorMessage(verb)) &&
 		      !(err = (string)SOUL_D->GetErrorMessage(verb)) ) {
 			err = "Such a command exists, but no default "
 			"syntax is known.";
 		    }
 		}
-		//tc("command: checkpoint 5","green");
 		if( intp(err) )  /* MudOS bug */ err = "What?";
 		SetCommandFail(err);
 	    }
-	    //tc("command: checkpoint 6","green");
 	    message("error", GetCommandFail(), this_object());
 	    this_agent(old_agent || 1);
 	    return 1;
 	}
-	//tc("command: checkpoint 7","green");
     }
-    //tc("command: checkpoint 8","green");
 
     if( (err = (mixed)call_other(file, "cmd", args)) != 1 ) {
 	string cmd;
 
-	//tc("command: checkpoint 9","green");
 	if( err ) SetCommandFail(err);
 	if( !args || args == "" ) cmd = verb;
 	else cmd = verb + " " + args;
 	if( (err = parse_sentence(cmd)) == 1 ) {
-	    //tc("command: checkpoint 10","green");
 	    this_agent(old_agent || 1);
 	    return 1;
 	}
-	//tc("command: checkpoint 11","green");
 	if( !err ) err = GetCommandFail();
 	message("error", err, this_object());
 	this_agent(old_agent || 1);
 	return 1;
     }
-    //tc("command: checkpoint 12","green");
     this_agent(old_agent || 1);
     return 1;
 }

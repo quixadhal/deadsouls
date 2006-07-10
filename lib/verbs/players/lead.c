@@ -13,7 +13,7 @@ static void create() {
     verb::create();
     SetVerb("lead");
     SetRules("LIV");
-    SetErrorMessage("Who would you like to lead?");
+    SetErrorMessage("Whom would you like to lead?");
     SetHelp("Syntax: lead LIVING\n"    
       "\n"
       "Allows one to assist a living being who is "

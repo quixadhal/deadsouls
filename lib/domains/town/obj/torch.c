@@ -7,7 +7,7 @@ static void create() {
     SetKeyName("torch");
     SetId( ({ "torch", "old torch", "wooden torch" }) );
     SetAdjectives( ({ "old", "wooden" }) );
-    SetShort("an old, wooden torch");
+    SetShort("an old wooden torch");
     SetLong("An old, wooden torch with a bit of cloth wrapped around "
       "one end and dipped into a flamable substance.");
     SetRadiantLight(7);
@@ -19,4 +19,7 @@ static void create() {
     SetBaseCost("silver",60);
     SetBurntValue(10);
     SetClass(10);
+}
+void init(){
+    ::init();
 }

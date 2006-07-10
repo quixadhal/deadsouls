@@ -1,7 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
 
-
 int PreExit(){
     if(this_player()->GetLevel() > 3 && !creatorp(this_player())){
 	if(present("gate guard",this_object())){
@@ -49,13 +48,13 @@ static void create() {
 	"casual entry. They are made of brick and appear old "
 	"and strong.",
       ]) );
+    SetInventory(([
+	"/domains/town/npc/mp" : 1,
+      ]));
     SetExits( ([
 	"north" : "/domains/town/room/road1",
       ]) );
     AddExit("south", "/domains/town/room/mansion_ext", (: PreExit :));
-    AddStuff( ({
-	"/domains/town/npc/mp" 
-      }) );
 
     SetProperty("no attack", 1);
 }

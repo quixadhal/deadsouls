@@ -34,7 +34,7 @@ static void create() {
       "see right through you, but the smile from beneath "+
       "his white beard is reassuring.");
     SetLevel(300);
-    SetUnique(1);
+    SetUnique(0);
     SetRace("human");
     SetGender("male");
     SetClass("mage");

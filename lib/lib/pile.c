@@ -10,12 +10,13 @@
 
 inherit LIB_ITEM;
 
-private string PileType   = 0;
-private int    PileAmount = 0;
+string PileType   = 0;
+int PileAmount = 0;
 
 static void create() {
     string *saveds;
     item::create();
+    SetNoCondition(1);
     saveds = item::GetSave();
     saveds += ({ "PileType", "PileAmount" });
     AddSave( saveds );
@@ -27,16 +28,9 @@ string array GetId() {
 
     id = item::GetId();
     if( PileType ) {
-	id += ({ PileType, PileAmount + " " + PileType });
+	id += ({ PileType, PileAmount + " " + PileType, "pile of "+PileType });
     }
-    return ({ id..., "money", "pile" });
-}
-
-varargs string GetLong(string str) {
-    if( !PileAmount ) {
-	return 0;
-    }
-    return "It is a pile of " + PileAmount + " " + PileType + ".";
+    return ({ id..., "money", "pile", "pile of "+ PileAmount + " " + PileType });
 }
 
 int GetMass() {
@@ -46,6 +40,11 @@ int GetMass() {
 void SetPile(string str, int amt) {
     PileType = str;
     PileAmount = amt;
+    if(!PileAmount || PileAmount < 1 ){ 
+	SetLong("a pile of money");
+	call_out( (: eventDestruct :), 1);
+    }
+    else SetLong("It is a pile of " + PileAmount + " " + PileType + ".");
     parse_refresh();
 }
 
@@ -56,6 +55,10 @@ int GetPileAmount() { return PileAmount; }
 string GetShort() {
     string str = item::GetShort();
 
+    if(!PileAmount || PileAmount < 1 ){
+	call_out( (: eventDestruct :), 1);
+	return "a pile of money";
+    }
     if( str ) {
 	return str;
     }
@@ -84,15 +87,18 @@ int eventMove(mixed dest) {
     int x;
 
     x = item::eventMove(dest);
-    if( !living(environment()) ) {
+    if( environment() && !living(environment()) ) {
 	return x;
     }
-    environment()->AddCurrency(PileType, PileAmount);
-    environment()->AddCarriedMass(-this_object()->GetMass());
-    SetShort("a pile of " + PileAmount + " " + PileType);
-    PileAmount = 0;
-    call_out((: Destruct :), 0);
-    return x;
+
+    if(environment() && living(environment())){
+	environment()->AddCurrency(PileType, PileAmount);
+	environment()->AddCarriedMass(-this_object()->GetMass());
+	SetShort("a pile of " + PileAmount + " " + PileType);
+	PileAmount = 0;
+	call_out((: Destruct :), 0);
+	return x;
+    }
 }
 
 mixed direct_get_wrd_wrd_out_of_obj(string num, string curr) {
@@ -121,4 +127,12 @@ mixed direct_get_wrd_wrd_out_of_obj(string num, string curr) {
 
 mixed direct_get_wrd_wrd_from_obj(string amt, string curr) {
     return direct_get_wrd_wrd_out_of_obj(amt, curr);
+}
+
+void init(){
+    ::init();
+    if(!PileAmount || PileAmount < 1 ){
+	SetLong("some money");
+	call_out( (: eventDestruct :), 1);
+    }
 }

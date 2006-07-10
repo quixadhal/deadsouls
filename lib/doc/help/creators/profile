@@ -1,0 +1,11 @@
+Your profile is a file that contains a list of 
+instructions. When you log in, the mud will force
+you to execute those commands. To modify what those
+"startup commands" are, edit the .profile file in
+your home directory. For example:
+
+cd
+ed .profile
+
+Note that the mud cannot force you to do 
+certain things as a security measure.

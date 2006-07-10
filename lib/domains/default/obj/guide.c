@@ -4,9 +4,9 @@ inherit LIB_BOOK;
 
 void create(){
     ::create();
-    SetKeyName("guidebook");
+    SetKeyName("administrator's guidebook");
     SetId( ({"book", "guide", "administrators guide", "administrators guidebook"}) );
-    SetAdjectives( ({"admin", "admins", "administrator", "administrators", "reference"}) );
+    SetAdjectives( ({"admin's", "admin", "admins", "administrator", "administrators", "reference"}) );
     SetShort("an Administrator's Guidebook");
     SetLong("This is a reference text for Dead Souls administrators.");
     SetNoCondition(1);

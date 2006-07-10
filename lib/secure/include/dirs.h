@@ -16,6 +16,7 @@
 #define DIR_SUICIDE             DIR_DATA "/suicide"
 #define DIR_RID                 DIR_DATA "/rid"
 #define DIR_SECURE_DAEMONS_SAVE DIR_DATA "/daemons"
+#define DIR_SECURE_VERBS        DIR_SECURE "/verbs"
 #define DIR_VOTES               DIR_DATA "/votes"
 #define DIR_GOSSIP              DIR_DATA "/gossip"
 

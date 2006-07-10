@@ -1,0 +1,7 @@
+Your plan file is the extra information others see when
+they finger you, usually listing what your projects are
+and what you've been up to. To modify your plan, 
+edit the .plan file in your home directory. For example,
+
+cd
+ed .plan
