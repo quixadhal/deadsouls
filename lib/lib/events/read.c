@@ -5,8 +5,8 @@ static private string Language;
 static private mixed Read    = 0;
 static private mapping Reads = ([]);
 
-private string tmpfile, globalval;
-private object globalwho;
+string tmpfile, globalval;
+object globalwho;
 
 // abstract methods
 string GetShort();
@@ -25,14 +25,14 @@ string array GetReads() {
     return keys(Reads);
 }
 
-void RemoveRead(string item) {
+mapping RemoveRead(string item) {
     if( !item || item == "default" ) {
 	Read = 0;
     }
     else {
 	map_delete(Reads, item);
     }
-    return;
+    return Reads;
 }
 
 varargs mixed SetRead(mixed arg1, mixed desc) {

@@ -193,7 +193,7 @@ int eventCreateDoor(string dir, string filename){
     my_room_file = base_name(my_room)+".c";
     other_room_file = my_room->GetExit(dir)+".c";
     if(!file_exists(other_room_file)) {
-	tell_room(my_room,"The new door fades away and disappears.");
+	tell_room(my_room,"The new door fades away and disapears.");
 	return 0;
     }
     unguarded( (: my_room_contents = read_file(my_room_file) :) );

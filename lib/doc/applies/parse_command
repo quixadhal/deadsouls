@@ -1,15 +1,15 @@
 
 parse_command(3)      LPC Library Functions      parse_command(3)
 
-NAME
+NNAAMMEE
        parse_command()  - try to match a string with a given pat-
        tern
 
-SYNOPSIS
+SSYYNNOOPPSSIISS
        int parse_command( string command, object env|object *oblist,
                           string pattern, mixed arg, ... );
 
-DESCRIPTION
+DDEESSCCRRIIPPTTIIOONN
        parse_command() is a piffed up sscanf(3) operating on word
        basis.   It  works similar to sscanf(3) in that it takes a
        pattern and a variable set of destination arguments. It is
@@ -108,7 +108,7 @@ parse_command(3)      LPC Library Functions      parse_command(3)
               second object in
                 the returned array of objects.
 
-CAVEAT
+CCAAVVEEAATT
        Patterns of type: "%s %w %i" Might not work as  one  would
 
 MudOS                       5 Sep 1994                          2
@@ -118,7 +118,7 @@ parse_command(3)      LPC Library Functions      parse_command(3)
        expect.   %w  will always succeed so the arg corresponding
        to %s will always be empty.
 
-BUGS
+BBUUGGSS
        Patterns of the type: 'word' and [word] The 'word' can not
        contain  spaces.   It  must  be a single word.  This is so
        because the pattern is exploded on " " (space) and a  pat-

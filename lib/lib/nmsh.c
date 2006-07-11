@@ -20,7 +20,7 @@ private string CurrentWorkingDirectory;
 private string PreviousWorkingDirectory;
 private mapping Nicknames, Aliases, Xverbs; 
 private static int CWDCount, CWDBottom, CWDTop, CmdNumber; 
-private static string Prompt; 
+private static string Prompt, CommandFail; 
 private static string *Stack; 
 
 static void create() {
@@ -32,17 +32,14 @@ static void create() {
       "sw" : "go southwest", "d" : "go down", "u" : "go up", "out": "go out",
       "exa" : "look at $*", "p" : "people", "sc" : "status", "inf" : "score",
       "eq" : "inventory", "where" : "people", "prac" : "skills", 
-      "sco" : "score", "practice" : "skills", "trophy" : "kills",
+      "practice" : "skills", "trophy" : "kills",
       "northwest" : "go northwest", "northeast" : "go northeast", 
       "southwest" : "go southwest", "southeast" : "go southeast",
       "north" : "go north", "south": "go south", "east" : "go east",
       "west" : "go west", "up" : "go up", "down": "go down", 
-      "ig" : "intergossip $*", "c" : "cre $*", "lp" : "lpuni $*",
-      "inv" : "inventory", "x" : "look at $*", "examine" : "look at $*",
-      "ic" : "intercre $*", "aa" : "ascii_art $*", "chat" : "newbie $*",
-      "dc" : "dchat $*", "exit" : "go out",
+      "ig" : "intergossip $*", "c" : "cre $*", "lp" : "lpuni $*"
     ]);
-    Xverbs = (["]":"] $*", "'":"say $*",":":"emote $*","\"":"say $*",]);
+    Xverbs = (["'":"say $*",":":"emote $*","\"":"say $*",]);
 } 
 
 int Setup() { 
@@ -51,9 +48,8 @@ int Setup() {
     if(!Nicknames) Nicknames = ([]);
     if(!Aliases) Aliases = ([]);
     if(!Xverbs) Xverbs = ([]);
-    add_action("cmd_alias", "alias",1); 
-    add_action("cmd_unalias", "unalias",1); 
-    add_action("cmd_nickname", "nickname",1); 
+    add_action("cmd_alias", "alias"); 
+    add_action("cmd_nickname", "nickname"); 
     if(creatorp(this_object())) { 
 	Stack = allocate(DIRECTORY_STACK_SIZE); 
 	CWDBottom = CWDTop = CWDCount = 0; 
@@ -88,19 +84,15 @@ nomask static int cmd_alias(string str) {
 	if(str[0] == '$') { 
 	    str = str[1..strlen(str)-1]; 
 	    if(Xverbs[str]) { 
-		//map_delete(Xverbs, str); 
-		//message("system", sprintf("Alias $%s removed.", str), this_player()); 
-		write(str+": "+Xverbs[str]);
-		return 1;
+		map_delete(Xverbs, str); 
+		message("system", sprintf("Alias $%s removed.", str), this_player()); 
 	    } 
 	    else message("system", sprintf("No such alias $%s.", str), this_player()); 
 	    return 1; 
 	} 
 	if(Aliases[str]) { 
-	    //map_delete(Aliases, str); 
-	    //message("system", sprintf("Alias %s removed.", str), this_player()); 
-	    write(str+": "+Aliases[str]);
-	    return 1;
+	    map_delete(Aliases, str); 
+	    message("system", sprintf("Alias %s removed.", str), this_player()); 
 	} 
 	else message("system", sprintf("No such alias %s.", str), this_player()); 
 	return 1; 
@@ -110,7 +102,7 @@ nomask static int cmd_alias(string str) {
 	  this_player()); 
 	return 1; 
     } 
-    if(key == "alias") return notify_fail("That would be a bad idea.\n");
+    if(key == "alias") return notify_fail("You are a bonehead.\n");
     if(key[0] == '$') { 
 	key = key[1..strlen(key)]; 
 	if(Xverbs[key])  
@@ -127,31 +119,6 @@ nomask static int cmd_alias(string str) {
 	else message("system", sprintf("Alias %s (%s) added.", key, thing),this_player()); 
 	Aliases[key] = thing; 
     } 
-    return 1; 
-} 
-
-nomask static int cmd_unalias(string str) { 
-    if(this_player() != this_object()) return 0; 
-    if(!str) {
-	write("Unalias what?");
-	return 1;
-    }
-    if(str[0] == '$') { 
-	str = str[1..strlen(str)-1]; 
-	if(Xverbs[str]) { 
-	    map_delete(Xverbs, str); 
-	    message("system", sprintf("Alias $%s removed.", str), this_player()); 
-	    return 1;
-	} 
-	else message("system", sprintf("No such alias $%s.", str), this_player()); 
-	return 1; 
-    } 
-    if(Aliases[str]) { 
-	map_delete(Aliases, str); 
-	message("system", sprintf("Alias %s removed.", str), this_player()); 
-	return 1;
-    } 
-    else message("system", sprintf("No such alias %s.", str), this_player()); 
     return 1; 
 } 
 
@@ -224,13 +191,13 @@ nomask static int cmd_pushd(string str) {
     return 1; 
 } 
 
-nomask static int cmd_popd() { 
+nomask static int cmd_popd(string str) { 
     if(this_player() != this_object()) return 0; 
     set_cwd(popd()); 
     return 1; 
 } 
 
-nomask static int cmd_pwd() {
+nomask static int cmd_pwd(string str) {
     if(!query_cwd()) message("system", "No current directory.", this_object());
     else message("system", query_cwd()+":", this_object());
     return 1;
@@ -283,56 +250,54 @@ nomask string write_prompt() {
 	message("prompt", ret, this_object());
 	return ret;
     }
-    if(ret){
-	while((x = strsrch(ret, "$")) != -1) {
-	    if(x == strlen(ret) -1) break;
-	    switch(ret[x+1]) {
-	    case 'D': 
-		if(!creatorp(this_object())) break;
-		if(sscanf(query_cwd(), user_path(GetKeyName())+"%s",
-		    tmp)) tmp = "~"+tmp;
-		else tmp = query_cwd();
-		ret = replace_string(ret, "$D", tmp); 
-		break;
-	    case 'V': case 'v':
-		if(GetInvis()) {
-		    ret = replace_string(ret, "$V", "INVIS"); 
-		    ret = replace_string(ret, "$v", "invis"); 
-		} 
-		else if(hiddenp(this_object())) { 
-		    ret = replace_string(ret, "$V", "HID"); 
-		    ret = replace_string(ret, "$v", "hid"); 
-		} 
-		else { 
-		    ret = replace_string(ret, "$V", ""); 
-		    ret = replace_string(ret, "$v", ""); 
-		} 
-		break;
-	    case 'C':
-		ret = replace_string(ret, "$C", sprintf("%d", CmdNumber+1)); 
-		break;
-	    case 'H':
-		ret = replace_string(ret, "$H", sprintf("%d", query_max_hp())); 
-		break;
-	    case 'h':
-		ret = replace_string(ret, "$h", sprintf("%d", query_hp())); 
-		break;
-	    case 'G':
-		ret = replace_string(ret, "$G", sprintf("%d", query_max_mp())); 
-		break;
-	    case 'g':
-		ret = replace_string(ret, "$g", sprintf("%d", query_mp())); 
-		break;
-	    case 'I':
-		ret = replace_string(ret, "$I", sprintf("%d", query_max_sp())); 
-		break;
-	    case 'i':
-		ret = replace_string(ret, "$i", sprintf("%d", query_sp())); 
-		break;
-	    default:
-		ret = replace_string(ret, ret[x..x+1], "");
-		break;
-	    }
+    while((x = strsrch(ret, "$")) != -1) {
+	if(x == strlen(ret) -1) break;
+	switch(ret[x+1]) {
+	case 'D': 
+	    if(!creatorp(this_object())) break;
+	    if(sscanf(query_cwd(), user_path(GetKeyName())+"%s",
+		tmp)) tmp = "~"+tmp;
+	    else tmp = query_cwd();
+	    ret = replace_string(ret, "$D", tmp); 
+	    break;
+	case 'V': case 'v':
+	    if(GetInvis()) {
+		ret = replace_string(ret, "$V", "INVIS"); 
+		ret = replace_string(ret, "$v", "invis"); 
+	    } 
+	    else if(hiddenp(this_object())) { 
+		ret = replace_string(ret, "$V", "HID"); 
+		ret = replace_string(ret, "$v", "hid"); 
+	    } 
+	    else { 
+		ret = replace_string(ret, "$V", ""); 
+		ret = replace_string(ret, "$v", ""); 
+	    } 
+	    break;
+	case 'C':
+	    ret = replace_string(ret, "$C", sprintf("%d", CmdNumber+1)); 
+	    break;
+	case 'H':
+	    ret = replace_string(ret, "$H", sprintf("%d", query_max_hp())); 
+	    break;
+	case 'h':
+	    ret = replace_string(ret, "$h", sprintf("%d", query_hp())); 
+	    break;
+	case 'G':
+	    ret = replace_string(ret, "$G", sprintf("%d", query_max_mp())); 
+	    break;
+	case 'g':
+	    ret = replace_string(ret, "$g", sprintf("%d", query_mp())); 
+	    break;
+	case 'I':
+	    ret = replace_string(ret, "$I", sprintf("%d", query_max_sp())); 
+	    break;
+	case 'i':
+	    ret = replace_string(ret, "$i", sprintf("%d", query_sp())); 
+	    break;
+	default:
+	    ret = replace_string(ret, ret[x..x+1], "");
+	    break;
 	}
     }
     message("prompt", ret, this_object());
@@ -496,7 +461,7 @@ int query_max_sp() { return 10; }
 
 string get_path() { return query_cwd(); }
 
-varargs int GetInvis() { return 0; }
+varargs int GetInvis(object ob) { return 0; }
 
 string GetKeyName() { return 0; }
 

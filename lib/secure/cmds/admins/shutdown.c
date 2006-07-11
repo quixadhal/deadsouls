@@ -6,40 +6,29 @@
 #include <lib.h>
 
 inherit LIB_DAEMON;
-object downer;
 
 void ShutDown(){
     shutdown();
 }
 
 int cmd(string str) {
-    downer = previous_object();
-    if(downer->GetForced()){
-	write("Forced attempt to shutdown.");
-	return 0;
-    }
-    if(!archp(downer)) {
-	write("You are not permitted to shutdown the game.\n");
+    if(this_player()->GetForced()) return 0;
+    if(!archp(previous_object())) {
+	notify_fail("You are not permitted to shutdown the game.\n");
 	return 0;
     }
     if(!str) {
-	write("You must give a shutdown reason as argument.\n");
+	notify_fail("You must give a shutdown reason as argument.\n");
 	return 0;
     }
-    shout("Game is shut down by " + downer->GetKeyName() + ".\n");
+    shout("Game is shut down by " + this_player()->GetKeyName() + ".\n");
     log_file("game_log", ctime(time())+" Game shutdown by "+
-      downer->GetKeyName()+"("+str+")\n");
+      this_player()->GetKeyName()+"("+str+")\n");
     foreach(object dude in users()){
-	if(dude && sizeof(base_name(dude))){
-	    if(!archp(dude)) dude->eventForce("quit");
-	    else {
-		downer = dude;
-		unguarded( (: downer->AddCarriedMass(-99999) :) );
-		unguarded( (: downer->save_player(downer->GetKeyName()) :) );
-	    }
-	}
+	if(dude && sizeof(base_name(dude)) && !archp(dude)) dude->eventForce("quit");
     }
-    call_out( (: shutdown :), 1);
+    shutdown();
+
     return 1;
 }
 

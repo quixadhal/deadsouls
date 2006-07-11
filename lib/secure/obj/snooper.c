@@ -48,7 +48,7 @@ void receive_snoop(string str){
     unguarded((: write_file("/secure/log/adm/"+guy+".log",guy+" "+timestamp()+": "+stringy) :));
     SNOOP_D->GetSnoop(guy, stringy);
     if( file_size("/secure/log/adm/"+guy+".log") > 200000) {
-	rename("/secure/log/adm/"+guy+".log", "/secure/log/adm/archive/"+guy+"."+time());
+	rename("/secure/log/adm/"+guy+".log", "/secure/log/bak/"+guy+"."+time());
     }
 }
 

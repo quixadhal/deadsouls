@@ -40,25 +40,24 @@ static void create() {
     SetDamagePoints(1000);
     SetPreventGet("You can't get that.");
     SetMaxCarry(20);
-
+    
     SetInventory(([
       ]));
-
+    
     mc = "";
     x = 0;
     speaker = "";
-
+    
     vote_str = "none" ;
     voters = ({ }) ;
     votes = ([ ]) ;
     agenda = ({ }) ;
     bounce_room = DEFAULT_BOUNCE_ROOM ;
-
+    
 }
 void init() {
     ::init();
     add_action("eventSay", "say",1);
-    add_action("eventSay", "codesay");
     add_action("eventRaise", "raise");
     add_action("eventCallOn", "recognize");
     add_action("shaddap", "yell");
@@ -83,29 +82,19 @@ void init() {
     add_action ("privacy", "privacy");
     add_action ("privacy", "priv");
     add_action ("localupdate", "update") ;
-    add_action ("localupdate", "reload") ;
     add_action ("step_down", "step" );
-    add_action ("RestrictedAction", "zap" );
-    add_action ("RestrictedAction", "force" );
 }
 mixed CanGet(object ob) { return "The podium does not budge.";}
 
-int RestrictedAction(){
-    if(!archp(this_player()) && sizeof(mc) && mc != this_player()->GetKeyName()){
-	write("That action is restricted here.");
-	return 1;
-    }
-}
+
 
 int eventSay(string args) {
     string foo;
-
-    if(!sizeof(args)) return 0;
-    args = replace_string(args,"\n","");
+    
     if (mc == this_player()->GetKeyName()) {
-	//this_player()->eventPrint("You say %^CYAN%^\"" + capitalize(args) + "\"");
-	//say(this_player()->GetName() + " says %^CYAN%^\"" + capitalize(args) + "\"");
-	return 0;
+	this_player()->eventPrint("You say %^CYAN%^\"" + capitalize(args) + "\"");
+	say(this_player()->GetName() + " says %^CYAN%^\"" + capitalize(args) + "\"");
+	return 1;
     }
     if ( mc != "" && this_player()-> GetKeyName() != speaker ) {
 	this_player()->eventPrint("%^RED%^It is not polite to talk out of order.");
@@ -116,12 +105,12 @@ int eventSay(string args) {
 	write ("You mutter to yourself.\n") ;
 	return 1 ;
     }
-    //foo = (string)this_player()->GetCapName() + 
-    //" says: %^CYAN%^\"" + capitalize(args)+"\"";
-    //say (foo) ;
-    //write("You say: %^CYAN%^\"" + capitalize(args)+"\"");
-    return 0;
-
+    foo = wrap((string)this_player()->GetCapName() + 
+      " says: %^CYAN%^\"" + capitalize(args)) ;
+    say (foo) ;
+    write(wrap("You say: %^CYAN%^\"" + capitalize(args)));
+    return 1;
+    
 }
 
 
@@ -274,19 +263,10 @@ int step_down(string args){
 	write("<step down>");
 	return 1;
     }
-
+    
 }
 
 int SetMc(string args) {
-    object ob;
-    if(args) ob = find_living(args);
-    if(!args || !ob) ob = this_player();
-    if(!member_group(ob, "MODERATORS")){
-	write("That person is not a member of the moderators group.");
-	write("An admin should use the admintool command to add the "+
-	  "appropriate people to that user group.");
-	return 1;
-    }
     if (x==0) {
 	if (args != 0) {
 	    if (present(args) ) {
@@ -315,7 +295,7 @@ int SetMc(string args) {
 }
 
 int privacy(string str){
-
+    
     if ( mc != this_player()->GetKeyName() ) {
 	write ("Only the mc may use the shield.\n") ;
 	return 1 ;
@@ -343,10 +323,10 @@ int echo (string str) {
 // Permit_entry lets the mc bring someone into the conference room
 // when it is locked.
 int permit_entry (string name) {
-
+    
     object user ;
     int oldlock ;
-
+    
     if ( mc != this_player()->GetKeyName() ) {
 	write ("Only the mc may permit entry into a locked conference.\n") ;
 	return 1 ;
@@ -376,11 +356,12 @@ int permit_entry (string name) {
 
 
 // Eject_player lets the mc banish a player from the room and dump
-// him in the bounce room.
+// him in the bounce room. Not very effective if the room is unlocked,
+// except perhaps as a warning.
 int eject_player (string str) {
-    object env = environment(this_player());
+    
     object ob ;
-
+    
     if ( mc != this_player()->GetKeyName() ) {
 	write ("Only the mc may eject players.\n") ;
 	return 1 ;
@@ -394,7 +375,6 @@ int eject_player (string str) {
     tell_object (ob, "You have been ejected from the room.\n") ;
     say (capitalize(str)+" has been ejected from the room.\n") ;
     ob->eventMove(bounce_room) ;
-    if(env) env->AddEjected(ob);
     return 1 ;
 }
 
@@ -404,10 +384,10 @@ int eject_player (string str) {
 // and start it running. See the help documents for more information on
 // how the clock works.
 varargs int localtime (string str) {
-
+    
     int i, min, sec ;
     string foo ;
-
+    
     // If no string, then we just indicate how much time is left on the clock.
     if (!str) {
 	if (!endtime || endtime == 0) {
@@ -489,9 +469,9 @@ int expire_time() {
 
 // Show_agenda lets users see the current agenda.
 int show_agenda() {
-
+    
     int i ;
-
+    
     if (!agenda || sizeof(agenda)==0) {
 	write ("The agenda has not been set.\n") ;
 	return 1 ;
@@ -525,10 +505,10 @@ int clear_items (string str) {
 // is of the form "after <int> <string>", then string is added to the
 // agenda AFTER item int. Agenda items are numbered 1-N rather than 0-(N-1).
 int add_items (string str) {
-
+    
     int post ;
     string prop ;
-
+    
     if ( mc != this_player()->GetKeyName() ) {
 	notify_fail ("Only the mc may add agenda items.\n") ;
 	return 0 ;
@@ -555,9 +535,9 @@ int add_items (string str) {
 
 // Remove_item lets the mc take an item off the agenda.
 int remove_item (string str) {
-
+    
     int agitem ;
-
+    
     if (!str) {
 	notify_fail ("Usage: remove <number of agenda item>\n") ;
 	return 0 ;
@@ -625,10 +605,10 @@ int vote (string str) {
 // Call_for_vote allows the mc to call for a secret-ballot vote on
 // a proposal.
 int call_for_vote (string str) {
-
+    
     string timestr, subjstr ;
     int i ;
-
+    
     if ( mc != this_player()->GetKeyName() ) {
 	write ("Only the mc may call for votes.\n") ;
 	return 1 ;
@@ -672,10 +652,10 @@ int call_for_vote (string str) {
 // Call_for_roll is exactly like call_for_vote EXCEPT that it calls for
 // a roll-call vote: that is, all votes are announced and logged.
 int call_for_roll (string str) {
-
+    
     string timestr, subjstr ;
     int i ;
-
+    
     if ( mc != this_player()->GetKeyName() ) {
 	write ("Only the mc may call for votes.\n") ;
 	return 1 ;
@@ -728,25 +708,6 @@ int expire_vote() {
 }
 
 int localupdate() {
-    if(!archp(this_player())){
-	write ("You may not update objects while in the conference room.\n") ;
-	return 1;
-    }
+    write ("You may not update objects while in the conference room.\n") ;
+    return 1 ;
 }
-
-int eventDestruct(){
-    if(sizeof(mc) && !this_player() || (this_player() && !archp(this_player()))){
-	write("You may not tamper with the podium.");
-	return 0;
-    }
-    else return ::eventDestruct();
-}
-
-int eventMove(mixed dest){
-    if(sizeof(mc)){
-	write("No.");
-	return 0;
-    }
-    else return ::eventMove(dest);
-}
-

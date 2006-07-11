@@ -3,6 +3,7 @@
 inherit LIB_ROOM;
 
 static void create() {
+    object ob;
     room::create();
     SetClimate("indoors");
     SetAmbientLight(30);
@@ -11,12 +12,10 @@ static void create() {
       "noisy and uncomfortable location, just like network rooms all around "
       "the world. It is here for debugging and troubleshooting purposes, so "
       "if that's not what you're doing, you should probably leave. " 
-      "The arch room is above. The router room is south. "
-      "The catch_tell room is east.");
+      "The arch room is above. The router room is south.");
     SetExits( ([
-	"south" : "/secure/room/router",
 	"up" : "/secure/room/arch",
-	"east" : "/domains/default/room/catchtell.c",
+	"south" : "/secure/room/router.c",
       ]) );
 
 }

@@ -1,26 +1,26 @@
 
 CARDINAL(1)                                           CARDINAL(1)
 
-NAME
-       cardinal() - returns the string description of a number
+NNAAMMEE
+       _c_a_r_d_i_n_a_l_(_) - returns the string description of a number
 
-SYNOPSIS
+SSYYNNOOPPSSIISS
        string cardinal(int x)
 
-DESCRIPTION
+DDEESSCCRRIIPPTTIIOONN
        Given any integer number, this function will return the
        number written out in English.
 
-EXAMPLES
-       o   cardinal(5) returns "five"
+EEXXAAMMPPLLEESS
+       +o   _c_a_r_d_i_n_a_l(5) returns "five"
 
-LOCATION
-       /secure/sefun/english.c
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/english.c
 
-SEE ALSO
-       ordinal()
+SSEEEE AALLSSOO
+       _o_r_d_i_n_a_l_(_)
 
-Author
+AAuutthhoorr
        Descartes of Borg
 
                                                                 1

@@ -38,7 +38,7 @@ mixed cmd(string str) {
 	return "It is too dark to attempt that.";
     if( env->GetDoor(str) && ((string)env->GetDoor(str))->GetClosed() ) {
 	message("my_action", sprintf("%s is blocking your view %s.",
-	    (capitalize(env->GetDoor(str)->GetShort(str))), str),
+	    ((string)env->GetDoor(str))->GetShort(str), str),
 	  this_player() );
 	return 1;
     }
@@ -50,7 +50,7 @@ mixed cmd(string str) {
     if(env->GetProperty("no peer")){
 	return "You can't see in that direction.";
     }
-    if( (i = this_player()->GetEffectiveVision(file,1)) > 5 )
+    if( (i = this_player()->GetEffectiveVision(1,file)) > 5 )
 	return "It is too bright in that direction.";
     else if( i < 3 )
 	return "It is too dark there.";

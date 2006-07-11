@@ -6,7 +6,7 @@
 
 inherit LIB_DAEMON;
 
-varargs int cmd()
+varargs int cmd(string str)
 {
     if((int)this_player()->GetInvis()) {
 	notify_fail("You are already invisible.\n");
@@ -19,5 +19,5 @@ varargs int cmd()
 
 void help()
 {
-    write("Syntax: <invis>\n\nMakes you invisible to players of lower levels in all circumstances.\n\nSee also: vis");
+    write("Syntax: <invis>\n\nMakes you invisible to players of lower levels in all circumstances.\n");
 }

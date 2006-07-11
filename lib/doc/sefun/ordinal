@@ -1,26 +1,26 @@
 
 ORDINAL(1)                                             ORDINAL(1)
 
-NAME
-       ordinal() - returns the ordinal suffix for a number
+NNAAMMEE
+       _o_r_d_i_n_a_l_(_) - returns the ordinal suffix for a number
 
-SYNOPSIS
+SSYYNNOOPPSSIISS
        string ordinal(int x)
 
-DESCRIPTION
+DDEESSCCRRIIPPTTIIOONN
        Given an integer, this function returns the ordinal suffix
        for the number.
 
-EXAMPLES
-       o   ordinal(7) returns "th"
+EEXXAAMMPPLLEESS
+       +o   _o_r_d_i_n_a_l(7) returns "th"
 
-LOCATION
-       /secure/sefun/english.c
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/english.c
 
-SEE ALSO
-       cardinal()
+SSEEEE AALLSSOO
+       _c_a_r_d_i_n_a_l_(_)
 
-Author
+AAuutthhoorr
        Descartes of Borg
 
                                                                 1

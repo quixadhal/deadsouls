@@ -9,6 +9,7 @@
 #include <lib.h>
 
 inherit LIB_LOOK_IN;
+inherit LIB_RADIANCE;
 inherit LIB_ADDSTUFF;
 
 int SetOpacity(int x){
@@ -20,8 +21,9 @@ int GetOpacity(){
 }
 
 int GetRadiantLight(int ambient) {
-    int r = this_object()->GetBaseRadiance(ambient);
+    int r = radiance::GetRadiantLight(ambient);
     int o = GetOpacity();
+
     if( o > 99 ) {
 	if( r < 1 ) {
 	    return 0;

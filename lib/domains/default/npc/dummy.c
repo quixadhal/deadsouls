@@ -86,15 +86,8 @@ varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixe
     damage = GetHealthPoints();
     damdiff = hp - damage;
     eventForce("say actual damage done: "+damdiff);
-    AddHP(damdiff+1);
+    AddHealthPoints(damdiff+1);
 }
-
-int RemoveLimb(string limb, object agent){
-    eventForce("say My "+limb+" has received enough damage to sever it. "
-      "However, since I am a training dummy, I'll be keeping it.");
-    return 1;
-}
-
 void init(){
     ::init();
 }

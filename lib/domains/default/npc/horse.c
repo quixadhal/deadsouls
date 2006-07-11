@@ -1,8 +1,6 @@
 #include <lib.h>
 
 inherit LIB_SENTIENT;
-inherit LIB_MOUNT;
-inherit LIB_DOMESTICATE;
 
 static void create() {
     sentient::create();
@@ -19,7 +17,6 @@ static void create() {
 	"The horse snorts.", "You hear the horse whinny.", 
 	"The horse flips its tail in the air.",
 	"The horse looks around."}));
-    SetNoClean(1);
 }
 void init(){
     ::init();

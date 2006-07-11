@@ -5,7 +5,7 @@
  *    created by Pallando@Dead Souls (Douglas Reay) 921212
  */
 
-varargs string identify( mixed a )
+string identify( mixed a )
 {
     int i, s;
     string ret;

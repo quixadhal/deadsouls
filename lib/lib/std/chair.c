@@ -8,11 +8,12 @@
 
 #include <lib.h>
 
+inherit LIB_ITEM;
 inherit LIB_SIT;
 inherit LIB_SURFACE;
 
 void create(){
-    surface::create();
+    ::create();
     SetMaxSitters(1);
     SetMaxCarry(100);
     SetMass(500);
@@ -20,7 +21,7 @@ void create(){
 
 int CanGet(object who){
     if(sit::CanGet(who))
-	return sit::CanGet(who);
+	return item::CanGet(who);
     else return 0;
 }
 

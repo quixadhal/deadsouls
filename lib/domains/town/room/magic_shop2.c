@@ -7,17 +7,13 @@ static void create() {
     SetAmbientLight(30);
     SetShort("The Magic Shop Storeroom");
     SetLong("This is the storeroom where magical items are kept."); 
-    SetInventory(([
-	"/domains/town/meals/potion_strength" : 5,
-	"/domains/town/meals/potion_bigheal" : 2,
-	"/domains/town/obj/omni" : 1,
-	"/domains/town/obj/8ball" : 3,
-	"/domains/town/meals/potion_healing" : 10,
-      ]));
     SetExits( ([
 	"east" : "/domains/town/room/magic_shop",
       ]) );
     SetObviousExits("e");
+    SetInventory( ([
+	"/domains/town/obj/omni" : 1,
+      ]) );
 }
 int CanReceive(object ob) {
     if( playerp(ob) && !creatorp(ob)  && !present("testchar badge",ob) ) {

@@ -73,11 +73,5 @@ int eventMove(mixed dest) {
     if(living(this_object()) && furn = this_object()->GetProperty("furniture_object"))
 	if(objectp(furn)) furn->eventReleaseStand(this_object());
 
-    if(living(this_object()) && !living(environment(this_object())) 
-      && furn = this_object()->GetProperty("mount"))
-	if(objectp(furn)) {
-	    this_object()->RemoveProperty("mount");
-	    furn->eventDismount(this_object());
-	}
     return (LastEnvironment != environment());
 }

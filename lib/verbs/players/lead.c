@@ -2,7 +2,7 @@
  *  created by Rush@Dead Souls
  */
 
-
+#pragma save_binary
 
 #include <lib.h>
 #include "include/lead.h"

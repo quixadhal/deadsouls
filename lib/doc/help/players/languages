@@ -35,11 +35,5 @@ example:
 
 %^GREEN%^speak in edhellen hi i speak a little elvish%^RESET%^
 
-To switch your default language to Valar (if you know it):
-
-%^GREEN%^speak in valar%^RESET%^
-
-This makes you use the Valar language whenever you "say" something.
-
 
 See also: ask, shout, speak

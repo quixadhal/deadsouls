@@ -21,9 +21,6 @@ private mapping Blocked;
 private int *Screen;
 private static int LogHarass, Client;
 private static mapping TermInfo;
-string MessageQueue;
-int PauseMessages;
-int MessageExceptions;
 
 static void create() {
     chat::create();
@@ -126,26 +123,6 @@ int Setup() {
     TermInfo = (mapping)TERMINAL_D->query_term_info(Terminal);
 }
 
-int eventFlushQueuedMessages(){
-    print_long_string(this_object(),MessageQueue);
-    MessageQueue = "";
-    return 1;
-}
-
-varargs int eventPauseMessages(int x, int exceptions){
-    if(exceptions) MessageExceptions = exceptions;
-    else MessageExceptions = 0;
-    if(x) PauseMessages = 1;
-    else {
-	if(PauseMessages){
-	    //call_out( (: eventFlushQueuedMessages :), 1);
-	    eventFlushQueuedMessages();
-	}
-	PauseMessages = 0;
-    }
-    return PauseMessages;
-}
-
 varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
     int msg_class;
 
@@ -158,8 +135,6 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
     else if( !intp(arg2) ) msg_class = MSG_ENV;
     else msg_class = arg2;
     if( !(msg_class & MSG_NOBLOCK) && GetBlocked("all") ) return 0;
-    if((msg_class & MSG_CHAN) && environment() &&
-      environment()->GetProperty("meeting room")) return 0;
     if( GetLogHarass() )
 	log_file("harass/" + GetKeyName(), strip_colours(msg) + "\n");
     if( !TermInfo )
@@ -176,13 +151,8 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
 	      GetScreen()[0], indent);
     }
     else if( !(msg_class & MSG_NOWRAP) ) msg = wrap(msg, GetScreen()[0]-1);
-    if(PauseMessages && !(msg_class & MessageExceptions)){
-	MessageQueue += msg;
-    }
-    else {
-	if( Client ) receive("<" + msg_class + " " + msg + " " + msg_class +">\n");
-	else receive(msg);
-    }
+    if( Client ) receive("<" + msg_class + " " + msg + " " + msg_class +">\n");
+    else receive(msg);
     return 1;
 }
 

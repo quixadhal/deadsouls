@@ -7,12 +7,8 @@
  */
 
 #include <talk_type.h>
-#include <daemons.h>
 #include <message_class.h>
 #include "include/talk.h"
-#define MAX_TELL_HIST_SIZE  50
-
-private static string array TellHist = ({});
 
 int GetPolyglot();
 
@@ -35,25 +31,6 @@ int direct_whisper_to_liv_str() { return 1; }
 int direct_whisper_in_wrd_to_liv_str() { return 1; }
 
 int direct_whisper_to_liv_in_wrd_str() { return 1; }
-
-int eventTellHist(string str){
-    string pob = base_name(previous_object());
-    string stack = get_stack();
-    if(pob != SERVICES_D && pob != "/secure/cmds/players/tell" &&
-      stack != "get_stack eventTellHist eventHearTalk eventSpeak cmd cmdAll <function>" &&
-      stack != "get_stack eventTellHist eventHearTalk eventSpeak cmd cmd cmdAll <function>"){
-	return 0; 
-    }
-    if(sizeof(TellHist) > MAX_TELL_HIST_SIZE) TellHist -= ({ TellHist[0] });
-    TellHist += ({ timestamp()+" "+str });
-    return 1;
-}
-
-string array GetTellHistory(){
-    if(this_object() != this_player() && !archp(this_player()))
-	return ({});
-    return copy(TellHist);
-}
 
 varargs mixed CanSpeak(object target, string verb, string msg, string lang) {
     if( lang && (!GetLanguageLevel(lang) || !GetLanguageName(lang)) )
@@ -82,10 +59,7 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
 	    " replies,%^RESET%^ \"" + msg + "%^RESET%^\"";
 	else tmp = "%^BOLD%^RED%^" + (string)who->GetName() +
 	    " tells you,%^RESET%^ \"" + msg + "%^RESET%^\"";
-	if(member_array(who->GetKeyName(),target->GetMuffed()) == -1){
-	    eventTellHist(tmp);
-	    eventPrint(tmp, MSG_CONV);
-	}
+	eventPrint(tmp, MSG_CONV);
 	break;
 
     case TALK_SEMI_PRIVATE:
@@ -147,7 +121,7 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
 }
 
 mixed eventTalkRespond(object who, object targ, int cls, string msg, string lang) {
-    return true(who,targ,cls,msg,lang);
+    return 1;
 }
 
 varargs mixed eventSpeak(object target, int cls, string msg, string lang) {
@@ -172,7 +146,6 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang) {
 	",%^RESET%^ \"" + msg + "%^RESET%^\"";
 	eventPrint(tmp, MSG_CONV);	
 	target->eventHearTalk(this_object(), target, cls, "tell", msg);
-	eventTellHist(tmp);
 	return 1;
 
     case TALK_SEMI_PRIVATE:

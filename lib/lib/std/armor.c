@@ -165,13 +165,6 @@ int SetProtection(int type, int amount) {
     return (Protection[type] = amount);
 }
 
-int SetAC(int i){
-    SetProtection(BLADE, i * 5);
-    SetProtection(BLUNT, i * 5);
-    SetProtection(KNIFE, i * 5);
-    return i;
-}
-
 string array GetRestrictLimbs() {
     return RestrictLimbs;
 }
@@ -435,8 +428,8 @@ varargs mixed eventUnequip(object who) {
     if( tmp != 1 ) {
 	return tmp;
     }
-    if(!who->GetDead()) send_messages("remove", "$agent_name $agent_verb $target_name.",
-	  who, this_object(), environment(who));
+    send_messages("remove", "$agent_name $agent_verb $target_name.",
+      who, this_object(), environment(who));
     return 1;
 }
 

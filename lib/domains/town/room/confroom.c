@@ -16,9 +16,8 @@ static void create() {
     SetShort("Conference Room");
     SetLong((: ExtraDesc :));
     SetInventory(([
-	"/domains/town/obj/chair" : 4,
 	"/domains/town/obj/bbucket" : 1,
-	"/secure/npc/cambot" : 1
+	"/domains/town/obj/chair" : 4,
       ]));
     SetExits(([
 	"west" : "/domains/town/room/adv_guild",
@@ -27,9 +26,7 @@ static void create() {
     SetProperties(([
 	"no attack" : 1,
 	"nopeer" : 1,
-	"meeting room" : 1,
       ]));
-    SetNoClean(1);
     privacy=0;
     set_heart_beat(20);
     timer = 0;
@@ -80,7 +77,7 @@ int CanReceive(object ob) {
 	}
 
     }
-    return room::CanReceive();
+    return 1;
 }
 
 int set_privacy(int i){

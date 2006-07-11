@@ -20,7 +20,6 @@ inherit LIB_LANGUAGE;
 inherit LIB_TALK;
 
 private string Town, Race, Gender;
-private static int Bulk;
 
 // abstract methods
 int GetParalyzed();
@@ -90,17 +89,9 @@ varargs string SetRace(string race, mixed extra) {
 
     RACES_D->SetCharacterRace(race, args);
 
-    switch(race){
-    case "tree" : this_object()->SetBodyComposition("wood");break;
-    case "balrog" : this_object()->SetBodyComposition("stone");break;
-    case "elemental" : this_object()->SetBodyComposition("stone");break;
-    case "golem" : this_object()->SetBodyComposition("clay");break;
-    case "plant" : this_object()->SetBodyComposition("vegetation");break;
-    }
-
     if(sizeof(args[4])){
 	foreach(mixed key, mixed val in args[4]){
-	    this_object()->AddSkill(key,atoi(val[1]),atoi(val[0]));
+	    this_object()->AddSkill(key,atoi(val[1]));
 	}
     }
 

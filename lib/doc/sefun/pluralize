@@ -1,30 +1,30 @@
 
 PLURALIZE(1)                                         PLURALIZE(1)
 
-NAME
-       pluralize() - returns the plural of a string or an object
+NNAAMMEE
+       _p_l_u_r_a_l_i_z_e_(_) - returns the plural of a string or an object
 
-SYNOPSIS
+SSYYNNOOPPSSIISS
        string pluralize(string|object single)
 
-DESCRIPTION
+DDEESSCCRRIIPPTTIIOONN
        Given a string, this function will return its pluralized
        for.  Given an object, this function will returnthe plural
        of its short description.
 
-EXAMPLES
-       o   pluralize("frog") returns "frogs"
+EEXXAAMMPPLLEESS
+       +o   _p_l_u_r_a_l_i_z_e("frog") returns "frogs"
 
-       o   pluralize("a globe of frogs") returns "globes of
+       +o   pluralize("a globe of frogs") returns "globes of
            frogs"
 
-LOCATION
-       /secure/sefun/english.c
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/english.c
 
-SEE ALSO
-       consolidate()
+SSEEEE AALLSSOO
+       _c_o_n_s_o_l_i_d_a_t_e_(_)
 
-Author
+AAuutthhoorr
        Descartes of Borg
 
                                                                 1

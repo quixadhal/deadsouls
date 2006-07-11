@@ -26,7 +26,7 @@ static void create() {
     EmptyItem = 0;
     EmptyName = "bottle";
     EmptyShort = "an empty bottle";
-    EmptyLong = "This empty bottle once contained some liquid.";
+    EmptyLong = "This empty bottle once contained some alcohol.";
     MyMessage = "You drink your drink.";
     OtherMessage = "$N drinks $P drink.";
     SetVendorType(VT_DRINK);
@@ -77,8 +77,8 @@ mixed eventDrink(object who) {
 	environment(who)->eventPrint( capitalize(othermsg), who );
     }
 
-    ob = new(GetEmptyItem() || LIB_USED_MEAL);
-    if( base_name(ob) == LIB_USED_MEAL ) {
+    ob = new(GetEmptyItem() || LIB_ITEM);
+    if( base_name(ob) == LIB_ITEM ) {
 	ob->SetKeyName(GetEmptyName());
 	ob->SetId( ({ GetEmptyName(), "container", "empty container" }) );
 	ob->SetShort(GetEmptyShort());

@@ -1,26 +1,26 @@
 
 DAY(1)                                                     DAY(1)
 
-NAME
-       day() - returns the name of the day in MUD time
+NNAAMMEE
+       _d_a_y_(_) - returns the name of the day in MUD time
 
-SYNOPSIS
+SSYYNNOOPPSSIISS
        string day(int x)
 
-DESCRIPTION
+DDEESSCCRRIIPPTTIIOONN
        Given a time integer as an argument, this will return the
        day at that time.
 
-EXAMPLES
-       day(time()) returns "Shadowday" today
+EEXXAAMMPPLLEESS
+       _d_a_y(_t_i_m_e_(_)) returns "Shadowday" today
 
-LOCATION
-       /secure/sefun/time.c
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/time.c
 
-SEE ALSO
-       day(), hour(), minutes(), month(), query_night(), year()
+SSEEEE AALLSSOO
+       _d_a_y_(_), _h_o_u_r_(_), _m_i_n_u_t_e_s_(_), _m_o_n_t_h_(_), _q_u_e_r_y___n_i_g_h_t_(_), _y_e_a_r_(_)
 
-Author
+AAuutthhoorr
        Descartes of Borg
 
                                                                 1

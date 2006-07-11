@@ -32,7 +32,7 @@ int status;
 object player;
 object person;
 
-string results, s;
+string results;
 
 void sendHTTPGet();
 
@@ -40,33 +40,48 @@ int http_file_found;
 
 private string args_list;
 
-mixed ProcessHTTPResult()
+void ProcessHTTPResult()
 {
+    int i = 0;
     string * parts;
     string * arg_array;
     string * temp;
+
+    //player->eventPrint(results);
     parts = explode( results, NOTES_DELIM );
+    //player->eventPrint( "Size of elements "+sizeof(parts) );
+
+    //found = regexp( parts, args_list+" +" );
+    //player->eventPrint( sizeof( found ) );
+    //if( !args_list ){
+    //player->eventPrint( parts[0] );
     temp = explode( parts[0], "---" );
     player->eventPrint( "Current Version of "+mud_name()+": " + mudlib_version() );
     player->eventPrint( "Latest Version of Dead Souls: %^RED%^"+trim(temp[0])+ "%^RESET%^" );
     write_file( SAVE_FILE, results, 1 );
+    //player->eventPrint( "\nFor complete release notes refer to "+SAVE_FILE );
+    //return;
+    //}
 
     arg_array = explode( args_list, " " );
     foreach( string str in arg_array ){
 	temp = regexp( parts, args_list+" +" );
-	if( sizeof( temp ) > 1 ) temp = regexp( parts, args_list+" " );
 	if( sizeof( temp ) > 3 ){
 	    player->eventPrint( "Too many results, truncating..." );
-	    return print_long_string(player, temp[0]+temp[1]+temp[2],1 );
+	    player->eventPrint( temp[0]+temp[1]+temp[2] );
 	}
 	else{
-	    s = implode(temp,"\n%^CYAN%^----%^RESET%^ ");
-	    write_file( SAVE_FILE, results, 1 );
-	    s += "\nFor complete release notes refer to "+SAVE_FILE;
-	    print_long_string(player, "%^CYAN%^----%^RESET%^ "+s,1 );
+	    foreach( string s in temp )
+	    {
+		player->eventPrint( "---- "+s );
+		i++;
+	    }
 	}
     }
-    return 1;
+
+
+    write_file( SAVE_FILE, results, 1 );
+    player->eventPrint( "For complete release notes refer to "+SAVE_FILE );
 }
 
 void read_callback( int fd, mixed message )

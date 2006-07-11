@@ -1,34 +1,13 @@
 // This file written completely by Tim Johnson (Tim@TimMUD)
 
-static void validate();
-
-varargs void remove_mud(string mudname, int forced){
-    int targetfd = connected_muds[mudname];
-    validate();
-    trr("stack: "+get_stack(),"red");
-    if(connected_muds[mudname] && !forced){
+static void remove_mud(string mudname){
+    if(connected_muds[mudname]){
 	trr("Cannot remove mud ["+mudname+"] because it is still online right now.\n");
 	return;
     }
-    if(!connected_muds[mudname]){
-	trr("Warning: cannot disconnect mud ["+mudname+"] because it is not in the connected_muds list.\n");
-	log_file("router/server_log",timestamp()+" Warning: cannot disconnect mud ["+mudname+"] because it is not in the connected_muds list.\n");
+    if(!mudinfo[mudname]){
+	trr("Cannot remove mud ["+mudname+"] because it is not in the mudinfo list.\n");
+	return;
     }
-    else {
-	log_file("router/server_log",timestamp()+" Disconnecting mud: "+mudname+" on fd:
-"+targetfd+"\n");
-    trr(timestamp()+" Disconnecting mud: "+mudname+" on fd: "+targetfd);
-    }
-    if(!mudinfo[mudname]){         
-        trr("Warning: cannot remove mud ["+mudname+"] because it is not in the mudinfo list.\n");
-log_file("router/server_log",timestamp()+" Warning: cannot remove mud ["+mudname+"] because it is not in the mudinfo list.\n");
-    }
-    else{
-    log_file("router/server_log",timestamp()+" Removing mud: "+mudname+" on fd:
-"+targetfd+"\n");
-    trr(timestamp()+" Removing mud: "+mudname+" on fd: "+targetfd);
-    }
-    close_callback(targetfd);
-    if(forced) map_delete(mudinfo, mudname);
-    log_file("router/server_log",timestamp()+" Removing mud: "+mudname+" on fd: "+targetfd+"\n");
+    map_delete(mudinfo, mudname);
 }

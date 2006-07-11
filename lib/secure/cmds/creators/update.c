@@ -62,7 +62,6 @@ mixed cmd(string args) {
 	string str = args;
 	args = "";
 	foreach(string foo in explode(str, " ")) {
-	    if(!sizeof(foo)) continue;
 	    switch(foo) {
 	    case "-r" : flags |= U_RECURSIVE; break;
 	    case "-e" : flags |= U_INTERACTIVE; break;
@@ -72,7 +71,6 @@ mixed cmd(string args) {
 	}
     }
     if( args == "" || !args ) {
-	if(!this_player()) return "No player.";
 	ob = environment(this_player());
 	if( !ob ) return "You have no environment.";
 	file = base_name(ob);
@@ -90,31 +88,27 @@ mixed cmd(string args) {
 	if( sizeof(obs) ) ReturnAndRelease(obs, file);
 	return 1;
     }
-    if(this_player()){
-	tmpfiles = map(explode(args, " "),
-	  function(string x) {
-	      string tmp = (string)this_player()->query_cwd();
-	      if( x[<2..] != ".c" ) x = x + ".c";
-	      return absolute_path(tmp, x);
-	    });
-	  tmpfiles = map(tmpfiles,
-	    (: ((file_size($1) == -2) ?
-		(($1[<1] == '/') ? ($1 + "*.c") : ($1 + "/*.c")) : $1)
-	    :));
-	  i = sizeof(tmpfiles);
-	  files = ({});
-	  while(i--) {
-	      if( sizeof(tmp = (string *)this_player()->wild_card(tmpfiles[i])) )
-		  files += tmp;
-	      else this_player()->eventPrint(tmpfiles[i] + ": File not found.");
-	  }
-	  i = sizeof(files);
-	  while(i--) eventUpdate(files[i], flags);
+    tmpfiles = map(explode(args, " "),
+      function(string x) {
+	  string tmp = (string)this_player()->query_cwd();
+	  if( x[<2..] != ".c" ) x = x + ".c";
+	  return absolute_path(tmp, x);
+	});
+      tmpfiles = map(tmpfiles,
+	(: ((file_size($1) == -2) ?
+	    (($1[<1] == '/') ? ($1 + "*.c") : ($1 + "/*.c")) : $1)
+	:));
+      i = sizeof(tmpfiles);
+      files = ({});
+      while(i--) {
+	  if( sizeof(tmp = (string *)this_player()->wild_card(tmpfiles[i])) )
+	      files += tmp;
+	  else this_player()->eventPrint(tmpfiles[i] + ": File not found.");
       }
-      //tc("args: "+args);
-      //tc("flags: "+flags);
-	return 1;
-    }
+      i = sizeof(files);
+      while(i--) eventUpdate(files[i], flags);
+      return 1;
+  }
 
     static int eventUpdate(string args, int flags) {
 	object ob;
@@ -127,13 +121,12 @@ mixed cmd(string args) {
 	    if( !eventUpdate(args, flags ^ U_RECURSIVE) ) return 0;
 	    if( !(ob = find_object(args)) ) return 0;
 	    ancestors = deep_inherit_list(ob);
-	    if(this_player() && (flags & U_RECURSIVE) && !(flags & U_AUTOMATED))  
+	    if(identify(flags ^ U_AUTOMATED) == "8")  
 		this_player()->eventPrint("(%^CYAN%^Recursive "
 		  "update: " + args + "%^RESET%^)\n");
 	    i = sizeof(ancestors);
 	    while(i--) if( !eventUpdate(ancestors[i], flags ^ U_RECURSIVE) ) {
-		    if(this_player()) 
-			this_player()->eventPrint("Recursive update failed.");
+		    this_player()->eventPrint("Recursive update failed.");
 		    return 0;
 		}        
 	}
@@ -141,23 +134,22 @@ mixed cmd(string args) {
 	ob = find_object(args);
 	if(!ob) ob = load_object(args);
 	if( ob ) {
-	    if( tmp = catch( ob->eventDestruct()) && this_player() )
+	    if( tmp = catch( ob->eventDestruct()) )
 		this_player()->eventPrint(args + ": error in eventDestruct()");
 	    if( ob ) destruct(ob);
-	    if( ob && this_player())
+	    if( ob )
 		this_player()->eventPrint(args + ": Failed to destruct old object.");
 	}
-	if( args == base_name(this_object()) && this_player() ) {
+	if( args == base_name(this_object()) ) {
 	    this_player()->eventPrint("Cannot reload update after destruct.\n"
 	      "It will be reloaded at next reference.");
 	    return 0;
 	}
 	tmp = catch(call_other(args, "???"));
-	if(this_player() && !(flags & U_AUTOMATED) ){
-	    if( !tmp ) 
-		this_player()->eventPrint(args + ": Ok");
-	    else this_player()->eventPrint(args + ": Error in update\n" + tmp);
-	}
-	return 1;
+	if( !tmp ) {
+	    if(identify(flags ^ U_AUTOMATED) == "8")this_player()->eventPrint(args + ": Ok");
+	    return 1;
+	} else this_player()->eventPrint(args + ": Error in update\n" + tmp);
+	return 0;
     }
 

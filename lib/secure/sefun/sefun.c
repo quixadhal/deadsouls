@@ -5,7 +5,6 @@
  */
 
 #include <lib.h>
-#include <cfg.h>
 #include <daemons.h>
 #include <commands.h>
 #include <objects.h>
@@ -80,82 +79,6 @@
 #include "/secure/sefun/wild_card.c"
 #include "/secure/sefun/compare_array.c"
 #include "/secure/sefun/legacy.c"
-#include "/secure/sefun/atomize.c"
-
-string globalstr;
-mixed globalmixed;
-
-string array groups(){
-    string *group_arr = ({});
-    string raw = read_file(CFG_GROUPS);
-    string *raw_arr = explode(raw,"\n");
-    foreach(string element in raw_arr){
-	string s1,s2,s3;
-	if(element[0..0] == "#"){
-	    continue;
-	}
-	if(sscanf(element,"(%s)%s",s1,s2) < 1)
-	    sscanf(element,"%s(%s)%s",s2,s1,s3);
-	if(s1) group_arr += ({ s1 });
-    }
-    return singular_array(group_arr);
-}
-
-varargs string socket_address(mixed arg, int foo){
-    return efun::socket_address(arg, foo);
-}
-
-#if CALL_OUT_LOGGING
-//This is ugly and should not be used except in cases of dire
-//emergency when you can't figure out wtf is choking your mud.
-//This *will* break a bunch of stuff. You were warned.
-int call_out(mixed args...){
-    if(strsrch(base_name(previous_object()),"/secure/")
-      && strsrch(base_name(previous_object()),"/daemon/")){
-	globalmixed = args;
-	unguarded( (: write_file("/log/secure/callouts",timestamp()+" "+
-	      identify(previous_object(-1))+" "+identify(globalmixed)+"\n") :) );
-    }
-    switch(sizeof(args)){
-    case 2 : return efun::call_out(args[0],args[1]);
-    case 3 : return efun::call_out(args[0],args[1],args[2]);
-    case 4 : return efun::call_out(args[0],args[1],args[2],args[3]);
-    case 5 : return efun::call_out(args[0],args[1],args[2],args[3],args[4]);
-    case 6 : return efun::call_out(args[0],args[1],args[2],args[3],args[4],args[5]);
-    case 7 : return efun::call_out(args[0],args[1],args[2],args[3],args[4],args[5],args[6]);
-    case 8 : return efun::call_out(args[0],args[1],args[2],args[3],args[4],args[5],args[6],args[7]);
-    case 9 : return efun::call_out(args[0],args[1],args[2],args[3],args[4],args[5],args[6],args[7],args[8]);
-    case 10 : return efun::call_out(args[0],args[1],args[2],args[3],args[4],args[5],args[6],args[7],args[8],args[9]);
-    default : return 0;
-    }
-}
-#endif
-
-//addr_server calls don't work well on Solaris and spam stderr
-string query_ip_name(object ob){
-    if(architecture() == "Solaris") return query_ip_number(ob);
-    else return efun::query_ip_name(ob);
-}
-
-function functionify(string str){
-    globalstr = str;
-    return (: globalstr :);
-}
-
-string *query_local_functions(mixed arg){
-    object ob;
-    string *allfuns;
-    string *ret = ({}); 
-    if(objectp(arg)) ob = arg;
-    else if(stringp(arg)) ob = load_object(arg);
-    allfuns = functions(ob);
-    foreach(string subfun in allfuns){
-	mixed thingy = function_exists(subfun,ob,1);
-	if(thingy && thingy == base_name(ob) && member_array(subfun,ret) == -1) 
-	    ret += ({ subfun });
-    }
-    return ret;
-}
 
 object find_object( string str ){
     if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return efun::find_object(str);
@@ -193,6 +116,16 @@ varargs mixed objects(mixed arg1, mixed arg2){
     }
 
     else return ({});
+}
+
+varargs string socket_address(mixed arg, int foo) {
+    string ret, port;
+    if(objectp(arg)) return efun::socket_address(arg);
+    ret = socket_status(arg)[4];
+    port = last_string_element(ret,".");
+    ret = replace_string(ret,"."+port,"");
+    if(!foo) return ret;
+    else return ret+" "+port;
 }
 
 mixed array users(){
@@ -264,16 +197,10 @@ object query_snooping(object ob) {
 
 int exec(object target, object src) {
     string tmp;
-    int ret;
-    //tc("target: "+identify(target),"cyan");
-    //tc("src: "+identify(src),"cyan");
+
     tmp = base_name(previous_object());
     if(tmp != LIB_CONNECT && tmp != CMD_ENCRE && tmp != CMD_DECRE && tmp != SU) return 0;
-    //return efun::exec(target, src);
-    ret = efun::exec(target, src);
-    //tc("target: "+identify(target),"white");
-    //tc("src: "+identify(src),"white");
-    return ret;
+    return efun::exec(target, src);
 }
 
 void write(string str) {
@@ -299,11 +226,9 @@ void notify_fail(string str) {
 }
 
 /* want to handle colours, but do it efficiently as possible */
-string capitalize(mixed str) {
+string capitalize(string str) {
     string *words, *tmp;
     int i;
-
-    if(objectp(str)) str = str->GetKeyName();
 
     /* error condition, let it look like an efun */
     if( !str || str == "" ) return efun::capitalize(str);

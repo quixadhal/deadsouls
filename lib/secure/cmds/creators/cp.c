@@ -17,11 +17,11 @@ int help();
 string rmSlash(string str) { return replace_string(str,"//","/"); }
 
 int cmd(string str) {
-    string s1;
+    string line;
     string file1;
     string file2;
     int localdest;
-    string *files;
+    string * files;
     int ow;
 
     if(this_player()->GetForced()) {
@@ -29,11 +29,6 @@ int cmd(string str) {
 	return 1;
     }
     localdest = 0;    /* Assume it's not a local destination */
-    if( str && sscanf( str, "-f %s", s1)) {
-	ow = 1;
-	str = s1;
-    }
-
     if (!str || sscanf(str, "%s %s", file1, file2) != 2) {
 	if (str && sscanf(str, "%s", file1)) {
 	    file2 = "";     // Check to see if it's a one arg
@@ -44,6 +39,7 @@ int cmd(string str) {
 	}
     }
 
+    if( str && sscanf( str, "-o %s", str)) ow = 1;
     /* check for last parameter == "." */
     if (file2 == ".") {
 	localdest = 1;     /* It's a local destination */
@@ -101,12 +97,8 @@ help() {
     message("help", "Command: cp\nSyntax: cp <oldfile> [pathname]<newfile>\n"
       "This command makes a copy of the file using the new name "
       "and location passed.  If a new pathname is not specified "
-      "then the copy is put into the present working directory. "
-      "Optionally, wild cards can be used by employing the * operator.\n"
-      "The -f flag forces overwriting of an existing file.\n\n" 
-      "Examples:\n"
-      "cp -f workroom.bak workroom.c\n"
-      "cp workroom.bak /tmp/",
+      "then the copy is put into the present working directory."
+      "Optionally, wild cards can be used by employing the * operator.", 
       this_player());
     return 1;
 }

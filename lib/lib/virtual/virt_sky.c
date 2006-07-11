@@ -7,7 +7,6 @@
  */
 
 #include <lib.h>
-#include <virtual.h>
 #include <medium.h>
 #include <position.h>
 
@@ -103,6 +102,7 @@ mixed eventGo(object who, string dir) {
 }
 
 mixed eventReceiveObject(object ob) {
+    int x = ob->GetLift();
     mixed rtn;
 
     rtn = virt_land::eventReceiveObject(ob);

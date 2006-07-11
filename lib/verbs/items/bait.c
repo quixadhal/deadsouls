@@ -4,7 +4,7 @@
  *  created by Blitz@Dead Souls 960117
  */
 
-
+#pragma save_binary
 
 #include <lib.h>
 #include "include/bait.h"

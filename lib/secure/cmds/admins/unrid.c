@@ -4,7 +4,6 @@
 
 #include <lib.h>
 #include <dirs.h>
-#include <daemons.h>
 
 inherit LIB_DAEMON;
 
@@ -26,7 +25,7 @@ mixed cmd(string str) {
 	return 1;
     }
     this_player()->eventPrint("Unrid successful.");
-    PLAYERS_D->AddPlayerInfo(str);
+    PLAYER_D->AddPlayerInfo(str);
     return 1;
 }
 

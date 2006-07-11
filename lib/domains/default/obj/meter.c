@@ -47,7 +47,7 @@ string DefaultReading(){
       "you what the available light is.");
     write("The ambient light here is: "+environment(this_player())->GetAmbientLight());
     write("Total radiant light here is: "+EvaluateRadiantLight());
-    write("Your vision range is: "+this_player()->GetEffectiveVision(environment(this_player()),1));
+    write("Your vision range is: "+this_player()->GetEffectiveVision(1));
     write("\nYour effective vision is "+translate_vision());
     write("\nFull radiance details:\n"+EvaluateRadiantLight(this_player(),1));
     return "";

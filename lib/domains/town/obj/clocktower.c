@@ -39,7 +39,6 @@ int eventReadClock(){
     if(hour > 12) hour -= 12;
 
     hour_string = cardinal(hour);
-    if(hour_string == "zero") hour_string = "twelve";
     switch(minutes){
     case 0 : minute_string ="o'clock"; break;
     case 1 : minute_string = hour_string;hour_string ="one minute past"; break;

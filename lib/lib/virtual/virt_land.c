@@ -197,6 +197,7 @@ void ResetLocation(){
     SetVirtualExits(CoordX,CoordY,CoordZ);
     SetLongAndItems(CoordX,CoordY,CoordZ);
     if(Reset_Message){
+	string ret;
 	eventPrint(Reset_Message);
 	if(sizeof(objects=filter(objects,(:playerp:))))
 	    objects->eventDescribeEnvironment(0);

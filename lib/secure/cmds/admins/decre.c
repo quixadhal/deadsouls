@@ -11,18 +11,15 @@
 
 inherit LIB_DAEMON;
 
-string home_dir, PlayerName;
-object ob, player_ob;
+string PlayerName;
 
 mixed cmd(string args) {
-    object *inv, *purge_array;
+    object ob, player_ob;
+    object *inv;
     string nom, file;
 
     if( !((int)master()->valid_apply(({ PRIV_ASSIST, PRIV_SECURE, LIB_CONNECT }))) )
 	error("Illegal decre attempt: "+get_stack()+" "+identify(previous_object(-1)));
-
-    ob = 0;
-    player_ob = 0;
 
     if( args == "" || !stringp(args) ) 
 	return "Who do you want to make a player?";
@@ -32,10 +29,6 @@ mixed cmd(string args) {
     if( !strsrch(file = save_file(nom), DIR_PLAYERS) )
 	return "You cannot make "+capitalize(args)+" a player.";
 
-    if(ob == this_player()){
-	return "Nonsense.";
-    }
-
     if(!ob = find_player(nom)){
 	PLAYERS_D->RemovePendingEncre(lower_case(nom));
 	PLAYERS_D->AddPendingDecre(lower_case(nom));
@@ -43,89 +36,42 @@ mixed cmd(string args) {
 	return 1;
     }
 
-    else {
-	mixed attrape;
-	home_dir = homedir(ob);
-	write("You decre "+capitalize(nom)+".");
-	PlayerName = nom;
+    if(ob == this_player()){
+	return "Nonsense.";
+    }
 
-	//Try to remove inventory and move the guy to the pod
-	//
-	ob->eventMove(ROOM_POD);
-	inv = deep_inventory(ob);
-	//tc("ob location: "+identify(environment(ob)));
-	//tc("ob inventory: "+identify(inv),"green");
-	if(sizeof(inv))
-	    foreach(object thing in inv){
-	    if(thing) {
-		//tc("thing: "+identify(thing));
-		//tc("Thing's env: "+identify(environment(thing)),"green");
-		thing->eventMove(ROOM_FURNACE);
-		//tc("Thing's env: "+identify(environment(thing)),"cyan");
-	    }
-	}
-	//Save the user to sync its state with his inventory
-	unguarded( (: ob->save_player((string)ob->GetKeyName()) :) );
-
-	//Move the user file to the player dir
-	//
-	   if( file_size(DIR_PLAYERS+"/"+nom[0..0]) != -2) 
+    if( file_size(DIR_PLAYERS+"/"+nom[0..0]) != -2) 
 	mkdir(DIR_PLAYERS+"/"+nom[0..0]);
-	if(rename(file+__SAVE_EXTENSION__, DIR_PLAYERS+"/"+nom[0..0]+"/"+nom+__SAVE_EXTENSION__))
-	    return "You failed due to lack of write access to "+DIR_PLAYERS+".";
-	//Remove their homedir, save it to a backup dir.
-	if(home_dir && directory_exists(home_dir))
-	    rename(home_dir,"/secure/save/decre/"+nom+"."+timestamp());
-	//Remove their name from the creator list in the player daemon, add it to the player list.
-	PLAYERS_D->eventDecre(lower_case(nom));
+    if(rename(file+__SAVE_EXTENSION__, DIR_PLAYERS+"/"+nom[0..0]+"/"+nom+__SAVE_EXTENSION__))
+	return "You failed due to lack of write access to "+DIR_PLAYERS+".";
+    PLAYERS_D->eventDecre(lower_case(nom));
 
-	//Try to create the new player object
-	//
-	attrape = catch(player_ob = (object)master()->player_object(nom));
+    if( ob = find_player(nom) ) {
+	PlayerName = nom;
+	inv = deep_inventory(ob);
+	ob->eventMove(ROOM_FURNACE);
+	if(sizeof(inv)) inv->eventMove(ROOM_FURNACE);
+	catch(player_ob = (object)master()->player_object(nom));
 	PlayerName = 0;
-	if( attrape || !player_ob ) {
-	    message("system", "\nFailed to create a player object.", 
+	if( !player_ob ) {
+	    message("system", "Failed to create a player object.", 
 	      this_player());
 	    message("system", "Please log out and log back in.", ob);
 	    return 1;
 	}
-
-	//Do the decre
-	//
 	exec(player_ob, ob);
-	//player_ob->Setup();
-
-	//Remove creator channels and such
-	//
-	foreach(string channel in player_ob->GetChannels())
-	player_ob->RemoveChannel(channel);
-	if( avatarp(player_ob) ) player_ob->AddChannel(({ "avatar" }));
-	if( high_mortalp(player_ob) ) player_ob->AddChannel( ({ "hm" }) );
-	if( newbiep(player_ob) ) player_ob->AddChannel( ({ "newbie" }) );
-	player_ob->AddChannel( ({ "gossip" }) );
-	if( councilp(player_ob) ) player_ob->AddChannel( ({ "council" }) );
-	player_ob->AddChannel(player_ob->GetClass());
-
-	//Destroy any objects loaded from their homedir
-	//
-	purge_array = filter(objects(), (: !strsrch(base_name($1), home_dir) :) );
-	foreach(object tainted in purge_array){
-	    if(clonep(tainted)){
-		tainted->eventMove(ROOM_FURNACE);
-		purge_array -= ({ tainted });
-	    }
-	}
-	foreach(object tainted in purge_array){
-	    tainted->eventDestruct();
-	}
+	inv=deep_inventory(ob);
+	if(sizeof(inv)) inv->eventMove(ROOM_FURNACE);
+	player_ob->Setup();
+	ob->eventDestruct();
+	inv=deep_inventory(player_ob);
+	if(sizeof(inv)) inv->eventMove(ROOM_FURNACE);
+	message("system", "You are now a player.", player_ob);
+	message("system", (string)player_ob->GetName() + " is now a player!",
+	  this_player());
+	if( file_size(file+__SAVE_EXTENSION__) > -1 ) rm(file+__SAVE_EXTENSION__);
     }
-    call_out( (: ob->eventMove(ROOM_FURNACE) :), 1 );
-    player_ob->eventMoveLiving(ROOM_START);
-    player_ob->SetLoginSite(ROOM_START);
-    unguarded( (: player_ob->save_player((string)player_ob->GetKeyName()) :) );
-    message("system", "You are now a player.", player_ob);
-    message("system", (string)player_ob->GetName() + " is now a player!",
-      this_player());
+    player_ob->eventMove(ROOM_START);
     return 1;
 }
 

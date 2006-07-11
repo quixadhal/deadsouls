@@ -9,8 +9,9 @@
 #include <lib.h>
 #include <message_class.h>
 
+inherit LIB_STORAGE;
 inherit LIB_SURFACE;
-//inherit LIB_SMELL;
+inherit LIB_SMELL;
 
 int DecayLife, Count, CallOut, Fresh;
 string Owner, Race;

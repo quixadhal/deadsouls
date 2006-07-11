@@ -1,20 +1,20 @@
 
 TELL_STD_ITEM(1)                                     TELL_OBJECT(1)
 
-NAME
-       tell_object() - sends a message to an object
+NNAAMMEE
+       _t_e_l_l___o_b_j_e_c_t_(_) - sends a message to an object
 
-SYNOPSIS
+SSYYNNOOPPSSIISS
        void tell_object(object ob, string|int str)
 
-DESCRIPTION
+DDEESSCCRRIIPPTTIIOONN
        This function sends a message of the message class
        "environment" to the object named.
 
-LOCATION
-       /secure/sefun/communications.c
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/communications.c
 
-Author
+AAuutthhoorr
        Descartes of Borg
 
                                                                 1

@@ -1,4 +1,3 @@
-#include <terrain_types.h>
 #include <lib.h>
 inherit LIB_ROOM;
 
@@ -10,7 +9,6 @@ static void create() {
     SetLong("This is a well-traveled road, leading "
       "east into town and west away from it. The "
       "town church is north. A grand mansion is south.");
-    AddTerrainType(T_ROAD);
     SetExits( ([
 	"north" : "/domains/town/room/church",
 	"east" : "/domains/town/room/vill_road1",

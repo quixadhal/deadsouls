@@ -15,12 +15,12 @@ int cmd(string str) {
     if( !str || str == "" ) {
 	write("Snoop whom?\n");
     }
-    else if(!(ob=find_player(str=lower_case(str))))
-	write(str+": no such player.\n");
     else if(str == this_player()->GetKeyName()){
 	write("That would be very foolish.");
 	return 1;
     }
+    else if(!(ob=find_player(str=lower_case(str))))
+	write(str+": no such player.\n");
     else
 	SNOOP_D->AddWatcher(this_player()->GetKeyName(), str);
     write("The snoop daemon has received your request.");

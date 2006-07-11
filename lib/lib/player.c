@@ -28,6 +28,7 @@ private int TrainingPoints, TitleLength;
 /* *****************  /lib/player.c driver applies  ***************** */
 
 static void create() {
+    AddSave( ({ "Properties", "CarriedMass", "Muffed" }) );
     interactive::create();
     living::create();
 
@@ -43,8 +44,8 @@ static void heart_beat() {
 	return;
     }
     interactive::heart_beat();
-    if( IDLE_TIMEOUT && query_idle(this_object()) >= IDLE_TIMEOUT && !creatorp(this_object()) && !present("testchar badge",this_object()) ) {
-	cmdQuit();
+    if( query_idle(this_object()) >= IDLE_TIMEOUT && !creatorp(this_object()) && !present("testchar badge",this_object()) ) {
+	cmdQuit(0);
 	return;
     }
     living::heart_beat();
@@ -123,9 +124,6 @@ static void eventDestroyUndead(object agent) {
 varargs int eventDie(mixed agent) {
     int x, expee, subexpee;
 
-    if(!agent) agent = previous_object();
-    if(!agent) agent = this_object();
-
     if( (x = living::eventDie(agent)) != 1 ) return x;
 
     if(!Deaths || !sizeof(Deaths)) 
@@ -158,7 +156,7 @@ else {
 
     eventCompleteHeal(GetMaxHealthPoints()/2);
     AddMagicPoints(-(random(GetMagicPoints())));
-    this_object()->eventMove(ROOM_DEATH);
+    interactive::eventMove(ROOM_DEATH);
     this_object()->AddExperiencePoints(-subexpee);
     this_object()->save_player((string)this_object()->GetKeyName());
     this_object()->eventForce("look");
@@ -225,7 +223,7 @@ int eventMove(mixed dest) {
     }
 
     ret = interactive::eventMove(dest);
-    if( this_object() && environment(this_object())) eventMoveFollowers(environment(this_object()));
+    eventMoveFollowers(environment(this_object()));
     return ret;
 }
 
@@ -244,71 +242,74 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
 		dest = "/"+implode(arr[0..sizeof(arr)-2], "/")+"/"+dest;
 	    }
 	}
-	if( !eventMove(dest) ) {
+	if( !interactive::eventMove(dest) ) {
 	    eventPrint("You remain where you are.", MSG_SYSTEM);
 	    return 0;
 	}
 	inv = filter(all_inventory(prev), (: (!GetInvis($1) && living($1) &&
 	      !GetProperty("stealthy") &&    
 	      ($1 != this_object())) :));
-	if( !omsg || omsg == "" ) {
-	    omsg = GetMessage("telout");
-	    imsg = GetMessage("telin");
-	}
+	if( !omsg || omsg == "" ) omsg = GetMessage("telout");
 	else if(GetPosition() == POSITION_SITTING ||
 	  GetPosition() == POSITION_LYING ){
 	    omsg = GetName()+" crawls "+omsg+".";
-	    imsg = GetName()+" crawls in.";
 	}
 	else if(GetPosition() == POSITION_FLYING ){
 	    omsg = GetName()+" flies "+omsg+".";
-	    imsg = GetName()+" flies in.";
 	}
 
-	else {
-	    omsg = GetMessage("leave", omsg);
-	    imsg = GetMessage("come", imsg);
-	}
+	else omsg = GetMessage("leave", omsg);
 	inv->eventPrint(omsg, MSG_ENV);
     }
-    else if( !eventMove(dest) ) {
+    else if( !interactive::eventMove(dest) ) {
 	eventPrint("You remain where you are.", MSG_SYSTEM);
 	return 0;
     }
     inv = filter(all_inventory(environment()),
       (: (!GetInvis($1) && !GetProperty("stealthy") &&
 	  living($1) && ($1 != this_object())) :));
+    if( (!imsg || imsg == "") && (!omsg || omsg == "") )
+	imsg = GetMessage("telin");
+    else if(GetPosition() == POSITION_SITTING ||
+      GetPosition() == POSITION_LYING ){
+	imsg = GetName()+" crawls in.";
+    }
+    else if(GetPosition() == POSITION_FLYING){
+	imsg = GetName()+" flies in.";
+    }
 
+    else if( !imsg || imsg == "" ) imsg = GetMessage("come", imsg);
+    else imsg = replace_string(imsg, "$N", GetName());
     inv->eventPrint(imsg, MSG_ENV);
     if(GetInvis()) {
-	if(!creatorp(this_object())) AddStaminaPoints(-(15-(GetSkillLevel("stealth")/10)));
+	AddStaminaPoints(-(15-(GetSkillLevel("stealth")/10)));
 	AddSkillPoints("stealth", 30 + GetSkillLevel("stealth")*2);
 	eventPrint("%^RED%^You move along quietly....%^RESET%^\n");
     }
     if(GetProperty("stealthy")) {
-	if(!creatorp(this_object())) AddStaminaPoints(-3 - random(3));
+	AddStaminaPoints(-3 - random(3));
 	AddSkillPoints("stealth", 10 + GetSkillLevel("stealth")*2);
     }
     eventDescribeEnvironment(GetBriefMode());
     newclim = (string)environment()->GetClimate();
     if( !GetUndead() ) switch( newclim ) {
     case "arid":
-	if(!creatorp(this_object())) AddStaminaPoints(-0.3);
+	AddStaminaPoints(-0.3);
 	break;
     case "tropical":
-	if(!creatorp(this_object())) AddStaminaPoints(-0.3);
+	AddStaminaPoints(-0.3);
 	break;
     case "sub-tropical":
-	if(!creatorp(this_object())) AddStaminaPoints(-0.2);
+	AddStaminaPoints(-0.2);
 	break;
     case "sub-arctic":
-	if(!creatorp(this_object())) AddStaminaPoints(-0.2);
+	AddStaminaPoints(-0.2);
 	break;
     case "arctic":
-	if(!creatorp(this_object())) AddStaminaPoints(-0.3);	  
+	AddStaminaPoints(-0.3);	  
 	break;
     default:
-	if(!creatorp(this_object())) AddStaminaPoints(-0.1);	  
+	AddStaminaPoints(-0.1);	  
 	break;	    
     }
     if( prevclim != newclim && prevclim != "indoors" && newclim != "indoors" ){
@@ -370,11 +371,16 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
 	}
     }
     eventMoveFollowers(environment(this_object()));
+    if(environment(this_player()) && base_name(environment(this_player()))) {
+	this_player()->SetProperty("LastLocation",
+	  base_name(environment(this_player())));
+    }
+
     return 1;
 }
 
 
-int eventReceiveObject(object foo) {
+int eventReceiveObject() {
     object ob;
 
     ob = previous_object();
@@ -383,7 +389,7 @@ int eventReceiveObject(object foo) {
     return 1;
 }
 
-int eventReleaseObject(object foo) {
+int eventReleaseObject() {
     object ob;
 
     ob = previous_object();
@@ -395,19 +401,10 @@ int eventReleaseObject(object foo) {
 
 void eventLoadObject(mixed *value, int recurse) { }
 
-static mixed eventUse(object used, string cmd) {
+mixed eventUse(object used, string cmd) {
     object old_agent;
     mixed tmp;
-    string mess = "";
 
-    mess += "------\n";
-    mess += timestamp()+":\n";
-    mess += "/lib/player.c: eventUse() hit.\n";
-    mess += "stack: "+get_stack()+"\n";
-    mess += "previous: "+identify(previous_object(-1))+"\n"; 
-    mess += "------\n";
-    log_file("player_errors",mess);
-    return 0;
     old_agent = this_agent(used);
     tmp = parse_sentence(cmd);
     this_agent(old_agent);
@@ -420,15 +417,25 @@ static mixed eventUse(object used, string cmd) {
 
 int CanReceive(object ob) { return CanCarry((int)ob->GetMass()); }
 
-mixed CanUse() { return 1; }
+mixed CanUse(object used, string cmd) { return 1; }
 
 /* *****************  /lib/player.c local functions  ***************** */
 
 int Setup() {
-    string classes;
     if( !interactive::Setup() ) return 0;
+    if( avatarp() ) AddChannel(({ "avatar" }));
+    if( high_mortalp() ) AddChannel( ({ "newbie", "hm" }) );
+    if( newbiep() ) AddChannel( ({ "newbie" }) ); 
+    else {
+	RemoveChannel( ({ "newbie" }) );
+	AddChannel( ({ "gossip" }) );
+    }
+    if( councilp() ) AddChannel( ({ "council" }) );
     if( !GetClass() ) SetClass("explorer");
     if( GetClass() ) {
+	string classes;
+
+	AddChannel(GetClass());
 	foreach(classes in (string array)CLASSES_D->GetClasses())
 	if( ClassMember(classes) && classes != GetClass() )
 	    AddChannel(classes);
@@ -441,19 +448,6 @@ int Setup() {
 
 	if(ENGLISH_ONLY) this_object()->SetNativeLanguage("English");
 	PLAYERS_D->AddPlayerInfo(this_object());
-
-	foreach(classes in (string array)CLASSES_D->GetClasses())
-	if( ClassMember(classes) && classes != GetClass() )
-	    AddChannel(classes);
-	if( avatarp() ) AddChannel(({ "avatar" }));
-	if( high_mortalp() ) AddChannel( ({ "newbie", "hm" }) );
-	if( newbiep() ) AddChannel( ({ "newbie" }) );
-	else {
-	    RemoveChannel( ({ "newbie" }) );
-	}
-	AddChannel( ({ "gossip" }) );
-	if( councilp() ) AddChannel( ({ "council" }) );
-	AddChannel(GetClass());
 
 	jeans = new("/domains/default/armor/jeans");
 	shirt = new("/domains/default/armor/shirt");
@@ -495,8 +489,6 @@ int Setup() {
 	if(file_exists(home+".c")) 
 	    this_object()->eventMoveLiving(home);
 
-	this_object()->AddChannel( ({"admin", "error", "cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat"}) );
-
 	SetShort("First Admin $N");
     }
 
@@ -531,25 +523,15 @@ string *SetMuffed(string *muffed){
 }
 
 string *AddMuffed(string muffed){
-    string tmpstr;
-    if(!muffed || muffed == "" || !sizeof(muffed)) return Muffed;
-    if(grepp(muffed,"@")) {
-	tmpstr = INTERMUD_D->GetMudName(muffed[1..sizeof(muffed)-1]);
-    }
-    if(sizeof(tmpstr)) muffed = tmpstr;
-    muffed = lower_case(muffed);
+    if(muffed) muffed = lower_case(muffed);
+    else return Muffed;
     if(member_array(muffed,Muffed) == -1) Muffed += ({ muffed });
     return Muffed;
 }
 
 string *RemoveMuffed(string unmuffed){
-    string tmpstr;
-    if(!sizeof(unmuffed)) return Muffed;
-    if(grepp(unmuffed,"@")) {
-	tmpstr = INTERMUD_D->GetMudName(unmuffed[1..sizeof(unmuffed)-1]);
-    }
-    if(sizeof(tmpstr)) unmuffed = tmpstr;
-    unmuffed = lower_case(unmuffed);
+    if(unmuffed) unmuffed = lower_case(unmuffed);
+    else return Muffed;
     if(member_array(unmuffed,Muffed) != -1) Muffed -= ({ unmuffed });
     return Muffed;
 }
@@ -722,16 +704,13 @@ string GetName() {
 varargs string GetLong(string str) {
     mapping counts;
     string item;
-    string *affects = ({});
 
     str = GetShort() + "\n";
     str += interactive::GetLong() + "\n";
     str += living::GetLong(nominative(this_object()));
     foreach(item in map(all_inventory(),
-	(: (string)$1->GetAffectLong(this_object()) :))){
-	if(item && member_array(item,affects) == -1) affects += ({ item });
-    }
-    if(sizeof(affects)) str += implode(affects,"\n")+"\n";
+	(: (string)$1->GetAffectLong(this_object()) :)))
+    if( item ) str += item + "\n";
     if(this_object()->GetAffectLong()) str += this_object()->GetAffectLong();
     counts = ([]);
     foreach(item in map(
@@ -785,10 +764,10 @@ string SetClass(string str) {
     return GetClass();
 }
 
-varargs mixed GetEffectiveVision(mixed location, int raw_score) {
+varargs mixed GetEffectiveVision(int raw_score, mixed location) {
     if( newbiep(this_object()) ) return VISION_CLEAR;
-    else if(raw_score && location) return living::GetEffectiveVision(location,raw_score);
-    else if(location) return living::GetEffectiveVision(location);
+    else if(raw_score && location) return living::GetEffectiveVision(raw_score,location);
+    else if(raw_score) return living::GetEffectiveVision(raw_score);
     else return living::GetEffectiveVision();
 }
 
@@ -847,3 +826,8 @@ varargs int eventTrain(string skill, int points) {
     }
     return 1;
 }
+
+//string ChangeClass(string cl) {
+//	error("Players cannot change class.\n");
+//	return GetClass();
+//   }

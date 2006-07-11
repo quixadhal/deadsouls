@@ -8,7 +8,7 @@ int
 cmd() {
     int i;
     object *user_ob;
-    string ret, name, *user_name;
+    string name, *user_name;
 
     user_ob = users();
     user_name = ({ });
@@ -22,10 +22,8 @@ cmd() {
 	}
     }
     user_name = sort_array(user_name, "sort_names");
-    ret = format_page(user_name, 4);
-    ret += sprintf("Total : %d", sizeof(user_name));
-    if(sizeof(ret) < __LARGEST_PRINTABLE_STRING__ ) write(ret);
-    else this_player()->eventPage(ret);
+    write(format_page(user_name, 4));
+    write(sprintf("Total : %d", sizeof(user_name)));
     return 1;
 }
 

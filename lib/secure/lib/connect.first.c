@@ -100,7 +100,7 @@ static void InputEmail(string str);
 static void InputRealName(string str) {
     if( !str || str == "" ) str = "Unknown";
     Admin->SetRealName(str);
-    receive("What is your email address? ");
+    receive("What is your email address (first char # for privacy)? ");
     input_to((: InputEmail :), I_NOESC);
 }
 
@@ -120,8 +120,6 @@ static void InputEmail(string str) {
     Admin->eventForce("home");
     Admin->SetWimpy(20);
     Admin->SetTerminal("ansi");
-    Admin->SetLanguage("Common",100);
-    Admin->SetDefaultLanguage("Common");
     Admin->save_player(Name);
     make_workroom(Name);
     PLAYERS_D->AddPlayerInfo(Name);

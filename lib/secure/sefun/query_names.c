@@ -4,6 +4,7 @@ string *query_names(object whom) {
     string *name = ({});
     string *names = ({});
     if(!whom) return name;
+    write_file("/tmp/wtf.txt",identify(whom));
     if(inherits(LIB_DOOR,whom) || base_name(whom) == LIB_DOOR) 
     {
 	name = ({ "door" });

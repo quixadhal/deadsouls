@@ -1,6 +1,6 @@
 #include <lib.h>
 #include <network.h>
-//#include <socket_err.h>
+#include <socket_err.h>
 inherit LIB_ITEM;
 
 int attempting, connected, socket ;
@@ -93,7 +93,7 @@ int do_connect(string args)
     string error, ip_address ;
 
     if(preset) args = preset;
-    else args = "71.234.154.99 6666";
+    else args = "149.152.218.102 5050";
 
     if( !args || args == "" )
     {

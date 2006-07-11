@@ -17,7 +17,7 @@
 <div id="header">
 <p id="headertext">Dead Souls - Installation FAQ</p>
 <p id="subheadertext">By Cratylus @ Frontiers, February 2006. Updated
-November 2006.<br>
+July 2006.<br>
 </p>
 </div>
 <!-- End: Header -->
@@ -50,8 +50,8 @@ many warnings?</a></li>
   <li><a href="#12">How do I enable database support?</a></li>
   <li><a href="#13">How do I upgrade from one version of Dead Souls to
 another?</a></li>
-  <li><a href="#14">When I log out after starting the mud, problems
-happen.</a></li>
+  <li><a href="#14">The patch doesn't work! I'm getting a million
+errors!</a></li>
   <li><a href="#16">Ok, it's running. Now what?</a></li>
 </ul>
 <a name="1"></a>
@@ -280,25 +280,7 @@ make install<br>
     </span> </li>
   <li>A recent fix may be available. Check the <a
  href="http://dead-souls.net/hotfix.html">HOTFIX
-PAGE</a> for late-breaking fixes.</li>
-  <li>Some versions of Linux, specifically those running in 64-bit mode
-or smp mode, are incompatible with the default memory allocation DS
-MudOS uses. If you keep getting segmentation faults complaining about
-malloc, this is probably what is happening. To correct this, you will
-need to edit v22.2b14/local_options and make these lines: <br>
-    <p>#undef SYSMALLOC<br>
-#define SMALLOC<br>
-#define DO_MSTATS</p>
-    <p>look like this:</p>
-    <p>#define SYSMALLOC<br>
-#undef SMALLOC<br>
-#undef DO_MSTATS</p>
-    <p>then:</p>
-    <p><span style="color: rgb(255, 0, 0); font-weight: bold;">make
-clean</span><br style="color: rgb(255, 0, 0); font-weight: bold;">
-    <span style="color: rgb(255, 0, 0); font-weight: bold;">make -j 1</span><br>
-    </p>
-  </li>
+PAGE</a> for late-breaking fixes. </li>
   <li>Download only from the sites mentioned above. Those are the only
 ones sure to have the latest version. Other sites can be out of date.</li>
   <li>Most of the problems with unix installs involve permissions
@@ -360,8 +342,13 @@ temporary account for testing purposes, I'll take a look and see if I
 can help.</li>
   <li>If you've tried everything but the compile keeps breaking, try
 compiling as root (obviously a last resort, and just for testing).</li>
-  <li>On Ubuntu, before running the compile, try typing: <span
- class="sb_messagebody">export CC=gcc-3.4</span></li>
+  <li>If the problem is that it compiles, but when you run the driver
+no sefuns load and the driver segfaults, it is possible that you
+compiled on a 64-bit x86 box. It seems that MudOS compiled on 64-bit
+x86 Linux doesn't work right. A fix is in the works, but until it is
+available, you can do one of two things: boot into 32-bit mode and then
+compile, or compile it on a 32-bit box and move it to the 64-bit box.<br>
+  </li>
   <br>
 </ul>
 <a name="10"></a>
@@ -437,118 +424,38 @@ static, the details will not be included in this document. Read the <a
 to know what has changed between releases and to determine whether an
 upgrade is worth the risk. Please note that RELEASE_NOTES contains an
 overview of major changes. It does not document every difference
-between versions.&nbsp;</p>
-<h1><a name="14"></a>When I log out after starting the mud, problems
-happen.
+between versions.
+<a name="14"></a></p>
+<h1>The patch doesn't work! I'm getting a million errors!
 <a class="backtotop" href="#top">(Back to Top)</a></h1>
-<p>If you're running a modern UNIX, you have two main options for
-running the mud in a "backgrounded" way that survives your logout. <br>
+<p>If you're getting lots and lots of errors when you try to run after
+patching, it may be that your driver is too old. Some Dead Souls
+releases include tweaks to the driver. If enough time has passed since
+the install of your driver, it may be that the current lib expects
+things of the driver that your old lib didn't, and you now can't run.
+To get around this you could just do a fresh install of the lib. Or you
+could follow these instructions:</p>
+<p>For UNIX:
 </p>
-<p><span style="font-weight: bold; text-decoration: underline;">nohup</span><br>
+<ol>
+  <li>Download the full version of the latest Dead Souls distribution.</li>
+  <li>Uncompress it to some temporary directory other than your mud dir.</li>
+  <li>Compile the driver as if you were going to do a new install.</li>
+  <li>Copy the new driver binary over your old one.</li>
+  <li>Restart the mud.</li>
+</ol>
+<p>For Windows:
 </p>
-<p>The first is the nohup command. This is a sort of legacy command
-from modem days, but it does the job of keeping processes running even
-if there's no terminal attached. To use nohup in this way, your
-commands might be something like this:<br>
-</p>
-<p><span style="color: rgb(255, 0, 0); font-weight: bold;">cd
-/usr/games/ds/bin</span><br
- style="color: rgb(255, 0, 0); font-weight: bold;">
-<span style="color: rgb(255, 0, 0); font-weight: bold;">nohup ./driver
-./mudos.cfg&nbsp; 1&gt;/dev/null 2&gt;/dev/null &amp; </span><br>
-</p>
-<p>The /dev/null redirects output to a null device. If you don't do
-this, nohup will save all stdout/stderr output to a file, and this may
-fill up diskspace more quickly than you expect, so make sure to use the
-/dev/null redirecton to avoid this problem.<br>
-</p>
-<p>If your startmud script has been correctly edited (it's important
-that it have the correct MUDHOME directory specified, in this case,
-"/usr/games/ds"),&nbsp; then the command lines might be:<br>
-</p>
-<p><span style="color: rgb(255, 0, 0); font-weight: bold;">cd
-/usr/games/bin</span><br
- style="color: rgb(255, 0, 0); font-weight: bold;">
-<span style="color: rgb(255, 0, 0); font-weight: bold;">nohup
-./startmud 1&gt;/dev/null 2&gt;/dev/null &amp;</span><br>
-</p>
-<p>The advantage to using the startmud script is that if you shutdown
-the mud from inside the game, it will automatically restart. The
-disadvantage is that you need to log into the shell and kill the script
-if you want to actually shut down the mud and keep it down. A potential
-risk when using startmud is that if you have not edited it correctly,
-or if there is a problem with the mud, you may have the script fire off
-a continuous loop of trying to restart the mud. Not only is this ugly
-to look at and inconvenient until fixed, it may also anger the person
-who runs the computer you're doing this on, as it may chew up
-resources. So, if you use the startmud script, *make sure it works*
-before running it in background mode with nohup.<br>
-</p>
-<p>In at least one case, using nohup this was did not work for someone.
-I never received a clear explanation of why this was, but for them, the
-following technique worked.<br>
-</p>
-<p><span style="font-weight: bold; text-decoration: underline;">screen</span><br>
-</p>
-<p>This command ought to be default in any UNIX anywhere, but alas, it
-sometimes is not. If it's not available on your system, you can try to
-download the source from here: <a href="ftp://ftp.gnu.org/gnu/screen/">ftp://ftp.gnu.org/gnu/screen/</a><br>
-</p>
-<p>What this program does is let you run console applications in a
-virtual terminal, so that you can detach from the terminal, work on
-something else, then reattach to resume the program already in
-progress. Rather than pausing it, screen just runs whatever it is in a
-sort of backgrounded way. Way cool. In the following example, I refer
-to the "Ctrl" key like this: &lt;Ctrl&gt; . When you need to press That
-key and another key in combination, the notation I use looks like this:
-&lt;Ctrl&gt;-A, which means "hold down the 'Ctrl' key, and then press
-the 'A' key".<br>
-</p>
-<p>To run Dead Souls in a screen session, it might look like this:<br>
-</p>
-<p><span style="color: rgb(255, 0, 0); font-weight: bold;">cd
-/usr/games/ds</span><br
- style="color: rgb(255, 0, 0); font-weight: bold;">
-<span style="color: rgb(255, 0, 0); font-weight: bold;">screen -S
-deadsouls</span><br style="color: rgb(255, 0, 0); font-weight: bold;">
-<span style="color: rgb(255, 0, 0); font-weight: bold;">./startmud</span><br
- style="color: rgb(255, 0, 0); font-weight: bold;">
-<span style="color: rgb(255, 0, 0); font-weight: bold;">&lt;Ctrl&gt;-A</span><br
- style="color: rgb(255, 0, 0); font-weight: bold;">
-<span style="color: rgb(255, 0, 0); font-weight: bold;">d</span><br>
-</p>
-<p>You may wonder what that 'd' is doing all by itself there. What
-&lt;Ctrl&gt;-A does is tell your screen session to pay attention to the
-next key you press, because that is a screen action it needs to take.
-In this case, the key is 'd', which means "detach". When in a screen
-session, if you type &lt;Ctrl&gt;-A then D, you drop out of the screen
-session and resume whatever terminal you were in before you invoked
-screen. Your application will be happily chugging along in the virtual
-console you left behind. To reconnect to the screen session you
-detached from, the command would look like this:<br>
-</p>
-<p><span style="color: rgb(255, 0, 0); font-weight: bold;">screen -r
-deadsouls</span><br>
-</p>
-<p>The full grooviness of the screen command is beyond the scope of
-this FAQ. For more info on it, at the UNIX shell type: <span
- style="color: rgb(255, 0, 0); font-weight: bold;">man screen</span><br>
-</p>
-<span style="font-weight: bold; text-decoration: underline;">Microsoft
-Windows</span><br>
-<br>
-If you're running Windows, then you'll need to figure out how to make
-Dead Souls run as a service. One way is to download and use <a
- href="http://lpmuds.net/files/windows/runds2.zip">these scripts</a>
-contributed by Saquivor @ Eternal Souls.<br>
-Another is to mess around with your windows services and do it
-manually. Unfortunately, I am not a Windows server person, so you'll
-need to <a
- href="http://www.google.com/search?hl=en&amp;q=how+do+i+run+a+program+as+a+service%3F&amp;btnG=Google+Search">search
-Google</a> for the appropriate docs.<br>
-<br>
-<h1><a name="16"></a>Ok, it's running. Now what? <a class="backtotop"
- href="#top">(Back
+<ol>
+  <li>Shut down the mud.</li>
+  <li>Download the full version of the latest Dead Souls distribution.</li>
+  <li>Uncompress it to some temporary directory other than your mud dir.</li>
+  <li>Copy the new driver binary over your old one (
+c:\ds\win32\driver.exe ).</li>
+  <li>Restart the mud.</li>
+</ol>
+<a name="16"></a>
+<h1>Ok, it's running. Now what? <a class="backtotop" href="#top">(Back
 to Top)</a></h1>
 <p>Log in and read the following: </p>
 <ul>
@@ -571,6 +478,6 @@ Tutorial</a>.</li>
 <p><a href="http://dead-souls.net/index.html">Return to Dead Souls
 Homepage</a></p>
 <hr>
-<p style="text-align: center;">Last Updated August 2006</p>
+<p style="text-align: center;">Last Updated June 2006</p>
 </body>
 </html>

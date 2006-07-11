@@ -13,12 +13,6 @@ mixed cmd(string form) {
     string str;
     int x, offset;
 
-    if(DISABLE_REBOOTS){
-	write("Recurring reboots are disabled.");
-	write("There is no reboot scheduled by the events daemon.");
-	return 1;
-    }
-
     offset = (int)TIME_D->GetOffset(local_time()[9]);
     offset += EXTRA_TIME_OFFSET;
 

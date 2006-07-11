@@ -21,21 +21,21 @@ inherit LIB_LIVING;
 inherit LIB_MESSAGES;
 inherit LIB_MOVE;
 inherit LIB_OBJECT;
+inherit LIB_CRAWL;
 inherit LIB_SAVE;
-inherit LIB_DOMESTICATE;
 
-private int CustomXP, ActionChance, CombatActionChance, AutoStand;
+private int CustomXP, ActionChance, CombatActionChance, AutoStand, Mount;
 private int MaximumHealth = 0;
 private mixed Encounter;
 private string *EnemyNames;
-private static int NPCLevel, Unique;
+private static int Level, Unique;
 private static mixed Die, Action, CombatAction;
 private static mapping Inventory;
 
 int eventExtraAction(){ return 1; }
 
 static void create() {
-    //AddSave( ({ "CarriedMass" }) );
+    AddSave( ({ "CarriedMass" }) );
     SetSaveRecurse(1);
     chat::create();
     command::create();
@@ -106,12 +106,8 @@ static void heart_beat() {
     eventExtraAction();
     position = GetPosition();
     if( position == POSITION_LYING || position == POSITION_SITTING ) {
-	if(AutoStand && 
-	  !RACES_D->GetLimblessRace(this_object()->GetRace())) 
-	    eventForce("stand up");
-	if(GetInCombat() && 
-	  !RACES_D->GetLimblessRace(this_object()->GetRace()) ) 
-	    eventForce("stand up");
+	if(AutoStand && !RACES_D->GetLimblessRace(this_object()->GetRace())) eventForce("stand up");
+	if(GetInCombat() && !RACES_D->GetLimblessRace(this_object()->GetRace()) ) eventForce("stand up");
     }
     if( !GetInCombat() && ActionChance > random(100) ) {
 	int x;
@@ -334,23 +330,9 @@ void eventDescribeEnvironment(int brief) {
 		eventPrint(desc + "\n", MSG_ROOMDESC);
 	    }
 	}
+	void receive_message(string cl, string msg) { catch_tell(msg); }
 
-	void receive_message(string cl, string msg) { 
-	    object *riders = get_livings(this_object());
-	    if(!NPC_CATCH_TELL_DEBUG) return;
-	    tell_room("/domains/default/room/catchtell","-------");
-	    tell_room("/domains/default/room/catchtell",timestamp());
-	    tell_room("/domains/default/room/catchtell","obj: "+identify(this_object()));
-	    tell_room("/domains/default/room/catchtell","cl: "+cl);
-	    tell_room("/domains/default/room/catchtell","msg: "+msg);
-	    tell_room("/domains/default/room/catchtell","-------");
-	    if(sizeof(riders)){
-		foreach(object living in riders){
-		    if(living->GetProperty("mount") == this_object())
-			tell_object(living, "(mount): "+msg);
-		}
-	    }
-	}
+	void catch_tell(string msg) { }
 
 	static int Destruct() {
 	    if( GetParty() ) PARTY_D->eventLeaveParty(this_object());
@@ -372,8 +354,6 @@ void eventDescribeEnvironment(int brief) {
 	}
 
 	/* ***************  /lib/npc.c events  *************** */
-
-
 	int eventCompleteMove(mixed dest) {
 	    mixed val;
 	    string file;
@@ -512,26 +492,10 @@ void eventDescribeEnvironment(int brief) {
 	}
 
 	varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
-	    object *riders = get_livings(this_object());
-	    if(!NPC_CATCH_TELL_DEBUG) return 1;
-	    tell_room("/domains/default/room/catchtell","-------");
-	    tell_room("/domains/default/room/catchtell",timestamp());
-	    tell_room("/domains/default/room/catchtell","obj: "+identify(this_object()));
-	    tell_room("/domains/default/room/catchtell","msg: "+msg);
-	    tell_room("/domains/default/room/catchtell","arg2: "+identify(arg2));
-	    tell_room("/domains/default/room/catchtell","arg3: "+identify(arg3));
-	    tell_room("/domains/default/room/catchtell","-------");
-	    if(sizeof(riders)){
-		foreach(object living in riders){
-		    if(living->GetProperty("mount") == this_object())
-			tell_object(living, "(mount): "+msg);
-		}
-	    }
-
 	    return 1;
 	}
 
-	int eventReceiveObject(object who) {
+	int eventReceiveObject() {
 	    object ob;
 
 	    ob = previous_object();
@@ -540,7 +504,7 @@ void eventDescribeEnvironment(int brief) {
 	    return 1;
 	}
 
-	int eventReleaseObject(object who) {
+	int eventReleaseObject() {
 	    object ob;
 
 	    ob = previous_object();
@@ -590,7 +554,7 @@ void eventDescribeEnvironment(int brief) {
 	    int x, i;
 
 	    cls = living::SetClass(cls);
-	    x = NPCLevel;
+	    x = Level;
 	    i = sizeof(skills = GetSkills());
 	    while(i--) {
 		int y;
@@ -605,7 +569,7 @@ void eventDescribeEnvironment(int brief) {
 	    string *tmp;
 	    int i;
 
-	    NPCLevel = x;
+	    Level = x;
 	    i = sizeof(tmp = GetSkills());
 	    while(i--) {
 		int y;
@@ -621,10 +585,10 @@ void eventDescribeEnvironment(int brief) {
 		SetStat(tmp[i], ((5-y)*10) + (3*x)/y, y);
 	    }
 	    eventCompleteHeal(GetMaxHealthPoints());
-	    return NPCLevel;
+	    return Level;
 	}
 
-	int GetLevel() { return NPCLevel; }
+	int GetLevel() { return Level; }
 
 	int SetCustomXP(int i){
 	    if(!i) i = 0;
@@ -694,8 +658,7 @@ void eventDescribeEnvironment(int brief) {
 
 	mixed SetAggressive(mixed val){
 	    if(sizeof(Encounter)) return Encounter;
-	    else if(val) Encounter = 100;
-	    else Encounter = 0;
+	    else Encounter = 100;
 	}
 
 
@@ -733,21 +696,16 @@ void eventDescribeEnvironment(int brief) {
 	varargs string GetLong(string str) {
 	    mapping counts;
 	    string item, what;
-	    string *affects = ({});
 
 	    str = object::GetLong() + "\n";
 	    what = "The "+GetGender()+" "+GetRace();
 	    str += living::GetLong(what);
 	    foreach(item in map(all_inventory(),
-		(: (string)$1->GetAffectLong(this_object()) :))){
-		if(item && member_array(item,affects) == -1) affects += ({ item });
-	    }
-	    if(sizeof(affects)) str += implode(affects,"\n")+"\n";
+		(: (string)$1->GetAffectLong(this_object()) :)))
+	    if( item ) str += item + "\n";
 	    if(this_object()->GetAffectLong()) str += this_object()->GetAffectLong();
 	    counts = ([]);
-	    foreach(item in map(
-		filter(all_inventory(), (: !((int)$1->GetInvis(this_object())) :)),
-		(: (string)$1->GetEquippedShort() :)))
+	    foreach(item in map(all_inventory(),(: (string)$1->GetEquippedShort() :)))
 	    if( item ) counts[item]++;
 	    if( sizeof(counts) ) str += GetCapName() + " is carrying:\n";
 	    foreach(item in keys(counts))
@@ -806,6 +764,13 @@ void eventDescribeEnvironment(int brief) {
 	}
 
 	int *GetScreen() { return ({ 80, 24 }); }
+
+	int SetMount(int x) {
+	    Mount = x;
+	    return Mount;
+	}
+
+	int GetMount(){ return Mount; }
 
 	int GetAutoStand(){ return AutoStand; }
 

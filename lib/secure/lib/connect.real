@@ -10,7 +10,6 @@
 #include <rooms.h>
 #include <news.h>
 #include <flags.h>
-#include <cfg.h>
 #include <config.h>
 #include <daemons.h>
 #include <message_class.h>
@@ -19,66 +18,36 @@
 inherit LIB_PAGER;
 
 static private int CrackCount, NetDead; 
-static private string name, Name, Terminal, raza, TrueName; 
-static private string Passwort, Gendre, CapNamen, E_Mail; 
+static private string name, Name, Terminal; 
 static private object Player, pile; 
 static private mapping LastError;
 static private int *Screen;
-static private int rescue, yescre;
-static private string *ip_permitted = ({});
+static private int rescue;
 
 int eventCheckPending(string str);
-void eventCompleteChar();
-void InputCre(string str);
-
-int CheckIp(){
-    string my_ip = query_ip_number();
-    int ips = 0;
-    if(!ip_permitted) ip_permitted = ({});
-    ip_permitted += PLAYERS_D->GetAdminIPs();
-    if(!SAME_IP_MAX) return 1;
-    foreach(object jugador in users()){
-	if(query_ip_number(jugador) == my_ip) ips++;
-    }
-    //tc("ips: "+ips);
-    //tc("SAME_IP_MAX: "+SAME_IP_MAX);
-    if(ips >= SAME_IP_MAX && member_array(my_ip, ip_permitted) == -1) return 0;
-    else return 1;
-}
 
 static void create(int binary) {
     CrackCount = 0;
     Name = "";
     Player = 0;
     NetDead = 0;
-    ip_permitted = explode(read_file(CFG_IP_UNRESTRICT),"\n");
 }
 
-varargs static void logon(mixed foo) {
-    string welcome = "Connected to "+mud_name()+", an LP mud";
-    if(sizeof(architecture())) welcome += " running on "+architecture()+".\n";
-    else welcome += ".\n";
+static void logon() {
+    string welcome;
 
     call_out((: eventTimeout :), LOGON_TIMEOUT);
-    if(mud_name() == "Dead Souls" || mud_name() == "Dead Souls Demo" ){
-	welcome += read_file(DS_WELCOME) || "Welcome to " + mud_name() + "!";
+    if(mud_name() == "Dead Souls"){
+	welcome = read_file(DS_WELCOME) || "Welcome to " + mud_name() + "!";
     }
     else {
-	welcome += read_file(NEWS_WELCOME) || "Welcome to " + mud_name() + "!";
+	welcome = read_file(NEWS_WELCOME) || "Welcome to " + mud_name() + "!";
     }
     receive(welcome);
     receive("\n" + center("Driver: " + version() + "               Mudlib: "+
 	mudlib() + " " + mudlib_version()) + "\n");
-    if(CheckIp()){ 
-	receive("\nWhat name do you wish? \n");
-	input_to((: InputName :), I_NOESC); 
-    }
-    else {
-	receive("\nToo many users from your site are currently logged on.\n");
-	receive("Please try again later.\n");
-	Destruct();
-	return;
-    }
+    receive("\nWhat name do you wish? \n");
+    input_to((: InputName :), I_NOESC); 
 } 
 
 static void InputName(string namen, string kill_me) {
@@ -132,9 +101,17 @@ static void InputName(string namen, string kill_me) {
 	Destruct();
 	return;
     }
-
+    if(rescue) unguarded( (: wipe_inv(name) :) );
     if( find_player(Name) ) NetDead = 1;
-
+    Player = (object)master()->player_object(Name);
+    if( !Player ) {
+	receive("\nIt seems some work is being done right now, try later.\n");
+	Destruct();
+	return;
+    }
+    if( (string)Player->GetRace() == "blob" ) {
+	Player->SetRace("human");
+    }
     if(lower_case(Name) == "guest"){
 	if( !NetDead ) eventEnterGame();
 	else eventReEnterGame(0);
@@ -142,6 +119,7 @@ static void InputName(string namen, string kill_me) {
     }
     receive("Password: \n");
     input_to((: InputPassword :), I_NOECHO | I_NOESC, name);
+    //name = "";
 } 
 
 static void InputPassword(string pass, string cap) {
@@ -158,7 +136,7 @@ static void InputPassword(string pass, string cap) {
 	return;
     }
 
-    control = PLAYERS_D->GetPlayerData(Name,"Password");
+    control = (string)Player->GetPassword();
     if( control != crypt(pass, control) ) {
 	receive("\nInvalid password.\n");
 	if( ++CrackCount > MAX_PASSWORD_TRIES ) {
@@ -178,26 +156,14 @@ static void InputPassword(string pass, string cap) {
 	return;
     }
 
-    if(rescue) unguarded( (: wipe_inv(name) :) );
-
-    Player = (object)master()->player_object(Name);
-    if( !Player ) {
-	receive("\nIt seems some work is being done right now, try later.\n");
-	Destruct();
-	return;
-    }
-    PLAYERS_D->AddPlayerInfo(Player);
-    if( !(string)Player->GetRace() || (string)Player->GetRace() == "blob" ) {
-	Player->SetRace("human");
-    }
-
     call_out( (: eventCheckPending, lower_case(Name) :), 3);
+
     if( !NetDead ) eventEnterGame();
     else eventReEnterGame(cap);
 }
 
 static void eventCreatePlayer(string cap) {
-    if( !((int)BANISH_D->valid_name(lower_case(Name))) ) {
+    if( !((int)BANISH_D->valid_name(Name)) ) {
 	receive(capitalize(cap) + " is not a valid name.\n");
 	receive(mud_name() + " requires that all names meet the following "
 	  "requirements:\n");
@@ -245,7 +211,6 @@ static void eventReEnterGame(string cap) {
 	    if(sizeof(deep_inventory(Player))) deep_inventory(Player)->eventMove(ROOM_FURNACE);
 	log_file("enter", cap + " (exec): " + ctime(time()) + "\n"); 
 	Player->eventReconnect();
-	Player->RemoveProperty("afk");
 	SNOOP_D->ReportReconnect(Player->GetKeyName());
     }
     receive("\nProblem reconnecting.\n");
@@ -293,8 +258,8 @@ static private void eventEnterGame() {
       file_size(user_path(Player->GetKeyName())+".profile") > 0){
 	Player->eventForce("source "+user_path(Player->GetKeyName())+".profile");
     }
-    Player->RemoveProperty("afk");
     SNOOP_D->CheckBot(Player->GetKeyName());
+    //if(!(Player->GetProperty("brand_spanking_new"))) destruct(this_object());
     call_out( (: destruct(this_object()) :), 10);
 
 } 
@@ -313,9 +278,8 @@ static void CreatePassword(string pass, string cap) {
 static void ConfirmPassword(string control, string cap, string pass) {
     if( control == pass ) {
 	Player = (object)master()->player_object(Name);
-	pass = crypt(pass, 0);
-	Passwort = pass;
-	receive("\n\nPlease choose an interesting gender (male, female, neutral, or none): \n");
+	Player->SetPassword(pass = crypt(pass, 0));
+	receive("\n\nPlease choose an interesting gender (male or female): \n");
 	input_to((: InputGender :), I_NOESC, cap);
 	return; 
     } 
@@ -325,15 +289,13 @@ static void ConfirmPassword(string control, string cap, string pass) {
 } 
 
 static void InputGender(string str, string cap) {
-    if( str != "male" && str != "female" 
-      && str != "neuter" && str != "neutral" && str != "none") { 
-	receive("\nCute, but pretend to be male, female, neutral, or none instead.\n");
+    if( str != "male" && str != "female" ) { 
+	receive("\nCute, but pretend to be either male or female instead.\n");
 	receive("Gender: ");
 	input_to((: InputGender :), I_NOESC, cap);
 	return;
     }
-    if(str == "none") str = "neuter";
-    Gendre = str;
+    Player->SetGender(str);
     receive("\nYou may format " + cap + " to appear however you wish using "
       "spaces, ', or -.\nEnter a display name (default: " + cap +"): \n");
     input_to((: InputCapName :), I_NOESC, cap);
@@ -346,10 +308,10 @@ static void InputCapName(string name, string cap) {
 	input_to((: InputCapName :), I_NOESC, cap);
 	return;
     }
-    cap = capitalize(name);
-    CapNamen = cap;
+    Player->SetCapName(cap = capitalize(name));
     receive("\nFor security reasons, " + mud_name() + " requires a valid "
-      "email.\n"
+      "email.\nYou can restrict this information as being admin only "
+      "by preceeding it\nwith a '#' character (e.g. #user@host).\n"
       "Email: \n");
     input_to((: InputEmail :), I_NOESC);
 } 
@@ -363,14 +325,14 @@ static void InputEmail(string email) {
 	input_to( (: InputEmail :), I_NOESC );
 	return; 
     } 
-    E_Mail = email;
+    Player->SetEmail(email);
     receive("\nIf you do not mind, please enter your real name (optional): \n");
     input_to( (: InputRealName :), I_NOESC );
 }
 
 static void InputRealName(string rname) {
     if( !rname || rname == "" ) rname = "Unknown";
-    TrueName = rname;
+    Player->SetRealName(rname);
     if(!HUMANS_ONLY){
 	receive("\n\nYou must now pick a race.\n");
 	receive("Picking a race influences what physical traits your character "
@@ -454,7 +416,7 @@ static void cmdList() {
 
 int eventCre(string str){
     mixed mixt;
-    if(yescre && AUTO_WIZ == 1){
+    if(AUTO_WIZ == 1){
 	mixt = load_object("/secure/cmds/admins/encre")->cmd(str);
     }
     destruct(this_object());
@@ -488,45 +450,9 @@ static void cmdPick(string args) {
 	input_to((: InputRace :), I_NOESC);
 	return;
     }
-    raza = args;
-    if(!AUTO_WIZ) eventCompleteChar();
-    else {
-	receive("This mud has enabled AUTO_WIZ.\n");
-	receive("This means that if you wish, you may be automatically \n");
-	receive("promoted to creator status. \n\n");
-	receive("If you want to be a player, enter: player\n");
-	receive("If you want to be a creator, enter: creator\n");
-	receive("What is your choice?\n");
-	input_to((: InputCre :), I_NOESC);
-    }
-}
-
-void InputCre(string str){
-    if(!str || str == "" || !sizeof(str) || !stringp(str)) str = "foo";
-    if(str != "creator" && str != "player"){
-	receive("\nInvalid choice.\n");
-	receive("If you want to be a player, enter: player\n");
-	receive("If you want to be a creator, enter: creator\n");
-	receive("What is your choice?\n");
-	input_to((: InputCre :), I_NOESC);
-	return;
-    }
-    if(str == "creator") yescre = 1;
-    eventCompleteChar();
-}
-
-void eventCompleteChar(){
-    Player->SetRace(raza);
+    Player->SetRace(args);
     Player->SetProperty("brand_spanking_new",1);
     Player->AddCurrency("silver",random(100)+57);
-    Player->SetRace(raza);
-    Player->SetPassword(Passwort);
-    Player->SetGender(Gendre);
-    Player->SetCapName(CapNamen);
-    Player->SetEmail(E_Mail);
-    Player->SetRealName(TrueName);    
-    Player->SetLanguage("Common",100);    
-    Player->SetDefaultLanguage("Common");    
     this_player()->SetWimpy(20);
     this_player()->SetTerminal("ansi");
     PLAYERS_D->AddPlayerInfo(Name);
@@ -597,6 +523,7 @@ static void GetGuestName(string nom) {
 	receive("Illegal name choice, try again: ");
 	return;
     }
+    //    ob = new(LIB_GUEST);
     ob->SetCapName(nom);
     exec(ob, this_object());
     ob->Setup();

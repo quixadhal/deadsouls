@@ -5,18 +5,20 @@
  *    created by Descartes of Borg 950113
  */
 
-
+#pragma save_binary
 
 #include <lib.h>
 #include <objects.h>
 #include "include/mail.h"
 
-inherit LIB_VERB;
+inherit LIB_DAEMON;
 
 static void create() {
-    verb::create();
-    SetVerb("mail");
-    SetRules("","STR");
+    daemon::create();
+    SetNoClean(1);
+    parse_init();
+    parse_add_rule("mail", "");
+    parse_add_rule("mail", "STR");
 }
 
 mixed can_mail() { return can_mail_str(""); }

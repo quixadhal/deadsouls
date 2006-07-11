@@ -42,11 +42,8 @@ mixed local_time(mixed val){
     }
     if(intp(val)){
 	mixed *stuff;
-	offset = 0;
-	if(!LOCAL_TIME){
-	    offset = TIME_D-> GetOffset(query_tz());
-	    offset *= 3600;
-	}
+	offset = TIME_D-> GetOffset(query_tz());
+	offset *= 3600;
 	stuff = localtime(time()+offset);
 	stuff[9] = query_tz();
 	return stuff;

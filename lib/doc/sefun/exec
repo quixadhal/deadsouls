@@ -1,24 +1,24 @@
 
 EXEC(1)                                                   EXEC(1)
 
-NAME
-       exec() - provides security for the MudOS exec() efun
+NNAAMMEE
+       _e_x_e_c_(_) - provides security for the MudOS _e_x_e_c_(_) efun
 
-SYNOPSIS
+SSYYNNOOPPSSIISS
        int exec(object target, object src)
 
-DESCRIPTION
+DDEESSCCRRIIPPTTIIOONN
        Since MudOS appropriately provides no security for this
        efun, the mudlib must decide what security it wants in an
        efun override.
 
-LOCATION
-       /secure/sefun/sefun.c
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/SimulEfun.c
 
-SEE ALSO
-       the exec() efun
+SSEEEE AALLSSOO
+       the _e_x_e_c_(_) efun
 
-Author
+AAuutthhoorr
        Descartes of Borg
 
                                                                 1

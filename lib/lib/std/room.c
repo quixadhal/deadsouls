@@ -15,7 +15,6 @@
 #include <medium.h>
 #include <message_class.h>
 #include <talk_type.h>
-#include <terrain_types.h>
 #include <privs.h>
 
 inherit LIB_CLEAN;
@@ -33,7 +32,6 @@ inherit LIB_MONEY;
 private function        Bury          = 0;
 private string          Climate       = "temperate";
 private int             DayLight      = -1970;
-private int             counter       = 0;
 private static string   DayLong       = 0;
 private object array    DummyItems    = ({});
 private static int      GasCheck      = time();
@@ -52,21 +50,20 @@ private static mixed    Touch         = 0;
 private string          Town          = "wilderness";
 private int		DefaultExits  = 1;
 private int		Flying        = 1;
-private int		ObviousVisible       = 1;
+private int		Obvious       = 1;
 private int		ActionChance  = 10;
 mapping			ItemsMap      = ([]);
 //private static object  *dummies       = ({});
 private static mixed    global_item;
 private static mixed	Action;
 private int		tick_resolution	= 5;
-private int		TerrainType	= T_OUTDOORS;
-private mapping         ActionsMap     = ([]);
 
 
 string GetClimate();
 int GetNightLight();
 int GetDayLight();
 int GetShade();
+int elderp(object foo);
 
 mixed direct_delete_exit_str(){
     return 1;
@@ -81,16 +78,6 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3);
 /***********      /lib/room.c data manipulation functions      **********/
 
 void CheckActions(){
-
-    if(sizeof(ActionsMap)){
-	foreach(mixed key, mixed val in ActionsMap){
-	    if( ActionChance > random(100) ) {
-		if(functionp(key)) evaluate(key);
-		else message("other_action", key, this_object());
-	    }
-	}
-    }
-
     if( ActionChance > random(100) ) {
 	int x;
 
@@ -109,8 +96,6 @@ void CheckActions(){
 }
 
 void heart_beat(){
-    counter++;
-    if(counter > 9999) counter = 0;
     CheckActions();
 }
 
@@ -124,16 +109,6 @@ void SetAction(int chance, mixed val) {
 
 mixed GetAction() { return Action; }
 
-mapping SetActionsMap(mapping ActMap){
-    if(ActMap && sizeof(ActMap)) ActionsMap = ActMap;
-    return copy(ActionsMap);
-}
-
-mapping GetActionsMap(){
-    return copy(ActionsMap);
-}
-
-
 int SetFrequency(int tick){
     if(tick) tick_resolution = tick;
     else tick_resolution = 5;
@@ -143,27 +118,6 @@ int SetFrequency(int tick){
 
 int GetFrequency(){
     return tick_resolution;
-}
-
-int GetTerrainType(){
-    return TerrainType;
-}
-
-int SetTerrainType(int i){
-    if(i) TerrainType = i;
-    else return TerrainType;
-}
-
-int AddTerrainType(int i){
-    if(!bitshiftedp(i)) return 0;
-    else TerrainType = TerrainType | i;
-    return TerrainType;
-}
-
-int RemoveTerrainType(int i){
-    if(!bitshiftedp(i)) return 0;
-    else TerrainType = TerrainType ^ i;
-    return TerrainType;
 }
 
 int GetAmbientLight() {
@@ -257,10 +211,7 @@ string SetNightLong(string str) { return (NightLong = str); }
 
 string GetNightLong() { return NightLong; }
 
-string SetClimate(string str) { 
-    if(str == "indoors" && TerrainType == T_OUTDOORS) TerrainType = T_INDOORS;
-    return (Climate = str); 
-}
+string SetClimate(string str) { return (Climate = str); }
 
 string GetClimate() { return Climate; }
 
@@ -311,11 +262,11 @@ varargs void AddItem(mixed item, mixed val, mixed adjectives) {
     DummyItems = ({ DummyItems..., ob });
 }
 
-mapping RemoveItem(mixed item) {
+void RemoveItem(mixed item) {
     if( objectp(item) ) {
 	DummyItems -= ({ item });
 	item->eventDestruct();
-	return copy(Items);
+	return;
     }
     else if( !arrayp(item) ) {
 	item = ({ item });
@@ -324,12 +275,12 @@ mapping RemoveItem(mixed item) {
 	if( sizeof(ob->GetId() & item) ) {
 	    ob->eventDestruct();
 	    DummyItems -= ({ ob });
-	    return copy(Items);
+	    return;
 	}
     }
 }
 
-mapping SetItems(mixed items) {
+void SetItems(mixed items) {
     if(sizeof(DummyItems)) DummyItems->eventDestruct();
     DummyItems = ({});
     if( arrayp(items) ) {
@@ -360,7 +311,6 @@ mapping SetItems(mixed items) {
 	error("Bad argument 1 to SetItems(), expected object array or "
 	  "mapping.\n");
     }
-    return copy(ItemsMap);
 }
 
 mapping GetItemsMap(){
@@ -584,7 +534,7 @@ varargs void AddSearch(mixed item, mixed val) {
     }
 }
 
-varargs mixed GetSearch() {
+varargs mixed GetSearch(string str) {
     return Search;
 }
 
@@ -644,7 +594,7 @@ varargs void AddSmell(mixed item, mixed val) {
     }
 }
 
-varargs mixed GetSmell() {
+varargs mixed GetSmell(string str) {
     return Smell;
 }
 
@@ -747,15 +697,20 @@ string SetTown(string town) { return (Town = town); }
 mixed SetProperty(string prop, mixed val) {
     if( prop == "light" ) {
 	if( !val ) return val;
-	if( val < 0 ) return val;
-	else return ambiance::SetAmbientLight(val*25);
+	if( GetClimate() == "indoors" ) {
+	    if( val < 0 ) return val;
+	    else return ambiance::SetAmbientLight(val*13);
+	}
+	else {
+	    if( val < 0 ) return SetShade(-val);
+	    else return SetDayLight(val);
+	}
     }
     else if( prop == "night light" ) {
 	if( !val ) return val;
 	if( val < 0 ) return val;
-	else return SetNightLight(15*val);
+	else return SetNightLight(4*val);
     }
-
     else return properties::SetProperty(prop, val);
 }
 
@@ -825,14 +780,9 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
 	return 1;
 
     case TALK_LOCAL:
-	obs = get_livings(this_object(),1);
-	if(sizeof(obs)) obs -= ({ who });
-	if(sizeof(obs))
-	    obs->eventHearTalk(who, target, cls, verb, msg, lang);
-	obs = get_livings(this_object(),2);
-	if(sizeof(obs)) obs -= ({ who });
-	if(sizeof(obs))
-	    obs->eventHearTalk(who, target, cls, verb, msg, lang);
+	obs = filter(all_inventory(),
+	  (: (int)$1->is_living() && $1 != $(who) :));
+	obs->eventHearTalk(who, target, cls, verb, msg, lang);
 	return 1;
 
     case TALK_AREA:
@@ -860,11 +810,11 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
     }
 }
 
-int eventMove() { return 0; }
+int eventMove(mixed dest) { return 0; }
 
 varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
     object *targs;
-    int msg_class;
+    int msg_class,i;
 
     if( !arg2 && !arg3 ) {
 	targs = filter(all_inventory(), (: (int)$1->is_living() :));
@@ -902,7 +852,7 @@ static void create() {
 }
 
 int CanReceive(object ob){
-    if(!GetProperty("no teleport") || !living(ob)) return container::CanReceive(ob);
+    if(!GetProperty("no teleport")) return container::CanReceive(ob);
     else {
 	string verb = query_verb();
 	string *allowed = ({ "go", "climb", "jump", "enter", "fly", "crawl" });
@@ -915,19 +865,12 @@ int CanReceive(object ob){
 }
 
 varargs void reset(int count) {
-    object *livings = get_livings(this_object());
-    if(sizeof(livings)){
-	foreach(object living in livings){
-	    if(living && (living->GetDrone() || living->GetMount() ||
-		living()->GetNoClean())) return;
-	}
-    }
     inventory::reset(count);
     all_inventory()->reset(count);
     ResetNumber++;
 }
 
-int id() {
+int id(string str) {
     return 0;
 }
 
@@ -942,14 +885,14 @@ int inventory_visible() {
 int SetNoDefaultExits(int i){
     if(!i) i = 0;
     DefaultExits = bool_reverse(i);
-    ObviousVisible = DefaultExits;
+    Obvious = DefaultExits;
     return DefaultExits;
 }
 
 int SetDefaultExits(int i){
     if(!i) i = 0;
     DefaultExits = i;
-    ObviousVisible = DefaultExits;
+    Obvious = DefaultExits;
     return DefaultExits;
 }
 
@@ -958,17 +901,15 @@ int SetCanFly(int i){
     else Flying = 0;
 }
 
-mixed CanFly(object who, string dest){
-    if(!who) who = this_player();
-    if(!dest) dest = "";
+varargs int CanFly(mixed ob, mixed dir){
     return Flying;
 }
 
 int SetNoObviousExits(int i){
     if(!i) i = 0;
-    ObviousVisible = bool_reverse(i);
-    DefaultExits = ObviousVisible;
-    return ObviousVisible;
+    Obvious = bool_reverse(i);
+    DefaultExits = Obvious;
+    return Obvious;
 }
 
 int GenerateObviousExits(){
@@ -1009,13 +950,12 @@ int GenerateObviousExits(){
     }
     if(last(dir_string,2) == ", ") dir_string = truncate(dir_string,2);
     dir_string = replace_string(dir_string,", , ",", ");
-    if(ObviousVisible) SetObviousExits(dir_string);
+    if(Obvious) SetObviousExits(dir_string);
     return 1;
 }
 
 static void init() {
-    if(this_object()->GetProperty("indoors")) SetClimate("indoors");
-    if(!sizeof(GetObviousExits()) && DefaultExits > 0 && ObviousVisible) GenerateObviousExits();
-    if((Action && sizeof(Action)) || sizeof(ActionsMap)) set_heart_beat(tick_resolution);
+    if(!sizeof(GetObviousExits()) && DefaultExits > 0 && Obvious) GenerateObviousExits();
+    if(Action && sizeof(Action)) set_heart_beat(tick_resolution);
 }
 

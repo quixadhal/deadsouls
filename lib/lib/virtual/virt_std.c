@@ -13,7 +13,7 @@ mixed CreateVirtualObject(string fname) {
     object daemon;
     string tmp, vname;
     int x, y, z, s;
-    int i;
+    int i, j;
 
     if(fname == recursed){
 	recursed = "";

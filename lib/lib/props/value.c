@@ -38,10 +38,7 @@ varargs int GetValue(string str) {
     return Value;
 }
 
-int SetValue(mixed y) {
-    mixed x;
-    if(arrayp(y)) return this_object()->SetBaseCost(y[1],y[0]); 
-    else x = y;
+int SetValue(int x) {
     if( !intp(x) ) {
 	error("Bad argument 1 to SetValue().\n\tExpected: int, Got: " +
 	  typeof(x) + "\n");
@@ -64,6 +61,10 @@ int SetVendorType(int x) {
 	error("Invalid vendor type.\n");
     }
     return (VendorType = x);
+}
+
+int CanSell() {
+    return 1;
 }
 
 varargs mixed SetBaseCost(mixed arg, int i){

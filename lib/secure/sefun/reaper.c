@@ -1,7 +1,4 @@
 #include <lib.h>
-#include <objects.h>
-
-string *ExemptArray = ({ OBJ_SNOOPER, LIB_DOOR, LIB_ROOM, LIB_SERVER, LIB_FTP_DATA_CONN});
 
 void  reap_dummies(){
     //
@@ -25,12 +22,12 @@ void  reap_dummies(){
     }
 }
 
-varargs void reap_other(string s1){
+varargs void reap_other(string str){
     //
     // destroys any cloned objects that
     // do not have an environment
     //
-    string s2;
+    string s1,s2;
     object *objects;
     object *others;
 
@@ -45,8 +42,7 @@ varargs void reap_other(string s1){
 
     foreach(object thingy in others){
 	if(!userp(thingy) && !environment(thingy) && 
-	  !inherits(LIB_SHADOW, thingy) &&
-	  member_array(base_name(thingy), ExemptArray) == -1 ) {
+	  base_name(thingy) != "/secure/obj/snooper" ) {
 	    thingy->eventDestruct();
 	}
     }

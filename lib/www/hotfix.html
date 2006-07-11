@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
   <title>Dead Souls Mudlib - Hotfixes</title>
@@ -16,56 +16,42 @@
 <p id="headertext">Dead Souls - Hotfixes</p>
 </div>
 <!-- End: Header -->
-Nothing's prefect. This is most certainly true of any things I've
-touched.<br>
-<br>
-This page contains late-breaking bugfixes found between Dead
-Souls releases. Only important bugs are addressed<br>
-here. Feature enhancements become available on full release. Minor,
-non-critical bugfixes are listed in the <a
- href="http://dead-souls.net/fixes.html">general fixes page</a>.<br>
-All of the fixes listed here will be included in the next release. They
-are provided here early in order to address<br>
-potential problems.<br>
-<br>
-<h3><b><u>Always back up files before overwriting them with hotfixes.</u></b></h3>
-<b><font color="red">Dead Souls 2.0r25</font> and below available
-hotfixes:</b><br>
+<p>Nothing's prefect. This is
+most certainly true of anything <span style="font-style: italic;">I've</span>
+touched.</p>
+<p>This page contains the late-breaking bugfixes found between Dead
+Souls releases. Only important bugs are addressed here. Feature
+enhancements and minor bugfixes become available on full release.</p>
+<p>All of the fixes listed here will be included in the next release.
+They
+are provided here early in order to address potential problems.</p>
+<p>For Dead Souls <span style="color: red; font-weight: bold;">2.0r25
+and below</span>,
+the
+following fixes are available:
+</p>
 <ul>
   <li>There is a <a href="http://dead-souls.net/news.html#16jun06">serious
-security problem</a> that affects all versions of Dead Souls below
-2.0r26. The only fix is to apply an upgrade patch. <br>
-The <a href="http://dead-souls.net/code/patches/dspatch_2.0r21_2.1.zip">patch</a>
-to upgrade to Dead Souls 2.1 is available now. This patch can be
-applied to any version of Dead Souls 2.0 above 2.0r20. </li>
-</ul>
-<b><font color="red">Dead Souls 2.1</font> available hotfixes: </b><br>
-<ul>
-  <li>Admintool has a security bug where, if you are standing in the
-same room as the target, and you encre/decre them, they can gain <br>
-access to admintool functions. Replace /secure/cmds/admins/admintool.c
-with this <a href="http://dead-souls.net/code/fixes/admintool.c">file</a>,
-then update /secure/cmds/admins/admintool.c <br>
-(thanks to Zaphod @ HodgePodge for the report) <br>
-    <br>
+security problem</a> that
+affects all versions of Dead Souls <span
+ style="text-decoration: underline;">below 2.0r26</span>. The only fix
+is to apply the patch to upgrade to 2.0r26. That patch
+is <a
+ href="http://dead-souls.net/code/patches/dspatch_2.0r21_2.0r26.zip">available
+now</a>. This patch can be applied to any version of Dead Souls
+above 2.0r20. If you plan to patch from pre- r26 to r29, you <span
+ style="font-weight: bold;">must</span> reboot the mud between the
+installations of the separate patches.<br>
   </li>
-  <li>A bug in verbs allows players to use the force command. This is a
-problem. The workaround is to replace copy <a
- href="http://dead-souls.net/code/fixes/force.c">this file</a> over<br>
-/secure/verbs/creators/force.c , then type: update
-/secure/verbs/creators/force.c (thanks to Zaroth @ Divided Realms for
-the report) <br>
-    <br>
-  </li>
-  <li>If you created a new local channel (call
-me-&gt;AddChannel("blahfoo")) its data is being sent to the router. To
-stop this, <br>
-copy <a href="http://dead-souls.net/code/fixes/chat.c">this file</a>
-over /secure/daemon/chat.c then type: update /secure/daemon/chat.c </li>
 </ul>
-<b><font color="red">Dead Souls 2.1.1</font> available hotfixes: </b>
+<br>
+<p>For Dead Souls <span style="color: red; font-weight: bold;">2.0r29</span>,
+the
+following fixes are available:
+</p>
 <ul>
-  <li>None. 2.1.1 contains the latest available hotfixes. </li>
+  <li>None.<br>
+  </li>
 </ul>
 <br>
 <br>

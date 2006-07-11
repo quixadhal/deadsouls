@@ -4,19 +4,21 @@
  *    created by Blitz@Dead Souls
  */
 
-
+#pragma save_binary
 
 #include <lib.h>
 #include <rounds.h>
 
-inherit LIB_VERB;
+inherit LIB_DAEMON;
 
 varargs void eventCheckBody(object ob, object receiver);
 
 static void create() {
-    verb::create();
-    SetVerb("body");
-    SetRules("", "LIV");
+    daemon::create();
+    SetNoClean(1);
+    parse_init();
+    parse_add_rule("body", "LIV");
+    parse_add_rule("body", "");
 }
 
 static string *DamageDegree = ({

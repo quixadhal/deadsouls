@@ -1,10 +1,12 @@
 #include <lib.h>
 
+inherit LIB_ITEM;
 inherit LIB_LIE;
 
 inherit LIB_SURFACE;
 
 void create(){
+    item::create();
     surface::create();
 
     SetMaxLiers(4);
@@ -15,7 +17,7 @@ void create(){
 
 int CanGet(object who){
     if(lie::CanGet(who))
-	return surface::CanGet(who);
+	return item::CanGet(who);
     else return 0;
 }
 

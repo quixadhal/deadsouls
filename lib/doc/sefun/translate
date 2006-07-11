@@ -1,30 +1,30 @@
 
 TRANSLATE(1)                                         TRANSLATE(1)
 
-NAME
-       translate() - translates any given string into nonsense
+NNAAMMEE
+       _t_r_a_n_s_l_a_t_e_(_) - translates any given string into nonsense
 
-SYNOPSIS
+SSYYNNOOPPSSIISS
        string translate(string str, int prof)
 
-DESCRIPTION
+DDEESSCCRRIIPPTTIIOONN
        Depending on the users linguistic proficiency, specified
        by the second argument, this function takes the string in
        the first argument and turns it into an appropriate degree
        of nonsense.  It is used to handle linguistic
        communication.
 
-EXAMPLES
-       o   translate("this is a string in another language", 2)
+EEXXAAMMPPLLEESS
+       +o   translate("this is a string in another language", 2)
            returns "blurb is bargle bing yellow gurble zing"
 
-       o   translate("this is another string", 10) returns "this
+       +o   translate("this is another string", 10) returns "this
            is another string"
 
-LOCATION
-       /secure/sefun/translate.c
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/translate.c
 
-Author
+AAuutthhoorr
        Descartes of Borg
 
                                                                 1

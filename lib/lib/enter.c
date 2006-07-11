@@ -164,7 +164,3 @@ string GetEnter() {
 	return Enter["room"];
     }
 }
-
-mixed direct_wizlock_obj(){ return 1; }
-mixed direct_wizunlock_obj(){ return 1; }
-

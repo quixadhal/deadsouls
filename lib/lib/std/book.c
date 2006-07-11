@@ -10,7 +10,6 @@ static mapping BookReads = ([]);
 
 string globalstr, globalstr2;
 
-void LoadBook();
 
 void SetTitle(string title){
     if(title) Title = title;
@@ -83,19 +82,16 @@ string eventLoadIndex(){
 
 void create(){
     ::create();
-    call_out( (: LoadBook :), 1);
     SetDefaultRead("Try \"read chapter 1 in book\" or "
       "\"read index in book\"");
 }
 
 void init(){
-    ::init();
-}
-
-void LoadBook(){
     mapping *map_array = this_object()->eventLoadChapters();
+    ::init();
     SetItems(map_array[0]);
     SetReads(map_array[1]);
     AddItem( "index", "This is a list of the chapters in this book.");
     SetRead("index", this_object()->eventLoadIndex());
 }
+

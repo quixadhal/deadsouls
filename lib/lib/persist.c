@@ -5,11 +5,8 @@
  */
 
 #include "include/persist.h"
-#include <config.h>
 
 private int SaveRecurse;
-private static int Retain = RETAIN_ON_QUIT;
-
 mixed *Saved = ({});
 
 string GetShort();
@@ -122,14 +119,3 @@ string GetSaveString() {
 	mp["#inventory#"] = (string *)all_inventory()->GetSaveString() - ({ 0 });
     return save_variable(mp);
 }
-
-int SetRetain(int i){
-    if(i) Retain = 1;
-    else Retain = 0;
-    return Retain;
-}
-
-int GetRetain(){
-    return Retain;
-}
-

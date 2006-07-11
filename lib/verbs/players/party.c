@@ -7,7 +7,7 @@
  *    created by Descartes of Borg 951121
  */
 
-
+#pragma save_binary
 
 #include <lib.h>
 #include <daemons.h>

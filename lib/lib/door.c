@@ -57,7 +57,7 @@ static void create() {
  * Tests to see if a certain player can lock the door with a given
  * key
  */
-mixed CanLock(object who, string foo) {
+mixed CanLock(object who) {
     object room;
 
     if( !(room = environment(who)) ) return 0;

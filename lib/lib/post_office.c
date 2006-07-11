@@ -44,7 +44,7 @@ int CanReceive(object ob) {
     else return room::CanReceive(ob);
 }
 
-int eventReleaseObject(object foo) {
+int eventReleaseObject() {
     object ob;
 
     if( !(ob = previous_object()) ) return room::eventReleaseObject();

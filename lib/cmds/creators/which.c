@@ -1,5 +1,5 @@
 /*    /cmds/creator/which.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls V Object Library
  *    gives you a list of directories in which a command may be found
  *    created by Descartes of Borg 950913
  *    Version: @(#) which.c 1.2@(#)

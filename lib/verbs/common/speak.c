@@ -5,29 +5,29 @@
  *    speak in WRD STR
  */
 
-
+#pragma save_binary
 
 #include <lib.h>
 #include <talk_type.h>
 #include "include/speak.h"
 
-inherit LIB_VERB;
+inherit LIB_DAEMON;
 
 static void create() {
-    verb::create();
-    SetVerb("speak");
-    SetRules("","in WRD","in WRD STR","STR");
+    daemon::create();
+    SetNoClean(1);
+    parse_init();
+    parse_add_rule("speak", "");
+    parse_add_rule("speak", "in WRD");
+    parse_add_rule("speak", "in WRD STR");
+    parse_add_rule("speak", "STR");
 }
 
 mixed can_speak() { return "Speak what? In what language?"; }
 
 mixed can_speak_in_wrd(string str) {
-    mixed ret = this_player()->CanSpeak(0, TALK_LOCAL, "foo", str);
-    if(intp(ret)) {
-	write("You are now speaking in "+capitalize(lower_case(str))+".");
-	return 1;
-    }
-    else return ret;
+    if( str ) return "What do you wish to say?";
+    else return 0;
 }
 
 mixed can_speak_str(string str) {
@@ -35,8 +35,7 @@ mixed can_speak_str(string str) {
 
     if( !str ) return 0;
     if( strlen(str) > 3 && str[0..2] == "in " ) return 0;
-    lang = (string)this_player()->GetDefaultLanguage() || 
-    (string)this_player()->GetNativeLanguage();
+    lang = (string)this_player()->GetNativeLanguage() || "english";
     return (mixed)this_player()->CanSpeak(0, TALK_LOCAL, str, lang);
 }
 
@@ -48,16 +47,12 @@ mixed can_speak_in_wrd_str(string lang, string str) {
 
 mixed do_speak() { return 1; }
 
-mixed do_speak_in_wrd(string str) { 
-    this_player()->SetDefaultLanguage(str);
-    return 1;
-}
+mixed do_speak_in_wrd(string str) { return 1; }
 
 mixed do_speak_str(string str) {
     string lang;
 
-    lang = (string)this_player()->GetDefaultLanguage() ||
-    (string)this_player()->GetNativeLanguage();
+    lang = (string)this_player()->GetNativeLanguage() || "english";
     return do_speak_in_wrd_str(lang, str);
 }
 
@@ -74,11 +69,8 @@ string GetHelp(string str) {
       "Sends the message you specify to all people in the same room "
       "as you.  If you are an avatar, you have the ability to customize "
       "the way these messages come out through the \"message\" "
-      "command.  If you fail to specify a language, your default "
-      "language will be used.\n"
-      "To switch your default language to something other than your "
-      "native language:\n"
-      "speak in FOO\n\n"
+      "command.  If you fail to specify a language, your native "
+      "language will be used.\n\n"
       "See also: message, say, shout, speak, tell");
 }
 

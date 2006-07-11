@@ -74,6 +74,7 @@ string GetStatus(string address){
 }
 
 string GetDestination(string address){
+    string ret = Stargates[address];
     if(sizeof(Stargates[address]) && sizeof(Stargates[address]["destination"]))
 	return Stargates[address]["destination"];
     else return "";

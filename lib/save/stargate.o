@@ -1,2 +1,2 @@
 #/daemon/stargate.c
-Stargates (["campus lab":(["endpoint":"","status":"idle","destination":"/domains/campus/room/slab",]),"tower":(["endpoint":"","status":"idle","destination":"/domains/Ylsrim/room/tower",]),"stargate lab":(["endpoint":"","status":"idle","destination":"/domains/default/room/stargate_lab",]),])
+Stargates (["stargate lab":(["destination":"/domains/default/room/stargate_lab","status":"idle","endpoint":"",]),"tower":(["destination":"/domains/Ylsrim/room/tower","status":"idle","endpoint":"",]),"campus lab":(["destination":"/domains/campus/room/slab","status":"idle","endpoint":"",]),])

@@ -9,7 +9,6 @@
 #define DIR_ACCOUNTS            DIR_DAEMONS_SAVE "/accounts"
 #define DIR_BOARDS              "/secure/save" "/boards"
 #define DIR_CRES                 DIR_DATA "/creators"
-#define DIR_ESTATES            "/estates"
 #define DIR_PLAYERS               DIR_DATA "/players"
 #define DIR_LETTERS             DIR_DATA "/letters"
 #define DIR_SECURE_OBJ         DIR_SECURE "/obj"
@@ -114,6 +113,5 @@
 #define DIR_SHADOWS             "/shadows"
 
 #define DIR_TMP                 "/tmp"
-#define TMP_DIR                 "/tmp"
 
 #endif /* s_dirs_h */

@@ -1,26 +1,26 @@
 
 LOG_FILE(1)                                           LOG_FILE(1)
 
-NAME
-       log_file() - logs a string to a file
+NNAAMMEE
+       _l_o_g___f_i_l_e_(_) - logs a string to a file
 
-SYNOPSIS
+SSYYNNOOPPSSIISS
        void log_file(string fl, string msg)
 
-DESCRIPTION
+DDEESSCCRRIIPPTTIIOONN
        Will write the string passed as the second argument to the
        file passed as the second argument under the log
        directory.  If the object doing the logging is not an
        approved secure object, then the log goes under the etc
        sub-directory of the log directory.
 
-LOCATION
-       /secure/sefun/log_file.c
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/log_file.c
 
-SEE ALSO
-       read_file(), write_file()
+SSEEEE AALLSSOO
+       _r_e_a_d___f_i_l_e_(_), _w_r_i_t_e___f_i_l_e_(_)
 
-Author
+AAuutthhoorr
        Descartes of Borg
 
                                                                 1

@@ -1,28 +1,28 @@
 
 DOMAIN_EXISTS(1)                                 DOMAIN_EXISTS(1)
 
-NAME
-       domain_exists() - returns true if the given string is a
+NNAAMMEE
+       _d_o_m_a_i_n___e_x_i_s_t_s_(_) - returns true if the given string is a
        valid domain
 
-SYNOPSIS
+SSYYNNOOPPSSIISS
        int domain_exists(string dmn)
 
-DESCRIPTION
+DDEESSCCRRIIPPTTIIOONN
        Given any string, this function will return true if the
        string is the name of a valid domain.
 
-EXAMPLES
-       domain_exists("Praxis") returns true if there is a
+EEXXAAMMPPLLEESS
+       _d_o_m_a_i_n___e_x_i_s_t_s("Praxis") returns true if there is a
        directory called "/domains/Praxis"
 
-LOCATION
-       /secure/sefun/domain_exists.c
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/domain_exists.c
 
-SEE ALSO
-       domain(), domain_master()
+SSEEEE AALLSSOO
+       _d_o_m_a_i_n_(_), _d_o_m_a_i_n___m_a_s_t_e_r_(_)
 
-Author
+AAuutthhoorr
        Descartes of Borg
 
                                                                 1

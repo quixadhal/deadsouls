@@ -79,7 +79,7 @@ void eventReceiveChannelMessage(mixed array packet) {
 
     CHAT_D->eventSendChannel(packet[7] + "@" + packet[2], packet[6],
       packet[8]);
-    //if(packet[2] != mud_name()) CHAT_D->eventAddLast(packet[6],"",packet[6],packet[8],packet[7] + "@" + packet[2]);
+    if(packet[2] != mud_name()) CHAT_D->eventAddLast(packet[6],"",packet[6],packet[8],packet[7] + "@" + packet[2]);
 
 }
 
@@ -91,7 +91,7 @@ void eventReceiveChannelEmote(mixed array packet) {
     if( !packet[7] ) return;
     CHAT_D->eventSendChannel(packet[7] + "@" + packet[2], packet[6],
       packet[8], 1, 0, 0);
-    //if(packet[2] != mud_name()) CHAT_D->eventAddLast(packet[6],"",packet[6],packet[7] + "@" + packet[2] + replace_string(packet[8],"$N",""));
+    if(packet[2] != mud_name()) CHAT_D->eventAddLast(packet[6],"",packet[6],packet[7] + "@" + packet[2] + replace_string(packet[8],"$N",""));
 }
 
 void eventReceiveChannelTargettedEmote(mixed array packet) {
@@ -163,14 +163,16 @@ void eventRegisterChannels(mapping list) {
     ns = (string)INTERMUD_D->GetNameserver();
     foreach(channel, val in list) {
 	if( !val ) continue;
-	if( member_array(channel, CHAT_D->GetLocalChannels()) == -1){
+	if( channel == (string)CHAT_D->GetLocalChannel(channel) && 
+	  channel != "dead_test4" && channel != "dead_souls" &&
+	  channel != "lpuni" && channel != "german" ) {
 	    INTERMUD_D->eventWrite(({ "channel-listen", 5, mud_name(), 0, ns, 
-		0, channel, 1 }));
+		0, channel, 0 }));
 	    log_file("channels", "New channel: " + channel + " recognized " +
 	      ctime(time()) + "\nValue: " + identify(val) + "\n\n");
 	}
 	else INTERMUD_D->eventWrite(({ "channel-listen", 5, mud_name(), 0, ns,
-		0, channel, 0 }));
+		0, channel, 1 }));
     }
     tn("eventRegisterChannels: "+identify(list),"green");
 

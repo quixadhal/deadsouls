@@ -92,8 +92,7 @@ static void create() {
     PreventPut = 0;
 }
 
-//mixed direct_put_obj_word_obj(object ob, string wrd, object ob2) {
-mixed direct_put_obj_word_obj() {
+mixed direct_put_obj_word_obj(object ob, string wrd, object ob2) {
     return CanPut(this_player());
 }
 

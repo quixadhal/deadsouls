@@ -26,6 +26,6 @@ mixed cmd(string str) {
 
 int help() {
     message("help", "Syntax: <cat [file]>\n\n"
-      "Displays the contents of the file mentioned all at once.",
+      "Displays the contents of the file mentioned all ate once.",
       this_player());
 }

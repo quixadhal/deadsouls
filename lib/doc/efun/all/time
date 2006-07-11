@@ -1,13 +1,11 @@
-time - return the number of seconds since January 1 1970
+debug_message - send a message to the driver's stdout
 
-int time( void );
+void debug_message(string);
 
-Return the number of seconds since midnight (GMT) January 1, 1970.
+The string argument is printed on the driver's stdout, as well as being added
+to the debug.log file.
 
 See also:
- ctime,
- localtime,
- time_expression,
- uptime
+ ctime
 
  Tim Hollebeek  Beek@ZorkMUD, Lima Bean, IdeaExchange, and elsewhere

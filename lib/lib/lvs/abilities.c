@@ -15,7 +15,7 @@ varargs void eventPrint(string str, mixed args...);
 // end abstract methods
 
 string array GetPrimarySkills();
-varargs void SetSkill(string skill, int level, mixed cls);
+varargs void SetSkill(string skill, int level, int cls);
 
 /* ***************** abilities.c attributes ***************** */
 /* GetBaseSkillLevel() returns the unmodified skill level */
@@ -111,7 +111,7 @@ string array GetPrimarySkills() {
  *
  * returns 1 on success, 0 on failure
  */
-varargs int AddSkill(string skill, int cls, int level) {
+varargs int AddSkill(string skill, int cls) {
     if( !stringp(skill) ) {
 	error("Bad argument 1 to AddSkill().\n\tExpected: string, Got: " +
 	  typeof(skill) + "\n");
@@ -122,13 +122,10 @@ varargs int AddSkill(string skill, int cls, int level) {
     if( !cls ) {
 	cls = 1;
     }
-    if(!level){
-	level = 1;
-    }
     else if( cls < 0 || cls > 4) {
 	return 0;
     }
-    Skills[skill] = ([ "points" : 0, "level" : level, "class" : cls ]);
+    Skills[skill] = ([ "points" : 0, "level" : 0, "class" : cls ]);
     return 1;
 }
 
@@ -159,12 +156,7 @@ void RemoveSkill(string skill) {
  * useful mostly for monster types, probably should have override
  * protections in the user object (should use AddSkill() for users)
  */
-varargs void SetSkill(string skill, int level, mixed cls) {
-    int tmp;
-    if(cls && !intp(cls)) {
-	tmp = 1;
-	cls = tmp;
-    }
+varargs void SetSkill(string skill, int level, int cls) {
     if( !stringp(skill) ) {
 	error("Bad argument 1 to SetSkill().\n\tExpected: string, Got: " +
 	  typeof(skill) + "\n");
@@ -191,7 +183,7 @@ mapping GetSkillsMap(){
     return copy(Skills);
 }
 
-void AddSkillBonus(string skill, mixed f) {
+void AddSkillBonus(string skill, function f) {
     if( !SkillsBonus[skill] ) {
 	SkillsBonus[skill] = ([]);
     }
@@ -218,13 +210,8 @@ int GetSkillBonus(string skill) {
     if( !SkillsBonus[skill] ) {
 	return 0;
     }
-
-    if(intp(SkillsBonus[skill]))
-	return SkillsBonus[skill];
-
     foreach(ob in keys(SkillsBonus[skill])) {
 	if( !ob ) continue;
-	else if(intp(SkillsBonus[skill][ob])) x += SkillsBonus[skill][ob];
 	else x += evaluate(SkillsBonus[skill][ob], skill);
     }
     return x;

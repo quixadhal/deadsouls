@@ -190,7 +190,6 @@ mixed eventCure(object who, int x, string type) {
 	return 0;
     }
     set_heart_beat(0);
-    if(this_object()) this_object()->eventMove(ROOM_FURNACE);
     eventDestruct();
     return 1;
 }
@@ -202,7 +201,7 @@ mixed eventEncounter(object who) {
     if( !query_heart_beat() ) {
 	set_heart_beat(5);
     }
-    if(this_object() && environment(this_object())) eventMultiply();
+    eventMultiply();
     return 1;
 }
 
@@ -213,9 +212,6 @@ mixed eventInfect(object ob) {
     string *bane;
     if(!ob) return;
 
-    if(!this_object()) return 0;
-    if(!ob) return 0;
-    if(!ob->CanReceive(this_object())) return 0;
     race = ob->GetRace();
 
     presbane = present("bane",ob);
@@ -235,11 +231,10 @@ mixed eventInfect(object ob) {
     if(ob->GetNonCarbonBased() == 1) return 0;
 
     if( functionp(Infect) ) {
-	if(!this_object()) return 0;
 	tmp = evaluate(Infect, ob);
 	if( tmp == 1 ) {
 	    eventMove(ob);
-	    if(this_object() && environment(this_object()) != ob) {
+	    if(environment() != ob) {
 		eventMove(ROOM_FURNACE);
 		set_heart_beat(0);
 	    }
@@ -269,7 +264,7 @@ mixed eventMultiply() {
 	//move to the host's environment
 	if(!present(this_object()->GetName(),ob) ) {
 	    germ = new(base_name(this_object()));
-	    if( germ && living(ob)  ) germ->eventInfect(ob);
+	    if( living(ob)  ) germ->eventInfect(ob);
 	    else if(!germ->eventMove(ob)) germ->eventMove(ROOM_FURNACE);
 	}
 
@@ -277,7 +272,7 @@ mixed eventMultiply() {
 	if(!sizeof(get_livings(ob))) return 0;
 	targs = filter(get_livings(ob), (: !query_carrying($1,base_name(this_object())) :) );
 	if(sizeof(targs)) winner = targs[random(sizeof(targs))];
-	if(this_object() && winner) new(base_name(this_object()))->eventInfect(winner);
+	if(winner) new(base_name(this_object()))->eventInfect(winner);
     }
     return 1; 
 }
@@ -318,7 +313,6 @@ static void heart_beat() {
     if(LifeSpan == -1) return;
     LifeSpan -= interval;
     if( LifeSpan < 5 ) {
-	if(this_object()) this_object()->eventMove(ROOM_FURNACE);
 	eventDestruct();
 	return;
     }

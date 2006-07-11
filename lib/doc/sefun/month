@@ -1,26 +1,26 @@
 
 MONTH(1)                                                 MONTH(1)
 
-NAME
-       month() - returns the name of the month at a given time
+NNAAMMEE
+       _m_o_n_t_h_(_) - returns the name of the month at a given time
 
-SYNOPSIS
+SSYYNNOOPPSSIISS
        string month(int x)
 
-DESCRIPTION
+DDEESSCCRRIIPPTTIIOONN
        Given an integer formatted time, this function will return
        the name of the month in MUD time for that time.
 
-EXAMPLES
-       o   month(time()) this moment returns "Altki"
+EEXXAAMMPPLLEESS
+       +o   _m_o_n_t_h(_t_i_m_e_(_)) this moment returns "Altki"
 
-LOCATION
-       /secure/sefun/time.c
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/time.c
 
-SEE ALSO
-       date(), day(), hour(), minutes(), query_night(), year()
+SSEEEE AALLSSOO
+       _d_a_t_e_(_), _d_a_y_(_), _h_o_u_r_(_), _m_i_n_u_t_e_s_(_), _q_u_e_r_y___n_i_g_h_t_(_), _y_e_a_r_(_)
 
-Author
+AAuutthhoorr
        Descartes of Borg
 
                                                                 1

@@ -49,6 +49,6 @@ int IsFollowing(object ob) {
 
 // eventFollow() needs to be overriden by child classes to provide the
 // actual move support.
-int eventFollow(object dest, int fC) { return 0; }
+int eventFollow(object dest, int followChance) { return 0; }
 
 

@@ -9,13 +9,15 @@
 private static int RadiantLight = 0;
 
 int GetRadiantLight(int ambient) {
-    return RadiantLight;
+    if( ambient < 1 ) {
+	return RadiantLight;
+    }
+    else {
+	//return (RadiantLight * 20)/(ambient);
+	return RadiantLight;
+    }
 }
 
 int SetRadiantLight(int x) {
     return (RadiantLight = x);
-}
-
-int GetBaseRadiance(int foo){
-    return RadiantLight;
 }

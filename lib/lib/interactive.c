@@ -31,7 +31,7 @@ inherit LIB_INTERFACE;
 
 private int Age, WhereBlock, Brief, LoginTime, BirthTime, RescueBit;
 private string Password, Email, RealName, Rank, LoginSite, HostSite, WebPage;
-private static string globaltmp;
+private string globaltmp;
 private mapping News;
 private class marriage *Marriages;
 private static int LastAge, Setup;
@@ -67,7 +67,7 @@ int SetRescueBit(int i){
 
 /* ***************  /lib/interactive.c modal functions  *************** */
 
-mixed CanDivorce() {
+mixed CanDivorce(object who) {
     class marriage m;
 
     if( !Marriages || !sizeof(Marriages) )
@@ -77,11 +77,11 @@ mixed CanDivorce() {
     return 1;
 }
 
-mixed CanGet() {
+mixed CanGet(object ob) {
     return GetName() + " is a living being!";
 }
 
-mixed CanMarry() {
+mixed CanMarry(object who, object to_whom) {
     if( !Marriages ) Marriages = ({});
     if( GetSpouse() ) return GetName() + " is currently married!";
     return 1;
@@ -123,10 +123,7 @@ int Setup() {
 	catch(room = load_object(LoginSite));
 	if( room && room->GetMedium() == MEDIUM_AIR ) {
 	}
-	if(!sizeof(LoginSite) || 
-	  (!file_exists(LoginSite) && !file_exists(LoginSite+".c")) || 
-	  !load_object(LoginSite) || !eventMove(LoginSite) || 
-	  RescueBit || !(inherits(LIB_ROOM, load_object(LoginSite)))) {
+	if(!sizeof(LoginSite) || (!file_exists(LoginSite) && !file_exists(LoginSite+".c")) || !load_object(LoginSite) || !eventMove(LoginSite) || RescueBit) {
 	    LoginSite = ROOM_START;
 	    eventMove(ROOM_START);
 	    SetRescueBit(0);
@@ -136,8 +133,8 @@ int Setup() {
     environment()->eventPrint(tmp, MSG_ENV, this_object());
     if( !(tmp = GetMessage("login")) )
 	tmp = GetName() + " enters " + mud_name() + ".";
-    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " logs in]",0);
-
+    filter(users(), (: archp :))->eventPrint("[" + GetCapName() + " logs in]",
+      MSG_SYSTEM);
     if(!catch(mp = (mapping)FOLDERS_D->mail_status(GetKeyName()))) {
 	if(mp["unread"]) {
 	    eventPrint("\n>>> " + mp["unread"] + " of your " +
@@ -159,7 +156,12 @@ static void net_dead() {
     log_file("enter", GetCapName() + " (net-dead): " + ctime(time()) + "\n");
     environment()->eventPrint(GetName() + " suddenly disappears into "
       "a sea of irreality.", MSG_ENV, this_object());
-    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " goes net-dead]",0);
+    filter(users(), (: archp :))->eventPrint("[" + GetCapName() +
+      " goes net-dead]", MSG_SYSTEM);
+    if(file_exists("/secure/room/control")){
+	get_livings(load_object("/secure/room/control"))->eventPrint("[" + GetKeyName()+
+	  " goes net-dead]", MSG_SYSTEM);
+    }
     SNOOP_D->ReportLinkDeath(this_object()->GetKeyName());
     eventMove(ROOM_FREEZER);
     if(query_snoop(this_object()))
@@ -173,7 +175,9 @@ void eventReconnect() {
     LastAge = time();
     HostSite = query_ip_name(this_object());
     eventPrint("Reconnected.", MSG_SYSTEM);
-    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " has rejoined " + mud_name() + "]",0);
+    filter(users(), (: archp :))->eventPrint("[" + GetCapName() + " has "
+      "rejoined " + mud_name() + "]",
+      MSG_SYSTEM);
     if( NetDiedHere ) eventMove(NetDiedHere);
     else eventMove(ROOM_START);
     environment()->eventPrint(GetCapName() + " has rejoined this reality.",
@@ -192,18 +196,7 @@ void eventDescribeEnvironment(int brief) {
 	eventPrint("You are nowhere.", MSG_ROOMDESC);
 	return;
     }
-
-    if(env->GetMount() || base_name(env) == LIB_CORPSE){ 
-	env = environment(environment(this_player()));
-	if(!env){
-	    eventPrint("You are in serious trouble. Ask an admin for help.");
-	    return;
-	}
-	i = GetEffectiveVision(env); 
-    }
-
-    else i =  GetEffectiveVision();
-    switch( i ) {
+    switch( i = GetEffectiveVision() ) {
     case VISION_BLIND:
 	eventPrint("You are blind and can see nothing.");
 	break;
@@ -427,14 +420,8 @@ void eventDescribeEnvironment(int brief) {
 	    if( tmp ) {
 		desc = tmp + desc;
 	    }
-	    if(this_player()->GetProperty("mount")) {
-		if(!sizeof(desc)) desc = "";
-		desc += "\nYou are mounted on "+
-		(this_player()->GetProperty("mount"))->GetShort()+".";
-	    }
 	    if( sizeof(desc) ) {
-		if(check_string_length(desc)) eventPrint(desc + "\n", MSG_ROOMDESC);
-		else print_long_string(this_player(), desc);
+		eventPrint(desc + "\n", MSG_ROOMDESC);
 	    }
 	}
 
@@ -448,7 +435,7 @@ void eventDescribeEnvironment(int brief) {
 	    return object::eventDestruct();
 	}
 
-	mixed eventDivorce() {
+	mixed eventDivorce(object who) {
 	    class marriage m;
 
 	    m = Marriages[0];
@@ -483,11 +470,8 @@ void eventDescribeEnvironment(int brief) {
 	    return x;
 	}
 
-	int cmdQuit() {
+	int cmdQuit(string str) {
 	    string tmp;
-	    object env = environment(this_object());
-	    int retain = RETAIN_ON_QUIT;
-	    if(!env) env = load_object(ROOM_FURNACE);
 
 	    if( previous_object() && !
 	      ((int)master()->valid_apply( ({ GetKeyName() }) )) ) return 0;
@@ -498,20 +482,12 @@ void eventDescribeEnvironment(int brief) {
 		return 1;
 	    }
 	    message("system", "Please come back another time!", this_object());
-	    if(!creatorp(this_object())){
-		foreach(object ob in all_inventory(this_object())){
-		    if((!retain && !ob->GetRetain()) || !ob->GetRetain()) ob->eventMove(env);
-		}
-		foreach(object ob in deep_inventory(this_object())){
-		    if((!retain && !ob->GetRetain()) || !ob->GetRetain()) ob->eventMove(env);
-		}
-	    }
 	    this_player()->AddCarriedMass(-5000);
+	    save_player(GetKeyName());
 	    tmp = GetMessage("logout") || (GetName() + " is gone from this reality!");
 	    message("environment", tmp, environment(this_object()), ({this_object()}));
 	    log_file("enter", GetCapName()+" (quit): "+timestamp()+"\n");
-	    save_player(GetKeyName());
-	    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " quits]",0);
+	    message("announce", "["+GetCapName()+" quits]", filter(users(), (: archp :)));
 	    eventDestruct();
 	    return 1;
 	}
@@ -540,20 +516,19 @@ void eventDescribeEnvironment(int brief) {
 	    else return Email;
 	}
 
-	varargs string array SetId(string *bogus) {
+	void SetId(string *bogus) {
 	    int i;
 
-	    if(UserId) return UserId;
+	    if(UserId) return;
 	    if(!GetCapName()) {
 		UserId = ({ GetKeyName() });
-		return UserId;
+		return;
 	    }
 	    UserId = ({ GetKeyName(), lower_case(GetCapName()) });
 	    if((i=sizeof(bogus = explode(lower_case(GetCapName()), " "))) == 1)
-		return UserId;
+		return;
 	    while(i--)
 		if(!user_exists(bogus[i])) UserId += ({ bogus[i] });
-	    return UserId;
 	}
 
 	string *GetId() { return UserId; }
@@ -645,9 +620,9 @@ void eventDescribeEnvironment(int brief) {
 	    else error("Privilege Violation: " + caller);
 	}
 
-	string SetCapName(string str) {
-	    if( base_name(previous_object(0)) != LIB_CONNECT ) return str;
-	    return object::SetCapName(str);
+	void SetCapName(string str) {
+	    if( base_name(previous_object(0)) != LIB_CONNECT ) return;
+	    object::SetCapName(str);
 	}
 
 	void move_or_destruct() {
@@ -690,10 +665,11 @@ void eventDescribeEnvironment(int brief) {
 	    return HostSite;
 	}
 
-	//void eventLoadObject(mixed *value, int recurse) { }
+	void eventLoadObject(mixed *value, int recurse) { }
 
 	int GetRadiantLight(int ambient) {
-	    return container::GetRadiantLight(ambient);
+	    return (object::GetRadiantLight(ambient) +
+	      container::GetRadiantLight(ambient));
 	}
 
 	string GetWebPage() {

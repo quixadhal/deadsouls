@@ -17,9 +17,7 @@ inherit LIB_CURRENCY;
 inherit LIB_FOLLOW;
 inherit LIB_MAGIC;
 inherit LIB_LEAD;
-//inherit LIB_SMELL;
-inherit "/lib/teach";
-inherit "/lib/learn";
+inherit LIB_SMELL;
 
 private int isPK;
 
@@ -33,34 +31,18 @@ static void create() {
     isPK = 0;
 }
 
+int SetDead(int i){
+    return combat::SetDead(i);
+}
+
 int is_living() { return 1; }
 
 int inventory_accessible() { return 1; }
 
-//int inventory_visible() { return 1; }
+int inventory_visible() { return 1; }
 
 mixed direct_verb_rule(string verb) {
     return SOUL_D->CanTarget(this_player(), verb, this_object());
-}
-
-mixed direct_ride_str(){
-    return this_object()->GetMount();
-}
-
-mixed direct_ride_word_str(){
-    return this_object()->GetMount();
-}
-
-mixed direct_mount_liv(){
-    return this_object()->GetMount();
-}
-
-mixed direct_dismount_liv(){
-    return this_object()->GetMount();
-}
-
-mixed direct_dismount_from_liv(){
-    return this_object()->GetMount();
 }
 
 mixed direct_attack_liv() {
@@ -173,9 +155,13 @@ mixed direct_give_wrd_wrd_to_liv(string num, string curr) {
     return 1;
 }
 
-//mixed direct_look_obj() { return 1; }
+mixed direct_look_obj() { return 1; }
 
-//mixed direct_look_at_obj() { return 1; }
+mixed direct_look_at_obj() { return 1; }
+
+mixed direct_smell_obj(object ob, string id) {
+    return smell::direct_smell_obj(ob,id);
+}
 
 mixed direct_steal_wrd_from_liv(string wrd) {
     if( wrd != "money" ) return 0;
@@ -410,7 +396,7 @@ mixed CanReceiveMagic(int hostile, string spell) {
 varargs mixed CanCastMagic(int hostile, string spell) {
     object env = environment();
 
-    if( !env ) eventPrint("You are nowhere!");
+    if( !env ) "You are nowhere!";
     if( spell && GetProperty("no " + spell) ) {
 	eventPrint("A mysterious forces prevents you from doing that.");
 	return 0;
@@ -428,7 +414,6 @@ varargs mixed CanCastMagic(int hostile, string spell) {
 }
 
 /*     **********     /lib/living.c event methods     **********     */
-
 mixed eventCure(object who, int amount, string type) {
     object array germs = filter(all_inventory(),
       (: $1->IsGerm() && $1->GetType()== $(type) :));
@@ -459,7 +444,7 @@ mixed eventInfect(object germ) {
     return germ->eventInfect(this_object());
 }
 
-varargs mixed eventShow(object who, string str) {
+varargs mixed eventShow(object who, string str, string on_id) {
     who->eventPrint(GetLong(str));
     environment(who)->eventPrint((string)this_player()->GetName() +
       " looks at " + GetShort() + ".",
@@ -633,10 +618,6 @@ int SetPK(int x) { return (isPK = x); }
 
 int GetPK() { return isPK; }
 
-int SetDead(int i){
-    return combat::SetDead(i);
+mixed indirect_look_at_obj_word_obj() {
+    return 0;
 }
-
-//mixed indirect_look_at_obj_word_obj() {
-//    return 0;
-//}

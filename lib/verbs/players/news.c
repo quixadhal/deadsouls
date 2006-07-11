@@ -2,7 +2,7 @@
  *  created by Rush@Dead Souls & Kalinash@Dead Souls
  */
 
-
+#pragma save_binary
 
 #include <lib.h>
 #include "include/news.h"

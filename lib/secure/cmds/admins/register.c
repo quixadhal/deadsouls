@@ -46,7 +46,7 @@ void end_edit(string site) {
 	write("Error in registering site: "+res+"\n");
 
     log_file("watch/register", "\n" + str);
-    write("%^RED%^%^BOLD%^"+site+" is now on registration!");
+    write("%^RED%^%^BOLD%^"+site+" is now on registeration!");
 }
 
 void abort() {

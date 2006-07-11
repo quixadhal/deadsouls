@@ -5,7 +5,7 @@
  *    Last modified: 96/11/03
  */
 
-
+#pragma save_binary
 
 #include <lib.h>
 #include <rounds.h>

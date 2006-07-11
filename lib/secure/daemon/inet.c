@@ -27,21 +27,6 @@ mapping GetServers() {
     return copy(Servers);
 }
 
-int GetServer(string str){
-    if(Servers[str]) return 1;
-    return 0;
-}
-
-int GetService(string str){
-    if(Services[str]) return 1;
-    return 0;
-}
-
-mapping GetServices() {
-    return copy(Services);
-}
-
-
 int AddService(string name, int port_offset, string socket_class, int type) {
     class service s = new(class service);
 
@@ -72,12 +57,12 @@ int RemoveService(string name) {
     return eventSave();
 }
 
-varargs int eventRestartServer(string svc, int forced) {
+int eventRestartServer(string svc) {
     if( !eventStopServer(svc) ) {
-	if(!forced) return 0;
+	return 0;
     }
     if( !eventStartServer(svc) ) {
-	if(!forced) return 0;
+	return 0;
     }
     return 1;
 }
@@ -134,15 +119,3 @@ static void create() {
 	  s->SocketType,  s->SocketClass);
     }
 }
-
-int eventDestruct(){
-    object *servers = filter(objects(), (: base_name($1) == LIB_SERVER :) );
-    eventSave();
-    foreach(object server in servers){
-	if(server && clonep(server)) server->eventDestruct();
-	if(server && clonep(server)) destruct(server);
-    }
-    return daemon::eventDestruct();
-}
-
-

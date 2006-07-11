@@ -20,9 +20,7 @@ varargs void say(mixed str, mixed ob) {
     environment(this_player())->eventPrint(str + "", MSG_ENV, obs);
 }
 
-varargs void tell_object(object ob, mixed str, int mclass){ 
-    ob->eventPrint(str, (mclass || MSG_CONV)); 
-}
+void tell_object(object ob, mixed str) { ob->eventPrint(str, MSG_CONV); }
 
 void tell_player(mixed player, string msg){
     object dude;
@@ -30,6 +28,7 @@ void tell_player(mixed player, string msg){
     if(objectp(player)) str = player->GetKeyName();
     else str = player;
     if(!msg || msg == "") return;
+    //write_file("/tmp/debug.txt",msg+"\n");
     if(!dude = find_player(str) ) return;
     else tell_object(dude, msg);
 }
@@ -47,14 +46,12 @@ varargs void tc(string str, string col, object dude){
     default : prefix = "%^BOLD%^MAGENTA%^";break;
     }
     if(!dude) dude = find_player(DEBUGGER);
-    if(dude){
-	tell_player(dude ,prefix+str+"%^RESET%^");
-	if(dude) flush_messages(dude);
-    }
-    debug_message(str);
+    if(!dude) return;
+    tell_player(dude ,prefix+str+"%^RESET%^");
+    flush_messages(dude);
 }
 
-varargs int tn(string str, string col, object room, int mclass){
+varargs int tn(string str, string col, object room){
     string prefix;
     if(!col) col = "magenta";
     switch(col){
@@ -67,16 +64,12 @@ varargs int tn(string str, string col, object room, int mclass){
     default : prefix = "%^BOLD%^MAGENTA%^";break;
     }
     if(!room) tell_object(load_object(ROOM_NETWORK) ,prefix+str+"%^RESET%^");
-    else {
-	if(!mclass) tell_object(room, prefix+str+"%^RESET%^");
-	else tell_object(room, prefix+str+"%^RESET%^",mclass);
-    }
+    else tell_object(room, prefix+str+"%^RESET%^");
     return 1;
 }
 
-varargs int trr(string str, string col, int mclass){
-    if(!mclass) mclass = 0;
-    tn(str, col, load_object(ROOM_ROUTER), mclass);
+varargs int trr(string str, string col){
+    tn(str, col, load_object(ROOM_ROUTER));
     return 1;
 }
 
@@ -125,3 +118,4 @@ varargs void shout(mixed str, mixed exclude) {
     if(this_player()) exclude += ({ this_player() });
     users()->eventPrint(str + "", MSG_CONV, exclude);
 }
+

@@ -2,7 +2,6 @@
 
 inherit LIB_NPC;
 
-
 int CheckOrc(mixed val){
     if(!val) return 0;
     if(!objectp(val)) return 0;
@@ -10,6 +9,7 @@ int CheckOrc(mixed val){
     else eventForce("growl at "+val->GetKeyName());
     return 1;
 }
+
 static void create() {
     npc::create();
     SetKeyName("orc");
@@ -29,7 +29,4 @@ static void create() {
 	"/domains/town/weap/dagger":"wield dagger",
       ]) );
 
-}
-void init(){
-    ::init();
 }

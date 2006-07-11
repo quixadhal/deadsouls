@@ -5,19 +5,19 @@ static void create();
 int inventory_accessible();
 int inventory_visible();
 
-mixed CanDivorce();
-mixed CanGet();
-mixed CanMarry();
+mixed CanDivorce(object who);
+mixed CanGet(object ob);
+mixed CanMarry(object who, object to_whom);
 
 int Setup();
 static void net_dead();
 void eventReconnect();
 void eventDescribeEnvironment(int brief);
 int eventDestruct();
-mixed eventDivorce();
+mixed eventDivorce(object who);
 mixed eventMarry(object who, object to_whom);
 int eventMove(mixed dest);
-int cmdQuit();
+int cmdQuit(string str);
 int GetAge();
 int GetBirth();
 string query_cwd();
@@ -58,6 +58,6 @@ int GetRadiantLight(int ambient);
 
 void eventLoad(mixed *value, int recurse);
 
-/* pure virtual */ varargs mixed GetEffectiveVision(mixed location, int raw_score);
+/* pure virtual */ varargs mixed GetEffectiveVision(int raw_score, mixed location);
 
 #endif /* l_interactive_h */

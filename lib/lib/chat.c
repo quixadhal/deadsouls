@@ -10,7 +10,6 @@
 
 private string *RestrictedChannels;
 private static mapping Channels;
-int NoChanColors = 0;
 
 static void create() {
     RestrictedChannels = ({ });
@@ -64,8 +63,7 @@ string *AddChannel(mixed val) {
     val = val - RestrictedChannels;
     if(arrayp(val)){
 	foreach(string channel in val){
-	    if(this_player()->GetExtraChannels() &&
-	      member_array(channel,this_player()->GetExtraChannels()) == -1){
+	    if(member_array(channel,this_player()->GetExtraChannels()) == -1){
 		this_player()->AddExtraChannels( ({ channel }) );
 	    }
 	}
@@ -94,16 +92,6 @@ string *RemoveChannel(mixed val) {
 }
 
 string *GetChannels() { return keys(Channels); }
-
-int GetNoChanColors(){
-    return NoChanColors;
-}
-
-int SetNoChanColors(int x){
-    if(x) NoChanColors = 1;
-    else NoChanColors = 0;
-    return NoChanColors;
-}
 
 string *RestrictChannel(mixed val) {
     if( stringp(val) ) val = ({ val });

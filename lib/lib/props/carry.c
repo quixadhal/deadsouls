@@ -8,7 +8,7 @@
 
 #include <config.h>
 
-static int CarriedMass = 0;
+int CarriedMass = 0;
 int MaxCarry    = 0;
 
 int CanCarry(int amount);

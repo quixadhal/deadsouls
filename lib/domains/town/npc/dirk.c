@@ -2,9 +2,9 @@
 
 inherit LIB_SENTIENT;
 
-
 int AdvanceDude(mixed arg);
 mapping advancement;
+
 int TalkFunc(){
     int rand1;
     string thing1, thing2, thing3, thing4, thing5;
@@ -18,14 +18,15 @@ int TalkFunc(){
     thing5 = "Food, drink, and caffeine help restore health and strength.";
 
     switch(rand1){
-    case 0 : eventForce("say "+thing1);break;
-    case 1 : eventForce("say "+thing2);break;
-    case 2 : eventForce("say "+thing3);break;
-    case 3 : eventForce("say "+thing4);break;
-    case 4 : eventForce("say "+thing5);break;
+    case 1 : eventForce("say "+thing1);break;
+    case 2 : eventForce("say "+thing2);break;
+    case 3 : eventForce("say "+thing3);break;
+    case 4 : eventForce("say "+thing4);break;
+    case 5 : eventForce("say "+thing5);break;
     default :  eventForce("smile");
     }
 }
+
 static void create() {
     sentient::create();
     SetKeyName("dirk");
@@ -36,9 +37,6 @@ static void create() {
       "Today he just wants to rest and relax, and has accepted "
       "the position of the town's Adventurers' Guild master. "
       "If you feel you deserve it, \"ask dirk to advance\".");
-    SetInventory(([
-	"/domains/town/armor/collar" : "wear collar",
-      ]));
     SetLevel(15);
     SetRace("human");
     SetGender("male");
@@ -71,10 +69,6 @@ static void create() {
     ]);
 }
 
-void init(){
-    ::init();
-}
-
 int AdvanceDude(mixed arg){
     int level,xp,qp;
     int desired_level,required_xp,required_qp;
@@ -101,6 +95,7 @@ int AdvanceDude(mixed arg){
 	  "I'm sorry but I can't help you.");
 	return 1;
     }
+
 
     xp = this_player()->GetExperiencePoints();
     if(!qp = this_player()->GetQuestPoints()) qp = 0;
@@ -141,11 +136,6 @@ int AdvanceDude(mixed arg){
 	  desired_level+". Please come back and try "
 	  "again once you have fulfilled them.");
     return 0;
-}
-
-string GetLevelTitle(int level){
-    if(!level) level = 1;
-    return advancement[level]["title"];
 }
 
 

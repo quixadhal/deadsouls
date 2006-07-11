@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+inherit "/lib/props/ambiance";
 
 static void create() {
     room::create();

@@ -3,6 +3,8 @@
 
 inherit LIB_SENTIENT;
 
+int Dying, LastHeal;
+
 static void create() {
     ::create();
 }
@@ -41,6 +43,7 @@ varargs int eventDie(object agent) {
 	    }
 	}
     }
+    //call_out( function() { Dying = 0; }, 0);
     this_object()->eventMove(ROOM_FURNACE);
     return 1;
 }
@@ -80,3 +83,21 @@ string GetLong(string nom) {
     }
     return str;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -8,7 +8,7 @@
 
 #include <config.h>
 
-int Mass = 0;
+private int Mass = 0;
 
 int AddMass(int x) {
     if( Mass + x > 0 ) {
@@ -21,8 +21,7 @@ int AddMass(int x) {
 }
 
 int GetMass() {
-    int load = this_object()->GetCarriedMass();
-    return (Mass + load);
+    return Mass;
 }
 
 int SetMass(int x) {

@@ -1,7 +1,6 @@
 #include <lib.h>
 #include <vendor_types.h>
 inherit "/lib/clip";
-
 void create(){
     ::create();
     SetKeyName("9mmclip");
@@ -17,7 +16,4 @@ void create(){
     SetInventory(([
 	"/domains/town/obj/round2" : 15
       ]));
-}
-void init(){
-    ::init();
 }

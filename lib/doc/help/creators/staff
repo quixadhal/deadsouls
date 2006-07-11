@@ -20,7 +20,6 @@ which is /secure/obj/staff.c
    It doesn't have to be a staff. If you prefer it to be a hat, or a
 gold watch, or whatever, feel free to make it so. Just remember that
 the creation object must inherit the modules that the staff inherits, and
-it must answer to the id "tanstaafl", and it must be somewhere in
-/secure. See /secure/obj/glasses.c for an example.
+it must answer to the id "tanstaafl".
 
 

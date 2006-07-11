@@ -12,8 +12,6 @@ static void create() {
     SetLevel(1);
     SetMelee(1);
     SetRace("lizard");
-    SetMaxHealthPoints(10);
-    SetHealthPoints(10);
     SetGender("male");
 }
 void init(){

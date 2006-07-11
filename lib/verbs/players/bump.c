@@ -3,7 +3,7 @@
  *  created by Blitz@Dead Souls
 */
 
-
+#pragma save_binary
 
 #include <lib.h>
 #include <damage_types.h>

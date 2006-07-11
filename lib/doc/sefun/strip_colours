@@ -1,23 +1,23 @@
 
 STRIP_COLOURS(1)                                 STRIP_COLOURS(1)
 
-NAME
-       strip_colours() - strips all colour codes from a string
+NNAAMMEE
+       _s_t_r_i_p___c_o_l_o_u_r_s_(_) - strips all colour codes from a string
 
-SYNOPSIS
+SSYYNNOOPPSSIISS
        string strip_colours(string str)
 
-DESCRIPTION
+DDEESSCCRRIIPPTTIIOONN
        Returns a string free of colour codes.
 
-EXAMPLES
-       o   strip_colours("%^RED%^Descartes tells you:%^RESET%^
+EEXXAAMMPPLLEESS
+       +o   strip_colours("%^RED%^Descartes tells you:%^RESET%^
            hi!") returns "Descartes tells you: hi!"
 
-LOCATION
-       /secure/sefun/strings.c
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/strings.c
 
-Author
+AAuutthhoorr
        Descartes of Borg
 
                                                                 1

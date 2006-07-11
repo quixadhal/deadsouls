@@ -63,8 +63,8 @@ int cmd(string str) {
     for(i=0; i<maxi; i++)
 	show += display_ls(dirs[i], all_files, long_details, time_sort, 
 	  no_load_info, brief, size);
-    if(!moref && check_string_length(show)) previous_object()->eventPrint(show);
-    else print_long_string(this_player(),show);
+    if(moref) previous_object()->more(explode(show, "\n"), "system");
+    else message("system", show, previous_object());
     return 1;
 }
 

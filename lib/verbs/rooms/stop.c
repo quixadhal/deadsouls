@@ -4,17 +4,18 @@
  *    created by Descartes of Borg 951016
  */
 
-
+#pragma save_binary
 
 #include <lib.h>
 #include "include/stop.h"
 
-inherit LIB_VERB;
+inherit LIB_DAEMON;
 
 static void create() {
-    verb::create();
-    SetVerb("stop");
-    SetRules("STR");
+    daemon::create();
+    SetNoClean(1);
+    parse_init();
+    parse_add_rule("stop", "STR");
 }
 
 mixed can_stop_str(string str) { 

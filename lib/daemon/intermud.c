@@ -28,7 +28,6 @@ private static int Connected, Tries;
 
 static void create() {
     client::create();
-    //tc("prev: "+identify(previous_object(-1)),"red");
     Connected = 0;
     Password = 0;
     Tries = 0;
@@ -44,8 +43,6 @@ static void create() {
     Nameservers = ({ ({ "*yatmim", "149.152.218.102 23" }) });
     SetNoClean(1);
     tn("INTERMUD_D reloaded.");
-    tn("Loading object stack: "+get_stack(),"red");
-    tn("Loading object trail: "+identify(previous_object(-1)),"red");
     SetDestructOnClose(1);
     SetSocketType(MUD);
     if(DISABLE_INTERMUD == 1){
@@ -54,9 +51,6 @@ static void create() {
     else call_out( (: Setup :), 2);
 }
 
-void FirstPing(){
-    PING_D->eventPing();
-}
 
 static void Setup() {
     string ip;
@@ -78,7 +72,6 @@ static void Setup() {
 	  mudlib() + " " + mudlib_version(), version(), "LPMud",
 	  MUD_STATUS, ADMIN_EMAIL,
 	  (mapping)SERVICES_D->GetServices(), ([]) }) ), "red");;
-    call_out( (: FirstPing :), 5);
 }
 
 void eventClearVars(){
@@ -244,14 +237,12 @@ static void eventRead(mixed *packet) {
 }
 
 static void eventSocketClose() {
-    //int extra_wait;
+    int extra_wait;
 
-    //This appears to be malfunctioning.
-    //
-    //extra_wait = (Tries++) * 20;
-    //if( extra_wait > 600 ) extra_wait = 600;
-    //Connected = 0;
-    //call_out( (: Setup :), 20 + extra_wait);
+    extra_wait = (Tries++) * 20;
+    if( extra_wait > 600 ) extra_wait = 600;
+    Connected = 0;
+    call_out( (: Setup :), 20 + extra_wait);
 }
 
 static void eventConnectionFailure() {
@@ -266,7 +257,6 @@ int SetSocketType(int x) { return client::SetSocketType(MUD); }
 
 string GetMudName(string mud) {
     string *lc, *uc;
-    mapping mudses = GetMudList();
     int x;
 
     if( MudList->List[mud] ) return mud;
@@ -275,13 +265,7 @@ string GetMudName(string mud) {
 	  else return lower_case(str);
 	});
       x = member_array(lower_case(mud), lc);
-      if( x < 0 ){
-	  foreach(string name in GetMuds()){
-	      //if(mudses[name][1] == mud) return name;
-	      if(mudses[name][1] +" "+mudses[name][2] == mud) return name;
-	  }
-	  return 0;
-      }
+      if( x < 0 ) return 0;
       else return uc[x];
   }
 
@@ -324,12 +308,6 @@ string GetMudName(string mud) {
 	}
 	Banned[mud] = reason;
 	save_object(SAVE_INTERMUD);
-	return 1;
-    }
-
-    int RawSend(string *packet){
-	if(!this_player() || !archp(this_player())) return 0;
-	eventWrite(packet);
 	return 1;
     }
 

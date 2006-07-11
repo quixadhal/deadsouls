@@ -4,7 +4,6 @@
 #include <dirs.h>
 
 #define LIB_AMBIANCE      DIR_PROPS "/ambiance"
-#define LIB_BODY_MASS     DIR_PROPS "/body_mass"
 #define LIB_CARRY         DIR_PROPS "/carry"
 #define LIB_CLEAN         DIR_PROPS "/clean"
 #define LIB_DAMAGE        DIR_PROPS "/damage"

@@ -106,6 +106,60 @@ void eventDescribeEnvironment(int verbose) {
     player::eventDescribeEnvironment(verbose);
 }
 
+varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
+    object *inv;
+    object prev;
+
+    if( prev = environment() ) {
+	if( stringp(dest) ) {
+	    if(dest[0] != '/') {
+		string *arr;
+
+		arr = explode(file_name(prev), "/");
+		dest = "/"+implode(arr[0..sizeof(arr)-2], "/")+"/"+dest;
+	    }
+	}
+	if( !eventMove(dest) ) {
+	    eventPrint("You remain where you are.", MSG_SYSTEM);
+	    return 0;
+	}
+	inv = filter(all_inventory(prev), (: (!GetInvis($1) && living($1) &&
+	      ($1 != this_object())) :));
+	if( !omsg || omsg == "" ) omsg = GetMessage("telout");
+	else if(GetPosition() == POSITION_SITTING ||
+	  GetPosition() == POSITION_LYING ){
+	    omsg = GetName()+" crawls "+omsg+".";
+	}
+	else if(GetPosition() == POSITION_FLYING ){
+	    omsg = GetName()+" flies "+omsg+".";
+	}
+
+	else omsg = GetMessage("leave", omsg);
+	inv->eventPrint(omsg, MSG_ENV);
+    }
+    else if( !eventMove(dest) ) {
+	eventPrint("You remain where you are.", MSG_SYSTEM);
+	return 0;
+    }
+    inv = filter(all_inventory(environment()),
+      (: (!GetInvis($1) && living($1) && ($1 != this_object())) :));
+    if( (!imsg || imsg == "") && (!omsg || omsg == "") )
+	imsg = GetMessage("telin");
+    else if(GetPosition() == POSITION_SITTING ||
+      GetPosition() == POSITION_LYING ){
+	imsg = GetName()+" crawls in.";
+    }
+    else if(GetPosition() == POSITION_FLYING){
+	imsg = GetName()+" flies in.";
+    }
+
+    else if( !imsg || imsg == "" ) imsg = GetMessage("come", imsg);
+    else imsg = replace_string(imsg, "$N", GetName());
+    inv->eventPrint(imsg, MSG_ENV);
+    eventDescribeEnvironment(GetBriefMode());
+    return 1;
+}
+
 static int Destruct() {
     int x;
 
@@ -124,6 +178,8 @@ int Setup() {
 
     laston = GetLoginTime();
     if( !player::Setup() ) return 0;
+    AddChannel(({"cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death","intergossip","intercre" }));
+    AddChannel((string array)CLASSES_D->GetClasses());
     if( archp() ) AddChannel( ({ "admin", "error" }) );
     AddSearchPath( ({ DIR_CREATOR_CMDS, DIR_SECURE_CREATOR_CMDS }) );
     if( file_size(tmp = user_path(GetKeyName()) + "cmds") == -2 )

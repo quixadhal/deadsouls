@@ -1,7 +1,7 @@
 string nom;
 
 int make_workroom(mixed dude) {
-    string cdir, tdir, dir_line, bakdata;
+    string cdir, tdir, dir_line;
 
     if(!dude) return 0;
 
@@ -14,14 +14,12 @@ int make_workroom(mixed dude) {
 	cdir = "/realms/"+nom;
 	tdir = "/realms/template/";
 	dir_line = "#define MY_DIR          \"/realms/"+nom+"\"";
-	bakdata = "workroom.orig : /realms/"+nom+"/workroom.c\n";
 	mkdir(cdir);
 	mkdir(cdir+"/cmds");
 	mkdir(cdir+"/log");
 	mkdir(cdir+"/bak");
 	mkdir(cdir+"/tmp");
 	mkdir(cdir+"/area");
-	mkdir(cdir+"/adm");
 	mkdir(cdir+"/area/room");
 	mkdir(cdir+"/area/weap");
 	mkdir(cdir+"/area/obj");
@@ -30,12 +28,10 @@ int make_workroom(mixed dude) {
 	mkdir(cdir+"/area/etc");
 	mkdir(cdir+"/area/doors");
 	mkdir(cdir+"/area/meals");
-	cp(tdir+"adm/remote.c",cdir+"/adm/remote.c");
 	cp(tdir+"workroom.c", cdir+"/workroom.c");
 	cp(tdir+"workroom.bak", cdir+"/workroom.bak");
 	cp(tdir+"bak/workroom.orig", cdir+"/bak/workroom.orig");
-	//cp(tdir+"bak/bk.db", cdir+"/bak/bk.db");
-	write_file(cdir+"/bak/bk.db",bakdata);
+	cp(tdir+"bak/bk.db", cdir+"/bak/bk.db");
 	cp(tdir+"plan", cdir+"/.plan");
 	cp(tdir+"profile", cdir+"/.profile");
 	cp(tdir+"cmds/custom.c", cdir+"/cmds/custom.c");
@@ -48,9 +44,6 @@ int make_workroom(mixed dude) {
 	cp(tdir+"area/obj/table.c", cdir+"/area/obj/table.c");
 	cp(tdir+"area/obj/key.c", cdir+"/area/obj/key.c");
 	cp(tdir+"area/obj/case.c", cdir+"/area/obj/case.c");
-	cp(tdir+"area/obj/cup.c", cdir+"/area/obj/cup.c");
-	cp(tdir+"area/obj/chest.c", cdir+"/area/obj/chest.c");
-	cp(tdir+"area/obj/pitcher.c", cdir+"/area/obj/pitcher.c");
 	cp(tdir+"area/obj/watch.c", cdir+"/area/obj/watch.c");
 	cp(tdir+"area/npc/fighter.c", cdir+"/area/npc/fighter.c");
 	cp(tdir+"area/armor/chainmail.c", cdir+"/area/armor/chainmail.c");

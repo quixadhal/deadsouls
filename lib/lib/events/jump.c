@@ -34,7 +34,6 @@ varargs mixed AddJump(string name, mixed saute, int type){
 
 
 mixed CanJump(object who, string id, int type) {
-
     if( Jumps[id] && Jumps[id][1] == type ) {
 	return 1;
     }

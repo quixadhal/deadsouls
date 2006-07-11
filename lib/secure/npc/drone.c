@@ -177,5 +177,3 @@ string eDE(int brief) {
     desc += "\n";
     return desc;
 }
-
-int GetDrone() { return 1; }

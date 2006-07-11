@@ -51,18 +51,8 @@ varargs int visibility(object ob) {
 
 mixed check_light(object who) {
     int light;
-    object env;
     if(!who) who = this_player();
-    env = environment(who);
-    if(!env) return "You are nowhere.";
-    if(env->GetMount() || base_name(env) == LIB_CORPSE){
-	env = environment(environment(this_player()));
-	if(!env){
-	    return "You are in serious trouble. Ask an admin for help.";
-	}
-    }
-    light = who->GetEffectiveVision(env);
-    if( light < 3 ) {
+    if( (light = who->GetEffectiveVision()) < 3 ) {
 	return "It's too dark to see.";
     }
     else if( light > 6 ) {

@@ -1,4 +1,4 @@
-
+#pragma save_binary
 
 #include <lib.h>
 #include <daemons.h>
@@ -62,8 +62,7 @@ mixed do_copy_obj_str(object ob, string str) {
     sourcefile = base_name(ob)+".c";
     targetfile = str;
     if(!check_privs(this_player(),str) || 
-      (!check_privs(this_player(),sourcefile) && 
-	strsrch(sourcefile,"/obj/"))){
+      !check_privs(this_player(),sourcefile)){
 	write("You lack sufficient privileges for this operation. Copy failed.");
 	return 0;
     }
@@ -116,7 +115,7 @@ mixed do_copy_str(string str) {
 	return 1;
     }
 
-    if((!check_privs(this_player(),str) && strsrch(str,"/obj/") ) || 
+    if(!check_privs(this_player(),str) || 
       !check_privs(this_player(),base_name(environment(this_player()))+".c")){
 	write("You lack sufficient privileges for this operation. Copy failed.");
 	return 1;

@@ -7,26 +7,6 @@ int count, active, tip, tipnumber, current_tip, hb, mooch, greeting, greetwait;
 int deactivate_bot(string str);
 string *watchlist;
 
-string LongDesc(){
-    string ret;
-    if(!active){
-	ret = "On closer inspection, this attractive "+
-	"young lady is no lady at all...she's an android! "+
-	"She appears to be totally motionless and frozen "+
-	"in place, with a friendly smile. Perhaps you "+
-	"can make her do something by typing: activate bot ";
-    }
-    else {
-	ret = "On closer inspection, this attractive "+
-	"young lady is no lady at all...she's an android! "+
-	"She appears to be in the middle of giving an orientation "+
-	"on this mud, with bizarrely friendly mannerisms. Perhaps you "+
-	"can make her be quiet by typing: deactivate bot ";
-    }
-    return ret;
-}
-
-
 static void create(){
     AddSave(({ "players" }) );
     ::create();
@@ -35,7 +15,11 @@ static void create(){
     SetAdjectives(({"orientation","young","female","polite","pretty","guide","newbie","simple","extremely"}));
     SetGender("female");
     SetShort("a polite young woman");
-    SetLong( (: LongDesc :) );
+    SetLong("On closer inspection, this attractive "+
+      "young lady is no lady at all...she's an android! "+
+      "She appears to be totally motionless and frozen "+
+      "in place, with a friendly smile. Perhaps you "+
+      "can make her do something by typing: activate bot ");
     SetInventory(([
 	"/domains/campus/armor/pillbox_hat" : "wear hat",
 	"/domains/campus/armor/wglove_r" : "wear white right glove",
@@ -87,6 +71,7 @@ varargs int eventGreet(string newbie){
 }
 
 int eventCheckNoob(){
+    mixed tmp;
     object array people;
     people=(get_livings(environment(this_object()),1));
     if(sizeof(people)){
@@ -112,8 +97,8 @@ void init(){
 }
 
 int next_tip(string str){
-    if(!str) return 0;
-    if(str=="") return 0;
+    if(!str) return;
+    if(str=="") return;
     if(str="tip"){
 	if(active != 1) { write("Jennybot is not active."); return 1; }
 	if(tip == tipnumber) ob->eventForce("say Sorry. No more tips.");
@@ -137,10 +122,9 @@ int refreshlist(){
     return 1;
 }
 int deactivate_bot(string str){
-    if(member_array(str, GetId()) == -1){
-	write("Deactivate whut?");
-	return 1;
-    }
+    if(!str) return 0;
+    //if(str != "bot") return 0;
+    if(member_array(str, GetId()) == -1) return 0;
     if( active == 0 ){
 	write("Jennybot is already inactive.");
     }
@@ -182,14 +166,14 @@ int activate_bot(string str){
     return 1;
 }
 int eventAct4(){
-    if(!new("/domains/campus/obj/note")->eventMove(this_object())){
+    if(!new("/domains/campus/obj/list")->eventMove(this_object())){
 	tell_room(environment(this_object()),"Oops! There's a bug, "+
-	  "and I don't have a note for you. Let's pretend I gave you "+
+	  "and I don't have a list for you. Let's pretend I gave you "+
 	  "one and move on. Please email Cratylus about this, though.");
 	return 1;
     }
     if(player && environment(this_object()) == environment(player)) {
-	eventForce("give note to "+player->GetName());
+	eventForce("give list to "+player->GetName());
     }
     return 1;
 }

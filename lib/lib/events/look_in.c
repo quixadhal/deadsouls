@@ -48,7 +48,6 @@ int SetOpacity(int x) {
 
 varargs mixed CanShowInterior(object who, object target) {
     int x;
-    if(!who) who = this_player();
 
     if( environment() != this_player()  && environment(this_player()) !=
       environment()) {

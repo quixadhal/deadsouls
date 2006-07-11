@@ -174,7 +174,7 @@ int GetMaxStatPoints(string stat, int level) {
     }
 }
 
-void AddStatBonus(string stat, mixed f) {
+void AddStatBonus(string stat, function f) {
     if(!StatsBonus[stat]) StatsBonus[stat] = ([]);
     StatsBonus[stat][previous_object()] = f;
 }
@@ -229,15 +229,11 @@ string GetResistance(int type) {
     else return "none";
 }
 
-mapping GetResistanceMap(){
-    return copy(Resistance);
-}
-
 int GetCustomStats() { return CustomStats; }
 
-varargs mixed GetEffectiveVision(mixed location, int raw_score) {
+varargs mixed GetEffectiveVision(mixed raw_score, mixed location) {
     int array l;
-    object env, rider;
+    object env;
     int bonus = GetVisionBonus();
     int a, y, x = 0;
 
@@ -246,13 +242,6 @@ varargs mixed GetEffectiveVision(mixed location, int raw_score) {
 	raw_score = 0;
     }
 
-    if(sizeof(get_livings(this_object())) && 
-      rider = get_random_living(this_object())){
-	if(rider->GetProperty("mount") == this_object() &&
-	  environment(this_object())){
-	    return rider->GetEffectiveVision(environment(this_object()));
-	}
-    }
 
     if(location){
 	if(objectp(location)) env = location;
@@ -266,9 +255,7 @@ varargs mixed GetEffectiveVision(mixed location, int raw_score) {
     if( Blind && !raw_score) {
 	return VISION_BLIND;
     }
-    if( !location ) {
-	env = environment();
-    }
+    if( !location ) env = environment();
     x = GetRadiantLight(0);
     a = env->GetAmbientLight();
     if(x) x = x/2;

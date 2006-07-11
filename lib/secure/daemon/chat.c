@@ -19,8 +19,7 @@ static private mapping Channels;
 static private mapping chanlast;
 
 static private string *local_chans = ({"newbie","cre","gossip","admin","error",
-  "priest", "mage", "explorer", "thief", "fighter", "death", "connections" });
-static string *syschans = ({ "death", "connections" });
+  "priest", "mage", "explorer", "thief", "fighter", "death" });
 
 
 static void create() {
@@ -46,26 +45,14 @@ static void create() {
     local_chans += tmp_arr;
 }
 
-string decolor(string str){
-    string s1 = "", s2, s3, test;
-    int tmp = 2;
-    if(sscanf(str,"%s<%s>%s",s1,s2,s3) != 3) 
-	tmp = sscanf(str,"<%s>%s",s2,s3);
-    if(tmp != 2) return str;
-    else {
-	test = s1+"<"+s2+">%^RESET%^"+strip_colours(s3);
-	return test;
-    }
-}
-
 varargs int CanListen(object who, string canal){
-    if(!RESTRICTED_INTERMUD) return 1;
+    if(RESTRICTED_INTERMUD == 0 || !RESTRICTED_INTERMUD) return 1;
     if(canal && member_array(canal, local_chans) != -1) return 1;
     else return imud_privp(who);
 } 
 
 varargs int CanTalk(object who, string canal){
-    if(!RESTRICTED_INTERMUD) return 1;
+    if(RESTRICTED_INTERMUD == 0 || !RESTRICTED_INTERMUD) return 1;
     if(canal && member_array(canal, local_chans) != -1) return 1;
     else return imud_privp(who);
 }
@@ -173,6 +160,13 @@ int cmdChannel(string verb, string str) {
     else if(last(verb, 1) == ":") varb = replace_string(verb,":","");
     else varb = verb;
 
+    if( verb == "hist" ) {
+	if( !Channels[str] ) return 0;
+	if( member_array(this_player(), Channels[str]) == -1 ) return 0;
+	cmdLast(str);
+	return 1;
+    }
+
     if( verb == "list" ) {
 	string *who;
 	string ch, mud;
@@ -223,18 +217,6 @@ int cmdChannel(string verb, string str) {
     }
     if(!CanTalk(this_player(),verb)){
 	write("You lack privileges to that channel.");
-	return 1;
-    }
-    if( !str || str == "" ) {
-	this_player()->SetBlocked(verb);
-	return 1;
-    }
-    if(member_array(verb, syschans) != -1) {
-	write("This is not a channel for chatting.");
-	return 1;
-    }
-    if(this_player()->GetProperty("gag")){
-	write("You have gag mode enabled. Type: 'gag off' to talk on channels.");
 	return 1;
     }
 
@@ -387,17 +369,21 @@ int cmdChannel(string verb, string str) {
 	rc = GetRemoteChannel(verb);
     }
     if( member_array(this_player(), Channels[verb]) == -1 ) return 0;
-
+    if( !str || str == "" ) {
+	this_player()->SetBlocked(verb);
+	return 1;
+    }
     if( (int)this_player()->GetBlocked(verb) ) {
 	if( (int)this_player()->GetBlocked("all") ) {
 	    this_player()->eventPrint("You cannot chat while totally blocked.",
 	      MSG_ERROR);
 	    return 1;
 	}
+	//this_player()->SetBlocked(verb);
 	this_player()->eventPrint("Turn this channel on to talk on it.", MSG_ERROR);
 	return 1;
     }
-    if( verb == "admin"  || verb == "cre") {
+    if( verb == "admin" || verb=="cre" ) {
 	if( !(name = (string)this_player()->GetCapName()) )
 	    name = capitalize((string)this_player()->GetKeyName());
     }
@@ -408,54 +394,29 @@ int cmdChannel(string verb, string str) {
     if(!grepp(str,"$N") && emote) str = "$N "+str;
 
     eventSendChannel(name, verb, str, emote, target, target_msg);
-    if(member_array(GetRemoteChannel(verb),INTERMUD_D->GetChannels()) != -1){
-	if( ob ) {
-	    SERVICES_D->eventSendChannel(name, rc, str, emote, target,
-	      target_msg);
-	}
-	else {
-	    SERVICES_D->eventSendChannel(name, rc, str, emote, targetkey,
-	      target_msg);          
-	}
+    if( ob ) {
+	SERVICES_D->eventSendChannel(name, rc, str, emote, target,
+	  target_msg);
+    }
+    else {
+	SERVICES_D->eventSendChannel(name, rc, str, emote, targetkey,
+	  target_msg);          
     }
     return 1;
 }
 
 varargs void eventSendChannel(string who, string ch, string msg, int emote,
   string target, string targmsg) {
-    object channeler = find_player(lower_case(who));
     string pchan,pmsg;
     pchan=ch;
-    if(!channeler) channeler = this_player();
-
-    if(this_player() && this_player() != channeler) channeler = this_player();
-
-    if(!strsrch(base_name(previous_object()), "/realms/") ||
-      !strsrch(base_name(previous_object()), "/open/")) {
-	return 0;
-    }
-
-    if(member_array(ch, syschans) != -1) {
-	emote = 0;
-    } 
-    if(channeler){
-	if(!CanTalk(channeler, ch) && member_array(ch, syschans) == -1){
-
-	    return;
-	}
-    }
 
     if( file_name(previous_object()) == SERVICES_D) {
 	ch = GetLocalChannel(ch);
 	if( emote && sizeof(who)) msg = replace_string(msg, "$N", who);
     }
     else if( origin() != ORIGIN_LOCAL && previous_object() != master() &&
-      file_name(previous_object()) != PARTY_D && member_array(ch, syschans) == -1){
-	return;
-    }
-    if(!Channels[ch] && file_name(previous_object()) != SERVICES_D){
-	return;
-    }
+      file_name(previous_object()) != PARTY_D && ch != "death") return;
+    if( !Channels[ch] ) return;
     if( emote ) {
 	object *obs;
 	object ob;
@@ -465,9 +426,6 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	}
 	switch(ch)
 	{
-	case "connections":
-	    this_msg = "%^WHITE%^";
-	    break;
 	case "death":
 	    this_msg = "%^RED%^";
 	    break;
@@ -477,7 +435,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	case "admin":
 	    this_msg = "%^MAGENTA%^";
 	    break;
-	case "dchat":
+	case "intergossip":
 	    this_msg = "%^CYAN%^";
 	    break;
 	case "intercre":
@@ -502,42 +460,37 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	    targmsg = replace_string(targmsg, "$N", who);
 	    targmsg = capitalize(replace_string(targmsg, "$O", "you"));
 	}
+	obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
 	tmp = this_msg + msg;
+	//ch = GetLocalChannel(ch);
 	eventAddLast(ch, tmp, pchan, msg);
-	if(Channels[ch]){
-	    obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
-	    foreach(object listener in obs) {
+	foreach(object listener in obs) {
+	    int ignore;
+	    if(sscanf(who,"%s@%s",suspect,site) < 2) {
+		suspect = who;
+		site = "@"+mud_name();
+	    }
+	    else site = "@"+site;
+	    if( listener == ob ) continue;
+	    if(sizeof(listener->GetMuffed()))
+		foreach(string jerk in listener->GetMuffed()){
+		if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
+		if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
+	    }
+	    if(!ignore && CanListen(listener,ch)) listener->eventPrint(tmp, MSG_CONV);
+	    ignore = 0;
+	}
+	if( member_array(ob, obs) != -1 ) {
+	    if( ob && !((int)ob->GetBlocked(ch)) ) {
 		int ignore;
-		if(sscanf(who,"%s@%s",suspect,site) < 2) {
-		    suspect = who;
-		    site = "@"+mud_name();
-		}
-		else site = "@"+site;
-		if( listener == ob ) continue;
-		if(sizeof(listener->GetMuffed()))
-		    foreach(string jerk in listener->GetMuffed()){
+		tmp = this_msg + targmsg;
+		if(sizeof(ob->GetMuffed()))
+		    foreach(string jerk in ob->GetMuffed()){
 		    if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
 		    if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 		}
-		if(listener->GetNoChanColors()) tmp = decolor(tmp);
-		if(!ignore && CanListen(listener,ch) && !(listener->GetProperty("mute"))) 
-		    listener->eventPrint(tmp, MSG_CHAN);
+		if(!ignore && CanListen(ob,ch)) ob->eventPrint(tmp, MSG_CONV);
 		ignore = 0;
-	    }
-	    if( member_array(ob, obs) != -1 ) {
-		if( ob && !((int)ob->GetBlocked(ch)) ) {
-		    int ignore;
-		    tmp = this_msg + targmsg;
-		    if(sizeof(ob->GetMuffed()))
-			foreach(string jerk in ob->GetMuffed()){
-			if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
-			if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
-		    }
-		    if(ob->GetNoChanColors()) tmp = decolor(tmp);
-		    if(!ignore && CanListen(ob,ch)&& !(ob->GetProperty("mute"))) 
-			ob->eventPrint(tmp, MSG_CHAN);
-		    ignore = 0;
-		}
 	    }
 	}
 	suspect = "";
@@ -548,14 +501,10 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	string tmsg;
 
 	tmsg = who + " ";
-
 	switch(ch)
 	{
 	case "cre":
 	    tmsg += "%^GREEN%^";
-	    break;
-	case "connections":
-	    tmsg += "%^WHITE%^";
 	    break;
 	case "death":
 	    tmsg += "%^RED%^";
@@ -563,7 +512,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	case "admin":
 	    tmsg += "%^MAGENTA%^";
 	    break;
-	case "dchat":
+	case "intergossip":
 	    tmsg += "%^CYAN%^";
 	    break;
 	case "intercre":
@@ -581,34 +530,32 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	default:
 	    tmsg += "%^BLUE%^";
 	}
+
 	tmsg += "<"+ch+">%^RESET%^ " + msg;
 	pmsg = msg;
 	msg = tmsg;
+	//ch = GetLocalChannel(ch);
 	eventAddLast(ch, msg, pchan, pmsg, who);
-	if(Channels[ch]) {
-	    obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
-	    foreach(object ob in obs){
-		int ignore;
-		if(sscanf(who,"%s@%s",suspect,site) < 2) {
-		    suspect = who;
-		    site = "@"+mud_name();
-		}
-		else site = "@"+site;
-
-		if(sizeof(ob->GetMuffed()))
-		    foreach(string jerk in ob->GetMuffed()){
-		    if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
-		    if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
-		}
-		if(ob->GetNoChanColors()) msg = decolor(msg);
-		if(!ignore && CanListen(ob,ch)&& !(ob->GetProperty("mute"))) 
-		    ob->eventPrint(msg, MSG_CHAN);
-
-		ignore = 0;
-		suspect ="";
-		site = "";
+	obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
+	foreach(object ob in obs){
+	    int ignore;
+	    if(sscanf(who,"%s@%s",suspect,site) < 2) {
+		suspect = who;
+		site = "@"+mud_name();
 	    }
+	    else site = "@"+site;
+
+	    if(sizeof(ob->GetMuffed()))
+		foreach(string jerk in ob->GetMuffed()){
+		if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
+		if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
+	    }
+	    if(!ignore && CanListen(ob,ch)) ob->eventPrint(msg, MSG_CONV);
+	    ignore = 0;
+	    suspect ="";
+	    site = "";
 	}
+
     }
 }
 
@@ -626,10 +573,6 @@ string *GetChannelList(string ch) {
 	ret += ({ (string)who->GetName() });
     }
     return ret;
-}
-
-string *GetLocalChannels(){
-    return copy(local_chans);
 }
 
 string GetLocalChannel(string ch) {

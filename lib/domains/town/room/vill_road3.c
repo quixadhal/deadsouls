@@ -1,4 +1,3 @@
-#include <terrain_types.h>
 #include <lib.h>
 inherit LIB_ROOM;
 
@@ -13,7 +12,6 @@ static void create() {
 	({ "building", "buildings" }) : "Structures designed for human occupancy.",
 	({ "hall", "town hall" }) : "This is the modest building where official town business takes place.",
       ]));
-    AddTerrainType(T_ROAD);
     SetExits( ([
 	"south" : "/domains/town/room/postoffice",
 	"west" : "/domains/town/room/vill_road2",

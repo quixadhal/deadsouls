@@ -1,4 +1,3 @@
-#include <terrain_types.h>
 #include <lib.h>
 inherit LIB_ROOM;
 
@@ -20,11 +19,11 @@ static void create() {
 	({ "road", "roads" }) : "This is a simple east-west road that goes east into town and west away from it. Another road, paved with cobblestones, intersects here to the north and leads high toward a fortress in the distance.",
 	"cobblestone road" : "This is where a cobblestone road begins that is built on an steep incline and rises up as it leads north to a high plateau.",
       ]));
-    AddTerrainType(T_ROAD);
-    SetExits( ([ 
-	"east" : "/domains/town/room/road1",
+    SetExits( ([
 	"west" : "/domains/town/room/bridge",
+	"east" : "/domains/town/room/road1",
       ]) );
+    if(mud_name() == "Dead Souls") AddExit("north","/domains/fort/room/f_road4.c");
 
 }
 void init(){

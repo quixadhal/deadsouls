@@ -28,7 +28,6 @@ static int eventCloseSocket() {
 }
 
 int eventRead(mixed data) {
-    //trr("SOCKETREAD: "+identify(data),"cyan");
     if( previous_object() != Owner ) {
 	return 0;
     }
@@ -44,8 +43,6 @@ int eventSocketClosed() {
 }
 
 varargs static int eventWrite(mixed data, int close) {
-    //trr("SOCKETWRITE: data: "+identify(data),"white");
-    //trr("SOCKETWRITE: close: "+identify(close),"white");
     return Owner->eventWrite(this_object(), data, close);
 }
 

@@ -7,13 +7,12 @@ int cmd(string str) {
     object ob;
 
     if( !str || str == "" ) {
-	str = "all";
+	write("Unsnoop whom?\n");
     }
-    else if(!(ob=find_player(str=lower_case(str))) && str != "all"){
+    else if(!(ob=find_player(str=lower_case(str))))
 	write(str+": no such player.\n");
-	return 1;
-    }
-    SNOOP_D->RemoveWatcher(this_player()->GetKeyName(), str);
+    else
+	SNOOP_D->RemoveWatcher(this_player()->GetKeyName(), str);
     write("The snoop daemon has received your request.");
     return 1;
 }

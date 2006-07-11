@@ -209,18 +209,13 @@ void create() {
     s_save = seal::GetSave();
     a_save = i_save + s_save;
 
-    AddSave( ({ "Closed","CanClose", "CanLock", "RecurseDepth" , "MaxRecurseDepth" }) );
+    AddSave( ({ "CanClose", "CanLock", "RecurseDepth" , "MaxRecurseDepth" }) );
     AddSave( a_save );
     holder::create();
     item::create();
     seal::create();
     PutCheck();
 }
-
-string array GetSave() {
-    return item::GetSave();
-}
-
 
 int inventory_accessible() {
     return seal::inventory_accessible();

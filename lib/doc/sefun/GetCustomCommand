@@ -1,0 +1,20 @@
+
+GETCUSTOMCOMMAND(1)                                     GETCUSTOMCOMMAND(1)
+
+NAME
+       GetCustomCommand() - Determines whether a custom command exists.
+
+SYNOPSIS
+       string GetCustomCommand(string str)
+
+DESCRIPTION
+       This sefun is used to ensure that a custom command isn't being spoofed.
+
+LOCATION
+       /secure/sefun/custom_commands.c
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

@@ -2,8 +2,7 @@
 inherit LIB_ROOM;
 
 int PreExit(){
-    if(this_player()->GetLevel() > MAX_NEWBIE_LEVEL && 
-      !creatorp(this_player()) && !present("testchar badge",this_player())){
+    if(this_player()->GetLevel() > 3 && !creatorp(this_player())){
 	if(present("gate guard",this_object())){
 	    present("gate guard",this_object())->eventForce("say You're too big to slip by me now. You're not going to the mansion any more.");
 	}

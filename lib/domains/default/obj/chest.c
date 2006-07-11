@@ -24,7 +24,7 @@ void create() {
       ]));
     SetMass(2000);
     SetBaseCost(50);
-    SetMaxCarry(10000);
+    SetMaxCarry(500);
     SetPreventPut("You cannot put this in there!");
     SetCanClose(1);
     SetClosed(1);

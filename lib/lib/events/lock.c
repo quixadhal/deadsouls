@@ -84,23 +84,15 @@ mixed CanPick(object who, string id) {
     return 1;
 }
 
-varargs mixed CanUnlock(object who, string id, object key) {
+mixed CanUnlock(object who, string id) {
     if( !GetLocked() ) {
 	return "It is already unlocked.";
     }
     return 1;
 }
 
-varargs mixed eventLock(object who, mixed arg1, mixed arg2) {
-    string array ids = ({});
-    object key;
-
-    if(objectp(arg1)) key = arg1;
-    else if(objectp(arg2)) key = arg2;
-    else return "There seems to be a problem with unlocking things.";
-
-    ids = key->GetId();
-    ids += ({ key->GetName() });
+mixed eventLock(object who, object key) {
+    string array ids = key->GetId();
 
     if(key->LockFun(1,key,lower_case(this_object()->GetName()))){
 	return 1;
@@ -187,16 +179,8 @@ varargs mixed eventPick(object who, string id, object tool) {
     return 1;
 }
 
-varargs mixed eventUnlock(object who, mixed arg1, mixed arg2) {
-    string array ids = ({});
-    object key;
-
-    if(objectp(arg1)) key = arg1;
-    else if(objectp(arg2)) key = arg2;
-    else return "There seems to be a problem with unlocking things.";
-
-    ids = key->GetId();
-    ids += ({ key->GetName() });
+mixed eventUnlock(object who, object key) {
+    string array ids = key->GetId();;
 
     if(key->UnLockFun(1,key,lower_case(this_object()->GetName()))){
 	return 1;
@@ -254,5 +238,3 @@ mixed direct_unlock_obj_with_obj(object target, object key, string id) {
     return CanUnlock(this_player(), remove_article(lower_case(id)));
 }
 
-mixed direct_wizlock_obj(){ return 1; }
-mixed direct_wizunlock_obj(){ return 1; }

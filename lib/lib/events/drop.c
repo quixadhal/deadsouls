@@ -6,12 +6,9 @@
  *    Last modified: 96/12/22
  */
 
-#include <lib.h>
 #include <function.h>
-#include <rooms.h>
 
 private mixed PreventDrop = 0;
-private mixed DestructOnDrop = 0;
 
 // abstract methods
 string GetDefiniteShort();
@@ -27,14 +24,6 @@ mixed SetPreventDrop(mixed val) {
 	error("Bad argument 1 to SetPreventDrop().\n");
     }
     return (PreventDrop = val);
-}
-
-int GetDestructOnDrop() {
-    return DestructOnDrop;
-}
-
-int SetDestructOnDrop(int val) {
-    return (DestructOnDrop = val);
 }
 
 mixed CanDrop(object who) {
@@ -70,10 +59,7 @@ mixed eventDrop(object who) {
     if( who != environment() ) {
 	return 0;
     }
-
-    if(DestructOnDrop) tmp = eventMove(ROOM_FURNACE);
-    else tmp = eventMove(environment(who));
-
+    tmp = eventMove(environment(who));
     if( !tmp ) {
 	who->eventPrint("Something prevents you from dropping "
 	  + GetDefiniteShort() + ".");
@@ -84,7 +70,6 @@ mixed eventDrop(object who) {
     }
     send_messages("drop", "$agent_name $agent_verb $target_name.",
       who, this_object(), environment(who));
-    if(DestructOnDrop) tell_room(environment(who),capitalize(this_object()->GetShort())+" vanishes in a flash of light!");
     return 1;
 }
 

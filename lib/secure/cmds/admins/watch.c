@@ -9,17 +9,17 @@ int cmd(string str) {
     if(!archp(previous_object())) return 0;
     if(!str) {
 	notify_fail("Watch which name or site?\n");
-	return 1;
+	return 0;
     }
     if(sscanf(str, "%s %s", which, nom) != 2) {
 	notify_fail("Correct syntax: <watch [name|site] [ip or name]>\n");
-	return 1;
+	return 0;
     }
     if(which == "name") BANISH_D->watch_name(nom);
     else if(which == "site") BANISH_D->watch_site(nom);
     else {
 	notify_fail("Undefined watch type: "+str+"\n");
-	return 1;
+	return 0;
     }
     message("info", nom+" is now an watched "+which, this_player());
     return 1;

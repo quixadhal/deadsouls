@@ -1,31 +1,31 @@
 
 BASE_NAME(1)                                         BASE_NAME(1)
 
-NAME
-       base_name() - returns the name of the object's original
+NNAAMMEE
+       _b_a_s_e___n_a_m_e_(_) - returns the name of the object's original
        file
 
-SYNOPSIS
+SSYYNNOOPPSSIISS
        string base_name(mixed val)
 
-DESCRIPTION
-       If you pass an object name (returned by the file_name()
+DDEESSCCRRIIPPTTIIOONN
+       If you pass an object name (returned by the _f_i_l_e___n_a_m_e_(_)
        efun) or an object itself, this function will return the
        name of the original file from which the object was loaded
-       or cloned.  For master copies, the base_name() will equal
-       the file_name().  For clones, the file_name() will be the
-       base_name() plus an extension.
+       or cloned.  For master copies, the _b_a_s_e___n_a_m_e_(_) will equal
+       the _f_i_l_e___n_a_m_e_(_).  For clones, the _f_i_l_e___n_a_m_e_(_) will be the
+       _b_a_s_e___n_a_m_e_(_) plus an extension.
 
-EXAMPLES
-       base_name(find_living("orc")) might return "/std/monster"
+EEXXAAMMPPLLEESS
+       _b_a_s_e___n_a_m_e(find_living("orc")) might return "/std/monster"
 
-LOCATION
-       /secure/sefun/base_name.c
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/base_name.c
 
-SEE ALSO
-       file_name()
+SSEEEE AALLSSOO
+       _f_i_l_e___n_a_m_e_(_)
 
-Author
+AAuutthhoorr
        Descartes of Borg
 
                                                                 1

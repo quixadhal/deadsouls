@@ -4,6 +4,7 @@
  *    affect them
  *    created by Descartes of Borg 950121
  *    Version: @(#) body.c 1.24@(#)
+ *    Last Modified: 96/12/21
  */
 
 #include <lib.h>
@@ -18,13 +19,11 @@
 #include <magic_protection.h>
 #include "include/body.h"
 
+inherit LIB_PERSIST;
 inherit LIB_POSITION;
 inherit LIB_UNDEAD;
 inherit LIB_CRAWL;
 inherit LIB_FLY;
-inherit LIB_MOUNT;
-inherit LIB_BODY_MASS;
-inherit LIB_PERSIST;
 
 #define COLLAPSE_AT            10.0
 
@@ -39,15 +38,17 @@ private static function Protect;
 private static mapping WornItems;
 private static class MagicProtection *Protection;
 static private int HeartModifier = 0;
+float MoJo;
 private static string PoliticalParty, BodyComposition;
 private static int Pacifist, rifleshot_wounds, gunshot_wounds, globalint1;
-private static int Size, Respiration, BodyType;
 string *ExtraChannels;
 mixed Agent;
 
-string GetRace();
-
 static void create() {
+    AddSave( ({ "Pacifist", "BodyComposition", "HealthPoints", "MagicPoints", "ExperiencePoints", "QuestPoints","StaminaPoints", "Undead",
+	"Limbs", "MissingLimbs", "WornItems" }) );
+    AddSave(({"ExtraChannels","MoJo", "PoliticalParty", "rifleshot_wounds", "gunshot_wounds" }));
+    MoJo = 0;
     PoliticalParty = "UNDECIDED";
     rifleshot_wounds = 0;
     gunshot_wounds = 0;
@@ -73,46 +74,6 @@ varargs mixed eventBuy(mixed arg1, mixed arg2, mixed arg3){
     write(capitalize(this_object()->GetShort())+" isn't buying anything from you.");
     return 1;
 }
-
-int GetMass(){
-    int base_mass = RACES_D->GetRaceMass(GetRace());
-    return base_mass + body_mass::GetBodyMass();
-}
-
-int GetSize(){
-    int size = RACES_D->GetRaceSize(GetRace());
-    if(Size) return Size;
-    return size;
-}
-
-int GetRespiration(){
-    int resp = RACES_D->GetRaceRespirationType(GetRace());
-    if(Respiration) return Respiration;
-    return resp;
-}
-
-int GetBodyType(){
-    int body_type = RACES_D->GetRaceBodyType(GetRace());
-    if(BodyType) return BodyType;
-    return body_type;
-}
-
-int SetMass(int i){
-    return body_mass::SetBodyMass(i);
-}
-
-int SetSize(int i){
-    return Size = i;
-}
-
-int SetRespiration(int i){
-    return Respiration = i;
-}
-
-int SetBodyType(int i){
-    return BodyType = i;
-}
-
 
 int GetEncumbrance(){
     int encumbrance = 0;
@@ -205,19 +166,15 @@ static void heart_beat() {
 	    if( Protection[i]->time && (--Protection[i]->time < 1) )
 		RemoveMagicProtection(i);
     }
-    if( env && (i = env->GetPoisonGas()) > 0 ) {
-	if( GetResistance(GAS) != "immune" ) {
+    if( env && (GetResistance(GAS) != "immune") ) {
+	if( (i = env->GetPoisonGas()) > 0 ) {
 	    eventPrint("You choke on the poisonous gases.");
 	    eventReceiveDamage(0, GAS, i);
 	}
     }
     eventCheckHealing();
-    if(!stringp(hobbled(this_player()))) {
-	eventFall();
-    }
-    if(this_object()->GetPosition() == POSITION_FLYING && !this_object()->CanFly()){
-	eventFall();
-    }
+    if(!stringp(hobbled(this_player()))) eventFall();
+    if(this_object()->GetPosition() == POSITION_FLYING && !this_object()->CanFly()) eventFall();
 }
 
 void eventReconnect() {
@@ -271,14 +228,6 @@ void eventCheckHealing() {
     int x, y;
     object dude;
     dude = this_object();
-
-    //This resets the parser counter.
-    this_object()->DoneTrying();
-
-    if(HealthPoints < 1) {
-	this_object()->eventDie(previous_object());
-	return;
-    }
 
     x = GetHeartRate() * 10;
 
@@ -694,20 +643,16 @@ varargs int eventDie(mixed agent) {
 	//I'd like to move the living body out first, but for now this
 	//misfeature stays.
 	//this_object()->eventMove(ROOM_VOID);
-
-	if(GetRace() == "android" || GetRace() == "bot" ) ob = new(LIB_BOT_CORPSE);
-	else if(member_array(GetRace(), RACES_D->GetNonMeatRaces()) != -1) {
-	    ob = crime_scene;
-	    if(GetBodyComposition()){
-		ob = new(LIB_CLAY);
-		ob->SetComposition(GetBodyComposition());
-	    }
+	if(GetRace() == "golem") {
+	    ob = new(LIB_CLAY); 
+	    if(GetBodyComposition()) ob->SetComposition(GetBodyComposition());
 	}
-	else {
-	    ob = new(LIB_CORPSE);
+	else { 
+	    if(GetRace() == "android") ob = new(LIB_BOT_CORPSE);
+	    else ob = new(LIB_CORPSE);
 	    ob->SetCorpse(this_object());
 	}
-	if(ob != crime_scene) ob->eventMove(crime_scene);
+	ob->eventMove(crime_scene);
 	obs = filter(all_inventory(), (: !((int)$1->GetRetainOnDeath()) :));
 	i = sizeof(obs);
 	obs->eventMove(ob);
@@ -1182,7 +1127,7 @@ varargs int eventDie(mixed agent) {
 		if(GetBodyComposition()) objict->SetComposition(GetBodyComposition());
 	    }
 	    else {
-		if(GetRace() == "android" || GetRace() == "bot") objict = new(LIB_BOT_LIMB);
+		if(GetRace() == "android") objict = new(LIB_BOT_LIMB);
 		else objict = new(LIB_LIMB);
 		objict->SetLimb(limb, GetCapName(), GetRace());
 		objict->SetId( ({ limb, limbname, "limb" }));
@@ -1220,7 +1165,7 @@ varargs int eventDie(mixed agent) {
 		if(GetBodyComposition()) ob->SetComposition(GetBodyComposition());
 	    }
 	    else {
-		if(GetRace() == "android" || GetRace() == "bot") ob = new(LIB_BOT_LIMB);
+		if(GetRace() == "android") ob = new(LIB_BOT_LIMB);
 		else ob = new(LIB_LIMB);
 		ob->SetLimb(limb, GetCapName(), GetRace());
 		ob->SetId( ({ limb, limbname, "limb" }));
@@ -1341,7 +1286,7 @@ varargs int eventDie(mixed agent) {
 	float h;
 
 	str = "";
-	exempt = ({"bot","android","tree","plant"});
+	exempt = ({"android","tree","plant"});
 
 	if(member_array(this_object()->GetRace(),exempt) == -1 &&
 	  !this_object()->GetUndead() ) {
@@ -1461,12 +1406,11 @@ varargs int eventDie(mixed agent) {
      */
 
     varargs static int AddHealthPoints(int x, string limb, object agent) {
-	int y = 0;
+	int y;
 
 	if( limb ) {
 	    if( !Limbs[limb] ) return -1;
 	    y = GetMaxHealthPoints(limb);
-	    if(y < 1) return y;
 	    if((Limbs[limb]["health"] += x) < 1) Limbs[limb]["health"] = 0;
 	    else if(Limbs[limb]["health"] > y)
 		Limbs[limb]["health"] = y;
@@ -1532,6 +1476,17 @@ varargs int eventDie(mixed agent) {
      *
      * returns the remaining number of stamina points
      */
+
+    float AddMoJo(mixed x){
+	if( !intp(x) && !floatp(x) )
+	    error("Bad argument 1 to AddMojo().\n");
+	if( intp(x) ) x = to_float(x);
+	if((MoJo += x) < 0.1) MoJo = 0.0;
+	if(MoJo > 100) MoJo = 100;
+	return MoJo;
+    }
+
+    float GetMoJo() { return MoJo; }
 
     int AddLead(string ammo,int number){
 	if( !intp(number) ) error("Bad argument 2 to AddLead().\n");
@@ -1724,11 +1679,11 @@ varargs int eventDie(mixed agent) {
     }
 
     int AddHP(int hp){
-	AddHealthPoints(hp);
+	this_object()->AddHealthPoints(hp);
 	return hp;
     }
 
-    string GetAffectLong(){
+    string GetAffectLong(object ob){
 	object dude;
 	string ret;
 	int alclevel;

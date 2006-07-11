@@ -13,9 +13,9 @@ thief - channel for the thief class
 fighter - channel for the fighter class
 error - system errors
 death - death announcements
-mage - channel for the mage class
-priest - channel for the priest class
-explorer - channel for the explorer class
+mage - channel for the thief class
+priest - channel for the thief class
+explorer - channel for the thief class
 admin - only admins hear this
 
 The following are intermud channels:
@@ -23,7 +23,6 @@ The following are intermud channels:
 ds - Dead Souls mud code talk
 ds_test - testing testing 1, 2, 3, etc
 intergossip - general offtopic stuff
-dchat - friendly offtopic stuff
 lpuni - LPUniversity discussion
 intercre - general technical chatter
 
@@ -48,13 +47,9 @@ local rules are in place, that's what must be obeyed.
 
 Some tips:
 ---------
-To turn on/off a channel, type its name by itself, like this: 
-newbie
+To turn on/off a channel, type its name by itself, like this: newbie
 
-To know who is listening to a channel: 
-list newbie
-list german@dead souls demo
+To know who is listening to a channel: list newbie
 
-To see a brief history of channel messages: 
-hist newbie
+To see a brief history of channel messages: hist newbie
 

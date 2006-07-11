@@ -5,10 +5,9 @@ static void send_mudlist_updates(string updating_mudname, int old_mudlist_id){
     string *kys; // array of strings for keys that need to be sent
     mapping out=([ ]); // mapping to send
     int i; // counter
-    mudinfo_update_counter++;
-    //trr("old_mudlist_id: "+old_mudlist_id,"blue");
-    //trr("updating_mudname: "+updating_mudname,"blue");
-    //trr("send_mudlist_updates, updating_mudname="+updating_mudname+", old_mudlist_id="+old_mudlist_id,"blue");
+    trr("old_mudlist_id: "+old_mudlist_id,"blue");
+    trr("updating_mudname: "+updating_mudname,"blue");
+    trr("send_mudlist_updates, updating_mudname="+updating_mudname+", old_mudlist_id="+old_mudlist_id,"blue");
     foreach(mudname in keys(mudinfo_updates)){
 #ifndef SEND_WHOLE_MUDLIST
 	if(mudinfo_updates[mudname]>old_mudlist_id){ // needs updating
@@ -64,7 +63,7 @@ static void send_mudlist_updates(string updating_mudname, int old_mudlist_id){
     // take an idea from /cmds/std/_semote.c
     kys=keys(out);
     for(i=0;i<sizeof(kys)-10;i+=10){ // leave a group of size between 1 and 10 remaining
-	//trr("sending a set of 10...");
+	trr("sending a set of 10...");
 	// send all the ones except the last one, doing 10 at a time,
 	// but give them their original mudlist id, in case they get
 	// disconnected before all the sets of 10 get finished
@@ -75,8 +74,7 @@ static void send_mudlist_updates(string updating_mudname, int old_mudlist_id){
 	    0,
 	    updating_mudname,
 	    0,
-	    //old_mudlist_id,
-	    (random(9999) * random(999)),
+	    old_mudlist_id,
 	    ([	kys[i]: out[kys[i]],
 	      kys[i+1]: out[kys[i+1]],
 	      kys[i+2]: out[kys[i+2]],

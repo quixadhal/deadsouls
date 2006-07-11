@@ -15,34 +15,23 @@ int help();
 int
 cmd(string str) {
     string t1, t2, *tmp;
-    int force = 0;
     if(this_player()->GetForced()) {
 	write("Someone tried forcing you to mv "+str+"\n");
 	return 1;
-    }
-
-    if(!str || !sizeof(str)){
-	return help();
-    }
-
-    if(sscanf(str,"-f %s %s",t1,t2) == 2) {
-	force = 1;
-	str = t1+" "+t2;
     }
     if(!str||sscanf(str,"%s %s",t1,t2)!=2) {
 	/* We should add checks for flags here. */
 	return help();  
     } else {
-	if(!force){
-	    if(file_size(t2=absolute_path((string)this_player()->query_cwd(),t2)) > 0)
-	    {
-		notify_fail("mv: "+t2+" already exists.\n");
-		return 0;
-	    }
+	//#if 0
+	if(file_size(t2=absolute_path((string)this_player()->query_cwd(),t2)) > 0)
+	{
+	    notify_fail("mv: "+t2+" already exists.\n");
+	    return 0;
 	}
-	t1=absolute_path((string)this_player()->query_cwd(),t1);
+	//#endif
 	t2=absolute_path((string)this_player()->query_cwd(),t2);
-	rename(t1,t2);
+	rename(t1=absolute_path(this_player()->query_cwd(),t1),t2);
 	if(file_size(t2) == -2) {
 	    tmp = explode(t1, "/");
 	    t2 += "/" + tmp[sizeof(tmp)-1];
@@ -58,10 +47,7 @@ int help() {
     write(
       "Syntax:\nmv <file1> <file2|directory>\n" +
       "Renames a file or moves it into the directory specified.\n" +
-      "The -f flag forces the overwriting of an existing file.\n\n"+
-      "Examples:\n"+
-      "mv -f workroom.bak workroom.c\n"+
-      "mv workroom.bak /tmp/");
+      "It wont overwrite an existing file.\n");
     return 1;
 }
 

@@ -12,8 +12,6 @@
 
 private mixed   ExternalDesc = 0;
 private int     Invisible    = 0;
-private static string  look_globalval;
-static function f;
 //private mapping Items        = ([]);
 mapping Items        = ([]);
 
@@ -103,28 +101,6 @@ varargs mixed AddItem(mixed item, mixed val) {
     return (Items[item]);
 }
 
-//TMI2 back-compat hack
-mixed AddItem_func(mixed foo){
-    foreach(mixed key, mixed val in foo){
-	look_globalval = val;
-	AddItem(key, (: look_globalval :) );
-    }
-    return foo;
-}
-
-mixed SetItem_func(mixed foo){
-    foreach(mixed key, mixed val in foo){
-	look_globalval = val;
-	//f =  call_other(this_object(), look_globalval);
-	f =  functionify(look_globalval);
-	//AddItem(key,  (: look_globalval :) );
-	call_other( this_object(), ({ "AddItem", key,  (: f :) }) );
-	//call_out( AddItem, 1, key, (: look_globalval :) );
-    }
-    return foo;
-}
-
-
 varargs mixed GetItem(string item, object who) {
     mixed val = mapping_member(Items, item);
 
@@ -159,22 +135,14 @@ mapping RemoveItem(mixed item) {
 	    error("Bad argument 1 to RemoveItem().\n");
 	}
 	map(item, (: RemoveItem($1) :));
-	return copy(Items);
+	return Items;
     }
     map_delete(Items, item);
-    return copy(Items);
+    return Items;
 }
 
 mapping SetItems(mapping items) {
-    foreach(mixed key, mixed val in items){
-	AddItem(key, val);
-    }
-    return copy(Items);
-}
-
-//TMI2 compat hack
-mapping SetItem_desc(mapping items) {
-    return SetItems(items);
+    return (Items = copy(items));
 }
 
 varargs string GetLong(string str) {
@@ -191,7 +159,7 @@ string SetLong(string str) {
 }
 
 varargs mixed eventShow(object who, string component) {
-    mixed desc;
+    string desc;
 
     if( component ) {
 	component = remove_article(lower_case(component));
@@ -211,56 +179,26 @@ varargs mixed eventShow(object who, string component) {
       (!sizeof(this_object()->GetLiers()) && !sizeof(this_object()->GetSitters()))){
 	if(inherits(LIB_SURFACE,this_object()) ||
 	  this_object()->GetOpacity() < 33){
-	    (functionp(desc) ? evaluate(desc) : who->eventPrint(desc));
+	    who->eventPrint(desc);
 	    this_object()->eventShowInterior(who);
 	}
-	else (functionp(desc) ? evaluate(desc) : who->eventPrint(desc));
+	else who->eventPrint(desc);
     }
-    else (functionp(desc) ? evaluate(desc) : who->eventPrint(desc));
+    else who->eventPrint(desc); 
     return 1;
 }
 
 mixed direct_look_obj() {
     object env = environment();
-    if(!this_object()->GetInvis()){
-	if( env != this_player() && env != environment(this_player()) ) {
-	    return "#Perhaps \"look at "+this_object()->GetKeyName()+
-	    " on\" something?"; 
-	}
+
+    if( env != this_player() && env != environment(this_player()) ) {
+	return "#You can't get to it to look at it.";
     }
     return 1;
 }
 
 mixed direct_look_at_obj() {
     return direct_look_obj();
-}
-
-mixed direct_look_at_obj_on_obj(object target, object ob,mixed arg) {
-    if(!ob) ob=environment(target);
-    //tc("arg: "+identify(arg),"cyan");
-    //tc("ob: "+identify(ob),"cyan");
-    //tc("target: "+identify(target),"cyan");
-    if((inherits(LIB_SIT,ob) && sizeof(ob->GetSitters())) ||
-      (inherits(LIB_LIE,ob) && sizeof(ob->GetLiers()))){
-	write("There appears to be someone blocking your view.");
-	//tc("gamma","yellow");
-	return 0;
-    }
-
-    if(!target->GetInvis()){
-	if((inherits(LIB_SURFACE,ob) || living(ob)) && 
-	  environment(target) == ob){
-	    if(this_player()->GetEffectiveVision() == VISION_CLEAR){
-		return target->GetExternalDesc();
-	    }
-	    else return "#You can't quite make out its details.";
-	}
-    }
-    if( environment(target) != ob || target->GetInvis() ) {
-	//tc("omega","red");
-	return "#There is no " + arg + " on " + ob->GetShort() + ".";
-    }
-    return 1;
 }
 
 mixed direct_look_at_obj_word_obj() {
@@ -270,7 +208,7 @@ mixed direct_look_at_obj_word_obj() {
 mixed direct_look_at_str_on_obj(string str, object target) {
     object dingus;
     str = remove_article(lower_case(str));
-    //tc("eh","cyan");
+
     if((inherits(LIB_SIT,target) && sizeof(target->GetSitters())) ||
       (inherits(LIB_LIE,target) && sizeof(target->GetLiers()))){
 	write("There appears to be someone blocking your view.");
@@ -288,5 +226,3 @@ mixed direct_look_at_str_on_obj(string str, object target) {
     }
     return 1;
 }
-
-

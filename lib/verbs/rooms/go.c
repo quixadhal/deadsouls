@@ -5,7 +5,7 @@
  *    created by Descartes of Borg 951104
  */
 
-
+#pragma save_binary
 
 #include <lib.h>
 #include "include/go.h"

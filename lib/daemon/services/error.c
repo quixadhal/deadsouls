@@ -9,22 +9,21 @@ void eventReceiveError(mixed *packet) {
     string error_code, mud, target, msg;
 
     tn("ERROR RECEIVED: "+identify(packet));
-    log_file("errors/intermud",timestamp()+" "+identify(packet)+"\n");
+
     if( packet[5] ) {
-	tn("exceptio probat regulam");
 	target = convert_name(packet[5]);
-	if( !(ob = find_player(target)) ) write("Can't find "+packet[5]);;
+	if( !(ob = find_player(target)) ) return;
     }
     mud = packet[2];
     error_code = packet[6];
     msg = packet[7];
     packet = packet[8];
-    tn("errorcode: "+error_code);
     switch(error_code) {
-    case "unk-src":
-	update("/daemon/intermud");
+    case "unk-dst": case "not-imp": case "unk-type": case "unk-src":
+	log_file("errors/intermud", error_code + ": " + msg + "\n");
 	return;
-    case "unk-dst": case "not-imp": case "unk-type":
+    case "unk-type":
+	log_file("errors/intermud", error_code + ": " + msg + "\n");
 	return;
     case "unk-user":
 	if( !ob ) return;

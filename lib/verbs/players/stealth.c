@@ -6,12 +6,13 @@
 #include <lib.h>
 #include "include/stealth.h"
 
-inherit LIB_VERB;
+inherit LIB_DAEMON;
 
 static void create() {
-    verb::create();
-    SetVerb("stealth");
-    SetRules("","WRD");
+    ::create();
+    parse_init();
+    parse_add_rule("stealth","");
+    parse_add_rule("stealth","WRD");
 }
 
 mixed can_stealth() {

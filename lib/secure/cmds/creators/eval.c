@@ -13,7 +13,8 @@ inherit LIB_DAEMON;
 int cmd( string a )
 {
     string file, filename;
-    mixed ret;
+    mixed err, ret;
+    string x,y;
 
     if(!member_group(previous_object(), PRIV_SECURE)) {
 	log_file("adm/eval", query_privs(previous_object())
@@ -38,17 +39,11 @@ int cmd( string a )
     "#include <armor_types.h>\n"+
     "#include <damage_types.h>\n"+
     "#include <position.h>\n"+
-    "#include <runtime_config.h>\n"+
-    "#include <terrain_types.h>\n"+
-    "#include <body_types.h>\n"+
-    "#include <size_types.h>\n"+
-    "#include <respiration_types.h>\n"+
-    "#include <message_class.h>\n"+
     "inherit LIB_ITEM;\n"+
     "mixed eval() { " + a + "; }\n"+
     "";
     filename = user_path((string)previous_object()->GetKeyName());
-    if( file_size( filename ) != -2 && !securep(previous_object()) ) {
+    if( file_size( filename ) != -2 ) {
 	notify_fail( "You must have a valid home directory!\n" );
 	return 0;
     }

@@ -38,7 +38,7 @@ void eventWeaponAttack(object target, object weapon, int num);
 int eventMeleeRound(mixed target, function f);
 void eventMeleeAttack(object target, string limb);
 int eventMagicRound(mixed target, function f);
-int eventWimpy(int i);
+int eventWimpy();
 
 static void create() {
     race::create();

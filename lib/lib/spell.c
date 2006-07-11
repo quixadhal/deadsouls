@@ -703,7 +703,6 @@ varargs int eventCast(object who, int level, mixed limb, object array targets) {
 
 varargs mixed eventParse(object who, mixed array args...) {
     int count = sizeof(args);
-    if(!who) who = this_player();
 
     if( count < 1 ) {
 	if( member_array("", Rules) == -1 ) {

@@ -13,10 +13,8 @@ mixed cmd(string str) {
     mixed *info;
     string *list;
     mapping borg;
-    string mud, tempy;
+    string mud;
     int all = 0;
-
-    if(sizeof(str) && sizeof(tempy = INTERMUD_D->GetMudName(str) )) str = tempy;
 
     if( str && str != "" && strlen(str) > 3 ) {
 	mapping tmp;
@@ -45,17 +43,13 @@ mixed cmd(string str) {
 		break;
 	    }
 	    tmpstr = (x ? info[x] : mud);
-	    z = strlen(str);
-	    y = strlen(tmpstr);
-
-
-	    if( lower_case(str) == lower_case(tmpstr) ) {
+	    z = strlen(str = replace_string(lower_case(str), " ", ""));
+	    y = strlen(tmpstr = replace_string(lower_case(tmpstr), " ", ""));
+	    if( str == tmpstr ) {
 		borg = ([ mud : info ]);
 		break;
 	    }
-
-	    else if( y > z && 
-	      lower_case(tmpstr[0..z-1]) == lower_case(str) && info[0] == -1 ) 
+	    else if( y > z && tmpstr[0..z-1] == str && info[0] == -1 ) 
 		borg[mud] = info;
 	}
     }
@@ -65,7 +59,7 @@ mixed cmd(string str) {
 	if( all == 1 || info[0] == -1 ) borg[mud] = info;
     }
     if( !sizeof(borg) ) {
-	if(this_player()) message("system", "No MUDs match your query.", this_player());
+	message("system", "No MUDs match your query.", this_player());
 	return 1;
     }
     else if( sizeof(borg) == 1 ) {
@@ -108,9 +102,8 @@ mixed cmd(string str) {
     list = sort_array(list, 1);
     list = ({ replace_string(mud_name(),"%^","%%^^") + " recognizes " + consolidate(sizeof(borg), "a mud")+
       " matching your query: ", "" }) + list;
-    if(this_player()) this_player()->eventPage(list);
-    if(this_player()) return 1;
-    else return implode(list,"\n");
+    this_player()->eventPage(list);
+    return 1;
 }
 
 int alphabet(string a, string b) {

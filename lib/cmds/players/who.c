@@ -25,9 +25,8 @@ int cmd(string args) {
 	    else if(avatarp(obs[i]) ) tmp+="[%^GREEN%^AVATAR%^RESET%^]";
 	    else if(high_mortalp(obs[i]) ) tmp+="[%^GREEN%^HIGH MORTAL%^RESET%^]";
 	    else tmp+=sprintf("[%d]", obs[i]->GetLevel() );
-	    if(elderp(obs[i])) tmp+="[%^YELLOW%^ELDER%^RESET%^]";
-	    if(ambassadorp(obs[i])) tmp+="[%^YELLOW%^AMBASSADOR%^RESET%^]";
-	    tmp += ": ";
+	    if(elderp(obs[i])) tmp+=" [%^YELLOW%^ELDER%^RESET%^]";
+	    if(ambassadorp(obs[i])) tmp+=" [%^YELLOW%^AMBASSADOR%^RESET%^]";
 	    if(sizeof(obs[i]->GetShort()) < 50) {
 		tmp+=sprintf(" %s", obs[i]->GetShort());
 	    }
@@ -53,8 +52,7 @@ int cmd(string args) {
     (p==1) ? x+=" member " : x+=" members ";
     x+="of our reality.\n";
     ret+=center(x);
-    if(check_string_length(ret)) this_player()->eventPrint(""+ret+"");
-    else print_long_string(this_player(),ret);
+    this_player()->eventPrint(""+ret+"");
     return 1;
 }
 

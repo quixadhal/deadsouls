@@ -81,7 +81,7 @@ int eventDie(){
 }
 
 int flicker(){
-    if(noflicker ==1) return 0;
+    if(noflicker ==1) return;
     if(!living(environment())){
 	tell_object(environment(),capitalize(baseshort)+" flickers and shines less brightly than before.");
 	return 1;

@@ -1,23 +1,23 @@
 
 QUERY_HOST_PORT(1)                             QUERY_HOST_PORT(1)
 
-NAME
-       query_host_port() - returns the port on which the MUD runs
+NNAAMMEE
+       _q_u_e_r_y___h_o_s_t___p_o_r_t_(_) - returns the port on which the MUD runs
 
-SYNOPSIS
-       int query_host_port()
+SSYYNNOOPPSSIISS
+       int _q_u_e_r_y___h_o_s_t___p_o_r_t_(_)
 
-DESCRIPTION
+DDEESSCCRRIIPPTTIIOONN
        Returns the port to which people telnet to access the MUD.
 
-LOCATION
-       /secure/sefun/mud_info.c
+LLOOCCAATTIIOONN
+       /secure/SimulEfun/mud_info.c
 
-SEE ALSO
-       architecture(), mud_name(), mudlib(), mudlib_version(),
-       version()
+SSEEEE AALLSSOO
+       _a_r_c_h_i_t_e_c_t_u_r_e_(_), _m_u_d___n_a_m_e_(_), _m_u_d_l_i_b_(_), _m_u_d_l_i_b___v_e_r_s_i_o_n_(_),
+       _v_e_r_s_i_o_n_(_)
 
-Author
+AAuutthhoorr
        Descartes of Borg
 
                                                                 1

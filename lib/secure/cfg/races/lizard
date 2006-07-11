@@ -1,6 +1,6 @@
 RACE lizard
 SENSITIVITY 20:80
-LANGUAGE Reptilian
+LANGUAGE Lizardish
 RESISTANCE SHOCK:high
 RESISTANCE BLADE:medium
 RESISTANCE BLUNT:medium
@@ -29,8 +29,3 @@ LIMB left forepaw:left foreleg:4::
 LIMB right forepaw:right foreleg:4::
 LIMB left rear paw:left rear leg:4::
 LIMB right rear paw:right rear leg:4::
-SWIMMING_RACE
-MASS 10
-SIZE S_VERY_SMALL
-BODY_TYPE B_QUADRUPED
-RESPIRATION_TYPE R_AIR

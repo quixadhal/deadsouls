@@ -6,7 +6,6 @@
 
 #include <function.h>
 #include <daemons.h>
-#include <message_class.h>
 
 varargs string center(string str, int x) {
     int y;
@@ -311,6 +310,8 @@ varargs mixed remove_matching_line(string target, string substring, int i, strin
     int omit, done, tail_search;
     string line, filename, new_file;
 
+    if(!target || !file_exists(target)) true();
+    else target = read_file(target);
     if(!target) return 0;
     if(strsrch(target,substring) == -1) return target;
     if(strsrch(target,"\n") == -1) return 0;
@@ -338,6 +339,7 @@ varargs mixed remove_matching_line(string target, string substring, int i, strin
 	if(!line) done = 100;
 	if(i == 999) done = 100;
     }
+
     rm(filename);
     return new_file;
 }
@@ -540,10 +542,8 @@ varargs mixed alpha_crypt(mixed arg1, mixed arg2){
     if(!intp(arg1) && !arg2) return 0;
     if(intp(arg1)) {
 	if(arg1 > 64) arg1 = 64;
-	//ret = crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
-	//ret += crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
-	ret = crypt(""+random(arg1+2)+arg1,""+random(999999)*91);
-	ret += crypt(""+random(arg1+2)+arg1,""+random(999999)*19);
+	ret = crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
+	ret += crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
 	ret = replace_string(ret,"`","");
 	ret = replace_string(ret,"!","");
 	ret = replace_string(ret,"/","");
@@ -635,56 +635,6 @@ int basic_punctuationp(mixed arg){
     return 0;
 }
 
-int check_string_length(string str){
-    if(sizeof(str) > __LARGEST_PRINTABLE_STRING__) return 0;
-    return 1;
-}
 
-varargs string *chunk_string(string str, int width){
-    string *ret =({});
-    string tmp1 = "";
-    string tmpfile = generate_tmp();
-    if(!width) width = __LARGEST_PRINTABLE_STRING__ / 2;
-    while(sizeof(str)){
-	write_file(tmpfile,str,1);
-	//tc("file_size("+tmpfile+"): "+file_size(tmpfile));
-	if(!(tmp1 = read_bytes(tmpfile, 0, width)))
-	    tmp1 = read_file(tmpfile);
-	//tc("sizeof(tmp1): "+sizeof(tmp1));
-	ret += ({ tmp1 });
-	//tc("tmp1: "+tmp1);
-	str = replace_string(str,tmp1,"");
-    }
-    return ret;
-}
 
-varargs mixed print_long_string(object who, string str, int catted){
-    string tfile, ret = "";
-    string *lines;
-    string *tmp;
-    if(!str) return 0;
-    tfile = generate_tmp();
-    lines = explode(str,"\n");
-    foreach(string line in lines){
-	if(sizeof(line) > __LARGEST_PRINTABLE_STRING__ / 2) 
-	    line = implode(chunk_string(line,who->GetScreen()[0]),"\n");
-	ret += line+"\n";
-    }
-    write_file(tfile,ret,1);
-    //tc("tfile: "+tfile,"red");
-    tmp = explode(ret,"\n");
-    foreach(string thing in tmp){
-	//tc("element size: "+sizeof(thing));
-    }
-    //tc("tfile: "+tfile,"red");
-    if(!catted) return (mixed)who->eventPage(explode(read_file(tfile),"\n"),MSG_SYSTEM);
-    else {
-	foreach(string thing in tmp){
-	    message("system", thing, who);
-	}
-
-    }
-    //rm(tfile);
-    //return 1;
-}
 

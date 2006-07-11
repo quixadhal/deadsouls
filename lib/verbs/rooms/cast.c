@@ -5,17 +5,18 @@
  *    created by Descartes of Borg 951016
  */
 
-
+#pragma save_binary
 
 #include <lib.h>
 #include "include/cast.h"
 
-inherit LIB_VERB;
+inherit LIB_DAEMON;
 
 static void create() {
-    verb::create();
-    SetVerb("cast");
-    SetRules("OBJ");
+    daemon::create();
+    SetNoClean(1);
+    parse_init();
+    parse_add_rule("cast", "OBJ");
 }
 
 mixed can_cast_obj(object ob) {

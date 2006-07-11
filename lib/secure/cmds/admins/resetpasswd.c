@@ -17,8 +17,6 @@ mixed cmd(string args) {
 	return 1;
     }
 
-    if(!args || !sizeof(args)) args = "me";
-
     args = lower_case(args);
 
     if(args == "me" || args == this_player()->GetKeyName()){

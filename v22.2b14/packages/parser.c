@@ -3032,10 +3032,10 @@ void f_parse_sentence PROT((void)) {
     if (!current_object->pinfo)
 	error("/%s is not known by the parser.	Call parse_init() first.\n",
 	      current_object->name);
-/*
-*    if (pi)
-*	error("Illegal to call parse_sentence() recursively.\n");
-*/    
+
+    if (pi)
+	error("Illegal to call parse_sentence() recursively.\n");
+    
     /* may not be done in case of an error, or in case of tail recursion.
      * if we are called tail recursively, we don't need this any more.
      */

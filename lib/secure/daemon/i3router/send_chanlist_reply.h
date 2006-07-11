@@ -4,8 +4,8 @@ static void send_chanlist_reply(string mudname, int old_chanid){
     string channame; // channel name
     //	string *output; // array of which channel names to tell them about
     mapping out=([ ]); // mapping to send
-    //int i; // counter
-    //trr("send_chanlist_reply, mudname="+mudname+", old_chanid="+old_chanid);
+    int i; // counter
+    trr("send_chanlist_reply, mudname="+mudname+", old_chanid="+old_chanid);
     foreach(channame in keys(channel_updates)){
 	//#ifndef SEND_WHOLE_CHANLIST
 	//	if(channel_updates[channame]>old_chanid){ // needs updating
@@ -21,7 +21,7 @@ static void send_chanlist_reply(string mudname, int old_chanid){
 	//	}
 	//#endif
     }
-    //trr("Chanlist: "+identify(out),"blue");
+    trr("Chanlist: "+identify(out),"blue");
     write_data(connected_muds[mudname],({
 	"chanlist-reply",
 	5,

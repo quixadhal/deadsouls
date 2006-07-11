@@ -286,8 +286,7 @@ string eventCopyRoom(string source, string dest){
     string homedir, areadir, tmpsource, map_str, new_file;
     mapping DestExits;
 
-    if(file_exists(source) && (!check_privs(this_player(),source) &&
-	strsrch(source,"/obj/"))){
+    if(file_exists(source) && !check_privs(this_player(),source)){
 	write("You do not appear to have access to this file. Modification aborted.");
 	return "";
     }

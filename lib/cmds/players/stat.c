@@ -5,14 +5,13 @@
  */
 
 #include <lib.h>
-#include <daemons.h>
 
 inherit LIB_DAEMON;
 
 mixed cmd(string args) {
     string *lines, *arr, *limbs;
     object ob;
-    string tmp1, tmp2, gold;
+    string tmp1, tmp2;
     int i, x, y, cols;
 
     if( args == "" || !args || args == "me" ) args = this_player()->GetKeyName();
@@ -20,10 +19,7 @@ mixed cmd(string args) {
 	write("You can only stat yourself.");
 	return 1;
     }
-    if(!environment(this_player())){
-	write("You have no environment. Your stats are the least of your worries.");
-	return 1;
-    }
+
     if( !(ob = present(args, environment(this_player()))) )
 	if( !(ob = find_player(convert_name(args))) &&
 	  !(ob = find_living(lower_case(args))) )
@@ -104,17 +100,13 @@ mixed cmd(string args) {
     while(i--) if( (y = strlen(arr[i])) > x ) x = y;
     x =cols/(x+2);
     lines += explode(format_page(arr, x), "\n");
-    if(sizeof(ECONOMY_D->__QueryCurrencies())){
-	if(valid_currency("gold")) gold = "gold";
-	else gold = ECONOMY_D->__QueryCurrencies()[0];
-	lines += ({ "", (string)ob->GetName()+" has amassed a net worth of " +
-	  ( (int)ob->GetNetWorth(gold) ) + " "+gold+"."});
-	arr = filter( map((string *)ob->GetCurrencies(),
-	    (: ($(ob))->GetCurrency($1) &&
-	      sprintf("%d %s", ($(ob))->GetCurrency($1), $1) :)),
-	  (: $1 :));
-	lines += ({ "Money on hand: "+implode(arr, ", ") });
-    }
+    lines += ({ "", (string)ob->GetName()+" has amassed a net worth of " +
+      ( (int)ob->GetNetWorth("gold") ) + " gold."});
+    arr = filter( map((string *)ob->GetCurrencies(),
+	(: ($(ob))->GetCurrency($1) &&
+	  sprintf("%d %s", ($(ob))->GetCurrency($1), $1) :)),
+      (: $1 :));
+    lines += ({ "Money on hand: "+implode(arr, ", ") });
     this_player()->eventPage(lines, "system");
     return 1;
 }

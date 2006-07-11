@@ -2,7 +2,8 @@
 
 #include <armor_types.h>
 #include <damage_types.h>
-inherit LIB_WORN_STORAGE;
+inherit LIB_STORAGE;
+inherit LIB_ARMOR;
 
 static void create() {
     ::create();

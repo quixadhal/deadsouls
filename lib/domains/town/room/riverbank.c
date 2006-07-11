@@ -15,6 +15,8 @@ static void create() {
 	"no magic":0, 
 	"no paralyze":0, 
 	"no teleport":0]));
+    SetItems(([  "river" : "A swift moving river, probably quite deep." ,
+	({"bank","riverbank","here","water"}) : "This is the edge of a powerful river."]));
     SetListen(([
 	({ "river", "water" }) : "You hear it rushing by.",
 	"default" : "You can hear the roar of the river rushing by.",
@@ -22,7 +24,6 @@ static void create() {
     SetInventory(([
 	"/domains/town/npc/troll" : 1,
 	"/domains/town/obj/rocks" : 1,
-	"/domains/town/obj/riverwater" : 1,
       ]));
     AddExit("up", "/domains/town/room/bridge");
     SetChance(90);

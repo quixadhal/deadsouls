@@ -9,7 +9,7 @@ inherit LIB_DAEMON;
 int cmd(string str) {
     object ob;
 
-    if(!str || str == "here") {
+    if(!str) {
 	environment(this_player())->reset();
 	write("You reset the room.\n");
 	return 1;
@@ -18,10 +18,7 @@ int cmd(string str) {
     if(!ob) ob = present(str, this_player());
     if(!ob) ob = parse_objects(environment(this_player()), str);
     if(!ob) ob = parse_objects(this_player(), str);
-    if(!ob) {
-	write("That object can't be found.");
-	return 1;
-    }
+    if(!ob) call_other(str, "reset");
     else ob->reset();
     write("You reset "+str+".\n");
     return 1;

@@ -23,7 +23,7 @@ mixed cmd(string args) {
 	    0, chan, ({}), ({ mud }) }) );
 
     //unguarded( (: update("/daemon/intermud") :) );
-    //load_object("/secure/cmds/creators/update")->cmd("/daemon/intermud");
+    load_object("/secure/cmds/creators/update")->cmd("/daemon/intermud");
 
     write(mud+" has been unbanned from "+chan+".");
 

@@ -14,12 +14,12 @@
 int eventDelete(object ob, string value);
 string global1, global2, globaltmp, globalvalue;
 
-string *base_arr = ({"set_heart_beat", "SetUnique", "SetNoClean","SetNoModify","SetProperties","SetLong","SetShort","SetItems","SetListen","SetSmell","SetInvis"});
+string *base_arr = ({"set_heart_beat", "SetUnique", "SetNoClean","SetNoModify","SetProperties","SetLong","SetShort","SetItems","SetListen","SetSmell"});
 string *item_arr = base_arr + ({"SetLanguage","SetRead","SetDefaultRead","SetDisableChance", "SetDamagePoints", "SetVendorType","SetNoCondition","SetMoney","SetKeyName", "SetId", "SetMass","SetCost","SetValue","SetAdjectives","SetDamagePoints","SetBaseCost" });
 string *meal_arr = item_arr + ({ "SetMealType", "SetStrength"}) -({"SetDamagePoints"});
 string *storage_arr = item_arr + ({"SetOpacity", "SetMaxCarry","SetInventory", "SetCanClose", "SetCanLock","SetMaxRecurse","SetLocked","SetClosed","SetKey"});
-string *room_arr = base_arr - ({"SetUnique"}) + ({"SetTerrainType","AddTerrainType","SetLanguage", "SetRead", "SetDefaultRead", "SetNoObviousExits","SetDefaultExits","SetTown","SetNightLong","SetDayLong","SetClimate","SetAmbientLight","SetNightLight","SetDayLight","SetObviousExits", "SetInventory", "SetEnters"});
-string *npc_arr = base_arr - ({"SetItems"}) + ({"SetMass","SetBodyType","SetSize","SetRespiration","SetMount","SetCanBefriend","SetDefaultLanguage","SetNativeLanguage","SetCustomXP", "SetSpellBook", "SetCanBite", "SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat"});
+string *room_arr = base_arr - ({"SetUnique"}) + ({"SetLanguage", "SetRead", "SetDefaultRead", "SetNoObviousExits","SetDefaultExits","SetTown","SetNightLong","SetDayLong","SetClimate","SetAmbientLight","SetNightLight","SetDayLight","SetObviousExits", "SetInventory", "SetEnters"});
+string *npc_arr = base_arr - ({"SetItems"}) + ({"SetNativeLanguage","SetCustomXP", "SetSpellBook", "SetCanBite", "SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat"});
 string *barkeep_arr = npc_arr + ({"SetLocalCurrency","SetMenuItems"});
 string *trainer_arr = npc_arr + ({"SetNoSpells", "AddTrainingSkills"});
 string *vendor_arr = npc_arr + ({"SetLocalCurrency","SetStorageRoom","SetMaxItems","SetVendorType"});
@@ -113,8 +113,13 @@ mixed eventModify(object ob, string str){
 	return 1;
     }
 
-    this_object()->eventGeneralStuff(filename);
-    //tc(read_file(filename),"white");
+    global1 = filename;
+    global2 = filename;
+
+    unguarded( (: global1 = replace_line(read_file(global1) ,({"customdefs.h"}), "#include \""+homedir(this_player())+"/customdefs.h\"") :) );
+    global1 = replace_string(global1,"//extras","");
+    global1 = replace_string(global1,"\n\n\n","\n\n");
+    unguarded( (: write_file(global2, global1, 1) :) );
     global1 = filename;
     global2 = tmpfile;
     unguarded( (: cp(global1,global2) :) );
@@ -429,21 +434,6 @@ mixed eventModify(object ob, string str){
 	case "sethiddendoor" : out = "SetHiddenDoor";break;
 	case "opacity" : out = "SetOpacity";break;
 	case "setopacity" : out = "SetOpacity";break;
-	case "setterraintype" : out = "SetTerrainType";break;
-	case "terraintype" : out = "AddTerrainType";break;
-	case "addterraintype" : out = "AddTerrainType";break;
-	case "terrain" : out = "AddTerrainType";break;
-	case "defaultlanguage" : out = "SetDefaultLanguage";break;
-	case "defaultlang" : out = "SetDefaultLanguage";break;
-	case "setdefaultlanguage" : out = "SetDefaultLanguage";break;
-	case "bodytype" : out = "SetBodyType";break;
-	case "setbodytype" : out = "SetBodyType";break;
-	case "setsize" : out = "SetSize";break;
-	case "size" : out = "SetSize";break;
-	case "respiration" : out = "SetRespiration";break;
-	case "setrespiration" : out = "SetRespiration";break;
-	case "setinvis" : out = "SetInvis";break;
-	case "invis" : out = "SetInvis";break;
 	default : out = mode;
 	}
     }
@@ -572,11 +562,6 @@ mixed eventModify(object ob, string str){
 	case "SetHealthPoints" : p_array = ({"SetInventory","SetMaxHealhPoints","SetClass","SetRace","SetLong"});break;
 	case "SetMaxHealthPoints" : p_array = ({"SetInventory","SetHealhPoints","SetClass","SetRace","SetLong"});break;
 	case "SetNativeLanguage" : p_array = ({"SetRace"});break;
-	case "SetSize" : p_array = ({"SetRace"});break;
-	case "SetBodyType" : p_array = ({"SetRace"});break;
-	case "SetRespiration" : p_array = ({"SetRace"});break;
-	case "SetClass" : p_array = ({"SetRace","SetLong"});break;
-	case "SetMass" : p_array = ({"SetRace","SetLong"});break;
 	case "SetSmell" : p_array = ({"SetItems","SetInventory","SetListen","SetLong","SetDayLong","SetNightLong","SetShort"});break;
 	case "SetListen" : p_array = ({"SetItems","SetInventory","SetSmell","SetLong","SetDayLong","SetNightLong","SetShort"});break;
 	case "SetItems" : p_array = ({"SetAmbientLight","SetDayLight","SetNightLight","create()","create ()","SetShort","SetLong","SetDayLong","SetNightLong"});break;

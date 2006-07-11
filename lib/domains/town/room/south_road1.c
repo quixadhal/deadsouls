@@ -1,4 +1,3 @@
-#include <terrain_types.h>
 #include <lib.h>
 inherit LIB_ROOM;
 
@@ -24,7 +23,6 @@ static void create() {
 	({"road","cobblestone road"}) : "A "
 	"cobblestone road running north and south."
       ]) );
-    AddTerrainType(T_ROAD);
     SetObviousExits("n, s, e, w");
     SetExits( ([
 	"south" : "/domains/town/room/south_road2",

@@ -12,7 +12,6 @@ private mixed PreventGet;
 int GetMass();
 mixed GetProperty(string key);
 string GetShort();
-string GetKeyName();
 mixed eventMove(mixed dest);
 // end abstract methods
 
@@ -65,8 +64,7 @@ mixed direct_get_obj(object target) {
 
 	if( !str ) str = "It";
 	else str = capitalize(str);
-	return "#You may need to get closer to it. Perhaps \"get "+GetKeyName()+
-	" from\" something?";
+	return "# You are unable to do that right now.";
     }
     return CanGet(this_player());
 }

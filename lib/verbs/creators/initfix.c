@@ -1,4 +1,4 @@
-
+#pragma save_binary
 
 #include <lib.h>
 #include <daemons.h>
@@ -14,9 +14,7 @@ static void create() {
     SetHelp("Syntax: <initfix OBJ>\n\n"
       "If you have write permissions to the file of the object "
       "specified, this command adds an init(){} function. Lacking "
-      "this function makes many objects break or behave unpredictably.\n"
-      "Please note that initfixing a door also reloads the "
-      "door's adjoining rooms.\n"
+      "this function makes many objects break or behave unpredictably."
       "\nSee also: copy, create, delete, modify, reload, add");
 }
 
@@ -56,18 +54,6 @@ mixed do_initfix_obj(object ob) {
 
     else write("Done.");
     reload(ob);
-    if(inherits(LIB_DOOR,ob)){
-	string *doors = environment(this_player())->GetDoors();
-	if(!sizeof(doors)) return 1;
-	foreach(string dir in doors){
-	    string substr = environment(this_player())->GetDoor(dir);
-	    if(last(substr,2) == ".c") substr = truncate(substr,2);
-	    if(substr == base_name(ob)){
-		reload(load_object(environment(this_player())->GetExit(dir)));
-		reload(environment(this_player()));
-	    }
-	}
-    }
     return 1;
 }
 

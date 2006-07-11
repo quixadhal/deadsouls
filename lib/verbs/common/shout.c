@@ -6,18 +6,21 @@
  *    created by Descartes of Borg 951119
  */
 
-
+#pragma save_binary
 
 #include <lib.h>
 #include <talk_type.h>
 #include "include/shout.h"
 
-inherit LIB_VERB;
+inherit LIB_DAEMON;
 
 static void create() {
-    verb::create();
-    SetVerb("shout");
-    SetRules("","in WRD STR","STR");
+    daemon::create();
+    SetNoClean(1);
+    parse_init();
+    parse_add_rule("shout", "");
+    parse_add_rule("shout", "in WRD STR");
+    parse_add_rule("shout", "STR");
 }
 
 mixed can_shout() { return "Shout what?"; }
@@ -26,8 +29,7 @@ mixed can_shout_str(string str) {
     string lang;
 
     if( !str ) return 0;
-    lang = (string)this_player()->GetDefaultLanguage() || 
-    (string)this_player()->GetNativeLanguage();
+    lang = (string)this_player()->GetNativeLanguage() || "english";
     return can_shout_in_wrd_str(lang, str);
 }
 
@@ -44,8 +46,7 @@ mixed do_shout() { return 1; }
 mixed do_shout_str(string str) {
     string lang;
 
-    lang = (string)this_player()->GetDefaultLanguage() || 
-    (string)this_player()->GetNativeLanguage();
+    lang = (string)this_player()->GetNativeLanguage() || "english";
     return do_shout_in_wrd_str(lang, str);
 }
 

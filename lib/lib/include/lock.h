@@ -12,7 +12,7 @@ mixed direct_unlock_obj_with_obj(object target, object key, string id);
 mixed CanLock(object who, string id);
 mixed CanOpen(object who, string id);
 mixed CanPick(object who, string id);
-varargs mixed CanUnlock(object who, string id, object key);
+mixed CanUnlock(object who, string id);
 
 mixed eventLock(object who, string id, object key);
 varargs mixed eventOpen(object who, string id, object tool);

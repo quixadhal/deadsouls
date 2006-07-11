@@ -3,10 +3,9 @@
 static void close_callback(int fd){
     string mudname;
     trr("close_callback: fd="+fd+"\n");
-    if(socket_status(fd)[1] == "LISTEN") return;
     foreach(mudname in keys(muds_on_this_fd(fd))){
-	trr(timestamp()+" close_callback: Removing mud from connected_muds list: "+mudname,"red");
-	if(mudinfo[mudname]) mudinfo[mudname]["disconnect_time"] = time();
+	trr("Removing mud from connected_muds list: "+mudname);
+	mudinfo[mudname]["disconnect_time"] = time();
 	map_delete(connected_muds, mudname);
 	broadcast_mudlist(mudname);
     }
@@ -62,10 +61,8 @@ static void write_data_retry(int fd, mixed data, int counter){
 
 static void close_connection(int fd){
     int sockerr;
-    if(socket_status(fd)[1] == "LISTEN") return;
     map_delete(sockets, fd);
     sockerr = socket_close(fd);
-    trr("closing socket:"+fd);
     trr("closing sockerr:"+sockerr);
 }
 

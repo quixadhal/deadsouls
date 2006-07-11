@@ -12,8 +12,8 @@ external_port_1 : telnet 6666
 
 # the address server is an external program that lets the mud translate
 # internet names to numbers (and vice versa).  select an unused port.
-address server ip : alcatraz.wolfpaw.net
-address server port : 8099
+address server ip : localhost
+address server port : 9999
 
 # absolute pathname of mudlib
 mudlib directory : /CHANGE/THIS/PATH/lib
@@ -57,7 +57,7 @@ time to clean up : 14400
 # Machine with too many players and too little memory: 900 (15 minutes)
 # Machine with few players and lot of memory: 10000
 # Machine with infinite memory: 0 (never swap).
-time to swap : 0
+time to swap : 90000
 
 # How many seconds until an object is reset again.
 time to reset : 900000
@@ -67,14 +67,14 @@ time to reset : 900000
 maximum bits in a bitfield : 1200
 
 # Max number of local variables in a function.
-maximum local variables : 35
+maximum local variables : 30
 
 # Maximum amount of "eval cost" per thread - execution is halted when 
 # it is exceeded.
 maximum evaluation cost : 5000000
 
 # This is the maximum array size allowed for one single array.
-maximum array size : 150000
+maximum array size : 15000
 
 # This is the maximum allowed size of a variable of type 'buffer'.
 maximum buffer size : 400000

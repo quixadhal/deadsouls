@@ -21,34 +21,30 @@ static void create() {
 
     daemon::create();
     Zones = ([]);
-    tmp = localtime(time());
-    //LocalZone = tmp[LT_ZONE];
-    if(LOCAL_TIME) x = -(tmp[LT_GMTOFF] / 3600);
-    else x = 0;
+    tmp = local_time(time());
+    LocalZone = tmp[LT_ZONE];
+    x = tmp[LT_GMTOFF] / 3600;
     if( file_size(CFG_TIME) < 1 ) return;
     i = sizeof(lines = filter(explode(read_file(CFG_TIME), "\n"),
 	(: $1 && $1 != "" && $1[0] != '#' :)));
-    foreach(string line in lines) {
+    while(i--) {
 	string *words;
-	if( sizeof(words = explode(line, ":")) != 3 ) continue;
-	//tc("words[0]: "+identify(words[0])+" words[1]: "+words[1]+" x: "+x,"cyan");
-	Zones[words[0]] = ([]);
-	Zones[words[0]]["offset"] = to_int(words[1]) - x;
-	Zones[words[0]]["name"] = words[2];
+
+	if( sizeof(words = explode(lines[i], ":")) != 3 ) continue;
+	Zones[words[0]] = new(class timezone);
+	((class timezone)Zones[words[0]])->Offset = to_int(words[1]) - x;
+	((class timezone)Zones[words[0]])->Name = words[2];
     }
-    //tc("zones: "+identify(Zones));
 }
 
 int GetOffset(string tzone) {
-    if(!tzone) tzone = query_tz();
     if( !Zones[tzone] ) return 0;
-    else return Zones[tzone]["offset"];
+    else return ((class timezone)Zones[tzone])->Offset;
 }
 
 string GetName(string tzone) {
-    if(!tzone) tzone = query_tz();
     if( !Zones[tzone] ) return 0;
-    else return Zones[tzone]["name"];
+    else return ((class timezone)Zones[tzone])->Name;
 }
 
 string *GetTimeZones() { return keys(Zones); }

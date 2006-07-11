@@ -96,7 +96,7 @@ static void eventConfigure() {
 	else days -= ((class month)Months[i])->Days;
     }
     x = CurrentMonth->DaylightHours * HOUR_LENGTH;
-    Morning = ((DAY_LENGTH * HOUR_LENGTH) - x) / 2;
+    Morning = ((((DAY_LENGTH + 4) * HOUR_LENGTH) - x) / 3) * 2;
     Twilight = Morning + x;
     if( Morning < HOUR_LENGTH ) {
 	Dawn = Morning/2;

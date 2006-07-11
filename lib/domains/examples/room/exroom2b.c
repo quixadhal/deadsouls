@@ -9,7 +9,7 @@ void create()
     SetAmbientLight(30);
     SetShort( "a 'child' file" );
     SetLong("This is an example room that inherits the properties "
-      "of another room.");
+"of another room.");
 
     /*  Note:  When we set the "exits" in this room we over-write
 	the "exits" we inherited from PAPAROOM.  There's a way to

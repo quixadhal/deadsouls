@@ -23,8 +23,8 @@
 #include "master.h"
 
 private static int ResetNumber;
-private static object Unguarded, gguy;
-private static string PlayerName, rlog, gcmd;
+private static object Unguarded;
+private static string PlayerName, rlog;
 private static object NewPlayer;
 private static mapping Groups, ReadAccess, WriteAccess;
 private static string *ParserDirs = ({ "secure", "verbs", "daemon", "lib", "spells" });
@@ -64,7 +64,7 @@ void new_groups() {
     Groups = tmp;
 }
 
-private static void load_access(string cfg, mapping resource) {
+private static void load_access(string cfg, mapping ref) {
     string *lines;
     string file;
 
@@ -87,7 +87,7 @@ private static void load_access(string cfg, mapping resource) {
 	  if( sscanf(line, "(%s) %s", fl, ac) != 2 ) {
 	      error("Error in loading config file " + cfg + ".");
 	  }
-	  resource[fl] = explode(ac, ":");
+	  ref[fl] = explode(ac, ":");
       }
   }
 
@@ -107,9 +107,10 @@ private static void load_access(string cfg, mapping resource) {
 	write("Master: unknown flag.\n");
     }
 
-    string *epilog(int i) {
+    string *epilog(int x) {
 	string *lines, *files;
 	string content;
+	int i;
 
 	if(!(content = read_file(CFG_PRELOAD))) return ({});
 	i = sizeof(lines = explode(content, "\n"));
@@ -193,7 +194,7 @@ private static void load_access(string cfg, mapping resource) {
 	object *stack;
 	string *privs;
 	string priv;
-	int i;
+	int i, privcheck;
 
 	if( objectp(file) ) file = base_name(file);
 	if( ok && sizeof(ok) && ok[0] == "all" ) return 1;
@@ -282,7 +283,6 @@ private static void load_access(string cfg, mapping resource) {
 	string err;
 	string file;
 
-	true(port);
 	file = LIB_CONNECT;
 	if( err  = catch(ob = new(file)) ) {
 	    write("It looks like someone is working on the user object.\n");
@@ -347,7 +347,6 @@ private static void load_access(string cfg, mapping resource) {
     }
 
     int valid_bind(object binder, object old_owner, object new_owner) {
-	true(old_owner,new_owner);
 	if( binder == master() ) return 1;
 	if( member_array(PRIV_SECURE, explode(query_privs(binder), ":")) != -1 )
 	    return 1;
@@ -363,13 +362,12 @@ private static void load_access(string cfg, mapping resource) {
 	else return (member_array(PRIV_SECURE, explode(priv, ":")) != -1);
     }
 
-    int valid_override(string file, string nom) { true(file,nom); return (file == SEFUN); }
+    int valid_override(string file, string nom) { return (file == SEFUN); }
 
-    int valid_save_binary(string str) { return true(str); }
+    int valid_save_binary(string str) { return 1; }
 
     int valid_shadow(object ob) {
 	object targ = previous_object();
-	true(ob);
 	return (!virtualp(targ) && !strsrch(file_name(targ), DIR_SHADOWS));
     }
 
@@ -377,10 +375,6 @@ private static void load_access(string cfg, mapping resource) {
 	string file, contents;
 
 	file = file_name(ob);
-	if(COMPAT_MODE){
-	    //buggy code removed
-	    true();
-	}
 	contents = read_file(base_name(ob)+".c");
 	if(strsrch(contents,"parse_add_rule") != -1 
 	  || strsrch(contents, "SetRules") != -1) {
@@ -401,8 +395,6 @@ private static void load_access(string cfg, mapping resource) {
 	int port;
 	string tmp;
 	int i;
-
-	true(fun); 
 
 	if( info && sizeof(info) == 4 ) {
 	    ob = info[1];
@@ -445,7 +437,7 @@ private static void load_access(string cfg, mapping resource) {
     string error_handler(mapping mp, int caught) {
 	string ret, file;
 
-	ret = "---\n"+timestamp()+"\n"+ standard_trace(mp);
+	ret = "---\n" + standard_trace(mp);
 	if( caught ) write_file(file = "/log/catch", ret);
 	else write_file(file = "/log/runtime", ret);
 	if( this_player(1) && find_object(SEFUN) ) {
@@ -527,7 +519,7 @@ private static void load_access(string cfg, mapping resource) {
 
     void master_log_file(string file, string msg) {
 	if(file_name(previous_object()) != SEFUN) return;
-	if(file_size(file) > MAX_LOG_SIZE) rename(file, file+"."+timestamp());
+	if(file_size(file) > MAX_LOG_SIZE) rename(file, file+".old");
 	write_file(file, msg);
     }
 
@@ -582,7 +574,7 @@ private static void load_access(string cfg, mapping resource) {
 	return to_int(read_file(file));
     }
 
-    string get_save_file_name() {
+    string get_save_file_name(string file) {
 	string str;
 
 	str = (string)this_player(1)->GetKeyName();
@@ -612,11 +604,6 @@ private static void load_access(string cfg, mapping resource) {
 
     string parser_error_message(int type, object ob, mixed arg, int flag) {
 	string err;
-	//tc("yupe: "+type);
-	//tc("ob: "+identify(ob));
-	//tc("arg: "+identify(arg));
-	//tc("flag: "+identify(flag));
-	//tc("last cmd: "+this_player()->GetLastCommand());
 
 	if( ob ) err = (string)ob->GetShort();
 	else err = "";
@@ -641,19 +628,6 @@ private static void load_access(string cfg, mapping resource) {
 	    {
 		mixed *obs;
 		int i;
-		gguy = this_player();
-		if(DEFAULT_PARSING){
-		    gcmd = this_player()->GetLastCommand();
-		    this_player()->eventRetryCommand(gcmd);
-		    //this_player()->SetPlayerPaused(1);
-		    //tc("hm?");
-		    //call_out( (: this_player()->eventRetryCommand(gcmd) :), 0);
-		    //f = bind( (: call_other, gguy, "eventRetryCommand",gcmd :), gguy );
-		    //if( f ) catch(evaluate(f));
-		    //new("/secure/obj/executor",gguy,gcmd);
-
-		    return " ";
-		}
 
 		obs = unique_array(arg, (: (string)$1->GetShort() :));
 		if( sizeof(obs) == 1 )

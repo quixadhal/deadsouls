@@ -3,6 +3,8 @@
 #include <damage_types.h>
 #include <dirs.h>
 inherit LIB_STORAGE;
+inherit LIB_WEAPON;
+inherit LIB_SHOOT;
 
 private int MaxAmmo, Millimeter, AmmoSize;
 private string PistolType, AmmoType;
@@ -17,15 +19,13 @@ private int autohit;
 private int dam;
 
 static void create(){
-    string *s_save, *a_save;
-    //string *s_save, *w_save, *a_save;
+    string *s_save, *w_save, *a_save;
 
     ::create();
 
     s_save = storage::GetSave();
-    //w_save = weapon::GetSave();
-    //a_save = s_save + w_save;
-    a_save = s_save;
+    w_save = weapon::GetSave();
+    a_save = s_save + w_save;
 
     AddSave( a_save );
     AddSave( ({ "loaded", "rounds", "shells" , "mag" , "cloned" }) );
@@ -119,30 +119,23 @@ int CanReceive(object ob){
 }
 int CanRelease(object ob){
     if(ob->GetKeyName()=="revolver cylinder"){
-	//write("The cylinder is not a removable part of the pistol.");
+	write("The cylinder is not a removable part of the pistol.");
 	return 0;
-
     }
     return 1;
 }
 
-int eventShoot(object ob, mixed target){
-    object cible;
-    if(stringp(target)) cible = present(target,environment(environment(this_object())));
-    if(objectp(target)){
-	cible = target;
-	target = cible->GetName(); 
-    }
+int eventShoot(object ob, string str){
     if(!rounds || rounds == 0){
 	write("Your weapon is not loaded.\n");
-	say(environment(this_object())->GetName()+" tries to shoot "+capitalize(target)+" with an unloaded weapon.\n");
+	say(environment(this_object())->GetName()+" tries to shoot "+capitalize(str)+" with an unloaded weapon.\n");
 	return 1;
     }
-    write("You shoot at "+capitalize(target)+"!\n");
-    say(environment(this_object())->GetName()+" shoots at "+capitalize(target)+"!\n");
-    if(cible) tell_object(cible, environment(this_object())->GetName()+
-	  " shoots at you!\n");
-    this_object()->eventFire(target);
+    write("You shoot at "+capitalize(str)+"!\n");
+    say(environment(this_object())->GetName()+" shoots at "+capitalize(str)+"!\n");
+    tell_object(present(str,environment(environment(this_object()))), environment(this_object())->GetName()+
+      " shoots at you!\n");
+    this_object()->eventFire(str);
     if(PistolType=="auto") new("/lib/shell")->eventMove(environment(environment(this_object())));
     return 1;
 }
@@ -168,7 +161,7 @@ int eventFire(string str){
     if(this_object()->GetPistolType() == "revolver"){
 	shells++;
 	ob=present("cylinder",this_object());
-	if(present("round",ob)) present("round",ob)->eventDestruct();
+	present("round",ob)->eventDestruct();
 	new("/lib/shell")->eventMove(ob);
     }
     if(rounds <= 0) loaded=0;
@@ -179,12 +172,12 @@ int eventFire(string str){
 	autohit=0;
 	return 1;
     }
-    if(ob && !living(ob) && base_name(ob) != LIB_CORPSE){
+    if(!living(ob)){
 	if(!sscanf(ob->GetLong(),"%sIt has been damaged by gun%s",s1,s2)){
 	    tempclass=ob->GetClass();
 	    if(tempclass) ob->SetClass(tempclass/2);
 	    tempshort=ob->GetShort();
-	    tempshort = "a damaged "+remove_article(tempshort);
+	    tempshort = "A damaged "+remove_article(tempshort);
 	    ob->SetShort(tempshort);
 	    templong=ob->GetLong();
 	    if(sscanf(templong,"%s\n\n%s",s1,s2) >=1){
@@ -207,7 +200,7 @@ int eventFire(string str){
 	dex=dexmap["level"];
     }
     else dex = 200;
-    if((ob && living(ob)) && (i < dex || autohit==1)){
+    if(i < dex || autohit==1){
 	NumLimbs=sizeof(ob->GetLimbs());
 	TorsoNum=member_array("torso",ob->GetLimbs());
 	i=random(100);
@@ -314,11 +307,11 @@ int ShowRounds() { environment(this_object())->eventPrint("Pistol has: "+rounds+
     return 1;
 }
 int SetAmmo(int i) { rounds=i; return 1; }
-int GetAmmo() { return rounds; }
-int GetMag() { return mag; }
+int GetAmmo(int i) { return rounds; }
+int GetMag(int i) { return mag; }
 int SetMag(int i) { mag=i; return 1; }
 int SetLoaded(int i) { loaded=i; return 1; }
-int GetLoaded() { return loaded; }
+int GetLoaded(int i) { return loaded; }
 int SetAmmoFile(string str) { AmmoFile=str; return 1; }
 int SetAmmoType(string str) { AmmoType=str; return 1; }
 int SetPistolType(string str) { PistolType=str; return 1; }
@@ -507,16 +500,8 @@ int doRevolverUnload(string what, string num){
 	    rounds--;
 	}
     }
-    if(n2 > 0){
-	string things = "rounds";
-	if(n2 == 1) things = "round";
-	write("You unload "+cardinal(n2)+" "+things+" from your pistol.");
-    }
-    if(n1 > 0){
-	string things = "shells";
-	if(n1 == 1) things = "shell";
-	write("You unload "+cardinal(n1)+" "+things+" from your pistol.");
-    }
+    if(n2 > 0) write("You unload "+n2+" rounds from your pistol.");
+    if(n1 > 0) write("You unload "+n1+" shells from your pistol.");
     say(environment(this_object())->GetName()+" unloads some cartridges from "+
       possessive(environment(this_object()))+" revolver.");
     return 1;
