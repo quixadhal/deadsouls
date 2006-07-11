@@ -476,7 +476,8 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	    }
 	    else site = "@"+site;
 	    if( listener == ob ) continue;
-	    foreach(string jerk in listener->GetMuffed()){
+	    if(sizeof(listener->GetMuffed()))
+		foreach(string jerk in listener->GetMuffed()){
 		//tc("suspect: "+suspect);
 		//tc("site: "+site);
 		//tc("jerk: "+jerk);
@@ -494,7 +495,8 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	    if( ob && !((int)ob->GetBlocked(ch)) ) {
 		int ignore;
 		tmp = this_msg + targmsg;
-		foreach(string jerk in ob->GetMuffed()){
+		if(sizeof(ob->GetMuffed()))
+		    foreach(string jerk in ob->GetMuffed()){
 		    if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
 		    if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 		}
@@ -555,7 +557,8 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	    }
 	    else site = "@"+site;
 
-	    foreach(string jerk in ob->GetMuffed()){
+	    if(sizeof(ob->GetMuffed()))
+		foreach(string jerk in ob->GetMuffed()){
 		//if(jerk) tc("jerk: "+jerk,"red");
 		if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
 		if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;

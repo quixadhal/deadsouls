@@ -1,5 +1,5 @@
 /*    /domains/Examples/armor/glove.c
- *    from the Nightmare IV LPC Library
+ *    from the Dead Souls LPC Library
  *    an example glove
  *    created by Descartes of Borg 950408
  */

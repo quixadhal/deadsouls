@@ -1,5 +1,5 @@
 /*    /domains/Praxis/etc/ale.c
- *    from Nightmare LPMud
+ *    from Dead Souls
  *    created by Descartes of Borg 950603
  */
 

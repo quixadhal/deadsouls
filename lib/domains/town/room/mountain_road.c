@@ -18,9 +18,8 @@ static void create() {
 	({"mountains","beautiful","snow-capped mountains"}) : "Beautiful "
 	"mountains, far off in the northern distance."
       ]) );
-    SetExits( ([
+    SetExits( ([ 
 	"south" : "/domains/town/room/road",
-	"north" : "/domains/test/room/start.c",
       ]) );
 
 }

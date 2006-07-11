@@ -1,5 +1,5 @@
 /*    /domains/Examples/etc/bag.c
- *    from the Nightmare IV LPC Library
+ *    from the Dead Souls LPC Library
  *    a sample bag object
  *    created by Descartes of Borg 950529
  */

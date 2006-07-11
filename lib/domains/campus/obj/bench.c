@@ -1,5 +1,5 @@
 /*    /domains/campus/etc/stool.c
- *    From the Nightmare V Object Library
+ *    From the Dead Souls Object Library
  *    An example of a chair object
  *    Created by Descartes of Borg 961221
  */

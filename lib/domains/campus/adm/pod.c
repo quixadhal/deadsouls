@@ -1,5 +1,5 @@
 /*    /domains/campus/adm/void.c
- *    from the Nightmare V Object Library
+ *    from the Dead Souls Object Library
  *    place where people go when their environments accidentally are
  *    destructed
  *    created by Descartes of Borg 960302

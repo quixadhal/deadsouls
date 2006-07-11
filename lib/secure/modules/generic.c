@@ -207,6 +207,9 @@ int eventAddItem(object ob, string addendum){
 	write("Insufficient privileges. Addition halted.");
 	return 1;
     }
+    //tc(read_file(base_name(ob)+".c"),"red");
+    this_object()->eventGeneralStuff(base_name(ob)+".c");
+    //tc(read_file(base_name(ob)+".c"),"green");
 
     InvMap = this_object()->QueryMap("SetInventory",ob);
     if(!inherits(LIB_NPC,ob)){

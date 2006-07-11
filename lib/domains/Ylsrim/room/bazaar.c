@@ -8,6 +8,11 @@
 
 inherit LIB_ROOM;
 
+int ReadSign() {
+    this_player()->more("/domains/town/txt/warning_sign.txt");
+    return 1;
+}
+
 static void create() {
     object ob; // this will be used to create dummy items
 
@@ -31,22 +36,26 @@ static void create() {
       "bargain, or even in some cases, in search of trouble.  "
       "Kaliid Road crosses Ylsrim from the west to the east just "
       "north of you, with an armory and a weapon shop straddling "
-      "both sides of the bazaar.  The bazaar stretches on south.");
+      "both sides of the bazaar.  The bazaar stretches on south."
+      "\n%^RED%^There is a sign here you can read.%^RESET%^");
     // this is the description people see at night
     SetNightLong("Though most areas of Ylsrim are peaceful right now, "
       "the central bazaar is still filled with people doing "
       "business, even though most of the shops are closed.  "
       "Kaliid Road is just north of here, and a closed armory "
       "and weapons shop sit on both sides of the bazaar.  "
-      "The bazaar stretches south.");
+      "The bazaar stretches south."
+      "\n%^RED%^There is a sign here you can read.%^RESET%^");
     // set up dummy items... the first few are simple
     AddItem(({ "villager", "traveller" }),
       "Both villagers and travellers are out looking for good "
       "deals.");
+    AddItem(({ "sign"}), "A sign. To read it, 'read sign'.");
     AddItem(({ "road" }), "It leads through Ylsrim from the Great Desert "
       "in the west towards more fertile land east.", ({ "kaliid" }));
     // people need to enter the armory, so we need to do something special
     // first create an armory dummy item
+    SetRead("sign", (: ReadSign :) );
     ob = new(LIB_DUMMY, ({ "armory", "shop" }),
       function(string str) {
 	  if( query_night() ) {

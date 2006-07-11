@@ -1,5 +1,5 @@
 /*    /domains/Examples/etc/door.c
- *    from the Nightmare IV LPC Library
+ *    from the Dead Souls LPC Library
  *    an example door object connecting doorroom1.c and doorroom2.c
  *    created by Descartes of Borg 950411
  */

@@ -23,12 +23,14 @@ static void create() {
 	"Ylsrim" : "This is the entry point for the Ylsrim domain.",
 	"campus" : "This is the entry point for the campus domain.",
 	"examples" : "This is the entry point for the examples domain.",
+	"town" : "This is the entry point for the town domain.",
 	({ "sign" }) : "A sign you can read.",
       ]));
     SetEnters( ([
 	"campus" : "/domains/campus/room/start",
 	"ylsrim" : "/domains/Ylsrim/room/bazaar",
 	"examples" : "/domains/examples/room/start.c",
+	"town" : "/domains/town/room/vill_road1",
       ]) );
     SetProperty("no attack", 1);
     SetProperty("nopeer",1);

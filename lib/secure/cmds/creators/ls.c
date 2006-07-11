@@ -89,7 +89,7 @@ static private mapping file_mapping(string *files) {
 static private string display_ls(mixed targ, int aflag, int lflag, int tflag,
   int nflag, int bflag, int sflag) {
     string *cles;
-    string ret;
+    string ret = "";
     int i, maxi;
 
     if(stringp(targ) && targ == "/") targ = ([ "/" : get_dir("/", -1) ]);

@@ -1,5 +1,5 @@
 /*    /domains/Examples/weapon/sword.c
- *    from the Nightmare IV LPC Library
+ *    from the Dead Souls LPC Library
  *    a simple sword example, nothing fancy
  *    created by Descartes of Borg 950402
  */

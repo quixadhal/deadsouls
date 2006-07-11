@@ -1,5 +1,5 @@
 /*    /domains/Midian/etc/key.c
- *    from the Nightmare Object Library
+ *    from the Dead Souls Object Library
  *    created by Descartes of Borg 960512
  */
 

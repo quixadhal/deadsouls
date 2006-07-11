@@ -1,5 +1,5 @@
 /*    /domains/Examples/weapon/dagger.c
- *    from the Nightmare IV LPC Library
+ *    from the Dead Souls LPC Library
  *    a simple dagger example, nothing fancy
  *    created by Descartes of Borg 950402
  */

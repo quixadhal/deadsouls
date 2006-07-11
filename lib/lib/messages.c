@@ -22,7 +22,7 @@ string SetMessage(string msg, string str) {
     switch(msg) {
     case "come": case "leave": case "telin": case "telout": case "home": 
     case "say": case "ask": case "exclaim": case "login": case "logout":
-    case "dest": case "clone": 
+    case "dest": case "clone": case "vis" : case "invis" :
 	return (Messages[msg] = str);
     default: return 0;
     }

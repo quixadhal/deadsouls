@@ -1,5 +1,5 @@
 /*    /domains/campus/adm/cache.c
- *    from the Nightmare V Object Library
+ *    from the Dead Souls Object Library
  *    room where hidden objects are stored
  *    created by Descartes of Borg 960302
  */

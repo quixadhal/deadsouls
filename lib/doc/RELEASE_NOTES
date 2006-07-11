@@ -1,3 +1,15 @@
+---- 2.1 (unreleased) ---
+- Fixed relative include problem in QCS.
+- Fixed memcheck.
+- Added vis and invis to list of customizable messages with the
+  message command.
+- Fixed bug in ls command with the -b flag.
+- Fixed index problems in chat.c with class channels.
+- The blackjack table is officially on the "I'm not fixing it" list.
+  It is left as an example of game code, but you are warned that 
+  it contains some subtle and not-so-subtle errors in its calculations.
+- Fixed a problem when looking at dummy items (e.g. buttons and doors).
+
 ---- 2.0r29 --- 
 - Fixed finger daemon to not display ip addresses to players.
 - The verb copy now handles relative paths more gracefully.

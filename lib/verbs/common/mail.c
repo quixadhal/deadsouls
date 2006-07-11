@@ -52,6 +52,7 @@ mixed do_mail_str(string str) {
 	  "object.");
 	return 1;
     }
+    this_player()->eventPrint("%^RED%^Remember!%^RESET%^ To end a post, enter a single period on an otherwise blank line, and then hit return.");
     ob->start_post(str);
     return 1;
 }
@@ -61,9 +62,8 @@ string GetHelp(string str) {
       "        <mail PLAYER>\n"
       "        <mail GROUP>\n\n"
       "        <mail PLAYER@MUD>\n\n"
-      "Allows you to send mail to another player on this game or "
-      "to a player on another game connected to the Intermud 3 "
-      "system.  Without arguments, you are simply set to read your "
+      "Allows you to send mail to another player on this game. "
+      "Without arguments, you are simply set to read your "
       "mail.  With arguments, you are creating mail to be sent.  "
       "You may only read mail in your home town.  The mailer will "
       "properly route any mail you send to the proper home town "

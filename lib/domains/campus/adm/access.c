@@ -1,5 +1,5 @@
 /*    /domains/campus/adm/access.c
- *    From the Nightmare V Object Library
+ *    From the Dead Souls Object Library
  *    the access object for the campus domain
  *    created by Descartes of Borg 960302
  */

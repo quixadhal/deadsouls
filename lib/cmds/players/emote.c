@@ -33,6 +33,7 @@ void help() {
       "Places any message you specify directly after your name.  For "
       "example, \"emote smiles.\" would have others see "
       "\"Descartes smiles.\".  Non-avatars lose a stamina point for "
-      "each emote to discourage abuse.", this_player());
+      "each emote to discourage abuse.\n"
+      "", this_player());
 }
 

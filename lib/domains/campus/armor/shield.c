@@ -1,7 +1,7 @@
 /*    /domains/Examples/armor/shield.c
- *    from the Nightmare IV LPC Library
+ *    from the Dead Souls LPC Library
  *    an example shield
- *    created by Lassondra@Nightmare
+ *    created by Lassondra@Dead Souls
  */
 
 #include <lib.h>

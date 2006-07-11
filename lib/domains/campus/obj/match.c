@@ -1,5 +1,5 @@
 /*    /domains/Praxis/etc/torch.c
- *    from Nightmare LPMud
+ *    from Dead Souls
  *    created by Descartes of Borg 951023
  */
 
