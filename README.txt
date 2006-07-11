@@ -24,11 +24,7 @@ the years, this embargo has stood quite firm. Yet some folks felt
 that it was a fine lib, and many were sorry to see it go.
 
 	This mudlib is based on that old warhorse. It is entirely
-free from those NM IV licensing problems. It is in a state
-as bug-free as I could make it, with my limited resources
-and faculties. I make it available so that a new generation of
-mudders can experience the joy of creating with LPC in a way
-that is easy to set up, intuitive to modify, and simple to maintain.
+free from those NM IV licensing problems, and can be shared.
 
 	Please review /doc/old/README for more historical background.
 
