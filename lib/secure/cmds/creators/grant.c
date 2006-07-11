@@ -51,5 +51,10 @@ void help() {
     message("help", "Syntax: <grant [access] to [whom] on [file|directory]>\n\n"
       "Allows you to give other creators access to files or directories "
       "under your control.  The access parameter is \"read\", "
-      "\"write\", or \"all\".", this_player());
+      "\"write\", or \"all\".\n" 
+      "There is no \"ungrant\" or \"deny\" command. Delete the "
+      "access file created in the subdirectory, to revoke the privileges "
+      "in it."
+      "",
+      this_player());
 }
