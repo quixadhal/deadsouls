@@ -394,16 +394,13 @@ int cmdChannel(string verb, string str) {
     if(!grepp(str,"$N") && emote) str = "$N "+str;
 
     eventSendChannel(name, verb, str, emote, target, target_msg);
-
-    if(member_array(GetRemoteChannel(verb),INTERMUD_D->GetChannels()) != -1){
-        if( ob ) {
-	    SERVICES_D->eventSendChannel(name, rc, str, emote, target,
-    	    target_msg);
-        }
-        else {
-          SERVICES_D->eventSendChannel(name, rc, str, emote, targetkey,
-          target_msg);          
-        }
+    if( ob ) {
+	SERVICES_D->eventSendChannel(name, rc, str, emote, target,
+	  target_msg);
+    }
+    else {
+	SERVICES_D->eventSendChannel(name, rc, str, emote, targetkey,
+	  target_msg);          
     }
     return 1;
 }
@@ -438,7 +435,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	case "admin":
 	    this_msg = "%^MAGENTA%^";
 	    break;
-	case "dchat":
+	case "intergossip":
 	    this_msg = "%^CYAN%^";
 	    break;
 	case "intercre":
@@ -515,7 +512,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	case "admin":
 	    tmsg += "%^MAGENTA%^";
 	    break;
-	case "dchat":
+	case "intergossip":
 	    tmsg += "%^CYAN%^";
 	    break;
 	case "intercre":

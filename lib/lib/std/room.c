@@ -697,15 +697,20 @@ string SetTown(string town) { return (Town = town); }
 mixed SetProperty(string prop, mixed val) {
     if( prop == "light" ) {
 	if( !val ) return val;
-	if( val < 0 ) return val;
-	else return ambiance::SetAmbientLight(val*25);
+	if( GetClimate() == "indoors" ) {
+	    if( val < 0 ) return val;
+	    else return ambiance::SetAmbientLight(val*13);
+	}
+	else {
+	    if( val < 0 ) return SetShade(-val);
+	    else return SetDayLight(val);
+	}
     }
     else if( prop == "night light" ) {
 	if( !val ) return val;
 	if( val < 0 ) return val;
-	else return SetNightLight(15*val);
+	else return SetNightLight(4*val);
     }
-
     else return properties::SetProperty(prop, val);
 }
 
@@ -847,7 +852,7 @@ static void create() {
 }
 
 int CanReceive(object ob){
-    if(!GetProperty("no teleport") || !living(ob)) return container::CanReceive(ob);
+    if(!GetProperty("no teleport")) return container::CanReceive(ob);
     else {
 	string verb = query_verb();
 	string *allowed = ({ "go", "climb", "jump", "enter", "fly", "crawl" });
@@ -860,13 +865,6 @@ int CanReceive(object ob){
 }
 
 varargs void reset(int count) {
-    object *livings = get_livings(this_object());
-    if(sizeof(livings)){
-	foreach(object living in livings){
-	    if(living->GetDrone() || living->GetMount() ||
-	      living()->GetNoClean()) return;
-	}
-    }
     inventory::reset(count);
     all_inventory()->reset(count);
     ResetNumber++;
@@ -957,8 +955,6 @@ int GenerateObviousExits(){
 }
 
 static void init() {
-    if(this_object()->GetProperty("indoors")) SetClimate("indoors");
-
     if(!sizeof(GetObviousExits()) && DefaultExits > 0 && Obvious) GenerateObviousExits();
     if(Action && sizeof(Action)) set_heart_beat(tick_resolution);
 }

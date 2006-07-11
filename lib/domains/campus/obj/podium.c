@@ -91,7 +91,6 @@ mixed CanGet(object ob) { return "The podium does not budge.";}
 int eventSay(string args) {
     string foo;
     
-    args = replace_string(args,"\n","");
     if (mc == this_player()->GetKeyName()) {
 	this_player()->eventPrint("You say %^CYAN%^\"" + capitalize(args) + "\"");
 	say(this_player()->GetName() + " says %^CYAN%^\"" + capitalize(args) + "\"");
@@ -106,10 +105,10 @@ int eventSay(string args) {
 	write ("You mutter to yourself.\n") ;
 	return 1 ;
     }
-    foo = (string)this_player()->GetCapName() + 
-    " says: %^CYAN%^\"" + capitalize(args)+"\"";
+    foo = wrap((string)this_player()->GetCapName() + 
+      " says: %^CYAN%^\"" + capitalize(args)) ;
     say (foo) ;
-    write("You say: %^CYAN%^\"" + capitalize(args)+"\"");
+    write(wrap("You say: %^CYAN%^\"" + capitalize(args)));
     return 1;
     
 }

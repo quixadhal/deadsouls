@@ -4,7 +4,6 @@
 //      created by Descartes of Borg 08 july 1993
 
 #include <lib.h>
-#include <privs.h>
 #include <daemons.h>
 
 inherit LIB_DAEMON;
@@ -14,7 +13,7 @@ int cmd(string str) {
     mixed res;
     int i;
 
-    if(!(int)master()->valid_apply(({ PRIV_SECURE, PRIV_ASSIST }))){
+    if(!(int)master()->valid_apply(({ SECURE, ASSIST }))){
 	error("Illegal attempt to add a guest.");
     }
 

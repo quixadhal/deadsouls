@@ -56,18 +56,8 @@ mixed can_reload_str_word(string str, string str2) {
     return can_reload_obj("foo"); }
 
 mixed do_reload_obj(object ob) {
-    string s1,s2;
     if(userp(ob)) {
 	write("No.");
-	return 1;
-    }
-    if(ob->GetDirectionMap()){
-	write(base_name(ob)+" is a virtual room, and not subject to normal reloading.");
-	return 1;
-    }
-    if(!strsrch(base_name(ob),"/open") ||
-      sscanf(base_name(ob),"/realms/%s/tmp/%s",s1,s2) == 2){
-	write(base_name(ob)+" is a temp file and not subject to reloading.");
 	return 1;
     }
     return reload(ob);
@@ -107,20 +97,18 @@ mixed do_reload_every_str(string str){
     case "container" : libfile = LIB_STORAGE; break;
     case "armor" : libfile = LIB_ARMOR; break;
     case "worn_storage" : libfile = LIB_WORN_STORAGE; break;
-    default : libfile = str;
+    default : libfile = "/lib/foo";
     }
 
-    if(!file_exists(libfile) && !file_exists(libfile+".c")){
+    if(!file_exists(libfile+".c")){
 	write("There is no such library file.");
 	return 1;
     }
 
-    if(last(libfile,2) == ".c") libfile = truncate(libfile,2);
     load_object("/secure/cmds/creators/update")->cmd("-a -r "+libfile);
 
-    ob_pool = filter(objects(), (: ( inherits(libfile, $1) ) :) );
-    if(!sizeof(ob_pool)) 
-	ob_pool = filter(objects(), (: ( base_name($1) == libfile ) :) );
+    ob_pool = filter(objects(), (: ( inherits(libfile, $1) &&
+	  !inherits(LIB_BOOK, $1) ) :) );
 
     if(!sizeof(ob_pool)) {
 	write("None found.");
@@ -129,7 +117,7 @@ mixed do_reload_every_str(string str){
 
     foreach(object ob in ob_pool){
 	if(ob) write("reloading: "+file_name(ob));
-	do_reload_obj(ob);
+	reload(ob);
     }
 
     write("Done.");
