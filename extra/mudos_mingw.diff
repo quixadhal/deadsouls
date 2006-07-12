@@ -1,0 +1,1314 @@
+diff -c -r --new-file v22.2b14/GNUmakefile ../mudos_v22.2b14_mingw/GNUmakefile
+*** v22.2b14/GNUmakefile	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/GNUmakefile	Tue Jun  6 19:23:08 2006
+***************
+*** 3,15 ****
+  OBJDIR=obj
+  DRIVER_BIN=driver
+  PROOF=
+! STRFUNCS=
+  INSTALL=install -c
+  INSTALL_DIR=../bin
+! OPTIMIZE=
+! CPP=gcc -E
+! CFLAGS=-D__USE_FIXED_PROTOTYPES__ -g -DDEBUG
+! CC=gcc
+  YACC=bison -d -y
+  RANLIB=ranlib
+  A=a
+--- 3,17 ----
+  OBJDIR=obj
+  DRIVER_BIN=driver
+  PROOF=
+! STRFUNCS=strfuncs.o
+  INSTALL=install -c
+  INSTALL_DIR=../bin
+! OPTIMIZE=-Wall -Wundef -DPEDANTIC -pedantic -Wmissing-declarations
+! CPP=gcc -E -mno-cygwin -static
+! CFLAGS=-D__CRYPT_IMPORT__ -D__USE_FIXED_PROTOTYPES__ -g -DDEBUG -DDEBUG_MACRO
+! #EXTRALIBS=-L/cygdrive/c/MinGW/lib -lwsock32 -lws2_32 
+! EXTRALIBS=-L/cygdrive/c/MinGW/lib -lwsock32 -lws2_32 
+! CC=gcc -static -mno-cygwin -B static 
+  YACC=bison -d -y
+  RANLIB=ranlib
+  A=a
+***************
+*** 81,87 ****
+  
+  all: $(OBJDIR) cc.h files main_build
+  
+! main_build: $(DRIVER_BIN) addr_server portbind
+  
+  parallel:
+  	$(MAKE) -k -l -j 6 cc.h files
+--- 83,89 ----
+  
+  all: $(OBJDIR) cc.h files main_build
+  
+! main_build: $(DRIVER_BIN) 
+  
+  parallel:
+  	$(MAKE) -k -l -j 6 cc.h files
+diff -c -r --new-file v22.2b14/GNUmakefile.in ../mudos_v22.2b14_mingw/GNUmakefile.in
+*** v22.2b14/GNUmakefile.in	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/GNUmakefile.in	Sun Jun  4 20:04:32 2006
+***************
+*** 65,71 ****
+  
+  all: $(OBJDIR) cc.h files main_build
+  
+! main_build: $(DRIVER_BIN) addr_server portbind
+  
+  parallel:
+  	$(MAKE) -k -l -j 6 cc.h files
+--- 65,71 ----
+  
+  all: $(OBJDIR) cc.h files main_build
+  
+! main_build: $(DRIVER_BIN) addr_server
+  
+  parallel:
+  	$(MAKE) -k -l -j 6 cc.h files
+diff -c -r --new-file v22.2b14/add_action.c ../mudos_v22.2b14_mingw/add_action.c
+*** v22.2b14/add_action.c	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/add_action.c	Sun Jun  4 19:58:18 2006
+***************
+*** 2,7 ****
+--- 2,8 ----
+  #include "comm.h"
+  #include "backend.h"
+  #include "add_action.h"
++ #include "efun_protos.h"
+  
+  #ifndef NO_ADD_ACTION
+  
+diff -c -r --new-file v22.2b14/build.MudOS ../mudos_v22.2b14_mingw/build.MudOS
+*** v22.2b14/build.MudOS	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/build.MudOS	Sun Jun  4 20:08:14 2006
+***************
+*** 1,5 ****
+--- 1,9 ----
+  #!/bin/sh
+  
++ echo "This mudos distribution is preconfigured for mingw."
++ echo "Running this script will clobber that config."
++ exit 1
++ 
+  if test $# -ne 0; then
+      case $1 in
+          develop)
+***************
+*** 21,26 ****
+--- 25,34 ----
+      echo Preparing to build standard MudOS driver ...
+  fi
+  
++ \cp -f ../bin/mudos.cfg.orig ../lib/secure/cfg/mudos.cfg
++ \rm -f ../bin/mudos.cfg
++ ln -s ../lib/secure/cfg/mudos.cfg ../bin/mudos.cfg
++ 
+  # If this is uncommented, the specified 'make' is used instead of looking for
+  # one 
+  #MAKE=make
+diff -c -r --new-file v22.2b14/buildMudOS.bat ../mudos_v22.2b14_mingw/buildMudOS.bat
+*** v22.2b14/buildMudOS.bat	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/buildMudOS.bat	Wed Dec 31 19:00:00 1969
+***************
+*** 1,74 ****
+- @echo off
+- 
+- if "%1" == "develop" echo Preparing to build developmental version of MudOS driver ...
+- if "%1" == "develop" set OPTIMIZE=-Od
+- if "%1" == "develop" set DEBUG=-Zi -DDEBUG -W4
+- if "%1" == "debug" echo Preparing to build debugging version of MudOS driver ...
+- if "%1" == "debug" set OPTIMIZE=-Od
+- if "%1" == "debug" set DEBUG=-Zi -DDEBUG -W2
+- if "%1x" == "x" echo Preparing to build standard MudOS driver ...
+- if "%1x" == "x" set OPTIMIZE=-Ox
+- 
+- rem  define this to be where you want the temporary compiled files to go
+- rem  (use only backslashes here)
+- set OBJDIR=.\obj
+- 
+- rem  change this if you wish the driver binary to be named something else
+- set DRIVER_BIN=driver
+- 
+- rem Set INSTALL_DIR to the directory where you want to install the executables.
+- rem (use only backslashes here)
+- set INSTALL_DIR=..\bin
+- 
+- rem Some of these are probably unnecessary
+- set CFLAGS=-nologo -MT %DEBUG%
+- 
+- rem Determine system type
+- set ARCH=Windows 95
+- if "%OS%" == "Windows_NT" set ARCH=Windows NT
+- if "%OS%" == "Windows_NT" set CFLAGS=%CFLAGS% -DWINNT
+- if "%OS%" == "" set CFLAGS=%CFLAGS% -DWIN95
+- 
+- mkdir %OBJDIR%
+- 
+- echo MAKE=NMake >Makefile.tmp
+- echo SHELL=command.com >>Makefile.tmp
+- echo OBJDIR=%OBJDIR% >>Makefile.tmp
+- echo DRIVER_BIN=%DRIVER_BIN% >>Makefile.tmp
+- echo INSTALL=copy >>Makefile.tmp
+- echo INSTALL_DIR=%INSTALL_DIR% >>Makefile.tmp
+- echo OPTIMIZE=%OPTIMIZE% >>Makefile.tmp
+- echo CPP=cl -E >>Makefile.tmp
+- echo CFLAGS=%CFLAGS% >>Makefile.tmp
+- echo CC=cl >>Makefile.tmp
+- echo YACC=bison -d -y >>Makefile.tmp
+- echo RANLIB=echo >>Makefile.tmp
+- echo O=obj >>Makefile.tmp
+- echo A=lib >>Makefile.tmp
+- echo EDIT_SOURCE=.\edit_source >>Makefile.tmp
+- echo EXE=.exe >>Makefile.tmp
+- echo TAB_EXT=_tab >> Makefile.tmp
+- 
+- echo ***************** Configuration completed **************
+- echo Installing MudOS on %ARCH%
+- echo.
+- echo Using copy to install binaries in %INSTALL_DIR%.
+- echo Using cl -E for preprocessing.
+- echo Using cl %CFLAGS% %OPTIMIZE% to compile.
+- echo Using bison -d -y to make the compiler.
+- echo Edit Makefile if this is not what you want
+- echo.
+- echo Otherwise, type 'nmake' to build MudOS, then 'nmake install'.
+- 
+- type Makefile.tmp > Makefile
+- type NMakefile.in >> Makefile
+- del Makefile.tmp
+- echo wsock32.lib > system_libs
+- 
+- set CFLAGS=
+- set OBJDIR=
+- set DRIVER_BIN=
+- set INSTALL_DIR=
+- set OPTIMIZE=
+- set DEBUG=
+- set ARCH=
+--- 0 ----
+diff -c -r --new-file v22.2b14/comm.c ../mudos_v22.2b14_mingw/comm.c
+*** v22.2b14/comm.c	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/comm.c	Tue Jun  6 16:03:58 2006
+***************
+*** 14,19 ****
+--- 14,21 ----
+  #include "master.h"
+  #include "add_action.h"
+  
++ #define  WIN // included as way of only compiling if set, you may want to change this to suit your makefiles/project etc
++ 
+  static char telnet_break_response[] = {  28, IAC, WILL, TELOPT_TM };
+  static char telnet_ip_response[]    = { 127, IAC, WILL, TELOPT_TM };
+  static char telnet_abort_response[] = { IAC, DM };
+***************
+*** 36,42 ****
+  				    SLC_NOSUPPORT, SLC_NOSUPPORT, SLC_NOSUPPORT, SLC_NOSUPPORT, SLC_NOSUPPORT, SLC_NOSUPPORT };
+  static char slc_default_chars[] = { 0x00, BREAK, IP, AO, AYT, 0x00, 0x00, 0x00, SUSP, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+  #ifdef DEBUG
+! static char *slc_names[] = { SLC_NAMELIST };
+  #endif
+  
+  /*
+--- 38,46 ----
+  				    SLC_NOSUPPORT, SLC_NOSUPPORT, SLC_NOSUPPORT, SLC_NOSUPPORT, SLC_NOSUPPORT, SLC_NOSUPPORT };
+  static char slc_default_chars[] = { 0x00, BREAK, IP, AO, AYT, 0x00, 0x00, 0x00, SUSP, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+  #ifdef DEBUG
+! #  ifndef sgi
+! char *slc_names[] = { SLC_NAMELIST };
+! #endif
+  #endif
+  
+  /*
+***************
+*** 255,261 ****
+      /*
+       * register signal handler for SIGPIPE.
+       */
+! #if !defined(LATTICE) && defined(SIGPIPE)
+      if (signal(SIGPIPE, sigpipe_handler) == SIGNAL_ERROR) {
+  	debug_perror("init_user_conn: signal SIGPIPE",0);
+  	exit(5);
+--- 259,265 ----
+      /*
+       * register signal handler for SIGPIPE.
+       */
+! #if !defined(LATTICE) && defined(SIGPIPE) && !defined(WIN)
+      if (signal(SIGPIPE, sigpipe_handler) == SIGNAL_ERROR) {
+  	debug_perror("init_user_conn: signal SIGPIPE",0);
+  	exit(5);
+***************
+*** 282,287 ****
+--- 286,298 ----
+  
+  void init_addr_server P2(char *, hostname, int, addr_server_port)
+  {
++ // This is what starts Winsock functions	
++ #ifdef WIN
++ 	WORD wVersionRequested = MAKEWORD(1,1);       
++ 	WSADATA wsaData;                              
++ 	WSAStartup(wVersionRequested, &wsaData);
++ #endif
++ 	
+      struct sockaddr_in server;
+      struct hostent *hp;
+      int server_fd;
+***************
+*** 291,296 ****
+--- 302,309 ----
+      if (addr_server_fd >= 0)
+  	return;
+  
++ printf ("Hostname = %s ",hostname );
++     
+      if (!hostname) return;
+  
+      /*
+***************
+*** 353,358 ****
+--- 366,377 ----
+  	socket_perror("init_addr_server: set_socket_nonblocking 1", 0);
+  	return;
+      }
++ //Close Winsock Functions
++ #ifdef WIN
++ 	WSACleanup();
++ #endif
++ 
++ 
+  }
+  
+  /*
+diff -c -r --new-file v22.2b14/comm.h ../mudos_v22.2b14_mingw/comm.h
+*** v22.2b14/comm.h	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/comm.h	Sat Jun  3 22:21:56 2006
+***************
+*** 9,14 ****
+--- 9,15 ----
+  #include "lpc_incl.h"
+  #include "network_incl.h"
+  
++ #define SIGPIPE 3
+  #define MAX_TEXT                   2048
+  #define MAX_SOCKET_PACKET_SIZE     1024
+  #define DESIRED_SOCKET_PACKET_SIZE 800
+diff -c -r --new-file v22.2b14/configuration ../mudos_v22.2b14_mingw/configuration
+*** v22.2b14/configuration	Wed Dec 31 19:00:00 1969
+--- ../mudos_v22.2b14_mingw/configuration	Sat Jun  3 21:48:04 2006
+***************
+*** 0 ****
+--- 1 ----
++ Machine CYGWIN_NT-5.0 ARIZONA 1.5.18(0.132/4/2) 2005-07-02 20:30 i686 unknown unknown Cygwin Configure version 5
+diff -c -r --new-file v22.2b14/configure ../mudos_v22.2b14_mingw/configure
+*** v22.2b14/configure	Wed Dec 31 19:00:00 1969
+--- ../mudos_v22.2b14_mingw/configure	Mon May 15 11:30:44 2006
+***************
+*** 0 ****
+--- 1,2 ----
++ #!/bin/sh
++ ./build.MudOS develop
+diff -c -r --new-file v22.2b14/configure.h ../mudos_v22.2b14_mingw/configure.h
+*** v22.2b14/configure.h	Wed Dec 31 19:00:00 1969
+--- ../mudos_v22.2b14_mingw/configure.h	Tue Jun  6 19:27:52 2006
+***************
+*** 0 ****
+--- 1,28 ----
++ #define INCL_STDLIB_H
++ #define INCL_TIME_H
++ #define INCL_FCNTL_H
++ #define INCL_DOS_H
++ #define INCL_SYS_STAT_H
++ #define INCL_LIMITS_H
++ #define USE_STRUCT_DIRENT
++ #define INCL_STDARG_H
++ #define HAS_MEMMOVE
++ #define RAND
++ #define HAS_STRERROR
++ #define HAS_GETCWD
++ 
++ #define SIG_ERR -1
++ #define SIGNAL_ERROR -1
++ /* #define WIN32 */
++ 
++ #define SIZEOF_INT 4
++ #define SIZEOF_PTR 4
++ #define SIZEOF_SHORT 2
++ #define SIZEOF_FLOAT 4
++ #define SIZEOF_INT 4
++ #define SIZEOF_PTR 4
++ #define SIZEOF_SHORT 2
++ #define SIZEOF_FLOAT 4
++ /* #define UINT32 unsigned long  */
++ #define CONFIGURE_VERSION	5
++ 
+diff -c -r --new-file v22.2b14/crc32.c ../mudos_v22.2b14_mingw/crc32.c
+*** v22.2b14/crc32.c	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/crc32.c	Sun Jun  4 19:58:18 2006
+***************
+*** 10,19 ****
+     by others.  See the comments in the file (crctab.h) for the credits.
+  */
+  
+- UINT32
+  compute_crc32 P2(unsigned char *, buf, int, len)
+  {
+!     register UINT32 crc = 0xFFFFFFFFL;
+      register int j;
+  
+      j = len;
+--- 10,18 ----
+     by others.  See the comments in the file (crctab.h) for the credits.
+  */
+  
+  compute_crc32 P2(unsigned char *, buf, int, len)
+  {
+!     register unsigned int crc = 0xFFFFFFFFL;
+      register int j;
+  
+      j = len;
+diff -c -r --new-file v22.2b14/crc32.h ../mudos_v22.2b14_mingw/crc32.h
+*** v22.2b14/crc32.h	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/crc32.h	Sat Jun  3 22:41:28 2006
+***************
+*** 4,9 ****
+  /*
+   * crc32.c
+   */
+! UINT32 compute_crc32 PROT((unsigned char *, int));
+! 
+  #endif
+--- 4,9 ----
+  /*
+   * crc32.c
+   */
+! /* UINT32 compute_crc32 PROT((unsigned char *, int)); */
+! int compute_crc32 PROT((unsigned char *, int));
+  #endif
+diff -c -r --new-file v22.2b14/crypt.c ../mudos_v22.2b14_mingw/crypt.c
+*** v22.2b14/crypt.c	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/crypt.c	Tue Jun  6 20:26:22 2006
+***************
+*** 82,88 ****
+  /* Table T constructed from a sine function, mentioned in RFC, section 3.4.
+   * Table T[i], 1 <= i <= 64,    = trunc (4294967296 * |sin i|).
+   */
+! UINT32 T[64] = {
+          0xd76aa478,0xe8c7b756,0x242070db,0xc1bdceee,0xf57c0faf,0x4787c62a,
+          0xa8304613,0xfd469501,0x698098d8,0x8b44f7af,0xffff5bb1,0x895cd7be,
+          0x6b901122,0xfd987193,0xa679438e,0x49b40821,0xf61e2562,0xc040b340,
+--- 82,88 ----
+  /* Table T constructed from a sine function, mentioned in RFC, section 3.4.
+   * Table T[i], 1 <= i <= 64,    = trunc (4294967296 * |sin i|).
+   */
+! unsigned long T[64] = {
+          0xd76aa478,0xe8c7b756,0x242070db,0xc1bdceee,0xf57c0faf,0x4787c62a,
+          0xa8304613,0xfd469501,0x698098d8,0x8b44f7af,0xffff5bb1,0x895cd7be,
+          0x6b901122,0xfd987193,0xa679438e,0x49b40821,0xf61e2562,0xc040b340,
+***************
+*** 97,105 ****
+  };
+  
+  /* This function returns success, i.e. 0 on error. */
+! int MD5Digest(  CONST byte *buf, /* Buffer to be digested.               */
+!                 UINT32  buflen,    /* Length of the buffer in bytes.       */
+!                 byte *Digest     /* Output area: 16 raw bytes.           */
+               )
+  {
+  
+--- 97,105 ----
+  };
+  
+  /* This function returns success, i.e. 0 on error. */
+! int MD5Digest(  BytE *buf, /* Buffer to be digested.               */
+!                 unsigned long  buflen,    /* Length of the buffer in bytes.       */
+!                 BytE *Digest     /* Output area: 16 raw bytes.           */
+               )
+  {
+  
+***************
+*** 108,115 ****
+  #define OC 0x98badcfe
+  #define OD 0x10325476
+  
+!         UINT32 A = OA, B = OB, C = OC, D = OD;
+!         static UINT32 Block[16];  /* One block: 512 bits. */
+  
+          if(buflen > MD5_MAXLEN) return 0;       /* Too large. */
+  
+--- 108,115 ----
+  #define OC 0x98badcfe
+  #define OD 0x10325476
+  
+!         unsigned long A = OA, B = OB, C = OC, D = OD;
+!         static unsigned long Block[16];  /* One block: 512 bits. */
+  
+          if(buflen > MD5_MAXLEN) return 0;       /* Too large. */
+  
+***************
+*** 174,180 ****
+   *
+   * Hell, perhaps sprintf (printing in hex) should be used..
+   */
+! int encode(byte *where, CONST byte *data, int inputbytes)
+  {
+          int i, w = 0;
+  
+--- 174,180 ----
+   *
+   * Hell, perhaps sprintf (printing in hex) should be used..
+   */
+! int encode( unsigned char *whEre, BytE *data, int inputbytes )
+  {
+          int i, w = 0;
+  
+***************
+*** 182,189 ****
+  #define ENCODER_OFFSET  96
+  
+          for(i = 0; i < inputbytes; i++) {
+!                 where[i*2]      = ENCODER_OFFSET + ( data[i]       & 0x0f);
+!                 where[1+(i*2)]  = ENCODER_OFFSET + ((data[i] >> 4) & 0x0f);
+                  w += 2;
+          }
+  
+--- 182,189 ----
+  #define ENCODER_OFFSET  96
+  
+          for(i = 0; i < inputbytes; i++) {
+!                 whEre[i*2]      = ENCODER_OFFSET + ( data[i]       & 0x0f);
+!                 whEre[1+(i*2)]  = ENCODER_OFFSET + ((data[i] >> 4) & 0x0f);
+                  w += 2;
+          }
+  
+***************
+*** 191,208 ****
+  }
+  
+  /* Gets raw data from printable string; opposite of encode().  */
+! void decode(byte *where, CONST byte *string, int stringbytes)
+  {
+          int i;
+  
+          for(i = 0; i < stringbytes; i+=2)
+!             where[i/2] = (string[i] & 0x0f) | ((string[i+1] & 0x0f) << 4);
+  }
+  
+  /* If there is a valid salt in the input, copy it. Otherwise,
+   * generate a new one.
+   */
+! void getsalt(byte *to, CONST byte *from)
+  {
+          int i;
+  
+--- 191,208 ----
+  }
+  
+  /* Gets raw data from printable string; opposite of encode().  */
+! void decode( unsigned char *whEre, BytE *string, int stringbytes)
+  {
+          int i;
+  
+          for(i = 0; i < stringbytes; i+=2)
+!             whEre[i/2] = (string[i] & 0x0f) | ((string[i+1] & 0x0f) << 4);
+  }
+  
+  /* If there is a valid salt in the input, copy it. Otherwise,
+   * generate a new one.
+   */
+! void getsalt(BytE *to, BytE *from)
+  {
+          int i;
+  
+***************
+*** 212,218 ****
+  #define MAGIC_SALTSEP   '!'
+  
+          if(from) {
+!             byte Digest[16];
+  
+              if(strlen((char *)from) > MD5_SALTLEN * 2) {
+                  if(from[2 * MD5_SALTLEN] == MAGIC_SALTSEP) {
+--- 212,218 ----
+  #define MAGIC_SALTSEP   '!'
+  
+          if(from) {
+!             BytE Digest[16];
+  
+              if(strlen((char *)from) > MD5_SALTLEN * 2) {
+                  if(from[2 * MD5_SALTLEN] == MAGIC_SALTSEP) {
+***************
+*** 256,262 ****
+          return;
+  }
+  
+! void crunchbuffer(byte *buf,            /* Buffer to be crunched.       */
+                    SIGNED int *len,      /* Length now used in buf.      */
+                    char *addition,       /* What to add to buf.          */
+                    SIGNED int addlen,    /* Length of addition.          */
+--- 256,262 ----
+          return;
+  }
+  
+! void crunchbuffer(BytE *buf,            /* Buffer to be crunched.       */
+                    SIGNED int *len,      /* Length now used in buf.      */
+                    char *addition,       /* What to add to buf.          */
+                    SIGNED int addlen,    /* Length of addition.          */
+***************
+*** 268,274 ****
+          used = *len;
+          
+          while(addlen > 0) {
+!                 byte Digest[16];
+                  int crunched;
+  
+                  /* Reduce `buf' by digesting it. */
+--- 268,274 ----
+          used = *len;
+          
+          while(addlen > 0) {
+!                 BytE Digest[16];
+                  int crunched;
+  
+                  /* Reduce `buf' by digesting it. */
+***************
+*** 307,320 ****
+   * At this point, custom_crypt() should never return NULL.
+   *
+   */
+! char *custom_crypt(CONST char *key, CONST char *salt, byte *rawout)
+  {
+!         byte Digest[16];
+!         static byte buffer[MD5_MAXLEN],
+                      abuffer[MD5_MAXLEN],
+                      thesalt[MD5_SALTLEN];
+          SIGNED int used = 0, len, i;
+!         static byte /* encode()d salt, encode()d digest, salt seperator
+                       * and null terminating byte:
+                       */
+                      ret[(MD5_SALTLEN*2) + 1 + (sizeof(Digest)*2) + 1];
+--- 307,321 ----
+   * At this point, custom_crypt() should never return NULL.
+   *
+   */
+! 
+! char *custom_crypt(char *key, char *salt, unsigned char *rawout)
+  {
+!         BytE Digest[16];
+!         static BytE buffer[MD5_MAXLEN],
+                      abuffer[MD5_MAXLEN],
+                      thesalt[MD5_SALTLEN];
+          SIGNED int used = 0, len, i;
+!         static BytE /* encode()d salt, encode()d digest, salt seperator
+                       * and null terminating byte:
+                       */
+                      ret[(MD5_SALTLEN*2) + 1 + (sizeof(Digest)*2) + 1];
+***************
+*** 322,328 ****
+          /* Obtain the salt we have to use (either given in salt
+           * arg or randomly generated one).
+           */
+!         getsalt(thesalt, (byte *)salt);
+  
+  #define ADDBUFFER(b, l) if(used + (l) > sizeof(buffer)) \
+  	                     crunchbuffer(buffer, &used, (char *)(b), (l), sizeof(buffer)); \
+--- 323,329 ----
+          /* Obtain the salt we have to use (either given in salt
+           * arg or randomly generated one).
+           */
+!         getsalt(thesalt, (BytE *)salt);
+  
+  #define ADDBUFFER(b, l) if(used + (l) > sizeof(buffer)) \
+  	                     crunchbuffer(buffer, &used, (char *)(b), (l), sizeof(buffer)); \
+diff -c -r --new-file v22.2b14/crypt.h ../mudos_v22.2b14_mingw/crypt.h
+*** v22.2b14/crypt.h	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/crypt.h	Tue Jun  6 20:25:48 2006
+***************
+*** 21,30 ****
+   * a salt from an unrecognized string. Any value returned
+   * from md5crypt("anything", NULL, NULL) is valid here.
+   */
+! #define MD5_VALID_SALT "anhlklck!ggddl`l`lg`bjblodlfcljdcnhffib`c"
+  
+! typedef unsigned char byte;
+  
+! char *custom_crypt(CONST char *key, CONST char *salt, byte *rawout);
+  
+  #endif
+--- 21,41 ----
+   * a salt from an unrecognized string. Any value returned
+   * from md5crypt("anything", NULL, NULL) is valid here.
+   */
+! #define MD5_VALID_SALT "anhlklck!ggddl`l`lg`bjblodlfcljdcnhffib`c" 
+! /* #define MD5_VALID_SALT "anhlklckggddlllgbjblodlfcljdcnhffibc" */
+  
+! typedef unsigned char BytE;
+  
+! /* char *custom_crypt(CONST char *key, CONST char *salt, unsigned char *rawout); */
+! 
+! char *custom_crypt(char *key, char *salt, unsigned char *rawout); 
+! 
+! /* int MD5Digest(  CONST BytE *buf, unsigned long  buflen, BytE *Digest); */
+! 
+! int MD5Digest PROT((  BytE *, unsigned long  buflen, BytE *));
+! int encode PROT(( unsigned char *, BytE *, int ));
+! void decode PROT(( unsigned char *, BytE *, int ));
+! void getsalt PROT((BytE *, BytE * ));
+! void crunchbuffer PROT((BytE *buf, SIGNED int *, char *, SIGNED int, int ));
+  
+  #endif
+diff -c -r --new-file v22.2b14/efuns_port.c ../mudos_v22.2b14_mingw/efuns_port.c
+*** v22.2b14/efuns_port.c	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/efuns_port.c	Tue Jun  6 20:36:04 2006
+***************
+*** 14,19 ****
+--- 14,21 ----
+  #include "include/localtime.h"
+  #include "port.h"
+  #include "crypt.h"
++ #include "crypt.h"
++ /* #include "include/wincrypt.h" */
+  #include "efun_protos.h"
+  
+  /* get a value for CLK_TCK for use by times() */
+***************
+*** 55,79 ****
+  #ifdef F_OLDCRYPT
+  void
+  f_oldcrypt PROT((void)) {
+!     char *res, salt[3];
+!     char *choice =
+!     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ./";
+! 
+!     if (sp->type == T_STRING && SVALUE_STRLEN(sp) >= 2) {
+!         salt[0] = sp->u.string[0];
+!         salt[1] = sp->u.string[1];
+!         free_string_svalue(sp--);
+!     } else {
+!         salt[0] = choice[random_number(strlen(choice))];
+!         salt[1] = choice[random_number(strlen(choice))];
+!         pop_stack();
+!     }
+!     salt[2] = 0;
+!     res = string_copy(OLDCRYPT(sp->u.string, salt), "f_crypt");
+!     free_string_svalue(sp);
+!     sp->subtype = STRING_MALLOC;
+!     sp->u.string = res;
+! }
+  #endif
+  
+  #ifdef F_LOCALTIME
+--- 57,82 ----
+  #ifdef F_OLDCRYPT
+  void
+  f_oldcrypt PROT((void)) {
+! /*     char *res, salt[3];
+! *     char *choice =
+! *     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ./";
+! * 
+! *     if (sp->type == T_STRING && SVALUE_STRLEN(sp) >= 2) {
+! *         salt[0] = sp->u.string[0];
+! *         salt[1] = sp->u.string[1];
+! *         free_string_svalue(sp--);
+! *     } else {
+! *         salt[0] = choice[random_number(strlen(choice))];
+! *         salt[1] = choice[random_number(strlen(choice))];
+! *         pop_stack();
+! *     }
+! *     salt[2] = 0;
+! *     res = string_copy(OLDCRYPT(sp->u.string, salt), "f_crypt");
+! *     free_string_svalue(sp);
+! *     sp->subtype = STRING_MALLOC;
+! *     sp->u.string = res;
+! */
+!  }
+  #endif
+  
+  #ifdef F_LOCALTIME
+diff -c -r --new-file v22.2b14/lex.c ../mudos_v22.2b14_mingw/lex.c
+*** v22.2b14/lex.c	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/lex.c	Sun Jun  4 19:58:18 2006
+***************
+*** 18,24 ****
+  #include "file_incl.h"
+  #include "lpc_incl.h"
+  #include "compiler.h"
+! #ifdef WIN32
+  #  include "grammar_tab.h"
+  #else
+  #  include "grammar.tab.h"
+--- 18,24 ----
+  #include "file_incl.h"
+  #include "lpc_incl.h"
+  #include "compiler.h"
+! #ifndef WIN32
+  #  include "grammar_tab.h"
+  #else
+  #  include "grammar.tab.h"
+diff -c -r --new-file v22.2b14/lint.h ../mudos_v22.2b14_mingw/lint.h
+*** v22.2b14/lint.h	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/lint.h	Wed May 24 10:32:46 2006
+***************
+*** 75,81 ****
+  /* SGI is missing some prototypes in the .h files */
+  #ifdef PEDANTIC
+  #  ifdef sgi
+!      void ualarm PROT((int, int));
+  #  endif
+  #endif
+  
+--- 75,82 ----
+  /* SGI is missing some prototypes in the .h files */
+  #ifdef PEDANTIC
+  #  ifdef sgi
+! /* If using some old-ass IRIX and it won't compile, uncomment the next line */
+! /*     void ualarm PROT((int, int)); */
+  #  endif
+  #endif
+  
+diff -c -r --new-file v22.2b14/local_options ../mudos_v22.2b14_mingw/local_options
+*** v22.2b14/local_options	Wed Dec 31 19:00:00 1969
+--- ../mudos_v22.2b14_mingw/local_options	Tue Jun  6 19:22:30 2006
+***************
+*** 0 ****
+--- 1,99 ----
++ #undef SYSMALLOC
++ #define SMALLOC
++ #undef BSDMALLOC
++ #undef WRAPPEDMALLOC
++ #define DEBUGMALLOC
++ #undef SBRK_OK
++ #define DO_MSTATS
++ #define DEBUGMALLOC_EXTENSIONS
++ #define CHECK_MEMORY
++ #undef HAS_STATUS_TYPE
++ #undef COMPRESS_FUNCTION_TABLES
++ #define SANE_EXPLODE_STRING
++ #undef REVERSIBLE_EXPLODE_STRING
++ #undef CAST_CALL_OTHERS
++ #define NONINTERACTIVE_STDERR_WRITE
++ #define NO_LIGHT
++ #undef NO_ADD_ACTION
++ #undef NO_SNOOP
++ #undef NO_ENVIRONMENT
++ #define NO_WIZARDS
++ #undef OLD_TYPE_BEHAVIOR
++ #undef OLD_RANGE_BEHAVIOR
++ #undef OLD_ED
++ #undef SENSIBLE_MODIFIERS
++ #define CUSTOM_CRYPT
++ #undef COMPAT_32
++ #define STRING_STATS
++ #define ARRAY_STATS
++ #define LOG_CATCHES
++ #undef ARGUMENTS_IN_TRACEBACK
++ #undef LOCALS_IN_TRACEBACK
++ #define MUDLIB_ERROR_HANDLER
++ #define CONFIG_FILE_DIR "./"
++ #define DEFAULT_PRAGMAS PRAGMA_STRICT_TYPES
++ #define SUPPRESS_ARGUMENT_WARNINGS
++ #undef NO_RESETS
++ #define LAZY_RESETS
++ #define SAVE_EXTENSION ".o"
++ #define NO_ANSI
++ #define STRIP_BEFORE_PROCESS_INPUT
++ #define OPCPROF
++ #undef OPCPROF_2D
++ #define TRAP_CRASHES
++ #define THIS_PLAYER_IN_CALL_OUT
++ #define CALLOUT_HANDLES
++ #undef FLUSH_OUTPUT_IMMEDIATELY
++ #define PRIVS
++ #define INTERACTIVE_CATCH_TELL
++ #define RESTRICTED_ED
++ #undef NO_SHADOWS
++ #undef SNOOP_SHADOWED
++ #define RECEIVE_SNOOP
++ #undef PROFILE_FUNCTIONS
++ #undef NO_BUFFER_TYPE
++ #undef BINARIES
++ #define ARRAY_RESERVED_WORD
++ #undef REF_RESERVED_WORD
++ #define PACKAGE_CONTRIB
++ #define PACKAGE_DEVELOP
++ #define PACKAGE_MATH
++ #define PACKAGE_MATRIX
++ #define PACKAGE_MUDLIB_STATS
++ #define PACKAGE_SOCKETS
++ #define PACKAGE_PARSER
++ #undef PACKAGE_EXTERNAL
++ #ifdef PACKAGE_EXTERNAL
++ #define NUM_EXTERNAL_CMDS 5
++ #endif
++ #undef PACKAGE_DB
++ #ifdef PACKAGE_DB
++ #undef USE_MSQL 1		/* MiniSQL, it's small; it's free */
++ #define USE_MYSQL 2		/* MySQL, bigger; it's free */
++ #define DEFAULT_DB USE_MYSQL	/* default database */
++ #endif
++ #undef PACKAGE_UIDS
++ #undef AUTO_SETEUID
++ #undef AUTO_TRUST_BACKBONE
++ #undef USE_32BIT_ADDRESSES
++ #define HEARTBEAT_INTERVAL 1000000
++ #define CALLOUT_CYCLE_SIZE 32
++ #define LARGEST_PRINTABLE_STRING 8192
++ #define MESSAGE_BUFFER_SIZE 4096
++ #define APPLY_CACHE_BITS 11
++ #define CACHE_STATS
++ #undef TRACE
++ #undef LPC_TO_C
++ #undef RUNTIME_LOADING
++ #undef TRACE_CODE
++ #define HEART_BEAT_CHUNK      32
++ #undef GET_CHAR_IS_BUFFERED
++ #define SMALL_STRING_SIZE     100
++ #define LARGE_STRING_SIZE     1000
++ #define MAX_SAVE_SVALUE_DEPTH 25
++ #define CFG_MAX_LOCAL_VARIABLES		25
++ #define CFG_EVALUATOR_STACK_SIZE 	1000
++ #define CFG_MAX_CALL_DEPTH		75
++ #define CFG_LIVING_HASH_SIZE		256
++ #define NEXT_MALLOC_DEBUG
++ 
+diff -c -r --new-file v22.2b14/mudlib/GNUmakefile ../mudos_v22.2b14_mingw/mudlib/GNUmakefile
+*** v22.2b14/mudlib/GNUmakefile	Fri Dec 12 12:07:58 2003
+--- ../mudos_v22.2b14_mingw/mudlib/GNUmakefile	Tue Jun  6 20:32:18 2006
+***************
+*** 1,17 ****
+! 
+! OBJ=interface.$(O)
+! SRC=interface.c
+! 
+! OBJ=$(addprefix $(OBJDIR)/,$(subst .c,.o,$(SRC)))
+! 
+! $(OBJDIR)/%.o: %.c
+! 	$(CC) -I$(OBJDIR) -I.. $(CFLAGS) -o $@ -c $<
+! 
+! all: $(OBJ)
+! 	ar rcu mudlib.$(A) $(OBJ)
+! 	$(RANLIB) mudlib.$(A)
+! 
+! clean:
+! 	-rm -f *.$(O)
+! 	-rm -f mudlib.$(A)
+! 
+--- 1,17 ----
+! 
+! OBJ=interface.$(O)
+! SRC=interface.c
+! 
+! OBJ=$(addprefix $(OBJDIR)/,$(subst .c,.o,$(SRC)))
+! 
+! $(OBJDIR)/%.o: %.c
+! 	$(CC) -I$(OBJDIR) -I.. $(CFLAGS) -o $@ -c $<
+! 
+! all: $(OBJ)
+! 	ar rcu mudlib.$(A) $(OBJ)
+! 	$(RANLIB) mudlib.$(A)
+! 
+! clean:
+! 	-rm -f *.$(O)
+! 	-rm -f mudlib.$(A)
+! 
+diff -c -r --new-file v22.2b14/mudlib/Makefile ../mudos_v22.2b14_mingw/mudlib/Makefile
+*** v22.2b14/mudlib/Makefile	Fri Dec 12 12:07:58 2003
+--- ../mudos_v22.2b14_mingw/mudlib/Makefile	Tue Jun  6 20:32:18 2006
+***************
+*** 1,15 ****
+! 
+! OBJ=interface.$(O)
+! SRC=interface.c
+! 
+! .c.$(O):
+! 	$(CC) $(CFLAGS) -I.. -c $*.c
+! 
+! all: $(OBJ)
+! 	ar rcu mudlib.$(A) $(OBJ)
+! 	$(RANLIB) mudlib.$(A)
+! 
+! clean:
+! 	-rm -f *.$(O)
+! 	-rm -f mudlib.$(A)
+! 
+--- 1,15 ----
+! 
+! OBJ=interface.$(O)
+! SRC=interface.c
+! 
+! .c.$(O):
+! 	$(CC) $(CFLAGS) -I.. -c $*.c
+! 
+! all: $(OBJ)
+! 	ar rcu mudlib.$(A) $(OBJ)
+! 	$(RANLIB) mudlib.$(A)
+! 
+! clean:
+! 	-rm -f *.$(O)
+! 	-rm -f mudlib.$(A)
+! 
+diff -c -r --new-file v22.2b14/network_incl.h ../mudos_v22.2b14_mingw/network_incl.h
+*** v22.2b14/network_incl.h	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/network_incl.h	Sun Jun  4 14:10:02 2006
+***************
+*** 5,11 ****
+  #  include <sys/types.h>
+  #endif
+  #ifdef INCL_SYS_IOCTL_H
+! #  include <sys/ioctl.h>
+  #endif
+  #ifdef INCL_SYS_SOCKET_H
+  #  include <sys/socket.h>
+--- 5,11 ----
+  #  include <sys/types.h>
+  #endif
+  #ifdef INCL_SYS_IOCTL_H
+! #  include "/usr/include/sys/ioctl.h"
+  #endif
+  #ifdef INCL_SYS_SOCKET_H
+  #  include <sys/socket.h>
+diff -c -r --new-file v22.2b14/options_incl.h ../mudos_v22.2b14_mingw/options_incl.h
+*** v22.2b14/options_incl.h	Wed Dec 31 19:00:00 1969
+--- ../mudos_v22.2b14_mingw/options_incl.h	Tue Jun  6 20:32:14 2006
+***************
+*** 0 ****
+--- 1 ----
++ #include "local_options"
+diff -c -r --new-file v22.2b14/packages/contrib.c ../mudos_v22.2b14_mingw/packages/contrib.c
+*** v22.2b14/packages/contrib.c	Fri Dec 12 12:07:58 2003
+--- ../mudos_v22.2b14_mingw/packages/contrib.c	Tue Oct 25 21:55:10 2005
+***************
+*** 1050,1058 ****
+          break;
+      case 'R':
+      case 'r':
+!         if (!strcasecmp(rel + 1, "oof"))
+              found = PLURAL_SUFFIX;
+          break;
+      case 'S':
+      case 's':
+          if (!strcasecmp(rel + 1, "niff")) {
+--- 1050,1063 ----
+          break;
+      case 'R':
+      case 'r':
+!         if (!strcasecmp(rel + 1, "oof")) {
+              found = PLURAL_SUFFIX;
+          break;
++ 	}
++ 	if (!strcasecmp(rel + 1, "emains")) {
++ 		found = PLURAL_SAME;
++ 		break;
++ 	}
+      case 'S':
+      case 's':
+          if (!strcasecmp(rel + 1, "niff")) {
+diff -c -r --new-file v22.2b14/socket_ctrl.c ../mudos_v22.2b14_mingw/socket_ctrl.c
+*** v22.2b14/socket_ctrl.c	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/socket_ctrl.c	Sun Jun  4 20:02:24 2006
+***************
+*** 1,3 ****
+--- 1,5 ----
++ #define SIOCSPGRP 0x8902 
++ #define ioctl ioctlsocket
+  #include "std.h"
+  #include "socket_ctrl.h"
+  #include "network_incl.h"
+***************
+*** 5,10 ****
+--- 7,17 ----
+  #include "file_incl.h"
+  #include "file.h"
+  
++ /* int ioctl(int x, int y, int z){
++ * return 1;
++ * }
++ */
++ 
+  /*
+    ioctl.c: part of the MudOS release -- Truilkan@TMI
+  
+***************
+*** 18,32 ****
+  
+  INLINE int set_socket_owner P2(int, fd, int, which)
+  {
+! #ifdef OLD_ULTRIX
+!     return fcntl(fd, F_SETOWN, which);
+! #else
+! #ifdef WINSOCK
+!     return 1; /* FIXME */
+! #else
+!     return ioctl(fd, SIOCSPGRP, &which);
+! #endif
+! #endif
+  }
+  
+  /*
+--- 25,33 ----
+  
+  INLINE int set_socket_owner P2(int, fd, int, which)
+  {
+! 
+!     /* return ioctl(fd, SIOCSPGRP, &which); */
+!     return ioctl(fd, SIOCSPGRP, &which); 
+  }
+  
+  /*
+diff -c -r --new-file v22.2b14/socket_ctrl.h ../mudos_v22.2b14_mingw/socket_ctrl.h
+*** v22.2b14/socket_ctrl.h	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/socket_ctrl.h	Sun Jun  4 19:50:58 2006
+***************
+*** 7,16 ****
+  int set_socket_nonblocking PROT((int, int));
+  int set_socket_owner PROT((int, int));
+  int set_socket_async PROT((int, int));
+  
+! #ifdef WIN32
+  void SocketPerror PROT((char *, char *));
+  void CDECL cleanup_sockets PROT((void));
+! #endif
+  
+  #endif
+--- 7,19 ----
+  int set_socket_nonblocking PROT((int, int));
+  int set_socket_owner PROT((int, int));
+  int set_socket_async PROT((int, int));
++ /* int ioctl PROT((int, int)); */
++ /* unsigned int ioctl(int fd, int SIOCSPGRP, int which); */
++ /* int ioctl (int __fd, int __cmd, ...); */
+  
+! /* #ifdef WIN32 */
+  void SocketPerror PROT((char *, char *));
+  void CDECL cleanup_sockets PROT((void));
+! /* #endif */
+  
+  #endif
+diff -c -r --new-file v22.2b14/socket_efuns.c ../mudos_v22.2b14_mingw/socket_efuns.c
+*** v22.2b14/socket_efuns.c	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/socket_efuns.c	Sun Jun  4 19:58:18 2006
+***************
+*** 1188,1203 ****
+   */
+  int get_socket_address P4(int, fd, char *, addr, int *, port, int, local)
+  {
+!     struct sockaddr_in *addr_in;
+  
+      if (fd < 0 || fd >= max_lpc_socks) {
+  	addr[0] = '\0';
+  	*port = 0;
+  	return EEFDRANGE;
+      }
+!     addr_in = &(local ? lpc_socks[fd].l_addr : lpc_socks[fd].r_addr);
+!     *port = (int) ntohs(addr_in->sin_port);
+!     strcpy(addr, inet_ntoa(addr_in->sin_addr));
+      return EESUCCESS;
+  }
+  
+--- 1188,1205 ----
+   */
+  int get_socket_address P4(int, fd, char *, addr, int *, port, int, local)
+  {
+!     struct sockaddr_in *addy_in;
+  
+      if (fd < 0 || fd >= max_lpc_socks) {
+  	addr[0] = '\0';
+  	*port = 0;
+  	return EEFDRANGE;
+      }
+!     /* addy_in =  &(local ? lpc_socks[fd].l_addr : lpc_socks[fd].r_addr); */
+! local ? lpc_socks[fd].l_addr : lpc_socks[fd].r_addr;
+! addy_in =  &local;
+!     *port = (int) ntohs(addy_in->sin_port);
+!     strcpy(addr, inet_ntoa(addy_in->sin_addr));
+      return EESUCCESS;
+  }
+  
+diff -c -r --new-file v22.2b14/strfuncs.c ../mudos_v22.2b14_mingw/strfuncs.c
+*** v22.2b14/strfuncs.c	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/strfuncs.c	Sun Jun  4 19:58:18 2006
+***************
+*** 9,90 ****
+  			islower(x) ? (x) + 10 - 'a' : (x) + 10 - 'A')
+  #define MBASE	('z' - 'a' + 1 + 10)
+  
+- long strtol P3(register char *, str, char **, ptr, register int, base)
+- {
+-     register long val;
+-     register int c;
+-     int xx, neg = 0;
+- 
+-     if (ptr != (char **) 0)
+- 	*ptr = str;		/* in case no number is formed */
+-     if (base < 0 || base > MBASE)
+- 	return (0);		/* base is invalid -- should be a fatal error */
+-     if (!isalnum(c = *str)) {
+- 	while (isspace(c))
+- 	    c = *++str;
+- 	switch (c) {
+- 	case '-':
+- 	    neg++;
+- 	case '+':		/* fall-through */
+- 	    c = *++str;
+- 	}
+-     }
+-     if (base == 0)
+- 	if (c != '0')
+- 	    base = 10;
+- 	else if (str[1] == 'x' || str[1] == 'X')
+- 	    base = 16;
+- 	else
+- 	    base = 8;
+-     /*
+-      * for any base > 10, the digits incrementally following 9 are assumed to
+-      * be "abc...z" or "ABC...Z"
+-      */
+-     if (!isalnum(c) || (xx = DIGIT(c)) >= base)
+- 	return (0);		/* no number formed */
+-     if (base == 16 && c == '0' && isxdigit(str[2]) &&
+- 	(str[1] == 'x' || str[1] == 'X'))
+- 	c = *(str += 2);	/* skip over leading "0x" or "0X" */
+-     for (val = -DIGIT(c); isalnum(c = *++str) && (xx = DIGIT(c)) < base;)
+- 	/* accumulate neg avoids surprises near MAXLONG */
+- 	val = base * val - xx;
+-     if (ptr != (char **) 0)
+- 	*ptr = str;
+-     return (neg ? val : -val);
+- }
+- 
+- strcspn P2(register char *, s, char *, set)
+- {
+-     register char *t;
+-     register int count = 0;
+- 
+-     while (*s) {
+- 	t = set;
+- 	while (*t && (*s != *t))
+- 	    t++;
+- 	if (!*t) {
+- 	    s++;
+- 	    count++;
+- 	} else
+- 	    break;
+-     }
+- 
+-     return (count);
+- }
+- 
+- 
+- INLINE char *memset P3(char *, s, int, c, int, n)
+- {
+-     if (c == 0)
+- 	bzero(s, n);
+-     else {
+- 	debug_message("Failed in memset\n");
+- 	exit(1);
+-     }
+- }
+- 
+- INLINE char *memcpy P3(char *, b, char *, a, int, s)
+- {
+-     bcopy(a, b, s);
+-     return b;
+- }
+--- 9,11 ----
+diff -c -r --new-file v22.2b14/system_libs ../mudos_v22.2b14_mingw/system_libs
+*** v22.2b14/system_libs	Wed Dec 31 19:00:00 1969
+--- ../mudos_v22.2b14_mingw/system_libs	Tue Jun  6 19:23:18 2006
+***************
+*** 0 ****
+--- 1 ----
++  -lwsock32 -lws2_32
+diff -c -r --new-file v22.2b14/ualarm.c ../mudos_v22.2b14_mingw/ualarm.c
+*** v22.2b14/ualarm.c	Fri Dec 12 12:08:00 2003
+--- ../mudos_v22.2b14_mingw/ualarm.c	Sun Jun  4 19:58:18 2006
+***************
+*** 1,4 ****
+--- 1,5 ----
+  #include "std.h"
++ #define ITIMER_REAL 0
+  #ifndef HAS_UALARM
+  /*
+   * Copyright (c) 1985 Regents of the University of California.
+***************
+*** 33,63 ****
+   * SUCH DAMAGE.
+   */
+  
+  #if defined(LIBC_SCCS) && !defined(lint)
+  static char sccsid[] = "@(#)ualarm.c	5.5 (Berkeley) 2/23/91";
+  #endif				/* LIBC_SCCS and not lint */
+  
+  #define	USPS	1000000		/* # of microseconds in a second */
+  
+! unsigned ualarm PROT((register unsigned, register unsigned));
+  
+  /*
+   * Generate a SIGALRM signal in ``usecs'' microseconds.
+   * If ``reload'' is non-zero, keep generating SIGALRM
+   * every ``reload'' microseconds after the first signal.
+   */
+! unsigned ualarm P2(register unsigned, usecs, register unsigned, reload) {
+!     struct itimerval new, old;
+! 
+!     new.it_interval.tv_usec = reload % USPS;
+!     new.it_interval.tv_sec = reload / USPS;
+  
+!     new.it_value.tv_usec = usecs % USPS;
+!     new.it_value.tv_sec = usecs / USPS;
+! 
+!     if (setitimer(ITIMER_REAL, &new, &old) == 0)
+! 	return old.it_value.tv_sec * USPS + old.it_value.tv_usec;
+      /* else */
+!     return -1;
+  }
+  #endif
+--- 34,79 ----
+   * SUCH DAMAGE.
+   */
+  
++ /*
++ * struct timeval {
++ * long int tv_sec;
++ * long int tv_usec;
++ * }
++ * 
++ * struct itimerval {
++ * struct timeval it_interval, it_value;
++ * }
++ */
+  #if defined(LIBC_SCCS) && !defined(lint)
+  static char sccsid[] = "@(#)ualarm.c	5.5 (Berkeley) 2/23/91";
+  #endif				/* LIBC_SCCS and not lint */
+  
+  #define	USPS	1000000		/* # of microseconds in a second */
+  
+! /* unsigned int ualarm PROT((register unsigned, register unsigned)); */
+  
+  /*
+   * Generate a SIGALRM signal in ``usecs'' microseconds.
+   * If ``reload'' is non-zero, keep generating SIGALRM
+   * every ``reload'' microseconds after the first signal.
+   */
+! /* unsigned int ualarm P2(register unsigned, usecs, register unsigned, reload) {*/
+! /* unsigned int ualarm (unsigned int usex, unsigned int reloady) { */
+  
+! /*int ualarm (int usex, int reloady) {
+!     struct itimerval new, old;
+! *
+! *    new.it_interval.tv_usec = reloady % USPS;
+! *    new.it_interval.tv_sec = reloady / USPS;
+! *
+! *    new.it_value.tv_usec = usex % USPS;
+! *    new.it_value.tv_sec = usex / USPS;
+! *
+! *    if (setitimer(ITIMER_REAL, &new, &old) == 0)
+! *	return old.it_value.tv_sec * USPS + old.it_value.tv_usec; 
+! */
+      /* else */
+! /*    return -1; 
+  }
++ */
+  #endif

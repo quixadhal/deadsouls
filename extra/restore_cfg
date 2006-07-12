@@ -1,0 +1,2 @@
+#!/bin/sh
+\cp -f ../bin/mudos.cfg.orig ../lib/secure/cfg/mudos.cfg

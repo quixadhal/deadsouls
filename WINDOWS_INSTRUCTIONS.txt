@@ -1,0 +1,43 @@
+YOU MUST READ THIS URL: http://dead-souls.net/ds-inst-faq.html
+
+
+-------------------------------------------------------------
+WARNING: Do NOT modify the file called
+mudos.cfg. Doing so WILL cause the driver to fail.
+You must use c:\ds as your mud folder. To rename the
+mud, use the admintool command after you log in.
+
+
+
+WARNING: This will not work on WinME or Win98 or earlier
+versions of windows.
+-------------------------------------------------------------
+
+
+1) unzip the distribution file.
+
+2) move the directory to c:\
+
+3) there should now be a c:\ds folder, containing bin, lib, etc. If
+   there isn't one, rename the directory you just created to c:\ds
+   If Dead Souls isn't in c:\ds , it won't run.
+   For example, there should be a c:\ds\bin, c:\ds\lib, etc.
+
+4) double-click on runmud.bat
+
+5)  telnet to your machine, using the port specified in bin/mudos.cfg. For example: telnet localhost 6666
+
+6) Create a new user. Just answer the questions. Make sure you are
+the first person to log in, because that person is automatically
+given admin privileges.
+
+7) You'll get booted out. Telnet back in, and you're now running Your
+Very Own MUD.
+
+8) This Windows port is beta. We welcome suggestions for improvement.
+
+9) If there is something actually wrong with this documentation, please visit Frontiers MUD and mudmail Cratylus. Details on this are in the /doc/SUPPORT file.
+
+10) If you have connection problems, try again with your firewall disabled.
+
+11) See the FAQ if you still have problems: http://dead-souls.net/ds-inst-faq.html
