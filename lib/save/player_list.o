@@ -1,8 +1,0 @@
-#/secure/daemon/players.c
-PlayerDataMap ([])
-PendingEncres ({})
-PendingDecres ({})
-players ({"cratylus","one","two","detah",})
-creators ({})
-user_list ({"cratylus","one","two","detah","detah",})
-player_save_file "/secure/save/players/d/detah.o"
