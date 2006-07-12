@@ -310,8 +310,7 @@ static void InputCapName(string name, string cap) {
     }
     Player->SetCapName(cap = capitalize(name));
     receive("\nFor security reasons, " + mud_name() + " requires a valid "
-      "email.\nYou can restrict this information as being admin only "
-      "by preceeding it\nwith a '#' character (e.g. #user@host).\n"
+      "email.\n"
       "Email: \n");
     input_to((: InputEmail :), I_NOESC);
 } 

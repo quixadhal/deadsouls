@@ -1,0 +1,49 @@
+#include <lib.h>
+#include "../customdefs.h";
+inherit LIB_NPC;
+inherit MY_AREA + "/etc/call_cops";
+static void create(){
+	npc::create();
+	SetKeyName("guard");
+	SetId( ({"human","gate guard","warrior","soldier"}) );
+	SetShort("a guard");
+	SetLong("This is a large professional soldier. He wears "+
+	"the proud crimson insignia of the Fortress Guards, a legendary "+
+	"force of warriors.");
+	SetLevel(5);
+	SetRace("human");
+	SetClass("fighter");
+	SetGender("male");
+	SetInventory(([
+	MY_ARMOR "/chainmail.c" : "wear chainmail",
+	MY_ARMOR "/leather_boot_r.c" : "wear boot",
+	MY_ARMOR "/leather_boot_l.c" : "wear boot",
+	MY_ARMOR "/steel_glove_l.c" : "wear glove",
+	MY_ARMOR "/steel_glove_r.c" : "wear glove",
+	MY_ARMOR "/steel_helmet.c" : "wear helmet",
+	MY_ARMOR "/crimson_cloak.c" : "wear cloak",
+	MY_ARMOR "/platemail_pants.c" : "wear pants",
+	MY_ARMOR "/shield.c" : "wear shield on left arm",
+	MY_WEAP "/std_sword.c" : "wield sword in right hand",
+		]));
+}
+
+int eventExtraAction(){
+	object gate;
+	int closed, locked;
+	call_cops::eventExtraAction();
+
+	if(this_object()->GetInCombat()){
+
+	gate = present("great gate",environment(this_object()));
+	closed = gate->GetClosed();
+	locked = gate->GetLocked();
+	if(gate && !closed) eventForce("close gate");
+	if(gate && closed && !locked) gate->SetLocked(1);
+	}
+
+	return 1;
+}
+
+
+
