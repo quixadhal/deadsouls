@@ -1,0 +1,51 @@
+YOU MUST READ THIS URL: http://dead-souls.net/ds-inst-faq.html 
+
+
+Then perform the following steps:
+
+1) cd to the directory where all mud files reside. Called $MUDHOME
+   in the rest of this document.
+
+2) cd to v22.2b14
+
+3) type ./configure
+
+4) type: make 
+
+5) type: make install
+	If this fails, just manually copy the "driver" file
+	into $MUDHOME/bin/
+
+6) edit $MUDHOME/bin/mudos.cfg (provided). The two to change are:
+mudlib directory and binary directory. For example, if your $MUDHOME
+is /home/joe/mud, then the mudlib directory line will look like this:
+
+/home/joe/mud/lib
+
+and bin:
+
+/home/joe/mud/bin
+
+7) edit $MUDHOME/bin/startmud (provided) and change the $MUDHOME
+    stuff.
+
+8) manually run the mud $MUDHOME/bin/driver $MUDHOME/bin/mudos.cfg
+
+9)  telnet to your machine, using the port specified in mudos.cfg. For
+example: telnet localhost 6666
+
+10) Create a new user. Just answer the questions. Make sure you are
+the first person to log in, because that person is automatically
+given admin privileges.
+
+11) You'll get booted out. Reboot the MUD, telnet back in, and you're 
+now running Your Very Own MUD.
+
+12) If you have problems, review the FAQ: http://dead-souls.net/ds-inst-faq.html
+
+13) If this doesn't help, please refer to the mudos.org documentation at their website. This procedure works perfectly on SuSE 9.3, SuSE 10, Solaris 8 and Solaris 10, but we can't possibly vouch for every unix flavor and compiler suite out there. If the compile fails, try the local_options file in extra/
+
+14) If there is something actually wrong with this documentation, please
+visit Frontiers MUD and mudmail Cratylus. Details on this are in the
+/doc/SUPPORT file.
+
