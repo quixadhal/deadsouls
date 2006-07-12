@@ -17,7 +17,7 @@ static void create() {
     SetClass("thief");
     SetGender("male");
     SetEncounter(100);
-    SetMaxHealthPoints(50);
+    SetMaxHealthPoints(25);
     SetInventory(([
 	"/domains/town/armor/towel":"wear towel",
 	"/domains/town/weap/brush":"wield brush",

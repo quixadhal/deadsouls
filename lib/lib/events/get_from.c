@@ -97,9 +97,11 @@ mixed eventGetFrom(object who, object array what) {
 	    continue;
 	}
 	if( ob->CanGet(who) != 1 ) {
+	    write("It would appear you can't get "+ob->GetShort()+" right now.");
 	    continue;
 	}
 	if( !who->CanCarry(ob->GetMass()) ) {
+	    write("It seems you can't carry it.");
 	    continue;
 	}
 	if( !ob->eventMove(who) ) {
