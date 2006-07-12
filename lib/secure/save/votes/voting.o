@@ -1,0 +1,3 @@
+#/secure/daemon/voting.c
+mapVoting (["candidates":(["mage":({}),"explorer":({}),"priest":({}),"fighter":({}),"thief":({}),]),"voted":({}),"votes":(["mage":([]),"explorer":([]),"priest":([]),"fighter":([]),"thief":([]),]),"status":4,])
+mapCouncil ([])

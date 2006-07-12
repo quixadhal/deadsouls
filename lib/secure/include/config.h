@@ -3,8 +3,8 @@
 
 #define DEFAULT_PROMPT           "> "
 #define MUD_STATUS               "mudlib development"
-#define ADMIN_EMAIL              "admin@here"
-#define DEBUGGER                 "DEBUG_NAME"
+#define ADMIN_EMAIL              "cratylus@comcast.net"
+#define DEBUGGER                 "cratylus"
 #define LOCAL_NEWS_PREFIX        "nm"
 
 #define MUD_IS_LOCKED            0

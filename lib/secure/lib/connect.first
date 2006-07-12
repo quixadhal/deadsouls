@@ -100,7 +100,7 @@ static void InputEmail(string str);
 static void InputRealName(string str) {
     if( !str || str == "" ) str = "Unknown";
     Admin->SetRealName(str);
-    receive("What is your email address (first char # for privacy)? ");
+    receive("What is your email address? ");
     input_to((: InputEmail :), I_NOESC);
 }
 
