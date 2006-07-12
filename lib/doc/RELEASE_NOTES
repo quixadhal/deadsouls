@@ -13,6 +13,8 @@
   it hasn't been working for a while, and it was only noticed by
   a bugtester, it's going away until post-2.1
 - Fixed color code problem in the arch room screen.
+- Fixed problem in look verb that caused problems looking at
+  objects that inherit LIB_DUMMY. Tons of thanks to Daelas for this save.
 
 ---- 2.0r29 --- 
 - Fixed finger daemon to not display ip addresses to players.
