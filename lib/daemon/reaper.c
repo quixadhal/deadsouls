@@ -13,6 +13,7 @@ static void eventReap() {
     call_out((: eventReap :), 300);
 
     reap_dummies();
+    reap_other();
 }
 
 static void create() {
