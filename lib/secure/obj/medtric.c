@@ -28,6 +28,7 @@ void create(){
       "* fscan: readout of all files inherited\t\t%^GREEN%^ONLINE%^RESET%^\n"+
       "* enshadow: move a shadow to an object\t\t%^RED%^offline%^RESET%^\n"+
       "* deshadow: remove all shadows from an object\t%^GREEN%^ONLINE%^RESET%^\n"+
+      "* diagnose: assess health status\t\t%^GREEN%^ONLINE%^RESET%^\n"+
       "* inject: insert substance into patient\t\t%^RED%^offline%^RESET%^\n"+
       "* extract: remove a foreign body or substance\t%^GREEN%^ONLINE%^RESET%^ (slugs only)\n"+
       "* modhealth: raise or lower health level\t%^GREEN%^ONLINE%^RESET%^\n"+
