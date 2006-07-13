@@ -87,9 +87,7 @@ int AddLanguagePoints(string lang, int points) {
 
     key = convert_name(lang);
     if( !Languages[key] ) SetLanguage(key, 0, 0);
-    //tc("thing1: "+identify(Languages[key]["points"]));
     Languages[key]["points"] += points;
-    //tc("thing2: "+identify(Languages[key]["points"]));
     Languages[key]["level"] = Languages[key]["points"];
     if(Languages[key]["level"] > 100) Languages[key]["level"] = 100;
     return Languages[key]["points"];

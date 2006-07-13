@@ -34,14 +34,8 @@ int answers_to(string name, object what){
     if(member_array(lower_case(name),query_names(what)) != -1) return 1;
     if(!sizeof(adjs)) return 0;
     hits = sscanf(name,"%s %s %s %s",s1, s2, s3, s4);
-    //tc("hits: "+hits);
     if(hits < 4) hits = sscanf(name,"%s %s %s",s1, s2, s3);
-    //tc("hits: "+hits);
     if(hits < 3) hits = sscanf(name,"%s %s",s1, s2);
-    //tc("s1: "+s1);
-    //tc("s2: "+s2);
-    //tc("s3: "+s3);
-    //tc("s4: "+s4);
     if(!hits) return 0;
     hits--;
     if(sizeof(s1)) preargs += ({s1});

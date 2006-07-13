@@ -66,8 +66,6 @@ mixed cmd(string str) {
 	string msg, svc;
 	int val, comma = 0;
 
-	//tc("borg: "+identify(borg));
-
 	mud = keys(borg)[0];
 	msg = "\nDetailed information on %^GREEN%^" + mud + "%^RESET%^:\n";
 	msg += sprintf("MUD Type: %:-6s Server: %:-20s Library: %s\n",

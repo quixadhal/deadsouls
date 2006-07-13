@@ -54,15 +54,10 @@ varargs mixed eventOpen(object who, object tool) {
 void create() {
     string *c_save, *l_save, *a_save;
 
-    //AddSave(close::GetSave() + lock::GetSave());
     c_save = close::GetSave();
     l_save = lock::GetSave();
     a_save = c_save + l_save;
 
     AddSave( a_save );
-
-    //tc("c_save: "+identify(c_save));
-    //tc("l_save: "+identify(l_save));
-    //tc("a_save: "+identify(a_save));
 
 }

@@ -42,8 +42,6 @@ int AutoDeactivate(){
 
 void init(){
     ::init();
-    //    add_action("privacy","privacy");
-    //    add_action("privacy","priv");
     add_action("report_time","timer");
 }
 
@@ -53,8 +51,6 @@ void heart_beat(){
 
 int report_time(){
     int secs = time() - timer;
-    //tc("time: "+time());
-    //tc("timer: "+timer);
 
     if(!timer){
 	write("Privacy field is not active.");

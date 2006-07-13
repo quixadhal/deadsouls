@@ -187,6 +187,5 @@ int replace(string str){
 	write("Found string in line "+n+". Replacing with: "+a3+".\n");
 	this_object()->replace(line);
     }
-    //tc("line: "+line);
     return 1;
 }

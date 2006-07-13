@@ -146,9 +146,7 @@ static void eventCatch(object who, string fish, object pole) {
 	return;
     }
     if( !((int)pole->eventCatch(who, fish)) ) return;
-    //food = new((string)fish->GetFood());
     food=new(fish);
-    //tc("new fish: "+identify(food),"yellow");
     RemoveFishing(who);
     who->AddSkillPoints("fishing", (int)fish->GetFight()+(int)fish->GetMass());
     message("my_action", "You find " + (string)fish->GetShort() + " on " +
@@ -157,15 +155,12 @@ static void eventCatch(object who, string fish, object pole) {
       (string)fish->GetShort() + " on " + (string)pole->GetShort() + 
       "!", this_object(), ({ who }));
     if( !((int)food->eventMove(who)) ) {
-	//tc("fish failed to move onto fisherman "+identify(who));
 	message("my_action", "You drop " + (string)food->GetShort() + "!",
 	  who);
 	message("other_action", (string)who->GetName() + " drops " +
 	  (string)food->GetShort() + "!", this_object(), ({ who }) );
 	food->eventMove(this_object());
     }
-    //tc("We weem to think all is well. The environment of "+identify(food)+" is "+
-    //identify(environment(food)));
 }
 
 mixed eventStop(object who, string str) {

@@ -89,8 +89,6 @@ varargs string SetRace(string race, mixed extra) {
 
     RACES_D->SetCharacterRace(race, args);
 
-    //tc("meep: "+identify(args[4]));
-
     if(sizeof(args[4])){
 	foreach(mixed key, mixed val in args[4]){
 	    this_object()->AddSkill(key,atoi(val[1]));
@@ -103,7 +101,6 @@ varargs string SetRace(string race, mixed extra) {
     }
     foreach(tmp in args[1]) {
 	mixt = copy(args[1]);
-	//tc("mixt: "+identify(mixt),"blue");
 	AddStat(tmp...);
     }
     if( stringp(args[2]) ) {

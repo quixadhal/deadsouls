@@ -84,23 +84,18 @@ mixed make(string str) {
 
     if(file_exists(arg2)) new_file = arg2;
     else if(strsrch(arg2,"./") != -1) {
-	//tc("found dotslash");
 	arg2 = replace_string(arg2,"./","");
 	new_file = absolute_path((string)this_player()->query_cwd(), arg2);
-	//tc("new_file: "+new_file);
     }
     else if(directory_exists(path_prefix(arg2))){
-	//tc("new_file: "+new_file,"red");
 	new_file  = arg2;
     }
     else if(grepp(arg2,"/")){
 	new_file = room_dir +"/"+ last_string_element(arg2,"/");
-	//tc("new_file: "+new_file,"green");
     }
 
     else {
 	new_file = room_dir +"/"+ arg2;
-	//tc("new_file: "+new_file,"blue");
     }
 
     if(!check_privs(this_player(),new_file)){
@@ -148,7 +143,6 @@ varargs int eventCreateExit(string dir, string room, string file, int remote){
     else if(strsrch(globaltmp,"AddExit") != -1) param = "AddExit";
     else if(strsrch(globaltmp,"SetLong") != -1) param = "SetLong";
     else {
-	//write("The room you are in is screwed up. Creation process halted.");
     }
     globaltmp = remove_matching_line(globaltmp,"SetObviousExits",1);
     globaltmp = remove_matching_line(globaltmp,"//extras",1);
@@ -177,46 +171,31 @@ int eventRemoveExit(string dir, string filename){
     mapping PointlessMap;
     mapping ExitsMap = load_object(filename)->GetExitMap();
 
-    //if(!sizeof(ExitsMap)) tc("Exitsmap is nothing");
-    //else tc("ExitsMap: "+identify(ExitsMap));
-
     if(file_exists(filename) && !check_privs(this_player(),filename)){
 	write("You do not appear to have access to this room's file. Modification aborted.");
 	return 1;
     }
 
     tmpfile = generate_tmp(load_object(filename));
-    //tmpfile = generate_tmp();
     globalstr = filename;
     globaltmp = tmpfile;
     unguarded( (: globalstr2 = read_file(globalstr) :) );
     contents = globalstr2;
-    //tc("filename: "+filename);
-    //tc("contents: "+contents);
     PointlessMap = ([]);
 
     PointlessMap = load_object(filename)->GetFullExitData();
-
-    //if(!sizeof(PointlessMap)) write("PointlessMap is nothing");
-    // else write("PointlessMap: "+identify(PointlessMap));
-
-    //if(file_exists(filename)) tc(filename+" exists.");
-    // else tc(filename+" doesn't exist.");
 
     if( member_array(dir,load_object(filename)->GetExits()) != -1 
       && !functionp(PointlessMap[dir]["pre"]) 
       && !functionp(PointlessMap[dir]["post"]) ) {
 	this_object()->eventReadMapping(filename,({"SetExits"}), 1);
-	//write("ExitsMap: "+identify(ExitsMap));
 	map_delete(ExitsMap,dir);
-	//tc("ExitsMap: "+identify(ExitsMap));
 	map_str = "SetExits( ([ \n";
 	foreach( key, val in ExitsMap){
 	    if(!functionp(PointlessMap[key]["pre"]) 
 	      && !functionp(PointlessMap[key]["post"])) map_str += "\""+key+"\" : \""+val+"\",\n";
 	}
 	map_str += "]) );";
-	//write("map_str: "+map_str);
 
 	unguarded( (: globalstr2 = read_file(globalstr) :) );
 	contents = globalstr2;
@@ -331,21 +310,15 @@ string eventCopyRoom(string source, string dest){
     unguarded( (: this_object()->eventReadMapping(globalstr,({"SetExits"}),1) :) ); 
     unguarded( (: this_object()->eventReadMapping(globalstr2,({"SetExits"}),1) :) ); 
     DestExits = load_object(dest)->GetExitMap();
-    //tc("\n--------\n");
 
     unguarded( (: globaltmp = read_file(globalstr) :) ); 
-    //write("globaltmp: "+globaltmp);
-    //tc("\n--------\n");
 
-    //write("DestExitS: "+identify(DestExits));
     map_str = "SetExits("+this_object()->eventStringifyMap(DestExits)+");\n";
     new_file = this_object()->eventAppend(globaltmp,({"SetItems","SetLong","SetDayLong"}),"\n"+map_str+"\n");
     new_file = replace_line(new_file,({"SetShort(",");"}),"SetShort(\"copy of "+last_string_element(source,"/")+"\");");
     replace_string(new_file,"\n\n\n","\n\n");
     new_file = remove_matching_line(new_file, "SetDoor", 1);
 
-    //tc("new_file: "+new_file);
-    //tc("\n--------\n");
     write_file(tmpsource,new_file,1);
 
     this_object()->eventGeneralStuff(tmpsource);
@@ -383,32 +356,13 @@ varargs int eventCreateEnter(string dir, string room, string file, int remote){
 
     if(remote && member_array("out",load_object(room)->GetExits()) != -1) return 0;
 
-    //globaltmp = remove_matching_line(globaltmp,"SetObviousExits",1);
-    //globaltmp = remove_matching_line(globaltmp,"SetExits",1);
-    //globaltmp = remove_matching_line(globaltmp,"SetDoor",1);
     globaltmp = remove_matching_line(globaltmp,"SetEnters",1);
     globaltmp = remove_matching_line(globaltmp,"//extras",1);
-    //tc("remote: "+remote,"yellow");
-    //tc("globalroom: "+globalroom);
-    //tc("globalfile: "+globalfile);
-    //tc("globaltmp: "+read_matching_line(globaltmp,"Long"));
-    //unguarded( (: tc("globalfile is: "+read_matching_line(read_file(globalfile),"Long"),"red") :) );
-    //unguarded( (: tc("globalroom is: "+read_matching_line(read_file(globalroom),"Long"),"red") :) );
     unguarded( (: write_file(globalfile,globaltmp,1) :) );
-    //players = get_livings(environment(this_player()),1);
-    //load_object("/secure/cmds/creators/update")->cmd("-a "+room);
-    //unguarded( (: tc("globalfile is: "+read_matching_line(read_file(globalfile),"Long"),"red") :) );
-    //unguarded( (: tc("globalroom is: "+read_matching_line(read_file(globalroom),"Long"),"red") :) );
 
     if(!remote) {
-	//tc("size of globalroom: "+sizeof(read_file(globalroom)));
-	//tc("size of globalfile: "+sizeof(read_file(globalfile)));
-	//tc("");
 	eventProcessEnters(room, dir, file);
-	//tc("size of globalroom: "+sizeof(read_file(globalroom)));
-	//tc("size of globalfile: "+sizeof(read_file(globalfile)));
 	this_object()->eventCreateExit("out", file, room, 1 );
-	//players->eventMove(load_object(room));
 	say(this_player()->GetCapName()+" waves "+possessive(this_player())+" hand and a new enter appears.");
 	this_object()->eventGeneralStuff(room);
     }
@@ -439,54 +393,33 @@ int eventRemoveEnter(string dir, string filename){
     mapping PointlessMap;
     mapping EntersMap = load_object(filename)->GetEnterMap();
 
-    //if(!sizeof(EntersMap)) tc("Entersmap is nothing");
-    //else tc("EntersMap: "+identify(EntersMap));
-
     if(file_exists(filename) && !check_privs(this_player(),filename)){
 	write("You do not appear to have access to this room's file. Modification aborted.");
 	return 1;
     }
 
     tmpfile = generate_tmp(load_object(filename));
-    //tmpfile = generate_tmp();
     globalstr = filename;
     globaltmp = tmpfile;
     unguarded( (: globalstr2 = read_file(globalstr) :) );
     contents = globalstr2;
-    //tc("filename: "+filename);
-    //tc("contents: "+contents);
     PointlessMap = ([]);
 
     PointlessMap = load_object(filename)->GetEnterMap();
 
-    //if(!sizeof(PointlessMap)) write("PointlessMap is nothing");
-    // else write("PointlessMap: "+identify(PointlessMap));
-
-    //if(file_exists(filename)) tc(filename+" exists.");
-    // else tc(filename+" doesn't exist.");
-
     if( member_array(dir,load_object(filename)->GetEnters()) != -1) { 
-	//&& !functionp(PointlessMap[dir]["pre"]) ) {
 	this_object()->eventReadMapping(filename,({"SetEnters"}), 1);
-	//write("EntersMap: "+identify(EntersMap));
 	foreach(key,val in EntersMap){
-	    //write("key: "+identify(key));
-	    //write("key: "+typeof(key));
-	    //write("val: "+identify(val));
-	    //write("val: "+typeof(val));
 	    if(arrayp(key) && member_array(dir,key) != -1) 
 		key_arr = key;
 	    true(); 
 	}
 	map_delete(EntersMap,key_arr);
-	//tc("EntersMap: "+identify(EntersMap));
 	map_str = "SetEnters( ([ \n";
 	foreach( key, val in EntersMap){
-	    //if(!functionp(PointlessMap[key]["pre"])) 
 	    map_str += "\""+key[0]+"\" : \""+val+"\",\n";
 	}
 	map_str += "]) );";
-	//write("map_str: "+map_str);
 
 	unguarded( (: globalstr2 = read_file(globalstr) :) );
 	contents = globalstr2;
@@ -553,8 +486,6 @@ varargs mixed eventProcessEnters(string filename, string dir, string location, o
     }
 
     PointlessMap =  load_object(filename)->GetEnterMap();
-    //tc("PointlessMap: "+identify(PointlessMap));
-    //tc("EntersMap: "+identify(EntersMap));
     map_str = "SetEnters( ([\n";
     globalstr = filename;
 
@@ -563,15 +494,7 @@ varargs mixed eventProcessEnters(string filename, string dir, string location, o
     new_file = remove_matching_line(new_file,"//extras");
     new_file = remove_matching_line(new_file, "AddEnter(", 1, ":)");
 
-    //foreach( key, val in EntersMap){
-    //	if(!functionp(PointlessMap[key]["pre"])
-    //           &&!functionp(PointlessMap[key]["post"]) 
-    //      && present(key,load_object(filename)) )
-    //                map_str += "\""+key+"\" : \""+val+"\",\n";
-    //}
-
     foreach( key, val in EntersMap){
-	//if(present(key[0],load_object(filename)) ) map_str += "\""+key[0]+"\" : \""+val+"\",\n";
 	map_str += "\""+key[0]+"\" : \""+val+"\",\n";
     }
 

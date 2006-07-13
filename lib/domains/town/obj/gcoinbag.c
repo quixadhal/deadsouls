@@ -13,7 +13,6 @@ void create() {
     SetMass(274);
     SetBaseCost("silver",1);
     SetMaxCarry(50);
-    //AddMoney("gold",5);
     SetMoney( ([
 	"gold" : 5,
 	"silver" : 15,

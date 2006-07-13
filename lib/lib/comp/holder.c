@@ -36,7 +36,6 @@ varargs string GetInternalDesc() {
 
     desc = (container::GetInternalDesc() || "");
     if(this_object()->CanClose() && GetOpacity() > 33){
-	//tc("GREEN LED","green");
 	if(this_object()->GetClosed()) desc += " It is closed. ";
 	else desc += " It is open. ";
     }
@@ -44,16 +43,11 @@ varargs string GetInternalDesc() {
     if(surfacep) desc = "On "+add_article(GetShort(), 1);
     items = filter(items, (: !($1->isDummy()) && !($1->GetInvis()) :));
     if( sizeof(items) ) {
-	//if( GetOpacity() > 33 && !surfacep) {
-	//desc = desc + " contains something.";
-	//}
-	//else {
 	if(surfacep){ 
 	    desc = desc+" you see " + item_list(items) + ".";
 	}
 	else desc = desc + " contains " + item_list(items) + ".";
     }
-    //}
     else {
 	if(!surfacep) desc = desc + " is completely empty.";
 	else desc = desc + " you see nothing.";

@@ -27,10 +27,6 @@ static void create() {
 	"east":"/domains/campus/room/u_lab"]));
     SetDoor("east","/domains/campus/doors/u_door");
     SetObviousExits("e,w");
-    //	SetInventory(([
-    //		"/domains/campus/npc/mp" : 1,
-    //	     ]));
-    //	SetProperty("no attack", 1);
 }
 void init(){
     AddListen(({"pipe","pipes","wall","cables","cable"}) , "The pipes and "+

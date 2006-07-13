@@ -76,7 +76,6 @@ int cmd(string str) {
     }
     screenSize = ((int*)this_player()->GetScreen())[0];
     formatString = calculateFormatString(screenSize);
-    // 74 '-'s.
     bar = "--------------------------------------------------------------------------";
     for(i = 75; i < screenSize; i++) bar += "-";
     bar += "\n";
@@ -244,7 +243,6 @@ static private string query_time() {
     string tzone;
     int x, offset;
 
-    //tzone = (string)this_player()->GetTimeZone() || local_time(time())[LT_ZONE];
     tzone = query_tz();
     offset = (int)TIME_D->GetOffset(tzone);
     offset += EXTRA_TIME_OFFSET;

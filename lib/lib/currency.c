@@ -83,16 +83,11 @@ varargs int GetNetWorth(string benjamins) {
     string curr;
     float net_worth = 0.0;
     int amt;
-    //tc("Currency: "+identify(Currency));
     foreach(curr, amt in Currency) {
-	//tc("curr: "+identify(curr),"blue");
-	//tc("amt: "+identify(amt),"blue");
 	if(valid_currency(curr))
 	    net_worth += amt * currency_rate(curr);
-	//tc("net_worth: "+net_worth,"blue");
 
     }
-    //tc("net_worth: "+net_worth);
     foreach(string bank, mapping balance in Bank) {
 	foreach(curr, amt in balance) {
 	    float tmp;

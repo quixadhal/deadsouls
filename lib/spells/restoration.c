@@ -1,7 +1,7 @@
-/*    /spells/resurrection.c
+/*    /spells/restoration.c
  *    From Dead Souls LPMud
  *    Created by BillGates of Money 961204
- *    Version: @(#) resurrection.c 1.2@(#)
+ *    Version: @(#) restoration.c 1.2@(#)
  *    Last modified: 96/12/04
  */
 
@@ -13,7 +13,7 @@ inherit LIB_SPELL;
 
 static void create() {
     spell::create();
-    SetSpell("resurrection");
+    SetSpell("restoration");
     SetRules("", "LIV");
     SetSpellType(SPELL_OTHER);
     SetRequiredMagic(75);
@@ -58,7 +58,7 @@ varargs int eventCast(object who, int level, string limb, object array targs) {
 	target->AddStaminaPoints(-(int)target->GetStaminaPoints());
 	who->AddStaminaPoints(-(int)who->GetStaminaPoints());
 	who->eventPrint("You feel utterly drained as your "
-	  "spell of resurrection goes awry.", target);
+	  "spell of restoration goes awry.", target);
 	target->eventPrint("You feel a draining effect as " +
 	  possessive_noun(who) + " attempt to resurrect you "
 	  "goes awry.", who);

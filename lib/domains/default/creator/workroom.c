@@ -14,7 +14,6 @@ static void create() {
 	"workroom" : "It looks very nice.",
       ]) );
     SetInventory(([
-	//"/domains/campus/obj/chest.c" : 1
       ]));
     SetObviousExits("d");
     SetExits( ([ "down" : "/domains/default/room/start.c",

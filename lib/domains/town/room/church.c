@@ -27,7 +27,6 @@ static void create() {
 	"vandalism" : "You don't see any of that."
       ]) );
     SetObviousExits("s, w");
-    //AddItem(new("/domains/town/obj/church_wall"));
     SetEnters( ([
 	"elevator" : "/domains/town/room/elevator",
       ]) );

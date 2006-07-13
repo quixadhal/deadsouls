@@ -79,12 +79,10 @@ mixed eventMove(mixed dest) {
     move_object(ob);
     if( environment() != ob ) {
 	str += "\nThe move was not successful";
-	//tc(str,"red");
 	return 0;
     }
     else {
 	str += "\nThe move was successful.";
-	//tc(str,"red");
 	return 1;
     }
 }
@@ -98,7 +96,6 @@ varargs static void create(string array id, mixed long, string array adj) {
     if(environment()) str += "\nMy current environment is "+file_name(environment())+".";
     else str += "\nI currently have no environment.";
     str += "\nCall stack: "+get_stack();
-    //tc(str,"blue");
 
     enter::create();
     parse_init();

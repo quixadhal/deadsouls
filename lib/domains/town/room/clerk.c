@@ -21,12 +21,9 @@ static void create() {
       ]));
     SetObviousExits("e");
     AddExit("east", "/domains/town/room/thall");
-    //funs
-    //snuf
 }
 void init() {
     ::init();
     SetSmell(([]));
     SetListen(([]));
 }
-//extras

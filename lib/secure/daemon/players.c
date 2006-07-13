@@ -64,7 +64,6 @@ void AddPlayerInfo(mixed arg) {
 	if(!file_exists(player_save_file)) return;
     }
 
-    //tc("player_save_file: "+player_save_file);
     user_list += ({ replace_string(last_string_element(player_save_file,"/"),".o","") }) ; 
     unguarded((: save_object, SAVE_PLAYER_LIST :));
 }

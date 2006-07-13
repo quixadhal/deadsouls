@@ -21,12 +21,9 @@ static void create() {
     SetInventory(([  "/domains/town/npc/mayor" : 1]));
     SetObviousExits("s");
     AddExit("south", "/domains/town/room/thall");
-    //funs
-    //snuf
 }
 void init() {
     ::init();
     SetSmell(([]));
     SetListen(([]));
 }
-//extras

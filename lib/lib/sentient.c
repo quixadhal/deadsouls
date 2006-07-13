@@ -265,13 +265,10 @@ mixed eventTalkRespond(object who, object targ, int cls, string msg, string lang
 mixed eventWander() {
     int fp;
 
-    //tc("1","red");
-
     if( !sizeof(WanderPath) ) {
 	string *sorties;
 	string tmp;
 
-	//tc("2","green");
 	sorties = ({});
 	foreach(tmp in (string *)environment()->GetExits()) {
 	    string dest, door;
@@ -332,16 +329,12 @@ static void heart_beat() {
 	return;
     }
     if( !GetInCombat() ) { // Things to do when not in combat
-	//tc("not in combat");
 	if( WanderSpeed ) { // Check if wandering
-	    //tc("wandering");
 	    if( WanderCount >= WanderSpeed ) { // Time to wander
-		//tc("time to wander");
 		WanderCount = 0;
 		eventWander();
 	    }
 	    else {
-		//tc("not time to wander yet");
 		WanderCount++;
 	    }
 	}

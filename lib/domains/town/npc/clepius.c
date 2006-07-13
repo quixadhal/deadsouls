@@ -30,13 +30,7 @@ static void create() {
 }
 
 int CanReceive() {
-    //   object ob,bag;
-    //bag = present("medical bag", this_object());
-    //	    ob = previous_object();
     if(present("healer token", this_object())){
-	//if(bag && member_array("healer token",ob->GetId()) != -1){
-	//	    ob->eventMove(bag);
-	//   }
 	return 0;
     }
 

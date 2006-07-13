@@ -129,9 +129,6 @@ int eventHelp(object who, string unused) {
 }
 
 int eventTrain(object who, string verb, string skill) {
-    //tc("who: "+identify(who));
-    //tc("verb: "+identify(verb));
-    //tc("skill: "+identify(skill));
     if( !who || environment(who) != environment() ) {
 	return 0;
     }

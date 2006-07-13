@@ -93,7 +93,6 @@ mixed cmd(string args) {
 	    d2 = ({});
 	}
 	else {
-	    //x = x/2;
 	    d1 = deaths[0..(x-1)];
 	    d2 = deaths[x..];
 	}

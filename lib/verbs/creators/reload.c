@@ -82,7 +82,6 @@ mixed do_reload_str_word(string wrd1, string wrd2) {
 
 mixed do_reload_every_str(string str){
     object *ob_pool = ({});
-    //tc("str: "+str);
 
     if(!archp(this_player())){
 	write("This verb is intended for arches only.");
@@ -101,8 +100,6 @@ mixed do_reload_every_str(string str){
     default : libfile = "/lib/foo";
     }
 
-    //tc("libfile: "+libfile);
-
     if(!file_exists(libfile+".c")){
 	write("There is no such library file.");
 	return 1;
@@ -118,10 +115,7 @@ mixed do_reload_every_str(string str){
 	return 1;
     }
 
-    //tc("ob_pool: "+identify(ob_pool));
-
     foreach(object ob in ob_pool){
-	//if(ob) tc("reloading: "+file_name(ob),"red");
 	if(ob) write("reloading: "+file_name(ob));
 	reload(ob);
     }

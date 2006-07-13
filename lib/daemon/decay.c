@@ -17,8 +17,6 @@ static void eventDecay() {
     corpses += find_inheritors(LIB_CORPSE);
     limbs += find_inheritors(LIB_LIMB);
 
-    //tc("eventDecay called. limbs: "+sizeof(limbs)+", corpses: "+sizeof(corpses));
-
     limbs->eventDecay();
     corpses->eventDecay();
 

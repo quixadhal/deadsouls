@@ -1,0 +1,838 @@
+chapter 1 "Introduction"
+
+    If you are unfamiliar with LPC based muds in general or Dead Souls
+mudlib in particular, you will find this handbook valuable in 
+orienting you around what you can do and how you can do it.
+
+    Keep in mind that this handbook describes the features of a mud
+running an unmodifed version of the lib. The mud you are on may
+differ somewhat, though probably not extremely so.
+
+    To advance a page in a chapter, just hit "return".
+
+   Let's start with just navigating this book. Once you are done
+reading this chapter, you can read the next chapter by typing:
+
+%^GREEN%^read chapter 2 in handbook%^RESET%^
+
+    Make sure you wait until you are done reading this chapter,
+though. The reason you should wait is that you are now in "reading
+mode", which means that anything you type and send to the mud
+is actually a command to the editing system that is displaying this
+text.
+
+    To leave reading mode (or more accurately, pager, or ed mode)
+you can hit "return" a bunch of times to complete the chapter, thus
+automatically exiting the pager. Another way is to enter the
+letter "q" (without the quotes) and then "return". That will also
+make you stop reading.
+
+    When you are not in reading mode, you can find out the chapter
+titles by typing:
+
+%^GREEN%^read index in handbook%^RESET%^
+
+   You really should read the whole thing, but in case you don't, the
+chapter titles will help as a reference to find the information you
+need. 
+
+    Something to watch out for is that if you or your environment 
+contain another handbook, the mud may not know which one you are
+trying to read. If you get a message like "Which of the two handbooks
+would you like to read?", you can try one or more of the following:
+
+%^GREEN%^read index in first handbook%^RESET%^
+
+%^GREEN%^read index in my handbook%^RESET%^
+
+%^GREEN%^read index in my first player handbook%^RESET%^
+
+
+\n
+chapter 2 "Command Syntax: Doing Stuff"
+
+
+Section 1: Manipulating Objects 
+----------
+
+    You've already noticed that Dead Souls, like most modern LP muds,
+uses natural-like command syntax, like:
+
+%^GREEN%^read first handbook%^RESET%^
+
+rather than:
+
+%^GREEN%^read handbook 1%^RESET%^
+
+    This is because Dead Souls uses a natural language parser. It isn't
+perfect, of course. If you try to "put all apples from box in my bag after
+opening them" you won't see much success, but this will work:
+
+%^GREEN%^open box%^RESET%^
+
+%^GREEN%^open bag%^RESET%^
+
+%^GREEN%^get apples from box%^RESET%^
+
+%^GREEN%^put apples in bag%^RESET%^
+
+    The parser will understand "the first box" or "my second bag",
+assuming those objects exist in your inventory or in your environment.
+
+    If you want to know what is in the box, the command is:
+
+%^GREEN%^look in box%^RESET%^
+
+    The command "look at box" or "examine box" will usually *not* show
+you the contents of that box. This is because normally, boxes are
+opaque, and in the real world, just looking at a box is rarely enough
+to see what it contains as well.
+    An exception to this rule are transparent containers (a glass
+trophy case, perhaps) whose interior is always visible from the
+outside.
+
+    Sometimes looking at an object reveals its contents because of
+the nature of the object. A table, for example, can have things on it,
+and typing:
+
+%^GREEN%^look at table %^RESET%^
+
+    ...will usually let you know what is on it. It is also possible to
+see what other players are carrying by just looking at them, 
+unless what they have is inside a container.
+    You'll want to remember that while you can "put apple in bag",
+if you want to put that apple on a surface like a table, you'll
+need to:
+
+%^GREEN%^put apple on table%^RESET%^
+
+    You can give things to people, and they will automatically
+accept them. However, you may not "take" or "get" things from living
+beings. It's theirs, and it's up to them if they want to share.
+    You can try to "steal sword from fighter" if you dare, but unless
+you have trained a lot, this is unlikely to succeed. We'll talk
+more about training and skills in a later chapter.
+    Naturally you may also drop things you no longer need, though
+it's nicer to your fellow mudders (and the mud's memory) to put
+them in recycling bins so the bits can be reused.
+   Some other common object manipulation commands are:
+
+   close, donate, attack, eat, drink, listen, smell, search,
+   shoot, touch, turn.
+
+   There are many others you may find useful, but these will be
+the ones you use most often to handle simple objects.
+
+* A note about articles:
+
+   Dead Souls understands both definite and indefinite articles.
+This means that you can refer to a specific apple, like so:
+
+%^GREEN%^get the apple%^RESET%^
+
+   But you can also be unspecific. If there are a dozen
+apples in a crate and you don't care which one you pick up:
+
+%^GREEN%^get an apple from the crate%^RESET%^
+
+
+Section 2: Navigation
+---------
+
+    Moving around here is probably much like any other mud. You
+can expect to move mostly in cardinal directions (like north and
+northwest), but you may sometimes need to go up, down, or out.
+    Strictly speaking, the way to do this is:
+
+%^GREEN%^go south%^RESET%^
+
+%^GREEN%^go out%^RESET%^
+
+    ...and so on, but this can get tedious after a while. Instead
+of having to type in "go" plus the entire direction, the mud allows
+you to enter shortcuts like "sw" for "go southwest" or "u" for
+"go up".
+
+    When you enter a room, very often you will see letters in
+brackets above the room description, like this: [n, u, out]
+    These are the "obvious exits" of that room, and help you
+quickly find your way around without having to go through each
+description. But remember! Just because a room has obvious exits
+doesn't mean those are the only exits. Sometimes a room must
+be searched to discover an exit, or there may be an exit available
+that just doesn't happen to be very obvious.
+    If a room is dark, obvious exits may not be visible at all.
+
+    Aside from those ordinary means of travel, there are situations
+that require more specific locomotion than just "go". These are
+examples of the use of some other commands to get around:
+
+%^GREEN%^jump onto road%^RESET%^
+
+%^GREEN%^enter window%^RESET%^
+
+%^GREEN%^climb ladder%^RESET%^
+
+%^GREEN%^crawl east%^RESET%^   (if you are lying down and can't get up)
+
+%^GREEN%^fly up%^RESET%^
+
+%^GREEN%^follow thief%^RESET%^
+
+%^GREEN%^evade hunter%^RESET%^
+
+
+Section 3: Armor
+-------
+
+    Now that you can manipulate objects and move around, you'll want
+to be able to defend yourself, should the need arise. The special
+object categories of "weapons" and "armor" should help.
+
+    Armor is an item that can be worn. That means that a pair of
+blue jeans is considered armor, and a suit of chainmail is considered
+armor as well. Basically, if you can wear it, it's "armor", because
+whether it's a lot or a little, it protects you.
+    Assuming you are humanoid, you have the following limbs:
+
+    head, neck, torso, right arm, right hand, left arm,
+    left hand, right leg, right foot, left leg, left foot.
+
+    Properly coded armor must be worn on the corect limbs. Usually
+a command like:
+
+%^GREEN%^wear chainmail%^RESET%^
+
+or
+
+%^GREEN%^wear all%^RESET%^
+
+    ...will cause you to automatically wear armor where it makes 
+most sense. However, it is possible to find armor that,
+for example, can be worn either on your neck or your torso, like
+an amulet. If this is so, you'll need to specify where you want it.
+    There are various types of armor, like cloak, pants, glove,
+etc. Many of them overlap. You can wear a shirt on your torso as
+well as a cloak and combat armor, but you may not wear two of
+the same type. If you have a robe and a cape that are both cloaks,
+you'll have to decide which one is going on.
+    You will find that shoes and gloves are often for one of your
+hands but not the other. Sometimes you will find shoes, or gloves
+that don't care which appendage they occupy, but usually these
+are simply incorrectly coded.
+
+    If you are of some exotic or non-humanoid race, you may have
+additional limbs to consider, and humanoid armor may not work for you.
+
+
+Section 4: Weapons
+---------
+
+   You may be surprised to learn that almost any manipulable object
+can be wielded as a weapon, or thrown as a missile. You can wield
+a can of Spam and try to kill an orc with it...and you may even succeed,
+if you are strong and tough enough. Don't count on it, though,
+and instead go for items that are made specifically with personal
+security in mind.
+
+    There are four main types of weapons:
+
+    knife: knives, daggers
+    blade: like swords, and spears
+    blunt: like clubs, staves, and shillelaghs
+    projectile: things designed to be thrown, like darts or grenades
+
+    Unless it is a special device or magical item, weapons
+must be wielded in order to be of use in combat. Some weapons,
+like staves or pikes, may require the use of both hands. If this
+is the case, wearing a shield may not be possible at the same time.
+    Like armor, weapons differ in quality and effectiveness. A
+"well-crafted sword" is probably a better choice than a "small
+rusty knife", but then again, you never know. Maybe rusty knives
+are exactly what some monster is most vulnerable to.
+
+    Note also that, like armor, weapons wear down with use.
+Examples of commands that involve weapons or fighting:
+
+%^GREEN%^wield sword%^RESET%^
+
+%^GREEN%^wield hammer in left hand%^RESET%^
+
+%^GREEN%^wield staff in left hand and right hand%^RESET%^
+
+%^GREEN%^unwield dagger%^RESET%^
+
+%^GREEN%^shoot gun at otik%^RESET%^
+
+%^GREEN%^throw dart at beggar%^RESET%^
+
+%^GREEN%^kill all%^RESET%^  (this makes an enemy of everyone in the room)
+
+%^GREEN%^ignore first orc%^RESET%^ (lets you concentrate on the other orcs)
+
+%^GREEN%^ignore all%^RESET%^ (don't fight anyone in the room, even if they are attacking you)
+
+%^GREEN%^target boss orc%^RESET%^ (this makes you ignore attacks from anyone else)
+
+%^GREEN%^wimpy 30%^RESET%^ (this makes you run away if your health points drop below 30%)
+
+
+Section 5: Miscellaneous Things to to with Things
+---------
+
+%^GREEN%^turn on flashlight%^RESET%^
+
+%^GREEN%^turn off flashlight%^RESET%^
+
+%^GREEN%^strike match%^RESET%^
+
+%^GREEN%^light torch with match%^RESET%^
+
+%^GREEN%^extinguish match%^RESET%^
+
+%^GREEN%^dig hole with shovel%^RESET%^
+
+%^GREEN%^move bed%^RESET%^
+
+%^GREEN%^search %^RESET%^ (by default searches the room)
+
+%^GREEN%^search rocks%^RESET%^
+
+%^GREEN%^unlock east door with silver key%^RESET%^
+
+%^GREEN%^bait pole with worm%^RESET%^
+
+%^GREEN%^fish with pole%^RESET%^
+
+%^GREEN%^stop fishing%^RESET%^
+
+%^GREEN%^drop all%^RESET%^
+
+%^GREEN%^donate 2 silver%^RESET%^
+
+%^GREEN%^get all%^RESET%^
+
+%^GREEN%^get all from corpse%^RESET%^
+
+%^GREEN%^sell first right glove to otik%^RESET%^
+
+%^GREEN%^sell all to otik%^RESET%^
+
+%^GREEN%^buy sword from otik%^RESET%^
+
+%^GREEN%^buy 8 from otik%^RESET%^ (get Otik to sell you item number 8)
+
+chapter 3 "Your Health and Abilities"
+
+    In the previous chapter you learned the basics of getting 
+around and taking care of yourself. It's important also to care
+*for* yourself, and this chapter describes the various aspects of
+your body's state and what abilities you may have.
+
+
+    The command that tells you almost everything you need to
+know is "stat". This diplays a whole lot of stuff, perhaps some of
+it completely unfamiliar. Let's start at the top, using my output
+as an example.
+
+First line:
+----------
+%^CYAN%^Cratylus aka Cratylus the unaccomplished, level 10 male human Explorer%^RESET%^
+
+    Here you see my short name, my name with title, my level, my
+gender, my race, and my class. Let's go over each.
+
+* short name: What a person would use to address you. "look at cratylus",
+for example.
+
+* name with title: This displays my title. Creators can have whatever title
+they want. Players can only have the titles they earn. As a player, a
+title is usually earned when you are promoted a level or complete a
+quest, though it is not always so on every mud.
+
+* level: This is a measure of your overall experience, expertise, and
+all-around game status. Being promoted a level means your skills,
+health, and vital statistics increase. This often means you can handle
+tougher monsters, for example, or tackle more challenging quests, learn
+new spells, and so on.
+
+* gender: This has no effect on your status. It is a cosmetic feature
+of your body that is only useful to you in the social context of your
+fellow mud players.
+
+* race: In Dead Souls, race has nothing to do with your local genetic
+makeup on planet Earth. In the mud, "race" refers to what one typically
+would call "species" in real-life. An example of a race other than human
+might be "orc" or "feline". Not all races are available for players. Once
+you have chosen a race to play, it is in theory possible to change it, but
+there is a nonzero chance you'll hose up your player file and lose your
+character forever. Besides, it's up to your local admins whether race
+changing is permitted on your mud. Different races have different
+abilities. Elves see better in darkness, for example. Orcs are stronger
+than some other humanoids, but dumber, too (which does affect gameplay).
+
+* class: This can be considered an occupational specialty. In the real
+world you have plumbers, doctors, soldiers, etc. In the mud world, 
+we can have explorers, fighters, mages, and the like. Each class brings
+its own unique advantages and disadvantages to your gameplay. A fighter
+can really kick more butt in melee combat than a mage, but a mage 
+gets to cast powerful spells. Explorers are a middle of the road class
+that gives you a bit of everything without specializing in anything.
+
+
+
+Next line:
+----------
+
+%^CYAN%^Alive / Awake%^RESET%^
+
+    It is indeed possible for your virtual body to cease life functions.
+When this happens your spirit speeds off to the land of the dead,
+where you drift until you decide to "regenerate" and regain your
+physical form. Except for some special magical items, anything you
+were carrying when you died is with that dead body, so it's a good
+idea to rush your new body back to the scene of the fatality and get
+your stuff back before someone else grabs it. Death is not only
+inconvenient, it also incurs major penalties on your statistics, so it
+should be avoided.
+    It is also possible to sleep. If you are drunk and asleep, your 
+injuries will heal more quickly. It's magic, don't worry about the
+logic behind it.
+    If you are attacked while sleeping, you will wake up. You can
+force yourself awake, too, but it's a bit tedious.
+
+
+Next line:
+---------
+
+%^CYAN%^Health: 350/350   Magic: 560/560   Stamina: 400/400   Carry: 1184/1300%^RESET%^
+
+    In each case, the number on the left of the slash indicates the
+current level, and the number on the right indicates what the maximum is.
+
+health: When I am 100% healthy, I have a total of 350 hp. If my hp ever
+reach 0 or less (!), I die. Poison and illness can cause hp's to
+gradually decrease, and although with time my hp's will normally
+return to 350 as I heal, poison and illness can slow down that healing
+or even cause me to die. Injury in combat is the most common source
+of hp loss, though spells, falls, and other adverse events can cause
+you injury or death.
+
+magic: I cast magic missile! Spell casting takes a toll on your magical
+abilities, and mp measure how much magic you've got left in you at
+any given point. Like hp, mp gradually grow back to your max if you
+avoid spellcasting for a while.
+
+stamina: Fighting is tough work, and swinging around swords while
+getting bashed with hammers really takes a lot out of a guy. Therefore
+keep an eye on this stat while you're fighting, because if it gets too
+low you will collapse and be unable to do anything for a while.
+
+carry: Objects have mass, and your body is of limited size and strength.
+My carry capacity is 0 when I carry nothing, and 1300 when I can 
+carry no more. Creators are allowed to exceed their bodies' carry
+capacity, but players cannot.
+
+
+Next line:
+---------
+
+%^CYAN%^Food: 0    Drink: 0    Alcohol: 0    Caffeine: 0    Poison: 0 %^RESET%^
+
+    These are pretty self-explanatory. Alcohol is good for healing,
+bad for fighting. Food and drink also help speed healing. Poison
+has the opposite effect. Caffeine can speed up your combat slightly,
+but tends to prevent full rest. 
+    You will not die from lack of food or lack of drink, but you
+will do better with a body not starved for nutrients. 
+    Your maximum load for any of these is not fixed, and varies
+depending on many factors, such as level, endurance, etc. 
+
+
+Next line:
+---------
+
+%^CYAN%^Training Points: 0    Quest Points: 0    Experience Points: 50 %^RESET%^
+
+    Training points can be cashed in with special NPC's called
+trainers, who can help you improve some skills. A trainer that
+specializes in fighting might be able to raise your "blade attack"
+skill, for example. you earn training points when you are
+promoted a level.
+
+    Quest points are awarded when you complete a quest. In
+the default version of Dead Souls, you cannot advance past a
+certain player level unless you earn some qp's. Read the sign
+in the adventurers guild for more details on this.
+
+    Experience points can be awarded for various reasons: completing
+a quest, solving a puzzle, winning a contest. Most often you
+will receive xp after killing an NPC. The amount of xp awarded
+will depend on the level of the NPC. Like qp, xp are needed to
+qualify for level advancement.
+
+
+
+Limb section:
+------------
+
+    Remember how wearing armor requires the right body parts?
+Well here they are, and this is their health. You can issue the
+"body" command for a quicker self-check.
+    Let's look at what the numbers mean with an example:
+
+%^CYAN%^left leg        (2) 160/160%^RESET%^
+
+   Obviously the first item identifies the limb in question.
+
+   The (2) is a kind of "importance score", indicating how critical
+a body part is. If this number is (1), like the head, it means that
+losing that limb causes immediate death.
+
+   The number on the right side of the slash indicates the hit point
+damage you may receive on that limb before it is severed. The number
+on the left is how many of those hits you have left.
+   It doesn't mean my leg has 160 of my hitpoints. If that were true,
+my hit points would add up to a heck of a lot more than 350.
+    This means that if I've lost, say, 200hp fighting a troll, and
+159hp of those hits were on my left leg, getting hit there again means I
+lose my left leg.
+    I would then collapse and have to crawl away to seek medical attention.
+Wearing armor on your limbs is a great way to minimize the danger of
+this happening.
+
+
+Skills section:
+--------------
+
+    Let's review skills by examining one of mine:
+
+%^CYAN%^blade attack  (1) 00% - 20/24%^RESET%^
+
+    This measures how likely I am to hit an opponent when I
+use a blade, and how good a hit it was. The number (1) means
+that this is a skill critical to my class. If an explorer can't 
+swing a sword, he oughta think about another line
+of work. 
+    The 00% means I have thus far earned no blade  attack
+experience toward achieving the next level of this skill.
+    The 20 is my current proficiency level.
+    The 24 is the maximum level I can reach at my current
+player level and with my current stats.
+
+    What's all this mean? Well, if I practice a lot of blade
+attacking, that 00% will gradually climb up to 99, and one more
+point causes me to go from a level 20 slicer of things to a
+level 21 slicer of things. This increases my likelihood of
+hitting my target in the future.
+
+    Meaning, in short, practice a skill, and you'll get
+better at it.
+
+    Of course, if my blade attack level reaches 24, I can advance
+my blade attack skills no further until my player level rises.
+
+
+Stats section:
+-------------
+
+    Remember these from Dungeons & Dragons? No? Well these vital
+statistics measure your general giftedness in that feature of your
+body. Let's look at one of mine:
+
+%^CYAN%^coordination (2) 42/42%^RESET%^
+
+    Coordination is one of those important stats for fighting and
+such. The more coordinated you are, the more likely you are to hit your 
+target. The (2) indicates that this stat is important to my class,
+but not critical. This influences its effect on my skills.
+    42/42 means that my coordination is not currently impaired. If
+someone cast a "stumble" spell on me, for example, this might look more
+like 30/42, and if I were drunk, it would look very shabby indeed.
+
+Last section:
+------------
+
+"Cratylus has amassed a net worth of 11 gold." means that when you
+add up the money in my bank accounts and the money I'm carrying,
+converted to gold, I have 11 gold to my name. It looks bad, but gold
+is actually quite valuable in the default Dead Souls economy.
+
+"Money on hand: 79 dollars, 34 silver" means that this is the amount of
+money I'm carrying. Don't forget that the amount of money you are carrying
+affects your overall carry capacity. Gold is an especially heavy
+currency.
+
+
+Final notes:
+-----------
+
+    "stat" is a great command to get thorough information about
+yourself. It is, however, quite a screenful. Briefer reports can be
+viewed with the following commands:
+
+%^GREEN%^body%^RESET%^
+%^GREEN%^skills%^RESET%^
+%^GREEN%^stats%^RESET%^
+%^GREEN%^score%^RESET%^
+%^GREEN%^status%^RESET%^
+
+chapter 4 "Quests"
+
+    Some muds don't have quests, and the fun people have is
+through role-playing and social activities with other players.
+
+    Other muds prefer to concentrate on killing lots and lots
+of monsters, a lot, over and over.
+
+    Quests give you a chance to problems-solve by performing some
+series of actions that satisfies a pre-determined requirement.
+
+    For example, Dead Souls' sample town contains a quest called
+Orcslayer. Leo the archwizard lives in the basement of the old 
+abandoned church, and he has lost a powerful magic sword called
+"Orcslayer". If you return it to him, he will reward you with
+experience points, quest points, and a new title you can use. To
+complete the quest, you need to defeat the warrior orcs, penetrate
+deep into their lair, defeat the orc shaman, and take Orcslayer from
+his corpse, then go to the church basement and give the sword to Leo.
+
+    In this case, if you're a level 1 newbie, the orcs will massacre you
+before you get anywhere near the shaman. So either team up with
+friends to tackle the orcs together, or raise your level to the
+point where you're tough enough to take them on.
+
+    To raise your level, wander around in the newbie mansion, which
+is south of the village church.
+
+    There's lots of loot there you can sell at Otik's shop, and with the 
+cash you can then get some proper weaponry and armor.
+
+    Silver is heavy, so don't try to carry all your money around
+all the time. Request an account from Zoe the banker and keep your
+money there until you really need it.
+
+    There is a quest in the newbie mansion, and solving it by
+finding the secret room will give you experience and quest points too.
+(hint, there might be more than one secret room)
+
+    Once you have enough experience and/or points, go to
+Dirk in the adventurers hall and "%^GREEN%^ask dirk to advance%^RESET%^".
+
+    Make sure you learn some spells from Herkimer, because if you
+go up against a bunch of orcs in their lair, you'll want spells to
+shield you from attacks, and spells to recover your strength after
+combat. As a non-mage, your spell abilities will be limited at
+lower levels, but as you gain levels you'll get better. Also, spells
+will rarely work after you first learn them. Keep casting them, 
+even if you screw them up, so that your magic skills increase.
+
+    Also, save your money. Drinking and sleeping help you heal,
+but not fast enough. By the time those natural processes finish
+and you're ready for combat again, the orcs may have gotten reinforcements.
+So if you can afford it, buy healing slips and use them at Clepius' 
+healer's guild. His treatment is expensive, but you will heal much
+more quickly.
+
+   In the tragic event of the loss of a limb, Clepius can also magically 
+regenerate a new limb...but obviously at some great cost.
+
+    There. I've just spoiled the Orcslayer quest for you. Normally,
+all you'd know about a quest is a cryptic clue, like the one in the
+scroll in the adventurers guild. Instead I've just spoiled the quest
+for you by telling you all about it. They're more fun when you have to
+figure them out on your own, like puzzles.
+
+    Normally, spoiling quests like this is a bannable offense on 
+a mud, so if you solve a quest, keep it to yourself unless you know
+the admins on your mud don't mind.
+chapter 5 "Communication"
+
+    There are many ways to communicate with other players. If
+you're in the same room as your intended listener, you can just 
+use the "say" command, like this:
+
+%^GREEN%^say hi, crat%^RESET%^
+
+    If the message is secret, you can "whisper":
+
+%^GREEN%^whisper to cratylus are you idle?%^RESET%^
+
+    If you want to say something that everyone in the mud can
+hear, use the "shout" command (at the cost of a lot of stamina):
+
+%^GREEN%^shout hey crat, wheredya go?%^RESET%^
+
+    Or, if it's an important secret and the target is not in the 
+same room as you, you can use the magical "tell" command:
+
+%^GREEN%^tell cratylus are you mad at me or something?%^RESET%^
+
+
+    There are also special communication lines on the mud that are
+class or role-specific. For example, if you type:
+
+%^GREEN%^newbie does anyone know what's up with cratylus?%^RESET%^
+
+    All people who are tuned into the newbie line will get
+your message. To see what lines are available to you, type:
+
+%^GREEN%^lines%^RESET%^
+
+To see who is listening to the newbie channel:
+
+%^GREEN%^list newbie%^RESET%^
+
+To see who is listening to some other channel on some other mud:
+
+%^GREEN%^list otherchannel@othermud%^RESET%^
+
+
+    To enable or disable a line, just type the name of it with no message.
+
+    To see a brief history of the past few messages on a line (in
+this case, the newbie line), type:
+
+%^GREEN%^hist newbie%^RESET%^
+
+
+    Spamming lines is rude and probably dangerous to your character, so 
+be sure you comply with your mud's rules on lines. 
+
+
+    Your mud may be on the intermud network. To find out, type the
+command:
+
+%^GREEN%^mudlist%^RESET%^
+
+    If a list of muds comes up, you know your mud is probably
+on the intermud3 communication network. Dead Souls by default restricts
+players from access to intermud channels, but you can "tell" to
+players on other muds, if you want. If you think your friend Xyzzy
+is online on a mud on intermud3, you can issue this command:
+
+%^GREEN%^locate xyzzy%^RESET%^
+
+    If he's logged into a mud on i3, you will get something like:
+
+Xyzzy was just located on Frontiers. (idle 00:03:17) [status: inactive]
+
+    You can then tell to him:
+
+%^GREEN%^tell xyzzy@frontiers dude, what's the deal with crat lately?%^RESET%^
+
+
+    Sometimes a player or NPC does not understand your character's
+native tongue. For example, if you are en elf, your native tongue is
+not English, it is Edhellen. If someone talks to you in English, you
+might see something like this:
+
+Xyzzy says in English, "leka mifahmam, potong-hwa."
+
+    Since your character doesn't speak English, what you see is gibberish.
+If you find a language teacher, your proficiency in the language they
+teach you will allow you to understand more of the words you hear.
+
+    Suppose that your elf character is now 100% fluent in English.
+If you greet a human player named Xyzzy by typing:
+
+%^GREEN%^say hello there, xyzzy%^RESET%^
+
+    Xyzzy will probably see something like:
+
+Noobie says in Edhellen, "pericolo temak, forshtor."
+
+    Instead, if you want to speak to a human, you'll have to type:
+
+%^GREEN%^speak in english hello there, xyzzy%^RESET%^
+
+
+    To find out what languages you speak, type:
+
+%^GREEN%^language%^RESET%^
+
+
+chapter 6 "Note to New Creators"
+
+    You should probably hang on to this book for reference. If
+you lose it, pick up a copy at the adventurers hall.
+
+    However, you need to start reading the Creators Manual. If
+you don't have one on you, get the one in the chest in your workroom.
+
+    If you're new to coding, start with chapter 31. It'll
+get you started with the Quick Creation System, or QCS.
+
+Cratylus @ Frontiers
+04 Jan 2006
+chapter 7 "Hints and tips"
+
+* The "wimpy" command helps you avoid death due to inattention or
+  network lag. If you "wimpy 20", you will automatically try to escape
+  combat if your health goes below 20% of your maximum.
+
+* "target" and "ignore" are extremely useful when fighting more than
+  one enemy. You should always target the toughest npc first, and
+  always ignore any npc who can't get up because their foot or leg
+  is severed.
+    But if they collapse due to exhaustion, it's a good idea to keep
+  beating on them, otherwise they may get back up and get healthy sooner
+  than you expect.
+
+* By default, different races speak different languages. If someone
+  says something to you and you see no words in the same language as
+  the rest of the mud, it means they are speaking a language you do
+  not understand. 
+    For example, if you are an elf, and you ask Radagast to teach
+  magic attack, you might get something like this:
+
+Radagast exclaims in English, "embleer con boltehe oota goota nehi auch"
+
+      Even though in the real world you may speak English fluently, in
+  the mud world, you do not speak English fluently. As an elf, your
+  native tongue is Edhellen, and you may find human speech incomprehensible.
+
+      If you find a trainer to teach you English, your skills in that
+  language will need time to improve. As you get better at a language, 
+  you will see fewer gibberish words.
+      
+      If you are a "newbie", this does not apply to you. A newbie in the
+  default Dead Souls distribution is a player at level 4 or below. This
+  definition may be changed by your admin.
+      Newbies need all the help they can get just to survive, so they 
+  are magically granted understanding of all languages, until they outgrow
+  their naivete.
+
+      If you are a student of languages in the Real World, you may 
+  recognize many of the "gibberish" words used by Dead Souls to represent
+  a foreign tongue. Your understanding of these words is not useful in
+  the context of the game, however, because they are not intended to
+  convey meaning other than "non-comprehensible words".
+
+
+* Your ability to see is affected by various things:
+
+  - A room's ambient light level
+  - Time of day
+  - Local light sources (flashlights, torches, etc)
+  - Your race's light sensitivity
+  - Magical effects
+  - Exposure to an excessive-light event
+
+      It's important to remember that a room may be too dark for
+you to see everything in it. You might be able to see the description
+of a room with no problem, but it may be necessary for you to
+light a torch in order to see the treasure chest there.
+
+      In the same way that darkness can impair vision, brightness
+can do the same. For elves, an outdoor area in bright sunlight that
+contains additional light sources can be just as hostile to
+vision as a dark cave with no torch would be for a human.
+      Regardless of race, a sufficiently adverse event, such as 
+a bright flash or special spell, can render you temporarily blind.
+
+      As with languages, newbies have some exemption to light-level
+limitations. 
+
+* Mages can wield knives but are pretty much helpless with any other
+vind of edged weapon.

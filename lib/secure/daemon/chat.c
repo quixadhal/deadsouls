@@ -46,14 +46,12 @@ static void create() {
 }
 
 varargs int CanListen(object who, string canal){
-    //tc("CanListen: who: "+identify(who)+", canal: "+canal);
     if(RESTRICTED_INTERMUD == 0 || !RESTRICTED_INTERMUD) return 1;
     if(canal && member_array(canal, local_chans) != -1) return 1;
     else return imud_privp(who);
 } 
 
 varargs int CanTalk(object who, string canal){
-    //tc("CanListen: who: "+identify(who)+", canal: "+canal);
     if(RESTRICTED_INTERMUD == 0 || !RESTRICTED_INTERMUD) return 1;
     if(canal && member_array(canal, local_chans) != -1) return 1;
     else return imud_privp(who);
@@ -214,7 +212,6 @@ int cmdChannel(string verb, string str) {
 	}
 	who = GetChannelList(str);
 	msg = "Online: " + implode(who, "   ");
-	//tc("msg1");
 	this_player()->eventPrint(msg, MSG_SYSTEM);
 	return 1;
     }
@@ -228,7 +225,6 @@ int cmdChannel(string verb, string str) {
 	    string emote_cmd, remains;
 	    mixed array msg_data;
 	    int i;
-	    //tc("we seem to think it's an emote");
 	    if( !Channels[verb] ) {
 		return 0;
 	    }
@@ -478,16 +474,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	    if( listener == ob ) continue;
 	    if(sizeof(listener->GetMuffed()))
 		foreach(string jerk in listener->GetMuffed()){
-		//tc("suspect: "+suspect);
-		//tc("site: "+site);
-		//tc("jerk: "+jerk);
-		//tc("msg: "+msg);
-		//sscanf(tmp,"%s %s %s", foo, bar, baz);
-		//if(jerk && grepp(lower_case(bar),lower_case(jerk))) ignore = 1;
 		if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
 		if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 	    }
-	    //tc("msg2","red");
 	    if(!ignore && CanListen(listener,ch)) listener->eventPrint(tmp, MSG_CONV);
 	    ignore = 0;
 	}
@@ -500,7 +489,6 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 		    if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
 		    if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 		}
-		//tc("msg3","green");
 		if(!ignore && CanListen(ob,ch)) ob->eventPrint(tmp, MSG_CONV);
 		ignore = 0;
 	    }
@@ -559,14 +547,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 
 	    if(sizeof(ob->GetMuffed()))
 		foreach(string jerk in ob->GetMuffed()){
-		//if(jerk) tc("jerk: "+jerk,"red");
 		if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
 		if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 	    }
-	    //tc("msg4","blue");
-	    //tc("who: "+who);
-	    //tc("suspect: "+suspect);
-	    //tc("site: "+site);
 	    if(!ignore && CanListen(ob,ch)) ob->eventPrint(msg, MSG_CONV);
 	    ignore = 0;
 	    suspect ="";

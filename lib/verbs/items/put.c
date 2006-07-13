@@ -29,9 +29,6 @@ static void create() {
 
 
 mixed can_put_obs_word_obj(object *foo1, string wrd, object foo2) {
-    //tc("1");
-    //tc("foo1: "+identify(foo1));
-    //tc("foo2: "+identify(foo2));
     if(check_light()) return this_player()->CanManipulate();
     else return 0;
 }
@@ -51,43 +48,34 @@ mixed do_put_obj_word_obj(object what, string wrd, object storage) {
 mixed do_put_obs_word_obj(mixed *res, string wrd, object storage) {
     object *obs;
 
-
-    //tc("2");
     obs = filter(res, (: objectp :));
 
-    //tc("a");
     if( !sizeof(obs) ) {
 	mixed *ua;
 
 	ua = unique_array(res, (: $1 :));
-	//tc("b");
 	foreach(string *lines in ua) {
 	    if(storage && storage->GetClosed()) 
 		write(capitalize(storage->GetShort())+" is closed.");
 	    else write("That doesn't seem possible at the moment.");
 	    return 1;
 	}
-	//tc("c");
 	if(storage && storage->GetClosed()) 
 	    write(capitalize(storage->GetShort())+" is closed.");
 	else write("That doesn't seem possible at the moment.");
 	return 1;
     }
-    //tc("d");
     if(!sizeof(filter(obs, (: environment($1) == this_player() :)))){
 	write("You don't seem to be in possession of that.");
 	eligible = ({});
-	//tc("1");
 	return 1;
     }
     eligible=filter(obs, (: (!($1->GetWorn()) && environment($1) == this_player()) :)); 
     if(!sizeof(eligible)){
 	write("Remove or unwield items before trying to put them somewhere.");
 	eligible = ({});
-	//tc("2");
 	return 1;
     }
-    //tc("eligible: "+identify(eligible));
     if(wrd == "in" || wrd == "into") {
 	foreach(object ob in eligible)
 	storage->eventPutInto(this_player(), ob);
@@ -103,16 +91,10 @@ mixed do_put_obs_word_obj(mixed *res, string wrd, object storage) {
 mixed can_put_wrd_wrd_word_obj(string num, string curr,string wrd, mixed container) {
     int amt;
 
-    //tc("num: "+num);
-    //tc("curr: "+curr);
-    //tc("wrd: "+wrd);
-    //tc("container: "+identify(container));
     if( !num || !curr ) return 0;
     if( (amt = to_int(num)) < 1 ) return "You cannot do that!";
-    //tc("1","blue");
     if( (int)this_player()->GetCurrency(curr) < amt )
 	return "You don't have that much " + curr + ".";
-    //tc("2","green");
     if(this_player()->GetLevel() < 4) {
 	write("Newbies cannot drop money.");
 	return "Newbies can't drop money.";
@@ -120,12 +102,9 @@ mixed can_put_wrd_wrd_word_obj(string num, string curr,string wrd, mixed contain
     if(wrd == "on" || wrd == "onto"){
 	if(container && !inherits( LIB_SURFACE, container ) ) return "#That isn't a load-bearing surface.";
     }
-    //tc("3","red");
     if(container && container->GetClosed()){
 	return "#That's closed.";
     }
-    //tc("hmm");
-    //return this_player()->CanManipulate();
     if(intp(check_light())) return this_player()->CanManipulate();
     else return check_light();
 }

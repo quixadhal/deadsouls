@@ -71,13 +71,6 @@ EndText
     return 1;
 }
 
-//int CanReceive(object ob) {
-//	    if(playerp(ob) && !creatorp(ob) ) {
-//		         message("info","The bank is closed for Festivus.", ob);
-//			            return 0;
-//	    }
-//	        return 1;
-//		    }
 void init(){
     ::init();
 }

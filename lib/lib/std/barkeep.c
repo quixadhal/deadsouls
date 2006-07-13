@@ -69,15 +69,12 @@ mapping RemoveMenuItem(string item) {
 
 mapping SetMenuItems(mapping mp) {
     mapping mp2 = ([]);
-    //tc("mp: "+identify(mp));
     foreach(mixed key, mixed val in mp){
 	string *key2;
 	if(stringp(key)) key2 = ({ key });
 	else key2 = key;
 	mp2[key2] = val;
     }
-    //tc("mp2: "+identify(mp2));
-    //tc("copy(mp2): "+identify(copy(mp2)));
     return (MenuItems = copy(mp2));
 }
 
@@ -130,7 +127,6 @@ mixed eventSell(object who, string args) {
     foreach(string *key, string val in MenuItems){
 	if(member_array(args,key) != -1) what = key;
     }
-    //tc("what: "+identify(what));
     if( !(ob = load_object(MenuItems[what])) ) {
 	eventForce("speak I am having a problem with that item right now.");
 	return 1;

@@ -34,7 +34,6 @@ void init(){
     ::init();
     if(living(environment())) owner = environment();
     else owner = 0;
-    //tc("control code: "+control_code);
     add_action("control","control");
     add_action("release","release");
     add_action("do_control","]");
@@ -136,7 +135,6 @@ int release(){
 }
 
 string GetControlCode(){
-    //tc("previous object: "+identify(previous_object()),"white");
     if(base_name(previous_object()) != "/shadows/drone") return alpha_crypt(16);
     else return control_code;
 }

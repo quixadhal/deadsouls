@@ -13,7 +13,6 @@ static void create() {
       "dangerous but more hostile. ");
     SetLevel(1);
     SetRace("orc");
-    //SetClass("fighter");
     SetGender("male");
     SetMaxHealthPoints(100);
     SetEncounter(0);

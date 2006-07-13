@@ -25,8 +25,6 @@ mixed can_dest_obj(string str) {
 }
 
 mixed can_dest_str(){
-    //The desting of strings is not yet supported.
-    //return 1;
     return 0;
 }
 
@@ -60,7 +58,6 @@ mixed do_dest_obs(object *obs) {
 
 mixed do_dest_str(string str){
     object *objects;
-    //tc("str: "+str);
     if(!objects = findobs(str)){
 	write("No such thing was found.");
 	return 1;

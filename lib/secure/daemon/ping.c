@@ -14,7 +14,6 @@ string *muds = PINGING_MUDS;
 int CheckOK(){
     Pinging = 0;
     if(!OK){
-	//tc("not ok");
 	Retries++;
 	update("/daemon/intermud");
     }
@@ -26,7 +25,6 @@ int CheckOK(){
 	}
 
 	Retries = 0;
-	//tc("ok");
     }
     if(Retries == 2){
 	tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"

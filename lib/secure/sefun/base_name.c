@@ -7,7 +7,6 @@
 string base_name(mixed val) {
     string name, base;
     int borg;
-    //tc("val: "+identify(val)+", which is: "+typeof(val),"green");
     if(!val) return "";
     if(objectp(val)) name = file_name(val);
     else if(val == "") return "";

@@ -49,23 +49,12 @@ int cmd( string a )
     }
     filename += "CMD_EVAL_TMP_FILE.c";
     if(securep(previous_object())) filename = "/secure/tmp/"+previous_object()->GetKeyName()+"_CMD_EVAL_TMP_FILE.c";
-    //tc("filename: "+filename);
-    //tc("previous_object: "+identify(previous_object()));
-    // long name so won't coincide with file already in your directory by accident
     rm( filename );
     if( ret = find_object( filename ) ) destruct( ret );
     write_file( filename, file,1 );
-    // if( err = catch( ret = (mixed)call_other( filename, "eval" ) ) )
-    //   write( "Error = " + err );
-    //  else 
     ret = (mixed)call_other(filename, "eval");
     write( wrap( "Result = " + identify( ret ) ) );
-    //rm( filename );
     if( ret = find_object( filename ) ) destruct( ret );
-
-    // Some muds prefer to change these lines so filename isn't deleted if
-    // an error occurs.  Also, if you don't have the identify() simul_efun
-    // the less through dump_variable() simul_efun can be used instead.
     return 1;
 }
 

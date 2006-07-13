@@ -89,10 +89,8 @@ int detonate(){
 	  possessive(ob)+" hand grenade!\n",ob);
 	detonated=2;
 	foreach(string limb in stuffs){
-	    //tc("limb: "+limb);
 	    if(limb != "head" && limb != "torso" && limb != "neck") ob->RemoveLimb(limb,this_object());
 	}
-	//ob->RemoveLimb("head",this_object());
 	ob = environment(ob);
     }
     if(detonated !=2) tell_room(environment(this_object()), "\nKABOOM! The grenade detonates!\n");

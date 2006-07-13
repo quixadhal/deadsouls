@@ -255,7 +255,6 @@ static private void LoadIndices() {
 		  }
 		  if( !sizeof(syn) ) {
 		      if( function_exists("help", load_object(file)) ) {
-			  //Error = "This help may be out of date.";
 			  Error = " ";
 			  file->help();
 			  return 0;
@@ -438,7 +437,6 @@ static private void LoadIndices() {
 	  help = "Index: %^GREEN%^" + index + "%^RESET%^\n" +
 	  "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
 	  if( file_exists(DIR_RACE_HELP + "/" + topic) )
-	      //help += read_file(DIR_RACE_HELP + "/" + topic);
 	      return help;
       }
       Error = "No such race exists.";

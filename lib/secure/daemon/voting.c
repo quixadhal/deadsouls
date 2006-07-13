@@ -167,16 +167,10 @@ mixed eventNextDay() {
 	    eventSave();
 	    return VOTE_SUCCESS;
 	}
-	//tc("mapVoting[\"daycount\"]: "+mapVoting["daycount"]);
 	eventEndVoting();
 	return VOTE_SUCCESS;
     }
 
-    //message("shout", "%^YELLOW%^Election announcement:%^RESET%^ " +
-    // "Only " + mapVoting["daycount"] + " " + 
-    //( (int)mapVoting["daycount"] > 1 ) ? "days" : "day" + " left to " + 
-    //( (int)mapVoting["mode"] == VOTE_MODE_VOTING )
-    //? "vote for the candidates." : "nominate candidates.", users());
     call_out( (: eventNextDay :), DAY );
     eventSave();
     return VOTE_SUCCESS;
@@ -189,15 +183,9 @@ mixed eventTallyVotes() {
     mapCouncil = ([]);
 
     foreach( string sClass in CLASSES_D->GetClasses() ) {
-	//tc("sClass: "+sClass);
 	mapWho = mapVoting["votes"][lower_case(sClass)];
-	//tc("mapVoting: "+identify(mapVoting),"red");
-	//tc("mapWho: "+identify(mapWho));
 	if( ! ( sizeof( asWho = keys( mapWho ) ) ) ){
-	    //tc("?");
-	    //return VOTE_SUCCESS;
 	}
-	//tc("asWho: "+identify(asWho));
 
 	while( sizeof( asWho ) >= 2 ) {
 	    string player1, player2;
@@ -210,10 +198,8 @@ mixed eventTallyVotes() {
 	    else
 		asWho -= ({ player1 });
 	}
-	//tc("asWho: "+identify(asWho));
 
 	if(asWho && sizeof(asWho)) mapCouncil[lower_case(sClass)] = asWho[0];
-	//tc("mapCouncil["+lower_case(sClass)+"]: "+identify(mapCouncil[lower_case(sClass)]));
     }
 
     eventSave();

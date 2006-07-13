@@ -765,7 +765,6 @@ string SetClass(string str) {
 }
 
 varargs mixed GetEffectiveVision(int raw_score, mixed location) {
-    //tc("stack1: "+get_stack(),"cyan");
     if( newbiep(this_object()) ) return VISION_CLEAR;
     else if(raw_score && location) return living::GetEffectiveVision(raw_score,location);
     else if(raw_score) return living::GetEffectiveVision(raw_score);

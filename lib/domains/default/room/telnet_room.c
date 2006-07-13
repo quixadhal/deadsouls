@@ -37,7 +37,7 @@ void create() {
       "Dead Souls MUD is where all new fixes and features "+
       "are tested before release."+
       "\n\tIf the connection "+
-      "fails, email cratylus@users.sourceforge.com to ask for help. "+
+      "fails, email cratylus@comcast.net to ask for help. "+
       "Once you connect to Dead Souls, type \"dcon\" to "+
       "return to your own mud. \n\n"+
       "To connect type \"connect\" \n"+

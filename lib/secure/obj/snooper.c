@@ -37,7 +37,6 @@ void stamp_time(){
 void heart_beat(){
     object dude;
     if(!guy || !(dude = find_player(guy))) {
-	//tc("I can't find "+guy);
 	eventDestruct();
     }
     if(dude && environment(dude) && base_name(environment(dude)) == ROOM_FREEZER) eventDestruct();
@@ -56,7 +55,6 @@ void receive_snoop(string str){
 int eventStartSnoop(string str){
     string snoopee;
     if(!str || str == "") return 0;
-    //tc("thingy: "+str);
     snoopee = "nobody";
     str = lower_case(str);
     guy = str;
@@ -64,7 +62,6 @@ int eventStartSnoop(string str){
     if(!ob=find_player(str)) { write("Target not found."); return; }
     unguarded((: write_file("/secure/log/adm/snoop.err",snoop(this_object(), ob)?"":guy+": snoop failed.\n") :));
     if(query_snooping(this_object())) snoopee = identify(query_snooping(this_object()));
-    //tc("I am: "+identify(this_object())+", and I am snooping: "+snoopee);
     SNOOP_D->RegisterSnooper();
     write_file("/secure/log/adm/"+str+".log","\nNEW SESSION: "+timestamp()+"\n");
     return 1;

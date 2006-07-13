@@ -643,8 +643,6 @@ void eventDescribeEnvironment(int brief) {
 	}
 
 	varargs void SetCurrency(mixed val, int amount) {
-	    //tc("val: "+identify(val),"red");
-	    //if(amount) tc("amount: "+identify(amount),"red");
 	    if( stringp(val) ) AddCurrency(val, amount);
 	    else if( mapp(val) ) {
 		string *currs;

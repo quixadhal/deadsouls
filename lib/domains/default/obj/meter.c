@@ -28,7 +28,6 @@ varargs mixed EvaluateRadiantLight(object ob, int report){
     string subrep = "";
     if(!ob) ob = this_player();
     foreach(object guy in get_livings(environment(ob))){
-	//x += guy->GetRadiantLight();
 	if(guy->GetRadiantLight()) 
 	    rep += guy->GetName()+"'s radiant light is: "+guy->GetRadiantLight()+".\n";
 	foreach(object item in all_inventory(guy)){

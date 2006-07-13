@@ -36,7 +36,7 @@ static void create() {
     SetExits( ([ "down" : "/domains/default/room/wiz_hall.c",
 	"east" : MY_ROOM "/sample_room"
       ]) );
-    SetNoModify(0);
+    SetNoModify(1);
 }
 
 int ReadSign(){

@@ -35,9 +35,7 @@ mixed find_inheritors(mixed arg){
 	if(!file_exists(arg)) return -1;
 	source = truncate(arg,2);
     }
-    //tc("source: "+source);
     targets = filter(objects(), (: inherits(source, $1) :) );
-    //tc("targetsize: "+sizeof(targets));
     if(sizeof(targets)) return targets;
     else return ({});
 }

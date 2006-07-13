@@ -37,16 +37,6 @@ int ResetGame(){
     objects+=({ find_object("/domains/campus/room/green_room2") });
     objects+=({ find_object("/domains/campus/room/blue_room2") });
 
-    //foreach(object thing in objects){
-    //	if(thing) {
-    //	contents = deep_inventory(thing);
-    //	foreach(object dummy in contents){
-    //if(dummy) dummy->eventDestruct();
-    //	}
-    //thing->eventDestruct();
-    //}
-    //}
-
     objects = ({ find_object("/domains/campus/doors/red_door") });
     objects +=({ find_object("/domains/campus/doors/green_door") });
     objects +=({ find_object("/domains/campus/doors/blue_door") });
@@ -68,7 +58,6 @@ int ResetGame(){
 int PushTheButton(){
     int genrand;
     gagnant = "";
-    //genrand = unguarded( (: to_int(read_file("/etc/random")) :) );
     genrand = random(256);
     send_messages("press", "$agent_name $agent_verb the button.",
       this_player(), 0, environment(this_player()));
@@ -85,7 +74,6 @@ int PushTheButton(){
     if(genrand == 0) gagnant = "red door";
     if(genrand == 1) gagnant = "green door";
     if(genrand == 2) gagnant = "blue door";
-    //tell_object(this_player(),"gagnant: "+gagnant);
     tell_room(environment(),"A voice from the pedestal says: "
       "PRECOG: gagnant is: "+gagnant+".\n"
       "PRECOG: genrand modulus is: "+genrand);
@@ -124,7 +112,6 @@ int choose(string str){
 	tell_room(environment(),"A voice from the pedestal says: "
 	  "You choose the "+str+".");
 	this_object()->MontyMagic(str);
-	//return 1;
     }
     else {
 	tell_room(environment(),"A voice from the pedestal says: "
@@ -142,7 +129,6 @@ int MontyMagic(string str){
     if(str != "red door") choices += ({ "red door" });
     if(str != "green door") choices += ({ "green door" });
     if(str != "blue door") choices += ({ "blue door" });
-    //genrand=to_int(read_file("/etc/random"));
     genrand = random(256);
     if( choices[1] == gagnant) which = 0;
     else if( choices[0] == gagnant) which = 1;

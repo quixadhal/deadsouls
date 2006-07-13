@@ -1233,9 +1233,6 @@ int eventEditGroup(string members){
 	}
     }
 
-    //tc("str: "+str);
-    //tc("green","green");
-
     if(str == "SECURE"){
 	validate();
 	if(!members || members == "") {

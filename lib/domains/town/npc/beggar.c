@@ -18,7 +18,6 @@ static void create() {
     SetPacifist(1);
     SetInventory(([
 	"/domains/town/obj/map" : 1,
-	//"/domains/town/obj/cold" : 1,
       ]));
     SetLevel(1);
     SetAutoStand(0);

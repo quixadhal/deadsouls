@@ -15,9 +15,6 @@ object dude,ww, ownerob;
 void doPrint(string str1, string str2);
 
 void validate(){
-    //tc("control code: "+control_code,"green");
-    //tc(" previous_object()->GetControlCode(): "+  previous_object()->GetControlCode(),"red");
-    //tc("hmm. previous_object: "+identify(previous_object(-1)));
     if(base_name(previous_object()) != "/secure/obj/control" || 
       previous_object()->GetControlCode() != control_code){
 	if(ownerob){
@@ -92,7 +89,6 @@ varargs int eventPrint(string msg, string msg_class){
 int eventDescribeEnvironment(mixed args){
     dude=this_object()->GetShadowedObject();
     arguments = args;
-    //dude->eDE(arguments) ;
     unguarded((: tell_object(ownerob,this_object()->eDE()+"\n") :));
     return 1;
 }
@@ -105,16 +101,13 @@ int eventReceiveCommand(string str){
     if(!query_heart_beat(this_object())) this_object()->set_heart_beat(1);
     if(ownerob && str != "look" && str != "l") this_object()->eventForce(str);
     else if(ownerob){
-	//tell_object(ownerob,"This is where the env dsc comes in.");
 	unguarded((: this_object()->eventDescribeEnvironment() :)) ;
-	//ownerob->eventPrint(this_object()->eventDescribeEnvironment(this_object())) ;
     }
     else if(!ownerob) return 0;
     return 1;
 }
 
 int SetOwner(string str){
-    //tc("control code: "+control_code,"blue");
     if(sizeof(owner) && this_object()->GetOwner() != "NONE") {
 	validate();
     }
@@ -173,7 +166,6 @@ string eDE(int brief) {
     smell = env->GetSmell();
     sound = env->GetListen();
     touch = env->GetTouch();
-    //if(desc) eventPrint(desc, "Room DEsc");
 
     if( smell ) desc += "%^GREEN%^\n";
     if( sound ) desc += "%^CYAN%^\n";

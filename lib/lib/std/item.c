@@ -188,14 +188,11 @@ mixed eventThrow(object who, object target) {
 	  ".", ({ who, target }) );
 	skill = (who->GetSkillLevel("projectile attack") +
 	  who->GetStatLevel("coordination"));
-	//tc("skill: "+skill);
 	skill -= (target->GetSkillLevel("projectile defense") +
 	  target->GetStatLevel("agility"))/2;
-	//tc("skill: "+skill);
 	if( GetWeaponType() != "projectile" ) {
 	    skill = skill/2;
 	}
-	//tc("skill: "+skill);
 	if( skill > random(100) + 1 ) {
 	    who->AddSkillPoints("projectile attack",
 	      target->GetSkillLevel("projectile defense") *
@@ -272,14 +269,6 @@ static void create() {
 }
 
 varargs mixed direct_get_obj_from_obj(object item, mixed gamma,mixed alfa, mixed beta, mixed epsilon){
-    //tc("stack: "+get_stack(),"yellow");
-    //tc("i am: "+this_object()->GetName(),"yellow");
-    //tc("item: "+identify(item),"yellow");
-    //tc("alfa: "+identify(alfa),"yellow");
-    //tc("beta: "+identify(beta),"yellow");
-    //tc("gamma: "+identify(gamma),"yellow");
-    //tc("type of gamma: "+typeof(gamma),"yellow");
-    //tc("epsilon: "+identify(epsilon),"yellow");
     if(answers_to(beta,environment(this_object()))) return 1;
     return 0;
 }

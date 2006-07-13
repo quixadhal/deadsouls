@@ -8,7 +8,6 @@ static void create() {
     SetKeyName("painting in the room");
     SetId("painting");
     SetAdjectives("beautiful");
-    //SetShort("a beautiful painting is on the wall");
     SetLong("Try: look at painting on the wall");
     SetNoCondition(1);
     SetPress( ([ "default" : "Try: push painting on wall" ]) );

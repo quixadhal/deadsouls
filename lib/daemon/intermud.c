@@ -103,7 +103,6 @@ static void eventRead(mixed *packet) {
 	return;
     }
     switch(packet[0]) {
-	//default :  tc("Packet: "+identify(packet));
     case "startup-reply":
 	log_file("intermud",identify(packet));
 	tn("INTERMUD_D: "+identify(packet),"red");
@@ -135,7 +134,6 @@ static void eventRead(mixed *packet) {
 	}
 	if( packet[6] == MudList->ID )  {
 	    tn("We don't like packet element 6. It is: "+identify(packet[6]),"red");
-	    //return;
 	    tn("We will continue anyway.","red");
 	}
 	if( packet[2] != Nameservers[0][0] ) {
@@ -178,7 +176,6 @@ static void eventRead(mixed *packet) {
 	SERVICES_D->eventReceiveChannelUserRequest(packet);
 	break;
     case "chanlist-reply":
-	//	  if( packet[6] == ChannelList->ID ) return; 
 	tn("chanlist reply: "+identify(packet), "blue");
 	if( packet[2] != Nameservers[0][0] ) return;
 	ChannelList->ID = packet[6];

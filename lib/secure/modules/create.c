@@ -554,10 +554,6 @@ mixed eventModify(object ob, string str){
     }
 
     else {
-	//if(!value || value == "" ) {
-	//   write("This setting requires a value.");
-	//  return 1;
-	//	}
 	switch(out){
 	case "SetLong" : p_array = ({"SetShort","SetAmbientLight","SetDayLight","SetNightLight","create()","create ()","create"}); break;
 	case "SetDayLong" : p_array = ({"SetShort","SetAmbientLight","SetDayLight","SetNightLight","SetNightLong","SetLong","create()","create ()","create"}); break;
@@ -601,7 +597,6 @@ int eventDelete(object ob, string value){
     tmpfile = generate_tmp(ob);
 
 
-    //tc("stack: "+get_stack());
     if(!check_privs(this_player(),filename)){
 
 	write("You do not appear to have access to this file. Modification aborted.");
@@ -642,7 +637,6 @@ int eventResumeArrayMod(object target, string tmpfile, string *NewArr, string fu
     mixed mx;
     filename = base_name(target)+".c";
 
-    //tc("stack: "+get_stack());
     if(!check_privs(this_player(),filename)){
 	write("You do not appear to have access to this file. Modification aborted.");
 	return 1;
@@ -663,9 +657,7 @@ int eventResumeArrayMod(object target, string tmpfile, string *NewArr, string fu
     default : p_array = ({"SetLong","SetShort","SetDayLong","SetNightLong"});
     }
     ret = remove_matching_line(read_file(tmpfile),func);
-    //tc("ret: "+ret,"red");
     ret = this_object()->eventAppend(ret,p_array,"\n"+array_string+"\n");
-    //tc("ret: "+ret,"green");
     globaltmp = ret;
     unguarded( (: write_file(global2,globaltmp,1) :) );
     this_object()->eventGeneralStuff(tmpfile);
@@ -690,8 +682,6 @@ int eventResumeMappingChange(object target, string tmpfile, mapping NewMap, stri
     map_string = this_object()->eventStringifyMap(NewMap);
     map_string = func+"("+map_string+");";
     filename = base_name(target)+".c";
-
-    //tc("stack: "+get_stack());
 
     if(!check_privs(this_player(),filename)){
 	write("You do not appear to have access to this file. Modification aborted.");
@@ -731,7 +721,6 @@ int eventResumeMappingChange(object target, string tmpfile, mapping NewMap, stri
 
 int eventAddSettings(object ob, string tmp, mapping NewMap, string func){
     string filename, new_lines;
-    //tc("stack: "+get_stack());
     filename = base_name(ob)+".c";
 
     if(!check_privs(this_player(),filename)){
@@ -745,14 +734,8 @@ int eventAddSettings(object ob, string tmp, mapping NewMap, string func){
     global2 = tmp;
     new_lines = "\n";
     foreach(string key, mixed val in NewMap){
-	//if(func != "SetSkill"){
 	if(intp(val)) new_lines += func+"(\""+key+"\", "+val+");\n";
 	else new_lines += func+"(\""+key+"\", \""+val+"\");\n";
-	//}
-	//else {
-	// if(intp(val)) new_lines += func+"(\""+key+"\", 0, "+val+");\n";
-	//else new_lines += func+"(\""+key+"\", 0, \""+val+"\");\n";
-	//}    
     }
     global1 = this_object()->eventAppend(global1,({func,"SetClass","SetRace","SetLevel","SetItems","SetInventory","SetLong", "SetClosed"}),new_lines);
     unguarded( (: write_file(global2, global1,1) :) );

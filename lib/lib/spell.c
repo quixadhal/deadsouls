@@ -72,7 +72,6 @@ int GetDamage() {
 	tmp = tmp/this_player()->GetSkill("magic attack")["class"];
     }
     damage += tmp;
-    //tc("spell damage: "+identify(damage));
     return damage;
 }
 
@@ -668,9 +667,7 @@ varargs int eventCast(object who, int level, mixed limb, object array targets) {
 		continue;
 	    }
 	    damage = (GetDamage() * level)/100;
-	    //damage = GetDamage();
 	    if(!limb) limb = "torso";
-	    //tc("limb: "+identify(limb));
 	    if(grepp(identify(limb),"leg") || grepp(identify(limb),"foot")) limb = "torso";
 	    damage = target->eventReceiveDamage(who, GetDamageType(), damage,
 	      AutoDamage, limb);

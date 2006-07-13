@@ -15,7 +15,6 @@ static int eventConvertObject(mixed val, int recurse) {
     string *flat = ({});
     mixed *tmp;
 
-    //tc("Hit eventConvertObject","red");
     if( val[0] != base_name(this_object()) ) error("Invalid save string.\n");
     tmp = map(Saved, (: functionp($1) ? evaluate($1, "loading") : $1 :));
     foreach(mixed elem in tmp) {

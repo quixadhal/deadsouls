@@ -422,7 +422,6 @@ int CanWeapon(object target, string type, int hands, int num) {
     else {
 	TargetLimb = limb;
     }
-    //tc("chance: "+chance);
     return chance;
 }
 
@@ -449,7 +448,6 @@ int CanMelee(object target) {
 	else {
 	    TargetLimb = limb;
 	}
-	//tc("chance: "+chance);
 	return chance;
     }
     else {
@@ -472,7 +470,6 @@ int CanMelee(object target) {
 	else {
 	    TargetLimb = limb;
 	}
-	//tc("chance: "+chance);
 	return chance;
     }
 }
@@ -659,9 +656,7 @@ int eventExecuteAttack(mixed target) {
 	else { // I hit, but how hard did I hit?
 	    int damage_type, damage, weapon_damage, actual_damage, encumbrance;
 	    encumbrance = this_object()->GetEncumbrance();
-	    //tc("encumbrance: "+encumbrance,"white");
 	    if(encumbrance > 20){
-		//tc("feep","yellow");
 		tell_object(this_object(),"You struggle to fight while carrying stuff.");
 	    }
 	    eventTrainSkill(weapon_type + " attack", pro*2, con, 1, bonus);
@@ -755,9 +750,7 @@ int eventExecuteAttack(mixed target) {
 	else {
 	    int x, encumbrance;
 	    encumbrance = this_object()->GetEncumbrance();
-	    //tc("encumbrance: "+encumbrance,"white");
 	    if(encumbrance > 20){
-		//tc("feep","blue");
 		tell_object(this_object(),"You struggle to fight while carrying stuff.");
 	    }
 	    // I hit, how hard?
@@ -956,9 +949,7 @@ int eventExecuteAttack(mixed target) {
 	encumbrance = this_object()->GetEncumbrance();
 
 	if(Dead) return 0;
-	//tc("encumbrance: "+encumbrance,"white");
 	if(encumbrance > 200){
-	    //tc("feep","green");
 	    if(GetInCombat()) tell_object(this_object(),"You try to dodge while weighed down.");
 	}
 	x = race::eventReceiveDamage(agent, type, x, internal, limbs);

@@ -211,7 +211,6 @@ int AddChannel(string channel, int privee) {
 }
 
 int RemoveChannel(string channel) {
-    //if( !((int)master()->valid_apply( ({}) )) ) return 0;
     tn("RemoveChannel: "+identify(channel),"green");
 
     if( member_array(channel, (string array)INTERMUD_D->GetChannels()) == -1 ){

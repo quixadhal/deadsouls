@@ -59,16 +59,12 @@ int CheckBot(string str){
     string *immune;
     string name;
 
-    //tc("hello.");
     if(!str) str = "foo";
     str = lower_case(str);
     foo = find_player(str);
     if(sizeof(snoopers)){
 	foreach(object snoopbox in snoopers){
-	    //tc("snooper: "+identify(snoopbox));
-	    //if(snoopbox && grepp("#",file_name(snoopbox)) ) {
 	    if(clonep(snoopbox) ) {
-		//tc("snooped: "+ file_name(snoopbox)+": "+snoopbox->GetSnooped()+"\n","yellow");
 	    }
 	    else snoopers -= ({snoopbox});
 	    if(snoopbox && snoopbox->GetSnooped() && snoopbox->GetSnooped() == str) {
@@ -80,25 +76,19 @@ int CheckBot(string str){
     }
     if(!already_watched && foo && (GLOBAL_MONITOR > 0 || member_array(str, monitored) != -1 || member_array(str, snooped) != -1 )){
 	if(archp(find_player(str)) && GLOBAL_MONITOR == 2) return 0;
-	//tc("already watched: "+already_watched);
 	cloan=new("/secure/obj/snooper");
-	//tc("cloning : "+identify(cloan));
 	cloan->eventStartSnoop(str);
     }
-    //tc("query_snooping: "+identify(query_snooping(cloan)));
     unguarded( (: save_object, SAVE_SNOOP, 1 :) );
     return 1;
 }
 
 void CheckSnooped(){
     object *lusers = users();
-    //if(!compare_array(lusers, prevusers) || just_loaded){
     just_loaded = 0;
     foreach(object user in lusers){
 	CheckBot(user->GetKeyName());
     }
-    //}
-    //else CheckBot("tanstaafl");
     prevusers = lusers;
 }
 
@@ -134,7 +124,6 @@ int eventDestruct(){
 void heart_beat(){
     count++;
 
-    //tc("snoop daemon heart_beat","green");
     if( !(count % 5) ) CheckSnooped();
 
     if( !(count % 10)) {
@@ -147,7 +136,6 @@ void heart_beat(){
 }
 
 void reset(){
-    //tc("Snoop daemon reset");
     if(query_heart_beat(this_object()) < 1) set_heart_beat(60);
     CheckSnooped();
 }
@@ -261,7 +249,6 @@ int Report(){
     }
     write("Watchers: "+identify(Watchers)+"\n");
     write("snoopers: "+identify(snoopers)+"\n");
-    //write("prevusers: "+identify(prevusers)+"\n");
     write("snooped: "+identify(snooped)+"\n");
     write("monitored: "+identify(monitored)+"\n");
     return 1;

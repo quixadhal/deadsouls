@@ -21,7 +21,6 @@ static void create() {
 	"nobility, and they are rendered with an "
 	"eerily lifelike realism.",
       ]) );
-    //AddStuff( ({ "/domains/town/obj/dining_table" }) );
     SetInventory( ([ 
 	"/domains/town/obj/dining_table" : 1,
       ]) );

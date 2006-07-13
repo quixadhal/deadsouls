@@ -20,14 +20,6 @@ int eventMove(mixed dest) {
 	int x;
 
 	x = (int)environment()->CanRelease(this_object());
-	////tc("verb: "+query_verb(),"blue");
-	//tc("prev obs: "+identify(previous_object(-1)));
-	//tc("stack: "+get_stack(),"blue");
-	//tc("this_object: "+identify(this_object()));
-	//tc("env this_object: "+identify(environment(this_object())),"blue");
-	//tc("env "+identify(environment()),"blue");
-	//if(dest) tc("dest: "+identify(dest));
-	//tc("x: "+x,"blue");
 	if( !x && !archp() ) {
 	    return 0;
 	}

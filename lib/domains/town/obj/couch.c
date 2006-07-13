@@ -23,4 +23,3 @@ static void create() {
 	"faint whiff of dog urine."
       ]) );
 }
-//mixed CanGet(object ob) { return "The toilet does not budge.";}

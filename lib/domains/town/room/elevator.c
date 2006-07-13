@@ -69,7 +69,6 @@ int SetFloor(int i){
     return 1;
 }
 int CanReceive(object ob) {
-    //tc("verb: "+query_verb());
     if(closed > 0 && query_verb() == "go"){
 	message("info","The elevator door is closed.", ob);
 	return 0;
@@ -117,7 +116,6 @@ void heart_beat(){
 	    moving = 0;
 	    SetFloor(callfloor);
 	    tell_room(this_object(),"The elevator arrives at its destination.");
-	    //tell_room(this_object(),"A voice says \"Floor "+cardinal(floor)+".\"");
 	    SetDoor(0);
 	    callfloor = 0;
 	}

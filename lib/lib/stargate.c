@@ -98,8 +98,6 @@ void eventConnect(string destination){
     int ret;
 
     destination = lower_case(destination);
-    //tc("origin: "+origin,"white");
-    //tc("destination: "+destination,"white");
 
     if (origin == destination){
 	write("You attempt to dial the gate, but the last chevron does not engage");
@@ -127,27 +125,13 @@ int eventDisconnect(){
     string endpoint = STARGATE_D->GetEndpoint(origin);
     string e = STARGATE_D->GetDestination(origin);
     string d = STARGATE_D->GetDestination(endpoint);
-    //object e = load_object(STARGATE_D->GetEndpoint(origin));
-    //object d;
-    //if(e) d = load_object(STARGATE_D->GetDestination(STARGATE_D->GetEndpoint(origin)));
-
-    //debug(sprintf("stargate_lib->eventDisconnect(%s), e=%s, d=%s", origin, e, d));
-
-    // FIX: does the player Get a message if they come through the gate and then leave the room?
-    //write("The chevrons on the stargate disengage and the portal disappears.");
-    //say("The chevrons on the stargate disengage and the portal disappears.");
-    //tell_room(d, "The chevrons on the stargate disengage and the portal disappears", ({ this_player() }));
     if(d) tell_room(d, "The chevrons on the stargate disengage and the portal disappears.");
     if(e) tell_room(e, "The chevrons on the stargate disengage and the portal disappears.");
-
-    //tc("origin: "+identify(origin));
 
     return STARGATE_D->eventDisconnect(origin);
 }
 
 string status(){
-    //tc("origin: "+origin);
-    //tc("staus: "+STARGATE_D->GetStatus(origin));
     return STARGATE_D->GetStatus(origin);  
 }
 
@@ -156,18 +140,14 @@ mixed cmdDial(string s){
     string flipside;
     if (s)
     {
-	//tc("s: "+s);
 	if(STARGATE_D->GetDestination(s)) 
 	    flipside = STARGATE_D->GetDestination(s);
-	//tc("flipside: "+flipside);
 	eventConnect(s);
-	//if(sizeof(flipside)) ob = find_object(flipside);
 	if(sizeof(flipside) && !ob) ob = load_object(flipside);
 	if(!ob){
 	    write("The Stargate abruptly begins to shuts down.");
 	    eventDisconnect();
 	}
-	//else if(!present("stargate",find_object(flipside))) tc("wtf");
 	return 1;
     }
 
@@ -243,7 +223,6 @@ string displayLong(){
 string displayShort(){
     string stat;
     stat = status();
-    //tc("status: "+stat);
     switch (stat)
     {
     case "inbound":

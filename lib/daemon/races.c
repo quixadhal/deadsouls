@@ -154,9 +154,6 @@ void AddRace(string file, int player) {
     mixed array tmp_limb = allocate(4);
     class Stat s; 
 
-    //tc("hello.");
-    //tc("hellow");
-
     res = new(class Race);
 
     res->Resistance = ([]);
@@ -168,7 +165,6 @@ void AddRace(string file, int player) {
 
     if( !file_exists(file) ) error("No such file: " + file);
     race = last_string_element(file,"/");
-    //tc("race: "+race);
 
     lines = explode(read_file(file), "\n");
 
@@ -189,32 +185,24 @@ void AddRace(string file, int player) {
 
 
       foreach(string line in explode(read_file(file),"\n")){
-	  //tc("line: "+line,"red");
-	  //tc("first_string_element: "+first_string_element(line," "),"green");
 	  test_string = first_string_element(line," ");
 	  if(!test_string || !sizeof(test_string)) test_string = line;
-
-	  //tc("test_string: "+test_string,"green");
 
 	  switch(test_string){
 
 	  case "FLYINGRACE":
-	      //tc("flying","red");
 	      SetFlyingRace(race);
 	      break;
 
 	  case "LIMBLESSRACE":
-	      //tc("limbless","red");
 	      SetLimblessRace(race);
 	      break;
 
 	  case "LIMBLESSCOMBATRACE":
-	      //tc("limblesscombat","red");
 	      SetLimblessCombatRace(race);
 	      break;
 
 	  case "NONBITINGRACE":
-	      //tc("nonbiting","red");
 	      SetNonBitingRace(race);
 	      break;
 
@@ -237,7 +225,6 @@ void AddRace(string file, int player) {
 	      //TODO: This should be a Language array to handle multiple 
 	      //languages but further research is required first.
 	      res->Language = replace_string(line, "LANGUAGE ", "");
-	      //tc("res->Language "+res->Language,"blue");
 	      break;
 
 	  case "RESISTANCE":			  
@@ -249,7 +236,6 @@ void AddRace(string file, int player) {
 
 	  case "SKILL":      
 	      tmp = explode(replace_string(line, "SKILL ", ""), ":");
-	      //tc("tmp: "+identify(tmp));
 	      res->Skills[tmp[0]] = ({ tmp[1], tmp[2], tmp[3], tmp[4] });
 	      break;
 
@@ -257,18 +243,14 @@ void AddRace(string file, int player) {
 	      tmp = ({});
 	      s = new (class Stat);
 	      tmp = explode(replace_string(line, "STATS ",""), ":");
-	      //tc("stat: "+identify(tmp),"yellow");
 	      s->Average = copy(to_int(tmp[1]));
 	      s->Class = copy(to_int(tmp[2]));
 	      res->Stats[tmp[0]] = s;
-	      //tc("ihnfcaa: "+(res->Stats[tmp[0]])->Average,"yellow");
-	      //tc("ihnfcaax2: "+(res->Stats[tmp[0]])->Class,"yellow");
 	      break;
 
 	  case "LIMB":
 	      limb = ({ ({}), ({}), ({}), ({}) });
 	      tmp_limb = explode(replace_string(line, "LIMB ",""), ":");
-	      //tc("tmp_limb: "+identify(tmp_limb),"cyan");
 	      limb[0] = tmp_limb[0];
 	      limb[1] = (tmp_limb[1] == "0" ? 0 : tmp_limb[1]);
 	      limb[2] = to_int(tmp_limb[2]);
@@ -277,7 +259,6 @@ void AddRace(string file, int player) {
 		    if( x == 0 && str != "0" ) { return GetArmor(str); }
 		    return x;
 		  });
-		//tc("limb: "+identify(limb),"green");
 
 		res->Limbs = ({ res->Limbs..., limb });
 		res->Limbs += ({limb});
@@ -293,8 +274,6 @@ void AddRace(string file, int player) {
 	    } 
 	  }  
 
-	  //tc("ok then.","blue");
-
 	  res->Complete = 1;
 
 	  if( player ) {
@@ -307,16 +286,14 @@ void AddRace(string file, int player) {
 
 	  Races[race] = res;
 	  wtf = save_variable(Races[race]);
-	  //tc("wtf: "+identify(wtf),"yellow");
 	  save_object(SAVE_RACES);
       } 
 
       void RemoveRace(string race) {
 	  validate();
 	  wtf = save_variable(Races[race]);
-	  //tc("wtf: "+identify(wtf),"yellow");
 	  map_delete(Races, race);
-	  if(Races[race]) //tc("wtf: "+identify(wtf),"blue");
+	  if(Races[race]) 
 	      save_object(SAVE_RACES);
       }
 
@@ -419,19 +396,13 @@ void AddRace(string file, int player) {
 	  tmp = ({ tmp..., ({ key, val }) });
 	  args[0] = tmp;
 	  tmp = ({});
-	  //foreach(string key, class Stat stat in res->Stats){
 	  StatMap = copy(res->Stats);
 	  schluss = "";
 	  foreach(schluss in keys(StatMap)){
-	      //tc("key: "+identify(StatMap[schluss]),"green");
-	      //tc("Average: "+identify(StatMap[schluss]->Average),"green");
-	      //tc("Class: "+identify(StatMap[schluss]->Class),"green");
 	      tmp = ({ tmp..., ({ schluss, StatMap[schluss]->Average, StatMap[schluss]->Class }) });
-	      //tc("SetCharacterRace: "+identify(tmp));
 	  }
 	  args[1] = tmp;
 	  args[2] = res->Language;
-	  //args[3] = ({ res->Sensitivity[0], res->Sensitivity[1] });
 	  args[3] = res->Sensitivity;
 	  args[4] = res->Skills; 
       }

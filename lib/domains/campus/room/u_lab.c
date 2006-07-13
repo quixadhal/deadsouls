@@ -39,12 +39,6 @@ static void create() {
 	"sign" : "A crude, hand-drawn sign in red ink next to the portal." ]));
     SetInventory(([
       ]));
-    //    SetRead((["sign":"The sign reads: Enter at your own risk! This portal leads to some "+
-    //	"places of questionable safety and unstable reality...you are warned!",
-    //	"notes" : "They are incomprehensible to you.",
-    //	({"board","chalkboard"}) : "It is full of cryptic equations. Buried in the middle of one "+
-    //	"is 'Step 3: a miracle happens'.",
-    //     ]));
     SetRead("sign","The sign reads: Enter at your own risk! This portal leads to some "+
       "places of questionable safety and unstable reality...you are warned!");
 

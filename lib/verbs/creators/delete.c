@@ -139,7 +139,6 @@ int eventDeleteExit(string str){
 	write("in your workroom.");
 	return 1;
     }
-    //tc("staff: "+file_name(staff));
 
     filename = base_name(environment(this_player()))+".c";
     exits = load_object(filename)->GetExits();

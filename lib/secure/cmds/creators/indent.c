@@ -28,16 +28,13 @@ string cmd(string str) {
 	else {
 	    paths = ({});
 	    files = get_dir(this_player()->query_cwd()+"/");
-	    //tc("files: "+identify(files));
 	    if(sizeof(files)) foreach(string s1 in files){
 		if(file_size(where + "/" +s1) == -2 ){
 		    paths += ({ where + "/" +s1 });
-		    //tc("paths: "+identify(paths));
 		}
 	    }
 	}
 	if(sizeof(paths)) foreach(string path in paths){
-	    //tc("path: "+path);
 	    load_object("/secure/cmds/creators/lsed")->cmd(rulefile + " "+ path + "/*.c");
 	    load_object("/secure/cmds/creators/lsed")->cmd(rulefile + " "+ path + "/*.h");
 	}

@@ -15,7 +15,6 @@ int eventConsider(object whom, object opponent){
 
     if(sizeof(weapons)){
 	foreach(object weapon in weapons){
-	    //tc("skill level for "+identify(weapon)+": "+whom->GetSkill(weapon->GetWeaponType()+" attack")["level"]);
 	    if(weapon->GetWeaponType() && whom->GetSkill(weapon->GetWeaponType()+" attack")){
 		attack_types += ({ weapon->GetWeaponType() });
 		score += ( whom->GetSkill(weapon->GetWeaponType()+" attack")["level"] ) * 3;
@@ -25,18 +24,15 @@ int eventConsider(object whom, object opponent){
 	    if(weapon->GetHands() > 1) {
 		if(!(whom->GetSkill("multi-hand"))) score /= 3;
 	    }
-	    //tc("weapon score: "+score);
 	}
 	if(sizeof(weapons) >1) {
 	    if(!(whom->GetSkill("multi-weapon"))) score /= 3;
 	}
-	//tc("final weapon score: "+score);
     }
 
     else if((whom->GetMelee())) {
 	if(whom->GetSkill("melee attack"))
 	    score += (((whom->GetSkill("melee attack")["level"]) * 3)); 
-	//tc("melee score: "+score);
     }
     if(!sizeof(attack_types)) attack_types = ({"blunt"});
     foreach(string Type in attack_types){
@@ -70,18 +66,12 @@ int eventConsider(object whom, object opponent){
 	DamType = 0;
     }
 
-    //tc("protection: "+protection,"blue");
 
 
     score += whom->GetStatLevel("speed") * 2;
-    //tc("speed score: "+score);
     score += whom->GetStatLevel("strength") * 3;
-    //tc("strength score: "+score);
     score += whom->GetMaxHealthPoints() / 15;
-    //tc("hp score: "+score);
     score += protection;
-    //tc("score plus protection: "+score);
-
 
     return score;
 }
@@ -106,15 +96,7 @@ mixed cmd(string str) {
     theirscore = eventConsider(thing, this_player());
     myscore = eventConsider(this_player(), thing);
 
-    //write("Consider complete. ");
-    //write("My score: "+myscore);
-    //write("Their score: "+theirscore);
-    //if(myscore >= theirscore) {
-    //	write("You have the advantage by "+(myscore - theirscore)+" points.");
-    //}
-    //else write("They the advantage by "+(theirscore - myscore)+" points.");
     totalscore = myscore - theirscore;
-    //write("totalscore: "+totalscore);
     if(totalscore > 100) write("Piece of cake.");
     else if(totalscore > 80) write("No problem.");
     else if(totalscore > 60) write("Very easy.");

@@ -423,8 +423,6 @@ varargs int eventReceiveDamage(object agent, int type, int x, int internal,
     string tmp = GetResistance(type);
     int fp;
 
-    //tc("agent: "+identify(agent),"yellow");
-
     if( tmp == "immune") {
 	return 0;
     }
@@ -614,17 +612,12 @@ varargs int eventDie(mixed agent) {
     int x;
     string killer, death_annc;
     object crime_scene;
-    //debug(identify(agent));
-    //tc("stack: "+identify(get_stack()));
-
-    //if(!agent) agent = previous_object();
 
     if(DeathEvents) return 1;
     DeathEvents = 1;
 
     if(agent && stringp(agent)) killer = agent + " ";
     else {
-	//tc("previous: "+identify(previous_object(-1)));
 	if(!agent) killer = "UNKNOWN";
 	else killer = agent->GetName();
     }
@@ -1151,10 +1144,7 @@ varargs int eventDie(mixed agent) {
 	    HealthPoints = 0;
 	    if( !Dying ) {
 		Dying = 1;
-		//tc("agent: "+identify(agent),"green");
 		Agent = agent;
-		//tc("Agent: "+identify(Agent),"blue");
-		//call_out((: eventDie, Agent :), 0);
 		eventDie(Agent);
 	    }
 	    return 0;
@@ -1433,8 +1423,6 @@ varargs int eventDie(mixed agent) {
 		if( !Dying ) {
 		    Dying = 1;
 		    Agent = agent;
-		    //tc("Agent: "+identify(Agent), "red");;
-		    //call_out( (: eventDie, Agent :), 0);
 		    eventDie(Agent);
 		}
 	    }

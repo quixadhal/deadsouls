@@ -17,7 +17,6 @@ void create(){
     tmpsave2 = surface::GetSave(); 
     tmpsave3 = ({ "Composition","Name","Nouns","ShortDesc", "Desc","Adjectives" });
     tmpsave4 = tmpsave1 + tmpsave2 + tmpsave3;
-    //tc("AddSave: "+identify(tmpsave4));
     AddSave( tmpsave4 );
     SetKeyName("lump");
     SetId( ({"lump","clay","mass"}) );
@@ -32,13 +31,11 @@ void create(){
 }
 
 void InitComposition(){
-    //tc("made it to initcomp.","red");
     SetComposition(Composition, Name, Nouns, Adjectives, ShortDesc, Desc);
 }
 
 varargs string SetComposition(string comp, string name, string *nouns, string *adjs, string short, string desc){
     string tmp;
-    //tc("made it to setcomp.","blue");
 
     if(name) {
 	Name = name;

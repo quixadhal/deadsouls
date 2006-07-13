@@ -229,9 +229,7 @@ int eventSpecialMapHandler(object ob, string func, mixed mode, mixed value){
     mapping SecondMap = ([]);
 
     plural_maps = ({ "SetProperties" });
-    //tc("mode: "+mode,"red");
     if(stringp(value)) value = trim(replace_string(value,mode,""));
-    //tc("value: "+value,"red");
 
     if(stringp(value) && !grepp(lower_case(func),"prop") ){
 	if(sscanf(value,"%d",integer) != 1 && 
@@ -239,7 +237,6 @@ int eventSpecialMapHandler(object ob, string func, mixed mode, mixed value){
 	    sscanf(value,"%s %s",tmp,junk);
 	    if(!tmp || !junk) value = 0;
 	    else if(sscanf(junk,"%d",integer) != 1) sscanf(junk,"%d %s",integer,junk2);
-	    //tc("tmp: "+tmp);
 	    if(tmp) mode += " "+tmp;
 	} 
 	if(integer) value = integer;
@@ -253,9 +250,6 @@ int eventSpecialMapHandler(object ob, string func, mixed mode, mixed value){
 	    value = trim(junk);
 	}
     }
-
-    //tc("mode: "+mode,"green");
-    //tc("value: "+value,"green");
 
     filename = base_name(ob)+".c";
     if(!check_privs(this_player(),filename)){
@@ -281,27 +275,15 @@ int eventSpecialMapHandler(object ob, string func, mixed mode, mixed value){
     SecondMap = this_object()->eventReadMapping(filename, ({ func }), 1);
     NewMap = add_maps(FirstMap, SecondMap);
     if(stringp(value) && sscanf(value,"%d",integer) == 1) {
-	//integer = value;
-	//NewMap[mode] = 0;
-	//NewMap[mode] += integer;
-	//NewMap[mode] += integer;
 	NewMap[mode] = integer;
     }
     else NewMap[mode] = value;
-    //write("mapping: "+identify(NewMap));
     globaltmp = generate_tmp(ob);
-    //globalstr = filename;
-    //unguarded( (: globalstr2 = read_file(globalstr) :) );
-    //tc("globalstr: "+globalstr,"yellow");
-    //tc("globaltmp: "+globaltmp,"yellow");
-    //tc("globalstr2: "+globalstr2,"blue");
     unguarded( (: write_file(globaltmp,globalstr2,1) :) );
 
     if(member_array(func,plural_maps) != -1) 
 	this_object()->eventResumeMappingChange(ob,globaltmp,copy(NewMap),func);
     else this_object()->eventAddSettings(ob,globaltmp,copy(NewMap),func2);
-    //write("hmm.");
-    //unguarded( (: tc("new file: "+read_file(globalstr)) :) );
     return 1;
 }
 
@@ -351,11 +333,8 @@ mapping eventReadPair(string filename, string param, int destructive){
 	globalstr = generate_tmp();
 	unguarded( (: write_file(globalstr,globalstr2,1) :) );
 	tmp = globalstr;
-	//tc(tmp+" is: "+read_file(tmp));
 	globalstr = filename;
 	globalstr2 = tmp;
-	//tc("globalstr2: "+globalstr2);
-	//tc("globalstr: "+globalstr);
 	unguarded( (: cp(globalstr2, globalstr) :) );
 	rm(tmp);
     }

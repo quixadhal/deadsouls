@@ -66,9 +66,6 @@ mixed gmake(string str) {
     }
 
     if(last(filename,2) != ".c") filename += ".c";
-    //tc("thing: "+last_string_element(this_player()->query_cwd(),"/"), "red"); 
-    //tc("filename: "+filename);
-    //tc("check_privs: "+check_privs(this_player(), filename));
 
     if(!this_player()->query_cwd()){
 	write("You have no current working directory. Please type: cd\nthen try again.");
@@ -106,7 +103,6 @@ mixed gmake(string str) {
     creation = "/obj/"+creation+".c";
     if(file_exists(creation) && cp(creation,filename)) true();
     else {
-	//write("Whoops! The template object /obj/"+creation+".c doesn't exist.");
 	write("Creation failed.");
 	return 1;
     }
@@ -207,9 +203,7 @@ int eventAddItem(object ob, string addendum){
 	write("Insufficient privileges. Addition halted.");
 	return 1;
     }
-    //tc(read_file(base_name(ob)+".c"),"red");
     this_object()->eventGeneralStuff(base_name(ob)+".c");
-    //tc(read_file(base_name(ob)+".c"),"green");
 
     InvMap = this_object()->QueryMap("SetInventory",ob);
     if(!inherits(LIB_NPC,ob)){

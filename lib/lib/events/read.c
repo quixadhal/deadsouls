@@ -96,7 +96,6 @@ varargs mixed eventRead(object who, string str) {
     mixed ret;
     mixed val = GetRead(str);
 
-    //tc("-1");
     if( arrayp(val) ) {
 	val = val[query_night()];
     }
@@ -105,7 +104,6 @@ varargs mixed eventRead(object who, string str) {
     if( functionp(val) ) {
 	if( functionp(val) & FP_OWNER_DESTED ) {
 	    who->eventPrint("There was a problem with the read.");
-	    //tc("alpha");
 	    return 1;
 	}
 	//The funtion being evaluated, GetRead, only takes one arg.
@@ -113,7 +111,6 @@ varargs mixed eventRead(object who, string str) {
 	ret = evaluate(val, str);
 	if(!stringp(ret)) return 1;
     }
-    //tc("bravo");
     environment(who)->eventPrint(who->GetName() + " reads " + GetShort() + ".",
       who);
     if(ret) val = ret;
@@ -121,46 +118,32 @@ varargs mixed eventRead(object who, string str) {
 	who->eventPrint("There is nothing to read.");
 	return 1;
     }
-    //tc("charlie");
     tmpfile = generate_tmp();
-    //tc("tmpfile: "+tmpfile);
     globalwho = who;
     globalval = val;
 
-    //tc("delta");
     if(Language){
-	//tc("echo");
 	write("The language appears to be "+capitalize(Language)+".");
     }
 
     if(!globalval){
-	//tc("foxtrot");
 	write("You can't read that.");
 	return 0;
     } 
-    //tc("0");
 
-    //unguarded( (: write_file(tmpfile, globalval) :) );
     if(Language && (this_player()->GetLanguageLevel(Language) < 100 &&
 	!(this_player()->GetPolyglot()))){
-	//tc("1");
 	if(sizeof(globalval) > 4800){
-	    //tc("2");
 	    globalval = "It is too long and you are too unfamiliar with the language to make sense of it.";
 
 	}
 	else {
-	    //tc("3");
 	    globalval = translate(val, this_player()->GetLanguageLevel(Language));
 	}
-	//tc("4");
     }
     else {
-	//tc("6");
 	globalval = val;
     }
-    //tc("val: "+val);
-    //tc("globalval: "+globalval);
     unguarded( (: write_file(tmpfile, globalval,1) :) );
 
     unguarded( (: globalwho->eventPage(tmpfile) :) );

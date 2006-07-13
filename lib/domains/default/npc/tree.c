@@ -40,7 +40,6 @@ int make_money(string str){
 		write("That is too much money to get from the tree at once.\n");
 		return 1;
 	    }
-	    //write("Currency: "+s1+"      Amount: "+d1+"\n");
 	    this_player()->AddCurrency(s1, d1);
 	    write("You get "+d1+" "+s1+" from the money tree.");
 	    say(this_player()->GetCapName()+" gets money from the money tree.");

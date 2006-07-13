@@ -1,14 +1,31 @@
----- 2.1 (unreleased) ---
+---- 2.1 ---
 - Fixed relative include problem in QCS.
 - Fixed memcheck.
 - Added vis and invis to list of customizable messages with the
   message command.
 - Fixed bug in ls command with the -b flag.
 - Fixed index problems in chat.c with class channels.
-- The blackjack table is officially on the "I'm not fixing it" list.
-  It is left as an example of game code, but you are warned that 
-  it contains some subtle and not-so-subtle errors in its calculations.
 - Fixed a problem when looking at dummy items (e.g. buttons and doors).
+- Fixed color code problem in the arch room screen.
+- Fixed problem in look verb that caused problems looking at
+  objects that inherit LIB_DUMMY. Tons of thanks to Daelas for this save.
+- Unused debug lines removed, general cleanup of ugly
+  or unnecessary comments.
+- Miscellaneous tightening up of domain objects such as lowering
+  the max health of newts, etc.
+- Miscellaneous tidying up of lib logic, such as preventing the
+  fly command to commence flight whether already flying or not.
+- KNOWN ISSUES:
+o The blackjack table is officially on the "I'm not fixing it" list.
+  It is left as an example of game code, but you are warned that
+  it contains some subtle and not-so-subtle errors in its calculations.
+o addr_server.exe win32 binary removed, due to bugginess. Since
+  it hasn't been working for a while, and it was only noticed by
+  a bugtester, it's going away until post-2.1
+o A peculiarity in grammar with multiple corpses can be seen. This is
+  partly due to a MudOS idiosyncracy which will be addressed in the future.
+o In some cases combat events appear slighly out of order. This
+  will be addressed in a rewrite of combat objects in the future.
 
 ---- 2.0r29 --- 
 - Fixed finger daemon to not display ip addresses to players.

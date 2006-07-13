@@ -10,8 +10,6 @@ static void create() {
     SetLong("This is a small clearing in a path through the forest. "
       "The path splits here, continuing into the valley "
       "west of here. The path to the east "
-      //, and also running north as a trail "
-      //"deeper into the wilderness. The path to the east "
       "leads back to the safety of the town.");
     SetExits( ([ 
 	"west" : "/domains/town/room/valley",

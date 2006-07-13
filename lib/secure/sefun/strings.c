@@ -414,27 +414,21 @@ varargs mixed replace_matching_line(string target, string substring, string repl
     for(i=1; !done; i++){
 	line = read_file(filename, i, 1);
 	if(!line) break;
-	//write("line: "+line);
 	if(strsrch(line,substring) != -1 ) omit =1;
-	//tc("omit: "+omit);
 
 	if(omit && last(line[0..strlen(line)-2],1,1) != ";") {
 	    tail_search = 1;
-	    //write("tail_search: "+tail_search);
 	}
 	else {
 	    tail_search = 0;
 	    if(omit) tag_it = 1;
-	    //tc("tail_search: "+tail_search+", tag_it: "+tag_it+", omit: "+omit);
 	}
 
 	if(!omit && !tail_search) {
 	    new_file += line;
-	    //write("adding the line.");
 	}
 
 	if(tag_it == 1){
-	    //tc("adding the replace");
 	    new_file += replace+"\n";
 	    tag_it = 0;
 	}
@@ -594,7 +588,6 @@ varargs string generate_tmp(mixed arg){
     else if(creatorp(this_player())) ret = homedir(this_player())+"/tmp/"+randy+time()+".tmp";
 
     else ret = "/open/"+randy+time()+".c";
-    //tc("generate_tmp ret: "+ret);
     return ret;
 }
 

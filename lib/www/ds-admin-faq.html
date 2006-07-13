@@ -401,7 +401,7 @@
  style="font-weight: bold; text-decoration: underline;"></span></big><big><span
  style="font-weight: bold; text-decoration: underline;"><a name="50"></a></span></big><big><span
  style="font-weight: bold; text-decoration: underline;">Everything is su-u-u-u-p-e-e-r-r-r s-s-l-o-o-o-o-w-w-w</span><br><br>First, make sure you are using the latest available version of<br>Dead Souls (check <a
- href="http://sourceforge.net/project/showfiles.php?group_id=148388">here</a>). Older versions of Dead Souls<br>are known to have nasty memory leaks.<br><br>Next, see if you have runaway objects. An object can be coded<br>to do really unpleasant stuff like replicate itself over and<br>over until it brings the mud to its knees. Find out how many<br>objects are loaded by typing: <span
+ href="http://dead-souls.net">here</a>). Older versions of Dead Souls<br>are known to have nasty memory leaks.<br><br>Next, see if you have runaway objects. An object can be coded<br>to do really unpleasant stuff like replicate itself over and<br>over until it brings the mud to its knees. Find out how many<br>objects are loaded by typing: <span
  style="font-weight: bold;">eval return sizeof(objects())</span><br><br>If the count is in the thousands, and only a few people are<br>logged on, you<span
  style="font-weight: bold;"> </span>may have a runaway. Most often this involves<br>NPC's doing stuff you didn't expect. Reset all loaded rooms<br>with the following command: <br><br><span
  style="font-weight: bold;">resetall<br><br></span>perhaps followed by a:<span

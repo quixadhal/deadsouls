@@ -19,7 +19,7 @@ mixed eventReadPrintout(){
     }
     ret += "%^RED%^Muds, alive or dead, test or production, that tried Dead Souls:%^RESET%^\n";
     foreach(string mud in all_dead_souls){
-	ret += mud + "\t\t" +MudMap2[mud][5] + "\n";
+	ret += mud + "\t\t" +MudMap2[mud][5] + "%^RESET%^\n";
     }
     ret += "\nTotal: "+sizeof(all_dead_souls);
     write_file(tmpfile,ret);
@@ -57,25 +57,25 @@ mixed eventReadScreen(){
 	ret += "%^GREEN%^Muds running the current version of Dead Souls:%^RESET%^\n";
 	foreach(string mud in good_muds){
 	    if(mud != "DeadSoulsWin") 
-		ret += mud + "\t\t" +MudMap[mud][5] + "\n";
+		ret += mud + "\t\t" +MudMap[mud][5] + "%^RESET%^\n";
 	}
     }
     if(!grepp(ret,"current version") || !grepp(canonical,mudlib_version())){
 	ret += "\n%^CYAN%^Muds running our version of Dead Souls:%^RESET%^\n";
 	foreach(string mud in dead_keys){
-	    ret += mud + "\t\t" +MudMap[mud][5] + "\n";
+	    ret += mud + "\t\t" +MudMap[mud][5] + "%^RESET%^\n";
 	}
     }
     ret += "\n%^RED%^Muds running any version of Dead Souls:%^RESET%^\n";
     foreach(string mud in all_dead_keys){
-	ret += mud + "\t\t" +MudMap[mud][5] + "\n";
+	ret += mud + "\t\t" +MudMap[mud][5] + "%^RESET%^\n";
     }
 
     ret += "\nTotal: "+sizeof(all_dead_keys);
 
     ret+= "\n\n%^YELLOW%^Dead Souls muds online:%^RESET%^ \n";
     foreach(string mud in online_muds){
-	ret += mud + "\t\t" +MudMap[mud][5] + "\n";
+	ret += mud + "\t\t" +MudMap[mud][5] + "%^RESET%^\n";
     }
 
     write_file(tmpfile,ret);

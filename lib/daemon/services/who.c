@@ -13,14 +13,11 @@ void eventReceiveWhoReply(mixed *packet) {
     string list, *who;
     object ob;
 
-    //tc("who packet: "+identify(packet));
     if( file_name(previous_object()) != INTERMUD_D ) return;
     if( !packet[5] || !(ob = find_player(convert_name(packet[5]))) ) return;
     list = "%^MAGENTA%^Remote who information from " + packet[2] + ":%^RESET%^\n";
     foreach(who in packet[6]) 
     list +=  who[0] + " (" + who[1] + " idle): " + who[2] +"\n";
-    //tc("list: "+list,"blue");
-    //ob->eventPage(({list}));
     ob->eventPrint(list);
     tn("eventReceiveWhoReply: "+identify(packet),"blue");
 }

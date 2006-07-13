@@ -9,6 +9,8 @@ static void create() {
     SetAdjectives(({"non-player", "non player"}));
     SetShort("a deer");
     SetLong("A Typical creature of its kind: nervous, shify, yet beautiful and graceful. This gentle herbivore just wants to eat plants and reproduce.");
+    SetWimpy(95);
+    SetPacifist(1);
     SetWanderSpeed(4);
     SetLevel(1);
     SetMelee(1);

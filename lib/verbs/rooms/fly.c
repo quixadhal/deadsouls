@@ -34,6 +34,9 @@ mixed can_fly() {
 	return "You are nowhere to begin with!";
     }
 
+    if(this_player()->GetPosition() == POSITION_FLYING) 
+	return "You are already flying.";
+
     switch( env->GetMedium() ) {
     case MEDIUM_LAND:
 	if(env->CanFly(this_player())) return this_player()->CanFly();

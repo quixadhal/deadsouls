@@ -37,7 +37,6 @@ string array GetWorn() {
 }
 
 static string array SetWorn(string array limbs) {
-    //tc("limbs: "+identify(limbs),"cyan");
     return (Worn = limbs);
 }
 
@@ -57,8 +56,6 @@ mixed CanUnequip(object who) {
 
 mixed eventEquip(object who, string array limbs) {
     mixed tmp = who->eventWear(this_object(), limbs);
-
-    //tc("limbs: "+identify(limbs));
 
     if( tmp != 1 ) {
 	return tmp;
