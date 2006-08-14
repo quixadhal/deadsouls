@@ -48,5 +48,6 @@
 #define ENABLE_ENCUMBRANCE       1
 #define GLOBAL_MONITOR           0
 #define PLAYER_KILL              0
+#define NPC_CATCH_TELL_DEBUG     0
 
 #endif /* s_config_h */

@@ -1,0 +1,31 @@
+GETHEALRATE
+
+NAME
+        GetHealRate()
+
+
+SYNOPSIS
+        int GetHealRate()
+
+
+DESCRIPTION
+        Returns a creature's healing rate.
+
+
+EXAMPLES
+         
+
+
+LOCATION
+        /lib/body
+/lib/race
+
+
+SEE ALSO
+         
+
+
+Author
+        Cratylus
+
+

@@ -1,0 +1,17 @@
+#d/standard/booth.c
+__VendorType "treasure"
+__Short "Nightmare referendum room"
+__Long "This is the referendum room of Nightmare.  Players come here to vote on issues that the wizards desire input on.  The current voting question is posted on the wall <read question> will display it."
+destinations (["down":"/domains/Praxis/adv_main",])
+invis_exits ([])
+pre_exit_func ([])
+post_exit_func ([])
+tracks ({})
+__Items (["slayar":0,"red moon":0,"spyefel":0,"green moon":0,"moon":0,"laros":0,"sun":0,"moons":0,"blue moon":0,"sky":0,])
+__Smells ([])
+__Listens ([])
+__Searches ([])
+reset_number 4
+a 10
+b 56
+vote (["asdf":"b","nex":"b","argus":"b","allanon":"b","soosheemee":"b","irie":"b","pollux":"b","josh":"b","bobafet":"a","trandar":"a","corona":"b","karatekid":"b","hades":"b","xa":"b","placid":"b","belfalas":"b","lassondra":"b","annie":"b","szordrin":"b","hugga":"b","dossy":"a","forlock":"b","nightshade":"b","nyarlathotep":"a","hrok":"b","asp":"b","millamber":"b","acidcasper":"b","alderon":"b","thekiller":"a","kolpi":"b","andras":"b","jubal":"b","deimos":"b","corvar":"b","turk":"b","flamme":"a","descartes":"b","aberddine":"b","isil":"b","kalinash":"a","baalzebub":"b","carmen":"b","tchalla":"b","cobalt":"a","eandril":"b","sleak":"b","zaknaifen":"a","cax":"b","merck":"b","phyyr":"b","brillag":"b","dana":"b","obiwan":"a","ahab":"b","kahless":"b","wysard":"b","kalos":"b","surpha":"b","niteraven":"b","ariel":"b","yildor":"b","gandalf":"b","retrograde":"b","brunoer":"b","jimbob":"b",])

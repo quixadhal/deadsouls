@@ -97,18 +97,20 @@ mixed do_reload_every_str(string str){
     case "container" : libfile = LIB_STORAGE; break;
     case "armor" : libfile = LIB_ARMOR; break;
     case "worn_storage" : libfile = LIB_WORN_STORAGE; break;
-    default : libfile = "/lib/foo";
+    default : libfile = str;
     }
 
-    if(!file_exists(libfile+".c")){
+    if(!file_exists(libfile) && !file_exists(libfile+".c")){
 	write("There is no such library file.");
 	return 1;
     }
 
+    if(last(libfile,2) == ".c") libfile = truncate(libfile,2);
     load_object("/secure/cmds/creators/update")->cmd("-a -r "+libfile);
 
-    ob_pool = filter(objects(), (: ( inherits(libfile, $1) &&
-	  !inherits(LIB_BOOK, $1) ) :) );
+    ob_pool = filter(objects(), (: ( inherits(libfile, $1) ) :) );
+    if(!sizeof(ob_pool)) 
+	ob_pool = filter(objects(), (: ( base_name($1) == libfile ) :) );
 
     if(!sizeof(ob_pool)) {
 	write("None found.");

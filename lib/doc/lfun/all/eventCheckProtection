@@ -1,0 +1,24 @@
+EVENTCHECKPROTECTION
+
+NAME
+        eventCheckProtection()
+
+SYNOPSIS
+        int eventCheckProtection(object agent, int type, int damage)
+
+DESCRIPTION
+        This function cycles through any magic protection found, reducing damage accordingly. agent  : object doing the damage. type   : damage type(s). damage : original amount damage being done.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        SetProtect, GetProtect, RemoveMagicProtection, AddMagicProtection
+
+Author
+        Unknown
+

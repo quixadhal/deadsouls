@@ -1,24 +1,30 @@
 // I3 server.
-// This file written completely by Tim Johnson (Tim@TimMUD)
+// This file written mostly by Tim Johnson (Tim@TimMUD)
 // Started by Tim on May 7, 2003.
 // http://cie.imaginary.com/protocols/intermud3.html#errors
 #include <lib.h>
+#include <commands.h>
 #include <socket.h>
 #include <socket_err.h>
 #define DEB_IN  1	// trr-Incoming
 #define DEB_OUT 2	// trr-Outgoing
 #define DEB_INVALID 3	// trr-Invalid
 #define DEB_OTHER 0	// trr-Other
-#define MYSERVER 9000	// Port to accept connections on.
 #define DEBUGGER_GUY "cratylus"	// Name of who to display trrging info to.
 #undef DEBUGGER_GUY
-#define DEBUGGER_GUY "guest"
+#define DEBUGGER_GUY "MXLPLX"
 #define MAXIMUM_RETRIES 5
 // SEND_WHOLE_MUDLIST makes it act like the official I3 server instead of like the I3 specs
 #define SEND_WHOLE_MUDLIST
 // SEND_WHOLE_CHANLIST makes it act like the official I3 server instead of like the I3 specs
 #define SEND_WHOLE_CHANLIST
 inherit LIB_CLEAN;
+
+static void validate(){
+    if( previous_object() != CMD_ROUTER &&
+      !((int)master()->valid_apply(({ "ASSIST" }))) )
+	error("Illegal attempt to access router daemon: "+get_stack()+" "+identify(previous_object(-1)));
+}
 
 // Unsaved variables...
 static private int router_socket;
@@ -35,8 +41,9 @@ mapping listening;
 
 // Saved variables...
 string router_name; // Name of the router.
-string *router_list; // Ordered list of routers to use.
-mapping mudinfo; // Info about all the muds which the router knows about.
+string router_ip;
+string *router_list = ({}); // Ordered list of routers to use.
+mapping mudinfo = ([]); // Info about all the muds which the router knows about.
 mapping channels; // Info about all the channels the router handles.
 mapping channel_updates; // Tells when a channel was last changed.
 int channel_update_counter; // Counter for the most recent change.
@@ -100,10 +107,27 @@ static void broadcast_data(mapping targets, mixed data);
 #include "./hosted_channels.h"
 
 // trrging stuff...
-mapping query_mudinfo(){ return copy(mudinfo); }
-mapping query_mud(string str){ return copy(mudinfo[str]); }
+mapping query_mudinfo(){ validate(); return copy(mudinfo); }
+mapping query_mud(string str){ validate(); return copy(mudinfo[str]); }
 void get_info() {
-    write_file ("/tmp/info.txt",
+    mixed *socket_stat = socket_status();
+    string socks = "";
+    int socknum = 0;
+    //tc("previous ob: "+identify(previous_object()));
+    //tc("previous obs: "+identify(previous_object(-1)),"yellow");
+    validate();
+    foreach(mixed element in socket_stat){
+	if(intp(element[0]) && element[0] != -1 && !grepp(element[3],"*") &&
+	  last_string_element(element[3],".") == itoa(router_port)) {
+	    socks += itoa(element[0]) + " ";
+	    socknum++;
+	}
+	//tc("element: "+identify(element));
+	//tc("element[0]: "+identify(element[0]));
+	//tc("typeof(element[0]): "+ typeof(element[0]));
+    }
+    socks += "\nTotal number of connected muds: "+socknum+"\n";
+    write_file ("/secure/tmp/info.txt",
       "router_name: "+router_name+
       "\nrouter_list"+identify(router_list)+
       "\nchannel_update_counter: "+ channel_update_counter+
@@ -114,38 +138,111 @@ void get_info() {
       "\nmudinfo_update_counter: "+ mudinfo_update_counter+
       "\nmudinfo_updates:"+identify(mudinfo_updates)+
       "\nconnected:"+identify(connected_muds)+"\n");
+    write("router_name: "+router_name+
+      "\nrouter_list"+identify(router_list)+
+      "\nchannel_update_counter: "+ channel_update_counter+
+      ((sizeof(channels)) ? "\nchannels:"+implode(keys(channels),", ") : "")+
+      "\nmudinfo_update_counter: "+ mudinfo_update_counter+
+      "\nsockets: "+socks);
 }
-void clear(){ string mudname; foreach(mudname in keys(mudinfo)) remove_mud(mudname); 
+void clear(){ 
+    string mudname; 
+    validate();
+    foreach(mudname in keys(mudinfo)) remove_mud(mudname); 
 }
 
+string GetRouterName(){
+    validate();
+    return router_name;
+}
+
+string SetRouterName(string str){
+    validate();
+    //tc("router_name: "+router_name);
+    router_name = str;
+    //tc("router_name: "+router_name);
+    save_object(SAVE_ROUTER);
+    return router_name;
+}
+
+string GetRouterIP(){
+    validate();
+    return router_ip;
+}
+
+string SetRouterIP(string str){
+    validate();
+    router_ip = str;
+    save_object(SAVE_ROUTER);
+    return router_ip;
+}
+
+string GetRouterPort(){
+    validate();
+    return router_port;
+}
+
+string SetRouterPort(string str){
+    validate();
+    router_port = str;
+    save_object(SAVE_ROUTER);
+    return router_port;
+}
+
+string *GetRouterList(){
+    validate();
+    return router_list;
+}
+
+varargs string *SetRouterList(string *str){
+    string tmp;
+    validate();
+    if(!strsrch(router_name,"*")) tmp = router_name;
+    else tmp = "*"+router_name;
+    if(!str || !sizeof(str)){
+	router_list = ({ ({ tmp, router_ip+" "+router_port }) });
+	save_object(SAVE_ROUTER);
+	return router_list;
+    }
+    router_list = ({ str });
+    save_object(SAVE_ROUTER);
+    return router_list;
+}
+
+
 mapping GetConnectedMuds(){
+    validate();
     return copy(connected_muds);
 }
 
-string *AddBannedMud(string str){
-    if( !((int)master()->valid_apply(({ "SECURE" }))) )
-	error("Illegal attempt to access admintool: "+get_stack()+" "+identify(previous_object(-1)));
+string *GetBannedMuds(){
+    validate();
+    return banned_muds;
+}
 
+string *AddBannedMud(string str){
+    validate();
     banned_muds += ({ str });
+    save_object(SAVE_ROUTER);
     return banned_muds;
 }
 
 string *RemoveBannedMud(string str){
-    if( !((int)master()->valid_apply(({ "SECURE" }))) )
-	error("Illegal attempt to access admintool: "+get_stack()+" "+identify(previous_object(-1)));
-
+    validate();
     banned_muds -= ({ str });
+    save_object(SAVE_ROUTER);
     return banned_muds;
 }
 
 void clear_discs(){ 
     string mudname; 
+    validate();
     foreach(mudname in keys(mudinfo)) {
 	if(query_mud(mudname)["disconnect_time"] &&
 	  time() - query_mud(mudname)["disconnect_time"] > 60 &&
 	  time() - query_mud(mudname)["disconnect_time"] < 80){
-	    //trr("Removing mud: "+identify(mudname),"red");
-	    //remove_mud(mudname);
+	    trr("Removing mud: "+identify(mudname),"red");
+	    remove_mud(mudname);
 	    trr("Broadcasting updated mudlist.","white");
 	    broadcast_mudlist(mudname);
 

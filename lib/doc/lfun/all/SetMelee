@@ -1,0 +1,29 @@
+SETMELEE
+
+NAME
+        SetMelee()
+
+
+SYNOPSIS
+        int SetMelee(int i)
+
+
+DESCRIPTION
+        Allows the npc this is called in to be capable of unarmed combat if the integer passed is 1. An argument of 0 indicates that the npc is not able to properly fight without weapons.
+
+
+EXAMPLES
+         
+
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        GetMelee
+
+Author
+        Cratylus
+
+

@@ -128,6 +128,7 @@ int release(){
     object dingus;
     if(remote && dingus=find_object(remote) ){
 	dingus->SetOwner("NONE");
+	remove_shadow(dingus);
     }
     controlling=0;
     write("You release your remote link.");

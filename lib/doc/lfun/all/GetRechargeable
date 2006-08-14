@@ -1,0 +1,24 @@
+GETRECHARGEABLE
+
+NAME
+        GetRechargeable()
+
+SYNOPSIS
+        int GetRechargeable()
+
+DESCRIPTION
+        Returns whether the battery is capable of being recharged.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/battery.c
+
+
+SEE ALSO
+        SetRechargeable, SetCharge, GetCharge
+
+Author
+        Cratylus
+

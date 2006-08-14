@@ -1,0 +1,24 @@
+ADDHP
+
+NAME
+        AddHP()
+
+SYNOPSIS
+        int AddHP(int hp)
+
+DESCRIPTION
+        Arbitrarily change a creature's health points by the integer provided.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        eventReceiveDamage
+
+Author
+        Cratylus
+

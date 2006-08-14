@@ -1,0 +1,29 @@
+GETHEARTMODIFIER
+
+NAME
+        GetHeartModifier()
+
+
+SYNOPSIS
+        int GetHeartModifier()
+
+
+DESCRIPTION
+        Returns the modifier set in that creature for their heart rate. A low number means a faster heart rate. A higher number means a slower heart rate. This affects how quickly a creature heals.
+
+
+EXAMPLES
+         
+
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        AddHeartModifier
+
+Author
+        Cratylus
+
+

@@ -1,0 +1,29 @@
+CANEXTINGUISH
+
+NAME
+        CanExtinguish()
+
+
+SYNOPSIS
+        mixed CanExtinguish(object who)
+
+
+DESCRIPTION
+        Returns whether the item can be doused, depending on physical location and fuel status.
+
+
+EXAMPLES
+         
+
+
+LOCATION
+        /lib/burn
+
+
+SEE ALSO
+        CanBurn
+
+Author
+        Cratylus
+
+

@@ -1,0 +1,37 @@
+GETCELLTYPE
+
+NAME
+        GetCellType()
+
+
+
+SYNOPSIS
+        string GetCellType()
+
+
+
+DESCRIPTION
+        Returns a string indicating (for batteries) what kind of battery it is, or (for flashlights) what kind of batteries the device requires.
+
+
+
+EXAMPLES
+         
+
+
+
+LOCATION
+        /lib/battery
+/lib/flashlight
+
+
+
+SEE ALSO
+        SetCellType
+
+
+
+Author
+        Cratylus
+
+

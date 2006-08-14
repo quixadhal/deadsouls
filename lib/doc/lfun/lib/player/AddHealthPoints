@@ -1,0 +1,36 @@
+ADDHEALTHPOINTS
+
+NAME
+        AddHealthPoints()
+
+
+
+SYNOPSIS
+        varargs static int AddHealthPoints(int x, string limb, object agent)
+
+
+
+DESCRIPTION
+        If the value of limb is not zero, then "x" number of health points will be added to limb "limb". If the value is 0, then the overall health points will be modified. int x - number of points being added, may be negative (required). string limb - the limb to which health is being added (optional). object agent - the living responsible for this damage. Returns the remaining number of health points for the limb in question or for the overall health points. Note this is a static function and cannot be called from outside the creature.
+
+
+
+EXAMPLES
+         
+
+
+
+LOCATION
+        /lib/body
+/lib/player
+
+
+SEE ALSO
+        AddHP
+
+
+
+Author
+        Unknown
+
+

@@ -1,0 +1,25 @@
+CANMARRY
+
+NAME
+        CanMarry()
+
+SYNOPSIS
+        mixed CanMarry(object who, object spouse1, object spouse2)
+
+DESCRIPTION
+        Ensures that the person officiating the marriage is an arch, and that the two prospective spouses are eligible to marry one another.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/chapel
+/lib/interactive
+
+
+SEE ALSO
+         
+
+Author
+        Cratylus
+

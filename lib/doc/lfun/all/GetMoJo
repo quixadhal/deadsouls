@@ -1,0 +1,24 @@
+GETMOJO
+
+NAME
+        GetMoJo()
+
+SYNOPSIS
+        float GetMoJo()
+
+DESCRIPTION
+        This is a test function, designed to check a creature's level of the notional characteristic of "Mojo". It is unused.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        SetMojo
+
+Author
+        Cratylus
+

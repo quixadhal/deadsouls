@@ -1,0 +1,29 @@
+GETFUELREQUIRED
+
+NAME
+        GetFuelRequired()
+
+
+SYNOPSIS
+        int GetFuelRequired()
+
+
+DESCRIPTION
+        Returns 1 if a thing requires fuel to burn, 0 otherwise.
+
+
+EXAMPLES
+         
+
+
+LOCATION
+        /lib/burn
+
+
+SEE ALSO
+        SetFuelRequired
+
+Author
+        Cratylus
+
+

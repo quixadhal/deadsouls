@@ -1,0 +1,24 @@
+Syntax: propose <title>
+Effect: a councilor uses this command to propose new laws.  The title of
+the new law is <title> and it puts you into a text editor to enter the
+actual proposal.
+
+Syntax: repeal <title>
+Effect: If a law already exists with the title <title> a councilor can use
+this command to put to the vote that the law be repealed.
+
+Syntax: law <title>
+Effect: Lists the text of law <title>
+Syntax: law
+Effect: Lists the titles of all laws
+
+Syntax: read <title>
+Effect: Lists the text of proposal <title>
+Syntax: read
+Effect: Lists the titles of all proposals
+
+Syntax: cast <vote> on <title>
+Effect: <vote> may be:
+  aye - vote that <title> be law (either introduced or not repealed)
+  nay - vote that <title> not be law (either be repealed or not be introduced)
+  abs - abstain

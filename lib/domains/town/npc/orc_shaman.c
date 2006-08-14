@@ -9,7 +9,6 @@ int CheckOrc(mixed val){
     else eventForce("growl at "+val->GetKeyName());
     return 1;
 }
-
 static void create() {
     npc::create();
     SetKeyName("orc shaman");
@@ -19,7 +18,7 @@ static void create() {
     SetLong("This orc is different from the others you've seen. "+
       "he has an unearthly ferocity about him and "+
       "is bigger, tougher, and meaner than the others.");
-    SetLevel(3);
+    SetLevel(1);
     SetRace("orc");
     SetClass("fighter");
     SetGender("male");
@@ -32,4 +31,7 @@ static void create() {
 	"/domains/town/armor/bearskin": "wear bearskin",
       ]) );
 
+}
+void init(){
+    ::init();
 }

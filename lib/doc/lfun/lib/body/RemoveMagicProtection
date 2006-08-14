@@ -1,0 +1,24 @@
+REMOVEMAGICPROTECTION
+
+NAME
+        RemoveMagicProtection()
+
+SYNOPSIS
+        int RemoveMagicProtection(int i)
+
+DESCRIPTION
+        If there is a protection function element i, for example Protection[3], it is removed from the creature's protections.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        AddMagicProtection
+
+Author
+        Cratylus
+

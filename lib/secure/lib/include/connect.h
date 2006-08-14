@@ -2,7 +2,7 @@
 #define l_connect_h
 
 static void create(int binary);
-static void logon();
+varargs static void logon(mixed foo);
 static void InputName(string name, string kill_me);
 static void InputPassword(string pass, string cap);
 static void eventCreatePlayer(string cap);

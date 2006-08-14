@@ -1,0 +1,29 @@
+GETDRAINABLE
+
+NAME
+        GetDrainable()
+
+
+SYNOPSIS
+        int GetDrainable()
+
+
+DESCRIPTION
+        Returns whether a battery can lose charge.
+
+
+EXAMPLES
+          
+
+LOCATION
+        /lib/battery.c
+
+
+SEE ALSO
+        SetDrainable, SetDrainRate, GetDrainRate
+
+
+Author
+        Cratylus
+
+

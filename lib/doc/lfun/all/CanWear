@@ -1,0 +1,24 @@
+CANWEAR
+
+NAME
+        CanWear()
+
+SYNOPSIS
+        mixed CanWear(object ob, string *limbs)
+
+DESCRIPTION
+        Checks to see if a particular armor can be worn. object armor - the piece of armor being checked. string *limbs - the limbs on which the armor wants to be worn. A nested array indicates that just one of the included limbs must be satisfied. Returns 1 if the armor can be worn on those limbs. Returns 0 if the armor cannot be worn there for any reason.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+         
+
+Author
+        Unknown
+

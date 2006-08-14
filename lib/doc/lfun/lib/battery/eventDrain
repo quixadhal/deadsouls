@@ -1,0 +1,24 @@
+EVENTDRAIN
+
+NAME
+        eventDrain()
+
+SYNOPSIS
+        int eventDrain(int i)
+
+DESCRIPTION
+        Causes a battery to lose charge by the specified amount.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/battery.c
+
+
+SEE ALSO
+        GetDrainRate, SetDrainRate
+
+Author
+        Cratylus
+

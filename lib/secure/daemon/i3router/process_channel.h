@@ -3,6 +3,8 @@
 
 static void process_channel(int fd, mixed *info){
     string mudname;
+    string sendermsg, sendername, senderrealname, sendermud;
+    string targetname, targetmud, targstr = "";
     trr("extra stuff is ["+info[0][8..]+"]");
     switch(info[0][8..]){ // what is after the "channel-"
     case "m": // message
@@ -20,13 +22,33 @@ static void process_channel(int fd, mixed *info){
 		send_error(info[2],info[3],"bad-pkt","Bad packet format.",info);
 		return;
 	    }
+	    if(!grepp(info[9],"\$N")){
+		info[9] = info[9] + " (from "+info[3]+"@"+info[2]+")";
+		info[10] = info[10] + " (from "+info[3]+"@"+info[2]+")";
+	    }
+	    sendername = info[11];
+	    senderrealname = info[3];
+	    sendermud = info[2];
+	    targetname = info[12];
+	    targetmud = info[7];
+	    sendermsg = info[9];
 	}
 	else{ // m, e
 	    if(sizeof(info)!=9){
 		send_error(info[2],info[3],"bad-pkt","Bad packet format.",info);
 		return;
 	    }
+	    if(info[0] == "channel-e" && !grepp(info[8],"$N"))
+		info[8] = info[8] + " (from "+info[3]+"@"+info[2]+")";
+	    sendername = info[7];
+	    senderrealname = info[3];
+	    sendermud = info[2];
+	    sendermsg = info[8];
 	}
+	if(targetname && targetmud) {
+	    targstr = "Target: "+targetname+"@"+targetmud;
+	}
+
 	if(info[4]!=0 || info[5]!=0 || !stringp(info[6]) ||
 	  !stringp(info[7]) || !stringp(info[8])){
 	    send_error(info[2],info[3],"bad-pkt","Bad packet format.",info);
@@ -87,10 +109,16 @@ static void process_channel(int fd, mixed *info){
 	// selective banned/allowed channel, or else are the owner
 	// of a filtered channel and they have not been
 	// blocked, so I will just do it...
+
+	log_file("router/"+info[6], timestamp()+" "+
+	  sendername+"("+senderrealname+")@"+sendermud+" "+": "+
+	  sendermsg+" "+targstr+"\n");
+
 	foreach(mudname in keys(connected_muds)){
 	    if(member_array(mudname, listening[info[6]])!=-1)
 		write_data(connected_muds[mudname],info);
 	}
+
 	//broadcast_data(muds_not_on_this_fd(fd), info);
 	// send to all the other fd's that have a mud listening
 	//			write_data(fd,info);
@@ -102,6 +130,11 @@ static void process_channel(int fd, mixed *info){
 	return;
     case "add":
 	// check if already exists...
+	if(channels[info[6]]){
+	    trr(info[3]+"@"+info[2]+" failed to create the channel: "+info[6]+
+	      "because it already exists.","red");
+	    return;
+	}
 	// check if a valid channel name (illegal characters?)
 	// check if other stuff is valid, like channel_type is 0,1,2
 	// at this point, is being successfully added...

@@ -1,0 +1,24 @@
+GETBURNTVALUE
+
+NAME
+        GetBurntValue()
+
+SYNOPSIS
+        int GetBurntValue()
+
+DESCRIPTION
+        Returns how much money the burnt thing is worth after being entirely consumed.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/burn
+
+
+SEE ALSO
+         
+
+Author
+        Cratylus
+

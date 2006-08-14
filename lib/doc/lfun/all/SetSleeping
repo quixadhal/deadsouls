@@ -1,0 +1,30 @@
+SETSLEEPING
+
+NAME
+        SetSleeping()
+
+
+SYNOPSIS
+        int SetSleeping(int i)
+
+
+DESCRIPTION
+        Set the creature to its sleep state, for a heartbeat duration of the number specified multiplied by the standard modifier, which in Dead Souls 2.1 is 6. 
+
+
+EXAMPLES
+        To make Tacitus sleep for 60 heart_beats (note that his heart_beats may be more than just one second long): find_player("tacitus")->SetSleeping(10) 
+
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        GetSleeping
+
+
+Author
+        Cratylus
+
+

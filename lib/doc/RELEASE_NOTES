@@ -1,3 +1,39 @@
+---- 2.1r17 (unreleased) ---
+- Added logon notification channel <connections>.
+- Added A_CUSTOM as an all-purpose armor type that can be worn
+  on most body parts.
+- Added channel logging to the router.
+- Fixed potential channel spoof and channel admin problems
+  in the router.
+- Modified various commands to deal with Load-Addled Game Syndrome.
+- Modified LIB_BOOK to avoid tedious reload on init().
+- Added player bots for load testing (tested on Linux with
+  approx 250 player bots, all active, with no noticeable lag
+  on a crappy 1.2GHz laptop).
+- Beefed up the router command.
+- Character creation now does not save the playerfile until
+  the entire creation process has completed.
+- Made AUTO_WIZzing a choice for the user, rather than
+  truly automatic.
+- Added privacy field to template workroom.
+- Added LIB_MESSAGES fix suggested by Memrosh.
+- Fixed a LastLocation bug in LIB_PLAYER.
+- Fixed shadow bug in the remote control.
+- Added catch_tell room to arch area.
+- Fixed reaper bug that destructed shadows.
+- Fixed a bug in room messages during eventMoveLiving().
+- Added Praxis domain.
+- Fixed customdefs issue in QCS with files in /domains.
+- Added FILE_D.
+- Added LIB_MOUNT, LIB_DOMESTICATE.
+- Fixed carry leak in arches during shutdown.
+- Fixed save problem in arches during shutdown.
+- COMPAT BUSTER: changed GetCustomPath and GetCustomCommand
+  to query_custom_path and query_custom_command.
+- Added commands: files, doctool, showfuns.
+- Cleaned up strange formatting error in old sefun docs.
+- Added sefun: query_local_functions.
+
 ---- 2.1 ---
 - Fixed relative include problem in QCS.
 - Fixed memcheck.

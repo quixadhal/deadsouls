@@ -1,0 +1,40 @@
+EVENTRECONNECT
+
+NAME
+        eventReconnect()
+
+
+
+SYNOPSIS
+        void eventReconnect()
+
+
+
+DESCRIPTION
+        A series of events that need to occur when a user reconnects to the game after going link-dead.
+
+
+
+EXAMPLES
+         
+
+
+
+LOCATION
+        /lib/body
+/lib/chat
+/lib/creator
+/lib/interactive
+/lib/npc
+/lib/player
+
+
+SEE ALSO
+         
+
+
+
+Author
+        Cratylus
+
+

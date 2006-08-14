@@ -2,6 +2,7 @@
 #define __GLOBAL_H
 
 #include <config.h>
+#include <lib.h>
 
 #if COMPAT_MODE
 #include <compat.h>

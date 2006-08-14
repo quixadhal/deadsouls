@@ -1,0 +1,20 @@
+WARNING!
+
+This area is Praxis. It is part of the old,
+obsolete precursor to Dead Souls called Nightmare 3.
+
+It has been somewhat unbroken, but is largely non-functional.
+
+The rooms and items here can be expected to function
+unexpectedly. This domain is here not as an example of
+how to build for Dead Souls, but as a historical artifact
+to give you context about the origins of Dead Souls.
+
+Whatever bugs you find in Praxis, therefore, are not
+going to be fixed. Consider it a museum piece, a mud
+area like a prehistoric insect caught in amber: perfect
+in its imperfection, sublime in its permanence.
+
+To return to the main sample area, use the stargate by typing:
+
+dial campus lab

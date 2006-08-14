@@ -388,7 +388,7 @@ varargs int eventModString(string file, string param, mixed replace, string *par
     if(unguarded( (: grepp(read_file(globalstr),globalstr3):) ))
 	ret = unguarded( (: replace_matching_line(read_file(globalstr), globalstr3, globalstr3+"("+globalmixed+");") :) );
     else ret = eventAppend(file,where_append,"\n"+globalstr3+"("+globalmixed+");\n");
-    ret = replace_line(ret,({"customdefs.h"}), "#include \""+homedir(this_player())+"/customdefs.h\"");
+    //ret = replace_line(ret,({"customdefs.h"}), "#include \""+homedir(this_player())+"/customdefs.h\"");
     globalstr3 = ret;
     unguarded( (:  write_file(globalstr2, globalstr3, 1) :) );
     unguarded( (: cp(globalstr2, globalstr) :) );

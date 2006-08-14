@@ -1,15 +1,15 @@
 
 CONJUCTION(1)                                       CONJUCTION(1)
 
-NNAAMMEE
-       _c_o_n_j_u_n_c_t_i_on_(_) - connects words, phrases or clauses with a
+NAME
+       conjunction() - connects words, phrases or clauses with a
        coordinator.
 
-SSYYNNOOPPSSIISS
+SYNOPSIS
        varargs string conjunction(mixed expressions,
        string coordinator)
 
-DDEESSCCRRIIPPTTIIOONN
+DESCRIPTION
        Given a number of words, or groups of words, that are used
        the same way in a sentence, this function returns a string
        which joins them using a coordinator such as and, but, or
@@ -17,18 +17,18 @@ DDEESSCCRRIIPPTTIIOONN
        to be joined. The second argument is the coordinator used
        to join them. The coordinator defaults to "and".
 
-EEXXAAMMPPLLEESS
-       +o   conjunction(({"a frog", "twelve trees",
+EXAMPLES
+       o   conjunction(({"a frog", "twelve trees",
            "some whip cream"}))
            returns "a frog, twelve trees and some whip cream"
 
-       +o   conjunction(({"Descartes", "Blitz"}),
+       o   conjunction(({"Descartes", "Blitz"}),
            "and obviously")
            returns "Descartes and obviously Blitz"
 
-       /secure/SimulEfun/english.c
+       /secure/sefun/english.c
 
-AAuutthhoorr
+Author
        Rush
 
                                                                 1

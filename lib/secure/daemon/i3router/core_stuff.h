@@ -1,11 +1,15 @@
 // This file written completely by Tim Johnson (Tim@TimMUD)
 #include <network.h>
 #include <save.h>
+int heart_count = 0;
+
+string router_port;
 
 static void create(){ 
     SetNoClean(1);
     sockets = ([]);
     connected_muds = ([]);
+    unguarded( (: restore_object, SAVE_ROUTER, 1 :) );
     if(!mudinfo) mudinfo = ([]);
     if(!mudinfo_updates) mudinfo_updates = ([]);
     if(!mudinfo_update_counter) mudinfo_update_counter = 1;
@@ -13,8 +17,11 @@ static void create(){
     if(!channels) channels = ([]);
     if(!channel_updates) channel_updates = ([]);
     if(!channel_update_counter) channel_update_counter = 1;
-    if(!router_name) router_name = "*crossing";
-    router_list = ({ ({"*crossing", "192.168.0.5 9000"}) });
+    if(!router_name) router_name = "*yadsm";
+    if(!router_port) router_port = "9000";
+    if(!router_ip) router_ip = "192.168.0.5";
+    if(!sizeof(router_list))
+	router_list = ({ ({"*yadsm", "192.168.0.5 9000"}) });
     log_file("server", "Created when uptime = " + uptime() + "\n");
     trr("server got created");
     log_file("i3router",timestamp()+" router object created.");
@@ -24,10 +31,14 @@ static void create(){
 }
 
 void heart_beat(){
-    trr("BING!","white");
-    this_object()->clear_discs();
+    heart_count++;
+    if(heart_count % 5) trr("BING!","white");
+    if(heart_count % 20) this_object()->clear_discs();
+    if(heart_count > 300) {
+	heart_count = 0;
+	save_object(SAVE_ROUTER);
+    }
 }
-
 
 static void setup(){
     trr("setup got called");
@@ -38,7 +49,7 @@ static void setup(){
 	trr("setup: Failed to create socket.\n");
 	return;
     }
-    if (socket_bind(router_socket, MYSERVER) < 0) {
+    if (socket_bind(router_socket, atoi(router_port)) < 0) {
 	socket_close(router_socket);
 	log_file("server", "setup: Failed to bind socket to port.\n");
 	trr("setup: Failed to bind socket to port.\n");

@@ -22,4 +22,16 @@ void add_sky_event(function f){
     SEASONS_D->AddTimeEvent("night", f);
 }
 
+mixed seteuid(mixed args){
+    return args;
+}
+
+mixed getuid(mixed args){
+    return args;
+}
+
+mixed geteuid(mixed args){
+    return args;
+}
+
 

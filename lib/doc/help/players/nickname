@@ -1,0 +1,9 @@
+This command permits you to substitute names, typically
+so you can avoid typing out long or complicated names all 
+the time. For example, if you do the following:
+
+%^GREEN%^nickname crat cratylus%^RESET%^
+
+You can then do stuff like:
+
+%^GREEN%^tell crat hi!%^RESET%^

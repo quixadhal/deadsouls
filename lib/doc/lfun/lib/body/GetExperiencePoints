@@ -1,0 +1,24 @@
+GETEXPERIENCEPOINTS
+
+NAME
+        GetExperiencePoints()
+
+SYNOPSIS
+        int GetExperiencePoints()
+
+DESCRIPTION
+        Returns the experience points a creature has earned.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+         
+
+Author
+        Cratylus
+

@@ -1,0 +1,33 @@
+EVENTCOMPLETEHEAL
+
+NAME
+        eventCompleteHeal()
+
+
+
+SYNOPSIS
+        void eventCompleteHeal(int x)
+
+
+
+DESCRIPTION
+        When a body determines it is time for a heal event (basically, the correct amount of time has passed, and the creature is to recover somewhat) this function is called. It does not do a "complete heal", it simply completes the heal event.
+
+EXAMPLES
+         
+
+
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+         
+
+
+
+Author
+        Cratylus
+
+

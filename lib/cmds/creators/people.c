@@ -90,6 +90,7 @@ int cmd(string str) {
     msg += implode(map_array(display, "map_info", this_object(), formatString), "\n") + "\n";
     msg += bar;
     msg += center(mud_name(), screenSize - 1);
+    if(sizeof(msg) > __LARGEST_PRINTABLE_STRING__ && !mflag) mflag = 1;
     if(mflag) this_player()->eventPage(explode(msg, "\n"), "system");
     else message("system", msg, this_player());
     return 1;

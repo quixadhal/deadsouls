@@ -1,0 +1,33 @@
+GETBURNRATE
+
+NAME
+        GetBurnRate()
+
+
+SYNOPSIS
+        int GetBurnRate()
+
+
+
+DESCRIPTION
+        Returns the rate at which a thing burns.
+
+
+
+EXAMPLES
+         
+
+
+
+LOCATION
+        /lib/burn
+/lib/lamp
+
+
+SEE ALSO
+        SetBurnRate
+
+Author
+        Cratylus
+
+

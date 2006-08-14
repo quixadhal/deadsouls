@@ -113,13 +113,8 @@ mixed eventModify(object ob, string str){
 	return 1;
     }
 
-    global1 = filename;
-    global2 = filename;
-
-    unguarded( (: global1 = replace_line(read_file(global1) ,({"customdefs.h"}), "#include \""+homedir(this_player())+"/customdefs.h\"") :) );
-    global1 = replace_string(global1,"//extras","");
-    global1 = replace_string(global1,"\n\n\n","\n\n");
-    unguarded( (: write_file(global2, global1, 1) :) );
+    this_object()->eventGeneralStuff(filename);
+    //tc(read_file(filename),"white");
     global1 = filename;
     global2 = tmpfile;
     unguarded( (: cp(global1,global2) :) );

@@ -8,7 +8,7 @@
 
 inherit LIB_DAEMON;
 
-#define MAN_PAGES ({ "sefun", "efun/all", "applies", "lfun" })
+#define MAN_PAGES ({ "sefun", "efun/all", "applies", "lfun/all" })
 
 int cmd(string str) {
     string d, tmp;

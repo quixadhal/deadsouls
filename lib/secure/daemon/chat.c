@@ -19,7 +19,8 @@ static private mapping Channels;
 static private mapping chanlast;
 
 static private string *local_chans = ({"newbie","cre","gossip","admin","error",
-  "priest", "mage", "explorer", "thief", "fighter", "death" });
+  "priest", "mage", "explorer", "thief", "fighter", "death", "connections" });
+static string *syschans = ({ "death", "connections" });
 
 
 static void create() {
@@ -52,6 +53,14 @@ varargs int CanListen(object who, string canal){
 } 
 
 varargs int CanTalk(object who, string canal){
+    //tc("who: "+identify(who));
+    //tc("string: "+canal);
+    //tc("imud_privp(who): "+imud_privp(who));
+    //tc("syschans: "+identify(syschans));
+    //tc("archp(who): "+identify(archp(who)));
+    //tc("member_array(canal, local_chans): "+ member_array(canal, local_chans));
+    //tc("member_array(canal, syschans) != -1 && !archp(who): "+(member_array(canal, syschans) != -1 && !archp(who)));
+    //if(member_array(canal, syschans) != -1 && !archp(who)) return 0;
     if(RESTRICTED_INTERMUD == 0 || !RESTRICTED_INTERMUD) return 1;
     if(canal && member_array(canal, local_chans) != -1) return 1;
     else return imud_privp(who);
@@ -219,6 +228,15 @@ int cmdChannel(string verb, string str) {
 	write("You lack privileges to that channel.");
 	return 1;
     }
+    if( !str || str == "" ) {
+	this_player()->SetBlocked(verb);
+	return 1;
+    }
+    if(member_array(verb, syschans) != -1) {
+	write("This is not a channel for chatting.");
+	return 1;
+    }
+
 
     if( !Channels[verb] ) {
 	if( sscanf(verb, "%semote", verb) || sscanf(verb, "%s:", verb) ) {
@@ -369,10 +387,7 @@ int cmdChannel(string verb, string str) {
 	rc = GetRemoteChannel(verb);
     }
     if( member_array(this_player(), Channels[verb]) == -1 ) return 0;
-    if( !str || str == "" ) {
-	this_player()->SetBlocked(verb);
-	return 1;
-    }
+
     if( (int)this_player()->GetBlocked(verb) ) {
 	if( (int)this_player()->GetBlocked("all") ) {
 	    this_player()->eventPrint("You cannot chat while totally blocked.",
@@ -383,7 +398,7 @@ int cmdChannel(string verb, string str) {
 	this_player()->eventPrint("Turn this channel on to talk on it.", MSG_ERROR);
 	return 1;
     }
-    if( verb == "admin" || verb=="cre" ) {
+    if( verb == "admin"  || verb == "cre") {
 	if( !(name = (string)this_player()->GetCapName()) )
 	    name = capitalize((string)this_player()->GetKeyName());
     }
@@ -407,15 +422,42 @@ int cmdChannel(string verb, string str) {
 
 varargs void eventSendChannel(string who, string ch, string msg, int emote,
   string target, string targmsg) {
+    object channeler = find_player(lower_case(who));
     string pchan,pmsg;
     pchan=ch;
+    if(!channeler) channeler = this_player();
+
+    //tc("ch: "+ch);
+    //tc("who: "+who);
+    //if(channeler) tc("channeler: "+identify(channeler));
+    //if(channeler) tc("channeler && !CanTalk(channeler, ch): "+(channeler && !CanTalk(channeler, ch)));
+
+    if(this_player() && this_player() != channeler) channeler = this_player();
+
+    if(!strsrch(base_name(previous_object()), "/realms/") ||
+      !strsrch(base_name(previous_object()), "/open/")) return 0;
+
+    if(member_array(ch, syschans) != -1) {
+	emote = 0;
+    } 
+    if(channeler){
+	//tc("WTF","red");
+	//tc("can talk: "+CanTalk(channeler, ch));
+	if(!CanTalk(channeler, ch) && member_array(ch, syschans) == -1){
+
+	    //tc("boo");
+	    return;
+	}
+    }
+    //else tc("ya");
 
     if( file_name(previous_object()) == SERVICES_D) {
 	ch = GetLocalChannel(ch);
 	if( emote && sizeof(who)) msg = replace_string(msg, "$N", who);
     }
     else if( origin() != ORIGIN_LOCAL && previous_object() != master() &&
-      file_name(previous_object()) != PARTY_D && ch != "death") return;
+      file_name(previous_object()) != PARTY_D && ch != "death" &&
+      ch != "connections" ) return;
     if( !Channels[ch] ) return;
     if( emote ) {
 	object *obs;
@@ -426,6 +468,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	}
 	switch(ch)
 	{
+	case "connections":
+	    this_msg = "%^WHITE%^";
+	    break;
 	case "death":
 	    this_msg = "%^RED%^";
 	    break;
@@ -505,6 +550,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	{
 	case "cre":
 	    tmsg += "%^GREEN%^";
+	    break;
+	case "connections":
+	    tmsg = "%^WHITE%^";
 	    break;
 	case "death":
 	    tmsg += "%^RED%^";

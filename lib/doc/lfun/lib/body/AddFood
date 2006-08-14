@@ -1,0 +1,24 @@
+ADDFOOD
+
+NAME
+        AddFood()
+
+SYNOPSIS
+        int AddFood(int x)
+
+DESCRIPTION
+        Arbitrarily add "food points" to the creature by the amount indicated by the passed integer.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        GetFood()
+
+Author
+        Cratylus
+

@@ -1,25 +1,25 @@
 
 SET_EVAL_LIMIT(1)                               SET_EVAL_LIMIT(1)
 
-NNAAMMEE
-       _s_e_t___e_v_a_l___l_i_m_i_t_(_) - provides security for the
-       _s_e_t___e_v_a_l___l_i_m_i_t_(_) efun
+NAME
+       set_eval_limit() - provides security for the
+       set_eval_limit() efun
 
-SSYYNNOOPPSSIISS
+SYNOPSIS
        void set_eval_limit(int x)
 
-DDEESSCCRRIIPPTTIIOONN
-       The MudOS efun _s_e_t___e_v_a_l___l_i_m_i_t_(_) has no security, so the
+DESCRIPTION
+       The MudOS efun set_eval_limit() has no security, so the
        mudlib needs to prevent objects from resetting the eval
        limit.  This override performs this function.
 
-LLOOCCAATTIIOONN
-       /secure/SimulEfun/SimulEfun.c
+LOCATION
+       /secure/sefun/sefun.c
 
-SSEEEE AALLSSOO
-       the _s_e_t___e_v_a_l___l_i_m_i_t_(_) efun
+SEE ALSO
+       the set_eval_limit() efun
 
-AAuutthhoorr
+Author
        Descartes of Borg
 
                                                                 1

@@ -1,0 +1,6 @@
+-  /domains/Praxis/sheriff.c
+   Sat Jul  2 16:40:14 1994 by Descartes(George Reese):
+     * Created this function use the polics daemon being created by
+     * Pallando@Nightmare to house criminals and law enforcement
+     * opfficials.  Created ./obj/mon/police.c to be the law
+     * enforcement types. 

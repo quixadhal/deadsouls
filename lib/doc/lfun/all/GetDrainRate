@@ -1,0 +1,30 @@
+GETDRAINRATE
+
+NAME
+        GetDrainRate()
+
+
+SYNOPSIS
+        int GetDrainRate()
+
+
+DESCRIPTION
+        Return the speed with which a battery is drained over time, in charge units per heartbeat.
+
+
+EXAMPLES
+         
+
+
+LOCATION
+        /lib/battery
+
+
+SEE ALSO
+        SetDrainRate, SetCharge, GetCharge
+
+
+Author
+        Cratylus
+
+

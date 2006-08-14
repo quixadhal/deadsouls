@@ -1,0 +1,23 @@
+
+GETCUSTOMPATH(1)                                     GETCUSTOMPATH(1)
+
+NAME
+       query_custom_path() - returns the directory designated as the
+custom commands location.
+
+SYNOPSIS
+       string *query_custom_path()
+
+DESCRIPTION
+       Creators are expected to have a directory within their
+homedir with a standard name which contains user-created, or
+"custom" command. This sefun retuns the dir for this_player().
+
+LOCATION
+       /secure/sefun/custom_commands.c
+
+Author
+       Cratylus @ Dead Souls
+
+                                                                1
+

@@ -9,7 +9,7 @@ int Pinging = 0;
 int OK = 0;
 int Retries = 0;
 
-string *muds = PINGING_MUDS;
+string *muds = PINGING_MUDS + ({ mud_name() });
 
 int CheckOK(){
     Pinging = 0;

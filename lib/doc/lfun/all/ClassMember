@@ -1,0 +1,24 @@
+CLASSMEMBER
+
+NAME
+        ClassMember()
+
+SYNOPSIS
+        int ClassMember(string class_name)
+
+DESCRIPTION
+        Returns whether the class daemon thinks the player is a member of the specified class.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/classes
+
+
+SEE ALSO
+         
+
+Author
+        Cratylus
+

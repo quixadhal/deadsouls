@@ -49,7 +49,6 @@ mixed can_look_obj(string verb, string id) {
 }
 
 mixed can_look_at_str(string str, string verb) {
-
     if( !environment(this_player()) ) return "You are nowhere.";
     if( SEASONS_D->GetLong(str) == 0 ) {
 	return "There is no " + remove_article(str) + " here.";
@@ -58,6 +57,7 @@ mixed can_look_at_str(string str, string verb) {
 	return check_light();
     }
 }
+
 mixed can_look_at_obj(string verb, string id) {
     return check_light();
 }

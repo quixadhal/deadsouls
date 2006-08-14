@@ -1,0 +1,24 @@
+GETCAFFEINE
+
+NAME
+        GetCaffeine()
+
+SYNOPSIS
+        int GetCaffeine()
+
+DESCRIPTION
+        Returns the caffeine level of the creature.
+
+EXAMPLES
+        present("barista",environment(this_player()))->GetCaffeine()
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        SetCaffeine
+
+Author
+        Cratylus
+

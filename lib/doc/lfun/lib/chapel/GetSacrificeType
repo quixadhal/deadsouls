@@ -1,0 +1,27 @@
+GETSACRIFICETYPE
+
+NAME
+        GetSacrificeType()
+
+SYNOPSIS
+        int GetSacrificeType()
+
+DESCRIPTION
+        Bit shifted return of sacrifice types permitted here. Unimplemented in Dead Souls 2.1.
+
+EXAMPLES
+         
+
+
+LOCATION
+        /lib/chapel
+
+
+SEE ALSO
+        SetAllowSacrifice, GetAllowSacrifice, SetSacrificeType, AddSacrificeType, GetSacrificeType, eventSacrifice, CanSacrifice
+
+
+Author
+        Cratylus
+
+

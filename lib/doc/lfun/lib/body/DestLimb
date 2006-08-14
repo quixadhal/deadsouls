@@ -1,0 +1,24 @@
+DESTLIMB
+
+NAME
+        DestLimb()
+
+SYNOPSIS
+        int DestLimb(string limb)
+
+DESCRIPTION
+        Removes a limb from the limbs mapping.  The limb isn't marked as mising, and the monster doesn't die even if you remove a fatal limb.  Useful for removing limbs from standard race types.  Removing the torso isn't allowed. Returns -1 on error, 0 on failure, 1 on success.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        RemoveLimb
+
+Author
+        Unknown
+

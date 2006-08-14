@@ -1,0 +1,24 @@
+SETSACRIFICETYPE
+
+NAME
+        SetSacrificeType()
+
+SYNOPSIS
+        int SetSacrificeType(int x)
+
+DESCRIPTION
+        Set what kind of sacrifice is permitted here. Unimplemented in Dead Souls 2.1.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/chapel
+
+
+SEE ALSO
+        SetAllowSacrifice, GetAllowSacrifice, SetSacrificeType, AddSacrificeType, GetSacrificeType, eventSacrifice, CanSacrifice
+
+Author
+        Cratylus
+

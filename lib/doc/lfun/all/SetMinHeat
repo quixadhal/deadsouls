@@ -1,0 +1,24 @@
+SETMINHEAT
+
+NAME
+        SetMinHeat()
+
+SYNOPSIS
+        static int SetMinHeat(int x)
+
+DESCRIPTION
+        Sets the minimum amount of heat required for the item to give off light.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/burn
+
+
+SEE ALSO
+        GetHeat, SetHeat, GetMinHeat
+
+Author
+        Cratylus
+

@@ -1,0 +1,24 @@
+UNRESTRICTCHANNEL
+
+NAME
+        UnrestrictChannel()
+
+SYNOPSIS
+        string array UnrestrictChannel(mixed val)
+
+DESCRIPTION
+        Removes the user's limitations on the channel(s) specified.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/chat
+
+
+SEE ALSO
+        AddChannel, RemoveChannel, GetChannels, returnChannels
+
+Author
+        Cratylus
+

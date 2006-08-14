@@ -12,7 +12,6 @@ static void send_error(string mud, string user, string errcode, string errmsg, m
 	0,
 	mud, // mud name
 	user, // user name
-	0,
 	errcode,
 	errmsg,
 	info

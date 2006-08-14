@@ -1,0 +1,24 @@
+EVENTRECEIVETHROW
+
+NAME
+        eventReceiveThrow()
+
+SYNOPSIS
+        mixed eventReceiveThrow(object who, object what)
+
+DESCRIPTION
+        Performs the appropriate calculations for a body that is the target of a thrown object.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+         
+
+Author
+        Cratylus
+

@@ -50,7 +50,7 @@ mixed cmd(string str) {
     if(env->GetProperty("no peer")){
 	return "You can't see in that direction.";
     }
-    if( (i = this_player()->GetEffectiveVision(1,file)) > 5 )
+    if( (i = this_player()->GetEffectiveVision(file,1)) > 5 )
 	return "It is too bright in that direction.";
     else if( i < 3 )
 	return "It is too dark there.";

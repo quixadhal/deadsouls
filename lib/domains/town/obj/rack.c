@@ -1,6 +1,6 @@
 #include <lib.h>
 
-inherit LIB_STORAGE;
+inherit LIB_SURFACE;
 object to;
 
 
@@ -16,7 +16,7 @@ void create() {
     SetBaseCost("silver",50);
     SetMaxCarry(5);
     SetInventory(([
-	"/domains/town/weap/paring_knife" : 1,
+	//"/domains/town/weap/paring_knife" : 1,
 	"/domains/town/weap/butcher_knife" : 1,
 	"/domains/town/weap/carving_knife" : 1,
       ]));

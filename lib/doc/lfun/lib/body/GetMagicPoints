@@ -1,0 +1,24 @@
+GETMAGICPOINTS
+
+NAME
+        GetMagicPoints()
+
+SYNOPSIS
+        int GetMagicPoints()
+
+DESCRIPTION
+        Returns a creature's current magic point level.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        SetMagicPoints, GetMaxMagicPoints, AddMagicPoints
+
+Author
+        Cratylus
+

@@ -204,8 +204,8 @@ mixed eventUnequip(object who) {
 	return tmp;
     }
     Wielded = 0;
-    send_messages("unwield", "$agent_name $agent_verb $target_name.",
-      who, this_object(), environment(who));
+    if(!who->GetDead()) send_messages("unwield", "$agent_name $agent_verb $target_name.",
+	  who, this_object(), environment(who));
     return 1;
 }
 
