@@ -48,6 +48,10 @@ void SetPile(string str, int amt) {
     parse_refresh();
 }
 
+void SetCurrency(string str, int amt) {
+    SetPile(str,  amt);
+}
+
 string GetPileType() { return PileType; }
 
 int GetPileAmount() { return PileAmount; }

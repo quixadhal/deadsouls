@@ -1,0 +1,24 @@
+RESTRICTCHANNEL
+
+NAME
+        RestrictChannel()
+
+SYNOPSIS
+        string array RestrictChannel(mixed val)
+
+DESCRIPTION
+        Limit the availability of the given channel(s) to the user.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/chat
+
+
+SEE ALSO
+        AddChannel, RemoveChannel, GetChannels, returnChannels
+
+Author
+        Cratylus
+

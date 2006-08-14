@@ -1,0 +1,24 @@
+REMOVECHANNEL
+
+NAME
+        RemoveChannel()
+
+SYNOPSIS
+        string array RemoveChannel(mixed val) 
+
+DESCRIPTION
+        Deletes a channel from the list of channels accessible to the user.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/chat
+
+
+SEE ALSO
+        AddChannel, RemoveChannel, GetChannels, returnChannels
+
+Author
+        Cratylus
+

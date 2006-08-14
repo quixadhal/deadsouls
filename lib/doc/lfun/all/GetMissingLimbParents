@@ -1,0 +1,24 @@
+GETMISSINGLIMBPARENTS
+
+NAME
+        GetMissingLimbParents()
+
+SYNOPSIS
+        string array GetMissingLimbParents(string limb)
+
+DESCRIPTION
+        Returns the entire chain of a limb's attachment as an array.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        GetLimbs, GetLimbParent, GetMissingLimbParent, GetLimbChildren
+
+Author
+        Cratylus
+

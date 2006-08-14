@@ -24,6 +24,7 @@ inherit LIB_POSITION;
 inherit LIB_UNDEAD;
 inherit LIB_CRAWL;
 inherit LIB_FLY;
+inherit LIB_MOUNT;
 
 #define COLLAPSE_AT            10.0
 
@@ -228,6 +229,11 @@ void eventCheckHealing() {
     int x, y;
     object dude;
     dude = this_object();
+
+    if(HealthPoints < 1) {
+	this_object()->eventDie(previous_object());
+	return;
+    }
 
     x = GetHeartRate() * 10;
 

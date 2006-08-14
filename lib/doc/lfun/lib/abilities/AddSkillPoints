@@ -1,0 +1,30 @@
+ADDSKILLPOINTS
+
+NAME
+        AddSkillPoints()
+
+
+SYNOPSIS
+        int AddSkillPoints(string skill, int x)
+
+
+DESCRIPTION
+        Adds x points to skill "skill".
+
+
+EXAMPLES
+           
+
+LOCATION
+        /lib/classes
+/lib/lvs/abilities
+
+
+SEE ALSO
+        AddSkillPoints, SetSkillModifier, GetSkillModifier
+
+
+Author
+        Cratylus
+
+

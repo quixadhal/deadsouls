@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Dead Souls Mudlib - General Fixes</title>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=ISO-8859-1">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link href="style.css" media="screen" rel="stylesheet" type="text/css">
+  <meta name="Keywords"
+ content="mudos,lpmud,dead souls,dead,souls,mud,installation">
+  <meta name="Description" content="Dead Souls hotfixes.">
+</head>
+<body>
+<!-- Begin: Header -->
+<div id="header">
+<p id="headertext">Dead Souls - General/Minor Fixes (non-critical stuff)</p>
+</div>
+<!-- End: Header -->
+<p>Obviously, no release of Dead Souls is going to be pefect. However,
+not all bugs need a "hotfix". A hotfix is a remediation for a very
+important functionality bug or a security exposure. Such important
+fixes will be listed on the <a href="http://dead-souls.net/hotfix.html">hotfix
+page</a>.<br>
+</p>
+<p>This page is for the more casual, run-of-the-mill bugfixes that
+become available for Dead Souls. You don't *have* to apply them. The
+reason for this page is that as time goes on, I expect more and more
+minor bugs in 2.1 will be found. I don't want to clutter the hotfix
+page with small stuff, because I want people to take very seriously
+what gets posted on the hotfix page.<br>
+</p>
+<p><span style="font-weight: bold;">Always back up files before
+overwriting them with these fixes.</span><br>
+</p>
+<p>For Dead Souls <span style="color: red; font-weight: bold;">2.1</span>,
+the
+following fixes are available:
+</p>
+<ul>
+  <li>There is a peculiar bug in room messages when entering/leaving a
+room that mixes up teleport messages and regular movement messages. The
+fix is to replace /lib/creator.c and<span style="font-style: italic;"> </span>/lib/player.c
+with <a href="http://dead-souls.net/code/fixes/creator.c">this</a>
+and <a href="http://dead-souls.net/code/fixes/player.c">this</a> ,
+then type: <span style="font-weight: bold;">update -r /lib/creator</span>
+, then log out and log back in (NOTE: this also fixes a problem with
+the <span style="font-style: italic;">return</span> command).</li>
+  <li>The shutdown command generates a carry capacity leak and possible
+loss of some inventory data in admins. Replace
+/secure/cmds/admins/shutdown.c with <a
+ href="http://dead-souls.net/code/fixes/shutdown.c">this</a> , then
+type: <span style="font-weight: bold;">update
+/secure/cmds/admins/shutdown</span> .</li>
+  <li>The reaper daemon destructs shadows every 15 minutes, meaning
+that your remote-controlled NPC's will get dested for apparently no
+reason. The reap_other() sefun has been fixed to correct this. Copy <a
+ href="http://dead-souls.net/code/fixes/reaper.c">this</a> over
+/secure/sefun/reaper.c , then type: <span style="font-weight: bold;">update
+/secure/sefun/reaper</span> , then <span style="font-weight: bold;">update
+/secure/sefun/sefun</span> . Note that this is a replacement for the
+reaper <span style="font-style: italic;">sefun file</span>, and not
+the reaper <span style="font-style: italic;">daemon</span>.<br>
+  </li>
+</ul>
+<br>
+<br>
+<div id="footer">
+<p style="text-align: center;"><a href="index.html">Return to Dead
+Souls Homepage</a></p>
+</div>
+</body>
+</html>

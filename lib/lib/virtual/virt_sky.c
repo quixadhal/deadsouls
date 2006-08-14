@@ -7,6 +7,7 @@
  */
 
 #include <lib.h>
+#include <virtual.h>
 #include <medium.h>
 #include <position.h>
 

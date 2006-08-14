@@ -1,0 +1,24 @@
+GETTORSO
+
+NAME
+        GetTorso()
+
+SYNOPSIS
+        string GetTorso()
+
+DESCRIPTION
+        Returns the name of the main limb nexus of a creature. An octopus, for example, might return "head" and an ant might return "thorax".
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+         
+
+Author
+        Cratylus
+

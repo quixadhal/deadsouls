@@ -1,0 +1,41 @@
+EVENTDIE
+
+NAME
+        eventDie()
+
+
+
+SYNOPSIS
+        varargs int eventDie(mixed agent)
+
+
+
+DESCRIPTION
+        When a creature dies, this function is called in them. The argument should be what it is that killed them. Note that this is a function that is heavily overridden, and must be handled with care if modified. If you don't know what a function override is, then don't mess with this function. If eventDie() returns something other than a positive integer, the creature doesn't die in the conventional sense: they instead become undead.
+
+
+
+EXAMPLES
+         
+
+
+
+LOCATION
+        /lib/body
+/lib/bot
+/lib/combat
+/lib/flashlight
+/lib/npc
+/lib/player
+/lib/race
+
+
+SEE ALSO
+         
+
+
+
+Author
+        Cratylus
+
+

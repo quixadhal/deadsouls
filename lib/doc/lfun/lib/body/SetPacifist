@@ -1,0 +1,24 @@
+SETPACIFIST
+
+NAME
+        SetPacifist()
+
+SYNOPSIS
+        int SetPacifist(int i)
+
+DESCRIPTION
+        An argument of 1 makes the creature a pacifist. 0 makes it not a pacifist.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        GetPacifist
+
+Author
+        Cratylus
+

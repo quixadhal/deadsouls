@@ -55,7 +55,7 @@ void eventLoadRogues(){
 
 int CheckBot(string str){
     object cloan, foo;
-    int allset, already_watched = 0;
+    int allset, err, already_watched = 0;
     string *immune;
     string name;
 
@@ -79,7 +79,8 @@ int CheckBot(string str){
 	cloan=new("/secure/obj/snooper");
 	cloan->eventStartSnoop(str);
     }
-    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+    err = catch(unguarded( (: save_object, SAVE_SNOOP, 1 :) ));
+    if(err) tc("problem.");
     return 1;
 }
 

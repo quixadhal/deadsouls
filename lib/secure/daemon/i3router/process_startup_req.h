@@ -60,7 +60,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
     case 1:
     case 2:
 	if(sizeof(info)!=18){
-	    trr("error");
+	    trr("error: wrong size packet. Got: "+sizeof(info)+", wanted 18");
 	    write_data(fd,({
 		"error",
 		5,
@@ -80,7 +80,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	break;
     case 3:
 	if(sizeof(info)!=20){
-	    trr("error");
+	    trr("error. wrong size packet. Got: "+sizeof(info)+", wanted 20");
 
 	    write_data(fd,({
 		"error",
@@ -100,7 +100,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	newinfo["other_data"]=info[19];
 	break;
     default:
-	trr("error");
+	trr("error. I dunno what.");
 
 	write_data(fd,({
 	    "error",

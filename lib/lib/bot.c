@@ -83,21 +83,3 @@ string GetLong(string nom) {
     }
     return str;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

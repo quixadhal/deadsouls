@@ -1,0 +1,41 @@
+GETNAME
+
+NAME
+        GetName()
+
+
+
+SYNOPSIS
+        string GetName()
+
+
+
+DESCRIPTION
+        Returns the object's proper name, capitalized if appropriate.
+
+
+
+EXAMPLES
+        this_player()->GetName()
+
+
+
+LOCATION
+        /lib/body
+/lib/creator
+/lib/interactive
+/lib/messages
+/lib/npc
+/lib/player
+/lib/props/id
+
+
+SEE ALSO
+        GetKeyName()
+
+
+
+Author
+        Cratylus
+
+

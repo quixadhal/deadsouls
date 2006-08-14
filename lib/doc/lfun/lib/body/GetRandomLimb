@@ -1,0 +1,24 @@
+GETRANDOMLIMB
+
+NAME
+        GetRandomLimb()
+
+SYNOPSIS
+        string GetRandomLimb(string targ)
+
+DESCRIPTION
+        Returns a random limb weighted towards the targetted limb. string targ - the targetted limb.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+         
+
+Author
+        UNKNOWN
+

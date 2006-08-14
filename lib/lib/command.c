@@ -55,11 +55,11 @@ static int cmdAll(string args) {
 	}
     }
 
-    if(GetCustomCommand(verb) && GetCustomCommand(verb) != "" && !creatorp(this_player()) ){
+    if(query_custom_command(verb) && query_custom_command(verb) != "" && !creatorp(this_player()) ){
 	this_player()->eventPrint("How clever of you. Or lucky. In any case, this command is unavailable to you.");
 	return 1;
     }
-    if( !(file = (GetCustomCommand(verb) )) || GetCustomCommand(verb) == "") {
+    if( !(file = (query_custom_command(verb) )) || query_custom_command(verb) == "") {
 	if( !(file = (string)CMD_D->GetCommand(verb, GetSearchPath())) ) {
 	    string cmd;
 	    int dbg;

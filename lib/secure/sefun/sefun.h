@@ -112,8 +112,8 @@ varargs string wrap(string str, int width);
 void write(string str);
 int tail(string file);
 void tell_player(mixed player, string msg);
-string *GetCustomPath();
-string GetCustomCommand(string str);
+string *query_custom_path();
+string query_custom_command(string str);
 string dump_socket_status();
 string flat_map(mapping mp);
 string *get_cmds();
@@ -215,5 +215,9 @@ int assistp(mixed guy);
 int elderp(object ob);
 int testp(object ob);
 string alpha_strip(mixed arg);
+mixed seteuid(mixed args);
+mixed getuid(mixed args);
+mixed geteuid(mixed args);
+string *query_local_functions(mixed arg);
 
 #endif /* l_sefun_h */

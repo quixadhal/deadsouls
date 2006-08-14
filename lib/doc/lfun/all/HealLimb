@@ -1,0 +1,24 @@
+HEALLIMB
+
+NAME
+        HealLimb()
+
+SYNOPSIS
+        int HealLimb(string limb)
+
+DESCRIPTION
+        If the creature possesses the limb in question, its maximum health points are restored.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+         
+
+Author
+        Cratylus
+

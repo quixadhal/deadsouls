@@ -14,8 +14,9 @@ static void create() {
       "if that's not what you're doing, you should probably leave. " 
       "The arch room is above. The router room is south.");
     SetExits( ([
+	"south" : "/secure/room/router",
 	"up" : "/secure/room/arch",
-	"south" : "/secure/room/router.c",
+	"east" : "/domains/default/room/catchtell.c",
       ]) );
 
 }

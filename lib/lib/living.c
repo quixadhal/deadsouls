@@ -19,7 +19,7 @@ inherit LIB_MAGIC;
 inherit LIB_LEAD;
 inherit LIB_SMELL;
 
-private int isPK;
+private int isPK, Mount;
 
 varargs mixed CanReceiveHealing(object who, string limb);
 
@@ -31,10 +31,6 @@ static void create() {
     isPK = 0;
 }
 
-int SetDead(int i){
-    return combat::SetDead(i);
-}
-
 int is_living() { return 1; }
 
 int inventory_accessible() { return 1; }
@@ -43,6 +39,26 @@ int inventory_visible() { return 1; }
 
 mixed direct_verb_rule(string verb) {
     return SOUL_D->CanTarget(this_player(), verb, this_object());
+}
+
+mixed direct_ride_str(){
+    return this_object()->GetMount();
+}
+
+mixed direct_ride_word_str(){
+    return this_object()->GetMount();
+}
+
+mixed direct_mount_liv(){
+    return this_object()->GetMount();
+}
+
+mixed direct_dismount_liv(){
+    return this_object()->GetMount();
+}
+
+mixed direct_dismount_from_liv(){
+    return this_object()->GetMount();
 }
 
 mixed direct_attack_liv() {
@@ -414,6 +430,47 @@ varargs mixed CanCastMagic(int hostile, string spell) {
 }
 
 /*     **********     /lib/living.c event methods     **********     */
+
+mixed eventMount(object who){
+    int rider_weight;
+    if(!who) return 0;
+    rider_weight = (who->GetCarriedMass()) + (who->GetMass() || 2000);
+    //tc("rider_weight: "+rider_weight);
+    //if(!environment(who)) return 1;
+    if(!environment(this_object())) return 0;
+    if(environment(who) && environment(who) == this_object()){
+	return write("You are already mounted.");
+    }
+    if(rider_weight + this_object()->GetCarriedMass() > this_object()->GetMaxCarry()){
+	return write("This mount cannot handle that much weight.");
+    }
+    else {
+	write("You mount "+this_object()->GetShort());
+	say(who->GetName()+" mounts "+this_object()->GetShort());
+	who->SetProperty("mount", this_object());
+	this_object()->AddCarriedMass(rider_weight);
+	return who->eventMove(this_object());
+    }
+}
+
+mixed eventDismount(object who){
+    int rider_weight;
+    if(!who) return 0;
+    rider_weight = (who->GetCarriedMass()) + (who->GetMass() || 2000);
+    if(!environment(this_object())) return 0;
+    if(environment(who) && environment(who) != this_object()){
+	return write("You are already dismounted.");
+    }
+    else {
+	write("You dismount from "+this_object()->GetShort());
+	say(who->GetName()+" dismounts from " +this_object()->GetShort());
+	who->RemoveProperty("mount");
+	this_object()->AddCarriedMass(-rider_weight);
+	return who->eventMove(environment(this_object()));
+    }
+}
+
+
 mixed eventCure(object who, int amount, string type) {
     object array germs = filter(all_inventory(),
       (: $1->IsGerm() && $1->GetType()== $(type) :));
@@ -617,6 +674,14 @@ int GetMaxCarry() { return combat::GetMaxCarry(); }
 int SetPK(int x) { return (isPK = x); }
 
 int GetPK() { return isPK; }
+
+int SetMount(int x) { return (Mount = x); }
+
+int GetMount() { return Mount; }
+
+int SetDead(int i){
+    return combat::SetDead(i);
+}
 
 mixed indirect_look_at_obj_word_obj() {
     return 0;

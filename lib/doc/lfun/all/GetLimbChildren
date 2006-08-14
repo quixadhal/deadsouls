@@ -1,0 +1,29 @@
+GETLIMBCHILDREN
+
+NAME
+        GetLimbChildren()
+
+
+SYNOPSIS
+        string array GetLimbChildren(string limb)
+
+
+DESCRIPTION
+        Returns the limbs that depend on this limb to remain attached to the creature.
+
+
+EXAMPLES
+        
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        GetLimbParent, GetMissingLimbParent, GetMissingLimbs, GetLimbs
+
+
+Author
+        Cratylus
+
+

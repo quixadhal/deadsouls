@@ -1,0 +1,167 @@
+g/dest_me\(\)/s/dest_me\(\)/destruct\(\)
+g/query_name/s/query_name/GetName
+g/set_light/s/set_light/SetLight
+g/SetLight/s/SetLight/SetAmbientLight
+g/inherit LIB_ROOM_OBJ/s/inherit LIB_ROOM_OBJ/inherit LIB_ROOM
+g/add_property/s/add_property/SetProperty
+g/TP\-\>/s/TP\-\>/this_player\(\)\-\>
+g/inherit INDOOR_ROOM/s/inherit INDOOR_ROOM/inherit LIB_ROOM
+g/inherit M_GETTABLE\;/s/inherit M_GETTABLE\;//
+g/inherit M_VALUABLE\;/s/inherit M_VALUABLE\;//
+g/inherit M_WEARABLE/s/inherit M_WEARABLE/inherit LIB_ARMOR
+g/inherit OBJ\;/s/inherit OBJ\;/inherit LIB_ITEM\;
+g/void setup\(\)/s/void setup\(\)/void create\(\)
+g/RACE_D/s/RACE_D/RACES_D
+g/set\(\"day long\"\,/s/set\(\"day long\"\,/SetDayLong\(
+g/set\(\"night long\"\,/s/set\(\"night long\"\,/SetNightLong\(
+g/inherit \"\/std\/barkeep\"/s/inherit \"\/std\/barkeep\"/inherit LIB_BARKEEP
+g/set_chance/s/set_chance/SetChance
+g/set_max_fishing/s/set_max_fishing/SetMaxFishing
+g/inherit PIER/s/inherit PIER/inherit LIB_FISHING
+g/\-\>move\(/s/\-\>move\(/\-\>eventMove\(
+g/remove_item_description/s/remove_item_description/RemoveItem
+g/remove_exit/s/remove_exit/RemoveExit
+g/query_max_sp/s/query_max_sp/GetMaxStaminaPoints
+g/set_sp/s/set_sp/SetStaminaPoints
+g/inherit \"\/std\/vendor\"/s/inherit \"\/std\/vendor\"/inherit \"\/lib\/std\/vendor\"
+g/\/std\/vote_room/s/\/std\/vote_room/\/domains\/town\/room\/voters
+g/inherit \"std\/vault\"/s/inherit \"std\/vault\"/inherit \"\/lib\/std\/room\"
+g/add_intox/s/add_intox/AddAlcohol
+g/set_day_long/s/set_day_long/SetDayLong
+g/set_night_long/s/set_night_long/SetNightLong
+g/set_door/s/set_door/SetDoor
+g/set_open/s/set_open/SetOpen
+g/query_open/s/query_open/GetOpen
+g/inherit VAULT/s/inherit VAULT/inherit LIB_ROOM
+g/move_player/s/move_player/eventMoveLiving
+g/\"\/std\/obj\/torch\"/s/\"\/std\/obj\/torch\"/\"\/domains\/town\/obj\/torch\"
+g/\"std\/obj\/torch\"/s/\"std\/obj\/torch\"/\"\/domains\/town\/obj\/torch\"
+g/set\(\"long\"\,/s/set\(\"long\"\,/SetLong\(
+g/set\(\"short\"\,/s/set\(\"short\"\,/SetShort\(
+g/set\(\"race\"\,/s/set\(\"race\"\,/SetRace\(
+g/new\(\"std\/weapon\"\)/s/new\(\"std\/weapon\"\)/new\(LIB_ITEM\)
+g/new\(WEAPON\)/s/new\(WEAPON\)/new\(LIB_ITEM\)
+g/new\(OBJECT\)/s/new\(OBJECT\)/new\(LIB_ITEM\)
+g/remove\(\)/s/remove\(\)/destruct\(\)
+g/inherit WEAPON/s/inherit WEAPON/inherit LIB_ITEM
+g/set_wc/s/set_wc/SetClass
+g/set_wield/s/set_wield/SetWield
+g/SetWield_string/s/SetWield_string/SetWield
+g/\"\/std\/weapon\"/s/\"\/std\/weapon\"/LIB_ITEM
+g/set_die/s/set_die/SetDie
+g/monster::create/s/monster::create/npc::create
+g/monster::init/s/monster::init/npc::init
+g/force_me/s/force_me/eventForce
+g/add_money/s/add_money/AddCurrency
+g/set_currency/s/set_currency/SetLocalCurrency
+g/set_item_types/s/set_item_types/SetVendorType
+g/set_storage_room/s/set_storage_room/SetStorageRoom
+g/inherit BARKEEP/s/inherit BARKEEP/inherit LIB_BARKEEP
+g/set_menu/s/set_menu/SetMenu
+g/set_max_mp/s/set_max_mp/SetMaxMagicPoints
+g/set_stats/s/set_stats/SetStat
+g/set_chats/s/set_chats/SetAction
+g/set_speech/s/set_speech/SetAction
+g/set_skill/s/set_skill/SetSkill
+g/set_class/s/set_class/SetClass
+g/set_languages/s/set_languages/SetLanguage
+g/set_lang_prof/s/set_lang_prof/SetLanguage
+g/set_speed/s/set_speed/SetWanderSpeed
+g/set_stats/s/set_stats/SetStats
+g/set_mp/s/set_mp/SetMagicPoints
+g/set_spell_chance/s/set_spell_chance/SetSpellChance
+g/set_spells/s/set_spells/SetSpells
+g/set_poisoning/s/set_poisoning/SetPoisonStrength
+g/\"\/std\/poison\"/s/\"\/std\/poison\"/LIB_MEAL_POISON
+g/set_eat/s/set_eat/SetMealMessages
+g/set_strength/s/set_strength/SetStrength
+g/SetMealStrength/s/SetMealStrength/SetStrength
+g/inherit FOOD/s/inherit FOOD/inherit LIB_MEAL
+g/set_weight/s/set_weight/SetMass
+g/set_no_clean/s/set_no_clean/SetNoClean
+g/set_communicable/s/set_communicable/SetCommunicable
+g/set_cure/s/set_cure/SetCure
+g/set_life_span/s/set_life_span/SetLifeSpan
+g/inherit GERM/s/inherit GERM/inherit LIB_GERM
+g/set_can_close/s/set_can_close/SetCanClose
+g/set_prevent_get/s/set_prevent_get/SetPreventGet
+g/set_can_lock/s/set_can_lock/SetCanLock
+g/set_key/s/set_key/SetKey
+g/OB_COINS/s/OB_COINS/LIB_PILE
+g/set_closed/s/set_closed/SetClosed
+g/set_locked/s/set_locked/SetLocked
+g/set_adjectives/s/set_adjectives/SetAdjectives
+g/set_max_encumbrance/s/set_max_encumbrance/SetMaxCarry
+g/inherit ROOM/s/inherit ROOM/inherit LIB_ROOM
+g/MONSTER/s/MONSTER/LIB_NPC
+g/ARMOUR/s/ARMOUR/LIB_ARMOR
+g/inherit OBJECT/s/inherit OBJECT/inherit LIB_ITEM
+g/inherit STORAGE/s/inherit STORAGE/inherit LIB_STORAGE
+g/set_long/s/set_long/SetLong
+g/set_short/s/set_short/SetShort
+g/the_short/s/the_short/GetShort
+g/set_property/s/set_property/SetProperty
+g/set_items/s/set_items/SetItems
+g/set_exits/s/set_exits/SetExits
+g/query_long/s/query_long/GetLong
+g/query_short/s/query_short/GetShort
+g/query_property/s/query_property/GetProperty
+g/setLong/s/setLong/SetLong
+g/inherit \"std\/room\"/s/inherit \"std\/room\"/inherit \"\/lib\/std\/room\"
+g/inherit \"\/std\/room\"/s/inherit \"\/std\/room\"/inherit \"\/lib\/std\/room\"
+g/inherit \"\/std\/monster\"/s/inherit \"\/std\/monster\"/inherit \"\/lib\/npc\"
+g/inherit \"std\/monster\"/s/inherit \"std\/monster\"/inherit \"\/lib\/npc\"
+g/\"\/std\/monster\"/s/\"\/std\/monster\"/\"\/lib\/npc\"
+g/\"std\/monster\"/s/\"std\/monster\"/\"\/lib\/npc\"
+g/\"\/std\/armour\"/s/\"\/std\/armour\"/\"\/lib\/std\/armor\"
+g/\"std\/armour\"/s/\"std\/armour\"/\"\/lib\/std\/armor\"
+g/#include <std.h>/s/#include <std.h>/#include <lib.h>
+g/SetName/s/SetName/SetKeyName
+g/set_name/s/set_name/SetKeyName
+g/set_id/s/set_id/SetId
+g/set_aggressive/s/set_aggressive/SetAggressive
+g/set_alignment/s/set_alignment/SetMorality
+g/set_race/s/set_race/SetRace
+g/set_gender/s/set_gender/SetGender
+g/set_max_hp/s/set_max_hp/SetMaxHealthPoints
+g/set_hp/s/set_hp/SetHealthPoints
+g/set_body_type/s/set_body_type/SetRace
+g/\"undead\"/s/\"undead\"/\"wraith\"
+g/remove_limb/s/remove_limb/RemoveLimb
+g/set_level/s/set_level/SetLevel
+g/\/obj\/coins/s/\/obj\/coins/\/lib\/pile
+g/SetPile/s/SetPile/SetCurrency
+g/set_money/s/set_money/SetCurrency
+g/add_limb/s/add_limb/AddLimb
+g/\/std\/bboard/s/\/std\/bboard/\/lib\/bboard
+g/std\/bboard/s/std\/bboard/\/lib\/bboard
+g/receive_objects/s/receive_objects/CanReceive
+g/add_item_description/s/add_item_description/AddItem
+g/add_exit/s/add_exit/AddExit
+g/set_light\(1\)/s/set_light\(1\)/SetAmbientLight\(30\)
+g/set_properties/s/set_properties/SetProperties
+g/set_smell_string/s/set_smell_string/SetSmell
+g/set_smell/s/set_smell/SetSmell
+g/set_liste/s/set_listen/SetListen
+g/SetListen_string/s/SetListen_string/SetListen
+g/set_search/s/set_search/SetSearch
+g/SetSearch_string/s/SetSearch_string/SetSearch
+g/remove_search/s/remove_search/RemoveSearch
+g/set_mass/s/set_mass/SetMass
+g/set_type/s/set_type/SetType
+g/set_limbs/s/set_limbs/SetRestrictLimbs
+g/set_wear/s/set_wear/SetWear
+g/set_ac/s/set_ac/SetAC
+g/set_value/s/set_value/SetValue
+g/set_invis/s/set_invis/SetInvis
+g/set_prevent_put/s/set_prevent_put/SetPreventPut
+g/set_prevent_drop/s/set_prevent_drop/SetPreventDrop
+g/\"\/std\/Object\"/s/\"\/std\/Object\"/LIB_ITEM
+g/\"std\/Object\"/s/\"std\/Object\"/\"\/lib\/std\/item\"
+g/set_read/s/set_read/SetRead
+g/set_vendor_type/s/set_vendor_type/SetVendorType
+g/set_destroy/s/set_destroy/true
+g/\ move\(/s/\ move\(/\ eventMove\(
+g/BBOARD/s/BBOARD/LIB_BOARD
+g/set_adj/s/set_adj/SetAdjectives
+g/set_read_mess\(/s/set_read_mess\(/SetRead\(\"default\"\,

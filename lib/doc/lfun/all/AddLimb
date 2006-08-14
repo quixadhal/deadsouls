@@ -1,0 +1,29 @@
+ADDLIMB
+
+NAME
+        AddLimb()
+
+
+SYNOPSIS
+        varargs int AddLimb(string limb, string parent, int classes, int *armors)
+
+
+DESCRIPTION
+        Adds the named limb to the body, attached at the named point the limb classes starts at 1 for a torso (strongest) to whatever the documentation rates as the weakest. string limb - the limb being added (required). string parent - the limb to which this one is being attached (required). int classes - rating of the limb's strength (optional). int *armors - the types of armors which can be worn here (optional). Returns 1 on success, 0 on failure. classes defaults to 1. armors defaults to ({}).
+
+
+EXAMPLES
+        To add a prehensile (wielding)  limb to a creature: creature->AddLimb("tentacle", "torso", 2, ({A_WEAPON }))
+
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        RemoveLimb, DestLimb, RestoreLimb
+
+Author
+        Unknown
+
+

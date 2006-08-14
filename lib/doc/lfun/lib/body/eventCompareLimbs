@@ -1,0 +1,24 @@
+EVENTCOMPARELIMBS
+
+NAME
+        eventCompareLimbs()
+
+SYNOPSIS
+        int eventCompareLimbs(string limb1, string limb2)
+
+DESCRIPTION
+        A test function designed to be run by the GetMissingLimbs fun. Largely unused in Dead Souls 2.1.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+         
+
+Author
+        Cratylus
+

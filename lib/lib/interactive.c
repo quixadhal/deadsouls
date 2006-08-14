@@ -123,7 +123,10 @@ int Setup() {
 	catch(room = load_object(LoginSite));
 	if( room && room->GetMedium() == MEDIUM_AIR ) {
 	}
-	if(!sizeof(LoginSite) || (!file_exists(LoginSite) && !file_exists(LoginSite+".c")) || !load_object(LoginSite) || !eventMove(LoginSite) || RescueBit) {
+	if(!sizeof(LoginSite) || 
+	  (!file_exists(LoginSite) && !file_exists(LoginSite+".c")) || 
+	  !load_object(LoginSite) || !eventMove(LoginSite) || 
+	  RescueBit || !(inherits(LIB_ROOM, load_object(LoginSite)))) {
 	    LoginSite = ROOM_START;
 	    eventMove(ROOM_START);
 	    SetRescueBit(0);
@@ -133,8 +136,8 @@ int Setup() {
     environment()->eventPrint(tmp, MSG_ENV, this_object());
     if( !(tmp = GetMessage("login")) )
 	tmp = GetName() + " enters " + mud_name() + ".";
-    filter(users(), (: archp :))->eventPrint("[" + GetCapName() + " logs in]",
-      MSG_SYSTEM);
+    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " logs in]",0);
+
     if(!catch(mp = (mapping)FOLDERS_D->mail_status(GetKeyName()))) {
 	if(mp["unread"]) {
 	    eventPrint("\n>>> " + mp["unread"] + " of your " +
@@ -156,12 +159,7 @@ static void net_dead() {
     log_file("enter", GetCapName() + " (net-dead): " + ctime(time()) + "\n");
     environment()->eventPrint(GetName() + " suddenly disappears into "
       "a sea of irreality.", MSG_ENV, this_object());
-    filter(users(), (: archp :))->eventPrint("[" + GetCapName() +
-      " goes net-dead]", MSG_SYSTEM);
-    if(file_exists("/secure/room/control")){
-	get_livings(load_object("/secure/room/control"))->eventPrint("[" + GetKeyName()+
-	  " goes net-dead]", MSG_SYSTEM);
-    }
+    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " goes net-dead]",0);
     SNOOP_D->ReportLinkDeath(this_object()->GetKeyName());
     eventMove(ROOM_FREEZER);
     if(query_snoop(this_object()))
@@ -175,9 +173,7 @@ void eventReconnect() {
     LastAge = time();
     HostSite = query_ip_name(this_object());
     eventPrint("Reconnected.", MSG_SYSTEM);
-    filter(users(), (: archp :))->eventPrint("[" + GetCapName() + " has "
-      "rejoined " + mud_name() + "]",
-      MSG_SYSTEM);
+    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " has rejoined " + mud_name() + "]",0);
     if( NetDiedHere ) eventMove(NetDiedHere);
     else eventMove(ROOM_START);
     environment()->eventPrint(GetCapName() + " has rejoined this reality.",
@@ -196,7 +192,18 @@ void eventDescribeEnvironment(int brief) {
 	eventPrint("You are nowhere.", MSG_ROOMDESC);
 	return;
     }
-    switch( i = GetEffectiveVision() ) {
+
+    if(env->GetMount() || base_name(env) == LIB_CORPSE){ 
+	env = environment(environment(this_player()));
+	if(!env){
+	    eventPrint("You are in serious trouble. Ask an admin for help.");
+	    return;
+	}
+	i = GetEffectiveVision(env); 
+    }
+
+    else i =  GetEffectiveVision();
+    switch( i ) {
     case VISION_BLIND:
 	eventPrint("You are blind and can see nothing.");
 	break;
@@ -420,6 +427,11 @@ void eventDescribeEnvironment(int brief) {
 	    if( tmp ) {
 		desc = tmp + desc;
 	    }
+	    if(this_player()->GetProperty("mount")) {
+		if(!sizeof(desc)) desc = "";
+		desc += "\nYou are mounted on "+
+		(this_player()->GetProperty("mount"))->GetShort()+".";
+	    }
 	    if( sizeof(desc) ) {
 		eventPrint(desc + "\n", MSG_ROOMDESC);
 	    }
@@ -487,7 +499,8 @@ void eventDescribeEnvironment(int brief) {
 	    tmp = GetMessage("logout") || (GetName() + " is gone from this reality!");
 	    message("environment", tmp, environment(this_object()), ({this_object()}));
 	    log_file("enter", GetCapName()+" (quit): "+timestamp()+"\n");
-	    message("announce", "["+GetCapName()+" quits]", filter(users(), (: archp :)));
+
+	    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " quits]",0);
 	    eventDestruct();
 	    return 1;
 	}

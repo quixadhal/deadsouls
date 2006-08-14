@@ -1,0 +1,32 @@
+GETPROTECT
+
+NAME
+        GetProtect()
+
+
+
+SYNOPSIS
+        function GetProtect()
+
+
+
+DESCRIPTION
+        Returns the "Protect" function set in the creature.
+
+
+EXAMPLES
+         
+
+
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        SetProtect, RemoveMagicProtection, AddMagicProtection
+
+Author
+        Cratylus
+
+

@@ -77,7 +77,7 @@ int CanReceive(object ob) {
 	}
 
     }
-    return 1;
+    return room::CanReceive();
 }
 
 int set_privacy(int i){

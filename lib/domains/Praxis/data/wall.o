@@ -1,0 +1,9 @@
+#domains/Praxis/wall.c
+__VendorType "treasure"
+__Short "a graffitti covered wall"
+__Long "You are in among ruined buildings in a bad part of the village.  There is graffiti all over the wall to the east."
+__Items (["graffiti":"Some is fresh, some is old.","sky":0,"wall":"You can scribble something on it.  <scribble stuff>.You can also read what is on it.","blue moon":0,"sun":0,"moons":0,"moon":0,"laros":0,"green moon":0,"buildings":"They are worn down by years of neglect.","spyefel":0,"slayar":0,"red moon":0,])
+__Smells ([])
+__Listens ([])
+__Searches ([])
+text_scan ({})

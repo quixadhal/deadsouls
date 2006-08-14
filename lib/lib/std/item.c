@@ -135,6 +135,7 @@ static int Destruct() {
 }
 
 int eventMove(mixed dest) {
+    if(!this_object()) return 0;
     if( !environment() && GetWorn() ) {
 	mixed array limbs = GetWorn();
 

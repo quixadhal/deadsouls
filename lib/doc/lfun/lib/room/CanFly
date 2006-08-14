@@ -1,0 +1,37 @@
+CANFLY
+
+NAME
+        CanFly()
+
+
+
+SYNOPSIS
+        int CanFly()
+
+
+
+DESCRIPTION
+        In npc's, checks to see whether the creature is capable of flight. A return of 1 is yes, a return of 0 is no. In rooms, the default is for a room to permit a flying creature to fly in or out. If CanFly returns 0, that behavior is restricted.
+
+
+
+EXAMPLES
+         
+
+
+
+LOCATION
+        /lib/body
+/lib/std/room
+/lib/virtual/virt_sky
+
+
+SEE ALSO
+         
+
+
+
+Author
+        Cratylus
+
+

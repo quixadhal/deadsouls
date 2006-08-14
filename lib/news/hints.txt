@@ -10,6 +10,12 @@ a blank line, then enter, then Q, then enter, like this:
 Q
 
 
+* PRIVACY: You can enable and disable a privacy field around
+your workroom with the command: privacy
+This will prevent unwanted visitors from entering,
+except for arches.
+
+
 * Admins: there is a new command: admintool
 It is a menu-driven system that will make your
 life easier and simplify tasks like locking

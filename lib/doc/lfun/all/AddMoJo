@@ -1,0 +1,29 @@
+ADDMOJO
+
+NAME
+        AddMoJo()
+
+
+SYNOPSIS
+        float AddMoJo(mixed x)
+
+
+DESCRIPTION
+        This is a test function, designed to add the notional characteristic of "Mojo" to a creature. It is unused.
+
+
+EXAMPLES
+         
+
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        GetMojo
+
+Author
+        Cratylus
+
+

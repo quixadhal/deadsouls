@@ -1,31 +1,31 @@
 
 DISTINCT_ARRAY(1)                               DISTINCT_ARRAY(1)
 
-NNAAMMEE
-       _d_i_s_t_i_n_c_t___a_r_r_a_y_(_) - returns an array of distinct members
+NAME
+       distinct_array() - returns an array of distinct members
 
-SSYYNNOOPPSSIISS
+SYNOPSIS
        mixed *distinct_array(mixed *arr)
 
-DDEESSCCRRIIPPTTIIOONN
+DESCRIPTION
        With the first argument of an array of any type, this
        function will filter out duplicate members and return an
        array with only unique members.
 
-EEXXAAMMPPLLEESS
+EXAMPLES
        distinct_array(({ "a", "b", "c", "b", "d", "a" })) returns
        ({ "a", "b", "c", "d" })
 
-NNOOTTEE
+NOTE
        The order of the result array is NOT guaranteed.
 
-LLOOCCAATTIIOONN
-       /secure/SimulEfun/distinct_array.c
+LOCATION
+       /secure/sefun/distinct_array.c
 
-SSEEEE AALLSSOO
-       _e_x_c_l_u_d_e___a_r_r_a_y_(_)
+SEE ALSO
+       exclude_array()
 
-AAuutthhoorr
+Author
        Descartes of Borg
 
                                                                 1

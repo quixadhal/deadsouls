@@ -10,7 +10,9 @@ static void create() {
     SetShort("a winged horse");
     SetLong("This beautiful white steed is a pegasus, a horse endowed with great feathered wings and can fly.");
     SetLevel(5);
+    SetMount(1);
     SetRace("pegasus");
+    SetStat("strength", 50);
     SetGender("male");
     SetMelee(1);
     SetAction(5, ({ 

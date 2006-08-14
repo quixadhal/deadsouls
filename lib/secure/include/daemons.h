@@ -18,6 +18,7 @@
 #define CREATE_D             DIR_SECURE_DAEMONS "/modules/create"
 #define ECONOMY_D            DIR_SECURE_DAEMONS "/economy"
 #define EVENTS_D             DIR_SECURE_DAEMONS "/events"
+#define FILE_D               DIR_SECURE_DAEMONS "/file"
 #define FINGER_D             DIR_SECURE_DAEMONS "/finger"
 #define FOLDERS_D            DIR_SECURE_DAEMONS "/folders"
 #define GOSSIP_D             DIR_SECURE_DAEMONS "/gossip"

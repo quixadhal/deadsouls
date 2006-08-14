@@ -542,8 +542,10 @@ varargs mixed alpha_crypt(mixed arg1, mixed arg2){
     if(!intp(arg1) && !arg2) return 0;
     if(intp(arg1)) {
 	if(arg1 > 64) arg1 = 64;
-	ret = crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
-	ret += crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
+	//ret = crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
+	//ret += crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
+	ret = crypt(""+random(arg1+2)+arg1,""+random(999999)*91);
+	ret += crypt(""+random(arg1+2)+arg1,""+random(999999)*19);
 	ret = replace_string(ret,"`","");
 	ret = replace_string(ret,"!","");
 	ret = replace_string(ret,"/","");

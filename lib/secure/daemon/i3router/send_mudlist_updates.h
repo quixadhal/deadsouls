@@ -5,6 +5,7 @@ static void send_mudlist_updates(string updating_mudname, int old_mudlist_id){
     string *kys; // array of strings for keys that need to be sent
     mapping out=([ ]); // mapping to send
     int i; // counter
+    mudinfo_update_counter++;
     trr("old_mudlist_id: "+old_mudlist_id,"blue");
     trr("updating_mudname: "+updating_mudname,"blue");
     trr("send_mudlist_updates, updating_mudname="+updating_mudname+", old_mudlist_id="+old_mudlist_id,"blue");
@@ -74,7 +75,8 @@ static void send_mudlist_updates(string updating_mudname, int old_mudlist_id){
 	    0,
 	    updating_mudname,
 	    0,
-	    old_mudlist_id,
+	    //old_mudlist_id,
+	    (random(9999) * random(999)),
 	    ([	kys[i]: out[kys[i]],
 	      kys[i+1]: out[kys[i+1]],
 	      kys[i+2]: out[kys[i+2]],

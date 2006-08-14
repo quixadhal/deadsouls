@@ -1,0 +1,24 @@
+ADDCHANNEL
+
+NAME
+        AddChannel()
+
+SYNOPSIS
+        string array AddChannel(mixed val)
+
+DESCRIPTION
+        Adds a channel to the list of those accessible to the user.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/chat
+
+
+SEE ALSO
+        AddChannel, RemoveChannel, GetChannels, returnChannels
+
+Author
+        Cratylus
+

@@ -1,0 +1,31 @@
+GETHEARTRATE
+
+NAME
+        GetHeartRate()
+
+
+SYNOPSIS
+        int GetHeartRate()
+
+
+DESCRIPTION
+        Returns a creature's heart rate (NOT heart_beat).
+
+
+EXAMPLES
+         
+
+
+LOCATION
+        /lib/body
+/lib/race
+
+
+SEE ALSO
+         
+
+
+Author
+        Cratylus
+
+

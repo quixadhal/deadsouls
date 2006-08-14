@@ -32,14 +32,16 @@ static void create() {
       "sw" : "go southwest", "d" : "go down", "u" : "go up", "out": "go out",
       "exa" : "look at $*", "p" : "people", "sc" : "status", "inf" : "score",
       "eq" : "inventory", "where" : "people", "prac" : "skills", 
-      "practice" : "skills", "trophy" : "kills",
+      "sco" : "score", "practice" : "skills", "trophy" : "kills",
       "northwest" : "go northwest", "northeast" : "go northeast", 
       "southwest" : "go southwest", "southeast" : "go southeast",
       "north" : "go north", "south": "go south", "east" : "go east",
       "west" : "go west", "up" : "go up", "down": "go down", 
-      "ig" : "intergossip $*", "c" : "cre $*", "lp" : "lpuni $*"
+      "ig" : "intergossip $*", "c" : "cre $*", "lp" : "lpuni $*",
+      "inv" : "inventory", "x" : "look at $*", "examine" : "look at $*",
+      "ic" : "intercre $*", "aa" : "ascii_art $*"
     ]);
-    Xverbs = (["'":"say $*",":":"emote $*","\"":"say $*",]);
+    Xverbs = (["]":"] $*", "'":"say $*",":":"emote $*","\"":"say $*",]);
 } 
 
 int Setup() { 

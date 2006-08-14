@@ -80,6 +80,21 @@
 #include "/secure/sefun/compare_array.c"
 #include "/secure/sefun/legacy.c"
 
+string *query_local_functions(mixed arg){
+    object ob;
+    string *allfuns;
+    string *ret = ({}); 
+    if(objectp(arg)) ob = arg;
+    else if(stringp(arg)) ob = load_object(arg);
+    allfuns = functions(ob);
+    foreach(string subfun in allfuns){
+	mixed thingy = function_exists(subfun,ob,1);
+	if(thingy && thingy == base_name(ob) && member_array(subfun,ret) == -1) 
+	    ret += ({ subfun });
+    }
+    return ret;
+}
+
 object find_object( string str ){
     if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return efun::find_object(str);
     if(base_name(efun::find_object(str)) == "/secure/obj/snooper") return 0;

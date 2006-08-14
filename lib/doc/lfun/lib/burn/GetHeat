@@ -1,0 +1,24 @@
+GETHEAT
+
+NAME
+        GetHeat()
+
+SYNOPSIS
+        int GetHeat()
+
+DESCRIPTION
+        Returns the heat given off by the item.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/burn
+
+
+SEE ALSO
+        SetHeat, GetMinHeat, SetMinHeat
+
+Author
+        Cratylus
+

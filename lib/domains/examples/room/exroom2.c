@@ -35,8 +35,8 @@ EndText
 	"east"  : EXPATH + "exroom2a"
       ]) );
     SetItems( ([
-        "lever" : "A lever for pulling.",
-    ]) );
+	"lever" : "A lever for pulling.",
+      ]) );
 
     myvar = 0;
 }

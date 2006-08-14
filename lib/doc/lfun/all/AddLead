@@ -1,0 +1,29 @@
+ADDLEAD
+
+NAME
+        AddLead()
+
+
+SYNOPSIS
+        int AddLead(string ammo,int number)
+
+
+DESCRIPTION
+        Obsolete function for adding bullet damage to a creature.
+
+
+EXAMPLES
+         
+
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        GetLead
+
+Author
+        Cratylus
+
+

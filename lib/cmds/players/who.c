@@ -53,7 +53,8 @@ int cmd(string args) {
     (p==1) ? x+=" member " : x+=" members ";
     x+="of our reality.\n";
     ret+=center(x);
-    this_player()->eventPrint(""+ret+"");
+    if(sizeof(ret) < __LARGEST_PRINTABLE_STRING__) this_player()->eventPrint(""+ret+"");
+    else this_player()->eventPage(""+ret+"");
     return 1;
 }
 

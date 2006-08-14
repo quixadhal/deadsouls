@@ -23,8 +23,9 @@ inherit LIB_MOVE;
 inherit LIB_OBJECT;
 inherit LIB_CRAWL;
 inherit LIB_SAVE;
+//inherit LIB_DOMESTICATE;
 
-private int CustomXP, ActionChance, CombatActionChance, AutoStand, Mount;
+private int CustomXP, ActionChance, CombatActionChance, AutoStand;
 private int MaximumHealth = 0;
 private mixed Encounter;
 private string *EnemyNames;
@@ -106,8 +107,12 @@ static void heart_beat() {
     eventExtraAction();
     position = GetPosition();
     if( position == POSITION_LYING || position == POSITION_SITTING ) {
-	if(AutoStand && !RACES_D->GetLimblessRace(this_object()->GetRace())) eventForce("stand up");
-	if(GetInCombat() && !RACES_D->GetLimblessRace(this_object()->GetRace()) ) eventForce("stand up");
+	if(AutoStand && 
+	  !RACES_D->GetLimblessRace(this_object()->GetRace())) 
+	    eventForce("stand up");
+	if(GetInCombat() && 
+	  !RACES_D->GetLimblessRace(this_object()->GetRace()) ) 
+	    eventForce("stand up");
     }
     if( !GetInCombat() && ActionChance > random(100) ) {
 	int x;
@@ -330,9 +335,26 @@ void eventDescribeEnvironment(int brief) {
 		eventPrint(desc + "\n", MSG_ROOMDESC);
 	    }
 	}
-	void receive_message(string cl, string msg) { catch_tell(msg); }
 
-	void catch_tell(string msg) { }
+	void receive_message(string cl, string msg) { 
+	    object *riders = get_livings(this_object());
+	    tell_room("/domains/default/room/catchtell","-------");
+	    tell_room("/domains/default/room/catchtell",timestamp());
+	    tell_room("/domains/default/room/catchtell","obj: "+identify(this_object()));
+	    tell_room("/domains/default/room/catchtell","cl: "+cl);
+	    tell_room("/domains/default/room/catchtell","msg: "+msg);
+	    tell_room("/domains/default/room/catchtell","-------");
+	    catch_tell(msg); 
+	    if(sizeof(riders)){
+		foreach(object living in riders){
+		    if(living->GetProperty("mount") == this_object())
+			tell_object(living, "(mount): "+msg);
+		}
+	    }
+	}
+
+	void catch_tell(string msg) { 
+	}
 
 	static int Destruct() {
 	    if( GetParty() ) PARTY_D->eventLeaveParty(this_object());
@@ -354,6 +376,8 @@ void eventDescribeEnvironment(int brief) {
 	}
 
 	/* ***************  /lib/npc.c events  *************** */
+
+
 	int eventCompleteMove(mixed dest) {
 	    mixed val;
 	    string file;
@@ -492,6 +516,21 @@ void eventDescribeEnvironment(int brief) {
 	}
 
 	varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
+	    object *riders = get_livings(this_object());
+	    tell_room("/domains/default/room/catchtell","-------");
+	    tell_room("/domains/default/room/catchtell",timestamp());
+	    tell_room("/domains/default/room/catchtell","obj: "+identify(this_object()));
+	    tell_room("/domains/default/room/catchtell","msg: "+msg);
+	    tell_room("/domains/default/room/catchtell","arg2: "+identify(arg2));
+	    tell_room("/domains/default/room/catchtell","arg3: "+identify(arg3));
+	    tell_room("/domains/default/room/catchtell","-------");
+	    if(sizeof(riders)){
+		foreach(object living in riders){
+		    if(living->GetProperty("mount") == this_object())
+			tell_object(living, "(mount): "+msg);
+		}
+	    }
+
 	    return 1;
 	}
 
@@ -499,6 +538,7 @@ void eventDescribeEnvironment(int brief) {
 	    object ob;
 
 	    ob = previous_object();
+	    //tc("ob was in: "+identify(environment(ob)));
 	    if( !ob || !container::eventReceiveObject() ) return 0;
 	    AddCarriedMass((int)ob->GetMass());
 	    return 1;
@@ -658,7 +698,8 @@ void eventDescribeEnvironment(int brief) {
 
 	mixed SetAggressive(mixed val){
 	    if(sizeof(Encounter)) return Encounter;
-	    else Encounter = 100;
+	    else if(val) Encounter = 100;
+	    else Encounter = 0;
 	}
 
 
@@ -764,13 +805,6 @@ void eventDescribeEnvironment(int brief) {
 	}
 
 	int *GetScreen() { return ({ 80, 24 }); }
-
-	int SetMount(int x) {
-	    Mount = x;
-	    return Mount;
-	}
-
-	int GetMount(){ return Mount; }
 
 	int GetAutoStand(){ return AutoStand; }
 

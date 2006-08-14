@@ -1,0 +1,15 @@
+#domains/Praxis/crypt.c
+__VendorType "treasure"
+__Short "a small crypt"
+__Long "The altar room is carved from the ancient gray stone that Praxis rests upon. Burning candles along the walls cause the shadows to dance around the room in a chaotic, yet enchanting dance. A large altar rises from the floor in the center of the room and steps carved into the stone lead upwards. "
+destinations (["up":"/domains/Praxis/cleric_hall",])
+invis_exits ([])
+pre_exit_func ([])
+post_exit_func ([])
+tracks ({})
+__Items (["spyefel":,"moon":,"sun":,"blue moon":,"shadows":"The shadows dance enchantingly across the room in time to the music of the flickering candle flames. ","candles":"The candles rest in iron stands set along the wall and are made from animal fat. The candle flames flicker to the tune of the wind, creating the music by which the shadows cavort and dance. ","sky":,"altar":,"red moon":,"slayar":,"shadow":"The shadows dance enchantingly across the room in time to the music of the flickering candle flames. ","stone":"The cold grey stone is creased and marked by the tools that were used to carve this room beaneath the earth. ","green moon":,"stones":"The cold grey stone is creased and marked by the tools that were used to carve this room beaneath the earth. ","laros":,"walls":"The walls are hewn roughly from the stone beneath Praxis and are lined with many flickering candles. ","moons":,"steps":"The steps are carved into the grey stone and are worn by the passage of many feet over the ages. ","wall":"The walls are hewn roughly from the stone beneath Praxis and are lined with many flickering candles. ","candle":"The candles rest in iron stands set along the wall and are made from animal fat. The candle flames flicker to the tune of the wind, creating the music by which the shadows cavort and dance. ","stands":"The stands are made of %^BLACK%^%^BOLD%^black%^RESET%^ iron and are of plain construction. Each stand holds between three to four lit candles. ","scenes":"You see Tempos wielding his mighty %^CYAN%^warhammer%^RESET%^ in a variety of battles you recognize from your religious studies. ",])
+__Smells ([])
+__Listens ([])
+__Searches ([])
+reset_number 2
+prayers 32

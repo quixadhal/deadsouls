@@ -1,0 +1,24 @@
+EVENTWEAR
+
+NAME
+        eventWear()
+
+SYNOPSIS
+        int eventWear(object ob, mixed limbs)
+
+DESCRIPTION
+        Mrks the limbs "limbs" as being protected by the armor "ob". object ob - the item being worn (or wielded). mixed limbs - string or array of limbs on which it is being worn (or wielded). Returns 1 if successful, 0 if failure.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        eventRemoveItem
+
+Author
+        Unknown
+

@@ -1,0 +1,24 @@
+ADDEXPERIENCEPOINTS
+
+NAME
+        AddExperiencePoints()
+
+SYNOPSIS
+        int AddExperiencePoints(mixed x)
+
+DESCRIPTION
+        This is the function called when "XP" is to be added to a player.
+
+EXAMPLES
+        this_player()->AddExperiencePoints(42)
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        GetExperiencePoints, SetCustomXP, GetCustomXP
+
+Author
+        Cratylus
+

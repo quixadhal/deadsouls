@@ -1,0 +1,31 @@
+EVENTEXTINGUISH
+
+NAME
+        eventExtinguish()
+
+
+SYNOPSIS
+        mixed eventExtinguish()
+
+
+DESCRIPTION
+        LIB_BURN: Calls eventDarken and stops heart_beat. LIB_FLASHLIGHT: Calls eventTurnOff().
+
+EXAMPLES
+         
+
+
+
+LOCATION
+        /lib/burn
+/lib/flashlight
+
+
+SEE ALSO
+        eventLight
+
+
+Author
+        Cratylus
+
+
