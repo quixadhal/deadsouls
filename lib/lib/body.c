@@ -1412,11 +1412,12 @@ varargs int eventDie(mixed agent) {
      */
 
     varargs static int AddHealthPoints(int x, string limb, object agent) {
-	int y;
+	int y = 0;
 
 	if( limb ) {
 	    if( !Limbs[limb] ) return -1;
 	    y = GetMaxHealthPoints(limb);
+	    if(y < 1) return y;
 	    if((Limbs[limb]["health"] += x) < 1) Limbs[limb]["health"] = 0;
 	    else if(Limbs[limb]["health"] > y)
 		Limbs[limb]["health"] = y;

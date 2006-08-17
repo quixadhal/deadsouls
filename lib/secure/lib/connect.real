@@ -489,6 +489,8 @@ void eventCompleteChar(){
     Player->SetCapName(CapNamen);
     Player->SetEmail(E_Mail);
     Player->SetRealName(TrueName);    
+    Player->SetLanguage("Common",100);    
+    Player->SetDefaultLanguage("Common");    
     this_player()->SetWimpy(20);
     this_player()->SetTerminal("ansi");
     PLAYERS_D->AddPlayerInfo(Name);

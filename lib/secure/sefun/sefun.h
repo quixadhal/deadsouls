@@ -219,5 +219,7 @@ mixed seteuid(mixed args);
 mixed getuid(mixed args);
 mixed geteuid(mixed args);
 string *query_local_functions(mixed arg);
+int check_string_length(string str);
+int print_long_string(object who, string str);
 
 #endif /* l_sefun_h */

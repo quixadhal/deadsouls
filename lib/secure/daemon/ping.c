@@ -8,6 +8,8 @@ inherit LIB_DAEMON;
 int Pinging = 0;
 int OK = 0;
 int Retries = 0;
+int counter = 0;
+int last_time = time();
 
 string *muds = PINGING_MUDS + ({ mud_name() });
 
@@ -47,15 +49,33 @@ int eventPing(){
     foreach(string mud in muds){
 	INTERMUD_D->eventWrite(({ "auth-mud-req", 5, mud_name(), 0, mud, 0 }));
     }
-    call_out( (: CheckOK :), 10);
-    call_out( (: eventPing :), 900);
     return 1;
 }
 
 void create() {
     daemon::create();
     SetNoClean(1);
-    call_out( (: eventPing :), 20);
+    set_heart_beat(1);
+}
+
+void DeadMan(){
+    int tmptime = time();
+    if(last_time + 60 < tmptime){
+	object *clones = filter(objects(), (: inherits(LIB_ROOM,$1) :));
+	clones->eventDestruct();
+
+	clones = filter(objects(), (: clonep($1) :));
+	clones->eventDestruct();
+    }
+    else last_time = tmptime;
+}
+
+void heart_beat(){
+    counter++;
+    DeadMan();
+    if(!(counter % 10)) CheckOK();
+    if(!(counter % 300)) eventPing();
+    if(counter > 10000) counter = 0;
 }
 
 int GetPinging(){

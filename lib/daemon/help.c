@@ -154,6 +154,9 @@ static private void LoadIndices() {
 		"and \"help creator commands\" first. \n\n"
 		" ");
 	  }
+	  if(member_array(str, CHAT_D->GetChannels()) != -1){
+	      return "See: help channels";
+	  }
 	  if( sscanf(str, "adverbs %s", topic) || str == "adverbs" ) {
 	      return (string)SOUL_D->GetHelp(str);
 	  }

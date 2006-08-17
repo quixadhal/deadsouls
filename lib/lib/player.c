@@ -282,34 +282,34 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
 
     inv->eventPrint(imsg, MSG_ENV);
     if(GetInvis()) {
-	AddStaminaPoints(-(15-(GetSkillLevel("stealth")/10)));
+	if(!creatorp(this_object())) AddStaminaPoints(-(15-(GetSkillLevel("stealth")/10)));
 	AddSkillPoints("stealth", 30 + GetSkillLevel("stealth")*2);
 	eventPrint("%^RED%^You move along quietly....%^RESET%^\n");
     }
     if(GetProperty("stealthy")) {
-	AddStaminaPoints(-3 - random(3));
+	if(!creatorp(this_object())) AddStaminaPoints(-3 - random(3));
 	AddSkillPoints("stealth", 10 + GetSkillLevel("stealth")*2);
     }
     eventDescribeEnvironment(GetBriefMode());
     newclim = (string)environment()->GetClimate();
     if( !GetUndead() ) switch( newclim ) {
     case "arid":
-	AddStaminaPoints(-0.3);
+	if(!creatorp(this_object())) AddStaminaPoints(-0.3);
 	break;
     case "tropical":
-	AddStaminaPoints(-0.3);
+	if(!creatorp(this_object())) AddStaminaPoints(-0.3);
 	break;
     case "sub-tropical":
-	AddStaminaPoints(-0.2);
+	if(!creatorp(this_object())) AddStaminaPoints(-0.2);
 	break;
     case "sub-arctic":
-	AddStaminaPoints(-0.2);
+	if(!creatorp(this_object())) AddStaminaPoints(-0.2);
 	break;
     case "arctic":
-	AddStaminaPoints(-0.3);	  
+	if(!creatorp(this_object())) AddStaminaPoints(-0.3);	  
 	break;
     default:
-	AddStaminaPoints(-0.1);	  
+	if(!creatorp(this_object())) AddStaminaPoints(-0.1);	  
 	break;	    
     }
     if( prevclim != newclim && prevclim != "indoors" && newclim != "indoors" ){

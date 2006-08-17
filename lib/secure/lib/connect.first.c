@@ -120,6 +120,8 @@ static void InputEmail(string str) {
     Admin->eventForce("home");
     Admin->SetWimpy(20);
     Admin->SetTerminal("ansi");
+    Admin->SetLanguage("Common",100);
+    Admin->SetDefaultLanguage("Common");
     Admin->save_player(Name);
     make_workroom(Name);
     PLAYERS_D->AddPlayerInfo(Name);

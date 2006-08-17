@@ -49,6 +49,12 @@
 "o","u","y","e",\
 "ki","ika","ita","ite","ni",\
 "ki","ika","ita","ite","ni",\
+"ip","ip","ip","ip","ip","ip",\
+"ip","ip","ip","ip","ip","ip",\
+"iq","iq","iq","iq","iq","iq",\
+"iq","iq","iq","iq","iq","iq",\
+"ig","ig","ig","ig","ig","ig",\
+"ig","ig","ig","ig","ig","ig",\
 "kii-oto","kii-oto","kii-oto","kii-oto","kii-oto",\
 "kii-ateh","kii-ateh","kii-ateh","kii-ateh","kii-ateh",\
 })

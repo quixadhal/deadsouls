@@ -12,10 +12,10 @@
 #include <talk_type.h>
 #include "include/shout.h"
 
-inherit LIB_DAEMON;
+inherit LIB_VERB;
 
 static void create() {
-    daemon::create();
+    verb::create();
     SetNoClean(1);
     parse_init();
     parse_add_rule("shout", "");

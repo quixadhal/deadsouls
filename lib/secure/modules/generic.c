@@ -224,25 +224,15 @@ int eventDoAddition(string str){
 int eventGeneralStuff(string str){
     string fpath = path_prefix(str);
     repstr = "";
-    //tc("path_prefix: "+fpath);
     globalstr = str;
     unguarded( (: globalstr2 = read_file(globalstr) :) );
-    //Checking for valid init
     unguarded( (: this_object()->eventAddInit(globalstr) :) );
-    //changing customdefs
-    //tc("Doing customdef in generic.c.","red");
     if(grepp(globalstr2,"./customdefs.h")){
 	string j1, j2, tmppath;
 	sscanf(globalstr2,"%sinclude \"%scustomdefs.h%s",j1,tmppath,j2);
-	if(!tmppath) tc("error","red");
 	else repstr = absolute_path(fpath,tmppath+"customdefs.h");
-	//tc("repstr: "+repstr,"green");
 	unguarded( (: globalstr2 = replace_line(globalstr2 ,({"./customdefs.h"}), "#include \""+repstr+"\"") :) );
     } 
-    //tc("repstr: "+repstr,"blue");
-    //tc("globalst2: "+globalstr2,"yellow");
-    //unguarded( (: globalstr2 = replace_line(globalstr2 ,({"./customdefs.h"}), "#include \""+repstr+"\"") :) );
-    //tc("globalst2: "+globalstr2,"cyan");
     globalstr2 = replace_string(globalstr2,"\n\n\n","\n\n");
     globalstr2 = replace_string(globalstr2,"//funs","");
     globalstr2 = replace_string(globalstr2,"//snuf","");
