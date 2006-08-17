@@ -9,12 +9,12 @@
 #include <lib.h>
 #include <rounds.h>
 
-inherit LIB_DAEMON;
+inherit LIB_VERB;
 
 varargs void eventCheckBody(object ob, object receiver);
 
 static void create() {
-    daemon::create();
+    verb::create();
     SetNoClean(1);
     parse_init();
     parse_add_rule("body", "LIV");

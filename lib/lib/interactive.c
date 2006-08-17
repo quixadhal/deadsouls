@@ -136,7 +136,10 @@ int Setup() {
     environment()->eventPrint(tmp, MSG_ENV, this_object());
     if( !(tmp = GetMessage("login")) )
 	tmp = GetName() + " enters " + mud_name() + ".";
+    //if(!archp(this_object()))
     CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " logs in]",0);
+    //else
+    //CHAT_D->eventSendChannel("SYSTEM","admin","[" + GetCapName() + " logs in]",0);
 
     if(!catch(mp = (mapping)FOLDERS_D->mail_status(GetKeyName()))) {
 	if(mp["unread"]) {
@@ -433,8 +436,11 @@ void eventDescribeEnvironment(int brief) {
 		(this_player()->GetProperty("mount"))->GetShort()+".";
 	    }
 	    if( sizeof(desc) ) {
-		eventPrint(desc + "\n", MSG_ROOMDESC);
+		if(check_string_length(desc)) eventPrint(desc + "\n", MSG_ROOMDESC);
+		else print_long_string(this_player(), desc);
 	    }
+	    else 
+		eventPrint("A very strange error has occurred, which you should report.\n",MSG_ROOMDESC);
 	}
 
 	int eventDestruct() {

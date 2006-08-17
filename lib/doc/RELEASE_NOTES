@@ -1,4 +1,20 @@
----- 2.1r17 (unreleased) ---
+---- 2.1r19 (unreleased) ---
+- Ludicrously long environment descriptions no longer break
+  when displayed.
+- "alias foo" no longer removes the "foo" alias, it merely displays
+  it. To remove that alias, the new way is:
+  unalias foo
+- New players are 100% proficient in the language Common, and it
+  is set as their default language.
+- You may now "speak in LANGUAGE" to set your default "say" language
+  to what you specify. To make it so that "say foo" comes out in Rigellian:
+  speak in rigellian
+  say foo
+- Creators don't lose stamina when moving around while invis.
+- Added sefuns check_string_length and print_long_string to handle
+  Strings Of Unusual Size.
+- Removed call_outs from PING_D.
+- Added DeadMan switch to PING_D.
 - Added logon notification channel <connections>.
 - Added A_CUSTOM as an all-purpose armor type that can be worn
   on most body parts.

@@ -14,48 +14,33 @@ string eventFindInstances(){
     string *raw_list = load_object("/secure/cmds/admins/files")->cmd("-c "+"/lib/");
     string cooked_list = "";
     sourcefiles = ({});
-    //tc("raw_list: "+sizeof(raw_list));
     foreach(string file in raw_list){
 	string funex;
-	//tc("file: "+file,"red");
 	if(last(file, 2) != ".c") continue;
-	//tc("func: "+funcname);
-	//tc("file: "+file);
 	if(grepp(load_object("/secure/cmds/creators/showfuns")->cmd(file), funcname)){
-	    //tc("foo: "+funcname);
-	    //tc("foo2: "+file);
 	    funex = function_exists(funcname,load_object(file),1);
-	    //tc("funex: "+funex);
 	    if(funex && !grepp(cooked_list,funex+"\n")){
 		sourcefiles += ({ last_string_element(funex,"/") });
 		cooked_list += funex+"\n";
 	    }
 	}
     }
-    //tc("cooked_list: "+cooked_list);
-    //tc("sourcefiles: "+identify(sourcefiles));
     return cooked_list;
 }
 
 int eventWriteDoc(){
     string ret = upper_case(funcname)+"\n\n";
-    //tc("ContentMap: "+identify(ContentMap),"cyan");
     foreach(string header in headers){
 	ret += header + "\n        ";
 	ret += replace_string(replace_string(ContentMap[header],"\n\n","\n"),"    ","") + "\n\n";
     }
 
-    //tc("doctype: "+doctype);
     if(doctype == "lfun"){
 	string tmp_path;
-	tc("HI! "+identify(sourcefiles),"yellow");
 	foreach(string sourcefl in sourcefiles){
-	    //tc("me again!","yellow");
 	    tmp_path = "/doc/lfun/lib/"+sourcefl;
-	    tc("tmp_path: "+tmp_path);
 	    if(!directory_exists(tmp_path)) mkdir(tmp_path);
 	    tmp_path += "/"+funcname;
-	    tc("writing to: "+tmp_path);
 	    write_file(tmp_path, ret,1);
 	}
     }
@@ -70,7 +55,6 @@ int eventWriteDoc(){
 
 varargs int eventSetSection(string content, string header){
     string tmpstr = " ";
-    //tc("ContentMap: "+identify(ContentMap),"blue");
     if(content == "Author" || (header  == "Author" && (!content || content == "")))
 	tmpstr = this_player()->GetName();
     if(sizeof(headers_left)){
@@ -112,7 +96,6 @@ int eventManageQueries(){
 	return 1;
     }
     if(!sizeof(headers_left) && sizeof(ContentMap["Author"])){
-	//tc("ContentMap: "+identify(ContentMap),"red");
 	eventWriteDoc();
     }
     return 1;
@@ -178,8 +161,6 @@ mixed cmd(string args) {
 	eventSetSection(tmp_str, header);
 	write(header+": \n"+tmp_str);
     }
-
-    //tc("ContentMap: "+identify(ContentMap));
 
     headers_left = headers;
     eventManageQueries();

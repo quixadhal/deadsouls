@@ -10,10 +10,10 @@
 #include <talk_type.h>
 #include "include/codesay.h"
 
-inherit LIB_DAEMON;
+inherit LIB_VERB;
 
 static void create() {
-    daemon::create();
+    verb::create();
     SetNoClean(1);
     parse_init();
     /* error conditions */

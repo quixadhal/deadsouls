@@ -39,7 +39,7 @@ static void create() {
       "west" : "go west", "up" : "go up", "down": "go down", 
       "ig" : "intergossip $*", "c" : "cre $*", "lp" : "lpuni $*",
       "inv" : "inventory", "x" : "look at $*", "examine" : "look at $*",
-      "ic" : "intercre $*", "aa" : "ascii_art $*"
+      "ic" : "intercre $*", "aa" : "ascii_art $*", "chat" : "newbie $*"
     ]);
     Xverbs = (["]":"] $*", "'":"say $*",":":"emote $*","\"":"say $*",]);
 } 
@@ -51,6 +51,7 @@ int Setup() {
     if(!Aliases) Aliases = ([]);
     if(!Xverbs) Xverbs = ([]);
     add_action("cmd_alias", "alias"); 
+    add_action("cmd_unalias", "unalias"); 
     add_action("cmd_nickname", "nickname"); 
     if(creatorp(this_object())) { 
 	Stack = allocate(DIRECTORY_STACK_SIZE); 
@@ -86,15 +87,19 @@ nomask static int cmd_alias(string str) {
 	if(str[0] == '$') { 
 	    str = str[1..strlen(str)-1]; 
 	    if(Xverbs[str]) { 
-		map_delete(Xverbs, str); 
-		message("system", sprintf("Alias $%s removed.", str), this_player()); 
+		//map_delete(Xverbs, str); 
+		//message("system", sprintf("Alias $%s removed.", str), this_player()); 
+		write(str+": "+Xverbs[str]);
+		return 1;
 	    } 
 	    else message("system", sprintf("No such alias $%s.", str), this_player()); 
 	    return 1; 
 	} 
 	if(Aliases[str]) { 
-	    map_delete(Aliases, str); 
-	    message("system", sprintf("Alias %s removed.", str), this_player()); 
+	    //map_delete(Aliases, str); 
+	    //message("system", sprintf("Alias %s removed.", str), this_player()); 
+	    write(str+": "+Aliases[str]);
+	    return 1;
 	} 
 	else message("system", sprintf("No such alias %s.", str), this_player()); 
 	return 1; 
@@ -104,7 +109,7 @@ nomask static int cmd_alias(string str) {
 	  this_player()); 
 	return 1; 
     } 
-    if(key == "alias") return notify_fail("You are a bonehead.\n");
+    if(key == "alias") return notify_fail("That would be a bad idea.\n");
     if(key[0] == '$') { 
 	key = key[1..strlen(key)]; 
 	if(Xverbs[key])  
@@ -121,6 +126,35 @@ nomask static int cmd_alias(string str) {
 	else message("system", sprintf("Alias %s (%s) added.", key, thing),this_player()); 
 	Aliases[key] = thing; 
     } 
+    return 1; 
+} 
+
+nomask static int cmd_unalias(string str) { 
+    string *a, *b;
+    string key, thing; 
+    int i;
+
+    if(this_player() != this_object()) return 0; 
+    if(!str) {
+	write("Unalias what?");
+	return 1;
+    }
+    if(str[0] == '$') { 
+	str = str[1..strlen(str)-1]; 
+	if(Xverbs[str]) { 
+	    map_delete(Xverbs, str); 
+	    message("system", sprintf("Alias $%s removed.", str), this_player()); 
+	    return 1;
+	} 
+	else message("system", sprintf("No such alias $%s.", str), this_player()); 
+	return 1; 
+    } 
+    if(Aliases[str]) { 
+	map_delete(Aliases, str); 
+	message("system", sprintf("Alias %s removed.", str), this_player()); 
+	return 1;
+    } 
+    else message("system", sprintf("No such alias %s.", str), this_player()); 
     return 1; 
 } 
 

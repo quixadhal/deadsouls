@@ -10,13 +10,11 @@ static string match_mud_name(string mud, string *list){
     if(member_array(mud, list) != -1) return mud;
     foreach(string element in list){
 	if(lower_case(element) == lower_case(mud)) {
-	    tc("!! element: "+element);
 	    return element;
 	}
     }
     foreach(string element in list){
 	if(!strsrch(lower_case(element), lower_case(mud))){
-	    tc("!!!! element: "+element);
 	    return element;
 	}
     }
@@ -212,11 +210,8 @@ mixed cmd(string args) {
     if(!arg2) arg1 = args;
 
     if(arg1 == "ban" || arg1 == "banned"){
-	//tc("router: "+identify(router));
-	//tc("banned: "+identify(router->GetBannedMuds()));
 	if(sizeof(router->GetBannedMuds())) banned_arr = router->GetBannedMuds();
 	else banned_arr = ({});
-	//tc("banned_arr: "+identify(banned_arr));
 	if(!sizeof(banned_arr)) banned = "No banned muds.";
 	else banned = implode(banned_arr,", ");
 	if(!arg2){
@@ -235,11 +230,8 @@ mixed cmd(string args) {
     }
 
     if(arg1 == "unban" || arg1 == "unbanned"){
-	//tc("router: "+identify(router));
-	//tc("banned: "+identify(router->GetBannedMuds()));
 	if(sizeof(router->GetBannedMuds())) banned_arr = router->GetBannedMuds();
 	else banned_arr = ({});
-	//tc("banned_arr: "+identify(banned_arr));
 	if(!sizeof(banned_arr)) unbanned = "No banned muds.";
 	else {
 	    banned = implode(banned_arr,", ");
@@ -292,7 +284,6 @@ mixed cmd(string args) {
 	    write("Syntax: router config NAME IP PORT");
 	    return 1;
 	}
-	//tc("s1: "+s1);
 	router->SetRouterName(s1);
 	router->SetRouterIP(s2);
 	router->SetRouterPort(s3);

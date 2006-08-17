@@ -16,6 +16,7 @@ class comprehension {
 
 private mapping                    Languages      = ([]);
 private static class comprehension Comprehension  = 0;
+private string                     DefaultLanguage = "";
 
 // abstract methods
 int GetHeartRate();
@@ -60,6 +61,19 @@ varargs void SetLanguageComprehension(function check, int time, function end) {
 	Comprehension->time = time;
 	Comprehension->end = end;
     }
+}
+
+mixed SetDefaultLanguage(string str){
+    if(!str || str == "") return DefaultLanguage = GetNativeLanguage();
+    if(member_array(lower_case(str),keys(Languages)) != -1 ||
+      member_array(capitalize(lower_case(str)),keys(Languages)) != -1)
+	return DefaultLanguage = capitalize(lower_case(str));
+    else return DefaultLanguage = GetNativeLanguage();
+}
+
+string GetDefaultLanguage(){
+    if(sizeof(DefaultLanguage)) return DefaultLanguage;
+    else return GetNativeLanguage();
 }
 
 int GetLanguageLevel(string lang) {

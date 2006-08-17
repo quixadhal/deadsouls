@@ -37,6 +37,9 @@ static void create() {
       "Today he just wants to rest and relax, and has accepted "
       "the position of the town's Adventurers' Guild master. "
       "If you feel you deserve it, \"ask dirk to advance\".");
+    SetInventory(([
+	"/domains/town/armor/collar" : "wear collar",
+      ]));
     SetLevel(15);
     SetRace("human");
     SetGender("male");
@@ -96,7 +99,6 @@ int AdvanceDude(mixed arg){
 	return 1;
     }
 
-
     xp = this_player()->GetExperiencePoints();
     if(!qp = this_player()->GetQuestPoints()) qp = 0;
     desired_level = level+1;
@@ -137,5 +139,3 @@ int AdvanceDude(mixed arg){
 	  "again once you have fulfilled them.");
     return 0;
 }
-
-
