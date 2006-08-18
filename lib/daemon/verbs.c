@@ -82,6 +82,10 @@ varargs void eventReloadVerbs(mixed val) {
 	object ob;
 	string *verb_list;
 
+receive("receive");
+message(1,"message",this_object(),({}));
+shout("shout");
+
 	if( ob = find_object(verb) ) ob->eventDestruct();
 	if( ob = load_object(verb) ) {
 	    i++;
@@ -89,8 +93,8 @@ varargs void eventReloadVerbs(mixed val) {
 		verb_list = ({ explode(verb, "/")[<1][0..<3] });
 	    else {
 		verb_list += (string *)ob->GetSynonyms();
-		verb_list =distinct_array(map(verb_list,
-		    (: explode($1," ")[0] :)));
+		//if(sizeof(verb_list)) verb_list = distinct_array(map(verb_list,
+		 //   (: explode($1," ")[0] :)));
 	    }
 	    Verbs += expand_keys(([ verb_list : verb ]));
 	}
