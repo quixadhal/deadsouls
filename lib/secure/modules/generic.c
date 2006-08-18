@@ -230,7 +230,7 @@ int eventGeneralStuff(string str){
     if(grepp(globalstr2,"./customdefs.h")){
 	string j1, j2, tmppath;
 	sscanf(globalstr2,"%sinclude \"%scustomdefs.h%s",j1,tmppath,j2);
-	else repstr = absolute_path(fpath,tmppath+"customdefs.h");
+	if(tmppath) repstr = absolute_path(fpath,tmppath+"customdefs.h");
 	unguarded( (: globalstr2 = replace_line(globalstr2 ,({"./customdefs.h"}), "#include \""+repstr+"\"") :) );
     } 
     globalstr2 = replace_string(globalstr2,"\n\n\n","\n\n");
