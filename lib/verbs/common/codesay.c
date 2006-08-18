@@ -32,13 +32,13 @@ mixed can_codesay_str(string str) {
 varargs mixed do_codesay_str(string str) {
     string filename = DIR_TMP + "/" + this_player()->GetKeyName() + ".codesay";
     if( !str ) {
-write("Huh?");
-return 1;
-}
-if(!creatorp(this_player())) {
-write("This is a command for creators.");
-return 1;
-}
+	write("Huh?");
+	return 1;
+    }
+    if(!creatorp(this_player())) {
+	write("This is a command for creators.");
+	return 1;
+    }
     if(strsrch(str,";") == -1){
 	write("You codesay: "+"%^BOLD%^CYAN%^"+str+"%^RESET%^");
 	say(this_player()->GetCapName()+" codesays: "+

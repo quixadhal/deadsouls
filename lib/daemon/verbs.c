@@ -82,9 +82,9 @@ varargs void eventReloadVerbs(mixed val) {
 	object ob;
 	string *verb_list;
 
-receive("receive");
-message(1,"message",this_object(),({}));
-shout("shout");
+	receive("receive");
+	message(1,"message",this_object(),({}));
+	shout("shout");
 
 	if( ob = find_object(verb) ) ob->eventDestruct();
 	if( ob = load_object(verb) ) {
@@ -94,7 +94,7 @@ shout("shout");
 	    else {
 		verb_list += (string *)ob->GetSynonyms();
 		//if(sizeof(verb_list)) verb_list = distinct_array(map(verb_list,
-		 //   (: explode($1," ")[0] :)));
+		//   (: explode($1," ")[0] :)));
 	    }
 	    Verbs += expand_keys(([ verb_list : verb ]));
 	}
