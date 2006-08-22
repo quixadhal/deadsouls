@@ -167,8 +167,8 @@ static void heart_beat() {
 	    if( Protection[i]->time && (--Protection[i]->time < 1) )
 		RemoveMagicProtection(i);
     }
-    if( env && (GetResistance(GAS) != "immune") ) {
-	if( (i = env->GetPoisonGas()) > 0 ) {
+    if( env && (i = env->GetPoisonGas()) > 0 ) {
+	if( GetResistance(GAS) != "immune" ) {
 	    eventPrint("You choke on the poisonous gases.");
 	    eventReceiveDamage(0, GAS, i);
 	}

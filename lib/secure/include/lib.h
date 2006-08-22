@@ -14,6 +14,7 @@
 
 #define LIB_AUTH           DIR_SECURE_LIB "/auth"
 #define LIB_BATTERY        DIR_LIB        "/battery"
+#define LIB_BLANK          DIR_LIB        "/blank"
 #define LIB_BLANK_PILE     DIR_LIB        "/blank_pile"
 #define LIB_BOARD          DIR_LIB        "/bboard"
 #define LIB_BODY           DIR_LIB        "/body"

@@ -1,0 +1,5 @@
+ 
+  This is where the files for the virtual room grid are kept. In /d/grid/room
+  are the real rooms that mesh with the grid. In /d/grid/data are the exit,
+  description, and terrain files.
+ 

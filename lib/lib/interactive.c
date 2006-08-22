@@ -439,8 +439,6 @@ void eventDescribeEnvironment(int brief) {
 		if(check_string_length(desc)) eventPrint(desc + "\n", MSG_ROOMDESC);
 		else print_long_string(this_player(), desc);
 	    }
-	    else 
-		eventPrint("A very strange error has occurred, which you should report.\n",MSG_ROOMDESC);
 	}
 
 	int eventDestruct() {

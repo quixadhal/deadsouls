@@ -31,6 +31,10 @@ int archp(object ob) {
     return (member_group(ob, "ASSIST") || member_group(ob, "SECURE"));
 }
 
+int adminp(object ob){
+    return archp(ob);
+}
+
 int imud_privp(mixed guy) {
     if(member_group(guy, "INTERMUD")) return 1;
     else return 0;
@@ -58,6 +62,10 @@ varargs int creatorp(object ob) {
     if(!ob) ob = previous_object();
     if(!ob || !userp(ob)) return 0;
     return !(strsrch(file_name(ob), DIR_CRES));
+}
+
+varargs int wizardp(object ob){
+    return creatorp(ob);
 }
 
 int hiddenp(object ob) {

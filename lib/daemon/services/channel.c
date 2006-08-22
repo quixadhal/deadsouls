@@ -163,16 +163,14 @@ void eventRegisterChannels(mapping list) {
     ns = (string)INTERMUD_D->GetNameserver();
     foreach(channel, val in list) {
 	if( !val ) continue;
-	if( channel == (string)CHAT_D->GetLocalChannel(channel) && 
-	  channel != "dead_test4" && channel != "dead_souls" &&
-	  channel != "lpuni" && channel != "german" ) {
+	if( member_array(channel, CHAT_D->GetLocalChannels()) == -1){
 	    INTERMUD_D->eventWrite(({ "channel-listen", 5, mud_name(), 0, ns, 
-		0, channel, 0 }));
+		0, channel, 1 }));
 	    log_file("channels", "New channel: " + channel + " recognized " +
 	      ctime(time()) + "\nValue: " + identify(val) + "\n\n");
 	}
 	else INTERMUD_D->eventWrite(({ "channel-listen", 5, mud_name(), 0, ns,
-		0, channel, 1 }));
+		0, channel, 0 }));
     }
     tn("eventRegisterChannels: "+identify(list),"green");
 

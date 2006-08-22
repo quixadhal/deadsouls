@@ -2,6 +2,7 @@
 #define s_lpu_h
 
 #define ROOM				"/lib/std/room"
+#define DOORS				"/lib/blank"
 #define OBJECT				"/lib/std/item"
 #define OB_SIMUL_EFUN			"/secure/sefun/sefun"
 #define __DIR__				"/domains/lpuni/"
@@ -58,5 +59,7 @@
 #define remove_item_description		RemoveItem
 #define remove_exit			RemoveExit
 #define add_item_description		AddItem
+#define set_outside                     SetTown
+#define create_door                     CreateDoor
 
 #endif /* s_lpu_h */

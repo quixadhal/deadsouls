@@ -29,6 +29,14 @@ mixed direct_initfix() {
     return 1;
 }
 
+mixed direct_createfix_obj() {
+    return 1;
+}
+
+mixed direct_createfix() {
+    return 1;
+}
+
 mixed direct_reload_obj() { return 1; }
 mixed indirect_reload_obj() { return 1; }
 mixed direct_reload_word_obj() { return 1; }

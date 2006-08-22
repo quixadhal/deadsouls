@@ -49,5 +49,8 @@
 #define GLOBAL_MONITOR           0
 #define PLAYER_KILL              0
 #define NPC_CATCH_TELL_DEBUG     0
+#define SAME_IP_MAX              4
+#define COMPAT_MODE              1
+
 
 #endif /* s_config_h */

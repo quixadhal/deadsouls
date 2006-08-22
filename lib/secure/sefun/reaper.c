@@ -1,5 +1,5 @@
 #include <lib.h>
-string *ExemptArray = ({ "/secure/obj/snooper" });
+string *ExemptArray = ({ "/secure/obj/snooper", "/lib/door" });
 
 void  reap_dummies(){
     //

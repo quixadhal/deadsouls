@@ -15,7 +15,7 @@ varargs void eventPrint(string str, mixed args...);
 // end abstract methods
 
 string array GetPrimarySkills();
-varargs void SetSkill(string skill, int level, int cls);
+varargs void SetSkill(string skill, int level, mixed cls);
 
 /* ***************** abilities.c attributes ***************** */
 /* GetBaseSkillLevel() returns the unmodified skill level */
@@ -156,7 +156,12 @@ void RemoveSkill(string skill) {
  * useful mostly for monster types, probably should have override
  * protections in the user object (should use AddSkill() for users)
  */
-varargs void SetSkill(string skill, int level, int cls) {
+varargs void SetSkill(string skill, int level, mixed cls) {
+    int tmp;
+    if(cls && !intp(cls)) {
+	tmp = 1;
+	cls = tmp;
+    }
     if( !stringp(skill) ) {
 	error("Bad argument 1 to SetSkill().\n\tExpected: string, Got: " +
 	  typeof(skill) + "\n");

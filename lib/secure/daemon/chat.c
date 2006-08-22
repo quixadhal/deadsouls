@@ -623,6 +623,10 @@ string *GetChannelList(string ch) {
     return ret;
 }
 
+string *GetLocalChannels(){
+    return copy(local_chans);
+}
+
 string GetLocalChannel(string ch) {
     switch(ch) {
     case "imud_code":
