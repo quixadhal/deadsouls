@@ -338,6 +338,7 @@ void eventDescribeEnvironment(int brief) {
 
 	void receive_message(string cl, string msg) { 
 	    object *riders = get_livings(this_object());
+	    if(!NPC_CATCH_TELL_DEBUG) return;
 	    tell_room("/domains/default/room/catchtell","-------");
 	    tell_room("/domains/default/room/catchtell",timestamp());
 	    tell_room("/domains/default/room/catchtell","obj: "+identify(this_object()));
@@ -351,9 +352,6 @@ void eventDescribeEnvironment(int brief) {
 			tell_object(living, "(mount): "+msg);
 		}
 	    }
-	}
-
-	void catch_tell(string msg) { 
 	}
 
 	static int Destruct() {
@@ -517,6 +515,7 @@ void eventDescribeEnvironment(int brief) {
 
 	varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
 	    object *riders = get_livings(this_object());
+	    if(!NPC_CATCH_TELL_DEBUG) return 1;
 	    tell_room("/domains/default/room/catchtell","-------");
 	    tell_room("/domains/default/room/catchtell",timestamp());
 	    tell_room("/domains/default/room/catchtell","obj: "+identify(this_object()));

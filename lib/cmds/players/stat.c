@@ -19,7 +19,10 @@ mixed cmd(string args) {
 	write("You can only stat yourself.");
 	return 1;
     }
-
+    if(!environment(this_player())){
+	write("You have no environment. Your stats are the least of your worries.");
+	return 1;
+    }
     if( !(ob = present(args, environment(this_player()))) )
 	if( !(ob = find_player(convert_name(args))) &&
 	  !(ob = find_living(lower_case(args))) )

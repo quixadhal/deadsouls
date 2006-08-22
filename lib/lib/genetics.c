@@ -222,11 +222,23 @@ varargs string SetResistance(int type, string level) {
 }
 
 string GetResistance(int type) {
+    //tc("type: "+type);
+    //tc("i am: "+identify(this_object()));
+    //tc("prev: "+identify(previous_object(-1)));
+    //tc("stack: "+get_stack());
+    //tc("Resistance[low] & type:" + (Resistance["low"] & type));
+    //tc("Resistance[medium] & type:" + (Resistance["low"] & type));
+    //tc("Resistance[high] & type:" + (Resistance["low"] & type));
+    //tc("Resistance[immune] & type:" + (Resistance["low"] & type));
     if(Resistance["low"] & type) return "low";
     else if(Resistance["medium"] & type) return "medium";
     else if(Resistance["high"] & type) return "high";
     else if(Resistance["immune"] & type) return "immune";
     else return "none";
+}
+
+mapping GetResistanceMap(){
+    return copy(Resistance);
 }
 
 int GetCustomStats() { return CustomStats; }

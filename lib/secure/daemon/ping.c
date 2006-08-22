@@ -59,21 +59,21 @@ void create() {
 }
 
 void DeadMan(){
-    int tmptime = time();
-    if(last_time + 60 < tmptime){
-	object *clones = filter(objects(), (: inherits(LIB_ROOM,$1) :));
-	clones->eventDestruct();
-
-	clones = filter(objects(), (: clonep($1) :));
-	clones->eventDestruct();
-    }
-    else last_time = tmptime;
+    //    int tmptime = time();
+    //    if(last_time + 60 < tmptime){
+    //	object *clones = filter(objects(), (: inherits(LIB_ROOM,$1) :));
+    //	clones->eventDestruct();
+    //
+    //	clones = filter(objects(), (: clonep($1) :));
+    //	clones->eventDestruct();
+    //    }
+    //    else last_time = tmptime;
 }
 
 void heart_beat(){
     counter++;
     DeadMan();
-    if(!(counter % 10)) CheckOK();
+    if(!(counter % 30)) CheckOK();
     if(!(counter % 300)) eventPing();
     if(counter > 10000) counter = 0;
 }

@@ -50,9 +50,9 @@ int Setup() {
     if(!Nicknames) Nicknames = ([]);
     if(!Aliases) Aliases = ([]);
     if(!Xverbs) Xverbs = ([]);
-    add_action("cmd_alias", "alias"); 
-    add_action("cmd_unalias", "unalias"); 
-    add_action("cmd_nickname", "nickname"); 
+    add_action("cmd_alias", "alias",1); 
+    add_action("cmd_unalias", "unalias",1); 
+    add_action("cmd_nickname", "nickname",1); 
     if(creatorp(this_object())) { 
 	Stack = allocate(DIRECTORY_STACK_SIZE); 
 	CWDBottom = CWDTop = CWDCount = 0; 

@@ -221,5 +221,9 @@ mixed geteuid(mixed args);
 string *query_local_functions(mixed arg);
 int check_string_length(string str);
 int print_long_string(object who, string str);
+void add(mixed arg1, mixed arg2);
+varargs int wizardp(object ob);
+int adminp(object ob);
+varargs mixed dump_variable(mixed foo, mixed bar);
 
 #endif /* l_sefun_h */

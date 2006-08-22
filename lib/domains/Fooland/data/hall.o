@@ -1,0 +1,4 @@
+#d/Fooland/mainboard.c
+ob_data (["long":"@@query_long","short.text":"General purpose bulletin board","short":"@@query_short","long.text":"This is a bulletin board. For information on how to use it, use `help board'.","id":({"board","bulletin board",}),"silent_look":1,"last_location":0,])
+messages ({(["title":"Note","poster":"Leto","time":816819130,"body":"This board is usually used for the one note we supply withdistributed mudlibs :)LetoPs. Currently, we're at version 1.3 pre-release 2","id":56,]),})
+id_ref 56

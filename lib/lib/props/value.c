@@ -38,7 +38,10 @@ varargs int GetValue(string str) {
     return Value;
 }
 
-int SetValue(int x) {
+int SetValue(mixed y) {
+    mixed x;
+    if(arrayp(y)) return this_object()->SetBaseCost(y[1],y[0]); 
+    else x = y;
     if( !intp(x) ) {
 	error("Bad argument 1 to SetValue().\n\tExpected: int, Got: " +
 	  typeof(x) + "\n");

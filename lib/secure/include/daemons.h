@@ -34,6 +34,7 @@
 #define PING_D               DIR_SECURE_DAEMONS "/ping"
 #define PLAYERS_D            DIR_SECURE_DAEMONS "/players"
 #define POLITICS_D           DIR_SECURE_DAEMONS "/politics"
+#define PROMOTION_D          DIR_SECURE_DAEMONS "/players"
 #define RACES_D              DIR_DAEMONS "/races"
 #define REAPER_D             DIR_DAEMONS "/reaper"
 #define REMOTE_D             DIR_SECURE_DAEMONS "/remote"
@@ -54,6 +55,7 @@
 #define VERBS_D              DIR_DAEMONS "/verbs"
 #define VIRTUAL_D            DIR_DAEMONS "/virtual"
 #define VOTING_D             DIR_SECURE_DAEMONS "/voting"
+#define WEATHER_D            DIR_DAEMONS "/weather"
 #define MASTER_D             DIR_SECURE_DAEMONS "/master"
 #define FTP_PORT_TRACKER_D   DIR_DAEMONS "/ftp_port_tracker"
 

@@ -1,0 +1,4 @@
+There should be three files in here: grid.descs which contains the short and
+long descriptions for the virtual rooms, grid.exits which contains the
+exit list, and grid.terrain which contains the terrain map. For more
+information on how the virtual room grid works, read /doc/mudlib/vrgrid.

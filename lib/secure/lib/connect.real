@@ -29,6 +29,17 @@ int eventCheckPending(string str);
 void eventCompleteChar();
 void InputCre(string str);
 
+int CheckIp(){
+    string my_ip = query_ip_number();
+    int ips = 0;
+    if(!SAME_IP_MAX) return 1;
+    foreach(object jugador in users()){
+	if(query_ip_number(jugador) == my_ip) ips++;
+    }
+    if(ips > SAME_IP_MAX) return 0;
+    else return 1;
+}
+
 static void create(int binary) {
     CrackCount = 0;
     Name = "";
@@ -37,20 +48,30 @@ static void create(int binary) {
 }
 
 varargs static void logon(mixed foo) {
-    string welcome;
+    string welcome = "Connected to "+mud_name()+", an LP mud";
+    if(sizeof(architecture())) welcome += " running on "+architecture()+".\n";
+    else welcome += ".\n";
 
     call_out((: eventTimeout :), LOGON_TIMEOUT);
     if(mud_name() == "Dead Souls"){
-	welcome = read_file(DS_WELCOME) || "Welcome to " + mud_name() + "!";
+	welcome += read_file(DS_WELCOME) || "Welcome to " + mud_name() + "!";
     }
     else {
-	welcome = read_file(NEWS_WELCOME) || "Welcome to " + mud_name() + "!";
+	welcome += read_file(NEWS_WELCOME) || "Welcome to " + mud_name() + "!";
     }
     receive(welcome);
     receive("\n" + center("Driver: " + version() + "               Mudlib: "+
 	mudlib() + " " + mudlib_version()) + "\n");
-    receive("\nWhat name do you wish? \n");
-    input_to((: InputName :), I_NOESC); 
+    if(CheckIp()){ 
+	receive("\nWhat name do you wish? \n");
+	input_to((: InputName :), I_NOESC); 
+    }
+    else {
+	receive("\nToo many users from your site are currently logged on.\n");
+	receive("Please try again later.\n");
+	Destruct();
+	return;
+    }
 } 
 
 static void InputName(string namen, string kill_me) {

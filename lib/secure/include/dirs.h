@@ -113,5 +113,6 @@
 #define DIR_SHADOWS             "/shadows"
 
 #define DIR_TMP                 "/tmp"
+#define TMP_DIR                 "/tmp"
 
 #endif /* s_dirs_h */

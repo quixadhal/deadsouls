@@ -90,6 +90,21 @@ string SetDoor(string dir, string file) {
     return (Doors[dir] = file); 
 }
 
+varargs string CreateDoor(string dir, string odir, string long, string locked, string key){
+    object new_door = new(LIB_DOOR);
+    string doorfile = file_name(new_door);
+    object ob = GetDummyItem(dir);
+    if( ob ) {
+	ob->SetDoor(doorfile);
+    }
+    new_door->SetSide(dir, ([ "id" : ({"door", dir+" door", long}), "short" : "a door leading "+dir, "long" : long, "lockable" : 1 ]));
+    new_door->SetSide(odir, ([ "id" : ({"door", odir+" door", long}), "short" : "a door leading "+odir, "long" : long, "lockable" : 1 ]));
+    if(key) new_door->SetKeys(dir, ({ key }) );
+    if(key) new_door->SetKeys(odir, ({ key }) );
+    new_door->eventRegisterSide(dir);
+    return (Doors[dir] = doorfile);
+}
+
 string GetDirection(string dest) {
 
     foreach(string dir, mapping data in Exits) {

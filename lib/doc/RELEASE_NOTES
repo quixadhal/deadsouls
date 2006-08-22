@@ -1,4 +1,10 @@
----- 2.1r19 (unreleased) ---
+---- 2.1r22 (unreleased) ---
+- Added numerous back-compat funs for TMI-2 porting.
+- Added SAME_IP_MAX define in config.h, to help limit bot spam/abuse.
+  Default limit is 4 connections per IP.
+- Fixed login problems in bots.
+- Raised ulimit in start script to 1024.
+- Dying creatures can no longer be observed to remove armor and weapons.
 - Ludicrously long environment descriptions no longer break
   when displayed.
 - "alias foo" no longer removes the "foo" alias, it merely displays
@@ -46,7 +52,7 @@
 - Fixed save problem in arches during shutdown.
 - COMPAT BUSTER: changed GetCustomPath and GetCustomCommand
   to query_custom_path and query_custom_command.
-- Added commands: files, doctool, showfuns.
+- Added commands: files, doctool, showfuns, createfix.
 - Cleaned up strange formatting error in old sefun docs.
 - Added sefun: query_local_functions.
 

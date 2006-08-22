@@ -28,6 +28,7 @@ private static int Connected, Tries;
 
 static void create() {
     client::create();
+    tc("prev: "+identify(previous_object(-1)),"red");
     Connected = 0;
     Password = 0;
     Tries = 0;
@@ -51,6 +52,9 @@ static void create() {
     else call_out( (: Setup :), 2);
 }
 
+void FirstPing(){
+    PING_D->eventPing();
+}
 
 static void Setup() {
     string ip;
@@ -72,6 +76,7 @@ static void Setup() {
 	  mudlib() + " " + mudlib_version(), version(), "LPMud",
 	  MUD_STATUS, ADMIN_EMAIL,
 	  (mapping)SERVICES_D->GetServices(), ([]) }) ), "red");;
+    call_out( (: FirstPing :), 5);
 }
 
 void eventClearVars(){
@@ -239,10 +244,12 @@ static void eventRead(mixed *packet) {
 static void eventSocketClose() {
     int extra_wait;
 
-    extra_wait = (Tries++) * 20;
-    if( extra_wait > 600 ) extra_wait = 600;
-    Connected = 0;
-    call_out( (: Setup :), 20 + extra_wait);
+    //This appears to be malfunctioning.
+    //
+    //extra_wait = (Tries++) * 20;
+    //if( extra_wait > 600 ) extra_wait = 600;
+    //Connected = 0;
+    //call_out( (: Setup :), 20 + extra_wait);
 }
 
 static void eventConnectionFailure() {

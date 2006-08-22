@@ -454,6 +454,66 @@ int eventModHeader(object ob, string what, string value){
     return 1;
 }
 
+int eventAddCreate(string file){
+    string *contents, *temparray, *temparray2, *beginners;
+    string tmpfile;
+    int done, add, memnum;
+
+    globalstr = tmpfile;
+    globalstr2 = file;
+
+    if(file_exists(file) && !check_privs(this_player(),file)){
+	write("You do not appear to have access to this file. Modification aborted.");
+	return 1;
+    }
+
+    tmpfile = generate_tmp(file);
+    temparray = ({});
+    temparray2 = ({});
+    contents = unguarded( (: eventReadFunctions(globalstr2) :) );
+    beginners = ({"private","static","nomask","varargs"});
+    beginners += ({"int","void","buffer","mapping","mixed","string","array","float"});
+
+    foreach(string func in contents){
+	if(member_array(func,contents) != 0 && grepp(func,"void create")) memnum = member_array(func,contents);
+    }
+
+    if(memnum && memnum != -1){
+	if(!grepp(contents[memnum],"::create()")){
+	    temparray = explode(contents[memnum],"\n");
+	    foreach(string line in temparray){
+		if(line && !starts_with_arr(line, beginners)) add = 1;
+		if(add && !done) {
+		    temparray2 += ({"::create();"});
+		    temparray2 += ({line});
+		    done = 1;
+		}
+		else {
+		    temparray2 += ({line});
+		}
+	    }
+	    contents[memnum] = implode(temparray2,"\n");
+	    global_array = contents;
+	    globalstr3 = tmpfile;
+	    unguarded( (: write_file(globalstr3,implode(global_array,"\n"),1) :) );
+	    //write_file(tmpfile,implode(contents,""));
+	}
+
+	else {
+	    //write("File already contains a working init function.");
+	    return 2;
+	}
+    }
+
+    global_array = contents;
+    globalstr3 = tmpfile;
+    unguarded( (: write_file(globalstr3,implode(global_array,"\n"),1) :) );
+    globalstr = tmpfile;
+    globalstr2 = file;
+    done = unguarded( (: cp(globalstr, globalstr2) :) );
+    unguarded( (: rm(globalstr) :) );
+    return done;
+}
 
 
 

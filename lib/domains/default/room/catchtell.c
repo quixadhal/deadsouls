@@ -16,7 +16,7 @@ static void create() {
 }
 int CanReceive(object ob) {
     if( !archp(ob) ){
-	message("info","The network room is available only to "+
+	message("info","The catch tell room is available only to "+
 	  "admins, sorry.",ob);
 	return 0;
     }

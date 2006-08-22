@@ -5,7 +5,7 @@ inherit LIB_ITEM;
 
 static int counter = 0, attempting, connected, socket ;
 static int dud_count = 0, spawning, last_action, loop_count = 0;
-static int maxbox = 80;
+static int maxbox = 500;
 static object person, player;
 static string preset, name, passwd, gender;
 static string display_name, email, real_name, race;
@@ -15,7 +15,8 @@ static int enable = 0;
 //static string ip = "70.85.244.100 6502";
 //static string ip = "192.168.0.3 4000";
 //static string ip = "72.24.247.42 23";
-static string ip = "192.168.0.68 6666";
+static string ip = "192.168.0.68 5000";
+//static string ip = "192.168.0.5 5050";
 //static string ip = "192.168.0.6 7777";
 //static string ip = "192.168.0.3 4000";
 static string local_currency = "silver";
@@ -180,7 +181,7 @@ int think(string str){
     }
     last_action = this_action;
 
-    eventBolo(str);
+    if(enable) eventBolo(str);
     if(sizeof(watching) < 1){
 	if(grepp(str, "You bump into ") && grepp(lower_case(str), "door")) DoorHandler(str);
 	if(grepp(str, "You stand up.")) travel = "go ";
@@ -223,8 +224,13 @@ int think(string str){
     else {
 	ret = eventWatch(str, watching);
     }
-
-    if(sizeof(ret)) this_object()->parse_comm(ret);
+    ret = trim(ret);
+    if(ret && ret != "" && sizeof(ret)) {
+	//tc("sizeof ret:"+sizeof(ret));
+	//tc(timestamp()+" in response to: "+str,"blue");
+	//tc(time()+"I am: "+identify(file_name(this_object()))+". I am sending: \""+ret+"\"\n");
+	this_object()->parse_comm(ret);
+    }
     return 1;
 }
 
@@ -364,7 +370,8 @@ void heart_beat(){
     int bots;
     counter++;
 
-    if(!environment()) return;
+    if(!environment(this_object())) return;
+    if(!clonep(this_object())) return;
     bots = sizeof(filter(all_inventory(environment()),
 	(: base_name($1) == base_name(this_object()) :)));
 
@@ -579,8 +586,9 @@ int do_connect(string args)
     socket = new_socket ;
     person = (object)previous_object() ;
     player=this_object();
-    tell_object(environment(),"I am "+name+", and I am connected "+
-      "to "+ip);
+    //tc("stack: "+get_stack());
+    tell_object(environment(),"I am "+name+", a.k.a "+file_name(this_object())+
+      " and I am connected to "+ip+" on socket"+socket+"\n");
     spent = 0;
     return 1 ;
 }
@@ -613,6 +621,7 @@ void write_callback( int fd )
 
 int parse_comm( string str )
 {
+    //tc("hit parse comm with: \""+str+"\", size is: "+sizeof(str),"red");
     if(str=="dcon" || str=="quit")
     {
 	socket_close( socket ) ;

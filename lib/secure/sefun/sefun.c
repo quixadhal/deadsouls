@@ -80,6 +80,22 @@
 #include "/secure/sefun/compare_array.c"
 #include "/secure/sefun/legacy.c"
 
+string globalstr;
+
+//varargs mixed new(mixed foo, mixed *bar...){
+//if(COMPAT_MODE && stringp(foo)) {
+//if(!file_exists(foo)) foo += ".c";
+//load_object("/secure/obj/staff")->eventAddCreate(foo);
+//}
+//if(!bar) return efun::new(foo);
+//else return efun::new(foo, bar...);
+//}
+
+function functionify(string str){
+    globalstr = str;
+    return (: globalstr :);
+}
+
 string *query_local_functions(mixed arg){
     object ob;
     string *allfuns;
@@ -241,9 +257,11 @@ void notify_fail(string str) {
 }
 
 /* want to handle colours, but do it efficiently as possible */
-string capitalize(string str) {
+string capitalize(mixed str) {
     string *words, *tmp;
     int i;
+
+    if(objectp(str)) str = str->GetKeyName();
 
     /* error condition, let it look like an efun */
     if( !str || str == "" ) return efun::capitalize(str);
