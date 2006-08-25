@@ -43,7 +43,7 @@ int vote(string str) {
 	notify_fail("You may only vote for a or b.\n");
 	return 0;
     }
-    if(MULTI_D->non_voter(me)) {
+    if(PLAYERS_D->non_voter(me)) {
 	write("You are listed as a second character.  You may not vote.");
 	return 1;
     }

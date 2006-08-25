@@ -1,6 +1,7 @@
 inherit "/std/quest_ob";
 
 void create() {
+    ::create();
     set_name("chaucer");
     set_id( ({"chaucer", "quest_object"}) );
     set_short( "%^YELLOW%^The Canterbury Tales%^RESET%^");

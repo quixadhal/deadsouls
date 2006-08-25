@@ -30,30 +30,30 @@ void reset() {
 }
 
 string shop_long(string str) {
-    if(query_night()) {
+    if(query_night()) 
 	return "Horace's is now closed.";
-    }
+}
 
-    void shop_closing(string str) {
-	object ob;
+void shop_closing(string str) {
+    object ob;
 
-	if(str == "night" && ob = present("horace", this_object())) 
-	    ob->destruct();
-	else if(str == "dawn" && !present("horace", this_object()))
-	    new("/domains/Praxis/obj/mon/horace")->move(this_object());
-    }
+    if(str == "night" && ob = present("horace", this_object())) 
+	ob->destruct();
+    else if(str == "dawn" && !present("horace", this_object()))
+	new("/domains/Praxis/obj/mon/horace")->move(this_object());
+}
 
-    int go_north(string str) {
-	if(!creatorp(this_player())) {
-	    message("my_action", "The magic of Horace stops you.", this_player());
-	    message("other_action", (string)this_player()->query_cap_name()+
-	      " is stopped by the magic of Horace.", this_object(),
-	      ({ this_player() }));
-	    return 0;
-	}
+int go_north(string str) {
+    if(!creatorp(this_player())) {
+	message("my_action", "The magic of Horace stops you.", this_player());
 	message("other_action", (string)this_player()->query_cap_name()+
-	  " cannot be stopped by Horace's magic.", this_object(),
+	  " is stopped by the magic of Horace.", this_object(),
 	  ({ this_player() }));
-	return 1;
+	return 0;
     }
+    message("other_action", (string)this_player()->query_cap_name()+
+      " cannot be stopped by Horace's magic.", this_object(),
+      ({ this_player() }));
+    return 1;
+}
 

@@ -1,6 +1,7 @@
 inherit "/std/quest_ob";
 
 void create() {
+    ::create();
     set_name("the_blight_of_the_bog");
     set_id( ({"blight", "quest_object", "the blight of the bog"}) );
     set_short( "%^GREEN%^%^BOLD%^The Blight of the Bog%^RESET%^");

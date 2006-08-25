@@ -3,9 +3,15 @@
 
 #define ROOM				"/lib/std/room"
 #define DOORS				"/lib/blank"
+#define DAEMON				"/lib/std/daemon"
 #define OBJECT				"/lib/std/item"
 #define OB_SIMUL_EFUN			"/secure/sefun/sefun"
+#define OB_DEED                         "/obj/deed"
+#define OB_ORDER                        "/obj/order"
+#define OB_ESTATE                       "/std/estate"
 #define __DIR__				"/domains/lpuni/"
+#define OB_POSTAL                       DIR_SECURE_OBJ "/post"
+#define ACCESS                          "/secure/lib/std/access"
 
 #define set_light 			SetAmbientLight
 #define set_short			SetShort
@@ -61,5 +67,7 @@
 #define add_item_description		AddItem
 #define set_outside                     SetTown
 #define create_door                     CreateDoor
+#define set_quest_points		SetQuestPoints
+#define query_quest_points		GetQuestPoints
 
 #endif /* s_lpu_h */

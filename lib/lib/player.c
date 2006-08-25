@@ -28,7 +28,7 @@ private int TrainingPoints, TitleLength;
 /* *****************  /lib/player.c driver applies  ***************** */
 
 static void create() {
-    AddSave( ({ "Properties", "CarriedMass", "Muffed" }) );
+    AddSave( ({ "TellHist", "Properties", "CarriedMass", "Muffed" }) );
     interactive::create();
     living::create();
 
@@ -518,15 +518,26 @@ string *SetMuffed(string *muffed){
 }
 
 string *AddMuffed(string muffed){
-    if(muffed) muffed = lower_case(muffed);
-    else return Muffed;
+    string tmpstr;
+    //tc("foo: "+INTERMUD_D);
+    if(!muffed || muffed == "" || !sizeof(muffed)) return Muffed;
+    if(grepp(muffed,"@")) {
+	tmpstr = INTERMUD_D->GetMudName(muffed[1..sizeof(muffed)-1]);
+    }
+    if(sizeof(tmpstr)) muffed = tmpstr;
+    muffed = lower_case(muffed);
     if(member_array(muffed,Muffed) == -1) Muffed += ({ muffed });
     return Muffed;
 }
 
 string *RemoveMuffed(string unmuffed){
-    if(unmuffed) unmuffed = lower_case(unmuffed);
-    else return Muffed;
+    string tmpstr;
+    if(!sizeof(unmuffed)) return Muffed;
+    if(grepp(unmuffed,"@")) {
+	tmpstr = INTERMUD_D->GetMudName(unmuffed[1..sizeof(unmuffed)-1]);
+    }
+    if(sizeof(tmpstr)) unmuffed = tmpstr;
+    unmuffed = lower_case(unmuffed);
     if(member_array(unmuffed,Muffed) != -1) Muffed -= ({ unmuffed });
     return Muffed;
 }

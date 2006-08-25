@@ -12,9 +12,6 @@ void create() {
       "empty vault.  The door on the south end leads to the lobby.");
     SetExits( 
       (["south" : "/domains/Praxis/bank"]) );
-    SetItems(
-      ([ "vault" : (: "look_at_vault" :) ]) );
-    SetDoor("vault", "/domains/Praxis/bank", "south", "bank key");
 }
 
 void reset() {
@@ -28,10 +25,5 @@ void reset() {
 	money->SetCurrency("electrum", random(200));
 	money->move(this_object());
     }
-}
-
-void look_at_vault() {
-    if(GetOpen("vault")) message("my_action", "It is open.", this_player());
-    else message("my_action", "It is slammed shut.", this_player());
 }
 

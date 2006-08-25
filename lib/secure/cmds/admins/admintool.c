@@ -586,17 +586,20 @@ int eventAddCurrency(string str){
 	return 1;
     }
 
+    //tc("currencies: "+identify(ECONOMY_D->__QueryCurrencies()));
     currencies = ECONOMY_D->__QueryCurrencies();
     if(member_array(str,currencies) != -1) {
 	write("That currency is already available.\n");
 	Menu();
 	return 1;
     }
-
-    query = "What should its exchange rate, or value be? For comparison, "+currencies[0]+" ";
-    query += "has a rate of "+ ECONOMY_D->__Query(currencies[0],"rate")+", "+currencies[1]+" ";
-    query += "has a rate of "+ ECONOMY_D->__Query(currencies[1],"rate")+", and "+currencies[2]+" ";
-    query += "has a rate of "+ ECONOMY_D->__Query(currencies[2],"rate")+".\n";
+    if(sizeof(currencies) > 2){
+	query = "What should its exchange rate, or value be? For comparison, "+currencies[0]+" ";
+	query += "has a rate of "+ ECONOMY_D->__Query(currencies[0],"rate")+", "+currencies[1]+" ";
+	query += "has a rate of "+ ECONOMY_D->__Query(currencies[1],"rate")+", and "+currencies[2]+" ";
+	query += "has a rate of "+ ECONOMY_D->__Query(currencies[2],"rate")+".\n";
+    }
+    else query = "What should its exchange rate, or value be?";
 
     write(query);
     input_to( (: CurrencyRate :) );
@@ -612,12 +615,13 @@ int CurrencyRate(string str){
 	Menu();
 	return 1;
     }
-
-    query = "What should its weight be? For comparison, "+currencies[0]+" ";
-    query += "has a weight of "+ ECONOMY_D->__Query(currencies[0],"weight")+", "+currencies[1]+" ";
-    query += "has a weight of "+ ECONOMY_D->__Query(currencies[1],"weight")+", and "+currencies[2]+" ";
-    query += "has a weight of "+ ECONOMY_D->__Query(currencies[2],"weight")+".\n";
-
+    if(sizeof(currencies) > 2){
+	query = "What should its weight be? For comparison, "+currencies[0]+" ";
+	query += "has a weight of "+ ECONOMY_D->__Query(currencies[0],"weight")+", "+currencies[1]+" ";
+	query += "has a weight of "+ ECONOMY_D->__Query(currencies[1],"weight")+", and "+currencies[2]+" ";
+	query += "has a weight of "+ ECONOMY_D->__Query(currencies[2],"weight")+".\n";
+    }
+    else query = "What should its weight be?";
     write(query);
     input_to( (: CurrencyWeight :) );
     return 1;
@@ -633,12 +637,13 @@ int  CurrencyWeight(string str){
 	Menu();
 	return 1;
     }
-
-    query = "What should its inflation rate be? For comparison, "+currencies[0]+" ";
-    query += "has an inflation rate of "+ ECONOMY_D->__Query(currencies[0],"inflation")+", "+currencies[1]+" ";
-    query += "has an inflation rate of "+ ECONOMY_D->__Query(currencies[1],"inflation")+", and "+currencies[2]+" ";
-    query += "has an inflation rate of "+ ECONOMY_D->__Query(currencies[2],"inflation")+".\n";
-
+    if(sizeof(currencies) > 2){
+	query = "What should its inflation rate be? For comparison, "+currencies[0]+" ";
+	query += "has an inflation rate of "+ ECONOMY_D->__Query(currencies[0],"inflation")+", "+currencies[1]+" ";
+	query += "has an inflation rate of "+ ECONOMY_D->__Query(currencies[1],"inflation")+", and "+currencies[2]+" ";
+	query += "has an inflation rate of "+ ECONOMY_D->__Query(currencies[2],"inflation")+".\n";
+    }
+    else query = "What should its inflation rate be?";
     write(query);
     input_to( (: CurrencyInflation :) );
     return 1;

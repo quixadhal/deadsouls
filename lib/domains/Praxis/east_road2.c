@@ -14,14 +14,14 @@ void create() {
       "Sun Alley, named for its' beautiful view of the sunsets, shoots "
       "off west from East Road. East Road continues, heading north and "
       "south upon the eastern border of town. To the east, you can see "
-      "the Praxis cemetary, shaded by large trees. The air is very still "
+      "the Praxis cemetery, shaded by large trees. The air is very still "
       "here, and a feeling of foreboding hangs in the air.");
     SetItems(
       (["alley" : "A bright and cheery alley which marks the northern "
 	"boarder of Praxis.",
 	"road" : "East Road is a curvy road running north and south "
 	"on the east side of Praxis.",
-	"cemetary" : "The residents of Praxis get buried there. It "
+	"cemetery" : "The residents of Praxis get buried there. It "
 	"looks spooky.",
 	"trees" : "The trees are large drooping willow trees.",
 	"forest" : "A great forest the marks the northern end of Praxis."])
@@ -29,7 +29,7 @@ void create() {
     SetExits( 
       (["north" : "/domains/Praxis/east_road3",
 	"south" : "/domains/Praxis/east_road1",
-	"east" : "/domains/Praxis/cemetary/grave_yard",
+	"east" : "/domains/Praxis/cemetery/grave_yard",
 	"west"	 : "/domains/Praxis/sun2"]) );
 }
 

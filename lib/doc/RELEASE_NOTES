@@ -1,5 +1,20 @@
----- 2.1r22 (unreleased) ---
-- Added numerous back-compat funs for TMI-2 porting.
+---- 2.1r23 (unreleased) ---
+- Added Nimrod's recursive/numbered grep enhancements.
+- Added numerous back-compat funs and obs for TMI-2 porting.
+- Added numerous back-compat funs and obs for Nightmare 3 porting.
+- Added daemons: ESTATES_D, ALCHEMIST_D (materials properties).
+- Router admin commands will now also take ip+port.
+- It is now possible to mudlist, rwho, and tell to a mud using its
+  ip address+port. For example: rwho 71.234.154.99 6666
+- The muffing commands now also affect tells. "earmuff Tatianna" will
+  prevent you from hearing channel messages *and* tells from tatianna.
+  You can also muff ip address + port, example:
+  earmuff @194.70.3.211 3000
+- "tell history" now provides a limited history of your tell messages.
+- Fixed a problem adding currencies with admintool when there are
+  fewer than 3 existing currencies.
+- Reverted to the old Nightmare calendar: mud time of day and sky
+  events should make more sense now.
 - Added SAME_IP_MAX define in config.h, to help limit bot spam/abuse.
   Default limit is 4 connections per IP.
 - Fixed login problems in bots.

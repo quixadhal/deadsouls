@@ -1,20 +1,20 @@
 #include <lib.h>
 #include <rooms.h>
 
-inherit LIB_NPC;
+inherit LIB_SENTIENT;
 
 private object __Target;
 
 void go_home();
 
 void init() {
-    npc::init();
+    ::init();
     add_action("cmd_surrender", "surrender");
 }
 
 void heart_beat() {
     if(!__Target || (int)__Target->query_ghost()) go_home();
-    monster::heart_beat();
+    ::heart_beat();
     if(__Target && environment(__Target) != environment(this_object()))
 	go_home();
 }
@@ -29,14 +29,14 @@ void set_target(object ob) {
 
 void go_home() {
     __Target = 0;
-    eventMove(ROOM_SHERIFF);
+    eventMove("/domains/Praxis/sheriff");
 }
 
 static int cmd_surrender(string unused) {
     if(this_player() != __Target) return 0;
     this_player()->cease_all_attacks();
-    this_player()->move(ROOM_SHERIFF);
-    ROOM_SHERIFF->add_prisoner(this_player());
+    this_player()->move("/domains/Praxis/sheriff");
+    "/domains/Praxis/sheriff"->add_prisoner(this_player());
     go_home();
     return 1;
 }

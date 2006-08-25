@@ -169,12 +169,19 @@ int cmdChannel(string verb, string str) {
     else if(last(verb, 1) == ":") varb = replace_string(verb,":","");
     else varb = verb;
 
-    if( verb == "hist" ) {
-	if( !Channels[str] ) return 0;
-	if( member_array(this_player(), Channels[str]) == -1 ) return 0;
-	cmdLast(str);
-	return 1;
-    }
+    //    if( verb == "hist" ) {
+    //tc("str: "+str);
+    //	if( !Channels[str] && str != "tell") return 0;
+    //        if(str == "tell"){
+    //        load_object("/secure/cmds/players/tell")->cmd("hist");
+    //        return 1;
+    //        }
+    //	if( member_array(this_player(), Channels[str]) != -1 ) {
+    //       cmdLast(str);
+    //	return 1;
+    //        }
+    //        return 0;
+    //    }
 
     if( verb == "list" ) {
 	string *who;

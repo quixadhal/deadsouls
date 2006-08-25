@@ -22,7 +22,7 @@ void reset() {
     ::reset();
     if(!present("spider", this_object())) 
 	for(x=0; x<10; x++) {
-	    new("/"+__DIR__+"obj/mon/spider")->move(this_object());
+	    new("/domains/Praxis/obj/mon/spider")->move(this_object());
 	}
 }
 

@@ -7,11 +7,11 @@
 
 inherit DAEMON;
 
-create() {
+void create() {
     daemon::create();
 }
 
-stone_player(object who, string where) {
+void stone_player(object who, string where) {
     object me;
 
     me = previous_object();
@@ -19,4 +19,4 @@ stone_player(object who, string where) {
       "runs off to join in the stoning!", environment(me));
     me->eventMoveLiving(where, "cheers wildly and "
       "runs off to join in the stoning!");
-    .
+} 

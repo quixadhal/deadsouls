@@ -61,7 +61,7 @@ void GetLong_time() {
     write("The clock face reads "+query_hour()+".\n");
 }
 
-int query_hour() {
+string query_hour() {
     int tmp, tmp2;
     string str;
 

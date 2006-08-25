@@ -847,7 +847,7 @@ static void create() {
 }
 
 int CanReceive(object ob){
-    if(!GetProperty("no teleport")) return container::CanReceive(ob);
+    if(!GetProperty("no teleport") || !living(ob)) return container::CanReceive(ob);
     else {
 	string verb = query_verb();
 	string *allowed = ({ "go", "climb", "jump", "enter", "fly", "crawl" });

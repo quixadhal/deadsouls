@@ -10,7 +10,7 @@
 #include <objects.h>
 #include <daemons.h>
 
-#define TOWN_HALL "domains/Praxis/town_hall"
+#define TOWN_HALL "/domains/Praxis/town_hall"
 #define HELP_FILE "/domains/Praxis/commands"
 #define TMP_FILE DIR_TMP + "/" + (this_player()->query_name()) + ".proposal"
 #define QUORUM 5
