@@ -1,7 +1,8 @@
 /* /wizards/melvaig/imp, Nightmare, November 1992 */
-inherit "std/quest_ob";
+inherit "/std/quest_ob";
 
 void create() {
+    ::create();
     set_name("imp_crown");
     set_id( ({ "imp_crown" , "quest_object" }) );
     set_short("The quest for the fabled Imp crown");

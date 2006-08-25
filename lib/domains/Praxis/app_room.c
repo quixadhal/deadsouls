@@ -19,6 +19,6 @@ void create() {
 }
 void reset() {
     ::reset();
-    if(!present("approval board")) 
-	new( __DIR__ "obj/misc/app_board")->move(this_object());
+    //if(!present("approval board")) 
+    //new( __DIR__ "obj/misc/app_board")->move(this_object());
 }

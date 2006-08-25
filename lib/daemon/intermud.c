@@ -28,7 +28,7 @@ private static int Connected, Tries;
 
 static void create() {
     client::create();
-    tc("prev: "+identify(previous_object(-1)),"red");
+    //tc("prev: "+identify(previous_object(-1)),"red");
     Connected = 0;
     Password = 0;
     Tries = 0;
@@ -264,6 +264,7 @@ int SetSocketType(int x) { return client::SetSocketType(MUD); }
 
 string GetMudName(string mud) {
     string *lc, *uc;
+    mapping mudses = GetMudList();
     int x;
 
     if( MudList->List[mud] ) return mud;
@@ -272,7 +273,13 @@ string GetMudName(string mud) {
 	  else return lower_case(str);
 	});
       x = member_array(lower_case(mud), lc);
-      if( x < 0 ) return 0;
+      if( x < 0 ){
+	  foreach(string name in GetMuds()){
+	      //if(mudses[name][1] == mud) return name;
+	      if(mudses[name][1] +" "+mudses[name][2] == mud) return name;
+	  }
+	  return 0;
+      }
       else return uc[x];
   }
 

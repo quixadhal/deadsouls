@@ -2,7 +2,7 @@
 
 inherit LIB_ROOM;
 
-create() {
+void create() {
     ::create();
     SetProperties( ([ "indoors" : 1, "light" : 1, "no killing" : 1, 
 	"no stealing" : 1, "no magic" : 1, "no teleport" : 1 ]) );
@@ -21,7 +21,7 @@ create() {
       "the air.");
 }
 
-init() {
+void init() {
     ::init();
     if(this_player()->query_ghost()) 
 	this_player()->move("/domains/Mountains/cave/cave3");

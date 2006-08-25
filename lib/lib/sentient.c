@@ -24,6 +24,7 @@ private mixed array WanderPath       = ({});
 private int         WanderRecurse    = 0;
 private int         WanderSpeed      = 0;
 private int         permit_load      = 0;
+private string      SpellChance      = 50;
 
 /* ******************  /lib/sentient.c data manipulation  **************** */
 /**
@@ -134,6 +135,15 @@ mapping GetTalkResponses() {
 
 mapping SetTalkResponses(mapping mp) {
     return TalkResponses = expand_keys(mp);
+}
+
+int SetSpellChance(int i){
+    SpellChance = i;
+    return SpellChance;
+}
+
+int GetSpellChance(){
+    return SpellChance;
 }
 
 varargs int SetWander(int speed, mixed *path, int recurse) {

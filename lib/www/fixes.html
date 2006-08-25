@@ -59,7 +59,28 @@ reason. The reap_other() sefun has been fixed to correct this. Copy <a
 /secure/sefun/reaper</span> , then <span style="font-weight: bold;">update
 /secure/sefun/sefun</span> . Note that this is a replacement for the
 reaper <span style="font-style: italic;">sefun file</span>, and not
-the reaper <span style="font-style: italic;">daemon</span>.<br>
+the reaper <span style="font-style: italic;">daemon</span>.</li>
+  <li>If you go on an economic rampage and delete all the existing
+currencies you can, you will run into a problem adding new ones with
+admintool, because, well, admintool wasn't coded to handle that
+situation. <a href="http://dead-souls.net/code/fixes/admintool.c">This
+version is</a>, though. Copy it over /secure/cmds/admins/admintool.c
+and then type <span style="font-weight: bold;">update
+/secure/cmds/admins/admintool.c </span>. I would suggest however,
+first *adding* your new currencies before removing the ones you don't
+like, because if you do it this way, admintool can give you some
+helpful comparisons of weight, value, and inflation.</li>
+  <li>The reload verb has been updated to handle temp objects and
+virtual rooms more gracefully. Copy <a
+ href="http://dead-souls.net/code/fixes/reload.c">this</a> over
+/verbs/creators/reload.c and type: <span style="font-weight: bold;">update
+/verbs/creators/reload.c</span><br>
+  </li>
+  <li>Non-arches/non-creators have a hard time dropping objects in
+rooms set "no teleport". <a
+ href="http://dead-souls.net/code/fixes/room.c">This room file</a>
+corrects it. Copy it over /lib/std/room.c and type: <span
+ style="font-weight: bold;">reload every room</span> .<br>
   </li>
 </ul>
 <br>

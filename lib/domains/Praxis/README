@@ -1,0 +1,16 @@
+This is the ANCIENT Praxis domain from the old Nightmare 3
+mudlib. It had been updated to work on Dead Souls 2, and 
+the objects all will load into memory properly, and for
+the most part, they work the way they're supposed to.
+
+However, this is *NOT* an example of what you should do
+when coding areas. This domain is provided for both historical
+context and for examples of how things *can* be done.
+
+Fancy stuff probably doesn't work, since it may depend on
+subsystems used in NM3 that are not used in DS2 (such as
+UID security). 
+
+Broken things here will very likely *NOT* be fixed. Like
+Ylsrim, this area is a museum piece, provided for reference
+and education, but for display purposes only.

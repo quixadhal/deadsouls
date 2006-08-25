@@ -1,5 +1,5 @@
 inherit "/lib/std/item";
-#include <security.h>
+//#include <security.h>
 #include <council.h>
 #define LOG "/realms/nialson/data/mage_coffer_log"
 

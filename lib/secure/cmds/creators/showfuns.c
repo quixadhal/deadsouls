@@ -3,7 +3,7 @@
 inherit LIB_DAEMON;
 mapping FileSize = ([]);
 mapping FunctionCache = ([]);
-string SaveFile = "/save/showfuns.o";
+string SaveFile = "/tmp/showfuns.o";
 string *arr = ({});
 string *types = ({ "void ", "status ",
   "string ", "string \*", "string array ",

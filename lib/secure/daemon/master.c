@@ -376,6 +376,7 @@ private static void load_access(string cfg, mapping ref) {
 
 	file = file_name(ob);
 	if(COMPAT_MODE){
+	    //buggy code removed
 	}
 	contents = read_file(base_name(ob)+".c");
 	if(strsrch(contents,"parse_add_rule") != -1 

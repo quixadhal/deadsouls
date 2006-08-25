@@ -225,5 +225,13 @@ void add(mixed arg1, mixed arg2);
 varargs int wizardp(object ob);
 int adminp(object ob);
 varargs mixed dump_variable(mixed foo, mixed bar);
+string day();
+int date();
+string month();
+int year();
+varargs int minutes(int x);
+varargs string season(int x);
+string query_time();
+varargs int hour(int x);
 
 #endif /* l_sefun_h */

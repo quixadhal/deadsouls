@@ -1,6 +1,7 @@
-inherit "std/quest_ob";
+inherit "/std/quest_ob";
 
 void create() {
+    ::create();
     set_name("dragon");
     set_id( ({ "dragon", "quest_object" }) );
     set_short("The quest for the dragon");

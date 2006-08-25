@@ -25,7 +25,7 @@ void reset() {
     ::reset();
     if(!present("spider")) {
 	for(x=0; x<15; ++x) {
-	    new("/"+__DIR__+"obj/mon/spider")->move(this_object());
+	    new("/domains/Praxis/obj/mon/spider")->move(this_object());
 	}
     }
 }

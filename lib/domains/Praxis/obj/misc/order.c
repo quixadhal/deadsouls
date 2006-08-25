@@ -6,7 +6,7 @@
 
 #include <lib.h>
 #include <dirs.h>
-#include <security.h>
+//#include <security.h>
 
 inherit LIB_ITEM;
 
@@ -16,7 +16,7 @@ string __Short, __Long, __Exit, __NewRoom;
 static private string create_file();
 
 void create() {
-    Object::create();
+    ::create();
     SetKeyName("work order");
     SetId( ({ "order", "work order" }) );
     SetShort("a work order");
@@ -35,7 +35,7 @@ void create() {
 }
 
 void init() {
-    Object::init();
+    ::init();
     add_action("cmd_build", "build");
 }
 
@@ -130,14 +130,14 @@ static void input_exit(string str) {
     }
     __Exit = "$"+(file=file_name(environment(this_player())))+";$"+valid_exits[str];
     __NewRoom= create_file();
-    seteuid(UID_ESTATES);
+    //seteuid(UID_ESTATES);
     write_file(file, "AddExit: $"+__NewRoom+";$"+str+"\n");
     write_file(__NewRoom, "SetProperty: $indoors;#"+__Indoors+"\n");
     write_file(__NewRoom, "SetProperty: $light;#"+__Light+"\n");
     write_file(__NewRoom, "SetShort: $"+__Short+"\n");
     write_file(__NewRoom, "SetLong: $"+__Long+"\n");
     write_file(__NewRoom, "AddExit: "+__Exit+"\n");
-    seteuid(getuid());
+    //seteuid(getuid());
     message("system", "Room begun.  You will see your addition "
       "appear later when the work is complete.", this_player());
     this_object()->remove();

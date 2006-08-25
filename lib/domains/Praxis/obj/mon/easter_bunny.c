@@ -1,8 +1,8 @@
-inherit "/lib/npc";
+inherit "/lib/sentient";
 
 int count_eggs;
 
-create() {
+void create() {
     ::create();
     SetKeyName("easter bunny");
     SetId(  ({ "bunny", "easter bunny" }) );
@@ -13,7 +13,7 @@ create() {
     SetGender("male");
     SetLevel(30);
     SetMorality(200);
-    SetRace( "mutant bunny");
+    SetRace("rodent");
     SetMaxHealthPoints(500000);
     SetHealthPoints(500000);
     SetAction(10,
@@ -29,7 +29,7 @@ create() {
 void catch_tell(string str) {
     string who;
 
-    if(!interact("enters", str)) return;
+    //if(!interact("enters", str)) return;
     sscanf(str, "%s enters%*s", who);
     who = lower_case(who);
     call_out("egghead", 2, who);

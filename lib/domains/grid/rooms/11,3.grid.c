@@ -15,8 +15,6 @@ void create () {
 	"which has some things worth looking at.\n") ;
 	set ("exits", ([
 	"north" : "/domains/Fooland/hut",
-	"east" : "/domains/grid/rooms/11,4.grid",
-	"west" : "/domains/grid/rooms/11,2.grid",
 	"south" : "/domains/Fooland/museum"
 	]) ) ;
 }

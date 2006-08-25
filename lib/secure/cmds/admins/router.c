@@ -6,7 +6,8 @@ mapping mudlist;
 string banned, unbanned;
 string *allmuds, *banned_arr, *unbanned_arr;
 
-static string match_mud_name(string mud, string *list){
+varargs string match_mud_name(string mud, string *list){
+    list = allmuds;
     if(member_array(mud, list) != -1) return mud;
     foreach(string element in list){
 	if(lower_case(element) == lower_case(mud)) {
@@ -17,7 +18,10 @@ static string match_mud_name(string mud, string *list){
 	if(!strsrch(lower_case(element), lower_case(mud))){
 	    return element;
 	}
+	if(mudlist[element]["ip"]+" "+mudlist[element]["player_port"] == mud)
+	    return mudlist[element]["name"];
     }
+
     return "";
 }
 
@@ -42,6 +46,7 @@ mixed cmd(string args) {
 
     if(args == "show"){
 	write("Router config:");
+	write("sample mud: "+identify(mudlist[allmuds[0]]));
 	router->get_info();
 	return 1;
     }
@@ -58,8 +63,11 @@ mixed cmd(string args) {
 	mapping info;
 	string *list;
 	mapping borg;
-	string mud;
+	string mud, tempy;
 	int all = 0;
+
+	if(sizeof(arg2)) tempy = match_mud_name(arg2);
+	if(sizeof(tempy)) arg2 = tempy;
 
 	if( arg2 && arg2 != "" && strlen(arg2) > 3 ) {
 	    mapping tmp_map;

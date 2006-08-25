@@ -25,7 +25,7 @@ create() {
 void init() {
     ::init();
     add_action("all_cmds", "");
-    if(!living(environment(this_object()))) this_object()->remove();
+    if(!living(environment(this_object()))) this_object()->eventDestruct();
     command("save");
 }
 
@@ -45,5 +45,5 @@ int all_cmds(string str) {
 }
 
 void destroy_me() {
-    remove();
+    eventDestruct();
 }

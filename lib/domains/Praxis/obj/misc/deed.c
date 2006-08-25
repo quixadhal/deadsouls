@@ -7,7 +7,7 @@
 #include <lib.h>
 #include <dirs.h>
 #include <daemons.h>
-#include <security.h>
+//#include <security.h>
 
 inherit LIB_ITEM;
 
@@ -17,7 +17,7 @@ string __Short, __Long, __Exit, __NewRoom, __EstateLong;
 static private string create_file();
 
 void create() {
-    Object::create();
+    ::create();
     SetKeyName("deed");
     SetId( ({ "estate deed", "deed" }) );
     SetShort("an estate deed");
@@ -34,7 +34,7 @@ void create() {
 }
 
 void init() {
-    Object::init();
+    ::init();
     add_action("cmd_build", "build");
 }
 
@@ -53,7 +53,7 @@ static int cmd_build(string str) {
 	return 1;
     }
     if(file_size(ESTATES_DIRS+"/"+geteuid(this_player())) != -2) {
-	seteuid(UID_ESTATES);
+	//seteuid(UID_ESTATES);
 	mkdir(ESTATES_DIRS+"/"+geteuid(this_player()));
 	seteuid(getuid());
     }
@@ -82,7 +82,7 @@ static void input_short(string str) {
     __Short = str;
     message("prompt", "Is the room 0) outdoors, or 1) indoors? ", this_player());
     input_to("input_indoors");
-    return 1;
+    return;
 }
 
 static void input_indoors(string str) {
@@ -135,7 +135,7 @@ void done_edit(mixed *unused) {
     }
     __Long = replace_string(str, "\n", " ");
     __NewRoom= create_file();
-    seteuid(UID_ESTATES);
+    //seteuid(UID_ESTATES);
     write_file(__NewRoom, "SetProperty: $indoors;#"+__Indoors+"\n");
     write_file(__NewRoom, "SetProperty: $light;#"+__Light+"\n");
     write_file(__NewRoom, "SetShort: $"+__Short+"\n");
@@ -143,7 +143,7 @@ void done_edit(mixed *unused) {
     write_file(__NewRoom, "AddExit: "+__Exit+"\n");
     ESTATES_D->add_estate((string)this_player()->query_CapName(), __NewRoom,
       file_name(environment(this_player())), __EstateLong);
-    seteuid(getuid());
+    //seteuid(getuid());
     message("system", "Room begun.  You will see your addition "
       "appear later when the work is complete.", this_player());
     this_object()->remove();
