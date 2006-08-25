@@ -24,7 +24,7 @@ private mixed array WanderPath       = ({});
 private int         WanderRecurse    = 0;
 private int         WanderSpeed      = 0;
 private int         permit_load      = 0;
-private string      SpellChance      = 50;
+private int      SpellChance      = 50;
 
 /* ******************  /lib/sentient.c data manipulation  **************** */
 /**
