@@ -36,12 +36,12 @@ void create() {
 }
 
 int preview() {
-    if((string)this_player()->query_class() != "child") {
+    if((string)this_player()->query_class() != "explorer") {
 	write("This is not for you.");
 	return 1;
     }
     say(this_player()->query_cap_name()+" seeks to learn about rogues.", this_player());
-    write("Welcome, child!\n");
+    write("Welcome, explorer!\n");
     write("Rogues are people who make their life and pleasure from the misery "
       "of others.  They keep their hideout here in the Outlands so as to "
       "keep a low profile in the eyes of the civilized world which is only "
@@ -64,7 +64,7 @@ int become(string str) {
 	notify_fail("You cannot become that here.\n");
 	return 0;
     }
-    if((string)this_player()->query_class() != "child") {
+    if((string)this_player()->query_class() != "explorer") {
 	write("You are much too old to start learning our ways now!");
 	return 1;
     }

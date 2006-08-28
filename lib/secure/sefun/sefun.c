@@ -149,16 +149,6 @@ varargs mixed objects(mixed arg1, mixed arg2){
     else return ({});
 }
 
-varargs string socket_address(mixed arg, int foo) {
-    string ret, port;
-    if(objectp(arg)) return efun::socket_address(arg);
-    ret = socket_status(arg)[4];
-    port = last_string_element(ret,".");
-    ret = replace_string(ret,"."+port,"");
-    if(!foo) return ret;
-    else return ret+" "+port;
-}
-
 mixed array users(){
     return filter(efun::users(), (: ($1) && environment($1) :) );
 }

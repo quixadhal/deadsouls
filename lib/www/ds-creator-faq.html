@@ -9,7 +9,7 @@
 </head>
 <body>
 <pre style="font-family: courier new,courier,monospace;"><span
- style="font-weight: bold;">Dead Souls Creator FAQ, v3.3</span><br><br>Written by Cratylus @ Frontiers, March 2006<br>Updated July 2006.<br><span
+ style="font-weight: bold;">Dead Souls Creator FAQ, v3.4</span><br><br>Written by Cratylus @ Frontiers, March 2006<br>Updated August 2006.<br><span
  style="font-weight: bold; text-decoration: underline;"><br></span>Note: commands are displayed in boldface, like this: <span
  style="font-weight: bold;">ls -a</span><span
  style="font-weight: bold; text-decoration: underline;"><br><br>What's this FAQ about?</span><br><br>	There are common issues and questions that crop<br>up for most new creators. This document is intended to<br>ease or at least shorten what can be a steep learning<br>curve.<br><br><br><span
@@ -79,7 +79,10 @@
  href="#2.59">2.59 How do languages work? Is there a list of them?</a><br><br><a
  href="#2.60">2.60 When I try to call test-&gt;SetLanguage("Bozo", 50), it sets it to 100%</a><br><br><a
  href="#2.61">2.61 How do I update an .h file?</a><br><br><a
- href="#2.62">2.62 I want to put an object in a room that doesn't show up in the inventory<br>but it can be manipulated.</a><br><br><br><span
+ href="#2.62">2.62 I want to put an object in a room that doesn't show up in the inventory<br>but it can be manipulated.</a><br><br><a
+ href="#2.63">2.63 What is pass by reference? What is pass by value?</a><br><br><a
+ href="#2.64">2.64 ZOMG pass by reference is terrible! How do I avoid it?</a><br><br><a
+ href="#2.65">2.65 What does the :: operator do?</a><br><br><br><span
  style="font-weight: bold;">Section 3: Intermud and channel stuff</span><br><br><a
  href="#3.1">3.1 How do I know what other muds are online on intermud?</a><br><br><a
  href="#3.2">3.2 Hey, LeetFooMud is online! How can I tell if Biff is logged on?</a><br><br><a
@@ -335,12 +338,14 @@
  style="font-weight: bold; text-decoration: underline;">Is there a sefun for making a whole string uppercase?</span><br><br>upper_case("omgwtfroflmao")<br><br><br><span
  style="font-weight: bold; text-decoration: underline;"></span><a
  name="2.25"></a><span
- style="font-weight: bold; text-decoration: underline;">What is the difference between filter() and foreach()? How do I use them?</span><br><br>Both of these efuns can act on the individual members of an array. <br><br>For example, if you wanted to have an array named mystuff which<br>contains the filenames of all objects in your inventory that<br>inherit LIB_ARMOR:<br><br>using filter:<br><br><span
- style="color: rgb(0, 0, 153);">object *stuff = filter(deep_inventory(this_player()), (: inherits(LIB_ARMOR,$1) :) );</span><br
- style="color: rgb(0, 0, 153);"><span style="color: rgb(0, 0, 153);">string *mystuff = filter(stuff, (: base_name($1)+".c" :) );</span><br><br>using foreach:<br><br><span
+ style="font-weight: bold; text-decoration: underline;">What is the difference between filter() and foreach()? How do I use them?</span><br><br>Both of these efuns can act on the individual members of an array. <br><br>For example, if you wanted to have an array named mystuff which<br>contains the base filenames of all objects in your inventory that<br>inherit LIB_ARMOR:<br><br>using filter:<br><br><span
+ style="color: rgb(0, 0, 153);">string *mystuff = ({}); <span
+ style="color: rgb(0, 0, 0);">//This has to be a global var</span></span><br
+ style="color: rgb(0, 0, 153);"><span style="color: rgb(0, 0, 153);">object *stuff = filter(filter(deep_inventory(this_player()), <br>(: inherits(LIB_ARMOR,$1) :) ), (: mystuff += ({ base_name($1) }) :) );<br></span><br
+ style="color: rgb(0, 0, 153);"><span style="color: rgb(0, 0, 153);"></span>using foreach:<br><br><span
  style="color: rgb(0, 0, 153);">string *mystuff = ({});</span><br
  style="color: rgb(0, 0, 153);"><span style="color: rgb(0, 0, 153);">foreach( object ob in deep_inventory(this_player())){</span><br
- style="color: rgb(0, 0, 153);"><span style="color: rgb(0, 0, 153);">if( inherits(LIB_ARMOR, ob) ) mystuff += ({ base_name(ob)+".c" });</span><br
+ style="color: rgb(0, 0, 153);"><span style="color: rgb(0, 0, 153);">if( inherits(LIB_ARMOR, ob) ) mystuff += ({ base_name(ob)});</span><br
  style="color: rgb(0, 0, 153);"><span style="color: rgb(0, 0, 153);">}</span><br><br>There are arguments favoring the use of either. I won't get into <br>it. As far as I can tell, it's really a question of preference. <br>	You can structure these functions more elegantly<br>than shown here, to best suit you. But this is the idea.<br><br><br><span
  style="font-weight: bold; text-decoration: underline;"></span><a
  name="2.26"></a><span
@@ -505,7 +510,30 @@
   <li>Make sure the item is SetInvis(1).<br>
   </li>
 </ol>
-<pre style="font-family: courier new,courier,monospace;"><br></pre>
+<pre style="font-family: courier new,courier,monospace;"><br><br><a
+ name="2.63"></a><span
+ style="font-weight: bold; text-decoration: underline;">What is pass by reference? What is pass by value?</span><br><br>	This is a slippery concept to grasp for some folks. It has<br>to do with the way that a variable is handled, when it interacts<br>with a function. <br><br>	When you pass by value, you send to the function the<br>value that is held by the variable. When you pass by reference, you<br>send to the function a pointer to the variable, not the value that<br>it contains. This is critically important to what happens to the<br>variable when the function is done doing its work. Let's take a look<br>at a sample function:<br><br><img
+ alt="function drawing" src="function.jpg"
+ style="width: 248px; height: 373px;" align="left"> <a
+ href="function.jpg">This is your typical simple function</a>. It<br>wants to be fed some input at the top, then<br>it will digest it in the middle, and then<br>it will poop out whatever the result of its<br>digestion is. That's the return, down at the<br>bottom.<br><br> This one wants to be fed an integer. When you <br>put the integer into its feeding funnel at the<br>top, that integer will be stored in the function's<br>local variable "B". B will stand for that integer.<br><br>The function then adds the integer 1 to B. B is now<br>whatever you put into the function plus one. <br><br>This new value is what is now returned, when the<br>function completes.<br><br>Pretty straightforward. Let's look at actually<br>sending data to this function.<br><br><br><br><img
+ style="width: 212px; height: 317px;" src="value.jpg"
+ alt="pass by value" align="left">At the top of <a href="value.jpg">this illustration</a> you see a variable called "A".<br>A is of the type "integer", and it contains the value 42. We're<br>going to feed A to SimpleFunction. We will "<span
+ style="font-weight: bold;">pass by value</span>".<br><br>What is happening is that whatever it is that A contains as a<br>value, we are sending to our function. We therefore are feeding<br>the integer 42 to SimpleFunction.<br><br>SimpleFunction does its thing. B is now equal to 42. Then <br>we add 1 to it. Now B is equal to 43.<br><br>We are done. The function poops out 43 as the return value.<br>B is a local variable, so when the function ends, its value<br>resets and it is null. At the end of this process:<br>return value == 43<br>A == 42<br>B == NULL <br><br><br><img
+ alt="pass by reference" src="reference.jpg"
+ style="width: 228px; height: 312px;" align="left"><br><a
+ href="reference.jpg">We will now send data again</a>, but this time, we will "<span
+ style="font-weight: bold;">pass by reference</span>".<br>This is slightly different. In the previous example, we passed the<br>value of A to SimpleFunction. Instead, we will now pass <span
+ style="font-style: italic; font-weight: bold;">a reference to A</span><br>to the function. For all practical purposes we are not sending 42.<br><br>We are sending the variable A itself.<br><br>The implications are important. When we feed A to SimpleFunction,<br>B no longer means "a local variable named B". B becomes a pointer<br>to A. This means that even though the function, as written, reads<br>B = B + 1, when you pass by reference you are actually performing<br>the operation on the referenced variable itself, so what it's actually<br>doing is A = A +1. At the end of this process:<br>return value == 43<br>A == 43<br>B == NULL<br><br><br><br>	You can see why it is vitally important to grasp this concept. <br>If you perform a pass by reference operation, you will get the exact<br>same return, or output, from the function as if you had passed by<br>value. However, you will have modified the variable you passed to the<br>function. If that's what you want to do, great. But if you do it<br>by accident, woe is you.<br><br><br><a
+ name="2.64"></a><span
+ style="font-weight: bold; text-decoration: underline;">ZOMG pass by reference is terrible! How do I avoid it?</span><br><br>	Fortunately, simple LPC datatypes do not pass by reference<br>as default behavior. Strings and integers pass by<br>value, so you don't have to worry about accidentally mangling<br>that data.<br><br>	However, objects, mappings, functions, and arrays all<br>pass by reference. If you are not careful in handling those datatypes,<br>you can end up with some extremely puzzling outcomes. When <br>manipulating complex datatypes, it is useful to use the copy()<br>sefun, if you don't want to modify the original variable. for<br>example:<br><br>string *SubtractElement(string *InputArray){<br>string *LocalArray = copy(InputArray);<br>LocalArray -= ({ LocalArray[0] });<br>return LocalArray;<br>}<br><br>	This function takes a string array as an argument,<br>and returns an array that is like the input array, but without<br>its first element. By using the copy() sefun, we manipulated<br>the an array identical to InputArray in value, while leaving<br>InputArray itself alone. If instead of:<br><br>string *LocalArray = copy(InputArray);<br><br>we had used:<br><br>string *LocalArray = InputArray;<br><br>	Then the return value would have been the same, but<br>whatever the array was that we passed to this function as an<br>argument has been modified.<br><br><br><a
+ name="2.65"></a><span
+ style="font-weight: bold; text-decoration: underline;">What does the :: operator do?</span><br><br>Detah &lt;ds&gt; does anyone have time to explain 1 line of code to me please.  specifically score.c L15 daemon::create()<br><br><span
+ style="color: rgb(0, 102, 0);">Cratylus &lt;ds&gt; hmm</span><br><br><span
+ style="color: rgb(0, 102, 0);">Cratylus &lt;ds&gt; the :: is the "scope resolution operator"</span><br
+ style="color: rgb(0, 102, 0);"><br style="color: rgb(0, 102, 0);"><span
+ style="color: rgb(0, 102, 0);">Cratylus &lt;ds&gt; that line says "in the file i inherited called daemon, run the create function"</span><br><br>Detah &lt;ds&gt; so to understand that line, I need to go to daemon.c and read the create() fun there?<br><br><span
+ style="color: rgb(0, 102, 0);">Cratylus &lt;ds&gt; yep</span><br><br>Detah &lt;ds&gt; ty<br><br><span
+ style="color: rgb(0, 102, 0);">Cratylus &lt;ds&gt; np</span><br></pre>
 <hr
  style="width: 100%; height: 2px; font-family: courier new,courier,monospace;">
 <pre style="font-family: courier new,courier,monospace;">Section 3: Intermud and channel stuff<br><br><br><span

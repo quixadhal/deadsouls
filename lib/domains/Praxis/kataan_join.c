@@ -32,13 +32,13 @@ void create() {
 }
 
 int preview() {
-    if((string)this_player()->query_class() != "child") {
+    if((string)this_player()->query_class() != "explorer") {
 	write("This is not for you.");
 	return 1;
     }
     say(this_player()->query_cap_name()+" seeks to learn about "
       "kataans.", this_player());
-    write("Welcome, child! ");
+    write("Welcome, explorer! ");
     write("Kataans are an ancient coven of evil, magical warriors skilled "
       "in the use of projectiles and stealth.  They are careful to do "
       "no acts which might be considered good.  Instead, the use the "
@@ -57,7 +57,7 @@ int become(string str) {
 	notify_fail("You cannot become that here.\n");
 	return 0;
     }
-    if((string)this_player()->query_class() != "child") {
+    if((string)this_player()->query_class() != "explorer") {
 	write("You are much too old to start learning our ways now!");
 	return 1;
     }

@@ -43,13 +43,13 @@ void create() {
 }
 
 int preview() {
-    if((string)this_player()->query_class() != "child") {
+    if((string)this_player()->query_class() != "explorer") {
 	write("This is not for you.\n");
 	return 1;
     }
     say(this_player()->query_cap_name()+" seeks to learn about fighter.", 
       this_player());
-    write("Welcome, child!");
+    write("Welcome, explorer!");
     write("Fighters are people whose only uniting belief is in combat as a "
       "form of art.  Some are great knights who fight for good wherever "
       "they go.  Others might be considered quite fiendish in some circles. "
@@ -69,7 +69,7 @@ int become(string str) {
 	notify_fail("You cannot become that here.\n");
 	return 0;
     }
-    if((string)this_player()->query_class() != "child") {
+    if((string)this_player()->query_class() != "explorer") {
 	write("You are much too old to start learning our ways now!");
 	return 1;
     }

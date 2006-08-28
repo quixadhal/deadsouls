@@ -1,4 +1,9 @@
----- 2.1r23 (unreleased) ---
+---- 2.1r26 (unreleased) ---
+- Added cambot to conference room.
+- Added commands: files, doctool, showfuns, createfix, findfun, pk.
+- Fixed a sockets bug in the driver (thanks to Zac@StarMUD)
+- Removed intergossip as a default enabled channel. Added dchat
+  as a default enabled channel.
 - Added Nimrod's recursive/numbered grep enhancements.
 - Added numerous back-compat funs and obs for TMI-2 porting.
 - Added numerous back-compat funs and obs for Nightmare 3 porting.
@@ -67,7 +72,6 @@
 - Fixed save problem in arches during shutdown.
 - COMPAT BUSTER: changed GetCustomPath and GetCustomCommand
   to query_custom_path and query_custom_command.
-- Added commands: files, doctool, showfuns, createfix.
 - Cleaned up strange formatting error in old sefun docs.
 - Added sefun: query_local_functions.
 

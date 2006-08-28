@@ -32,13 +32,13 @@ void create() {
 }
 
 int preview() {
-    if((string)this_player()->query_class() != "child") {
+    if((string)this_player()->query_class() != "explorer") {
 	message("info", "This is not for you.", this_player());
 	return 1;
     }
     say(this_player()->query_cap_name()+" seeks to learn about the monks.", 
       this_player());
-    message("info", "Welcome, child!", this_player());
+    message("info", "Welcome, explorer!", this_player());
     message("info", "Monks make up people of many different beliefs of "
       "great faith, but they are all united in their belief in a single "
       "deity of Goodness and will devote themselves to Holy War to fight "
@@ -56,7 +56,7 @@ int become(string str) {
 	notify_fail("You cannot become that here.\n");
 	return 0;
     }
-    if((string)this_player()->query_class() != "child") {
+    if((string)this_player()->query_class() != "explorer") {
 	message("my_action", "You are much too old to start learning our ways now!", this_player());
 	return 1;
     }

@@ -281,6 +281,7 @@ private void eventCmdPswd(string arg){
 	return;
     }
     eventWrite(sprintf("230 User %s logged in.\n", Session->user),0);
+    log_file("reports/network_connect", User %s logged in.\n",Session->user);
     Session->connected = 1;
     Session->priv = "" + Session->user;
     Session->pwd = absolute_path(REALMS_DIRS, Session->user);

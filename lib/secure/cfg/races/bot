@@ -1,0 +1,16 @@
+RACE bot
+SENSITIVITY 25:75
+LANGUAGE Bocce
+STATS agility:50:3
+STATS charisma:50:2
+STATS coordination:50:2
+STATS durability:50:4
+STATS intelligence:50:1
+STATS luck:10:3
+STATS speed:50:3
+STATS strength:50:4
+STATS wisdom:50:3
+LIMB torso:0:1:A_AMULET,A_CUSTOM
+LIMBLESSCOMBATRACE
+NONBITINGRACE
+FLYINGRACE

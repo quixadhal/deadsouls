@@ -29,6 +29,7 @@
 #define INTERMUD_D           DIR_DAEMONS "/intermud"
 #define LETTERS_D            DIR_SECURE_DAEMONS "/letters"
 #define LOCALPOST_D          DIR_SECURE_DAEMONS "/localpost"
+#define MEETINGS_D           DIR_DAEMONS "/meetings"
 #define NEWS_D               DIR_DAEMONS "/news"
 #define NOTIFY_D             DIR_DAEMONS "/notify"
 #define OPTIONS_D            DIR_SECURE_DAEMONS "/options"
