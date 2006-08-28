@@ -2,9 +2,9 @@
 
 inherit LIB_SENTIENT;
 
+
 int AdvanceDude(mixed arg);
 mapping advancement;
-
 int TalkFunc(){
     int rand1;
     string thing1, thing2, thing3, thing4, thing5;
@@ -26,7 +26,6 @@ int TalkFunc(){
     default :  eventForce("smile");
     }
 }
-
 static void create() {
     sentient::create();
     SetKeyName("dirk");
@@ -70,6 +69,10 @@ static void create() {
       19:(["title":"Quaestor","xp":1000000,"qp":285]),
       20:(["title":"Caesar","xp":2000000,"qp":450]),
     ]);
+}
+
+void init(){
+    ::init();
 }
 
 int AdvanceDude(mixed arg){
@@ -139,3 +142,10 @@ int AdvanceDude(mixed arg){
 	  "again once you have fulfilled them.");
     return 0;
 }
+
+string GetLevelTitle(int level){
+    if(!level) level = 1;
+    return advancement[level]["title"];
+}
+
+

@@ -654,7 +654,7 @@ varargs int eventDie(mixed agent) {
 	    if(GetBodyComposition()) ob->SetComposition(GetBodyComposition());
 	}
 	else { 
-	    if(GetRace() == "android") ob = new(LIB_BOT_CORPSE);
+	    if(GetRace() == "android" || GetRace() == "bot" ) ob = new(LIB_BOT_CORPSE);
 	    else ob = new(LIB_CORPSE);
 	    ob->SetCorpse(this_object());
 	}
@@ -1133,7 +1133,7 @@ varargs int eventDie(mixed agent) {
 		if(GetBodyComposition()) objict->SetComposition(GetBodyComposition());
 	    }
 	    else {
-		if(GetRace() == "android") objict = new(LIB_BOT_LIMB);
+		if(GetRace() == "android" || GetRace() == "bot") objict = new(LIB_BOT_LIMB);
 		else objict = new(LIB_LIMB);
 		objict->SetLimb(limb, GetCapName(), GetRace());
 		objict->SetId( ({ limb, limbname, "limb" }));
@@ -1171,7 +1171,7 @@ varargs int eventDie(mixed agent) {
 		if(GetBodyComposition()) ob->SetComposition(GetBodyComposition());
 	    }
 	    else {
-		if(GetRace() == "android") ob = new(LIB_BOT_LIMB);
+		if(GetRace() == "android" || GetRace() == "bot") ob = new(LIB_BOT_LIMB);
 		else ob = new(LIB_LIMB);
 		ob->SetLimb(limb, GetCapName(), GetRace());
 		ob->SetId( ({ limb, limbname, "limb" }));
@@ -1292,7 +1292,7 @@ varargs int eventDie(mixed agent) {
 	float h;
 
 	str = "";
-	exempt = ({"android","tree","plant"});
+	exempt = ({"bot","android","tree","plant"});
 
 	if(member_array(this_object()->GetRace(),exempt) == -1 &&
 	  !this_object()->GetUndead() ) {

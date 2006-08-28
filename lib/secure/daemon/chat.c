@@ -53,14 +53,6 @@ varargs int CanListen(object who, string canal){
 } 
 
 varargs int CanTalk(object who, string canal){
-    //tc("who: "+identify(who));
-    //tc("string: "+canal);
-    //tc("imud_privp(who): "+imud_privp(who));
-    //tc("syschans: "+identify(syschans));
-    //tc("archp(who): "+identify(archp(who)));
-    //tc("member_array(canal, local_chans): "+ member_array(canal, local_chans));
-    //tc("member_array(canal, syschans) != -1 && !archp(who): "+(member_array(canal, syschans) != -1 && !archp(who)));
-    //if(member_array(canal, syschans) != -1 && !archp(who)) return 0;
     if(RESTRICTED_INTERMUD == 0 || !RESTRICTED_INTERMUD) return 1;
     if(canal && member_array(canal, local_chans) != -1) return 1;
     else return imud_privp(who);
@@ -529,7 +521,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 		if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
 		if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 	    }
-	    if(!ignore && CanListen(listener,ch)) listener->eventPrint(tmp, MSG_CONV);
+	    if(!ignore && CanListen(listener,ch)) listener->eventPrint(tmp, MSG_CHAN);
 	    ignore = 0;
 	}
 	if( member_array(ob, obs) != -1 ) {
@@ -541,7 +533,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 		    if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
 		    if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 		}
-		if(!ignore && CanListen(ob,ch)) ob->eventPrint(tmp, MSG_CONV);
+		if(!ignore && CanListen(ob,ch)) ob->eventPrint(tmp, MSG_CHAN);
 		ignore = 0;
 	    }
 	}
@@ -605,7 +597,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 		if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
 		if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 	    }
-	    if(!ignore && CanListen(ob,ch)) ob->eventPrint(msg, MSG_CONV);
+	    if(!ignore && CanListen(ob,ch)) ob->eventPrint(msg, MSG_CHAN);
 	    ignore = 0;
 	    suspect ="";
 	    site = "";

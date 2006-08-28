@@ -20,6 +20,8 @@
 #define MSG_MSG_BOX  (1 << 12)                      /* display msg box */
 #define MSG_QUERY    (1 << 13)                      /* response to client */
 
+#define MSG_CHAN     (1 << 14)
+
 
 /* client command types */
 #define CMD_LOGIN    (1 << 0)                       /* login */

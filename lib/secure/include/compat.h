@@ -69,5 +69,6 @@
 #define create_door                     CreateDoor
 #define set_quest_points		SetQuestPoints
 #define query_quest_points		GetQuestPoints
+#define query_class                     GetClass
 
 #endif /* s_lpu_h */

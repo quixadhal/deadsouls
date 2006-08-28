@@ -19,6 +19,108 @@ Page</big></big></big><br>
 </div>
 <hr style="width: 100%; height: 2px;">
 <div style="text-align: left;"><br>
+<a name="25aug06"></a><span style="font-weight: bold;">25 August 06</span><br>
+<br>
+<span style="text-decoration: underline;">other-lib compat</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; This isn't something I've announced with great
+fanfare,<br>
+so I thought I'd give it a mention here. I'm working on lib<br>
+compatibility systems. The idea is that I'd like it to be<br>
+possible for people who have old areas they wrote for other<br>
+muds to be able to use those areas in DS with minimum pain.<br>
+&nbsp;&nbsp;&nbsp; There are two main ways to accomplish this:<br>
+<br>
+1) A translation system to turn old code to DS code<br>
+2) An interpretation system to read old code and use it as if it were
+DS code<br>
+<br>
+&nbsp;&nbsp;&nbsp; The first one is rather easier to do. I've put
+together<br>
+some lsed scripts that can be run to transmogrify Nightmare 3<br>
+code into Dead Souls 2 code. You can see this script in<br>
+/secure/scripts on the demo mud.<br>
+&nbsp;&nbsp;&nbsp; I've already translated Praxis from NM3 into DS2
+code.<br>
+You can <a href="http://dead-souls.net/javaclient/demo.html">log onto
+the demo mud</a> and check out /domains/Praxis<br>
+for yourself. I'm done with the basics there, and will be<br>
+seeing about getting the fancier stuff in there working.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The second one is harder. Getting funky old
+TMI-2/NM3/Skylib/LPUni<span
+ style="font-weight: bold; color: rgb(204, 0, 0);">*</span> <br>
+code to work natively on DS is a tall order. I've put together<br>
+a header file called compat.h which is enabled with the new<br>
+COMPAT_MODE define in config.h. This enables the lib to<br>
+read things like set_property as SetProperty, etc.&nbsp; You<br>
+can read this file on the demo mud, as /secure/include/compat.h<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; Even with that file, some of the scary old
+habits of<br>
+TMI-2 code break things. For example, there's no good way to<br>
+make set("foo","bar"); into SetFoo("bar"); using a preprocessor<br>
+define that I know of (please tell me if I'm wrong!). To get<br>
+around this kind of behavior, I've added a new sefun file:<br>
+/secure/sefun/legacy.c<br>
+<br>
+&nbsp;&nbsp;&nbsp; That file takes the hypergeneral contructors like
+set(),<br>
+add(), and query(), and parses them into code DS2 can more<br>
+properly understand. It's not a foolproof fix, but it's working<br>
+pretty well for a lot of objects.<br>
+<br>
+&nbsp;&nbsp;&nbsp; You can take a look at working TMI-2 code on the demo<br>
+mud in /domains/Fooland. The majority of stuff there still doesn't<br>
+work....it's still a work in progress. But type: <span
+ style="font-weight: bold;">goto /domains/Fooland/hall</span><br>
+and: <span style="font-weight: bold;">lightme 30</span> and <span
+ style="font-weight: bold;">about here</span> and you'll see for
+yourself that TMI-2 code<br>
+*can* work on DS2. Sometimes it'll just work, sometimes it needs<br>
+minor adjustments, but at least you won't have to do a drastic<br>
+rewrite of every file in your old domain.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Don't get me wrong, you obviously have a lot of work
+to<br>
+do if you're going to migrate to DS2 from another lib. Your<br>
+paths will be different, you may need to add some lines or remove some.<br>
+The idea isn't to have 100% drop-in compatibility with other libs.<br>
+<br>
+&nbsp;&nbsp;&nbsp; I mean, heck, you can't even do that with many muds<br>
+running the <span style="font-weight: bold; font-style: italic;">same</span>
+lib.<br>
+<br>
+&nbsp;&nbsp;&nbsp; No, the idea is to facilitate your migration. I want
+DS2 to be<br>
+a kind of Rosetta Stone for MudOS, a lib that people can use and <br>
+refer to in a way that is as close to MudOS lib agnostic as possible.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Of course, DGD or Cold or other driver based libs
+are beyond<br>
+the scope of my expertise. Maybe I can tackle those once we<br>
+have a unified MudOS paradigm.<br>
+<br>
+&nbsp;&nbsp;&nbsp; I don't expect to be able to do this for all MudOS
+libs,<br>
+either. Lima, for example, is so weird that I don't even know if<br>
+it's possible. The example objects and areas aren't enough for<br>
+me to base a translation engine on...so if you have a Lima<br>
+area you're not using, please donate it so I can us it as a<br>
+base for translation.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Remember, this is <span style="font-weight: bold;">*NOT*</span>
+in the regular distribution. Don't<br>
+try to get your old code to work on ds2.1. These capabilities<br>
+are currently (mostly) only available on the demo and devel muds.<br>
+&nbsp;&nbsp;&nbsp; Compat features will be more generally available in
+the next release.<br>
+<br>
+<span style="font-weight: bold; color: rgb(204, 0, 0);">*</span>I'm
+told that LPUni code is not TMI-2, it has "<span
+ style="font-style: italic;">TMI-II compatability</span> (sic)"<br>
+<br>
+<br>
 <a name="23aug06"></a><span style="font-weight: bold;">23 August 06</span><br>
 <br>
 <span style="text-decoration: underline;">Releases:</span><br>

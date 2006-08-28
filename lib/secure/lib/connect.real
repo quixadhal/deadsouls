@@ -29,6 +29,16 @@ int eventCheckPending(string str);
 void eventCompleteChar();
 void InputCre(string str);
 
+static string eventReadPassword(string nom){
+    string s1, mima;
+    string str = DIR_PLAYERS "/" + nom[0..0] + "/" + nom + __SAVE_EXTENSION__;
+    if( !str || !file_exists(str) )
+	str = DIR_CRES "/" + nom[0..0] + "/" + nom + __SAVE_EXTENSION__;
+    mima = read_matching_line(read_file(str), "Password \"");
+    sscanf(mima, "Password \"%s\"",s1);
+    return s1;
+}
+
 int CheckIp(){
     string my_ip = query_ip_number();
     int ips = 0;
@@ -53,7 +63,7 @@ varargs static void logon(mixed foo) {
     else welcome += ".\n";
 
     call_out((: eventTimeout :), LOGON_TIMEOUT);
-    if(mud_name() == "Dead Souls"){
+    if(mud_name() == "Dead Souls" || mud_name() == "Dead Souls Demo" ){
 	welcome += read_file(DS_WELCOME) || "Welcome to " + mud_name() + "!";
     }
     else {
@@ -125,17 +135,9 @@ static void InputName(string namen, string kill_me) {
 	Destruct();
 	return;
     }
-    if(rescue) unguarded( (: wipe_inv(name) :) );
+
     if( find_player(Name) ) NetDead = 1;
-    Player = (object)master()->player_object(Name);
-    if( !Player ) {
-	receive("\nIt seems some work is being done right now, try later.\n");
-	Destruct();
-	return;
-    }
-    if( (string)Player->GetRace() == "blob" ) {
-	raza = "human";
-    }
+
     if(lower_case(Name) == "guest"){
 	if( !NetDead ) eventEnterGame();
 	else eventReEnterGame(0);
@@ -159,7 +161,7 @@ static void InputPassword(string pass, string cap) {
 	return;
     }
 
-    control = (string)Player->GetPassword();
+    control = eventReadPassword(Name);
     if( control != crypt(pass, control) ) {
 	receive("\nInvalid password.\n");
 	if( ++CrackCount > MAX_PASSWORD_TRIES ) {
@@ -179,8 +181,19 @@ static void InputPassword(string pass, string cap) {
 	return;
     }
 
-    call_out( (: eventCheckPending, lower_case(Name) :), 3);
+    if(rescue) unguarded( (: wipe_inv(name) :) );
 
+    Player = (object)master()->player_object(Name);
+    if( !Player ) {
+	receive("\nIt seems some work is being done right now, try later.\n");
+	Destruct();
+	return;
+    }
+    if( (string)Player->GetRace() == "blob" ) {
+	raza = "human";
+    }
+
+    call_out( (: eventCheckPending, lower_case(Name) :), 3);
     if( !NetDead ) eventEnterGame();
     else eventReEnterGame(cap);
 }
