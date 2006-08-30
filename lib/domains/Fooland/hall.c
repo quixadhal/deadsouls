@@ -98,7 +98,6 @@ int read_book (string str) {
 }
  
 int eyes() {
-tc("foo1");
 	write ("The eyes of the old wizard look back at you! Suddenly, you\n"+
 "feel a tremendous force pulling you into the picture..\n") ;
 	this_player()->move_player("/domains/Fooland/tower1",
