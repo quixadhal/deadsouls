@@ -59,6 +59,7 @@ void create() {
 }
 
 void DeadMan(){
+    //    This breaks things.
     //    int tmptime = time();
     //    if(last_time + 60 < tmptime){
     //	object *clones = filter(objects(), (: inherits(LIB_ROOM,$1) :));

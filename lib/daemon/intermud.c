@@ -325,5 +325,11 @@ string GetMudName(string mud) {
 	return 1;
     }
 
+    int RawSend(string *packet){
+	if(!this_player() || !archp(this_player())) return 0;
+	eventWrite(packet);
+	return 1;
+    }
+
 #endif /* __PACKAGE_SOCKETS__ */
 

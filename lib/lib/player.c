@@ -28,7 +28,6 @@ private int TrainingPoints, TitleLength;
 /* *****************  /lib/player.c driver applies  ***************** */
 
 static void create() {
-    AddSave( ({ "TellHist", "Properties", "CarriedMass", "Muffed" }) );
     interactive::create();
     living::create();
 

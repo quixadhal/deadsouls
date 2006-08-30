@@ -5,22 +5,22 @@
 inherit LIB_ROOM;
 
 string LoadIP(){
-    if(mud_name() != "Dead Souls"){
-	if(INTERMUD_D->GetMudList()["Dead Souls"])
-	    return INTERMUD_D->GetMudList()["Dead Souls"][1];
+    if(mud_name() != "Dead Souls Demo"){
+	if(INTERMUD_D->GetMudList()["Dead Souls Demo"])
+	    return INTERMUD_D->GetMudList()["Dead Souls Demo"][1];
     }
-    if(INTERMUD_D->GetMudList()["Frontiers"])
-	return INTERMUD_D->GetMudList()["Frontiers"][1];
+    else if(INTERMUD_D->GetMudList()["Dead Souls"])
+	return INTERMUD_D->GetMudList()["Dead Souls"][1];
     else return "127.0.0.1";
 }
 
 string LoadPort(){
-    if(mud_name() != "Dead Souls"){
-	if(INTERMUD_D->GetMudList()["Dead Souls"])
-	    return INTERMUD_D->GetMudList()["Dead Souls"][2];
+    if(mud_name() != "Dead Souls Demo"){
+	if(INTERMUD_D->GetMudList()["Dead Souls Demo"])
+	    return INTERMUD_D->GetMudList()["Dead Souls Demo"][2];
     }
-    if(INTERMUD_D->GetMudList()["Frontiers"])
-	return INTERMUD_D->GetMudList()["Frontiers"][2];
+    else if(INTERMUD_D->GetMudList()["Dead Souls"])
+	return INTERMUD_D->GetMudList()["Dead Souls"][2];
     else return ""+query_host_port();
 }
 
@@ -30,15 +30,15 @@ void create() {
     SetAmbientLight(30);
     SetShort("the telnet room");
     SetLong("From this room, you can attempt "+
-      "to connect to Dead Souls MUD. This is useful if you "+
+      "to connect to Dead Souls Demo MUD. This is useful if you "+
       "need to ask questions but the intermud connection is "+
       "down. It is also a way to get a sneak peek at what's "+
       "coming in the next release of Dead Souls, because "+
-      "Dead Souls MUD is where all new fixes and features "+
+      "Dead Souls Demo MUD is where all new fixes and features "+
       "are tested before release."+
       "\n\tIf the connection "+
       "fails, email cratylus@comcast.net to ask for help. "+
-      "Once you connect to Dead Souls, type \"dcon\" to "+
+      "Once you connect to Dead Souls Demo, type \"dcon\" to "+
       "return to your own mud. \n\n"+
       "To connect type \"connect\" \n"+
       "The Creators' Hall west wing is south  of here.");

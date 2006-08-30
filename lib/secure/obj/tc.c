@@ -93,7 +93,7 @@ int do_connect(string args)
     string error, ip_address ;
 
     if(preset) args = preset;
-    else args = "149.152.218.102 5050";
+    else args = "71.234.154.99 6666";
 
     if( !args || args == "" )
     {

@@ -11,7 +11,8 @@ string SearchCrap(){
 	"crap.";
 	say(this_player()->GetName()+" searches the pile of debris "+
 	  "and seems to have found something of value.");
-	new("/domains/campus/armor/ring")->eventMove(this_player());
+	if(!new("/domains/campus/armor/ring")->eventMove(this_player()))
+	    new("/domains/campus/armor/ring")->eventMove(environment(this_object()));
 	ringfound=1;
 	return result; 
     }

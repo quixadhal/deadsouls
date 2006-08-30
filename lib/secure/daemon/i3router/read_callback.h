@@ -25,6 +25,7 @@ static void read_callback(int fd, mixed info){
     int i;
     trr("Received from fd("+fd+"), fd("+socket_address(fd)+")\n"+identify(info),((info[0] == "auth-mud-req" || info[0] == "auth-mud-reply") ? "magenta" : "green"));
     // Base info in a packet is of size 6.
+    if(grepp(info[0],"chan") && !grepp(info[0],"channel-listen")) log_file("router/packet_log",identify(info)+"\n");
     if(sizeof(info)<6 ||
       !stringp(info[0]) ||
       !intp(info[1]) || !stringp(info[2]) ||
@@ -80,6 +81,7 @@ static void read_callback(int fd, mixed info){
 	    info
 	  }));
 	trr("They have not done a startup-req for fd="+fd+", mudname="+info[2]);
+	log_file("router/server_log",timestamp()+" They have not done a startup-req for fd="+fd+", mudname="+info[2]+"\n");
 	return;
     }
     // at this point, I guess it has a valid origin and stuff
@@ -131,7 +133,7 @@ static void read_callback(int fd, mixed info){
 	// Something meant for the router but not handled by now!
 	send_error(info[2],info[3],"not-imp","Unknown command sent to router: "+info[0],info);
 	trr("unhandled packet meant for router: "+info[0],"red");
-	log_file("server","UNHANDLED PACKET:\n"+identify(info)+"\n");
+	log_file("router/server_log","UNHANDLED PACKET:\n"+identify(info)+"\n");
 	return;
     }
     // at this point, I guess you should forward it to the destination...

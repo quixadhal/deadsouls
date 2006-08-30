@@ -59,7 +59,6 @@ int SetRecordingFile(string str){
 	return 1;
     }
     filename = last_string_element(str);
-    gstr2 = str;
     if(!check_privs(this_player(),str) || !unguarded( (: write_file(gstr2,"") :) )){
 	write("That is not a valid path.");
 	return 1;
@@ -81,7 +80,8 @@ void catch_tell( string message ){
 }
 
 void receive_message(string s1, string s2){
-    gstr = s2;
+    gstr = replace_string(s2,"%^CYAN%^","");
+    gstr = replace_string(gstr,"%%^^CYAN%%^^","");
     if(recording) unguarded( (: write_file(recfile,timestamp()+": "+gstr+"\n") :) );
 }
 
@@ -111,8 +111,8 @@ int eventTurnOn(object ob){
 	return 0;
     }
     if(!recording){
-	write("You turn on the camcorder.");
-	say(this_player()->GetName()+" turns on a camcorder.");
+	write("You turn on the cambot.");
+	say(this_player()->GetName()+" turns on a cambot.");
 	SetShort(baseshort+" %^BOLD%^RED%^%^FLASH%^recording%^RESET%^");
 	if(!sizeof(recfile)) recfile = truncate(generate_tmp(),2)+".txt";
 	write("Recording file is: "+recfile);
@@ -133,8 +133,8 @@ varargs mixed eventTurnOff(string str){
 	return 0;
     }
     if(recording){
-	write("You turn off the camcorder.");
-	say(this_player()->GetName()+" turns off a camcorder.");
+	write("You turn off the cambot.");
+	say(this_player()->GetName()+" turns off a cambot.");
 	SetShort(baseshort);
 	recording = 0;
 	return 1;

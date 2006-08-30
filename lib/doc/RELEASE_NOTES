@@ -1,4 +1,10 @@
 ---- 2.1r26 (unreleased) ---
+- Added well-door system.
+- Changed stat command to handle economies that do not have gold.
+- Idle times now report in a human readable format.
+- SERVICES_D: unk-src error now triggers an INTERMUD_D reload.
+- Router verified to accept over 400 separate mud connections.
+- Default connection mud for the telnet room is now Dead Souls Demo.
 - Added cambot to conference room.
 - Added commands: files, doctool, showfuns, createfix, findfun, pk.
 - Fixed a sockets bug in the driver (thanks to Zac@StarMUD)
@@ -44,7 +50,7 @@
 - Added logon notification channel <connections>.
 - Added A_CUSTOM as an all-purpose armor type that can be worn
   on most body parts.
-- Added channel logging to the router.
+- Enhanced channel and event logging to the router.
 - Fixed potential channel spoof and channel admin problems
   in the router.
 - Modified various commands to deal with Load-Addled Game Syndrome.

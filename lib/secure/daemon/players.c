@@ -53,6 +53,11 @@ void AddPlayerInfo(mixed arg) {
 	if(last(arg,2) != ".o") arg += ".o";
 	if(!grepp(arg,"/")){
 	    string initial = arg[0..0];
+	    if(!directory_exists(DIR_ESTATES))
+		mkdir(DIR_ESTATES);
+	    if(!directory_exists(DIR_ESTATES+"/"+initial))
+		mkdir(DIR_ESTATES + "/"+initial);
+	    mkdir(DIR_ESTATES + "/"+initial+"/"+truncate(arg,2));
 	    player_save_file = DIR_CRES +"/"+initial+"/"+arg;
 	    if(!file_exists(player_save_file))
 		player_save_file = DIR_PLAYERS +"/"+initial+"/"+arg;

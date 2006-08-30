@@ -39,16 +39,13 @@ private static function Protect;
 private static mapping WornItems;
 private static class MagicProtection *Protection;
 static private int HeartModifier = 0;
-float MoJo;
+private static float MoJo;
 private static string PoliticalParty, BodyComposition;
 private static int Pacifist, rifleshot_wounds, gunshot_wounds, globalint1;
 string *ExtraChannels;
 mixed Agent;
 
 static void create() {
-    AddSave( ({ "Pacifist", "BodyComposition", "HealthPoints", "MagicPoints", "ExperiencePoints", "QuestPoints","StaminaPoints", "Undead",
-	"Limbs", "MissingLimbs", "WornItems" }) );
-    AddSave(({"ExtraChannels","MoJo", "PoliticalParty", "rifleshot_wounds", "gunshot_wounds" }));
     MoJo = 0;
     PoliticalParty = "UNDECIDED";
     rifleshot_wounds = 0;
