@@ -9,7 +9,8 @@ string SearchFun(){
 	tell_room(this_object(),this_player()->GetName()+ 
 	  " searches the room and finds something ",
 	  ({ this_player() }) );
-	new("/domains/town/armor/newbie_ring")->eventMove(this_object());
+	if(!new("/domains/town/armor/newbie_ring")->eventMove(this_player()))
+	    new("/domains/town/armor/newbie_ring")->eventMove(this_object());
 	found = 1;
 	return result;
     }

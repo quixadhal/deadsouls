@@ -69,7 +69,9 @@ void init(){
 string ReadSign(){
     string ret = "This is a special room for the orderly administration of meetings. It uses a special podium to manage speaking, and prevents the receipt of channel messages. It also prevents teleporting in under some circumstances. If you are attending a meeting here, please try to be polite and avoid being disruptive. You are here by choice, so if you're bored, feel free to leave quietly. Some useful commands in this room:\n";
     ret += "raise : indicates you wish to speak.\n";
-    ret += "agenda : displays the current agenda.\n";
+    ret += "agenda : displays the current agenda.\n\n";
+    ret += "Remember! Channels and come commands like \"call\" will ";
+    ret += "not work here!";
     return ret;
 }
 

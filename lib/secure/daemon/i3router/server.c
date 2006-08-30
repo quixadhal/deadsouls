@@ -35,7 +35,7 @@ static private mapping connected_muds;
 // muds that have successfully done a startup
 // (key=mudname, value=fd)
 //static private
-mapping listening;
+static private mapping listening;
 // list of muds listening to each channel
 // (key=chan name, value=mud array)
 
@@ -54,7 +54,6 @@ int mudinfo_update_counter; // Similar to channel_update_counter
 
 // Prototypes
 void write_data(int fd, mixed data);
-void close_connection(int fd);
 static mapping muds_on_this_fd(int fd);
 static mapping muds_not_on_this_fd(int fd);
 static void broadcast_data(mapping targets, mixed data);
@@ -109,23 +108,45 @@ static void broadcast_data(mapping targets, mixed data);
 // trrging stuff...
 mapping query_mudinfo(){ validate(); return copy(mudinfo); }
 mapping query_mud(string str){ validate(); return copy(mudinfo[str]); }
-void get_info() {
-    mixed *socket_stat = socket_status();
-    string socks = "";
-    int socknum = 0;
-    //tc("previous ob: "+identify(previous_object()));
-    //tc("previous obs: "+identify(previous_object(-1)),"yellow");
+mapping query_connected_muds(){ validate(); return copy(connected_muds); }
+mapping query_socks(){ validate(); return copy(sockets); }
+
+mapping query_connected_fds(){
+    mapping RetMap = ([]);
     validate();
-    foreach(mixed element in socket_stat){
-	if(intp(element[0]) && element[0] != -1 && !grepp(element[3],"*") &&
-	  last_string_element(element[3],".") == itoa(router_port)) {
-	    socks += itoa(element[0]) + " ";
-	    socknum++;
-	}
-	//tc("element: "+identify(element));
-	//tc("element[0]: "+identify(element[0]));
-	//tc("typeof(element[0]): "+ typeof(element[0]));
+    foreach(mixed key, mixed val in connected_muds){
+	RetMap[val] = key;
     }
+    return copy(RetMap);
+}
+
+int *open_socks(){
+    int *ret = ({});
+    validate();
+    foreach(mixed element in socket_status()){
+	if(intp(element[0]) && element[0] != -1 && !grepp(element[3],"*") &&
+	  last_string_element(element[3],".") == router_port) {
+	    ret += ({ element[0] });
+	}
+    }
+    return ret;
+}
+
+int clean_socks(){
+    int *socky = open_socks();
+    int *conn_socky = keys(query_connected_fds());
+    foreach(int fd in socky){
+	if(member_array(fd, conn_socky) == -1) close_connection(fd);
+    }
+    return sizeof(open_socks());
+}
+
+void get_info() {
+    mixed *socky = open_socks();
+    string socks = implode(socky, " ");
+    int socknum = sizeof(socky);
+    validate();
+
     socks += "\nTotal number of connected muds: "+socknum+"\n";
     write_file ("/secure/tmp/info.txt",
       "router_name: "+router_name+
@@ -148,6 +169,7 @@ void get_info() {
 void clear(){ 
     string mudname; 
     validate();
+    log_file("router/server_log",timestamp()+" Clearing all mud data.\n"); 
     foreach(mudname in keys(mudinfo)) remove_mud(mudname); 
 }
 
@@ -161,6 +183,7 @@ string SetRouterName(string str){
     //tc("router_name: "+router_name);
     router_name = str;
     //tc("router_name: "+router_name);
+    log_file("router/server_log",timestamp()+" setting router name to: "+str+"\n"); 
     save_object(SAVE_ROUTER);
     return router_name;
 }
@@ -173,6 +196,7 @@ string GetRouterIP(){
 string SetRouterIP(string str){
     validate();
     router_ip = str;
+    log_file("router/server_log",timestamp()+" setting router IP to: "+str+"\n");
     save_object(SAVE_ROUTER);
     return router_ip;
 }
@@ -185,6 +209,7 @@ string GetRouterPort(){
 string SetRouterPort(string str){
     validate();
     router_port = str;
+    log_file("router/server_log",timestamp()+" setting router port to: "+str+"\n");
     save_object(SAVE_ROUTER);
     return router_port;
 }
@@ -197,6 +222,7 @@ string *GetRouterList(){
 varargs string *SetRouterList(string *str){
     string tmp;
     validate();
+    return router_list;
     if(!strsrch(router_name,"*")) tmp = router_name;
     else tmp = "*"+router_name;
     if(!str || !sizeof(str)){
@@ -205,6 +231,7 @@ varargs string *SetRouterList(string *str){
 	return router_list;
     }
     router_list = ({ str });
+    log_file("router/server_log",timestamp()+" setting router list to: "+identify(router_list)+"\n");
     save_object(SAVE_ROUTER);
     return router_list;
 }
@@ -223,6 +250,7 @@ string *GetBannedMuds(){
 string *AddBannedMud(string str){
     validate();
     banned_muds += ({ str });
+    log_file("router/server_log",timestamp()+" "+str+" has been BANNED\n");
     save_object(SAVE_ROUTER);
     return banned_muds;
 }
@@ -230,6 +258,7 @@ string *AddBannedMud(string str){
 string *RemoveBannedMud(string str){
     validate();
     banned_muds -= ({ str });
+    log_file("router/server_log",timestamp()+" "+str+" has been unbanned.\n");
     save_object(SAVE_ROUTER);
     return banned_muds;
 }

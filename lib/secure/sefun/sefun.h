@@ -233,5 +233,6 @@ varargs int minutes(int x);
 varargs string season(int x);
 string query_time();
 varargs int hour(int x);
+varargs string time_elapsed(int arg1, int arg2);
 
 #endif /* l_sefun_h */

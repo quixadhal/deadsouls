@@ -17,7 +17,7 @@ void eventReceiveWhoReply(mixed *packet) {
     if( !packet[5] || !(ob = find_player(convert_name(packet[5]))) ) return;
     list = "%^MAGENTA%^Remote who information from " + packet[2] + ":%^RESET%^\n";
     foreach(who in packet[6]) 
-    list +=  who[0] + " (" + who[1] + " idle): " + who[2] +"\n";
+    list +=  who[0] + " (" + time_elapsed(who[1]) + " idle): " + who[2] +"\n";
     ob->eventPrint(list);
     tn("eventReceiveWhoReply: "+identify(packet),"blue");
 }

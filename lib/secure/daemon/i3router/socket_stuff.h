@@ -63,6 +63,7 @@ static void close_connection(int fd){
     int sockerr;
     map_delete(sockets, fd);
     sockerr = socket_close(fd);
+    trr("closing socket:"+fd);
     trr("closing sockerr:"+sockerr);
 }
 
