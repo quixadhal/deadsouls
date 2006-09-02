@@ -1,0 +1,7 @@
+This is where real grid rooms should go. They should have the name in the
+following format:
+x,y.grid.c
+where x,y is the grid coordinates of the real room. Any rooms that the
+grid server can't find here gets cloned from the virtual room.
+You can store other rooms here also if you want to, although we kinda
+recommend that you not.

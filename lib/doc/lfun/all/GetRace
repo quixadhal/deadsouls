@@ -1,0 +1,38 @@
+GETRACE
+
+NAME
+        GetRace()
+
+
+
+SYNOPSIS
+        string GetRace()
+
+
+
+DESCRIPTION
+        Returns the creature's race.
+
+
+
+EXAMPLES
+        present("Spock", environment(this_player()))->GetRace()
+
+
+
+LOCATION
+        /lib/body
+/lib/race
+/lib/std/corpse
+/lib/std/limb
+
+
+SEE ALSO
+        GetClass
+
+
+
+Author
+        Cratylus
+
+

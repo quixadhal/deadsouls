@@ -10,5 +10,6 @@ float percent(mixed numerator, mixed denominator) {
     else a = (floatp(numerator) ? numerator : to_float(numerator));
     if(!floatp(denominator) && !intp(denominator)) return 0.0;
     else b = (floatp(denominator) ? denominator : to_float(denominator));
+    if((b < 1 && b > -1) || !b || b == 0 || b == 0.0 ) return 0.0;
     return ((a/b)*100);
 }

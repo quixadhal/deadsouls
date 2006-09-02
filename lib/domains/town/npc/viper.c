@@ -5,11 +5,11 @@ inherit LIB_SENTIENT;
 
 static void create() {
     sentient::create();
-    SetKeyName("snake");
-    SetId( ({"garter snake", "reptile"}) );
-    SetAdjectives( ({"small", "harmless", "garter", "black", "black and yellow", "yellow and black"}) );
-    SetShort("a garter snake");
-    SetLong("This is a small, harmless reptile, about 9 inches long. It is black with a few yellow stripes along its length. This snake enjoys eating garden pests.");
+    SetKeyName("viper");
+    SetAdjectives( ({"dangerous", "venomous", "pit"}) );
+    SetId( ({"snake", "reptile"}) );
+    SetShort("a pit viper");
+    SetLong("This is a thickly-built snake, about three feet long, with a brown and black pattern along its muscular body. A member of the family viperidae, it is a class of snake known for the deadliness of its venom.");
     SetAutoStand(0);
     SetPosition(POSITION_LYING);
     SetLevel(1);

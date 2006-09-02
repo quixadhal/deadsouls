@@ -15,9 +15,17 @@ mixed cmd(string str) {
     mixed mud;
     object ob, machine;
     int i, maxi;
-    string who, msg, tmp, tmp2, machine_message;
+    string who, msg, tmp, tmp2, machine_message, retname;
 
     if(!str) return notify_fail("Syntax: <tell [who] [message]>\n");
+
+    if(str == "hist" || str == "history"){
+	string ret = "Your tell history: \n\n"; 
+	ret += implode(this_player()->GetTellHistory(),"\n");
+	print_long_string(this_player(), ret);
+	return 1;
+    }
+
     if(!creatorp(this_player()) && this_player()->GetMagicPoints() < 15) {
 	write("You lack sufficient magic to tell to anyone right now.");
 	return 1;
@@ -46,6 +54,7 @@ mixed cmd(string str) {
 	maxi = sizeof(words = explode(str, " "));
 	who = 0;
 	for(i=0; i<maxi; i++) {
+	    retname = words[0];
 	    if(ob=find_living(tmp=convert_name(implode(words[0..i], " ")))) {
 		who = tmp;
 		if(i+1 < maxi) msg = implode(words[i+1..maxi-1], " ");
@@ -54,7 +63,13 @@ mixed cmd(string str) {
 	    }
 	}
 	if(!who) {
-	    if(!mud) return notify_fail("Tell whom what?\n");
+	    if(!mud){
+		words -= ({ retname });
+		msg = implode(words," ");
+		this_player()->eventTellHist("You tried to tell "+retname+": "+
+		  "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
+		return notify_fail("Tell whom what?\n");
+	    }
 	    else return notify_fail(mud_name()+" is not aware of that mud.\n");
 	}
 	if(msg == "") return notify_fail("What do you wish to tell?\n");
@@ -84,12 +99,17 @@ mixed cmd(string str) {
 	}
 	if( (err = (mixed)this_player()->CanSpeak(ob, "tell", msg)) != 1){
 	    if(ob && !creatorp(ob)) this_player()->AddMagicPoints(15);
+	    this_player()->eventTellHist("You tried to tell "+retname+": "+
+	      "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
 	    return err || "Tell whom what?";
 	}
 	if( ob->GetInvis() && creatorp(ob) && !archp(this_player()) ) {
-	    ob->eventPrint("%^BLUE%^%^BOLD%^" +
-	      (string)this_player()->GetName() + " unknowingly "
-	      "tells you, %^RESET%^\"" + msg + "\"");
+	    string inv_ret = "%^BLUE%^%^BOLD%^" + (string)this_player()->GetName() + 
+	    " unknowingly tells you, %^RESET%^\"" + msg + "\"";
+	    ob->eventPrint(inv_ret);
+	    ob->eventTellHist(inv_ret);
+	    this_player()->eventTellHist("You tried to tell "+retname+": "+
+	      "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
 	    return "Tell whom what?";
 	}
 	else this_player()->eventSpeak(ob, TALK_PRIVATE, msg);

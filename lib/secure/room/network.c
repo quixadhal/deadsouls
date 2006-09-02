@@ -12,10 +12,12 @@ static void create() {
       "noisy and uncomfortable location, just like network rooms all around "
       "the world. It is here for debugging and troubleshooting purposes, so "
       "if that's not what you're doing, you should probably leave. " 
-      "The arch room is above. The router room is south.");
+      "The arch room is above. The router room is south. "
+      "The catch_tell room is east.");
     SetExits( ([
+	"south" : "/secure/room/router",
 	"up" : "/secure/room/arch",
-	"south" : "/secure/room/router.c",
+	"east" : "/domains/default/room/catchtell.c",
       ]) );
 
 }

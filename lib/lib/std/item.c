@@ -31,6 +31,7 @@ inherit LIB_WEAPON;
 inherit LIB_MONEY;
 
 private int RetainOnDeath, nocondition;
+private string QuestId = "";
 
 /* ******************** item.c attributes ******************** */
 string GetExternalDesc() {
@@ -54,6 +55,15 @@ string GetExternalDesc() {
 
 int SetNoCondition(int i){
     nocondition = i;
+}
+
+string SetQuestId(string name){
+    QuestId = name;
+    return QuestId;
+}
+
+string GetQuestId(){
+    return QuestId;
 }
 
 string GetItemCondition() {
@@ -135,6 +145,7 @@ static int Destruct() {
 }
 
 int eventMove(mixed dest) {
+    if(!this_object()) return 0;
     if( !environment() && GetWorn() ) {
 	mixed array limbs = GetWorn();
 

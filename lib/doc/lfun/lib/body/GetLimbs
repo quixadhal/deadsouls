@@ -1,0 +1,24 @@
+GETLIMBS
+
+NAME
+        GetLimbs()
+
+SYNOPSIS
+        string array GetLimbs()
+
+DESCRIPTION
+        Returns a creature's existing limbs.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        GetMissingLimbs
+
+Author
+        Cratylus
+

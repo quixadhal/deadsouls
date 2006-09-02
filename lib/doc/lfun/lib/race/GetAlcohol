@@ -1,0 +1,36 @@
+GETALCOHOL
+
+NAME
+        GetAlcohol()
+
+
+
+SYNOPSIS
+        int GetAlcohol()
+
+
+
+DESCRIPTION
+        Returns the alcohol level of the creature.
+
+
+
+EXAMPLES
+        present("wino",environment(this_player()))->GetAlcohol()
+
+
+
+LOCATION
+        /lib/body
+/lib/race
+
+
+SEE ALSO
+        SetAlcohol
+
+
+
+Author
+        Cratylus
+
+

@@ -1,0 +1,37 @@
+GETFINGERS
+
+NAME
+        GetFingers()
+
+
+
+SYNOPSIS
+        LIB_BODY: int GetFingers(string limb) LIB_ARMOR: int GetFingers()
+
+
+
+DESCRIPTION
+        For creatures, returns the number of fingers on the given limb. For armor, returns the number of fingers required to wear the item.
+
+
+
+EXAMPLES
+         
+
+
+
+LOCATION
+        /lib/body
+/lib/std/armor
+/lib/std/worn_storage
+
+
+SEE ALSO
+        AddFingers
+
+
+
+Author
+        Cratylus
+
+

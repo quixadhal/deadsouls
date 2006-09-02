@@ -30,7 +30,7 @@ mapping GetSpellBook() {
     return copy(SpellBook);
 }
 
-static void SetSpellBook(mapping book) {
+void SetSpellBook(mapping book) {
     SpellBook = book;
 }
 

@@ -1,0 +1,24 @@
+SETDRAINABLE
+
+NAME
+        SetDrainable()
+
+SYNOPSIS
+        int SetDrainable(int i)
+
+DESCRIPTION
+        Sets whether a battery actually loses power over time or not.
+
+EXAMPLES
+        For an everlasting battery: SetDrainable(0)
+
+LOCATION
+        /lib/battery.c
+
+
+SEE ALSO
+        GetDrainable, SetDrainRate, GetDrainRate
+
+Author
+        Cratylus
+

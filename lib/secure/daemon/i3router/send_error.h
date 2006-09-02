@@ -5,6 +5,7 @@ static void send_error(string mud, string user, string errcode, string errmsg, m
 	trr("Can't send error to "+mud+" because they're not connected.");
 	return;
     }
+    log_file("router/server_log",timestamp()+" Sending error to "+mud+": "+errmsg+"\n");
     write_data(connected_muds[mud],({
 	"error",
 	5,
@@ -12,7 +13,6 @@ static void send_error(string mud, string user, string errcode, string errmsg, m
 	0,
 	mud, // mud name
 	user, // user name
-	0,
 	errcode,
 	errmsg,
 	info

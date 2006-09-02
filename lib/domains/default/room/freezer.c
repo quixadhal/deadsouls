@@ -4,8 +4,8 @@
 
 inherit LIB_ROOM;
 
-static private object *Old;
 
+static private object *Old;
 void create() {
     room::create();
     SetNoClean(1);
@@ -18,7 +18,6 @@ void create() {
     call_out("clean_room", MAX_NET_DEAD_TIME);
     SetNoModify(1);
 }
-
 static void clean_room() {
     object *clean_me;
     object ob;
@@ -34,4 +33,7 @@ static void clean_room() {
     Old = all_inventory() - clean_me;
     foreach(ob in clean_me) ob->eventDestruct();
     call_out((: clean_room :), MAX_NET_DEAD_TIME);
+}
+void init(){
+    ::init();
 }

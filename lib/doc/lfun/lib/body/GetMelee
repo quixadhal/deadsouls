@@ -1,0 +1,24 @@
+GETMELEE
+
+NAME
+        GetMelee()
+
+SYNOPSIS
+        int GetMelee()
+
+DESCRIPTION
+        Returns whether a creature is capable of unarmed combat. If this returns 0, the creature is most likely extremely ineffective without a weapon.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+         
+
+Author
+        Cratylus
+

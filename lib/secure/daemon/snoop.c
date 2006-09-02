@@ -55,7 +55,7 @@ void eventLoadRogues(){
 
 int CheckBot(string str){
     object cloan, foo;
-    int allset, already_watched = 0;
+    int allset, err, already_watched = 0;
     string *immune;
     string name;
 
@@ -79,7 +79,7 @@ int CheckBot(string str){
 	cloan=new("/secure/obj/snooper");
 	cloan->eventStartSnoop(str);
     }
-    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+    err = catch(unguarded( (: save_object, SAVE_SNOOP, 1 :) ));
     return 1;
 }
 
@@ -243,14 +243,15 @@ int ReportReconnect(string str){
     return 0;
 }
 
-int Report(){
+string Report(){
+    string ret = "";
     if( !((int)master()->valid_apply(({ PRIV_SECURE }))) ){
 	return 0;
     }
-    write("Watchers: "+identify(Watchers)+"\n");
-    write("snoopers: "+identify(snoopers)+"\n");
-    write("snooped: "+identify(snooped)+"\n");
-    write("monitored: "+identify(monitored)+"\n");
-    return 1;
+    ret+="Watchers: "+identify(Watchers)+"\n";
+    ret+="snoopers: "+identify(snoopers)+"\n";
+    ret+="snooped: "+identify(snooped)+"\n";
+    ret+="monitored: "+identify(monitored)+"\n";
+    return ret;
 }
 

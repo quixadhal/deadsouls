@@ -1,0 +1,47 @@
+unalias prac
+unalias eq
+unalias where 
+unalias inf
+unalias sc
+unalias practice 
+unalias trophy
+alias start goto /domains/campus/room/start
+alias obj cd /realms/cratylus/area/obj
+alias arm cd /realms/cratylus/area/armor
+alias armor cd /realms/cratylus/area/armor
+alias weap cd /realms/cratylus/area/weap
+alias weapon cd /realms/cratylus/area/weap
+alias npc cd /realms/cratylus/area/npc
+alias room cd /realms/cratylus/area/room
+alias door cd /realms/cratylus/area/doors
+alias town cd /domains/town
+alias tobj cd /domains/town/obj
+alias tarm cd /domains/town/armor
+alias tarmor cd /domains/town/armor
+alias tweap cd /domains/town/weap
+alias tweapon cd /domains/town/weap
+alias tnpc cd /domains/town/npc
+alias troom cd /domains/town/room
+alias tdoor cd /domains/town/doors
+alias camp cd /domains/campus/obj
+alias cobj cd /domains/campus/obj
+alias carm cd /domains/campus/armor
+alias carmor cd /domains/campus/armor
+alias cweap cd /domains/campus/weap
+alias cweapon cd /domains/campus/weap
+alias cnpc cd /domains/campus/npc
+alias croom cd /domains/campus/room
+alias cdoor cd /domains/campus/doors
+alias ige intergossipemote $*
+alias ice intercreemote $*
+alias ce creemote $*
+alias ae adminemote $*
+alias err tail /log/runtime
+alias perr tail /log/player_errors
+alias area cd /realms/cratylus/area/
+alias cs codesay $*
+alias sec cd /secure
+alias sef cd /secure/sefun
+alias aw adminemote waves.
+alias cw creemote waves.
+alias welcome ds hi, $*. you can use this channel to ask questions. it's an intermud channel that dead souls muds listen to.

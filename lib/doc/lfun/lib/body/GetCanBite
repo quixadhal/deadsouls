@@ -1,0 +1,24 @@
+GETCANBITE
+
+NAME
+        GetCanBite()
+
+SYNOPSIS
+        int GetCanBite()
+
+DESCRIPTION
+        Returns whether the creature is permitted to bite during combat. This may be overridden by the race settings, if it is not a "biting race".
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+         
+
+Author
+        Cratylus
+

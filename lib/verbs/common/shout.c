@@ -12,10 +12,10 @@
 #include <talk_type.h>
 #include "include/shout.h"
 
-inherit LIB_DAEMON;
+inherit LIB_VERB;
 
 static void create() {
-    daemon::create();
+    verb::create();
     SetNoClean(1);
     parse_init();
     parse_add_rule("shout", "");
@@ -29,7 +29,8 @@ mixed can_shout_str(string str) {
     string lang;
 
     if( !str ) return 0;
-    lang = (string)this_player()->GetNativeLanguage() || "english";
+    lang = (string)this_player()->GetDefaultLanguage() || 
+    (string)this_player()->GetNativeLanguage();
     return can_shout_in_wrd_str(lang, str);
 }
 
@@ -46,7 +47,8 @@ mixed do_shout() { return 1; }
 mixed do_shout_str(string str) {
     string lang;
 
-    lang = (string)this_player()->GetNativeLanguage() || "english";
+    lang = (string)this_player()->GetDefaultLanguage() || 
+    (string)this_player()->GetNativeLanguage();
     return do_shout_in_wrd_str(lang, str);
 }
 

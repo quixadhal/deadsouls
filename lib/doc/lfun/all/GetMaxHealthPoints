@@ -1,0 +1,39 @@
+GETMAXHEALTHPOINTS
+
+NAME
+        GetMaxHealthPoints()
+
+
+
+SYNOPSIS
+        varargs int GetMaxHealthPoints(string limb)
+
+
+
+DESCRIPTION
+        Returns a creature's maximum health level. Their normal healing process will not increase their health beyond this point.
+
+
+
+EXAMPLES
+         
+
+
+
+LOCATION
+        /lib/body
+/lib/combat
+/lib/living
+/lib/npc
+/lib/race
+
+
+SEE ALSO
+        SetMaxHealthPoints, SetHealthPoints, GetHealthPoints
+
+
+
+Author
+        Cratylus
+
+

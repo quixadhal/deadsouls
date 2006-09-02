@@ -1,0 +1,24 @@
+GETEQUIPPEDLIMBS
+
+NAME
+        GetEquippedLimbs()
+
+SYNOPSIS
+        string array GetEquippedLimbs()
+
+DESCRIPTION
+        Returns an array of the limbs possessed by a creature that are currently wearing or wielding something.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        GetWorn
+
+Author
+        Cratylus
+

@@ -1,0 +1,24 @@
+RESTORELIMB
+
+NAME
+        RestoreLimb()
+
+SYNOPSIS
+        varargs int RestoreLimb(string limb, int recurse)
+
+DESCRIPTION
+        This is the function that should be used to put tail back on something that used to have a tail and no longer does because it was severed. Using AddLimb() for that purpose is not recommended. If the optional argument "recurse" is a positive integer, the function will restore the limb and anything distal to it. If the limb to be restored is attached to a limb that does not exist, the function will fail.
+
+EXAMPLES
+        To restore the arm plus its children (in this case, a hand): RestoreLimb("right arm",1) . RestoreLimb("right arm") will restore the arm only.
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        RemoveLimb, DestLimb, AddLimb
+
+Author
+        Cratylus
+

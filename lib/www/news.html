@@ -19,6 +19,621 @@ Page</big></big></big><br>
 </div>
 <hr style="width: 100%; height: 2px;">
 <div style="text-align: left;"><br>
+<a name="30aug06"></a><span style="font-weight: bold;">30 August 06</span><br>
+<br>
+<span style="text-decoration: underline;">alpha code</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; I've decided to make alpha code available for
+download.<br>
+Having others poke at my code before official releases might<br>
+be nice, and I want to see if that's a workable model for<br>
+doing things. Alpha code will not come with patches...that<br>
+is, if you want to try out alpha code, you have to download<br>
+the whole deal, not upgrade from previous versions.<br>
+<br>
+&nbsp;&nbsp;&nbsp; This is because I don't want people to apply alpha<br>
+patches to their production muds and then flip out because<br>
+the alpha code doesn't work right.<br>
+<br>
+&nbsp;&nbsp;&nbsp; If that suits you, you can download from: <a
+ href="http://dead-souls.net/code/alpha/">http://dead-souls.net/code/alpha/</a><br>
+<br>
+<span style="text-decoration: underline;">distribution packages</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; The default 2.0r26 and 2.1 package files have changed<br>
+somewhat. They now have a "b" added to the filename to <br>
+reflect this change. Basically, each distro is as it was, <br>
+except that intergossip and intercre are no longer <br>
+enabled by default for creators.<br>
+<br>
+&nbsp;&nbsp;&nbsp; It's a minor change, and I didn't want to go through
+the<br>
+hassle of a whole new version change for this one thing, so<br>
+I expect the filename change will suffice to let people<br>
+know...if they even care.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The change is due to the situation on the router.
+I've been<br>
+absolutely loath to start banning people or muds, except<br>
+where I just have no other alternative. In removing these<br>
+two channels as default, I feel I have performed my due<br>
+diligence in avoiding newbies getting trashed or offended<br>
+on the yatmim router.<br>
+<br>
+&nbsp;&nbsp;&nbsp; It's a unique situation, in that many of the
+"offenders"<br>
+that have been causing problems on the router seem to<br>
+be genuinely unaware of the rules, and sometimes even<br>
+unaware of the router not being the same as the old one.<br>
+I just don't have time to educate every ignoramus who<br>
+gets offended when I call them on their behavior, and I<br>
+just don't have the heart to punish entire muds just because<br>
+a few nincompoops can't remember where they are.<br>
+<br>
+&nbsp;&nbsp;&nbsp; This doesn't mean it's open season now on newbies<br>
+found on intergossip and intercre. It just means I<br>
+don't have to shepherd every new mud through the<br>
+gauntlet...something I, again, just don't have time for.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Also there's a new channel enabled by default for
+creators on<br>
+new muds called "dchat". To join, type: <span
+ style="font-weight: bold;">call me-&gt;AddChannel("dchat")</span><br
+ style="font-weight: bold;">
+<br>
+<br>
+<a name="25aug06"></a><span style="font-weight: bold;">25 August 06</span><br>
+<br>
+<span style="text-decoration: underline;">other-lib compat</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; This isn't something I've announced with great
+fanfare,<br>
+so I thought I'd give it a mention here. I'm working on lib<br>
+compatibility systems. The idea is that I'd like it to be<br>
+possible for people who have old areas they wrote for other<br>
+muds to be able to use those areas in DS with minimum pain.<br>
+&nbsp;&nbsp;&nbsp; There are two main ways to accomplish this:<br>
+<br>
+1) A translation system to turn old code to DS code<br>
+2) An interpretation system to read old code and use it as if it were
+DS code<br>
+<br>
+&nbsp;&nbsp;&nbsp; The first one is rather easier to do. I've put
+together<br>
+some lsed scripts that can be run to transmogrify Nightmare 3<br>
+code into Dead Souls 2 code. You can see this script in<br>
+/secure/scripts on the demo mud.<br>
+&nbsp;&nbsp;&nbsp; I've already translated Praxis from NM3 into DS2
+code.<br>
+You can <a href="http://dead-souls.net/javaclient/demo.html">log onto
+the demo mud</a> and check out /domains/Praxis<br>
+for yourself. I'm done with the basics there, and will be<br>
+seeing about getting the fancier stuff in there working.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The second one is harder. Getting funky old
+TMI-2/NM3/Skylib/LPUni<span
+ style="font-weight: bold; color: rgb(204, 0, 0);">*</span> <br>
+code to work natively on DS is a tall order. I've put together<br>
+a header file called compat.h which is enabled with the new<br>
+COMPAT_MODE define in config.h. This enables the lib to<br>
+read things like set_property as SetProperty, etc.&nbsp; You<br>
+can read this file on the demo mud, as /secure/include/compat.h<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; Even with that file, some of the scary old
+habits of<br>
+TMI-2 code break things. For example, there's no good way to<br>
+make set("foo","bar"); into SetFoo("bar"); using a preprocessor<br>
+define that I know of (please tell me if I'm wrong!). To get<br>
+around this kind of behavior, I've added a new sefun file:<br>
+/secure/sefun/legacy.c<br>
+<br>
+&nbsp;&nbsp;&nbsp; That file takes the hypergeneral contructors like
+set(),<br>
+add(), and query(), and parses them into code DS2 can more<br>
+properly understand. It's not a foolproof fix, but it's working<br>
+pretty well for a lot of objects.<br>
+<br>
+&nbsp;&nbsp;&nbsp; You can take a look at working TMI-2 code on the demo<br>
+mud in /domains/Fooland. The majority of stuff there still doesn't<br>
+work....it's still a work in progress. But type: <span
+ style="font-weight: bold;">goto /domains/Fooland/hall</span><br>
+and: <span style="font-weight: bold;">lightme 30</span> and <span
+ style="font-weight: bold;">about here</span> and you'll see for
+yourself that TMI-2 code<br>
+*can* work on DS2. Sometimes it'll just work, sometimes it needs<br>
+minor adjustments, but at least you won't have to do a drastic<br>
+rewrite of every file in your old domain.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Don't get me wrong, you obviously have a lot of work
+to<br>
+do if you're going to migrate to DS2 from another lib. Your<br>
+paths will be different, you may need to add some lines or remove some.<br>
+The idea isn't to have 100% drop-in compatibility with other libs.<br>
+<br>
+&nbsp;&nbsp;&nbsp; I mean, heck, you can't even do that with many muds<br>
+running the <span style="font-weight: bold; font-style: italic;">same</span>
+lib.<br>
+<br>
+&nbsp;&nbsp;&nbsp; No, the idea is to facilitate your migration. I want
+DS2 to be<br>
+a kind of Rosetta Stone for MudOS, a lib that people can use and <br>
+refer to in a way that is as close to MudOS lib agnostic as possible.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Of course, DGD or Cold or other driver based libs
+are beyond<br>
+the scope of my expertise. Maybe I can tackle those once we<br>
+have a unified MudOS paradigm.<br>
+<br>
+&nbsp;&nbsp;&nbsp; I don't expect to be able to do this for all MudOS
+libs,<br>
+either. Lima, for example, is so weird that I don't even know if<br>
+it's possible. The example objects and areas aren't enough for<br>
+me to base a translation engine on...so if you have a Lima<br>
+area you're not using, please donate it so I can us it as a<br>
+base for translation.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Remember, this is <span style="font-weight: bold;">*NOT*</span>
+in the regular distribution. Don't<br>
+try to get your old code to work on ds2.1. These capabilities<br>
+are currently (mostly) only available on the demo and devel muds.<br>
+&nbsp;&nbsp;&nbsp; Compat features will be more generally available in
+the next release.<br>
+<br>
+<span style="font-weight: bold; color: rgb(204, 0, 0);">*</span>I'm
+told that LPUni code is not TMI-2, it has "<span
+ style="font-style: italic;">TMI-II compatability</span> (sic)"<br>
+<br>
+<br>
+<a name="23aug06"></a><span style="font-weight: bold;">23 August 06</span><br>
+<br>
+<span style="text-decoration: underline;">Releases:</span><br>
+&nbsp;&nbsp;&nbsp; I am really getting comfortable with not having to
+release<br>
+stuff every five minutes. Yet...I'm starting to feel like I'm<br>
+hoarding <a href="http://dead-souls.net/RELEASE_NOTES">goodies</a>,
+and that's not nice. So I'm going to work<br>
+out some sort of release schedule soon, so I can at least<br>
+have a target date to miss. :)<br>
+<br>
+<span style="text-decoration: underline;">Connection page:</span><br>
+&nbsp;&nbsp;&nbsp; I added a <a
+ href="http://dead-souls.net/javaclient/demo.html">connection page</a>
+to make it easier for the<br>
+casual visitor to the Dead Souls site to log into the demo<br>
+mud and check it out for themselves. I know the java client is<br>
+ugly, but it has the virtue of working well. If you know<br>
+of another java client <span
+ style="font-weight: bold; font-style: italic;">that works</span>
+(believe me I've played<br>
+with the mudmagic one and others and have not gotten them<br>
+to behave) please let me know.<br>
+<br>
+<span style="text-decoration: underline;">LPUni:</span><br>
+&nbsp;&nbsp;&nbsp; There has been recent <a
+ href="http://lpuni.org/component/option,com_simpleboard/Itemid,47/func,view/catid,16/id,663/#827">turmoil
+in the LPUni community</a> <br>
+about the prospect of moving the site onto a server run<br>
+by Kyndig. Dale at Wolfpaw has come to the rescue and offered<br>
+a hosting package that I think is acceptable to everyone.<br>
+<br>
+&nbsp;&nbsp;&nbsp; I don't think Wolfpaw will be able to rival Kyndig's<br>
+customer service for a couple of reasons. First, Dale doesn't<br>
+do it as his primary job, so there will necessarily be some<br>
+lag between service requests and action. Second, Dale doesn't<br>
+have anything to prove. I suspect that Kyndig was Mr. Johnny-<br>
+on-the-spot for Tacitus because he wanted to demonstrate stellar<br>
+support, in order to facilitate the decision to have LPUni<br>
+move there. For Tacitus the choice was a no-brainer. With<br>
+support requests handled within minutes of filing them, and<br>
+FREE service besides, well, it's a done deal right there...<br>
+unless you actually care about the moral aspects of entering into<br>
+a pact with Kyndig, which I did.<br>
+<br>
+&nbsp;&nbsp;&nbsp; My thrust is that folks shouldn't expect the kind of<br>
+lightning-fast service Kyndig was providing in order to prove<br>
+a point. Wolfpaw is a solid hosting solution, solid enough to<br>
+handle mudconnector.com, which is the premier mud resource<br>
+site. Having to wait a day or two for service requests on<br>
+our discounted hosting package is part of the price we will<br>
+pay for keeping our hands clean.<br>
+<br>
+&nbsp;&nbsp;&nbsp; If none of that stuff made sense to you, you probably<br>
+don't know about the Kyndig situation, and really, you're<br>
+not missing anything. It's a big dumb political brouhaha <br>
+that you're just as well not knowing about.<br>
+<br>
+&nbsp;&nbsp;&nbsp; I've received some threats about being nominated for
+an<br>
+LPUni council position. Please note that I feel I am already<br>
+participating to the best of my ability in the LPUni<br>
+community, and me being in such a council would not have the<br>
+effect folks think it would. Please don't bother<br>
+nominating me. Thanks.<br>
+<br>
+<br>
+<a name="10aug06"></a><span style="font-weight: bold;">10 August 06</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; Ok. That wraps it up for the load testing. My<br>
+fears were largely unfounded. I fired hundreds of playerbots<br>
+into a mud running on Linux on a 1.2GHz laptop with .5 gig ram.<br>
+The bots are created by an AI routine that telnets to the<br>
+target mud, automatically creates a character, and then<br>
+walks around the mud, picking things up, picking fights<br>
+with orcs, and doing typical player things. They were coded<br>
+to avoid idleness of more than 4 seconds, though a few<br>
+malfunctioned due to unexpected stimuli.<br>
+<br>
+<br>
+The results:<br>
+<ul>
+  <li>Around 300 players, a slight lag could be found, if you were
+looking for it.</li>
+  <li>Around 400 there was a minor lag.</li>
+  <li>Around 500 there was definite lag, as in "you could not miss
+this" type lag. However, I remember playing on a mud back in the day
+which had heavier lag with just 30 players on. <br>
+  </li>
+  <li>Around 600 players there was undeniably heavy lag. Most commands
+ran in under 1 second, but some took a few seconds to complete, and
+some errored out because the mud was too busy.</li>
+  <li>Around 700 players the mud was in definite "I'd rather not play
+here" mode. Most commands ran in under 2 seconds, but some took several
+seconds to complete.</li>
+</ul>
+<br>
+&nbsp;&nbsp; These tests have proven very valuable in shaking out<br>
+bugs I would not have spotted otherwise. <br>
+<br>
+&nbsp;&nbsp; I got as far as 710 players before running the tests <br>
+started to get inconvenient for me (the bot generation process <br>
+is a bit awkward). At this point I'm satisfied that if<br>
+people run into a performance bottleneck when using Dead Souls<br>
+it is *not* due to the base lib or MudOS efficiency.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The news, therefore, is good for people running Linux<br>
+on modern PC hardware. Even if your mud becomes the busiest in <br>
+non-commercial mudding history, the software will keep up with you.<br>
+As for bandwidth and clean area coding, that's on you.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The news for Windows users...not so good. <br>
+<br>
+&nbsp;&nbsp;&nbsp; I don't know why, but it seems that you can't<br>
+get more than 64 (or so) players logged on simultaneously<br>
+to a Windows DS mud.<br>
+<br>
+&nbsp;&nbsp;&nbsp; It's possible that recompiling MudOS for Windows<br>
+using Cygwin fixes this, but I don't know for sure and<br>
+I will not be testing that in the near future. If<br>
+you're running DS on windows and you <span style="font-weight: bold;">really
+really</span> need<br>
+to be able to have more than 64 players on at once<br>
+right away, let me know and we'll discuss your options.<br>
+&nbsp;&nbsp;&nbsp; Otherwise, I'm shelving that for now.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Someday I'll have a newer PC to play with and<br>
+I'll shoot for the 1024 player barrier. But that day<br>
+is not today.&nbsp; <br>
+&nbsp;&nbsp;&nbsp; <br>
+<br>
+<a name="09aug06"></a><span style="font-weight: bold;">09 August 06</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; I'm just about done playing with load testing.<br>
+The results have been fascinating, because I've<br>
+just never had occasion to review data from "too<br>
+many players" problems.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The bad news is that MudOS is coded using many<br>
+f*()'s, which limits the use of file descriptors<br>
+in most cases to 255. Determining whether this is<br>
+the obstacle it *looks* like will be a task for<br>
+the future, as I need more time and beefier computers<br>
+to extract the results I need and perform the <br>
+tests I want.<br>
+<br>
+&nbsp;&nbsp;&nbsp; At some point last night I did an <br>
+eval return sizeof(users()) and I got the staggering<br>
+value of 407. However, there were errors all<br>
+over, and the mud was, for all practical purposes,<br>
+unusuable. It's not clear to me how far it'll<br>
+go and still be usable in any way. I'm actually<br>
+wondering if I hallucinated that because I<br>
+haven't been able to reproduce it since.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Anyway, that's the bad news. Right now you<br>
+can't have a <span style="font-weight: bold;">ludicrous</span> <span
+ style="font-weight: bold;">number</span> of players on <br>
+simultaneously.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The good news is that you can have a <span
+ style="font-weight: bold;">large number</span><br>
+&nbsp;of players on simultaneously. I've set it<br>
+up so that my development mud (not the demo mud)<br>
+has 160+ players at all times. This is to see<br>
+what it's like to conduct business on a very,<br>
+very busy DS mud. So far the lag is so minor as<br>
+to be easily ignored. <br>
+<br>
+&nbsp;&nbsp;&nbsp; The system is a bargain basement beige box<br>
+running an 800MHz Duron with a gig and a half<br>
+of ram. Even with all those players bumping around,<br>
+the process hovers around 40% cpu, and the amount<br>
+of ram used is 81 megs. My guess is that with a<br>
+3G proc and above, running on modern (eg not<br>
+2002) hardware, you'd have scant chance of noticing<br>
+200+ players, except for all the dying and <br>
+shouting of course.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Take a look if you'd like, by telnetting to<br>
+rugose.com port 5050. Note that it's just a<br>
+cable modem, and I use it for all my net traffic,<br>
+so whatever lag you get is 90% network-based.<br>
+<br>
+<br>
+<span style="font-weight: bold;"><a name="07aug06"></a>07 August 06</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; In order to load-test DS, I've coded a playerbot<br>
+object that telnets to the test mud and does<br>
+typical player things: pick things up, wear them,<br>
+wander about, open doors, etc. It does something<br>
+at least once per 5 heartbeats, so it's quite a <br>
+noisy thing.<br>
+<br>
+&nbsp;&nbsp;&nbsp; I also coded it to permit the rapid loading of<br>
+many of them at once. The idea is to know what<br>
+kind of bugs await me at the 200+ player threshold.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The results are interesting, and rather better<br>
+than I expected. On a half-broken, 512Mb ram, <br>
+p3 1.2GHz laptop, I can run 180 of these busy little<br>
+guys with no noticeable lag.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Around that point, though, I start hitting<br>
+some weirdness. It doesn't involve "performance",<br>
+quite. It's more a matter of the existing systems not<br>
+really being set up to handle 100 objects<br>
+each with a separate short description in one room.<br>
+That sort of thing. It's encouraging, though, that<br>
+the problems I'm running into don't involve<br>
+capacity, so much as tweaking functionality.<br>
+<br>
+<br>
+<span style="font-weight: bold;"><a name="02aug06"></a>02 August 06</span><br>
+<br>
+<span style="text-decoration: underline;">Intermud:</span><br>
+&nbsp;&nbsp;&nbsp; I've received some negative feedback from the<br>
+DS community about the participation of muds from<br>
+the old gjs router on our new yatmim. Intergossip,<br>
+which used to be mostly PG-13 if not PG is now<br>
+edging toward an R rating.<br>
+&nbsp;&nbsp;&nbsp; I don't like it much, myself, because it tends<br>
+to deter some people from participating, and the<br>
+point of the router is participation.<br>
+&nbsp;&nbsp;&nbsp; However, I feel bound by the rules I set down,<br>
+and by the spirit in which I developed them. The<br>
+idea is to foster community and support. My idea<br>
+of community is not the only one, nor is it necessarily<br>
+the correct one. I am reluctant to take it upon<br>
+myself to dictate that only happy talk is permitted.<br>
+&nbsp;&nbsp;&nbsp; I am committed to preventing abuse of newbies<br>
+from happening on the 5 default DS channels, and<br>
+I will be strict in enforcing the rules outlined<br>
+on the router rules page. But I am loath to try to<br>
+enforce politeness, because frankly I don't think<br>
+I have the time or energy for it.<br>
+&nbsp;&nbsp;&nbsp; I made yatmim a public router because I felt<br>
+that it was a good idea to avoid a stagnant, <br>
+insular atmosphere on intermud. I'm still confident<br>
+I made the right choice, and unless things get out<br>
+of hand, I will continue to enforce the rules as I<br>
+have been.<br>
+&nbsp;&nbsp;&nbsp; However, if what I start to see is a hostile,<br>
+counterproductive atmosphere, I will interpret this<br>
+as against the intent of the channels, and will<br>
+feel unpleasant obligations.<br>
+<br>
+<span style="text-decoration: underline;">RELEASE_NOTES:</span><br>
+&nbsp;&nbsp;&nbsp; After some thought, I've decided to share the<br>
+<a href="http://dead-souls.net/RELEASE_NOTES">RELEASE_NOTES</a> of the
+unreleased 2.1r* versions. This<br>
+doesn't mean any releases are coming anytime soon.<br>
+&nbsp;&nbsp;&nbsp; The idea is that I'd like folks to see that<br>
+their bug fixes and requests are being addressed,<br>
+and not just falling into a black hole.<br>
+&nbsp;&nbsp;&nbsp; I also want people to know DS development <br>
+continues, even though the release schedule is<br>
+dramatically slowed.<br>
+<br>
+&nbsp;&nbsp;&nbsp; For those asking "why not just make releases<br>
+like before?", the reason is that the packaging<br>
+process is a very time-consuming one. It also tends to <br>
+make it difficult to work on long-term projects, because<br>
+every little thing has to be wrapped up and clean.<br>
+&nbsp;&nbsp;&nbsp; This way I can have a big, messy, sprawling <br>
+lib that lets me work on a piece here and a piece<br>
+there as I see fit without worrying about having<br>
+all the moving parts working right away.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The changes in the release notes will sometimes<br>
+be reflected in the demo mud, and sometimes not.<br>
+Don't expect always to see the latest nifty<br>
+thing show up on the demo mud when you see it on<br>
+the release notes, but you should see it there eventually,<br>
+when I do my periodic (sometimes piecemeal) porting.<br>
+<br>
+<span style="text-decoration: underline;">LPU:</span><br>
+&nbsp;&nbsp;&nbsp; It looks like Tacitus is more or less retiring<br>
+from his role as admin of LPUni. I don't know anything<br>
+more about it that you guys, so I have no special <br>
+insight as to where things are going with LPUni.<br>
+&nbsp;&nbsp;&nbsp; However, it would be sad if it went away, because<br>
+the forums and Wiki do seem to be a great benefit<br>
+to the DS community, and potentially to the LP<br>
+community at large.<br>
+&nbsp;&nbsp;&nbsp; I hope that even if Tacitus is not able to play<br>
+as active a role in the management of the site as<br>
+he used to, that he leaves it up for the community <br>
+to use as a resource for communication.<br>
+<br>
+<br>
+<br>
+<a name="28jul06"></a><span style="font-weight: bold;">28 July 06</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; Added a reaper fix to the <a
+ href="http://dead-souls.net/fixes.html">fixes page</a>.<br>
+<br>
+&nbsp;&nbsp;&nbsp; I've completed the new doctool system, and have<br>
+begun plowing into the lfun documentation gap. To see<br>
+what the lfun docs will look like, log into the<br>
+demo mud and poke through the files in /doc/lfun .<br>
+Please note that the demo mud is not where I write<br>
+the docs, so if it looks like the list isn't getting<br>
+bigger, it has nothing to do with the amount of<br>
+documentation I'm producing. I copy over to the demo<br>
+mud as I remember to do so.<br>
+<br>
+&nbsp;&nbsp;&nbsp; I've also added the Praxis domain to the demo<br>
+mud, so you can review the code. Remember it is still<br>
+not completely ported, and even when it is done, it<br>
+will not be "production quality" stuff. It's just<br>
+a sample of what Dead Souls/Nightmare used to look like.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Please remember that Dead Souls is made stronger<br>
+by word of mouth. The more people try it, then the more<br>
+people will adopt it, and the more work happens on it, and<br>
+the better it becomes.<br>
+<br>
+&nbsp;&nbsp;&nbsp; You can contribute to this cycle by replying to<br>
+any of the following forum threads as you see fit:<br>
+<br>
+<br>
+<a
+ href="http://mudconnector.com/discuss/discuss.cgi?mode=REPLY&amp;area=promotions&amp;message=15115">http://mudconnector.com/discuss/discuss.cgi?mode=REPLY&amp;area=promotions&amp;message=15115</a><br>
+<br>
+<a
+ href="http://www.topmudsites.com/cgi-bin/ikonboard/ikonboard.cgi?s=44ca0daf3613ffff;act=ST;f=14;t=535">http://www.topmudsites.com/cgi-bin/ikonboard/ikonboard.cgi?s=44ca0daf3613ffff;act=ST;f=14;t=535</a><br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp; Your contribution to keeping Dead Souls on the front<br>
+burner of mud discussion is vital in widening the public<br>
+awareness of it. Even just a one-line opinion, "It rocks" or "It sucks"<br>
+is helpful. Just post <span
+ style="font-weight: bold; font-style: italic;">something</span>!<br>
+<br>
+<br>
+<a name="25jul06"></a><span style="font-weight: bold;">25 July 06</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; I've added a <a
+ href="http://dead-souls.net/fixes.html">General/Minor Fixes page</a>
+to handle<br>
+bugfixes that aren't critical to security or functionality.<br>
+<br>
+&nbsp;&nbsp;&nbsp; I want to keep such minor bugfixes separate from<br>
+hotfixes, which are meant to be important, and shouldn't<br>
+get buried under the clutter of numerous small corrections.<br>
+<br>
+&nbsp;&nbsp;&nbsp; I also don't intend to get sucked into frequent patch<br>
+level releases, so that fixes page is where folks should<br>
+expect to find their "upgrades" for a while. Please run<br>
+diffs against the files in <a href="http://dead-souls.net/code/fixes/">http://dead-souls.net/code/fixes/</a><br>
+if you want to know what's changed.<br>
+<br>
+<br>
+<a name="24jul06"></a><span style="font-weight: bold;">24 July 06</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; Well, I appear to have lost my mind. I'm<br>
+<a
+ href="http://mudconnector.com/discuss2/discuss.cgi?mode=MSG&amp;area=positions&amp;message=29939">advertising
+for builders</a>. And, in what I suspect<br>
+is an unprecedented display of utter shamelessness,<br>
+I'm making an <a
+ href="http://dead-souls.net/articles/renaissance.html#next2">open plea
+for someone to give me their mud</a>.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Well, <a
+ href="http://dead-souls.net/articles/renaissance.html">read the
+article in its entirety</a> to<br>
+understand the motivation. <br>
+<br>
+&nbsp;&nbsp;&nbsp; Whether this fails or succeeds, I think it'll<br>
+work great for me. If people do sign up and/or<br>
+I get a dead mud to revive, it'll advance my sinister<br>
+agenda of world domination.<br>
+<br>
+&nbsp;&nbsp;&nbsp; If both pleas go unanswered, I'll be able to<br>
+devote my time only to the current DS projects.<br>
+<br>
+&nbsp;&nbsp;&nbsp; I'm honestly not sure which I'd prefer. Let<br>
+the Fates decide.<br>
+<br>
+<br>
+<a name="19jul06"></a><span style="font-weight: bold;">19 July 06</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; Porting other LP mudlibs to Dead Souls is<br>
+rather more of a pain in the neck than I'd realized,<br>
+but I'm making good progress, I think.<br>
+<br>
+&nbsp;&nbsp;&nbsp; I have about 85% of the Nightmare 3 Praxis<br>
+area ported over. The monsters don't work yet, but<br>
+the rooms seem quite stable. To take a look<br>
+around, telnet to the <span
+ style="font-weight: bold; font-style: italic;">dev</span><span
+ style="font-style: italic;"> </span>(not the demo) mud<br>
+at <a href="telnet://rugose.com:5050">rugose.com 5050</a>, open the
+reception room door, <br>
+<span style="font-weight: bold;">go north</span>, then <span
+ style="font-weight: bold;">go west</span> 5 times, then <span
+ style="font-weight: bold;">go north</span> into<br>
+the campus stargate lab. Type: <span style="font-weight: bold;">dial
+praxis</span>, <br>
+then type: <span style="font-weight: bold;">enter gate</span>. Don't
+forget your way back <br>
+to the gate after wandering in Praxis.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The <span
+ style="font-weight: bold; font-style: italic;">dev</span> mud does not
+auto-wiz you. Don't be<br>
+surprised that you are not a Creator.<br>
+<br>
+&nbsp;&nbsp;&nbsp; On a separate note, Tyche's rudeness has<br>
+given me an excellent opportunity to explain my<br>
+side of the licensing disagreement, which<br>
+I have attempted to do here:<br>
+<br>
+<a
+ href="http://www.mudconnect.com/discuss2/discuss.cgi?mode=MSG&amp;area=promotions&amp;message=15678#15678">http://www.mudconnect.com/discuss2/discuss.cgi?mode=MSG&amp;area=promotions&amp;message=15678#15678</a><br>
+<br>
+&nbsp;&nbsp;&nbsp; I encourage everyone to chip in with their opinion,<br>
+as I'm very interested in knowing what the DS <br>
+community thinks of the situation.<br>
+<br>
+<br>
+<a name="15jul06"></a><span style="font-weight: bold;">15 July 06</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; So evidently some GPL militant informed on<br>
+me to Sourceforge, and they've asked me to comply<br>
+with OSS or remove my project.<br>
+&nbsp;&nbsp;&nbsp; I gave it some thought, and decided to follow<br>
+their "formerly OSS" policy, leaving an older,<br>
+GPL version of Dead Souls available for download,<br>
+and removing the newer stuff. Probably this will<br>
+satisfy nobody but me. But given how some people <br>
+have been approaching the subject, I'm disinclined <br>
+to try to please anyone else with DS licensing.<br>
+&nbsp;&nbsp;&nbsp; Sourceforge web maintenance stuff is down,<br>
+but as soon as it comes back up I'll fix the<br>
+project page to reflect the New Way.<br>
+<br>
+&nbsp;&nbsp; On a brighter-still note, very few complaints<br>
+or bug reports have surfaced since the release of<br>
+Dead Souls 2.1. W00t! <br>
+<br>
+&nbsp;&nbsp;&nbsp; As mentioned before, please don't expect<br>
+patches or upgrades anytime soon. Please operate<br>
+as if DS development is over. It isn't, and I<br>
+will be developing new stuff, but it would be<br>
+unwise for you to operate in expectation of it.<br>
+<br>
+<br>
 <a name="12jul06"></a><span style="font-weight: bold;">12 July 06</span><br>
 <br>
 &nbsp;&nbsp;&nbsp; As I suspected, someone has flown into a<br>

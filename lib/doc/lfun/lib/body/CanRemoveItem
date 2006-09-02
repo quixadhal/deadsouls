@@ -1,0 +1,24 @@
+CANREMOVEITEM
+
+NAME
+        CanRemoveItem()
+
+SYNOPSIS
+        mixed CanRemoveItem(object ob)
+
+DESCRIPTION
+        LIB_BODY: Returns whether the creature can remove a given article of clothing or unwield a weapon. In body.c it is a stub that always returns 1.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+         
+
+Author
+        Cratylus
+

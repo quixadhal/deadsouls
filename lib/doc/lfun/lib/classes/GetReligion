@@ -1,0 +1,29 @@
+GETRELIGION
+
+NAME
+        GetReligion()
+
+
+SYNOPSIS
+        varargs string GetReligion(int flag)
+
+
+DESCRIPTION
+        Returns the thing's religion. With an argument of 0 or no argument, the religion's adjective, or descriptive attribute, is returned. With an argument of 1, the religion's specific name is returned.
+
+EXAMPLES
+         
+
+
+LOCATION
+        /lib/chapel
+/lib/classes
+
+
+SEE ALSO
+        SetReligion
+
+Author
+        Cratylus
+
+

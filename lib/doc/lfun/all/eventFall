@@ -1,0 +1,35 @@
+EVENTFALL
+
+NAME
+        eventFall()
+
+
+
+SYNOPSIS
+        mixed eventFall()
+
+
+
+DESCRIPTION
+        What happens when a body suffers a fall. Relevant checks and actions occur here.
+
+
+
+EXAMPLES
+        this_player()->eventFall()
+
+
+
+LOCATION
+        /lib/body
+/lib/lvs/position
+
+
+SEE ALSO
+           
+
+
+Author
+        Cratylus
+
+

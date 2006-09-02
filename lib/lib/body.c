@@ -24,6 +24,7 @@ inherit LIB_POSITION;
 inherit LIB_UNDEAD;
 inherit LIB_CRAWL;
 inherit LIB_FLY;
+inherit LIB_MOUNT;
 
 #define COLLAPSE_AT            10.0
 
@@ -38,16 +39,13 @@ private static function Protect;
 private static mapping WornItems;
 private static class MagicProtection *Protection;
 static private int HeartModifier = 0;
-float MoJo;
+private static float MoJo;
 private static string PoliticalParty, BodyComposition;
 private static int Pacifist, rifleshot_wounds, gunshot_wounds, globalint1;
 string *ExtraChannels;
 mixed Agent;
 
 static void create() {
-    AddSave( ({ "Pacifist", "BodyComposition", "HealthPoints", "MagicPoints", "ExperiencePoints", "QuestPoints","StaminaPoints", "Undead",
-	"Limbs", "MissingLimbs", "WornItems" }) );
-    AddSave(({"ExtraChannels","MoJo", "PoliticalParty", "rifleshot_wounds", "gunshot_wounds" }));
     MoJo = 0;
     PoliticalParty = "UNDECIDED";
     rifleshot_wounds = 0;
@@ -166,8 +164,8 @@ static void heart_beat() {
 	    if( Protection[i]->time && (--Protection[i]->time < 1) )
 		RemoveMagicProtection(i);
     }
-    if( env && (GetResistance(GAS) != "immune") ) {
-	if( (i = env->GetPoisonGas()) > 0 ) {
+    if( env && (i = env->GetPoisonGas()) > 0 ) {
+	if( GetResistance(GAS) != "immune" ) {
 	    eventPrint("You choke on the poisonous gases.");
 	    eventReceiveDamage(0, GAS, i);
 	}
@@ -228,6 +226,11 @@ void eventCheckHealing() {
     int x, y;
     object dude;
     dude = this_object();
+
+    if(HealthPoints < 1) {
+	this_object()->eventDie(previous_object());
+	return;
+    }
 
     x = GetHeartRate() * 10;
 
@@ -648,7 +651,7 @@ varargs int eventDie(mixed agent) {
 	    if(GetBodyComposition()) ob->SetComposition(GetBodyComposition());
 	}
 	else { 
-	    if(GetRace() == "android") ob = new(LIB_BOT_CORPSE);
+	    if(GetRace() == "android" || GetRace() == "bot" ) ob = new(LIB_BOT_CORPSE);
 	    else ob = new(LIB_CORPSE);
 	    ob->SetCorpse(this_object());
 	}
@@ -1127,7 +1130,7 @@ varargs int eventDie(mixed agent) {
 		if(GetBodyComposition()) objict->SetComposition(GetBodyComposition());
 	    }
 	    else {
-		if(GetRace() == "android") objict = new(LIB_BOT_LIMB);
+		if(GetRace() == "android" || GetRace() == "bot") objict = new(LIB_BOT_LIMB);
 		else objict = new(LIB_LIMB);
 		objict->SetLimb(limb, GetCapName(), GetRace());
 		objict->SetId( ({ limb, limbname, "limb" }));
@@ -1165,7 +1168,7 @@ varargs int eventDie(mixed agent) {
 		if(GetBodyComposition()) ob->SetComposition(GetBodyComposition());
 	    }
 	    else {
-		if(GetRace() == "android") ob = new(LIB_BOT_LIMB);
+		if(GetRace() == "android" || GetRace() == "bot") ob = new(LIB_BOT_LIMB);
 		else ob = new(LIB_LIMB);
 		ob->SetLimb(limb, GetCapName(), GetRace());
 		ob->SetId( ({ limb, limbname, "limb" }));
@@ -1286,7 +1289,7 @@ varargs int eventDie(mixed agent) {
 	float h;
 
 	str = "";
-	exempt = ({"android","tree","plant"});
+	exempt = ({"bot","android","tree","plant"});
 
 	if(member_array(this_object()->GetRace(),exempt) == -1 &&
 	  !this_object()->GetUndead() ) {
@@ -1406,11 +1409,12 @@ varargs int eventDie(mixed agent) {
      */
 
     varargs static int AddHealthPoints(int x, string limb, object agent) {
-	int y;
+	int y = 0;
 
 	if( limb ) {
 	    if( !Limbs[limb] ) return -1;
 	    y = GetMaxHealthPoints(limb);
+	    if(y < 1) return y;
 	    if((Limbs[limb]["health"] += x) < 1) Limbs[limb]["health"] = 0;
 	    else if(Limbs[limb]["health"] > y)
 		Limbs[limb]["health"] = y;
@@ -1679,7 +1683,7 @@ varargs int eventDie(mixed agent) {
     }
 
     int AddHP(int hp){
-	this_object()->AddHealthPoints(hp);
+	AddHealthPoints(hp);
 	return hp;
     }
 

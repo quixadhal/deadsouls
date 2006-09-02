@@ -12,6 +12,8 @@
 
 private mixed   ExternalDesc = 0;
 private int     Invisible    = 0;
+private string  globalval;
+function f;
 //private mapping Items        = ([]);
 mapping Items        = ([]);
 
@@ -101,6 +103,34 @@ varargs mixed AddItem(mixed item, mixed val) {
     return (Items[item]);
 }
 
+//TMI2 back-compat hack
+mixed AddItem_func(mixed foo){
+    //tc("foo:"+identify(foo),"blue");
+    //tc("typeof foo:"+typeof(foo),"blue");
+    foreach(mixed key, mixed val in foo){
+	globalval = val;
+	AddItem(key, (: globalval :) );
+    }
+    return foo;
+}
+
+mixed SetItem_func(mixed foo){
+    //tc("foo:"+identify(foo),"blue");
+    //tc("typeof foo:"+typeof(foo),"blue");
+    foreach(mixed key, mixed val in foo){
+	//tc("key: "+identify(key));
+	//tc("val: "+identify(val));
+	globalval = val;
+	//f =  call_other(this_object(), globalval);
+	f =  functionify(globalval);
+	//AddItem(key,  (: globalval :) );
+	call_other( this_object(), ({ "AddItem", key,  (: f :) }) );
+	//call_out( AddItem, 1, key, (: globalval :) );
+    }
+    return foo;
+}
+
+
 varargs mixed GetItem(string item, object who) {
     mixed val = mapping_member(Items, item);
 
@@ -112,8 +142,10 @@ varargs mixed GetItem(string item, object who) {
     }
     else if( functionp(val) ) {
 	if( functionp(val) & FP_OWNER_DESTED ) {
+	    //tc("Oddness.");
 	    return "An error occurred evaulating a function pointer.";
 	}
+	//tc("Goodness.");
 	return evaluate(val, who, item);
     }
     else {
@@ -145,6 +177,11 @@ mapping SetItems(mapping items) {
     return (Items = copy(items));
 }
 
+//TMI2 compat hack
+mapping SetItem_desc(mapping items) {
+    return SetItems(items);
+}
+
 varargs string GetLong(string str) {
     if( str && Items[str] ) {
 	return GetItem(str);
@@ -159,7 +196,7 @@ string SetLong(string str) {
 }
 
 varargs mixed eventShow(object who, string component) {
-    string desc;
+    mixed desc;
 
     if( component ) {
 	component = remove_article(lower_case(component));
@@ -179,12 +216,12 @@ varargs mixed eventShow(object who, string component) {
       (!sizeof(this_object()->GetLiers()) && !sizeof(this_object()->GetSitters()))){
 	if(inherits(LIB_SURFACE,this_object()) ||
 	  this_object()->GetOpacity() < 33){
-	    who->eventPrint(desc);
+	    (functionp(desc) ? evaluate(desc) : who->eventPrint(desc));
 	    this_object()->eventShowInterior(who);
 	}
-	else who->eventPrint(desc);
+	else (functionp(desc) ? evaluate(desc) : who->eventPrint(desc));
     }
-    else who->eventPrint(desc); 
+    else (functionp(desc) ? evaluate(desc) : who->eventPrint(desc));
     return 1;
 }
 

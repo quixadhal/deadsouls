@@ -17,4 +17,7 @@
 #define PORT_RCP                  (query_host_port() - 10)
 #define PORT_UDP                  (query_host_port() + 8) 
 
+//#define HOST_IP                   "71.234.154.99"
+#define HOST_IP                   "192.168.0.5"
+
 #endif /* __NETWORK_H */ 

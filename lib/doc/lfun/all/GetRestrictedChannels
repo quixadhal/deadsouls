@@ -1,0 +1,24 @@
+GETRESTRICTEDCHANNELS
+
+NAME
+        GetRestrictedChannels()
+
+SYNOPSIS
+        string array GetRestrictedChannels()
+
+DESCRIPTION
+        Returns an array of the names of the channels whose use is restricted to this user.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/chat
+
+
+SEE ALSO
+         
+
+Author
+        Cratylus
+

@@ -28,7 +28,6 @@ private int TrainingPoints, TitleLength;
 /* *****************  /lib/player.c driver applies  ***************** */
 
 static void create() {
-    AddSave( ({ "Properties", "CarriedMass", "Muffed" }) );
     interactive::create();
     living::create();
 
@@ -123,7 +122,10 @@ static void eventDestroyUndead(object agent) {
 
 varargs int eventDie(mixed agent) {
     int x, expee, subexpee;
+
     if(!agent) agent = previous_object();
+    if(!agent) agent = this_object();
+
     if( (x = living::eventDie(agent)) != 1 ) return x;
 
     if(!Deaths || !sizeof(Deaths)) 
@@ -279,34 +281,34 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
 
     inv->eventPrint(imsg, MSG_ENV);
     if(GetInvis()) {
-	AddStaminaPoints(-(15-(GetSkillLevel("stealth")/10)));
+	if(!creatorp(this_object())) AddStaminaPoints(-(15-(GetSkillLevel("stealth")/10)));
 	AddSkillPoints("stealth", 30 + GetSkillLevel("stealth")*2);
 	eventPrint("%^RED%^You move along quietly....%^RESET%^\n");
     }
     if(GetProperty("stealthy")) {
-	AddStaminaPoints(-3 - random(3));
+	if(!creatorp(this_object())) AddStaminaPoints(-3 - random(3));
 	AddSkillPoints("stealth", 10 + GetSkillLevel("stealth")*2);
     }
     eventDescribeEnvironment(GetBriefMode());
     newclim = (string)environment()->GetClimate();
     if( !GetUndead() ) switch( newclim ) {
     case "arid":
-	AddStaminaPoints(-0.3);
+	if(!creatorp(this_object())) AddStaminaPoints(-0.3);
 	break;
     case "tropical":
-	AddStaminaPoints(-0.3);
+	if(!creatorp(this_object())) AddStaminaPoints(-0.3);
 	break;
     case "sub-tropical":
-	AddStaminaPoints(-0.2);
+	if(!creatorp(this_object())) AddStaminaPoints(-0.2);
 	break;
     case "sub-arctic":
-	AddStaminaPoints(-0.2);
+	if(!creatorp(this_object())) AddStaminaPoints(-0.2);
 	break;
     case "arctic":
-	AddStaminaPoints(-0.3);	  
+	if(!creatorp(this_object())) AddStaminaPoints(-0.3);	  
 	break;
     default:
-	AddStaminaPoints(-0.1);	  
+	if(!creatorp(this_object())) AddStaminaPoints(-0.1);	  
 	break;	    
     }
     if( prevclim != newclim && prevclim != "indoors" && newclim != "indoors" ){
@@ -414,20 +416,10 @@ mixed CanUse(object used, string cmd) { return 1; }
 /* *****************  /lib/player.c local functions  ***************** */
 
 int Setup() {
+    string classes;
     if( !interactive::Setup() ) return 0;
-    if( avatarp() ) AddChannel(({ "avatar" }));
-    if( high_mortalp() ) AddChannel( ({ "newbie", "hm" }) );
-    if( newbiep() ) AddChannel( ({ "newbie" }) ); 
-    else {
-	RemoveChannel( ({ "newbie" }) );
-	AddChannel( ({ "gossip" }) );
-    }
-    if( councilp() ) AddChannel( ({ "council" }) );
     if( !GetClass() ) SetClass("explorer");
     if( GetClass() ) {
-	string classes;
-
-	AddChannel(GetClass());
 	foreach(classes in (string array)CLASSES_D->GetClasses())
 	if( ClassMember(classes) && classes != GetClass() )
 	    AddChannel(classes);
@@ -440,6 +432,19 @@ int Setup() {
 
 	if(ENGLISH_ONLY) this_object()->SetNativeLanguage("English");
 	PLAYERS_D->AddPlayerInfo(this_object());
+
+	foreach(classes in (string array)CLASSES_D->GetClasses())
+	if( ClassMember(classes) && classes != GetClass() )
+	    AddChannel(classes);
+	if( avatarp() ) AddChannel(({ "avatar" }));
+	if( high_mortalp() ) AddChannel( ({ "newbie", "hm" }) );
+	if( newbiep() ) AddChannel( ({ "newbie" }) );
+	else {
+	    RemoveChannel( ({ "newbie" }) );
+	    AddChannel( ({ "gossip" }) );
+	}
+	if( councilp() ) AddChannel( ({ "council" }) );
+	AddChannel(GetClass());
 
 	jeans = new("/domains/default/armor/jeans");
 	shirt = new("/domains/default/armor/shirt");
@@ -515,15 +520,26 @@ string *SetMuffed(string *muffed){
 }
 
 string *AddMuffed(string muffed){
-    if(muffed) muffed = lower_case(muffed);
-    else return Muffed;
+    string tmpstr;
+    //tc("foo: "+INTERMUD_D);
+    if(!muffed || muffed == "" || !sizeof(muffed)) return Muffed;
+    if(grepp(muffed,"@")) {
+	tmpstr = INTERMUD_D->GetMudName(muffed[1..sizeof(muffed)-1]);
+    }
+    if(sizeof(tmpstr)) muffed = tmpstr;
+    muffed = lower_case(muffed);
     if(member_array(muffed,Muffed) == -1) Muffed += ({ muffed });
     return Muffed;
 }
 
 string *RemoveMuffed(string unmuffed){
-    if(unmuffed) unmuffed = lower_case(unmuffed);
-    else return Muffed;
+    string tmpstr;
+    if(!sizeof(unmuffed)) return Muffed;
+    if(grepp(unmuffed,"@")) {
+	tmpstr = INTERMUD_D->GetMudName(unmuffed[1..sizeof(unmuffed)-1]);
+    }
+    if(sizeof(tmpstr)) unmuffed = tmpstr;
+    unmuffed = lower_case(unmuffed);
     if(member_array(unmuffed,Muffed) != -1) Muffed -= ({ unmuffed });
     return Muffed;
 }

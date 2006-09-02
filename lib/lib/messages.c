@@ -41,7 +41,7 @@ varargs string GetMessage(string msg, mixed arg) {
 	if(strsrch(arg, "$N") == -1) tmp = replace_string(tmp, "$D", arg);
 	else tmp = arg;
 	break;
-//The following case is a bugfix courtesy of Memrosh @ Ascension
+	//The following case is a bugfix courtesy of Memrosh @ Ascension
     case "come":
 	if(stringp(arg)){ tmp = arg;}
 	break; 

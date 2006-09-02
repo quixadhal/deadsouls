@@ -1,0 +1,8 @@
+This directory (grudgingly) exists for backward-compatibility
+with backward libs. It is intended to contain files which 
+don't have much code at all. Rather, they are placeholders for
+the files that really *should* be inherited.
+
+If there *are* code-heavy files here, they are usually lifted
+directly from some older lib, and should not be considered a
+canonical way of doing things.

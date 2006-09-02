@@ -13,8 +13,12 @@ static void process_startup_req(int protocol, mixed info, int fd){
 
     trr("info: "+identify(info));
     trr("process_startup_req: protocol="+protocol+", mud="+info[2],"blue");
+    log_file("router/server_log",timestamp()+" process_startup_req: protocol="+protocol+", mud="+info[2]+"\n");
 
-    if(member_array(info[2], banned_muds) != -1) return;
+    if(member_array(info[2], banned_muds) != -1) {
+	log_file("router/server_log",timestamp()+" "+info[2]+" denied. reason: banned.\n");
+	return;
+    }
 
     if(sizeof(info)<18){ 
 	// smallest protocol is protocol 1/2 which have size 18
@@ -60,7 +64,8 @@ static void process_startup_req(int protocol, mixed info, int fd){
     case 1:
     case 2:
 	if(sizeof(info)!=18){
-	    trr("error");
+	    trr("error: wrong size packet. Got: "+sizeof(info)+", wanted 18");
+	    log_file("router/server_log",timestamp()+" error: wrong size packet. Got: "+sizeof(info)+", wanted 18\n");
 	    write_data(fd,({
 		"error",
 		5,
@@ -80,7 +85,8 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	break;
     case 3:
 	if(sizeof(info)!=20){
-	    trr("error");
+	    trr("error. wrong size packet. Got: "+sizeof(info)+", wanted 20");
+	    log_file("router/server_log",timestamp()+" error. wrong size packet. Got: "+sizeof(info)+", wanted 20\n");
 
 	    write_data(fd,({
 		"error",
@@ -100,7 +106,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	newinfo["other_data"]=info[19];
 	break;
     default:
-	trr("error");
+	log_file("router/server_log",timestamp()+" error. I dunno what.\n");
 
 	write_data(fd,({
 	    "error",
@@ -148,6 +154,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
     if(connected_muds[info[2]]){
 	// if MUD is already connected
 	trr("mud already connected");
+	log_file("router/server_log",timestamp()+" mud already connected\n");
 	write_data(fd,({
 	    "error",
 	    5,
@@ -168,6 +175,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	if(newinfo["ip"]==mudinfo[info[2]]["ip"]){
 	    // same IP as last time... let's just trust 'em...
 	    trr("Wrong password, but right IP","green");
+	    log_file("router/server_log",timestamp()+" Wrong password, but right IP\n");
 	    write_data(fd,({
 		"error",5,router_name,0,info[2],0,
 		"warning", // nothing in error summary that seems applicable?
@@ -177,6 +185,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	}
 	else{
 	    trr("wrong password, and from a new IP","red");
+	    log_file("router/server_log",timestamp()+" WRONG PASSWORD, AND FROM A NEW IP\n");
 	    write_data(fd,({
 		"error",
 		5,
@@ -196,11 +205,13 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	// if new MUD, assign it a password
 	newinfo["password"]=random(9999)+1;
 	trr("Assigning password "+newinfo["password"],"white");
+	trr("Ok. this is the password: "+newinfo["password"],"white");
 	// Change this maybe... see if the password is supposed to be in a certain range
     }
-    else trr("Right password. Known: "+mudinfo[info[2]]["password"]+", current: "+newinfo["password"],"green");
+    //else trr("Known: "+mudinfo[info[2]]["password"]+", current: "+newinfo["password"],"green");
+    //log_file("router/server_log",timestamp()+" Known: "+mudinfo[info[2]]["password"]+", current: "+newinfo["password"]+"\n");
     // MUD should be okay at this point.
-    trr("about to update the mudinfo...");
+    trr("about to update the mudinfo...","white");
     mudinfo[info[2]]=newinfo; // update the mudinfo
     connected_muds[info[2]] = fd; // add this MUD to list of connected muds
     trr("about to send the startup reply...");

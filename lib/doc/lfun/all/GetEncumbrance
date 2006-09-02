@@ -1,0 +1,29 @@
+GETENCUMBRANCE
+
+NAME
+        GetEncumbrance()
+
+
+SYNOPSIS
+        int GetEncumbrance()
+
+DESCRIPTION
+        Encumbrance is the measure of how unwieldy a player's inventory is. It has to do with the number of items carried, not necessarily their weight. The more items carried, the creater the encumbrance, and the more difficult it is to fight, if ENABLE_ENCUMBRANCE is defined in config.h.
+
+
+EXAMPLES
+         
+
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+         
+
+
+Author
+        Cratylus
+
+

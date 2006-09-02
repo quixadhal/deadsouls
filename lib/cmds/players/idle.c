@@ -16,11 +16,7 @@ mixed cmd(string args) {
 	return (string)who->GetName() + " is link dead.";
     x = query_idle(who);
     if( x > 4 ) {
-	this_player()->eventPrint( sprintf("%s has been idle for %s%s.",
-	    (string)who->GetName(),
-	    ( x>59 ? ( consolidate(x/60, "one minute") + " and " ) : "" ),
-	    consolidate(x%60, "one second")) );
-
+	this_player()->eventPrint(who->GetName()+" has been idle for "+time_elapsed(x)+".");
     }
     else this_player()->eventPrint((string)who->GetName() + " is "
 	  "not idle.");

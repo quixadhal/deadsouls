@@ -8,7 +8,7 @@
 
 inherit LIB_DAEMON;
 
-#define MAN_PAGES ({ "sefun", "efun/all", "applies", "lfun" })
+#define MAN_PAGES ({ "sefun", "efun/all", "applies", "lfun/all" })
 
 int cmd(string str) {
     string d, tmp;
@@ -28,3 +28,13 @@ int cmd(string str) {
     this_player()->eventPage(pages[0]);
     return 1;
 }
+
+void help() {
+    message("help", "Syntax: man FUNCTION\n\n"
+      "This command provides information on the function specified, "
+      "if it has a help file in the /doc/efun/all, /doc/sefun, or "
+      "/doc/lfun/all directories. "
+      "\n\n",
+      this_player());
+}
+

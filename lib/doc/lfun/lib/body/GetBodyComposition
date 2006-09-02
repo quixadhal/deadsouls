@@ -1,0 +1,29 @@
+GETBODYCOMPOSITION
+
+NAME
+        GetBodyComposition()
+
+
+SYNOPSIS
+        string GetBodyComposition()
+
+
+DESCRIPTION
+        Returns a string indicating what a non-biological creature is made of.
+
+EXAMPLES
+         
+
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        SetBodyComposition
+
+
+Author
+        Cratylus
+
+

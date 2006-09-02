@@ -542,8 +542,10 @@ varargs mixed alpha_crypt(mixed arg1, mixed arg2){
     if(!intp(arg1) && !arg2) return 0;
     if(intp(arg1)) {
 	if(arg1 > 64) arg1 = 64;
-	ret = crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
-	ret += crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
+	//ret = crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
+	//ret += crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
+	ret = crypt(""+random(arg1+2)+arg1,""+random(999999)*91);
+	ret += crypt(""+random(arg1+2)+arg1,""+random(999999)*19);
 	ret = replace_string(ret,"`","");
 	ret = replace_string(ret,"!","");
 	ret = replace_string(ret,"/","");
@@ -635,6 +637,22 @@ int basic_punctuationp(mixed arg){
     return 0;
 }
 
+int check_string_length(string str){
+    if(sizeof(str) > __LARGEST_PRINTABLE_STRING__) return 0;
+    return 1;
+}
 
-
+int print_long_string(object who, string str){
+    string tfile, ret = "";
+    string *lines;
+    tfile = generate_tmp();
+    lines = explode(str,"\n");
+    foreach(string line in lines){
+	if(sizeof(line) < __LARGEST_PRINTABLE_STRING__) ret += line+"\n";
+    }
+    write_file(tfile,ret,1);
+    this_player()->eventPage(tfile);
+    rm(tfile);
+    return 1;
+}
 

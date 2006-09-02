@@ -375,6 +375,9 @@ private static void load_access(string cfg, mapping ref) {
 	string file, contents;
 
 	file = file_name(ob);
+	if(COMPAT_MODE){
+	    //buggy code removed
+	}
 	contents = read_file(base_name(ob)+".c");
 	if(strsrch(contents,"parse_add_rule") != -1 
 	  || strsrch(contents, "SetRules") != -1) {
@@ -519,7 +522,7 @@ private static void load_access(string cfg, mapping ref) {
 
     void master_log_file(string file, string msg) {
 	if(file_name(previous_object()) != SEFUN) return;
-	if(file_size(file) > MAX_LOG_SIZE) rename(file, file+".old");
+	if(file_size(file) > MAX_LOG_SIZE) rename(file, file+"."+timestamp());
 	write_file(file, msg);
     }
 

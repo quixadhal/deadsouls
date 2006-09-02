@@ -1,0 +1,24 @@
+GETSTAMINAPOINTS
+
+NAME
+        GetStaminaPoints()
+
+SYNOPSIS
+        int GetStaminaPoints()
+
+DESCRIPTION
+        Returns a creature's current stamina point level.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/body
+
+
+SEE ALSO
+        AddStaminaPoints, GetMaxStaminaPoints
+
+Author
+        Cratylus
+

@@ -13,7 +13,6 @@ string LongDesc(){
 }
 
 static void create() {
-    object ob;
     room::create();
     SetClimate("indoors");
     SetAmbientLight(30);
@@ -34,13 +33,6 @@ static void create() {
       ]) );
     SetProperty("no attack", 1);
     SetProperty("nopeer",1);
-    ob = new("/lib/bboard");
-    ob->SetKeyName("chalkboard");
-    ob->SetId( ({ "board", "chalkboard", "dusty board", "dusty chalkboard" }) );
-    ob->set_board_id("immortal_board");
-    ob->set_max_posts(30);
-    SetShort("Domains Room");
-    ob->eventMove(this_object());
     SetExits(([
 	"north" : "/domains/default/room/wiz_hall2",
       ]));

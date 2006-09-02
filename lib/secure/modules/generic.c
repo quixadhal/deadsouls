@@ -6,7 +6,7 @@
 int eventGetArray(string str);
 int eventDoAddition(string str);
 
-string globalstr, globalstr2, temporary, func, v2;
+string globalstr, globalstr2, temporary, func, v2, repstr;
 object target;
 string *NewArr = ({});
 string *array_val = ({});
@@ -222,19 +222,25 @@ int eventDoAddition(string str){
 }
 
 int eventGeneralStuff(string str){
+    string fpath = path_prefix(str);
+    repstr = "";
     globalstr = str;
-    globalstr2 = str;
+    unguarded( (: globalstr2 = read_file(globalstr) :) );
+    unguarded( (: this_object()->eventAddInit(globalstr) :) );
+    if(grepp(globalstr2,"./customdefs.h")){
+	string j1, j2, tmppath;
+	sscanf(globalstr2,"%sinclude \"%scustomdefs.h%s",j1,tmppath,j2);
+	if(tmppath) repstr = absolute_path(fpath,tmppath+"customdefs.h");
+	unguarded( (: globalstr2 = replace_line(globalstr2 ,({"./customdefs.h"}), "#include \""+repstr+"\"") :) );
+    } 
+    globalstr2 = replace_string(globalstr2,"\n\n\n","\n\n");
+    globalstr2 = replace_string(globalstr2,"//funs","");
+    globalstr2 = replace_string(globalstr2,"//snuf","");
+    globalstr2 = replace_string(globalstr2,"//extras","");
+    unguarded( (: write_file(globalstr, globalstr2, 1) :) );
     write("Indenting file...");
     unguarded( (: indent_file(globalstr) :) );
-    //Checking for valid init
-    unguarded( (: this_object()->eventAddInit(globalstr) :) );
-    //changing customdefs
-    unguarded( (: globalstr = replace_line(read_file(globalstr) ,({"customdefs.h"}), "#include \""+homedir(this_player())+"/customdefs.h\"") :) );
-    globalstr = replace_string(globalstr,"\n\n\n","\n\n");
-    globalstr = replace_string(globalstr,"//funs","");
-    globalstr = replace_string(globalstr,"//snuf","");
-    globalstr = replace_string(globalstr,"//extras","");
-    unguarded( (: write_file(globalstr2, globalstr, 1) :) );
+    repstr = "";
     return 1;
 }
 

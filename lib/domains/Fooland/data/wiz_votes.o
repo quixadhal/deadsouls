@@ -1,0 +1,7 @@
+#d/Fooland/vote_room.c
+ob_data (["exits":(["east":"/domains/Fooland/tower1",]),"capacity":9970000,"short":"A generic voting room","light":1,"volume":9996000,"long":"An air of profound thought infuses the atmosphere of this room, possiblybecause the issues decided here have been so weighty that the very fabricof history resonates with their clamour, or more likely due to the dubioussubstances smoked here by wizards of the old school.  Whatever the cause,if you would like to stick your muddy oar into the turbulent waters oftoday's issues, the commands necessary are explained by \"help room\",(provided of course the admins, who convene votes here, verify yourpropositions as being worthy of voted upon).",])
+contents (["Harbringer the fifth Horseman of the Appocolyopse!%^RESET%^":({,}),])
+vote_data ([])
+new_data (["spending":(["votes":([]),"options":({}),"proposer":"Phaedrus","text":"     Reduced CPU spending and _no_new_features!_","cast":([]),]),"teacher's/for/newbies":(["votes":([]),"options":({}),"proposer":"Harbringer","text":"We should get teachers for newbies ....maybe even schedual classes!","cast":([]),]),"hey":(["votes":([]),"proposer":"Xaos","options":({}),"text":"I propose we kill all the people","cast":([]),]),])
+save_file "/domains/Fooland/data/wiz_votes"
+default_options ({"endorse","reject","abstain",})

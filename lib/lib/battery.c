@@ -91,5 +91,5 @@ int eventUse(int i){
 }
 
 void heart_beat(){
-    eventDrain(1);
+    eventDrain(GetDrainRate() || 1);
 }

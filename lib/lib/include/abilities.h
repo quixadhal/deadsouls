@@ -2,7 +2,7 @@
 #define l_abilities_h
 
 static void create();
-varargs void SetSkill(string skill, int level, int classes);
+varargs void SetSkill(string skill, int level, mixed classes);
 varargs int AddSkill(string skill, int classes);
 mapping GetSkill(string skill);                               
 int GetSkillClass(string skill);

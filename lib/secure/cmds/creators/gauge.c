@@ -13,11 +13,6 @@ mixed cmd(string args) {
     mapping before, after;
     int stime, usertime, eval_cost;
 
-    if(query_os_type() == "windows"){
-	write("This command does not work on Microsoft Windows.");
-	return 1;
-    }
-
     if( !args || args == "" ) return "You must specify a command to execute.";
     before = rusage();
     catch(eval_cost = (int)previous_object()->eventForce(args));

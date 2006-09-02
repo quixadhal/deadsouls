@@ -1,16 +1,17 @@
-// This command is only useful if you own an intermud channel
-
 #include <lib.h>
 #include <daemons.h>
 
 inherit LIB_DAEMON;
 
 mixed cmd(string args) {
-    string chan, mud;
+    string ret;
 
     if(!this_player() || !archp(this_player())) return 0;
 
-    SNOOP_D->Report();
+    ret = SNOOP_D->Report();
+
+    if(check_string_length(ret) > 0) this_player()->eventPrint(""+ret+"");
+    else print_long_string(this_player(),ret);
 
     return 1;
 }

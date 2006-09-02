@@ -21,8 +21,10 @@ The wildcard is also helpful for channel aliases:
 
 To see your aliases, type: %^GREEN%^alias%^RESET%^
 
-To remove an alias, type alias plus the alias, like so:
+To see a specific alias, like gc: %^GREEN%^alias gc%^RESET%^
 
-%^GREEN%^alias gc%^RESET%^
+To remove an alias, type unalias plus the alias, like so:
+
+%^GREEN%^unalias gc%^RESET%^
 
 

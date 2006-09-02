@@ -80,6 +80,37 @@
 #include "/secure/sefun/compare_array.c"
 #include "/secure/sefun/legacy.c"
 
+string globalstr;
+
+//varargs mixed new(mixed foo, mixed *bar...){
+//if(COMPAT_MODE && stringp(foo)) {
+//if(!file_exists(foo)) foo += ".c";
+//load_object("/secure/obj/staff")->eventAddCreate(foo);
+//}
+//if(!bar) return efun::new(foo);
+//else return efun::new(foo, bar...);
+//}
+
+function functionify(string str){
+    globalstr = str;
+    return (: globalstr :);
+}
+
+string *query_local_functions(mixed arg){
+    object ob;
+    string *allfuns;
+    string *ret = ({}); 
+    if(objectp(arg)) ob = arg;
+    else if(stringp(arg)) ob = load_object(arg);
+    allfuns = functions(ob);
+    foreach(string subfun in allfuns){
+	mixed thingy = function_exists(subfun,ob,1);
+	if(thingy && thingy == base_name(ob) && member_array(subfun,ret) == -1) 
+	    ret += ({ subfun });
+    }
+    return ret;
+}
+
 object find_object( string str ){
     if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return efun::find_object(str);
     if(base_name(efun::find_object(str)) == "/secure/obj/snooper") return 0;
@@ -116,16 +147,6 @@ varargs mixed objects(mixed arg1, mixed arg2){
     }
 
     else return ({});
-}
-
-varargs string socket_address(mixed arg, int foo) {
-    string ret, port;
-    if(objectp(arg)) return efun::socket_address(arg);
-    ret = socket_status(arg)[4];
-    port = last_string_element(ret,".");
-    ret = replace_string(ret,"."+port,"");
-    if(!foo) return ret;
-    else return ret+" "+port;
 }
 
 mixed array users(){
@@ -226,9 +247,11 @@ void notify_fail(string str) {
 }
 
 /* want to handle colours, but do it efficiently as possible */
-string capitalize(string str) {
+string capitalize(mixed str) {
     string *words, *tmp;
     int i;
+
+    if(objectp(str)) str = str->GetKeyName();
 
     /* error condition, let it look like an efun */
     if( !str || str == "" ) return efun::capitalize(str);

@@ -1,0 +1,47 @@
+GETLONG
+
+NAME
+        GetLong()
+
+
+
+SYNOPSIS
+        string GetLong(string str)
+
+
+
+DESCRIPTION
+        Returns the "long desciption" of the object it's called in. This long description is the main part of what the player sees when they "look at" something.
+
+
+
+EXAMPLES
+         
+
+
+
+LOCATION
+        /lib/body
+/lib/bot
+/lib/creator
+/lib/donate
+/lib/door
+/lib/fuel
+/lib/interactive
+/lib/lamp
+/lib/npc
+/lib/player
+/lib/torch
+/lib/events/look
+/lib/std/room
+
+
+SEE ALSO
+         
+
+
+
+Author
+        Cratylus
+
+

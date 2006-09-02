@@ -1,0 +1,24 @@
+GETMORALITYDESCRIPTION
+
+NAME
+        GetMoralityDescription()
+
+SYNOPSIS
+        string GetMoralityDescription()
+
+DESCRIPTION
+        Returns the descriptive string associated with a player's morality, such as "neutral"
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/classes
+
+
+SEE ALSO
+         
+
+Author
+        Cratylus
+

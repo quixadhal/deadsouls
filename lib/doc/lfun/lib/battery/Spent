@@ -1,0 +1,24 @@
+SPENT
+
+NAME
+        Spent()
+
+SYNOPSIS
+        int Spent()
+
+DESCRIPTION
+        Sets the given battery to its "spent" state, with no charge and a new description.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/battery.c
+
+
+SEE ALSO
+         
+
+Author
+        Cratylus
+
