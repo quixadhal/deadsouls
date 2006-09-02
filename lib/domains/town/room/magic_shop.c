@@ -15,13 +15,12 @@ static void create() {
 	({"store","shop","place"}) : "This is the local magic shop.",
 	({ "sign" ,"sign on the wall" }): "A sign on the wall, meant for reading.",
       ]));
-    SetRead("sign", (: read_sign :) );
-    SetExits( ([
-	"out" : "/domains/town/room/south_road1",
+    SetExits( ([ 
+	"west" : "/domains/town/room/magic_shop2",
 	"east" : "/domains/town/room/south_road1",
 	"south" : "/domains/town/room/magic_guild",
-	"west" : "/domains/town/room/magic_shop2",
       ]) );
+    SetRead("sign", (: read_sign :) );
     SetInventory( ([
 	"/domains/town/npc/oana" : 1,
 	"/domains/town/obj/bbucket" : 1,

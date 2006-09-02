@@ -188,7 +188,7 @@ mapping GetSkillsMap(){
     return copy(Skills);
 }
 
-void AddSkillBonus(string skill, function f) {
+void AddSkillBonus(string skill, mixed f) {
     if( !SkillsBonus[skill] ) {
 	SkillsBonus[skill] = ([]);
     }
@@ -215,8 +215,13 @@ int GetSkillBonus(string skill) {
     if( !SkillsBonus[skill] ) {
 	return 0;
     }
+
+    if(intp(SkillsBonus[skill]))
+	return SkillsBonus[skill];
+
     foreach(ob in keys(SkillsBonus[skill])) {
 	if( !ob ) continue;
+	else if(intp(SkillsBonus[skill][ob])) x += SkillsBonus[skill][ob];
 	else x += evaluate(SkillsBonus[skill][ob], skill);
     }
     return x;

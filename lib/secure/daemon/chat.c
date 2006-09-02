@@ -434,7 +434,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
     if(this_player() && this_player() != channeler) channeler = this_player();
 
     if(!strsrch(base_name(previous_object()), "/realms/") ||
-      !strsrch(base_name(previous_object()), "/open/")) return 0;
+      !strsrch(base_name(previous_object()), "/open/")) {
+	return 0;
+    }
 
     if(member_array(ch, syschans) != -1) {
 	emote = 0;
@@ -456,8 +458,12 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
     }
     else if( origin() != ORIGIN_LOCAL && previous_object() != master() &&
       file_name(previous_object()) != PARTY_D && ch != "death" &&
-      ch != "connections" ) return;
-    if( !Channels[ch] ) return;
+      ch != "connections" ) {
+	return;
+    }
+    if(!Channels[ch] && file_name(previous_object()) != SERVICES_D){
+	return;
+    }
     if( emote ) {
 	object *obs;
 	object ob;

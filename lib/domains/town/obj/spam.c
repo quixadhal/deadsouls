@@ -17,6 +17,7 @@ void create(){
     SetMass(20);
     SetBaseCost("silver",10);
     SetVendorType(VT_TREASURE);
+    SetRetain(1);
 }
 void init(){
     ::init();

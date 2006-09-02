@@ -1,4 +1,15 @@
----- 2.1r26 (unreleased) ---
+---- 2.1r30 (unreleased) ---
+- Added RETAIN_ON_QUIT define in config.h, and SetRetain() and GetRetain()
+  to LIB_PERSIST. Any object that returns 1 on GetRetain() is retained
+  across logons, regardless of RETAIN_ON_QUIT. Any object that return 0
+  on GetRetain() is removed on quit, regardless of RETAIN_ON_QUIT. Changing
+  RETAIN_ON_QUIT requires a reload of every object, or a restart of the mud.
+- Added sample potions to /domains/town/meals
+- Empty bottles now behave properly across logons.
+- cp and mv now take -f as a flag to force overwriting.
+- Removed channels (except admin ones) stay removed.
+- Fixed double-logging in channel messages.
+- Recompiled windows binary with new options and fixed socket_efuns.
 - Added well-door system.
 - Changed stat command to handle economies that do not have gold.
 - Idle times now report in a human readable format.

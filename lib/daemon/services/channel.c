@@ -79,7 +79,7 @@ void eventReceiveChannelMessage(mixed array packet) {
 
     CHAT_D->eventSendChannel(packet[7] + "@" + packet[2], packet[6],
       packet[8]);
-    if(packet[2] != mud_name()) CHAT_D->eventAddLast(packet[6],"",packet[6],packet[8],packet[7] + "@" + packet[2]);
+    //if(packet[2] != mud_name()) CHAT_D->eventAddLast(packet[6],"",packet[6],packet[8],packet[7] + "@" + packet[2]);
 
 }
 
@@ -91,7 +91,7 @@ void eventReceiveChannelEmote(mixed array packet) {
     if( !packet[7] ) return;
     CHAT_D->eventSendChannel(packet[7] + "@" + packet[2], packet[6],
       packet[8], 1, 0, 0);
-    if(packet[2] != mud_name()) CHAT_D->eventAddLast(packet[6],"",packet[6],packet[7] + "@" + packet[2] + replace_string(packet[8],"$N",""));
+    //if(packet[2] != mud_name()) CHAT_D->eventAddLast(packet[6],"",packet[6],packet[7] + "@" + packet[2] + replace_string(packet[8],"$N",""));
 }
 
 void eventReceiveChannelTargettedEmote(mixed array packet) {
