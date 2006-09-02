@@ -31,7 +31,7 @@ inherit LIB_INTERFACE;
 
 private int Age, WhereBlock, Brief, LoginTime, BirthTime, RescueBit;
 private string Password, Email, RealName, Rank, LoginSite, HostSite, WebPage;
-private string globaltmp;
+private static string globaltmp;
 private mapping News;
 private class marriage *Marriages;
 private static int LastAge, Setup;
@@ -488,6 +488,9 @@ void eventDescribeEnvironment(int brief) {
 
 	int cmdQuit(string str) {
 	    string tmp;
+	    object env = environment(this_object());
+	    int retain = RETAIN_ON_QUIT;
+	    if(!env) env = load_object(ROOM_FURNACE);
 
 	    if( previous_object() && !
 	      ((int)master()->valid_apply( ({ GetKeyName() }) )) ) return 0;
@@ -498,12 +501,22 @@ void eventDescribeEnvironment(int brief) {
 		return 1;
 	    }
 	    message("system", "Please come back another time!", this_object());
+	    if(!creatorp(this_object())){
+		tc("retain: "+retain);
+		foreach(object ob in all_inventory(this_object())){
+		    tc("ob: "+identify(ob)+", retain: "+ob->GetRetain());
+		    if((!retain && !ob->GetRetain()) || !ob->GetRetain()) ob->eventMove(env);
+		}
+		foreach(object ob in deep_inventory(this_object())){
+		    tc("ob: "+identify(ob)+", retain: "+ob->GetRetain(),"red");
+		    if((!retain && !ob->GetRetain()) || !ob->GetRetain()) ob->eventMove(env);
+		}
+	    }
 	    this_player()->AddCarriedMass(-5000);
-	    save_player(GetKeyName());
 	    tmp = GetMessage("logout") || (GetName() + " is gone from this reality!");
 	    message("environment", tmp, environment(this_object()), ({this_object()}));
 	    log_file("enter", GetCapName()+" (quit): "+timestamp()+"\n");
-
+	    save_player(GetKeyName());
 	    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " quits]",0);
 	    eventDestruct();
 	    return 1;

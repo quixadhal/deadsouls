@@ -416,20 +416,10 @@ mixed CanUse(object used, string cmd) { return 1; }
 /* *****************  /lib/player.c local functions  ***************** */
 
 int Setup() {
+    string classes;
     if( !interactive::Setup() ) return 0;
-    if( avatarp() ) AddChannel(({ "avatar" }));
-    if( high_mortalp() ) AddChannel( ({ "newbie", "hm" }) );
-    if( newbiep() ) AddChannel( ({ "newbie" }) ); 
-    else {
-	RemoveChannel( ({ "newbie" }) );
-	AddChannel( ({ "gossip" }) );
-    }
-    if( councilp() ) AddChannel( ({ "council" }) );
     if( !GetClass() ) SetClass("explorer");
     if( GetClass() ) {
-	string classes;
-
-	AddChannel(GetClass());
 	foreach(classes in (string array)CLASSES_D->GetClasses())
 	if( ClassMember(classes) && classes != GetClass() )
 	    AddChannel(classes);
@@ -442,6 +432,19 @@ int Setup() {
 
 	if(ENGLISH_ONLY) this_object()->SetNativeLanguage("English");
 	PLAYERS_D->AddPlayerInfo(this_object());
+
+	foreach(classes in (string array)CLASSES_D->GetClasses())
+	if( ClassMember(classes) && classes != GetClass() )
+	    AddChannel(classes);
+	if( avatarp() ) AddChannel(({ "avatar" }));
+	if( high_mortalp() ) AddChannel( ({ "newbie", "hm" }) );
+	if( newbiep() ) AddChannel( ({ "newbie" }) );
+	else {
+	    RemoveChannel( ({ "newbie" }) );
+	    AddChannel( ({ "gossip" }) );
+	}
+	if( councilp() ) AddChannel( ({ "council" }) );
+	AddChannel(GetClass());
 
 	jeans = new("/domains/default/armor/jeans");
 	shirt = new("/domains/default/armor/shirt");

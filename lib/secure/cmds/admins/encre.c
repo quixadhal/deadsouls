@@ -80,10 +80,8 @@ mixed cmd(string args) {
 	book = new("/domains/default/obj/manual");
 	if(book && !present("manual",cre_ob))  book->eventMove(cre_ob);
 	else if(book) book->eventMove(ROOM_FURNACE);
+	cre_ob->AddChannel(({"cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat" }));
 	cre_ob->save_player((string)cre_ob->GetKeyName());
-	//message("system", "You will now be logged off.", cre_ob);
-	//message("system", "Please log back in to use your new powers.", cre_ob);
-	//cre_ob->eventForce("quit");
     }
     return 1;
 }

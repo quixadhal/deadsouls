@@ -1683,7 +1683,7 @@ varargs int eventDie(mixed agent) {
     }
 
     int AddHP(int hp){
-	this_object()->AddHealthPoints(hp);
+	AddHealthPoints(hp);
 	return hp;
     }
 

@@ -174,7 +174,7 @@ int GetMaxStatPoints(string stat, int level) {
     }
 }
 
-void AddStatBonus(string stat, function f) {
+void AddStatBonus(string stat, mixed f) {
     if(!StatsBonus[stat]) StatsBonus[stat] = ([]);
     StatsBonus[stat][previous_object()] = f;
 }
