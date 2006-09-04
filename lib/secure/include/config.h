@@ -46,7 +46,7 @@
 #define HUMANS_ONLY              0
 #define PINGING_MUDS             ({"Frontiers","Dead Souls"})
 #define ENABLE_ENCUMBRANCE       1
-#define GLOBAL_MONITOR           1
+#define GLOBAL_MONITOR           0
 #define PLAYER_KILL              0
 #define NPC_CATCH_TELL_DEBUG     0
 #define SAME_IP_MAX              4
