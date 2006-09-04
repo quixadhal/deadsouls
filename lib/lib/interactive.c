@@ -502,13 +502,10 @@ void eventDescribeEnvironment(int brief) {
 	    }
 	    message("system", "Please come back another time!", this_object());
 	    if(!creatorp(this_object())){
-		tc("retain: "+retain);
 		foreach(object ob in all_inventory(this_object())){
-		    tc("ob: "+identify(ob)+", retain: "+ob->GetRetain());
 		    if((!retain && !ob->GetRetain()) || !ob->GetRetain()) ob->eventMove(env);
 		}
 		foreach(object ob in deep_inventory(this_object())){
-		    tc("ob: "+identify(ob)+", retain: "+ob->GetRetain(),"red");
 		    if((!retain && !ob->GetRetain()) || !ob->GetRetain()) ob->eventMove(env);
 		}
 	    }

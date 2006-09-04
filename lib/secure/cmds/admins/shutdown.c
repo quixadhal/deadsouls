@@ -14,13 +14,19 @@ void ShutDown(){
 
 int cmd(string str) {
     downer = previous_object();
-    if(downer->GetForced()) return 0;
+    tc("downer: "+identify(downer));
+    tc("downers: "+identify(previous_object(-1)));
+    tc("stack: "+get_stack());
+    if(downer->GetForced()){
+     write("Forced attempt to shutdown.");
+     return 0;
+     }
     if(!archp(downer)) {
-	notify_fail("You are not permitted to shutdown the game.\n");
+	write("You are not permitted to shutdown the game.\n");
 	return 0;
     }
     if(!str) {
-	notify_fail("You must give a shutdown reason as argument.\n");
+	write("You must give a shutdown reason as argument.\n");
 	return 0;
     }
     shout("Game is shut down by " + downer->GetKeyName() + ".\n");
@@ -37,7 +43,7 @@ int cmd(string str) {
 	}
     }
     call_out( (: shutdown :), 1);
-
+    tc("hm.");
     return 1;
 }
 
