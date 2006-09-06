@@ -12,6 +12,7 @@
 #define LIB_CONSULT      DIR_EVENTS "/consult"
 #define LIB_DIG          DIR_EVENTS "/dig"
 #define LIB_DIG_WITH     DIR_EVENTS "/dig_with"
+#define LIB_DRINK        DIR_EVENTS "/drink"
 #define LIB_DROP         DIR_EVENTS "/drop"
 #define LIB_GET          DIR_EVENTS "/get"
 #define LIB_GET_FROM     DIR_EVENTS "/get_from"

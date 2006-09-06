@@ -111,7 +111,7 @@ string array GetPrimarySkills() {
  *
  * returns 1 on success, 0 on failure
  */
-varargs int AddSkill(string skill, int cls) {
+varargs int AddSkill(string skill, int cls, int level) {
     if( !stringp(skill) ) {
 	error("Bad argument 1 to AddSkill().\n\tExpected: string, Got: " +
 	  typeof(skill) + "\n");
@@ -122,10 +122,13 @@ varargs int AddSkill(string skill, int cls) {
     if( !cls ) {
 	cls = 1;
     }
+    if(!level){
+	level = 1;
+    }
     else if( cls < 0 || cls > 4) {
 	return 0;
     }
-    Skills[skill] = ([ "points" : 0, "level" : 0, "class" : cls ]);
+    Skills[skill] = ([ "points" : 0, "level" : level, "class" : cls ]);
     return 1;
 }
 

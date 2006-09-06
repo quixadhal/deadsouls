@@ -52,5 +52,6 @@
 #define SAME_IP_MAX              4
 #define COMPAT_MODE              1
 #define RETAIN_ON_QUIT           1
+#define MAX_COMMANDS_PER_SECOND  10
 
 #endif /* s_config_h */

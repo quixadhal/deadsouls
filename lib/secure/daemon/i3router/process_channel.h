@@ -23,8 +23,8 @@ static void process_channel(int fd, mixed *info){
 		return;
 	    }
 	    if(!grepp(info[9],"\$N")){
-		info[9] = info[9] + " (from "+info[3]+"@"+info[2]+")";
-		info[10] = info[10] + " (from "+info[3]+"@"+info[2]+")";
+		info[9] = info[9] + " (from "+info[11]+"@"+info[2]+")";
+		info[10] = info[10] + " (from "+info[11]+"@"+info[2]+")";
 	    }
 	    sendername = info[11];
 	    senderrealname = info[3];

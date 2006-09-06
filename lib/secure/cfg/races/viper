@@ -18,7 +18,7 @@ STATS charisma:1:5
 STATS speed:10:4
 STATS strength:1:5
 STATS coordination:1:5
-poison bite:1:3:2:4
+SKILL poison bite:8:1:0:0
 LIMB torso:0:1:A_VEST,A_CUSTOM
 LIMB head:torso:1:A_HELMET,A_CUSTOM
 LIMBLESSCOMBATRACE

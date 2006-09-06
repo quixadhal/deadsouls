@@ -1,4 +1,13 @@
----- 2.1r30 (unreleased) ---
+---- 2.1r34 (unreleased) ---
+- Fixed problem on i3 router that caused muds to share fd's.
+- Added MAX_COMMANDS_PER_SECOND to config.h to enable a cap on scripters.
+- Fixed race-based skills. See http://dead-souls.net/ds-creator-faq.html#2.45
+- Added LIB_FLASK (for canteens, coffee cups, etc). Flasks can
+  now be filled at the town's riverbank and at the shore.
+- Added verbs: pour, fill, empty.
+- Removed encre/decre from admintool. It was goofy and dangerous.
+- Added SetActionsMap() to LIB_ROOM, to enable room actions with variable
+  frequencies. The old SetAction() method also still works.
 - Added RETAIN_ON_QUIT define in config.h, and SetRetain() and GetRetain()
   to LIB_PERSIST. Any object that returns 1 on GetRetain() is retained
   across logons, regardless of RETAIN_ON_QUIT. Any object that return 0

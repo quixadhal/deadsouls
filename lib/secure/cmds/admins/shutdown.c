@@ -14,13 +14,10 @@ void ShutDown(){
 
 int cmd(string str) {
     downer = previous_object();
-    tc("downer: "+identify(downer));
-    tc("downers: "+identify(previous_object(-1)));
-    tc("stack: "+get_stack());
     if(downer->GetForced()){
-     write("Forced attempt to shutdown.");
-     return 0;
-     }
+	write("Forced attempt to shutdown.");
+	return 0;
+    }
     if(!archp(downer)) {
 	write("You are not permitted to shutdown the game.\n");
 	return 0;
@@ -43,7 +40,6 @@ int cmd(string str) {
 	}
     }
     call_out( (: shutdown :), 1);
-    tc("hm.");
     return 1;
 }
 

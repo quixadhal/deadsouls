@@ -268,9 +268,9 @@ void clear_discs(){
     validate();
     foreach(mudname in keys(mudinfo)) {
 	if(query_mud(mudname)["disconnect_time"] &&
-	  time() - query_mud(mudname)["disconnect_time"] > 60 &&
-	  time() - query_mud(mudname)["disconnect_time"] < 80){
-	    trr("Removing mud: "+identify(mudname),"red");
+	  time() - query_mud(mudname)["disconnect_time"] > 60){
+	    //&& time() - query_mud(mudname)["disconnect_time"] < 80){
+	    trr("Removing disconnected mud: "+identify(mudname),"red");
 	    remove_mud(mudname);
 	    trr("Broadcasting updated mudlist.","white");
 	    broadcast_mudlist(mudname);
@@ -279,3 +279,7 @@ void clear_discs(){
     }
 }
 
+int eventDestruct(){
+    save_object(SAVE_ROUTER);
+    clean::eventDestruct();
+}

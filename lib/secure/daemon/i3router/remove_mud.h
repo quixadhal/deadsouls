@@ -13,8 +13,8 @@ varargs void remove_mud(string mudname, int forced){
 	trr("Cannot remove mud ["+mudname+"] because it is not in the mudinfo list.\n");
 	return;
     }
-    //map_delete(mudinfo, mudname);
-    close_callback(targetfd);
+    map_delete(mudinfo, mudname);
+    //close_callback(targetfd);
     log_file("router/server_log",timestamp()+" Removing mud: "+mudname+" on fd: "+targetfd+"\n");
-    //if(connected_muds[mudname]) map_delete(connected_muds, mudname);
+    if(connected_muds[mudname]) map_delete(connected_muds, mudname);
 }
