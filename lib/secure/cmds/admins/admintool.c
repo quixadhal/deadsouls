@@ -76,6 +76,7 @@ string process_input(string str);
 
 string global_group_temp, menu, racepath, currency, ridded, globalstr, file;
 string *currencies;
+string gnom, gstr;
 
 float rate, weight, inflation; 
 
@@ -136,8 +137,8 @@ string process_input(string str){
     case "i" : RemoveRace();break;
     case "j" : AddCurrency();break;
     case "k" : RemoveCurrency();break;
-    case "l" : EncrePlayer();break;
-    case "m" : DecreCreator();break;
+	//case "l" : EncrePlayer();break;
+	//case "m" : DecreCreator();break;
     case "n" : RidUser();break;
     case "o" : BanishUser();break;
     case "p" : UnBanishUser();break;
@@ -218,8 +219,8 @@ int UsersMenu() {
     validate();
     tmp = "\tDead Souls Admin Tool Users Menu\n";
     tmp += "\t\n\n";
-    tmp += "\t\tl) promote a player to creator\n";
-    tmp += "\t\tm) demote a creator to player\n";
+    //tmp += "\t\tl) promote player to creator\n";
+    //tmp += "\t\tm) demote a creator to player\n";
     tmp += "\t\tn) completely erase a user\n";
     tmp += "\t\to) banish a username\n";
     tmp += "\t\tp) unbanish a username\n\n";
@@ -689,66 +690,6 @@ int eventRemoveCurrency(string str){
     }
     ECONOMY_D->remove_currency(str);
     write("Remaining currencies: "+identify(ECONOMY_D->__QueryCurrencies())+"\n");
-    Menu();
-    return 1;
-}
-
-int EncrePlayer(){
-    validate();
-    write("Please enter the name of the player you'd like to promote: \n");
-    input_to( (: eventEncrePlayer :) );
-    return 1;
-}
-
-int eventEncrePlayer(string str){
-    validate();
-    EnCre(str);
-    Menu();
-    return 1;
-}
-
-int DecreCreator(){
-    validate();
-    write("Please enter the name of the player you'd like to demote: \n");
-    input_to( (: eventDecreCreator :) );
-    return 1;
-}
-
-int eventDecreCreator(string str){
-    validate();
-    DeCre(str);	
-    Menu();
-    return 1;
-}
-
-mixed EnCre(string args) {
-    object ob;
-    string file, nom;
-
-    validate();
-    nom = convert_name(args);
-    if( !user_exists(nom) ){
-	write(capitalize(nom) + " is not a member of " +
-	  possessive_noun(mud_name()) + " reality.");
-	Menu();
-	return 1;
-    }
-    load_object("/secure/cmds/admins/encre")->cmd(nom);
-    Menu();
-    return 1;
-}
-
-mixed DeCre(string args) {
-    object ob;
-    string nom, file;
-    nom = convert_name(args);
-    if( !user_exists(nom) ){
-	write(capitalize(nom) + " is not a member of " +
-	  possessive_noun(mud_name()) + " reality.");
-	Menu();
-	return 1;
-    }
-    load_object("/secure/cmds/admins/decre")->cmd(nom);
     Menu();
     return 1;
 }

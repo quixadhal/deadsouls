@@ -17,6 +17,8 @@ private static int Forced;
 private static string CommandFail;
 private static string *SearchPath;
 private static string *apostrophe_exceptions;
+private static int last_cmd_time = 0;
+private static int cmd_count = 1;
 
 int direct_force_liv_str() { return 1; }
 int direct_force_liv_to_str() { return 1; }
@@ -44,6 +46,18 @@ static int cmdAll(string args) {
     object old_agent;
     mixed err;
     string verb, file;
+
+    if(MAX_COMMANDS_PER_SECOND){
+	if(last_cmd_time == time()) cmd_count++;
+	else {
+	    last_cmd_time = time();
+	    cmd_count = 1;
+	}
+	if(!creatorp(this_player()) && cmd_count > MAX_COMMANDS_PER_SECOND) {
+	    write("You have exceeded the "+MAX_COMMANDS_PER_SECOND+" commands per second limit.");
+	    return 1;
+	}
+    }    
 
     old_agent = this_agent(this_object());
     verb = query_verb();

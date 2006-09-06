@@ -16,7 +16,24 @@ static void process_startup_req(int protocol, mixed info, int fd){
     log_file("router/server_log",timestamp()+" process_startup_req: protocol="+protocol+", mud="+info[2]+"\n");
 
     if(member_array(info[2], banned_muds) != -1) {
-	log_file("router/server_log",timestamp()+" "+info[2]+" denied. reason: banned.\n");
+	//log_file("router/server_log",timestamp()+" "+info[2]+" denied. reason: banned.\n");
+	return;
+    }
+
+    if(fd && member_array(fd,keys(this_object()->query_connected_fds())) != -1){
+	trr("FD CONFLICT, MUD: "+info[2]+", FD: "+fd,"red");
+	log_file("router/server_log","FD CONFLICT, MUD: "+info[2]+", FD: "+fd+"\n");
+	write_data(fd,({
+	    "error",
+	    5,
+	    router_name,
+	    0,
+	    info[2],
+	    0,
+	    "bad-mojo",
+	    "FD collision. Please disconnect and try again.",
+	    info
+	  }));
 	return;
     }
 

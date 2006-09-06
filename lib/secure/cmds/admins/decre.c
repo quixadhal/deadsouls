@@ -66,8 +66,8 @@ mixed cmd(string args) {
 	ob->eventDestruct();
 	inv=deep_inventory(player_ob);
 	if(sizeof(inv)) inv->eventMove(ROOM_FURNACE);
-        foreach(string channel in player_ob->GetChannels())
-             player_ob->RemoveChannel(channel);
+	foreach(string channel in player_ob->GetChannels())
+	player_ob->RemoveChannel(channel);
 	message("system", "You are now a player.", player_ob);
 	message("system", (string)player_ob->GetName() + " is now a player!",
 	  this_player());

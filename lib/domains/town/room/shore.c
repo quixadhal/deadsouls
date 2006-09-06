@@ -21,6 +21,20 @@ int ActionFunction(){
     return 1;
 }
 
+int ActionFunction2(){
+    object *cres, dude;
+    if(!sizeof(get_livings(this_object()))) return 0;
+    cres = filter(get_livings(this_object()), (: creatorp($1) :) );
+    dude = get_random_living(this_object());
+    if(!dude) return 0;
+    dude->eventForce("ponder");
+    if(!sizeof(cres)) return 0;
+    cres->eventPrint("%^GREEN%^ActionFunction2 activates. Dude is: "+
+      identify(dude)+".%^RESET%^");
+    return 1;
+}
+
+
 static void create() {
     fishing::create();
     SetClimate("outdoors");
@@ -51,7 +65,16 @@ static void create() {
 	"/domains/town/meals/shark" : 1,
 	"/domains/town/meals/herring" : 10,
       ]) );
-
+    //This is a function that allows for a set of actions
+    //with different trigger frequencies.
+    SetActionsMap( ([ 
+	"A soft breeze cools your brow." : 5,
+	"You briefly hear seagulls far in the distance." : 7,
+	(: ActionFunction2 :) : 2,
+      ]) );
+    SetInventory( ([
+	"/domains/town/obj/seawater" : 1,
+      ]) );
 }
 void init(){
     ::init();

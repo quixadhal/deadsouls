@@ -91,7 +91,7 @@ varargs string SetRace(string race, mixed extra) {
 
     if(sizeof(args[4])){
 	foreach(mixed key, mixed val in args[4]){
-	    this_object()->AddSkill(key,atoi(val[1]));
+	    this_object()->AddSkill(key,atoi(val[1]),atoi(val[0]));
 	}
     }
 

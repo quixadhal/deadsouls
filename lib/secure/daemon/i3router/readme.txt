@@ -20,4 +20,7 @@
 // should work.
 //
 // -Tim (Last edited February 16, 2004)
-
+//
+// Some modifications have been made by Cratylus @ Dead Souls to get it
+// working on DS muds and add some features.
+// -Crat 05Sep2006
