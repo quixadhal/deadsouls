@@ -30,11 +30,9 @@ int cmd(string str) {
     }
     localdest = 0;    /* Assume it's not a local destination */
     if( str && sscanf( str, "-f %s", s1)) {
-	tc("meep");
 	ow = 1;
 	str = s1;
     }
-    tc("str: "+str);
 
     if (!str || sscanf(str, "%s %s", file1, file2) != 2) {
 	if (str && sscanf(str, "%s", file1)) {

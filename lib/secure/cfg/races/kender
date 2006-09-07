@@ -1,7 +1,7 @@
 RACE kender
 SENSITIVITY 23:78
 LANGUAGE Kendrall
-SKILL stealing:1:5:5:5
+SKILL stealing:2:1:0:0
 STATS agility:40:3
 STATS charisma:40:2
 STATS coordination:50:2

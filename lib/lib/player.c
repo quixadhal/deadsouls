@@ -395,7 +395,7 @@ int eventReleaseObject() {
 
 void eventLoadObject(mixed *value, int recurse) { }
 
-mixed eventUse(object used, string cmd) {
+static mixed eventUse(object used, string cmd) {
     object old_agent;
     mixed tmp;
 
@@ -485,6 +485,9 @@ int Setup() {
 
 	if(file_exists(home+".c")) 
 	    this_object()->eventMoveLiving(home);
+
+	foreach(string chan in CHAT_D->GetChannels())
+	this_object()->AddChannel(chan);
 
 	SetShort("First Admin $N");
     }

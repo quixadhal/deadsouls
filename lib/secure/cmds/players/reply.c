@@ -24,32 +24,7 @@ int cmd(string str) {
 	notify_fail("No current reply addressee.\n");
 	return 0;
     }
-    ob = find_living(reply);
-    if(!ob && (sscanf(reply, "%s@%s", a, b) != 2)) {
-	notify_fail(capitalize(reply)+" is not currently in our reality.\n");
-	return 0;
-    }
-    if(sscanf(reply, "%s@%s", a, b) == 2) {
-	a = lower_case(a);
-	SERVICES_D->eventSendTell(a, b, str);
-	return 1;
-    }
-    if( (err = (mixed)this_player()->CanSpeak(ob, "reply", str)) != 1 )
-	return err;
-    machine=present("cratylus' answering machine",ob);
-    if(machine){
-	int parse_it;
-	parse_it=machine->query_answer();
-	frm=(string)this_player()->GetName();
-	if(parse_it){
-	    machine->get_message(frm+" tells you: "+msg+".\n");
-	    machine_message=machine->send_message();
-	    message("info",machine_message,this_player());
-	    return 1;
-	}
-    }
-    this_player()->eventSpeak(ob, TALK_PRIVATE, str);
-    ob->SetProperty("reply", this_player()->GetKeyName());
+    load_object("/secure/cmds/players/tell")->cmd(reply+" "+str);
     return 1;
 }
 

@@ -13,10 +13,13 @@
 
 //inherit "/lib/props/extra_parse";
 
-private static int Forced;
+private static int Forced, Paused = 0;
 private static string CommandFail;
 private static string *SearchPath;
-private static string *apostrophe_exceptions;
+private static int last_cmd_time = 0;
+private static int cmd_count = 1;
+private string *CommandHist = ({});
+private int MaxCommandHistSize = 20;
 
 int direct_force_liv_str() { return 1; }
 int direct_force_liv_to_str() { return 1; }
@@ -25,16 +28,15 @@ int direct_force_liv_to_str() { return 1; }
 /*  ***************  /lib/command.c driver applies  ***************  */
 
 static void create() {
-    apostrophe_exceptions = ({ "ed","modify","delete","create","add" });
-    apostrophe_exceptions += ({"rwho", "finger","mudlist","tell","eval"});
-    apostrophe_exceptions += ({"say","speak","yell","whisper","shout"});
-    //Fix here courtesy of Jonez
-    apostrophe_exceptions += ({"ping", "reply"});
     SearchPath = ({ DIR_PLAYER_CMDS, DIR_SECURE_PLAYER_CMDS, DIR_CLAN_CMDS,
       DIR_COMMON_CMDS, DIR_SECURE_COMMON_CMDS });
 }
 
 static string process_input(string cmd) { 
+    tc("HIT","red");
+    //if(sizeof(CommandHist) >= MaxCommandHistSize) CommandHist -= ({ CommandHist[0] }); 
+    //CommandHist += ({ cmd });
+    //tc("cmdhist: "+identify(CommandHist),"yellow");
     return cmd;
 }
 
@@ -44,6 +46,25 @@ static int cmdAll(string args) {
     object old_agent;
     mixed err;
     string verb, file;
+
+    if(Paused) return 0;
+
+    if(MAX_COMMANDS_PER_SECOND){
+	if(last_cmd_time == time()) cmd_count++;
+	else {
+	    last_cmd_time = time();
+	    cmd_count = 1;
+	}
+	if(!creatorp(this_player()) && cmd_count > MAX_COMMANDS_PER_SECOND) {
+	    write("You have exceeded the "+MAX_COMMANDS_PER_SECOND+" commands per second limit.");
+	    return 1;
+	}
+    }    
+
+    if(sizeof(CommandHist) >= MaxCommandHistSize) CommandHist -= ({ CommandHist[0] }); 
+    if(!args) CommandHist += ({ query_verb() });
+    else CommandHist += ({ query_verb()+" "+args });
+    //tc("cmdhist: "+identify(CommandHist),"yellow");
 
     old_agent = this_agent(this_object());
     verb = query_verb();
@@ -67,7 +88,7 @@ static int cmdAll(string args) {
 	    if( args ) cmd = verb + " " + args;
 	    else cmd = verb;
 	    if( (int)this_object()->GetProperty("parse debug") ) dbg = 1;
-	    if( (int)this_object()->GetProperty("debug") ) dbg = 1;
+	    else if( (int)this_object()->GetProperty("debug") ) dbg = 1;
 	    else dbg = 0;
 	    if( (err = parse_sentence(cmd, dbg)) == 1 ) {
 		this_agent(old_agent || 1);
@@ -168,6 +189,19 @@ int eventForce(string cmd) {
     return res;
 }
 
+int eventRetryCommand(string lastcmd){
+    string virb, prep, rest,ret;
+    if(sscanf(lastcmd, "%s %s %s",virb, prep, rest) == 3 && 
+      member_array(prep,master()->parse_command_prepos_list()) != -1)
+	ret = virb + " "+prep+" a "+rest;
+    else if(sscanf(lastcmd, "%s %s",virb, rest) == 2) ret = virb + " a "+rest;
+    else ret = "wtf";
+    //tc("ret: "+ret);
+    parse_sentence(ret);
+    this_object()->SetPlayerPaused(0);
+    return 1;
+}
+
 /*  **********  /lib/command.c data manipulation functions  ********** */
 
 string *AddSearchPath(mixed val) {
@@ -197,6 +231,36 @@ string *GetSearchPath() { return SearchPath; }
 int GetForced() { return Forced; }
 
 string GetClient() { return 0; }
+
+string *GetCommandHist(){
+    return CommandHist;
+}
+
+string GetLastCommand(){
+    if(!GetForced() && (this_player() == this_object() || previous_object() == master())){
+	return CommandHist[sizeof(CommandHist)-1];
+    }
+    else return "";
+}
+
+int GetMaxCommandHistSize(){
+    return MaxCommandHistSize;
+}
+
+int SetMaxCommandHistSize(int i){
+    if(!i || i < 2) i = 2;
+    return MaxCommandHistSize = i;
+}
+
+int SetPlayerPaused(int i){
+    if(previous_object() == this_object() || previous_object() == master())
+	Paused = i;
+    return Paused;
+}
+
+int GetPlayerPaused(){
+    return Paused;
+}
 
 string SetCommandFail(string str) { 
     if( !str || str == "" ){

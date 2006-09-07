@@ -1,3 +1,0 @@
-void foo() {
-    void x;
-}

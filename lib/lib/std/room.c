@@ -32,6 +32,7 @@ inherit LIB_MONEY;
 private function        Bury          = 0;
 private string          Climate       = "temperate";
 private int             DayLight      = -1970;
+private int             counter       = 0;
 private static string   DayLong       = 0;
 private object array    DummyItems    = ({});
 private static int      GasCheck      = time();
@@ -57,13 +58,13 @@ mapping			ItemsMap      = ([]);
 private static mixed    global_item;
 private static mixed	Action;
 private int		tick_resolution	= 5;
+private mapping         ActionsMap     = ([]);
 
 
 string GetClimate();
 int GetNightLight();
 int GetDayLight();
 int GetShade();
-int elderp(object foo);
 
 mixed direct_delete_exit_str(){
     return 1;
@@ -78,6 +79,16 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3);
 /***********      /lib/room.c data manipulation functions      **********/
 
 void CheckActions(){
+
+    if(sizeof(ActionsMap)){
+	foreach(mixed key, mixed val in ActionsMap){
+	    if( ActionChance > random(100) ) {
+		if(functionp(key)) evaluate(key);
+		else message("other_action", key, this_object());
+	    }
+	}
+    }
+
     if( ActionChance > random(100) ) {
 	int x;
 
@@ -96,6 +107,8 @@ void CheckActions(){
 }
 
 void heart_beat(){
+    counter++;
+    if(counter > 9999) counter = 0;
     CheckActions();
 }
 
@@ -108,6 +121,16 @@ void SetAction(int chance, mixed val) {
 }
 
 mixed GetAction() { return Action; }
+
+mapping SetActionsMap(mapping ActMap){
+    if(ActMap && sizeof(ActMap)) ActionsMap = ActMap;
+    return copy(ActionsMap);
+}
+
+mapping GetActionsMap(){
+    return copy(ActionsMap);
+}
+
 
 int SetFrequency(int tick){
     if(tick) tick_resolution = tick;
@@ -958,8 +981,7 @@ int GenerateObviousExits(){
 
 static void init() {
     if(this_object()->GetProperty("indoors")) SetClimate("indoors");
-
     if(!sizeof(GetObviousExits()) && DefaultExits > 0 && Obvious) GenerateObviousExits();
-    if(Action && sizeof(Action)) set_heart_beat(tick_resolution);
+    if((Action && sizeof(Action)) || sizeof(ActionsMap)) set_heart_beat(tick_resolution);
 }
 

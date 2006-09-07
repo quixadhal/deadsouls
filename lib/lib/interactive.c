@@ -141,6 +141,8 @@ int Setup() {
     //else
     //CHAT_D->eventSendChannel("SYSTEM","admin","[" + GetCapName() + " logs in]",0);
 
+#echo Login occurs.
+
     if(!catch(mp = (mapping)FOLDERS_D->mail_status(GetKeyName()))) {
 	if(mp["unread"]) {
 	    eventPrint("\n>>> " + mp["unread"] + " of your " +
@@ -502,13 +504,10 @@ void eventDescribeEnvironment(int brief) {
 	    }
 	    message("system", "Please come back another time!", this_object());
 	    if(!creatorp(this_object())){
-		tc("retain: "+retain);
 		foreach(object ob in all_inventory(this_object())){
-		    tc("ob: "+identify(ob)+", retain: "+ob->GetRetain());
 		    if((!retain && !ob->GetRetain()) || !ob->GetRetain()) ob->eventMove(env);
 		}
 		foreach(object ob in deep_inventory(this_object())){
-		    tc("ob: "+identify(ob)+", retain: "+ob->GetRetain(),"red");
 		    if((!retain && !ob->GetRetain()) || !ob->GetRetain()) ob->eventMove(env);
 		}
 	    }

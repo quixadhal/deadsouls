@@ -84,7 +84,6 @@ varargs void eventReloadVerbs(mixed val) {
 
 	receive("receive");
 	message(1,"message",this_object(),({}));
-	shout("shout");
 
 	if( ob = find_object(verb) ) ob->eventDestruct();
 	if( ob = load_object(verb) ) {

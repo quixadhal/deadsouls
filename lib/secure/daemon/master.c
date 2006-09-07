@@ -24,7 +24,7 @@
 
 private static int ResetNumber;
 private static object Unguarded;
-private static string PlayerName, rlog;
+private static string PlayerName, rlog, gcmd;
 private static object NewPlayer;
 private static mapping Groups, ReadAccess, WriteAccess;
 private static string *ParserDirs = ({ "secure", "verbs", "daemon", "lib", "spells" });
@@ -607,6 +607,11 @@ private static void load_access(string cfg, mapping ref) {
 
     string parser_error_message(int type, object ob, mixed arg, int flag) {
 	string err;
+	//tc("yupe: "+type);
+	//tc("ob: "+identify(ob));
+	//tc("arg: "+identify(arg));
+	//tc("flag: "+identify(flag));
+	//tc("last cmd: "+this_player()->GetLastCommand());
 
 	if( ob ) err = (string)ob->GetShort();
 	else err = "";
@@ -631,6 +636,14 @@ private static void load_access(string cfg, mapping ref) {
 	    {
 		mixed *obs;
 		int i;
+
+		if(DEFAULT_PARSING){
+		    gcmd = this_player()->GetLastCommand();
+		    this_player()->SetPlayerPaused(1);
+		    //tc("hm?");
+		    call_out( (: this_player()->eventRetryCommand(gcmd) :), 0);
+		    return " ";
+		}
 
 		obs = unique_array(arg, (: (string)$1->GetShort() :));
 		if( sizeof(obs) == 1 )

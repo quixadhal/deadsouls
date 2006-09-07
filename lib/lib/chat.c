@@ -63,7 +63,8 @@ string *AddChannel(mixed val) {
     val = val - RestrictedChannels;
     if(arrayp(val)){
 	foreach(string channel in val){
-	    if(member_array(channel,this_player()->GetExtraChannels()) == -1){
+	    if(this_player()->GetExtraChannels() &&
+	      member_array(channel,this_player()->GetExtraChannels()) == -1){
 		this_player()->AddExtraChannels( ({ channel }) );
 	    }
 	}

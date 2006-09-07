@@ -21,7 +21,7 @@ static void create(){
     if(!router_port) router_port = "9000";
     if(!router_ip) router_ip = "192.168.0.5";
     //if(!sizeof(router_list))
-    router_list = ({ ({"*yatmim", "149.152.218.102 23"}) });
+    router_list = ({ ({"*yadsm", "192.168.0.5 9000"}) });
     log_file("router/server_log", "Created when uptime = " + uptime() + "\n");
     trr("server got created");
     log_file("router/server_log",timestamp()+" router object created.\n");

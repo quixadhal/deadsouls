@@ -59,7 +59,8 @@ int SetRecordingFile(string str){
 	return 1;
     }
     filename = last_string_element(str);
-    if(!check_privs(this_player(),str) || !unguarded( (: write_file(gstr2,"") :) )){
+    gstr2 = str;
+    if(!check_privs(this_player(),str) || !unguarded( (: write_file(gstr2,"New log: "+timestamp()+"\n") :) )){
 	write("That is not a valid path.");
 	return 1;
     }

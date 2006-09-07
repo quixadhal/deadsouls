@@ -1,3 +1,0 @@
-TYPETEST
-
-int x = "hi";
