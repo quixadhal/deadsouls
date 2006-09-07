@@ -395,7 +395,7 @@ int eventReleaseObject() {
 
 void eventLoadObject(mixed *value, int recurse) { }
 
-mixed eventUse(object used, string cmd) {
+static mixed eventUse(object used, string cmd) {
     object old_agent;
     mixed tmp;
 

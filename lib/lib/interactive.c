@@ -141,6 +141,8 @@ int Setup() {
     //else
     //CHAT_D->eventSendChannel("SYSTEM","admin","[" + GetCapName() + " logs in]",0);
 
+#echo Login occurs.
+
     if(!catch(mp = (mapping)FOLDERS_D->mail_status(GetKeyName()))) {
 	if(mp["unread"]) {
 	    eventPrint("\n>>> " + mp["unread"] + " of your " +
