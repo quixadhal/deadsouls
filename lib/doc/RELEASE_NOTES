@@ -1,10 +1,7 @@
----- 2.1r36 (unreleased) ---
+---- 2.1r34 (unreleased) ---
 - Added DEFAULT_PARSING to config.h. If this is set to 1, commands
   that normally fail with an ambiguity error ("Which X do you mean?")
-  will instead default to the first eligible object. This is an
-  ugly workaround, and it pauses the user's return until the correct
-  pattern is matched. The proper fix is in the driver and will not
-  be forthcoming until someone knowledgeable in C helps (HINT! HINT!).
+  will instead default to the first eligible object. 
 - Fixed problem on i3 router that caused muds to share fd's.
 - Added MAX_COMMANDS_PER_SECOND to config.h to enable a cap on scripters.
   This affects players only.
