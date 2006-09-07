@@ -53,5 +53,6 @@
 #define COMPAT_MODE              1
 #define RETAIN_ON_QUIT           1
 #define MAX_COMMANDS_PER_SECOND  10
+#define DEFAULT_PARSING          0
 
 #endif /* s_config_h */

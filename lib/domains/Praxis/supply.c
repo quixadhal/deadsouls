@@ -26,6 +26,9 @@ void create() {
       (["shop" : "You can buy and sell things here.",
 	"passage" : "Horace keeps the things he has for sale back there.",
 	"road" : "Boc La Road."]) );
+    SetInventory(([
+	"/domains/Praxis/obj/mon/horace" : 1,
+      ]));
     SetExits( 
       (["south" : "/domains/Praxis/e_boc_la2"]) );
     SetProperty("no castle", 1);
@@ -52,4 +55,3 @@ int go_north(string str) {
     this_player()->eventMoveLiving("/domains/Praxis/storage", "north");
     return 1;
 }
-
