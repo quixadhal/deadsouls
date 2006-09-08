@@ -44,16 +44,19 @@ string eventAppend(string file, string *params, string addendum){
     string *top_array;
     string *bottom_array;
     string search_str, new_string;
+    //tc("stack: "+get_stack(),"green");
+    //tc("file: "+file,"green");
 
     globalstr = file;
 
-    if(unguarded( (: file_exists(globalstr):) ) && !check_privs(this_player(),globalstr)){
+    if(!grepp(globalstr,"\n") && unguarded( (: file_exists(globalstr):) ) && !check_privs(this_player(),globalstr)){
 	write("You do not appear to have access to this file. Modification aborted.");
 	return "";
     }
-    if(unguarded( (: file_exists(globalstr):) )) {
+    if(!grepp(globalstr,"\n") && unguarded( (: file_exists(globalstr):) )) {
 	file = unguarded( (: read_file(globalstr) :) );
     }
+    //tc("file: "+file,"green");
     foreach(string param in params){
 	if(!found && param && sizeof(param) && param != "" && stringp(param)){
 	    if(strsrch(file,param) != -1){ 
@@ -86,7 +89,6 @@ string eventAppend(string file, string *params, string addendum){
 
     top_array = file_arr[0..secondary_line-1];
     bottom_array = file_arr[secondary_line..sizeof(file_arr)-1];
-
     new_string = implode(top_array,"\n");
     new_string += addendum;
     new_string += implode(bottom_array,"\n");
