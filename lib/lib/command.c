@@ -33,10 +33,6 @@ static void create() {
 }
 
 static string process_input(string cmd) { 
-    tc("HIT","red");
-    //if(sizeof(CommandHist) >= MaxCommandHistSize) CommandHist -= ({ CommandHist[0] }); 
-    //CommandHist += ({ cmd });
-    //tc("cmdhist: "+identify(CommandHist),"yellow");
     return cmd;
 }
 

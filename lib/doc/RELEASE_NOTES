@@ -1,4 +1,5 @@
----- 2.1r34 (unreleased) ---
+---- 2.1r38 (unreleased) ---
+- Fixed QCS bug when running in Windows that turned '\n' into '/n'
 - Added DEFAULT_PARSING to config.h. If this is set to 1, commands
   that normally fail with an ambiguity error ("Which X do you mean?")
   will instead default to the first eligible object. 
