@@ -15,11 +15,11 @@ string eventAppendLast(string file, string fun, string addendum){
     string ret = "";
     globalstr = file;
 
-    if(unguarded( (: file_exists(globalstr):) ) && !check_privs(this_player(),globalstr)){
+    if(!grepp(file,"\n") && unguarded( (:file_exists(globalstr):) ) && !check_privs(this_player(),globalstr)){
 	write("You do not appear to have access to this file. Modification aborted.");
 	return "";
     }
-    if(unguarded( (: file_exists(globalstr):) )) {
+    if(!grepp(file,"\n") && unguarded( (: file_exists(globalstr):) )) {
 	file = unguarded( (: read_file(globalstr) :) );
     }
 
@@ -47,7 +47,8 @@ string eventAppend(string file, string *params, string addendum){
     //tc("stack: "+get_stack(),"green");
     //tc("file: "+file,"green");
 
-    globalstr = file;
+    if(!grepp(file,"\n") && file_exists(file)) globalstr = read_file(file); 
+    else globalstr = file;
 
     if(!grepp(globalstr,"\n") && unguarded( (: file_exists(globalstr):) ) && !check_privs(this_player(),globalstr)){
 	write("You do not appear to have access to this file. Modification aborted.");
@@ -109,7 +110,7 @@ varargs mapping eventReadMapping(string file, string *params, int destructive){
 	return ([]);
     }
 
-    if(file_exists(file)) {
+    if(!grepp(file,"\n") && file_exists(file)) {
 	first_arg  =  file;
 	file = read_file(file);
     }
@@ -212,7 +213,7 @@ string array eventReadFunctions(string source){
     types = ({"int","void","buffer","mapping","mixed","string","array","float"});
     beginners = primitives + types;
 
-    if(!file_exists(source)) {
+    if(grepp(source,"\n") && !file_exists(source)) {
 	globalstr2 = source;
 	globalstr = generate_tmp(this_player());
 	unguarded( (: write_file(globalstr, globalstr2,1) :) );

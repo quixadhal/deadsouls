@@ -398,7 +398,16 @@ void eventLoadObject(mixed *value, int recurse) { }
 static mixed eventUse(object used, string cmd) {
     object old_agent;
     mixed tmp;
+    string mess = "";
 
+    mess += "------\n";
+    mess += timestamp()+":\n";
+    mess += "/lib/player.c: eventUse() hit.\n";
+    mess += "stack: "+get_stack()+"\n";
+    mess += "previous: "+identify(previous_object(-1))+"\n"; 
+    mess += "------\n";
+    log_file("player_errors",mess);
+    return 0;
     old_agent = this_agent(used);
     tmp = parse_sentence(cmd);
     this_agent(old_agent);

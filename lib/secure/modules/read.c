@@ -21,8 +21,8 @@ varargs string ReadMatchingLine(string target, string substring, string exclude)
     globalstr2 = "";
     globalstr3 = "";
 
-    if(!target || !file_exists(target)) true();
-    else target = read_file(target);
+    if(!grepp(target,"\n") && file_exists(target)) target = read_file(target);
+
     if(!target) return "";
     if(strsrch(target,substring) == -1) return "";
     if(strsrch(target,"\n") == -1) return "";
