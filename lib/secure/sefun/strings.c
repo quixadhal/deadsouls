@@ -310,8 +310,6 @@ varargs mixed remove_matching_line(string target, string substring, int i, strin
     int omit, done, tail_search;
     string line, filename, new_file;
 
-    if(!target || !file_exists(target)) true();
-    else target = read_file(target);
     if(!target) return 0;
     if(strsrch(target,substring) == -1) return target;
     if(strsrch(target,"\n") == -1) return 0;
@@ -339,7 +337,6 @@ varargs mixed remove_matching_line(string target, string substring, int i, strin
 	if(!line) done = 100;
 	if(i == 999) done = 100;
     }
-
     rm(filename);
     return new_file;
 }

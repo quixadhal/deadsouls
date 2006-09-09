@@ -3,8 +3,8 @@
 
 #define DEFAULT_PROMPT           "> "
 #define MUD_STATUS               "mudlib development"
-#define ADMIN_EMAIL              "cratylus@comcast.net"
-#define DEBUGGER                 "cratylus"
+#define ADMIN_EMAIL              "admin@here"
+#define DEBUGGER                 "DEBUG_NAME"
 #define LOCAL_NEWS_PREFIX        "nm"
 
 #define MUD_IS_LOCKED            0
@@ -53,6 +53,6 @@
 #define COMPAT_MODE              1
 #define RETAIN_ON_QUIT           1
 #define MAX_COMMANDS_PER_SECOND  10
-#define DEFAULT_PARSING          0
+#define DEFAULT_PARSING          1
 
 #endif /* s_config_h */

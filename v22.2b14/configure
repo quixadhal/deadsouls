@@ -1,0 +1,14 @@
+#!/bin/sh
+./build.MudOS develop
+
+if uname -a | grep "WOLF/OS" | grep -v grep ; then
+echo ""
+echo "Running Wolfpaw-specific modification."
+echo "When this is done, please enter the following command line:"
+echo " "
+echo "make -j 1"
+\cp -f ../extra/wolfpaw/* . 
+else
+echo "No Wolfpaw config needed."
+fi
+

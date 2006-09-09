@@ -23,7 +23,7 @@
 #include "master.h"
 
 private static int ResetNumber;
-private static object Unguarded;
+private static object Unguarded, gguy;
 private static string PlayerName, rlog, gcmd;
 private static object NewPlayer;
 private static mapping Groups, ReadAccess, WriteAccess;
@@ -636,12 +636,18 @@ private static void load_access(string cfg, mapping ref) {
 	    {
 		mixed *obs;
 		int i;
-
+		function f;
+		gguy = this_player();
 		if(DEFAULT_PARSING){
 		    gcmd = this_player()->GetLastCommand();
-		    this_player()->SetPlayerPaused(1);
+		    this_player()->eventRetryCommand(gcmd);
+		    //this_player()->SetPlayerPaused(1);
 		    //tc("hm?");
-		    call_out( (: this_player()->eventRetryCommand(gcmd) :), 0);
+		    //call_out( (: this_player()->eventRetryCommand(gcmd) :), 0);
+		    //f = bind( (: call_other, gguy, "eventRetryCommand",gcmd :), gguy );
+		    //if( f ) catch(evaluate(f));
+		    //new("/secure/obj/executor",gguy,gcmd);
+
 		    return " ";
 		}
 

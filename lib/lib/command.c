@@ -33,10 +33,6 @@ static void create() {
 }
 
 static string process_input(string cmd) { 
-    tc("HIT","red");
-    //if(sizeof(CommandHist) >= MaxCommandHistSize) CommandHist -= ({ CommandHist[0] }); 
-    //CommandHist += ({ cmd });
-    //tc("cmdhist: "+identify(CommandHist),"yellow");
     return cmd;
 }
 
@@ -191,6 +187,7 @@ int eventForce(string cmd) {
 
 int eventRetryCommand(string lastcmd){
     string virb, prep, rest,ret;
+    if(previous_object() != master()) return 0;
     if(sscanf(lastcmd, "%s %s %s",virb, prep, rest) == 3 && 
       member_array(prep,master()->parse_command_prepos_list()) != -1)
 	ret = virb + " "+prep+" a "+rest;
