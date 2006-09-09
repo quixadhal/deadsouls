@@ -27,14 +27,14 @@ static void create(){
     log_file("router/server_log",timestamp()+" router object created.\n");
     call_out("setup", 5);
     call_out("LocalHostedChans", 15);
-    set_heart_beat(10);
+    set_heart_beat(1);
 }
 
 void heart_beat(){
     heart_count++;
-    if(heart_count % 5) trr("BING!","white");
-    if(heart_count % 20) this_object()->clear_discs();
-    if(heart_count > 300) {
+    if(!(heart_count % 60)) trr("BING!","white");
+    if(!(heart_count % 120)) this_object()->clear_discs();
+    if(!(heart_count > 240)) {
 	heart_count = 0;
 	this_object()->clean_socks();
 	save_object(SAVE_ROUTER);

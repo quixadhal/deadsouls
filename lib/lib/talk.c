@@ -12,7 +12,7 @@
 #include "include/talk.h"
 #define MAX_TELL_HIST_SIZE  50
 
-string array TellHist = ({});
+private static string array TellHist = ({});
 
 int GetPolyglot();
 
@@ -39,12 +39,9 @@ int direct_whisper_to_liv_in_wrd_str() { return 1; }
 int eventTellHist(string str){
     string pob = base_name(previous_object());
     string stack = get_stack();
-    //tc("I am: "+identify(this_object()),"red");
-    //tc("pob: "+pob,"white");
-    //tc("stack: "+get_stack(),"blue");
-    //tc("----");
     if(pob != SERVICES_D && pob != "/secure/cmds/players/tell" &&
-      stack != "get_stack eventTellHist eventHearTalk eventSpeak cmd cmdAll <function>"){
+      stack != "get_stack eventTellHist eventHearTalk eventSpeak cmd cmdAll <function>" &&
+      stack != "get_stack eventTellHist eventHearTalk eventSpeak cmd cmd cmdAll <function>"){
 	return 0; 
     }
     if(sizeof(TellHist) > MAX_TELL_HIST_SIZE) TellHist -= ({ TellHist[0] });
