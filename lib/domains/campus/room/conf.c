@@ -51,17 +51,9 @@ int CanReceive(object ob) {
 	ob->eventMoveLiving(ROOM_START);
 	return 0;
     }
-    if(ob && living(ob)){
-	if(interactive(ob) && 
-	  file_name(environment(ob)) != "/domains/campus/room/corridor4"
-	  && !archp(ob)){
-	    message("info","You must enter the conference room through the normal "+
-	      "entrance, like everyone else.",ob);
-	    return 0;
-	}
-    }
     return 1;
 }
+
 void init(){
     ::init();
 }

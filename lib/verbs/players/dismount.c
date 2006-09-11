@@ -52,6 +52,7 @@ mixed do_dismount() {
 	this_player()->eventMoveLiving(new_env);
     }
     else return write("You don't seem to have a mount.");
+
 }
 
 

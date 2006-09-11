@@ -23,7 +23,7 @@ inherit LIB_MOVE;
 inherit LIB_OBJECT;
 inherit LIB_CRAWL;
 inherit LIB_SAVE;
-//inherit LIB_DOMESTICATE;
+inherit LIB_DOMESTICATE;
 
 private int CustomXP, ActionChance, CombatActionChance, AutoStand;
 private int MaximumHealth = 0;

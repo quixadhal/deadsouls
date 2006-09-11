@@ -1,8 +1,6 @@
 #include <lib.h>
 
 inherit LIB_SENTIENT;
-inherit LIB_MOUNT;
-inherit LIB_DOMESTICATE;
 
 static void create() {
     sentient::create();
@@ -15,11 +13,12 @@ static void create() {
     SetRace("horse");
     SetGender("male");
     SetMelee(1);
-    SetAction(5, ({ 
-	"The horse snorts.", "You hear the horse whinny.", 
-	"The horse flips its tail in the air.",
-	"The horse looks around."}));
-    SetNoClean(1);
+    //SetAction(5, ({ 
+    //	"The horse snorts.", "You hear the horse whinny.", 
+    //	"The horse flips its tail in the air.",
+    //	"The horse looks around."}));
+    SetMount(1);
+    SetCanBefriend(1);
 }
 void init(){
     ::init();

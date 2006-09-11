@@ -39,11 +39,12 @@ void eventReceiveWhoRequest(mixed *packet) {
     tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"+capitalize(packet[3])+" at "+packet[2]+" has requested a list of users currently logged on. Replying with: %^BOLD%^YELLOW%^"+ret+".%^RESET%^\"");
 }
 
-void eventSendWhoRequest(string mud) {
+varargs void eventSendWhoRequest(string mud) {
     string who;
 
     who = (string)this_player(1)->GetKeyName();
-    INTERMUD_D->eventWrite(({ "who-req", 5, mud_name(), who, mud, 0 }));
+    if((mud) && sizeof(mud)) INTERMUD_D->eventWrite(({ "who-req", 5, mud_name(), who, mud, 0 }));
+    else INTERMUD_D->eventWrite(({ "who-req", 5, mud_name(), who, 0, 0 }));
     tn("eventSendWhoRequest: "+identify( ({ "who-req", 5, mud_name(), who, mud, 0 })), "blue");
 }
 
