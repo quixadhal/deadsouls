@@ -4,9 +4,9 @@
 inherit LIB_DAEMON;
 
 mixed cmd(string str) {
-    foreach(string mud in INTERMUD_D->GetMuds()){
-	SERVICES_D->eventSendWhoRequest(mud);
-    }
+    //    foreach(string mud in INTERMUD_D->GetMuds()){
+    SERVICES_D->eventSendWhoRequest();
+    //    }
     return 1;
 }
 

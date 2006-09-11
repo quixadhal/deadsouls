@@ -20,6 +20,11 @@ cmd(string str) {
 	write("Someone tried forcing you to mv "+str+"\n");
 	return 1;
     }
+
+    if(!str || !sizeof(str)){
+	return help();
+    }
+
     if(sscanf(str,"-f %s %s",t1,t2) == 2) {
 	force = 1;
 	str = t1+" "+t2;
@@ -53,7 +58,10 @@ int help() {
     write(
       "Syntax:\nmv <file1> <file2|directory>\n" +
       "Renames a file or moves it into the directory specified.\n" +
-      "The -f flag forces the overwriting of an existing file.\n");
+      "The -f flag forces the overwriting of an existing file.\n\n"+
+      "Examples:\n"+
+      "mv -f workroom.bak workroom.c\n"+
+      "mv workroom.bak /tmp/");
     return 1;
 }
 

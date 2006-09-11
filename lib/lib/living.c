@@ -431,46 +431,6 @@ varargs mixed CanCastMagic(int hostile, string spell) {
 
 /*     **********     /lib/living.c event methods     **********     */
 
-mixed eventMount(object who){
-    int rider_weight;
-    if(!who) return 0;
-    rider_weight = (who->GetCarriedMass()) + (who->GetMass() || 2000);
-    //tc("rider_weight: "+rider_weight);
-    //if(!environment(who)) return 1;
-    if(!environment(this_object())) return 0;
-    if(environment(who) && environment(who) == this_object()){
-	return write("You are already mounted.");
-    }
-    if(rider_weight + this_object()->GetCarriedMass() > this_object()->GetMaxCarry()){
-	return write("This mount cannot handle that much weight.");
-    }
-    else {
-	write("You mount "+this_object()->GetShort());
-	say(who->GetName()+" mounts "+this_object()->GetShort());
-	who->SetProperty("mount", this_object());
-	this_object()->AddCarriedMass(rider_weight);
-	return who->eventMove(this_object());
-    }
-}
-
-mixed eventDismount(object who){
-    int rider_weight;
-    if(!who) return 0;
-    rider_weight = (who->GetCarriedMass()) + (who->GetMass() || 2000);
-    if(!environment(this_object())) return 0;
-    if(environment(who) && environment(who) != this_object()){
-	return write("You are already dismounted.");
-    }
-    else {
-	write("You dismount from "+this_object()->GetShort());
-	say(who->GetName()+" dismounts from " +this_object()->GetShort());
-	who->RemoveProperty("mount");
-	this_object()->AddCarriedMass(-rider_weight);
-	return who->eventMove(environment(this_object()));
-    }
-}
-
-
 mixed eventCure(object who, int amount, string type) {
     object array germs = filter(all_inventory(),
       (: $1->IsGerm() && $1->GetType()== $(type) :));
