@@ -101,9 +101,12 @@ help() {
     message("help", "Command: cp\nSyntax: cp <oldfile> [pathname]<newfile>\n"
       "This command makes a copy of the file using the new name "
       "and location passed.  If a new pathname is not specified "
-      "then the copy is put into the present working directory."
+      "then the copy is put into the present working directory. "
       "Optionally, wild cards can be used by employing the * operator.\n"
-      "The -f flag forces overwriting of an existing file.", 
+      "The -f flag forces overwriting of an existing file.\n\n" 
+      "Examples:\n"
+      "cp -f workroom.bak workroom.c\n"
+      "cp workroom.bak /tmp/",
       this_player());
     return 1;
 }

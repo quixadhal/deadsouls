@@ -270,6 +270,15 @@ int step_down(string args){
 }
 
 int SetMc(string args) {
+    object ob;
+    if(args) ob = find_living(args);
+    if(!args || !ob) ob = this_player();
+    if(!member_group(ob, "MODERATORS")){
+	write("That person is not a member of the moderators group.");
+	write("An admin should use the admintool command to add the "+
+	  "appropriate people to that user group.");
+	return 1;
+    }
     if (x==0) {
 	if (args != 0) {
 	    if (present(args) ) {

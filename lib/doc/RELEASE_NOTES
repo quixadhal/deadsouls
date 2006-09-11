@@ -1,4 +1,8 @@
----- 2.1r38 (unreleased) ---
+---- 2.1r40 (unreleased) ---
+- Campus meeting room no longer blocks teleports.
+- Added stables south of the town schoolhouse.
+- Mounts must now be befriended before being mounted. To end your
+  ownership, "abandon" the mount.
 - Fixed QCS bug when running in Windows that turned '\n' into '/n'
 - Added DEFAULT_PARSING to config.h. If this is set to 1, commands
   that normally fail with an ambiguity error ("Which X do you mean?")

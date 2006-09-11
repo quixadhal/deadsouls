@@ -58,10 +58,12 @@ mixed can_ride_into_str(string str) {
 
 mixed do_ride_str(string str) {
     object mount = environment(this_player());
-    return (mixed)environment(mount)->eventGo(mount, str);
+    //return (mixed)environment(mount)->eventGo(mount, str);
+    return mount->eventRide(str);
 }
 
 mixed do_ride_into_str(string str) {
     object mount = environment(this_player());
-    return (mixed)environment(mount)->eventEnter(mount, str);
+    //return (mixed)environment(mount)->eventEnter(mount, str);
+    return mount->eventRide("into" + str);
 }
