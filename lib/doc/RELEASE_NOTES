@@ -1,6 +1,14 @@
----- 2.1r40 (unreleased) ---
+---- 2.1r41 (unreleased) ---
+- Fixed "first admin bug" that failed to add channels.
+- Implemented emotes bugfix provided by Aransus.
+- Modified the template realm somewhat. There are now flask examples,
+  and each wiz gets their own toychest, rather than using one default file for all.
+- Added to QCS: Set/AddTerrainType, SetDefaultLanguage.
+- Added room terrain types.
+- Non-DS code no longer needs ::create() in the create() fun to work.
 - Campus meeting room no longer blocks teleports.
-- Added stables south of the town schoolhouse.
+- Added stable with mountable horse south of the town schoolhouse.
+  "mount horse" and "dismount".
 - Mounts must now be befriended before being mounted. To end your
   ownership, "abandon" the mount.
 - Fixed QCS bug when running in Windows that turned '\n' into '/n'
@@ -22,7 +30,7 @@
   across logons, regardless of RETAIN_ON_QUIT. Any object that return 0
   on GetRetain() is removed on quit, regardless of RETAIN_ON_QUIT. Changing
   RETAIN_ON_QUIT requires a reload of every object, or a restart of the mud.
-- Added sample potions to /domains/town/meals
+- Added sample potions to /domains/town/meals and to Oana's magic shop.
 - Empty bottles now behave properly across logons.
 - cp and mv now take -f as a flag to force overwriting.
 - Removed channels (except admin ones) stay removed.

@@ -24,11 +24,11 @@ void create(){
       "with drones. This is due to safeguards in the master object security "+
       "model, and it will not be \"fixed\".%^RESET%^\n"+
       "\n Labeled buttons on this device read:\n"+
-      "* medscan: scan for disease, poison, etc\t%^RED%^offline%^RESET%^\n"+
+      //"* medscan: scan for disease, poison, etc\t%^RED%^offline%^RESET%^\n"+
       "* fscan: readout of all files inherited\t\t%^GREEN%^ONLINE%^RESET%^\n"+
-      "* enshadow: move a shadow to an object\t\t%^RED%^offline%^RESET%^\n"+
+      //"* enshadow: move a shadow to an object\t\t%^RED%^offline%^RESET%^\n"+
       "* deshadow: remove all shadows from an object\t%^GREEN%^ONLINE%^RESET%^\n"+
-      "* inject: insert substance into patient\t\t%^RED%^offline%^RESET%^\n"+
+      //"* inject: insert substance into patient\t\t%^RED%^offline%^RESET%^\n"+
       "* extract: remove a foreign body or substance\t%^GREEN%^ONLINE%^RESET%^ (slugs only)\n"+
       "* modhealth: raise or lower health level\t%^GREEN%^ONLINE%^RESET%^\n"+
       "* modcaff: raise or lower caffeine level\t%^GREEN%^ONLINE%^RESET%^\n"+
@@ -44,8 +44,9 @@ void create(){
       "* regenerate: restore all amputated limbs\t%^GREEN%^ONLINE%^RESET%^\n"+
       "* cure: eliminate known diseases\t\t%^GREEN%^ONLINE%^RESET%^\n"+
       "* infect: introduce disease into patient\t%^GREEN%^ONLINE%^RESET%^\n"+
-      "* inoculate: raise immunity to a disease\t%^RED%^offline%^RESET%^\n"+
-      "* posture: change your own posture.\t\t%^RED%^offline%^RESET%^\n");
+      //"* inoculate: raise immunity to a disease\t%^RED%^offline%^RESET%^\n"+
+      //"* posture: change your own posture.\t\t%^RED%^offline%^RESET%^\n"+
+      "");
     SetProperties(([
 	"no steal" : 1,
       ]));

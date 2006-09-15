@@ -1,3 +1,4 @@
+#include <terrain_types.h>
 #include <lib.h>
 inherit LIB_ROOM;
 static void create() {
@@ -24,6 +25,7 @@ static void create() {
 	"almost purple from here.",
 	"intersection" : "The main town crossroads is south."
       ]) );
+    AddTerrainType(T_ROAD);
     SetExits( ([ 
 	"east" : "/domains/town/room/tavern",
 	"south" : "/domains/town/room/vill_road1",

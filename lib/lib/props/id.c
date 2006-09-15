@@ -77,7 +77,8 @@ varargs string array SetId(mixed val...) {
 	    Id = ({ Id..., id... });
 	}
     }
-    parse_refresh();
+    if(COMPAT_MODE) parse_init();
+    else parse_refresh();
     return Id;
 }
 

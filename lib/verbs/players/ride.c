@@ -8,7 +8,6 @@
 #pragma save_binary
 
 #include <lib.h>
-#include "include/go.h"
 
 inherit LIB_VERB;
 

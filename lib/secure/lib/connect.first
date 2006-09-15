@@ -124,6 +124,7 @@ static void InputEmail(string str) {
     Admin->SetDefaultLanguage("Common");
     Admin->save_player(Name);
     Admin->AddChannel( ({ "admin", "error" }) );
+    Admin->AddChannel( ({"cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat"}) );
     make_workroom(Name);
     PLAYERS_D->AddPlayerInfo(Name);
 

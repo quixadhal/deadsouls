@@ -21,3 +21,5 @@ static void create() {
     SetNoCondition(1);
     SetInvis(1);
 }
+
+mixed CanGet(object ob) { return "#The river stays in place.";}
