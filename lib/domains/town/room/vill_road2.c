@@ -1,3 +1,4 @@
+#include <terrain_types.h>
 #include <lib.h>
 inherit LIB_ROOM;
 
@@ -18,6 +19,7 @@ static void create() {
 	({"road","long road"}) : "An east-west cobblestone "
 	"road through town.",
       ]) );
+    AddTerrainType(T_ROAD);
     SetEnters( ([ 
       ]) );
     SetObviousExits("n, s, e, w, enter store, enter guild");

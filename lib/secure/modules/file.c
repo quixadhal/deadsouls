@@ -7,6 +7,7 @@ int eventModString(string file, string param, string replace);
 string first_arg, globalstr, globalstr2, globalstr3;
 string *global_array;
 mixed globalmixed;
+string *where_append;
 
 string eventAppendLast(string file, string fun, string addendum){
     int done;
@@ -348,7 +349,7 @@ int eventAddInit(string file){
 
 varargs int eventModString(string file, string param, mixed replace, string *params){
     string check_include, ret, tmpfile;
-    string *where_append;
+    int terrain_include = 0;
     if(file_exists(file) && !check_privs(this_player(),file)){
 	write("You do not appear to have access to this file. Modification aborted.");
 	return 1;
@@ -358,6 +359,8 @@ varargs int eventModString(string file, string param, mixed replace, string *par
     else where_append = params;
 
     tmpfile = generate_tmp(file);
+
+    //if(!grepp(file,"\n") && file_exists(file)) globalstr = read_file(file);
     globalstr = file;
     globalstr2 = tmpfile;
     globalstr3 = param;
@@ -365,16 +368,23 @@ varargs int eventModString(string file, string param, mixed replace, string *par
 
     if(stringp(replace)) { 
 	if(globalstr3 == "SetArmorType" || globalstr3 == "SetMealType" || 
-	  globalstr3 == "SetPosition" ||
+	  globalstr3 == "SetPosition" || globalstr3 == "SetTerrainType" ||
+	  globalstr3 == "AddTerrainType" ||
 	  globalstr3 == "SetVendorType" || globalstr3 == "SetDamageType"){
 	    replace = upper_case(replace);
+	    //tc("foo!");
 	    if(globalstr3 == "SetArmorType") check_include = "/include/armor_types.h";
 	    if(globalstr3 == "SetVendorType") check_include = "/include/vendor_types.h";
 	    if(globalstr3 == "SetDamageType") check_include = "/include/damage_types.h";
 	    if(globalstr3 == "SetMealType") check_include = "/include/meal_types.h";
 	    if(globalstr3 == "SetPosition") check_include = "/include/position.h";
+	    if(globalstr3 == "SetTerrainType") check_include = "/include/terrain_types.h";
+	    if(globalstr3 == "AddTerrainType") check_include = "/include/terrain_types.h";
 	    if(globalstr3 == "SetVendorType" && !grepp(replace,"VT_")) replace = "VT_"+replace;
 	    if(globalstr3 == "SetArmorType" && !grepp(replace,"A_")) replace = "A_"+replace;
+	    if(globalstr3 == "SetTerrainType" && !grepp(replace,"T_")) replace = "T_"+replace;
+	    if(globalstr3 == "AddTerrainType" && !grepp(replace,"T_")) replace = "T_"+replace;
+	    if(grepp(replace,"T_")) terrain_include = 1;
 	    if(globalstr3 == "SetMealType" && !grepp(replace,"MEAL_")) replace = "MEAL_"+replace;
 	    if(globalstr3 == "SetPosition" && !grepp(replace,"POSITION_")) replace = "POSITION_"+replace;
 	    if(!grepp(read_file(check_include),replace)) {
@@ -388,13 +398,20 @@ varargs int eventModString(string file, string param, mixed replace, string *par
 	}
 	else globalmixed = "\""+replace+"\"";
     }
+    //tc("globalmixed: "+globalmixed);
     if(unguarded( (: grepp(read_file(globalstr),globalstr3):) ))
 	ret = unguarded( (: replace_matching_line(read_file(globalstr), globalstr3, globalstr3+"("+globalmixed+");") :) );
-    else ret = eventAppend(file,where_append,"\n"+globalstr3+"("+globalmixed+");\n");
+    else ret = unguarded( (: eventAppend(read_file(globalstr),where_append,"\n"+globalstr3+"("+globalmixed+");\n") :) );
+    //tc("ret: "+ret,"green");
     //ret = replace_line(ret,({"customdefs.h"}), "#include \""+homedir(this_player())+"/customdefs.h\"");
+    if(terrain_include && !grepp(ret,"terrain_types.h")) ret = "#include <terrain_types.h>\n" + ret;
     globalstr3 = ret;
     unguarded( (:  write_file(globalstr2, globalstr3, 1) :) );
+    //tc(read_file(globalstr2),"red");
+    globalstr = file;
     unguarded( (: cp(globalstr2, globalstr) :) );
+    //unguarded( (: tc(globalstr,"blue") :) );
+    //unguarded( (: tc(read_file(globalstr),"blue") :) );
     unguarded( (: rm(globalstr2) :) );
     return 1;
 }

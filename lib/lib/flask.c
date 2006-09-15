@@ -13,8 +13,13 @@ int indirect_fill_obj_with_obj(){ return 1;}
 int indirect_fill_obj_from_obj(){ return 1;}
 
 int indirect_pour_obj_into_obj() { return 1;}
+int direct_pour_obj_into_obj() { return 1;}
+int indirect_pour_from_obj_into_obj() { return 1;}
+int direct_pour_from_obj_into_obj() { return 1;}
+
 int direct_pour_obj_out() { return 1;}
 int direct_pour_out_obj() { return 1;}
+
 int direct_empty_obj() { return 1;}
 
 mixed indirect_drink_from_obj() {
@@ -107,12 +112,29 @@ varargs mixed eventEmpty(object who){
 mixed eventFill(object who, object from){
     int howmuch_me = CanFillMe();
     int howmuch_them = from->CanFillOther();
+    if(!inherits(LIB_DUMMY,from) && base_name(from) != LIB_DUMMY &&
+      environment(from) != this_player()){
+	write("You aren't holding the "+from->GetKeyName()+".");
+	return 1;
+    }
+
+    if((inherits(LIB_DUMMY,from) || base_name(from) != LIB_DUMMY) &&
+      environment(this_object()) != this_player()){
+	write("You aren't holding the "+this_object()->GetKeyName()+".");
+	return 1;
+    }
+
     if(from == this_object()){
 	write("You can't fill it with itself!");
 	return 1;
     }
     if(!howmuch_them) {
 	write("The "+from->GetKeyName()+" is empty.");
+	return 1;
+    }
+    if(FlaskUses >= MaxFlask) {
+	FlaskUses = MaxFlask;
+	write("The "+this_object()->GetKeyName()+" is already full.");
 	return 1;
     }
     if(from->GetFlaskContents() != GetFlaskContents() && GetFlaskContents() != "empty"){

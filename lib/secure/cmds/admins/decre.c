@@ -11,7 +11,7 @@
 
 inherit LIB_DAEMON;
 
-string PlayerName;
+string home_dir, PlayerName;
 
 mixed cmd(string args) {
     object ob, player_ob;
@@ -47,6 +47,8 @@ mixed cmd(string args) {
     PLAYERS_D->eventDecre(lower_case(nom));
 
     if( ob = find_player(nom) ) {
+	home_dir = homedir(ob);
+	write("You decre "+capitalize(nom)+".");
 	PlayerName = nom;
 	inv = deep_inventory(ob);
 	ob->eventMove(ROOM_FURNACE);
@@ -72,6 +74,10 @@ mixed cmd(string args) {
 	message("system", (string)player_ob->GetName() + " is now a player!",
 	  this_player());
 	if( file_size(file+__SAVE_EXTENSION__) > -1 ) rm(file+__SAVE_EXTENSION__);
+	if(home_dir && directory_exists(home_dir))
+	    rename(home_dir,"/secure/save/decre/"+nom+"."+timestamp());
+	filter(objects(), (: !strsrch(base_name($1), home_dir) :) )->eventDestruct();
+
     }
     player_ob->eventMove(ROOM_START);
     return 1;

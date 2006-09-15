@@ -1,3 +1,4 @@
+#include <terrain_types.h>
 #include <lib.h>
 inherit LIB_ROOM;
 
@@ -20,6 +21,7 @@ static void create() {
     SetItems( ([
 	"sign":"A large sign on the road. To read it, 'read sign'.",
       ]) );
+    AddTerrainType(T_ROAD);
     SetNoModify(0);
     SetInventory(([
 	"/domains/town/obj/clocktower" : 1,

@@ -44,6 +44,9 @@ int make_workroom(mixed dude) {
 	cp(tdir+"area/obj/table.c", cdir+"/area/obj/table.c");
 	cp(tdir+"area/obj/key.c", cdir+"/area/obj/key.c");
 	cp(tdir+"area/obj/case.c", cdir+"/area/obj/case.c");
+	cp(tdir+"area/obj/cup.c", cdir+"/area/obj/cup.c");
+	cp(tdir+"area/obj/chest.c", cdir+"/area/obj/chest.c");
+	cp(tdir+"area/obj/pitcher.c", cdir+"/area/obj/pitcher.c");
 	cp(tdir+"area/obj/watch.c", cdir+"/area/obj/watch.c");
 	cp(tdir+"area/npc/fighter.c", cdir+"/area/npc/fighter.c");
 	cp(tdir+"area/armor/chainmail.c", cdir+"/area/armor/chainmail.c");

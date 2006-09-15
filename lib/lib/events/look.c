@@ -229,7 +229,8 @@ mixed direct_look_obj() {
     object env = environment();
 
     if( env != this_player() && env != environment(this_player()) ) {
-	return "#You can't get to it to look at it.";
+	return "#Perhaps \"look at "+this_object()->GetKeyName()+
+	" on\" something?"; 
     }
     return 1;
 }
