@@ -13,7 +13,9 @@
 
 //inherit "/lib/props/extra_parse";
 
-private static int Forced, Paused = 0;
+int Paused = 0;
+private static int Forced = 0;
+private static int ParseRecurse = 0;
 private static string CommandFail;
 private static string *SearchPath;
 private static int last_cmd_time = 0;
@@ -60,7 +62,6 @@ static int cmdAll(string args) {
     if(sizeof(CommandHist) >= MaxCommandHistSize) CommandHist -= ({ CommandHist[0] }); 
     if(!args) CommandHist += ({ query_verb() });
     else CommandHist += ({ query_verb()+" "+args });
-    //tc("cmdhist: "+identify(CommandHist),"yellow");
 
     old_agent = this_agent(this_object());
     verb = query_verb();
@@ -187,15 +188,20 @@ int eventForce(string cmd) {
 
 int eventRetryCommand(string lastcmd){
     string virb, prep, rest,ret;
+    mixed err;
     if(previous_object() != master()) return 0;
+    ParseRecurse++;
+    if(ParseRecurse > 1){
+	ParseRecurse = 0;
+	write("Which one?");
+	return 1;
+    }
     if(sscanf(lastcmd, "%s %s %s",virb, prep, rest) == 3 && 
       member_array(prep,master()->parse_command_prepos_list()) != -1)
 	ret = virb + " "+prep+" a "+rest;
     else if(sscanf(lastcmd, "%s %s",virb, rest) == 2) ret = virb + " a "+rest;
     else ret = "wtf";
-    //tc("ret: "+ret);
     parse_sentence(ret);
-    this_object()->SetPlayerPaused(0);
     return 1;
 }
 
@@ -250,7 +256,8 @@ int SetMaxCommandHistSize(int i){
 }
 
 int SetPlayerPaused(int i){
-    if(previous_object() == this_object() || previous_object() == master())
+    if(previous_object() == this_object() || previous_object() == master() ||
+      archp(this_player()) )
 	Paused = i;
     return Paused;
 }

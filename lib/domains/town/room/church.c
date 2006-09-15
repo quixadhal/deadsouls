@@ -43,16 +43,3 @@ static void create() {
 void init(){
     ::init();
 }
-
-void lookit(string str){
-    string s1,s2;
-
-    if(sscanf(str,"at%sbutton%swall",s1,s2) == 2){
-	write("A button made for pushing.");
-	return;	
-    }
-    if(sscanf(str,"at%sbutton%selevator",s1,s2) == 2){
-	write("A button made for pressing.");
-	return;
-    }
-}

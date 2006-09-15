@@ -40,6 +40,7 @@ int cmd( string a )
     "#include <damage_types.h>\n"+
     "#include <position.h>\n"+
     "#include <runtime_config.h>\n"+
+    "#include <terrain_types.h>\n"+
     "inherit LIB_ITEM;\n"+
     "mixed eval() { " + a + "; }\n"+
     "";

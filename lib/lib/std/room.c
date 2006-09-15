@@ -15,6 +15,7 @@
 #include <medium.h>
 #include <message_class.h>
 #include <talk_type.h>
+#include <terrain_types.h>
 #include <privs.h>
 
 inherit LIB_CLEAN;
@@ -58,6 +59,7 @@ mapping			ItemsMap      = ([]);
 private static mixed    global_item;
 private static mixed	Action;
 private int		tick_resolution	= 5;
+private int		TerrainType	= T_OUTDOORS;
 private mapping         ActionsMap     = ([]);
 
 
@@ -141,6 +143,27 @@ int SetFrequency(int tick){
 
 int GetFrequency(){
     return tick_resolution;
+}
+
+int GetTerrainType(){
+    return TerrainType;
+}
+
+int SetTerrainType(int i){
+    if(i) TerrainType = i;
+    else return TerrainType;
+}
+
+int AddTerrainType(int i){
+    if(!bitshiftedp(i)) return 0;
+    else TerrainType = TerrainType | i;
+    return TerrainType;
+}
+
+int RemoveTerrainType(int i){
+    if(!bitshiftedp(i)) return 0;
+    else TerrainType = TerrainType ^ i;
+    return TerrainType;
 }
 
 int GetAmbientLight() {
@@ -234,7 +257,10 @@ string SetNightLong(string str) { return (NightLong = str); }
 
 string GetNightLong() { return NightLong; }
 
-string SetClimate(string str) { return (Climate = str); }
+string SetClimate(string str) { 
+    if(str == "indoors" && TerrainType == T_OUTDOORS) TerrainType = T_INDOORS;
+    return (Climate = str); 
+}
 
 string GetClimate() { return Climate; }
 

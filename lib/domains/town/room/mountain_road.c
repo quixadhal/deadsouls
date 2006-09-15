@@ -1,3 +1,4 @@
+#include <terrain_types.h>
 #include <lib.h>
 inherit LIB_ROOM;
 
@@ -18,6 +19,7 @@ static void create() {
 	({"mountains","beautiful","snow-capped mountains"}) : "Beautiful "
 	"mountains, far off in the northern distance."
       ]) );
+    AddTerrainType(T_ROAD);
     SetExits( ([ 
 	"south" : "/domains/town/room/road",
       ]) );
