@@ -13,9 +13,9 @@ thief - channel for the thief class
 fighter - channel for the fighter class
 error - system errors
 death - death announcements
-mage - channel for the thief class
-priest - channel for the thief class
-explorer - channel for the thief class
+mage - channel for the mage class
+priest - channel for the priest class
+explorer - channel for the explorer class
 admin - only admins hear this
 
 The following are intermud channels:

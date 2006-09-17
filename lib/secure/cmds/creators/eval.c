@@ -41,11 +41,14 @@ int cmd( string a )
     "#include <position.h>\n"+
     "#include <runtime_config.h>\n"+
     "#include <terrain_types.h>\n"+
+    "#include <body_types.h>\n"+
+    "#include <size_types.h>\n"+
+    "#include <respiration_types.h>\n"+
     "inherit LIB_ITEM;\n"+
     "mixed eval() { " + a + "; }\n"+
     "";
     filename = user_path((string)previous_object()->GetKeyName());
-    if( file_size( filename ) != -2 ) {
+    if( file_size( filename ) != -2 && !securep(previous_object()) ) {
 	notify_fail( "You must have a valid home directory!\n" );
 	return 0;
     }

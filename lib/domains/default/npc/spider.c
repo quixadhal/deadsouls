@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <size_types.h>
 
 inherit LIB_SENTIENT;
 

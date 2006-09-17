@@ -10,6 +10,7 @@
 #include <save.h>
 #include <privs.h>
 #include <armor_types.h>
+#include <size_types.h>
 #include "include/races.h"
 
 inherit LIB_DAEMON;
@@ -17,11 +18,13 @@ inherit LIB_DAEMON;
 private mapping Races = ([]);
 static private mapping Resistances = ([]);
 static private mapping Armors = ([]);
+static private mapping Sizes = ([]);
+static private mapping Btypes = ([]);
 string array FlyingRaces = ({});
 string array LimblessCombatRaces = ({});
 string array LimblessRaces = ({});
 string array NonBitingRaces = ({});
-
+string array SwimmingRaces = ({});
 
 static void create() {
     string array lines;
@@ -36,48 +39,6 @@ static void create() {
     if(!LimblessCombatRaces) LimblessCombatRaces = ({});
     if(!LimblessRaces) LimblessRaces = ({});
     if(!NonBitingRaces) NonBitingRaces = ({});
-
-    // Hocus pocus to load armor and resistance info
-    lines = explode(read_file("/include/armor_types.h"), "\n");
-    foreach(string line in lines) {
-	string type;
-
-	if( sscanf(line, "#define %s %*s", type) == 2 ) {
-	    string file = DIR_DAEMONS "/tmp/" + type + ".c";
-
-	    if( type == "A_MAX_ARMOR_BIT" ) {
-		continue;
-	    }
-
-	    if( !file_exists(file) ) {
-		unguarded((: write_file($(file), "#include <armor_types.h>\n"
-		      "int armor() { return " +
-		      $(type) + "; }\n") :));
-	    }
-
-	    Armors[type] = call_other(file, "armor");
-	}
-    }
-
-    lines = explode(read_file("/include/damage_types.h"), "\n");
-    foreach(string line in lines) {
-	string type;
-
-	if( sscanf(line, "#define %s %*s", type) == 2 ) {
-	    string file = DIR_DAEMONS "/tmp/" + type + ".c";
-	    if( type == "MAX_DAMAGE_BIT" ) {
-		continue;
-	    }
-
-	    if( !file_exists(file) ) {
-		unguarded((: write_file($(file), "#include <damage_types.h>\n"
-		      "int damage() { return " +
-		      $(type) + "; }\n") :));
-	    }
-
-	    Resistances[type] = call_other(file, "damage");
-	}
-    }
 }
 
 static private void validate() {
@@ -114,31 +75,78 @@ int SetLimblessRace(string str){
 }
 
 int SetFlyingRace(string str){
-    //if(member_array(str,FlyingRaces) != -1) return 0;
     FlyingRaces += ({ str });
     return 1;
 }
 
 int SetNonBitingRace(string str){
-    //if(member_array(str,FlyingRaces) != -1) return 0;
     NonBitingRaces += ({ str });
     return 1;
 }
 
+int SetSwimmingRace(string str){
+    SwimmingRaces += ({ str });
+    return 1;
+}
+
+int GetSwimmingRace(string str){
+    if(member_array(str,SwimmingRaces) != -1) return 1;
+    else return 0;
+}
+
+string *GetSwimmingRaces(){
+    return copy(SwimmingRaces);
+}
+
 string *GetLimblessCombatRaces(){
-    return LimblessCombatRaces;
+    return copy(LimblessCombatRaces);
 }
 
 string *GetLimblessRaces(){
-    return LimblessRaces;
+    return copy(LimblessRaces);
 }
 
 string *GetFlyingRaces(){
-    return FlyingRaces;
+    return copy(FlyingRaces);
 }
 
 int GetBitingRace(string str){
     if(member_array(str,NonBitingRaces) == -1) return 1;
+    else return 0;
+}
+
+int RemoveRaceVars(string str){
+    if(previous_object() != this_object()) return 0;
+    FlyingRaces  -= ({ str });
+    LimblessCombatRaces -= ({ str });
+    LimblessRaces -= ({ str });
+    NonBitingRaces -= ({ str }); 
+    NonBitingRaces -= ({ str });
+    SwimmingRaces -= ({ str });
+    return 1;
+}
+
+int GetRaceMass(string str){
+    int Mass = Races[str]->Mass;
+    if(Mass) return Mass;
+    else return 0;
+}
+
+int GetRaceSize(string str){
+    int Size = Races[str]->Size;
+    if(Size) return Size;
+    else return 0;
+}
+
+int GetRaceBodyType(string str){
+    int Btype = Races[str]->Btype;
+    if(Btype) return Btype;
+    else return 0;
+}
+
+int GetRaceRespirationType(string str){
+    int Btype = Races[str]->Btype;
+    if(Btype) return Btype;
     else return 0;
 }
 
@@ -157,6 +165,10 @@ void AddRace(string file, int player) {
     res->Skills = ([]);
     res->Stats = ([]);
     res->Limbs = ({});
+    res->Mass = 0;
+    res->Size = 0;
+    res->Btype = 0;
+    res->Rtype = 0;
 
     validate();
 
@@ -171,21 +183,36 @@ void AddRace(string file, int player) {
 	if(!test_string || !sizeof(test_string)) test_string = line;
 
 	switch(test_string){
+	    string type = "";
 
-	case "FLYINGRACE":
-	    SetFlyingRace(race);
+	case "FLYING_RACE":
+	    line = replace_string(line, "FLYING_RACE ", "");
+	    if(line && to_int(line) < 1) break;
+	    else SetFlyingRace(race);
 	    break;
 
-	case "LIMBLESSRACE":
-	    SetLimblessRace(race);
+	case "LIMBLESS_RACE":
+	    line = replace_string(line, "LIMBLESS_RACE ", "");
+	    if(line && to_int(line) < 1) break;
+	    else SetLimblessRace(race);
 	    break;
 
-	case "LIMBLESSCOMBATRACE":
-	    SetLimblessCombatRace(race);
+	case "LIMBLESS_COMBAT_RACE":
+	    line = replace_string(line, "LIMBLESS_COMBAT_RACE ", "");
+	    if(line && to_int(line) < 1) break;
+	    else SetLimblessCombatRace(race);
 	    break;
 
-	case "NONBITINGRACE":
-	    SetNonBitingRace(race);
+	case "NONBITING_RACE":
+	    line = replace_string(line, "NONBITING_RACE ", "");
+	    if(line && to_int(line) < 1) break;
+	    else SetNonBitingRace(race);
+	    break;
+
+	case "SWIMMING_RACE":
+	    line = replace_string(line, "SWIMMING_RACE ", "");
+	    if(line && to_int(line) < 1) break;
+	    else SetSwimmingRace(race);
 	    break;
 
 	case "RACE":
@@ -201,6 +228,7 @@ void AddRace(string file, int player) {
 	case "PLAYER_RACE":
 	    line = replace_string(line, "PLAYER_RACE ", "");
 	    if(!player && to_int(line) > 0) player = 1;
+	    else player = 0;
 	    break;
 
 	case "LANGUAGE":
@@ -219,6 +247,33 @@ void AddRace(string file, int player) {
 	case "SKILL":      
 	    tmp = explode(replace_string(line, "SKILL ", ""), ":");
 	    res->Skills[tmp[0]] = ({ tmp[1], tmp[2], tmp[3], tmp[4] });
+	    break;
+
+	case "MASS":
+	    x = 0;
+	    sscanf(line, "MASS %d",x);
+	    if(x) res->Mass = x;
+	    break;
+
+	case "SIZE":
+	    type = "";
+	    x = 0;
+	    if(sscanf(line, "SIZE %s",type)) res->Size = GetSize(type);
+	    else res->Size = x;
+	    break;
+
+	case "BODY_TYPE":
+	    type = "";
+	    x = 0;
+	    if(sscanf(line, "BODY_TYPE %s",type)) res->Btype = GetBodyType(type);
+	    else res->Btype = x;
+	    break;
+
+	case "RESPIRATION_TYPE":
+	    type = "";
+	    x = 0;
+	    if(sscanf(line, "RESPIRATION_TYPE %s",type)) res->Btype = GetRespirationType(type);
+	    else res->Btype = x;
 	    break;
 
 	case "STATS":
@@ -273,12 +328,19 @@ void AddRace(string file, int player) {
     void RemoveRace(string race) {
 	validate();
 	map_delete(Races, race);
+	RemoveRaceVars(race);
 	if(Races[race]) 
 	    save_object(SAVE_RACES);
     }
 
+    string ConvertPipe(string str){
+	str = replace_string(str," ","");
+	str = replace_string(str,"|","+");
+	return str;
+    }
 
-    int GetArmor(string str) {
+    int GetArmor(string foo) {
+	string str = ConvertPipe(foo);
 	string file = DIR_DAEMONS "/tmp/" + str + ".c";
 
 	if( !unguarded((: file_exists($(file)) :)) ) {
@@ -286,6 +348,39 @@ void AddRace(string file, int player) {
 		  "int armor() { return " + $(str) + "; }\n") :));
 	}
 	return call_other(file, "armor"); 
+    }
+
+    int GetSize(string foo) {
+	string str = ConvertPipe(foo);
+	string file = DIR_DAEMONS "/tmp/" + str + ".c";
+
+	if( !unguarded((: file_exists($(file)) :)) ) {
+	    unguarded((: write_file($(file), "#include <size_types.h>\n" +
+		  "int size() { return " + $(str) + "; }\n") :));
+	}
+	return call_other(file, "size"); 
+    }
+
+    int GetBodyType(string foo) {
+	string str = ConvertPipe(foo);
+	string file = DIR_DAEMONS "/tmp/" + str + ".c";
+
+	if( !unguarded((: file_exists($(file)) :)) ) {
+	    unguarded((: write_file($(file), "#include <body_types.h>\n" +
+		  "int btype() { return " + $(str) + "; }\n") :));
+	}
+	return call_other(file, "btype"); 
+    }
+
+    int GetRespirationType(string foo) {
+	string str = ConvertPipe(foo);
+	string file = DIR_DAEMONS "/tmp/" + str + ".c";
+
+	if( !unguarded((: file_exists($(file)) :)) ) {
+	    unguarded((: write_file($(file), "#include <respiration_types.h>\n" +
+		  "int rtype() { return " + $(str) + "; }\n") :));
+	}
+	return call_other(file, "rtype"); 
     }
 
     int GetResistance(string str) {

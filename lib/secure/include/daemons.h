@@ -21,6 +21,7 @@
 #define EVENTS_D             DIR_SECURE_DAEMONS "/events"
 #define ESTATES_D            DIR_SECURE_DAEMONS "/estates"
 #define FILE_D               DIR_SECURE_DAEMONS "/file"
+#define FUNCTION_D           DIR_SECURE_DAEMONS "/function"
 #define FINGER_D             DIR_SECURE_DAEMONS "/finger"
 #define FOLDERS_D            DIR_SECURE_DAEMONS "/folders"
 #define GOSSIP_D             DIR_SECURE_DAEMONS "/gossip"

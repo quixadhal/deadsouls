@@ -5,33 +5,21 @@ inherit LIB_DAEMON;
 string funcname;
 string *sourcefiles = ({});
 
-string eventFindInstances(){
-    string *raw_list = load_object("/secure/cmds/admins/files")->cmd("-c "+"/lib/");
-    string cooked_list = "";
-    sourcefiles = ({});
-    foreach(string file in raw_list){
-	string funex;
-	if(last(file, 2) != ".c") continue;
-	if(grepp(load_object("/secure/cmds/creators/showfuns")->cmd(file), funcname)){
-	    funex = function_exists(funcname,load_object(file),1);
-	    if(funex && !grepp(cooked_list,funex+"\n")){
-		sourcefiles += ({ last_string_element(funex,"/") });
-		cooked_list += funex+"\n";
-	    }
-	}
-    }
-    return cooked_list;
-}
-
 mixed cmd(string args) {
-    string ret;
+    string ret, where;
 
     if(!args || args == ""){
 	write("You'll need to be more specific. Try: help findfun");
 	return 1;
     }
+    if(grepp(args,"-a ")){
+	where = "/";
+	args = replace_string(args,"-a ","");
+    }
+    else where = "/lib";
+
     funcname = args;
-    ret = eventFindInstances();
+    ret = FUNCTION_D->GetInstances(args, where);
     write(ret);
     return 1;
 }

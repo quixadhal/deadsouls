@@ -4,7 +4,6 @@
  *    affect them
  *    created by Descartes of Borg 950121
  *    Version: @(#) body.c 1.24@(#)
- *    Last Modified: 96/12/21
  */
 
 #include <lib.h>
@@ -39,14 +38,15 @@ private static function Protect;
 private static mapping WornItems;
 private static class MagicProtection *Protection;
 static private int HeartModifier = 0;
-private static float MoJo;
 private static string PoliticalParty, BodyComposition;
 private static int Pacifist, rifleshot_wounds, gunshot_wounds, globalint1;
+private static int Mass, Size, Respiration, BodyType;
 string *ExtraChannels;
 mixed Agent;
 
+string GetRace();
+
 static void create() {
-    MoJo = 0;
     PoliticalParty = "UNDECIDED";
     rifleshot_wounds = 0;
     gunshot_wounds = 0;
@@ -72,6 +72,47 @@ varargs mixed eventBuy(mixed arg1, mixed arg2, mixed arg3){
     write(capitalize(this_object()->GetShort())+" isn't buying anything from you.");
     return 1;
 }
+
+int GetMass(){
+    int base_mass = RACES_D->GetRaceMass(GetRace());
+    if(Mass) return Mass;
+    return base_mass;
+}
+
+int GetSize(){
+    int size = RACES_D->GetRaceSize(GetRace());
+    if(Size) return Size;
+    return size;
+}
+
+int GetRespiration(){
+    int resp = RACES_D->GetRaceRespirationType(GetRace());
+    if(Respiration) return Respiration;
+    return resp;
+}
+
+int GetBodyType(){
+    int body_type = RACES_D->GetRaceBodyType(GetRace());
+    if(BodyType) return BodyType;
+    return body_type;
+}
+
+int SetMass(int i){
+    return Mass = i;
+}
+
+int SetSize(int i){
+    return Size = i;
+}
+
+int SetRespiration(int i){
+    return Respiration = i;
+}
+
+int SetBodyType(int i){
+    return BodyType = i;
+}
+
 
 int GetEncumbrance(){
     int encumbrance = 0;
@@ -1480,17 +1521,6 @@ varargs int eventDie(mixed agent) {
      *
      * returns the remaining number of stamina points
      */
-
-    float AddMoJo(mixed x){
-	if( !intp(x) && !floatp(x) )
-	    error("Bad argument 1 to AddMojo().\n");
-	if( intp(x) ) x = to_float(x);
-	if((MoJo += x) < 0.1) MoJo = 0.0;
-	if(MoJo > 100) MoJo = 100;
-	return MoJo;
-    }
-
-    float GetMoJo() { return MoJo; }
 
     int AddLead(string ammo,int number){
 	if( !intp(number) ) error("Bad argument 2 to AddLead().\n");

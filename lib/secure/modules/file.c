@@ -45,8 +45,7 @@ string eventAppend(string file, string *params, string addendum){
     string *top_array;
     string *bottom_array;
     string search_str, new_string;
-    //tc("stack: "+get_stack(),"green");
-    //tc("file: "+file,"green");
+    int tmpnull = 0;
 
     if(!grepp(file,"\n") && file_exists(file)) globalstr = read_file(file); 
     else globalstr = file;
@@ -58,7 +57,6 @@ string eventAppend(string file, string *params, string addendum){
     if(!grepp(globalstr,"\n") && unguarded( (: file_exists(globalstr):) )) {
 	file = unguarded( (: read_file(globalstr) :) );
     }
-    //tc("file: "+file,"green");
     foreach(string param in params){
 	if(!found && param && sizeof(param) && param != "" && stringp(param)){
 	    if(strsrch(file,param) != -1){ 
@@ -77,10 +75,11 @@ string eventAppend(string file, string *params, string addendum){
 
     foreach(string line in file_arr){
 	if(line && line != "" && strsrch(line, search_str) != -1) {
+	    //if(line && line != "") {
 	    primary_line = member_array(line, file_arr);
 	    count = primary_line;
 	}
-	if(primary_line){
+	if(primary_line > tmpnull){
 	    count++;
 	    if(last(line,1,1) == ";" ) {
 		secondary_line = count;
@@ -369,10 +368,10 @@ varargs int eventModString(string file, string param, mixed replace, string *par
     if(stringp(replace)) { 
 	if(globalstr3 == "SetArmorType" || globalstr3 == "SetMealType" || 
 	  globalstr3 == "SetPosition" || globalstr3 == "SetTerrainType" ||
-	  globalstr3 == "AddTerrainType" ||
+	  globalstr3 == "AddTerrainType" || globalstr3 == "SetSize" ||
+	  globalstr3 == "SetBodyType" || globalstr3 == "SetRespiration" ||
 	  globalstr3 == "SetVendorType" || globalstr3 == "SetDamageType"){
 	    replace = upper_case(replace);
-	    //tc("foo!");
 	    if(globalstr3 == "SetArmorType") check_include = "/include/armor_types.h";
 	    if(globalstr3 == "SetVendorType") check_include = "/include/vendor_types.h";
 	    if(globalstr3 == "SetDamageType") check_include = "/include/damage_types.h";
@@ -380,6 +379,12 @@ varargs int eventModString(string file, string param, mixed replace, string *par
 	    if(globalstr3 == "SetPosition") check_include = "/include/position.h";
 	    if(globalstr3 == "SetTerrainType") check_include = "/include/terrain_types.h";
 	    if(globalstr3 == "AddTerrainType") check_include = "/include/terrain_types.h";
+	    if(globalstr3 == "SetSize") check_include = "/include/size_types.h";
+	    if(globalstr3 == "SetRespiration") check_include = "/include/respiration_types.h";
+	    if(globalstr3 == "SetBodyType") check_include = "/include/body_types.h";
+	    if(globalstr3 == "SetSize" && !grepp(replace,"S_")) replace = "S_"+replace; 
+	    if(globalstr3 == "SetRespiration" && !grepp(replace,"R_")) replace = "R_"+replace;
+	    if(globalstr3 == "SetBodyType" && !grepp(replace,"B_")) replace = "B_"+replace; 
 	    if(globalstr3 == "SetVendorType" && !grepp(replace,"VT_")) replace = "VT_"+replace;
 	    if(globalstr3 == "SetArmorType" && !grepp(replace,"A_")) replace = "A_"+replace;
 	    if(globalstr3 == "SetTerrainType" && !grepp(replace,"T_")) replace = "T_"+replace;
@@ -398,20 +403,14 @@ varargs int eventModString(string file, string param, mixed replace, string *par
 	}
 	else globalmixed = "\""+replace+"\"";
     }
-    //tc("globalmixed: "+globalmixed);
     if(unguarded( (: grepp(read_file(globalstr),globalstr3):) ))
 	ret = unguarded( (: replace_matching_line(read_file(globalstr), globalstr3, globalstr3+"("+globalmixed+");") :) );
     else ret = unguarded( (: eventAppend(read_file(globalstr),where_append,"\n"+globalstr3+"("+globalmixed+");\n") :) );
-    //tc("ret: "+ret,"green");
-    //ret = replace_line(ret,({"customdefs.h"}), "#include \""+homedir(this_player())+"/customdefs.h\"");
     if(terrain_include && !grepp(ret,"terrain_types.h")) ret = "#include <terrain_types.h>\n" + ret;
     globalstr3 = ret;
     unguarded( (:  write_file(globalstr2, globalstr3, 1) :) );
-    //tc(read_file(globalstr2),"red");
     globalstr = file;
     unguarded( (: cp(globalstr2, globalstr) :) );
-    //unguarded( (: tc(globalstr,"blue") :) );
-    //unguarded( (: tc(read_file(globalstr),"blue") :) );
     unguarded( (: rm(globalstr2) :) );
     return 1;
 }
@@ -443,7 +442,7 @@ int eventModHeader(object ob, string what, string value){
 	return 1;
     }
     if(what == "inherit"){
-	globalstr3 = this_object()->eventAppend(tmpfile,({"inherit "}),newline);
+	globalstr3 = this_object()->eventAppend(globalstr3,({"inherit "}),newline);
     }
 
     else {
@@ -452,22 +451,24 @@ int eventModHeader(object ob, string what, string value){
 	    globalstr3  =  replace_string(globalstr3,".h\"\n",".h\";\n");
 	    unguarded( (: write_file(globalstr,globalstr3,1) :) );
 
-	    globalstr3 = this_object()->eventAppend(tmpfile,({"#include "}),newline);
+	    globalstr3 = this_object()->eventAppend(globalstr3,({"#include "}),newline);
 	    globalstr3  =  replace_string(globalstr3,".h>;\n",".h>\n");
 	    globalstr3  =  replace_string(globalstr3,".h\";\n",".h\"\n");
 
 	}
 	else {
-	    globalstr3 = this_object()->eventAppend(tmpfile,({"inherit "}),newline);
+	    globalstr3 = this_object()->eventAppend(globalstr3,({"inherit "}),newline);
 	}
     }
 
+    globalstr = generate_tmp(ob);
     unguarded( (: write_file(globalstr,globalstr3,1) :) );
 
     if( catch(load_object(globalstr))){
 	write("This change would hose up the object. Modification aborted.");
 	return 1;
     }
+
     unguarded( (: cp(globalstr, globalstr2) :) );
     reload(ob);
     rm(tmpfile);

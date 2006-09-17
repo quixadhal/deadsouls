@@ -29,3 +29,7 @@ LIMB left forepaw:left foreleg:4::
 LIMB right forepaw:right foreleg:4::
 LIMB left rear paw:left rear leg:4::
 LIMB right rear paw:right rear leg:4::
+MASS 90
+SIZE S_SMALL
+BODY_TYPE B_QUADRUPED
+RESPIRATION_TYPE R_AIR

@@ -6,7 +6,7 @@ string tmp;
 
 mixed cmd(string args) {
     int x,c;
-    string filenames;
+    string *filenames;
     string *ret_arr;
 
     if( !((int)master()->valid_apply(({ "ASSIST" }))) &&
@@ -28,13 +28,6 @@ mixed cmd(string args) {
 	}
     }
 
-    if(!c){
-	shout("%^YELLOW%^File daemon is scanning all files. Please wait...");
-	flush_messages();
-	FILE_D->eventHarvestDirs();
-	FILE_D->eventHarvestFiles();
-	shout("%^GREEN%^File scan complete.");
-    }
     write("Number of directories: "+sizeof(FILE_D->GetDirs()));
     filenames = FILE_D->GetFiles();
     write("Number of files: "+sizeof(filenames));
@@ -47,7 +40,8 @@ mixed cmd(string args) {
     ret_arr = regexp(filenames, args);
     if(x) ret_arr = filter(ret_arr, (: !strsrch($1, tmp) :) );
     if(interactive(previous_object())){
-	write(implode(ret_arr,"\n"));
+	if(sizeof(implode(ret_arr,"\n"))) print_long_string(this_player(),implode(ret_arr,"\n"));
+	else write("Too many matches.");
 	return 1;
     }
     else return ret_arr;
