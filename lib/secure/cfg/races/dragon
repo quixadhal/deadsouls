@@ -25,4 +25,9 @@ LIMB left forepaw:left foreleg:4::
 LIMB left rear paw:left rear leg:4::
 LIMB right forepaw:right foreleg:4::
 LIMB right rear paw:right rear leg:4::
-FLYINGRACE
+FLYING_RACE
+MASS 40000
+SIZE S_HUGE
+BODY_TYPE B_SEMI_BIPEDAL
+SWIMMING_RACE
+RESPIRATION_TYPE R_AIR

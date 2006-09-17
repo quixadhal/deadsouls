@@ -20,6 +20,7 @@ inherit LIB_LANGUAGE;
 inherit LIB_TALK;
 
 private string Town, Race, Gender;
+private static int Mass, Bulk;
 
 // abstract methods
 int GetParalyzed();

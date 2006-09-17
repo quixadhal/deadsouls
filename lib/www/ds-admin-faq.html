@@ -12,7 +12,7 @@
  style="font-weight: bold;">Dead Souls Admin FAQ, v3.5</span></big><br>
 <br>
 Written by Cratylus @ Dead Souls, October 2005<br>
-Updated 06 September 2006<br>
+Updated 16 September 2006<br>
 <span style="font-weight: bold; text-decoration: underline;"><br>
 </span>Note: commands are displayed in boldface, like this: <span
  style="font-weight: bold;">ls -a</span><span
@@ -287,8 +287,22 @@ one on dead-souls.net?</a><br
 <a href="#96">96 Good heavens! All I wanted to do was change combat,
 and it is so complicated!</a><br>
 <br>
+<a href="#97">97 Editing in Windows is fine and call_out()'s are great.
+Your advice sucks!</a><br>
 <br>
+<a href="#98">98 I keep hearing that Dead Souls can do this or that,
+but I'm trying and can't.</a><br>
 <br>
+</big><big style="font-family: courier new,courier,monospace;"><a
+ href="#99">99 You appear to have a FAQ for everything!</a><br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;"><a
+ href="#100">100 If I XYZ, will that work?</a><br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;"><a
+ href="#102">102 Hey you skipped question 101!</a><br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
 <span style="font-weight: bold; text-decoration: underline;"><a name="0"></a>How
 do I start?</span><br>
 <br>
@@ -322,22 +336,24 @@ open a terminal window <br>
 (or for windows users, Start -&gt; Run ) and <br>
 type: <span style="font-weight: bold;">telnet</span> </big><big
  style="font-family: courier new,courier,monospace;"><span
- style="font-weight: bold;">rugose.com 6666<br>
-<br>
+ style="font-weight: bold;">rugose.com 6666 </span>, or use the java
+applet<br>
+at this page: <a href="http://dead-souls.net/javaclient/demo.html">http://dead-souls.net/javaclient/demo.html</a><br>
+<span style="font-weight: bold;"><br>
 </span></big><big style="font-family: courier new,courier,monospace;">When
-you log in, the system will read your playerfile for<br>
-a few seconds and then it will turn you into a creator. This<br>
-is so that you can examine code, try out the QCS, etc. <br>
+you log in, the system will ask you whether you'd<br>
+like to be a player or creator. You'll want to choose "creator"<br>
+so that you can examine code, try out the QCS, etc. <br>
 <br>
 <span style="font-weight: bold; color: rgb(153, 0, 0);">Please note
 that in the regular, non-demo version of the</span><br
  style="font-weight: bold; color: rgb(153, 0, 0);">
 <span style="font-weight: bold; color: rgb(153, 0, 0);">mud, people are
-NOT automatically given creator status. </span><br>
+NOT automatically given that choice. </span><br>
 <br>
 On the regular non-demo version of the mud, Only<br>
 the admin (basically, the first person to log on to the new mud)<br>
-gets automatic creatorship.<br>
+gets automatic creatorship by default.<br>
 <br>
 After logging in, you will be transported<br>
 to your workroom. Some useful commands:<br>
@@ -376,7 +392,7 @@ or builder, and many people just don't feel like dealing with<br>
 the hassle of running a mud. <br>
 There are a few Dead Souls muds out there that could<br>
 use help from you. Telnet to the Dead Souls development mud<br>
-and type: <span style="font-weight: bold;">mudlist -m dead</span> to
+and type: <span style="font-weight: bold;">mudlist -m Dead</span> to
 see a list of Dead Souls muds<br>
 that might be hiring.<br>
 You can also just code on the Dead Souls development<br>
@@ -387,7 +403,7 @@ the lib, let me know and I'll inspect it for approval.<br>
 Please note that anything you code on the Dead Souls<br>
 development mud becomes property of Dead Souls mudlib <br>
 distribution, meaning you can't prevent me from <br>
-publishing it. So if you want to prevent your code from <br>
+using it. So if you want to prevent your code from <br>
 being used that way, don't code on my mud.<br>
 <br>
 Please also note that the above may not be true.<br>
@@ -474,6 +490,12 @@ business. As of June 5 2006,<br>
 Blackdawn mud is bridging that channel, so it is accessible<br>
 from both i3 routers.<br>
 <br>
+The ds channel is for Dead Souls-related conversation. Sometimes<br>
+the topic drifts, but "random chat" should be avoided<br>
+there. Use dchat for off-topic chat. If you don't already<br>
+hace dchat enabled, type: <span style="font-weight: bold;">call
+me-&gt;AddChannel("dchat")</span><br>
+<br>
 <br style="text-decoration: underline; font-weight: bold;">
 <span style="text-decoration: underline; font-weight: bold;"></span></big><big
  style="font-family: courier new,courier,monospace;"><span
@@ -500,6 +522,11 @@ latest connection info:<br>
 <a href="http://dead-souls.net/router.html"><br>
 Dead Souls I3 Router Page</a><br>
 <br>
+Under some unusual circumstances, the router might<br>
+be misbehaving. If that happens, post a question on<br>
+the lpmuds intermud topic: <a href="http://lpmuds.net/forum/">http://lpmuds.net/forum/</a><br>
+<br>
+Please make sure you post on the Intermud topic.<br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
  style="font-family: courier new,courier,monospace;"><span
@@ -517,10 +544,10 @@ without realizing it.<br>
 <br>
 I implemented a "keepalive" system which<br>
 uses the intermud "auth" packets as pings. Every <br>
-fifteen minutes or so, you mud tries to ping Frontiers<br>
-and Dead Souls. If it gets a reply from at least one,<br>
-then it's happy. If neither reply, then your mud <br>
-alerts the Arch room that intermud is down, and it<br>
+five minutes or so, your mud tries to ping Frontiers,<br>
+Dead Souls, and itself. If it gets a reply from at <br>
+least one, then it's happy. If neither reply, then your <br>
+mud alerts the Arch room that intermud is down, and it<br>
 will reload the intermud daemon every 15 minutes<br>
 in an attempt to reconnect. Once i3 is back up and<br>
 you are reconnected, you go back to pinging.<br>
@@ -538,8 +565,9 @@ your own mud only, so you just ping yourself.<br>
 You can also DISABLE_INTERMUD in that<br>
 same file. <br>
 <br>
-Dont' edit that file with a default Windows<br>
-editor. Back up the file before you edit it. Reboot <br>
+<a href="http://dead-souls.net/downloads.html#1">Dont' edit that file
+with a default Windows<br>
+editor.</a> Back up the file before you edit it. Reboot <br>
 the mud after making the changes. If it won't reboot,<br>
 you probably munged the format and need to restore<br>
 the original.<br>
@@ -581,8 +609,10 @@ inside. The text files are in /doc/manual .<br>
 limbs to a race?</span><br>
 <br>
 Edit /secure/cfg/races/&lt;race&gt; and make the changes<br>
-you want. Then use admintool to remove the race from the<br>
-races daemon, then add re-add the race. <br>
+you want. Then use <span style="font-weight: bold;">removerace</span>
+to remove the race from the<br>
+races daemon, then add re-add the race with <span
+ style="font-weight: bold;">addrace</span> . <br>
 <br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
@@ -669,7 +699,7 @@ understand the code and modify it to suit your tastes.<br>
 Similarly, "orcs are too strong!" or "advancing levels<br>
 should increase your eyesight" are issues you need to deal<br>
 with on your own, using the coding skills learned from reading the<br>
-Creators Manual.<br>
+Creator's Manual.<br>
 <br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
@@ -725,7 +755,7 @@ The colors are specified in /secure/daemon/chat.c<br>
 what other muds use Dead Souls?</span><br>
 <br>
 <span style="font-weight: bold;"></span><br>
-<span style="font-weight: bold;">mudlist -m dead<br>
+<span style="font-weight: bold;">mudlist -m Dead<br>
 </span></big><big style="font-family: courier new,courier,monospace;"><span
  style="font-weight: bold;"><br>
 </span>See the <a href="http://dead-souls.net/ds-creator-faq.html">creator's
@@ -1319,11 +1349,11 @@ from both <a href="http://www.mudmagic.com/hosting/">Kyndig</a> and <a
 <a href="http://wolfpaw.net/">Wolfpaw</a> also is an excellent
 commercial host: stable and reliable. <br>
 One of my test muds is hosted there, and this is the uptime report,<br>
-as of 06 September 2006:<br>
+as of 16 September 2006:<br>
 <br>
-<span style="font-weight: bold;">Frontiers has been up for 6w 5d 21h
-20m 59s.</span><br>
-<br>
+<span style="font-weight: bold;">Frontiers has been up for 8w 1d 16h
+48m 47s.<br>
+</span><br>
 If you have a DSL or cable modem, and your computer is<br>
 up all the time, you can just use that, too. Your IP may be<br>
 dynamic, making it tough for people to find you, but there are<br>
@@ -1438,7 +1468,6 @@ privileges. Commands are different from verbs in that they tend<br>
 not to manipulate your environment, but rather deal with <br>
 the player's relationship to the system and/or files.<br>
 <br>
-<br>
 <span style="font-weight: bold; color: rgb(0, 102, 0);">daemon/</span><br>
 <br>
 Daemons are files that provide access to data files in an<br>
@@ -1452,17 +1481,19 @@ worth compared to gold", that is uniform across the mud, and <br>
 prevents accidental overwrites of data files by multiple<br>
 editors.<br>
 <br>
-<br>
 <span style="font-weight: bold; color: rgb(0, 102, 0);">doc/</span><br>
 <br>
 General documentation. <br>
-<br>
 <br style="font-weight: bold; color: rgb(0, 102, 0);">
 <span style="font-weight: bold; color: rgb(0, 102, 0);">domains/</span><br>
 <br>
 This is where MUD game areas go when they are complete<br>
 and ready for general play by the public. Once here, only<br>
 admins have write access to the files. <br>
+<br>
+<span style="font-weight: bold; color: rgb(0, 102, 0);">estates/</span><br>
+<br>
+Where player-owned objects and rooms are kept.<br>
 <br>
 <br>
 <span style="font-weight: bold; color: rgb(0, 102, 0);">ftp/</span><br>
@@ -1473,7 +1504,6 @@ you are determined to have mud ftp access for your creators, <br>
 this is one way. See /secure/lib/net for the actual server. It<br>
 may or may not work. I won't support it.<br>
 <br>
-<br>
 <span style="font-weight: bold; color: rgb(0, 102, 0);">include/</span><br>
 <br>
 Include files provide a set of constants for your files. For<br>
@@ -1481,13 +1511,11 @@ example, if you include &lt;damage_types.h&gt;, you can specify in<br>
 the code for your chainmail that it protects against<br>
 the damage type "BLADE" at a certain level.<br>
 <br>
-<br>
 <span style="font-weight: bold; color: rgb(0, 102, 0);">lib/</span><br>
 <br>
 This is the heart of the Dead Souls lib. This is the location<br>
 of the files that your objects, be they swords, shoes, or <br>
 handguns, will use as their configuration base. <br>
-<br>
 <br>
 <span style="color: rgb(0, 102, 0); font-weight: bold;">log/</span><br>
 <br>
@@ -1500,7 +1528,6 @@ Announcements are made here. For example, in /news/creator<br>
 you can post a notice that you have added a teleportation<br>
 spell, and when your creators log on, they will see the message.<br>
 <br>
-<br>
 <span style="font-weight: bold; color: rgb(0, 102, 0);">obj/</span><br>
 <br>
 Contains some important templates, especially some for the QCS.<br>
@@ -1511,11 +1538,9 @@ Legacy directory. Kept for compatibility. Historically this<br>
 directory has served as a place where creators can put code<br>
 for others to freely modify.<br>
 <br>
-<br>
 <span style="font-weight: bold; color: rgb(0, 102, 0);">realms/</span><br>
 <br>
 This is where creator home directories are.<br>
-<br>
 <br>
 <span style="font-weight: bold; color: rgb(0, 102, 0);">save/</span><br>
 <br>
@@ -1525,11 +1550,9 @@ is in races.o. In classes.o you'll find the skill ranges<br>
 for fighters. Do not edit these files. They must be<br>
 modified by daemons only, or you risk corrupting them.<br>
 <br>
-<br>
 <span style="font-weight: bold; color: rgb(0, 102, 0);">secure/</span><br>
 <br>
 This directory will be described in a separate section below.<br>
-<br>
 <br>
 <span style="color: rgb(0, 102, 0); font-weight: bold;">shadows/</span><br>
 <br>
@@ -1540,23 +1563,32 @@ that attach themselves to another object, intercepting<br>
 function calls. For obvious reasons this is a security <br>
 risk, so unless you really <span style="font-style: italic;">really</span>
 know what you're doing, <br>
-avoid them.<br>
-<br>
+avoid them. Shadows not in this directory will not load.<br>
 <br>
 <span style="font-weight: bold; color: rgb(0, 102, 0);">spells/</span><br>
 <br>
 Pretty self explanatory. The spells daemon looks for spells here.<br>
+Spells not in this directory will not be available.<br>
+<br>
+<span style="font-weight: bold; color: rgb(0, 102, 0);">std/</span><br>
+<br>
+Provided for backward-compatibility with older lib<br>
+files. Not needed if you aren't porting from an older<br>
+or different lib (such as TMI-2 or LPUniversity).<br>
 <br>
 <br>
 <span style="font-weight: bold; color: rgb(0, 102, 0);">tmp/</span><br>
 <br>
 A directory anyone can write to. Generally for swapping<br>
-data between objects, systems, or people.<br>
-<br>
+data between objects, systems, or people. Note: files<br>
+here can't be loaded into memory with the update command, <br>
+for security reasons. If you need to put something in<br>
+a world-writable place but need it to be loadable, use<br>
+/open instead.<br>
 <br>
 <span style="font-weight: bold; color: rgb(0, 102, 0);">verbs/</span><br>
 <br>
-Another controversial topic. Verbs are a kind of command. For<br>
+A controversial topic. Verbs are a kind of command. For<br>
 example, <span style="font-weight: bold;">go</span> and <span
  style="font-weight: bold;">sit</span> and <span
  style="font-weight: bold;">open</span> are verbs. Specifically, verbs<br>
@@ -1566,7 +1598,8 @@ at the green goblin</span><br>
 should work, and should work the same everywhere on the<br>
 MUD. Verbs are a source of debate among some people, because<br>
 to folks accustomed to add_action commands, verbs seem<br>
-excessively complex.<br>
+excessively complex. Verbs not in this directory will<br>
+not load.<br>
 <br>
 <span style="font-weight: bold; color: rgb(0, 102, 0);">www/</span><br>
 <br>
@@ -1661,6 +1694,7 @@ To understand what you're looking at when you run commands like <br>
 <span style="font-weight: bold;">more /domains/town/weap/orcslayer.c</span>
 you need to get comfortable<br>
 with LPC. <br>
+<br>
 The brute force way of doing this is copying stuff<br>
 and then changing the descriptions, thus making new stuff.<br>
 This will work, but you'll waste time looking for examples of<br>
@@ -1803,9 +1837,9 @@ command.<br>
 secure?</span><br>
 <br>
 The short answer is no, nothing I know of is "secure" in the<br>
-sense that you don't need to continually pay attention to it. If the<br>
-question is "Is Dead Souls particularly unsafe to run?" then the<br>
-answer is no. Just like any other Internet program you use, Dead Souls<br>
+sense that you don't need to continually pay attention to it. <br>
+<br>
+Just like any other Internet program you use, Dead Souls<br>
 is not an obvious security risk, so long as it is not used carelessly.<br>
 And, obviously, games of any kind, including Dead Souls, should never<br>
 be installed on any mission-critical, national security, public<br>
@@ -1821,9 +1855,12 @@ The first sphere is probably most important. Presumably<br>
 you plan to run a mud on a computer that does other things too, <br>
 and you want to keep those things separate from your mud. The <br>
 most important thing to do is to avoid running Dead Souls as a<br>
-privileged user. In the case of Windows, this means that the<br>
+privileged user. <br>
+<br>
+In the case of Windows, this means that the<br>
 program should not be run by Administrator or anyone in the<br>
 Administrator group.<br>
+<br>
 For unix users, this means that the driver should not run<br>
 under uid 0 (root). <br>
 <br>
@@ -1831,6 +1868,7 @@ The reason for this precaution is that if some genius<br>
 hacker manages to exploit some unknown weakness in the program, <br>
 it is better that the process they hack doesn't have full admin<br>
 privileges to the box.<br>
+<br>
 This caution has little to do with Dead Souls specifically.<br>
 It is a warning I'd give to anyone planning to run any kind of network<br>
 server. You should take your own security seriously, and<br>
@@ -1868,7 +1906,8 @@ form a chain between the command and the intended event).<br>
 Granular (more detailed) modification of user privileges<br>
 can be done by changing files in /secure/cfg to grant <br>
 users and groups specific privileges. Also see<br>
-the <span style="font-weight: bold;">grant</span> command.<br>
+the <span style="font-weight: bold;">grant</span> command, as well as <span
+ style="font-weight: bold;">domainadmin</span>. <br>
 <br>
 Security bugs usually aren't about the security model itself<br>
 being weak, but rather careless code (generally from me). If<br>
@@ -2346,8 +2385,7 @@ documentation are artifacts of pre-1.1 Nightmare code. <br>
 Estates in the Nightmare lib were player-owned areas,<br>
 which were granted to players of specific rank, status,<br>
 etc who could afford to buy the rights to them.<br>
-There is currently no estate support in Dead Souls,<br>
-though it is on the post 2.1 feature list.<br>
+Estate support in Dead Souls is planned for post 2.1.<br>
 <br>
 <br>
 <a name="76"></a><span
@@ -2500,11 +2538,13 @@ privileges associated with the groups in groups.cfg?</span><br>
 <span style="text-decoration: underline;">SECURE</span> gives you 100%
 admin privs to the mud.<br>
 <br>
-<span style="text-decoration: underline;">ASSIST</span> gives you most.
-The assistant admin position can<br>
-be fine tuned by reading the security code in /secure/daemon/master.c<br>
-and modifying it to suit you. This should only be done by<br>
-someone who fully understands every line in that file.<br>
+<span style="text-decoration: underline;">ASSIST</span> allows reading
+to almost all files in /secure, but<br>
+doesn't provide write access to those files. Assist admins<br>
+do report as archp() == 1, so access to writes based on <br>
+that pointer should be carefully managed. Assist admins<br>
+can also read the contents of player directories. See<br>
+/secure/cg/groups/read.cfg and write.cfg for more detail.<br>
 <br>
 <span style="text-decoration: underline;">ELDER</span> is just a nice
 thing to have show up in the who list.<br>
@@ -2755,7 +2795,7 @@ my intermud connection, and sometimes I'm half connected</span><br
  style="font-weight: bold; text-decoration: underline;">
 <br>
 This happens most frequently when using a wireless connection.<br>
-Intermud is apparently not at all tolerant of the vasual manner in which<br>
+Intermud is apparently not at all tolerant of the casual manner in which<br>
 many wireless connections work, and as a result your intermud<br>
 connectivity will likely suffer. Perhaps this is old-school of me,<br>
 but I think it's reasonable to suggest that you run your mud on<br>
@@ -2900,9 +2940,161 @@ slow down and work on modifying simpler objects and systems before<br>
 starting to chew on player object inheritables.<br>
 <br>
 Just a thought.<br>
+<br>
+<br>
+</small></big></big><big
+ style="font-family: courier new,courier,monospace;"><a name="97"></a><span
+ style="font-weight: bold; text-decoration: underline;">Editing in
+Windows is fine and call_out()'s are great. Your advice sucks!</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; Astute or adventurous readers may have noticed that
+some of my<br>
+statements on the faq are only true up to a point. For example, if you<br>
+have a proper editor, and know what you're doing, there's nothing<br>
+inherently wrong with editing an .o file.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Similarly, a call_out() here or there isn't wrong,
+and in fact is<br>
+the only way to do certain things elegantly.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The reason for the stern warnings is that these, and
+other subjects,<br>
+involve judgment calls that a novice is not in a position to make. Are<br>
+you 100% sure that windows editor won't add dos formatting? Can you<br>
+be certain that your call_out won't bring the mud to its knees <br>
+if mishandled?<br>
+<br>
+&nbsp;&nbsp;&nbsp; Expert coders and admins can determine their risk
+level based on<br>
+experience. Until newcomers gain that experience, I try to dissuade<br>
+them from risky behavior, because getting tripped up in the starting<br>
+gate is no way to win a race.<br>
+<br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;"><a
+ name="98"></a><span
+ style="font-weight: bold; text-decoration: underline;">I keep hearing
+that Dead Souls can do this or that, but I'm trying and can't.</span></big><br>
+<big style="font-family: courier new,courier,monospace;"><br>
+&nbsp;&nbsp;&nbsp; It may be that you downloaded the older, GPL version
+of<br>
+Dead Souls. The <a href="http://dead-souls.net/code/dead_souls.zip">latest,
+non-GPL version</a> may have the feature<br>
+you're looking for.<br>
+<br>
+&nbsp;&nbsp;&nbsp; When I refer to the latest version, I mean the latest<br>
+stable release. Cutting-edge "alpha" versions can be downloaded,<br>
+which include the <a href="http://dead-souls.net/RELEASE_NOTES">absolute
+latest stuff</a> I've been working on.<br>
+It may be that the feature you're talking about is only available<br>
+on the alpha version, and hasn't been included in a stable<br>
+release yet.<br>
+<br>
+&nbsp;&nbsp;&nbsp; You can <a href="http://dead-souls.net/code/alpha/">download
+the alpha</a> and run it, but you do so at your<br>
+own risk. Alpha versions have that name for a reason: they aren't<br>
+fully tested and are likely to have bugs.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Alpha versions are numbered differently from stable
+releases.<br>
+For example, Dead Souls 2.1 alpha 8 is roughly equivalent to <br>
+(unreleased) Dead Souls 2.1 release 41. This is because the <br>
+alpha version changes less frequently than the "internal"<br>
+release.<br>
+<br>
+<br>
+<a name="99"></a><span
+ style="font-weight: bold; text-decoration: underline;">You appear to
+have a FAQ for everything!</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; I'm not kidding when I call these FAQ's. These
+questions<br>
+really do get asked frequently. <br>
+<br>
+&nbsp;&nbsp;&nbsp; When you start using Dead Souls, when you ask a
+question<br>
+on the DS line, you will more often than not get a FAQ url<br>
+from me. This is normal, and is meant to encourage you to<br>
+review the docs on your own.<br>
+<br>
+&nbsp;&nbsp;&nbsp; If you find that most of your questions <br>
+have FAQ's for answers, you should seriously consider changing<br>
+the way you're going about things. When you're not sure<br>
+about something, check the FAQ's first. That's what <br>
+they're there for.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Eventually, if all your questions are answered by<br>
+existing documentation, you might find that you get fewer<br>
+and fewer responses from people, as they start <a
+ href="http://dead-souls.net/code/ds2.1/lib/cmds/players/earmuff.c">tuning<br>
+you out</a>. Remember that most people refer to the docs:&nbsp; <br>
+the <a href="http://dead-souls.net/code/ds2.1/lib/doc/">help and
+manual files</a>, command help messages,<br>
+as well as the <a href="http://dead-souls.net/ds-admin-faq.html">admin</a>,
+<a href="http://dead-souls.net/ds-creator-faq.html">creator</a>, <a
+ href="http://dead-souls.net/debugging.html">debugging</a>, and <a
+ href="http://dead-souls.net/ds-faq.html">general</a><br>
+faqs. There's also the in-game <a
+ href="http://dead-souls.net/doc/hbook/">player's handbook</a>, <a
+ href="http://dead-souls.net/doc/manual/">creator's<br>
+manual</a>, and <a href="http://dead-souls.net/doc/guide/">admin guide</a>,
+as well as web based <a href="http://dead-souls.net/example.html">examples</a><br>
+and <a href="http://dead-souls.net/editor.html">tutorials</a>. There
+is also a <a href="http://lpmuds.net/forum/">Dead Souls support forum</a><br>
+which is searchable.<br>
+<br>
+&nbsp;&nbsp;&nbsp; There is a ton of documentation for DS, and most
+people<br>
+consult it regularly. If you keep asking questions that<br>
+are explicitly answered in docs, you may find yourself<br>
+in the awkward position of not having anyone listening<br>
+to you when you ask for something *not* documented.<br>
+<br>
+&nbsp;&nbsp;&nbsp; This <span
+ style="font-weight: bold; font-style: italic;">doesn't</span> mean
+"Don't bother us with your newbieness".<br>
+<br>
+&nbsp;&nbsp;&nbsp; It means "First <a
+ href="http://www.jargon.net/jargonfile/r/RTFM.html">RTFM</a>. If it's
+not in there, ask like<br>
+someone who has tried to find the answer, not like a <a
+ href="http://en.wikipedia.org/wiki/Newbie">lazy<br>
+person who wants to be tutored</a>."<br>
+<br>
+&nbsp;&nbsp;&nbsp; A very detailed explanation of the reason for this<br>
+is at <a href="http://www.catb.org/%7Eesr/faqs/smart-questions.html">http://www.catb.org/~esr/faqs/smart-questions.html</a><br>
+(<span style="font-weight: bold;">NOTE:</span> The people that run that
+page have nothing to do<br>
+with Dead Souls. Do not try to ask them Dead Souls questions).<br>
+<br>
+I strongly urge you to read that entire document. If you've<br>
+never read it before, it will help you both on DS channels<br>
+and pretty much anywhere else where experts are available <br>
+for questions. I promise there will be benefit from <br>
+reading it.<br>
+<br>
+<br>
+<a name="100"></a><span
+ style="font-weight: bold; text-decoration: underline;">If I XYZ, will
+that work?</span><br>
+<br>
+Try it and see. One of the drawbacks to having exhaustive<br>
+documentation is that folks can get the impression there's<br>
+an example of every test case. As with any coding (programming)<br>
+environment, you'll need to put in a lot of trial and<br>
+error to learn. If it doesn't work, and it's not documented,<br>
+tell us what you did, where you looked, and what you expected.<br>
+<br>
+<br>
+<a name="102"></a><span
+ style="font-weight: bold; text-decoration: underline;">Hey you skipped
+question 101!</span><br>
+<br>
+Yeah I goofed the numbers and now people are using #101 for<br>
+something else. Oh well.<br>
+<br>
 <br style="font-family: courier new,courier,monospace;">
-</small></big></big><br
- style="font-family: courier new,courier,monospace;">
+</big><br style="font-family: courier new,courier,monospace;">
 <big style="font-family: courier new,courier,monospace;">-
 Cratylus</big><br style="font-family: courier new,courier,monospace;">
 <br style="font-family: courier new,courier,monospace;">

@@ -31,3 +31,7 @@ LIMB left hoof:left leg:4::
 LIMB right hoof:right leg:4::
 HAND right hand:5
 HAND left hand:5
+MASS 1300
+SIZE S_SOMEWHAT_SMALL
+BODY_TYPE B_HUMANOID
+RESPIRATION_TYPE R_AIR

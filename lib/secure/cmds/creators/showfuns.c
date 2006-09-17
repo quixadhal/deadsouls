@@ -1,9 +1,10 @@
 #include <lib.h>
+#include <daemons.h>
 
 inherit LIB_DAEMON;
-mapping FileSize = ([]);
-mapping FunctionCache = ([]);
-string SaveFile = "/tmp/showfuns.o";
+//mapping FileSize = ([]);
+//mapping FunctionCache = ([]);
+//string SaveFile = "/tmp/showfuns.o";
 string *arr = ({});
 string *types = ({ "void ", "status ",
   "string ", "string \*", "string array ",
@@ -16,8 +17,6 @@ string *types = ({ "void ", "status ",
 
 void create(){
     daemon::create();
-    if(!file_exists(SaveFile)) save_object(SaveFile);
-    else restore_object(SaveFile);
 }
 
 mixed cmd(string str) {
@@ -36,7 +35,8 @@ mixed cmd(string str) {
     else tmp = "";
     content = replace_string(content, " *", " array ");
     //tc("content: "+content);
-    if(!sizeof(FunctionCache[str]) || stat(str)[0] != FileSize[str]){
+    if(!tmp = FUNCTION_D->GetFunctions(str)){
+	tmp = "";
 	lines = explode(content, "\n");
 	ob = load_object(str);
 	if(!ob) return "File cannot be loaded.";
@@ -50,18 +50,30 @@ mixed cmd(string str) {
 			//tc("line: "+line);
 			line = trim(line);
 			if(!strsrch(line,"/*") || !strsrch(line,"//") || !strsrch(line,"*")) continue;
+			if(last(line,1) == ";") continue;
 			if(!grepp(tmp,func)) tmp += line+"\n";
 		    }
 		}
 	    }
 	}
-	FileSize[str] = stat(str)[0];
-	FunctionCache[str] = tmp;
-	save_object(SaveFile);
+	//FileSize[str] = stat(str)[0];
+	//FunctionCache[str] = tmp;
+	FUNCTION_D->ReceiveFunctionData(str, tmp, stat(str)[0]);
     }
     //message("system", FunctionCache[str], this_player());
-    return FunctionCache[str];
+    //return FunctionCache[str];
+    return tmp;
 }
+
+//int eventDestruct(){
+//save_object(SaveFile);
+//return ::eventDestruct();
+//}
+
+//int SaveMe(){
+//save_object(SaveFile);
+//return 1;
+//}
 
 int help() {
     message("help", "Syntax: <showfuns [file]>\n\n"

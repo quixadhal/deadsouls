@@ -26,3 +26,7 @@ LIMB left forepaw:left foreleg:4::
 LIMB left rear paw:left rear leg:4::
 LIMB right forepaw:right foreleg:4::
 LIMB right rear paw:right rear leg:4::
+MASS 500
+SIZE S_LARGE
+BODY_TYPE B_CHIMAERA
+RESPIRATION_TYPE R_AIR

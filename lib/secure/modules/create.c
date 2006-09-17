@@ -19,7 +19,7 @@ string *item_arr = base_arr + ({"SetLanguage","SetRead","SetDefaultRead","SetDis
 string *meal_arr = item_arr + ({ "SetMealType", "SetStrength"}) -({"SetDamagePoints"});
 string *storage_arr = item_arr + ({"SetOpacity", "SetMaxCarry","SetInventory", "SetCanClose", "SetCanLock","SetMaxRecurse","SetLocked","SetClosed","SetKey"});
 string *room_arr = base_arr - ({"SetUnique"}) + ({"SetTerrainType","AddTerrainType","SetLanguage", "SetRead", "SetDefaultRead", "SetNoObviousExits","SetDefaultExits","SetTown","SetNightLong","SetDayLong","SetClimate","SetAmbientLight","SetNightLight","SetDayLight","SetObviousExits", "SetInventory", "SetEnters"});
-string *npc_arr = base_arr - ({"SetItems"}) + ({"SetMount","SetCanBefriend","SetDefaultLanguage","SetNativeLanguage","SetCustomXP", "SetSpellBook", "SetCanBite", "SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat"});
+string *npc_arr = base_arr - ({"SetItems"}) + ({"SetMass","SetBodyType","SetSize","SetRespiration","SetMount","SetCanBefriend","SetDefaultLanguage","SetNativeLanguage","SetCustomXP", "SetSpellBook", "SetCanBite", "SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat"});
 string *barkeep_arr = npc_arr + ({"SetLocalCurrency","SetMenuItems"});
 string *trainer_arr = npc_arr + ({"SetNoSpells", "AddTrainingSkills"});
 string *vendor_arr = npc_arr + ({"SetLocalCurrency","SetStorageRoom","SetMaxItems","SetVendorType"});
@@ -436,6 +436,12 @@ mixed eventModify(object ob, string str){
 	case "defaultlanguage" : out = "SetDefaultLanguage";break;
 	case "defaultlang" : out = "SetDefaultLanguage";break;
 	case "setdefaultlanguage" : out = "SetDefaultLanguage";break;
+	case "bodytype" : out = "SetBodyType";break;
+	case "setbodytype" : out = "SetBodyType";break;
+	case "setsize" : out = "SetSize";break;
+	case "size" : out = "SetSize";break;
+	case "respiration" : out = "SetRespiration";break;
+	case "setrespiration" : out = "SetRespiration";break;
 	default : out = mode;
 	}
     }
@@ -564,6 +570,11 @@ mixed eventModify(object ob, string str){
 	case "SetHealthPoints" : p_array = ({"SetInventory","SetMaxHealhPoints","SetClass","SetRace","SetLong"});break;
 	case "SetMaxHealthPoints" : p_array = ({"SetInventory","SetHealhPoints","SetClass","SetRace","SetLong"});break;
 	case "SetNativeLanguage" : p_array = ({"SetRace"});break;
+	case "SetSize" : p_array = ({"SetRace"});break;
+	case "SetBodyType" : p_array = ({"SetRace"});break;
+	case "SetRespiration" : p_array = ({"SetRace"});break;
+	case "SetClass" : p_array = ({"SetRace","SetLong"});break;
+	case "SetMass" : p_array = ({"SetRace","SetLong"});break;
 	case "SetSmell" : p_array = ({"SetItems","SetInventory","SetListen","SetLong","SetDayLong","SetNightLong","SetShort"});break;
 	case "SetListen" : p_array = ({"SetItems","SetInventory","SetSmell","SetLong","SetDayLong","SetNightLong","SetShort"});break;
 	case "SetItems" : p_array = ({"SetAmbientLight","SetDayLight","SetNightLight","create()","create ()","SetShort","SetLong","SetDayLong","SetNightLong"});break;
