@@ -9,7 +9,7 @@
 </head>
 <body>
 <pre style="font-family: courier new,courier,monospace;"><span
- style="font-weight: bold;">Dead Souls Creator FAQ, v3.4</span><br><br>Written by Cratylus @ Frontiers, March 2006<br>Updated September 2006.<br><span
+ style="font-weight: bold;">Dead Souls Creator FAQ, v3.4</span><br><br>Written by Cratylus @ Frontiers, March 2006<br>Updated September 18 2006.<br><span
  style="font-weight: bold; text-decoration: underline;"><br></span>Note: commands are displayed in boldface, like this: <span
  style="font-weight: bold;">ls -a</span><span
  style="font-weight: bold; text-decoration: underline;"><br><br>What's this FAQ about?</span><br><br>	There are common issues and questions that crop<br>up for most new creators. This document is intended to<br>ease or at least shorten what can be a steep learning<br>curve.<br><br><br><span
@@ -82,7 +82,9 @@
  href="#2.62">2.62 I want to put an object in a room that doesn't show up in the inventory<br>but it can be manipulated.</a><br><br><a
  href="#2.63">2.63 What is pass by reference? What is pass by value?</a><br><br><a
  href="#2.64">2.64 ZOMG pass by reference is terrible! How do I avoid it?</a><br><br><a
- href="#2.65">2.65 What does the :: operator do?</a><br><br>2.67 I know this file is fine. I copied it from another file that<br>works, but it won't update. This is driving me insane.<br><br><br><br><span
+ href="#2.65">2.65 What does the :: operator do?</a><br><br><a
+ href="#2.67">2.67 I know this file is fine. I copied it from another file that<br>works, but it won't update. This is driving me insane.</a><br><br><a
+ href="#2.68">2.68 What is SetEncounter supposed to do?</a><br><br><br><span
  style="font-weight: bold;">Section 3: Intermud and channel stuff</span><br><br><a
  href="#3.1">3.1 How do I know what other muds are online on intermud?</a><br><br><a
  href="#3.2">3.2 Hey, LeetFooMud is online! How can I tell if Biff is logged on?</a><br><br><a
@@ -113,8 +115,9 @@
  href="#4.16">4.17 ZOMG this is the best mudlib evar how can I evar thank you?</a><br><br><a
  href="#4.17">4.18 Dude this mudlib sux0rz @ss. What a waste of my time.</a><br><br><a
  href="#4.19">4.19 I'm seeing a filename but I can't read it.</a><br><br><a
- href="#4.20">4.20 Is there a command to go back to your previous directory<br>without having to type it all out again?</a><a
- href="#4.21"></a><br><br><br><span style="font-weight: bold;">Section 5: Building</span><br><br><a
+ href="#4.20">4.20 Is there a command to go back to your previous directory<br>without having to type it all out again?</a><br><a
+ href="#4.21"><br>4.21 When I'm in combat, I keep getting messages about not being<br>able to fight while carrying stuff, but I only have X, Y, and Z on me.</a><br><br><br><span
+ style="font-weight: bold;">Section 5: Building</span><br><br><a
  href="#5.1">5.1 QCS is putting stuff where I don't want it.</a><br><br><a
  href="#5.2">5.2 How do I make a blank room, instead of copying the current one?</a><br><br><a
  href="#5.3">5.3 How do I build an area?</a><br><br><a href="#5.4">5.4 How do I make a quest?</a><br><br><a
@@ -412,7 +415,9 @@
  style="font-weight: bold; text-decoration: underline;">My NPC's stats are all hosed up.</span><br
  style="font-weight: bold; text-decoration: underline;"><br>Make sure you have SetLevel() *after* SetRace() and SetClass().<br>Also make sure there's a working ::create() in your create<br>function. Some examples are:<br><br>::create();<br>npc::create();<br>vendor::create();<br><br>And make sure your init() function has an:<br><br>::init();<br><br><br><a
  name="2.42"></a><span
- style="font-weight: bold; text-decoration: underline;">This squirrel is taking *forever* to kill.</span><br><br>The mud is calculating its health points based on level and<br>race. If your squirrel has 340hp, it'll seem unreasonably<br>tough. Use SetMaxHealthPoints() to cap its vitality to<br>something like, say, 5.<br><br><br><a
+ style="font-weight: bold; text-decoration: underline;">This squirrel is taking *forever* to kill.</span><br><br>The mud is calculating its health points based on level and<br>race. If your squirrel has 340hp, it'll seem unreasonably<br>tough. Use SetMaxHealthPoints() to cap its vitality to<br>something like, say, 5.<br><br>Also, humans tend to be pretty crappy at combat, unless<br>they are of the fighter class. Even a rat can be<br>a challenge for a wimpy, weak little level 1 human. Try<br>using a dwarf or an orc to fight, or make your character<br>a fighter with: <span
+ style="font-weight: bold;">call me-&gt;ChangeClass("fighter")</span><br><br>Please note that <a
+ href="#4.21">carrying anything at all tends to <br>seriously hamper your ability to fight</a>. Drop anything<br>you're not carrying or wielding, or put it in a backpack.<br><br><br><a
  name="2.43"></a><span
  style="font-weight: bold; text-decoration: underline;">My room should not be entered/exited by just anyone. How</span><br
  style="font-weight: bold; text-decoration: underline;"><span
@@ -538,7 +543,9 @@
  style="text-decoration: underline; font-weight: bold;">I <span
  style="font-style: italic;">know</span> this file is fine. I copied it from another file that</span><br
  style="text-decoration: underline; font-weight: bold;"><span
- style="text-decoration: underline; font-weight: bold;">works, but it won't update. This is driving me insane.</span><br><br>There are few circumstances under which a properly-coded file will not update:<br><br>1) Files placed in /tmp will not update.<br><br>2) Verbs placed outside the /verb dir will not update.<br><br>3) Dead Souls does not handle files with spaces in the name.<br><br></pre>
+ style="text-decoration: underline; font-weight: bold;">works, but it won't update. This is driving me insane.</span><br><br>There are few circumstances under which a properly-coded file will not update:<br><br>1) Files placed in /tmp will not update.<br><br>2) Verbs placed outside the /verb dir will not update.<br><br>3) Dead Souls does not handle files with spaces in the name.<br><br>4) If the file you copied from has a relative include (such as #include "./customdefs.h" )<br>   and you copy that to a different directory, the relative include will make<br>   the update fail if you don't have the header file where it expects it.<br><br>5) If the file has a SetInventory() that contains broken files or broken filenames or<br>   files that do not exist, the update will probably fail in some way.<br><br>6) Files in directories that aren't readable to you won't update.<br><br>7) .h files do not update.<br><br>8) Dead Souls is case-sensitive. My_New_Room.c is a different file from my_new_room.c . <br><br><br><a
+ name="2.68"></a><span
+ style="font-weight: bold; text-decoration: underline;">What is SetEncounter supposed to do?</span><br><br>When objects meet in the same environment, they call SetEncounter()<br>in themselves to see if anything interesting should occur, based<br>on the other items in the environment. <br><br>In the case of an NPC, SetEncounter(50) means "if a living thing<br>comes into the room, and its charisma is lower than 50, kill it".<br><br>To make it always aggressive, you'd set that to an appropriately <br>high number.<br><br>Alternately you can put a function pointer in there, to make a<br>more sophisticated condition for attack, or perhaps something<br>other than combat.<br><br>See /domains/town/npc/orc.c for an example.<br><br></pre>
 <hr
  style="width: 100%; height: 2px; font-family: courier new,courier,monospace;">
 <pre style="font-family: courier new,courier,monospace;">Section 3: Intermud and channel stuff<br><br><br><span
@@ -1131,7 +1138,10 @@ better.</span><br style="font-family: courier new,courier,monospace;">
  style="font-weight: bold;">cd ~/area</span><br><br>To go to the /domains dir: <span
  style="font-weight: bold;">cd ^</span><br><br>To go to /domains/default: <span
  style="font-weight: bold;">cd ^default</span><br><br>To go to the directory you were in before the current one: <span
- style="font-weight: bold;">cd ~-</span><br><br></pre>
+ style="font-weight: bold;">cd ~-<br><br></span><br><a name="4.21"></a><span
+ style="text-decoration: underline; font-weight: bold;">When I'm in combat, I keep getting messages about not being</span><br
+ style="text-decoration: underline; font-weight: bold;"><span
+ style="text-decoration: underline; font-weight: bold;">able to fight while carrying stuff, but I only have X, Y, and Z on me.</span><br><br>I was carrying some dishes to the kitchen a while back, and it<br>occurred to me that even if I had a sword, if someone jumped<br>out and started fighting me, the first thing I'd have to do is<br>drop anything I'm not wielding, or get my butt kicked.<br><br>The more I thought about it, the more it made sense to set up<br>an encumbrance system that prevented proper fighting ability so<br>long as you're carrying anything that isn't worn or wielded,<br>no matter how heavy.<br><br>If you don't like this behavior, talk to your admin abour changing<br>the encumbrance define in /secure/include/config.h .<br><br></pre>
 <br style="font-family: courier new,courier,monospace;">
 <hr
  style="width: 100%; height: 2px; font-family: courier new,courier,monospace;"><br

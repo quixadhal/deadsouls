@@ -89,7 +89,7 @@ static void create() {
 }
 
 int ReceiveFunctionData(string file, string funs, int fsize){
-    tc("file: "+file+", size: "+fsize,"cyan");
+    //tc("file: "+file+", size: "+fsize,"cyan");
     FunctionCache[file] = funs;
     FileSize[file] = fsize;
     return fsize;
