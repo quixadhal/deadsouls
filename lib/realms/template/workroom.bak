@@ -37,7 +37,7 @@ static void create() {
 	({"sheet","reminder","reminders"}) : (: ReadSheet :)
       ]) );
     SetInventory( ([
-	MY_OBJ "/obj/chest" : 1,
+	MY_OBJ "/chest" : 1,
 	"/domains/default/obj/bbucket" :1,
       ]) );
     SetExits( ([ "down" : "/domains/default/room/wiz_hall.c",
