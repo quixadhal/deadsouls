@@ -9,7 +9,7 @@
 </head>
 <body>
 <pre style="font-family: courier new,courier,monospace;"><span
- style="font-weight: bold;">Dead Souls Creator FAQ, v3.4</span><br><br>Written by Cratylus @ Frontiers, March 2006<br>Updated September 2006.<br><span
+ style="font-weight: bold;">Dead Souls Creator FAQ, v3.4</span><br><br>Written by Cratylus @ Frontiers, March 2006<br>Updated September 18 2006.<br><span
  style="font-weight: bold; text-decoration: underline;"><br></span>Note: commands are displayed in boldface, like this: <span
  style="font-weight: bold;">ls -a</span><span
  style="font-weight: bold; text-decoration: underline;"><br><br>What's this FAQ about?</span><br><br>	There are common issues and questions that crop<br>up for most new creators. This document is intended to<br>ease or at least shorten what can be a steep learning<br>curve.<br><br><br><span
@@ -82,7 +82,9 @@
  href="#2.62">2.62 I want to put an object in a room that doesn't show up in the inventory<br>but it can be manipulated.</a><br><br><a
  href="#2.63">2.63 What is pass by reference? What is pass by value?</a><br><br><a
  href="#2.64">2.64 ZOMG pass by reference is terrible! How do I avoid it?</a><br><br><a
- href="#2.65">2.65 What does the :: operator do?</a><br><br><br><span
+ href="#2.65">2.65 What does the :: operator do?</a><br><br><a
+ href="#2.67">2.67 I know this file is fine. I copied it from another file that<br>works, but it won't update. This is driving me insane.</a><br><br><a
+ href="#2.68">2.68 What is SetEncounter supposed to do?</a><br><br><br><span
  style="font-weight: bold;">Section 3: Intermud and channel stuff</span><br><br><a
  href="#3.1">3.1 How do I know what other muds are online on intermud?</a><br><br><a
  href="#3.2">3.2 Hey, LeetFooMud is online! How can I tell if Biff is logged on?</a><br><br><a
@@ -113,8 +115,9 @@
  href="#4.16">4.17 ZOMG this is the best mudlib evar how can I evar thank you?</a><br><br><a
  href="#4.17">4.18 Dude this mudlib sux0rz @ss. What a waste of my time.</a><br><br><a
  href="#4.19">4.19 I'm seeing a filename but I can't read it.</a><br><br><a
- href="#4.20">4.20 Is there a command to go back to your previous directory<br>without having to type it all out again?</a><a
- href="#4.21"></a><br><br><br><span style="font-weight: bold;">Section 5: Building</span><br><br><a
+ href="#4.20">4.20 Is there a command to go back to your previous directory<br>without having to type it all out again?</a><br><a
+ href="#4.21"><br>4.21 When I'm in combat, I keep getting messages about not being<br>able to fight while carrying stuff, but I only have X, Y, and Z on me.</a><br><br><br><span
+ style="font-weight: bold;">Section 5: Building</span><br><br><a
  href="#5.1">5.1 QCS is putting stuff where I don't want it.</a><br><br><a
  href="#5.2">5.2 How do I make a blank room, instead of copying the current one?</a><br><br><a
  href="#5.3">5.3 How do I build an area?</a><br><br><a href="#5.4">5.4 How do I make a quest?</a><br><br><a
@@ -237,7 +240,7 @@
  href="example.html">QCS example page</a> for an explanation of this<br>important Dead Souls system.<br><br><br><span
  style="font-weight: bold; text-decoration: underline;"></span><a
  name="2.2"></a><span
- style="font-weight: bold; text-decoration: underline;">SetUnique doesn't work.</span><br><br>	SetUnique() is probably doing something you<br>don't expect. When an item is loaded into memory, and<br>it has an inventory, it first checks each of those items<br>for whether it's supposed to be unique.<br>	If it is supposed to be unique, then we look<br>through the list of loaded objects to see if there is<br>one of these items already cloned. If there is, then<br>we don't clone a new one.<br>	What this means is that if I kidnap Leo the<br>archwizard and hold him in my workroom, another one will<br>not appear in the basement until my Leo is dested.<br><br>	Note, however, that this does NOT mean that the<br>mud will never have two Leos. I can clone however many<br>Leos I want. But as long as one or more cloned Leos<br>exist, the basement will not make another. That's<br>what SetUnique means.<br><br>	Now, if the behavior you're seeing is different<br>from what I described, maybe SetUnique <span
+ style="font-weight: bold; text-decoration: underline;">SetUnique doesn't work.</span><br><br>	SetUnique() is probably doing something you<br>don't expect. When an item is loaded into memory, and<br>it has an inventory, it first checks each of those items<br>for whether it's supposed to be unique.<br>	If it is supposed to be unique, then we look<br>through the list of loaded objects to see if there is<br>one of these items already cloned. If there is, then<br>we don't clone a new one.<br>	What this means is that if I kidnap Leo the<br>archwizard and hold him in my workroom, another one will<br>not appear in the basement until my Leo is dested.<br><br>	Note, however, that this does NOT mean that the<br>mud will never have two Leos. I can clone however many<br>Leos I want. But as long as one or more cloned Leos<br>exist, the basement will not make another. That's<br>what SetUnique means.<br><br>	Putting a negative number in the value element<br>of a given item in SetInventory makes it get treated as a <br>unique object.<br><br>	Now, if the behavior you're seeing is different<br>from what I described, maybe SetUnique <span
  style="font-style: italic;">is</span> broken,<br>and you should email me with what you're seeing.<br><br><br
  style="text-decoration: underline; font-weight: bold;"><span
  style="text-decoration: underline; font-weight: bold;"></span><a
@@ -412,7 +415,9 @@
  style="font-weight: bold; text-decoration: underline;">My NPC's stats are all hosed up.</span><br
  style="font-weight: bold; text-decoration: underline;"><br>Make sure you have SetLevel() *after* SetRace() and SetClass().<br>Also make sure there's a working ::create() in your create<br>function. Some examples are:<br><br>::create();<br>npc::create();<br>vendor::create();<br><br>And make sure your init() function has an:<br><br>::init();<br><br><br><a
  name="2.42"></a><span
- style="font-weight: bold; text-decoration: underline;">This squirrel is taking *forever* to kill.</span><br><br>The mud is calculating its health points based on level and<br>race. If your squirrel has 340hp, it'll seem unreasonably<br>tough. Use SetMaxHealthPoints() to cap its vitality to<br>something like, say, 5.<br><br><br><a
+ style="font-weight: bold; text-decoration: underline;">This squirrel is taking *forever* to kill.</span><br><br>The mud is calculating its health points based on level and<br>race. If your squirrel has 340hp, it'll seem unreasonably<br>tough. Use SetMaxHealthPoints() to cap its vitality to<br>something like, say, 5.<br><br>Also, humans tend to be pretty crappy at combat, unless<br>they are of the fighter class. Even a rat can be<br>a challenge for a wimpy, weak little level 1 human. Try<br>using a dwarf or an orc to fight, or make your character<br>a fighter with: <span
+ style="font-weight: bold;">call me-&gt;ChangeClass("fighter")</span><br><br>Please note that <a
+ href="#4.21">carrying anything at all tends to <br>seriously hamper your ability to fight</a>. Drop anything<br>you're not carrying or wielding, or put it in a backpack.<br><br><br><a
  name="2.43"></a><span
  style="font-weight: bold; text-decoration: underline;">My room should not be entered/exited by just anyone. How</span><br
  style="font-weight: bold; text-decoration: underline;"><span
@@ -440,7 +445,7 @@
  style="font-weight: bold;">NONBITINGRACE</span> (some races can't or won't bite)<br><span
  style="font-weight: bold;">PLAYER_RACE 1</span> (enables the selection of this race for players)<br><br>Please note that while the LIB_BODY object does<br>specify a number of fingers, they aren't items that<br>can be severed, and their purpose mostly is determining<br>what kind of gloves you can wear.<br><br><br><a
  name="2.46"></a><span
- style="font-weight: bold; text-decoration: underline;">How does the format for class files work?</span><br><br>	Class files have only two types of<br>entry lines that Dead Souls currently supports.<br>The first is the name of the class.<br><br>	Every line after that is presumed to be<br>a skill specification line, in the following<br>format:<br><br>skill name:starting level:importance to the class<br><br><br><a
+ style="font-weight: bold; text-decoration: underline;">How does the format for class files work?</span><br><br>	Class files have only two types of<br>entry lines that Dead Souls currently supports.<br>The first is the name of the class.<br><br>	Every line after that is presumed to be<br>a skill specification line, in the following<br>format:<br><br>skill name:starting level:importance to the class (1 is highest)<br><br><br><a
  name="2.47"></a><span
  style="font-weight: bold; text-decoration: underline;">What do Properties do?</span><br><br>	Properties are a way to provide flexibility in<br>the lib. Objects usually work by having variables<br>that are modified by functions. This allows a player<br>to have, for example, a SpellBook variable which<br>contains the spells she knows, and this variable in<br>turn is affected by "spell learning" functions, etc.<br><br>	Suppose, however, that I want to set a<br>variable in a player, but that variable does not<br>exist. This is tricky indeed, because it would<br>involve a modification to one or more library objects,<br>and reloading them...possibly requiring re-logins<br>or (very rarely) even rebooting the mud.<br><br>	Instead you can use properties as a quick<br>and dirty way to get that functionality without<br>rewriting lib objects. For example, if you do<br>something like this:<br><br>present("lamp",this_player())-&gt;SetProperty("blessed", 1);<br><br>	Then that lamp is blessed, and maybe now<br>a monster has a function like this:<br><br>if(present("lamp",this_player())-&gt;GetProperty("blessed")) RunAway();<br><br>	SetProperty() and SetProperties() are just<br>convenient ways to create and modify custom variables in<br>objects and players on the fly. Strictly speaking this<br>is not good coding practice. Anything useful enough to<br>make into a Property is useful enough to do in another way.<br>	However, it is available to you as another implement<br>in your coders' toolbox.<br><br><br><a
  name="2.48"></a><span
@@ -533,7 +538,14 @@
  style="color: rgb(0, 102, 0);"><br style="color: rgb(0, 102, 0);"><span
  style="color: rgb(0, 102, 0);">Cratylus &lt;ds&gt; that line says "in the file i inherited called daemon, run the create function"</span><br><br>Detah &lt;ds&gt; so to understand that line, I need to go to daemon.c and read the create() fun there?<br><br><span
  style="color: rgb(0, 102, 0);">Cratylus &lt;ds&gt; yep</span><br><br>Detah &lt;ds&gt; ty<br><br><span
- style="color: rgb(0, 102, 0);">Cratylus &lt;ds&gt; np</span><br></pre>
+ style="color: rgb(0, 102, 0);">Cratylus &lt;ds&gt; np<br><br></span><br><a
+ name="2.67"></a><span
+ style="text-decoration: underline; font-weight: bold;">I <span
+ style="font-style: italic;">know</span> this file is fine. I copied it from another file that</span><br
+ style="text-decoration: underline; font-weight: bold;"><span
+ style="text-decoration: underline; font-weight: bold;">works, but it won't update. This is driving me insane.</span><br><br>There are few circumstances under which a properly-coded file will not update:<br><br>1) Files placed in /tmp will not update.<br><br>2) Verbs placed outside the /verb dir will not update.<br><br>3) Dead Souls does not handle files with spaces in the name.<br><br>4) If the file you copied from has a relative include (such as #include "./customdefs.h" )<br>   and you copy that to a different directory, the relative include will make<br>   the update fail if you don't have the header file where it expects it.<br><br>5) If the file has a SetInventory() that contains broken files or broken filenames or<br>   files that do not exist, the update will probably fail in some way.<br><br>6) Files in directories that aren't readable to you won't update.<br><br>7) .h files do not update.<br><br>8) Dead Souls is case-sensitive. My_New_Room.c is a different file from my_new_room.c . <br><br><br><a
+ name="2.68"></a><span
+ style="font-weight: bold; text-decoration: underline;">What is SetEncounter supposed to do?</span><br><br>When objects meet in the same environment, they call SetEncounter()<br>in themselves to see if anything interesting should occur, based<br>on the other items in the environment. <br><br>In the case of an NPC, SetEncounter(50) means "if a living thing<br>comes into the room, and its charisma is lower than 50, kill it".<br><br>To make it always aggressive, you'd set that to an appropriately <br>high number.<br><br>Alternately you can put a function pointer in there, to make a<br>more sophisticated condition for attack, or perhaps something<br>other than combat.<br><br>See /domains/town/npc/orc.c for an example.<br><br></pre>
 <hr
  style="width: 100%; height: 2px; font-family: courier new,courier,monospace;">
 <pre style="font-family: courier new,courier,monospace;">Section 3: Intermud and channel stuff<br><br><br><span
@@ -1126,7 +1138,10 @@ better.</span><br style="font-family: courier new,courier,monospace;">
  style="font-weight: bold;">cd ~/area</span><br><br>To go to the /domains dir: <span
  style="font-weight: bold;">cd ^</span><br><br>To go to /domains/default: <span
  style="font-weight: bold;">cd ^default</span><br><br>To go to the directory you were in before the current one: <span
- style="font-weight: bold;">cd ~-</span><br><br></pre>
+ style="font-weight: bold;">cd ~-<br><br></span><br><a name="4.21"></a><span
+ style="text-decoration: underline; font-weight: bold;">When I'm in combat, I keep getting messages about not being</span><br
+ style="text-decoration: underline; font-weight: bold;"><span
+ style="text-decoration: underline; font-weight: bold;">able to fight while carrying stuff, but I only have X, Y, and Z on me.</span><br><br>I was carrying some dishes to the kitchen a while back, and it<br>occurred to me that even if I had a sword, if someone jumped<br>out and started fighting me, the first thing I'd have to do is<br>drop anything I'm not wielding, or get my butt kicked.<br><br>The more I thought about it, the more it made sense to set up<br>an encumbrance system that prevented proper fighting ability so<br>long as you're carrying anything that isn't worn or wielded,<br>no matter how heavy.<br><br>If you don't like this behavior, talk to your admin abour changing<br>the encumbrance define in /secure/include/config.h .<br><br></pre>
 <br style="font-family: courier new,courier,monospace;">
 <hr
  style="width: 100%; height: 2px; font-family: courier new,courier,monospace;"><br

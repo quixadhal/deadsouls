@@ -1,4 +1,18 @@
----- 2.1r41 (unreleased) ---
+---- 2.1r42 (unreleased) ---
+- The findfun command no longer fails with timeouts and it executes
+  extremely fast due to the use of the new daemons.
+- Fixed QCS bug that prevented adding includes.
+- Added features to races: body type, size, average mass, whether they can
+  swim, and what they breathe.
+- New daemon: FILE_D, traverses the lib hierarchy, compiles
+  a list of all files, and maintains the cached data for querying.
+  Full refreshes of the data happen relatively quickly, in under
+  a minute, and does not lag the mud much.
+- New daemon: FUNCTION_D, uses FILE_D to determine inheritable lib
+  filenames, then queries each for the names of functions defined.
+  Full refreshes of this data happen slowly, several minutes
+  or longer. However, the mud is not much lagged during this process
+  except while processing very large files (e.g. /lib/body.c).
 - Fixed "first admin bug" that failed to add channels.
 - Implemented emotes bugfix provided by Aransus.
 - Modified the template realm somewhat. There are now flask examples,

@@ -495,8 +495,9 @@ int Setup() {
 	if(file_exists(home+".c")) 
 	    this_object()->eventMoveLiving(home);
 
-	foreach(string chan in CHAT_D->GetChannels())
-	this_object()->AddChannel(chan);
+	//foreach(string chan in CHAT_D->GetChannels())
+	//this_object()->AddChannel(chan);
+	this_object()->AddChannel( ({"admin", "error", "cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat"}) );
 
 	SetShort("First Admin $N");
     }

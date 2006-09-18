@@ -31,4 +31,8 @@ LIMB right forepaw:right foreleg:4::
 LIMB right hand:right arm:4:A_GLOVE,A_LONG_GLOVE,A_WEAPON,A_SHIELD,A_CUSTOM
 LIMB left rear paw:left rear leg:4::
 LIMB right rear paw:right rear leg:4::
-FLYINGRACE
+FLYING_RACE
+MASS 3000
+SIZE S_SOMEWHAT_SMALL
+BODY_TYPE B_WINGED_MAN
+RESPIRATION_TYPE R_AIR

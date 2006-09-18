@@ -23,4 +23,8 @@ LIMB left fore-hoof:left foreleg:4::
 LIMB left rear hoof:left rear leg:4::
 LIMB right fore-hoof:right foreleg:4::
 LIMB right rear hoof:right rear leg:4::
-NONBITINGRACE
+NONBITING_RACE
+MASS 3000
+SIZE S_HUMAN_SIZED
+BODY_TYPE B_QUADRUPED
+RESPIRATION_TYPE R_AIR

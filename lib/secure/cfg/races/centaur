@@ -30,3 +30,7 @@ LIMB right back hoof:right back leg:4::
 LIMB left back hoof:left back leg:4::
 HAND right hand:5
 HAND left hand:5
+MASS 3000
+SIZE S_LARGE
+BODY_TYPE B_SEMI_BIPEDAL
+RESPIRATION_TYPE R_AIR

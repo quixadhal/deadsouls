@@ -1,12 +1,15 @@
 #include <lib.h>
 #include <config.h>
+#include <daemons.h>
+#include <runtime_config.h>
 
 inherit LIB_DAEMON;
 string *all_dirs = ({});
-string *dirs = ({});
-string dir_list = "";
-string file_list = "";
 string *all_files = ({});
+int ftilt, dtilt;
+string globaltemp;
+
+mixed Report();
 
 static private void validate() {
     if(!this_player()) return 0;
@@ -14,89 +17,80 @@ static private void validate() {
 	error("Illegal attempt to access FILE_D: "+get_stack()+" "+identify(previous_object(-1)));
 }
 
-mixed eventHarvestFiles(){
-    string *harvest;
-    string *recolte;
-
-    validate();
-
-    all_files = ({});
-    file_list = "";
-    if(!sizeof(all_dirs)) this_object()->eventHarvestDirs();
-    harvest = all_dirs;
-    recolte = all_dirs[0..9];
-
-    while(sizeof(recolte)){
-	foreach(string dir in recolte){
-	    foreach(string file in get_dir(dir)){
-		if(file_exists(dir+file)){
-		    all_files += ({ dir+file });
-		    file_list += dir+file+"\n";
-		}
-	    }
+void heart_beat(){
+    foreach(mixed arr in call_out_info()){
+	if(arr[0] == this_object()){
+	    return ;
 	}
-	harvest -= harvest[0..9];
-	recolte =  harvest[0..9];
     }
-    //write_file("/tmp/files.txt",file_list);
-    return "fee";
+    //shout("SYSTEM: File scan complete.");
+    Report();
+    set_heart_beat(0);
 }
 
+mixed ReadDir(string str){
+    string *current_level_dirs = ({});
+    int iteration = 1;
 
-mixed eventHarvestDirs(){
     validate();
 
-    all_dirs = ({});
-    dirs = ({});
-    dir_list = "";
+    if(!str ||  !sizeof(str)) str = "/";
 
-    foreach(string dir in get_dir("/")){
-	if( directory_exists("/"+dir) ) {
-	    dir_list += "/"+dir+"/\n";
-	    dirs += ({ "/"+dir+"/" });
-	}
-    }
-    all_dirs = dirs;
-
-    //write_file("/tmp/dirs.txt",dir_list,1);
-    //tc("dirs: "+identify(dirs));
-
-    while(sizeof(dirs)){
-	string *tmp_dirs = ({});
-	foreach(string dir in dirs){
-	    foreach(string sub in get_dir(dir)){
-		if( directory_exists(dir+sub) ) {
-		    dir_list += dir+sub+"/\n";
-		    tmp_dirs += ({ dir+sub+"/" });
-		}
+    if(!query_heart_beat()) set_heart_beat(1);
+    if(last(str,1) != "/") str += "/";
+    if(directory_exists(str)){
+	foreach(string element in get_dir(str)){
+	    if(file_exists(str+element)) all_files += ({ str+element });
+	    if(directory_exists(str+element)) {
+		all_dirs += ({ str+element });
+		current_level_dirs += ({ str+element });
 	    }
 	}
-	all_dirs += tmp_dirs;
-	dirs = tmp_dirs;
+	if(sizeof(current_level_dirs)){
+	    foreach(string element in current_level_dirs){
+		iteration++;
+		globaltemp = element;
+		call_out( (: ReadDir, globaltemp :), iteration );
+	    }
+	}
     }
+    return 1;
+}
 
-    //write_file("/tmp/dirs.txt",dir_list,1);
-
-    //eventHarvestFiles();
-    return "foo";
+static mixed Report(){
+    foreach(mixed arr in call_out_info()){
+	if(arr[0] == this_object()){
+	    write("File scan is not complete.");
+	    return 1;
+	}
+    }
+    all_dirs = sort_array(all_dirs,1);
+    all_dirs = singular_array(all_dirs);
+    all_files = sort_array(all_files,1);
+    all_files = singular_array(all_files);
+    rm("/secure/tmp/dirs.txt");
+    rm("/secure/tmp/files.txt");
+    foreach(string dir in all_dirs){
+	write_file("/secure/tmp/dirs.txt",dir+"\n",1);
+    }
+    foreach(string dir in all_files){
+	write_file("/secure/tmp/files.txt",dir+"\n",1);
+    }
+    return 1;
 }
 
 string *GetFiles(){
-    if(!sizeof(all_files)) {
-	eventHarvestDirs();
-	eventHarvestFiles();
-    }
     return all_files;
 }
 
 string *GetDirs(){
-    if(!sizeof(all_dirs)) eventHarvestDirs();
     return all_dirs;
 }
 
 static void create() {
+    object fun_d = find_object(FUNCTION_D);
     daemon::create();
-    call_out((: eventHarvestDirs :), 1);
-    call_out((: eventHarvestFiles :), 5);
+    call_out((: ReadDir,"/" :), 1);
+    if(!fun_d) fun_d = load_object(FUNCTION_D);
 }
 
