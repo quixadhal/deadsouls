@@ -1,4 +1,5 @@
----- 2.1r42 (unreleased) ---
+---- 2.1r46 (unreleased) ---
+- Added new features to each race file.
 - The findfun command no longer fails with timeouts and it executes
   extremely fast due to the use of the new daemons.
 - Fixed QCS bug that prevented adding includes.
