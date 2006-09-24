@@ -16,11 +16,8 @@ inherit LIB_VERB;
 
 static void create() {
     verb::create();
-    SetNoClean(1);
-    parse_init();
-    parse_add_rule("yell", "");
-    parse_add_rule("yell", "in WRD STR");
-    parse_add_rule("yell", "STR");
+    SetVerb("yell");
+    SetRules("","in WRD STR","STR");
 }
 
 mixed can_yell() { return "Yell what?"; }

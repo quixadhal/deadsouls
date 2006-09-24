@@ -186,32 +186,32 @@ void AddRace(string file, int player) {
 	    string type = "";
 
 	case "FLYING_RACE":
-	    line = replace_string(line, "FLYING_RACE ", "");
-	    if(line && to_int(line) < 1) break;
+	    line = trim(replace_string(line, "FLYING_RACE", ""));
+	    if(sizeof(line) && atoi(line) < 1) break;
 	    else SetFlyingRace(race);
 	    break;
 
 	case "LIMBLESS_RACE":
-	    line = replace_string(line, "LIMBLESS_RACE ", "");
-	    if(line && to_int(line) < 1) break;
+	    line = trim(replace_string(line, "LIMBLESS_RACE", ""));
+	    if(sizeof(line) && atoi(line) < 1) break;
 	    else SetLimblessRace(race);
 	    break;
 
 	case "LIMBLESS_COMBAT_RACE":
-	    line = replace_string(line, "LIMBLESS_COMBAT_RACE ", "");
-	    if(line && to_int(line) < 1) break;
+	    line = trim(replace_string(line, "LIMBLESS_COMBAT_RACE", ""));
+	    if(sizeof(line) && atoi(line) < 1) break;
 	    else SetLimblessCombatRace(race);
 	    break;
 
 	case "NONBITING_RACE":
-	    line = replace_string(line, "NONBITING_RACE ", "");
-	    if(line && to_int(line) < 1) break;
+	    line = trim(replace_string(line, "NONBITING_RACE", ""));
+	    if(sizeof(line) && atoi(line) < 1) break;
 	    else SetNonBitingRace(race);
 	    break;
 
 	case "SWIMMING_RACE":
-	    line = replace_string(line, "SWIMMING_RACE ", "");
-	    if(line && to_int(line) < 1) break;
+	    line = trim(replace_string(line, "SWIMMING_RACE", ""));
+	    if(sizeof(line) && atoi(line) < 1) break;
 	    else SetSwimmingRace(race);
 	    break;
 
@@ -227,7 +227,7 @@ void AddRace(string file, int player) {
 
 	case "PLAYER_RACE":
 	    line = replace_string(line, "PLAYER_RACE ", "");
-	    if(!player && to_int(line) > 0) player = 1;
+	    if(!player && atoi(line) > 0) player = 1;
 	    else player = 0;
 	    break;
 

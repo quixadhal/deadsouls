@@ -15,10 +15,8 @@ varargs void eventCheckBody(object ob, object receiver);
 
 static void create() {
     verb::create();
-    SetNoClean(1);
-    parse_init();
-    parse_add_rule("body", "LIV");
-    parse_add_rule("body", "");
+    SetVerb("body");
+    SetRules("", "LIV");
 }
 
 static string *DamageDegree = ({

@@ -7,8 +7,8 @@ inherit LIB_FLASK;
 static void create() {
     dummy::create();
     flask::create();
-    SetKeyName("water");
-    SetId(({"sea","seawater" }));
+    SetKeyName("seawater");
+    SetId(({"sea","sea water","ocean","water" }));
     SetAdjectives("calm","lovely");
     SetLong("A calm, lovely sea view.");
     SetShort("the sea");

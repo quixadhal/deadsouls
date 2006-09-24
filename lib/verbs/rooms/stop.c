@@ -9,13 +9,12 @@
 #include <lib.h>
 #include "include/stop.h"
 
-inherit LIB_DAEMON;
+inherit LIB_VERB;
 
 static void create() {
-    daemon::create();
-    SetNoClean(1);
-    parse_init();
-    parse_add_rule("stop", "STR");
+    verb::create();
+    SetVerb("stop");
+    SetRules("STR");
 }
 
 mixed can_stop_str(string str) { 

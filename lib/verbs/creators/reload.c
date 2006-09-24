@@ -56,12 +56,13 @@ mixed can_reload_str_word(string str, string str2) {
     return can_reload_obj("foo"); }
 
 mixed do_reload_obj(object ob) {
-    string s1,s2;
-    if(userp(ob)) {
-	write("No.");
+    string s1,s2, foo = "Null object: ";
+    if(!ob || userp(ob)) {
+	if(ob) foo = base_name(ob)+": ";
+	write(foo+"Invalid for reloading.");
 	return 1;
     }
-    if(ob->GetDirectionMap()){
+    if(ob && ob->GetDirectionMap()){
 	write(base_name(ob)+" is a virtual room, and not subject to normal reloading.");
 	return 1;
     }

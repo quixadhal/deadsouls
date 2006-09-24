@@ -1,4 +1,10 @@
----- 2.1r47 (unreleased) ---
+---- 2.1r48 (unreleased) ---
+- "X looks around" and "checks possessions" messages are now suppressed
+  in meeting rooms.
+- Fixed reporting of object mass so that both the mass of the container
+  and its contents are returned. This corrects a LIB_MOUNT error.
+- Fixed archaic parse_* lines in some verbs that interfered with VERBS_D.
+- Fixed "say to".
 - Added new features to each race file.
 - The findfun command no longer fails with timeouts and it executes
   extremely fast due to the use of the new daemons.
