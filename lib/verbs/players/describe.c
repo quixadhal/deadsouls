@@ -12,7 +12,7 @@ inherit LIB_VERB;
 static void create() {
     verb::create();
     SetVerb("describe");
-    SetRules("LIV");
+    SetRules("LIV","STR");
     SetErrorMessage("Describe syntax: describe <message>");
     SetHelp("Syntax: describe MESSAGE\n"
       "\n"
@@ -21,7 +21,6 @@ static void create() {
       "denote your name. Example: If I typed 'describe $N is "
       "nondescript.', my description would be 'Rush is "
       "nondescript.'\n");
-    parse_add_rule("describe", "STR");
 }
 
 mixed can_describe_str(string str) {

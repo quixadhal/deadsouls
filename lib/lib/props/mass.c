@@ -21,7 +21,8 @@ int AddMass(int x) {
 }
 
 int GetMass() {
-    return Mass;
+    int load = this_object()->GetCarriedMass();
+    return (Mass + load);
 }
 
 int SetMass(int x) {

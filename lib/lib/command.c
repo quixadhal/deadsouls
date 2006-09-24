@@ -187,21 +187,39 @@ int eventForce(string cmd) {
 }
 
 int eventRetryCommand(string lastcmd){
-    string virb, prep, rest,ret;
+    string virb, wrd, prep, rest,ret;
     mixed err;
     if(previous_object() != master()) return 0;
     ParseRecurse++;
-    if(ParseRecurse > 1){
+    if(ParseRecurse > 3){
 	ParseRecurse = 0;
 	write("Which one?");
 	return 1;
     }
-    if(sscanf(lastcmd, "%s %s %s",virb, prep, rest) == 3 && 
-      member_array(prep,master()->parse_command_prepos_list()) != -1)
-	ret = virb + " "+prep+" a "+rest;
+
+    if(sscanf(lastcmd, "%s %s %s %s",virb,wrd, prep, rest) == 4){  
+	if(member_array(prep,master()->parse_command_prepos_list()) != -1){
+	    if(first(rest,2) == "a ") ret = virb + " a "+wrd+" "+prep+" "+rest;
+	    else ret = virb + " "+wrd+" "+prep+" a "+rest;
+	}
+	else if(member_array(wrd,master()->parse_command_prepos_list()) != -1){
+	    if(ParseRecurse > 0) ret = virb + " "+wrd+" a "+prep+" "+rest;
+	}
+
+    }
+
+    else if(sscanf(lastcmd, "%s %s %s",virb, prep, rest) == 3 && 
+      member_array(prep,master()->parse_command_prepos_list()) != -1){
+	if(ParseRecurse > 0) ret = virb + " "+prep+" a "+rest;
+
+    }
     else if(sscanf(lastcmd, "%s %s",virb, rest) == 2) ret = virb + " a "+rest;
     else ret = "wtf";
-    parse_sentence(ret);
+    if(!ret) {
+	write("One of the nouns you used is too vague. Try another.");
+	return 1;
+    }
+    if(ret) parse_sentence(ret);
     return 1;
 }
 

@@ -39,7 +39,7 @@ static void process_channel(int fd, mixed *info){
 		return;
 	    }
 	    if(info[0] == "channel-e" && !grepp(info[8],"$N"))
-		info[8] = info[8] + " (from "+info[3]+"@"+info[2]+")";
+		info[8] = info[8] + " (from "+info[7]+"@"+info[2]+")";
 	    sendername = info[7];
 	    senderrealname = info[3];
 	    sendermud = info[2];
@@ -113,6 +113,8 @@ static void process_channel(int fd, mixed *info){
 	log_file("router/server_log"+info[6], timestamp()+" "+
 	  sendername+"("+senderrealname+")@"+sendermud+" "+": "+
 	  sendermsg+" "+targstr+"\n");
+
+	info[8] = "/secure/daemon/filter"->eventFilter(info[8]);
 
 	foreach(mudname in keys(connected_muds)){
 	    if(member_array(mudname, listening[info[6]])!=-1)

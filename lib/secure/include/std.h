@@ -11,6 +11,7 @@
 #define LIB_CORPSE       DIR_STD  "/corpse"
 #define LIB_DAEMON       DIR_STD  "/daemon"
 #define LIB_DUMMY        DIR_STD  "/dummy"
+#define LIB_FURNACE      DIR_STD  "/furnace"
 #define LIB_ITEM         DIR_STD  "/item"
 #define LIB_LIMB         DIR_STD  "/limb"
 #define LIB_ROOM         DIR_STD  "/room"

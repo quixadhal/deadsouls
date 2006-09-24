@@ -15,12 +15,8 @@ inherit LIB_VERB;
 
 static void create() {
     verb::create();
-    SetNoClean(1);
-    parse_init();
-    parse_add_rule("speak", "");
-    parse_add_rule("speak", "in WRD");
-    parse_add_rule("speak", "in WRD STR");
-    parse_add_rule("speak", "STR");
+    SetVerb("speak");
+    SetRules("","in WRD","in WRD STR","STR");
 }
 
 mixed can_speak() { return "Speak what? In what language?"; }

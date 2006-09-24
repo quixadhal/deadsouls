@@ -16,11 +16,8 @@ inherit LIB_VERB;
 
 static void create() {
     verb::create();
-    SetNoClean(1);
-    parse_init();
-    parse_add_rule("shout", "");
-    parse_add_rule("shout", "in WRD STR");
-    parse_add_rule("shout", "STR");
+    SetVerb("shout");
+    SetRules("","in WRD STR","STR");
 }
 
 mixed can_shout() { return "Shout what?"; }

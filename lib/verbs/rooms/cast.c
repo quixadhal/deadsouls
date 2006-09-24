@@ -10,13 +10,12 @@
 #include <lib.h>
 #include "include/cast.h"
 
-inherit LIB_DAEMON;
+inherit LIB_VERB;
 
 static void create() {
-    daemon::create();
-    SetNoClean(1);
-    parse_init();
-    parse_add_rule("cast", "OBJ");
+    verb::create();
+    SetVerb("cast");
+    SetRules("OBJ");
 }
 
 mixed can_cast_obj(object ob) {

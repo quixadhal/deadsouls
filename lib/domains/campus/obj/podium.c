@@ -83,11 +83,19 @@ void init() {
     add_action ("privacy", "privacy");
     add_action ("privacy", "priv");
     add_action ("localupdate", "update") ;
+    add_action ("localupdate", "reload") ;
     add_action ("step_down", "step" );
+    add_action ("RestrictedAction", "zap" );
+    add_action ("RestrictedAction", "force" );
 }
 mixed CanGet(object ob) { return "The podium does not budge.";}
 
-
+int RestrictedAction(){
+    if(!archp(this_player()) && sizeof(mc) && mc != this_player()->GetKeyName()){
+	write("That action is restricted here.");
+	return 1;
+    }
+}
 
 int eventSay(string args) {
     string foo;
@@ -368,10 +376,9 @@ int permit_entry (string name) {
 
 
 // Eject_player lets the mc banish a player from the room and dump
-// him in the bounce room. Not very effective if the room is unlocked,
-// except perhaps as a warning.
+// him in the bounce room.
 int eject_player (string str) {
-
+    object env = environment(this_player());
     object ob ;
 
     if ( mc != this_player()->GetKeyName() ) {
@@ -387,6 +394,7 @@ int eject_player (string str) {
     tell_object (ob, "You have been ejected from the room.\n") ;
     say (capitalize(str)+" has been ejected from the room.\n") ;
     ob->eventMove(bounce_room) ;
+    if(env) env->AddEjected(ob);
     return 1 ;
 }
 
@@ -720,13 +728,15 @@ int expire_vote() {
 }
 
 int localupdate() {
-    write ("You may not update objects while in the conference room.\n") ;
-    return 1 ;
+    if(!archp(this_player())){
+	write ("You may not update objects while in the conference room.\n") ;
+	return 1;
+    }
 }
 
 int eventDestruct(){
     if(sizeof(mc) && !this_player() || (this_player() && !archp(this_player()))){
-	write("This is an arch-level cambot. You may not tamper with it.");
+	write("You may not tamper with the podium.");
 	return 0;
     }
     else return ::eventDestruct();
@@ -739,5 +749,4 @@ int eventMove(mixed dest){
     }
     else return ::eventMove(dest);
 }
-
 

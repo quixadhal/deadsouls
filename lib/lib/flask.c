@@ -81,6 +81,7 @@ string GetFlaskContents() { return FlaskContents; }
 
 string SetFlaskContents(string str) { 
     SetId(GetId()+({ str }));
+    parse_refresh();
     return (FlaskContents = str); 
 }
 
@@ -103,6 +104,7 @@ varargs mixed eventEmpty(object who){
     write("You pour the "+FlaskContents+" out of "+GetShort()+".");
     say(who->GetName()+" pours the "+FlaskContents+" out of "+GetShort()+".");
     SetId(tmpid);
+    parse_refresh();
     FlaskContents = "empty";
     SetStrength(0);
     FlaskUses = 0;
@@ -112,13 +114,13 @@ varargs mixed eventEmpty(object who){
 mixed eventFill(object who, object from){
     int howmuch_me = CanFillMe();
     int howmuch_them = from->CanFillOther();
-    if(!inherits(LIB_DUMMY,from) && base_name(from) != LIB_DUMMY &&
+    if(!from->isDummy() &&
       environment(from) != this_player()){
 	write("You aren't holding the "+from->GetKeyName()+".");
 	return 1;
     }
 
-    if((inherits(LIB_DUMMY,from) || base_name(from) != LIB_DUMMY) &&
+    if(from->isDummy() &&
       environment(this_object()) != this_player()){
 	write("You aren't holding the "+this_object()->GetKeyName()+".");
 	return 1;
@@ -155,6 +157,7 @@ mixed eventFill(object who, object from){
     FlaskStrength = from->GetStrength();
     if(member_array(FlaskContents, GetId()) == -1) 
 	SetId(GetId() + ({ FlaskContents }) );
+    parse_refresh();
     return 1;
 }
 
@@ -165,6 +168,7 @@ varargs mixed eventDrink(object who, object target, string foo) {
     who->eventDrink(this_object());
     if(!FlaskUses) {
 	SetId(GetId() - ({ FlaskContents }) );
+	parse_refresh();
 	FlaskContents = "empty";
 	SetStrength(0);
     }

@@ -2,6 +2,8 @@
 #include <rooms.h>
 inherit LIB_ROOM;
 
+object *ejected_players = ({});
+
 string ReadSign();
 
 static void create() {
@@ -51,11 +53,37 @@ int CanReceive(object ob) {
 	ob->eventMoveLiving(ROOM_START);
 	return 0;
     }
+    if(member_array(ob, ejected_players) != -1) {
+	write("You have been ejected from the meeting room and may not return.");
+	return 0;
+    }
     return 1;
 }
 
 void init(){
     ::init();
+}
+
+object *AddEjected(object punk){
+    if(member_array(punk, ejected_players) == -1){
+	write(capitalize(punk->GetKeyName())+" has been added to the ejected list.");
+	ejected_players += ({ punk });
+    }
+    else write(capitalize(punk->GetKeyName())+" is already on the ejected list.");
+    return ejected_players;
+}
+
+object *GetEjected(){
+    return ejected_players;
+}
+
+object *RemoveEjected(object punk){
+    if(member_array(punk, ejected_players) != -1){
+	write(capitalize(punk->GetKeyName())+" has been removed from the ejected list.");
+	ejected_players -= ({ punk });
+    }
+    else write(capitalize(punk->GetKeyName())+" is not on the ejected list.");
+    return ejected_players;
 }
 
 string ReadSign(){
@@ -67,4 +95,8 @@ string ReadSign(){
     return ret;
 }
 
-
+int eventDestruct(){
+    if( !((int)master()->valid_apply(({ "ASSIST" }))) )
+	error("Illegal attempt to destroy object: "+get_stack()+" "+identify(previous_object(-1)));
+    else return ::eventDestruct();
+}

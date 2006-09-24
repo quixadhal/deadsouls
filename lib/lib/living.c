@@ -18,6 +18,8 @@ inherit LIB_FOLLOW;
 inherit LIB_MAGIC;
 inherit LIB_LEAD;
 inherit LIB_SMELL;
+inherit "/lib/teach";
+inherit "/lib/learn";
 
 private int isPK, Mount;
 
