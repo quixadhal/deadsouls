@@ -1,4 +1,5 @@
 #include <lib.h>
+string *ExemptArray = ({ "/secure/obj/snooper" });
 
 void  reap_dummies(){
     //
@@ -42,7 +43,8 @@ varargs void reap_other(string str){
 
     foreach(object thingy in others){
 	if(!userp(thingy) && !environment(thingy) && 
-	  base_name(thingy) != "/secure/obj/snooper" ) {
+	  !inherits(LIB_SHADOW, thingy) &&
+	  member_array(base_name(thingy), ExemptArray) == -1 ) {
 	    thingy->eventDestruct();
 	}
     }

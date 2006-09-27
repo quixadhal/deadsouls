@@ -123,7 +123,7 @@ static void eventDestroyUndead(object agent) {
 
 varargs int eventDie(mixed agent) {
     int x, expee, subexpee;
-
+    if(!agent) agent = previous_object();
     if( (x = living::eventDie(agent)) != 1 ) return x;
 
     if(!Deaths || !sizeof(Deaths)) 
@@ -156,7 +156,7 @@ else {
 
     eventCompleteHeal(GetMaxHealthPoints()/2);
     AddMagicPoints(-(random(GetMagicPoints())));
-    interactive::eventMove(ROOM_DEATH);
+    this_object()->eventMove(ROOM_DEATH);
     this_object()->AddExperiencePoints(-subexpee);
     this_object()->save_player((string)this_object()->GetKeyName());
     this_object()->eventForce("look");
@@ -242,44 +242,41 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
 		dest = "/"+implode(arr[0..sizeof(arr)-2], "/")+"/"+dest;
 	    }
 	}
-	if( !interactive::eventMove(dest) ) {
+	if( !eventMove(dest) ) {
 	    eventPrint("You remain where you are.", MSG_SYSTEM);
 	    return 0;
 	}
 	inv = filter(all_inventory(prev), (: (!GetInvis($1) && living($1) &&
 	      !GetProperty("stealthy") &&    
 	      ($1 != this_object())) :));
-	if( !omsg || omsg == "" ) omsg = GetMessage("telout");
+	if( !omsg || omsg == "" ) {
+	    omsg = GetMessage("telout");
+	    imsg = GetMessage("telin");
+	}
 	else if(GetPosition() == POSITION_SITTING ||
 	  GetPosition() == POSITION_LYING ){
 	    omsg = GetName()+" crawls "+omsg+".";
+	    imsg = GetName()+" crawls in.";
 	}
 	else if(GetPosition() == POSITION_FLYING ){
 	    omsg = GetName()+" flies "+omsg+".";
+	    imsg = GetName()+" flies in.";
 	}
 
-	else omsg = GetMessage("leave", omsg);
+	else {
+	    omsg = GetMessage("leave", omsg);
+	    imsg = GetMessage("come", imsg);
+	}
 	inv->eventPrint(omsg, MSG_ENV);
     }
-    else if( !interactive::eventMove(dest) ) {
+    else if( !eventMove(dest) ) {
 	eventPrint("You remain where you are.", MSG_SYSTEM);
 	return 0;
     }
     inv = filter(all_inventory(environment()),
       (: (!GetInvis($1) && !GetProperty("stealthy") &&
 	  living($1) && ($1 != this_object())) :));
-    if( (!imsg || imsg == "") && (!omsg || omsg == "") )
-	imsg = GetMessage("telin");
-    else if(GetPosition() == POSITION_SITTING ||
-      GetPosition() == POSITION_LYING ){
-	imsg = GetName()+" crawls in.";
-    }
-    else if(GetPosition() == POSITION_FLYING){
-	imsg = GetName()+" flies in.";
-    }
 
-    else if( !imsg || imsg == "" ) imsg = GetMessage("come", imsg);
-    else imsg = replace_string(imsg, "$N", GetName());
     inv->eventPrint(imsg, MSG_ENV);
     if(GetInvis()) {
 	AddStaminaPoints(-(15-(GetSkillLevel("stealth")/10)));
@@ -371,11 +368,6 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
 	}
     }
     eventMoveFollowers(environment(this_object()));
-    if(environment(this_player()) && base_name(environment(this_player()))) {
-	this_player()->SetProperty("LastLocation",
-	  base_name(environment(this_player())));
-    }
-
     return 1;
 }
 
@@ -764,10 +756,10 @@ string SetClass(string str) {
     return GetClass();
 }
 
-varargs mixed GetEffectiveVision(int raw_score, mixed location) {
+varargs mixed GetEffectiveVision(mixed location, int raw_score) {
     if( newbiep(this_object()) ) return VISION_CLEAR;
-    else if(raw_score && location) return living::GetEffectiveVision(raw_score,location);
-    else if(raw_score) return living::GetEffectiveVision(raw_score);
+    else if(raw_score && location) return living::GetEffectiveVision(location,raw_score);
+    else if(location) return living::GetEffectiveVision(location);
     else return living::GetEffectiveVision();
 }
 
