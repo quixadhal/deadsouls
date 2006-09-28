@@ -34,14 +34,12 @@ int ActionFunction2(){
     return 1;
 }
 
-
 static void create() {
     fishing::create();
     SetClimate("outdoors");
     SetAmbientLight(30);
     SetShort("Shore Edge");
-    SetLong("You are on the shore, at the far eastern end of town. "
-      "A road travels west into the heart of town. ");
+    SetLong("You are on the shore, at the far eastern end of town. A road travels west into the heart of town. A great sea stretches out into the eastern horizon.");
     SetExits( ([
 	"west" : "/domains/town/room/vill_road4.c",
       ]) );

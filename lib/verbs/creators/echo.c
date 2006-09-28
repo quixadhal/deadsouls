@@ -12,15 +12,12 @@
 #include <message_class.h>
 #include "include/echo.h"
 
-inherit LIB_DAEMON;
+inherit LIB_VERB;
 
 static void create() {
-    daemon::create();
-    SetNoClean(1);
-    parse_init();
-    parse_add_rule("echo", "");
-    parse_add_rule("echo", "to LIV STR");
-    parse_add_rule("echo", "STR");
+    verb::create();
+    SetVerb("echo");
+    SetRules("","to LIV STR","STR");
 }
 
 int livings_are_remote() { return 1; }

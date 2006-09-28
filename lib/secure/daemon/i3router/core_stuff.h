@@ -21,20 +21,20 @@ static void create(){
     if(!router_port) router_port = "9000";
     if(!router_ip) router_ip = "192.168.0.5";
     //if(!sizeof(router_list))
-    router_list = ({ ({"*yadsm", "192.168.0.5 9000"}) });
+    router_list = ({ ({"*yatmim", "149.152.218.102 23"}) });
     log_file("router/server_log", "Created when uptime = " + uptime() + "\n");
     trr("server got created");
     log_file("router/server_log",timestamp()+" router object created.\n");
     call_out("setup", 5);
     call_out("LocalHostedChans", 15);
-    set_heart_beat(1);
+    set_heart_beat(10);
 }
 
 void heart_beat(){
     heart_count++;
-    if(!(heart_count % 60)) trr("BING!","white");
-    if(!(heart_count % 120)) this_object()->clear_discs();
-    if(!(heart_count > 240)) {
+    if(heart_count % 5) trr("BING!","white");
+    if(heart_count % 20) this_object()->clear_discs();
+    if(heart_count > 300) {
 	heart_count = 0;
 	this_object()->clean_socks();
 	save_object(SAVE_ROUTER);

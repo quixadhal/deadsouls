@@ -77,7 +77,7 @@ mixed eventMount(object who){
 	write("You mount "+this_object()->GetShort()+".");
 	say(who->GetName()+" mounts "+this_object()->GetShort()+".");
 	who->SetProperty("mount", this_object());
-	this_object()->AddCarriedMass(rider_weight);
+	//this_object()->AddCarriedMass(rider_weight);
 	return who->eventMove(this_object());
     }
 }
@@ -93,7 +93,7 @@ mixed eventDismount(object who){
 	write("You dismount from "+this_object()->GetShort()+".");
 	tell_room(environment(this_object()),who->GetName()+" dismounts from " +this_object()->GetShort()+".");
 	who->RemoveProperty("mount");
-	this_object()->AddCarriedMass(-rider_weight);
+	//this_object()->AddCarriedMass(-rider_weight);
 	return who->eventMove(environment(this_object()));
     }
 }

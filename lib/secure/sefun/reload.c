@@ -39,7 +39,8 @@ varargs mixed reload(mixed ob, int recursive) {
     else args = "-a "; 
 
     if(!grepp(unguarded( (: read_file(filename) :) ),"void init()" || !grepp(unguarded( (: read_file(filename) :) ),"::init()"))) { 
-	write("This object lacks a working init function. Please run initfix on it as soon as possible.");
+	if(!strsrch(filename,"/lib/") || ob->isDummy() || inherits(LIB_DAEMON,ob)) true(); 
+	else write("This object lacks a working init function. Please run initfix on it as soon as possible.");
     }
 
     if(inherits(LIB_ROOM,ob)){
@@ -80,8 +81,8 @@ varargs mixed reload(mixed ob, int recursive) {
     if(ob && !inherits(LIB_DOOR, ob) && !stringed && env) {
 	unguarded( (: next = clone_object(filename) :) ); 
 	ob->eventMove(ROOM_FURNACE);
-	next->eventMove(env);
+	if(next && env) next->eventMove(env);
     }
-    write("Reload complete.");
+    write("Done.");
     return 1;
 }

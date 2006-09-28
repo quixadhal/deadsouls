@@ -15,11 +15,11 @@ static void create() {
 	({"store","shop","place"}) : "This is the local store.",
 	({ "sign" ,"sign on the wall" }): "A sign on the wall, meant for reading.",
       ]));
-    SetRead("sign", (: read_sign :) );
     SetInventory(([
-	"/domains/town/obj/bbucket" :1,
-	"/domains/town/npc/otik" :1
-      ]) );
+	"/domains/town/obj/bbucket" : 1,
+	"/domains/town/npc/otik" : 1,
+      ]));
+    SetRead("sign", (: read_sign :) );
     SetExits( ([
 	"south" : "/domains/town/room/vill_road2",
 	"north" : "/domains/town/room/shop2",

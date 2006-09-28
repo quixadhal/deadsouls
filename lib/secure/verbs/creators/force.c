@@ -13,7 +13,10 @@ static void create() {
       "your bidding.");
 }
 
-mixed can_force_liv_to_str(string str) { return 1; }
+mixed can_force_liv_to_str(string str) { 
+    if(!creatorp(this_player())) return 0;
+    return 1;
+}
 
 mixed can_force_liv_str(string str) {
     return can_force_liv_to_str(str);
@@ -29,6 +32,7 @@ if(!who) return 0;
 	tell_room(environment(who), who->GetName()+" dests "+objective(who)+
 	  "self while trying to pull a foolish joke on "+target->GetName()+".", who);
         tell_player(target,who->GetName()+" tried to force you to "+cmd);
+        tell_player(target,who->GetName()+" has been dested, instead.");
 	who->eventDestruct();
 	return 1;
     }

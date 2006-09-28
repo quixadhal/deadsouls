@@ -15,10 +15,8 @@ inherit LIB_VERB;
 
 static void create() {
     verb::create();
-    SetNoClean(1);
-    parse_init();
-    parse_add_rule("mail", "");
-    parse_add_rule("mail", "STR");
+    SetVerb("mail");
+    SetRules("","STR");
 }
 
 mixed can_mail() { return can_mail_str(""); }

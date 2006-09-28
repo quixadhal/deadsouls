@@ -47,13 +47,13 @@ static void create() {
 }
 
 varargs int CanListen(object who, string canal){
-    if(RESTRICTED_INTERMUD == 0 || !RESTRICTED_INTERMUD) return 1;
+    if(!RESTRICTED_INTERMUD) return 1;
     if(canal && member_array(canal, local_chans) != -1) return 1;
     else return imud_privp(who);
 } 
 
 varargs int CanTalk(object who, string canal){
-    if(RESTRICTED_INTERMUD == 0 || !RESTRICTED_INTERMUD) return 1;
+    if(!RESTRICTED_INTERMUD) return 1;
     if(canal && member_array(canal, local_chans) != -1) return 1;
     else return imud_privp(who);
 }
@@ -160,20 +160,6 @@ int cmdChannel(string verb, string str) {
     if(grepp(verb, "emote")) varb = replace_string(verb,"emote","");
     else if(last(verb, 1) == ":") varb = replace_string(verb,":","");
     else varb = verb;
-
-    //    if( verb == "hist" ) {
-    //tc("str: "+str);
-    //	if( !Channels[str] && str != "tell") return 0;
-    //        if(str == "tell"){
-    //        load_object("/secure/cmds/players/tell")->cmd("hist");
-    //        return 1;
-    //        }
-    //	if( member_array(this_player(), Channels[str]) != -1 ) {
-    //       cmdLast(str);
-    //	return 1;
-    //        }
-    //        return 0;
-    //    }
 
     if( verb == "list" ) {
 	string *who;
@@ -393,7 +379,6 @@ int cmdChannel(string verb, string str) {
 	      MSG_ERROR);
 	    return 1;
 	}
-	//this_player()->SetBlocked(verb);
 	this_player()->eventPrint("Turn this channel on to talk on it.", MSG_ERROR);
 	return 1;
     }
@@ -408,13 +393,15 @@ int cmdChannel(string verb, string str) {
     if(!grepp(str,"$N") && emote) str = "$N "+str;
 
     eventSendChannel(name, verb, str, emote, target, target_msg);
-    if( ob ) {
-	SERVICES_D->eventSendChannel(name, rc, str, emote, target,
-	  target_msg);
-    }
-    else {
-	SERVICES_D->eventSendChannel(name, rc, str, emote, targetkey,
-	  target_msg);          
+    if(member_array(GetRemoteChannel(verb),INTERMUD_D->GetChannels()) != -1){
+	if( ob ) {
+	    SERVICES_D->eventSendChannel(name, rc, str, emote, target,
+	      target_msg);
+	}
+	else {
+	    SERVICES_D->eventSendChannel(name, rc, str, emote, targetkey,
+	      target_msg);          
+	}
     }
     return 1;
 }
@@ -425,11 +412,6 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
     string pchan,pmsg;
     pchan=ch;
     if(!channeler) channeler = this_player();
-
-    //tc("ch: "+ch);
-    //tc("who: "+who);
-    //if(channeler) tc("channeler: "+identify(channeler));
-    //if(channeler) tc("channeler && !CanTalk(channeler, ch): "+(channeler && !CanTalk(channeler, ch)));
 
     if(this_player() && this_player() != channeler) channeler = this_player();
 
@@ -442,23 +424,18 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	emote = 0;
     } 
     if(channeler){
-	//tc("WTF","red");
-	//tc("can talk: "+CanTalk(channeler, ch));
 	if(!CanTalk(channeler, ch) && member_array(ch, syschans) == -1){
 
-	    //tc("boo");
 	    return;
 	}
     }
-    //else tc("ya");
 
     if( file_name(previous_object()) == SERVICES_D) {
 	ch = GetLocalChannel(ch);
 	if( emote && sizeof(who)) msg = replace_string(msg, "$N", who);
     }
     else if( origin() != ORIGIN_LOCAL && previous_object() != master() &&
-      file_name(previous_object()) != PARTY_D && ch != "death" &&
-      ch != "connections" ) {
+      file_name(previous_object()) != PARTY_D && member_array(ch, syschans) == -1){
 	return;
     }
     if(!Channels[ch] && file_name(previous_object()) != SERVICES_D){
@@ -512,7 +489,6 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	}
 	obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
 	tmp = this_msg + msg;
-	//ch = GetLocalChannel(ch);
 	eventAddLast(ch, tmp, pchan, msg);
 	foreach(object listener in obs) {
 	    int ignore;
@@ -551,13 +527,14 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	string tmsg;
 
 	tmsg = who + " ";
+
 	switch(ch)
 	{
 	case "cre":
 	    tmsg += "%^GREEN%^";
 	    break;
 	case "connections":
-	    tmsg = "%^WHITE%^";
+	    tmsg += "%^WHITE%^";
 	    break;
 	case "death":
 	    tmsg += "%^RED%^";
@@ -583,11 +560,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	default:
 	    tmsg += "%^BLUE%^";
 	}
-
 	tmsg += "<"+ch+">%^RESET%^ " + msg;
 	pmsg = msg;
 	msg = tmsg;
-	//ch = GetLocalChannel(ch);
 	eventAddLast(ch, msg, pchan, pmsg, who);
 	obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
 	foreach(object ob in obs){
@@ -604,6 +579,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 		if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 	    }
 	    if(!ignore && CanListen(ob,ch)) ob->eventPrint(msg, MSG_CHAN);
+
 	    ignore = 0;
 	    suspect ="";
 	    site = "";

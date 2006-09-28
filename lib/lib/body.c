@@ -24,6 +24,7 @@ inherit LIB_UNDEAD;
 inherit LIB_CRAWL;
 inherit LIB_FLY;
 inherit LIB_MOUNT;
+inherit LIB_MASS;
 
 #define COLLAPSE_AT            10.0
 
@@ -40,7 +41,7 @@ private static class MagicProtection *Protection;
 static private int HeartModifier = 0;
 private static string PoliticalParty, BodyComposition;
 private static int Pacifist, rifleshot_wounds, gunshot_wounds, globalint1;
-private static int Mass, Size, Respiration, BodyType;
+private static int Size, Respiration, BodyType;
 string *ExtraChannels;
 mixed Agent;
 
@@ -75,8 +76,7 @@ varargs mixed eventBuy(mixed arg1, mixed arg2, mixed arg3){
 
 int GetMass(){
     int base_mass = RACES_D->GetRaceMass(GetRace());
-    if(Mass) return Mass;
-    return base_mass;
+    return base_mass + mass::GetMass();
 }
 
 int GetSize(){
@@ -98,7 +98,7 @@ int GetBodyType(){
 }
 
 int SetMass(int i){
-    return Mass = i;
+    return mass::SetMass(i);
 }
 
 int SetSize(int i){
@@ -212,8 +212,12 @@ static void heart_beat() {
 	}
     }
     eventCheckHealing();
-    if(!stringp(hobbled(this_player()))) eventFall();
-    if(this_object()->GetPosition() == POSITION_FLYING && !this_object()->CanFly()) eventFall();
+    if(!stringp(hobbled(this_player()))) {
+	eventFall();
+    }
+    if(this_object()->GetPosition() == POSITION_FLYING && !this_object()->CanFly()){
+	eventFall();
+    }
 }
 
 void eventReconnect() {

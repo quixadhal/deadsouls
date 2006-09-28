@@ -9,10 +9,10 @@
 </head>
 <body>
 <big style="font-family: courier new,courier,monospace;"><big><span
- style="font-weight: bold;">Dead Souls Admin FAQ, v3.5</span></big><br>
+ style="font-weight: bold;">Dead Souls Admin FAQ</span></big><br>
 <br>
 Written by Cratylus @ Dead Souls, October 2005<br>
-Updated 16 September 2006<br>
+Updated 27 September 2006<br>
 <span style="font-weight: bold; text-decoration: underline;"><br>
 </span>Note: commands are displayed in boldface, like this: <span
  style="font-weight: bold;">ls -a</span><span
@@ -302,6 +302,14 @@ but I'm trying and can't.</a><br>
 </big><big style="font-family: courier new,courier,monospace;"><a
  href="#102">102 Hey you skipped question 101!</a><br>
 <br>
+<a href="#103">103 </a></big><big
+ style="font-family: courier new,courier,monospace;"><a href="#103">You
+are not taking my bug report very seriously.</a><br>
+<br>
+<a href="#104">104 </a></big><a href="#104"><big
+ style="font-family: courier new,courier,monospace;">Dude. Just answer
+my question. It's just one question, ffs.</big></a><br>
+<big style="font-family: courier new,courier,monospace;"><br>
 </big><big style="font-family: courier new,courier,monospace;"><br>
 <span style="font-weight: bold; text-decoration: underline;"><a name="0"></a>How
 do I start?</span><br>
@@ -320,6 +328,11 @@ the administrator's guide, by typing these commands:<br>
 <span style="font-weight: bold;">read chapter 2 in guide</span><br>
 <br>
 etc.<br>
+<br>
+You should also become familiar with the <a
+ href="http://dead-souls.net/ds-creator-faq.html">Creator FAQ</a>, in<br>
+particular <a href="http://dead-souls.net/ds-creator-faq.html#1.1">the
+section on getting questions answered</a>.<br>
 <br>
 <br style="font-weight: bold; text-decoration: underline;">
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
@@ -485,7 +498,7 @@ intergossip channel</span><br style="color: rgb(255, 0, 0);">
 <span style="color: rgb(255, 0, 0);">entirely.</span><br>
 <br>
 The lpuni channel is a mix of<br>
-chat and official <a href="http://lpuni.muddomain.net">LPUniversity</a>
+chat and official <a href="lpu_faq.html">LPUniversity</a>
 business. As of June 5 2006,<br>
 Blackdawn mud is bridging that channel, so it is accessible<br>
 from both i3 routers.<br>
@@ -527,6 +540,12 @@ be misbehaving. If that happens, post a question on<br>
 the lpmuds intermud topic: <a href="http://lpmuds.net/forum/">http://lpmuds.net/forum/</a><br>
 <br>
 Please make sure you post on the Intermud topic.<br>
+<br>
+It may also be that you have been earmuffed by <br>
+other people, because you've annoyed them. You<br>
+can avoid this by becoming familiar with the<br>
+<a href="#99">proper way to find answers</a>.<br>
+<br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
  style="font-family: courier new,courier,monospace;"><span
@@ -745,6 +764,9 @@ changes on the lib.<br>
 change the colors of the channel messages?</span><br>
 <br>
 The colors are specified in /secure/daemon/chat.c<br>
+<br>
+You will need to replace the color specification in more<br>
+than one spot in that file.<br>
 <br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
@@ -1912,7 +1934,8 @@ the <span style="font-weight: bold;">grant</span> command, as well as <span
 Security bugs usually aren't about the security model itself<br>
 being weak, but rather careless code (generally from me). If<br>
 you find such a bug, please let me know right away so I<br>
-can fix it and share the information with everyone.<br>
+can fix it. You will receive credit for the discovery on the<br>
+hotfix page.<br>
 </big><big style="font-family: courier new,courier,monospace;"><br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
@@ -2741,7 +2764,8 @@ being 100% grammatically correct in its parsing system.<br>
 <span style="font-weight: bold;">However...</span><br>
 <br>
 If you're willing to make compromises with grammar, it can be done to<br>
-a certain extent. For example, If you make "mein", "meine", "meines",
+a certain extent. For example, If you make "mein", "meiner", "meine",
+"meines",
 "meinen",<br>
 and "meinem" all applicable to all possessive situations, then it can
 work fine.<br>
@@ -2905,8 +2929,7 @@ be concerned with the licensing.</span><br
  style="font-weight: bold; text-decoration: underline;">Good heavens!
 All I wanted to do was change combat, and it is so complicated!</span><br>
 <br>
-This is somewhat related to <a
- href="file:///home/sanchez/ds/lib/www/ds-admin-faq.html#72">question 72</a>,
+This is somewhat related to <a href="ds-admin-faq.html#72">question 72</a>,
 "Will changing XYZ be hard?". Some<br>
 folks have super-specific ideas about how their mudlib should look,
 and, for example,<br>
@@ -2955,14 +2978,13 @@ inherently wrong with editing an .o file.<br>
 <br>
 &nbsp;&nbsp;&nbsp; Similarly, a call_out() here or there isn't wrong,
 and in fact is<br>
-the only way to do certain things elegantly.<br>
+the only way to do certain things elegantly (or at all).<br>
 <br>
 &nbsp;&nbsp;&nbsp; The reason for the stern warnings is that these, and
 other subjects,<br>
 involve judgment calls that a novice is not in a position to make. Are<br>
 you 100% sure that windows editor won't add dos formatting? Can you<br>
-be certain that your call_out won't bring the mud to its knees <br>
-if mishandled?<br>
+be certain that your call_out won't bring the mud to its knees?<br>
 <br>
 &nbsp;&nbsp;&nbsp; Expert coders and admins can determine their risk
 level based on<br>
@@ -3083,7 +3105,9 @@ documentation is that folks can get the impression there's<br>
 an example of every test case. As with any coding (programming)<br>
 environment, you'll need to put in a lot of trial and<br>
 error to learn. If it doesn't work, and it's not documented,<br>
-tell us what you did, where you looked, and what you expected.<br>
+go to the <a href="http://lpmuds.net/forum/">Dead Souls forum</a>,
+tell us what you did, where you <br>
+looked, and what you expected.<br>
 <br>
 <br>
 <a name="102"></a><span
@@ -3093,6 +3117,155 @@ question 101!</span><br>
 Yeah I goofed the numbers and now people are using #101 for<br>
 something else. Oh well.<br>
 <br>
+<br>
+<a name="103"></a><span
+ style="font-weight: bold; text-decoration: underline;">You are not
+taking my bug report very seriously.</span><br>
+<br>
+On the contrary. I am fanatically dedicated to making and keeping<br>
+Dead Souls the very best LP lib out there. As you spend more time<br>
+getting acquainted with the DS community and how things work,<br>
+you will see that I am deadly serious about bugs and they<br>
+usually get addressed quickly, if they prevent functionality.<br>
+At a minimum, legitimate bugs end up on my .plan (which you<br>
+can see by <a href="http://dead-souls.net/ds-admin-faq.html#1">logging
+on to the demo mud</a> and typing: <span style="font-weight: bold;">finger
+cratylus</span>).<br>
+<br>
+I know DS2 has bugs. I'm not under the illusion it's perfect,<br>
+or <a href="http://dead-souls.net/ds-admin-faq.html#55">that I'm a
+coding god</a>.<br>
+<br>
+However, I *do* get a lot of reports, and I have to prioritize<br>
+them. DS2 doesn't put food on the table for my family,<br>
+or keep the rain off our heads, so you'll need to keep in mind<br>
+that, as special and wonderful a person as you are, your<br>
+coding confusion is sadly not my personal emergency. <br>
+<br>
+Whether it's a critical security flaw or a typo in a<br>
+file's header, I can promise you I *will* address your problem, <br>
+unless another member of the community gets to it first. You <br>
+may have to just be patient.<br>
+<br>
+Another reason you may feel I'm not addressing your problem<br>
+is that you may not actually have a problem. Specifically,<br>
+if you are a new admin, and something doesn't work the way<br>
+you think it should, I advise you not to immediately<br>
+regard it as a bug. It may well *be* a bug, but assuming it<br>
+is so is not helpful. Consider the following scenarios:<br>
+<br>
+<span style="text-decoration: underline;">Scenario 1a:</span><br>
+Noobulator@LeetFooMUD &lt;ds&gt; BUG!! I can't see what's in my toy
+chest!!1!<br>
+Cratylus@Dead Souls Demo &lt;ds&gt; k. thx.<br>
+<br>
+<span style="text-decoration: underline;">Scenario 1b:</span><br>
+</big><big style="font-family: courier new,courier,monospace;">Noobulator@LeetFooMUD
+&lt;ds&gt; I type "l chest" but I can't see what's in there.<br>
+</big><big style="font-family: courier new,courier,monospace;">Cratylus@Dead
+Souls Demo &lt;ds&gt; try: look in chest<br>
+<br>
+Another common source of "bug reports" is what can charitably<br>
+be called operator error. For example:<br>
+<br>
+<span style="text-decoration: underline;">Scenario 2:</span><br>
+</big><big style="font-family: courier new,courier,monospace;">Noobulator@LeetFooMUD
+&lt;ds&gt; lol the schoolhouse is broken lol<br>
+</big><big style="font-family: courier new,courier,monospace;">Cratylus@Dead
+Souls Demo &lt;ds&gt; works for me<br>
+</big><big style="font-family: courier new,courier,monospace;">Noobulator@LeetFooMUD
+&lt;ds&gt; well, it's bugged. I get a million errors when I enter<br>
+</big><big style="font-family: courier new,courier,monospace;">Cratylus@Dead
+Souls Demo &lt;ds&gt; i can't reproduce the problem on my test muds.<br>
+<br>
+Ususally in such a scenario, it turns out that the person<br>
+was *sure* they didn't change anything...and later remember <br>
+they just took out this one line they didn't like from the<br>
+code. Or perhaps they removed the "dwarf" race, and so the<br>
+schoolhouse can't load because it has a dwarf npc in it. Or<br>
+maybe they....etc etc etc.<br>
+<br>
+If you report a bug, and you get something like this from me:<br>
+<br>
+"I can't reproduce your problem."<br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
+It means I tried to get the same results, and couldn't.<br>
+You can interpret that as meaning that you've either<br>
+caused the problem yourself, or haven't given me<br>
+enough information to be able to test what you're<br>
+talking about.<br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
+If you don't elaborate further, and you don't post your code and<br>
+error messages on the forum, then I'll assume you're going<br>
+to track down your coding mistake on your own.<br>
+<br>
+This doesn't mean I don't like you, or that I think you're<br>
+a loser, or that I don't care about bugs. It means I can't do<br>
+anything useful with the information you've given me. If<br>
+you can provide me with enough information so that I<br>
+can reproduce your problem, then I can work on fixing it.<br>
+Otherwise, what can I do?<br>
+<br>
+I would also ask you to be as open-minded as you would<br>
+like me to be. It isn't easy for me to be nice and polite...<br>
+I've actually a rather abrasive personality by default. If<br>
+I don't know you and I'm being polite to you, the chances are <br>
+that I'm really making an effort. The chances that you're<br>
+asking me something I've never heard, or reporting something<br>
+I'm unaware of, are small, if you are a new admin. If my<br>
+response is not to your liking (for example "check the Creator FAQ",<br>
+or "read the Player's Handbook"), getting hostile and defensive<br>
+with me won't help anything. Given how long I've been working<br>
+on this code, it's very likely that I've given you<br>
+extremely good advice, out of a genuine desire to have you succeed.<br>
+If you react in an adversarial manner, you may wind up<br>
+missing the technical usefulness of what I've said, and<br>
+discourage me from responding promptly to you in the future.<br>
+<br>
+And if it happens that I *am* wrong, which occurs frequently<br>
+enough, then simply following my instructions and explaining to<br>
+me how they didn't work is a perfect way of showing me my mistake.<br>
+<br>
+<br>
+<a name="104"></a><span
+ style="font-weight: bold; text-decoration: underline;">Dude. Just
+answer my question. It's just one question, ffs.</span><br>
+<br>
+If there's one thing that fills me with dread it's the<br>
+prospect of having to RTFM for software I'm totally clueless<br>
+about. Technical people often are terrible docwriters, and it<br>
+can be a real challenge to tease out the information you need.<br>
+<br>
+In fact, sometimes it's necessary to understand what's in a<br>
+manual before you can read it, because of the level of complexity.<br>
+<br>
+So I sympathize with you. Looking at a pile of documentation<br>
+99% of which you don't understand is daunting, and I truly<br>
+appreciate that fact, because I've been there.<br>
+<br>
+So I totally grok when you say "Look, please just tell me how<br>
+to eventNarfle the garthak(). Ok?" I feel it, man. I get you.<br>
+<br>
+What I want you to understand is that when I tell you to RTFM,<br>
+I'm *not* giving you the brush-off because I like it. I'm<br>
+doing it because to you it's one little question. To me, it's<br>
+Creator FAQ #X, which I've answered 24 times before, and for<br>
+which I sat down and wrote out an excruciatingly detailed<br>
+explanation. <br>
+<br>
+Take a look at this FAQ, and the others. There are literally<br>
+hundreds of entries, all of them written by me, in a way as<br>
+clear as I could make it. Take a look at the dozens of chapters<br>
+in the Admin Guide, Player's Handbook, and Creator's Manual.<br>
+That stuff didn't write itself.<br>
+<br>
+I didn't go through the laborious process of all that doc<br>
+work so that I could then do it over again every time someone<br>
+doesn't feel like doing a text search on the FAQ for eventNarfle.<br>
+<br>
+I'm not saying I'm too good to waste my time on you. I'm saying<br>
+I *HAVE* spent the time, I *did* make the effort, and I need<br>
+you to make just a little effort of your own as well.<br>
 <br style="font-family: courier new,courier,monospace;">
 </big><br style="font-family: courier new,courier,monospace;">
 <big style="font-family: courier new,courier,monospace;">-

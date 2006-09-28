@@ -89,7 +89,7 @@ int eventBefriend(object who){
     if(!CanBefriend(who)){
 	write("You fail to befriend "+this_object()->GetName()+".");
 	say(who->GetName()+" fails to befriend "+this_object()->GetName()+
-	  ". "+nominative(who)+" looks very silly!");
+	  ". "+capitalize(nominative(who))+" looks very silly!");
 	return 1;
     }
     write("You befriend "+this_object()->GetName()+".");

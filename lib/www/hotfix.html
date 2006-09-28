@@ -58,9 +58,33 @@ same room as the target, and you encre/decre them, they can gain access
 to admintool functions. Replace /secure/cmds/admins/admintool.c with <a
  href="http://dead-souls.net/code/fixes/admintool.c">this file</a>,
 then <span style="font-weight: bold;">update
-/secure/cmds/admins/admintool.c</span><br>
+/secure/cmds/admins/admintool.c </span>(thanks to Zaphod @ HodgePodge
+for the report)</li>
+  <li>A bug in verbs allows players to use the force command. This is a
+problem. The workaround is to replace copy <a
+ href="http://dead-souls.net/code/fixes/force.c">this file</a> over
+/secure/verbs/creators/force.c , then type: <span
+ style="font-weight: bold;">update /secure/verbs/creators/force.c</span>
+(thanks to Zaroth @ Divided Realms for the report)</li>
+  <li>If you created a new local channel (call
+me-&gt;AddChannel("blahfoo")) its data is being sent to the router. To
+stop this, copy <a href="http://dead-souls.net/code/fixes/chat.c">this
+file</a> over /secure/daemon/chat.c then type: <span
+ style="font-weight: bold;">update /secure/daemon/chat.c</span><br>
   </li>
 </ul>
+<br>
+<p>For Dead Souls <span style="color: red; font-weight: bold;">2.1.1</span>,
+the
+following hotfixes are available:
+</p>
+<ul style="font-weight: bold;">
+  <li><span style="font-weight: normal;"><span
+ style="font-weight: bold;">None.</span> 2.1.1 contains the latest
+available hotfixes.</span><br>
+  </li>
+</ul>
+<br>
 <br>
 <br>
 <div id="footer">

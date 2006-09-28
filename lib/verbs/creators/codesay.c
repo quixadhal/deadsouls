@@ -14,12 +14,8 @@ inherit LIB_VERB;
 
 static void create() {
     verb::create();
-    SetNoClean(1);
-    parse_init();
-    /* error conditions */
-    parse_add_rule("codesay", "");
-    /* actual verbs */
-    parse_add_rule("codesay", "STR");
+    SetVerb("codesay");
+    SetRules("STR");
 }
 
 mixed can_codesay() { return "Say what?"; }
