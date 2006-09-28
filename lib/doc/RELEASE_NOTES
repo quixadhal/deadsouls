@@ -139,6 +139,23 @@
 - Cleaned up strange formatting error in old sefun docs.
 - Added sefun: query_local_functions.
 
+---- 2.1.1 ---
+- Fixed a bug in chat.c that sent comms on new local channels to
+  the router (!!).
+- Fixed "return" command bug and various travel message bugs
+  in LIB_CREATOR and LIB_PLAYER.
+- Eliminated savefile data leak in admins on shutdown.
+- Fixed overly aggressive reaper that killed shadows.
+- Admintool security flaw has been removed by removing encre and
+  decre from its menu.
+- It's no longer possible to screw up admintool by removing too
+  many currencies at once.
+- Updated verbs/commands: reload, gauge.
+- "Can't drop things in a no-teleport room" bug fixed.
+- Default channel removed: intergossip.
+- Default channel added: dchat.
+- Players can no longer use the force command.
+
 ---- 2.1 ---
 - Fixed relative include problem in QCS.
 - Fixed memcheck.

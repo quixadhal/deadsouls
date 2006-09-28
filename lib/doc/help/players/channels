@@ -23,6 +23,7 @@ The following are intermud channels:
 ds - Dead Souls mud code talk
 ds_test - testing testing 1, 2, 3, etc
 intergossip - general offtopic stuff
+dchat - friendly offtopic stuff
 lpuni - LPUniversity discussion
 intercre - general technical chatter
 
@@ -47,9 +48,13 @@ local rules are in place, that's what must be obeyed.
 
 Some tips:
 ---------
-To turn on/off a channel, type its name by itself, like this: newbie
+To turn on/off a channel, type its name by itself, like this: 
+newbie
 
-To know who is listening to a channel: list newbie
+To know who is listening to a channel: 
+list newbie
+list german@dead souls demo
 
-To see a brief history of channel messages: hist newbie
+To see a brief history of channel messages: 
+hist newbie
 
