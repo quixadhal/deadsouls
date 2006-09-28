@@ -47,13 +47,13 @@ static void create() {
 }
 
 varargs int CanListen(object who, string canal){
-    if(RESTRICTED_INTERMUD == 0 || !RESTRICTED_INTERMUD) return 1;
+    if(!RESTRICTED_INTERMUD) return 1;
     if(canal && member_array(canal, local_chans) != -1) return 1;
     else return imud_privp(who);
 } 
 
 varargs int CanTalk(object who, string canal){
-    if(RESTRICTED_INTERMUD == 0 || !RESTRICTED_INTERMUD) return 1;
+    if(!RESTRICTED_INTERMUD) return 1;
     if(canal && member_array(canal, local_chans) != -1) return 1;
     else return imud_privp(who);
 }
@@ -393,13 +393,15 @@ int cmdChannel(string verb, string str) {
     if(!grepp(str,"$N") && emote) str = "$N "+str;
 
     eventSendChannel(name, verb, str, emote, target, target_msg);
-    if( ob ) {
-	SERVICES_D->eventSendChannel(name, rc, str, emote, target,
-	  target_msg);
-    }
-    else {
-	SERVICES_D->eventSendChannel(name, rc, str, emote, targetkey,
-	  target_msg);          
+    if(member_array(GetRemoteChannel(verb),INTERMUD_D->GetChannels()) != -1){
+	if( ob ) {
+	    SERVICES_D->eventSendChannel(name, rc, str, emote, target,
+	      target_msg);
+	}
+	else {
+	    SERVICES_D->eventSendChannel(name, rc, str, emote, targetkey,
+	      target_msg);          
+	}
     }
     return 1;
 }
