@@ -9,7 +9,7 @@ string *all_files = ({});
 int ftilt, dtilt;
 string globaltemp;
 
-mixed Report();
+static mixed Report();
 
 static private void validate() {
     if(!this_player()) return 0;
@@ -71,10 +71,10 @@ static mixed Report(){
     rm("/secure/tmp/dirs.txt");
     rm("/secure/tmp/files.txt");
     foreach(string dir in all_dirs){
-	write_file("/secure/tmp/dirs.txt",dir+"\n",1);
+	write_file("/secure/tmp/dirs.txt",dir+"\n");
     }
     foreach(string dir in all_files){
-	write_file("/secure/tmp/files.txt",dir+"\n",1);
+	write_file("/secure/tmp/files.txt",dir+"\n");
     }
     return 1;
 }

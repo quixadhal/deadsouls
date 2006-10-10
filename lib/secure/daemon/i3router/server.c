@@ -18,7 +18,7 @@
 #define SEND_WHOLE_MUDLIST
 // SEND_WHOLE_CHANLIST makes it act like the official I3 server instead of like the I3 specs
 #define SEND_WHOLE_CHANLIST
-inherit LIB_CLEAN;
+inherit LIB_DAEMON;
 
 static void validate(){
     if( previous_object() != CMD_ROUTER &&
@@ -281,5 +281,5 @@ void clear_discs(){
 
 int eventDestruct(){
     save_object(SAVE_ROUTER);
-    clean::eventDestruct();
+    daemon::eventDestruct();
 }
