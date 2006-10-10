@@ -1,4 +1,21 @@
----- 2.1r48 (unreleased) ---
+---- 2.1r50 (unreleased) ---
+- mudos.cfg now has a time to swap value of 0, to disable
+  swapping. I've seen now more than one driver crash due to
+  a swap bug, and I'm not sure what the problem is, so until I do
+  know, swapping will be disabled by default.
+- Added RELOAD_D for objects that need to somehow get
+  themselves reloaded without incurring recursion problems.
+- ROUTER_D now resets every 25 hours or so.
+- The banish command now has an "-s" option to banish offensive
+  substrings from names.
+- Corrected problem in addraces command that distorted which races
+  could be used by players.
+- Added commands: files, doctool, showfuns, createfix, findfun, 
+  pk, find.
+- Modified make_workroom so that newbie creators who hose their
+  workroom can "restore workroom" without first having backed it up.
+- Fixed bug in snoop command that caused bizarre situation when
+  snooping yourself using your capitalized name.
 - "X looks around" and "checks possessions" messages are now suppressed
   in meeting rooms.
 - Fixed reporting of object mass so that both the mass of the container

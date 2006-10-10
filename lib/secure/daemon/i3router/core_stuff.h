@@ -1,5 +1,6 @@
 // This file written completely by Tim Johnson (Tim@TimMUD)
 #include <network.h>
+#include <daemons.h>
 #include <save.h>
 int heart_count = 0;
 
@@ -43,6 +44,7 @@ void heart_beat(){
 
 static void setup(){
     trr("setup got called");
+    RELOAD_D->eventReload(this_object(),90000+random(10000));
     log_file("router/server_log",timestamp()+" setup has been called.\n");
     if( file_size( SAVE_ROUTER __SAVE_EXTENSION__ ) > 0 )
 	unguarded( (: restore_object, SAVE_ROUTER, 1 :) );

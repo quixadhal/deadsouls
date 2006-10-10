@@ -119,6 +119,10 @@ mixed cmd(string str) {
 	      "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
 	    return "Tell whom what?";
 	}
+        //if(ob->GetProperty("afk")) {
+        //   message("my_action", (string)ob->GetName()+
+        //      " is afk and cannot receive your message.", this_player()); 
+        //}
 	else this_player()->eventSpeak(ob, TALK_PRIVATE, msg);
 	ob->SetProperty("reply", (string)this_player()->GetKeyName());
 	if(!archp(ob) && userp(ob) && (query_idle(ob) > 60))

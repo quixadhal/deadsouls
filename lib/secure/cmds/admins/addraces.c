@@ -9,8 +9,7 @@ mixed cmd(string args) {
     foreach(string race in races){
 	string str = CFG_RACES+"/"+race;
 	if(file_exists(str)) {
-	    if(race == "human") RACES_D->AddRace(str, 1);
-	    else RACES_D->AddRace(str, 0);
+	    RACES_D->AddRace(str);
 	}
     }
     write("Done.");
