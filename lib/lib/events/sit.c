@@ -59,6 +59,7 @@ mixed direct_sit_down_word_obj() {
 
 int CanGet(object who){
     object *sitters = this_object()->GetSitters();
+    true(who);
     if(sizeof(sitters)){
 	foreach(object wer in sitters){
 	    if(!wer || environment(wer) != environment()) this_object()->eventReleaseStand(wer);

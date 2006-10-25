@@ -10,17 +10,16 @@
 
 inherit LIB_MEAL;
 
-static private int Mass, Fight;
+static private int Fight;
 static private string Food;
 
 static void create() {
     meal::create();
-    Mass = 0;
     Food = 0;
     Fight = 0;
 }
 
-int eventCatch(object who) { return 1; }
+int eventCatch(object who) { return true(who); }
 
 int SetFight(int x) { return (Fight = x); }
 
@@ -29,7 +28,3 @@ int GetFight() { return Fight; }
 string SetFood(string str) { return (Food = str); }
 
 string GetFood() { return Food; }
-
-int SetMass(int x) { return (Mass = x); }
-
-int GetMass() { return Mass; }

@@ -43,6 +43,8 @@ varargs mapping SetShake(mixed key, mixed desc) {
 varargs mixed CanShake(object who, string component) {
     mixed val;
 
+    true(who);
+
     if( !component ) {
 	component = "default";
     }
@@ -95,9 +97,11 @@ varargs mixed eventShake(object who, string component) {
 }
 
 mixed direct_shake_obj(object target) {
+    true(target);
     return CanShake(this_player());
 }
 
 mixed direct_shake_str_on_obj(string str, object target) {
+    true(target);
     return CanShake(this_player(), remove_article(lower_case(str)));
 }

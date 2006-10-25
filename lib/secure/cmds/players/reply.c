@@ -24,6 +24,7 @@ int cmd(string str) {
 	notify_fail("No current reply addressee.\n");
 	return 0;
     }
+    //tc(reply+" "+str);
     load_object("/secure/cmds/players/tell")->cmd(reply+" "+str);
     return 1;
 }

@@ -5,19 +5,19 @@ static void create();
 int inventory_accessible();
 int inventory_visible();
 
-mixed CanDivorce(object who);
-mixed CanGet(object ob);
-mixed CanMarry(object who, object to_whom);
+mixed CanDivorce();
+mixed CanGet();
+mixed CanMarry();
 
 int Setup();
 static void net_dead();
 void eventReconnect();
 void eventDescribeEnvironment(int brief);
 int eventDestruct();
-mixed eventDivorce(object who);
+mixed eventDivorce();
 mixed eventMarry(object who, object to_whom);
 int eventMove(mixed dest);
-int cmdQuit(string str);
+int cmdQuit();
 int GetAge();
 int GetBirth();
 string query_cwd();

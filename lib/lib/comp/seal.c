@@ -11,9 +11,9 @@
 inherit LIB_CLOSE;
 inherit LIB_LOCK;
 
-varargs static mixed AddSave(mixed args...) {
-    return ({});
-}
+//varargs static mixed AddSave(mixed args...) {
+//    return ({});
+//}
 
 mixed CanLock(object who, string id) {
     mixed tmp = lock::CanLock(who);
@@ -27,9 +27,10 @@ mixed CanLock(object who, string id) {
     return 1;
 }
 
-mixed CanOpen(object who) {
+varargs mixed CanOpen(object who, string id) {
     if( GetLocked() ) {
-	return "It is locked!";
+	id = "It is locked!";
+	return id;
     }
     else return close::CanOpen(who);
 }
@@ -52,12 +53,12 @@ varargs mixed eventOpen(object who, object tool) {
 }
 
 void create() {
-    string *c_save, *l_save, *a_save;
+    //string *c_save, *l_save, *a_save;
 
-    c_save = close::GetSave();
-    l_save = lock::GetSave();
-    a_save = c_save + l_save;
+    //c_save = close::GetSave();
+    //l_save = lock::GetSave();
+    //a_save = c_save + l_save;
 
-    AddSave( a_save );
+    //AddSave( a_save );
 
 }

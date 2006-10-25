@@ -80,6 +80,6 @@ mapping SetInventory(mapping mp) {
     return Inventory;
 }
 
-varargs void reset(int count) {
+varargs void reset() {
     eventLoadInventory();
 }

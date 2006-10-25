@@ -17,6 +17,7 @@ static void create() {
 }
 
 mixed CanMail(object who, string args) {
+    true(args);
     if( !interactive(who) ) return 0;
     if( GetTown() != (string)who->GetTown() )
 	return "Any mail you might have will be at your home post office.";
@@ -44,9 +45,10 @@ int CanReceive(object ob) {
     else return room::CanReceive(ob);
 }
 
-int eventReleaseObject() {
+int eventReleaseObject(object foo) {
     object ob;
 
+    true(foo);
     if( !(ob = previous_object()) ) return room::eventReleaseObject();
     if( !room::eventReleaseObject() ) return 0;
     if( (ob = present(POSTAL_ID, ob)) ) ob->eventDestruct();

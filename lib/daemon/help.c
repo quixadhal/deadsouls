@@ -439,10 +439,13 @@ static private void LoadIndices() {
       if( help = (string)RACES_D->GetHelp(topic) ) {
 	  help = "Index: %^GREEN%^" + index + "%^RESET%^\n" +
 	  "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
-	  if( file_exists(DIR_RACE_HELP + "/" + topic) )
-	      return help;
+	  return help;
       }
-      Error = "No such race exists.";
+      else if( file_exists(DIR_RACE_HELP + "/" + topic) ){
+	  help = read_file(DIR_RACE_HELP + "/" + topic);
+	  return help;
+      }
+      Error = "There is no such race.";
       return 0;
 
       case "spells": case "prayers":

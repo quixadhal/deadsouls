@@ -17,7 +17,7 @@ mixed cmd(string str) {
     int i, maxi;
     string who, msg, tmp, tmp2, machine_message, retname;
 
-    //tc("str: "+str);
+    //tc("str: "+str,"red");
 
     if(!str) return notify_fail("Syntax: <tell [who] [message]>\n");
 
@@ -69,19 +69,29 @@ mixed cmd(string str) {
 	}
 	//tc("4");
 	if(!who) {
+	    //tc("4.1");
 	    if(!mud){
+		//tc("4.2");
 		words -= ({ retname });
 		msg = implode(words," ");
 		this_player()->eventTellHist("You tried to tell "+retname+": "+
 		  "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
-		return notify_fail("Tell whom what?\n");
+		write("Tell whom what?\n");
+		return 1;
 	    }
-	    else return notify_fail(mud_name()+" is not aware of that mud.\n");
+	    else {
+		write(mud_name()+" is not aware of that mud.\n");
+		return 1;
+	    }
 	}
-	if(msg == "") return notify_fail("What do you wish to tell?\n");
+	if(msg == ""){
+	    write("What do you wish to tell?\n");
+	    return 1;
+	}
     }
     else {
 	if(!creatorp(this_player())) this_player()->AddMagicPoints(-15);
+	//tc("4.7");
 	SERVICES_D->eventSendTell(who, mud, msg);
 	return 1;
     }
@@ -119,10 +129,12 @@ mixed cmd(string str) {
 	      "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
 	    return "Tell whom what?";
 	}
-        //if(ob->GetProperty("afk")) {
-        //   message("my_action", (string)ob->GetName()+
-        //      " is afk and cannot receive your message.", this_player()); 
-        //}
+#ifdef BLOCK_TELLS_TO_AFK
+	if(ob->GetProperty("afk")) {
+	    message("my_action", (string)ob->GetName()+
+	      " is afk and cannot receive your message.", this_player()); 
+	}
+#endif
 	else this_player()->eventSpeak(ob, TALK_PRIVATE, msg);
 	ob->SetProperty("reply", (string)this_player()->GetKeyName());
 	if(!archp(ob) && userp(ob) && (query_idle(ob) > 60))

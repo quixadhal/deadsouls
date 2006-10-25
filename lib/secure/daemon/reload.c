@@ -10,30 +10,30 @@ static void create() {
 }
 
 varargs int eventReload(mixed what, int when){
-//tc("received thing","cyan");
-if(!when) when = time();
-else when += time();
-if(!what) return 0;
-if(stringp(what)){
-if(last(what,2) == ".c") what = trim(what,2);
-what = find_object(what);
-if(!what) return 0;
-}
-if(!objectp(what)) return 0;
-if(Reloadees[what]) return 0;
-Reloadees[what] = when;
+    //tc("received thing","cyan");
+    if(!when) when = time();
+    else when += time();
+    if(!what) return 0;
+    if(stringp(what)){
+	if(last(what,2) == ".c") what = trim(what,2);
+	what = find_object(what);
+	if(!what) return 0;
+    }
+    if(!objectp(what)) return 0;
+    if(Reloadees[what]) return 0;
+    Reloadees[what] = when;
 }
 
 void heart_beat(){
-foreach(mixed key, mixed val in Reloadees){
-if(time() >= val){
-map_delete(Reloadees,key);
-//tc("bink: "+identify(key));
-reload(key);
-}
-}
+    foreach(mixed key, mixed val in Reloadees){
+	if(time() >= val){
+	    map_delete(Reloadees,key);
+	    //tc("bink: "+identify(key));
+	    reload(key);
+	}
+    }
 }
 
 mapping GetReloads(){
-return copy(Reloadees);
+    return copy(Reloadees);
 }

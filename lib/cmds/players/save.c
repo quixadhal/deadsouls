@@ -8,7 +8,7 @@
 inherit LIB_DAEMON;
 
 int
-cmd(string str) {
+cmd() {
     if(this_player()->query_disable()) {
 	write("Wait a minute.");
 	return 1;

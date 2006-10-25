@@ -1,7 +1,7 @@
-int true(){
-    return 1;
+varargs int true(mixed args...){
+    if(args || !args) return 1;
 }
 
-int false(){
-    return 0;
+varargs int false(mixed args...){
+    if(args || !args) return 0;
 }

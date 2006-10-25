@@ -22,6 +22,7 @@ string ResolveObjectName(string file) {
 }
 
 mixed direct_close_obj(object target) {
+    true(target);
     if( !Door ) {
 	return 0;
     }
@@ -44,6 +45,7 @@ mixed direct_enter_into_obj() {
 }
 
 varargs mixed direct_lock_obj_with_obj(object target, object tool) {
+    true(target, tool);
     if( !Door ) {
 	return 0;
     }
@@ -53,6 +55,7 @@ varargs mixed direct_lock_obj_with_obj(object target, object tool) {
 }
 
 mixed direct_open_obj(object target) {
+    true(target);
     if( !Door ) {
 	return 0;
     }
@@ -62,10 +65,12 @@ mixed direct_open_obj(object target) {
 }
 
 mixed direct_open_obj_with_obj(object target, object ob) {
+    true(ob);
     return direct_open_obj(target);
 }
 
 mixed direct_pick_str_on_obj(string str, object ob, string id1, string id2) {
+    true(ob,id1);
     if( !Door || remove_article(lower_case(str)) != "lock" ) {
 	return 0;
     }
@@ -76,10 +81,12 @@ mixed direct_pick_str_on_obj(string str, object ob, string id1, string id2) {
 
 mixed direct_pick_str_on_obj_with_obj(string str, object ob, object w,
   string id1, string id2, string id3) {
+    true(w,id3);
     return direct_pick_str_on_obj(str, ob, id1, id2);
 }
 
 mixed direct_unlock_obj_with_obj(object target, object w) {
+    true(target,w);
     if( !Door ) {
 	return 0;
     }

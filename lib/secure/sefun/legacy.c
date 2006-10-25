@@ -38,6 +38,7 @@ void query(mixed arg1, mixed arg2){
 }
 
 varargs mixed dump_variable(mixed foo, mixed bar){
+    true(bar);
     return identify(foo);
 }
 

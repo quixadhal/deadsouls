@@ -18,13 +18,13 @@
 #include <magic_protection.h>
 #include "include/body.h"
 
-inherit LIB_PERSIST;
 inherit LIB_POSITION;
 inherit LIB_UNDEAD;
 inherit LIB_CRAWL;
 inherit LIB_FLY;
 inherit LIB_MOUNT;
-inherit LIB_MASS;
+inherit LIB_BODY_MASS;
+inherit LIB_PERSIST;
 
 #define COLLAPSE_AT            10.0
 
@@ -71,12 +71,12 @@ static void create() {
 varargs mixed eventBuy(mixed arg1, mixed arg2, mixed arg3){
     //This function will hopefully get overridden where appropriate.
     write(capitalize(this_object()->GetShort())+" isn't buying anything from you.");
-    return 1;
+    return true(arg1,arg2,arg3);
 }
 
 int GetMass(){
     int base_mass = RACES_D->GetRaceMass(GetRace());
-    return base_mass + mass::GetMass();
+    return base_mass + body_mass::GetBodyMass();
 }
 
 int GetSize(){
@@ -98,7 +98,7 @@ int GetBodyType(){
 }
 
 int SetMass(int i){
-    return mass::SetMass(i);
+    return body_mass::SetBodyMass(i);
 }
 
 int SetSize(int i){
@@ -231,7 +231,7 @@ void ParseHook(string str){
 
 /************      /lib/body.c Modal Methods Section      ************/
 
-mixed CanRemoveItem(object ob) { return 1; }
+mixed CanRemoveItem(object ob) { return true(ob); }
 
 /************      /lib/body.c Events Section      ************/
 
@@ -1494,7 +1494,7 @@ varargs int eventDie(mixed agent) {
 	else return HealthPoints;
     }
 
-    varargs int GetMaxHealthPoints(string limb) { return 0; }
+    varargs int GetMaxHealthPoints(string limb) { return false(limb); }
 
     /* int AddMagicPoints(int x)
      * int x - the number of magic points being added, may be negative
@@ -1649,7 +1649,7 @@ varargs int eventDie(mixed agent) {
 
     int GetPoison() { return Poison; }
 
-    string GetResistance(int type) { return "none"; }
+    string GetResistance(int type) { true(type); return "none"; }
 
     string GetRace() { return 0; }
 
@@ -1721,7 +1721,7 @@ varargs int eventDie(mixed agent) {
 	return hp;
     }
 
-    string GetAffectLong(object ob){
+    string GetAffectLong(){
 	object dude;
 	string ret;
 	int alclevel;

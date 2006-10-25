@@ -53,7 +53,8 @@ varargs int CanCast(object who, int level, string limb, object array targs) {
 
 varargs int eventCast(object who, int level, string limb, object array targs) {
     object target = targs[0];
-    int chance = level + random((int)who->GetSkillLevel("healing"));
+    //int chance = level + random((int)who->GetSkillLevel("healing"));
+
     if( level < (30 + random(30)) ) {
 	target->AddStaminaPoints(-(int)target->GetStaminaPoints());
 	who->AddStaminaPoints(-(int)who->GetStaminaPoints());

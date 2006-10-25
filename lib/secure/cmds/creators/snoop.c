@@ -18,8 +18,8 @@ int cmd(string str) {
     else if(!(ob=find_player(str=lower_case(str))))
 	write(str+": no such player.\n");
     else if(str == this_player()->GetKeyName()){
-        write("That would be very foolish.");
-        return 1;
+	write("That would be very foolish.");
+	return 1;
     }
     else
 	SNOOP_D->AddWatcher(this_player()->GetKeyName(), str);

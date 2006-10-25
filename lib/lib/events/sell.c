@@ -9,7 +9,7 @@
 //inherit LIB_COST;
 
 mixed CanSell(object seller) {
-    return 1;
+    return true(seller);
 }
 
 mixed direct_sell_obj_to_liv() {

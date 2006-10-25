@@ -1,4 +1,16 @@
----- 2.1r50 (unreleased) ---
+---- 2.1r51 (unreleased) ---
+- Got rid of a null error message in reply command when the target 
+  is missing.
+- Fixed problem in help daemon that prevented race help from displaying.
+- Revolvers reimplemented.
+- Driver options now output verbose warnings about inherited function
+  conflicts and unused variables.
+- Eliminated various function conflicts in lib files.
+- Isolated unused variables in /lib file function arguments with
+  true() and false().
+- true() and false() now can take any number of arguments, and always
+  return 1 and 0, respectively.
+- Fixed bug in "home" command. 
 - mudos.cfg now has a time to swap value of 0, to disable
   swapping. I've seen now more than one driver crash due to
   a swap bug, and I'm not sure what the problem is, so until I do

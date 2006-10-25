@@ -3,7 +3,6 @@
 #include <damage_types.h>
 #include <dirs.h>
 inherit LIB_STORAGE;
-inherit LIB_WEAPON;
 inherit LIB_SHOOT;
 
 private int MaxAmmo, Millimeter, AmmoSize;
@@ -19,13 +18,15 @@ private int autohit;
 private int dam;
 
 static void create(){
-    string *s_save, *w_save, *a_save;
+    string *s_save, *a_save;
+    //string *s_save, *w_save, *a_save;
 
     ::create();
 
     s_save = storage::GetSave();
-    w_save = weapon::GetSave();
-    a_save = s_save + w_save;
+    //w_save = weapon::GetSave();
+    //a_save = s_save + w_save;
+    a_save = s_save;
 
     AddSave( a_save );
     AddSave( ({ "loaded", "rounds", "shells" , "mag" , "cloned" }) );
@@ -119,8 +120,9 @@ int CanReceive(object ob){
 }
 int CanRelease(object ob){
     if(ob->GetKeyName()=="revolver cylinder"){
-	write("The cylinder is not a removable part of the pistol.");
+	//write("The cylinder is not a removable part of the pistol.");
 	return 0;
+
     }
     return 1;
 }
@@ -161,7 +163,7 @@ int eventFire(string str){
     if(this_object()->GetPistolType() == "revolver"){
 	shells++;
 	ob=present("cylinder",this_object());
-	present("round",ob)->eventDestruct();
+	if(present("round",ob)) present("round",ob)->eventDestruct();
 	new("/lib/shell")->eventMove(ob);
     }
     if(rounds <= 0) loaded=0;
@@ -307,11 +309,11 @@ int ShowRounds() { environment(this_object())->eventPrint("Pistol has: "+rounds+
     return 1;
 }
 int SetAmmo(int i) { rounds=i; return 1; }
-int GetAmmo(int i) { return rounds; }
-int GetMag(int i) { return mag; }
+int GetAmmo() { return rounds; }
+int GetMag() { return mag; }
 int SetMag(int i) { mag=i; return 1; }
 int SetLoaded(int i) { loaded=i; return 1; }
-int GetLoaded(int i) { return loaded; }
+int GetLoaded() { return loaded; }
 int SetAmmoFile(string str) { AmmoFile=str; return 1; }
 int SetAmmoType(string str) { AmmoType=str; return 1; }
 int SetPistolType(string str) { PistolType=str; return 1; }
@@ -500,8 +502,16 @@ int doRevolverUnload(string what, string num){
 	    rounds--;
 	}
     }
-    if(n2 > 0) write("You unload "+n2+" rounds from your pistol.");
-    if(n1 > 0) write("You unload "+n1+" shells from your pistol.");
+    if(n2 > 0){
+	string things = "rounds";
+	if(n2 == 1) things = "round";
+	write("You unload "+cardinal(n2)+" "+things+" from your pistol.");
+    }
+    if(n1 > 0){
+	string things = "shells";
+	if(n1 == 1) things = "shell";
+	write("You unload "+cardinal(n1)+" "+things+" from your pistol.");
+    }
     say(environment(this_object())->GetName()+" unloads some cartridges from "+
       possessive(environment(this_object()))+" revolver.");
     return 1;

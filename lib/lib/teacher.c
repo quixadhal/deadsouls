@@ -74,8 +74,8 @@ static void create() {
     Students = ([]);
     SetNoClean(1);
     SetCommandResponses( ([
-	"teach" : (: eventTeach :),
-	"teach" : (: eventTeach :),
+	"teach" : (: eventTeachLanguage :),
+	"teach" : (: eventTeachLanguage :),
 	"default" : (: eventHelp :),
 	"help" : (: eventHelp :),
       ]) );
@@ -140,6 +140,7 @@ mapping GetStudents() { return copy(Students); }
 /**** high-level events ****/
 
 int eventHelp(object who, string unused) {
+    true(unused);
     eventForce("speak I am not sure of what you are "
       "asking, " + (string)who->GetName() + ".");
     if(sizeof( GetTeachingLanguages() )){
@@ -151,7 +152,7 @@ int eventHelp(object who, string unused) {
     return 1;
 }
 
-int eventTeach(object who, string verb, string language) {
+int eventTeachLanguage(object who, string verb, string language) {
     if( !who || environment(who) != environment() ) {
 	return 0;
     }
@@ -220,6 +221,7 @@ int eventStart(object who, string language) {
 }
 
 int eventContinue(object who, string language, int x) {
+    true(x);
     who->eventPrint("You listen intently as " + GetName()
       + " continues " + possessive(this_object())
       + " dissertation on " + language + ".");

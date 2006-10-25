@@ -66,10 +66,6 @@ int SetVendorType(int x) {
     return (VendorType = x);
 }
 
-int CanSell() {
-    return 1;
-}
-
 varargs mixed SetBaseCost(mixed arg, int i){
     float base, rate;
 

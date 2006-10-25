@@ -8,12 +8,11 @@
 
 #include <lib.h>
 
-inherit LIB_ITEM;
 inherit LIB_SIT;
 inherit LIB_SURFACE;
 
 void create(){
-    ::create();
+    surface::create();
     SetMaxSitters(1);
     SetMaxCarry(100);
     SetMass(500);

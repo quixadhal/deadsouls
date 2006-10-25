@@ -52,7 +52,7 @@ private static mixed    Touch         = 0;
 private string          Town          = "wilderness";
 private int		DefaultExits  = 1;
 private int		Flying        = 1;
-private int		Obvious       = 1;
+private int		ObviousVisible       = 1;
 private int		ActionChance  = 10;
 mapping			ItemsMap      = ([]);
 //private static object  *dummies       = ({});
@@ -311,11 +311,11 @@ varargs void AddItem(mixed item, mixed val, mixed adjectives) {
     DummyItems = ({ DummyItems..., ob });
 }
 
-void RemoveItem(mixed item) {
+mapping RemoveItem(mixed item) {
     if( objectp(item) ) {
 	DummyItems -= ({ item });
 	item->eventDestruct();
-	return;
+	return copy(Items);
     }
     else if( !arrayp(item) ) {
 	item = ({ item });
@@ -324,12 +324,12 @@ void RemoveItem(mixed item) {
 	if( sizeof(ob->GetId() & item) ) {
 	    ob->eventDestruct();
 	    DummyItems -= ({ ob });
-	    return;
+	    return copy(Items);
 	}
     }
 }
 
-void SetItems(mixed items) {
+mapping SetItems(mixed items) {
     if(sizeof(DummyItems)) DummyItems->eventDestruct();
     DummyItems = ({});
     if( arrayp(items) ) {
@@ -360,6 +360,7 @@ void SetItems(mixed items) {
 	error("Bad argument 1 to SetItems(), expected object array or "
 	  "mapping.\n");
     }
+    return copy(ItemsMap);
 }
 
 mapping GetItemsMap(){
@@ -583,7 +584,7 @@ varargs void AddSearch(mixed item, mixed val) {
     }
 }
 
-varargs mixed GetSearch(string str) {
+varargs mixed GetSearch() {
     return Search;
 }
 
@@ -643,7 +644,7 @@ varargs void AddSmell(mixed item, mixed val) {
     }
 }
 
-varargs mixed GetSmell(string str) {
+varargs mixed GetSmell() {
     return Smell;
 }
 
@@ -854,11 +855,11 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
     }
 }
 
-int eventMove(mixed dest) { return 0; }
+int eventMove() { return 0; }
 
 varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
     object *targs;
-    int msg_class,i;
+    int msg_class;
 
     if( !arg2 && !arg3 ) {
 	targs = filter(all_inventory(), (: (int)$1->is_living() :));
@@ -921,7 +922,7 @@ varargs void reset(int count) {
     ResetNumber++;
 }
 
-int id(string str) {
+int id() {
     return 0;
 }
 
@@ -936,14 +937,14 @@ int inventory_visible() {
 int SetNoDefaultExits(int i){
     if(!i) i = 0;
     DefaultExits = bool_reverse(i);
-    Obvious = DefaultExits;
+    ObviousVisible = DefaultExits;
     return DefaultExits;
 }
 
 int SetDefaultExits(int i){
     if(!i) i = 0;
     DefaultExits = i;
-    Obvious = DefaultExits;
+    ObviousVisible = DefaultExits;
     return DefaultExits;
 }
 
@@ -952,15 +953,17 @@ int SetCanFly(int i){
     else Flying = 0;
 }
 
-varargs int CanFly(mixed ob, mixed dir){
+mixed CanFly(object who, string dest){
+    if(!who) who = this_player();
+    if(!dest) dest = "";
     return Flying;
 }
 
 int SetNoObviousExits(int i){
     if(!i) i = 0;
-    Obvious = bool_reverse(i);
-    DefaultExits = Obvious;
-    return Obvious;
+    ObviousVisible = bool_reverse(i);
+    DefaultExits = ObviousVisible;
+    return ObviousVisible;
 }
 
 int GenerateObviousExits(){
@@ -1001,13 +1004,13 @@ int GenerateObviousExits(){
     }
     if(last(dir_string,2) == ", ") dir_string = truncate(dir_string,2);
     dir_string = replace_string(dir_string,", , ",", ");
-    if(Obvious) SetObviousExits(dir_string);
+    if(ObviousVisible) SetObviousExits(dir_string);
     return 1;
 }
 
 static void init() {
     if(this_object()->GetProperty("indoors")) SetClimate("indoors");
-    if(!sizeof(GetObviousExits()) && DefaultExits > 0 && Obvious) GenerateObviousExits();
+    if(!sizeof(GetObviousExits()) && DefaultExits > 0 && ObviousVisible) GenerateObviousExits();
     if((Action && sizeof(Action)) || sizeof(ActionsMap)) set_heart_beat(tick_resolution);
 }
 

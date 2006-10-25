@@ -19,10 +19,10 @@ varargs mixed reload(mixed ob, int recursive) {
     if(!ob) return 0;
     //tc("moop: "+identify(ob),"blue");
     if(objectp(ob) && inherits(LIB_DAEMON,ob) && !ob->GetDoor()){
-    string obname = base_name(ob)+".c";
-    //tc("hi!","green");
-    ob->eventDestruct();
-    return load_object(obname);
+	string obname = base_name(ob)+".c";
+	//tc("hi!","green");
+	ob->eventDestruct();
+	return load_object(obname);
     }
     //tc("mep","white");
     if(objectp(ob) && environment(ob)) env = environment(ob);
