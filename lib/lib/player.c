@@ -44,7 +44,7 @@ static void heart_beat() {
     }
     interactive::heart_beat();
     if( query_idle(this_object()) >= IDLE_TIMEOUT && !creatorp(this_object()) && !present("testchar badge",this_object()) ) {
-	cmdQuit(0);
+	cmdQuit();
 	return;
     }
     living::heart_beat();
@@ -118,6 +118,7 @@ int eventDisplayStatus() {
 }
 
 static void eventDestroyUndead(object agent) {
+    if(agent) true();
 }
 
 varargs int eventDie(mixed agent) {
@@ -374,7 +375,7 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
 }
 
 
-int eventReceiveObject() {
+int eventReceiveObject(object foo) {
     object ob;
 
     ob = previous_object();
@@ -383,7 +384,7 @@ int eventReceiveObject() {
     return 1;
 }
 
-int eventReleaseObject() {
+int eventReleaseObject(object foo) {
     object ob;
 
     ob = previous_object();
@@ -420,7 +421,7 @@ static mixed eventUse(object used, string cmd) {
 
 int CanReceive(object ob) { return CanCarry((int)ob->GetMass()); }
 
-mixed CanUse(object used, string cmd) { return 1; }
+mixed CanUse() { return 1; }
 
 /* *****************  /lib/player.c local functions  ***************** */
 

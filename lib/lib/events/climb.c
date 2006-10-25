@@ -46,6 +46,8 @@ mixed CanClimb(object who, int type) {
     int array tmp;
     object dude;
     string thingname;
+
+    true(who);
     dude=this_player();
     thingname=this_object()->GetKeyName();
 
@@ -128,14 +130,17 @@ varargs mixed eventClimb(object who, int type, string where) {
 }
 
 mixed direct_climb_obj(object ob) {
+    true(ob);
     return CanClimb(this_player(), CLIMB_UP);
 }
 
 mixed direct_climb_out_of_obj(object ob) {
+    true(ob);
     return CanClimb(this_player(), CLIMB_OUT);
 }
 
 mixed direct_climb_word_obj(string word, object ob) {
+    true(ob);
     if( !Climb ) {
 	return 0;
     }

@@ -27,18 +27,17 @@ int SetClosed(int x) {
     return Closed;
 }
 
-string array GetSave() {
-    return ({ "Closed" });
-}
-
-mixed CanClose(object who) {
+varargs mixed CanClose(object who, string id) {
+    true(who);
     if( Closed ) {
-	return capitalize(GetDefiniteShort()) + " is already closed.";
+	id = capitalize(GetDefiniteShort()) + " is already closed.";
+	return id;
     }
     else return 1;
 }
 
 varargs mixed CanOpen(object who, object tool) {
+    true(who,tool);
     if( !Closed ) {
 	return capitalize(GetDefiniteShort()) + " is already open.";
     }
@@ -55,6 +54,7 @@ mixed eventClose(object who) {
 }
 
 varargs mixed eventOpen(object who, object tool) {
+    true(tool);
     if( SetClosed(0) ) {
 	return 0;
     }
@@ -80,13 +80,16 @@ int SetOpen(int x) {
 
 
 mixed direct_close_obj(object target) {
+    true(target);
     return CanClose(this_player());
 }
 
 mixed direct_open_obj(object target) {
+    true(target);
     return CanOpen(this_player());
 }
 
 mixed direct_open_obj_with_obj(object target, object tool) {
+    true(target);
     return CanOpen(this_player(), tool);
 }

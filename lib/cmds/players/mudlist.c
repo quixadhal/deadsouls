@@ -107,7 +107,7 @@ mixed cmd(string str) {
     list = sort_array(list, 1);
     list = ({ replace_string(mud_name(),"%^","%%^^") + " recognizes " + consolidate(sizeof(borg), "a mud")+
       " matching your query: ", "" }) + list;
-    this_player()->eventPage(list);
+    if(this_player()) this_player()->eventPage(list);
     return 1;
 }
 

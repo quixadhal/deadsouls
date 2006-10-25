@@ -49,6 +49,7 @@ string array GetSave() {
 }
 
 int eventStrike(object ob) {
+    true(ob);
     return GetClass();
 }
 

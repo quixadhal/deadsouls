@@ -6,7 +6,7 @@
 
 inherit LIB_DAEMON;
 
-varargs int cmd(string str)
+varargs int cmd()
 {
     if((int)this_player()->GetInvis()) {
 	notify_fail("You are already invisible.\n");

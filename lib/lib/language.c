@@ -43,7 +43,6 @@ mapping RemoveLanguage(string lang) {
 }
 
 mapping SetNativeLanguage(string lang){
-    string key = convert_name(lang);
     string old_lang = GetNativeLanguage();
     RemoveLanguage(old_lang);
     SetLanguage(old_lang, 100);
@@ -97,7 +96,6 @@ string GetLanguageName(string lang) {
 
 int AddLanguagePoints(string lang, int points) {
     string key;
-    int y;
 
     key = convert_name(lang);
     if( !Languages[key] ) SetLanguage(key, 0, 0);
@@ -127,7 +125,7 @@ int GetNextLevel(string lang, int curr_level) {
     return y;
 }
 
-int GetStatLevel(string stat) { return 0; }
+int GetStatLevel(string stat) { return false(stat); }
 
 string GetNativeLanguage() {
     mapping val;

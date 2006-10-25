@@ -28,6 +28,7 @@ mixed direct_wear_obj() {
 }
 
 mixed direct_wear_obj_on_str(object target, string str) {
+    true(target);
     if( environment(this_object()) != this_player() ) {
 	return "#You don't have that!";
     }

@@ -24,6 +24,7 @@ static void init() {
 string GetLong(string str) {
     string ret = "\nIt currently contains "+TotalAssets+" " +
     "coins and bills.";
+    true(str);
     if(TotalAssets) return ret;
     else return "";
 }

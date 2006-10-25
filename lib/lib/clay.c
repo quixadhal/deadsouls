@@ -1,22 +1,19 @@
 #include <lib.h>
-inherit LIB_STORAGE;
 inherit LIB_SURFACE;
 
 private static string Composition, Name, ShortDesc, Desc;
-private static string *Nouns, *Adjectives;
+private static string *Nouns, *Adjs;
 
 varargs string SetComposition(string comp, string name, string *nouns, string *adjs, string
   short, string desc);
 void InitComposition();
 
 void create(){
-    string *tmpsave1, *tmpsave2, *tmpsave3, *tmpsave4;
+    string *tmpsave2, *tmpsave3, *tmpsave4;
     surface::create();
-    storage::create();
-    tmpsave1 = storage::GetSave(); 
     tmpsave2 = surface::GetSave(); 
-    tmpsave3 = ({ "Composition","Name","Nouns","ShortDesc", "Desc","Adjectives" });
-    tmpsave4 = tmpsave1 + tmpsave2 + tmpsave3;
+    tmpsave3 = ({ "Composition","Name","Nouns","ShortDesc", "Desc","Adjs" });
+    tmpsave4 = tmpsave2 + tmpsave3;
     AddSave( tmpsave4 );
     SetKeyName("lump");
     SetId( ({"lump","clay","mass"}) );
@@ -31,7 +28,7 @@ void create(){
 }
 
 void InitComposition(){
-    SetComposition(Composition, Name, Nouns, Adjectives, ShortDesc, Desc);
+    SetComposition(Composition, Name, Nouns, Adjs, ShortDesc, Desc);
 }
 
 varargs string SetComposition(string comp, string name, string *nouns, string *adjs, string short, string desc){
@@ -70,7 +67,7 @@ varargs string SetComposition(string comp, string name, string *nouns, string *a
     }
 
     if(sizeof(adjs)){
-	Adjectives = adjs;
+	Adjs = adjs;
 	SetAdjectives(adjs);
     }
 

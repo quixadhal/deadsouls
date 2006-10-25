@@ -35,7 +35,7 @@ mixed eventUse(object used, string cmd);
 
 int CanCarry(int amount);
 int CanReceive(object ob);
-mixed CanUse(object used, string cmd);
+mixed CanUse();
 
 int Setup();
 

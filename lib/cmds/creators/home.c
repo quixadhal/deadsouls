@@ -17,7 +17,9 @@ mixed cmd(string str) {
     prev = environment(this_player());
     if( !str || str == "" ) who =(string)this_player()->GetKeyName();
     else who = lower_case(str);
+    if(!user_exists(who)) return "There's no such user.";
     str = user_path(who);
+    if(!directory_exists(str)) return "That person has no creator dir.";
     if( ob = (object)this_player()->query_property("workroom") ) {
 	if(ob == prev) return "You twitch.";
 	if( (int)this_player()->eventMove(ob) ) {

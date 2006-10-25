@@ -8,7 +8,7 @@
 
 #include <config.h>
 
-private int Mass = 0;
+int Mass = 0;
 
 int AddMass(int x) {
     if( Mass + x > 0 ) {

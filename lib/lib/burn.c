@@ -128,6 +128,7 @@ mixed indirect_light_obs_with_obj(object *targets, object source) {
 }
 
 mixed CanExtinguish(object who) {
+    true(who);
     if( environment() != this_player() &&
       environment() != environment(this_player()) ) {
 	return "#That is not within your reach!";
@@ -159,6 +160,7 @@ mixed eventBurnOut() {
 varargs mixed eventBurn(object who, object what) {
     int y;
 
+    true(who);
     if( !what ) {
 	if( Heat ) return 0;
 	else y = MinHeat;

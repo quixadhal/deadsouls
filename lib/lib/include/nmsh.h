@@ -7,7 +7,7 @@ nomask static int cmd_cd(string str);
 nomask static int cmd_nickname(string str);
 nomask static int cmd_nmsh(string str);
 nomask static int cmd_pushd(string str);
-nomask static int cmd_popd(string str);
+nomask static int cmd_popd();
 nomask string write_prompt();
 nomask string process_input(string str);
 nomask static void process_request(string request, string xtra);

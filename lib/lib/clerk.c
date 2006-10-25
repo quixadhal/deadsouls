@@ -3,7 +3,7 @@
 
 mixed performMarriage(object spouse1, object spouse2) ;
 int performDivorce(object ob1);
-int eventRequest(mixed arg1, mixed arg2, mixed arg3);
+int MarriageRequest(mixed arg1, mixed arg2, mixed arg3);
 int eventRequestDivorce(mixed arg1, mixed arg2, mixed arg3);
 
 inherit  LIB_MAYOR;
@@ -18,20 +18,21 @@ void create(){
     SetLong("An officious-looking clerk."); 
     SetLocalCurrency("silver");
     SetClass("priest");
-    AddCommandResponse("marry", (: eventRequest :));
-    AddCommandResponse("wed", (: eventRequest :));
-    AddCommandResponse("join", (: eventRequest :));
+    AddCommandResponse("marry", (: MarriageRequest :));
+    AddCommandResponse("wed", (: MarriageRequest :));
+    AddCommandResponse("join", (: MarriageRequest :));
     AddCommandResponse("divorce", (: eventRequestDivorce :));
     SetLevel(4);
     SetTax(5);
 }
 
 int eventRequestDivorce(mixed arg1, mixed arg2, mixed arg3){
+    true(arg2, arg3);
     this_object()->performDivorce(arg1);
     return 1;
 }
 
-int eventRequest(mixed arg1, mixed arg2, mixed arg3){
+int MarriageRequest(mixed arg1, mixed arg2, mixed arg3){
     string s1, s2, dudename;
     object ob1, ob2;
     if(strsrch(arg2,"divorce") != -1){

@@ -62,7 +62,7 @@ varargs mixed eventBlind(object who, int amt, mixed end) {
     Blind = new(class blindness);
     Blind->count = amt;
     Blind->end = end;
-    return 1;
+    return true(who);
 }
 
 mixed eventCustomizeStat(string stat, int amount) {
@@ -85,9 +85,9 @@ mixed eventRestoreSight(object who, int amt) {
     Blind->count -= amt;
     if( Blind->count < 1 ) {
 	RemoveBlindness();
-	return 1;
+	return true(who,amt);
     }
-    return 0;
+    return false(who,amt);
 }
 
 varargs void SetStat(string stat, int level, int classes) {

@@ -12,7 +12,7 @@
 
 private mixed   ExternalDesc = 0;
 private int     Invisible    = 0;
-private string  globalval;
+private string  look_globalval;
 function f;
 //private mapping Items        = ([]);
 mapping Items        = ([]);
@@ -108,8 +108,8 @@ mixed AddItem_func(mixed foo){
     //tc("foo:"+identify(foo),"blue");
     //tc("typeof foo:"+typeof(foo),"blue");
     foreach(mixed key, mixed val in foo){
-	globalval = val;
-	AddItem(key, (: globalval :) );
+	look_globalval = val;
+	AddItem(key, (: look_globalval :) );
     }
     return foo;
 }
@@ -120,12 +120,12 @@ mixed SetItem_func(mixed foo){
     foreach(mixed key, mixed val in foo){
 	//tc("key: "+identify(key));
 	//tc("val: "+identify(val));
-	globalval = val;
-	//f =  call_other(this_object(), globalval);
-	f =  functionify(globalval);
-	//AddItem(key,  (: globalval :) );
+	look_globalval = val;
+	//f =  call_other(this_object(), look_globalval);
+	f =  functionify(look_globalval);
+	//AddItem(key,  (: look_globalval :) );
 	call_other( this_object(), ({ "AddItem", key,  (: f :) }) );
-	//call_out( AddItem, 1, key, (: globalval :) );
+	//call_out( AddItem, 1, key, (: look_globalval :) );
     }
     return foo;
 }
@@ -167,14 +167,15 @@ mapping RemoveItem(mixed item) {
 	    error("Bad argument 1 to RemoveItem().\n");
 	}
 	map(item, (: RemoveItem($1) :));
-	return Items;
+	return copy(Items);
     }
     map_delete(Items, item);
-    return Items;
+    return copy(Items);
 }
 
 mapping SetItems(mapping items) {
-    return (Items = copy(items));
+    Items = copy(items);
+    return copy(items);
 }
 
 //TMI2 compat hack

@@ -29,10 +29,11 @@ string array GetSave() {
 }
 
 mixed CanPoison(object who) {
-    return 1;
+    return true(who);
 }
 
 mixed eventPoison(object who, object agent, int strength) {
+    true(agent);
     send_messages("spread", "$agent_name $agent_verb some poison onto "
       "$target_name.", who, this_object(), environment(who));
     AddPoison(strength);

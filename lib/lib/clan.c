@@ -30,7 +30,7 @@ static void init() {
     }
 }
 
-mixed CanJoin(object ob) { return 1; }
+mixed CanJoin(object ob) { return true(ob); }
 
 string GetAffectLong(object ob) {
     if(!ob || !living(ob)) return 0;

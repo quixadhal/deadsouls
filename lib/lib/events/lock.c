@@ -20,6 +20,7 @@ string array AddKey(string key) {
 }
 
 varargs string array GetKeys(string unused) {
+    true(unused);
     return Keys;
 }
 
@@ -71,6 +72,7 @@ string array GetSave() {
 }
 
 mixed CanLock(object who, string id) {
+    true(who,id);
     if( GetLocked() ) {
 	return "It is already locked.";
     }
@@ -78,17 +80,18 @@ mixed CanLock(object who, string id) {
 }
 
 mixed CanPick(object who, string id) {
+    true(who,id);
     if( !GetLocked() ) {
 	return "Pick it when it is not even locked?";
     }
     return 1;
 }
 
-mixed CanUnlock(object who, string id) {
+varargs mixed CanUnlock(object who, string id, object key) {
     if( !GetLocked() ) {
 	return "It is already unlocked.";
     }
-    return 1;
+    return true(who,id,key);
 }
 
 mixed eventLock(object who, object key) {
@@ -214,11 +217,13 @@ mixed eventUnlock(object who, object key) {
 }
 
 mixed direct_lock_obj_with_obj(object target, object key, string id) {
+    true(target,key);
     return CanLock(this_player(), remove_article(lower_case(id)));
 }
 
 mixed direct_pick_str_on_obj(string str, object target, string str2,
   string id) {
+    true(str2,target);
     if( remove_article(lower_case(str)) != "lock" ) {
 	return "Pick the what?";
     }
@@ -227,6 +232,7 @@ mixed direct_pick_str_on_obj(string str, object target, string str2,
 
 mixed direct_pick_str_on_obj_with_obj(string str, object target, object tool,
   string str2, string targ_id) {
+    true(target,tool,str2);
     if( remove_article(lower_case(str)) != "lock" ) {
 	return "Pick the what?";
     }
@@ -235,6 +241,7 @@ mixed direct_pick_str_on_obj_with_obj(string str, object target, object tool,
 }
 
 mixed direct_unlock_obj_with_obj(object target, object key, string id) {
+    true(target,key,id);
     return CanUnlock(this_player(), remove_article(lower_case(id)));
 }
 

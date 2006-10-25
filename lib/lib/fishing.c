@@ -11,7 +11,7 @@
 
 inherit LIB_ROOM;
 
-static private int MaxFishing, Speed, Chance, counter;
+static private int MaxFishing, Speed, Chance, fishing_counter;
 static private mapping Fishing, Fish;
 
 static void create() {
@@ -19,7 +19,7 @@ static void create() {
     MaxFishing = 10;
     Speed = 10;
     Chance = 0;
-    counter = 0;
+    fishing_counter = 0;
     Fish = ([]);
     Fishing = ([]);
 }
@@ -31,9 +31,9 @@ void heart_beat() {
 
     room::CheckActions();
 
-    counter++;
-    if(counter < Speed) return;
-    counter = 0;
+    fishing_counter++;
+    if(fishing_counter < Speed) return;
+    fishing_counter = 0;
 
     if( !sizeof(Fishing) ) {
 	return;
@@ -105,6 +105,7 @@ void heart_beat() {
 }
 
 mixed CanCast(object who, string where) {
+    true(who, where);
     if( (int)this_player()->GetInCombat() ) 
 	return "You are too busy to fish!";
     if( Fishing[(string)this_player()->GetKeyName()] )
@@ -115,6 +116,7 @@ mixed CanCast(object who, string where) {
 }
 
 mixed CanStop(object who, string str) {
+    true(who);
     if( str != "fishing" ) return 0;
     str = (string)this_player()->GetKeyName();
     if( !Fishing[str] ) return "You are not fishing!";
@@ -127,7 +129,7 @@ int CanRelease(object who){
 }
 
 mixed eventCast(object who, object pole, string str) {
-
+    true(str);
     send_messages(({ "cast", "start" }),
       "$agent_name $agent_verb $agent_possessive " +
       pole->GetKeyName() + " and $agent_verb fishing.", who, 0,
@@ -164,6 +166,7 @@ static void eventCatch(object who, string fish, object pole) {
 }
 
 mixed eventStop(object who, string str) {
+    true(str);
     RemoveFishing(this_player());
     message("my_action", "You stop fishing.", who);
     message("other_action", (string)who->GetName() + " stops "
@@ -203,7 +206,7 @@ mapping RemoveFishing(object who) {
     if( !who ) return Fishing;
     if( Fishing[str = (string)who->GetKeyName()] ) 
 	map_delete(Fishing, str);
-    if( !sizeof(Fishing) ) return;
+    if( !sizeof(Fishing) ) return ([]);
     return Fishing;
 }
 

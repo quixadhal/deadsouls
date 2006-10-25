@@ -43,6 +43,8 @@ varargs mapping SetManipulate(mixed key, mixed desc) {
 varargs mixed CanManipulate(object who, string component) {
     mixed val;
 
+    true(who);
+
     if( !component ) {
 	component = "default";
     }
@@ -95,9 +97,11 @@ varargs mixed eventManipulate(object who, string component) {
 }
 
 mixed direct_move_obj(object target) {
+    true(target);
     return CanManipulate(this_player());
 }
 
 mixed direct_move_str_on_obj(string str, object target) {
+    true(target);
     return CanManipulate(this_player(), remove_article(lower_case(str)));
 }

@@ -51,6 +51,8 @@ varargs mapping SetPress(mixed key, mixed desc) {
 varargs mixed CanPress(object who, string component) {
     mixed val;
 
+    true(who);
+
     if( !component ) {
 	component = "default";
     }
@@ -103,9 +105,11 @@ varargs mixed eventPress(object who, string component) {
 }
 
 mixed direct_press_obj(object target) {
+    true(target);
     return CanPress(this_player());
 }
 
 mixed direct_press_str_on_obj(string str, object target) {
+    true(target);
     return CanPress(this_player(), remove_article(lower_case(str)));
 }

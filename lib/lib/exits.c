@@ -94,6 +94,7 @@ varargs string CreateDoor(string dir, string odir, string long, string locked, s
     object new_door = new(LIB_DOOR);
     string doorfile = file_name(new_door);
     object ob = GetDummyItem(dir);
+    if(!locked) locked = "";
     if( ob ) {
 	ob->SetDoor(doorfile);
     }

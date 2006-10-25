@@ -17,7 +17,7 @@ int help();
 string rmSlash(string str) { return replace_string(str,"//","/"); }
 
 int cmd(string str) {
-    string line, s1;
+    string s1;
     string file1;
     string file2;
     int localdest;

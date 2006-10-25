@@ -38,6 +38,7 @@ mixed direct_wield_obj() {
 }
 
 mixed direct_wield_obj_word_str(object target, string wrd, string limb) {
+    true(target,wrd);
     if( environment() != this_player() ) {
 	return "#You don't have that!";
     }

@@ -43,6 +43,8 @@ varargs mapping SetPull(mixed key, mixed desc) {
 varargs mixed CanPull(object who, string component) {
     mixed val;
 
+    true(who);
+
     if( !component ) {
 	component = "default";
     }
@@ -95,9 +97,11 @@ varargs mixed eventPull(object who, string component) {
 }
 
 mixed direct_pull_obj(object target) {
+    true(target);
     return CanPull(this_player());
 }
 
 mixed direct_pull_str_on_obj(string str, object target) {
+    true(target);
     return CanPull(this_player(), remove_article(lower_case(str)));
 }
