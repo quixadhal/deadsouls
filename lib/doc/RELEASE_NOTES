@@ -4,7 +4,8 @@
 - Fixed problem in help daemon that prevented race help from displaying.
 - Revolvers reimplemented.
 - Driver options now output verbose warnings about inherited function
-  conflicts and unused variables.
+  conflicts and unused variables if you use local_options.debug at
+  compile time.
 - Eliminated various function conflicts in lib files.
 - Isolated unused variables in /lib file function arguments with
   true() and false().
