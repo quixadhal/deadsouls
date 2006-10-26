@@ -20,9 +20,9 @@ static void create(){
     if(!channel_update_counter) channel_update_counter = 1;
     if(!router_name) router_name = "*yadsm";
     if(!router_port) router_port = "9000";
-    if(!router_ip) router_ip = "192.168.0.5";
+    if(!router_ip) router_ip = "192.168.0.4";
     //if(!sizeof(router_list))
-    router_list = ({ ({"*yatmim", "149.152.218.102 23"}) });
+    router_list = ({ ({"*yadsm", "192.168.0.4 9000"}) });
     log_file("router/server_log", "Created when uptime = " + uptime() + "\n");
     trr("server got created");
     log_file("router/server_log",timestamp()+" router object created.\n");
@@ -83,7 +83,7 @@ void remove(){
     mudinfo_update_counter++; // just increment once... all the connected muds
     // getting simultaneously disconnected is okay to count as one change :)
     foreach(mudname in keys(connected_muds)){
-	mudinfo_updates[mudname];
+	mudinfo_updates[mudname]++;
 	mudinfo[mudname]["disconnect_time"]=time();
 	map_delete(connected_muds,mudname); // unneeded: connected_muds isn't saved anyway
     }
@@ -91,4 +91,4 @@ void remove(){
     trr("Successfully destructed when uptime = " + uptime() + "\n");
     destruct(this_object());
 }
-int query_prevent_shadow(object ob){ return 1; }
+int query_prevent_shadow(object ob){ return true(ob); }

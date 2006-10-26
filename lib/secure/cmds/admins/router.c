@@ -46,7 +46,7 @@ mixed cmd(string args) {
 
     if(args == "show"){
 	write("Router config:");
-	write("sample mud: "+identify(mudlist[allmuds[0]]));
+	//write("sample mud: "+identify(mudlist[allmuds[0]]));
 	router->get_info();
 	return 1;
     }

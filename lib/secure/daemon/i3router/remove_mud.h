@@ -9,9 +9,23 @@ varargs void remove_mud(string mudname, int forced){
 	trr("Cannot remove mud ["+mudname+"] because it is still online right now.\n");
 	return;
     }
-    if(!mudinfo[mudname]){
-	trr("Cannot remove mud ["+mudname+"] because it is not in the mudinfo list.\n");
-	return;
+    if(!connected_muds[mudname]){
+	trr("Warning: cannot disconnect mud ["+mudname+"] because it is not in the connected_muds list.\n");
+	log_file("router/server_log",timestamp()+" Warning: cannot disconnect mud ["+mudname+"] because it is not in the connected_muds list.\n");
+    }
+    else {
+	log_file("router/server_log",timestamp()+" Disconnecting mud: "+mudname+" on fd:
+"+targetfd+"\n");
+    trr(timestamp()+" Disconnecting mud: "+mudname+" on fd: "+targetfd);
+    }
+    if(!mudinfo[mudname]){         
+        trr("Warning: cannot remove mud ["+mudname+"] because it is not in the mudinfo list.\n");
+log_file("router/server_log",timestamp()+" Warning: cannot remove mud ["+mudname+"] because it is not in the mudinfo list.\n");
+    }
+    else{
+    log_file("router/server_log",timestamp()+" Removing mud: "+mudname+" on fd:
+"+targetfd+"\n");
+    trr(timestamp()+" Removing mud: "+mudname+" on fd: "+targetfd);
     }
     map_delete(mudinfo, mudname);
     //close_callback(targetfd);
