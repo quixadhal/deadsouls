@@ -23,12 +23,12 @@ void  reap_dummies(){
     }
 }
 
-varargs void reap_other(string str){
+varargs void reap_other(string s1){
     //
     // destroys any cloned objects that
     // do not have an environment
     //
-    string s1,s2;
+    string s2;
     object *objects;
     object *others;
 

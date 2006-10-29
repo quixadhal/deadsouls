@@ -67,7 +67,7 @@ int SetRescueBit(int i){
 
 /* ***************  /lib/interactive.c modal functions  *************** */
 
-mixed CanDivorce(object who) {
+mixed CanDivorce() {
     class marriage m;
 
     if( !Marriages || !sizeof(Marriages) )
@@ -77,11 +77,11 @@ mixed CanDivorce(object who) {
     return 1;
 }
 
-mixed CanGet(object ob) {
+mixed CanGet() {
     return GetName() + " is a living being!";
 }
 
-mixed CanMarry(object who, object to_whom) {
+mixed CanMarry() {
     if( !Marriages ) Marriages = ({});
     if( GetSpouse() ) return GetName() + " is currently married!";
     return 1;
@@ -136,12 +136,7 @@ int Setup() {
     environment()->eventPrint(tmp, MSG_ENV, this_object());
     if( !(tmp = GetMessage("login")) )
 	tmp = GetName() + " enters " + mud_name() + ".";
-    //if(!archp(this_object()))
     CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " logs in]",0);
-    //else
-    //CHAT_D->eventSendChannel("SYSTEM","admin","[" + GetCapName() + " logs in]",0);
-
-#echo Login occurs.
 
     if(!catch(mp = (mapping)FOLDERS_D->mail_status(GetKeyName()))) {
 	if(mp["unread"]) {
@@ -453,7 +448,7 @@ void eventDescribeEnvironment(int brief) {
 	    return object::eventDestruct();
 	}
 
-	mixed eventDivorce(object who) {
+	mixed eventDivorce() {
 	    class marriage m;
 
 	    m = Marriages[0];
@@ -488,7 +483,7 @@ void eventDescribeEnvironment(int brief) {
 	    return x;
 	}
 
-	int cmdQuit(string str) {
+	int cmdQuit() {
 	    string tmp;
 	    object env = environment(this_object());
 	    int retain = RETAIN_ON_QUIT;
@@ -545,19 +540,20 @@ void eventDescribeEnvironment(int brief) {
 	    else return Email;
 	}
 
-	void SetId(string *bogus) {
+	varargs string array SetId(string *bogus) {
 	    int i;
 
-	    if(UserId) return;
+	    if(UserId) return UserId;
 	    if(!GetCapName()) {
 		UserId = ({ GetKeyName() });
-		return;
+		return UserId;
 	    }
 	    UserId = ({ GetKeyName(), lower_case(GetCapName()) });
 	    if((i=sizeof(bogus = explode(lower_case(GetCapName()), " "))) == 1)
-		return;
+		return UserId;
 	    while(i--)
 		if(!user_exists(bogus[i])) UserId += ({ bogus[i] });
+	    return UserId;
 	}
 
 	string *GetId() { return UserId; }
@@ -649,9 +645,9 @@ void eventDescribeEnvironment(int brief) {
 	    else error("Privilege Violation: " + caller);
 	}
 
-	void SetCapName(string str) {
-	    if( base_name(previous_object(0)) != LIB_CONNECT ) return;
-	    object::SetCapName(str);
+	string SetCapName(string str) {
+	    if( base_name(previous_object(0)) != LIB_CONNECT ) return str;
+	    return object::SetCapName(str);
 	}
 
 	void move_or_destruct() {
@@ -694,7 +690,7 @@ void eventDescribeEnvironment(int brief) {
 	    return HostSite;
 	}
 
-	void eventLoadObject(mixed *value, int recurse) { }
+	//void eventLoadObject(mixed *value, int recurse) { }
 
 	int GetRadiantLight(int ambient) {
 	    return (object::GetRadiantLight(ambient) +

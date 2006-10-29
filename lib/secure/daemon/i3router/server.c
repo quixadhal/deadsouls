@@ -5,7 +5,6 @@
 #include <lib.h>
 #include <commands.h>
 #include <socket.h>
-#include <socket_err.h>
 #define DEB_IN  1	// trr-Incoming
 #define DEB_OUT 2	// trr-Outgoing
 #define DEB_INVALID 3	// trr-Invalid
@@ -18,7 +17,7 @@
 #define SEND_WHOLE_MUDLIST
 // SEND_WHOLE_CHANLIST makes it act like the official I3 server instead of like the I3 specs
 #define SEND_WHOLE_CHANLIST
-inherit LIB_CLEAN;
+inherit LIB_DAEMON;
 
 static void validate(){
     if( previous_object() != CMD_ROUTER &&
@@ -88,6 +87,7 @@ static void write_data(int fd, mixed data);
 static void broadcast_data(mapping targets, mixed data);
 
 // Code for all the stuff in the prototypes...
+#include "./clean_fd.h"
 #include "./broadcast_chanlist.h"
 #include "./broadcast_mudlist.h"
 #include "./debug.h"
@@ -281,5 +281,5 @@ void clear_discs(){
 
 int eventDestruct(){
     save_object(SAVE_ROUTER);
-    clean::eventDestruct();
+    daemon::eventDestruct();
 }

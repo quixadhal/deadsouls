@@ -10,7 +10,7 @@ string *GetTeachingLanguages();
 mapping GetStudents();
 
 int eventHelp(object who, string unused);
-int eventTeach(object who, string verb, string language);
+int eventTeachLanguage(object who, string verb, string language);
 
 static int ContinueTeaching(object who, string language, int x);
 

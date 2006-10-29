@@ -1,4 +1,4 @@
-int mustcarry,mustwield;
+int mustcarry = 1,mustwield = 1;
 
 int MustCarry(int i){
     if(i) mustcarry = i;
@@ -11,7 +11,6 @@ int MustWield(int i){
     if(mustwield) return mustwield;
     else return 0;
 }
-
 
 int eventShoot(mixed shooter, mixed target){
     string tmp;

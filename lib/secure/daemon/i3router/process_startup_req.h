@@ -7,7 +7,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
     //  Loads info into newinfo mapping.
     //  Error if mud is already connected.
     mapping newinfo;
-    string site_ip, junk;
+    string site_ip;
     // router name is info[4], I'll just pretend I'm every router though, ha-ha!
     // also, should verify that all the fields are the right type
 
@@ -54,9 +54,13 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	return;
     }
     trr("fd is:" +fd);
-
     site_ip=socket_address(fd);
-    trr("site_ip: "+site_ip);
+    trr("site_ip: "+site_ip,"blue");
+    if(grepp(site_ip," ")){
+	string *ip_split=explode(site_ip," ");
+	site_ip = ip_split[0];
+    }
+    trr("site_ip: "+site_ip,"cyan");
     newinfo = ([
       "name":info[2],
       "ip":site_ip,

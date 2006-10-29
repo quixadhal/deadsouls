@@ -1,0 +1,8 @@
+Displays who is listening to a given channel. To know who
+is listening to ds on your mud, type:
+
+list ds
+
+To know who is listening to ds on another mud:
+
+list ds@dead souls

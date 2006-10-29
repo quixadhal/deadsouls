@@ -5,7 +5,7 @@
  *    created by Descartes of Borg 950113
  */
 
-#pragma save_binary
+
 
 #include <lib.h>
 #include <objects.h>

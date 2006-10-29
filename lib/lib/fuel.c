@@ -49,7 +49,6 @@ static string SetFuelType(string str) {
 
 varargs string GetLong(string val) {
     /*    string str;
-
     if(!(str = item::GetLong(val)) || str == "") return str;
     else return sprintf("%s%s", str, (GetFuel() ? "" :
 				      sprintf("\nThe %s is out of fuel.", GetKeyName())));

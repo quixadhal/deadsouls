@@ -1,7 +1,7 @@
 string nom;
 
 int make_workroom(mixed dude) {
-    string cdir, tdir, dir_line;
+    string cdir, tdir, dir_line, bakdata;
 
     if(!dude) return 0;
 
@@ -14,6 +14,7 @@ int make_workroom(mixed dude) {
 	cdir = "/realms/"+nom;
 	tdir = "/realms/template/";
 	dir_line = "#define MY_DIR          \"/realms/"+nom+"\"";
+	bakdata = "workroom.orig : /realms/"+nom+"/workroom.c\n";
 	mkdir(cdir);
 	mkdir(cdir+"/cmds");
 	mkdir(cdir+"/log");
@@ -31,7 +32,8 @@ int make_workroom(mixed dude) {
 	cp(tdir+"workroom.c", cdir+"/workroom.c");
 	cp(tdir+"workroom.bak", cdir+"/workroom.bak");
 	cp(tdir+"bak/workroom.orig", cdir+"/bak/workroom.orig");
-	cp(tdir+"bak/bk.db", cdir+"/bak/bk.db");
+	//cp(tdir+"bak/bk.db", cdir+"/bak/bk.db");
+	write_file(cdir+"/bak/bk.db",bakdata);
 	cp(tdir+"plan", cdir+"/.plan");
 	cp(tdir+"profile", cdir+"/.profile");
 	cp(tdir+"cmds/custom.c", cdir+"/cmds/custom.c");

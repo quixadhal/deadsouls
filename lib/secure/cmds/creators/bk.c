@@ -4,7 +4,6 @@
 inherit LIB_DAEMON;
 
 mixed cmd(string str) {
-    string *arr;
     string *file_arr;
     string tmp, filename, str2, orig;
     int time;

@@ -9,13 +9,26 @@
 inherit LIB_DAEMON;
 
 int cmd(string str) {
+    int substr = 0;
+
     if(!str || str == ""){
 	write("Syntax: banish <string>");
 	return 1;
     }
+
+    if(grepp(str,"-s ")){
+	str = replace_string(str,"-s ","");
+	substr = 1;
+    }
     if(!user_exists(str = lower_case(str))) {
-	write(capitalize(str)+" is now banished.\n");
-	catch(call_other(BANISH_D, "banish_name", str));
+	if(!substr){
+	    BANISH_D->banish_name(str);
+	    write(capitalize(str)+" is now banished.\n");
+	}
+	else {
+	    BANISH_D->set_illegal_substring(str);
+	    write("The substring \""+str+"\" is now illegal in a name.");
+	}
     }
     else {
 	write("A player by that name already exists.\n");
@@ -32,5 +45,9 @@ void help() {
       "cassandra' meaning to kill the evil enchantress, but Cassandra\n"
       "walked in and I accidentally killed her.\"  It is also to be\n"
       "used to keep people from using offensive names.\n"
+      "The -s option makes the argument a substring to be made illegal, "
+      "so that:\n"
+      "banish -s top\n"
+      "would make it impossible to create a character named Carrottop."
     );
 }

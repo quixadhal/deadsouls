@@ -11,7 +11,7 @@
 
 inherit LIB_ROOM;
 
-static private int MaxFishing, Speed, Chance, counter;
+static private int MaxFishing, Speed, Chance, fishing_counter;
 static private mapping Fishing, Fish;
 
 static void create() {
@@ -19,7 +19,7 @@ static void create() {
     MaxFishing = 10;
     Speed = 10;
     Chance = 0;
-    counter = 0;
+    fishing_counter = 0;
     Fish = ([]);
     Fishing = ([]);
 }
@@ -31,9 +31,9 @@ void heart_beat() {
 
     room::CheckActions();
 
-    counter++;
-    if(counter < Speed) return;
-    counter = 0;
+    fishing_counter++;
+    if(fishing_counter < Speed) return;
+    fishing_counter = 0;
 
     if( !sizeof(Fishing) ) {
 	return;
@@ -127,7 +127,6 @@ int CanRelease(object who){
 }
 
 mixed eventCast(object who, object pole, string str) {
-
     send_messages(({ "cast", "start" }),
       "$agent_name $agent_verb $agent_possessive " +
       pole->GetKeyName() + " and $agent_verb fishing.", who, 0,
@@ -203,7 +202,7 @@ mapping RemoveFishing(object who) {
     if( !who ) return Fishing;
     if( Fishing[str = (string)who->GetKeyName()] ) 
 	map_delete(Fishing, str);
-    if( !sizeof(Fishing) ) return;
+    if( !sizeof(Fishing) ) return ([]);
     return Fishing;
 }
 

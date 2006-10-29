@@ -14,6 +14,7 @@ int last_time = time();
 string *muds = PINGING_MUDS + ({ mud_name() });
 
 int CheckOK(){
+    string list = load_object("/cmds/players/mudlist")->cmd("");
     Pinging = 0;
     if(!OK){
 	Retries++;
@@ -34,6 +35,8 @@ int CheckOK(){
 	rm("/tmp/muds.txt");
 	load_object(ROOM_ARCH)->SetImud(0);
     }
+    write_file("/www/mudlist.txt",timestamp()+"\n",1);
+    write_file("/www/mudlist.txt",""+list);
     return 1;
 }
 

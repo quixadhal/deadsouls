@@ -27,13 +27,10 @@ int SetClosed(int x) {
     return Closed;
 }
 
-string array GetSave() {
-    return ({ "Closed" });
-}
-
-mixed CanClose(object who) {
+varargs mixed CanClose(object who, string id) {
     if( Closed ) {
-	return capitalize(GetDefiniteShort()) + " is already closed.";
+	id = capitalize(GetDefiniteShort()) + " is already closed.";
+	return id;
     }
     else return 1;
 }

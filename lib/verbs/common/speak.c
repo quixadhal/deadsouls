@@ -5,7 +5,7 @@
  *    speak in WRD STR
  */
 
-#pragma save_binary
+
 
 #include <lib.h>
 #include <talk_type.h>

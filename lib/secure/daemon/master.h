@@ -36,7 +36,7 @@ string author_file(string str);
 static int slow_shutdown();
 int save_ed_setup(object who, int code);
 int retrieve_ed_setup(object who);
-string get_save_file_name(string file);
+string get_save_file_name();
 int is_locked();
 string *parse_command_id_list();
 string *parse_command_plural_id_list();

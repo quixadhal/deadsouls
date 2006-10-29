@@ -44,7 +44,7 @@ static void heart_beat() {
     }
     interactive::heart_beat();
     if( query_idle(this_object()) >= IDLE_TIMEOUT && !creatorp(this_object()) && !present("testchar badge",this_object()) ) {
-	cmdQuit(0);
+	cmdQuit();
 	return;
     }
     living::heart_beat();
@@ -374,7 +374,7 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
 }
 
 
-int eventReceiveObject() {
+int eventReceiveObject(object foo) {
     object ob;
 
     ob = previous_object();
@@ -383,7 +383,7 @@ int eventReceiveObject() {
     return 1;
 }
 
-int eventReleaseObject() {
+int eventReleaseObject(object foo) {
     object ob;
 
     ob = previous_object();
@@ -420,7 +420,7 @@ static mixed eventUse(object used, string cmd) {
 
 int CanReceive(object ob) { return CanCarry((int)ob->GetMass()); }
 
-mixed CanUse(object used, string cmd) { return 1; }
+mixed CanUse() { return 1; }
 
 /* *****************  /lib/player.c local functions  ***************** */
 
@@ -495,8 +495,6 @@ int Setup() {
 	if(file_exists(home+".c")) 
 	    this_object()->eventMoveLiving(home);
 
-	//foreach(string chan in CHAT_D->GetChannels())
-	//this_object()->AddChannel(chan);
 	this_object()->AddChannel( ({"admin", "error", "cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat"}) );
 
 	SetShort("First Admin $N");
@@ -534,7 +532,6 @@ string *SetMuffed(string *muffed){
 
 string *AddMuffed(string muffed){
     string tmpstr;
-    //tc("foo: "+INTERMUD_D);
     if(!muffed || muffed == "" || !sizeof(muffed)) return Muffed;
     if(grepp(muffed,"@")) {
 	tmpstr = INTERMUD_D->GetMudName(muffed[1..sizeof(muffed)-1]);
@@ -847,8 +844,3 @@ varargs int eventTrain(string skill, int points) {
     }
     return 1;
 }
-
-//string ChangeClass(string cl) {
-//	error("Players cannot change class.\n");
-//	return GetClass();
-//   }

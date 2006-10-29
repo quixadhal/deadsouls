@@ -107,10 +107,9 @@ private static void load_access(string cfg, mapping ref) {
 	write("Master: unknown flag.\n");
     }
 
-    string *epilog(int x) {
+    string *epilog(int i) {
 	string *lines, *files;
 	string content;
-	int i;
 
 	if(!(content = read_file(CFG_PRELOAD))) return ({});
 	i = sizeof(lines = explode(content, "\n"));
@@ -194,7 +193,7 @@ private static void load_access(string cfg, mapping ref) {
 	object *stack;
 	string *privs;
 	string priv;
-	int i, privcheck;
+	int i;
 
 	if( objectp(file) ) file = base_name(file);
 	if( ok && sizeof(ok) && ok[0] == "all" ) return 1;
@@ -283,6 +282,7 @@ private static void load_access(string cfg, mapping ref) {
 	string err;
 	string file;
 
+	true(port);
 	file = LIB_CONNECT;
 	if( err  = catch(ob = new(file)) ) {
 	    write("It looks like someone is working on the user object.\n");
@@ -347,6 +347,7 @@ private static void load_access(string cfg, mapping ref) {
     }
 
     int valid_bind(object binder, object old_owner, object new_owner) {
+	true(old_owner,new_owner);
 	if( binder == master() ) return 1;
 	if( member_array(PRIV_SECURE, explode(query_privs(binder), ":")) != -1 )
 	    return 1;
@@ -362,12 +363,13 @@ private static void load_access(string cfg, mapping ref) {
 	else return (member_array(PRIV_SECURE, explode(priv, ":")) != -1);
     }
 
-    int valid_override(string file, string nom) { return (file == SEFUN); }
+    int valid_override(string file, string nom) { true(file,nom); return (file == SEFUN); }
 
-    int valid_save_binary(string str) { return 1; }
+    int valid_save_binary(string str) { return true(str); }
 
     int valid_shadow(object ob) {
 	object targ = previous_object();
+	true(ob);
 	return (!virtualp(targ) && !strsrch(file_name(targ), DIR_SHADOWS));
     }
 
@@ -377,6 +379,7 @@ private static void load_access(string cfg, mapping ref) {
 	file = file_name(ob);
 	if(COMPAT_MODE){
 	    //buggy code removed
+	    true();
 	}
 	contents = read_file(base_name(ob)+".c");
 	if(strsrch(contents,"parse_add_rule") != -1 
@@ -398,6 +401,8 @@ private static void load_access(string cfg, mapping ref) {
 	int port;
 	string tmp;
 	int i;
+
+	true(fun); 
 
 	if( info && sizeof(info) == 4 ) {
 	    ob = info[1];
@@ -577,7 +582,7 @@ private static void load_access(string cfg, mapping ref) {
 	return to_int(read_file(file));
     }
 
-    string get_save_file_name(string file) {
+    string get_save_file_name() {
 	string str;
 
 	str = (string)this_player(1)->GetKeyName();
@@ -636,7 +641,6 @@ private static void load_access(string cfg, mapping ref) {
 	    {
 		mixed *obs;
 		int i;
-		function f;
 		gguy = this_player();
 		if(DEFAULT_PARSING){
 		    gcmd = this_player()->GetLastCommand();

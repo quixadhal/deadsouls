@@ -84,7 +84,7 @@ mixed CanPick(object who, string id) {
     return 1;
 }
 
-mixed CanUnlock(object who, string id) {
+varargs mixed CanUnlock(object who, string id, object key) {
     if( !GetLocked() ) {
 	return "It is already unlocked.";
     }

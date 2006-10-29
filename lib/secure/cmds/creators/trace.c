@@ -1,0 +1,22 @@
+#include <lib.h>
+#include <daemons.h>
+
+inherit LIB_DAEMON;
+
+mixed cmd(string args) {
+    int x;
+    if(!args) args = "0";
+    x = atoi(args);
+    if(!archp(previous_object())) return 0;
+    trace(x);
+    write("Set tracing level to "+x+".");
+    return 1;
+}
+
+int help() {
+    message("help", "Syntax: <trace [level]>\n\n"
+      "Displays function call tracing to you. See \"man trace\""
+      " for details on tracing levels.",
+      this_player());
+}
+

@@ -147,7 +147,7 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
 }
 
 mixed eventTalkRespond(object who, object targ, int cls, string msg, string lang) {
-    return 1;
+    return true(who,targ,cls,msg,lang);
 }
 
 varargs mixed eventSpeak(object target, int cls, string msg, string lang) {

@@ -22,7 +22,7 @@ static void process_channel(int fd, mixed *info){
 		send_error(info[2],info[3],"bad-pkt","Bad packet format.",info);
 		return;
 	    }
-	    if(!grepp(info[9],"\$N")){
+	    if(!grepp(info[9],"$N")){
 		info[9] = info[9] + " (from "+info[11]+"@"+info[2]+")";
 		info[10] = info[10] + " (from "+info[11]+"@"+info[2]+")";
 	    }
@@ -168,7 +168,14 @@ static void process_channel(int fd, mixed *info){
 	      "Unknown channel: "+info[6],info);
 	    return;
 	}
-	if(channels[info[6]][1]!=info[2]){ // error, not owner!
+	trr("test1: "+clean_fd(socket_address(fd)));
+	trr("test2: "+router_ip);
+	trr("test3: "+channels[info[6]][1]);
+	trr("test4: "+info[2]);
+
+	if(channels[info[6]][1]!=info[2] && 
+	  info[2] != mud_name() &&
+	  clean_fd(socket_address(fd)) != router_ip ){
 	    send_error(info[2],info[3],"not-allowed","Channel "+
 	      info[6]+" owned by: "+channels[info[6]][1],info);
 	    return;
@@ -176,29 +183,54 @@ static void process_channel(int fd, mixed *info){
 	// at this point, is being removed by the owner...
 	channel_update_counter++;
 	map_delete(channels,info[6]);
-	channel_updates[info[6]] = channel_update_counter;
+	map_delete(channel_updates,info[6]);
+	//channel_updates[info[6]] = channel_update_counter;
 	trr(info[3]+"@"+info[2]+" deleted the channel: "+info[6],"yellow");
 	log_file("router/server_log",timestamp()+" "+info[3]+"@"+info[2]+" deleted the channel: "+info[6]+"\n");
 	// broadcast an update saying that this channel is gone now
+	broadcast_chanlist(info[6]);
 	save_object(SAVE_ROUTER);
 	return;
     case "admin":
 	// add/delete muds from the 2 lists...
+	trr("test1: "+clean_fd(socket_address(fd)));
+	trr("test2: "+router_ip);
+	trr("test3: "+channels[info[6]][1]);
+	trr("test4: "+info[2]);
+	if(channels[info[6]][1]!=info[2] && 
+	  clean_fd(socket_address(fd)) != router_ip ){
+	    send_error(info[2],info[3],"not-allowed","Channel "+
+	      info[6]+" owned by: "+channels[info[6]][1],info);
+	    return;
+	}
 	if(!listening[info[6]]) listening[info[6]] = ({});
-	if(info[7]){ // add to list...
+	if(sizeof(info[7])){ // add to list...
+	    trr("planning to add.","white");
 	    channels[info[6]][2] += info[7];
 	    // if add to ban list, unlisten...
-	    if(channels[info[6]][0]==0) // type 0 means selective ban
+	    if(channels[info[6]][0]==0){ // type 0 means selective ban
+		trr(identify(info[7]) +" has been banned from "+info[6],"yellow");
 		listening[info[6]] -= info[7];
+	    }
+	    else trr(identify(info[7]) +" has been unbanned from "+info[6],"yellow");
 	}
-	if(info[8]){ // remove from list...
-	    channels[info[6]][2] += info[8];
-	    if(channels[info[6]][0]!=0) // type 0 means selective ban...
+	if(sizeof(info[8])){ // remove from list...
+	    trr("channels[info[6]]: "+identify(channels[info[6]]),"white");
+	    trr("planning to remove","white");
+	    trr("info: "+identify(info),"white");
+	    channels[info[6]][2] -= info[8];
+	    trr("channels[info[6]]: "+identify(channels[info[6]]), "white");
+	    if(channels[info[6]][0]!=0){ // type 0 means selective ban...
 		// selective allow and filtered are the same though...
 		// so if not selective ban, then act like selective allow...
 		// if removed from allow list, unlisten...
 		listening[info[6]] -= info[8];
+		trr(identify(info[8])+" has been banned from "+info[6],"yellow");
+	    }
+	    else trr(identify(info[8])+" has been unbanned from "+info[6],"yellow");
+	    //else listening[info[6]] += info[8];
 	}
+	trr("Channel data for "+info[6]+": "+identify(channels[info[6]]), "white");
 	save_object(SAVE_ROUTER);
 	return;
     case "listen": // mudname=info[2], channame=info[6], on_or_off=info[7]

@@ -20,7 +20,7 @@ private string CurrentWorkingDirectory;
 private string PreviousWorkingDirectory;
 private mapping Nicknames, Aliases, Xverbs; 
 private static int CWDCount, CWDBottom, CWDTop, CmdNumber; 
-private static string Prompt, CommandFail; 
+private static string Prompt; 
 private static string *Stack; 
 
 static void create() {
@@ -131,10 +131,6 @@ nomask static int cmd_alias(string str) {
 } 
 
 nomask static int cmd_unalias(string str) { 
-    string *a, *b;
-    string key, thing; 
-    int i;
-
     if(this_player() != this_object()) return 0; 
     if(!str) {
 	write("Unalias what?");
@@ -228,13 +224,13 @@ nomask static int cmd_pushd(string str) {
     return 1; 
 } 
 
-nomask static int cmd_popd(string str) { 
+nomask static int cmd_popd() { 
     if(this_player() != this_object()) return 0; 
     set_cwd(popd()); 
     return 1; 
 } 
 
-nomask static int cmd_pwd(string str) {
+nomask static int cmd_pwd() {
     if(!query_cwd()) message("system", "No current directory.", this_object());
     else message("system", query_cwd()+":", this_object());
     return 1;
@@ -498,7 +494,7 @@ int query_max_sp() { return 10; }
 
 string get_path() { return query_cwd(); }
 
-varargs int GetInvis(object ob) { return 0; }
+varargs int GetInvis() { return 0; }
 
 string GetKeyName() { return 0; }
 

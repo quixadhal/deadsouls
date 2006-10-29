@@ -5,7 +5,7 @@
  *    Version: @(#) nominate.c 1.1@(#) Last modified: 96/10/21
  */
 
-#pragma save_binary
+
 
 #include <lib.h>
 #include "include/nominate.h"

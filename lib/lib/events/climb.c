@@ -46,6 +46,7 @@ mixed CanClimb(object who, int type) {
     int array tmp;
     object dude;
     string thingname;
+
     dude=this_player();
     thingname=this_object()->GetKeyName();
 

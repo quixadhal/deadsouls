@@ -18,13 +18,13 @@
 #include <magic_protection.h>
 #include "include/body.h"
 
-inherit LIB_PERSIST;
 inherit LIB_POSITION;
 inherit LIB_UNDEAD;
 inherit LIB_CRAWL;
 inherit LIB_FLY;
 inherit LIB_MOUNT;
-inherit LIB_MASS;
+inherit LIB_BODY_MASS;
+inherit LIB_PERSIST;
 
 #define COLLAPSE_AT            10.0
 
@@ -76,7 +76,7 @@ varargs mixed eventBuy(mixed arg1, mixed arg2, mixed arg3){
 
 int GetMass(){
     int base_mass = RACES_D->GetRaceMass(GetRace());
-    return base_mass + mass::GetMass();
+    return base_mass + body_mass::GetBodyMass();
 }
 
 int GetSize(){
@@ -98,7 +98,7 @@ int GetBodyType(){
 }
 
 int SetMass(int i){
-    return mass::SetMass(i);
+    return body_mass::SetBodyMass(i);
 }
 
 int SetSize(int i){
@@ -1721,7 +1721,7 @@ varargs int eventDie(mixed agent) {
 	return hp;
     }
 
-    string GetAffectLong(object ob){
+    string GetAffectLong(){
 	object dude;
 	string ret;
 	int alclevel;

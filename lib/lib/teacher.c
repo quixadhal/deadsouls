@@ -74,8 +74,8 @@ static void create() {
     Students = ([]);
     SetNoClean(1);
     SetCommandResponses( ([
-	"teach" : (: eventTeach :),
-	"teach" : (: eventTeach :),
+	"teach" : (: eventTeachLanguage :),
+	"teach" : (: eventTeachLanguage :),
 	"default" : (: eventHelp :),
 	"help" : (: eventHelp :),
       ]) );
@@ -151,7 +151,7 @@ int eventHelp(object who, string unused) {
     return 1;
 }
 
-int eventTeach(object who, string verb, string language) {
+int eventTeachLanguage(object who, string verb, string language) {
     if( !who || environment(who) != environment() ) {
 	return 0;
     }

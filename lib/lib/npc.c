@@ -21,7 +21,6 @@ inherit LIB_LIVING;
 inherit LIB_MESSAGES;
 inherit LIB_MOVE;
 inherit LIB_OBJECT;
-inherit LIB_CRAWL;
 inherit LIB_SAVE;
 inherit LIB_DOMESTICATE;
 
@@ -29,7 +28,7 @@ private int CustomXP, ActionChance, CombatActionChance, AutoStand;
 private int MaximumHealth = 0;
 private mixed Encounter;
 private string *EnemyNames;
-private static int Level, Unique;
+private static int NPCLevel, Unique;
 private static mixed Die, Action, CombatAction;
 private static mapping Inventory;
 
@@ -533,17 +532,16 @@ void eventDescribeEnvironment(int brief) {
 	    return 1;
 	}
 
-	int eventReceiveObject() {
+	int eventReceiveObject(object who) {
 	    object ob;
 
 	    ob = previous_object();
-	    //tc("ob was in: "+identify(environment(ob)));
 	    if( !ob || !container::eventReceiveObject() ) return 0;
 	    AddCarriedMass((int)ob->GetMass());
 	    return 1;
 	}
 
-	int eventReleaseObject() {
+	int eventReleaseObject(object who) {
 	    object ob;
 
 	    ob = previous_object();
@@ -593,7 +591,7 @@ void eventDescribeEnvironment(int brief) {
 	    int x, i;
 
 	    cls = living::SetClass(cls);
-	    x = Level;
+	    x = NPCLevel;
 	    i = sizeof(skills = GetSkills());
 	    while(i--) {
 		int y;
@@ -608,7 +606,7 @@ void eventDescribeEnvironment(int brief) {
 	    string *tmp;
 	    int i;
 
-	    Level = x;
+	    NPCLevel = x;
 	    i = sizeof(tmp = GetSkills());
 	    while(i--) {
 		int y;
@@ -624,10 +622,10 @@ void eventDescribeEnvironment(int brief) {
 		SetStat(tmp[i], ((5-y)*10) + (3*x)/y, y);
 	    }
 	    eventCompleteHeal(GetMaxHealthPoints());
-	    return Level;
+	    return NPCLevel;
 	}
 
-	int GetLevel() { return Level; }
+	int GetLevel() { return NPCLevel; }
 
 	int SetCustomXP(int i){
 	    if(!i) i = 0;

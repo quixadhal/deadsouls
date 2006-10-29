@@ -1,4 +1,37 @@
----- 2.1r48 (unreleased) ---
+---- 2.1r54 (unreleased) ---
+- Fixed bug in router code that created problems when muds
+  originating from the same ip connected and reconnected.
+- Added commands: files, doctool, showfuns, createfix, findfun,
+  pk, find, chanremove, chancreate.
+- Got rid of confusing null long desc on doors when initfixed or reloaded.
+- Got rid of a null error message in reply command when the target 
+  is missing.
+- Fixed problem in help daemon that prevented race help from displaying.
+- Revolvers reimplemented.
+- Driver options now output verbose warnings about inherited function
+  conflicts and unused variables if you use local_options.debug at
+  compile time.
+- Eliminated various function conflicts in lib files.
+- Isolated unused variables in /lib file function arguments with
+  true() and false().
+- true() and false() now can take any number of arguments, and always
+  return 1 and 0, respectively.
+- Fixed bug in "home" command. 
+- mudos.cfg now has a time to swap value of 0, to disable
+  swapping. I've seen now more than one driver crash due to
+  a swap bug, and I'm not sure what the problem is, so until I do
+  know, swapping will be disabled by default.
+- Added RELOAD_D for objects that need to somehow get
+  themselves reloaded without incurring recursion problems.
+- ROUTER_D now resets every 25 hours or so.
+- The banish command now has an "-s" option to banish offensive
+  substrings from names.
+- Corrected problem in addraces command that distorted which races
+  could be used by players.
+- Modified make_workroom so that newbie creators who hose their
+  workroom can "restore workroom" without first having backed it up.
+- Fixed bug in snoop command that caused bizarre situation when
+  snooping yourself using your capitalized name.
 - "X looks around" and "checks possessions" messages are now suppressed
   in meeting rooms.
 - Fixed reporting of object mass so that both the mass of the container

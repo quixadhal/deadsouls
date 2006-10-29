@@ -188,7 +188,6 @@ int eventForce(string cmd) {
 
 int eventRetryCommand(string lastcmd){
     string virb, wrd, prep, rest,ret;
-    mixed err;
     if(previous_object() != master()) return 0;
     ParseRecurse++;
     if(ParseRecurse > 3){
@@ -251,7 +250,7 @@ string *GetSearchPath() { return SearchPath; }
 
 int GetForced() { return Forced; }
 
-string GetClient() { return 0; }
+int GetClient() { return 0; }
 
 string *GetCommandHist(){
     return CommandHist;

@@ -58,5 +58,7 @@ void help() {
       "saves time and avoids mud-wide lag, but may return outdated "
       "information."
       "\n\n"
+      "Note: This command is deprecated for finding files. For "
+      "searching the mud for files, use the \"find\" command instead.\n"
       "", this_player());
 }

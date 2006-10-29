@@ -9,7 +9,6 @@
 #define OB_DEED                         "/obj/deed"
 #define OB_ORDER                        "/obj/order"
 #define OB_ESTATE                       "/std/estate"
-#define __DIR__				"/domains/lpuni/"
 #define OB_POSTAL                       DIR_SECURE_OBJ "/post"
 #define ACCESS                          "/secure/lib/std/access"
 
@@ -47,7 +46,6 @@
 #define set_listen_string		SetListen
 #define set_listen 			SetListen
 #define set_edit_ok			valid_edit	
-#define POLITICS_D			"/secure/daemon/politics"
 #define set_search			SetSearch
 #define set_paralyzed			SetParalyzed
 #define set_pre_exit_functions		SetProperty

@@ -199,7 +199,7 @@ static void InputPassword(string pass, string cap) {
 }
 
 static void eventCreatePlayer(string cap) {
-    if( !((int)BANISH_D->valid_name(Name)) ) {
+    if( !((int)BANISH_D->valid_name(lower_case(Name))) ) {
 	receive(capitalize(cap) + " is not a valid name.\n");
 	receive(mud_name() + " requires that all names meet the following "
 	  "requirements:\n");

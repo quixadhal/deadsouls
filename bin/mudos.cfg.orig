@@ -57,7 +57,7 @@ time to clean up : 14400
 # Machine with too many players and too little memory: 900 (15 minutes)
 # Machine with few players and lot of memory: 10000
 # Machine with infinite memory: 0 (never swap).
-time to swap : 90000
+time to swap : 0
 
 # How many seconds until an object is reset again.
 time to reset : 900000

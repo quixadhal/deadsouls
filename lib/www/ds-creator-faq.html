@@ -13,7 +13,7 @@ Souls Creator FAQ</span><br style="font-family: monospace;">
 <br style="font-family: monospace;">
 <span style="font-family: monospace;">Written by Cratylus @ Frontiers,
 March 2006</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">Updated September 20 2006.</span><br
+<span style="font-family: monospace;">Updated October 1 2006.</span><br
  style="font-family: monospace;">
 <span
  style="font-weight: bold; text-decoration: underline; font-family: monospace;"><br>
@@ -316,9 +316,19 @@ works, but it won't update. This is driving me insane.</a><br
  style="font-family: monospace;">
 <br style="font-family: monospace;">
 <a style="font-family: monospace;" href="#2.68">2.68 What is
-SetEncounter supposed to do?</a><br style="font-family: monospace;">
+SetEncounter supposed to do</a><a style="font-family: monospace;"
+ href="#2.68">?</a><br>
 <br style="font-family: monospace;">
+</big></big><big><big><a style="font-family: monospace;" href="#2.69">2.69
+I keep getting "This should be edited by hand.Change cancelled."</a></big></big><br>
+<br>
+<a style="font-family: monospace;" href="#2.70"><span
+ style="font-family: monospace;"><big><big><span
+ style="font-family: monospace;">2.70 zOMGLOLERZ I did what said but no
+my workrom really IS broke!!1!</span></big></big></span></a><big><big><a
+ style="font-family: monospace;" href="ds-creator-faq.html#2.68"></a><br>
 <br style="font-family: monospace;">
+</big></big><big><big><br style="font-family: monospace;">
 <span style="font-weight: bold; font-family: monospace;">Section 3:
 Intermud and channel stuff</span><br style="font-family: monospace;">
 <br style="font-family: monospace;">
@@ -3688,7 +3698,7 @@ is pass by reference? What is pass by value?</span><br
  style="font-family: monospace;">
 <br style="font-family: monospace;">
 <span style="font-family: monospace;"> This is a slippery concept to
-grasp for some folks. It has</span><br style="font-family: monospace;">
+grasp for many folks. It has</span><br style="font-family: monospace;">
 <span style="font-family: monospace;">to do with the way that a
 variable is handled, when it interacts</span><br
  style="font-family: monospace;">
@@ -3789,11 +3799,9 @@ out 43 as the return value.</span><br style="font-family: monospace;">
 the function ends, its value</span><br style="font-family: monospace;">
 <span style="font-family: monospace;">resets and it is null. At the end
 of this process:</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">return value == 43</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">A == 42</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">B == NULL </span><br
+<span style="font-family: monospace;">return value == 43</span><span
+ style="font-family: monospace;">, A == 42</span>, <span
+ style="font-family: monospace;">B == NULL </span><br
  style="font-family: monospace;">
 <br style="font-family: monospace;">
 <br style="font-family: monospace;">
@@ -3812,15 +3820,14 @@ the previous example, we passed the</span><br
 <span style="font-family: monospace;">value of A to SimpleFunction.
 Instead, we will now pass </span><span
  style="font-style: italic; font-weight: bold; font-family: monospace;">a
-reference to A</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">to the function. For all
-practical purposes we are not sending 42.</span><br
- style="font-family: monospace;">
+reference to A </span><span style="font-family: monospace;">to the
+function. For all
+practical purposes we are not sending 42.</span> <span
+ style="font-family: monospace;">We are sending the variable A
+itself.<br>
 <br style="font-family: monospace;">
-<span style="font-family: monospace;">We are sending the variable A
-itself.</span><br style="font-family: monospace;">
-<br style="font-family: monospace;">
-<span style="font-family: monospace;">The implications are important.
+</span><span style="font-family: monospace;">The implications are
+important.
 When we feed A to SimpleFunction,</span><br
  style="font-family: monospace;">
 <span style="font-family: monospace;">B no longer means "a local
@@ -3833,15 +3840,12 @@ the function, as written, reads</span><br
 reference you are actually performing</span><br
  style="font-family: monospace;">
 <span style="font-family: monospace;">the operation on the referenced
-variable itself, so what it's actually</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">doing is A = A +1. At the end of
+variable itself, so what it's actually</span><span
+ style="font-family: monospace;"> doing is A = A +1. At the end of
 this process:</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">return value == 43</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">A == 43</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">B == NULL</span><br
+<span style="font-family: monospace;">return value == 43, </span><span
+ style="font-family: monospace;">A == 43, </span><span
+ style="font-family: monospace;">B == NULL</span><br
  style="font-family: monospace;">
 <br style="font-family: monospace;">
 <br style="font-family: monospace;">
@@ -4056,7 +4060,60 @@ attack, or perhaps something</span><br style="font-family: monospace;">
  style="font-family: monospace;">
 <br style="font-family: monospace;">
 <span style="font-family: monospace;">See /domains/town/npc/orc.c for
-an example.</span><br style="font-family: monospace;">
+an example.<br>
+<br>
+<br>
+</span></big></big><big><big><span style="font-family: monospace;"><a
+ name="2.69"></a><span
+ style="font-weight: bold; text-decoration: underline;">I keep getting
+"This should be edited by hand. Change cancelled."</span></span></big></big><br>
+<br>
+<span style="font-family: monospace;"><big><big><span
+ style="font-family: monospace;">The QCS is carefully designed and
+calibrated to prevent you from<br>
+creating broken objects or damaging working ones. Even so, it is<br>
+possible to make very inconvenient mistakes with it.<br>
+<br>
+One of the most common ways for a newbie to shoot himself in the<br>
+foot is by altering their workroom in a way he doesn't understand,<br>
+then being unable to restore it to its original state.<br>
+<br>
+The workroom therefore has a feature that prevents it from being<br>
+modified with the QCS. If you go to your workroom and type<br>
+<span style="font-weight: bold;">more here</span> , you will see that
+SetNoModify(1) is in the file. This<br>
+makes the QCS refuse to make changes to the file. <br>
+<br>
+To make changes to your workroom, either use the mud's <a
+ href="http://dead-souls.net/editor.html">line editor</a>,<br>
+or use the following command while standing in your workroom:<br>
+<span style="font-weight: bold;">modify here setnomodify 0</span><br>
+<br>
+By setting SetNoModify(0), you enable QCS to make changes to the room.<br>
+<br>
+Note that asking for help fixing a workroom you screwed up<br>
+is an excellent way to brand yourself a Hopeless Newbie.<br>
+<br>
+<br>
+<a name="2.70"></a><span
+ style="font-weight: bold; text-decoration: underline;">zOMGLOLERZ I
+did what said but no my workrom really IS broke!!1!</span><br>
+<br>
+In the inevitable case of someone damaging their workroom despite<br>
+my warnings and safeguards, your homedir contains a default<br>
+backup workroom file. To restore your workroom to its original,<br>
+working form, type: <br>
+<br>
+<span style="font-weight: bold;">cd</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">mv workroom.c workroom.fukt1</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">cp workroom.bak workroom.c</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">update workroom.c</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">home</span><br>
+<br>
+</span><span style="font-family: monospace;"></span></big></big></span><big><big>
 <br style="font-family: monospace;">
 </big></big>
 <hr style="width: 100%; height: 2px; font-family: monospace;"><big><big><span
