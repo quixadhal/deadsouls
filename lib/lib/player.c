@@ -118,7 +118,6 @@ int eventDisplayStatus() {
 }
 
 static void eventDestroyUndead(object agent) {
-    if(agent) true();
 }
 
 varargs int eventDie(mixed agent) {
@@ -496,8 +495,6 @@ int Setup() {
 	if(file_exists(home+".c")) 
 	    this_object()->eventMoveLiving(home);
 
-	//foreach(string chan in CHAT_D->GetChannels())
-	//this_object()->AddChannel(chan);
 	this_object()->AddChannel( ({"admin", "error", "cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat"}) );
 
 	SetShort("First Admin $N");
@@ -535,7 +532,6 @@ string *SetMuffed(string *muffed){
 
 string *AddMuffed(string muffed){
     string tmpstr;
-    //tc("foo: "+INTERMUD_D);
     if(!muffed || muffed == "" || !sizeof(muffed)) return Muffed;
     if(grepp(muffed,"@")) {
 	tmpstr = INTERMUD_D->GetMudName(muffed[1..sizeof(muffed)-1]);
@@ -848,8 +844,3 @@ varargs int eventTrain(string skill, int points) {
     }
     return 1;
 }
-
-//string ChangeClass(string cl) {
-//	error("Players cannot change class.\n");
-//	return GetClass();
-//   }

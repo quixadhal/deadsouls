@@ -6,7 +6,7 @@
  *    Last modified: 96/10/20
  */
 
-#pragma save_binary
+
 
 #include <lib.h>
 #include <climb.h>

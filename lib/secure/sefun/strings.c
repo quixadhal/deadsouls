@@ -398,11 +398,6 @@ varargs mixed replace_matching_line(string target, string substring, string repl
     tag_it = 0;
     omit = 0;
 
-    /* This is a screwup. It should not be necessary. The exclude
-    * string should work.
-    */
-    true(exclude);
-
     if(!target || !file_exists(target)) true();
     else target = read_file(target);
     if(!target) return 0;
@@ -647,7 +642,6 @@ int check_string_length(string str){
 int print_long_string(object who, string str){
     string tfile, ret = "";
     string *lines;
-    true(who);
     tfile = generate_tmp();
     lines = explode(str,"\n");
     foreach(string line in lines){

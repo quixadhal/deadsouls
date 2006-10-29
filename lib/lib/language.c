@@ -125,7 +125,7 @@ int GetNextLevel(string lang, int curr_level) {
     return y;
 }
 
-int GetStatLevel(string stat) { return false(stat); }
+int GetStatLevel(string stat) { return 0; }
 
 string GetNativeLanguage() {
     mapping val;

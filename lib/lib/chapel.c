@@ -76,7 +76,6 @@ mixed eventMarry(object who, object spouse1, object spouse2) {
 }
 
 mixed eventSacrifice(object who, object what, string deus) {
-    true(what,deus);
     who->eventPrint("You attempt to make a sacrifice, but nothing happens.");
     return 1;
 }

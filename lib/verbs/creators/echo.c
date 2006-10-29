@@ -6,7 +6,7 @@
  *    created by Descartes of Borg 951114
  */
 
-#pragma save_binary
+
 
 #include <lib.h>
 #include <message_class.h>

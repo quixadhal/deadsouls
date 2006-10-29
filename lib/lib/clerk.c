@@ -27,7 +27,6 @@ void create(){
 }
 
 int eventRequestDivorce(mixed arg1, mixed arg2, mixed arg3){
-    true(arg2, arg3);
     this_object()->performDivorce(arg1);
     return 1;
 }

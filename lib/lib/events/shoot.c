@@ -14,7 +14,6 @@ int MustWield(int i){
 
 int eventShoot(mixed shooter, mixed target){
     string tmp;
-    true(shooter);
     if(target && objectp(target)){
 	tmp=target->GetName();
 	target = tmp;
@@ -50,12 +49,10 @@ int CanShoot(object shooter, string target){
 }
 
 int direct_shoot_obj_at_str(object shooter, string target){
-    true(shooter,target);
     return 1;
 }
 
 int indirect_shoot_wrd_with_wrd(mixed shooter,mixed target){
-    true(shooter,target);
     return 1;
 }
 

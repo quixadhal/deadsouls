@@ -4,7 +4,7 @@
  *    created by Blitz@Dead Souls
  */
 
-#pragma save_binary
+
 
 #include <lib.h>
 #include <rounds.h>

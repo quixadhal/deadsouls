@@ -7,12 +7,10 @@
  */
 
 varargs mixed CanDrink(object who, string substance) {
-    true(who,substance);
     return 1;
 }
 
 varargs mixed eventDrink(object who, string substance) {
-    true(who,substance);
     return 1;
 }
 

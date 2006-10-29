@@ -1,4 +1,4 @@
-#pragma save_binary
+
 
 #include <lib.h>
 #include "include/use.h"

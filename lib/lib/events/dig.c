@@ -30,7 +30,6 @@ mixed SetDig(mixed val) {
 }
 
 mixed CanDig(object who) {
-    true(who);
     if( !Dig ) {
 	return 0;
     }

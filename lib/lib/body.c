@@ -71,7 +71,7 @@ static void create() {
 varargs mixed eventBuy(mixed arg1, mixed arg2, mixed arg3){
     //This function will hopefully get overridden where appropriate.
     write(capitalize(this_object()->GetShort())+" isn't buying anything from you.");
-    return true(arg1,arg2,arg3);
+    return 1;
 }
 
 int GetMass(){
@@ -231,7 +231,7 @@ void ParseHook(string str){
 
 /************      /lib/body.c Modal Methods Section      ************/
 
-mixed CanRemoveItem(object ob) { return true(ob); }
+mixed CanRemoveItem(object ob) { return 1; }
 
 /************      /lib/body.c Events Section      ************/
 
@@ -1494,7 +1494,7 @@ varargs int eventDie(mixed agent) {
 	else return HealthPoints;
     }
 
-    varargs int GetMaxHealthPoints(string limb) { return false(limb); }
+    varargs int GetMaxHealthPoints(string limb) { return 0; }
 
     /* int AddMagicPoints(int x)
      * int x - the number of magic points being added, may be negative
@@ -1649,7 +1649,7 @@ varargs int eventDie(mixed agent) {
 
     int GetPoison() { return Poison; }
 
-    string GetResistance(int type) { true(type); return "none"; }
+    string GetResistance(int type) { return "none"; }
 
     string GetRace() { return 0; }
 

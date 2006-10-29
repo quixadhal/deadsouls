@@ -13,8 +13,7 @@ inherit LIB_DAEMON;
 int cmd( string a )
 {
     string file, filename;
-    mixed err, ret;
-    string x,y;
+    mixed ret;
 
     if(!member_group(previous_object(), PRIV_SECURE)) {
 	log_file("adm/eval", query_privs(previous_object())

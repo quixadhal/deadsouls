@@ -7,9 +7,9 @@ int copper,cents,silver,electrum,gold,dollars,platinum;
 int PutCoins(object who);
 
 int Payment(object who, int value) {
-    return true(who, value);
+    return 1;
 }
 
 int PutCoins(object who) {
-    return true(who);
+    return 1;
 }

@@ -1,4 +1,9 @@
----- 2.1r51 (unreleased) ---
+---- 2.1r54 (unreleased) ---
+- Fixed bug in router code that created problems when muds
+  originating from the same ip connected and reconnected.
+- Added commands: files, doctool, showfuns, createfix, findfun,
+  pk, find, chanremove, chancreate.
+- Got rid of confusing null long desc on doors when initfixed or reloaded.
 - Got rid of a null error message in reply command when the target 
   is missing.
 - Fixed problem in help daemon that prevented race help from displaying.
@@ -23,8 +28,6 @@
   substrings from names.
 - Corrected problem in addraces command that distorted which races
   could be used by players.
-- Added commands: files, doctool, showfuns, createfix, findfun, 
-  pk, find.
 - Modified make_workroom so that newbie creators who hose their
   workroom can "restore workroom" without first having backed it up.
 - Fixed bug in snoop command that caused bizarre situation when

@@ -9,7 +9,6 @@
 #include <lib.h>
 
 inherit LIB_LOOK_IN;
-//inherit LIB_RADIANCE;
 inherit LIB_ADDSTUFF;
 
 int SetOpacity(int x){
@@ -57,21 +56,17 @@ int GetRadiantLight(int ambient) {
 }
 
 int CanReceive(object ob) {
-    if(!ob) true();
     return 1;
 }
 
 int CanRelease(object ob) {
-    if(!ob) true();
     return 1;
 }
 
 int eventReceiveObject(object ob) {
-    if(!ob) true();
     return !(!previous_object());
 }
 
 int eventReleaseObject(object ob) {
-    if(!ob) true();
     return !(!previous_object());
 }

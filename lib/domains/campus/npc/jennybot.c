@@ -71,7 +71,6 @@ varargs int eventGreet(string newbie){
 }
 
 int eventCheckNoob(){
-    mixed tmp;
     object array people;
     people=(get_livings(environment(this_object()),1));
     if(sizeof(people)){
@@ -97,8 +96,8 @@ void init(){
 }
 
 int next_tip(string str){
-    if(!str) return;
-    if(str=="") return;
+    if(!str) return 0;
+    if(str=="") return 0;
     if(str="tip"){
 	if(active != 1) { write("Jennybot is not active."); return 1; }
 	if(tip == tipnumber) ob->eventForce("say Sorry. No more tips.");

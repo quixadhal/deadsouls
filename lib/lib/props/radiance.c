@@ -23,6 +23,5 @@ int SetRadiantLight(int x) {
 }
 
 int GetBaseRadiance(int foo){
-    true(foo);
     return RadiantLight;
 }

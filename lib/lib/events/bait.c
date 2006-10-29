@@ -29,7 +29,6 @@ string array GetSave() {
 }
 
 mixed CanBait(object who) {
-    true(who);
     if( GetBait() ) {
 	return "There is already bait on " + GetDefiniteShort() + ".";
     }
@@ -37,7 +36,6 @@ mixed CanBait(object who) {
 }
 
 int eventBait(object who, object bait) {
-    true(who);
     AddBait(bait->GetBaitStrength());
     return 1;
 }

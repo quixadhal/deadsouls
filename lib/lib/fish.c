@@ -19,7 +19,7 @@ static void create() {
     Fight = 0;
 }
 
-int eventCatch(object who) { return true(who); }
+int eventCatch(object who) { return 1; }
 
 int SetFight(int x) { return (Fight = x); }
 

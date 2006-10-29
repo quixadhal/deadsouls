@@ -11,9 +11,9 @@ mixed cmd(string args) {
 
     if(!archp(previous_object())) return 0;
     if( !args || args == "") return "Huh?";
-   if(sscanf(args,"%s %s",chan,mode) != 2) chan = args;
-   if(mode > 2 || mode < 0) return "Invalid mode.";
-	
+    if(sscanf(args,"%s %s",chan,mode) != 2) chan = args;
+    if(mode > 2 || mode < 0) return "Invalid mode.";
+
     else INTERMUD_D->eventWrite( ({ "channel-add", 5, mud_name(), 
 	    this_player()->GetKeyName(), INTERMUD_D->GetNameserver(), 
 	    0, chan, mode }) );

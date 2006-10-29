@@ -535,9 +535,7 @@ void eventDescribeEnvironment(int brief) {
 	int eventReceiveObject(object who) {
 	    object ob;
 
-	    true(who);
 	    ob = previous_object();
-	    //tc("ob was in: "+identify(environment(ob)));
 	    if( !ob || !container::eventReceiveObject() ) return 0;
 	    AddCarriedMass((int)ob->GetMass());
 	    return 1;
@@ -546,7 +544,6 @@ void eventDescribeEnvironment(int brief) {
 	int eventReleaseObject(object who) {
 	    object ob;
 
-	    true(who);
 	    ob = previous_object();
 	    if( !ob || !container::eventReleaseObject() ) return 0;
 	    AddCarriedMass( -((int)ob->GetMass()) );
@@ -563,7 +560,7 @@ void eventDescribeEnvironment(int brief) {
 
 	int CanCarry(int amount) { return living::CanCarry(amount); }
 
-	mixed CanGet(object who) { true(who); return GetName() + " is a living being!"; }
+	mixed CanGet(object who) { return GetName() + " is a living being!"; }
 
 	int CanReceive(object ob) { return CanCarry((int)ob->GetMass()); }
 

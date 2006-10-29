@@ -1,6 +1,6 @@
 #include <lib.h>
 #include <network.h>
-#include <socket_err.h>
+//#include <socket_err.h>
 inherit LIB_ITEM;
 
 int attempting, connected, socket ;

@@ -43,8 +43,6 @@ varargs mapping SetConsult(mixed key, mixed desc) {
 varargs mixed CanConsult(object who, string component) {
     mixed val;
 
-    true(who);
-
     if( !component ) {
 	component = "default";
     }
@@ -97,11 +95,9 @@ varargs mixed eventConsult(object who, string component) {
 }
 
 mixed direct_consult_obj(object target) {
-    true(target);
     return CanConsult(this_player());
 }
 
 mixed direct_consult_str_on_obj(string str, object target) {
-    true(target);
     return CanConsult(this_player(), remove_article(lower_case(str)));
 }

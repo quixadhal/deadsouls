@@ -13,7 +13,7 @@ int direct_detect_wrd_in_obj(string word) {
 	this_player()->eventPrint("You need better access to it.");
 	return 0;
     }
-    else return true(word);
+    else return 1;
 }
 
 mixed eventDetect(object who, string str, int ability) {

@@ -6,7 +6,7 @@
  *    created by Descartes of Borg 960113
  */
 
-#pragma save_binary
+
 
 #include <lib.h>
 #include "include/drop.h"

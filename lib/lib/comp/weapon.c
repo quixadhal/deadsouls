@@ -144,7 +144,7 @@ int eventDeteriorate(int type) {
 	    SetClass(x-1);
 	}
     }
-    return true(type);
+    return 1;
 }
 
 mixed eventEquip(object who, string array limbs) {

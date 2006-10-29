@@ -48,7 +48,6 @@ static string SetFuelType(string str) {
 
 
 varargs string GetLong(string val) {
-    true(val);
     /*    string str;
     if(!(str = item::GetLong(val)) || str == "") return str;
     else return sprintf("%s%s", str, (GetFuel() ? "" :
