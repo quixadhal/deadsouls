@@ -64,7 +64,7 @@ void new_groups() {
     Groups = tmp;
 }
 
-private static void load_access(string cfg, mapping ref) {
+private static void load_access(string cfg, mapping resource) {
     string *lines;
     string file;
 
@@ -87,7 +87,7 @@ private static void load_access(string cfg, mapping ref) {
 	  if( sscanf(line, "(%s) %s", fl, ac) != 2 ) {
 	      error("Error in loading config file " + cfg + ".");
 	  }
-	  ref[fl] = explode(ac, ":");
+	  resource[fl] = explode(ac, ":");
       }
   }
 

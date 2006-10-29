@@ -5,7 +5,7 @@ void create();
 void new_read();
 void new_write();
 void new_groups();
-static private void load_access(string cfg, mapping ref);
+static private void load_access(string cfg, mapping resource);
 void flag(string str);
 string *epilog(int x);
 string privs_file(string file);
