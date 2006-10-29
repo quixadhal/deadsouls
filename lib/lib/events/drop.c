@@ -89,7 +89,6 @@ mixed eventDrop(object who) {
 }
 
 mixed direct_drop_obj(object target) {
-    true(target);
     if( environment() != this_player() ) {
 	return "#You don't have that to drop.";
     }

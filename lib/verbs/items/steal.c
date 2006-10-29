@@ -5,7 +5,7 @@
  *    created by Descartes of Borg 951218
  */
 
-#pragma save_binary
+
 
 #include <lib.h>
 #include <rounds.h>

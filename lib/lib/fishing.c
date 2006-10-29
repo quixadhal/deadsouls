@@ -105,7 +105,6 @@ void heart_beat() {
 }
 
 mixed CanCast(object who, string where) {
-    true(who, where);
     if( (int)this_player()->GetInCombat() ) 
 	return "You are too busy to fish!";
     if( Fishing[(string)this_player()->GetKeyName()] )
@@ -116,7 +115,6 @@ mixed CanCast(object who, string where) {
 }
 
 mixed CanStop(object who, string str) {
-    true(who);
     if( str != "fishing" ) return 0;
     str = (string)this_player()->GetKeyName();
     if( !Fishing[str] ) return "You are not fishing!";
@@ -129,7 +127,6 @@ int CanRelease(object who){
 }
 
 mixed eventCast(object who, object pole, string str) {
-    true(str);
     send_messages(({ "cast", "start" }),
       "$agent_name $agent_verb $agent_possessive " +
       pole->GetKeyName() + " and $agent_verb fishing.", who, 0,
@@ -166,7 +163,6 @@ static void eventCatch(object who, string fish, object pole) {
 }
 
 mixed eventStop(object who, string str) {
-    true(str);
     RemoveFishing(this_player());
     message("my_action", "You stop fishing.", who);
     message("other_action", (string)who->GetName() + " stops "

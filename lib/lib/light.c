@@ -38,7 +38,6 @@ string GetShort() {
 }
 
 mixed CanLight(object who) {
-    true(who);
     if( GetLit() ) {
 	return "#It is already lit.";
     }
@@ -64,7 +63,6 @@ mixed eventDarken() {
 }
 
 varargs mixed eventLight(object who, object tool) {
-    true(who,tool);
     SetLit(1);
     return 1;
 }

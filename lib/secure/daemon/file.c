@@ -12,9 +12,9 @@ string globaltemp;
 static mixed Report();
 
 static private void validate() {
-    if(!this_player()) return 0;
     if( !((int)master()->valid_apply(({ "ASSIST" }))) )
-	error("Illegal attempt to access FILE_D: "+get_stack()+" "+identify(previous_object(-1)));
+	log_file("adm/file","Illegal attempt to access FILE_D: "+get_stack()+" "+identify(previous_object(-1)));
+    error("Illegal attempt to access FILE_D: "+get_stack()+" "+identify(previous_object(-1)));
 }
 
 void heart_beat(){
@@ -23,7 +23,6 @@ void heart_beat(){
 	    return ;
 	}
     }
-    //shout("SYSTEM: File scan complete.");
     Report();
     set_heart_beat(0);
 }
@@ -33,6 +32,7 @@ mixed ReadDir(string str){
     int iteration = 1;
 
     validate();
+    log_file("adm/file","FILE_D ReadDir accessed and run by: "+identify(previous_object(-1)));
 
     if(!str ||  !sizeof(str)) str = "/";
 
@@ -58,6 +58,7 @@ mixed ReadDir(string str){
 }
 
 static mixed Report(){
+    log_file("adm/file","FILE_D Report accessed and run by: "+identify(previous_object(-1)));
     foreach(mixed arr in call_out_info()){
 	if(arr[0] == this_object()){
 	    write("File scan is not complete.");

@@ -154,12 +154,10 @@ mixed indirect_give_obj_to_liv(object item) {
 }
 
 mixed indirect_give_obs_to_liv(object *items) {
-    if(items) true();
     return 1;
 }
 
 mixed direct_give_liv_wrd_wrd(object targ, string num, string curr) {
-    if(targ) true();
     return direct_give_wrd_wrd_to_liv(num, curr);
 }
 
@@ -193,7 +191,6 @@ mixed direct_steal_wrd_from_liv(string wrd) {
 mixed indirect_steal_obj_from_liv(object item, mixed args...) {
     mixed tmp;
 
-    if(args) true();
     if( environment()->GetProperty("no attack") )
 	return "Mystical forces prevent your malice.";
     if( !item ) return 1;
@@ -384,7 +381,6 @@ int CanCarry(int amount) { return carry::CanCarry(amount); }
 varargs mixed CanReceiveHealing(object who, string limb) {
     int max, hp;
 
-    if(who) true();
     max = GetMaxHealthPoints(limb);
     hp = GetHealthPoints(limb);
     if( (max-hp) < max/20 ) {

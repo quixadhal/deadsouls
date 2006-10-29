@@ -11,8 +11,6 @@
 varargs mixed CanBuryWith(object who, object what) {
     int fp = functionp(environment(who)->GetBury());
 
-    true(what);
-
     if( !fp || (fp & FP_OWNER_DESTED) ) {
 	return "This is not a very good place for burying.";
     }
@@ -66,7 +64,6 @@ varargs mixed eventDigWith(object who, object what) {
 }
 
 mixed direct_bury_str_with_obj(string str) {
-    true(str);
     if( environment() != this_player() ) {
 	return "#You must have it to dig with it!";
     }

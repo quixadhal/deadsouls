@@ -355,7 +355,6 @@ string process_input(string str) {
 } 
 
 nomask static void process_request(string request, string xtra) {
-    true(xtra);
     switch(request) {
     case "ALIAS":
 	receive("<ALIAS>[n,go north] [s,go south] [e,go east] [w,go west] "

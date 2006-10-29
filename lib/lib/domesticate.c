@@ -162,6 +162,5 @@ string *SetTrainedSkills(string *skills){
 
 string eventCommandNPC(object who, string cmd){
     //if(this_object()->GetStat("intelligence") < 10
-    true(who,cmd);
     return "foo";
 }

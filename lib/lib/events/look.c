@@ -105,8 +105,6 @@ varargs mixed AddItem(mixed item, mixed val) {
 
 //TMI2 back-compat hack
 mixed AddItem_func(mixed foo){
-    //tc("foo:"+identify(foo),"blue");
-    //tc("typeof foo:"+typeof(foo),"blue");
     foreach(mixed key, mixed val in foo){
 	look_globalval = val;
 	AddItem(key, (: look_globalval :) );
@@ -115,11 +113,7 @@ mixed AddItem_func(mixed foo){
 }
 
 mixed SetItem_func(mixed foo){
-    //tc("foo:"+identify(foo),"blue");
-    //tc("typeof foo:"+typeof(foo),"blue");
     foreach(mixed key, mixed val in foo){
-	//tc("key: "+identify(key));
-	//tc("val: "+identify(val));
 	look_globalval = val;
 	//f =  call_other(this_object(), look_globalval);
 	f =  functionify(look_globalval);
@@ -142,10 +136,8 @@ varargs mixed GetItem(string item, object who) {
     }
     else if( functionp(val) ) {
 	if( functionp(val) & FP_OWNER_DESTED ) {
-	    //tc("Oddness.");
 	    return "An error occurred evaulating a function pointer.";
 	}
-	//tc("Goodness.");
 	return evaluate(val, who, item);
     }
     else {

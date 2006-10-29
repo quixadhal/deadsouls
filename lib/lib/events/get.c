@@ -60,7 +60,6 @@ static void create() {
 }
 
 mixed direct_get_obj(object target) {
-    true(target);
     if( environment() != environment(this_player()) ) {
 	string str = GetShort();
 
@@ -76,7 +75,6 @@ mixed direct_get_obj_out_of_obj(object target, object src) {
     object env;
     string str;
 
-    true(target,src);
     env = environment();
     if( !(str = GetShort()) ) str = "It";
     else str = capitalize(str);

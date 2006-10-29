@@ -122,7 +122,7 @@ string array GetSave() {
 mixed CanRepair(object who) {
     if( GetBroken() ) return 1;
     else if( !GetMaxClass() ) return "It doesn't need repairing.";
-    else return true(who);
+    else return 1;
 }
 
 mixed CanSteal(object who) {
@@ -133,7 +133,7 @@ mixed CanSteal(object who) {
 }
 
 varargs mixed CanThrow(object who, object target) {
-    return true(who,target);
+    return 1;
 }
 
 /* ********************* item.c events ************************ */ 
@@ -254,7 +254,7 @@ varargs mixed eventRepair(object who, int strength, int type) {
 	}
 	else break;
     }
-    return true(who,strength,type);
+    return 1;
 }
 
 mixed eventShow(object who, string component) {

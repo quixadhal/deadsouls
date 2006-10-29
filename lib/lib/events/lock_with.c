@@ -32,11 +32,10 @@ mixed array GetSave() {
 }
 
 mixed eventLockLock(object who, object what) {
-    return true(who,what);
+    return 1;
 }
 
 mixed eventUnlockLock(object who, object what) {
-    true(what);
     if( GetDisableChance() > random(100) ) {
 	SetDisabled(1);
 	who->eventPrint(capitalize(GetDefiniteShort()) + " gets twisted "
@@ -47,7 +46,6 @@ mixed eventUnlockLock(object who, object what) {
 }
 
 mixed indirect_lock_obj_with_obj(object target, object key, string id) {
-    true(target,key,id);
     if( environment() != this_player() ) {
 	return "#You don't have " + GetDefiniteShort() + "!";
     }
@@ -58,7 +56,6 @@ mixed indirect_lock_obj_with_obj(object target, object key, string id) {
 }    
 
 mixed indirect_unlock_obj_with_obj(object target, object key, string id) {
-    true(target,key,id);
     if( environment() != this_player() ) {
 	return "#You don't have " + GetDefiniteShort() + "!";
     }

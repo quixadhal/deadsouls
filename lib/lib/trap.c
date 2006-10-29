@@ -67,7 +67,6 @@ mixed CanCapture(object who, object target) {
 }
 
 mixed CanFree(object who, object target) {
-    true(who);
     if( environment(target) != this_object() ) {
 	return "#" + target->GetName() + " is not in " + GetShort() + ".";
     }

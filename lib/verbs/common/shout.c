@@ -6,7 +6,7 @@
  *    created by Descartes of Borg 951119
  */
 
-#pragma save_binary
+
 
 #include <lib.h>
 #include <talk_type.h>

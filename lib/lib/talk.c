@@ -66,7 +66,7 @@ varargs mixed CanSpeak(object target, string verb, string msg, string lang) {
 	if( (int)target->GetBlocked("tell") )
 	    return (string)target->GetName() + " is blocking all tells.";
     }
-    return true(verb,msg);
+    return 1;
 }
 
 varargs mixed eventHearTalk(object who, object target, int cls, string verb,

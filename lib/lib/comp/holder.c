@@ -56,12 +56,11 @@ varargs string GetInternalDesc() {
 }
 
 static mixed array AddSave(mixed array vars) {
-    true(vars);
     return ({});
 }
 
 int SetSaveRecurse(int x) {
-    return false(x);
+    return 0;
 }
 
 int CanReceive(object ob) {

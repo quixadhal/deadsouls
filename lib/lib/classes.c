@@ -111,7 +111,7 @@ string SetClan(string clan) { return (Clan = clan); }
 
 string GetClan() { return Clan; }
 
-int GetBaseStatLevel(string stat) { return false(stat); }
+int GetBaseStatLevel(string stat) { return 0; }
 
 int SetMorality(int x) { return (Morality = x); }
 

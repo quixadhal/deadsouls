@@ -39,7 +39,6 @@ int eventBreak() {
 }
 
 mixed CanCast(object who) {
-    true(who);
     if( GetBroken() )
 	return "You cannot cast a broken " + strip_article(GetShort()) + "!";
     else return 1;
@@ -94,4 +93,4 @@ int GetStrength() { return PoleStrength; }
 
 /* virtual functions */
 
-mixed AddSave(mixed *vars) { true(vars); return ({}); }
+mixed AddSave(mixed *vars) { return ({}); }

@@ -6,7 +6,7 @@
  *  a check for poison uses put in by BillGates 961202
  */
 
-#pragma save_binary
+
 
 #include <lib.h>
 #include <rounds.h>

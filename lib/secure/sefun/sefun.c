@@ -233,7 +233,7 @@ object *livings() {
     return efun::livings() - (efun::livings() - objects());
 }
 
-void set_privs(object ob, string str) { true(ob,str); return; }
+void set_privs(object ob, string str) { return; }
 
 void set_eval_limit(int x) {
     if(previous_object() != master()) return;

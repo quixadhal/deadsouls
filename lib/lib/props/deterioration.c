@@ -50,7 +50,6 @@ string array GetSave() {
 
 // args d and l not used
 int eventReceiveDamage(object agent, int type, int amt, int d, mixed array l) {
-    true(agent,d,l);
     DamagePoints -= (amt * 5);
     if( DamagePoints < 1 ) {
 	Deterioration++;

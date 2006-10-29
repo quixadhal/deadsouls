@@ -11,11 +11,10 @@ inherit LIB_DAEMON;
 
 mixed cmd(string args) {
     mixed *arg_arr;
-    string *all_args;
     function f;
     object target;
     mixed val;
-    string arg_targ, arg_func, err, this_arg;
+    string arg_targ, arg_func, err;
     int i, maxi;
 
     if(!member_group(previous_object(), PRIV_SECURE)) {

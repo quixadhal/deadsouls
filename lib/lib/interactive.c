@@ -460,7 +460,6 @@ void eventDescribeEnvironment(int brief) {
 	    class marriage m;
 	    object env;
 
-	    if(who || to_whom) true();
 	    if( (env = previous_object()) != environment() ) return 0;
 	    m = new(class marriage);
 	    m->Spouse = (string)to_whom->GetCapName();

@@ -62,7 +62,7 @@ int SetUndead(int x) {
 
 /*****                  Events                   *****/
 mixed eventBite(object target) {
-    return false(target);
+    return 0;
 }
 
 mixed eventTurn(object who) {

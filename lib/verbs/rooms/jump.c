@@ -13,7 +13,7 @@
  *    created by Descartes of Borg 960117
  */
 
-#pragma save_binary
+
 
 #include <lib.h>
 #include <jump.h>

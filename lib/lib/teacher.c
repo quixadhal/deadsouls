@@ -140,7 +140,6 @@ mapping GetStudents() { return copy(Students); }
 /**** high-level events ****/
 
 int eventHelp(object who, string unused) {
-    true(unused);
     eventForce("speak I am not sure of what you are "
       "asking, " + (string)who->GetName() + ".");
     if(sizeof( GetTeachingLanguages() )){
@@ -221,7 +220,6 @@ int eventStart(object who, string language) {
 }
 
 int eventContinue(object who, string language, int x) {
-    true(x);
     who->eventPrint("You listen intently as " + GetName()
       + " continues " + possessive(this_object())
       + " dissertation on " + language + ".");

@@ -130,7 +130,6 @@ mixed GetCombatMove(string type, int skill) {
     int i;
     mixed foo;
 
-    true(type);
     if( skill < random(100) ) return 0;
     if( !i = sizeof(MOVE_TYPES) ) return 0;
     foo = MOVE_TYPES[ random(i) ];

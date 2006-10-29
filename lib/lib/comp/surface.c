@@ -7,5 +7,5 @@ void create(){
 }
 
 int eventPutOn(object player, object item){
-    return true(player,item);
+    return 1;
 }

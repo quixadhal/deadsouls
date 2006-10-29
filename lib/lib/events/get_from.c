@@ -30,7 +30,7 @@ mixed CanGetFrom(object who, object item) {
       (environment() != this_player()) ) {
 	return "#" + capitalize(GetShort()) + " is not in reach.";
     }
-    return true(who);
+    return 1;
 }
 
 mixed CanPutInto(object who, object item) {
@@ -53,7 +53,7 @@ mixed CanPutInto(object who, object item) {
     if( this_object()->GetClosed() ){
 	return "#It's closed!";
     }
-    return true(who);
+    return 1;
 }
 
 mixed CanPutOnto(object who, object item) {
@@ -62,7 +62,7 @@ mixed CanPutOnto(object who, object item) {
     if((inherits(LIB_SIT,item) && sizeof(item->GetSitters())) ||
       (inherits(LIB_LIE,item) && sizeof(item->GetLiers()))){
 	write("There appears to be someone preventing your access.");
-	return false(who);
+	return 0;
     }
 
     if(!inherits( LIB_SURFACE, item ) ){
@@ -167,7 +167,7 @@ mixed indirect_get_obj_from_obj(object item, object container) {
 	return 0;
     }
 
-    if(environment(item) != this_object()) return false(container);
+    if(environment(item) != this_object()) return 0;
 
     return CanGetFrom(this_player(), item);
 }
@@ -188,7 +188,6 @@ mixed indirect_get_obs_out_of_obj(object array items, object storage) {
 }
 
 mixed indirect_put_obj_word_obj(object what, string word, object storage) {
-    true(word);
     if( !what ) {
 	return (storage == this_object());
     }
@@ -199,5 +198,5 @@ mixed indirect_put_obs_word_obj(object *items, string wrd, object storage) {
     if( !items ) {
 	return (storage == this_object());
     }
-    return true(wrd);
+    return 1;
 }

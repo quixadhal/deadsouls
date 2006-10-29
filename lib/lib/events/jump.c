@@ -35,8 +35,6 @@ varargs mixed AddJump(string name, mixed saute, int type){
 
 mixed CanJump(object who, string id, int type) {
 
-    true(who);
-
     if( Jumps[id] && Jumps[id][1] == type ) {
 	return 1;
     }
@@ -109,8 +107,6 @@ mixed eventJump(object who, string id, int type) {
 
 mixed direct_jump_word_obj(string prep, object target, string id) {
     int type;
-
-    true(target);
 
     switch(prep) {
     case "in": case "into":

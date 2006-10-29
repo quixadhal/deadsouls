@@ -1,4 +1,4 @@
-#pragma save_binary
+
 
 #include <lib.h>
 #include <daemons.h>
@@ -32,6 +32,8 @@ static void create() {
       "the command will fail with \"Too long evaluation\" errors.\n"
       "    Books, due to their processing-intensive load time, "
       "are excluded from the \"every\" keyword.\n"
+      "Please note that reloading a door also reloads the "
+      "door's adjoining rooms.\n"
       "\nSee also: copy, create, delete, modify, initfix, add");
 }
 
@@ -57,6 +59,7 @@ mixed can_reload_str_word(string str, string str2) {
 
 mixed do_reload_obj(object ob) {
     string s1,s2, foo = "Null object: ";
+    if(ob->GetDoor()) ob = load_object(ob->GetDoor());
     if(!ob || userp(ob)) {
 	if(ob) foo = base_name(ob)+": ";
 	write(foo+"Invalid for reloading.");
@@ -71,7 +74,20 @@ mixed do_reload_obj(object ob) {
 	write(base_name(ob)+" is a temp file and not subject to reloading.");
 	return 1;
     }
-    return reload(ob);
+    reload(ob);
+    if(inherits(LIB_DOOR,ob)){
+	string *doors = environment(this_player())->GetDoors();
+	if(!sizeof(doors)) return 1;
+	foreach(string dir in doors){
+	    string substr = environment(this_player())->GetDoor(dir);
+	    if(last(substr,2) == ".c") substr = truncate(substr,2);
+	    if(substr == base_name(ob)){
+		reload(load_object(environment(this_player())->GetExit(dir)));
+		reload(environment(this_player()));
+	    }
+	}
+    }
+    return 1;
 }
 
 mixed do_reload_str_obj(string str, object ob) {
