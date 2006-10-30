@@ -62,6 +62,7 @@ mixed cmd(string args) {
 	string str = args;
 	args = "";
 	foreach(string foo in explode(str, " ")) {
+	    if(!sizeof(foo)) continue;
 	    switch(foo) {
 	    case "-r" : flags |= U_RECURSIVE; break;
 	    case "-e" : flags |= U_INTERACTIVE; break;

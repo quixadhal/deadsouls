@@ -89,8 +89,23 @@ the
 following fixes are available:
 </p>
 <ul>
-  <li><span style="font-weight: bold;">None.</span> 2.1.1 contains the
-latest stable fixes.</li>
+  <li><span style="font-weight: bold;"></span>When using a TalkResponse
+in a sentient, sometimes the act happens before the speech message is
+seen. This is due to the message queue handled by rooms. To fix this,
+replace /lib/std/room.c with <a
+ href="http://dead-souls.net/code/fixes/room.c">this file</a>, then
+type: <span style="font-weight: bold;">reload every room</span></li>
+  <li>There is an issue using SetItems() on tangible objects (for
+example, the runes on Orcslayer). Copy <a
+ href="http://dead-souls.net/code/fixes/look.c">this file</a> over
+/lib/events/look.c , then type the following commands: <span
+ style="font-weight: bold;">reload every item</span>,<span
+ style="font-weight: bold;"> reload every weapon</span>, <span
+ style="font-weight: bold;">reload every armor</span>,<span
+ style="font-weight: bold;"> reload every worn_storage</span>, <span
+ style="font-weight: bold;">reload every container</span>.<span
+ style="font-weight: bold;"><br>
+    </span></li>
 </ul>
 <br>
 <div id="footer">
