@@ -13,8 +13,10 @@ void create() {
 	"no attack" : 1,
       ]));
     SetExits( ([ "down" : ROOM_START ]) );
-    call_out((: reload_room :), 600, load_object(base_name(this_object())));
-    set_heart_beat(1);
+    if(base_name(this_object()) != LIB_FURNACE){
+	call_out((: reload_room :), 600, load_object(base_name(this_object())));
+	set_heart_beat(1);
+    }
     SetNoModify(1);
 }
 int CanReceive(object ob){
@@ -27,9 +29,11 @@ void init(){
     ::init();
 }
 void heart_beat(){
-    if(sizeof(all_inventory(this_object()))){
-	foreach(object ob in deep_inventory(this_object())){
-	    ob->eventDestruct();
+    if(base_name(this_object()) != LIB_FURNACE){
+	if(sizeof(all_inventory(this_object()))){
+	    foreach(object ob in deep_inventory(this_object())){
+		ob->eventDestruct();
+	    }
 	}
     }
 }
