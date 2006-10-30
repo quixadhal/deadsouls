@@ -166,8 +166,10 @@ mapping RemoveItem(mixed item) {
 }
 
 mapping SetItems(mapping items) {
-    Items = copy(items);
-    return copy(items);
+foreach(mixed key, mixed val in items){
+AddItem(key, val);
+}
+    return copy(Items);
 }
 
 //TMI2 compat hack
