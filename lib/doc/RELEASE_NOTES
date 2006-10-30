@@ -1,8 +1,9 @@
 ---- 2.1r55 (unreleased) ---
+- Fixed incorrect behavior during automated reloads.
+- Fixed an incorrect inherited call in LIB_CHAIR.
 - local_options now has "ref" defined as a reserved word. This allows
   the use of "ref" as a keyword for passing variables by reference,
   instead of by value. For an example, see /domains/default/obj/pass_example.c
-- 2.1a11 released
 - Fixed bug in router code that created problems when muds
   originating from the same ip connected and reconnected.
 - Added commands: files, doctool, showfuns, createfix, findfun,

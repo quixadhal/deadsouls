@@ -1,3 +1,21 @@
+/* Please note this info from options.h
+* REF_RESERVED_WORD: If this is defined then the word 'ref' can be
+*   used to pass arguments to functions by reference.  Example:
+*
+* void inc(int ref x) {
+*     x++;
+* }
+*
+* ... y = 1; inc(ref y); ...
+*
+* A side effect is that 'ref' cannot be a variable or function name.
+*
+* Note: ref must be used in *both* places; this is intentional.  It protects
+* against passing references to routines which don't intend to return values
+* through their arguments, and against forgetting to pass a reference
+* to a function which wants one (or accidentally having a variable modified!)
+*/
+
 #include <lib.h>
 
 inherit LIB_ITEM;

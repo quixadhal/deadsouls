@@ -20,7 +20,7 @@ void create(){
 
 int CanGet(object who){
     if(sit::CanGet(who))
-	return item::CanGet(who);
+	return sit::CanGet(who);
     else return 0;
 }
 
