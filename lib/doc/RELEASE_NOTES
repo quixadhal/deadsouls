@@ -1,4 +1,7 @@
----- 2.1r55 (unreleased) ---
+---- 2.1r58 (unreleased) ---
+- SetItems() now works properly in tangible items (eg Orcslayer).
+- Fixed problem with out-of-sequence messages using TalkResponse 
+  in sentients.
 - Fixed incorrect behavior during automated reloads.
 - Fixed an incorrect inherited call in LIB_CHAIR.
 - local_options now has "ref" defined as a reserved word. This allows

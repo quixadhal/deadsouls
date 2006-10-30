@@ -344,7 +344,6 @@ void eventDescribeEnvironment(int brief) {
 	    tell_room("/domains/default/room/catchtell","cl: "+cl);
 	    tell_room("/domains/default/room/catchtell","msg: "+msg);
 	    tell_room("/domains/default/room/catchtell","-------");
-	    catch_tell(msg); 
 	    if(sizeof(riders)){
 		foreach(object living in riders){
 		    if(living->GetProperty("mount") == this_object())

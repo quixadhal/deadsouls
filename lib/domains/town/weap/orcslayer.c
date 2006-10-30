@@ -3,7 +3,7 @@
 #include <vendor_types.h>
 
 inherit LIB_ITEM;
-inherit LIB_READ;
+
 
 static void create() {
     item::create();
@@ -25,11 +25,14 @@ static void create() {
     SetRead( ([
 	({"rune","runes"}) : "You do not understand them."
       ]) );
+AddItem("thing" , "A thing.");
 }
-
 int eventStrike(object target) {
     if( (string)target->GetRace() != "orc" ) return item::eventStrike(target);
     message("environment", "The orc slayer sword glows blue and emits a ghastly shrieking sound!",
       environment(target));
     return item::eventStrike(target) + random(50)+10;
+}
+void init(){
+::init();
 }

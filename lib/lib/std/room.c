@@ -825,9 +825,12 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
 	return 1;
 
     case TALK_LOCAL:
-	obs = filter(all_inventory(),
-	  (: (int)$1->is_living() && $1 != $(who) :));
-	obs->eventHearTalk(who, target, cls, verb, msg, lang);
+	obs = get_livings(this_object(),1) - ({ who });
+	if(sizeof(obs))
+	    obs->eventHearTalk(who, target, cls, verb, msg, lang);
+	obs = get_livings(this_object(),2) - ({who});
+	if(sizeof(obs))
+	    obs->eventHearTalk(who, target, cls, verb, msg, lang);
 	return 1;
 
     case TALK_AREA:
