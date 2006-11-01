@@ -1,4 +1,7 @@
----- 2.1r58 (unreleased) ---
+---- 2.1r60 (unreleased) ---
+- Commented out annoying addr_init error in driver that spams
+  STDERR when running on Solaris.
+- tc() now also prints to STDOUT.
 - SetItems() now works properly in tangible items (eg Orcslayer).
 - Fixed problem with out-of-sequence messages using TalkResponse 
   in sentients.

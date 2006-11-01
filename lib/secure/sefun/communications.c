@@ -48,6 +48,7 @@ varargs void tc(string str, string col, object dude){
     if(!dude) dude = find_player(DEBUGGER);
     if(!dude) return;
     tell_player(dude ,prefix+str+"%^RESET%^");
+    debug_message(str);
     flush_messages(dude);
 }
 

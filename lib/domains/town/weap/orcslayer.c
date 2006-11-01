@@ -25,7 +25,7 @@ static void create() {
     SetRead( ([
 	({"rune","runes"}) : "You do not understand them."
       ]) );
-AddItem("thing" , "A thing.");
+    AddItem("thing" , "A thing.");
 }
 int eventStrike(object target) {
     if( (string)target->GetRace() != "orc" ) return item::eventStrike(target);
@@ -34,5 +34,5 @@ int eventStrike(object target) {
     return item::eventStrike(target) + random(50)+10;
 }
 void init(){
-::init();
+    ::init();
 }

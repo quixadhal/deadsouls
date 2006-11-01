@@ -303,9 +303,13 @@ void init_addr_server P2(char *, hostname, int, addr_server_port)
         hp = gethostbyaddr((char *)&addr, sizeof(addr), AF_INET);
     } else {
         hp = gethostbyname(hostname);
+        return;
     }
     if (hp == NULL) {
-	socket_perror("init_addr_server: gethostbyname", 0);
+/* gethostbyname appears to fail on Solaris, and this message
+ * scrolls over and over. I am stopping the madness.
+ * socket_perror("init_addr_server: gethostbyname", 0);
+*/
 	return;
     }
 
