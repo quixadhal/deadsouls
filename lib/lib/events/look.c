@@ -166,9 +166,9 @@ mapping RemoveItem(mixed item) {
 }
 
 mapping SetItems(mapping items) {
-foreach(mixed key, mixed val in items){
-AddItem(key, val);
-}
+    foreach(mixed key, mixed val in items){
+        AddItem(key, val);
+    }
     return copy(Items);
 }
 
