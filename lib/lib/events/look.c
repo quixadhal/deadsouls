@@ -222,16 +222,45 @@ varargs mixed eventShow(object who, string component) {
 
 mixed direct_look_obj() {
     object env = environment();
-
-    if( env != this_player() && env != environment(this_player()) ) {
-	return "#Perhaps \"look at "+this_object()->GetKeyName()+
-	" on\" something?"; 
+    if(!this_object()->GetInvis()){
+	if( env != this_player() && env != environment(this_player()) ) {
+	    return "#Perhaps \"look at "+this_object()->GetKeyName()+
+	    " on\" something?"; 
+	}
     }
     return 1;
 }
 
 mixed direct_look_at_obj() {
     return direct_look_obj();
+}
+
+mixed direct_look_at_obj_on_obj(object target, object ob,mixed arg) {
+    if(!ob) ob=environment(target);
+    //tc("arg: "+identify(arg),"cyan");
+    //tc("ob: "+identify(ob),"cyan");
+    //tc("target: "+identify(target),"cyan");
+    if((inherits(LIB_SIT,ob) && sizeof(ob->GetSitters())) ||
+      (inherits(LIB_LIE,ob) && sizeof(ob->GetLiers()))){
+	write("There appears to be someone blocking your view.");
+	//tc("gamma","yellow");
+	return 0;
+    }
+
+    if(!target->GetInvis()){
+	if((inherits(LIB_SURFACE,ob) || living(ob)) && 
+	  environment(target) == ob){
+	    if(this_player()->GetEffectiveVision() == VISION_CLEAR){
+		return target->GetExternalDesc();
+	    }
+	    else return "#You can't quite make out its details.";
+	}
+    }
+    if( environment(target) != ob || target->GetInvis() ) {
+	//tc("omega","red");
+	return "#There is no " + arg + " on " + ob->GetShort() + ".";
+    }
+    return 1;
 }
 
 mixed direct_look_at_obj_word_obj() {
@@ -241,7 +270,7 @@ mixed direct_look_at_obj_word_obj() {
 mixed direct_look_at_str_on_obj(string str, object target) {
     object dingus;
     str = remove_article(lower_case(str));
-
+    //tc("eh","cyan");
     if((inherits(LIB_SIT,target) && sizeof(target->GetSitters())) ||
       (inherits(LIB_LIE,target) && sizeof(target->GetLiers()))){
 	write("There appears to be someone blocking your view.");
@@ -259,3 +288,5 @@ mixed direct_look_at_str_on_obj(string str, object target) {
     }
     return 1;
 }
+
+

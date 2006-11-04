@@ -12,9 +12,10 @@ string globaltemp;
 static mixed Report();
 
 static private void validate() {
-    if( !((int)master()->valid_apply(({ "ASSIST" }))) )
+    if( !((int)master()->valid_apply(({ "ASSIST" }))) ){
 	log_file("adm/file","Illegal attempt to access FILE_D: "+get_stack()+" "+identify(previous_object(-1)));
-    error("Illegal attempt to access FILE_D: "+get_stack()+" "+identify(previous_object(-1)));
+	error("Illegal attempt to access FILE_D: "+get_stack()+" "+identify(previous_object(-1)));
+    }
 }
 
 void heart_beat(){
@@ -91,7 +92,8 @@ string *GetDirs(){
 static void create() {
     object fun_d = find_object(FUNCTION_D);
     daemon::create();
-    call_out((: ReadDir,"/" :), 1);
+    //call_out((: ReadDir,"/" :), 1);
+    ReadDir("/");
     if(!fun_d) fun_d = load_object(FUNCTION_D);
 }
 

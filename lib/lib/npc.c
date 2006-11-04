@@ -742,7 +742,9 @@ void eventDescribeEnvironment(int brief) {
 	    if( item ) str += item + "\n";
 	    if(this_object()->GetAffectLong()) str += this_object()->GetAffectLong();
 	    counts = ([]);
-	    foreach(item in map(all_inventory(),(: (string)$1->GetEquippedShort() :)))
+	    foreach(item in map(
+		filter(all_inventory(), (: !((int)$1->GetInvis(this_object())) :)),
+		(: (string)$1->GetEquippedShort() :)))
 	    if( item ) counts[item]++;
 	    if( sizeof(counts) ) str += GetCapName() + " is carrying:\n";
 	    foreach(item in keys(counts))

@@ -40,9 +40,9 @@ void heart_beat(){
     foreach(mixed key, mixed val in Reloadees){
 	if(time() >= val){
 	    map_delete(Reloadees,key);
-	    tc("bink: "+key);
+	    //tc("bink: "+key);
 	    key = find_object(key);
-	    tc("bink2: "+identify(key));
+	    //tc("bink2: "+identify(key));
 	    reload(key);
 	}
     }

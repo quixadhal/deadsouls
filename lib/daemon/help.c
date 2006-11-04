@@ -325,7 +325,11 @@ static private void LoadIndices() {
 
 	  case "library objects":
 	      topic = GetTopic(index, topic);
-	      if( catch(help = topic->GetHelp(topic)) ) {
+	      if( !file_exists(topic+".c") ){
+		  Error = "No such topic found.";
+		  return 0;
+	      }
+	      if(  catch(help = topic->GetHelp(topic)) ) {
 		  Error = "An error occurred in attempting to access help.";
 		  return 0;
 	      }

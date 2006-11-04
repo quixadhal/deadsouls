@@ -6,16 +6,6 @@
 
 #include <daemons.h>
 
-varargs void create_event(string f, int when, mixed *args, int reg) {
-    object ob;
-    string fn;
-
-    if( clonep(ob = previous_object()) ) return;
-    if( !function_exists(f, ob) || when < 60 ) return;
-    fn = file_name(ob);
-    EVENTS_D->AddEvent(fn, fn, f, when, args, reg);
-}
-
 varargs void add_event(string source, string ob, string fun, mixed *args, int when, int repeat){
     if(!archp(this_player())) return;
     EVENTS_D->AddEvent(source, ob, fun, args, when, repeat);

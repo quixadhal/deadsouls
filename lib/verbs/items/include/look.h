@@ -14,9 +14,9 @@ mixed can_look_at_str_on_obj(string targ, string verb, string id1, string id2);
 mixed do_look();
 varargs mixed do_look_at_obj(object ob, mixed *args...);
 mixed do_look_at_str(string str);
-mixed do_look_in_obj(object ob);
-mixed do_look_inside_obj(object ob);
-mixed do_look_at_obj_word_obj(object target, object storage);
+mixed do_look_in_obj(object ob, mixed arg);
+mixed do_look_inside_obj(object ob, mixed arg);
+mixed do_look_at_obj_word_obj(object target, object storage, mixed arg);
 varargs mixed do_look_at_str_on_obj(string id, object ob, mixed args...);
 
 #endif /* l_look_h */

@@ -28,7 +28,6 @@ void tell_player(mixed player, string msg){
     if(objectp(player)) str = player->GetKeyName();
     else str = player;
     if(!msg || msg == "") return;
-    //write_file("/tmp/debug.txt",msg+"\n");
     if(!dude = find_player(str) ) return;
     else tell_object(dude, msg);
 }
@@ -119,4 +118,3 @@ varargs void shout(mixed str, mixed exclude) {
     if(this_player()) exclude += ({ this_player() });
     users()->eventPrint(str + "", MSG_CONV, exclude);
 }
-

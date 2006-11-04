@@ -75,7 +75,7 @@ mixed do_reload_obj(object ob) {
 	return 1;
     }
     reload(ob);
-    if(inherits(LIB_DOOR,ob)){
+    if(ob && inherits(LIB_DOOR,ob)){
 	string *doors = environment(this_player())->GetDoors();
 	if(!sizeof(doors)) return 1;
 	foreach(string dir in doors){
