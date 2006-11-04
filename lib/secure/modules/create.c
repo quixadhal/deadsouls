@@ -14,7 +14,7 @@
 int eventDelete(object ob, string value);
 string global1, global2, globaltmp, globalvalue;
 
-string *base_arr = ({"set_heart_beat", "SetUnique", "SetNoClean","SetNoModify","SetProperties","SetLong","SetShort","SetItems","SetListen","SetSmell"});
+string *base_arr = ({"set_heart_beat", "SetUnique", "SetNoClean","SetNoModify","SetProperties","SetLong","SetShort","SetItems","SetListen","SetSmell","SetInvis"});
 string *item_arr = base_arr + ({"SetLanguage","SetRead","SetDefaultRead","SetDisableChance", "SetDamagePoints", "SetVendorType","SetNoCondition","SetMoney","SetKeyName", "SetId", "SetMass","SetCost","SetValue","SetAdjectives","SetDamagePoints","SetBaseCost" });
 string *meal_arr = item_arr + ({ "SetMealType", "SetStrength"}) -({"SetDamagePoints"});
 string *storage_arr = item_arr + ({"SetOpacity", "SetMaxCarry","SetInventory", "SetCanClose", "SetCanLock","SetMaxRecurse","SetLocked","SetClosed","SetKey"});
@@ -442,6 +442,8 @@ mixed eventModify(object ob, string str){
 	case "size" : out = "SetSize";break;
 	case "respiration" : out = "SetRespiration";break;
 	case "setrespiration" : out = "SetRespiration";break;
+	case "setinvis" : out = "SetInvis";break;
+	case "invis" : out = "SetInvis";break;
 	default : out = mode;
 	}
     }

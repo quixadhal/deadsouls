@@ -401,7 +401,7 @@ int SetReboot(){
 }
 
 int eventSetReboot(mixed i){
-    int num;
+    int num, check;
 
     validate();
     if(!intp(i) && !sscanf(i,"%d",num)){
@@ -410,8 +410,13 @@ int eventSetReboot(mixed i){
 	return 1;
     }
     if(intp(i)) num = i;
-    EVENTS_D->SetRebootInterval(num);
-    write("Reboot interval set to "+EVENTS_D->GetRebootInterval()+" hours.");
+    check = EVENTS_D->SetRebootInterval(num);
+    reload(EVENTS_D);
+    if(num == check)
+	write("Reboot interval set to "+EVENTS_D->GetRebootInterval()+" hours.");
+    else
+	write("Reboot interval could not be set. Current interval is: "+
+	  check + " hours.");
     Menu();
     return 1;
 }

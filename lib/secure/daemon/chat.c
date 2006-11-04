@@ -487,36 +487,38 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	    targmsg = replace_string(targmsg, "$N", who);
 	    targmsg = capitalize(replace_string(targmsg, "$O", "you"));
 	}
-	obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
 	tmp = this_msg + msg;
 	eventAddLast(ch, tmp, pchan, msg);
-	foreach(object listener in obs) {
-	    int ignore;
-	    if(sscanf(who,"%s@%s",suspect,site) < 2) {
-		suspect = who;
-		site = "@"+mud_name();
-	    }
-	    else site = "@"+site;
-	    if( listener == ob ) continue;
-	    if(sizeof(listener->GetMuffed()))
-		foreach(string jerk in listener->GetMuffed()){
-		if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
-		if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
-	    }
-	    if(!ignore && CanListen(listener,ch)) listener->eventPrint(tmp, MSG_CHAN);
-	    ignore = 0;
-	}
-	if( member_array(ob, obs) != -1 ) {
-	    if( ob && !((int)ob->GetBlocked(ch)) ) {
+	if(Channels[ch]){
+	    obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
+	    foreach(object listener in obs) {
 		int ignore;
-		tmp = this_msg + targmsg;
-		if(sizeof(ob->GetMuffed()))
-		    foreach(string jerk in ob->GetMuffed()){
+		if(sscanf(who,"%s@%s",suspect,site) < 2) {
+		    suspect = who;
+		    site = "@"+mud_name();
+		}
+		else site = "@"+site;
+		if( listener == ob ) continue;
+		if(sizeof(listener->GetMuffed()))
+		    foreach(string jerk in listener->GetMuffed()){
 		    if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
 		    if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 		}
-		if(!ignore && CanListen(ob,ch)) ob->eventPrint(tmp, MSG_CHAN);
+		if(!ignore && CanListen(listener,ch)) listener->eventPrint(tmp, MSG_CHAN);
 		ignore = 0;
+	    }
+	    if( member_array(ob, obs) != -1 ) {
+		if( ob && !((int)ob->GetBlocked(ch)) ) {
+		    int ignore;
+		    tmp = this_msg + targmsg;
+		    if(sizeof(ob->GetMuffed()))
+			foreach(string jerk in ob->GetMuffed()){
+			if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
+			if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
+		    }
+		    if(!ignore && CanListen(ob,ch)) ob->eventPrint(tmp, MSG_CHAN);
+		    ignore = 0;
+		}
 	    }
 	}
 	suspect = "";
@@ -564,27 +566,28 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	pmsg = msg;
 	msg = tmsg;
 	eventAddLast(ch, msg, pchan, pmsg, who);
-	obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
-	foreach(object ob in obs){
-	    int ignore;
-	    if(sscanf(who,"%s@%s",suspect,site) < 2) {
-		suspect = who;
-		site = "@"+mud_name();
-	    }
-	    else site = "@"+site;
+	if(Channels[ch]) {
+	    obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
+	    foreach(object ob in obs){
+		int ignore;
+		if(sscanf(who,"%s@%s",suspect,site) < 2) {
+		    suspect = who;
+		    site = "@"+mud_name();
+		}
+		else site = "@"+site;
 
-	    if(sizeof(ob->GetMuffed()))
-		foreach(string jerk in ob->GetMuffed()){
-		if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
-		if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
-	    }
-	    if(!ignore && CanListen(ob,ch)) ob->eventPrint(msg, MSG_CHAN);
+		if(sizeof(ob->GetMuffed()))
+		    foreach(string jerk in ob->GetMuffed()){
+		    if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
+		    if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
+		}
+		if(!ignore && CanListen(ob,ch)) ob->eventPrint(msg, MSG_CHAN);
 
-	    ignore = 0;
-	    suspect ="";
-	    site = "";
+		ignore = 0;
+		suspect ="";
+		site = "";
+	    }
 	}
-
     }
 }
 

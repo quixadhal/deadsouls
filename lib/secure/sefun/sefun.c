@@ -81,15 +81,28 @@
 #include "/secure/sefun/legacy.c"
 
 string globalstr;
+mixed globalmixed;
 
-//varargs mixed new(mixed foo, mixed *bar...){
-//if(COMPAT_MODE && stringp(foo)) {
-//if(!file_exists(foo)) foo += ".c";
-//load_object("/secure/obj/staff")->eventAddCreate(foo);
-//}
-//if(!bar) return efun::new(foo);
-//else return efun::new(foo, bar...);
-//}
+int call_out(mixed args...){
+    if(CALL_OUT_LOGGING && strsrch(base_name(previous_object()),"/secure/")
+      && strsrch(base_name(previous_object()),"/daemon/")){
+	globalmixed = args;
+	unguarded( (: write_file("/log/secure/callouts",timestamp()+" "+
+	      identify(previous_object(-1))+" "+identify(globalmixed)+"\n") :) );
+    }
+    switch(sizeof(args)){
+    case 2 : return efun::call_out(args[0],args[1]);
+    case 3 : return efun::call_out(args[0],args[1],args[2]);
+    case 4 : return efun::call_out(args[0],args[1],args[2],args[3]);
+    case 5 : return efun::call_out(args[0],args[1],args[2],args[3],args[4]);
+    case 6 : return efun::call_out(args[0],args[1],args[2],args[3],args[4],args[5]);
+    case 7 : return efun::call_out(args[0],args[1],args[2],args[3],args[4],args[5],args[6]);
+    case 8 : return efun::call_out(args[0],args[1],args[2],args[3],args[4],args[5],args[6],args[7]);
+    case 9 : return efun::call_out(args[0],args[1],args[2],args[3],args[4],args[5],args[6],args[7],args[8]);
+    case 10 : return efun::call_out(args[0],args[1],args[2],args[3],args[4],args[5],args[6],args[7],args[8],args[9]);
+    default : return 0;
+    }
+}
 
 function functionify(string str){
     globalstr = str;
