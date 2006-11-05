@@ -109,7 +109,7 @@ static void eventPollEvents() {
 	    map_delete(Events, events[i]);
 	}
     }
-    if( (uptime() > RebootInterval*3600) && !InReboot ) {
+    if( (uptime() > RebootInterval*3600) && !InReboot && !DISABLE_REBOOTS) {
 	InReboot = 1;
 	eventReboot(MINUTES_REBOOT_WARNING);
     }

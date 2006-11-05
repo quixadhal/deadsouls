@@ -1,4 +1,10 @@
----- 2.1r61 (unreleased) ---
+---- 2.1r62 (unreleased) ---
+- Recurring reboots can now be disabled in config.h with DISABLE_REBOOTS.
+- Added command "chancolors" to toggle seeing colored channel messages. This is
+  to limit the annoyingness of people who add pinkfish color codes
+  to their channel messages.
+- Fixed a problem in LIB_SHOOT that prevented targeting specific
+  victims, as well as a runtime bug when shooting things in your inventory.
 - Fixed a runtime in CHAT_D that mishandled unknown chans.
 - If EVENTS_LOGGING is set in config.h, new events added to the
   EVENTS_D will be logged to /log/secure/events.

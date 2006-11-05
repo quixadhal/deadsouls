@@ -1,7 +1,7 @@
 #include <lib.h>
 inherit LIB_ROOM;
 
-int doorcounter,callfloor,closed,floor,counter,moving;
+int doorcounter,callfloor,closed,floor,my_counter,moving;
 string floorname;
 static void create() {
     room::create();
@@ -33,13 +33,13 @@ void init(){
 }
 int CallMe(int i){
     if(i == floor && moving == 0) {
-	this_object()->SetDoor(0);
+	this_object()->SetDoorClosed(0);
 	return 1;
     }
     else callfloor = i;
     return 1;
 }
-int SetDoor(int i){
+int SetDoorClosed(int i){
     if(i && i == closed) return i;
     if(!i && closed == 0) return i;
     if(i == 0 && closed == 0) return i;
@@ -69,7 +69,8 @@ int SetFloor(int i){
     return 1;
 }
 int CanReceive(object ob) {
-    if(closed > 0 && query_verb() == "go"){
+    if(closed > 0 && query_verb() != "goto" &&
+      query_verb() != "trans"  ){
 	message("info","The elevator door is closed.", ob);
 	return 0;
     }
@@ -90,14 +91,14 @@ int CanRelease(object ob){
 varargs int eventRoll(int i){
     if(!i) i = 10;
     moving = 1;
-    SetDoor(1);
-    counter = i;
+    SetDoorClosed(1);
+    my_counter = i;
     return i;
 }
 void heart_beat(){
     if(doorcounter > 0){
 	doorcounter--;
-	if(doorcounter  < 2) SetDoor(1);
+	if(doorcounter  < 2) SetDoorClosed(1);
     }
 
     if(moving == 0 && closed == 1 && callfloor > 0){
@@ -106,17 +107,17 @@ void heart_beat(){
     }
 
     if(moving && moving > 0){
-	counter--;
-	if(counter % 5  == 0) {
+	my_counter--;
+	if(my_counter % 5  == 0) {
 	    tell_room(this_object(),"The elevator continues...");
 	}
 
-	if(counter < 2) {
-	    counter = 0;
+	if(my_counter < 2) {
+	    my_counter = 0;
 	    moving = 0;
 	    SetFloor(callfloor);
 	    tell_room(this_object(),"The elevator arrives at its destination.");
-	    SetDoor(0);
+	    SetDoorClosed(0);
 	    callfloor = 0;
 	}
     }

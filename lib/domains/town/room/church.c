@@ -15,7 +15,12 @@ static void create() {
       "in the west wall.\n%^GREEN%^There is a button next "
       "to the elevator.%^RESET%^");
     SetItems(([
-	({"elevator","elevator door","door","wall","west wall"}) : "Set into the "
+	({"elevator","elevator door","door"}) : "Set into the "
+	"west wall is a thoroughly modern-looking elevator, which seems "
+	"out of place in this rustic, colonial church. There is a button "+
+	"next to it, presumably to call the elevator car.",
+	"road" : "The road is south of here.",
+	({"wall","west wall"}) : "Set into the "
 	"west wall is a thoroughly modern-looking elevator, which seems "
 	"out of place in this rustic, colonial church. There is a button "+
 	"next to it, presumably to call the elevator car.",
