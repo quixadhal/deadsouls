@@ -25,6 +25,8 @@ int eventShoot(mixed shooter, mixed target){
 
 int CanShoot(object shooter, string target){
     object cible;
+
+    if(living(shooter)) return 0;
     if(mustcarry > 0 && environment(this_object()) != this_player()) {
 	write("You are not holding the weapon.");
 	return 1;
@@ -48,11 +50,24 @@ int CanShoot(object shooter, string target){
     return 1;
 }
 
+int direct_shoot_obj_at_obj(object shooter, object target){
+    return 1;
+}
+
+int direct_shoot_obj_with_obj(object shooter, object target){
+    return 1;
+}
+
 int direct_shoot_obj_at_str(object shooter, string target){
     return 1;
 }
 
-int indirect_shoot_wrd_with_wrd(mixed shooter,mixed target){
+int indirect_shoot_obj_with_obj(mixed ob1,mixed ob2){
     return 1;
 }
+
+int indirect_shoot_obj_at_obj(mixed ob1,mixed ob2){
+    return 1;
+}
+
 

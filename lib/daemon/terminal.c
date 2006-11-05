@@ -105,6 +105,10 @@ string no_colours(string str) {
     return terminal_colour(str, term_info["unknown"]);
 }
 
+string no_colors(string str){
+    return no_colours(str);
+}
+
 string GetHTML(string str) {
     int i, tot, fcount = 0, ncount = 0;
     string tmp;

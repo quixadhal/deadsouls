@@ -237,5 +237,6 @@ varargs int hour(int x);
 varargs string time_elapsed(int arg1, int arg2);
 int bitshiftedp(int x);
 int call_out(mixed args...);
+string strip_colors(string str);
 
 #endif /* l_sefun_h */

@@ -1,8 +1,7 @@
-2006.11.04-16.40
+2006.11.05-17.14
 Dead Souls recognizes eighty-one muds matching your query: 
 
 ADHD Central    LPMud  MudOS v22.2b14  Dead Souls 2.1     199.44.153.217 6666
-Akiinobu's Drea LPMud  MudOS v22.2b14  Dead Souls 2.1a10  4.162.108.154 6666
 Almost Dead     LPMud  MudOS v22.2b14  Dead Souls 2.0r26  71.254.12.251 10077
 Anarres II      LP     MudOS A2-0.99.1 Anarres II 1.3.1-c 62.49.9.82 5000
 Ancient Rome    LPMud  MudOS v22.2b14  Dead Souls 2.1     209.209.80.36 9999
@@ -11,8 +10,8 @@ Archipelago     LPMud  MudOS v22.1b23- Discworld 15.0a    82.152.242.101 8000
 Archipelago Tes LPMud  MudOS v22.1b23- Discworld 15.0a    82.152.242.101 8010
 Ascension       LPMud  MudOS v22.2b14  Dead Souls 2.1     204.209.44.3 1111
 Autarchy        LPMud  MudOS v22.2b14  Autarchy A-0610-R7 88.105.75.198 11001
-City of Doors   LPMud  SOS 0.1.2       Dead Souls 2.1.1   41.244.213.187 6666
-CoffeeMud Dev   Coffee CoffeeMud v5.2. CoffeeMud v5.2.4   71.145.149.239 5555
+City of Doors   LPMud  SOS 0.1.2       Dead Souls 2.1.1   41.243.70.234 6666
+CoffeeMud       Coffee CoffeeMud v5.2. CoffeeMud v5.2.4   71.145.149.239 23
 DS EXTREME!     LPMud  MudOS v22.2b14  Dead Souls 2.1     208.101.6.202 6000
 DS2 DS2.1.1     LPMud  MudOS v22.2b14  Dead Souls 2.1.1   71.234.154.99 8888
 DS2 Discworld   LPMud  FluffOS v1.22   Discworld 17.0a    71.234.154.99 6677
@@ -21,7 +20,7 @@ DS2 Merentha    LP Mud MudOS v22.2b12  Merentha 1.2.0     71.234.154.99 6622
 DS2 Nightmare 4 LPMud  MudOS v22b25    Nightmare IVr6     71.234.154.99 6644
 DS2 Skylib      LP     MudOS v22.2b14- Skylib 1.7         71.234.154.99 6699
 DS2 TMI-2       LPmud  MudOS v21.7a10  Tmi-2 1.4          71.234.154.99 6688
-DSMud           LPMud  MudOS v22.2b14  Dead Souls 2.1     70.154.14.68 7001
+DSMud           LPMud  MudOS v22.2b14  Dead Souls 2.1     70.157.175.208 7001
 DSclovis        LPMud  MudOS v22.2b14  Dead Souls 2.1.1   68.110.182.192 1234
 DarkeMUDDS      LPMud  MudOS v22.2b14  Dead Souls 2.1.1   206.212.239.69 5659
 Dead Souls      LPMud  MudOS v22.2b14  Dead Souls 2.1     71.234.154.99 7777
@@ -44,7 +43,6 @@ Frontiers       LPMud  MudOS v22.2b14  Dead Souls 2.1r53  10.0.0.2 5050
 Haven           LPMud  MudOS v22.2b13  Modified Nightmare 70.226.46.180 4000
 HavenJR         LPMud  MudOS v22.2b13  Modified Nightmare 70.226.46.180 5000
 Haven_RPG       LPMud  MudOS v22.2b14  Dead Souls 2.1     70.85.248.82 7000
-Hogwarts: A Leg LPMud  MudOS v22.2b14  Dead Souls 2.1     68.207.169.3 6666
 IOMdev          LP     MudOS v22.2b9 b Lima-0.9r4         217.116.225.153 10000
 Infinite Lands  LPMud  MudOS v22.2b14  Dead Souls 2.1a9   216.136.9.8 4200
 Islands of Myth LP     MudOS v22.2b9 b Lima-0.9r4         217.116.225.153 3000
@@ -65,15 +63,17 @@ OtherWorldTest  LPMud  MudOS v22.2b14  Dead Souls 2.1     12.110.58.25 6666
 OurMUD          Coffee CoffeeMud v5.2. CoffeeMud v5.2.4   68.104.141.144 5555
 OuterSpace      lp     CD.04.07.OS     CD.00.30.OS        131.155.141.70 3333
 PenUmbral       LPMud  MudOS v22.2b14  Dead Souls 2.1.1   210.15.216.10 6666
+Pyloros         LPMud  MudOS v22.2b14  Dead Souls 2.1     69.125.214.204 8888
 RathesNewMud    LPMud  MudOS v22.2b14  Dead Souls 2.0r26  72.72.222.90 6000
 RoD             LPMud  MudOS v22.1     RoD Lib            38.119.115.95 3000
 Rock the Halo   LPMud  MudOS v22.2b14  LPUniLib A-0706-R6 82.163.76.162 6060
 RtHBridge       LPMud  MudOS v22.2b14  LPUniLib A-0706-R6 82.163.76.162 6050
-Sand Pit        LPMud  MudOS v22.2b14  Dead Souls 2.1     58.178.11.96 6666
+Sand Pit        LPMud  MudOS v22.2b14  Dead Souls 2.1     58.178.70.184 6666
 Shattered Realm LPMud  MudOS v22.2b14s SR v2.1            83.250.165.65 4001
 Split Infinity  LPMud  MudOS v22.2b11  Nightmare IVr4     62.242.79.65 4000
 StarMUD         LPMud  MudOS v22.2b14  Starlib v4.0b      70.113.96.218 4000
 Symmetry        LP     MudOS v22.2a21  Lima               67.18.240.146 7878
+The Forgotten R Coffee CoffeeMud v5.2. CoffeeMud v5.2.4   67.149.93.81 5555
 Trilogy         LP     MudOS v22.2a35  Lima 1.0bwhatever  206.54.183.226 1984
 Ultimate Galaxy LPMud  MudOS v22.2b14  Dead Souls 2.1     69.25.180.40 6666
 Universes       LPMud  MudOS v22.1     UniLib 1.0a        68.126.45.147 3333

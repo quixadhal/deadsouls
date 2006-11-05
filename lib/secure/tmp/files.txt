@@ -70,6 +70,7 @@
 /cmds/creators/wiz.c
 /cmds/players/biography.c
 /cmds/players/brief.c
+/cmds/players/chancolors.c
 /cmds/players/consider.c
 /cmds/players/converse.c
 /cmds/players/customize.c
@@ -2903,6 +2904,7 @@
 /lib/virtual/virt_map.c
 /lib/virtual/virt_sky.c
 /lib/virtual/virt_std.c
+/log/adm/call
 /log/adm/file
 /log/archive/mudlist_packet-2006.11.01-13.08
 /log/archive/mudlist_packet-2006.11.01-15.08
@@ -2917,6 +2919,10 @@
 /log/archive/mudlist_packet-2006.11.04-07.09
 /log/archive/mudlist_packet-2006.11.04-15.09
 /log/archive/mudlist_packet-2006.11.04-16.17
+/log/archive/mudlist_packet-2006.11.04-23.13
+/log/archive/mudlist_packet-2006.11.05-04.25
+/log/archive/mudlist_packet-2006.11.05-13.05
+/log/archive/mudlist_packet-2006.11.05-14.49
 /log/archive/mudlist_packet.2006.11.03-21.52-2006.11.03-23.08
 /log/archive/runtime-2006.11.01-15.08
 /log/archive/runtime-2006.11.02-07.08
@@ -2925,12 +2931,14 @@
 /log/author_stats
 /log/catch
 /log/chan/archive/ds-2006.11.03-17.08
+/log/chan/archive/ds-2006.11.05-13.05
 /log/chan/archive/intergossip-2006.11.02-23.08
 /log/chan/archive/intergossip-2006.11.03-23.08
 /log/chan/archive/intergossip-2006.11.04-13.09
 /log/chan/ascii_art
 /log/chan/bofh
 /log/chan/connections
+/log/chan/cre
 /log/chan/dchat
 /log/chan/death
 /log/chan/discworld-chat
@@ -2946,6 +2954,7 @@
 /log/enter
 /log/errors/archive/secure-2006.11.03-23.08
 /log/errors/archive/secure-2006.11.04-16.17
+/log/errors/campus
 /log/errors/cmds
 /log/errors/daemon
 /log/errors/intermud
@@ -3294,13 +3303,12 @@
 /secure/cmds/players/reply.c
 /secure/cmds/players/suicide.c
 /secure/cmds/players/tell.c
-/secure/daemon/.function.c.swp
-/secure/daemon/.reload.c.swp
 /secure/daemon/alchemist.c
 /secure/daemon/autoexec.c
 /secure/daemon/bboard.c
 /secure/daemon/bboard.h
 /secure/daemon/character.c
+/secure/daemon/chat.bak
 /secure/daemon/chat.c
 /secure/daemon/economy.c
 /secure/daemon/estates.c
@@ -3570,6 +3578,7 @@
 /std/quest_ob.c
 /std/room.c
 /tmp/1.txt
+/tmp/chat.txt
 /tmp/muds.txt
 /tmp/showfuns.o
 /tmp/thing.txt

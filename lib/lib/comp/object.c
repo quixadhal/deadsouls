@@ -18,6 +18,7 @@ inherit LIB_RADIANCE;
 inherit LIB_SEARCH;
 inherit LIB_SMELL;
 inherit LIB_TOUCH;
+inherit LIB_SHOOT;
 
 mixed indirect_dest_obj() { return 1; }
 mixed direct_dest_obj() { return 1; }
