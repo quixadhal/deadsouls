@@ -179,12 +179,12 @@ int eventFire(string str){
 	autohit=0;
 	return 1;
     }
-    if(ob && !living(ob)){
+    if(ob && !living(ob) && base_name(ob) != LIB_CORPSE){
 	if(!sscanf(ob->GetLong(),"%sIt has been damaged by gun%s",s1,s2)){
 	    tempclass=ob->GetClass();
 	    if(tempclass) ob->SetClass(tempclass/2);
 	    tempshort=ob->GetShort();
-	    tempshort = "A damaged "+remove_article(tempshort);
+	    tempshort = "a damaged "+remove_article(tempshort);
 	    ob->SetShort(tempshort);
 	    templong=ob->GetLong();
 	    if(sscanf(templong,"%s\n\n%s",s1,s2) >=1){

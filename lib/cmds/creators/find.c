@@ -4,44 +4,7 @@
 inherit LIB_COMMAND;
 
 int cmd(string str){
-    int cased = 1;
-    int strict = 0;
-    string ret = "";
-    string all_files = FILE_D->GetFiles();
-
-    if(!str || str == ""){
-	write("Please specify the filename or substring you're looking for.");
-	return 1;
-    }
-
-    if(grepp(str,"-i ")){
-	cased = 0;
-	str = replace_string(str,"-i ","");
-    }
-
-    if(grepp(str,"-s ")){
-	strict = 1;
-	str = replace_string(str,"-s ","");
-    }
-
-    foreach(string element in all_files){
-	string tmpstr, tmpelement;
-
-	if(!cased){ 
-	    tmpelement = lower_case(element);
-	    tmpstr = lower_case(str);
-	} 
-	else {
-	    tmpelement = element;
-	    tmpstr = str;
-	}  
-
-	if(!strict && grepp(last_string_element(tmpelement,"/"), tmpstr)) ret += element + "\n"; 
-	else if(strict && last_string_element(tmpelement,"/") == tmpstr) ret += element + "\n";
-    }
-    write("Matches:");
-    if(sizeof(ret)) write(ret);
-    else write("None.");
+    FILE_D->SearchFiles(str);
     return 1;
 }
 

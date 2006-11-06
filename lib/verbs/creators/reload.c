@@ -59,7 +59,7 @@ mixed can_reload_str_word(string str, string str2) {
 
 mixed do_reload_obj(object ob) {
     string s1,s2, foo = "Null object: ";
-    if(ob->GetDoor()) ob = load_object(ob->GetDoor());
+    if(ob && ob->GetDoor()) ob = load_object(ob->GetDoor());
     if(!ob || userp(ob)) {
 	if(ob) foo = base_name(ob)+": ";
 	write(foo+"Invalid for reloading.");

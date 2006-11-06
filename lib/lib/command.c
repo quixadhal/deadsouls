@@ -273,9 +273,11 @@ int SetMaxCommandHistSize(int i){
 }
 
 int SetPlayerPaused(int i){
-    if(previous_object() == this_object() || previous_object() == master() ||
-      archp(this_player()) )
-	Paused = i;
+    if( !((int)master()->valid_apply(({ "ASSIST" }))) ){
+	error("Illegal attempt to access admintool: "+get_stack()+" "+identify(previous_object(-1)));
+	log_file("adm/pause",timestamp()+" Illegal attempt to access SetPlayerPaused on "+identify(this_object())+" by "+identify(previous_object(-1))+"\n");
+    }
+    Paused = i;
     return Paused;
 }
 
