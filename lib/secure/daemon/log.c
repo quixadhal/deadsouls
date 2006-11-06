@@ -9,7 +9,8 @@ static void create() {
 int RotateLogs(){
     string *contents,*paths;
     string fooname,foopath,temppath;
-    paths = ({"/log/chan/", "/log/","/log/errors/","/secure/log/adm/","/secure/log/","/log/router"});
+    paths = ({"/log/chan/", "/log/","/log/errors/","/secure/log/adm/",
+      "/secure/log/","/log/router/","/log/secure/","/log/adm/"});
     foreach(string path in paths){
 	contents = get_dir(path);
 	foreach(string substr in contents){

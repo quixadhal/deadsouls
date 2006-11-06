@@ -7,7 +7,7 @@ inherit LIB_DAEMON;
 
 static string globaltmp;
 static string *files = ({});
-static string SaveFile = "/secure/save/functions.o";
+static string SaveFuns = "/secure/save/functions.o";
 static int seeking = 0;
 static int count = 0;
 mapping FileSize = ([]);
@@ -27,12 +27,12 @@ void heart_beat(){
 	    }
 	}
 	//tc("functions load complete");
-	save_object(SaveFile);
+	save_object(SaveFuns);
 	seeking = 0;
     }
     count++;
     if(count > 700){
-	save_object(SaveFile);
+	save_object(SaveFuns);
 	count = 0;
     }
 }
@@ -49,11 +49,6 @@ mixed ReadFuns(string str){
     string *subfiles = ({});
     validate();
 
-    if(seeking){
-	//tc("Already seeking");
-	//return 1;
-    }
-
     seeking = 1;
     if(!str || !sizeof(str)) str = "/lib";
 
@@ -63,10 +58,10 @@ mixed ReadFuns(string str){
     //tc("files: "+implode(files, ", "),"red");
     files = filter(files, (: (!sizeof(FunctionCache[$1]) || stat($1)[0] != FileSize[$1]) :) ); 
     //tc("files: "+implode(files, ", "),"yellow");
-    //foreach(string file in files){
-    //tc("FileSize["+file+"]: "+FileSize[file]);
-    //tc("Actual file size: "+stat(file)[0]+"\n","yellow");
-    //}
+    foreach(string file in files){
+	//tc("FileSize["+file+"]: "+FileSize[file]);
+	//tc("Actual file size: "+stat(file)[0]+"\n","yellow");
+    }
     while(sizeof(files) > 0){
 	interval++;
 	subfiles = ({ files[0] }) ;
@@ -78,8 +73,8 @@ mixed ReadFuns(string str){
 
 static void create() {
     daemon::create();
-    if(!file_exists(SaveFile)) save_object(SaveFile);
-    else restore_object(SaveFile);
+    if(!file_exists(SaveFuns)) save_object(SaveFuns);
+    else restore_object(SaveFuns);
     call_out((: ReadFuns,"/lib/" :), 1);
     call_out((: ReadFuns,"/secure/sefun/" :), 30);
     call_out((: ReadFuns,"/secure/lib/" :), 60);
@@ -101,7 +96,7 @@ mixed GetFunctions(string str){
 }
 
 int eventDestruct(){
-    save_object(SaveFile);
+    save_object(SaveFuns);
     return ::eventDestruct();
 }
 
@@ -111,6 +106,7 @@ varargs mixed GetInstances(string str, string where){
     //tc("where: "+where);
     foreach(string key, string val in FunctionCache){
 	string funex;
+	//write_file("/tmp/thing.txt",key+" "+val+"\n");
 	if(grepp(val, str) && !strsrch(key,where)){
 	    funex = function_exists(str,load_object(key),1);
 	    if(funex && !grepp(cooked_list,funex+"\n")){

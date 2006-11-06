@@ -99,8 +99,22 @@ varargs mixed eventSit(object target) {
 }
 
 mixed eventFly(){
+    if( Chair ) {
+	mixed tmp = Chair->eventReleaseStand(this_object());
+
+	if( tmp != 1 ) {
+	    if( !tmp ) {
+		eventPrint("You cannot get up!");
+	    }
+	    else {
+		eventPrint(tmp);
+	    }
+	    return 1;
+	}
+	Chair = 0;
+    }
     write("You lift up off the ground.");
-    say(this_player()->GetName()+" begins flying and rises up off the ground.");
+    say(this_player()->GetName()+" begins flying and rises up into the air.");
     Position = POSITION_FLYING;
     return 1;
 }

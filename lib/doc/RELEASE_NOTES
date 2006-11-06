@@ -1,4 +1,29 @@
----- 2.1r58 (unreleased) ---
+---- 2.1r63 (unreleased) ---
+- Added commands: pause, unpause. Used to remove/restore commands
+  from a player with behavior problems.
+- Recurring reboots can now be disabled in config.h with DISABLE_REBOOTS.
+- Added command "chancolors" to toggle seeing colored channel messages. This is
+  to limit the annoyingness of people who add pinkfish color codes
+  to their channel messages.
+- Fixed a problem in LIB_SHOOT that prevented targeting specific
+  victims, as well as a runtime bug when shooting things in your inventory.
+- Fixed a runtime in CHAT_D that mishandled unknown chans.
+- If EVENTS_LOGGING is set in config.h, new events added to the
+  EVENTS_D will be logged to /log/secure/events.
+- If CALL_OUT_LOGGING is set in config.h, call_outs not created by
+  privileged objects are logged (There shouldn't be any need to
+  log call_outs initiated from within /secure). call_outs originating
+  in /daemon are not logged either, due to the size of the resulting
+  log growing too quickly.
+- Initiating flight while resting on furniture no longer corrupts
+  a creature's short desc.
+- Fixed bug where "look at thing on blah" let you look at
+  the thing even if it was invis.
+- Fixed bug in LIB_NPC that revealed carried invisible objects.
+- Alpha 13 released
+- Commented out annoying addr_init error in driver that spams
+  STDERR when running on Solaris.
+- tc() now also prints to STDOUT.
 - SetItems() now works properly in tangible items (eg Orcslayer).
 - Fixed problem with out-of-sequence messages using TalkResponse 
   in sentients.

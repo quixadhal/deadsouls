@@ -27,8 +27,6 @@ string array NonBitingRaces = ({});
 string array SwimmingRaces = ({});
 
 static void create() {
-    string array lines;
-
     daemon::create();
 
     if( unguarded((: file_size(SAVE_RACES __SAVE_EXTENSION__) :)) > 0 )
@@ -154,7 +152,7 @@ void AddRace(string file, int player) {
     class Race res;
     string array tmp, parts;
     string race, test_string;
-    int i, x;
+    int x;
     mixed array limb = allocate(4);
     mixed array tmp_limb = allocate(4);
     class Stat s; 

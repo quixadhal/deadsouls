@@ -108,7 +108,8 @@ mixed cmd(string str) {
     list = ({ replace_string(mud_name(),"%^","%%^^") + " recognizes " + consolidate(sizeof(borg), "a mud")+
       " matching your query: ", "" }) + list;
     if(this_player()) this_player()->eventPage(list);
-    return 1;
+    if(this_player()) return 1;
+    else return implode(list,"\n");
 }
 
 int alphabet(string a, string b) {

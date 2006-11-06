@@ -3,7 +3,6 @@
 #include <damage_types.h>
 #include <dirs.h>
 inherit LIB_STORAGE;
-inherit LIB_SHOOT;
 
 private int MaxAmmo, Millimeter, AmmoSize;
 private string PistolType, AmmoType;
@@ -127,17 +126,23 @@ int CanRelease(object ob){
     return 1;
 }
 
-int eventShoot(object ob, string str){
+int eventShoot(object ob, mixed target){
+    object cible;
+    if(stringp(target)) cible = present(target,environment(environment(this_object())));
+    if(objectp(target)){
+	cible = target;
+	target = cible->GetName(); 
+    }
     if(!rounds || rounds == 0){
 	write("Your weapon is not loaded.\n");
-	say(environment(this_object())->GetName()+" tries to shoot "+capitalize(str)+" with an unloaded weapon.\n");
+	say(environment(this_object())->GetName()+" tries to shoot "+capitalize(target)+" with an unloaded weapon.\n");
 	return 1;
     }
-    write("You shoot at "+capitalize(str)+"!\n");
-    say(environment(this_object())->GetName()+" shoots at "+capitalize(str)+"!\n");
-    tell_object(present(str,environment(environment(this_object()))), environment(this_object())->GetName()+
-      " shoots at you!\n");
-    this_object()->eventFire(str);
+    write("You shoot at "+capitalize(target)+"!\n");
+    say(environment(this_object())->GetName()+" shoots at "+capitalize(target)+"!\n");
+    if(cible) tell_object(cible, environment(this_object())->GetName()+
+	  " shoots at you!\n");
+    this_object()->eventFire(target);
     if(PistolType=="auto") new("/lib/shell")->eventMove(environment(environment(this_object())));
     return 1;
 }
@@ -174,12 +179,12 @@ int eventFire(string str){
 	autohit=0;
 	return 1;
     }
-    if(!living(ob)){
+    if(ob && !living(ob) && base_name(ob) != LIB_CORPSE){
 	if(!sscanf(ob->GetLong(),"%sIt has been damaged by gun%s",s1,s2)){
 	    tempclass=ob->GetClass();
 	    if(tempclass) ob->SetClass(tempclass/2);
 	    tempshort=ob->GetShort();
-	    tempshort = "A damaged "+remove_article(tempshort);
+	    tempshort = "a damaged "+remove_article(tempshort);
 	    ob->SetShort(tempshort);
 	    templong=ob->GetLong();
 	    if(sscanf(templong,"%s\n\n%s",s1,s2) >=1){
@@ -202,7 +207,7 @@ int eventFire(string str){
 	dex=dexmap["level"];
     }
     else dex = 200;
-    if(i < dex || autohit==1){
+    if((ob && living(ob)) && (i < dex || autohit==1)){
 	NumLimbs=sizeof(ob->GetLimbs());
 	TorsoNum=member_array("torso",ob->GetLimbs());
 	i=random(100);

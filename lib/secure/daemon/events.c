@@ -21,7 +21,7 @@ static void create() {
     SetNoClean(1);
     if( file_exists(SAVE_EVENTS __SAVE_EXTENSION__) )
 	unguarded((: restore_object, SAVE_EVENTS :));
-    if( !RebootInterval ) RebootInterval = 24;
+    if( !RebootInterval ) RebootInterval = 170;
     if( !Events ) Events = ([]);
     eventSave();
     call_out((: eventPollEvents :), 60);
@@ -109,7 +109,7 @@ static void eventPollEvents() {
 	    map_delete(Events, events[i]);
 	}
     }
-    if( (uptime() > RebootInterval*3600) && !InReboot ) {
+    if( (uptime() > RebootInterval*3600) && !InReboot && !DISABLE_REBOOTS) {
 	InReboot = 1;
 	eventReboot(MINUTES_REBOOT_WARNING);
     }
@@ -128,9 +128,21 @@ int SetRebootInterval(int x) {
 int GetRebootInterval() { return RebootInterval; }
 
 void AddEvent(string c, string s, string f, mixed *a, int w, int r) {
-    if( file_name(previous_object()) != SEFUN ) return;
-    Events[time() + w] = ([ "object" : s, "function" : f, "args" : a,
+    mapping NewEvent;
+    if( file_name(previous_object()) != SEFUN ) {
+	if(EVENTS_LOGGING){
+	    unguarded( (: write_file("/log/secure/events",timestamp()+" "+
+		  identify(previous_object(-1))+" ILLEGALLY tried to add an event.\n") :) );
+	}
+	return;
+    }
+    NewEvent = ([ "object" : s, "function" : f, "args" : a,
       "creator" : c,  "regular" : (r ? w : 0), "interval" : w ]);
+    if(EVENTS_LOGGING)
+	unguarded( (: write_file("/log/secure/events",timestamp()+
+	      identify(previous_object(-1))+" added this event: "+
+	      identify($(NewEvent))+"\n") :) );		
+    Events[time() + w] = NewEvent;
     eventSave(1);
 }
 

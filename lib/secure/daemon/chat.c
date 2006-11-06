@@ -46,6 +46,20 @@ static void create() {
     local_chans += tmp_arr;
 }
 
+string decolor(string str){
+    string s1 = "", s2, s3, test;
+    int tmp = 2;
+    if(sscanf(str,"%s<%s>%s",s1,s2,s3) != 3) 
+	tmp = sscanf(str,"<%s>%s",s2,s3);
+    if(tmp != 2) return str;
+    else {
+	test = s1+"<"+s2+">%^RESET%^"+strip_colours(s3);
+	return test;
+    }
+}
+
+
+
 varargs int CanListen(object who, string canal){
     if(!RESTRICTED_INTERMUD) return 1;
     if(canal && member_array(canal, local_chans) != -1) return 1;
@@ -487,36 +501,40 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	    targmsg = replace_string(targmsg, "$N", who);
 	    targmsg = capitalize(replace_string(targmsg, "$O", "you"));
 	}
-	obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
 	tmp = this_msg + msg;
 	eventAddLast(ch, tmp, pchan, msg);
-	foreach(object listener in obs) {
-	    int ignore;
-	    if(sscanf(who,"%s@%s",suspect,site) < 2) {
-		suspect = who;
-		site = "@"+mud_name();
-	    }
-	    else site = "@"+site;
-	    if( listener == ob ) continue;
-	    if(sizeof(listener->GetMuffed()))
-		foreach(string jerk in listener->GetMuffed()){
-		if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
-		if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
-	    }
-	    if(!ignore && CanListen(listener,ch)) listener->eventPrint(tmp, MSG_CHAN);
-	    ignore = 0;
-	}
-	if( member_array(ob, obs) != -1 ) {
-	    if( ob && !((int)ob->GetBlocked(ch)) ) {
+	if(Channels[ch]){
+	    obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
+	    foreach(object listener in obs) {
 		int ignore;
-		tmp = this_msg + targmsg;
-		if(sizeof(ob->GetMuffed()))
-		    foreach(string jerk in ob->GetMuffed()){
+		if(sscanf(who,"%s@%s",suspect,site) < 2) {
+		    suspect = who;
+		    site = "@"+mud_name();
+		}
+		else site = "@"+site;
+		if( listener == ob ) continue;
+		if(sizeof(listener->GetMuffed()))
+		    foreach(string jerk in listener->GetMuffed()){
 		    if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
 		    if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 		}
-		if(!ignore && CanListen(ob,ch)) ob->eventPrint(tmp, MSG_CHAN);
+		if(listener->GetNoChanColors()) tmp = decolor(tmp);
+		if(!ignore && CanListen(listener,ch)) listener->eventPrint(tmp, MSG_CHAN);
 		ignore = 0;
+	    }
+	    if( member_array(ob, obs) != -1 ) {
+		if( ob && !((int)ob->GetBlocked(ch)) ) {
+		    int ignore;
+		    tmp = this_msg + targmsg;
+		    if(sizeof(ob->GetMuffed()))
+			foreach(string jerk in ob->GetMuffed()){
+			if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
+			if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
+		    }
+		    if(ob->GetNoChanColors()) tmp = decolor(tmp);
+		    if(!ignore && CanListen(ob,ch)) ob->eventPrint(tmp, MSG_CHAN);
+		    ignore = 0;
+		}
 	    }
 	}
 	suspect = "";
@@ -564,27 +582,29 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	pmsg = msg;
 	msg = tmsg;
 	eventAddLast(ch, msg, pchan, pmsg, who);
-	obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
-	foreach(object ob in obs){
-	    int ignore;
-	    if(sscanf(who,"%s@%s",suspect,site) < 2) {
-		suspect = who;
-		site = "@"+mud_name();
-	    }
-	    else site = "@"+site;
+	if(Channels[ch]) {
+	    obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
+	    foreach(object ob in obs){
+		int ignore;
+		if(sscanf(who,"%s@%s",suspect,site) < 2) {
+		    suspect = who;
+		    site = "@"+mud_name();
+		}
+		else site = "@"+site;
 
-	    if(sizeof(ob->GetMuffed()))
-		foreach(string jerk in ob->GetMuffed()){
-		if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
-		if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
-	    }
-	    if(!ignore && CanListen(ob,ch)) ob->eventPrint(msg, MSG_CHAN);
+		if(sizeof(ob->GetMuffed()))
+		    foreach(string jerk in ob->GetMuffed()){
+		    if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
+		    if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
+		}
+		if(ob->GetNoChanColors()) msg = decolor(msg);
+		if(!ignore && CanListen(ob,ch)) ob->eventPrint(msg, MSG_CHAN);
 
-	    ignore = 0;
-	    suspect ="";
-	    site = "";
+		ignore = 0;
+		suspect ="";
+		site = "";
+	    }
 	}
-
     }
 }
 

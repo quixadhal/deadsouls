@@ -6,6 +6,7 @@ mixed cmd(string args) {
     write("Screen: \t\t"+identify(this_player()->GetScreen()));
     write("Terminal: \t\t"+this_player()->GetTerminal());
     write("Brief mode: \t\t"+ ( (this_player()->GetBriefMode()) ? "on" : "off" ));
+    write("Channel message colors: "+ ( (this_player()->GetNoChanColors()) ? "off" : "on" ));
     write("Playerkiller mode: \t"+ ( (this_player()->GetPK()) ? "on" : "off" ));
     if(creatorp(this_player())) 
 	write("Debug mode: \t\t"+ ( (this_player()->GetProperty("debug")) ? "on" : "off" ));

@@ -59,7 +59,7 @@ mixed can_reload_str_word(string str, string str2) {
 
 mixed do_reload_obj(object ob) {
     string s1,s2, foo = "Null object: ";
-    if(ob->GetDoor()) ob = load_object(ob->GetDoor());
+    if(ob && ob->GetDoor()) ob = load_object(ob->GetDoor());
     if(!ob || userp(ob)) {
 	if(ob) foo = base_name(ob)+": ";
 	write(foo+"Invalid for reloading.");
@@ -75,7 +75,7 @@ mixed do_reload_obj(object ob) {
 	return 1;
     }
     reload(ob);
-    if(inherits(LIB_DOOR,ob)){
+    if(ob && inherits(LIB_DOOR,ob)){
 	string *doors = environment(this_player())->GetDoors();
 	if(!sizeof(doors)) return 1;
 	foreach(string dir in doors){

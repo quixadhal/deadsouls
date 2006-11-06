@@ -1,10 +1,8 @@
 #include <lib.h>
 
 inherit LIB_CHAIR;
-inherit LIB_SURFACE;
 
 void create() {
-    surface::create();
     chair::create();
     SetKeyName("wooden table");
     SetId( ({ "table" }) );

@@ -242,7 +242,7 @@ static void eventRead(mixed *packet) {
 }
 
 static void eventSocketClose() {
-    int extra_wait;
+    //int extra_wait;
 
     //This appears to be malfunctioning.
     //

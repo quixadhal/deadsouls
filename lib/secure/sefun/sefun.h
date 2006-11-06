@@ -46,7 +46,8 @@ varargs object get_object(string str, object player);
 varargs mixed get_objects(string str, object player, int no_arr);
 int hiddenp(object ob);
 int high_mortalp(object ob);
-string identify(mixed a);
+//string identify(mixed a);
+varargs string identify( mixed a );
 string item_list(mixed *items);
 int leaderp(object ob);
 object *livings();
@@ -235,5 +236,7 @@ string query_time();
 varargs int hour(int x);
 varargs string time_elapsed(int arg1, int arg2);
 int bitshiftedp(int x);
+int call_out(mixed args...);
+string strip_colors(string str);
 
 #endif /* l_sefun_h */
