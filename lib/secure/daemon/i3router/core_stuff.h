@@ -18,11 +18,11 @@ static void create(){
     if(!channels) channels = ([]);
     if(!channel_updates) channel_updates = ([]);
     if(!channel_update_counter) channel_update_counter = 1;
-    if(!router_name) router_name = "*yadsm";
+    if(!router_name) router_name = "*yatmim";
     if(!router_port) router_port = "9000";
-    if(!router_ip) router_ip = "192.168.0.4";
+    if(!router_ip) router_ip = "10.0.0.2";
     //if(!sizeof(router_list))
-    router_list = ({ ({"*yadsm", "192.168.0.4 9000"}) });
+    router_list = ({ ({"*yatmim", "149.152.218.102 23"}) });
     log_file("router/server_log", "Created when uptime = " + uptime() + "\n");
     trr("server got created");
     log_file("router/server_log",timestamp()+" router object created.\n");

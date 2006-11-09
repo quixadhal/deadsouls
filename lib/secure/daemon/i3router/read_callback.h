@@ -42,7 +42,7 @@ static void read_callback(int fd, mixed info){
 	  }));
 	return;
     }
-    //if(lower_case(info[4]) == "yatmin") info[4] = "yadsm";
+    //if(lower_case(info[4]) == "yatmin") info[4] = "yatmim";
     if(info[4]!=0 && !connected_muds[info[4]] && info[4]!=router_name){
 	// if target mud is not 0 (broadcasting), not the router name,
 	// and not a connected MUD
