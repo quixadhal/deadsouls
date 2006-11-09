@@ -83,8 +83,9 @@
 string globalstr;
 mixed globalmixed;
 
+#if CALL_OUT_LOGGING
 int call_out(mixed args...){
-    if(CALL_OUT_LOGGING && strsrch(base_name(previous_object()),"/secure/")
+    if(strsrch(base_name(previous_object()),"/secure/")
       && strsrch(base_name(previous_object()),"/daemon/")){
 	globalmixed = args;
 	unguarded( (: write_file("/log/secure/callouts",timestamp()+" "+
@@ -103,6 +104,7 @@ int call_out(mixed args...){
     default : return 0;
     }
 }
+#endif
 
 function functionify(string str){
     globalstr = str;

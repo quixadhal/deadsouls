@@ -287,6 +287,7 @@ mixed cmd(string args) {
 	    sscanf(arg2,"%s %s %s", s3, s2, s1);
 	}
 	if(s1){
+	    s1 = reverse_string(s1);
 	    if(!strsrch(s1,"*")) true();
 	    else s1 = "*"+s1;
 	}
@@ -294,6 +295,8 @@ mixed cmd(string args) {
 	    write("Syntax: router config NAME IP PORT");
 	    return 1;
 	}
+	if(s2) s2 = reverse_string(s2);
+	s3 = reverse_string(s3);
 	router->SetRouterName(s1);
 	router->SetRouterIP(s2);
 	router->SetRouterPort(s3);

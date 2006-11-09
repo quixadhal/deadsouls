@@ -236,7 +236,9 @@ string query_time();
 varargs int hour(int x);
 varargs string time_elapsed(int arg1, int arg2);
 int bitshiftedp(int x);
+#if CALL_OUT_LOGGING
 int call_out(mixed args...);
+#endif
 string strip_colors(string str);
 
 #endif /* l_sefun_h */
