@@ -27,7 +27,7 @@ mixed cmd(string str) {
     arr = ({});
 
     if( !str ) return "You must specify a file.";
-    else str = absolute_path((string)this_player()->query_cwd(), str);
+    else if(this_player()) str = absolute_path((string)this_player()->query_cwd(), str);
     if( !file_exists(str) ) str += ".c";
     if( !file_exists(str) ) return "File " + str + " not found.";
     else if( !(content = read_file(str)) )

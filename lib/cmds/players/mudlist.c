@@ -64,7 +64,7 @@ mixed cmd(string str) {
 	if( all == 1 || info[0] == -1 ) borg[mud] = info;
     }
     if( !sizeof(borg) ) {
-	message("system", "No MUDs match your query.", this_player());
+	if(this_player()) message("system", "No MUDs match your query.", this_player());
 	return 1;
     }
     else if( sizeof(borg) == 1 ) {
