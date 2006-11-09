@@ -150,6 +150,8 @@ void get_info() {
     socks += "\nTotal number of connected muds: "+socknum+"\n";
     write_file ("/secure/tmp/info.txt",
       "router_name: "+router_name+
+      "\nrouter_ip: "+router_ip+
+      "\nrouter_port: "+router_port+
       "\nrouter_list"+identify(router_list)+
       "\nchannel_update_counter: "+ channel_update_counter+
       "\nchannels:"+identify(channels)+
@@ -160,6 +162,8 @@ void get_info() {
       "\nmudinfo_updates:"+identify(mudinfo_updates)+
       "\nconnected:"+identify(connected_muds)+"\n");
     write("router_name: "+router_name+
+      "\nrouter_ip: "+router_ip+
+      "\nrouter_port: "+router_port+
       "\nrouter_list"+identify(router_list)+
       "\nchannel_update_counter: "+ channel_update_counter+
       ((sizeof(channels)) ? "\nchannels:"+implode(keys(channels),", ") : "")+
@@ -181,6 +185,7 @@ string GetRouterName(){
 string SetRouterName(string str){
     validate();
     //tc("router_name: "+router_name);
+    if(first(str,1) != "*") str = "*"+str;
     router_name = str;
     //tc("router_name: "+router_name);
     log_file("router/server_log",timestamp()+" setting router name to: "+str+"\n"); 
@@ -216,6 +221,18 @@ string SetRouterPort(string str){
 
 string *GetRouterList(){
     validate();
+    return router_list;
+}
+
+varargs string *SetList(){
+    string tmp;
+    validate();
+    if(!strsrch(router_name,"*")) tmp = router_name;
+    else tmp = "*"+router_name;
+    router_list = ({ ({ tmp, router_ip+" "+router_port }) });
+    save_object(SAVE_ROUTER);
+    log_file("router/server_log",timestamp()+" setting router list to: "+identify(router_list)+"\n");
+    save_object(SAVE_ROUTER);
     return router_list;
 }
 

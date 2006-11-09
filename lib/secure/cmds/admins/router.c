@@ -165,6 +165,7 @@ mixed cmd(string args) {
 
     if(args == "reload" || args == "restart"){
 	if(router){
+	    router->SetList();
 	    router->eventDestruct();
 	    router = find_object(ROUTER_D);
 	    if(router) write("Router unload failed.");
@@ -280,10 +281,11 @@ mixed cmd(string args) {
 
 
     if(arg1 == "config"){
-	string sendarg = ""; 
 	string s1, s2, s3;
-	if(arg2 && sizeof(arg2))
-	    sscanf(arg2,"%s %s %s", s1, s2, s3);
+	if(arg2 && sizeof(arg2)){
+	    arg2 = reverse_string(arg2);
+	    sscanf(arg2,"%s %s %s", s3, s2, s1);
+	}
 	if(s1){
 	    if(!strsrch(s1,"*")) true();
 	    else s1 = "*"+s1;
@@ -311,12 +313,46 @@ mixed cmd(string args) {
 	return 1;
     }
 
+    if(arg1 == "name"){
+	if(!arg2 || !sizeof(arg2)){
+	    write("Syntax: router name NAME");
+	    return 1;
+	}
+	router->SetRouterName(arg2);
+	write("Router name set.");
+	return 1;
+    }
+
+
+    if(arg1 == "ip"){
+	if(!arg2 || !sizeof(arg2)){
+	    write("Syntax: router ip ADDRESS");
+	    return 1;
+	}
+	router->SetRouterIP(arg2);
+	write("Router ip set.");
+	return 1;
+    }
+
+
+    if(arg1 == "port"){
+	if(!arg2 || !sizeof(arg2)){
+	    write("Syntax: router port NUMBER");
+	    return 1;
+	}
+	router->SetRouterPort(arg2);
+	write("Router port set.");
+	return 1;
+    }
+
+
     write("Router command completed.");
     return 1;
 }
 
 string GetHelp(string args) {
     return ("Syntax: \n\n"
+      "Subcommands:\n" 
       "\n\n"
       "");
 }
