@@ -54,9 +54,9 @@
 #define RETAIN_ON_QUIT           1
 #define MAX_COMMANDS_PER_SECOND  10
 #define DEFAULT_PARSING          1
-#define CALL_OUT_LOGGING         1
+// Note: call_out logging breaks older code.
+#define CALL_OUT_LOGGING         0
 #define EVENTS_LOGGING           1
 #define DISABLE_REBOOTS          0
-
 
 #endif /* s_config_h */
