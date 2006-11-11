@@ -185,12 +185,8 @@
 /estates
 /estates/c
 /estates/c/cratylus
-/estates/o
-/estates/o/one
 /estates/s
 /estates/s/slymenstra
-/estates/t
-/estates/t/two
 /ftp
 /include
 /lib
@@ -204,6 +200,7 @@
 /lib/virtual
 /log
 /log/adm
+/log/adm/archive
 /log/archive
 /log/chan
 /log/chan/archive
@@ -272,7 +269,6 @@
 /realms/template/tmp
 /save
 /save/kills
-/save/kills/c
 /save/kills/o
 /secure
 /secure/cfg
@@ -296,6 +292,7 @@
 /secure/lib/std
 /secure/log
 /secure/log/adm
+/secure/log/adm/archive
 /secure/log/bak
 /secure/modules
 /secure/npc
@@ -313,18 +310,12 @@
 /secure/save/letters
 /secure/save/players
 /secure/save/players/c
-/secure/save/players/o
 /secure/save/players/s
-/secure/save/players/t
 /secure/save/postal
 /secure/save/postal/c
 /secure/save/postal/c/cratylus
-/secure/save/postal/o
-/secure/save/postal/o/one
 /secure/save/postal/s
 /secure/save/postal/s/slymenstra
-/secure/save/postal/t
-/secure/save/postal/t/two
 /secure/save/rid
 /secure/save/suicide
 /secure/save/votes
