@@ -1,4 +1,5 @@
----- 2.1r63 (unreleased) ---
+---- 2.1r68 (unreleased) ---
+- Added command: groupmod.
 - Added commands: pause, unpause. Used to remove/restore commands
   from a player with behavior problems.
 - Recurring reboots can now be disabled in config.h with DISABLE_REBOOTS.
