@@ -189,8 +189,8 @@ static void InputPassword(string pass, string cap) {
 	Destruct();
 	return;
     }
-    if( (string)Player->GetRace() == "blob" ) {
-	raza = "human";
+    if( !(string)Player->GetRace() || (string)Player->GetRace() == "blob" ) {
+	Player->SetRace("human");
     }
 
     call_out( (: eventCheckPending, lower_case(Name) :), 3);

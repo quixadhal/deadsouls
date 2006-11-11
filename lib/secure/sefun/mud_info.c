@@ -27,7 +27,7 @@ string architecture() { return __ARCH__; }
 
 string mudlib() { return "Dead Souls"; }
 
-string mudlib_version() { return "2.1a14"; }
+string mudlib_version() { return "2.1a15"; }
 
 int query_host_port() { return __PORT__; }
 
