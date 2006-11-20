@@ -8,7 +8,7 @@
 #include <config.h>
 
 private int SaveRecurse;
-private int Retain = RETAIN_ON_QUIT;
+private static int Retain = RETAIN_ON_QUIT;
 
 mixed *Saved = ({});
 

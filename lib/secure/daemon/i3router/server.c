@@ -85,6 +85,7 @@ static void write_data_retry(int fd, mixed data, int counter);
 static void close_connection(int fd);
 static void write_data(int fd, mixed data);
 static void broadcast_data(mapping targets, mixed data);
+varargs string *SetList();
 
 // Code for all the stuff in the prototypes...
 #include "./clean_fd.h"
@@ -189,7 +190,8 @@ string SetRouterName(string str){
     router_name = str;
     //tc("router_name: "+router_name);
     log_file("router/server_log",timestamp()+" setting router name to: "+str+"\n"); 
-    save_object(SAVE_ROUTER);
+    //save_object(SAVE_ROUTER);
+    SetList();
     return router_name;
 }
 
@@ -202,7 +204,8 @@ string SetRouterIP(string str){
     validate();
     router_ip = str;
     log_file("router/server_log",timestamp()+" setting router IP to: "+str+"\n");
-    save_object(SAVE_ROUTER);
+    //save_object(SAVE_ROUTER);
+    SetList();
     return router_ip;
 }
 
@@ -215,7 +218,8 @@ string SetRouterPort(string str){
     validate();
     router_port = str;
     log_file("router/server_log",timestamp()+" setting router port to: "+str+"\n");
-    save_object(SAVE_ROUTER);
+    //save_object(SAVE_ROUTER);
+    SetList();
     return router_port;
 }
 

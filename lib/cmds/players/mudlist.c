@@ -49,7 +49,7 @@ mixed cmd(string str) {
 	    y = strlen(tmpstr);
 
 
-	    if( str == tmpstr ) {
+	    if( lower_case(str) == lower_case(tmpstr) ) {
 		borg = ([ mud : info ]);
 		break;
 	    }

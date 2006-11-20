@@ -233,10 +233,16 @@ object query_snooping(object ob) {
 
 int exec(object target, object src) {
     string tmp;
-
+    int ret;
+    //tc("target: "+identify(target),"cyan");
+    //tc("src: "+identify(src),"cyan");
     tmp = base_name(previous_object());
     if(tmp != LIB_CONNECT && tmp != CMD_ENCRE && tmp != CMD_DECRE && tmp != SU) return 0;
-    return efun::exec(target, src);
+    //return efun::exec(target, src);
+    ret = efun::exec(target, src);
+    //tc("target: "+identify(target),"white");
+    //tc("src: "+identify(src),"white");
+    return ret;
 }
 
 void write(string str) {

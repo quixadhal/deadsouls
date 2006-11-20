@@ -1,0 +1,26 @@
+SETSKILLS
+
+NAME
+        SetSkills()
+
+SYNOPSIS
+        mapping SetSkills(mapping mp)
+
+DESCRIPTION
+        For LIB_SPELL this sets the required skills to be able to cast a spell, and the required level for each skill. For LIB_POTION and LIB_BONUS, this sets the skills altered by drinking the potion.
+
+EXAMPLES
+        SetSkills( ([ "cleverness" : 1 ]) )
+
+LOCATION
+        /lib/bonus
+/lib/potion
+/lib/spell
+
+
+SEE ALSO
+        GetSkills, SetStats, GetStats
+
+Author
+        Cratylus
+

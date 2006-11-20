@@ -1,0 +1,25 @@
+SETBONUSES
+
+NAME
+        SetBonuses()
+
+SYNOPSIS
+        int SetBonuses()
+
+DESCRIPTION
+        A function internal to LIB_BONUS which cycles through the bonuses set on the object and applies them.
+
+EXAMPLES
+         
+
+
+LOCATION
+        /lib/bonus
+
+
+SEE ALSO
+        RemoveBonuses
+
+Author
+        Cratylus
+

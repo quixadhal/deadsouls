@@ -37,6 +37,7 @@ mixed can_give_liv_obj() {
 }
 
 mixed can_give_obj_to_liv(mixed arg1, mixed arg2) { 
+    //tc("can_give_obj_to_liv","red");
     return this_player()->CanManipulate(); }
 
 mixed can_give_liv_wrd_wrd(object targ, string num, string curr) {
@@ -68,6 +69,7 @@ mixed do_give_liv_obj(object target, object what) {
 }
 
 mixed do_give_obj_to_liv(object what, object target) {
+    //tc("do_give_obj_to_liv","green");
     if(!intp(target->CanManipulate())){
 	this_player()->eventPrint(target->GetName()+" is incapable "+
 	  "of holding that.");

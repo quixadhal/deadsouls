@@ -12,8 +12,8 @@
 
 private mixed   ExternalDesc = 0;
 private int     Invisible    = 0;
-private string  look_globalval;
-function f;
+private static string  look_globalval;
+static function f;
 //private mapping Items        = ([]);
 mapping Items        = ([]);
 

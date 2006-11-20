@@ -20,10 +20,7 @@ void create() {
     SetNoModify(1);
 }
 int CanReceive(object ob){
-    if(interactive(ob)){
-	return 0;
-    }
-    return 1;
+    return room::CanReceive(ob);
 }
 void init(){
     ::init();

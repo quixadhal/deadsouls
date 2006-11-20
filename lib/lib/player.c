@@ -225,7 +225,7 @@ int eventMove(mixed dest) {
     }
 
     ret = interactive::eventMove(dest);
-    eventMoveFollowers(environment(this_object()));
+    if( this_object() && environment(this_object())) eventMoveFollowers(environment(this_object()));
     return ret;
 }
 
@@ -450,8 +450,8 @@ int Setup() {
 	if( newbiep() ) AddChannel( ({ "newbie" }) );
 	else {
 	    RemoveChannel( ({ "newbie" }) );
-	    AddChannel( ({ "gossip" }) );
 	}
+	AddChannel( ({ "gossip" }) );
 	if( councilp() ) AddChannel( ({ "council" }) );
 	AddChannel(GetClass());
 
