@@ -14,7 +14,7 @@ int GetMass();
 
 mixed indirect_give_liv_obj(object target) {
     mixed tmp;
-
+    //tc("indirect_give_liv_obj");
     if( environment() != this_player() ) {
 	return "#You cannot give what is not yours.";
     }
@@ -31,14 +31,15 @@ mixed indirect_give_liv_obj(object target) {
 
 mixed direct_give_obj_to_liv() {
     mixed tmp;
-
+    //tc("direct_give_obj_to_liv","blue");
+    if(environment() == this_player() && CanDrop(this_player())) return 1;
     if( environment() != this_player() ) {
 	return "#You cannot give what is not yours.";
     }
     tmp = CanDrop(this_player());
     if( tmp != 1 ) {
-	return (tmp || "You can't drop " + GetDefiniteShort() + ".");
+	return (tmp || "#You can't drop " + GetDefiniteShort() + ".");
     }
-    return 1;
+    else return 1;
 }
 

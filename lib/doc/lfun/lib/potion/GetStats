@@ -1,0 +1,26 @@
+GETSTATS
+
+NAME
+        GetStats()
+
+SYNOPSIS
+        genetics: string array GetStats() , potion and bonus: mapping GetStats()
+
+DESCRIPTION
+        Called in a living thing, GetStats() returns an array of the creature's stat names, such as "strength", "wisdom", and the like. In the potion object, it returns a mapping of stats to modify when the potion is drunk. When the potion is drunk, this mapping is communicated to the bonus object that is moved into the drinker.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/bonus
+/lib/genetics
+/lib/potion
+
+
+SEE ALSO
+        SetStats, GetStat, SetStat, GetStatLevel
+
+Author
+        Cratylus
+

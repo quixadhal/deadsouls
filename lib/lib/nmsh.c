@@ -283,54 +283,56 @@ nomask string write_prompt() {
 	message("prompt", ret, this_object());
 	return ret;
     }
-    while((x = strsrch(ret, "$")) != -1) {
-	if(x == strlen(ret) -1) break;
-	switch(ret[x+1]) {
-	case 'D': 
-	    if(!creatorp(this_object())) break;
-	    if(sscanf(query_cwd(), user_path(GetKeyName())+"%s",
-		tmp)) tmp = "~"+tmp;
-	    else tmp = query_cwd();
-	    ret = replace_string(ret, "$D", tmp); 
-	    break;
-	case 'V': case 'v':
-	    if(GetInvis()) {
-		ret = replace_string(ret, "$V", "INVIS"); 
-		ret = replace_string(ret, "$v", "invis"); 
-	    } 
-	    else if(hiddenp(this_object())) { 
-		ret = replace_string(ret, "$V", "HID"); 
-		ret = replace_string(ret, "$v", "hid"); 
-	    } 
-	    else { 
-		ret = replace_string(ret, "$V", ""); 
-		ret = replace_string(ret, "$v", ""); 
-	    } 
-	    break;
-	case 'C':
-	    ret = replace_string(ret, "$C", sprintf("%d", CmdNumber+1)); 
-	    break;
-	case 'H':
-	    ret = replace_string(ret, "$H", sprintf("%d", query_max_hp())); 
-	    break;
-	case 'h':
-	    ret = replace_string(ret, "$h", sprintf("%d", query_hp())); 
-	    break;
-	case 'G':
-	    ret = replace_string(ret, "$G", sprintf("%d", query_max_mp())); 
-	    break;
-	case 'g':
-	    ret = replace_string(ret, "$g", sprintf("%d", query_mp())); 
-	    break;
-	case 'I':
-	    ret = replace_string(ret, "$I", sprintf("%d", query_max_sp())); 
-	    break;
-	case 'i':
-	    ret = replace_string(ret, "$i", sprintf("%d", query_sp())); 
-	    break;
-	default:
-	    ret = replace_string(ret, ret[x..x+1], "");
-	    break;
+    if(ret){
+	while((x = strsrch(ret, "$")) != -1) {
+	    if(x == strlen(ret) -1) break;
+	    switch(ret[x+1]) {
+	    case 'D': 
+		if(!creatorp(this_object())) break;
+		if(sscanf(query_cwd(), user_path(GetKeyName())+"%s",
+		    tmp)) tmp = "~"+tmp;
+		else tmp = query_cwd();
+		ret = replace_string(ret, "$D", tmp); 
+		break;
+	    case 'V': case 'v':
+		if(GetInvis()) {
+		    ret = replace_string(ret, "$V", "INVIS"); 
+		    ret = replace_string(ret, "$v", "invis"); 
+		} 
+		else if(hiddenp(this_object())) { 
+		    ret = replace_string(ret, "$V", "HID"); 
+		    ret = replace_string(ret, "$v", "hid"); 
+		} 
+		else { 
+		    ret = replace_string(ret, "$V", ""); 
+		    ret = replace_string(ret, "$v", ""); 
+		} 
+		break;
+	    case 'C':
+		ret = replace_string(ret, "$C", sprintf("%d", CmdNumber+1)); 
+		break;
+	    case 'H':
+		ret = replace_string(ret, "$H", sprintf("%d", query_max_hp())); 
+		break;
+	    case 'h':
+		ret = replace_string(ret, "$h", sprintf("%d", query_hp())); 
+		break;
+	    case 'G':
+		ret = replace_string(ret, "$G", sprintf("%d", query_max_mp())); 
+		break;
+	    case 'g':
+		ret = replace_string(ret, "$g", sprintf("%d", query_mp())); 
+		break;
+	    case 'I':
+		ret = replace_string(ret, "$I", sprintf("%d", query_max_sp())); 
+		break;
+	    case 'i':
+		ret = replace_string(ret, "$i", sprintf("%d", query_sp())); 
+		break;
+	    default:
+		ret = replace_string(ret, ret[x..x+1], "");
+		break;
+	    }
 	}
     }
     message("prompt", ret, this_object());

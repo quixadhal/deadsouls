@@ -10,6 +10,7 @@
 #include <rooms.h>
 #include <news.h>
 #include <flags.h>
+#include <cfg.h>
 #include <config.h>
 #include <daemons.h>
 #include <message_class.h>
@@ -24,29 +25,24 @@ static private object Player, pile;
 static private mapping LastError;
 static private int *Screen;
 static private int rescue, yescre;
+static private string *ip_permitted = ({});
 
 int eventCheckPending(string str);
 void eventCompleteChar();
 void InputCre(string str);
 
-static string eventReadPassword(string nom){
-    string s1, mima;
-    string str = DIR_PLAYERS "/" + nom[0..0] + "/" + nom + __SAVE_EXTENSION__;
-    if( !str || !file_exists(str) )
-	str = DIR_CRES "/" + nom[0..0] + "/" + nom + __SAVE_EXTENSION__;
-    mima = read_matching_line(read_file(str), "Password \"");
-    sscanf(mima, "Password \"%s\"",s1);
-    return s1;
-}
-
 int CheckIp(){
     string my_ip = query_ip_number();
     int ips = 0;
+    if(!ip_permitted) ip_permitted = ({});
+    ip_permitted += PLAYERS_D->GetAdminIPs();
     if(!SAME_IP_MAX) return 1;
     foreach(object jugador in users()){
 	if(query_ip_number(jugador) == my_ip) ips++;
     }
-    if(ips > SAME_IP_MAX) return 0;
+    //tc("ips: "+ips);
+    //tc("SAME_IP_MAX: "+SAME_IP_MAX);
+    if(ips >= SAME_IP_MAX && member_array(my_ip, ip_permitted) == -1) return 0;
     else return 1;
 }
 
@@ -55,6 +51,7 @@ static void create(int binary) {
     Name = "";
     Player = 0;
     NetDead = 0;
+    ip_permitted = explode(read_file(CFG_IP_UNRESTRICT),"\n");
 }
 
 varargs static void logon(mixed foo) {
@@ -161,7 +158,7 @@ static void InputPassword(string pass, string cap) {
 	return;
     }
 
-    control = eventReadPassword(Name);
+    control = PLAYERS_D->GetPlayerData(Name,"Password");
     if( control != crypt(pass, control) ) {
 	receive("\nInvalid password.\n");
 	if( ++CrackCount > MAX_PASSWORD_TRIES ) {
@@ -189,6 +186,7 @@ static void InputPassword(string pass, string cap) {
 	Destruct();
 	return;
     }
+    PLAYERS_D->AddPlayerInfo(Player);
     if( !(string)Player->GetRace() || (string)Player->GetRace() == "blob" ) {
 	Player->SetRace("human");
     }

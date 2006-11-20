@@ -60,6 +60,11 @@ static void create() {
     SetLong("$N is nondescript.");
 }
 
+string SetLoginSite(string site){
+    if(site && !catch(load_object(site))) LoginSite = site;
+    return LoginSite;
+}
+
 int SetRescueBit(int i){
     RescueBit = i;
     return i;

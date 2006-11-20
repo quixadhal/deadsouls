@@ -1,0 +1,25 @@
+SETPOINTS
+
+NAME
+        SetPoints()
+
+SYNOPSIS
+        mapping SetPoints(mapping arg)
+
+DESCRIPTION
+        In LIB_POTION and LIB_BONUS, this lfun specifies which vital points are affected, and by how much.
+
+EXAMPLES
+        SetPoints( ([ "HP" : 100, "SP" : 50 ]) );
+
+LOCATION
+        /lib/bonus
+/lib/potion
+
+
+SEE ALSO
+        GetPoints, SetBonusDuration, GetBonusDuration
+
+Author
+        Cratylus
+

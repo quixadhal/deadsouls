@@ -1,0 +1,36 @@
+EVENTDESTRUCT
+
+NAME
+        eventDestruct()
+
+SYNOPSIS
+        int eventDestruct()
+
+DESCRIPTION
+        This lfun provides a convenient means to ensure proper things happen when an object is destructed. Rather than simply destruct(), you can use eventDestruct to, for example, move a thing to the furnace before it is actually removed from memory. Any invocation of eventDestruct() in a child object should probably make a scope reference to eventDestruct in its inheritance chain.
+
+EXAMPLES
+        int eventDestruct(){ write("Gbye!"); return ::eventDestruct(); }
+
+LOCATION
+        /lib/bonus
+/lib/chat
+/lib/interactive
+/lib/meal
+/lib/npc
+/lib/props/clean
+/lib/std/daemon
+/secure/lib/connect
+/secure/lib/file
+/secure/lib/net/client
+/secure/lib/net/ftp_client
+/secure/lib/net/ftp_data_connection
+/secure/lib/net/server
+
+
+SEE ALSO
+        destruct (efun)
+
+Author
+        Cratylus
+
