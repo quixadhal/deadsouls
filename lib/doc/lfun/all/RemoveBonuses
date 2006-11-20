@@ -1,0 +1,24 @@
+REMOVEBONUSES
+
+NAME
+        RemoveBonuses()
+
+SYNOPSIS
+        int RemoveBonuses()
+
+DESCRIPTION
+        Remove the effects of a bonus from a creature.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/bonus
+
+
+SEE ALSO
+        SetBonuses
+
+Author
+        Cratylus
+

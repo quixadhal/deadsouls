@@ -45,10 +45,11 @@ varargs void tc(string str, string col, object dude){
     default : prefix = "%^BOLD%^MAGENTA%^";break;
     }
     if(!dude) dude = find_player(DEBUGGER);
-    if(!dude) return;
-    tell_player(dude ,prefix+str+"%^RESET%^");
+    if(dude){
+	tell_player(dude ,prefix+str+"%^RESET%^");
+	if(dude) flush_messages(dude);
+    }
     debug_message(str);
-    flush_messages(dude);
 }
 
 varargs int tn(string str, string col, object room){

@@ -1,0 +1,24 @@
+SETBONUSDURATION
+
+NAME
+        SetBonusDuration()
+
+SYNOPSIS
+        int SetBonusDuration(int i)
+
+DESCRIPTION
+        Specifies the number of heartbeats that should elapse before a bonus's effects wear off.
+
+EXAMPLES
+        SetBonusDuration(100)
+
+LOCATION
+        /lib/bonus
+
+
+SEE ALSO
+        SetPoints, SetSkills, SetStats
+
+Author
+        Cratylus
+

@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <save.h>
 #include <daemons.h>
 
 inherit LIB_DAEMON;
@@ -33,7 +34,7 @@ mixed cmd(string args) {
     if(!archp(previous_object())) return 0;
 
     if(!router){
-	write("Router is not loaded.");
+	write("Router is not loaded. First try: mudconfig router enable");
 	return 1;
     }
 
@@ -99,7 +100,7 @@ mixed cmd(string args) {
 		tmpstr = (x ? info[x] : mud);
 		z = strlen(arg2 = replace_string(lower_case(arg2), " ", ""));
 		y = strlen(tmpstr = replace_string(lower_case(tmpstr), " ", ""));
-		if( arg2 == tmpstr ) {
+		if( lower_case(arg2) == lower_case(tmpstr) ) {
 		    borg = ([ mud : info ]);
 		    break;
 		}
@@ -177,6 +178,15 @@ mixed cmd(string args) {
 	router = load_object(ROUTER_D);
 	if(!router) write("Router load failed.");
 	else write("Router loaded.");
+	return 1;
+    }
+
+    if(args == "reset"){
+	if(router) router->eventDestruct();
+	unguarded( (: rename(SAVE_ROUTER, "/secure/save/backup/router."+time()) :) );
+	router = load_object(ROUTER_D);
+	if(!router) write("Router load failed.");
+	else write("Router reset to default settings.");
 	return 1;
     }
 

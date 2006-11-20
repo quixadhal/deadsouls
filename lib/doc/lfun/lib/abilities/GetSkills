@@ -1,0 +1,27 @@
+GETSKILLS
+
+NAME
+        GetSkills()
+
+SYNOPSIS
+        LIB_SPELL, LIB_ABILITIES: string array GetSkills() ; LIB_POTION, LIB_BONUS: mapping GetSkills()
+
+DESCRIPTION
+        For LIB_ABILITIES this lfun returns the list of skill names possessed by the creature it's called in, such as "knife defense", etc. For LIB_SPELL this returns a list of the skills required to be able to cast the spell. For LIB_POTION and LIB_BONUS, this lfun works much like GetStats(), in that it returns a mapping of skills and how they are modified when a potion is drunk.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/bonus
+/lib/lvs/abilities
+/lib/potion
+/lib/spell
+
+
+SEE ALSO
+        GetStats, SetSkill
+
+Author
+        Cratylus
+

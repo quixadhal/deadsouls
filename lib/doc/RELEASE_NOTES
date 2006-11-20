@@ -1,4 +1,26 @@
----- 2.1r68 (unreleased) ---
+---- 2.1r72 (unreleased) ---
+- Fixed a bug in grep that made it choke and halt on binary files. It still
+  chokes, but it continues grepping after reporting the runtime.
+- "decre" no longer removes all channels. Note that testing encre and
+  decre repeatedly on the same character will probably generate problems eventually.
+- Added LOCAL_TIME parameter to config.h. Some OS'es use UTC and offsets for
+  timekeeping, others use a "local time" setting. Rather than try to play offset
+  games and fail miserably, this setting is meant to address that.
+- Added "mudconfig" command to enable the convenient changing of some config.h parameters.
+- LIB_CONNECT now checks CFG_IP_UNRESTRICT as well as SAME_IP_MAX to determine
+  if the connection should be permitted. This allows you to specify ip's that
+  are immune from "max connection" restrictions. 
+- LIB_CONNECT now checks each incoming connection to determine whether it
+  is the last known ip of a SECURE user. If it is, the connection
+  is permitted regardless of SAME_IP_MAX.
+- It is now possible to use the "home" command to go to other
+  creators' workrooms.
+- GetPlayerList(), GetCreatorList(), and GetUserList() in PLAYERS_D can now be trusted
+  to provide correct information (for new installs).
+- It is now possible to get player data from users that are logged off, by specifying the variable
+  to the player daemon. For example: eval return PLAYERS_D->GetPlayerData("cratylus","Properties")
+- Beefed up groupmod to handle group adding/deleting, and enable (some) use by ASSIST.
+- Alpha 15 released.
 - Added command: groupmod.
 - Added commands: pause, unpause. Used to remove/restore commands
   from a player with behavior problems.

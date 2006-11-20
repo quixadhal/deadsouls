@@ -8,7 +8,7 @@ object next;
 object *dudes;
 string filename, args;
 
-varargs mixed reload(mixed ob, int recursive) {
+varargs mixed reload(mixed ob, int recursive,int quiet) {
     mapping StringFellows = ([]);
     int stringed;
     object env;
@@ -57,8 +57,10 @@ varargs mixed reload(mixed ob, int recursive) {
     //tc("check2","cyan");
     if(!grepp(unguarded( (: read_file(filename) :) ),"void init()" || !grepp(unguarded( (: read_file(filename) :) ),"::init()"))) { 
 	//tc("check3","cyan");
-	if(!strsrch(filename,"/lib/") || ob->isDummy() || inherits(LIB_DAEMON,ob)) true(); 
-	else write("This object lacks a working init function. Please run initfix on it as soon as possible.");
+	if(clonep(ob) && !inherits(LIB_ROOM,ob)){
+	    if(!strsrch(filename,"/lib/") || ob->isDummy() || inherits(LIB_DAEMON,ob)) true(); 
+	    else write("This object lacks a working init function. Please run initfix on it as soon as possible.");
+	}
     }
     //tc("ob2: "+identify(ob));
     if(inherits(LIB_ROOM,ob)){
@@ -111,6 +113,6 @@ varargs mixed reload(mixed ob, int recursive) {
 	ob->eventMove(ROOM_FURNACE);
 	if(next && env) next->eventMove(env);
     }
-    write("Done.");
+    if(!quiet) write("Done.");
     return 1;
 }
