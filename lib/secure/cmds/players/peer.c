@@ -38,7 +38,7 @@ mixed cmd(string str) {
 	return "It is too dark to attempt that.";
     if( env->GetDoor(str) && ((string)env->GetDoor(str))->GetClosed() ) {
 	message("my_action", sprintf("%s is blocking your view %s.",
-	    ((string)env->GetDoor(str))->GetShort(str), str),
+	    (capitalize(env->GetDoor(str)->GetShort(str))), str),
 	  this_player() );
 	return 1;
     }

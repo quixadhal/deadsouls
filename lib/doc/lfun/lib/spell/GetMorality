@@ -1,0 +1,24 @@
+GETMORALITY
+
+NAME
+        GetMorality()
+
+SYNOPSIS
+        int GetMorality()
+
+DESCRIPTION
+        Returns the morality of the object.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/classes
+/lib/spell
+
+SEE ALSO
+        SetMorality
+
+Author
+        Cratylus
+

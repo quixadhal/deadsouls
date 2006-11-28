@@ -7,28 +7,22 @@ SYNOPSIS
         string GetClass()
 
 
-
 DESCRIPTION
         Returns the creature's class.
-
 
 
 EXAMPLES
          
 
 
-
 LOCATION
         /lib/classes
 /lib/props/damage
-
 
 SEE ALSO
         SetClass, ChangeClass
 
 
-
 Author
         Cratylus
-
 

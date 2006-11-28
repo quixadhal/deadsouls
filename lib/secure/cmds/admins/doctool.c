@@ -34,7 +34,7 @@ int eventWriteDoc(){
 	ret += header + "\n        ";
 	ret += replace_string(replace_string(ContentMap[header],"\n\n","\n"),"    ","") + "\n\n";
     }
-
+    ret = replace_string(ret,"\n\n\n","\n\n");
     if(doctype == "lfun"){
 	string tmp_path;
 	foreach(string sourcefl in sourcefiles){

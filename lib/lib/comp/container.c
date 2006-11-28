@@ -22,7 +22,6 @@ int GetOpacity(){
 int GetRadiantLight(int ambient) {
     int r = this_object()->GetBaseRadiance(ambient);
     int o = GetOpacity();
-
     if( o > 99 ) {
 	if( r < 1 ) {
 	    return 0;

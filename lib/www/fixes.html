@@ -84,7 +84,8 @@ corrects it. Copy it over /lib/std/room.c and type: <span
   </li>
 </ul>
 <br>
-<p>For Dead Souls <span style="color: red; font-weight: bold;">2.1.1</span>,
+<p><a name="2.1.1"></a>For Dead Souls <span
+ style="color: red; font-weight: bold;">2.1.1</span>,
 the
 following fixes are available:
 </p>
@@ -102,10 +103,18 @@ example, the runes on Orcslayer). Copy <a
  style="font-weight: bold;">reload every item</span>,<span
  style="font-weight: bold;"> reload every weapon</span>, <span
  style="font-weight: bold;">reload every armor</span>,<span
- style="font-weight: bold;"> reload every worn_storage</span>, <span
- style="font-weight: bold;">reload every container</span>.<span
- style="font-weight: bold;"><br>
-    </span></li>
+ style="font-weight: bold;"> reload every worn_storage</span><span
+ style="font-weight: bold;"></span>.</li>
+  <li>"reload every container" errors out. Copy <a
+ href="http://dead-souls.net/code/fixes/reload.c">this file</a> over
+/verbs/creators/reload.c then <span style="font-weight: bold;">update
+/verbs/creators/reload.c</span><br>
+  </li>
+  <li>Locking things has a bug. To fix this, copy <a
+ href="http://dead-souls.net/code/fixes/lock.c">this file</a> over
+/lib/events/lock.c, then reboot, or <span style="font-weight: bold;">reload
+every container.</span><br>
+  </li>
 </ul>
 <br>
 <div id="footer">

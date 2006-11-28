@@ -10,14 +10,19 @@
 #include <rooms.h>
 
 void eventReceiveWhoReply(mixed *packet) {
-    string list, *who;
+    string list, *who, tmp;
     object ob;
 
     if( file_name(previous_object()) != INTERMUD_D ) return;
     if( !packet[5] || !(ob = find_player(convert_name(packet[5]))) ) return;
     list = "%^MAGENTA%^Remote who information from " + packet[2] + ":%^RESET%^\n";
-    foreach(who in packet[6]) 
-    list +=  who[0] + " (" + time_elapsed(who[1]) + " idle): " + who[2] +"\n";
+    foreach(who in packet[6]){ 
+	mixed wtf;
+	if(intp(who[1])) wtf = to_int(who[1]);
+	if(wtf < 6) tmp = "not";
+	else tmp = time_elapsed(wtf);
+	list +=  who[0] + " (" + tmp + " idle): " + who[2] +"\n";
+    }
     ob->eventPrint(list);
     tn("eventReceiveWhoReply: "+identify(packet),"blue");
 }

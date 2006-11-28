@@ -1,0 +1,23 @@
+EVENTBRING
+
+NAME
+        eventBring()
+
+SYNOPSIS
+        int eventBring(string str)
+
+DESCRIPTION
+        A clan master is empowered to attempt to teleport a member to her location. This function performs the work for that event.
+
+EXAMPLES
+        eventBring("doofus")
+
+LOCATION
+        /lib/clan
+
+SEE ALSO
+        eventJoin, eventUnjoin, eventInitiate, eventRetire
+
+Author
+        Cratylus
+

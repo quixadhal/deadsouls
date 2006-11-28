@@ -71,15 +71,7 @@ int cmd(string str) {
 		max += sizeof(r_files);
 		continue;
 	    }
-	    tc("wtf1: "+files[i]);
-	    //tc("wtf2: "+read_file(files[i]));
-	    if(last_string_element(files[i],"/") == "core" ||
-	      last(files[i],4) == ".ico" ||last(files[i],4) == ".jpg" ||
-	      last(files[i],4) == ".gif" || last(files[i],4) == ".png"
-	      || last(files[i],4) == ".php" || last(files[i],3) == ".db" ) continue;
-	    if(catch(read_file(files[i]))) continue;
-	    if(!file_exists(files[i]) ||  file_size(files[i]) == 0 ||
-	      !(txt = read_file(files[i]))) continue;
+	    if(!(txt = read_file(files[i]))) continue;
 	    borg[files[i]] = regexp(explode(txt, "\n"), exp);
 	    if(!sizeof(borg[files[i]])) map_delete(borg, files[i]);
 	}
@@ -92,8 +84,7 @@ int cmd(string str) {
 	if(!write_file(output, str)) message("system", "Failed to write to: "+output, this_player());
 	else message("system", "Grep sent to: "+output, this_player());
     }
-    else print_long_string(this_player(),str);
-    //else message("Nsystem", str, this_player());
+    else message("Nsystem", str, this_player());
     return 1;
 }
 

@@ -35,7 +35,7 @@ private static mapping Inventory;
 int eventExtraAction(){ return 1; }
 
 static void create() {
-    AddSave( ({ "CarriedMass" }) );
+    //AddSave( ({ "CarriedMass" }) );
     SetSaveRecurse(1);
     chat::create();
     command::create();

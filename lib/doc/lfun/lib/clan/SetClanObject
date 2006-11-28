@@ -1,0 +1,23 @@
+SETCLANOBJECT
+
+NAME
+        SetClanObject()
+
+SYNOPSIS
+        string SetClanObject(string str)
+
+DESCRIPTION
+        Establishes the unique id of the clan's "clan object", which confers membership.
+
+EXAMPLES
+        SetClanObject("snoo")
+
+LOCATION
+        /lib/clan
+
+SEE ALSO
+        GetClanObject
+
+Author
+        Cratylus
+

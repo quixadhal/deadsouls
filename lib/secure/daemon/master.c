@@ -445,7 +445,7 @@ private static void load_access(string cfg, mapping resource) {
     string error_handler(mapping mp, int caught) {
 	string ret, file;
 
-	ret = "---\n" + standard_trace(mp);
+	ret = "---\n"+timestamp()+"\n"+ standard_trace(mp);
 	if( caught ) write_file(file = "/log/catch", ret);
 	else write_file(file = "/log/runtime", ret);
 	if( this_player(1) && find_object(SEFUN) ) {

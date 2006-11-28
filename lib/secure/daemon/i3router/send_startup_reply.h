@@ -7,14 +7,14 @@ static void send_startup_reply(string mudname){
     //  or when the set of routers change for some reason.
 
     if(!connected_muds[mudname]) {
-	trr("PROBLEM","red");
+	//trr("PROBLEM","red");
 	return;
     }
 
     else {
-	if(mudinfo[mudname] && mudinfo[mudname]["password"])
-	    trr(mudname +" apparently exists. password: "+mudinfo[mudname]["password"],"white");
-	else trr(mudname +" apparently exists, but I can't find a password for it.","white");
+	//if(mudinfo[mudname] && mudinfo[mudname]["password"])
+	//trr(mudname +" apparently exists. password: "+mudinfo[mudname]["password"],"white");
+	//else trr(mudname +" apparently exists, but I can't find a password for it.","white");
     }
 
 
@@ -29,8 +29,8 @@ static void send_startup_reply(string mudname){
 	mudinfo[mudname]["password"]
       }) );
 
-    trr("connected_muds[mudname]: "+identify(connected_muds[mudname]),"blue");
-    trr("mudname: "+identify(mudname),"blue");
-    trr("router_name: "+identify(router_name),"blue");
-    trr("mudinfo[mudname]: "+identify(mudinfo[mudname]),"yellow");
+    //trr("connected_muds[mudname]: "+identify(connected_muds[mudname]),"blue");
+    //trr("mudname: "+identify(mudname),"blue");
+    //trr("router_name: "+identify(router_name),"blue");
+    //trr("mudinfo[mudname]: "+identify(mudinfo[mudname]),"yellow");
 }
