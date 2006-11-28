@@ -1,0 +1,23 @@
+GETSKILLMODIFIER
+
+NAME
+        GetSkillModifier()
+
+SYNOPSIS
+        string GetSkillModifier(string skill)
+
+DESCRIPTION
+        Returns the stat (eg, strength, intelligence) that affects the advancement of the specified skill.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/classes
+
+SEE ALSO
+         
+
+Author
+        Cratylus
+

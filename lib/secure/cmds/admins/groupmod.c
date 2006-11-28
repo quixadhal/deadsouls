@@ -156,6 +156,7 @@ mixed cmd(mixed args) {
 }
 
 void help() {
-    message("help", "Syntax: groupmod [-a|-d] GROUP NAME \n\n"
+    message("help", "Syntax: groupmod [-a|-r] GROUP NAME \n"
+      "        groupmod [-c|-d] GROUP\n\n"
       "", this_player());
 }

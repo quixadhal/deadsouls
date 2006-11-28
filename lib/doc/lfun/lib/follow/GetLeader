@@ -1,0 +1,24 @@
+GETLEADER
+
+NAME
+        GetLeader()
+
+SYNOPSIS
+        LIB_FOLLOW: object GetLeader(), LIB_CLAN: string GetLeader()
+
+DESCRIPTION
+        Gets who the leader is in the given context. Note that LIB_FOLLOW uses the object datatype and LIB_CLAN uses string.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/clan
+/lib/follow
+
+SEE ALSO
+         
+
+Author
+        Cratylus
+

@@ -60,11 +60,6 @@ static void create() {
     SetLong("$N is nondescript.");
 }
 
-string SetLoginSite(string site){
-    if(site && !catch(load_object(site))) LoginSite = site;
-    return LoginSite;
-}
-
 int SetRescueBit(int i){
     RescueBit = i;
     return i;
@@ -698,8 +693,7 @@ void eventDescribeEnvironment(int brief) {
 	//void eventLoadObject(mixed *value, int recurse) { }
 
 	int GetRadiantLight(int ambient) {
-	    return (object::GetRadiantLight(ambient) +
-	      container::GetRadiantLight(ambient));
+	    return container::GetRadiantLight(ambient);
 	}
 
 	string GetWebPage() {

@@ -918,8 +918,8 @@ varargs void reset(int count) {
     object *livings = get_livings(this_object());
     if(sizeof(livings)){
 	foreach(object living in livings){
-	    if(living->GetDrone() || living->GetMount() ||
-	      living()->GetNoClean()) return;
+	    if(living && (living->GetDrone() || living->GetMount() ||
+		living()->GetNoClean())) return;
 	}
     }
     inventory::reset(count);

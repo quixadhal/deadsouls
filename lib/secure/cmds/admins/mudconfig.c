@@ -312,7 +312,7 @@ static int ProcessOther(string which, string arg){
 	write("This configuration change will require a few minutes to take effect completely.");
     }
     if(which == "GLOBAL_MONITOR") reload(SNOOP_D,0,1);
-    if(which == "IDLE_TIMEOUT"){ 
+    if(which == "IDLE_TIMEOUT" || which == "MAX_NEWBIE_LEVEL"){ 
 	reload(LIB_CREATOR,1,1);
 	write("This configuration will take effect for each user the next time they log in.");
 	return 1;
@@ -360,7 +360,7 @@ static int ProcessModal(string which, string arg){
 	config2 += ({ element });
     }
     CompleteConfig();
-    if(which == "DEFAULT_PARSING"){ 
+    if(which == "DEFAULT_PARSING" || which == "ENABLE_ENCUMBRANCE"){ 
 	reload(LIB_CREATOR,1,1);
 	write("This configuration will take effect for each user the next time they log in.");
 	return 1;
@@ -371,7 +371,7 @@ static int ProcessModal(string which, string arg){
 
 void help() {
     message("help",
-      "Syntax: sysconfig PARAMETER VALUE \n\n"
+      "Syntax: mudconfig PARAMETER VALUE \n\n"
       "Modifies various system settings.\n"
       "Examples: \n"
       "\nmudconfig autowiz [ yes | no ]"
@@ -382,9 +382,10 @@ void help() {
       "\nmudconfig pk [ yes | no ]"
       "\nmudconfig compat [ yes | no ]"
       "\nmudconfig retain [ yes | no ]"
-      "\nmudconfig maxcommands [ yes | no ]"
       "\nmudconfig defaultparse [ yes | no ]"
       "\nmudconfig disablereboot [ yes | no ]"
+      "\nmudconfig localtime [ yes | no ]"
+      "\nmudconfig maxcommands <max number of commands per second>"
       "\nmudconfig maxip <max connections per IP>"
       "\nmudconfig monitor <monitoring level, 0 to 2>"
       "\nmudconfig newbielevel <max newbie level>"

@@ -215,7 +215,7 @@ int eventRetryCommand(string lastcmd){
     else if(sscanf(lastcmd, "%s %s",virb, rest) == 2) ret = virb + " a "+rest;
     else ret = "wtf";
     if(!ret) {
-	write("One of the nouns you used is too vague. Try another.");
+	write("One of the nouns you used is too vague. Please be more specific.");
 	return 1;
     }
     if(ret) parse_sentence(ret);

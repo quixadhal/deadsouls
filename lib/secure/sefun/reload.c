@@ -87,7 +87,7 @@ varargs mixed reload(mixed ob, int recursive,int quiet) {
 		    }
 		}
 	    }
-	    write("Reload complete.");
+	    if(!quiet) write("Reload complete.");
 	}
 	StringFellows = ([]);
 	return 1;

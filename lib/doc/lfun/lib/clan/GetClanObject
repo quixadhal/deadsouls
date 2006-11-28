@@ -1,0 +1,23 @@
+GETCLANOBJECT
+
+NAME
+        GetClanObject()
+
+SYNOPSIS
+        string GetClanObject()
+
+DESCRIPTION
+        Returns the unique id of the membership object of the clan the object belongs to.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/clan
+
+SEE ALSO
+        SetClanObject
+
+Author
+        Cratylus
+

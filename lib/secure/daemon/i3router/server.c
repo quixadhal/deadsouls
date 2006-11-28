@@ -137,7 +137,15 @@ int clean_socks(){
     int *socky = open_socks();
     int *conn_socky = keys(query_connected_fds());
     foreach(int fd in socky){
-	if(member_array(fd, conn_socky) == -1) close_connection(fd);
+	if(member_array(fd, conn_socky) == -1) {
+	    if(socket_status(fd)[1] != "LISTEN") {
+		close_connection(fd);
+		trr("I closed fd: "+fd,"white");
+	    }
+	    else {
+		trr("Leaving this alone: "+identify(socket_status(fd)),"white");
+	    }
+	}
     }
     return sizeof(open_socks());
 }
@@ -185,10 +193,8 @@ string GetRouterName(){
 
 string SetRouterName(string str){
     validate();
-    //tc("router_name: "+router_name);
     if(first(str,1) != "*") str = "*"+str;
     router_name = str;
-    //tc("router_name: "+router_name);
     log_file("router/server_log",timestamp()+" setting router name to: "+str+"\n"); 
     //save_object(SAVE_ROUTER);
     SetList();
@@ -288,14 +294,21 @@ void clear_discs(){
     string mudname; 
     validate();
     foreach(mudname in keys(mudinfo)) {
-	if(query_mud(mudname)["disconnect_time"] &&
-	  time() - query_mud(mudname)["disconnect_time"] > 60){
-	    //&& time() - query_mud(mudname)["disconnect_time"] < 80){
+	if(query_mud(mudname)["disconnect_time"] > 60 &&
+	  time() - query_mud(mudname)["disconnect_time"] > 300){
+	    trr("I want to remove "+mudname+". Its disconnect time is "+ctime(query_mud(mudname)["disconnect_time"]),"white");
+	    trr("Which was "+time_elapsed(time() - query_mud(mudname)["disconnect_time"])+" ago.","white");
+	    if(member_array(mudname,keys(query_connected_muds())) != -1){
+		trr("Its fd is: "+query_connected_muds()[mudname],"white");
+	    }
+	    else {
+		trr("It is not listed as a connected mud.","white");
+	    }
 	    trr("Removing disconnected mud: "+identify(mudname),"red");
 	    remove_mud(mudname);
+	    map_delete(mudinfo, mudname);
 	    trr("Broadcasting updated mudlist.","white");
 	    broadcast_mudlist(mudname);
-
 	}
     }
 }
@@ -303,4 +316,16 @@ void clear_discs(){
 int eventDestruct(){
     save_object(SAVE_ROUTER);
     daemon::eventDestruct();
+}
+
+string query_fd_info(mixed foo){
+    int num, i;
+    string ret = "";
+    if(stringp(foo)) if(sscanf(foo,"%d",num) != 1) return "foo";
+    if(intp(foo)) num = foo;
+    for(i=0;i<num;i++){
+	mapping bar = query_connected_fds();
+	ret += i+" "+socket_address(i)+" "+(bar[i]+"" || "")+"\n";
+    }
+    return ret;
 }

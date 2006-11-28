@@ -84,6 +84,9 @@ string globalstr;
 mixed globalmixed;
 
 #if CALL_OUT_LOGGING
+//This is ugly and should not be used except in cases of dire
+//emergency when you can't figure out wtf is choking your mud.
+//This *will* break a bunch of stuff. You were warned.
 int call_out(mixed args...){
     if(strsrch(base_name(previous_object()),"/secure/")
       && strsrch(base_name(previous_object()),"/daemon/")){
@@ -105,6 +108,12 @@ int call_out(mixed args...){
     }
 }
 #endif
+
+//addr_server calls don't work well on Solaris and spam stderr
+string query_ip_name(object ob){
+    if(architecture() == "Solaris") return query_ip_number(ob);
+    else return efun::query_ip_name(ob);
+}
 
 function functionify(string str){
     globalstr = str;

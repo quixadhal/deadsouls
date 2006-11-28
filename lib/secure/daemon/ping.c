@@ -16,6 +16,7 @@ string *muds = PINGING_MUDS + ({ mud_name() });
 int CheckOK(){
     string list = load_object("/cmds/players/mudlist")->cmd("");
     Pinging = 0;
+    if(DISABLE_INTERMUD) return 1;
     if(!OK){
 	Retries++;
 	update("/daemon/intermud");
@@ -77,8 +78,10 @@ void DeadMan(){
 void heart_beat(){
     counter++;
     DeadMan();
-    if(!(counter % 30)) CheckOK();
-    if(!(counter % 300)) eventPing();
+    if(!DISABLE_INTERMUD){
+	if(!(counter % 30)) CheckOK();
+	if(!(counter % 300)) eventPing();
+    }
     if(counter > 10000) counter = 0;
 }
 

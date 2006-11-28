@@ -38,6 +38,7 @@
 #define PING_D               DIR_SECURE_DAEMONS "/ping"
 #define PLAYERS_D            DIR_SECURE_DAEMONS "/players"
 #define POLITICS_D           DIR_SECURE_DAEMONS "/politics"
+#define PRELOAD_D            DIR_SECURE_DAEMONS "/preload_check"
 #define PROMOTION_D          DIR_SECURE_DAEMONS "/players"
 #define RACES_D              DIR_DAEMONS "/races"
 #define RELOAD_D             DIR_SECURE_DAEMONS "/reload"

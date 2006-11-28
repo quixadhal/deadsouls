@@ -25,7 +25,7 @@ mixed cmd(string args) {
     player_ob = 0;
 
     if( args == "" || !stringp(args) ) 
-	return "Whom do you want to make a player?";
+	return "Who do you want to make a player?";
     nom = convert_name(args);
     if( !user_exists(nom) ) return capitalize(nom) + " is not a member of " +
 	possessive_noun(mud_name()) + " reality.";
@@ -119,14 +119,13 @@ mixed cmd(string args) {
 	    tainted->eventDestruct();
 	}
     }
-
     call_out( (: ob->eventMove(ROOM_FURNACE) :), 1 );
+    player_ob->eventMoveLiving(ROOM_START);
     player_ob->SetLoginSite(ROOM_START);
     unguarded( (: player_ob->save_player((string)player_ob->GetKeyName()) :) );
-    message("system", "You are now a player. You will be disconnected. Please log back in.", player_ob);
+    message("system", "You are now a player.", player_ob);
     message("system", (string)player_ob->GetName() + " is now a player!",
       this_player());
-    player_ob->eventDestruct();
     return 1;
 }
 

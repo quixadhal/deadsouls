@@ -52,6 +52,9 @@ int CompleteQuest(object ob){
 	eventForce("say I hereby award you 10 quest points, and 2000 experience points!");
 	ob->AddQuestPoints(10);
 	ob->AddExperiencePoints(2000);
+	reload("/domains/town/room/valley",0,1);
+	reload("/domains/town/room/orc_fortress",0,1);
+	reload("/domains/town/room/orc_temple",0,1);
     }
     return 1;
 }

@@ -6,7 +6,7 @@ void broadcast_mudlist(string mudname){
     mixed *packet1; // for muds that use protocol 1 or 2
     mixed *packet3; // for muds that use protocol 3
     mudinfo_update_counter++;
-    trr("broadcasting mudlist to let them know about "+mudname,"red");
+    //trr("broadcasting mudlist to let them know about "+mudname,"red");
     packet1 = ({ "mudlist", 5, router_name, 0, "dummy", 0, mudinfo_update_counter,([
 	mudname:({
 	  connected_muds[mudname] ? -1 : 0,

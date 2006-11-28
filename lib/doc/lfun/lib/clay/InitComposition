@@ -1,0 +1,23 @@
+INITCOMPOSITION
+
+NAME
+        InitComposition()
+
+SYNOPSIS
+        void InitComposition()
+
+DESCRIPTION
+        This is a function internal to LIB_CLAY which is called in create() to initialize its values.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/clay
+
+SEE ALSO
+        SetComposition
+
+Author
+        Cratylus
+

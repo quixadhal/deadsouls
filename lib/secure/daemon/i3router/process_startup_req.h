@@ -11,12 +11,13 @@ static void process_startup_req(int protocol, mixed info, int fd){
     // router name is info[4], I'll just pretend I'm every router though, ha-ha!
     // also, should verify that all the fields are the right type
 
-    trr("info: "+identify(info));
-    trr("process_startup_req: protocol="+protocol+", mud="+info[2],"blue");
+    //trr("info: "+identify(info));
+    trr(timestamp()+" process_startup_req: protocol="+protocol+", mud="+info[2],"blue");
     log_file("router/server_log",timestamp()+" process_startup_req: protocol="+protocol+", mud="+info[2]+"\n");
 
     if(member_array(info[2], banned_muds) != -1) {
-	//log_file("router/server_log",timestamp()+" "+info[2]+" denied. reason: banned.\n");
+	trr(timestamp()+" "+info[2]+" denied. reason: banned.\n");
+	log_file("router/server_log",timestamp()+" "+info[2]+" denied. reason: banned.\n");
 	return;
     }
 
@@ -39,7 +40,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 
     if(sizeof(info)<18){ 
 	// smallest protocol is protocol 1/2 which have size 18
-	trr("THIS SHOULDNT BE HERE");
+	//trr("THIS SHOULDNT BE HERE");
 	write_data(fd,({
 	    "error",
 	    5,
@@ -53,13 +54,10 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	  }));
 	return;
     }
-    trr("fd is:" +fd);
+    trr("fd is:" +fd,"cyan");
     site_ip=socket_address(fd);
-    trr("site_ip: "+site_ip,"blue");
-    if(grepp(site_ip," ")){
-	string *ip_split=explode(site_ip," ");
-	site_ip = ip_split[0];
-    }
+    //trr("site_ip: "+site_ip,"cyan");
+    site_ip = clean_fd(site_ip);
     trr("site_ip: "+site_ip,"cyan");
     newinfo = ([
       "name":info[2],
@@ -80,7 +78,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
       "protocol":protocol,
       "restart_delay":-1,
     ]);
-    trr("newinfo: "+identify(newinfo));
+    //trr("newinfo: "+identify(newinfo));
     switch(protocol){
     case 1:
     case 2:
@@ -229,8 +227,9 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	trr("Ok. this is the password: "+newinfo["password"],"white");
 	// Change this maybe... see if the password is supposed to be in a certain range
     }
-    //else trr("Known: "+mudinfo[info[2]]["password"]+", current: "+newinfo["password"],"green");
-    //log_file("router/server_log",timestamp()+" Known: "+mudinfo[info[2]]["password"]+", current: "+newinfo["password"]+"\n");
+    else {
+	trr("Known: "+mudinfo[info[2]]["password"]+", current: "+newinfo["password"],"green");
+    }
     // MUD should be okay at this point.
     trr("about to update the mudinfo...","white");
     mudinfo[info[2]]=newinfo; // update the mudinfo
@@ -250,4 +249,5 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	trr("This is what newinfo looks like: "+identify(newinfo),"blue");
 	trr("-------------------------------","blue");
     }
+    trr(timestamp()+" process_startup_req: for mud: "+info[2]+" complete.\n---\n","blue");
 }

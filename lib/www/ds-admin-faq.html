@@ -12,7 +12,7 @@
  style="font-weight: bold;">Dead Souls Admin FAQ</span></big><br>
 <br>
 Written by Cratylus @ Dead Souls, October 2005<br>
-Updated 27 September 2006<br>
+Updated 23 November 2006<br>
 <span style="font-weight: bold; text-decoration: underline;"><br>
 </span>Note: commands are displayed in boldface, like this: <span
  style="font-weight: bold;">ls -a</span><span
@@ -313,6 +313,14 @@ my question. It's just one question, ffs.</big></a><br>
 <a href="#105">105 Is it possible to upgrade to alpha without killing
 everything I've done?</a><br>
 <br>
+<a href="#106">106 How do I start an area?</a><br>
+<br>
+<a href="#107">107 I don't want to use a cookie-cutter codebase</a><br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
+<a href="#108">108 How do I make my new area the default domain where
+new people to arrive?</a><br>
+<br>
+<br>
 </big><big style="font-family: courier new,courier,monospace;"><br>
 <span style="font-weight: bold; text-decoration: underline;"><a name="0"></a>How
 do I start?</span><br>
@@ -470,7 +478,7 @@ and other Dead Souls muds on the i3 network will see<br>
 your message like this:<br>
 <br>
 <span style="font-weight: bold;">You@YourMud <span
- style="color: rgb(51, 51, 255);">&lt;ds&gt;</span> blah blah</span><br
+ style="color: rgb(255, 204, 0);">&lt;ds&gt;</span> blah blah</span><br
  style="font-weight: bold;">
 <br>
 Please note that intercre is where you ask coding<br>
@@ -488,7 +496,7 @@ Conversely, dchat is mostly chat. <br>
 channel to</span><br style="color: rgb(255, 0, 0);">
 <span style="color: rgb(255, 0, 0);">yourself or your creators, be
 aware that conversations</span><br style="color: rgb(255, 0, 0);">
-<span style="color: rgb(255, 0, 0);">there tend to sometimes not be
+<span style="color: rgb(255, 0, 0);">there tend sometimes not to be
 PG-rated. You can</span><br style="color: rgb(255, 0, 0);">
 <span style="color: rgb(255, 0, 0);">also find yourself baited into a
 flamebattle if</span><br style="color: rgb(255, 0, 0);">
@@ -500,11 +508,11 @@ yourself from being baited.</span><br style="color: rgb(255, 0, 0);">
 intergossip channel</span><br style="color: rgb(255, 0, 0);">
 <span style="color: rgb(255, 0, 0);">entirely.</span><br>
 <br>
-The lpuni channel is a mix of<br>
-chat and official <a href="lpu_faq.html">LPUniversity</a>
-business. As of June 5 2006,<br>
-Blackdawn mud is bridging that channel, so it is accessible<br>
-from both i3 routers.<br>
+The lpuni channel is a mix of chat and official <a href="lpu_faq.html">LPUniversity</a>
+<br>
+business. The LPUniversity project appears to be dead as of<br>
+this writing though (21 Nov 06), so the channel's existence is likely<br>
+to be a matter of historical, and not practical, relevance.<br>
 <br>
 The ds channel is for Dead Souls-related conversation. Sometimes<br>
 the topic drifts, but "random chat" should be avoided<br>
@@ -672,8 +680,199 @@ For details:<br>
 <span style="font-weight: bold;">help addrace<br>
 <br>
 </span>Note that the race file PLAYER_RACE line overrides <br>
-the options used in the addrace command.<span style="font-weight: bold;"><br>
-</span><br>
+the options used in the addrace command.<br>
+<br>
+NOTE: It is possible to remove all races. However, please<br>
+read the following discussion to get an idea of the issues<br>
+involved:<br>
+<br>
+<span style="color: rgb(204, 0, 0);">[2006.11.20-18.08] Ohm@ashdev
+&lt;dead_souls&gt; Hey, if the removeraces command will screw up
+something, will removing the races manually from admintool have the
+same effect?</span><br>
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.08] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; ok let's take this one step at a time</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.09] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; removeraces will erase the list of races
+held in the races daemon</span><br style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.09] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; what this means is that when you try to
+clone a bear, you will get a big pukey error message</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.10] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; because bears aren't a race any more, so
+the npc you try to clone will error out</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.10] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; i consider that "broken" behavior,
+because i dont like it</span><br style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.10] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; but you'll only see it if you try to load
+npc's, aka mobs<br>
+<span style="color: rgb(0, 0, 0); font-weight: bold;">[Ed note:
+removing all races will also screw your players]</span><br>
+</span><span style="color: rgb(204, 0, 0);">[2006.11.20-18.11]
+Ohm@ashdev &lt;dead_souls&gt; what if I want to get rid of all those
+races, and all of those mobs?</span><br>
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.11] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; right</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.11] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; before i answer your question</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.12] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; do you plan to have dogs n cats n deer n
+stuff?</span><br>
+<span style="color: rgb(204, 0, 0);">[2006.11.20-18.12] Ohm@ashdev
+&lt;dead_souls&gt; No. I'm want to completely write all my mobs from
+scratch, because they're based on a very specific virtual world.</span><br>
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.12] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; ok</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.13] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; what you want to do is not complicated</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.13] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; so i hope yer not getting that vibe</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.13] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; the reason i'm cautioning you against it
+is</span><br style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.14] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; that removing all races basically makes
+lots of rooms not work anymore, because they contain npc's that require
+races to exist</span><br>
+[2006.11.20-18.14] Syphon@WorldWideResistance &lt;dead_souls&gt; eep,
+That's a bit of editing<br>
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.14] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; and disabling sample areas isn't
+something i recommend to someone who's starting out</span><br>
+<span style="color: rgb(204, 0, 0);">[2006.11.20-18.15] Ohm@ashdev
+&lt;dead_souls&gt; right, that's what I'm trying to figure out. How can
+I get rid of the mobs, and other spots that require them so it will run
+right.</span><br>
+[2006.11.20-18.15] Syphon@WorldWideResistance &lt;dead_souls&gt; Can't
+he just dest npc in all the rooms ?<br>
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.15] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; ok</span><br>
+<span style="color: rgb(204, 0, 0);">[2006.11.20-18.15] Ohm@ashdev
+&lt;dead_souls&gt; I'm newish to ds, but I've worked with plenty of
+other muds, and I figured I can reference to the backups if I need help.</span><br>
+[2006.11.20-18.15] Syphon@WorldWideResistance &lt;dead_souls&gt; How
+many rooms are there<br>
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.15] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; desting an npc doesnt permanently remove
+it from the room</span><br>
+[2006.11.20-18.15] Syphon@WorldWideResistance &lt;dead_souls&gt; ah<br>
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.15] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; to permanently remove an npc</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.16] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; walk into the room it's in</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.16] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; and then: delete &lt;npc&gt;</span><br>
+[2006.11.20-18.16] Syphon@WorldWideResistance &lt;dead_souls&gt; nod<br>
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.16] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; where &lt;npc&gt; is the name of the npc</span><br>
+[2006.11.20-18.16] &lt;dead_souls&gt; Zeus@Ancient Rome deletes
+Cratylus...wait that won't work :P<br>
+[2006.11.20-18.16] &lt;dead_souls&gt; Zeus@Ancient Rome watches the
+delete backfire and melts into a pile of goo<br>
+<span style="color: rgb(204, 0, 0);">[2006.11.20-18.16] Ohm@ashdev
+&lt;dead_souls&gt; yea, but that's not exactly practical in my
+situation... I want to get rid of ALL npcs in ALL rooms.</span><br>
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.17] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; ok</span><br>
+<span style="color: rgb(204, 0, 0);">[2006.11.20-18.18] Ohm@ashdev
+&lt;dead_souls&gt; wait, this doesn't make sense... the only npc I see
+in the source files is fighter.c</span><br>
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.19] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; here's what i think then</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.19] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; if the sampel areas are incompatible with
+your vision, then just don't use them</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.20] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; not trying to be difficult, but if it's a
+lot of trouble to back-port to them, you're probably better off
+concentrating on your original areas</span><br>
+<span style="color: rgb(204, 0, 0);">[2006.11.20-18.20] Ohm@ashdev
+&lt;dead_souls&gt; when you first load the server, what areas are
+loaded, and from where?</span><br>
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.21] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; the mud expects /domains/default to exist
+for some stuff like the default death room and such</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.21] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; but by editing /secure/include/rooms.h
+you can just substitute your own rooms for these system functions</span><br>
+<span style="color: rgb(204, 0, 0);">[2006.11.20-18.21] Ohm@ashdev
+&lt;dead_souls&gt; Ohhhhhhhhh! Okay. I see now.</span><br>
+[2006.11.20-18.22] Kriton@Dead Souls Arena &lt;dead_souls&gt;
+send_messages needs a man page :P<br>
+<span style="color: rgb(204, 0, 0);">[2006.11.20-18.22] Ohm@ashdev
+&lt;dead_souls&gt; So you're saying the npcs listed in
+domains/default/npc/ are required because rooms listed in rooms.h try
+and load some of those npcs.</span><br>
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.23] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; not quite</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.23] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; hang on crazy 2 yr old</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.28] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; ok</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.28] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; in /secure/include/rooms.h you can see
+that special rooms are specified</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.29] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; the start room, the death room, etc</span><br>
+<span style="color: rgb(204, 0, 0);">[2006.11.20-18.29] Ohm@ashdev
+&lt;dead_souls&gt; right</span><br>
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.29] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; the mud needs these to exist, or your
+users will be helpless</span><br style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.29] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; ok</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.29] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; my point is, you dont need to use the
+ones that are there</span><br style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.29] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; make your own, and then put the filenames
+in the rooms.h file</span><br style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.30] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; nobody who plays your mud ever needs to
+see a single stock room</span><br style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.30] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; they can just exist like an appendix,
+unused, unneeded</span><br>
+<span style="color: rgb(204, 0, 0);">[2006.11.20-18.30] Ohm@ashdev
+&lt;dead_souls&gt; ok</span><br>
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.30] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; eventually, once they have no usefulness,
+deleted</span><br style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.31] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; but for now, i think they *are* useful to
+you</span><br style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.31] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; as examples</span><br
+ style="color: rgb(0, 0, 153);">
+<span style="color: rgb(0, 0, 153);">[2006.11.20-18.31] Cratylus@Dead
+Souls Demo &lt;dead_souls&gt; which is why i caution you against just
+deleting lots of stuff before you get the hang of how i all works</span><br>
+<span style="color: rgb(204, 0, 0);">[2006.11.20-18.32] Ohm@ashdev
+&lt;dead_souls&gt; ok, that makes sense</span><br
+ style="color: rgb(204, 0, 0);">
+<span style="color: rgb(204, 0, 0);">[2006.11.20-18.32] Ohm@ashdev
+&lt;dead_souls&gt; I really just needed to know what I had to do to
+remove all stock rooms from player view</span><br>
+<span style="font-weight: bold;"></span><br>
 <br style="font-weight: bold; text-decoration: underline;">
 </big><big style="font-family: courier new,courier,monospace;"><span
  style="font-weight: bold; text-decoration: underline;"><a name="11"></a></span></big><big
@@ -731,8 +930,7 @@ Creator's Manual.<br>
  style="font-weight: bold; text-decoration: underline;">Can you please
 make the FAQ easier to read? It's too long and complicated.</span><br>
 <br>
-I'm a lib coder, not a web designer. Cut me slack. Or, edit it<br>
-for me and show me how it's done.<br>
+No.<br>
 <br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
@@ -951,7 +1149,10 @@ all wrong!</span><br>
 <br>
 The <span style="font-weight: bold;">mudtime</span> command tells you
 what time it is in the game, not what time<br>
-it is in the real world.<br>
+it is in the real world. This mud time, or game time, passes much more<br>
+quickly than normal, real-world time, so you may see a few sunrises and<br>
+sunsets in the game while playing. Hopefully you are sufficiently<br>
+well-adjusted that this will not occur in real life.<br>
 <br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
@@ -964,9 +1165,15 @@ is all wrong!</span><br>
 If you used <span style="font-weight: bold;">admintool</span> to
 change your timezone and the time of day is still<br>
 wrong, you may be using an OS with timekeeping that Dead Souls doesn't<br>
-understand. If this is so, figure out how many hours off you are, and<br>
+understand. You may be using a UNIX operating system that is set for <br>
+GMT offsets, rather than local time.<br>
+<br>
+If this is so, figure out how many hours off you are, and<br>
 enter that value into the EXTRA_TIME_OFFSET parameter in
 /secure/include/config.h<br>
+If you're running a version of Dead Souls higher than 2.1.1, you<br>
+should also make sure LOCAL_TIME in /secure/include/config.h is set to
+0.<br>
 <br>
 Also make sure to change your timezone during daylight saving<br>
 changes. For example, EDT to EST, and vice versa.<br>
@@ -1083,6 +1290,10 @@ this with a Windows editor.<br>
 <br>
 Instead of the updates you can reboot the mud.<br>
 <br>
+Users of Dead Souls versions above 2.1a15 can type (for example): <br>
+<span style="font-weight: bold;">mudconfig maxidle 14400</span><br>
+To make players get logged off after four hours.<br>
+<br>
 </big><big style="font-family: courier new,courier,monospace;"><br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
  style="font-family: courier new,courier,monospace;"><span
@@ -1105,8 +1316,12 @@ this with a Windows editor.<br>
 3) update /secure/lib/connect<br>
 <br>
 Instead of the updates you can reboot the mud.<br>
-</big><big style="font-family: courier new,courier,monospace;"><br>
 <br>
+</big><big style="font-family: courier new,courier,monospace;">Users of
+Dead Souls versions above 2.1a15 can just type:<br>
+<span style="font-weight: bold;">mudconfig autowiz on</span><br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
 <span style="text-decoration: underline; font-weight: bold;"></span></big><big
  style="font-family: courier new,courier,monospace;"><span
  style="font-weight: bold; text-decoration: underline;"><a name="35"></a></span></big><big
@@ -1137,6 +1352,18 @@ the intermud group using admintool.<br>
 <br>
 Instead of these updates, you could just reboot the mud.<br>
 <br>
+</big><big style="font-family: courier new,courier,monospace;">Users of
+Dead Souls versions above 2.1a15 can </big><big
+ style="font-family: courier new,courier,monospace;">just </big><big
+ style="font-family: courier new,courier,monospace;">type:<br>
+<span style="font-weight: bold;">mudconfig intermud restrict</span><br>
+<br>
+They can also use groupmod to add/remove users to the<br>
+intermud group:<br>
+<span style="font-weight: bold;">groupmod -a intermud joebob</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">groupmod -r intermud jimbob</span><br>
+<br>
 </big><big style="font-family: courier new,courier,monospace;"><br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
  style="font-family: courier new,courier,monospace;"><span
@@ -1158,7 +1385,12 @@ this with a Windows editor.<br>
 <br>
 3) update /daemon/intermud<br>
 <br>
-<br style="font-weight: bold; text-decoration: underline;">
+</big><big style="font-family: courier new,courier,monospace;">Users of
+Dead Souls versions above 2.1a15 can just type:<br>
+<span style="font-weight: bold;">mudconfig intermud disable<br>
+<br>
+</span></big><big style="font-family: courier new,courier,monospace;"><br
+ style="font-weight: bold; text-decoration: underline;">
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
  style="font-family: courier new,courier,monospace;"><span
  style="font-weight: bold; text-decoration: underline;"><a name="37"></a></span></big><big
@@ -1173,7 +1405,16 @@ this with a Windows editor.<br>
 <big style="font-family: courier new,courier,monospace;">2) reboot the
 mud<br>
 <br>
-<br>
+</big><big style="font-family: courier new,courier,monospace;">Users of
+Dead Souls versions above 2.1a15 can just type (for example):<br>
+<span style="font-weight: bold;">mudconfig startroom
+/domains/MystyDragonClouds/room/cloud_nine<br>
+</span>If you use mudconfig for this, a reboot isn't necessary, but
+it'll<br>
+ensure all objects in the mud use the new start room.<span
+ style="font-weight: bold;"><br>
+</span><br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
  style="font-family: courier new,courier,monospace;"><span
  style="font-weight: bold; text-decoration: underline;"><a name="38"></a></span></big><big
@@ -1190,6 +1431,12 @@ Don't do this with a Windows editor.<br>
 </big><big style="font-family: courier new,courier,monospace;">2)
 reboot the mud<br>
 <br>
+</big><big style="font-family: courier new,courier,monospace;">Users of
+Dead Souls versions above 2.1a15 can just type:<br>
+<span style="font-weight: bold;">mudconfig newbielevel 0<br>
+</span>then:<span style="font-weight: bold;"><br>
+update -r /lib/player<br>
+</span></big><big style="font-family: courier new,courier,monospace;"><br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
  style="font-family: courier new,courier,monospace;"><span
@@ -1210,7 +1457,11 @@ reboot the mud<br>
 * Note that this will not affect players who are <br>
 already non-human.<br>
 <br>
+</big><big style="font-family: courier new,courier,monospace;">Users of
+Dead Souls versions above 2.1a15 can just type:<br>
+<span style="font-weight: bold;">mudconfig justhumans 1</span><br>
 <br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
  style="font-family: courier new,courier,monospace;"><span
  style="font-weight: bold; text-decoration: underline;"><a name="40"></a></span></big><big
@@ -1228,6 +1479,10 @@ this with a Windows editor.<br>
 </big><big style="font-family: courier new,courier,monospace;">2)
 reboot the mud<br>
 <br>
+</big><big style="font-family: courier new,courier,monospace;">Users of
+Dead Souls versions above 2.1a15 can type:<br>
+<span style="font-weight: bold;">mudconfig justenglish 1</span></big><br>
+<big style="font-family: courier new,courier,monospace;"><br>
 * Note that this may not affect players who already<br>
 are not native English speakers. To change them, <br>
 type:<br>
@@ -1352,7 +1607,12 @@ to Dead Souls. A good host will have a high level of service, shell<br>
 and file transfer access, etc, for which you obviously will need<br>
 to pay money. <br>
 <br>
-There used to be one free mud hosting service I<br>
+</big><big style="font-family: courier new,courier,monospace;">I'm told
+that the free mud hosting at <a
+ href="http://isunlimited.net/hosting-mu.php">ISUnlimited</a> is
+adequate.</big><br>
+<big style="font-family: courier new,courier,monospace;"><br>
+There used to be another free mud hosting service I<br>
 was aware of, and that's <a href="http://www.frostmud.com/">FrostMud</a>.
 It was basically a guy and a Linux<br>
 server with room on it for muds. However, there's some sort<br>
@@ -1364,11 +1624,12 @@ can still use his service.<br>
 <br>
 There's no such thing as a free lunch. If you want<br>
 a reliably solid, well supported, feature-rich platform for your<br>
-mud, quit being a cheapskate and cough up the $20/mo. That's<br>
-like, what, one espresso every couple of days. <br>
+mud, quit being a cheapskate and cough up the $9/mo. That's<br>
+like, what, three espressos a month. Nobody is too hard up to<br>
+host commercially, unless you're on the street. <br>
 <br>
 I've heard good things about the commercial service <br>
-from both <a href="http://www.mudmagic.com/hosting/">Kyndig</a> and <a
+from both&nbsp;<a href="http://www.murpe.com/hosting/">MURPE</a> and <a
  href="http://arthmoor.com/mud-hosting.php">Arthmoor</a>.<br>
 <br>
 <a href="http://wolfpaw.net/">Wolfpaw</a> also is an excellent
@@ -1379,6 +1640,11 @@ as of 16 September 2006:<br>
 <span style="font-weight: bold;">Frontiers has been up for 8w 1d 16h
 48m 47s.<br>
 </span><br>
+However, Wolfpaw has become rather tired of dealing with <br>
+newbie mud admis, so unless you're a hardcore do-it-yourselfer<br>
+who just needs a big data pipe and nothing else, you may be<br>
+better off with other hosting.<br>
+<br>
 If you have a DSL or cable modem, and your computer is<br>
 up all the time, you can just use that, too. Your IP may be<br>
 dynamic, making it tough for people to find you, but there are<br>
@@ -1415,16 +1681,14 @@ guarantee it will make it into any future release, but it just might.<br>
 <br>
 Please be aware that by doing so, you signal you claim no <br>
 copyright to the code, allowing me to publish it and <br>
-preventing you from ever revoking my right to distribute it.<br>
+preventing you from ever revoking my right to distribute it.</big><big
+ style="font-family: courier new,courier,monospace;"><br>
 <br>
-<span style="font-style: italic;"> Naturally there are interpretations
-of copyright law</span><br style="font-style: italic;">
-<span style="font-style: italic;">that suggest the above paragraph is
-not correct in one way</span><br style="font-style: italic;">
-<span style="font-style: italic;">or another, but my point is clear: if
-you're going to try to </span><br style="font-style: italic;">
-<span style="font-style: italic;">do such a thing, don't bother
-submitting it.</span><br>
+<small style="font-style: italic;"><small><small><small>Naturally there
+are interpretations of copyright law<br>
+that suggest the above paragraph is not correct in one way<br>
+or another, but my point is clear: if you're going to try to<br>
+do such a thing, don't bother submitting it. </small></small></small></small><br>
 <br>
 You also represent that no third party has copyright to <br>
 the code, and hold me harmless in any subsequent<br>
@@ -1440,30 +1704,26 @@ Souls that anyone other than me has copyright to. I can't<br>
 afford the risk of someone deciding I can't distribute<br>
 code that DS may eventually rely on.<br>
 <br>
-</big><big
- style="font-family: courier new,courier,monospace; font-style: italic;">
-Naturally there are interpretations of copyright law<br>
+<small style="font-style: italic;"><small>Naturally there are
+interpretations of copyright law<br>
 that suggest the above paragraph is not correct in one way<br>
-or another, but my point is clear: if you're going to try to <br>
-do such a thing, don't bother submitting it.</big><br
- style="font-family: courier new,courier,monospace;">
-<big style="font-family: courier new,courier,monospace;"><br>
-Also, I don't want to hear from anyone about my<br>
+or another, but my point is clear: if you're going to try to<br>
+do such a thing, don't bother submitting it.</small></small> <br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;">Also, I
+don't want to hear from anyone about my<br>
 use of legal terms of art. I know damn well it's more complicated<br>
 than I make it sound. My phrasing is sufficient to make<br>
 the legal practical transaction of ideas possible here.<br>
 <br>
-</big><big style="font-family: courier new,courier,monospace;"><span
- style="font-style: italic;">Naturally there are interpretations of
-copyright law</span><br style="font-style: italic;">
-<span style="font-style: italic;">that suggest the above paragraph is
-not correct in one way</span><br style="font-style: italic;">
-<span style="font-style: italic;">or another, but my point is clear: if
-you're going to try to </span><br style="font-style: italic;">
-<span style="font-style: italic;">do such a thing, don't bother
-submitting it.</span><br style="font-style: italic;">
+<small style="font-style: italic;"><small>Naturally there are
+interpretations of copyright law<br>
+that suggest the above paragraph is not correct in one way<br>
+or another, but my point is clear: if you're going to try to<br>
+do such a thing, don't bother submitting it. </small></small><br>
 <br>
-Oh wait that paragraph is ok. Sorry, I've been having<br>
+</big><big style="font-family: courier new,courier,monospace;">Oh wait
+that paragraph is ok. Sorry, I've been having<br>
 people's opinions on intellectual property inflicted on me<br>
 again, and it makes my copy and paste finger twitchy.<br>
 <br>
@@ -2268,11 +2528,12 @@ Major version number changes are very rare and represent a<br>
 vast difference from the old major version. Versions 1 and 2 of<br>
 Dead Souls are so different as to be largely incompatible with each<br>
 other's code.<br>
-As of this writing, the goal of releasing version 2.1 looms.<br>
-The significance of this milestone is that Dead Souls 2.1 is<br>
-intended to be the fulfillment of the promise that there was in<br>
-version 1.1. After the release of Dead Souls 2.1, the focus of<br>
-development will be in adding major systems and functionality<br>
+<br>
+As of this writing, 2.1.1 is released, and it is the fulfillment<br>
+of the promise that there was in version 1.1.<br>
+<br>
+The focus of development is now in adding major systems and
+functionality<br>
 that 1.1 was hoped to have, but never did.<br>
 <br>
 <br>
@@ -2375,7 +2636,6 @@ For more information on domainadmin, type:<br>
 For more details on where QCS puts things, be sure<br>
 to read <a href="http://dead-souls.net/ds-creator-faq.html#5.1">this
 Creator FAQ section</a>.<br>
-<br>
 <br>
 <br>
 <a name="74"></a><span
@@ -2625,7 +2885,33 @@ may be available to a user based on the access privileges<br>
 defined in a given adm/ subdirectory. See <span
  style="font-weight: bold;">help grant</span> for<br>
 more details on that system.<br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
+The permissions logic goes something like this:<br>
 <br>
+<span style="font-weight: bold;">uid/euid/guid</span>:<br>
+1) These absolutely do not work in Dead Souls. It is not a supported
+security model.<br>
+<br style="font-weight: bold;">
+<span style="font-weight: bold;">read.cfg</span>:<br>
+1) If a file/directory is not in this file, anyone can read it.<br>
+2) If a file/directory is in this file, only the specified
+groups/prople can read it.<br>
+<br>
+<span style="font-weight: bold;">write.cfg</span>:<br>
+1) If a file/directory is not in this file, only admins can write to it.<br>
+2) If a file/directory is in this file, admins + the groups/people
+specified can write to it.<br>
+<br>
+<span style="font-weight: bold;">grant command</span>:<br>
+1) A creator may use "grant" to give read and/or write access to files
+under her control.<br>
+<br>
+<span style="font-weight: bold;">default</span>:<br>
+1) Objects in the /secure dir can arbitrarily limit access to their
+data if coded to do so.<br>
+2) Anything not explained by the above rules is a security policy
+defined in /secure/daemon/master.c</big><br>
+<big style="font-family: courier new,courier,monospace;"><br>
 <br>
 </big><big style="font-family: courier new,courier,monospace;"><a
  name="87"></a><span
@@ -2729,6 +3015,9 @@ new creators. The same goes for /secure/sefun/make_workroom.c<br>
 need to know and trust your builders.<br>
 <br>
 - Don't let a week go by without a full backup of your mud.<br>
+<br>
+- Don't use color codes in your mud name. It makes people on<br>
+intermud cranky.<br>
 <br>
 <br>
 <a style="font-weight: bold; text-decoration: underline;" name="101"></a><span
@@ -2924,9 +3213,24 @@ Dead Souls site. </span><span
 need to worry about licensing issues. Only <br>
 those looking to distribute </span><span
  style="font-family: courier new,courier,monospace;">or fork DS should
-be concerned with the licensing.</span><br
- style="font-family: courier new,courier,monospace;">
-<big style="font-family: courier new,courier,monospace;"><br>
+be concerned with the licensing.<br>
+<br>
+For people who don't like running proprietary code, and don't trust me<br>
+to honor the GPL license, you have now a THIRD option, which is using<br>
+the public domain version of DS2 known as Dead Souls II. For more <br>
+details, please see this page: <a
+ href="http://dead-souls.net/ds-II-faq.html">http://dead-souls.net/ds-II-faq.html</a>
+.<br>
+<br>
+<span style="font-weight: bold;">Short answer</span>: If you don't care
+what license you use, then you should<br>
+use the most featured and most current stable version, which is: </span></big><big
+ style="font-family: courier new,courier,monospace;"><a
+ style="font-family: courier new,courier,monospace;"
+ href="http://dead-souls.net/code/dead_souls.zip">http://dead-souls.net/code/dead_souls.zip</a><br>
+</big><big style="font-family: courier new,courier,monospace;"><span
+ style="font-family: courier new,courier,monospace;"></span><big
+ style="font-family: courier new,courier,monospace;"><br>
 <small><br>
 <a name="96"></a><span
  style="font-weight: bold; text-decoration: underline;">Good heavens!
@@ -3315,7 +3619,201 @@ stable release...then don't.<br>
 <br>
 If you do it and screw up, restore from backup. You did back up<br>
 first, right?<br>
-<br style="font-family: courier new,courier,monospace;">
+<br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;"><a
+ name="106"></a><span
+ style="font-weight: bold; text-decoration: underline;">How do I start
+an area?</span><br>
+<br>
+In Dead Souls, a set of related objects, creatures, and rooms that<br>
+add up to the creative vision of a builder is called a "domain". <br>
+It's the same thing as what other codebases refer to as an "area".<br>
+The terms are used interchangeably in the DS community.<br>
+<br>
+Dead Souls domains are comprised of a bunch of LPC files that live<br>
+in a specific directory. If the domain is to be called UlTiMaTe DBZ
+PWNAGE<br>
+then that directory (aka "folder") might be called /domains/dragonballz
+.<br>
+<br>
+To create that domain, you can use the <span style="font-weight: bold;">domaincreate</span>
+command, like so:<br>
+<br>
+<span style="font-weight: bold;">domaincreate dragonballz</span><br>
+<br>
+This will generate some standard directories and a start room for<br>
+the domain. At that point you can assign a domain admin with the<br>
+domainadmin command. For more info:<br>
+<br>
+<span style="font-weight: bold;">help domaincreate</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">help domainadmin</span><br>
+<br>
+<br>
+<a name="107"></a><span
+ style="font-weight: bold; text-decoration: underline;">I don't want to
+use a cookie-cutter codebase</span><br>
+<br>
+So, this one time, these guys were checking out Dead Souls, and<br>
+one of them was seriously evaluating it, and his buddy was basically<br>
+coming up with reasons why some other lib was better...no matter<br>
+what. For example, the doubter guy was like "feh we don't want<br>
+a medieval mud", to which I replied "check out the firearms<br>
+code", and the reply was "lol, we have our own". You know, a<br>
+total no win sort of deal.<br>
+<br>
+And then the doubter guy said something that got me thinking.<br>
+Among his objections was one that I didn't quite understand.<br>
+<br>
+"We don't want a cookie-cutter lib," he said.<br>
+<br>
+Now, the lib he was advocating was no more or less cookie cutter<br>
+than DS, in my opinion, so it's not like I was dazzled by the<br>
+argument, so much as I was confused by the premise. Just what<br>
+the heck does "cookie cutter" mean?<br>
+<br>
+<span style="font-weight: bold; font-style: italic;">Cookie cutter as a
+bad thing:</span><br>
+<br>
+I think what people sometimes mean is that they don't want a mud<br>
+that looks like every other mud. Why bother logging into <br>
+LeetDikuHeavilyModifiedMud When DikuHighlyLeetCustomizedMud is <br>
+exactly the same, except the race and skill names are different?<br>
+<br>
+Similarly, there are a few dozen new Dead Souls muds out there.<br>
+They all mostly look the same...why not choose something that<br>
+isn't like Everyone Else?<br>
+<br>
+<span style="font-weight: bold; font-style: italic;">Cookie cutter as a
+good thing:</span><br>
+<br>
+I would suggest that there are some things for which "cookie<br>
+cutter" as a pejorative term is of limited impact. For example,<br>
+operating systems and air conditioners. There are things that,<br>
+when acquired, aren't acquired for their uniqueness. They are<br>
+acquired for their suitability to a specific application. <br>
+<br>
+In this sense, cookie cutter basically means widely adopted, and<br>
+from the standpoint of someone just trying to get a specific job<br>
+done, it is an advantage that there is wide adoption of what<br>
+you're working on.<br>
+<br>
+<span style="font-weight: bold; font-style: italic;">Where Dead Souls
+fits in:</span><br>
+<br>
+* A codebase distribution is, necessarily, cookie cutter. It's<br>
+a set of frameworks, presumably standardized during development,<br>
+that are the same for everyone when they first get it. From<br>
+this perspective, anything that you didn't 100% code yourself is<br>
+cookie cutter when you download it.<br>
+<br>
+* If you download a codebase and then just run it with no modifications,<br>
+then the problem in "originality" isn't the codebase, it's you.<br>
+<br>
+* Dead Souls includes a large (perhaps overlarge) amount of<br>
+rooms, creatures, objects, armor, and weapons in the stock distribution.<br>
+When you download and run it, you basically have a working mud with<br>
+quests and pubs and whatnot.<br>
+<br>
+<span style="text-decoration: underline;">YOU ARE NOT SUPPOSED TO USE
+THAT STUFF AS YOUR MUD</span><br>
+<br>
+Those are examples. They are sample areas. If your mud uses the sample<br>
+areas, they should be one or more of the following<br>
+<br>
+A) Temporary, while you're learning the lib<br>
+B) A joke<br>
+C) Not the areas new players see<br>
+<br>
+If you make no changes to the sample areas and present them to new<br>
+players as a mud, then yes, you have a cookie cutter mud, and you<br>
+really might as well just shut down, because only your friends will<br>
+log on to play, and not for very long.<br>
+<br>
+I think that the problem is that people see this large amount of<br>
+example material and think that they have to use it in their mud. If it
+<br>
+were so, then that would be sad and would doom every Dead Souls mud to
+be<br>
+exactly like every other.<br>
+<br>
+Instead, your mud can have a Roman Empire theme, with no hint of<br>
+the stock areas in sight when a player logs in. Just the robe and<br>
+sandals they wear and the classical city they must explore. That's<br>
+actually been done, by a mud called, aptly enough, <a
+ href="telnet://209.209.80.36:9999">Ancient Rome</a>.<br>
+<br>
+Nothing prevents you from having your new players launched into<br>
+space the moment they log in, or find themselves suiting up for<br>
+a dive into Kaminoan oceans. It's a mud *codebase*, not a mud. <br>
+<br>
+Make it your own.<br>
+<br>
+<br>
+<a name="108"></a><span
+ style="font-weight: bold; text-decoration: underline;">How do I make
+my new area the default domain where new people to arrive?</span><br>
+<br>
+<span style="font-weight: bold;">1)</span> Back everything up.<br>
+<br>
+<br>
+<span style="font-weight: bold;">2)</span> In your new domain, make
+sure that the room/ directory contains (working) rooms<br>
+with the following names:<br>
+<br>
+void.c<br>
+death.c<br>
+freezer.c<br>
+pod.c<br>
+wiz_hall.c<br>
+<br>
+See the rooms in /domains/default/room to see what these rooms do and
+how they work.<br>
+<br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;"><span
+ style="font-weight: bold;">3)</span> Edit this file:
+/secure/include/rooms.h<br>
+<br>
+Change this:<br>
+<br>
+#define ROOM_START&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"/domains/campus/room/start"<br>
+<br>
+To point to your new domain's start room. For example,<br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;">#define
+ROOM_START&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"/domains/dragonballz/room/leet_start_room"</big><br>
+<big style="font-family: courier new,courier,monospace;"><br>
+<br>
+<span style="font-weight: bold;">4)</span> Edit this file: </big><big
+ style="font-family: courier new,courier,monospace;">/secure/include/dirs.h<br>
+<br>
+Change this:<br>
+<br>
+#define DIR_STANDARD_DOMAIN&nbsp;&nbsp;&nbsp;&nbsp; DOMAINS_DIRS
+"/default"<br>
+<br>
+To this:<br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;">#define
+DIR_STANDARD_DOMAIN&nbsp;&nbsp;&nbsp;&nbsp; DOMAINS_DIRS "/dragonballz"<br>
+<br>
+Or whatever your new main area is.<br>
+<br>
+<br>
+<span style="font-weight: bold;">5)</span> reboot (In theory you can do
+this without rebooting, but the instructions would be longer)<br>
+<br>
+<br>
+<span style="font-weight: bold;">6)</span> If this fails, restore from
+the backup you made in step 1,<br>
+and ask for help either on the ds line or on <a
+ href="http://lpmuds.net/forum/">the forum</a>.<br>
+<br>
+<br>
 </big><br style="font-family: courier new,courier,monospace;">
 <big style="font-family: courier new,courier,monospace;">-
 Cratylus</big><br style="font-family: courier new,courier,monospace;">

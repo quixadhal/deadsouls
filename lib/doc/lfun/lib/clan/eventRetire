@@ -1,0 +1,23 @@
+EVENTRETIRE
+
+NAME
+        eventRetire()
+
+SYNOPSIS
+        int eventRetire(string str)
+
+DESCRIPTION
+        This is the first part of a two part "clan expulsion process". Once the clan member has gone through the directives in this function, eventUnjoin() is called in this object to finalize the expulsion.
+
+EXAMPLES
+        eventRetire("deckard")
+
+LOCATION
+        /lib/clan
+
+SEE ALSO
+        eventJoin, eventUnjoin, eventBring, eventInitiate
+
+Author
+        Cratylus
+
