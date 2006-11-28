@@ -8,22 +8,22 @@ int deactivate_bot(string str);
 string *watchlist;
 
 string LongDesc(){
-string ret;
-if(!active){
-ret = "On closer inspection, this attractive "+
-      "young lady is no lady at all...she's an android! "+
-      "She appears to be totally motionless and frozen "+
-      "in place, with a friendly smile. Perhaps you "+
-      "can make her do something by typing: activate bot ";
-}
-else {
-ret = "On closer inspection, this attractive "+
-      "young lady is no lady at all...she's an android! "+
-      "She appears to be in the middle of giving an orientation "+
-      "on this mud, with bizarrely friendly mannerisms. Perhaps you "+
-      "can make her be quiet by typing: deactivate bot ";
-}
-return ret;
+    string ret;
+    if(!active){
+	ret = "On closer inspection, this attractive "+
+	"young lady is no lady at all...she's an android! "+
+	"She appears to be totally motionless and frozen "+
+	"in place, with a friendly smile. Perhaps you "+
+	"can make her do something by typing: activate bot ";
+    }
+    else {
+	ret = "On closer inspection, this attractive "+
+	"young lady is no lady at all...she's an android! "+
+	"She appears to be in the middle of giving an orientation "+
+	"on this mud, with bizarrely friendly mannerisms. Perhaps you "+
+	"can make her be quiet by typing: deactivate bot ";
+    }
+    return ret;
 }
 
 
@@ -138,9 +138,9 @@ int refreshlist(){
 }
 int deactivate_bot(string str){
     if(member_array(str, GetId()) == -1){
-write("Deactivate whut?");
-return 1;
-}
+	write("Deactivate whut?");
+	return 1;
+    }
     if( active == 0 ){
 	write("Jennybot is already inactive.");
     }

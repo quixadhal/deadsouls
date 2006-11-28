@@ -1,5 +1,7 @@
 #include <lib.h>
-string *ExemptArray = ({ "/secure/obj/snooper", "/lib/door", "/lib/std/room" });
+#include <objects.h>
+
+string *ExemptArray = ({ OBJ_SNOOPER, LIB_DOOR, LIB_ROOM, LIB_SERVER});
 
 void  reap_dummies(){
     //
