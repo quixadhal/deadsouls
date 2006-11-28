@@ -1,10 +1,10 @@
-#undef SYSMALLOC
-#define SMALLOC
+#define SYSMALLOC
+#undef SMALLOC
 #undef BSDMALLOC
 #undef WRAPPEDMALLOC
 #define DEBUGMALLOC
 #undef SBRK_OK
-#define DO_MSTATS
+#undef DO_MSTATS
 #define DEBUGMALLOC_EXTENSIONS
 #define CHECK_MEMORY
 #undef HAS_STATUS_TYPE

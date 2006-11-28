@@ -44,6 +44,8 @@ static void create() {
     Nameservers = ({ ({ "*yatmim", "149.152.218.102 23" }) });
     SetNoClean(1);
     tn("INTERMUD_D reloaded.");
+    tn("Loading object stack: "+get_stack(),"red");
+    tn("Loading object trail: "+identify(previous_object(-1)),"red");
     SetDestructOnClose(1);
     SetSocketType(MUD);
     if(DISABLE_INTERMUD == 1){

@@ -1,0 +1,24 @@
+SETRELIGION
+
+NAME
+        SetReligion()
+
+SYNOPSIS
+        string array SetReligion(string adj, string noun)
+
+DESCRIPTION
+        Sets the religion of the object.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/chapel
+/lib/classes
+
+SEE ALSO
+        GetReligion
+
+Author
+        Cratylus
+

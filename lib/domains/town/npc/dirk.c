@@ -18,11 +18,11 @@ int TalkFunc(){
     thing5 = "Food, drink, and caffeine help restore health and strength.";
 
     switch(rand1){
-    case 1 : eventForce("say "+thing1);break;
-    case 2 : eventForce("say "+thing2);break;
-    case 3 : eventForce("say "+thing3);break;
-    case 4 : eventForce("say "+thing4);break;
-    case 5 : eventForce("say "+thing5);break;
+    case 0 : eventForce("say "+thing1);break;
+    case 1 : eventForce("say "+thing2);break;
+    case 2 : eventForce("say "+thing3);break;
+    case 3 : eventForce("say "+thing4);break;
+    case 4 : eventForce("say "+thing5);break;
     default :  eventForce("smile");
     }
 }

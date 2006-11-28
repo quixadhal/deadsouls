@@ -37,6 +37,7 @@ alias ice intercreemote $*
 alias ce creemote $*
 alias ae adminemote $*
 alias err tail /log/runtime
+alias ecc tail /log/catch
 alias perr tail /log/player_errors
 alias area cd /realms/cratylus/area/
 alias cs codesay $*

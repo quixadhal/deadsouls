@@ -1,0 +1,23 @@
+EVENTINITIATE
+
+NAME
+        eventInitiate()
+
+SYNOPSIS
+        int eventInitiate(string str)
+
+DESCRIPTION
+        This is the first part of a two part "clan joining process". Once the new clan member has gone through the directives in this function, eventJoin() is called in this object to finalize the new membership.
+
+EXAMPLES
+        eventJoin, eventUnjoin, eventBring, eventRetire
+
+LOCATION
+        /lib/clan
+
+SEE ALSO
+        eventJoin, eventUnjoin, eventBring, eventRetire
+
+Author
+        Cratylus
+

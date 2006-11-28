@@ -23,7 +23,10 @@ static void read_callback(int fd, mixed info){
 
     string mudname;
     int i;
-    trr("Received from fd("+fd+"), fd("+socket_address(fd)+")\n"+identify(info),((info[0] == "auth-mud-req" || info[0] == "auth-mud-reply") ? "magenta" : "green"));
+    //trr("Received from fd("+fd+"), fd("+socket_address(fd)+")\n"+identify(info),((info[0] == "auth-mud-req" || info[0] == "auth-mud-reply") ? "magenta" : "green"));
+    if(info[0] != "auth-mud-req" && info[0] != "auth-mud-reply" && info[0] != "channel-listen" &&
+      info[0] != "channel-listen" && info[0] != "tell")
+	trr(timestamp()+" Received from fd("+fd+"), fd("+socket_address(fd)+")\n"+identify(info), "green");
     // Base info in a packet is of size 6.
     if(grepp(info[0],"chan") && !grepp(info[0],"channel-listen")) log_file("router/packet_log",identify(info)+"\n");
     if(sizeof(info)<6 ||
@@ -57,12 +60,12 @@ static void read_callback(int fd, mixed info){
 	    "destination unknown", // same as I3
 	    info
 	  }));
-	trr("Error [unk-dst], because target is "+info[4]+" and thus invalid.");
+	//trr("Error [unk-dst], because target is "+info[4]+" and thus invalid.");
 	return;
     }
     if(sscanf(info[0],"startup-req-%d",i)==1){
 	// special condition for startup-req...
-	trr("calling process_startup_req, i="+i+", fd="+fd+" which is: "+socket_address(fd));
+	//trr("calling process_startup_req, i="+i+", fd="+fd+" which is: "+socket_address(fd));
 	//call_other(this_object(),"process_startup_req",i,info,fd);
 	this_object()->process_startup_req(i,info,fd);
 	return;
@@ -80,14 +83,14 @@ static void read_callback(int fd, mixed info){
 	    "Your MUD hasn't registered as "+info[2]+" yet", // Error message
 	    info
 	  }));
-	trr("They have not done a startup-req for fd="+fd+", mudname="+info[2]);
+	//trr("They have not done a startup-req for fd="+fd+", mudname="+info[2]);
 	log_file("router/server_log",timestamp()+" They have not done a startup-req for fd="+fd+", mudname="+info[2]+"\n");
 	return;
     }
     // at this point, I guess it has a valid origin and stuff
     if(sscanf(info[0],"channel-%*s")==1){ // command has a "channel-" prefix
 	// special case for channel stuff
-	trr("calling process_channel...");
+	//trr("calling process_channel...");
 	process_channel(fd,info);
 	return;
     }
@@ -132,7 +135,7 @@ static void read_callback(int fd, mixed info){
     if(info[4]==router_name) {
 	// Something meant for the router but not handled by now!
 	send_error(info[2],info[3],"not-imp","Unknown command sent to router: "+info[0],info);
-	trr("unhandled packet meant for router: "+info[0],"red");
+	//trr("unhandled packet meant for router: "+info[0],"red");
 	log_file("router/server_log","UNHANDLED PACKET:\n"+identify(info)+"\n");
 	return;
     }

@@ -1,0 +1,23 @@
+SETSKILLMODIFIER
+
+NAME
+        SetSkillModifier()
+
+SYNOPSIS
+        static string SetSkillModifier(string skill, string stat)
+
+DESCRIPTION
+        Establishes which of your stats (eg, strength, intelligence) affects the specified skill.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/classes
+
+SEE ALSO
+        GetSkillModifier
+
+Author
+        Cratylus
+

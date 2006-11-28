@@ -91,8 +91,16 @@ varargs mixed CanUnlock(object who, string id, object key) {
     return 1;
 }
 
-mixed eventLock(object who, object key) {
-    string array ids = key->GetId();
+varargs mixed eventLock(object who, mixed arg1, mixed arg2) {
+    string array ids = ({});
+    object key;
+
+    if(objectp(arg1)) key = arg1;
+    else if(objectp(arg2)) key = arg2;
+    else return "There seems to be a problem with unlocking things.";
+
+    ids = key->GetId();
+    ids += ({ key->GetName() });
 
     if(key->LockFun(1,key,lower_case(this_object()->GetName()))){
 	return 1;
@@ -179,8 +187,16 @@ varargs mixed eventPick(object who, string id, object tool) {
     return 1;
 }
 
-mixed eventUnlock(object who, object key) {
-    string array ids = key->GetId();;
+varargs mixed eventUnlock(object who, mixed arg1, mixed arg2) {
+    string array ids = ({});
+    object key;
+
+    if(objectp(arg1)) key = arg1;
+    else if(objectp(arg2)) key = arg2;
+    else return "There seems to be a problem with unlocking things.";
+
+    ids = key->GetId();
+    ids += ({ key->GetName() });
 
     if(key->UnLockFun(1,key,lower_case(this_object()->GetName()))){
 	return 1;

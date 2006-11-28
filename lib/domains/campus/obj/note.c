@@ -4,18 +4,18 @@ inherit LIB_ITEM;
 inherit LIB_READ;
 
 int TestFunc(){
-    this_player()->eventPage("/domains/campus/txt/list.txt","system");
+    this_player()->eventPage("/domains/campus/txt/note.txt","system");
     return 1;
 }
 
 
 void create(){
     ::create();
-    SetKeyName("list");
+    SetKeyName("note");
     SetId(({"paper","slip"}));
     SetAdjectives(({"small"}));
-    SetShort("a list");
-    SetLong("A list on a slip of paper. Try: read list \n");
+    SetShort("a note");
+    SetLong("A note with writing on it. Try: read note \n");
     SetMass(0);
     SetDollarCost(0);
     SetVendorType(VT_TREASURE);

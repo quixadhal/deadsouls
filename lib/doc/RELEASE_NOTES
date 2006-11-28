@@ -1,4 +1,18 @@
----- 2.1r72 (unreleased) ---
+---- 2.1r75 (unreleased) ---
+- Reverted default MALLOC to something that fancy new 64 bit computers like.
+- Retooled inet/server subsystem to accommodate RCP, added creremote
+  and LIB_REMOTE to the extra/ dir of the distribution, as well as instructions.
+- Recompiled Windows driver to match current unix standard config.
+- Finally (I hope) nailed that pesky router connection problem.
+- Fixed bug in LIB_LOCK that prevented carried, lockable objects from working right.
+- "unsnoop" and "unsnoop all" now work.
+- Cleaned unwatched players from "snoopreport".
+- /log/catch messages now have time stamps.
+- Fixed errors/typos in groupmod and mudconfig help text.
+- There is an error in the help file for groupmod. It should look like this:
+  Syntax: groupmod [-a|-r] GROUP NAME 
+          groupmod [-c|-d] GROUP
+- Alpha 16 released.
 - Fixed a bug in grep that made it choke and halt on binary files. It still
   chokes, but it continues grepping after reporting the runtime.
 - "decre" no longer removes all channels. Note that testing encre and

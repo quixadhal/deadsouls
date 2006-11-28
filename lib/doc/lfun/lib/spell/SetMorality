@@ -1,0 +1,24 @@
+SETMORALITY
+
+NAME
+        SetMorality()
+
+SYNOPSIS
+        int SetMorality(int x)
+
+DESCRIPTION
+        Sets the morality of the object.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/classes
+/lib/spell
+
+SEE ALSO
+        GetMorality
+
+Author
+        Cratylus
+

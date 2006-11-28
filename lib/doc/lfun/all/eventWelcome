@@ -1,0 +1,23 @@
+EVENTWELCOME
+
+NAME
+        eventWelcome()
+
+SYNOPSIS
+        void eventWelcome(object ob)
+
+DESCRIPTION
+        Provides a set of messages or events to occur indicating to the new clan member they are welcome.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/clan
+
+SEE ALSO
+        eventRetire, eventJoin, eventUnjoin, eventBring, eventInitiate
+
+Author
+        Cratylus
+

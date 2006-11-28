@@ -1,0 +1,23 @@
+GETCLAN
+
+NAME
+        GetClan()
+
+SYNOPSIS
+        string GetClan()
+
+DESCRIPTION
+        Returns what the player object has set as its clan.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/classes
+
+SEE ALSO
+        SetClan
+
+Author
+        Cratylus
+

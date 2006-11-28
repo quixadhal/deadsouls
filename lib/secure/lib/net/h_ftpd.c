@@ -101,7 +101,7 @@ static void create(int fd, object owner){
     Session = new(class ftp_session);
     Session->cmdPipe = owner;
     Session->idleTime = 0;
-    tc("completed create");
+    //tc("completed create");
 }
 
 /* Zaxan@Haven - This allows imms access to all files they would normally
@@ -212,7 +212,7 @@ private void idle_time_out(){
 }
 
 private string GetFtpWelcomeMsg(){
-tc("start ftp welcome");
+//tc("start ftp welcome");
     return sprintf("220- %s FTP server ready.\n%s"
 		 "220 Please login with your creator name"+(ALLOW_ANON_FTP ? " or
 anonymous" : "")+".\n",
@@ -220,7 +220,7 @@ anonymous" : "")+".\n",
 		 file_exists(FTP_WELCOME) ? "220- " +
 		 replace_string(read_file(FTP_WELCOME), "\n", "\n220- ") 
 		 +"\n": "");
-   tc("ended ftp welcome"); 
+   //tc("ended ftp welcome"); 
 }
 
 string GetKeyName(){ return Session->user; }
@@ -254,10 +254,10 @@ string GetUniqueFileName(string arg){
 
 void StartService(){
    int port;
-   tc("startservice","blue");
+   //tc("startservice","blue");
 
    /* Determine Port */
-tc("startservice");
+//tc("startservice");
 
    for(port=MIN_PASV_PORT;port <= MAX_PASV_PORT;port++)
       if(member_array(port, FTP_PORT_TRACKER_D->QueryUsedPorts()) == -1)
@@ -275,7 +275,7 @@ break;
 
    eventWrite(GetFtpWelcomeMsg(),0);
    call_out("idle_time_out", 60);
-tc("end startservice");
+//tc("end startservice");
 }
 
 private void eventDestructDataPipe(mixed f){
@@ -294,7 +294,7 @@ void Destruct(){
 }
 
 private void eventCmdUser(string arg){
-tc("arg: "+arg,"yellow");
+//tc("arg: "+arg,"yellow");
     if(!arg){ 
         eventWrite("500 command not understood.\n",0); 
         return; 
@@ -402,7 +402,7 @@ string RetrieveCmdCallback(object ob){
 }
 
 private void eventReadFtpData(mixed text){
-tc("ftp data: "+identify(text),"green");
+//tc("ftp data: "+identify(text),"green");
     switch(Session->binary){
         case 0:
             text=replace_string(text, "\r", "");
@@ -448,7 +448,7 @@ complete.\n",0):));
 private void eventCmdPasv(string arg)
 {
    string ip, *parts;
-tc("entered passive mode");
+//tc("entered passive mode");
 
    if(arg)
    { 

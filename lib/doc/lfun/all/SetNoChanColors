@@ -1,0 +1,24 @@
+SETNOCHANCOLORS
+
+NAME
+        SetNoChanColors()
+
+SYNOPSIS
+        int SetNoChanColors(int x)
+
+DESCRIPTION
+        Users can disable seeing colors in channel messages. This lfun sets that parameter in the player object.
+
+EXAMPLES
+        SetNoChanColors(1)
+
+LOCATION
+        /lib/chat
+
+
+SEE ALSO
+        GetNoChanColors
+
+Author
+        Cratylus
+
