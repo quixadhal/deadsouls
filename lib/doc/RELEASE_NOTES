@@ -1,4 +1,7 @@
----- 2.1r74 (unreleased) ---
+---- 2.1r75 (unreleased) ---
+- Reverted default MALLOC to something that fancy new 64 bit computers like.
+- Retooled inet/server subsystem to accommodate RCP, added creremote
+  and LIB_REMOTE to the extra/ dir of the distribution, as well as instructions.
 - Recompiled Windows driver to match current unix standard config.
 - Finally (I hope) nailed that pesky router connection problem.
 - Fixed bug in LIB_LOCK that prevented carried, lockable objects from working right.

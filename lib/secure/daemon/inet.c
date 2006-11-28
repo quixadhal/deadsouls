@@ -119,3 +119,15 @@ static void create() {
 	  s->SocketType,  s->SocketClass);
     }
 }
+
+int eventDestruct(){
+    object *servers = filter(objects(), (: base_name($1) == LIB_SERVER :) );
+    eventSave();
+    foreach(object server in servers){
+	if(server && clonep(server)) server->eventDestruct();
+	if(server && clonep(server)) destruct(server);
+    }
+    return daemon::eventDestruct();
+}
+
+

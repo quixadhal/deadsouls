@@ -20,3 +20,6 @@ Extras directory
   the best of my primitive knowledge, no Cygwin technology included
   in this patch. Use mudos_mingw.diff for this masochism.
 
+- I added a creremote/ dir with stuff you'll need to take advantage
+  of Dead Souls RCP support. However, the stuff in this dir is not
+  Dead Souls stuff, so it is not supported by me.
