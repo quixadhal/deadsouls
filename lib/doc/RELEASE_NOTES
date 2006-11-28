@@ -1,4 +1,5 @@
----- 2.1r73 (unreleased) ---
+---- 2.1r74 (unreleased) ---
+- Recompiled Windows driver to match current unix standard config.
 - Finally (I hope) nailed that pesky router connection problem.
 - Fixed bug in LIB_LOCK that prevented carried, lockable objects from working right.
 - "unsnoop" and "unsnoop all" now work.
