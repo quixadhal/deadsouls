@@ -25,7 +25,7 @@ static void read_callback(int fd, mixed info){
     int i;
     //trr("Received from fd("+fd+"), fd("+socket_address(fd)+")\n"+identify(info),((info[0] == "auth-mud-req" || info[0] == "auth-mud-reply") ? "magenta" : "green"));
     if(info[0] != "auth-mud-req" && info[0] != "auth-mud-reply" && info[0] != "channel-listen" &&
-      info[0] != "channel-listen" && info[0] != "tell")
+      info[0] != "channel-listen" && info[0] != "tell" && info[0] != "ping")
 	trr(timestamp()+" Received from fd("+fd+"), fd("+socket_address(fd)+")\n"+identify(info), "green");
     // Base info in a packet is of size 6.
     if(grepp(info[0],"chan") && !grepp(info[0],"channel-listen")) log_file("router/packet_log",identify(info)+"\n");

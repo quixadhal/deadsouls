@@ -21,6 +21,10 @@
 #define MSG_QUERY    (1 << 13)                      /* response to client */
 
 #define MSG_CHAN     (1 << 14)
+#define MSG_FTP      (1 << 15)
+#define MSG_HTTP     (1 << 16)
+#define MSG_RCP      (1 << 17)
+#define MSG_I3       (1 << 18)
 
 
 /* client command types */

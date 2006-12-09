@@ -21,7 +21,6 @@ static void create(){
     if(!router_name) router_name = "*yatmim";
     if(!router_port) router_port = "23";
     if(!router_ip) router_ip = "149.152.218.102";
-    //if(!sizeof(router_list))
     router_list = ({ ({"*yatmim", "149.152.218.102 23"}) });
     log_file("router/server_log", "Created when uptime = " + uptime() + "\n");
     trr("server got created");
@@ -33,8 +32,8 @@ static void create(){
 
 void heart_beat(){
     heart_count++;
-    if(heart_count > 1800) {
-	trr("CLOSING DEAD/DISCONNECTED SOCKETS","white");
+    if(heart_count > 900) {
+	trr("CLOSING DEAD/DISCONNECTED/PARADOXED SOCKETS","white");
 	heart_count = 0;
 	this_object()->clear_discs();
 	this_object()->clean_socks();
@@ -44,7 +43,7 @@ void heart_beat(){
 
 static void setup(){
     trr("setup got called");
-    RELOAD_D->eventReload(this_object(),90000+random(10000));
+    RELOAD_D->eventReload(this_object(),90000+random(9000));
     log_file("router/server_log",timestamp()+" setup has been called.\n");
     if( file_size( SAVE_ROUTER __SAVE_EXTENSION__ ) > 0 )
 	unguarded( (: restore_object, SAVE_ROUTER, 1 :) );

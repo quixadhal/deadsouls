@@ -2,6 +2,7 @@
 #include <cfg.h>
 #include <save.h>
 #include <daemons.h>
+#include <network.h>
 void help();
 
 inherit LIB_DAEMON;
@@ -16,6 +17,7 @@ string array nonmodals = ({ "prompt","status","email","debugger", "access", "pin
 string array modals = ({ "autowiz", "locked","localtime", 
   "justenglish", "justhumans", "encumbrance", "pk", "compat",
   "retain", "defaultparse", "disablereboot" });
+string array inet_services = ({ "ftp", "http", "rcp", "inet" });
 
 static int NotImplemented(string which);
 varargs static int TestFun(string which, string arg);
@@ -24,6 +26,7 @@ varargs static int ModRouter(string which, string arg);
 static int ProcessModal(string which, string arg);
 varargs static int ModStartRoom(string which, string arg);
 static int ProcessOther(string which, string arg);
+int ProcessInet(string which, string arg);
 
 static private void validate() {
     if(!this_player()) return 0;
@@ -51,6 +54,10 @@ mixed cmd(string str) {
 
     if(member_array(which,modals) != -1){
 	ProcessModal(which, arg);
+    }
+
+    if(member_array(which,inet_services) != -1){
+	ProcessInet(which, arg);
     }
 
     else switch(which){
@@ -369,6 +376,203 @@ static int ProcessModal(string which, string arg){
     return 1;
 }
 
+int ProcessService(string which, string what){
+    int port_offset, type;
+    string sclass;
+    switch(which){
+    case "ftp": port_offset=OFFSET_FTP;sclass="/secure/lib/net/ftp";type=1;break;
+    case "http": port_offset=OFFSET_HTTP;sclass="/secure/lib/net/http";type=3;break;
+    case "rcp": port_offset=OFFSET_RCP;sclass="/secure/lib/net/remote";type=1;break;
+    }
+    switch(what){
+    case "add": INET_D->AddService(which,port_offset, sclass, type);break;
+    case "remove": INET_D->RemoveService(which);break;
+    case "start": INET_D->eventStartServer(which);break;
+    case "restart": INET_D->eventRestartServer(which,1);break;
+    case "stop": INET_D->eventStopServer(which);break;
+    }
+    write("Done.");
+    return 1;
+}
+
+int ProcessInet(string which, string arg){
+    int sub, port_offset;
+    string preloads = read_file(CFG_PRELOAD);
+    string *load_lines = explode(preloads,"\n");
+    string *ret_arr = ({});
+    string yesline = "/secure/daemon/inet";
+    string noline = "#/secure/daemon/inet";
+    validate();
+    if(!arg) arg == "status";
+    if(which != "inet"){
+	sub = 1;
+	if(!find_object(INET_D)){
+	    write("The inet service is not running. Please type: mudconfig inet start");
+	    write("Or: mudconfig inet enable");
+	    write("Then retry your command.");
+	    return 1;
+	}
+    }
+    else {
+	if(member_array(arg,yesbools) != -1){
+	    if(member_array(yesline,load_lines) != -1) {
+		write("Persistent inet activation is already enabled.");
+		return 1;
+	    }
+	    else {
+		write("Enabling persistent inet activation.");
+		foreach(string line in load_lines){
+		    if(line == noline) line = yesline;
+		    ret_arr += ({ line });
+		}
+		if(member_array(yesline,ret_arr) == -1){
+		    ret_arr += ({ yesline });
+		}
+		unguarded( (: cp(CFG_PRELOAD,"/secure/save/backup/preload."+time()) :) );
+		ret_string = implode(ret_arr,"\n")+"\n";
+		ret_string = replace_string(ret_string,"\n\n","\n");
+		unguarded( (: write_file(CFG_PRELOAD,ret_string,1) :) );
+		write("The inet service is enabled.");
+		arg = "start";
+	    }
+	}
+
+	if(member_array(arg,nobools) != -1){
+	    if(member_array(noline,load_lines) != -1){
+		write("Persistent inet activation is already disabled.");
+		return 1;
+	    }
+	    else {
+		write("Disabling persistent inet activation.");
+		foreach(string line in load_lines){
+
+		    if(line == yesline) line = noline;
+		    ret_arr += ({ line });
+		}
+		if(member_array(noline,ret_arr) == -1){
+		    ret_arr += ({ noline });
+		}
+		unguarded( (: cp(CFG_PRELOAD,"/secure/save/backup/preload."+time()) :) );
+		ret_string = implode(ret_arr,"\n")+"\n";
+		ret_string = replace_string(ret_string,"\n\n","\n");
+		unguarded( (: write_file(CFG_PRELOAD,ret_string,1) :) );
+		write("The inet service is disabled.");
+		arg = "stop";
+	    }
+	}
+
+	if(arg == "start"){
+	    if(find_object(INET_D)) write("The inet service is already running.");
+	    else {
+		write("Starting the inet service.");
+		load_object(INET_D);
+	    }
+	}
+	else if(arg == "stop"){
+	    if(!find_object(INET_D)) write("The inet service is already stopped.");
+	    else {
+		write("Stopping the inet service.");
+		find_object(INET_D)->eventDestruct();
+	    }
+	}
+	else if(arg == "restart"){
+	    if(find_object(INET_D)) {
+		write("The inet service is running. Stopping it now...");
+		find_object(INET_D)->eventDestruct();
+	    }
+	    write("Starting the inet service.");
+	    load_object(INET_D);
+	}
+	else if(arg == "status"){
+	    if(member_array(yesline,load_lines) != -1){
+		write("Persistent inet activation is enabled.");
+	    }
+	    else {
+		write("Persistent inet activation is disabled.");
+	    }
+
+	    if(!find_object(INET_D)){
+		write("The inet service is not running");
+	    }
+	    else{
+		string *servkeys, *servkeys2;
+		string subret = "The following services are available: "; 
+		string subret2 = "The following services are running: "; 
+		write("The inet service is running");
+		if(sizeof(servkeys = keys(INET_D->GetServices()))){
+		    subret += implode(servkeys,", ")+".\n";
+		}
+		else subret = "";
+		if(sizeof(servkeys2 = keys(INET_D->GetServers()))){
+		    subret2 += implode(servkeys2,", ")+".\n";
+		}
+		else subret2 = "";
+		write(subret+subret2);
+		return 1;
+	    }
+	    ret_string = "";
+	    write("Done.");
+	    return 1;
+	}
+	else write("Unsupported inet subcommand.");
+	return 1;
+    }
+    if(arg == "enable"){
+	if(INET_D->GetService(which)){
+	    write("The "+which+" service is already enabled. Perhaps you mean to start or restart it?");
+	    return 1;
+	}
+	ProcessService(which,"add");
+	return 1;
+    }
+    if(arg == "disable"){
+	if(!(INET_D->GetService(which))){
+	    write("The "+which+" service is already disabled.");
+	    return 1;
+	}
+	ProcessService(which,"remove");
+	return 1;
+    }
+
+    if(arg == "start"){
+	if(INET_D->GetServer(which)){
+	    write("The "+which+" service is already started. Perhaps you mean to restart it?");
+	    return 1;
+	}
+	if(!(INET_D->GetService(which))){
+	    write("The "+which+" service has been disabled or is not available.");
+	    return 1;
+	}
+	ProcessService(which,"start");
+	return 1;
+    }
+    if(arg == "stop"){
+	if(!(INET_D->GetService(which))){
+	    write("The "+which+" service is already disabled and therefore not running.");
+	    return 1;
+	}
+	if(!(INET_D->GetServer(which))){
+	    write("The "+which+" service is already stopped.");
+	    return 1;
+	}
+	ProcessService(which,"stop");
+	return 1;
+    }
+
+    if(arg == "restart"){
+	ProcessService(which,"restart");
+	return 1;
+    }
+    if(arg == "status"){
+	write("The "+which+" service is "+(INET_D->GetService(which) ? "enabled." : "disabled."));
+	if(INET_D->GetService(which))
+	    write("The "+which+" service is "+(INET_D->GetServer(which) ? "running." : "stopped."));
+	return 1;
+    }
+    write("Unsupported mudconfig inet service subcommand.");
+    return 1;
+}
+
 void help() {
     message("help",
       "Syntax: mudconfig PARAMETER VALUE \n\n"
@@ -395,6 +599,10 @@ void help() {
       "\nmudconfig router [ on | off ]"
       "\nmudconfig startroom <filename of start room>"
       "\nmudconfig intermud [ enable | disable | restrict | unrestrict | reset ]"
+      "\nmudconfig inet [ enable | disable | start | stop | restart | status ]"
+      "\nmudconfig ftp [ enable | disable | start | stop | restart | status ]"
+      "\nmudconfig http [ enable | disable | start | stop | restart | status ]"
+      "\nmudconfig rcp [ enable | disable | start | stop | restart | status ]"
       "\n\nSee also: admintool", this_player()
     );
 }

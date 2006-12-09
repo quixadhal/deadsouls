@@ -17,12 +17,14 @@ static void process_startup_req(int protocol, mixed info, int fd){
 
     if(member_array(info[2], banned_muds) != -1) {
 	trr(timestamp()+" "+info[2]+" denied. reason: banned.\n");
+	trr("---\n","blue");
 	log_file("router/server_log",timestamp()+" "+info[2]+" denied. reason: banned.\n");
 	return;
     }
 
     if(fd && member_array(fd,keys(this_object()->query_connected_fds())) != -1){
 	trr("FD CONFLICT, MUD: "+info[2]+", FD: "+fd,"red");
+	trr("---\n","blue");
 	log_file("router/server_log","FD CONFLICT, MUD: "+info[2]+", FD: "+fd+"\n");
 	write_data(fd,({
 	    "error",
@@ -83,7 +85,8 @@ static void process_startup_req(int protocol, mixed info, int fd){
     case 1:
     case 2:
 	if(sizeof(info)!=18){
-	    trr("error: wrong size packet. Got: "+sizeof(info)+", wanted 18");
+	    trr("error: wrong size packet. Got: "+sizeof(info)+", wanted 18","red");
+	    trr("---\n","blue");
 	    log_file("router/server_log",timestamp()+" error: wrong size packet. Got: "+sizeof(info)+", wanted 18\n");
 	    write_data(fd,({
 		"error",
@@ -104,7 +107,8 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	break;
     case 3:
 	if(sizeof(info)!=20){
-	    trr("error. wrong size packet. Got: "+sizeof(info)+", wanted 20");
+	    trr("error. wrong size packet. Got: "+sizeof(info)+", wanted 20","red");
+	    trr("---\n","blue");
 	    log_file("router/server_log",timestamp()+" error. wrong size packet. Got: "+sizeof(info)+", wanted 20\n");
 
 	    write_data(fd,({
@@ -172,7 +176,8 @@ static void process_startup_req(int protocol, mixed info, int fd){
     }
     if(connected_muds[info[2]]){
 	// if MUD is already connected
-	trr("mud already connected");
+	trr("mud already connected","red");
+	trr("---\n","blue");
 	log_file("router/server_log",timestamp()+" mud already connected\n");
 	write_data(fd,({
 	    "error",
@@ -204,6 +209,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	}
 	else{
 	    trr("wrong password, and from a new IP","red");
+	    trr("---\n","blue");
 	    log_file("router/server_log",timestamp()+" WRONG PASSWORD, AND FROM A NEW IP\n");
 	    write_data(fd,({
 		"error",
@@ -224,17 +230,17 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	// if new MUD, assign it a password
 	newinfo["password"]=random(9999)+1;
 	trr("Assigning password "+newinfo["password"],"white");
-	trr("Ok. this is the password: "+newinfo["password"],"white");
+	//trr("Ok. this is the password: "+newinfo["password"],"white");
 	// Change this maybe... see if the password is supposed to be in a certain range
     }
     else {
-	trr("Known: "+mudinfo[info[2]]["password"]+", current: "+newinfo["password"],"green");
+	//trr("Known: "+mudinfo[info[2]]["password"]+", current: "+newinfo["password"],"green");
     }
     // MUD should be okay at this point.
     trr("about to update the mudinfo...","white");
     mudinfo[info[2]]=newinfo; // update the mudinfo
     connected_muds[info[2]] = fd; // add this MUD to list of connected muds
-    trr("about to send the startup reply...");
+    trr("about to send the startup reply...","white");
     send_startup_reply(info[2]); // reply to MUD
     mudinfo_update_counter++;
     mudinfo_updates[info[2]]=mudinfo_update_counter;
