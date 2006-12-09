@@ -83,6 +83,10 @@
 string globalstr;
 mixed globalmixed;
 
+varargs string socket_address(mixed arg, int foo){
+    return efun::socket_address(arg, foo);
+}
+
 #if CALL_OUT_LOGGING
 //This is ugly and should not be used except in cases of dire
 //emergency when you can't figure out wtf is choking your mud.

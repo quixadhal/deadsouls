@@ -183,7 +183,8 @@ void clear(){
     string mudname; 
     validate();
     log_file("router/server_log",timestamp()+" Clearing all mud data.\n"); 
-    foreach(mudname in keys(mudinfo)) remove_mud(mudname); 
+    foreach(mudname in keys(mudinfo)) remove_mud(mudname,1); 
+    save_object(SAVE_ROUTER);    
 }
 
 string GetRouterName(){
@@ -196,7 +197,6 @@ string SetRouterName(string str){
     if(first(str,1) != "*") str = "*"+str;
     router_name = str;
     log_file("router/server_log",timestamp()+" setting router name to: "+str+"\n"); 
-    //save_object(SAVE_ROUTER);
     SetList();
     return router_name;
 }
@@ -210,7 +210,6 @@ string SetRouterIP(string str){
     validate();
     router_ip = str;
     log_file("router/server_log",timestamp()+" setting router IP to: "+str+"\n");
-    //save_object(SAVE_ROUTER);
     SetList();
     return router_ip;
 }
@@ -224,7 +223,6 @@ string SetRouterPort(string str){
     validate();
     router_port = str;
     log_file("router/server_log",timestamp()+" setting router port to: "+str+"\n");
-    //save_object(SAVE_ROUTER);
     SetList();
     return router_port;
 }
@@ -262,7 +260,6 @@ varargs string *SetRouterList(string *str){
     save_object(SAVE_ROUTER);
     return router_list;
 }
-
 
 mapping GetConnectedMuds(){
     validate();
@@ -305,7 +302,22 @@ void clear_discs(){
 		trr("It is not listed as a connected mud.","white");
 	    }
 	    trr("Removing disconnected mud: "+identify(mudname),"red");
-	    remove_mud(mudname);
+	    remove_mud(mudname,1);
+	    map_delete(mudinfo, mudname);
+	    trr("Broadcasting updated mudlist.","white");
+	    broadcast_mudlist(mudname);
+	}
+	if(query_mud(mudname)["disconnect_time"] > 0 &&
+	  query_mud(mudname)["connect_time"] > 0){
+	    trr("I want to remove "+mudname+". It is in a paradox state.","white");
+	    if(member_array(mudname,keys(query_connected_muds())) != -1){
+		trr("Its fd is: "+query_connected_muds()[mudname],"white");
+	    }
+	    else {
+		trr("It is not listed as a connected mud.","white");
+	    }
+	    trr("Removing disconnected mud: "+identify(mudname),"red");
+	    remove_mud(mudname,1);
 	    map_delete(mudinfo, mudname);
 	    trr("Broadcasting updated mudlist.","white");
 	    broadcast_mudlist(mudname);

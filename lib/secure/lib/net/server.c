@@ -10,8 +10,12 @@
 #include <daemons.h>
 #include <network.h>
 #include <runtime_config.h>
+#include <message_class.h>
 
 inherit LIB_DAEMON;
+string mcolor;
+int mclass;
+int ftp_port = PORT_FTP;
 
 class server {
     int         Descriptor;
@@ -52,7 +56,7 @@ static int SetSocketType(int x ) {
 static int eventClose(mixed sock) {
     class server s;
 
-    //trr("LIB_SERVER: eventClose trying to close: "+identify(sock));
+    trr("LIB_SERVER: eventClose trying to close: "+identify(sock),mcolor,mclass);
     if( intp(sock) ) {
 	sock = Sockets[sock];
     }
@@ -105,13 +109,13 @@ int eventCreateSocket(int port) {
 	eventSocketError("Error in socket_listen().", x);
 	return x;
     }
-    //trr("LIB_SERVER: eventCreateSocket, port: "+port+", x: "+x);
+    trr("LIB_SERVER: eventCreateSocket, port: "+port+", x: "+x,mcolor,mclass);
 }
 
 static int Destruct() {
     if( daemon::Destruct() ) {
 	foreach(int fd, class server socket in Sockets) {
-	    //trr("server:Destruct: fd: "+fd+", "+socket_address(fd),"green");
+	    trr("server:Destruct: fd: "+fd+", "+socket_address(fd),mcolor,mclass);
 	    socket->Owner->evenShutdown();
 	}
 	eventClose(Listen);
@@ -131,8 +135,8 @@ int eventDestruct() {
 
 static void eventNewConnection(object socket) {
     class server s = new(class server);
-    //trr("LIB_SERVER: eventNewConnection, socket: "+identify(socket));
-    //trr("LIB_SERVER: eventNewConnection, socket->GetDescriptor(): "+identify(socket->GetDescriptor()));
+    trr("LIB_SERVER: eventNewConnection, socket: "+identify(socket),mcolor,mclass);
+    trr("LIB_SERVER: eventNewConnection, socket->GetDescriptor(): "+identify(socket->GetDescriptor()),mcolor,mclass);
     s->Descriptor = socket->GetDescriptor();
     s->Blocking = 0;
     s->Owner = socket;
@@ -141,7 +145,7 @@ static void eventNewConnection(object socket) {
 }
 
 static void eventServerAbortCallback(int fd) {
-    //trr("server:eventServerAbortCallback: fd: "+fd+", "+socket_address(fd),"green");
+    trr("server:eventServerAbortCallback: fd: "+fd+", "+socket_address(fd),mcolor,mclass);
     eventClose(fd);
 }
 
@@ -156,7 +160,7 @@ int eventShutdown() {
 static void eventServerListenCallback(int fd) {
     int x;
 
-    //trr("server:eventServerListenCallback: fd: "+fd+", "+socket_address(fd),"green");
+    trr("server:eventServerListenCallback: fd: "+fd+", "+socket_address(fd),mcolor,mclass);
     x = socket_accept(fd,
       "eventServerReadCallback", 
       "eventServerWriteCallback");
@@ -174,16 +178,16 @@ static void eventServerListenCallback(int fd) {
 static void eventServerReadCallback(int fd, mixed val) {
     class server s = Sockets[fd];
 
-    //trr("server:eventServerReadCallback: fd: "+fd+", "+socket_address(fd),"green");
-    //trr("server: I think that Sockets[fd] is: "+identify(Sockets[fd]),"green");
+    trr("server:eventServerReadCallback: fd: "+fd+", "+socket_address(fd),mcolor,mclass);
+    trr("server: I think that Sockets[fd] is: "+identify(Sockets[fd]),mcolor,mclass);
     if( !s || !s->Owner ) {
-	//trr("No owner found for this data.");
+	trr("No owner found for this data.",mcolor,mclass);
 	eventClose(fd);
 	return;
     }
     else {
-	//trr("Owner: "+identify(s->Owner),"green");
-	//trr("  val: "+identify(val),"green");
+	trr("Owner: "+identify(s->Owner),mcolor,mclass);
+	trr("  val: "+identify(val),mcolor,mclass);
 	s->Owner->eventRead(val);
     }
 }
@@ -192,7 +196,7 @@ static void eventServerWriteCallback(int fd) {
     class server sock;
     int x;
 
-    //trr("server:eventServerWriteCallback: fd: "+fd+", "+socket_address(fd),"green");
+    trr("server:eventServerWriteCallback: fd: "+fd+", "+socket_address(fd),mcolor,mclass);
     if( Listen && Listen->Descriptor == fd ) {
 	sock = Listen;
     }
@@ -240,16 +244,16 @@ static void eventServerWriteCallback(int fd) {
 
 static void eventSocketError(string msg, int code) {
     log_file("servers", "Error code: " + code + "\n" + msg + "\n");
-    //trr("LIB_SERVER Error code: " + code + "\n" + msg + "\n","red");
+    trr("LIB_SERVER Error code: " + code + "\n" + msg + "\n","red",mclass);
 }
 
 varargs int eventWrite(object owner, mixed val, int close) {
     class server sock;
     int fd = owner->GetDescriptor();
 
-    //trr("server:eventWrite: fd: "+fd+", "+socket_address(fd),"green");
-    //trr("       eventWrite: owner: "+identify(owner)+", val: "+identify(val),"green");
-    //trr("       eventWrite: close: "+close,"green");
+    trr("server:eventWrite: fd: "+fd+", "+socket_address(fd),mcolor,mclass);
+    trr("       eventWrite: owner: "+identify(owner)+", val: "+identify(val),mcolor,mclass);
+    trr("       eventWrite: close: "+close,mcolor,mclass);
 
     if( Listen && Listen->Descriptor == fd ) {
 	sock = Listen;
@@ -306,11 +310,17 @@ varargs int eventWrite(object owner, mixed val, int close) {
 varargs static void create(int port, int type, string socket_obj) {
     daemon::create();
     SetNoClean(1);
-
+    //tc("thing: "+PORT_FTP);
+    //tc("ftp_port: "+ftp_port);
     //tc("this_object: "+identify(this_object()));
     //tc("port: "+port);
     //tc("type: "+type);
     //tc("socket_obj: "+socket_obj);
+
+    if(port == PORT_FTP){mcolor="green";mclass=MSG_FTP;}
+    else if(port == PORT_HTTP){mcolor="cyan";mclass=MSG_HTTP;}
+    else if(port == PORT_RCP){mcolor="yellow";mclass=MSG_RCP;}
+    else { mcolor="blue",mclass=MSG_CONV;}
 
     if( socket_obj ) {
 	SocketObject = socket_obj;

@@ -81,6 +81,7 @@ mixed cmd(string args) {
 	if(book && !present("manual",cre_ob))  book->eventMove(cre_ob);
 	else if(book) book->eventMove(ROOM_FURNACE);
 	cre_ob->AddChannel(({"cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat" }));
+	cre_ob->SetPolyglot(1);
 	cre_ob->save_player((string)cre_ob->GetKeyName());
     }
     return 1;

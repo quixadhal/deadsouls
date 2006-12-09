@@ -28,8 +28,7 @@ log_file("router/server_log",timestamp()+" Warning: cannot remove mud ["+mudname
 "+targetfd+"\n");
     trr(timestamp()+" Removing mud: "+mudname+" on fd: "+targetfd);
     }
-    map_delete(mudinfo, mudname);
     close_callback(targetfd);
+    if(forced) map_delete(mudinfo, mudname);
     log_file("router/server_log",timestamp()+" Removing mud: "+mudname+" on fd: "+targetfd+"\n");
-    //if(connected_muds[mudname]) map_delete(connected_muds, mudname);
 }

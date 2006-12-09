@@ -9,6 +9,7 @@
 #ifndef l_sefun_h
 #define l_sefun_h
 
+varargs string socket_address(mixed arg, int foo);
 string absolute_path(string curr, string newpth);
 int absolute_value(int x);
 varargs string add_article(string str, int def);
@@ -195,7 +196,6 @@ int imud_privp(mixed guy);
 int securep(mixed guy);
 string convert_ascii(int i);
 varargs object get_random_living(object room, int foo);
-varargs string socket_address(mixed arg, int foo);
 varargs int debug(mixed msg, mixed val, string color);
 int valid_timezone(string str);
 varargs int tell_creators(string msg, string color);

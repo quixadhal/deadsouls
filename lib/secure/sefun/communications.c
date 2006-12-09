@@ -20,7 +20,9 @@ varargs void say(mixed str, mixed ob) {
     environment(this_player())->eventPrint(str + "", MSG_ENV, obs);
 }
 
-void tell_object(object ob, mixed str) { ob->eventPrint(str, MSG_CONV); }
+varargs void tell_object(object ob, mixed str, int mclass){ 
+    ob->eventPrint(str, (mclass || MSG_CONV)); 
+}
 
 void tell_player(mixed player, string msg){
     object dude;
@@ -52,7 +54,7 @@ varargs void tc(string str, string col, object dude){
     debug_message(str);
 }
 
-varargs int tn(string str, string col, object room){
+varargs int tn(string str, string col, object room, int mclass){
     string prefix;
     if(!col) col = "magenta";
     switch(col){
@@ -65,12 +67,16 @@ varargs int tn(string str, string col, object room){
     default : prefix = "%^BOLD%^MAGENTA%^";break;
     }
     if(!room) tell_object(load_object(ROOM_NETWORK) ,prefix+str+"%^RESET%^");
-    else tell_object(room, prefix+str+"%^RESET%^");
+    else {
+	if(!mclass) tell_object(room, prefix+str+"%^RESET%^");
+	else tell_object(room, prefix+str+"%^RESET%^",mclass);
+    }
     return 1;
 }
 
-varargs int trr(string str, string col){
-    tn(str, col, load_object(ROOM_ROUTER));
+varargs int trr(string str, string col, int mclass){
+    if(!mclass) mclass = 0;
+    tn(str, col, load_object(ROOM_ROUTER), mclass);
     return 1;
 }
 

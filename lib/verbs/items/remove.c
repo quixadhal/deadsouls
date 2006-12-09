@@ -23,6 +23,7 @@ static void create() {
       "The second syntax is simply a synonym for the \"get\" "
       "command.\n\n"
       "See also: get, wear, wield, unwield");
+    SetSynonyms("take off", "unwear");
 }
 
 mixed can_remove_obj() {

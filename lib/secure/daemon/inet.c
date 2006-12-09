@@ -27,6 +27,21 @@ mapping GetServers() {
     return copy(Servers);
 }
 
+int GetServer(string str){
+    if(Servers[str]) return 1;
+    return 0;
+}
+
+int GetService(string str){
+    if(Services[str]) return 1;
+    return 0;
+}
+
+mapping GetServices() {
+    return copy(Services);
+}
+
+
 int AddService(string name, int port_offset, string socket_class, int type) {
     class service s = new(class service);
 
@@ -57,12 +72,12 @@ int RemoveService(string name) {
     return eventSave();
 }
 
-int eventRestartServer(string svc) {
+varargs int eventRestartServer(string svc, int forced) {
     if( !eventStopServer(svc) ) {
-	return 0;
+	if(!forced) return 0;
     }
     if( !eventStartServer(svc) ) {
-	return 0;
+	if(!forced) return 0;
     }
     return 1;
 }
