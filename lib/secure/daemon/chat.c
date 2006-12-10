@@ -58,8 +58,6 @@ string decolor(string str){
     }
 }
 
-
-
 varargs int CanListen(object who, string canal){
     if(!RESTRICTED_INTERMUD) return 1;
     if(canal && member_array(canal, local_chans) != -1) return 1;
@@ -235,7 +233,10 @@ int cmdChannel(string verb, string str) {
 	write("This is not a channel for chatting.");
 	return 1;
     }
-
+    if(this_player()->GetProperty("gag")){
+	write("You have gag mode enabled. Type: 'gag off' to talk on channels.");
+	return 1;
+    }
 
     if( !Channels[verb] ) {
 	if( sscanf(verb, "%semote", verb) || sscanf(verb, "%s:", verb) ) {
@@ -519,7 +520,8 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 		    if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 		}
 		if(listener->GetNoChanColors()) tmp = decolor(tmp);
-		if(!ignore && CanListen(listener,ch)) listener->eventPrint(tmp, MSG_CHAN);
+		if(!ignore && CanListen(listener,ch) && !(listener->GetProperty("mute"))) 
+		    listener->eventPrint(tmp, MSG_CHAN);
 		ignore = 0;
 	    }
 	    if( member_array(ob, obs) != -1 ) {
@@ -532,7 +534,8 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 			if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 		    }
 		    if(ob->GetNoChanColors()) tmp = decolor(tmp);
-		    if(!ignore && CanListen(ob,ch)) ob->eventPrint(tmp, MSG_CHAN);
+		    if(!ignore && CanListen(ob,ch)&& !(ob->GetProperty("mute"))) 
+			ob->eventPrint(tmp, MSG_CHAN);
 		    ignore = 0;
 		}
 	    }
@@ -598,7 +601,8 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 		    if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 		}
 		if(ob->GetNoChanColors()) msg = decolor(msg);
-		if(!ignore && CanListen(ob,ch)) ob->eventPrint(msg, MSG_CHAN);
+		if(!ignore && CanListen(ob,ch)&& !(ob->GetProperty("mute"))) 
+		    ob->eventPrint(msg, MSG_CHAN);
 
 		ignore = 0;
 		suspect ="";

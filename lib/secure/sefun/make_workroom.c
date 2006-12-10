@@ -30,7 +30,7 @@ int make_workroom(mixed dude) {
 	mkdir(cdir+"/area/etc");
 	mkdir(cdir+"/area/doors");
 	mkdir(cdir+"/area/meals");
-        cp(tdir+"adm/remote.c",cdir+"/adm/remote.c");
+	cp(tdir+"adm/remote.c",cdir+"/adm/remote.c");
 	cp(tdir+"workroom.c", cdir+"/workroom.c");
 	cp(tdir+"workroom.bak", cdir+"/workroom.bak");
 	cp(tdir+"bak/workroom.orig", cdir+"/bak/workroom.orig");

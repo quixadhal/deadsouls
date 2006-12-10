@@ -1,4 +1,20 @@
----- 2.1r75 (unreleased) ---
+---- 2.1r77 (unreleased) ---
+- Alpha 18 released.
+- Added commands: gag, mute.
+- Fixed another paradox condition in the router where a mud could be
+  simultaneously connected AND disconnected, causing reconnection problems.
+  A periodic check for this condition will clear it every 15 minutes or so.
+- Added command: flee.
+- New creators are polyglottized by default.
+- inet, ftp, http, and rcp services can now be configured with mudconfig.
+- The router room is now the server monitoring room. Admins may now use
+  that room selectively to monitor traffic on the following services:
+  ftp, http, rcp, i3 (router). They can be monitored in any combination,
+  and the messages are in different colors to help distinguish between them
+  when multiple service monitoring occurs.
+- Added alcatraz.wolfpaw.net:8099 as the default addr_server in mudos.cfg.
+- The netstat command now lists the correct FD's.
+- Alpha 17 released.
 - Reverted default MALLOC to something that fancy new 64 bit computers like.
 - Retooled inet/server subsystem to accommodate RCP, added creremote
   and LIB_REMOTE to the extra/ dir of the distribution, as well as instructions.

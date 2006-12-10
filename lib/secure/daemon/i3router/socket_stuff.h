@@ -6,7 +6,7 @@ static void close_callback(int fd){
     if(socket_status(fd)[1] == "LISTEN") return;
     foreach(mudname in keys(muds_on_this_fd(fd))){
 	trr(timestamp()+" close_callback: Removing mud from connected_muds list: "+mudname,"red");
-	mudinfo[mudname]["disconnect_time"] = time();
+	if(mudinfo[mudname]) mudinfo[mudname]["disconnect_time"] = time();
 	map_delete(connected_muds, mudname);
 	broadcast_mudlist(mudname);
     }
