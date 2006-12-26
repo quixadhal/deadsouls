@@ -28,7 +28,7 @@ private static function Write;
 private static function Close;
 private static class data_conn Socket;
 
-varargs static void eventClose(class data_conn sock, int aboted);
+varargs static int eventClose(class data_conn sock, int aboted);
 static void eventRead(mixed val);
 static void eventSocketClose();
 static void eventSocketError(string str, int x);
@@ -81,6 +81,7 @@ int eventCreateSocket(string host, int port) {
 	if(x != EESUCCESS)
 	{
 	    eventClose(Socket);
+	    //tc("Error in socket_listen().", "red");
 	    eventSocketError("Error in socket_listen().", x);
 	    return x;
 	}
@@ -92,6 +93,7 @@ int eventCreateSocket(string host, int port) {
 	  "eventReadCallback", "eventWriteCallback");
 	if( x != EESUCCESS ) {
 	    eventClose(Socket);
+	    //tc("Error in socket_connect().", "red");
 	    eventSocketError("Error in socket_connect().", x);
 	    return x;
 	}
@@ -115,6 +117,7 @@ static void eventListenCallback(int fd)
     Socket->PassiveDescriptor = x;
     if(x < 0)
     {
+	//tc("Error in socket_accept().", "red");
 	eventSocketError("Error in socket_accept().", x);
 	return;
     }
@@ -181,8 +184,6 @@ static void eventWriteCallback(int fd) {
 
 
 void eventWrite(mixed val) {
-    int x;
-
     if( !Socket ) return;
     if( Socket->Buffer ) Socket->Buffer += ({ val });
     else Socket->Buffer = ({ val });

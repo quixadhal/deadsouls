@@ -254,3 +254,5 @@ mixed direct_unlock_obj_with_obj(object target, object key, string id) {
     return CanUnlock(this_player(), remove_article(lower_case(id)));
 }
 
+mixed direct_wizlock_obj(){ return 1; }
+mixed direct_wizunlock_obj(){ return 1; }

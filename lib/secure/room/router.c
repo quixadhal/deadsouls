@@ -3,7 +3,7 @@
 #include <message_class.h>
 inherit LIB_ROOM;
 
-int ftp, http, rcp, i3;
+int ftp, hftp, http, rcp, i3;
 
 string LongDesc(){
     string ret = "This room is like the network room to its north, "
@@ -12,12 +12,14 @@ string LongDesc(){
     "network server, this room should be quiet. Otherwise "
     "this may be the noisiest damn room on your mud.\n";
     ret += "FTP server monitoring: "+(ftp?"%^GREEN%^online%^RESET%^":"%^RED%^OFFLINE%^RESET%^")+"\n";
+    ret += "HFTP server monitoring: "+(hftp?"%^GREEN%^online%^RESET%^":"%^RED%^OFFLINE%^RESET%^")+"\n";
     ret += "HTTP server monitoring: "+(http?"%^GREEN%^online%^RESET%^":"%^RED%^OFFLINE%^RESET%^")+"\n";
     ret += "RCP server monitoring: "+(rcp?"%^GREEN%^online%^RESET%^":"%^RED%^OFFLINE%^RESET%^")+"\n";
     ret += "I3 server monitoring: "+(i3?"%^GREEN%^online%^RESET%^":"%^RED%^OFFLINE%^RESET%^")+"\n";
     ret += "\nTo enable server monitoring, you may, for example, type:\n"
     "i3 on\n"
     "ftp on\n"
+    "hftp on\n"
     "http on\n"
     "rcp on\n";
     return ret;
@@ -50,6 +52,7 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     //tc("arg2: "+arg2);
     //tc("arg3: "+identify(arg3));
     if(arg2 == MSG_FTP && !ftp) return 0;
+    if(arg2 == MSG_HFTP && !hftp) return 0;
     if(arg2 == MSG_HTTP && !http) return 0;
     if(arg2 == MSG_RCP && !rcp) return 0;
     if(arg2 == MSG_I3 && !i3) return 0;
@@ -59,6 +62,7 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
 void init(){
     ::init();
     add_action("ListenFTP","ftp");
+    add_action("ListenHFTP","hftp");
     add_action("ListenHTTP","http");
     add_action("ListenRCP","rcp");
     add_action("ListenI3","i3");
@@ -111,6 +115,31 @@ int ListenFTP(string str){
     write(capitalize(this_player()->GetKeyName())+" disables ftp data monitoring.");
     say("You disable ftp data monitoring.");
     ftp = 0;
+    return 1;
+}
+
+int ListenHFTP(string str){
+    if(!str || (str != "on" && str != "off")){
+	write("Please specify whether you want it on or off.");
+	return 1;
+    }
+    if(str == "on"){
+	if(hftp){
+	    write("This room is already receiving hftp data.");
+	    return 1;
+	}
+	write(capitalize(this_player()->GetKeyName())+" enables hftp data monitoring.");
+	say("You enable hftp data monitoring.");
+	hftp = 1;
+	return 1;
+    }
+    if(!hftp){
+	write("This room is already blocking hftp data.");
+	return 1;
+    }
+    write(capitalize(this_player()->GetKeyName())+" disables hftp data monitoring.");
+    say("You disable hftp data monitoring.");
+    hftp = 0;
     return 1;
 }
 

@@ -313,7 +313,7 @@ static void ConfirmPassword(string control, string cap, string pass) {
 	Player = (object)master()->player_object(Name);
 	pass = crypt(pass, 0);
 	Passwort = pass;
-	receive("\n\nPlease choose an interesting gender (male or female): \n");
+	receive("\n\nPlease choose an interesting gender (male, female, neutral, or none): \n");
 	input_to((: InputGender :), I_NOESC, cap);
 	return; 
     } 
@@ -323,12 +323,14 @@ static void ConfirmPassword(string control, string cap, string pass) {
 } 
 
 static void InputGender(string str, string cap) {
-    if( str != "male" && str != "female" ) { 
-	receive("\nCute, but pretend to be either male or female instead.\n");
+    if( str != "male" && str != "female" 
+      && str != "neuter" && str != "neutral" && str != "none") { 
+	receive("\nCute, but pretend to be male, female, neutral, or none instead.\n");
 	receive("Gender: ");
 	input_to((: InputGender :), I_NOESC, cap);
 	return;
     }
+    if(str == "none") str = "neuter";
     Gendre = str;
     receive("\nYou may format " + cap + " to appear however you wish using "
       "spaces, ', or -.\nEnter a display name (default: " + cap +"): \n");

@@ -12,7 +12,7 @@
  style="font-weight: bold;">Dead Souls Admin FAQ</span></big><br>
 <br>
 Written by Cratylus @ Dead Souls, October 2005<br>
-Updated 23 November 2006<br>
+Updated 26 December 2006<br>
 <span style="font-weight: bold; text-decoration: underline;"><br>
 </span>Note: commands are displayed in boldface, like this: <span
  style="font-weight: bold;">ls -a</span><span
@@ -319,6 +319,8 @@ everything I've done?</a><br>
 </big><big style="font-family: courier new,courier,monospace;"><br>
 <a href="#108">108 How do I make my new area the default domain where
 new people to arrive?</a><br>
+<br>
+<a href="#109">109 I heard passive mode on the FTP server works now</a><br>
 <br>
 <br>
 </big><big style="font-family: courier new,courier,monospace;"><br>
@@ -1087,6 +1089,11 @@ connection to an FTP server (for example, you are behind a<br>
 firewall), you have to use PASV (or passive) mode. Unfortunately,<br>
 at this time, PASV is not implemented in the mud FTP server. <br>
 <br>
+<span style="font-weight: bold; text-decoration: underline;">*UPDATE</span>:
+As of Dead Souls 2.1a19 there is a passive-mode<br>
+compliant ftp server included in the lib. See <a href="#109">this link</a><br>
+for more information.<br>
+<br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
  style="font-family: courier new,courier,monospace;"><span
@@ -1629,19 +1636,19 @@ like, what, three espressos a month. Nobody is too hard up to<br>
 host commercially, unless you're on the street. <br>
 <br>
 I've heard good things about the commercial service <br>
-from both&nbsp;<a href="http://www.murpe.com/hosting/">MURPE</a> and <a
- href="http://arthmoor.com/mud-hosting.php">Arthmoor</a>.<br>
+from <a href="http://arthmoor.com/mud-hosting.php">Arthmoor</a> and <a
+ href="http://www.genesismuds.com/">Genesis</a>.<br>
 <br>
 <a href="http://wolfpaw.net/">Wolfpaw</a> also is an excellent
 commercial host: stable and reliable. <br>
 One of my test muds is hosted there, and this is the uptime report,<br>
-as of 16 September 2006:<br>
+as of 25 December 2006:<br>
 <br>
-<span style="font-weight: bold;">Frontiers has been up for 8w 1d 16h
-48m 47s.<br>
+<span style="font-weight: bold;">Dead Souls Arena has been up for 11w
+6d 7h 28m 34s.<br>
 </span><br>
 However, Wolfpaw has become rather tired of dealing with <br>
-newbie mud admis, so unless you're a hardcore do-it-yourselfer<br>
+newbie mud admins, so unless you're a hardcore do-it-yourselfer<br>
 who just needs a big data pipe and nothing else, you may be<br>
 better off with other hosting.<br>
 <br>
@@ -3813,6 +3820,178 @@ the backup you made in step 1,<br>
 and ask for help either on the ds line or on <a
  href="http://lpmuds.net/forum/">the forum</a>.<br>
 <br>
+<br>
+<a name="109"></a><span
+ style="font-weight: bold; text-decoration: underline;">I heard passive
+mode on the FTP server works now</span><br>
+<br>
+If you are using Dead Souls 2.1 Alpha 19 and above, then yes,<br>
+passive mode FTP works now. There are some very important<br>
+things to keep in mind.<br>
+<br>
+<span style="font-weight: bold;">1)</span> Dead Souls now comes with
+two ftp servers. The original<br>
+is known to the inet system as ftp. The new, passive-mode <br>
+server is known to the inet system as hftp. To enable hftp,<br>
+run the following mudconfig commands:<br>
+<br>
+<span style="font-weight: bold;">mudconfig inet enable</span><br
+ style="font-weight: bold;">
+<br style="font-weight: bold;">
+<span style="font-weight: bold;">mudconfig hftp enable</span><br>
+<br>
+<span style="font-weight: bold;">2)</span> The default port for the
+hftp server is 6 less than your<br>
+mud's telnet port. So if your mud runs on port 6666, then<br>
+the hftp server will be on port 6660. This can be changed<br>
+by editing /secure/include/network.h<br>
+<br>
+<span style="font-weight: bold;">3)</span> The mud must know its
+correct external ip address. You<br>
+must set this in the config.h file, preferably with the mudconfig<br>
+command, like so:<br>
+<br>
+<span style="font-weight: bold;">mudconfig hostip 111.222.333.444</span><br>
+<br>
+Where "111.222.333.444" would be the actual ip address that<br>
+the external machines will be trying to connect to. If<br>
+you do not know what this address is, leave the default<br>
+of "127.0.0.1" in the config file. This will let the ftp server<br>
+know it needs to try to figure out the address based on information<br>
+it gets from the intermud router.<br>
+<br>
+If it cannot gather this information, or you don't specify<br>
+a valid external ip address, then the passive-mode <br>
+ftp server will not be able to handle incoming connections <br>
+properly.<br>
+<br>
+<span style="font-weight: bold;">4)</span> Passive ftp support requires
+the use of an additional<br>
+range of ports. The default range of ports reserved by hftp<br>
+starts at -65 from your mud port, to -11 from your mud port.<br>
+This means that if your mud is running on port 6666, then<br>
+ports 6601 to 6655 are reserved for your passive mode transactions.<br>
+If there is a port conflict with another program, you'll<br>
+have problems. You can change the port range by editing<br>
+/secure/include/network.h<br>
+<br>
+<span style="font-weight: bold;">5)</span> Once it's been correctly
+configured and started, you<br>
+should be able to use passive mode for ftp transfers<br>
+even if your ftp client computer is behind a firewall.<br>
+<br>
+If the mud computer itself is behind a firewall, you will<br>
+need to make sure that the range of ports discussed<br>
+in the above section are being properly forwarded to<br>
+the mud computer. If the mud is behind a router, for <br>
+example, you may need to configure that router to<br>
+forward ports 6601 to 6655 to the mud computer.<br>
+<br>
+<span style="font-weight: bold;">6)</span> If all has gone well, then
+you can ftp to the mud's<br>
+hftp port, begin a passive session, and while away<br>
+the hours uploading and downloading to your heart's<br>
+content. On a command line ftp client, that might look<br>
+something like this:<br>
+<br>
+<span style="color: rgb(204, 0, 0);"></span><span
+ style="color: rgb(204, 0, 0);">myhost: /tmp/foo $ <span
+ style="font-weight: bold;">ls</span><br>
+./&nbsp;&nbsp; ../<br>
+myhost: /tmp/foo $ <span style="font-weight: bold;">ftp mymud.com 6660</span><br>
+Connected to mymud.com.<br>
+220- Dead Souls Alpha FTP server ready.<br>
+220-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+FTPD news<br>
+220-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/news/ftpd<br>
+220-<br>
+220 Please login with your creator name or anonymous.<br>
+Name (mymud.com:dude): <span style="font-weight: bold;">myguy</span><br>
+331 Password required for myguy.<br>
+Password:<br>
+230 User myguy logged in.<br>
+Remote system type is UNIX.<br>
+ftp&gt; <span style="font-weight: bold;">passive</span><br>
+Passive mode on.<br>
+ftp&gt; <span style="font-weight: bold;">ls</span><br>
+227 Entering Passive Mode (1,2,3,4,29,180)<br>
+150 Opening ASCII mode data connection for file list.<br>
+netin: Connection reset by peer<br>
+226 Transfer complete.<br>
+ftp&gt; <span style="font-weight: bold;">ls</span><br>
+227 Entering Passive Mode (1,2,3,4,29,180)<br>
+150 Opening ASCII mode data connection for file list.<br>
+.<br>
+..<br>
+.plan<br>
+.profile<br>
+adm<br>
+area<br>
+bak<br>
+cmds<br>
+customdefs.h<br>
+log<br>
+tmp<br>
+workroom.bak<br>
+workroom.c<br>
+226 Transfer complete.<br>
+96 bytes received in 0.013 seconds (7.23 Kbytes/s)<br>
+ftp&gt; <span style="font-weight: bold;">get workroom.c</span><br>
+227 Entering Passive Mode (1,2,3,4,29,180)<br>
+150 Opening ascii mode data connection for /realms/one/workroom.c (3087
+bytes).<br>
+netin: Connection reset by peer<br>
+226 Transfer complete.<br>
+ftp&gt; <span style="font-weight: bold;">get workroom.c</span><br>
+227 Entering Passive Mode (1,2,3,4,29,180)<br>
+150 Opening ascii mode data connection for /realms/one/workroom.c (3087
+bytes).<br>
+226 Transfer complete.<br>
+local: workroom.c remote: workroom.c<br>
+3087 bytes received in 0.031 seconds (96.35 Kbytes/s)<br>
+ftp&gt; <span style="font-weight: bold;">bye</span><br>
+221 Goodbye.<br>
+myhost: /tmp/foo $ <span style="font-weight: bold;">ls</span><br>
+./&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+../&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; workroom.c<br>
+myhost: /tmp/foo $ <span style="font-weight: bold;">ls -l</span><br>
+total 48<br>
+drwxr-xr-x&nbsp;&nbsp; 2 root&nbsp;&nbsp;&nbsp;&nbsp;
+other&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 184 Dec 26 04:03 ./<br>
+drwxrwxrwt&nbsp;&nbsp; 7 root&nbsp;&nbsp;&nbsp;&nbsp;
+sys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1361 Dec 26 04:00
+../<br>
+-rw-r--r--&nbsp;&nbsp; 1 root&nbsp;&nbsp;&nbsp;&nbsp;
+other&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3087 Dec 26 04:03 workroom.c</span><br>
+<br>
+The sharp-eyed among you will no doubt have noticed an <br>
+odd error saying "</big><big
+ style="font-family: courier new,courier,monospace;">netin: Connection
+reset by peer". This is<br>
+a bug I'll be working on as time permits, but in the<br>
+meantime, consider it a minor annoyance. Just retry<br>
+your command if you see that, and it will probably work<br>
+the second time.<br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
+<span style="font-weight: bold;">7)</span> hftp has NOT been tested for
+security or reliability.<br>
+If it doesn't work, you're free to let me know, but do<br>
+not expect me to fix it. If someone hacks into your mud using<br>
+rcp, http, ftp, or hftp, and ruins your life, this is not<br>
+my problem. These servers are provided to you as a convenience,<br>
+not as standards-compliant, production-quality internet<br>
+software. Proceed with extreme care and make regular backups<br>
+a top priority. If in doubt, do the following:<br>
+<br style="font-weight: bold;">
+<span style="font-weight: bold;">mudconfig inet disable<br>
+</span><br>
+<span style="font-weight: bold;">8)</span> If you find hftp helpful and
+useful, please thank Duuk @ Haven<br>
+for being kind enough to let me filch it from his mud, <a
+ href="http://havenmud.com/">Haven</a>.<br>
+If you *don't* like it, please withhold comment until you have<br>
+a patch to submit to fix a shortcoming. <br>
 <br>
 </big><br style="font-family: courier new,courier,monospace;">
 <big style="font-family: courier new,courier,monospace;">-

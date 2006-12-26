@@ -49,8 +49,8 @@ class ftp_session {
 #define LTYPE_LIST      0
 #define LTYPE_NLST      1
 #define MAX_IDLE_TIME	600
-#define MIN_PASV_PORT	8000
-#define MAX_PASV_PORT	9000
+#define MIN_PASV_PORT	7670
+#define MAX_PASV_PORT	7699
 
 #endif  /* __FTP__ */
 

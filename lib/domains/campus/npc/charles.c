@@ -5,12 +5,15 @@
 
 inherit LIB_NPC;
 
-string firstchoice, secondchoice,mm, vv, printvar;
-string response,s1,s2,s3;
-object ww;
-int playing,runs,switches,stays,percent;
+static string firstchoice, secondchoice,mm, vv, printvar;
+static string response,s1,s2,s3;
+static object ww;
+static int playing;
+int runs,switches,stays,percent;
 int fred,fgreen,fblue;
 int wins,red_wins,green_wins,blue_wins;
+string save_file = "/domains/campus/save/charles.o";
+
 static void create() {
     npc::create();
     SetKeyName("charles");
@@ -25,19 +28,9 @@ static void create() {
     SetRace("human");
     SetGender("male");
     SetNoClean(1);
+    restore_object(save_file);
     playing = 0;
     response = "";
-    runs = to_int(read_file("/domains/campus/txt/ai/charles/runs"));
-    switches = to_int(read_file("/domains/campus/txt/ai/charles/switches"));
-    stays = to_int(read_file("/domains/campus/txt/ai/charles/stays"));
-    percent = to_int(read_file("/domains/campus/txt/ai/charles/percent"));
-    fred = to_int(read_file("/domains/campus/txt/ai/charles/fred"));
-    fgreen = to_int(read_file("/domains/campus/txt/ai/charles/fgreen"));
-    fblue = to_int(read_file("/domains/campus/txt/ai/charles/fblue"));
-    wins = to_int(read_file("/domains/campus/txt/ai/charles/wins"));
-    red_wins = to_int(read_file("/domains/campus/txt/ai/charles/red_wins"));
-    green_wins = to_int(read_file("/domains/campus/txt/ai/charles/green_wins"));
-    blue_wins = to_int(read_file("/domains/campus/txt/ai/charles/blue_wins"));
 }
 int eventBeginPlay(){
     int run;
@@ -46,25 +39,18 @@ int eventBeginPlay(){
     response = "";
     playing = 1;
     eventForce("say If successful, this will be run "+run+".");
-    eventForce("say out of "+runs+" runs, I have ");
-    eventForce("say switched "+switches+" times, and ");
-    eventForce("say stayed "+stays+" times.");
-    eventForce("say my first choices have been: ");
-    eventForce("say red: "+fred+" green: "+fgreen+" blue: "+fblue);
-    eventForce("say the winners have been: ");
-    eventForce("say red: "+red_wins+" green: "+green_wins+" blue: "+blue_wins);
-    eventForce("say I have won "+wins+" times.");
-    write_file("/domains/campus/txt/ai/charles/runs",""+runs,1);
-    write_file("/domains/campus/txt/ai/charles/switches",""+switches,1);
-    write_file("/domains/campus/txt/ai/charles/stays",""+stays,1);
-    write_file("/domains/campus/txt/ai/charles/percent",""+percent,1);
-    write_file("/domains/campus/txt/ai/charles/fred",""+fred,1);
-    write_file("/domains/campus/txt/ai/charles/fgreen",""+fgreen,1);
-    write_file("/domains/campus/txt/ai/charles/fblue",""+fblue,1);
-    write_file("/domains/campus/txt/ai/charles/wins",""+wins,1);
-    write_file("/domains/campus/txt/ai/charles/red_wins",""+red_wins,1);
-    write_file("/domains/campus/txt/ai/charles/green_wins",""+green_wins,1);
-    write_file("/domains/campus/txt/ai/charles/blue_wins",""+blue_wins,1);
+    //eventForce("say out of "+runs+" runs, I've  "
+    //"switched "+switches+" times, and "
+    //"stayed "+stays+" times.");
+    //eventForce("say my first choices have been: "
+    //"red: "+fred+" green: "+fgreen+" blue: "+fblue);
+    eventForce("say the winners have been: "
+      "red: "+red_wins+" green: "+green_wins+" blue: "+blue_wins);
+    eventForce("say I've switched "+percent(switches,runs)+"% "
+      "of the time. My win rate is "+
+      percent(wins,run)+"%.");
+    save_object(save_file,1);
+    eventForce("push a button on a pedestal");
     eventForce("push button on pedestal");
     return 1;
 }

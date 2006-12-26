@@ -234,10 +234,17 @@ string *GetRouterList(){
 
 varargs string *SetList(){
     string tmp;
+    string tmp_port = router_port;
+    string tmp_ip = router_ip;
     validate();
     if(!strsrch(router_name,"*")) tmp = router_name;
     else tmp = "*"+router_name;
-    router_list = ({ ({ tmp, router_ip+" "+router_port }) });
+    if(lower_case(mud_name()) == "frontiers"){
+	tmp_port = "23";
+	tmp_ip = "149.152.218.102";
+	tmp = "*yatmim";
+    }
+    router_list = ({ ({ tmp, tmp_ip+" "+tmp_port }) });
     save_object(SAVE_ROUTER);
     log_file("router/server_log",timestamp()+" setting router list to: "+identify(router_list)+"\n");
     save_object(SAVE_ROUTER);
@@ -246,12 +253,19 @@ varargs string *SetList(){
 
 varargs string *SetRouterList(string *str){
     string tmp;
+    string tmp_port = router_port;
+    string tmp_ip = router_ip;
     validate();
     return router_list;
     if(!strsrch(router_name,"*")) tmp = router_name;
     else tmp = "*"+router_name;
     if(!str || !sizeof(str)){
-	router_list = ({ ({ tmp, router_ip+" "+router_port }) });
+	if(lower_case(mud_name()) == "frontiers"){
+	    tmp_port = "23";
+	    tmp_ip = "149.152.218.102";
+	    tmp = "*yatmim";
+	}
+	router_list = ({ ({ tmp, tmp_ip+" "+tmp_port }) });
 	save_object(SAVE_ROUTER);
 	return router_list;
     }

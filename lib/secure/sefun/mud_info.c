@@ -4,6 +4,7 @@
 //      created by Descartes of Borg
 
 #include <config.h>
+#include <daemons.h>
 
 string mud_name() { return MUD_NAME; }
 
@@ -44,4 +45,10 @@ string query_os_type(){
 	return "windows";
     }
     else return "unix";
+}
+
+string query_intermud_ip(){
+    if(INTERMUD_D->GetMudList()[mud_name()])
+	return INTERMUD_D->GetMudList()[mud_name()][1];
+    else return "";
 }
