@@ -23,6 +23,7 @@ int help()
     write( @EndText
 Syntax: vis
 Effect: Makes you visible if you wern't already.
+See also: invis
 EndText
     );
     return 1;

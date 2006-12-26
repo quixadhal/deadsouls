@@ -25,6 +25,7 @@
 #define MSG_HTTP     (1 << 16)
 #define MSG_RCP      (1 << 17)
 #define MSG_I3       (1 << 18)
+#define MSG_HFTP     (1 << 19)
 
 
 /* client command types */

@@ -1,7 +1,7 @@
 #include <lib.h>
 #include <objects.h>
 
-string *ExemptArray = ({ OBJ_SNOOPER, LIB_DOOR, LIB_ROOM, LIB_SERVER});
+string *ExemptArray = ({ OBJ_SNOOPER, LIB_DOOR, LIB_ROOM, LIB_SERVER, LIB_FTP_DATA_CONN});
 
 void  reap_dummies(){
     //

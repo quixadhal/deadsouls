@@ -54,7 +54,8 @@ mixed cmd(string str) {
 		break;
 	    }
 
-	    else if( y > z && tmpstr[0..z-1] == str && info[0] == -1 ) 
+	    else if( y > z && 
+	      lower_case(tmpstr[0..z-1]) == lower_case(str) && info[0] == -1 ) 
 		borg[mud] = info;
 	}
     }

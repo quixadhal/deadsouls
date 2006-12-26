@@ -17,7 +17,7 @@ string array nonmodals = ({ "prompt","status","email","debugger", "access", "pin
 string array modals = ({ "autowiz", "locked","localtime", 
   "justenglish", "justhumans", "encumbrance", "pk", "compat",
   "retain", "defaultparse", "disablereboot" });
-string array inet_services = ({ "ftp", "http", "rcp", "inet" });
+string array inet_services = ({ "hftp", "ftp", "http", "rcp", "inet" });
 
 static int NotImplemented(string which);
 varargs static int TestFun(string which, string arg);
@@ -26,6 +26,7 @@ varargs static int ModRouter(string which, string arg);
 static int ProcessModal(string which, string arg);
 varargs static int ModStartRoom(string which, string arg);
 static int ProcessOther(string which, string arg);
+static int ProcessString(string which, string arg);
 int ProcessInet(string which, string arg);
 
 static private void validate() {
@@ -73,6 +74,10 @@ mixed cmd(string str) {
     case "maxip" : which = "SAME_IP_MAX";ProcessOther(which,arg);break;
     case "maxcommands" : which = "MAX_COMMANDS_PER_SECOND";ProcessOther(which,arg);break;
     case "maxidle" : which = "IDLE_TIMEOUT";ProcessOther(which,arg);break;
+    case "hostip" : which = "HOST_IP";ProcessString(which,arg);break;
+    case "email" : which = "ADMIN_EMAIL";ProcessString(which,arg);break;
+    case "mudstatus" : which = "MUD_STATUS";ProcessString(which,arg);break;
+    case "debugger" : which = "DEBUGGER";ProcessString(which,arg);break;
     default : NotImplemented(which);break;
     }
     return 1;
@@ -327,6 +332,26 @@ static int ProcessOther(string which, string arg){
     return 1;
 }
 
+static int ProcessString(string which, string arg){
+    validate();
+
+    foreach(string element in config){
+	if(grepp(element, which)){
+	    string s1, s2, s3;
+	    if(sscanf(element,"#define %s %s",s1,s2) != 2){
+		write("Major problem. You should revert to a backup of config.h immediately.");
+		return 1;
+	    }
+	    s3 = trim(s2);
+	    s2 = replace_string(s2,s3,"\""+arg+"\"");
+	    element = "#define "+s1+" "+s2;
+	}
+	config2 += ({ element });
+    }
+    CompleteConfig();
+    return 1;
+}
+
 static int ProcessModal(string which, string arg){
     int junk;
     validate();
@@ -380,6 +405,7 @@ int ProcessService(string which, string what){
     int port_offset, type;
     string sclass;
     switch(which){
+    case "hftp": port_offset=OFFSET_HFTP;sclass="/secure/lib/net/h_ftpd";type=1;break;
     case "ftp": port_offset=OFFSET_FTP;sclass="/secure/lib/net/ftp";type=1;break;
     case "http": port_offset=OFFSET_HTTP;sclass="/secure/lib/net/http";type=3;break;
     case "rcp": port_offset=OFFSET_RCP;sclass="/secure/lib/net/remote";type=1;break;
@@ -396,14 +422,14 @@ int ProcessService(string which, string what){
 }
 
 int ProcessInet(string which, string arg){
-    int sub, port_offset;
+    int sub;
     string preloads = read_file(CFG_PRELOAD);
     string *load_lines = explode(preloads,"\n");
     string *ret_arr = ({});
     string yesline = "/secure/daemon/inet";
     string noline = "#/secure/daemon/inet";
     validate();
-    if(!arg) arg == "status";
+    if(!arg) arg = "status";
     if(which != "inet"){
 	sub = 1;
 	if(!find_object(INET_D)){
@@ -598,9 +624,12 @@ void help() {
       "\nmudconfig resets <interval between resets>"
       "\nmudconfig router [ on | off ]"
       "\nmudconfig startroom <filename of start room>"
+      "\nmudconfig email <the admin's email address>"
+      "\nmudconfig hostip <the computer's ip address (eg 111.222.333.444)>"
       "\nmudconfig intermud [ enable | disable | restrict | unrestrict | reset ]"
       "\nmudconfig inet [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig ftp [ enable | disable | start | stop | restart | status ]"
+      "\nmudconfig hftp [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig http [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig rcp [ enable | disable | start | stop | restart | status ]"
       "\n\nSee also: admintool", this_player()

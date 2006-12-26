@@ -4,7 +4,7 @@
  *
  */
 
-#ifndef startgate_h
+#ifndef stargate_h
 #define stargate_h
 
 #define GATE_TIMEOUT (10+random(5))

@@ -137,6 +137,7 @@ string array explode_list(string list) {
 	switch(objectp(val) ? (string)val->GetGender() : (string)val) {
 	case "male": return "his";
 	case "female": return "her";
+	case "neutral": return "hir";
 	default: return "its";
 	}
     }
@@ -159,6 +160,7 @@ string array explode_list(string list) {
 	switch(objectp(val) ? (string)val->GetGender() : (string)val) {
 	case "male": return "he";
 	case "female": return "she";
+	case "neutral": return "sie";
 	default: return "it";
 	}
     }
@@ -167,6 +169,7 @@ string array explode_list(string list) {
 	switch(objectp(val) ? (string)val->GetGender() : (string)val) {
 	case "male": return "him";
 	case "female": return "her";
+	case "neutral": return "hir";
 	default: return "it";
 	}
     }
