@@ -1,6 +1,4 @@
----- 2.1r79 (unreleased) ---
-- Alpha 19 released.
-- Added a default guest character.
+---- 2.1r80 (unreleased) ---
 - Added passive-mode support to ftp server ( contributed by Duuk @ Haven ).
 - Added code to prevent "bad alternate router data" bug that tends
   to knock muds off the router.

@@ -59,6 +59,8 @@
 
 inherit LIB_SOCKET;
 
+private void eventCmdPasv(string arg);
+
 private class  ftp_session Session;
 private        string      Password  = 0;
 private        string      host_ip  = "127.0.0.1";
