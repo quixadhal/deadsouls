@@ -1,4 +1,17 @@
----- 2.1r77 (unreleased) ---
+---- 2.1r80 (unreleased) ---
+- Alpha 19 released.
+- Added passive-mode support to ftp server ( contributed by Duuk @ Haven ).
+- Added code to prevent "bad alternate router data" bug that tends
+  to knock muds off the router.
+- Added "neutral" (aka hermaphrodite, aka intersex) and "none" to 
+  user-selectable gender choices (Not applicable to first admin).
+- Lower case mudlib names now work in mudlist.
+- Probability lab bugs have been fixed. Charly and Charles now save
+  their persistent data in a sensible way.
+- "copy /obj/room.c" now works for non-admins.
+- Fixed up some issues with the dsversion command.
+- Added sefun: chunk_string(), groups(), query_intermud_ip().
+- Added commands: wizlock, wizunlock, wizlist.
 - Alpha 18 released.
 - Added commands: gag, mute.
 - Fixed another paradox condition in the router where a mud could be
@@ -12,7 +25,6 @@
   ftp, http, rcp, i3 (router). They can be monitored in any combination,
   and the messages are in different colors to help distinguish between them
   when multiple service monitoring occurs.
-- Added alcatraz.wolfpaw.net:8099 as the default addr_server in mudos.cfg.
 - The netstat command now lists the correct FD's.
 - Alpha 17 released.
 - Reverted default MALLOC to something that fancy new 64 bit computers like.

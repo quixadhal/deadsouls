@@ -6,6 +6,7 @@
 
 #include <function.h>
 #include <daemons.h>
+#include <message_class.h>
 
 varargs string center(string str, int x) {
     int y;
@@ -639,17 +640,50 @@ int check_string_length(string str){
     return 1;
 }
 
-int print_long_string(object who, string str){
+varargs string *chunk_string(string str, int width){
+    string *ret =({});
+    string tmp1 = "";
+    string tmpfile = generate_tmp();
+    if(!width) width = __LARGEST_PRINTABLE_STRING__ / 2;
+    while(sizeof(str)){
+	write_file(tmpfile,str,1);
+	//tc("file_size("+tmpfile+"): "+file_size(tmpfile));
+	if(!(tmp1 = read_bytes(tmpfile, 0, width)))
+	    tmp1 = read_file(tmpfile);
+	//tc("sizeof(tmp1): "+sizeof(tmp1));
+	ret += ({ tmp1 });
+	//tc("tmp1: "+tmp1);
+	str = replace_string(str,tmp1,"");
+    }
+    return ret;
+}
+
+varargs mixed print_long_string(object who, string str, int catted){
     string tfile, ret = "";
     string *lines;
+    string *tmp;
     tfile = generate_tmp();
     lines = explode(str,"\n");
     foreach(string line in lines){
-	if(sizeof(line) < __LARGEST_PRINTABLE_STRING__) ret += line+"\n";
+	if(sizeof(line) > __LARGEST_PRINTABLE_STRING__ / 2) 
+	    line = implode(chunk_string(line,who->GetScreen()[0]),"\n");
+	ret += line+"\n";
     }
     write_file(tfile,ret,1);
-    this_player()->eventPage(tfile);
-    rm(tfile);
-    return 1;
+    //tc("tfile: "+tfile,"red");
+    tmp = explode(ret,"\n");
+    foreach(string thing in tmp){
+	//tc("element size: "+sizeof(thing));
+    }
+    //tc("tfile: "+tfile,"red");
+    if(!catted) (mixed)who->eventPage(tfile,MSG_SYSTEM);
+    else {
+	foreach(string thing in tmp){
+	    message("system", thing, who);
+	}
+
+    }
+    //rm(tfile);
+    //return 1;
 }
 

@@ -163,13 +163,8 @@
 /domains/campus/npc
 /domains/campus/obj
 /domains/campus/room
+/domains/campus/save
 /domains/campus/txt
-/domains/campus/txt/ai
-/domains/campus/txt/ai/charles
-/domains/campus/txt/ai/charles/bak2
-/domains/campus/txt/ai/charles/bak2/bak1
-/domains/campus/txt/ai/charly
-/domains/campus/txt/ai/charly/bak
 /domains/campus/txt/jenny
 /domains/campus/weap
 /domains/default
@@ -204,6 +199,8 @@
 /estates/s
 /estates/s/scroda
 /estates/s/slymenstra
+/estates/t
+/estates/t/two
 /ftp
 /include
 /lib
@@ -343,6 +340,7 @@
 /secure/save/players/c
 /secure/save/players/o
 /secure/save/players/s
+/secure/save/players/t
 /secure/save/postal
 /secure/save/postal/c
 /secure/save/postal/c/cratylus
@@ -351,6 +349,8 @@
 /secure/save/postal/s
 /secure/save/postal/s/scroda
 /secure/save/postal/s/slymenstra
+/secure/save/postal/t
+/secure/save/postal/t/two
 /secure/save/rid
 /secure/save/suicide
 /secure/save/votes

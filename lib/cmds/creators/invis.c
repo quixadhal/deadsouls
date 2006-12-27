@@ -19,5 +19,5 @@ varargs int cmd()
 
 void help()
 {
-    write("Syntax: <invis>\n\nMakes you invisible to players of lower levels in all circumstances.\n");
+    write("Syntax: <invis>\n\nMakes you invisible to players of lower levels in all circumstances.\n\nSee also: vis");
 }

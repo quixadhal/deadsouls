@@ -5,6 +5,7 @@
  */
 
 #include <lib.h>
+#include <cfg.h>
 #include <daemons.h>
 #include <commands.h>
 #include <objects.h>
@@ -82,6 +83,22 @@
 
 string globalstr;
 mixed globalmixed;
+
+string array groups(){
+    string *group_arr = ({});
+    string raw = read_file(CFG_GROUPS);
+    string *raw_arr = explode(raw,"\n");
+    foreach(string element in raw_arr){
+	string s1,s2,s3;
+	if(element[0..0] == "#"){
+	    continue;
+	}
+	if(sscanf(element,"(%s)%s",s1,s2) < 1)
+	    sscanf(element,"%s(%s)%s",s2,s1,s3);
+	if(s1) group_arr += ({ s1 });
+    }
+    return singular_array(group_arr);
+}
 
 varargs string socket_address(mixed arg, int foo){
     return efun::socket_address(arg, foo);

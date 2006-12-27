@@ -4,6 +4,7 @@
 //      created by Descartes of Borg
 
 #include <config.h>
+#include <daemons.h>
 
 string mud_name() { return MUD_NAME; }
 
@@ -27,7 +28,7 @@ string architecture() { return __ARCH__; }
 
 string mudlib() { return "Dead Souls"; }
 
-string mudlib_version() { return "2.1a18"; }
+string mudlib_version() { return "2.1a19"; }
 
 int query_host_port() { return __PORT__; }
 
@@ -44,4 +45,10 @@ string query_os_type(){
 	return "windows";
     }
     else return "unix";
+}
+
+string query_intermud_ip(){
+    if(INTERMUD_D->GetMudList()[mud_name()])
+	return INTERMUD_D->GetMudList()[mud_name()][1];
+    else return "";
 }

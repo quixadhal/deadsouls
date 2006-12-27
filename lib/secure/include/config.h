@@ -1,6 +1,7 @@
 #ifndef s_config_h
 #define s_config_h
 #define DEFAULT_PROMPT           "> "
+#define HOST_IP                  "127.0.0.1"
 #define MUD_STATUS               "mudlib development"
 #define ADMIN_EMAIL              "admin@here"
 #define DEBUGGER                 "DEBUG_NAME"

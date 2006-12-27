@@ -221,7 +221,7 @@ mixed getuid(mixed args);
 mixed geteuid(mixed args);
 string *query_local_functions(mixed arg);
 int check_string_length(string str);
-int print_long_string(object who, string str);
+varargs mixed print_long_string(object who, string str, int catted);
 void add(mixed arg1, mixed arg2);
 varargs int wizardp(object ob);
 int adminp(object ob);
@@ -240,5 +240,8 @@ int bitshiftedp(int x);
 int call_out(mixed args...);
 #endif
 string strip_colors(string str);
+varargs string *chunk_string(string str, int width);
+string array groups();
+string query_intermud_ip();
 
 #endif /* l_sefun_h */

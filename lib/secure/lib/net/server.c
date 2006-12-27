@@ -165,6 +165,7 @@ static void eventServerListenCallback(int fd) {
       "eventServerReadCallback", 
       "eventServerWriteCallback");
     if( x < 0 ) {
+	//tc("Error in socket_accept().");
 	eventSocketError("Error in socket_accept().", x);
 	return;
     }
@@ -318,6 +319,7 @@ varargs static void create(int port, int type, string socket_obj) {
     //tc("socket_obj: "+socket_obj);
 
     if(port == PORT_FTP){mcolor="green";mclass=MSG_FTP;}
+    if(port == PORT_HFTP){mcolor="white";mclass=MSG_HFTP;}
     else if(port == PORT_HTTP){mcolor="cyan";mclass=MSG_HTTP;}
     else if(port == PORT_RCP){mcolor="yellow";mclass=MSG_RCP;}
     else { mcolor="blue",mclass=MSG_CONV;}
