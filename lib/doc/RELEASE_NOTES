@@ -1,4 +1,20 @@
----- 2.1r80 (unreleased) ---
+---- 2.1r81 (unreleased) ---
+- Added sefuns: atomize_string, atomize_array.
+- Setting OBJECT_MATCHING in /secure/include/config.h to 1 will enable
+  "shortest matching name" behavior, so that "zap di" is equivalent
+  to "zap dirk".
+- Setting COMMAND_MATCHING in /secure/include/config.h to 1 will enable
+  "shortest matching command" behavior, so that "upd here" is equivalent
+  to "update here".
+- Added command: qed.
+- Setting BARE_EXITS in /secure/include/config.h to 1 will now let you
+  use "north" and "cabin" as valid movement commands, rather than "go north"
+  and "enter cabin".
+- "afk" property is now removed on login.
+- Extra description strings from GetAffectLong() no longer duplicate if
+  you're carrying multiples of an item.
+- Modified races so that non-meat lifeforms don't leave rotting meat corpses.
+- Alpha 19 released.
 - Added passive-mode support to ftp server ( contributed by Duuk @ Haven ).
 - Added code to prevent "bad alternate router data" bug that tends
   to knock muds off the router.
@@ -24,7 +40,6 @@
   ftp, http, rcp, i3 (router). They can be monitored in any combination,
   and the messages are in different colors to help distinguish between them
   when multiple service monitoring occurs.
-- Added alcatraz.wolfpaw.net:8099 as the default addr_server in mudos.cfg.
 - The netstat command now lists the correct FD's.
 - Alpha 17 released.
 - Reverted default MALLOC to something that fancy new 64 bit computers like.

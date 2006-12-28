@@ -6,6 +6,26 @@
  *    Last modified: 97/01/01
  */
 
+#include <daemons.h>
+
+string *localcmds;
+
+string match_command(string verb){
+    string *local_arr;
+    localcmds = ({});
+    filter(this_player()->GetCommands(), (: localcmds += ({ $1[0] }) :));
+    localcmds += CMD_D->GetCommands();
+    localcmds += keys(VERBS_D->GetVerbs());
+    if(member_array(verb,localcmds) == -1){
+	local_arr = regexp(localcmds,"^"+verb);
+	if(sizeof(local_arr)) {
+	    return local_arr[0];
+	}
+    }
+    return "";
+}
+
+
 varargs string add_article(string str, int def) {
     if( !stringp(str) ) {
 	error("Bad argument 1 to add_article().\n");

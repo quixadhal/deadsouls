@@ -40,7 +40,7 @@ static void create() {
       "ig" : "intergossip $*", "c" : "cre $*", "lp" : "lpuni $*",
       "inv" : "inventory", "x" : "look at $*", "examine" : "look at $*",
       "ic" : "intercre $*", "aa" : "ascii_art $*", "chat" : "newbie $*",
-      "dc" : "dchat $*",
+      "dc" : "dchat $*", "exit" : "go out",
     ]);
     Xverbs = (["]":"] $*", "'":"say $*",":":"emote $*","\"":"say $*",]);
 } 

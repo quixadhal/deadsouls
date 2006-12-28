@@ -11,10 +11,10 @@
 <big><big><span style="font-weight: bold; font-family: monospace;">Dead
 Souls Creator FAQ</span><br style="font-family: monospace;">
 <br style="font-family: monospace;">
-<span style="font-family: monospace;">Written by Cratylus @ Frontiers,
-March 2006</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">Updated November 27 2006.</span><br
- style="font-family: monospace;">
+<span style="font-family: monospace;">Written by Cratylus @ Dead Souls</span><span
+ style="font-family: monospace;"><br>
+<br>
+Updated December 28 2006.</span><br style="font-family: monospace;">
 <span
  style="font-weight: bold; text-decoration: underline; font-family: monospace;"><br>
 </span><span style="font-family: monospace;">Note: commands are
@@ -496,10 +496,17 @@ but he isn't responding to the "list" command.</a><br
  style="font-family: monospace;">
 <br style="font-family: monospace;">
 <a style="font-family: monospace;" href="#5.10">5.10 I gave room with a
-default smell but I cannot get any other smells in there, <br>
+default smell but I cannot get any other smells </a><br>
+<a style="font-family: monospace;" href="#5.10">in there,such as 'smell
+object' for example</a><br>
 <br>
-such as 'smell object' for example</a><br
- style="font-family: monospace;">
+</big></big><big><big><a style="font-family: monospace;" href="#5.11">5.11
+How do I make a weapon more powerful?</a><br>
+<br style="font-family: monospace;">
+<a style="font-family: monospace;" href="#5.12">5.12 My NPC refuses to
+wield his weapon.</a></big></big><br>
+<big><big><a style="font-family: monospace;" href="#5.10"></a><br>
+<br style="font-family: monospace;">
 <br style="font-family: monospace;">
 </big></big>
 <hr style="width: 100%; height: 2px; font-family: monospace;"><big><big><span
@@ -2821,7 +2828,11 @@ if this behavior is unintended,</span><br
  name="2.45"></a>How does the format for race files work?</span><br
  style="font-family: monospace;">
 <br style="font-family: monospace;">
-<span style="font-family: monospace;">Here's a template with parameters
+<span style="font-family: monospace;">Race attributes are specified in
+race files. They are found in<br>
+/secure/cfg/races<br>
+<br>
+Here's a template with parameters
 in parentheses for clarity:</span><br style="font-family: monospace;">
 <br style="font-family: monospace;">
 <span style="font-weight: bold; font-family: monospace;">RACE</span><span
@@ -2873,10 +2884,14 @@ for particular functionality.</span><br style="font-family: monospace;">
  style="font-family: monospace;"> (enables limbless combat)</span><br
  style="font-family: monospace;">
 <span style="font-weight: bold; font-family: monospace;">NONBITINGRACE</span><span
- style="font-family: monospace;"> (some races can't or won't bite)</span><br
- style="font-family: monospace;">
-<span style="font-weight: bold; font-family: monospace;">PLAYER_RACE 1</span><span
- style="font-family: monospace;"> (enables the selection of this race
+ style="font-family: monospace;"> (some races can't or won't bite)<br>
+<span style="font-weight: bold;">NOT_MEAT</span> (specifies that when
+it dies, a meat corpse shouldn't appear)<br>
+<span style="font-weight: bold;">SWIMMING_RACE</span> (enables travel
+in water)<br style="font-family: monospace;">
+</span><span style="font-weight: bold; font-family: monospace;">PLAYER_RACE
+1</span><span style="font-family: monospace;"> (enables the selection
+of this race
 for players)</span><br style="font-family: monospace;">
 <br style="font-family: monospace;">
 <span style="font-family: monospace;">Please note that while the
@@ -2885,9 +2900,56 @@ LIB_BODY object does</span><br style="font-family: monospace;">
 aren't items that</span><br style="font-family: monospace;">
 <span style="font-family: monospace;">can be severed, and their purpose
 mostly is determining</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">what kind of gloves you can wear.</span><br
+<span style="font-family: monospace;">what kind of gloves you can wear.<br>
+<br>
+NOT_MEAT is available in Dead Souls alpha 19 and above.<br>
+If NOT_MEAT is specified, then an npc of that race should<br>
+have SetBodyComposition() in its create() function.<br>
+For example, a rock golem should have:<br>
+<br>
+SetBodyComposition("rock");<br>
+<br>
+Please see /domains/default/npc/dummy.c for an example.<br>
+<br>
+If an npc's race is NOT_MEAT, and it is not a robot,<br>
+and SetBodyComposition() is absent, it may not leave<br>
+any remains at all upon death, unless it has a composition<br>
+set by default in /lib/races.c <br>
+<br>
+Dead Souls alpha libs have the following additional racial options:<br>
+</span></big></big>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">MASS<br>
+      </td>
+      <td style="vertical-align: top;">An integer corresponding roughly
+to weight on planet Earth, in pounds, multiplied by 10.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">SIZE<br>
+      </td>
+      <td style="vertical-align: top;">/include/size_types.h<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">RESPIRATION_TYPE<br>
+      </td>
+      <td style="vertical-align: top;">/include/respiration_types.h<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">BODY_TYPE<br>
+      </td>
+      <td style="vertical-align: top;">/include/body_types.h<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<big><big><span style="font-family: monospace;"></span><br
  style="font-family: monospace;">
-<br style="font-family: monospace;">
 <br style="font-family: monospace;">
 <a style="font-family: monospace;" name="2.46"></a><span
  style="font-weight: bold; text-decoration: underline; font-family: monospace;">How
@@ -5691,8 +5753,61 @@ a look at /domains/town/room/riverbank.c for what it</span><br
 Note that for each Smell or Listen, you need a corresponding</span><br
  style="font-family: monospace;">
 <span style="font-family: monospace;">SetItems
-element.</span><br style="font-family: monospace;">
-<br style="font-family: monospace;">
+element.<br>
+<br>
+<br>
+<a name="5.11"></a><span
+ style="font-weight: bold; text-decoration: underline;">How do I make a
+weapon more powerful?</span><br>
+<br>
+Modify SetClass(). SetClass(20), for example, will make the weapon's<br>
+raw damage (before adjusting for armor, the opponent's skills, <br>
+magical protection, etc) be 20. So on a sleeping, naked, unenchanted<br>
+target, the weapon (assuming the wielder is adept) would take<br>
+away 20 health points on a successful strike.<br>
+<br>
+As you can see, there are many modifiers on a weapon's effectiveness,<br>
+including the target's susceptibility to that kind of weapon. There<br>
+is no written-down formula for the exact amount of damage. You'll <br>
+need to make test weapons and test npc's and determine for yourself<br>
+the appropriate balance.<br>
+<br>
+A convenient way to do this is in the arena. Type:<br>
+<br>
+<span style="font-weight: bold;">goto /domains/default/room/arena</span><br>
+<br>
+There you'll see a training dummy and an npc you can use to <br>
+test your weapons and armor. The dummy talks whenever he is<br>
+hit, and describes the kind and extent and location of the<br>
+damage he has received. For a demonstration, type:<br>
+<br>
+<span style="font-weight: bold;">force fighter to kill dummy</span><br>
+<br>
+You can make a weapon cause a certain amount of damage regardless<br>
+of protection by adding the appropriate code in in eventStrike().<br>
+Please see chapter 29 of the Creator's Manual for details and examples.<br>
+<br>
+<br>
+<a name="5.12"></a><span
+ style="font-weight: bold; text-decoration: underline;">My NPC refuses
+to wield his weapon!</span><br>
+<br>
+There are a number of reasons this might be. If it is a two-handed<br>
+weapon, and he is already wielding something in one hand, that<br>
+would cause a failure. If the NPC is wearing a shield, and you<br>
+don't specify which hand to wield in, the NPC might default to<br>
+trying to wield on the shield hand, and that would fail.<br>
+<br>
+To troubleshoot the problem, have the NPC wield specific things on<br>
+specific limbs to see if that works. For example,<br>
+<br>
+<span style="font-weight: bold;">force orc wield a sword in left hand</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">force orc wield my first sword in
+right hand</span><br>
+<br>
+etc.<br style="font-family: monospace;">
+</span><br style="font-family: monospace;">
 <br style="font-family: monospace;">
 <span style="font-family: monospace;">-
 Cratylus</span><br style="font-family: monospace;">
