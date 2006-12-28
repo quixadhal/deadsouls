@@ -733,13 +733,16 @@ void eventDescribeEnvironment(int brief) {
 	varargs string GetLong(string str) {
 	    mapping counts;
 	    string item, what;
+	    string *affects = ({});
 
 	    str = object::GetLong() + "\n";
 	    what = "The "+GetGender()+" "+GetRace();
 	    str += living::GetLong(what);
 	    foreach(item in map(all_inventory(),
-		(: (string)$1->GetAffectLong(this_object()) :)))
-	    if( item ) str += item + "\n";
+		(: (string)$1->GetAffectLong(this_object()) :))){
+		if(item && member_array(item,affects) == -1) affects += ({ item });
+	    }
+	    if(sizeof(affects)) str += implode(affects,"\n")+"\n";
 	    if(this_object()->GetAffectLong()) str += this_object()->GetAffectLong();
 	    counts = ([]);
 	    foreach(item in map(

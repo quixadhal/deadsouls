@@ -54,4 +54,8 @@
 #define CALL_OUT_LOGGING         0
 #define EVENTS_LOGGING           1
 #define DISABLE_REBOOTS          0
+#define BARE_EXITS               1
+#define COMMAND_MATCHING         1
+#define OBJECT_MATCHING          1
+
 #endif /* s_config_h */

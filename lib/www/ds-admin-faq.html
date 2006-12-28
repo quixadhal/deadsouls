@@ -12,7 +12,7 @@
  style="font-weight: bold;">Dead Souls Admin FAQ</span></big><br>
 <br>
 Written by Cratylus @ Dead Souls, October 2005<br>
-Updated 26 December 2006<br>
+Updated 28 December 2006<br>
 <span style="font-weight: bold; text-decoration: underline;"><br>
 </span>Note: commands are displayed in boldface, like this: <span
  style="font-weight: bold;">ls -a</span><span
@@ -320,7 +320,14 @@ everything I've done?</a><br>
 <a href="#108">108 How do I make my new area the default domain where
 new people to arrive?</a><br>
 <br>
-<a href="#109">109 I heard passive mode on the FTP server works now</a><br>
+<a href="#109">109 I heard passive mode on the FTP server works now.</a><br>
+<br>
+<a href="#110">110 I boot the mud but nothing happens...the startup
+headers<br>
+come up but nothing preloads and I get no error messages. What's<br>
+going on?</a><br>
+<br>
+<a href="#111">111 How do I add a default alias?</a><br>
 <br>
 <br>
 </big><big style="font-family: courier new,courier,monospace;"><br>
@@ -530,6 +537,14 @@ me-&gt;AddChannel("dchat")</span><br>
  style="text-decoration: underline; font-weight: bold;">I talk on
 intermud but nobody replies. What's up with that?</span><br>
 <br>
+If you haven't changed your MUD's name from the<br>
+stock default (ie if your mud name is DeadSoulsWin <br>
+or DeadSoulsNew) then your mud may be conflicting with<br>
+someone else's new mud that is already connected to<br>
+intermud. <a href="#82">Change your mud's name</a> and see if this
+helps.<br>
+<br>
+Another possible cause is network problems.<br>
 I3 uses a hub topology. All muds communicating on intermud<br>
 connect to the router to do so. If that router is down all<br>
 i3 communication stops, until it comes back up. To check<br>
@@ -1298,8 +1313,14 @@ this with a Windows editor.<br>
 Instead of the updates you can reboot the mud.<br>
 <br>
 Users of Dead Souls versions above 2.1a15 can type (for example): <br>
-<span style="font-weight: bold;">mudconfig maxidle 14400</span><br>
-To make players get logged off after four hours.<br>
+<br>
+<span style="font-weight: bold;">mudconfig maxidle 14400<br>
+<br>
+</span>To make players get logged off after four hours. Setting the<br>
+number to 0 makes it so there is no idling timeout enforced.<br>
+<br>
+Note that logged-in players need to log off and log back on for<br>
+this change to take effect.<br>
 <br>
 </big><big style="font-family: courier new,courier,monospace;"><br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
@@ -3893,87 +3914,88 @@ hftp port, begin a passive session, and while away<br>
 the hours uploading and downloading to your heart's<br>
 content. On a command line ftp client, that might look<br>
 something like this:<br>
-<br>
-<span style="color: rgb(204, 0, 0);"></span><span
- style="color: rgb(204, 0, 0);">myhost: /tmp/foo $ <span
- style="font-weight: bold;">ls</span><br>
-./&nbsp;&nbsp; ../<br>
+<span style="color: rgb(204, 0, 0);"><br>
+myhost: /tmp/foo $ <span style="font-weight: bold;">ls -l</span><br>
+total 32<br>
+drwxr-xr-x&nbsp;&nbsp; 2 myuser&nbsp;&nbsp;&nbsp;&nbsp;
+other&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 117 Dec 26 18:34 ./<br>
+drwxrwxrwt&nbsp;&nbsp; 7 myuser&nbsp;&nbsp;&nbsp;&nbsp;
+sys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1361 Dec 26 18:33
+../<br>
 myhost: /tmp/foo $ <span style="font-weight: bold;">ftp mymud.com 6660</span><br>
 Connected to mymud.com.<br>
-220- Dead Souls Alpha FTP server ready.<br>
+220- Dead Souls FTP server ready.<br>
 220-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 FTPD news<br>
 220-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 /news/ftpd<br>
 220-<br>
 220 Please login with your creator name or anonymous.<br>
-Name (mymud.com:dude): <span style="font-weight: bold;">myguy</span><br>
+Name (mymud.com:myuser): <span style="font-weight: bold;">myguy</span><br>
 331 Password required for myguy.<br>
 Password:<br>
 230 User myguy logged in.<br>
 Remote system type is UNIX.<br>
 ftp&gt; <span style="font-weight: bold;">passive</span><br>
 Passive mode on.<br>
-ftp&gt; <span style="font-weight: bold;">ls</span><br>
-227 Entering Passive Mode (1,2,3,4,29,180)<br>
+ftp&gt; <span style="font-weight: bold;">bin</span><br>
+200 Type set to I.<br>
+ftp&gt; <span style="font-weight: bold;">dir</span><br>
+227 Entering Passive Mode (1,2,3,4,30,32)<br>
 150 Opening ASCII mode data connection for file list.<br>
-netin: Connection reset by peer<br>
+drwxrwxr-x&nbsp;&nbsp; 1&nbsp; dead_sou
+dead_sou&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 Dec 26 18:33 .<br>
+drwxrwxr-x&nbsp;&nbsp; 1&nbsp; dead_sou
+dead_sou&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 Dec 26 18:33 ..<br>
+-rw-rw-r--&nbsp;&nbsp; 1&nbsp; dead_sou
+dead_sou&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 28 Dec 26 18:33 .plan<br>
+-rw-rw-r--&nbsp;&nbsp; 1&nbsp; dead_sou
+dead_sou&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 21 Dec 26 18:33 .profile<br>
+drwxrwxr-x&nbsp;&nbsp; 1&nbsp; dead_sou
+dead_sou&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 Dec 26 18:33 adm<br>
+drwxrwxr-x&nbsp;&nbsp; 1&nbsp; dead_sou
+dead_sou&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 Dec 26 18:33 area<br>
+drwxrwxr-x&nbsp;&nbsp; 1&nbsp; dead_sou
+dead_sou&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 Dec 26 18:33 bak<br>
+drwxrwxr-x&nbsp;&nbsp; 1&nbsp; dead_sou
+dead_sou&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 Dec 26 18:33 cmds<br>
+-rw-rw-r--&nbsp;&nbsp; 1&nbsp; dead_sou
+dead_sou&nbsp;&nbsp;&nbsp;&nbsp; 361 Dec 26 18:33 customdefs.h<br>
+drwxrwxr-x&nbsp;&nbsp; 1&nbsp; dead_sou
+dead_sou&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 Dec 26 18:33 log<br>
+drwxrwxr-x&nbsp;&nbsp; 1&nbsp; dead_sou
+dead_sou&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 Dec 26 18:33 tmp<br>
+-rw-rw-r--&nbsp;&nbsp; 1&nbsp; dead_sou dead_sou&nbsp;&nbsp;&nbsp; 3087
+Dec 26 18:33 workroom.bak<br>
+-rw-rw-r--&nbsp;&nbsp; 1&nbsp; dead_sou dead_sou&nbsp;&nbsp;&nbsp; 3087
+Dec 26 18:33 workroom.c<br>
 226 Transfer complete.<br>
-ftp&gt; <span style="font-weight: bold;">ls</span><br>
-227 Entering Passive Mode (1,2,3,4,29,180)<br>
-150 Opening ASCII mode data connection for file list.<br>
-.<br>
-..<br>
-.plan<br>
-.profile<br>
-adm<br>
-area<br>
-bak<br>
-cmds<br>
-customdefs.h<br>
-log<br>
-tmp<br>
-workroom.bak<br>
-workroom.c<br>
-226 Transfer complete.<br>
-96 bytes received in 0.013 seconds (7.23 Kbytes/s)<br>
+811 bytes received in 0.0097 seconds (81.68 Kbytes/s)<br>
 ftp&gt; <span style="font-weight: bold;">get workroom.c</span><br>
-227 Entering Passive Mode (1,2,3,4,29,180)<br>
-150 Opening ascii mode data connection for /realms/one/workroom.c (3087
-bytes).<br>
-netin: Connection reset by peer<br>
-226 Transfer complete.<br>
-ftp&gt; <span style="font-weight: bold;">get workroom.c</span><br>
-227 Entering Passive Mode (1,2,3,4,29,180)<br>
-150 Opening ascii mode data connection for /realms/one/workroom.c (3087
-bytes).<br>
+227 Entering Passive Mode (1,2,3,4,30,32)<br>
+150 Opening binary mode data connection for /realms/myguy/workroom.c
+(3087 bytes).<br>
 226 Transfer complete.<br>
 local: workroom.c remote: workroom.c<br>
-3087 bytes received in 0.031 seconds (96.35 Kbytes/s)<br>
+3087 bytes received in 0.031 seconds (96.91 Kbytes/s)<br>
 ftp&gt; <span style="font-weight: bold;">bye</span><br>
 221 Goodbye.<br>
-myhost: /tmp/foo $ <span style="font-weight: bold;">ls</span><br>
-./&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-../&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; workroom.c<br>
 myhost: /tmp/foo $ <span style="font-weight: bold;">ls -l</span><br>
 total 48<br>
-drwxr-xr-x&nbsp;&nbsp; 2 root&nbsp;&nbsp;&nbsp;&nbsp;
-other&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 184 Dec 26 04:03 ./<br>
-drwxrwxrwt&nbsp;&nbsp; 7 root&nbsp;&nbsp;&nbsp;&nbsp;
-sys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1361 Dec 26 04:00
+drwxr-xr-x&nbsp;&nbsp; 2 myuser&nbsp;&nbsp;&nbsp;&nbsp;
+other&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 184 Dec 26 18:35 ./<br>
+drwxrwxrwt&nbsp;&nbsp; 7 myuser&nbsp;&nbsp;&nbsp;&nbsp;
+sys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1361 Dec 26 18:33
 ../<br>
--rw-r--r--&nbsp;&nbsp; 1 root&nbsp;&nbsp;&nbsp;&nbsp;
-other&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3087 Dec 26 04:03 workroom.c</span><br>
+-rw-r--r--&nbsp;&nbsp; 1 myuser&nbsp;&nbsp;&nbsp;&nbsp;
+other&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3087 Dec 26 18:35 workroom.c</span><br>
 <br>
-The sharp-eyed among you will no doubt have noticed an <br>
-odd error saying "</big><big
- style="font-family: courier new,courier,monospace;">netin: Connection
-reset by peer". This is<br>
-a bug I'll be working on as time permits, but in the<br>
-meantime, consider it a minor annoyance. Just retry<br>
-your command if you see that, and it will probably work<br>
-the second time.<br>
-</big><big style="font-family: courier new,courier,monospace;"><br>
+The sharp-eyed among you will no doubt have noticed that<br>
+binary mode ("bin") is being used. This is because ASCII<br>
+mode transfers don't work too reliably, and fail more <br>
+often than not.<br>
+</big><big style="font-family: courier new,courier,monospace;"></big><big
+ style="font-family: courier new,courier,monospace;"><br>
 <span style="font-weight: bold;">7)</span> hftp has NOT been tested for
 security or reliability.<br>
 If it doesn't work, you're free to let me know, but do<br>
@@ -3992,6 +4014,44 @@ for being kind enough to let me filch it from his mud, <a
  href="http://havenmud.com/">Haven</a>.<br>
 If you *don't* like it, please withhold comment until you have<br>
 a patch to submit to fix a shortcoming. <br>
+<br>
+<span style="font-weight: bold;">9)</span> Known issues:<br>
+<br>
+* If you see this: </big><big
+ style="font-family: courier new,courier,monospace;">"</big><big
+ style="font-family: courier new,courier,monospace;">netin: Connection
+reset by peer" it means<br>
+you're trying to use ASCII mode. Remember to use binary mode.<br>
+<br>
+* Anonymous FTP doesn't work yet.<br>
+<br>
+<br>
+<a name="110"></a><span
+ style="text-decoration: underline; font-weight: bold;">I boot the mud
+but nothing happens...the startup headers</span><br
+ style="text-decoration: underline; font-weight: bold;">
+<span style="text-decoration: underline; font-weight: bold;">come up
+but nothing preloads and I get no error messages. What's</span><br
+ style="text-decoration: underline; font-weight: bold;">
+<span style="text-decoration: underline; font-weight: bold;">going on?</span><br>
+<br>
+This can happen if your internet connection goes down, and<br>
+you're using name resolution. For example, if you are trying to<br>
+use 1.2.3.4 7777 as your address server, and your network<br>
+connection goes down so that you can't reach 1.2.3.4, then<br>
+if you try to reboot, the driver will hang at that point in<br>
+its startup configuration, waiting for 1.2.3.4 to become <br>
+available.<br>
+<br>
+Simply change that entry in mudos.cfg to something like<br>
+localhost or 127.0.0.1 and you should be able to boot again.<br>
+<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"><a
+ name="111"></a>How do I add a default alias?</span><br>
+<br>
+Add it to the Aliases array in /lib/nmsh.c<br>
+<br>
 <br>
 </big><br style="font-family: courier new,courier,monospace;">
 <big style="font-family: courier new,courier,monospace;">-

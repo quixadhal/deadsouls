@@ -243,5 +243,8 @@ string strip_colors(string str);
 varargs string *chunk_string(string str, int width);
 string array groups();
 string query_intermud_ip();
+string *atomize_string(string str);
+string *atomize_array(string *temp_arr);
+string match_command(string verb);
 
 #endif /* l_sefun_h */
