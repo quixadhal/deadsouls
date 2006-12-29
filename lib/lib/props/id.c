@@ -56,7 +56,8 @@ string array GetId() {
     tmp = GetKeyName();
 
     if( tmp ) {
-	return distinct_array(({ Id..., tmp }));
+	if(!OBJECT_MATCHING) return distinct_array(({ Id..., tmp }));
+	else return Id + atomize_string(tmp);
     }
     else return Id;
 }
@@ -78,7 +79,10 @@ varargs string array SetId(mixed val...) {
 	}
     }
     if(COMPAT_MODE) parse_init();
-    else parse_refresh();
+    parse_refresh();
+    if(OBJECT_MATCHING){
+	Id = atomize_array(Id);
+    }
     return Id;
 }
 

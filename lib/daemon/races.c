@@ -25,6 +25,7 @@ string array LimblessCombatRaces = ({});
 string array LimblessRaces = ({});
 string array NonBitingRaces = ({});
 string array SwimmingRaces = ({});
+string array NonMeatRaces = ({});
 
 static void create() {
     daemon::create();
@@ -37,6 +38,7 @@ static void create() {
     if(!LimblessCombatRaces) LimblessCombatRaces = ({});
     if(!LimblessRaces) LimblessRaces = ({});
     if(!NonBitingRaces) NonBitingRaces = ({});
+    if(!NonMeatRaces) NonMeatRaces = ({});
 }
 
 static private void validate() {
@@ -50,6 +52,11 @@ int CanFly(string str){
     else return 0;
 }
 
+int GetNonMeatRace(string str){
+    if(member_array(str,NonMeatRaces) == -1) return 0;
+    else return 1;
+}
+
 int GetLimblessCombatRace(string str){
     if(member_array(str,LimblessCombatRaces) == -1) return 0;
     else return 1;
@@ -58,6 +65,12 @@ int GetLimblessCombatRace(string str){
 int GetLimblessRace(string str){
     if(member_array(str,LimblessRaces) == -1) return 0;
     else return 1;
+}
+
+int SetNonMeatRace(string str){
+    if(member_array(str,NonMeatRaces) != -1) return 0;
+    NonMeatRaces += ({ lower_case(str) });
+    return 1;
 }
 
 int SetLimblessCombatRace(string str){
@@ -90,6 +103,10 @@ int SetSwimmingRace(string str){
 int GetSwimmingRace(string str){
     if(member_array(str,SwimmingRaces) != -1) return 1;
     else return 0;
+}
+
+string *GetNonMeatRaces(){
+    return copy(NonMeatRaces);
 }
 
 string *GetSwimmingRaces(){
@@ -187,6 +204,12 @@ void AddRace(string file, int player) {
 	    line = trim(replace_string(line, "FLYING_RACE", ""));
 	    if(sizeof(line) && atoi(line) < 1) break;
 	    else SetFlyingRace(race);
+	    break;
+
+	case "NOT_MEAT":
+	    line = trim(replace_string(line, "NOT_MEAT", ""));
+	    if(sizeof(line) && atoi(line) < 1) break;
+	    else SetNonMeatRace(race);
 	    break;
 
 	case "LIMBLESS_RACE":

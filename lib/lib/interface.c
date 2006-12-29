@@ -21,6 +21,9 @@ private mapping Blocked;
 private int *Screen;
 private static int LogHarass, Client;
 private static mapping TermInfo;
+string MessageQueue;
+int PauseMessages;
+int MessageExceptions;
 
 static void create() {
     chat::create();
@@ -123,6 +126,26 @@ int Setup() {
     TermInfo = (mapping)TERMINAL_D->query_term_info(Terminal);
 }
 
+int eventFlushQueuedMessages(){
+    print_long_string(this_object(),MessageQueue);
+    MessageQueue = "";
+    return 1;
+}
+
+varargs int eventPauseMessages(int x, int exceptions){
+    if(exceptions) MessageExceptions = exceptions;
+    else MessageExceptions = 0;
+    if(x) PauseMessages = 1;
+    else {
+	if(PauseMessages){
+	    //call_out( (: eventFlushQueuedMessages :), 1);
+	    eventFlushQueuedMessages();
+	}
+	PauseMessages = 0;
+    }
+    return PauseMessages;
+}
+
 varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
     int msg_class;
 
@@ -153,8 +176,13 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
 	      GetScreen()[0], indent);
     }
     else if( !(msg_class & MSG_NOWRAP) ) msg = wrap(msg, GetScreen()[0]-1);
-    if( Client ) receive("<" + msg_class + " " + msg + " " + msg_class +">\n");
-    else receive(msg);
+    if(PauseMessages && !(msg_class & MessageExceptions)){
+	MessageQueue += msg;
+    }
+    else {
+	if( Client ) receive("<" + msg_class + " " + msg + " " + msg_class +">\n");
+	else receive(msg);
+    }
     return 1;
 }
 

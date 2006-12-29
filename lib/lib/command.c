@@ -15,12 +15,15 @@
 
 int Paused = 0;
 private static int Forced = 0;
+private static int StillTrying = 0;
 private static int ParseRecurse = 0;
 private static string CommandFail;
 private static string *SearchPath;
 private static int last_cmd_time = 0;
 private static int cmd_count = 1;
 private string *CommandHist = ({});
+private string *localcmds = ({});
+private string *next_command = ({});
 private int MaxCommandHistSize = 20;
 
 int direct_force_liv_str() { return 1; }
@@ -72,6 +75,19 @@ static int cmdAll(string args) {
 	    return 1;
 	}
     }
+
+    if(BARE_EXITS){
+	localcmds = ({});
+	filter(this_player()->GetCommands(), (: localcmds += ({ $1[0] }) :));
+	if(member_array(verb,CMD_D->GetCommands()) == -1 &&
+	  member_array(verb,keys(VERBS_D->GetVerbs())) == -1 &&
+	  member_array(verb,localcmds) == -1){
+	    if(member_array(verb,environment(this_player())->GetExits()) != -1) verb = "go "+verb;
+	    if(member_array(verb,environment(this_player())->GetEnters()) != -1) verb = "enter "+verb;
+	}
+    }
+
+    if(COMMAND_MATCHING && sizeof(match_command(verb))) verb = match_command(verb);
 
     if(query_custom_command(verb) && query_custom_command(verb) != "" && !creatorp(this_player()) ){
 	this_player()->eventPrint("How clever of you. Or lucky. In any case, this command is unavailable to you.");
@@ -186,38 +202,74 @@ int eventForce(string cmd) {
     return res;
 }
 
+int DoneTrying(){
+    return StillTrying = 0;
+}
+
 int eventRetryCommand(string lastcmd){
     string virb, wrd, prep, rest,ret;
+    string *tmp_arr = ({});
+    string *prep_arr = MASTER_D->parse_command_prepos_list();
+    next_command = ({});
+    prep_arr -= ({"here","room","exit","enter"});
     if(previous_object() != master()) return 0;
-    ParseRecurse++;
-    if(ParseRecurse > 3){
-	ParseRecurse = 0;
-	write("Which one?");
+    StillTrying++;
+    //command_cache += ({ lastcmd });
+    filter(explode(lastcmd," "), (: next_command += ({ trim($1) }) :) );
+    //tc("next_command: "+identify(next_command));
+    if(sizeof(next_command) == 2) ret = next_command[0]+" a "+next_command[1];
+    else if(sizeof(next_command) == 3){
+	if(member_array(next_command[1],prep_arr) != -1) 
+	    ret = next_command[0]+" "+next_command[1]+" a "+next_command[2];
+    }
+    else if(sizeof(next_command) > 3){
+	foreach(string element in prep_arr){
+	    if(!grepp(lastcmd,element+" a"))
+		lastcmd = replace_string(lastcmd,element,element+" a");
+	}
+	ret = lastcmd;
+    }
+
+    if(StillTrying > 3){
+	int i;
+	tmp_arr = ({});
+	tmp_arr = explode(ret," ");
+	ret = "";
+	for(i = 0; i < sizeof(tmp_arr);i++){
+	    //tc("ret: "+ret,"yellow");
+	    //tc("tmp_arr["+i+"]: "+tmp_arr[i],"yellow");
+	    ret += " "+tmp_arr[i];
+	    if(member_array(tmp_arr[i],prep_arr) != -1 && tmp_arr[i+1] != "a") ret += " a";
+	}
+	ret = trim(ret);
+	//tc("ret: "+ret,"white");
+    }
+
+    if(StillTrying > 3 && tmp_arr[1] != "a"){
+	ret = tmp_arr[0]+" a "+implode(tmp_arr[1..]," ");
+    }
+    //tc("ret: "+ret,"red");
+    if(COMMAND_MATCHING){
+	string vb;
+	next_command = ({});
+	tmp_arr = explode(ret," ");
+	vb = match_command(tmp_arr[0]);
+	if(sizeof(vb)) next_command = ({ vb });
+	else next_command = ({ tmp_arr[0] });
+	foreach(string element in tmp_arr[1..]){
+	    next_command += ({ element });
+	}
+	ret = implode(next_command," ");
+    }
+
+
+    if(StillTrying > 6) {
+	write("Your command is ambiguous. Please be more specific. Which thing do you mean?");
+	StillTrying = 0;
 	return 1;
     }
 
-    if(sscanf(lastcmd, "%s %s %s %s",virb,wrd, prep, rest) == 4){  
-	if(member_array(prep,master()->parse_command_prepos_list()) != -1){
-	    if(first(rest,2) == "a ") ret = virb + " a "+wrd+" "+prep+" "+rest;
-	    else ret = virb + " "+wrd+" "+prep+" a "+rest;
-	}
-	else if(member_array(wrd,master()->parse_command_prepos_list()) != -1){
-	    if(ParseRecurse > 0) ret = virb + " "+wrd+" a "+prep+" "+rest;
-	}
-
-    }
-
-    else if(sscanf(lastcmd, "%s %s %s",virb, prep, rest) == 3 && 
-      member_array(prep,master()->parse_command_prepos_list()) != -1){
-	if(ParseRecurse > 0) ret = virb + " "+prep+" a "+rest;
-
-    }
-    else if(sscanf(lastcmd, "%s %s",virb, rest) == 2) ret = virb + " a "+rest;
-    else ret = "wtf";
-    if(!ret) {
-	write("One of the nouns you used is too vague. Please be more specific.");
-	return 1;
-    }
+    //tc("ret: "+ret,"cyan");
     if(ret) parse_sentence(ret);
     return 1;
 }

@@ -272,6 +272,9 @@ void eventCheckHealing() {
     object dude;
     dude = this_object();
 
+    //This resets the parser counter.
+    this_object()->DoneTrying();
+
     if(HealthPoints < 1) {
 	this_object()->eventDie(previous_object());
 	return;
@@ -691,16 +694,20 @@ varargs int eventDie(mixed agent) {
 	//I'd like to move the living body out first, but for now this
 	//misfeature stays.
 	//this_object()->eventMove(ROOM_VOID);
-	if(GetRace() == "golem") {
-	    ob = new(LIB_CLAY); 
-	    if(GetBodyComposition()) ob->SetComposition(GetBodyComposition());
+
+	if(GetRace() == "android" || GetRace() == "bot" ) ob = new(LIB_BOT_CORPSE);
+	else if(member_array(GetRace(), RACES_D->GetNonMeatRaces()) != -1) {
+	    ob = crime_scene;
+	    if(GetBodyComposition()){
+		ob = new(LIB_CLAY);
+		ob->SetComposition(GetBodyComposition());
+	    }
 	}
-	else { 
-	    if(GetRace() == "android" || GetRace() == "bot" ) ob = new(LIB_BOT_CORPSE);
-	    else ob = new(LIB_CORPSE);
+	else {
+	    ob = new(LIB_CORPSE);
 	    ob->SetCorpse(this_object());
 	}
-	ob->eventMove(crime_scene);
+	if(ob != crime_scene) ob->eventMove(crime_scene);
 	obs = filter(all_inventory(), (: !((int)$1->GetRetainOnDeath()) :));
 	i = sizeof(obs);
 	obs->eventMove(ob);

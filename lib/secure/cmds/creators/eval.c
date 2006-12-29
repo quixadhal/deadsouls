@@ -43,6 +43,7 @@ int cmd( string a )
     "#include <body_types.h>\n"+
     "#include <size_types.h>\n"+
     "#include <respiration_types.h>\n"+
+    "#include <message_class.h>\n"+
     "inherit LIB_ITEM;\n"+
     "mixed eval() { " + a + "; }\n"+
     "";

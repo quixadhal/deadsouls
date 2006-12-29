@@ -12,7 +12,7 @@ external_port_1 : telnet 6666
 
 # the address server is an external program that lets the mud translate
 # internet names to numbers (and vice versa).  select an unused port.
-address server ip : localhost
+address server ip : alcatraz.wolfpaw.net
 address server port : 8099
 
 # absolute pathname of mudlib

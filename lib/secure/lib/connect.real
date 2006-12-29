@@ -245,6 +245,7 @@ static void eventReEnterGame(string cap) {
 	    if(sizeof(deep_inventory(Player))) deep_inventory(Player)->eventMove(ROOM_FURNACE);
 	log_file("enter", cap + " (exec): " + ctime(time()) + "\n"); 
 	Player->eventReconnect();
+	Player->RemoveProperty("afk");
 	SNOOP_D->ReportReconnect(Player->GetKeyName());
     }
     receive("\nProblem reconnecting.\n");
@@ -292,6 +293,7 @@ static private void eventEnterGame() {
       file_size(user_path(Player->GetKeyName())+".profile") > 0){
 	Player->eventForce("source "+user_path(Player->GetKeyName())+".profile");
     }
+    Player->RemoveProperty("afk");
     SNOOP_D->CheckBot(Player->GetKeyName());
     call_out( (: destruct(this_object()) :), 10);
 

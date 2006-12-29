@@ -722,13 +722,16 @@ string GetName() {
 varargs string GetLong(string str) {
     mapping counts;
     string item;
+    string *affects = ({});
 
     str = GetShort() + "\n";
     str += interactive::GetLong() + "\n";
     str += living::GetLong(nominative(this_object()));
     foreach(item in map(all_inventory(),
-	(: (string)$1->GetAffectLong(this_object()) :)))
-    if( item ) str += item + "\n";
+	(: (string)$1->GetAffectLong(this_object()) :))){
+	if(item && member_array(item,affects) == -1) affects += ({ item });
+    }
+    if(sizeof(affects)) str += implode(affects,"\n")+"\n";
     if(this_object()->GetAffectLong()) str += this_object()->GetAffectLong();
     counts = ([]);
     foreach(item in map(

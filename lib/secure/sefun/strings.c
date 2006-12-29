@@ -662,6 +662,7 @@ varargs mixed print_long_string(object who, string str, int catted){
     string tfile, ret = "";
     string *lines;
     string *tmp;
+    if(!str) return 0;
     tfile = generate_tmp();
     lines = explode(str,"\n");
     foreach(string line in lines){
@@ -676,7 +677,7 @@ varargs mixed print_long_string(object who, string str, int catted){
 	//tc("element size: "+sizeof(thing));
     }
     //tc("tfile: "+tfile,"red");
-    if(!catted) (mixed)who->eventPage(tfile,MSG_SYSTEM);
+    if(!catted) return (mixed)who->eventPage(explode(read_file(tfile),"\n"),MSG_SYSTEM);
     else {
 	foreach(string thing in tmp){
 	    message("system", thing, who);
