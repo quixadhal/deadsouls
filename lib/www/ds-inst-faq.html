@@ -17,7 +17,7 @@
 <div id="header">
 <p id="headertext">Dead Souls - Installation FAQ</p>
 <p id="subheadertext">By Cratylus @ Frontiers, February 2006. Updated
-November 2006.<br>
+December 2006.<br>
 </p>
 </div>
 <!-- End: Header -->
@@ -33,7 +33,7 @@ AGAIN</span>.<span style="font-weight: bold;"><a
 <ul>
   <li><a href="#1">Is this FAQ really necessary?</a> </li>
   <li><a href="#2">Where do I get Dead Souls?</a></li>
-  <li><a href="#2.1">Why is there only one version? Where are the UNIX
+  <li><a href="#2.1">Where are the separate UNIX
 and Windows versions?</a></li>
   <li><a href="#3">Where do I get patches?</a></li>
   <li><a href="#4">Should I apply the available patches during an
@@ -70,16 +70,31 @@ to Top)</a></h1>
 sites tend to mirror these or copy data, then fail to update their data
 regularly. The following will always have the most recent version, and
 it is the only one officially authorized to distribute Dead Souls.</p>
-<p>Download the latest version from the following:
+<p>Download the stable version from the following:
 </p>
 <ul>
   <big> </big><li><big><a
  href="http://dead-souls.net/code/dead_souls.zip"><span
  style="text-decoration: underline;">http://dead-souls.net/code/dead_souls.zip</span></a></big></li>
-  <big></big>
 </ul>
+<br>
+Download the <span
+ style="font-weight: bold; text-decoration: underline;">latest</span><span
+ style="text-decoration: underline;"> </span>version here:<br>
+<br>
+<ul>
+  <li><big><a href="http://dead-souls.net/code/dead_souls.zip"><span
+ style="text-decoration: underline;">http://dead-souls.net/code/dead_souls_alpha.zip</span></a></big></li>
+</ul>
+<br>
+The alpha version has lots of neat new stuff. Some of the new stuff is
+still not 100% production quality. If new features that are still under
+development are upsetting to you, you may be better off using the
+"stable" version instead.<br>
+<br>
+<br>
 <a name="2.1"></a>
-<h1>Why is there only one version? Where are the UNIX and Windows
+<h1>Where are the separate UNIX and Windows
 versions? <a class="backtotop" href="#top">(Back to Top)</a></h1>
 <p>Starting in Dead Souls 2.0r22 the two separate versions have been
 merged into one distribution download file. Now it doesn't matter
@@ -272,6 +287,17 @@ late-breaking fixes.</li>
  class="backtotop" href="#top">(Back to Top)</a></h1>
 <ul>
   <li>first, stop using Fedora. Ha ha just kidding.</li>
+  <li>Some hosting providers give you a robust environment that
+requires UNIX expertise to handle. For example, I know of folks that
+use Genesis Muds to host, and run into all sorts of file permission
+conflicts, umask issues, etc. While I'm happy to provide guidance to
+some degree, you do have to take it upon yourself to become familiar
+with the OS you're using. As much as I want to be helpful to you on
+this, getting you up to speed on being a UNIX server admin is way
+beyond the scope of this little document. Whomever it is that you pay
+money to, ask them for documentation. Sorry if it sounds
+rude....there's only so much I can take responsibility for.<br>
+  </li>
   <li>Your compiler may be trying to run a distributed "make" by
 default. That's a no-go for MudOS. Try disabling that at compile time
 by using this instead of the normal make command line: <br>

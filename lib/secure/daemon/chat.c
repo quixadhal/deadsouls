@@ -480,6 +480,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	case "dchat":
 	    this_msg = "%^CYAN%^";
 	    break;
+        case "intergossip":
+            this_msg = "%^CYAN%^";
+            break;
 	case "intercre":
 	    this_msg = "%^YELLOW%^";
 	    break;
@@ -566,6 +569,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	case "dchat":
 	    tmsg += "%^CYAN%^";
 	    break;
+        case "intergossip":
+            tmsg += "%^CYAN%^";
+            break;
 	case "intercre":
 	    tmsg += "%^YELLOW%^";
 	    break;
