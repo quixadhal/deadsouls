@@ -79,7 +79,7 @@ varargs string array SetId(mixed val...) {
 	}
     }
     if(COMPAT_MODE) parse_init();
-    else parse_refresh();
+    parse_refresh();
     if(OBJECT_MATCHING){
 	Id = atomize_array(Id);
     }

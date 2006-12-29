@@ -3080,6 +3080,7 @@
 /lib/virtual/virt_std.c
 /log/adm/eval
 /log/adm/file
+/log/adm/file.2006.12.28-17.32
 /log/author_stats
 /log/catch
 /log/chan/connections
@@ -3103,6 +3104,7 @@
 /log/errors/lib
 /log/errors/one
 /log/errors/secure
+/log/errors/verbs
 /log/game_log
 /log/intermud
 /log/more
@@ -3112,6 +3114,9 @@
 /log/mudlist_packet.2006.12.28-13.57
 /log/mudlist_packet.2006.12.28-14.11
 /log/mudlist_packet.2006.12.28-17.32
+/log/mudlist_packet.2006.12.28-18.35
+/log/mudlist_packet.2006.12.28-19.09
+/log/mudlist_packet.2006.12.28-19.23
 /log/new_players
 /log/open/currency
 /log/reset
