@@ -1,4 +1,7 @@
----- 2.1r81 (unreleased) ---
+---- 2.1r82 (unreleased) ---
+- DEFAULT_PARSING now works correctly. If you have two keys and two tables,
+  "put key on table" will put a key on a table without causing
+  an "ambiguous parsing" error.
 - Added sefuns: atomize_string, atomize_array.
 - Setting OBJECT_MATCHING in /secure/include/config.h to 1 will enable
   "shortest matching name" behavior, so that "zap di" is equivalent

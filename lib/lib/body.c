@@ -272,6 +272,9 @@ void eventCheckHealing() {
     object dude;
     dude = this_object();
 
+    //This resets the parser counter.
+    this_object()->DoneTrying();
+
     if(HealthPoints < 1) {
 	this_object()->eventDie(previous_object());
 	return;

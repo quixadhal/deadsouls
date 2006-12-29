@@ -60,9 +60,19 @@ mixed do_wield_obj(object ob) {
     string array limbs = GetFreeLimbs(this_player());
     int hands = ob->GetHands();
 
+    //tc("limbs: "+identify(limbs),"red");
+
+    if(ob->GetEquipped())
+	return write("You're already wielding it!");
+
     if( hands < sizeof(limbs) ) {
 	limbs = limbs[0..(hands-1)];
     }
+    else if( hands > sizeof(limbs) ) {
+	return write("You're out of limbs to wield with!");
+    }
+    //tc("limbs: "+identify(limbs));
+    //tc("hands: "+identify(hands));
     return ob->eventEquip(this_player(), limbs);
 }
 

@@ -203,7 +203,7 @@ int eventForce(string cmd) {
 }
 
 int DoneTrying(){
-    return StillTrying;
+    return StillTrying = 0;
 }
 
 int eventRetryCommand(string lastcmd){
@@ -263,11 +263,12 @@ int eventRetryCommand(string lastcmd){
     }
 
 
-    //ch    if(!ret) {
-    //StillTrying = 0;
-    //tc("meh");
-    //return 1;
-    //    }
+    if(StillTrying > 6) {
+	write("Your command is ambiguous. Please be more specific. Which thing do you mean?");
+	StillTrying = 0;
+	return 1;
+    }
+
     //tc("ret: "+ret,"cyan");
     if(ret) parse_sentence(ret);
     return 1;
