@@ -246,5 +246,6 @@ string query_intermud_ip();
 string *atomize_string(string str);
 string *atomize_array(string *temp_arr);
 string match_command(string verb);
+varargs mixed random_numbers(int n, int integer);
 
 #endif /* l_sefun_h */

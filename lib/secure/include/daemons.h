@@ -33,6 +33,7 @@
 #define MEETINGS_D           DIR_DAEMONS "/meetings"
 #define NEWS_D               DIR_DAEMONS "/news"
 #define NOTIFY_D             DIR_DAEMONS "/notify"
+#define OOB_D                DIR_SECURE_DAEMONS "/oob"
 #define OPTIONS_D            DIR_SECURE_DAEMONS "/options"
 #define PARTY_D              DIR_DAEMONS "/party"
 #define PING_D               DIR_SECURE_DAEMONS "/ping"

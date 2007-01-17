@@ -64,9 +64,12 @@ static void close_connection(int fd){
     int sockerr;
     if(socket_status(fd)[1] == "LISTEN") return;
     map_delete(sockets, fd);
+    trr("About to try closing socket: "+fd,"yellow");
+    trr("Pre-closing state: "+socket_status(fd)[1],"yellow");
     sockerr = socket_close(fd);
-    trr("closing socket:"+fd);
-    trr("closing sockerr:"+sockerr);
+    trr("closing socket:"+fd,"white");
+    trr("closing sockerr:"+sockerr,"white");
+    trr("Post-closing state: "+socket_status(fd)[1],"yellow");
 }
 
 static void write_data(int fd, mixed data){

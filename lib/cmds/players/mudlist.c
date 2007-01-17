@@ -98,7 +98,7 @@ mixed cmd(string str) {
 	    msg += "FTP port (File Transfer): " + borg[mud][11]["ftp"] + "\n";
 	if( borg[mud][11]["rcp"] )
 	    msg += "RCP port (Remote Creator): " + borg[mud][11]["rcp"] + "\n";
-	message("info", msg, this_player());
+	if(this_player()) message("info", msg, this_player());
 	return 1;
     }
     list = ({});

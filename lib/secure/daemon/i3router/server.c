@@ -138,7 +138,7 @@ int clean_socks(){
     int *conn_socky = keys(query_connected_fds());
     foreach(int fd in socky){
 	if(member_array(fd, conn_socky) == -1) {
-	    if(socket_status(fd)[1] != "LISTEN") {
+	    if(sizeof(socket_status(fd)) && socket_status(fd)[1] != "LISTEN") {
 		close_connection(fd);
 		trr("I closed fd: "+fd,"white");
 	    }

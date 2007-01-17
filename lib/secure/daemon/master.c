@@ -402,8 +402,9 @@ private static void load_access(string cfg, mapping resource) {
 	string tmp;
 	int i;
 
-	true(fun); 
-
+	//if(ob) tc("valid_socket: ob: "+identify(ob),"blue");
+	//if(fun) tc("valid_socket: fun: "+identify(fun),"blue");
+	//if(info) tc("valid_socket: info: "+identify(info),"blue");
 	if( info && sizeof(info) == 4 ) {
 	    ob = info[1];
 	    port = info[3];

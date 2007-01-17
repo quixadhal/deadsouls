@@ -78,6 +78,7 @@
 #define LIB_MOUNT          DIR_LIB        "/mount"
 #define LIB_NMSH           DIR_LIB        "/nmsh"
 #define LIB_NPC            DIR_LIB        "/npc"
+#define LIB_OOB            DIR_SECURE_LIB "/net/oob"
 #define LIB_PAGER          DIR_LIB        "/pager"
 #define LIB_PERSIST        DIR_LIB        "/persist"
 #define LIB_PILE           DIR_LIB        "/pile"

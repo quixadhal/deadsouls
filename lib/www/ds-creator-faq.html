@@ -14,7 +14,7 @@ Souls Creator FAQ</span><br style="font-family: monospace;">
 <span style="font-family: monospace;">Written by Cratylus @ Dead Souls</span><span
  style="font-family: monospace;"><br>
 <br>
-Updated December 28 2006.</span><br style="font-family: monospace;">
+Updated January 02 2007.</span><br style="font-family: monospace;">
 <span
  style="font-weight: bold; text-decoration: underline; font-family: monospace;"><br>
 </span><span style="font-family: monospace;">Note: commands are
@@ -333,6 +333,9 @@ my workrom really IS broke!!1!</span></big></big></span></a><span
  style="font-family: monospace;"><br>
 <br>
 <a href="#2.71">2.71 I can't find the SetQuatloos() lfun anywhere!</a><br>
+<br>
+<a href="#2.72">2.72 What does "This room needs a corresponding SetItem
+to make a SetEnter" mean?</a><br>
 <br style="font-family: monospace;">
 </span></big></big></span><big><big><br style="font-family: monospace;">
 <span style="font-weight: bold; font-family: monospace;">Section 3:
@@ -4285,9 +4288,26 @@ For more information on finding and analyzing library functions, see:<br>
  style="font-weight: bold;">
 <span style="font-weight: bold;">help showfuns<br>
 <br>
-</span>See also <a href="#2.54">Question 2.54</a><span
- style="font-weight: bold;"><br>
-</span><br>
+</span>See also <a href="#2.54">Question 2.54</a><br>
+<br>
+<br>
+<a name="2.72"></a><span
+ style="font-weight: bold; text-decoration: underline;">What does "This
+room needs a corresponding SetItem to make a SetEnter" mean?</span><br>
+<br>
+For a player to "enter porthole", the room must have a "porthole" to
+"enter".<br>
+That means that there must be an AddItem or a SetItems element called
+"porthole"<br>
+in the room...else the SetEnter won't work. The rule of thumb is, if<br>
+you can't look at the enter, you can't enter it. In this case, if you<br>
+can't "look at porthole" you can safely assume you won't be able to<br>
+create an enter by that name. Either add the item manually by editing<br>
+(using AddItem or SetItem) or use QCS ( <span
+ style="font-weight: bold;">modify here items</span> ). Please<br>
+see the <a href="example.html">QCS example page</a> for how adding
+items with QCS works.<br>
+<span style="font-weight: bold;"></span><br>
 </span><span style="font-family: monospace;"></span></big></big></span><big><big>
 <br style="font-family: monospace;">
 </big></big>

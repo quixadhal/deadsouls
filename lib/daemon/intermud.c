@@ -41,7 +41,7 @@ static void create() {
     ChannelList->List = ([]);
     if( file_size( SAVE_INTERMUD __SAVE_EXTENSION__ ) > 0 )
 	unguarded( (: restore_object, SAVE_INTERMUD, 1 :) );
-    Nameservers = ({ ({ "*yatmim", "149.152.218.102 23" }) });
+    Nameservers = ({ ({ "*i4", "204.209.44.3 8080" }) });
     SetNoClean(1);
     tn("INTERMUD_D reloaded.");
     tn("Loading object stack: "+get_stack(),"red");

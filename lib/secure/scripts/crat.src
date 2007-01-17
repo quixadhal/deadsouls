@@ -47,3 +47,4 @@ alias aw adminemote waves.
 alias cw creemote waves.
 alias welcome ds hi, $*. you can use this channel to ask questions. it's an intermud channel that dead souls muds listen to.
 call me->AddChannel("intergossip")
+alias intermud intergossip http://lpmuds.net/intermud.html

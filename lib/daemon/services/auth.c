@@ -7,6 +7,8 @@
 void eventReceiveAuthReply(mixed array packet) {
     object pinger;
     object *pingers = filter( users(), (: $1->GetProperty("pinging") :) );
+    //tc("mud: "+packet[2]+", token: "+packet[6],"blue");
+    OOB_D->ReceivedToken(packet[2],packet[6]);
     PING_D->SetOK();
     if(pinger = find_object("/secure/daemon/ping")){
 	if(pinger->GetPinging()){
@@ -26,19 +28,21 @@ void eventReceiveAuthReply(mixed array packet) {
 
 void eventReceiveAuthRequest(mixed array packet) {
     string mudlist = "";
+    int token = random_numbers(9,1);
     PING_D->SetOK();
     tn("Auth request received from "+packet[2]+".","white");
     INTERMUD_D->eventWrite( ({"auth-mud-reply", 5, mud_name(), 0, packet[2],
-	0, (random(9999) * 10000) + 1138  }) );
+	0, token }) );
+    //tc("mud: "+packet[2]+", token: "+token,"green");
+    //tc("token: "+token,"green");
+    OOB_D->SentToken(packet[2],token);
+    //tc("mud: "+packet[2]+", token: "+token);
     if(file_exists("/tmp/muds.txt"))
 	mudlist = read_file("/tmp/muds.txt");
-    if(!grepp(mudlist,packet[2]) || packet[2] == "DeadSoulsNew" ||
-      packet[2] == "DeadSoulsWin"){
+    if((!grepp(mudlist,packet[2]) || packet[2] == "DeadSoulsNew" ||
+	packet[2] == "DeadSoulsWin") && packet[2] != mud_name()){
 	write_file("/tmp/muds.txt",packet[2]+"\n"); 
-	tc("We have a new mud! "+packet[2]+" has joined intermud.","red");
+	//tc("We have a new mud! "+packet[2]+" has joined intermud.","red");
 	tn("We have a new mud! "+packet[2]+" has joined intermud.","red");
     }
-
 }
-
-

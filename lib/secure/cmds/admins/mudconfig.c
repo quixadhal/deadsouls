@@ -17,7 +17,7 @@ string array nonmodals = ({ "prompt","status","email","debugger", "access", "pin
 string array modals = ({ "autowiz", "locked","localtime", 
   "justenglish", "justhumans", "encumbrance", "pk", "compat",
   "retain", "defaultparse", "disablereboot" });
-string array inet_services = ({ "hftp", "ftp", "http", "rcp", "inet" });
+string array inet_services = ({ "oob", "hftp", "ftp", "http", "rcp", "inet" });
 
 static int NotImplemented(string which);
 varargs static int TestFun(string which, string arg);
@@ -409,6 +409,7 @@ int ProcessService(string which, string what){
     case "ftp": port_offset=OFFSET_FTP;sclass="/secure/lib/net/ftp";type=1;break;
     case "http": port_offset=OFFSET_HTTP;sclass="/secure/lib/net/http";type=3;break;
     case "rcp": port_offset=OFFSET_RCP;sclass="/secure/lib/net/remote";type=1;break;
+    case "oob": port_offset=OFFSET_OOB;sclass="/secure/lib/net/oob";type=0;break;
     }
     switch(what){
     case "add": INET_D->AddService(which,port_offset, sclass, type);break;
@@ -632,6 +633,7 @@ void help() {
       "\nmudconfig hftp [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig http [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig rcp [ enable | disable | start | stop | restart | status ]"
+      "\nmudconfig oob [ enable | disable | start | stop | restart | status ]"
       "\n\nSee also: admintool", this_player()
     );
 }

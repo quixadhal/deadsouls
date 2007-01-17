@@ -535,6 +535,20 @@ mixed homedir(object ob){
     else return 0;
 }
 
+varargs mixed random_numbers(int n, int integer){
+    string ret = "";
+    int i;
+    if(integer && n > 9) n = 9;
+    for(i=n;i>0;i--){
+	//int tmp = 1;
+	int tmp = random(10);
+	if(!sizeof(ret)) tmp = random(9)+1;
+	ret += itoa(tmp);
+    }
+    if(!integer) return ret;
+    else return(atoi(ret));
+}
+
 varargs mixed alpha_crypt(mixed arg1, mixed arg2){
     string ret;
     if(!intp(arg1) && !arg2) return 0;

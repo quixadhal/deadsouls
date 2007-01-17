@@ -23,9 +23,26 @@ static void process_startup_req(int protocol, mixed info, int fd){
     }
 
     if(fd && member_array(fd,keys(this_object()->query_connected_fds())) != -1){
-	trr("FD CONFLICT, MUD: "+info[2]+", FD: "+fd,"red");
+	trr("FD CONFLICT, NEW MUD: "+info[2]+", FD: "+fd,"red");
+	trr("FD CONFLICT, EXISTING MUD: "+this_object()->query_connected_fds()[fd]+", FD: "+fd,"red");
+	trr("Socket status: "+identify(socket_status(fd)),"red");
 	trr("---\n","blue");
 	log_file("router/server_log","FD CONFLICT, MUD: "+info[2]+", FD: "+fd+"\n");
+	if(this_object()->query_connected_fds()[fd] != info[2] &&
+	  this_object()->query_mudinfo()[info[2]]["ip"] != explode(socket_address(fd)," ")[0]){
+	    write_data(fd,({
+		"error",
+		5,
+		router_name,
+		0,
+		info[2],
+		0,
+		"bad-mojo",
+		"FD collision. Please disconnect and try again.",
+		info
+	      }));
+	    return;
+	}
 	write_data(fd,({
 	    "error",
 	    5,
@@ -34,7 +51,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	    info[2],
 	    0,
 	    "bad-mojo",
-	    "FD collision. Please disconnect and try again.",
+	    "Looks like a buffer hasn't cleared from your last disconnect. Please disable intermud for a few minutes, then re-enable it and try again.",
 	    info
 	  }));
 	return;
@@ -81,6 +98,9 @@ static void process_startup_req(int protocol, mixed info, int fd){
       "restart_delay":-1,
     ]);
     //trr("newinfo: "+identify(newinfo));
+
+    if(protocol == 2 && sizeof(info) == 20 ) protocol = 3;
+
     switch(protocol){
     case 1:
     case 2:
@@ -179,21 +199,31 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	trr("mud already connected","red");
 	trr("---\n","blue");
 	log_file("router/server_log",timestamp()+" mud already connected\n");
-	write_data(fd,({
-	    "error",
-	    5,
-	    router_name,
-	    0,
-	    info[2], // mud name
-	    0,
-	    "bad-proto", // doesn't seem to me like it should be bad-proto...
-	    // see what the official one uses for this
-	    // it might just boot the earlier MUD off?
-	    "MUD already connected", // Error message
-	    info
-	  }));
-	return;
+	if(this_object()->query_mudinfo()[info[2]]["ip"] != explode(socket_address(fd)," ")[0] ||
+	  mudinfo[info[2]]["password"] != newinfo["password"]){
+	    write_data(fd,({
+		"error",
+		5,
+		router_name,
+		0,
+		info[2], // mud name
+		0,
+		"bad-proto", // doesn't seem to me like it should be bad-proto...
+		// see what the official one uses for this
+		// it might just boot the earlier MUD off?
+		"MUD already connected", // Error message
+		info
+	      }));
+	    return;
+	}
+	if(this_object()->query_mudinfo()[info[2]]["ip"] == explode(socket_address(fd)," ")[0] &&
+	  mudinfo[info[2]]["password"] == newinfo["password"]){
+	    trr("Since it's the same ip and password, I'll remove the current connection.");
+	    log_file("router/server_log",timestamp()+" Since it's the same ip and password, I'll remove the current connection\n");
+	    this_object()->remove_mud(info[2],1);
+	}
     }
+
     if(mudinfo[info[2]] && sizeof(mudinfo[info[2]]) && mudinfo[info[2]]["password"] != newinfo["password"]){
 	// if MUD is already known, not connected, and wrong password
 	if(newinfo["ip"]==mudinfo[info[2]]["ip"]){

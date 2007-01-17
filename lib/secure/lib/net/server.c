@@ -180,7 +180,7 @@ static void eventServerReadCallback(int fd, mixed val) {
     class server s = Sockets[fd];
 
     trr("server:eventServerReadCallback: fd: "+fd+", "+socket_address(fd),mcolor,mclass);
-    trr("server: I think that Sockets[fd] is: "+identify(Sockets[fd]),mcolor,mclass);
+    trr("server: I think that Sockets["+fd+"] is: "+identify(Sockets[fd]),mcolor,mclass);
     if( !s || !s->Owner ) {
 	trr("No owner found for this data.",mcolor,mclass);
 	eventClose(fd);
@@ -188,6 +188,7 @@ static void eventServerReadCallback(int fd, mixed val) {
     }
     else {
 	trr("Owner: "+identify(s->Owner),mcolor,mclass);
+	trr("sizeof(val): "+sizeof(val),mcolor,mclass);
 	trr("  val: "+identify(val),mcolor,mclass);
 	s->Owner->eventRead(val);
     }
@@ -315,13 +316,14 @@ varargs static void create(int port, int type, string socket_obj) {
     //tc("ftp_port: "+ftp_port);
     //tc("this_object: "+identify(this_object()));
     //tc("port: "+port);
-    //tc("type: "+type);
+    tc("type: "+type);
     //tc("socket_obj: "+socket_obj);
 
     if(port == PORT_FTP){mcolor="green";mclass=MSG_FTP;}
     if(port == PORT_HFTP){mcolor="white";mclass=MSG_HFTP;}
     else if(port == PORT_HTTP){mcolor="cyan";mclass=MSG_HTTP;}
     else if(port == PORT_RCP){mcolor="yellow";mclass=MSG_RCP;}
+    else if(port == PORT_OOB){mcolor="red";mclass=MSG_OOB;}
     else { mcolor="blue",mclass=MSG_CONV;}
 
     if( socket_obj ) {

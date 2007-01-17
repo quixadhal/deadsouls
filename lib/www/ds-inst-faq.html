@@ -68,14 +68,13 @@ solutions to the more common obstacles.</p>
 to Top)</a></h1>
 <p>You should only ever download from the site listed below. Some other
 sites tend to mirror these or copy data, then fail to update their data
-regularly. The following will always have the most recent version, and
-it is the only one officially authorized to distribute Dead Souls.</p>
+regularly. The following will always have the most recent versions.</p>
 <p>Download the stable version from the following:
 </p>
 <ul>
   <big> </big><li><big><a
- href="http://dead-souls.net/code/dead_souls.zip"><span
- style="text-decoration: underline;">http://dead-souls.net/code/dead_souls.zip</span></a></big></li>
+ href="http://lpmuds.net/files/deadsouls/ds2.1.1.zip"><span
+ style="text-decoration: underline;">http://lpmuds.net/files/deadsouls/ds2.1.1.zip</span></a></big></li>
 </ul>
 <br>
 Download the <span
@@ -83,8 +82,8 @@ Download the <span
  style="text-decoration: underline;"> </span>version here:<br>
 <br>
 <ul>
-  <li><big><a href="http://dead-souls.net/code/dead_souls.zip"><span
- style="text-decoration: underline;">http://dead-souls.net/code/dead_souls_alpha.zip</span></a></big></li>
+  <li><big><a href="http://lpmuds.net/files/deadsouls/ds2.3a1.zip"><span
+ style="text-decoration: underline;">http://lpmuds.net/files/deadsouls/ds2.3a1.zip</span></a></big></li>
 </ul>
 <br>
 The alpha version has lots of neat new stuff. Some of the new stuff is
@@ -234,7 +233,7 @@ you ignore this warning you are very likely to end up with really
 confusing errors and problems. Instead use the normal unix command
 line. For example: <span class="command">unzip -d ds ds2.1.zip</span></li>
   <li>NOTE: If you don't use the "-d" flag to specify the name of the
-new directory you want to create, the archive will dump everything
+new directory you want to create, the archive may dump everything
 into your current working directory, which may look ugly if that's
 not your intention.</li>
   <li> Don't use an existing driver binary, even if it's from a
@@ -324,6 +323,10 @@ need to edit v22.2b14/local_options and make these lines: <br>
 clean</span><br style="color: rgb(255, 0, 0); font-weight: bold;">
     <span style="color: rgb(255, 0, 0); font-weight: bold;">make -j 1</span><br>
     </p>
+    <p>The memory allocation for 2.3a1 and above is already set for
+64bit/smp compatibility, so this editing should not be needed if the
+version you are installing is sufficiently recent.<br>
+    </p>
   </li>
   <li>Download only from the sites mentioned above. Those are the only
 ones sure to have the latest version. Other sites can be out of date.</li>
@@ -396,7 +399,8 @@ compiling as root (obviously a last resort, and just for testing).</li>
 <p> Beats me. This is one of those complaints I don't really know how
 to respond to. At the end of the compile, you'll have a driver that
 works. It's been tested on GCC 2, 3, and 4. It's worked for Fedora
-Linux, SuSE Linux, and various versions of Solaris. It works. Ignore
+Linux, SuSE Linux, and various other versions of UNIX and UNIX-clone
+environments. It works. Ignore
 the compile schmutz.</p>
 <a name="11"></a>
 <h1>Why is there a windows-format mudos.cfg in /secure/cfg? I'm running
@@ -527,7 +531,7 @@ progress. Rather than pausing it, screen just runs whatever it is in a
 sort of backgrounded way. Way cool. In the following example, I refer
 to the "Ctrl" key like this: &lt;Ctrl&gt; . When you need to press That
 key and another key in combination, the notation I use looks like this:
-&lt;Ctrl&gt;-A, which means "hold down the 'Ctrl' key, and then press
+&lt;Ctrl&gt;-a, which means "hold down the 'Ctrl' key, and then press
 the 'A' key".<br>
 </p>
 <p>To run Dead Souls in a screen session, it might look like this:<br>
@@ -539,15 +543,15 @@ the 'A' key".<br>
 deadsouls</span><br style="color: rgb(255, 0, 0); font-weight: bold;">
 <span style="color: rgb(255, 0, 0); font-weight: bold;">./startmud</span><br
  style="color: rgb(255, 0, 0); font-weight: bold;">
-<span style="color: rgb(255, 0, 0); font-weight: bold;">&lt;Ctrl&gt;-A</span><br
+<span style="color: rgb(255, 0, 0); font-weight: bold;">&lt;Ctrl&gt;-a</span><br
  style="color: rgb(255, 0, 0); font-weight: bold;">
 <span style="color: rgb(255, 0, 0); font-weight: bold;">d</span><br>
 </p>
 <p>You may wonder what that 'd' is doing all by itself there. What
-&lt;Ctrl&gt;-A does is tell your screen session to pay attention to the
+&lt;Ctrl&gt;-a does is tell your screen session to pay attention to the
 next key you press, because that is a screen action it needs to take.
 In this case, the key is 'd', which means "detach". When in a screen
-session, if you type &lt;Ctrl&gt;-A then D, you drop out of the screen
+session, if you type &lt;Ctrl&gt;-a then d, you drop out of the screen
 session and resume whatever terminal you were in before you invoked
 screen. Your application will be happily chugging along in the virtual
 console you left behind. To reconnect to the screen session you
