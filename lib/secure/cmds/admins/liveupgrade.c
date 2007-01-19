@@ -2,19 +2,21 @@
 #include <dirs.h>
 #include <cfg.h>
 #include <daemons.h>
+#include <network.h>
 
 inherit LIB_DAEMON;
 
-string globalfile, globalmud;
-string array allnames = ({});
-int i = 0;
+string array allnames;
+int i;
 
 mixed cmd( string str) {
     string mud, file;
     int foo;
     mapping NewFiles = ([]);
-    globalmud = "";
-    globalfile = "";
+    object inet = find_object(INET_D);
+    string *preload_file = explode(read_file(CFG_PRELOAD),"\n");
+    i = 0;
+    allnames = ({});
     if(!this_player()) return 0;
     if( !((int)master()->valid_apply(({ "SECURE" }))) )
 	error("Illegal attempt to access liveupgrade: "+get_stack()+" "+identify(previous_object(-1)));
@@ -27,17 +29,65 @@ mixed cmd( string str) {
 	    files += ({ DIR_UPGRADES_FILES+"/"+element });
 	}
 	foreach(string element in files){
-	    NewFiles[element] = replace_string(replace_string(element,"\\","/"),
+	    NewFiles[element] = replace_string(replace_string(element,"0^0","/"),
 	      DIR_UPGRADES_FILES+"/","");
+	    load_object("/secure/cmds/creators/bk")->cmd(NewFiles[element]);
 	    rename(element, NewFiles[element]);
 	}
+	if(member_array(INET_D,preload_file) == -1 && inet) inet->eventDestruct();
 	write("Done.");
 	return 1;
     }
 
-    globalmud = mud;
+    if(!inet){
+	inet = load_object(INET_D);
+	write("Starting INET_D.");
+	if(member_array(INET_D,preload_file) == -1)
+	    write("When you complete the upgrade by using the \"apply\" keyword, the "
+	      "inet daemon will be shut down, since you do not have it enabled by "
+	      "default. Please remember to either apply the upgrades when the downloading "
+	      "is complete, or manually shut down INET_D with the command: mudconfig inet stop\n");
+    }
+    if(!inet){
+	write("There is a problem with INET_D. The upgrade will not proceed.");
+	return 1;
+    }
+
+    if(!INET_D->GetService("oob")){
+	write("The OOB service is not enabled. Enabling it now.");
+	INET_D->AddService("oob",OFFSET_OOB,LIB_OOB,0);
+    }
+
+    if(!INET_D->GetService("oob")){
+	write("There was a problem enabling the OOB service. The upgrade will not proceed.");
+	return 1;
+    }
+
+    if(!INET_D->GetServer("oob")){
+	write("The OOB service is not started. Starting it now.");
+	INET_D->eventStartServer("oob");
+    }
+
+    if(!INET_D->GetServer("oob")){
+	write("There was a problem starting the OOB service. The upgrade will not proceed.");
+	return 1;
+    }
+
+    if(foo < 2) {
+	mud = LIVEUPGRADE_SERVER;
+	file = str;
+    }
+    if(!file){
+	return this_object()->GetHelp();
+    }
+
+    mud = INTERMUD_D->GetMudName(mud);
+    if(!mud){
+	write("That liveupgrade server appears unavailable.");
+	return 1;
+    }
     if(file == "all"){
-	string tmp = replace_string(DIR_UPGRADES_TXT+"/upgrades.txt","/","\\");
+	string tmp = replace_string(DIR_UPGRADES_TXT+"/upgrades.txt","/","0^0");
 	OOB_D->GetFile(mud,DIR_UPGRADES_TXT+"/upgrades.txt");
 	if(!file_exists(DIR_UPGRADES_TXT+"/list.txt")){
 	    write("You're either missing the current updates file, or it is "
@@ -52,7 +102,7 @@ mixed cmd( string str) {
 	return 1;
     }
     OOB_D->GetFile(mud,file);
-    write("Single file upgrade begun.");
+    write("Requesting the file \""+file+"\" from "+INTERMUD_D->GetMudName(mud)+".");
     return 1;
 }
 

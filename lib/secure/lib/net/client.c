@@ -121,6 +121,8 @@ void eventWrite(mixed val) {
 
 static void eventClose(class client sock) {
     if( !sock ) return;
+    //if( !sock ) sock = Socket;
+    //if( !sock ) return;
     socket_close(sock->Descriptor);
     sock = 0;
     eventSocketClose();

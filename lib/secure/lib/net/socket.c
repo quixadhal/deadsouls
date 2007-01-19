@@ -24,6 +24,7 @@ int GetDescriptor() {
 
 /* ************************* socket.c events *********************** */
 static int eventCloseSocket() {
+    if(!Owner) return 0;
     Owner->eventClose(this_object());
 }
 
@@ -36,11 +37,15 @@ int eventRead(mixed data) {
 }
 
 int eventSocketClosed() {
-    if( previous_object() != Owner ) {
+    if(!Owner || previous_object() != Owner ) {
 	return 0;
     }
-    Destruct();
+    daemon::eventDestruct();
     return 1;
+}
+
+int eventDestruct(){
+    return daemon::eventDestruct();
 }
 
 varargs static int eventWrite(mixed data, int close) {

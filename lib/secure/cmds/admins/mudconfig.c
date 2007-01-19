@@ -418,6 +418,12 @@ int ProcessService(string which, string what){
     case "restart": INET_D->eventRestartServer(which,1);break;
     case "stop": INET_D->eventStopServer(which);break;
     }
+    if(which == "oob"){
+	if( what == "start" || what == "restart")
+	    reload(OOB_D);
+	if( what == "stop" )
+	    OOB_D->eventDestruct();
+    }
     write("Done.");
     return 1;
 }

@@ -106,6 +106,25 @@ varargs string *SetList();
 #include "./socket_stuff.h"
 #include "./hosted_channels.h"
 
+void disconnect(string str){
+    string *bums = ({});
+    if(str) bums = ({ str });
+    else bums = keys(mudinfo);
+    if(!sizeof(bums)) return;
+
+    foreach( string bum in bums ){
+	int targetfd;
+	if(mudinfo[bum] && !mudinfo[bum]["disconnect_time"]) mudinfo[bum]["disconnect_time"] = time();
+	if(connected_muds[bum]) {
+	    targetfd = connected_muds[bum];
+	    map_delete(connected_muds, bum);
+	    if(socket_status(targetfd)[1] != "LISTEN") close_connection(targetfd);
+	    log_file("router/server_log",timestamp()+" Disconnecting mud: "+bum+" on fd: "+targetfd+"\n");
+	}
+	broadcast_mudlist(bum);
+    }
+}
+
 // trrging stuff...
 mapping query_mudinfo(){ validate(); return copy(mudinfo); }
 mapping query_mud(string str){ validate(); return copy(mudinfo[str]); }

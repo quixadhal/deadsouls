@@ -60,6 +60,7 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     if(arg2 == MSG_HTTP && !http) return 0;
     if(arg2 == MSG_RCP && !rcp) return 0;
     if(arg2 == MSG_I3 && !i3) return 0;
+    if(arg2 == MSG_OOB && !oob) return 0;
     return ::eventPrint(msg, arg2, arg3);
 }
 

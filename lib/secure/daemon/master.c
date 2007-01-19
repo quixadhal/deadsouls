@@ -22,6 +22,13 @@
 #include <message_class.h>
 #include "master.h"
 
+#ifndef COMPAT_MODE
+#define COMPAT_MODE 1
+#endif
+#ifndef DEFAULT_PARSING
+#define DEFAULT_PARSING 1
+#endif
+
 private static int ResetNumber;
 private static object Unguarded, gguy;
 private static string PlayerName, rlog, gcmd;

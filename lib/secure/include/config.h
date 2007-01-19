@@ -57,5 +57,6 @@
 #define BARE_EXITS               1
 #define COMMAND_MATCHING         1
 #define OBJECT_MATCHING          1
+#define LIVEUPGRADE_SERVER       "Dead Souls"
 
 #endif /* s_config_h */

@@ -1,3 +1,7 @@
+---- 2.3a5 ---
+- Added OOB support.
+- Added liveupgrade system. See: help liveupgrade
+
 ---- 2.3a1 ---
 - Fixed null errors in wield verb.
 - DEFAULT_PARSING now works correctly. If you have two keys and two tables,

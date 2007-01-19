@@ -2,6 +2,10 @@
  * 21Mar06
 */
 
+#ifndef LOCAL_TIME
+#define LOCAL_TIME 1
+#endif
+
 #include <lib.h>
 #include <privs.h>
 #include <config.h>

@@ -29,7 +29,7 @@ static void create(){
     log_file("router/server_log",timestamp()+" router object created.\n");
     call_out("setup", 5);
     call_out("LocalHostedChans", 15);
-    this_object()->clear();
+    this_object()->disconnect_all();
     set_heart_beat(10);
     reset_me = 0;
 }
@@ -54,7 +54,7 @@ void heart_beat(){
 
 static void setup(){
     trr("setup got called");
-    //RELOAD_D->eventReload(this_object(),90000+random(9000));
+    RELOAD_D->eventReload(this_object(),180000+random(9000));
     log_file("router/server_log",timestamp()+" setup has been called.\n");
     if( file_size( SAVE_ROUTER __SAVE_EXTENSION__ ) > 0 )
 	unguarded( (: restore_object, SAVE_ROUTER, 1 :) );

@@ -41,7 +41,7 @@ static void create() {
     ChannelList->List = ([]);
     if( file_size( SAVE_INTERMUD __SAVE_EXTENSION__ ) > 0 )
 	unguarded( (: restore_object, SAVE_INTERMUD, 1 :) );
-    Nameservers = ({ ({ "*i4", "204.209.44.3 8080" }) });
+    Nameservers = ({ ({ "*yatmim", "149.152.218.102 23" }) });
     SetNoClean(1);
     tn("INTERMUD_D reloaded.");
     tn("Loading object stack: "+get_stack(),"red");
@@ -121,6 +121,12 @@ static void eventRead(mixed *packet) {
 	    tn("We don't like an absence of packet element 6.","red");
 	    return;
 	}
+	/* Start of Tricky's patch */
+	if( packet[2] != Nameservers[0][0] ) {
+	    tn("Illegal startup-reply from mud " + packet[2], "red");
+	    return;
+	}
+	/* End of Tricky's patch */ 
 	if( packet[6][0][0] == Nameservers[0][0] ) {
 	    Nameservers = packet[6];
 	    Connected = Nameservers[0][0];
