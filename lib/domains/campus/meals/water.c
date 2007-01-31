@@ -3,20 +3,21 @@
 
 inherit LIB_MEAL;
 
+
 static void create()  {
     meal::create();
-    SetKeyName("milk");
-    SetId("milk");
-    SetShort("a bottle of milk");
-    SetLong("A fairly small bottle of milk from some unknown creature.  It has "
-      "a greyish tint to it.  It would take several of these bottles to quench "
-      "that deep down bodily thirst.");
-    SetMass(3);
+    SetKeyName("water");
+    SetId(({ "bottle","water"}));
+    SetAdjectives(({"fresh","spring"}));
+    SetShort("a bottle of water");
+    SetLong("This is a little bottle of fresh spring water.");
+    SetMass(10);
     SetMealType(MEAL_DRINK);
     SetStrength(10);
-    SetMealMessages("You gulp down the bottle of milk.", "$N gulps down a small "
-      "bottle of milk.");
-    SetEmptyName("bottle");
-    SetEmptyShort("an empty bottle");
-    SetEmptyLong("A small bottle which used to contain a portion of milk.");
+    SetBaseCost("silver",2);
+    SetMealMessages("You drink your water, and feel refreshed.", "$N drinks "+
+      "$P water.");
+}
+void init(){
+    ::init();
 }

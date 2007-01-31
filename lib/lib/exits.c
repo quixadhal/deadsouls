@@ -136,9 +136,11 @@ object GetDummyItem(mixed id) {
     if( stringp(id) ) {
 	id = ({ id });
     }
-    foreach(object dummy in dummies) {
-	if( sizeof(dummy->GetId() & id) ) {
-	    return dummy;
+    if(arrayp(id)){
+	foreach(object dummy in dummies) {
+	    foreach(string element in id){
+		if(answers_to(element,dummy)) return dummy;
+	    }
 	}
     }
     return 0;

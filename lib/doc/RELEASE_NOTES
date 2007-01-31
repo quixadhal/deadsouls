@@ -1,3 +1,43 @@
+---- 2.3a9 ---
+- Fixed bug that prevented players who idled out while editing from
+  being booted.
+- Sending a tell to an NPC no longer runtimes.
+- Closed up various exploit vectors with overrides of efuns.
+- Null groups no longer hose MASTER_D.
+- Fixed spurious error message in mv command.
+- Added the "prompt" command, with which you can now customize dynamic prompts.
+- Added wimpy status to env command.
+- Fixed some bugs and an exploit in mail code.
+- Creators can no longer snoop by default. To make snooping available
+  to a creator, add her to the SNOOPER group. She will then be able to snoop
+  players, but not creators. To let her snoop creators, you'll need to
+  promote her to assistant admin, or edit valid_snoop() in /secure/sefun/sefun.c .
+- Added inews to the default creator channel list.
+- Fixed grievous carry leak in containers.
+- Fixed some null error messages when default parsing is enabled.
+- Fixed a runtime with default parsing enabled.
+- Fixed error message when giving something to an overloaded creature.
+- Added verbs: activate, deactivate, install, uninstall.
+- Added LIB_ACTIVATE, LIB_INSTALL.
+- Added wrist computer as an example of an object that has functions
+  added to it without shadows. See /domains/default/armor/wristcomp.c
+  and /domains/default/obj/module_cloak.c
+- Only one LIB_OOB ob is created for a full liveupgrade.
+- You can now do a liveupgrade from behind a firewall: opening
+  your oob port is no longer necessary.
+- Fixed flashlight bug.
+- Fixed elevator button/dummy object bug.
+- System channels are added to players on login if they're missing. This
+  corrects a problem with login announcements on upgraded muds.
+- First admin logins now may choose between four genders.
+- Shortest command matching is now shortest *unique* command matching, to
+  avoid accidentally executing the wrong command.
+- Added OBJECT_MATCHING, COMMAND_MATCHING, BARE_EXITS, and
+  LIVEUPGRADE_SERVER to mudconfig command.
+- The wizlist command generates an updated cre list regardless of whether
+  the mud is upgraded or at its native rev.
+- Implemented LIB_ROOM fix suggested by Memrosh.
+
 ---- 2.3a5 ---
 - Added OOB support.
 - Added liveupgrade system. See: help liveupgrade

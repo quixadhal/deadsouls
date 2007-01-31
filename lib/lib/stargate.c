@@ -172,8 +172,6 @@ int cmdEnter(string what){
     who = this_player();
     endpoint = STARGATE_D->GetEndpoint(origin);
     destination = STARGATE_D->GetDestination(endpoint);
-    //debug("endpoint=" + endpoint);
-    //debug("destination=" + destination);
     who->eventPrint("You step through the event horizon of the stargate.");
     who->eventMoveLiving(destination, 
       "$N steps into the event horizon and disappears", 

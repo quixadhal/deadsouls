@@ -7,6 +7,7 @@ int cmd(string str){
     string *raw_array;
     string *grps = groups();
     string ret = "";
+    PLAYERS_D->CompileCreList();
     raw_array = sort_array(PLAYERS_D->GetCreatorList(),1);
     foreach(string wiz in raw_array){
 	string tmp = wiz;

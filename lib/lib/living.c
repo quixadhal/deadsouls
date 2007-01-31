@@ -150,7 +150,10 @@ mixed indirect_give_obj_to_liv(object item) {
     if( !item ) return 0;
     if( this_player() == this_object() ) return "Are you confused?";
     if( environment(item) != this_player() ) return "You don't have that!";
-    return CanCarry((int)item->GetMass());
+    if(!CanCarry((int)item->GetMass())){
+	return this_object()->GetName()+" is carrying too much.";
+    }
+    else return CanCarry((int)item->GetMass());
 }
 
 mixed indirect_give_obs_to_liv(object *items) {

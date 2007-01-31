@@ -1,10 +1,10 @@
 #include <lib.h>
 inherit LIB_BOT;
+inherit LIB_ACTIVATE;
 
 object player, bot, ob, noobster;
 string name, watchline;
 int count, active, tip, tipnumber, current_tip, hb, mooch, greeting, greetwait;
-int deactivate_bot(string str);
 string *watchlist;
 
 string LongDesc(){
@@ -50,10 +50,10 @@ static void create(){
 	"Jenny straightens her hair.",
 	"Jenny the guide bot touches up her rouge a bit.", 
 	"Jenny smiles."}));
-    AddCommandResponse("shutdown", (: deactivate_bot :));
-    AddCommandResponse("shut down", (: deactivate_bot :) );
-    AddCommandResponse("shut up", (: deactivate_bot :));
-    AddCommandResponse("go away", (: deactivate_bot :) );
+    AddCommandResponse("shutdown", (: eventTurnOff :));
+    AddCommandResponse("shut down", (: eventTurnOff :) );
+    AddCommandResponse("shut up", (: eventTurnOff :));
+    AddCommandResponse("go away", (: eventTurnOff :) );
     set_heart_beat(1);
     ob=this_object();
     count=210;
@@ -66,12 +66,12 @@ static void create(){
 varargs int eventGreet(string newbie){
     object noob;
     string guy,prespiel,spiel;
-    if((!newbie || newbie == "") && !noobster){
+    if((!newbie || newbie == "") || !noobster){
 	return 0;
     }
     if(!newbie || newbie == "") newbie = noobster->GetKeyName();
     if(newbie && newbie != "there") noob = find_player(newbie);
-    if(newbie && newbie != "there") guy = noob->GetName();
+    if(noob && newbie != "there") guy = noob->GetName();
     else guy = "there";
     tell_room(environment(this_object()),"The polite young "+
       "lady springs to life!\n");
@@ -104,8 +104,8 @@ int eventCheckNoob(){
 
 void init(){
     ::init();
-    add_action("activate_bot","activate");
-    add_action("deactivate_bot","deactivate");
+    //add_action("activate_bot","activate");
+    //add_action("eventTurnOff","deactivate");
     add_action("next_tip","next");
     add_action("get_p","gp");
     eventCheckNoob();
@@ -136,30 +136,24 @@ int refreshlist(){
     unguarded( (: write_file("/domains/campus/txt/moochers.txt",watchline,1) :) );
     return 1;
 }
-int deactivate_bot(string str){
-    if(member_array(str, GetId()) == -1){
-	write("Deactivate whut?");
-	return 1;
-    }
+int eventTurnOff(){
     if( active == 0 ){
 	write("Jennybot is already inactive.");
     }
     //set_heart_beat(0);
     tip = 0;
     if( active != 0) {
-	tell_room(this_object(),"Jenny nods and becomes motionless again, "+
+	tell_room(environment(this_object()),"Jenny nods and becomes motionless again, "+
 	  "her expression now fixed and staring out into "+
 	  "space.");
     }
     active=0;
     return 1;
 }
-int activate_bot(string str){
+
+int eventTurnOn(){
     player=this_player();
     name=this_player()->GetName();
-    if(!str) return 0;
-    //if(str != "bot") return 0;
-    if(member_array(str, GetId()) == -1) return 0;	
     if(active==1){
 	write("Jennybot has already been activated.");
 	return 1;
@@ -262,7 +256,7 @@ int eventDoTip(int i){
     hb=0;
     eventSwitch(i);
     if(tip > tipnumber) {
-	this_object()->deactivate_bot("bot");
+	this_object()->eventTurnOff("bot");
 	return 1;
     }
     tell_room(environment(this_object()),read_file("/domains/campus/txt/jenny/"+i+".txt"));
@@ -271,6 +265,11 @@ int eventDoTip(int i){
 void heart_beat(){
     hb++;
     if(greeting) greetwait++;
+    //tc("greetwait: "+greetwait);
+    //tc("hb: "+hb);
+    //tc("tip: "+tip);
+    //tc("noobster: "+identify(noobster));
+    //tc("greeting: "+greeting);
     if(noobster && greetwait > 0){
 	eventGreet();
 	noobster = 0;

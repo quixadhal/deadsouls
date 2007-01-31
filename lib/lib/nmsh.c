@@ -20,7 +20,7 @@ private string CurrentWorkingDirectory;
 private string PreviousWorkingDirectory;
 private mapping Nicknames, Aliases, Xverbs; 
 private static int CWDCount, CWDBottom, CWDTop, CmdNumber; 
-private static string Prompt; 
+private string Prompt; 
 private static string *Stack; 
 
 static void create() {
@@ -264,15 +264,58 @@ nomask static int cmd_work(string str) {
     return 1;
 }
 
-nomask string write_prompt() { 
-    string tmp, ret; 
+nomask string write_prompt() {
+    string tmp, ret;
+    string ret2 = "";
     int x, y;
 
     if( (y = query_ed_mode()) != -1 ) {
 	if( !y ) {
-	    if( creatorp() ) ret = ":";
-	    else 
-		ret = "\tQ)uit without saving, save and ex)it, h)elp\nCommand: ";
+	    //if( creatorp() ) ret = ":";
+	    //else
+	    ret = "\tQ)uit without saving, save and ex)it, h)elp\nCommand: ";
+	}
+	else if( y == -2 ) ret = "Help: ";
+	else ret = "*\b";
+	message("prompt", ret, this_object());
+	return ret;
+    }
+    if((ret = Prompt) == DEFAULT_PROMPT) {
+	message("prompt", ret, this_object());
+	return ret;
+    }
+    if(grepp(ret,"$g")) ret = replace_string(ret,"$g",itoa(this_object()->GetMagicPoints()));
+    if(grepp(ret,"$G")) ret = replace_string(ret,"$G",itoa(this_object()->GetMaxMagicPoints()));
+    if(grepp(ret,"$V")){
+	if(GetInvis())
+	    ret = replace_string(ret,"$V","INVIS");
+	else
+	    ret = replace_string(ret,"$V","");
+    }
+    if(grepp(ret,"$P") && query_cwd()) ret = replace_string(ret,"$P",query_cwd());
+    if(grepp(ret,"$C")) ret = replace_string(ret,"",itoa( CmdNumber+1 ));
+    if(grepp(ret,"$h")) ret = replace_string(ret,"$h",itoa( this_object()->GetHealthPoints() ));
+    if(grepp(ret,"$H")) ret = replace_string(ret,"$H",itoa( this_object()->GetMaxHealthPoints() ));
+    if(grepp(ret,"$i")) ret = replace_string(ret,"$i",itoa( this_object()->GetStaminaPoints() ));
+    if(grepp(ret,"$I")) ret = replace_string(ret,"$I",itoa( to_int(this_object()->GetMaxStaminaPoints() )));
+    if(grepp(ret,"")) ret = replace_string(ret,"",itoa( ));
+    ret += " ";
+    message("prompt", ret, this_object());
+    return ret;
+}
+
+
+#if 0
+nomask string write_prompt() { 
+    string tmp, ret; 
+    string ret2 = "";
+    int x, y;
+
+    if( (y = query_ed_mode()) != -1 ) {
+	if( !y ) {
+	    //if( creatorp() ) ret = ":";
+	    //else 
+	    ret = "\tQ)uit without saving, save and ex)it, h)elp\nCommand: ";
 	}
 	else if( y == -2 ) ret = "Help: ";
 	else ret = "*\b";
@@ -312,22 +355,26 @@ nomask string write_prompt() {
 		ret = replace_string(ret, "$C", sprintf("%d", CmdNumber+1)); 
 		break;
 	    case 'H':
-		ret = replace_string(ret, "$H", sprintf("%d", query_max_hp())); 
+		ret = replace_string(ret, "$H", sprintf("%d", this_object()->GetMaxHealthPoints())); 
 		break;
 	    case 'h':
-		ret = replace_string(ret, "$h", sprintf("%d", query_hp())); 
+		ret = replace_string(ret, "$h", sprintf("%d", this_object()->GetHealthPoints())); 
 		break;
 	    case 'G':
-		ret = replace_string(ret, "$G", sprintf("%d", query_max_mp())); 
+		ret = replace_string(ret, "$g", sprintf("%d", this_object()->GetMagicPoints())); 
 		break;
 	    case 'g':
-		ret = replace_string(ret, "$g", sprintf("%d", query_mp())); 
+		ret = replace_string(ret, "$G", sprintf("%d", this_object()->GetMaxMagicPoints())); 
 		break;
 	    case 'I':
-		ret = replace_string(ret, "$I", sprintf("%d", query_max_sp())); 
+		ret = replace_string(ret, "$I", sprintf("%d", to_int(this_object()->GetMaxStaminaPoints()))); 
 		break;
 	    case 'i':
-		ret = replace_string(ret, "$i", sprintf("%d", query_sp())); 
+		ret = replace_string(ret, "$i", sprintf("%d", this_object()->GetStaminaPoints())); 
+		break;
+	    case 'P':
+		if(query_cwd()) ret2 = query_cwd();
+		ret = replace_string(ret, "$P", ret2);
 		break;
 	    default:
 		ret = replace_string(ret, ret[x..x+1], "");
@@ -335,9 +382,11 @@ nomask string write_prompt() {
 	    }
 	}
     }
+    ret += " ";
     message("prompt", ret, this_object());
     return ret;
 } 
+#endif
 
 string process_input(string str) { 
     string tmp, xtra, request; 
@@ -468,11 +517,11 @@ nomask static string replace_nickname(string str) {
 } 
 
 void reset_prompt() { 
-    Prompt =GetPrompt(); 
-    if(!stringp(Prompt)) Prompt = "Prompt screwey> ";
+    //Prompt = GetPrompt(); 
+    if(!stringp(Prompt)) Prompt = "> ";
     Prompt =replace_string(Prompt, "$M", mud_name()); 
     Prompt =replace_string(Prompt, "$m", lower_case(mud_name())); 
-    Prompt =replace_string(Prompt, "$N", (string)this_object()->GetCapName()); 
+    Prompt =replace_string(Prompt, "$N", capitalize(this_object()->GetKeyName())); 
     Prompt =replace_string(Prompt, "$n", GetKeyName());
 } 
 
@@ -481,6 +530,8 @@ string query_cwd() { return CurrentWorkingDirectory; }
 string query_prev_wd() { return PreviousWorkingDirectory; } 
 
 string GetPrompt() { return DEFAULT_PROMPT; }
+
+string SetPrompt(string str) { return Prompt = str; }
 
 int query_mp() { return 1; } 
 

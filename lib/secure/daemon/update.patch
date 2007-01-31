@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <daemons.h>
 
 inherit LIB_DAEMON;
 
@@ -98,6 +99,16 @@ static void eventUpdate() {
 
     else {
 	string newfile = "#include <lib.h>\n";
+string ver = mudlib_version();
+string mudinfo = replace_string(read_file("/secure/sefun/mud_info.c"),
+ver,"2.3a9");
+string native_rev = replace_string(read_file("/secure/sefun/native_version.c"),
+"2.3a9",ver);
+//tc("mudinfo:\n"+mudinfo);
+//tc("native_rev:\n"+native_rev,"green");
+write_file("/secure/sefun/mud_info.c",mudinfo,1);
+write_file("/secure/sefun/native_version.c",native_rev,1);
+
 	newfile += "\n";
 	newfile += "inherit LIB_DAEMON;\n";
 	newfile += "\n";
@@ -160,7 +171,10 @@ static void eventUpdate() {
 	rm("/secure/daemon/update.patch");
 	rm("/secure/daemon/update.new");
 
+        PLAYERS_D->CompileCreList();
+        PLAYERS_D->CompilePlayerList();
 
+        rename("/secure/daemon/update.c", "/secure/daemon/update.patch");
 	write_file("/secure/daemon/update.c",newfile,1);
 
 	debug_message("\nUpgrade is done. Performing the last of two reboots.\n");

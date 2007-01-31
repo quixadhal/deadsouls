@@ -530,9 +530,19 @@ string path_prefix(string str){
     return str[0..i-2];
 }
 
-mixed homedir(object ob){
-    if(creatorp(ob)) return "/realms/"+ob->GetKeyName();
+mixed homedir(mixed ob){
+    string name = "";
+    string initial = "";
+    if(!ob) ob = this_player();
+    if(!ob) return 0;
+    if(objectp(ob)) name = ob->GetKeyName();
+    else if(stringp(ob)) name = ob;
     else return 0;
+    if(!sizeof(name)) return 0;
+    initial = name[0..0];
+    if(!user_exists(name)) return 0;
+    if(directory_exists("/realms/"+name)) return "/realms/"+name;
+    else return DIR_ESTATES + "/"+initial+"/"+name; 
 }
 
 varargs mixed random_numbers(int n, int integer){

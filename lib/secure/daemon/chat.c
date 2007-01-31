@@ -29,6 +29,9 @@ static void create() {
     daemon::create();
     SetNoClean(1);
     Channels = ([]);
+    foreach(string kanal in local_chans + syschans){
+	if( !Channels[kanal] ) Channels[kanal] = ({});
+    }
     foreach(pl in users()) {
 	string *chans;
 	string channel;
@@ -684,3 +687,4 @@ string GetRemoteChannel(string ch) {
 }
 
 string *GetChannels() { return copy(keys(Channels)); }
+string *GetSystemChannels() { return copy(syschans); }

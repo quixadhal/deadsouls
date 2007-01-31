@@ -37,6 +37,7 @@ static void create() {
 
 static string process_input(string str) {
     SetCommandFail(0);
+    command::process_input(str);
     if( Client ) {
 	int cl;
 

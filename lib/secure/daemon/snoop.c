@@ -7,6 +7,7 @@
 inherit LIB_DAEMON;
 
 int SnoopClean();
+int RemoveWatcher(string watcher, mixed target);
 
 string *snooped = ({});
 object *snoopers = ({});
@@ -93,7 +94,15 @@ void CheckSnooped(){
 }
 
 int SnoopClean(){
+    object *voyeurs = users();
     snoopers = filter(objects(), (: base_name($1) == "/secure/obj/snooper" :) );
+    if(sizeof(voyeurs)){
+	foreach(object perv in voyeurs){
+	    if(!snooperp(perv) && !archp(perv)){
+		RemoveWatcher(perv->GetKeyName(), "all");
+	    }
+	}
+    }
     if(sizeof(snoopers)){
 	foreach(object snoopbox in snoopers){
 	    if(snoopbox && !clonep(snoopbox) ) {

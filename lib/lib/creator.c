@@ -165,8 +165,6 @@ varargs string GetLong(string str) {
 
 int GetCreatorBirth() { return CreatorBirth; }
 
-//string GetNativeLanguage() { return "English"; }
-
 string GetName() { 
     if( !GetInvis() ) return ::GetName();
     else return "A shadow";

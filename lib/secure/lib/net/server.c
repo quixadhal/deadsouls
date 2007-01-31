@@ -52,6 +52,9 @@ static int eventClose(mixed sock) {
     mapping s; 
 
     trr("LIB_SERVER: eventClose trying to close: "+identify(sock),mcolor,mclass);
+    if(mapp(sock)) {
+	s = copy(sock);
+    }
     if( intp(sock) ) {
 	s = copy(Sockets[sock]);
     }
@@ -109,7 +112,8 @@ static int Destruct() {
     if( daemon::Destruct() ) {
 	foreach(int fd, mapping socket in Sockets) {
 	    trr("server:Destruct: fd: "+fd+", "+socket_address(fd),mcolor,mclass);
-	    socket["Owner"]->eventShutdown();
+	    if(socket && socket["Owner"])
+		socket["Owner"]->eventShutdown();
 	}
 	eventClose(Listen);
 	return 1;
@@ -181,7 +185,9 @@ static void eventServerReadCallback(int fd, mixed val) {
     else {
 	trr("Sockets["+fd+"]: "+identify(Sockets[fd]),mcolor,mclass);
 	trr("sizeof(val): "+sizeof(val),mcolor,mclass);
-	trr("  val: "+identify(val),mcolor,mclass);
+	trr("typeof(val): "+typeof(val),mcolor,mclass);
+	if(bufferp(val)) trr("  val: "+identify(read_buffer(val)),mcolor,mclass);
+	else trr("  val: "+identify(val),mcolor,mclass);
 	Sockets[fd]["Owner"]->eventRead(val);
     }
 }
@@ -246,7 +252,8 @@ varargs int eventWrite(object owner, mixed val, int close) {
     mapping sock;
 
     trr("server:eventWrite: fd: "+fd+", "+socket_address(fd),mcolor,mclass);
-    trr("       eventWrite: owner: "+identify(owner)+", val: "+identify(val),mcolor,mclass);
+    if(bufferp(val)) trr("       eventWrite: owner: "+identify(owner)+", val: "+identify(read_buffer(val)),mcolor,mclass);
+    else trr("       eventWrite: owner: "+identify(owner)+", val: "+identify(val),mcolor,mclass);
     trr("       eventWrite: close: "+close,mcolor,mclass);
 
     if( Listen && Listen["Descriptor"] == fd ) {

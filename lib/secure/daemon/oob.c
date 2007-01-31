@@ -20,7 +20,7 @@ mapping IncomingSessions = ([]);
 string array waiting_auth = ({});
 object array Clients = ({});
 
-mixed globalvar;
+mixed globalvar, g1, g2;
 
 void StartServer();
 void StopServer();
@@ -38,6 +38,11 @@ varargs mixed eventBeginOOB(string mud, int token, mixed *data){
     object ob;
     int port = INTERMUD_D->GetMudList()[mud][11]["oob"];
     string ip = INTERMUD_D->GetMudList()[mud][1];
+        if(sizeof(INTERMUD_D->GetMudList()[mud][12]) &&
+      INTERMUD_D->GetMudList()[mud][12]["ip"] &&
+      INTERMUD_D->GetMudList()[mud][12]["ip"] != "127.0.0.1")
+        ip = INTERMUD_D->GetMudList()[mud][12]["ip"];
+    tc("IP: "+ip, "yellow");
     validate();
     trr("OOB_D.eventBeginOOB, mud: "+mud+", token: "+token,"yellow",MSG_OOB);
     if(!port || !ip) return;
@@ -125,7 +130,12 @@ varargs mixed RequestBegin(string target, mixed *data){
     if(!ReceivedMudTokens[target] || !ReceivedMudTokens[target]["token"])
 	RequestToken(target);
     ip = INTERMUD_D->GetMudList()[target][1];
+    if(sizeof(INTERMUD_D->GetMudList()[target][12]) &&
+      INTERMUD_D->GetMudList()[target][12]["ip"] &&
+      INTERMUD_D->GetMudList()[target][12]["ip"] != "127.0.0.1")
+	ip = INTERMUD_D->GetMudList()[target][12]["ip"];
     port = INTERMUD_D->GetMudList()[target][11]["oob"];
+    tc("ip: "+ip,"white");
     if( eventCreateSocket(ip, port) < 0 ){
 	trr("OOB_D.RequestBegin: couldn't create outbound socket",mcolor,MSG_OOB);
 	return 0;
@@ -186,6 +196,7 @@ varargs mixed send_file(string str, object oob){
     if(oob) trr("OOB_D.send_file oob: "+identify(oob),"cyan",MSG_OOB);
 
     if( !str ) trr("You must specify a file to cat.","cyan",MSG_OOB);
+    str = trim(str);
     if( !file_exists(str) ) trr("File " + str + " not found.","cyan",MSG_OOB);
     else if( !(tmp = read_file(str)) )
 	trr("Unable to read file " + str + ".","cyan",MSG_OOB);
@@ -194,6 +205,15 @@ varargs mixed send_file(string str, object oob){
 	return 0;
     }
     arr = explode(tmp,"\n");
+    if(file_size(str) > 60000){
+	trr("OOB_D.send_file: file too large. Send of "+str+" %^WHITE%^FAILED%^RESET%^.");
+	return 1;
+    }
+    if(!strsrch(str,"/secure/upgrades/txt/upgrades."))
+	str = "/secure/upgrades/txt/upgrades.txt";
+    if(!strsrch(str,"/secure/upgrades/txt/mud_info."))
+	str = "/secure/sefun/mud_info.c";
+    trr("OOB_D.send_file str: "+identify(str),"cyan",MSG_OOB);
     foreach(string line in arr){
 	i++;
 	if(oob) write_data( ({ "oob-file", str, i, line }), oob );
@@ -201,6 +221,12 @@ varargs mixed send_file(string str, object oob){
     }
     trr("OOB_D.send_file: sent.","cyan",MSG_OOB);
     return 1;
+}
+
+varargs void call_send_file(string str, object oob){
+    g1 = str;
+    g2 = oob;
+    call_out( (:send_file, g1, g2 :), 2);
 }
 
 string FindMud(object ob){
@@ -280,9 +306,12 @@ mixed SendFile(string str){
     return 1;
 }
 
-mixed GetFile(string mud, string file){
+mixed GetFile(string mud, mixed file){
     validate();
-    AddRequestedFile(mud, file);
+    if(stringp(file)) AddRequestedFile(mud, file);
+    else if(arrayp(file))
+	foreach(string element in file) AddRequestedFile(mud, element);
+    //tc("file: "+identify(file),"yellow");
     RequestBegin(mud, ({ "oob-file-req", file }) );
     return 1;
 }
@@ -292,11 +321,12 @@ int eventMajorUpgrade(string mud, string *files){
     validate();
     allfiles = sort_array(files,1);
     globalmud = mud;
-    foreach(string element in allfiles){
-	interval += 3;
-	globalvar = element;
-	call_out( (: GetFile, globalmud, globalvar :), interval );
-    }
+    GetFile(globalmud, allfiles);
+    //foreach(string element in allfiles){
+    //interval += 3;
+    //globalvar = element;
+    //call_out( (: GetFile, globalmud, globalvar :), interval );
+    //}
 
     return 1;
 }

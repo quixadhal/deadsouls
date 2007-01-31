@@ -3,6 +3,7 @@
 
 inherit LIB_MEAL;
 
+
 static void create() {
     meal::create();
     SetKeyName("sandwich");
@@ -15,4 +16,7 @@ static void create() {
     SetMealType(MEAL_FOOD);
     SetMealMessages("You eat a ham sandwich. Mmm!",
       "$N eats $P ham sandwich.");
+}
+void init(){
+    ::init();
 }

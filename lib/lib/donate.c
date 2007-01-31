@@ -67,12 +67,6 @@ int eventDonate(string amt, string type) {
 	tp->eventPrint("Nice try!\n");
 	return 0;
     }
-    //if(type != GetLocalCurrency()) {
-    //	tp->eventPrint("The " + pluralize(GetOwner()) +
-    //	  " only deal in " + GetLocalCurrency() +
-    //	  ".\n");
-    //	return 0;
-    //   }
     if((int)tp->GetCurrency(type) < amount) {
 	tp->eventPrint("You don't have that much " + type + "!\n");
 	return 0;

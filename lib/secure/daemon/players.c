@@ -47,6 +47,33 @@ void validate(){
     }
 }
 
+string *CompileCreList(){
+    string *cre_dirs = unguarded( (: get_dir(DIR_CRES+"/") :) );
+    string *cres = ({});
+    foreach(string subdir in cre_dirs){
+	cres += unguarded( (: get_dir,DIR_CRES+"/"+subdir+"/" :) );
+    }
+    foreach(string cre in cres){
+	if(member_array(cre, user_list) == -1 ||
+	  member_array(cre, creators) == -1) 
+	    this_object()->AddPlayerInfo(replace_string(cre, ".o",""));
+    }
+    return cres;
+}
+
+string *CompilePlayerList(){
+    string *play_dirs = get_dir(DIR_PLAYERS+"/");
+    string *plays = ({});
+    foreach(string subdir in play_dirs){
+	plays += get_dir(DIR_PLAYERS+"/"+subdir+"/");
+    }
+    foreach(string play in plays){
+	if(member_array(play, user_list) == -1 ||
+	  member_array(play, players) == -1)
+	    this_object()->AddPlayerInfo(replace_string(play, ".o",""));
+    }
+    return plays;
+}
 
 void create() {
     ::create();
@@ -58,7 +85,8 @@ void create() {
     if(creators) creators = singular_array(creators);
     if(user_list) user_list = singular_array(user_list);
     unguarded((: save_object, SAVE_PLAYER_LIST :));
-
+    call_out( (: CompileCreList :), 1);
+    call_out( (: CompilePlayerList :), 5);
 }
 
 string *eventCre(string str){
@@ -96,6 +124,10 @@ void AddPlayerInfo(mixed arg) {
 	    if(!directory_exists(DIR_ESTATES+"/"+initial))
 		mkdir(DIR_ESTATES + "/"+initial);
 	    mkdir(DIR_ESTATES + "/"+initial+"/"+truncate(arg,2));
+	    mkdir(DIR_ESTATES + "/"+initial+"/"+truncate(arg,2)+"/tmp");
+	    mkdir(DIR_ESTATES + "/"+initial+"/"+truncate(arg,2)+"/log");
+	    mkdir(DIR_ESTATES + "/"+initial+"/"+truncate(arg,2)+"/bak");
+	    mkdir(DIR_ESTATES + "/"+initial+"/"+truncate(arg,2)+"/adm");
 	    player_save_file = DIR_CRES +"/"+initial+"/"+arg;
 	    if(!file_exists(player_save_file))
 		player_save_file = DIR_PLAYERS +"/"+initial+"/"+arg;
@@ -131,7 +163,7 @@ string *GetUserList(){
 int RemoveUser(string str){
     if(!str || str == "") return 0;
     str = lower_case(str);
-    if(!user_exists(str)) return 0;
+    if(user_exists(str)) return 0;
     if(member_array(str, players) != -1) players -= ({ str });
     if(member_array(str, creators) != -1) creators -= ({ str });
     if(member_array(str, user_list) != -1) user_list -= ({ str });

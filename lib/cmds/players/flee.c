@@ -7,7 +7,7 @@ mixed cmd(string str) {
 	write("You are not in combat.");
 	return 1;
     }
-    this_player()->eventWimpy();
+    this_player()->eventWimpy("go out");
     return 1;
 }
 

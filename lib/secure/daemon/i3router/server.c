@@ -12,7 +12,7 @@
 #define DEBUGGER_GUY "cratylus"	// Name of who to display trrging info to.
 #undef DEBUGGER_GUY
 #define DEBUGGER_GUY "MXLPLX"
-#define MAXIMUM_RETRIES 5
+#define MAXIMUM_RETRIES 20
 // SEND_WHOLE_MUDLIST makes it act like the official I3 server instead of like the I3 specs
 #define SEND_WHOLE_MUDLIST
 // SEND_WHOLE_CHANLIST makes it act like the official I3 server instead of like the I3 specs
@@ -318,6 +318,22 @@ string *RemoveBannedMud(string str){
     log_file("router/server_log",timestamp()+" "+str+" has been unbanned.\n");
     save_object(SAVE_ROUTER);
     return banned_muds;
+}
+
+void check_discs(){
+    foreach(int element in sort_array(copy(values(connected_muds)),1)){
+	string lost_mud;
+	if(socket_status(element)[1] == "CLOSED"){
+	    foreach(string key, int val in connected_muds){
+		if(val == element){
+		    trr("REMOVING DISCONNECTED: "+key+" from "+val);
+		    if(mudinfo[key]) mudinfo[key]["disconnect_time"] = time();
+		    map_delete(connected_muds, key);
+		    broadcast_mudlist(key);
+		}
+	    }
+	}
+    }
 }
 
 void clear_discs(){ 

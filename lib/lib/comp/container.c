@@ -27,7 +27,7 @@ int GetRadiantLight(int ambient) {
 	    return 0;
 	}
 	else {
-	    int y = (r*10)/ambient;
+	    int y = r / (ambient || 1);
 
 	    if( y > r ) {
 		return r;

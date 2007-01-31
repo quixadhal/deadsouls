@@ -919,7 +919,7 @@ varargs void reset(int count) {
     if(sizeof(livings)){
 	foreach(object living in livings){
 	    if(living && (living->GetDrone() || living->GetMount() ||
-		living()->GetNoClean())) return;
+		living->GetNoClean())) return;
 	}
     }
     inventory::reset(count);

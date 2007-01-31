@@ -27,6 +27,11 @@ static private int *Screen;
 static private int rescue, yescre;
 static private string *ip_permitted = ({});
 
+//Change this to 1 to enable color codes in /news/welcome
+//then update the connect.c file.
+//Note that it may look weird or broken on some people's terminals.
+static private int AllowColorSplash = 0;
+
 int eventCheckPending(string str);
 void eventCompleteChar();
 void InputCre(string str);
@@ -40,8 +45,6 @@ int CheckIp(){
     foreach(object jugador in users()){
 	if(query_ip_number(jugador) == my_ip) ips++;
     }
-    //tc("ips: "+ips);
-    //tc("SAME_IP_MAX: "+SAME_IP_MAX);
     if(ips >= SAME_IP_MAX && member_array(my_ip, ip_permitted) == -1) return 0;
     else return 1;
 }
@@ -66,7 +69,12 @@ varargs static void logon(mixed foo) {
     else {
 	welcome += read_file(NEWS_WELCOME) || "Welcome to " + mud_name() + "!";
     }
-    receive(welcome);
+    if(AllowColorSplash){
+	receive(terminal_colour(welcome,TERMINAL_D->query_term_info("ansi")));
+    }
+    else {
+	receive(welcome);
+    }    
     receive("\n" + center("Driver: " + version() + "               Mudlib: "+
 	mudlib() + " " + mudlib_version()) + "\n");
     if(CheckIp()){ 
@@ -246,6 +254,7 @@ static void eventReEnterGame(string cap) {
 	log_file("enter", cap + " (exec): " + ctime(time()) + "\n"); 
 	Player->eventReconnect();
 	Player->RemoveProperty("afk");
+	if(creatorp(Player)) Player->AddChannel(CHAT_D->GetSystemChannels());
 	SNOOP_D->ReportReconnect(Player->GetKeyName());
     }
     receive("\nProblem reconnecting.\n");
@@ -294,6 +303,7 @@ static private void eventEnterGame() {
 	Player->eventForce("source "+user_path(Player->GetKeyName())+".profile");
     }
     Player->RemoveProperty("afk");
+    if(creatorp(Player)) Player->AddChannel(CHAT_D->GetSystemChannels());
     SNOOP_D->CheckBot(Player->GetKeyName());
     call_out( (: destruct(this_object()) :), 10);
 

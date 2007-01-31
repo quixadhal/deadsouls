@@ -43,13 +43,16 @@ cmd(string str) {
 	t1=absolute_path((string)this_player()->query_cwd(),t1);
 	t2=absolute_path((string)this_player()->query_cwd(),t2);
 	rename(t1,t2);
+	if(directory_exists(t2) && !directory_exists(t1))
+	    write("mv: Ok.");
+	else write("mv: Failed.");
 	if(file_size(t2) == -2) {
 	    tmp = explode(t1, "/");
 	    t2 += "/" + tmp[sizeof(tmp)-1];
 	}
-	write(
-	  ((file_size(t1)<0)&&(file_size(t2)!=-1)) ? t1+" -> "+t2+"\n"
-	  :"mv failed.\n");
+	//write(
+	//((file_size(t1)<0)&&(file_size(t2)!=-1)) ? t1+" -> "+t2+"\n"
+	//:"mv failed.\n");
     }
     return 1;
 }

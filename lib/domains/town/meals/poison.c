@@ -4,6 +4,7 @@
 inherit LIB_MEAL;
 inherit LIB_MEAL_POISON;
 
+
 static void create() {
     ::create();
     SetKeyName("poison");
@@ -23,8 +24,10 @@ static void create() {
     SetPoisonStrength(70);
     SetPoisonUses(3);
 }
-
 mixed eventDrink(object who) {
     who->AddPoison(this_object()->GetPoisonStrength() * this_object()->GetPoisonUses());
     return ::eventDrink(who);
+}
+void init(){
+    ::init();
 }

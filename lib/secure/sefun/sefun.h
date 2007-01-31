@@ -166,7 +166,7 @@ varargs string last(string str, int i, int significant);
 int starts_with_arr(string primary, string *sub);
 int starts_with(string primary, string sub);
 string reverse_string(string str);
-mixed homedir(object ob);
+mixed homedir(mixed ob);
 varargs string generate_tmp(mixed arg);
 string newline_trim(string str);
 int directory_exists(string str);
@@ -247,5 +247,7 @@ string *atomize_string(string str);
 string *atomize_array(string *temp_arr);
 string match_command(string verb);
 varargs mixed random_numbers(int n, int integer);
+int snooperp(mixed guy);
+string native_version();
 
 #endif /* l_sefun_h */

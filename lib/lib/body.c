@@ -262,7 +262,6 @@ int eventCollapse() {
     }
     send_messages("collapse", "$agent_name $agent_verb to the ground.",
       this_object(), 0, environment());
-    //this_object()->eventCollapse();
     SetPosition(POSITION_LYING);
     return 1;
 }
@@ -366,7 +365,6 @@ mixed eventFall() {
     if( !dest ) {
 	send_messages(({ "fall", "die" }), "$agent_name $agent_verb into a "
 	  "dark abyss and $agent_verb.", this_object(), 0, env);
-	//SetPosition(POSITION_LYING);
 	this_object()->eventCollapse();
 	eventDie("Deceleration sickness");
     }
@@ -379,7 +377,6 @@ mixed eventFall() {
 	eventMove(dest);
 	environment()->eventPrint(GetName() + " comes falling in from above.",
 	  this_object());
-	//SetPosition(POSITION_LYING);
 	this_object()->eventCollapse();
 	foreach(string limb in GetLimbs()) {
 	    int hp = GetHealthPoints(limb);
@@ -612,7 +609,6 @@ mixed eventReceiveThrow(object who, object what) {
 	int mod = who->GetSkillLevel("projectile attack") +
 	who->GetStatLevel("strength");
 
-	//mod = mod/2;
 	x = what->eventStrike(this_object()) * 3;
 	x = (x*mod)/100;
 	if( what->GetWeaponType() != "projectile" ) {
@@ -727,7 +723,6 @@ varargs int eventDie(mixed agent) {
 
     SetUndead(!(x = GetUndead()));
 
-    //call_out( function() { Dying = 0; }, 0);
     evaluate( function() { Dying = 0; });
       flush_messages();
       return 1;
@@ -916,7 +911,6 @@ varargs int eventDie(mixed agent) {
 	    else return 1; /* ok */
 	case A_GLOVE:
 	    if(maxi != 1)
-		//return "You can only wear " + short + " on one limb.";
 		if( GetFingers(limbs[0]) > (int)ob->GetFingers() ) {
 		    return capitalize(short) + " does not seem to fit well on "
 		    "your " + limbs[0] + ".";
@@ -1005,6 +999,9 @@ varargs int eventDie(mixed agent) {
 	    break;
 	case A_COLLAR:
 	    bad_types = A_COLLAR | A_AMULET;
+	    break;
+	case A_CUSTOM: 
+	    bad_types = A_CUSTOM;
 	    break;
 
 	default: return 0; /* not any illegal stuff */

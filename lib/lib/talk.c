@@ -82,7 +82,7 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
 	    " replies,%^RESET%^ \"" + msg + "%^RESET%^\"";
 	else tmp = "%^BOLD%^RED%^" + (string)who->GetName() +
 	    " tells you,%^RESET%^ \"" + msg + "%^RESET%^\"";
-	if(member_array(who->GetKeyName(),target->GetMuffed()) == -1){
+	if(target->GetMuffed() && member_array(who->GetKeyName(),target->GetMuffed()) == -1){
 	    eventTellHist(tmp);
 	    eventPrint(tmp, MSG_CONV);
 	}
@@ -159,10 +159,6 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang) {
 	lang = GetLanguageName(lang);
     }
     cols = GetScreen()[0];
-    //debug("target",target);
-    //debug("cls",cls);
-    //debug("msg",msg);
-    //debug("lang",lang);
     if( msg[<1] != '?' && msg[<1] != '!' && msg[<1] != '.' )
 	msg = capitalize(msg) + ".";
     else msg = capitalize(msg);

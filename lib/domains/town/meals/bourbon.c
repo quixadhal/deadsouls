@@ -3,6 +3,7 @@
 
 inherit LIB_MEAL;
 
+
 static void create() {
     meal::create();
     SetKeyName("ale");
@@ -15,4 +16,7 @@ static void create() {
     SetStrength(50);
     SetMealMessages("You finish off the boubon and gasp! WHEW!! Mean stuff!",
       "$N finishes off a bottle of bourbon and gasps.");
+}
+void init(){
+    ::init();
 }

@@ -2,6 +2,8 @@
 #include <network.h>
 #include <daemons.h>
 #include <save.h>
+void check_discs();
+
 int heart_count = 0;
 static int reset_me = 0;
 
@@ -42,6 +44,7 @@ int SetReset(){
 
 void heart_beat(){
     heart_count++;
+    check_discs();
     if(reset_me) RELOAD_D->eventReload(this_object(), 2);
     if(heart_count > 604800) {
 	trr("CLOSING DEAD/DISCONNECTED/PARADOXED SOCKETS","white");
@@ -54,7 +57,7 @@ void heart_beat(){
 
 static void setup(){
     trr("setup got called");
-    RELOAD_D->eventReload(this_object(),180000+random(9000));
+    RELOAD_D->eventReload(this_object(),864000+random(9000));
     log_file("router/server_log",timestamp()+" setup has been called.\n");
     if( file_size( SAVE_ROUTER __SAVE_EXTENSION__ ) > 0 )
 	unguarded( (: restore_object, SAVE_ROUTER, 1 :) );

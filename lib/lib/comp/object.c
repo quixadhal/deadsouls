@@ -20,8 +20,15 @@ inherit LIB_SMELL;
 inherit LIB_TOUCH;
 inherit LIB_SHOOT;
 
-mixed indirect_dest_obj() { return 1; }
-mixed direct_dest_obj() { return 1; }
+mixed CanDest(){
+    if(environment() && environment() != environment(this_player()) &&
+      environment() != this_player())
+	return "#That's not accessible to you.";
+    else return 1;
+}
+
+mixed indirect_dest_obj() { return CanDest(); }
+mixed direct_dest_obj() { return CanDest(); }
 
 /* ************************ object.c events ********************* */
 static int Destruct() {

@@ -11,8 +11,6 @@
 #include <daemons.h>
 #include "include/command.h"
 
-//inherit "/lib/props/extra_parse";
-
 int Paused = 0;
 private static int Forced = 0;
 private static int StillTrying = 0;
@@ -25,6 +23,7 @@ private string *CommandHist = ({});
 private string *localcmds = ({});
 private string *next_command = ({});
 private int MaxCommandHistSize = 20;
+static string current_command = "";
 
 int direct_force_liv_str() { return 1; }
 int direct_force_liv_to_str() { return 1; }
@@ -38,6 +37,7 @@ static void create() {
 }
 
 static string process_input(string cmd) { 
+    current_command = cmd;
     return cmd;
 }
 
@@ -48,7 +48,9 @@ static int cmdAll(string args) {
     mixed err;
     string verb, file;
 
-    if(Paused) return 0;
+    if(Paused) {
+	return 0;
+    }
 
     if(MAX_COMMANDS_PER_SECOND){
 	if(last_cmd_time == time()) cmd_count++;
@@ -214,21 +216,33 @@ int eventRetryCommand(string lastcmd){
     prep_arr -= ({"here","room","exit","enter"});
     if(previous_object() != master()) return 0;
     StillTrying++;
-    //command_cache += ({ lastcmd });
+    //debug("StillTrying: "+StillTrying,"white");
     filter(explode(lastcmd," "), (: next_command += ({ trim($1) }) :) );
-    //tc("next_command: "+identify(next_command));
-    if(sizeof(next_command) == 2) ret = next_command[0]+" a "+next_command[1];
+    //debug("next_command: "+identify(next_command));
+    if(sizeof(next_command) == 2){
+	ret = next_command[0]+" a "+next_command[1];
+	//debug("ret: "+ret,"red");
+    }
     else if(sizeof(next_command) == 3){
 	if(member_array(next_command[1],prep_arr) != -1) 
 	    ret = next_command[0]+" "+next_command[1]+" a "+next_command[2];
+	else ret = next_command[0]+" a "+next_command[1]+" "+next_command[2];
+	//debug("ret: "+ret,"green");
+    }
+    else if(sizeof(next_command) == 4 && StillTrying < 2){
+	ret = next_command[0]+" a "+next_command[1]+" "+next_command[2]+" "+next_command[3];
+	//debug("ret: "+ret,"magenta");
     }
     else if(sizeof(next_command) > 3){
 	foreach(string element in prep_arr){
 	    if(!grepp(lastcmd,element+" a"))
 		lastcmd = replace_string(lastcmd,element,element+" a");
 	}
+	//debug("ret: "+ret);
 	ret = lastcmd;
+	//debug("ret: "+ret);
     }
+    //debug("ret: "+ret,"cyan");
 
     if(StillTrying > 3){
 	int i;
@@ -236,19 +250,21 @@ int eventRetryCommand(string lastcmd){
 	tmp_arr = explode(ret," ");
 	ret = "";
 	for(i = 0; i < sizeof(tmp_arr);i++){
-	    //tc("ret: "+ret,"yellow");
-	    //tc("tmp_arr["+i+"]: "+tmp_arr[i],"yellow");
+	    //debug("ret: "+ret,"yellow");
+	    //debug("tmp_arr["+i+"]: "+tmp_arr[i],"yellow");
 	    ret += " "+tmp_arr[i];
 	    if(member_array(tmp_arr[i],prep_arr) != -1 && tmp_arr[i+1] != "a") ret += " a";
 	}
 	ret = trim(ret);
-	//tc("ret: "+ret,"white");
+	//debug("ret: "+ret,"white");
     }
 
     if(StillTrying > 3 && tmp_arr[1] != "a"){
 	ret = tmp_arr[0]+" a "+implode(tmp_arr[1..]," ");
+	//debug("still tryin is greater than 3");
+	//debug("tmp_arr: "+identify(tmp_arr));
     }
-    //tc("ret: "+ret,"red");
+    //debug("ret: "+ret,"yellow");
     if(COMMAND_MATCHING){
 	string vb;
 	next_command = ({});
@@ -269,8 +285,18 @@ int eventRetryCommand(string lastcmd){
 	return 1;
     }
 
-    //tc("ret: "+ret,"cyan");
-    if(ret) parse_sentence(ret);
+    //debug("ret: "+ret,"cyan");
+    if(ret) {
+	mixed err;
+	//debug("trying to parse: "+ret,0,"cyan");
+	if(err = parse_sentence(ret)){
+	    //debug("err: "+err,0,"red");
+	    if(stringp(err) && sizeof(trim(err))){
+		write(err);
+		return 1;
+	    }
+	}
+    }
     return 1;
 }
 
@@ -304,7 +330,7 @@ int GetForced() { return Forced; }
 
 int GetClient() { return 0; }
 
-string *GetCommandHist(){
+static string *GetCommandHist(){
     return CommandHist;
 }
 
@@ -313,6 +339,12 @@ string GetLastCommand(){
 	return CommandHist[sizeof(CommandHist)-1];
     }
     else return "";
+}
+
+string GetCurrentCommand(){
+    if(!this_player()) return "";
+    if(this_player() != this_object()) return "";
+    return current_command;
 }
 
 int GetMaxCommandHistSize(){

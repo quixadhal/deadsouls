@@ -36,19 +36,19 @@ static void create() {
 mixed direct_drink_obj() { 
     if( environment() != this_player() ) return "#You don't have that!";
     if( MealType & MEAL_FOOD ) return "Wouldn't you rather eat it?";
-    return (int)this_player()->CanDrink(this_object());
+    return this_player()->CanDrink(this_object());
 }
 
 mixed direct_drink_from_obj() {
     if( MealType & MEAL_FOOD ) return 0;
     if( environment() != this_player() ) return "#You don't have that!";
-    return (int)this_player()->CanDrink(this_object());
+    return this_player()->CanDrink(this_object());
 }
 
 mixed direct_eat_obj() {
     if( environment() != this_player() ) return "#You don't have that!";
     if( !(MealType & MEAL_FOOD) ) return "Wouldn't you rather drink it?";
-    return (int)this_player()->CanEat(this_object());
+    return this_player()->CanEat(this_object());
 }
 
 static mixed AddSave(mixed *vars) { return item::AddSave(vars); }
@@ -82,6 +82,7 @@ mixed eventDrink(object who) {
 	ob->SetKeyName(GetEmptyName());
 	ob->SetId( ({ GetEmptyName(), "container", "empty container" }) );
 	ob->SetShort(GetEmptyShort());
+	ob->SetAdjectives( ({ "empty", "drained" }) );
 	ob->SetLong(GetEmptyLong());
 	ob->SetBaseCost(1);
 	ob->SetMass(10);

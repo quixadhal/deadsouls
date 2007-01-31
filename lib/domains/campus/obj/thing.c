@@ -9,7 +9,7 @@ void create(){
     SetAdjectives( ({"generic","sample","template"}) );
     SetShort("a generic thing");
     SetLong("This is an object of indeterminate nature and proportions.");
-    SetMass(20);
+    SetMass(200);
     SetDollarCost(10);
     SetVendorType(VT_TREASURE);
 }

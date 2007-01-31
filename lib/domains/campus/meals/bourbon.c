@@ -8,6 +8,7 @@
 
 inherit LIB_MEAL;
 
+
 static void create() {
     meal::create();
     SetKeyName("ale");
@@ -22,4 +23,7 @@ static void create() {
     SetEmptyName("bottle");
     SetEmptyShort("an empty bottle of bourbon");
     SetEmptyLong("This is an empty green bottle that once held bourbon.");
+}
+void init(){
+    ::init();
 }

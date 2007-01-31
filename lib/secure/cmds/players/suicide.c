@@ -18,6 +18,12 @@ static private void GetPassword(string input);
 static private void GetYesOrNo(string input);
 static private void EndSuicide(string who);
 
+int eventHoseDude(object dude){
+    if(dude) dude->eventDestruct();
+    if(dude) destruct(dude);
+    return 1;
+}
+
 mixed cmd(string str) {
     string who;
     object ob;
@@ -37,7 +43,7 @@ mixed cmd(string str) {
     who = (string)this_player()->GetKeyName();
     if( who == "guest" ) return "Guest is not suicidal!";
     if( member_group(who, PRIV_SECURE) || member_group(who, PRIV_ASSIST) )
-	return "You must first have your security privledges removed.";
+	return "You must first have your security privileges removed.";
     this_player()->eventPrint("Committing suicide means having your character "
       "completely erased from "+mud_name()+"'s database.  If you "
       "are certain this is what you want, enter in your correct "
@@ -58,7 +64,7 @@ static private void GetPassword(string input) {
 	this_player()->eventPrint("Wrong password.  Suicide aborted.");
 	return;
     }
-    this_player()->eventPrint("\nLeave a suicide note? (a)bort, (y)es, (N)o :",
+    this_player()->eventPrint("\nLeave a suicide note? (a)bort, (y)es, (N)o :\n",
       MSG_EDIT);
     input_to((: GetYesOrNo :)); 
     return;
@@ -74,10 +80,11 @@ static private void GetYesOrNo(string input) {
 	EndSuicide(tmp);
 	return;
     }
+    //call_out((: eventHoseDude, this_player() :), 10);
     this_player()->eventPrint("\nYou may now enter a letter "
       "explaining why you suicided.  If you do not wish to write a "
       "letter, simply exit the editor without writing anything. "
-      "(enter \".\" on a blank line to exit editor.)");
+      "(enter \".\" on a blank line to exit editor.)\n");
     this_player()->eventEdit(DIR_TMP + "/" + tmp, (: EndSuicide, tmp :));
 }
 
@@ -100,6 +107,20 @@ static private void EndSuicide(string who) {
       +". (from "+query_ip_name(this_player())+")\n");
     tmp = save_file(who) + __SAVE_EXTENSION__;
     unguarded((: rename, tmp, DIR_SUICIDE + "/" + who + __SAVE_EXTENSION__ :));
+    if(homedir(this_player()) && directory_exists(homedir(this_player()))){
+	object *purge_array = filter(objects(), (: !strsrch(base_name($1), homedir(this_player())) :) );
+	foreach(object tainted in purge_array){
+	    if(clonep(tainted)){
+		tainted->eventMove(ROOM_FURNACE);
+		purge_array -= ({ tainted });
+	    }
+	}
+	foreach(object tainted in purge_array){
+	    tainted->eventDestruct();
+	}
+	//unguarded( (: rename(homedir(this_player()),"/secure/save/decre/"+who+"."+timestamp()) :) );
+	unguarded( (: rename,homedir(this_player()),"/secure/save/decre/"+who+"."+timestamp() :) );
+    }
     this_player()->eventPrint("You have suicided.  Please try " 
       "again another time.");
     environment(this_player())->eventPrint(
@@ -109,7 +130,7 @@ static private void EndSuicide(string who) {
     if( sizeof( ob = filter(users(), (: archp :)) ) )
 	ob->eventPrint("["+(string)this_player()->GetName()+" has "
 	  "comitted suicide]");
-    PLAYERS_D->RemoveUser((string)this_player()->GetKeyName());
+    PLAYERS_D->RemoveUser(who);
     this_player()->eventMove(ROOM_FURNACE);
     this_player()->eventDestruct();
     return;

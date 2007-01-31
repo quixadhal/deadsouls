@@ -445,7 +445,7 @@ void eventDescribeEnvironment(int brief) {
 	    foreach(ob in deep_inventory(this_object())) {
 		if( ob ) catch(ob->eventDestruct());
 	    }
-	    return object::eventDestruct();
+	    return object::Destruct();
 	}
 
 	mixed eventDivorce() {
@@ -512,7 +512,12 @@ void eventDescribeEnvironment(int brief) {
 	    log_file("enter", GetCapName()+" (quit): "+timestamp()+"\n");
 	    save_player(GetKeyName());
 	    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " quits]",0);
-	    eventDestruct();
+	    if(in_edit()){
+		ed_cmd(".");
+		ed_cmd("x");
+		ed_cmd("Q");
+	    }
+	    this_object()->eventDestruct();
 	    return 1;
 	}
 

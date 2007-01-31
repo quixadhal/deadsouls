@@ -88,16 +88,19 @@ mixed cmd( string str) {
     }
     if(file == "all"){
 	string tmp = replace_string(DIR_UPGRADES_TXT+"/upgrades.txt","/","0^0");
-	OOB_D->GetFile(mud,DIR_UPGRADES_TXT+"/upgrades.txt");
+	//OOB_D->GetFile(mud,DIR_UPGRADES_TXT+"/upgrades.txt");
 	if(!file_exists(DIR_UPGRADES_TXT+"/list.txt")){
 	    write("You're either missing the current updates file, or it is "
-	      "still downloading. Please wait a few moments then try again.");
+	      "still downloading. Please wait a minute then try again.");
+	    OOB_D->GetFile(mud,DIR_UPGRADES_TXT+"/upgrades.txt");
 	    return 1;
 	}
 
 	allnames = explode(read_file(DIR_UPGRADES_TXT"/list.txt"),"\n");
 
 	OOB_D->eventMajorUpgrade(mud, allnames);
+	//write("Asking for: "+implode(allnames,", "));
+	rm(DIR_UPGRADES_TXT+"/list.txt");
 	write("Full upgrade begun.");
 	return 1;
     }

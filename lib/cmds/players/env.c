@@ -10,6 +10,7 @@ mixed cmd(string args) {
     write("Playerkiller mode: \t"+ ( (this_player()->GetPK()) ? "on" : "off" ));
     write("Mute mode: \t\t"+ ( (this_player()->GetProperty("mute")) ? "on" : "off" ));
     write("Gag mode: \t\t"+ ( (this_player()->GetProperty("gag")) ? "on" : "off" ));
+    write("Wimpy mode: \t\t"+ ( ((int)this_player()->GetWimpy()) ? "on" : "off" ));
     if(creatorp(this_player())){ 
 	write("Debug mode: \t\t"+ ( (this_player()->GetProperty("debug")) ? "on" : "off" ));
     }

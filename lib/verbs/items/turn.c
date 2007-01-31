@@ -13,7 +13,7 @@ inherit LIB_VERB;
 static void create() {
     verb::create();
     SetVerb("turn");
-    SetRules("", "OBJ", "on OBJ", "off OBJ");
+    SetRules("", "OBJ", "on OBJ", "off OBJ", "OBJ on", "OBJ off");
     SetErrorMessage("Turn on or turn off something?");
     SetHelp("Syntax: <turn>\n"
       "        <turn on ITEM>\n"
@@ -39,6 +39,14 @@ mixed can_turn_off_obj(mixed foo) {
     return this_player()->CanManipulate();
 }
 
+mixed can_turn_obj_on(mixed foo) {
+    return this_player()->CanManipulate();
+}
+
+mixed can_turn_obj_off(mixed foo) {
+    return this_player()->CanManipulate();
+}
+
 mixed do_turn() {
     environment(this_player())->eventPrint((string)this_player()->GetName() +
       " turns around.", this_player());
@@ -55,6 +63,14 @@ varargs mixed do_turn_on_obj(mixed foo, mixed foo2) {
 }
 
 mixed do_turn_off_obj(mixed foo) {
+    return foo->eventTurnOff();
+}
+
+varargs mixed do_turn_obj_on(mixed foo, mixed foo2) {
+    return foo->eventTurnOn();
+}
+
+mixed do_turn_obj_off(mixed foo) {
     return foo->eventTurnOff();
 }
 

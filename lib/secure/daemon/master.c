@@ -89,11 +89,12 @@ private static void load_access(string cfg, mapping resource) {
 	  return 1;
 	});
       foreach(string line in lines) {
-	  string fl, ac;
+	  string fl, ac = "";
 
-	  if( sscanf(line, "(%s) %s", fl, ac) != 2 ) {
+	  if( sscanf(line, "(%s)%s", fl, ac) != 2 ) {
 	      error("Error in loading config file " + cfg + ".");
 	  }
+	  ac = trim(ac);
 	  resource[fl] = explode(ac, ":");
       }
   }
@@ -265,6 +266,9 @@ private static void load_access(string cfg, mapping resource) {
 	string nom, tmp;
 	int x;
 
+	if(!creatorp(ob)){
+	    if(!strsrch(file,homedir(ob))) return 1;
+	}
 	if( !sscanf(file, REALMS_DIRS "/%s", nom) ) return 0;
 	if( sscanf(nom, "%s/%*s", tmp) ) nom = tmp;
 	nom = user_path(nom)+"adm/access";

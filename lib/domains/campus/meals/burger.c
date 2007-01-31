@@ -1,6 +1,7 @@
 #include <lib.h>
 #include <meal_types.h>
 inherit LIB_MEAL;
+
 static void create() {
     meal::create();
     SetKeyName("hamburger");
@@ -8,6 +9,7 @@ static void create() {
     SetShort("a greasy hamburger");
     SetLong("Evidently considered to be food by some people, "+
       "this little horror in a bun is greasy, flat, and slightly gray. Enjoy!");
+    SetNoCondition(1);
     SetMass(15);
     SetStrength(35);
     //SetDollarCost(4);
@@ -15,4 +17,7 @@ static void create() {
     SetMealType(MEAL_FOOD);
     SetMealMessages("You wolf down your hamburger with gusto.",
       "$N wolfs down $P hamburger hungrily.");
+}
+void init(){
+    ::init();
 }

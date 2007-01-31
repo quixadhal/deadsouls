@@ -23,6 +23,10 @@ static void read_callback(int fd, mixed info){
 
     string mudname;
     int i;
+
+    //trr("Incoming data from fd("+fd+"), address "+socket_address(fd)+".");
+    //trr("The known status of that fd is "+identify(socket_status(fd)));
+
     //trr("Received from fd("+fd+"), fd("+socket_address(fd)+")\n"+identify(info),((info[0] == "auth-mud-req" || info[0] == "auth-mud-reply") ? "magenta" : "green"));
     if(info[0] != "auth-mud-req" && info[0] != "auth-mud-reply" && info[0] != "channel-listen" &&
       info[0] != "channel-listen" && info[0] != "tell" && info[0] != "ping")

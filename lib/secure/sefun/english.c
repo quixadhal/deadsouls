@@ -18,7 +18,7 @@ string match_command(string verb){
     localcmds += keys(VERBS_D->GetVerbs());
     if(member_array(verb,localcmds) == -1){
 	local_arr = regexp(localcmds,"^"+verb);
-	if(sizeof(local_arr)) {
+	if(sizeof(local_arr) == 1) {
 	    return local_arr[0];
 	}
     }

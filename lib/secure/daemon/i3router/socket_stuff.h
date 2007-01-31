@@ -15,9 +15,12 @@ static void close_callback(int fd){
 
 static void listen_callback(int fd){
     int fdstat;
+    trr("listen_callback: socket_status("+fd+"): "+identify(socket_status(fd)));
     if ((fdstat = socket_accept(fd, "read_callback", "write_callback")) < 0) {
+	trr("listen_callback couldn't accept socket "+fd+", errorcode "+fdstat);
 	return;
     }
+    else trr("listen_callback: fdstat: "+fdstat);
 }
 
 void write_callback(int fd){
@@ -30,10 +33,15 @@ void write_callback(int fd){
     }
 }
 
-static void write_data_retry(int fd, mixed data, int counter){
+void write_data_retry(int fd, mixed data, int counter){
     int rc;
+    //trr("write_data_retry, fd("+fd+"), "+this_object()->query_connected_fds()[fd]+
+    //", counter: "+counter);
+
     if (counter == MAXIMUM_RETRIES) {
-	close_connection(fd);
+	//close_connection(fd);
+	trr("Could not write data to "+this_object()->query_connected_fds()[fd]+
+	  " "+identify(data));
 	return;
     }
     rc = socket_write(fd, data);
@@ -47,16 +55,14 @@ static void write_data_retry(int fd, mixed data, int counter){
 	break;
     case EECALLBACK:
 	break;
-    case EESEND:
+    default:
 	if (counter < MAXIMUM_RETRIES) {
-	    trr("retry hit");
-	    call_out("retry_write", 2, ({fd, data, counter + 1}));
+	    trr("write_data_retry: " + socket_error(rc));
+	    //call_out("retry_write", 2, ({fd, data, counter + 1}));
+	    //call_out( (: write_data_retry :), 2 , $(fd), $(data), $(counter) + 1 ); 
+	    call_out( (: write_data_retry :), 2 , fd, data, counter + 1 ); 
 	    return;
 	}
-    default:
-	trr("write_data_retry: " + socket_error(rc));
-	close_connection(fd);
-	break;
     }
 }
 

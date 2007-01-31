@@ -1,6 +1,7 @@
 #include <lib.h>
 #include <meal_types.h>
 inherit LIB_MEAL;
+
 static void create() {
     meal::create();
     SetKeyName("dish");
@@ -19,4 +20,7 @@ static void create() {
     SetEmptyName("dish");
     SetEmptyShort("an empty little plastic salad dish");
     SetEmptyLong("This little dish used to contain a salad.");
+}
+void init(){
+    ::init();
 }

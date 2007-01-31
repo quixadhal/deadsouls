@@ -142,7 +142,10 @@ mixed do_bump_liv(object ob) {
 
 void MoveBack(object ob, string where) {
     if( !ob ) return;
-    ob->eventMoveLiving(where, "$N leaves angrily", "$N enters angrily");
     ob->eventForce("growl");
+    tell_room(environment(ob),capitalize(ob->GetShort())+" leaves angrily.");
+    ob->eventMove(where);
+    tell_room(environment(ob),capitalize(ob->GetShort())+" enters angrily.");
+    ob->eventForce("say wtf");
 }
 

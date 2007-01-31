@@ -495,7 +495,7 @@ int Setup() {
 	if(file_exists(home+".c")) 
 	    this_object()->eventMoveLiving(home);
 
-	this_object()->AddChannel( ({"admin", "error", "cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat"}) );
+	this_object()->AddChannel( ({"admin", "error", "cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat","inews"}) );
 
 	SetShort("First Admin $N");
     }

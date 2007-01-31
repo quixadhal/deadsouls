@@ -63,6 +63,7 @@ string GetHelp(string args) {
       "the daemon. Known routers are:\n"
       "*gjs 198.144.203.194 9000 (The \"official\" intermud.org router)\n"
       "*yatmim 149.152.218.102 23 (The \"official\" Dead Souls router)\n"
+      "*i4 204.209.44.3 8080 (The testing and standby router for yatmim)\n"
       "The official current Dead Souls router's IP will always be "
       "available at:\n"
       "http://dead-souls.net/router.html"

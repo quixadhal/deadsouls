@@ -13,9 +13,10 @@ string array bools = ({ "enable","disable","on","off","1","0" });
 string array yesbools = ({ "enable","on","1","yes" });
 string array nobools = ({ "disable","off","0","no" });
 string array restrict_tokens = ({ "restrict","unrestrict" });
-string array nonmodals = ({ "prompt","status","email","debugger", "access", "pinging" });
-string array modals = ({ "autowiz", "locked","localtime", 
-  "justenglish", "justhumans", "encumbrance", "pk", "compat",
+string array nonmodals = ({ "liveupgrade", "prompt","status","email",
+  "debugger", "access", "pinging" });
+string array modals = ({ "matchcommand", "matchobject", "autowiz", "locked","localtime", 
+  "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare",
   "retain", "defaultparse", "disablereboot" });
 string array inet_services = ({ "oob", "hftp", "ftp", "http", "rcp", "inet" });
 
@@ -76,6 +77,7 @@ mixed cmd(string str) {
     case "maxidle" : which = "IDLE_TIMEOUT";ProcessOther(which,arg);break;
     case "hostip" : which = "HOST_IP";ProcessString(which,arg);break;
     case "email" : which = "ADMIN_EMAIL";ProcessString(which,arg);break;
+    case "liveupgrade" : which = "LIVEUPGRADE_SERVER";ProcessString(which,arg);break;
     case "mudstatus" : which = "MUD_STATUS";ProcessString(which,arg);break;
     case "debugger" : which = "DEBUGGER";ProcessString(which,arg);break;
     default : NotImplemented(which);break;
@@ -376,6 +378,9 @@ static int ProcessModal(string which, string arg){
     case "retain" : which = "RETAIN_ON_QUIT";break;
     case "defaultparse" : which = "DEFAULT_PARSING";break;
     case "disablereboot" : which = "DISABLE_REBOOTS";break;
+    case "exitsbare" : which = "BARE_EXITS";break;
+    case "matchcommand" : which = "COMMAND_MATCHING";break;
+    case "matchobject" : which = "OBJECT_MATCHING";break;
     default : break;
     }
     foreach(string element in config){
@@ -392,12 +397,14 @@ static int ProcessModal(string which, string arg){
 	config2 += ({ element });
     }
     CompleteConfig();
-    if(which == "DEFAULT_PARSING" || which == "ENABLE_ENCUMBRANCE"){ 
+    if(which == "DEFAULT_PARSING" || which == "ENABLE_ENCUMBRANCE" ||
+      which == "BARE_EXITS" || which == "COMMAND_MATCHING"){ 
 	reload(LIB_CREATOR,1,1);
 	write("This configuration will take effect for each user the next time they log in.");
 	return 1;
     }
-    if(which == "RETAIN_ON_QUIT") write("To ensure this configuration takes effect, reboot the mud.");
+    if(which == "RETAIN_ON_QUIT" || which == "OBJECT_MATCHING") 
+	write("To make this configuration take effect, reboot the mud.");
     return 1;
 }
 
@@ -621,17 +628,21 @@ void help() {
       "\nmudconfig retain [ yes | no ]"
       "\nmudconfig defaultparse [ yes | no ]"
       "\nmudconfig disablereboot [ yes | no ]"
+      "\nmudconfig matchcommand [ yes | no ]"
+      "\nmudconfig matchobject [ yes | no ]"
+      "\nmudconfig exitsbare [ yes | no ]"
       "\nmudconfig localtime [ yes | no ]"
+      "\nmudconfig offset <offset from gmt in seconds>"
+      "\nmudconfig extraoffset <offset from GMT in hours>"
       "\nmudconfig maxcommands <max number of commands per second>"
       "\nmudconfig maxip <max connections per IP>"
       "\nmudconfig monitor <monitoring level, 0 to 2>"
       "\nmudconfig newbielevel <max newbie level>"
-      "\nmudconfig offset <offset from gmt in seconds>"
-      "\nmudconfig extraoffset <offset from GMT in hours>"
       "\nmudconfig resets <interval between resets>"
-      "\nmudconfig router [ on | off ]"
+      "\nmudconfig router [ enable | disable ]"
       "\nmudconfig startroom <filename of start room>"
       "\nmudconfig email <the admin's email address>"
+      "\nmudconfig liveupgrade <the default liveupgrade mud's name>"
       "\nmudconfig hostip <the computer's ip address (eg 111.222.333.444)>"
       "\nmudconfig intermud [ enable | disable | restrict | unrestrict | reset ]"
       "\nmudconfig inet [ enable | disable | start | stop | restart | status ]"

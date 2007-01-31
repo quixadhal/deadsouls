@@ -119,10 +119,19 @@ void eventWrite(mixed val) {
     }
 }
 
-static void eventClose(class client sock) {
-    if( !sock ) return;
-    //if( !sock ) sock = Socket;
-    //if( !sock ) return;
+static void eventClose(mixed arg) {
+    class client sock;
+    if(!arg) return;
+    if(classp(arg)) sock = arg; 
+    if(!classp(arg)){
+	trr("arg: "+identify(arg),"yellow");
+	trr("prevs: "+identify(previous_object(-1)),"yellow");
+	trr("i am: "+identify(this_object()),"yellow");
+	if(mapp(arg)) socket_close(arg["Descriptor"]);
+	if(objectp(arg)) socket_close(arg->GetDescriptor());
+	return;
+    }
+    //else trr("Yes, I am a class.");
     socket_close(sock->Descriptor);
     sock = 0;
     eventSocketClose();

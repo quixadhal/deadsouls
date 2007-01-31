@@ -54,6 +54,7 @@ static void create(mixed alpha, mixed beta, mixed gamma, mixed delta){
 		    trr("LIB_OOB.create Sending the oob-begin and setting globalvar.",mcolor,MSG_OOB);
 		    client::eventWrite( ({ "oob-begin", mud_name(), 1, beta }) );
 		    globalvar = delta;
+		    //tc("globalvar: "+identify(globalvar),"white");
 		}
 		else {
 		    trr("LIB_OOB.create Sending the oob-begin.",mcolor,MSG_OOB);
@@ -68,36 +69,50 @@ static void create(mixed alpha, mixed beta, mixed gamma, mixed delta){
 
 void heart_beat(){
     counter++;
-    if(counter == 600){
+    if(counter == 60){
 	//tc("i am "+(client ? "client " : "socket ") +identify(this_object())+" and i'm trying to self destruct.","white");
 	//tc("socket_close("+this_object()->GetDescriptor()+"): "+
 	//socket_close(this_object()->GetDescriptor()), "white");
 	if(client) client::eventDestruct();
 	else {
-	    eventClose(this_object());
+	    //eventClose(this_object());
+	    socket_close(this_object()->GetDescriptor());
+	    eventDestruct();
 	}
     }
-    if(counter == 610){
+    if(counter == 61){
 	//tc("i am "+(client ? "client " : "socket ") +identify(this_object())+" and i'm trying to self destruct.","yellow");
 	// socket::eventDestruct();
+	socket_close(this_object()->GetDescriptor());
 	eventCloseSocket();
     }
-    if(counter == 620){
+    if(counter == 62){
 	//tc("i am "+(client ? "client " : "socket ") +identify(this_object())+" and i'm trying to self destruct.","red");
 	// destruct();
+	socket_close(this_object()->GetDescriptor());
 	eventSocketClosed();
     }
 }
 
 int eventRead(mixed data) {
+    mixed tmp = 0;
+    string liblevel = "";
+    string mud = OOB_D->FindMud(this_object());
     validate();
+    if(sizeof(mud) && (tmp = INTERMUD_D->GetMudList()[mud])){
+	if(sscanf(INTERMUD_D->GetMudList()[mud][5],"Dead Souls %s",liblevel) != 1)
+	    liblevel = tmp[5];
+    }
+    //tc("liblevel: "+liblevel,"white");
+    //if(tmp) tc("tmp: "+identify(tmp),"white");
     trr("--\nOOB "+whoami+" READ i am: "+identify(this_object()),mcolor,MSG_OOB);
     trr("OOB "+whoami+" READ i read: "+identify(data)+"\n--",mcolor,MSG_OOB);
     //tc("it is a: "+typeof(data),"yellow");
     counter = 0;
     if(data[0] == "oob-begin"){
 	//check for token here?
-	socket::eventWrite( ({ "oob-reply","Welcome to oob object "+identify(this_object()) }));
+	//socket::eventWrite( ({ "oob-reply","Welcome to oob object "+identify(this_object()) }));
+	socket::eventWrite( ({ "oob-reply","Welcome to the OOB service on "+mud_name() }));
 	OOB_D->RequestToken(data[1]);
 	OOB_D->RegisterNewIncoming(data[1]);
     }
@@ -112,9 +127,24 @@ int eventRead(mixed data) {
 
     //if(sizeof(globalvar)) tc("i'd like to write this: "+identify(globalvar),"white");
 
-    if(data[0] == "oob-reply" && !global_lock && globalvar && arrayp(globalvar)){
-	global_lock = 1;
-	client::eventWrite(globalvar);
+    if((data[0] == "oob-file-end" || data[0] == "oob-reply" || data[0] == "oob-file-error") 
+      && globalvar && arrayp(globalvar)){
+	if(globalvar[0] == "oob-file-req"){
+	    if(stringp(globalvar[1])) {
+		client::eventWrite(globalvar);
+		globalvar = ({ "oob-file-req", 0 });
+	    }
+	    else if(sizeof(globalvar[1])){ 
+		client::eventWrite(({"oob-file-req", globalvar[1][0] }));
+		globalvar[1] -= ({ globalvar[1][0] });
+	    }
+	    else {
+		if(sizeof(FilesMap)) eventDumpFiles();
+		OOB_D->RemoveIncoming( OOB_D->FindMud(this_object()) );
+		if(client) this_object()->eventDestruct();
+		else socket::eventCloseSocket();
+	    }
+	}
     }
 
     if(data[0] == "oob-test"){
@@ -134,21 +164,41 @@ int eventRead(mixed data) {
 
     if(data[0] == "oob-file-req"){
 	string *ok_files = explode(read_file("/secure/upgrades/txt/upgrades.txt"),"\n");
-	ok_files += ({ "/secure/upgrades/txt/upgrades.txt" });
-	if(member_array(data[1],ok_files) == -1 && strsrch(data[1],"/open/")){
-	    client::eventWrite( ({ "oob-file-error","CLIENT File access denied." }) );
-	    socket::eventWrite( ({ "oob-file-error","SOCKET File access denied." }) );
+	string sendfile;
+
+	if(file_exists("/secure/upgrades/txt/upgrades."+liblevel)){
+	    ok_files = explode(read_file("/secure/upgrades/txt/upgrades."+liblevel),"\n");
+	    if(data[1] == "/secure/upgrades/txt/upgrades.txt") 
+		sendfile = "/secure/upgrades/txt/upgrades."+liblevel;
+	    else sendfile = data[1];
+	    ok_files += ({ "/secure/upgrades/txt/upgrades."+liblevel });
+	    ok_files += ({ "/secure/upgrades/txt/mud_info."+liblevel });
+	}
+	else {
+	    sendfile = data[1];
+	    ok_files += ({ "/secure/upgrades/txt/upgrades.txt" });
+	}
+	if(sendfile == "/secure/sefun/mud_info.c"){
+	    if(file_exists("/secure/upgrades/txt/mud_info."+liblevel))
+		sendfile = "/secure/upgrades/txt/mud_info."+liblevel;
+	}
+	//tc("oob-file-req: "+identify(sendfile,"white");
+	if(member_array(sendfile,ok_files) == -1 ){
+	    socket::eventWrite( ({ "oob-file-error","File access denied." }) );
 	    return 0;
 	}
-	if(directory_exists(data[1])){
-	    socket::eventWrite( ({ "oob-file-error","That's a directory.",data[1]}) );
+	if(directory_exists(sendfile)){
+	    socket::eventWrite( ({ "oob-file-error","That's a directory.",sendfile}) );
 	    return 0;
 	}
 	if(!OOB_D->AuthenticateReceivedToken(OOB_D->FindMud(this_object()))){
 	    socket::eventWrite( ({ "oob-file-error","No token found for your mud." }) );
 	    return 0;
 	}
-	OOB_D->SendFile(data[1]);
+	OOB_D->send_file(sendfile,this_object());
+	if(liblevel == "2.3a5")
+	    socket::eventWrite(({"oob-end", "oob-file send complete." }) );
+	else socket::eventWrite(({"oob-file-end", "oob-file send complete." }) );
     }
 
     if(data[0] == "oob-file-error"){
@@ -157,7 +207,7 @@ int eventRead(mixed data) {
 	} 
 	if(data[1] == "That's a directory."){
 	    mkdir(data[2]);
-	    client::eventDestruct();
+	    if(mudlib_version() == "2.3a5") client::eventDestruct();
 	}
     }
 
@@ -170,7 +220,7 @@ void write_data(mixed arg){
     trr("LIB_OOB.write_data i am being asked to write: "+identify(arg)+"\n--",mcolor,MSG_OOB);
     //tc("LIB_OOB.write_data prev: "+base_name(previous_object())+" "+OOB_D);
     if(base_name(previous_object()) == OOB_D)
-	client::eventWrite(arg);
+	socket::eventWrite(arg);
     if(arg && arg[0] && arg[0] == "oob-end"){
 	//client::eventDestruct();
 	return;

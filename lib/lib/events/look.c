@@ -235,9 +235,10 @@ mixed direct_look_at_obj() {
     return direct_look_obj();
 }
 
-mixed direct_look_at_obj_on_obj(object target, object ob,mixed arg) {
+mixed direct_look_at_obj_on_obj(object target, object ob,mixed arg, mixed arg2) {
     if(!ob) ob=environment(target);
     //tc("arg: "+identify(arg),"cyan");
+    //tc("arg2: "+identify(arg2),"cyan");
     //tc("ob: "+identify(ob),"cyan");
     //tc("target: "+identify(target),"cyan");
     if((inherits(LIB_SIT,ob) && sizeof(ob->GetSitters())) ||
@@ -245,6 +246,10 @@ mixed direct_look_at_obj_on_obj(object target, object ob,mixed arg) {
 	write("There appears to be someone blocking your view.");
 	//tc("gamma","yellow");
 	return 0;
+    }
+
+    if(ob->GetInvis()){
+	return "#There is no "+arg+" on "+arg2+" here.";
     }
 
     if(!target->GetInvis()){

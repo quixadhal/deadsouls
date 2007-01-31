@@ -60,6 +60,8 @@ static void create() {
 }
 
 mixed direct_get_obj(object target) {
+    if(environment() == this_player())
+	return "#You're already holding it.";
     if( environment() != environment(this_player()) ) {
 	string str = GetShort();
 

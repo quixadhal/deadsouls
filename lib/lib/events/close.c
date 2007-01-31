@@ -28,6 +28,11 @@ int SetClosed(int x) {
 }
 
 varargs mixed CanClose(object who, string id) {
+
+    if(who && environment() && environment() != environment(who) &&
+      environment() != who)
+	return "#That's not accessible to you.";
+
     if( Closed ) {
 	id = capitalize(GetDefiniteShort()) + " is already closed.";
 	return id;
@@ -36,6 +41,10 @@ varargs mixed CanClose(object who, string id) {
 }
 
 varargs mixed CanOpen(object who, object tool) {
+    if(environment() && environment() != environment(who) &&
+      environment() != who)
+	return "#That's not accessible to you.";
+
     if( !Closed ) {
 	return capitalize(GetDefiniteShort()) + " is already open.";
     }

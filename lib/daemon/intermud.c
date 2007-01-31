@@ -26,6 +26,8 @@ private mapping Banned;
 private mixed *Nameservers;
 private static int Connected, Tries;
 
+mapping ExtraInfo();
+
 static void create() {
     client::create();
     //tc("prev: "+identify(previous_object(-1)),"red");
@@ -70,7 +72,7 @@ static void Setup() {
 	PORT_OOB, PORT_UDP, mudlib() + " " + mudlib_version(), 
 	mudlib() + " " + mudlib_version(), version(), "LPMud",
 	MUD_STATUS, ADMIN_EMAIL,
-	(mapping)SERVICES_D->GetServices(), ([]) }) );
+	(mapping)SERVICES_D->GetServices(), ExtraInfo() }) );
     tn("INTERMUD_D setup: "+identify( ({
 	  "startup-req-3", 5, mud_name(), 0, Nameservers[0][0], 0,
 	  Password, MudList->ID, ChannelList->ID, query_host_port(),
@@ -338,6 +340,38 @@ string GetMudName(string mud) {
 	eventWrite(packet);
 	return 1;
     }
+
+    string nextboot() {
+	string str;
+	int x, offset;
+
+	if(DISABLE_REBOOTS){
+	    return "never";
+	}
+
+	offset = (int)TIME_D->GetOffset(local_time()[9]);
+	offset += EXTRA_TIME_OFFSET;
+
+	x = (int)EVENTS_D->GetRebootInterval() * 3600;
+	x = (time() - uptime()) + x;
+	if(!LOCAL_TIME) 
+	    x += offset * 3600;
+	str = query_tz()+ " " + ctime(x);
+	return str;
+    }
+
+    //This new packet element data added to be able
+    //to handle liveupgrade stuff more sensibly.
+    mapping ExtraInfo(){
+	return ([
+	  "native version" : native_version(),
+	  "os build" : query_os_type(),
+	  "uptime" : time_elapsed(uptime()),
+	  "next boot" : nextboot(),
+	  "ip" : HOST_IP
+	]);
+    }
+
 
 #endif /* __PACKAGE_SOCKETS__ */
 
