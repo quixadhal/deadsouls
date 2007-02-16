@@ -85,7 +85,7 @@ void add_post(string who, string folder, mapping borg) {
     if(folder != "new") return;
     if((pl=find_player(who)) && (int)OPTIONS_D->query_option(who, "notify")) {
 	msg = (string)OPTIONS_D->query_option(who, "message");
-	if( !stringp(msg) ) msg = "New mail from $N!\n";
+	if( !stringp(msg) ) msg = "%^RED%^%^BOLD%^New mail from $N!%^RESET%^\n";
 	msg = replace_string(replace_string(msg, "$S", borg["subject"]),
 	  "$N", capitalize(borg["from"]));
 	message("system", msg, pl);

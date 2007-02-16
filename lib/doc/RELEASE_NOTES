@@ -1,3 +1,15 @@
+---- 2.3a10 ---
+- Added intermud mail support.
+- Fixed $P in prompt.
+- Added security fixes to router.
+- Abstracted the connection code from the everything-else code in the
+  router, so that modifications can be made without having to drop muds.
+- Moved people command to /secure so admins can see each other.
+- Invis admins no longer generate connection messages when logging in or out.
+- Fixed mv command.
+- Creators can now sleep.
+- Telling to a sleeping person now generates a warning.
+
 ---- 2.3a9 ---
 - Fixed bug that prevented players who idled out while editing from
   being booted.

@@ -107,7 +107,7 @@ static void eventWriteCallback(int fd) {
 }
 
 void eventWrite(mixed val) {
-
+    //tc("CLIENT eventWrite: "+identify(val||"foo"),"white");
     if( !Socket ) return;
     if( Socket->Buffer ) Socket->Buffer += ({ val });
     else Socket->Buffer = ({ val });

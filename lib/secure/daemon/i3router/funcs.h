@@ -1,4 +1,4 @@
-// This file written completely by Tim Johnson (Tim@TimMUD)
+// This file written mostly by Tim Johnson (Tim@TimMUD)
 
 static mapping muds_on_this_fd(int fd){
     return filter_mapping(connected_muds,"value_equals",this_object(),fd);

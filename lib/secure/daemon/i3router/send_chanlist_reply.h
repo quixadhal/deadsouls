@@ -1,4 +1,4 @@
-// This file written completely by Tim Johnson (Tim@TimMUD)
+// This file written mostly by Tim Johnson (Tim@TimMUD)
 
 static void send_chanlist_reply(string mudname, int old_chanid){
     string channame; // channel name

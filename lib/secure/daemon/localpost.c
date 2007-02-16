@@ -83,6 +83,9 @@ varargs string *send_post(mapping borg, mixed who) {
     string msg, a, b, tmpstr;
     int i, j, x;
 
+    //if(borg) tc("borg: "+identify(borg),"yellow");
+    //if(who) tc("who: "+identify(who),"white");
+
     if(!who) who = distinct_array(borg["to"] + borg["cc"]);
     tmpstr = base_name(previous_object(0));
     if(tmpstr != OBJ_POST && tmpstr != REMOTEPOST_D && tmpstr != FOLDERS_D)
@@ -105,16 +108,18 @@ varargs string *send_post(mapping borg, mixed who) {
 	i = sizeof(who = tmpwho);
 	while(i--) {
 	    if(sscanf(who[i], "%s@%s", a, b) == 2) {
-		if(!remote_mail[b]) remote_mail[b] = ({});
-		remote_mail[b] += ({});
+		if(!remote_mail[b]) remote_mail[b] = ({ a });
+		remote_mail[b] += ({ a });
 	    }
 	    else if(!user_exists(who[i])) rejects += ({ who[i] });
 	    else FOLDERS_D->add_post(who[i], "new", borg);
 	}
 	j = sizeof(cles = keys(remote_mail));
 	while(j--) 
-	    if(!((int)REMOTEPOST_D->send_post(borg+(["message":msg]), cles[j])))
+	    if(!((int)REMOTEPOST_D->send_post(borg+(["message":msg]), cles[j]))){
+		//tc("rejecting: "+cles[j]);
 		rejects += remote_mail[cles[j]];
+	    }
 	return rejects;
     }
     else if(pointerp(tmp = __MudGroups[who]) && (i = sizeof(tmp))) {

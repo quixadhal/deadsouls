@@ -1,8 +1,6 @@
-// This file written completely by Tim Johnson (Tim@TimMUD)
 #include <network.h>
 #include <daemons.h>
 #include <save.h>
-void check_discs();
 
 int heart_count = 0;
 static int reset_me = 0;
@@ -10,8 +8,10 @@ static int reset_me = 0;
 string router_port;
 
 static void create(){ 
+    object rsock = find_object(RSOCKET_D);
+    if(!rsock) rsock = load_object(RSOCKET_D);
+    if(!rsock) return;
     SetNoClean(1);
-    sockets = ([]);
     connected_muds = ([]);
     unguarded( (: restore_object, SAVE_ROUTER, 1 :) );
     if(!mudinfo) mudinfo = ([]);
@@ -29,9 +29,8 @@ static void create(){
     log_file("router/server_log", "Created when uptime = " + uptime() + "\n");
     trr("server got created");
     log_file("router/server_log",timestamp()+" router object created.\n");
-    call_out("setup", 5);
+    call_out("setup", 1);
     call_out("LocalHostedChans", 15);
-    this_object()->disconnect_all();
     set_heart_beat(10);
     reset_me = 0;
 }
@@ -44,64 +43,18 @@ int SetReset(){
 
 void heart_beat(){
     heart_count++;
-    check_discs();
     if(reset_me) RELOAD_D->eventReload(this_object(), 2);
-    if(heart_count > 604800) {
-	trr("CLOSING DEAD/DISCONNECTED/PARADOXED SOCKETS","white");
+    if(heart_count > 60) {
+	//trr("CLOSING OLD/DISCONNECTED/PARADOXED SOCKETS","white");
 	heart_count = 0;
-	this_object()->clear_discs();
-	this_object()->clean_socks();
+	check_discs();
 	save_object(SAVE_ROUTER);
     }
 }
 
 static void setup(){
-    trr("setup got called");
-    RELOAD_D->eventReload(this_object(),864000+random(9000));
-    log_file("router/server_log",timestamp()+" setup has been called.\n");
     if( file_size( SAVE_ROUTER __SAVE_EXTENSION__ ) > 0 )
 	unguarded( (: restore_object, SAVE_ROUTER, 1 :) );
-    if ((router_socket = socket_create(MUD, "read_callback", "close_callback")) < 0){
-	log_file("router/server_log", timestamp()+"setup: Failed to create socket.\n");
-	trr("setup: Failed to create socket.\n");
-	return;
-    }
-    if (socket_bind(router_socket, atoi(router_port)) < 0) {
-	socket_close(router_socket);
-	log_file("router/server_log", timestamp()+"setup: Failed to bind socket to port.\n");
-	trr("setup: Failed to bind socket to port.\n");
-	return;
-    }
-    if (socket_listen(router_socket, "listen_callback") < 0) {
-	socket_close(router_socket);
-	log_file("router/server_log", timestamp()+"setup: Failed to listen to socket.\n");
-	trr("setup: Failed to listen to socket.\n");
-    }
-    trr("setup ended");
-    log_file("router/server_log",timestamp()+" setup successful.\n");
-    log_file("router/server_log",timestamp()+" open sockets: "+identify(this_object()->open_socks())+"\n");
-    log_file("router/server_log",timestamp()+" cleaning sockets...\n");
-    this_object()->clean_socks();
-    log_file("router/server_log",timestamp()+" open sockets: "+identify(this_object()->open_socks())+"\n");
 }
 
-void remove(){
-    string mudname;
-    log_file("router/server_log", timestamp()+" Being removed by: "+identify(previous_object())+"\n");
-    //trr("Being removed by: "+identify(previous_object())+"\n","red");
-    log_file("router/server_log", "sockets:"+identify(sockets)+"\n");
-    //trr("sockets:"+identify(sockets)+"\n");
-    log_file("router/server_log", "Starting to destruct at uptime = " + uptime() + "\n");
-    //trr("Starting to destruct at uptime = " + uptime() + "\n");
-    mudinfo_update_counter++; // just increment once... all the connected muds
-    // getting simultaneously disconnected is okay to count as one change :)
-    foreach(mudname in keys(connected_muds)){
-	mudinfo_updates[mudname]++;
-	mudinfo[mudname]["disconnect_time"]=time();
-	map_delete(connected_muds,mudname); // unneeded: connected_muds isn't saved anyway
-    }
-    log_file("router/server_log", "Successfully destructed when uptime = " + uptime() + "\n");
-    //trr("Successfully destructed when uptime = " + uptime() + "\n");
-    destruct(this_object());
-}
 int query_prevent_shadow(object ob){ return true(ob); }

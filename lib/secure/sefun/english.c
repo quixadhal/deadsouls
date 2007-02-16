@@ -25,7 +25,6 @@ string match_command(string verb){
     return "";
 }
 
-
 varargs string add_article(string str, int def) {
     if( !stringp(str) ) {
 	error("Bad argument 1 to add_article().\n");

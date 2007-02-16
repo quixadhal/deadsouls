@@ -292,7 +292,11 @@ nomask string write_prompt() {
 	else
 	    ret = replace_string(ret,"$V","");
     }
-    if(grepp(ret,"$P") && query_cwd()) ret = replace_string(ret,"$P",query_cwd());
+    if(grepp(ret,"$P")){
+	tmp = query_cwd();
+	if(!tmp || !sizeof(tmp)) tmp = "No working directory.";
+	ret = replace_string(ret,"$P",tmp);
+    }
     if(grepp(ret,"$C")) ret = replace_string(ret,"",itoa( CmdNumber+1 ));
     if(grepp(ret,"$h")) ret = replace_string(ret,"$h",itoa( this_object()->GetHealthPoints() ));
     if(grepp(ret,"$H")) ret = replace_string(ret,"$H",itoa( this_object()->GetMaxHealthPoints() ));
@@ -303,90 +307,6 @@ nomask string write_prompt() {
     message("prompt", ret, this_object());
     return ret;
 }
-
-
-#if 0
-nomask string write_prompt() { 
-    string tmp, ret; 
-    string ret2 = "";
-    int x, y;
-
-    if( (y = query_ed_mode()) != -1 ) {
-	if( !y ) {
-	    //if( creatorp() ) ret = ":";
-	    //else 
-	    ret = "\tQ)uit without saving, save and ex)it, h)elp\nCommand: ";
-	}
-	else if( y == -2 ) ret = "Help: ";
-	else ret = "*\b";
-	message("prompt", ret, this_object());
-	return ret;
-    }
-    if((ret = Prompt) == DEFAULT_PROMPT) {
-	message("prompt", ret, this_object());
-	return ret;
-    }
-    if(ret){
-	while((x = strsrch(ret, "$")) != -1) {
-	    if(x == strlen(ret) -1) break;
-	    switch(ret[x+1]) {
-	    case 'D': 
-		if(!creatorp(this_object())) break;
-		if(sscanf(query_cwd(), user_path(GetKeyName())+"%s",
-		    tmp)) tmp = "~"+tmp;
-		else tmp = query_cwd();
-		ret = replace_string(ret, "$D", tmp); 
-		break;
-	    case 'V': case 'v':
-		if(GetInvis()) {
-		    ret = replace_string(ret, "$V", "INVIS"); 
-		    ret = replace_string(ret, "$v", "invis"); 
-		} 
-		else if(hiddenp(this_object())) { 
-		    ret = replace_string(ret, "$V", "HID"); 
-		    ret = replace_string(ret, "$v", "hid"); 
-		} 
-		else { 
-		    ret = replace_string(ret, "$V", ""); 
-		    ret = replace_string(ret, "$v", ""); 
-		} 
-		break;
-	    case 'C':
-		ret = replace_string(ret, "$C", sprintf("%d", CmdNumber+1)); 
-		break;
-	    case 'H':
-		ret = replace_string(ret, "$H", sprintf("%d", this_object()->GetMaxHealthPoints())); 
-		break;
-	    case 'h':
-		ret = replace_string(ret, "$h", sprintf("%d", this_object()->GetHealthPoints())); 
-		break;
-	    case 'G':
-		ret = replace_string(ret, "$g", sprintf("%d", this_object()->GetMagicPoints())); 
-		break;
-	    case 'g':
-		ret = replace_string(ret, "$G", sprintf("%d", this_object()->GetMaxMagicPoints())); 
-		break;
-	    case 'I':
-		ret = replace_string(ret, "$I", sprintf("%d", to_int(this_object()->GetMaxStaminaPoints()))); 
-		break;
-	    case 'i':
-		ret = replace_string(ret, "$i", sprintf("%d", this_object()->GetStaminaPoints())); 
-		break;
-	    case 'P':
-		if(query_cwd()) ret2 = query_cwd();
-		ret = replace_string(ret, "$P", ret2);
-		break;
-	    default:
-		ret = replace_string(ret, ret[x..x+1], "");
-		break;
-	    }
-	}
-    }
-    ret += " ";
-    message("prompt", ret, this_object());
-    return ret;
-} 
-#endif
 
 string process_input(string str) { 
     string tmp, xtra, request; 

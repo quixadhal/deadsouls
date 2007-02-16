@@ -38,12 +38,13 @@ varargs mixed eventBeginOOB(string mud, int token, mixed *data){
     object ob;
     int port = INTERMUD_D->GetMudList()[mud][11]["oob"];
     string ip = INTERMUD_D->GetMudList()[mud][1];
-        if(sizeof(INTERMUD_D->GetMudList()[mud][12]) &&
+    if(sizeof(INTERMUD_D->GetMudList()[mud][12]) &&
       INTERMUD_D->GetMudList()[mud][12]["ip"] &&
       INTERMUD_D->GetMudList()[mud][12]["ip"] != "127.0.0.1")
-        ip = INTERMUD_D->GetMudList()[mud][12]["ip"];
-    tc("IP: "+ip, "yellow");
+	ip = INTERMUD_D->GetMudList()[mud][12]["ip"];
+    //tc("IP: "+ip, "yellow");
     validate();
+    //tc("?");
     trr("OOB_D.eventBeginOOB, mud: "+mud+", token: "+token,"yellow",MSG_OOB);
     if(!port || !ip) return;
     if(!OutgoingSessions[mud]) OutgoingSessions[mud] = ({});
@@ -135,7 +136,7 @@ varargs mixed RequestBegin(string target, mixed *data){
       INTERMUD_D->GetMudList()[target][12]["ip"] != "127.0.0.1")
 	ip = INTERMUD_D->GetMudList()[target][12]["ip"];
     port = INTERMUD_D->GetMudList()[target][11]["oob"];
-    tc("ip: "+ip,"white");
+    //tc("ip: "+ip,"white");
     if( eventCreateSocket(ip, port) < 0 ){
 	trr("OOB_D.RequestBegin: couldn't create outbound socket",mcolor,MSG_OOB);
 	return 0;
@@ -330,4 +331,31 @@ int eventMajorUpgrade(string mud, string *files){
 
     return 1;
 }
+
+mixed SendMail(mapping mail){
+    mixed target;
+    validate();
+    //tc("ok, mail is: "+identify(mail),"yellow");
+    trr("OOB_D.SendMail: mail: "+identify(mail),mcolor,MSG_OOB);
+    foreach(mixed key, mixed val in mail){
+	//target = RequestBegin(key);
+	if(sizeof(val)){
+	    foreach(mixed id, mixed message in val){
+		//tc("message: "+identify(message));
+		target = RequestBegin(key, message);
+		trr("OOB_D.SendMail: target: "+identify(target),mcolor,MSG_OOB);
+		trr("OOB_D.SendMail: mud: "+identify(key),mcolor,MSG_OOB);
+		if(target && objectp(target)){
+		    trr("OOB_D.SendMail: target found!",mcolor,MSG_OOB);
+		    target->write_data(message);
+		}
+		else {
+		    trr("OOB_D.SendMail: no target",mcolor,MSG_OOB);
+		}
+	    }
+	}
+    }
+    return 1;
+}
+
 

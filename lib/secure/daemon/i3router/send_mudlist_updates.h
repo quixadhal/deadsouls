@@ -1,4 +1,4 @@
-// This file written completely by Tim Johnson (Tim@TimMUD)
+// This file written mostly by Tim Johnson (Tim@TimMUD)
 
 static void send_mudlist_updates(string updating_mudname, int old_mudlist_id){
     string mudname; // mud name

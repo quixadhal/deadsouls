@@ -49,9 +49,12 @@ int eventDestruct(){
 }
 
 varargs static int eventWrite(mixed data, int close) {
-    //trr("SOCKETWRITE: data: "+identify(data),"white");
-    //trr("SOCKETWRITE: close: "+identify(close),"white");
-    return Owner->eventWrite(this_object(), data, close);
+    //tc("SOCKETWRITE: data: "+identify(data),"white");
+    //tc("SOCKETWRITE: close: "+identify(close),"white");
+    if(!close) close = 0;
+    if(!data) data = ({});
+    if(Owner && this_object()) return Owner->eventWrite(this_object(), data, close);
+    else return 0;
 }
 
 /* ******************** socket.c driver applies ****************** */

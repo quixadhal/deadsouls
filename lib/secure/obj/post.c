@@ -133,7 +133,7 @@ void start_post(string str) {
     int i, maxi;;
 
     if(str && str != "") {    
-	maxi = sizeof(args = explode(str, " "));    
+	maxi = sizeof(args = explode(str, ","));    
 	if(args[0][0] == '-' && strlen(args[0]) == 2) {    
 	    switch(args[0][1]) {    
 	    case 'r':    
@@ -167,6 +167,7 @@ void start_post(string str) {
 	__CommandLine = 1; 
 	__TmpPost = ([]); 
 	__FwdRply = 0;    
+	//tc("args: "+identify(args));
 	send_letter(args);    
 	return;    
     }    
@@ -220,7 +221,7 @@ varargs static void indices(int x, string str) {
 		((i+1 > 99) ? (""+(i+1)) : ((i+1 > 9) ? (" "+(i+1)) : ("  "+(i+1)))),
 		(__BoxInfo[i]["read"] ? " " : "N"),    
 		(__Delete[i] ? "D" : " "),    
-		arrange_string(capitalize(__BoxInfo[i]["from"]), 20),    
+		arrange_string(capitalize(__BoxInfo[i]["from"]), 30),    
 		arrange_string(postal_time(__BoxInfo[i]["date"]), 7),    
 		arrange_string(__BoxInfo[i]["subject"], __Screen-40)), this_player());    
     index_menu();    
@@ -1267,10 +1268,16 @@ for(i=0, maxi = sizeof(args); i<maxi; i++) {
 	flag = 0; 
     } 
     else {
-	if(!__TmpPost["to"]) __TmpPost["to"] = ({ convert_name(args[i]) });
-	else __TmpPost["to"] += ({ convert_name(args[i]) });
-    }
-} 
+	if(!grepp(args[i],"@")){
+	    if(!__TmpPost["to"]) __TmpPost["to"] = ({ trim(convert_name(args[i])) });
+	    else __TmpPost["to"] += ({ trim(convert_name(args[i])) });
+	}
+	else {
+	    if(!__TmpPost["to"]) __TmpPost["to"] = ({ trim(args[i]) });
+	    else __TmpPost["to"] += ({ trim(args[i]) });
+	}
+    } 
+}
 if(!__TmpPost["to"]) { 
     message("prompt", "To: \n", this_player()); 
     input_to("get_to"); 
@@ -1306,7 +1313,7 @@ static void get_to(string str) {
 	postal_error("No recipients given.  Mail aborted."); 
 	return; 
     } 
-    send_letter(explode(str, " ")); 
+    send_letter(explode(str, ",")); 
 } 
 
 static void get_subject(string str) { 
@@ -1357,7 +1364,7 @@ static void get_cc(string str) {
     string tmp; 
 
     if(!__TmpPost["cc"]) __TmpPost["cc"] = ({});
-    if(str && str != "") __TmpPost["cc"] += explode(str, " ");
+    if(str && str != "") __TmpPost["cc"] += explode(str, ",");
     if(__TmpPost["message"]) {
 	__TmpPost["message"] = sprintf("%s%s", __TmpPost["message"],
 	  query_signature()); 

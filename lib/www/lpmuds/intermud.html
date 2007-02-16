@@ -139,7 +139,7 @@ yatmim router<br>
     <tr>
       <td style="vertical-align: top;">name<br>
       </td>
-      <td style="vertical-align: top;">yatmim<br>
+      <td style="vertical-align: top;">*yatmim<br>
       </td>
     </tr>
     <tr>
@@ -157,9 +157,8 @@ yatmim router<br>
     <tr>
       <td style="vertical-align: top;">scheduled maintenance<br>
       </td>
-      <td style="vertical-align: top;">The router is running on new
-hardware. Some testing will occur on 9 and 10 January, with occasional
-resets.<br>
+      <td style="vertical-align: top;">14 Feb 2007: Occasional downtime
+due to router upgrade. <br>
       </td>
     </tr>
     <tr>
@@ -169,17 +168,24 @@ resets.<br>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top;">alternate router:<br>
+      <td style="vertical-align: top;">alternate router #1:<br>
       </td>
       <td style="vertical-align: top;"><a
  href="http://lpmuds.net/alternate_router.html">http://lpmuds.net/alternate_router.html</a><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">alternate router #2:<br>
+      </td>
+      <td style="vertical-align: top;">TBA (Arren?)<br>
       </td>
     </tr>
   </tbody>
 </table>
 <br>
 Mudlist:<br>
-<iframe src="mudlist.txt.txt" frameborder="1" width="800"></iframe><br>
+<iframe src="http://alcatraz.wolfpaw.net:8065/mudlist.txt"
+ frameborder="1" width="800"></iframe><br>
 <br>
 Channel logs can be viewed here:<br>
 <a href="http://www.dollshousedressmaker.co.uk/i3chans.html">http://www.dollshousedressmaker.co.uk/i3chans.html</a><br>
@@ -194,11 +200,9 @@ Channel logs can be viewed here:<br>
 				element.src = smf_images_url + "/" + (value ? "h_" : "") + element.id + ".gif";
 			}
 		// ]</script>
-<div style="text-align: left;"></div>
 <br>
 </div>
 <div class="tborder">
-<div style="text-align: center;"></div>
 <div class="catbg"
  style="padding: 6px; vertical-align: middle; text-align: center;">&nbsp;
 <a name="channels"></a>Popular channels<br>
@@ -355,7 +359,6 @@ chat.<br>
 <br>
 <br>
 <div class="tborder">
-<div style="text-align: center;"></div>
 <div class="catbg"
  style="padding: 6px; vertical-align: middle; text-align: center;">&nbsp;
 <a name="faq"></a>Router FAQ<br>
@@ -448,7 +451,8 @@ happening, why does it crash<br>
 ever on?<br>
 [2006.08.01-14.05] Zakk@Lima Bean &lt;imud_gossip&gt; 'run' hahaha etc<br>
       <br>
-And that's the last transmission I'm aware of, as of today, 08 January,
+And that's the last transmission I'm aware of, as of today, 14
+February,
 2007. As if it weren't bad enough that it looks like it's down for the
 count, it also appears Zakk had the last word.<br>
       <br>
@@ -476,27 +480,69 @@ need to be updated with the current information.<br>
     <tr>
       <td style="vertical-align: top;"><a name="broxor"></a><span
  style="font-weight: bold;">It doesn't work</span><br>
-      <br>
-&nbsp;&nbsp;&nbsp;&nbsp; There are a few possible reasons for this,
-mostly centered around the router being paranoid about security. The
-router resets frequently, and on that reset, your mud will be
-authenticated. Just be patient. If it's been more than a day or so,
-email me at<br>
-&lt;my name here&gt;@comcast.net<br>
-      <br>
-&nbsp;&nbsp;&nbsp; To know for sure if this is the problem, change your
-mud name to something unique and reboot. If you connect to intermud,
-you know that was the issue.<br>
-      <br>
-&nbsp;&nbsp;&nbsp; Also note, the name is yatmim, with an M at the end
-and not an N. It stands for Yet Another TMI Mud. yatmim. Lower case
-letters.<br>
+&nbsp;
       <br>
 &nbsp;&nbsp;&nbsp; Getting the router name wrong is the number one
 cause of errors. Also, once you get it wrong, your own client cache
 might keep the old one, even if you change your intermud client code.
 Make sure you purge the i3 data cache before you try again.<br>
       <br>
+&nbsp;&nbsp;&nbsp; Also note, the name is *yatmim, with an 'm' at the
+end
+and not an 'n' (M not N). It stands for Yet Another TMI Mud. yatmim.
+Lower case
+letters. The asterisk is part of the name, and not optional.<br>
+      <br>
+&nbsp;&nbsp;&nbsp; Another major cause is that the <span
+ style="font-weight: bold; font-style: italic;">router</span> name is
+right, but you've chosen a <span
+ style="font-weight: bold; font-style: italic;">mud</span> name someone
+else already is using. If your mud's name is "DeadSoulsNew" or "Your
+Mud's Name" or "test" or somesuch, the router won't let you on because
+some other newbie got there before you and now the router has
+associated their ip with that that name. Pick something unique and try
+again.<br>
+      <br>
+&nbsp;&nbsp;&nbsp; The next most likely reason you can't connect is
+that your mud handles intermud passwords incorrectly and your ip
+address changed. The way intermud passwords work is this: <br>
+      <br>
+1) You connect to the intermud router <br>
+2) It generates a random number and gives it to you. That's your
+password. <br>
+3) If you disconnect, then come back with a different ip address, your
+mud sends that password to the router which then says "ok I recognize
+that password as being for your mud, I'll let you on". <br>
+      <br>
+&nbsp;&nbsp;&nbsp; If your mud's I3 client doesn't save your password
+and your ip address changes (which can happen very frequently if your
+mud is on a DSL or cable modem) then the router will assume you are not
+who you say you are, and deny the connection. To see if this is what's
+happening, change your mud name to something new (and unique) and try
+again.<br>
+      <br>
+&nbsp;&nbsp;&nbsp; In some cases, some muds misbehave in a way that is
+either unacceptable to the router, violates the router rules, or
+interferes with the normal operation of the router. If your mud does
+not have a useful admin contact email address that it sends to the
+router on connection, then nobody can be contacted to help correct this
+situation. This means your mud may have been banished or firewalled out
+without you knowing about it. If the router in question is yatmim or
+i4, send me an email. My name is Cratylus, and I have an email account
+with a comcast dot net domain address. <br>
+      <br>
+&nbsp;&nbsp;&nbsp; Under some circumstances, such as an unusually
+lossy/unstable network connection, and most specifically a wireless
+connection, the router may have a hard time maintaining your mud
+online, and once dropped, you may not be able to get back on. At the
+risk of being old-fashioned, I suggest that you put your mud on a
+stable, land-line internet connection.<br>
+      <br>
+&nbsp;&nbsp;&nbsp; Finally, it may be that the router you've chosen is
+dead or temporarily offline. Try one of the routers listed above, or
+ask on the <a href="http://lpmuds.net/forum/index.php?board=4.0">intermud
+board</a> of the lpmuds.net discussion forum to see if someone has set
+up a different router for you to use.<br>
       </td>
     </tr>
     <tr>
@@ -522,7 +568,6 @@ that any Dead Souls mud can serve as a router, should it wish to
 establish its own private intermud network. Eventually these individual
 routers may be part of a failover network, but there are no firm plans
 for this in place.<br>
-      <br>
       </td>
     </tr>
     <tr>
@@ -646,7 +691,7 @@ this I am sorry.<br>
  style="padding: 6px; vertical-align: middle; text-align: center;">&nbsp;
 <a name="rules"></a>Router Rules<br>
 </div>
-<a href="http://www.dollshousedressmaker.co.uk/i3chans.html"></a><br>
+<br>
 <a name="1"></a>1) The point of this router being up is not free speech.<br>
 <br>
 <a name="2"></a>2) This router is up for the following purposes:<br>
@@ -794,7 +839,6 @@ straighten it out.<br>
 				element.src = smf_images_url + "/" + (value ? "h_" : "") + element.id + ".gif";
 			}
 		// ]</script>
-<div style="text-align: left;"></div>
 <br>
 <br>
 <br>

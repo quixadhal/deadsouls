@@ -1,4 +1,4 @@
-// This I3 router code was written completely by Tim Johnson (Tim@TimMUD,
+// This I3 router code was written mostly by Tim Johnson (Tim@TimMUD,
 // Tim@The Eternal Fantasy)
 // To use it, #include the server.h file or else just rename it to server.c
 //

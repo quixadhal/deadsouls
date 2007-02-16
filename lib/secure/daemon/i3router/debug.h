@@ -1,4 +1,4 @@
-// This file written completely by Tim Johnson (Tim@TimMUD)
+// This file written mostly by Tim Johnson (Tim@TimMUD)
 
 varargs void Debug(string str, int level){
     if(find_player(DEBUGGER_GUY))

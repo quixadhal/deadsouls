@@ -8,12 +8,17 @@
 #include <lib.h> 
 #include <save.h> 
 #include <daemons.h> 
+#include <objects.h> 
 #include "remotepost.h"
 
 inherit LIB_DAEMON;
 
 private mapping __MailQueue; 
 static private mapping __IncomingMail; 
+mapping Incoming = ([]);
+mapping Outgoing = ([]);
+
+int count = 0;
 
 void create() {
     string *muds; 
@@ -27,7 +32,20 @@ void create() {
 	restore_mailqueue(); 
     i = sizeof(muds = keys(__MailQueue)); 
     while(i--) __MailQueue[muds[i]][0]["in transit"] = 0; 
+    set_heart_beat(10);
 } 
+
+void heart_beat(){
+    count++;
+    if(sizeof(Outgoing))
+	OOB_D->SendMail(copy(Outgoing));
+    if(count > 30){
+	count = 0;
+	foreach(mixed key, mixed val in Outgoing){
+	    if(!sizeof(val)) map_delete(Outgoing,key);
+	}
+    }
+}
 
 string postal_check(string mud) { 
     if(file_name(previous_object()) != SERVICES_D) return 0;
@@ -59,57 +77,114 @@ string resend_post(string mud) {
     return __MailQueue[mud][0]["post"][0]; 
 } 
 
-void send_post(mapping borg, string mud) {
-    string *msg, *tmp; 
+int send_post(mapping borg, string mud) {
+    string *msg, *tmp, *muds = ({}); 
     int i, maxi, x, y; 
+    mapping TmpMap = ([]);
+
+    //if(borg) tc("borg: "+identify(borg),"green");
+    //if(mud) tc("mud: "+identify(mud),"white");
+    if(file_name(previous_object(0)) != LOCALPOST_D &&
+      base_name(previous_object(0)) != OBJ_POST){
+	//tc("REMOTEPOST_D.send_post: "+identify(previous_object()),"red");
+	return 0;
+    }
+
+    foreach(mixed val in borg["to"] + borg["cc"]){
+	string mudname;
+	if(sscanf(val,"%*s@%s",mudname)) {
+	    mudname = INTERMUD_D->GetMudName(mudname);
+	    if(mudname){
+		OOB_D->RequestToken(mudname);
+		muds += ({ mudname });
+		if(!TmpMap) TmpMap = ([]);
+		if(!TmpMap[mudname]) TmpMap[mudname] = ({});
+		TmpMap[mudname] += convert_names(({ val }));
+	    }
+	}
+    }
+
+    //tc("borg[\"to\"]: "+identify(borg["to"]),"cyan");
+    //tc("borg[\"cc\"]: "+identify(borg["cc"]),"cyan");
 
     borg["to"] = convert_names(borg["to"]); 
     borg["cc"] = convert_names(borg["cc"]); 
     borg["from"] = sprintf("%s@%s", convert_name(borg["from"]),
       mud_name());
-    tmp = ({ sprintf("||WIZTO:%s||WIZFROM:%s%s||SUBJECT:%s||DATE:%d||MSG:", 
-	implode(borg["to"], ","), borg["from"],  
-	(sizeof(borg["cc"]) ? implode(borg["cc"], ",") : ""), borg["subject"], 
-	time()) }); 
-    msg = explode(borg["message"], "\n"); 
-    for(i=0, maxi = sizeof(msg); i<maxi; i++) { 
-	if((y=strlen(tmp[x])) > 200) { 
-	    x++; 
-	    tmp += ({ "||MSG:" }); 
-	} 
-	tmp[x] += sprintf("%s\n", msg[i]); 
-    } 
-    tmp[x] += "||ENDMSG:1"; 
-    if(!__MailQueue[mud]) 
-	__MailQueue[mud] = ({ ([ "in transit": 0, "post": tmp ]) }); 
-    else __MailQueue[mud] += ({ ([ "in transit": 0, "post": tmp ]) }); 
-    SERVICES_D->new_mail(mud);
+
+    //tc("borg[\"to\"]: "+identify(borg["to"]),"cyan");
+    //tc("borg[\"cc\"]: "+identify(borg["cc"]),"cyan");
+
+
+    foreach(string destination in singular_array(muds)){
+	string *tmp_to = ({});
+	string *tmp_cc = ({});
+
+	//tc("TmpMap["+destination+"]: "+identify(TmpMap[destination]),"cyan");
+
+	foreach(string dude in borg["to"]){
+	    if(member_array(dude,TmpMap[destination]) != -1) tmp_to += ({ dude });
+	}
+	foreach(string dude in borg["cc"]){
+	    if(member_array(dude,TmpMap[destination]) != -1) tmp_cc += ({ dude });
+	}
+	if(!Outgoing) Outgoing = ([]);
+	if(!Outgoing[destination]) Outgoing[destination] = ([]);
+	Outgoing[destination][borg["id"]] = 
+	({
+	  "mail",
+	  borg["id"],
+	  borg["from"],
+	  ([ destination : tmp_to ]),
+	  ([ destination : tmp_cc ]),
+	  ({}),
+	  borg["id"],
+	  borg["subject"],
+	  borg["message"],
+	});
+	//tc("Outgoing["+destination+"]["+borg["id"]+"]: "+identify(Outgoing[destination][borg["id"]]));
+    }
+    //tc("muds: "+identify(muds),"cyan");
+    //    SERVICES_D->new_mail(mud);
     save_mailqueue(); 
+    return 1;
 } 
 
-int incoming_post(mapping info) { 
-    mapping borg; 
+int outgoing_sent(string destination, string id){
+    //tc("outgoing_sent: destination: "+destination+", id: "+id,"cyan");
+    if(base_name(previous_object(0)) != LIB_OOB){
+	//tc("REMOTEPOST_D.outgoing_sent: "+identify(previous_object()),"red");
+	return 0;
+    }
+    map_delete(Outgoing[destination], id);
+    if(!sizeof(Outgoing[destination])) map_delete(Outgoing, destination);
+    save_mailqueue();
+    //tc("Outgoing: "+identify(Outgoing),"blue");
+    return 1;
+}
 
-    if(file_name(previous_object(0)) != SERVICES_D) return 0;
-    info["NAME"] = replace_string(lower_case(info["NAME"]), " ", ".");
-    if(info["WIZTO"]) __IncomingMail[info["NAME"]] = info; 
-    else { 
-	if(!__IncomingMail[info["NAME"]]) return 0; 
-	else __IncomingMail[info["NAME"]]["MSG"] += info["MSG"]; 
-    } 
-    borg = ([]);
-    if(info["ENDMSG"]) { 
-	borg["to"] = __IncomingMail[info["NAME"]]["WIZTO"]; 
-	borg["cc"] = __IncomingMail[info["NAME"]]["CC"]; 
-	borg["from"] = __IncomingMail[info["NAME"]]["WIZFROM"]; 
-	borg["subject"] = __IncomingMail[info["NAME"]]["SUBJECT"]; 
-	borg["message"] = __IncomingMail[info["NAME"]]["MSG"]; 
-	borg["date"] = __IncomingMail[info["NAME"]]["DATE"]; 
-	LOCALPOST_D->send_post(copy(borg), 
-	  local_targets(distinct_array(borg["to"] + borg["cc"])));
-	map_delete(__IncomingMail, info["NAME"]); 
-    } 
-    return 1; 
+int incoming_post(mixed *packet){ 
+    mapping borg; 
+    string from = packet[2];
+    //tc("incoming post: "+identify(packet),"green");
+    if(base_name(previous_object(0)) != LIB_OOB){
+	//tc("REMOTEPOST_D.incoming_post: "+identify(previous_object()),"red");
+	return 0;
+    }
+    if(!grepp(packet[2],"@")) from = packet[2]+"@"+packet[0];
+    borg =
+    ([
+      "id" : packet[1],
+      "from" : from,
+      "to" : packet[3][mud_name()],
+      "cc" : packet[4][mud_name()],
+      "date" : packet[6],
+      "subject" : packet[7],
+      "message" : packet[8]
+    ]);
+//tc("INCOMING POST: "+identify(packet),"green");
+LOCALPOST_D->send_post(copy(borg)); 
+return 1; 
 } 
 
 static private string *local_targets(string *str) {
@@ -133,16 +208,20 @@ static private void restore_mailqueue() {
     unguarded((: restore_object, SAVE_MAILQUEUE :));
 } 
 
-static private string *convert_names(string *noms) {
+string *convert_names(string *noms) {
     string a, b;
-    int i;
+    string *nombres = ({});
 
-    i = sizeof(noms);
-    while(i--) {
-	if(sscanf(noms[i], "%s@%s", a, b) != 2)
-	    noms[i] = sprintf("%s@%s", noms[i], mud_name());
+    foreach(string namen in noms){
+	if(sscanf(namen, "%s@%s", a, b) != 2) nombres += ({ namen });
+	else nombres += ({ a });
     }
-    return noms;
+    return nombres;
 }
 
 mapping query_mail_queue() { return copy(__MailQueue); }
+
+int eventDestruct(){
+    save_mailqueue();
+    return ::eventDestruct();
+}

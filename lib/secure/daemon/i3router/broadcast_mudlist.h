@@ -1,4 +1,4 @@
-// This file written completely by Tim Johnson (Tim@TimMUD)
+// This file written mostly by Tim Johnson (Tim@TimMUD)
 
 // broadcast the mudlist when a mud just now got changed...
 void broadcast_mudlist(string mudname){

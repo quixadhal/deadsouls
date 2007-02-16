@@ -35,7 +35,7 @@ static void create(mixed alpha, mixed beta, mixed gamma, mixed delta){
     if(gamma) trr("LIB_OOB.create gamma: "+identify(gamma),"green",MSG_OOB);
     if(delta) trr("LIB_OOB.create delta: "+identify(delta),"green",MSG_OOB);
     set_heart_beat(1);
-    //SetDestructOnClose(1);
+    SetDestructOnClose(0);
     if(clonep()){
 	if(intp(alpha)){
 	    socket::create(alpha, beta);
@@ -51,13 +51,13 @@ static void create(mixed alpha, mixed beta, mixed gamma, mixed delta){
 	    else {
 		trr("LIB_OOB.create: Apparently I opened a socket.",mcolor,MSG_OOB);
 		if( delta && arrayp(delta)) {
-		    trr("LIB_OOB.create Sending the oob-begin and setting globalvar.",mcolor,MSG_OOB);
+		    //trr("LIB_OOB.create Sending the oob-begin and setting globalvar.",mcolor,MSG_OOB);
 		    client::eventWrite( ({ "oob-begin", mud_name(), 1, beta }) );
 		    globalvar = delta;
 		    //tc("globalvar: "+identify(globalvar),"white");
 		}
 		else {
-		    trr("LIB_OOB.create Sending the oob-begin.",mcolor,MSG_OOB);
+		    //trr("LIB_OOB.create Sending the oob-begin.",mcolor,MSG_OOB);
 		    client::eventWrite( ({ "oob-begin", mud_name(), 1, beta }) );
 		}
 	    }
@@ -69,26 +69,25 @@ static void create(mixed alpha, mixed beta, mixed gamma, mixed delta){
 
 void heart_beat(){
     counter++;
-    if(counter == 60){
+    if(counter == 600){
 	//tc("i am "+(client ? "client " : "socket ") +identify(this_object())+" and i'm trying to self destruct.","white");
 	//tc("socket_close("+this_object()->GetDescriptor()+"): "+
 	//socket_close(this_object()->GetDescriptor()), "white");
 	if(client) client::eventDestruct();
 	else {
-	    //eventClose(this_object());
 	    socket_close(this_object()->GetDescriptor());
 	    eventDestruct();
 	}
     }
-    if(counter == 61){
+    if(counter == 601){
 	//tc("i am "+(client ? "client " : "socket ") +identify(this_object())+" and i'm trying to self destruct.","yellow");
-	// socket::eventDestruct();
+	socket::eventDestruct();
 	socket_close(this_object()->GetDescriptor());
 	eventCloseSocket();
     }
-    if(counter == 62){
+    if(counter == 602){
 	//tc("i am "+(client ? "client " : "socket ") +identify(this_object())+" and i'm trying to self destruct.","red");
-	// destruct();
+	destruct();
 	socket_close(this_object()->GetDescriptor());
 	eventSocketClosed();
     }
@@ -144,6 +143,9 @@ int eventRead(mixed data) {
 		if(client) this_object()->eventDestruct();
 		else socket::eventCloseSocket();
 	    }
+	}
+	else {
+	    client::eventWrite(globalvar);
 	}
     }
 
@@ -210,19 +212,34 @@ int eventRead(mixed data) {
 	    if(mudlib_version() == "2.3a5") client::eventDestruct();
 	}
     }
+    if(data[0] == "mail"){
+	string *ret = ({ OOB_D->FindMud(this_object()) }) + ( data - ({ data[0] }) );
+	REMOTEPOST_D->incoming_post(ret);
+	socket::eventWrite( ({ "mail-ack", ([ data[1] : ({}) ]) }) );
+    }
 
+    if(data[0] == "mail-ack"){
+	foreach(mixed key, mixed val in data[1]){
+	    REMOTEPOST_D->outgoing_sent(OOB_D->FindMud(this_object()), key);
+	}
+    }
     return 1;
 }
 
 void write_data(mixed arg){
     validate();
-    trr("--/nLIB_OOB.write_data i am "+whoami+" "+identify(this_object()),mcolor,MSG_OOB);
-    trr("LIB_OOB.write_data i am being asked to write: "+identify(arg)+"\n--",mcolor,MSG_OOB);
+    //trr("--/nLIB_OOB.write_data i am "+whoami+" "+identify(this_object()),mcolor,MSG_OOB);
+    //trr("LIB_OOB.write_data i am being asked to write: "+identify(arg)+"\n--",mcolor,MSG_OOB);
     //tc("LIB_OOB.write_data prev: "+base_name(previous_object())+" "+OOB_D);
-    if(base_name(previous_object()) == OOB_D)
+    if(base_name(previous_object()) == OOB_D){
+	//trr("I will write it.",mcolor,MSG_OOB);
 	socket::eventWrite(arg);
+    }
+    else {
+	//trr("I will NOT write it.",mcolor,MSG_OOB);
+    }
     if(arg && arg[0] && arg[0] == "oob-end"){
-	//client::eventDestruct();
+	client::eventDestruct();
 	return;
     }
 }
@@ -235,7 +252,7 @@ int eventDumpFiles(){
 	if(key == DIR_UPGRADES_TXT+"/upgrades.txt") fname = DIR_UPGRADES_TXT+"/list.txt";
 	rm(fname);
 	OOB_D->RemoveRequestedFile(OOB_D->FindMud(this_object()), key);
-	trr("LIB_OOB.eventDumpFiles file: "+fname,mcolor,MSG_OOB);
+	//trr("LIB_OOB.eventDumpFiles file: "+fname,mcolor,MSG_OOB);
 	for(int i = 1;i < sizeof(FilesMap[key])+1; i++){
 	    if(FilesMap[key][i]) write_file(fname,FilesMap[key][i]+"\n");
 	}

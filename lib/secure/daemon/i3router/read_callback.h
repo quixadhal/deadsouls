@@ -1,6 +1,6 @@
-// This file written completely by Tim Johnson (Tim@TimMUD)
+static string *blacklisted = explode(read_file(ROUTER_BLACKLIST),"\n");
 
-static void read_callback(int fd, mixed info){
+void read_callback(int fd, mixed info){
     // This is called when messages come in from a MUD.
     // Should reject all messages if they have not done a (successful) startup-req,
     // Should check to make sure the fd matches with the mud they are claiming to be, else error.
@@ -24,12 +24,20 @@ static void read_callback(int fd, mixed info){
     string mudname;
     int i;
 
+    validate();
+
+    if(sizeof(blacklisted)){
+	if(member_array(info[2], blacklisted) != -1) return;
+	if(member_array(clean_fd(socket_address(fd)), blacklisted) != -1) return;
+    }
+
     //trr("Incoming data from fd("+fd+"), address "+socket_address(fd)+".");
     //trr("The known status of that fd is "+identify(socket_status(fd)));
 
     //trr("Received from fd("+fd+"), fd("+socket_address(fd)+")\n"+identify(info),((info[0] == "auth-mud-req" || info[0] == "auth-mud-reply") ? "magenta" : "green"));
     if(info[0] != "auth-mud-req" && info[0] != "auth-mud-reply" && info[0] != "channel-listen" &&
-      info[0] != "channel-listen" && info[0] != "tell" && info[0] != "ping")
+      info[0] != "channel-listen" && info[0] != "tell" && info[0] != "ping" &&
+      info[0] != "emoteto")
 	trr(timestamp()+" Received from fd("+fd+"), fd("+socket_address(fd)+")\n"+identify(info), "green");
     // Base info in a packet is of size 6.
     if(grepp(info[0],"chan") && !grepp(info[0],"channel-listen")) log_file("router/packet_log",identify(info)+"\n");
@@ -141,6 +149,13 @@ static void read_callback(int fd, mixed info){
 	send_error(info[2],info[3],"not-imp","Unknown command sent to router: "+info[0],info);
 	//trr("unhandled packet meant for router: "+info[0],"red");
 	log_file("router/server_log","UNHANDLED PACKET:\n"+identify(info)+"\n");
+	return;
+    }
+    if(info[0]=="startup-reply" || info[0]=="chan-filter-reply"||
+      info[0]=="chanlist-reply" || info[0]=="mudlist" ||
+      info[0]=="bad-mojo"){
+	send_error(info[2],info[3],"not-allowed",
+	  "You are not allowed to send this kind of packet.",info);
 	return;
     }
     // at this point, I guess you should forward it to the destination...

@@ -281,7 +281,8 @@ void eventCheckHealing() {
 
     x = GetHeartRate() * 10;
 
-    if(dude->GetSleeping() > 0 && dude->GetPosition() != POSITION_LYING){
+    if(dude->GetSleeping() > 0 && dude->GetPosition() != POSITION_LYING
+      && dude->GetPosition() != POSITION_SITTING){
 	dude->eventCollapse();
     }
 

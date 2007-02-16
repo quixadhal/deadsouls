@@ -37,3 +37,10 @@ trr(timestamp()+" remove_mud: Removing mud from connected_muds list: "+mudname,"
     if(forced) map_delete(mudinfo, mudname);
     log_file("router/server_log",timestamp()+" Removing mud: "+mudname+" on fd: "+targetfd+"\n");
 }
+
+void disconnect_mud(string mudname){
+validate();
+        if(mudinfo[mudname]) mudinfo[mudname]["disconnect_time"] = time();
+        map_delete(connected_muds, mudname);
+        broadcast_mudlist(mudname);
+}

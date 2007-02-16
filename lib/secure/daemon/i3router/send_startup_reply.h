@@ -1,4 +1,4 @@
-// This file written completely by Tim Johnson (Tim@TimMUD)
+// This file written mostly by Tim Johnson (Tim@TimMUD)
 
 static void send_startup_reply(string mudname){
     // This packet will be delivered to a mud for three conditions:

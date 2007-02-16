@@ -364,8 +364,21 @@ mixed cmd(string args) {
 }
 
 string GetHelp(string args) {
-    return ("Syntax: \n\n"
-      "Subcommands:\n" 
+    return ("Syntax: router [subcommand [arg]]\n\n"
+      "With no arguments, router status is displayed.\n"
+      "examples:\n" 
+      "router reload : stops and restarts the router\n"
+      "router reset : resets the router to a blank configuration\n"
+      "router ban : lists banned muds\n"
+      "router ban <mudname> : bans the mud with the name <mudname>\n"
+      "router unban <mudname> : the opposite of banning\n"
+      "router config <name> <ip> <port> : config the router in one line\n"
+      "router port <portnum> : sets the router port\n"
+      "router ip <ip number> : sets the ip address, e.g. 11.22.33.44\n"
+      "router name <routername> : sets the router name\n"
+      "router mudlist : display information of known muds\n" 
+      "\n"
+      "To bring the router online or offline, use the mudconfig command."
       "\n\n"
       "");
 }

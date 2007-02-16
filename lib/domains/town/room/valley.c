@@ -17,16 +17,11 @@ static void create() {
     SetClimate("outdoors");
     SetAmbientLight(30);
     SetShort("Orc Valley");
-    SetLong("You are in a small valley nestled amongst mountains to the west "
-      "and north.  To the south the forest is impassably thick. "
-      "A tribe of orcs have chosen this valley is their home, and "
-      "several hovels sit and various states of disrepair around you, "
-      "along with several vast piles of refuse.  The orcs have built "
-      "a wooden fortress to the north.  To the west stands a "
-      "sheer, unclimbable cliff. High above on the cliff a giant column "
-      "of fire pours into the sky.");
+    SetLong("You are in a small valley below the sheer cliffs to the west. A band of orcs appears to have made this place their home, and you can see their ramshackle fortress toward the north. A well-traveled path leads east into a forest.");
+//A narrow path snakes its way southwest into the woods.");
     SetExits( ([
-	"east" : "/domains/town/room/clearing"
+	"east" : "/domains/town/room/clearing",
+	//"southwest" : "/domains/town/room/narrow_path.c",
       ]) );
     AddExit("north", "/domains/town/room/orc_fortress", (: PreExit :));
     SetInventory(([

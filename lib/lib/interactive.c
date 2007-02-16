@@ -102,8 +102,6 @@ int Setup() {
     SetId(({}));
     autosave::Setup();
     call_out("save_player", 2, GetKeyName());
-    log_file("enter", GetCapName()+" (enter): "+ctime(time())+
-      " : "+query_ip_name(this_object())+"\n");
     if( VOTING_D->GetStatus() == VOTE_RUNNING ) {
 	if( VOTING_D->GetMode() == VOTE_MODE_CANDIDATES )
 	    eventPrint("%^YELLOW%^Class Elections are in progress!  "
@@ -136,13 +134,17 @@ int Setup() {
     environment()->eventPrint(tmp, MSG_ENV, this_object());
     if( !(tmp = GetMessage("login")) )
 	tmp = GetName() + " enters " + mud_name() + ".";
-    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " logs in]",0);
+    if(!(archp(this_object()) && this_object()->GetInvis())){
+	log_file("enter", GetCapName()+" (enter): "+ctime(time())+
+	  " : "+query_ip_name(this_object())+"\n");
+	CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " logs in]",0);
+    }
 
     if(!catch(mp = (mapping)FOLDERS_D->mail_status(GetKeyName()))) {
 	if(mp["unread"]) {
-	    eventPrint("\n>>> " + mp["unread"] + " of your " +
+	    eventPrint("\n%^RED%^%^BOLD%^>>> " + mp["unread"] + " of your " +
 	      (mp["total"] == 1 ? mp["total"] + " letter is" :
-		mp["total"] + " letters remain") + " unread. <<<\n",
+		mp["total"] + " letters remain") + " unread. <<<%^RESET%^\n",
 	      MSG_SYSTEM);
 	}
     }
@@ -156,10 +158,12 @@ static void net_dead() {
     LastAge = time();
     NetDiedHere = environment(this_object());
     save_player(GetKeyName());
-    log_file("enter", GetCapName() + " (net-dead): " + ctime(time()) + "\n");
-    environment()->eventPrint(GetName() + " suddenly disappears into "
-      "a sea of irreality.", MSG_ENV, this_object());
-    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " goes net-dead]",0);
+    if(!(archp(this_object()) && this_object()->GetInvis())){
+	log_file("enter", GetCapName() + " (net-dead): " + ctime(time()) + "\n");
+	environment()->eventPrint(GetName() + " suddenly disappears into "
+	  "a sea of irreality.", MSG_ENV, this_object());
+	CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " goes net-dead]",0);
+    }
     SNOOP_D->ReportLinkDeath(this_object()->GetKeyName());
     eventMove(ROOM_FREEZER);
     if(query_snoop(this_object()))
@@ -168,16 +172,17 @@ static void net_dead() {
 }
 
 void eventReconnect() {
-
     interface::eventReconnect();
     LastAge = time();
     HostSite = query_ip_name(this_object());
     eventPrint("Reconnected.", MSG_SYSTEM);
-    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " has rejoined " + mud_name() + "]",0);
+    if(!(archp(this_object()) && this_object()->GetInvis())){
+	CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " has rejoined " + mud_name() + "]",0);
+	environment()->eventPrint(GetCapName() + " has rejoined this reality.",
+	  MSG_ENV, this_object());
+    }
     if( NetDiedHere ) eventMove(NetDiedHere);
     else eventMove(ROOM_START);
-    environment()->eventPrint(GetCapName() + " has rejoined this reality.",
-      MSG_ENV, this_object());
     NetDiedHere = 0;
 }
 
@@ -506,12 +511,14 @@ void eventDescribeEnvironment(int brief) {
 		    if((!retain && !ob->GetRetain()) || !ob->GetRetain()) ob->eventMove(env);
 		}
 	    }
-	    this_player()->AddCarriedMass(-5000);
+	    this_object()->AddCarriedMass(-5000);
 	    tmp = GetMessage("logout") || (GetName() + " is gone from this reality!");
-	    message("environment", tmp, environment(this_object()), ({this_object()}));
-	    log_file("enter", GetCapName()+" (quit): "+timestamp()+"\n");
 	    save_player(GetKeyName());
-	    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " quits]",0);
+	    if(!(archp(this_object()) && this_object()->GetInvis())){
+		log_file("enter", GetCapName()+" (quit): "+timestamp()+"\n");
+		message("environment", tmp, environment(this_object()), ({this_object()}));
+		CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " quits]",0);
+	    }
 	    if(in_edit()){
 		ed_cmd(".");
 		ed_cmd("x");

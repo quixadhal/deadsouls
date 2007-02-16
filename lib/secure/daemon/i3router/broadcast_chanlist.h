@@ -1,4 +1,4 @@
-// This file written completely by Tim Johnson (Tim@TimMUD)
+// This file written mostly by Tim Johnson (Tim@TimMUD)
 
 // broadcast the chanlist-reply when a channel just now got changed...
 static void broadcast_chanlist(string channame){

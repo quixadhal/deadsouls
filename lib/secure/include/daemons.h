@@ -47,6 +47,7 @@
 #define REMOTE_D             DIR_SECURE_DAEMONS "/remote"
 #define REMOTEPOST_D         DIR_SECURE_DAEMONS "/remotepost"
 #define ROUTER_D             DIR_SECURE_DAEMONS "/i3router/server"
+#define RSOCKET_D            DIR_SECURE_DAEMONS "/i3router/rsocket"
 #define SEASONS_D            DIR_DAEMONS "/seasons"
 #define SERVICES_D           DIR_DAEMONS "/services"
 #define SNOOP_D              DIR_SECURE_DAEMONS "/snoop"
