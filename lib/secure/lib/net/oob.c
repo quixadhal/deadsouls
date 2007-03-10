@@ -16,6 +16,11 @@ int global_lock = 0;
 string mcolor = "magenta";
 int client = 0;
 int counter = 0;
+string *forbidden_prefixes = ({ "/secure/save/players", "/secure/save/creators" });
+string *forbidden_suffixes = ({ ".o" });
+string *forbidden_files = ({ "/secure/sefun/native_version.c" });
+mixed *begin_packet = ({});
+mapping TranslatedFiles = ([]);
 
 int eventDumpFiles();
 
@@ -30,12 +35,13 @@ void eventID(string str){
 }
 
 static void create(mixed alpha, mixed beta, mixed gamma, mixed delta){
-    if(alpha) trr("LIB_OOB.create alpha: "+identify(alpha),"green",MSG_OOB);
-    if(beta) trr("LIB_OOB.create beta: "+identify(beta),"green",MSG_OOB);
-    if(gamma) trr("LIB_OOB.create gamma: "+identify(gamma),"green",MSG_OOB);
-    if(delta) trr("LIB_OOB.create delta: "+identify(delta),"green",MSG_OOB);
+    //if(alpha) trr("LIB_OOB.create alpha: "+identify(alpha),"green",MSG_OOB);
+    //if(beta) trr("LIB_OOB.create beta: "+identify(beta),"green",MSG_OOB);
+    //if(gamma) trr("LIB_OOB.create gamma: "+identify(gamma),"green",MSG_OOB);
+    //if(delta) trr("LIB_OOB.create delta: "+identify(delta),"green",MSG_OOB);
+    trr("LIB_OOB.create: I am a new OOB object, name: "+file_name(),mcolor,MSG_OOB);
     set_heart_beat(1);
-    SetDestructOnClose(0);
+    //SetDestructOnClose(0);
     if(clonep()){
 	if(intp(alpha)){
 	    socket::create(alpha, beta);
@@ -43,31 +49,41 @@ static void create(mixed alpha, mixed beta, mixed gamma, mixed delta){
 
 	else if(beta && intp(beta)){
 	    client = 1;
+	    begin_packet = ({ "oob-begin", mud_name(), 1, beta });
 	    if( eventCreateSocket(alpha, gamma) < 0 ){
 		trr("LIB_OOB.create: Couldn't create outbound socket.",mcolor,MSG_OOB);
 		client::eventDestruct();
 		return;
 	    }
 	    else {
-		trr("LIB_OOB.create: Apparently I opened a socket.",mcolor,MSG_OOB);
+		trr("LIB_OOB.create: Apparently I opened an outbound socket.",mcolor,MSG_OOB);
+		client::eventWrite( begin_packet );
 		if( delta && arrayp(delta)) {
-		    //trr("LIB_OOB.create Sending the oob-begin and setting globalvar.",mcolor,MSG_OOB);
-		    client::eventWrite( ({ "oob-begin", mud_name(), 1, beta }) );
+		    //trr("LIB_OOB.create Setting globalvar.",mcolor,MSG_OOB);
 		    globalvar = delta;
-		    //tc("globalvar: "+identify(globalvar),"white");
+		    trr("payload type: "+identify(globalvar[0]),"white",MSG_OOB);
 		}
 		else {
 		    //trr("LIB_OOB.create Sending the oob-begin.",mcolor,MSG_OOB);
-		    client::eventWrite( ({ "oob-begin", mud_name(), 1, beta }) );
+		    trr("no payload","white",MSG_OOB);
 		}
 	    }
 	}
     }
-    if(client) whoami = "CLIENT";
-    else whoami = "SOCKET";
+    if(client) {
+	whoami = "CLIENT";
+	trr("LIB_OOB "+file_name()+": I think I am a "
+	  "%^YELLOW%^%^BOLD%^client%^RESET%^",mcolor,MSG_OOB);
+    }
+    else {
+	whoami = "SOCKET";
+	trr("LIB_OOB "+file_name()+": I think I am a "
+	  "%^CYAN%^%^BOLD%^server%^RESET%^",mcolor,MSG_OOB);
+    }
 }
 
 void heart_beat(){
+    //if nothing resets the counter for 10 minutes, we die
     counter++;
     if(counter == 600){
 	//tc("i am "+(client ? "client " : "socket ") +identify(this_object())+" and i'm trying to self destruct.","white");
@@ -107,6 +123,7 @@ int eventRead(mixed data) {
     trr("--\nOOB "+whoami+" READ i am: "+identify(this_object()),mcolor,MSG_OOB);
     trr("OOB "+whoami+" READ i read: "+identify(data)+"\n--",mcolor,MSG_OOB);
     //tc("it is a: "+typeof(data),"yellow");
+    //every time we read something, the inactivity  counter resets
     counter = 0;
     if(data[0] == "oob-begin"){
 	//check for token here?
@@ -205,7 +222,8 @@ int eventRead(mixed data) {
 
     if(data[0] == "oob-file-error"){
 	if(data[1] == "No token found for your mud."){
-	    call_out( (: eventWrite(globalvar) :), 5);
+	    call_out( (: eventWrite(begin_packet) :), 2);
+	    trr(file_name()+": No auth token yet. Retrying in 2 seconds.",mcolor,MSG_OOB);
 	} 
 	if(data[1] == "That's a directory."){
 	    mkdir(data[2]);

@@ -64,6 +64,7 @@
 #define VIRTUAL_D            DIR_DAEMONS "/virtual"
 #define VOTING_D             DIR_SECURE_DAEMONS "/voting"
 #define WEATHER_D            DIR_DAEMONS "/weather"
+#define WGET_D               DIR_SECURE_DAEMONS "/wget"
 #define MASTER_D             DIR_SECURE_DAEMONS "/master"
 #define FTP_PORT_TRACKER_D   DIR_DAEMONS "/ftp_port_tracker"
 

@@ -16,7 +16,7 @@ inherit LIB_HISTORY;
 #define DIRECTORY_STACK_SIZE     5
 #define MAX_CMD_ALIASES          128
 
-private string CurrentWorkingDirectory;
+private string CurrentWorkingDirectory = "/";
 private string PreviousWorkingDirectory;
 private mapping Nicknames, Aliases, Xverbs; 
 private static int CWDCount, CWDBottom, CWDTop, CmdNumber; 
@@ -320,8 +320,7 @@ string process_input(string str) {
 	}
 	else return str;
     }
-    else if((tmp = eventHistory(str)) == "") return ""; 
-    if(tmp != str) message("system", tmp, this_object());
+    else if((tmp = eventHistory(str)) == "") return "";     if(tmp != str) message("system", tmp, this_object());
     return do_alias(do_nickname(tmp));
 } 
 
@@ -470,7 +469,6 @@ string get_path() { return query_cwd(); }
 varargs int GetInvis() { return 0; }
 
 string GetKeyName() { return 0; }
-
 
 
 

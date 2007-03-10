@@ -90,7 +90,7 @@ varargs void eventReloadVerbs(mixed val) {
 	    i++;
 	    if( !(verb_list = (string *)ob->GetVerbs()) ) 
 		verb_list = ({ explode(verb, "/")[<1][0..<3] });
-	    else {
+	    else if(verb_list && ob->GetSynonyms()) {
 		verb_list += (string *)ob->GetSynonyms();
 		//if(sizeof(verb_list)) verb_list = distinct_array(map(verb_list,
 		//   (: explode($1," ")[0] :)));
@@ -112,6 +112,5 @@ int GetValidVerb(string verb) {
 }
 
 mapping GetVerbs() { return copy(Verbs); }
-
 
 

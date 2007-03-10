@@ -45,4 +45,3 @@ int direct_uninstall_obj_word_obj(object thingus, object target){
 int indirect_uninstall_obj_word_obj(object one, object two, object three){
     return CanUninstall(this_player(), one);
 }
-

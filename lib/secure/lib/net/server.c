@@ -336,4 +336,3 @@ varargs static void create(int port, int type, string socket_obj) {
 	call_out((: eventCreateSocket :), 1, Port);
     }
 }
-

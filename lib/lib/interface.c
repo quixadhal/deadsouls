@@ -268,4 +268,3 @@ string SetTerminal(string terminal) {
 string GetTerminal() { return Terminal; }
 
 string GetKeyName() { return 0; }
-

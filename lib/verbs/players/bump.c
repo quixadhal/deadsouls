@@ -148,4 +148,3 @@ void MoveBack(object ob, string where) {
     tell_room(environment(ob),capitalize(ob->GetShort())+" enters angrily.");
     ob->eventForce("say wtf");
 }
-

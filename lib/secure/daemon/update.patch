@@ -17,6 +17,7 @@ static void eventUpdate() {
 
 	rm("/cmds/creators/people.c");
 	rm("/secure/daemon/i3router/socket_stuff.h");
+	rm("/save/events.c");
 
         reload(CMD_D);
 
@@ -31,5 +32,4 @@ static void create() {
     daemon::create();
     call_out((: eventUpdate :), 2);
 }
-
 

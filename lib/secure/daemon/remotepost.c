@@ -15,7 +15,7 @@ inherit LIB_DAEMON;
 
 private mapping __MailQueue; 
 static private mapping __IncomingMail; 
-mapping Incoming = ([]);
+mapping Old = ([]);
 mapping Outgoing = ([]);
 
 int count = 0;
@@ -206,9 +206,7 @@ static private void save_mailqueue() {
 
 static private void restore_mailqueue() { 
     unguarded((: restore_object, SAVE_MAILQUEUE :));
-} 
-
-string *convert_names(string *noms) {
+} string *convert_names(string *noms) {
     string a, b;
     string *nombres = ({});
 
@@ -224,4 +222,22 @@ mapping query_mail_queue() { return copy(__MailQueue); }
 int eventDestruct(){
     save_mailqueue();
     return ::eventDestruct();
+}
+
+void defer_old_mail(){
+    foreach(mixed destination, mixed messages in Outgoing){
+	if(!Old) Old = ([]);
+	foreach(mixed key, mixed val in messages){
+	    //tc("key: "+identify(key));
+	    if((time() - key) > 60){
+		if(!Old[destination]) Old[destination] = ([]);
+		if(!Old[destination][key]) Old[destination][key] = val;
+		//tc("Old: "+identify(Old));
+		//tc("Outgoing: "+identify(Outgoing));
+		map_delete(Outgoing[destination],key);
+	    }
+	}
+    }
+    //tc("Old: "+identify(Old));
+    //tc("Outgoing: "+identify(Outgoing));
 }

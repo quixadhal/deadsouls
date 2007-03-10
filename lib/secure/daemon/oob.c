@@ -42,7 +42,10 @@ varargs mixed eventBeginOOB(string mud, int token, mixed *data){
       INTERMUD_D->GetMudList()[mud][12]["ip"] &&
       INTERMUD_D->GetMudList()[mud][12]["ip"] != "127.0.0.1")
 	ip = INTERMUD_D->GetMudList()[mud][12]["ip"];
-    //tc("IP: "+ip, "yellow");
+    //tc("IP: "+ip, "cyan");
+    //tc("token: "+token, "cyan");
+    //tc("port: "+port, "cyan");
+    //if(data) tc("data: "+(identify(data)), "cyan");
     validate();
     //tc("?");
     trr("OOB_D.eventBeginOOB, mud: "+mud+", token: "+token,"yellow",MSG_OOB);
@@ -304,14 +307,16 @@ mixed SendFile(string str){
 	send_file(str);
 	write_data(({"oob-end", "oob-file send complete." }) );
     }
-    return 1;
-}
+    return 1;}
 
 mixed GetFile(string mud, mixed file){
     validate();
     if(stringp(file)) AddRequestedFile(mud, file);
     else if(arrayp(file))
-	foreach(string element in file) AddRequestedFile(mud, element);
+	foreach(string element in file){
+	tc("file: "+element);
+	AddRequestedFile(mud, element);
+    }
     //tc("file: "+identify(file),"yellow");
     RequestBegin(mud, ({ "oob-file-req", file }) );
     return 1;
@@ -338,7 +343,7 @@ mixed SendMail(mapping mail){
     //tc("ok, mail is: "+identify(mail),"yellow");
     trr("OOB_D.SendMail: mail: "+identify(mail),mcolor,MSG_OOB);
     foreach(mixed key, mixed val in mail){
-	//target = RequestBegin(key);
+	target = RequestBegin(key);
 	if(sizeof(val)){
 	    foreach(mixed id, mixed message in val){
 		//tc("message: "+identify(message));
@@ -357,5 +362,4 @@ mixed SendMail(mapping mail){
     }
     return 1;
 }
-
 

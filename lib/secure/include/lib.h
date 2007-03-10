@@ -13,6 +13,7 @@
 
 
 #define LIB_AUTH           DIR_SECURE_LIB "/auth"
+#define LIB_BANK           DIR_LIB        "/bank"
 #define LIB_BATTERY        DIR_LIB        "/battery"
 #define LIB_BLANK          DIR_LIB        "/blank"
 #define LIB_BLANK_PILE     DIR_LIB        "/blank_pile"
@@ -114,5 +115,6 @@
 #define LIB_VEHICLE        DIR_LIB        "/vehicle"
 #define LIB_VERB           DIR_LIB        "/verb"
 #define LIB_VIRTUAL        DIR_LIB        "/virtual"
+#define LIB_WEB_CLIENT     DIR_SECURE_LIB "/net/web_client"
 
 #endif /* s_lib_h */

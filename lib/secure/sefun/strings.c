@@ -8,6 +8,8 @@
 #include <daemons.h>
 #include <message_class.h>
 
+string global_temp_file = "";
+
 varargs string center(string str, int x) {
     int y;
 
@@ -283,6 +285,7 @@ int starts_with_arr(string primary, string *sub){
 // returns the last [i] characters of a string.
 varargs string last(string str, int i, int significant){
     string ret, tmp;
+    if(!str || !sizeof(str) || !stringp(str)) return "";
     ret = str[(strlen(str) - i )..(strlen(str) -1)];
     if(significant) {
 	tmp = trim(str);
@@ -683,32 +686,45 @@ varargs string *chunk_string(string str, int width){
 }
 
 varargs mixed print_long_string(object who, string str, int catted){
-    string tfile, ret = "";
+    string ret = "";
     string *lines;
     string *tmp;
     if(!str) return 0;
-    tfile = generate_tmp();
+    global_temp_file = generate_tmp();
     lines = explode(str,"\n");
     foreach(string line in lines){
 	if(sizeof(line) > __LARGEST_PRINTABLE_STRING__ / 2) 
 	    line = implode(chunk_string(line,who->GetScreen()[0]),"\n");
 	ret += line+"\n";
     }
-    write_file(tfile,ret,1);
-    //tc("tfile: "+tfile,"red");
+    write_file(global_temp_file,ret,1);
     tmp = explode(ret,"\n");
     foreach(string thing in tmp){
-	//tc("element size: "+sizeof(thing));
     }
-    //tc("tfile: "+tfile,"red");
-    if(!catted) return (mixed)who->eventPage(explode(read_file(tfile),"\n"),MSG_SYSTEM);
+    if(!catted){
+	(mixed)who->eventPage(explode(read_file(global_temp_file),"\n"),MSG_SYSTEM);
+	return unguarded( (: rm(global_temp_file) :) );
+    }
     else {
 	foreach(string thing in tmp){
 	    message("system", thing, who);
 	}
-
     }
-    //rm(tfile);
-    //return 1;
+    unguarded( (: rm(global_temp_file) :) );
+    return 1;
 }
 
+string convert_newline(string str){
+string ret = "";
+if(!str) return ret;
+ret = replace_string(str,"\r","\n");
+return ret;
+}
+
+int clean_newline_file(string str){
+string ret = "";
+if(!file_exists(str)) return 0;
+else ret = convert_newline(read_file(str));
+if(ret != "") return write_file(str,ret,1);
+else return 0;
+}

@@ -77,4 +77,3 @@ mixed do_turn_obj_off(mixed foo) {
 mixed do_turn_on_obj_word_obj(mixed foo, mixed foo2) {
     return foo2->eventTurnOn(foo);
 }
-

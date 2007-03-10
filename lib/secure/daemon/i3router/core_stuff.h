@@ -27,17 +27,22 @@ static void create(){
     if(mud_name() == "Frontiers")
 	router_list = ({ ({"*yatmim", "149.152.218.102 23"}) });
     log_file("router/server_log", "Created when uptime = " + uptime() + "\n");
-    trr("server got created");
+    //trr("server got created");
     log_file("router/server_log",timestamp()+" router object created.\n");
     call_out("setup", 1);
     call_out("LocalHostedChans", 15);
+    this_object()->purge_crud();
     set_heart_beat(10);
     reset_me = 0;
+    if(file_exists(ROUTER_BLACKLIST)){
+	blacklisted_muds += explode(read_file(ROUTER_BLACKLIST),"\n");
+	blacklisted_muds = singular_array(blacklisted_muds);
+    }
 }
 
 int SetReset(){
     if(base_name(previous_object()) != "/domains/campus/room/tricky") return 0;
-    tc("objects: "+identify(previous_object(-1)),"red");
+    //trr("objects: "+identify(previous_object(-1)),"red");
     reset_me = 1;
 }
 
@@ -47,6 +52,7 @@ void heart_beat(){
     if(heart_count > 60) {
 	//trr("CLOSING OLD/DISCONNECTED/PARADOXED SOCKETS","white");
 	heart_count = 0;
+	this_object()->purge_ips();
 	check_discs();
 	save_object(SAVE_ROUTER);
     }
@@ -55,6 +61,7 @@ void heart_beat(){
 static void setup(){
     if( file_size( SAVE_ROUTER __SAVE_EXTENSION__ ) > 0 )
 	unguarded( (: restore_object, SAVE_ROUTER, 1 :) );
+    irn_setup();
 }
 
 int query_prevent_shadow(object ob){ return true(ob); }

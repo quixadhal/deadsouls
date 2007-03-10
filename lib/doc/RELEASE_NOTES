@@ -1,3 +1,65 @@
+---- 2.3a16 (unreleased) ---
+- Ping daemon does not try to ping when intermud is disabled.
+- Added sefuns: convert_newline, clean_newline_file, to deal with http file corruption.
+- WGET_D now correctly handles receipt of newlines in files.
+
+---- 2.3a15 ---
+- The liveupgrade command has a check now so that trying to "liveupgrade apply" while
+  downloads are in progress will fail.
+- Unique objects are now dropped when a player leaves the game whether or
+  not the mud is set to default inventory retention.
+- The sefun print_long_string() now deletes its temp file when done.
+- Mounts updated and improved: short and long  descs include riders, room messages are relayed
+  to riders, and riders can be examined, among other enhancements. Some messages, such
+  as combat messages, are still a little confusing.
+- The initfix verb now fails reasonably for virtual rooms.
+- Non-meat creatures behave somewhat more sensibly now when shot.
+- Fixed a null cwd error on first admin login.
+- It is now possible to force room inventory to respawn every X seconds. By passing an
+  array in SetInventory, an item can be respawned if it is missing. See the example
+  in /domains/default/room/wiz_hall.c , which is set to check every 10 seconds to
+  see if the tree is there. If it is not, it will respawn one copy of it.
+- The who command no longer counts Pinkfish code in its character count for title length,
+  so you may have a diferent color for every letter of your 50 character long title,
+  if you absolutely positively MUST.
+- Added a LIB_BANK as a wrapper for tellers, like LIB_SHOP for vendors. It's now possible
+  to just "balance" and "deposit all" rather than "ask zoe for balance" and "ask zoe to
+  deposit all".
+- Added command "speakcolor" to set the color in which you receive spoken messages (if,
+  for example, you dislike people saying things in cyan).
+
+---- 2.3a14 ---
+- Fixed runtime in lead/follow code with SetEnters.
+- Fixed bug that prevented followers from following through a SetEnter.
+- Made some important changes to the liveupgrade system to handle
+  unusual exceptions.
+
+---- 2.3a13 ---
+- The liveupgrade command now defaults to http connections to the dead-souls.net site,
+  which is orders of magnitude faster and more secure than oob, as well as more
+  reliable and efficient.
+- Implemented shutdown packet in router. If the delay time is less than
+  7 days, it just disconnects the mud. Otherwise it deletes the mud's info.
+- Router connections with a sufficiently large number of password failures
+  are automatically blacklisted.
+- Removed muds are now properly synced on IRN.
+- Intermud passwords now use 9 digits.
+- Dead Souls now handles Tricky's ping-req and ping-reply packets.
+- Network room is less spammy on reconnects.
+- Arch/wiz room intermud status is now updated in realtime. The status indicated is always current.
+- Fixed chanlist problem in router.
+- MAX_COMMANDS_PER_SECOND now also applies to creators.
+- Modified router and router command to add functionality. See: help router
+- Router now periodically sifts through sockets and discards router sockets
+  not currently associated with a connected mud.
+- Fixed problem in validate() in PLAYERS_D.
+
+---- 2.3a11 ---
+- Replying to intermud mail now works.
+- Fixed spurious error message in mudconfig command.
+- Added basic Inter Router Networking support to router code.
+- Fixed bizarre exit message if you're not standing and you go home.
+
 ---- 2.3a10 ---
 - Added intermud mail support.
 - Fixed $P in prompt.
@@ -267,8 +329,7 @@
 - Added commands: files, doctool, showfuns, createfix, findfun, pk.
 - Fixed a sockets bug in the driver (thanks to Zac@StarMUD)
 - Removed intergossip as a default enabled channel. Added dchat
-  as a default enabled channel.
-- Added Nimrod's recursive/numbered grep enhancements.
+  as a default enabled channel.- Added Nimrod's recursive/numbered grep enhancements.
 - Added numerous back-compat funs and obs for TMI-2 porting.
 - Added numerous back-compat funs and obs for Nightmare 3 porting.
 - Added daemons: ESTATES_D, ALCHEMIST_D (materials properties).
@@ -976,4 +1037,3 @@ o In some cases combat events appear slighly out of order. This
 
 ---- 2.0r1 ---
 - Fixed peculiar "multiple doors in a room" bug.
-

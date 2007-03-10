@@ -2,6 +2,7 @@
 void check_discs();
 
 string *banned_muds = ({});
+mapping bad_connects = ([]);
 
 static void process_startup_req(int protocol, mixed info, int fd){
     // Handles startup stuff.
@@ -14,10 +15,10 @@ static void process_startup_req(int protocol, mixed info, int fd){
     // also, should verify that all the fields are the right type
 
     //trr("info: "+identify(info));
-    trr("Incoming data from fd("+fd+"), address "+socket_address(fd)+".","blue");
+    //trr("Incoming data from fd("+fd+"), address "+socket_address(fd)+".","blue");
     check_discs();
-    trr("The known status of that fd is "+identify(socket_status(fd)),"blue");
-    trr("muds on that fd: "+identify(filter(keys(this_object()->query_connected_muds()), (: this_object()->query_connected_muds()[$1] == $(fd) :) )),"blue");
+    //trr("The known status of that fd is "+identify(socket_status(fd)),"blue");
+    //trr("muds on that fd: "+identify(filter(keys(this_object()->query_connected_muds()), (: this_object()->query_connected_muds()[$1] == $(fd) :) )),"blue");
     trr(timestamp()+" process_startup_req: protocol="+protocol+", mud="+info[2],"blue");
     log_file("router/server_log",timestamp()+" process_startup_req: protocol="+protocol+", mud="+info[2]+"\n");
 
@@ -28,7 +29,23 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	return;
     }
 
-    brethren = filter(keys(mudinfo), (: mudinfo[$1]["ip"] == clean_fd(socket_address($(fd))) :) ); 
+    if(!info[2] || !sizeof(info[2])) {
+	trr(timestamp()+" "+info[2]+" denied. reason: null name.\n");
+	trr("---\n","blue");
+	log_file("router/server_log",timestamp()+" "+info[2]+" denied. reason: null name\n");
+	return;
+    }
+
+    //    brethren = 
+    //filter(keys(mudinfo), 
+    //(: mudinfo[$1]["ip"] == 
+    //clean_fd(socket_address($(fd))) :) ); 
+    foreach(mixed element in keys(mudinfo)){
+	if(member_array(element,keys(connected_muds)) == -1) continue;
+	if(mudinfo[element] && mudinfo[element]["ip"] == clean_fd(socket_address(fd)))
+	    brethren += ({ element });
+    }
+
     trr("Number of muds with the same ip: "+sizeof(brethren));
     if(sizeof(brethren) > MAXMUDS && !mudinfo[info[2]]){
 	write_data(fd,({ "error", 5, router_name, 0, info[2], 0,
@@ -64,10 +81,10 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	  }));
 	return;
     }
-    trr("fd is:" +fd,"cyan");
+    //trr("fd is:" +fd,"cyan");
     site_ip=socket_address(fd);
     site_ip = clean_fd(site_ip);
-    trr("site_ip: "+site_ip,"cyan");
+    //trr("site_ip: "+site_ip,"cyan");
     newinfo = ([
       "name":info[2],
       "ip":site_ip,
@@ -86,6 +103,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
       "open_status":info[16],
       "protocol":protocol,
       "restart_delay":-1,
+      "router" : my_name,
     ]);
     //trr("newinfo: "+identify(newinfo));
 
@@ -186,7 +204,9 @@ static void process_startup_req(int protocol, mixed info, int fd){
     }
     if(connected_muds[info[2]]){
 	// if MUD is already connected
-	trr("mud already connected","red");
+	trr("ROUTER_D: mud already connected on fd"+connected_muds[info[2]],"red");
+	trr("ROUTER_D: Xref back: mud on fd"+connected_muds[info[2]]+" is "+
+	  "supposed to be "+this_object()->query_connected_fds()[this_object()->query_connected_muds()[info[2]]],"red");
 	trr("---\n","blue");
 	log_file("router/server_log",timestamp()+" mud already connected\n");
 	if(this_object()->query_mudinfo()[info[2]]["ip"] != explode(socket_address(fd)," ")[0] ||
@@ -207,7 +227,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	    return;
 	}
 	if(this_object()->query_mudinfo()[info[2]]["ip"] == explode(socket_address(fd)," ")[0] &&
-	  mudinfo[info[2]]["password"] == newinfo["password"]){
+	  mudinfo[info[2]]["password"] == newinfo["password"] ){
 	    trr("Since it's the same ip and password, I'll remove the current connection.");
 	    log_file("router/server_log",timestamp()+" Since it's the same ip and password, I'll remove the current connection\n");
 	    //this_object()->remove_mud(info[2],1);
@@ -219,8 +239,8 @@ static void process_startup_req(int protocol, mixed info, int fd){
 
     if(mudinfo[info[2]] && sizeof(mudinfo[info[2]]) && mudinfo[info[2]]["password"] != newinfo["password"]){
 	// if MUD is already known, not connected, and wrong password
-	if(newinfo["ip"]==mudinfo[info[2]]["ip"]){
-	    // same IP as last time... let's just trust 'em...
+	if(newinfo["ip"]==mudinfo[info[2]]["ip"] && info[2] != "Dead Souls"){
+	    // same IP as last time and it isn't Dead Souls
 	    trr("Wrong password, but right IP","green");
 	    log_file("router/server_log",timestamp()+" Wrong password, but right IP\n");
 	    write_data(fd,({
@@ -231,8 +251,15 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	      }));
 	}
 	else{
-	    trr("wrong password, and from a new IP","red");
+	    trr("wrong password, and from a new IP (or a mud named Dead Souls)","red");
 	    trr("---\n","blue");
+	    if(!bad_connects[newinfo["ip"]]) bad_connects[newinfo["ip"]] = 1;
+	    else bad_connects[newinfo["ip"]] = bad_connects[newinfo["ip"]] + 1;
+	    if(bad_connects[newinfo["ip"]] > 100){
+		trr("ROUTER_D: "+newinfo["ip"]+" blacklisted!","red");
+		this_object()->AddBlacklistedMud(newinfo["ip"]);
+		bad_connects[newinfo["ip"]] = 0;
+	    }
 	    log_file("router/server_log",timestamp()+" WRONG PASSWORD, AND FROM A NEW IP\n");
 	    write_data(fd,({
 		"error",
@@ -248,35 +275,38 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	    return;
 	}
     }
-    //trr("Right IP.","green");
     if(!mudinfo[info[2]] || !newinfo["password"] || mudinfo[info[2]]["password"] != newinfo["password"] ){
 	// if new MUD, assign it a password
-	newinfo["password"]=random(9999)+1;
-	trr("Assigning password "+newinfo["password"],"white");
+	newinfo["password"]=random_numbers(9,1);	trr("ROUTER_D: Assigning password "+newinfo["password"],"white");
 	//trr("Ok. this is the password: "+newinfo["password"],"white");
 	// Change this maybe... see if the password is supposed to be in a certain range
     }
     else {
-	//trr("Known: "+mudinfo[info[2]]["password"]+", current: "+newinfo["password"],"green");
+	trr("ROUTER_D: password: Known: "+mudinfo[info[2]]["password"]+", current: "+newinfo["password"],"green");
     }
     // MUD should be okay at this point.
-    trr("about to update the mudinfo...","white");
+    //trr("about to update the mudinfo...","white");
     mudinfo[info[2]]=newinfo; // update the mudinfo
     connected_muds[info[2]] = fd; // add this MUD to list of connected muds
-    trr("about to send the startup reply...","white");
+    //trr("about to send the startup reply...","white");
     send_startup_reply(info[2]); // reply to MUD
     mudinfo_update_counter++;
     mudinfo_updates[info[2]]=mudinfo_update_counter;
     send_mudlist_updates(info[2], newinfo["old_mudlist_id"]);
+    send_full_mudlist(info[2]);
     broadcast_mudlist(info[2]);
-    if(member_array("channel", keys(newinfo["services"])) != -1)
-	send_chanlist_reply(info[2], ( newinfo["old_chanlist_id"]) ? newinfo["old_chanlist_id"] : (random(1138) * 1138)  );
+    broadcast_chanlist("foo",info[2]);
+    if(bad_connects[newinfo["ip"]]) bad_connects[newinfo["ip"]] = 0;
+    if(member_array("channel", keys(newinfo["services"])) != -1){
+	//send_chanlist_reply(info[2], ( newinfo["old_chanlist_id"]) ? newinfo["old_chanlist_id"] : (random(1138) * 1138)  );
+
+    }
     else {
-	trr("-------------------------------","blue");
+	//trr("-------------------------------","blue");
 	trr("It looks like "+info[2]+" doesn't have a channel service?!?","blue");
-	trr("These are the services reported: "+identify(newinfo["services"]),"blue");
-	trr("This is what newinfo looks like: "+identify(newinfo),"blue");
-	trr("-------------------------------","blue");
+	//trr("These are the services reported: "+identify(newinfo["services"]),"blue");
+	//trr("This is what newinfo looks like: "+identify(newinfo),"blue");
+	//trr("-------------------------------","blue");
     }
     trr(timestamp()+" process_startup_req: for mud: "+info[2]+" complete.\n---\n","blue");
 }

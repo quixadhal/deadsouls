@@ -504,9 +504,7 @@ static void option_cmd(string str) {
 }    
 
 static void help_cmd(string str, string ind) {    
-    string tmp, file;  
-
-    if(str == "" || !str) {    
+    string tmp, file;      if(str == "" || !str) {    
 	postal_error("Invalid help command.", "help", ind);  
 	return;    
     }    

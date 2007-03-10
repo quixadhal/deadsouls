@@ -251,7 +251,7 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
 	inv = filter(all_inventory(prev), (: (!GetInvis($1) && living($1) &&
 	      !GetProperty("stealthy") &&    
 	      ($1 != this_object())) :));
-	if( !omsg || omsg == "" ) {
+	if( !omsg || omsg == "" || query_verb() == "home" ) {
 	    omsg = GetMessage("telout");
 	    imsg = GetMessage("telin");
 	}

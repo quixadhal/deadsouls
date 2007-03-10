@@ -591,8 +591,7 @@ private static void load_access(string cfg, mapping resource) {
 
 	file = user_path((string)who->GetKeyName())+".edrc";
 	if(!file_exists(file)) return 0;
-	return to_int(read_file(file));
-    }
+	return to_int(read_file(file));    }
 
     string get_save_file_name() {
 	string str;

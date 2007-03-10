@@ -14,9 +14,11 @@ object router = find_object(ROUTER_D);
 
 static void validate(){
     if( previous_object() != cmd && previous_object() != router &&
-      !((int)master()->valid_apply(({ "ASSIST" }))) )
+      previous_object() != this_object() && !((int)master()->valid_apply(({ "ASSIST" }))) ){
+	trr("SECURITY ALERT: validation failure in RSOCKET_D.","red");
 	error("Illegal attempt to access router socket daemon: "+get_stack()+
 	  " "+identify(previous_object(-1)));
+    }
 }
 
 static void create(){
@@ -25,12 +27,18 @@ static void create(){
 
 void close_connection(int fd){
     int sockerr;
+    mixed *sockstat = ({});
 
+    if(!fd){
+	return;
+    }
     validate();
 
-    if(socket_status(fd)[1] == "LISTEN") return;
+    sockstat = socket_status(fd);
+    if(!sockstat || !sizeof(sockstat)) return;
+    if(sockstat[1] == "LISTEN") return;
     trr("About to try closing socket: "+fd,"yellow");
-    trr("Pre-closing state: "+socket_status(fd)[1],"yellow");
+    trr("Pre-closing state: "+sockstat[1],"yellow");
     sockerr = socket_close(fd);
     if(sockerr > -1) map_delete(sockets,fd);
     trr("closing socket:"+fd,"white");
@@ -48,7 +56,7 @@ static void close_callback(int fd){
     foreach(mixed key, mixed val in muds_on_this_fd){
 	if(val != fd) map_delete(muds_on_this_fd, key);
     }
-    trr("close_callback: fd="+fd+"\n");
+    //trr("close_callback: fd="+fd+"\n");
     if(socket_status(fd)[1] == "LISTEN") return;
     foreach(mudname in keys(muds_on_this_fd)){
 	trr(timestamp()+" close_callback: Removing mud from connected_muds list: "+mudname,"red");
@@ -59,12 +67,14 @@ static void close_callback(int fd){
 
 static void listen_callback(int fd){
     int fdstat;
-    //trr("listen_callback: socket_status("+fd+"): "+identify(socket_status(fd)));
+    trr("rsocket: listen_callback: socket_status("+fd+"): "+identify(socket_status(fd)));
     if ((fdstat = socket_accept(fd, "read_callback", "write_callback")) < 0) {
-	//trr("listen_callback couldn't accept socket "+fd+", errorcode "+fdstat);
+	trr("listen_callback couldn't accept socket "+fd+", errorcode "+fdstat);
 	return;
     }
-    //else trr("listen_callback: fdstat: "+fdstat);
+    else {
+	trr("listen_callback: fdstat: "+fdstat);
+    }
 }
 
 static void read_callback(int fd, mixed info){
@@ -91,8 +101,7 @@ static void write_data_retry(int fd, mixed data, int counter){
 
     maxtry = ROUTER_D->GetMaxRetries();
     if (counter == maxtry) {
-	trr("Could not write data to "+this_object()->query_connected_fds()[fd]+
-	  " "+identify(data));
+	trr("Could not write data to "+ROUTER_D->query_connected_fds()[fd]+", fd"+fd+": "+identify(data[0]));
 	return;
     }
     rc = socket_write(fd, data);
@@ -108,9 +117,19 @@ static void write_data_retry(int fd, mixed data, int counter){
 	break;
     case EECALLBACK:
 	break;
+    case EESECURITY:
+	break;
+    case EEFDRANGE:
+	break;
+    case EENOTCONN:
+	break;
+    case EEBADF:
+	break;
     default:
 	if (counter < maxtry) {
-	    trr("write_data_retry: " + socket_error(rc));
+	    if(counter < 3 || counter > maxtry-2)
+		trr("RSOCKET_D write_data_retry "+counter+" to "+
+		  ROUTER_D->query_connected_fds()[fd]+", fd"+fd+" error,  code "+rc+": " + socket_error(rc));
 	    call_out( (: write_data_retry :), 2 , fd, data, counter + 1 ); 
 	    return;
 	}
@@ -135,26 +154,37 @@ static void setup(){
     if(!find_object(ROUTER_D)) return;
 
     router_port = atoi(ROUTER_D->GetRouterPort());
-    trr("setup got called");
+    trr("rsocket setup got called");
     log_file("router/server_log",timestamp()+" setup has been called.\n");
     if ((router_socket = socket_create(MUD, "read_callback", "close_callback")) < 0){
 	log_file("router/server_log", timestamp()+"setup: Failed to create socket.\n");
-	trr("setup: Failed to create socket.\n");
+	trr("rsocket setup: Failed to create socket.\n");
 	return;
     }
     if (socket_bind(router_socket, router_port) < 0) {
 	socket_close(router_socket);
 	log_file("router/server_log", timestamp()+"setup: Failed to bind socket to port.\n");
-	trr("setup: Failed to bind socket to port.\n");
+	trr("rsocket setup: Failed to bind socket to port.\n");
 	return;
     }
     if (socket_listen(router_socket, "listen_callback") < 0) {
 	socket_close(router_socket);
 	log_file("router/server_log", timestamp()+"setup: Failed to listen to socket.\n");
-	trr("setup: Failed to listen to socket.\n");
+	trr("rsocket setup: Failed to listen to socket.\n");
     }
-    trr("setup ended");
+    trr("rsocket setup ended");
     log_file("router/server_log",timestamp()+" setup successful.\n");
+}
+
+void complete_socket_handoff(int i){
+    //trr("hit the right handoff fun. arg: "+i);
+    if(base_name(previous_object()) != ROUTER_D){
+	//trr("I don't want your dirty socket, "+identify(previous_object()));
+	return;
+    }
+    //trr("sockstat: "+identify(socket_status(i)));
+    socket_acquire(i, "read_callback", "write_callback", "close_callback");
+    //trr("sockstat: "+identify(socket_status(i)));
 }
 
 mapping query_socks(){ validate(); return copy(sockets); }

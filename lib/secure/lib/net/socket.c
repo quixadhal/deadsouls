@@ -64,4 +64,3 @@ static void create(int fd, object owner) {
     Descriptor = fd;
     Owner = owner;
 }
-

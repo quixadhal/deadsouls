@@ -1,7 +1,7 @@
 // This file written mostly by Tim Johnson (Tim@TimMUD)
 #include <save.h>
 
-static void process_channel(int fd, mixed *info){
+static void process_channel(mixed fd, mixed *info){
     string mudname;
     string sendermsg, sendername, senderrealname, sendermud;
     string targetname, targetmud, targstr = "";
@@ -114,10 +114,17 @@ static void process_channel(int fd, mixed *info){
 	  sendername+"("+senderrealname+")@"+sendermud+" "+": "+
 	  sendermsg+" "+targstr+"\n");
 
+	if(intp(fd)) this_object()->SendMessage(info);
+
+	else if(member_array(fd, this_object()->GetBannedMuds()) != -1){
+	    //trr("router: banned mud "+fd+" tried to send a channel message");
+	    return;
+	}
+
 	info[8] = "/secure/daemon/filter"->eventFilter(info[8]);
 
 	foreach(mudname in keys(connected_muds)){
-	    if(member_array(mudname, listening[info[6]])!=-1)
+	    if(listening[info[6]] && member_array(mudname, listening[info[6]])!=-1)
 		write_data(connected_muds[mudname],info);
 	}
 
@@ -133,8 +140,7 @@ static void process_channel(int fd, mixed *info){
     case "add":
 	// check if already exists...
 	if(channels[info[6]]){
-	    //trr(info[3]+"@"+info[2]+" failed to create the channel: "+info[6]+
-	    //"because it already exists.","red");
+	    //trr(info[3]+"@"+info[2]+" failed to create the channel: "+info[6]+ "because it already exists.","red");
 	    return;
 	}
 	// check if a valid channel name (illegal characters?)
@@ -148,162 +154,175 @@ static void process_channel(int fd, mixed *info){
 	// broadcast an update saying that this channel is added or changed now
 	// chanlist-reply packet to everybody (who has a channel service?)
 	broadcast_chanlist(info[6]);
-	//			broadcast_data(muds_not_on_this_fd(fd), ({
-	//				"chanlist-reply",5,router_name,0,
-	//				0, // should be mudname, I think 0 would work just as well?
-	//				0, channel_update_counter,
-	//				([ info[6]:({ info[2], info[7] }) ])
-	//			}));
-	//			write_data(fd,({
-	//				"chanlist-reply",5,router_name,0,
-	//				0, // should be mudname, I think 0 would work just as well?
-	//				0, channel_update_counter,
-	//				([ info[6]:({ info[2], info[7] }) ])
-	//			}));
-	save_object(SAVE_ROUTER);
-	return;
-    case "remove":
-	if(!channels[info[6]]){ // error, channel is not registered!
-	    send_error(info[2],info[3],"unk-channel",
-	      "Unknown channel: "+info[6],info);
-	    return;
-	}
-	//trr("test1: "+clean_fd(socket_address(fd)));
-	//trr("test2: "+router_ip);
-	//trr("test3: "+channels[info[6]][1]);
-	//trr("test4: "+info[2]);
-
-	if(channels[info[6]][1]!=info[2] && 
-	  info[2] != mud_name() &&
-	  clean_fd(socket_address(fd)) != router_ip ){
-	    send_error(info[2],info[3],"not-allowed","Channel "+
-	      info[6]+" owned by: "+channels[info[6]][1],info);
-	    return;
-	}
-	// at this point, is being removed by the owner...
-	channel_update_counter++;
-	map_delete(channels,info[6]);
-	map_delete(channel_updates,info[6]);
-	//channel_updates[info[6]] = channel_update_counter;
-	//trr(info[3]+"@"+info[2]+" deleted the channel: "+info[6],"yellow");
-	log_file("router/server_log",timestamp()+" "+info[3]+"@"+info[2]+" deleted the channel: "+info[6]+"\n");
-	// broadcast an update saying that this channel is gone now
-	broadcast_chanlist(info[6]);
-	save_object(SAVE_ROUTER);
-	return;
-    case "admin":
-	// add/delete muds from the 2 lists...
-	//trr("test1: "+clean_fd(socket_address(fd)));
-	//trr("test2: "+router_ip);
-	//trr("test3: "+channels[info[6]][1]);
-	//trr("test4: "+info[2]);
-	if(channels[info[6]][1]!=info[2] && 
-	  clean_fd(socket_address(fd)) != router_ip ){
-	    send_error(info[2],info[3],"not-allowed","Channel "+
-	      info[6]+" owned by: "+channels[info[6]][1],info);
-	    return;
-	}
-	if(!listening[info[6]]) listening[info[6]] = ({});
-	if(sizeof(info[7])){ // add to list...
-	    //trr("planning to add.","white");
-	    channels[info[6]][2] += info[7];
-	    // if add to ban list, unlisten...
-	    if(channels[info[6]][0]==0){ // type 0 means selective ban
-		//trr(identify(info[7]) +" has been banned from "+info[6],"yellow");
-		listening[info[6]] -= info[7];
-	    }
-	    //else trr(identify(info[7]) +" has been unbanned from "+info[6],"yellow");
-	}
-	if(sizeof(info[8])){ // remove from list...
-	    //trr("channels[info[6]]: "+identify(channels[info[6]]),"white");
-	    //trr("planning to remove","white");
-	    //trr("info: "+identify(info),"white");
-	    channels[info[6]][2] -= info[8];
-	    //trr("channels[info[6]]: "+identify(channels[info[6]]), "white");
-	    if(channels[info[6]][0]!=0){ // type 0 means selective ban...
-		// selective allow and filtered are the same though...
-		// so if not selective ban, then act like selective allow...
-		// if removed from allow list, unlisten...
-		listening[info[6]] -= info[8];
-		//trr(identify(info[8])+" has been banned from "+info[6],"yellow");
-	    }
-	    //else trr(identify(info[8])+" has been unbanned from "+info[6],"yellow");
-	    //else listening[info[6]] += info[8];
-	}
-	//trr("Channel data for "+info[6]+": "+identify(channels[info[6]]), "white");
-	save_object(SAVE_ROUTER);
-	return;
-    case "listen": // mudname=info[2], channame=info[6], on_or_off=info[7]
-	if(!channels[info[6]]){ // error, channel is not registered!
-	    send_error(info[2],info[3],"unk-channel",
-	      "Unknown channel: "+info[6],info);
-	    return;
-	}
-	if(!listening) listening=([ ]);
-	if(!listening[info[6]]) listening[info[6]]=({ }); // first MUD to listen
-	if(info[7]){ // on_or_off is on
-	    if(member_array(info[2],listening[info[6]])!=-1)
-		return; // already listening, ignore them
-	}
-	else{ // on_or_off is on
-	    if(member_array(info[2],listening[info[6]])==-1)
-		return; // already NOT listening, ignore them
-	}
-	//trr("listening change on chan:"+info[6]+", mud="+info[2]+", on_or_off="+info[7]);
-	// only CHANGES should get to this point
-	switch(channels[info[6]][0]){
-	case 0: // selectively banned
-	    if(member_array(info[2],channels[info[6]][2])!=-1){
-		// in list, you're banned...
-		send_error(info[2],0,"not-allowed",
-		  "Banned from "+info[6],info);
-		save_object(SAVE_ROUTER);
-		return;
-	    }
-	    // not in ban list at this point
-	    if(info[7])
-		listening[info[6]] += ({ info[2] });
-	    else
-		listening[info[6]] -= ({ info[2] });
-	    save_object(SAVE_ROUTER);
-	    return;
-	case 1: // selectively allowed
-	    if(member_array(info[2],channels[info[6]][2])==-1 &&
-	      info[2] != channels[info[6]][1]){
-		// NOT in list, you're banned!
-		send_error(info[2],0,"not-allowed",
-		  "Not in allow list for "+info[6],info);
-		return;
-	    }
-	    // in allow list at this point
-	    if(info[7])
-		listening[info[6]] += ({ info[2] });
-	    else
-		listening[info[6]] -= ({ info[2] });
-	    save_object(SAVE_ROUTER);
-	    return;
-	case 2: // filtered... act like selectively allowed
-	    if(member_array(info[2],channels[info[6]][2])==-1 &&
-	      info[2] != channels[info[6]][1]){
-		// NOT in list, you're banned!
-		send_error(info[2],0,"not-allowed",
-		  "Not in allow list for "+info[6],
-		  info);
-		return;
-	    }
-	    // in allow list at this point
-	    if(info[7])
-		listening[info[6]] += ({ info[2] });
-	    else
-		listening[info[6]] -= ({ info[2] });
-	    save_object(SAVE_ROUTER);
-	    return;
-	} // switch
-    default: // trying to do "channel-blah"
-	send_error(info[2],info[3],"unk-type","I don't know what "+info[0]+
-	  " means.",info);
-	//trr("Don't know what the ["+info[0]+"] packet means.", "yellow");
+	SendList( ([ "channels" : ([ info[6] : channels[info[6]] ]), "listening" : ([]) ]),
+	0, "chanlist" );
+    //			broadcast_data(muds_not_on_this_fd(fd), ({
+    //				"chanlist-reply",5,router_name,0,
+    //				0, // should be mudname, I think 0 would work just as well?
+    //				0, channel_update_counter,
+    //				([ info[6]:({ info[2], info[7] }) ])
+    //			}));
+    //			write_data(fd,({
+    //				"chanlist-reply",5,router_name,0,
+    //				0, // should be mudname, I think 0 would work just as well?
+    //				0, channel_update_counter,
+    //				([ info[6]:({ info[2], info[7] }) ])
+    //			}));
+    save_object(SAVE_ROUTER);
+    return;
+case "remove":
+    if(!channels[info[6]]){ // error, channel is not registered!
+	send_error(info[2],info[3],"unk-channel",
+	  "Unknown channel: "+info[6],info);
 	return;
     }
-    //trr("can't get here?");
+    //trr("test1: "+clean_fd(socket_address(fd)));
+    //trr("test2: "+router_ip);
+    //trr("test3: "+channels[info[6]][1]);
+    //trr("test4: "+info[2]);
+
+    if(channels[info[6]][1]!=info[2] && 
+      info[2] != mud_name() &&
+      clean_fd(socket_address(fd)) != router_ip ){
+	send_error(info[2],info[3],"not-allowed","Channel "+
+	  info[6]+" owned by: "+channels[info[6]][1],info);
+	return;
+    }
+    // at this point, is being removed by the owner...
+    channel_update_counter++;
+    map_delete(channels,info[6]);
+    map_delete(channel_updates,info[6]);
+    //channel_updates[info[6]] = channel_update_counter;
+    //trr(info[3]+"@"+info[2]+" deleted the channel: "+info[6],"yellow");
+    log_file("router/server_log",timestamp()+" "+info[3]+"@"+info[2]+" deleted the channel: "+info[6]+"\n");
+    // broadcast an update saying that this channel is gone now
+    broadcast_chanlist(info[6]);
+    save_object(SAVE_ROUTER);
+    SendList( ([ "channels" : ([ info[6] : -1 ]), "listening" : ([]) ]),
+      0, "chanlist" );
+    return;
+case "admin":
+    // add/delete muds from the 2 lists...
+    //trr("test1: "+clean_fd(socket_address(fd)));
+    //trr("test2: "+router_ip);
+    //trr("test3: "+channels[info[6]][1]);
+    //trr("test4: "+info[2]);
+    if(channels[info[6]][1]!=info[2] && 
+      clean_fd(socket_address(fd)) != router_ip ){
+	send_error(info[2],info[3],"not-allowed","Channel "+
+	  info[6]+" owned by: "+channels[info[6]][1],info);
+	return;
+    }
+    if(!listening[info[6]]) listening[info[6]] = ({});
+    if(sizeof(info[7])){ // add to list...
+	//trr("planning to add.","white");
+	channels[info[6]][2] += info[7];
+	// if add to ban list, unlisten...
+	if(channels[info[6]][0]==0){ // type 0 means selective ban
+	    //trr(identify(info[7]) +" has been banned from "+info[6],"yellow");
+	    listening[info[6]] -= info[7];
+	}
+	//else //trr(identify(info[7]) +" has been unbanned from "+info[6],"yellow");
+    }
+    if(sizeof(info[8])){ // remove from list...
+	//trr("channels[info[6]]: "+identify(channels[info[6]]),"white");
+	//trr("planning to remove","white");
+	//trr("info: "+identify(info),"white");
+	channels[info[6]][2] -= info[8];
+	//trr("channels[info[6]]: "+identify(channels[info[6]]), "white");
+	if(channels[info[6]][0]!=0){ // type 0 means selective ban...
+	    // selective allow and filtered are the same though...
+	    // so if not selective ban, then act like selective allow...
+	    // if removed from allow list, unlisten...
+	    listening[info[6]] -= info[8];
+	    //trr(identify(info[8])+" has been banned from "+info[6],"yellow");
+	}
+	//else //trr(identify(info[8])+" has been unbanned from "+info[6],"yellow");
+	//else listening[info[6]] += info[8];
+    }
+    //trr("Channel data for "+info[6]+": "+identify(channels[info[6]]), "white");
+    SendList( ([ "channels" : ([ info[6] : channels[info[6]] ]),
+      "listening" : ([ info[6] : listening[info[6]] ]) ]),
+0, "chanlist" );
+save_object(SAVE_ROUTER);
+return;
+case "listen": // mudname=info[2], channame=info[6], on_or_off=info[7]
+if(!channels[info[6]]){ // error, channel is not registered!
+    send_error(info[2],info[3],"unk-channel",
+      "Unknown channel: "+info[6],info);
+    return;
+}
+if(!listening) listening=([ ]);
+if(!listening[info[6]]) listening[info[6]]=({ }); // first MUD to listen
+if(info[7]){ // on_or_off is on
+    if(member_array(info[2],listening[info[6]])!=-1)
+	return; // already listening, ignore them
+}
+else{ // on_or_off is off
+    if(member_array(info[2],listening[info[6]])==-1)
+	return; // already NOT listening, ignore them
+}
+//trr("listening change on chan:"+info[6]+", mud="+info[2]+", on_or_off="+info[7]);
+// only CHANGES should get to this point
+switch(channels[info[6]][0]){
+case 0: // selectively banned
+    if(member_array(info[2],channels[info[6]][2])!=-1){
+	// in list, you're banned...
+	send_error(info[2],0,"not-allowed",
+	  "Banned from "+info[6],info);
+	save_object(SAVE_ROUTER);
+	return;
+    }
+    // not in ban list at this point
+    if(info[7])
+	listening[info[6]] += ({ info[2] });
+    else
+	listening[info[6]] -= ({ info[2] });
+    save_object(SAVE_ROUTER);
+    SendList( ([ "channels" : ([]), "listening" : ([ info[6] : listening[info[6]] ]) ]),
+    0, "chanlist" );
+return;
+case 1: // selectively allowed
+if(member_array(info[2],channels[info[6]][2])==-1 &&
+  info[2] != channels[info[6]][1]){
+    // NOT in list, you're banned!
+    send_error(info[2],0,"not-allowed",
+      "Not in allow list for "+info[6],info);
+    return;
+}
+// in allow list at this point
+if(info[7])
+    listening[info[6]] += ({ info[2] });
+else
+    listening[info[6]] -= ({ info[2] });
+save_object(SAVE_ROUTER);
+SendList( ([ "channels" : ([]), "listening" : ([ info[6] : listening[info[6]] ]) ]),
+0, "chanlist" );
+return;
+case 2: // filtered... act like selectively allowed
+if(member_array(info[2],channels[info[6]][2])==-1 &&
+  info[2] != channels[info[6]][1]){
+    // NOT in list, you're banned!
+    send_error(info[2],0,"not-allowed",
+      "Not in allow list for "+info[6],
+      info);
+    return;
+}
+// in allow list at this point
+if(info[7])
+    listening[info[6]] += ({ info[2] });
+else
+    listening[info[6]] -= ({ info[2] });
+save_object(SAVE_ROUTER);
+SendList( ([ "channels" : ([]), "listening" : ([ info[6] : listening[info[6]] ]) ]),
+0, "chanlist" );
+return;
+} // switch
+default: // trying to do "channel-blah"
+send_error(info[2],info[3],"unk-type","I don't know what "+info[0]+
+  " means.",info);
+//trr("Don't know what the ["+info[0]+"] packet means.", "yellow");
+return;
+}
+//trr("can't get here?");
 }

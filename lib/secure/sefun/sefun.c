@@ -346,4 +346,3 @@ string capitalize(mixed str) {
     words[0] = "%^" + implode(tmp, "%^") + "%^";
     return implode(words, " ");
 }
-

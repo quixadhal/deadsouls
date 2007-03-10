@@ -22,7 +22,7 @@ int CheckOK(){
 	update("/daemon/intermud");
     }
     else {
-	if(Retries > 0){
+	if(Retries > 0 && INTERMUD_D->GetConnectedStatus()){
 	    tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"
 	      "Intermud connection is %^BOLD%^GREEN%^ONLINE%^BOLD%^CYAN%^.%^RESET%^\"");
 	    load_object(ROOM_ARCH)->SetImud(1);
@@ -30,7 +30,7 @@ int CheckOK(){
 
 	Retries = 0;
     }
-    if(Retries == 2){
+    if(Retries == 2 && !(INTERMUD_D->GetConnectedStatus())){
 	tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"
 	  "Intermud connection is %^BOLD%^RED%^OFFLINE%^BOLD%^CYAN%^.%^RESET%^\"");
 	rm("/tmp/muds.txt");
@@ -42,6 +42,7 @@ int CheckOK(){
 }
 
 int eventPing(){
+if(DISABLE_INTERMUD) return 1;
     Pinging = 1;
     OK = 0;
 
@@ -59,7 +60,11 @@ int eventPing(){
 void create() {
     daemon::create();
     SetNoClean(1);
-    set_heart_beat(1);
+    if(!DISABLE_INTERMUD) set_heart_beat(1);
+    else {
+    set_heart_beat(0);
+    Pinging = 0;
+    }
 }
 
 void DeadMan(){
@@ -90,6 +95,7 @@ int GetPinging(){
 }
 
 int SetOK(){
+    if(DISABLE_INTERMUD) return 1;
     OK = 1;
     load_object(ROOM_ARCH)->SetImud(1);
 }

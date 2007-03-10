@@ -1,28 +1,40 @@
 // This file written mostly by Tim Johnson (Tim@TimMUD)
 
-static void send_mudlist_updates(string updating_mudname, int old_mudlist_id){
+void send_mudlist_updates(string updating_mudname, int old_mudlist_id){
     string mudname; // mud name
     string *kys; // array of strings for keys that need to be sent
     mapping out=([ ]); // mapping to send
     int i; // counter
+    int status;
+    mapping payload = ([]);
     mudinfo_update_counter++;
     //trr("old_mudlist_id: "+old_mudlist_id,"blue");
     //trr("updating_mudname: "+updating_mudname,"blue");
     //trr("send_mudlist_updates, updating_mudname="+updating_mudname+", old_mudlist_id="+old_mudlist_id,"blue");
     foreach(mudname in keys(mudinfo_updates)){
+	//trr("mudinfo_updates current element: "+identify(mudname));
 #ifndef SEND_WHOLE_MUDLIST
+	//trr("send whole mudlist undefined");
 	if(mudinfo_updates[mudname]>old_mudlist_id){ // needs updating
 #endif
 	    if(!mudinfo[mudname]){ // deleted mud;
 		out[mudname] = 0;
 	    }
 	    else{
+		if(!connected_muds[mudname]){
+		    if(mudinfo[mudname]["disconnect_time"] &&
+		      mudinfo[mudname]["restart_delay"] == -1) status = 0;
+		    else  status = mudinfo[mudname]["restart_delay"];
+		}
+		else status = -1;
+		//trr("STATUS: "+status,"yellow");
 		switch(mudinfo[updating_mudname]["protocol"]){
 		case 1:
 		case 2:
 		    out[mudname] = ({
-		      connected_muds[mudname] ? -1 : 0,
+		      status,
 		      // -1=up, 0=down, n=down for n secs
+		      mudinfo[mudname]["restart_delay"],
 		      mudinfo[mudname]["ip"], // ip_addr
 		      mudinfo[mudname]["player_port"], // player_port
 		      mudinfo[mudname]["imud_tcp_port"], // imud_tcp_port
@@ -37,7 +49,7 @@ static void send_mudlist_updates(string updating_mudname, int old_mudlist_id){
 		    break;
 		case 3:
 		    out[mudname] = ({
-		      (connected_muds[mudname] ? -1 : 0),
+		      status,
 		      // -1=up, 0=down, n=down for n secs
 		      mudinfo[mudname]["ip"], // ip_addr
 		      mudinfo[mudname]["player_port"], // player_port
@@ -68,6 +80,17 @@ static void send_mudlist_updates(string updating_mudname, int old_mudlist_id){
 	// send all the ones except the last one, doing 10 at a time,
 	// but give them their original mudlist id, in case they get
 	// disconnected before all the sets of 10 get finished
+	payload = ([  kys[i]: out[kys[i]],
+	  kys[i+1]: out[kys[i+1]],
+	  kys[i+2]: out[kys[i+2]],
+	  kys[i+3]: out[kys[i+3]],
+	  kys[i+4]: out[kys[i+4]],
+	  kys[i+5]: out[kys[i+5]],
+	  kys[i+6]: out[kys[i+6]],
+	  kys[i+7]: out[kys[i+7]],
+	  kys[i+8]: out[kys[i+8]],
+	  kys[i+9]: out[kys[i+9]],
+	]);
 	write_data(connected_muds[updating_mudname],({
 	    "mudlist",
 	    5,
@@ -77,18 +100,9 @@ static void send_mudlist_updates(string updating_mudname, int old_mudlist_id){
 	    0,
 	    //old_mudlist_id,
 	    (random(9999) * random(999)),
-	    ([	kys[i]: out[kys[i]],
-	      kys[i+1]: out[kys[i+1]],
-	      kys[i+2]: out[kys[i+2]],
-	      kys[i+3]: out[kys[i+3]],
-	      kys[i+4]: out[kys[i+4]],
-	      kys[i+5]: out[kys[i+5]],
-	      kys[i+6]: out[kys[i+6]],
-	      kys[i+7]: out[kys[i+7]],
-	      kys[i+8]: out[kys[i+8]],
-	      kys[i+9]: out[kys[i+9]],
-	    ]),
+	    payload,
 	  }));
+	//this_object()->SendList(payload);
 	map_delete(out,kys[i]);
 	map_delete(out,kys[i+1]);
 	map_delete(out,kys[i+2]);
@@ -111,5 +125,6 @@ static void send_mudlist_updates(string updating_mudname, int old_mudlist_id){
 	mudinfo_update_counter,
 	out,
       }));
+    //this_object()->SendList(out);
     mudinfo[updating_mudname]["old_mudlist_id"]=mudinfo_update_counter;
 }

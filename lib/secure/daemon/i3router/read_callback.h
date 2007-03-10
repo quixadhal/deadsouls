@@ -1,6 +1,6 @@
-static string *blacklisted = explode(read_file(ROUTER_BLACKLIST),"\n");
+string *blacklisted_muds = ({});
 
-void read_callback(int fd, mixed info){
+void read_callback(mixed fd, mixed info){
     // This is called when messages come in from a MUD.
     // Should reject all messages if they have not done a (successful) startup-req,
     // Should check to make sure the fd matches with the mud they are claiming to be, else error.
@@ -23,24 +23,38 @@ void read_callback(int fd, mixed info){
 
     string mudname;
     int i;
+    string *logspam = ({ "auth-mud-req", "auth-mud-reply", "tell", "emoteto",
+      "ping","channel-listen" });
 
-    validate();
-
-    if(sizeof(blacklisted)){
-	if(member_array(info[2], blacklisted) != -1) return;
-	if(member_array(clean_fd(socket_address(fd)), blacklisted) != -1) return;
+    //trr("read_callback, fd"+fd+", info: "+identify(info));
+    if(!strsrch(info[0],"irn-")){
+	//trr("spotted irn packet: "+info[0],"blue");
+	irn_read_callback(fd, info);
+	return;
     }
 
-    //trr("Incoming data from fd("+fd+"), address "+socket_address(fd)+".");
-    //trr("The known status of that fd is "+identify(socket_status(fd)));
+    if(stringp(fd) && member_array(info[0],logspam) == -1)
+	//trr("Received IRN data "+info[0]+" for "+info[4]+" from "+info[2]);
 
-    //trr("Received from fd("+fd+"), fd("+socket_address(fd)+")\n"+identify(info),((info[0] == "auth-mud-req" || info[0] == "auth-mud-reply") ? "magenta" : "green"));
-    if(info[0] != "auth-mud-req" && info[0] != "auth-mud-reply" && info[0] != "channel-listen" &&
-      info[0] != "channel-listen" && info[0] != "tell" && info[0] != "ping" &&
-      info[0] != "emoteto")
-	trr(timestamp()+" Received from fd("+fd+"), fd("+socket_address(fd)+")\n"+identify(info), "green");
+	if(info[4] && !grepp(info[0],"startup-req") && 
+	  member_array(info[4], keys(connected_muds)) == -1 &&
+	  member_array(info[2], keys(connected_muds)) == -1){
+	    //trr(info[4]+" is not on this router. Dropping from read_callback.");
+	    return;
+	}
+    validate();
+    if(sizeof(blacklisted_muds)){
+	if(member_array(info[2], blacklisted_muds) != -1) return;
+	if(intp(fd) && member_array(clean_fd(socket_address(fd)), blacklisted_muds) != -1) return;
+    }
+    if(member_array(info[0],logspam) == -1 && strsrch(info[0],"irn-")){
+	string foo = "IRN";
+	if(intp(fd)) foo = socket_address(fd);
+	trr(timestamp()+" Received from fd("+fd+"), source: "+foo+"\n"+identify(info), "green");
+    }
     // Base info in a packet is of size 6.
-    if(grepp(info[0],"chan") && !grepp(info[0],"channel-listen")) log_file("router/packet_log",identify(info)+"\n");
+    // comment out the line below to avoid big channel logs
+    if(grepp(info[0],"chan") && !grepp(info[0],"channel-listen")) log_file("router/chan_log_",identify(info)+"\n");
     if(sizeof(info)<6 ||
       !stringp(info[0]) ||
       !intp(info[1]) || !stringp(info[2]) ||
@@ -58,9 +72,9 @@ void read_callback(int fd, mixed info){
 	return;
     }
     //if(lower_case(info[4]) == "yatmin") info[4] = "yatmim";
-    if(info[4]!=0 && !connected_muds[info[4]] && info[4]!=router_name){
+    if(info[4]!=0 && !mudinfo[info[4]] && info[4]!=router_name){
 	// if target mud is not 0 (broadcasting), not the router name,
-	// and not a connected MUD
+	// and not a known MUD
 	write_data(fd,({
 	    "error",
 	    5,
@@ -72,17 +86,17 @@ void read_callback(int fd, mixed info){
 	    "destination unknown", // same as I3
 	    info
 	  }));
-	//trr("Error [unk-dst], because target is "+info[4]+" and thus invalid.");
+	trr("Error [unk-dst], because target is "+info[4]+" and thus invalid.");
 	return;
     }
     if(sscanf(info[0],"startup-req-%d",i)==1){
 	// special condition for startup-req...
-	//trr("calling process_startup_req, i="+i+", fd="+fd+" which is: "+socket_address(fd));
+	trr("calling process_startup_req, i="+i+", fd="+fd+" which is: "+socket_address(fd));
 	//call_other(this_object(),"process_startup_req",i,info,fd);
 	this_object()->process_startup_req(i,info,fd);
 	return;
     }
-    if(!connected_muds[info[2]] || (connected_muds[info[2]]!=fd)){
+    if(intp(fd) && connected_muds[info[2]] && (connected_muds[info[2]]!=fd)){
 	// MUD hasn't done a startup-req yet
 	write_data(fd,({
 	    "error",
@@ -95,7 +109,7 @@ void read_callback(int fd, mixed info){
 	    "Your MUD hasn't registered as "+info[2]+" yet", // Error message
 	    info
 	  }));
-	//trr("They have not done a startup-req for fd="+fd+", mudname="+info[2]);
+	trr("They have not done a startup-req for fd="+fd+", mudname="+info[2]);
 	log_file("router/server_log",timestamp()+" They have not done a startup-req for fd="+fd+", mudname="+info[2]+"\n");
 	return;
     }
@@ -108,6 +122,7 @@ void read_callback(int fd, mixed info){
     }
     if(info[0]=="chan-filter-reply"){
 	if(!stringp(info[6]) || sizeof(info[7])<9 ){
+	    //trr("wtf2");
 	    // avoid out-of-bounds
 	    send_error(info[2],info[3],"bad-pkt",
 	      "Invalid chan-filter-reply packet.",info);
@@ -117,7 +132,7 @@ void read_callback(int fd, mixed info){
 	      "You are not the owner of "+info[6],info);
 	    return;
 	}
-	if(member_array(info[7][6],({ "channel-a", "channel-e", "channel-t"}))==-11){
+	if(member_array(info[7][6],({ "channel-a", "channel-e", "channel-t"}))==-1){
 	    // Not a valid channel packet.
 	    send_error(info[2],info[3],"not-allowed","*giggles*",info);
 	}
@@ -130,30 +145,55 @@ void read_callback(int fd, mixed info){
 	    return;
 	}
 	if(member_array(info[7][6],({ "channel-a", "channel-e", "channel-t"}))){
-
 	}
 	// Broadcast the message...
+	if(intp(fd)) this_object()->SendMessage(info);
 	foreach(mudname in keys(connected_muds)){
 	    if(member_array(mudname, listening[info[6]])!=-1)
 		write_data(connected_muds[mudname],info[7]);
 	}
 	return;
     }
-
     if(info[4]==0){ // if broadcasting this...
+	if(intp(fd)) {
+	    this_object()->SendMessage(info);
+	}
 	broadcast_data(connected_muds,info);
-	return;
-    }
+	return;    }
     if(info[4]==router_name) {
-	// Something meant for the router but not handled by now!
-	send_error(info[2],info[3],"not-imp","Unknown command sent to router: "+info[0],info);
-	//trr("unhandled packet meant for router: "+info[0],"red");
-	log_file("router/server_log","UNHANDLED PACKET:\n"+identify(info)+"\n");
+	switch(info[0]){
+	case "shutdown" :
+	    if(sizeof(info) != 7){
+		send_error(info[2],info[3],"bad-pkt","Wrong number of elements for packet: "+info[0],info);
+		return;
+	    }
+	    if(info[6] > 604800) {
+		trr("ROUTER_D: deleting "+this_object()->query_connected_fds()[fd]+" per "+
+		  "request of "+info[2]);
+		log_file("router/server_log","deleting "+this_object()->query_connected_fds()[fd]+" per "+
+		  "request of "+info[2]+"\n");
+		remove_mud(this_object()->query_connected_fds()[fd], 1);
+	    }
+	    else {
+		trr("ROUTER_D: disconnecting "+this_object()->query_connected_fds()[fd]+" per "+
+		  "request of "+info[2]);
+		log_file("router/server_log","disconnecting "+this_object()->query_connected_fds()[fd]+" per "+
+		  "request of "+info[2]+"\n");
+		this_object()->disconnect_mud(this_object()->query_connected_fds()[fd]);
+	    }
+	    break;
+	default :
+	    // Something meant for the router but not handled by now!
+	    send_error(info[2],info[3],"not-imp","Unknown command sent to router: "+info[0],info);
+	    trr("unhandled packet meant for router: "+info[0],"red");
+	    log_file("router/server_log","UNHANDLED PACKET:\n"+identify(info)+"\n");
+	}
 	return;
     }
     if(info[0]=="startup-reply" || info[0]=="chan-filter-reply"||
       info[0]=="chanlist-reply" || info[0]=="mudlist" ||
       info[0]=="bad-mojo"){
+	// Thanks to Tricky for pointing out the need for this safeguard
 	send_error(info[2],info[3],"not-allowed",
 	  "You are not allowed to send this kind of packet.",info);
 	return;
@@ -169,8 +209,7 @@ void read_callback(int fd, mixed info){
 		info[6],info[7],0,0
 	      }));
 	    return;
-	}
-	if(sizeof(info)==10 && mudinfo[info[4]]["protocol"]<=2){
+	}	if(sizeof(info)==10 && mudinfo[info[4]]["protocol"]<=2){
 	    // target mud is being sent a protocol 3 response,
 	    // but only understands 1 & 2, so strip the extra info
 	    write_data(connected_muds[info[4]], ({
@@ -180,6 +219,11 @@ void read_callback(int fd, mixed info){
 	    return;
 	}
     }
+    // if fd is an integer (meaning it's locally connected) and info[4] is zero
+    // (meaning it's a boradcast) then we send data to irn. Also, if fd is an
+    // integer, info[4] is non-zero, and info[4] is not a connected mud.
+    if((!info[4] && intp(fd)) || 
+      (intp(fd) && info[4] && !connected_muds[info[4]]) ) this_object()->SendMessage(info);
     write_data(connected_muds[info[4]], info);
     return;
 }

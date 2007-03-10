@@ -28,10 +28,12 @@ void eventReceiveAuthReply(mixed array packet) {
 
 void eventReceiveAuthRequest(mixed array packet) {
     string mudlist = "";
+    string header = "auth-mud-reply";
     int token = random_numbers(9,1);
     PING_D->SetOK();
-    tn("Auth request received from "+packet[2]+".","white");
-    INTERMUD_D->eventWrite( ({"auth-mud-reply", 5, mud_name(), 0, packet[2],
+    tn(packet[0]+" received from "+packet[2]+".","white");
+    if(packet[0] == "ping-req") header = "ping-reply";
+    INTERMUD_D->eventWrite( ({header, 5, mud_name(), 0, packet[2],
 	0, token }) );
     //tc("mud: "+packet[2]+", token: "+token,"green");
     //tc("token: "+token,"green");

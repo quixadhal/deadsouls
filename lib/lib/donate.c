@@ -78,4 +78,3 @@ int eventDonate(string amt, string type) {
     if(living(this_object())) this_object()->eventForce("say Thank you!");
     return 1;
 }
-

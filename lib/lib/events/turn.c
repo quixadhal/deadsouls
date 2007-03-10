@@ -76,4 +76,3 @@ int direct_turn_obj_on_obj_off(object target, object thinger){
 int indirect_turn_obj_on_obj_off(object thinger, object target){
     return CanTurnOff(this_player(), target );
 }
-

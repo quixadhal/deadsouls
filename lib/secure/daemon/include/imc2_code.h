@@ -446,7 +446,7 @@ private void resolve_callback( string address, string resolved, int key ) {
 #ifdef DATA_LOG
 	log_file(DATA_LOG,"socket_create: " + socket_error(socket_num) + "\n");
 #endif
-	tc("socket_create: " + socket_error(socket_num) + "\n");
+	trr("socket_create: " + socket_error(socket_num) + "\n");
 	return;
     }
     //Debug("Created socket descriptor " + socket_num);
@@ -701,8 +701,7 @@ private void start_logon(){
 		  break;
 	      case 1: // reply
 		  IMC2_MSG(sprintf("%s %%^CYAN%%^%s@%s%%^RESET%%^ replies to you: %s\n",
-		      NETWORK_ID,sender,origin,data["text"]), who);
-		  blmsg=sprintf("%s %s@%s replied to you: %s\n",
+		      NETWORK_ID,sender,origin,data["text"]), who);		  blmsg=sprintf("%s %s@%s replied to you: %s\n",
 		    NETWORK_ID,sender,origin,data["text"]);
 		  break;
 	      default:
@@ -1499,4 +1498,3 @@ EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
 
 
       void forget_user(string str){ map_delete(tells,str); }
-

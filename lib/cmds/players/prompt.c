@@ -35,4 +35,3 @@ void help() {
       "\n\n",
       this_player() );
 }
-

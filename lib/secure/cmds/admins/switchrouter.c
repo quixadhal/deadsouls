@@ -11,11 +11,32 @@ mixed cmd(string args) {
 
     if(!archp(previous_object())) return "No.";
 
+    if(!args || args == ""){
+	object omud = find_object(INTERMUD_D);
+	if(!omud){
+	    write("The intermud daemon is not loaded. Try: help switchrouter");
+	    write("It may also be disabled. Try: help mudconfig");
+	    return 1;
+	}
+	name = omud->GetNameservers()[0][0];
+	ip = omud->GetNameservers()[0][1];
+	if(!name || !ip){
+	    write("There appears to be something wrong with your intermud daemon config.");
+	    return 1;
+	}
+	write("Your current direct router connection is to "+name+" "+ip);
+	if(sizeof(omud->GetNameservers()) > 1){
+	    write("NOTE: You have multiple routers configured. The array "+
+	      "of routers you are connected to is: "+identify(omud->GetNameservers()));
+	}
+	return 1;
+    }
+
     if(find_object(INTERMUD_D))find_object(INTERMUD_D)->eventClearVars();
     if(find_object(INTERMUD_D))find_object(INTERMUD_D)->eventDestruct();
-    //rm("/save/intermud.o");
 
-    if(!args || args == ""){
+
+    if(args == "reload"){
 	write("Reloading intermud daemon.");
 	if( load_object(INTERMUD_D) ) write("Intermud daemon reloaded.");
 	else write("Failed to reload intermud daemon.");

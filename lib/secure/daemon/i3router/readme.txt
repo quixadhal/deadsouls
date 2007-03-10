@@ -24,3 +24,6 @@
 // Some modifications have been made by Cratylus @ Dead Souls to get it
 // working on DS muds and add some features.
 // -Crat 05Sep2006
+//
+// Added inter-router networking support. See irn.h.
+// -Crat 23Feb2007

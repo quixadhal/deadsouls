@@ -5,7 +5,9 @@
 inherit LIB_DAEMON;
 mapping mudlist;
 string banned, unbanned;
+string blacklisted, unblacklisted;
 string *allmuds, *banned_arr, *unbanned_arr;
+string *blacklisted_arr, *unblacklisted_arr;
 
 varargs string match_mud_name(string mud, string *list){
     list = allmuds;
@@ -66,9 +68,18 @@ mixed cmd(string args) {
 	mapping borg;
 	string mud, tempy;
 	int all = 0;
-
+	int ipsort = 0;
+	int fdsort = 0;
 	if(sizeof(arg2)) tempy = match_mud_name(arg2);
 	if(sizeof(tempy)) arg2 = tempy;
+	if(arg2 && !strsrch(arg2,"-i")){
+	    ipsort = 1;
+	    arg2 = trim(arg2[2..]);
+	}
+	if(arg2 && !strsrch(arg2,"-f")){
+	    fdsort = 1;
+	    arg2 = trim(arg2[2..]);
+	}
 
 	if( arg2 && arg2 != "" && strlen(arg2) > 3 ) {
 	    mapping tmp_map;
@@ -111,7 +122,8 @@ mixed cmd(string args) {
 	else {
 	    borg = ([ ]);
 	    foreach( mud, info in mudlist ){
-		if( all == 1 || info["restart_delay"] == -1 ) borg[mud] = info;
+		if( all == 1 || (info["restart_delay"] && info["restart_delay"] == -1) ) 
+		    borg[mud] = info;
 	    }
 	}
 	if( !sizeof(borg) ) {
@@ -153,10 +165,33 @@ mixed cmd(string args) {
 	}
 
 	list = ({});
-	foreach(mud, info in borg)
-	list += ({ sprintf("%:-15s %:-6s %:-15s %:-18s %s %d",
-	    //replace_string(mud,"%^","%%^^"), info[8], info[7], info[5], info[1], info[2]) });
-	    replace_string(mud,"%^","%%^^"), info["mud_type"], info["driver"], info["base_mudlib"], info["ip"], info["player_port"]) });
+
+	if(fdsort){
+	    mapping fds = ROUTER_D->query_connected_fds();
+	    string *ret = ({});
+	    int i, quant = sizeof(socket_status());
+	    for(i = 0; i < quant; i++){
+		if(last_string_element(socket_status(i)[3],".") == ROUTER_D->GetRouterPort() ){
+		    string mudnamen;
+		    if(fds[i]) mudnamen = fds[i];
+		    else mudnamen = "UNKNOWN";
+		    ret += ({ i+" "+mudnamen+" "+explode(socket_address(i)," ")[0] });
+		}
+	    }
+	    ret = sort_array(ret,1);
+	    this_player()->eventPage(ret);
+	    return 1;
+	}
+
+	foreach(mud, info in borg){
+	    if(ipsort)
+		list += ({ sprintf("%:-15s %:-6s %:-15s %:-18s",
+		    info["ip"], itoa(info["player_port"]), replace_string(mud,"%^","%%^^"), info["base_mudlib"]) });
+
+	    else
+		list += ({ sprintf("%:-15s %:-6s %:-15s %:-18s %s %d",
+		    replace_string(mud,"%^","%%^^"), info["mud_type"], info["driver"], info["base_mudlib"], info["ip"], info["player_port"]) });
+	}
 	list = sort_array(list, 1);
 	list = ({ replace_string(mud_name(),"%^","%%^^") + " recognizes " + consolidate(sizeof(borg), "a mud")+
 	  " matching your query: ", "" }) + list;
@@ -164,14 +199,23 @@ mixed cmd(string args) {
 	return 1;
     }
 
-    if(args == "reload" || args == "restart"){
+    if(args == "reload" || args == "restart" || args == "reset"){
+	object rsocket = find_object(RSOCKET_D);
 	if(router){
+	    if(args == "reset") router->clear();
 	    router->SetList();
 	    router->eventDestruct();
 	    router = find_object(ROUTER_D);
 	    if(router) write("Router unload failed.");
 	    else write("Router unloaded from memory.");
 	    flush_messages();
+	}
+	if(args == "restart" || args == "reset"){
+	    if(rsocket) rsocket->eventDestruct();
+	    if(rsocket) destruct(rsocket);
+	    if(rsocket) write("%^RED%^BOLD%^Router socker not destructed.%^RESET%^");
+	    rsocket = load_object(RSOCKET_D);
+	    if(!rsocket) write("Could not reload router socket daemon.");
 	}
 	write("Loading router daemon...");
 	flush_messages();
@@ -180,15 +224,14 @@ mixed cmd(string args) {
 	else write("Router loaded.");
 	return 1;
     }
-
-    if(args == "reset"){
-	if(router) router->eventDestruct();
-	unguarded( (: rename(SAVE_ROUTER, "/secure/save/backup/router."+time()) :) );
-	router = load_object(ROUTER_D);
-	if(!router) write("Router load failed.");
-	else write("Router reset to default settings.");
-	return 1;
-    }
+    //if(args == "reset"){
+    //if(router) router->eventDestruct();
+    //unguarded( (: rename(SAVE_ROUTER, "/secure/save/backup/router."+time()) :) );
+    //router = load_object(ROUTER_D);
+    //if(!router) write("Router load failed.");
+    //else write("Router reset to default settings.");
+    //return 1;
+    //}
 
     if(args == "on" || args == "online"){
 	if(router){
@@ -272,6 +315,49 @@ mixed cmd(string args) {
 	return 1;
     }
 
+    if(arg1 == "blacklist" || arg1 == "blacklisted"){
+	if(sizeof(router->GetBlacklistedMuds())) blacklisted_arr = router->GetBlacklistedMuds();
+	else blacklisted_arr = ({});
+	if(!sizeof(blacklisted_arr)) blacklisted = "No blacklisted muds.";
+	else blacklisted = implode(blacklisted_arr,", ");
+	if(!arg2){
+	    write("Blacklisted muds: "+blacklisted);
+	    return 1;
+	}
+	tmp = match_mud_name(arg2, allmuds);
+	if(!sizeof(tmp)){
+	    write("There is no such mud, but I am adding the name to the list.");
+	}
+	else arg2 = tmp;
+
+	router->AddBlacklistedMud(arg2);
+	write(arg2+" has been added to the blacklisted list.");
+	return 1;
+    }
+
+    if(arg1 == "unblacklist" || arg1 == "unblacklisted"){
+	if(sizeof(router->GetBlacklistedMuds())) blacklisted_arr = router->GetBlacklistedMuds();
+	else blacklisted_arr = ({});
+	if(!sizeof(blacklisted_arr)) unblacklisted = "No blacklisted muds.";
+	else {
+	    blacklisted = implode(blacklisted_arr,", ");
+	    unblacklisted_arr = filter(keys(mudlist), (: member_array($1, blacklisted_arr) == -1 :) ) || ({});
+	    unblacklisted = implode(unblacklisted_arr,", ");
+	}
+	if(!arg2){
+	    write("Unblacklisted muds: "+unblacklisted);
+	    return 1;
+	}
+	//tmp = match_mud_name(arg2, allmuds);
+	//if(!sizeof(tmp)){
+	//   write("There is no such mud, but I am removing the name from the list.");
+	//}
+	//else arg2 = tmp;
+
+	router->RemoveBlacklistedMud(arg2);
+	write(arg2+" has been removed from the blacklisted list.");
+	return 1;
+    }
 
     if(arg1 == "id" || arg1 == "identify"){
 	if(!arg2){
@@ -367,8 +453,9 @@ string GetHelp(string args) {
     return ("Syntax: router [subcommand [arg]]\n\n"
       "With no arguments, router status is displayed.\n"
       "examples:\n" 
-      "router reload : stops and restarts the router\n"
-      "router reset : resets the router to a blank configuration\n"
+      "router reload : bounces the router without dropping connections\n"
+      "router restart : bounces the router dropping all connections\n"
+      "router reset : like restart but also clears all saved mud info\n"
       "router ban : lists banned muds\n"
       "router ban <mudname> : bans the mud with the name <mudname>\n"
       "router unban <mudname> : the opposite of banning\n"
@@ -377,6 +464,8 @@ string GetHelp(string args) {
       "router ip <ip number> : sets the ip address, e.g. 11.22.33.44\n"
       "router name <routername> : sets the router name\n"
       "router mudlist : display information of known muds\n" 
+      "router mudlist -i : display muds sorted by ip\n" 
+      "router mudlist -f : display connected muds sorted by file descriptor\n" 
       "\n"
       "To bring the router online or offline, use the mudconfig command."
       "\n\n"

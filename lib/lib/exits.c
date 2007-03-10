@@ -107,16 +107,15 @@ varargs string CreateDoor(string dir, string odir, string long, string locked, s
 }
 
 string GetDirection(string dest) {
-
     foreach(string dir, mapping data in Exits) {
 	if( data["room"] == dest ) {
 	    return "go " + dir;
 	}
     }
     foreach(string dir in GetEnters()) {
-	mapping data = GetEnterData(dir);
+	string data = GetEnter(dir);
 
-	if(data["room"] && data["room"] == dest ) {
+	if(data && data  == dest ) {
 	    return "enter " + dir;
 	}
     }

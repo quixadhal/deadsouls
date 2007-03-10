@@ -314,6 +314,7 @@ void eventDescribeEnvironment(int brief) {
 	if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM ) {
 	    mapping lying = ([]), sitting = ([]), standing = ([]), flying = ([]);
 	    mapping furniture = ([]);
+	    object mount = this_player()->GetProperty("mount");
 	    object *obs;
 	    string key;
 	    int val;
@@ -323,7 +324,7 @@ void eventDescribeEnvironment(int brief) {
 		  if( living(ob) ) return 1;
 		  if( (int)ob->isFreshCorpse() )
 		      return 1;
-		}) - ({ this_object() });
+		}) - ({ this_object(), mount });
 	      maxi = sizeof(shorts = map(obs, (: (string)$1->GetHealthShort() :)));
 	      foreach(object liv in obs) {
 		  string s = (string)liv->GetHealthShort();
@@ -433,9 +434,21 @@ void eventDescribeEnvironment(int brief) {
 		desc = tmp + desc;
 	    }
 	    if(this_player()->GetProperty("mount")) {
+		string mount_inv = "Nothing";
+		string *mount_stuffs = ({});
+		object *mount_obs = filter( all_inventory(this_player()->GetProperty("mount")),
+		  (: !($1->GetInvis()) && !($1 == this_player()) :));
+		if(sizeof(mount_obs)){
+		    foreach(object element in mount_obs){
+			mount_stuffs += ({ element->GetShort() });
+		    }
+		    mount_inv = conjunction(mount_stuffs);
+		}
 		if(!sizeof(desc)) desc = "";
 		desc += "\nYou are mounted on "+
-		(this_player()->GetProperty("mount"))->GetShort()+".";
+		(this_player()->GetProperty("mount"))->GetPlainShort()+".";
+		desc += "\nOn "+(this_player()->GetProperty("mount"))->GetPlainShort()+
+		" you see: "+mount_inv+".";
 	    }
 	    if( sizeof(desc) ) {
 		if(check_string_length(desc)) eventPrint(desc + "\n", MSG_ROOMDESC);
@@ -700,9 +713,7 @@ void eventDescribeEnvironment(int brief) {
 		else return HostSite;
 	    }
 	    return HostSite;
-	}
-
-	//void eventLoadObject(mixed *value, int recurse) { }
+	}	//void eventLoadObject(mixed *value, int recurse) { }
 
 	int GetRadiantLight(int ambient) {
 	    return container::GetRadiantLight(ambient);

@@ -26,7 +26,7 @@ int LocalHostedChans(){
 	router_name, 0, "lpuni", 0 }) );
 
     process_channel(1, ({ "channel-add", 5,
-	"Haven", "duuk",
+	"Frontiers", "cratylus",
 	router_name, 0, "free_speech", 0 }) );
 
     return 1;

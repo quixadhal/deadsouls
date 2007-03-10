@@ -349,7 +349,7 @@ string array explode_list(string list) {
 	for(int i = 0; i < size; i++) {
 	    tmp += expressions[i];
 	    if(i < size - 2) tmp += ", ";
-	    else return tmp + " " + coordinator + " " + expressions[size - 1];
+	    else return tmp + ", " + coordinator + " " + expressions[size - 1];
 	}
     }
 

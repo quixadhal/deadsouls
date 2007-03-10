@@ -39,11 +39,11 @@ mapping Currency, Bank, SpellBook;
 //end player vars
 
 void validate(){
-    if(catch((int)master()->valid_apply()) ||
-      !(int)master()->valid_apply(({ "SECURE", "ASSIST", "LIB_CONNECT" })) ){
+    if(!(int)master()->valid_apply(({ "SECURE", "ASSIST", "LIB_CONNECT" })) ){
 	string offender = identify(previous_object(-1));
 	debug("PLAYERS_D SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
 	log_file("security", "\n"+timestamp()+" PLAYERS_D breach: "+offender+" "+get_stack());
+	error("PLAYERS_D SECURITY VIOLATION: "+offender+" "+get_stack());
     }
 }
 
@@ -152,8 +152,7 @@ string *GetPlayerList(){
     return players;
 }
 
-string *GetCreatorList(){
-    return creators;
+string *GetCreatorList(){    return creators;
 }
 
 string *GetUserList(){
@@ -301,4 +300,3 @@ string array GetAdminIPs(){
     }
     return ret_array;
 }
-

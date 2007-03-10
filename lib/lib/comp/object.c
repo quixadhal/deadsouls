@@ -50,4 +50,3 @@ static int Destruct() {
 static void create() {
     parse_init();
 }
-

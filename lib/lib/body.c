@@ -405,8 +405,7 @@ mixed eventFall() {
  * on the body
  *
  * if the internal flag is set then overall health is healed.
- * if limbs are specified then the specified limbs are healed.
- * if the internal flag is NOT set and NO limbs are specified (default)
+ * if limbs are specified then the specified limbs are healed. * if the internal flag is NOT set and NO limbs are specified (default)
  *   then both overall health as well as the health of all limbs are healed.
  *
  * returns the actual amount of healing done or -1 if an error occurs
@@ -687,11 +686,15 @@ varargs int eventDie(mixed agent) {
 	object ob;
 	string curr;
 	int i;
+	object *riders = GetRiders();
 
 	//I'd like to move the living body out first, but for now this
 	//misfeature stays.
 	//this_object()->eventMove(ROOM_VOID);
 
+	if(riders && sizeof(riders)){
+	    foreach(object rider in riders) eventBuck(rider);
+	}
 	if(GetRace() == "android" || GetRace() == "bot" ) ob = new(LIB_BOT_CORPSE);
 	else if(member_array(GetRace(), RACES_D->GetNonMeatRaces()) != -1) {
 	    ob = crime_scene;
@@ -1316,8 +1319,7 @@ varargs int eventDie(mixed agent) {
 	if (memberp(GetMissingLimbParents(limb2), limb1)){
 	    return -1;
 	}
-	return strcmp(limb1, limb2);
-    } 
+	return strcmp(limb1, limb2);    } 
 
     // New comparison functionality courtesy of
     // Garfield and Javelin at M*U*D
@@ -1759,4 +1761,3 @@ varargs int eventDie(mixed agent) {
 	else DeathEvents = 1;
 	return DeathEvents;
     }
-

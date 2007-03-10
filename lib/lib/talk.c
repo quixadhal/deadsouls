@@ -13,6 +13,7 @@
 #define MAX_TELL_HIST_SIZE  50
 
 private static string array TellHist = ({});
+private string SpeakColor = "CYAN%^";
 
 int GetPolyglot();
 
@@ -35,6 +36,34 @@ int direct_whisper_to_liv_str() { return 1; }
 int direct_whisper_in_wrd_to_liv_str() { return 1; }
 
 int direct_whisper_to_liv_in_wrd_str() { return 1; }
+
+string SetSpeakColor(string str){
+    if(!str) str = "foo";
+    switch(str){
+    case "red" : SpeakColor = upper_case(str)+"%^";break;
+    case "green" : SpeakColor = upper_case(str)+"%^";break;
+    case "orange" : SpeakColor = upper_case(str)+"%^";break;
+    case "yellow" : SpeakColor = upper_case(str)+"%^";break;
+    case "blue" : SpeakColor = upper_case(str)+"%^";break;
+    case "magenta" : SpeakColor = upper_case(str)+"%^";break;
+    case "black" : SpeakColor = upper_case(str)+"%^";break;
+    case "white" : SpeakColor = upper_case(str)+"%^";break;
+    case "b_red" : SpeakColor += upper_case(str)+"%^";break;
+    case "b_green" : SpeakColor += upper_case(str)+"%^";break;
+    case "b_orange" : SpeakColor += upper_case(str)+"%^";break;
+    case "b_yellow" : SpeakColor += upper_case(str)+"%^";break;
+    case "b_blue" : SpeakColor += upper_case(str)+"%^";break;
+    case "b_magenta" : SpeakColor += upper_case(str)+"%^";break;
+    case "b_black" : SpeakColor += upper_case(str)+"%^";break;
+    case "b_white" : SpeakColor += upper_case(str)+"%^";break;
+    case "b_cyan" : SpeakColor += upper_case(str)+"%^";break;
+    case "flash" : SpeakColor += upper_case(str)+"%^";break;
+    default : SpeakColor = "CYAN%^";break;
+    }
+    return SpeakColor;
+}
+
+string GetSpeakColor() { return SpeakColor; }
 
 int eventTellHist(string str){
     string pob = base_name(previous_object());
@@ -72,6 +101,10 @@ varargs mixed CanSpeak(object target, string verb, string msg, string lang) {
 varargs mixed eventHearTalk(object who, object target, int cls, string verb,
   string msg, string lang) {
     string tmp;
+    object *riders = this_object()->GetRiders();
+
+    if(riders && sizeof(riders)) 
+	riders->eventHearTalk(who, target, cls, verb, (msg ||0), (lang ||0));
 
     if( lang && !newbiep() && !GetPolyglot() ) msg = translate(msg, GetLanguageLevel(lang));
     switch(cls) {
@@ -90,7 +123,7 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
 
     case TALK_SEMI_PRIVATE:
 	if( target != this_object() ) return 0;
-	tmp = "%^BOLD%^CYAN%^" + (string)who->GetName() + " whispers in " +
+	tmp = "%^BOLD%^" + SpeakColor + (string)who->GetName() + " whispers in " +
 	capitalize(lang) + " to you,%^RESET%^ \"" + msg + "%^RESET%^\"";
 	eventPrint(tmp, MSG_CONV);
 	break;
@@ -122,7 +155,7 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
 	    if( lang ) tmp = pluralize(verb) + " in " + capitalize(lang);
 	    else tmp = pluralize(verb);
 	    tmp = (string)who->GetName() + " " + tmp + ", \"";
-	    tmp = tmp + "%^BOLD%^CYAN%^" + msg + "%^RESET%^\"";
+	    tmp = tmp + "%^BOLD%^" + SpeakColor + msg + "%^RESET%^\"";
 	    eventPrint(tmp, MSG_CONV);
 	}
 	break;
@@ -201,7 +234,7 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang) {
 	    tmp = "You " + verb;
 	    if( lang ) tmp = tmp + " in " + capitalize(lang);
 	}
-	tmp = tmp + ", \"%^BOLD%^CYAN%^" + msg + "%^RESET%^\"";
+	tmp = tmp + ", \"%^BOLD%^" + SpeakColor + msg + "%^RESET%^\"";
 	eventPrint(tmp, MSG_CONV);
 	environment()->eventHearTalk(this_object(), target, cls, verb, msg,
 	  lang);

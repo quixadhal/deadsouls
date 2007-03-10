@@ -121,7 +121,6 @@ int eventMoveFollowers(object dest) {
 
 int eventEvade(object ob) {
     mixed ret;
-
     ret = CanEvade(ob);
     if( stringp(ret) ) error(ret);
     if( ret = 1 ) {
@@ -131,5 +130,4 @@ int eventEvade(object ob) {
     }
     return 0;
 }
-
 

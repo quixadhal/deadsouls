@@ -88,4 +88,3 @@ mixed direct_get_obj_out_of_obj(object target, object src) {
 mixed direct_get_obj_from_obj(object target, object src) {
     return direct_get_obj_out_of_obj(target, src);
 }
-

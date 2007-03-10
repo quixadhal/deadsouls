@@ -56,10 +56,12 @@ mixed cmd(string str) {
 
     if(member_array(which,modals) != -1){
 	ProcessModal(which, arg);
+	return 1;
     }
 
     if(member_array(which,inet_services) != -1){
 	ProcessInet(which, arg);
+	return 1;
     }
 
     else switch(which){

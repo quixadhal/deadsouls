@@ -142,4 +142,3 @@ int sort_folder(mapping a, mapping b) {
 }
 
 int filter_folder(mapping borg) { return (borg ? 1 : 0); }
-

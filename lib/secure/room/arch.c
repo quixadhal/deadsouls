@@ -95,8 +95,11 @@ int GetImud(){
 }
 
 string SignRead(){
-    if(imud_enabled) return "\"Intermud connection: %^BOLD%^GREEN%^ONLINE%^RESET%^\"";
-    else return "\"Intermud connection: %^BOLD%^RED%^OFFLINE%^RESET%^\"";
+    string ret = "";
+    if(INTERMUD_D->GetConnectedStatus()) 
+	ret += "\"Intermud connection: %^BOLD%^GREEN%^ONLINE%^RESET%^\"";
+    else ret +=  "\"Intermud connection: %^BOLD%^RED%^OFFLINE%^RESET%^\"";
+    return ret;
 }
 
 string LongDesc(){

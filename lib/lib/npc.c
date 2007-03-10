@@ -335,22 +335,25 @@ void eventDescribeEnvironment(int brief) {
 	    }
 	}
 
-	void receive_message(string cl, string msg) { 
-	    object *riders = get_livings(this_object());
-	    if(!NPC_CATCH_TELL_DEBUG) return;
-	    tell_room("/domains/default/room/catchtell","-------");
-	    tell_room("/domains/default/room/catchtell",timestamp());
-	    tell_room("/domains/default/room/catchtell","obj: "+identify(this_object()));
-	    tell_room("/domains/default/room/catchtell","cl: "+cl);
-	    tell_room("/domains/default/room/catchtell","msg: "+msg);
-	    tell_room("/domains/default/room/catchtell","-------");
-	    if(sizeof(riders)){
-		foreach(object living in riders){
-		    if(living->GetProperty("mount") == this_object())
-			tell_object(living, "(mount): "+msg);
-		}
-	    }
-	}
+	/*
+	 *	void receive_message(string cl, string msg) { 
+	 *	    object *riders = get_livings(this_object());
+	 *	    if(NPC_CATCH_TELL_DEBUG){
+	 *	    tell_room("/domains/default/room/catchtell","-------");
+	 *	    tell_room("/domains/default/room/catchtell",timestamp());
+	 *	    tell_room("/domains/default/room/catchtell","obj: "+identify(this_object()));
+	 *	    tell_room("/domains/default/room/catchtell","cl: "+cl);
+	 *	    tell_room("/domains/default/room/catchtell","msg: "+msg);
+	 *	    tell_room("/domains/default/room/catchtell","-------");
+	 *            }
+	 *	    if(sizeof(riders)){
+	 *		foreach(object living in riders){
+	 *		    if(living->GetProperty("mount") == this_object())
+	 *			tell_object(living, "(mount): "+msg);
+	 *		}
+	 *	    }
+	 *	}
+	 */
 
 	static int Destruct() {
 	    if( GetParty() ) PARTY_D->eventLeaveParty(this_object());
@@ -512,22 +515,19 @@ void eventDescribeEnvironment(int brief) {
 	}
 
 	varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
-	    object *riders = get_livings(this_object());
-	    if(!NPC_CATCH_TELL_DEBUG) return 1;
-	    tell_room("/domains/default/room/catchtell","-------");
-	    tell_room("/domains/default/room/catchtell",timestamp());
-	    tell_room("/domains/default/room/catchtell","obj: "+identify(this_object()));
-	    tell_room("/domains/default/room/catchtell","msg: "+msg);
-	    tell_room("/domains/default/room/catchtell","arg2: "+identify(arg2));
-	    tell_room("/domains/default/room/catchtell","arg3: "+identify(arg3));
-	    tell_room("/domains/default/room/catchtell","-------");
-	    if(sizeof(riders)){
-		foreach(object living in riders){
-		    if(living->GetProperty("mount") == this_object())
-			tell_object(living, "(mount): "+msg);
-		}
+	    object *riders = GetRiders();
+	    if(NPC_CATCH_TELL_DEBUG){
+		tell_room("/domains/default/room/catchtell","-------");
+		tell_room("/domains/default/room/catchtell",timestamp());
+		tell_room("/domains/default/room/catchtell","obj: "+identify(this_object()));
+		tell_room("/domains/default/room/catchtell","msg: "+msg);
+		tell_room("/domains/default/room/catchtell","arg2: "+identify(arg2));
+		tell_room("/domains/default/room/catchtell","arg3: "+identify(arg3));
+		tell_room("/domains/default/room/catchtell","stack: "+get_stack());
+		tell_room("/domains/default/room/catchtell","-------");
 	    }
-
+	    if(riders && sizeof(riders))
+		if(!arg2 || arg2 != MSG_CONV) riders->eventPrint(msg, (arg2||0), (arg3||0));
 	    return 1;
 	}
 
@@ -728,12 +728,29 @@ void eventDescribeEnvironment(int brief) {
 
 	string GetCapName() { return object::GetCapName(); }
 
-	string GetShort() { return object::GetShort(); }
+	string GetShort(){
+	    string ret = object::GetShort(); 
+	    object *riders = GetRiders();
+	    string *names = ({});
+	    if(riders && sizeof(riders)){
+		foreach(object rider in riders){
+		    names += ({ rider->GetShort() });
+		}
+		ret += " ridden by "+conjunction(names);
+	    }
+	    return ret;
+	}
+
+	string GetPlainShort(){
+	    return object::GetShort();
+	}
 
 	varargs string GetLong(string str) {
 	    mapping counts;
 	    string item, what;
 	    string *affects = ({});
+	    object *riders = this_object()->GetRiders();
+	    string *ridernames = ({});
 
 	    str = object::GetLong() + "\n";
 	    what = "The "+GetGender()+" "+GetRace();
@@ -744,6 +761,12 @@ void eventDescribeEnvironment(int brief) {
 	    }
 	    if(sizeof(affects)) str += implode(affects,"\n")+"\n";
 	    if(this_object()->GetAffectLong()) str += this_object()->GetAffectLong();
+	    if(riders && sizeof(riders)){
+		foreach(object rider in riders){
+		    ridernames += ({ rider->GetShort() });
+		}
+		str += capitalize(GetPlainShort())+" is ridden by "+conjunction(ridernames)+".\n";
+	    }
 	    counts = ([]);
 	    foreach(item in map(
 		filter(all_inventory(), (: !((int)$1->GetInvis(this_object())) :)),

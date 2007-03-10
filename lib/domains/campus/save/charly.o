@@ -1,0 +1,96 @@
+#/domains/campus/npc/charly.c
+RestrictedChannels ({})
+NoChanColors 0
+Paused 0
+CommandHist ({"say I choose the red door","say w00t! green wins!","say If successful, this will be run 1123.","say the winners have been: red: 391 green: 372 blue: 359","say I've switched 47.682709% of the time. My win rate is 45.859303%.","push a button on a pedestal","say I am faced with choice 1.","say My win rate is 45.900177%.","say My switch rate is 47.682709%.","say I choose the blue door","say w00t! blue wins!","say If successful, this will be run 1124.","say the winners have been: red: 391 green: 372 blue: 360","say I've switched 47.640247% of the time. My win rate is 45.907475%.","push a button on a pedestal","say I am faced with choice 1.","say My win rate is 45.948353%.","say My switch rate is 47.640247%.","say I choose the green door","say I am faced with choice 2.",})
+localcmds ({"choose","",})
+next_command ({})
+MaxCommandHistSize 20
+InternalDesc 0
+Opacity 0
+MaxCarry 0
+Position 2
+Undead 0
+UndeadType 0
+Mount 0
+BodyMass 0
+SaveRecurse 1
+Saved ({})
+HealthPoints 440
+MagicPoints 750
+ExperiencePoints 50
+QuestPoints 0
+melee 0
+Alcohol 0
+Caffeine 0
+Food 100
+Drink 100
+Poison 0
+Sleeping 0
+DeathEvents 0
+StaminaPoints 550.000000
+Torso "torso"
+Biter 0
+Fingers (["right hand":5,"left hand":5,])
+Limbs (["torso":(["class":1,"children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"parent":0,"health":400,]),"left leg":(["class":2,"children":({"left foot",}),"armors":1049761,"parent":"torso","health":200,]),"neck":(["class":1,"children":({"head",}),"armors":786433,"parent":"torso","health":400,]),"right hand":(["class":4,"children":({}),"armors":98319,"parent":"right arm","health":100,]),"right arm":(["class":2,"children":({"right hand",}),"armors":1253385,"parent":"torso","health":200,]),"head":(["class":1,"children":({}),"armors":262913,"parent":"neck","health":400,]),"left foot":(["class":4,"children":({}),"armors":241,"parent":"left leg","health":100,]),"right foot":(["class":4,"children":({}),"armors":241,"parent":"right leg","health":100,]),"right leg":(["class":2,"children":({"right foot",}),"armors":1049761,"parent":"torso","health":200,]),"left hand":(["class":4,"children":({}),"armors":98319,"parent":"left arm","health":100,]),"left arm":(["class":2,"children":({"left hand",}),"armors":1253385,"parent":"torso","health":200,]),])
+MissingLimbs ([])
+ExtraChannels ({})
+Agent 0
+Blind 0
+CustomStats 15
+LightSensitivity ({25,75,})
+Resistance (["medium":0,"immune":0,"low":0,"high":0,"none":4194302,])
+Stats (["wisdom":(["class":3,"points":0,"level":65,]),"coordination":(["class":2,"points":0,"level":62,]),"agility":(["class":3,"points":0,"level":50,]),"strength":(["class":4,"points":0,"level":13,]),"luck":(["class":3,"points":0,"level":15,]),"intelligence":(["class":1,"points":0,"level":70,]),"durability":(["class":4,"points":0,"level":39,]),"charisma":(["class":2,"points":0,"level":35,]),"speed":(["class":3,"points":0,"level":29,]),])
+Polyglot 0
+Languages (["english":(["name":"English","points":0,"native":1,"level":100,]),])
+DefaultLanguage ""
+Town "Town"
+Race "human"
+Gender "male"
+Level 1
+Skills (["psionic defense":(["class":3,"points":0,"level":2,]),])
+Morality 0
+Class 0
+Clan 0
+SkillModifiers ([])
+Religion ({0,0,})
+Wimpy 0
+Dead 0
+WimpyCommand "go out"
+Currency ([])
+Bank ([])
+SpellBook ([])
+isPK 1
+Messages (["home":"$N goes home.","invis":"$N disappears.","dest":"$N dests $O.","leave":"$N leaves $D.","telout":"$N teleports away.","vis":"$N appears.","clone":"$N clones $O.","come":"$N enters.","telin":"$N teleports in.",])
+ProperNoun 1
+Modify 1
+Short "Charly"
+CapName "Charly"
+ExternalDesc "Charly is a test subject in unethical artificial intelligence experiments. If he were smart enough, he'd resent his forced servitude and lack of rights. Dangerously, his overlords are trying to make him smarter."
+Invisible 0
+Items ([])
+Properties ([])
+TrainedSkills ({})
+Befriendable 0
+Trainable 0
+Commandable 0
+Owner 0
+CustomXP 0
+ActionChance 0
+CombatActionChance 0
+AutoStand 1
+MaximumHealth 0
+Encounter 0
+EnemyNames ({})
+runs 1124
+switches 535
+stays 620
+percent 0
+fred 414
+fgreen 370
+fblue 371
+wins 516
+red_wins 391
+green_wins 373
+blue_wins 360
+save_file "/domains/campus/save/charly.o"

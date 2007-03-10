@@ -17,7 +17,7 @@
 <div id="header">
 <p id="headertext">Dead Souls - Installation FAQ</p>
 <p id="subheadertext">By Cratylus @ Frontiers, February 2006. Updated
-December 2006.<br>
+March 2007.<br>
 </p>
 </div>
 <!-- End: Header -->
@@ -82,8 +82,9 @@ Download the <span
  style="text-decoration: underline;"> </span>version here:<br>
 <br>
 <ul>
-  <li><big><a href="http://lpmuds.net/files/deadsouls/ds2.3a1.zip"><span
- style="text-decoration: underline;">http://lpmuds.net/files/deadsouls/ds2.3a1.zip</span></a></big></li>
+  <li><a href="http://dead-souls.net/code/alpha/"><big><span
+ style="text-decoration: underline;"></span></big><big><span
+ style="text-decoration: underline;">http://dead-souls.net/code/alpha/</span></big></a></li>
 </ul>
 <br>
 The alpha version has lots of neat new stuff. Some of the new stuff is
@@ -196,6 +197,13 @@ cause the mud not to run.</li>
   <li>Trying to use Windows 98, 95, Me, or 3.x will simply not work.
 Sorry. Those are not server class operating systems and they use
 technology incompatible with the mud's requirements.</li>
+  <li>If you connect to the mud for the first time, but then it hangs,
+look in c:\ds\lib\log\runtime and c:\ds\lib\log\catch. Those are error
+log files. If you see stuff about files or directories not existing,
+then the problem is probably that your decompression program didn't
+unpack the files right. Start over. Download winrar and use that to
+uncompress.<br>
+  </li>
   <li>If the mud starts but you get lots of bizarre errors, there may
 be a couple of reasons for this:
     <ul>
@@ -224,16 +232,23 @@ with a different unzip utility.</li>
 <a name="8"></a>
 <h1>How do I install Dead Souls in a Linux/UNIX box? <a
  class="backtotop" href="#top">(Back to Top)</a></h1>
-<p>First make sure of a couple of things:
-</p>
 <ul>
+  <li>Login to your shell. Follow the instructions provided by your
+hosting service or your unix documentation to know how to do this.</li>
+  <li>Download the distribution package. For example: <span
+ style="font-weight: bold; color: rgb(255, 0, 0);">wget
+http://dead-souls.net/code/dead_souls_alpha.zip</span><br>
+  </li>
   <li>DO NOT use fileroller (a GUI based app) to decompress the
 package. If
 you ignore this warning you are very likely to end up with really
 confusing errors and problems. Instead use the normal unix command
-line. For example: <span class="command">unzip -d ds ds2.1.zip</span></li>
+line. For example: <span class="command">unzip -d ds
+dead_souls_alpha.zip</span></li>
   <li>NOTE: If you don't use the "-d" flag to specify the name of the
-new directory you want to create, the archive may dump everything
+new directory you want to create, the archive <span
+ style="font-weight: bold; font-style: italic;">may</span> dump
+everything
 into your current working directory, which may look ugly if that's
 not your intention.</li>
   <li> Don't use an existing driver binary, even if it's from a
@@ -246,7 +261,11 @@ upgrade, read the upgrade section further down in this document. Once
 we're set on those requirements and you've uncompressed the tarball, we
 can continue with the installation procedure.</li>
   <li>cd to the directory where all mud files reside. Called $MUDHOME
-in the rest of these UNIX instructions.</li>
+in the rest of these UNIX instructions. You can determine your current
+directory by typing <span
+ style="font-weight: bold; color: rgb(255, 0, 0);">pwd</span><span
+ style="color: rgb(255, 0, 0);"> </span>at the shell prompt.<br>
+  </li>
   <li>cd to v22.2b14</li>
   <li>type: <span class="command">./configure</span></li>
   <li>type: <span class="command">make</span></li>
@@ -391,6 +410,16 @@ can help.</li>
 compiling as root (obviously a last resort, and just for testing).</li>
   <li>On Ubuntu, before running the compile, try typing: <span
  class="sb_messagebody">export CC=gcc-3.4</span></li>
+  <li><span class="sb_messagebody">If you get errors complaining about
+not finding bison or yacc, what this means is that compiling the driver
+requires these tools, and the configure script can't find them. They
+are either in a non-standard location, or your host simply does not
+have them installed. If you run the host box, either install bison (or
+yacc), or add their path to your PATH environment variable. If you are
+not the host computer admin, politely explain to the admins that you
+can't compile without bison (or yacc) and could they please install it
+for you.<br>
+    </span></li>
   <br>
 </ul>
 <a name="10"></a>

@@ -110,6 +110,7 @@ void CheckActions(){
 
 void heart_beat(){
     counter++;
+    inventory::heart_beat();
     if(counter > 9999) counter = 0;
     CheckActions();
 }
@@ -865,23 +866,27 @@ int eventMove() { return 0; }
 varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
     object *targs;
     int msg_class;
+    targs = filter(all_inventory(), (: (int)$1->is_living() :));
+
+    //foreach(mixed element in targs){
+    //    object *riders = element->GetRiders();
+    //    if(riders && sizeof(riders)) targs += riders;
+    //}
 
     if( !arg2 && !arg3 ) {
-	targs = filter(all_inventory(), (: (int)$1->is_living() :));
 	msg_class = MSG_ENV;
     }
     else if( objectp(arg2) || arrayp(arg2) ) {
 	if( objectp(arg2) ) arg2 = ({ arg2 });
-	targs = (filter(all_inventory(), (: (int)$1->is_living() :)) - arg2);
+	targs -=  arg2;
 	msg_class = MSG_ENV;
     }
     else if( !arg3 ) {
-	targs = filter(all_inventory(), (: (int)$1->is_living() :));
 	msg_class = arg2;
     }
     else if( objectp(arg3) || arrayp(arg3) ) {
 	if( objectp(arg3) ) arg3 = ({ arg3 });
-	targs = (filter(all_inventory(), (: (int)$1->is_living() :)) - arg3);
+	targs -= arg3;
 	msg_class = arg2;
     }
     targs->eventPrint(msg, msg_class);
@@ -915,11 +920,9 @@ int CanReceive(object ob){
 }
 
 varargs void reset(int count) {
-    object *livings = get_livings(this_object());
-    if(sizeof(livings)){
-	foreach(object living in livings){
-	    if(living && (living->GetDrone() || living->GetMount() ||
-		living->GetNoClean())) return;
+    if(sizeof(all_inventory())){
+	foreach(object element in deep_inventory()){
+	    if(element->GetNoClean()) return;
 	}
     }
     inventory::reset(count);
@@ -1018,4 +1021,3 @@ static void init() {
     if(!sizeof(GetObviousExits()) && DefaultExits > 0 && ObviousVisible) GenerateObviousExits();
     if((Action && sizeof(Action)) || sizeof(ActionsMap)) set_heart_beat(tick_resolution);
 }
-

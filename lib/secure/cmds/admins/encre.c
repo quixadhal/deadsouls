@@ -99,4 +99,3 @@ void help() {
       "See also: decre, rid", this_player()
     );
 }
-

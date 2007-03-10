@@ -52,13 +52,13 @@ static int cmdAll(string args) {
 	return 0;
     }
 
-    if(MAX_COMMANDS_PER_SECOND){
+    if(!archp(this_player()) && MAX_COMMANDS_PER_SECOND){
 	if(last_cmd_time == time()) cmd_count++;
 	else {
 	    last_cmd_time = time();
 	    cmd_count = 1;
 	}
-	if(!creatorp(this_player()) && cmd_count > MAX_COMMANDS_PER_SECOND) {
+	if(cmd_count > MAX_COMMANDS_PER_SECOND) {
 	    write("You have exceeded the "+MAX_COMMANDS_PER_SECOND+" commands per second limit.");
 	    return 1;
 	}
@@ -83,7 +83,7 @@ static int cmdAll(string args) {
 	filter(this_player()->GetCommands(), (: localcmds += ({ $1[0] }) :));
 	if(member_array(verb,CMD_D->GetCommands()) == -1 &&
 	  member_array(verb,keys(VERBS_D->GetVerbs())) == -1 &&
-	  member_array(verb,localcmds) == -1){
+	  member_array(verb,localcmds) == -1 && environment(this_player())->GetExits()){
 	    if(member_array(verb,environment(this_player())->GetExits()) != -1) verb = "go "+verb;
 	    if(member_array(verb,environment(this_player())->GetEnters()) != -1) verb = "enter "+verb;
 	}
@@ -379,5 +379,4 @@ string SetCommandFail(string str) {
 }
 
 string GetCommandFail() { return CommandFail; }
-
 

@@ -1,10 +1,9 @@
 #include <lib.h>
-inherit LIB_ROOM;
-
+inherit LIB_BANK;
 
 int ReadSign();
 static void create() {
-    room::create();
+    bank::create();
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("First Village Bank");

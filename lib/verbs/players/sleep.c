@@ -32,4 +32,3 @@ mixed do_sleep() {
     return (mixed)this_player()->SetSleeping(random(10)+5);
 }
 
-

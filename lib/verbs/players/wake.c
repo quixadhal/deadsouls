@@ -45,4 +45,3 @@ mixed do_wake() {
     return 1;
 }
 
-

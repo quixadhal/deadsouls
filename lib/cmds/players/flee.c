@@ -18,4 +18,3 @@ void help() {
       "This command doesn't work for creators.\n\n",
       this_player() );
 }
-

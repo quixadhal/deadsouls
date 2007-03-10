@@ -35,7 +35,7 @@ int SetSocketType(int type) { return (SocketType = type); }
 int SetDestructOnClose(int x) { return (DestructOnClose = x); }
 
 int eventCreateSocket(string host, int port) {
-    int x;
+    int x, ret;
 
     Socket = new(class client);
     Socket->Blocking = 1;
@@ -45,6 +45,7 @@ int eventCreateSocket(string host, int port) {
 	eventSocketError("Error in socket_create().", x);
 	return x;
     }
+    ret = x;
     Socket->Descriptor = x;
     x = socket_bind(Socket->Descriptor, 0);
     if( x != EESUCCESS ) {
@@ -59,6 +60,7 @@ int eventCreateSocket(string host, int port) {
 	eventSocketError("Error in socket_connect().", x);
 	return x;
     }
+    return ret;
 }
 
 static void eventAbortCallback(int fd) {
@@ -149,4 +151,3 @@ static void eventSocketError(string str, int x) {
     if( LogFile ) 
 	log_file(LogFile, ctime(time()) + "\n" + socket_error(x) + "\n");
 }
-

@@ -52,7 +52,7 @@ varargs string identify( mixed a );
 string item_list(mixed *items);
 int leaderp(object ob);
 object *livings();
-object load_object(string str);
+//object load_object(string str);
 void log_file(string fl, string msg);
 int member_group(mixed who, string grp);
 int moral_act(object who, object target, int amount);
@@ -218,8 +218,7 @@ int testp(object ob);
 string alpha_strip(mixed arg);
 mixed seteuid(mixed args);
 mixed getuid(mixed args);
-mixed geteuid(mixed args);
-string *query_local_functions(mixed arg);
+mixed geteuid(mixed args);string *query_local_functions(mixed arg);
 int check_string_length(string str);
 varargs mixed print_long_string(object who, string str, int catted);
 void add(mixed arg1, mixed arg2);
@@ -249,5 +248,8 @@ string match_command(string verb);
 varargs mixed random_numbers(int n, int integer);
 int snooperp(mixed guy);
 string native_version();
+string convert_newline(string str);
+int clean_newline_file(string str);
+
 
 #endif /* l_sefun_h */
