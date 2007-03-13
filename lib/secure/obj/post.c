@@ -667,7 +667,7 @@ static private void quit_box(string cmd) {
 
     if(__Options["quit"]) {   
 	message("prompt", "Do you really wish to quit (default 'n')? \n",    
-	  this_player());   
+	  this_player());
 	input_to("confirm_quit", cmd);   
 	return;   
     }   

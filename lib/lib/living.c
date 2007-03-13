@@ -22,6 +22,8 @@ inherit "/lib/teach";
 inherit "/lib/learn";
 
 private int isPK;
+private mixed Attackable = 1;
+private int NoCondition = 0;
 
 varargs mixed CanReceiveHealing(object who, string limb);
 
@@ -64,8 +66,8 @@ mixed direct_dismount_from_liv(){
 }
 
 mixed direct_attack_liv() {
-    if(PLAYER_KILL) return 1;
     if( userp(this_player()) && userp(this_object()) ) {
+	if(PLAYER_KILL) return 1;
 	if( !(int)environment(this_player())->CanAttack(this_object()) ) {
 	    return "No player killing!";
 	}
@@ -74,7 +76,8 @@ mixed direct_attack_liv() {
 	}
 	else return "No PK!";
     }
-    else return 1;
+
+    else return this_object()->GetAttackable();
 }
 
 mixed direct_attack_only_liv(){
@@ -640,6 +643,20 @@ int SetDead(int i){
     return combat::SetDead(i);
 }
 
-//mixed indirect_look_at_obj_word_obj() {
-//    return 0;
-//}
+mixed SetAttackable(mixed foo){
+    Attackable = foo;
+    return Attackable;
+}
+
+mixed GetAttackable(){
+    return Attackable;
+}
+
+int SetNoCondition(int foo){
+    NoCondition = foo;
+    return NoCondition;
+}
+
+int GetNoCondition(){
+    return NoCondition;
+}

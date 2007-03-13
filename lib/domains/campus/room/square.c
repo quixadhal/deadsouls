@@ -6,8 +6,7 @@
 #include <lib.h>
 
 inherit LIB_ROOM;
-inherit "/lib/props/ambiance";
-inherit "/lib/props/getlivings";
+inherit LIB_AMBIANCE;
 
 int CheckDoor(){
     object *obs;

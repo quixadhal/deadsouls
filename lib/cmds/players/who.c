@@ -57,4 +57,3 @@ int cmd(string args) {
     else print_long_string(this_player(),ret);
     return 1;
 }
-

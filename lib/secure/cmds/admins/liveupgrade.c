@@ -15,17 +15,30 @@ string array tmpnames;
 string upgrade_prefix = "/code/upgrades/"+mudlib_version();
 int i;
 int oob = 0;
+object player;
 
 mixed cmd( string str) {
     string mud = "Dead Souls"; 
     string file;
-    int foo, tmpint;
+    int foo, tmpint = 0;
     mapping NewFiles = ([]);
     object inet = find_object(INET_D);
     string *preload_file = explode(read_file(CFG_PRELOAD),"\n");
+    mixed *socks = socket_status();
+
+    foreach(mixed element in socks){
+	//tc("1: "+element[1]+", 4: "+element[4]);
+	if(element[1] == "DATA_XFER" && element[4] == WEB_SOURCE+".80"){
+	    write("A download is still in progress. Please wait until it is complete.");
+	    return 1;
+	}
+    }
+
+    player = this_player();
     i = 0;
     allnames = ({});
-    if(!this_player()) return 0;
+    if(!player) return 0;
+
     if( !((int)master()->valid_apply(({ "SECURE" }))) )
 	error("Illegal attempt to access liveupgrade: "+get_stack()+" "+identify(previous_object(-1)));
 
@@ -48,15 +61,7 @@ mixed cmd( string str) {
 
     if(str == "apply"){
 	string *files = ({});
-	mixed *socks = socket_status();
 
-	foreach(mixed element in socks){
-	    //tc("1: "+element[1]+", 4: "+element[4]);
-	    if(element[1] == "DATA_XFER" && element[4] == WEB_SOURCE+".80"){
-		write("A download is still in progress. Please wait until it is complete.");
-		return 1;
-	    }
-	}
 	foreach(string element in get_dir(DIR_UPGRADES_FILES+"/")){
 	    files += ({ DIR_UPGRADES_FILES+"/"+element });
 	}
@@ -73,11 +78,11 @@ mixed cmd( string str) {
 	    else rename(element, NewFiles[element]);
 	}
 	if(member_array(INET_D,preload_file) == -1 && inet) inet->eventDestruct();
+	reload(UPDATE_D);
 	rm("/secure/upgrades/txt/list.txt");
 	write("Done.");
 	return 1;
     }
-
 
     if(oob){
 	tn("oob lu");
@@ -165,7 +170,7 @@ mixed cmd( string str) {
 	write("Full upgrade begun.");
 	write("Please wait until the netstat command shows no more connections to "+
 	  "the upgrade server, then issue the command: liveupgrade apply\n\n");
-	write("WARNING! WARNING! WARNING!");
+	write("%^FLASH%^RED%^WARNING! %^BLACK%^WARNING! %^YELLOW%^WARNING! %^RESET%^WARNING!");
 	write("You must *always* do a full backup before applying the liveupgrade. "+
 	  "If the liveupgrade screwed up, and you get garbage files because of connection "+
 	  "problems, it may be necessary for you to restore from backup to be able to "+

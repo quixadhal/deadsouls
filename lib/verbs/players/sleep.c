@@ -31,4 +31,3 @@ mixed do_sleep() {
       "lose consciousness.", ({this_player()}) );
     return (mixed)this_player()->SetSleeping(random(10)+5);
 }
-

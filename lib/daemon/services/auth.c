@@ -16,7 +16,7 @@ void eventReceiveAuthReply(mixed array packet) {
 	}
     }
     tn("Auth reply received from "+packet[2]+".","white");
-    tn("Ping packet: "+identify(packet),"white");
+    //tn("Ping packet: "+identify(packet),"white");
     if(sizeof(pingers)){
 	foreach(object dude in pingers){
 	    tell_player(dude, packet[2]+" has just replied to a ping request from "+

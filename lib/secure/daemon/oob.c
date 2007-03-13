@@ -362,4 +362,3 @@ mixed SendMail(mapping mail){
     }
     return 1;
 }
-

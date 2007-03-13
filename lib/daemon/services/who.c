@@ -8,13 +8,24 @@
 
 #include <daemons.h>
 #include <rooms.h>
+static mapping user_table = ([]);
+
+static string eventLookupUser(string str){
+    if(!user_table) user_table = ([]);
+    if(!user_table[str]) return str;
+    else {
+	string ret = user_table[str];
+	map_delete(user_table, str);
+	return ret;
+    }
+}
 
 void eventReceiveWhoReply(mixed *packet) {
     string list, *who, tmp;
     object ob;
 
     if( file_name(previous_object()) != INTERMUD_D ) return;
-    if( !packet[5] || !(ob = find_player(convert_name(packet[5]))) ) return;
+    if( !packet[5] || !(ob = find_player(convert_name(eventLookupUser(packet[5])))) ) return;
     list = "%^MAGENTA%^Remote who information from " + packet[2] + ":%^RESET%^\n";
     foreach(who in packet[6]){ 
 	mixed wtf;
@@ -45,11 +56,14 @@ void eventReceiveWhoRequest(mixed *packet) {
 }
 
 varargs void eventSendWhoRequest(string mud) {
-    string who;
+    string who, crypt_who;
 
     who = (string)this_player(1)->GetKeyName();
-    if((mud) && sizeof(mud)) INTERMUD_D->eventWrite(({ "who-req", 5, mud_name(), who, mud, 0 }));
-    else INTERMUD_D->eventWrite(({ "who-req", 5, mud_name(), who, 0, 0 }));
+    if(this_player(1)->GetInvis()) crypt_who = alpha_crypt(10); 
+    else crypt_who = who;
+    user_table[crypt_who] = who;
+    if((mud) && sizeof(mud)) INTERMUD_D->eventWrite(({ "who-req", 5, mud_name(), crypt_who, mud, 0 }));
+    else INTERMUD_D->eventWrite(({ "who-req", 5, mud_name(), crypt_who, 0, 0 }));
     tn("eventSendWhoRequest: "+identify( ({ "who-req", 5, mud_name(), who, mud, 0 })), "blue");
 }
 

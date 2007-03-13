@@ -504,4 +504,3 @@ varargs int purge_ips(int rude){
 }
 
 
-

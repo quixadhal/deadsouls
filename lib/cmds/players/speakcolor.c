@@ -18,4 +18,3 @@ void help() {
       "This command allows you to set the color in which you receive spoken messages.\n\n",
       this_player() );
 }
-

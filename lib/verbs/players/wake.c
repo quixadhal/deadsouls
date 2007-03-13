@@ -44,4 +44,3 @@ mixed do_wake() {
     else tell_player(this_player(),"You are nearing full wakefulness...");
     return 1;
 }
-

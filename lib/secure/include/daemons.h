@@ -59,6 +59,7 @@
 #define TIME_D               DIR_DAEMONS "/time"
 #define UNDERWORLD_D         DIR_DAEMONS "/underworld"
 #define UNIQUE_D             DIR_DAEMONS "/unique"
+#define UPDATE_D             DIR_SECURE_DAEMONS "/update"
 #define USERS_D              DIR_SECURE_DAEMONS "/users"
 #define VERBS_D              DIR_DAEMONS "/verbs"
 #define VIRTUAL_D            DIR_DAEMONS "/virtual"

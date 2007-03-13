@@ -63,8 +63,7 @@ mixed cmd(string args) {
 		thing->eventMove(ROOM_FURNACE);
 		//tc("Thing's env: "+identify(environment(thing)),"cyan");
 	    }
-	}
-	//Save the user to sync its state with his inventory
+	}	//Save the user to sync its state with his inventory
 	unguarded( (: ob->save_player((string)ob->GetKeyName()) :) );
 
 	//Move the user file to the player dir
@@ -93,7 +92,7 @@ mixed cmd(string args) {
 	//Do the decre
 	//
 	exec(player_ob, ob);
-	//player_ob->Setup();
+	player_ob->Setup();
 
 	//Remove creator channels and such
 	//
@@ -141,4 +140,3 @@ void help() {
       "See also: encre, rid", this_player()
     );
 }
-

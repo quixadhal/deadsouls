@@ -75,7 +75,6 @@ int SetMount(int x) {
     Mount = x;
     return Mount;
 }
-
 int GetMount(){ return Mount; }
 
 mixed eventMount(object who){

@@ -24,7 +24,7 @@
 **
 ** Myth@Icon of Sin - Jan 19, 1997
 **  o Fixed STOR:
-**    o ascii: removed \r's
+**    o ascii: removed carriage returns
 **    o binary: added a fileposition flag
 **  o Added the SYST command.
 **  o Added line checking to the read callback.
@@ -98,7 +98,7 @@ private void eventReadFtpData(mixed text){
     //tc("ftp data: "+identify(text),"green");
     switch(Session->binary){
     case 0:
-	text=replace_string(text, "\r", "");
+	text=replace_string(text, CARRIAGE_RETURN, "");
 	write_file(Session->targetFile, text);
 	return;
     case 1:
@@ -542,8 +542,8 @@ private void do_list( string arg, int ltype){
 	}
 	if(strsrch(flags,'1') > -1)
 	    output=implode(map(files,(:sprintf("%s",$1[0]) :)),"\n");
-	eventWrite("150 Opening ASCII mode data connection for file list.\r\n",0);
-	Session->dataPipe->eventWrite(implode(explode(output,"\n"), "\r\n")+"\r\n");
+	eventWrite("150 Opening ASCII mode data connection for file list."+CARRIAGE_RETURN+"\n",0);
+	Session->dataPipe->eventWrite(implode(explode(output,"\n"), CARRIAGE_RETURN+"\n")+CARRIAGE_RETURN+"\n");
 	return;
     }
 
@@ -932,7 +932,7 @@ private void do_list( string arg, int ltype){
 
 	if (!(Session->command)) Session->command = "";
 
-	data = replace_string(data, "\r", "");
+	data = replace_string(data, CARRIAGE_RETURN, "");
 	Session->command += data;
 	if ((i = strsrch(Session->command, "\n")) == -1) return;
 	data=Session->command[0..i-1];

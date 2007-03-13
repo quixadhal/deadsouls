@@ -42,7 +42,7 @@ int CheckOK(){
 }
 
 int eventPing(){
-if(DISABLE_INTERMUD) return 1;
+    if(DISABLE_INTERMUD) return 1;
     Pinging = 1;
     OK = 0;
 
@@ -62,8 +62,8 @@ void create() {
     SetNoClean(1);
     if(!DISABLE_INTERMUD) set_heart_beat(1);
     else {
-    set_heart_beat(0);
-    Pinging = 0;
+	set_heart_beat(0);
+	Pinging = 0;
     }
 }
 

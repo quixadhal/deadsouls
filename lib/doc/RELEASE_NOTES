@@ -1,4 +1,22 @@
----- 2.3a16 (unreleased) ---
+---- 2.3a18 ---
+- If OLD_STYLE_PLURALS is defined in config.h, commands will be translated
+  from "drop book 2" format to "drop 2nd book" format automatically.
+- Added SetNoCondition() to living things. If you don't like indications of
+  health on an npc, make it SetNoCondition(1) and its health status will not
+  report on looking at it. This will also work on players. If you want this to
+  be the default behavior for players, add a call to SetNoCondition in connect.c.
+- Added Set/GetAttackable to LIB_LIVING, so that npc's can be made immune
+  to players' standard attacks. Note that your mud may still contain special
+  weapons or spells that can trick the npc into fighting, so you may also want to
+  set the npc to not pick fights, using SetPacifist(1)
+- Names of invis players are now scrambled when they make rwho requests,
+  so that the target mud does not know who has queried it.
+- Invis admins now correctly receive pings/tells/rwho's/etc.
+- When mounted, you can now "ride s" rather than "ride south".
+- The copy verb now deals with custom defines more sanely.
+- It is now possible to create rooms not linked to anything, with the create command.
+  Example: create room none newroom1.c
+- The decre command no longer freezes the target.
 - Ping daemon does not try to ping when intermud is disabled.
 - Added sefuns: convert_newline, clean_newline_file, to deal with http file corruption.
 - WGET_D now correctly handles receipt of newlines in files.
@@ -407,8 +425,7 @@
   in LIB_CREATOR and LIB_PLAYER.
 - Eliminated savefile data leak in admins on shutdown.
 - Fixed overly aggressive reaper that killed shadows.
-- Admintool security flaw has been removed by removing encre and
-  decre from its menu.
+- Admintool security flaw has been removed by removing encre and  decre from its menu.
 - It's no longer possible to screw up admintool by removing too
   many currencies at once.
 - Updated verbs/commands: reload, gauge.

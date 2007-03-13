@@ -52,18 +52,20 @@ string GetLong(string nom) {
 
     if(!nom) nom = this_object()->GetKeyName();
     str = ::GetLong();
-    str += capitalize(nom);
-    h = percent(GetHealthPoints(), GetMaxHealthPoints());
-    if( h < 10.0 ) str += " is barely functional.\n";
-    else if( h < 20.0 ) str += " is functioning poorly.\n";
-    else if( h < 30.0 ) str += " is severely damaged.\n";
-    else if( h < 40.0 ) str += " is badly damaged.\n";
-    else if( h < 50.0 ) str += " is damaged.\n";
-    else if( h < 60.0 ) str += " has sustained minor damage.\n";
-    else if( h < 70.0 ) str += " looks a bit battered.\n";
-    else if( h < 80.0 ) str += " is in decent shape.\n";
-    else if( h < 90.0 ) str += " is quite keen.\n";
-    else str += " is operating at optimal levels.\n";
+    if(!(this_object()->GetNoCondition())){
+	str += capitalize(nom);
+	h = percent(GetHealthPoints(), GetMaxHealthPoints());
+	if( h < 10.0 ) str += " is barely functional.\n";
+	else if( h < 20.0 ) str += " is functioning poorly.\n";
+	else if( h < 30.0 ) str += " is severely damaged.\n";
+	else if( h < 40.0 ) str += " is badly damaged.\n";
+	else if( h < 50.0 ) str += " is damaged.\n";
+	else if( h < 60.0 ) str += " has sustained minor damage.\n";
+	else if( h < 70.0 ) str += " looks a bit battered.\n";
+	else if( h < 80.0 ) str += " is in decent shape.\n";
+	else if( h < 90.0 ) str += " is quite keen.\n";
+	else str += " is operating at optimal levels.\n";
+    }
     limbs = GetMissingLimbs();
     if( sizeof(limbs) ) {
 	int i, maxi;

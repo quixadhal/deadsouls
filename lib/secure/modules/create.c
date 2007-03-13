@@ -19,7 +19,7 @@ string *item_arr = base_arr + ({"SetLanguage","SetRead","SetDefaultRead","SetDis
 string *meal_arr = item_arr + ({ "SetMealType", "SetStrength"}) -({"SetDamagePoints"});
 string *storage_arr = item_arr + ({"SetOpacity", "SetMaxCarry","SetInventory", "SetCanClose", "SetCanLock","SetMaxRecurse","SetLocked","SetClosed","SetKey"});
 string *room_arr = base_arr - ({"SetUnique"}) + ({"SetTerrainType","AddTerrainType","SetLanguage", "SetRead", "SetDefaultRead", "SetNoObviousExits","SetDefaultExits","SetTown","SetNightLong","SetDayLong","SetClimate","SetAmbientLight","SetNightLight","SetDayLight","SetObviousExits", "SetInventory", "SetEnters"});
-string *npc_arr = base_arr - ({"SetItems"}) + ({"SetMass","SetBodyType","SetSize","SetRespiration","SetMount","SetCanBefriend","SetDefaultLanguage","SetNativeLanguage","SetCustomXP", "SetSpellBook", "SetCanBite", "SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat"});
+string *npc_arr = base_arr - ({"SetItems"}) + ({"SetMass","SetBodyType","SetSize","SetRespiration","SetMount","SetCanBefriend","SetDefaultLanguage","SetNativeLanguage","SetCustomXP", "SetSpellBook", "SetCanBite", "SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat", "SetNoCondition", "SetAttackable"});
 string *barkeep_arr = npc_arr + ({"SetLocalCurrency","SetMenuItems"});
 string *trainer_arr = npc_arr + ({"SetNoSpells", "AddTrainingSkills"});
 string *vendor_arr = npc_arr + ({"SetLocalCurrency","SetStorageRoom","SetMaxItems","SetVendorType"});
@@ -444,6 +444,8 @@ mixed eventModify(object ob, string str){
 	case "setrespiration" : out = "SetRespiration";break;
 	case "setinvis" : out = "SetInvis";break;
 	case "invis" : out = "SetInvis";break;
+	case "attackable" : out = "SetAttackable";break;
+	case "setattackable" : out = "SetAttackable";break;
 	default : out = mode;
 	}
     }

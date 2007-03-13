@@ -91,6 +91,34 @@ static int cmdAll(string args) {
 
     if(COMMAND_MATCHING && sizeof(match_command(verb))) verb = match_command(verb);
 
+    if(OLD_STYLE_PLURALS && args){
+	int numba, i;
+	string tmp_ret;
+	string *line = explode(args," ");
+	//tc("line: "+identify(line));
+	for(i = 0; i < sizeof(line); i++){
+	    string element = line[i];
+	    //tc("element: "+element);
+	    if(numba = atoi(element)){
+		object o1;
+		string e1, e2;
+		//tc("numba: "+numba);
+		e1 = numba+ordinal(numba);
+		e2 = line[i-1];
+		//tc("looking for: "+e2+" "+numba);
+		o1 = present(e2+" "+numba,this_player());
+		if(!o1) o1 = present(e2+" "+numba,environment(this_player()));
+		if(o1){
+		    //tc("o1: "+identify(o1));
+		    tmp_ret = e1+" "+e2;
+		    //tc("ret: "+tmp_ret);
+		    args = replace_string(args,e2+" "+numba,tmp_ret);
+		}
+		//else tc("no dice");
+	    }
+	}
+    }
+
     if(query_custom_command(verb) && query_custom_command(verb) != "" && !creatorp(this_player()) ){
 	this_player()->eventPrint("How clever of you. Or lucky. In any case, this command is unavailable to you.");
 	return 1;
@@ -195,6 +223,7 @@ int Setup() {
 int eventForce(string cmd) {
     string err;
     int res;
+    if(!cmd) return 0;
 
     cmd = process_input(cmd);
     Forced = 1;
@@ -279,7 +308,7 @@ int eventRetryCommand(string lastcmd){
     }
 
 
-    if(StillTrying > 6) {
+    if(StillTrying > 6) {	
 	write("Your command is ambiguous. Please be more specific. Which thing do you mean?");
 	StillTrying = 0;
 	return 1;
@@ -379,4 +408,3 @@ string SetCommandFail(string str) {
 }
 
 string GetCommandFail() { return CommandFail; }
-

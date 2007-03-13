@@ -2,4 +2,3 @@
 #include <daemons.h>
 
 inherit WGET_D;
-

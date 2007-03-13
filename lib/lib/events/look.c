@@ -286,4 +286,3 @@ mixed direct_look_at_str_on_obj(string str, object target) {
     }
     return 1;
 }
-

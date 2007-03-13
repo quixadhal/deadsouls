@@ -715,16 +715,16 @@ varargs mixed print_long_string(object who, string str, int catted){
 }
 
 string convert_newline(string str){
-string ret = "";
-if(!str) return ret;
-ret = replace_string(str,"\r","\n");
-return ret;
+    string ret = "";
+    if(!str) return ret;
+    ret = replace_string(str,CARRIAGE_RETURN,"\n");
+    return ret;
 }
 
 int clean_newline_file(string str){
-string ret = "";
-if(!file_exists(str)) return 0;
-else ret = convert_newline(read_file(str));
-if(ret != "") return write_file(str,ret,1);
-else return 0;
+    string ret = "";
+    if(!file_exists(str)) return 0;
+    else ret = convert_newline(read_file(str));
+    if(ret != "") return write_file(str,ret,1);
+    else return 0;
 }

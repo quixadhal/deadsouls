@@ -1,8 +1,8 @@
 #include <lib.h>
 #include <modules.h>
 
-string globalstr, globalstr2, globaltmp;
-string globalroom, globalfile;
+private string globalstr, globalstr2, globaltmp;
+private string globalroom, globalfile;
 
 varargs int eventCreateExit(string dir, string room, string file, int remote);
 varargs int eventCreateEnter(string dir, string room, string file, int remote);
@@ -11,15 +11,17 @@ varargs mixed eventProcessExits(string filename, string dir, string location);
 varargs mixed eventProcessEnters(string filename, string dir, string location, object room);
 string eventCopyRoom(string source, string dest);
 
-string *cardinal_dirs = ( ({"north","south","east","west", "northeast","northwest","southeast","southwest","up","down", "out"}) );
+string *cardinal_dirs = ( ({"none", "north","south","east","west", "northeast","northwest","southeast","southwest","up","down", "out"}) );
 
 mixed make(string str) {
     int enter;
+    int blank = 0;
     string *exits;
     string *enters;
     string foo, current_dir, current_room, this_room, new_room, room_dir;
     string tmp_path, new_file, arg1, arg2, s1, s2;
     object room;
+    globalstr = globalstr2 = globaltmp = "";
 
     if(!str || str == "") {
 	write("You'll need to be more specific. Try 'help create'");
@@ -31,13 +33,25 @@ mixed make(string str) {
 	return 1;
     }
 
+    if(sscanf(str," %s %s", s1, s2) == 2){
+	arg1 = s1;
+	arg2 = s2;
+	if(sizeof(opposite_dir(arg1))) enter = 0;
+	else enter = 1;
+    }
+    else {
+	write("Usage: create room <direction> <file>");
+	return 1;
+    }
+
+    if(arg1 == "none") blank = 1;
 
     foo = ""+time();
     room = environment(this_player());
     current_dir = this_player()->query_cwd();
     current_room = base_name(room);
-    room_dir = path_prefix(current_room);
-
+    if(!blank) room_dir = path_prefix(current_room);
+    else room_dir = current_dir;
 
     if(file_exists(current_room+".c") && !check_privs(this_player(),current_room+".c")){
 	write("You do not appear to have access to this room file. Modification aborted.");
@@ -54,29 +68,25 @@ mixed make(string str) {
     this_room = read_file(current_room+".c");
     new_room = read_file("/obj/room.c");
 
+    if(!blank){
 
-    if(sscanf(str," %s %s", s1, s2) == 2){ 
-	arg1 = s1;
-	arg2 = s2;
-	if(sizeof(opposite_dir(arg1))) enter = 0;
-	else enter = 1;
-    }
-    else {
-	write("Usage: create room <direction> <file>");
-	return 1;
-    }
+	if(environment(this_player())->GetNoModify() ){
+	    write("This should be edited by hand. Change cancelled.");
+	    return 1;
+	}
 
-    exits = room->GetExits();
-    enters = room->GetEnters();
+	exits = room->GetExits();
+	enters = room->GetEnters();
 
-    if(member_array(arg1,exits) != -1){
-	write("This room already has an exit in that direction.");
-	return 1;
-    }
+	if(member_array(arg1,exits) != -1){
+	    write("This room already has an exit in that direction.");
+	    return 1;
+	}
 
-    if(member_array(arg1,enters) != -1){
-	write("This room already has an enter by that name.");
-	return 1;
+	if(member_array(arg1,enters) != -1){
+	    write("This room already has an enter by that name.");
+	    return 1;
+	}
     }
 
     if(strsrch(arg2,".c") == -1) arg2 += ".c";
@@ -110,6 +120,12 @@ mixed make(string str) {
 	if(!file_exists(new_file)) cp("/obj/room.c",new_file);
     }
 
+    if(blank){
+	reload(new_file);
+	this_player()->eventMoveLiving(new_file);
+	return 1;
+    }
+
     if(enter == 0) eventCreateExit(arg1, current_room+".c", new_file);
     else eventCreateEnter(arg1, current_room+".c", new_file);
     if(file_exists(new_file) &&
@@ -124,12 +140,13 @@ varargs int eventCreateExit(string dir, string room, string file, int remote){
     string param;
     string *file_arr;
 
-    if(member_array(dir,cardinal_dirs) == -1) {
-	this_object()->eventCreateEnter(dir, room, file, remote);
-	return 1;
-    }
     if(file_exists(room) && !check_privs(this_player(),room)){
 	write("You do not appear to have access to this room file. Modification aborted.");
+	return 1;
+    }
+
+    if(member_array(dir,cardinal_dirs) == -1) {
+	this_object()->eventCreateEnter(dir, room, file, remote);
 	return 1;
     }
 
@@ -320,9 +337,30 @@ string eventCopyRoom(string source, string dest){
     replace_string(new_file,"\n\n\n","\n\n");
     new_file = remove_matching_line(new_file, "SetDoor", 1);
 
+    if(query_verb() == "copy" && grepp(new_file, "customdefs\.h")){
+	string *tmparr = explode(new_file,"\n");
+	string *tmparr2 = explode(read_file(dest),"\n");
+	string bad_def = "";
+	string good_def = "";
+	foreach(string element in tmparr2){
+	    if(!strsrch(element,"#include")){
+		if(grepp(element,"customdefs.h")){
+		    good_def = element;
+		}
+	    }
+	}
+	tmparr2 = ({});
+	foreach(string element in tmparr){
+	    if(!strsrch(element,"#include")){
+		if(grepp(element,"customdefs.h")) element = good_def;
+	    }
+	    tmparr2 += ({ element });
+	}
+	new_file = implode(tmparr2,"\n");
+    }
+
     write_file(tmpsource,new_file,1);
 
-    this_object()->eventGeneralStuff(tmpsource);
     globalstr = tmpsource;
     globalstr2 = dest;
 
@@ -331,6 +369,7 @@ string eventCopyRoom(string source, string dest){
     }
 
     this_object()->eventAddInit(dest);
+    this_object()->eventGeneralStuff(dest);
     rm(tmpsource);
     return "Room data copy complete.";
 }

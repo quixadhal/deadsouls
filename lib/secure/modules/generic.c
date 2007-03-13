@@ -227,12 +227,14 @@ int eventGeneralStuff(string str){
     globalstr = str;
     unguarded( (: globalstr2 = read_file(globalstr) :) );
     unguarded( (: this_object()->eventAddInit(globalstr) :) );
-    if(grepp(globalstr2,"./customdefs.h")){
-	string j1, j2, tmppath;
-	sscanf(globalstr2,"%sinclude \"%scustomdefs.h%s",j1,tmppath,j2);
-	if(tmppath) repstr = absolute_path(fpath,tmppath+"customdefs.h");
-	unguarded( (: globalstr2 = replace_line(globalstr2 ,({"./customdefs.h"}), "#include \""+repstr+"\"") :) );
-    } 
+    if(query_verb() != "copy"){
+	if(grepp(globalstr2,"./customdefs.h")){
+	    string j1, j2, tmppath;
+	    sscanf(globalstr2,"%sinclude \"%scustomdefs.h%s",j1,tmppath,j2);
+	    if(tmppath) repstr = absolute_path(fpath,tmppath+"customdefs.h");
+	    unguarded( (: globalstr2 = replace_line(globalstr2 ,({"./customdefs.h"}), "#include \""+repstr+"\"") :) );
+	} 
+    }
     globalstr2 = replace_string(globalstr2,"\n\n\n","\n\n");
     globalstr2 = replace_string(globalstr2,"//funs","");
     globalstr2 = replace_string(globalstr2,"//snuf","");

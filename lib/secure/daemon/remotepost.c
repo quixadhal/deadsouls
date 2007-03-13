@@ -131,7 +131,7 @@ int send_post(mapping borg, string mud) {
 	if(!Outgoing) Outgoing = ([]);
 	if(!Outgoing[destination]) Outgoing[destination] = ([]);
 	Outgoing[destination][borg["id"]] = 
-	({
+	({	  
 	  "mail",
 	  borg["id"],
 	  borg["from"],

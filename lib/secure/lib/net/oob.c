@@ -119,7 +119,7 @@ int eventRead(mixed data) {
 	    liblevel = tmp[5];
     }
     //tc("liblevel: "+liblevel,"white");
-    //if(tmp) tc("tmp: "+identify(tmp),"white");
+    //if(tmp) tc("tmp: "+identify(tmp),"white");    
     trr("--\nOOB "+whoami+" READ i am: "+identify(this_object()),mcolor,MSG_OOB);
     trr("OOB "+whoami+" READ i read: "+identify(data)+"\n--",mcolor,MSG_OOB);
     //tc("it is a: "+typeof(data),"yellow");
@@ -229,7 +229,7 @@ int eventRead(mixed data) {
 	    mkdir(data[2]);
 	    if(mudlib_version() == "2.3a5") client::eventDestruct();
 	}
-    }
+    }    
     if(data[0] == "mail"){
 	string *ret = ({ OOB_D->FindMud(this_object()) }) + ( data - ({ data[0] }) );
 	REMOTEPOST_D->incoming_post(ret);

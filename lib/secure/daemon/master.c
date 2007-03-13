@@ -41,6 +41,8 @@ void create() {
     NewPlayer = 0;
     PlayerName = 0;
     ResetNumber = 1;
+    if(!file_exists("/secure/sefun/native_version.c"))
+	cp("/secure/scripts/native_version.proto", "/secure/sefun/native_version.c");
     new_read();
     new_write();
     new_groups();

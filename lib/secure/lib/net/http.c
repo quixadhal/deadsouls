@@ -84,7 +84,7 @@ int eventRead(buffer data) {
 	eventError(FILE_BAD_CMD);
 	return 1;
     }
-    args = explode(replace_string(str, "\r", ""), "\n")[0];
+    args = explode(replace_string(str, CARRIAGE_RETURN, ""), "\n")[0];
     sscanf(args, "%s %s", cmd, args);
     switch(lower_case(cmd)) {
     case "get":

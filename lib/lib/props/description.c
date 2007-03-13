@@ -161,4 +161,3 @@ object array GetDummyItems() {
     }
     return DummyItems;
 }
-

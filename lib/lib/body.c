@@ -1343,23 +1343,24 @@ varargs int eventDie(mixed agent) {
 	str = "";
 	exempt = ({"bot","android","tree","plant"});
 
-	if(member_array(this_object()->GetRace(),exempt) == -1 &&
-	  !this_object()->GetUndead() ) {
-	    str = "The "+this_object()->GetGender()+" ";
-	    str += this_object()->GetRace();
-	    h = percent(GetHealthPoints(), GetMaxHealthPoints());
-	    if( h < 10.0 ) str += " is mortally wounded.\n";
-	    else if( h < 20.0 ) str += " is near death.\n";
-	    else if( h < 30.0 ) str += " is severely injured.\n";
-	    else if( h < 40.0 ) str += " is badly injured.\n";
-	    else if( h < 50.0 ) str += " is hurt.\n";
-	    else if( h < 60.0 ) str += " is slightly injured.\n";
-	    else if( h < 70.0 ) str += " has some cuts and bruises.\n";
-	    else if( h < 80.0 ) str += " is in decent shape.\n";
-	    else if( h < 90.0 ) str += " is quite keen.\n";
-	    else str += " is in top condition.\n";
+	if(!(this_object()->GetNoCondition())){
+	    if(member_array(this_object()->GetRace(),exempt) == -1 &&
+	      !this_object()->GetUndead() ) {
+		str = "The "+this_object()->GetGender()+" ";
+		str += this_object()->GetRace();
+		h = percent(GetHealthPoints(), GetMaxHealthPoints());
+		if( h < 10.0 ) str += " is mortally wounded.\n";
+		else if( h < 20.0 ) str += " is near death.\n";
+		else if( h < 30.0 ) str += " is severely injured.\n";
+		else if( h < 40.0 ) str += " is badly injured.\n";
+		else if( h < 50.0 ) str += " is hurt.\n";
+		else if( h < 60.0 ) str += " is slightly injured.\n";
+		else if( h < 70.0 ) str += " has some cuts and bruises.\n";
+		else if( h < 80.0 ) str += " is in decent shape.\n";
+		else if( h < 90.0 ) str += " is quite keen.\n";
+		else str += " is in top condition.\n";
+	    }
 	}
-
 	if(this_object()->GetUndead()) {
 	    str = capitalize(nominative(this_object()))+" has been killed, and ";
 	    str +=  "is one of the Walking Undead.\n";
@@ -1698,7 +1699,7 @@ varargs int eventDie(mixed agent) {
 
 	if( !(sh = GetShort()) ) return 0;
 	h = percent(GetHealthPoints(), GetMaxHealthPoints());
-	if( h > 90.0 ) cl = "%^BOLD%^GREEN%^";
+	if( this_object()->GetNoCondition() || h > 90.0 ) cl = "%^BOLD%^GREEN%^";
 	else if( h > 75.0 ) cl = "%^GREEN%^";
 	else if( h > 50.0 ) cl = "%^BOLD%^BLUE%^";
 	else if( h > 35.0 ) cl = "%^BLUE%^";

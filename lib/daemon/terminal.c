@@ -51,7 +51,7 @@ void create() {
       "B_GREEN": ESC("GD"), "B_ORANGE":ESC("G4"), "B_YELLOW":ESC("G4"),
       "B_BLUE":ESC("G4"), "B_CYAN":ESC("GD"), "B_BLACK": ESC("GD"),
       "B_WHITE":ESC("G4"), "B_MAGENTA":("G4"), "STATUS":"", "WINDOW":"",
-      "CLEARLINE":"\r", "INITTERM":"", "ENDTERM":"" ]) + nohtml;
+      "CLEARLINE":CARRIAGE_RETURN, "INITTERM":"", "ENDTERM":"" ]) + nohtml;
     term_info["ansi-status"] =
     ([ "RESET": ANSI("0;37;40"), "BOLD":ANSI(1), "FLASH":ANSI(5),
       "BLACK":ANSI(30), "RED":ANSI(31), "GREEN":ANSI(32), "ORANGE":ANSI(33),
@@ -63,7 +63,7 @@ void create() {
       "B_MAGENTA":ANSI(45), "STATUS":ESC("[23;24r")+ESC(8), 
       "WINDOW":ESC(7)+ESC("[0;22r")+ESC("[22H\n"),
       "INITTERM":ESC("[H")+ESC("[J")+ESC("[23;24r")+ESC("23H\n"),
-      "CLEARLINE":"\r", "ENDTERM":ESC("[0r")+ESC("[H")+ESC("[J") ]) +nohtml;
+      "CLEARLINE":CARRIAGE_RETURN, "ENDTERM":ESC("[0r")+ESC("[H")+ESC("[J") ]) +nohtml;
 term_info["xterm"] =
 ([ "RESET" :  ANSI("0;37;40"), "BOLD": ESC("[7m"),
   "FLASH":ESC("[5m$<2>"), "BLACK":ANSI(30), "RED":ANSI(31),
@@ -73,7 +73,7 @@ term_info["xterm"] =
   "B_ORANGE":ANSI(43), "B_YELLOW":ANSI(43), "B_BLUE":ANSI(44), 
   "B_CYAN":ANSI(46), "B_BLACK":ANSI(40), "B_WHITE": ANSI(47),
   "B_MAGENTA": ANSI(45), "STATUS":"", "WINDOW":"", "INITTERM":"",
-  "CLEARLINE":"\r", "ENDTERM":"" ]) + nohtml;
+  "CLEARLINE":CARRIAGE_RETURN, "ENDTERM":"" ]) + nohtml;
 term_info["html"] = term_info["unknown"] +
 ([ "RED"  : "<FONT COLOR=\"#FF0000\">",
   "GREEN" : "<FONT COLOR=\"#00FF00\">",
@@ -135,4 +135,3 @@ string GetHTML(string str) {
     }
     return str;
 }
-

@@ -168,6 +168,7 @@ object find_object( string str ){
     object ret = efun::find_object(str);
     if(!ret) return 0;
     if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return ret;
+    if(base_name(previous_object()) == SERVICES_D) return ret;
     if(base_name(ret) == "/secure/obj/snooper") return 0;
     if(archp(ret) && ret->GetInvis()) return 0;
     else return ret;
@@ -176,6 +177,7 @@ object find_object( string str ){
 object find_player( string str ){
     object ret = efun::find_player(str);
     if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return ret;
+    if(base_name(previous_object()) == SERVICES_D) return ret;
     if(ret && archp(ret) && ret->GetInvis()) return 0;
     else return ret;
 }
@@ -184,6 +186,7 @@ object *livings() {
     object *privlivs = efun::livings();
     object *unprivlivs = filter(privlivs, (: !($1->GetInvis() && archp($1)) :) );
     if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return privlivs;
+    if(base_name(previous_object()) == SERVICES_D) return privlivs;
     else return unprivlivs;
     //return efun::livings() - (efun::livings() - objects());
 }
@@ -191,7 +194,8 @@ object *livings() {
 varargs mixed objects(mixed arg1, mixed arg2){
     object array tmp_obs = efun::objects();
 
-    if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))))
+    if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
+      base_name(previous_object())  != SERVICES_D)
 	tmp_obs = filter(tmp_obs, (: !($1->GetInvis() && archp($1)) :) );
 
     if(base_name(previous_object()) == SNOOP_D || archp(this_player())){
@@ -225,7 +229,8 @@ varargs mixed objects(mixed arg1, mixed arg2){
 
 mixed array users(){
     object *ret = filter(efun::users(), (: ($1) && environment($1) :) );
-    if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))))
+    if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
+      base_name(previous_object())  != SERVICES_D)
 	ret = filter(ret, (: !($1->GetInvis() && archp($1)) :) );
     return ret;
 }

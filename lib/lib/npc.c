@@ -74,7 +74,7 @@ void CheckEncounter(){
 	if( functionp(Encounter) ) {
 	    x = (int)evaluate(Encounter, this_player());
 	}
-	else if( arrayp(Encounter) ) {
+	else if( arrayp(Encounter) ) {	    
 	    if( member_array(this_player()->GetKeyName(), Encounter) > -1 ) {
 		x = 1;
 	    }

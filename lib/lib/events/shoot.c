@@ -23,8 +23,9 @@ int eventShoot(mixed shooter, mixed target){
     return 1;
 }
 
-int CanShoot(object shooter, string target){
+int CanShoot(object shooter, mixed target){
     object cible;
+    mixed attackable;
 
     if(living(shooter)) return 0;
     if(mustcarry > 0 && environment(this_object()) != this_player()) {
@@ -42,6 +43,15 @@ int CanShoot(object shooter, string target){
     }
     if(stringp(target) && !cible=present(target,environment(this_object()))){
 	cible=present(target,environment(this_player()));
+    }
+
+    if(objectp(target)) cible = target;
+
+    attackable = cible->GetAttackable();
+
+    if(!attackable || !intp(attackable) || attackable != 1){
+	write("You are unable to shoot "+objective(cible)+".");
+	return 0;
     }
 
     if(this_object()->eventFireWeapon(shooter,cible)) return 1;

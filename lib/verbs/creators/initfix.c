@@ -29,7 +29,8 @@ mixed can_initfix_word(string str) { return can_initfix_obj("foo"); }
 
 mixed do_initfix_obj(object ob) {
     object staff;
-    string *virts = ({ LIB_VIRT_LAND, LIB_VIRT_SKY, LIB_VIRTUAL });
+    string *virts = ({ LIB_VIRT_LAND, LIB_VIRT_SKY, LIB_VIRTUAL,
+      LIB_VIRT_MAP, LIB_VIRT_SPACE, LIB_VIRT_SURFACE, LIB_VIRT_SUBSURFACE });
     staff = present("tanstaafl",this_player());
     if(!staff) {
 	write("You must be holding the creator staff in order to use this command.");

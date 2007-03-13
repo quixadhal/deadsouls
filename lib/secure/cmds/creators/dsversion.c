@@ -126,11 +126,11 @@ void close_callback( int fd )
 
 void sendHTTPGet()
 {
-    string str ="GET "+HTTP_PATH+" HTTP/1.0\r\n"+
-    "Host: "+HTTP_HOST+"\r\n" +
+    string str ="GET "+HTTP_PATH+" HTTP/1.0"+CARRIAGE_RETURN+"\n"+
+    "Host: "+HTTP_HOST+CARRIAGE_RETURN"\n" +
     "User-Agent: "+ player->GetName() + "@" + mud_name() + " " +
     mudlib()+ "/" + mudlib_version() +" ("+ query_os_type()+";) "+ 
-    version() + "\r\n\r\n";
+    version() + CARRIAGE_RETURN+"\n"+CARRIAGE_RETURN+"\n";
     int result = 0;
     results = "";
 #ifdef _DEBUG
@@ -244,7 +244,6 @@ string GetHelp() {
       "Shows the latest version of Dead Souls and release notes.\n"+
       "e.g. dsversion, dsversion r1, dsversion 2.0r1");
 }
-
 
 
 

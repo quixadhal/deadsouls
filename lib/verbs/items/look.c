@@ -52,10 +52,10 @@ mixed can_look_obj(string verb, string id) {
 }
 
 mixed can_look_at_str(string str, string verb) {
-    //tc("4");
+    //tc("thingy");
     if( !environment(this_player()) ) return "You are nowhere.";
     if( SEASONS_D->GetLong(str) == 0 ) {
-	return "There is no " + remove_article(str) + " here.";
+	//return "There is no " + remove_article(str) + " here.";
     }
     else {
 	return check_light();
@@ -125,6 +125,9 @@ varargs mixed do_look_at_obj(object ob, mixed arg) {
 
 mixed do_look_at_str(string str) {
     //tc("do look at str","white");
+    //if( SEASONS_D->GetLong(str) == 0 ) {
+    //	return "There is no " + remove_article(str) + " here.";
+    //    }
     return (mixed)SEASONS_D->eventShow(this_player(),
       remove_article(lower_case(str)));
 }

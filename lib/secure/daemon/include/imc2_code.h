@@ -165,7 +165,7 @@ private int read_callback(object socket, string info){
     // The hub groups packets, unfortunately.
     switch(mode){
     case MODE_WAITING_ACCEPT: // waiting for Hub to send autosetup
-	if(sscanf(info, "autosetup %s accept %s\n\r",
+	if(sscanf(info, "autosetup %s accept %s\n"+CARRIAGE_RETURN,
 	    hub_name, network_name)==2){
 	    //Debug("Connected, hub is "+hub_name+", network is "+network_name);
 	    mode = MODE_CONNECTED;
@@ -187,7 +187,7 @@ private int read_callback(object socket, string info){
 	break;
     case MODE_CONNECTED:	
 	while(!done){
-	    if(sscanf(buf,"%s\n\r%s",a,b)==2){ // found a break...
+	    if(sscanf(buf,"%s\n"+CARRIAGE_RETURN+"%s",a,b)==2){ // found a break...
 		got_packet(a);
 		buf=b;
 	    }
@@ -196,7 +196,7 @@ private int read_callback(object socket, string info){
 	    }
 	}
 	/*
-				strs = explode(info,"\n\r");
+				strs = explode(info,"\n"+CARRIAGE_RETURN);
 				foreach(str in strs){
 					got_packet(str);
 				}
@@ -219,9 +219,9 @@ private void got_packet(string info){
     //Debug(save_variable(info),DEB_PAK);
 
     str = info;
-    // messages end with " \n\r" or "\n" or sometimes just a space
+    // messages end with newlines or sometimes just a space
     sscanf(str, "%s\n^", str);
-    sscanf(str, "%s\r^", str);
+    sscanf(str, "%s"+CARRIAGE_RETURN+"^", str);
     sscanf(str, "%s ^", str);
     sscanf(str, "%s ^", str);
     if(sscanf(str, "%s %d %s %s %s %s",
@@ -376,7 +376,6 @@ private int close_callback(object socket){
     create();
     return 1;
 }
-
 private void send_text(string text){
     // Send a literal string.
     // Almost everything should use the send_packet function instead of this.
@@ -493,7 +492,7 @@ private void start_logon(){
 	  str=replace_string(str,"\\","\\\\");
 	  str=replace_string(str,"\"","\\\"");
 	  str=replace_string(str,"\n","\\n");
-	  str=replace_string(str,"\r","\\r");
+	  str=replace_string(str,CARRIAGE_RETURN,"\\"+CARRIAGE_RETURN);
 	  if(sizeof(explode(str," "))!=1) str = "\""+str+"\"";
 	  return str;
       }
@@ -507,13 +506,13 @@ private void start_logon(){
 		  case 34 : output += "\""; break; // '\"' makes warnings.
 		  case '\\' : output += "\\"; break;
 		  case 'n' : output += "\n"; break;
-		  case 'r' : output += "\r"; break;
+		  case 'r' : output += CARRIAGE_RETURN; break;
 		  }
 	      }
 	      b=b[1..];
 	  }
 	  output += b;
-	  output = replace_string(output,"\n\r","\n");
+	  output = replace_string(output,"\n"+CARRIAGE_RETURN,"\n");
 	  if((sizeof(explode(output," "))==1) && sscanf(output,"\\\"%*s\\\"") ) output = "\""+output+"\"";
 	  return output;
       }

@@ -58,5 +58,7 @@
 #define COMMAND_MATCHING         1
 #define OBJECT_MATCHING          1
 #define LIVEUPGRADE_SERVER       "Dead Souls"
+#define CARRIAGE_RETURN          "\r"
+#define OLD_STYLE_PLURALS        1
 
 #endif /* s_config_h */
