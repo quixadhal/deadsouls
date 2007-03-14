@@ -32,7 +32,8 @@ void init(){
 }
 
 int CanReceive(object ob){
-    if(!interactive(ob) && starts_with(base_name(environment(ob)),"/domains/town/virtual")){
+    if(!interactive(ob) && starts_with(base_name(environment(ob)),"/domains/town/virtual") &&
+      (!ob->GetRiders() || !sizeof(ob->GetRiders()))){
 	write("You find yourself unable to leave the forest.");
 	return 0;
     }

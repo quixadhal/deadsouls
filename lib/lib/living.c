@@ -159,8 +159,18 @@ mixed indirect_give_obj_to_liv(object item) {
     else return CanCarry((int)item->GetMass());
 }
 
+mixed indirect_give_obj_liv(object item) {
+    //tc("item: "+identify(item),"blue");
+    return indirect_give_obj_to_liv(item);
+}
+
 mixed indirect_give_obs_to_liv(object *items) {
     return 1;
+}
+
+mixed indirect_give_obs_liv(object *items) {
+    //tc("item: "+identify(items),"blue");
+    return indirect_give_obs_to_liv(items);
 }
 
 mixed direct_give_liv_wrd_wrd(object targ, string num, string curr) {

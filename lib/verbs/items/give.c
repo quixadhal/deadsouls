@@ -19,7 +19,7 @@ string curr2;
 static void create() {
     verb::create();
     SetVerb("give");
-    SetRules("LIV WRD WRD", "WRD WRD to LIV", "LIV OBS", "OBS to LIV");
+    SetRules("LIV WRD WRD", "WRD WRD to LIV", "OBS LIV", "LIV OBS", "OBS to LIV" );
     SetErrorMessage("Give what to whom?");
     SetHelp("Syntax: <give LIVING ITEM>\n"
       "        <give LIVING ITEMS>\n"
@@ -36,8 +36,13 @@ mixed can_give_liv_obj() {
     return can_give_obj_to_liv();
 }
 
+mixed can_give_obj_liv(mixed arg1, mixed arg2) {
+    //tc("can_give_obj_liv, arg1: "+identify(arg1)+", arg2: "+identify(arg2),"red");
+    return can_give_obj_to_liv();
+}
+
 mixed can_give_obj_to_liv(mixed arg1, mixed arg2) { 
-    //tc("can_give_obj_to_liv","red");
+    //tc("can_give_obj_TO_liv, arg1: "+identify(arg1)+", arg2: "+identify(arg2),"red");
     return this_player()->CanManipulate(); }
 
 mixed can_give_liv_wrd_wrd(object targ, string num, string curr) {
@@ -68,8 +73,14 @@ mixed do_give_liv_obj(object target, object what) {
     return do_give_obj_to_liv(what, target);
 }
 
+mixed do_give_obj_liv(object what, object target) {
+    return do_give_obj_to_liv(what, target);
+}
+
 mixed do_give_obj_to_liv(object what, object target) {
     //tc("do_give_obj_to_liv","green");
+    //tc("what: "+identify(what),"green");
+    //tc("target: "+identify(target),"green");
     if(!intp(target->CanManipulate())){
 	this_player()->eventPrint(target->GetName()+" is incapable "+
 	  "of holding that.");
@@ -120,6 +131,10 @@ mixed do_give_wrd_wrd_to_liv(string num, string curr, object target) {
 }
 
 mixed do_give_liv_obs(object target, mixed *items) {
+    return do_give_obs_to_liv(items, target);
+}
+
+mixed do_give_obs_liv(mixed *items, object target) {
     return do_give_obs_to_liv(items, target);
 }
 

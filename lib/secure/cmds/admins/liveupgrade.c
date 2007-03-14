@@ -5,8 +5,9 @@
 #include <network.h>
 
 #define WGET_D "/secure/daemon/wget"
-#define WEB_SOURCE "127.0.0.1"
+#define WEB_SOURCE "149.152.218.102"
 #define WEB_SOURCE_NAME "dead-souls.net"
+#define WEB_SOURCE_PORT 80
 
 inherit LIB_DAEMON;
 
@@ -28,7 +29,7 @@ mixed cmd( string str) {
 
     foreach(mixed element in socks){
 	//tc("1: "+element[1]+", 4: "+element[4]);
-	if(element[1] == "DATA_XFER" && element[4] == WEB_SOURCE+".80"){
+	if(element[1] == "DATA_XFER" && element[4] == WEB_SOURCE+"."+WEB_SOURCE_PORT){
 	    write("A download is still in progress. Please wait until it is complete.");
 	    return 1;
 	}
@@ -148,7 +149,7 @@ mixed cmd( string str) {
 	    }
 	    else {
 		WGET_D->GetFile(WEB_SOURCE, upgrade_prefix+"/upgrades.txt",WEB_SOURCE_NAME,
-		  "/secure/upgrades/txt/list.txt");
+		  "/secure/upgrades/txt/list.txt",WEB_SOURCE_PORT);
 	    }
 	    return 1;
 	}

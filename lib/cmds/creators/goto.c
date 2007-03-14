@@ -10,17 +10,25 @@
 inherit LIB_DAEMON;
 
 mixed cmd(string str) {
-    object ob;
+    object ob, dude;
+    object *riders;
 
     if(!str) return "Goto where?";
-    if((ob = find_living(lower_case(str))) && 
-      (!ob->GetInvis() || !archp(ob)) && ob=environment(ob)) {
+    ob = find_player(lower_case(str));
+    if(!ob) ob = find_living(lower_case(str));
+    if(ob) dude = ob;
+    if((!ob->GetInvis() || !archp(ob)) && ob=environment(ob)) {
 	if(ob == environment(this_player())) {
 	    message("my_action", "You twitch.", this_player());
 	    if(hiddenp(this_player())) return 1;
 	    message("other_action", (string)this_player()->GetName()+
 	      " twitches.", ob, ({ this_player() }));
 	    return 1;
+	}
+	riders=ob->GetRiders();
+	if(riders && sizeof(riders) && member_array(dude,riders) != -1 &&
+	  environment(ob)){
+	    ob = environment(ob);
 	}
     }
     if(ob && ob->GetInvis() && creatorp(ob) && !archp(this_player())) ob = 0;

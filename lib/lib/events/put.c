@@ -101,3 +101,7 @@ mixed direct_put_wrd_wrd_word_obj(){
     return CanPut(this_player());
 }
 
+mixed direct_put_obj_obj() {
+    return direct_put_obj_word_obj();
+}
+

@@ -12,7 +12,7 @@ inherit LIB_VERB;
 static void create() {
     verb::create();
     SetVerb("get");
-    SetRules("WRD WRD from OBJ", "WRD WRD out of OBJ", "OBS",
+    SetRules("OBS OBJ", "WRD WRD from OBJ", "WRD WRD out of OBJ", "OBS",
       "OBS out of OBJ", "OBS from OBJ");
     SetSynonyms("take");
     SetErrorMessage("Get what?  Or perhaps get something from somewhere?");
@@ -53,6 +53,10 @@ varargs mixed can_get_obj_out_of_obj(string verb, string rule, object item, obje
     return eventCheckLight(this_player());
 }
 
+mixed can_get_obj_obj(string verb, string rule, object item, object container) {
+    return can_get_obj_out_of_obj(verb, rule, item, container);
+}
+
 mixed can_get_obj_from_obj(string verb, string rule, object item, object container) {
     return can_get_obj_out_of_obj(verb, rule, item, container);
 }
@@ -90,6 +94,10 @@ mixed do_get_obj_out_of_obj(object ob, object storage) {
 }
 
 mixed do_get_obj_from_obj(object ob, object storage) {
+    return do_get_obj_out_of_obj(ob, storage);
+}
+
+mixed do_get_obj_obj(object ob, object storage) {
     return do_get_obj_out_of_obj(ob, storage);
 }
 
@@ -137,3 +145,8 @@ mixed do_get_obs_out_of_obj(mixed *targs, object storage) {
 mixed do_get_obs_from_obj(mixed *obs, object storage) {
     return do_get_obs_out_of_obj(obs, storage);
 }
+
+mixed do_get_obs_obj(mixed *obs, object storage) {
+    return do_get_obs_out_of_obj(obs, storage);
+}
+

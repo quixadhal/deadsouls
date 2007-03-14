@@ -17,7 +17,7 @@ static void create() {
     verb::create();
     SetVerb("put");
     SetSynonyms("place", "stick");
-    SetRules("OBS in OBJ", "OBS into OBJ", "OBS on OBJ", "OBS onto OBJ",
+    SetRules("OBS in OBJ", "OBS into OBJ", "OBS on OBJ", "OBS onto OBJ", "OBS OBJ",
       "WRD WRD in OBJ", "WRD WRD into OBJ", "WRD WRD on OBJ", "WRD WRD onto OBJ");
     SetErrorMessage("Put what where?");
     SetHelp("Syntax: <put ITEM into CONTAINER>\n"
@@ -33,21 +33,34 @@ mixed can_put_obs_word_obj(object *foo1, string wrd, object foo2) {
     else return 0;
 }
 
+mixed can_put_obs_obj(object *foo1, string wrd, object foo2){
+    return can_put_obs_word_obj(foo1, wrd, foo2);
+}
+
 mixed can_put_obj_word_obj(object target, string wrd, object storage) {
     object *target_arr;
     if(target) target_arr = ({ target });
     return can_put_obs_word_obj(target_arr, wrd, storage);
 }
 
-mixed do_put_obj_word_obj(object what, string wrd, object storage) {
+mixed can_put_obj_obj(object target, string wrd, object storage){
+    return can_put_obj_word_obj(target, wrd, storage);
+}
 
+mixed do_put_obj_word_obj(object what, string wrd, object storage) {
     if(wrd == "in" || wrd == "into") return (mixed)storage->eventPutInto(this_player(), what);
     if(wrd == "on" || wrd == "onto") return (mixed)storage->eventPutOnto(this_player(), what);
 }
 
+mixed do_put_obj_obj(object what, object storage){
+    string prepo;
+    if(storage && inherits(LIB_SURFACE,storage)) prepo = "onto";
+    else prepo = "into";
+    return do_put_obj_word_obj(what, prepo, storage);
+}
+
 mixed do_put_obs_word_obj(mixed *res, string wrd, object storage) {
     object *obs;
-
     obs = filter(res, (: objectp :));
 
     if( !sizeof(obs) ) {
@@ -86,6 +99,13 @@ mixed do_put_obs_word_obj(mixed *res, string wrd, object storage) {
     }
     eligible = ({});
     return 1;
+}
+
+mixed do_put_obs_obj(mixed *res, object storage){
+    string prepo;
+    if(storage && inherits(LIB_SURFACE,storage)) prepo = "onto";
+    else prepo = "into";
+    return do_put_obs_word_obj(res, prepo, storage);
 }
 
 mixed can_put_wrd_wrd_word_obj(string num, string curr,string wrd, mixed container) {

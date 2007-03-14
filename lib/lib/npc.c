@@ -524,10 +524,44 @@ void eventDescribeEnvironment(int brief) {
 		tell_room("/domains/default/room/catchtell","arg2: "+identify(arg2));
 		tell_room("/domains/default/room/catchtell","arg3: "+identify(arg3));
 		tell_room("/domains/default/room/catchtell","stack: "+get_stack());
+		tell_room("/domains/default/room/catchtell","previous: "+identify(previous_object(-1)));
 		tell_room("/domains/default/room/catchtell","-------");
 	    }
-	    if(riders && sizeof(riders))
-		if(!arg2 || arg2 != MSG_CONV) riders->eventPrint(msg, (arg2||0), (arg3||0));
+	    if(riders){
+		int i1;
+		//tc("wtf");
+		//if(member_array(this_object(),previous_object(-1)) != -1){
+		//if(arg2 && intp(arg2) && !(arg2 & MSG_ENV)){
+		//tc("avoiding recurse");
+		//return 0;
+		//}
+		//}
+		if(!arg2) arg2 = 0;
+		if(!arg3) arg3 = 0;
+		if(sizeof(riders)){
+		    //tc("hrm");
+		    if(arg2 && intp(arg2)){
+			object *tmp_riders = riders;
+			//tc("i seem to thing its msg_conv or msg_env");
+			if(arg2 & MSG_CONV || arg2 & MSG_ENV){
+			    foreach(object ob in previous_object(-1)){
+				if(member_array(ob,riders) != -1) tmp_riders -= ({ ob });
+			    }
+			}
+			//tc("hmm.");
+			tmp_riders->eventPrint(msg, arg2, arg3);
+		    }
+		    i1 = sizeof(previous_object(-1)) -1;
+		    if(i1 < 0) i1 = 0;
+		    if(sizeof(previous_object(-1)) &&
+		      (member_array(previous_object(),riders) != -1 ||
+			member_array(previous_object(-1)[i1],riders) != -1) &&
+		      (!intp(arg2) || (!(arg2 & MSG_CONV) && !(arg2 & MSG_ENV))) && 
+		      member_array(this_object(),previous_object(-1)) == -1){ 
+			environment()->eventPrint(msg, arg2, arg3);
+		    }
+		}
+	    }  
 	    return 1;
 	}
 

@@ -176,6 +176,10 @@ mixed indirect_get_obj_out_of_obj(object item, object container) {
     return indirect_get_obj_from_obj(item, container);
 }
 
+mixed indirect_get_obj_obj(object item, object container) {
+    return indirect_get_obj_from_obj(item, container);
+}
+
 mixed indirect_get_obs_from_obj(object array items, object storage) {
     if( !items ) {
 	return (storage == this_object());
@@ -187,6 +191,10 @@ mixed indirect_get_obs_out_of_obj(object array items, object storage) {
     return indirect_get_obs_from_obj(items, storage);
 }
 
+mixed indirect_get_obs_obj(object array items, object storage) {
+    return indirect_get_obs_from_obj(items, storage);
+}
+
 mixed indirect_put_obj_word_obj(object what, string word, object storage) {
     if( !what ) {
 	return (storage == this_object());
@@ -194,9 +202,17 @@ mixed indirect_put_obj_word_obj(object what, string word, object storage) {
     return CanPutInto(this_player(), what);
 }
 
+mixed indirect_put_obj_obj(object what, string word, object storage) {
+    return indirect_put_obj_word_obj(what, word, storage);
+}
+
 mixed indirect_put_obs_word_obj(object *items, string wrd, object storage) {
     if( !items ) {
 	return (storage == this_object());
     }
     return 1;
+}
+
+mixed indirect_put_obs_obj(object *items, string wrd, object storage) {
+    return indirect_put_obs_word_obj(items, wrd, storage);
 }

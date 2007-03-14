@@ -54,6 +54,7 @@ void read_callback(int fd, mixed data){
     string tmp="";
     mixed tmp2 = "";
     string last_char = last(data,1);
+    string first_char = first(data,1);
     string *tmparr = explode(data,"\n");
     string *nullifiers = ({ "HTTP/", "HTTP0^0", "Date:", "Server:", "Last-Modified:", "ETag:",
       "Accept-Ranges:", "Content-Length:", "Connection:", "Content-Type:", "X-Pad:" });
@@ -64,11 +65,22 @@ void read_callback(int fd, mixed data){
     data = replace_string(data,CARRIAGE_RETURN,"\n");
     tmparr = explode(data,"\n");
     //if(last(data,1) != last_char) tc("AQUI GUAPO: "+gwhere,"white");
-    //if(last_char == "\n") tc("last_char is \\n, guapo. file: "+gwhere,"red");
-    //if(last_char == "\r") tc("last_char is \\r, guapo. file: "+gwhere,"green");
-    //if(last_char == "\t") tc("last_char is \\t, guapo. file: "+gwhere,"blue");
+    //if(last_char == "\n") tc("last_char is \\n, guapo. file: "+gwhere+", last 8: "+last(data,8),"red");
+    //else if(last_char == "\r") tc("last_char is \\r, guapo. file: "+gwhere+", last 8: "+last(data,8),"green");
+    //else if(last_char == "\t") tc("last_char is \\t, guapo. file: "+gwhere+", last 8: "+last(data,8),"blue");
+    //else tc("last_char is "+last_char+", guapo. file: "+gwhere+", last 8: "+last(data,8),"cyan");
+
+    //if(first_char == "\n") tc("first_char is \\n, guapo. file: "+gwhere+", first 8: "+first(data,8),"white");
+    //else if(first_char == "\r") tc("first_char is \\r, guapo. file: "+gwhere+", first 8: "+first(data,8),"yellow");    
+    //else if(first_char == "\t") tc("first_char is \\t, guapo. file: "+gwhere+", first 8: "+first(data,8),"magenta");
+    //else tc("first_char is "+first_char+", guapo. file: "+gwhere+", first 8: "+first(data,8),"orange");
+
     //tc("last data char: \""+last_char+"\", size: "+sizeof(last_char)+" N?: "+(last_char == "\n" ? "yes" : "no"));
     //tc("last data char: \""+last_char+"\", size: "+sizeof(last_char)+" R?: "+(last_char == "\r" ? "yes" : "no"));
+    //for(i = 0; i < 256; i++){
+    //if(sprintf("%c",i) == last_char) tc("last is: %^B_WHITE%^BLACK%^"+i);
+    //if(sprintf("%c",i) == first_char) tc("first is: %^B_WHITE%^RED%^"+i);
+    //}
     tn("fd is: "+fd);
     tn("data: "+data,"red");
     if(!started){
@@ -89,30 +101,26 @@ void read_callback(int fd, mixed data){
 		tmparr = tmparr[1..];
 		//tc("tmparr[0]: "+tmparr[0],"green");
 	    }
-	    else break;
+	    //else break;
 	}
-	started = 1;
+	//started = 1;
     }
 
     else {
 	write_file("/tmp/foo.txt",data);
     }
-    //foreach(string line in tmparr){
-    //if(grepp(line, " has evaded you.")){
-    //int memb = member_array(line,tmparr);
-    // tc("line: "+line,"cyan");
-    //tc("size of tmparr: "+sizeof(tmparr),"cyan");
-    //tc("member: "+memb,"cyan");
-    //tc("memb["+(memb-1)+"]: "+tmparr[memb-1],"cyan");
-    //tc("memb["+(memb+1)+"]: "+tmparr[memb+1],"cyan");
-    //}
-    //}
     data = implode(tmparr,"\n");
     if(last(data,1) != last_char){
 	//tc("AQUI GUAPO: "+gwhere,"yellow");
 	if(last_char == CARRIAGE_RETURN ) data += "\n";
 	else data += last_char;
     }
+    if(started && first(data,1) != first_char){
+	//tc("AQUI GUAPO: "+gwhere,"yellow");
+	data = first_char+data;
+    }
+
+    if(!started) started = 1;
 
     tn("where: "+gwhere);
     gwhere = replace_string(gwhere,"0^0code0^0upgrades0^0"+mudlib_version(),"");

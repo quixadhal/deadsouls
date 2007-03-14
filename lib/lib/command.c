@@ -11,6 +11,9 @@
 #include <daemons.h>
 #include "include/command.h"
 
+#define OLD_STYLE_PLURALS 1
+#define DIKU_EMULATION 1
+
 int Paused = 0;
 private static int Forced = 0;
 private static int StillTrying = 0;
@@ -96,9 +99,14 @@ static int cmdAll(string args) {
 	string tmp_ret;
 	string *line = explode(args," ");
 	//tc("line: "+identify(line));
-	for(i = 0; i < sizeof(line); i++){
+	for(i = 1; i < sizeof(line); i++){
 	    string element = line[i];
 	    //tc("element: "+element);
+	    if(sscanf(element,"%d.%s",numba,tmp_ret) == 2){
+		args = replace_string(args,element,numba+ordinal(numba)+" "+tmp_ret);
+		continue;
+	    }
+	    //start single-number check
 	    if(numba = atoi(element)){
 		object o1;
 		string e1, e2;
@@ -115,7 +123,7 @@ static int cmdAll(string args) {
 		    args = replace_string(args,e2+" "+numba,tmp_ret);
 		}
 		//else tc("no dice");
-	    }
+	    }//end single number check
 	}
     }
 

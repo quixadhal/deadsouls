@@ -101,7 +101,7 @@ varargs mixed CanSpeak(object target, string verb, string msg, string lang) {
 varargs mixed eventHearTalk(object who, object target, int cls, string verb,
   string msg, string lang) {
     string tmp;
-    object *riders = this_object()->GetRiders();
+    object *riders = this_object()->GetRiders() - ({ who });
 
     if(riders && sizeof(riders)) 
 	riders->eventHearTalk(who, target, cls, verb, (msg ||0), (lang ||0));
@@ -186,6 +186,18 @@ mixed eventTalkRespond(object who, object targ, int cls, string msg, string lang
 varargs mixed eventSpeak(object target, int cls, string msg, string lang) {
     string verb, tmp;
     int cols;
+    object env;
+
+    if( living(environment()) ){
+	object *riders = environment()->GetRiders();
+	if(riders && sizeof(riders) ){
+	    if(member_array(this_object(),riders) != -1){
+		env = environment(environment());
+	    }
+	}
+    }
+
+    if(!env) env = environment();
 
     if( lang && !GetPolyglot() ) {
 	msg = translate(msg, GetLanguageLevel(lang));
@@ -210,7 +222,7 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang) {
 	else tmp = "%^BOLD%^CYAN%^You whisper in " + capitalize(lang) + " to " +
 	    (string)target->GetName() + ",%^RESET%^ \"" + msg + "%^RESET%^\"";
 	eventPrint(tmp, MSG_CONV);	
-	environment()->eventHearTalk(this_object(), target, cls, "whisper",
+	env->eventHearTalk(this_object(), target, cls, "whisper",
 	  msg, lang);
 	return 1;
 
@@ -236,7 +248,7 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang) {
 	}
 	tmp = tmp + ", \"%^BOLD%^" + SpeakColor + msg + "%^RESET%^\"";
 	eventPrint(tmp, MSG_CONV);
-	environment()->eventHearTalk(this_object(), target, cls, verb, msg,
+	env->eventHearTalk(this_object(), target, cls, verb, msg,
 	  lang);
 	return 1;
 
@@ -244,7 +256,7 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang) {
 	tmp = "%^BOLD%^GREEN%^You yell in " + capitalize(lang) + ",%^RESET%^ \"" +
 	msg + "%^RESET%^\"";
 	eventPrint(tmp, MSG_CONV);   	
-	environment()->eventHearTalk(this_object(), target, cls, "yell", msg,
+	env->eventHearTalk(this_object(), target, cls, "yell", msg,
 	  lang);
 	break;
 

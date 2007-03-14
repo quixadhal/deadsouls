@@ -55,7 +55,6 @@ private int		Flying        = 1;
 private int		ObviousVisible       = 1;
 private int		ActionChance  = 10;
 mapping			ItemsMap      = ([]);
-//private static object  *dummies       = ({});
 private static mixed    global_item;
 private static mixed	Action;
 private int		tick_resolution	= 5;
@@ -86,7 +85,7 @@ void CheckActions(){
 	foreach(mixed key, mixed val in ActionsMap){
 	    if( ActionChance > random(100) ) {
 		if(functionp(key)) evaluate(key);
-		else message("other_action", key, this_object());
+		else eventPrint(key);
 	    }
 	}
     }
@@ -103,7 +102,7 @@ void CheckActions(){
 		evaluate(act);
 		return;
 	    }
-	    else message("other_action", act, this_object());
+	    else eventPrint(act);
 	}
     }
 }
@@ -868,16 +867,15 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
     int msg_class;
     targs = filter(all_inventory(), (: (int)$1->is_living() :));
 
-    //foreach(mixed element in targs){
-    //    object *riders = element->GetRiders();
-    //    if(riders && sizeof(riders)) targs += riders;
-    //}
-
     if( !arg2 && !arg3 ) {
 	msg_class = MSG_ENV;
     }
     else if( objectp(arg2) || arrayp(arg2) ) {
 	if( objectp(arg2) ) arg2 = ({ arg2 });
+	foreach(object mount in arg2){
+	    object *riders = mount->GetRiders();
+	    if(riders) targs += riders;
+	}
 	targs -=  arg2;
 	msg_class = MSG_ENV;
     }
@@ -886,6 +884,10 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
     }
     else if( objectp(arg3) || arrayp(arg3) ) {
 	if( objectp(arg3) ) arg3 = ({ arg3 });
+	foreach(object mount in arg3){
+	    object *riders = mount->GetRiders();
+	    if(riders) targs += riders;
+	}
 	targs -= arg3;
 	msg_class = arg2;
     }
