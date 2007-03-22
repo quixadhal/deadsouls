@@ -16,7 +16,7 @@ string array restrict_tokens = ({ "restrict","unrestrict" });
 string array nonmodals = ({ "liveupgrade", "prompt","status","email",
   "debugger", "access", "pinging" });
 string array modals = ({ "matchcommand", "matchobject", "autowiz", "locked","localtime", 
-  "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare",
+  "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
   "retain", "defaultparse", "disablereboot" });
 string array inet_services = ({ "oob", "hftp", "ftp", "http", "rcp", "inet" });
 
@@ -29,6 +29,7 @@ varargs static int ModStartRoom(string which, string arg);
 static int ProcessOther(string which, string arg);
 static int ProcessString(string which, string arg);
 int ProcessInet(string which, string arg);
+varargs static int ModDefaultDomain(string which, string arg);
 
 static private void validate() {
     if(!this_player()) return 0;
@@ -69,6 +70,7 @@ mixed cmd(string str) {
     case "intermud" : ModIntermud(which, arg);break;
     case "router" : ModRouter(which, arg);break;
     case "startroom" : ModStartRoom(which, arg);break;
+    case "defaultdomain" : ModDefaultDomain(which, arg);break;
     case "resets" : which = "TIME_TO_RESET";ProcessOther(which,arg);break;
     case "offset" : which = "GMT_OFFSET";ProcessOther(which,arg);break;
     case "extraoffset" : which = "EXTRA_TIME_OFFSET";ProcessOther(which,arg);break;
@@ -129,7 +131,7 @@ varargs static int ModStartRoom(string which, string arg){
 	write("/n/nThat room file is broken. Please fix it and try again.");
 	return 1;
     }
-    cp("/secure/include/rooms.h","/secure/save/backup/room."+time());
+    cp("/secure/include/rooms.h","/secure/save/backup/rooms."+time());
     config = explode( read_file("/secure/include/rooms.h"),"\n" );
     config2 = ({});
     foreach(string line in config){
@@ -148,6 +150,45 @@ varargs static int ModStartRoom(string which, string arg){
     return 1;
 }
 
+varargs static int ModDefaultDomain(string which, string arg){
+    if(!arg){
+	write("Please specify the absolute path to the domain, eg: /domains/MystyShyre");
+	return 1;
+    }
+
+    if(first(arg,1) != "/"){
+	write("You've entered a relative path. Please try again, using an absolute path. "+
+	  "For example: mudconfig defaultdomain /domains/MystyShyre");
+	return 1;
+    }
+
+    if(!directory_exists(arg)){
+	write("That domain does not exist. Type: help domaincreate");
+	return 1;
+    }
+
+    if(!directory_exists(arg+"/room")){
+	write("That directory seems to lack a /room dir. It is not suitable for a domain.");
+	return 1;
+    }
+
+    cp("/secure/include/dirs.h","/secure/save/backup/dirs."+time());
+    config = explode( read_file("/secure/include/dirs.h"),"\n" );
+    config2 = ({});
+    foreach(string line in config){
+	string s1,s2,s3;
+	if(sscanf(line,"%s %s %s",s1,s2,s3) == 3){
+	    if(s1 == "#define" && s2 == "DIR_STANDARD_DOMAIN")
+		line = "#define DIR_STANDARD_DOMAIN       \""+arg+"\"";
+	}
+	config2 += ({ line });
+    }
+
+    CompleteConfig("/secure/include/dirs.h");
+
+    write("\nPlease reboot the mud for this change to take effect.\n");
+    return 1;
+}
 
 varargs static int ModRouter(string which, string arg){
     string preloads = read_file(CFG_PRELOAD);
@@ -381,6 +422,7 @@ static int ProcessModal(string which, string arg){
     case "defaultparse" : which = "DEFAULT_PARSING";break;
     case "disablereboot" : which = "DISABLE_REBOOTS";break;
     case "exitsbare" : which = "BARE_EXITS";break;
+    case "nmexits" : which = "NM_STYLE_EXITS";break;
     case "matchcommand" : which = "COMMAND_MATCHING";break;
     case "matchobject" : which = "OBJECT_MATCHING";break;
     default : break;
@@ -404,6 +446,13 @@ static int ProcessModal(string which, string arg){
 	reload(LIB_CREATOR,1,1);
 	write("This configuration will take effect for each user the next time they log in.");
 	return 1;
+    }
+    if(which == "NM_STYLE_EXITS"){
+	reload(LIB_ROOM,1,1);
+	reload(LIB_CREATOR,1,1);
+	write("This configuration will take effect for rooms not yet loaded for each "
+	  "user the next time they log in. To ensure all rooms pick up the new configuration, "
+	  "either reboot the mud, or type: \"reload every room\", then quit and log back in.");
     }
     if(which == "RETAIN_ON_QUIT" || which == "OBJECT_MATCHING") 
 	write("To make this configuration take effect, reboot the mud.");
@@ -633,6 +682,7 @@ void help() {
       "\nmudconfig matchcommand [ yes | no ]"
       "\nmudconfig matchobject [ yes | no ]"
       "\nmudconfig exitsbare [ yes | no ]"
+      "\nmudconfig nmexits [ yes | no ] (This togggles where default exits are displayed)"
       "\nmudconfig localtime [ yes | no ]"
       "\nmudconfig offset <offset from gmt in seconds>"
       "\nmudconfig extraoffset <offset from GMT in hours>"
@@ -643,6 +693,7 @@ void help() {
       "\nmudconfig resets <interval between resets>"
       "\nmudconfig router [ enable | disable ]"
       "\nmudconfig startroom <filename of start room>"
+      "\nmudconfig defaultdomain </full/path>"
       "\nmudconfig email <the admin's email address>"
       "\nmudconfig liveupgrade <the default liveupgrade mud's name>"
       "\nmudconfig hostip <the computer's ip address (eg 111.222.333.444)>"

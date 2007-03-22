@@ -1,3 +1,39 @@
+---- 2.4.1 ---
+- The display of obvious exits can be over the desc in brackets (default)
+  or under the desc in text form, depending on the NM_STYLE_EXITS 
+  setting in config.h. This can be configured with: mudconfig nmexits [on|off]
+- Added Diku-style equipment (eq) command.
+- It's now possible to use two-letter emotes on channels, and one may
+  use "channel:" syntax as well as "channelemote", eg: "cre: foo"
+- Added age check to login for COPPA compliance (Technically this is
+  not necessary since COPPA applies to commercial enterprises, but
+  I'm adding it on general principle).
+- Fixed nonsensical parsing bug in LIB_COMMAND.
+- Liveupgrade will now create a dir if necessary.
+- Rooms missing from /std added.
+
+---- 2.4 ---
+- Improved security in WGET_D.
+
+---- 2.3a20 ---
+- convert_ascii no longer uses a broken (and slow) lookup table. It 
+  also now has a reverse counterpart, convert_into_ascii.
+- Fixed a null array in LIB_MOUNT that hosed up some non-mount npc's.
+- Added defaultdomain subcommand to the mudconfig command, so that
+  you can make your new domain the default one for the mud with the 
+  command: mudconfig defaultdomain /domains/MySpiffyArea
+- The domaincreate command now adds all the rooms necessary to make a
+  domain work as a default domain.
+- Fixed a bug that allowed players to be attacked by other players
+  despite PK and SetAttackable safeguards.
+- Fixed a broken add_action in jennybot that emulated a broken verb.
+- The liveupgrade command has been revamped to avoid a crasher (!!!) and 
+  no longer requires multiple "liveupgrade all" entries. Just one will do.
+- WGET_D is now throttled to prevent overwhelming the network.
+- REMOTEPOST_D is now more aggressive about retiring old failed mail to avoid 
+  idle OOB objects from constantly loading.
+- Fixed bug in goto that broke using a string as an argument.
+
 ---- 2.3a19 ---
 - Further simplified parsing: it is no longer necessary to "put book on table" or
   "give sword to fighter". You can now "put book table" and "give sword fighter".

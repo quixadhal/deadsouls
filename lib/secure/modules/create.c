@@ -763,4 +763,3 @@ int eventAddSettings(object ob, string tmp, mapping NewMap, string func){
     reload(ob);
     return 1;
 }
-

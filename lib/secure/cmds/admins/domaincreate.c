@@ -51,6 +51,12 @@ mixed cmd(string args) {
     }
 
     cp("/obj/room.c",domain_path+"/room/start.c");
+    cp("/std/death.c",domain_path+"/room/death.c");
+    cp("/std/void.c",domain_path+"/room/void.c");
+    cp("/std/pod.c",domain_path+"/room/pod.c");
+    cp("/std/freezer.c",domain_path+"/room/freezer.c");
+    cp("/std/furnace.c",domain_path+"/room/furnace.c");
+    cp("/std/wiz_hall.c",domain_path+"/room/wiz_hall.c");
 
     write("Ok.");
     return 1;

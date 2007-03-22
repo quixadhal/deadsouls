@@ -15,7 +15,6 @@ static void create() {
     SetExits( ([
 	"east" : "/domains/town/room/mansion_dhall3"
       ]) );
-    SetObviousExits("e");
 }
 void init(){
     ::init();

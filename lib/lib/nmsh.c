@@ -31,7 +31,7 @@ static void create() {
       "ne" : "go northeast", "nw" : "go northwest", "se" : "go southeast",
       "sw" : "go southwest", "d" : "go down", "u" : "go up", "out": "go out",
       "exa" : "look at $*", "p" : "people", "sc" : "status", "inf" : "score",
-      "eq" : "inventory", "where" : "people", "prac" : "skills", 
+      "eq" : "equipment", "where" : "people", "prac" : "skills", 
       "sco" : "score", "practice" : "skills", "trophy" : "kills",
       "northwest" : "go northwest", "northeast" : "go northeast", 
       "southwest" : "go southwest", "southeast" : "go southeast",
@@ -469,6 +469,5 @@ string get_path() { return query_cwd(); }
 varargs int GetInvis() { return 0; }
 
 string GetKeyName() { return 0; }
-
 
 

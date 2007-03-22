@@ -6,6 +6,9 @@
  *    Last Modified: 050912
  */
 
+#ifndef NM_STYLE_EXITS
+#define NM_STYLE_EXITS 1
+#endif
 
 #include <lib.h>
 #include <rooms.h>
@@ -997,17 +1000,20 @@ int GenerateObviousExits(){
 	}
     }
 
-    if(member_array("north",exits) != -1) dir_string += "n, ";
-    if(member_array("south",exits) != -1) dir_string += "s, ";
-    if(member_array("east",exits) != -1) dir_string += "e, ";
-    if(member_array("west",exits) != -1) dir_string += "w, ";
-    if(member_array("northeast",exits) != -1) dir_string += "ne, ";
-    if(member_array("northwest",exits) != -1) dir_string += "nw, ";
-    if(member_array("southeast",exits) != -1) dir_string += "se, ";
-    if(member_array("southwest",exits) != -1) dir_string += "sw, ";
-    if(member_array("up",exits) != -1) dir_string += "u, ";
-    if(member_array("down",exits) != -1) dir_string += "d, ";
-    if(member_array("out",exits) != -1) dir_string += "out, ";
+    if(NM_STYLE_EXITS){
+	if(member_array("north",exits) != -1) dir_string += "n, ";
+	if(member_array("south",exits) != -1) dir_string += "s, ";
+	if(member_array("east",exits) != -1) dir_string += "e, ";
+	if(member_array("west",exits) != -1) dir_string += "w, ";
+	if(member_array("northeast",exits) != -1) dir_string += "ne, ";
+	if(member_array("northwest",exits) != -1) dir_string += "nw, ";
+	if(member_array("southeast",exits) != -1) dir_string += "se, ";
+	if(member_array("southwest",exits) != -1) dir_string += "sw, ";
+	if(member_array("up",exits) != -1) dir_string += "u, ";
+	if(member_array("down",exits) != -1) dir_string += "d, ";
+	if(member_array("out",exits) != -1) dir_string += "out, ";
+    }
+    else dir_string = implode(exits,", ")+", ";
     if(sizeof(this_object()->GetEnters(1) - ({0}) )) {
 	if(sizeof(this_object()->GetExits())) dir_string += ", ";
 	dir_string += enters;

@@ -12,7 +12,6 @@
 #include "include/command.h"
 
 #define OLD_STYLE_PLURALS 1
-#define DIKU_EMULATION 1
 
 int Paused = 0;
 private static int Forced = 0;
@@ -103,8 +102,10 @@ static int cmdAll(string args) {
 	    string element = line[i];
 	    //tc("element: "+element);
 	    if(sscanf(element,"%d.%s",numba,tmp_ret) == 2){
-		args = replace_string(args,element,numba+ordinal(numba)+" "+tmp_ret);
-		continue;
+		if(present(numba+ordinal(numba)+" "+tmp_ret,environment(this_player()))){
+		    args = replace_string(args,element,numba+ordinal(numba)+" "+tmp_ret);
+		    continue;
+		}
 	    }
 	    //start single-number check
 	    if(numba = atoi(element)){
@@ -266,18 +267,9 @@ int eventRetryCommand(string lastcmd){
 	else ret = next_command[0]+" a "+next_command[1]+" "+next_command[2];
 	//debug("ret: "+ret,"green");
     }
-    else if(sizeof(next_command) == 4 && StillTrying < 2){
+    else if(sizeof(next_command) == 4 && StillTrying < MAX_COMMANDS_PER_SECOND){
 	ret = next_command[0]+" a "+next_command[1]+" "+next_command[2]+" "+next_command[3];
 	//debug("ret: "+ret,"magenta");
-    }
-    else if(sizeof(next_command) > 3){
-	foreach(string element in prep_arr){
-	    if(!grepp(lastcmd,element+" a"))
-		lastcmd = replace_string(lastcmd,element,element+" a");
-	}
-	//debug("ret: "+ret);
-	ret = lastcmd;
-	//debug("ret: "+ret);
     }
     //debug("ret: "+ret,"cyan");
 

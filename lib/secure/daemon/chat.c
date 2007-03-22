@@ -44,6 +44,7 @@ static void create() {
     }
     foreach( string channel in local_chans ){
 	tmp_arr += ({ channel + "emote" });
+	tmp_arr += ({ channel + ":" });
     }
 
     local_chans += tmp_arr;
@@ -167,12 +168,16 @@ int cmdChannel(string verb, string str) {
 
     if(first(str,1) == ":" && 
       (member_array(str[1..1], ({ "Q", "O", "P", "D", "I", "X" })) == -1 &&
-	alphap(str[1..1]) && sizeof(str) > 3)){
+	alphap(str[1..1]) && sizeof(str) > 2)){
 	if(!grepp(verb,"emote")) verb += "emote";
 	str = trim(replace_string(str,":","",1));
     }
 
-    if(grepp(verb, "emote")) varb = replace_string(verb,"emote","");
+    if(grepp(verb, ":")){
+	varb = replace_string(verb,":","");
+	verb = replace_string(verb,":","emote");
+    }
+    else if(grepp(verb, "emote")) varb = replace_string(verb,"emote","");
     else if(last(verb, 1) == ":") varb = replace_string(verb,":","");
     else varb = verb;
 

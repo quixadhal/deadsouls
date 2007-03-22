@@ -63,8 +63,7 @@ mixed do_initfix_obj(object ob) {
     }
 
     else write("Done.");
-    reload(ob);
-    if(inherits(LIB_DOOR,ob)){
+    if(ob && inherits(LIB_DOOR,ob)){
 	string *doors = environment(this_player())->GetDoors();
 	if(!sizeof(doors)) return 1;
 	foreach(string dir in doors){
@@ -76,6 +75,7 @@ mixed do_initfix_obj(object ob) {
 	    }
 	}
     }
+    if(ob) reload(ob);
     return 1;
 }
 

@@ -63,10 +63,12 @@ object *RemoveRider(object ob){
 
 object *GetRiders(){
     object *ret = ({});
-    foreach(mixed rider in Riders){
-	if(!rider) RemoveRider(rider);
-	if(environment(rider) == this_object()) ret += ({ rider });
-	else RemoveRider(rider);
+    if(Riders && sizeof(Riders)){
+	foreach(mixed rider in Riders){
+	    if(!rider) RemoveRider(rider);
+	    if(environment(rider) == this_object()) ret += ({ rider });
+	    else RemoveRider(rider);
+	}
     }
     return ret;
 }

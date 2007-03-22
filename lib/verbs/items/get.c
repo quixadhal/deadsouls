@@ -149,4 +149,3 @@ mixed do_get_obs_from_obj(mixed *obs, object storage) {
 mixed do_get_obs_obj(mixed *obs, object storage) {
     return do_get_obs_out_of_obj(obs, storage);
 }
-

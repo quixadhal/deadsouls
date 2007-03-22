@@ -36,12 +36,13 @@ void create(){
 
 varargs mixed eventBeginOOB(string mud, int token, mixed *data){
     object ob;
-    int port = INTERMUD_D->GetMudList()[mud][11]["oob"];
-    string ip = INTERMUD_D->GetMudList()[mud][1];
-    if(sizeof(INTERMUD_D->GetMudList()[mud][12]) &&
-      INTERMUD_D->GetMudList()[mud][12]["ip"] &&
-      INTERMUD_D->GetMudList()[mud][12]["ip"] != "127.0.0.1")
-	ip = INTERMUD_D->GetMudList()[mud][12]["ip"];
+    mapping MudList = INTERMUD_D->GetMudList();
+    int port = MudList[mud][11]["oob"];
+    string ip = MudList[mud][1];
+    if(sizeof(MudList[mud][12]) &&
+      MudList[mud][12]["ip"] &&
+      MudList[mud][12]["ip"] != "127.0.0.1")
+	ip = MudList[mud][12]["ip"];
     //tc("IP: "+ip, "cyan");
     //tc("token: "+token, "cyan");
     //tc("port: "+port, "cyan");
@@ -343,7 +344,7 @@ mixed SendMail(mapping mail){
     //tc("ok, mail is: "+identify(mail),"yellow");
     trr("OOB_D.SendMail: mail: "+identify(mail),mcolor,MSG_OOB);
     foreach(mixed key, mixed val in mail){
-	target = RequestBegin(key);
+	//target = RequestBegin(key);
 	if(sizeof(val)){
 	    foreach(mixed id, mixed message in val){
 		//tc("message: "+identify(message));

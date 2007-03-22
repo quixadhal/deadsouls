@@ -60,5 +60,6 @@
 #define LIVEUPGRADE_SERVER       "Dead Souls"
 #define CARRIAGE_RETURN          "\r"
 #define OLD_STYLE_PLURALS        1
+#define NM_STYLE_EXITS           0
 
 #endif /* s_config_h */

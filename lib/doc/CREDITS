@@ -8,7 +8,7 @@ Sine qua non: Descartes, the legion of MudOS developers, and
 Direct conributors: Haderach and his clever code and inspiration, Duuk
               and his willingness to let me poke through his lib and
 	      filch code. Great thanks to Marajin for his direct and
-	      substantial contribution to the Windows port.
+	      substantial contribution to the Cygwin Windows port.
                   Much gratitude to Saquivor, for whom a town street is
               now named, for getting the Windows socket code working.
                   Thanks also to the following for code donation,
@@ -17,7 +17,8 @@ Direct conributors: Haderach and his clever code and inspiration, Duuk
 
 Appreciation of: Jayren, Kaylus, Arianrhod, Nosmo, Pyro, Abby, Balmung, 
               Aten, Metiscus, Garfield, Javelin, Alensin, Daelas, Root,
-              Kristus, Zeus, Dastuun, Detah, and Nulvect for their
+              Kristus, Zeus, Dastuun, Detah, Nulvect, Memrosh, Luna,
+              Kuurus, Darloth, Albiorix, Aransus, and Thecreator for their
               thoughtful comments and suggestions.
 
 * Thanks to Frostmud.com for letting me test on their box.

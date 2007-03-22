@@ -33,7 +33,9 @@ mixed cmd(string str) {
 }
 
 int help() {
-    message("system", "Syntax: create room DIRECTION FILE\n"
+    message("system", "Syntax:\n"
+      "        create room DIRECTION FILE\n"
+      "        create room none FILE\n"
       "        create npc FILE\n"
       "        create barkeep FILE\n"
       "        create vendor FILE\n"

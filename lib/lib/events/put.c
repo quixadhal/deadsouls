@@ -104,4 +104,3 @@ mixed direct_put_wrd_wrd_word_obj(){
 mixed direct_put_obj_obj() {
     return direct_put_obj_word_obj();
 }
-

@@ -20,10 +20,6 @@ static void create() {
 	"north" : "/domains/town/room/thall",
 	"east" : "/domains/town/room/vill_road4.c",
       ]) );
-    SetEnters( ([
-	"town hall" : "/domains/town/room/thall",
-	"office" : "/domains/town/room/postoffice.c",
-      ]) );
 }
 void init(){
     ::init();

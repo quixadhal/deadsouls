@@ -81,7 +81,9 @@
 #include "/secure/sefun/compare_array.c"
 #include "/secure/sefun/legacy.c"
 #include "/secure/sefun/atomize.c"
+#ifdef LIVEUPGRADE_SERVER
 #include "/secure/sefun/native_version.c"
+#endif
 
 string globalstr;
 mixed globalmixed;

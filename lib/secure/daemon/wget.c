@@ -3,152 +3,227 @@
 #include <network.h>
 
 inherit LIB_DAEMON;
-string gwhere, gfile, ghost;
-int started = 0;
+string gfile, ghost;
+int upgrading = 0;
+int max_outbound = 5;
+int max_retries = 200;
+mapping FilesMap = ([]);
+mapping FileQueue = ([]);
+string lucmd = "/secure/cmds/admins/liveupgrade";
+
+void validate(){
+    if(!(int)master()->valid_apply(({ "SECURE" })) ){
+	string offender = identify(previous_object(-1));
+	debug("WGET_D SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
+	log_file("security", "\n"+timestamp()+" WGET_D breach: "+offender+" "+get_stack());
+	error("WGET_D SECURITY VIOLATION: "+offender+" "+get_stack());
+    }
+}
 
 static void create() {
     daemon::create();
+    set_heart_beat(1);
 }
 
-int open_connection(string where, int port){
-    int status, fd;
-
-    fd = socket_create(STREAM, "read_callback", "close_callback");
-    if( fd < 0 ){
-	tn("WGET_D: socket error: "+socket_error(fd),"red");
-	return 0;
-    }
-    status = socket_connect(fd, where +" "+port, "read_callback", "write_callback");
-    if( status < 0 ){
-	tn("WGET_D: socket error: "+socket_error(status),"red");
-	return 0;
-    }
-    return 1;
-}
-
-varargs int GetFile(string source, string file, string host, string where, int port){
-    gfile = file;
-    ghost = host;
-    gwhere = where;
-    if(where) rm(where);
-    open_connection(source, (port || 80));
-}
-
-void write_callback(int fd){
-    string str ="GET "+gfile+" HTTP/1.0"+CARRIAGE_RETURN+"\n"+
-    "Host: "+ghost+CARRIAGE_RETURN+"\n" +
-    "User-Agent: "+ "foo" + "@" + mud_name() + " " +
-    mudlib()+ "/" + mudlib_version() +" ("+ query_os_type()+";) "+ 
-    version() + " "+
-    CARRIAGE_RETURN+"\n"+CARRIAGE_RETURN+"\n";
-    int result = 0;
-    tn("str: "+str);
-    result = socket_write(fd, (string)str);
-    if(result < 0) tn("result: "+result+", aka: "+socket_error(result));
-    else tn("WGET_D: request successfully sent from client "+identify(this_object()));
-}
-
-void read_callback(int fd, mixed data){
-    int i;
-    int nullify = 0;
-    string tmp="";
-    mixed tmp2 = "";
-    string last_char = last(data,1);
-    string first_char = first(data,1);
-    string *tmparr = explode(data,"\n");
-    string *nullifiers = ({ "HTTP/", "HTTP0^0", "Date:", "Server:", "Last-Modified:", "ETag:",
-      "Accept-Ranges:", "Content-Length:", "Connection:", "Content-Type:", "X-Pad:" });
-    //tmp2 = implode(tmparr,"\n");
-    //tmparr = explode(tmp2,"\n");
-    data = replace_string(data,"\n"+CARRIAGE_RETURN,"\n");
-    data = replace_string(data,CARRIAGE_RETURN+"\n","\n");
-    data = replace_string(data,CARRIAGE_RETURN,"\n");
-    tmparr = explode(data,"\n");
-    //if(last(data,1) != last_char) tc("AQUI GUAPO: "+gwhere,"white");
-    //if(last_char == "\n") tc("last_char is \\n, guapo. file: "+gwhere+", last 8: "+last(data,8),"red");
-    //else if(last_char == "\r") tc("last_char is \\r, guapo. file: "+gwhere+", last 8: "+last(data,8),"green");
-    //else if(last_char == "\t") tc("last_char is \\t, guapo. file: "+gwhere+", last 8: "+last(data,8),"blue");
-    //else tc("last_char is "+last_char+", guapo. file: "+gwhere+", last 8: "+last(data,8),"cyan");
-
-    //if(first_char == "\n") tc("first_char is \\n, guapo. file: "+gwhere+", first 8: "+first(data,8),"white");
-    //else if(first_char == "\r") tc("first_char is \\r, guapo. file: "+gwhere+", first 8: "+first(data,8),"yellow");    
-    //else if(first_char == "\t") tc("first_char is \\t, guapo. file: "+gwhere+", first 8: "+first(data,8),"magenta");
-    //else tc("first_char is "+first_char+", guapo. file: "+gwhere+", first 8: "+first(data,8),"orange");
-
-    //tc("last data char: \""+last_char+"\", size: "+sizeof(last_char)+" N?: "+(last_char == "\n" ? "yes" : "no"));
-    //tc("last data char: \""+last_char+"\", size: "+sizeof(last_char)+" R?: "+(last_char == "\r" ? "yes" : "no"));
-    //for(i = 0; i < 256; i++){
-    //if(sprintf("%c",i) == last_char) tc("last is: %^B_WHITE%^BLACK%^"+i);
-    //if(sprintf("%c",i) == first_char) tc("first is: %^B_WHITE%^RED%^"+i);
-    //}
-    tn("fd is: "+fd);
-    tn("data: "+data,"red");
-    if(!started){
-	write_file("/tmp/foo.txt",data,1);
-	foreach(string element in tmparr){
-	    foreach(string nully in nullifiers){
-		if(!strsrch(element,nully)){
-		    tn("deleting: "+element,"green");
-		    tmparr -= ({ element });
-		}
-	    }
-	}
-	//tc("tmparr[0]: \""+tmparr[0]+"\", size: "+sizeof(tmparr[0])+" R?: "+(tmparr[0] == "\r" ? "yes" : "no"));
-	if(!strsrch(tmparr[0],"Location: ")) nullify = 1;
-
-	while(sizeof(tmparr[0]) < 2){
-	    if(sizeof(tmparr) > 1){
-		tmparr = tmparr[1..];
-		//tc("tmparr[0]: "+tmparr[0],"green");
-	    }
-	    //else break;
-	}
-	//started = 1;
-    }
-
-    else {
-	write_file("/tmp/foo.txt",data);
-    }
-    data = implode(tmparr,"\n");
-    if(last(data,1) != last_char){
-	//tc("AQUI GUAPO: "+gwhere,"yellow");
-	if(last_char == CARRIAGE_RETURN ) data += "\n";
-	else data += last_char;
-    }
-    if(started && first(data,1) != first_char){
-	//tc("AQUI GUAPO: "+gwhere,"yellow");
-	data = first_char+data;
-    }
-
-    if(!started) started = 1;
-
-    tn("where: "+gwhere);
-    gwhere = replace_string(gwhere,"0^0code0^0upgrades0^0"+mudlib_version(),"");
-    foreach(string nully in nullifiers){
-	if(grepp(gwhere, nully)) nullify = 1;
-    }
-    tn("where: "+gwhere);
-    tn("data: "+data,"white");
-    if(!nullify) write_file(gwhere,data);
-}
-
-string convname(string raw){
+varargs string convname(string raw, int rev){
     string ret = replace_string(raw,"/","0^0");
-    ret = "/secure/upgrades/files/"+ret;
-    tn("file: "+ret);
+    if(rev){
+	ret = replace_string(raw,"0^0","/");
+	ret = replace_string(ret,"/secure/upgrades/files/","");
+    }
+    else ret = "/secure/upgrades/files/"+ret;
     return ret;
 }
 
-int eventMajorUpgrade(string source, string *files, string host){
+static void LUReport(string str){
+    if(upgrading) lucmd->eventReceiveReport(str);
+}
+
+static int ProcessData(int fd){
+    int i;
+    int nullify = 0;
+    string where;
+    string tmp="";
+    string data= FilesMap[fd]["contents"];
+    mixed tmp2 = "";
+    string *nullifiers = ({ "HTTP/", "HTTP0^0", "Date:", "Server:", "Last-Modified:", "ETag:",
+      "Accept-Ranges:", "Content-Length:", "Connection:", "Content-Type:", "X-Pad:" });
+    string *tmparr = ({});
+    FilesMap[fd]["last_char"] = last(data,1);
+    FilesMap[fd]["first_char"] = first(data,1);
+    tmparr = explode(data,"\n");
+    i = sizeof(tmparr);
+
+    foreach(string element in tmparr){
+	if(!strsrch(element,"<title>404 Not Found</title>")) nullify = 1;
+	foreach(string nully in nullifiers){
+	    if(!strsrch(element,nully)){
+		tmparr -= ({ element });
+	    }
+	}
+    }
+
+    if(!strsrch(tmparr[0],"Location: ")) nullify = 1;
+
+    if(!nullify){
+	while(!sizeof(tmparr[0]) || sizeof(tmparr[0]) < 2){
+	    tmparr = tmparr[1..];
+	}
+    }
+    data = implode(tmparr,"\n");
+
+    if(!FilesMap[fd]["started"]) FilesMap[fd]["started"] = 1;
+
+    where = FilesMap[fd]["where"];
+    FilesMap[fd]["where"] = replace_string(where,"0^0code0^0upgrades0^0"+mudlib_version(),"");
+    foreach(string nully in nullifiers){
+	if(grepp(where, nully)) nullify = 1;
+    }
+    FilesMap[fd]["normalname"] = convname(FilesMap[fd]["where"],1);
+    if(directory_exists(FilesMap[fd]["normalname"])) nullify = 1;
+    if(!nullify){
+	if(data && (data[0] == 10 || data[0] == 13)) data = data[1..];
+	if(last(data,1) != "\n") data += "\n";
+	FilesMap[fd]["contents"] = data;
+    }
+    else FilesMap[fd]["contents"] = 0;
+}
+
+void close_callback(int fd){
+    validate();
+
+    if(FilesMap[fd]){
+	LUReport("Received "+FilesMap[fd]["file"]);
+	ProcessData(fd);
+	if(FilesMap[fd]["contents"] && sizeof(FilesMap[fd]["contents"]))
+	    write_file(FilesMap[fd]["where"], FilesMap[fd]["contents"]);
+	map_delete(FilesMap,fd);
+	this_object()->eventRetryGet(1);
+    }
+}
+
+varargs int GetFile(string source, string file, string host, string where, int port){
+    int fd, status;
+
+    validate();
+
+    if(sizeof(FilesMap) > max_outbound){
+	if(!FileQueue) FileQueue = ([]);
+	if(!FileQueue[file]) FileQueue[file] = ([ "source" : source, "file" : file, "host" : host,
+	      "where" : where, "port" : (port || 80), "creation" : time(), "started" : 0,
+	      "user" : (this_player() ? this_player()->GetName() : identify(this_object())),
+	      "first_char" : "", "last_char" : "" ]);
+	return 0;
+    }
+
+    fd = socket_create(STREAM, "read_callback", "close_callback");
+    if( fd < 0 ){
+	return 0;
+    }
+
+    FilesMap[fd] = ([ "source" : source, "file" : file, "host" : host,
+      "where" : where, "port" : (port || 80), "creation" : time(), "started" : 0,
+      "user" : (this_player() ? this_player()->GetName() : identify(this_object())) ]);
+
+status = socket_connect(fd, source +" "+port, "read_callback", "write_callback");
+if( status < 0 ){
+    return 0;
+}
+
+return fd;
+}
+
+static varargs void RetryGet(int i){
+    mixed *queue = keys(FileQueue);
+    if(!i) i = 2;
+    if(i > max_outbound) i = max_outbound;
+    if(!FileQueue || !sizeof(FileQueue)){
+	return 0;
+    }
+    foreach(mixed element in queue[0..i]){
+	mapping  TmpMap = FileQueue[element];
+	mixed foo = GetFile(TmpMap["source"],TmpMap["file"],TmpMap["host"],TmpMap["where"],TmpMap["port"]);
+	if(foo){
+	    LUReport("%^CYAN%^Requesting: file: "+TmpMap["file"]+"%^RESET%^");
+	    map_delete(FileQueue, element);
+	}
+    }
+}
+
+static void CleanFD(int fd){
+    if(!FilesMap[fd]) socket_close(fd);
+    else if(!socket_status(fd)) map_delete(FilesMap,fd);
+    else if(socket_status(fd)[1] != "DATA_XFER"){
+	map_delete(FilesMap,fd);
+	socket_close(fd);
+    }
+}
+
+void heart_beat(){
+    if((!FileQueue || !sizeof(FileQueue)) &&
+      (!FilesMap || !sizeof(FilesMap))){
+	if(upgrading){
+	    LUReport("\nFile download complete. After backing up your mud, issue the command: liveupgrade apply");
+	    upgrading = 0;
+	}
+	return;
+    }
+    RetryGet();
+}
+
+void write_callback(int fd){
+    string str;
+    int result = 0;
+    validate();
+    if(!FilesMap[fd] || !socket_status(fd)){
+	CleanFD(fd);
+	return; 
+    }
+    str ="GET "+FilesMap[fd]["file"]+" HTTP/1.0"+CARRIAGE_RETURN+"\n"+
+    "Host: "+FilesMap[fd]["host"]+CARRIAGE_RETURN+"\n" +
+    "User-Agent: "+ FilesMap[fd]["user"] + "@" + mud_name() + " " +
+    mudlib()+ "/" + mudlib_version() +" ("+ query_os_type()+";) "+ 
+    version() + " "+
+    CARRIAGE_RETURN+"\n"+CARRIAGE_RETURN+"\n";
+    result = socket_write(fd, (string)str);
+}
+
+void read_callback(int fd, mixed data){
+    validate();
+
+    if(!FilesMap[fd]){
+	return;
+    }
+    if(!FilesMap[fd]["contents"]) FilesMap[fd]["contents"] = data;
+    else FilesMap[fd]["contents"] += data;
+}
+
+varargs int eventMajorUpgrade(string source, string *files, string host, int port){
     string *allfiles = sort_array(files,1);
+    validate();
+    if(upgrading){
+	LUReport("There is a liveupgrade already in progress.");
+	return 0;
+    }
+    upgrading = 1;
     foreach(string element in allfiles){
-	object new_client;
-	tn("element: "+element);
-	tn("source: "+source);
 	if(last_string_element(element,1) == "/") continue;
-	new_client = new(LIB_WEB_CLIENT);
-	tn("new_client: "+identify(new_client));
-	new_client->GetFile(source, element, host, convname(element));
+	GetFile(source, element, host, convname(element), (port || 80));
     }
     return 1;
+}
+
+int eventDestruct(){
+    int *fds = keys(FilesMap);
+    validate();
+    if(sizeof(fds)){
+	foreach(int fd in fds){
+	    socket_close(fd);
+	}
+    }
+    return ::eventDestruct();
+}
+
+int GetUpgrading(){
+    return upgrading;
 }

@@ -82,7 +82,6 @@ varargs string *send_post(mapping borg, mixed who) {
     string *rejects, *tmp, *tmpwho, *cles;
     string msg, a, b, tmpstr;
     int i, j, x;
-
     //if(borg) tc("borg: "+identify(borg),"yellow");
     //if(who) tc("who: "+identify(who),"white");
 

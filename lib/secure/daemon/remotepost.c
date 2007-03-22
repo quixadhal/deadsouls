@@ -18,7 +18,7 @@ static private mapping __IncomingMail;
 mapping Old = ([]);
 mapping Outgoing = ([]);
 
-int count = 0;
+static int count = 0;
 
 void create() {
     string *muds; 
@@ -38,9 +38,12 @@ void create() {
 void heart_beat(){
     count++;
     if(sizeof(Outgoing))
-	OOB_D->SendMail(copy(Outgoing));
-    if(count > 30){
+	//OOB_D->SendMail(copy(Outgoing));
+	OOB_D->SendMail(Outgoing);
+    Outgoing = ([]);
+    if(count > 6){
 	count = 0;
+	save_mailqueue();
 	foreach(mixed key, mixed val in Outgoing){
 	    if(!sizeof(val)) map_delete(Outgoing,key);
 	}
@@ -224,12 +227,12 @@ int eventDestruct(){
     return ::eventDestruct();
 }
 
-void defer_old_mail(){
+varargs void defer_old_mail(int i){
     foreach(mixed destination, mixed messages in Outgoing){
 	if(!Old) Old = ([]);
 	foreach(mixed key, mixed val in messages){
 	    //tc("key: "+identify(key));
-	    if((time() - key) > 60){
+	    if(((time() - key) > 300) || i){
 		if(!Old[destination]) Old[destination] = ([]);
 		if(!Old[destination][key]) Old[destination][key] = val;
 		//tc("Old: "+identify(Old));

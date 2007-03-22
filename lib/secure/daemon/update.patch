@@ -7,6 +7,18 @@ static void eventUpdate() {
 
     if(!file_exists("/secure/tmp/update.lock")){
 	string config_file = read_file("/secure/include/config.h");
+        string native = read_file( (file_exists("/secure/sefun/native_version.c") ?
+"/secure/sefun/native_version.c" : "/secure/scripts/native_version.proto"));
+        string ver = mudlib_version();
+        string mudinfo = replace_string(read_file("/secure/sefun/mud_info.c"),
+                ver,"2.3a20");
+        string native_rev = replace_string((native ? native :
+"string native_version() { return \"UNKNOWN\";}"),
+                "UNKNOWN",ver);
+        write_file("/secure/sefun/mud_info.c",mudinfo,1);
+        write_file("/secure/sefun/native_version.c",native_rev,1);
+        tc("ver: "+ver);
+        tc("native: "+native);
 
 	load_object("/secure/cmds/admins/removeraces")->cmd();
 	write_file("/secure/tmp/update.lock","The mud will probably reboot twice.");
@@ -105,15 +117,7 @@ static void eventUpdate() {
     }
 
     else {
-	string newfile = "#include <lib.h>\n";
-        string ver = mudlib_version();
-        string mudinfo = replace_string(read_file("/secure/sefun/mud_info.c"),
-                ver,"2.3a18");
-        string native_rev = replace_string(read_file("/secure/sefun/native_version.c"),
-                "UNKNOWN",ver);
-        write_file("/secure/sefun/mud_info.c",mudinfo,1);
-        write_file("/secure/sefun/native_version.c",native_rev,1);
-
+        string newfile = "#include <lib.h>\n";
 	newfile += "\n";
 	newfile += "inherit LIB_DAEMON;\n";
 	newfile += "\n";
@@ -178,6 +182,7 @@ static void eventUpdate() {
         rm("/cmds/creators/people.c");
         rm("/secure/daemon/i3router/socket_stuff.h");
         rm("/save/events.c");
+        mkdir("/domains/campus/save");
       
         reload(MASTER_D);
         reload(CMD_D);
@@ -198,5 +203,4 @@ static void create() {
     daemon::create();
     call_out((: eventUpdate :), 2);
 }
-
 

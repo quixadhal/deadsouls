@@ -37,7 +37,7 @@ static void create() {
     SetDoor("red room","/domains/campus/doors/red_door2");
     SetDoor("green room","/domains/campus/doors/green_door2");
     SetDoor("blue room","/domains/campus/doors/blue_door2");
-    SetObviousExits("e");
+    SetObviousExits("east");
     SetNoClean(1);
 }
 void init(){

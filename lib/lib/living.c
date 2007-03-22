@@ -67,16 +67,17 @@ mixed direct_dismount_from_liv(){
 
 mixed direct_attack_liv() {
     if( userp(this_player()) && userp(this_object()) ) {
-	if(PLAYER_KILL) return 1;
-	if( !(int)environment(this_player())->CanAttack(this_object()) ) {
-	    return "No player killing!";
+	if(!(int)environment(this_player())->CanAttack(this_object())){
+	    return "Player killing is not permitted in this area!";
+	}
+	if(!(this_object()->GetAttackable())){
+	    return "You are unable to attack that person.";
 	}
 	if(this_player()->GetPK() && this_object()->GetPK()){
-	    return 1;
+	    return (PLAYER_KILL ? 1 : "This is not a PK mud.");
 	}
-	else return "No PK!";
+	else return "One of you is not a player killer. You cannot fight them.";
     }
-
     else return this_object()->GetAttackable();
 }
 

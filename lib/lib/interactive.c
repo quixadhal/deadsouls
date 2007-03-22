@@ -6,6 +6,10 @@
  *    Last modified: 97/01/03
  */
 
+#ifndef NM_STYLE_EXITS
+#define NM_STYLE_EXITS 1
+#endif
+
 #include <lib.h>
 #include <clock.h>
 #include <privs.h>
@@ -192,6 +196,7 @@ void eventDescribeEnvironment(int brief) {
     string *shorts;
     string desc, smell, sound, touch;
     int i, maxi;
+    string altern_obvious = "";
 
     if(!(env = environment(this_object()))) {
 	eventPrint("You are nowhere.", MSG_ROOMDESC);
@@ -232,6 +237,10 @@ void eventDescribeEnvironment(int brief) {
 		desc = capitalize((string)env->GetShort() || "")
 		+ " [" + desc + "]\n";
 	    else desc = capitalize((string)env->GetShort()+"\n" || "\n");
+	    if(!NM_STYLE_EXITS){
+		desc = capitalize((string)env->GetShort()+"\n" || "\n");
+		altern_obvious = "Obvious exit$Q: "+(string)env->GetObviousExits() || "none";
+	    }
 	}
 	else desc = "\n";
 	if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM )
@@ -249,13 +258,22 @@ void eventDescribeEnvironment(int brief) {
     else {
 	if(i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM){
 	    desc = (string)env->GetShort();
-	    if( (tmp = (string)env->GetObviousExits()) && tmp != "" )
-		desc += " [" + tmp + "]";
-	    else desc += "\n";
+	    if(NM_STYLE_EXITS){
+		if( (tmp = (string)env->GetObviousExits()) && tmp != "" )
+		    desc += " [" + tmp + "]";
+		else desc += "\n";
+	    }
+	    else altern_obvious = "Obvious exits: "+(string)env->GetObviousExits() || "none";
 	}
 	else desc = "\n";
     }
     if( desc ) eventPrint(desc, MSG_ROOMDESC);
+    if(sizeof(altern_obvious)){
+        int quant = sizeof(env->GetExits()) + sizeof(env->GetEnters());
+        if(quant > 1) altern_obvious = replace_string(altern_obvious,"$Q","s");
+        else altern_obvious = replace_string(altern_obvious,"$Q","");
+        eventPrint(altern_obvious,MSG_ROOMDESC);
+    }
     if( smell ) eventPrint("%^GREEN%^" + smell, MSG_ROOMDESC);
     if( sound ) eventPrint("%^CYAN%^" + sound, MSG_ROOMDESC);
     if( touch ) eventPrint("%^YELLOW%^" + touch, MSG_ROOMDESC);

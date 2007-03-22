@@ -20,10 +20,10 @@ static void create() {
 	"green room" : "There's no green room here.",
 	"blue room" : "There's no blue room here.",
       ]) );
+    SetObviousExits("west");
     SetInventory(([
 	"/domains/campus/obj/pedestal3" : 1,
       ]));
-    SetObviousExits("w");
     SetExits(([
 	"west" : "/domains/campus/room/wiz_lab",
       ]));

@@ -26,7 +26,6 @@ static void create() {
 	"shower stall" : "/domains/town/room/shower",
 	"shower" : "/domains/town/room/shower"
       ]) );
-    SetObviousExits("w");
 }
 void init(){
     ::init();

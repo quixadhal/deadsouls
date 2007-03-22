@@ -23,7 +23,6 @@ static void create() {
 	"who or what would enjoy spending time down here.",
 	"crawlspace" : "It looks like you might be able to enter the crawlspace, if you "+
 	"really wanted to."]));
-    SetObviousExits("e, u");
     SetInventory((["/domains/campus/npc/rat" : 1]));
     AddExit("up","/domains/campus/room/stairwell");
     AddExit("east","/domains/campus/room/basement2");

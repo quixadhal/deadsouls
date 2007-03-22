@@ -9,6 +9,10 @@
 #ifndef l_sefun_h
 #define l_sefun_h
 
+#ifndef CARRIAGE_RETURN
+#define CARRIAGE_RETURN "\r"
+#endif
+
 varargs string socket_address(mixed arg, int foo);
 string absolute_path(string curr, string newpth);
 int absolute_value(int x);
@@ -251,6 +255,6 @@ int snooperp(mixed guy);
 string native_version();
 string convert_newline(string str);
 int clean_newline_file(string str);
-
+mixed convert_into_ascii(string str);
 
 #endif /* l_sefun_h */

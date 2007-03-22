@@ -229,10 +229,10 @@ static void eventCreatePlayer(string cap) {
     input_to((: ConfirmName :), I_NOESC, cap);
 }
 
-static void ConfirmName(string ans, string cap) {
+static void AgeCheck(string ans, string cap) {
     if( !ans || ans == "" || lower_case(ans)[0..0] != "y" ) {
-	receive("\nOk, then enter the name you really want: \n");
-	input_to( (: InputName :), I_NOESC );
+	receive("\nSorry. You are not old enough to play here.\n");
+	Destruct();
 	return;
     }
     log_file("new_players", Name + " from " + query_ip_number() + " (" +
@@ -240,6 +240,16 @@ static void ConfirmName(string ans, string cap) {
     receive("\nCreate a password of at least 5 letters: \n");
     input_to((: CreatePassword :), I_NOECHO | I_NOESC, cap);
 } 
+
+static void ConfirmName(string ans, string cap) {
+    if( !ans || ans == "" || lower_case(ans)[0..0] != "y" ) {
+	receive("\nOk, then enter the name you really want: \n");
+	input_to( (: InputName :), I_NOESC );
+	return;
+    }
+    receive("\nAre you 13 years of age or older? (y/n) \n");
+    input_to((: AgeCheck :), I_NOESC, cap);
+}
 
 static void eventReEnterGame(string cap) {
     if( interactive(Player) ) {

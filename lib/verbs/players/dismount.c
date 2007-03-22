@@ -14,7 +14,7 @@ static void create() {
       "\n"
       "This command allows you to get off a  "
       "creature you are riding.\n\n"
-      "See also: mount");
+      "See also: mount, befriend, abandon");
 }
 
 mixed can_dismount_liv() {

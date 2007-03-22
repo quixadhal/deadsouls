@@ -861,7 +861,6 @@ private void do_list( string arg, int ltype){
 	}
 	eventWrite("250 RMD command successful.\n",0);
     }
-
     void eventRead(string data){
 	string cmd, arg;
 	function dispatchTo;

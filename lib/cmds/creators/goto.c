@@ -17,7 +17,7 @@ mixed cmd(string str) {
     ob = find_player(lower_case(str));
     if(!ob) ob = find_living(lower_case(str));
     if(ob) dude = ob;
-    if((!ob->GetInvis() || !archp(ob)) && ob=environment(ob)) {
+    if(ob && objectp(ob) && (!ob->GetInvis() || !archp(ob)) && ob=environment(ob)) {
 	if(ob == environment(this_player())) {
 	    message("my_action", "You twitch.", this_player());
 	    if(hiddenp(this_player())) return 1;

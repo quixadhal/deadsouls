@@ -21,7 +21,6 @@ static void create() {
     SetExits( ([
 	"north" : "/domains/town/room/mansion_uhall3"
       ]) );
-    SetObviousExits("n");
     open = 0;
 }
 int OpenPassage(){

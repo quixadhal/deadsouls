@@ -80,4 +80,3 @@ int indirect_shoot_obj_at_obj(mixed ob1,mixed ob2){
     return 1;
 }
 
-

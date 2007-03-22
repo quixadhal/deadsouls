@@ -112,4 +112,3 @@ int GetValidVerb(string verb) {
 }
 
 mapping GetVerbs() { return copy(Verbs); }
-

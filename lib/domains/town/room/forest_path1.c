@@ -39,4 +39,3 @@ int CanReceive(object ob){
     }
     return ::CanReceive();
 }
-

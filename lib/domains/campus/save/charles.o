@@ -2,7 +2,7 @@
 RestrictedChannels ({})
 NoChanColors 0
 Paused 0
-CommandHist ({"say I select the blue door","say My win rate is 67.593399%.","say My switch rate is 101.042572%.","say If successful, this will be run 1153.","say the winners have been: red: 384 green: 384 blue: 384","say I've switched 101.041664% of the time. My win rate is 67.562881%.","say I randomly choose the red door","say I am faced with choice 2.","say My win rate is 67.621529%.","say My switch rate is 101.041664%.","say w00t! blue wins!","say If successful, this will be run 1154.","say the winners have been: red: 384 green: 384 blue: 385","say I've switched 101.040771% of the time. My win rate is 67.590988%.","say I select the blue door","say I am faced with choice 2.","say My win rate is 67.649612%.","say My switch rate is 101.040771%.",})
+CommandHist ({"say I select the blue door","say My win rate is 67.560776%.","say My switch rate is 101.005867%.","say If successful, this will be run 1195.","say the winners have been: red: 398 green: 398 blue: 398","say I've switched 101.005028% of the time. My win rate is 67.447701%.","say I randomly choose the red door","say I am faced with choice 2.","say My win rate is 67.504189%.","say My switch rate is 101.005028%.","say w00t! blue wins!","say If successful, this will be run 1196.","say the winners have been: red: 398 green: 398 blue: 399","say I've switched 101.004181% of the time. My win rate is 67.474915%.","push a button on a pedestal","say I am faced with choice 1.","say I select the blue door","say I am faced with choice 2.","say My win rate is 67.531380%.","say My switch rate is 101.004181%.",})
 localcmds ({"choose","",})
 next_command ({})
 MaxCommandHistSize 20
@@ -13,6 +13,7 @@ Position 2
 Undead 0
 UndeadType 0
 Mount 0
+Riders 0
 BodyMass 0
 SaveRecurse 1
 Saved ({})
@@ -32,7 +33,7 @@ StaminaPoints 410.000000
 Torso "torso"
 Biter 0
 Fingers (["right hand":5,"left hand":5,])
-Limbs (["torso":(["class":1,"children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"parent":0,"health":360,]),"left leg":(["class":2,"children":({"left foot",}),"armors":1049761,"parent":"torso","health":180,]),"neck":(["class":1,"children":({"head",}),"armors":786433,"parent":"torso","health":360,]),"right hand":(["class":4,"children":({}),"armors":98319,"parent":"right arm","health":90,]),"right arm":(["class":2,"children":({"right hand",}),"armors":1253385,"parent":"torso","health":180,]),"head":(["class":1,"children":({}),"armors":262913,"parent":"neck","health":360,]),"left foot":(["class":4,"children":({}),"armors":241,"parent":"left leg","health":90,]),"right foot":(["class":4,"children":({}),"armors":241,"parent":"right leg","health":90,]),"right leg":(["class":2,"children":({"right foot",}),"armors":1049761,"parent":"torso","health":180,]),"left hand":(["class":4,"children":({}),"armors":98319,"parent":"left arm","health":90,]),"left arm":(["class":2,"children":({"left hand",}),"armors":1253385,"parent":"torso","health":180,]),])
+Limbs (["right hand":(["class":4,"children":({}),"health":90,"armors":98319,"parent":"right arm",]),"torso":(["class":1,"children":({"neck","right leg","left leg","right arm","left arm",}),"health":360,"armors":1538049,"parent":0,]),"head":(["class":1,"children":({}),"health":360,"armors":262913,"parent":"neck",]),"left foot":(["class":4,"children":({}),"health":90,"armors":241,"parent":"left leg",]),"right foot":(["class":4,"children":({}),"health":90,"armors":241,"parent":"right leg",]),"right leg":(["class":2,"children":({"right foot",}),"health":180,"armors":1049761,"parent":"torso",]),"left hand":(["class":4,"children":({}),"health":90,"armors":98319,"parent":"left arm",]),"left leg":(["class":2,"children":({"left foot",}),"health":180,"armors":1049761,"parent":"torso",]),"neck":(["class":1,"children":({"head",}),"health":360,"armors":786433,"parent":"torso",]),"right arm":(["class":2,"children":({"right hand",}),"health":180,"armors":1253385,"parent":"torso",]),"left arm":(["class":2,"children":({"left hand",}),"health":180,"armors":1253385,"parent":"torso",]),])
 MissingLimbs ([])
 ExtraChannels ({})
 Agent 0
@@ -40,10 +41,11 @@ Blind 0
 CustomStats 15
 LightSensitivity ({25,75,})
 Resistance (["medium":0,"immune":0,"low":0,"high":0,"none":4194302,])
-Stats (["wisdom":(["class":3,"points":0,"level":51,]),"coordination":(["class":2,"points":0,"level":35,]),"agility":(["class":3,"points":0,"level":36,]),"strength":(["class":4,"points":0,"level":13,]),"luck":(["class":3,"points":0,"level":15,]),"intelligence":(["class":1,"points":0,"level":66,]),"durability":(["class":4,"points":0,"level":35,]),"charisma":(["class":2,"points":0,"level":47,]),"speed":(["class":3,"points":0,"level":33,]),])
+Stats (["agility":(["class":3,"points":0,"level":36,]),"strength":(["class":4,"points":0,"level":13,]),"luck":(["class":3,"points":0,"level":15,]),"charisma":(["class":2,"points":0,"level":47,]),"durability":(["class":4,"points":0,"level":35,]),"speed":(["class":3,"points":0,"level":33,]),"wisdom":(["class":3,"points":0,"level":51,]),"intelligence":(["class":1,"points":0,"level":66,]),"coordination":(["class":2,"points":0,"level":35,]),])
 Polyglot 0
 Languages (["english":(["name":"English","points":0,"native":1,"level":100,]),])
 DefaultLanguage ""
+SpeakColor 0
 Town "Town"
 Race "human"
 Gender "male"
@@ -61,7 +63,9 @@ Currency ([])
 Bank ([])
 SpellBook ([])
 isPK 1
-Messages (["home":"$N goes home.","invis":"$N disappears.","dest":"$N dests $O.","leave":"$N leaves $D.","telout":"$N teleports away.","vis":"$N appears.","clone":"$N clones $O.","come":"$N enters.","telin":"$N teleports in.",])
+Attackable 0
+NoCondition 0
+Messages (["home":"$N goes home.","come":"$N enters.","telin":"$N teleports in.","invis":"$N disappears.","dest":"$N dests $O.","leave":"$N leaves $D.","telout":"$N teleports away.","vis":"$N appears.","clone":"$N clones $O.",])
 ProperNoun 1
 Modify 1
 Short "Charles"
@@ -82,15 +86,15 @@ AutoStand 1
 MaximumHealth 0
 Encounter 0
 EnemyNames ({})
-runs 1154
-switches 1166
+runs 1196
+switches 1208
 stays 17
 percent 0
-fred 124
+fred 125
 fgreen 115
 fblue 119
-wins 780
-red_wins 384
-green_wins 385
-blue_wins 385
+wins 807
+red_wins 399
+green_wins 398
+blue_wins 399
 save_file "/domains/campus/save/charles.o"

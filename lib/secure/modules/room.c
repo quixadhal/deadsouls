@@ -553,4 +553,3 @@ varargs mixed eventProcessEnters(string filename, string dir, string location, o
     rm(globaltmp);
     return 1;
 }
-

@@ -104,10 +104,7 @@ int eventCheckNoob(){
 
 void init(){
     ::init();
-    //add_action("activate_bot","activate");
-    //add_action("eventTurnOff","deactivate");
     add_action("next_tip","next");
-    add_action("get_p","gp");
     eventCheckNoob();
 }
 

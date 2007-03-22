@@ -561,7 +561,6 @@ private static void load_access(string cfg, mapping resource) {
 
     string domain_file(string str) {
 	string nom, tmp;
-
 	if(sscanf(str, DOMAINS_DIRS+"/%s/%s", nom, tmp) == 2) return nom;
 	return 0;
     }

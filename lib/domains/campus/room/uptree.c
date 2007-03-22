@@ -11,7 +11,6 @@ static void create() {
     SetShort("up a tree");
     SetLong("You are standing on some sturdy branches of the large "+ 
       "tree in University Square. ");
-    SetObviousExits("d");
     SetExits( ([ 
 	"down" : "/domains/campus/room/usquare"
       ]) );

@@ -35,7 +35,6 @@ static void create() {
     SetInventory(([
 	"/domains/town/obj/gbed" : 1,
       ]) );
-    SetObviousExits("e");
     SetSearch( ([ "default"  : (: SearchFun :)  ]) );
     found = 0;
 }
