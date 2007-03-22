@@ -1,4 +1,4 @@
-// This I3 router code was written completely by Tim Johnson (Tim@TimMUD,
+// This I3 router code was written mostly by Tim Johnson (Tim@TimMUD,
 // Tim@The Eternal Fantasy)
 // To use it, #include the server.h file or else just rename it to server.c
 //
@@ -24,3 +24,6 @@
 // Some modifications have been made by Cratylus @ Dead Souls to get it
 // working on DS muds and add some features.
 // -Crat 05Sep2006
+//
+// Added inter-router networking support. See irn.h.
+// -Crat 23Feb2007

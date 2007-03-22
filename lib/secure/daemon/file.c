@@ -42,7 +42,8 @@ mixed ReadDir(string str){
     if(directory_exists(str)){
 	foreach(string element in get_dir(str)){
 	    if(file_exists(str+element)) all_files += ({ str+element });
-	    if(directory_exists(str+element)) {
+	    if(directory_exists(str+element) && 
+	      strsrch(str+element,"/secure/upgrades")) {
 		all_dirs += ({ str+element });
 		current_level_dirs += ({ str+element });
 	    }
@@ -139,4 +140,3 @@ static void create() {
     ReadDir("/");
     if(!fun_d) fun_d = load_object(FUNCTION_D);
 }
-

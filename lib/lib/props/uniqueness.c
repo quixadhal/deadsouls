@@ -27,6 +27,7 @@ int SetUnique(int x) {
     Unique = x;
     if( Unique ) {
 	UNIQUE_D->eventTouchObject();
+	this_object()->SetRetain(0);
     }
     return Unique;
 }

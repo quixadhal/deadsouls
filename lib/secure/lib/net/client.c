@@ -35,7 +35,7 @@ int SetSocketType(int type) { return (SocketType = type); }
 int SetDestructOnClose(int x) { return (DestructOnClose = x); }
 
 int eventCreateSocket(string host, int port) {
-    int x;
+    int x, ret;
 
     Socket = new(class client);
     Socket->Blocking = 1;
@@ -45,6 +45,7 @@ int eventCreateSocket(string host, int port) {
 	eventSocketError("Error in socket_create().", x);
 	return x;
     }
+    ret = x;
     Socket->Descriptor = x;
     x = socket_bind(Socket->Descriptor, 0);
     if( x != EESUCCESS ) {
@@ -59,6 +60,7 @@ int eventCreateSocket(string host, int port) {
 	eventSocketError("Error in socket_connect().", x);
 	return x;
     }
+    return ret;
 }
 
 static void eventAbortCallback(int fd) {
@@ -107,7 +109,7 @@ static void eventWriteCallback(int fd) {
 }
 
 void eventWrite(mixed val) {
-
+    //tc("CLIENT eventWrite: "+identify(val||"foo"),"white");
     if( !Socket ) return;
     if( Socket->Buffer ) Socket->Buffer += ({ val });
     else Socket->Buffer = ({ val });
@@ -119,8 +121,19 @@ void eventWrite(mixed val) {
     }
 }
 
-static void eventClose(class client sock) {
-    if( !sock ) return;
+static void eventClose(mixed arg) {
+    class client sock;
+    if(!arg) return;
+    if(classp(arg)) sock = arg; 
+    if(!classp(arg)){
+	trr("arg: "+identify(arg),"yellow");
+	trr("prevs: "+identify(previous_object(-1)),"yellow");
+	trr("i am: "+identify(this_object()),"yellow");
+	if(mapp(arg)) socket_close(arg["Descriptor"]);
+	if(objectp(arg)) socket_close(arg->GetDescriptor());
+	return;
+    }
+    //else trr("Yes, I am a class.");
     socket_close(sock->Descriptor);
     sock = 0;
     eventSocketClose();
@@ -138,4 +151,3 @@ static void eventSocketError(string str, int x) {
     if( LogFile ) 
 	log_file(LogFile, ctime(time()) + "\n" + socket_error(x) + "\n");
 }
-

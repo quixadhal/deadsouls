@@ -35,7 +35,8 @@ static string chat_command(string str) {
     }
     if( cmd == "list" && (int)CHAT_D->cmdChannel(cmd, arg) ) return "";
     else if( Channels[cmd] && (int)CHAT_D->cmdChannel(cmd, arg) ) return "";
-    else if( sscanf(cmd, "%semote", cmd) == 1 && Channels[cmd] ) {
+    else if( (sscanf(cmd, "%semote", cmd) || sscanf(cmd, "%s:", cmd))
+      && Channels[cmd] ) {
 	if( (int)CHAT_D->cmdChannel(cmd+"emote", arg) ) return "";
 	else return str;
     }

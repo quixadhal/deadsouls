@@ -22,6 +22,8 @@ inherit "/lib/teach";
 inherit "/lib/learn";
 
 private int isPK;
+private mixed Attackable = 1;
+private int NoCondition = 0;
 
 varargs mixed CanReceiveHealing(object who, string limb);
 
@@ -64,17 +66,19 @@ mixed direct_dismount_from_liv(){
 }
 
 mixed direct_attack_liv() {
-    if(PLAYER_KILL) return 1;
     if( userp(this_player()) && userp(this_object()) ) {
-	if( !(int)environment(this_player())->CanAttack(this_object()) ) {
-	    return "No player killing!";
+	if(!(int)environment(this_player())->CanAttack(this_object())){
+	    return "Player killing is not permitted in this area!";
+	}
+	if(!(this_object()->GetAttackable())){
+	    return "You are unable to attack that person.";
 	}
 	if(this_player()->GetPK() && this_object()->GetPK()){
-	    return 1;
+	    return (PLAYER_KILL ? 1 : "This is not a PK mud.");
 	}
-	else return "No PK!";
+	else return "One of you is not a player killer. You cannot fight them.";
     }
-    else return 1;
+    else return this_object()->GetAttackable();
 }
 
 mixed direct_attack_only_liv(){
@@ -150,11 +154,24 @@ mixed indirect_give_obj_to_liv(object item) {
     if( !item ) return 0;
     if( this_player() == this_object() ) return "Are you confused?";
     if( environment(item) != this_player() ) return "You don't have that!";
-    return CanCarry((int)item->GetMass());
+    if(!CanCarry((int)item->GetMass())){
+	return this_object()->GetName()+" is carrying too much.";
+    }
+    else return CanCarry((int)item->GetMass());
+}
+
+mixed indirect_give_obj_liv(object item) {
+    //tc("item: "+identify(item),"blue");
+    return indirect_give_obj_to_liv(item);
 }
 
 mixed indirect_give_obs_to_liv(object *items) {
     return 1;
+}
+
+mixed indirect_give_obs_liv(object *items) {
+    //tc("item: "+identify(items),"blue");
+    return indirect_give_obs_to_liv(items);
 }
 
 mixed direct_give_liv_wrd_wrd(object targ, string num, string curr) {
@@ -637,6 +654,20 @@ int SetDead(int i){
     return combat::SetDead(i);
 }
 
-//mixed indirect_look_at_obj_word_obj() {
-//    return 0;
-//}
+mixed SetAttackable(mixed foo){
+    Attackable = foo;
+    return Attackable;
+}
+
+mixed GetAttackable(){
+    return Attackable;
+}
+
+int SetNoCondition(int foo){
+    NoCondition = foo;
+    return NoCondition;
+}
+
+int GetNoCondition(){
+    return NoCondition;
+}

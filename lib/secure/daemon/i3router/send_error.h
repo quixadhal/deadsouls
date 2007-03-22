@@ -1,4 +1,4 @@
-// This file written completely by Tim Johnson (Tim@TimMUD)
+// This file written mostly by Tim Johnson (Tim@TimMUD)
 
 static void send_error(string mud, string user, string errcode, string errmsg, mixed *info){
     if(!connected_muds[mud]){

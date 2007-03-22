@@ -17,7 +17,7 @@
 <div id="header">
 <p id="headertext">Dead Souls - Installation FAQ</p>
 <p id="subheadertext">By Cratylus @ Frontiers, February 2006. Updated
-November 2006.<br>
+March 2007.<br>
 </p>
 </div>
 <!-- End: Header -->
@@ -33,7 +33,7 @@ AGAIN</span>.<span style="font-weight: bold;"><a
 <ul>
   <li><a href="#1">Is this FAQ really necessary?</a> </li>
   <li><a href="#2">Where do I get Dead Souls?</a></li>
-  <li><a href="#2.1">Why is there only one version? Where are the UNIX
+  <li><a href="#2.1">Where are the separate UNIX
 and Windows versions?</a></li>
   <li><a href="#3">Where do I get patches?</a></li>
   <li><a href="#4">Should I apply the available patches during an
@@ -68,18 +68,33 @@ solutions to the more common obstacles.</p>
 to Top)</a></h1>
 <p>You should only ever download from the site listed below. Some other
 sites tend to mirror these or copy data, then fail to update their data
-regularly. The following will always have the most recent version, and
-it is the only one officially authorized to distribute Dead Souls.</p>
-<p>Download the latest version from the following:
+regularly. The following will always have the most recent versions.</p>
+<p>Download the stable version from the following:
 </p>
 <ul>
   <big> </big><li><big><a
- href="http://dead-souls.net/code/dead_souls.zip"><span
- style="text-decoration: underline;">http://dead-souls.net/code/dead_souls.zip</span></a></big></li>
-  <big></big>
+ href="http://lpmuds.net/files/deadsouls/ds2.4.zip"><span
+ style="text-decoration: underline;">http://lpmuds.net/files/deadsouls/ds2.4.zip</span></a></big></li>
 </ul>
+<br>
+Download the <span
+ style="font-weight: bold; text-decoration: underline;">latest</span><span
+ style="text-decoration: underline;"> </span>version here:<br>
+<br>
+<ul>
+  <li><a href="http://dead-souls.net/code/alpha/"><big><span
+ style="text-decoration: underline;"></span></big><big><span
+ style="text-decoration: underline;">http://dead-souls.net/code/alpha/</span></big></a></li>
+</ul>
+<br>
+The alpha version has lots of neat new stuff. Some of the new stuff is
+still not 100% production quality. If new features that are still under
+development are upsetting to you, you may be better off using the
+"stable" version instead.<br>
+<br>
+<br>
 <a name="2.1"></a>
-<h1>Why is there only one version? Where are the UNIX and Windows
+<h1>Where are the separate UNIX and Windows
 versions? <a class="backtotop" href="#top">(Back to Top)</a></h1>
 <p>Starting in Dead Souls 2.0r22 the two separate versions have been
 merged into one distribution download file. Now it doesn't matter
@@ -182,6 +197,13 @@ cause the mud not to run.</li>
   <li>Trying to use Windows 98, 95, Me, or 3.x will simply not work.
 Sorry. Those are not server class operating systems and they use
 technology incompatible with the mud's requirements.</li>
+  <li>If you connect to the mud for the first time, but then it hangs,
+look in c:\ds\lib\log\runtime and c:\ds\lib\log\catch. Those are error
+log files. If you see stuff about files or directories not existing,
+then the problem is probably that your decompression program didn't
+unpack the files right. Start over. Download winrar and use that to
+uncompress.<br>
+  </li>
   <li>If the mud starts but you get lots of bizarre errors, there may
 be a couple of reasons for this:
     <ul>
@@ -210,16 +232,23 @@ with a different unzip utility.</li>
 <a name="8"></a>
 <h1>How do I install Dead Souls in a Linux/UNIX box? <a
  class="backtotop" href="#top">(Back to Top)</a></h1>
-<p>First make sure of a couple of things:
-</p>
 <ul>
+  <li>Login to your shell. Follow the instructions provided by your
+hosting service or your unix documentation to know how to do this.</li>
+  <li>Download the distribution package. For example: <span
+ style="font-weight: bold; color: rgb(255, 0, 0);">wget
+http://dead-souls.net/code/dead_souls_alpha.zip</span><br>
+  </li>
   <li>DO NOT use fileroller (a GUI based app) to decompress the
 package. If
 you ignore this warning you are very likely to end up with really
 confusing errors and problems. Instead use the normal unix command
-line. For example: <span class="command">unzip -d ds ds2.1.zip</span></li>
+line. For example: <span class="command">unzip -d ds
+dead_souls_alpha.zip</span></li>
   <li>NOTE: If you don't use the "-d" flag to specify the name of the
-new directory you want to create, the archive will dump everything
+new directory you want to create, the archive <span
+ style="font-weight: bold; font-style: italic;">may</span> dump
+everything
 into your current working directory, which may look ugly if that's
 not your intention.</li>
   <li> Don't use an existing driver binary, even if it's from a
@@ -232,7 +261,11 @@ upgrade, read the upgrade section further down in this document. Once
 we're set on those requirements and you've uncompressed the tarball, we
 can continue with the installation procedure.</li>
   <li>cd to the directory where all mud files reside. Called $MUDHOME
-in the rest of these UNIX instructions.</li>
+in the rest of these UNIX instructions. You can determine your current
+directory by typing <span
+ style="font-weight: bold; color: rgb(255, 0, 0);">pwd</span><span
+ style="color: rgb(255, 0, 0);"> </span>at the shell prompt.<br>
+  </li>
   <li>cd to v22.2b14</li>
   <li>type: <span class="command">./configure</span></li>
   <li>type: <span class="command">make</span></li>
@@ -271,7 +304,23 @@ late-breaking fixes.</li>
 <h1>I'm having trouble getting Dead Souls for UNIX to work <a
  class="backtotop" href="#top">(Back to Top)</a></h1>
 <ul>
-  <li>first, stop using Fedora. Ha ha just kidding.</li>
+  <li>First, stop using Fedora. Ha ha just kidding.</li>
+  <li>If you get this: "make: *** No rule to make target
+`obj/malloc.o', needed by `driver'.&nbsp; Stop.", just type "<span
+ style="font-weight: bold; color: rgb(255, 0, 0);">make</span>" again,
+or "<span style="color: rgb(255, 0, 0); font-weight: bold;">make -j 1</span>"<br>
+  </li>
+  <li>Some hosting providers give you a robust environment that
+requires UNIX expertise to handle. For example, I know of folks that
+use Genesis Muds to host, and run into all sorts of file permission
+conflicts, umask issues, etc. While I'm happy to provide guidance to
+some degree, you do have to take it upon yourself to become familiar
+with the OS you're using. As much as I want to be helpful to you on
+this, getting you up to speed on being a UNIX server admin is way
+beyond the scope of this little document. Whomever it is that you pay
+money to, ask them for documentation. Sorry if it sounds
+rude....there's only so much I can take responsibility for.<br>
+  </li>
   <li>Your compiler may be trying to run a distributed "make" by
 default. That's a no-go for MudOS. Try disabling that at compile time
 by using this instead of the normal make command line: <br>
@@ -297,6 +346,10 @@ need to edit v22.2b14/local_options and make these lines: <br>
     <p><span style="color: rgb(255, 0, 0); font-weight: bold;">make
 clean</span><br style="color: rgb(255, 0, 0); font-weight: bold;">
     <span style="color: rgb(255, 0, 0); font-weight: bold;">make -j 1</span><br>
+    </p>
+    <p>The memory allocation for 2.3a1 and above is already set for
+64bit/smp compatibility, so this editing should not be needed if the
+version you are installing is sufficiently recent.<br>
     </p>
   </li>
   <li>Download only from the sites mentioned above. Those are the only
@@ -362,6 +415,16 @@ can help.</li>
 compiling as root (obviously a last resort, and just for testing).</li>
   <li>On Ubuntu, before running the compile, try typing: <span
  class="sb_messagebody">export CC=gcc-3.4</span></li>
+  <li><span class="sb_messagebody">If you get errors complaining about
+not finding bison or yacc, what this means is that compiling the driver
+requires these tools, and the configure script can't find them. They
+are either in a non-standard location, or your host simply does not
+have them installed. If you run the host box, either install bison (or
+yacc), or add their path to your PATH environment variable. If you are
+not the host computer admin, politely explain to the admins that you
+can't compile without bison (or yacc) and could they please install it
+for you.<br>
+    </span></li>
   <br>
 </ul>
 <a name="10"></a>
@@ -370,7 +433,8 @@ compiling as root (obviously a last resort, and just for testing).</li>
 <p> Beats me. This is one of those complaints I don't really know how
 to respond to. At the end of the compile, you'll have a driver that
 works. It's been tested on GCC 2, 3, and 4. It's worked for Fedora
-Linux, SuSE Linux, and various versions of Solaris. It works. Ignore
+Linux, SuSE Linux, and various other versions of UNIX and UNIX-clone
+environments. It works. Ignore
 the compile schmutz.</p>
 <a name="11"></a>
 <h1>Why is there a windows-format mudos.cfg in /secure/cfg? I'm running
@@ -501,7 +565,7 @@ progress. Rather than pausing it, screen just runs whatever it is in a
 sort of backgrounded way. Way cool. In the following example, I refer
 to the "Ctrl" key like this: &lt;Ctrl&gt; . When you need to press That
 key and another key in combination, the notation I use looks like this:
-&lt;Ctrl&gt;-A, which means "hold down the 'Ctrl' key, and then press
+&lt;Ctrl&gt;-a, which means "hold down the 'Ctrl' key, and then press
 the 'A' key".<br>
 </p>
 <p>To run Dead Souls in a screen session, it might look like this:<br>
@@ -513,15 +577,15 @@ the 'A' key".<br>
 deadsouls</span><br style="color: rgb(255, 0, 0); font-weight: bold;">
 <span style="color: rgb(255, 0, 0); font-weight: bold;">./startmud</span><br
  style="color: rgb(255, 0, 0); font-weight: bold;">
-<span style="color: rgb(255, 0, 0); font-weight: bold;">&lt;Ctrl&gt;-A</span><br
+<span style="color: rgb(255, 0, 0); font-weight: bold;">&lt;Ctrl&gt;-a</span><br
  style="color: rgb(255, 0, 0); font-weight: bold;">
 <span style="color: rgb(255, 0, 0); font-weight: bold;">d</span><br>
 </p>
 <p>You may wonder what that 'd' is doing all by itself there. What
-&lt;Ctrl&gt;-A does is tell your screen session to pay attention to the
+&lt;Ctrl&gt;-a does is tell your screen session to pay attention to the
 next key you press, because that is a screen action it needs to take.
 In this case, the key is 'd', which means "detach". When in a screen
-session, if you type &lt;Ctrl&gt;-A then D, you drop out of the screen
+session, if you type &lt;Ctrl&gt;-a then d, you drop out of the screen
 session and resume whatever terminal you were in before you invoked
 screen. Your application will be happily chugging along in the virtual
 console you left behind. To reconnect to the screen session you

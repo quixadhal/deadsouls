@@ -39,7 +39,7 @@
 #define ENGLISH_ONLY             0
 #define HUMANS_ONLY              0
 #define PINGING_MUDS             ({"Frontiers","Dead Souls"})
-#define ENABLE_ENCUMBRANCE       1
+#define ENABLE_ENCUMBRANCE       0
 #define GLOBAL_MONITOR           0
 #define PLAYER_KILL              0
 #define NPC_CATCH_TELL_DEBUG     0
@@ -57,5 +57,9 @@
 #define BARE_EXITS               1
 #define COMMAND_MATCHING         1
 #define OBJECT_MATCHING          1
+#define LIVEUPGRADE_SERVER       "Dead Souls"
+#define CARRIAGE_RETURN          "\r"
+#define OLD_STYLE_PLURALS        1
+#define NM_STYLE_EXITS           0
 
 #endif /* s_config_h */

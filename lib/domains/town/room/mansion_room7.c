@@ -12,7 +12,6 @@ static void create() {
     SetExits( ([
 	"west" : "/domains/town/room/mansion_dhall3"
       ]) );
-    SetObviousExits("w");
     SetInventory( ([
 	"/domains/town/obj/rack" : 1,
 	"/domains/town/obj/stove" : 1,

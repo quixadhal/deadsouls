@@ -262,7 +262,6 @@ int eventCollapse() {
     }
     send_messages("collapse", "$agent_name $agent_verb to the ground.",
       this_object(), 0, environment());
-    //this_object()->eventCollapse();
     SetPosition(POSITION_LYING);
     return 1;
 }
@@ -282,7 +281,8 @@ void eventCheckHealing() {
 
     x = GetHeartRate() * 10;
 
-    if(dude->GetSleeping() > 0 && dude->GetPosition() != POSITION_LYING){
+    if(dude->GetSleeping() > 0 && dude->GetPosition() != POSITION_LYING
+      && dude->GetPosition() != POSITION_SITTING){
 	dude->eventCollapse();
     }
 
@@ -366,7 +366,6 @@ mixed eventFall() {
     if( !dest ) {
 	send_messages(({ "fall", "die" }), "$agent_name $agent_verb into a "
 	  "dark abyss and $agent_verb.", this_object(), 0, env);
-	//SetPosition(POSITION_LYING);
 	this_object()->eventCollapse();
 	eventDie("Deceleration sickness");
     }
@@ -379,7 +378,6 @@ mixed eventFall() {
 	eventMove(dest);
 	environment()->eventPrint(GetName() + " comes falling in from above.",
 	  this_object());
-	//SetPosition(POSITION_LYING);
 	this_object()->eventCollapse();
 	foreach(string limb in GetLimbs()) {
 	    int hp = GetHealthPoints(limb);
@@ -407,8 +405,7 @@ mixed eventFall() {
  * on the body
  *
  * if the internal flag is set then overall health is healed.
- * if limbs are specified then the specified limbs are healed.
- * if the internal flag is NOT set and NO limbs are specified (default)
+ * if limbs are specified then the specified limbs are healed. * if the internal flag is NOT set and NO limbs are specified (default)
  *   then both overall health as well as the health of all limbs are healed.
  *
  * returns the actual amount of healing done or -1 if an error occurs
@@ -612,7 +609,6 @@ mixed eventReceiveThrow(object who, object what) {
 	int mod = who->GetSkillLevel("projectile attack") +
 	who->GetStatLevel("strength");
 
-	//mod = mod/2;
 	x = what->eventStrike(this_object()) * 3;
 	x = (x*mod)/100;
 	if( what->GetWeaponType() != "projectile" ) {
@@ -690,11 +686,15 @@ varargs int eventDie(mixed agent) {
 	object ob;
 	string curr;
 	int i;
+	object *riders = GetRiders();
 
 	//I'd like to move the living body out first, but for now this
 	//misfeature stays.
 	//this_object()->eventMove(ROOM_VOID);
 
+	if(riders && sizeof(riders)){
+	    foreach(object rider in riders) eventBuck(rider);
+	}
 	if(GetRace() == "android" || GetRace() == "bot" ) ob = new(LIB_BOT_CORPSE);
 	else if(member_array(GetRace(), RACES_D->GetNonMeatRaces()) != -1) {
 	    ob = crime_scene;
@@ -727,7 +727,6 @@ varargs int eventDie(mixed agent) {
 
     SetUndead(!(x = GetUndead()));
 
-    //call_out( function() { Dying = 0; }, 0);
     evaluate( function() { Dying = 0; });
       flush_messages();
       return 1;
@@ -916,7 +915,6 @@ varargs int eventDie(mixed agent) {
 	    else return 1; /* ok */
 	case A_GLOVE:
 	    if(maxi != 1)
-		//return "You can only wear " + short + " on one limb.";
 		if( GetFingers(limbs[0]) > (int)ob->GetFingers() ) {
 		    return capitalize(short) + " does not seem to fit well on "
 		    "your " + limbs[0] + ".";
@@ -1005,6 +1003,9 @@ varargs int eventDie(mixed agent) {
 	    break;
 	case A_COLLAR:
 	    bad_types = A_COLLAR | A_AMULET;
+	    break;
+	case A_CUSTOM: 
+	    bad_types = A_CUSTOM;
 	    break;
 
 	default: return 0; /* not any illegal stuff */
@@ -1318,8 +1319,7 @@ varargs int eventDie(mixed agent) {
 	if (memberp(GetMissingLimbParents(limb2), limb1)){
 	    return -1;
 	}
-	return strcmp(limb1, limb2);
-    } 
+	return strcmp(limb1, limb2);    } 
 
     // New comparison functionality courtesy of
     // Garfield and Javelin at M*U*D
@@ -1343,23 +1343,24 @@ varargs int eventDie(mixed agent) {
 	str = "";
 	exempt = ({"bot","android","tree","plant"});
 
-	if(member_array(this_object()->GetRace(),exempt) == -1 &&
-	  !this_object()->GetUndead() ) {
-	    str = "The "+this_object()->GetGender()+" ";
-	    str += this_object()->GetRace();
-	    h = percent(GetHealthPoints(), GetMaxHealthPoints());
-	    if( h < 10.0 ) str += " is mortally wounded.\n";
-	    else if( h < 20.0 ) str += " is near death.\n";
-	    else if( h < 30.0 ) str += " is severely injured.\n";
-	    else if( h < 40.0 ) str += " is badly injured.\n";
-	    else if( h < 50.0 ) str += " is hurt.\n";
-	    else if( h < 60.0 ) str += " is slightly injured.\n";
-	    else if( h < 70.0 ) str += " has some cuts and bruises.\n";
-	    else if( h < 80.0 ) str += " is in decent shape.\n";
-	    else if( h < 90.0 ) str += " is quite keen.\n";
-	    else str += " is in top condition.\n";
+	if(!(this_object()->GetNoCondition())){
+	    if(member_array(this_object()->GetRace(),exempt) == -1 &&
+	      !this_object()->GetUndead() ) {
+		str = "The "+this_object()->GetGender()+" ";
+		str += this_object()->GetRace();
+		h = percent(GetHealthPoints(), GetMaxHealthPoints());
+		if( h < 10.0 ) str += " is mortally wounded.\n";
+		else if( h < 20.0 ) str += " is near death.\n";
+		else if( h < 30.0 ) str += " is severely injured.\n";
+		else if( h < 40.0 ) str += " is badly injured.\n";
+		else if( h < 50.0 ) str += " is hurt.\n";
+		else if( h < 60.0 ) str += " is slightly injured.\n";
+		else if( h < 70.0 ) str += " has some cuts and bruises.\n";
+		else if( h < 80.0 ) str += " is in decent shape.\n";
+		else if( h < 90.0 ) str += " is quite keen.\n";
+		else str += " is in top condition.\n";
+	    }
 	}
-
 	if(this_object()->GetUndead()) {
 	    str = capitalize(nominative(this_object()))+" has been killed, and ";
 	    str +=  "is one of the Walking Undead.\n";
@@ -1698,7 +1699,7 @@ varargs int eventDie(mixed agent) {
 
 	if( !(sh = GetShort()) ) return 0;
 	h = percent(GetHealthPoints(), GetMaxHealthPoints());
-	if( h > 90.0 ) cl = "%^BOLD%^GREEN%^";
+	if( this_object()->GetNoCondition() || h > 90.0 ) cl = "%^BOLD%^GREEN%^";
 	else if( h > 75.0 ) cl = "%^GREEN%^";
 	else if( h > 50.0 ) cl = "%^BOLD%^BLUE%^";
 	else if( h > 35.0 ) cl = "%^BLUE%^";
@@ -1761,4 +1762,3 @@ varargs int eventDie(mixed agent) {
 	else DeathEvents = 1;
 	return DeathEvents;
     }
-

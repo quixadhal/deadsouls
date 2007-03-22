@@ -25,7 +25,6 @@ static void create() {
 	"cobblestone road running north and south."
       ]) );
     AddTerrainType(T_ROAD);
-    SetObviousExits("n, s, e, w");
     SetExits( ([
 	"south" : "/domains/town/room/south_road2",
 	"north" : "/domains/town/room/vill_road1",

@@ -121,15 +121,11 @@ int eventMoveFollowers(object dest) {
 
 int eventEvade(object ob) {
     mixed ret;
-
     ret = CanEvade(ob);
     if( stringp(ret) ) error(ret);
     if( ret = 1 ) {
-	ob->eventPrint(this_object()->GetName() + " has evaded you.");
-	this_object()->eventPrint("You have evaded " + ob->GetName() + ".");
+	ob->eventPrint(this_object()->GetName() + " has evaded you.");	this_object()->eventPrint("You have evaded " + ob->GetName() + ".");
 	return 1;
     }
     return 0;
 }
-
-

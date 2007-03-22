@@ -24,6 +24,7 @@ int GetDescriptor() {
 
 /* ************************* socket.c events *********************** */
 static int eventCloseSocket() {
+    if(!Owner) return 0;
     Owner->eventClose(this_object());
 }
 
@@ -36,17 +37,24 @@ int eventRead(mixed data) {
 }
 
 int eventSocketClosed() {
-    if( previous_object() != Owner ) {
+    if(!Owner || previous_object() != Owner ) {
 	return 0;
     }
-    Destruct();
+    daemon::eventDestruct();
     return 1;
 }
 
+int eventDestruct(){
+    return daemon::eventDestruct();
+}
+
 varargs static int eventWrite(mixed data, int close) {
-    //trr("SOCKETWRITE: data: "+identify(data),"white");
-    //trr("SOCKETWRITE: close: "+identify(close),"white");
-    return Owner->eventWrite(this_object(), data, close);
+    //tc("SOCKETWRITE: data: "+identify(data),"white");
+    //tc("SOCKETWRITE: close: "+identify(close),"white");
+    if(!close) close = 0;
+    if(!data) data = ({});
+    if(Owner && this_object()) return Owner->eventWrite(this_object(), data, close);
+    else return 0;
 }
 
 /* ******************** socket.c driver applies ****************** */
@@ -56,4 +64,3 @@ static void create(int fd, object owner) {
     Descriptor = fd;
     Owner = owner;
 }
-

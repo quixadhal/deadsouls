@@ -81,9 +81,18 @@
 #include "/secure/sefun/compare_array.c"
 #include "/secure/sefun/legacy.c"
 #include "/secure/sefun/atomize.c"
+#ifdef LIVEUPGRADE_SERVER
+#include "/secure/sefun/native_version.c"
+#endif
 
 string globalstr;
 mixed globalmixed;
+
+string debug_info(int debuglevel, mixed arg){
+    if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
+	return efun::debug_info(debuglevel, arg);
+    else return "";
+}
 
 string array groups(){
     string *group_arr = ({});
@@ -158,13 +167,38 @@ string *query_local_functions(mixed arg){
 }
 
 object find_object( string str ){
-    if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return efun::find_object(str);
-    if(base_name(efun::find_object(str)) == "/secure/obj/snooper") return 0;
-    else return efun::find_object(str);
+    object ret = efun::find_object(str);
+    if(!ret) return 0;
+    if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return ret;
+    if(base_name(previous_object()) == SERVICES_D) return ret;
+    if(base_name(ret) == "/secure/obj/snooper") return 0;
+    if(archp(ret) && ret->GetInvis()) return 0;
+    else return ret;
+} 
+
+object find_player( string str ){
+    object ret = efun::find_player(str);
+    if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return ret;
+    if(base_name(previous_object()) == SERVICES_D) return ret;
+    if(ret && archp(ret) && ret->GetInvis()) return 0;
+    else return ret;
+}
+
+object *livings() {
+    object *privlivs = efun::livings();
+    object *unprivlivs = filter(privlivs, (: !($1->GetInvis() && archp($1)) :) );
+    if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return privlivs;
+    if(base_name(previous_object()) == SERVICES_D) return privlivs;
+    else return unprivlivs;
+    //return efun::livings() - (efun::livings() - objects());
 }
 
 varargs mixed objects(mixed arg1, mixed arg2){
     object array tmp_obs = efun::objects();
+
+    if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
+      base_name(previous_object())  != SERVICES_D)
+	tmp_obs = filter(tmp_obs, (: !($1->GetInvis() && archp($1)) :) );
 
     if(base_name(previous_object()) == SNOOP_D || archp(this_player())){
 	return tmp_obs;
@@ -196,7 +230,11 @@ varargs mixed objects(mixed arg1, mixed arg2){
 }
 
 mixed array users(){
-    return filter(efun::users(), (: ($1) && environment($1) :) );
+    object *ret = filter(efun::users(), (: ($1) && environment($1) :) );
+    if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
+      base_name(previous_object())  != SERVICES_D)
+	ret = filter(ret, (: !($1->GetInvis() && archp($1)) :) );
+    return ret;
 }
 
 int destruct(object ob) {
@@ -232,7 +270,9 @@ int valid_snoop(object snooper, object target){
     }
     if(archp(snooper)) return 1;
     if( base_name(snooper) == "/secure/obj/snooper" ) return 1;
-    if(creatorp(snooper) && playerp(target)) return 1; 
+    //Uncomment the following line to let cres snoop players
+    //if(creatorp(snooper) && playerp(target)) return 1; 
+    if(snooperp(snooper) && creatorp(snooper) && playerp(target)) return 1;
     return 0;
 }
 
@@ -281,10 +321,6 @@ void write(string str) {
     else efun::write(str);
 }
 
-object *livings() {
-    return efun::livings() - (efun::livings() - objects());
-}
-
 void set_privs(object ob, string str) { return; }
 
 void set_eval_limit(int x) {
@@ -317,4 +353,3 @@ string capitalize(mixed str) {
     words[0] = "%^" + implode(tmp, "%^") + "%^";
     return implode(words, " ");
 }
-

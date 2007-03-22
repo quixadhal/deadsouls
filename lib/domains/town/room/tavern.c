@@ -15,7 +15,11 @@ static void create() {
       "\tImported espresso:\t\t\t\t15 silver\n"
       "\tHam sandwich:\t\t\t\t\t10 silver\n\n\n"
       "To order a bottle of water, \"buy water from lars\"\n"
+      "\nThere is a framed portrait on the wall.\n"
     );
+    SetItems(([
+	({ "portrait", "framed portrait", "frame", "picture" }) : "It is a dramatic portrait of an ancient dragon of immense beauty and grace. It is titled \"Daelas: Heir of Arodaleas\".",
+      ]));
     SetInventory(([
 	"/domains/town/obj/bbucket" :1,
 	"/domains/town/npc/lars" :1

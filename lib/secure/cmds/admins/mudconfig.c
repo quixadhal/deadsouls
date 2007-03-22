@@ -13,11 +13,12 @@ string array bools = ({ "enable","disable","on","off","1","0" });
 string array yesbools = ({ "enable","on","1","yes" });
 string array nobools = ({ "disable","off","0","no" });
 string array restrict_tokens = ({ "restrict","unrestrict" });
-string array nonmodals = ({ "prompt","status","email","debugger", "access", "pinging" });
-string array modals = ({ "autowiz", "locked","localtime", 
-  "justenglish", "justhumans", "encumbrance", "pk", "compat",
+string array nonmodals = ({ "liveupgrade", "prompt","status","email",
+  "debugger", "access", "pinging" });
+string array modals = ({ "matchcommand", "matchobject", "autowiz", "locked","localtime", 
+  "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
   "retain", "defaultparse", "disablereboot" });
-string array inet_services = ({ "hftp", "ftp", "http", "rcp", "inet" });
+string array inet_services = ({ "oob", "hftp", "ftp", "http", "rcp", "inet" });
 
 static int NotImplemented(string which);
 varargs static int TestFun(string which, string arg);
@@ -28,6 +29,7 @@ varargs static int ModStartRoom(string which, string arg);
 static int ProcessOther(string which, string arg);
 static int ProcessString(string which, string arg);
 int ProcessInet(string which, string arg);
+varargs static int ModDefaultDomain(string which, string arg);
 
 static private void validate() {
     if(!this_player()) return 0;
@@ -55,10 +57,12 @@ mixed cmd(string str) {
 
     if(member_array(which,modals) != -1){
 	ProcessModal(which, arg);
+	return 1;
     }
 
     if(member_array(which,inet_services) != -1){
 	ProcessInet(which, arg);
+	return 1;
     }
 
     else switch(which){
@@ -66,6 +70,7 @@ mixed cmd(string str) {
     case "intermud" : ModIntermud(which, arg);break;
     case "router" : ModRouter(which, arg);break;
     case "startroom" : ModStartRoom(which, arg);break;
+    case "defaultdomain" : ModDefaultDomain(which, arg);break;
     case "resets" : which = "TIME_TO_RESET";ProcessOther(which,arg);break;
     case "offset" : which = "GMT_OFFSET";ProcessOther(which,arg);break;
     case "extraoffset" : which = "EXTRA_TIME_OFFSET";ProcessOther(which,arg);break;
@@ -76,6 +81,7 @@ mixed cmd(string str) {
     case "maxidle" : which = "IDLE_TIMEOUT";ProcessOther(which,arg);break;
     case "hostip" : which = "HOST_IP";ProcessString(which,arg);break;
     case "email" : which = "ADMIN_EMAIL";ProcessString(which,arg);break;
+    case "liveupgrade" : which = "LIVEUPGRADE_SERVER";ProcessString(which,arg);break;
     case "mudstatus" : which = "MUD_STATUS";ProcessString(which,arg);break;
     case "debugger" : which = "DEBUGGER";ProcessString(which,arg);break;
     default : NotImplemented(which);break;
@@ -125,7 +131,7 @@ varargs static int ModStartRoom(string which, string arg){
 	write("/n/nThat room file is broken. Please fix it and try again.");
 	return 1;
     }
-    cp("/secure/include/rooms.h","/secure/save/backup/room."+time());
+    cp("/secure/include/rooms.h","/secure/save/backup/rooms."+time());
     config = explode( read_file("/secure/include/rooms.h"),"\n" );
     config2 = ({});
     foreach(string line in config){
@@ -144,6 +150,45 @@ varargs static int ModStartRoom(string which, string arg){
     return 1;
 }
 
+varargs static int ModDefaultDomain(string which, string arg){
+    if(!arg){
+	write("Please specify the absolute path to the domain, eg: /domains/MystyShyre");
+	return 1;
+    }
+
+    if(first(arg,1) != "/"){
+	write("You've entered a relative path. Please try again, using an absolute path. "+
+	  "For example: mudconfig defaultdomain /domains/MystyShyre");
+	return 1;
+    }
+
+    if(!directory_exists(arg)){
+	write("That domain does not exist. Type: help domaincreate");
+	return 1;
+    }
+
+    if(!directory_exists(arg+"/room")){
+	write("That directory seems to lack a /room dir. It is not suitable for a domain.");
+	return 1;
+    }
+
+    cp("/secure/include/dirs.h","/secure/save/backup/dirs."+time());
+    config = explode( read_file("/secure/include/dirs.h"),"\n" );
+    config2 = ({});
+    foreach(string line in config){
+	string s1,s2,s3;
+	if(sscanf(line,"%s %s %s",s1,s2,s3) == 3){
+	    if(s1 == "#define" && s2 == "DIR_STANDARD_DOMAIN")
+		line = "#define DIR_STANDARD_DOMAIN       \""+arg+"\"";
+	}
+	config2 += ({ line });
+    }
+
+    CompleteConfig("/secure/include/dirs.h");
+
+    write("\nPlease reboot the mud for this change to take effect.\n");
+    return 1;
+}
 
 varargs static int ModRouter(string which, string arg){
     string preloads = read_file(CFG_PRELOAD);
@@ -376,6 +421,10 @@ static int ProcessModal(string which, string arg){
     case "retain" : which = "RETAIN_ON_QUIT";break;
     case "defaultparse" : which = "DEFAULT_PARSING";break;
     case "disablereboot" : which = "DISABLE_REBOOTS";break;
+    case "exitsbare" : which = "BARE_EXITS";break;
+    case "nmexits" : which = "NM_STYLE_EXITS";break;
+    case "matchcommand" : which = "COMMAND_MATCHING";break;
+    case "matchobject" : which = "OBJECT_MATCHING";break;
     default : break;
     }
     foreach(string element in config){
@@ -392,12 +441,21 @@ static int ProcessModal(string which, string arg){
 	config2 += ({ element });
     }
     CompleteConfig();
-    if(which == "DEFAULT_PARSING" || which == "ENABLE_ENCUMBRANCE"){ 
+    if(which == "DEFAULT_PARSING" || which == "ENABLE_ENCUMBRANCE" ||
+      which == "BARE_EXITS" || which == "COMMAND_MATCHING"){ 
 	reload(LIB_CREATOR,1,1);
 	write("This configuration will take effect for each user the next time they log in.");
 	return 1;
     }
-    if(which == "RETAIN_ON_QUIT") write("To ensure this configuration takes effect, reboot the mud.");
+    if(which == "NM_STYLE_EXITS"){
+	reload(LIB_ROOM,1,1);
+	reload(LIB_CREATOR,1,1);
+	write("This configuration will take effect for rooms not yet loaded for each "
+	  "user the next time they log in. To ensure all rooms pick up the new configuration, "
+	  "either reboot the mud, or type: \"reload every room\", then quit and log back in.");
+    }
+    if(which == "RETAIN_ON_QUIT" || which == "OBJECT_MATCHING") 
+	write("To make this configuration take effect, reboot the mud.");
     return 1;
 }
 
@@ -409,6 +467,7 @@ int ProcessService(string which, string what){
     case "ftp": port_offset=OFFSET_FTP;sclass="/secure/lib/net/ftp";type=1;break;
     case "http": port_offset=OFFSET_HTTP;sclass="/secure/lib/net/http";type=3;break;
     case "rcp": port_offset=OFFSET_RCP;sclass="/secure/lib/net/remote";type=1;break;
+    case "oob": port_offset=OFFSET_OOB;sclass="/secure/lib/net/oob";type=0;break;
     }
     switch(what){
     case "add": INET_D->AddService(which,port_offset, sclass, type);break;
@@ -416,6 +475,12 @@ int ProcessService(string which, string what){
     case "start": INET_D->eventStartServer(which);break;
     case "restart": INET_D->eventRestartServer(which,1);break;
     case "stop": INET_D->eventStopServer(which);break;
+    }
+    if(which == "oob"){
+	if( what == "start" || what == "restart")
+	    reload(OOB_D);
+	if( what == "stop" )
+	    OOB_D->eventDestruct();
     }
     write("Done.");
     return 1;
@@ -614,17 +679,23 @@ void help() {
       "\nmudconfig retain [ yes | no ]"
       "\nmudconfig defaultparse [ yes | no ]"
       "\nmudconfig disablereboot [ yes | no ]"
+      "\nmudconfig matchcommand [ yes | no ]"
+      "\nmudconfig matchobject [ yes | no ]"
+      "\nmudconfig exitsbare [ yes | no ]"
+      "\nmudconfig nmexits [ yes | no ] (This togggles where default exits are displayed)"
       "\nmudconfig localtime [ yes | no ]"
+      "\nmudconfig offset <offset from gmt in seconds>"
+      "\nmudconfig extraoffset <offset from GMT in hours>"
       "\nmudconfig maxcommands <max number of commands per second>"
       "\nmudconfig maxip <max connections per IP>"
       "\nmudconfig monitor <monitoring level, 0 to 2>"
       "\nmudconfig newbielevel <max newbie level>"
-      "\nmudconfig offset <offset from gmt in seconds>"
-      "\nmudconfig extraoffset <offset from GMT in hours>"
       "\nmudconfig resets <interval between resets>"
-      "\nmudconfig router [ on | off ]"
+      "\nmudconfig router [ enable | disable ]"
       "\nmudconfig startroom <filename of start room>"
+      "\nmudconfig defaultdomain </full/path>"
       "\nmudconfig email <the admin's email address>"
+      "\nmudconfig liveupgrade <the default liveupgrade mud's name>"
       "\nmudconfig hostip <the computer's ip address (eg 111.222.333.444)>"
       "\nmudconfig intermud [ enable | disable | restrict | unrestrict | reset ]"
       "\nmudconfig inet [ enable | disable | start | stop | restart | status ]"
@@ -632,6 +703,7 @@ void help() {
       "\nmudconfig hftp [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig http [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig rcp [ enable | disable | start | stop | restart | status ]"
+      "\nmudconfig oob [ enable | disable | start | stop | restart | status ]"
       "\n\nSee also: admintool", this_player()
     );
 }

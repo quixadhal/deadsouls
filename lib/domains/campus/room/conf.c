@@ -36,7 +36,6 @@ static void create() {
       ]));
     SetExits( (["north" : "/domains/campus/room/corridor4",
       ]));
-    SetObviousExits("n");
     SetInventory((["/domains/campus/obj/podium" : 1,
 	"/secure/npc/cambot" : 1
       ]));

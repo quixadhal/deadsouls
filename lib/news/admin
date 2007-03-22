@@ -27,7 +27,7 @@ read manual
 * You now have an intermud channel available by default. If you
   see something like:
 
-Cratylus@Dead Souls %^BLUE%^<ds>%^RESET%^ Hi there!
+Cratylus@Dead Souls %^YELLOW%^<ds>%^RESET%^ Hi there!
 
   Don't be surprised. "ds" is an intermud communication channel
   between Dead Souls muds. To chat, type: 

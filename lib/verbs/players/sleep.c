@@ -17,12 +17,8 @@ static void create() {
 
 mixed can_sleep() {
 
-    if( this_player()->GetCaffeine() > 10 ) {
+    if( !creatorp(this_player()) && this_player()->GetCaffeine() > 10 ) {
 	return "You are too wired to sleep right now.";
-    }
-
-    if(creatorp(this_player())){
-	return "Creators are not permitted this kind of slack. Get back to work.";
     }
 
     return 1;
@@ -35,5 +31,3 @@ mixed do_sleep() {
       "lose consciousness.", ({this_player()}) );
     return (mixed)this_player()->SetSleeping(random(10)+5);
 }
-
-

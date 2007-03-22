@@ -13,6 +13,7 @@
 
 
 #define LIB_AUTH           DIR_SECURE_LIB "/auth"
+#define LIB_BANK           DIR_LIB        "/bank"
 #define LIB_BATTERY        DIR_LIB        "/battery"
 #define LIB_BLANK          DIR_LIB        "/blank"
 #define LIB_BLANK_PILE     DIR_LIB        "/blank_pile"
@@ -78,6 +79,7 @@
 #define LIB_MOUNT          DIR_LIB        "/mount"
 #define LIB_NMSH           DIR_LIB        "/nmsh"
 #define LIB_NPC            DIR_LIB        "/npc"
+#define LIB_OOB            DIR_SECURE_LIB "/net/oob"
 #define LIB_PAGER          DIR_LIB        "/pager"
 #define LIB_PERSIST        DIR_LIB        "/persist"
 #define LIB_PILE           DIR_LIB        "/pile"
@@ -113,5 +115,6 @@
 #define LIB_VEHICLE        DIR_LIB        "/vehicle"
 #define LIB_VERB           DIR_LIB        "/verb"
 #define LIB_VIRTUAL        DIR_LIB        "/virtual"
+#define LIB_WEB_CLIENT     DIR_SECURE_LIB "/net/web_client"
 
 #endif /* s_lib_h */

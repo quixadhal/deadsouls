@@ -29,8 +29,8 @@ static void create() {
     ob->SetShort("a dusty chalkboard");
     ob->eventMove(this_object());
     SetInventory(([
-	"/domains/default/npc/tree" : 1,
-	"/domains/default/obj/chest.c" : 1 ]));
+	"/domains/default/npc/tree" : ({ 10, 1 }),
+	"/domains/default/obj/chest" : 1 ]));
     SetItems( ([
 	({"sign"}) : "A sign you can read.",
       ]) );

@@ -1,8 +1,7 @@
-
-
 #include <lib.h>
 #include <daemons.h>
 #include <modules.h>
+#include <virtual.h>
 
 inherit LIB_VERB;
 
@@ -30,6 +29,8 @@ mixed can_initfix_word(string str) { return can_initfix_obj("foo"); }
 
 mixed do_initfix_obj(object ob) {
     object staff;
+    string *virts = ({ LIB_VIRT_LAND, LIB_VIRT_SKY, LIB_VIRTUAL,
+      LIB_VIRT_MAP, LIB_VIRT_SPACE, LIB_VIRT_SURFACE, LIB_VIRT_SUBSURFACE });
     staff = present("tanstaafl",this_player());
     if(!staff) {
 	write("You must be holding the creator staff in order to use this command.");
@@ -39,6 +40,13 @@ mixed do_initfix_obj(object ob) {
     }
 
     if(ob->GetDoor()) ob = load_object(ob->GetDoor());
+
+    foreach(string element in virts){
+	if(inherits(element, ob)){
+	    write("This is a virtual item. Aborting modification.");
+	    return 1;
+	}
+    }
 
     if(first(base_name(ob),5) == "/lib/") {
 	write("This appears to be a lib file. Aborting modification.");
@@ -55,8 +63,7 @@ mixed do_initfix_obj(object ob) {
     }
 
     else write("Done.");
-    reload(ob);
-    if(inherits(LIB_DOOR,ob)){
+    if(ob && inherits(LIB_DOOR,ob)){
 	string *doors = environment(this_player())->GetDoors();
 	if(!sizeof(doors)) return 1;
 	foreach(string dir in doors){
@@ -68,6 +75,7 @@ mixed do_initfix_obj(object ob) {
 	    }
 	}
     }
+    if(ob) reload(ob);
     return 1;
 }
 

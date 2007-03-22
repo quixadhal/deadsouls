@@ -13,9 +13,11 @@ static void create() {
       "\n"
       "If a living object is specified, this command allows "
       "you to try to make friends. This is a prerequisite to " 
-      "successfully mounting an animal.\n"
+      "successfully mounting an animal. Note that if your charisma is low "
+      "enough, you may fail. Also beware that someone with higher "
+      "charisma may steal your mount.\n"
       "\n"
-      "");
+      "See also: mount, dismount, abandon");
 }
 
 mixed can_befriend_liv() { return 1; }

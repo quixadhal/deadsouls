@@ -53,6 +53,10 @@ string DefaultReading(){
     return "";
 }
 
+varargs mixed eventUse(mixed arg){
+    return DefaultReading();
+}
+
 void create(){
     ::create();
     SetKeyName("light meter");

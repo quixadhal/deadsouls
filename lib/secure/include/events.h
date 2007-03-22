@@ -3,6 +3,7 @@
 
 #include <dirs.h>
 
+#define LIB_ACTIVATE     DIR_EVENTS "/activate"
 #define LIB_BAIT         DIR_EVENTS "/bait"
 #define LIB_BAIT_WITH    DIR_EVENTS "/bait_with"
 #define LIB_BURY         DIR_EVENTS "/bury"
@@ -18,6 +19,7 @@
 #define LIB_GET_FROM     DIR_EVENTS "/get_from"
 #define LIB_GIVE         DIR_EVENTS "/give"
 #define LIB_JUMP         DIR_EVENTS "/jump"
+#define LIB_INSTALL      DIR_EVENTS "/install"
 #define LIB_LISTEN       DIR_EVENTS "/listen"
 #define LIB_LOCK         DIR_EVENTS "/lock"
 #define LIB_LOCK_WITH    DIR_EVENTS "/lock_with"

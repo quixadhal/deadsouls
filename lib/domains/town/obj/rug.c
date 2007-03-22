@@ -4,7 +4,6 @@ inherit LIB_ITEM;
 inherit LIB_PRESS;
 inherit "/lib/events/manipulate";
 
-
 int MoveRug();
 int PushRug();
 void create(){

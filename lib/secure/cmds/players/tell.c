@@ -17,8 +17,6 @@ mixed cmd(string str) {
     int i, maxi;
     string who, msg, tmp, tmp2, machine_message, retname;
 
-    //tc("str: "+str,"red");
-
     if(!str) return notify_fail("Syntax: <tell [who] [message]>\n");
 
     if(str == "hist" || str == "history"){
@@ -32,7 +30,6 @@ mixed cmd(string str) {
 	write("You lack sufficient magic to tell to anyone right now.");
 	return 1;
     }
-    //tc("1");
     mud = 0;
     if((maxi=sizeof(words = explode(str, "@"))) > 1) {
 	who = convert_name(words[0]);
@@ -50,11 +47,9 @@ mixed cmd(string str) {
 		break;
 	    }
 	}
-	//tc("2");
 	if(msg == "") return notify_fail("Syntax: <tell [who] [message]>\n");
 	if(!mud) mud = -1;
     }
-    //tc("3");
     if(!mud || mud == -1) {
 	maxi = sizeof(words = explode(str, " "));
 	who = 0;
@@ -67,11 +62,8 @@ mixed cmd(string str) {
 		break;
 	    }
 	}
-	//tc("4");
 	if(!who) {
-	    //tc("4.1");
 	    if(!mud){
-		//tc("4.2");
 		words -= ({ retname });
 		msg = implode(words," ");
 		this_player()->eventTellHist("You tried to tell "+retname+": "+
@@ -91,11 +83,9 @@ mixed cmd(string str) {
     }
     else {
 	if(!creatorp(this_player())) this_player()->AddMagicPoints(-15);
-	//tc("4.7");
 	SERVICES_D->eventSendTell(who, mud, msg);
 	return 1;
     }
-    //tc("5");
     if(ob) {
 	string frm;
 	mixed err;
@@ -143,8 +133,10 @@ mixed cmd(string str) {
 	else if(in_edit(ob) || in_input(ob))
 	    message("my_action", (string)ob->GetCapName()+" is in input "+
 	      "and may not be able to respond.", this_player());
+	else if(ob->GetSleeping())
+	    message("my_action", (string)ob->GetCapName()+" is sleeping "+
+	      "and is unable to respond.", this_player());
     }
-    //tc("6");
     return 1;
 }
 

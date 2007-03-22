@@ -136,6 +136,7 @@ varargs void SetLongAndItems(int x, int y, int z) {
 	  "This is a rather scary looking opening in the cliff wall, leading "
 	  "north into the ground.");
 	AddEnter("cave","/domains/town/room/cave_entrance");
+	SetObviousExits("n, s, e, w, se, sw, enter cave");
     }
 
     if(x == 24 && y == 1) {

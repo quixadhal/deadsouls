@@ -1,6 +1,7 @@
 #include <lib.h>
 #include <meal_types.h>
 inherit LIB_MEAL;
+
 static void create() {
     meal::create();
     SetKeyName("apple");
@@ -14,4 +15,7 @@ static void create() {
     SetMealType(MEAL_FOOD);
     SetMealMessages("You wolf down your apple with gusto.",
       "$N wolfs down $P apple hungrily.");
+}
+void init(){
+    ::init();
 }

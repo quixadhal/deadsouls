@@ -25,7 +25,6 @@ static void create() {
     SetRead("sign", (: read_sign :) );
     SetExits((["south" : "/domains/campus/room/corridor4"
       ]));
-    SetObviousExits("s");
     SetProperty("no attack", 1);
     SetInventory(([
 	"/domains/campus/obj/bbucket" :1,

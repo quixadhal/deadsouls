@@ -43,3 +43,6 @@ mixed direct_give_obj_to_liv() {
     else return 1;
 }
 
+mixed direct_give_obj_liv(){
+    return direct_give_obj_to_liv();
+}

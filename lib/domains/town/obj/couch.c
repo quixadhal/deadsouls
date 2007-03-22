@@ -17,7 +17,6 @@ static void create() {
     SetMaxSitters(2);
     SetMaxLiers(1);
 
-
     SetSmell( ([
 	"default" : "It smells dirty and gross. There's a "
 	"faint whiff of dog urine."

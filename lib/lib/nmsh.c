@@ -16,11 +16,11 @@ inherit LIB_HISTORY;
 #define DIRECTORY_STACK_SIZE     5
 #define MAX_CMD_ALIASES          128
 
-private string CurrentWorkingDirectory;
+private string CurrentWorkingDirectory = "/";
 private string PreviousWorkingDirectory;
 private mapping Nicknames, Aliases, Xverbs; 
 private static int CWDCount, CWDBottom, CWDTop, CmdNumber; 
-private static string Prompt; 
+private string Prompt; 
 private static string *Stack; 
 
 static void create() {
@@ -31,7 +31,7 @@ static void create() {
       "ne" : "go northeast", "nw" : "go northwest", "se" : "go southeast",
       "sw" : "go southwest", "d" : "go down", "u" : "go up", "out": "go out",
       "exa" : "look at $*", "p" : "people", "sc" : "status", "inf" : "score",
-      "eq" : "inventory", "where" : "people", "prac" : "skills", 
+      "eq" : "equipment", "where" : "people", "prac" : "skills", 
       "sco" : "score", "practice" : "skills", "trophy" : "kills",
       "northwest" : "go northwest", "northeast" : "go northeast", 
       "southwest" : "go southwest", "southeast" : "go southeast",
@@ -264,15 +264,16 @@ nomask static int cmd_work(string str) {
     return 1;
 }
 
-nomask string write_prompt() { 
-    string tmp, ret; 
+nomask string write_prompt() {
+    string tmp, ret;
+    string ret2 = "";
     int x, y;
 
     if( (y = query_ed_mode()) != -1 ) {
 	if( !y ) {
-	    if( creatorp() ) ret = ":";
-	    else 
-		ret = "\tQ)uit without saving, save and ex)it, h)elp\nCommand: ";
+	    //if( creatorp() ) ret = ":";
+	    //else
+	    ret = "\tQ)uit without saving, save and ex)it, h)elp\nCommand: ";
 	}
 	else if( y == -2 ) ret = "Help: ";
 	else ret = "*\b";
@@ -283,61 +284,29 @@ nomask string write_prompt() {
 	message("prompt", ret, this_object());
 	return ret;
     }
-    if(ret){
-	while((x = strsrch(ret, "$")) != -1) {
-	    if(x == strlen(ret) -1) break;
-	    switch(ret[x+1]) {
-	    case 'D': 
-		if(!creatorp(this_object())) break;
-		if(sscanf(query_cwd(), user_path(GetKeyName())+"%s",
-		    tmp)) tmp = "~"+tmp;
-		else tmp = query_cwd();
-		ret = replace_string(ret, "$D", tmp); 
-		break;
-	    case 'V': case 'v':
-		if(GetInvis()) {
-		    ret = replace_string(ret, "$V", "INVIS"); 
-		    ret = replace_string(ret, "$v", "invis"); 
-		} 
-		else if(hiddenp(this_object())) { 
-		    ret = replace_string(ret, "$V", "HID"); 
-		    ret = replace_string(ret, "$v", "hid"); 
-		} 
-		else { 
-		    ret = replace_string(ret, "$V", ""); 
-		    ret = replace_string(ret, "$v", ""); 
-		} 
-		break;
-	    case 'C':
-		ret = replace_string(ret, "$C", sprintf("%d", CmdNumber+1)); 
-		break;
-	    case 'H':
-		ret = replace_string(ret, "$H", sprintf("%d", query_max_hp())); 
-		break;
-	    case 'h':
-		ret = replace_string(ret, "$h", sprintf("%d", query_hp())); 
-		break;
-	    case 'G':
-		ret = replace_string(ret, "$G", sprintf("%d", query_max_mp())); 
-		break;
-	    case 'g':
-		ret = replace_string(ret, "$g", sprintf("%d", query_mp())); 
-		break;
-	    case 'I':
-		ret = replace_string(ret, "$I", sprintf("%d", query_max_sp())); 
-		break;
-	    case 'i':
-		ret = replace_string(ret, "$i", sprintf("%d", query_sp())); 
-		break;
-	    default:
-		ret = replace_string(ret, ret[x..x+1], "");
-		break;
-	    }
-	}
+    if(grepp(ret,"$g")) ret = replace_string(ret,"$g",itoa(this_object()->GetMagicPoints()));
+    if(grepp(ret,"$G")) ret = replace_string(ret,"$G",itoa(this_object()->GetMaxMagicPoints()));
+    if(grepp(ret,"$V")){
+	if(GetInvis())
+	    ret = replace_string(ret,"$V","INVIS");
+	else
+	    ret = replace_string(ret,"$V","");
     }
+    if(grepp(ret,"$P")){
+	tmp = query_cwd();
+	if(!tmp || !sizeof(tmp)) tmp = "No working directory.";
+	ret = replace_string(ret,"$P",tmp);
+    }
+    if(grepp(ret,"$C")) ret = replace_string(ret,"",itoa( CmdNumber+1 ));
+    if(grepp(ret,"$h")) ret = replace_string(ret,"$h",itoa( this_object()->GetHealthPoints() ));
+    if(grepp(ret,"$H")) ret = replace_string(ret,"$H",itoa( this_object()->GetMaxHealthPoints() ));
+    if(grepp(ret,"$i")) ret = replace_string(ret,"$i",itoa( this_object()->GetStaminaPoints() ));
+    if(grepp(ret,"$I")) ret = replace_string(ret,"$I",itoa( to_int(this_object()->GetMaxStaminaPoints() )));
+    if(grepp(ret,"")) ret = replace_string(ret,"",itoa( ));
+    ret += " ";
     message("prompt", ret, this_object());
     return ret;
-} 
+}
 
 string process_input(string str) { 
     string tmp, xtra, request; 
@@ -351,8 +320,7 @@ string process_input(string str) {
 	}
 	else return str;
     }
-    else if((tmp = eventHistory(str)) == "") return ""; 
-    if(tmp != str) message("system", tmp, this_object());
+    else if((tmp = eventHistory(str)) == "") return "";     if(tmp != str) message("system", tmp, this_object());
     return do_alias(do_nickname(tmp));
 } 
 
@@ -468,11 +436,11 @@ nomask static string replace_nickname(string str) {
 } 
 
 void reset_prompt() { 
-    Prompt =GetPrompt(); 
-    if(!stringp(Prompt)) Prompt = "Prompt screwey> ";
+    //Prompt = GetPrompt(); 
+    if(!stringp(Prompt)) Prompt = "> ";
     Prompt =replace_string(Prompt, "$M", mud_name()); 
     Prompt =replace_string(Prompt, "$m", lower_case(mud_name())); 
-    Prompt =replace_string(Prompt, "$N", (string)this_object()->GetCapName()); 
+    Prompt =replace_string(Prompt, "$N", capitalize(this_object()->GetKeyName())); 
     Prompt =replace_string(Prompt, "$n", GetKeyName());
 } 
 
@@ -481,6 +449,8 @@ string query_cwd() { return CurrentWorkingDirectory; }
 string query_prev_wd() { return PreviousWorkingDirectory; } 
 
 string GetPrompt() { return DEFAULT_PROMPT; }
+
+string SetPrompt(string str) { return Prompt = str; }
 
 int query_mp() { return 1; } 
 
@@ -499,7 +469,5 @@ string get_path() { return query_cwd(); }
 varargs int GetInvis() { return 0; }
 
 string GetKeyName() { return 0; }
-
-
 
 

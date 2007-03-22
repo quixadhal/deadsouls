@@ -1,4 +1,4 @@
-// This file written completely by Tim Johnson (Tim@TimMUD)
+// This file written mostly by Tim Johnson (Tim@TimMUD)
 
 static void send_startup_reply(string mudname){
     // This packet will be delivered to a mud for three conditions:
@@ -14,7 +14,7 @@ static void send_startup_reply(string mudname){
     else {
 	//if(mudinfo[mudname] && mudinfo[mudname]["password"])
 	//trr(mudname +" apparently exists. password: "+mudinfo[mudname]["password"],"white");
-	//else trr(mudname +" apparently exists, but I can't find a password for it.","white");
+	//else //trr(mudname +" apparently exists, but I can't find a password for it.","white");
     }
 
 

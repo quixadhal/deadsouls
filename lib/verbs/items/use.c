@@ -8,7 +8,7 @@ inherit LIB_VERB;
 static void create() {
     verb::create();
     SetVerb("use");
-    SetRules("OBJ to STR");
+    SetRules("OBJ to STR", "OBJ");
     SetErrorMessage("Use what to do what?");
     SetHelp("Syntax: <use OBJ to CMD>\n\n"
       "Certain objects, like scrolls, allow you to perform acts beyond "
@@ -18,9 +18,17 @@ static void create() {
       "See also: detect, discern");
 }
 
+mixed can_use_obj(mixed arg) { return 1; }
+
 mixed can_use_obj_to_str(string str) { return 1; }
 
 mixed do_use_obj_to_str(object ob, string str) {
     if( !ob ) return 0;
     else return (mixed)ob->eventUse(this_player(), str);
 }
+
+mixed do_use_obj(object ob) {
+    if( !ob ) return 0;
+    else return (mixed)ob->eventUse(this_player());
+}
+

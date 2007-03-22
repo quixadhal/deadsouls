@@ -3,6 +3,7 @@
 
 inherit LIB_MEAL;
 
+
 static void create()  {
     meal::create();
     SetKeyName("coffee");
@@ -16,4 +17,7 @@ static void create()  {
     SetBaseCost("silver",5);
     SetMealMessages("The wonderful drink is invigorating." , 
       "$N drinks $P coffee, and looks invigorated.");
+}
+void init(){
+    ::init();
 }

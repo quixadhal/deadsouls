@@ -1,4 +1,7 @@
 private static mapping Inventory = ([]);
+private static mapping InventoryCheck = ([]);
+private static string gkey = "";
+private static int counter = 0;
 
 static void eventLoadInventory();
 
@@ -65,6 +68,21 @@ static void eventLoadInventory() {
     }
 }
 
+mapping SetInventoryCheck(mapping newmap){
+    string key = keys(newmap)[0];
+    int hb = query_heart_beat();
+    int tmpint = 0;
+    if(last(key,2) == ".c") key = truncate(key,2);
+    if(!hb){
+	hb = 1;
+	set_heart_beat(1);
+    }
+    if(hb > 1) tmpint =  (newmap["howlong"] / hb || 1);
+    else tmpint =  newmap["howlong"];
+    if(!InventoryCheck) InventoryCheck = ([]);
+    InventoryCheck[key] = newmap[key];
+    return copy(InventoryCheck);
+}
 
 mapping SetInventory(mapping mp) {
     foreach(string key, mixed val in mp) {
@@ -74,12 +92,45 @@ mapping SetInventory(mapping mp) {
 	if( key[0] != '/' ) {
 	    key = "/" + key;
 	}
-	Inventory[key] = val;
+	if(arrayp(val)){
+	    int howlong = 60;
+	    int howmany = 1;
+	    if(val[1] && intp(val[1])) Inventory[key] = val[1];
+	    else Inventory[key] = 1;
+	    if(val[0] && intp(val[0])) howlong = val[0];
+	    else continue;
+	    if(val[1] && intp(val[1])) howmany = val[1];
+	    if(!query_heart_beat()) set_heart_beat(1);
+	    SetInventoryCheck( ([ key : ([ "howlong" : howlong, "howmany" : howmany ]) ]) );
+	}
+	else Inventory[key] = val;
     }
     eventLoadInventory();
     return Inventory;
 }
 
 varargs void reset() {
+    counter = 0;
     eventLoadInventory();
 }
+
+void heart_beat(){
+    int i;
+    counter++;
+    if(!InventoryCheck || !sizeof(InventoryCheck)) return;
+    foreach(mixed key, mixed val in InventoryCheck){
+	if(!InventoryCheck[key] || !InventoryCheck[key]["howlong"]) continue;
+	if(!(counter % InventoryCheck[key]["howlong"])){
+	    string *obs;
+	    gkey = key;
+	    obs = filter(all_inventory(), (: base_name($1) == gkey :) );
+	    if(!sizeof(obs)){
+		object ob;
+		for(i=InventoryCheck[key]["howmany"]; i > 0; i--){
+		    ob = new(key);
+		    if(ob) ob->eventMove(this_object());
+		}
+	    }
+	}
+    }
+} 

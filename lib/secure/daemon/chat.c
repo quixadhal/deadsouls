@@ -29,6 +29,9 @@ static void create() {
     daemon::create();
     SetNoClean(1);
     Channels = ([]);
+    foreach(string kanal in local_chans + syschans){
+	if( !Channels[kanal] ) Channels[kanal] = ({});
+    }
     foreach(pl in users()) {
 	string *chans;
 	string channel;
@@ -41,6 +44,7 @@ static void create() {
     }
     foreach( string channel in local_chans ){
 	tmp_arr += ({ channel + "emote" });
+	tmp_arr += ({ channel + ":" });
     }
 
     local_chans += tmp_arr;
@@ -164,12 +168,16 @@ int cmdChannel(string verb, string str) {
 
     if(first(str,1) == ":" && 
       (member_array(str[1..1], ({ "Q", "O", "P", "D", "I", "X" })) == -1 &&
-	alphap(str[1..1]) && sizeof(str) > 3)){
+	alphap(str[1..1]) && sizeof(str) > 2)){
 	if(!grepp(verb,"emote")) verb += "emote";
 	str = trim(replace_string(str,":","",1));
     }
 
-    if(grepp(verb, "emote")) varb = replace_string(verb,"emote","");
+    if(grepp(verb, ":")){
+	varb = replace_string(verb,":","");
+	verb = replace_string(verb,":","emote");
+    }
+    else if(grepp(verb, "emote")) varb = replace_string(verb,"emote","");
     else if(last(verb, 1) == ":") varb = replace_string(verb,":","");
     else varb = verb;
 
@@ -480,6 +488,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	case "dchat":
 	    this_msg = "%^CYAN%^";
 	    break;
+	case "intergossip":
+	    this_msg = "%^GREEN%^";
+	    break;
 	case "intercre":
 	    this_msg = "%^YELLOW%^";
 	    break;
@@ -565,6 +576,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	    break;
 	case "dchat":
 	    tmsg += "%^CYAN%^";
+	    break;
+	case "intergossip":
+	    tmsg += "%^GREEN%^";
 	    break;
 	case "intercre":
 	    tmsg += "%^YELLOW%^";
@@ -678,3 +692,4 @@ string GetRemoteChannel(string ch) {
 }
 
 string *GetChannels() { return copy(keys(Channels)); }
+string *GetSystemChannels() { return copy(syschans); }

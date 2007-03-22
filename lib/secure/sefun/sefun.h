@@ -9,6 +9,10 @@
 #ifndef l_sefun_h
 #define l_sefun_h
 
+#ifndef CARRIAGE_RETURN
+#define CARRIAGE_RETURN "\r"
+#endif
+
 varargs string socket_address(mixed arg, int foo);
 string absolute_path(string curr, string newpth);
 int absolute_value(int x);
@@ -52,7 +56,7 @@ varargs string identify( mixed a );
 string item_list(mixed *items);
 int leaderp(object ob);
 object *livings();
-object load_object(string str);
+//object load_object(string str);
 void log_file(string fl, string msg);
 int member_group(mixed who, string grp);
 int moral_act(object who, object target, int amount);
@@ -166,7 +170,7 @@ varargs string last(string str, int i, int significant);
 int starts_with_arr(string primary, string *sub);
 int starts_with(string primary, string sub);
 string reverse_string(string str);
-mixed homedir(object ob);
+mixed homedir(mixed ob);
 varargs string generate_tmp(mixed arg);
 string newline_trim(string str);
 int directory_exists(string str);
@@ -207,6 +211,7 @@ int domain_admin(string pretender, string domain);
 int compare_array(mixed *arr1, mixed *arr2);
 int arrcmp(mixed *arr1, mixed *arr2);
 string append_line(string file, string *params, string repl);
+int alphap(mixed arg);
 varargs mixed alpha_crypt(mixed arg1, mixed arg2);
 void set(mixed arg1, mixed arg2);
 void query(mixed arg1, mixed arg2);
@@ -218,8 +223,7 @@ int testp(object ob);
 string alpha_strip(mixed arg);
 mixed seteuid(mixed args);
 mixed getuid(mixed args);
-mixed geteuid(mixed args);
-string *query_local_functions(mixed arg);
+mixed geteuid(mixed args);string *query_local_functions(mixed arg);
 int check_string_length(string str);
 varargs mixed print_long_string(object who, string str, int catted);
 void add(mixed arg1, mixed arg2);
@@ -246,5 +250,11 @@ string query_intermud_ip();
 string *atomize_string(string str);
 string *atomize_array(string *temp_arr);
 string match_command(string verb);
+varargs mixed random_numbers(int n, int integer);
+int snooperp(mixed guy);
+string native_version();
+string convert_newline(string str);
+int clean_newline_file(string str);
+mixed convert_into_ascii(string str);
 
 #endif /* l_sefun_h */

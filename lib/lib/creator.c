@@ -76,8 +76,7 @@ mixed indirect_marry_liv_to_liv() {
 static void net_dead() {
     player::net_dead();
     CreatorAge += time() - LastCreatorAge;
-    LastCreatorAge = time();
-}
+    LastCreatorAge = time();}
 
 void eventReconnect() {
     string tmp;
@@ -165,10 +164,7 @@ varargs string GetLong(string str) {
 
 int GetCreatorBirth() { return CreatorBirth; }
 
-//string GetNativeLanguage() { return "English"; }
-
 string GetName() { 
     if( !GetInvis() ) return ::GetName();
     else return "A shadow";
 }
-

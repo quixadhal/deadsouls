@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+
 int push_it(string str){
     if(str=="wall" || str=="east wall"){
 	write("The east wall opens and you fall through!\n");
@@ -30,11 +31,13 @@ static void create() {
 	"had been against the wall here.",
 	"air" : "It feels heavy, making it hard to breathe. It's hard to imagine "+
 	"who or what would enjoy spending time down here."]));
-    AddExit("west","/domains/campus/room/basement");
-    SetObviousExits("w");
+    SetExits( ([
+	"west" : "/domains/campus/room/basement.c",
+      ]) );
     SetProperty("no attack", 1);
 }
 void init(){
+::init();
     add_action("push_it","push");
     add_action("push_it","search");
     add_action("push_it","touch");

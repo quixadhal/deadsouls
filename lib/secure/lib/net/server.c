@@ -17,16 +17,11 @@ string mcolor;
 int mclass;
 int ftp_port = PORT_FTP;
 
-class server {
-    int         Descriptor;
-    int         Blocking;
-    int         Closing;
-    object      Owner;
-    mixed array Buffer;
-}
+mapping ServerMap = ([]);
+mapping Listen = ([]);
 
 private static int          DestructOnClose= 0;
-private static class server Listen         = 0;
+//private static class server Listen         = 0;
 private static int          MaxBytes       = get_config(__MAX_BYTE_TRANSFER__);
 private static int          Port           = 0;
 private static string       SocketObject   = 0;
@@ -54,30 +49,31 @@ static int SetSocketType(int x ) {
 
 /* ******************** server.c events *************************** */
 static int eventClose(mixed sock) {
-    class server s;
+    mapping s; 
 
     trr("LIB_SERVER: eventClose trying to close: "+identify(sock),mcolor,mclass);
+    if(mapp(sock)) {
+	s = copy(sock);
+    }
     if( intp(sock) ) {
-	sock = Sockets[sock];
+	s = copy(Sockets[sock]);
     }
     else if( objectp(sock) ) {
-	sock = Sockets[sock->GetDescriptor()];
+	s = copy(Sockets[sock->GetDescriptor()]);
     }
-    if( !sock ) {
+    if( !s ) {
 	return 0;
     }
-    s = sock;
-    if( s->Blocking ) {
-	s->Closing = 1;
+    if( s["Blocking"] ) {
+	s["Closing"] = 1;
 	return 1;
     }
-    if( Sockets[s->Descriptor] ) {
-	map_delete(Sockets, s->Descriptor);
+    if( Sockets[s["Descriptor"]] ) {
+	map_delete(Sockets, s["Descriptor"]);
     }
-    socket_close(s->Descriptor);
-    //    eventSocketClosed(s->Owner);
-    if( s->Owner ) {
-	s->Owner->eventSocketClosed();
+    socket_close(s["Descriptor"]);
+    if( s["Owner"] ) {
+	s["Owner"]->eventSocketClosed();
     }
     if( DestructOnClose && sock == Listen ) {
 	Destruct();
@@ -87,8 +83,8 @@ static int eventClose(mixed sock) {
 
 int eventCreateSocket(int port) {
     int x;
-    Listen = new(class server);
-    Listen->Blocking = 0; /* servers are not blocking to start */
+    //Listen = new(class server);
+    Listen["Blocking"] = 0; /* servers are not blocking to start */
     x = socket_create(SocketType,
       "eventServerReadCallback", 
       "eventServerAbortCallback");
@@ -96,14 +92,14 @@ int eventCreateSocket(int port) {
 	eventSocketError("Error in socket_create().", x);
 	return x;
     }
-    Listen->Descriptor = x;
-    x = socket_bind(Listen->Descriptor, port);
+    Listen["Descriptor"] = x;
+    x = socket_bind(Listen["Descriptor"], port);
     if( x != EESUCCESS ) {
 	eventClose(Listen);
 	eventSocketError("Error in socket_bind().", x);
 	return x;
     }
-    x = socket_listen(Listen->Descriptor, "eventServerListenCallback");
+    x = socket_listen(Listen["Descriptor"], "eventServerListenCallback");
     if( x != EESUCCESS ) {
 	eventClose(Listen);
 	eventSocketError("Error in socket_listen().", x);
@@ -114,9 +110,10 @@ int eventCreateSocket(int port) {
 
 static int Destruct() {
     if( daemon::Destruct() ) {
-	foreach(int fd, class server socket in Sockets) {
+	foreach(int fd, mapping socket in Sockets) {
 	    trr("server:Destruct: fd: "+fd+", "+socket_address(fd),mcolor,mclass);
-	    socket->Owner->evenShutdown();
+	    if(socket && socket["Owner"])
+		socket["Owner"]->eventShutdown();
 	}
 	eventClose(Listen);
 	return 1;
@@ -134,13 +131,14 @@ int eventDestruct() {
 }
 
 static void eventNewConnection(object socket) {
-    class server s = new(class server);
+    //class server s = new(class server);
+    int fd = socket->GetDescriptor();
+    if(!Sockets[fd]) Sockets[fd] = ([]);
     trr("LIB_SERVER: eventNewConnection, socket: "+identify(socket),mcolor,mclass);
     trr("LIB_SERVER: eventNewConnection, socket->GetDescriptor(): "+identify(socket->GetDescriptor()),mcolor,mclass);
-    s->Descriptor = socket->GetDescriptor();
-    s->Blocking = 0;
-    s->Owner = socket;
-    Sockets[s->Descriptor] = s;
+    Sockets[fd]["Descriptor"] = socket->GetDescriptor();
+    Sockets[fd]["Blocking"] = 0;
+    Sockets[fd]["Owner"] = socket;
     socket->StartService(); // added for welcome
 }
 
@@ -165,40 +163,41 @@ static void eventServerListenCallback(int fd) {
       "eventServerReadCallback", 
       "eventServerWriteCallback");
     if( x < 0 ) {
-	//tc("Error in socket_accept().");
+	trr("Error in socket_accept().",mcolor,mclass);
 	eventSocketError("Error in socket_accept().", x);
 	return;
     }
     if( Sockets[x] ) {
 	eventClose(Sockets[x]);
     }
-    //tc("SocketObject: "+SocketObject);
+    trr("LIB_SERVER SocketObject: "+SocketObject,mcolor,mclass);
     eventNewConnection(new(SocketObject, x, this_object()));
 }
 
 static void eventServerReadCallback(int fd, mixed val) {
-    class server s = Sockets[fd];
-
     trr("server:eventServerReadCallback: fd: "+fd+", "+socket_address(fd),mcolor,mclass);
-    trr("server: I think that Sockets[fd] is: "+identify(Sockets[fd]),mcolor,mclass);
-    if( !s || !s->Owner ) {
-	trr("No owner found for this data.",mcolor,mclass);
+    trr("server: I think that Sockets["+fd+"] is: "+identify(Sockets[fd]),mcolor,mclass);
+    if( !Sockets[fd] || !Sockets[fd]["Owner"] ) {
+	trr("server: No owner found for this data.",mcolor,mclass);
 	eventClose(fd);
 	return;
     }
     else {
-	trr("Owner: "+identify(s->Owner),mcolor,mclass);
-	trr("  val: "+identify(val),mcolor,mclass);
-	s->Owner->eventRead(val);
+	trr("Sockets["+fd+"]: "+identify(Sockets[fd]),mcolor,mclass);
+	trr("sizeof(val): "+sizeof(val),mcolor,mclass);
+	trr("typeof(val): "+typeof(val),mcolor,mclass);
+	if(bufferp(val)) trr("  val: "+identify(read_buffer(val)),mcolor,mclass);
+	else trr("  val: "+identify(val),mcolor,mclass);
+	Sockets[fd]["Owner"]->eventRead(val);
     }
 }
 
 static void eventServerWriteCallback(int fd) {
-    class server sock;
     int x;
+    mapping sock;
 
     trr("server:eventServerWriteCallback: fd: "+fd+", "+socket_address(fd),mcolor,mclass);
-    if( Listen && Listen->Descriptor == fd ) {
+    if( Listen && Listen["Descriptor"] == fd ) {
 	sock = Listen;
     }
     else if( Sockets[fd] ) {
@@ -207,38 +206,38 @@ static void eventServerWriteCallback(int fd) {
     else {
 	return;
     }
-    sock->Blocking = 0;
-    if( !sock->Buffer && sock->Closing ) {
+    sock["Blocking"] = 0;
+    if( !sock["Buffer"] && sock["Closing"] ) {
 	eventClose(sock);
 	return;
     }
     x = EESUCCESS;
-    while( sock->Buffer && x == EESUCCESS ) {
-	switch( x = socket_write(sock->Descriptor, sock->Buffer[0]) ) {
+    while( sock["Buffer"] && x == EESUCCESS ) {
+	switch( x = socket_write(sock["Descriptor"], sock["Buffer"][0]) ) {
 	case EESUCCESS:
 	    break;
 	case EECALLBACK:
-	    sock->Blocking = 1;
+	    sock["Blocking"] = 1;
 	    break;
 	case EEWOULDBLOCK: 
 	    call_out( (: eventServerWriteCallback :), 0, fd);
 	    return;
 	case EEALREADY:
-	    sock->Blocking = 1;
+	    sock["Blocking"] = 1;
 	    return;
 	default:
 	    eventClose(sock);
 	    eventSocketError("Error in socket_write().", x);
 	    return;
 	}
-	if( sizeof(sock->Buffer) == 1 ) {
-	    sock->Buffer = 0;
-	    if( sock->Closing && !sock->Blocking ) {
+	if( sizeof(sock["Buffer"]) == 1 ) {
+	    sock["Buffer"] = 0;
+	    if( sock["Closing"] && !sock["Blocking"] ) {
 		eventClose(sock);
 	    }
 	}
 	else {
-	    sock->Buffer = sock->Buffer[1..];
+	    sock["Buffer"] = sock["Buffer"][1..];
 	}
     }
 }
@@ -249,14 +248,15 @@ static void eventSocketError(string msg, int code) {
 }
 
 varargs int eventWrite(object owner, mixed val, int close) {
-    class server sock;
     int fd = owner->GetDescriptor();
+    mapping sock;
 
     trr("server:eventWrite: fd: "+fd+", "+socket_address(fd),mcolor,mclass);
-    trr("       eventWrite: owner: "+identify(owner)+", val: "+identify(val),mcolor,mclass);
+    if(bufferp(val)) trr("       eventWrite: owner: "+identify(owner)+", val: "+identify(read_buffer(val)),mcolor,mclass);
+    else trr("       eventWrite: owner: "+identify(owner)+", val: "+identify(val),mcolor,mclass);
     trr("       eventWrite: close: "+close,mcolor,mclass);
 
-    if( Listen && Listen->Descriptor == fd ) {
+    if( Listen && Listen["Descriptor"] == fd ) {
 	sock = Listen;
     }
     else if( Sockets[fd] ) {
@@ -265,15 +265,15 @@ varargs int eventWrite(object owner, mixed val, int close) {
     else {
 	return 0;
     }
-    if( owner != sock->Owner ) {
+    if( owner != sock["Owner"] ) {
 	return 0;
     }
     if( SocketType != STREAM || stringp(val)) {
-	if( sock->Buffer ) {
-	    sock->Buffer += ({ val });
+	if( sock["Buffer"] ) {
+	    sock["Buffer"] += ({ val });
 	}
 	else {
-	    sock->Buffer = ({ val });
+	    sock["Buffer"] = ({ val });
 	}
     }
     else {
@@ -281,8 +281,8 @@ varargs int eventWrite(object owner, mixed val, int close) {
 	int size = sizeof(data);
 	int count = (size/MaxBytes) + 1;
 
-	if( !sock->Buffer ) {
-	    sock->Buffer = ({});
+	if( !sock["Buffer"] ) {
+	    sock["Buffer"] = ({});
 	}
 	for(int i=0; i<count; i++) {
 	    int length, ptr;
@@ -296,13 +296,13 @@ varargs int eventWrite(object owner, mixed val, int close) {
 		length = size - ptr;
 	    }
 	    b = read_buffer(data, ptr, length);
-	    sock->Buffer = ({ sock->Buffer..., b });
+	    sock["Buffer"] = ({ sock["Buffer"]..., b });
 	}
     }
 
-    sock->Closing = close;
-    if( !sock->Blocking ) {
-	eventServerWriteCallback(sock->Descriptor);
+    sock["Closing"] = close;
+    if( !sock["Blocking"] ) {
+	eventServerWriteCallback(sock["Descriptor"]);
     }
     return 1;
 }
@@ -322,6 +322,7 @@ varargs static void create(int port, int type, string socket_obj) {
     if(port == PORT_HFTP){mcolor="white";mclass=MSG_HFTP;}
     else if(port == PORT_HTTP){mcolor="cyan";mclass=MSG_HTTP;}
     else if(port == PORT_RCP){mcolor="yellow";mclass=MSG_RCP;}
+    else if(port == PORT_OOB){mcolor="red";mclass=MSG_OOB;}
     else { mcolor="blue",mclass=MSG_CONV;}
 
     if( socket_obj ) {
@@ -335,4 +336,3 @@ varargs static void create(int port, int type, string socket_obj) {
 	call_out((: eventCreateSocket :), 1, Port);
     }
 }
-

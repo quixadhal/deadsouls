@@ -63,6 +63,8 @@ int GetDecayLife() { return DecayLife; }
 //}
 
 void SetCorpse(object who) {
+    string tmpshort = (string)who->GetShort();
+    if(sizeof(who->GetRiders())) tmpshort = (string)who->GetPlainShort();
     if( DecayLife < 100 ) {
 	DecayLife = 500;
     }
@@ -73,7 +75,7 @@ void SetCorpse(object who) {
     Race = who->GetRace();
     Count = 1;
     Fresh = 1;
-    SetShort("the corpse of "+(string)who->GetShort());
+    SetShort("the corpse of "+tmpshort);
     SetLong("As you look closely at " + who->GetCapName() +
       ", you notice that " +  nominative(who) +
       " does not appear to be moving.");

@@ -116,4 +116,8 @@
 #define DIR_TMP                 "/tmp"
 #define TMP_DIR                 "/tmp"
 
+#define DIR_UPGRADES             DIR_SECURE "/upgrades"
+#define DIR_UPGRADES_FILES       DIR_UPGRADES "/files"
+#define DIR_UPGRADES_TXT         DIR_UPGRADES "/txt"
+
 #endif /* s_dirs_h */

@@ -2,7 +2,6 @@
 
 inherit LIB_NPC;
 
-
 int CheckOrc(mixed val){
     if(!val) return 0;
     if(!objectp(val)) return 0;

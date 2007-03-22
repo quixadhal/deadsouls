@@ -6,6 +6,10 @@
  *    Last modified: 97/01/03
  */
 
+#ifndef NM_STYLE_EXITS
+#define NM_STYLE_EXITS 1
+#endif
+
 #include <lib.h>
 #include <clock.h>
 #include <privs.h>
@@ -102,8 +106,6 @@ int Setup() {
     SetId(({}));
     autosave::Setup();
     call_out("save_player", 2, GetKeyName());
-    log_file("enter", GetCapName()+" (enter): "+ctime(time())+
-      " : "+query_ip_name(this_object())+"\n");
     if( VOTING_D->GetStatus() == VOTE_RUNNING ) {
 	if( VOTING_D->GetMode() == VOTE_MODE_CANDIDATES )
 	    eventPrint("%^YELLOW%^Class Elections are in progress!  "
@@ -136,13 +138,17 @@ int Setup() {
     environment()->eventPrint(tmp, MSG_ENV, this_object());
     if( !(tmp = GetMessage("login")) )
 	tmp = GetName() + " enters " + mud_name() + ".";
-    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " logs in]",0);
+    if(!(archp(this_object()) && this_object()->GetInvis())){
+	log_file("enter", GetCapName()+" (enter): "+ctime(time())+
+	  " : "+query_ip_name(this_object())+"\n");
+	CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " logs in]",0);
+    }
 
     if(!catch(mp = (mapping)FOLDERS_D->mail_status(GetKeyName()))) {
 	if(mp["unread"]) {
-	    eventPrint("\n>>> " + mp["unread"] + " of your " +
+	    eventPrint("\n%^RED%^%^BOLD%^>>> " + mp["unread"] + " of your " +
 	      (mp["total"] == 1 ? mp["total"] + " letter is" :
-		mp["total"] + " letters remain") + " unread. <<<\n",
+		mp["total"] + " letters remain") + " unread. <<<%^RESET%^\n",
 	      MSG_SYSTEM);
 	}
     }
@@ -156,10 +162,12 @@ static void net_dead() {
     LastAge = time();
     NetDiedHere = environment(this_object());
     save_player(GetKeyName());
-    log_file("enter", GetCapName() + " (net-dead): " + ctime(time()) + "\n");
-    environment()->eventPrint(GetName() + " suddenly disappears into "
-      "a sea of irreality.", MSG_ENV, this_object());
-    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " goes net-dead]",0);
+    if(!(archp(this_object()) && this_object()->GetInvis())){
+	log_file("enter", GetCapName() + " (net-dead): " + ctime(time()) + "\n");
+	environment()->eventPrint(GetName() + " suddenly disappears into "
+	  "a sea of irreality.", MSG_ENV, this_object());
+	CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " goes net-dead]",0);
+    }
     SNOOP_D->ReportLinkDeath(this_object()->GetKeyName());
     eventMove(ROOM_FREEZER);
     if(query_snoop(this_object()))
@@ -168,16 +176,17 @@ static void net_dead() {
 }
 
 void eventReconnect() {
-
     interface::eventReconnect();
     LastAge = time();
     HostSite = query_ip_name(this_object());
     eventPrint("Reconnected.", MSG_SYSTEM);
-    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " has rejoined " + mud_name() + "]",0);
+    if(!(archp(this_object()) && this_object()->GetInvis())){
+	CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " has rejoined " + mud_name() + "]",0);
+	environment()->eventPrint(GetCapName() + " has rejoined this reality.",
+	  MSG_ENV, this_object());
+    }
     if( NetDiedHere ) eventMove(NetDiedHere);
     else eventMove(ROOM_START);
-    environment()->eventPrint(GetCapName() + " has rejoined this reality.",
-      MSG_ENV, this_object());
     NetDiedHere = 0;
 }
 
@@ -187,6 +196,7 @@ void eventDescribeEnvironment(int brief) {
     string *shorts;
     string desc, smell, sound, touch;
     int i, maxi;
+    string altern_obvious = "";
 
     if(!(env = environment(this_object()))) {
 	eventPrint("You are nowhere.", MSG_ROOMDESC);
@@ -227,6 +237,10 @@ void eventDescribeEnvironment(int brief) {
 		desc = capitalize((string)env->GetShort() || "")
 		+ " [" + desc + "]\n";
 	    else desc = capitalize((string)env->GetShort()+"\n" || "\n");
+	    if(!NM_STYLE_EXITS){
+		desc = capitalize((string)env->GetShort()+"\n" || "\n");
+		altern_obvious = "Obvious exit$Q: "+(string)env->GetObviousExits() || "none";
+	    }
 	}
 	else desc = "\n";
 	if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM )
@@ -244,13 +258,22 @@ void eventDescribeEnvironment(int brief) {
     else {
 	if(i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM){
 	    desc = (string)env->GetShort();
-	    if( (tmp = (string)env->GetObviousExits()) && tmp != "" )
-		desc += " [" + tmp + "]";
-	    else desc += "\n";
+	    if(NM_STYLE_EXITS){
+		if( (tmp = (string)env->GetObviousExits()) && tmp != "" )
+		    desc += " [" + tmp + "]";
+		else desc += "\n";
+	    }
+	    else altern_obvious = "Obvious exits: "+(string)env->GetObviousExits() || "none";
 	}
 	else desc = "\n";
     }
     if( desc ) eventPrint(desc, MSG_ROOMDESC);
+    if(sizeof(altern_obvious)){
+        int quant = sizeof(env->GetExits()) + sizeof(env->GetEnters());
+        if(quant > 1) altern_obvious = replace_string(altern_obvious,"$Q","s");
+        else altern_obvious = replace_string(altern_obvious,"$Q","");
+        eventPrint(altern_obvious,MSG_ROOMDESC);
+    }
     if( smell ) eventPrint("%^GREEN%^" + smell, MSG_ROOMDESC);
     if( sound ) eventPrint("%^CYAN%^" + sound, MSG_ROOMDESC);
     if( touch ) eventPrint("%^YELLOW%^" + touch, MSG_ROOMDESC);
@@ -309,6 +332,7 @@ void eventDescribeEnvironment(int brief) {
 	if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM ) {
 	    mapping lying = ([]), sitting = ([]), standing = ([]), flying = ([]);
 	    mapping furniture = ([]);
+	    object mount = this_player()->GetProperty("mount");
 	    object *obs;
 	    string key;
 	    int val;
@@ -318,7 +342,7 @@ void eventDescribeEnvironment(int brief) {
 		  if( living(ob) ) return 1;
 		  if( (int)ob->isFreshCorpse() )
 		      return 1;
-		}) - ({ this_object() });
+		}) - ({ this_object(), mount });
 	      maxi = sizeof(shorts = map(obs, (: (string)$1->GetHealthShort() :)));
 	      foreach(object liv in obs) {
 		  string s = (string)liv->GetHealthShort();
@@ -428,9 +452,21 @@ void eventDescribeEnvironment(int brief) {
 		desc = tmp + desc;
 	    }
 	    if(this_player()->GetProperty("mount")) {
+		string mount_inv = "Nothing";
+		string *mount_stuffs = ({});
+		object *mount_obs = filter( all_inventory(this_player()->GetProperty("mount")),
+		  (: !($1->GetInvis()) && !($1 == this_player()) :));
+		if(sizeof(mount_obs)){
+		    foreach(object element in mount_obs){
+			mount_stuffs += ({ element->GetShort() });
+		    }
+		    mount_inv = conjunction(mount_stuffs);
+		}
 		if(!sizeof(desc)) desc = "";
 		desc += "\nYou are mounted on "+
-		(this_player()->GetProperty("mount"))->GetShort()+".";
+		(this_player()->GetProperty("mount"))->GetPlainShort()+".";
+		desc += "\nOn "+(this_player()->GetProperty("mount"))->GetPlainShort()+
+		" you see: "+mount_inv+".";
 	    }
 	    if( sizeof(desc) ) {
 		if(check_string_length(desc)) eventPrint(desc + "\n", MSG_ROOMDESC);
@@ -445,7 +481,7 @@ void eventDescribeEnvironment(int brief) {
 	    foreach(ob in deep_inventory(this_object())) {
 		if( ob ) catch(ob->eventDestruct());
 	    }
-	    return object::eventDestruct();
+	    return object::Destruct();
 	}
 
 	mixed eventDivorce() {
@@ -506,13 +542,20 @@ void eventDescribeEnvironment(int brief) {
 		    if((!retain && !ob->GetRetain()) || !ob->GetRetain()) ob->eventMove(env);
 		}
 	    }
-	    this_player()->AddCarriedMass(-5000);
+	    this_object()->AddCarriedMass(-5000);
 	    tmp = GetMessage("logout") || (GetName() + " is gone from this reality!");
-	    message("environment", tmp, environment(this_object()), ({this_object()}));
-	    log_file("enter", GetCapName()+" (quit): "+timestamp()+"\n");
 	    save_player(GetKeyName());
-	    CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " quits]",0);
-	    eventDestruct();
+	    if(!(archp(this_object()) && this_object()->GetInvis())){
+		log_file("enter", GetCapName()+" (quit): "+timestamp()+"\n");
+		message("environment", tmp, environment(this_object()), ({this_object()}));
+		CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " quits]",0);
+	    }
+	    if(in_edit()){
+		ed_cmd(".");
+		ed_cmd("x");
+		ed_cmd("Q");
+	    }
+	    this_object()->eventDestruct();
 	    return 1;
 	}
 
@@ -688,9 +731,7 @@ void eventDescribeEnvironment(int brief) {
 		else return HostSite;
 	    }
 	    return HostSite;
-	}
-
-	//void eventLoadObject(mixed *value, int recurse) { }
+	}	//void eventLoadObject(mixed *value, int recurse) { }
 
 	int GetRadiantLight(int ambient) {
 	    return container::GetRadiantLight(ambient);

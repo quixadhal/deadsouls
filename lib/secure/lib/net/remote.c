@@ -94,10 +94,10 @@ static private void eventProcess(int fd, string str) {
 	Connections[fd]["buffer"] = Connections[fd]["buffer"][(x+1)..];
     else Connections[fd]["buffer"] = "";
     if( sscanf(str, "%s %s", cmd, arg) != 2) {
-	cmd = replace_string(str, "\r", "");
+	cmd = replace_string(str, CARRIAGE_RETURN, "");
 	arg = "";
     }
-    else arg = replace_string(arg, "\r", "");
+    else arg = replace_string(arg, CARRIAGE_RETURN, "");
     //trr("Connections: "+identify(Connections),"blue");
     if( !Connections[fd]["object"] ) {
 	string username, password;
@@ -124,7 +124,7 @@ static private void eventProcess(int fd, string str) {
 	    log_file("remote", "Failed attempt to login as " + username 
 	      + "\n");
 	    eventWrite("50 Login failed.\n", 1);
-	    map_delete(Connections, fd);
+	    map_delete(Connections, fd);	     
 	    return;
 	}
 	if( !(Connections[fd]["object"] = 

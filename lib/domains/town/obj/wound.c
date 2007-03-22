@@ -1,11 +1,12 @@
 #include <lib.h>
 #include <damage_types.h>
 #include <vendor_types.h>
+#include <daemons.h>
 inherit LIB_ITEM;
 void create(){
     ::create();
-    SetKeyName("firearms_wound");
-    SetId(({"firearms_wound"}));
+    SetKeyName("wound");
+    SetId(({"wound","firearms_wound"}));
     SetInvis(1);
     SetMass(0);
     SetBaseCost("silver",0);
@@ -47,10 +48,12 @@ void heart_beat(){
     }
 
     dam = num*10;
-    tell_object(ob,"You bleed heavily from your gunshot wounds.");
-    tell_room(environment(ob), ob->GetName()+
-      " bleeds heavily from "+possessive(environment())+" gunshot wounds.",environment());
-    ob->eventReceiveDamage(this_object(),TRAUMA,dam,0,"torso");
+    if(!RACES_D->GetNonMeatRace(ob->GetRace())){
+	tell_object(ob,"You bleed heavily from your gunshot wounds.");
+	tell_room(environment(ob), ob->GetName()+
+	  " bleeds heavily from "+possessive(environment())+" gunshot wounds.",environment());
+	ob->eventReceiveDamage(this_object(),TRAUMA,dam,0,"torso");
+    }
     return;
 }
 mixed CanGet(object ob) { return "Your hands slip on the gunshot wounds.";}

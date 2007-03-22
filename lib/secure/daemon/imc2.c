@@ -257,7 +257,7 @@ void read_callback(int socket, mixed info){
     // The hub groups packets, unfortunately.
     switch(mode){
     case MODE_WAITING_ACCEPT: // waiting for Hub to send autosetup
-	if(sscanf(info, "autosetup %s accept %s\n\r",
+	if(sscanf(info, "autosetup %s accept %s\n"+CARRIAGE_RETURN,
 	    hub_name, network_name)==2){
 	    //debug("Connected, hub is "+hub_name+", network is "+network_name);
 	    mode = MODE_CONNECTED;
@@ -277,7 +277,7 @@ void read_callback(int socket, mixed info){
 	break;
     case MODE_CONNECTED:
 	while(!done){
-	    if(sscanf(buf,"%s\n\r%s",a,b)==2){ // found a break...
+	    if(sscanf(buf,"%s\n"+CARRIAGE_RETURN+"%s",a,b)==2){ // found a break...
 		got_packet(a);
 		buf=b;
 	    } else { // no break...
@@ -304,9 +304,9 @@ private void got_packet(string info){
 #endif
 
     str = info;
-    // messages end with " \n\r" or "\n" or sometimes just a space
+    // messages sometimes end with newline chars or spaces
     sscanf(str, "%s\n^", str);
-    sscanf(str, "%s\r^", str);
+    sscanf(str, "%s"+CARRIAGE_RETURN+"^", str);
     sscanf(str, "%s ^", str);
     sscanf(str, "%s ^", str);
     if(sscanf(str, "%s %d %s %s %s %s",
@@ -583,7 +583,7 @@ void start_logon(){
 	  str=replace_string(str,"\\","\\\\");
 	  str=replace_string(str,"\"","\\\"");
 	  str=replace_string(str,"\n","\\n");
-	  str=replace_string(str,"\r","\\r");
+	  str=replace_string(str,CARRIAGE_RETURN,"\\"+CARRIAGE_RETURN);
 	  if(sizeof(explode(str," "))!=1) str = "\""+str+"\"";
 	  return str;
       }
@@ -597,13 +597,13 @@ void start_logon(){
 		  case 34 : output += "\""; break; // '\"' makes warnings.
 		  case '\\' : output += "\\"; break;
 		  case 'n' : output += "\n"; break;
-		  case 'r' : output += "\r"; break;
+		  case 'r' : output += CARRIAGE_RETURN; break;
 		  }
 	      }
 	      b=b[1..];
 	  }
 	  output += b;
-	  output = replace_string(output,"\n\r","\n");
+	  output = replace_string(output,"\n"+CARRIAGE_RETURN,"\n");
 	  if((sizeof(explode(output," "))==1) && sscanf(output,"\\\"%*s\\\"") ) output = "\""+output+"\"";
 	  return output;
       }
@@ -947,7 +947,7 @@ void start_logon(){
 		  case 'b': output += "%^FLASH%^%^BLUE%^"; break; // Dark Blue
 		  case 'p': output += "%^FLASH%^%^MAGENTA%^"; break; // Purple
 		  case 'c': output += "%^FLASH%^%^CYAN%^"; break; // Cyan
-		  case 'w': output += "%^FLASH%^%^WHITE%^"; break; // Grey
+		  case 'w': output += "%^FLASH%^%^WHITE%^"; break; // Grey		  
 		  case 'z': output += "%^FLASH%^%^BLACK%^"; break; // Dark Grey
 		  case 'R': output += "%^FLASH%^%^RED%^"; break; // Red
 		  case 'G': output += "%^FLASH%^%^GREEN%^"; break; // Green
@@ -1584,4 +1584,3 @@ EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
 
 
       void forget_user(string str){ map_delete(tells,str); }
-

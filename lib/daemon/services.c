@@ -82,6 +82,10 @@ mapping GetServices() {
 #ifdef PORT_HTTP
       "http" : PORT_HTTP,
 #endif
+#ifdef PORT_OOB
+      "oob" : PORT_OOB,
+      "mail" : 1,
+#endif
 #ifdef PORT_NNTP
       "nntp" : PORT_NNTP,
 #endif

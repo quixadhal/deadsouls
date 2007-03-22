@@ -26,9 +26,6 @@ mixed cmd(string str) {
       sscanf(str,"enter%s",arg) == 1 ||
       sscanf(str,"exit%s",arg) == 1 ) room = 1;
 
-    if(room && environment(this_player())->GetNoModify() )
-	return "This should be edited by hand. Change cancelled.";
-
     if(room) staff->make(arg);
     else staff->gmake(str);
 
@@ -36,7 +33,9 @@ mixed cmd(string str) {
 }
 
 int help() {
-    message("system", "Syntax: create room DIRECTION FILE\n"
+    message("system", "Syntax:\n"
+      "        create room DIRECTION FILE\n"
+      "        create room none FILE\n"
       "        create npc FILE\n"
       "        create barkeep FILE\n"
       "        create vendor FILE\n"

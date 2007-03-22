@@ -209,7 +209,7 @@ int eventFire(string str){
     else dex = 200;
     if((ob && living(ob)) && (i < dex || autohit==1)){
 	NumLimbs=sizeof(ob->GetLimbs());
-	TorsoNum=member_array("torso",ob->GetLimbs());
+	TorsoNum=member_array(ob->GetTorso(),ob->GetLimbs());
 	i=random(100);
 	if(i < 50) limbhit=TorsoNum;
 	else limbhit=random(NumLimbs);

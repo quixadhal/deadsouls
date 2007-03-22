@@ -6,10 +6,10 @@
 
 #include <lib.h>
 
-inherit LIB_CHAIR;
+inherit LIB_BED;
 
 static void create() {
-    chair::create();
+    ::create();
     SetKeyName("sofa");
     SetId("sofa");
     SetAdjectives( ({ "black", "small", "tasteful", "upholstered" }) );
@@ -20,7 +20,7 @@ static void create() {
     SetDollarCost(15);
     SetMaxSitters(2);
 }
-mixed CanGet(object ob) { return "The bench does not budge.";}
+mixed CanGet(object ob) { return "The sofa does not budge.";}
 void init(){
     ::init();
 }

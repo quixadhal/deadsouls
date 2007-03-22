@@ -62,7 +62,7 @@ int eventModMoney(object ob, string type, mixed val){
     if(stringp(val)) val = amount;
     NewMap[type] = val;
     globalstr2 += this_object()->eventStringifyMap(NewMap) + " );";
-    globaltmp = this_object()->eventAppend(globaltmp,({"SetItems","SetInventory","SetLong"}),"\n"+globalstr2+"\n");
+    globaltmp = this_object()->eventAppend(read_file(globaltmp),({"SetItems","SetInventory","SetLong"}),"\n"+globalstr2+"\n");
     unguarded( (: write_file(globalstr,globaltmp,1) :) );
     this_object()->eventGeneralStuff(globalstr);
     unguarded( (: cp(globalstr,globalstr3) :) );

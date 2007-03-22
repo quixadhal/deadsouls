@@ -22,6 +22,13 @@
 #include <message_class.h>
 #include "master.h"
 
+#ifndef COMPAT_MODE
+#define COMPAT_MODE 1
+#endif
+#ifndef DEFAULT_PARSING
+#define DEFAULT_PARSING 1
+#endif
+
 private static int ResetNumber;
 private static object Unguarded, gguy;
 private static string PlayerName, rlog, gcmd;
@@ -34,6 +41,8 @@ void create() {
     NewPlayer = 0;
     PlayerName = 0;
     ResetNumber = 1;
+    if(!file_exists("/secure/sefun/native_version.c"))
+	cp("/secure/scripts/native_version.proto", "/secure/sefun/native_version.c");
     new_read();
     new_write();
     new_groups();
@@ -82,11 +91,12 @@ private static void load_access(string cfg, mapping resource) {
 	  return 1;
 	});
       foreach(string line in lines) {
-	  string fl, ac;
+	  string fl, ac = "";
 
-	  if( sscanf(line, "(%s) %s", fl, ac) != 2 ) {
+	  if( sscanf(line, "(%s)%s", fl, ac) != 2 ) {
 	      error("Error in loading config file " + cfg + ".");
 	  }
+	  ac = trim(ac);
 	  resource[fl] = explode(ac, ":");
       }
   }
@@ -258,6 +268,9 @@ private static void load_access(string cfg, mapping resource) {
 	string nom, tmp;
 	int x;
 
+	if(!creatorp(ob)){
+	    if(!strsrch(file,homedir(ob))) return 1;
+	}
 	if( !sscanf(file, REALMS_DIRS "/%s", nom) ) return 0;
 	if( sscanf(nom, "%s/%*s", tmp) ) nom = tmp;
 	nom = user_path(nom)+"adm/access";
@@ -402,8 +415,9 @@ private static void load_access(string cfg, mapping resource) {
 	string tmp;
 	int i;
 
-	true(fun); 
-
+	//if(ob) tc("valid_socket: ob: "+identify(ob),"blue");
+	//if(fun) tc("valid_socket: fun: "+identify(fun),"blue");
+	//if(info) tc("valid_socket: info: "+identify(info),"blue");
 	if( info && sizeof(info) == 4 ) {
 	    ob = info[1];
 	    port = info[3];
@@ -547,7 +561,6 @@ private static void load_access(string cfg, mapping resource) {
 
     string domain_file(string str) {
 	string nom, tmp;
-
 	if(sscanf(str, DOMAINS_DIRS+"/%s/%s", nom, tmp) == 2) return nom;
 	return 0;
     }
@@ -579,8 +592,7 @@ private static void load_access(string cfg, mapping resource) {
 
 	file = user_path((string)who->GetKeyName())+".edrc";
 	if(!file_exists(file)) return 0;
-	return to_int(read_file(file));
-    }
+	return to_int(read_file(file));    }
 
     string get_save_file_name() {
 	string str;

@@ -95,6 +95,7 @@ int GetNoModify(){
     if(Modify) return 0;
     else return 1;
 }
+
 string GetShort();
 
 string GetDefiniteShort() {
@@ -160,4 +161,3 @@ object array GetDummyItems() {
     }
     return DummyItems;
 }
-

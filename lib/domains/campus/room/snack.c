@@ -35,7 +35,6 @@ static void create() {
       ]));
     SetExits( ([ "south" : "/domains/campus/room/corridor",
       ]));
-    SetObviousExits("s");
     SetRead("menu", (: eventReadMenu :));
     SetInventory(([
 	"/domains/campus/npc/gloria.c" : 1 ]));

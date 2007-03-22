@@ -151,6 +151,7 @@ mixed cmd(mixed args) {
     unguarded( (: write_file("/secure/cfg/groups.cfg",new_config_file,1) :) );
     load_object("/secure/cmds/creators/update")->cmd("/secure/daemon/master");
     load_object("/secure/cmds/creators/update")->cmd("/secure/lib/connect");
+    if(str == "SNOOPER") SNOOP_D->SnoopClean();
     new_config_file = "";
     return 1;
 }

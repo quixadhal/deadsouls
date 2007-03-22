@@ -18,6 +18,16 @@ private string calculateFormatString(int screenSize);
 object *whom, *who, *display;
 string *args;
 
+mixed room_env(object ob){
+    string *riders;
+    object env = environment(ob);
+    if(!env) return 0;
+    if(!living(env)) return env;
+    if(arrayp(riders = env->GetRiders()) && member_array(ob, riders) != -1 &&
+      environment(env)) env = environment(env);
+    return env;
+}
+
 int cmd(string str) {
     string msg, tmp1, tmp2;
     int i, maxi, aflag, bflag, cflag, eflag, gflag, hflag, lflag, mflag;
@@ -173,8 +183,8 @@ static int special_sort(object alpha, object beta) {
 	}
     }
     if(__SortFlags[3]) {
-	if((a = file_name(environment(alpha))) != 
-	  (b = file_name(environment(beta)))) return strcmp(a, b);
+	if((a = file_name(room_env(alpha))) != 
+	  (b = file_name(room_env(beta)))) return strcmp(a, b);
     }
     if(__SortFlags[2]) {
 	if((x = (int)alpha->GetLevel()) != (y=(int)beta->GetLevel())) {
@@ -231,8 +241,8 @@ static string map_info(object ob, string formatString) {
     else if(x >= 2600) idle = sprintf("%:-3d h", x/3600);
     else idle = sprintf("%:-2d m", x/60);
     ip = query_ip_name(ob);
-    if(!environment(ob)) env = "no environment";
-    else env = file_name(environment(ob));
+    if(!room_env(ob)) env = "no environment";
+    else env = file_name(room_env(ob));
     if(!strsrch(env, REALMS_DIRS)) 
 	env = "~" + env[strlen(REALMS_DIRS)+1..];
     else if(!strsrch(env, DOMAINS_DIRS))

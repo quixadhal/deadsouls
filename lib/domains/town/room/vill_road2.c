@@ -22,7 +22,6 @@ static void create() {
     AddTerrainType(T_ROAD);
     SetEnters( ([ 
       ]) );
-    SetObviousExits("n, s, e, w, enter store, enter guild");
     SetExits( ([
 	"north" : "/domains/town/room/shop",
 	"south" : "/domains/town/room/adv_guild",

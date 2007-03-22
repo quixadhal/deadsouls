@@ -8,6 +8,8 @@
 #include <daemons.h>
 #include <message_class.h>
 
+string global_temp_file = "";
+
 varargs string center(string str, int x) {
     int y;
 
@@ -283,6 +285,7 @@ int starts_with_arr(string primary, string *sub){
 // returns the last [i] characters of a string.
 varargs string last(string str, int i, int significant){
     string ret, tmp;
+    if(!str || !sizeof(str) || !stringp(str)) return "";
     ret = str[(strlen(str) - i )..(strlen(str) -1)];
     if(significant) {
 	tmp = trim(str);
@@ -530,9 +533,33 @@ string path_prefix(string str){
     return str[0..i-2];
 }
 
-mixed homedir(object ob){
-    if(creatorp(ob)) return "/realms/"+ob->GetKeyName();
+mixed homedir(mixed ob){
+    string name = "";
+    string initial = "";
+    if(!ob) ob = this_player();
+    if(!ob) return 0;
+    if(objectp(ob)) name = ob->GetKeyName();
+    else if(stringp(ob)) name = ob;
     else return 0;
+    if(!sizeof(name)) return 0;
+    initial = name[0..0];
+    if(!user_exists(name)) return 0;
+    if(directory_exists("/realms/"+name)) return "/realms/"+name;
+    else return DIR_ESTATES + "/"+initial+"/"+name; 
+}
+
+varargs mixed random_numbers(int n, int integer){
+    string ret = "";
+    int i;
+    if(integer && n > 9) n = 9;
+    for(i=n;i>0;i--){
+	//int tmp = 1;
+	int tmp = random(10);
+	if(!sizeof(ret)) tmp = random(9)+1;
+	ret += itoa(tmp);
+    }
+    if(!integer) return ret;
+    else return(atoi(ret));
 }
 
 varargs mixed alpha_crypt(mixed arg1, mixed arg2){
@@ -659,32 +686,45 @@ varargs string *chunk_string(string str, int width){
 }
 
 varargs mixed print_long_string(object who, string str, int catted){
-    string tfile, ret = "";
+    string ret = "";
     string *lines;
     string *tmp;
     if(!str) return 0;
-    tfile = generate_tmp();
+    global_temp_file = generate_tmp();
     lines = explode(str,"\n");
     foreach(string line in lines){
 	if(sizeof(line) > __LARGEST_PRINTABLE_STRING__ / 2) 
 	    line = implode(chunk_string(line,who->GetScreen()[0]),"\n");
 	ret += line+"\n";
     }
-    write_file(tfile,ret,1);
-    //tc("tfile: "+tfile,"red");
+    write_file(global_temp_file,ret,1);
     tmp = explode(ret,"\n");
     foreach(string thing in tmp){
-	//tc("element size: "+sizeof(thing));
     }
-    //tc("tfile: "+tfile,"red");
-    if(!catted) return (mixed)who->eventPage(explode(read_file(tfile),"\n"),MSG_SYSTEM);
+    if(!catted){
+	(mixed)who->eventPage(explode(read_file(global_temp_file),"\n"),MSG_SYSTEM);
+	return unguarded( (: rm(global_temp_file) :) );
+    }
     else {
 	foreach(string thing in tmp){
 	    message("system", thing, who);
 	}
-
     }
-    //rm(tfile);
-    //return 1;
+    unguarded( (: rm(global_temp_file) :) );
+    return 1;
 }
 
+string convert_newline(string str){
+    string ret = "";
+    if(!str) return ret;
+    ret = replace_string(str,CARRIAGE_RETURN,"\n");
+    return ret;
+}
+
+int clean_newline_file(string str){
+    string ret = "";
+    if(!file_exists(str)) return 0;
+    else ret = convert_newline(read_file(str));
+    if(ret != "") return write_file(str,ret,1);
+    else return 0;
+}

@@ -17,14 +17,13 @@ string match_command(string verb){
     localcmds += CMD_D->GetCommands();
     localcmds += keys(VERBS_D->GetVerbs());
     if(member_array(verb,localcmds) == -1){
-	local_arr = regexp(localcmds,"^"+verb);
-	if(sizeof(local_arr)) {
+	if(alphap(verb[0..0])) local_arr = regexp(localcmds,"^"+verb);
+	if(sizeof(local_arr) == 1) {
 	    return local_arr[0];
 	}
     }
     return "";
 }
-
 
 varargs string add_article(string str, int def) {
     if( !stringp(str) ) {
@@ -350,7 +349,7 @@ string array explode_list(string list) {
 	for(int i = 0; i < size; i++) {
 	    tmp += expressions[i];
 	    if(i < size - 2) tmp += ", ";
-	    else return tmp + " " + coordinator + " " + expressions[size - 1];
+	    else return tmp + ", " + coordinator + " " + expressions[size - 1];
 	}
     }
 

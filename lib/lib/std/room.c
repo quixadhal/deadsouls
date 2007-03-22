@@ -6,6 +6,9 @@
  *    Last Modified: 050912
  */
 
+#ifndef NM_STYLE_EXITS
+#define NM_STYLE_EXITS 1
+#endif
 
 #include <lib.h>
 #include <rooms.h>
@@ -55,7 +58,6 @@ private int		Flying        = 1;
 private int		ObviousVisible       = 1;
 private int		ActionChance  = 10;
 mapping			ItemsMap      = ([]);
-//private static object  *dummies       = ({});
 private static mixed    global_item;
 private static mixed	Action;
 private int		tick_resolution	= 5;
@@ -86,7 +88,7 @@ void CheckActions(){
 	foreach(mixed key, mixed val in ActionsMap){
 	    if( ActionChance > random(100) ) {
 		if(functionp(key)) evaluate(key);
-		else message("other_action", key, this_object());
+		else eventPrint(key);
 	    }
 	}
     }
@@ -103,13 +105,14 @@ void CheckActions(){
 		evaluate(act);
 		return;
 	    }
-	    else message("other_action", act, this_object());
+	    else eventPrint(act);
 	}
     }
 }
 
 void heart_beat(){
     counter++;
+    inventory::heart_beat();
     if(counter > 9999) counter = 0;
     CheckActions();
 }
@@ -865,23 +868,30 @@ int eventMove() { return 0; }
 varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
     object *targs;
     int msg_class;
+    targs = filter(all_inventory(), (: (int)$1->is_living() :));
 
     if( !arg2 && !arg3 ) {
-	targs = filter(all_inventory(), (: (int)$1->is_living() :));
 	msg_class = MSG_ENV;
     }
     else if( objectp(arg2) || arrayp(arg2) ) {
 	if( objectp(arg2) ) arg2 = ({ arg2 });
-	targs = (filter(all_inventory(), (: (int)$1->is_living() :)) - arg2);
+	foreach(object mount in arg2){
+	    object *riders = mount->GetRiders();
+	    if(riders) targs += riders;
+	}
+	targs -=  arg2;
 	msg_class = MSG_ENV;
     }
     else if( !arg3 ) {
-	targs = filter(all_inventory(), (: (int)$1->is_living() :));
 	msg_class = arg2;
     }
     else if( objectp(arg3) || arrayp(arg3) ) {
 	if( objectp(arg3) ) arg3 = ({ arg3 });
-	targs = (filter(all_inventory(), (: (int)$1->is_living() :)) - arg3);
+	foreach(object mount in arg3){
+	    object *riders = mount->GetRiders();
+	    if(riders) targs += riders;
+	}
+	targs -= arg3;
 	msg_class = arg2;
     }
     targs->eventPrint(msg, msg_class);
@@ -915,11 +925,9 @@ int CanReceive(object ob){
 }
 
 varargs void reset(int count) {
-    object *livings = get_livings(this_object());
-    if(sizeof(livings)){
-	foreach(object living in livings){
-	    if(living && (living->GetDrone() || living->GetMount() ||
-		living()->GetNoClean())) return;
+    if(sizeof(all_inventory())){
+	foreach(object element in deep_inventory()){
+	    if(element->GetNoClean()) return;
 	}
     }
     inventory::reset(count);
@@ -992,17 +1000,20 @@ int GenerateObviousExits(){
 	}
     }
 
-    if(member_array("north",exits) != -1) dir_string += "n, ";
-    if(member_array("south",exits) != -1) dir_string += "s, ";
-    if(member_array("east",exits) != -1) dir_string += "e, ";
-    if(member_array("west",exits) != -1) dir_string += "w, ";
-    if(member_array("northeast",exits) != -1) dir_string += "ne, ";
-    if(member_array("northwest",exits) != -1) dir_string += "nw, ";
-    if(member_array("southeast",exits) != -1) dir_string += "se, ";
-    if(member_array("southwest",exits) != -1) dir_string += "sw, ";
-    if(member_array("up",exits) != -1) dir_string += "u, ";
-    if(member_array("down",exits) != -1) dir_string += "d, ";
-    if(member_array("out",exits) != -1) dir_string += "out, ";
+    if(NM_STYLE_EXITS){
+	if(member_array("north",exits) != -1) dir_string += "n, ";
+	if(member_array("south",exits) != -1) dir_string += "s, ";
+	if(member_array("east",exits) != -1) dir_string += "e, ";
+	if(member_array("west",exits) != -1) dir_string += "w, ";
+	if(member_array("northeast",exits) != -1) dir_string += "ne, ";
+	if(member_array("northwest",exits) != -1) dir_string += "nw, ";
+	if(member_array("southeast",exits) != -1) dir_string += "se, ";
+	if(member_array("southwest",exits) != -1) dir_string += "sw, ";
+	if(member_array("up",exits) != -1) dir_string += "u, ";
+	if(member_array("down",exits) != -1) dir_string += "d, ";
+	if(member_array("out",exits) != -1) dir_string += "out, ";
+    }
+    else dir_string = implode(exits,", ")+", ";
     if(sizeof(this_object()->GetEnters(1) - ({0}) )) {
 	if(sizeof(this_object()->GetExits())) dir_string += ", ";
 	dir_string += enters;
@@ -1018,4 +1029,3 @@ static void init() {
     if(!sizeof(GetObviousExits()) && DefaultExits > 0 && ObviousVisible) GenerateObviousExits();
     if((Action && sizeof(Action)) || sizeof(ActionsMap)) set_heart_beat(tick_resolution);
 }
-

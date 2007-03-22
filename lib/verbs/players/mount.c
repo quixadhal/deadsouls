@@ -13,7 +13,7 @@ static void create() {
       "\n"
       "This command allows you to put yourself astride a "
       "creature suitable and ready for riding.\n\n"
-      "See also: dismount");
+      "See also: dismount, befriend, abandon");
 }
 
 mixed can_mount_liv() {

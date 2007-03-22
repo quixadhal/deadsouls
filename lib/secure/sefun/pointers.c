@@ -68,6 +68,15 @@ varargs int wizardp(object ob){
     return creatorp(ob);
 }
 
+int snooperp(mixed guy) {
+    mixed dude = guy;
+    if(!guy) guy = previous_object();
+    if(!stringp(guy)) guy = guy->GetKeyName();
+    if(!guy || guy == "") guy = base_name(dude);
+    if(member_group(guy, "SNOOPER")) return 1;
+    else return 0;
+}
+
 int hiddenp(object ob) {
     if(!objectp(ob)) error("Bad argument 1 to hiddenp().\n");
     return !find_object(file_name(ob));

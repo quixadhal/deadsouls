@@ -322,6 +322,10 @@ mixed direct_use_obj_to_str() {
     else return 1;
 }
 
+mixed direct_use_obj() {
+    return direct_use_obj_to_str();
+}
+
 mixed direct_throw_obj_word_obj() {
     if( environment() != this_player() ) {
 	return "#Throw something you are not holding?";

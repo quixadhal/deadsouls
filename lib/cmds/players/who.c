@@ -28,7 +28,7 @@ int cmd(string args) {
 	    if(elderp(obs[i])) tmp+="[%^YELLOW%^ELDER%^RESET%^]";
 	    if(ambassadorp(obs[i])) tmp+="[%^YELLOW%^AMBASSADOR%^RESET%^]";
 	    tmp += ": ";
-	    if(sizeof(obs[i]->GetShort()) < 50) {
+	    if(sizeof(strip_colours(obs[i]->GetShort())) < 70) {
 		tmp+=sprintf(" %s", obs[i]->GetShort());
 	    }
 	    else {
@@ -57,4 +57,3 @@ int cmd(string args) {
     else print_long_string(this_player(),ret);
     return 1;
 }
-

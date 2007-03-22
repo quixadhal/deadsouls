@@ -1,12 +1,3 @@
-/*    /verbs/rooms/go.c
- *    from the Dead Souls Object Library
- *    ride STR
- *    ride into STR
- *    created by Descartes of Borg 951104
- */
-
-
-
 #include <lib.h>
 
 inherit LIB_VERB;
@@ -24,7 +15,6 @@ static void create() {
       "See also: mount, dismount");
 }
 
-
 mixed can_ride_str(string str) {
     object mount = environment(this_player());
     object where;
@@ -37,6 +27,18 @@ mixed can_ride_str(string str) {
     if( mount->GetStaminaPoints() <3 )
 	return "Your mount is too tired to go anywhere right now.";
     if(!stringp(hobbled(mount))) return "Your mount is incapacitated.";
+    if(str) switch(str){
+    case "n" : str = "north"; break;
+    case "s" : str = "south"; break;
+    case "e" : str = "east"; break;
+    case "w" : str = "west"; break;
+    case "u" : str = "up"; break;
+    case "d" : str = "down"; break;
+    case "ne" : str = "northeast"; break;
+    case "nw" : str = "northwest"; break;
+    case "se" : str = "southeast"; break;
+    case "sw" : str = "southwest"; break;
+    }
     return where->CanGo(mount, str);
 }
 
@@ -57,12 +59,22 @@ mixed can_ride_into_str(string str) {
 
 mixed do_ride_str(string str) {
     object mount = environment(this_player());
-    //return (mixed)environment(mount)->eventGo(mount, str);
+    if(str) switch(str){
+    case "n" : str = "north"; break;
+    case "s" : str = "south"; break;
+    case "e" : str = "east"; break;
+    case "w" : str = "west"; break;
+    case "u" : str = "up"; break;
+    case "d" : str = "down"; break;
+    case "ne" : str = "northeast"; break;
+    case "nw" : str = "northwest"; break;
+    case "se" : str = "southeast"; break;
+    case "sw" : str = "southwest"; break;
+    }
     return mount->eventRide(str);
 }
 
 mixed do_ride_into_str(string str) {
     object mount = environment(this_player());
-    //return (mixed)environment(mount)->eventEnter(mount, str);
     return mount->eventRide("into" + str);
 }
