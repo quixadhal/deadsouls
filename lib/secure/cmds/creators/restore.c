@@ -10,6 +10,7 @@ mixed cmd(string str) {
     string *sorted_array, *sub_arr, *new_arr, *bkarr;
     string line, s1, bkname, bkcontents;
     int number;
+    object here;
 
     if( !str ) return "You must specify a file to restore.";
     if(str && sscanf(str,"%s %d",s1, number) > 1) str = s1;
@@ -19,16 +20,32 @@ mixed cmd(string str) {
     sub_arr = ({});
 
     bkname = homedir(this_player())+"/bak/bk.db";
-    if( !str ) return "You must specify a file to restore.";
-    if( !file_exists(bkname)) {
+
+    if(!file_exists(bkname)) {
 	write("The backup database file does not exist. Aborting.");
 	return 1;
     }
+
     bkcontents = read_file(bkname);
-    if(strsrch(bkcontents,str) == -1) {
+    bkarr = explode(bkcontents,"\n");
+
+    foreach(string zline in bkarr){
+	if(!strsrch(zline,str)) new_arr += ({ zline });
+    }
+
+    if(!sizeof(new_arr) && str == "here"){
+	here = environment(this_player());
+	str = last_string_element(base_name(here),"/");
+	foreach(string zline in bkarr){
+	    if(!strsrch(zline,str)) new_arr += ({ zline });
+	}
+    }
+
+    if(!sizeof(new_arr)){
 	write("You haven't backed up a file by that name."); 
 	return 1;
     }
+
     if(str == "workroom.orig") {
 	unguarded( (: globalint = cp(homedir(this_player())+"/bak/workroom.orig",
 	      homedir(this_player())+"/workroom.c") :) );
@@ -39,7 +56,7 @@ mixed cmd(string str) {
 	else write("Workroom could not be restored.");
 	return 1;
     }
-    bkarr = explode(bkcontents,"\n");
+
     foreach(string zline in bkarr){
 	if(strsrch(zline,str) != -1) new_arr += ({ zline });
     }
@@ -56,7 +73,8 @@ mixed cmd(string str) {
     }
     globalstr1 = REALMS_DIRS + "/" + this_player()->GetKeyName()+"/bak/"+sub_arr[0];
     globalstr2 = sub_arr[1];
-    unguarded( (: cp(globalstr1, globalstr2) :) );
+    cp(globalstr1, globalstr2);
+    if(here) reload(here);
     write("File restored.");
     return 1;
 }
@@ -72,6 +90,10 @@ int help() {
       "recent version:\n"
       "restore file.c 2\n"
       "And so on.\n"
+      "\"restore here\" will attempt to restore a backup of the room "
+      "you are currently standing in, and will reload it, if possible. "
+      "This is the only case in which the command will automatically "
+      "reload a restored object.\n"
       "See also: bk", 
       this_player());
 }

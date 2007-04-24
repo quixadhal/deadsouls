@@ -13,7 +13,6 @@ static void create() {
 }
 
 varargs int eventReload(mixed what, int when){
-    //tc("received thing","cyan");
     if(!when) when = time();
     else when += time();
     if(!what) return 0;
@@ -40,9 +39,7 @@ void heart_beat(){
     foreach(mixed key, mixed val in Reloadees){
 	if(time() >= val){
 	    map_delete(Reloadees,key);
-	    //tc("bink: "+key);
 	    key = find_object(key);
-	    //tc("bink2: "+identify(key));
 	    reload(key);
 	}
     }

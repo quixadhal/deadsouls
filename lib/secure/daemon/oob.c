@@ -43,12 +43,7 @@ varargs mixed eventBeginOOB(string mud, int token, mixed *data){
       MudList[mud][12]["ip"] &&
       MudList[mud][12]["ip"] != "127.0.0.1")
 	ip = MudList[mud][12]["ip"];
-    //tc("IP: "+ip, "cyan");
-    //tc("token: "+token, "cyan");
-    //tc("port: "+port, "cyan");
-    //if(data) tc("data: "+(identify(data)), "cyan");
     validate();
-    //tc("?");
     trr("OOB_D.eventBeginOOB, mud: "+mud+", token: "+token,"yellow",MSG_OOB);
     if(!port || !ip) return;
     if(!OutgoingSessions[mud]) OutgoingSessions[mud] = ({});
@@ -84,7 +79,6 @@ void Report(){
 }
 
 void SentToken(string mud, int token){
-    //trr("OOB_D.SentToken prev: "+identify(previous_object()), mcolor, MSG_OOB);
     if(base_name(previous_object()) != SERVICES_D) return 0;
     if(!SentMudTokens[mud]) SentMudTokens[mud] = ([]);
     SentMudTokens[mud]["token"] = token;
@@ -92,13 +86,11 @@ void SentToken(string mud, int token){
 }
 
 void ReceivedToken(string mud, int token){
-    //trr("OOB_D.ReceivedToken prev: "+identify(previous_object()), mcolor, MSG_OOB);
     if(base_name(previous_object()) != SERVICES_D) return 0;
     if(!ReceivedMudTokens[mud]) ReceivedMudTokens[mud] = ([]);
     ReceivedMudTokens[mud]["token"] = token;
     ReceivedMudTokens[mud]["token_time"] = time();
     if(member_array(mud, waiting_auth) != -1){
-	//eventWrite( ({ "oob-begin", mud_name(), 1, token }) );
 	eventBeginOOB(mud, token);
 	waiting_auth -= ({ mud });
     }
@@ -110,7 +102,6 @@ int AuthenticateReceivedToken(string mud){
 }
 
 mapping GetTokens(string arg){
-    //tc("OOB_D.GetTokens prev: "+identify(previous_object()),"yellow");
     if(base_name(previous_object()) != SERVICES_D) return 0;
     if(arg) return ReceivedMudTokens[arg];
     else return copy(ReceivedMudTokens);
@@ -129,8 +120,6 @@ varargs mixed RequestBegin(string target, mixed *data){
     int token;
     mixed ret = 1;
     validate();
-    //tc("OOB_D.RequestBegin hit.");
-    //tc("OOB_D.RequestBegin Report:"+this_object()->Report());
     if(!target || !(target = INTERMUD_D->GetMudName(target))) return 0;
     if(!ReceivedMudTokens[target] || !ReceivedMudTokens[target]["token"])
 	RequestToken(target);
@@ -140,32 +129,23 @@ varargs mixed RequestBegin(string target, mixed *data){
       INTERMUD_D->GetMudList()[target][12]["ip"] != "127.0.0.1")
 	ip = INTERMUD_D->GetMudList()[target][12]["ip"];
     port = INTERMUD_D->GetMudList()[target][11]["oob"];
-    //tc("ip: "+ip,"white");
     if( eventCreateSocket(ip, port) < 0 ){
 	trr("OOB_D.RequestBegin: couldn't create outbound socket",mcolor,MSG_OOB);
 	return 0;
     }
     else trr("OOB_D.RequestBegin socket created",mcolor,MSG_OOB);
-    //token = ReceivedMudTokens[target]["token"];
-    //eventWrite( ({ "oob-begin", mud_name(), 1, ReceivedMudTokens[target]["token"] }) );
-    //eventWrite( ({ "oob-begin", mud_name(), 1, token }) );
     if(member_array(target, waiting_auth) == -1 && (!ReceivedMudTokens[target] ||
 	!ReceivedMudTokens[target]["token"]) ){
-	//waiting_auth += ({ target });
-	//tc("1");
 	RequestToken(target);
 	if(data) call_out( (: RequestBegin( $(target), $(data) ) :), 5);
 	else call_out( (: RequestBegin( $(target) ) :), 5);
 	return 0;
     }
     else if( ReceivedMudTokens[target] && ReceivedMudTokens[target]["token"] ){
-	//tc("2");
-	//eventWrite( ({ "oob-begin", mud_name(), 1, token }) );
 	if(data && sizeof(data)) 
 	    ret = eventBeginOOB(target, ReceivedMudTokens[target]["token"], data);
 	else ret = eventBeginOOB(target, ReceivedMudTokens[target]["token"]);
     }
-    //tc("OOB_D.RequestBegin: ret: "+identify(ret));
     return ret;
 }
 
@@ -188,7 +168,6 @@ varargs void write_data(mixed arg, object oob){
 
 void eventRead(mixed foo){
     validate();
-    //tc("OOB_D.eventRead: "+identify(foo));
 }
 
 varargs mixed send_file(string str, object oob){
@@ -196,7 +175,6 @@ varargs mixed send_file(string str, object oob){
     string tmp;
     int i = 0;
     validate();
-    //tc("OOB_D.send_file: 1","cyan");
     trr("OOB_D.send_file str: "+identify(str),"cyan",MSG_OOB);
     if(oob) trr("OOB_D.send_file oob: "+identify(oob),"cyan",MSG_OOB);
 
@@ -266,12 +244,10 @@ void RemoveIncoming(string mud){
 
 void AddRequestedFile(string mud, string file){
     validate();
-    //tc("OOB_D.AddRequestedFile prev: "+identify(previous_object(-1)));
     if((this_player() && securep(this_player())) || base_name(previous_object()) == LIB_OOB){
 	if(!RequestedFiles[mud]) RequestedFiles[mud] = ({});
 	RequestedFiles[mud] += ({ file });
     }
-    //else tc("OOB_D.AddRequestedFile bad thing.");
 }
 
 void RemoveRequestedFile(string mud, string file){
@@ -315,10 +291,8 @@ mixed GetFile(string mud, mixed file){
     if(stringp(file)) AddRequestedFile(mud, file);
     else if(arrayp(file))
 	foreach(string element in file){
-	tc("file: "+element);
 	AddRequestedFile(mud, element);
     }
-    //tc("file: "+identify(file),"yellow");
     RequestBegin(mud, ({ "oob-file-req", file }) );
     return 1;
 }
@@ -329,25 +303,16 @@ int eventMajorUpgrade(string mud, string *files){
     allfiles = sort_array(files,1);
     globalmud = mud;
     GetFile(globalmud, allfiles);
-    //foreach(string element in allfiles){
-    //interval += 3;
-    //globalvar = element;
-    //call_out( (: GetFile, globalmud, globalvar :), interval );
-    //}
-
     return 1;
 }
 
 mixed SendMail(mapping mail){
     mixed target;
     validate();
-    //tc("ok, mail is: "+identify(mail),"yellow");
     trr("OOB_D.SendMail: mail: "+identify(mail),mcolor,MSG_OOB);
     foreach(mixed key, mixed val in mail){
-	//target = RequestBegin(key);
 	if(sizeof(val)){
 	    foreach(mixed id, mixed message in val){
-		//tc("message: "+identify(message));
 		target = RequestBegin(key, message);
 		trr("OOB_D.SendMail: target: "+identify(target),mcolor,MSG_OOB);
 		trr("OOB_D.SendMail: mud: "+identify(key),mcolor,MSG_OOB);

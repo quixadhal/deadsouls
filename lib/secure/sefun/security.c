@@ -89,4 +89,12 @@ int check_privs(mixed pretender, mixed target){
     if(x > 10) return 1;
 }
 
+int check_read(string file){
+    string contents; 
+    if(!file || !file_exists(file)) return 0;
+    contents = read_file(file);
+    if(!contents || !sizeof(contents)) return 0;
+    return 1;
+}
+
 mixed unguarded(function f) { return (mixed)master()->apply_unguarded(f); }

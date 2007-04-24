@@ -1,5 +1,3 @@
-
-
 #include <lib.h>
 #include <daemons.h>
 #include <rooms.h>
@@ -81,6 +79,7 @@ mixed do_modify_obj_str(object ob, string str) {
 	return 1;
     }
 
+    //staff->eventGeneralStuff(base_name(ob)+".c");
     return staff->eventModify(ob, str);
 }
 

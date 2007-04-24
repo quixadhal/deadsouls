@@ -1,25 +1,107 @@
 #include <lib.h>
 #include <dirs.h>
 #include <cfg.h>
+#include <save.h>
 #include <daemons.h>
 #include <network.h>
 
 #define WGET_D "/secure/daemon/wget"
+#ifndef WEB_SOURCE
 #define WEB_SOURCE "149.152.218.102"
-//#define WEB_SOURCE "127.0.0.1"
+#endif
+#ifndef WEB_SOURCE_NAME
 #define WEB_SOURCE_NAME "dead-souls.net"
+#endif
 #define WEB_SOURCE_PORT 80
+#ifndef SAVE_LIVEUPGRADE
+#define SAVE_LIVEUPGRADE   DIR_SECURE_SAVE "/liveupgrade"
+#endif
 
 inherit LIB_DAEMON;
 
 string array allnames = ({});
 string array tmpnames;
-string upgrade_prefix = "/code/upgrades/"+mudlib_version();
-string upgrades_txt = "/secure/upgrades/txt";
-string upgrades_files = "/secure/upgrades/files";
-int i = 0;
-int oob = 0;
-object player = 0;
+string reverts_dir, revert_name;
+//static string reverts_prefix = "/secure/upgrades/";
+static string upgrade_prefix = "/code/upgrades/"+mudlib_version();
+static string reverts_prefix = "/secure/upgrades/reverts/"+mudlib_version();
+static string upgrades_txt = "/secure/upgrades/txt";
+static string upgrades_files = "/secure/upgrades/files";
+static int i = 0;
+static int oob = 0;
+static object player = 0;
+int transver = 0;
+
+void create(){
+    daemon::create();
+    SetSaveFile(SAVE_LIVEUPGRADE);
+    eventRestore(1);
+}
+
+int eventBackup(string file){
+    string tmp, time_str,short_name,filename;
+    if(!file) return 0;
+    if(!file_exists(file)) return -1;
+    if( !(tmp = read_file(file)) ) return -2;  
+    time_str = time()+"."+random_numbers(5);
+    short_name = last_string_element(file,"/");
+    if(!revert_name){
+	revert_name = itoa(time());
+    }
+    if(!reverts_prefix){
+	reverts_prefix = "/secure/upgrades/reverts/"+mudlib_version();
+    }
+    if(!directory_exists("/secure/upgrades/reverts/")){
+	mkdir("/secure/upgrades/reverts");
+    }
+    if(!directory_exists(reverts_prefix)){
+	mkdir(reverts_prefix);
+    }
+    if(!directory_exists(reverts_prefix+"/"+revert_name)){
+	mkdir(reverts_prefix+"/"+revert_name);
+    }
+    filename = reverts_prefix+"/"+revert_name+
+    "/"+short_name+"."+time_str;
+    write_file(reverts_prefix+"/"+revert_name+"/"+
+      "/bk.db",short_name+"."+time_str+" : "+file+"\n");
+    cp(file,filename);
+    return 1;
+}
+
+int eventRevert(string revert_path){
+    string *files;
+
+    tc("got revert path: "+revert_path);
+
+    if(!revert_path){
+	return 0;
+    }
+
+    if(!directory_exists(revert_path)){
+	return -1;
+    }
+
+    if(!file_exists(revert_path+"/bk.db")){
+	return -2;
+    }
+
+    files = explode(read_file(revert_path+"/bk.db"),"\n");
+
+    if(!files || !sizeof(files)){
+	return -3;
+    }
+
+    foreach(string line in files){
+	string backup, target;
+	tc("line: "+line);
+	if(sscanf(line,"%s : %s", backup, target) != 2) continue;
+	if(!directory_exists(path_prefix(target))){
+	    mkdir_recurse(path_prefix(target));
+	}
+	cp(revert_path+"/"+backup, target);
+    }
+    return 1;
+}
 
 mixed cmd(string str) {
     string mud = "Dead Souls"; 
@@ -30,6 +112,46 @@ mixed cmd(string str) {
     object inet = find_object(INET_D);
     string *preload_file = explode(read_file(CFG_PRELOAD),"\n");
     mixed *socks = socket_status();
+
+    if(!revert_name){
+	revert_name = itoa(time());
+    }
+
+    if(str == "alpha"){
+	if(transver){
+	    transver = 0;
+	    write("Alpha/Stable upgrades disabled.");
+	    return 1;
+	}
+	if(!transver){
+	    transver = 1;
+	    write("Alpha/Stable upgrades enabled.");
+	    return 1;
+	}
+    }
+
+    if(str == "revert"){
+	string *vers = get_dir("/secure/upgrades/reverts/");
+	string ver, subver;
+	if(!vers || !sizeof(vers)){
+	    write("There is no previous backup to revert to.");
+	    return 1;
+	}
+	else ver = vers[0];
+	tc("ver: "+ver);
+	vers = get_dir("/secure/upgrades/reverts/"+ver+"/");
+	if(!vers || !sizeof(vers)){
+	    write("There is no backup instance to revert to.");
+	    return 1;
+	}
+	else subver = "/secure/upgrades/reverts/"+ver+"/"+vers[0];
+	tc("subver: "+subver);
+	eventRevert(subver);
+	rename(subver,"/secure/upgrades/bak/"+last_string_element(subver,"/"));
+	rmdir(path_prefix(subver));
+	write("Reversion complete.");
+	return 1;
+    } 
 
     foreach(mixed element in socks){
 	if(element[1] == "DATA_XFER" && element[4] == WEB_SOURCE+"."+WEB_SOURCE_PORT &&
@@ -50,6 +172,10 @@ mixed cmd(string str) {
 	mkdir("/secure/upgrades/bak");
     }
 
+    if(!directory_exists(reverts_prefix)){
+	mkdir(reverts_prefix);
+    }
+
     i = sscanf(mudlib_version(),"2.3a%d",tmpint);
     if(i && tmpint < 12) oob = 1;
     else {
@@ -67,6 +193,24 @@ mixed cmd(string str) {
 	string *files = ({});
 	player->eventPrint("I hope you backed up...\n");
 	foreach(string element in get_dir(upgrades_files+"/")){
+	    if(element == "0^0secure0^0sefun0^0mud_info.c"){
+		object thingy = load_object(upgrades_files+"/"+element);
+		string vers;
+		if(thingy){
+		    string current_ver = mudlib_version();
+		    vers = thingy->mudlib_version();
+		    tc("vers: "+vers);
+		    tc("current_ver: "+current_ver);
+		    if(((grepp(vers,"a") && !grepp(current_ver, "a")) ||
+			(!grepp(vers,"a") && grepp(current_ver, "a"))) &&
+		      !transver){
+			write("This upgrade would cross stable/alpha "
+			  "boundaries, but that has not been enabled "
+			  "with \"liveupgrade alpha\" yet.");
+			return 1;
+		    }
+		}
+	    }
 	    files += ({ upgrades_files+"/"+element });
 	}
 	foreach(string element in files){
@@ -77,12 +221,15 @@ mixed cmd(string str) {
 	    if(!contents) contents = "";
 	    if(last(contents,1) != "\n") contents += "\n";
 	    write_file(element, contents, 1);
-	    load_object("/secure/cmds/creators/bk")->cmd(NewFiles[element]);
+	    eventBackup(NewFiles[element]);
 	    if(directory_exists(NewFiles[element])) rm(element);
 	    else {
 		string path = path_prefix(NewFiles[element]);
-		if(!directory_exists(path)) mkdir(path);
+		if(!directory_exists(path)) mkdir_recurse(path);
+		tc("moving "+element+" to "+NewFiles[element]);
+		tc("element: "+file_size(element)+", NewFiles[element]: "+file_size(NewFiles[element]));
 		rename(element, NewFiles[element]);
+		tc("element: "+file_size(element)+", NewFiles[element]: "+file_size(NewFiles[element]));
 	    }
 	}
 	if(member_array(INET_D,preload_file) == -1 && inet) inet->eventDestruct();
@@ -173,6 +320,7 @@ mixed cmd(string str) {
 	}
 
 	if(!file_exists(upgrades_txt+"/list.txt")){
+	    tc("downloading: "+upgrade_prefix+"/upgrades.txt");
 	    player->eventPrint("Downloading updates table. Please wait...");
 	    rename("/secure/upgrades/files","/secure/upgrades/bak/"+time());
 	    mkdir("/secure/upgrades/files");
@@ -229,6 +377,8 @@ string GetHelp() {
     return ("Syntax: liveupgrade [-o] all\n"
       "        liveupgrade apply\n"
       "        liveupgrade cancel\n"
+      "        liveupgrade revert\n"
+      "        liveupgrade alpha\n"
       "To use oob updates (not recommended), use the -o flag. The default "
       "is currently an http connection to dead-souls.net, which is vastly "
       "faster and more secure than oob.\n"
@@ -239,6 +389,12 @@ string GetHelp() {
       "liveupgrade apply\n"
       "This will delete your old copies of files and copy the newly downloaded "
       "ones in their place.\n"
-      "NEVER EVER do a liveupgrade without a full backup first."
+      "NEVER EVER do a liveupgrade without a full backup first.\n"
+      "To cancel the liveupgrade process:\n"
+      "liveupgrade cancel\n"
+      "To restore your mud to the condition it was in prior to the last liveupgrade.\n"
+      "liveupgrade revert\n"
+      "To enable liveupgrading between alpha and stable versions:\n"
+      "liveupgrade alpha\n"
       "");
 }

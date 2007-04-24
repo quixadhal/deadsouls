@@ -12,6 +12,7 @@
 #define DISABLE_INTERMUD         0
 #define MINUTES_REBOOT_WARNING   20
 #define TIME_TO_RESET            20000
+#define RESET_ALL                0
 #define GMT_OFFSET               -32000
 #define LOCAL_TIME               1
 #define EXTRA_TIME_OFFSET        0
@@ -48,9 +49,6 @@
 #define RETAIN_ON_QUIT           1
 #define MAX_COMMANDS_PER_SECOND  10
 #define DEFAULT_PARSING          1
-// Note: call_out logging breaks a lot of code.
-// only use it in extremis. Reboot when activating 
-// or deactivating it.
 #define CALL_OUT_LOGGING         0
 #define EVENTS_LOGGING           1
 #define DISABLE_REBOOTS          0
@@ -61,5 +59,6 @@
 #define CARRIAGE_RETURN          "\r"
 #define OLD_STYLE_PLURALS        1
 #define NM_STYLE_EXITS           0
+#define WEB_SOURCE               "149.152.218.102"
 
 #endif /* s_config_h */

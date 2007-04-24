@@ -24,8 +24,8 @@ static void create() {
 	"south" : "/domains/town/room/vill_road2",
 	"north" : "/domains/town/room/shop2",
       ]) );
-    SetProperty("no attack", 1);
 }
+
 int read_sign(){
     write("HOW TO CONDUCT BUSINESS HERE\n");
     write("list : Get a list of all the items Otik has for sale");

@@ -167,7 +167,6 @@ void start_post(string str) {
 	__CommandLine = 1; 
 	__TmpPost = ([]); 
 	__FwdRply = 0;    
-	//tc("args: "+identify(args));
 	send_letter(args);    
 	return;    
     }    

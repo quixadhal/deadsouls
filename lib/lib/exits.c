@@ -32,7 +32,8 @@ mixed CanGo(object who, string str) {
 
 mixed eventGo(object who, string str) {
     if(query_verb() == "go" && interactive(this_player())){	
-	if( who->GetPosition() != POSITION_STANDING ) {
+	if( who->GetPosition() != POSITION_STANDING && 
+	  who->GetPosition() != POSITION_FLYING) {
 	    if(stringp(hobbled(this_player()))) who->eventStand();
 	    if( who->GetPosition() != POSITION_STANDING ) {
 		return 0;

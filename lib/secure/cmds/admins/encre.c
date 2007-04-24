@@ -14,7 +14,7 @@ string PlayerName;
 
 mixed cmd(string args) {
     object ob, cre_ob, jeans, shirt, robe, hat, book, staff;
-    string file, nom;
+    string file, nom, home_dir;
 
     if( !((int)master()->valid_apply(({ PRIV_ASSIST, PRIV_SECURE, LIB_CONNECT }))) )
 	error("Illegal encre attempt: "+get_stack()+" "+identify(previous_object(-1)));
@@ -37,12 +37,12 @@ mixed cmd(string args) {
 	write(capitalize(nom)+" will be a creator next time they log in.");
 	return 1;
     }
-
     if( file_size(DIR_CRES+"/"+nom[0..0]) != -2) mkdir(DIR_CRES+"/"+nom[0..0]);
     if(rename(file+__SAVE_EXTENSION__, DIR_CRES+"/"+nom[0..0]+"/"+nom+__SAVE_EXTENSION__))
 	return "You failed due to lack of write access to "+DIR_CRES+".";
     PLAYERS_D->eventCre(lower_case(nom));
     if( ob = find_player(nom) ) {
+	home_dir = homedir(ob);
 	ob->SetProperty("brand_spanking_new",0);
 	PlayerName = nom;
 	catch(cre_ob = (object)master()->player_object(nom));
@@ -61,6 +61,7 @@ mixed cmd(string args) {
 	  users(), ({ this_player(), cre_ob }));
 	if( file_size(file+__SAVE_EXTENSION__) > -1 ) rm(file+__SAVE_EXTENSION__);
 	make_workroom(cre_ob);
+	rename(home_dir, homedir(cre_ob)+"/estate");
 	cre_ob->eventForce("home");
 	cre_ob->eventForce("cd");
 	jeans = present("jeans",cre_ob);

@@ -16,8 +16,6 @@ void set(mixed arg1, mixed arg2){
 
 void add(mixed arg1, mixed arg2){
     string s1, s2;
-    //tc("arg1: "+identify(arg1));
-    //tc("arg2: "+identify(arg2));
     arg1 = capitalize(arg1);
     if(!grepp(arg1,"/")) call_other( previous_object(), ({ "Add"+arg1, arg2 }) );
     else {
@@ -57,7 +55,6 @@ mixed getuid(mixed args){
 }
 
 mixed geteuid(mixed args){
-    //if(objectp(args)) return args->GetKeyName();
     return args;
 }
 

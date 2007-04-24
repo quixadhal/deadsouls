@@ -86,9 +86,6 @@ void heart_beat(){
     //if nothing resets the counter for 10 minutes, we die
     counter++;
     if(counter == 600){
-	//tc("i am "+(client ? "client " : "socket ") +identify(this_object())+" and i'm trying to self destruct.","white");
-	//tc("socket_close("+this_object()->GetDescriptor()+"): "+
-	//socket_close(this_object()->GetDescriptor()), "white");
 	if(client) client::eventDestruct();
 	else {
 	    socket_close(this_object()->GetDescriptor());
@@ -96,13 +93,11 @@ void heart_beat(){
 	}
     }
     if(counter == 601){
-	//tc("i am "+(client ? "client " : "socket ") +identify(this_object())+" and i'm trying to self destruct.","yellow");
 	socket::eventDestruct();
 	socket_close(this_object()->GetDescriptor());
 	eventCloseSocket();
     }
     if(counter == 602){
-	//tc("i am "+(client ? "client " : "socket ") +identify(this_object())+" and i'm trying to self destruct.","red");
 	destruct();
 	socket_close(this_object()->GetDescriptor());
 	eventSocketClosed();
@@ -118,30 +113,22 @@ int eventRead(mixed data) {
 	if(sscanf(INTERMUD_D->GetMudList()[mud][5],"Dead Souls %s",liblevel) != 1)
 	    liblevel = tmp[5];
     }
-    //tc("liblevel: "+liblevel,"white");
-    //if(tmp) tc("tmp: "+identify(tmp),"white");    
     trr("--\nOOB "+whoami+" READ i am: "+identify(this_object()),mcolor,MSG_OOB);
     trr("OOB "+whoami+" READ i read: "+identify(data)+"\n--",mcolor,MSG_OOB);
-    //tc("it is a: "+typeof(data),"yellow");
     //every time we read something, the inactivity  counter resets
     counter = 0;
     if(data[0] == "oob-begin"){
-	//check for token here?
-	//socket::eventWrite( ({ "oob-reply","Welcome to oob object "+identify(this_object()) }));
 	socket::eventWrite( ({ "oob-reply","Welcome to the OOB service on "+mud_name() }));
 	OOB_D->RequestToken(data[1]);
 	OOB_D->RegisterNewIncoming(data[1]);
     }
 
     if(data[0] == "oob-end"){
-	//tc("hmmmmmmmmmm");
 	if(sizeof(FilesMap)) eventDumpFiles();
 	OOB_D->RemoveIncoming( OOB_D->FindMud(this_object()) );
 	if(client) this_object()->eventDestruct();
 	else socket::eventCloseSocket();
     }
-
-    //if(sizeof(globalvar)) tc("i'd like to write this: "+identify(globalvar),"white");
 
     if((data[0] == "oob-file-end" || data[0] == "oob-reply" || data[0] == "oob-file-error") 
       && globalvar && arrayp(globalvar)){
@@ -171,7 +158,6 @@ int eventRead(mixed data) {
     }
 
     if(data[0] == "oob-file"){
-	//tc("me: "+identify(OOB_D->FindMud(this_object()))+" "+data[1],"green");
 	if(!OOB_D->AuthenticateFile(OOB_D->FindMud(this_object()), data[1])){
 	    client::eventWrite( ({ "oob-file-error","CLIENT I have not asked for this file from you." }) );
 	    socket::eventWrite( ({ "oob-file-error","SOCKET I have not asked for this file from you." }) );
@@ -201,7 +187,6 @@ int eventRead(mixed data) {
 	    if(file_exists("/secure/upgrades/txt/mud_info."+liblevel))
 		sendfile = "/secure/upgrades/txt/mud_info."+liblevel;
 	}
-	//tc("oob-file-req: "+identify(sendfile,"white");
 	if(member_array(sendfile,ok_files) == -1 ){
 	    socket::eventWrite( ({ "oob-file-error","File access denied." }) );
 	    return 0;
@@ -246,15 +231,10 @@ int eventRead(mixed data) {
 
 void write_data(mixed arg){
     validate();
-    //trr("--/nLIB_OOB.write_data i am "+whoami+" "+identify(this_object()),mcolor,MSG_OOB);
-    //trr("LIB_OOB.write_data i am being asked to write: "+identify(arg)+"\n--",mcolor,MSG_OOB);
-    //tc("LIB_OOB.write_data prev: "+base_name(previous_object())+" "+OOB_D);
     if(base_name(previous_object()) == OOB_D){
-	//trr("I will write it.",mcolor,MSG_OOB);
 	socket::eventWrite(arg);
     }
     else {
-	//trr("I will NOT write it.",mcolor,MSG_OOB);
     }
     if(arg && arg[0] && arg[0] == "oob-end"){
 	client::eventDestruct();
@@ -264,13 +244,11 @@ void write_data(mixed arg){
 
 int eventDumpFiles(){
     validate();
-    //trr("LIB_OOB.eventDumpFiles DUMPING FILES:",mcolor,MSG_OOB);
     foreach(mixed key, mixed val in FilesMap){
 	string fname = DIR_UPGRADES_FILES+"/"+replace_string(key,"/","0^0");
 	if(key == DIR_UPGRADES_TXT+"/upgrades.txt") fname = DIR_UPGRADES_TXT+"/list.txt";
 	rm(fname);
 	OOB_D->RemoveRequestedFile(OOB_D->FindMud(this_object()), key);
-	//trr("LIB_OOB.eventDumpFiles file: "+fname,mcolor,MSG_OOB);
 	for(int i = 1;i < sizeof(FilesMap[key])+1; i++){
 	    if(FilesMap[key][i]) write_file(fname,FilesMap[key][i]+"\n");
 	}

@@ -592,7 +592,6 @@ int eventAddCurrency(string str){
 	return 1;
     }
 
-    //tc("currencies: "+identify(ECONOMY_D->__QueryCurrencies()));
     currencies = ECONOMY_D->__QueryCurrencies();
     if(member_array(str,currencies) != -1) {
 	write("That currency is already available.\n");
@@ -1233,4 +1232,3 @@ mixed cmd(string args) {
     Menu("main");
     return 1;
 }
-

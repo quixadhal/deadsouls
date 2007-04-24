@@ -82,8 +82,6 @@ varargs string *send_post(mapping borg, mixed who) {
     string *rejects, *tmp, *tmpwho, *cles;
     string msg, a, b, tmpstr;
     int i, j, x;
-    //if(borg) tc("borg: "+identify(borg),"yellow");
-    //if(who) tc("who: "+identify(who),"white");
 
     if(!who) who = distinct_array(borg["to"] + borg["cc"]);
     tmpstr = base_name(previous_object(0));
@@ -116,7 +114,6 @@ varargs string *send_post(mapping borg, mixed who) {
 	j = sizeof(cles = keys(remote_mail));
 	while(j--) 
 	    if(!((int)REMOTEPOST_D->send_post(borg+(["message":msg]), cles[j]))){
-		//tc("rejecting: "+cles[j]);
 		rejects += remote_mail[cles[j]];
 	    }
 	return rejects;

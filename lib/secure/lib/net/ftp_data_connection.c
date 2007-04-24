@@ -81,7 +81,6 @@ int eventCreateSocket(string host, int port) {
 	if(x != EESUCCESS)
 	{
 	    eventClose(Socket);
-	    //tc("Error in socket_listen().", "red");
 	    eventSocketError("Error in socket_listen().", x);
 	    return x;
 	}
@@ -93,7 +92,6 @@ int eventCreateSocket(string host, int port) {
 	  "eventReadCallback", "eventWriteCallback");
 	if( x != EESUCCESS ) {
 	    eventClose(Socket);
-	    //tc("Error in socket_connect().", "red");
 	    eventSocketError("Error in socket_connect().", x);
 	    return x;
 	}
@@ -117,7 +115,6 @@ static void eventListenCallback(int fd)
     Socket->PassiveDescriptor = x;
     if(x < 0)
     {
-	//tc("Error in socket_accept().", "red");
 	eventSocketError("Error in socket_accept().", x);
 	return;
     }
@@ -222,5 +219,4 @@ static void eventSocketError(string str, int x) {
 	log_file(LogFile, ctime(time()) + " - " + str + " (" + socket_error(x)
 	  + ")\n");
 }
-
 

@@ -1,12 +1,7 @@
-/*    /lib/props/mass.c
- *    From the Dead Souls Object Library
- *    Handles object massiveness and weight
- *    Created by Descartes of Borg 970101
- *    Version: @(#) mass.c 1.1@(#)
- *    Last modified: 97/01/01
- */
-
 #include <config.h>
+#include <daemons.h>
+
+string GetRace();
 
 int BodyMass = 0;
 
@@ -21,8 +16,9 @@ int AddBodyMass(int x) {
 }
 
 int GetBodyMass() {
-    int load = this_object()->GetCarriedBodyMass();
-    return (BodyMass + load);
+    int base_mass = RACES_D->GetRaceMass(GetRace());
+    int load = this_object()->GetCarriedMass();
+    return (base_mass + load);
 }
 
 int SetBodyMass(int x) {
@@ -47,4 +43,3 @@ int GetWeight() {
 int GetMass(){
     return GetBodyMass();
 }
-

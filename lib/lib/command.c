@@ -24,6 +24,7 @@ private static int cmd_count = 1;
 private string *CommandHist = ({});
 private string *localcmds = ({});
 private string *next_command = ({});
+private static string *QueuedCommands = ({});
 private int MaxCommandHistSize = 20;
 static string current_command = "";
 
@@ -97,10 +98,8 @@ static int cmdAll(string args) {
 	int numba, i;
 	string tmp_ret;
 	string *line = explode(args," ");
-	//tc("line: "+identify(line));
 	for(i = 1; i < sizeof(line); i++){
 	    string element = line[i];
-	    //tc("element: "+element);
 	    if(sscanf(element,"%d.%s",numba,tmp_ret) == 2){
 		if(present(numba+ordinal(numba)+" "+tmp_ret,environment(this_player()))){
 		    args = replace_string(args,element,numba+ordinal(numba)+" "+tmp_ret);
@@ -111,19 +110,14 @@ static int cmdAll(string args) {
 	    if(numba = atoi(element)){
 		object o1;
 		string e1, e2;
-		//tc("numba: "+numba);
 		e1 = numba+ordinal(numba);
 		e2 = line[i-1];
-		//tc("looking for: "+e2+" "+numba);
 		o1 = present(e2+" "+numba,this_player());
 		if(!o1) o1 = present(e2+" "+numba,environment(this_player()));
 		if(o1){
-		    //tc("o1: "+identify(o1));
 		    tmp_ret = e1+" "+e2;
-		    //tc("ret: "+tmp_ret);
 		    args = replace_string(args,e2+" "+numba,tmp_ret);
 		}
-		//else tc("no dice");
 	    }//end single number check
 	}
     }
@@ -240,6 +234,31 @@ int eventForce(string cmd) {
     Forced = 0;
     if(err) error(err);
     return res;
+}
+
+int eventForceQueuedCommand(string cmd){
+    tell_object(this_object(),"%^RED%^Executing queued command: %^RESET%^"+cmd);
+    eventForce(cmd);
+}
+
+int eventExecuteQueuedCommands(){
+    int i = 0;
+    foreach(string tmp in QueuedCommands){
+	i++;
+	call_out("eventForceQueuedCommand", i, tmp);
+	QueuedCommands -= ({ tmp });
+    }
+}
+
+int eventQueueCommand(string line){
+    if(!line || !sizeof(line) || !stringp(line)) return 0;
+    if(!this_player()) return 0;
+    if(interactive(this_object())){
+	if(this_player() && this_player() != this_object()) return 0;
+    }
+    if(line != "") QueuedCommands += ({ line });
+    //if(sizeof(QueuedCommands)) eventExecuteQueuedCommands();
+    return 1;
 }
 
 int DoneTrying(){

@@ -311,12 +311,6 @@ varargs int eventWrite(object owner, mixed val, int close) {
 varargs static void create(int port, int type, string socket_obj) {
     daemon::create();
     SetNoClean(1);
-    //tc("thing: "+PORT_FTP);
-    //tc("ftp_port: "+ftp_port);
-    //tc("this_object: "+identify(this_object()));
-    //tc("port: "+port);
-    //tc("type: "+type);
-    //tc("socket_obj: "+socket_obj);
 
     if(port == PORT_FTP){mcolor="green";mclass=MSG_FTP;}
     if(port == PORT_HFTP){mcolor="white";mclass=MSG_HFTP;}

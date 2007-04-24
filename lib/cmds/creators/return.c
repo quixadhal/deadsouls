@@ -3,42 +3,51 @@
 inherit LIB_DAEMON;
 
 mixed cmd(string args) {
-    object ob, room;
-    string last_loc;
+    object ob, room, where;
+    string last_loc, name;
+    int result;
 
-    if( !args || args == "" ) {
-	if(!last_loc = this_player()->GetProperty("LastLocation")){
-	    write("You have nowhere to return to.");
-	    return 1;
+    if( !args || args == "" ){ 
+	ob = this_player();
+	name = "You";
+    }
+    else {
+	if( !(ob = find_player(convert_name(args))) && !(ob = find_living(args)) )
+	    return "No such being exists anywhere presently.";
+	name = "They";
+    }
+    if(!last_loc = ob->GetProperty("LastLocation")){
+	write(name+" have nowhere to return to.");
+	return 1;
+    }
+
+    if(grepp(last_loc,"#")) where = find_object(last_loc);
+    else where = load_object(last_loc);
+
+    if(!where){
+	write("There is a problem with that location.");
+	write(name+" remain where "+lower_case(name)+" are.");
+	return 1;
+    }
+
+    if(environment(ob) == where){
+	write(name+" are already there.");
+	return 1;
+    }
+
+    else result = ob->eventMoveLiving(where);
+
+    if(ob != this_player()){
+	if(result){
+	    message("system", "You have been returned to your previous location by " +
+	      (string)this_player()->GetName() + ".", ob);
+	    message("system", "You return " + (string)ob->GetCapName() +
+	      " to their previous location.", this_player());
 	}
-	else if(!load_object(last_loc)){
-	    write("There is a problem with that location.");
-	    write("You remain where you are.");
-	    return 1;
+	else {
+	    return "Failed to move " + (string)ob->GetCapName() + ".";
 	}
-	else this_player()->eventMoveLiving(load_object(last_loc));
-	return 1;
     }
-
-    if( !(ob = find_player(convert_name(args))) && !(ob = find_living(args)) )
-	return "No such being exists anywhere presently.";
-    if( !room = load_object(ob->GetProperty("ReturnSite"))){
-	write("That person has nowhere to return.");
-	return 1;
-    }
-
-    if(room == environment(ob)){
-	write("That person is already there.");
-	return 1;
-    }
-
-    ob->SetProperty("ReturnSite","");
-    if( !((int)ob->eventMoveLiving(room) ))
-	return "Failed to move " + (string)ob->GetCapName() + ".";
-    message("system", "You have been returned to your previous location by " +
-      (string)this_player()->GetName() + ".", ob);
-    message("system", "You return " + (string)ob->GetCapName() + 
-      " to their previous location.", this_player());
     return 1;
 }
 

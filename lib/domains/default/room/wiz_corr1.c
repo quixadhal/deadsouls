@@ -7,7 +7,7 @@ static void create() {
     room::create();
     SetClimate("indoors");
     SetAmbientLight(30);
-    SetShort("Test Labs Corridor");
+    SetShort("Test Labs Corridor West");
     SetLong("This is the main corridor of the test labs. North is the combat arena. South is the menagerie. The Creators Hall is west of here, and the corridor continues east.");
     SetExits( ([
 	"south" : "/domains/default/room/wiz_corr_south",

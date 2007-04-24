@@ -51,10 +51,6 @@ int CanReceive(object ob) {
 }
 
 varargs int eventPrint(string msg, mixed arg2, mixed arg3){
-    //tc("event print hit. obs: "+identify(previous_object(-1)));
-    //tc("msg: "+msg);
-    //tc("arg2: "+arg2);
-    //tc("arg3: "+identify(arg3));
     if(arg2 == MSG_FTP && !ftp) return 0;
     if(arg2 == MSG_HFTP && !hftp) return 0;
     if(arg2 == MSG_HTTP && !http) return 0;

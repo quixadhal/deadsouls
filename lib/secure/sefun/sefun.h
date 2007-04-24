@@ -256,5 +256,9 @@ string native_version();
 string convert_newline(string str);
 int clean_newline_file(string str);
 mixed convert_into_ascii(string str);
+int check_read(string file);
+varargs string simple_map(mixed arg);
+string query_door(object what, string direction);
+int mkdir_recurse(string path);
 
 #endif /* l_sefun_h */

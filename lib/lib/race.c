@@ -57,7 +57,7 @@ mixed CanEat(object ob) {
     else return 1;
 }
 
-varargs int eventDie(object agent) {
+varargs int eventDie(mixed agent) {
     int x;
 
     if( (x = body::eventDie(agent)) != 1 ) return x;
@@ -231,7 +231,7 @@ int GetMaxCarry() {
     int carry_max;
     carry_max = this_object()->GetLivingMaxCarry();
     if(carry_max) return carry_max;
-    else return ((2 + GetStatLevel("strength")) * 100); 
+    else return ((2 + GetStatLevel("strength")) * 50); 
 }
 
 int GetHeartRate() {

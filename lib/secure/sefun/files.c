@@ -47,3 +47,17 @@ int indent_file(string filename){
     return 1;
 }
 
+int mkdir_recurse(string path){
+    string *path_arr = explode(path,"/");
+    string agglutinate = "";
+
+    if(directory_exists(path)) return 0;
+
+    foreach(string element in path_arr){
+	agglutinate += "/"+element;
+	if(!directory_exists(agglutinate)){
+	    if(!mkdir(agglutinate)) return 0;
+	}
+    }
+    return 1;
+}

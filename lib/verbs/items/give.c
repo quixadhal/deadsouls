@@ -37,12 +37,10 @@ mixed can_give_liv_obj() {
 }
 
 mixed can_give_obj_liv(mixed arg1, mixed arg2) {
-    //tc("can_give_obj_liv, arg1: "+identify(arg1)+", arg2: "+identify(arg2),"red");
     return can_give_obj_to_liv();
 }
 
 mixed can_give_obj_to_liv(mixed arg1, mixed arg2) { 
-    //tc("can_give_obj_TO_liv, arg1: "+identify(arg1)+", arg2: "+identify(arg2),"red");
     return this_player()->CanManipulate(); }
 
 mixed can_give_liv_wrd_wrd(object targ, string num, string curr) {
@@ -78,9 +76,6 @@ mixed do_give_obj_liv(object what, object target) {
 }
 
 mixed do_give_obj_to_liv(object what, object target) {
-    //tc("do_give_obj_to_liv","green");
-    //tc("what: "+identify(what),"green");
-    //tc("target: "+identify(target),"green");
     if(!intp(target->CanManipulate())){
 	this_player()->eventPrint(target->GetName()+" is incapable "+
 	  "of holding that.");

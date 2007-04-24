@@ -34,7 +34,6 @@ mixed cmd(string str) {
 	return "Unable to read file " + str + ".";
     else tmp = "";
     content = replace_string(content, " *", " array ");
-    //tc("content: "+content);
     if(!tmp = FUNCTION_D->GetFunctions(str)){
 	tmp = "";
 	lines = explode(content, "\n");
@@ -47,7 +46,6 @@ mixed cmd(string str) {
 	    foreach(string element in types){
 		foreach(string line in lines){
 		    if(regexp(line, element+func)) {
-			//tc("line: "+line);
 			line = trim(line);
 			if(!strsrch(line,"/*") || !strsrch(line,"//") || !strsrch(line,"*")) continue;
 			if(last(line,1) == ";") continue;

@@ -75,8 +75,7 @@ varargs mixed eventBuy(mixed arg1, mixed arg2, mixed arg3){
 }
 
 int GetMass(){
-    int base_mass = RACES_D->GetRaceMass(GetRace());
-    return base_mass + body_mass::GetBodyMass();
+    return body_mass::GetBodyMass();
 }
 
 int GetSize(){
@@ -208,7 +207,7 @@ static void heart_beat() {
     if( env && (i = env->GetPoisonGas()) > 0 ) {
 	if( GetResistance(GAS) != "immune" ) {
 	    eventPrint("You choke on the poisonous gases.");
-	    eventReceiveDamage(0, GAS, i);
+	    eventReceiveDamage("Poison gas", GAS, i);
 	}
     }
     eventCheckHealing();
@@ -359,17 +358,19 @@ mixed eventFall() {
     if( GetPosition() == POSITION_LYING ) {
 	return 0;
     }
-    if( env->GetMedium() == MEDIUM_LAND ) {
+    if( env->GetMedium() == MEDIUM_AIR ) {
 	return position::eventFall();
     }
     dest = env->GetGround();
+#if 0
     if( !dest ) {
 	send_messages(({ "fall", "die" }), "$agent_name $agent_verb into a "
 	  "dark abyss and $agent_verb.", this_object(), 0, env);
 	this_object()->eventCollapse();
 	eventDie("Deceleration sickness");
     }
-    else {
+#endif
+    if(!dest){
 	int p = random(100) + 1;
 	int was_undead = GetUndead();
 
@@ -383,7 +384,9 @@ mixed eventFall() {
 	    int hp = GetHealthPoints(limb);
 
 	    p = (hp * p)/100;
-	    eventReceiveDamage(0, BLUNT, p, 0, ({ limb }));
+	    //eventReceiveDamage("Deceleration sickness", BLUNT, p, 0, ({ limb }));
+	    //tc("hmm.");
+	    eventReceiveDamage("Deceleration sickness", BLUNT, p, 0, ({ GetTorso() }));
 	    if( Dying || (was_undead != GetUndead()) ) {
 		break;
 	    }
@@ -430,9 +433,9 @@ varargs int eventHealDamage(int x, int internal, mixed limbs) {
     return x;
 }
 
-/* varargs int eventReceiveDamage(object agent, int type, int x,
+/* varargs int eventReceiveDamage(mixed agent, int type, int x,
  *     int internal, mixed limbs)
- * object agent - the living object responsible for this damage (required)
+ * object agent - the thing responsible for this damage (required)
  * int type - the damage type(s) being done (required)
  * int x - the amount of damage being done, negatives illegal (required)
  * int internal - flag for internal or external damage (optional)
@@ -466,10 +469,22 @@ varargs int eventHealDamage(int x, int internal, mixed limbs) {
  * returns the average actual amount of damage done
  */
 
-varargs int eventReceiveDamage(object agent, int type, int x, int internal,
+varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
   mixed limbs) {
     string tmp = GetResistance(type);
+    string agentname;
     int fp;
+
+    //tc("wtf");
+    //tc("agent: "+identify(agent),"red");
+
+    if(agent && stringp(agent)){
+	agentname = agent;
+	agent = 0;
+    }
+
+    //tc("stack: "+get_stack(),"red");
+    //tc("agent: "+identify(agent),"red");
 
     if( tmp == "immune") {
 	return 0;
@@ -491,7 +506,7 @@ varargs int eventReceiveDamage(object agent, int type, int x, int internal,
     x = eventCheckProtection(agent, type, x);
     if( !limbs ) {
 	if( internal ) {
-	    AddHealthPoints(-x, 0, agent);
+	    AddHealthPoints(-x, 0, (agent || agentname));
 	    return x;
 	}
 	else {
@@ -507,7 +522,7 @@ varargs int eventReceiveDamage(object agent, int type, int x, int internal,
     if( internal ) {
 	limbs = filter(limbs, (: !AddHealthPoints(-$(x), $1, $(agent)) :));
 	map(limbs, (: (Limbs[$1] ? this_object()->RemoveLimb($1, $(agent)) : 0) :));
-	AddHealthPoints(-x, 0, agent);
+	AddHealthPoints(-x, 0, (agent || agentname));
 	return x;
     }
     else {
@@ -525,31 +540,31 @@ varargs int eventReceiveDamage(object agent, int type, int x, int internal,
 	    }
 	    if(!(j = sizeof(obs = GetWorn(limbs[i])))) { /* no armor */
 		y += z;                     /* add to total damage */
-		if( !AddHealthPoints(-z, limbs[i], agent) )
-		    this_object()->RemoveLimb(limbs[i], agent);
+		if( !AddHealthPoints(-z, limbs[i], (agent || agentname)) )
+		    this_object()->RemoveLimb(limbs[i], (agent || agentname));
 		continue;
 	    }
 	    while(j--) {
-		z -= (int)obs[j]->eventReceiveDamage(agent,type, z, 0, limbs[i]);
+		z -= (int)obs[j]->eventReceiveDamage((agent || agentname),type, z, 0, limbs[i]);
 		if(z < 1) break;
 	    }
 	    if(z < 1) continue;
 	    else {
 		y += z;
 		if(!AddHealthPoints(-z, limbs[i], agent))
-		    this_object()->RemoveLimb(limbs[i], agent);
+		    this_object()->RemoveLimb(limbs[i], (agent || agentname));
 	    }
 	}
 	y = y / (maxi ? maxi : 1);
 	if( y ) {
-	    AddHealthPoints(-y, 0, agent);
+	    AddHealthPoints(-y, 0, (agent || agentname));
 	    AddStaminaPoints(-y/2);
 	}
 	return y;
     }
     AddHealthPoints(-x, 0, agent);
     AddStaminaPoints(-x/2);
-    if(HealthPoints < 1) eventDie(agent);
+    if(HealthPoints < 1) eventDie((agent || agentname));
     return x;
 }
 
@@ -647,8 +662,8 @@ mixed eventReceiveThrow(object who, object what) {
     return 1;
 }
 
-/* varargs int eventDie(object agent)
- * object agent - the agent responsible for the death (optional)
+/* varargs int eventDie(mixed agent)
+ * mixed agent - the agent responsible for the death (optional)
  *
  * description
  * Kills the owner of this body if not already dying
@@ -663,7 +678,11 @@ varargs int eventDie(mixed agent) {
     if(DeathEvents) return 1;
     DeathEvents = 1;
 
-    if(agent && stringp(agent)) killer = agent + " ";
+    //tc("stack: "+get_stack());
+    //if(agent) tc("agent: "+identify(agent),"green");
+    //tc("prevs: "+identify(previous_object(-1)));
+
+    if(agent && stringp(agent)) killer = agent;
     else {
 	if(!agent) killer = "UNKNOWN";
 	else killer = agent->GetName();
@@ -675,7 +694,7 @@ varargs int eventDie(mixed agent) {
 
     if( Sleeping > 0 ) Sleeping = 0;
 
-    if( agent ) {
+    if( agent && objectp(agent) ) {
 	if( x ) agent->eventDestroyEnemy(this_object());
 	else agent->eventKillEnemy(this_object());
     }
@@ -1160,10 +1179,15 @@ varargs int eventDie(mixed agent) {
      *
      * returns -1 on error, 0 on failure, 1 on success
      */
-    int RemoveLimb(string limb, object agent) {
+    int RemoveLimb(string limb, mixed agent) {
 	string *kiddies;
-	string limbname,adjname,templimbname;
+	string limbname,adjname,templimbname, agentname;
 	int i;
+
+	if(agent && stringp(agent)){
+	    agentname = agent;
+	    agent = 0;
+	}
 
 	if(limb == "torso" || limb == "neck") return 0;
 
@@ -1201,7 +1225,7 @@ varargs int eventDie(mixed agent) {
 	    if( !Dying ) {
 		Dying = 1;
 		Agent = agent;
-		eventDie(Agent);
+		eventDie((Agent ? Agent : agentname));
 	    }
 	    return 0;
 	}
@@ -1461,8 +1485,15 @@ varargs int eventDie(mixed agent) {
      * or for the overall health points
      */
 
-    varargs static int AddHealthPoints(int x, string limb, object agent) {
+    varargs static int AddHealthPoints(int x, string limb, mixed agent) {
 	int y = 0;
+	string agentname;
+
+	//tc("gent: "+identify(agent),"blue");
+	if(agent && stringp(agent)){
+	    agentname = agent;
+	    agent = 0;
+	}
 
 	if( limb ) {
 	    if( !Limbs[limb] ) return -1;
@@ -1480,7 +1511,7 @@ varargs int eventDie(mixed agent) {
 		if( !Dying ) {
 		    Dying = 1;
 		    Agent = agent;
-		    eventDie(Agent);
+		    eventDie((Agent ? Agent : agentname));
 		}
 	    }
 	    else {

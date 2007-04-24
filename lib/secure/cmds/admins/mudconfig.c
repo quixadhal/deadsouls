@@ -13,7 +13,7 @@ string array bools = ({ "enable","disable","on","off","1","0" });
 string array yesbools = ({ "enable","on","1","yes" });
 string array nobools = ({ "disable","off","0","no" });
 string array restrict_tokens = ({ "restrict","unrestrict" });
-string array nonmodals = ({ "liveupgrade", "prompt","status","email",
+string array nonmodals = ({ "liveupgrade", "prompt","status","email","websource",
   "debugger", "access", "pinging" });
 string array modals = ({ "matchcommand", "matchobject", "autowiz", "locked","localtime", 
   "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
@@ -84,6 +84,7 @@ mixed cmd(string str) {
     case "liveupgrade" : which = "LIVEUPGRADE_SERVER";ProcessString(which,arg);break;
     case "mudstatus" : which = "MUD_STATUS";ProcessString(which,arg);break;
     case "debugger" : which = "DEBUGGER";ProcessString(which,arg);break;
+    case "websource" : which = "WEB_SOURCE";ProcessString(which,arg);break;
     default : NotImplemented(which);break;
     }
     return 1;
@@ -378,6 +379,7 @@ static int ProcessOther(string which, string arg){
 }
 
 static int ProcessString(string which, string arg){
+    object ob;
     validate();
 
     foreach(string element in config){
@@ -392,6 +394,9 @@ static int ProcessString(string which, string arg){
 	    element = "#define "+s1+" "+s2;
 	}
 	config2 += ({ element });
+    }
+    if(which == "WEB_SOURCE" && ob = find_object("/secure/cmds/admins/liveupgrade")){
+	ob->eventDestruct();
     }
     CompleteConfig();
     return 1;
@@ -697,6 +702,7 @@ void help() {
       "\nmudconfig email <the admin's email address>"
       "\nmudconfig liveupgrade <the default liveupgrade mud's name>"
       "\nmudconfig hostip <the computer's ip address (eg 111.222.333.444)>"
+      "\nmudconfig websource <the remote web server's ip address (eg 111.222.333.444)>"
       "\nmudconfig intermud [ enable | disable | restrict | unrestrict | reset ]"
       "\nmudconfig inet [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig ftp [ enable | disable | start | stop | restart | status ]"

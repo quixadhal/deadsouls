@@ -1,0 +1,335 @@
+This file details the effects of configuration parameters in /secure/include/config.h
+
+#ifndef s_config_h
+#define s_config_h
+    This means, "If the s_config_h parameter is not defined, define it now
+and also define the stuff in this file."
+
+
+#define DEFAULT_PROMPT           "> "
+    Self-explanatory. Can be overridden per player with the "prompt" command.
+
+
+#define HOST_IP                  "127.0.0.1"
+    Sometimes your mud's actual IP will be a fake internal address,
+like 10.0.1.1. But this may be confusing under some circumstances,
+and especially in the case of the hftp server, an address like this
+will interfere with proper operation.
+    Normally the right and safe thing to do is leave this parameter
+alone. A host IP definition of 127.0.0.1 lets the mud know it needs to
+figure out its IP address the normal way. If you are running hftp, or
+have some unusual situation where your actual IP address is not reachable
+but some other one is, then this is where you'd put that external-facing
+IP address.
+    General advice: leave this alone.
+    
+
+#define MUD_STATUS               "mudlib development"
+    Self explanatory.
+
+
+#define ADMIN_EMAIL              "cratylus@comcast.net"
+    Self explanatory. Note that it is very important to have a valid
+email defined here. Otherwise if the I3 router moves, or your mud
+malfunctions and needs to be blacklisted, there is no way to contact
+you to straighten things out.
+
+
+#define DEBUGGER                 "cratylus"
+    The tc() sefun is a special kind of debugger for admin use. It
+will send its messages to the one person specified here.
+
+
+#define LOCAL_NEWS_PREFIX        "nm"
+    Deprecated. Once used for an intermud news system that is
+not currently supported.
+
+
+#define MUD_IS_LOCKED            0
+    If this is a nonzero integer, only people in the allowed groups
+are permitted to log in. By default, these groups are: SECURE, ASSIST,
+ELDER, TEST.
+
+
+#define AUTO_WIZ                 0
+    If this is a nonzero integer, new users are given the option to
+join your mud as either players or creators, as they choose.
+
+
+#define RESTRICTED_INTERMUD      0
+    If this is a nonzero integer, users must be added to the INTERMUD
+group by an admin if you want them to be able to use intermud channels.
+This can be done conveniently with the "groupmod" command.
+
+
+#define DISABLE_INTERMUD         0
+    If this is a nonzero integer, no intermud functions will work. Your
+intermud daemon will refuse to load, and you will therefore not be
+connected to the intermud network.
+
+
+#define MINUTES_REBOOT_WARNING   20
+    Self explanatory.
+
+
+#define TIME_TO_RESET            20000
+    The interval between calls to eventReset() in
+the master daemon. 20000 means that every 5 hours, the master
+daemon will call evetReset() in itself. This function will randomly
+pick 25% of all loaded objects, and call reset() and clean_up() on them.
+
+
+#define RESET_ALL                0
+    If this is a nonzero integer, eventReset() in MASTER_D will
+eventReset() 100% of all loaded objects, not 25%. Not recommended
+for large muds, as this can cause noticeable lag if objects
+are swapped out.
+
+
+#define GMT_OFFSET               -32000
+    A way to tinker with time settings, if you live in a strange
+place. Recommendation: leave this alone.
+
+
+#define LOCAL_TIME               1
+    If this is a non-zero integer, the mud will simply believe
+whatever time the system thinks it is. Most OS'es can be trusted to
+return the time you want, but if your server is in another time zone,
+or your OS returns a GMT (aka UTC) offset rather than local time,
+then you may need to set this to 0 and tinker with GMT_OFFSET and
+EXTRA_TIME_OFFSET.
+
+
+#define EXTRA_TIME_OFFSET        0
+    Another tool for tuning your local time. Set in hours, not seconds.
+Play with offset settings at your own risk. The correct time of day on your
+own system is your own responsibility.
+
+
+#define MAX_LOG_SIZE             150000
+    The log rotation daemon uses this parameter as its trigger for
+backing up logs. When log rotation check happens, approximately every
+two hours (this is set in the events daemon, see the "events" command)
+any log file the daemon is set to scan that is larger than this size
+is renamed to something unique and archived.
+
+
+#define MAX_NET_DEAD_TIME        1800
+    The maximum number of seconds allowed for a player to be "disconnected
+but not having quit". Players whose link dies are normally moved to ROOM_FREEZER
+where they stay until their link is re-established. If it doesn't happen in
+the specified number of seconds, their player object if force-quit.
+
+
+#define MIN_HISTORY_SIZE         10
+#define MAX_HISTORY_SIZE         30
+    The number of lines stored in a players command history buffer.
+
+
+#define LOGON_TIMEOUT            360
+    If a user does not complete their login within this number of seconds,
+their connection is dropped.
+
+
+#define IDLE_TIMEOUT             3600
+    If a player is idle for this number of seconds, they are force-quit.
+
+
+#define LINK_WAIT_PERIOD         1800
+    Unsupported. This is part of a multi-character play control system that
+may or may not work in Dead Souls 2.
+
+
+#define MAX_PASSWORD_TRIES       3
+#define MIN_USER_NAME_LENGTH     2
+#define MAX_USER_NAME_LENGTH     15
+#define MAX_USER_CAP_NAME_LENGTH 20
+    Self explanatory. The "cap name" indicates the special name that a player may
+have which includes special characters. This name is spacified on character
+creation.
+
+
+#define LOCKED_ACCESS_ALLOWED    ({ "SECURE", "ASSIST", "ELDER", "TEST" })
+    Members of these user groups are allowed to log in when the mud is locked.
+
+
+#define SUPPORTED_CLIENTS       ({ "amcp", "amcp/1.1" })
+    UNSUPPORTED. This is a remote administration protocol that has not been made
+to work on Dead Souls 2.
+
+
+#define HOUR_LENGTH              1200
+#define DAY_LENGTH               20
+    Mud-time definitions. Dead Souls hours and days are shorter than "real world"
+hours and days. Here is where that is specified.
+
+
+#define MAX_NEWBIE_LEVEL         3
+    Players below this level get special treatment. They gain access to
+special newbie areas, can see in the dark, and understand all languages.
+
+
+#define AUTOSAVE_TIME            450
+    Interval between automatic saves in users.
+
+
+#define MORTAL_POSITIONS         ({ "player", "high mortal", "ambassador" })
+    Unsupported. Part of a roles system that does not apply to Dead Souls 2
+by default.
+
+
+#define DEFAULT_GRAVITY          1.0
+    Affects the amount of stuff players can carry.
+
+
+#define DEFAULT_ITEM_MESSAGE     "You do not see that here."
+    Self explanatory.
+
+
+#define RESET_INTERMUD           0
+    If this is a nonzer integer, your intermud data cache will be wiped on reboot.
+ 
+
+#define ENGLISH_ONLY             0
+    Forces the use of English only for users.
+
+
+#define HUMANS_ONLY              0
+    Prevents new users from picking a race other than human.
+
+
+#define PINGING_MUDS             ({"Frontiers","Dead Souls"})
+    Defines the muds used by the ping daemon for its periodic intermud
+connection status check.
+
+
+#define ENABLE_ENCUMBRANCE       0
+    If this is a nonzero integer, players will find it near-impossible
+to engage in successful combat if they're carring stuff. Anything that is
+not worn or wielded creates a major obstacle to fighting.
+
+
+#define GLOBAL_MONITOR           0
+    If this is set to 1, all users are automatically snooped when they
+connect and their sessions are logged in /secure/adm.
+    If this is set to 2, only non-admin users are logged this way.
+
+
+#define PLAYER_KILL              0
+    This must be set to a nonzero integer if playerkilling zones are
+to work in the mud.
+
+
+#define NPC_CATCH_TELL_DEBUG     0
+    If a nonzero integer, then anything seen or heard by any NPC is
+echoed to /domains/default/room/catchtell, along with some debugging
+info. Recommendation: do not use this. It is noisier than you expect,
+will tend to lag a busy mud, and is really for debugging purposes only.
+
+
+#define SAME_IP_MAX              4
+    The maximum number of connections permitted from an IP. IP's
+from which an admin has previously logged in are excluded from this,
+and IP's to be excluded from this can be specified in /secure/cfg/ip_unrestrict.cfg
+(by adding the ip's on their own lines).
+
+
+#define COMPAT_MODE              1
+    This enables the lib to use defines that translate old code from
+TMI-2 and Nightmare 3 (among others) into usable DS2 code on the fly. 
+See /secure/include/compat.h and /secure/sefun/legacy.c
+
+
+#define RETAIN_ON_QUIT           1
+    If this is a nonzero integer, when a character quits, her inventory is
+saved, and it is restored to her when she logs back in. If this is zero,
+then when a character quits, her inventory is moved to her environment, and
+it is not restored to her when she logs back in.
+    Unique items are moved to the quitter's environment regardless of
+what this is set to.
+
+
+#define MAX_COMMANDS_PER_SECOND  10
+    Defines for non-admins the maximum number of commands allowed per second.
+This avoids both player scripting foolishness, and certain errors
+that can occur when "command stacking" hundreds of commands per second that can 
+ruin things for everyone.
+
+
+#define DEFAULT_PARSING          1
+    If this is a nonzero integer, lib-based extension to the driver parser
+will attempt re-parse ambiguous commands, making things like "drop book"
+parse like "drop a book" if you have more than one. This adds some overhead
+to each ambiguous command that needs to be reparsed, so disable it if you
+are having performance problems.
+
+
+#define CALL_OUT_LOGGING         0
+    This will log the use of the call_out() efun by objects outside the
+/daemon and /secure filesystems. Recommendation: do not use this. While it
+has been fixed so it does not break things, this is strictly a debugging
+tool to ferret out errors, not a "normal use" logger.
+
+
+#define EVENTS_LOGGING           1
+    A nonzero integer here will enable the logging of events initiated by the
+events daemon.
+
+
+#define DISABLE_REBOOTS          0
+    A nonzero integer here will cause your mud's periodic reboots not to
+occur.
+
+
+#define BARE_EXITS               1
+    A nonzero integer here allows the use of exits such that typing
+"house" is possible, rather than "go house" or "enter house". This adds
+some overhead to every command, so disable it if you are having performance
+problems.
+
+
+#define COMMAND_MATCHING         1
+    A nonzero integer here allows the use of "shortest unique command matching".
+This means you might, for example, be able to "gi book to knight" rather than
+"give book to knight". This adds some overhead to every command, so disable it if
+you are having performance problems.
+
+
+#define OBJECT_MATCHING          1
+    A nonzero integer here allows the use of "shortest unique object matching".
+This means you might, for example, be able to "give bo to kni" rather than
+"give book to knight". This adds some overhead to every command, so disable it if
+you are having performance problems.
+
+
+#define LIVEUPGRADE_SERVER       "Dead Souls"
+    Deprecated. Specifies the mud to use for OOB liveupgrades. OOB liveupgrades
+are no longer supported and have been replaced by the faster and more secure
+web based liveupgrade system.
+
+
+#define CARRIAGE_RETURN          "\r"
+    In some cases, this pesky little character has to be wiped from files without
+wiping the thing that specifies what character to wipe. This define helps avoid
+problems when a file has to clean itself of this character. Don't change this.
+
+
+#define OLD_STYLE_PLURALS        1
+    A nonzero integer here allows you to use stuff like "book 2" or "2.book"
+rather than "second book" in a command. This adds some overhead to every command,
+so disable it if you are having performance problems.
+
+
+#define NM_STYLE_EXITS           0
+    A nonzero integer here enables the old "obvious exits" behavior, which was to
+display them over the long desc in the form: [n, s, enter lodge]
+    Otherwise, they display below the long desc, in the form:
+Obvious exits: north, south, enter lodge
+
+
+#define WEB_SOURCE               "149.152.218.102"
+    Specifies the ip to use during liveupgrades. 
+
+
+#endif /* s_config_h */
+    End configuration.

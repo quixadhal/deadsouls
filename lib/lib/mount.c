@@ -66,7 +66,7 @@ object *GetRiders(){
     if(Riders && sizeof(Riders)){
 	foreach(mixed rider in Riders){
 	    if(!rider) RemoveRider(rider);
-	    if(environment(rider) == this_object()) ret += ({ rider });
+	    else if(environment(rider) == this_object()) ret += ({ rider });
 	    else RemoveRider(rider);
 	}
     }
@@ -75,6 +75,7 @@ object *GetRiders(){
 
 int SetMount(int x) {
     Mount = x;
+    if(Mount) this_object()->SetNoClean(1);
     return Mount;
 }
 int GetMount(){ return Mount; }

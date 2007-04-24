@@ -7,7 +7,11 @@
  */
 
 #include <position.h>
+#include <medium.h>
+#include <message_class.h>
 #include <daemons.h>
+
+inherit LIB_FALL;
 
 private int           Position = POSITION_STANDING;
 private static object Chair    = 0;
@@ -24,12 +28,36 @@ int SetPosition(int x) {
     Position = x;
 }
 
-mixed eventFall() {
-    send_messages("fall", "$agent_name $agent_verb to the ground.",
-      this_object(), 0, environment());
-    Position = POSITION_LYING;
-    return 1;
+mixed eventFall(){
+    return fall::eventFall();
 }
+
+#if 0
+mixed eventFall() {
+    object env = environment();
+    mixed rumbo;
+    if(!env || !(rumbo = env->GetExit("down"))) return 0;
+    if(env->GetMedium() != MEDIUM_AIR){
+	send_messages("fall", "$agent_name $agent_verb to the ground.",
+	  this_object(), 0, environment());
+	Position = POSITION_LYING;
+	return 1;
+    }
+    else {
+	rumbo = load_object(rumbo);
+	if(!rumbo) return 0; 
+	say(this_object()->GetName()+" plummets in from above.");
+	write("You plummet downward!");
+	if(this_object()->eventMove(rumbo)){
+	    env->eventPrint(this_object()->GetName()+" continues "+
+	      possessive(this_player())+" fall downward.", MSG_ENV);
+	    call_out( "eventFall", 1);
+	}
+	return 1;
+    }
+    return 0;
+}
+#endif
 
 varargs mixed eventLay(object target) {
     mixed tmp;
@@ -113,14 +141,20 @@ mixed eventFly(){
 	}
 	Chair = 0;
     }
-    write("You lift up off the ground.");
-    say(this_player()->GetName()+" begins flying and rises up into the air.");
-    Position = POSITION_FLYING;
+    if(this_object()->CanFly() && Position != POSITION_FLYING){
+	tell_object(this_object(),"You begin flying.");
+	say(this_player()->GetName()+" begins flying and hovers in the air.");
+	Position = POSITION_FLYING;
+    }
     return 1;
 }
 
 mixed eventLand(){
+    object env = environment();
+    if(!env) return 0;
     if(! Position == POSITION_FLYING ) return 0;
+    if( env->GetMedium() == MEDIUM_AIR || env->GetMedium() == MEDIUM_WATER ||
+      env->GetMedium() == MEDIUM_SPACE ) return 0;  
     write("You stop flying and land gracefully.");
     say(this_player()->GetName()+" stops flying and lands gracefully.");
     if(stringp(hobbled(this_player()))) Position = POSITION_STANDING;

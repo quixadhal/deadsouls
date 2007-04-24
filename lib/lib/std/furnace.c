@@ -29,7 +29,8 @@ void heart_beat(){
     if(base_name(this_object()) != LIB_FURNACE){
 	if(sizeof(all_inventory(this_object()))){
 	    foreach(object ob in deep_inventory(this_object())){
-		ob->eventDestruct();
+		if(interactive(ob)) ob->eventMoveLiving(ROOM_VOID);
+		else ob->eventDestruct();
 	    }
 	}
     }

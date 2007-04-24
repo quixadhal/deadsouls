@@ -983,7 +983,8 @@ int GenerateObviousExits(){
     string *normals;
     string *exits;
     string dir_string, enters;
-    exits = GetExits();
+    exits = filter(GetExits(), (: !($1 == "up" && !(this_object()->GetVirtualSky()) &&
+	  load_object(GetExit($1))->GetVirtualSky()) :) );
     enters = "";
     normals = ({ "north", "south", "east", "west", "up", "down" });
     normals += ({ "northeast", "southeast", "northwest", "southwest" });
@@ -1022,6 +1023,10 @@ int GenerateObviousExits(){
     dir_string = replace_string(dir_string,", , ",", ");
     if(ObviousVisible) SetObviousExits(dir_string);
     return 1;
+}
+
+int eventReceiveObject(object ob){
+    return container::eventReceiveObject(ob);
 }
 
 static void init() {

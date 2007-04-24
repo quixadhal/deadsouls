@@ -122,49 +122,52 @@ static void eventDestroyUndead(object agent) {
 
 varargs int eventDie(mixed agent) {
     int x, expee, subexpee;
+    string agentname;
 
     if(!agent) agent = previous_object();
     if(!agent) agent = this_object();
+    if(stringp(agent)) agentname = agent;
+    else agentname = agent->GetName();
 
     if( (x = living::eventDie(agent)) != 1 ) return x;
 
     if(!Deaths || !sizeof(Deaths)) 
-	Deaths = ({([ "date" : ctime(time()), "enemy" : ((agent->GetName()) ? agent->GetName() : agent) ])});
-else Deaths += ({ ([ "date" : ctime(time()), "enemy" : agent->GetName() ]) });
+	Deaths = ({([ "date" : ctime(time()), "enemy" : agentname ])});
+    else Deaths += ({ ([ "date" : ctime(time()), "enemy" : agentname ]) });
 
-if( !GetUndead() ) {
-    eventDestroyUndead(agent);
-}
-else {
-    message("my_action", "Consciousness passes from you after one last "
-      "gasp for air.", this_object());
-    message("my_action", "You awake, but you find your body feels "
-      "different, and the world about you is unfamiliar.",
-      this_object());
-    if( agent ) {
-	message("other_action", GetName() + " drops dead by the hand "
-	  "of " + (string)agent->GetName() + ".",
-	  environment(this_object()), ({ agent, this_object() }));
-	message("other_action", "You send " + GetName() + " into the "
-	  "Underworld.", agent);
+    if( !GetUndead() ) {
+	eventDestroyUndead(agent);
     }
-    else message("other_action", GetName() + " drops dead.",
-	  environment(), ({ this_object() }) );
+    else {
+	message("my_action", "Consciousness passes from you after one last "
+	  "gasp for air.", this_object());
+	message("my_action", "You awake, but you find your body feels "
+	  "different, and the world about you is unfamiliar.",
+	  this_object());
+	if( agent ) {
+	    message("other_action", GetName() + " drops dead by the hand "
+	      "of " + agentname + ".",
+	      environment(this_object()), ({ agent, this_object() }));
+	    message("other_action", "You send " + GetName() + " into the "
+	      "Underworld.", agent);
+	}
+	else message("other_action", GetName() + " drops dead.",
+	      environment(), ({ this_object() }) );
 
-    NewBody(GetRace());
+	NewBody(GetRace());
 
-    expee = this_object()->GetExperiencePoints();
-    subexpee = to_int(expee * 0.25);
+	expee = this_object()->GetExperiencePoints();
+	subexpee = to_int(expee * 0.25);
 
-    eventCompleteHeal(GetMaxHealthPoints()/2);
-    AddMagicPoints(-(random(GetMagicPoints())));
-    this_object()->eventMove(ROOM_DEATH);
-    this_object()->AddExperiencePoints(-subexpee);
-    this_object()->save_player((string)this_object()->GetKeyName());
-    this_object()->eventForce("look");
-}
-flush_messages();
-return 1;
+	eventCompleteHeal(GetMaxHealthPoints()/2);
+	AddMagicPoints(-(random(GetMagicPoints())));
+	this_object()->eventMove(ROOM_DEATH);
+	this_object()->AddExperiencePoints(-subexpee);
+	this_object()->save_player((string)this_object()->GetKeyName());
+	this_object()->eventForce("look");
+    }
+    flush_messages();
+    return 1;
 }
 
 mixed eventTurn(object who) {
@@ -218,11 +221,14 @@ void eventRevive() {
 
 int eventMove(mixed dest) {
     int ret;
+    object env = environment();
+    string location;
 
-    if(environment(this_player()) && base_name(environment(this_player()))) {
-	this_player()->SetProperty("LastLocation",
-	  base_name(environment(this_player())));
-    }
+    if(!env) location = ROOM_START;
+    else if(clonep(env)) location = file_name(env);
+    else location = base_name(env);
+
+    if(location) this_object()->SetProperty("LastLocation", location);
 
     ret = interactive::eventMove(dest);
     if( this_object() && environment(this_object())) eventMoveFollowers(environment(this_object()));
@@ -380,6 +386,7 @@ int eventReceiveObject(object foo) {
     ob = previous_object();
     if( !ob || !interactive::eventReceiveObject() ) return 0;
     AddCarriedMass((int)ob->GetMass());
+    if(environment()) environment()->AddCarriedMass((int)ob->GetMass());
     return 1;
 }
 
@@ -388,8 +395,10 @@ int eventReleaseObject(object foo) {
 
     ob = previous_object();
     if( !ob || !interactive::eventReleaseObject() ) return 0;
-    if( ob->GetMass() )
-	AddCarriedMass( -((int)ob->GetMass()) );
+    if( ob->GetMass() ){
+	AddCarriedMass( -(ob->GetMass()) );
+	if(environment()) environment()->AddCarriedMass(-(ob->GetMass()));
+    }
     return 1;
 }
 

@@ -31,12 +31,10 @@ static void create() {
     foreach(string line in lines) {
 	string *words;
 	if( sizeof(words = explode(line, ":")) != 3 ) continue;
-	//tc("words[0]: "+identify(words[0])+" words[1]: "+words[1]+" x: "+x,"cyan");
 	Zones[words[0]] = ([]);
 	Zones[words[0]]["offset"] = to_int(words[1]) - x;
 	Zones[words[0]]["name"] = words[2];
     }
-    //tc("zones: "+identify(Zones));
 }
 
 int GetOffset(string tzone) {

@@ -3,6 +3,7 @@
 
 \mv -f ../bin/mudos.cfg ../bin/mudos.bak
 \cp -f ../bin/mudos.cfg.orig ../lib/secure/cfg/mudos.cfg
+\cp -f ../extra/creremote/remote.c ../lib/lib/
 ln -s ../lib/secure/cfg/mudos.cfg ../bin/mudos.cfg
 
 if uname -a | grep "WOLF/OS" | grep -v grep ; then

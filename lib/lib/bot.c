@@ -22,7 +22,7 @@ varargs int eventDie(object agent) {
 	string curr;
 	int i;
 
-	ob = new("/lib/bot_corpse");
+	ob = new(LIB_BOT_CORPSE);
 	ob->SetCorpse(this_object());
 	ob->eventMove(environment());
 	obs = filter(all_inventory(), (: !((int)$1->GetRetainOnDeath()) :));

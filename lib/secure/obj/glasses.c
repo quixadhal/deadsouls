@@ -4,6 +4,9 @@
 #include <damage_types.h>
 
 inherit LIB_ARMOR;
+//bane provides protection from germs and parasites
+inherit LIB_BANE;
+//the modules below provide qcs functionality
 inherit MODULES_ARMOR;
 inherit MODULES_CREATE;
 inherit MODULES_MAPPING;
@@ -17,6 +20,8 @@ inherit MODULES_DOOR;
 static void create(){
     armor::create();
     SetKeyName("glasses");
+    //the tanstaafl id enables this object to function like a
+    //qcs staff
     SetId(({"tanstaafl"}));
     SetAdjectives(({"wire-rimmed", "wire rimmed"}));
     SetShort("wire-rimmed glasses");
@@ -28,6 +33,8 @@ static void create(){
     SetProtection(BLADE,1);
     SetProtection(KNIFE,1);
     SetArmorType(A_VISOR);
+    //full protection from all diseases
+    SetBane(({"all"}));
 }
 void init(){
     ::init();

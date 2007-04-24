@@ -41,6 +41,7 @@ static void eventLoadItem(string file, mixed args, int count) {
 		}
 		if( ob ) {
 		    ob->eventMove(this_object());
+		    //ob->eventAnnounceCanonicalId();
 		}
 		args--;
 	    }

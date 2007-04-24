@@ -49,8 +49,6 @@ int eventDestruct(){
 }
 
 varargs static int eventWrite(mixed data, int close) {
-    //tc("SOCKETWRITE: data: "+identify(data),"white");
-    //tc("SOCKETWRITE: close: "+identify(close),"white");
     if(!close) close = 0;
     if(!data) data = ({});
     if(Owner && this_object()) return Owner->eventWrite(this_object(), data, close);

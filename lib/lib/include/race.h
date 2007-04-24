@@ -6,7 +6,7 @@ static void create();
 mixed CanDrink(object ob);
 mixed CanEat(object ob);
 
-varargs int eventDie(object agent);
+varargs int eventDie(mixed agent);
 mixed eventDrink(object ob);
 mixed eventEat(object ob);
 
@@ -31,5 +31,4 @@ int GetStatLevel(string stat);
 int GetAlcohol();
 
 #endif /* l_race_h */
-
 

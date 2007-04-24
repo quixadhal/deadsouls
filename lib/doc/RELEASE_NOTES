@@ -1,5 +1,59 @@
+---- 2.4.2 ---
+- New subcommands added to liveupgrade: revert and alpha.
+- Various security exposures mitigated.
+- Fixed CanGet() bug in LIB_CHAIR (Thanks, K'Azdean).
+- The new mkdir_recurse() sefun allows liveupgrade to handle recursively creating 
+  directories if needed.
+- Fixed a bug in sample virtual areas that made travel nw, sw, or se take
+  you to the wrong place.
+- CALL_OUT_LOGGING has been reworked to be less vile and it now breaks
+  few things, if any.
+- Added an automapper. See: help automap
+- Added Smaug area conversion utility, found in /secure/obj/converter_smaug.c
+- A player's start room can now be a virtual room or a 
+  cloned object (e.g. a mount).
+- Fixed a problem with sending a string to eventDie() as an argument.
+- Beefed up get_stack() sefun.
+- Added virtual area to wiz labs for mounted combat testing.
+- Added 3d virtual sky area to mounted combat arena.
+- Fixed various problems with sky-based 3d virtual areas such as
+  falling through multiple rooms, flying up more than one room, etc.
+- The "source" command now takes the -q flag to indicate queuing, rather than
+  immediate execution. This allows creators to be subject to the maximum
+  number of commands per second limit but still be able use sourcing.
+- The object matching code used to step on objects. For example, if your room had
+  a "bar" as a SetItem, and a barstool as an inventory item, and OBJECT_MATCHING
+  was enabled, then "exa bar" would actually return the barstool's long desc.
+  This has now been fixed.
+- The LastLocation property in players now handles cloned environments (e.g. mounts)
+  and the return command also now deals with them correctly.
+- Fixed a bug in eventDescribeEnvironment() that prevented riders from 
+  seeing living creatures in a room when issuing the command: look
+- Fixed bug in npc's that made mounted riders hear spoken messages more than once.
+- Fixed another carry leak in containers. Containers now update their
+  environments' CarriedMass.
+- Fixed bug in LIB_BONUS that allowed the dropping/putting/getting of the 
+  invisible bonus object.
+- Fixed bug in LIB_POTION that failed to set the effect's duration.
+- LIB_CLEAN will no longer dest inheritables in the /lib/ directory. This 
+  avoids a situation where the inherits() efun returns confusing information.
+- FILE_D now does a daily recompilation of the mud files list.
+- Mounts are now set to resist room resets, so that one's loot doesn't
+  get unloaded from memory just because they left their horse alone too long.
+- The encre command now moves a player's estate to her creator homedir.
+- The suicide command now removes a creator's directory or a player's estate
+  and moves it to the /secure/save/decre directory.
+- SetAttackable can now take a function as an argument. See /domains/town/npc/lars.c
+  for an example.
+- A bug in SetAttackable that allowed players to be attacked when a string
+  was set as an argument is fixed.
+- A bug in QCS that prevented deleting rooms with relative "customdefs" defines
+  has been fixed.
+- "restore here" now works.
+- Fixed typo in Chapter 8 of the Admin Guide.
+
 ---- 2.4.1 ---
-- The display of obvious exits can be over the desc in brackets (default)
+- The display of obvious exits can be over the desc in brackets
   or under the desc in text form, depending on the NM_STYLE_EXITS 
   setting in config.h. This can be configured with: mudconfig nmexits [on|off]
 - Added Diku-style equipment (eq) command.

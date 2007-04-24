@@ -12,7 +12,7 @@
  style="font-weight: bold;">Dead Souls Admin FAQ</span></big><br>
 <br>
 Written by Cratylus @ Dead Souls, October 2005<br>
-Updated 28 February 2007<br>
+Updated April 2007<br>
 <span style="font-weight: bold; text-decoration: underline;"><br>
 </span>Note: commands are displayed in boldface, like this: <span
  style="font-weight: bold;">ls -a</span><span
@@ -21,7 +21,7 @@ Updated 28 February 2007<br>
 What's this FAQ about?</span><br>
 <br>
 The point of this document is to orient a new admin in<br>
-Dead Souls 2. Starting a MUD with a lib that is completely new to<br>
+Dead Souls 2. Starting a MUD with a lib thatn is completely new to<br>
 you can be confusing and discouraging. Hopefully this FAQ will<br>
 make the experience less difficult.<br>
 <br>
@@ -209,8 +209,7 @@ dream come true.<br>
 </a><br>
 <a href="#70">70 What do the version numbers mean?</a><br>
 <br>
-<a href="#71">71 The Dead Souls router is down. How do I switch back to
-*gjs?</a><br>
+<a href="#71">71 The Dead Souls router is down.</a><br>
 <br>
 <a href="#72">72 I'm going to totally revamp &lt;insert highly complex
 system here&gt;.<br>
@@ -262,8 +261,8 @@ dynamic?</a><br>
 <br>
 <a href="#90">90 Is intermud communication secure?</a><br>
 <br>
-<a href="#91">91 What should I <span
- style="font-weight: bold; font-style: italic;">not</span> do?</a><br>
+<a href="#91">91 What are some do's and don'ts<span
+ style="font-weight: bold; font-style: italic;"></span>?</a><br>
 <a href="#93"><br>
 </a></big><a style="font-family: courier new,courier,monospace;"
  href="#92"><big>92 Is DS2 in any way suited to create a non-english
@@ -329,7 +328,25 @@ going on?</a><br>
 <br>
 <a href="#111">111 How do I add a default alias?</a><br>
 <br>
+</big><big style="font-family: courier new,courier,monospace;"><a
+ href="#112">112 How do reset() and clean_up() work?</a><br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
+<a href="#113">113 When do reset() and clean_up() happen?</a><br>
 <br>
+</big><big style="font-family: courier new,courier,monospace;"><a
+ href="#114">114 I want a 100% PK mud. Setting rooms PK one by one is
+not acceptable.</a><br>
+<br>
+</big><a href="#115"><big
+ style="font-family: courier new,courier,monospace;">115 How do I make
+a new skill?</big></a><br>
+<br>
+<a href="#116"><big style="font-family: courier new,courier,monospace;">116
+Why was Descartes so lame?</big></a><br>
+<big style="font-family: courier new,courier,monospace;"><br>
+</big><br>
+<big style="font-family: courier new,courier,monospace;"><br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
 </big><big style="font-family: courier new,courier,monospace;"><br>
 <span style="font-weight: bold; text-decoration: underline;"><a name="0"></a>How
 do I start?</span><br>
@@ -433,23 +450,9 @@ mud. You're welcome to create as you please, and if your<br>
 building gets to the point where you'd like it included in<br>
 the lib, let me know and I'll inspect it for approval.<br>
 <br>
-Please note that anything you code on the Dead Souls<br>
-development mud becomes property of Dead Souls mudlib <br>
-distribution, meaning you can't prevent me from <br>
-using it. So if you want to prevent your code from <br>
-being used that way, don't code on my mud.<br>
-<br>
-Please also note that the above may not be true.<br>
-A physically signed agreement may be necessary for it to<br>
-be legally so. I leave that paragraph there because I<br>
-feel it is consistent with the spirit I'm trying to<br>
-convey here. If you contribute, please do so fully. A<br>
-moral commitment is the idea here, not an anally<br>
-legalistic one. <br>
-<br>
-As adults we'll work it out. I have no<br>
-interest in publishing anything without people's <br>
-permission.<br>
+Please note that starting January 2007, for any of your code to become <br>
+part of the official Dead Souls distribution, you must officially <br>
+disclaim copyright to it and place it into public domain.<br>
 <br>
 <br style="font-weight: bold; text-decoration: underline;">
 </big><big style="font-family: courier new,courier,monospace;"><span
@@ -519,8 +522,8 @@ intergossip channel</span><br style="color: rgb(255, 0, 0);">
 <br>
 The lpuni channel is a mix of chat and official <a href="lpu_faq.html">LPUniversity</a>
 <br>
-business. The LPUniversity project appears to be dead as of<br>
-this writing though (21 Nov 06), so the channel's existence is likely<br>
+business. The LPUniversity project has been dead as of<br>
+November 2006, though, so the channel's existence is likely<br>
 to be a matter of historical, and not practical, relevance.<br>
 <br>
 The ds channel is for Dead Souls-related conversation. Sometimes<br>
@@ -609,15 +612,9 @@ is watching you, you can edit "PINGING_MUDS" in<br>
 /secure/include/config.h to have the name of<br>
 your own mud only, so you just ping yourself.<br>
 <br>
-You can also DISABLE_INTERMUD in that<br>
-same file. <br>
+You can also disable your intermud connection with the command:<br>
 <br>
-<a href="http://dead-souls.net/downloads.html#1">Dont' edit that file
-with a default Windows<br>
-editor.</a> Back up the file before you edit it. Reboot <br>
-the mud after making the changes. If it won't reboot,<br>
-you probably munged the format and need to restore<br>
-the original.<br>
+<span style="font-weight: bold;">mudconfig intermud disable</span><br>
 <br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
@@ -679,7 +676,8 @@ For example:<br>
  style="font-family: courier new,courier,monospace;"><span
  style="font-weight: bold;"> /secure/cfg/races/wampa</span><br>
 <br>
-Edit the wampa file to reflect what you think a<br>wampa is like. If you want new players to be able<br>
+Edit the wampa file to reflect what you think a<br>
+wampa is like. If you want new players to be able<br>
 to select wampa as their race, make sure the file<br>
 has this line in it:<br>
 <br>
@@ -757,7 +755,8 @@ Souls Demo &lt;dead_souls&gt; the reason i'm cautioning you against it
 is</span><br style="color: rgb(0, 0, 153);">
 <span style="color: rgb(0, 0, 153);">[2006.11.20-18.14] Cratylus@Dead
 Souls Demo &lt;dead_souls&gt; that removing all races basically makes
-lots of rooms not work anymore, because they contain npc's that requireraces to exist</span><br>
+lots of rooms not work anymore, because they contain npc's that
+requireraces to exist</span><br>
 [2006.11.20-18.14] Syphon@WorldWideResistance &lt;dead_souls&gt; eep,
 That's a bit of editing<br>
 <span style="color: rgb(0, 0, 153);">[2006.11.20-18.14] Cratylus@Dead
@@ -895,16 +894,14 @@ remove all stock rooms from player view</span><br>
  style="font-weight: bold; text-decoration: underline;">How do I make
 my friend an admin?</span><br>
 <br>
-Use the groups menu in admintool, and select <br>
-"Modify a group". Select the ASSIST or SECURE group,<br>
-and enter the names of all the members it should have. If<br>
-I wanted to make xyzzy an assistant admin, I would<br>
-make him a creator, then I would edit the<br>
-ASSIST group and make the contents look like this:<br>
+<span style="font-weight: bold;"><br>
+</span>To make a creator named Xyzzy an assistant admin, ype:<span
+ style="font-weight: bold;"><br>
 <br>
-<span style="font-weight: bold;">cratylus:xyzzy<br>
+groupmod -a ASSIST xyzzy <br>
 <br>
-</span>Xyzzy then needs to log out and log back in.<br>
+</span>Xyzzy then needs to log out and log back in. To<br>
+make him a full admin, you'd add him to the SECURE group instead.<br>
 <span style="font-weight: bold;"></span><br>
 <br style="font-weight: bold; text-decoration: underline;">
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
@@ -1283,11 +1280,16 @@ leetness to others.<br>
  style="font-weight: bold; text-decoration: underline;">I found a bug.
 For real. Can you please fix it?</span><br>
 <br>
-Email me: &lt;put my name here&gt;@comcast.net<br>
+Please post on the forum: <a href="http://lpmuds.net/forum/">http://lpmuds.net/forum/</a><br>
 <br>
 Please include a detailed description of the bug, and the exact<br>
 error text and commands that produced it. A log file or<br>
 screencap would be helpful.<br>
+<br>
+Make sure you have read this:<br>
+<br>
+<a href="http://www.chiark.greenend.org.uk/%7Esgtatham/bugs.html">http://www.chiark.greenend.org.uk/~sgtatham/bugs.html</a><br>
+<br>
 <br>
 <br style="font-weight: bold; text-decoration: underline;">
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
@@ -1392,7 +1394,8 @@ intermud group:<br>
 <br>
 </big><big style="font-family: courier new,courier,monospace;"><br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
- style="font-family: courier new,courier,monospace;"><span style="font-weight: bold; text-decoration: underline;"><a name="36"></a></span></big><big
+ style="font-family: courier new,courier,monospace;"><span
+ style="font-weight: bold; text-decoration: underline;"><a name="36"></a></span></big><big
  style="font-family: courier new,courier,monospace;"><span
  style="font-weight: bold; text-decoration: underline;">How do I get
 off intermud completely?</span><br>
@@ -1708,15 +1711,9 @@ will gladly accept its submission, also by email. There's no<br>
 guarantee it will make it into any future release, but it just might.<br>
 <br>
 Please be aware that by doing so, you signal you claim no <br>
-copyright to the code, allowing me to publish it and <br>
-preventing you from ever revoking my right to distribute it.</big><big
- style="font-family: courier new,courier,monospace;"><br>
-<br>
-<small style="font-style: italic;"><small><small><small>Naturally there
-are interpretations of copyright law<br>
-that suggest the above paragraph is not correct in one way<br>
-or another, but my point is clear: if you're going to try to<br>
-do such a thing, don't bother submitting it. </small></small></small></small><br>
+copyright to the code (you must make it Public Domain), allowing me to <br>
+publish it and preventing you from ever revoking my right to distribute
+it.</big><big style="font-family: courier new,courier,monospace;"><br>
 <br>
 You also represent that no third party has copyright to <br>
 the code, and hold me harmless in any subsequent<br>
@@ -1732,28 +1729,12 @@ Souls that anyone other than me has copyright to. I can't<br>
 afford the risk of someone deciding I can't distribute<br>
 code that DS may eventually rely on.<br>
 <br>
-<small style="font-style: italic;"><small>Naturally there are
-interpretations of copyright law<br>
-that suggest the above paragraph is not correct in one way<br>
-or another, but my point is clear: if you're going to try to<br>
-do such a thing, don't bother submitting it.</small></small> <br>
-<br>
 </big><big style="font-family: courier new,courier,monospace;">Also, I
 don't want to hear from anyone about my<br>
-use of legal terms of art. I know damn well it's more complicated<br>than I make it sound. My phrasing is sufficient to make<br>
+use of legal terms of art. I know damn well it's more complicated<br>
+than I make it sound. My phrasing is sufficient to make<br>
 the legal practical transaction of ideas possible here.<br>
-<br>
-<small style="font-style: italic;"><small>Naturally there are
-interpretations of copyright law<br>
-that suggest the above paragraph is not correct in one way<br>
-or another, but my point is clear: if you're going to try to<br>
-do such a thing, don't bother submitting it. </small></small><br>
-<br>
-</big><big style="font-family: courier new,courier,monospace;">Oh wait
-that paragraph is ok. Sorry, I've been having<br>
-people's opinions on intellectual property inflicted on me<br>
-again, and it makes my copy and paste finger twitchy.<br>
-<br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
 The point I'm making should be clear. If it isn't,<br>
 please consult applicable laws, etc. <br>
 <br>
@@ -2199,7 +2180,7 @@ stay 100% on top of such a system (just like any OS), there's<br>
 no way to be sure you won't rooted.<br>
 <br>
 With stack security, privilege management is much, much<br>
-easier. A file's privilege is based solely on its location. If<br>
+simpler. A file's privilege is based solely on its location. If<br>
 a user doesn't have read access to /foo/bar/ then she can't read<br>
 or modify /foo/bar/file.c. If someone with privs to that location<br>
 copies the file to somewhere else, then the privs of that new location<br>
@@ -2306,9 +2287,15 @@ Whoops. Send me an email telling me where I goofed and I'll fix it.<br>
  style="text-decoration: underline; font-weight: bold;">Intermud mail
 doesn't work</span><br>
 <br>
-No it doesn't. It's actually a pretty complicated system to<br>
-implement, so get used to just local mud mail for now. It<br>
-is definitely planned for the future, though.<br>
+Yes it does. If you tried to send intermud mail to someone<br>
+with Dead Souls and it failed, then one or more of the following is
+true:<br>
+<br>
+* You are using a Dead Souls version below 2.4.1.<br>
+* The recipient is using a Dead Souls version below 2.4.1.<br>
+* The recipient has disabled their OOB service.<br>
+* The recipient has disabled their INET service.<br>
+* The recipient is firewalled and cannot accept OOB connections.<br>
 <br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
@@ -2375,10 +2362,8 @@ next release. If this is so the version name will have<br>
 "(unreleased)" next to it.<br>
 <br>
 As of 2.0r19, the dsversion command is available to<br>
-allow you to query that site from the mud itself.<br>
-<br>
-To see what I'm working on, log onto the demo mud<br>
-and type: <span style="font-weight: bold;">finger cratylus</span><br>
+allow you to query that site from the mud itself.<span
+ style="font-weight: bold;"></span><br>
 <br>
 </big></small></big><big
  style="font-family: courier new,courier,monospace;"><br>
@@ -2393,21 +2378,7 @@ No, I don't. If I had developers and teams and<br>
 such things, then I'd use all the fancy project<br>
 management stuff available on Sourceforge.<br>
 But I don't want to manage developers,<br>
-I want to lib code. If you want to help develop<br>
-the lib, then that's really great. Follow the instructions<br>
-from the previous question and look at my plan file<br>
-for something that looks interesting and that<br>
-doesn't have an asterisk. Tell me you'd like<br>
-to take that project, and I'll mark it as yours.<br>
-That's it. Send it to me when yer done.<br>
-If I get tired of waiting I'll tell you<br>
-I'm going to do it myself, like I was planning<br>
-all along, and you'll be relieved of that expectation.<br>
-Setting up some kind of sophisticated<br>
-collaboration tool to get 3 pieces of code from<br>
-2 people, and me having to be on people's backs<br>
-for results and stuff...this is not what I <br>
-signed up for and I'm not doing it.<br>
+I want to lib code. <br>
 </big><big style="font-family: courier new,courier,monospace;"><br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
@@ -2460,7 +2431,7 @@ corrected.<br>
  style="font-weight: bold;"><span style="text-decoration: underline;">How
 does one achieve 'high mortal' or 'ambassador' positions?</span><br>
 <br>
-</span>Those are legacy positions from v1/Pre v1 Dead Souls. They are<br>
+</span>Those are legacy positions from DS v1/Nightmare IV/3. They are<br>
 basically groups, managed by an arch with admintool, which<br>
 can be granted privileges not normally enjoyed by mortals.<br>
 In the current implementation of Dead Souls, those<br>
@@ -2499,7 +2470,7 @@ I keep getting: "It seems some work is being </span><br
 <span style="font-weight: bold; text-decoration: underline;">done right
 now, try later."</span><br>
 <br>
-This is very bad. What this means is that some<br>
+This is bad. What this means is that some<br>
 files that are needed in order to load your player <br>
 object cannot be loaded. It can be any of a very large<br>
 number of files, which is the problem. Usually this<br>
@@ -2556,30 +2527,25 @@ vast difference from the old major version. Versions 1 and 2 of<br>
 Dead Souls are so different as to be largely incompatible with each<br>
 other's code.<br>
 <br>
-As of this writing, 2.1.1 is released, and it is the fulfillment<br>
-of the promise that there was in version 1.1.<br>
-<br>
-The focus of development is now in adding major systems and
-functionality<br>
-that 1.1 was hoped to have, but never did.<br>
+As of this writing, 2.4.1 is released as the current stable version.<br>
 <br>
 <br>
 </big><big style="font-family: courier new,courier,monospace;"><a
  name="71"></a><span
  style="font-weight: bold; text-decoration: underline;">The Dead Souls
-router is down. How do I switch back to *gjs?</span><br>
+router is down.</span><br>
 <br>
 Use the switchrouter command to change between <br>
 routers. The new default I3 router for Dead Souls muds is called<br>
 *yatmim. So far it's been dramatically more reliable than<br>
-the old intermud.org router, which is known as *gjs.<br>
-The advantage to *yatmim is that it is dependable<br>
-and the bulk of the Dead Souls community (a vital resource for<br>
-DS-specific technical support) uses that router.<br>
-The advantage to *gjs is that many more muds are<br>
-connected to it, and you can have more opportunity for random<br>
-chatting and gossiping. Also, the intercre channel on *gjs<br>
-is an excellent resource for general technical questions.<br>
+the old intermud.org router, which was known as *gjs.<br>
+<br>
+If the router you are on is down, try using the switchrouter<br>
+command to connect to a backup. As of this writing, the *i4<br>
+and *yatmim routers serve as mirrors for each other, so<br>
+that connecting to one will give you access to the same muds<br>
+as those on the other.<br>
+<br>
 For more information on switching between routers, type:<br>
 <br>
 <span style="font-weight: bold;">help switchrouter</span><br>
@@ -2588,11 +2554,6 @@ If the *yatmim router goes down for more than a<br>
 few minutes, make sure to check the <a href="router.html">router page</a>
 to see if<br>
 the IP address or port have changed.<br>
-<br>
-There's also a good chance that what has happened<br>
-is your mud's IP address has changed, and *yatmim interprets<br>
-your connection from a different IP as an impostor. Eventually<br>
-this will clear. You may have to wait up to 24 hours.<br>
 <br>
 <br>
 </big><big style="font-family: courier new,courier,monospace;"><a
@@ -2621,7 +2582,8 @@ front of that horse. Let me phrase it like this:<br>
 know and understand, you aren't ready to do lib coding yet."<br>
 <br>
 If you are at 100% grok with the manual, then<br>
-please read chapter 8 of the Admin's Guide to get started<br>
+please read <a href="http://dead-souls.net/doc/guide/chapter08">chapter
+8 of the Admin's Guide</a> to get started<br>
 on serious lib work. <br>
 <br>
 <br>
@@ -2915,7 +2877,7 @@ more details on that system.<br>
 </big><big style="font-family: courier new,courier,monospace;"><br>
 The permissions logic goes something like this:<br>
 <br>
-<span style="font-weight: bold;">uid/euid/guid</span>:<br>
+<span style="font-weight: bold;">uid/euid/gid</span>:<br>
 1) These absolutely do not work in Dead Souls. It is not a supported
 security model.<br>
 <br style="font-weight: bold;">
@@ -2952,10 +2914,14 @@ Type: <span style="font-weight: bold;">help ticktock</span><br>
  style="font-weight: bold; text-decoration: underline;">How can I
 change the default prompt? Can I make it dynamic?</span><br>
 <br>
-The default prompt is defines in /secure/include/config.h .<br>
-It is static. Eventually a revamp of the command shell will permit<br>
-dynamic prompts (listing, for example, health status, or current<br>
-working directory) but for now that is not available.<br>
+The default prompt is defined in /secure/include/config.h .<br>
+<br>
+In Dead Souls 2.4.1 and above, you can use the prompt command<br>
+to change the default to something else, and you can even <br>
+have dynamic prompts which indicate your health status, etc.<br>
+Type:<br>
+<br>
+<span style="font-weight: bold;">help prompt</span><br>
 <br>
 <br>
 <a name="89"></a><span
@@ -3028,15 +2994,31 @@ Therefore: do not tell secrets across intermud.<br>
 <br>
 <br>
 <a name="91"></a><span
- style="font-weight: bold; text-decoration: underline;">What should I <span
- style="font-style: italic;">not</span> do?</span><br>
+ style="font-weight: bold; text-decoration: underline;">What are some
+do's and don'ts?</span><br>
 <br>
-There aren't too many "don'ts", but they tend to<br>
+There aren't too many, but they tend to<br>
 be important, so try to follow these guidelines:<br>
 <br>
 - Don't mess with /realms/template/ unless you know exactly<br>
 what you're doing. Breaking anything there will hose up<br>
 new creators. The same goes for /secure/sefun/make_workroom.c<br>
+<br>
+- Don't be too adventurous with your admin character. I've<br>
+had to change admin tools so people can't remove themselves<br>
+from admin groups, and so that people can't demote themselves<br>
+from creator to player...not because I thought maybe someone<br>
+might do it, but because people <span
+ style="font-weight: bold; font-style: italic;">have</span> done it. If
+you play games<br>
+with your admin's body, gender, stats, whatever, it probably won't be<br>
+fatal, but then, it might. Don't experiment on your admin. Use<br>
+a test character.<br>
+<br>
+- Always always always back up any lib files you mess<br>
+with. The <span style="font-weight: bold;">bk</span> and <span
+ style="font-weight: bold;">restore</span> commands are your best
+friends.<br>
 <br>
 - Don't let just anyone off the street become Creator. You<br>
 need to know and trust your builders.<br>
@@ -3045,6 +3027,34 @@ need to know and trust your builders.<br>
 <br>
 - Don't use color codes in your mud name. It makes people on<br>
 intermud cranky.<br>
+<br>
+- Don't edit files that end in ".o". Those are data files,<br>
+and are very very easy to corrupt if you edit them by hand,<br>
+possibly damaging your mud.<br>
+<br>
+- Don't assume it's anyone's responsibility but your own <br>
+to teach you LPC and how to use Dead Souls.<br>
+<br>
+- You should avoid changing your lib name unless you have<br>
+a good reason for doing so. Changing from "Dead Souls" to<br>
+"MyLib" or whatever probably seems like a fun thing to do, but<br>
+makes you look like you're trying to claim credit that is not due.<br>
+People really do notice, and really can tell. It makes you look bad.<br>
+Keep in mind that most of what is currently in Dead Souls<br>
+was written exclusively by me<a href="#91a"><span
+ style="font-weight: bold;">*</span></a>, and yet I have not changed
+the name.<br>
+Similarly, unless you're actually branching MudOS, don't change<br>
+the name that is reported by it. Leaving the driver and lib names<br>
+alone is perhaps the one way you have to demonstrate your<br>
+gratitude to the dozens of developers that made them available<br>
+to you.<br>
+<br>
+<small><small><a name="91a"></a><span style="font-weight: bold;">*</span>
+After removing docs from each, the uncompressed lib material<br>
+in DS1.1 is about 5 megs contained in about 1000 files and<br>
+directories, and DS2.4 is about 12 megs contained in about 2300<br>
+files and directories. </small></small><br>
 <br>
 <br>
 <a style="font-weight: bold; text-decoration: underline;" name="101"></a><span
@@ -3155,25 +3165,26 @@ reasonable to suggest that you run your mud on a static IP.<br>
 Finally, I have seen some home firewall/router devices that<br>
 have an unconscionably short timeout for idle connections. There is<br>
 usually enough intermud traffic that your conenction will receive a<br>
-packet within fifteen minutes, but if your timeout interval appears to
+packet within five minutes, but if your timeout interval appears to
 be<br>
 shorter than that, you can tweak your intermud ping interval by<br>
 changing this line in /secure/daemon/ping.c then updating the file:<br>
-<big><br>
-</big><span style="font-family: courier new,courier,monospace;">call_out(
-(: eventPing :), 900);</span><br
+<span style="font-family: courier new,courier,monospace;"></span><br
  style="font-family: courier new,courier,monospace;">
+if(!(counter % 300)) eventPing();<br>
 <br style="font-family: courier new,courier,monospace;">
 <span style="font-family: courier new,courier,monospace;">to this:</span><br
  style="font-family: courier new,courier,monospace;">
 <br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">call_out( (:
-eventPing :), 240);</span><br
+<span style="font-family: courier new,courier,monospace;"></span></big><big
+ style="font-family: courier new,courier,monospace;">if(!(counter %
+60)) eventPing();</big><br
+ style="font-family: courier new,courier,monospace;">
+<big style="font-family: courier new,courier,monospace;"><br
  style="font-family: courier new,courier,monospace;">
 <br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
 <span style="font-family: courier new,courier,monospace;"> That will
-shorten your intermud ping interval to 4 minutes,</span><br
+shorten your intermud ping interval to 1 minute,</span><br
  style="font-family: courier new,courier,monospace;">
 <span style="font-family: courier new,courier,monospace;">which should
 keep most such aggressive timeouts from happening.</span><br
@@ -3273,11 +3284,11 @@ I think you'll find Dead Souls 2 can be molded into whatever you want.<br>
 <br>
 However, I would suggest the if you're going to be spending more than<br>
 50% of your time ripping things out of this lib, it might be that this<br>
-lib doesn't actually suit you. You might be happier with <a
- href="http://www.mudmagic.com/codes/download/lpc/mudos/tmi-2">TMI-2</a>,<br>
-for example, or <a href="http://mudos.org/lima-1.0b5+driver.tar.gz">Lima</a>,
-or <a
- href="https://sourceforge.net/project/showfiles.php?group_id=150383">LPUni</a>.
+lib doesn't actually suit you. You might be happier with TMI-2,<br>
+for example, or Lima,
+or LPUn, etc. You can choose from a number of<br>
+libs from the LPMuds.net download page: <a
+ href="http://lpmuds.net/downloads.html">http://lpmuds.net/downloads.html</a>
 <br>
 <br>
 If you're going to stick with DS2, though, then it's time for a
@@ -3319,7 +3330,8 @@ other subjects,<br>
 involve judgment calls that a novice is not in a position to make. Are<br>
 you 100% sure that windows editor won't add dos formatting? Can you<br>
 be certain that your call_out won't bring the mud to its knees?<br>
-<br>&nbsp;&nbsp;&nbsp; Expert coders and admins can determine their risk
+<br>
+&nbsp;&nbsp;&nbsp; Expert coders and admins can determine their risk
 level based on<br>
 experience. Until newcomers gain that experience, I try to dissuade<br>
 them from risky behavior, because getting tripped up in the starting<br>
@@ -3460,10 +3472,7 @@ Dead Souls the very best LP lib out there. As you spend more time<br>
 getting acquainted with the DS community and how things work,<br>
 you will see that I am deadly serious about bugs and they<br>
 usually get addressed quickly, if they prevent functionality.<br>
-At a minimum, legitimate bugs end up on my .plan (which you<br>
-can see by <a href="http://dead-souls.net/ds-admin-faq.html#1">logging
-on to the demo mud</a> and typing: <span style="font-weight: bold;">finger
-cratylus</span>).<br>
+At a minimum, legitimate bugs end up on my .plan.<br>
 <br>
 I know DS2 has bugs. I'm not under the illusion it's perfect,<br>
 or <a href="http://dead-souls.net/ds-admin-faq.html#55">that I'm a
@@ -3781,63 +3790,35 @@ Make it your own.<br>
  style="font-weight: bold; text-decoration: underline;">How do I make
 my new area the default domain where new people to arrive?</span><br>
 <br>
-<span style="font-weight: bold;">1)</span> Back everything up.<br>
-<br>
-<br>
-<span style="font-weight: bold;">2)</span> In your new domain, make
+<span style="font-weight: bold;"></span><span style="font-weight: bold;">1)</span>
+In your new domain, make
 sure that the room/ directory contains (working) rooms<br>
 with the following names:<br>
 <br>
 void.c<br>
 death.c<br>
 freezer.c<br>
+furnace.c<br>
 pod.c<br>
 wiz_hall.c<br>
+start.c<br>
 <br>
 See the rooms in /domains/default/room to see what these rooms do and
 how they work.<br>
-<br>
+The domaincreate command generates these rooms by default.<br>
 <br>
 </big><big style="font-family: courier new,courier,monospace;"><span
- style="font-weight: bold;">3)</span> Edit this file:
-/secure/include/rooms.h<br>
+ style="font-weight: bold;">2)</span> Use the mudconfig command with
+the defaultdomain subcommand. If your new<br>
+default domain is </big><big
+ style="font-family: courier new,courier,monospace;">/domains/dragonballz,
+you would type:<br>
 <br>
-Change this:<br>
-<br>
-#define ROOM_START&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-"/domains/campus/room/start"<br>
-<br>
-To point to your new domain's start room. For example,<br>
-<br>
-</big><big style="font-family: courier new,courier,monospace;">#define
-ROOM_START&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-"/domains/dragonballz/room/leet_start_room"</big><br>
+<span style="font-weight: bold;">mudconfig defaultdomain </span></big><big
+ style="font-family: courier new,courier,monospace; font-weight: bold;">/domains/dragonballz</big><br>
 <big style="font-family: courier new,courier,monospace;"><br>
-<br>
-<span style="font-weight: bold;">4)</span> Edit this file: </big><big
- style="font-family: courier new,courier,monospace;">/secure/include/dirs.h<br>
-<br>
-Change this:<br>
-<br>
-#define DIR_STANDARD_DOMAIN&nbsp;&nbsp;&nbsp;&nbsp; DOMAINS_DIRS
-"/default"<br>
-<br>
-To this:<br>
-<br>
-</big><big style="font-family: courier new,courier,monospace;">#define
-DIR_STANDARD_DOMAIN&nbsp;&nbsp;&nbsp;&nbsp; DOMAINS_DIRS "/dragonballz"<br>
-<br>
-Or whatever your new main area is.<br>
-<br>
-<br>
-<span style="font-weight: bold;">5)</span> reboot (In theory you can do
+<span style="font-weight: bold;">3)</span> reboot (In theory you can do
 this without rebooting, but the instructions would be longer)<br>
-<br>
-<br>
-<span style="font-weight: bold;">6)</span> If this fails, restore from
-the backup you made in step 1,<br>
-and ask for help either on the ds line or on <a
- href="http://lpmuds.net/forum/">the forum</a>.<br>
 <br>
 <br>
 <a name="109"></a><span
@@ -4051,6 +4032,313 @@ localhost or 127.0.0.1 and you should be able to boot again.<br>
 Add it to the Aliases array in /lib/nmsh.c<br>
 <br>
 <br>
+<span style="font-weight: bold; text-decoration: underline;"><a
+ name="112"></a>How do reset() and clean_up() work?</span><br>
+<br>
+LPmuds come from a tradition of trying to be as conservative with<br>
+computer memory as possible. Back when a server with 128 megabytes<br>
+of RAM was worth killing for, people often had to make do with<br>
+scant memory resources. Objects needed to be be either swapped to<br>
+disk, or unloaded from memory entirely, if they weren't really needed.<br>
+<br>
+The clean_up() apply was meant to address this. The driver<br>
+periodically calls clean_up() on every object. Typically, the<br>
+clean_up() function coded into a given object contains instructions<br>
+such as "if you're not in a player's inventory and you're just<br>
+lying around, then destruct yourself", that sort of thing. In<br>
+Dead Souls, clean_up() is a function in LIB_CLEAN, which is <br>
+inherited by most objects.<br>
+<br>
+Some objects should never be unloaded from memory, like daemons,<br>
+and some special objects. Such things should have SetNoClean(1)<br>
+specified in their create() function, so that the clean_up()<br>
+apply doesn't try to destroy them.<br>
+<br>
+Tangible objects (shoes, swords) that are SetNoClean(1) will<br>
+prevent the object they are in (NPC or room) from doing a clean_up().<br>
+<br>
+reset() is another "driver apply", or function that is called by<br>
+the driver. Like clean_up(), reset() is called periodically, but<br>
+it is intended not to be a trigger for auto-destruction, so much<br>
+as a set of instructions to make an object presentable to <br>
+players again.<br>
+<br>
+For example, if Joe Player completes the Orcslayer quest by<br>
+killing a bunch of orcs, then when Jane Player wants to do the <br>
+quest, she's just going to find a bunch of dead orcs. However,<br>
+when reset() gets called on the room, then the inventory can<br>
+reload, so that Jane gets a crack at those orcs as well.<br>
+<br>
+Like clean_up(), reset() is not generally meant to be put in<br>
+run of the mill objects. By default, rooms inherit reset()<br>
+from LIB_ROOM, and it serves the purpose of reloading the<br>
+inventory the room is supposed to have.<br>
+<br>
+<br>
+<a name="113"></a><span
+ style="font-weight: bold; text-decoration: underline;">When do reset()
+and clean_up() happen?</span><br>
+<br>
+The way MudOS works, the driver calls reset() and clean_up()<br>
+on objects based on the interval specified in the runtime<br>
+configuration file. <br>
+<br>
+That means that if mudos.cfg</big><big
+ style="font-family: courier new,courier,monospace;"> has a "time to
+reset" of<br>
+3600, your reset interval is 1 hour. Orcs will repopulate the<br>
+cave every hour at that rate (assuming they've been killed).<br>
+<br>
+Similarly, "time to clean up" specifies the driver's <br>
+interval between clean_up()'s. <br>
+<br>
+While this is a valid scheme, Dead Souls doesn't rely <br>
+on it. Dead Souls uses the TIME_TO_RESET variable in <br>
+/secure/include/config.h to determine the reset() and<br>
+clean_up() interval. If TIME_TO_RESET is 14400, then the<br>
+master daemon (MASTER_D) will run eventReset() every four<br>
+hours. eventReset() is a function that seeks out objects and<br>
+calls reset() and clean_up() on them.<br>
+<br>
+Note that this may cause set_reset() to behave in a way you don't<br>
+expect, and it means you'll get reset()'s in your mud even if<br>
+you compile the driver not to do so. <br>
+<br>
+Therefore, it's a good idea to set your "time to clean up"<br>
+and </big><big style="font-family: courier new,courier,monospace;">"time
+to reset" in mudos.cfg to something very large<br>
+(like 2000000000, aka 63 years) so that you don't have<br>
+two separate systems doing reset()'s and clean_up()'s.<br>
+<br>
+In Dead Souls 2.4.1 and below, MASTER_D calls reset() and<br>
+clean_up() on 25% of loaded objects at a time, to avoid<br>
+lag on busy muds. 2.5a1 and above can choose to have these<br>
+fuctions called on all loaded objects with the RESET_ALL<br>
+definition in /secure/include/config.h<br>
+<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;"><a
+ name="114"></a>I want a 100% PK mud. Setting rooms PK one by one is
+not acceptable.</span><br>
+<br>
+Setting your DS mud to be 100% PK (pplayer killing) is not that
+convenient <br>
+by default, I agree. The reason for this is that from what I've seen, <br>
+unrestricted PK is a great way to ruin a mud, and it should not be <br>
+something you can enable accidentally.<br>
+<br>
+Having said that, this is the procedure you would follow to make<br>
+a Dead Souls mud 100% unrestricted PK.<br>
+<br>
+1) Run the command: <span style="font-weight: bold;">mudconfig pk yes</span><br>
+2) Edit /lib/std/room.c. Change <br>
+<br>
+<span style="font-weight: bold; color: rgb(0, 102, 0);">private static
+int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PlayerKill&nbsp;&nbsp;&nbsp; = 0;</span><br>
+<br>
+to<br>
+<br>
+<span style="font-weight: bold; color: rgb(0, 102, 0);">private static
+int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PlayerKill&nbsp;&nbsp;&nbsp; = 1;</span><br>
+<br>
+3) Edit /lib/living.c. Change<br>
+<br>
+<span style="color: rgb(0, 102, 0); font-weight: bold;">&nbsp;&nbsp;&nbsp;
+isPK = 0;</span><br>
+<br>
+to<br>
+<br>
+<span style="font-weight: bold; color: rgb(0, 102, 0);">&nbsp;&nbsp;&nbsp;
+isPK = 1;</span><br>
+<br>
+4) Reboot<br>
+<br>
+5) Players created before this change may still need to use the <span
+ style="font-weight: bold;">pk</span> command<br>
+to enable player killing for themselves.<br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
+<span style="font-weight: bold; text-decoration: underline;"><a
+ name="115"></a>How do I make a new skill?</span><br>
+<br>
+What people usually mean by this is Diku style "skills", which are<br>
+more like special commands or spells than Dead Souls skills. In<br>
+Dead Souls, a "skill" is a property of a living thing that allows it<br>
+to be proficient to some specified level at a kind of activity. For<br>
+example, to be able to cast a defensive spell like buffer, you<br>
+may need a particular level of proficiency at the skill of "magic
+defense".<br>
+<br>
+That kind of skill isn't "created" in the standard sense. That kind<br>
+of skill is added to a player or NPC programmatically, usually when<br>
+their character is created, or they advance levels, or join a class.<br>
+<br>
+For more information on that kind of skill, please read Section IV<br>
+of Chapter 8 of the <a href="http://dead-souls.net/doc/guide/chapter08">Admin
+Guide</a>.<br>
+<br>
+In order to make the Diku-style "skill", all you really need to <br>
+do is write a new command. For example, take a look at <a
+ href="http://dead-souls.net/code/ds2.4.1/lib/cmds/players/flee.c">/cmds/players/flee.c</a><br>
+<br>
+That's what a Dead Souls command looks like. Pretty straightforward,<br>
+but you'll need to become a little familiar with LPC to make your<br>
+own. Read the <a href="http://dead-souls.net/doc/manual/">Creator's
+Manual</a> to become familiar with LPC, then<br>
+play around with making a command of your own by copying flee.c to<br>
+bash.c or whatever, and tinkering with the code.<br>
+<br>
+There's no "quick" way to making a new skill of this kind. This is the<br>
+point where you decide whether to invest the time in learning enough<br>
+LPC to get your vision implemented in earnest.<br>
+<br>
+For the advanced coders, I would suggest creating a new <a
+ href="http://dead-souls.net/verbs.html">verb</a>, rather <br>
+than a new command. Verbs are far more powerful and sophisticated than<br>
+commands and are suited for just this kind of purpose. However, they<br>
+require intermediate-to-advanced LPC coding skills, so if you are<br>
+new to LPC, please do not try verbs yet.<br>
+<br>
+<br>
+<a name="116"></a><span
+ style="font-weight: bold; text-decoration: underline;">Why was
+Descartes so lame?</span><br>
+<br>
+People have really got the wrong idea here. There are two main
+complaints<br>
+against the original author of the Dead Souls lib:<br>
+<br>
+"Descartes was a mean jerk."<br>
+<br>
+and<br>
+<br>
+"Descartes was an incompetent coder and/or docwriter."<br>
+<br>
+My first response is that even if these things were true, <span
+ style="font-weight: bold; font-style: italic;">it doesn't matter</span>.<br>
+<br>
+Whether Descartes was personally hurtful to you once is totally<br>
+irrelevant to your mud. He has left the mudding community and<br>
+will not hurt you again. Further, Dead Souls 2 was built from<br>
+public domain code, meaning he can never ever revoke your right<br>
+to use Dead Souls. By nursing your old resentments against Descartes,<br>
+you are only casting yourself in a bad light, by seeming petty<br>
+and self-involved.<br>
+<br>
+As to his supposed programming competence, this also is entirely
+irrelevant<br>
+to you. I can tell you that as the current maintainer of DS, I am<br>
+intimately familiar with his code and am in an excellent position<br>
+to sit here and bitch about it. The main reason I don't is that:<br>
+<br>
+1) I am eternally grateful he wrote it in the first place.<br>
+2) Given the TENS OF THOUSANDS of lines of good code he's written, a
+few <br>
+&nbsp;&nbsp; stumbles aren't worth getting smarmy about.<br>
+3) Whether the code was written by him, one of his people, or dictated<br>
+&nbsp;&nbsp; to the lib directly from the mouth of Satan in the pits of
+hell, in the end, the <br>
+&nbsp;&nbsp; original author is not the problem. If the code doesn't do
+what you want, there <br>
+&nbsp;&nbsp; is really no point at all in grousing about it. Either fix
+it, ask for help, or<br>
+&nbsp;&nbsp; get a new lib. If you're an admin it's because you're a
+can-do type,<br>
+&nbsp;&nbsp; and willing to DIY where necessary. If not, blaming and
+complaining aren't<br>
+&nbsp;&nbsp; the answer. Meditation and introspection are. As in, you
+should be asking<br>
+&nbsp;&nbsp; yourself if running a mud is what you should be doing.<br>
+<br>
+Ok, now that I got the ranting out of my system, let's address the
+specific accusations:<br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;">"Descartes
+was a mean jerk."<br>
+<br>
+&nbsp;&nbsp;&nbsp; Yeah, sort of. It really depended on how you
+approached him. Really,<br>
+as far as I could tell, he was a normal person with a somewhat low<br>
+threshold for having his buttons pushed. And people enjoyed pushing<br>
+his buttons. A lot. And this lowered his threshold for it. Rinse,
+repeat.<br>
+<br>
+&nbsp;&nbsp;&nbsp; As a result, if you were to publicly approach him in
+a way that<br>
+he identified as making you likely to be a button pusher, he'd tend to <br>
+handle you as such. You were less likely to get bile on you if you<br>
+approached him privately, but then, you might just get ignored as<br>
+Yet Another Loser wanting her hand held rather than just putting in<br>
+the work learning how to build her mud.<br>
+<br>
+&nbsp;&nbsp;&nbsp; On occasion he'd also just be generally irritable,
+combative, and argumentative.<br>
+In short, he was a normal person. I have personally been involved in<br>
+plenty of flaming back and forth with Descartes...quite thoroughly
+hostile<br>
+and ill-spirited. I doubt either one of us took it personally. This sort<br>
+of behavior was kind of the norm on intermud at the time. If you took it<br>
+personally, really, that's your problem, not his.<br>
+<br>
+&nbsp;&nbsp;&nbsp; And remember, we're talking about Descartes "in
+character". Whenever<br>
+I've communicated with George Reese out of his Descartes character,
+he's been<br>
+nothing but polite, courteous, and personable. Don't mistake the player<br>
+for the character.<br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;">"Descartes
+was an incompetent coder and/or docwriter."<br>
+<br>
+&nbsp;&nbsp;&nbsp; This one bugs me. The main reason is that I don't
+think the people<br>
+who say these things are in a position to judge. I think that something
+like<br>
+99% of his code is just dandy. It's useful and effective. And most of<br>
+it is quite efficient: remember that Dead Souls was developed on very<br>
+weak machines and was the basis for a very busy mud. It was vital that<br>
+things run efficiently and load economically.&nbsp; <br>
+<br>
+&nbsp;&nbsp;&nbsp; That his code contains some weaknesses is beyond
+dispute. If I were<br>
+to criticize something about his code, though, it wouldn't be that it is<br>
+shoddy or ill-conceived. Where I run into something that makes me spit,<br>
+usually it's obvious that he meant to finish a thing, and just didn't<br>
+get to it. If you run into something that tempts you to say "bah,<br>
+more DescartesLogic", step back and take a deep breath. The chances are<br>
+that you're really not grasping that bigger picture of the code you're<br>
+examining. <br>
+<br>
+&nbsp;&nbsp;&nbsp; On the other hand, yes, some objects really seem to
+have been handled<br>
+carelessly. I believe I lost a few months off my life from the
+aggravation<br>
+of trying to fix various issues in armor. This does not mean Descartes <br>
+was an incompetent coder. It means that, like normal people who work on<br>
+a hobby that does not feed, clothe, or house them, Descartes on occasion<br>
+slapped something together to just get it working and do what he needed
+quickly.<br>
+<br>
+&nbsp;&nbsp;&nbsp; Is that something anyone is not guilty of?<br>
+<br>
+&nbsp;&nbsp;&nbsp; As to weak docs, remember that his Basic and
+Intermediate LPC texts<br>
+are of biblical significance in the history of Dead Souls. They are,
+though<br>
+imperfect, a bedrock of documentation that is massive in size and<br>
+greatly detailed. This is in addition to the material in /doc/build. If<br>
+those docs seem inadequate to you, then you simply cannot be pleased.<br>
+<br>
+&nbsp;&nbsp;&nbsp; In the end, keep this in mind. George Reese is a
+professional developer,<br>
+who runs a software business. He is also a professional docwriter,
+having<br>
+published technical books that people have paid real money to buy.
+Unless<br>
+you have comparable credentials, and/or have published a mudlib yourself<br>
+which thousands of people have used, then you might want to reconsider<br>
+complaining about Descartes and his competence in these areas.<br>
+&nbsp;&nbsp;&nbsp; <br>
 </big><br style="font-family: courier new,courier,monospace;">
 <big style="font-family: courier new,courier,monospace;">-
 Cratylus</big><br style="font-family: courier new,courier,monospace;">

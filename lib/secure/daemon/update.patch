@@ -3,204 +3,54 @@
 
 inherit LIB_DAEMON;
 
-static void eventUpdate() {
+static void eventUpdate(){
+    string config_file = read_file("/secure/include/config.h");
+    string newfile = "#include <lib.h>\n";
+    newfile += "\n";
+    newfile += "inherit LIB_DAEMON;\n";
+    newfile += "\n";
+    newfile += "static void eventUpdate(){}\n";
+    newfile += "\n";
+    newfile += "static void create(){\n";
+    newfile += "    daemon::create();\n";
+    newfile += "    call_out((: eventUpdate :), 60);\n";
+    newfile += "}\n";
 
-    if(!file_exists("/secure/tmp/update.lock")){
-	string config_file = read_file("/secure/include/config.h");
-        string native = read_file( (file_exists("/secure/sefun/native_version.c") ?
-"/secure/sefun/native_version.c" : "/secure/scripts/native_version.proto"));
-        string ver = mudlib_version();
-        string mudinfo = replace_string(read_file("/secure/sefun/mud_info.c"),
-                ver,"2.3a20");
-        string native_rev = replace_string((native ? native :
-"string native_version() { return \"UNKNOWN\";}"),
-                "UNKNOWN",ver);
-        write_file("/secure/sefun/mud_info.c",mudinfo,1);
-        write_file("/secure/sefun/native_version.c",native_rev,1);
-        tc("ver: "+ver);
-        tc("native: "+native);
+    tc("Performing update tasks...");
 
-	load_object("/secure/cmds/admins/removeraces")->cmd();
-	write_file("/secure/tmp/update.lock","The mud will probably reboot twice.");
+    if(sizeof(config_file)){
 
-	if(sizeof(config_file)){
+	if(!grepp(config_file, "RESET_ALL"))
+	    config_file = append_line(config_file,"#define TIME_TO_RESET",
+	      "#define RESET_ALL                0");
 
-	    if(!grepp(config_file, "PLAYER_KILL")) 
-		config_file = append_line(config_file,"GLOBAL_MONITOR",
-		  "#define PLAYER_KILL              1");
+        if(!grepp(config_file, "WEB_SOURCE"))
+            config_file = append_line(config_file,"NM_STYLE_EXITS",
+              "#define WEB_SOURCE               \"149.152.218.102\"");
 
-	    if(!grepp(config_file, "HOST_IP"))
-		config_file = append_line(config_file,"DEFAULT_PROMPT",
-		  "#define HOST_IP                  \"127.0.0.1\"");
-
-	    if(!grepp(config_file, "LOCAL_TIME"))
-		config_file = append_line(config_file,"GMT_OFFSET",
-		  "#define LOCAL_TIME               1");
-
-	    if(!grepp(config_file, "EXTRA_TIME_OFFSET"))
-		config_file = append_line(config_file,"LOCAL_TIME",
-		  "#define EXTRA_TIME_OFFSET        0");
-
-	    if(!grepp(config_file, "NPC_CATCH_TELL_DEBUG"))
-		config_file = append_line(config_file,"PLAYER_KILL",
-		  "#define NPC_CATCH_TELL_DEBUG     0");
-
-	    if(!grepp(config_file, "SAME_IP_MAX"))
-		config_file = append_line(config_file,"NPC_CATCH_TELL_DEBUG",
-		  "#define SAME_IP_MAX              4");
-
-	    if(!grepp(config_file, "COMPAT_MODE"))
-		config_file = append_line(config_file,"SAME_IP_MAX",
-		  "#define COMPAT_MODE              1");
-
-	    if(!grepp(config_file, "RETAIN_ON_QUIT"))
-		config_file = append_line(config_file,"COMPAT_MODE",
-		  "#define RETAIN_ON_QUIT           1");
-
-	    if(!grepp(config_file, "MAX_COMMANDS_PER_SECOND"))
-		config_file = append_line(config_file,"RETAIN_ON_QUIT",
-		  "#define MAX_COMMANDS_PER_SECOND  10");
-
-	    if(!grepp(config_file, "DEFAULT_PARSING"))
-		config_file = append_line(config_file,"MAX_COMMANDS_PER_SECOND",
-		  "#define DEFAULT_PARSING          0");
-
-
-	    if(!grepp(config_file, "CALL_OUT_LOGGING")){
-		string thing = "// Note: call_out logging breaks a lot of code.\n";
-		thing += "// only use it in extremis. Reboot when activating\n";
-		thing += "// or deactivating it.\n";
-		thing += "#define CALL_OUT_LOGGING         0";
-		config_file = append_line(config_file,"DEFAULT_PARSING",thing);
-	    }
-
-	    if(!grepp(config_file, "EVENTS_LOGGING"))
-		config_file = append_line(config_file,"CALL_OUT_LOGGING",
-		  "#define EVENTS_LOGGING           1");
-
-	    if(!grepp(config_file, "DISABLE_REBOOTS"))
-		config_file = append_line(config_file,"EVENTS_LOGGING",
-		  "#define DISABLE_REBOOTS          0");
-
-	    if(!grepp(config_file, "BARE_EXITS"))
-		config_file = append_line(config_file,"DISABLE_REBOOTS",
-		  "#define BARE_EXITS               1");;
-
-	    if(!grepp(config_file, "COMMAND_MATCHING"))
-		config_file = append_line(config_file,"BARE_EXITS",
-		  "#define COMMAND_MATCHING         0");;
-
-	    if(!grepp(config_file, "OBJECT_MATCHING"))
-		config_file = append_line(config_file,"COMMAND_MATCHING",
-		  "#define OBJECT_MATCHING          0");
-
-	    if(!grepp(config_file, "LIVEUPGRADE_SERVER"))
-		config_file = append_line(config_file,"OBJECT_MATCHING",
-		  "#define LIVEUPGRADE_SERVER       \"Dead Souls\"");
-
-            if(!grepp(config_file, "CARRIAGE_RETURN"))
-                config_file = append_line(config_file,"LIVEUPGRADE_SERVER",
-                  "#define CARRIAGE_RETURN          \"\r\"");
-
-            if(!grepp(config_file, "OLD_STYLE_PLURALS"))
-                config_file = append_line(config_file,"CARRIAGE_RETURN",
-                  "#define OLD_STYLE_PLURALS        1");
-
-	    write_file("/secure/include/config.h", config_file+"\n", 1);
-	}
-
-	load_object("/secure/cmds/admins/addraces")->cmd();
-
-	debug_message("\nUpgrade is half done. Performing the first of two reboots.\n");
-	debug_message("\nYou can safely ignore errors seen here.\n");
-	call_out( (: shutdown :), 2);
+	write_file("/secure/include/config.h", config_file+"\n", 1);
     }
 
-    else {
-        string newfile = "#include <lib.h>\n";
-	newfile += "\n";
-	newfile += "inherit LIB_DAEMON;\n";
-	newfile += "\n";
-	newfile += "static void eventUpdate() {}\n";
-	newfile += "\n";
-	newfile += "static void create() {\n";
-	newfile += "    daemon::create();\n";
-	newfile += "    call_out((: eventUpdate :), 60);\n";
-	newfile += "}\n";
+    reload(EVENTS_D);
+    EVENTS_D->AddEvent("/secure/daemon/file","/secure/daemon/file","ReadDir",({ }),90000,1);
+    if(file_exists("/secure/scripts/qcs_check.scr"))
+    rename("/secure/scripts/qcs_check.scr", "/secure/scripts/qcs_check.txt");
+    mkdir("/domains/default/virtual");
+    mkdir("/domains/default/virtual/sky");
+    mkdir("/domains/default/virtual/arena");
+    mkdir("/secure/upgrades/reverts");
 
+    tc("Doing race stuff...");
+   
+    load_object("/secure/cmds/admins/removeraces")->cmd();
+    load_object("/secure/cmds/admins/addraces")->cmd();
 
-	rm("/secure/tmp/update.lock");
-	rm("/doc/sefun/tell_room");
-	rm("/www/ds-lpu-faq.html");
-	rm("/spells/resurrection.c");
-	rm("/cmds/creators/move.c");
-	rmdir("/domains/town/secure");
-	rm("/secure/cmds/creators/force.c");
-	rm("/secure/cmds/creators/locate.c");
-	rm("/secure/cmds/creators/banish.c");
-	rm("/secure/daemon/players.h");
-	rm("/secure/daemon/player.c");
-	rm("/secure/cmds/router.c");
-	rm("/secure/cmds/creators/roommaker.c");
-	rm("/secure/sefun/groups.c");
-	rm("/save/intermud.o");
-	rm("/lib/guild.c");
-	rm("/www/doc/ds-faq.html");
-	rm("/www/doc/ds-admin-faq.html");
-	rm("/www/doc/editor");
-	rm("/www/doc/example");
-	rm("/lib/include/guild.h");
-	rm("/doc/help/players/thief");
-	rm("/doc/help/players/mage");
-	rm("/doc/help/players/cleric");
-	rm("/cmds/admins/gate.c");
-	rm("/cmds/admins/stargate.c");
-	rm("/www/doc/ds-admin-faq.html");
-	rm("/www/doc/ds-faq.html");
-	rm("/www/doc/editor.html");
-	rm("/www/doc/example.html");
-	update("/daemon/intermud");
-	mkdir("/secure/log/adm");
-	rm("/cmds/creators/move.c");
-	rm("/secure/obj/roommaker.c");
-	mkdir("/secure/log/bak");
-	rm("/cmds/creators/move.c");
-	rm("/domains/campus/meals/red_wine.c");
-	rm("/domains/campus/meals/wing.c");
-	rm("/secure/cmds/creators/force.c");
-	rm("/secure/tmp/update.lock");
-	rm("/daemon/preload_check.c");
-	rm("/cmds/creators/home.c");
-	rm("/doc/sefun/GetCustomCommand");
-	rm("/doc/sefun/GetCustomPath");
-	rm("/domains/campus/obj/list.c");
-	rm("/domains/campus/txt/list.txt");
-	rm("/lib/props/getlivings.c");
-	rm("/lib/props/poisoning.c");
-	rm("/secure/daemon/update.patch");
-	rm("/secure/daemon/update.new");
-        rm("/cmds/creators/people.c");
-        rm("/secure/daemon/i3router/socket_stuff.h");
-        rm("/save/events.c");
-        mkdir("/domains/campus/save");
-      
-        reload(MASTER_D);
-        reload(CMD_D);
-
-        PLAYERS_D->CompileCreList();
-        PLAYERS_D->CompilePlayerList();
-
-        rename("/secure/daemon/update.c", "/secure/daemon/update.patch");
-	write_file("/secure/daemon/update.c",newfile,1);
-
-	debug_message("\nUpgrade is done. Performing the last of two reboots.\n");
-	//debug_message("\nYou can safely ignore errors seen here.\n");
-	call_out( (: shutdown :), 2);
-    }
+    tc("Almost done...");
+    write_file("/secure/daemon/update.c",newfile,1);
+    tc("Update tasks complete.");
 }
 
 static void create() {
     daemon::create();
-    call_out((: eventUpdate :), 2);
+    call_out((: eventUpdate :), 60);
 }
-

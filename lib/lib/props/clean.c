@@ -7,6 +7,7 @@
  */
 
 #include <clean_up.h>
+#include <rooms.h>
 
 private static int NoClean = 0; 
 
@@ -34,17 +35,20 @@ static int Destruct() {
     if( !this_object() ) {
 	return 1;
     }
+
     env = environment();
-    if( env ) {
-	foreach(object ob in all_inventory()) {
-	    if( ob ) {
-		ob->eventMove(env);
-	    }
+
+    foreach(object ob in all_inventory()) {
+	if( ob ) {
+	    if(env) ob->eventMove(env);
+	    else ob->eventMove(ROOM_FURNACE);
 	}
     }
 
-    if(living(this_object()) && furn = this_object()->GetProperty("furniture_object"))
-	if(objectp(furn)) furn->eventReleaseStand(this_object());
+    if(this_object()){
+	if(living(this_object()) && furn = this_object()->GetProperty("furniture_object"))
+	    if(objectp(furn)) furn->eventReleaseStand(this_object());
+    }
 
     remove_call_out();
     destruct(this_object()); 
@@ -59,7 +63,6 @@ int eventDestruct() {
 int clean_up(int ref_exists) { 
     object array inv; 
     object env;
-
     if( NoClean || ref_exists ) {
 	return NEVER_AGAIN;
     }
@@ -76,11 +79,21 @@ int clean_up(int ref_exists) {
 	}
     } 
     inv = deep_inventory(this_object());
-    if( sizeof(filter(inv, (: userp :))) ) {
-	return TRY_AGAIN_LATER;
+    if(inv && sizeof(inv)){
+	if( sizeof(filter(inv, (: interactive($1) :))) ) {
+	    return TRY_AGAIN_LATER;
+	}
+	if( sizeof(filter(inv, (: $1->GetNoClean() :))) ) {
+	    return TRY_AGAIN_LATER;
+	}
     }
     if( !env ) { 
-	catch(inv->eventDestruct());
+
+	if(this_object() && !strsrch(base_name(this_object()),"/lib/")){
+	    return NEVER_AGAIN;
+	}
+
+	if(inv) catch(inv->eventMove(ROOM_FURNACE));
 	if( this_object() ) {
 	    Destruct();
 	}
@@ -89,7 +102,7 @@ int clean_up(int ref_exists) {
 	}
 	return NEVER_AGAIN; 
     } 
-    if( userp(env) ) {
+    if( interactive(env) ) {
 	return TRY_AGAIN_LATER;
     }
     return env->clean_up(); 

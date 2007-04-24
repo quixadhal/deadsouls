@@ -16,15 +16,15 @@ int cmd(string str) {
     downer = previous_object();
     if(downer->GetForced()){
 	write("Forced attempt to shutdown.");
-	return 0;
+	return 1;
     }
     if(!archp(downer)) {
 	write("You are not permitted to shutdown the game.\n");
-	return 0;
+	return 1;
     }
     if(!str) {
 	write("You must give a shutdown reason as argument.\n");
-	return 0;
+	return 1;
     }
     shout("Game is shut down by " + downer->GetKeyName() + ".\n");
     log_file("game_log", ctime(time())+" Game shutdown by "+

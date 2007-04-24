@@ -85,6 +85,7 @@ int eventReceiveObject(object ob) {
 	return tmp;
     }
     AddCarriedMass(ob->GetMass());
+    if(environment()) environment()->AddCarriedMass((int)ob->GetMass());
     parse_refresh();
     return 1;
 }
@@ -93,7 +94,10 @@ int eventReleaseObject(object ob) {
     int x;
 
     x = container::eventReleaseObject(ob);
-    AddCarriedMass(-(ob->GetMass()));
+    if(ob->GetMass()){
+	AddCarriedMass(-(ob->GetMass()));
+	if(environment()) environment()->AddCarriedMass(-(ob->GetMass()));
+    }
     parse_refresh();
     return x;
 }

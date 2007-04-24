@@ -10,6 +10,7 @@
 #include <medium.h>
 
 inherit LIB_ROOM;
+inherit LIB_VIRTUAL;
 
 private int CoordX = 0;
 private int CoordY = 0;

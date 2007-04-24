@@ -7,12 +7,13 @@ static void create() {
     room::create();
     SetClimate("indoors");
     SetAmbientLight(30);
-    SetShort("Test Labs Corridor East");
-    SetLong("This is the main corridor of the test labs. North is the disease lab. The corridor runs west from here. South is the new Stargate lab.");
+    SetShort("Test Labs Corridor");
+    SetLong("This is the main corridor of the test labs. North is the disease lab. The corridor runs east and west from here. South is the new Stargate lab.");
     SetExits( ([
-	"west" : "/domains/default/room/wiz_corr1",
 	"north" : "/domains/default/room/quarantine1",
-	"south" : "/domains/default/room/stargate_lab.c",
+	"south" : "/domains/default/room/stargate_lab",
+	"west" : "/domains/default/room/wiz_corr1",
+	"east" : "/domains/default/room/wiz_corr_east2.c",
       ]) );
 
     SetInventory(([

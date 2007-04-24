@@ -1,5 +1,3 @@
-
-
 #include <lib.h>
 #include <daemons.h>
 #include <rooms.h>
@@ -78,11 +76,16 @@ mixed do_add_obj_to_obj(object ob, object ob2) {
 	return 0;
     }
 
-    if(!check_privs(this_player(),str) || 
-      !check_privs(this_player(),sourcefile)){
-	write("You lack sufficient privileges for this operation. Copy failed.");
+    if(!check_privs(this_player(),str)){ 
+	write("You lack sufficient privileges for this operation on "+str+". Copy failed.");
 	return 0;
     }
+
+    if(!check_read(sourcefile)){
+	write("You lack sufficient privileges for this operation on "+sourcefile+". Copy failed.");
+	return 0;
+    }
+
     if(!file_exists(sourcefile) || !file_exists(str)) {
 	write("That file no longer exists.");
 	return 0;
@@ -104,7 +107,7 @@ mixed do_add_obj_to_obj(object ob, object ob2) {
 	return 1;
     }
 
-    staff->eventAddItem(ob2, base_name(ob));
-    if(ob) ob->eventMove(ROOM_FURNACE);
+    if(staff->eventAddItem(ob2, base_name(ob)))
+	if(ob) ob->eventMove(ROOM_FURNACE);
     return 1;
 }

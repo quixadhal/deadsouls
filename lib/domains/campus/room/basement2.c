@@ -37,7 +37,7 @@ static void create() {
     SetProperty("no attack", 1);
 }
 void init(){
-::init();
+    ::init();
     add_action("push_it","push");
     add_action("push_it","search");
     add_action("push_it","touch");

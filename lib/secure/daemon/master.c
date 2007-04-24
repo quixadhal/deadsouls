@@ -28,6 +28,10 @@
 #ifndef DEFAULT_PARSING
 #define DEFAULT_PARSING 1
 #endif
+#ifndef RESET_ALL
+#define RESET_ALL 1
+#endif
+
 
 private static int ResetNumber;
 private static object Unguarded, gguy;
@@ -415,9 +419,6 @@ private static void load_access(string cfg, mapping resource) {
 	string tmp;
 	int i;
 
-	//if(ob) tc("valid_socket: ob: "+identify(ob),"blue");
-	//if(fun) tc("valid_socket: fun: "+identify(fun),"blue");
-	//if(info) tc("valid_socket: info: "+identify(info),"blue");
 	if( info && sizeof(info) == 4 ) {
 	    ob = info[1];
 	    port = info[3];
@@ -624,11 +625,6 @@ private static void load_access(string cfg, mapping resource) {
 
     string parser_error_message(int type, object ob, mixed arg, int flag) {
 	string err;
-	//tc("yupe: "+type);
-	//tc("ob: "+identify(ob));
-	//tc("arg: "+identify(arg));
-	//tc("flag: "+identify(flag));
-	//tc("last cmd: "+this_player()->GetLastCommand());
 
 	if( ob ) err = (string)ob->GetShort();
 	else err = "";
@@ -657,13 +653,6 @@ private static void load_access(string cfg, mapping resource) {
 		if(DEFAULT_PARSING){
 		    gcmd = this_player()->GetLastCommand();
 		    this_player()->eventRetryCommand(gcmd);
-		    //this_player()->SetPlayerPaused(1);
-		    //tc("hm?");
-		    //call_out( (: this_player()->eventRetryCommand(gcmd) :), 0);
-		    //f = bind( (: call_other, gguy, "eventRetryCommand",gcmd :), gguy );
-		    //if( f ) catch(evaluate(f));
-		    //new("/secure/obj/executor",gguy,gcmd);
-
 		    return " ";
 		}
 
@@ -755,7 +744,8 @@ private static void load_access(string cfg, mapping resource) {
 	x = reclaim_objects();
 	write_file(DIR_LOGS "/reset", "Reset " + ResetNumber + " occurred at: " +
 	  ctime(time()) + "\n");
-	obs = objects( (: !environment($1) && (random(100) < 26) :) );
+	if(!RESET_ALL) obs = objects( (: !environment($1) && (random(100) < 26) :) );
+	else obs = objects();
 	y = 0;
 	foreach(ob in obs) {
 	    function f;

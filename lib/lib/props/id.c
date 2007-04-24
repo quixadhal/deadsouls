@@ -11,7 +11,10 @@
 private static string array Adjectives   = ({});
 private string              CapName      = 0;
 private static string array Id           = ({});
+private static string array CanonicalId  = ({});
+private static string array ExcludedIds  = ({});
 private static string       KeyName      = 0;
+private static object array NotifiedObjects = ({});
 
 string GetKeyName();
 
@@ -57,9 +60,16 @@ string array GetId() {
 
     if( tmp ) {
 	if(!OBJECT_MATCHING) return distinct_array(({ Id..., tmp }));
-	else return Id + atomize_string(tmp);
+	else return Id + ({ file_name(this_object()) }) + atomize_string(tmp) - ExcludedIds;
     }
     else return Id;
+}
+
+string array GetCanonicalId() {
+    string tmp;
+    tmp = GetKeyName();
+
+    return copy(CanonicalId);
 }
 
 varargs string array SetId(mixed val...) {
@@ -80,6 +90,9 @@ varargs string array SetId(mixed val...) {
     }
     if(COMPAT_MODE) parse_init();
     parse_refresh();
+
+    CanonicalId = Id;
+
     if(OBJECT_MATCHING){
 	Id = atomize_array(Id);
     }
@@ -127,4 +140,57 @@ string array parse_command_plural_id_list() {
 
 string array parse_command_adjectiv_id_list() {
     return filter(GetAdjectives(), (: $1 && ($1 != "") :));
+}
+
+varargs void eventAnnounceCanonicalId(object env){
+    object *inv;
+    if(!OBJECT_MATCHING) return;
+    if(!env) env = environment();
+    if(!env) return;
+    if(environment(env)) env = environment(env);
+    inv = deep_inventory(env) - ({ this_object() });
+    //tc("I am "+identify(this_object())+" and I'm trying to announce to: "+identify(inv),"green");
+    inv->ReceiveCanonicalId(CanonicalId);
+    inv = all_inventory(this_object());
+    if(inv && sizeof(inv)) inv->eventAnnounceCanonicalId(env);
+}
+
+
+varargs void ReceiveCanonicalId(mixed foo, int leaving){
+    if(!OBJECT_MATCHING) return;
+    if(!foo || !sizeof(foo)) return;
+    if(!leaving){
+	foreach(mixed element in foo){
+	    if(member_array(element, GetId()) != -1){
+		if(member_array(element, CanonicalId) == -1){
+		    ExcludedIds += ({ element });
+		    //tc("I am: "+identify(this_object())+", I am excluding: "+element,"red");
+		    //tc("Ids "+identify(GetId()),"red");
+		    parse_init();
+		    parse_refresh();
+		}
+	    }
+	}
+    }
+    else {
+	foreach(mixed element in foo){
+	    ExcludedIds -= ({ element });
+	    //tc("I am: "+identify(this_object())+", I am unexcluding: "+element,"blue");
+	    parse_init();
+	    parse_refresh();
+	}
+	//if(environment()) eventAnnounceCanonicalId(environment());
+    }
+    //tc("I am: "+identify(this_object())+", ExcludedIds: "+identify(ExcludedIds));
+    if(previous_object() != this_object()){
+	//tc("I am: "+identify(this_object())+", and I ant to send a ReceiveCanonicalId to "+identify(previous_object()),"white");
+	if(member_array(previous_object(), NotifiedObjects) == -1){
+	    //previous_object()->ReceiveCanonicalId(CanonicalId);
+	    //tc("I am: "+identify(this_object())+", I am sending a ReceiveCanonicalId to "+identify(previous_object()),"cyan");
+	    //tc("previous: "+identify(previous_object())+" NotifiedObjects: "+identify(NotifiedObjects),"white");
+	    NotifiedObjects += ({ previous_object() });
+	    //tc("previous: "+identify(previous_object())+" NotifiedObjects: "+identify(NotifiedObjects));
+	    previous_object()->ReceiveCanonicalId(CanonicalId);
+	}
+    }
 }

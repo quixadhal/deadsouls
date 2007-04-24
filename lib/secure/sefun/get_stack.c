@@ -1,8 +1,14 @@
 string get_stack() {
-    string *stack;
-    string list;
-    stack = call_stack(2);
-    list = implode(stack," ");
+    int i, s;
+    string list = "";
+    string *stack0 = call_stack(0);
+    string *stack1 = call_stack(1);
+    string *stack2 = call_stack(2);
+    //tc("sizeof(stack1): "+sizeof(stack1));
+    for(i = 0, s = sizeof(stack1); i < s; i++){
+	list +="\n"+i+":"+identify(stack2[i])+"."+identify(stack1[i])+"."+identify(stack2[i]);
+	//list = implode(stack," ");
+    }
     return list;
 }
 

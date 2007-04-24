@@ -53,11 +53,10 @@ mixed eventDrink(object who) {
     ob->SetPoints(Points); 
     ob->SetStats(Stats); 
     ob->SetSkills(Skills); 
-    ob->SetDuration(Duration);
+    ob->SetBonusDuration(Duration);
     ob->eventMove(who);
     meal::eventDrink(who);
     return 1;
 }
-
 
 
