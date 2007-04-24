@@ -114,7 +114,6 @@ mixed eventModify(object ob, string str){
     }
 
     this_object()->eventGeneralStuff(filename);
-    //tc(read_file(filename),"white");
     global1 = filename;
     global2 = tmpfile;
     unguarded( (: cp(global1,global2) :) );

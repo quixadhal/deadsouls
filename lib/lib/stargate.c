@@ -70,8 +70,8 @@ void create(){
       "inside the larger ring and seems to be able to move.");
     SetMass(1000);
     SetBaseCost("silver",50);
-    SetPreventGet("The gate is pure naquadah and cannot be moved");
-    SetPreventPut("The gate is pure naquadah and cannot be moved");
+    SetPreventGet("The gate is pure naquadah and cannot be moved.");
+    SetPreventPut("The gate is pure naquadah and cannot be moved!");
     SetTouch("You feel the stargate beneath your hand humming with energy.");
 }
 

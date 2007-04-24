@@ -9,9 +9,10 @@ static private int XPosition, YPosition;
 
 varargs void SetLongAndItems(int x, int y, int z);
 
-int LimitTravel(int requested, int maximum){
-    if(requested > maximum) return maximum;
-    if(requested < 0 ) return 0;
+varargs int LimitTravel(int requested, int maximum, int lessthan){
+    if(lessthan && requested < maximum) return maximum;
+    else if(lessthan && requested > maximum) return requested;
+    else if(requested > maximum) return maximum;
     else return requested;
 }
 
@@ -41,10 +42,10 @@ varargs static void create(int x, int y) {
     if( y == max_south ) s = "forest/" + x+ "," + (y);
     else s = "forest/" + x + "," + (y-1);
 
-    nw = "forest/" + LimitTravel(x - 1, max_east) + "," + LimitTravel(y+1, max_north);
+    nw = "forest/" + LimitTravel(x - 1, max_west, 1) + "," + LimitTravel(y+1, max_north);
     ne = "forest/" + LimitTravel(x + 1, max_east) + "," + LimitTravel(y+1, max_north);
-    sw = "forest/" + LimitTravel(x - 1, max_east) + "," + LimitTravel(y-1, max_north);
-    se = "forest/" + LimitTravel(x + 1, max_east) + "," + LimitTravel(y-1, max_north);
+    sw = "forest/" + LimitTravel(x - 1, max_west, 1) + "," + LimitTravel(y-1, max_south, 1);
+    se = "forest/" + LimitTravel(x + 1, max_east) + "," + LimitTravel(y-1, max_south, 1);
 
     SetGoMessage("You can't travel in that direction.");
     if( n ) AddExit("north", __DIR__ + n);

@@ -227,7 +227,7 @@ int eventGeneralStuff(string str){
     globalstr = str;
     unguarded( (: globalstr2 = read_file(globalstr) :) );
     unguarded( (: this_object()->eventAddInit(globalstr) :) );
-    if(query_verb() != "copy"){
+    if(query_verb() != "copy" && query_verb() != "delete"){
 	if(grepp(globalstr2,"./customdefs.h")){
 	    string j1, j2, tmppath;
 	    sscanf(globalstr2,"%sinclude \"%scustomdefs.h%s",j1,tmppath,j2);

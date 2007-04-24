@@ -85,11 +85,8 @@ int send_post(mapping borg, string mud) {
     int i, maxi, x, y; 
     mapping TmpMap = ([]);
 
-    //if(borg) tc("borg: "+identify(borg),"green");
-    //if(mud) tc("mud: "+identify(mud),"white");
     if(file_name(previous_object(0)) != LOCALPOST_D &&
       base_name(previous_object(0)) != OBJ_POST){
-	//tc("REMOTEPOST_D.send_post: "+identify(previous_object()),"red");
 	return 0;
     }
 
@@ -107,23 +104,14 @@ int send_post(mapping borg, string mud) {
 	}
     }
 
-    //tc("borg[\"to\"]: "+identify(borg["to"]),"cyan");
-    //tc("borg[\"cc\"]: "+identify(borg["cc"]),"cyan");
-
     borg["to"] = convert_names(borg["to"]); 
     borg["cc"] = convert_names(borg["cc"]); 
     borg["from"] = sprintf("%s@%s", convert_name(borg["from"]),
       mud_name());
 
-    //tc("borg[\"to\"]: "+identify(borg["to"]),"cyan");
-    //tc("borg[\"cc\"]: "+identify(borg["cc"]),"cyan");
-
-
     foreach(string destination in singular_array(muds)){
 	string *tmp_to = ({});
 	string *tmp_cc = ({});
-
-	//tc("TmpMap["+destination+"]: "+identify(TmpMap[destination]),"cyan");
 
 	foreach(string dude in borg["to"]){
 	    if(member_array(dude,TmpMap[destination]) != -1) tmp_to += ({ dude });
@@ -145,33 +133,25 @@ int send_post(mapping borg, string mud) {
 	  borg["subject"],
 	  borg["message"],
 	});
-	//tc("Outgoing["+destination+"]["+borg["id"]+"]: "+identify(Outgoing[destination][borg["id"]]));
     }
-    //tc("muds: "+identify(muds),"cyan");
-    //    SERVICES_D->new_mail(mud);
     save_mailqueue(); 
     return 1;
 } 
 
 int outgoing_sent(string destination, string id){
-    //tc("outgoing_sent: destination: "+destination+", id: "+id,"cyan");
     if(base_name(previous_object(0)) != LIB_OOB){
-	//tc("REMOTEPOST_D.outgoing_sent: "+identify(previous_object()),"red");
 	return 0;
     }
     map_delete(Outgoing[destination], id);
     if(!sizeof(Outgoing[destination])) map_delete(Outgoing, destination);
     save_mailqueue();
-    //tc("Outgoing: "+identify(Outgoing),"blue");
     return 1;
 }
 
 int incoming_post(mixed *packet){ 
     mapping borg; 
     string from = packet[2];
-    //tc("incoming post: "+identify(packet),"green");
     if(base_name(previous_object(0)) != LIB_OOB){
-	//tc("REMOTEPOST_D.incoming_post: "+identify(previous_object()),"red");
 	return 0;
     }
     if(!grepp(packet[2],"@")) from = packet[2]+"@"+packet[0];
@@ -185,7 +165,6 @@ int incoming_post(mixed *packet){
       "subject" : packet[7],
       "message" : packet[8]
     ]);
-//tc("INCOMING POST: "+identify(packet),"green");
 LOCALPOST_D->send_post(copy(borg)); 
 return 1; 
 } 
@@ -231,16 +210,11 @@ varargs void defer_old_mail(int i){
     foreach(mixed destination, mixed messages in Outgoing){
 	if(!Old) Old = ([]);
 	foreach(mixed key, mixed val in messages){
-	    //tc("key: "+identify(key));
 	    if(((time() - key) > 300) || i){
 		if(!Old[destination]) Old[destination] = ([]);
 		if(!Old[destination][key]) Old[destination][key] = val;
-		//tc("Old: "+identify(Old));
-		//tc("Outgoing: "+identify(Outgoing));
 		map_delete(Outgoing[destination],key);
 	    }
 	}
     }
-    //tc("Old: "+identify(Old));
-    //tc("Outgoing: "+identify(Outgoing));
 }

@@ -26,7 +26,6 @@ void heart_beat(){
 		return ;
 	    }
 	}
-	//tc("functions load complete");
 	save_object(SaveFuns);
 	seeking = 0;
     }
@@ -55,12 +54,8 @@ mixed ReadFuns(string str){
     files = FILE_D->GetFiles();
     globaltmp = str;
     files = filter(files, (: (!strsrch($1, globaltmp) && last($1,2) == ".c" ) :) );
-    //tc("files: "+implode(files, ", "),"red");
     files = filter(files, (: (!sizeof(FunctionCache[$1]) || stat($1)[0] != FileSize[$1]) :) ); 
-    //tc("files: "+implode(files, ", "),"yellow");
     foreach(string file in files){
-	//tc("FileSize["+file+"]: "+FileSize[file]);
-	//tc("Actual file size: "+stat(file)[0]+"\n","yellow");
     }
     while(sizeof(files) > 0){
 	interval++;
@@ -84,7 +79,6 @@ static void create() {
 }
 
 int ReceiveFunctionData(string file, string funs, int fsize){
-    //tc("file: "+file+", size: "+fsize,"cyan");
     FunctionCache[file] = funs;
     FileSize[file] = fsize;
     return fsize;
@@ -103,10 +97,8 @@ int eventDestruct(){
 varargs mixed GetInstances(string str, string where){
     string cooked_list = "";
     if(!where || ! sizeof(where)) where = "/lib/";
-    //tc("where: "+where);
     foreach(string key, string val in FunctionCache){
 	string funex;
-	//write_file("/tmp/thing.txt",key+" "+val+"\n");
 	if(grepp(val, str) && !strsrch(key,where)){
 	    funex = function_exists(str,load_object(key),1);
 	    if(funex && !grepp(cooked_list,funex+"\n")){

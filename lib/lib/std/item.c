@@ -29,6 +29,7 @@ inherit LIB_UNIQUENESS;
 inherit LIB_VALUE;
 inherit LIB_WEAPON;
 inherit LIB_MONEY;
+inherit LIB_FALL;
 
 private int RetainOnDeath, nocondition;
 private string QuestId = "";

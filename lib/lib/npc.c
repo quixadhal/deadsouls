@@ -427,7 +427,7 @@ void eventDescribeEnvironment(int brief) {
 	    else {
 		if(GetPosition() == POSITION_STANDING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " drops dead.", environment(), ({ this_object() }) );
 		else if(GetPosition() == POSITION_FLYING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " falls dead.", environment(), ({ this_object() }) );
-		else message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " finally dies.", environment(), ({ this_object() }) );
+		else message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " dies.", environment(), ({ this_object() }) );
 		if( agent ) message("my_action", "You kill " + GetName() + ".", agent);
 	    }
 	    set_heart_beat(0);
@@ -528,28 +528,22 @@ void eventDescribeEnvironment(int brief) {
 		tell_room("/domains/default/room/catchtell","-------");
 	    }
 	    if(riders){
-		int i1;
-		//tc("wtf");
-		//if(member_array(this_object(),previous_object(-1)) != -1){
-		//if(arg2 && intp(arg2) && !(arg2 & MSG_ENV)){
-		//tc("avoiding recurse");
-		//return 0;
-		//}
-		//}
+		int i1, rider_source;
 		if(!arg2) arg2 = 0;
 		if(!arg3) arg3 = 0;
 		if(sizeof(riders)){
-		    //tc("hrm");
 		    if(arg2 && intp(arg2)){
 			object *tmp_riders = riders;
-			//tc("i seem to thing its msg_conv or msg_env");
 			if(arg2 & MSG_CONV || arg2 & MSG_ENV){
 			    foreach(object ob in previous_object(-1)){
-				if(member_array(ob,riders) != -1) tmp_riders -= ({ ob });
+				if(member_array(ob,riders) != -1){
+				    tmp_riders -= ({ ob });
+				    rider_source = 1;
+				}
 			    }
 			}
-			//tc("hmm.");
-			tmp_riders->eventPrint(msg, arg2, arg3);
+			if(arg2 & MSG_CONV && !rider_source) true();
+			else tmp_riders->eventPrint(msg, arg2, arg3);
 		    }
 		    i1 = sizeof(previous_object(-1)) -1;
 		    if(i1 < 0) i1 = 0;
@@ -571,6 +565,7 @@ void eventDescribeEnvironment(int brief) {
 	    ob = previous_object();
 	    if( !ob || !container::eventReceiveObject() ) return 0;
 	    AddCarriedMass((int)ob->GetMass());
+	    if(environment()) environment()->AddCarriedMass((int)ob->GetMass());
 	    return 1;
 	}
 
@@ -579,7 +574,10 @@ void eventDescribeEnvironment(int brief) {
 
 	    ob = previous_object();
 	    if( !ob || !container::eventReleaseObject() ) return 0;
-	    AddCarriedMass( -((int)ob->GetMass()) );
+	    if( ob->GetMass() ){
+		AddCarriedMass( -((int)ob->GetMass()) );
+		if(environment()) environment()->AddCarriedMass(-(ob->GetMass()));
+	    }
 	    return 1;
 	}
 

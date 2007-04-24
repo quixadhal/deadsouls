@@ -69,6 +69,7 @@ mixed do_copy_obj_str(object ob, string str) {
 	write("That file no longer exists.");
 	return 0;
     }
+    //else unguarded( (: success = cp(sourcefile, targetfile) :) );
     else unguarded( (: success = cp(sourcefile, targetfile) :) );
     if(success) {
 	write("Copy successful.");

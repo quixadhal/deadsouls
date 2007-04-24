@@ -17,9 +17,8 @@ inherit LIB_CURRENCY;
 inherit LIB_FOLLOW;
 inherit LIB_MAGIC;
 inherit LIB_LEAD;
-//inherit LIB_SMELL;
-inherit "/lib/teach";
-inherit "/lib/learn";
+inherit LIB_TEACH;
+inherit LIB_LEARN;
 
 private int isPK;
 private mixed Attackable = 1;
@@ -65,20 +64,31 @@ mixed direct_dismount_from_liv(){
     return this_object()->GetMount();
 }
 
-mixed direct_attack_liv() {
+mixed direct_attack_liv(){
+    if(intp(Attackable) && !Attackable){
+	return "You are unable to attack "+this_object()->GetShort()+".";
+    }
+    if(stringp(Attackable)) return Attackable;
+    return 1;
+}
+
+mixed CanAttack(){
     if( userp(this_player()) && userp(this_object()) ) {
 	if(!(int)environment(this_player())->CanAttack(this_object())){
 	    return "Player killing is not permitted in this area!";
 	}
-	if(!(this_object()->GetAttackable())){
-	    return "You are unable to attack that person.";
+	if(intp(Attackable) && !Attackable){
+	    return "You are unable to attack "+this_object()->GetShort()+".";
 	}
 	if(this_player()->GetPK() && this_object()->GetPK()){
-	    return (PLAYER_KILL ? 1 : "This is not a PK mud.");
+	    if(!PLAYER_KILL) return "This is not a PK mud.";
 	}
 	else return "One of you is not a player killer. You cannot fight them.";
     }
-    else return this_object()->GetAttackable();
+    if(functionp(Attackable)) return evaluate(Attackable, this_player());
+    else {
+	return (Attackable || 0);
+    }
 }
 
 mixed direct_attack_only_liv(){
@@ -161,7 +171,6 @@ mixed indirect_give_obj_to_liv(object item) {
 }
 
 mixed indirect_give_obj_liv(object item) {
-    //tc("item: "+identify(item),"blue");
     return indirect_give_obj_to_liv(item);
 }
 
@@ -170,7 +179,6 @@ mixed indirect_give_obs_to_liv(object *items) {
 }
 
 mixed indirect_give_obs_liv(object *items) {
-    //tc("item: "+identify(items),"blue");
     return indirect_give_obs_to_liv(items);
 }
 

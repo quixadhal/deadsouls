@@ -943,9 +943,12 @@ int eventExecuteAttack(mixed target) {
 	    NonTargets = ({});
     }
 
-    varargs int eventReceiveDamage(object agent, int type, int x, int internal,
+    varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
       mixed limbs) {
 	int hp,encumbrance;
+
+	//tc("ok.","green");
+
 	encumbrance = this_object()->GetEncumbrance();
 
 	if(Dead) return 0;

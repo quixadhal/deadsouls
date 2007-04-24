@@ -436,7 +436,7 @@ static string SetVerb(string verb) {
 }
 
 /* ******************** spell.c modals *************************** */
-static int CanAttack(object who, object array enemies, int power) {
+static int CanSpellAttack(object who, object array enemies, int power) {
     int i, maxi = sizeof(enemies);
     int hits = 0;
     int misses = 0;
@@ -576,7 +576,7 @@ varargs int CanCast(object who, int level, string limb, object array targets) {
 	return 0;
     }
     if( AutoDamage != -1 ) {
-	if( CanAttack(who, targets, x) == - 1 ) {
+	if( CanSpellAttack(who, targets, x) == - 1 ) {
 	    who->eventPrint("Your powers fail you.");
 	    return 0;
 	}

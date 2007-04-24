@@ -108,11 +108,9 @@ string *eventDecre(string str){
 void AddPlayerInfo(mixed arg) {
 
     if(!objectp(arg) && !stringp(arg)) return ;
-    //tc("reveiced: "+identify(arg),"cyan");
     if(objectp(arg)){
 	if(base_name(previous_object())!=LIB_CONNECT &&!interactive(arg)) return;
 	else player_save_file = base_name(arg)+".o";
-	//tc("player_save_file: "+identify(player_save_file),"red");
     }
     else {
 	arg = lower_case(arg);
@@ -135,14 +133,12 @@ void AddPlayerInfo(mixed arg) {
 	}
 	else player_save_file = arg;
     }
-    //tc("player_save_file: "+player_save_file,"blue");
     namestr = replace_string(last_string_element(player_save_file,"/"),".o","");
     if(grepp(player_save_file, DIR_CRES) && member_array(namestr,creators) == -1) 
 	creators += ({ namestr }) ; 
     else if(member_array(namestr,players) == -1) 
 	players += ({ namestr }) ; 
     if(!file_exists(player_save_file)) return;
-    //tc("player_save_file: "+identify(player_save_file),"green");
     if(member_array(namestr,user_list) == -1)
 	user_list += ({ replace_string(last_string_element(player_save_file,"/"),".o","") }) ; 
     unguarded((: save_object, SAVE_PLAYER_LIST :));
@@ -221,12 +217,9 @@ static int LoadPlayer(string str){
     player_save_file = DIR_CRES +"/"+initial+"/"+arg;
     if(!file_exists(player_save_file))
 	player_save_file = DIR_PLAYERS +"/"+initial+"/"+arg;
-    //tc("player_save_file: "+player_save_file);
     if(!file_exists(player_save_file)) return -1;
 
     restore_object(player_save_file,1);
-    //tc("ExternalDesc: "+ExternalDesc);
-    //tc("player_save_file: "+player_save_file);
     return 1;
 }
 
@@ -274,7 +267,6 @@ mixed GetPlayerData(string player, string val){
     }
     gplayer = player;
     if(ob = find_player(player)){
-	//tc("wtf");
 	unguarded( (: ob->save_player(gplayer) :));
     }
     unguarded( (: LoadPlayer(gplayer) :) );

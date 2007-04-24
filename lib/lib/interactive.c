@@ -121,14 +121,16 @@ int Setup() {
 	eventMove( VOTING_D->GetVoteRoom() );
     } else {
 	object room;
-
-	catch(room = load_object(LoginSite));
+	//tc("LoginSite: "+LoginSite);
+	if(grepp(LoginSite,"#")){
+	    room = find_object(LoginSite);
+	}
+	if(!room) catch(room = load_object(LoginSite));
 	if( room && room->GetMedium() == MEDIUM_AIR ) {
 	}
 	if(!sizeof(LoginSite) || 
-	  (!file_exists(LoginSite) && !file_exists(LoginSite+".c")) || 
-	  !load_object(LoginSite) || !eventMove(LoginSite) || 
-	  RescueBit || !(inherits(LIB_ROOM, load_object(LoginSite)))) {
+	  (!room && !file_exists(LoginSite) && !file_exists(LoginSite+".c")) || 
+	  !eventMove(LoginSite) || RescueBit ){ 
 	    LoginSite = ROOM_START;
 	    eventMove(ROOM_START);
 	    SetRescueBit(0);
@@ -241,10 +243,13 @@ void eventDescribeEnvironment(int brief) {
 		desc = capitalize((string)env->GetShort()+"\n" || "\n");
 		altern_obvious = "Obvious exit$Q: "+(string)env->GetObviousExits() || "none";
 	    }
+	    //if(this_object()->GetProperty("automapping")) desc += simple_map(env)+"\n";
 	}
 	else desc = "\n";
-	if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM )
+	if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM ){
+	    if(this_object()->GetProperty("automapping")) desc += simple_map(env)+"\n"; 
 	    desc += (string)env->GetLong();
+	}
 	if(functionp(tmp = (mixed)env->GetSmell("default")))
 	    tmp = (string)(*tmp)("default");
 	smell = tmp;
@@ -258,6 +263,7 @@ void eventDescribeEnvironment(int brief) {
     else {
 	if(i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM){
 	    desc = (string)env->GetShort();
+	    if(this_object()->GetProperty("automapping")) desc += simple_map(env)+"\n";
 	    if(NM_STYLE_EXITS){
 		if( (tmp = (string)env->GetObviousExits()) && tmp != "" )
 		    desc += " [" + tmp + "]";
@@ -269,10 +275,10 @@ void eventDescribeEnvironment(int brief) {
     }
     if( desc ) eventPrint(desc, MSG_ROOMDESC);
     if(sizeof(altern_obvious)){
-        int quant = sizeof(env->GetExits()) + sizeof(env->GetEnters());
-        if(quant > 1) altern_obvious = replace_string(altern_obvious,"$Q","s");
-        else altern_obvious = replace_string(altern_obvious,"$Q","");
-        eventPrint(altern_obvious,MSG_ROOMDESC);
+	int quant = sizeof(env->GetExits()) + sizeof(env->GetEnters());
+	if(quant > 1) altern_obvious = replace_string(altern_obvious,"$Q","s");
+	else altern_obvious = replace_string(altern_obvious,"$Q","");
+	eventPrint(altern_obvious,MSG_ROOMDESC);
     }
     if( smell ) eventPrint("%^GREEN%^" + smell, MSG_ROOMDESC);
     if( sound ) eventPrint("%^CYAN%^" + sound, MSG_ROOMDESC);
@@ -328,7 +334,7 @@ void eventDescribeEnvironment(int brief) {
 	      else desc += ", ";
 	  }
       }
-	i = GetEffectiveVision();
+	i = GetEffectiveVision(env);
 	if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM ) {
 	    mapping lying = ([]), sitting = ([]), standing = ([]), flying = ([]);
 	    mapping furniture = ([]);
@@ -512,8 +518,10 @@ void eventDescribeEnvironment(int brief) {
 
 	    x = move::eventMove(dest);
 	    if( x ) {
-		if( !(str = (string)environment()->GetProperty("login")) )
-		    LoginSite = base_name(environment());
+		if( !(str = (string)environment()->GetProperty("login")) ){
+		    if(clonep(environment())) LoginSite = file_name(environment());
+		    else LoginSite = base_name(environment());
+		}
 		else LoginSite = str;
 	    }
 	    return x;
@@ -527,7 +535,7 @@ void eventDescribeEnvironment(int brief) {
 
 	    if( previous_object() && !
 	      ((int)master()->valid_apply( ({ GetKeyName() }) )) ) return 0;
-	    if( (int)environment(this_object())->GetProperty("no quit") &&
+	    if( env->GetProperty("no quit") &&
 	      ! sizeof(previous_object(-1)) ) {
 		message("system", "You are unable to escape this reality!",
 		  this_object());
@@ -547,7 +555,7 @@ void eventDescribeEnvironment(int brief) {
 	    save_player(GetKeyName());
 	    if(!(archp(this_object()) && this_object()->GetInvis())){
 		log_file("enter", GetCapName()+" (quit): "+timestamp()+"\n");
-		message("environment", tmp, environment(this_object()), ({this_object()}));
+		if(env) message("environment", tmp, env, ({this_object()}));
 		CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " quits]",0);
 	    }
 	    if(in_edit()){

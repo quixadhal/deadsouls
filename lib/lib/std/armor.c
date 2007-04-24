@@ -32,6 +32,7 @@ inherit LIB_STEAL;
 inherit LIB_UNIQUENESS;
 inherit LIB_VALUE;
 inherit LIB_WEAR;
+inherit LIB_FALL;
 
 private int            Fingers       = 5;
 private mapping        Protection    = ([]);

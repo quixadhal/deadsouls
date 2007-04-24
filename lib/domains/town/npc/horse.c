@@ -8,6 +8,7 @@ static void create() {
     SetId(({"horse","large horse"}));
     SetShort("a large horse");
     SetLong("A large, hooved quadruped, taller and more muscular than you.");
+    SetNoClean(1);
     SetWimpy(50);
     SetLevel(5);
     SetRace("horse");

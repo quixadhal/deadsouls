@@ -13,6 +13,7 @@
 #define SAVE_GOSSIP        DIR_GOSSIP "/gossip"
 #define SAVE_INET          DIR_SECURE_SAVE "/inet"
 #define SAVE_INTERMUD      DIR_SAVE "/intermud"
+#define SAVE_LIVEUPGRADE   DIR_SECURE_SAVE "/liveupgrade"
 #define SAVE_MAILQUEUE     DIR_DATA "/mailqueue"
 #define SAVE_NAMESERVER    DIR_SAVE "/network"
 #define SAVE_NOTIFY        DIR_SAVE "/notify"

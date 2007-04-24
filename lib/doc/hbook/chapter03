@@ -107,7 +107,7 @@ low you will collapse and be unable to do anything for a while.
 carry: Objects have mass, and your body is of limited size and strength.
 My carry capacity is 0 when I carry nothing, and 1300 when I can 
 carry no more. Creators are allowed to exceed their bodies' carry
-capacity, but players cannot.
+capacity, but players cannot. 
 
 
 Next line:
@@ -226,6 +226,24 @@ but not critical. This influences its effect on my skills.
 someone cast a "stumble" spell on me, for example, this might look more
 like 30/42, and if I were drunk, it would look very shabby indeed.
 
+New characters should avail themselves of the "customize" command.
+When you create a character, you are assigned stats based on
+random numbers modified by the race you choose. For example, humans
+are physically weaker than other races, so you might have a 
+strength of 15 as a human, whereas a dwarf might expect something
+like 42. On the other hand, humans tend to be quite smart, and so
+your human character might have a high intelligence stat, and
+the dwarf a substantially lower one. To balance out stats that
+are grossly unfair, new characters are given 15 points to spend
+to add to their stats. As a human with 15 strength, you might
+choose to throw all your customization points into strength, adding
+up to a whopping 30. Or you might choose to distribute points
+among your stats in a manner most suited to your playing style.
+For syntax and details, type:
+
+help customize
+
+
 Last section:
 ------------
 
@@ -252,4 +270,3 @@ viewed with the following commands:
 %^GREEN%^stats%^RESET%^
 %^GREEN%^score%^RESET%^
 %^GREEN%^status%^RESET%^
-

@@ -21,27 +21,14 @@ static void eventProcess(int fd, string str);
 static void create(int fd, object owner){
     socket::create(fd, owner);
     FD = fd;
-    //trr("this object: "+identify(this_object())+" created","blue");
-    //trr("fd: "+fd+", owner: "+identify(owner),"blue");
     Connections = ([]);
-    //Connections[FD]["init"] = "crikey!";
-    //call_out( (: Setup :), 1);
 }
 
-//static void Setup() {
-//    if( eventCreateSocket(PORT_RCP) < 0 ) {
-//	if( this_object() ) Destruct();
-//	return;
-//    }
-//}
-
 static void eventSocketClosed(int fd) {
-    //tc("hit eventSocketClosed, arg: "+fd);
     map_delete(Connections, fd);
 }
 
 void eventRead(string str) {
-    //tc("hit eventRead, arg: "+str,"blue");
     if( !str ) {
 	eventWrite("50 Invalid command.\n", 1);
 	if( Connections[FD] ) map_delete(Connections, FD);
@@ -53,7 +40,6 @@ void eventRead(string str) {
 static private void eventProcess(int fd, string str) {
     string tmp, cmd, arg, file, val;
     int x;
-    //tc("hit eventProcess, args: "+fd+" "+str,"blue");
     if( Connections[fd] && Connections[fd]["in edit"] > 0 ) {
 	int len;
 
@@ -85,7 +71,6 @@ static private void eventProcess(int fd, string str) {
 	}
 	return;
     }
-    //trr("remote: not busy","blue");
     if( !Connections[fd] ) Connections[fd] = ([ "buffer" : "" ]);
     if( (Connections[fd]["buffer"] += str) == "" ) return;
     if( (x = strsrch(Connections[fd]["buffer"], "\n")) == -1 ) return;
@@ -98,10 +83,8 @@ static private void eventProcess(int fd, string str) {
 	arg = "";
     }
     else arg = replace_string(arg, CARRIAGE_RETURN, "");
-    //trr("Connections: "+identify(Connections),"blue");
     if( !Connections[fd]["object"] ) {
 	string username, password;
-	//trr("!Connections[fd][\"object\"] )","blue");
 	if( cmd != "login" ) {
 	    eventWrite("50 Must login with user name and password.\n", 1);
 	    map_delete(Connections, fd);

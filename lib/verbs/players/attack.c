@@ -91,8 +91,13 @@ varargs mixed do_attack_lvs(mixed *targets, int exclusive) {
 	if(member_array(this_player(),subobj->GetEnemies()) != -1){
 	    write("You are already fighting "+subobj->GetName()+"!");
 	}
-	else tmpobs += ({ subobj });
+	else {
+	    mixed attackable = subobj->CanAttack(this_player());
+	    if(intp(attackable) && attackable) tmpobs += ({ subobj });
+	    else if(stringp(attackable)) write(attackable);
+	}
     }
+
     obs = tmpobs;
     if(!sizeof(obs)) return 1;
 

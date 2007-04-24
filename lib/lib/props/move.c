@@ -1,15 +1,17 @@
 #include <message_class.h>
+#include <medium.h>
 
 private static object LastEnvironment = 0;
 
 varargs int eventPrint(string str, mixed args...);
+varargs void eventAnnounceCanonicalId(object env);
 
 object GetLastEnvironment() {
     return LastEnvironment;
 }
 
 int eventMove(mixed dest) {
-    object ob,to,furn;
+    object ob,to,furn,prev;
     int depth;
     to=this_object();
 
@@ -60,13 +62,24 @@ int eventMove(mixed dest) {
 
     }
     if(!objectp(to) ) return 0; 
+    prev = environment(ob);
     move_object(ob);
-    environment()->eventReceiveObject(this_object());
+    ob->eventReceiveObject(this_object());
+    if(environment() == prev) return 0;
     if( environment() ) {
 	foreach(object peer in all_inventory(environment())) {
 	    if( peer != this_object() ) {
 		catch(peer->eventEncounter(this_object()));
 	    }
+	}
+	if(OBJECT_MATCHING){ 
+	    object *prev_inv = ({});
+	    eventAnnounceCanonicalId();
+	    //tc("I am "+identify(this_object())+" and I am here: "+identify(environment()),"yellow");
+#if 1
+	    if(prev && sizeof(prev_inv = deep_inventory(prev)))
+		prev_inv->ReceiveCanonicalId(ob->GetCanonicalId(), 1);
+#endif
 	}
     }
 
@@ -79,5 +92,9 @@ int eventMove(mixed dest) {
 	    this_object()->RemoveProperty("mount");
 	    furn->eventDismount(this_object());
 	}
+    if(environment()->GetMedium() == MEDIUM_AIR){
+	if(!(this_object()->CanFly())) call_out("eventFall", 1);
+	else this_object()->eventFly();
+    }
     return (LastEnvironment != environment());
 }

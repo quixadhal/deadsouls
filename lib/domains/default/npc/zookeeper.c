@@ -1,9 +1,9 @@
 #include <lib.h>
 
-inherit LIB_SENTIENT;
+inherit LIB_BOT;
 
 static void create() {
-    sentient::create();
+    ::create();
     SetKeyName("zookeeper bot");
     SetId( ({"bot", "robot", "zookeeper", "keeper"}) );
     SetAdjectives(({"non-player", "non player"}));

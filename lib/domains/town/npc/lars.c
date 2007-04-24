@@ -1,6 +1,9 @@
 #include <lib.h>
+#include <position.h>
 
 inherit LIB_BARKEEP;
+
+mixed NoKill(object attacker);
 
 static void create() {
     barkeep::create();
@@ -27,7 +30,25 @@ static void create() {
     SetSkill("bargaining", 1);
     SetProperty("no bump", 1);
     SetLocalCurrency("silver");
+    SetAttackable( (: NoKill :) );
 }
 void init(){
     ::init();
+}
+
+mixed NoKill(object attacker){
+    if(attacker->GetTown() == "Town"){
+	return "Lars is like your favorite uncle. You find yourself unable to attack him.";
+    }
+    else {
+	tell_object(attacker,"Lars casually deflects your attack and boots you out the door.");
+	say("Lars casually deflects an attack from "+attacker->GetName()+" and "
+	  "boots "+objective(attacker)+" out the door.");
+	tell_room("/domains/town/room/road",attacker->GetName()+" comes flying out of the pub and "
+	  "lands on "+possessive(attacker)+" butt on the road.");
+	attacker->eventMove("/domains/town/room/road");
+	attacker->eventDescribeEnvironment();
+	attacker->SetPosition(POSITION_SITTING);
+	return "";
+    }
 }

@@ -674,12 +674,9 @@ varargs string *chunk_string(string str, int width){
     if(!width) width = __LARGEST_PRINTABLE_STRING__ / 2;
     while(sizeof(str)){
 	write_file(tmpfile,str,1);
-	//tc("file_size("+tmpfile+"): "+file_size(tmpfile));
 	if(!(tmp1 = read_bytes(tmpfile, 0, width)))
 	    tmp1 = read_file(tmpfile);
-	//tc("sizeof(tmp1): "+sizeof(tmp1));
 	ret += ({ tmp1 });
-	//tc("tmp1: "+tmp1);
 	str = replace_string(str,tmp1,"");
     }
     return ret;

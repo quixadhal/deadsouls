@@ -18,6 +18,9 @@ static private void GetPassword(string input);
 static private void GetYesOrNo(string input);
 static private void EndSuicide(string who);
 
+string home_dir = "";
+string gwho = "";
+
 int eventHoseDude(object dude){
     if(dude) dude->eventDestruct();
     if(dude) destruct(dude);
@@ -80,7 +83,6 @@ static private void GetYesOrNo(string input) {
 	EndSuicide(tmp);
 	return;
     }
-    //call_out((: eventHoseDude, this_player() :), 10);
     this_player()->eventPrint("\nYou may now enter a letter "
       "explaining why you suicided.  If you do not wish to write a "
       "letter, simply exit the editor without writing anything. "
@@ -91,7 +93,8 @@ static private void GetYesOrNo(string input) {
 static private void EndSuicide(string who) {
     string tmp, file, newfile;
     object *ob;
-
+    gwho = who;
+    home_dir = homedir(this_player()); 
     if(!directory_exists(DIR_TMP + "/suicide/")) mkdir (DIR_TMP + "/suicide/");
 
     file = DIR_TMP + "/" + who;
@@ -107,8 +110,8 @@ static private void EndSuicide(string who) {
       +". (from "+query_ip_name(this_player())+")\n");
     tmp = save_file(who) + __SAVE_EXTENSION__;
     unguarded((: rename, tmp, DIR_SUICIDE + "/" + who + __SAVE_EXTENSION__ :));
-    if(homedir(this_player()) && directory_exists(homedir(this_player()))){
-	object *purge_array = filter(objects(), (: !strsrch(base_name($1), homedir(this_player())) :) );
+    if(home_dir && directory_exists(home_dir)){
+	object *purge_array = filter(objects(), (: !strsrch(base_name($1), home_dir) :) );
 	foreach(object tainted in purge_array){
 	    if(clonep(tainted)){
 		tainted->eventMove(ROOM_FURNACE);
@@ -118,8 +121,9 @@ static private void EndSuicide(string who) {
 	foreach(object tainted in purge_array){
 	    tainted->eventDestruct();
 	}
-	//unguarded( (: rename(homedir(this_player()),"/secure/save/decre/"+who+"."+timestamp()) :) );
-	unguarded( (: rename,homedir(this_player()),"/secure/save/decre/"+who+"."+timestamp() :) );
+	unguarded( (: rename(home_dir,"/secure/save/decre/"+gwho+"."+timestamp()) :) );
+	home_dir = "";
+	gwho = "";
     }
     this_player()->eventPrint("You have suicided.  Please try " 
       "again another time.");

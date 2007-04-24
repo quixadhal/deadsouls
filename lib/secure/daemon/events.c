@@ -7,6 +7,7 @@
 #include <lib.h>
 #include <save.h>
 #include <config.h>
+#include <daemons.h>
 #include <privs.h>
 #include "events.h"
 
@@ -129,7 +130,7 @@ int GetRebootInterval() { return RebootInterval; }
 
 void AddEvent(string c, string s, string f, mixed *a, int w, int r) {
     mapping NewEvent;
-    if( file_name(previous_object()) != SEFUN ) {
+    if( file_name(previous_object()) != SEFUN && file_name(previous_object()) != UPDATE_D) {
 	if(EVENTS_LOGGING){
 	    unguarded( (: write_file("/log/secure/events",timestamp()+" "+
 		  identify(previous_object(-1))+" ILLEGALLY tried to add an event.\n") :) );

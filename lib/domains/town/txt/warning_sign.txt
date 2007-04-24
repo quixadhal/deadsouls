@@ -1,16 +1,21 @@
 WARNING!
 
-This area is Ylsrim. It is part of the old,
-broken version of Dead Souls. It has been mostly unbroken,
-so that for example the desert and bank roof work properly.
+North of here is Larstown, an area where some creatures
+*may* be hostile. Be cautious, and make sure you read the
+Player's Handbook.
 
-However, you will note obvious differences in design
-between Ylsrim and the main sample town. Remember, neither
-Ylsrim nor the town are intended to *be* a mud.
-They are only examples of places and things that you can
-examine to guide you in building your own mud.
+South is the Virtual Campus, an area with conference rooms
+and a "University" feel to promote a learning environment.
 
-Whatever bugs you find in Ylsrim, therefore, are not
-going to be fixed. Consider it a museum piece, a mud
-area like a prehistoric insect caught in amber: perfect
-in its imperfection, sublime in its permanence.
+These areas are *not* a mud. They are sample objects, 
+rooms, and NPC's (aka mobs) that are intended to be used
+in learning and teaching how to create a real mud of
+your own, using the Dead Souls 2 mudlib.
+
+If you have logged into a mud and you are reading this,
+do not assume "All DS muds are the same." Assume that for
+whatever reason, this mud has not yet replaced the default
+sample areas with areas of their own.
+
+-Cratylus
+23 April 2007

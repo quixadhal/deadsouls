@@ -262,11 +262,6 @@ int eventDoTip(int i){
 void heart_beat(){
     hb++;
     if(greeting) greetwait++;
-    //tc("greetwait: "+greetwait);
-    //tc("hb: "+hb);
-    //tc("tip: "+tip);
-    //tc("noobster: "+identify(noobster));
-    //tc("greeting: "+greeting);
     if(noobster && greetwait > 0){
 	eventGreet();
 	noobster = 0;

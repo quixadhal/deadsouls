@@ -1,0 +1,16 @@
+WARNING!
+
+This area is Ylsrim. It is part of the old,
+broken version of Dead Souls. It has been mostly unbroken,
+so that for example the desert and bank roof work properly.
+
+However, you will note obvious differences in design
+between Ylsrim and the main sample town. Remember, neither
+Ylsrim nor the town are intended to *be* a mud.
+They are only examples of places and things that you can
+examine to guide you in building your own mud.
+
+Whatever bugs you find in Ylsrim, therefore, are not
+going to be fixed. Consider it a museum piece, a mud
+area like a prehistoric insect caught in amber: perfect
+in its imperfection, sublime in its permanence.

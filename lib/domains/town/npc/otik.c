@@ -3,7 +3,6 @@
 
 inherit LIB_VENDOR;
 
-
 static void create() {
     ::create();
     SetKeyName("otik");
@@ -24,7 +23,7 @@ static void create() {
     SetMaxItems(10000);
     SetVendorType(VT_ALL);
     SetSkill("bargaining", 1);
-
+    SetAttackable(0);
 }
 void init(){
     ::init();

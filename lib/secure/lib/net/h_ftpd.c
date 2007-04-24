@@ -95,7 +95,6 @@ static void create(int fd, object owner){
 }
 
 private void eventReadFtpData(mixed text){
-    //tc("ftp data: "+identify(text),"green");
     switch(Session->binary){
     case 0:
 	text=replace_string(text, CARRIAGE_RETURN, "");
@@ -120,7 +119,6 @@ private void eventDestructDataPipe(mixed f){
 
 private void eventCmdPasv(string arg)
 {
-    //tc("entered passive mode");
 
     if(arg)
     {
@@ -272,10 +270,8 @@ string GetUniqueFileName(string arg){
 
 void StartService(){
     int port;
-    //tc("startservice","blue");
 
     /* Determine Port */
-    //tc("startservice");
 
     for(port=MIN_PASV_PORT;port <= MAX_PASV_PORT;port++)
 	if(member_array(port, FTP_PORT_TRACKER_D->QueryUsedPorts()) == -1)
@@ -283,7 +279,6 @@ void StartService(){
 
     if(port > MAX_PASV_PORT)
     {
-	//tc("550 out of ports.\n", "blue");
 	eventWrite("550 out of ports.\n", 0);
 	Destruct();
 	return;
@@ -294,7 +289,6 @@ void StartService(){
 
     eventWrite(GetFtpWelcomeMsg(),0);
     call_out("idle_time_out", 60);
-    //tc("end startservice","blue");
 
 }
 

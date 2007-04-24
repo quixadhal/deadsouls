@@ -81,6 +81,10 @@ mixed eventScore() {
     if( z > sizeof(DrunkDegree) - 1 ) z = (sizeof(DrunkDegree) - 1);
     str += ({ "You "+FoodDegree[x] });
     str += ({ sprintf("You are %s and %s.", DrinkDegree[y], DrunkDegree[z]) });
+    x = (int)this_player()->GetCustomStats();
+    if(x){
+	str += ({ "You have "+x+" customization points left. Type: help customize" });
+    }
     this_player()->eventPage(str, "info");
     return 1;
 }

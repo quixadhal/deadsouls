@@ -71,8 +71,6 @@ int CheckBot(string str){
 	    if(snoopbox && snoopbox->GetSnooped() && snoopbox->GetSnooped() == str) {
 		already_watched = 1;
 	    }
-	    if(snoopbox->GetSnooped() && (!find_player(snoopbox->GetSnooped()) ||!(snoopbox->GetSnooped()))) {
-	    }
 	}
     }
     if(!already_watched && foo && (GLOBAL_MONITOR > 0 || member_array(str, monitored) != -1 || member_array(str, snooped) != -1 )){

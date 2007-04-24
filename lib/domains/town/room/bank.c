@@ -33,11 +33,10 @@ static void create() {
 	({"counter","main counter"}) : "An area where a "
 	"teller waits to assist you."
       ]) );
+    SetExits( ([ 
+	"west" : "/domains/town/room/south_road1",
+      ]) );
     SetRead( ({"sign","sign hanging here"}) , (: ReadSign :) );
-    SetExits(([ "west" : "/domains/town/room/south_road1",
-	"out" : "/domains/town/room/south_road1",
-      ]));
-    SetObviousExits("w");
     SetProperty("no attack", 1);
 }
 int ReadSign(){

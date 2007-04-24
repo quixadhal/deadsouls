@@ -111,8 +111,6 @@ mixed cmd(string args) {
 	  i = sizeof(files);
 	  while(i--) eventUpdate(files[i], flags);
       }
-      //tc("args: "+args);
-      //tc("flags: "+flags);
 	return 1;
     }
 
@@ -160,4 +158,3 @@ mixed cmd(string args) {
 	}
 	return 1;
     }
-

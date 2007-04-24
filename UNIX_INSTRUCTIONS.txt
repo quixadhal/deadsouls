@@ -6,7 +6,7 @@ Then perform the following steps:
 1) cd to the directory where all mud files reside. Called $MUDHOME
    in the rest of this document.
 
-2) cd to v22.2b14
+2) cd to v22.2b14-dsouls2
 
 3) type ./configure
 

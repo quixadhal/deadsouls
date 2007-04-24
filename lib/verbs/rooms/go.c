@@ -5,8 +5,6 @@
  *    created by Descartes of Borg 951104
  */
 
-
-
 #include <lib.h>
 #include "include/go.h"
 
@@ -26,7 +24,6 @@ static void create() {
       "\"go south\" has been pre-aliased to \"s\".\n\n"
       "See also: climb, enter, jump");
 }
-
 
 mixed can_go_str(string str) {
     if( !environment(this_player()) ) return "You are nowhere.";

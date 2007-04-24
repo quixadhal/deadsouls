@@ -53,15 +53,10 @@ mixed cmd(string args) {
 	//
 	ob->eventMove(ROOM_POD);
 	inv = deep_inventory(ob);
-	//tc("ob location: "+identify(environment(ob)));
-	//tc("ob inventory: "+identify(inv),"green");
 	if(sizeof(inv))
 	    foreach(object thing in inv){
 	    if(thing) {
-		//tc("thing: "+identify(thing));
-		//tc("Thing's env: "+identify(environment(thing)),"green");
 		thing->eventMove(ROOM_FURNACE);
-		//tc("Thing's env: "+identify(environment(thing)),"cyan");
 	    }
 	}	//Save the user to sync its state with his inventory
 	unguarded( (: ob->save_player((string)ob->GetKeyName()) :) );
