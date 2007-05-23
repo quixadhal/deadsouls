@@ -128,6 +128,11 @@ varargs string SetRace(string race, mixed extra) {
 	SetLightSensitivity(args[3]...);
     }
     if( extra != 1 ) NewBody(race);
+    tmp = this_object()->GetId();
+    if(member_array(race,tmp) == -1){
+	tmp += ({ race });
+	this_object()->SetId(tmp);
+    }
     if( stringp(extra) ) return (Race = extra), race; 
     else return (Race = race);
 }

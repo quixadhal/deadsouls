@@ -1,1 +1,1 @@
- -lresolv -lcrypt -lnsl -lm -lz
+ -lresolv -lcrypt -lnsl -lm

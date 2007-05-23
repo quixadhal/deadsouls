@@ -66,6 +66,7 @@
 #define LIB_LEAD           DIR_LIB        "/lead"
 #define LIB_LEADER         DIR_LIB        "/leader"
 #define LIB_LEARN          DIR_LIB        "/learn"
+#define LIB_LEVEL          DIR_LIB        "/lvs/level"
 #define LIB_LIGHT          DIR_LIB        "/light"
 #define LIB_LIVING         DIR_LIB        "/living"
 #define LIB_LOGIN          DIR_SECURE_LIB "/connect"

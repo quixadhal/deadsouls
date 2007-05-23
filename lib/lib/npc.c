@@ -637,22 +637,25 @@ void eventDescribeEnvironment(int brief) {
 	    string *tmp;
 	    int i;
 
-	    NPCLevel = x;
-	    i = sizeof(tmp = GetSkills());
-	    while(i--) {
-		int y;
+	    if(!NPCLevel){
+		NPCLevel = x;
+		i = sizeof(tmp = GetSkills());
+		while(i--) {
+		    int y;
 
-		y = (GetSkillClass(tmp[i]) || 5);
-		SetSkill(tmp[i], (3*x)/y, y);
-	    }
-	    i = sizeof(tmp = GetStats());
-	    while(i--) {
-		int y;
+		    y = (GetSkillClass(tmp[i]) || 5);
+		    SetSkill(tmp[i], (3*x)/y, y);
+		}
+		i = sizeof(tmp = GetStats());
+		while(i--) {
+		    int y;
 
-		y = (GetStatClass(tmp[i]) || 5);
-		SetStat(tmp[i], ((5-y)*10) + (3*x)/y, y);
+		    y = (GetStatClass(tmp[i]) || 5);
+		    SetStat(tmp[i], ((5-y)*10) + (3*x)/y, y);
+		}
+		eventCompleteHeal(GetMaxHealthPoints());
 	    }
-	    eventCompleteHeal(GetMaxHealthPoints());
+	    else NPCLevel = x;
 	    return NPCLevel;
 	}
 

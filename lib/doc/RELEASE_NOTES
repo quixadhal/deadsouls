@@ -1,20 +1,17 @@
----- 2.4.6 ---
-- Released 2007-11-04
-- Bundled driver is now FluffOS.
-- users() sefun override properly fixed.
-
----- 2.4.4 ---
-- Released 2007-10-12
-- Miscellaneous minor bugfixes.
-- Fixed driver problem that stopped compile at malloc.c (stole the
-  fix from FluffOS!)
-- Fixed driver problem that made timekeeping fail (ualarm).
-- Bonus object works properly now.
-- Fixed a problem in the users() sefun that mysteriously hosed
-  64-bit Linux installs.
+---- 2.5a1 (unreleased) ---
+- The race of a creature is now automatically added to its id array.
+- Added ChangeLevel to sanely manage the advancement of skills
+  and stats when a creature's level changes. The stat and skill "class"
+  now dictates when stat and skill level is increased. When the
+  new player level is divisible by 3, for example, and the stat class
+  is three, then the stat is increased by 1.
+- Added checks for TEST group membership to autosave and auto-quit.
+- Implemented workaround to runtime error when moving into a room
+  with many objects (caused by a buggy new parser feature).
+- Fixed bug in /lib/body.c that caused an erroneous eventFall() where
+  eventCollapse() was called for.
 
 ---- 2.4.2 ---
-- Released 2007-04-23
 - New subcommands added to liveupgrade: revert and alpha.
 - Various security exposures mitigated.
 - Fixed CanGet() bug in LIB_CHAIR (Thanks, K'Azdean).
@@ -69,7 +66,6 @@
 - Fixed typo in Chapter 8 of the Admin Guide.
 
 ---- 2.4.1 ---
-- Released 2007-03-21
 - The display of obvious exits can be over the desc in brackets
   or under the desc in text form, depending on the NM_STYLE_EXITS 
   setting in config.h. This can be configured with: mudconfig nmexits [on|off]
@@ -106,7 +102,6 @@
 - Fixed bug in goto that broke using a string as an argument.
 
 ---- 2.3a19 ---
-- Released 2007-03-13
 - Further simplified parsing: it is no longer necessary to "put book on table" or
   "give sword to fighter". You can now "put book table" and "give sword fighter".
   Added to OLD_STYLE_PLURALS, COMMAND_MATCHING, and OBJECT_MATCHING, you can now
@@ -123,7 +118,6 @@
 - Fixed last major obstacle to http liveupgrades. Files should no longer get mangled in-transit.
 
 ---- 2.3a18 ---
-- Released 2007-03-12
 - If OLD_STYLE_PLURALS is defined in config.h, commands will be translated
   from "drop book 2" format to "drop 2nd book" format automatically.
 - Added SetNoCondition() to living things. If you don't like indications of
@@ -204,7 +198,6 @@
 - Fixed bizarre exit message if you're not standing and you go home.
 
 ---- 2.3a10 ---
-- Released 2007-02-15
 - Added intermud mail support.
 - Fixed $P in prompt.
 - Added security fixes to router.
@@ -217,7 +210,6 @@
 - Telling to a sleeping person now generates a warning.
 
 ---- 2.3a9 ---
-- Released 2007-01-30
 - Fixed bug that prevented players who idled out while editing from
   being booted.
 - Sending a tell to an NPC no longer runtimes.
@@ -258,12 +250,10 @@
 - Implemented LIB_ROOM fix suggested by Memrosh.
 
 ---- 2.3a5 ---
-- Released 2007-01-19
 - Added OOB support.
 - Added liveupgrade system. See: help liveupgrade
 
 ---- 2.3a1 ---
-- Released 2006-12-29
 - Fixed null errors in wield verb.
 - DEFAULT_PARSING now works correctly. If you have two keys and two tables,
   "put key on table" will put a key on a table without causing
@@ -548,7 +538,6 @@
 - Added sefun: query_local_functions.
 
 ---- 2.1.1 ---
-- Released 2006-09-27
 - Fixed a bug in chat.c that sent comms on new local channels to
   the router (!!).
 - Fixed "return" command bug and various travel message bugs
@@ -565,7 +554,6 @@
 - Players can no longer use the force command.
 
 ---- 2.1 ---
-- Released 2006-07-12
 - Fixed relative include problem in QCS.
 - Fixed memcheck.
 - Added vis and invis to list of customizable messages with the
@@ -595,7 +583,6 @@ o In some cases combat events appear slighly out of order. This
   will be addressed in a rewrite of combat objects in the future.
 
 ---- 2.0r29 --- 
-- Released 2006-07-09
 - Fixed finger daemon to not display ip addresses to players.
 - The verb copy now handles relative paths more gracefully.
 - LIB_TEACHER can now know all languages with SetAllLanguages(1)
@@ -636,7 +623,6 @@ o In some cases combat events appear slighly out of order. This
 - Fixed a bug in the MudOS parser that screwed up things with apostrophes.
 
 ---- 2.0r28 --- 
-- Released 2006-07-05
 - Fixed minor bug in body.c that interfered with collapsing.
 - Fixed message boards.
 - Added command: snoopreport
@@ -645,7 +631,6 @@ o In some cases combat events appear slighly out of order. This
 - The command mudlist now ignores colors.
 
 ---- 2.0r27 --- 
-- Released 2006-07-05
 - Fixed currency problem in dying NPC's.
 - Added commands: env, polyglottize
 - Fixed "about" verb.
@@ -686,7 +671,6 @@ o In some cases combat events appear slighly out of order. This
 - Fixed message board in arch room.
 
 ---- 2.0r26 ---
-- Released 2006-06-18
 - Plugged some serious security holes ( http://dead-souls.net/news.html#16jun06 )
 - Cleaned up some unnecessary call_outs in lib objects.
 - Added LIB_PULL.
@@ -704,7 +688,6 @@ o In some cases combat events appear slighly out of order. This
   command is invisible.
 
 ---- 2.0r25 ---
-- Released 2006-06-06
 - r24 had some unfortunate licensing problems attached.
   r25 includes a Win32 native binary that does not depend
   on any GPL code to run.
@@ -715,12 +698,10 @@ o In some cases combat events appear slighly out of order. This
   release if you have r23 or r24.
 
 ---- 2.0r24 ---
-- Released 2006-06-03
 - Ran into some trouble when releasing r23. For
   technical reasons, it's being re-released as r24.
 
 ---- 2.0r23 ---
-- Released 2006-06-02
 - Fixed a bug that sent local channel data to the i3
   router. Sorry about this, guys. As soon as I found
   this, I killed it. It appears to have affected r22 only.
@@ -742,7 +723,6 @@ o In some cases combat events appear slighly out of order. This
   in LIB_STARGATE.
 
 ---- 2.0r22 ---
-- Released 2006-05-15
 - Changed UNIX config and start scripts to assume
   Bourne shell rather than bash.
 - Fixed "look in" bug in transparent containers.
@@ -778,7 +758,6 @@ o In some cases combat events appear slighly out of order. This
   Otherwise, you have to "look in" it.
 
 ---- 2.0r21 ---
-- Released 2006-04-22
 - Fixed a bug in "following" code.
 - Fixed a bug in trainer code.
 - Fixed latent SNOOP_D bugs.
@@ -797,7 +776,6 @@ o In some cases combat events appear slighly out of order. This
 - Removed clan inheritance from gstaff.c.
 
 ---- 2.0r20 ---
-- Released 2006-04-14
 - "put all in <thing>" now ignores worn and wielded
   items.
 - Added commands: switchrouter, domainadmin,
@@ -843,7 +821,6 @@ o In some cases combat events appear slighly out of order. This
 - Integrated most I3 packets with router room.
 
 ---- 2.0r19 ---
-- Released 2006-04-07
 - Fixed menu item bug in LIB_BARKEEP.
 - Fixed Ylsrim pub.
 - Added keepalive pinger tool to wiz chest.
@@ -886,7 +863,6 @@ o In some cases combat events appear slighly out of order. This
 - Added AUTOEXEC_D.
 
 ---- 2.0r18 ---
-- Released 2006-03-29
 - Changed default intermud router to 149.152.218.102 port 23
 - Added a sanity check in telnet room.
 - Fixed bug in Newbie Mansion Quest (thx Jonez).
@@ -900,7 +876,6 @@ o In some cases combat events appear slighly out of order. This
 - Fixed light bug in ROOM_VOID.
 
 ---- 2.0r17 ---
-- Released 2006-03-24
 - Fixed bug that prevented assistant admins from shutting down.
 - Added Shadyman's emote doc.
 - Tweaked timestamp() (thx, Jonez).
@@ -944,7 +919,6 @@ o In some cases combat events appear slighly out of order. This
 - Added commands: addraces, removeraces, ascii, resetall, flushobs.
 
 ---- 2.0r16 ---
-- Released 2006-03-12
 - Admin email specified at login now gets sent to config.h.
 - New FAQ material added to /www
 - If a file exists in /doc/help/races for a specified race,
@@ -1011,7 +985,6 @@ o In some cases combat events appear slighly out of order. This
 - Added tweaks to read verb and faq command submitted by Manchi.
 
 ---- 2.0r14 ---
-- Released 2006-02-23
 - Added barkeeps to QCS.
 - Added vendors to QCS.
 - Barkeeps now properly handle array keys in menu items. See Lars.
@@ -1045,7 +1018,6 @@ o In some cases combat events appear slighly out of order. This
 - More sefun documentation.
 
 ---- 2.0r12 ---
-- Release 2006-01-30
 - Fixed function conflict that made "scan -i" fail.
 - Tightened up "get" lib code.
 - Verbified "zap".
@@ -1080,7 +1052,6 @@ o In some cases combat events appear slighly out of order. This
 - SetUnique() now does what common sense requires.
 
 ---- 2.0r10 ---
-- Released 2006-01-23
 - Fixed a problem in the death system that allowed creators to
   be undead without quite realizing it.
 - Fixed miscellaneous minor gotchas in the sample town.
@@ -1121,7 +1092,6 @@ o In some cases combat events appear slighly out of order. This
   messages fixed, etc).
 
 ---- 2.0r8 ---
-- Released 2006-01-17
 - Added intermud announcements to arch room (/secure/room/arch).
 - Fixed bug in targeted intermud emotes.
 - Channels now log without needing to have a player listening.
@@ -1154,7 +1124,6 @@ o In some cases combat events appear slighly out of order. This
 - Added some directives to QCS.
 
 ---- 2.0r7 ---
-- Released 2006-01-12
 - Added sample virtual forest to town area.
 - Added intermud list of Dead Souls muds to arch room ("read screen").
 - Added mudtime and ticktock commands, and tweaked the time system.
@@ -1171,7 +1140,6 @@ o In some cases combat events appear slighly out of order. This
 - Applied workaround for a bug in Clepius.
 
 ---- 2.0r6 ---
-- Released 2006-01-05
 - Added manuals and such to first admin logon.
 - Cleaned up miscellaneous login quirks.
 - Got rid of that pesky elog message at startup.
@@ -1195,7 +1163,6 @@ o In some cases combat events appear slighly out of order. This
 - Added Players Handbook
 
 ---- 2.0r3 ---
-- Released 2006-01-02
 - Added workaround for Windows time-of-day problem.
 - Fixed minor QCS issues.
 

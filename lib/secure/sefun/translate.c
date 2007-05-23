@@ -35,6 +35,7 @@
 "suoro","voi","debil","kunel","shinel",\
 "sasikumea","zakila","txakurra","soustat","irrumator",\
 "mentula","koproskilo","malakas","la'a'za'zel","zayin",\
+"haakskeekah",\
 "STENDEC","CROATOAN","LATUALATUKA",\
 "ar","ot","ti","fi","na",\
 "ar","ot","ti","fi","na",\

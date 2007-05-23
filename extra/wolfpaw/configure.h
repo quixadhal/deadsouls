@@ -39,12 +39,7 @@
 #define SIZEOF_INT 4
 #define SIZEOF_PTR 4
 #define SIZEOF_SHORT 2
-#define SIZEOF_LONG 4
 #define SIZEOF_FLOAT 4
 #define UINT32 unsigned long
 #define CONFIGURE_VERSION       5
 
-#define USHRT_MAX  (MAXSHORT)
-#define USE_STRUCT_DIRENT
-#define RTLD_LAZY     1
-#define INADDR_NONE (unsigned int)0xffffffff

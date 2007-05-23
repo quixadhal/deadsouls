@@ -25,6 +25,7 @@ static void create() {
       "regular drinks.  Different types of drinks have different "
       "effects on you which you will learn through experimentation.\n\n"
       "See also: bait, cast, eat, fish");
+    SetSynonyms("quaff");
 }
 
 mixed can_drink_obj(string verb) { return this_player()->CanManipulate(); }

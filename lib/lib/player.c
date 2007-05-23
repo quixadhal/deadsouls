@@ -43,7 +43,10 @@ static void heart_beat() {
 	return;
     }
     interactive::heart_beat();
-    if( IDLE_TIMEOUT && query_idle(this_object()) >= IDLE_TIMEOUT && !creatorp(this_object()) && !present("testchar badge",this_object()) ) {
+    if( IDLE_TIMEOUT && query_idle(this_object()) >= IDLE_TIMEOUT 
+      && !creatorp(this_object()) 
+      && !present("testchar badge",this_object()) 
+      && !testp(this_object()) ) {
 	cmdQuit();
 	return;
     }

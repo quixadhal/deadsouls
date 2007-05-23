@@ -118,8 +118,8 @@ mixed cmd(string str) {
     }
 
     if(!str || str == ""){
-        write("Try: help liveupgrade.");
-        return 1;
+	write("Try: help liveupgrade.");
+	return 1;
     }
 
     if(str == "alpha"){

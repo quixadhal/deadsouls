@@ -6,6 +6,8 @@
  *    Last modified: 97/01/03
  */
 
+inherit LIB_LEVEL;
+
 private int            Level       = 1;
 private mapping        Skills      = ([]);
 private static mapping SkillsBonus = ([]);
@@ -61,9 +63,13 @@ int ResetLevel() {
 int SetLevel(int x) {
     string array skills = GetPrimarySkills();
 
-    foreach(string skill in skills) {
-	SetSkill(skill, 2*x);
+    if(!Level){
+	//tc("hmmm.","red");
+	foreach(string skill in skills) {
+	    SetSkill(skill, 2*x);
+	}
     }
+
     return (Level = x);
 }
 

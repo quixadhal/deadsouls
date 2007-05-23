@@ -119,17 +119,11 @@ int AdvanceDude(mixed arg){
 	  "have earned the name "+this_player()->GetName()+" "
 	  +advancement[desired_level]["title"]+".");
 
-	this_player()->SetLevel(desired_level);
+	this_player()->ChangeLevel(desired_level);
 	this_player()->AddTrainingPoints(desired_level);
 	this_player()->AddTitle(advancement[desired_level]["title"]);
 	this_player()->RemoveTitle(advancement[desired_level-1]["title"]);
 
-	for(i=0;i<sizeof(statlist);i++){
-	    this_stat = this_player()->GetStat(statlist[i]);
-	    statclass = this_stat["class"];
-	    statlevel = this_stat["level"];
-	    this_player()->SetStat(statlist[i],statlevel + 1,statclass);
-	}
 	this_player()->save_player((string)this_player()->GetKeyName());
 
 	return 1;
