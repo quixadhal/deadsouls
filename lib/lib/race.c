@@ -129,7 +129,7 @@ varargs string SetRace(string race, mixed extra) {
     }
     if( extra != 1 ) NewBody(race);
     tmp = this_object()->GetId();
-    if(member_array(race,tmp) == -1){
+    if(tmp && member_array(race,tmp) == -1){
 	tmp += ({ race });
 	this_object()->SetId(tmp);
     }

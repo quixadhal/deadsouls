@@ -1,4 +1,7 @@
----- 2.5a1 (unreleased) ---
+---- 2.5a4 (unreleased) ---
+- Modified driver to approach POSIX setitimer() compliance.
+- 100% merged Windows and UNIX driver code.
+- Added calendar information to the mudtime command.
 - The race of a creature is now automatically added to its id array.
 - Added ChangeLevel to sanely manage the advancement of skills
   and stats when a creature's level changes. The stat and skill "class"

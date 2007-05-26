@@ -8,6 +8,7 @@ mixed cmd() {
     int integer, hours, minutes;
     string meridiem = " am";
     string nulle = "";
+    int daynum = query_date();
 
     mudtime = SEASONS_D->GetMudTime();
     hours = mudtime[0];
@@ -21,6 +22,9 @@ mixed cmd() {
     if(!hours || hours == 0) hours = 12;
 
     if(minutes < 10) nulle = "0";
+
+    write("It is "+query_day_name()+", "+daynum+ordinal(daynum)+" day of "+
+      query_month()+", in "+query_season()+".");
 
     write("In the MUD, the time is "+hours+":"+nulle+minutes+meridiem+"."); 
 
