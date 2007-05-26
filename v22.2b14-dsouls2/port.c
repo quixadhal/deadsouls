@@ -201,7 +201,7 @@ get_cpu_times P2(unsigned long *, secs, unsigned long *, usecs)
 #ifdef TIMES			/* start TIMES */
     times(&t);
     *secs = (total = t.tms_utime + t.tms_stime) / CLK_TCK;
-    *usecs = ((total - (*secs * CLK_TCK)) * 1000000) / CLK_TCK;
+    *usecs = ((total - (*secs * CLK_TCK)) * 999999) / CLK_TCK;
     return 1;
 #else				/* end then TIMES */
 

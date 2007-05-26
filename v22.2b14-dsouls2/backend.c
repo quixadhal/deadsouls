@@ -155,8 +155,8 @@ void backend()
 	     * drop through. (Except on Windows)
 	     */
 #ifdef WIN32
-	    timeout.tv_sec = HEARTBEAT_INTERVAL/1000000;
-	    timeout.tv_usec = HEARTBEAT_INTERVAL%1000000;
+	    timeout.tv_sec = HEARTBEAT_INTERVAL/999999;
+	    timeout.tv_usec = HEARTBEAT_INTERVAL%999999;
 #else
 	    timeout.tv_sec = 60;
 	    timeout.tv_usec = 0;

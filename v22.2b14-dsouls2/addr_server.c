@@ -9,6 +9,10 @@
 #include "file_incl.h"
 #include "port.h"
 
+#ifdef WIN32
+#define SIGNAL_ERROR -1
+#endif
+
 #ifdef DEBUG_MACRO
 int debug_level = DBG_addr_server;
 #endif				/* DEBUG_MACRO */

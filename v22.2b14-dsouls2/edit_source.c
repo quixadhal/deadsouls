@@ -1603,14 +1603,13 @@ static void handle_configure() {
 
     close_output_file();
 
+    open_output_file("system_libs");
+
 #ifdef WIN32
-    system("copy windows\\configure.h tmp.config.h");
-    system("type configure.h >> tmp.config.h");
-    system("del configure.h");
-    system("rename tmp.config.h configure.h");
+    check_library("-lwsock32");
+    check_library("-lws2_32");
 #else
 
-    open_output_file("system_libs");
     check_library("-lresolv");
     check_library("-lbsd");
     check_library("-lBSD");
@@ -1656,7 +1655,11 @@ static void handle_configure() {
 	}
     }
 
+#ifndef WIN32
     fprintf(yyout, "\n\n");
+#else 
+    fprintf(" -lwsock32 -lws2_32", "\n\n");
+#endif
     close_output_file();
 #endif
 }

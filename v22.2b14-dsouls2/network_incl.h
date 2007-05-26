@@ -5,7 +5,7 @@
 #  include <sys/types.h>
 #endif
 #ifdef INCL_SYS_IOCTL_H
-#  include <sys/ioctl.h>
+#  include "/usr/include/sys/ioctl.h"
 #endif
 #ifdef INCL_SYS_SOCKET_H
 #  include <sys/socket.h>

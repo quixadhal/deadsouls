@@ -33,6 +33,10 @@
  * SUCH DAMAGE.
  */
 
+#ifdef WIN32
+#define ITIMER_REAL 0
+#endif
+
 #if defined(LIBC_SCCS) && !defined(lint)
 static char sccsid[] = "@(#)ualarm.c	5.5 (Berkeley) 2/23/91";
 #endif				/* LIBC_SCCS and not lint */
@@ -46,6 +50,8 @@ unsigned ualarm PROT((register unsigned, register unsigned));
  * If ``reload'' is non-zero, keep generating SIGALRM
  * every ``reload'' microseconds after the first signal.
  */
+
+#ifndef WIN32
 unsigned ualarm P2(register unsigned, usecs, register unsigned, reload) {
     struct itimerval new, old;
 
@@ -60,4 +66,6 @@ unsigned ualarm P2(register unsigned, usecs, register unsigned, reload) {
     /* else */
     return -1;
 }
+#endif
+
 #endif
