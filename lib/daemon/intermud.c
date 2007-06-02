@@ -169,8 +169,10 @@ static void eventRead(mixed *packet) {
 	foreach(cle, val in packet[7]) {
 	    string tmp = "";
 	    if(cle){
+		string lib = "unknown";
+		if(val && sizeof(val) > 5 && arrayp(val)) lib = val[5];
 		tmp += "%^BOLD%^CYAN%^Processing mud: "+identify(cle)+
-		", lib: "+val[5];
+		", lib: "+lib;
 		if(val){
 		    if(!val[0]) tmp += " %^RED%^BOLD%^offline%^RESET%^";
 		    else tmp += " %^GREEN%^BOLD%^ONLINE%^RESET%^";

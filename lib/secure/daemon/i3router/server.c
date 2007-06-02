@@ -415,6 +415,7 @@ string query_fd_info(mixed foo){
 int GetMaxRetries(){ return MAXIMUM_RETRIES; }
 
 varargs void ReceiveList(mixed data, string type){
+    string *cmuds = keys(connected_muds);
     //trr("ReceiveList: " +identify(keys(data)),"red");
     //trr("ReceiveList ("+type+"): " +identify(data),"red");
     //trr("Current muds: "+identify(keys(mudinfo)));
@@ -425,6 +426,7 @@ varargs void ReceiveList(mixed data, string type){
     }
     if(type == "mudlist"){
 	foreach(mixed key, mixed val in data){
+	    if(member_array(key,cmuds) != -1) continue;
 	    if(mudinfo[key] && intp(val)){
 		trr("ROUTER_D: deleting "+key);
 		mudinfo[key]["disconnect_time"] = time();
@@ -435,35 +437,32 @@ varargs void ReceiveList(mixed data, string type){
 		map_delete(mudinfo, key);
 		continue;
 	    }
-	    if(!mudinfo[key] || member_array(key,keys(connected_muds)) == -1){
-		//trr("received remote list: "+key,"white");
-		if(!mapp(val)){
-		    //trr("VAL NOT A MAPPING. key: "+identify(key)+", val: "+identify(val),"blue");
-		    return;
-		}
-		//trr("accepting "+key+" into mudinfo mapping.","cyan");
-		mudinfo_update_counter++;
-		mudinfo_updates[key] = mudinfo_update_counter;
-		mudinfo[key]=val;
-		//broadcast_mudlist(key, 1);
-		//call_out( (: broadcast_mudlist :), 2 , key, 1 );
-		schedule_broadcast(key, 1);
+	    //trr("received remote list: "+key,"white");
+	    if(!mapp(val)){
+		//trr("VAL NOT A MAPPING. key: "+identify(key)+", val: "+identify(val),"blue");
+		return;
 	    }
-	    else {
-		//trr("router: REJECTING "+key+".","white");
-	    }
+	    //trr("accepting "+key+" into mudinfo mapping.","cyan");
+	    mudinfo_update_counter++;
+	    mudinfo_updates[key] = mudinfo_update_counter;
+	    mudinfo[key]=val;
+	    //broadcast_mudlist(key, 1);
+	    //call_out( (: broadcast_mudlist :), 2 , key, 1 );
+	    schedule_broadcast(key, 1);
 	}
     }
     else if(type == "chanlist"){
 	//trr("Current muds: "+identify(keys(mudinfo)));
 	if(data["listening"] && sizeof(data["listening"]) && mapp(data["listening"])){
 	    foreach(mixed key, mixed val in data["listening"]){
-		listening[key] = val;
+		//listening[key] = val;
 		//trr("listening update: "+key+" is "+identify(val));
 	    }
 	}
 	if(data["channels"] && sizeof(data["channels"]) && mapp(data["channels"])){
 	    foreach(mixed key, mixed val in data["channels"]){
+		string ownermud = data["channels"][key][1];
+		if(member_array(ownermud, cmuds) != -1) continue;
 		if(val == -1) map_delete(channels, key);
 		if(val == -1) map_delete(listening, key);
 		else {

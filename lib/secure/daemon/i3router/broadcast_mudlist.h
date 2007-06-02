@@ -93,6 +93,7 @@ varargs void broadcast_mudlist(string mudname, int remote, string single){
 	this_object()->SendList( ([ mudname : mudinfo[mudname] ]) );
 }
 foreach(targ_mudname in audience){
+    if(!sizeof(mudinfo) || !mudinfo[targ_mudname]) continue;
     switch(mudinfo[targ_mudname]["protocol"]){
     case 1:
     case 2:

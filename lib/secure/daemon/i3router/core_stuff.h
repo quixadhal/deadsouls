@@ -38,6 +38,7 @@ static void create(){
 	blacklisted_muds += explode(read_file(ROUTER_BLACKLIST),"\n");
 	blacklisted_muds = singular_array(blacklisted_muds);
     }
+    this_object()->irn_checkstat();
 }
 
 int SetReset(){
@@ -48,6 +49,7 @@ int SetReset(){
 
 void heart_beat(){
     heart_count++;
+    this_object()->irn_checkstat();
     if(reset_me) RELOAD_D->eventReload(this_object(), 2);
     if(heart_count > 60) {
 	//trr("CLOSING OLD/DISCONNECTED/PARADOXED SOCKETS","white");

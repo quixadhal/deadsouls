@@ -202,7 +202,10 @@ mixed cmd(string args) {
     if(args == "reload" || args == "restart" || args == "reset"){
 	object rsocket = find_object(RSOCKET_D);
 	if(router){
-	    if(args == "reset") router->clear();
+	    if(args == "reset"){
+		router->clear();
+		router->irn_clear();
+	    }
 	    router->SetList();
 	    router->eventDestruct();
 	    router = find_object(ROUTER_D);
@@ -397,7 +400,7 @@ mixed cmd(string args) {
 	router->SetRouterIP(s2);
 	router->SetRouterPort(s3);
 	router->SetRouterList();
-	write("Config complete. To activate, type: router reload");
+	write("Config complete. To activate, type: router reset");
 	return 1;
     }
 
