@@ -11,7 +11,7 @@ static void create() {
     SetId( ({ "orcslayer", "orc slayer","sword", "short sword", "shortsword"}));
     SetAdjectives( ({ "crafted","finely crafted","short","sharp","fine"}));
     SetShort("a finely crafted short sword");
-    SetLong("This is a very fine blade, overed with ancient runes. Engraved on it is a picture of the sword slicing an orc.");
+    SetLong("This is a very fine blade, covered with ancient runes. Engraved on it is a picture of the sword slicing an orc.");
     SetMass(300);
     SetBaseCost("silver",500);
     SetVendorType(VT_WEAPON);

@@ -31,7 +31,8 @@ if(socket_status(targetfd)[1] == "LISTEN") continue;
 //trr(timestamp()+" remove_mud: Removing mud from connected_muds list: "+mudname,"red");
         if(mudinfo[mudname]) mudinfo[mudname]["disconnect_time"] = time();
         map_delete(connected_muds, mudname);
-        broadcast_mudlist(mudname);
+        //broadcast_mudlist(mudname);
+        schedule_broadcast(mudname);
     }
     close_connection(targetfd);
     if(forced){
@@ -51,5 +52,6 @@ void disconnect_mud(string mudname){
 close_connection(connected_muds[mudname]);
  map_delete(connected_muds, mudname);
 }
-        broadcast_mudlist(mudname);
+        //broadcast_mudlist(mudname);
+        schedule_broadcast(mudname);
 }

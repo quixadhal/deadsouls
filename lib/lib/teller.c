@@ -336,7 +336,8 @@ int cmdParse(object who, string cmd, string str) {
 	}
 	sscanf(str, "%d %s", x, s1);
 	if( member_array(s1, Currencies) < 0 ) {
-	    who->eventPrint(s1 + " is not supported here!");
+	    if(!s1) who->eventPrint("Please specify a currency.");
+	    else who->eventPrint(s1 + " is not supported here!");
 	    return 1;
 	}
 	return eventWithdraw(who, s1, x);

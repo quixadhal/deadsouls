@@ -3,12 +3,14 @@
 inherit LIB_NPC;
 
 int CheckOrc(mixed val){
+    string *allowed_races = ({ "orc", "half-orc", "bear" });
     if(!val) return 0;
     if(!objectp(val)) return 0;
-    if(val->GetRace() == "orc") return 0;
+    if(member_array(val->GetRace(), allowed_races) != -1) return 0;
     else eventForce("growl at "+val->GetKeyName());
     return 1;
 }
+
 static void create() {
     npc::create();
     SetKeyName("orc");

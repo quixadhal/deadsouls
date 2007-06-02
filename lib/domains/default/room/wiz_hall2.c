@@ -43,7 +43,8 @@ static void create() {
 }
 
 int CanReceive(object ob) {
-    if(playerp(ob) && !creatorp(ob) && !present("testchar badge",ob)) {
+    if(playerp(ob) && !creatorp(ob) && !present("testchar badge",ob) &&
+      !member_group(ob,"TEST")) {
 	message("info","Creator staff only, sorry.", ob);
 	return 0;
     }

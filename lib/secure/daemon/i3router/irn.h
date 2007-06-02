@@ -2,15 +2,17 @@
 #include <save.h>
 #include <daemons.h>
 
-string my_name = "*yatmim";
-string my_password = "CROATOAN";
+string my_name = "*krakatoa";
+string my_password = IRN_PASSWORD;
 string *ok_ips = ({});
 int irn_enabled = 1;
 int irn_maxtry = 32;
 int convert_channel = 0;
 
 mapping routers = ([
-  "*i4" : ([ "ip" : "204.209.44.3", "port" : 8080, "password" : "STENDEC" ]),
+  //"*krakatoa" : ([ "ip" : "192.168.0.206", "port" : 5001, "password" : IRN_PASSWORD1 ]),
+  //"*vesuvius" : ([ "ip" : "192.168.0.206", "port" : 5002, "password" : IRN_PASSWORD2 ]),
+  //"*stroggili" : ([ "ip" : "192.168.0.206", "port" : 5003, "password" : IRN_PASSWORD3 ]),
 ]);
 
 static mapping chan_conv = ([
@@ -52,7 +54,7 @@ static int GoodPeer(int fd, mixed data){
 	return 0;
     }
     irn_connections[data[2]]["fd"] = fd;
-    trr("IRN: returning 1!","yellow");
+    //trr("IRN: returning 1!","yellow");
     return 1;
 }
 
@@ -347,7 +349,7 @@ static varargs void SendList(mixed data, int fd, string type){
     if(type == "mudlist") type = "irn-mudlist-delta";
     if(type == "chanlist") type = "irn-chanlist-delta";
     //trr("list type: "+type);
-    //trr("irn: trying to send list","white");
+    trr("irn: trying to send list: "+identify(keys(data)),"white");
     if(!irn_enabled) return;
     if(!mapp(data)){
 	//trr("irn: Tried to send a non-map. guilty stack: "+get_stack(),"cyan");
@@ -387,6 +389,7 @@ static varargs void SendList(mixed data, int fd, string type){
 
 varargs void SendWholeList(int fd, string type){
     mapping tmp = ([]);
+    int i=1;
     if(!type || !sizeof(type)) type = "mudlist";
     if(!irn_enabled) return;
     if(!fd) fd = 0;
@@ -404,10 +407,17 @@ varargs void SendWholeList(int fd, string type){
     }
     foreach(mixed key, mixed val in tmp){
 	//trr("irn: Sending "+key,"white");
-	if(type == "mudlist") if(mapp(val)) SendList( ([ key : val ]), fd, type );
+	if(type == "mudlist") if(mapp(val)){
+		trr("scheduling "+key,"red");
+		i++;
+		call_out( (: SendList :), i, ([ key : val ]), fd, type );
+		//SendList( ([ key : val ]), fd, type );
+	    }
 	if(type == "chanlist"){
 	    foreach(mixed key2, mixed val2 in val){
-		SendList( ([ key : ([ key2 : val2 ]) ]), fd, type );
+		i++;
+		call_out( (: SendList :), i, ([ key : ([ key2 : val2 ]) ]), fd, type );
+		//SendList( ([ key : ([ key2 : val2 ]) ]), fd, type );
 	    }
 	}
     }

@@ -662,7 +662,6 @@ void eventDescribeEnvironment(int brief) {
 
 	varargs string GetLong() {
 	    string str;
-
 	    str = object::GetLong(str);
 	    if(!str || strsrch(str, "$N") == -1) str = "$N is nondescript.";
 	    str = replace_string(str, "$N", GetName());

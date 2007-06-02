@@ -1728,7 +1728,7 @@ varargs int eventDie(mixed agent) {
 	string cl, sh;
 	float h;
 
-	if( !(sh = GetShort()) ) return 0;
+	if( !(sh = this_object()->GetShort()) ) return 0;
 	h = percent(GetHealthPoints(), GetMaxHealthPoints());
 	if( this_object()->GetNoCondition() || h > 90.0 ) cl = "%^BOLD%^GREEN%^";
 	else if( h > 75.0 ) cl = "%^GREEN%^";

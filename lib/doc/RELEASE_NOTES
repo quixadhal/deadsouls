@@ -1,4 +1,7 @@
----- 2.5a4 (unreleased) ---
+---- 2.5a6 (unreleased) ---
+- Fixed various router runtimes and improved IRN data integrity.
+- The bear costume now effectively disguises a player in most
+  ways and they truly appear to be a bear. A shadow is used for this purpose.
 - Modified driver to approach POSIX setitimer() compliance.
 - 100% merged Windows and UNIX driver code.
 - Added calendar information to the mudtime command.

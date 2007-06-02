@@ -62,7 +62,8 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	log_file("router/server_log","FD CONFLICT, MUD: "+info[2]+", FD: "+fd+"\n");
 	if(mudinfo[existing_mud]) mudinfo[existing_mud]["disconnect_time"] = time();
 	map_delete(connected_muds, existing_mud);
-	broadcast_mudlist(existing_mud);
+	//broadcast_mudlist(existing_mud);
+	schedule_broadcast(existing_mud);
     }
 
     if(sizeof(info)<18){ 
@@ -233,7 +234,8 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	    //this_object()->remove_mud(info[2],1);
 	    if(mudinfo[info[2]]) mudinfo[info[2]]["disconnect_time"] = time();
 	    map_delete(connected_muds, info[2]);
-	    broadcast_mudlist(info[2]);
+	    //broadcast_mudlist(info[2]);
+	    schedule_broadcast(info[2]);
 	}
     }
 

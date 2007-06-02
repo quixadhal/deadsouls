@@ -103,7 +103,7 @@ varargs void SetLongAndItems(int x, int y, int z) {
     ::SetLongAndItems(x, y, z);
 
     inv = ([]);
-    str = "You are on a large flat plain, bordered on all sides "
+    str = "You are in the air above a large flat plain, bordered on all sides "
     "by stone walls, forming a large arena for heavy weapons and "
     "mounted combat.";
     if(query_night()) str += " The stars of the night sky glitter overhead.";

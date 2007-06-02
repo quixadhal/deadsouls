@@ -19,8 +19,12 @@ static void create() {
 
 }
 int CanReceive(object ob) {
-    if(living(ob) && !creatorp(ob) && !present("testchar badge",ob)) {
-	message("info","Creator staff only, sorry.", ob);
+    //if(living(ob) && !creatorp(ob) && !present("testchar badge",ob)) {
+    //	message("info","Creator staff only, sorry.", ob);
+    //	return 0;
+    //   }
+    if(living(ob) && !interactive(ob)){
+	message("info","NPC's not allowed, sorry.", ob);
 	return 0;
     }
     return room::CanReceive(ob);

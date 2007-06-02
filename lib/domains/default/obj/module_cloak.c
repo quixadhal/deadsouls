@@ -114,10 +114,15 @@ varargs mixed eventInstall(object what, object where, int auto){
 }
 
 varargs mixed eventUninstall(object what, mixed auto){
+    int success;
     what->eventUninstallModule(this_object(), auto || 0);
     if(this_player() && environment() && environment() == what)
-	this_object()->eventMove(this_player());
-    return 1;
+	success = this_object()->eventMove(this_player());
+    if(success || auto) return 1;
+    else {
+	if(!success) write("The uninstall failed.");
+	return 0;
+    }
 }
 
 string Report(){

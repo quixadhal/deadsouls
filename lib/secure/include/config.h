@@ -60,5 +60,8 @@
 #define OLD_STYLE_PLURALS        1
 #define NM_STYLE_EXITS           0
 #define WEB_SOURCE               "149.152.218.102"
+#define IRN_PASSWORD1            "KRAKATOA"
+#define IRN_PASSWORD2            "VESUVIUS"
+#define IRN_PASSWORD3            "STROGGILI"
 
 #endif /* s_config_h */

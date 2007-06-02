@@ -736,7 +736,7 @@ varargs string GetLong(string str) {
     string item;
     string *affects = ({});
 
-    str = GetShort() + "\n";
+    str = this_object()->GetShort() + "\n";
     str += interactive::GetLong() + "\n";
     str += living::GetLong(nominative(this_object()));
     foreach(item in map(all_inventory(),

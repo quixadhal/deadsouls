@@ -27,6 +27,10 @@ static void create() {
       ]) );
 
 }
+
 void init(){
     ::init();
+    if(mud_name() == "Dead Souls Omega" && !GetExit("north")){
+	AddExit("north", "/domains/fort/room/f_road4");
+    }
 }

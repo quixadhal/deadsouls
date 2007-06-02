@@ -16,6 +16,7 @@
 #include <config.h>
 #include <daemons.h>
 #include <network.h>
+#include <rooms.h>
 #include "include/intermud.h"
 
 inherit LIB_CLIENT;
@@ -168,13 +169,15 @@ static void eventRead(mixed *packet) {
 	foreach(cle, val in packet[7]) {
 	    string tmp = "";
 	    if(cle){
-		tmp += "%^BOLD%^CYAN%^Processing mud: "+identify(cle);
+		tmp += "%^BOLD%^CYAN%^Processing mud: "+identify(cle)+
+		", lib: "+val[5];
 		if(val){
 		    if(!val[0]) tmp += " %^RED%^BOLD%^offline%^RESET%^";
 		    else tmp += " %^GREEN%^BOLD%^ONLINE%^RESET%^";
 		}
 		else tmp += " Status unknown";
 		tn(tmp);
+		tn(tmp,"cyan",ROOM_ARCH);
 	    }
 	    if( !val && MudList->List[cle] != 0 ) 
 		map_delete(MudList->List, cle);

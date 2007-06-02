@@ -6,7 +6,7 @@ inherit LIB_VERB;
 static void create() {
     verb::create();
     SetVerb("uninstall");
-    SetRules("", "OBJ","OBJ from OBJ","OBJ in OBJ","OBJ on OBJ");
+    SetRules("OBJ","OBJ from OBJ","OBJ in OBJ","OBJ on OBJ");
     SetErrorMessage("Uninstall something?");
     SetHelp("Syntax: uninstall THING\n"
       "        uninstall THING from THING\n"

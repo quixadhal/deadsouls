@@ -10,6 +10,16 @@ inherit LIB_WORN_STORAGE;
 static int active = 0;
 mapping SpecialFuns = ([]);
 
+int CheckPanel(){
+    if(this_object()->GetClosed()){
+	write("The wrist computer is closed. The panel is not accessible.");
+    }
+    else {
+	write("A panel you can read.");
+    }
+    return 1;
+}
+
 static void create() {
     worn_storage::create();
     SetKeyName("wrist computer");
@@ -35,7 +45,13 @@ static void create() {
     SetCanClose(1);
     SetClosed(1);
     SetLanguage("Yautja");
-    SetRead("default","Yautja tactical data system, version .09");
+    SetItems( ([
+	({"panel","functions"}) : (: CheckPanel :),
+      ]) );
+    SetRead( ([
+	({ "panel", "default" }) :"Yautja tactical data system, version .09",
+	//"panel": (: eventRead :),
+      ]) );
 }
 
 int eventInitialize(){
@@ -134,7 +150,7 @@ varargs mixed eventUninstallModule(object which, int auto){
 	return 1;
     }
     if(!auto){
-	write("You uninstall a module from the wrist computer. The computer says:");
+	write("You attempt to uninstall a module from the wrist computer. The computer says:");
 	say(this_player()->GetName()+"'s wrist computer says: ");
 	yaut_say("Uninstalling...");
     }
@@ -201,10 +217,20 @@ mixed CanGetFrom(object who, object item){
     return "This is a wrist computer. One can uninstall modules from it.";
 }
 
-varargs mixed eventRead(object who, string str){
+varargs mixed eventRead(mixed who, mixed str){
+    object dude;
+    string what;
     string ret = "Yautja tactical data system display. Installed modules:\n";
+    if(stringp(who)){
+	what = who;
+	dude = this_player();
+    }
+    else {
+	dude = who;
+	what = str;
+    }
     if(this_object()->GetClosed()){
-	write("The wrist computer is closed. There is nothing to read");
+	write("The wrist computer is closed. There is nothing to read.");
 	return 1;
     }
     if(!active){
@@ -214,8 +240,10 @@ varargs mixed eventRead(object who, string str){
     foreach(mixed ob in all_inventory()){
 	if(ob->Report()) ret += ob->Report();
     }
-    SetRead("default",ret);
-    return ::eventRead(who, str);
+    SetRead( ([
+	({ "panel", "default" }) :ret,
+      ]) );
+    return ::eventRead(dude, what);
 }
 
 varargs mixed eventOpen(object who, object tool){
@@ -223,7 +251,12 @@ varargs mixed eventOpen(object who, object tool){
     SetProtection(BLADE, 1);
     SetProtection(KNIFE, 2);
     SetProtection(HEAT, 3);
-    return ::eventOpen(who || 0, tool || 0);
+    ::eventOpen(who || 0, tool || 0);
+    if(!(this_object()->GetClosed())){
+	write("Opening the wrist computer yields a panel you can read.");
+	return 1;
+    }
+    return 0;
 }
 
 mixed eventClose(object who){
@@ -231,7 +264,7 @@ mixed eventClose(object who){
     SetProtection(BLADE, 10);
     SetProtection(KNIFE, 20);
     SetProtection(HEAT, 30);
-    return ::eventOpen(who || 0);
+    return ::eventClose(who || 0);
 }
 
 string GetInternalDesc(){

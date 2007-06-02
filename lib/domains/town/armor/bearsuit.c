@@ -20,10 +20,25 @@ static void create(){
     SetProtection(KNIFE,20);
     SetArmorType(A_BODY_ARMOR);
 }
-string GetAffectLong(object ob) {
-    if(!GetWorn()) return 0;
-    return ob->GetName() + " looks just like a bear!";
-}
 void init(){
     ::init();
 }
+mixed eventEquip(object who, string array limbs){
+    mixed success = armor::eventEquip(who, limbs);
+    object bearshadow = new("/shadows/bear");
+    if(success){
+	bearshadow->enshadow(who);
+    }
+    return success;
+}
+
+varargs mixed eventUnequip(object who) {
+    mixed success;
+    if(!who) who = this_player();
+    success = armor::eventUnequip(who);
+    if(success){
+	who->unbearshadow();
+    }
+    return success;
+}
+

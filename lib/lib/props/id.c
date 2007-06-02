@@ -123,24 +123,24 @@ int id(string str) {
     if( !stringp(str) ) {
 	return 0;
     }
-    return (member_array(lower_case(str), GetId()) != -1);
+    return (member_array(lower_case(str), this_object()->GetId()) != -1);
 }
 
 string array parse_command_id_list() {
-    string array ids = (GetId() || ({}));
+    string array ids = (this_object()->GetId() || ({}));
 
     return filter(ids, (: stringp($1) && ($1 != "") :));
 }
 
 string array parse_command_plural_id_list() {
-    string array ids = (GetId() || ({}));
+    string array ids = (this_object()->GetId() || ({}));
 
     ids = filter(ids, (: stringp($1) && ($1 != "") :));
     return map(ids, (: pluralize :));
 }
 
 string array parse_command_adjectiv_id_list() {
-    return filter(GetAdjectives(), (: $1 && ($1 != "") :));
+    return filter(this_object()->GetAdjectives(), (: $1 && ($1 != "") :));
 }
 
 varargs void eventAnnounceCanonicalId(object env){
@@ -150,7 +150,7 @@ varargs void eventAnnounceCanonicalId(object env){
     if(!env) return;
     if(environment(env)) env = environment(env);
     inv = deep_inventory(env) - ({ this_object() });
-    if(sizeof(inv) > 30) return;
+    if(sizeof(inv) > 25) return;
     //tc("I am "+identify(this_object())+" and I'm trying to announce to: "+identify(inv),"green");
     inv->ReceiveCanonicalId(CanonicalId);
     inv = all_inventory(this_object());
@@ -163,11 +163,11 @@ varargs void ReceiveCanonicalId(mixed foo, int leaving){
     if(!foo || !sizeof(foo)) return;
     if(!leaving){
 	foreach(mixed element in foo){
-	    if(member_array(element, GetId()) != -1){
+	    if(member_array(element, this_object()->GetId()) != -1){
 		if(member_array(element, CanonicalId) == -1){
 		    ExcludedIds += ({ element });
 		    //tc("I am: "+identify(this_object())+", I am excluding: "+element,"red");
-		    //tc("Ids "+identify(GetId()),"red");
+		    //tc("Ids "+identify(this_object()->GetId()),"red");
 		    parse_init();
 		    parse_refresh();
 		}

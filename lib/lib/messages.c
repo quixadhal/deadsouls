@@ -51,7 +51,7 @@ varargs string GetMessage(string msg, mixed arg) {
 	break;
     }
     if(strsrch(tmp, "$N") == -1) tmp = "$N "+tmp;
-    return capitalize(replace_string(tmp, "$N", GetName()));
+    return capitalize(replace_string(tmp, "$N", this_object()->GetName()));
 }
 
 string GetName() { return 0; }

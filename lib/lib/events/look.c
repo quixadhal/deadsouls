@@ -182,7 +182,7 @@ varargs string GetLong(string str) {
 	return GetItem(str);
     }
     else {
-	return GetExternalDesc();
+	return this_object()->GetExternalDesc();
     }
 }
 

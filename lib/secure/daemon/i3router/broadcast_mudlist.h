@@ -1,13 +1,23 @@
 // This file written mostly by Tim Johnson (Tim@TimMUD)
 
 // broadcast the mudlist when a mud just now got changed...
+
+static void validate();
+
+static mapping BroadcastQueue = ([]);
+
 varargs void broadcast_mudlist(string mudname, int remote, string single){
     string targ_mudname;
     string *audience = ({});
     mixed *packet1; // for muds that use protocol 1 or 2
     mixed *packet3; // for muds that use protocol 3
     int mudstat;
+
+    validate();
+
     mudinfo_update_counter++;
+
+    if(BroadcastQueue[mudname]) map_delete(BroadcastQueue, mudname);
 
     if(single && sizeof(single) && connected_muds[single]){
 	audience = ({ single });
@@ -96,3 +106,21 @@ foreach(targ_mudname in audience){
     }
 }
 }
+
+varargs void schedule_broadcast(string mudname, int remote, string single){
+    validate();
+    if(!BroadcastQueue) BroadcastQueue = ([]);
+    if(BroadcastQueue[mudname]) return;
+    else { 
+	BroadcastQueue[mudname] =([]);
+	if(remote) BroadcastQueue[mudname]["remote"] = remote;
+	else BroadcastQueue[mudname]["remote"] = 0;
+	if(single) BroadcastQueue[mudname]["single"] = single;
+	else BroadcastQueue[mudname]["single"] = 0;
+	call_out( (: broadcast_mudlist :), 10,
+	  mudname, BroadcastQueue[mudname]["remote"], 
+	  BroadcastQueue[mudname]["single"] );
+    }
+}
+
+

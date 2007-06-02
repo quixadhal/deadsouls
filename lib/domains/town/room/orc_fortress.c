@@ -3,15 +3,19 @@ inherit LIB_ROOM;
 
 int PreExit(){
     object *livings;
+    string *allowed_races = ({ "orc", "half-orc", "bear" });
+    string duderace = this_player()->GetRace();
     livings = get_livings(this_object());
     foreach(object living in livings){
-	if(living->GetRace() == "orc" && !interactive(living)) {
+	if(living->GetRace() == "orc" && !interactive(living) &&
+	  member_array(duderace, allowed_races) == -1){
 	    write("An orc bars your way!");
 	    return 0;
 	}
     }
     return 1;
 }
+
 static void create() {
     room::create();
     SetClimate("indoors");

@@ -64,7 +64,7 @@ static void broadcast_data(mapping targets, mixed data);
 // Ones with their own files...
 string clean_fd(string fd);
 static void broadcast_chanlist(string channame);
-static void broadcast_mudlist(string mudname);
+void broadcast_mudlist(string mudname);
 static varargs void Debug(string str, int level);
 static void process_channel(int fd, mixed *info);
 static void process_startup_req(int protocol, mixed info, int fd);
@@ -325,6 +325,7 @@ string *RemoveBlacklistedMud(string str){
 
 void check_discs(){
     int *fds = values(connected_muds);
+    int i = 1;
     fds += keys(irn_sockets);
     foreach(int element in sort_array(fds,1)){
 	string lost_mud;
@@ -332,13 +333,19 @@ void check_discs(){
 	  socket_status(element)[1] == "CLOSED"){
 	    foreach(string key, mixed val in mudinfo){
 		if(!connected_muds[key] && mudinfo[key]["router"] && mudinfo[key]["router"] == my_name){
-		    disconnect_mud(key);
+		    i = i+2;
+		    call_out( (: disconnect_mud :), i, key);
 		}
 	    }
+
+	    i = 1;
+
 	    foreach(string key, int val in connected_muds){
 		if(val == element){
 		    trr("REMOVING DISCONNECTED: "+key+" from "+val);
-		    disconnect_mud(key);
+		    i = i+2; 
+		    //disconnect_mud(key);
+		    call_out( (: disconnect_mud :), i, key);
 		}
 	    }
 	    foreach(mixed key, mixed val in irn_sockets){
@@ -350,7 +357,10 @@ void check_discs(){
 
 void clear_discs(){ 
     string mudname; 
+    int i = 1;
+
     validate();
+
     foreach(mudname in keys(mudinfo)) {
 	if(query_mud(mudname)["disconnect_time"] > 604800 ){
 	    //trr("I want to remove "+mudname+". Its disconnect time is "+ctime(query_mud(mudname)["disconnect_time"]),"white");
@@ -362,10 +372,13 @@ void clear_discs(){
 		//trr("It is not listed as a connected mud.","white");
 	    }
 	    //trr("Removing disconnected mud: "+identify(mudname),"red");
-	    remove_mud(mudname,1);
+	    i = i+2;
+	    call_out( (: remove_mud :), i, mudname,1);
 	}
+
 	if(mudinfo[mudname] && mudinfo[mudname]["disconnect_time"] > 0 &&
 	  mudinfo[mudname]["connect_time"] > 0){
+	    i = 1;
 	    //trr("I want to remove "+mudname+". It is in a paradox state.","white");
 	    if(member_array(mudname,keys(query_connected_muds())) != -1){
 		//trr("Its fd is: "+query_connected_muds()[mudname],"white");
@@ -374,7 +387,9 @@ void clear_discs(){
 		//trr("It is not listed as a connected mud.","white");
 	    }
 	    //trr("Removing disconnected mud: "+identify(mudname),"red");
-	    remove_mud(mudname,1);
+	    //remove_mud(mudname,1);
+	    i = i+2;
+	    call_out( (: remove_mud :), i, mudname,1);
 	}
     }
 }
@@ -414,7 +429,9 @@ varargs void ReceiveList(mixed data, string type){
 		trr("ROUTER_D: deleting "+key);
 		mudinfo[key]["disconnect_time"] = time();
 		mudinfo[key]["connect_time"] = 0;
-		broadcast_mudlist(key, 1);
+		//broadcast_mudlist(key, 1);
+		//call_out( (: broadcast_mudlist :), 2 , key, 1 );
+		schedule_broadcast(key, 1);
 		map_delete(mudinfo, key);
 		continue;
 	    }
@@ -428,7 +445,9 @@ varargs void ReceiveList(mixed data, string type){
 		mudinfo_update_counter++;
 		mudinfo_updates[key] = mudinfo_update_counter;
 		mudinfo[key]=val;
-		broadcast_mudlist(key, 1);
+		//broadcast_mudlist(key, 1);
+		//call_out( (: broadcast_mudlist :), 2 , key, 1 );
+		schedule_broadcast(key, 1);
 	    }
 	    else {
 		//trr("router: REJECTING "+key+".","white");
@@ -502,4 +521,3 @@ varargs int purge_ips(int rude){
     }
     return 1;
 }
-

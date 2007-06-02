@@ -6,6 +6,7 @@
 
 static private int router_socket;
 static private mapping sockets = ([]);
+static private int incept_date;
 
 
 void write_data(int fd, mixed data);
@@ -22,6 +23,7 @@ static void validate(){
 }
 
 static void create(){
+    incept_date = time();
     call_out("setup",1);
 }
 
@@ -37,13 +39,15 @@ void close_connection(int fd){
     sockstat = socket_status(fd);
     if(!sockstat || !sizeof(sockstat)) return;
     if(sockstat[1] == "LISTEN") return;
-    trr("About to try closing socket: "+fd,"yellow");
+    trr("About to try closing socket: "+fd+
+      " (aka: "+ROUTER_D->query_connected_fds()[fd]+")","yellow");
     trr("Pre-closing state: "+sockstat[1],"yellow");
     sockerr = socket_close(fd);
     if(sockerr > -1) map_delete(sockets,fd);
-    trr("closing socket:"+fd,"white");
-    trr("closing sockerr:"+sockerr,"white");
+    //trr("closing socket:"+fd,"white");
+    //trr("closing sockerr:"+sockerr,"white");
     trr("Post-closing state: "+socket_status(fd)[1],"yellow");
+    trr("---\n","white");
 }
 
 static void close_callback(int fd){
@@ -127,7 +131,7 @@ static void write_data_retry(int fd, mixed data, int counter){
 	break;
     default:
 	if (counter < maxtry) {
-	    if(counter < 3 || counter > maxtry-2)
+	    if(counter < 2 || counter > maxtry-1)
 		trr("RSOCKET_D write_data_retry "+counter+" to "+
 		  ROUTER_D->query_connected_fds()[fd]+", fd"+fd+" error,  code "+rc+": " + socket_error(rc));
 	    call_out( (: write_data_retry :), 2 , fd, data, counter + 1 ); 
@@ -188,3 +192,8 @@ void complete_socket_handoff(int i){
 }
 
 mapping query_socks(){ validate(); return copy(sockets); }
+
+int GetInceptDate(){
+    return incept_date;
+}
+

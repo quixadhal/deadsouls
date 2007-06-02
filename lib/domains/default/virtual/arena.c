@@ -111,7 +111,7 @@ varargs void SetLongAndItems(int x, int y, int z) {
     if(query_night()) str += " The stars of the night sky glitter overhead.";
     if(x == 1) str += " A stone wall prevents further travel west.";
     if(x == 10) str += " A stone wall prevents further travel east.";
-    if(y == 1) str += " A stone wall prevents further travel south.";
+    if(y == 1 && x != 5) str += " A stone wall prevents further travel south.";
     if(y == 10) str += " A stone wall prevents further travel north.";
     if(x == 5 && y == 1) str += "\n%^GREEN%^There is a sign here you can read.%^RESET%^";
 

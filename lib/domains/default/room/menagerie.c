@@ -8,7 +8,11 @@ static void create() {
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("The Menagerie");
-    SetLong("There are more creatures to the south, east, and west.");
+    SetLong("This is a magical area containing examples of the various "
+      "races available to creators for their areas. Normally these creatures "
+      "would not be found all crowded together like this, but a powerful "
+      "magic keeps them bound here so that mud staff can analyze and test them. "
+      "There are more creatures to the south, east, and west.");
     SetNoClean(1);
     SetInventory(([
 	"/domains/default/npc/horse" : 1,
