@@ -48,7 +48,7 @@ void create(){
     SetLong("Rage Virus v2");
     SetCure(20);
     SetCommunicable(50);
-    SetLifeSpan(-1);
+    SetLifeSpan(99999);
     SetType("viral");
     SetInfect((: InfectMess :));
 }
@@ -88,6 +88,7 @@ int eventDestruct(){
 
 int eventMove(mixed dest){
     ::eventMove(dest);
+    if(environment() && !living(environment())) victim = 0;
     bonuses();
 }
 

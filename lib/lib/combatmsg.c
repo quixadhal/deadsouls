@@ -99,7 +99,7 @@ static void eventSendMissMessages(object target, int x, string limb) {
     if( !limb ) limb = "body";
     data = GetMissData(target, x, limb);
     if( sizeof(data) != 4 ) return;
-    eventPrint(sprintf(data[0], data[1]...));
+    this_object()->eventPrint(sprintf(data[0], data[1]...));
     target->eventPrint(sprintf(data[0], data[2]...));
     environment()->eventPrint(sprintf(data[0], data[3]...), 
       ({ this_object(), target }) );
@@ -160,7 +160,7 @@ SendMeleeMessages(object target, int x, string targlimb, string limb) {
     }
     if( !limb ) limb = "attack";
     if( !targlimb ) targlimb = "body";
-    eventPrint(sprintf("You %s %s %s the %s with your %s.",
+    this_object()->eventPrint(sprintf("You %s %s %s the %s with your %s.",
 	verb[0], (string)target->GetName(), adverb, targlimb, limb) );
     target->eventPrint(sprintf("%s %s you %s your %s with %s %s.",
 	GetName(), verb[1], adverb, targlimb, possessive(this_object()), limb));
@@ -199,7 +199,7 @@ SendWeaponMessages(object target, int x, object weapon, string limb) {
 	verb[1] = moves[1] + " and " + verb[1];
     }
     if( !limb ) limb = "body";
-    eventPrint(sprintf("You %s %s %s the %s with your %s.",
+    this_object()->eventPrint(sprintf("You %s %s %s the %s with your %s.",
 	verb[0], (string)target->GetName(), adverb, limb, weap) );
     target->eventPrint(sprintf("%s %s you %s your %s with %s %s.",
 	GetName(), verb[1], adverb, limb, possessive(this_object()), weap) );

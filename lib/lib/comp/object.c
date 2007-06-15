@@ -8,6 +8,7 @@
 
 #include <lib.h>
 
+inherit LIB_SHADOW_HOOK;
 inherit LIB_CLEAN;
 inherit LIB_DESCRIPTION;
 inherit LIB_ID;

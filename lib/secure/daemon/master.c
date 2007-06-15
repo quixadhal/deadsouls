@@ -355,9 +355,11 @@ private static void load_access(string cfg, mapping resource) {
     }
 
     static void crash(string err) {
-	write_file(DIR_LOGS "/crashes", 
-	  mud_name() + " crashed " + ctime(time()) + " with error " + 
-	  err+".\n");
+	string guilty_stack = get_stack();
+	string guilty_obs = identify(previous_object(-1));
+	write_file(DIR_LOGS "/crashes",
+	  mud_name() + " crashed " + ctime(time()) + " with error " +
+	  err+".\n"+guilty_stack+"\n"+guilty_obs+"\n---\n");
 	message("system", "Reality implosion!!!  Everyone duck!!!", users());
 	message("system", "You are being forced to quit.", users());
 	users()->cmdQuit();

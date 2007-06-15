@@ -42,7 +42,7 @@ SendList( ([ mudname : -1 ]), 0, "mudlist" );
     log_file("router/server_log",timestamp()+" Removing mud: "+mudname+" on fd: "+targetfd+"\n");
 }
 
-void disconnect_mud(string mudname){
+varargs void disconnect_mud(string mudname, int remote){
     validate();
         if(mudinfo[mudname]){
         mudinfo[mudname]["disconnect_time"] = time();
@@ -53,5 +53,5 @@ close_connection(connected_muds[mudname]);
  map_delete(connected_muds, mudname);
 }
         //broadcast_mudlist(mudname);
-        schedule_broadcast(mudname);
+        schedule_broadcast(mudname, remote);
 }

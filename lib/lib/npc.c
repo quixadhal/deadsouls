@@ -527,7 +527,7 @@ void eventDescribeEnvironment(int brief) {
 		tell_room("/domains/default/room/catchtell","previous: "+identify(previous_object(-1)));
 		tell_room("/domains/default/room/catchtell","-------");
 	    }
-	    if(riders){
+	    if(riders && sizeof(riders)){
 		int i1, rider_source;
 		if(!arg2) arg2 = 0;
 		if(!arg3) arg3 = 0;

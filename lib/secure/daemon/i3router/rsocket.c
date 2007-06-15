@@ -4,6 +4,8 @@
 #include <daemons.h>
 #include <network.h>
 
+inherit LIB_DAEMON;
+
 static private int router_socket;
 static private mapping sockets = ([]);
 static private int incept_date;
@@ -195,5 +197,17 @@ mapping query_socks(){ validate(); return copy(sockets); }
 
 int GetInceptDate(){
     return incept_date;
+}
+
+int eventDestruct(){
+    string alert = "RSOCKET_D is being killed!\n";
+    alert += "STACK: "+get_stack()+"\n";
+    alert += "PREVS: "+identify(previous_object(-1))+"\n";
+
+    tc(alert,"red");
+    trr(alert);
+    tn(alert);
+    log_file("router/server_log",timestamp()+" "+alert+"\n");
+    return ::eventDestruct();
 }
 

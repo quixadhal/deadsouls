@@ -52,7 +52,7 @@
 #include "/secure/sefun/user_path.c"
 #include "/secure/sefun/visible.c"
 #include "/secure/sefun/tail.c"
-#include "/secure/sefun/dump_socket_status.c"
+#include "/secure/sefun/sockets.c"
 #include "/secure/sefun/local_time.c"
 #include "/secure/sefun/get_livings.c"
 #include "/secure/sefun/get_verbs.c"

@@ -19,3 +19,16 @@ END;
 
     return ret;
 }
+
+mixed *socket_names(){
+    string *finalsocks, *sock_array = ({});
+    int i, quant = sizeof(socket_status());
+    for(i = 0; i < quant; i++){
+	mixed *tmp = socket_status(i);
+	tmp[0] = i;
+	sock_array += ({ tmp });
+    }
+    finalsocks = sock_array;
+
+    return finalsocks;
+}

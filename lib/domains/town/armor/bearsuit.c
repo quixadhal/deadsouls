@@ -13,6 +13,7 @@ static void create(){
       "the wearer look like a bear. It seems to have "+
       "been fashioned from real bear parts.");
     SetMass(500);
+    SetMatching(0);
     SetBaseCost("silver",1000);
     SetDamagePoints(10);
     SetProtection(BLUNT,10);
@@ -27,8 +28,10 @@ mixed eventEquip(object who, string array limbs){
     mixed success = armor::eventEquip(who, limbs);
     object bearshadow = new("/shadows/bear");
     if(success){
-	bearshadow->enshadow(who);
+	tc("success");
+	bearshadow->eventShadow(who);
     }
+    else destruct(bearshadow);
     return success;
 }
 

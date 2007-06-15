@@ -520,7 +520,7 @@ int eventExecuteAttack(mixed target) {
 	    this_object()->eventFly();
 	}
 	else if(RACES_D->GetLimblessCombatRace(GetRace()) != 1){
-	    eventPrint("You can't fight unless you are up!");
+	    this_object()->eventPrint("You can't fight unless you are up!");
 	    return 0;
 	}
     }
@@ -679,7 +679,7 @@ int eventExecuteAttack(mixed target) {
 		SendWeaponMessages(target, actual_damage, weapon, TargetLimb);
 	    }
 	    else {
-		eventPrint(possessive_noun(target) + " death is now on your "
+		this_object()->eventPrint(possessive_noun(target) + " death is now on your "
 		  "head.");
 		target->eventPrint(GetName() + " is your murderer.");
 		environment()->eventPrint(possessive_noun(target) +
@@ -766,7 +766,7 @@ int eventExecuteAttack(mixed target) {
 		SendMeleeMessages(target, (x > 0) ? x : 0, TargetLimb);
 	    }
 	    else {
-		eventPrint(possessive_noun(target) + " death is now "
+		this_object()->eventPrint(possessive_noun(target) + " death is now "
 		  "on your head.");
 		target->eventPrint(GetName() + " is your murderer.");
 		environment()->eventPrint(possessive_noun(target) +
@@ -791,7 +791,7 @@ int eventExecuteAttack(mixed target) {
 	if(target->GetDead()) return 1;
 
 	if( environment() != environment(target) ) {
-	    eventPrint(target->GetName() + " has gone away.");
+	    this_object()->eventPrint(target->GetName() + " has gone away.");
 	    return 1;
 	}
 	if( TargetLimb ) {
@@ -802,7 +802,7 @@ int eventExecuteAttack(mixed target) {
 		if( x < 1 ) {
 		    target->eventPrint(possessive_noun(this_object()) + " bite "
 		      "is nothing more than a pinch.");
-		    eventPrint("Your bite is nothing more than a pinch.");
+		    this_object()->eventPrint("Your bite is nothing more than a pinch.");
 		    environment()->eventPrint(possessive_noun(this_object()) +
 		      " bite is nothing more than a "
 		      "pinch.",
@@ -811,7 +811,7 @@ int eventExecuteAttack(mixed target) {
 		else {
 		    target->eventPrint(GetName() + " bites you in the " +
 		      TargetLimb + "!");
-		    eventPrint("You bite " + target->GetName() + " in the " +
+		    this_object()->eventPrint("You bite " + target->GetName() + " in the " +
 		      TargetLimb + "!");
 		    environment()->eventPrint(GetName() + " bites " +
 		      target->GetName() + " in the " +
@@ -824,7 +824,7 @@ int eventExecuteAttack(mixed target) {
 	    else {
 		target->eventPrint("You avoid " + possessive_noun(this_object()) +
 		  " bite.");
-		eventPrint(target->GetName() + " avoids your bite.");
+		this_object()->eventPrint(target->GetName() + " avoids your bite.");
 		environment()->eventPrint(target->GetName() + " avoids " +
 		  possessive_noun(this_object()) +
 		  " bite.",
@@ -834,7 +834,7 @@ int eventExecuteAttack(mixed target) {
 	    }
 	}
 	else {
-	    eventPrint("You flounder about like a buffoon.");
+	    this_object()->eventPrint("You flounder about like a buffoon.");
 	    environment()->eventPrint(GetName() + " flounders about like a "
 	      "buffoon.", this_object());
 	}
@@ -1026,7 +1026,7 @@ int eventExecuteAttack(mixed target) {
 		tmp = filter((string *)environment()->GetEnters(),
 		  (: !((string)environment()->GetDoor($1)) :));
 		if( !sizeof(tmp) ) {
-		    eventPrint("You need to escape, but you have nowhere to go!");
+		    this_object()->eventPrint("You need to escape, but you have nowhere to go!");
 		    return 0;
 		}
 		cmd = "enter " + tmp[random(sizeof(tmp))];
@@ -1052,7 +1052,7 @@ int eventExecuteAttack(mixed target) {
 		    evaluate(f);
 		}
 		else {
-		    eventPrint("You can move again.");
+		    this_object()->eventPrint("You can move again.");
 		}
 	    }
 	    return;

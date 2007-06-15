@@ -14,6 +14,7 @@ private static string array Id           = ({});
 private static string array CanonicalId  = ({});
 private static string array ExcludedIds  = ({});
 private static string       KeyName      = 0;
+private static int          Matching     = 1;
 private static object array NotifiedObjects = ({});
 
 string GetKeyName();
@@ -59,7 +60,7 @@ string array GetId() {
     tmp = GetKeyName();
 
     if( tmp ) {
-	if(!OBJECT_MATCHING) return distinct_array(({ Id..., tmp }));
+	if(!OBJECT_MATCHING || !Matching) return distinct_array(({ CanonicalId..., tmp }));
 	else return Id + ({ file_name(this_object()) }) + atomize_string(tmp) - ExcludedIds;
     }
     else return Id;
@@ -94,7 +95,7 @@ varargs string array SetId(mixed val...) {
 
     CanonicalId = Id;
 
-    if(OBJECT_MATCHING){
+    if(OBJECT_MATCHING && Matching){
 	Id = atomize_array(Id);
     }
     return Id;
@@ -145,7 +146,7 @@ string array parse_command_adjectiv_id_list() {
 
 varargs void eventAnnounceCanonicalId(object env){
     object *inv;
-    if(!OBJECT_MATCHING) return;
+    if(!OBJECT_MATCHING || !Matching) return;
     if(!env) env = environment();
     if(!env) return;
     if(environment(env)) env = environment(env);
@@ -159,7 +160,7 @@ varargs void eventAnnounceCanonicalId(object env){
 
 
 varargs void ReceiveCanonicalId(mixed foo, int leaving){
-    if(!OBJECT_MATCHING) return;
+    if(!OBJECT_MATCHING || !Matching) return;
     if(!foo || !sizeof(foo)) return;
     if(!leaving){
 	foreach(mixed element in foo){
@@ -195,4 +196,18 @@ varargs void ReceiveCanonicalId(mixed foo, int leaving){
 	    previous_object()->ReceiveCanonicalId(CanonicalId);
 	}
     }
+}
+
+//This is for explicitly enabling or disabling
+//object matching. For some items, object matching is
+//really inconvenient.
+
+int SetMatching(int i){
+    if(!i) Matching = 0;
+    else Matching = 1;
+    return Matching;
+}
+
+int GetMatching(){
+    return Matching;
 }

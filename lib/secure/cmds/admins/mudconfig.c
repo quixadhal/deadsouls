@@ -15,7 +15,7 @@ string array nobools = ({ "disable","off","0","no" });
 string array restrict_tokens = ({ "restrict","unrestrict" });
 string array nonmodals = ({ "liveupgrade", "prompt","status","email","websource",
   "debugger", "access", "pinging" });
-string array modals = ({ "matchcommand", "matchobject", "autowiz", "locked","localtime", 
+string array modals = ({ "catchtell","matchcommand", "matchobject", "autowiz", "locked","localtime", 
   "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
   "retain", "defaultparse", "disablereboot" });
 string array inet_services = ({ "oob", "hftp", "ftp", "http", "rcp", "inet" });
@@ -430,6 +430,7 @@ static int ProcessModal(string which, string arg){
     case "nmexits" : which = "NM_STYLE_EXITS";break;
     case "matchcommand" : which = "COMMAND_MATCHING";break;
     case "matchobject" : which = "OBJECT_MATCHING";break;
+    case "catchtell" : which = "NPC_CATCH_TELL_DEBUG";break;
     default : break;
     }
     foreach(string element in config){
@@ -450,6 +451,11 @@ static int ProcessModal(string which, string arg){
       which == "BARE_EXITS" || which == "COMMAND_MATCHING"){ 
 	reload(LIB_CREATOR,1,1);
 	write("This configuration will take effect for each user the next time they log in.");
+	return 1;
+    }
+    if(which == "NPC_CATCH_TELL_DEBUG"){
+	if(file_exists("/domains/default/room/catchtell"))
+	    reload("/domains/default/room/catchtell");
 	return 1;
     }
     if(which == "NM_STYLE_EXITS"){

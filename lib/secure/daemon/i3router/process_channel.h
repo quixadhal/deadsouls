@@ -71,7 +71,7 @@ static void process_channel(mixed fd, mixed *info){
 	    // pretend they requested it... I'm gonna pretend...
 	    process_channel(fd,({ "channel-listen", 5, info[2], 0,
 		router_name, 0, info[6], 1 }));
-	    return;
+	    //return;
 	}
 	if(channels[info[6]][0]==2){ // filtered channel
 	    if(channels[info[6]][1]!=info[2]){ // not from chan owner

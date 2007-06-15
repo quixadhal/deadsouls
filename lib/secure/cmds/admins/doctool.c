@@ -175,5 +175,7 @@ void help() {
       "mud it is run on. It should therefore be used only when \n"
       "substantial occasional lag is acceptable."
       "\n\n"
+      "It is not unusual for this command to error out on \"Too long "
+      "evaluation\" the first few times you run it.\n\n"
       "See also: man, help", this_player());
 }

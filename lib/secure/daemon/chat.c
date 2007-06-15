@@ -20,6 +20,7 @@ static private mapping chanlast;
 
 static private string *local_chans = ({"newbie","cre","gossip","admin","error",
   "priest", "mage", "explorer", "thief", "fighter", "death", "connections" });
+static private string *remote_chans = ({});
 static string *syschans = ({ "death", "connections" });
 
 
@@ -48,6 +49,36 @@ static void create() {
     }
 
     local_chans += tmp_arr;
+}
+
+string *AddRemoteChannel(mixed chan){
+    string *ret = copy(remote_chans);
+    if(base_name(previous_object()) != INTERMUD_D) return ret;
+    if(stringp(chan)) chan = ({ chan });
+    if(!arrayp(chan)) return ret;
+    foreach(string element in chan){
+	if(member_array(element, local_chans) != -1){
+	    chan -= ({ element });
+	}
+    }
+    return copy(remote_chans += chan);
+}
+
+string *RemoveRemoteChannel(mixed chan){
+    string *ret = copy(remote_chans);
+    if(base_name(previous_object()) != INTERMUD_D) return ret;
+    if(stringp(chan)) chan = ({ chan });
+    if(!arrayp(chan)) return ret;
+    foreach(string element in chan){
+	if(member_array(element, local_chans) != -1){
+	    chan -= ({ element });
+	}
+    }
+    return copy(remote_chans -= chan);
+}
+
+string *GetRemoteChannels(){
+    return copy(remote_chans);
 }
 
 string decolor(string str){
@@ -180,6 +211,13 @@ int cmdChannel(string verb, string str) {
     else if(grepp(verb, "emote")) varb = replace_string(verb,"emote","");
     else if(last(verb, 1) == ":") varb = replace_string(verb,":","");
     else varb = verb;
+
+    if(member_array(varb, remote_chans) == -1 &&
+      member_array(varb, local_chans) == -1) local_chans += ({ varb });
+
+    if(find_object(INTERMUD_D) && !sizeof(remote_chans)){
+	remote_chans = INTERMUD_D->GetChannels();
+    }
 
     if( verb == "list" ) {
 	string *who;
@@ -416,7 +454,8 @@ int cmdChannel(string verb, string str) {
     if(!grepp(str,"$N") && emote) str = "$N "+str;
 
     eventSendChannel(name, verb, str, emote, target, target_msg);
-    if(member_array(GetRemoteChannel(verb),INTERMUD_D->GetChannels()) != -1){
+    if(member_array(GetRemoteChannel(verb), remote_chans) != -1
+      && member_array(verb, local_chans) == -1){
 	if( ob ) {
 	    SERVICES_D->eventSendChannel(name, rc, str, emote, target,
 	      target_msg);
@@ -490,6 +529,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	    break;
 	case "intergossip":
 	    this_msg = "%^GREEN%^";
+	    break;
+	case "free_speech":
+	    this_msg = "%^BOLD%^%^WHITE%^";
 	    break;
 	case "intercre":
 	    this_msg = "%^YELLOW%^";
@@ -579,6 +621,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	    break;
 	case "intergossip":
 	    tmsg += "%^GREEN%^";
+	    break;
+	case "free_speech":
+	    tmsg += "%^BOLD%^%^WHITE%^";
 	    break;
 	case "intercre":
 	    tmsg += "%^YELLOW%^";

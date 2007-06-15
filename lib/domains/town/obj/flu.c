@@ -65,6 +65,7 @@ int eventDestruct(){
 
 int eventMove(mixed dest){
     ::eventMove(dest);
+    if(environment() && !living(environment())) victim = 0;
     bonuses();
 }
 

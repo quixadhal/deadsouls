@@ -139,12 +139,17 @@ mapping query_connected_fds(){
 int *open_socks(){
     int *ret = ({});
     validate();
-    foreach(mixed element in socket_status()){
+    foreach(mixed element in socket_names()){
 	if(intp(element[0]) && element[0] != -1 && !grepp(element[3],"*") &&
-	  last_string_element(element[3],".") == router_port) {
+	  last_string_element(element[3],".") == router_port &&
+	  member_array(element[0],
+	    keys(this_object()->query_irn_sockets())) == -1) {
 	    ret += ({ element[0] });
+	    tc(identify(keys(this_object()->query_irn_sockets())),"white");
+	    tc("open_socks: I think this is valid: "+identify(element));
 	}
     }
+    tc("ret: "+identify(ret),"white");
     return ret;
 }
 
@@ -176,6 +181,8 @@ void get_info() {
       ((sizeof(channels)) ? "\nchannels:"+implode(keys(channels),", ") : "")+
       "\nmudinfo_update_counter: "+ mudinfo_update_counter+
       "\nsockets: "+socks+
+      "\nRouter socket daemon uptime: "+
+      time_elapsed(time()-RSOCKET_D->GetInceptDate())+
       "\n"+Report()
     );
 }
@@ -485,13 +492,13 @@ int purge_crud(){
     return sizeof(mudinfo);
 }
 
-varargs int purge_ip(string ip, int rude){
-    mixed *sock_array = socket_status();
+varargs int purge_ip(string ip, int rude, mixed *sock_array){
     validate();
+    if(!sock_array || !sizeof(sock_array)) sock_array = socket_names();
     foreach(mixed element in sock_array){
-	int fd = member_array(element, sock_array);
-	if(last_string_element(socket_status(fd)[3],".") != router_port) continue;
-	if(member_array(fd,keys(irn_sockets)) != -1) continue;
+	int fd = element[0];
+	if(last_string_element(element[3],".") != router_port) continue;
+	if(member_array(fd, keys(irn_sockets)) != -1) continue;
 	if(clean_fd(socket_address(fd)) == ip){
 	    if(query_connected_fds()[fd]){
 		if(rude){
@@ -500,7 +507,7 @@ varargs int purge_ip(string ip, int rude){
 		}
 	    }
 	    else {
-		trr("router: purging fd:"+fd+", status: "+identify(socket_status(fd)));
+		trr("router: purging fd:"+fd+", status: "+identify(element));
 		close_connection(fd);
 	    }
 	}
@@ -509,13 +516,13 @@ varargs int purge_ip(string ip, int rude){
 }
 
 varargs int purge_ips(int rude){
-    int i, quant = sizeof(socket_status());
-    string ip_address;
-    for(i = 0; i < quant; i++){
-	ip_address = socket_status(i)[3];
+    mixed *sockies = socket_names();
+    foreach(mixed element in sockies){
+	string ip_address = element[3];
+	tc("looking at: "+identify(element),"blue");
 	if(last_string_element(ip_address,".") == router_port ){
-	    ip_address = replace_string(socket_status(i)[4],"."+last_string_element(socket_status(i)[4],"."),"");
-	    purge_ip(ip_address,(rude || 0));
+	    ip_address = replace_string(element[4],"."+last_string_element(element[4],"."),"");
+	    purge_ip(ip_address,(rude || 0), sockies);
 	}
     }
     return 1;

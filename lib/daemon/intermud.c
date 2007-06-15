@@ -25,15 +25,15 @@ private int Password;
 private class list MudList, ChannelList;
 private mapping Banned;
 private mixed *Nameservers;
-private static int Connected, Tries;
+private static int Tries;
 private static int SocketStat = -1;
+private static int Online = 0;
 
 mapping ExtraInfo();
 
 static void create() {
     client::create();
     tn("INTERMUD_D: prev: "+identify(previous_object(-1)),"red");
-    Connected = 0;
     Password = 0;
     Tries = 0;
     Banned = ([]);
@@ -88,14 +88,15 @@ static void Setup() {
 }
 
 int GetConnectedStatus(){
-    if(SocketStat > -1 && socket_status(SocketStat)[1] == "DATA_XFER") return 1;
-    else return 0;
+    //tc("socketstat: "+identify(socket_status(SocketStat)),"cyan");
+    //if(SocketStat > -1 && socket_status(SocketStat)[1] == "DATA_XFER") return 1;
+    //else return 0;
+    return Online;
 }
 
 void eventClearVars(){
     if( !((int)master()->valid_apply(({ PRIV_ASSIST, INTERMUD_D }))) )
 	error("Illegal attempt to reset intermud: "+get_stack()+" "+identify(previous_object(-1)));
-    Connected = 0;
     Tries = 0;
     MudList = new(class list);
     ChannelList = new(class list);
@@ -109,6 +110,7 @@ void eventClearVars(){
 static void eventRead(mixed *packet) {
     mixed val;
     string cle;
+    Online = 1;
 
     if( !packet || sizeof(packet) < 6 ) return; /* should send error */
     if( Banned[packet[2]] ) {
@@ -140,7 +142,6 @@ static void eventRead(mixed *packet) {
 	/* End of Tricky's patch */ 
 	if( packet[6][0][0] == Nameservers[0][0] ) {
 	    Nameservers = packet[6];
-	    Connected = Nameservers[0][0];
 	    Password = packet[7];
 	    save_object(SAVE_INTERMUD);
 	}
@@ -222,9 +223,14 @@ static void eventRead(mixed *packet) {
 	if( packet[2] != Nameservers[0][0] ) return;
 	ChannelList->ID = packet[6];
 	foreach(cle, val in packet[7]) { 
-	    if( !val && ChannelList->List != 0 ) 
+	    if( !val && ChannelList->List != 0 ){ 
 		map_delete(ChannelList->List, cle);
-	    else if( val ) ChannelList->List[cle] = val;
+		CHAT_D->RemoveRemoteChannel(cle);
+	    }
+	    else if( val ){
+		ChannelList->List[cle] = val;
+		CHAT_D->AddRemoteChannel(cle);
+	    }
 	} 
 	save_object(SAVE_INTERMUD);
 	SERVICES_D->eventRegisterChannels(packet[7]);
@@ -279,18 +285,18 @@ static void eventRead(mixed *packet) {
 }
 
 static void eventSocketClose() {
+    Online = 0;
     //int extra_wait;
 
     //This appears to be malfunctioning.
     //
     //extra_wait = (Tries++) * 20;
     //if( extra_wait > 600 ) extra_wait = 600;
-    //Connected = 0;
     //call_out( (: Setup :), 20 + extra_wait);
 }
 
 static void eventConnectionFailure() {
-    if( Connected ) return;
+    Online = 0;
     tn("INTERMUD_D: CONNECTION FAILED","red");
     error("Failed to find a useful name server.\n");
 }
@@ -299,6 +305,7 @@ int SetDestructOnClose(int x) { return 0; }
 
 static void eventClose(mixed arg){
     SocketStat = -1;
+    Online = 0;
     tn("INTERMUD_D: socket closing!");
     ::eventClose(arg);
 }

@@ -225,6 +225,22 @@ static void process_startup_req(int protocol, mixed info, int fd){
 		"MUD already connected", // Error message
 		info
 	      }));
+
+	    //This message to the already-connected mud serves 
+	    //to alert the legit mud that something may be wrong, and
+	    //also will trigger a closure of the socket if it turns out
+	    //to actually be in a zombie state.
+	    write_data(connected_muds[info[2]],({
+		"error",
+		5,
+		router_name,
+		0,
+		info[2], // mud name
+		0,
+		"bad-mojo", 
+		"Another mud is trying to be you.", 
+		({ explode(socket_address(fd)," ")[0], info[12], info[13], info[17] })
+	      }));
 	    return;
 	}
 	if(this_object()->query_mudinfo()[info[2]]["ip"] == explode(socket_address(fd)," ")[0] &&

@@ -316,14 +316,17 @@ int eventRetryCommand(string lastcmd){
     if(COMMAND_MATCHING){
 	string vb;
 	next_command = ({});
+	if(!ret) ret = "";
 	tmp_arr = explode(ret," ");
-	vb = match_command(tmp_arr[0]);
-	if(sizeof(vb)) next_command = ({ vb });
-	else next_command = ({ tmp_arr[0] });
-	foreach(string element in tmp_arr[1..]){
-	    next_command += ({ element });
+	if(sizeof(tmp_arr)){
+	    vb = match_command(tmp_arr[0]);
+	    if(sizeof(vb)) next_command = ({ vb });
+	    else next_command = ({ tmp_arr[0] });
+	    foreach(string element in tmp_arr[1..]){
+		next_command += ({ element });
+	    }
+	    ret = implode(next_command," ");
 	}
-	ret = implode(next_command," ");
     }
 
 

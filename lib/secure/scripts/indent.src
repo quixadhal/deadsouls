@@ -44,3 +44,6 @@ cd /verbs
 indent */*
 cd /secure/daemon/i3router
 indent *
+cd /shadows
+indent *
+

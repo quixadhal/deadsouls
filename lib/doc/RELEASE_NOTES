@@ -1,4 +1,24 @@
----- 2.5a7 (unreleased) ---
+---- 2.5a8 ---
+- Added Set/GetMatching() to LIB_ID so that individual items
+  can choose not to be "object matched".
+- Intermud status sign should now work for reals.
+- Added a shadow management system, so that objects can receive multiple
+  shadows and remove them individually if necessary.
+- New test character tool: /domains/default/armor/jade_ring.c allows you
+  to receive detailed information about damage you receive, where, how
+  much before protection, and how much after protection. It can also make
+  you immune from damage, and can be used to force creatures to report
+  their damage to you in a similar way.
+- Added command: mem
+- IRN tested and confirmed to work well with 4 nodes.
+- Router fix: Sending a message on a channel a mud wasn't listening to now
+  enables the channel for the mud *and* sends the message.
+- Router fix: if a mud tries to connect with the same name as another
+  mud, and from a different address, the currently connected mud is 
+  notified. This serves two purposes: alerting a mud to a potential
+  problem, and triggering a reset of the socket if it's actually zombied.
+
+---- 2.5a7 ---
 - Improved IRN multi-peer support.
 - Fixed various router runtimes and improved IRN data integrity.
 - The bear costume now effectively disguises a player in most

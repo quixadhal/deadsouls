@@ -260,5 +260,6 @@ int check_read(string file);
 varargs string simple_map(mixed arg);
 string query_door(object what, string direction);
 int mkdir_recurse(string path);
+mixed *socket_names();
 
 #endif /* l_sefun_h */

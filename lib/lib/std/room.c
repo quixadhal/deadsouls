@@ -21,6 +21,7 @@
 #include <terrain_types.h>
 #include <privs.h>
 
+inherit LIB_SHADOW_HOOK;
 inherit LIB_CLEAN;
 inherit LIB_CONTAINER;
 inherit LIB_EXITS;

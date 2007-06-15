@@ -1,0 +1,23 @@
+PERFORMMARRIAGE
+
+NAME
+        performMarriage()
+
+SYNOPSIS
+        mixed performMarriage(object spouse1, object spouse2)
+
+DESCRIPTION
+        This function checks to ensure the location of the two betrotheds is suitable, then performs the actions that seal their lives in mortal bliss.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/clerk
+
+SEE ALSO
+         
+
+Author
+        Cratylus
+

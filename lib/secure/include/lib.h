@@ -101,6 +101,7 @@
 #define LIB_SENTIENT       DIR_LIB        "/sentient"
 #define LIB_SERVER         DIR_SECURE_LIB "/net/server"
 #define LIB_SHADOW         DIR_LIB        "/shadow"
+#define LIB_SHADOW_HOOK    DIR_LIB        "/shadow_hook"
 #define LIB_SHELL          DIR_LIB        "/shell"
 #define LIB_SHOP           DIR_LIB        "/shop"
 #define LIB_SOCKET         DIR_SECURE_LIB "/net/socket"
