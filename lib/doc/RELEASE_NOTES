@@ -1,3 +1,6 @@
+---- 2.5a9 ---
+- Fixed a peculiar crasher in the router when running under Linux.
+
 ---- 2.5a8 ---
 - Added Set/GetMatching() to LIB_ID so that individual items
   can choose not to be "object matched".

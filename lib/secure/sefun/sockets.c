@@ -22,9 +22,13 @@ END;
 
 mixed *socket_names(){
     string *finalsocks, *sock_array = ({});
-    int i, quant = sizeof(socket_status());
+    int i, quant;
+    //tc("About to try a socket_status().","yellow");
+    i = catch( quant = sizeof(socket_status()) );
+    //tc("I survived. i is: "+i,"green");
     for(i = 0; i < quant; i++){
 	mixed *tmp = socket_status(i);
+        //tc("Made it into the for. i is: "+i,"white");
 	tmp[0] = i;
 	sock_array += ({ tmp });
     }

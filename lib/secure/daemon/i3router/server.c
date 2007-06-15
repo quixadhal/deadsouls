@@ -145,11 +145,11 @@ int *open_socks(){
 	  member_array(element[0],
 	    keys(this_object()->query_irn_sockets())) == -1) {
 	    ret += ({ element[0] });
-	    tc(identify(keys(this_object()->query_irn_sockets())),"white");
-	    tc("open_socks: I think this is valid: "+identify(element));
+	    //tc(identify(keys(this_object()->query_irn_sockets())),"white");
+	    //tc("open_socks: I think this is valid: "+identify(element));
 	}
     }
-    tc("ret: "+identify(ret),"white");
+    //tc("ret: "+identify(ret),"white");
     return ret;
 }
 
@@ -493,16 +493,22 @@ int purge_crud(){
 }
 
 varargs int purge_ip(string ip, int rude, mixed *sock_array){
+    //tc("...received purge order.");
     validate();
+    //tc("will I make it past socket_names?","yellow");
     if(!sock_array || !sizeof(sock_array)) sock_array = socket_names();
+    //tc("YES!","green");
     foreach(mixed element in sock_array){
 	int fd = element[0];
 	if(last_string_element(element[3],".") != router_port) continue;
 	if(member_array(fd, keys(irn_sockets)) != -1) continue;
+        if(ip == "*") continue;
+        //tc("so far so good.");
 	if(clean_fd(socket_address(fd)) == ip){
+        //tc("mmhmm. dissing "+identify(element));
 	    if(query_connected_fds()[fd]){
 		if(rude){
-		    trr("router: fd to be purged: "+fd+", "+query_connected_fds()[fd]);
+		    trr("router: fd to be rudely purged: "+fd+", "+query_connected_fds()[fd]);
 		    disconnect_mud(query_connected_fds()[fd]);
 		}
 	    }
@@ -512,6 +518,7 @@ varargs int purge_ip(string ip, int rude, mixed *sock_array){
 	    }
 	}
     }
+    //tc("GOAL!","green");
     return 1;
 }
 
@@ -519,9 +526,11 @@ varargs int purge_ips(int rude){
     mixed *sockies = socket_names();
     foreach(mixed element in sockies){
 	string ip_address = element[3];
-	tc("looking at: "+identify(element),"blue");
+	//tc("looking at: "+identify(element),"blue");
 	if(last_string_element(ip_address,".") == router_port ){
+            //tc("I decide to purge.");
 	    ip_address = replace_string(element[4],"."+last_string_element(element[4],"."),"");
+            //tc("purging: "+ip_address);
 	    purge_ip(ip_address,(rude || 0), sockies);
 	}
     }
