@@ -28,7 +28,7 @@ mixed *socket_names(){
     //tc("I survived. i is: "+i,"green");
     for(i = 0; i < quant; i++){
 	mixed *tmp = socket_status(i);
-        //tc("Made it into the for. i is: "+i,"white");
+	//tc("Made it into the for. i is: "+i,"white");
 	tmp[0] = i;
 	sock_array += ({ tmp });
     }

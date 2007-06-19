@@ -2,19 +2,17 @@
 #include <save.h>
 #include <daemons.h>
 
-static string my_name = "*alpha";
-static string my_password = IRN_PASSWORD1;
+static string my_name = "*i4";
+static string my_password = IRN_PASSWORD;
 static string *ok_ips = ({});
 static int irn_enabled = 1;
 static int irn_maxtry = 32;
 static int convert_channel = 1;
 static int convert_channel2 = 0;
 
-static mapping routers = ([
-  "*alpha" : ([ "ip" : "192.168.0.206", "port" : 4001, "password" : IRN_PASSWORD1 ]),
-  "*beta" : ([ "ip" : "192.168.0.206", "port" : 4002, "password" : IRN_PASSWORD2 ]),
-  "*gamma" : ([ "ip" : "192.168.0.206", "port" : 4003, "password" : IRN_PASSWORD3 ]),
-  "*delta" : ([ "ip" : "192.168.0.206", "port" : 4004, "password" : IRN_PASSWORD4 ]),
+mapping routers = ([
+  "*yatmim" : ([ "ip" : "149.152.218.102", "port" : 23, "password" : IRN_PASSWORD2 ]),
+  //"*omega" : ([ "ip" : "71.234.154.99", "port" : 6000, "password" : IRN_PASSWORD3 ]),
 ]);
 
 static mapping chan_conv = ([
@@ -51,7 +49,7 @@ void irn_checkstat(){
 	}
 	else if(sstat){
 	    //trr("IRN: checkstat socket "+irn_connections[key]["fd"]+" for "+
-	      //identify(key)+" is in data transfer mode.");
+	    //identify(key)+" is in data transfer mode.");
 	}
 	else {
 	    //trr("IRN checkstat: "+key+" is not connected.");

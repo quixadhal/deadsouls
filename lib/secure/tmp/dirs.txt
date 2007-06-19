@@ -214,6 +214,12 @@
 /estates/g/guest/bak
 /estates/g/guest/log
 /estates/g/guest/tmp
+/estates/o
+/estates/o/one
+/estates/o/one/adm
+/estates/o/one/bak
+/estates/o/one/log
+/estates/o/one/tmp
 /ftp
 /include
 /lib
@@ -227,8 +233,10 @@
 /lib/virtual
 /log
 /log/adm
+/log/adm/archive
 /log/archive
 /log/chan
+/log/chan/archive
 /log/errors
 /log/law
 /log/law/adm
@@ -321,9 +329,12 @@
 /secure/save/players
 /secure/save/players/c
 /secure/save/players/g
+/secure/save/players/o
 /secure/save/postal
 /secure/save/postal/c
 /secure/save/postal/c/cratylus
+/secure/save/postal/o
+/secure/save/postal/o/one
 /secure/save/rid
 /secure/save/suicide
 /secure/save/votes

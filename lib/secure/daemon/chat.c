@@ -212,12 +212,12 @@ int cmdChannel(string verb, string str) {
     else if(last(verb, 1) == ":") varb = replace_string(verb,":","");
     else varb = verb;
 
-    if(member_array(varb, remote_chans) == -1 &&
-      member_array(varb, local_chans) == -1) local_chans += ({ varb });
-
     if(find_object(INTERMUD_D) && !sizeof(remote_chans)){
 	remote_chans = INTERMUD_D->GetChannels();
     }
+
+    if(member_array(GetRemoteChannel(varb), remote_chans) == -1 &&
+      member_array(varb, local_chans) == -1) local_chans += ({ varb });
 
     if( verb == "list" ) {
 	string *who;

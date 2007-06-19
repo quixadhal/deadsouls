@@ -15,7 +15,7 @@ static string eventLookupUser(string str){
     if(!user_table[str]) return str;
     else {
 	string ret = user_table[str];
-	map_delete(user_table, str);
+	//map_delete(user_table, str);
 	return ret;
     }
 }
@@ -59,9 +59,22 @@ varargs void eventSendWhoRequest(string mud) {
     string who, crypt_who;
 
     who = (string)this_player(1)->GetKeyName();
-    if(this_player(1)->GetInvis()) crypt_who = alpha_crypt(10); 
+
+    if(this_player(1)->GetInvis()){
+	foreach(string key, string val in user_table){
+	    if(!key || ! val) continue;
+	    if(val == who){
+		crypt_who = key;
+	    }
+	}
+	if(!crypt_who){
+	    crypt_who = alpha_crypt(10); 
+	    user_table[crypt_who] = who;
+	}
+    }
+
     else crypt_who = who;
-    user_table[crypt_who] = who;
+
     if((mud) && sizeof(mud)) INTERMUD_D->eventWrite(({ "who-req", 5, mud_name(), crypt_who, mud, 0 }));
     else INTERMUD_D->eventWrite(({ "who-req", 5, mud_name(), crypt_who, 0, 0 }));
     tn("eventSendWhoRequest: "+identify( ({ "who-req", 5, mud_name(), who, mud, 0 })), "blue");

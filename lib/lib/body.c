@@ -987,6 +987,9 @@ varargs int eventDie(mixed agent) {
 	    bad_types = type;
 	    break;
 	case A_SHIELD:
+	    bad_types = A_SHIELD | A_WEAPON;
+	    break;
+#if 0
 	    foreach(limb in limbs) {
 		object worn_item;
 		int tmp = 0;
@@ -1002,6 +1005,7 @@ varargs int eventDie(mixed agent) {
 		    return "You cannot wear " + short + " there right now.";
 	    }
 	    return 1; /* ok */
+#endif
 	case A_WEAPON:
 	    foreach(limb in limbs) {
 		object worn_item;

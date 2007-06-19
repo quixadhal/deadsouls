@@ -13,8 +13,6 @@
 #define DEB_INVALID 3	// //trr-Invalid
 #define DEB_OTHER 0	// //trr-Other
 #define DEBUGGER_GUY "cratylus"	// Name of who to display //trrging info to.
-#undef DEBUGGER_GUY
-#define DEBUGGER_GUY "MXLPLX"
 #define MAXIMUM_RETRIES 20
 // SEND_WHOLE_MUDLIST makes it act like the official I3 server instead of like the I3 specs
 #define SEND_WHOLE_MUDLIST
@@ -340,8 +338,12 @@ void check_discs(){
 	  socket_status(element)[1] == "CLOSED"){
 	    foreach(string key, mixed val in mudinfo){
 		if(!connected_muds[key] && mudinfo[key]["router"] && mudinfo[key]["router"] == my_name){
-		    i = i+2;
-		    call_out( (: disconnect_mud :), i, key);
+		    //i = i+2;
+		    //call_out( (: disconnect_mud :), i, key);
+		    if(!mudinfo[key]["disconnect_time"])
+			mudinfo[key]["disconnect_time"] = time();
+		    if(mudinfo[key]["connect_time"]) 
+			mudinfo[key]["connect_time"] = 0;
 		}
 	    }
 
@@ -369,7 +371,11 @@ void clear_discs(){
     validate();
 
     foreach(mudname in keys(mudinfo)) {
-	if(query_mud(mudname)["disconnect_time"] > 604800 ){
+	int deadsince = time() - mudinfo[mudname]["disconnect_time"];
+	tc(mudname+": "+ctime(mudinfo[mudname]["disconnect_time"]),"white");
+	//tc("dead age: "+time_elapsed(deadsince),"white");
+	if(mudinfo[mudname]["disconnect_time"] && deadsince > 21600 ){
+	    tc(mudname+": "+time_elapsed(deadsince),"red");
 	    //trr("I want to remove "+mudname+". Its disconnect time is "+ctime(query_mud(mudname)["disconnect_time"]),"white");
 	    //trr("Which was "+time_elapsed(time() - query_mud(mudname)["disconnect_time"])+" ago.","white");
 	    if(member_array(mudname,keys(query_connected_muds())) != -1){
@@ -378,7 +384,7 @@ void clear_discs(){
 	    else {
 		//trr("It is not listed as a connected mud.","white");
 	    }
-	    //trr("Removing disconnected mud: "+identify(mudname),"red");
+	    trr("Removing disconnected mud: "+identify(mudname),"red");
 	    i = i+2;
 	    call_out( (: remove_mud :), i, mudname,1);
 	}
@@ -386,14 +392,14 @@ void clear_discs(){
 	if(mudinfo[mudname] && mudinfo[mudname]["disconnect_time"] > 0 &&
 	  mudinfo[mudname]["connect_time"] > 0){
 	    i = 1;
-	    //trr("I want to remove "+mudname+". It is in a paradox state.","white");
+	    trr("I want to remove "+mudname+". It is in a paradox state.","white");
 	    if(member_array(mudname,keys(query_connected_muds())) != -1){
 		//trr("Its fd is: "+query_connected_muds()[mudname],"white");
 	    }
 	    else {
 		//trr("It is not listed as a connected mud.","white");
 	    }
-	    //trr("Removing disconnected mud: "+identify(mudname),"red");
+	    trr("Removing disconnected mud: "+identify(mudname),"red");
 	    //remove_mud(mudname,1);
 	    i = i+2;
 	    call_out( (: remove_mud :), i, mudname,1);
@@ -502,10 +508,10 @@ varargs int purge_ip(string ip, int rude, mixed *sock_array){
 	int fd = element[0];
 	if(last_string_element(element[3],".") != router_port) continue;
 	if(member_array(fd, keys(irn_sockets)) != -1) continue;
-        if(ip == "*") continue;
-        //tc("so far so good.");
+	if(ip == "*") continue;
+	//tc("so far so good.");
 	if(clean_fd(socket_address(fd)) == ip){
-        //tc("mmhmm. dissing "+identify(element));
+	    //tc("mmhmm. dissing "+identify(element));
 	    if(query_connected_fds()[fd]){
 		if(rude){
 		    trr("router: fd to be rudely purged: "+fd+", "+query_connected_fds()[fd]);
@@ -528,9 +534,9 @@ varargs int purge_ips(int rude){
 	string ip_address = element[3];
 	//tc("looking at: "+identify(element),"blue");
 	if(last_string_element(ip_address,".") == router_port ){
-            //tc("I decide to purge.");
+	    //tc("I decide to purge.");
 	    ip_address = replace_string(element[4],"."+last_string_element(element[4],"."),"");
-            //tc("purging: "+ip_address);
+	    //tc("purging: "+ip_address);
 	    purge_ip(ip_address,(rude || 0), sockies);
 	}
     }

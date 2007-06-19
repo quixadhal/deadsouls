@@ -1,3 +1,9 @@
+---- 2.5a10 ---
+- Removed a channel bug introduced in a8 that prevents the use of renamed
+  channels like ds, intergossip, etc.
+- i3who now works properly for invis users.
+- Router now retires muds that haven't connected in a week from the mudlist.
+
 ---- 2.5a9 ---
 - Fixed a peculiar crasher in the router when running under Linux.
 

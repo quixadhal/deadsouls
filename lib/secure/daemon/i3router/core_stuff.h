@@ -9,7 +9,10 @@ string router_port;
 
 static void create(){ 
     object rsock = find_object(RSOCKET_D);
-    if(!rsock) rsock = load_object(RSOCKET_D);
+    if(!rsock){
+	rsock = load_object(RSOCKET_D);
+	rsock->irn_clear();
+    }
     if(!rsock) return;
     SetNoClean(1);
     connected_muds = ([]);
@@ -49,14 +52,17 @@ int SetReset(){
 
 void heart_beat(){
     heart_count++;
-    this_object()->irn_checkstat();
     if(reset_me) RELOAD_D->eventReload(this_object(), 2);
-    if(heart_count > 60) {
+    if(!(heart_count % 60)) {
 	//trr("CLOSING OLD/DISCONNECTED/PARADOXED SOCKETS","white");
-	heart_count = 0;
+	this_object()->irn_checkstat();
 	this_object()->purge_ips();
 	check_discs();
 	save_object(SAVE_ROUTER);
+    }
+    if(heart_count > 3600){
+	heart_count = 0;
+	this_object()->clear_discs();
     }
 }
 
