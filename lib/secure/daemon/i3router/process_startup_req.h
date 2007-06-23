@@ -19,20 +19,17 @@ static void process_startup_req(int protocol, mixed info, int fd){
     check_discs();
     //trr("The known status of that fd is "+identify(socket_status(fd)),"blue");
     //trr("muds on that fd: "+identify(filter(keys(this_object()->query_connected_muds()), (: this_object()->query_connected_muds()[$1] == $(fd) :) )),"blue");
-    trr(timestamp()+" process_startup_req: protocol="+protocol+", mud="+info[2],"blue");
-    log_file("router/server_log",timestamp()+" process_startup_req: protocol="+protocol+", mud="+info[2]+"\n");
+    server_log("%^BLUE%^process_startup_req: protocol="+protocol+", mud="+info[2]);
 
     if(member_array(info[2], banned_muds) != -1) {
-	trr(timestamp()+" "+info[2]+" denied. reason: banned.\n");
+	server_log("%^RED%^"+info[2]+" denied. reason: banned.");
 	trr("---\n","blue");
-	log_file("router/server_log",timestamp()+" "+info[2]+" denied. reason: banned.\n");
 	return;
     }
 
     if(!info[2] || !sizeof(info[2])) {
-	trr(timestamp()+" "+info[2]+" denied. reason: null name.\n");
+	server_log("%^RED%^"+info[2]+" denied. reason: null name");
 	trr("---\n","blue");
-	log_file("router/server_log",timestamp()+" "+info[2]+" denied. reason: null name\n");
 	return;
     }
 
@@ -55,11 +52,9 @@ static void process_startup_req(int protocol, mixed info, int fd){
 
     if(fd && member_array(fd,keys(this_object()->query_connected_fds())) != -1){
 	string existing_mud = this_object()->query_connected_fds()[fd];
-	trr("FD CONFLICT, NEW MUD: "+info[2]+", FD: "+fd,"red");
-	trr("FD CONFLICT, EXISTING MUD: "+existing_mud+", FD: "+fd,"red");
 	trr("Socket status: "+identify(socket_status(fd)),"red");
+	server_log("%^RED%^FD CONFLICT, MUD: "+info[2]+", FD: "+fd);
 	trr("---\n","blue");
-	log_file("router/server_log","FD CONFLICT, MUD: "+info[2]+", FD: "+fd+"\n");
 	if(mudinfo[existing_mud]) mudinfo[existing_mud]["disconnect_time"] = time();
 	map_delete(connected_muds, existing_mud);
 	//broadcast_mudlist(existing_mud);
@@ -114,9 +109,8 @@ static void process_startup_req(int protocol, mixed info, int fd){
     case 1:
     case 2:
 	if(sizeof(info)!=18){
-	    trr("error: wrong size packet. Got: "+sizeof(info)+", wanted 18","red");
+	    server_log("error: wrong size packet. Got: "+sizeof(info)+", wanted 18");
 	    trr("---\n","blue");
-	    log_file("router/server_log",timestamp()+" error: wrong size packet. Got: "+sizeof(info)+", wanted 18\n");
 	    write_data(fd,({
 		"error",
 		5,
@@ -136,9 +130,8 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	break;
     case 3:
 	if(sizeof(info)!=20){
-	    trr("error. wrong size packet. Got: "+sizeof(info)+", wanted 20","red");
+	    server_log("error. wrong size packet. Got: "+sizeof(info)+", wanted 20");
 	    trr("---\n","blue");
-	    log_file("router/server_log",timestamp()+" error. wrong size packet. Got: "+sizeof(info)+", wanted 20\n");
 
 	    write_data(fd,({
 		"error",
@@ -158,7 +151,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	newinfo["other_data"]=info[19];
 	break;
     default:
-	log_file("router/server_log",timestamp()+" error. I dunno what.\n");
+	server_log("error. I dunno what.");
 
 	write_data(fd,({
 	    "error",
@@ -208,8 +201,8 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	trr("ROUTER_D: mud already connected on fd"+connected_muds[info[2]],"red");
 	trr("ROUTER_D: Xref back: mud on fd"+connected_muds[info[2]]+" is "+
 	  "supposed to be "+this_object()->query_connected_fds()[this_object()->query_connected_muds()[info[2]]],"red");
+	server_log("mud already connected");
 	trr("---\n","blue");
-	log_file("router/server_log",timestamp()+" mud already connected\n");
 	if(this_object()->query_mudinfo()[info[2]]["ip"] != explode(socket_address(fd)," ")[0] ||
 	  mudinfo[info[2]]["password"] != newinfo["password"]){
 	    write_data(fd,({
@@ -245,8 +238,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	}
 	if(this_object()->query_mudinfo()[info[2]]["ip"] == explode(socket_address(fd)," ")[0] &&
 	  mudinfo[info[2]]["password"] == newinfo["password"] ){
-	    trr("Since it's the same ip and password, I'll remove the current connection.");
-	    log_file("router/server_log",timestamp()+" Since it's the same ip and password, I'll remove the current connection\n");
+	    server_log("Since it's the same ip and password, I'll remove the current connection");
 	    //this_object()->remove_mud(info[2],1);
 	    if(mudinfo[info[2]]) mudinfo[info[2]]["disconnect_time"] = time();
 	    map_delete(connected_muds, info[2]);
@@ -259,8 +251,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 	// if MUD is already known, not connected, and wrong password
 	if(newinfo["ip"]==mudinfo[info[2]]["ip"] && info[2] != "Dead Souls"){
 	    // same IP as last time and it isn't Dead Souls
-	    trr("Wrong password, but right IP","green");
-	    log_file("router/server_log",timestamp()+" Wrong password, but right IP\n");
+	    server_log("Wrong password, but right IP");
 	    write_data(fd,({
 		"error",5,router_name,0,info[2],0,
 		"warning", // nothing in error summary that seems applicable?
@@ -278,7 +269,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 		this_object()->AddBlacklistedMud(newinfo["ip"]);
 		bad_connects[newinfo["ip"]] = 0;
 	    }
-	    log_file("router/server_log",timestamp()+" WRONG PASSWORD, AND FROM A NEW IP\n");
+	    server_log("%^RED%^WRONG PASSWORD, AND FROM A NEW IP");
 	    write_data(fd,({
 		"error",
 		5,

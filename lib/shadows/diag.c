@@ -59,7 +59,7 @@ varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixe
     if(!internal) internal = 0;
     if(!limbs) limbs = "";
 
-    this_object()->eventReceiveShadowDamage(agent, type, x, internal, limbs);
+    GetShadowedObject()->eventReceiveDamage(agent, type, x, internal, limbs);
 
     damage = this_object()->GetHealthPoints();
     damdiff = hp - damage;

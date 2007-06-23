@@ -1,8 +1,6 @@
 #include <lib.h>
 
-inherit LIB_STORAGE;
-inherit LIB_CHAIR;
-inherit "/lib/comp/surface";
+inherit LIB_BED;
 
 
 void create() {

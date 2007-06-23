@@ -110,9 +110,8 @@ static void process_channel(mixed fd, mixed *info){
 	// of a filtered channel and they have not been
 	// blocked, so I will just do it...
 
-	log_file("router/server_log"+info[6], timestamp()+" "+
-	  sendername+"("+senderrealname+")@"+sendermud+" "+": "+
-	  sendermsg+" "+targstr+"\n");
+	server_log(sendername+"("+senderrealname+")@"+sendermud+" "+": "+
+	  sendermsg+" "+targstr+"\n",info[6]);
 
 	if(intp(fd)) this_object()->SendMessage(info);
 
@@ -150,7 +149,7 @@ static void process_channel(mixed fd, mixed *info){
 	channels[info[6]]=({ info[7], info[2], ({}) });
 	channel_updates[info[6]] = channel_update_counter;
 	//trr(info[3]+"@"+info[2]+" created the channel: "+info[6],"yellow");
-	log_file("router/server_log",timestamp()+" "+info[3]+"@"+info[2]+" created the channel: "+info[6]+"\n");
+	server_log(info[3]+"@"+info[2]+" created the channel: "+info[6]+"\n");
 	// broadcast an update saying that this channel is added or changed now
 	// chanlist-reply packet to everybody (who has a channel service?)
 	broadcast_chanlist(info[6]);
@@ -194,7 +193,7 @@ case "remove":
     map_delete(channel_updates,info[6]);
     //channel_updates[info[6]] = channel_update_counter;
     //trr(info[3]+"@"+info[2]+" deleted the channel: "+info[6],"yellow");
-    log_file("router/server_log",timestamp()+" "+info[3]+"@"+info[2]+" deleted the channel: "+info[6]+"\n");
+    server_log(info[3]+"@"+info[2]+" deleted the channel: "+info[6]+"\n");
     // broadcast an update saying that this channel is gone now
     broadcast_chanlist(info[6]);
     save_object(SAVE_ROUTER);

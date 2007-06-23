@@ -2,8 +2,6 @@
 #include <props.h>
 
 inherit LIB_BED;
-inherit LIB_STORAGE;
-inherit LIB_SURFACE;
 inherit LIB_SMELL;
 
 static void create() {

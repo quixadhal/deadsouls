@@ -210,4 +210,3 @@ int eventDestruct(){
     log_file("router/server_log",timestamp()+" "+alert+"\n");
     return ::eventDestruct();
 }
-

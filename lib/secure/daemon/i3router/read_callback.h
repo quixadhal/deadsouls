@@ -24,7 +24,7 @@ void read_callback(mixed fd, mixed info){
     string mudname;
     int i;
     string *logspam = ({ "auth-mud-req", "auth-mud-reply", "tell", "emoteto",
-      "ping","channel-listen" });
+      "ping","channel-listen", "ping-req", "ping-reply" });
 
     //trr("read_callback, fd"+fd+", info: "+identify(info));
     if(!strsrch(info[0],"irn-")){
@@ -53,8 +53,10 @@ void read_callback(mixed fd, mixed info){
 	trr(timestamp()+" Received from fd("+fd+"), source: "+foo+"\n"+identify(info), "green");
     }
     // Base info in a packet is of size 6.
-    // comment out the line below to avoid big channel logs
-    if(grepp(info[0],"chan") && !grepp(info[0],"channel-listen")) log_file("router/chan_log_",identify(info)+"\n");
+    // comment out the statements below to avoid a big channel log file
+    if(grepp(info[0],"chan") && !grepp(info[0],"channel-listen")) 
+	server_log(identify(info),"chan_log");
+
     if(sizeof(info)<6 ||
       !stringp(info[0]) ||
       !intp(info[1]) || !stringp(info[2]) ||
@@ -109,8 +111,7 @@ void read_callback(mixed fd, mixed info){
 	    "Your MUD hasn't registered as "+info[2]+" yet", // Error message
 	    info
 	  }));
-	trr("They have not done a startup-req for fd="+fd+", mudname="+info[2]);
-	log_file("router/server_log",timestamp()+" They have not done a startup-req for fd="+fd+", mudname="+info[2]+"\n");
+	server_log("They have not done a startup-req for fd="+fd+", mudname="+info[2]);
 	return;
     }
     // at this point, I guess it has a valid origin and stuff
@@ -168,25 +169,20 @@ void read_callback(mixed fd, mixed info){
 		return;
 	    }
 	    if(info[6] > 604800) {
-		trr("ROUTER_D: deleting "+this_object()->query_connected_fds()[fd]+" per "+
-		  "request of "+info[2]);
-		log_file("router/server_log","deleting "+this_object()->query_connected_fds()[fd]+" per "+
+		server_log("ROUTER_D: deleting "+this_object()->query_connected_fds()[fd]+" per "+
 		  "request of "+info[2]+"\n");
 		remove_mud(this_object()->query_connected_fds()[fd], 1);
 	    }
 	    else {
-		trr("ROUTER_D: disconnecting "+this_object()->query_connected_fds()[fd]+" per "+
+		server_log("ROUTER_D: disconnecting "+this_object()->query_connected_fds()[fd]+" per "+
 		  "request of "+info[2]);
-		log_file("router/server_log","disconnecting "+this_object()->query_connected_fds()[fd]+" per "+
-		  "request of "+info[2]+"\n");
 		this_object()->disconnect_mud(this_object()->query_connected_fds()[fd]);
 	    }
 	    break;
 	default :
 	    // Something meant for the router but not handled by now!
 	    send_error(info[2],info[3],"not-imp","Unknown command sent to router: "+info[0],info);
-	    trr("unhandled packet meant for router: "+info[0],"red");
-	    log_file("router/server_log","UNHANDLED PACKET:\n"+identify(info)+"\n");
+	    server_log("%^RED%^UNHANDLED PACKET:\n"+identify(info));
 	}
 	return;
     }

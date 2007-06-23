@@ -10,6 +10,7 @@ string router_port;
 static void create(){ 
     object rsock = find_object(RSOCKET_D);
     if(!rsock){
+	trr("Strange. No rsocket.");
 	rsock = load_object(RSOCKET_D);
 	rsock->irn_clear();
     }
@@ -29,12 +30,10 @@ static void create(){
     if(!router_ip) router_ip = "149.152.218.102";
     if(mud_name() == "Frontiers")
 	router_list = ({ ({"*yatmim", "149.152.218.102 23"}) });
-    log_file("router/server_log", "Created when uptime = " + uptime() + "\n");
-    //trr("server got created");
-    log_file("router/server_log",timestamp()+" router object created.\n");
+    server_log("Created when uptime = " + uptime() + "\n");
     call_out("setup", 1);
     call_out("LocalHostedChans", 15);
-    this_object()->purge_crud();
+    //this_object()->purge_crud();
     set_heart_beat(10);
     reset_me = 0;
     if(file_exists(ROUTER_BLACKLIST)){
@@ -42,6 +41,7 @@ static void create(){
 	blacklisted_muds = singular_array(blacklisted_muds);
     }
     this_object()->irn_checkstat();
+    //this_object()->irn_setup(1);
 }
 
 int SetReset(){
@@ -52,12 +52,12 @@ int SetReset(){
 
 void heart_beat(){
     heart_count++;
-    if(reset_me) RELOAD_D->eventReload(this_object(), 2);
+    //if(reset_me) RELOAD_D->eventReload(this_object(), 2);
     if(!(heart_count % 60)) {
 	//trr("CLOSING OLD/DISCONNECTED/PARADOXED SOCKETS","white");
 	this_object()->irn_checkstat();
-	this_object()->purge_ips();
-	check_discs();
+	//this_object()->purge_ips();
+	this_object()->check_discs();
 	save_object(SAVE_ROUTER);
     }
     if(heart_count > 3600){
@@ -69,7 +69,7 @@ void heart_beat(){
 static void setup(){
     if( file_size( SAVE_ROUTER __SAVE_EXTENSION__ ) > 0 )
 	unguarded( (: restore_object, SAVE_ROUTER, 1 :) );
-    irn_setup();
+    //irn_setup();
 }
 
 int query_prevent_shadow(object ob){ return true(ob); }

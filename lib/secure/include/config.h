@@ -60,8 +60,10 @@
 #define OLD_STYLE_PLURALS        1
 #define NM_STYLE_EXITS           0
 #define WEB_SOURCE               "149.152.218.102"
-#define IRN_PASSWORD1            "KRAKATOA"
-#define IRN_PASSWORD2            "VESUVIUS"
-#define IRN_PASSWORD3            "STROGGILI"
+#define ROUTER_NAME              "Alpha"
+#define IRN_PASSWORD             "Alpha"
+#define IRN_PASSWORD1            "Bravo"
+#define IRN_PASSWORD2            "Charlie"
+#define IRN_PASSWORD3            "Delta"
 
 #endif /* s_config_h */

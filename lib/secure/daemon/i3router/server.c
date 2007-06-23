@@ -87,6 +87,7 @@ int value_not_equals(string a,int b, int c);
 varargs string *SetList();
 
 // Code for all the stuff in the prototypes...
+#include "./server_log.h"
 #include "./irn.h"
 #include "./clean_fd.h"
 #include "./broadcast_chanlist.h"
@@ -143,42 +144,29 @@ int *open_socks(){
 	  member_array(element[0],
 	    keys(this_object()->query_irn_sockets())) == -1) {
 	    ret += ({ element[0] });
-	    //tc(identify(keys(this_object()->query_irn_sockets())),"white");
-	    //tc("open_socks: I think this is valid: "+identify(element));
 	}
     }
-    //tc("ret: "+identify(ret),"white");
     return ret;
 }
 
 void get_info() {
-    mixed *socky = open_socks();
+    mixed *socky = sort_array(values(connected_muds), 1);
+    mixed *muddy = sort_array(keys(connected_muds), 1);
     string socks = implode(socky, " ");
+    string muddies = implode(muddy, ", ");
     int socknum = sizeof(socky);
     validate();
 
     socks += "\nTotal number of connected muds: "+socknum+"\n";
-    write_file ("/secure/tmp/info.txt",
-      "router_name: "+router_name+
-      "\nrouter_ip: "+router_ip+
-      "\nrouter_port: "+router_port+
-      "\nrouter_list"+identify(router_list)+
-      "\nchannel_update_counter: "+ channel_update_counter+
-      "\nchannels:"+identify(channels)+
-      "\nchannel_updates:"+identify(channel_updates)+
-      //"\nlistening:"+identify(listening)+
-      //"\nmudinfo:"+identify(mudinfo)+
-      "\nmudinfo_update_counter: "+ mudinfo_update_counter+
-      "\nmudinfo_updates:"+identify(mudinfo_updates)+
-      "\nconnected:"+identify(connected_muds)+"\n");
     write("router_name: "+router_name+
       "\nrouter_ip: "+router_ip+
       "\nrouter_port: "+router_port+
       "\nrouter_list"+identify(router_list)+
       "\nchannel_update_counter: "+ channel_update_counter+
-      ((sizeof(channels)) ? "\nchannels:"+implode(keys(channels),", ") : "")+
+      ((sizeof(channels)) ? "\nchannels:"+implode(sort_array(keys(channels),1),", ") : "")+
       "\nmudinfo_update_counter: "+ mudinfo_update_counter+
       "\nsockets: "+socks+
+      "\nmuds: "+muddies+
       "\nRouter socket daemon uptime: "+
       time_elapsed(time()-RSOCKET_D->GetInceptDate())+
       "\n"+Report()
@@ -188,7 +176,7 @@ void get_info() {
 void clear(){ 
     string mudname; 
     validate();
-    log_file("router/server_log",timestamp()+" Clearing all mud data.\n"); 
+    server_log("%^RED%^Clearing all mud data!"); 
     foreach(mudname in keys(mudinfo)) remove_mud(mudname,1); 
     save_object(SAVE_ROUTER);    
 }
@@ -202,7 +190,7 @@ string SetRouterName(string str){
     validate();
     if(first(str,1) != "*") str = "*"+str;
     router_name = str;
-    log_file("router/server_log",timestamp()+" setting router name to: "+str+"\n"); 
+    server_log(" setting router name to: "+str); 
     SetList();
     return router_name;
 }
@@ -215,7 +203,7 @@ string GetRouterIP(){
 string SetRouterIP(string str){
     validate();
     router_ip = str;
-    log_file("router/server_log",timestamp()+" setting router IP to: "+str+"\n");
+    server_log("Setting router IP to: "+str);
     SetList();
     return router_ip;
 }
@@ -228,7 +216,7 @@ string GetRouterPort(){
 string SetRouterPort(string str){
     validate();
     router_port = str;
-    log_file("router/server_log",timestamp()+" setting router port to: "+str+"\n");
+    server_log("Setting router port to: "+str);
     SetList();
     return router_port;
 }
@@ -252,7 +240,7 @@ varargs string *SetList(){
     }
     router_list = ({ ({ tmp, tmp_ip+" "+tmp_port }) });
     save_object(SAVE_ROUTER);
-    log_file("router/server_log",timestamp()+" setting router list to: "+identify(router_list)+"\n");
+    server_log("Setting router list to: "+identify(router_list));
     save_object(SAVE_ROUTER);
     return router_list;
 }
@@ -276,7 +264,7 @@ varargs string *SetRouterList(string *str){
 	return router_list;
     }
     router_list = ({ str });
-    log_file("router/server_log",timestamp()+" setting router list to: "+identify(router_list)+"\n");
+    server_log("Setting router list to: "+identify(router_list));
     save_object(SAVE_ROUTER);
     return router_list;
 }
@@ -294,7 +282,7 @@ string *GetBannedMuds(){
 string *AddBannedMud(string str){
     validate();
     banned_muds += ({ str });
-    log_file("router/server_log",timestamp()+" "+str+" has been BANNED\n");
+    server_log(str+" has been BANNED");
     save_object(SAVE_ROUTER);
     return banned_muds;
 }
@@ -302,7 +290,7 @@ string *AddBannedMud(string str){
 string *RemoveBannedMud(string str){
     validate();
     banned_muds -= ({ str });
-    log_file("router/server_log",timestamp()+" "+str+" has been unbanned.\n");
+    server_log(str+" has been unbanned.");
     save_object(SAVE_ROUTER);
     return banned_muds;
 }
@@ -315,7 +303,7 @@ string *GetBlacklistedMuds(){
 string *AddBlacklistedMud(string str){
     validate();
     blacklisted_muds += ({ str });
-    log_file("router/server_log",timestamp()+" "+str+" has been BLACKLISTED\n");
+    server_log(str+" has been BLACKLISTED");
     save_object(SAVE_ROUTER);
     return blacklisted_muds;
 }
@@ -323,7 +311,7 @@ string *AddBlacklistedMud(string str){
 string *RemoveBlacklistedMud(string str){
     validate();
     blacklisted_muds -= ({ str });
-    log_file("router/server_log",timestamp()+" "+str+" has been unblacklisted.\n");
+    server_log(str+" has been unblacklisted.");
     save_object(SAVE_ROUTER);
     return blacklisted_muds;
 }
@@ -331,15 +319,15 @@ string *RemoveBlacklistedMud(string str){
 void check_discs(){
     int *fds = values(connected_muds);
     int i = 1;
-    fds += keys(irn_sockets);
-    foreach(int element in sort_array(fds,1)){
+    if(sizeof(fds))
+	foreach(mixed element in sort_array(fds,1)){
 	string lost_mud;
+	if(!intp(element)) continue;
 	if(!socket_status(element) ||
 	  socket_status(element)[1] == "CLOSED"){
 	    foreach(string key, mixed val in mudinfo){
 		if(!connected_muds[key] && mudinfo[key]["router"] && mudinfo[key]["router"] == my_name){
-		    //i = i+2;
-		    //call_out( (: disconnect_mud :), i, key);
+		    server_log("Cleaning connection info from "+key);
 		    if(!mudinfo[key]["disconnect_time"])
 			mudinfo[key]["disconnect_time"] = time();
 		    if(mudinfo[key]["connect_time"]) 
@@ -347,18 +335,12 @@ void check_discs(){
 		}
 	    }
 
-	    i = 1;
-
 	    foreach(string key, int val in connected_muds){
 		if(val == element){
 		    trr("REMOVING DISCONNECTED: "+key+" from "+val);
-		    i = i+2; 
-		    //disconnect_mud(key);
+		    i++;
 		    call_out( (: disconnect_mud :), i, key);
 		}
-	    }
-	    foreach(mixed key, mixed val in irn_sockets){
-		map_delete(irn_sockets, key);
 	    }
 	}
     }
@@ -372,35 +354,32 @@ void clear_discs(){
 
     foreach(mudname in keys(mudinfo)) {
 	int deadsince = time() - mudinfo[mudname]["disconnect_time"];
-	tc(mudname+": "+ctime(mudinfo[mudname]["disconnect_time"]),"white");
+	//tc(mudname+": "+ctime((mudinfo[mudname]["disconnect_time"]) || time()),"white");
 	//tc("dead age: "+time_elapsed(deadsince),"white");
-	if(mudinfo[mudname]["disconnect_time"] && deadsince > 21600 ){
-	    tc(mudname+": "+time_elapsed(deadsince),"red");
-	    //trr("I want to remove "+mudname+". Its disconnect time is "+ctime(query_mud(mudname)["disconnect_time"]),"white");
-	    //trr("Which was "+time_elapsed(time() - query_mud(mudname)["disconnect_time"])+" ago.","white");
-	    if(member_array(mudname,keys(query_connected_muds())) != -1){
-		//trr("Its fd is: "+query_connected_muds()[mudname],"white");
+	if(mudinfo[mudname]["disconnect_time"] && deadsince > 604800 ){
+	    //tc(mudname+": "+time_elapsed(deadsince),"red");
+	    if(mudinfo[mudname]["router"] && mudinfo[mudname]["router"] == my_name){
+		server_log("I want to remove "+mudname+". Its disconnect time is "+ctime(query_mud(mudname)["disconnect_time"]));
+		server_log("Which was "+time_elapsed(time() - query_mud(mudname)["disconnect_time"])+" ago.");
+		i = i+1;
+		call_out( (: remove_mud :), i, mudname,1);
 	    }
 	    else {
-		//trr("It is not listed as a connected mud.","white");
+		//server_log(mudname+" is not listed as a local mud.");
 	    }
-	    trr("Removing disconnected mud: "+identify(mudname),"red");
-	    i = i+2;
-	    call_out( (: remove_mud :), i, mudname,1);
 	}
 
 	if(mudinfo[mudname] && mudinfo[mudname]["disconnect_time"] > 0 &&
 	  mudinfo[mudname]["connect_time"] > 0){
 	    i = 1;
-	    trr("I want to remove "+mudname+". It is in a paradox state.","white");
+	    server_log("I want to remove "+mudname+". It is in a paradox state.");
 	    if(member_array(mudname,keys(query_connected_muds())) != -1){
 		//trr("Its fd is: "+query_connected_muds()[mudname],"white");
 	    }
 	    else {
 		//trr("It is not listed as a connected mud.","white");
 	    }
-	    trr("Removing disconnected mud: "+identify(mudname),"red");
-	    //remove_mud(mudname,1);
+	    server_log("Removing disconnected mud: "+identify(mudname));
 	    i = i+2;
 	    call_out( (: remove_mud :), i, mudname,1);
 	}
@@ -410,6 +389,8 @@ void clear_discs(){
 int eventDestruct(){
     validate();
     save_object(SAVE_ROUTER);
+    server_log("I am being destructed by: \n"+get_stack()+
+      "\n"+identify(previous_object(-1)));
     daemon::eventDestruct();
 }
 
@@ -514,14 +495,16 @@ varargs int purge_ip(string ip, int rude, mixed *sock_array){
 	    //tc("mmhmm. dissing "+identify(element));
 	    if(query_connected_fds()[fd]){
 		if(rude){
-		    trr("router: fd to be rudely purged: "+fd+", "+query_connected_fds()[fd]);
+		    server_log("router: fd to be rudely purged: "+fd+", "+query_connected_fds()[fd]);
 		    disconnect_mud(query_connected_fds()[fd]);
 		}
 	    }
+#if 0
 	    else {
-		trr("router: purging fd:"+fd+", status: "+identify(element));
+		server_log("router: wanting to purge fd:"+fd+", status: "+identify(element));
 		close_connection(fd);
 	    }
+#endif
 	}
     }
     //tc("GOAL!","green");
