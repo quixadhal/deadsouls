@@ -304,6 +304,7 @@
 /secure/cmds/players/include
 /secure/daemon
 /secure/daemon/i3router
+/secure/daemon/i3router/bak
 /secure/daemon/include
 /secure/include
 /secure/lib

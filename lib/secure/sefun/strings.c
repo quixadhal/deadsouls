@@ -10,6 +10,18 @@
 
 string global_temp_file = "";
 
+mapping Morse = ([ "a" : ".-", "b" : "-...", "c" : "-.-.",
+  "d" : "-..", "e" : ".", "f" : "..-.", "g" : "--.", "h" : "....", "i" : "..",
+  "j" : ".---", "k" : "-.-", "l" : ".-..", "m" : "--", "n" : "-.", "o" : "---",
+  "p" : ".--.", "q" : "--.-", "r" : ".-.", "s" : "...", "t" : "-", "u" : "..-",
+  "v" : "...-", "w" : ".--", "x" : "-..-", "y" : "-.--", "z" : "--..",
+  "1" : ".----", "2" : "..---", "3" : "...--", "4" : "....-", "5" : ".....",
+  "6" : " -....", "7" : "--...", "8" : "---..", "9" : "----.","0" : " -----",
+  "." : ".-.-.-", "," : "--..--", "?" : "..--..", "'" : ".----.", "!" : "-.-.--",
+  "/" : "-..-.", "(" : "-.--.", ")" : "-.--.-", "&" : ".-...", ":" : "---...",
+  ";" : "-.-.-.", "=" : "-...-", "+" : ".-.-.", "-" : "-....-", "_" : "..--.-",
+  "\"" : ".-..-.", "$" : "...-..-", "@" : ".--.-." ]);
+
 varargs string center(string str, int x) {
     int y;
 
@@ -724,4 +736,38 @@ int clean_newline_file(string str){
     else ret = convert_newline(read_file(str));
     if(ret != "") return write_file(str,ret,1);
     else return 0;
+}
+
+string morse(string msg) {
+    mapping morse = Morse;
+    string tmp;
+    int x, i;
+    msg = lower_case(msg);
+    for(tmp = "", x = strlen(msg), i=0; i< x; i++) {
+	if(morse[msg[i..i]]) tmp += morse[msg[i..i]]+" ";
+	else tmp += msg[i..i]+ " ";
+    }
+    return tmp;
+}
+
+string unmorse(string msg) {
+    mapping morse = ([]);
+    string tmp = "";
+    string *phrase = ({});
+    int x, i;
+    foreach(mixed key, mixed val in Morse){
+	morse[val] = key;
+    }
+
+    phrase = explode(msg,"  ");
+    foreach(string element in phrase){
+	string *word = explode(element," ");
+	foreach(string letter in word){
+	    if(member_array(letter, keys(morse)) != -1){
+		tmp += morse[letter];
+	    }
+	}
+	tmp += " ";
+    } 
+    return tmp;
 }

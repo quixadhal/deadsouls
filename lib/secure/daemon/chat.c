@@ -212,6 +212,8 @@ int cmdChannel(string verb, string str) {
     else if(last(verb, 1) == ":") varb = replace_string(verb,":","");
     else varb = verb;
 
+    if(!strsrch(str,"^encode")) str = morse("(encoded):  "+str[7..]);
+
     if(find_object(INTERMUD_D) && !sizeof(remote_chans)){
 	remote_chans = INTERMUD_D->GetChannels();
     }
@@ -474,6 +476,10 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
     string pchan,pmsg;
     pchan=ch;
     if(!channeler) channeler = this_player();
+
+    if(!strsrch(msg,"-.--. . -. -.-. --- -.. . -.. -.--.- ---...")) msg = unmorse(msg);
+    if(targmsg && !strsrch(targmsg,"-.--. . -. -.-. --- -.. . -.. -.--.- ---..."))
+	targmsg = unmorse(targmsg);
 
     if(this_player() && this_player() != channeler) channeler = this_player();
 

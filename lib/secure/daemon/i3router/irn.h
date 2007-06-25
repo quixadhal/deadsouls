@@ -26,7 +26,6 @@ static mapping chan_conv = ([
 mapping irn_connections = ([]);
 mapping irn_sockets = ([]);
 
-void eventSetup();
 static void write_data(int fd, mixed data);
 static varargs void SendList(mixed data, int fd, string type);
 varargs void SendWholeList(int fd,string type);
@@ -37,6 +36,7 @@ void irn_checkstat(){
     mixed sstat;
     if(!irn_enabled || !sizeof(routers)) return;
     foreach(mixed key, mixed val in routers){
+        ok_ips += ({ routers[key]["ip"] });
 	if(!irn_connections[key] || irn_connections[key]["fd"] == -1){
 	    foreach(mixed key2, mixed val2 in mudinfo){
 		if(val2["router"] == key && !mudinfo[key2]["disconnect_time"])
@@ -44,9 +44,11 @@ void irn_checkstat(){
 	    }
 	}
     }
+
+    ok_ips = singular_array(ok_ips);
+
     foreach(mixed key, mixed val in irn_sockets){
 	sstat = socket_status(key);
-	tc("socket_status for "+key+": "+identify(sstat),"white");
 	if(!sstat || sstat[1] != "DATA_XFER"){
 	    trr("IRN checkstat: removing socket record for: "+identify(key));
 	    map_delete(irn_sockets, key);
@@ -54,8 +56,6 @@ void irn_checkstat(){
 
 	if(!irn_connections[val["name"]] || 
 	  irn_connections[val["name"]]["fd"] != key){
-	    tc("irn_connections[val[\"name\"]]: "+
-	      identify(irn_connections[val["name"]]), "yellow");
 	    //map_delete(irn_sockets, key);
 	    //this_object()->close_connection(key);
 	}
@@ -112,7 +112,8 @@ static int GoodPeer(int fd, mixed data){
     if(!irn_enabled) return 0;
     //trr("IRN: hit GoodPeer","yellow");
     if(member_array(ip,ok_ips) == -1){
-	trr("irn: bad ip");
+        server_log("irn: bad ip: "+ip);
+        server_log("ok_ips: "+identify(ok_ips));
 	return 0;
     }
 
@@ -144,7 +145,8 @@ static int ValidatePeer(int fd, mixed data){
     if(!irn_enabled) return 0;
     //trr("IRN: hit ValidatePeer","green");
     if(member_array(ip,ok_ips) == -1){
-	trr("IRN: bad ip");
+	server_log("IRN: bad ip: "+ip);
+        server_log("ok_ips: "+identify(ok_ips));
 	return 0;
     }
     if(!irn_connections[data[2]]){
@@ -210,7 +212,7 @@ void irn_clear(){
 
 varargs void irn_setup(int clear){
     //mapping tmpinfo = this_object()->query_mudinfo();
-    tc("stack: "+get_stack()+"\n"+identify(previous_object(-1)),"white");
+    server_log("irn_setup("+clear+"): "+get_stack(),"white");
     if(!irn_enabled) return;
     if(clear){
 	if(sizeof(irn_connections))
@@ -234,6 +236,7 @@ varargs void irn_setup(int clear){
 	    continue;
 	}
 	ok_ips += ({ routers[key]["ip"] });
+        server_log("ok_ips: "+identify(ok_ips));
 	if(!irn_connections[key]){
 #if 1
 	    foreach(mixed key2, mixed val2 in mudinfo){
@@ -617,10 +620,11 @@ string Report(){
 	}
 	ret += "\n";
     }
-    trr("irn: irn_connections: "+identify(irn_connections),"green");
-    trr("irn: irn_sockets: "+identify(irn_sockets),"cyan");
+    ret += "ok_ips: "+identify(ok_ips)+"\n";
+    //trr("irn: irn_connections: "+identify(irn_connections),"green");
+    //trr("irn: irn_sockets: "+identify(irn_sockets),"cyan");
     foreach(mixed element in keys(irn_sockets)){
-	trr("socket_status("+element+"): "+identify(socket_status(element)),"green");
+	//trr("socket_status("+element+"): "+identify(socket_status(element)),"green");
     }
     return ret;
 }
@@ -637,7 +641,6 @@ static void begin_socket_handoff(int fd){
 }
 
 mapping query_irn_sockets(){
-    //tc("hmm");
     validate();
     return copy(irn_sockets);
 }

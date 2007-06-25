@@ -32,4 +32,3 @@ int eventUnshadow(){
     shadowed->RemoveShadow(shadow_thing);
     return destruct(shadow_thing);
 }
-

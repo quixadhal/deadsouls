@@ -67,4 +67,3 @@ string array parse_command_id_list() {
 
     return filter(ids, (: stringp($1) && ($1 != "") :));
 }
-

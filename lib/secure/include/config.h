@@ -60,6 +60,7 @@
 #define OLD_STYLE_PLURALS        1
 #define NM_STYLE_EXITS           0
 #define WEB_SOURCE               "149.152.218.102"
+#define DESTRUCT_LOGGING         1
 #define ROUTER_NAME              "Alpha"
 #define IRN_PASSWORD             "Alpha"
 #define IRN_PASSWORD1            "Bravo"

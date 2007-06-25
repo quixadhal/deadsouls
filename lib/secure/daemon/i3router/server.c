@@ -169,6 +169,7 @@ void get_info() {
       "\nmuds: "+muddies+
       "\nRouter socket daemon uptime: "+
       time_elapsed(time()-RSOCKET_D->GetInceptDate())+
+      ", up since "+ctime(RSOCKET_D->GetInceptDate())+
       "\n"+Report()
     );
 }
@@ -316,6 +317,16 @@ string *RemoveBlacklistedMud(string str){
     return blacklisted_muds;
 }
 
+mixed GetRemoteIP(int fd){
+    mixed conn = socket_status(fd);
+    string ret;
+    if(!conn || !sizeof(conn)) return 0;
+    if(!conn[4] || conn[4] == "*.*") return 0;
+    conn = explode(conn[4],".");
+    ret = implode(conn[0..3],".");
+    return ret;
+}  
+
 void check_discs(){
     int *fds = values(connected_muds);
     int i = 1;
@@ -324,7 +335,8 @@ void check_discs(){
 	string lost_mud;
 	if(!intp(element)) continue;
 	if(!socket_status(element) ||
-	  socket_status(element)[1] == "CLOSED"){
+	  socket_status(element)[1] == "CLOSED" || !GetRemoteIP(element) ||
+            GetRemoteIP(element) != mudinfo[query_connected_fds()[element]]["ip"]){
 	    foreach(string key, mixed val in mudinfo){
 		if(!connected_muds[key] && mudinfo[key]["router"] && mudinfo[key]["router"] == my_name){
 		    server_log("Cleaning connection info from "+key);

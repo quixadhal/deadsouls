@@ -131,7 +131,7 @@ varargs void reap_other(string str);
 mixed reap_list();
 string timestamp();
 object *get_dupes(object ob, object where);
-string get_stack();
+varargs string get_stack(int x);
 mixed hobbled(object ob);
 string query_base_currency();
 int query_base_rate();
@@ -261,5 +261,7 @@ varargs string simple_map(mixed arg);
 string query_door(object what, string direction);
 int mkdir_recurse(string path);
 mixed *socket_names();
+string morse(string msg);
+string unmorse(string msg);
 
 #endif /* l_sefun_h */

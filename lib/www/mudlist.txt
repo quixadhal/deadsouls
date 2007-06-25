@@ -1,45 +1,50 @@
-2007.06.23-19.15
-Dead Souls Omega recognizes sixty muds matching your query: 
+2007.06.24-23.48
+Dead Souls Omega recognizes sixty-six muds matching your query: 
 
 Age of Deities  LPMud  MudOS v22.2b14- Dead Souls 2.4.2   67.166.80.171 6666
 Anarres II      LP     MudOS A2-0.99.1 Anarres II 1.3.1-c 81.138.64.235 5000
 Anarres Router  LPMud  MudOS v22.2b14  Dead Souls 2.3a10  81.138.64.235 6666
 Ancient Mystiqu LPMud  MudOS v22.2b14- Dead Souls 2.4.2   75.126.160.250 6699
+Andromeda       LPMud  MudOS v22.2b14  Wildfire 3.4       81.104.17.55 8888
 Archipelago     LPMud  MudOS v22.1b23- Discworld 15.0a    82.152.242.101 8000
 Ascension       LPMud  MudOS v22.2b14  Dead Souls 2.1     204.209.44.3 1111
 Calamine        LPMud  MudOS v22.2b14- Dead Souls 2.4.2   70.77.78.21 6666
 City of Doors   LPMud  MudOS v22.2b14- Dead Souls 2.4.2   41.243.95.42 6666
 DarkeMUDDS      LPMud  MudOS v22.2b14- Dead Souls 2.5a9   206.212.239.65 5659
-Dead Souls      LPMud  MudOS v22.2b14- Dead Souls 2.5a9   204.209.44.3 8070
-Dead Souls Beta LPMud  MudOS v22.2b14- Dead Souls 2.5a9   204.209.44.3 8000
-Dead Souls Demo LPMud  MudOS v22.2b14- Dead Souls 2.5a9   71.234.154.99 6666
-Dead Souls Omeg LPMud  MudOS v22.2b14- Dead Souls 2.5a9   71.234.154.99 7777
+Dead Souls      LPMud  MudOS v22.2b14- Dead Souls 2.5a11  204.209.44.3 8070
+Dead Souls Beta LPMud  MudOS v22.2b14- Dead Souls 2.5a11  204.209.44.3 8000
+Dead Souls Brav LPMud  MudOS v22.2b14- Dead Souls 2.5a12  71.234.154.99 6666
+Dead Souls Demo LPMud  MudOS v22.2b14- Dead Souls 2.5a11  71.234.154.99 6666
+Dead Souls Omeg LPMud  MudOS v22.2b14- Dead Souls 2.5a11  71.234.154.99 7777
 Dead_Souls_bean LPMud  MudOS v22.2b14- Dead Souls IIr4    76.189.121.17 44133
 Dead_Souls_turo LPMud  MudOS v22.2b14- Dead Souls 2.4.2   67.46.153.19 6666
+Deepspawns Doma LPMud  MudOS v22.2b14- Dead Souls 2.5a7   199.45.236.131 5777
 Delusion        AberMU DME 0.99        DME 0.99           141.30.225.3 6715
 Descent2        LPMud  MudOS v22.2b14  Dead Souls 2.4.1   67.106.77.119 2121
 Desperate Sorro LPMud  MudOS v22.2b14  Dead Souls 2.4.1   218.103.131.94 5000
 Dionea          LPMud  MudOS v22.2b14  Dead Souls 2.1     70.142.57.189 6666
 Discworld       LPMud  FluffOS v2.6    Discworld 17.0a    82.68.167.69 23
-Dreamwood Fores LPMud  MudOS v22.2b14- Dead Souls 2.5a7   84.56.91.190 4242
+Dreamwood Fores LPMud  MudOS v22.2b14- Dead Souls 2.5a7   84.56.110.6 4242
 Elephant        LP     MudOS v22.1b19  Elephant Mudlib 2. 62.73.186.221 23
 FR:Anarchy      LPMud  MudOS v22.2b9 D FRlib IV           80.232.38.254 4003
-Firefly Mud     LP     MudOS v22.2b11  Lima 1.0b3         129.241.210.28 7878
 FnordMud        LPMud  MudOS v22.2b14- Dead Souls 2.4.2   76.172.92.85 2110
 Forgotten Age   n/a    OPWE 0.9.0      FA-Lib             66.162.13.88 0
 Galactic Salvag LPMud  MudOS v22.2b14- Dead Souls 2.4.2   76.185.102.201 3000
 Haven           LPMud  MudOS v22.2b13  Haven 0.1          70.226.46.180 5000
+IOMdev          LP     MudOS v22.2b9 b Lima-0.9r4         217.116.225.153 10000
 Infinite Lands  LPMud  MudOS v22.2b14  Dead Souls 2.3a7   216.136.9.8 4200
 Islands of Myth LP     MudOS v22.2b9 b Lima-0.9r4         217.116.225.153 3000
+Islands of Myth LP     MudOS v22.2b9 b Lima-0.9r4         217.116.225.153 4000
 Llyrland        LPMud  SOS 0.1.2       Dead Souls 2.1.1   72.52.136.219 8484
+Merfrenius      LPMud  MudOS v22.2b14  LPUniLib A-0610-R7 69.236.115.211 9500
 Midden-aarde    LPMud  MudOS v22.2b14- Dead Souls 2.4.2   192.87.65.104 6666
 MidnightSun     LPMud  MudOS v22.1     Midnight 2.0       130.240.16.140 3000
-Mufugannuka     LPMud  MudOS v22.2b14- Dead Souls IIr4    76.168.176.161 6666
 Mystic          LPMud  MudOS v22.2b14  Realms of Mystic L 70.184.241.7 3000
 Never_Test      LPMud  MudOS v22.2b14  Dead Souls 2.4.1   97.86.44.161 7799
 Neverland       LPMud  MudOS v22.2b14- Dead Souls 2.4.2   75.126.160.250 9999
 Nevermore       LPMud  MudOS v22.2b14  Dead Souls 2.0r21  68.10.203.181 7777
 Nightfall       LPMud  LPMud 3.2.10-de NF                 212.100.41.8 23
+OtherWorldTest  LPMud  MudOS v22.2b14- Dead Souls 2.4.2   72.193.152.187 8867
 Otherworld      LPMud  MudOS v22.2b14- Dead Souls 2.4.2   193.66.231.250 8867
 PAMud           LPMud  MudOS v22.2b14  Dead Souls 2.1.1   72.72.236.243 6000
 Pyloros         LPMud  MudOS v22.2b14- Dead Souls 2.4.2   69.125.214.204 8888
@@ -47,17 +52,18 @@ Realm_of_Learni LPMud  MudOS v22.2b14- Dead Souls 2.4.2   83.227.180.93 6666
 Rise of Praxis  LPMud  MudOS v22.2b14- Dead Souls 2.4.2   75.85.39.56 6666
 RoD             LPMud  MudOS v22.1     RoD Lib            38.119.115.95 3000
 Rock the Halo   LPMud  MudOS v22.2b14  LPUniLib a1 RtH    77.68.112.53 6060
-Rottyantás      LPMud  MudOS v22.2b14- Dead Souls 2.4.2   81.183.114.236 6666
-Sand Pit        LPMud  MudOS v22.2b14  Dead Souls 2.1     58.178.78.167 6666
+Rottyantás      LPMud  MudOS v22.2b14- Dead Souls 2.4.2   84.2.137.89 6666
+Sand Pit        LPMud  MudOS v22.2b14  Dead Souls 2.1     58.178.61.250 6666
 Shinneryl       LPMud  MudOS v22.2b14  Dead Souls 2.1.1   64.142.109.187 7777
 Sinn?           LPMud  LDMud 3.2.14    UNIlib             212.112.242.201 3333
 StarMUD         LPMud  MudOS v22.2b14  Starlib v4.0b      72.179.41.89 4000
-Test Bed        LPMud  MudOS v22.2b14  LPUniLib A-0610-R7 68.100.243.242 4000
 The Lost Chroni LPMud  FluffOS v1.22   Discworld 17.0a    62.194.18.136 6677
 Trilogy         LP     MudOS v22.2a35  Lima 1.0bwhatever  66.207.164.98 1984
+Tubmud          LPMud  LDMud 3.2.12-de Tublib stable      85.214.44.4 7680
 UOSSMUD         LP     MudOS v22.2b12  Lima 1.0a6         64.235.252.202 9000
-Ulthar          LP     MudOS v22.1b19  Elephant Mudlib 2. 194.106.49.114 23
 Universes       LPMud  MudOS v22.1     UniLib 1.0a        68.126.45.147 3333
 VEx             LPMud  MudOS v22.2b14  Dead Souls 2.1.1   216.55.167.40 6666
 WoWMud          LPMud  MudOS v22.2b14  LPUniLib A-0610-R7 69.31.165.86 7001
 Wunderland      LPMud  LDMud 3.3.713   WL-Lib             139.18.11.86 23
+Zero Age        Coffee CoffeeMud v5.3. CoffeeMud v5.3.0   68.51.88.100 5555
+Zynna           LPMud  MudOS v20 DnD R DnD/Nightmare Clas 72.194.221.122 4000

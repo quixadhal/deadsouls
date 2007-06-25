@@ -1,4 +1,4 @@
-string get_stack() {
+varargs string get_stack( int x) {
     int i, s;
     string list = "";
     string *stack0 = call_stack(0);
@@ -9,6 +9,10 @@ string get_stack() {
 	list +="\n"+i+":"+identify(stack2[i])+"."+identify(stack1[i])+"."+identify(stack2[i]);
 	//list = implode(stack," ");
     }
+
+    if(x){
+	list += "\n"+ identify(previous_object(-1));
+    }
+
     return list;
 }
-

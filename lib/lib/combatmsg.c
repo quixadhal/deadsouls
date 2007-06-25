@@ -207,4 +207,3 @@ SendWeaponMessages(object target, int x, object weapon, string limb) {
 	GetName(), verb[1], (string)target->GetName(), adverb, limb,
 	possessive(this_object()), weap), ({ target, this_object() }) );
 }
-

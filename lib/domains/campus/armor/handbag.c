@@ -1,4 +1,3 @@
-
 #include <lib.h>
 
 #include <armor_types.h>

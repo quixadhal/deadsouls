@@ -204,4 +204,3 @@ varargs mixed eventUnequip(object who) {
     }
     return success;
 }
-

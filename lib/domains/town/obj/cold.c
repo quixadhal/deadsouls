@@ -151,4 +151,3 @@ int damage5(){
 
 mixed CanGet(object ob) { return "Your fingers slip on your runny snot.";}
 mixed CanDrop(object ob) { return "Your fingers slip on your runny snot.";}
-

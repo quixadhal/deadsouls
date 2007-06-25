@@ -1,3 +1,11 @@
+---- 2.5a12 ---
+- Released 2007-06-24
+- Nailed some really pesky router crashers involving null socket owner
+  object references.
+- Added sefuns: morse(), unmorse().
+- Added an automatic Morse coder/decoder system to channels. To encode
+  messages, make the first word of the message be: ^encode
+
 ---- 2.5a11 ---
 - Released 2007-06-23
 - Various broken table objects (eg the Orc Shaman's altar) fixed.

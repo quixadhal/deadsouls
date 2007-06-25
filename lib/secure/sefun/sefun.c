@@ -4,6 +4,10 @@
  *    created by Descartes of Borg 940213
  */
 
+#ifndef DESTRUCT_LOGGING
+#define DESTRUCT_LOGGING 0
+#endif
+
 #include <lib.h>
 #include <cfg.h>
 #include <daemons.h>
@@ -243,14 +247,23 @@ mixed array users(){
 int destruct(object ob) {
     string *privs;
     string tmp;
+    int ok;
 
-    if(previous_object(0) && previous_object(0) == ob) return efun::destruct(ob);
-    if(!(tmp = query_privs(previous_object(0)))) return 0;
-    if(member_array(PRIV_SECURE, explode(tmp, ":")) != -1)
-	return efun::destruct(ob);
     privs = ({ file_privs(file_name(ob)) });
-    if((int)master()->valid_apply(({ "ASSIST" }) + privs))
-	return efun::destruct(ob);
+
+    if(tmp = query_privs(previous_object(0))){
+	if(previous_object(0) && previous_object(0) == ob) ok = 1;
+	if(member_array(PRIV_SECURE, explode(tmp, ":")) != -1) ok = 1;
+	if((int)master()->valid_apply(({ "ASSIST" }) + privs)) ok = 1;
+    }
+
+    if(DESTRUCT_LOGGING){
+	string stat = "FAIL";
+	if(ok) stat = "success";
+	log_file("destructs",timestamp()+"\n"+stat+"\n"+get_stack(1)+"\n--\n");
+    }
+
+    if(ok) return efun::destruct(ob);
     else return 0;
 }
 

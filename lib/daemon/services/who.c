@@ -80,5 +80,3 @@ varargs void eventSendWhoRequest(string mud) {
     tn("eventSendWhoRequest: "+identify( ({ "who-req", 5, mud_name(), who, mud, 0 })), "blue");
 }
 
-
-
