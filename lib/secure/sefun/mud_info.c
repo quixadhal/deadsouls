@@ -11,11 +11,11 @@ string mud_name() { return MUD_NAME; }
 string admin_email() { return ADMIN_EMAIL; }
 
 #ifdef MUDOS_VERSION
-string version() { return MUDOS_VERSION+"-dsouls2"; }
+string version() { return MUDOS_VERSION+"-ds2.001"; }
 #endif // MUDOS_VERSION
 
 #ifdef __VERSION__
-string version() { return __VERSION__+"-dsouls2"; }
+string version() { return __VERSION__+"-ds2.001"; }
 #endif // __VERSION__
 
 #ifdef MUDOS_ARCH
@@ -28,7 +28,7 @@ string architecture() { return __ARCH__; }
 
 string mudlib() { return "Dead Souls"; }
 
-string mudlib_version() { return "2.5a12"; }
+string mudlib_version() { return "2.5a13"; }
 
 int query_host_port() { return __PORT__; }
 

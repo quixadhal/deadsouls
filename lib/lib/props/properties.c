@@ -20,8 +20,9 @@ mixed AddProperty(string prop, mixed val) {
 }
 
 mixed GetProperty(string prop) {
+    if(Properties && Properties[prop])
     return Properties[prop];
-    //else return 0;
+    else return 0;
 }
 
 mapping GetProperties() {

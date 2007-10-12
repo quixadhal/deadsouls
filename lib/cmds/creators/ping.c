@@ -5,7 +5,7 @@ inherit LIB_DAEMON;
 
 mixed cmd(string str) {
     string target;
-    if(!str || str == "") str = "Dead Souls";
+    if(!str || str == "") str = mud_name();
     target = INTERMUD_D->GetMudName(str);
     this_player()->SetProperty("pinging",1);
     INTERMUD_D->eventWrite(({ "auth-mud-req", 5, mud_name(), 0,target, 0 }));

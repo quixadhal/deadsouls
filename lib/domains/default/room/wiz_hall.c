@@ -56,6 +56,15 @@ int CanReceive(object ob) {
     }
     return 1;
 }
+
+int eventReceiveObject(object ob){
+    string race = ob->GetRace();
+    if(race && race == "orc"){
+	ob->eventPrint("Welcome to our inclusive halls, proud orc!");
+    }
+    return ::eventReceiveObject(ob);
+}
+
 void init(){
     ::init();
 }

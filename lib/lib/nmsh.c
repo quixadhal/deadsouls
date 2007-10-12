@@ -31,7 +31,7 @@ static void create() {
       "ne" : "go northeast", "nw" : "go northwest", "se" : "go southeast",
       "sw" : "go southwest", "d" : "go down", "u" : "go up", "out": "go out",
       "exa" : "look at $*", "p" : "people", "sc" : "status", "inf" : "score",
-      "eq" : "equipment", "where" : "people", "prac" : "skills", 
+      "eq" : "equipment", "prac" : "skills", 
       "sco" : "score", "practice" : "skills", "trophy" : "kills",
       "northwest" : "go northwest", "northeast" : "go northeast", 
       "southwest" : "go southwest", "southeast" : "go southeast",

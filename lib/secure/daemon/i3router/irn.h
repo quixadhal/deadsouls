@@ -9,6 +9,7 @@ static int irn_enabled = 1;
 static int irn_maxtry = 32;
 static int convert_channel = 1;
 static int convert_channel2 = 0;
+static mapping PingMap = ([]);
 
 mapping routers = ([
   "*yatmim" : ([ "ip" : "149.152.218.102", "port" : 23, "password" : IRN_PASSWORD2 ]),
@@ -36,7 +37,7 @@ void irn_checkstat(){
     mixed sstat;
     if(!irn_enabled || !sizeof(routers)) return;
     foreach(mixed key, mixed val in routers){
-        ok_ips += ({ routers[key]["ip"] });
+	ok_ips += ({ routers[key]["ip"] });
 	if(!irn_connections[key] || irn_connections[key]["fd"] == -1){
 	    foreach(mixed key2, mixed val2 in mudinfo){
 		if(val2["router"] == key && !mudinfo[key2]["disconnect_time"])
@@ -62,6 +63,7 @@ void irn_checkstat(){
     }
 
     foreach(mixed key, mixed val in irn_connections){
+	if(!PingMap) PingMap = ([]);
 	if(!key ||!sizeof(key)|| !val) continue;
 	//trr("IRN: checkstat checking "+identify(key)+" : "+identify(val));
 	//trr(identify(socket_status(irn_connections[key]["fd"])));
@@ -75,15 +77,19 @@ void irn_checkstat(){
 	    map_delete(irn_connections,key);
 	}
 	else if(sstat){
-	    //trr("IRN: checkstat socket "+irn_connections[key]["fd"]+" for "+
-	    //identify(key)+" is in data transfer mode.");
+	    int code = time();
+	    trr("IRN: checkstat socket "+irn_connections[key]["fd"]+" for "+
+	      identify(key)+" is in data transfer mode.");
+	    PingMap[key] = code;
+	    this_object()->irn_ping(key, code);
 	}
 	else {
-	    //trr("IRN checkstat: "+key+" is not connected.");
+	    trr("IRN checkstat: "+key+" is not connected.");
 	}
     }
 
-#if 0
+#if 1
+    tc("Looking to disconnect dead irn sockets.");
     foreach(mixed key, mixed val in irn_sockets){
 	sstat = socket_status(key);
 	if(!sstat || sstat[1] != "DATA_XFER"){
@@ -112,8 +118,8 @@ static int GoodPeer(int fd, mixed data){
     if(!irn_enabled) return 0;
     //trr("IRN: hit GoodPeer","yellow");
     if(member_array(ip,ok_ips) == -1){
-        server_log("irn: bad ip: "+ip);
-        server_log("ok_ips: "+identify(ok_ips));
+	server_log("irn: bad ip: "+ip);
+	server_log("ok_ips: "+identify(ok_ips));
 	return 0;
     }
 
@@ -146,7 +152,7 @@ static int ValidatePeer(int fd, mixed data){
     //trr("IRN: hit ValidatePeer","green");
     if(member_array(ip,ok_ips) == -1){
 	server_log("IRN: bad ip: "+ip);
-        server_log("ok_ips: "+identify(ok_ips));
+	server_log("ok_ips: "+identify(ok_ips));
 	return 0;
     }
     if(!irn_connections[data[2]]){
@@ -236,7 +242,7 @@ varargs void irn_setup(int clear){
 	    continue;
 	}
 	ok_ips += ({ routers[key]["ip"] });
-        server_log("ok_ips: "+identify(ok_ips));
+	server_log("ok_ips: "+identify(ok_ips));
 	if(!irn_connections[key]){
 #if 1
 	    foreach(mixed key2, mixed val2 in mudinfo){
@@ -445,7 +451,7 @@ case "irn-data" :
     }
     //trr("irn: got new data, type: "+data[0]+". sending to router.");
     if(convert_channel && !strsrch(data[6][0],"chan") && strsrch(data[6][0],"chan-user")){
-	if(chan_conv[irn_sockets[fd]["name"]]){
+	if(irn_sockets[fd] && irn_sockets[fd]["name"] && chan_conv[irn_sockets[fd]["name"]]){
 	    //trr("chan_conv");
 	    foreach(string key, string val in chan_conv[irn_sockets[fd]["name"]]){
 		//trr("data[6][6]: "+data[6][6]);
@@ -648,4 +654,40 @@ mapping query_irn_sockets(){
 mapping query_irn_connections(){
     validate();
     return copy(irn_connections);
+}
+
+int query_irn_enabled(){
+    if(irn_enabled) return 1;
+    return 0;
+}
+
+int toggle_irn(int x){
+    validate();
+    if(x) irn_enabled = 1;
+    else irn_enabled = 0;
+    return irn_enabled;
+}
+
+mixed irn_ping(mixed target, int code){
+    if(!intp(target)){
+	target = irn_connections[target];
+	if(target && target["fd"]) target = target["fd"];
+	else return 0;
+    }
+
+    if(!irn_sockets[target]) return 0;
+    if(!code) code = time();
+
+    write_data(target, ({
+	"irn-ping",
+	5,
+	my_name,
+	0,
+	irn_sockets[target]["name"],
+	0,
+	time(),
+	code
+      }) );
+
+    return 1;
 }

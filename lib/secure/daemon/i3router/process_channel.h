@@ -138,6 +138,7 @@ static void process_channel(mixed fd, mixed *info){
 	return;
     case "add":
 	// check if already exists...
+	if(info[6] || !stringp(info[6])) return;
 	if(channels[info[6]]){
 	    //trr(info[3]+"@"+info[2]+" failed to create the channel: "+info[6]+ "because it already exists.","red");
 	    return;

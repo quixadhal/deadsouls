@@ -1536,8 +1536,10 @@ static void handle_configure() {
     if (!check_prog("CONST const", "int foo(const int *, const int *);", "", 0))
 	fprintf(yyout, "#define CONST\n");
     
+#if defined(sun) || defined(SunOS_5)
     verbose_check_prog("Checking for ualarm()", "HAS_UALARM",
 		       "", "ualarm(0, 0);", 0);
+#endif
     verbose_check_prog("Checking for strerror()", "HAS_STRERROR",
 		       "", "strerror(12);", 0);
     verbose_check_prog("Checking for POSIX getcwd()", "HAS_GETCWD",

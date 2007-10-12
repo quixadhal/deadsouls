@@ -94,7 +94,7 @@ static void listen_callback(int fd){
     }
     else {
 	server_log("socket_accepted: "+fdstat+
-          ", "+identify(socket_status(fdstat)),"rsocket");
+	  ", "+identify(socket_status(fdstat)),"rsocket");
     }
 }
 
@@ -102,9 +102,9 @@ static void read_callback(int fd, mixed info){
 
     validate(fd);
     if(bufferp(info)){
-        yenta("%^WHITE%^fd "+fd+" is sending me buffer data!");
-        yenta("%^WHITE%^As far as I can tell, it is:");
-        yenta("%^BLUE%^"+identify(read_buffer(info)));
+	yenta("%^WHITE%^fd "+fd+" is sending me buffer data!");
+	yenta("%^WHITE%^As far as I can tell, it is:");
+	yenta("%^BLUE%^"+identify(read_buffer(info)));
     }
     else yenta("%^WHITE%^data from fd "+fd+":\n%^BLUE%^"+identify(info));
     if(!find_object(ROUTER_D)) return;

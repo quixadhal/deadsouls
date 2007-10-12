@@ -158,6 +158,7 @@ void get_info() {
     validate();
 
     socks += "\nTotal number of connected muds: "+socknum+"\n";
+    //tc("channels: "+identify(channels));
     write("router_name: "+router_name+
       "\nrouter_ip: "+router_ip+
       "\nrouter_port: "+router_port+
@@ -336,7 +337,7 @@ void check_discs(){
 	if(!intp(element)) continue;
 	if(!socket_status(element) ||
 	  socket_status(element)[1] == "CLOSED" || !GetRemoteIP(element) ||
-            GetRemoteIP(element) != mudinfo[query_connected_fds()[element]]["ip"]){
+	  GetRemoteIP(element) != mudinfo[query_connected_fds()[element]]["ip"]){
 	    foreach(string key, mixed val in mudinfo){
 		if(!connected_muds[key] && mudinfo[key]["router"] && mudinfo[key]["router"] == my_name){
 		    server_log("Cleaning connection info from "+key);
@@ -459,15 +460,21 @@ varargs void ReceiveList(mixed data, string type){
     }
     else if(type == "chanlist"){
 	//trr("Current muds: "+identify(keys(mudinfo)));
+	//tc("chanlist update: "+identify(data));
 	if(data["listening"] && sizeof(data["listening"]) && mapp(data["listening"])){
 	    foreach(mixed key, mixed val in data["listening"]){
 		//listening[key] = val;
-		//trr("listening update: "+key+" is "+identify(val));
+		trr("listening update: "+key+" is "+identify(val)+" val is a "+typeof(val),"yellow");
 	    }
 	}
 	if(data["channels"] && sizeof(data["channels"]) && mapp(data["channels"])){
 	    foreach(mixed key, mixed val in data["channels"]){
 		string ownermud = data["channels"][key][1];
+		if(!key || !val || !stringp(key)){
+		    map_delete(channels, key);
+		    map_delete(listening, key);
+		    continue;
+		}
 		if(member_array(ownermud, cmuds) != -1) continue;
 		if(val == -1) map_delete(channels, key);
 		if(val == -1) map_delete(listening, key);
@@ -476,7 +483,7 @@ varargs void ReceiveList(mixed data, string type){
 		    channels[key] = val;
 		}
 		broadcast_chanlist(key);
-		//trr("chan update: "+key+" is "+identify(val));
+		trr("chan update: "+key+" is "+identify(val)+" val is a "+typeof(val),"green");
 	    }
 	}
     }

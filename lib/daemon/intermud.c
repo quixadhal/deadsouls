@@ -117,7 +117,7 @@ static void eventRead(mixed *packet) {
 
 	eventWrite(({ "error", 5, mud_name(), 0, packet[2],
 	    packet[3], "unk-user", 
-	    "Your mud is not allowed to send to Dead Souls.",
+	    "Your mud is not allowed to send to "+mud_name()+".",
 	    packet }));
 
 	return;
@@ -374,6 +374,8 @@ string GetMudName(string mud) {
 	save_object(SAVE_INTERMUD);
 	return 1;
     }
+
+    mapping GetBanned(){ return copy(Banned); }
 
     int RawSend(string *packet){
 	if(!this_player() || !archp(this_player())) return 0;

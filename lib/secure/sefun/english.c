@@ -6,6 +6,10 @@
  *    Last modified: 97/01/01
  */
 
+#ifndef SEFUN_PLURALIZE
+#define SEFUN_PLURALIZE 1
+#endif
+
 #include <daemons.h>
 
 string *localcmds;
@@ -194,76 +198,121 @@ string array explode_list(string list) {
     }
 
     string reflexive(mixed val) { return sprintf("%sself", objective(val)); }
-    /*
+
+#if SEFUN_PLURALIZE 
 #define VOWELS ({"a","e","i","o","u"})
 
-#define ABNORMAL ([ "moose":"moose", "mouse":"mice", "die":"dice", "index":"indices", "human":"humans", "sheep":"sheep", "fish":"fish", "child":"children", "ox":"oxen", "tooth":"teeth", "deer":"deer", "bus":"busses" ])
+#define ABNORMAL ([ "moose":"moose", "mouse":"mice", "die":"dice", "index":"indices", "human":"humans", "sheep":"sheep", "fish":"fish", "child":"children", "ox":"oxen", "tooth":"teeth", "deer":"deer", "sphinx":"sphinges" ])
 
     string pluralize(mixed single) {
 	int x, i, y, ind;
 	string str, tmp, tmp1;
 	string *words;
+	string ret = "";
+	int reset = 0;
+	string clean_str = "";
+	string modulo = "";
+
+	tc("foo!");
+
+	if(last(single,9) == "%^RESET%^"){
+	    reset = 1;
+	    single = truncate(single,9);
+	}
 
 	if(objectp(single)) {
-	    if(str = (string)single->query_plural_name()) return str;
+	    if(str = (string)single->query_plural_name()){
+		tc("1");
+		return str;
+	    }
 	    else str = (string)single->GetKeyName();
 	}
 	else if(stringp(single)) str = (string)single;
 	else error("Bad argument 1 to pluralize()");
-	if(!str) return str;
-	i = sizeof(words = explode(str, " "));
-	 if( i > 1 && words[i-1][0] == '(' && words[i-1][1<] == ')' )
-	    return pluralize( implode(words[1..(i-2)]), " " );
-	if(words[0] == "a" || words[0] == "an" || words[0] == "the")
-	  i = sizeof(words = words[1..(i-1)]);
-	if((y=member_array("of", words)) > 0 || (y=member_array("Of",words))>0)
-	    str = words[ind = y-1];
-	else str = words[ind = i-1];
-	x = strlen(str);
-	if(ABNORMAL[str]) return ABNORMAL[str];
-	if(x > 2 && str[x-3..x-1] == "man") {
-	    words[ind] = str[0..x-3]+"en";
-	    return implode(words, " ");
-	  }
-	if(x > 1) {
-	    tmp = str[x-2..x-1];
-	    switch(tmp) {
-		case "ch": case "sh":
-		  words[ind] = sprintf("%ses", str);
-		  return implode(words, " ");
-		case "ff": case "fe":
-		  words[ind] = sprintf("%sves", str[0..x-3]);
-		  return implode(words, " ");
-		case "us":
-		  words[ind] = sprintf("%si", str[0..x-3]);
-		  return implode(words, " ");
-		case "um":
-		  words[ind] = sprintf("%sa", str[0..x-3]);
-		  return implode(words, " ");
-		case "ef":
-		  words[ind] = sprintf("%ss", str);
-		  return implode(words, " ");
+
+	if(!str){
+	    tc("2");
+	    return str;
+	}
+
+	clean_str = strip_colours(str);
+	modulo = replace_string(str, clean_str, "");
+	x = strlen(clean_str);
+
+	if(ABNORMAL[strip_colours(str)]){
+	    tc("abnormal");
+	    if(reset){
+		ret = ABNORMAL[clean_str];
+		ret = modulo + ret + "%^RESET%^";
 	    }
+	    else ret = ABNORMAL[strip_colours(str)];
+	    tc("3");
+	    return ret;
 	}
-	tmp = str[x-1..x-1];
+
+	tc("ret: "+ret);
+	tc("str: "+str);
+	tc("clean_str: "+clean_str);
+
+	if(x > 1) {
+	    tmp = clean_str[x-2..x-1];
+	    switch(tmp) {
+	    case "ch": case "sh":
+		ret = sprintf("%ses", clean_str);
+		break;
+	    case "ff": case "fe":
+		ret = sprintf("%sves", clean_str[0..x-3]);
+		break;
+	    case "us":
+		ret = sprintf("%si", clean_str[0..x-3]);
+		break;
+	    case "um":
+		ret = sprintf("%sa", clean_str[0..x-3]);
+		break;
+	    case "ef":
+		ret = sprintf("%ss", clean_str);
+		break;
+	    }
+	    //if(reset) ret += "%^RESET%^";
+	    //tc("4");
+	    //return ret;
+	}
+
+	tc("ret: "+ret, "white");
+	tc("str: "+str, "white");
+	tc("clean_str: "+clean_str, "white");
+
+	tmp = clean_str[x-1..x-1];
 	switch(tmp) {
-	    case "o": case "x": case "s":
-	      words[ind] = sprintf("%ses", str);
-	      return implode(words, " ");
-	    case "f":
-	      words[ind] = sprintf("%sves", str[0..x-2]);
-	      return implode(words, " ");
-	    case "y":
-		if(member_array(str[x-2..x-2],VOWELS)!=-1)
-				   words[ind] = sprintf("%ss",str);
-		else
-		words[ind] = sprintf("%sies", str[0..x-2]);
-		return implode(words, " ");
+	case "o": case "x": case "s":
+	    ret = sprintf("%ses", clean_str);
+	    break;
+	case "f":
+	    ret = sprintf("%sves", clean_str[0..x-2]);
+	    break;
+	case "y":
+	    if(member_array(clean_str[x-2..x-2],VOWELS)!=-1)
+		ret = sprintf("%ss",clean_str);
+	    else
+		ret = sprintf("%sies", clean_str[0..x-2]);
+	    break;
 	}
-	words[ind] = sprintf("%ss", str);
-	return implode(words, " ");
+	if(sizeof(ret)){
+	    if(reset){
+		ret = modulo + ret + "%^RESET%^";
+	    }    
+	    tc("5"); 
+	    return ret;
+	}
+	ret = sprintf("%ss", clean_str);
+	if(reset){
+	    ret = modulo + ret + "%^RESET%^";
+	}
+	tc("6");
+	return ret;
     }
-    */
+#endif
+
     string cardinal(int x) {
 	string tmp;
 	int a;

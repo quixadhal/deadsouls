@@ -43,7 +43,7 @@ int cmd(string args) {
 	    p++;
 	}
     }
-    ret+=center(mud_name());
+    ret+=center(mud_name())+"\n";
     ret+=SEP;
     ret+=tmp;
     ret+=SEP;

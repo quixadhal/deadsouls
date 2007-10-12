@@ -15,6 +15,7 @@ clone workboot_l
 clone workboot_r
 clone workglove_l
 clone workglove_r
+cd /realms/cratylus/area/armor
 clone cap
 cd /domains/town/obj
 clone 8ball

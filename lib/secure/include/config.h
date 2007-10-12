@@ -39,7 +39,8 @@
 #define RESET_INTERMUD           0
 #define ENGLISH_ONLY             0
 #define HUMANS_ONLY              0
-#define PINGING_MUDS             ({"Frontiers","Dead Souls"})
+#define PINGING_MUDS             ({})
+#define PING_INTERVAL            60
 #define ENABLE_ENCUMBRANCE       0
 #define GLOBAL_MONITOR           0
 #define PLAYER_KILL              0
@@ -66,5 +67,6 @@
 #define IRN_PASSWORD1            "Bravo"
 #define IRN_PASSWORD2            "Charlie"
 #define IRN_PASSWORD3            "Delta"
+#define SEFUN_PLURALIZE          0
 
 #endif /* s_config_h */

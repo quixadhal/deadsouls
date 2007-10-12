@@ -35,7 +35,7 @@ mixed cmd(string args) {
 
     if(!archp(previous_object())) return 0;
 
-    if(!router){
+    if(!router && (args != "on" && args != "online")){
 	write("Router is not loaded. First try: mudconfig router enable");
 	return 1;
     }
@@ -447,6 +447,44 @@ mixed cmd(string args) {
 	return 1;
     }
 
+    if(arg1 == "irn"){
+	if(!arg2){
+	    write("Please specify an irn subcommand: enable, disable, "
+	      "check, force.");
+	    return 1;
+	}
+	if(arg2 == "check"){
+	    ROUTER_D->irn_checkstat();
+	    write("irn status check issued.");
+	    return 1;
+	}
+	if(arg2 == "enable"){
+	    if(ROUTER_D->query_irn_enabled()){
+		write("irn already enabled.");
+		return 1;
+	    }
+	    ROUTER_D->toggle_irn(1);
+	    ROUTER_D->irn_checkstat(); 
+	    write("irn enabled.");
+	    return 1;
+	}
+	if(arg2 == "disable"){
+	    if(!(ROUTER_D->query_irn_enabled())){
+		write("irn already disabled.");
+		return 1;
+	    }
+	    ROUTER_D->toggle_irn(0);
+	    ROUTER_D->irn_clear();
+	    write("irn disabled.");
+	    return 1;
+	} 
+	if(arg2 == "force"){
+	    ROUTER_D->toggle_irn(1);
+	    ROUTER_D->irn_setup(1);
+	    write("irn forcibly reloaded.");
+	    return 1;
+	}
+    }
 
     write("Router command completed.");
     return 1;
@@ -459,9 +497,13 @@ string GetHelp(string args) {
       "router reload : bounces the router without dropping connections\n"
       "router restart : bounces the router dropping all connections\n"
       "router reset : like restart but also clears all saved mud info\n"
+      "router irn [enable|disable|check|force] : manages IRN subsystem\n"
       "router ban : lists banned muds\n"
       "router ban <mudname> : bans the mud with the name <mudname>\n"
       "router unban <mudname> : the opposite of banning\n"
+      "router blacklist : lists blacklisted names and IP's\n"
+      "router blacklist [name | ip address] : a harsher kind of ban\n"
+      "router unblacklist [name | ip address] : the opposite of blacklisting\n"
       "router config <name> <ip> <port> : config the router in one line\n"
       "router port <portnum> : sets the router port\n"
       "router ip <ip number> : sets the ip address, e.g. 11.22.33.44\n"

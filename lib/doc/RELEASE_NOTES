@@ -1,3 +1,23 @@
+---- 2.5a13 (unreleased) ---
+- Released 2007-10-12
+- Removed command: where
+- Modified users() sefun override to avoid a crasher under mysterious 
+  circumstances.
+- Added SEFUN_PLURALIZE to config.h, to allow the sefun override of
+  the driver's pluralize() efun.
+- Added command: rot
+- Fixed driver problem that stopped compile at malloc.c (stole the
+  fix from FluffOS!)
+- Fixed driver problem that made timekeeping fail (ualarm).
+- Keepalive pinger object no longer requires you to be actually idle.
+- WARNING: Vehicles do not work yet. Do not be sad if you find what
+  looks like vehicle code that doesn't work
+- Bonus object works properly now.
+- Miscellaneous fixes to i3 router code.
+- Libtest bot script fixed up.
+- Fixed a problem in the users() sefun that mysteriously hosed
+  64-bit Linux installs.
+
 ---- 2.5a12 ---
 - Released 2007-06-24
 - Nailed some really pesky router crashers involving null socket owner

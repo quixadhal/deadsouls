@@ -53,7 +53,8 @@ void heart_beat(){
     if(interval > 0 && count > interval){
 	count = 0;
 	if(living(environment(this_object())) &&
-	  query_idle(environment(this_object())) > 240){
+	  true()){
+	    //query_idle(environment(this_object())) > 240){
 	    tell_object(environment(this_object()),keepalive);
 	}
     }

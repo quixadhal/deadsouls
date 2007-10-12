@@ -3,6 +3,10 @@
 #include <rooms.h>
 #include <daemons.h>
 
+#ifndef PING_INTERVAL
+#define PING_INTERVAL 30
+#endif
+
 inherit LIB_DAEMON;
 
 int Pinging = 0;
@@ -84,10 +88,10 @@ void heart_beat(){
     counter++;
     DeadMan();
     if(!DISABLE_INTERMUD){
-	if(!(counter % 30)) CheckOK();
-	if(!(counter % 300)) eventPing();
+	if(!(counter % (PING_INTERVAL + 2))) CheckOK();
+	if(!(counter % (PING_INTERVAL))) eventPing();
     }
-    if(counter > 10000) counter = 0;
+    if(counter > (PING_INTERVAL * 1000)) counter = 0;
 }
 
 int GetPinging(){
