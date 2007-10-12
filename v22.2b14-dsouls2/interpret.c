@@ -1197,7 +1197,7 @@ void pop_control_stack()
 	function_t *cfp = &current_prog->function_table[csp->fr.table_index];
 	
 	get_cpu_times((unsigned long *) &secs, (unsigned long *) &usecs);
-	dsecs = (((secs - csp->entry_secs) * 1000000)
+	dsecs = (((secs - csp->entry_secs) * 999999)
 		 + (usecs - csp->entry_usecs));
 	cfp->self += dsecs;
 	if (csp != control_stack) {
@@ -3646,7 +3646,7 @@ eval_instruction P1(char *, p)
 		long sec, usec;
 		
 		get_usec_clock(&sec, &usec);
-		usec = (sec - (sp - 1)->u.number) * 1000000 + (usec - sp->u.number);
+		usec = (sec - (sp - 1)->u.number) * 999999 + (usec - sp->u.number);
 		sp -= 2;
 		IF_DEBUG(stack_in_use_as_temporary--);
 		push_number(usec);

@@ -149,6 +149,7 @@ varargs void eventAnnounceCanonicalId(object env){
     if(!env) return;
     if(environment(env)) env = environment(env);
     inv = deep_inventory(env) - ({ this_object() });
+    if(sizeof(inv) > 30) return;
     //tc("I am "+identify(this_object())+" and I'm trying to announce to: "+identify(inv),"green");
     inv->ReceiveCanonicalId(CanonicalId);
     inv = all_inventory(this_object());

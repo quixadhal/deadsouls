@@ -212,7 +212,7 @@ static void heart_beat() {
     }
     eventCheckHealing();
     if(!stringp(hobbled(this_player()))) {
-	eventFall();
+        this_object()->eventCollapse();
     }
     if(this_object()->GetPosition() == POSITION_FLYING && !this_object()->CanFly()){
 	eventFall();

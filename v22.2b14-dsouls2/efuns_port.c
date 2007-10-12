@@ -55,6 +55,7 @@ f_crypt PROT((void))
 #ifdef F_OLDCRYPT
 void
 f_oldcrypt PROT((void)) {
+#ifndef WIN32
     char *res, salt[3];
     char *choice =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ./";
@@ -73,6 +74,7 @@ f_oldcrypt PROT((void)) {
     free_string_svalue(sp);
     sp->subtype = STRING_MALLOC;
     sp->u.string = res;
+#endif
 }
 #endif
 
@@ -181,11 +183,11 @@ f_rusage PROT((void))
 	m = allocate_mapping(0);
     } else {
 #if 1 /* Was !SunOS_5 */
-	usertime = rus.ru_utime.tv_sec * 1000 + rus.ru_utime.tv_usec / 1000;
-	stime = rus.ru_stime.tv_sec * 1000 + rus.ru_stime.tv_usec / 1000;
+	usertime = rus.ru_utime.tv_sec * 999 + rus.ru_utime.tv_usec / 999;
+	stime = rus.ru_stime.tv_sec * 999 + rus.ru_stime.tv_usec / 999;
 #else
-	usertime = rus.ru_utime.tv_sec * 1000 + rus.ru_utime.tv_nsec / 1000000;
-	stime = rus.ru_stime.tv_sec * 1000 + rus.ru_stime.tv_nsec / 1000000;
+	usertime = rus.ru_utime.tv_sec * 999 + rus.ru_utime.tv_nsec / 999999;
+	stime = rus.ru_stime.tv_sec * 999 + rus.ru_stime.tv_nsec / 999999;
 #endif
 	maxrss = rus.ru_maxrss;
 #ifdef sun
@@ -224,8 +226,8 @@ f_rusage PROT((void))
     if (get_process_stats(NULL, PS_SELF, &ps, NULL) == -1)
 	m = allocate_mapping(0);
     else {
-	utime = ps.ps_utime.tv_sec * 1000 + ps.ps_utime.tv_usec / 1000;
-	stime = ps.ps_stime.tv_sec * 1000 + ps.ps_stime.tv_usec / 1000;
+	utime = ps.ps_utime.tv_sec * 999 + ps.ps_utime.tv_usec / 999;
+	stime = ps.ps_stime.tv_sec * 999 + ps.ps_stime.tv_usec / 999;
 	maxrss = ps.ps_maxrss * getpagesize() / 1024;
 
 	m = allocate_mapping(19);
@@ -268,8 +270,8 @@ f_rusage PROT((void))
 
     times(&t);
     m = allocate_mapping(2);
-    add_mapping_pair(m, "utime", t.tms_utime * 1000 / CLK_TCK);
-    add_mapping_pair(m, "stime", t.tms_stime * 1000 / CLK_TCK);
+    add_mapping_pair(m, "utime", t.tms_utime * 999 / CLK_TCK);
+    add_mapping_pair(m, "stime", t.tms_stime * 999 / CLK_TCK);
     push_refed_mapping(m);
 }
 
@@ -286,8 +288,8 @@ f_rusage PROT((void))
 
     i = timer(clock);		/* returns 0 if success, -1 otherwise */
     m = allocate_mapping(2);
-    add_mapping_pair(m, "utime", i ? 0 : clock[0] * 1000 + clock[1] / 1000);
-    add_mapping_pair(m, "stime", i ? 0 : clock[0] * 1000 + clock[1] / 1000);
+    add_mapping_pair(m, "utime", i ? 0 : clock[0] * 999 + clock[1] / 999);
+    add_mapping_pair(m, "stime", i ? 0 : clock[0] * 999 + clock[1] / 999);
     push_refed_mapping(m);
 }
 

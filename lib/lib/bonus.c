@@ -79,7 +79,7 @@ int SetBonuses(){
     if(sizeof(Points))
 	foreach(string key, int val in Points){
 	switch(key){
-	case "HP" : env->AddHp(val);break;
+	case "HP" : env->AddHP(val);break;
 	case "XP" : env->AddExperiencePoints(val);break;
 	case "SP" : env->AddStaminaPoints(val);break;
 	case "MP" : env->AddMagicPoints(val);break;

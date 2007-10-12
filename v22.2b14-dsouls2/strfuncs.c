@@ -9,6 +9,8 @@
 			islower(x) ? (x) + 10 - 'a' : (x) + 10 - 'A')
 #define MBASE	('z' - 'a' + 1 + 10)
 
+#ifndef WIN32
+
 long strtol P3(register char *, str, char **, ptr, register int, base)
 {
     register long val;
@@ -88,3 +90,5 @@ INLINE char *memcpy P3(char *, b, char *, a, int, s)
     bcopy(a, b, s);
     return b;
 }
+
+#endif

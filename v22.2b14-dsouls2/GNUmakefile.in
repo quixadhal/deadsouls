@@ -65,7 +65,10 @@ SRC=grammar.tab.c lex.c main.c rc.c interpret.c simulate.c file.c object.c \
 
 all: $(OBJDIR) cc.h files main_build
 
-main_build: $(DRIVER_BIN) addr_server portbind
+main_build2: $(DRIVER_BIN) addr_server portbind
+
+main_build: files
+	$(MAKE) main_build2
 
 parallel:
 	$(MAKE) -k -l -j 6 cc.h files
