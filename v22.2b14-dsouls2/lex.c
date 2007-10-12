@@ -18,11 +18,7 @@
 #include "file_incl.h"
 #include "lpc_incl.h"
 #include "compiler.h"
-#ifdef WIN32
-#  include "grammar_tab.h"
-#else
 #  include "grammar.tab.h"
-#endif
 #include "scratchpad.h"
 #include "preprocess.h"
 #include "md.h"

@@ -21,10 +21,21 @@
  * a salt from an unrecognized string. Any value returned
  * from md5crypt("anything", NULL, NULL) is valid here.
  */
-#define MD5_VALID_SALT "anhlklck!ggddl`l`lg`bjblodlfcljdcnhffib`c"
+#define MD5_VALID_SALT "anhlklck!ggddl`l`lg`bjblodlfcljdcnhffib`c" 
+/* #define MD5_VALID_SALT "anhlklckggddlllgbjblodlfcljdcnhffibc" */
 
-typedef unsigned char byte;
+typedef unsigned char BytE;
 
-char *custom_crypt(CONST char *key, CONST char *salt, byte *rawout);
+/* char *custom_crypt(CONST char *key, CONST char *salt, unsigned char *rawout); */
+
+char *custom_crypt(char *key, char *salt, unsigned char *rawout); 
+
+/* int MD5Digest(  CONST BytE *buf, unsigned long  buflen, BytE *Digest); */
+
+int MD5Digest PROT((  BytE *, unsigned long  buflen, BytE *));
+int encode PROT(( unsigned char *, BytE *, int ));
+void decode PROT(( unsigned char *, BytE *, int ));
+void getsalt PROT((BytE *, BytE * ));
+void crunchbuffer PROT((BytE *buf, SIGNED int *, char *, SIGNED int, int ));
 
 #endif

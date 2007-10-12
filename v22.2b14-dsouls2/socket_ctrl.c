@@ -5,6 +5,11 @@
 #include "file_incl.h"
 #include "file.h"
 
+#ifdef WIN32
+#define SIOCSPGRP 0x8902
+#define ioctl ioctlsocket
+#endif
+
 /*
   ioctl.c: part of the MudOS release -- Truilkan@TMI
 
@@ -21,11 +26,7 @@ INLINE int set_socket_owner P2(int, fd, int, which)
 #ifdef OLD_ULTRIX
     return fcntl(fd, F_SETOWN, which);
 #else
-#ifdef WINSOCK
-    return 1; /* FIXME */
-#else
     return ioctl(fd, SIOCSPGRP, &which);
-#endif
 #endif
 }
 

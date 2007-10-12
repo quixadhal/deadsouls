@@ -470,7 +470,7 @@ c_generate_node P1(parse_node_t *, expr) {
 	{
 	    ins_string("{ int start_sec,start_usec,end_sec,end_usec;\nget_usec_clock(&start_sec,&start_usec);\n");
 	    c_generate_node(expr->r.expr);
-	    ins_string("get_usec_clock(&end_sec,&end_usec);\nend_usec=(end_sec - start_sec) * 1000000 + end_usec - start_usec;\npush_number(end_usec);\n}\n");
+	    ins_string("get_usec_clock(&end_sec,&end_usec);\nend_usec=(end_sec - start_sec) * 999999 + end_usec - start_usec;\npush_number(end_usec);\n}\n");
 	    break;
 	}
     case NODE_LVALUE_EFUN:

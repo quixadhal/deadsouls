@@ -391,7 +391,7 @@ strchr(0,0); strrchr(0,0);
 }
 END
 $CC $CFLAGS comptest.c
-if test ! -f a.out; then
+if test ! -f a.out && test ! -f a.exe; then
     STR="-Dstrchr=index -Dstrrchr=rindex"
 fi
 

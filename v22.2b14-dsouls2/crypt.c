@@ -82,7 +82,7 @@
 /* Table T constructed from a sine function, mentioned in RFC, section 3.4.
  * Table T[i], 1 <= i <= 64,    = trunc (4294967296 * |sin i|).
  */
-UINT32 T[64] = {
+unsigned long T[64] = {
         0xd76aa478,0xe8c7b756,0x242070db,0xc1bdceee,0xf57c0faf,0x4787c62a,
         0xa8304613,0xfd469501,0x698098d8,0x8b44f7af,0xffff5bb1,0x895cd7be,
         0x6b901122,0xfd987193,0xa679438e,0x49b40821,0xf61e2562,0xc040b340,
@@ -97,9 +97,9 @@ UINT32 T[64] = {
 };
 
 /* This function returns success, i.e. 0 on error. */
-int MD5Digest(  CONST byte *buf, /* Buffer to be digested.               */
-                UINT32  buflen,    /* Length of the buffer in bytes.       */
-                byte *Digest     /* Output area: 16 raw bytes.           */
+int MD5Digest(  BytE *buf, /* Buffer to be digested.               */
+                unsigned long  buflen,    /* Length of the buffer in bytes.       */
+                BytE *Digest     /* Output area: 16 raw bytes.           */
              )
 {
 
@@ -108,8 +108,8 @@ int MD5Digest(  CONST byte *buf, /* Buffer to be digested.               */
 #define OC 0x98badcfe
 #define OD 0x10325476
 
-        UINT32 A = OA, B = OB, C = OC, D = OD;
-        static UINT32 Block[16];  /* One block: 512 bits. */
+        unsigned long A = OA, B = OB, C = OC, D = OD;
+        static unsigned long Block[16];  /* One block: 512 bits. */
 
         if(buflen > MD5_MAXLEN) return 0;       /* Too large. */
 
@@ -174,7 +174,7 @@ Tr(A,B,C,D, 4, 6,61,I); Tr(D,A,B,C,11,10,62,I); Tr(C,D,A,B, 2,15,63,I); Tr(B,C,D
  *
  * Hell, perhaps sprintf (printing in hex) should be used..
  */
-int encode(byte *where, CONST byte *data, int inputbytes)
+int encode( unsigned char *whEre, BytE *data, int inputbytes )
 {
         int i, w = 0;
 
@@ -182,8 +182,8 @@ int encode(byte *where, CONST byte *data, int inputbytes)
 #define ENCODER_OFFSET  96
 
         for(i = 0; i < inputbytes; i++) {
-                where[i*2]      = ENCODER_OFFSET + ( data[i]       & 0x0f);
-                where[1+(i*2)]  = ENCODER_OFFSET + ((data[i] >> 4) & 0x0f);
+                whEre[i*2]      = ENCODER_OFFSET + ( data[i]       & 0x0f);
+                whEre[1+(i*2)]  = ENCODER_OFFSET + ((data[i] >> 4) & 0x0f);
                 w += 2;
         }
 
@@ -191,18 +191,18 @@ int encode(byte *where, CONST byte *data, int inputbytes)
 }
 
 /* Gets raw data from printable string; opposite of encode().  */
-void decode(byte *where, CONST byte *string, int stringbytes)
+void decode( unsigned char *whEre, BytE *string, int stringbytes)
 {
         int i;
 
         for(i = 0; i < stringbytes; i+=2)
-            where[i/2] = (string[i] & 0x0f) | ((string[i+1] & 0x0f) << 4);
+            whEre[i/2] = (string[i] & 0x0f) | ((string[i+1] & 0x0f) << 4);
 }
 
 /* If there is a valid salt in the input, copy it. Otherwise,
  * generate a new one.
  */
-void getsalt(byte *to, CONST byte *from)
+void getsalt(BytE *to, BytE *from)
 {
         int i;
 
@@ -212,7 +212,7 @@ void getsalt(byte *to, CONST byte *from)
 #define MAGIC_SALTSEP   '!'
 
         if(from) {
-            byte Digest[16];
+            BytE Digest[16];
 
             if(strlen((char *)from) > MD5_SALTLEN * 2) {
                 if(from[2 * MD5_SALTLEN] == MAGIC_SALTSEP) {
@@ -256,7 +256,7 @@ void getsalt(byte *to, CONST byte *from)
         return;
 }
 
-void crunchbuffer(byte *buf,            /* Buffer to be crunched.       */
+void crunchbuffer(BytE *buf,            /* Buffer to be crunched.       */
                   SIGNED int *len,      /* Length now used in buf.      */
                   char *addition,       /* What to add to buf.          */
                   SIGNED int addlen,    /* Length of addition.          */
@@ -268,7 +268,7 @@ void crunchbuffer(byte *buf,            /* Buffer to be crunched.       */
         used = *len;
         
         while(addlen > 0) {
-                byte Digest[16];
+                BytE Digest[16];
                 int crunched;
 
                 /* Reduce `buf' by digesting it. */
@@ -307,14 +307,15 @@ void crunchbuffer(byte *buf,            /* Buffer to be crunched.       */
  * At this point, custom_crypt() should never return NULL.
  *
  */
-char *custom_crypt(CONST char *key, CONST char *salt, byte *rawout)
+
+char *custom_crypt(char *key, char *salt, unsigned char *rawout)
 {
-        byte Digest[16];
-        static byte buffer[MD5_MAXLEN],
+        BytE Digest[16];
+        static BytE buffer[MD5_MAXLEN],
                     abuffer[MD5_MAXLEN],
                     thesalt[MD5_SALTLEN];
         SIGNED int used = 0, len, i;
-        static byte /* encode()d salt, encode()d digest, salt seperator
+        static BytE /* encode()d salt, encode()d digest, salt seperator
                      * and null terminating byte:
                      */
                     ret[(MD5_SALTLEN*2) + 1 + (sizeof(Digest)*2) + 1];
@@ -322,7 +323,7 @@ char *custom_crypt(CONST char *key, CONST char *salt, byte *rawout)
         /* Obtain the salt we have to use (either given in salt
          * arg or randomly generated one).
          */
-        getsalt(thesalt, (byte *)salt);
+        getsalt(thesalt, (BytE *)salt);
 
 #define ADDBUFFER(b, l) if(used + (l) > sizeof(buffer)) \
 	                     crunchbuffer(buffer, &used, (char *)(b), (l), sizeof(buffer)); \

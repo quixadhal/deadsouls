@@ -257,7 +257,7 @@ void init_user_conn()
     /*
      * register signal handler for SIGPIPE.
      */
-#if !defined(LATTICE) && defined(SIGPIPE)
+#if !defined(LATTICE) && defined(SIGPIPE) && defined(SIGNAL_ERROR)
     if (signal(SIGPIPE, sigpipe_handler) == SIGNAL_ERROR) {
 	debug_perror("init_user_conn: signal SIGPIPE",0);
 	exit(5);
@@ -284,6 +284,11 @@ void ipc_remove()
 
 void init_addr_server P2(char *, hostname, int, addr_server_port)
 {
+#ifdef WIN32
+        WORD wVersionRequested = MAKEWORD(1,1);
+        WSADATA wsaData;
+        WSAStartup(wVersionRequested, &wsaData);
+#endif
     struct sockaddr_in server;
     struct hostent *hp;
     int server_fd;
@@ -355,6 +360,11 @@ void init_addr_server P2(char *, hostname, int, addr_server_port)
 	socket_perror("init_addr_server: set_socket_nonblocking 1", 0);
 	return;
     }
+
+//Close Winsock Functions
+#ifdef WIN32
+        WSACleanup();
+#endif
 }
 
 /*
