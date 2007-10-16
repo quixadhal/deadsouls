@@ -1,4 +1,4 @@
----- 2.5a13 (unreleased) ---
+---- 2.5a13 ---
 - Released 2007-10-12
 - Removed command: where
 - Modified users() sefun override to avoid a crasher under mysterious 

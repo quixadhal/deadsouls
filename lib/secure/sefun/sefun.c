@@ -237,11 +237,7 @@ varargs mixed objects(mixed arg1, mixed arg2){
 }
 
 mixed array users(){
-    object *ret = ({});
-    if(sizeof(efun::users()))
-        foreach(mixed foo in efun::users()){
-           if(foo && environment(foo)) ret += ({ foo });
-    }
+    object *ret = filter(efun::users(), (: ($1) && environment($1) :) );
     if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
       base_name(previous_object())  != SERVICES_D)
 	ret = filter(ret, (: !($1->GetInvis() && archp($1)) :) );
