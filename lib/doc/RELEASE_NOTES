@@ -1,3 +1,7 @@
+---- 2.5a14 ---
+- Released 2007-10-16
+- FluffOS is now the bundled driver for the alpha branch.
+
 ---- 2.5a13 ---
 - Released 2007-10-12
 - Removed command: where
