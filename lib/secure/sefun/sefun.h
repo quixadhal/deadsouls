@@ -62,6 +62,7 @@ int member_group(mixed who, string grp);
 int moral_act(object who, object target, int amount);
 string *mud_currencies();
 string mud_name();
+string imc2_mud_name();
 string mudlib();
 string mudlib_version();
 varargs int newbiep(object ob);

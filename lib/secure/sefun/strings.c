@@ -40,18 +40,18 @@ varargs string arrange_string(string str, int x) {
 
 string evaluate_description(mixed val) {
     if( stringp(val) ) {
-	return val;
+        return val;
     }
     if( functionp(val) ) {
-	if( functionp(val) & FP_OWNER_DESTED ) {
-	    return 0;
-	}
-	else {
-	    return evaluate(val);
-	}
+        if( functionp(val) & FP_OWNER_DESTED ) {
+            return 0;
+        }
+        else {
+            return evaluate(val);
+        }
     }
     if( arrayp(val) ) {
-	return evaluate_description(val[query_night()]);
+        return evaluate_description(val[query_night()]);
     }
     return val;
 }
@@ -76,7 +76,7 @@ string space_trim(string str) {
 
     whitespace = "  " ;
     while(grepp(str, whitespace)) {
-	str = replace_string(str,"  "," ");
+        str = replace_string(str,"  "," ");
     }
     return str;
 }
@@ -94,23 +94,23 @@ string newline_trim(string str) {
 
 varargs string wrap(string str, int x) {
     if( !x ) {
-	if( !this_player() ) x = 79;
-	else {
-	    int *tmp;
+        if( !this_player() ) x = 79;
+        else {
+            int *tmp;
 
-	    tmp = (int *)this_player()->GetScreen();
-	    if( tmp ) x = (tmp[0] || 79);
-	    else x = 79;
-	}
+            tmp = (int *)this_player()->GetScreen();
+            if( tmp ) x = (tmp[0] || 79);
+            else x = 79;
+        }
     }
     if(sizeof(str) < 7900) return sprintf("%-=" + x + "s\n", str);
     else {
-	string tmpfile = generate_tmp();
-	write_file(tmpfile,str);
-	str = read_bytes(tmpfile,0,7900);
-	rm(tmpfile);
-	str += "\n*** TRUNCATED ***\n";
-	return sprintf("%-=" + x + "s\n", str);
+        string tmpfile = generate_tmp();
+        write_file(tmpfile,str);
+        str = read_bytes(tmpfile,0,7900);
+        rm(tmpfile);
+        str += "\n*** TRUNCATED ***\n";
+        return sprintf("%-=" + x + "s\n", str);
     } 
 }
 
@@ -121,134 +121,134 @@ varargs mixed convert_string(string str, int flag) {
 
     if( (str = trim(str)) == "" ) return 0;
     if( str[0] == '(' ) {
-	switch(str[1]) {
+        switch(str[1]) {
 
-	case '{':
+        case '{':
 
-	    ret[0] = ({});
-	    str = str[2..];
-	    while(str[0] != '}') {
-		mixed *tmp;
+            ret[0] = ({});
+            str = str[2..];
+            while(str[0] != '}') {
+                mixed *tmp;
 
-		tmp = convert_string(str, 1);
-		ret[0] += ({ tmp[0] });
-		str = tmp[1];
-		while(str[0] == ' ' || str[0] == '\t') str = str[1..];
-		if( str[0] != ',' && str[0] != '}' )
-		    error("Improperly formatted array: " + str + "\n");
-		else if( str[0] == ',') {
-		    str = str[1..];
-		    while(str[0] == ' ' || str[0] == '\t') str = str[1..];
-		}
-	    }
-	    if( str[1] != ')' ) {
-		str = str[2..];
-		while(str[0] == ' ' || str[0] == '\t') str = str[1..];
-		if( str[0] != ')' ) error("Illegal array terminator.\n");
-		else ret[1] = str[1..];
-	    }
-	    else ret[1] = str[2..];
-	    if( !flag ) return ret[0];
-	    while(ret[1][0] == ' ' || ret[1][0] == '\t') ret[1] = ret[1][1..];
-	    return ret;
+                tmp = convert_string(str, 1);
+                ret[0] += ({ tmp[0] });
+                str = tmp[1];
+                while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+                if( str[0] != ',' && str[0] != '}' )
+                    error("Improperly formatted array: " + str + "\n");
+                else if( str[0] == ',') {
+                    str = str[1..];
+                    while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+                }
+            }
+            if( str[1] != ')' ) {
+                str = str[2..];
+                while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+                if( str[0] != ')' ) error("Illegal array terminator.\n");
+                else ret[1] = str[1..];
+            }
+            else ret[1] = str[2..];
+            if( !flag ) return ret[0];
+            while(ret[1][0] == ' ' || ret[1][0] == '\t') ret[1] = ret[1][1..];
+            return ret;
 
-	case '[':
+        case '[':
 
-	    ret[0] = ([]);
-	    str = str[2..];
-	    while(str[0] != ']') {
-		mixed *tmp;
-		mixed cle;
+            ret[0] = ([]);
+            str = str[2..];
+            while(str[0] != ']') {
+                mixed *tmp;
+                mixed cle;
 
-		tmp = convert_string(str, 1);
-		str = tmp[1];
-		while(str[0] == ' ' || str[0] == '\t') str = str[1..];
-		if( str[0] != ':' ) 
-		    error("Illegally formatting mapping: " + str + "\n");
-		cle = tmp[0];
-		tmp = convert_string(str[1..], 1);
-		ret[0][cle] = tmp[0];
-		str = tmp[1];
-		while(str[0] == ' ' || str[0] == '\t') str = str[1..];
-		if( str[0] != ',' && str[0] != ']' ) 
-		    error("Illegally formatted mapping: " + str + "n");
-		else if( str[0] != ']' ) {
-		    str = str[1..];
-		    while(str[0] == ' ' || str[0] == '\t') str = str[1..];
-		}
-	    }
-	    if( str[1] != ')' ) {
-		str = str[2..];
-		while(str[0] == ' ' || str[0] == '\t') str = str[1..];
-		if( str[0] != ')' ) error("Illegal array terminator.\n");
-		else ret[1] = str[1..];
-	    }
-	    else ret[1] = str[2..];
-	    if( !flag ) return ret[0];
-	    while(ret[1][0] == ' ' || ret[1][0] == '\t') ret[1] = ret[1][1..];
-	    return ret;
-	}
+                tmp = convert_string(str, 1);
+                str = tmp[1];
+                while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+                if( str[0] != ':' ) 
+                    error("Illegally formatting mapping: " + str + "\n");
+                cle = tmp[0];
+                tmp = convert_string(str[1..], 1);
+                ret[0][cle] = tmp[0];
+                str = tmp[1];
+                while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+                if( str[0] != ',' && str[0] != ']' ) 
+                    error("Illegally formatted mapping: " + str + "n");
+                else if( str[0] != ']' ) {
+                    str = str[1..];
+                    while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+                }
+            }
+            if( str[1] != ')' ) {
+                str = str[2..];
+                while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+                if( str[0] != ')' ) error("Illegal array terminator.\n");
+                else ret[1] = str[1..];
+            }
+            else ret[1] = str[2..];
+            if( !flag ) return ret[0];
+            while(ret[1][0] == ' ' || ret[1][0] == '\t') ret[1] = ret[1][1..];
+            return ret;
+        }
     }
     else if( str[0] == '"' ) {
-	string tmp;
+        string tmp;
 
-	tmp = "";
-	while( str[1] != '"' || (str[1] == '"' && str[0] == '\\') ) {
-	    if( str[1] == '"' ) tmp = tmp[0..<2] + "\"";
-	    else tmp += str[1..1];
-	    str = str[1..];
-	}
-	if( !flag ) return tmp;
-	if( strlen(str) > 2 ) str = trim(str[2..]);
-	return ({ tmp, str });
+        tmp = "";
+        while( str[1] != '"' || (str[1] == '"' && str[0] == '\\') ) {
+            if( str[1] == '"' ) tmp = tmp[0..<2] + "\"";
+            else tmp += str[1..1];
+            str = str[1..];
+        }
+        if( !flag ) return tmp;
+        if( strlen(str) > 2 ) str = trim(str[2..]);
+        return ({ tmp, str });
     }
     else if( str[0] >= '0' && str[0] <= '9' || str[0] == '-' ) {
-	string tmp;
-	int y;
+        string tmp;
+        int y;
 
-	if( strlen(str) > 1 && str[0] == '-' ) {
-	    tmp = str[0..0];
-	    str = str[1..];
-	}
-	else {
-	    tmp = "";
-	}
-	if( strlen(str) > 1 && str[0..1] == "0x" ) {
-	    tmp = "0x";
-	    str = str[2..];
-	    while(str != "" && (str[0] >= '0' && str[0] <= '9')) {
-		tmp += str[0..0];
-		if( strlen(str) > 1 ) str = str[1..];
-		else str = "";
-	    }
-	    sscanf(tmp, "%x", y);
-	}
-	else {
-	    while(str != "" && (str[0] >= '0' && str[0] <= '9')) {
-		tmp += str[0..0];
-		if( strlen(str) > 1 ) str = str[1..];
-		else str = "";
-	    }
-	    sscanf(tmp, "%d", y);
-	}
-	if( !flag ) return y;
-	if( str != "" ) str = trim(str);
-	return ({ y, str });
+        if( strlen(str) > 1 && str[0] == '-' ) {
+            tmp = str[0..0];
+            str = str[1..];
+        }
+        else {
+            tmp = "";
+        }
+        if( strlen(str) > 1 && str[0..1] == "0x" ) {
+            tmp = "0x";
+            str = str[2..];
+            while(str != "" && (str[0] >= '0' && str[0] <= '9')) {
+                tmp += str[0..0];
+                if( strlen(str) > 1 ) str = str[1..];
+                else str = "";
+            }
+            sscanf(tmp, "%x", y);
+        }
+        else {
+            while(str != "" && (str[0] >= '0' && str[0] <= '9')) {
+                tmp += str[0..0];
+                if( strlen(str) > 1 ) str = str[1..];
+                else str = "";
+            }
+            sscanf(tmp, "%d", y);
+        }
+        if( !flag ) return y;
+        if( str != "" ) str = trim(str);
+        return ({ y, str });
     }
     else {
-	string tmp;
+        string tmp;
 
-	tmp = "";
-	while(strlen(str) && ((str[0] >= 'a' && str[0] <= 'z') ||
-	    (str[0] >= 'A' && str[0] <= 'Z') ||
-	    (str[0] >= '0' && str[0] <= '9') ||
-	    (str[0] == '_'))) {
-	    tmp += str[0..0];
-	    if( strlen(str) > 1 ) str = str[1..];
-	    else str = "";
-	}
-	if( !flag ) return to_object(tmp);
-	else return ({ to_object(tmp), str });
+        tmp = "";
+        while(strlen(str) && ((str[0] >= 'a' && str[0] <= 'z') ||
+            (str[0] >= 'A' && str[0] <= 'Z') ||
+            (str[0] >= '0' && str[0] <= '9') ||
+            (str[0] == '_'))) {
+            tmp += str[0..0];
+            if( strlen(str) > 1 ) str = str[1..];
+            else str = "";
+        }
+        if( !flag ) return to_object(tmp);
+        else return ({ to_object(tmp), str });
     }
     error("Gobbledygook in string.\n");
 }
@@ -261,7 +261,7 @@ string reverse_string(string str) {
     if (!str) error("The reverse_string sefun needs input.");
 
     for (i = strlen(str); i >= 0; i--) {
-	newstring += str[i..i];
+        newstring += str[i..i];
     }
     return newstring;
 }
@@ -275,7 +275,7 @@ int starts_with(string primary, string sub){
     if(!rev) return 0;
     primary = reverse_string(rev);
     if(!sscanf(primary,sub+" %s",junk) > 0) 
-	sscanf(primary,sub+"%s",junk);
+        sscanf(primary,sub+"%s",junk);
     if(junk) return 1;
 
     else return 0;
@@ -289,7 +289,7 @@ int starts_with_arr(string primary, string *sub){
     if(!rev) return 0;
     primary = reverse_string(rev);
     foreach(string element in sub){
-	if(sscanf(primary,element+" %s",junk) > 0) return 1;
+        if(sscanf(primary,element+" %s",junk) > 0) return 1;
     }
     return 0;
 }
@@ -300,8 +300,8 @@ varargs string last(string str, int i, int significant){
     if(!str || !sizeof(str) || !stringp(str)) return "";
     ret = str[(strlen(str) - i )..(strlen(str) -1)];
     if(significant) {
-	tmp = trim(str);
-	ret = tmp[(strlen(tmp) - i )..(strlen(tmp) -1)];
+        tmp = trim(str);
+        ret = tmp[(strlen(tmp) - i )..(strlen(tmp) -1)];
     }
     return ret;
 }
@@ -336,22 +336,22 @@ varargs mixed remove_matching_line(string target, string substring, int i, strin
     write_file(filename,target);
 
     for(i=1; !done; i++){
-	line = read_file(filename, i, 1);
-	if(!line) break;
-	if(strsrch(line,substring) != -1 && strsrch(line,exclude) == -1) omit =1;
+        line = read_file(filename, i, 1);
+        if(!line) break;
+        if(strsrch(line,substring) != -1 && strsrch(line,exclude) == -1) omit =1;
 
-	if(omit && last(line[0..strlen(line)-2],1,1) != ";") {
-	    tail_search = 1;
-	}
-	else tail_search = 0;
+        if(omit && last(line[0..strlen(line)-2],1,1) != ";") {
+            tail_search = 1;
+        }
+        else tail_search = 0;
 
-	if(!omit && !tail_search) {
-	    new_file += line;
-	}
+        if(!omit && !tail_search) {
+            new_file += line;
+        }
 
-	if(!tail_search) omit = 0;
-	if(!line) done = 100;
-	if(i == 999) done = 100;
+        if(!tail_search) omit = 0;
+        if(!line) done = 100;
+        if(i == 999) done = 100;
     }
     rm(filename);
     return new_file;
@@ -375,22 +375,22 @@ varargs mixed read_matching_line(string target, string substring, int i, string 
     write_file(filename,target);
 
     for(i=1; !done; i++){
-	line = read_file(filename, i, 1);
-	if(!line) break;
-	if(strsrch(line,substring) != -1 && strsrch(line,exclude) == -1) omit =1;
-	if(omit && last(line[0..strlen(line)-2],1,1) != ";") {
-	    tail_search = 1;
-	}
-	else tail_search = 0;
+        line = read_file(filename, i, 1);
+        if(!line) break;
+        if(strsrch(line,substring) != -1 && strsrch(line,exclude) == -1) omit =1;
+        if(omit && last(line[0..strlen(line)-2],1,1) != ";") {
+            tail_search = 1;
+        }
+        else tail_search = 0;
 
-	if(omit || tail_search) {
-	    new_file += line;
-	}
+        if(omit || tail_search) {
+            new_file += line;
+        }
 
 
-	if(!tail_search) omit = 0;
-	if(!line) done = 100;
-	if(i == 999) done = 100;
+        if(!tail_search) omit = 0;
+        if(!line) done = 100;
+        if(i == 999) done = 100;
     }
 
     rm(filename);
@@ -425,30 +425,30 @@ varargs mixed replace_matching_line(string target, string substring, string repl
     write_file(filename,target);
 
     for(i=1; !done; i++){
-	line = read_file(filename, i, 1);
-	if(!line) break;
-	if(strsrch(line,substring) != -1 ) omit =1;
+        line = read_file(filename, i, 1);
+        if(!line) break;
+        if(strsrch(line,substring) != -1 ) omit =1;
 
-	if(omit && last(line[0..strlen(line)-2],1,1) != ";") {
-	    tail_search = 1;
-	}
-	else {
-	    tail_search = 0;
-	    if(omit) tag_it = 1;
-	}
+        if(omit && last(line[0..strlen(line)-2],1,1) != ";") {
+            tail_search = 1;
+        }
+        else {
+            tail_search = 0;
+            if(omit) tag_it = 1;
+        }
 
-	if(!omit && !tail_search) {
-	    new_file += line;
-	}
+        if(!omit && !tail_search) {
+            new_file += line;
+        }
 
-	if(tag_it == 1){
-	    new_file += replace+"\n";
-	    tag_it = 0;
-	}
+        if(tag_it == 1){
+            new_file += replace+"\n";
+            tag_it = 0;
+        }
 
-	if(!tail_search) omit = 0;
-	if(!line) done = 100;
-	if(i == 999) done = 100;
+        if(!tail_search) omit = 0;
+        if(!line) done = 100;
+        if(i == 999) done = 100;
     }
 
     rm(filename);
@@ -468,7 +468,7 @@ int memberp(mixed *primary, mixed sub){
 
 int reverse_memberp(string primary, string *sub){
     foreach(string element in sub){
-	if(strsrch(primary,element) != -1) return 1;
+        if(strsrch(primary,element) != -1) return 1;
     }
     return 0;
 }
@@ -483,15 +483,15 @@ string replace_line(string file, string *params, string repl){
     file_arr = explode(file, "\n");
 
     foreach(string line in file_arr){
-	alarm = 0;
+        alarm = 0;
 
-	foreach(string element in params){
-	    if(grepp(line,element)) alarm++;
-	}
+        foreach(string element in params){
+            if(grepp(line,element)) alarm++;
+        }
 
-	if(alarm == sizeof(params)){
-	    file_arr[member_array(line,file_arr)] = repl;
-	}
+        if(alarm == sizeof(params)){
+            file_arr[member_array(line,file_arr)] = repl;
+        }
 
     }
     return implode(file_arr,"\n");
@@ -505,20 +505,21 @@ string append_line(string file, string *params, string repl){
     file_arr = explode(file, "\n");
 
     foreach(string line in file_arr){
-	alarm = 0;
+        alarm = 0;
 
-	foreach(string element in params){
-	    if(grepp(line,element)) alarm++;
-	}
+        foreach(string element in params){
+            if(grepp(line,element)) alarm++;
+        }
 
-	if(alarm == sizeof(params)){
-	    file_arr[member_array(line,file_arr)] += ("\n"+repl);
-	}
+        if(alarm == sizeof(params)){
+            file_arr[member_array(line,file_arr)] += ("\n"+repl);
+        }
 
     }
     return implode(file_arr,"\n");
 }
 
+#if 0
 string last_string_element(string str, string delimiter){
     string rev, revd, revret, junk;
     if(!str || !delimiter) return "";
@@ -528,6 +529,18 @@ string last_string_element(string str, string delimiter){
     sscanf(rev,"%s"+revd+"%s",revret,junk);
     if(!revret || revret == "") return "";
     return reverse_string(revret);
+}
+#endif
+
+string last_string_element(string str, string delimiter){
+    int i,strsize = sizeof(str);
+    string ret = "";
+    if(!str || !delimiter || !grepp(str,delimiter)) return "";
+    for(i = strsize; i > 0 ; i--){
+        if(str[i..i] == delimiter) break;
+        ret = str[i..i] + ret;
+    }
+    return ret;
 }
 
 varargs string first_string_element(string str, string delimiter, int stripfirst){
@@ -565,10 +578,10 @@ varargs mixed random_numbers(int n, int integer){
     int i;
     if(integer && n > 9) n = 9;
     for(i=n;i>0;i--){
-	//int tmp = 1;
-	int tmp = random(10);
-	if(!sizeof(ret)) tmp = random(9)+1;
-	ret += itoa(tmp);
+        //int tmp = 1;
+        int tmp = random(10);
+        if(!sizeof(ret)) tmp = random(9)+1;
+        ret += itoa(tmp);
     }
     if(!integer) return ret;
     else return(atoi(ret));
@@ -578,16 +591,16 @@ varargs mixed alpha_crypt(mixed arg1, mixed arg2){
     string ret;
     if(!intp(arg1) && !arg2) return 0;
     if(intp(arg1)) {
-	if(arg1 > 64) arg1 = 64;
-	//ret = crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
-	//ret += crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
-	ret = crypt(""+random(arg1+2)+arg1,""+random(999999)*91);
-	ret += crypt(""+random(arg1+2)+arg1,""+random(999999)*19);
-	ret = replace_string(ret,"`","");
-	ret = replace_string(ret,"!","");
-	ret = replace_string(ret,"/","");
-	ret = replace_string(ret,".","");
-	return ret[0..(arg1 - 1)];
+        if(arg1 > 64) arg1 = 64;
+        //ret = crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
+        //ret += crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
+        ret = crypt(""+random(arg1+2)+arg1,""+random(999999)*91);
+        ret += crypt(""+random(arg1+2)+arg1,""+random(999999)*19);
+        ret = replace_string(ret,"`","");
+        ret = replace_string(ret,"!","");
+        ret = replace_string(ret,"/","");
+        ret = replace_string(ret,".","");
+        return ret[0..(arg1 - 1)];
     }
 
     ret = crypt(arg1, arg2);
@@ -608,20 +621,20 @@ varargs string generate_tmp(mixed arg){
     if(!arg) return "/open/"+time()+".c";
 
     if(objectp(arg) && this_player() && creatorp(this_player()))
-	ret = homedir(this_player())+"/tmp/"+last_string_element(base_name(arg),"/")+randy+time()+".c";
+        ret = homedir(this_player())+"/tmp/"+last_string_element(base_name(arg),"/")+randy+time()+".c";
 
     else if(objectp(arg) && this_player())
-	ret = "/tmp/"+last_string_element(base_name(arg),"/")+randy+time()+".c";
+        ret = "/tmp/"+last_string_element(base_name(arg),"/")+randy+time()+".c";
 
     else if(stringp(arg) && this_player() && creatorp(this_player())) {
-	if(file_exists(arg)) ret = homedir(this_player())+"/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
-	else ret = homedir(this_player())+"/tmp/"+randy+time()+".c";
-	//ret = homedir(this_player())+"/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
+        if(file_exists(arg)) ret = homedir(this_player())+"/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
+        else ret = homedir(this_player())+"/tmp/"+randy+time()+".c";
+        //ret = homedir(this_player())+"/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
     }
 
     else if(stringp(arg) && this_player()) {
-	if(objectp(load_object(arg))) ret = "/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
-	else ret = "/open/"+last_string_element(arg,"/")+randy+time()+".tmp";
+        if(objectp(load_object(arg))) ret = "/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
+        else ret = "/open/"+last_string_element(arg,"/")+randy+time()+".tmp";
     }
 
     else if(creatorp(this_player())) ret = homedir(this_player())+"/tmp/"+randy+time()+".tmp";
@@ -635,7 +648,7 @@ int alphap(mixed arg){
     alphabet += ({ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" });
     if(!stringp(arg)) return 0;
     foreach(string element in alphabet){
-	if(grepp(arg,element)) return 1;
+        if(grepp(arg,element)) return 1;
     }
     return 0;
 }
@@ -649,7 +662,7 @@ string alpha_strip(mixed arg){
     blown = explode(raw,"");
     ret = "";
     foreach(string element in blown){
-	if(alphap(element)) ret += element;
+        if(alphap(element)) ret += element;
     }
     return ret;
 }
@@ -659,7 +672,7 @@ int numericp(mixed arg){
     if(intp(arg)) arg = itoa(arg);
     if(!stringp(arg)) return 0;
     foreach(string element in alphabet){
-	if(grepp(arg,element)) return 1;
+        if(grepp(arg,element)) return 1;
     }
     return 0;
 }
@@ -669,7 +682,7 @@ int basic_punctuationp(mixed arg){
     alphabet += ({ "@", "!", "$", "%", "=", "{", "}", "[", "]", ":", "<", ">" });
     if(!stringp(arg)) return 0;
     foreach(string element in alphabet){
-	if(grepp(arg,element)) return 1;
+        if(grepp(arg,element)) return 1;
     }
     return 0;
 }
@@ -685,11 +698,11 @@ varargs string *chunk_string(string str, int width){
     string tmpfile = generate_tmp();
     if(!width) width = __LARGEST_PRINTABLE_STRING__ / 2;
     while(sizeof(str)){
-	write_file(tmpfile,str,1);
-	if(!(tmp1 = read_bytes(tmpfile, 0, width)))
-	    tmp1 = read_file(tmpfile);
-	ret += ({ tmp1 });
-	str = replace_string(str,tmp1,"");
+        write_file(tmpfile,str,1);
+        if(!(tmp1 = read_bytes(tmpfile, 0, width)))
+            tmp1 = read_file(tmpfile);
+        ret += ({ tmp1 });
+        str = replace_string(str,tmp1,"");
     }
     return ret;
 }
@@ -702,22 +715,22 @@ varargs mixed print_long_string(object who, string str, int catted){
     global_temp_file = generate_tmp();
     lines = explode(str,"\n");
     foreach(string line in lines){
-	if(sizeof(line) > __LARGEST_PRINTABLE_STRING__ / 2) 
-	    line = implode(chunk_string(line,who->GetScreen()[0]),"\n");
-	ret += line+"\n";
+        if(sizeof(line) > __LARGEST_PRINTABLE_STRING__ / 2) 
+            line = implode(chunk_string(line,who->GetScreen()[0]),"\n");
+        ret += line+"\n";
     }
     write_file(global_temp_file,ret,1);
     tmp = explode(ret,"\n");
     foreach(string thing in tmp){
     }
     if(!catted){
-	(mixed)who->eventPage(explode(read_file(global_temp_file),"\n"),MSG_SYSTEM);
-	return unguarded( (: rm(global_temp_file) :) );
+        (mixed)who->eventPage(explode(read_file(global_temp_file),"\n"),MSG_SYSTEM);
+        return unguarded( (: rm(global_temp_file) :) );
     }
     else {
-	foreach(string thing in tmp){
-	    message("system", thing, who);
-	}
+        foreach(string thing in tmp){
+            message("system", thing, who);
+        }
     }
     unguarded( (: rm(global_temp_file) :) );
     return 1;
@@ -744,8 +757,8 @@ string morse(string msg) {
     int x, i;
     msg = lower_case(msg);
     for(tmp = "", x = strlen(msg), i=0; i< x; i++) {
-	if(morse[msg[i..i]]) tmp += morse[msg[i..i]]+" ";
-	else tmp += msg[i..i]+ " ";
+        if(morse[msg[i..i]]) tmp += morse[msg[i..i]]+" ";
+        else tmp += msg[i..i]+ " ";
     }
     return tmp;
 }
@@ -756,18 +769,18 @@ string unmorse(string msg) {
     string *phrase = ({});
     int x, i;
     foreach(mixed key, mixed val in Morse){
-	morse[val] = key;
+        morse[val] = key;
     }
 
     phrase = explode(msg,"  ");
     foreach(string element in phrase){
-	string *word = explode(element," ");
-	foreach(string letter in word){
-	    if(member_array(letter, keys(morse)) != -1){
-		tmp += morse[letter];
-	    }
-	}
-	tmp += " ";
+        string *word = explode(element," ");
+        foreach(string letter in word){
+            if(member_array(letter, keys(morse)) != -1){
+                tmp += morse[letter];
+            }
+        }
+        tmp += " ";
     } 
     return tmp;
 }

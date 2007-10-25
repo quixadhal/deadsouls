@@ -112,4 +112,5 @@
 #undef SERVER_IP
 #define ALLOW_INHERIT_AFTER_FUNCTION
 #define PARSE_DEBUG
-#undef MINGW
+#define FLUFFOS
+#define MINGW

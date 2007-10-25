@@ -49,12 +49,17 @@ int cmd_post(string str) {
 
     if(!str) return notify_fail("You must specify a subject.\n");
     if(file_exists(file = DIR_TMP+"/"+(string)this_player()->GetKeyName())) {
-	message("system", "You have an abandoned post waiting.",this_player());
-	message("system", "        e)dit it, or start n)ew", this_player());
-	message("prompt", "\nCommand (default 'n'): ", this_player());
-	input_to("begin_post", str, file, (: continue_post :));
+        message("system", "You have an abandoned post waiting.",this_player());
+        message("system", "        e)dit it, or start n)ew", this_player());
+        message("prompt", "\nCommand (default 'n'): ", this_player());
+        input_to("begin_post", str, file, (: continue_post :));
     }
-    else begin_post("n", str, file, (: continue_post :));
+    else {
+        write("When finished writing, enter a single period on a blank line, then ");
+        write("at the colon prompt (:) type a lower-case x and return.\n");
+        write("Like this:\n.\nx\n"); 
+        begin_post("n", str, file, (: continue_post :));
+    }
     return 1;
 }
 
@@ -62,8 +67,8 @@ static void begin_post(string cmd, string subj, string file, function f) {
     if(cmd == "" || !cmd) cmd = "n";
     else cmd = cmd[0..0];
     if(cmd != "n" && cmd != "e") {
-	message("system", "Invalid bulletin board command.", this_player());
-	return;
+        message("system", "Invalid bulletin board command.", this_player());
+        return;
     }
     if(cmd == "n" && file_exists(file)) rm(file);
     (*f)(subj, file);
@@ -78,14 +83,14 @@ void end_post(string subj, string mail) {
 
     file = DIR_TMP "/" + (string)this_player()->GetKeyName();
     if(!(msg = read_file(file))) {
-	message("system", "No file read!", this_player());
-	if(file_exists(file)) rm(file);
-	return;
+        message("system", "No file read!", this_player());
+        if(file_exists(file)) rm(file);
+        return;
     }
     else rm(file);
     if( !mail )
-	BBOARD_D->add_post(query_board_id(),
-	  (string)this_player()->GetCapName(), subj, msg);
+        BBOARD_D->add_post(query_board_id(),
+          (string)this_player()->GetCapName(), subj, msg);
     message("system", "Message posted!", this_player());
 }
 
@@ -95,35 +100,35 @@ int cmd_read(string str) {
     int x, i, maxi;
 
     if(str){
-	if(str == "board" || sscanf(str,"board %s",junk) ) {
-	    write("To read the first post, type: read 1");
-	    write("To read the second one: read 2");
-	    write("And so on.");
-	    return 1;
-	}
+        if(str == "board" || sscanf(str,"board %s",junk) ) {
+            write("To read the first post, type: read 1");
+            write("To read the second one: read 2");
+            write("And so on.");
+            return 1;
+        }
 
-	maxi = sizeof(posts = (mapping *)BBOARD_D->query_posts(query_board_id()));
-	if(!str) {
-	    for(i=0, x = -1; i<maxi; i++)
-		if(member_array((string)this_player()->GetKeyName(),
-		    posts[i]["read"]) == -1) {
-		    x = i;
-		    break;
-		}
-	    if(x == -1) return notify_fail("No unread posts.\n");
-	}
-	else if(!(x = to_int(str))) return notify_fail("Read what?\n");
-	else x--;
-	if(x < 0 || x >= sizeof(posts))
-	    return notify_fail("Invalid post number.\n");
-	str = "Post #%^YELLOW%^" + (x+1) + "%^RESET%^ by %^YELLOW%^" +
-	posts[x]["author"] + "%^RESET%^\nSubject: %^CYAN%^" +
-	posts[x]["subject"] + "%^RESET%^\n\n";
-	str += posts[x]["post"];
+        maxi = sizeof(posts = (mapping *)BBOARD_D->query_posts(query_board_id()));
+        if(!str) {
+            for(i=0, x = -1; i<maxi; i++)
+                if(member_array((string)this_player()->GetKeyName(),
+                    posts[i]["read"]) == -1) {
+                    x = i;
+                    break;
+                }
+            if(x == -1) return notify_fail("No unread posts.\n");
+        }
+        else if(!(x = to_int(str))) return notify_fail("Read what?\n");
+        else x--;
+        if(x < 0 || x >= sizeof(posts))
+            return notify_fail("Invalid post number.\n");
+        str = "Post #%^YELLOW%^" + (x+1) + "%^RESET%^ by %^YELLOW%^" +
+        posts[x]["author"] + "%^RESET%^\nSubject: %^CYAN%^" +
+        posts[x]["subject"] + "%^RESET%^\n\n";
+        str += posts[x]["post"];
 
-	BBOARD_D->mark_read(query_board_id(),x,(string)this_player()->GetKeyName());
-	this_player()->eventPage(explode(str, "\n"), "system");
-	return 1;
+        BBOARD_D->mark_read(query_board_id(),x,(string)this_player()->GetKeyName());
+        this_player()->eventPage(explode(str, "\n"), "system");
+        return 1;
     }
 }
 

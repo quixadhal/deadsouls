@@ -4,7 +4,8 @@
 #include "/daemon/include/races.h"
 
 int eventReceiveCommand(string butt, string munch);
-int SetOwner(string hole);
+//varargs int SetOwner(string str, mixed arg);
+int SetOwner(string str);
 string GetOwner();
 int ListenUp(int foo);
 int itemcheck,listening;
@@ -17,20 +18,20 @@ void doPrint(string str1, string str2);
 void validate(){
     if(base_name(previous_object()) != "/secure/obj/control" || 
       previous_object()->GetControlCode() != control_code){
-	if(ownerob){
-	    tell_object(ownerob,"%^RED%^Security violation. Someone is attempting to "+
-	      "hijack your drone. Guilty object stack: %^YELLOW%^"+
-	      identify(previous_object(-1))+"%^RESET%^");
-	}
-	error("Illegal control attempt by: "+identify(previous_object(-1))+", "+get_stack());
+        if(ownerob){
+            tell_object(ownerob,"%^RED%^Security violation. Someone is attempting to "+
+              "hijack your drone. Guilty object stack: %^YELLOW%^"+
+              identify(previous_object(-1))+"%^RESET%^");
+        }
+        error("Illegal control attempt by: "+identify(previous_object(-1))+", "+get_stack());
     }
     return;
 }
 
 int doCheckLiving(object ob){
     if(living(ob) && ob->GetInvis() !=1){
-	if(file_name(ob) != file_name(this_object()) )
-	    desc += ob->GetShort()+" is here.\n";
+        if(file_name(ob) != file_name(this_object()) )
+            desc += ob->GetShort()+" is here.\n";
     }
     return 1;
 }
@@ -39,11 +40,11 @@ int doCheckItem(object ob){
     string s1;
     if(!living(ob)
       && !sscanf(file_name(ob),"/lib/std/dummy#%s",s1) ){
-	if(itemcheck==0){
-	    desc+="Here you see:\n";
-	    itemcheck=1;
-	}
-	if(ob->GetInvis() != 1) desc += ob->GetShort()+"\n";
+        if(itemcheck==0){
+            desc+="Here you see:\n";
+            itemcheck=1;
+        }
+        if(ob->GetInvis() != 1) desc += ob->GetShort()+"\n";
     }
     return 1;
 }
@@ -101,25 +102,26 @@ int eventReceiveCommand(string str){
     if(!query_heart_beat(this_object())) this_object()->set_heart_beat(1);
     if(ownerob && str != "look" && str != "l") this_object()->eventForce(str);
     else if(ownerob){
-	unguarded((: this_object()->eventDescribeEnvironment() :)) ;
+        unguarded((: this_object()->eventDescribeEnvironment() :)) ;
     }
     else if(!ownerob) return 0;
     return 1;
 }
 
-int SetOwner(string str){
+varargs int SetOwner(string str, mixed arg){
     if(sizeof(owner) && this_object()->GetOwner() != "NONE") {
-	validate();
+        validate();
     }
     if(str == "NONE") {
-	control_code = "";
-	owner = "NONE";
-	ownerob = 0;
-	listening = 0;
-	return 1;
+        control_code = "";
+        owner = "NONE";
+        ownerob = 0;
+        listening = 0;
+        return 1;
     }
     owner=str;
-    ownerob=find_player(owner);
+    if(arg && objectp(arg)) ownerob=arg;
+    else ownerob=find_player(owner);
     listening=1;
     this_object()->set_heart_beat(1);
     return 1;
@@ -133,12 +135,12 @@ string GetOwner(){
 
 int SetControlCode(string str){
     if(sizeof(control_code) && GetOwner() != "NONE" ){
-	if(ownerob){
-	    tell_object(ownerob,"%^RED%^Security violation. Someone is attempting to "
-	      "hijack your drone. Guilty object stack: %^YELLOW%^"+
-	      identify(previous_object(-1))+"%^RESET%^");
-	}
-	error("Illegal control attempt by: "+identify(previous_object(-1))+", "+get_stack());
+        if(ownerob){
+            tell_object(ownerob,"%^RED%^Security violation. Someone is attempting to "
+              "hijack your drone. Guilty object stack: %^YELLOW%^"+
+              identify(previous_object(-1))+"%^RESET%^");
+        }
+        error("Illegal control attempt by: "+identify(previous_object(-1))+", "+get_stack());
     }
     else control_code = str;
     return 1;
@@ -153,11 +155,11 @@ string eDE(int brief) {
     int i, maxi;
     dude=this_object()->GetShadowedObject();
     if(!(env = environment(this_object()->GetShadowedObject()))) {
-	eventPrint(dude->GetName());
-	eventPrint(file_name(dude));
-	eventPrint(base_name(environment(find_object(file_name(dude)))));
-	eventPrint("You are nowhere.","Room Desc");
-	return;
+        eventPrint(dude->GetName());
+        eventPrint(file_name(dude));
+        eventPrint(base_name(environment(find_object(file_name(dude)))));
+        eventPrint("You are nowhere.","Room Desc");
+        return;
     }
     desc = (string)env->GetObviousExits() || "";
     desc = capitalize(env->GetInternalShort() || env->GetShort() || "")

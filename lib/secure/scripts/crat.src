@@ -66,6 +66,15 @@ alias welcome ds hi, $*. you can use this channel to ask questions. it's an inte
 call me->AddChannel("intergossip")
 call me->AddChannel("coffeemud_universe")
 call me->AddChannel("free_speech")
+call me->AddChannel("ibuild")
+call me->AddChannel("ichat")
+call me->AddChannel("pchat")
+call me->AddChannel("i2chat")
+call me->AddChannel("i3chat")
+call me->AddChannel("i2code")
+call me->AddChannel("i2game")
+call me->AddChannel("i2news")
+call me->AddChannel("irc")
 alias intermud intergossip http://lpmuds.net/intermud.html
 alias porch goto /domains/town/room/porch
 prompt %^BLUE%^$M%^RESET%^ %^BOLD%^$P%^RESET%^ > 

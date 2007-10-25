@@ -166,6 +166,7 @@ static void InputEmail(string str) {
     else {
 	receive("Mud name unchanged.\n");
     }
+    IMC2_D->eventChangeIMC2Passwords();
     PLAYERS_D->AddPlayerInfo(Name);
     shutdown();
     destruct(this_object());

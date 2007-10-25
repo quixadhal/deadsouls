@@ -8,14 +8,16 @@
 
 string mud_name() { return MUD_NAME; }
 
+string imc2_mud_name() { return replace_string(MUD_NAME," ","_"); }
+
 string admin_email() { return ADMIN_EMAIL; }
 
 #ifdef MUDOS_VERSION
-string version() { return MUDOS_VERSION+"-ds2.011"; }
+string version() { return MUDOS_VERSION+"-ds2.012"; }
 #endif // MUDOS_VERSION
 
 #ifdef __VERSION__
-string version() { return __VERSION__+"-ds2.011"; }
+string version() { return __VERSION__+"-ds2.012"; }
 #endif // __VERSION__
 
 #ifdef MUDOS_ARCH
@@ -28,27 +30,27 @@ string architecture() { return __ARCH__; }
 
 string mudlib() { return "Dead Souls"; }
 
-string mudlib_version() { return "2.5a15"; }
+string mudlib_version() { return "2.5a16"; }
 
 int query_host_port() { return __PORT__; }
 
 string query_os_type(){
     string config_file, s1, s2, s3;
     if(function_exists("architecture",load_object("/secure/sefun/sefun"))){
-	if(architecture() == "Cygwin-32") return "windows";
-	if(!file_exists("/secure/cfg/mudos.cfg")) return architecture();
+        if(architecture() == "Cygwin-32") return "windows";
+        if(!file_exists("/secure/cfg/mudos.cfg")) return architecture();
     }
     if(!file_exists("/secure/cfg/mudos.cfg")) return "";
     config_file = read_matching_line("/secure/cfg/mudos.cfg","mudlib directory :");
     if(!config_file) return "";
     if(sscanf(config_file,"%s:%s:%s",s1,s2,s3) == 3){
-	return "windows";
+        return "windows";
     }
     else return "unix";
 }
 
 string query_intermud_ip(){
     if(INTERMUD_D->GetMudList()[mud_name()])
-	return INTERMUD_D->GetMudList()[mud_name()][1];
+        return INTERMUD_D->GetMudList()[mud_name()][1];
     else return "";
 }
