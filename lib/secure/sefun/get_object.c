@@ -32,17 +32,17 @@ varargs object get_object( string str, object player )
     if( sscanf( str, "@%s", tmp )         &&
       ( tmp = get_object( tmp, player ) ) &&
       ( what = environment( tmp )       )    )
-	return what;
+        return what;
     if( player )    //  Check existance of this_player()
     {
-	if( str == "me" ) return player;
-	if( what = present( str, player ) ) return what; // Inventory check
-	if( what = environment( player ) )               // Environment check
-	{
-	    if (str == "here" || str == "env" || str == "environment")
-		return what;
-	    if( what = present( str, what ) ) return what;
-	}
+        if( str == "me" ) return player;
+        if( what = present( str, player ) ) return what; // Inventory check
+        if( what = environment( player ) )               // Environment check
+        {
+            if (str == "here" || str == "env" || str == "environment")
+                return what;
+            if( what = present( str, what ) ) return what;
+        }
     }
 
     // Call might be made by a room so make a previous_object() check
@@ -60,9 +60,9 @@ varargs object get_object( string str, object player )
 
     if( player )
     {
-	//  this option removed because Dead Souls doesn't support cwf
-	//  if( str == "cwf" ) str = (string)player-> query( "cwf" );
-	str = absolute_path( (string)player-> get_path(), str );
+        //  this option removed because Dead Souls doesn't support cwf
+        //  if( str == "cwf" ) str = (string)player-> query( "cwf" );
+        str = absolute_path( (string)player-> get_path(), str );
     }
 
     //  Make sure the object is loaded into memory, if it exists
@@ -103,49 +103,49 @@ varargs mixed get_objects( string str, object player, int no_arr )
     while( i-- && ( str[i..i] != ":" ) ); // a reverse sscanf
     if( ( i > 0 ) && ( i < ( s - 1 ) ) ) // of form "%s:%s"
     {
-	base = get_objects( str[0..(i-1)], player );
-	str = str[(i+1)..s];
-	if( !base ) return 0;
-	if( !pointerp( base ) ) base = ({ base });
-	s = sizeof( base );
-	ret = ({ });
-	if( str == "e" )
-	{
-	    while( s-- )
-		if( tmp = environment( base[s] ) )
-		    ret += ({ tmp });
-	} else if( str == "i" ) {
-	    while( s-- )
-		if( tmp = all_inventory( base[s] ) )
-		    ret += ( pointerp( tmp ) ? tmp : ({ tmp }) );
-	} else if( str == "d" ) {
-	    while( s-- )
-		if( tmp = deep_inventory( base[s] ) )
-		    ret += ( pointerp( tmp ) ? tmp : ({ tmp }) );
-	} else if( sscanf( str, "%d", i ) ) {
-	    if( ( i > -1 ) && ( i < s ) ) return base[i];
-	    else return 0;
-	} else {
-	    // This is the location to add more syntax options if wanted such as
-	    // ith item in jth base object, all such items in all base objects, etc
-	    while( s-- )
-		if( what = present( str, base[s] ) )
-		    return what;
-	    return 0;
-	}
-	switch( sizeof( ret ) )
-	{
-	case 0: return 0;
-	case 1: return ret[0];
-	}
-	return( no_arr ? ret[0] : ret );
+        base = get_objects( str[0..(i-1)], player );
+        str = str[(i+1)..s];
+        if( !base ) return 0;
+        if( !pointerp( base ) ) base = ({ base });
+        s = sizeof( base );
+        ret = ({ });
+        if( str == "e" )
+        {
+            while( s-- )
+                if( tmp = environment( base[s] ) )
+                    ret += ({ tmp });
+        } else if( str == "i" ) {
+            while( s-- )
+                if( tmp = all_inventory( base[s] ) )
+                    ret += ( pointerp( tmp ) ? tmp : ({ tmp }) );
+        } else if( str == "d" ) {
+            while( s-- )
+                if( tmp = deep_inventory( base[s] ) )
+                    ret += ( pointerp( tmp ) ? tmp : ({ tmp }) );
+        } else if( sscanf( str, "%d", i ) ) {
+            if( ( i > -1 ) && ( i < s ) ) return base[i];
+            else return 0;
+        } else {
+            // This is the location to add more syntax options if wanted such as
+            // ith item in jth base object, all such items in all base objects, etc
+            while( s-- )
+                if( what = present( str, base[s] ) )
+                    return what;
+            return 0;
+        }
+        switch( sizeof( ret ) )
+        {
+        case 0: return 0;
+        case 1: return ret[0];
+        }
+        return( no_arr ? ret[0] : ret );
     }
     if( str == "users" )
     {
-	ret = users();
-	if( !no_arr ) return ret;
-	if( sizeof( ret ) ) return ret[0];
-	return 0;
+        ret = users();
+        if( !no_arr ) return ret;
+        if( sizeof( ret ) ) return ret[0];
+        return 0;
     }
     return get_object( str, player );
 }

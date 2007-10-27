@@ -25,7 +25,7 @@ static void create() {
 
 mixed can_sell_obj_to_liv() {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     return this_player()->CanManipulate();
 }
@@ -47,19 +47,19 @@ mixed do_sell_obs_to_liv(object array items, object vendor) {
 
     obs = filter(items, (: objectp :));
     if( !sizeof(obs) ) {
-	mixed array ua;
+        mixed array ua;
 
-	ua = unique_array(items, (: $1 :));
-	foreach(string array list in ua) {
-	    this_player()->eventPrint(list[0]);
-	}
-	return 1;
+        ua = unique_array(items, (: $1 :));
+        foreach(string array list in ua) {
+            this_player()->eventPrint(list[0]);
+        }
+        return 1;
     }
     eligible=filter(obs, (: (!($1->GetWorn()) && environment($1) == this_player()) :)); 
     if(!sizeof(eligible)){
-	write("Remove or unwield items before trying to sell them.");
-	eligible = ({});
-	return 1;
+        write("Remove or unwield items before trying to sell them.");
+        eligible = ({});
+        return 1;
     }
 
     return vendor->eventBuy(this_player(), eligible);

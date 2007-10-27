@@ -23,29 +23,29 @@ mixed cmd(string args) {
     int scan, i, maxi;
 
     if( args == "" || !args ) {
-	ob = this_player();
-	scan = 0;
+        ob = this_player();
+        scan = 0;
     }
     else {
-	while(args[0] == '-') {
-	    switch(args[1]) {
-	    case 'd': scan |= OPT_D; break;
-	    case 'e': scan |= OPT_E; break;
-	    case 'i': scan |= OPT_I; break;
-	    case 'f': scan |= OPT_F; break;
-	    }
-	    if( strlen(args) > 3 ) args = trim(args[2..]);
-	    else args = "";
-	}
-	if( args != "" ) ob = to_object(args);
-	if( !ob ) ob = this_player();
+        while(args[0] == '-') {
+            switch(args[1]) {
+            case 'd': scan |= OPT_D; break;
+            case 'e': scan |= OPT_E; break;
+            case 'i': scan |= OPT_I; break;
+            case 'f': scan |= OPT_F; break;
+            }
+            if( strlen(args) > 3 ) args = trim(args[2..]);
+            else args = "";
+        }
+        if( args != "" ) ob = to_object(args);
+        if( !ob ) ob = this_player();
     }
     if( scan & OPT_E ) ob = environment(ob);
     if( !ob ) return "No environment for requested object.";
     if( scan & OPT_D ) tmp = "Deep scanning " + identify(ob) + ":\n";
     else tmp = "Scanning " + identify(ob) + ":\n";
     for(i=0, maxi = sizeof(inv = all_inventory(ob)); i<maxi; i++)
-	tmp += inventory(inv[i], 1, scan);
+        tmp += inventory(inv[i], 1, scan);
     this_player()->eventPage(explode(tmp, "\n"), "system");
     return 1;
 }
@@ -57,15 +57,15 @@ string inventory(object ob, int level, int scan) {
 
     for(i = 1, ret = ""; i <= level; i++) ret += "\t";
     if( scan & OPT_I ) {
-	string tmp;
-	if( scan & OPT_F ) tmp = identify(ob) + "\n" + ret + " ";
-	else tmp = "";
-	tmp += sprintf("(%s) - Mass: %d  Value: %d  Class: %d",
-	  capitalize((string)ob->GetKeyName()),
-	  (int)ob->GetMass(), (int)ob->GetValue(),
-	  intp((int)ob->GetClass()) ? (int)ob->GetClass() : 0 );
-	if( ob->GetWorn() ) tmp += " (worn)";
-	ret += tmp;
+        string tmp;
+        if( scan & OPT_F ) tmp = identify(ob) + "\n" + ret + " ";
+        else tmp = "";
+        tmp += sprintf("(%s) - Mass: %d  Value: %d  Class: %d",
+          capitalize((string)ob->GetKeyName()),
+          (int)ob->GetMass(), (int)ob->GetValue(),
+          intp((int)ob->GetClass()) ? (int)ob->GetClass() : 0 );
+        if( ob->GetWorn() ) tmp += " (worn)";
+        ret += tmp;
     }
     else ret += identify(ob);
     if( ( scan & OPT_D ) &&
@@ -73,7 +73,7 @@ string inventory(object ob, int level, int scan) {
     else ret += "\n";
     if( !( scan & OPT_D ) ) return ret;
     for(i=0; i<maxi; i++)
-	ret += inventory(inv[i], level + 1, scan);
+        ret += inventory(inv[i], level + 1, scan);
     return ret;
 }
 

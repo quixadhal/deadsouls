@@ -23,33 +23,33 @@ int GetRadiantLight(int ambient) {
     int r = this_object()->GetBaseRadiance(ambient);
     int o = GetOpacity();
     if( o > 99 ) {
-	if( r < 1 ) {
-	    return 0;
-	}
-	else {
-	    int y = r / (ambient || 1);
+        if( r < 1 ) {
+            return 0;
+        }
+        else {
+            int y = r / (ambient || 1);
 
-	    if( y > r ) {
-		return r;
-	    }
-	    else {
-		return y;
-	    }
-	}
+            if( y > r ) {
+                return r;
+            }
+            else {
+                return y;
+            }
+        }
     }
     foreach(object ob in all_inventory()) {
-	r += ob->GetRadiantLight(ambient);
+        r += ob->GetRadiantLight(ambient);
     }
     if( ambient > 0 ) {
-	int y;
+        int y;
 
-	y = (r*10)/ambient;
-	if( y > r ) {
-	    y = r;
-	}
-	else {
-	    r = y;
-	}
+        y = (r*10)/ambient;
+        if( y > r ) {
+            y = r;
+        }
+        else {
+            r = y;
+        }
     }
     return ( (r*(100-o))/100 );
 }

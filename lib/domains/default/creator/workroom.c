@@ -11,7 +11,7 @@ static void create() {
     SetLong("You are standing in the workroom of a creator."+
       " The start room is down from here.");
     SetItems( ([ 
-	"workroom" : "It looks very nice.",
+        "workroom" : "It looks very nice.",
       ]) );
     SetInventory(([
       ]));

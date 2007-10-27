@@ -31,16 +31,16 @@ object *AddFollower(object follower) {
     if( !objectp(follower) ) error("Bad argument 1 to AddFollower().\n");
     if( follower != this_object() && !Followers[follower]
       && !follower->GetProperty("no follow") ) {
-	if( !follower->IsFollowing(this_object()) ) {
-	    if( follower->SetLeader(this_object()) ) {
-		tmp = new(class FollowerClass);
-		tmp->followed = 0;
-		tmp->bonus = 0;
-		tmp->lost = 0;
-		Followers[follower] = tmp;
-		numberOfFollowers++;
-	    }
-	}
+        if( !follower->IsFollowing(this_object()) ) {
+            if( follower->SetLeader(this_object()) ) {
+                tmp = new(class FollowerClass);
+                tmp->followed = 0;
+                tmp->bonus = 0;
+                tmp->lost = 0;
+                Followers[follower] = tmp;
+                numberOfFollowers++;
+            }
+        }
     }
     return GetFollowers();
 }
@@ -83,21 +83,21 @@ int GetFollowBonus(object follower) {
 
 varargs mixed CanLead(object ob) {
     if( ob ) {
-	if( !ob->CanFollow() )
-	    return "You are not empowered to lead " + ob->GetName();
-	if( ob->IsFollowing(this_object()) )
-	    return "You are already leading " + ob->GetName();
-	if( this_object()->IsFollowing(ob) )
-	    return ob->GetName() + " is already leading you.";
-	if( ob == this_object() )
-	    return "You cannot possibly do that.";
+        if( !ob->CanFollow() )
+            return "You are not empowered to lead " + ob->GetName();
+        if( ob->IsFollowing(this_object()) )
+            return "You are already leading " + ob->GetName();
+        if( this_object()->IsFollowing(ob) )
+            return ob->GetName() + " is already leading you.";
+        if( ob == this_object() )
+            return "You cannot possibly do that.";
     }
     return 1;
 }
 
 varargs mixed CanEvade(object ob) {
     if( ob && !ob->IsFollowing(this_object()) )
-	return ob->GetName() + " is not following you.";
+        return ob->GetName() + " is not following you.";
     return 1;
 }
 
@@ -107,14 +107,14 @@ int eventMoveFollowers(object dest) {
     int followChance;
 
     foreach(ob in GetFollowers()) {
-	follower = Followers[ob];
+        follower = Followers[ob];
 
-	followChance = 100;
-	if( !follower->followed ) followChance -= 20 + this_object()->GetSkillLevel("stealth");
-	followChance += ob->GetSkillLevel("tracking");
-	followChance += follower->bonus;
-	if( ob->eventFollow(dest, followChance) ) follower->lost = 0;
-	else if( follower->lost++ && eventEvade(ob) ) RemoveFollower(ob);
+        followChance = 100;
+        if( !follower->followed ) followChance -= 20 + this_object()->GetSkillLevel("stealth");
+        followChance += ob->GetSkillLevel("tracking");
+        followChance += follower->bonus;
+        if( ob->eventFollow(dest, followChance) ) follower->lost = 0;
+        else if( follower->lost++ && eventEvade(ob) ) RemoveFollower(ob);
     }
     return 1;
 }
@@ -124,8 +124,8 @@ int eventEvade(object ob) {
     ret = CanEvade(ob);
     if( stringp(ret) ) error(ret);
     if( ret = 1 ) {
-	ob->eventPrint(this_object()->GetName() + " has evaded you.");	this_object()->eventPrint("You have evaded " + ob->GetName() + ".");
-	return 1;
+        ob->eventPrint(this_object()->GetName() + " has evaded you.");	this_object()->eventPrint("You have evaded " + ob->GetName() + ".");
+        return 1;
     }
     return 0;
 }

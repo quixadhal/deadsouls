@@ -16,18 +16,18 @@ static void create() {
     SetShort("Conference Room");
     SetLong((: ExtraDesc :));
     SetInventory(([
-	"/domains/town/obj/chair" : 4,
-	"/domains/town/obj/bbucket" : 1,
-	"/secure/npc/cambot" : 1
+        "/domains/town/obj/chair" : 4,
+        "/domains/town/obj/bbucket" : 1,
+        "/secure/npc/cambot" : 1
       ]));
     SetExits(([
-	"west" : "/domains/town/room/adv_guild",
+        "west" : "/domains/town/room/adv_guild",
       ]));
 
     SetProperties(([
-	"no attack" : 1,
-	"nopeer" : 1,
-	"meeting room" : 1,
+        "no attack" : 1,
+        "nopeer" : 1,
+        "meeting room" : 1,
       ]));
     SetNoClean(1);
     privacy=0;
@@ -58,8 +58,8 @@ int report_time(){
     int secs = time() - timer;
 
     if(!timer){
-	write("Privacy field is not active.");
-	return 0;
+        write("Privacy field is not active.");
+        return 0;
     }
 
     write("Elapsed seconds: "+secs);
@@ -69,15 +69,15 @@ int report_time(){
 
 int CanReceive(object ob) {
     if(privacy){
-	if(!interactive(ob)) { 
-	    message("info","\n\nPRIVACY WARNING: "+ob->GetName()+" has entered the room.\n\n",this_object() );
-	}
-	else if(!archp(ob)){
-	    message("info","You bounce off the conference room privacy shield.", ob);
-	    message("info",ob->GetName()+" bounced off the privacy shield.",this_object());
-	    if(!environment(ob)) ob->eventMoveLiving(ROOM_START);
-	    return 0;
-	}
+        if(!interactive(ob)) { 
+            message("info","\n\nPRIVACY WARNING: "+ob->GetName()+" has entered the room.\n\n",this_object() );
+        }
+        else if(!archp(ob)){
+            message("info","You bounce off the conference room privacy shield.", ob);
+            message("info",ob->GetName()+" bounced off the privacy shield.",this_object());
+            if(!environment(ob)) ob->eventMoveLiving(ROOM_START);
+            return 0;
+        }
 
     }
     return room::CanReceive();
@@ -85,9 +85,9 @@ int CanReceive(object ob) {
 
 int set_privacy(int i){
     if(environment(this_player()) != this_object() && !archp(this_player())) {
-	write("You lack the adequate privileges to do that.");
-	say(this_player()->GetName()+" is trying to mess around with the privacy shield system.");
-	return 1;
+        write("You lack the adequate privileges to do that.");
+        say(this_player()->GetName()+" is trying to mess around with the privacy shield system.");
+        return 1;
     }
     privacy=i;
     return 1;
@@ -95,24 +95,24 @@ int set_privacy(int i){
 
 int privacy(string str){
     if(environment(this_player()) != this_object() && !archp(this_player())) {
-	write("You lack the adequate privileges to do that.");
-	say(this_player()->GetName()+" is trying to muck around with the privacy shield system.");
-	return 1;
+        write("You lack the adequate privileges to do that.");
+        say(this_player()->GetName()+" is trying to muck around with the privacy shield system.");
+        return 1;
     }
 
     if(str=="on" || str == "1"){
-	this_object()->set_privacy(1);
-	write("You enable the privacy shield.\n");
-	say(this_player()->GetName()+" enables a privacy force field around the room.");
-	timer = time();
-	return 1;
+        this_object()->set_privacy(1);
+        write("You enable the privacy shield.\n");
+        say(this_player()->GetName()+" enables a privacy force field around the room.");
+        timer = time();
+        return 1;
     }
     if(str=="off" || str == "0"){
-	this_object()->set_privacy(0);
-	write("You disable the privacy shield.\n");
-	say(this_player()->GetName()+" disables a privacy force field around the room.");
-	timer = 0;
-	return 1;
+        this_object()->set_privacy(0);
+        write("You disable the privacy shield.\n");
+        say(this_player()->GetName()+" disables a privacy force field around the room.");
+        timer = 0;
+        return 1;
     }
 }
 

@@ -19,12 +19,12 @@ void init(){
 void lookit(string str){
     if(str == "at wound" || str == "at wounds" || str == "at my wounds" ||
       str == "at my wound" || str == "at gunshot wound" || str == "at gunshot wounds"){
-	if(base_name(this_player()) == base_name(environment()) ){
-	    write("You have been wounded by gunfire. There "+
-	      "are "+cardinal(this_player()->GetLead())+" bullet holes "+
-	      "in your body.");
-	    return;
-	}
+        if(base_name(this_player()) == base_name(environment()) ){
+            write("You have been wounded by gunfire. There "+
+              "are "+cardinal(this_player()->GetLead())+" bullet holes "+
+              "in your body.");
+            return;
+        }
     }
 }
 string GetAffectLong(object ob) {
@@ -39,20 +39,20 @@ void heart_beat(){
     num = ob->GetLead();
 
     if(!num){ 
-	tmp = ob->GetLead("gunshot_wounds");
-	ob->AddLead("gunshot_wounds", -tmp);
-	tmp = ob->GetLead("rifleshot_wounds");
-	ob->AddLead("rifleshot_wounds", -tmp);
-	this_object()->eventDestruct(); 
-	return; 
+        tmp = ob->GetLead("gunshot_wounds");
+        ob->AddLead("gunshot_wounds", -tmp);
+        tmp = ob->GetLead("rifleshot_wounds");
+        ob->AddLead("rifleshot_wounds", -tmp);
+        this_object()->eventDestruct(); 
+        return; 
     }
 
     dam = num*10;
     if(!RACES_D->GetNonMeatRace(ob->GetRace())){
-	tell_object(ob,"You bleed heavily from your gunshot wounds.");
-	tell_room(environment(ob), ob->GetName()+
-	  " bleeds heavily from "+possessive(environment())+" gunshot wounds.",environment());
-	ob->eventReceiveDamage(this_object(),TRAUMA,dam,0,"torso");
+        tell_object(ob,"You bleed heavily from your gunshot wounds.");
+        tell_room(environment(ob), ob->GetName()+
+          " bleeds heavily from "+possessive(environment())+" gunshot wounds.",environment());
+        ob->eventReceiveDamage(this_object(),TRAUMA,dam,0,"torso");
     }
     return;
 }

@@ -15,8 +15,8 @@ void create() {
     inventory_visible();
     inventory_accessible();
     SetInventory( ([
-	"/domains/town/weap/cue" : 2,
-	"/domains/town/obj/pool_ball" : 16,
+        "/domains/town/weap/cue" : 2,
+        "/domains/town/obj/pool_ball" : 16,
       ]) );
 }
 void init(){

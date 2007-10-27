@@ -29,8 +29,8 @@ mixed do_zap_liv(object ob){
     int mhp;
 
     if(!living(ob)) {
-	write("You can only zap living things.");
-	return 1;
+        write("You can only zap living things.");
+        return 1;
 
     }
     else name = ob->GetName();
@@ -47,7 +47,7 @@ mixed do_zap_liv(object ob){
 
 mixed do_zap_lvs(object *obs) {
     foreach(object ob in obs){
-	if(!(ob == this_player())) do_zap_liv(ob);
+        if(!(ob == this_player())) do_zap_liv(ob);
     }
     return 1;
 }

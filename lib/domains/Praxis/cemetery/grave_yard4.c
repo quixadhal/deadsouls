@@ -16,30 +16,30 @@ void create() {
       "to put up a headstone.");
     SetItems(
       (["cemetery" : "All about you stretch the silent graves.  "
-	"You feel like you are being watched.",
-	"grave" : "The grave is covered with the trash and "
-	"mementos of a coder.",
-	"pencils" : "The pencils are all short, chewed, and "
-	"broken.  None write anymore.",
-	"writing" : "Here lies Flamme.  This lovely young lass "
-	"met an untimely end when she used humor at the wrong "
-	"time and with the wrong god.  Let this be a lesson to "
-	"young immortals.",
-	"paper" : "Countless small bits and wads of paper litter the area.",
-	"code" : "The pieces of code never did work, and are "
-	"unintelligible to normal humans.",
-	"marker" : "The plaque is of white marble.  You might "
-	"be able to read the writing on it."])  );
+        "You feel like you are being watched.",
+        "grave" : "The grave is covered with the trash and "
+        "mementos of a coder.",
+        "pencils" : "The pencils are all short, chewed, and "
+        "broken.  None write anymore.",
+        "writing" : "Here lies Flamme.  This lovely young lass "
+        "met an untimely end when she used humor at the wrong "
+        "time and with the wrong god.  Let this be a lesson to "
+        "young immortals.",
+        "paper" : "Countless small bits and wads of paper litter the area.",
+        "code" : "The pieces of code never did work, and are "
+        "unintelligible to normal humans.",
+        "marker" : "The plaque is of white marble.  You might "
+        "be able to read the writing on it."])  );
     SetExits( 
       (["northeast" : "/domains/Praxis/cemetery/grave_yard5",
-	"northwest" : "/domains/Praxis/cemetery/grave_yard2",
-	"southwest" : "/domains/Praxis/cemetery/grave_yard3"]) );
+        "northwest" : "/domains/Praxis/cemetery/grave_yard2",
+        "southwest" : "/domains/Praxis/cemetery/grave_yard3"]) );
 }
 
 void reset() {
     ::reset();
     if (!present("ghost"))
-	new("/domains/Praxis/cemetery/mon/ghost4")->move(this_object());
+        new("/domains/Praxis/cemetery/mon/ghost4")->move(this_object());
 }
 
 void init() {
@@ -49,8 +49,8 @@ void init() {
 
 int read(string str) {
     if (str == "writing")  {
-	write (::GetLong("writing"));
-	return 1;
+        write (::GetLong("writing"));
+        return 1;
     }
     notify_fail("Read what?\n");
     return 0;

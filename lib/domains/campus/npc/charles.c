@@ -59,23 +59,23 @@ int choice1(){
     eventForce("say I am faced with choice 1.");
     genrand = random(256);
     if(!genrand || genrand == 0){
-	eventForce("say I cannot make up my mind right now.");
-	eventForce("say I will start over.");
-	playing = 0;
-	return 1;
+        eventForce("say I cannot make up my mind right now.");
+        eventForce("say I will start over.");
+        playing = 0;
+        return 1;
     }
     if( runs > 10 ){
-	if( red_wins > blue_wins ) firstchoice = "red";
-	if( red_wins < blue_wins ) firstchoice = "blue";
-	if( green_wins > blue_wins && green_wins > red_wins) firstchoice = "green";
+        if( red_wins > blue_wins ) firstchoice = "red";
+        if( red_wins < blue_wins ) firstchoice = "blue";
+        if( green_wins > blue_wins && green_wins > red_wins) firstchoice = "green";
     }
 
     if( !firstchoice || firstchoice == ""){
-	genrand = genrand % 3;
-	if(genrand == 1) { firstchoice = "red"; fred++; }
-	if(genrand == 2) { firstchoice = "green"; fgreen++; }
-	if(genrand == 0) { firstchoice = "blue"; fblue++; }
-	eventForce("say I randomly choose the "+firstchoice+" door");
+        genrand = genrand % 3;
+        if(genrand == 1) { firstchoice = "red"; fred++; }
+        if(genrand == 2) { firstchoice = "green"; fgreen++; }
+        if(genrand == 0) { firstchoice = "blue"; fblue++; }
+        eventForce("say I randomly choose the "+firstchoice+" door");
     }
     else eventForce("say I select the "+firstchoice+" door");
 
@@ -91,30 +91,30 @@ int choice2(string str){
 
     if(runs > 20){
 
-	percent_switch = percent(switches,runs);
-	percent_wins = percent(wins,runs);
-	eventForce("say My win rate is "+percent_wins+"%.");
-	eventForce("say My switch rate is "+percent_switch+"%.");
-	if( percent_wins < 50 && percent_switch > 50 ) response = "stay";
-	else if( percent_wins < 50 && percent_switch < 50 ) response = "switch";
-	else if( percent_wins > 50 && percent_switch < 50 ) response = "stay";
-	else if( percent_wins > 50 && percent_switch > 50 ) response = "switch";
-	else if(which == 1) response = "switch";
-	else response = "stay";
+        percent_switch = percent(switches,runs);
+        percent_wins = percent(wins,runs);
+        eventForce("say My win rate is "+percent_wins+"%.");
+        eventForce("say My switch rate is "+percent_switch+"%.");
+        if( percent_wins < 50 && percent_switch > 50 ) response = "stay";
+        else if( percent_wins < 50 && percent_switch < 50 ) response = "switch";
+        else if( percent_wins > 50 && percent_switch < 50 ) response = "stay";
+        else if( percent_wins > 50 && percent_switch > 50 ) response = "switch";
+        else if(which == 1) response = "switch";
+        else response = "stay";
     }
 
     else {
 
-	if(which == 1) {
-	    response = "switch";
-	}
-	else {
-	    response = "stay";
-	}
+        if(which == 1) {
+            response = "switch";
+        }
+        else {
+            response = "stay";
+        }
     }
 
     if(sscanf(str,"%sswitch to the %s %s",s1,s2,s3) > 0) {
-	secondchoice = s2;
+        secondchoice = s2;
     }
 
     eventForce("say I decide to "+response+".");
@@ -126,19 +126,19 @@ int choice2(string str){
 }
 int WinFun(string str){
     if(sscanf(str,"%smay enter the %s room and claim%s",s1,s2,s3) > 0){
-	if(s2 == "red") red_wins++;
-	if(s2 == "green") green_wins++;
-	if(s2 == "blue") blue_wins++;
-	wins++;
-	eventForce("say w00t! "+s2+" wins!");
-	return 1;
+        if(s2 == "red") red_wins++;
+        if(s2 == "green") green_wins++;
+        if(s2 == "blue") blue_wins++;
+        wins++;
+        eventForce("say w00t! "+s2+" wins!");
+        return 1;
     }
     return 0;
 }
 int LoseFun(string str){
     string foo;
     if(sscanf(str,"%smay enter the %s room to get%s",s1,s2,s3) > 0){
-	if(response == "stay") foo = secondchoice;
+        if(response == "stay") foo = secondchoice;
     }
     eventForce("say "+secondchoice+" wins, I guess.");
     if(secondchoice == "red") red_wins++;
@@ -158,8 +158,8 @@ int eventPedestalParse(string str){
 int eventFirstPass(string str){
     if(!str || str == "") return 0;
     if(sscanf(str,"A voice from the pedestal%s",s1) > 0){
-	eventPedestalParse(str);
-	return 1;
+        eventPedestalParse(str);
+        return 1;
     }
     return 0;
 }
@@ -188,18 +188,18 @@ int eventPrint(string msg, string msg_class){
 void heart_beat(){
     //eventForce("say playing is: "+playing);
     if(playing && response != "" ) {
-	if(firstchoice != ""){
-	    //eventForce("say response is: "+response);
-	    eventForce(response);
-	    runs ++;
-	    //playing = 0;
-	}
-	//else eventBeginPlay();
-	playing = 0;
+        if(firstchoice != ""){
+            //eventForce("say response is: "+response);
+            eventForce(response);
+            runs ++;
+            //playing = 0;
+        }
+        //else eventBeginPlay();
+        playing = 0;
     }
 
     if(!playing){
-	//eventForce("say playing is zero, restarting.");
-	eventBeginPlay();
+        //eventForce("say playing is zero, restarting.");
+        eventBeginPlay();
     }
 }

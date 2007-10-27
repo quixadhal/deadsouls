@@ -19,11 +19,11 @@ static void create() {
     SetDamageType(BLADE);
     SetWeaponType("blade");
     SetItems( ([
-	({"rune","runes"}) : "The runes' meaning is undecipherable to you.",
-	({"picture","engraving"}) : "An almost comical image of a startled orc sliced in half.",
+        ({"rune","runes"}) : "The runes' meaning is undecipherable to you.",
+        ({"picture","engraving"}) : "An almost comical image of a startled orc sliced in half.",
       ]) );
     SetRead( ([
-	({"rune","runes"}) : "You do not understand them."
+        ({"rune","runes"}) : "You do not understand them."
       ]) );
     AddItem("thing" , "A thing.");
 }

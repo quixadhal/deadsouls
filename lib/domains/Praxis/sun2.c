@@ -16,17 +16,17 @@ void create() {
       "the borders of Praxis here.");
     SetItems(
       (["foo" : "Whatever you say.",
-	"alley" : "This alley is the northernmost part of Praxis. "
-	"Only the great North Forest is north of here.",
-	"restaurant" : "A great place to rest up from adventuring.",
-	"road" : "East Road.",
-	"forest" : "The huge forest north of Praxis.  The "
-	"walled town of Cartesia is out there somewhere.",
-	"border" : "The forest keeps Praxis from expanding any "
-	"further north."]) );
+        "alley" : "This alley is the northernmost part of Praxis. "
+        "Only the great North Forest is north of here.",
+        "restaurant" : "A great place to rest up from adventuring.",
+        "road" : "East Road.",
+        "forest" : "The huge forest north of Praxis.  The "
+        "walled town of Cartesia is out there somewhere.",
+        "border" : "The forest keeps Praxis from expanding any "
+        "further north."]) );
     SetExits( 
       (["east" : "/domains/Praxis/east_road2",
-	"west" : "/domains/Praxis/sun1",
-	"south"	 : "/domains/Praxis/restaurant"]) );
+        "west" : "/domains/Praxis/sun1",
+        "south"	 : "/domains/Praxis/restaurant"]) );
 }
 

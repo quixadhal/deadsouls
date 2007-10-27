@@ -8,9 +8,9 @@ inherit LIB_CLIMB; // This makes it climbable
 
 int LadderClimb(){
     if(base_name(environment()) == "/domains/town/room/mansion_ext"){
-	write("You climb up the ladder and into the mansion through the second-story window.");
-	eventClimb(this_player(),CLIMB_UP,"/domains/town/room/mansion_uhall1");
-	return 1;
+        write("You climb up the ladder and into the mansion through the second-story window.");
+        eventClimb(this_player(),CLIMB_UP,"/domains/town/room/mansion_uhall1");
+        return 1;
     }
     write("This ladder seems made specifically for one place, and it looks like this isn't it.");
     return 0;

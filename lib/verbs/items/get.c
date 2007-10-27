@@ -33,14 +33,14 @@ mixed eventCheckLight(object who) {
     int light;
 
     if( (light = who->GetEffectiveVision()) < 2 ) {
-	if( 100 + (10*light) < random(100) )
-	    return "You fumble around in the darkness.";
-	else return this_player()->CanManipulate();
+        if( 100 + (10*light) < random(100) )
+            return "You fumble around in the darkness.";
+        else return this_player()->CanManipulate();
     }
     else if( light > 5 ) {
-	if( 100 - (10*light) < random(100) )
-	    return "You fumble around in the blinding light.";
-	else return this_player()->CanManipulate();
+        if( 100 - (10*light) < random(100) )
+            return "You fumble around in the blinding light.";
+        else return this_player()->CanManipulate();
     }
     else return this_player()->CanManipulate();
 }
@@ -84,11 +84,11 @@ mixed do_get_wrd_wrd_from_obj(string num, string curr, object pile) {
 mixed do_get_obj_out_of_obj(object ob, object storage) {
     if(!ob) return "No object";
     if(!(environment(ob) == storage)){
-	ob = present(ob->GetKeyName(), storage);
-	if(!ob){
-	    write("That's not in there.");
-	    return "";
-	}
+        ob = present(ob->GetKeyName(), storage);
+        if(!ob){
+            write("That's not in there.");
+            return "";
+        }
     }
     return (mixed)storage->eventGetFrom(this_player(), ({ ob }));
 }
@@ -104,22 +104,22 @@ mixed do_get_obj_obj(object ob, object storage) {
 mixed do_get_obs(mixed *targs) {
     object *obs;
     if( !sizeof(targs) ) {
-	this_player()->eventPrint("There is no such thing to be taken.");
-	return 1;
+        this_player()->eventPrint("There is no such thing to be taken.");
+        return 1;
     }
     obs = filter(targs, (: objectp :));
     if( !sizeof(obs) ) {
-	mapping messages = unique_mapping(targs, (: $1 :));
+        mapping messages = unique_mapping(targs, (: $1 :));
 
-	foreach(string msg in keys(messages)) {
-	    this_player()->eventPrint(msg);
-	}
-	return 1;
+        foreach(string msg in keys(messages)) {
+            this_player()->eventPrint(msg);
+        }
+        return 1;
     }
     foreach(object item in obs) {
 
-	if( (mixed)item->CanGet(this_player()) != 1 ) continue;
-	item->eventGet(this_player());
+        if( (mixed)item->CanGet(this_player()) != 1 ) continue;
+        item->eventGet(this_player());
     }
     return 1;
 }
@@ -127,17 +127,17 @@ mixed do_get_obs(mixed *targs) {
 mixed do_get_obs_out_of_obj(mixed *targs, object storage) {
     object *obs;
     if( !sizeof(targs) ) {
-	this_player()->eventPrint("There is no such thing to be taken.");
-	return 1;
+        this_player()->eventPrint("There is no such thing to be taken.");
+        return 1;
     }
     obs = filter(targs, (: objectp :));
     if( !sizeof(obs) ) {
-	mapping messages = unique_mapping(targs, (: $1 :));
+        mapping messages = unique_mapping(targs, (: $1 :));
 
-	foreach(string msg in keys(messages)) {
-	    this_player()->eventPrint(msg);
-	}
-	return 1;
+        foreach(string msg in keys(messages)) {
+            this_player()->eventPrint(msg);
+        }
+        return 1;
     }
     return (mixed)storage->eventGetFrom(this_player(), obs);
 }

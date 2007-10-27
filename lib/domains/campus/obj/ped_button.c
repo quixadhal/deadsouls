@@ -24,7 +24,7 @@ int PushButton(object who) {
       who, 0, environment(who));
 
     foreach(object ob in objects){
-	ob->ButtonPush();
+        ob->ButtonPush();
     }
 
 }

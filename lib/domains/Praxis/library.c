@@ -24,10 +24,10 @@ void create() {
       "type <read [title]> to read a particular book.");
     SetItems(
       (["library" : "The laws of reality are explained in here.",
-	"shelf" : "It has books on it.",
-	"shelves" : "Books fill them.",
-	"book" : "One of many.",
-	"books" : "They are everywhere on the shelves."]) );
+        "shelf" : "It has books on it.",
+        "shelves" : "Books fill them.",
+        "book" : "One of many.",
+        "books" : "They are everywhere on the shelves."]) );
     SetExits( 
       (["west" : "/domains/Praxis/east_road1"]) );
 
@@ -40,28 +40,28 @@ int read(string str) {
     int i,j,k;
 
     if(!str) {
-	notify_fail("Read what?\n");
-	return 0;
+        notify_fail("Read what?\n");
+        return 0;
     }
     if(str == "volume" || str == "book") {
-	notify_fail("Which "+str+"?\n");
-	return 0;
+        notify_fail("Which "+str+"?\n");
+        return 0;
     }
     if(str == "volumes" || str == "books") {
-	message("info", "The books available for reading are:",this_player());
-	dir = get_dir(DIR_LIBRARY + "/");
-	for(i=0; i<sizeof(dir); i++) dir[i] = replace_string(dir[i], "_", " ");
-	message("info", replace_string(format_page(dir, 3), "\n", " "),
-	  this_player());
-	message("info", "Type <read [book name]> to read a particular book.", this_player());
+        message("info", "The books available for reading are:",this_player());
+        dir = get_dir(DIR_LIBRARY + "/");
+        for(i=0; i<sizeof(dir); i++) dir[i] = replace_string(dir[i], "_", " ");
+        message("info", replace_string(format_page(dir, 3), "\n", " "),
+          this_player());
+        message("info", "Type <read [book name]> to read a particular book.", this_player());
     }
     else {
-	str = replace_string(str, " ", "_");
-	if(file_size(DIR_LIBRARY + "/"+str) == -1) {
-	    notify_fail("There is no book here by that title.\n");
-	    return 0;
-	}
-	this_player()->more(DIR_LIBRARY + "/"+str);
+        str = replace_string(str, " ", "_");
+        if(file_size(DIR_LIBRARY + "/"+str) == -1) {
+            notify_fail("There is no book here by that title.\n");
+            return 0;
+        }
+        this_player()->more(DIR_LIBRARY + "/"+str);
     }
     return 1;
 }
@@ -69,8 +69,8 @@ int read(string str) {
 int help(string str) {
     if(!str) return 0;
     if(str != "library") {
-	notify_fail("You help "+str+".\n");
-	return 0;
+        notify_fail("You help "+str+".\n");
+        return 0;
     }
     write("You can read what is in the library.\nType <read books>.\n");
     return 1;

@@ -14,7 +14,7 @@ static void create(){
       "pass is grounds for disciplinary action. A small scribble "+
       "at the bottom of the pass reads: click heels");
     SetProperties(([
-	"no steal" : 1,
+        "no steal" : 1,
       ]));
     SetMass(10);
     SetBaseCost(5000);
@@ -29,16 +29,16 @@ void init(){
 }
 int nplh(string str){
     if(str=="heels"){
-	if(present(this_object()->GetKeyName(),this_player() ) ){
-	    write("There's no place like home!\n"+
-	      "You are transported by an awesome whirlwind somewhere "+
-	      "else...\n");
-	    this_player()->eventMoveLiving(ROOM_START);
-	    return 1;
-	}
-	write("You click your heels together...but feel "+
-	  "as though you're missing something.\n");
-	return 1;
+        if(present(this_object()->GetKeyName(),this_player() ) ){
+            write("There's no place like home!\n"+
+              "You are transported by an awesome whirlwind somewhere "+
+              "else...\n");
+            this_player()->eventMoveLiving(ROOM_START);
+            return 1;
+        }
+        write("You click your heels together...but feel "+
+          "as though you're missing something.\n");
+        return 1;
     }
 }
 string GetAffectLong(object ob) {

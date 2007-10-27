@@ -33,7 +33,7 @@ mixed can_ask_liv_str(string str) {
     string tmp;
 
     if( !str ) {
-	str = "";
+        str = "";
     }
     if( sscanf(str, "to %s", tmp) ) return 1;
     else if( sscanf(str, "for %s", tmp) ) return 1;
@@ -63,8 +63,8 @@ mixed do_ask_liv_for_str(object ob, string str) {
       (string)ob->GetName()+" for "+str+".",
       environment(ob), ({ ob, this_player() }) );
     if( !((int)ob->eventRequest(this_player(), str)) )
-	message("other_action", (string)this_player()->GetName()+" asks "
-	  "you for "+str+".", ob);
+        message("other_action", (string)this_player()->GetName()+" asks "
+          "you for "+str+".", ob);
     return 1;
 }
 

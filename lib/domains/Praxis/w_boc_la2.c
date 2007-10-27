@@ -24,19 +24,19 @@ void create() {
     SetSmell("house", "It smells of the magic smoke coming from it.");
     SetExits( 
       (["east" : "/domains/Praxis/w_boc_la1",
-	"west" : "/domains/Praxis/w_boc_la3",
-	"south" : "/domains/Praxis/farm",
-	"north" : "/domains/Praxis/sage_room"]) );
+        "west" : "/domains/Praxis/w_boc_la3",
+        "south" : "/domains/Praxis/farm",
+        "north" : "/domains/Praxis/sage_room"]) );
     SetItems(
       (["road" : "Boc La Road runs east and west through Praxis.",
-	"roads" : "West Road and Boc La Road.",
-	"highway" : "A very heavily travelled highway to the "
-	"western lands of Nightmare. Beware of the Daroq Mountains.",
-	"mountains" : "The Daroq Mountains.  Vile creatures are "
-	"rumoured to live in and about them.",
-	"house" : "This tiny little house has wisps of white "
-	"smoke coming out of the door and windows.",
-	"smoke" : "Lacey wisps of white smoke are coming out "
-	"of the house to the north."]) );
+        "roads" : "West Road and Boc La Road.",
+        "highway" : "A very heavily travelled highway to the "
+        "western lands of Nightmare. Beware of the Daroq Mountains.",
+        "mountains" : "The Daroq Mountains.  Vile creatures are "
+        "rumoured to live in and about them.",
+        "house" : "This tiny little house has wisps of white "
+        "smoke coming out of the door and windows.",
+        "smoke" : "Lacey wisps of white smoke are coming out "
+        "of the house to the north."]) );
 }
 

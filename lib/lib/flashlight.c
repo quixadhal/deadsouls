@@ -58,7 +58,7 @@ int SetDrainRate(int i){
 int eventUse(int i){
     Lit = i;
     foreach(object ob in all_inventory(this_object())){
-	ob->eventUse(i);
+        ob->eventUse(i);
     }
     return i;
 }
@@ -68,13 +68,13 @@ int eventDie(){
     Lit=0;
     eventRadiate(0);
     foreach(object ob in all_inventory(this_object())){
-	ob->eventUse(0);
+        ob->eventUse(0);
     }
     SetShort(baseshort);
     tell_object(environment(this_object()),"The "+me+" flickers and dies.");
     if(living(environment())){
-	tell_room(environment(environment()),environment()->GetName()+"'s "+me+
-	  " flickers and dies.",({ environment() }) );
+        tell_room(environment(environment()),environment()->GetName()+"'s "+me+
+          " flickers and dies.",({ environment() }) );
     }
     set_heart_beat(0);
     return 1;
@@ -83,8 +83,8 @@ int eventDie(){
 int flicker(){
     if(noflicker ==1) return 0;
     if(!living(environment())){
-	tell_object(environment(),capitalize(baseshort)+" flickers and shines less brightly than before.");
-	return 1;
+        tell_object(environment(),capitalize(baseshort)+" flickers and shines less brightly than before.");
+        return 1;
     }
     tell_room(environment(environment()),environment()->GetName()+"'s "+me+
       " flickers and shines less brightly than before.",({ environment() }) );
@@ -98,12 +98,12 @@ int CheckPower(){
     if( sizeof(all_inventory(this_object())) < mincells ) powered = 0;
     batts = all_inventory(this_object());
     foreach(object batt in batts){
-	batt->Spent();
-	level = batt->GetCharge();
-	if(level == 10 || level == 30 || level == 50 ) flicker();
-	noflicker = 1;
-	//write("The "+me+" flickers.");
-	if( level < 1) powered = 0; 
+        batt->Spent();
+        level = batt->GetCharge();
+        if(level == 10 || level == 30 || level == 50 ) flicker();
+        noflicker = 1;
+        //write("The "+me+" flickers.");
+        if( level < 1) powered = 0; 
     }
     noflicker = 0;
     return powered;
@@ -111,11 +111,11 @@ int CheckPower(){
 
 int CanReceive(object ob) {
     if(ob->GetCellType() != celltype) {
-	return 0;
+        return 0;
     }
     if(sizeof(all_inventory(this_object())) >= maxcells ){
 
-	return 0;
+        return 0;
     }
     return 1;
 }
@@ -152,27 +152,27 @@ int eventTurnOn(object ob){
     CheckPower();
 
     if(powered != 1){
-	write("It isn't powered.");
-	return 1;
+        write("It isn't powered.");
+        return 1;
     }
 
     if(player != env  && environment(player) !=env) {
-	write("It isn't within reach.");
-	return 1;
+        write("It isn't within reach.");
+        return 1;
     }
     if(Lit < 1){
-	write("You turn on the "+me+".");
-	say(name+" turns on a "+me+".");
-	if(drainrate && drainrate > 0) eventUse(drainrate);
-	else eventUse(1);
-	eventRadiate(lightlevel);
-	set_heart_beat(1);
-	SetShort(baseshort+" (%^BOLD%^YELLOW%^lit%^RESET%^)");
-	return 1;
+        write("You turn on the "+me+".");
+        say(name+" turns on a "+me+".");
+        if(drainrate && drainrate > 0) eventUse(drainrate);
+        else eventUse(1);
+        eventRadiate(lightlevel);
+        set_heart_beat(1);
+        SetShort(baseshort+" (%^BOLD%^YELLOW%^lit%^RESET%^)");
+        return 1;
     }
     if(Lit >= 1){
-	write("It is already lit.");
-	return 1;
+        write("It is already lit.");
+        return 1;
     }
 }
 
@@ -180,17 +180,17 @@ varargs mixed eventTurnOff(string str){
     regetID();
     if(player != env  && environment(player) !=env) { write("It isn't within reach."); return 1; }
     if(Lit > 0){
-	write("You turn off the "+me+".");
-	say(name+" turns off a "+me+".");
-	eventRadiate(0);
-	eventUse(0);
-	set_heart_beat(0);
-	SetShort(baseshort);
-	return 1;
+        write("You turn off the "+me+".");
+        say(name+" turns off a "+me+".");
+        eventRadiate(0);
+        eventUse(0);
+        set_heart_beat(0);
+        SetShort(baseshort);
+        return 1;
     }
     if(Lit < 1){
-	write("It is already off.");
-	return 1;
+        write("It is already off.");
+        return 1;
     }
 }
 
@@ -206,6 +206,6 @@ void heart_beat(){
     CheckPower();
 
     if(powered != 1){
-	eventDie();
+        eventDie();
     }
 }

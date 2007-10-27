@@ -16,14 +16,14 @@ void create() {
     SetValue(0);
     SetMass(10);
     if(random(100) < 30) {
-	SetStrength(-10);
-	SetMealMessages("$N eat $O, and it is ROTTEN!",
-	  "$N eats $O, and it is ROTTEN!");
+        SetStrength(-10);
+        SetMealMessages("$N eat $O, and it is ROTTEN!",
+          "$N eats $O, and it is ROTTEN!");
     }
     else {
-	SetStrength(10);
-	SetMealMessages("$N eat $O filled with delicious candy!",
-	  "$N eats $O filled with delicious candy!");
+        SetStrength(10);
+        SetMealMessages("$N eat $O filled with delicious candy!",
+          "$N eats $O filled with delicious candy!");
     }
 }
 

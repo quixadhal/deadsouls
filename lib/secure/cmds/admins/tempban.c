@@ -17,15 +17,15 @@ int cmd(string str) {
     if(!archp(previous_object())) return 0;
 
     if(!str) {
-	write("The following sites are on temporary registration:\n"+
-	  BANISH_D->query_temp_site_info());
-	return 1;
+        write("The following sites are on temporary registration:\n"+
+          BANISH_D->query_temp_site_info());
+        return 1;
     }
 
 
     if(sscanf(str, "%s %d", site, time) != 2) {
-	notify_fail("Correct syntax: tempban [site] [time in minutes]>\n\n");
-	return 0;
+        notify_fail("Correct syntax: tempban [site] [time in minutes]>\n\n");
+        return 0;
     }
 
     write(site+" is now on register for "+time+" minutes.");

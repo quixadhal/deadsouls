@@ -22,18 +22,18 @@ void eventReceiveLocateRequest(mixed array packet) {
     tn("Locate request received: "+identify(packet),"white");
     if( !(ob = find_player(packet[6])) || ob->GetInvis()) return;
     if( interactive(ob) ) {
-	string array tmp = ({ });
-	if( in_input(ob) || in_edit(ob) )
-	    tmp += ({ "editing" });
-	if( (idl = query_idle(ob)) > 60 )
-	    tmp += ({ "inactive" });
-	if( sizeof(tmp) ) status = implode(tmp, ", ");
-	else status = 0;
+        string array tmp = ({ });
+        if( in_input(ob) || in_edit(ob) )
+            tmp += ({ "editing" });
+        if( (idl = query_idle(ob)) > 60 )
+            tmp += ({ "inactive" });
+        if( sizeof(tmp) ) status = implode(tmp, ", ");
+        else status = 0;
     }
     else status = "link-dead";
     INTERMUD_D->eventWrite( ({ "locate-reply", 5, mud_name(), 0, packet[2], 
-	packet[3], mud_name(),
-	(string)ob->GetName(), idl, status }) );
+        packet[3], mud_name(),
+        (string)ob->GetName(), idl, status }) );
 }
 
 void eventReceiveLocateReply(mixed array packet) {
@@ -43,13 +43,13 @@ void eventReceiveLocateReply(mixed array packet) {
 
     if( file_name(previous_object()) != INTERMUD_D ) return;
     if( !stringp(packet[5]) || !(ob = find_player(convert_name(packet[5]))) ) 
-	return;
+        return;
     tn("Locate reply received: "+identify(packet),"white");
     m = packet[7] + " was just located on " + packet[6] + ".";
     if( (idl = (int)packet[8]) > 60 )
-	m += sprintf(" (idle %02d:%02d:%02d)", idl/3600, (idl/60)%60, idl%60);
+        m += sprintf(" (idle %02d:%02d:%02d)", idl/3600, (idl/60)%60, idl%60);
     if( stringp(packet[9]) )
-	m += " [status: " + packet[9] + "]";
+        m += " [status: " + packet[9] + "]";
     ob->eventPrint(m, MSG_SYSTEM);
 }
 

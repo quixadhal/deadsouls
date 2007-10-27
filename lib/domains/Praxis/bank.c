@@ -34,14 +34,14 @@ void create() {
       "all commands. The exit to the bank is back south.");
     SetItems(
       (["bank" : "You are in its huge lobby. There is a counter in "
-	"front of you\nand and exit behind you.",
-	"citizens" : "They are wandering about aimlessly.",
-	"account" : "You're a damn loon.",
-	"sign" : "Reading it will give you a list of commands.",
-	"teller" : "The teller looks at you impatiently.",
-	"counter" : "A teller waits behind it for you to do something.",
-	"exit" : "It leads out into the alley.",
-	"vault" : (: this_object(), "look_at_vault" :) ]) );
+        "front of you\nand and exit behind you.",
+        "citizens" : "They are wandering about aimlessly.",
+        "account" : "You're a damn loon.",
+        "sign" : "Reading it will give you a list of commands.",
+        "teller" : "The teller looks at you impatiently.",
+        "counter" : "A teller waits behind it for you to do something.",
+        "exit" : "It leads out into the alley.",
+        "vault" : (: this_object(), "look_at_vault" :) ]) );
     SetExits( 
       (["south":"/domains/Praxis/alley1"]) );
 }
@@ -51,72 +51,72 @@ void reset() {
 
     ::reset();
     if(!present("guard")) {
-	mon = new(LIB_NPC);
-	mon->SetKeyName("guard");
-	mon->SetId( ({ "guard", "bank guard", "big ogre" }) );
-	mon->SetRace( "ogre");
-	mon->SetGender("male");
-	mon->SetShort( "Bank guard");
-	mon->SetLong( "A big, ugly ogre hired to guard the "
-	  "newly open bank.\n");
-	mon->SetLevel(14);
-	mon->SetRace("human");
-	mon->SetHealthPoints(500 + random(100));
-	mon->SetClass("fighter");
-	mon->SetSpellChance(10);
-	mon->SetSpells( ({ "parry", "Bugga" }) );
-	mon->SetSkills("defense", 70);
-	mon->SetSkills("blade", 90);
-	mon->set_emotes(9, 
-	  ({ "Guard says: Goddamn thief!",
-	    "Guard grunts.",
-	    "Guard says: No way you're getting past me!",
-	    "Guard says: You disgust me."}), 1);
-	mon->set_emotes(3,
-	  ({ "Guard munches on a rat pie.", 
-	    "Guard says: I hate rogues." }), 0);
-	mon->SetWielding_limbs( ({ "right hand", "left hand" }) );
-	mon->move(this_object());
-	weapon = new(LIB_ITEM);
-	weapon->SetKeyName("broadsword");
-	weapon->SetId( ({ "broadsword", "sword" }) );
-	weapon->SetShort( "Broadsword");
-	weapon->SetLong( "A huge broadsword.");
-	weapon->SetClass(13);
-	weapon->SetType("blade");
-	weapon->SetMass(700);
-	weapon->SetValue(91);
-	weapon->move(mon);
-	mon->eventForce("wield broadsword in right hand");
-	key = new(LIB_ITEM);
-	key->SetKeyName("key");
-	key->SetId( ({ "bank key", "key", "bronze key" }) );
-	key->SetShort( "Bronze key");
-	key->SetLong( "An unremarkable bronze key.");
-	key->SetMass(29);
-	key->SetValue(35);
-	key->move(mon);
+        mon = new(LIB_NPC);
+        mon->SetKeyName("guard");
+        mon->SetId( ({ "guard", "bank guard", "big ogre" }) );
+        mon->SetRace( "ogre");
+        mon->SetGender("male");
+        mon->SetShort( "Bank guard");
+        mon->SetLong( "A big, ugly ogre hired to guard the "
+          "newly open bank.\n");
+        mon->SetLevel(14);
+        mon->SetRace("human");
+        mon->SetHealthPoints(500 + random(100));
+        mon->SetClass("fighter");
+        mon->SetSpellChance(10);
+        mon->SetSpells( ({ "parry", "Bugga" }) );
+        mon->SetSkills("defense", 70);
+        mon->SetSkills("blade", 90);
+        mon->set_emotes(9, 
+          ({ "Guard says: Goddamn thief!",
+            "Guard grunts.",
+            "Guard says: No way you're getting past me!",
+            "Guard says: You disgust me."}), 1);
+        mon->set_emotes(3,
+          ({ "Guard munches on a rat pie.", 
+            "Guard says: I hate rogues." }), 0);
+        mon->SetWielding_limbs( ({ "right hand", "left hand" }) );
+        mon->move(this_object());
+        weapon = new(LIB_ITEM);
+        weapon->SetKeyName("broadsword");
+        weapon->SetId( ({ "broadsword", "sword" }) );
+        weapon->SetShort( "Broadsword");
+        weapon->SetLong( "A huge broadsword.");
+        weapon->SetClass(13);
+        weapon->SetType("blade");
+        weapon->SetMass(700);
+        weapon->SetValue(91);
+        weapon->move(mon);
+        mon->eventForce("wield broadsword in right hand");
+        key = new(LIB_ITEM);
+        key->SetKeyName("key");
+        key->SetId( ({ "bank key", "key", "bronze key" }) );
+        key->SetShort( "Bronze key");
+        key->SetLong( "An unremarkable bronze key.");
+        key->SetMass(29);
+        key->SetValue(35);
+        key->move(mon);
     }
     if(query_reset_number() != 1) {
-	present("guard")->eventForce("close vault");
-	present("guard")->eventForce("lock vault with key");
+        present("guard")->eventForce("close vault");
+        present("guard")->eventForce("lock vault with key");
     }
 }
 
 int do_drunkard() {
     if(present("guard") && !this_player()->query_invis()) {
-	present("guard")->eventForce("kill "+(string)this_player()->query_name());
-	this_player()->add_follower(present("guard"));
-	write("The guard foils you before you can slip the key in!");
-	say(this_player()->query_cap_name()+" is foiled trying to break "
-	  "into the vault!");
-	return 0;
+        present("guard")->eventForce("kill "+(string)this_player()->query_name());
+        this_player()->add_follower(present("guard"));
+        write("The guard foils you before you can slip the key in!");
+        say(this_player()->query_cap_name()+" is foiled trying to break "
+          "into the vault!");
+        return 0;
     }
     if(this_player()->query_intox()) {
-	write("You are fumble around drunkenly with the bank key.");
-	say(this_player()->query_cap_name()+" fiddles around drunkenly "
-	  "with the bank key.");
-	return 0;
+        write("You are fumble around drunkenly with the bank key.");
+        say(this_player()->query_cap_name()+" fiddles around drunkenly "
+          "with the bank key.");
+        return 0;
     }
     return 1;
 }

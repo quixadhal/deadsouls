@@ -15,7 +15,7 @@ static void create() {
     daemon::create();
     Objects = ([]);
     if( file_size(SAVE_UNIQUE __SAVE_EXTENSION__) > 0 )
-	unguarded( (: restore_object, SAVE_UNIQUE :) );
+        unguarded( (: restore_object, SAVE_UNIQUE :) );
 }
 
 void eventTouchObject() {
@@ -32,11 +32,11 @@ object GetUniqueCopy(string fn, int rare) {
     int x;
 
     if( !Objects[fn] ) {
-	ob = new(fn);
-	if( !((int)ob->GetUnique()) ) return ob;
-	else Objects[fn] = time();
-	unguarded( (: save_object, SAVE_UNIQUE :) );
-	return ob;
+        ob = new(fn);
+        if( !((int)ob->GetUnique()) ) return ob;
+        else Objects[fn] = time();
+        unguarded( (: save_object, SAVE_UNIQUE :) );
+        return ob;
     }
     x = time() - Objects[fn];
     if( x < (86400 * rare) ) return 0;

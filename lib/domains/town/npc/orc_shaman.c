@@ -27,10 +27,10 @@ static void create() {
     SetMaxHealthPoints(200);
     SetEncounter(  (: CheckOrc :) );
     SetInventory(([
-	"/domains/town/weap/gstaff":"wield staff",
-	"/domains/town/weap/orcslayer":1,
-	"/domains/town/armor/orc_helmet": "wear helmet",
-	"/domains/town/armor/bearskin": "wear bearskin",
+        "/domains/town/weap/gstaff":"wield staff",
+        "/domains/town/weap/orcslayer":1,
+        "/domains/town/armor/orc_helmet": "wear helmet",
+        "/domains/town/armor/bearskin": "wear bearskin",
       ]) );
 
 }

@@ -23,7 +23,7 @@ void create() {
 void reset() {
     ::reset();
     if(!present("chest")) 
-	new("/domains/Praxis/obj/misc/chest")->move(this_object());
+        new("/domains/Praxis/obj/misc/chest")->move(this_object());
     //present("chest", this_object())->SetClosed(0);
     //if(!present("orcslayer", present("chest")))
     new("/domains/Praxis/obj/weapon/orc_slayer")->move(present("chest"));

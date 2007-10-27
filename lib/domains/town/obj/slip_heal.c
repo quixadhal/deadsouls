@@ -15,10 +15,10 @@ void create(){
     SetBaseCost("silver",200);
     SetVendorType(VT_HERB);
     SetItems( ([
-	({"script","writing","scribbling"}) : "There is writing on the slip."
+        ({"script","writing","scribbling"}) : "There is writing on the slip."
       ]) );
     SetRead( ([
-	({"script","writing","scribbling"}) : "The slip reads: \"etaoin\""
+        ({"script","writing","scribbling"}) : "The slip reads: \"etaoin\""
       ]) );
     SetDefaultRead("default", "The slip reads: \"shrdlu\"");
     SetProperty("problem","heal");
@@ -26,7 +26,7 @@ void create(){
 
 void init(){
     if( living(environment()) && environment()->GetKeyName() != "clepius"){
-	patient = environment()->GetKeyName();
+        patient = environment()->GetKeyName();
     }
 }
 

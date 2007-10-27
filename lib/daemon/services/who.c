@@ -14,9 +14,9 @@ static string eventLookupUser(string str){
     if(!user_table) user_table = ([]);
     if(!user_table[str]) return str;
     else {
-	string ret = user_table[str];
-	//map_delete(user_table, str);
-	return ret;
+        string ret = user_table[str];
+        //map_delete(user_table, str);
+        return ret;
     }
 }
 
@@ -28,11 +28,11 @@ void eventReceiveWhoReply(mixed *packet) {
     if( !packet[5] || !(ob = find_player(convert_name(eventLookupUser(packet[5])))) ) return;
     list = "%^MAGENTA%^Remote who information from " + packet[2] + ":%^RESET%^\n";
     foreach(who in packet[6]){ 
-	mixed wtf;
-	if(intp(who[1])) wtf = to_int(who[1]);
-	if(wtf < 6) tmp = "not";
-	else tmp = time_elapsed(wtf);
-	list +=  who[0] + " (" + tmp + " idle): " + who[2] +"\n";
+        mixed wtf;
+        if(intp(who[1])) wtf = to_int(who[1]);
+        if(wtf < 6) tmp = "not";
+        else tmp = time_elapsed(wtf);
+        list +=  who[0] + " (" + tmp + " idle): " + who[2] +"\n";
     }
     ob->eventPrint(list);
     tn("eventReceiveWhoReply: "+identify(packet),"blue");
@@ -44,11 +44,11 @@ void eventReceiveWhoRequest(mixed *packet) {
     if( file_name(previous_object()) != INTERMUD_D ) return;
     msg = map(filter(users(), (: (environment($1) && !((int)$1->GetInvis()))  :)),
       (: ({ (string)$1->GetCapName(), query_idle($1),
-	  (string)$1->GetShort() }) :));
+          (string)$1->GetShort() }) :));
     INTERMUD_D->eventWrite(({ "who-reply", 5, mud_name(), 0, packet[2],
-	packet[3], msg }));
+        packet[3], msg }));
     foreach(string *entry in msg){
-	ret += entry[0]+", ";
+        ret += entry[0]+", ";
     }
     ret = truncate(ret,2);
     tn("eventReceiveWhoRequest: "+identify(packet),"blue");
@@ -61,16 +61,16 @@ varargs void eventSendWhoRequest(string mud) {
     who = (string)this_player(1)->GetKeyName();
 
     if(this_player(1)->GetInvis()){
-	foreach(string key, string val in user_table){
-	    if(!key || ! val) continue;
-	    if(val == who){
-		crypt_who = key;
-	    }
-	}
-	if(!crypt_who){
-	    crypt_who = alpha_crypt(10); 
-	    user_table[crypt_who] = who;
-	}
+        foreach(string key, string val in user_table){
+            if(!key || ! val) continue;
+            if(val == who){
+                crypt_who = key;
+            }
+        }
+        if(!crypt_who){
+            crypt_who = alpha_crypt(10); 
+            user_table[crypt_who] = who;
+        }
     }
 
     else crypt_who = who;

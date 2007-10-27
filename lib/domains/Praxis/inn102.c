@@ -18,28 +18,28 @@ void create() {
       "shade of sand, and the furniture is a deep oaken "
       "color. In order to exit the room, try 'leave'." );
     SetItems( ([ 
-	({ "room", "chambers", "chamber" }) :
-	"The chamber is a very comfortable room.",
-	"inn" : "The Nightmare Inn is reputed to be the best "
-	"in the land.",
-	"bed" : "The bed is very large and comfortable. It "
-	"looks like it would be fun to bounce on.",
-	({ "night stand", "night stands" }) :
-	"The night stands are very solid oaken structures.",
-	"lamp" : "The lamp is a very old antique lamp that "
-	"is made out of fine crystal.",
-	"carpet" : "The carpet is a very soothing shade of "
-	"beige.", ]) );
+        ({ "room", "chambers", "chamber" }) :
+        "The chamber is a very comfortable room.",
+        "inn" : "The Nightmare Inn is reputed to be the best "
+        "in the land.",
+        "bed" : "The bed is very large and comfortable. It "
+        "looks like it would be fun to bounce on.",
+        ({ "night stand", "night stands" }) :
+        "The night stands are very solid oaken structures.",
+        "lamp" : "The lamp is a very old antique lamp that "
+        "is made out of fine crystal.",
+        "carpet" : "The carpet is a very soothing shade of "
+        "beige.", ]) );
     SetExits( ([
-	"east" : "/domains/Praxis/hall.c",
+        "east" : "/domains/Praxis/hall.c",
       ]) );
 
 }
 
 int bounce(string str) {
     if(!str || str!="bed" ) {
-	notify_fail( "Bounce on what?\n");
-	return 0;
+        notify_fail( "Bounce on what?\n");
+        return 0;
     }
 
     write( "You bounce up and down on the bed happily.");

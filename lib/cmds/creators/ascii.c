@@ -9,19 +9,19 @@ int cmd(string str){
     string ret = "";
 
     if(str && !code = atoi(str)){
-	write("That doesn't appear to be an integer.");
-	return 1;
+        write("That doesn't appear to be an integer.");
+        return 1;
     }
 
     if(code) {
-	ret = convert_ascii(code);
-	write("The ASCII code "+code+" is: "+ret);
-	return 1;
+        ret = convert_ascii(code);
+        write("The ASCII code "+code+" is: "+ret);
+        return 1;
     }
 
     for(code = 33; code < 256; code++){
-	tmp = convert_ascii(code);
-	if(sizeof(tmp)) ret += "The ASCII code "+code+" is: "+tmp+"\n"; 
+        tmp = convert_ascii(code);
+        if(sizeof(tmp)) ret += "The ASCII code "+code+" is: "+tmp+"\n"; 
     }
 
     write(ret);

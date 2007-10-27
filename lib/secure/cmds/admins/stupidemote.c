@@ -17,76 +17,76 @@ mixed cmd(string args) {
     string emote, xtra, prep;
 
     if( !args || args == "" ) {
-	return "Add which emote?";
+        return "Add which emote?";
     }
     if( sscanf(args, "%s %s", emote, xtra) != 2 ) {
-	emote = args;
-	xtra = 0;
+        emote = args;
+        xtra = 0;
     }
     if( xtra ) {
-	if( xtra == "LIV" || xtra == "LVS" ) {
-	    prep = 0;
-	}
-	else {
-	    string token;
+        if( xtra == "LIV" || xtra == "LVS" ) {
+            prep = 0;
+        }
+        else {
+            string token;
 
-	    if( strlen(xtra) < 5 ) {
-		return "The expression " + xtra + " makes no sense.";
-	    }
-	    prep = xtra[0..<5];
-	    token = xtra[<3..];
-	    if( member_array(prep, master()->parse_command_prepos_list()) ==
-	      -1 ) {
-		return "The preposition " + prep + " is not a valid.";
-	    }
-	    if( member_array(token, ({ "LIV", "LVS" })) == -1 ) {
-		return "The token " + token + " is invalid.";
-	    }
-	    rules = ({ rules..., token });
-	}
-	rules = ({ rules..., xtra, "STR " + xtra, xtra + " STR" });
+            if( strlen(xtra) < 5 ) {
+                return "The expression " + xtra + " makes no sense.";
+            }
+            prep = xtra[0..<5];
+            token = xtra[<3..];
+            if( member_array(prep, master()->parse_command_prepos_list()) ==
+              -1 ) {
+                return "The preposition " + prep + " is not a valid.";
+            }
+            if( member_array(token, ({ "LIV", "LVS" })) == -1 ) {
+                return "The token " + token + " is invalid.";
+            }
+            rules = ({ rules..., token });
+        }
+        rules = ({ rules..., xtra, "STR " + xtra, xtra + " STR" });
     }
     else {
-	prep = 0;
+        prep = 0;
     }
     if( !SOUL_D->AddVerb(emote, capitalize(emote) + " how?") ) {
-	previous_object()->eventPrint("Failed to create emote.");
-	return 1;
+        previous_object()->eventPrint("Failed to create emote.");
+        return 1;
     }
     foreach(string rule in rules) {
-	string msg;
+        string msg;
 
-	if( rule == "" ) {
-	    msg = "$agent_name $agent_verb.";
-	    adverbs = 0;
-	}
-	else if( rule == "STR" ) {
-	    msg = "$agent_name $agent_verb $adverb.";
-	    adverbs = ({ "-" });
-	}
-	else if( rule == "LIV" || rule == "LVS" || rule == xtra ) {
-	    if( prep ) {
-		msg = "$agent_name $agent_verb " + prep + " $target_name.";
-	    }
-	    else {
-		msg = "$agent_name $agent_verb $target_name.";
-	    }
-	}
-	else {
-	    if( prep ) {
-		msg = "$agent_name $agent_verb $adverb " + prep +
-		" $target_name.";
-	    }
-	    else {
-		msg = "$agent_name $agent_verb $target_name $adverb.";
-	    }
-	}
-	if( adverbs ) {
-	    SOUL_D->AddRule(emote, rule, ({ ({ emote }), msg }), adverbs);
-	}
-	else {
-	    SOUL_D->AddRule(emote, rule, ({ ({ emote }), msg }));
-	}
+        if( rule == "" ) {
+            msg = "$agent_name $agent_verb.";
+            adverbs = 0;
+        }
+        else if( rule == "STR" ) {
+            msg = "$agent_name $agent_verb $adverb.";
+            adverbs = ({ "-" });
+        }
+        else if( rule == "LIV" || rule == "LVS" || rule == xtra ) {
+            if( prep ) {
+                msg = "$agent_name $agent_verb " + prep + " $target_name.";
+            }
+            else {
+                msg = "$agent_name $agent_verb $target_name.";
+            }
+        }
+        else {
+            if( prep ) {
+                msg = "$agent_name $agent_verb $adverb " + prep +
+                " $target_name.";
+            }
+            else {
+                msg = "$agent_name $agent_verb $target_name $adverb.";
+            }
+        }
+        if( adverbs ) {
+            SOUL_D->AddRule(emote, rule, ({ ({ emote }), msg }), adverbs);
+        }
+        else {
+            SOUL_D->AddRule(emote, rule, ({ ({ emote }), msg }));
+        }
     }
     previous_object()->eventPrint("Stupid emote added.");
     return 1;

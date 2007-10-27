@@ -9,8 +9,8 @@ inherit LIB_DAEMON;
 varargs int cmd(string str)
 {
     if(!this_player()->GetInvis()) {
-	notify_fail("You are already visible.\n");
-	return 0;
+        notify_fail("You are already visible.\n");
+        return 0;
     }
     this_player()->SetInvis(0);
     message("my_action", "You step out of the shadows.", this_player());

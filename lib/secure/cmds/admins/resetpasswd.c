@@ -13,8 +13,8 @@ string savefile;
 mixed cmd(string args) {
 
     if(!archp(previous_object())) {
-	write("No.");
-	return 1;
+        write("No.");
+        return 1;
     }
 
     if(!args || !sizeof(args)) args = "me";
@@ -22,35 +22,35 @@ mixed cmd(string args) {
     args = lower_case(args);
 
     if(args == "me" || args == this_player()->GetKeyName()){
-	write("To reset your own password, use the command: passwd");
-	return 1;
+        write("To reset your own password, use the command: passwd");
+        return 1;
     }
 
     if( (int)previous_object()->GetForced() )
-	return "You cannot be forced to change a password.";
+        return "You cannot be forced to change a password.";
     if( previous_object() != this_player() )
-	return "You're being sploited to reset someone's password.";
+        return "You're being sploited to reset someone's password.";
 
     if(!user_exists(args)){
-	write("That person does not exist on this mud.");
-	return 1;
+        write("That person does not exist on this mud.");
+        return 1;
     }
 
     if(find_player(args)){
-	write("That player is currently logged on. Please use "
-	  "the passwd command to reset their password.");
-	return 1;
+        write("That player is currently logged on. Please use "
+          "the passwd command to reset their password.");
+        return 1;
     }
 
     savefile = DIR_CRES + "/" + args[0..0] + "/" + args + ".o";
     if(!file_exists(savefile)) {
-	write("Couldn't find "+savefile+". Looking for alternate.");
-	savefile = DIR_PLAYERS + "/" + args[0..0] + "/"+ args + ".o";
+        write("Couldn't find "+savefile+". Looking for alternate.");
+        savefile = DIR_PLAYERS + "/" + args[0..0] + "/"+ args + ".o";
     }
 
     if(!file_exists(savefile)){
-	write("Save file could not be found. Exiting.");
-	return 1;
+        write("Save file could not be found. Exiting.");
+        return 1;
     }
 
     write("Found "+savefile+".");
@@ -62,10 +62,10 @@ mixed cmd(string args) {
 
 static void NewPass(string pass) {
     if( !pass || strlen(pass) < 5 ) {
-	this_player()->eventPrint("Password must be at least 5 "
-	  "characters, password change failed.",
-	  MSG_SYSTEM);
-	return;
+        this_player()->eventPrint("Password must be at least 5 "
+          "characters, password change failed.",
+          MSG_SYSTEM);
+        return;
     }
     this_player()->eventPrint("\nConfirm: ", MSG_PROMPT);
     input_to( (: ConfirmPass :), I_NOECHO | I_NOESC, pass);
@@ -74,18 +74,18 @@ static void NewPass(string pass) {
 static void ConfirmPass(string str, string newpass) {
     string *lines;
     if( str != newpass ) {
-	this_player()->eventPrint("Passwords do not match.", MSG_SYSTEM);
-	return;
+        this_player()->eventPrint("Passwords do not match.", MSG_SYSTEM);
+        return;
     }
 
     lines = explode(unguarded((: read_file, savefile :)),"\n");
     unguarded((: rm, savefile :));
     foreach(string line in lines) {
-	string val;
+        string val;
 
-	if( sscanf(line, "Password %s", val) )
-	    line = "Password \"" + crypt(newpass, 0) + "\"";
-	unguarded((: write_file, savefile, line + "\n" :));
+        if( sscanf(line, "Password %s", val) )
+            line = "Password \"" + crypt(newpass, 0) + "\"";
+        unguarded((: write_file, savefile, line + "\n" :));
     }
     this_player()->eventPrint("\nPassword changed.", MSG_SYSTEM);
 }

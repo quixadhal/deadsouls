@@ -26,8 +26,8 @@ static void create() {
     i = sizeof(borg = keys(Currencies));
     temps = percent(time()-LastInflation, 4800000)* 0.01;
     while(i--) { 
-	tmp = temps * Currencies[borg[i]]["inflation"];
-	Currencies[borg[i]]["rate"] += tmp*Currencies[borg[i]]["rate"];
+        tmp = temps * Currencies[borg[i]]["inflation"];
+        Currencies[borg[i]]["rate"] += tmp*Currencies[borg[i]]["rate"];
     }
     LastInflation = time();
     unguarded( (: save_object(SAVE_ECONOMY) :) );
@@ -41,8 +41,8 @@ string ewrite(string str){
 
 static private void validate() {
     if( !((int)master()->valid_apply(({ PRIV_ASSIST }))) ){
-	write(identify(previous_object(-1)));
-	error("Illegal attempt to modify economy data");
+        write(identify(previous_object(-1)));
+        error("Illegal attempt to modify economy data");
     }
 }
 
@@ -79,6 +79,6 @@ float __Query(string type, string key) {
 
 string *__QueryCurrencies() { 
     if(sizeof(Currencies))
-	return keys(Currencies); 
+        return keys(Currencies); 
     else return ({});
 }

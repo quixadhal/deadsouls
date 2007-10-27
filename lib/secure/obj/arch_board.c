@@ -19,7 +19,7 @@ void init(){
 
 void validate(){
     if( !this_player() || !archp(this_player()) ) 
-	error("Illegal attempt to access arch board: "+get_stack()+" "+identify(previous_object(-1)));
+        error("Illegal attempt to access arch board: "+get_stack()+" "+identify(previous_object(-1)));
 }
 
 int cmd_read(string str) {

@@ -6,21 +6,21 @@ inherit LIB_ROOM;
 
 string LoadIP(){
     if(mud_name() != "Dead Souls Demo"){
-	if(INTERMUD_D->GetMudList()["Dead Souls Demo"])
-	    return INTERMUD_D->GetMudList()["Dead Souls Demo"][1];
+        if(INTERMUD_D->GetMudList()["Dead Souls Demo"])
+            return INTERMUD_D->GetMudList()["Dead Souls Demo"][1];
     }
     else if(INTERMUD_D->GetMudList()["Dead Souls"])
-	return INTERMUD_D->GetMudList()["Dead Souls"][1];
+        return INTERMUD_D->GetMudList()["Dead Souls"][1];
     else return "127.0.0.1";
 }
 
 string LoadPort(){
     if(mud_name() != "Dead Souls Demo"){
-	if(INTERMUD_D->GetMudList()["Dead Souls Demo"])
-	    return INTERMUD_D->GetMudList()["Dead Souls Demo"][2];
+        if(INTERMUD_D->GetMudList()["Dead Souls Demo"])
+            return INTERMUD_D->GetMudList()["Dead Souls Demo"][2];
     }
     else if(INTERMUD_D->GetMudList()["Dead Souls"])
-	return INTERMUD_D->GetMudList()["Dead Souls"][2];
+        return INTERMUD_D->GetMudList()["Dead Souls"][2];
     else return ""+query_host_port();
 }
 
@@ -43,7 +43,7 @@ void create() {
       "To connect type \"connect\" \n"+
       "The Creators' Hall west wing is south  of here.");
     SetExits( ([ 
-	"south" : "/domains/default/room/wiz_hall2",
+        "south" : "/domains/default/room/wiz_hall2",
       ]) );
     SetNoModify(1);
 }
@@ -52,22 +52,22 @@ void init(){
     object ding;
     ::init();
     if(!present("telnet_room_client",this_player())){
-	ding=new("/secure/obj/tc");
-	ding->eventMove(this_player());
-	ding->SetConnection(LoadIP()+" "+LoadPort());
+        ding=new("/secure/obj/tc");
+        ding->eventMove(this_player());
+        ding->SetConnection(LoadIP()+" "+LoadPort());
     }
 }
 
 int CanRelease(object ob){
     if(present("telnet_room_client",ob)){
-	present("telnet_room_client",ob)->eventDestruct();
+        present("telnet_room_client",ob)->eventDestruct();
     }
     return 1;
 }
 
 int CanReceive(object ob) {
     if(interactive(ob)){
-	tell_object(this_object(),ob->GetName()+" is about to enter the telnet room.");
+        tell_object(this_object(),ob->GetName()+" is about to enter the telnet room.");
     }
     return 1;
 }

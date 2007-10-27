@@ -41,19 +41,19 @@ mixed CanDrink(object ob) {
     strength = (int)ob->GetStrength();
     type = (int)ob->GetMealType();
     if( (type & MEAL_ALCOHOL) && ((strength + GetAlcohol()) >
-	GetStatLevel("durability")) )
-	return "That drink is too strong for you right now.";
+        GetStatLevel("durability")) )
+        return "That drink is too strong for you right now.";
     if( (type & MEAL_CAFFEINE) && ((strength + GetCaffeine()) >
-	GetStatLevel("durability")) )
-	return "That is too much caffeine for you right now.";
+        GetStatLevel("durability")) )
+        return "That is too much caffeine for you right now.";
     if( (type & MEAL_DRINK) && ((strength + GetDrink()) > 100) )
-	return "You can't drink any more fluids right now.";
+        return "You can't drink any more fluids right now.";
     return 1;
 }
 
 mixed CanEat(object ob) {
     if( ((int)ob->GetStrength() + GetFood()) > 100 )
-	return "This is more food than you can handle right now.";
+        return "This is more food than you can handle right now.";
     else return 1;
 }
 
@@ -79,7 +79,7 @@ mixed eventDrink(object ob) {
 mixed eventEat(object ob) {
     AddFood((int)ob->GetStrength());
     if( (int)ob->GetMealType() & MEAL_POISON )
-	AddPoison((int)ob->GetStrength());
+        AddPoison((int)ob->GetStrength());
     return 1;
 }
 
@@ -99,39 +99,39 @@ varargs string SetRace(string race, mixed extra) {
     }
 
     if(sizeof(args[4])){
-	foreach(mixed key, mixed val in args[4]){
-	    this_object()->AddSkill(key,atoi(val[1]),atoi(val[0]));
-	}
+        foreach(mixed key, mixed val in args[4]){
+            this_object()->AddSkill(key,atoi(val[1]),atoi(val[0]));
+        }
     }
 
     foreach(tmp in args[0]) {
-	mixt = copy(args[0]);
-	SetResistance(tmp...);
+        mixt = copy(args[0]);
+        SetResistance(tmp...);
     }
     foreach(tmp in args[1]) {
-	mixt = copy(args[1]);
-	AddStat(tmp...);
+        mixt = copy(args[1]);
+        AddStat(tmp...);
     }
     if( stringp(args[2]) ) {
-	mixt = copy(args[2]);
+        mixt = copy(args[2]);
 
-	if(!ENGLISH_ONLY){
-	    SetLanguage(args[2], 100, 1);
-	}
-	else {
-	    SetLanguage("English", 100, 1);
-	}
+        if(!ENGLISH_ONLY){
+            SetLanguage(args[2], 100, 1);
+        }
+        else {
+            SetLanguage("English", 100, 1);
+        }
     }
     if( sizeof(args[3]) == 2 ) {
-	mixt = copy(args[3]);
+        mixt = copy(args[3]);
 
-	SetLightSensitivity(args[3]...);
+        SetLightSensitivity(args[3]...);
     }
     if( extra != 1 ) NewBody(race);
     tmp = this_object()->GetId();
     if(tmp && member_array(race,tmp) == -1){
-	tmp += ({ race });
-	this_object()->SetId(tmp);
+        tmp += ({ race });
+        this_object()->SetId(tmp);
     }
     if( stringp(extra) ) return (Race = extra), race; 
     else return (Race = race);
@@ -151,26 +151,26 @@ varargs void SetStat(string stat, int level, int classes) {
     genetics::SetStat(stat, level, classes);
     switch(stat) {
     case "durability":
-	eventCompleteHeal(healthPoints = GetMaxHealthPoints());
-	eventHealDamage(healthPoints);
-	break;
+        eventCompleteHeal(healthPoints = GetMaxHealthPoints());
+        eventHealDamage(healthPoints);
+        break;
     case "intelligence":
-	AddMagicPoints(GetMaxMagicPoints());
-	break;
+        AddMagicPoints(GetMaxMagicPoints());
+        break;
     case "agility":
-	AddStaminaPoints(GetMaxStaminaPoints());
-	break;
+        AddStaminaPoints(GetMaxStaminaPoints());
+        break;
     }
 }
 
 varargs int GetMaxHealthPoints(string limb) {
     if(!limb) return ( 50 + (GetStatLevel("durability") * 10) );
     else {
-	int x;
+        int x;
 
-	x = GetLimbClass(limb);
-	if(!x) x = 5;
-	return ( (1 + GetStatLevel("durability")/x) * 10 );
+        x = GetLimbClass(limb);
+        if(!x) x = 5;
+        return ( (1 + GetStatLevel("durability")/x) * 10 );
     }
 }
 
@@ -213,19 +213,19 @@ int GetMobility() {
     int encum, mob;
 
     if( GetParalyzed() ) {
-	return 0;
+        return 0;
     }
     if( max < 1 ) {
-	max = 1;
+        max = 1;
     }
     encum = (GetCarriedMass() * 100)/max;
     encum -= (encum * GetStatLevel("agility"))/200;
     mob = 100 - encum;
     if( mob > 100 ) {
-	mob = 100;
+        mob = 100;
     }
     else if( mob < 1 ) {
-	mob = 0;
+        mob = 0;
     }
     return mob;
 }

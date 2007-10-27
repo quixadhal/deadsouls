@@ -15,7 +15,7 @@ void create(){
     SetAmmoType("nato");
     SetVendorType(VT_TREASURE);
     SetInventory(([
-	"/domains/campus/obj/223round" : 30,
+        "/domains/campus/obj/223round" : 30,
       ]));
 }
 void init(){

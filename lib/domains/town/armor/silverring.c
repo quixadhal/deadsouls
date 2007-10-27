@@ -15,8 +15,8 @@ static void create(){
     SetDamagePoints(100);
     SetArmorType(A_RING);
     SetItems(([
-	({"script","words","inscription","writing"}) : "Words engraved on the ring in a highly "+
-	"stylized script."
+        ({"script","words","inscription","writing"}) : "Words engraved on the ring in a highly "+
+        "stylized script."
       ]) );
     SetRead(({"script","words","inscription","writing"}), "\"etaoin shrdlu\""  );
 

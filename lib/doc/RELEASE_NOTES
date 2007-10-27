@@ -1,19 +1,27 @@
+---- 2.5a17 ---
+- Win32 FluffOS executable problems fixed, and the current windows
+  driver is now FluffOS.
+- Compile time compat fixes added for Wolfpaw hosts.
+
 ---- 2.5a16 ---
 - Released 2007-10-24
 - FluffOS code altered to compile on Win32, but the included binary
   is still MudOS.
 - Added Shadyman's updated Tim@TimMUD IMC2 code (see: help imc2 )
 - Fixed very confusing behavior when adding a player-usable race
-  with admintool.
+  with admintool if the race file was set to PLAYER_RACE.
 - The users() sefun override now is optimized for FluffOS. It works
   fine on MudOS for back-compatibility, but less efficiently.
 - FluffOS code and compilation options somewhat modified to get
   around minor compatibility issues.
 
+---- 2.5a15 ---
+- Bundled driver is now FluffOS.
+
 ---- 2.5a14 ---
 - Tightened up last_string_element() sefun.
-- Router improvements: * IRN nodes now reset a peer's connection
-  if no data is received within a set time. * IP's put on the blacklist
+- Router improvements: a) IRN nodes now reset a peer's connection
+  if no data is received within a set time. b) IP's put on the blacklist
   for having the wrong password are now automatically removed
   from the blacklist after a set time (default 1 week).
 - Router fix: a bug that had the router sending mudlist updates to the

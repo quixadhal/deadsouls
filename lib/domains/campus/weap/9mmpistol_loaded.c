@@ -24,7 +24,7 @@ void create(){
 
 int AddClip(){
     if(!present("clip",this_object())){
-	new("/domains/campus/obj/9mmclip")->eventMove(this_object());
+        new("/domains/campus/obj/9mmclip")->eventMove(this_object());
     }
     return 1;
 }

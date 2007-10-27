@@ -22,8 +22,8 @@ int GetArmorType() {
 
 int SetArmorType(int x) {
     if( !intp(x) ) {
-	error("Bad argument to SetArmorType().\n\tExpected value from "
-	  "/include/armor_types.h, Got: " + typeof(x) + "\n");
+        error("Bad argument to SetArmorType().\n\tExpected value from "
+          "/include/armor_types.h, Got: " + typeof(x) + "\n");
     }
     return (ArmorType = x);
 }
@@ -42,14 +42,14 @@ static string array SetWorn(string array limbs) {
 
 mixed CanEquip(object who, string array limbs) {
     if( GetWorn() ) {
-	return "#You are already using " + GetDefiniteShort() + ".";
+        return "#You are already using " + GetDefiniteShort() + ".";
     }
     return who->CanWear(this_object(), limbs);
 }
 
 mixed CanUnequip(object who) {
     if( !GetWorn() ) {
-	return "#You are not using " + GetDefiniteShort() + ".";
+        return "#You are not using " + GetDefiniteShort() + ".";
     }
     return who->CanRemoveItem(who, this_object());
 }
@@ -58,7 +58,7 @@ mixed eventEquip(object who, string array limbs) {
     mixed tmp = who->eventWear(this_object(), limbs);
 
     if( tmp != 1 ) {
-	return tmp;
+        return tmp;
     }
     SetWorn(limbs);
     return 1;
@@ -68,14 +68,14 @@ static void eventRestoreEquip(string array limbs) {
     mixed tmp;
 
     if( !limbs || !environment() ) {
-	return;
+        return;
     }
     tmp = CanEquip(environment(), limbs);
     if( tmp == 1 ) {
-	tmp = eventEquip(environment(), limbs);
+        tmp = eventEquip(environment(), limbs);
     }
     if( stringp(tmp) ) {
-	environment()->eventPrint(tmp);
+        environment()->eventPrint(tmp);
     }
 }
 
@@ -83,7 +83,7 @@ mixed eventUnequip(object who) {
     mixed tmp = who->eventRemoveItem(this_object());
 
     if( tmp != 1 ) {
-	return tmp;
+        return tmp;
     }
     SetWorn(0);
     return 1;

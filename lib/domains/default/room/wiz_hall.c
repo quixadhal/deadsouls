@@ -29,16 +29,16 @@ static void create() {
     ob->SetShort("a dusty chalkboard");
     ob->eventMove(this_object());
     SetInventory(([
-	"/domains/default/npc/tree" : ({ 10, 1 }),
-	"/domains/default/obj/chest" : 1 ]));
+        "/domains/default/npc/tree" : ({ 10, 1 }),
+        "/domains/default/obj/chest" : 1 ]));
     SetItems( ([
-	({"sign"}) : "A sign you can read.",
+        ({"sign"}) : "A sign you can read.",
       ]) );
     SetExits( ([
-	"east" : "/domains/default/room/wiz_corr1",
-	"south" : "/secure/room/arch",
-	"north" : "/domains/town/room/adv_guild",
-	"west" : "/domains/default/room/wiz_hall2.c",
+        "east" : "/domains/default/room/wiz_corr1",
+        "south" : "/secure/room/arch",
+        "north" : "/domains/town/room/adv_guild",
+        "west" : "/domains/default/room/wiz_hall2.c",
       ]) );
     SetRead("sign", (: load_object(ROOM_ARCH)->SignRead() :) );
 }
@@ -46,13 +46,13 @@ static void create() {
 int CanReceive(object ob) {
     if(playerp(ob) && !creatorp(ob) && !present("testchar badge",ob) &&
       !member_group(ob,"TEST")) {
-	message("info","Creator staff only, sorry.", ob);
-	return 0;
+        message("info","Creator staff only, sorry.", ob);
+        return 0;
     }
 
     if(ob->GetRace() == "rodent"){
-	message("info","You are repelled by rodenticide.",ob);
-	return 0;
+        message("info","You are repelled by rodenticide.",ob);
+        return 0;
     }
     return 1;
 }
@@ -60,7 +60,7 @@ int CanReceive(object ob) {
 int eventReceiveObject(object ob){
     string race = ob->GetRace();
     if(race && race == "orc"){
-	ob->eventPrint("Welcome to our inclusive halls, proud orc!");
+        ob->eventPrint("Welcome to our inclusive halls, proud orc!");
     }
     return ::eventReceiveObject(ob);
 }

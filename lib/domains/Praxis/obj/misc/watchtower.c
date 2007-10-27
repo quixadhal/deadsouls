@@ -40,14 +40,14 @@ void init() {
 
 int read(string str) {
     if(str == "clock") {
-	GetLong_time();
-	return 1;
+        GetLong_time();
+        return 1;
     }
     else if (str == "names") {
-	message("Ninfo", "These people have donated money and made Nightmare possible:\n"+
-	  format_page(sort_array(DONATORS_LIST, "alpha", this_object()), 5)
-	  ,this_player());
-	return 1;
+        message("Ninfo", "These people have donated money and made Nightmare possible:\n"+
+          format_page(sort_array(DONATORS_LIST, "alpha", this_object()), 5)
+          ,this_player());
+        return 1;
     }
     notify_fail("Read what?\n");
     return 0;

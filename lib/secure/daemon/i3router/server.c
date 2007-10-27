@@ -443,7 +443,7 @@ void clear_discs(){
                 server_log("I want to remove "+mudname+". Its disconnect time is "+ctime(query_mud(mudname)["disconnect_time"]));
                 server_log("Which was "+time_elapsed(time() - query_mud(mudname)["disconnect_time"])+" ago.");
                 i = i+1;
-                call_out( (: remove_mud :), i, mudname,1);
+                remove_mud(mudname,1);
             }
             else {
                 server_log(mudname+" is not listed as a local mud.");
@@ -462,7 +462,7 @@ void clear_discs(){
             }
             server_log("Removing disconnected mud: "+identify(mudname));
             i = i+2;
-            call_out( (: remove_mud :), i, mudname,1);
+            remove_mud(mudname,1);
         }
     }
 }

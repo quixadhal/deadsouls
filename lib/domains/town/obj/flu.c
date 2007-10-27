@@ -35,20 +35,20 @@ void create(){
 
 void bonuses(){
     if(victim && environment(this_object()) == victim){
-	victim->AddStatBonus("intelligence", -15);
-	victim->AddStatBonus("strength", -25);
-	victim->AddStatBonus("charisma", -45);
-	victim->AddStatBonus("durability", -25);
-	victim->AddStatBonus("agility", -25);
-	victim->AddStatBonus("coordination", -15);
-	victim->AddStatBonus("speed", -15);
-	victim->AddStatBonus("wisdom", -2);
+        victim->AddStatBonus("intelligence", -15);
+        victim->AddStatBonus("strength", -25);
+        victim->AddStatBonus("charisma", -45);
+        victim->AddStatBonus("durability", -25);
+        victim->AddStatBonus("agility", -25);
+        victim->AddStatBonus("coordination", -15);
+        victim->AddStatBonus("speed", -15);
+        victim->AddStatBonus("wisdom", -2);
     }
     else if(victim) {
-	foreach( string stat in ({"intelligence", "strength",
-	    "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
-	    victim->RemoveStatBonus(stat);
-	}
+        foreach( string stat in ({"intelligence", "strength",
+            "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
+            victim->RemoveStatBonus(stat);
+        }
     }
     return;
 }
@@ -98,55 +98,55 @@ string GetAffectLong(object ob) {
 
 int damage1(){
     if(victim){
-	tell_object(victim,"You feel weak and ill.");
-	tell_room(environment(victim),victimname+" looks pale and ill.", ({victim}) );
-	if(FatigueLevel() > 10) victim->AddStaminaPoints(random(-15)-15);
+        tell_object(victim,"You feel weak and ill.");
+        tell_room(environment(victim),victimname+" looks pale and ill.", ({victim}) );
+        if(FatigueLevel() > 10) victim->AddStaminaPoints(random(-15)-15);
     }
     return 1;
 }
 
 int damage2(){
     if(victim){
-	tell_object(victim,"You are racked by a fit of gruesome-sounding, hacking coughs.");
-	tell_room(environment(victim),victimname+" is racked by a fit of gruesome-sounding, hacking coughs.", ({victim}) );
-	if(DangerLevel() != 100) victim->AddHP(-(random(20)+10));
-	if(FatigueLevel() > 10) victim->AddStaminaPoints(random(-10)-5);
+        tell_object(victim,"You are racked by a fit of gruesome-sounding, hacking coughs.");
+        tell_room(environment(victim),victimname+" is racked by a fit of gruesome-sounding, hacking coughs.", ({victim}) );
+        if(DangerLevel() != 100) victim->AddHP(-(random(20)+10));
+        if(FatigueLevel() > 10) victim->AddStaminaPoints(random(-10)-5);
     }
     return 1;
 }
 
 int damage3(){
     if(victim){
-	tell_room(environment(victim),victimname+" lets out a groan of discomfort.", ({victim}) );
-	tell_object(victim,"You let out a groan of discomfort as a wave of weakness hits you.");
-	if(FatigueLevel() > 10) victim->AddStaminaPoints(random(-10)-10);
+        tell_room(environment(victim),victimname+" lets out a groan of discomfort.", ({victim}) );
+        tell_object(victim,"You let out a groan of discomfort as a wave of weakness hits you.");
+        if(FatigueLevel() > 10) victim->AddStaminaPoints(random(-10)-10);
     }
     return 1;
 }
 
 int damage4(){
     if(victim){
-	tell_room(environment(victim),victimname+" gags violently, then chokes out a thick rope of vomit onto the ground.", ({victim}) );
-	tell_object(victim,"You gag violently, then choke out a thick rope of vomit onto the ground.");
-	if(DangerLevel() != 100) victim->AddHP(-(random(30)+15));
-	if(FatigueLevel() > 10) victim->AddStaminaPoints(random(-25)-20);
+        tell_room(environment(victim),victimname+" gags violently, then chokes out a thick rope of vomit onto the ground.", ({victim}) );
+        tell_object(victim,"You gag violently, then choke out a thick rope of vomit onto the ground.");
+        if(DangerLevel() != 100) victim->AddHP(-(random(30)+15));
+        if(FatigueLevel() > 10) victim->AddStaminaPoints(random(-25)-20);
     }
     return 1;
 }
 
 int damage5(){
     if(victim){
-	if(victim->GetPosition() != 1){
-	    tell_room(environment(victim),victimname+" makes a horrendous flatulent noise and falls helplessly to the floor, soiling "+objective(victim)+"self.", ({victim}) );
-	    tell_object(victim,"You make a horrendous flatulent noise and fall helplessly to the floor, soiling yourself.");
-	    victim->SetPosition(1);
-	}
-	if(victim->GetPosition() == 1){
-	    tell_room(environment(victim),victimname+" makes a horrendous flatulent noise as "+nominative(this_player())+" lies helplessly on the ground.");
-	    tell_object(victim,"You make a horrendous flatulent noise as you lie helplessly on the ground.");
-	}
-	if(DangerLevel() != 100) victim->AddHP(-(random(35)+15));
-	if(FatigueLevel() > 10) victim->AddStaminaPoints(random(-35)-25);
+        if(victim->GetPosition() != 1){
+            tell_room(environment(victim),victimname+" makes a horrendous flatulent noise and falls helplessly to the floor, soiling "+objective(victim)+"self.", ({victim}) );
+            tell_object(victim,"You make a horrendous flatulent noise and fall helplessly to the floor, soiling yourself.");
+            victim->SetPosition(1);
+        }
+        if(victim->GetPosition() == 1){
+            tell_room(environment(victim),victimname+" makes a horrendous flatulent noise as "+nominative(this_player())+" lies helplessly on the ground.");
+            tell_object(victim,"You make a horrendous flatulent noise as you lie helplessly on the ground.");
+        }
+        if(DangerLevel() != 100) victim->AddHP(-(random(35)+15));
+        if(FatigueLevel() > 10) victim->AddStaminaPoints(random(-35)-25);
     }
     return 1;
 }

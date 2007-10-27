@@ -14,24 +14,24 @@ static void create() {
       "\n"
       "%^GREEN%^There is a large sign on the wall you can read.%^RESET%^");
     SetInventory( ([
-	"/domains/campus/obj/pedestal" : 1,
-	"/domains/campus/npc/charly" : 1
+        "/domains/campus/obj/pedestal" : 1,
+        "/domains/campus/npc/charly" : 1
       ]) );
     SetItems( ([
-	({ "wall","walls","north wall"}) : "Shiny, white laboratory walls.",
-	"red room" : "There's no red room here.",
-	"green room" : "There's no green room here.",
-	"blue room" : "There's no blue room here.",
+        ({ "wall","walls","north wall"}) : "Shiny, white laboratory walls.",
+        "red room" : "There's no red room here.",
+        "green room" : "There's no green room here.",
+        "blue room" : "There's no blue room here.",
       ]) );
     AddItem( ({"sign","sign on the wall"}), "A sign you can read.",({"large"}) );
 
     SetExits( ([
-	"south" : "/domains/campus/room/wiz_lab"
+        "south" : "/domains/campus/room/wiz_lab"
       ]) );
     SetEnters( ([
-	"red room" : "/domains/campus/room/red_room",
-	"green room" : "/domains/campus/room/green_room",
-	"blue room" : "/domains/campus/room/blue_room"
+        "red room" : "/domains/campus/room/red_room",
+        "green room" : "/domains/campus/room/green_room",
+        "blue room" : "/domains/campus/room/blue_room"
       ]) );
     SetDoor("red room","/domains/campus/doors/red_door");
     SetDoor("green room","/domains/campus/doors/green_door");

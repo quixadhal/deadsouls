@@ -24,14 +24,14 @@ static void create() {
 
 mixed cureMe(object who, int amount, string type) {
     if( amount < 40 ) {
-	return 0;
+        return 0;
     }
     return 1;
 }
 
 int infectMe(object who) {
     if( who->GetRace() == "klingon" ) {
-	return 0;
+        return 0;
     }
     who->eventPrint("You start feeling a little achy.");
     return 1;
@@ -39,24 +39,24 @@ int infectMe(object who) {
 
 int eventSuffer(object who) {
     if( !random(100) ) {
-	Destruct();
-	return 1;
+        Destruct();
+        return 1;
     }
     switch(random(3)) {
     case 0:
-	send_messages("cough", "$agent_name $agent_verb miserably.",
-	  who, 0, environment(who));
-	break;
+        send_messages("cough", "$agent_name $agent_verb miserably.",
+          who, 0, environment(who));
+        break;
 
     case 1:
-	send_messages("", "$agent_possessive_noun red nose runs all over "
-	  "$agent_possessive face.", who, 0, environment(who));
-	break;
+        send_messages("", "$agent_possessive_noun red nose runs all over "
+          "$agent_possessive face.", who, 0, environment(who));
+        break;
 
     case 2:
-	send_messages("look", "$agent_name $agent_verb miserable.",
-	  who, 0, environment(who));
-	break;
+        send_messages("look", "$agent_name $agent_verb miserable.",
+          who, 0, environment(who));
+        break;
     }
     who->eventReceiveDamage(0, COLD, random(3) + 1, 1);
     return 1;

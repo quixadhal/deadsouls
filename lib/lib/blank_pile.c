@@ -12,14 +12,14 @@ string array GetId() {
 
     id = pile::GetId();
     if( PileType ) {
-	if(PileType != "dollars") {
-	    id += ({ PileType, PileAmount + " " + PileType +" coins"});
-	    return ({ id..., "money", "pile","coins","coin" });
-	}
-	else {
-	    id += ({ PileType, PileAmount + " " + PileType +" dollars"});
-	    return ({ id..., "money", "pile","bill","bills" });
-	}
+        if(PileType != "dollars") {
+            id += ({ PileType, PileAmount + " " + PileType +" coins"});
+            return ({ id..., "money", "pile","coins","coin" });
+        }
+        else {
+            id += ({ PileType, PileAmount + " " + PileType +" dollars"});
+            return ({ id..., "money", "pile","bill","bills" });
+        }
     }
 }
 
@@ -28,7 +28,7 @@ string GetShort() {
     if(!PileAmount) sum = "some";
     else sum = cardinal(PileAmount);
     if(PileType != "dollars") {
-	return sum + " " + PileType + " coins";
+        return sum + " " + PileType + " coins";
     }
     else return sum + " " + PileType ;
 }

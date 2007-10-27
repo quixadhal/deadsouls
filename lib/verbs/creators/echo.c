@@ -50,8 +50,8 @@ mixed do_echo_str(string str) {
     string tmp;
 
     if( sscanf(str, "to all %s", tmp) && tmp ) {
-	obs = (users() - ({ this_player() }));
-	str = tmp;
+        obs = (users() - ({ this_player() }));
+        str = tmp;
     }
     else obs = (all_inventory(environment(this_player())) - ({this_player()}));
     eventEcho(obs, str);
@@ -62,10 +62,10 @@ void eventEcho(object *targs, string str) {
     object ob;
 
     foreach(ob in targs) {
-	if( archp(ob) )
-	    ob->eventPrint((string)this_player()->GetCapName() +
-	      " echoes: " + str, MSG_CONV);
-	else ob->eventPrint(str, MSG_CONV);
+        if( archp(ob) )
+            ob->eventPrint((string)this_player()->GetCapName() +
+              " echoes: " + str, MSG_CONV);
+        else ob->eventPrint(str, MSG_CONV);
     }
     this_player()->eventPrint("You echo: " + str, MSG_CONV);
 }

@@ -35,11 +35,11 @@ void init(){
 }
 int memo(string str){
     if(!dirchecked){
-	this_object()->checkdir();
+        this_object()->checkdir();
     }
     if(!str){
-	write("You do not write anything on your memo pad.\n");
-	return 1;
+        write("You do not write anything on your memo pad.\n");
+        return 1;
     }
     write_file("/realms/"+ownerstr+"/log/memo",str+"\n");
     write("You add a memorandum to your memo pad.\n");
@@ -48,27 +48,27 @@ int memo(string str){
 }
 int read_memo(string str){
     if(str=="memo" || str=="memo pad" || str=="pad" || str=="notepad"){
-	if(!dirchecked){
-	    this_object()->checkdir();
-	}
-	fileread=read_file("/realms/"+ownerstr+"/log/memo");
-	if(!fileread){
-	    write("The memo pad is blank.\n");
-	    return 1;
-	}
-	write("The pad reads:\n"+fileread+"\n");
-	say(capownerstr+" flips through "+possessive(this_player())+" memo pad.\n");
-	return 1;
+        if(!dirchecked){
+            this_object()->checkdir();
+        }
+        fileread=read_file("/realms/"+ownerstr+"/log/memo");
+        if(!fileread){
+            write("The memo pad is blank.\n");
+            return 1;
+        }
+        write("The pad reads:\n"+fileread+"\n");
+        say(capownerstr+" flips through "+possessive(this_player())+" memo pad.\n");
+        return 1;
     }
     if(str=="instructions" || str=="instruction"){
-	this_object()->help_msg();
-	return 1;
+        this_object()->help_msg();
+        return 1;
     }
 }
 int help_mem(string str){
     if(str=="memo" || str=="memo pad" ||str=="pad"||str=="notepad"){
-	this_object()->help_msg();
-	return 1;
+        this_object()->help_msg();
+        return 1;
     }
 }
 int help_msg(){
@@ -84,8 +84,8 @@ int help_msg(){
 int exa_inst(string str){
     if(str=="instruction" || str=="instructions" ||
       str=="at instruction" || str=="at instructions"){
-	write("Instructions on the use of the memo pad.\n");
-	return 1;
+        write("Instructions on the use of the memo pad.\n");
+        return 1;
     }
 }
 int checkdir(){

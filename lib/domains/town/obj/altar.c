@@ -14,9 +14,9 @@ static void create() {
       "holy offerings and sacrifices are made. It is "+
       "sheeted in dried blood and rotting tissue.");
     SetItems( ([
-	({"blood","dried blood","tissue","rotting tissue"}) : ""+
-	"This appears to be the accumulated detritus of "+
-	"numerous sacrifices.",
+        ({"blood","dried blood","tissue","rotting tissue"}) : ""+
+        "This appears to be the accumulated detritus of "+
+        "numerous sacrifices.",
       ]) );
     SetMass(3000);
     SetBaseCost("silver",15);

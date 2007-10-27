@@ -55,10 +55,10 @@ void heart_beat(){
 
 int CanRelease(object ob){
     if(userp(ob) && ob->GetGhost() && environment(ob) == this_object()) {
-	tell_player(ob,"\n%^RED%^Your undead spirit is recalled and as you leave "+
-	  "the underworld a new body regenerates around you. "+
-	  "You live again!%^RESET%^\n");
-	ob->eventRevive();
+        tell_player(ob,"\n%^RED%^Your undead spirit is recalled and as you leave "+
+          "the underworld a new body regenerates around you. "+
+          "You live again!%^RESET%^\n");
+        ob->eventRevive();
     }
     return 1;
 }

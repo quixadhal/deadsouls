@@ -53,61 +53,61 @@ mixed do_add_obj_to_obj(object ob, object ob2) {
     string str, sourcefile;
     staff = present("tanstaafl",this_player());
     if(!staff) {
-	write("You must be holding the creator staff in order to use this command.");
-	write("If you don't know where you put it, get another one from the chest ");
-	write("in your workroom.");
-	return 1;
+        write("You must be holding the creator staff in order to use this command.");
+        write("If you don't know where you put it, get another one from the chest ");
+        write("in your workroom.");
+        return 1;
     }
     str = base_name(ob2)+".c";
     sourcefile = base_name(ob)+".c";
 
     if(userp(ob)){
-	write("You can't do that to a player.");
-	return 1;
+        write("You can't do that to a player.");
+        return 1;
     }
 
     if(!living(ob2) &&
       !inherits(LIB_STORAGE,ob2) &&
       !inherits(LIB_WORN_STORAGE,ob2) &&
       !inherits(LIB_ROOM,ob2)){
-	write("That object is not intended to contain other objects. Addition halted.");
-	write("If you are sure this is incorrect, then the target object may be ");
-	write("missing a working init function. Fix it with the initfix command.");
-	return 0;
+        write("That object is not intended to contain other objects. Addition halted.");
+        write("If you are sure this is incorrect, then the target object may be ");
+        write("missing a working init function. Fix it with the initfix command.");
+        return 0;
     }
 
     if(!check_privs(this_player(),str)){ 
-	write("You lack sufficient privileges for this operation on "+str+". Copy failed.");
-	return 0;
+        write("You lack sufficient privileges for this operation on "+str+". Copy failed.");
+        return 0;
     }
 
     if(!check_read(sourcefile)){
-	write("You lack sufficient privileges for this operation on "+sourcefile+". Copy failed.");
-	return 0;
+        write("You lack sufficient privileges for this operation on "+sourcefile+". Copy failed.");
+        return 0;
     }
 
     if(!file_exists(sourcefile) || !file_exists(str)) {
-	write("That file no longer exists.");
-	return 0;
+        write("That file no longer exists.");
+        return 0;
     }
 
     if(base_name(ob2) == LIB_DUMMY) ob = environment(this_player());
     if(base_name(ob) == LIB_DUMMY) {
-	write("That's not the kind of thing you can add to something.");
-	return 1;
+        write("That's not the kind of thing you can add to something.");
+        return 1;
     }
 
     if(starts_with(base_name(ob2),"/lib/")) {
-	write("This appears to be a library object. Canceling modification.");
-	return 1;
+        write("This appears to be a library object. Canceling modification.");
+        return 1;
     }
 
     if(ob2->GetNoModify()){
-	write("This object must be modified by hand.");
-	return 1;
+        write("This object must be modified by hand.");
+        return 1;
     }
 
     if(staff->eventAddItem(ob2, base_name(ob)))
-	if(ob) ob->eventMove(ROOM_FURNACE);
+        if(ob) ob->eventMove(ROOM_FURNACE);
     return 1;
 }

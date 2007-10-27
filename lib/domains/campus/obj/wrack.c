@@ -21,10 +21,10 @@ void create() {
     SetDollarCost(500);
     SetMaxCarry(5000);
     SetInventory(([
-	"/domains/campus/weap/dagger" : 5,
-	"/domains/campus/weap/sword" : 5,
-	"/domains/campus/weap/sharpsword" : 5,
-	"/domains/campus/weap/staff" : 5,
+        "/domains/campus/weap/dagger" : 5,
+        "/domains/campus/weap/sword" : 5,
+        "/domains/campus/weap/sharpsword" : 5,
+        "/domains/campus/weap/staff" : 5,
       ]));
     SetCanClose(1);
     SetClosed(0);

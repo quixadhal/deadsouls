@@ -19,22 +19,22 @@ varargs string GetSmell(string str, object who) {
     mixed val;
 
     if( !str || str == "default" ) {
-	val = Smell;
+        val = Smell;
     }
     else {
-	val = Smells[str];
+        val = Smells[str];
     }
     if( !val ) {
-	return 0;
+        return 0;
     }
     if( functionp(val) ) {
-	if( functionp(val) & FP_OWNER_DESTED ) {
-	    return "An error occured in a function pointer.";
-	}
-	return evaluate(val, who, str);
+        if( functionp(val) & FP_OWNER_DESTED ) {
+            return "An error occured in a function pointer.";
+        }
+        return evaluate(val, who, str);
     }
     else if( arrayp(val) ) {
-	return val[query_night()];
+        return val[query_night()];
     }
     else return val;
 }
@@ -45,10 +45,10 @@ string array GetSmells() {
 
 mapping RemoveSmell(string item) {
     if( !item || item == "default" ) {
-	Smell = 0;
+        Smell = 0;
     }
     else {
-	map_delete(Smells, item);
+        map_delete(Smells, item);
     }
     return Smells;
 }
@@ -62,50 +62,50 @@ mapping RemoveSmell(string item) {
  */
 varargs mixed SetSmell(mixed array args...) {
     if( sizeof(args) == 1 ) {
-	if( mapp(args[0]) ) {
-	    if( args[0]["default"] ) {
-		Smell = args[0]["default"];
-		map_delete(args[0], "default");
-	    }
-	    return (Smells = expand_keys(args[0]));
-	}
-	else {
-	    Smell = args[0];
-	}
-	return args[0];
+        if( mapp(args[0]) ) {
+            if( args[0]["default"] ) {
+                Smell = args[0]["default"];
+                map_delete(args[0], "default");
+            }
+            return (Smells = expand_keys(args[0]));
+        }
+        else {
+            Smell = args[0];
+        }
+        return args[0];
     }
     else if( sizeof(args) == 2 ) {
-	if( !args[1] ) {
-	    return SetSmell(args[0]);
-	}
-	else if( arrayp(args[0]) ) {
-	    foreach(string item in args[0]) {
-		SetSmell(item, args[1]);
-	    }
-	    return args[1];
-	}
-	else {
-	    if( !args[0] || args[0] == "default" ) {
-		Smell = args[1];
-		return Smell;
-	    }
-	    else {
-		Smells[args[0]] = args[1];
-		return Smells[args[0]];
-	    }
-	}
+        if( !args[1] ) {
+            return SetSmell(args[0]);
+        }
+        else if( arrayp(args[0]) ) {
+            foreach(string item in args[0]) {
+                SetSmell(item, args[1]);
+            }
+            return args[1];
+        }
+        else {
+            if( !args[0] || args[0] == "default" ) {
+                Smell = args[1];
+                return Smell;
+            }
+            else {
+                Smells[args[0]] = args[1];
+                return Smells[args[0]];
+            }
+        }
     }
     else {
-	error("Wrong number of arguments to SetSmell():\n\t"
-	  "Expected 1 or 2, got " + sizeof(args) + "\n");
+        error("Wrong number of arguments to SetSmell():\n\t"
+          "Expected 1 or 2, got " + sizeof(args) + "\n");
     }
 }
 
 varargs mixed eventSmell(object who, string str) {
     str = GetSmell(str, who);
     if( !str ) {
-	who->eventPrint("There is nothing to smell.");
-	return 1;
+        who->eventPrint("There is nothing to smell.");
+        return 1;
     }
     environment(who)->eventPrint(who->GetName() + " smells " + GetShort() +
       ".", who);
@@ -115,29 +115,29 @@ varargs mixed eventSmell(object who, string str) {
 
 mixed direct_smell_obj() {
     if( !Smell ) {
-	return "You notice no unusual odor.";
+        return "You notice no unusual odor.";
     }
     else {
-	return 1;
+        return 1;
     }
 }
 
 mixed direct_smell_str_word_obj(string str) {
     str = remove_article(lower_case(str));
     if( !Smells[str] ) {
-	return "You notice no unusual odor.";
+        return "You notice no unusual odor.";
     }
     else {
-	return 1;
+        return 1;
     }
 }
 
 mapping GetSmellMap(){
     mapping Smells = ([]);
     foreach(object ob in this_object()->GetDummyItems()) {
-	if( ob->GetSmell() ) {
-	    Smells[ob->GetId()] = ob->GetSmell();
-	}
+        if( ob->GetSmell() ) {
+            Smells[ob->GetId()] = ob->GetSmell();
+        }
     }
     if(this_object()->GetSmell()) Smells["default"] = this_object()->GetSmell();
     return copy(Smells);

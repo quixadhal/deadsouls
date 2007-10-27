@@ -12,20 +12,20 @@ static void create() {
       "leads into a stairwell. "+
       "A foyer and the building exit lie west of here.");
     SetExits( ([
-	"north" : "/domains/campus/room/mailroom",
-	"west" : "/domains/campus/room/foyer",
-	"south" : "/domains/campus/room/stairwell",
-	"east" : "/domains/campus/room/corridor" ]) );
+        "north" : "/domains/campus/room/mailroom",
+        "west" : "/domains/campus/room/foyer",
+        "south" : "/domains/campus/room/stairwell",
+        "east" : "/domains/campus/room/corridor" ]) );
     SetItems( (["corridor" : "This is a carpeted corridor, leading west.",
-	"floor" : "The carpet is purple, and somewhat institutional.",
-	"carpet" : "The carpet is purple, and somewhat institutional."]) );
+        "floor" : "The carpet is purple, and somewhat institutional.",
+        "carpet" : "The carpet is purple, and somewhat institutional."]) );
     SetDoor("south","/domains/campus/doors/top_stairs");
     SetProperty("no attack", 1);
 }
 int CanReceive(object ob){
     if(ob && ob->GetRace() == "rodent"){
-	message("info","You are repelled by rodenticide.",ob);
-	return 0;
+        message("info","You are repelled by rodenticide.",ob);
+        return 0;
     }
     return 1;
 }

@@ -13,8 +13,8 @@ int CheckDoor(){
     int i;
     obs=get_livings(find_object("/domains/campus/room/sewer2"),1);
     if(!sizeof(obs) && !"/domains/campus/doors/grate"->GetClosed() ) {
-	"/domains/campus/doors/grate"->SetClosed(1);
-	tell_object(this_object(),"The drainage grate slams shut.");
+        "/domains/campus/doors/grate"->SetClosed(1);
+        tell_object(this_object(),"The drainage grate slams shut.");
     }
     return 1;
 }
@@ -40,29 +40,29 @@ static void create() {
     SetDayLong(day);
     SetNightLong(day+night);
     SetItems( ([ ({ "square", "center" }) : "The square is a popular meeting place "
-	"for Larstown's denizens.",
-	"fountain" : "This beautifully designed fountain was donated "
-	"by Trent.",
-	({"street","North Street","north street"}) : "North Street leads north "+
-	"toward the village marketplace and its clock tower.",
-	({"avenue","east avenue","East Avenue"}) : "East Avenue leads east toward "+
-	"the shore and Larstown docks.",
-	({"road","south road","South Road"}) : "South Road leads south toward "+
-	"the town's water well, bank, and residential area.",
-	({"track","West Track","west track"}) : "West Track leads west toward the "+
-	"town hall and some business and civic buildings.",
-	({"circular bench", "bench", "stone bench", "stone"}) : "Many of "
-	"Frontier's denizens like to sit around the fountain and enjoy the "
-	"beautiful sights and sounds of the square." ]) );
+        "for Larstown's denizens.",
+        "fountain" : "This beautifully designed fountain was donated "
+        "by Trent.",
+        ({"street","North Street","north street"}) : "North Street leads north "+
+        "toward the village marketplace and its clock tower.",
+        ({"avenue","east avenue","East Avenue"}) : "East Avenue leads east toward "+
+        "the shore and Larstown docks.",
+        ({"road","south road","South Road"}) : "South Road leads south toward "+
+        "the town's water well, bank, and residential area.",
+        ({"track","West Track","west track"}) : "West Track leads west toward the "+
+        "town hall and some business and civic buildings.",
+        ({"circular bench", "bench", "stone bench", "stone"}) : "Many of "
+        "Frontier's denizens like to sit around the fountain and enjoy the "
+        "beautiful sights and sounds of the square." ]) );
     SetSearch( ([ "fountain" : "It appears someone has already stolen all the coins in the fountain." ]) );
     SetSmell( ([ "default" : "You smell the clean and misty air of the fountain's spray." ]) );
     SetObviousExits("n,s,e,w");
     SetExits( ([
-	"east" : "/domains/campus/room/square",
-	"east" : "/domains/campus/room/square",
-	"east" : "/domains/campus/room/square",
-	"east" : "/domains/campus/room/square",
-	"down" : "/domains/campus/room/sewer2"
+        "east" : "/domains/campus/room/square",
+        "east" : "/domains/campus/room/square",
+        "east" : "/domains/campus/room/square",
+        "east" : "/domains/campus/room/square",
+        "down" : "/domains/campus/room/sewer2"
       ]) );
 
     SetDoor("down","/domains/campus/doors/grate");

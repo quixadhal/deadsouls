@@ -15,7 +15,7 @@ void create() {
       (["chamber" : "It is a roundish room and dimly lit."]) );
     SetExits( 
       (["south" : "/domains/Praxis/orc_valley/open",
-	"north" : "/domains/Praxis/orc_valley/treasure"]) );
+        "north" : "/domains/Praxis/orc_valley/treasure"]) );
     AddExit("north", "/domains/Praxis/orc_valley/treasure", (: "go_north" :) );
 }
 
@@ -24,16 +24,16 @@ void reset() {
 
     ::reset();
     if(!present("shaman")) {
-	mon = new("/domains/Praxis/obj/mon/orc_shaman");
-	mon->move(this_object());
-	ob = new(LIB_ITEM);
-	ob->SetKeyName("key");
-	ob->SetId( ({ "key", "stone key", "a stone key", "orc_treasure" }) );
-	ob->SetShort( "A stone key");
-	ob->SetLong( "There is nothing special about it.");
-	ob->SetMass(190);
-	ob->SetValue(30);
-	ob->move(mon);
+        mon = new("/domains/Praxis/obj/mon/orc_shaman");
+        mon->move(this_object());
+        ob = new(LIB_ITEM);
+        ob->SetKeyName("key");
+        ob->SetId( ({ "key", "stone key", "a stone key", "orc_treasure" }) );
+        ob->SetShort( "A stone key");
+        ob->SetLong( "There is nothing special about it.");
+        ob->SetMass(190);
+        ob->SetValue(30);
+        ob->move(mon);
     }
 }
 

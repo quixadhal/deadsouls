@@ -15,13 +15,13 @@ void  reap_dummies(){
     dummies = ({});
 
     foreach(object ob in objects){
-	if(base_name(ob) == "/lib/std/dummy"){
-	    dummies += ({ ob });
-	}
+        if(base_name(ob) == "/lib/std/dummy"){
+            dummies += ({ ob });
+        }
     }
 
     foreach(object dummy in dummies){
-	if(!environment(dummy)) dummy->eventDestruct();
+        if(!environment(dummy)) dummy->eventDestruct();
     }
 }
 
@@ -38,17 +38,17 @@ varargs void reap_other(string s1){
     others = ({});
 
     foreach(object ob in objects){
-	if(sscanf(file_name(ob),"%s#%s",s1,s2) > 0) {
-	    if(base_name(ob) != LIB_CONNECT) others += ({ ob });
-	}
+        if(sscanf(file_name(ob),"%s#%s",s1,s2) > 0) {
+            if(base_name(ob) != LIB_CONNECT) others += ({ ob });
+        }
     }
 
     foreach(object thingy in others){
-	if(!userp(thingy) && !environment(thingy) && 
-	  !inherits(LIB_SHADOW, thingy) &&
-	  member_array(base_name(thingy), ExemptArray) == -1 ) {
-	    thingy->eventDestruct();
-	}
+        if(!userp(thingy) && !environment(thingy) && 
+          !inherits(LIB_SHADOW, thingy) &&
+          member_array(base_name(thingy), ExemptArray) == -1 ) {
+            thingy->eventDestruct();
+        }
     }
 }
 
@@ -65,14 +65,14 @@ mixed reap_list(){
     list = "";
 
     foreach(object thing in objects){
-	if(sscanf(file_name(thing),"%s#%s",s1,s2) > 0) {
-	    if(!environment(thing)) clones += ({ thing });
-	}
+        if(sscanf(file_name(thing),"%s#%s",s1,s2) > 0) {
+            if(!environment(thing)) clones += ({ thing });
+        }
     }
 
     rm("/tmp/lost_object_list.txt");
     foreach(object clone in clones){
-	write_file("/tmp/lost_object_list.txt", file_name(clone)+"\n");
+        write_file("/tmp/lost_object_list.txt", file_name(clone)+"\n");
     }
     //write("Total size of list: "+sizeof(clones)+" lost objects.");
     return this_player()->eventPage("/tmp/lost_object_list.txt");

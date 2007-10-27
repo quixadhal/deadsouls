@@ -28,10 +28,10 @@ static void create() {
 
 int eventMoralAct(int degree) {
     if( degree > 10 ) {
-	degree = 10;
+        degree = 10;
     }
     else if( degree < -10 ) {
-	degree = -10;
+        degree = -10;
     }
     Morality += degree;
     if( Morality > 2500 ) Morality = 2500;
@@ -41,12 +41,12 @@ int eventMoralAct(int degree) {
 
 int AddSkillPoints(string skill, int x) {
     if( SkillModifiers[skill] ) {
-	int stat_level; 
-	stat_level = GetBaseStatLevel(SkillModifiers[skill]);
-	if( stat_level < 20 ) x = x - x/2;
-	else if( stat_level < 40 ) x = x - x/3;
-	else if( stat_level > 70 && x < 100 ) x = x + x/3;
-	else if( stat_level > 99 ) x = x + x/2;
+        int stat_level; 
+        stat_level = GetBaseStatLevel(SkillModifiers[skill]);
+        if( stat_level < 20 ) x = x - x/2;
+        else if( stat_level < 40 ) x = x - x/3;
+        else if( stat_level > 70 && x < 100 ) x = x + x/3;
+        else if( stat_level > 99 ) x = x + x/2;
     }
     return abilities::AddSkillPoints(skill, x);
 }
@@ -64,30 +64,30 @@ string SetClass(string class_name) {
 
     CLASSES_D->SetClass(class_name, args);
     if( Class ) {
-	string multi;
+        string multi;
 
-	if( !high_mortalp() ) { // Not high mortal
-	    return Class;
-	}
-	if( !args[0] ) { // No such secondary class
-	    return Class;
-	}
-	multi = args[0][Class];
-	if( !multi ) { // Can't multi-class in this combo
-	    return Class;
-	}
-	class_name = multi;
+        if( !high_mortalp() ) { // Not high mortal
+            return Class;
+        }
+        if( !args[0] ) { // No such secondary class
+            return Class;
+        }
+        multi = args[0][Class];
+        if( !multi ) { // Can't multi-class in this combo
+            return Class;
+        }
+        class_name = multi;
     }
     else {
-	if( !args[0] ) { // No such class
-	    return Class;
-	}
-	foreach(tmp in args[2]) {
-	    SetSkill(tmp...);
-	}
+        if( !args[0] ) { // No such class
+            return Class;
+        }
+        foreach(tmp in args[2]) {
+            SetSkill(tmp...);
+        }
     }
     foreach(tmp in args[1]) {
-	SetSkill(tmp...);
+        SetSkill(tmp...);
     }
     return (Class = class_name);
 }
@@ -95,7 +95,7 @@ string SetClass(string class_name) {
 string ChangeClass(string class_name)  {
     string cl;
     foreach(cl in GetSkills())  {
-	RemoveSkill(cl);
+        RemoveSkill(cl);
     }
     Class = 0;
     return SetClass(class_name);

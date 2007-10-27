@@ -15,8 +15,8 @@ mixed cmd(string args) {
     if(mode > 2 || mode < 0) return "Invalid mode.";
 
     else INTERMUD_D->eventWrite( ({ "channel-add", 5, mud_name(), 
-	    this_player()->GetKeyName(), INTERMUD_D->GetNameserver(), 
-	    0, chan, mode }) );
+            this_player()->GetKeyName(), INTERMUD_D->GetNameserver(), 
+            0, chan, mode }) );
 
     //unguarded( (: update("/daemon/intermud") :) );
     load_object("/secure/cmds/creators/update")->cmd("/daemon/intermud");

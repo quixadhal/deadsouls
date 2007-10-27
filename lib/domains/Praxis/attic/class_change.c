@@ -58,23 +58,23 @@ int changing(string str)
 
     if(!present("mad wizard"))
     {
-	write("The mad wizard is not in to fix you up.\n");
-	return 1;
+        write("The mad wizard is not in to fix you up.\n");
+        return 1;
     }
     if(!str)
     {
-	write("How can the wizard operate if you do not give "+
-	  "instructions?\n");
-	say("The mad wizard bonks "+this_player()->query_cap_name()+
-	  " over the head.\n");
-	return 1;
+        write("How can the wizard operate if you do not give "+
+          "instructions?\n");
+        say("The mad wizard bonks "+this_player()->query_cap_name()+
+          " over the head.\n");
+        return 1;
     }
     //wtf does this do?
     //str=extract(str, 9);
     if(str == (string)this_player()->query_class())
     {
-	write("Mad Wizard says: yer even crazier than I am!\n");
-	return 1;
+        write("Mad Wizard says: yer even crazier than I am!\n");
+        return 1;
     }
     switch(str)
     {
@@ -83,19 +83,19 @@ int changing(string str)
     case "rogue":
     case "mage":
     case "monk":
-	i=1;
-	break;
+        i=1;
+        break;
     default: i=0;
     }
     if(!i)
     {
-	write("Mad Wizard says: what kind of class is that?\n");
-	return 1;
+        write("Mad Wizard says: what kind of class is that?\n");
+        return 1;
     }
     if( (int)this_player()->query_money("gold") < 5000)
     {
-	write("Mad Wizard says: You need more money than that.\n");
-	return 1;
+        write("Mad Wizard says: You need more money than that.\n");
+        return 1;
     }
     this_player()->add_money("gold", - 5000);
     this_player()->add_exp( - (this_player()->query_exp() / 2) );

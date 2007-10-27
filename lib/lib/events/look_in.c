@@ -19,16 +19,16 @@ string GetInternalDesc() {
     mixed val = InternalDesc;
 
     if( arrayp(val) ) {
-	val = val[query_night()];
+        val = val[query_night()];
     }
     if( stringp(val) ) {
-	return val;
+        return val;
     }
     else if( functionp(val) ) {
-	if( functionp(val) & FP_OWNER_DESTED ) {
-	    return "Error evaluating internal description.";
-	}
-	return evaluate(val, this_player());
+        if( functionp(val) & FP_OWNER_DESTED ) {
+            return "Error evaluating internal description.";
+        }
+        return evaluate(val, this_player());
     }
 }
 
@@ -52,23 +52,23 @@ varargs mixed CanShowInterior(object who, object target) {
 
     if( environment() != this_player()  && environment(this_player()) !=
       environment()) {
-	return "#You don't have that!";
+        return "#You don't have that!";
     }
 
     if(living()) {
-	//write("You can't look inside of a living being.");
-	//return 1;
-	return "You can't look inside of a living being.";
+        //write("You can't look inside of a living being.");
+        //return 1;
+        return "You can't look inside of a living being.";
     }
 
     if( target ) {
-	x = 66;
+        x = 66;
     }
     else {
-	x = 33;
+        x = 33;
     }
     if( this_object()->GetClosed() && this_object()->GetOpacity() > x ) {
-	return 0;
+        return 0;
     }
     return 1;
 }
@@ -84,20 +84,20 @@ varargs mixed eventShowInterior(object who, object target) {
     dabei=present(this,who);
 
     if( target ) {
-	//return target->eventShow(who);
-	return "well, well, well.";
+        //return target->eventShow(who);
+        return "well, well, well.";
     }
 
     if(!imhere && !dabei) {
-	who->eventPrint("That is not here.");
-	return 0;
+        who->eventPrint("That is not here.");
+        return 0;
     }
 
     if( !str || str == "" ) {
-	return 0;
+        return 0;
     }
     if(!inherits("/lib/comp/surface",this_object())) environment(who)->eventPrint(who->GetName() + " looks inside " +
-	  GetShort() + ".", who);
+          GetShort() + ".", who);
     who->eventPrint(str);
 
 }
@@ -114,16 +114,16 @@ mixed direct_look_inside_obj() {
 
 mixed indirect_look_at_obj_word_obj(object target) {
     if( environment(target) != this_object() ) {
-	return "#That is not in there.";
+        return "#That is not in there.";
     }
     return CanShowInterior(this_player(), target);
 }
 
 mixed inventory_visible() {
     if( GetOpacity() > 33 ) {
-	return 0;
+        return 0;
     }
     else {
-	return 1;
+        return 1;
     }
 }

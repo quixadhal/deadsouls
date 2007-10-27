@@ -64,38 +64,38 @@ mixed do_put_obs_word_obj(mixed *res, string wrd, object storage) {
     obs = filter(res, (: objectp :));
 
     if( !sizeof(obs) ) {
-	mixed *ua;
+        mixed *ua;
 
-	ua = unique_array(res, (: $1 :));
-	foreach(string *lines in ua) {
-	    if(storage && storage->GetClosed()) 
-		write(capitalize(storage->GetShort())+" is closed.");
-	    else write("That doesn't seem possible at the moment.");
-	    return 1;
-	}
-	if(storage && storage->GetClosed()) 
-	    write(capitalize(storage->GetShort())+" is closed.");
-	else write("That doesn't seem possible at the moment.");
-	return 1;
+        ua = unique_array(res, (: $1 :));
+        foreach(string *lines in ua) {
+            if(storage && storage->GetClosed()) 
+                write(capitalize(storage->GetShort())+" is closed.");
+            else write("That doesn't seem possible at the moment.");
+            return 1;
+        }
+        if(storage && storage->GetClosed()) 
+            write(capitalize(storage->GetShort())+" is closed.");
+        else write("That doesn't seem possible at the moment.");
+        return 1;
     }
     if(!sizeof(filter(obs, (: environment($1) == this_player() :)))){
-	write("You don't seem to be in possession of that.");
-	eligible = ({});
-	return 1;
+        write("You don't seem to be in possession of that.");
+        eligible = ({});
+        return 1;
     }
     eligible=filter(obs, (: (!($1->GetWorn()) && environment($1) == this_player()) :)); 
     if(!sizeof(eligible)){
-	write("Remove or unwield items before trying to put them somewhere.");
-	eligible = ({});
-	return 1;
+        write("Remove or unwield items before trying to put them somewhere.");
+        eligible = ({});
+        return 1;
     }
     if(wrd == "in" || wrd == "into") {
-	foreach(object ob in eligible)
-	storage->eventPutInto(this_player(), ob);
+        foreach(object ob in eligible)
+        storage->eventPutInto(this_player(), ob);
     }
     if(wrd == "on" || wrd == "onto") {
-	foreach(object ob in eligible)
-	storage->eventPutOnto(this_player(), ob);
+        foreach(object ob in eligible)
+        storage->eventPutOnto(this_player(), ob);
     }
     eligible = ({});
     return 1;
@@ -114,16 +114,16 @@ mixed can_put_wrd_wrd_word_obj(string num, string curr,string wrd, mixed contain
     if( !num || !curr ) return 0;
     if( (amt = to_int(num)) < 1 ) return "You cannot do that!";
     if( (int)this_player()->GetCurrency(curr) < amt )
-	return "You don't have that much " + curr + ".";
+        return "You don't have that much " + curr + ".";
     if(this_player()->GetLevel() < 4) {
-	write("Newbies cannot drop money.");
-	return "Newbies can't drop money.";
+        write("Newbies cannot drop money.");
+        return "Newbies can't drop money.";
     }
     if(wrd == "on" || wrd == "onto"){
-	if(container && !inherits( LIB_SURFACE, container ) ) return "#That isn't a load-bearing surface.";
+        if(container && !inherits( LIB_SURFACE, container ) ) return "#That isn't a load-bearing surface.";
     }
     if(container && container->GetClosed()){
-	return "#That's closed.";
+        return "#That's closed.";
     }
     if(intp(check_light())) return this_player()->CanManipulate();
     else return check_light();
@@ -137,18 +137,18 @@ mixed do_put_wrd_wrd_word_obj(string num, string curr, mixed wort, object ob) {
     if(wort == "in") wort = "into";
 
     if(wort == "onto" && !inherits( LIB_SURFACE, ob ) ) {
-	write("That isn't a load-bearing surface.");
-	return 1;
+        write("That isn't a load-bearing surface.");
+        return 1;
     }
     if(wort == "into" && inherits( LIB_SURFACE, ob ) ) {
-	write("That's a surface. Try \"put on\"");
-	return 1;
+        write("That's a surface. Try \"put on\"");
+        return 1;
     }
 
     if((inherits(LIB_SIT,ob) && sizeof(ob->GetSitters())) ||
       (inherits(LIB_LIE,ob) && sizeof(ob->GetLiers()))){
-	write("There appears to be someone blocking your access.");
-	return 0;
+        write("There appears to be someone blocking your access.");
+        return 0;
     }
 
 
@@ -158,9 +158,9 @@ mixed do_put_wrd_wrd_word_obj(string num, string curr, mixed wort, object ob) {
     pile->SetPile(curr, amt);
     if( !((int)pile->eventMove(ob)) ||
       (int)this_player()->AddCurrency(curr, -amt) == -1 ) {
-	this_player()->eventPrint("Something prevents your action.");
-	pile->eventDestruct();
-	return 1;
+        this_player()->eventPrint("Something prevents your action.");
+        pile->eventDestruct();
+        return 1;
     }
     this_player()->eventPrint("You put " + amt + " " + curr + 
       " "+wort+" "+ob->GetShort()+".");

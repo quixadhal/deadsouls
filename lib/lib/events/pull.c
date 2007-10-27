@@ -8,7 +8,7 @@ string GetDefiniteShort();
 
 varargs mixed GetPull(string str) {
     if( !str ) {
-	str = "default";
+        str = "default";
     }
     return Pull[str];
 }
@@ -24,18 +24,18 @@ mapping RemovePull(string item) {
 
 varargs mapping SetPull(mixed key, mixed desc) {
     if( !key ) {
-	key = "default";
+        key = "default";
     }
     if( !desc ) {
-	if( mapp(key) ) {
-	    Pull = expand_keys(key);
-	}
-	else {
-	    Pull["default"] = key;
-	}
+        if( mapp(key) ) {
+            Pull = expand_keys(key);
+        }
+        else {
+            Pull["default"] = key;
+        }
     }
     else {
-	Pull[key] = desc;
+        Pull[key] = desc;
     }
     return Pull;
 }
@@ -44,17 +44,17 @@ varargs mixed CanPull(object who, string component) {
     mixed val;
 
     if( !component ) {
-	component = "default";
+        component = "default";
     }
     val = Pull[component];
     if( !val ) {
-	if( component == "default" ) {
-	    return 0;
-	}
-	else {
-	    return "#There is no " + component + " on " +
-	    GetDefiniteShort() + ".";
-	}
+        if( component == "default" ) {
+            return 0;
+        }
+        else {
+            return "#There is no " + component + " on " +
+            GetDefiniteShort() + ".";
+        }
     }
     else return 1;
 }
@@ -63,34 +63,34 @@ varargs mixed eventPull(object who, string component) {
     mixed val;
 
     if( !component ) {
-	val = Pull["default"];
+        val = Pull["default"];
     }
     else {
-	val = Pull[component];
+        val = Pull[component];
     }
     if( arrayp(val) ) {
-	val = val[query_night()];
+        val = val[query_night()];
     }
     if( stringp(val) ) {
-	object env;
+        object env;
 
-	env = environment(who);
-	who->eventPrint(val);
-	if( component ) {
-	    env->eventPrint(who->GetName() + " pulls the " + component +
-	      " on " + GetDefiniteShort() + ".", who);
-	}
-	else {
-	    env->eventPrint(who->GetName() + " pulls " +
-	      GetDefiniteShort() + ".", who);
-	}
-	return 1;
+        env = environment(who);
+        who->eventPrint(val);
+        if( component ) {
+            env->eventPrint(who->GetName() + " pulls the " + component +
+              " on " + GetDefiniteShort() + ".", who);
+        }
+        else {
+            env->eventPrint(who->GetName() + " pulls " +
+              GetDefiniteShort() + ".", who);
+        }
+        return 1;
     }
     else {
-	if( functionp(val) & FP_OWNER_DESTED ) {
-	    return "Error in evaluating functional.";
-	}
-	return evaluate(val, who, component);
+        if( functionp(val) & FP_OWNER_DESTED ) {
+            return "Error in evaluating functional.";
+        }
+        return evaluate(val, who, component);
     }
 }
 

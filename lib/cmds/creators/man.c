@@ -19,12 +19,12 @@ int cmd(string str) {
     i = sizeof(MAN_PAGES);
     pages = ({});
     while(i--) 
-	if(file_exists(tmp = sprintf("%s/%s/%s", DIR_DOCS, MAN_PAGES[i],
-	      str))) pages += ({ tmp });
+        if(file_exists(tmp = sprintf("%s/%s/%s", DIR_DOCS, MAN_PAGES[i],
+              str))) pages += ({ tmp });
     if(!(i = sizeof(pages))) return notify_fail("No such man page.\n");
     else if(i > 1) 
-	message("system", "Showing only the first of "+i+" man pages.",
-	  this_player());
+        message("system", "Showing only the first of "+i+" man pages.",
+          this_player());
     this_player()->eventPage(pages[0]);
     return 1;
 }

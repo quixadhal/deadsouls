@@ -41,13 +41,13 @@ mixed CanPut(object who) {
     if( stringp(PreventPut) ) return PreventPut;
     //debug("i dunno 7");
     if( objectp(PreventPut) ) {
-	if( PreventPut == who )
-	    return "You cannot put " + GetShort() + " anywhere.";
-	else return 1;
+        if( PreventPut == who )
+            return "You cannot put " + GetShort() + " anywhere.";
+        else return 1;
     }
     else if(functionp(PreventPut)) return evaluate(PreventPut, who);
     else {
-	return "It seems you're unable to do that right now.";
+        return "It seems you're unable to do that right now.";
     }
 }
 
@@ -55,25 +55,25 @@ varargs mixed eventPut(object who, object storage, string prep) {
     int depth;
     if(!prep || prep == "") prep = " into ";
     if(prep == " onto " && !inherits( LIB_SURFACE, previous_object() ) ) {
-	who->eventPrint("That isn't a load-bearing surface.");
-	return 0;
+        who->eventPrint("That isn't a load-bearing surface.");
+        return 0;
     }
 
     if(prep == " into " && inherits( LIB_SURFACE, previous_object() ) ) {
-	who->eventPrint("That's a surface. Try \"put on\"");
-	return 0;
+        who->eventPrint("That's a surface. Try \"put on\"");
+        return 0;
     }
 
     if((inherits(LIB_SIT,storage) && sizeof(storage->GetSitters())) ||
       (inherits(LIB_LIE,storage) && sizeof(storage->GetLiers()))){
-	write("There appears to be someone blocking your access.");
-	return 0;
+        write("There appears to be someone blocking your access.");
+        return 0;
     }
 
 
     if( !eventMove(storage) ) {
-	who->eventPrint("There is not enough room in there!");
-	return 0;
+        who->eventPrint("There is not enough room in there!");
+        return 0;
     }
     who->eventPrint("You put " + GetShort() + prep +
       (string)storage->GetShort() + ".");
@@ -81,8 +81,8 @@ varargs mixed eventPut(object who, object storage, string prep) {
       GetShort() + prep +
       (string)storage->GetShort() + ".", who);
     if(inherits("/lib/std/storage",this_object())) {
-	depth = this_object()->GetRecurseDepth();
-	if(depth && inherits("/lib/std/storage",storage)) storage->AddRecurseDepth(depth); 
+        depth = this_object()->GetRecurseDepth();
+        if(depth && inherits("/lib/std/storage",storage)) storage->AddRecurseDepth(depth); 
     }
 
     return 1;

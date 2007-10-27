@@ -25,12 +25,12 @@ static void create(){
 
 int CheckOrc(){
     if( (string)this_player()->GetRace() == "orc" ) {
-	write("You can almost feel the power of the bear as you wear its skull.");
-	say((string)this_player()->GetName() + " wears a bear skull helmet.");
-	return 1;
+        write("You can almost feel the power of the bear as you wear its skull.");
+        say((string)this_player()->GetName() + " wears a bear skull helmet.");
+        return 1;
     }
     else {
-	write("The helmet appears designed for orc anatomy. It does not fit you.");
-	return 0;
+        write("The helmet appears designed for orc anatomy. It does not fit you.");
+        return 0;
     }
 }

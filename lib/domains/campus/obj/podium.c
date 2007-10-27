@@ -92,8 +92,8 @@ mixed CanGet(object ob) { return "The podium does not budge.";}
 
 int RestrictedAction(){
     if(!archp(this_player()) && sizeof(mc) && mc != this_player()->GetKeyName()){
-	write("That action is restricted here.");
-	return 1;
+        write("That action is restricted here.");
+        return 1;
     }
 }
 
@@ -103,18 +103,18 @@ int eventSay(string args) {
     if(!sizeof(args)) return 0;
     args = replace_string(args,"\n","");
     if (mc == this_player()->GetKeyName()) {
-	//this_player()->eventPrint("You say %^CYAN%^\"" + capitalize(args) + "\"");
-	//say(this_player()->GetName() + " says %^CYAN%^\"" + capitalize(args) + "\"");
-	return 0;
+        //this_player()->eventPrint("You say %^CYAN%^\"" + capitalize(args) + "\"");
+        //say(this_player()->GetName() + " says %^CYAN%^\"" + capitalize(args) + "\"");
+        return 0;
     }
     if ( mc != "" && this_player()-> GetKeyName() != speaker ) {
-	this_player()->eventPrint("%^RED%^It is not polite to talk out of order.");
-	this_player()->eventPrint("Raise your hand if you'd like to speak.");
-	return 1;
+        this_player()->eventPrint("%^RED%^It is not polite to talk out of order.");
+        this_player()->eventPrint("Raise your hand if you'd like to speak.");
+        return 1;
     }
     if ((!args) || (args == " ")) {
-	write ("You mutter to yourself.\n") ;
-	return 1 ;
+        write ("You mutter to yourself.\n") ;
+        return 1 ;
     }
     //foo = (string)this_player()->GetCapName() + 
     //" says: %^CYAN%^\"" + capitalize(args)+"\"";
@@ -127,20 +127,20 @@ int eventSay(string args) {
 
 int eventCallOn(string args) {
     if (present((object)args)) {
-	if (mc == this_player()->GetKeyName()) {
-	    speaker = args;
-	    write("You have called on " + speaker+".\n");
-	    find_living(args)->eventPrint("%^CYAN%^" + capitalize(mc) + " has called on you, you may speak.");
-	    return 1;
-	}
-	else {
-	    this_player()->eventPrint("Only the speaker can do that.");
-	    return 1;
-	}
+        if (mc == this_player()->GetKeyName()) {
+            speaker = args;
+            write("You have called on " + speaker+".\n");
+            find_living(args)->eventPrint("%^CYAN%^" + capitalize(mc) + " has called on you, you may speak.");
+            return 1;
+        }
+        else {
+            this_player()->eventPrint("Only the speaker can do that.");
+            return 1;
+        }
     }
     else {
-	write("%^CYAN%^This person is not here to be called on.");
-	return 1;
+        write("%^CYAN%^This person is not here to be called on.");
+        return 1;
     }
 }	
 
@@ -149,79 +149,79 @@ int eventRaise() {
     string dude;
     dude=this_player()->GetKeyName();
     if(dude != mc && dude != speaker) {
-	tell_room(environment(this_player()),
-	  this_player()->GetName()+" raises "+
-	  possessive(this_player())+
-	  " hand.", ({this_player()}) );
-	this_player()->eventPrint("%^CYAN%^You raise your hand.");
-	return 1;
+        tell_room(environment(this_player()),
+          this_player()->GetName()+" raises "+
+          possessive(this_player())+
+          " hand.", ({this_player()}) );
+        this_player()->eventPrint("%^CYAN%^You raise your hand.");
+        return 1;
     }
     else {
-	write("You can speak already. Say what's on your mind.");
-	return 1;
+        write("You can speak already. Say what's on your mind.");
+        return 1;
     }
 }
 
 
 int shaddap() {
     if(mc != "" && this_player()->GetKeyName() != speaker){
-	write("%^RED%^It would be impolite to do that at this time.");
-	return 1;
+        write("%^RED%^It would be impolite to do that at this time.");
+        return 1;
     }
 }
 
 
 int help(string args) {
     if (args != "podium") {
-	return 0;
+        return 0;
     }
     else {
-	write("%^GREEN%^This is the speakers podium, it is where the "
-	  "speaker stands during a speech.  This podium "
-	  "has special properties, it can prevent others "
-	  "from speaking out of turn, if you are the "+
-	  "speaker.%^RESET%^");
-	if (this_player()->GetKeyName() == mc) {
-	    write("%^RED%^Available commands:");
-	    write("%^YELLOW%^recognize %^RESET%^: Calls on another to speak.");		
-	    write("%^YELLOW%^say %^RESET%^: As the speaker, you can say things whenever you like.");
-	    write("%^YELLOW%^quiet %^RESET%^: Revokes the speaking privilege to the person you last called on.");
-	    write("%^YELLOW%^changemc %^RESET%^: Removes yourself as mc, and let someone else take over.");
-	    write("%^YELLOW%^add <string>%^RESET%^: Add agenda item <string> to the bottom of the agenda.");
-	    write("%^YELLOW%^remove <int>%^RESET%^: Remove agenda item <int> from the agenda.");
-	    write("%^YELLOW%^clear agenda%^RESET%^: Clear the agenda.");
-	    write("%^YELLOW%^permit <name>%^RESET%^: Permit player <name> to enter the meeting room when locked.");
-	    write("%^YELLOW%^eject <name>%^RESET%^: Eject player <name> from the meeting room.");
-	    write("%^YELLOW%^time <num> [minutes/seconds]%^RESET%^: Set the clock to <num> minutes or seconds.");
-	    write("%^YELLOW%^reset clock%^RESET%^: Clear the clock.");
-	    write("%^YELLOW%^step down%^RESET%^: Step down as head speaker.");
-	    write("%^YELLOW%^rollcall <num> [minutes/seconds] <subject>%^RESET%^: Call for a roll call vote,\n"
-	      "\tlasting num minutes or seconds, on <subject>.");
-	    write("%^YELLOW%^add after <int> <string>%^RESET%^: Add agenda item <string> after agenda item #<int>.\n"
-	      "\tadd after 0 <string> adds to the top of the list.");
-	    write("%^YELLOW%^call <num> [minutes/seconds] <subject>%^RESET%^: Call for a vote, lasting num minutes\n"
-	      "\tor seconds, on <subject>.");
-	    return 1;
-	}
-	else {
-	    write("%^RED%^Available commands:");
-	    write("%^YELLOW%^raise %^RESET%^: Raise your hand, to motion to the speaker that you would like to speak.");
-	    write("%^YELLOW%^say %^RESET%^ : Say something, you only may do this if the speaker has called on you.");
-	    if (x == 0) {
-		write("%^YELLOW%^setmc%^RESET%^ : There is no mc currently, use this command to set one.");
-	    }
-	    return 1;
-	}
+        write("%^GREEN%^This is the speakers podium, it is where the "
+          "speaker stands during a speech.  This podium "
+          "has special properties, it can prevent others "
+          "from speaking out of turn, if you are the "+
+          "speaker.%^RESET%^");
+        if (this_player()->GetKeyName() == mc) {
+            write("%^RED%^Available commands:");
+            write("%^YELLOW%^recognize %^RESET%^: Calls on another to speak.");		
+            write("%^YELLOW%^say %^RESET%^: As the speaker, you can say things whenever you like.");
+            write("%^YELLOW%^quiet %^RESET%^: Revokes the speaking privilege to the person you last called on.");
+            write("%^YELLOW%^changemc %^RESET%^: Removes yourself as mc, and let someone else take over.");
+            write("%^YELLOW%^add <string>%^RESET%^: Add agenda item <string> to the bottom of the agenda.");
+            write("%^YELLOW%^remove <int>%^RESET%^: Remove agenda item <int> from the agenda.");
+            write("%^YELLOW%^clear agenda%^RESET%^: Clear the agenda.");
+            write("%^YELLOW%^permit <name>%^RESET%^: Permit player <name> to enter the meeting room when locked.");
+            write("%^YELLOW%^eject <name>%^RESET%^: Eject player <name> from the meeting room.");
+            write("%^YELLOW%^time <num> [minutes/seconds]%^RESET%^: Set the clock to <num> minutes or seconds.");
+            write("%^YELLOW%^reset clock%^RESET%^: Clear the clock.");
+            write("%^YELLOW%^step down%^RESET%^: Step down as head speaker.");
+            write("%^YELLOW%^rollcall <num> [minutes/seconds] <subject>%^RESET%^: Call for a roll call vote,\n"
+              "\tlasting num minutes or seconds, on <subject>.");
+            write("%^YELLOW%^add after <int> <string>%^RESET%^: Add agenda item <string> after agenda item #<int>.\n"
+              "\tadd after 0 <string> adds to the top of the list.");
+            write("%^YELLOW%^call <num> [minutes/seconds] <subject>%^RESET%^: Call for a vote, lasting num minutes\n"
+              "\tor seconds, on <subject>.");
+            return 1;
+        }
+        else {
+            write("%^RED%^Available commands:");
+            write("%^YELLOW%^raise %^RESET%^: Raise your hand, to motion to the speaker that you would like to speak.");
+            write("%^YELLOW%^say %^RESET%^ : Say something, you only may do this if the speaker has called on you.");
+            if (x == 0) {
+                write("%^YELLOW%^setmc%^RESET%^ : There is no mc currently, use this command to set one.");
+            }
+            return 1;
+        }
     }
 }
 
 
 int quiet() {
     if (mc == this_player()->GetKeyName()) {
-	write("%^CYAN%^You thank " + capitalize(speaker) + " for speaking.");
-	find_living(speaker)->eventPrint("%^CYAN%^" + capitalize(mc) + " thanks you for you speaking.");
-	speaker = mc;
-	return 1;
+        write("%^CYAN%^You thank " + capitalize(speaker) + " for speaking.");
+        find_living(speaker)->eventPrint("%^CYAN%^" + capitalize(mc) + " thanks you for you speaking.");
+        speaker = mc;
+        return 1;
     }
     write ("Only the mc may use this command.\n") ;
     return 1;
@@ -230,49 +230,49 @@ int quiet() {
 
 int changemc(string args) {
     if (args != 0) {
-	if ( this_player()->GetKeyName() != mc ) {
-	    write("%^RED%^You are not the mc to begin with, you cannot give that position away.");
-	    return 1;
-	}
-	else {
-	    if (!present(args)) {
-		write("%^CYAN%^" + args + " is not present, and therefore cannot be mc.");
-		return 1;
-	    }
-	    else {
-		write("%^CYAN%^You hand the podium over to " + args);
-		mc = args;
-		say("%^CYAN%^" + capitalize(args) + " is the new head speaker.");
-		find_living(mc)->eventPrint("%^BLUE%^You are the new head speaker!");
-		find_living(mc)->eventPrint("The command \"help podium\" can help you, if you don't know what to do.");
-		return 1;
-	    }
-	}
+        if ( this_player()->GetKeyName() != mc ) {
+            write("%^RED%^You are not the mc to begin with, you cannot give that position away.");
+            return 1;
+        }
+        else {
+            if (!present(args)) {
+                write("%^CYAN%^" + args + " is not present, and therefore cannot be mc.");
+                return 1;
+            }
+            else {
+                write("%^CYAN%^You hand the podium over to " + args);
+                mc = args;
+                say("%^CYAN%^" + capitalize(args) + " is the new head speaker.");
+                find_living(mc)->eventPrint("%^BLUE%^You are the new head speaker!");
+                find_living(mc)->eventPrint("The command \"help podium\" can help you, if you don't know what to do.");
+                return 1;
+            }
+        }
     }
     else {
-	write("%^CYAN%^Syntax:");
-	write("changemc <player>");
-	return 1;
+        write("%^CYAN%^Syntax:");
+        write("changemc <player>");
+        return 1;
     }
 }
 
 int step_down(string args){
     if (args == "down") {
-	if ( this_player()->GetKeyName() != mc ) {
-	    write("%^RED%^You are not the mc to begin with, you cannot give that position away.");
-	    return 1;
-	}
-	say("%^CYAN%^" + capitalize(mc) + " has stepped down as the head speaker.");
-	write ( "You step down as the head speaker" );
-	mc = "";
-	x--;
-	load_object(base_name(environment(this_object())))->AutoDeactivate();    
-	return 1;
+        if ( this_player()->GetKeyName() != mc ) {
+            write("%^RED%^You are not the mc to begin with, you cannot give that position away.");
+            return 1;
+        }
+        say("%^CYAN%^" + capitalize(mc) + " has stepped down as the head speaker.");
+        write ( "You step down as the head speaker" );
+        mc = "";
+        x--;
+        load_object(base_name(environment(this_object())))->AutoDeactivate();    
+        return 1;
     }
     else {
-	write("%^CYAN%^Syntax:");
-	write("<step down>");
-	return 1;
+        write("%^CYAN%^Syntax:");
+        write("<step down>");
+        return 1;
     }
 
 }
@@ -282,55 +282,55 @@ int SetMc(string args) {
     if(args) ob = find_living(args);
     if(!args || !ob) ob = this_player();
     if(!member_group(ob, "MODERATORS")){
-	write("That person is not a member of the moderators group.");
-	write("An admin should use the admintool command to add the "+
-	  "appropriate people to that user group.");
-	return 1;
+        write("That person is not a member of the moderators group.");
+        write("An admin should use the admintool command to add the "+
+          "appropriate people to that user group.");
+        return 1;
     }
     if (x==0) {
-	if (args != 0) {
-	    if (present(args) ) {
-		mc = args;
-		say("%^CYAN%^" + capitalize(mc) + " is the speaker.");	
-		write("You set " + capitalize(args) + " as the speaker.");
-		find_living(mc)->eventPrint("The command \"help podium\" can help you, if you don't know what to do.");
-		x++;
-		return 1;
-	    }
-	    else {
-		write("You cannot set him/her as the speaker, he/she is not here!");
-		return 1;
-	    }
-	}
-	else {
-	    write("%^CYAN%^Syntax:");
-	    write("setmc <player>");
-	    return 1;
-	}
+        if (args != 0) {
+            if (present(args) ) {
+                mc = args;
+                say("%^CYAN%^" + capitalize(mc) + " is the speaker.");	
+                write("You set " + capitalize(args) + " as the speaker.");
+                find_living(mc)->eventPrint("The command \"help podium\" can help you, if you don't know what to do.");
+                x++;
+                return 1;
+            }
+            else {
+                write("You cannot set him/her as the speaker, he/she is not here!");
+                return 1;
+            }
+        }
+        else {
+            write("%^CYAN%^Syntax:");
+            write("setmc <player>");
+            return 1;
+        }
     }
     else {
-	write("There is already a speaker, you cannot set another one.");
-	return 1;
+        write("There is already a speaker, you cannot set another one.");
+        return 1;
     }
 }
 
 int privacy(string str){
 
     if ( mc != this_player()->GetKeyName() ) {
-	write ("Only the mc may use the shield.\n") ;
-	return 1 ;
+        write ("Only the mc may use the shield.\n") ;
+        return 1 ;
     }
     if(str=="on" || str == "1"){
-	load_object(base_name(environment(this_object())))->set_privacy( 1 );
-	write("You enable the privacy shield.\n");
-	say(this_player()->GetName()+" enables a privacy force field around the room.");
-	return 1;
+        load_object(base_name(environment(this_object())))->set_privacy( 1 );
+        write("You enable the privacy shield.\n");
+        say(this_player()->GetName()+" enables a privacy force field around the room.");
+        return 1;
     }
     if(str=="off" || str == "0"){
-	load_object(base_name(environment(this_object())))->AutoDeactivate();
-	write("You disable the privacy shield.\n");
-	say(this_player()->GetName()+" disables a privacy force field around the room.");
-	return 1;
+        load_object(base_name(environment(this_object())))->AutoDeactivate();
+        write("You disable the privacy shield.\n");
+        say(this_player()->GetName()+" disables a privacy force field around the room.");
+        return 1;
     }
 }
 
@@ -348,17 +348,17 @@ int permit_entry (string name) {
     int oldlock ;
 
     if ( mc != this_player()->GetKeyName() ) {
-	write ("Only the mc may permit entry into a locked conference.\n") ;
-	return 1 ;
+        write ("Only the mc may permit entry into a locked conference.\n") ;
+        return 1 ;
     }
     user = find_player(name) ;
     if (!user) {
-	write ("There is no user by that name.\n") ;
-	return 1 ;
+        write ("There is no user by that name.\n") ;
+        return 1 ;
     }
     if (present(user,environment(this_object()))) {
-	write (capitalize(name)+" is already here!\n") ;
-	return 1 ;
+        write (capitalize(name)+" is already here!\n") ;
+        return 1 ;
     }
     // We save the old locked status of the room, and restore it when we're
     // done. You can "permit" entry into an unlocked conference if you want
@@ -382,13 +382,13 @@ int eject_player (string str) {
     object ob ;
 
     if ( mc != this_player()->GetKeyName() ) {
-	write ("Only the mc may eject players.\n") ;
-	return 1 ;
+        write ("Only the mc may eject players.\n") ;
+        return 1 ;
     }
     ob = find_player(str) ;
     if (!ob || !present (ob, environment(this_object()))) {
-	write ("There is no player named "+capitalize(str)+" here.\n") ;
-	return 1 ;
+        write ("There is no player named "+capitalize(str)+" here.\n") ;
+        return 1 ;
     }
     write ("You eject "+capitalize(str)+" from the room!\n") ;
     tell_object (ob, "You have been ejected from the room.\n") ;
@@ -410,41 +410,41 @@ varargs int localtime (string str) {
 
     // If no string, then we just indicate how much time is left on the clock.
     if (!str) {
-	if (!endtime || endtime == 0) {
-	    write ("Time is not running at the moment.\n") ;
-	    return 1 ;
-	}
-	i = time() ;
-	i = endtime - i ;
-	min = (i/60) ;
-	sec = i - (min*60) ;
-	if (min==1) {
-	    write ("The clock shows 1 minute and "+sec+" seconds remaining.\n") ;
-	} else {
-	    write ("The clock shows "+min+" minutes and "+sec+" seconds remaining.\n") ;
-	}
-	return 1 ;
+        if (!endtime || endtime == 0) {
+            write ("Time is not running at the moment.\n") ;
+            return 1 ;
+        }
+        i = time() ;
+        i = endtime - i ;
+        min = (i/60) ;
+        sec = i - (min*60) ;
+        if (min==1) {
+            write ("The clock shows 1 minute and "+sec+" seconds remaining.\n") ;
+        } else {
+            write ("The clock shows "+min+" minutes and "+sec+" seconds remaining.\n") ;
+        }
+        return 1 ;
     }
     // If there is a string, then the user is trying to set the clock to some
     // number of minutes or seconds.
     if ( mc != this_player()->GetKeyName() ) {
-	write ("Only the mc may set the clock.\n") ;
-	return 1 ;
+        write ("Only the mc may set the clock.\n") ;
+        return 1 ;
     }
     // You cannot set a new time if the clock is running. This is for safety.
     // You must reset the clock first. See below.
     if (endtime!=0) {
-	write ("The clock is running. You must reset the clock first.\n"
-	) ;
-	return 1 ;
+        write ("The clock is running. You must reset the clock first.\n"
+        ) ;
+        return 1 ;
     }
     if (sscanf(str, "%d min%s", i, foo) == 2) {
-	i=i*60 ;
+        i=i*60 ;
     } else {
-	if (sscanf(str, "%d seconds", i) != 1) {
-	    write ("You must set a number of minutes or seconds: ie, 3 minutes or 90 seconds.\n") ;
-	    return 1 ;
-	}
+        if (sscanf(str, "%d seconds", i) != 1) {
+            write ("You must set a number of minutes or seconds: ie, 3 minutes or 90 seconds.\n") ;
+            return 1 ;
+        }
     }
     write ("You set the clock to "+str+".\n") ;
     say (capitalize(mc)+" sets the clock to "+str+".\n") ;
@@ -458,16 +458,16 @@ varargs int localtime (string str) {
 // on it.
 int reset_clock (string str) {
     if (!str || str!="clock") {
-	notify_fail ("Reset what?\n") ;
-	return 0 ;
+        notify_fail ("Reset what?\n") ;
+        return 0 ;
     }
     if ( mc != this_player()->GetKeyName() ) {
-	write ("Only the mc may reset the clock.\n") ;
-	return 1 ;
+        write ("Only the mc may reset the clock.\n") ;
+        return 1 ;
     }
     if (endtime==0) {
-	write ("The clock isn't running.\n") ;
-	return 1 ;
+        write ("The clock isn't running.\n") ;
+        return 1 ;
     }
     endtime = 0 ;
     write ("You clear the clock.\n") ;
@@ -493,12 +493,12 @@ int show_agenda() {
     int i ;
 
     if (!agenda || sizeof(agenda)==0) {
-	write ("The agenda has not been set.\n") ;
-	return 1 ;
+        write ("The agenda has not been set.\n") ;
+        return 1 ;
     }
     write ("The current agenda is:\n") ;
     for (i=0;i<sizeof(agenda);i++) {
-	write ((i+1)+". "+agenda[i]+"\n") ;
+        write ((i+1)+". "+agenda[i]+"\n") ;
     }
     return 1 ;
 }
@@ -508,12 +508,12 @@ int show_agenda() {
 // Clear_speakers erases the speakers list or agenda, depending on argument.
 int clear_items (string str) {
     if ( mc != this_player()->GetKeyName() ) {
-	write ("Only the mc may clear the agenda.\n") ;
-	return 1 ;
+        write ("Only the mc may clear the agenda.\n") ;
+        return 1 ;
     }
     if (!str || str!="agenda") {
-	write ("Usage: clear [agenda]\n") ;
-	return 1 ;
+        write ("Usage: clear [agenda]\n") ;
+        return 1 ;
     }
     agenda = ({ }) ;
     write ("The agenda has been cleared.\n") ;
@@ -530,24 +530,24 @@ int add_items (string str) {
     string prop ;
 
     if ( mc != this_player()->GetKeyName() ) {
-	notify_fail ("Only the mc may add agenda items.\n") ;
-	return 0 ;
+        notify_fail ("Only the mc may add agenda items.\n") ;
+        return 0 ;
     }
     if (!str) {
-	write ("Usage: add item  or  add after N item\n") ;
-	return 1 ;
+        write ("Usage: add item  or  add after N item\n") ;
+        return 1 ;
     }
     if (sscanf(str,"after %d %s", post, prop)!=2) {
-	agenda += ({ str }) ;
-	write ("Added the following item to the agenda\n"+str+"\n") ;
-	return 1 ;
+        agenda += ({ str }) ;
+        write ("Added the following item to the agenda\n"+str+"\n") ;
+        return 1 ;
     }
     if (post<0 || post>=sizeof(agenda)) {
-	notify_fail ("Item number out of range.\n") ;
-	return 0 ;
+        notify_fail ("Item number out of range.\n") ;
+        return 0 ;
     }
     if (post==0) agenda = ({ prop }) + agenda ; else
-	agenda = agenda[0..post-1] + ({ prop }) + agenda[post..sizeof(agenda)] ;
+        agenda = agenda[0..post-1] + ({ prop }) + agenda[post..sizeof(agenda)] ;
     write ("Added the following agenda item after item "+post+":\n"+
       prop+"\n") ;
     return 1 ;
@@ -559,29 +559,29 @@ int remove_item (string str) {
     int agitem ;
 
     if (!str) {
-	notify_fail ("Usage: remove <number of agenda item>\n") ;
-	return 0 ;
+        notify_fail ("Usage: remove <number of agenda item>\n") ;
+        return 0 ;
     }
     if (sscanf(str,"%d",agitem)!=1) {
-	notify_fail ("Usage: remove <number of agenda item>\n") ;
-	return 0 ;
+        notify_fail ("Usage: remove <number of agenda item>\n") ;
+        return 0 ;
     }
     if (agitem<0 || agitem>sizeof(agenda)) {
-	write ("Item number out of range.\n") ;
-	return 0 ;
+        write ("Item number out of range.\n") ;
+        return 0 ;
     }
     // Convert to 0-(N-1) numbering.
     agitem = agitem-1 ;
     write (agitem+"\n") ;
     write ("Removing the following agenda item:\n"+agenda[agitem]+"\n") ;
     if (agitem==0) {
-	agenda = agenda[1..sizeof(agenda)-1] ;
+        agenda = agenda[1..sizeof(agenda)-1] ;
     } else {
-	if (agitem == sizeof(agenda)-1) {
-	    agenda = agenda[0..sizeof(agenda)-2] ;
-	} else {
-	    agenda = agenda[0..agitem-1] + agenda[agitem+1..sizeof(agenda)-1] ;
-	}
+        if (agitem == sizeof(agenda)-1) {
+            agenda = agenda[0..sizeof(agenda)-2] ;
+        } else {
+            agenda = agenda[0..agitem-1] + agenda[agitem+1..sizeof(agenda)-1] ;
+        }
     }
     return 1 ;
 }
@@ -591,25 +591,25 @@ int remove_item (string str) {
 int vote (string str) {
     // With no argument, we print the proposal, if there is one.
     if (!str) {
-	if (!vote_str || vote_str=="none") {
-	    write ("No vote is in progress.\n") ;
-	    return 1 ;
-	}
-	write ("Voting on: "+vote_str+"\n") ;
-	return 1 ;
+        if (!vote_str || vote_str=="none") {
+            write ("No vote is in progress.\n") ;
+            return 1 ;
+        }
+        write ("Voting on: "+vote_str+"\n") ;
+        return 1 ;
     }
     // If there is a argument, we interpret that string as a vote cast.
     if (!vote_str || vote_str=="none") {
-	write ("No vote is in progress at this time.\n") ;
-	return 1 ;
+        write ("No vote is in progress at this time.\n") ;
+        return 1 ;
     }
     if (str!="yes" && str!="no" && str!="abstain") {
-	write ("Please vote yes, no, or abstain..\n") ;
-	return 1 ;
+        write ("Please vote yes, no, or abstain..\n") ;
+        return 1 ;
     }
     if (member_array( this_player()->GetName(),voters)!=-1) {
-	write ("You have already voted!\n") ;
-	return 1 ;
+        write ("You have already voted!\n") ;
+        return 1 ;
     }
     voters += ({ this_player()->GetName() }) ;
     votes[str] = votes[str]+1 ;
@@ -617,7 +617,7 @@ int vote (string str) {
     // If this is a roll call vote - ie, the votes are being logged - we announce
     // the vote to the log file and to the room.
     if (votelog) {
-	say (capitalize(this_player()->GetName())+" votes "+capitalize(str)+".\n") ;
+        say (capitalize(this_player()->GetName())+" votes "+capitalize(str)+".\n") ;
     }
     return 1 ;
 }
@@ -630,32 +630,32 @@ int call_for_vote (string str) {
     int i ;
 
     if ( mc != this_player()->GetKeyName() ) {
-	write ("Only the mc may call for votes.\n") ;
-	return 1 ;
+        write ("Only the mc may call for votes.\n") ;
+        return 1 ;
     }
     // Must specify an amount of time for which votes may be cast, and a subject
     // which people are voting on.
     if (!str) {
-	write ("Usage: call <num> <minutes|seconds> <subject>\n") ;
-	return 1 ;
+        write ("Usage: call <num> <minutes|seconds> <subject>\n") ;
+        return 1 ;
     }
     if (sscanf(str,"%d %s %s",i,timestr,subjstr)!=3) {
-	write ("Usage: call <num> <minutes|seconds> <subject>\n") ;
-	return 1 ;
+        write ("Usage: call <num> <minutes|seconds> <subject>\n") ;
+        return 1 ;
     }
     // This is going to reset the clock: so we want to force the mc to
     // clear the clock first.
     if (endtime!=0) {
-	write ("The clock is running. You must reset the clock first.\n") ;
-	return 1 ;
+        write ("The clock is running. You must reset the clock first.\n") ;
+        return 1 ;
     }
     if (timestr=="minutes") {
-	i = i * 60 ;
+        i = i * 60 ;
     } else {
-	if (timestr!="seconds") {
-	    write ("Enter the time in minutes or seconds.\n") ;
-	    return 1 ;
-	}
+        if (timestr!="seconds") {
+            write ("Enter the time in minutes or seconds.\n") ;
+            return 1 ;
+        }
     }
     vote_str = subjstr ;
     // This is a secret ballot so we don't want to log the votes.
@@ -677,28 +677,28 @@ int call_for_roll (string str) {
     int i ;
 
     if ( mc != this_player()->GetKeyName() ) {
-	write ("Only the mc may call for votes.\n") ;
-	return 1 ;
+        write ("Only the mc may call for votes.\n") ;
+        return 1 ;
     }
     if (!str) {
-	write ("Usage: rollcall <num> <minutes|seconds> <subject>\n") ;
-	return 1 ;
+        write ("Usage: rollcall <num> <minutes|seconds> <subject>\n") ;
+        return 1 ;
     }
     if (sscanf(str,"%d %s %s",i,timestr,subjstr)!=3) {
-	write ("Usage: rollcall <num> <minutes|seconds> <subject>\n") ;
-	return 1 ;
+        write ("Usage: rollcall <num> <minutes|seconds> <subject>\n") ;
+        return 1 ;
     }
     if (endtime!=0) {
-	write ("The clock is running. You must reset the clock first.\n") ;
-	return 1 ;
+        write ("The clock is running. You must reset the clock first.\n") ;
+        return 1 ;
     }
     if (timestr=="minutes") {
-	i = i * 60 ;
+        i = i * 60 ;
     } else {
-	if (timestr!="seconds") {
-	    write ("Enter the time in minutes or seconds.\n") ;
-	    return 1 ;
-	}
+        if (timestr!="seconds") {
+            write ("Enter the time in minutes or seconds.\n") ;
+            return 1 ;
+        }
     }
     vote_str = subjstr ;
     // This is a roll call vote so we log the votes and announce them.
@@ -729,23 +729,23 @@ int expire_vote() {
 
 int localupdate() {
     if(!archp(this_player())){
-	write ("You may not update objects while in the conference room.\n") ;
-	return 1;
+        write ("You may not update objects while in the conference room.\n") ;
+        return 1;
     }
 }
 
 int eventDestruct(){
     if(sizeof(mc) && !this_player() || (this_player() && !archp(this_player()))){
-	write("You may not tamper with the podium.");
-	return 0;
+        write("You may not tamper with the podium.");
+        return 0;
     }
     else return ::eventDestruct();
 }
 
 int eventMove(mixed dest){
     if(sizeof(mc)){
-	write("No.");
-	return 0;
+        write("No.");
+        return 0;
     }
     else return ::eventMove(dest);
 }

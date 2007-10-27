@@ -25,11 +25,11 @@ mixed can_mail_str(string str) {
     if( !str ) return 0;
     else if( str == "" ) str = 0;
     if( !creatorp(this_player()) ) {
-	mixed tmp;
+        mixed tmp;
 
-	tmp = (mixed)environment(this_player())->CanMail(this_player(), str);
-	if( !tmp ) return "Does this place look like a post office?";
-	else return tmp;
+        tmp = (mixed)environment(this_player())->CanMail(this_player(), str);
+        if( !tmp ) return "Does this place look like a post office?";
+        else return tmp;
     }
     return 1;
 }
@@ -40,15 +40,15 @@ mixed do_mail_str(string str) {
     object ob;
 
     if( !creatorp(this_player()) )
-	return (mixed)environment(this_player())->eventMail(this_player(), str);
+        return (mixed)environment(this_player())->eventMail(this_player(), str);
     if( !(ob = new(OBJ_POST)) ) {
-	this_player()->eventPrint("Failed to load postal object!");
-	return 1;
+        this_player()->eventPrint("Failed to load postal object!");
+        return 1;
     }
     if( !((int)ob->eventMove(this_player())) ) {
-	this_player()->eventPrint("You can't seem to carry the postal "
-	  "object.");
-	return 1;
+        this_player()->eventPrint("You can't seem to carry the postal "
+          "object.");
+        return 1;
     }
     this_player()->eventPrint("%^RED%^Remember!%^RESET%^ To end a post, enter a single period on an otherwise blank line, and then hit return.");
     ob->start_post(str);

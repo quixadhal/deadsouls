@@ -26,15 +26,15 @@ void catch_tell(string str) {
 
     if(this_player() == (ob = this_object())) return;
     if(sscanf(str, "%squest%s", a, b) == 2 || sscanf(str, "%stask%s", a, b) == 2) {
-	this_object()->eventForce("speak in farsi You must find for me the Orc Slayer!  The evil orcs have taken it so that it cannot be used against them.  The people of Praxis must have it back.");
-	return;
+        this_object()->eventForce("speak in farsi You must find for me the Orc Slayer!  The evil orcs have taken it so that it cannot be used against them.  The people of Praxis must have it back.");
+        return;
     }
     if(sscanf(str, "%shere%slayer%s", a, b, c) == 3) {
-	this_object()->eventForce("speak in farsi The Orc Slayer is in the treasury in the Valley of the Orcs.");
-	return;
+        this_object()->eventForce("speak in farsi The Orc Slayer is in the treasury in the Valley of the Orcs.");
+        return;
     }
     if(sscanf(str, "%s gives you %s", a, b) == 2) {
-	call_out("check_quest", 2, ({ lower_case(a), lower_case(b) }) );
+        call_out("check_quest", 2, ({ lower_case(a), lower_case(b) }) );
     }
 }
 
@@ -48,13 +48,13 @@ void check_quest( string *what ) {
     ob = present("sword");
     if(!tp) return;
     if(!ob) {
-	tell_object(tp, "Unity says: Nice try.  Now leave or die.");
-	return;
+        tell_object(tp, "Unity says: Nice try.  Now leave or die.");
+        return;
     }
     if(!ob->id("the_one_orc_slayer")) {
-	tell_object(ob, "Unity says: This is very nice, but I do not need it.");
-	eventForce("give "+that+" to "+who);
-	return;
+        tell_object(ob, "Unity says: This is very nice, but I do not need it.");
+        eventForce("give "+that+" to "+who);
+        return;
     }
     tell_room(environment(this_object()), "Unity smiles happily.", this_object());
     tell_room(environment(this_object()), tp->query_cap_name()+" has completed the quest for the Orc Slayer.", ({ tp, this_object() }));

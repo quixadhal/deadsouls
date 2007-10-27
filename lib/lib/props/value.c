@@ -20,10 +20,10 @@ int GetDestroyOnSell() {
 
 int SetDestroyOnSell(int x) {
     if( x ) {
-	DestroyOnSell = 1;
+        DestroyOnSell = 1;
     }
     else {
-	DestroyOnSell = 0;
+        DestroyOnSell = 0;
     }
     return DestroyOnSell;
 }
@@ -43,11 +43,11 @@ int SetValue(mixed y) {
     if(arrayp(y)) return this_object()->SetBaseCost(y[1],y[0]); 
     else x = y;
     if( !intp(x) ) {
-	error("Bad argument 1 to SetValue().\n\tExpected: int, Got: " +
-	  typeof(x) + "\n");
+        error("Bad argument 1 to SetValue().\n\tExpected: int, Got: " +
+          typeof(x) + "\n");
     }
     else {
-	return (Value = x);
+        return (Value = x);
     }
 }
 
@@ -57,11 +57,11 @@ int GetVendorType() {
 
 int SetVendorType(int x) {
     if( !intp(x) ) {
-	error("Bad argument 1 to SetVendorType().\n\tExpected: int, Got: " +
-	  typeof(x) + "\n");
+        error("Bad argument 1 to SetVendorType().\n\tExpected: int, Got: " +
+          typeof(x) + "\n");
     }
     if( !(x & VT_ALL) ) {
-	error("Invalid vendor type.\n");
+        error("Invalid vendor type.\n");
     }
     return (VendorType = x);
 }
@@ -71,15 +71,15 @@ varargs mixed SetBaseCost(mixed arg, int i){
 
     if(intp(arg)) Cost = arg;
     else if(stringp(arg)){
-	if(member_array(arg,ECONOMY_D->__QueryCurrencies()) == -1){
-	    return "Bad currency value to SetBaseCost.";
-	}
-	if(!i) return "Bad amount value to SetBaseCost.";
+        if(member_array(arg,ECONOMY_D->__QueryCurrencies()) == -1){
+            return "Bad currency value to SetBaseCost.";
+        }
+        if(!i) return "Bad amount value to SetBaseCost.";
 
-	base = query_base_rate();
-	rate = ECONOMY_D->__Query(arg,"rate");
+        base = query_base_rate();
+        rate = ECONOMY_D->__Query(arg,"rate");
 
-	Cost = i * rate;
+        Cost = i * rate;
 
     }
     return Cost;
@@ -89,7 +89,7 @@ int GetBaseCost(string str){
     if(!str)return Cost;
 
     if(member_array(str,ECONOMY_D->__QueryCurrencies()) == -1){
-	return 0;
+        return 0;
     }
 
     return query_value(Cost,query_base_currency(),str);

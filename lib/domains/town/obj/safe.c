@@ -15,8 +15,8 @@ void create() {
     SetBaseCost("silver",50);
     SetMaxCarry(500);
     SetInventory(([
-	"/domains/town/weap/9mil": 1,
-	"/domains/town/obj/slip_heal": 4,
+        "/domains/town/weap/9mil": 1,
+        "/domains/town/obj/slip_heal": 4,
       ]));
     SetCanClose(1);
     SetClosed(1);

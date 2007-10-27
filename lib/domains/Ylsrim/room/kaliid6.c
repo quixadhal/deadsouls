@@ -28,7 +28,7 @@ static void create() {
     AddItem(new("/domains/Ylsrim/etc/wall"));
     SetObviousExits("e, w");
     SetExits( ([ "east" : "/domains/Ylsrim/room/"+ "kaliid5",
-	"west" : "/domains/Ylsrim/room/"+ "kaliid7" ]));
+        "west" : "/domains/Ylsrim/room/"+ "kaliid7" ]));
 }
 void init(){
     ::init();

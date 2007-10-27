@@ -14,9 +14,9 @@ mixed cmd(string form) {
     int x, offset;
 
     if(DISABLE_REBOOTS){
-	write("Recurring reboots are disabled.");
-	write("There is no reboot scheduled by the events daemon.");
-	return 1;
+        write("Recurring reboots are disabled.");
+        write("There is no reboot scheduled by the events daemon.");
+        return 1;
     }
 
     offset = (int)TIME_D->GetOffset(local_time()[9]);
@@ -25,7 +25,7 @@ mixed cmd(string form) {
     x = (int)EVENTS_D->GetRebootInterval() * 3600;
     x = (time() - uptime()) + x;
     if(query_os_type() != "windows" ) 
-	x += offset * 3600;
+        x += offset * 3600;
     str = query_tz()+ " " + ctime(x);
     message("system", "Current "+query_tz()+" system time is "+timestamp(),
       this_player());

@@ -12,10 +12,10 @@ void create() {
       "It looks a bit tamer as you look south and west.");
     SetItems(
       (["jungle" : "A growing rain forest full of green vegetation.",
-	"vegetation" : "All sorts of plant life growing as you have "
-	"never before seen."]) );
+        "vegetation" : "All sorts of plant life growing as you have "
+        "never before seen."]) );
     SetExits( 
       (["northeast" : "/domains/Praxis/rain_forest",
-	"southwest" : "/domains/Praxis/wild2"]) );
+        "southwest" : "/domains/Praxis/wild2"]) );
 }
 

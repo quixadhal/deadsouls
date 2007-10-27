@@ -25,15 +25,15 @@ mixed eventSpreadPoison(object who, object target) {
     if( !who || !target || !PoisonUses ) return 0;
     PoisonUses--;
     if( random(50) > (int)who->GetStatLevel("coordination") ) {
-	this_player()->eventPrint("You fumble around with the poison, "
-	  "spilling it on yourself.");
-	environment(this_player())->eventPrint((string)who->GetName() +
-	  " fumbles around with some "
-	  "poison, spilling it on " +
-	  reflexive(who) + ".",
-	  this_player());
-	who->AddPoison(random(10));
-	return 1;
+        this_player()->eventPrint("You fumble around with the poison, "
+          "spilling it on yourself.");
+        environment(this_player())->eventPrint((string)who->GetName() +
+          " fumbles around with some "
+          "poison, spilling it on " +
+          reflexive(who) + ".",
+          this_player());
+        who->AddPoison(random(10));
+        return 1;
     }
     target->eventPoison(who, this_object(), PoisonStrength);
     return 1;

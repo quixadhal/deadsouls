@@ -1539,7 +1539,7 @@ static void handle_configure() {
     if (!check_prog("CONST const", "int foo(const int *, const int *);", "", 0))
         fprintf(yyout, "#define CONST\n");
     
-#if defined(sun) || defined(SunOS_5)
+#if defined(sun) || defined(SunOS_5) || defined(WIN32)
     verbose_check_prog("Checking for ualarm()", "HAS_UALARM",
                        "", "ualarm(0, 0);", 0);
 #endif

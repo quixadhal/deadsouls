@@ -30,17 +30,17 @@ static private void preload_estates() {
 
     i = sizeof(who = keys(__Estates));
     while(i--) {
-	if((j = sizeof(__Estates[who[i]])) > 1)
-	    desc = "an estate of "+who[i];
-	else desc = possessive_noun(who[i])+" estate";
-	while(j--) {
-	    ob = new(OB_ESTATE);
-	    ob->set_short(desc);
-	    ob->set_long(__Estates[who[i]][j][2]);
-	    ob->set_exit(__Estates[who[i]][j][0]);
-	    __Estates[who[i]][j][1]->set_no_clean(1);
-	    ob->move(__Estates[who[i]][j][1]);
-	}
+        if((j = sizeof(__Estates[who[i]])) > 1)
+            desc = "an estate of "+who[i];
+        else desc = possessive_noun(who[i])+" estate";
+        while(j--) {
+            ob = new(OB_ESTATE);
+            ob->set_short(desc);
+            ob->set_long(__Estates[who[i]][j][2]);
+            ob->set_exit(__Estates[who[i]][j][0]);
+            __Estates[who[i]][j][1]->set_no_clean(1);
+            ob->move(__Estates[who[i]][j][1]);
+        }
     }
 }
 

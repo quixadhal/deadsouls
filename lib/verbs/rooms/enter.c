@@ -25,7 +25,7 @@ static void create() {
 
 mixed can_enter_obj() {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     if(!stringp(hobbled(this_player()))) return "Your injuries prevent easy movement. Perhaps you should try crawling.";
     return 1;

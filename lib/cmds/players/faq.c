@@ -12,19 +12,19 @@ static void GetFAQ(string args);
 
 mixed cmd(string args) {
     if( !args || args == "" ) {
-	string *files;
-	int cols, i, maxi, x, y;
+        string *files;
+        int cols, i, maxi, x, y;
 
-	message("help", mud_name() + " has the following FAQ lists:",
-	  this_player());
-	cols = ((int *)this_player()->GetScreen())[0];
-	i = sizeof(files = get_dir(DIR_FAQS "/"));
-	while(i--) if( (y =strlen(files[i])) > x ) x = y;
-	cols = cols / (x+2);
-	message("help", format_page(files, cols), this_player());
-	message("prompt", "\nWhich FAQ (general)? ", this_player());
-	input_to( (: GetFAQ :) );
-	return 1;
+        message("help", mud_name() + " has the following FAQ lists:",
+          this_player());
+        cols = ((int *)this_player()->GetScreen())[0];
+        i = sizeof(files = get_dir(DIR_FAQS "/"));
+        while(i--) if( (y =strlen(files[i])) > x ) x = y;
+        cols = cols / (x+2);
+        message("help", format_page(files, cols), this_player());
+        message("prompt", "\nWhich FAQ (general)? ", this_player());
+        input_to( (: GetFAQ :) );
+        return 1;
     }
     else GetFAQ(args);
     return 1;
@@ -34,14 +34,14 @@ static void GetFAQ(string args) {
     string file;
     //bugfix courtesy of Manchi
     if( !args || args == "" || args == "y" || args == "Y" || lower_case(args) == "yes")
-	args = "general";
+        args = "general";
     if( file_size(file = DIR_FAQS "/" + args) < 0 ) {
-	message("error", "No such FAQ available.", this_player());
-	return;
+        message("error", "No such FAQ available.", this_player());
+        return;
     }
     if( !(file = read_file(file)) ) {
-	message("error", "Failed to read FAQ document.", this_player());
-	return;
+        message("error", "Failed to read FAQ document.", this_player());
+        return;
     }
     this_player()->eventPage(explode(file, "\n"), "help");
 }

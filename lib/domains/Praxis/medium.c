@@ -17,7 +17,7 @@ void create() {
       (["west" : "/domains/Praxis/west_road2"]) );
     SetItems(
       (["artifacts" : "You have no idea what they are or what they mean.",
-	"hut" : "It is very odd."]) );
+        "hut" : "It is very odd."]) );
 }
 
 void reset() {

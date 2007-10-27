@@ -24,9 +24,9 @@ int cmd(string str) {
     str = absolute_path((string)this_player()->get_path(), str);
     if(file_size(str) == -1) return notify_fail("Invalid path.\n");
     if(file_size(file = str) != -2) {
-	i = sizeof(tmp = explode(str, "/"));
-	if(i < 2) str = "/";
-	else str = "/"+implode(tmp[0..i-2], "/");
+        i = sizeof(tmp = explode(str, "/"));
+        if(i < 2) str = "/";
+        else str = "/"+implode(tmp[0..i-2], "/");
     }
     if(str[strlen(str)-1] != '/') str += "/";
     str += CHANGELOG;

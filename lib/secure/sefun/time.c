@@ -43,28 +43,28 @@ varargs string time_elapsed(int arg1, int arg2){
 
     str = "";
     if (x = (tm / YEAR)) {
-	str += x + "y ";
-	tm -= x * YEAR;
+        str += x + "y ";
+        tm -= x * YEAR;
     }
 
     if (x = (tm / WEEK)) {
-	str += x + "w ";
-	tm -= x * WEEK;
+        str += x + "w ";
+        tm -= x * WEEK;
     }
     if (x = (tm / DAY)) {
-	str += x +"d ";
-	tm -= x * DAY;
+        str += x +"d ";
+        tm -= x * DAY;
     }
     if (x = (tm / HOUR)) {
-	str += x + "h ";
-	tm -= x * HOUR;
+        str += x + "h ";
+        tm -= x * HOUR;
     }
     if (x = (tm / MIN)) {
-	str += x + "m ";
-	tm -= x * MIN;
+        str += x + "m ";
+        tm -= x * MIN;
     }
     if (tm) {
-	str += tm + "s";
+        str += tm + "s";
     }
     //str += str[0..<2] + "%^RESET%^.";
     return str;

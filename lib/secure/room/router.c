@@ -37,15 +37,15 @@ static void create() {
     SetShort("Server monitoring room");
     SetLong( (: LongDesc :) );
     SetExits(([
-	"north" : "/secure/room/network",
+        "north" : "/secure/room/network",
       ]));
 }
 
 int CanReceive(object ob) {
     if( !archp(ob)  ){
-	message("info","The server room is available only to "+
-	  "admins, sorry.",ob);
-	return 0;
+        message("info","The server room is available only to "+
+          "admins, sorry.",ob);
+        return 0;
     }
     return 1;
 }
@@ -72,22 +72,22 @@ void init(){
 
 int ListenI3(string str){
     if(!str || (str != "on" && str != "off")){
-	write("Please specify whether you want it on or off.");
-	return 1;
+        write("Please specify whether you want it on or off.");
+        return 1;
     }
     if(str == "on"){
-	if(i3){
-	    write("This room is already receiving i3 data.");
-	    return 1;
-	}
-	write(capitalize(this_player()->GetKeyName())+" enables i3 data monitoring.");
-	say("You enable i3 data monitoring.");
-	i3 = 1;
-	return 1;
+        if(i3){
+            write("This room is already receiving i3 data.");
+            return 1;
+        }
+        write(capitalize(this_player()->GetKeyName())+" enables i3 data monitoring.");
+        say("You enable i3 data monitoring.");
+        i3 = 1;
+        return 1;
     }
     if(!i3){
-	write("This room is already blocking i3 data.");
-	return 1;
+        write("This room is already blocking i3 data.");
+        return 1;
     }
     write(capitalize(this_player()->GetKeyName())+" disables i3 data monitoring.");
     say("You disable i3 data monitoring.");
@@ -97,22 +97,22 @@ int ListenI3(string str){
 
 int ListenFTP(string str){
     if(!str || (str != "on" && str != "off")){
-	write("Please specify whether you want it on or off.");
-	return 1;
+        write("Please specify whether you want it on or off.");
+        return 1;
     }
     if(str == "on"){
-	if(ftp){
-	    write("This room is already receiving ftp data.");
-	    return 1;
-	}
-	write(capitalize(this_player()->GetKeyName())+" enables ftp data monitoring.");
-	say("You enable ftp data monitoring.");
-	ftp = 1;
-	return 1;
+        if(ftp){
+            write("This room is already receiving ftp data.");
+            return 1;
+        }
+        write(capitalize(this_player()->GetKeyName())+" enables ftp data monitoring.");
+        say("You enable ftp data monitoring.");
+        ftp = 1;
+        return 1;
     }
     if(!ftp){
-	write("This room is already blocking ftp data.");
-	return 1;
+        write("This room is already blocking ftp data.");
+        return 1;
     }
     write(capitalize(this_player()->GetKeyName())+" disables ftp data monitoring.");
     say("You disable ftp data monitoring.");
@@ -122,22 +122,22 @@ int ListenFTP(string str){
 
 int ListenHFTP(string str){
     if(!str || (str != "on" && str != "off")){
-	write("Please specify whether you want it on or off.");
-	return 1;
+        write("Please specify whether you want it on or off.");
+        return 1;
     }
     if(str == "on"){
-	if(hftp){
-	    write("This room is already receiving hftp data.");
-	    return 1;
-	}
-	write(capitalize(this_player()->GetKeyName())+" enables hftp data monitoring.");
-	say("You enable hftp data monitoring.");
-	hftp = 1;
-	return 1;
+        if(hftp){
+            write("This room is already receiving hftp data.");
+            return 1;
+        }
+        write(capitalize(this_player()->GetKeyName())+" enables hftp data monitoring.");
+        say("You enable hftp data monitoring.");
+        hftp = 1;
+        return 1;
     }
     if(!hftp){
-	write("This room is already blocking hftp data.");
-	return 1;
+        write("This room is already blocking hftp data.");
+        return 1;
     }
     write(capitalize(this_player()->GetKeyName())+" disables hftp data monitoring.");
     say("You disable hftp data monitoring.");
@@ -147,22 +147,22 @@ int ListenHFTP(string str){
 
 int ListenHTTP(string str){
     if(!str || (str != "on" && str != "off")){
-	write("Please specify whether you want it on or off.");
-	return 1;
+        write("Please specify whether you want it on or off.");
+        return 1;
     }
     if(str == "on"){
-	if(http){
-	    write("This room is already receiving http data.");
-	    return 1;
-	}
-	write(capitalize(this_player()->GetKeyName())+" enables http data monitoring.");
-	say("You enable http data monitoring.");
-	http = 1;
-	return 1;
+        if(http){
+            write("This room is already receiving http data.");
+            return 1;
+        }
+        write(capitalize(this_player()->GetKeyName())+" enables http data monitoring.");
+        say("You enable http data monitoring.");
+        http = 1;
+        return 1;
     }
     if(!http){
-	write("This room is already blocking http data.");
-	return 1;
+        write("This room is already blocking http data.");
+        return 1;
     }
     write(capitalize(this_player()->GetKeyName())+" disables http data monitoring.");
     say("You disable http data monitoring.");
@@ -172,22 +172,22 @@ int ListenHTTP(string str){
 
 int ListenRCP(string str){
     if(!str || (str != "on" && str != "off")){
-	write("Please specify whether you want it on or off.");
-	return 1;
+        write("Please specify whether you want it on or off.");
+        return 1;
     }
     if(str == "on"){
-	if(rcp){
-	    write("This room is already receiving rcp data.");
-	    return 1;
-	}
-	write(capitalize(this_player()->GetKeyName())+" enables rcp data monitoring.");
-	say("You enable rcp data monitoring.");
-	rcp = 1;
-	return 1;
+        if(rcp){
+            write("This room is already receiving rcp data.");
+            return 1;
+        }
+        write(capitalize(this_player()->GetKeyName())+" enables rcp data monitoring.");
+        say("You enable rcp data monitoring.");
+        rcp = 1;
+        return 1;
     }
     if(!rcp){
-	write("This room is already blocking rcp data.");
-	return 1;
+        write("This room is already blocking rcp data.");
+        return 1;
     }
     write(capitalize(this_player()->GetKeyName())+" disables rcp data monitoring.");
     say("You disable rcp data monitoring.");
@@ -197,22 +197,22 @@ int ListenRCP(string str){
 
 int ListenOOB(string str){
     if(!str || (str != "on" && str != "off")){
-	write("Please specify whether you want it on or off.");
-	return 1;
+        write("Please specify whether you want it on or off.");
+        return 1;
     }
     if(str == "on"){
-	if(oob){
-	    write("This room is already receiving oob data.");
-	    return 1;
-	}
-	write(capitalize(this_player()->GetKeyName())+" enables oob data monitoring.");
-	say("You enable oob data monitoring.");
-	oob = 1;
-	return 1;
+        if(oob){
+            write("This room is already receiving oob data.");
+            return 1;
+        }
+        write(capitalize(this_player()->GetKeyName())+" enables oob data monitoring.");
+        say("You enable oob data monitoring.");
+        oob = 1;
+        return 1;
     }
     if(!oob){
-	write("This room is already blocking oob data.");
-	return 1;
+        write("This room is already blocking oob data.");
+        return 1;
     }
     write(capitalize(this_player()->GetKeyName())+" disables oob data monitoring.");
     say("You disable oob data monitoring.");

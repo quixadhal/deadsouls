@@ -14,32 +14,32 @@ static void create() {
       "covering the bottom of this tunnel, running west to east along "+
       "the tunnel's length. Light streams in from a drainage grate above.");
     SetItems( ([ ({"tunnel","tunnels"}) : "You are in a sewer tunnel."+
-	"It's foul, dark, and hot.",
-	({"sewer","sewer system"}) : "Though evidently in good repair "+
-	"and of modern construction, this is still a sewer tunnel, "+
-	"and it's hostile to human comfort.",
-	({"steam","vent","vents","wall-mounted vents"}): "Apparently "+
-	"there is industrial machinery nearby that exhausts hot steam "+
-	"through vents in the walls.",
-	"air" : "It is rank with the reek of decomposing waste.",
-	({"wall","walls"}) : "The walls of the sewer tunnel are made "+
-	"of concrete and appear well-built and sturdy.", 
-	({"stream","liquid","stream of liquid","dark liquid"}) : "Whatever "+
-	"this stuff is, water is not its main component. It's some kind "+
-	"of foul-smelling liquid waste, flowing along the bottom "+
-	"of the tunnel.",
-	"light" : "There isn't much of it, and you can't tell if it's " +
-	"sunshine or lamplight, but it lets you see a bit better.",
-	({"sewage","waste","garbage"}) : "It appears that the fluid on the "+
-	"bottom of this tunnel is the result of garbage and waste "+
-	"processing. In liquid form, this garbage flows "+
-	"east from here.",
+        "It's foul, dark, and hot.",
+        ({"sewer","sewer system"}) : "Though evidently in good repair "+
+        "and of modern construction, this is still a sewer tunnel, "+
+        "and it's hostile to human comfort.",
+        ({"steam","vent","vents","wall-mounted vents"}): "Apparently "+
+        "there is industrial machinery nearby that exhausts hot steam "+
+        "through vents in the walls.",
+        "air" : "It is rank with the reek of decomposing waste.",
+        ({"wall","walls"}) : "The walls of the sewer tunnel are made "+
+        "of concrete and appear well-built and sturdy.", 
+        ({"stream","liquid","stream of liquid","dark liquid"}) : "Whatever "+
+        "this stuff is, water is not its main component. It's some kind "+
+        "of foul-smelling liquid waste, flowing along the bottom "+
+        "of the tunnel.",
+        "light" : "There isn't much of it, and you can't tell if it's " +
+        "sunshine or lamplight, but it lets you see a bit better.",
+        ({"sewage","waste","garbage"}) : "It appears that the fluid on the "+
+        "bottom of this tunnel is the result of garbage and waste "+
+        "processing. In liquid form, this garbage flows "+
+        "east from here.",
       ]) );
     SetSmell( ([ "default" : "The stench of sewage and waste hangs here."]) );
     SetListen("default","You hear faint echoes of dripping water.");
     SetExits( ([
-	"east" : "/domains/campus/room/sewer1",
-	"up" : "/domains/town/room/vill_road1"
+        "east" : "/domains/campus/room/sewer1",
+        "up" : "/domains/town/room/vill_road1"
       ]) );
 
     SetDoor("up","/domains/campus/doors/grate");
@@ -51,12 +51,12 @@ int SteamBlast(){
     stuff=all_inventory();
     lstuff = ({});
     for(i=0;i<sizeof(stuff);i++){
-	temparr= ({ stuff[i] });
-	if(living(stuff[i]) && !sizeof(lstuff)) lstuff = ({stuff[i]});
-	if(living(stuff[i]) && sizeof(lstuff) > 0 && member_array(stuff[i],lstuff) == -1) lstuff += ({stuff[i]});
+        temparr= ({ stuff[i] });
+        if(living(stuff[i]) && !sizeof(lstuff)) lstuff = ({stuff[i]});
+        if(living(stuff[i]) && sizeof(lstuff) > 0 && member_array(stuff[i],lstuff) == -1) lstuff += ({stuff[i]});
     }
     for(i=0;i<sizeof(lstuff);i++){
-	if(sizeof(lstuff) > 0 && !creatorp(lstuff[i]) ) lstuff[i]->eventReceiveDamage(0, 7,random(30)+10, "torso");
+        if(sizeof(lstuff) > 0 && !creatorp(lstuff[i]) ) lstuff[i]->eventReceiveDamage(0, 7,random(30)+10, "torso");
 
     }
     tell_room(this_object(), "You are hit by a blast of scalding-hot steam!");

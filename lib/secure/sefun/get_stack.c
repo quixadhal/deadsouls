@@ -6,12 +6,12 @@ varargs string get_stack( int x) {
     string *stack2 = call_stack(2);
     //tc("sizeof(stack1): "+sizeof(stack1));
     for(i = 0, s = sizeof(stack1); i < s; i++){
-	list +="\n"+i+":"+identify(stack2[i])+"."+identify(stack1[i])+"."+identify(stack2[i]);
-	//list = implode(stack," ");
+        list +="\n"+i+":"+identify(stack2[i])+"."+identify(stack1[i])+"."+identify(stack2[i]);
+        //list = implode(stack," ");
     }
 
     if(x){
-	list += "\n"+ identify(previous_object(-1));
+        list += "\n"+ identify(previous_object(-1));
     }
 
     return list;

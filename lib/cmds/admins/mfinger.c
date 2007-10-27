@@ -23,15 +23,15 @@ mixed cmd(string args) {
 
     if( !args || args == "" ) return "Mfinger whom?";
     if( !(ob = find_player(args)) ) 
-	return "No one around " + mud_name() + " by that name.";
+        return "No one around " + mud_name() + " by that name.";
     ip = query_ip_number(ob);
     args = (string)ob->GetCapName();
     ob = new(LIB_CLIENT);
     Waiting[ob] = ([ "who" : this_player(), "player" : args, "ip" : ip ]);
     if( (int)ob->eventCreateSocket(ip, 79) < 0 ) {
-	message("error", "Unable to create socket.", this_player());
-	ob->eventDestruct();
-	return 1;
+        message("error", "Unable to create socket.", this_player());
+        ob->eventDestruct();
+        return 1;
     }
     ob->SetDestructOnClose(1);
     ob->SetRead( (: ReadSocket :) );

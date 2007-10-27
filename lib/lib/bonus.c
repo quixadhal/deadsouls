@@ -22,7 +22,7 @@ void init(){
     item::init();
     set_heart_beat(1);
     if(environment(this_object()) && living(environment(this_object()))) 
-	SetBonuses();
+        SetBonuses();
 }
 
 void heart_beat(){
@@ -69,22 +69,22 @@ int SetBonuses(){
     object env = environment();
     if(!env || ! living(env)) return 0;
     if(sizeof(Stats))
-	foreach(string key, int val in Stats){
-	env->AddStatBonus(key, val);
+        foreach(string key, int val in Stats){
+        env->AddStatBonus(key, val);
     }
     if(sizeof(Skills))
-	foreach(string key, int val in Skills){
-	env->AddSkillBonus(key, val);
+        foreach(string key, int val in Skills){
+        env->AddSkillBonus(key, val);
     }
     if(sizeof(Points))
-	foreach(string key, int val in Points){
-	switch(key){
-	case "HP" : env->AddHp(val);break;
-	case "XP" : env->AddExperiencePoints(val);break;
-	case "SP" : env->AddStaminaPoints(val);break;
-	case "MP" : env->AddMagicPoints(val);break;
-	default : break;
-	}
+        foreach(string key, int val in Points){
+        switch(key){
+        case "HP" : env->AddHp(val);break;
+        case "XP" : env->AddExperiencePoints(val);break;
+        case "SP" : env->AddStaminaPoints(val);break;
+        case "MP" : env->AddMagicPoints(val);break;
+        default : break;
+        }
     }
     return 1;
 }
@@ -93,12 +93,12 @@ int RemoveBonuses(){
     object env = environment();
     if(!env || ! living(env)) return 0;
     if(sizeof(Stats))
-	foreach(string key, int val in Stats){
-	env->RemoveStatBonus(key);
+        foreach(string key, int val in Stats){
+        env->RemoveStatBonus(key);
     }
     if(sizeof(Skills))
-	foreach(string key, int val in Skills){
-	env->RemoveSkillBonus(key);
+        foreach(string key, int val in Skills){
+        env->RemoveSkillBonus(key);
     }
     return 1;
 }

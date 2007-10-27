@@ -29,7 +29,7 @@ void create() {
     __MailQueue = ([]); 
     __IncomingMail = ([]); 
     if(file_exists(sprintf("%s%s", SAVE_MAILQUEUE, __SAVE_EXTENSION__))) 
-	restore_mailqueue(); 
+        restore_mailqueue(); 
     i = sizeof(muds = keys(__MailQueue)); 
     while(i--) __MailQueue[muds[i]][0]["in transit"] = 0; 
     set_heart_beat(10);
@@ -38,15 +38,15 @@ void create() {
 void heart_beat(){
     count++;
     if(sizeof(Outgoing))
-	//OOB_D->SendMail(copy(Outgoing));
-	OOB_D->SendMail(Outgoing);
+        //OOB_D->SendMail(copy(Outgoing));
+        OOB_D->SendMail(Outgoing);
     Outgoing = ([]);
     if(count > 6){
-	count = 0;
-	save_mailqueue();
-	foreach(mixed key, mixed val in Outgoing){
-	    if(!sizeof(val)) map_delete(Outgoing,key);
-	}
+        count = 0;
+        save_mailqueue();
+        foreach(mixed key, mixed val in Outgoing){
+            if(!sizeof(val)) map_delete(Outgoing,key);
+        }
     }
 }
 
@@ -65,10 +65,10 @@ string next_post(string mud) {
     if(!__MailQueue[mud = replace_string(lower_case(mud), " ", ".")]) return 0;
     x = __MailQueue[mud][0]["in transit"]++; 
     if(sizeof(__MailQueue[mud][0]["post"]) == x) { 
-	if( !sizeof(__MailQueue[mud] = __MailQueue[mud][1..]) )
-	    map_delete(__MailQueue, mud); 
-	save_mailqueue(); 
-	return 0; 
+        if( !sizeof(__MailQueue[mud] = __MailQueue[mud][1..]) )
+            map_delete(__MailQueue, mud); 
+        save_mailqueue(); 
+        return 0; 
     } 
     return __MailQueue[mud][0]["post"][x]; 
 } 
@@ -87,21 +87,21 @@ int send_post(mapping borg, string mud) {
 
     if(file_name(previous_object(0)) != LOCALPOST_D &&
       base_name(previous_object(0)) != OBJ_POST){
-	return 0;
+        return 0;
     }
 
     foreach(mixed val in borg["to"] + borg["cc"]){
-	string mudname;
-	if(sscanf(val,"%*s@%s",mudname)) {
-	    mudname = INTERMUD_D->GetMudName(mudname);
-	    if(mudname){
-		OOB_D->RequestToken(mudname);
-		muds += ({ mudname });
-		if(!TmpMap) TmpMap = ([]);
-		if(!TmpMap[mudname]) TmpMap[mudname] = ({});
-		TmpMap[mudname] += convert_names(({ val }));
-	    }
-	}
+        string mudname;
+        if(sscanf(val,"%*s@%s",mudname)) {
+            mudname = INTERMUD_D->GetMudName(mudname);
+            if(mudname){
+                OOB_D->RequestToken(mudname);
+                muds += ({ mudname });
+                if(!TmpMap) TmpMap = ([]);
+                if(!TmpMap[mudname]) TmpMap[mudname] = ({});
+                TmpMap[mudname] += convert_names(({ val }));
+            }
+        }
     }
 
     borg["to"] = convert_names(borg["to"]); 
@@ -110,29 +110,29 @@ int send_post(mapping borg, string mud) {
       mud_name());
 
     foreach(string destination in singular_array(muds)){
-	string *tmp_to = ({});
-	string *tmp_cc = ({});
+        string *tmp_to = ({});
+        string *tmp_cc = ({});
 
-	foreach(string dude in borg["to"]){
-	    if(member_array(dude,TmpMap[destination]) != -1) tmp_to += ({ dude });
-	}
-	foreach(string dude in borg["cc"]){
-	    if(member_array(dude,TmpMap[destination]) != -1) tmp_cc += ({ dude });
-	}
-	if(!Outgoing) Outgoing = ([]);
-	if(!Outgoing[destination]) Outgoing[destination] = ([]);
-	Outgoing[destination][borg["id"]] = 
-	({	  
-	  "mail",
-	  borg["id"],
-	  borg["from"],
-	  ([ destination : tmp_to ]),
-	  ([ destination : tmp_cc ]),
-	  ({}),
-	  borg["id"],
-	  borg["subject"],
-	  borg["message"],
-	});
+        foreach(string dude in borg["to"]){
+            if(member_array(dude,TmpMap[destination]) != -1) tmp_to += ({ dude });
+        }
+        foreach(string dude in borg["cc"]){
+            if(member_array(dude,TmpMap[destination]) != -1) tmp_cc += ({ dude });
+        }
+        if(!Outgoing) Outgoing = ([]);
+        if(!Outgoing[destination]) Outgoing[destination] = ([]);
+        Outgoing[destination][borg["id"]] = 
+        ({	  
+          "mail",
+          borg["id"],
+          borg["from"],
+          ([ destination : tmp_to ]),
+          ([ destination : tmp_cc ]),
+          ({}),
+          borg["id"],
+          borg["subject"],
+          borg["message"],
+        });
     }
     save_mailqueue(); 
     return 1;
@@ -140,7 +140,7 @@ int send_post(mapping borg, string mud) {
 
 int outgoing_sent(string destination, string id){
     if(base_name(previous_object(0)) != LIB_OOB){
-	return 0;
+        return 0;
     }
     map_delete(Outgoing[destination], id);
     if(!sizeof(Outgoing[destination])) map_delete(Outgoing, destination);
@@ -152,7 +152,7 @@ int incoming_post(mixed *packet){
     mapping borg; 
     string from = packet[2];
     if(base_name(previous_object(0)) != LIB_OOB){
-	return 0;
+        return 0;
     }
     if(!grepp(packet[2],"@")) from = packet[2]+"@"+packet[0];
     borg =
@@ -175,9 +175,9 @@ static private string *local_targets(string *str) {
 
     i = sizeof(str);
     while(i--) {
-	sscanf(str[i], "%s@%s", a, b);
-	if(replace_string(lower_case(b), " ", ".") == 
-	  replace_string(lower_case(mud_name()), " ", ".")) str[i] = a;
+        sscanf(str[i], "%s@%s", a, b);
+        if(replace_string(lower_case(b), " ", ".") == 
+          replace_string(lower_case(mud_name()), " ", ".")) str[i] = a;
     }
     return str;
 } 
@@ -193,8 +193,8 @@ static private void restore_mailqueue() {
     string *nombres = ({});
 
     foreach(string namen in noms){
-	if(sscanf(namen, "%s@%s", a, b) != 2) nombres += ({ namen });
-	else nombres += ({ a });
+        if(sscanf(namen, "%s@%s", a, b) != 2) nombres += ({ namen });
+        else nombres += ({ a });
     }
     return nombres;
 }
@@ -208,13 +208,13 @@ int eventDestruct(){
 
 varargs void defer_old_mail(int i){
     foreach(mixed destination, mixed messages in Outgoing){
-	if(!Old) Old = ([]);
-	foreach(mixed key, mixed val in messages){
-	    if(((time() - key) > 300) || i){
-		if(!Old[destination]) Old[destination] = ([]);
-		if(!Old[destination][key]) Old[destination][key] = val;
-		map_delete(Outgoing[destination],key);
-	    }
-	}
+        if(!Old) Old = ([]);
+        foreach(mixed key, mixed val in messages){
+            if(((time() - key) > 300) || i){
+                if(!Old[destination]) Old[destination] = ([]);
+                if(!Old[destination][key]) Old[destination][key] = val;
+                map_delete(Outgoing[destination],key);
+            }
+        }
     }
 }

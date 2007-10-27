@@ -8,7 +8,7 @@ inherit LIB_DAEMON;
 static private void validate() {
     if(!this_player()) return 0;
     if( !((int)master()->valid_apply(({ "ASSIST" }))) )
-	error("Illegal attempt to access admintool: "+get_stack()+" "+identify(previous_object(-1)));
+        error("Illegal attempt to access admintool: "+get_stack()+" "+identify(previous_object(-1)));
 }
 
 varargs int Menu(string str);
@@ -137,8 +137,8 @@ string process_input(string str){
     case "i" : RemoveRace();break;
     case "j" : AddCurrency();break;
     case "k" : RemoveCurrency();break;
-	//case "l" : EncrePlayer();break;
-	//case "m" : DecreCreator();break;
+        //case "l" : EncrePlayer();break;
+        //case "m" : DecreCreator();break;
     case "n" : RidUser();break;
     case "o" : BanishUser();break;
     case "p" : UnBanishUser();break;
@@ -291,22 +291,22 @@ int ToggleMudLock(){
     if(!sizeof(line_array)) write("Array is zero length.");
 
     foreach(string line in line_array){
-	if(strsrch(line,"MUD_IS_LOCKED") != -1){
-	    lockline = line;
-	}
+        if(strsrch(line,"MUD_IS_LOCKED") != -1){
+            lockline = line;
+        }
     }
     if(sscanf(lockline,"%s%d",junk, num) < 2) {
-	write("Operation failed. You need to hand-"+
-	  "edit /secure/include/config.h immediately.");
-	return 0;
+        write("Operation failed. You need to hand-"+
+          "edit /secure/include/config.h immediately.");
+        return 0;
     }
     if(num == 0) {
-	write("Locking mud.\n");	
-	num = 1;
+        write("Locking mud.\n");	
+        num = 1;
     }
     else {
-	write("Unlocking mud.\n");
-	num = 0;
+        write("Unlocking mud.\n");
+        num = 0;
     }
     newline = junk + num;
     newfile = replace_string(line_string, lockline, newline);
@@ -321,7 +321,7 @@ int ToggleMudLock(){
 int ShowLock(){
     validate();
     if(load_object("/secure/daemon/master")->is_locked()){
-	write("Mud is locked. Only admins and designated personnel can log in.\n");
+        write("Mud is locked. Only admins and designated personnel can log in.\n");
     }
     else write("Mud is unlocked. Players are free to login.\n");
     Menu();
@@ -361,9 +361,9 @@ varargs int eventChangeEmail(string str, int auto){
 
     validate();
     if(strsrch(str,"@") == -1 ) {
-	write("That isn't a valid email address.");
-	if(!auto) Menu();
-	return 0;
+        write("That isn't a valid email address.");
+        if(!auto) Menu();
+        return 0;
     }
     str == replace_string(str, "#", "");
     line_string = read_file("/secure/include/config.h");
@@ -371,15 +371,15 @@ varargs int eventChangeEmail(string str, int auto){
     line_array = explode(line_string, "\n");
     if(!sizeof(line_array)) write("Array is zero length.");
     foreach(string line in line_array){
-	if(strsrch(line,"ADMIN_EMAIL") != -1){
-	    lockline = line;
-	}
+        if(strsrch(line,"ADMIN_EMAIL") != -1){
+            lockline = line;
+        }
     }
     if(sscanf(lockline,"%s\"%s\"",junk, email) < 2) {
-	write("Operation failed. You need to hand-"+
-	  "edit /secure/include/config.h immediately.");
-	if(!auto) Menu();
-	return 0;
+        write("Operation failed. You need to hand-"+
+          "edit /secure/include/config.h immediately.");
+        if(!auto) Menu();
+        return 0;
     }
 
     newline = junk + "\""+str+"\"";
@@ -405,18 +405,18 @@ int eventSetReboot(mixed i){
 
     validate();
     if(!intp(i) && !sscanf(i,"%d",num)){
-	write("Failed to set new interval.\n");
-	Menu();
-	return 1;
+        write("Failed to set new interval.\n");
+        Menu();
+        return 1;
     }
     if(intp(i)) num = i;
     check = EVENTS_D->SetRebootInterval(num);
     reload(EVENTS_D);
     if(num == check)
-	write("Reboot interval set to "+EVENTS_D->GetRebootInterval()+" hours.");
+        write("Reboot interval set to "+EVENTS_D->GetRebootInterval()+" hours.");
     else
-	write("Reboot interval could not be set. Current interval is: "+
-	  check + " hours.");
+        write("Reboot interval could not be set. Current interval is: "+
+          check + " hours.");
     Menu();
     return 1;
 }
@@ -435,26 +435,26 @@ int eventAddClass(string str){
 
     validate();
     if(!str) {
-	write("Invalid class name.\n");
-	Menu();
-	return 1;
+        write("Invalid class name.\n");
+        Menu();
+        return 1;
     }
 
     classpath = "/secure/cfg/classes/"+str;
     write("Looking for "+classpath+"...");
     classes = load_object(CLASSES_D)->GetClasses();
     if(member_array(str,classes) != -1) {
-	write("That class is already available.\n");
-	Menu();
-	return 1;
+        write("That class is already available.\n");
+        Menu();
+        return 1;
     }
     if(file_size(classpath) < 1) {
-	write("For a class to be added, you must create and ");
-	write("edit a class file, then place it in /secure/cfg/classes ");
-	write("with the other class files.\n");
-	write("Operation Failed: no such class file\n");
-	Menu();
-	return 1;
+        write("For a class to be added, you must create and ");
+        write("edit a class file, then place it in /secure/cfg/classes ");
+        write("with the other class files.\n");
+        write("Operation Failed: no such class file\n");
+        Menu();
+        return 1;
     }
     CLASSES_D->AddClass(classpath);
     write("Classes currently available: "+implode(load_object(CLASSES_D)->GetClasses()," ")+"\n");
@@ -474,15 +474,15 @@ int RemoveClass(){
 int eventRemoveClass(string str){
     validate();
     if(!str){
-	write("That is not a valid class.\n");
-	Menu();
-	return 1;
+        write("That is not a valid class.\n");
+        Menu();
+        return 1;
     }
 
     if(member_array(str,load_object(CLASSES_D)->GetClasses()) == -1) {
-	write("That class is already unavailable.\n");
-	Menu();
-	return 1;
+        write("That class is already unavailable.\n");
+        Menu();
+        return 1;
     }
 
     load_object(CLASSES_D)->RemoveClass(str);
@@ -504,26 +504,26 @@ int eventAddRace(string str){
 
     validate();
     if(!str) {
-	write("Invalid race name.\n");
-	Menu();
-	return 1;
+        write("Invalid race name.\n");
+        Menu();
+        return 1;
     }
 
     racepath = "/secure/cfg/races/"+str;
     write("Looking for "+racepath+"...");
     races = load_object(RACES_D)->GetRaces();
     if(member_array(str,races) != -1) {
-	write("That race is already available.\n");
-	Menu();
-	return 1;
+        write("That race is already available.\n");
+        Menu();
+        return 1;
     }
     if(file_size(racepath) < 1) {
-	write("For a race to be added, you must create and ");
-	write("edit a race file, then place it in /secure/cfg/races ");
-	write("with the other race files.\n");
-	write("Operation Failed: no such race file\n");
-	Menu();
-	return 1;
+        write("For a race to be added, you must create and ");
+        write("edit a race file, then place it in /secure/cfg/races ");
+        write("with the other race files.\n");
+        write("Operation Failed: no such race file\n");
+        Menu();
+        return 1;
     }
 
     write("Should players be able to play as this race?");
@@ -556,15 +556,15 @@ int RemoveRace(){
 int eventRemoveRace(string str){
     validate();
     if(!str){
-	write("That is not a valid race.\n");
-	Menu();
-	return 1;
+        write("That is not a valid race.\n");
+        Menu();
+        return 1;
     }
 
     if(member_array(str,load_object(RACES_D)->GetRaces()) == -1) {
-	write("That race is already unavailable.\n");
-	Menu();
-	return 1;
+        write("That race is already unavailable.\n");
+        Menu();
+        return 1;
     }
 
     load_object(RACES_D)->RemoveRace(str);
@@ -587,22 +587,22 @@ int eventAddCurrency(string str){
     validate();
     currency = str;
     if(!str || str == "") {
-	write("Invalid currency name.\n");
-	Menu();
-	return 1;
+        write("Invalid currency name.\n");
+        Menu();
+        return 1;
     }
 
     currencies = ECONOMY_D->__QueryCurrencies();
     if(member_array(str,currencies) != -1) {
-	write("That currency is already available.\n");
-	Menu();
-	return 1;
+        write("That currency is already available.\n");
+        Menu();
+        return 1;
     }
     if(sizeof(currencies) > 2){
-	query = "What should its exchange rate, or value be? For comparison, "+currencies[0]+" ";
-	query += "has a rate of "+ ECONOMY_D->__Query(currencies[0],"rate")+", "+currencies[1]+" ";
-	query += "has a rate of "+ ECONOMY_D->__Query(currencies[1],"rate")+", and "+currencies[2]+" ";
-	query += "has a rate of "+ ECONOMY_D->__Query(currencies[2],"rate")+".\n";
+        query = "What should its exchange rate, or value be? For comparison, "+currencies[0]+" ";
+        query += "has a rate of "+ ECONOMY_D->__Query(currencies[0],"rate")+", "+currencies[1]+" ";
+        query += "has a rate of "+ ECONOMY_D->__Query(currencies[1],"rate")+", and "+currencies[2]+" ";
+        query += "has a rate of "+ ECONOMY_D->__Query(currencies[2],"rate")+".\n";
     }
     else query = "What should its exchange rate, or value be?";
 
@@ -616,15 +616,15 @@ int CurrencyRate(string str){
 
     validate();
     if(!str || !sscanf(str,"%f",rate) ){
-	write("Invalid rate. Currency not added.\n");
-	Menu();
-	return 1;
+        write("Invalid rate. Currency not added.\n");
+        Menu();
+        return 1;
     }
     if(sizeof(currencies) > 2){
-	query = "What should its weight be? For comparison, "+currencies[0]+" ";
-	query += "has a weight of "+ ECONOMY_D->__Query(currencies[0],"weight")+", "+currencies[1]+" ";
-	query += "has a weight of "+ ECONOMY_D->__Query(currencies[1],"weight")+", and "+currencies[2]+" ";
-	query += "has a weight of "+ ECONOMY_D->__Query(currencies[2],"weight")+".\n";
+        query = "What should its weight be? For comparison, "+currencies[0]+" ";
+        query += "has a weight of "+ ECONOMY_D->__Query(currencies[0],"weight")+", "+currencies[1]+" ";
+        query += "has a weight of "+ ECONOMY_D->__Query(currencies[1],"weight")+", and "+currencies[2]+" ";
+        query += "has a weight of "+ ECONOMY_D->__Query(currencies[2],"weight")+".\n";
     }
     else query = "What should its weight be?";
     write(query);
@@ -638,15 +638,15 @@ int  CurrencyWeight(string str){
 
     validate();
     if(!str || !sscanf(str,"%f",weight) ){
-	write("Invalid weight. Currency not added.\n");
-	Menu();
-	return 1;
+        write("Invalid weight. Currency not added.\n");
+        Menu();
+        return 1;
     }
     if(sizeof(currencies) > 2){
-	query = "What should its inflation rate be? For comparison, "+currencies[0]+" ";
-	query += "has an inflation rate of "+ ECONOMY_D->__Query(currencies[0],"inflation")+", "+currencies[1]+" ";
-	query += "has an inflation rate of "+ ECONOMY_D->__Query(currencies[1],"inflation")+", and "+currencies[2]+" ";
-	query += "has an inflation rate of "+ ECONOMY_D->__Query(currencies[2],"inflation")+".\n";
+        query = "What should its inflation rate be? For comparison, "+currencies[0]+" ";
+        query += "has an inflation rate of "+ ECONOMY_D->__Query(currencies[0],"inflation")+", "+currencies[1]+" ";
+        query += "has an inflation rate of "+ ECONOMY_D->__Query(currencies[1],"inflation")+", and "+currencies[2]+" ";
+        query += "has an inflation rate of "+ ECONOMY_D->__Query(currencies[2],"inflation")+".\n";
     }
     else query = "What should its inflation rate be?";
     write(query);
@@ -657,9 +657,9 @@ int  CurrencyWeight(string str){
 int CurrencyInflation(string str){
     validate();
     if(!str || !sscanf(str,"%f",inflation) ){
-	write("Invalid inflation rate. Currency not added.\n");
-	Menu();
-	return 1;
+        write("Invalid inflation rate. Currency not added.\n");
+        Menu();
+        return 1;
     }
     write(identify(previous_object(-1)));
     write("ECONOMY_D->add_currency(\""+currency+"\", "+rate+", "+inflation+", "+weight+");");
@@ -673,10 +673,10 @@ int RemoveCurrency(){
     validate();
     currencies = ECONOMY_D->__QueryCurrencies();
     if(sizeof(currencies) == 1) {
-	write("Please add a currency before removing this last one.");
-	write("Removing the last currency would cause the mud to "+
-	  "behave unexpectedly.");
-	return 1;
+        write("Please add a currency before removing this last one.");
+        write("Removing the last currency would cause the mud to "+
+          "behave unexpectedly.");
+        return 1;
     }
     write("Available currencies: "+ identify(currencies) +".");
     write("Which currency would you like to remove?\n");
@@ -688,9 +688,9 @@ int RemoveCurrency(){
 int eventRemoveCurrency(string str){
     validate();
     if(!str || member_array(str, currencies) == -1) {
-	write("Invalid currency. No currency removed.\n");
-	Menu();
-	return 1;
+        write("Invalid currency. No currency removed.\n");
+        Menu();
+        return 1;
     }
     ECONOMY_D->remove_currency(str);
     write("Remaining currencies: "+identify(ECONOMY_D->__QueryCurrencies())+"\n");
@@ -711,14 +711,14 @@ int RidUser(){
 int eventRidUser(string str){
     validate();
     if(!str){
-	write("Invalid entry.\n");
-	Menu();
-	return 1;
+        write("Invalid entry.\n");
+        Menu();
+        return 1;
     }
 
     if( !user_exists(str) ) {
-	write("No such person: " + str + ".\n");
-	Menu();
+        write("No such person: " + str + ".\n");
+        Menu();
     }
     DoRid(str);
     return 1;
@@ -733,16 +733,16 @@ int DoRid(string who) {
     str = convert_name(who);
     who = capitalize(who);
     if( member_group(str, PRIV_SECURE) || member_group(str, PRIV_ASSIST) ){
-	write("You must first remove this person from a secure group.");
-	Menu();
-	return 1;
+        write("You must first remove this person from a secure group.");
+        Menu();
+        return 1;
     }
     if( ob = find_player(ridded)) {
-	who = (string)ob->GetCapName();
-	message("system", "You are being ridded from " + mud_name() + ".",
-	  ob);
-	ob->eventForce("quit");
-	//if( !((int)ob->eventDestruct()) ) destruct(ob);
+        who = (string)ob->GetCapName();
+        message("system", "You are being ridded from " + mud_name() + ".",
+          ob);
+        ob->eventForce("quit");
+        //if( !((int)ob->eventDestruct()) ) destruct(ob);
     }
     file = save_file(ridded) + __SAVE_EXTENSION__;
     //if( rename(file, DIR_RID + "/" + str + __SAVE_EXTENSION__) ) {
@@ -779,17 +779,17 @@ int BanishUser(){
 int evenBanishUser(string str){
     validate();
     if(member_array(str,BANISH_D->query_banished()) != -1) {
-	write("That name is already banished.\n");
-	Menu();
-	return 1;
+        write("That name is already banished.\n");
+        Menu();
+        return 1;
     }
     if(!user_exists(str = lower_case(str))) {
-	write(capitalize(str)+" is now banished.\n");
-	catch(call_other(BANISH_D, "banish_name", str));
+        write(capitalize(str)+" is now banished.\n");
+        catch(call_other(BANISH_D, "banish_name", str));
     }
     else {
-	write("A player by that name already exists.\n");
-	this_player()->eventPrint((string)FINGER_D->GetFinger(str));
+        write("A player by that name already exists.\n");
+        this_player()->eventPrint((string)FINGER_D->GetFinger(str));
     }
     Menu();
     return 1;
@@ -805,9 +805,9 @@ int UnBanishUser(){
 int eventUnBanishUser(string str){
     validate();
     if(member_array(str,BANISH_D->query_banished()) == -1) {
-	write("That is not a banished name.");
-	Menu();
-	return 1;
+        write("That is not a banished name.");
+        Menu();
+        return 1;
     }
     catch(call_other(BANISH_D, "unbanish_name", str));
     write(str+" is unbanished.\n");
@@ -829,15 +829,15 @@ varargs int eventChangeName(string newname, int automated){
 
     validate();
     if(!newname || newname == "") {
-	write("Name change cancelled.\n");
-	Menu();
-	return 1;
+        write("Name change cancelled.\n");
+        Menu();
+        return 1;
     }
 
     if(automated){
-	if(mud_name() != "DeadSoulsNew" &&
-	  mud_name() != "DeadSoulsWin")
-	    return 0;
+        if(mud_name() != "DeadSoulsNew" &&
+          mud_name() != "DeadSoulsWin")
+            return 0;
     }
 
     line_string = read_file("/secure/cfg/mudos.cfg");
@@ -846,27 +846,27 @@ varargs int eventChangeName(string newname, int automated){
     if(!sizeof(line_array)) write("Array is zero length.");
 
     if(!sizeof(line_array) || !sizeof(line_string)) {
-	if(!automated) Menu();
-	return 0;
+        if(!automated) Menu();
+        return 0;
     }
 
     foreach(string line in line_array){
-	if(strsrch(line,"name :") != -1){
-	    nameline = line;
-	}
+        if(strsrch(line,"name :") != -1){
+            nameline = line;
+        }
     }
 
     if(!nameline || sscanf(nameline,"%s : %s",junk, name) < 2) {
-	write("Operation failed. You need to copy over "+
-	  "/secure/cfg/mudos.cfg immediately with an original.");
-	if(!automated) Menu();
-	return 0;
+        write("Operation failed. You need to copy over "+
+          "/secure/cfg/mudos.cfg immediately with an original.");
+        if(!automated) Menu();
+        return 0;
     }
 
     if(automated){
-	if(name != "DeadSoulsWin" && name != "DeadSouls" &&
-	  name != "Dead Souls" && name != "DeadSoulsNew") newname = name;
-	cp("/secure/cfg/mudos.cfg","/secure/cfg/mudos.orig");
+        if(name != "DeadSoulsWin" && name != "DeadSouls" &&
+          name != "Dead Souls" && name != "DeadSoulsNew") newname = name;
+        cp("/secure/cfg/mudos.cfg","/secure/cfg/mudos.orig");
     }
 
     newline = junk + " : " + newname;
@@ -875,9 +875,9 @@ varargs int eventChangeName(string newname, int automated){
     cp("/secure/cfg/mudos.cfg","/secure/cfg/mudos.autobak");
     write("\n");
     if(!automated)  {
-	write("\nMUD's name changed. Reboot the MUD to activate new name.\n");
-	write("\n Do you want to shut down the MUD now to activate the change?\n");
-	input_to( (: eventShutDownMud :) );
+        write("\nMUD's name changed. Reboot the MUD to activate new name.\n");
+        write("\n Do you want to shut down the MUD now to activate the change?\n");
+        input_to( (: eventShutDownMud :) );
     }
     return 1;
 }
@@ -897,16 +897,16 @@ varargs int eventChangePort(string newport, int automated){
 
     validate();
     if(!newport || newport == "") {
-	write("Port change cancelled.\n");
-	Menu();
-	return 1;
+        write("Port change cancelled.\n");
+        Menu();
+        return 1;
     }
 
     if(!sscanf(newport,"%d", num) > 0 || num < 1 || num > 65535 ) {
-	write("Invalid port: numeral between 1 and 65535 expected.");
-	write("Port change cancelled.\n");
-	Menu();
-	return 1;
+        write("Invalid port: numeral between 1 and 65535 expected.");
+        write("Port change cancelled.\n");
+        Menu();
+        return 1;
     }
 
     line_string = read_file("/secure/cfg/mudos.cfg");
@@ -915,16 +915,16 @@ varargs int eventChangePort(string newport, int automated){
     if(!sizeof(line_array)) write("Array is zero length.");
 
     foreach(string line in line_array){
-	if(strsrch(line,"external_port_1 :") != -1){
-	    nameline = line;
-	}
+        if(strsrch(line,"external_port_1 :") != -1){
+            nameline = line;
+        }
     }
 
     if(!nameline || sscanf(nameline,"%s : %s",junk, name) < 2) {
-	write("Operation failed. You need to copy over "+
-	  "/secure/cfg/mudos.cfg immediately with an original.");
-	if(!automated) Menu();
-	return 0;
+        write("Operation failed. You need to copy over "+
+          "/secure/cfg/mudos.cfg immediately with an original.");
+        if(!automated) Menu();
+        return 0;
     }
 
     newline = junk + " : telnet " + newport;
@@ -932,11 +932,11 @@ varargs int eventChangePort(string newport, int automated){
     newfile = replace_string(line_string, nameline, newline);
     write_file("/secure/cfg/mudos.cfg",newfile,1);
     if(!automated)  {
-	write("\nMUD's port changed. Reboot the MUD to activate new port.");
-	write("NOTE: If the port you selected is 1024 or below, your OS "+
-	  "may require the MUD to run as a privileged user.");
-	write("\n Do you want to shut down the MUD now to activate the change?\n");
-	input_to( (: eventShutDownMud :) );
+        write("\nMUD's port changed. Reboot the MUD to activate new port.");
+        write("NOTE: If the port you selected is 1024 or below, your OS "+
+          "may require the MUD to run as a privileged user.");
+        write("\n Do you want to shut down the MUD now to activate the change?\n");
+        input_to( (: eventShutDownMud :) );
     }
     return 1;
 }
@@ -954,9 +954,9 @@ int eventShutDownMud(string str){
     validate();
     if(!str) str = "no";
     if(member_array(str,response_array) == -1){
-	write("Shutdown cancelled.\n");
-	Menu();
-	return 1;
+        write("Shutdown cancelled.\n");
+        Menu();
+        return 1;
     }
 
     write("Shutdown initiated.\n");
@@ -966,7 +966,7 @@ int eventShutDownMud(string str){
     log_file("game_log", ctime(time())+" Game shutdown by "+
       this_player()->GetKeyName()+"(admintool)\n");
     foreach(object dude in users()){
-	if(sizeof(base_name(dude)) && !archp(dude)) dude->eventForce("quit");
+        if(sizeof(base_name(dude)) && !archp(dude)) dude->eventForce("quit");
     }
     shutdown();
     write("Shutdown complete.");
@@ -993,37 +993,37 @@ int eventAddGroup(string str){
     bottom_array = ({});
 
     if(!str || str == "") {
-	write("\nGroup addition cancelled.\n");
-	Menu();
-	return 1;
+        write("\nGroup addition cancelled.\n");
+        Menu();
+        return 1;
     }
     config_file = read_file("/secure/cfg/groups.cfg");
     if(!sizeof(config_file)) {
-	write("Couldn't read file. Addition cancelled.\n");
-	Menu();
-	return 1;
+        write("Couldn't read file. Addition cancelled.\n");
+        Menu();
+        return 1;
     }
 
     str = upper_case(str);
     if(strsrch(config_file,"("+str+")") != -1 ) {
-	write("\nThat group already exists. Addition cancelled.\n");
-	Menu();
-	return 1;
+        write("\nThat group already exists. Addition cancelled.\n");
+        Menu();
+        return 1;
     }
 
     line_array = explode(config_file, "\n");
     if(!sizeof(line_array)) {
-	write("\nArray is zero length. Addition cancelled.\n");
-	Menu();
-	return 1;
+        write("\nArray is zero length. Addition cancelled.\n");
+        Menu();
+        return 1;
     }
 
     foreach(string line in line_array){
-	if(strsrch(line,"(") != -1 && 
-	  first(line,1) != "#"){
-	    bottom_array += ({ line });
-	}
-	else top_array += ({ line });
+        if(strsrch(line,"(") != -1 && 
+          first(line,1) != "#"){
+            bottom_array += ({ line });
+        }
+        else top_array += ({ line });
     }
 
     bottom_array += ({"("+str+") "});
@@ -1058,45 +1058,45 @@ int eventRemoveGroup(string str){
     bottom_array = ({});
 
     if(!str || str == "") {
-	write("\nGroup removal cancelled.\n");
-	Menu();
-	return 1;
+        write("\nGroup removal cancelled.\n");
+        Menu();
+        return 1;
     }
     config_file = read_file("/secure/cfg/groups.cfg");
     if(!sizeof(config_file)) {
-	write("Couldn't read file. removal cancelled.\n");
-	Menu();
-	return 1;
+        write("Couldn't read file. removal cancelled.\n");
+        Menu();
+        return 1;
     }
 
     str = upper_case(str);
     if(strsrch(config_file,"("+str+")") == -1 ) {
-	write("\nThat group doesn't exist. removal cancelled.\n");
-	Menu();
-	return 1;
+        write("\nThat group doesn't exist. removal cancelled.\n");
+        Menu();
+        return 1;
     }
 
     if(str == "SECURE" || str == "ASSIST"){
-	write("\nThis is a configured administrative group. You "+
-	  "can't remove it with admintool. If you really, really, really "+
-	  "know what you're doing and you want to remove that group, you'll "+
-	  "have to do it manually with an editor.\n");
-	Menu();
-	return 1;
+        write("\nThis is a configured administrative group. You "+
+          "can't remove it with admintool. If you really, really, really "+
+          "know what you're doing and you want to remove that group, you'll "+
+          "have to do it manually with an editor.\n");
+        Menu();
+        return 1;
     }
 
     line_array = explode(config_file, "\n");
     if(!sizeof(line_array)) {
-	write("\nArray is zero length. removal cancelled.\n");
-	Menu();
-	return 1;
+        write("\nArray is zero length. removal cancelled.\n");
+        Menu();
+        return 1;
     }
 
     foreach(string line in line_array){
-	if(strsrch(line,"(") != -1 && first(line,1) != "#"){
-	    if(strsrch(line,"("+str+")") == -1 ) bottom_array += ({ line });
-	}
-	else if(strsrch(line,"("+str+")") == -1 ) top_array += ({ line });
+        if(strsrch(line,"(") != -1 && first(line,1) != "#"){
+            if(strsrch(line,"("+str+")") == -1 ) bottom_array += ({ line });
+        }
+        else if(strsrch(line,"("+str+")") == -1 ) top_array += ({ line });
     }
 
     new_config_file = implode(top_array,"\n");
@@ -1123,28 +1123,28 @@ int eventModGroup(string str){
 
     validate();
     if(!str || str == "") {
-	write("\nGroup modification cancelled.\n");
-	Menu();
-	return 1;
+        write("\nGroup modification cancelled.\n");
+        Menu();
+        return 1;
     }
     config_file = read_file("/secure/cfg/groups.cfg");
     if(!sizeof(config_file)) {
-	write("Couldn't read file. modification cancelled.\n");
-	Menu();
-	return 1;
+        write("Couldn't read file. modification cancelled.\n");
+        Menu();
+        return 1;
     }
 
     str = upper_case(str);
     if(strsrch(config_file,"("+str+")") == -1 ) {
-	write("\nThat group doesn't exist. modification cancelled.\n");
-	Menu();
-	return 1;
+        write("\nThat group doesn't exist. modification cancelled.\n");
+        Menu();
+        return 1;
     }
 
     if(!sizeof(explode(config_file, "\n"))) {
-	write("\nArray is zero length. modification cancelled.\n");
-	Menu();
-	return 1;
+        write("\nArray is zero length. modification cancelled.\n");
+        Menu();
+        return 1;
     }
 
     write(str);
@@ -1176,35 +1176,35 @@ int eventEditGroup(string members){
 
 
     if(str == "ASSIST" || str == "SECURE" ) {
-	if(!securep(this_player())){
-	    write("Only full admins may do this.");
-	    Menu();
-	    return 1;
-	}
+        if(!securep(this_player())){
+            write("Only full admins may do this.");
+            Menu();
+            return 1;
+        }
     }
 
     if(str == "SECURE"){
-	validate();
-	if(!members || members == "") {
-	    write("You're not leaving the SECURE group empty. Modification cancelled.\n");
-	    Menu();
-	    return 1;
-	}
-	if(strsrch(members,":") != -1) dudes = explode(members,":");
-	else dudes = ({ members });
+        validate();
+        if(!members || members == "") {
+            write("You're not leaving the SECURE group empty. Modification cancelled.\n");
+            Menu();
+            return 1;
+        }
+        if(strsrch(members,":") != -1) dudes = explode(members,":");
+        else dudes = ({ members });
 
-	if(member_array(this_player()->GetKeyName(),dudes) == -1) {
-	    write("You can only modify this line with admintool if you include yourself in it. Modification cancelled.\n");
-	    Menu();
-	    return 1;
-	}
+        if(member_array(this_player()->GetKeyName(),dudes) == -1) {
+            write("You can only modify this line with admintool if you include yourself in it. Modification cancelled.\n");
+            Menu();
+            return 1;
+        }
     }
 
     foreach(string line in line_array){
-	if(strsrch(line,"(") != -1 && first(line,1) != "#"){
-	    if(strsrch(line,"("+str+")") == -1 ) bottom_array += ({ line });
-	}
-	else if(strsrch(line,"("+str+")") == -1 ) top_array += ({ line });
+        if(strsrch(line,"(") != -1 && first(line,1) != "#"){
+            if(strsrch(line,"("+str+")") == -1 ) bottom_array += ({ line });
+        }
+        else if(strsrch(line,"("+str+")") == -1 ) top_array += ({ line });
     }
 
     new_config_file = implode(top_array,"\n");

@@ -29,12 +29,12 @@ static void create() {
     SetShort("Creators' Hall West Wing");
     ob->eventMove(this_object());
     SetItems( ([
-	({"sign"}) : "A sign you can read.",
+        ({"sign"}) : "A sign you can read.",
       ]) );
     SetExits( ([
-	"east" : "/domains/default/room/wiz_hall",
-	"north" : "/domains/default/room/telnet_room",
-	"south" : "/domains/default/room/domains_room.c",
+        "east" : "/domains/default/room/wiz_hall",
+        "north" : "/domains/default/room/telnet_room",
+        "south" : "/domains/default/room/domains_room.c",
       ]) );
     SetInventory(([
       ]));
@@ -45,13 +45,13 @@ static void create() {
 int CanReceive(object ob) {
     if(playerp(ob) && !creatorp(ob) && !present("testchar badge",ob) &&
       !member_group(ob,"TEST")) {
-	message("info","Creator staff only, sorry.", ob);
-	return 0;
+        message("info","Creator staff only, sorry.", ob);
+        return 0;
     }
 
     if(ob->GetRace() == "rodent"){
-	message("info","You are repelled by rodenticide.",ob);
-	return 0;
+        message("info","You are repelled by rodenticide.",ob);
+        return 0;
     }
     return 1;
 }

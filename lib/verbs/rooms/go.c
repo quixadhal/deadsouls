@@ -28,7 +28,7 @@ static void create() {
 mixed can_go_str(string str) {
     if( !environment(this_player()) ) return "You are nowhere.";
     if( (int)this_player()->GetStaminaPoints() <3 )
-	return "You are too tired to go anywhere right now.";
+        return "You are too tired to go anywhere right now.";
     if(!stringp(hobbled(this_player()))) return "Your injuries prevent easy movement. Perhaps you should try crawling.";
     return (mixed)environment(this_player())->CanGo(this_player(), str);
 }
@@ -36,7 +36,7 @@ mixed can_go_str(string str) {
 mixed can_go_into_str(string str) {
     if( !environment(this_player()) ) return "You are nowhere.";
     if( (int)this_player()->GetStaminaPoints() <3 )
-	return "You are too tired right now.";
+        return "You are too tired right now.";
     if(!stringp(hobbled(this_player()))) return "Your injuries prevent easy movement. Perhaps you should try crawling.";
     return (mixed)environment(this_player())->CanEnter(this_player(), str);
 }

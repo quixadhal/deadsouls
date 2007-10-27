@@ -82,17 +82,17 @@ int eventRespawn(){
     int boxnum = 0;
 
     if(!spent){
-	foreach(object thing in all_inventory(environment())){
-	    if(base_name(thing) == base_name(this_object())){
-		boxnum++;
-		file_names += ({ file_name(thing) });
-	    }
-	}
-	if(boxnum < maxbox){
-	    newbox = new(base_name(this_object()));
-	    newbox->eventMove(environment());
-	    tell_object(environment(newbox), "Respawned box "+boxnum+": "+file_name(newbox));
-	}
+        foreach(object thing in all_inventory(environment())){
+            if(base_name(thing) == base_name(this_object())){
+                boxnum++;
+                file_names += ({ file_name(thing) });
+            }
+        }
+        if(boxnum < maxbox){
+            newbox = new(base_name(this_object()));
+            newbox->eventMove(environment());
+            tell_object(environment(newbox), "Respawned box "+boxnum+": "+file_name(newbox));
+        }
     }
     spent = 1;
     return 1;
@@ -100,20 +100,20 @@ int eventRespawn(){
 
 int Setup(){
     if(!enable){
-	dud_count++;
-	if(dud_count > 5){
-	    if( socket )
-	    {
-		socket_close( socket ) ;
-	    }
-	    tell_object(environment(),"I am "+name+" and I have failed. I die.");
-	    parse_comm("dcon");
-	    if(sizeof(filter(all_inventory(environment()), (: base_name($1) == base_name(this_object()) :) )) > 1) eventDestruct();
-	    return 1;
-	}
-	do_reset("client");
-	do_connect(ip);
-	call_out( (: Setup :), 60);
+        dud_count++;
+        if(dud_count > 5){
+            if( socket )
+            {
+                socket_close( socket ) ;
+            }
+            tell_object(environment(),"I am "+name+" and I have failed. I die.");
+            parse_comm("dcon");
+            if(sizeof(filter(all_inventory(environment()), (: base_name($1) == base_name(this_object()) :) )) > 1) eventDestruct();
+            return 1;
+        }
+        do_reset("client");
+        do_connect(ip);
+        call_out( (: Setup :), 60);
     }
     return 1;
 }
@@ -155,17 +155,17 @@ string random_act(){
 
 string eventStargate(string str){
     if(grepp(str,"idle stargate")){
-	int which = random(4);
-	switch(which){
-	case 0 : parse_comm("dial stargate lab");break;
-	case 1 : parse_comm("dial tower");break;
-	case 2 : parse_comm("dial campus lab");break;
-	case 3 : parse_comm("dial praxis");break;
-	default : parse_comm("dial praxis");break;
-	}
+        int which = random(4);
+        switch(which){
+        case 0 : parse_comm("dial stargate lab");break;
+        case 1 : parse_comm("dial tower");break;
+        case 2 : parse_comm("dial campus lab");break;
+        case 3 : parse_comm("dial praxis");break;
+        default : parse_comm("dial praxis");break;
+        }
     }
     if(grepp(str,"outbound stargate")){
-	parse_comm("enter stargate");
+        parse_comm("enter stargate");
     }
     return "wave";
 }
@@ -176,62 +176,62 @@ int think(string str){
     int this_action = time();
     this_object()->eventScanExits(str);
     if(this_action - last_action > 10 && enable){
-	parse_comm("stand up");
-	in_combat = 0;
+        parse_comm("stand up");
+        in_combat = 0;
     }
     last_action = this_action;
 
     if(enable) eventBolo(str);
     if(sizeof(watching) < 1){
-	if(grepp(str, "You bump into ") && grepp(lower_case(str), "door")) DoorHandler(str);
-	if(grepp(str, "You stand up.")) travel = "go ";
-	if(grepp(str, "a portal forms")) ret = "enter portal";
-	if(grepp(str, "stargate is here")) ret = eventStargate(str);
-	if(grepp(str, "Perhaps you should try crawling.")) travel = "crawl ";
-	if(grepp(str, "What name do you wish")) ret = name;
-	if(grepp(str, "Please enter a new name:")) ret = name;
-	if(grepp(str, "Do you really wish to be known as ")) ret = "y";
-	if(grepp(str, "Are you 13 years of age or older")) ret = "y";
-	if(grepp(str, "Create a password of at least 5 letters")) ret = passwd;
-	if(grepp(str, "Password:")) ret = passwd;
-	if(grepp(str, "Invalid password.")) ret = "12345";
-	if(grepp(str, "Please confirm your password")) ret = passwd;
-	if(grepp(str, "Please choose an interesting gender")) ret = gender;
-	if(grepp(str, "Please choose a gender")) ret = gender;
-	if(grepp(str, "to appear however you wish using spaces")) ret = name;
-	if(grepp(str, "requires a valid email")) ret = email;
-	if(grepp(str, "Type 'dcon' to finalize exit.")) ret = "dcon";
-	if(grepp(str, "If you do not mind, please enter your real name")) ret = real_name;
-	if(grepp(str, "You must now pick a race.")) ret = "pick "+race;
-	if(grepp(str, "No such race.")) ret = "pick roman";
-	if(grepp(str, "This mud has enabled AUTO_WIZ.")) ret = "player";
-	if(grepp(str, "Autosaving...")) ret = random_act();
-	if(grepp(str, "An interactive copy of you currently exists.")){
-	    ret = "n";
-	    name = alpha_crypt(14);
-	}
-	if(grepp(str, "No more attempts allowed")) ret = "foo"; 
-	if(grepp(str, "Reconnected.") || grepp(str,"You wear") ) {
-	    ret = random_act();
-	    enable = 1;
-	    wander = 1;
-	}
-	if(grepp(str, "You may choose to regenerate into a new body here.")) ret = "regenerate";
-	if(grepp(str, "press enter:")) ret = "\n";
-	if(grepp(str, "%:")) ret = "\n";
-	if(grepp(str, "Press <return> to continue:")) ret = "\n";
-	previous_command = ret;
+        if(grepp(str, "You bump into ") && grepp(lower_case(str), "door")) DoorHandler(str);
+        if(grepp(str, "You stand up.")) travel = "go ";
+        if(grepp(str, "a portal forms")) ret = "enter portal";
+        if(grepp(str, "stargate is here")) ret = eventStargate(str);
+        if(grepp(str, "Perhaps you should try crawling.")) travel = "crawl ";
+        if(grepp(str, "What name do you wish")) ret = name;
+        if(grepp(str, "Please enter a new name:")) ret = name;
+        if(grepp(str, "Do you really wish to be known as ")) ret = "y";
+        if(grepp(str, "Are you 13 years of age or older")) ret = "y";
+        if(grepp(str, "Create a password of at least 5 letters")) ret = passwd;
+        if(grepp(str, "Password:")) ret = passwd;
+        if(grepp(str, "Invalid password.")) ret = "12345";
+        if(grepp(str, "Please confirm your password")) ret = passwd;
+        if(grepp(str, "Please choose an interesting gender")) ret = gender;
+        if(grepp(str, "Please choose a gender")) ret = gender;
+        if(grepp(str, "to appear however you wish using spaces")) ret = name;
+        if(grepp(str, "requires a valid email")) ret = email;
+        if(grepp(str, "Type 'dcon' to finalize exit.")) ret = "dcon";
+        if(grepp(str, "If you do not mind, please enter your real name")) ret = real_name;
+        if(grepp(str, "You must now pick a race.")) ret = "pick "+race;
+        if(grepp(str, "No such race.")) ret = "pick roman";
+        if(grepp(str, "This mud has enabled AUTO_WIZ.")) ret = "player";
+        if(grepp(str, "Autosaving...")) ret = random_act();
+        if(grepp(str, "An interactive copy of you currently exists.")){
+            ret = "n";
+            name = alpha_crypt(14);
+        }
+        if(grepp(str, "No more attempts allowed")) ret = "foo"; 
+        if(grepp(str, "Reconnected.") || grepp(str,"You wear") ) {
+            ret = random_act();
+            enable = 1;
+            wander = 1;
+        }
+        if(grepp(str, "You may choose to regenerate into a new body here.")) ret = "regenerate";
+        if(grepp(str, "press enter:")) ret = "\n";
+        if(grepp(str, "%:")) ret = "\n";
+        if(grepp(str, "Press <return> to continue:")) ret = "\n";
+        previous_command = ret;
     }
 
     else {
-	ret = eventWatch(str, watching);
+        ret = eventWatch(str, watching);
     }
     ret = trim(ret);
     if(ret && ret != "" && sizeof(ret)) {
-	//tc("sizeof ret:"+sizeof(ret));
-	//tc(timestamp()+" in response to: "+str,"blue");
-	//tc(time()+"I am: "+identify(file_name(this_object()))+". I am sending: \""+ret+"\"\n");
-	this_object()->parse_comm(ret);
+        //tc("sizeof ret:"+sizeof(ret));
+        //tc(timestamp()+" in response to: "+str,"blue");
+        //tc(time()+"I am: "+identify(file_name(this_object()))+". I am sending: \""+ret+"\"\n");
+        this_object()->parse_comm(ret);
     }
     return 1;
 }
@@ -241,128 +241,128 @@ string eventBolo(string str){
     wander = 0;
     if(grepp(str, "press enter:") || grepp(str, "%:") ||
       grepp(str,"Press <return> to continue:" )){
-	parse_comm("\n");
+        parse_comm("\n");
     }
 
 
     if(grepp(str, "table is here")){
-	parse_comm("get all from table");
+        parse_comm("get all from table");
     }
 
     if(grepp(str, "wardrobe")&& !grepp(str, "There is no ")) {
-	parse_comm("open first wardrobe");
-	parse_comm("get all from wardrobe chest");
-	parse_comm("wear all");
+        parse_comm("open first wardrobe");
+        parse_comm("get all from wardrobe chest");
+        parse_comm("wear all");
     }
 
     if(grepp(str, "chest")&& !grepp(str, "There is no ")) {
-	parse_comm("open first chest");
-	parse_comm("get all from first chest");
-	parse_comm("wear all");
+        parse_comm("open first chest");
+        parse_comm("get all from first chest");
+        parse_comm("wear all");
     }
 
     if(grepp(str, "bag") && !grepp(str, "There is no ")){ 
-	parse_comm("open first bag");
-	parse_comm("get all from first bag");
-	parse_comm("wear all");
+        parse_comm("open first bag");
+        parse_comm("get all from first bag");
+        parse_comm("wear all");
     }
 
     if(grepp(str, "box")&& !grepp(str, "There is no ")) {
-	parse_comm("open first box");
-	parse_comm("get all from first box");
-	parse_comm("wear all");
+        parse_comm("open first box");
+        parse_comm("get all from first box");
+        parse_comm("wear all");
     }
 
     if(grepp(str, "a knife rack")){
-	parse_comm("get all from rack");
-	parse_comm("unwield all");
-	parse_comm("wield my first carving knife in right hand");
+        parse_comm("get all from rack");
+        parse_comm("unwield all");
+        parse_comm("wield my first carving knife in right hand");
     }
 
     if(grepp(str, "You get") && (grepp(str, "flesh") || grepp(str, "corpse"))){
-	parse_comm("get all from my first corpse");
-	parse_comm("get all from my first pile");
+        parse_comm("get all from my first corpse");
+        parse_comm("get all from my first pile");
     }
 
     if(grepp(str, "large stove")&& !grepp(str, "There is no ")){
-	parse_comm("open stove");
+        parse_comm("open stove");
     }
 
     if(grepp(str, "You swing at")){
-	if(!in_combat){
-	    eventCombatPrep();
-	}
+        if(!in_combat){
+            eventCombatPrep();
+        }
     }
 
     if(grepp(str, " little rat ") ){
-	parse_comm("kill first rat");
+        parse_comm("kill first rat");
     }
 
     if(grepp(str, "newt")){
-	parse_comm("kill first newt");
+        parse_comm("kill first newt");
     }
 
     if(grepp(str, " orc") && ( grepp(str, "is standing here") || grepp(str, "are standing here")) ){
-	eventCombatPrep();
-	parse_comm("target first orc");
+        eventCombatPrep();
+        parse_comm("target first orc");
     }
 
     if(grepp(str, "Mansion Garden")) {
-	parse_comm("drop ladder");
-	parse_comm("climb ladder");
+        parse_comm("drop ladder");
+        parse_comm("climb ladder");
     }
 
     if(grepp(str, "Otik, the keeper of the shop")){
-	parse_comm("wear all");
-	parse_comm("unwield all");
-	parse_comm("sell all to otik");
-	parse_comm("buy sword from otik");
-	parse_comm("wield sword in right hand");
-	ret = "say Thank you, Otesanek.";
+        parse_comm("wear all");
+        parse_comm("unwield all");
+        parse_comm("sell all to otik");
+        parse_comm("buy sword from otik");
+        parse_comm("wield sword in right hand");
+        ret = "say Thank you, Otesanek.";
     }
 
     if(grepp(str,"You must create an account") ){ 
-	parse_comm("say ok, dude");
-	parse_comm("request account from zoe");
+        parse_comm("say ok, dude");
+        parse_comm("request account from zoe");
     }
     if(grepp(str, "Dirk the Tired")){
-	parse_comm("ask dirk to advance");
+        parse_comm("ask dirk to advance");
     }
 
     if(grepp(str, "Herkimer the kind wizard")){
-	parse_comm("ask herkimer to teach buffer");
-	parse_comm("ask herkimer to teach meditate");
+        parse_comm("ask herkimer to teach buffer");
+        parse_comm("ask herkimer to teach meditate");
     }
 
 
     if(grepp(str, "Zoe the bank teller")){
-	parse_comm("say hello, Zoe");
-	parse_comm("money");
-	parse_comm("ask zoe for balance");
-	if((onhand - pocket_money) > 0) 
-	    parse_comm("ask zoe to deposit "+(onhand - pocket_money)+" "+local_currency);
-	if(balance - pocket_money + onhand > 0 && (onhand + balance - 5) < pocket_money) 
-	    parse_comm("ask zoe to withdraw "+(pocket_money - onhand)+" "+local_currency);
+        parse_comm("say hello, Zoe");
+        parse_comm("money");
+        parse_comm("ask zoe for balance");
+        if((onhand - pocket_money) > 0) 
+            parse_comm("ask zoe to deposit "+(onhand - pocket_money)+" "+local_currency);
+        if(balance - pocket_money + onhand > 0 && (onhand + balance - 5) < pocket_money) 
+            parse_comm("ask zoe to withdraw "+(pocket_money - onhand)+" "+local_currency);
     }
 
     if(grepp(str,"In your pockets you find only")){
-	string s1, s2;
-	int i1;
-	if(sscanf(str,"%s %d "+local_currency+"%s",s1,i1,s2) < 3)
-	    onhand = 0;
-	else onhand = i1;
+        string s1, s2;
+        int i1;
+        if(sscanf(str,"%s %d "+local_currency+"%s",s1,i1,s2) < 3)
+            onhand = 0;
+        else onhand = i1;
     }
 
     if(grepp(str, "and open an account with") ||
       grepp(str,"You already have an account with") )
-	open_account = 1;
+        open_account = 1;
 
     if(grepp(str, "Your last transaction:")){
-	string s1, s2, s3, s4;
-	int i1;
-	if(sscanf(str,"%s"+local_currency+"%s:%s\n%s",s1,s2,s3,s4) == 4){
-	    balance = atoi(trim(s3));
-	}
+        string s1, s2, s3, s4;
+        int i1;
+        if(sscanf(str,"%s"+local_currency+"%s:%s\n%s",s1,s2,s3,s4) == 4){
+            balance = atoi(trim(s3));
+        }
     }
     wander = 1;
     return ret;
@@ -375,11 +375,11 @@ void heart_beat(){
     if(!environment(this_object())) return;
     if(!clonep(this_object())) return;
     bots = sizeof(filter(all_inventory(environment()),
-	(: base_name($1) == base_name(this_object()) :)));
+        (: base_name($1) == base_name(this_object()) :)));
 
     if((!spent || bots < 2) && enable && bots < maxbox) 
     {
-	call_out( (: eventRespawn :), 2 );
+        call_out( (: eventRespawn :), 2 );
     }
 
     if(!enable) return;
@@ -416,46 +416,46 @@ int eventScanExits(string str){
     str = strip_colours(str);
     //tc("str: \""+str+"\"");
     if(sscanf(str,"%sObvious exit: %s\n%s",s1,s2,s3) ||
-       sscanf(str,"%sObvious exits: %s\n%s",s1,s2,s3)){
-       dirs = explode(s2,", ");
-       //tc("s2a: "+s2,"yellow");
+      sscanf(str,"%sObvious exits: %s\n%s",s1,s2,s3)){
+        dirs = explode(s2,", ");
+        //tc("s2a: "+s2,"yellow");
     }
     else if(sscanf(str,"%s [%s]%s", s1, s2, s3) ){
-       //tc("s2b: "+s2,"yellow");
-	dirs = explode(s2,",");
+        //tc("s2b: "+s2,"yellow");
+        dirs = explode(s2,",");
     }
     //tc("dirs: "+identify(dirs),"green");
     if(sizeof(dirs)){
         string Esc = sprintf("%c",27);
         oldexits = ({});
-	foreach(string dir in dirs){
+        foreach(string dir in dirs){
             string junk1, junk2;
             if(grepp(dir, Esc)){
-            if(sscanf(dir,"%s"+Esc+"%s",junk1,junk2)) dir = junk1;
+                if(sscanf(dir,"%s"+Esc+"%s",junk1,junk2)) dir = junk1;
             }
             if(!dir || !sizeof(dir)) continue;
-	    dir = trim(dir);
+            dir = trim(dir);
             //tc("dir: "+dir,"green");
-	    switch(dir){
-	    case "u" : dir = "up";break;
-	    case "d" : dir = "down";break;
-	    case "o" : dir = "out";break;
-	    case "n" : dir = "north";break;
-	    case "s" : dir = "south";break;
-	    case "e" : dir = "east";break;
-	    case "w" : dir = "west";break;
-	    case "ne" : dir = "northeast";break;
-	    case "nw" : dir = "northwest";break;
-	    case "se" : dir = "southeast";break;
-	    case "sw" : dir = "southwest";break;
-	    }
-	    if(grepp(dir,"enter ")) newexits += ({ dir });
-	    else newexits += ({ travel+dir });
-	}
-	if(sizeof(newexits)) {
-	    exits = newexits;
-	    enable = 1;
-	}
+            switch(dir){
+            case "u" : dir = "up";break;
+            case "d" : dir = "down";break;
+            case "o" : dir = "out";break;
+            case "n" : dir = "north";break;
+            case "s" : dir = "south";break;
+            case "e" : dir = "east";break;
+            case "w" : dir = "west";break;
+            case "ne" : dir = "northeast";break;
+            case "nw" : dir = "northwest";break;
+            case "se" : dir = "southeast";break;
+            case "sw" : dir = "southwest";break;
+            }
+            if(grepp(dir,"enter ")) newexits += ({ dir });
+            else newexits += ({ travel+dir });
+        }
+        if(sizeof(newexits)) {
+            exits = newexits;
+            enable = 1;
+        }
     }
     if(!sizeof(exits)) exits = oldexits;
     //tc("exits: "+identify(exits),"red");
@@ -497,8 +497,8 @@ int do_reconnect()
 {
     if( !connected )
     {
-	notify_fail( "The telnet client is not connected!\n" ) ;
-	return 0 ;
+        notify_fail( "The telnet client is not connected!\n" ) ;
+        return 0 ;
     }
     person = this_object() ;
     return 1 ;
@@ -509,18 +509,18 @@ int do_reset( string args )
     notify_fail( "Usage: reset client\n" ) ;
     if( !args || args == "" )
     {
-	return 0 ;
+        return 0 ;
     }
     if( args != "client" )
     {
-	return 0 ;
+        return 0 ;
     }
     if( connected )
     {
-	if( socket )
-	{
-	    socket_close( socket ) ;
-	}
+        if( socket )
+        {
+            socket_close( socket ) ;
+        }
     }
     attempting = 0 ;
     connected = 0 ;
@@ -536,23 +536,23 @@ int do_connect(string args)
 
     if( !args || args == "" )
     {
-	notify_fail( "You fail." ) ;
-	return 0 ;
+        notify_fail( "You fail." ) ;
+        return 0 ;
     }
     if( sscanf( args, "%s %d", ip_address, port ) != 2 )
     {
-	notify_fail( "You fail." ) ;
-	return 0 ;
+        notify_fail( "You fail." ) ;
+        return 0 ;
     }
     if( attempting )
     {
-	notify_fail( "Telnet connection attempt already in progress.\n" ) ;
-	return 0 ;
+        notify_fail( "Telnet connection attempt already in progress.\n" ) ;
+        return 0 ;
     }
     if( connected )
     {
-	notify_fail( "Already connected...\n" ) ;
-	return 0 ;
+        notify_fail( "Already connected...\n" ) ;
+        return 0 ;
     }
     new_socket = socket_create( STREAM, "read_callback", "close_callback" ) ;
 
@@ -561,48 +561,48 @@ int do_connect(string args)
     if(loop_count > 10) this_object()->eventDestruct();
 
     foreach(mixed element in socket_status()){
-	if(intp(element[0]) && element[0] != -1 && !grepp(element[3],"*")){ 
-	    socks_array += element[0];
-	}
+        if(intp(element[0]) && element[0] != -1 && !grepp(element[3],"*")){ 
+            socks_array += element[0];
+        }
     }
     socks_array = ({});
 
     if( new_socket < 0 )
     {
-	switch( new_socket )
-	{
-	case EEMODENOTSUPP :
-	    error = "Socket mode not supported.\n" ;
-	    break ;
-	case EESOCKET :
-	    error = "Problem creating socket.\n" ;
-	    break ;
-	case EESETSOCKOPT :
-	    error = "Problem with setsockopt.\n" ;
-	    break ;
-	case EENONBLOCK :
-	    error = "Problem with setting non-blocking mode.\n" ;
-	    break ;
-	case EENOSOCKS :
-	    error = "No more available efun sockets.\n" ;
-	    break ;
-	case EESECURITY :
-	    error = "Security violation attempted.\n" ;
-	    break ;
-	default :
-	    error = "Unknown error code: " + new_socket + ".\n" ;
-	    break ;
-	}
-	notify_fail( "Unable to connect, problem with socket_create.\n"
-	  "Reason: " + error ) ;
-	return 0 ;
+        switch( new_socket )
+        {
+        case EEMODENOTSUPP :
+            error = "Socket mode not supported.\n" ;
+            break ;
+        case EESOCKET :
+            error = "Problem creating socket.\n" ;
+            break ;
+        case EESETSOCKOPT :
+            error = "Problem with setsockopt.\n" ;
+            break ;
+        case EENONBLOCK :
+            error = "Problem with setting non-blocking mode.\n" ;
+            break ;
+        case EENOSOCKS :
+            error = "No more available efun sockets.\n" ;
+            break ;
+        case EESECURITY :
+            error = "Security violation attempted.\n" ;
+            break ;
+        default :
+            error = "Unknown error code: " + new_socket + ".\n" ;
+            break ;
+        }
+        notify_fail( "Unable to connect, problem with socket_create.\n"
+          "Reason: " + error ) ;
+        return 0 ;
     }
     sc_result = socket_connect( new_socket, ip_address + " " + port,
       "read_callback", "write_callback" ) ;
     if( sc_result != EESUCCESS )
     {
-	notify_fail( "Failed to connect.\n" ) ;
-	return 0 ;
+        notify_fail( "Failed to connect.\n" ) ;
+        return 0 ;
     }
     attempting = 1 ;
     socket = new_socket ;
@@ -656,36 +656,36 @@ int parse_comm( string str )
     //tc("size  of \""+str+"\" now is: "+sizeof(str),"red");
     if(str=="dcon" || str=="quit")
     {
-	socket_close( socket ) ;
-	attempting = 0 ;
-	connected = 0 ;
-	socket = 0 ;
-	person = 0 ;
-	this_object()->eventDescribeEnvironment();
-	return 1 ;
+        socket_close( socket ) ;
+        attempting = 0 ;
+        connected = 0 ;
+        socket = 0 ;
+        person = 0 ;
+        this_object()->eventDescribeEnvironment();
+        return 1 ;
     } else {
-	if( !connected )
-	{
-	    int fco;
+        if( !connected )
+        {
+            int fco;
             //tc("hmm. not connected.");
-	    enable = 0;
-	    fco = find_call_out("Setup");
-	    if(fco == -1) Setup();
-	    return 1 ;
-	}
-	if( attempting )
-	{
-	    int fco;
+            enable = 0;
+            fco = find_call_out("Setup");
+            if(fco == -1) Setup();
+            return 1 ;
+        }
+        if( attempting )
+        {
+            int fco;
             //tc("hmmm. attempting.");
-	    enable = 0;
-	    fco = find_call_out("Setup");
-	    if(fco == -1) Setup();
-	    return 1 ;
-	}
+            enable = 0;
+            fco = find_call_out("Setup");
+            if(fco == -1) Setup();
+            return 1 ;
+        }
         //tc("socket status for socket "+socket+": "+identify(socket_status(socket)));
-	write_stat = socket_write( socket, str + "\n" ) ;
+        write_stat = socket_write( socket, str + "\n" ) ;
         //tc("write result ("+write_stat+"): "+socket_error(write_stat));
-	return 1 ;
+        return 1 ;
     }
 }
 

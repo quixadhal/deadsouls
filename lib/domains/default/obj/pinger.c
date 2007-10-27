@@ -27,8 +27,8 @@ void create(){
 int SetInterval(string str){
     interval = atoi(str);
     if(!intp(interval)){
-	write("That is not a valid integer.");
-	return 1;
+        write("That is not a valid integer.");
+        return 1;
     }
 
     write("Interval set to "+interval+" heartbeats.");
@@ -51,11 +51,11 @@ void init(){
 void heart_beat(){
     count++;
     if(interval > 0 && count > interval){
-	count = 0;
-	if(living(environment(this_object())) &&
-	  true()){
-	    //query_idle(environment(this_object())) > 240){
-	    tell_object(environment(this_object()),keepalive);
-	}
+        count = 0;
+        if(living(environment(this_object())) &&
+          true()){
+            //query_idle(environment(this_object())) > 240){
+            tell_object(environment(this_object()),keepalive);
+        }
     }
 }

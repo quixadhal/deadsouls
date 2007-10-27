@@ -46,14 +46,14 @@ int AddService(string name, int port_offset, string socket_class, int type) {
     class service s = new(class service);
 
     if( !master()->valid_apply(({})) ) {
-	return 0;
+        return 0;
     }
     s->PortOffset = port_offset;
     s->SocketClass = socket_class;
     s->SocketType = type;
     Services[name] = s;
     if( !eventSave() ) {
-	return 0;
+        return 0;
     }
     Servers[name] = new(LIB_SERVER, query_host_port()+port_offset, type,
       socket_class);
@@ -62,10 +62,10 @@ int AddService(string name, int port_offset, string socket_class, int type) {
 
 int RemoveService(string name) {
     if( !master()->valid_apply() ) {
-	return 0;
+        return 0;
     }
     if( Servers[name] ) {
-	Servers[name]->eventShutdown();
+        Servers[name]->eventShutdown();
     }
     map_delete(Servers, name);
     map_delete(Services, name);
@@ -74,10 +74,10 @@ int RemoveService(string name) {
 
 varargs int eventRestartServer(string svc, int forced) {
     if( !eventStopServer(svc) ) {
-	if(!forced) return 0;
+        if(!forced) return 0;
     }
     if( !eventStartServer(svc) ) {
-	if(!forced) return 0;
+        if(!forced) return 0;
     }
     return 1;
 }
@@ -87,22 +87,22 @@ int eventStartServer(string svc) {
     object ob = Servers[svc];
 
     if( !master()->valid_apply(({})) ) {
-	return 0;
+        return 0;
     }
     if( ob ) {
-	return 0;
+        return 0;
     }
     if( !s ) {
-	return 0;
+        return 0;
     }
     ob = new(LIB_SERVER, query_host_port()+s->PortOffset, s->SocketType,
       s->SocketClass);
     if( ob ) {
-	Servers[svc] = ob;
-	return 1;
+        Servers[svc] = ob;
+        return 1;
     }
     else {
-	return 0;
+        return 0;
     }
 }
 
@@ -110,18 +110,18 @@ int eventStopServer(string svc) {
     object ob = Servers[svc];
 
     if( !master()->valid_apply(({})) ) {
-	return 0;
+        return 0;
     }
     if( !ob ) {
-	return 0;
+        return 0;
     }
     ob->eventShutdown();
     map_delete(Servers, svc);
     if( ob ) {
-	return 0;
+        return 0;
     }
     else {
-	return 1;
+        return 1;
     }
 }
 
@@ -130,8 +130,8 @@ static void create() {
     daemon::create();
     SetNoClean(1);
     foreach(string svc, class service s in Services) {
-	Servers[svc] = new(LIB_SERVER, query_host_port() + s->PortOffset,
-	  s->SocketType,  s->SocketClass);
+        Servers[svc] = new(LIB_SERVER, query_host_port() + s->PortOffset,
+          s->SocketType,  s->SocketClass);
     }
 }
 
@@ -139,8 +139,8 @@ int eventDestruct(){
     object *servers = filter(objects(), (: base_name($1) == LIB_SERVER :) );
     eventSave();
     foreach(object server in servers){
-	if(server && clonep(server)) server->eventDestruct();
-	if(server && clonep(server)) destruct(server);
+        if(server && clonep(server)) server->eventDestruct();
+        if(server && clonep(server)) destruct(server);
     }
     return daemon::eventDestruct();
 }

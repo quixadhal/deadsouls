@@ -43,9 +43,9 @@ mixed eventMove(mixed dest) {
 
     if(archp(this_player())) return armor::eventMove(dest);
     if( !environment() ) {
-	tmp = armor::eventMove(dest);
-	//if( tmp == 1 ) environment()->eventForce("wear wedding ring");
-	return tmp;
+        tmp = armor::eventMove(dest);
+        //if( tmp == 1 ) environment()->eventForce("wear wedding ring");
+        return tmp;
     }
     else return 0;
 }

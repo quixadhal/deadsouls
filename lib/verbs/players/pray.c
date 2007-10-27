@@ -27,11 +27,11 @@ mixed can_pray_for_str(string spell) {
     object tmp = SPELLS_D->GetSpell(spell);
 
     if( tmp ) {
-	string verb = tmp->GetVerb();
+        string verb = tmp->GetVerb();
 
-	if( verb != "pray" ) {
-	    return "That is not something you pray for.";
-	}
+        if( verb != "pray" ) {
+            return "That is not something you pray for.";
+        }
     }
     return this_player()->CanCast(tmp);
 }

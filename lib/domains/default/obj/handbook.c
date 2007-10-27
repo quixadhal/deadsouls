@@ -10,7 +10,7 @@ void create(){
     SetShort("a Player's Handbook");
     SetLong("This is a handbook for players. To read it, you must read the chapters in it. For example, 'read chapter 1 in handbook', or 'read index in handbook'");
     SetProperties(([
-	"no steal" : 1,
+        "no steal" : 1,
       ]));
     SetMass(3);
     SetBaseCost("silver",10);

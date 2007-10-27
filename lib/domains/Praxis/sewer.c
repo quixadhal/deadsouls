@@ -11,9 +11,9 @@ void create() {
     );
     SetItems(
       (["sewers" : "The disgusting tunnels of human waste under Praxis.",
-	"slime" : "Nasty, nasty.",
-	({"wall", "east wall"}) : "A disgusting slime-coated wall.",
-	"ceiling" : "A disgusting slime-coated ceiling.",
+        "slime" : "Nasty, nasty.",
+        ({"wall", "east wall"}) : "A disgusting slime-coated wall.",
+        "ceiling" : "A disgusting slime-coated ceiling.",
       ]));
     SetExits(
       (["west" : "/domains/Praxis/sewer_ent", 

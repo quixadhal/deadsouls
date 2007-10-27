@@ -33,13 +33,13 @@ int eventStrike(object target) {
 
     // check if the target is an orc
     if( target->GetRace() == "orc" ) {
-	// send a cool message to everyone in the room
-	// environment() is the person using the sword
-	// environment(environment()) thus would be the room
-	environment(environment())->eventPrint("The Orc Slayer flares with "
-	  "hatred of orcs.");
-	// add a random(5) to the default damage
-	x += random(5);
+        // send a cool message to everyone in the room
+        // environment() is the person using the sword
+        // environment(environment()) thus would be the room
+        environment(environment())->eventPrint("The Orc Slayer flares with "
+          "hatred of orcs.");
+        // add a random(5) to the default damage
+        x += random(5);
     }
     // return the damage it should do
     return x;

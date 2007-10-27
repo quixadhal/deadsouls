@@ -22,9 +22,9 @@ void create() {
       "There is graffiti all over the wall to the east.");
     SetItems(
       (["buildings" : "They are worn down by years of neglect.",
-	"graffiti" : "Some is fresh, some is old.",
-	"wall" : "You can scribble something on it.  <scribble stuff>.\n"
-	"You can also read what is on it."]) );
+        "graffiti" : "Some is fresh, some is old.",
+        "wall" : "You can scribble something on it.  <scribble stuff>.\n"
+        "You can also read what is on it."]) );
     SetExits( 
       (["south"	 : "/domains/Praxis/alley2"]) );
     call_out("fade", 900);
@@ -34,15 +34,15 @@ void create() {
 int scribble(string str) {
     if(!text_scan) text_scan = ({});
     if(bad(str)) {
-	notify_fail("The Nightmare Reality prevents you from spreading your crap.\n");
-	return 0;
+        notify_fail("The Nightmare Reality prevents you from spreading your crap.\n");
+        return 0;
     }
     text_scan += ({ str });
     personal_log("graffitti: "+ (string)this_player()->query_name()+" "+ctime(time())+"\n"+str+"\n");
     save_object("/domains/Praxis/data/wall");
     message("my_action", sprintf("You scribble: %s", str), this_player());
     message("other_action", sprintf("%s scribbles some graffitti on the wall.",
-	(string)this_player()->query_cap_name()), this_object(),
+        (string)this_player()->query_cap_name()), this_object(),
       ({ this_player() }));
     return 1;
 }
@@ -51,18 +51,18 @@ int read(string str) {
     int i;
 
     if(!str) {
-	notify_fail("Read what?\n");
-	return 0;
+        notify_fail("Read what?\n");
+        return 0;
     }
     if(str != "wall" && str != "graffitti") {
-	notify_fail("Read what?\n");
-	return 0;
+        notify_fail("Read what?\n");
+        return 0;
     }
     for(i=0; i<sizeof(text_scan); i++) {
-	message("info", text_scan[i], this_player());
+        message("info", text_scan[i], this_player());
     }
     message("other_action", sprintf("%s reads the graffitti on the wall.",
-	(string)this_player()->query_cap_name()), this_object(),
+        (string)this_player()->query_cap_name()), this_object(),
       ({ this_player() }));
     return 1;
 }
@@ -74,7 +74,7 @@ int bad(string str) {
 
     bad_words = ({ "fuck", "shit", "cock", "cunt", "bitch" });
     for(i=0; i<sizeof(bad_words); i++) {
-	if(sscanf(lower_case(str), "%s"+bad_words[i]+"%s", a, b) == 2) return 1;
+        if(sscanf(lower_case(str), "%s"+bad_words[i]+"%s", a, b) == 2) return 1;
     }
     return 0;
 }

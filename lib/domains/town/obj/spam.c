@@ -33,30 +33,30 @@ int SpamSpamSpamSpam(string spam){
     string spamspam;
     object ob;
     if(!spam || spam == ""){
-	this_object()->Spam();
-	return 1;
+        this_object()->Spam();
+        return 1;
     }
     if(!sscanf(spam,"%s with %s",spam1,spam2)){
-	write("You'd like to spam who with what?");
-	say(this_player()->GetName()+" fumbles with "+possessive(this_player())+
-	  " can of spam.\n");
-	return 1;
+        write("You'd like to spam who with what?");
+        say(this_player()->GetName()+" fumbles with "+possessive(this_player())+
+          " can of spam.\n");
+        return 1;
     }
     ob=present(spam1,environment(this_player()));
     if(!ob){
-	write("There is no such thing here to spam!\n");
-	say(this_player()->GetName()+" looks around for something to spam.\n");
-	return 1;
+        write("There is no such thing here to spam!\n");
+        say(this_player()->GetName()+" looks around for something to spam.\n");
+        return 1;
     }
     if(!living(ob)){
-	write("That thing is not impressed by spam.\n");
-	say(this_player()->GetName()+" spams around foolishly.\n");
-	return 1;
+        write("That thing is not impressed by spam.\n");
+        say(this_player()->GetName()+" spams around foolishly.\n");
+        return 1;
     }
     if(file_size(DIR_TXT+"/"+spam2+".txt") == -1){
-	write("You cannot spam "+ob->GetName()+" that way. You look silly.\n");
-	say(this_player()->GetName()+" looks silly trying to spam incorrectly.\n");
-	return 1;
+        write("You cannot spam "+ob->GetName()+" that way. You look silly.\n");
+        say(this_player()->GetName()+" looks silly trying to spam incorrectly.\n");
+        return 1;
     }
     spamspam=unguarded((: read_file(DIR_TXT+"/"+spam2+".txt") :));
     say(this_player()->GetName()+" spams "+ob->GetName()+" with a "+

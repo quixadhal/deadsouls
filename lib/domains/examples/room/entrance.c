@@ -28,8 +28,8 @@ void create() {
     );
 
     SetExits( ([  
-	"north"   : EXPATH + "exroom1",
-	"south" : START
+        "north"   : EXPATH + "exroom1",
+        "south" : START
       ]));
 
     //  What follows is a short tutorial on item descriptions.
@@ -52,9 +52,9 @@ void create() {
     //   and get the same description.  This is a very useful method.
 
     SetItems( ([
-	"floor" : "The floor is dirty.",
-	"ceiling" : "The ceiling is high",
-	({ "wall", "walls" }) : "The walls are currtly not very exciting.",
+        "floor" : "The floor is dirty.",
+        "ceiling" : "The ceiling is high",
+        ({ "wall", "walls" }) : "The walls are currtly not very exciting.",
       ]) );
 
     // The room code also allows us to manipulate individual 'keys' of the
@@ -84,12 +84,12 @@ void test1()
 {
     write("Now take a look at the room");
     SetItems( ([
-	"north wall" : "The north wall has an exit.",
-	"east wall" : "The east wall is painted blue.",
-	"south wall" : "The south wall is painted yellow.",
-	"west wall" : "The west wall is painted green.",
-	"wall" : "Which wall?  North, South, East or West?",
-	"walls" : "Which wall?  North, South, East or West?"
+        "north wall" : "The north wall has an exit.",
+        "east wall" : "The east wall is painted blue.",
+        "south wall" : "The south wall is painted yellow.",
+        "west wall" : "The west wall is painted green.",
+        "wall" : "Which wall?  North, South, East or West?",
+        "walls" : "Which wall?  North, South, East or West?"
       ]) );
 
     // In this example, when overwriting the SetItems mapping, you are

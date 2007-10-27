@@ -61,31 +61,31 @@ mixed do_reload_obj(object ob) {
     string s1,s2, foo = "Null object: ";
     if(ob && ob->GetDoor()) ob = load_object(ob->GetDoor());
     if(!ob || userp(ob)) {
-	if(ob) foo = base_name(ob)+": ";
-	write(foo+"Invalid for reloading.");
-	return 1;
+        if(ob) foo = base_name(ob)+": ";
+        write(foo+"Invalid for reloading.");
+        return 1;
     }
     if(ob && ob->GetDirectionMap()){
-	write(base_name(ob)+" is a virtual room, and not subject to normal reloading.");
-	return 1;
+        write(base_name(ob)+" is a virtual room, and not subject to normal reloading.");
+        return 1;
     }
     if(!strsrch(base_name(ob),"/open") ||
       sscanf(base_name(ob),"/realms/%s/tmp/%s",s1,s2) == 2){
-	write(base_name(ob)+" is a temp file and not subject to reloading.");
-	return 1;
+        write(base_name(ob)+" is a temp file and not subject to reloading.");
+        return 1;
     }
     reload(ob);
     if(ob && inherits(LIB_DOOR,ob)){
-	string *doors = environment(this_player())->GetDoors();
-	if(!sizeof(doors)) return 1;
-	foreach(string dir in doors){
-	    string substr = environment(this_player())->GetDoor(dir);
-	    if(last(substr,2) == ".c") substr = truncate(substr,2);
-	    if(substr == base_name(ob)){
-		reload(load_object(environment(this_player())->GetExit(dir)));
-		reload(environment(this_player()));
-	    }
-	}
+        string *doors = environment(this_player())->GetDoors();
+        if(!sizeof(doors)) return 1;
+        foreach(string dir in doors){
+            string substr = environment(this_player())->GetDoor(dir);
+            if(last(substr,2) == ".c") substr = truncate(substr,2);
+            if(substr == base_name(ob)){
+                reload(load_object(environment(this_player())->GetExit(dir)));
+                reload(environment(this_player()));
+            }
+        }
     }
     return 1;
 }
@@ -111,8 +111,8 @@ mixed do_reload_every_str(string str){
     object *ob_pool = ({});
 
     if(!archp(this_player())){
-	write("This verb is intended for arches only.");
-	return 1;
+        write("This verb is intended for arches only.");
+        return 1;
     }
 
     switch(str){
@@ -128,8 +128,8 @@ mixed do_reload_every_str(string str){
     }
 
     if(!file_exists(libfile) && !file_exists(libfile+".c")){
-	write("There is no such library file.");
-	return 1;
+        write("There is no such library file.");
+        return 1;
     }
 
     if(last(libfile,2) == ".c") libfile = truncate(libfile,2);
@@ -137,16 +137,16 @@ mixed do_reload_every_str(string str){
 
     ob_pool = filter(objects(), (: ( inherits(libfile, $1) ) :) );
     if(!sizeof(ob_pool)) 
-	ob_pool = filter(objects(), (: ( base_name($1) == libfile ) :) );
+        ob_pool = filter(objects(), (: ( base_name($1) == libfile ) :) );
 
     if(!sizeof(ob_pool)) {
-	write("None found.");
-	return 1;
+        write("None found.");
+        return 1;
     }
 
     foreach(object ob in ob_pool){
-	if(ob) write("reloading: "+file_name(ob));
-	do_reload_obj(ob);
+        if(ob) write("reloading: "+file_name(ob));
+        do_reload_obj(ob);
     }
 
     write("Done.");

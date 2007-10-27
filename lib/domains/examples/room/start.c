@@ -12,7 +12,7 @@ void create() {
     SetLong("A featureless area. The example rooms are north.");
 
     SetExits( ([
-	"north" : EXPATH + "entrance"
+        "north" : EXPATH + "entrance"
       ]) );
 }
 void init(){

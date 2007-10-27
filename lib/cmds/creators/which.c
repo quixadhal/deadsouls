@@ -21,19 +21,19 @@ mixed cmd(string args) {
     isverb = 0;
 
     if( !args ) {
-	return "You want to know information on which command?";
+        return "You want to know information on which command?";
     }
     if(member_array(args,keys(VERBS_D->GetVerbs())) != -1){
-	dirs += ({ (VERBS_D->GetVerbs())[args] });
-	isverb = 1;
+        dirs += ({ (VERBS_D->GetVerbs())[args] });
+        isverb = 1;
     }
     else if( !(dirs = CMD_D->GetPaths(args)) ) {
-	return args + ": not found.";
+        return args + ": not found.";
     }
     msg = args + ":";
     foreach(dir in dirs) {
-	if(isverb) msg += "\n\t" + dir;
-	else msg += "\n\t" + dir + "/" + args + ".c";
+        if(isverb) msg += "\n\t" + dir;
+        else msg += "\n\t" + dir + "/" + args + ".c";
     }
     previous_object()->eventPrint(msg, MSG_SYSTEM);
     return 1;

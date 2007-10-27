@@ -8,11 +8,11 @@ static void create() {
     SetLong("You are in a cramped little space beneath the stairs in the "+
       "basement. It is dark, tight, and dirty in here.");
     SetItems(([
-	({"crawlspace","space"}) : "You are in the space beneath stairs.",
-	"basement" : "The basement is just outside the crawlspace.",
-	"stairs" : "You're under them."]));
+        ({"crawlspace","space"}) : "You are in the space beneath stairs.",
+        "basement" : "The basement is just outside the crawlspace.",
+        "stairs" : "You're under them."]));
     SetInventory(([
-	"/domains/campus/obj/rayovac" : 1,
+        "/domains/campus/obj/rayovac" : 1,
       ]));
     AddExit("out" , "/domains/campus/room/basement");
     SetObviousExits("out");

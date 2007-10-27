@@ -24,8 +24,8 @@ static int eventUpdate(string args, int flags);
 static void CacheAndCarry(object *obs){
     if(!sizeof(obs)) return;
     foreach(object fellow in obs){
-	string ubi = fellow->GetProperty("LastLocation");
-	if(ubi) LocationsMap[fellow->GetKeyName()] = ubi;
+        string ubi = fellow->GetProperty("LastLocation");
+        if(ubi) LocationsMap[fellow->GetKeyName()] = ubi;
     }
     obs->eventMove(ROOM_VOID);
 }
@@ -35,9 +35,9 @@ static void ReturnAndRelease(object *dudes, string file){
     if(!file) return;
     dudes->eventMove(file);
     foreach(object fellow in dudes){
-	if(sizeof(LocationsMap[fellow->GetKeyName()])){
-	    fellow->SetProperty("LastLocation",LocationsMap[fellow->GetKeyName()]);
-	}
+        if(sizeof(LocationsMap[fellow->GetKeyName()])){
+            fellow->SetProperty("LastLocation",LocationsMap[fellow->GetKeyName()]);
+        }
     }
 }
 
@@ -59,102 +59,102 @@ mixed cmd(string args) {
     int i, flags;
 
     if( sizeof(args) ) {
-	string str = args;
-	args = "";
-	foreach(string foo in explode(str, " ")) {
-	    if(!sizeof(foo)) continue;
-	    switch(foo) {
-	    case "-r" : flags |= U_RECURSIVE; break;
-	    case "-e" : flags |= U_INTERACTIVE; break;
-	    case "-a" : flags |= U_AUTOMATED; break;
-	    default: args += " " + foo;
-	    }   
-	}
+        string str = args;
+        args = "";
+        foreach(string foo in explode(str, " ")) {
+            if(!sizeof(foo)) continue;
+            switch(foo) {
+            case "-r" : flags |= U_RECURSIVE; break;
+            case "-e" : flags |= U_INTERACTIVE; break;
+            case "-a" : flags |= U_AUTOMATED; break;
+            default: args += " " + foo;
+            }   
+        }
     }
     if( args == "" || !args ) {
-	if(!this_player()) return "No player.";
-	ob = environment(this_player());
-	if( !ob ) return "You have no environment.";
-	file = base_name(ob);
-	this_player()->eventPrint("Updating environment");
-	obs = filter(all_inventory(ob), (: userp :));
-	//if( sizeof(obs) ) obs->eventMove(ROOM_VOID);
-	if( sizeof(obs) ) CacheAndCarry(obs);
-	if( !eventUpdate(base_name(ob), flags) ) {
-	    obs->eventPrint("You are thrown into the void as your "
-	      "surroundings violently destruct.");
-	    return "Error in reloading environment.";
-	}
-	obs = filter(obs, (: $1 :));
-	//if( sizeof(obs) ) obs->eventMove(file);
-	if( sizeof(obs) ) ReturnAndRelease(obs, file);
-	return 1;
+        if(!this_player()) return "No player.";
+        ob = environment(this_player());
+        if( !ob ) return "You have no environment.";
+        file = base_name(ob);
+        this_player()->eventPrint("Updating environment");
+        obs = filter(all_inventory(ob), (: userp :));
+        //if( sizeof(obs) ) obs->eventMove(ROOM_VOID);
+        if( sizeof(obs) ) CacheAndCarry(obs);
+        if( !eventUpdate(base_name(ob), flags) ) {
+            obs->eventPrint("You are thrown into the void as your "
+              "surroundings violently destruct.");
+            return "Error in reloading environment.";
+        }
+        obs = filter(obs, (: $1 :));
+        //if( sizeof(obs) ) obs->eventMove(file);
+        if( sizeof(obs) ) ReturnAndRelease(obs, file);
+        return 1;
     }
     if(this_player()){
-	tmpfiles = map(explode(args, " "),
-	  function(string x) {
-	      string tmp = (string)this_player()->query_cwd();
-	      if( x[<2..] != ".c" ) x = x + ".c";
-	      return absolute_path(tmp, x);
-	    });
-	  tmpfiles = map(tmpfiles,
-	    (: ((file_size($1) == -2) ?
-		(($1[<1] == '/') ? ($1 + "*.c") : ($1 + "/*.c")) : $1)
-	    :));
-	  i = sizeof(tmpfiles);
-	  files = ({});
-	  while(i--) {
-	      if( sizeof(tmp = (string *)this_player()->wild_card(tmpfiles[i])) )
-		  files += tmp;
-	      else this_player()->eventPrint(tmpfiles[i] + ": File not found.");
-	  }
-	  i = sizeof(files);
-	  while(i--) eventUpdate(files[i], flags);
+        tmpfiles = map(explode(args, " "),
+          function(string x) {
+              string tmp = (string)this_player()->query_cwd();
+              if( x[<2..] != ".c" ) x = x + ".c";
+              return absolute_path(tmp, x);
+            });
+          tmpfiles = map(tmpfiles,
+            (: ((file_size($1) == -2) ?
+                (($1[<1] == '/') ? ($1 + "*.c") : ($1 + "/*.c")) : $1)
+            :));
+          i = sizeof(tmpfiles);
+          files = ({});
+          while(i--) {
+              if( sizeof(tmp = (string *)this_player()->wild_card(tmpfiles[i])) )
+                  files += tmp;
+              else this_player()->eventPrint(tmpfiles[i] + ": File not found.");
+          }
+          i = sizeof(files);
+          while(i--) eventUpdate(files[i], flags);
       }
-	return 1;
+        return 1;
     }
 
     static int eventUpdate(string args, int flags) {
-	object ob;
-	string tmp;
+        object ob;
+        string tmp;
 
-	if( flags & U_RECURSIVE ) {
-	    string *ancestors;
-	    int i;
+        if( flags & U_RECURSIVE ) {
+            string *ancestors;
+            int i;
 
-	    if( !eventUpdate(args, flags ^ U_RECURSIVE) ) return 0;
-	    if( !(ob = find_object(args)) ) return 0;
-	    ancestors = deep_inherit_list(ob);
-	    if(this_player() && (flags & U_RECURSIVE) && !(flags & U_AUTOMATED))  
-		this_player()->eventPrint("(%^CYAN%^Recursive "
-		  "update: " + args + "%^RESET%^)\n");
-	    i = sizeof(ancestors);
-	    while(i--) if( !eventUpdate(ancestors[i], flags ^ U_RECURSIVE) ) {
-		    if(this_player()) 
-			this_player()->eventPrint("Recursive update failed.");
-		    return 0;
-		}        
-	}
-	if( args[<2..] == ".c" ) args = args[0..<3];
-	ob = find_object(args);
-	if(!ob) ob = load_object(args);
-	if( ob ) {
-	    if( tmp = catch( ob->eventDestruct()) && this_player() )
-		this_player()->eventPrint(args + ": error in eventDestruct()");
-	    if( ob ) destruct(ob);
-	    if( ob && this_player())
-		this_player()->eventPrint(args + ": Failed to destruct old object.");
-	}
-	if( args == base_name(this_object()) && this_player() ) {
-	    this_player()->eventPrint("Cannot reload update after destruct.\n"
-	      "It will be reloaded at next reference.");
-	    return 0;
-	}
-	tmp = catch(call_other(args, "???"));
-	if(this_player() && !(flags & U_AUTOMATED) ){
-	    if( !tmp ) 
-		this_player()->eventPrint(args + ": Ok");
-	    else this_player()->eventPrint(args + ": Error in update\n" + tmp);
-	}
-	return 1;
+            if( !eventUpdate(args, flags ^ U_RECURSIVE) ) return 0;
+            if( !(ob = find_object(args)) ) return 0;
+            ancestors = deep_inherit_list(ob);
+            if(this_player() && (flags & U_RECURSIVE) && !(flags & U_AUTOMATED))  
+                this_player()->eventPrint("(%^CYAN%^Recursive "
+                  "update: " + args + "%^RESET%^)\n");
+            i = sizeof(ancestors);
+            while(i--) if( !eventUpdate(ancestors[i], flags ^ U_RECURSIVE) ) {
+                    if(this_player()) 
+                        this_player()->eventPrint("Recursive update failed.");
+                    return 0;
+                }        
+        }
+        if( args[<2..] == ".c" ) args = args[0..<3];
+        ob = find_object(args);
+        if(!ob) ob = load_object(args);
+        if( ob ) {
+            if( tmp = catch( ob->eventDestruct()) && this_player() )
+                this_player()->eventPrint(args + ": error in eventDestruct()");
+            if( ob ) destruct(ob);
+            if( ob && this_player())
+                this_player()->eventPrint(args + ": Failed to destruct old object.");
+        }
+        if( args == base_name(this_object()) && this_player() ) {
+            this_player()->eventPrint("Cannot reload update after destruct.\n"
+              "It will be reloaded at next reference.");
+            return 0;
+        }
+        tmp = catch(call_other(args, "???"));
+        if(this_player() && !(flags & U_AUTOMATED) ){
+            if( !tmp ) 
+                this_player()->eventPrint(args + ": Ok");
+            else this_player()->eventPrint(args + ": Error in update\n" + tmp);
+        }
+        return 1;
     }

@@ -12,16 +12,16 @@ static void create() {
       "ago ate the delicate flowers and vegetables that "
       "once grew here. The gardener's shack is north.");
     SetItems(([
-	({ "flowers", "vegetables", "flowers and vegetables" }) : "If they were once here, they certainly no longer are.",
-	({ "shack", "wooden shack" }) : "A beaten-up old wooden shack is north.",
-	"garden" : "A mess of weeds and dirt.",
+        ({ "flowers", "vegetables", "flowers and vegetables" }) : "If they were once here, they certainly no longer are.",
+        ({ "shack", "wooden shack" }) : "A beaten-up old wooden shack is north.",
+        "garden" : "A mess of weeds and dirt.",
       ]));
     SetExits( ([
-	"east" : "/domains/town/room/mansion_ext",
-	"north" : "/domains/town/room/shack"
+        "east" : "/domains/town/room/mansion_ext",
+        "north" : "/domains/town/room/shack"
       ]));
     SetEnters( ([
-	"shack" : "/domains/town/room/shack",
+        "shack" : "/domains/town/room/shack",
       ]) );
 }
 void init(){

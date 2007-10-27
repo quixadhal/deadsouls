@@ -7,7 +7,7 @@ static void create() {
     SetShort("");
     SetLong("");
     SetExits( ([
-	"out" : "/domains/town/room/mansion_room3"
+        "out" : "/domains/town/room/mansion_room3"
       ]) );
     SetObviousExits("out");
 }

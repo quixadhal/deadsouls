@@ -9,7 +9,7 @@ void init() {
 
     ::init();
     if(!living(this_player()) || !interactive(this_player())) 
-	this_player()->eventMoveLiving("/domains/Praxis/alley1", "north");
+        this_player()->eventMoveLiving("/domains/Praxis/alley1", "north");
     add_action("mail", "mail");
 }
 
@@ -32,7 +32,7 @@ void create() {
     SetProperty("light", 2);
     SetProperty("indoors", 1);
     SetItems( ([ "list" : "A list of commands you may use at the "
-	"post office."]) );
+        "post office."]) );
     //exit changed by drakken 17.aug
     AddExit("north","/domains/Praxis/alley1",(: this_object(),"more" :) );
     SetProperty("no attack", 1);
@@ -43,8 +43,8 @@ int mail(string str) {
     object ob;
 
     if((string)this_player()->query_name() == "guest") {
-	notify_fail("Guest may not use the mailer.\n");
-	return 0;
+        notify_fail("Guest may not use the mailer.\n");
+        return 0;
     }
     ob = new(OB_POSTAL);
     ob->move(this_player());

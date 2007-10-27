@@ -23,18 +23,18 @@ int RemoveDig() {
 
 mixed SetDig(mixed val) {
     if( !stringp(val) && !arrayp(val) && !functionp(val) ) {
-	error("Bad argument 1 to SetDig().\n\tExpected: string or function "
-	  "or mixed array, Got: " + typeof(val) + "\n");
+        error("Bad argument 1 to SetDig().\n\tExpected: string or function "
+          "or mixed array, Got: " + typeof(val) + "\n");
     }
     return (Dig = val);
 }
 
 mixed CanDig(object who) {
     if( !Dig ) {
-	return 0;
+        return 0;
     }
     else {
-	return 1;
+        return 1;
     }
 }
 
@@ -42,16 +42,16 @@ mixed eventDig(object who, object tool) {
     mixed val = Dig;
 
     if( arrayp(val) ) {
-	val = val[query_night()];
+        val = val[query_night()];
     }
     if( stringp(val) ) {
-	environment(who)->eventPrint(who->GetName() + " digs " +
-	  GetShort() + " with " +
-	  tool->GetShort() + ".", who);
-	who->eventPrint(val);
+        environment(who)->eventPrint(who->GetName() + " digs " +
+          GetShort() + " with " +
+          tool->GetShort() + ".", who);
+        who->eventPrint(val);
     }
     else {
-	return evaluate(val, who, tool);
+        return evaluate(val, who, tool);
     }
 }
 

@@ -21,11 +21,11 @@ static void create() {
     SetDamagePoints(100);
     SetArmorType(A_VEST);
     SetInventory(([
-	"/domains/town/obj/torch" : 1,
-	"/domains/town/obj/match" : 3,
-	"/domains/town/obj/map" : 1,
-	"/domains/town/meals/ale" : 3,
-	"/domains/town/meals/poison" : 1,
+        "/domains/town/obj/torch" : 1,
+        "/domains/town/obj/match" : 3,
+        "/domains/town/obj/map" : 1,
+        "/domains/town/meals/ale" : 3,
+        "/domains/town/meals/poison" : 1,
       ]));
 }
 void init(){

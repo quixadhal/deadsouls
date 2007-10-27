@@ -27,8 +27,8 @@ mixed can_bait_obj_with_obj(string verb) { return this_player()->CanManipulate()
 
 mixed do_bait_obj_with_obj(object pole, object bait) {
     if( pole == bait ) {
-	this_player()->eventPrint("You can't use it to bait itself!");
-	return 1;
+        this_player()->eventPrint("You can't use it to bait itself!");
+        return 1;
     }
     return (mixed)bait->eventBait(this_player(), pole);
 }

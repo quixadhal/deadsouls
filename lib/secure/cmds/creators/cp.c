@@ -25,29 +25,29 @@ int cmd(string str) {
     int ow;
 
     if(this_player()->GetForced()) {
-	write("Someone has tried forcing you to cp " + str);
-	return 1;
+        write("Someone has tried forcing you to cp " + str);
+        return 1;
     }
     localdest = 0;    /* Assume it's not a local destination */
     if( str && sscanf( str, "-f %s", s1)) {
-	ow = 1;
-	str = s1;
+        ow = 1;
+        str = s1;
     }
 
     if (!str || sscanf(str, "%s %s", file1, file2) != 2) {
-	if (str && sscanf(str, "%s", file1)) {
-	    file2 = "";     // Check to see if it's a one arg
-	    localdest = 1;  // cp function.  Assume localdest.
-	} else {
-	    help();
-	    return 1;
-	}
+        if (str && sscanf(str, "%s", file1)) {
+            file2 = "";     // Check to see if it's a one arg
+            localdest = 1;  // cp function.  Assume localdest.
+        } else {
+            help();
+            return 1;
+        }
     }
 
     /* check for last parameter == "." */
     if (file2 == ".") {
-	localdest = 1;     /* It's a local destination */
-	file2 = "";
+        localdest = 1;     /* It's a local destination */
+        file2 = "";
     }
     /* Given the player's current working directory and the path(s)
        for the file, construct the new full path for both files */
@@ -56,41 +56,41 @@ int cmd(string str) {
 
     /* Added by Brodbane to handle wild card options, 3/3/06 */
     if( !sizeof( files = wild_card( file1 ) ) )
-	files = ({ file1 });
+        files = ({ file1 });
     if( sizeof(files) > 1 )
     {
-	switch( file_size(file2) )
-	{
-	case -1:
-	    this_player()->eventForce("mkdir "+file2);
-	    break;
-	case -2:
-	    break;
-	default:
-	    return(write("Cannot copy wild card to a single file."),1);
-	}
+        switch( file_size(file2) )
+        {
+        case -1:
+            this_player()->eventForce("mkdir "+file2);
+            break;
+        case -2:
+            break;
+        default:
+            return(write("Cannot copy wild card to a single file."),1);
+        }
     }
 
     foreach( string file in files ) {
-	string dest = (file_size(file2)==-2 ? rmSlash(file2+"/"+
-	    explode( file, "/")[<1]) : file2 );
+        string dest = (file_size(file2)==-2 ? rmSlash(file2+"/"+
+            explode( file, "/")[<1]) : file2 );
 
 
-	if( file_size( file ) == -2 ) {
-	    localdest = 1;
-	    if( sizeof(files) > 1 )
-		continue;
-	    else write( "cp: "+file+" is a directory." );
-	} 
-	else if( file_size(file) < 1 ) { write( "cp: couldn't find  "+file ); }
-	else if( file == dest ) write( "cp: You cant copy a file on to itself!" );
-	else if( file_size(dest) > 0 && !ow && !sscanf(dest, "%*s.save" )) write( "cp: "+dest+" already exists." );
-	else if( !master()->valid_read( file, this_player(), "cp" ) ) write( file+": Permission denied." );
-	else if( !master()->valid_write( dest, this_player(), "cp" ) ) write( dest+": Permission denied." );
-	else { 
-	    write_file( dest, read_file(file), 1 );
-	    write( "Copied: "+file+" to "+dest );
-	}
+        if( file_size( file ) == -2 ) {
+            localdest = 1;
+            if( sizeof(files) > 1 )
+                continue;
+            else write( "cp: "+file+" is a directory." );
+        } 
+        else if( file_size(file) < 1 ) { write( "cp: couldn't find  "+file ); }
+        else if( file == dest ) write( "cp: You cant copy a file on to itself!" );
+        else if( file_size(dest) > 0 && !ow && !sscanf(dest, "%*s.save" )) write( "cp: "+dest+" already exists." );
+        else if( !master()->valid_read( file, this_player(), "cp" ) ) write( file+": Permission denied." );
+        else if( !master()->valid_write( dest, this_player(), "cp" ) ) write( dest+": Permission denied." );
+        else { 
+            write_file( dest, read_file(file), 1 );
+            write( "Copied: "+file+" to "+dest );
+        }
     }
     return 1;
 }

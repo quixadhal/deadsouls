@@ -11,8 +11,8 @@ static void create(){
     SetShort("a robe");
     SetLong("This is a large, comfortable-looking robe, like a wizard might wear. It has many pockets and compartments for holding things.");
     SetProperties(([
-	"gamma" : 3,
-	"no steal" : 1,
+        "gamma" : 3,
+        "no steal" : 1,
       ]));
     SetCanClose(1);
     SetMaxCarry(5000);

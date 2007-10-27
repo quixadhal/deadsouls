@@ -13,6 +13,7 @@ echo "When this is done, please enter the following command line:"
 echo " "
 echo "make -j 1"
 \cp -f ../extra/wolfpaw/* . 
+echo "#include \"../extra/wolfpaw/configure.h\"" >> local_options
 else
 echo "No Wolfpaw config needed."
 fi

@@ -18,16 +18,16 @@ void create() {
       "and the town hall is south.");
     SetExits( 
       (["north" : "/domains/Praxis/monastery",
-	"east" : "/domains/Praxis/e_boc_la2",
-	"south" : "/domains/Praxis/town_hall.c",
-	"west" : "/domains/Praxis/square"]) );
+        "east" : "/domains/Praxis/e_boc_la2",
+        "south" : "/domains/Praxis/town_hall.c",
+        "west" : "/domains/Praxis/square"]) );
     SetItems(
       (["road" : "Boc La Road is the large path that runs east-west "
-	"through Praxis.", 
-	"monastery" : "The monks of Nightmare study and "
-	"worship there.", 
-	"square" : "Monument Square is the center point of "
-	"all of Praxis. Many adventurers enjoying hanging out there, "
-	"chatting with fellow citizens about life in Praxis."]) );
+        "through Praxis.", 
+        "monastery" : "The monks of Nightmare study and "
+        "worship there.", 
+        "square" : "Monument Square is the center point of "
+        "all of Praxis. Many adventurers enjoying hanging out there, "
+        "chatting with fellow citizens about life in Praxis."]) );
 }
 

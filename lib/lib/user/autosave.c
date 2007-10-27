@@ -32,23 +32,23 @@ int Setup() {
 
 nomask void restore_inventory() {
     if( Inventory ) {
-	foreach(string obdata in Inventory) {
-	    object ob;
-	    mixed tmp;
+        foreach(string obdata in Inventory) {
+            object ob;
+            mixed tmp;
 
-	    tmp = restore_variable(obdata);
-	    if( arrayp(tmp) ) {
-		ob = new(tmp[0]);
-		if( ob ) ob->eventConvertObject(tmp, 1);
-	    }
-	    else {
-		if( !catch(ob = new(tmp["#base_name#"])) ) {
-		    if( ob ) {
-			ob->eventLoadObject(tmp, 1);
-		    }
-		}
-	    }
-	}
+            tmp = restore_variable(obdata);
+            if( arrayp(tmp) ) {
+                ob = new(tmp[0]);
+                if( ob ) ob->eventConvertObject(tmp, 1);
+            }
+            else {
+                if( !catch(ob = new(tmp["#base_name#"])) ) {
+                    if( ob ) {
+                        ob->eventLoadObject(tmp, 1);
+                    }
+                }
+            }
+        }
     }
     Inventory = 0;
 }
@@ -57,7 +57,7 @@ nomask int restore_player(string nom) {
     string file;
 
     if( previous_object(0) != master() ) {
-	return 0;
+        return 0;
     }
     file = save_file(nom);
     return unguarded((: restore_object, file, 1 :));
@@ -67,7 +67,7 @@ nomask void save_player(string nom) {
     string file;
 
     if( !nom || nom != GetKeyName() ) {
-	return;
+        return;
     }
     Inventory = filter(map(all_inventory(), (: $1->GetSaveString() :)),
       (: $1 :));
@@ -80,13 +80,13 @@ static void heart_beat() {
     int x = time();
 
     if( x - LastSave < AUTOSAVE_TIME ) {
-	return;
+        return;
     }
     LastSave = x;
     save_player(GetKeyName());
     if( !creatorp(this_object()) && !present("visitor pass",this_object()) 
       && !testp(this_object()) ) {
-	eventPrint("Autosaving...", MSG_SYSTEM);
+        eventPrint("Autosaving...", MSG_SYSTEM);
     }
 }
 

@@ -9,27 +9,27 @@ int moral_act(object agent, object target, int amount) {
 
     am = (int)agent->GetMorality();
     if( target ) {
-	tm = (int)target->GetMorality();
+        tm = (int)target->GetMorality();
     }
     else {
-	tm = 0;
+        tm = 0;
     }
     if( am < 200 && am > -200 ) {
-	if( amount >= 200 ) {
-	    if( tm >= 200 ) amount = amount + tm;
-	    else if( tm <= -200 ) amount = 0;
-	}
-	else if( amount <= -200 ) {
-	    if( tm >= 200 ) amount *= tm;
-	    if( tm <= -200 ) amount = 0;
-	}
+        if( amount >= 200 ) {
+            if( tm >= 200 ) amount = amount + tm;
+            else if( tm <= -200 ) amount = 0;
+        }
+        else if( amount <= -200 ) {
+            if( tm >= 200 ) amount *= tm;
+            if( tm <= -200 ) amount = 0;
+        }
     }
     else if( am >= 200 ) {
-	if( amount >= 200 ) {
-	    if( tm >= 200 ) amount *=tm;
-	    else if( tm <= -200 ) amount = 0;
-	}
-	else if( amount <= -200 && tm >=200 ) amount *= tm;
+        if( amount >= 200 ) {
+            if( tm >= 200 ) amount *=tm;
+            else if( tm <= -200 ) amount = 0;
+        }
+        else if( amount <= -200 && tm >=200 ) amount *= tm;
     }
     else if( amount > 1000 ) amount = 75 + random(25);
     else if( amount > 100 ) amount = amount /10;

@@ -28,7 +28,7 @@ static void create() {
 
 mixed can_remove_obj() {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     if(intp(check_light())) return this_player()->CanManipulate();
     else return check_light();
@@ -55,12 +55,12 @@ mixed do_remove_obs(mixed *res) {
 
     obs = filter(res, (: objectp :));
     if( !sizeof(obs) ) {
-	mixed *ua;
+        mixed *ua;
 
-	ua = unique_array(res, (: $1 :));
-	foreach(string *list in ua)
-	this_player()->eventPrint(list[0]);
-	return 1;
+        ua = unique_array(res, (: $1 :));
+        foreach(string *list in ua)
+        this_player()->eventPrint(list[0]);
+        return 1;
     }
     res = (mixed *)obs->eventUnequip(this_player()) - ({ 1 });
     if( !sizeof(res) ) return 1;

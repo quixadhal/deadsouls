@@ -12,27 +12,27 @@ int cmd(string str) {
     int substr = 0;
 
     if(!str || str == ""){
-	write("Syntax: banish <string>");
-	return 1;
+        write("Syntax: banish <string>");
+        return 1;
     }
 
     if(grepp(str,"-s ")){
-	str = replace_string(str,"-s ","");
-	substr = 1;
+        str = replace_string(str,"-s ","");
+        substr = 1;
     }
     if(!user_exists(str = lower_case(str))) {
-	if(!substr){
-	    BANISH_D->banish_name(str);
-	    write(capitalize(str)+" is now banished.\n");
-	}
-	else {
-	    BANISH_D->set_illegal_substring(str);
-	    write("The substring \""+str+"\" is now illegal in a name.");
-	}
+        if(!substr){
+            BANISH_D->banish_name(str);
+            write(capitalize(str)+" is now banished.\n");
+        }
+        else {
+            BANISH_D->set_illegal_substring(str);
+            write("The substring \""+str+"\" is now illegal in a name.");
+        }
     }
     else {
-	write("A player by that name already exists.\n");
-	this_player()->eventPrint((string)FINGER_D->GetFinger(str));
+        write("A player by that name already exists.\n");
+        this_player()->eventPrint((string)FINGER_D->GetFinger(str));
     }
     return 1;
 }

@@ -9,7 +9,7 @@
 #include <daemons.h>
 #include <message_class.h>
 
-#define IMC2_DISABLED
+#define IMC2_ENABLED
 
 // Connection data...
 #define HOSTNAME "server01.intermud.us"
@@ -1556,9 +1556,9 @@ EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
 
           if(!file || !sizeof(file)) return;
 
-          file = replace_string(file,"clientpass",cpass);
-          file = replace_string(file,"serverpass",spass);
-          file = replace_string(file,"define IMC2_DISABLED","define IMC2_ENABLED");
+          file = replace_string(file,"mnhbkgeaia",cpass);
+          file = replace_string(file,"ggcclbeedj",spass);
+          file = replace_string(file,"define IMC2_ENABLED","define IMC2_ENABLED");
 
           write_file(filename, file, 1);
 

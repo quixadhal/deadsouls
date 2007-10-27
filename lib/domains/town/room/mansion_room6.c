@@ -11,10 +11,10 @@ static void create() {
       "it seems that the servants probably rotate "
       "after-hours duty.");
     SetInventory( ([
-	"/domains/town/obj/cot" :1,
+        "/domains/town/obj/cot" :1,
       ]) );
     SetExits( ([
-	"east" : "/domains/town/room/mansion_uhall3"
+        "east" : "/domains/town/room/mansion_uhall3"
       ]) );
 }
 void init(){

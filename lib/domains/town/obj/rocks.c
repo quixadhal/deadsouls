@@ -7,19 +7,19 @@ string SearchCrap(){
     object *livings;
     livings = get_livings(environment(this_object()));
     foreach(object living in livings){
-	if(living->GetRace() == "troll" && !interactive(living)) {
-	    write("The troll distracts you!");
-	    return " ";
-	}
+        if(living->GetRace() == "troll" && !interactive(living)) {
+            write("The troll distracts you!");
+            return " ";
+        }
     }
     if(!polefound){
-	result="Rummaging through the rocks, you "+
-	"discover a fishing pole hidden underneath.";
-	say(this_player()->GetName()+" searches the pile of rocks "+
-	  "and seems to have found something of value.");
-	new("/domains/town/obj/pole")->eventMove(environment(this_player()));
-	polefound=1;
-	return result; 
+        result="Rummaging through the rocks, you "+
+        "discover a fishing pole hidden underneath.";
+        say(this_player()->GetName()+" searches the pile of rocks "+
+          "and seems to have found something of value.");
+        new("/domains/town/obj/pole")->eventMove(environment(this_player()));
+        polefound=1;
+        return result; 
     }
 
     result="You rummage through the rocks "+
@@ -44,7 +44,7 @@ void create(){
     SetSearch( (: SearchCrap :) );
     polefound=0;
     SetItems( ([
-	({"rock","rocks"}) : "A pile of rocks.",
+        ({"rock","rocks"}) : "A pile of rocks.",
       ]) );
 
 }

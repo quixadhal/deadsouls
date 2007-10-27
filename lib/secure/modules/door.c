@@ -24,11 +24,11 @@ mapping GetDoorKeys(string str){
     lines = global_array;
     if(!sizeof(lines)) return ([]);
     foreach(string line in lines){
-	if(grepp(line, "SetKeys")){
-	    sscanf(line,"%sKeys(%s,%s",junk1, dir, junk2);
-	    dir = this_object()->eventCleanString(dir);
-	    KeyMap[dir] = line;
-	}
+        if(grepp(line, "SetKeys")){
+            sscanf(line,"%sKeys(%s,%s",junk1, dir, junk2);
+            dir = this_object()->eventCleanString(dir);
+            KeyMap[dir] = line;
+        }
     }
 
     return copy(KeyMap);
@@ -49,37 +49,37 @@ varargs mixed eventChangeDoor(mixed door, string property, mixed value, string c
     sides = porte->GetSides();
 
     foreach(string side in sides){
-	mapping TmpMap1 = ([]);
-	TmpMap1 = porte->GetSide(side);
-	props = keys(TmpMap1);
+        mapping TmpMap1 = ([]);
+        TmpMap1 = porte->GetSide(side);
+        props = keys(TmpMap1);
 
-	switch(property){
-	case "SetId" : property = "id";break;
-	case "SetLong" : property = "long";break;
-	case "SetShort" : property = "short";break;
-	case "SetCanLock" : property = "lockable";break;
-	case "SetKey" : property = "key";break;
-	}
-	if(member_array(property, props) != -1 ){
-	    if(!cote) TmpMap1[property] = value;
-	    else if(cote && cote == side && property == "id")
-		TmpMap1[property] = explode(value,":");
-	    else if(cote && cote == side) TmpMap1[property] = value;
-	}
+        switch(property){
+        case "SetId" : property = "id";break;
+        case "SetLong" : property = "long";break;
+        case "SetShort" : property = "short";break;
+        case "SetCanLock" : property = "lockable";break;
+        case "SetKey" : property = "key";break;
+        }
+        if(member_array(property, props) != -1 ){
+            if(!cote) TmpMap1[property] = value;
+            else if(cote && cote == side && property == "id")
+                TmpMap1[property] = explode(value,":");
+            else if(cote && cote == side) TmpMap1[property] = value;
+        }
 
-	if(!TmpMap1["lockable"]) lockable = 0;
-	else lockable = TmpMap1["lockable"];
-	map_string += "SetSide(\""+side+"\", ([\"id\" : "+identify(TmpMap1["id"])+",\n";
-	map_string += "\"short\" : \""+TmpMap1["short"]+"\",\n";
-	map_string += "\"long\" : \""+TmpMap1["long"]+"\",\n";
-	map_string +="\"lockable\" : "+lockable+" ]) );\n";
-	if(property == "key") {
-	    if(!cote || cote == side) map_string += "SetKeys(\""+side+"\", ({\""+value+"\"}) );\n\n";
-	    else if(KeyMap[side])  map_string += KeyMap[side] + "\n\n";
-	}
-	if(property != "key" && KeyMap[side]){
-	    map_string += KeyMap[side] + "\n\n";
-	}
+        if(!TmpMap1["lockable"]) lockable = 0;
+        else lockable = TmpMap1["lockable"];
+        map_string += "SetSide(\""+side+"\", ([\"id\" : "+identify(TmpMap1["id"])+",\n";
+        map_string += "\"short\" : \""+TmpMap1["short"]+"\",\n";
+        map_string += "\"long\" : \""+TmpMap1["long"]+"\",\n";
+        map_string +="\"lockable\" : "+lockable+" ]) );\n";
+        if(property == "key") {
+            if(!cote || cote == side) map_string += "SetKeys(\""+side+"\", ({\""+value+"\"}) );\n\n";
+            else if(KeyMap[side])  map_string += KeyMap[side] + "\n\n";
+        }
+        if(property != "key" && KeyMap[side]){
+            map_string += KeyMap[side] + "\n\n";
+        }
     }
 
     return map_string;
@@ -91,8 +91,8 @@ varargs int eventProcessDoor(mixed door, string property, mixed value, string co
     string other_room;
 
     if(!door || ! property ){
-	write("Wrong number of arguments to evenProcessDoor");
-	return 0;
+        write("Wrong number of arguments to evenProcessDoor");
+        return 0;
     }
 
     if(!value) value = 0;
@@ -100,8 +100,8 @@ varargs int eventProcessDoor(mixed door, string property, mixed value, string co
     if(objectp(door)) door = base_name(door);
     if(last(door,2) != ".c") door += ".c";
     if(!file_exists(door)){
-	write("No such door file.");
-	return 0;
+        write("No such door file.");
+        return 0;
     }
 
     porte = load_object(door);
@@ -138,14 +138,14 @@ int eventDeleteDoor(string door){
     this_room = base_name(environment(this_player()))+".c";
     other_room = this_object()->GetOtherRoom(door)+".c";
     foreach( string room in ({this_room, other_room}) ){
-	globalstr = room;
-	unguarded( (: globalstr2 = read_file(globalstr) :) );
-	globalstr2 = remove_matching_line(globalstr2, door);
-	globalstr3 = generate_tmp(load_object(door));
-	unguarded( (: write_file(globalstr3, globalstr2, 1) :) );
-	unguarded( (: cp(globalstr3, globalstr) :) );
-	unguarded( (: rm(globalstr3) :) );
-	reload(room);
+        globalstr = room;
+        unguarded( (: globalstr2 = read_file(globalstr) :) );
+        globalstr2 = remove_matching_line(globalstr2, door);
+        globalstr3 = generate_tmp(load_object(door));
+        unguarded( (: write_file(globalstr3, globalstr2, 1) :) );
+        unguarded( (: cp(globalstr3, globalstr) :) );
+        unguarded( (: rm(globalstr3) :) );
+        reload(room);
     }
     return 1;
 }
@@ -153,8 +153,8 @@ int eventDeleteDoor(string door){
 string GetOtherRoom(string door){
     string other_room, dir_str;
     foreach(string dir in environment(this_player())->GetDoors()){
-	if(grepp(environment(this_player())->GetDoor(dir), door)) dir_str =
-	    dir;
+        if(grepp(environment(this_player())->GetDoor(dir), door)) dir_str =
+            dir;
     }
     other_room = environment(this_player())->GetExit(dir_str);
     if(other_room) return other_room;
@@ -169,13 +169,13 @@ string eventEvaluateDoorSide(object door){
     door_sides = door->GetSides();
 
     foreach(string dir in door_array){
-	if(load_object(environment(this_player())->GetDoor(dir)) == door) dir_str = dir;
+        if(load_object(environment(this_player())->GetDoor(dir)) == door) dir_str = dir;
     }
 
     if(!dir_str) return "";
 
     foreach(string side in door_sides){
-	if(side == dir_str) ret_str = side;
+        if(side == dir_str) ret_str = side;
     }
 
     return ret_str;
@@ -193,8 +193,8 @@ int eventCreateDoor(string dir, string filename){
     my_room_file = base_name(my_room)+".c";
     other_room_file = my_room->GetExit(dir)+".c";
     if(!file_exists(other_room_file)) {
-	tell_room(my_room,"The new door fades away and disappears.");
-	return 0;
+        tell_room(my_room,"The new door fades away and disappears.");
+        return 0;
     }
     unguarded( (: my_room_contents = read_file(my_room_file) :) );
     unguarded( (: other_room_contents = read_file(other_room_file) :) );
@@ -212,18 +212,18 @@ int eventCreateDoor(string dir, string filename){
 
     opp_dir = opposite_dir(dir);
     if(opp_dir && opp_dir != "" && grepp(contents,"DIR_Y")){
-	rep_str = "Y";
-	contents = replace_string(contents, "DIR_"+rep_str, opp_dir);
-	contents = replace_string(contents, rep_str+"_SIDE", opp_dir);
+        rep_str = "Y";
+        contents = replace_string(contents, "DIR_"+rep_str, opp_dir);
+        contents = replace_string(contents, rep_str+"_SIDE", opp_dir);
     }
 
     temp_array = explode(my_room_contents,"\n");
     foreach(string line in temp_array) {
-	if(grepp(line,"SetDoor")){
-	    if(grepp(line,truncate(filename,2)) || grepp(line,"\""+dir+"\"")){
-		my_room_contents = remove_matching_line(my_room_contents, line);
-	    }
-	}
+        if(grepp(line,"SetDoor")){
+            if(grepp(line,truncate(filename,2)) || grepp(line,"\""+dir+"\"")){
+                my_room_contents = remove_matching_line(my_room_contents, line);
+            }
+        }
     }
 
     new_line = "SetDoor(\""+dir+"\", \""+filename+"\");";
@@ -231,11 +231,11 @@ int eventCreateDoor(string dir, string filename){
 
     temp_array = explode(other_room_contents,"\n");
     foreach(string line in temp_array) {
-	if(grepp(line,"SetDoor")){
-	    if(grepp(line,truncate(filename,2)) || grepp(line,"\""+opp_dir+"\"")){
-		other_room_contents = remove_matching_line(other_room_contents, line);
-	    }
-	}
+        if(grepp(line,"SetDoor")){
+            if(grepp(line,truncate(filename,2)) || grepp(line,"\""+opp_dir+"\"")){
+                other_room_contents = remove_matching_line(other_room_contents, line);
+            }
+        }
     }
 
     new_line = "SetDoor(\""+opp_dir+"\", \""+filename+"\");";

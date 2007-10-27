@@ -13,19 +13,19 @@ static void create() {
       "scheduled. The rest of the Adventurers' Guild is "+
       "east of here.");
     SetItems( ([
-	({"wall","walls"}) : "The walls have mirrors set into them.",
-	({"mirror","mirrors"}) : "Peekaboo!",
-	({"hardwoord floor", "floor"}) : "The floor is made of polished wood, and is "+
-	"reminiscent of what you might expect in a dancing school.",
-	({"ceiling","high ceiling"}) : "The high, vaulted ceiling "+
-	"provides plenty of headroom." 
+        ({"wall","walls"}) : "The walls have mirrors set into them.",
+        ({"mirror","mirrors"}) : "Peekaboo!",
+        ({"hardwoord floor", "floor"}) : "The floor is made of polished wood, and is "+
+        "reminiscent of what you might expect in a dancing school.",
+        ({"ceiling","high ceiling"}) : "The high, vaulted ceiling "+
+        "provides plenty of headroom." 
       ]) );
     SetExits( ([ 
-	"east" : "/domains/town/room/adv_guild",
+        "east" : "/domains/town/room/adv_guild",
       ]) );
     SetInventory(([
-	"/domains/town/npc/radagast" : 1,
-	"/domains/town/obj/bbucket" : 1,
+        "/domains/town/npc/radagast" : 1,
+        "/domains/town/obj/bbucket" : 1,
       ]));
     SetPlayerKill(1);
 }

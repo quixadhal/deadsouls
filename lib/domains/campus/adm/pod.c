@@ -19,8 +19,8 @@ void create() {
 }
 int CanReceive(object ob){
     if(!interactive(ob)){
-	ob->eventDestruct();
-	return 1;
+        ob->eventDestruct();
+        return 1;
     }
     ob->eventMove(ROOM_VOID);
     return 1;

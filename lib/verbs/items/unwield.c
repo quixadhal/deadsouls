@@ -24,7 +24,7 @@ static void create() {
 
 mixed can_unwield_obj(string verb) {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     return 1;
 }
@@ -37,20 +37,20 @@ mixed do_unwield_obs(mixed array targs) {
     object array obs;
 
     if( !sizeof(targs) ) {
-	this_player()->eventPrint("There is no such thing to be unwielded.");
-	return 1;
+        this_player()->eventPrint("There is no such thing to be unwielded.");
+        return 1;
     }
     obs = filter(targs, (: objectp :));
     if( !sizeof(obs) ) {
-	mapping messages = unique_mapping(targs, (: $1 :));
+        mapping messages = unique_mapping(targs, (: $1 :));
 
-	foreach(string msg in keys(messages)) {
-	    this_player()->eventPrint(msg);
-	}
-	return 1;
+        foreach(string msg in keys(messages)) {
+            this_player()->eventPrint(msg);
+        }
+        return 1;
     }
     foreach(object item in obs) {
-	do_unwield_obj(item);
+        do_unwield_obj(item);
     }
     return 1;
 }

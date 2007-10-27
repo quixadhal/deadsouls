@@ -64,41 +64,41 @@ mixed eventDrink(object who) {
 
     if( (tmp = (mixed)who->eventDrink(this_object())) != 1 ) return tmp;
     if( (x = functionp(MyMessage)) && !(x & FP_OWNER_DESTED) ) {
-	evaluate(MyMessage, who);
+        evaluate(MyMessage, who);
     }
     else {
-	string mymsg, othermsg;
+        string mymsg, othermsg;
 
-	mymsg = replace_string(MyMessage, "$P", "your");
-	othermsg = replace_string(OtherMessage, "$P", possessive(who));
-	mymsg = replace_string(mymsg, "$N", "you");
-	othermsg = replace_string(othermsg, "$N", (string)who->GetName());
-	who->eventPrint( capitalize(mymsg) );
-	environment(who)->eventPrint( capitalize(othermsg), who );
+        mymsg = replace_string(MyMessage, "$P", "your");
+        othermsg = replace_string(OtherMessage, "$P", possessive(who));
+        mymsg = replace_string(mymsg, "$N", "you");
+        othermsg = replace_string(othermsg, "$N", (string)who->GetName());
+        who->eventPrint( capitalize(mymsg) );
+        environment(who)->eventPrint( capitalize(othermsg), who );
     }
 
     ob = new(GetEmptyItem() || LIB_USED_MEAL);
     if( base_name(ob) == LIB_USED_MEAL ) {
-	ob->SetKeyName(GetEmptyName());
-	ob->SetId( ({ GetEmptyName(), "container", "empty container" }) );
-	ob->SetShort(GetEmptyShort());
-	ob->SetAdjectives( ({ "empty", "drained" }) );
-	ob->SetLong(GetEmptyLong());
-	ob->SetBaseCost(1);
-	ob->SetMass(10);
-	ob->SetDestroyOnSell();
+        ob->SetKeyName(GetEmptyName());
+        ob->SetId( ({ GetEmptyName(), "container", "empty container" }) );
+        ob->SetShort(GetEmptyShort());
+        ob->SetAdjectives( ({ "empty", "drained" }) );
+        ob->SetLong(GetEmptyLong());
+        ob->SetBaseCost(1);
+        ob->SetMass(10);
+        ob->SetDestroyOnSell();
     }
     if( !((int)ob->eventMove(who)) ) {
-	who->eventPrint("You drop " + (string)ob->GetShort() + ".");
-	environment(who)->eventPrint((string)who->GetName() +
-	  " drops " + (string)ob->GetShort() + ".", who);
-	ob->eventMove(environment(who));
+        who->eventPrint("You drop " + (string)ob->GetShort() + ".");
+        environment(who)->eventPrint((string)who->GetName() +
+          " drops " + (string)ob->GetShort() + ".", who);
+        ob->eventMove(environment(who));
     }
 
     if( x = GetPoison() ) {
-	if( random((int)who->GetStatLevel("luck")) > 35 )
-	    who->eventPrint("That didn't seem to taste quite right.");
-	who->AddPoison(x);
+        if( random((int)who->GetStatLevel("luck")) > 35 )
+            who->eventPrint("That didn't seem to taste quite right.");
+        who->AddPoison(x);
     }
     Destruct();
     return 1;
@@ -110,23 +110,23 @@ mixed eventEat(object who) {
 
     if( (tmp = (mixed)who->eventEat(this_object())) != 1 ) return tmp;
     if( (x = functionp(MyMessage)) && !(x & FP_OWNER_DESTED) ) {
-	evaluate(MyMessage, who);
+        evaluate(MyMessage, who);
     }
     else {
-	string mymsg, othermsg;
+        string mymsg, othermsg;
 
-	mymsg = replace_string(MyMessage, "$P", "your");
-	othermsg = replace_string(OtherMessage, "$P",
-	  possessive(who));
-	mymsg = replace_string(mymsg, "$N", "you");
-	othermsg = replace_string(othermsg, "$N", (string)who->GetName());
-	who->eventPrint( capitalize(mymsg) );
-	environment(who)->eventPrint( capitalize(othermsg), who );
+        mymsg = replace_string(MyMessage, "$P", "your");
+        othermsg = replace_string(OtherMessage, "$P",
+          possessive(who));
+        mymsg = replace_string(mymsg, "$N", "you");
+        othermsg = replace_string(othermsg, "$N", (string)who->GetName());
+        who->eventPrint( capitalize(mymsg) );
+        environment(who)->eventPrint( capitalize(othermsg), who );
     }
     if( x = GetPoison() ) {
-	if( random((int)who->GetStatLevel("luck")) > 35 )
-	    who->eventPrint("You notice a strange aftertaste.");
-	who->AddPoison(x);
+        if( random((int)who->GetStatLevel("luck")) > 35 )
+            who->eventPrint("You notice a strange aftertaste.");
+        who->AddPoison(x);
     }
     Destruct();
     return 1;
@@ -161,9 +161,9 @@ int SetMealType(int x) {
     int vt = 0;
 
     if( x & MEAL_FOOD ) {
-	vt |= VT_FOOD;
-	MyMessage = "You eat your food.";
-	OtherMessage = "$N eats $P food.";
+        vt |= VT_FOOD;
+        MyMessage = "You eat your food.";
+        OtherMessage = "$N eats $P food.";
     }
     if( x & MEAL_DRINK ) vt |= VT_DRINK;
     SetVendorType(vt);
@@ -178,19 +178,19 @@ int GetStrength() { return MealStrength; }
 
 varargs void SetMealMessages(mixed array val...) {
     if( !arrayp(val) ) {
-	error(sprintf("Bad argument 1 to SetMealMessages(): %O\n", val));
+        error(sprintf("Bad argument 1 to SetMealMessages(): %O\n", val));
     }
     if( sizeof(val) == 1 ) {
-	if( arrayp(val[0]) ) SetMealMessages(val[0]...);
-	else if( stringp(val[0]) || functionp(val[0]) ) MyMessage = val[0];
-	else error(sprintf("Bad argument 1 to SetMealMessages(): %O\n",
-		val[0]));
-	return;
+        if( arrayp(val[0]) ) SetMealMessages(val[0]...);
+        else if( stringp(val[0]) || functionp(val[0]) ) MyMessage = val[0];
+        else error(sprintf("Bad argument 1 to SetMealMessages(): %O\n",
+                val[0]));
+        return;
     }
     if( !stringp(val[0]) )
-	error(sprintf("Bad argument 1 to SetMealMessages(): %O\n", val[0]));
+        error(sprintf("Bad argument 1 to SetMealMessages(): %O\n", val[0]));
     else if( !stringp(val[1]) ) 
-	error(sprintf("Bad argument 2 to SetMealMessages(): %O\n", val[1]));
+        error(sprintf("Bad argument 2 to SetMealMessages(): %O\n", val[1]));
     MyMessage = val[0];
     OtherMessage = val[1];
 }

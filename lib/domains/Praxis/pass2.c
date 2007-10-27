@@ -16,20 +16,20 @@ void create() {
       "up into the mountain.");
     SetItems(
       (["point" : "From here it looks like you can see the entire world.",
-	"pass" : "It winds around from the west to the southeast.",
-	"mountains" : "A huge mountain range separating the fertile "
-	"lands of the east from the desert.",
-	"valley" : "A huge forested valley.",
-	"desert" : "The Qajip Desert where many travellers have "
-	"lost their way and not been found.",
-	"forest" : "It is dark and gloomy near the mountains, but "
-	"it looks friendlier off to the east.",
-	"cave" : "The cave stands very darkly and ominously before you.",
-	"mountain" : "It is one of the lower ones, guarding the pass."]) );
+        "pass" : "It winds around from the west to the southeast.",
+        "mountains" : "A huge mountain range separating the fertile "
+        "lands of the east from the desert.",
+        "valley" : "A huge forested valley.",
+        "desert" : "The Qajip Desert where many travellers have "
+        "lost their way and not been found.",
+        "forest" : "It is dark and gloomy near the mountains, but "
+        "it looks friendlier off to the east.",
+        "cave" : "The cave stands very darkly and ominously before you.",
+        "mountain" : "It is one of the lower ones, guarding the pass."]) );
     SetExits( 
       (["west" : "/domains/Praxis/pass3",
-	"southeast" : "/domains/Praxis/pass1",
-	"north"	 : "/domains/Praxis/mountains/entrance"]) );
+        "southeast" : "/domains/Praxis/pass1",
+        "north"	 : "/domains/Praxis/mountains/entrance"]) );
 }
 void init(){
     ::init();

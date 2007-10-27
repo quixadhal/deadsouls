@@ -19,35 +19,35 @@ mixed CanLock(object who, string id) {
     mixed tmp = lock::CanLock(who);
 
     if( tmp != 1 ) {
-	return tmp;
+        return tmp;
     }
     if( !GetClosed() ) {
-	return "You cannot lock it while it is open.";
+        return "You cannot lock it while it is open.";
     }
     return 1;
 }
 
 varargs mixed CanOpen(object who, string id) {
     if( GetLocked() ) {
-	id = "It is locked!";
-	return id;
+        id = "It is locked!";
+        return id;
     }
     else return close::CanOpen(who);
 }
 
 varargs mixed eventOpen(object who, object tool) {
     if( tool && GetLocked() ) {
-	mixed tmp =  eventPick(who, tool);
+        mixed tmp =  eventPick(who, tool);
 
-	if( tmp != 1 || GetLocked() ) {
-	    return tmp;
-	}
+        if( tmp != 1 || GetLocked() ) {
+            return tmp;
+        }
     }
     if( GetLocked() ) {
-	send_messages(({ "attempt", "find" }), "$agent_name $agent_verb to "
-	  "open $target_name, but $agent_nominative $agent_verb "
-	  "it locked.", who, this_object(), environment(who));
-	return 1;
+        send_messages(({ "attempt", "find" }), "$agent_name $agent_verb to "
+          "open $target_name, but $agent_nominative $agent_verb "
+          "it locked.", who, this_object(), environment(who));
+        return 1;
     }
     return close::eventOpen(who, tool);
 }

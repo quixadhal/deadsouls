@@ -12,7 +12,7 @@ static void create() {
       "ever was anything of value here, it's "+
       "probably long gone.");
     SetExits( ([
-	"west" : "/domains/town/room/mansion_uhall3"
+        "west" : "/domains/town/room/mansion_uhall3"
       ]) );
 }
 void init(){

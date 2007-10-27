@@ -19,35 +19,35 @@ int cmd(string who) {
 
     if(!archp(previous_object())) return 0;
     if( !who || who == "" ) {
-	write("Rid whom?");
-	return 1;
+        write("Rid whom?");
+        return 1;
     }
 
     str = convert_name(who);
     who = capitalize(who);
     if( member_group(str, PRIV_SECURE) || member_group(str, PRIV_ASSIST) ){
-	write("You must first remove this person from a secure group.");
-	return 1;
+        write("You must first remove this person from a secure group.");
+        return 1;
     }
 
     if( !user_exists(str) ) {
-	write("No such person: " + who + ".");
-	return 1;
+        write("No such person: " + who + ".");
+        return 1;
     }
 
     if( ob = find_player(str) ) {
-	who = (string)ob->GetCapName();
-	message("system", "You are being ridded from " + mud_name() + ".",
-	  ob);
-	if( !((int)ob->eventDestruct()) ) destruct(ob);
+        who = (string)ob->GetCapName();
+        message("system", "You are being ridded from " + mud_name() + ".",
+          ob);
+        if( !((int)ob->eventDestruct()) ) destruct(ob);
     }
     file = save_file(str) + __SAVE_EXTENSION__;
     if( rename(file, DIR_RID + "/" + str + __SAVE_EXTENSION__) ) {
-	write("Rename failed, security violation logged.");
-	log_file("security", "\n*****\nRid violation attempted\n"
-	  "Target: " + who + "\nCall stack:\n" + 
-	  sprintf("%O\n", previous_object(-1)));
-	return 1;
+        write("Rename failed, security violation logged.");
+        log_file("security", "\n*****\nRid violation attempted\n"
+          "Target: " + who + "\nCall stack:\n" + 
+          sprintf("%O\n", previous_object(-1)));
+        return 1;
     }
     write("Enter reason for ridding " + who + ".");
     file = DIR_TMP + "/" + (string)this_player()->GetKeyName();

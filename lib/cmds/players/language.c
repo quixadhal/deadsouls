@@ -7,16 +7,16 @@ mixed cmd(string str) {
     string *langs = this_player()->GetLanguages();
 
     foreach(string lang in langs){
-	FluencyMap[lang] = this_player()->GetLanguageLevel(lang);
+        FluencyMap[lang] = this_player()->GetLanguageLevel(lang);
     }
 
     if(this_player()->GetPolyglot()){
-	write("You understand all languages with 100% proficiency.");
+        write("You understand all languages with 100% proficiency.");
     }
 
     write("You speak: ");
     foreach(string key, int val in FluencyMap){
-	write(capitalize(key)+" with "+val+"% proficiency.");
+        write(capitalize(key)+" with "+val+"% proficiency.");
     }
 
     return 1;

@@ -11,7 +11,7 @@ mixed cmd(string str) {
 
     types = load_object(RACES_D)->GetRaces();
     if( !sizeof(types) ) {
-	return "No list at this time.";
+        return "No list at this time.";
     }
     types = sort_array(types, 1);
     message("help", format_page(types, 5), this_player() );

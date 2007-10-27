@@ -42,14 +42,14 @@ void init() {
 static int cmd_build(string str) {
     if(!str) return notify_fail("Build which room?\n");
     if(file_size(ESTATES_DIRS+"/"+geteuid(this_player())) != -2)
-	return notify_fail("You need an estates directory!\n");
+        return notify_fail("You need an estates directory!\n");
     /*
-	if(!high_mortalp(this_player())) 
-	  return notify_fail("Only high mortals may build!\n");
+        if(!high_mortalp(this_player())) 
+          return notify_fail("Only high mortals may build!\n");
     */
     if(strsrch(file_name(environment(this_player())), 
-	ESTATES_DIRS+"/"+geteuid(this_player())) != 0)
-	return notify_fail("You can only build on your stuff!\n");
+        ESTATES_DIRS+"/"+geteuid(this_player())) != 0)
+        return notify_fail("You can only build on your stuff!\n");
     __Short = str;
     message("prompt", "Is the room 0) outdoors, or 1) indoors? ", this_player());
     input_to("input_indoors");
@@ -61,8 +61,8 @@ static void input_indoors(string str) {
 
     x = to_int(str);
     if(x && x != 1) {
-	message("system", "That was not a valid value.", this_player());
-	return;
+        message("system", "That was not a valid value.", this_player());
+        return;
     }
     __Indoors = x;
     message("system", "How well lit is the room?", this_player());
@@ -76,8 +76,8 @@ static void input_light(string str) {
 
     x = to_int(str);
     if(x && x != 1 && x != 2 && x != 3) {
-	message("system", "Invalid light number.", this_player());
-	return;
+        message("system", "Invalid light number.", this_player());
+        return;
     }
     __Light = x;
     message("system", "Enter in a long description for the room.  "
@@ -101,8 +101,8 @@ void done_edit(mixed *unused) {
     string str;
 
     if(!(str = read_file(DIR_TMP+"/"+geteuid(this_player())+".estate"))) {
-	message("system", "No long!", this_player());
-	return;
+        message("system", "No long!", this_player());
+        return;
     }
     __Long = replace_string(str, "\n", " ");
     message("prompt", "\nIn which direction do you wish to build "+__Short+"? ",
@@ -116,17 +116,17 @@ static void input_exit(string str) {
 
     if(member_array(str, (string *)environment(this_player())->query_exits())
       != -1) {
-	message("system", "A room already exists in that direction!",
-	  this_player());
-	return;
+        message("system", "A room already exists in that direction!",
+          this_player());
+        return;
     }
     valid_exits = ([ "north": "south", "south": "north", "east":"west",
       "west":"east", "up":"down", "down":"up", "southeast":"northwest",
       "northwest":"southeast", "southwest":"northeast",
       "northeast":"southwest" ]);
     if(!valid_exits[str]) {
-	message("system", "That is not a real direction!", this_player());
-	return;
+        message("system", "That is not a real direction!", this_player());
+        return;
     }
     __Exit = "$"+(file=file_name(environment(this_player())))+";$"+valid_exits[str];
     __NewRoom= create_file();

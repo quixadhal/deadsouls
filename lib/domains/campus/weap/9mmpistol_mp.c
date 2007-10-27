@@ -31,9 +31,9 @@ int AddClip(){
 
 void CheckMP(){
     if(base_name(environment(this_object())) == "/domains/campus/npc/mp"){
-	AddClip();
-	SetLoaded(1);
-	SetAmmo(15);
-	SetMag(1);
+        AddClip();
+        SetLoaded(1);
+        SetAmmo(15);
+        SetMag(1);
     }
 }

@@ -19,21 +19,21 @@ void create() {
 
     SetItems( 
       ([({"path", "centre path"}) : "It is the main road winding "
-	"north and south through Praxis.",
-	({"pier", "port", "port of praxis"}) : "Everything that "
-	"comes into Praxis from overseas comes through here.",
-	({"hall", "hall of fighters"}) : "The fighters of this "
-	"reality often come from all over to gather there.",
-	"realty" : "High mortals by stuff to build castles with there.", 
-	"fighters" : "They are roaming aimlessly about the Hall of "
-	"Fighters.",
-	"people" : "They are going about their business in the area.",
-	"high mortals" : "The mightiest of mortals who often "
-	"comprise class leaders."])  );
+        "north and south through Praxis.",
+        ({"pier", "port", "port of praxis"}) : "Everything that "
+        "comes into Praxis from overseas comes through here.",
+        ({"hall", "hall of fighters"}) : "The fighters of this "
+        "reality often come from all over to gather there.",
+        "realty" : "High mortals by stuff to build castles with there.", 
+        "fighters" : "They are roaming aimlessly about the Hall of "
+        "Fighters.",
+        "people" : "They are going about their business in the area.",
+        "high mortals" : "The mightiest of mortals who often "
+        "comprise class leaders."])  );
     SetExits( ([ 
-	"south" : "/domains/Praxis/pier1",
-	"northwest" : "/domains/Praxis/fighter_join",
-	"northeast" : "/domains/Praxis/s_centre3",
+        "south" : "/domains/Praxis/pier1",
+        "northwest" : "/domains/Praxis/fighter_join",
+        "northeast" : "/domains/Praxis/s_centre3",
       ]) );
     SetListen("default", "You hear many people going about their "
       "business.");

@@ -15,7 +15,7 @@ int CheckHuman(mixed val){
     gdude = val;
     if(val->GetRace() != "human") return 0;
     else { 
-	call_out( (: nasty, gdude :) , 2);
+        call_out( (: nasty, gdude :) , 2);
     }
     return 1;
 }

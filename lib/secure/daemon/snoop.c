@@ -23,12 +23,12 @@ static void create() {
     daemon::create();
     debug("SNOOP_D restarted.","red");
     if( file_size( SAVE_SNOOP __SAVE_EXTENSION__ ) > 0 )
-	unguarded( (: restore_object, SAVE_SNOOP, 1 :) );
+        unguarded( (: restore_object, SAVE_SNOOP, 1 :) );
     SetNoClean(1);
     SnoopClean();
     set_heart_beat(1);
     if(GLOBAL_MONITOR == 0 && sizeof(monitored)){
-	call_out( (: eventLoadRogues :), 1);
+        call_out( (: eventLoadRogues :), 1);
     }
     snoopers = filter(objects(), (: base_name($1) == "/secure/obj/snooper" :) );
     prevusers = users();
@@ -64,19 +64,19 @@ int CheckBot(string str){
     str = lower_case(str);
     foo = find_player(str);
     if(sizeof(snoopers)){
-	foreach(object snoopbox in snoopers){
-	    if(clonep(snoopbox) ) {
-	    }
-	    else snoopers -= ({snoopbox});
-	    if(snoopbox && snoopbox->GetSnooped() && snoopbox->GetSnooped() == str) {
-		already_watched = 1;
-	    }
-	}
+        foreach(object snoopbox in snoopers){
+            if(clonep(snoopbox) ) {
+            }
+            else snoopers -= ({snoopbox});
+            if(snoopbox && snoopbox->GetSnooped() && snoopbox->GetSnooped() == str) {
+                already_watched = 1;
+            }
+        }
     }
     if(!already_watched && foo && (GLOBAL_MONITOR > 0 || member_array(str, monitored) != -1 || member_array(str, snooped) != -1 )){
-	if(archp(find_player(str)) && GLOBAL_MONITOR == 2) return 0;
-	cloan=new("/secure/obj/snooper");
-	cloan->eventStartSnoop(str);
+        if(archp(find_player(str)) && GLOBAL_MONITOR == 2) return 0;
+        cloan=new("/secure/obj/snooper");
+        cloan->eventStartSnoop(str);
     }
     err = catch(unguarded( (: save_object, SAVE_SNOOP, 1 :) ));
     return 1;
@@ -86,7 +86,7 @@ void CheckSnooped(){
     object *lusers = users();
     just_loaded = 0;
     foreach(object user in lusers){
-	CheckBot(user->GetKeyName());
+        CheckBot(user->GetKeyName());
     }
     prevusers = lusers;
 }
@@ -95,35 +95,35 @@ int SnoopClean(){
     object *voyeurs = users();
     snoopers = filter(objects(), (: base_name($1) == "/secure/obj/snooper" :) );
     if(sizeof(voyeurs)){
-	foreach(object perv in voyeurs){
-	    if(!snooperp(perv) && !archp(perv)){
-		RemoveWatcher(perv->GetKeyName(), "all");
-	    }
-	}
+        foreach(object perv in voyeurs){
+            if(!snooperp(perv) && !archp(perv)){
+                RemoveWatcher(perv->GetKeyName(), "all");
+            }
+        }
     }
     if(sizeof(snoopers)){
-	foreach(object snoopbox in snoopers){
-	    if(snoopbox && !clonep(snoopbox) ) {
-		snoopers -= ({snoopbox});
-	    }
-	    else {
-		object subject;
-		string dude = snoopbox->GetSnooped();
-		if(dude) subject = find_player(dude);
-		if(!dude || !subject || !query_snooping(snoopbox) || 
-		  (member_array(dude,snooped) == -1 && member_array(dude,monitored) == -1 && GLOBAL_MONITOR < 1 )){
-		    snoopbox->eventDestruct();
-		    snoopers -= ({snoopbox});
-		}
-	    }
-	}
+        foreach(object snoopbox in snoopers){
+            if(snoopbox && !clonep(snoopbox) ) {
+                snoopers -= ({snoopbox});
+            }
+            else {
+                object subject;
+                string dude = snoopbox->GetSnooped();
+                if(dude) subject = find_player(dude);
+                if(!dude || !subject || !query_snooping(snoopbox) || 
+                  (member_array(dude,snooped) == -1 && member_array(dude,monitored) == -1 && GLOBAL_MONITOR < 1 )){
+                    snoopbox->eventDestruct();
+                    snoopers -= ({snoopbox});
+                }
+            }
+        }
     }
     return 1;
 }
 
 int eventDestruct(){
     if( !((int)master()->valid_apply(({ "SECURE" }))) )
-	error("Illegal attempt to destruct snoop: "+get_stack()+" "+identify(previous_object(-1)));
+        error("Illegal attempt to destruct snoop: "+get_stack()+" "+identify(previous_object(-1)));
     return ::eventDestruct();
 }
 
@@ -134,10 +134,10 @@ void heart_beat(){
     if( !(count % 5) ) CheckSnooped();
 
     if( !(count % 10)) {
-	foreach(object snoopbox in snoopers){
-	    if(!snoopbox) snoopers -= ({ snoopbox });
-	}
-	SnoopClean();
+        foreach(object snoopbox in snoopers){
+            if(!snoopbox) snoopers -= ({ snoopbox });
+        }
+        SnoopClean();
     }
     if(count > 100) count = 0;
 }
@@ -152,9 +152,9 @@ int GetSnoop(string target, string msg){
     }
     if(base_name(previous_object()) != "/secure/obj/snooper") return 0;
     else if(sizeof(Watchers[target])) {
-	foreach(string watcher in Watchers[target]){
-	    tell_player(watcher, target+"% "+msg);
-	}
+        foreach(string watcher in Watchers[target]){
+            tell_player(watcher, target+"% "+msg);
+        }
     }
     else Watchers[target] = ({});
     return 1;
@@ -162,16 +162,16 @@ int GetSnoop(string target, string msg){
 
 int AddWatcher(string watcher, string target){
     if(!valid_snoop(find_player(watcher), find_player(target))) {
-	return 0;
+        return 0;
     }
     if(Watchers[target] && member_array(watcher,Watchers[target]) != -1){
-	return 0;
+        return 0;
     }
     if(!Watchers[target] || !sizeof(Watchers[target])) {
-	Watchers[target] = ({ watcher });
+        Watchers[target] = ({ watcher });
     }
     else {
-	Watchers[target] += ({ watcher });
+        Watchers[target] += ({ watcher });
     }
     if(member_array(target,snooped) == -1) snooped += ({target});
     CheckBot(target);
@@ -182,33 +182,33 @@ int AddWatcher(string watcher, string target){
 int RemoveWatcher(string watcher, mixed target){
     string *targs = ({});
     if(this_player() && interactive(this_player())){
-	if(this_player()->GetKeyName() != watcher && !archp(this_player())) return 0;
+        if(this_player()->GetKeyName() != watcher && !archp(this_player())) return 0;
     }
     else return 0;
     if(stringp(target)){
-	if(target == "all"){
-	    foreach(string key, string *sap in Watchers){ 
-		if(member_array(watcher,sap) != -1) targs += ({ key });
-	    }
-	}
-	else targs = ({ target });
+        if(target == "all"){
+            foreach(string key, string *sap in Watchers){ 
+                if(member_array(watcher,sap) != -1) targs += ({ key });
+            }
+        }
+        else targs = ({ target });
     }
     else if(arrayp(target)) targs = target;
     else return 0;
     foreach(string subtarg in targs){
-	if(!Watchers[subtarg] || !sizeof(Watchers[subtarg])) return 0;
-	else if(member_array(watcher, Watchers[subtarg]) != -1) 
-	    Watchers[subtarg] -= ({ watcher });
-	if((!Watchers[subtarg] || !sizeof(Watchers[subtarg])) &&
-	  member_array(subtarg, monitored) == -1) {
-	    foreach(object snoopbox in snoopers){
-		if(snoopbox->GetSnooped() == subtarg) snoopbox->eventDestruct(); 
-	    }
-	}
-	if(!Watchers[subtarg] || !sizeof(Watchers[subtarg])) {
-	    snooped -= ({subtarg});
-	    if(Watchers[subtarg]) map_delete(Watchers, subtarg);
-	}
+        if(!Watchers[subtarg] || !sizeof(Watchers[subtarg])) return 0;
+        else if(member_array(watcher, Watchers[subtarg]) != -1) 
+            Watchers[subtarg] -= ({ watcher });
+        if((!Watchers[subtarg] || !sizeof(Watchers[subtarg])) &&
+          member_array(subtarg, monitored) == -1) {
+            foreach(object snoopbox in snoopers){
+                if(snoopbox->GetSnooped() == subtarg) snoopbox->eventDestruct(); 
+            }
+        }
+        if(!Watchers[subtarg] || !sizeof(Watchers[subtarg])) {
+            snooped -= ({subtarg});
+            if(Watchers[subtarg]) map_delete(Watchers, subtarg);
+        }
     }
     CheckBot("adsfgrertgrsgnfxmy");
     unguarded( (: save_object, SAVE_SNOOP, 1 :) );
@@ -228,7 +228,7 @@ int RemoveMonitor(object requestor, string target){
     unguarded( (: save_object, SAVE_SNOOP, 1 :) );
     if(Watchers[target] && sizeof(Watchers[target])) return 1;
     foreach(object snoopbox in snoopers){
-	if(snoopbox->GetSnooped() == target) snoopbox->eventDestruct(); 
+        if(snoopbox->GetSnooped() == target) snoopbox->eventDestruct(); 
     }
     if(Watchers[target] && !sizeof(Watchers[target])) map_delete(Watchers, target);
     CheckBot("asreg54eqwhtrbsf");
@@ -238,25 +238,25 @@ int RemoveMonitor(object requestor, string target){
 
 int ReportLinkDeath(string str){
     if(!find_player(str)){
-	foreach(object snoopbox in snoopers){
-	    if(snoopbox->GetSnooped() == str) snoopbox->eventDestruct(); 
-	}
-	map_delete(Watchers, str);
-	unguarded( (: save_object, SAVE_SNOOP, 1 :) );
-	return 1;
+        foreach(object snoopbox in snoopers){
+            if(snoopbox->GetSnooped() == str) snoopbox->eventDestruct(); 
+        }
+        map_delete(Watchers, str);
+        unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+        return 1;
     }
     return 0;
 }
 
 int ReportReconnect(string str){
     if(base_name(previous_object()) == LIB_CONNECT){
-	foreach(object snoopbox in snoopers){
-	    if(snoopbox->GetSnooped() == str) snoopbox->eventDestruct(); 
-	}
-	map_delete(Watchers, str);
-	CheckBot(str);
-	unguarded( (: save_object, SAVE_SNOOP, 1 :) );
-	return 1;
+        foreach(object snoopbox in snoopers){
+            if(snoopbox->GetSnooped() == str) snoopbox->eventDestruct(); 
+        }
+        map_delete(Watchers, str);
+        CheckBot(str);
+        unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+        return 1;
     }
     return 0;
 }
@@ -265,11 +265,11 @@ string Report(){
     string ret = "";
     mapping TmpWatchers = ([]);
     if( !((int)master()->valid_apply(({ PRIV_SECURE }))) ){
-	return 0;
+        return 0;
     }
     foreach(mixed key, mixed val in Watchers){
-	if(sizeof(val))
-	    TmpWatchers[key] = val;
+        if(sizeof(val))
+            TmpWatchers[key] = val;
     }
     ret+="Watchers: "+identify(TmpWatchers)+"\n";
     ret+="snoopers: "+identify(snoopers)+"\n";

@@ -25,12 +25,12 @@ int SetBaitStrength(int x) {
 
 mixed eventBait(object who, object pole) {
     if( !(who && pole) ) {
-	return 0;
+        return 0;
     }
     if( !pole->eventBait(who, this_object()) ) {
-	who->eventPrint(capitalize(pole->GetDefiniteShort()) +
-	  "remains unbaited.");
-	return 1;
+        who->eventPrint(capitalize(pole->GetDefiniteShort()) +
+          "remains unbaited.");
+        return 1;
     }
     send_messages("bait", "$agent_name $agent_verb $target_name with " +
       GetShort() + ".", who, pole, environment(who));
@@ -40,7 +40,7 @@ mixed eventBait(object who, object pole) {
 
 mixed indirect_bait_obj_with_obj() {
     if( environment() != this_player() ) {
-	return "#You don't have that bait!";
+        return "#You don't have that bait!";
     }
     return 1;
 }

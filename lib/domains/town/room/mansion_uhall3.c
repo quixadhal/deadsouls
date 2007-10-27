@@ -13,16 +13,16 @@ static void create() {
       "circular marble staircase leads down to the "
       "ground floor."); 
     SetItems( ([
-	({"hall","hallway"}) : "A corridor permitting "+
-	"travel from one part of the mansion to another."
+        ({"hall","hallway"}) : "A corridor permitting "+
+        "travel from one part of the mansion to another."
       ]) );
 
     SetExits( ([
-	"south" : "/domains/town/room/mansion_mbdroom",
-	"north" : "/domains/town/room/mansion_uhall2",
-	"down" : "/domains/town/room/mansion_dhall3",
-	"east" : "/domains/town/room/mansion_room5",
-	"west" : "/domains/town/room/mansion_room6"
+        "south" : "/domains/town/room/mansion_mbdroom",
+        "north" : "/domains/town/room/mansion_uhall2",
+        "down" : "/domains/town/room/mansion_dhall3",
+        "east" : "/domains/town/room/mansion_room5",
+        "west" : "/domains/town/room/mansion_room6"
       ]) );
 }
 void init(){

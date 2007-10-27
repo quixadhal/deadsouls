@@ -15,7 +15,7 @@ void create(){
     SetAmmoType("acp");
     SetVendorType(VT_TREASURE);
     SetInventory(([
-	"/domains/campus/obj/round2" : 15
+        "/domains/campus/obj/round2" : 15
       ]));
 }
 void init(){

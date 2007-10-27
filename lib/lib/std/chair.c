@@ -20,7 +20,7 @@ void create(){
 
 int CanGet(object who){
     if(::CanGet(who))
-	return ::CanGet(who);
+        return ::CanGet(who);
     else return 0;
 }
 

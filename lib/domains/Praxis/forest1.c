@@ -14,10 +14,10 @@ void create() {
       "village roads south.");
     SetExits( 
       (["north" : "/domains/Praxis/forest2",
-	"south"	 : "/domains/Praxis/n_centre2"]) );
+        "south"	 : "/domains/Praxis/n_centre2"]) );
     SetItems(
       (["path" : "A small path throught the huge North Forest.",
-	"forest" : "The North Forest. It is not a very well traveled place.",
-	"village" : "The grand village of Praxis"]) );
+        "forest" : "The North Forest. It is not a very well traveled place.",
+        "village" : "The grand village of Praxis"]) );
 }
 

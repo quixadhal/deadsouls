@@ -12,13 +12,13 @@ int cmd(string str) {
     list=users();
     write("\nList of users in various editors:\n");
     for(i=0;i<sizeof(list);i++)
-	if(!list[i]->GetInvis() && list[i]->GetKeyName())
-	    if(present("mailer", list[i]))
-		printf("%s - In mailer.\n",
-		  arrange_string( (string)list[i]->GetName(), 20));
-	    else if(in_edit(list[i]) || in_input(list[i]))
-		printf("%s - Editing.\n",
-		  arrange_string( (string)list[i]->GetName(), 20));
+        if(!list[i]->GetInvis() && list[i]->GetKeyName())
+            if(present("mailer", list[i]))
+                printf("%s - In mailer.\n",
+                  arrange_string( (string)list[i]->GetName(), 20));
+            else if(in_edit(list[i]) || in_input(list[i]))
+                printf("%s - Editing.\n",
+                  arrange_string( (string)list[i]->GetName(), 20));
     return 1;
 }
 

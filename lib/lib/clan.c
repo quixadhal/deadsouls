@@ -18,15 +18,15 @@ static void init() {
     if(!present(this_object(), this_player())) return;
     if((string)this_player()->GetClan() != (string)GetClanName()) return;
     if((string)this_player()->GetKeyName() == (string)GetLeader()) {
-	add_action("eventBring", "bring");
-	add_action("eventInitiate", "initiate");
-	add_action("eventRetire", "retire");
+        add_action("eventBring", "bring");
+        add_action("eventInitiate", "initiate");
+        add_action("eventRetire", "retire");
     }
     this_player()->eventPrint("\n");
     if(!isWelcomed) {
-	this_player()->AddChannel(GetClanName());
-	eventWelcome(this_player());
-	isWelcomed = 1;
+        this_player()->AddChannel(GetClanName());
+        eventWelcome(this_player());
+        isWelcomed = 1;
     }
 }
 
@@ -40,9 +40,9 @@ string GetAffectLong(object ob) {
 
 string SetLeader(string str) {
     if(!user_exists(str)) error("No such user: " + str
-	  + ". You must have a real leader.");
+          + ". You must have a real leader.");
     if(!stringp(Clan->leader)) 
-	Clan->leader = str;
+        Clan->leader = str;
     return Clan->leader;
 }
 
@@ -75,23 +75,23 @@ int eventBring(string str) {
     if(!str) return notify_fail("Bring whom?\n");
     who = find_player(lower_case(str));
     if(!who)
-	return notify_fail(who->GetName() + " is nowhere to be found.\n");
+        return notify_fail(who->GetName() + " is nowhere to be found.\n");
     if((string)who->GetClan() != (string)GetClanName())
-	return notify_fail(who->GetName() + " is not one of you!\n");
+        return notify_fail(who->GetName() + " is not one of you!\n");
     if(   environment(who)->GetProperty("no teleport")
       || environment(this_player())->GetProperty("no teleport")
       || environment(this_player())->GetProperty("no magic"))
-	return notify_fail("A magic force blocks your powers.\n");
+        return notify_fail("A magic force blocks your powers.\n");
     if(present(who, environment(this_player())))
-	return notify_fail(capitalize(str) + " is here.\n");
+        return notify_fail(capitalize(str) + " is here.\n");
     if((int)this_player()->GetMagicPoints() < 70)
-	return notify_fail("Too low on magic power.\n");
+        return notify_fail("Too low on magic power.\n");
     this_player()->AddMagicPoints(-70);
     who->eventPrint("%^CYAN%^Your clan leader summons you.%^RESET%^");
     who->eventMoveLiving(environment(this_player()));
     if(!present(who, environment(this_player())))
-	this_player()->eventPrint("%^CYAN%^" + capitalize(str)
-	  + " is beyond your reach.%^RESET%^");
+        this_player()->eventPrint("%^CYAN%^" + capitalize(str)
+          + " is beyond your reach.%^RESET%^");
     return 1;
 }
 
@@ -103,18 +103,18 @@ int eventInitiate(string str) {
     if(!str) return notify_fail("Initiate whom?\n");
     initiate = present(lower_case(str), environment(this_player()));
     if(!initiate || !living(initiate))
-	return notify_fail("No one of that nature here.\n");
+        return notify_fail("No one of that nature here.\n");
     if(stringp(ret = CanJoin(initiate))) return notify_fail(ret);
     else if(!ret) return ret;
     if((int)this_player()->GetMagicPoints() < 300)
-	return notify_fail("Too low on magic power.\n");
+        return notify_fail("Too low on magic power.\n");
     if(initiate->GetClan())
-	return notify_fail("You may only initiate people without clan "
-	  + "affiliation.\n");
+        return notify_fail("You may only initiate people without clan "
+          + "affiliation.\n");
     initiate->SetClan((string)GetClanName());
     initiate->SetSkill(GetClanSkill(), 1, 1);
     if(clanObject = new((string)GetClanObject()))
-	clanObject->eventMove(initiate);
+        clanObject->eventMove(initiate);
     this_player()->AddMagicPoints(-300);
     eventJoin(initiate);
     return 1;
@@ -135,9 +135,9 @@ int eventRetire(string str) {
     if(!str) return notify_fail("Retire whom?\n");
     retiree = present(lower_case(str), environment(this_player()));
     if(!retiree || !living(retiree))
-	return notify_fail("No one of that nature here.\n");
+        return notify_fail("No one of that nature here.\n");
     if((string)retiree->GetClan() != (string)GetClanName())
-	return notify_fail(retiree->GetName() + " is not one of us!\n");
+        return notify_fail(retiree->GetName() + " is not one of us!\n");
     clanObject = present(GetClanName() + "_clan_object", retiree);
     if(!clanObject) error("Problem with clan object.");
     clanObject->eventDestruct();

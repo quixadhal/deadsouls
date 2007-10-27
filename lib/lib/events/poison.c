@@ -11,7 +11,7 @@ private int Poison = 0;
 int AddPoison(int x) {
     Poison += x;
     if( Poison < 1 ) {
-	Poison = 0;
+        Poison = 0;
     }
     return Poison;
 }

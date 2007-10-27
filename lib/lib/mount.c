@@ -38,7 +38,7 @@ int eventRide(string direction){
     object *guys = get_livings(this_object());
     if(interactive(this_object())) return 0;
     if(sscanf(direction,"%s %s",s1,s2) == 2){
-	if(s1 == "enter" || s1 == "into") travel_cmd = "enter";
+        if(s1 == "enter" || s1 == "into") travel_cmd = "enter";
     }
 
     if(!s1 || s1 == "") switch(this_object()->GetPosition()){
@@ -64,11 +64,11 @@ object *RemoveRider(object ob){
 object *GetRiders(){
     object *ret = ({});
     if(Riders && sizeof(Riders)){
-	foreach(mixed rider in Riders){
-	    if(!rider) RemoveRider(rider);
-	    else if(environment(rider) == this_object()) ret += ({ rider });
-	    else RemoveRider(rider);
-	}
+        foreach(mixed rider in Riders){
+            if(!rider) RemoveRider(rider);
+            else if(environment(rider) == this_object()) ret += ({ rider });
+            else RemoveRider(rider);
+        }
     }
     return ret;
 }
@@ -86,23 +86,23 @@ mixed eventMount(object who){
     rider_weight = (who->GetCarriedMass()) + (who->GetMass() || 2000);
     if(!environment(this_object())) return 0;
     if(environment(who) && environment(who) == this_object()){
-	return write("You are already mounted.");
+        return write("You are already mounted.");
     }
     if(rider_weight + this_object()->GetCarriedMass() > this_object()->GetMaxCarry()){
-	return write("This mount cannot handle that much weight.");
+        return write("This mount cannot handle that much weight.");
     }
     if(this_object()->GetMountOwner() != who){
-	write(this_object()->GetName()+" doesn't know you well enough to let "+
-	  "you ride "+objective(this_object())+".");
-	return 0;
+        write(this_object()->GetName()+" doesn't know you well enough to let "+
+          "you ride "+objective(this_object())+".");
+        return 0;
     }
     else {
-	this_object()->SetNoClean(1);
-	write("You mount "+this_object()->GetShort()+".");
-	say(who->GetName()+" mounts "+this_object()->GetShort()+".");
-	who->SetProperty("mount", this_object());
-	if(who->eventMove(this_object())) return AddRider(who);
-	else return 0;
+        this_object()->SetNoClean(1);
+        write("You mount "+this_object()->GetShort()+".");
+        say(who->GetName()+" mounts "+this_object()->GetShort()+".");
+        who->SetProperty("mount", this_object());
+        if(who->eventMove(this_object())) return AddRider(who);
+        else return 0;
     }
 }
 
@@ -111,14 +111,14 @@ mixed eventDismount(object who){
     rider_weight = (who->GetCarriedMass()) + (who->GetMass() || 2000);
     if(!environment(this_object())) return 0;
     if(environment(who) && environment(who) != this_object()){
-	return write("You are already dismounted.");
+        return write("You are already dismounted.");
     }
     else {
-	write("You dismount from "+this_object()->GetPlainShort()+".");
-	tell_room(environment(this_object()),who->GetName()+" dismounts from " +this_object()->GetPlainShort()+".", ({ this_object() }));
-	who->RemoveProperty("mount");
-	if(who->eventMove(environment(this_object()))) return RemoveRider(who);
-	else return 0;
+        write("You dismount from "+this_object()->GetPlainShort()+".");
+        tell_room(environment(this_object()),who->GetName()+" dismounts from " +this_object()->GetPlainShort()+".", ({ this_object() }));
+        who->RemoveProperty("mount");
+        if(who->eventMove(environment(this_object()))) return RemoveRider(who);
+        else return 0;
     }
 }
 
@@ -127,14 +127,14 @@ mixed eventBuck(object who){
     rider_weight = (who->GetCarriedMass()) + (who->GetMass() || 2000);
     if(!environment(this_object())) return 0;
     if(environment(who) && environment(who) != this_object()){
-	return 0;
+        return 0;
     }
     else {
-	tell_player(who,"You are thrown from"+this_object()->GetPlainShort()+"!");
-	tell_room(environment(this_object()),who->GetName()+" is thrown from " +this_object()->GetPlainShort()+"!", ({ this_object() }));
-	who->RemoveProperty("mount");
-	who->SetPosition(POSITION_LYING);
-	if(who->eventMove(environment(this_object()))) return RemoveRider(who);
-	else return 0;
+        tell_player(who,"You are thrown from"+this_object()->GetPlainShort()+"!");
+        tell_room(environment(this_object()),who->GetName()+" is thrown from " +this_object()->GetPlainShort()+"!", ({ this_object() }));
+        who->RemoveProperty("mount");
+        who->SetPosition(POSITION_LYING);
+        if(who->eventMove(environment(this_object()))) return RemoveRider(who);
+        else return 0;
     }
 }

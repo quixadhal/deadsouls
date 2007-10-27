@@ -17,9 +17,9 @@ static void create() {
       "have enough money, though...she looks like she can mean business when "+
       "she has to.");
     SetInventory(([
-	"/domains/campus/armor/collar" : "wear collar on neck",
-	"/domains/campus/armor/jeans" : "wear jeans",
-	"/domains/campus/armor/shirt" : "wear shirt",
+        "/domains/campus/armor/collar" : "wear collar on neck",
+        "/domains/campus/armor/jeans" : "wear jeans",
+        "/domains/campus/armor/shirt" : "wear shirt",
       ]));
     SetLevel(1);
     SetRace("human");

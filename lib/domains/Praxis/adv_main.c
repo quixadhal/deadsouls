@@ -24,14 +24,14 @@ void create() {
       "%^BLUE%^blue%^RESET%^ light.");
     SetExits( 
       (["north" : "/domains/Praxis/e_boc_la2",
-	"east" : "/domains/Praxis/lpmud_room",
-	"south" : "/domains/Praxis/adv_inner",
-	"down" : "/domains/Praxis/ombud_hall"]) );
+        "east" : "/domains/Praxis/lpmud_room",
+        "south" : "/domains/Praxis/adv_inner",
+        "down" : "/domains/Praxis/ombud_hall"]) );
     SetItems(
       (["hall" : "A place for a rowdy time!",
-	"road" : "A small dirt path going through Praxis.",
-	"passage" : "A %^BLUE%^blue%^RESET%^ light illuminates it.",
-	"light" : "It is probably a force field."]) );
+        "road" : "A small dirt path going through Praxis.",
+        "passage" : "A %^BLUE%^blue%^RESET%^ light illuminates it.",
+        "light" : "It is probably a force field."]) );
 
     ob = new("/lib/bboard");
     ob->SetKeyName("board");
@@ -51,10 +51,10 @@ void create() {
 
 int go_south() {
     if(!creatorp(this_player())) {
-	write("%^BLUE%^%^BOLD%^You cannot penetrate the force of the blue light.");
-	say(this_player()->query_cap_name()+" tries to get through the "
-	  "passage, but fails.", this_player());
-	return 0;
+        write("%^BLUE%^%^BOLD%^You cannot penetrate the force of the blue light.");
+        say(this_player()->query_cap_name()+" tries to get through the "
+          "passage, but fails.", this_player());
+        return 0;
     }
     return 1;
 }
@@ -88,24 +88,24 @@ int train_player(object tp, string which, int amount) {
     int exp, amt;
 
     if(amount < 1) {
-	notify_fail("You cannot train that amount.\n");
-	return 0;
+        notify_fail("You cannot train that amount.\n");
+        return 0;
     }
     exp = (int)tp->query_exp();
     if(exp-amount < get_exp((int)tp->query_level())) {
-	notify_fail("You do not have the experience to train that much.\n");
-	return 0;
+        notify_fail("You do not have the experience to train that much.\n");
+        return 0;
     }
     if((int)tp->query_max_skill(which) <= (int)tp->query_skill(which)) {
-	notify_fail("You can train no more in that skill.\n");
-	return 0;
+        notify_fail("You can train no more in that skill.\n");
+        return 0;
     }
     amt = ( (int)tp->query_level() * 4 ) + 20;
     if(amt <= (int)tp->query_skill(which) )
     {
-	notify_fail("You must advance your level to train more in that skill"+
-	  ".\n");
-	return 0;
+        notify_fail("You must advance your level to train more in that skill"+
+          ".\n");
+        return 0;
     }
     tp->add_skill_points(which, amount/4);
     tp->add_exp(-amount);

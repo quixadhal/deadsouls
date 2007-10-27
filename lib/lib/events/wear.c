@@ -15,21 +15,21 @@ mixed CanUnequip(object who);
 mixed direct_remove_obj() {
 
     if( environment(this_object()) != this_player() ) {
-	return "#You don't have that!";
+        return "#You don't have that!";
     }
     return CanUnequip(this_player());
 }
 
 mixed direct_wear_obj() {
     if( environment(this_object()) != this_player() ) {
-	return "#You don't have that!";
+        return "#You don't have that!";
     }
     return CanEquip(this_player(), GetRestrictLimbs());
 }
 
 mixed direct_wear_obj_on_str(object target, string str) {
     if( environment(this_object()) != this_player() ) {
-	return "#You don't have that!";
+        return "#You don't have that!";
     }
     return CanEquip(this_player(), ({ remove_article(lower_case(str)) }));
 }

@@ -14,17 +14,17 @@ static void create() {
       "The arch room is above. The router room is south. "
       "The catch_tell room is east.");
     SetExits( ([
-	"south" : "/secure/room/router",
-	"up" : "/secure/room/arch",
-	"east" : "/domains/default/room/catchtell.c",
+        "south" : "/secure/room/router",
+        "up" : "/secure/room/arch",
+        "east" : "/domains/default/room/catchtell.c",
       ]) );
 
 }
 int CanReceive(object ob) {
     if( !archp(ob) ){
-	message("info","The network room is available only to "+
-	  "admins, sorry.",ob);
-	return 0;
+        message("info","The network room is available only to "+
+          "admins, sorry.",ob);
+        return 0;
     }
     return 1;
 }

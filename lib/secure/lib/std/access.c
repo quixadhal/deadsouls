@@ -21,19 +21,19 @@ private static function WriteFunction = 0;
 // trouble of changing
 static void set_access(string type, function f) {
     if( type == "read" ) {
-	ReadFunction = f;
+        ReadFunction = f;
     }
     else {
-	WriteFunction = f;
+        WriteFunction = f;
     }
 }
 
 mapping query_access(string type) {
     if( type == "read" ) {
-	return copy(ReadAccess);
+        return copy(ReadAccess);
     }
     else {
-	return copy(WriteAccess);
+        return copy(WriteAccess);
     }
 }
 
@@ -43,87 +43,87 @@ nomask int check_access(object ob, string fun, string file, string oper) {
     mapping access;
 
     if( oper == "read" ) {
-	if( functionp(ReadFunction) ) {
-	    if( !(functionp(ReadFunction) & FP_OWNER_DESTED) ) {
-		if( evaluate(ReadFunction, ob, fun, file) ) {
-		    return 1;
-		}
-	    }
-	}
-	access = ReadAccess;
+        if( functionp(ReadFunction) ) {
+            if( !(functionp(ReadFunction) & FP_OWNER_DESTED) ) {
+                if( evaluate(ReadFunction, ob, fun, file) ) {
+                    return 1;
+                }
+            }
+        }
+        access = ReadAccess;
     }
     else {
-	if( functionp(WriteFunction) ) {
-	    if( !(functionp(WriteFunction) & FP_OWNER_DESTED) ) {
-		if( evaluate(WriteFunction, ob, fun, file) ) {
-		    return 1;
-		}
-	    }
-	}
-	access = WriteAccess;
+        if( functionp(WriteFunction) ) {
+            if( !(functionp(WriteFunction) & FP_OWNER_DESTED) ) {
+                if( evaluate(WriteFunction, ob, fun, file) ) {
+                    return 1;
+                }
+            }
+        }
+        access = WriteAccess;
     }
     if( !arrayp(who = match_path(access, file)) ) {
-	return 0;
+        return 0;
     }
     return (member_array(ob->GetKeyName(), who) != -1);
 }
 
 nomask int grant_access(string type, string file, string who) {
     if( type == "read" ) {
-	if( ReadAccess[file] ) {
-	    ReadAccess[file] = distinct_array(ReadAccess[file] + ({ who }));
-	}
-	else {
-	    ReadAccess[file] = ({ who });
-	}
-	if( !eventSave() ) {
-	    Destruct();
-	    return 0;
-	}
-	return 1;
+        if( ReadAccess[file] ) {
+            ReadAccess[file] = distinct_array(ReadAccess[file] + ({ who }));
+        }
+        else {
+            ReadAccess[file] = ({ who });
+        }
+        if( !eventSave() ) {
+            Destruct();
+            return 0;
+        }
+        return 1;
     }
     else if( type != "write" ) {
-	return 0;
+        return 0;
     }
     if( WriteAccess[file] ) {
-	WriteAccess[file] = distinct_array(WriteAccess[file] + ({ who }));
+        WriteAccess[file] = distinct_array(WriteAccess[file] + ({ who }));
     }
     else {
-	WriteAccess[file] = ({ who });
+        WriteAccess[file] = ({ who });
     }
     if( !eventSave() ) {
-	Destruct();
-	return 0;
+        Destruct();
+        return 0;
     }
     return 1;
 }
 
 nomask int remove_access(string type, string file, string who) {
     if( type == "read" ) {
-	if( !ReadAccess[file] ) {
-	    return 0;
-	}
-	else {
-	    ReadAccess[file] -= ({ who });
-	}
-	if( !eventSave() ) {
-	    Destruct();
-	    return 0;
-	}
-	return 1;
+        if( !ReadAccess[file] ) {
+            return 0;
+        }
+        else {
+            ReadAccess[file] -= ({ who });
+        }
+        if( !eventSave() ) {
+            Destruct();
+            return 0;
+        }
+        return 1;
     }
     else if( type != "write" ) {
-	return 0;
+        return 0;
     }
     if( !WriteAccess ) {
-	return 0;
+        return 0;
     }
     else {
-	WriteAccess[file] -= ({ who });
+        WriteAccess[file] -= ({ who });
     }
     if( !eventSave() ) {
-	Destruct();
-	return 0;
+        Destruct();
+        return 0;
     }
     return 1;
 }
@@ -133,7 +133,7 @@ void create() {
     string file = base_name(this_object());
 
     if( strsrch(file, REALMS_DIRS) == 0 || strsrch(file, DOMAINS_DIRS) == 0 ) {
-	SetSaveFile(file);
+        SetSaveFile(file);
     }
     daemon::create();
 }

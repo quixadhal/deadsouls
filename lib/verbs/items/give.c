@@ -57,12 +57,12 @@ mixed can_give_wrd_wrd_to_liv(string num, string curr, object targ) {
     if(valid_currency(curr)) curr2 = curr;
 
     if(sscanf(num,"%d",amt) != 1){
-	if(valid_currency(curr)) return "Please use a number to specify the amount.";
-	else return "That isn't a valid currency.";
+        if(valid_currency(curr)) return "Please use a number to specify the amount.";
+        else return "That isn't a valid currency.";
     }
     if( amt < 1 ) return "What sort of amount is that?";
     if( amt > (int)this_player()->GetCurrency(lower_case(curr)) )
-	return "You don't have that much " + curr + "."; 
+        return "You don't have that much " + curr + "."; 
     if(this_player()->GetLevel() < 4) return "Newbies can't give money.";
     return this_player()->CanManipulate();
 }
@@ -77,13 +77,13 @@ mixed do_give_obj_liv(object what, object target) {
 
 mixed do_give_obj_to_liv(object what, object target) {
     if(!intp(target->CanManipulate())){
-	this_player()->eventPrint(target->GetName()+" is incapable "+
-	  "of holding that.");
-	return 1;
+        this_player()->eventPrint(target->GetName()+" is incapable "+
+          "of holding that.");
+        return 1;
     }
     if( !((int)what->eventMove(target)) ) {
-	this_player()->eventPrint("They cannot accept that right now.");
-	return 1;
+        this_player()->eventPrint("They cannot accept that right now.");
+        return 1;
     }
     this_player()->eventPrint("You give " + (string)target->GetName() + " " +
       (string)what->GetShort() + ".");
@@ -106,13 +106,13 @@ mixed do_give_wrd_wrd_to_liv(string num, string curr, object target) {
     if(curr2) curr = curr2;
     amt = to_int(num);
     if( (int)target->AddCurrency(curr, amt) == -1 ) {
-	this_player()->eventPrint("You just can't give that money away.");
-	return 1;
+        this_player()->eventPrint("You just can't give that money away.");
+        return 1;
     }
     if( (int)this_player()->AddCurrency(curr, -amt) == -1 ) {
-	target->AddCurrency(curr, -amt);
-	this_player()->eventPrint("The amount of money you have is boggled.");
-	return 1;
+        target->AddCurrency(curr, -amt);
+        this_player()->eventPrint("The amount of money you have is boggled.");
+        return 1;
     }
     this_player()->eventPrint("You give " + (string)target->GetName() + " " +
       amt + " " + curr + ".");
@@ -137,16 +137,16 @@ mixed do_give_obs_to_liv(mixed *items, object target) {
     object *obs;
 
     if( sizeof(items) < 1 ) {
-	this_player()->eventPrint("You don't have any to give.");
-	return 1;
+        this_player()->eventPrint("You don't have any to give.");
+        return 1;
     }
     obs = filter(items, (: objectp :));
     if( !sizeof(obs) ) {
-	mixed *ua;
+        mixed *ua;
 
-	ua = unique_array(items, (: $1 :));
-	foreach(string *list in ua) this_player()->eventPrint(list[0]);
-	return 1;
+        ua = unique_array(items, (: $1 :));
+        foreach(string *list in ua) this_player()->eventPrint(list[0]);
+        return 1;
     }
     foreach(object ob in obs) do_give_obj_to_liv(ob, target);
     return 1;

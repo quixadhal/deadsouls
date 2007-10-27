@@ -12,12 +12,12 @@ string *get_verbs(){
 
     foreach(str in get_dir("/verbs/"))
     {
-	temparr=get_dir("/verbs/"+str+"/*.c");
-	for(i=0;i<sizeof(temparr);i++){
-	    //write(temparr[i]);
-	    if(temparr[i] && !sizeof(verbs)) verbs = ({temparr[i]});
-	    if(temparr[i] && sizeof(verbs) > 0)  verbs += ({temparr[i]});
-	}
+        temparr=get_dir("/verbs/"+str+"/*.c");
+        for(i=0;i<sizeof(temparr);i++){
+            //write(temparr[i]);
+            if(temparr[i] && !sizeof(verbs)) verbs = ({temparr[i]});
+            if(temparr[i] && sizeof(verbs) > 0)  verbs += ({temparr[i]});
+        }
     }
     return verbs;
 

@@ -7,8 +7,8 @@ inherit LIB_DAEMON;
 int eventTranslate(string str){
     string contents;
     if(!file_exists(str)){
-	write("No such file.");
-	return 0;
+        write("No such file.");
+        return 0;
     }
 
     load_object("/secure/cmds/creators/lsed")->cmd("/secure/scripts/nm3.lsed "+str);
@@ -22,20 +22,20 @@ string *eventCompileList(string str){
 
     if(strsrch(str,"/domains/") != 0 &&
       strsrch(str,"/realms/") != 0){
-	write("Don't be stupid.");
-	return ({});
+        write("Don't be stupid.");
+        return ({});
     }
 
     FILE_D->eventHarvestDirs();
     FILE_D->eventHarvestFiles();
 
     foreach(string file in FILE_D->GetFiles()){
-	if(!strsrch(file,str)) files += ({ file });
+        if(!strsrch(file,str)) files += ({ file });
     }
 
     rm("/tmp/files.txt");
     foreach(string foo in files){
-	write_file("/tmp/files.txt",foo+"\n");
+        write_file("/tmp/files.txt",foo+"\n");
     }
 
     return files;

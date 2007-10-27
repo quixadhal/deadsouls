@@ -18,8 +18,8 @@ EndText
     );
 
     SetExits( ([  
-	"south" : EXPATH + "exroom2",
-	"north" : EXPATH + "exroom4",
+        "south" : EXPATH + "exroom2",
+        "north" : EXPATH + "exroom4",
       ]));
 
 }
@@ -34,8 +34,8 @@ int aa_pull(string str)
 {
     if (str!="lever")
     {
-	write( "Pull what?\n" );
-	return 1;
+        write( "Pull what?\n" );
+        return 1;
     }   
     write(@EndText
 You pull the lever and a big hand grabs you!

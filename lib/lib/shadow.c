@@ -7,11 +7,11 @@ static int shadowing;
 
 int eventShadow(object ob){
     if(!shadowing){
-	shadowing = 1;
-	shadowed = ob;
-	ob->AddShadow(shadow_thing);
-	shadow(ob);
-	return 1;
+        shadowing = 1;
+        shadowed = ob;
+        ob->AddShadow(shadow_thing);
+        shadow(ob);
+        return 1;
     }
     else return 0;
 }

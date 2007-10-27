@@ -42,33 +42,33 @@ varargs mixed CanCast(object spell) {
     string tmp;
 
     if( GetParalyzed() ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     if( environment()->GetProperty("no magic") ) {
-	return "Supernatural forces prevent your magic.";
+        return "Supernatural forces prevent your magic.";
     }
     if( !spell ) {
-	return "No such spell exists in this reality.";
+        return "No such spell exists in this reality.";
     }
     if( spell->GetVerb() == "pray" ) {
-	tmp = "prayer";
+        tmp = "prayer";
     }
     else {
-	tmp = "spell";
+        tmp = "spell";
     }
     if( !SpellBook[spell->GetSpell()] ) {
-	return "You have never heard of that " + tmp + " before.";
+        return "You have never heard of that " + tmp + " before.";
     }
     if( GetMagicPoints() < spell->GetRequiredMagic() ) {
-	return "You do not have the power required.";
+        return "You do not have the power required.";
     }
     if( GetStaminaPoints() < spell->GetRequiredStamina() ) {
-	return "You are too tired.";
+        return "You are too tired.";
     }
     foreach(string skill in spell->GetSkills()) {
-	if( GetSkillLevel(skill) < spell->GetSkillRequired(skill) ) {
-	    return "That " + tmp + " is beyond your comprehension.";
-	}
+        if( GetSkillLevel(skill) < spell->GetSkillRequired(skill) ) {
+            return "That " + tmp + " is beyond your comprehension.";
+        }
     }
     return 1;
 }
@@ -82,49 +82,49 @@ varargs mixed eventPrepareCast(string verb, mixed array args...) {
 
     tmp = spell->eventParse(this_object(), args...);
     if( !arrayp(tmp) ) {
-	if( stringp(tmp) ) {
-	    eventPrint(tmp);
-	}
-	else {
-	    eventPrint("You are confused.");
-	}
-	return 1;
+        if( stringp(tmp) ) {
+            eventPrint(tmp);
+        }
+        else {
+            eventPrint("You are confused.");
+        }
+        return 1;
     }
     args = tmp;
     targets = spell->GetTargets(this_object(), args...);
     args = filter(args, (: stringp :));
     if( spell->GetAutoHeal() == 0 ) {
-	if( !sizeof(args) ) {
-	    object array existing = filter(targets, (: $1 :));
+        if( !sizeof(args) ) {
+            object array existing = filter(targets, (: $1 :));
 
-	    if( sizeof(existing) != 1 ) {
-		error("This spell was poorly constructed.");
-	    }
-	    arg = existing[0]->GetRandomLimb("torso");
-	}
-	else {
-	    arg = args[0];
-	}
+            if( sizeof(existing) != 1 ) {
+                error("This spell was poorly constructed.");
+            }
+            arg = existing[0]->GetRandomLimb("torso");
+        }
+        else {
+            arg = args[0];
+        }
     }
     else {
-	if( !sizeof(args) ) {
-	    arg = 0;
-	}
-	else {
-	    arg = args[0];
-	}
+        if( !sizeof(args) ) {
+            arg = 0;
+        }
+        else {
+            arg = args[0];
+        }
     }
     if( spell->GetVerb() == "pray" ) {
-	special = "a prayer";
+        special = "a prayer";
     }
     else {
-	special = "an incantation";
+        special = "an incantation";
     }
     if( targets ) {
-	send_to = filter(targets, (: environment($1) == environment() :));
+        send_to = filter(targets, (: environment($1) == environment() :));
     }
     else {
-	send_to = 0;
+        send_to = 0;
     }
     send_messages(({ "close", "begin" }),
       "$agent_name $agent_verb $agent_possessive eyes and "
@@ -132,17 +132,17 @@ varargs mixed eventPrepareCast(string verb, mixed array args...) {
       send_to, environment());
     type = spell->GetSpellType();
     if( GetInCombat() || (type == SPELL_COMBAT) ) {
-	if( type == SPELL_COMBAT ) {
-	    SetAttack(targets, (: eventCast($(spell), $(arg), $(targets)) :),
-	      ROUND_MAGIC);
-	}
-	else {
-	    SetAttack(0, (: eventCast($(spell), $(arg), $(targets)) :),
-	      ROUND_MAGIC);
-	}
+        if( type == SPELL_COMBAT ) {
+            SetAttack(targets, (: eventCast($(spell), $(arg), $(targets)) :),
+              ROUND_MAGIC);
+        }
+        else {
+            SetAttack(0, (: eventCast($(spell), $(arg), $(targets)) :),
+              ROUND_MAGIC);
+        }
     }
     else {
-	eventCast(spell, arg, targets);
+        eventCast(spell, arg, targets);
     }
     return 1;
 }
@@ -151,10 +151,10 @@ static varargs void eventCast(object spell, string limb, object array targs) {
     string name = spell->GetSpell();
 
     if( SpellBook[name] < 100 ) {
-	eventTrainSpell(spell);
+        eventTrainSpell(spell);
     }
     if( spell->CanCast(this_object(), SpellBook[name], limb, targs) ) {
-	spell->eventCast(this_object(), SpellBook[name], limb, targs);
+        spell->eventCast(this_object(), SpellBook[name], limb, targs);
     }
 }
 
@@ -162,12 +162,12 @@ mixed eventLearnSpell(string spell) {
     object magic = SPELLS_D->GetSpell(spell = lower_case(spell));
 
     foreach(string skill in magic->GetSkills()) {
-	if( magic->GetRequiredSkill(skill) > GetSkillLevel(skill) ) {
-	    return 0;
-	}
+        if( magic->GetRequiredSkill(skill) > GetSkillLevel(skill) ) {
+            return 0;
+        }
     }
     if( !SpellBook[spell] ) {
-	SpellBook[spell] = 1;
+        SpellBook[spell] = 1;
     }
     return 1;
 }
@@ -177,9 +177,9 @@ static void eventTrainSpell(object spell) {
     int x = SpellBook[name] + 1;
 
     foreach(string skill in spell->GetSkills() ) {
-	if( (5 * GetSkillLevel(skill)) < x ) {
-	    return;
-	}
+        if( (5 * GetSkillLevel(skill)) < x ) {
+            return;
+        }
     }
     SpellBook[name] = x;
 }

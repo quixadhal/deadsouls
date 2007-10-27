@@ -25,8 +25,8 @@ static void create() {
 
 mixed can_describe_str(string str) {
     if(strsrch(str, "$N") == -1)
-	return("Your description must include a minimum of one '$N' "
-	  + "to specify your name.");
+        return("Your description must include a minimum of one '$N' "
+          + "to specify your name.");
     return 1;
 }
 

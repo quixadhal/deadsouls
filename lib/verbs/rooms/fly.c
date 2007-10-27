@@ -31,48 +31,48 @@ mixed can_fly() {
     object env = environment(this_player());
 
     if( !env ) {
-	return "You are nowhere to begin with!";
+        return "You are nowhere to begin with!";
     }
 
     if(this_player()->GetPosition() == POSITION_FLYING) 
-	return "You are already flying.";
+        return "You are already flying.";
 
     switch( env->GetMedium() ) {
     case MEDIUM_LAND:
-	if(env->CanFly(this_player())) return this_player()->CanFly();
+        if(env->CanFly(this_player())) return this_player()->CanFly();
     case MEDIUM_AIR:
-	return this_player()->CanFly();
+        return this_player()->CanFly();
     default:
-	return "You can't fly here.";
+        return "You can't fly here.";
     }
 }
 
 mixed can_fly_str(string str) {
     if( !environment(this_player()) ) {
-	return "You are nowhere.";
+        return "You are nowhere.";
     }
     if( (int)this_player()->GetStaminaPoints() < 15 )
-	return "You are too tired to fly anywhere right now.";
+        return "You are too tired to fly anywhere right now.";
     if(this_player()->GetPosition() != POSITION_FLYING){
-	return "You are not flying.";
+        return "You are not flying.";
     }
     if((mixed)environment(this_player())->CanFly(this_player(), str)){
-	return this_player()->CanFly();
+        return this_player()->CanFly();
     }
     else return 0;
 }
 
 mixed can_fly_into_str(string str) {
     if( !environment(this_player()) ) {
-	return "You are nowhere.";
+        return "You are nowhere.";
     }
     if( (int)this_player()->GetStaminaPoints() < 3 )
-	return "You are too tired right now.";
+        return "You are too tired right now.";
     if(this_player()->GetPosition() != POSITION_FLYING){
-	return "You are not flying.";
+        return "You are not flying.";
     }
     if((mixed)environment(this_player())->CanEnter(this_player(), str)){
-	return this_player()->CanFly();
+        return this_player()->CanFly();
     }
     else return 0;
 }

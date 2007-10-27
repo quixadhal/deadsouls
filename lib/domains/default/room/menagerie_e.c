@@ -10,21 +10,21 @@ void create() {
     SetLong("This is the eastern annex of the menagerie.");
     SetNoClean(1);
     SetInventory(([
-	"/domains/default/npc/foochy" : 1,
-	"/domains/default/npc/satyr" : 1,
-	"/domains/default/npc/slug" : 1,
-	"/domains/default/npc/unicorn" : 1,
-	"/domains/default/npc/triffid" : 1,
-	"/domains/default/npc/snake" : 1,
-	"/domains/default/npc/sheep" : 1,
-	"/domains/default/npc/boar" : 1,
-	"/domains/default/npc/pegasus" : 1,
-	"/domains/default/npc/giant" : 1,
-	"/domains/default/npc/lemur" : 1,
-	"/domains/default/npc/treant" : 1,
+        "/domains/default/npc/foochy" : 1,
+        "/domains/default/npc/satyr" : 1,
+        "/domains/default/npc/slug" : 1,
+        "/domains/default/npc/unicorn" : 1,
+        "/domains/default/npc/triffid" : 1,
+        "/domains/default/npc/snake" : 1,
+        "/domains/default/npc/sheep" : 1,
+        "/domains/default/npc/boar" : 1,
+        "/domains/default/npc/pegasus" : 1,
+        "/domains/default/npc/giant" : 1,
+        "/domains/default/npc/lemur" : 1,
+        "/domains/default/npc/treant" : 1,
       ]));
     SetExits(([
-	"west" : "/domains/default/room/menagerie",
+        "west" : "/domains/default/room/menagerie",
       ]));
 
 }

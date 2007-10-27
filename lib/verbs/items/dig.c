@@ -14,11 +14,11 @@ inherit LIB_VERB;
 
 static void eventDig(object who, object tool, object what, object check) {
     if( !who || check != environment(who) ) {
-	return;
+        return;
     }
     if( !tool || (environment(tool) != who) ) {
-	who->eventPrint("You have lost your equipment.");
-	return;
+        who->eventPrint("You have lost your equipment.");
+        return;
     }
     tool->eventDigWith(who, what);
 }
@@ -27,12 +27,12 @@ varargs static void eventPrepareDig(object who, object tool, object what) {
     function f = (: eventDig($(who), $(tool), $(what), environment($(who))) :);
 
     if( (int)this_player()->GetInCombat() ) {
-	send_messages("start", "$agent_name $agent_verb to dig with " +
-	  tool->GetShort() + ".", who, 0, environment(who));
-	who->SetAttack(0, f, ROUND_OTHER);
+        send_messages("start", "$agent_name $agent_verb to dig with " +
+          tool->GetShort() + ".", who, 0, environment(who));
+        who->SetAttack(0, f, ROUND_OTHER);
     }
     else {
-	evaluate(f);
+        evaluate(f);
     }
 }
 
@@ -52,10 +52,10 @@ static void create() {
 
 mixed can_dig_with_obj() {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything!";
+        return "You cannot do anything!";
     }
     if( this_player()->GetPosition() != POSITION_STANDING ) {
-	return "Dig when you are not standing?";
+        return "Dig when you are not standing?";
     }
     return this_player()->CanManipulate();
 }
@@ -75,7 +75,7 @@ mixed do_dig_with_obj(object ob) {
 
 mixed do_dig_str_with_obj(string str, object ob) {
     if( remove_article(lower_case(str)) != "hole" ) {
-	return 0;
+        return 0;
     }
     return do_dig_with_obj(ob);
 }

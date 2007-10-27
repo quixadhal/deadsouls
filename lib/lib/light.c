@@ -39,7 +39,7 @@ string GetShort() {
 
 mixed CanLight(object who) {
     if( GetLit() ) {
-	return "#It is already lit.";
+        return "#It is already lit.";
     }
     return 1;
 }
@@ -52,11 +52,11 @@ mixed eventDarken() {
     object env;
 
     if( env = environment() ) {
-	env->eventPrint("The " + GetKeyName() + " goes dark.");
-	if( living(env) ) {
-	    environment(env)->eventPrint(possessive_noun(env) + " " +
-	      GetKeyName() + " goes dark.", env);
-	}
+        env->eventPrint("The " + GetKeyName() + " goes dark.");
+        if( living(env) ) {
+            environment(env)->eventPrint(possessive_noun(env) + " " +
+              GetKeyName() + " goes dark.", env);
+        }
     }
     SetLit(0);
     return 1;

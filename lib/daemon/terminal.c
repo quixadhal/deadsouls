@@ -116,22 +116,22 @@ string GetHTML(string str) {
     str = terminal_colour(str, term_info["html"]);
     tmp = str;
     while( (i = strsrch(tmp, "<FONT")) != -1 ) {
-	fcount++;
-	tmp = tmp[(i+5)..];
+        fcount++;
+        tmp = tmp[(i+5)..];
     }
     if( fcount < 1 ) {
-	return str;
+        return str;
     }
     tmp = str;
     while( (i = strsrch(tmp, "</FONT")) != -1 ) {
-	ncount++;
-	tmp = tmp[(i+6)..];
+        ncount++;
+        tmp = tmp[(i+6)..];
     }
     tot = fcount - ncount;
     if( tot > 0 ) {
-	while( tot-- ) {
-	    str += "</FONT>";
-	}
+        while( tot-- ) {
+            str += "</FONT>";
+        }
     }
     return str;
 }

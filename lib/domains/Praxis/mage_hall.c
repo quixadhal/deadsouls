@@ -13,15 +13,15 @@ int get_cost(string which, int lev);
 
 int CanReceive(object ob) {
     if(!(int)VOTING_D->is_time_to_vote())
-	return ::CanReceive(ob);
+        return ::CanReceive(ob);
     if(creatorp(this_player()) || (int)this_player()->query_level() < 2)
-	return ::CanReceive(ob);
+        return ::CanReceive(ob);
     if((int)VOTING_D->query_voted((string)this_player()->query_name(),
-	this_player()->query_class()))
-	return ::CanReceive(ob);
+        this_player()->query_class()))
+        return ::CanReceive(ob);
     else {
-	message("my_action", "You have not yet voted for your class leader.  Please do so now.", this_player());
-	call_out("move_me", 5, this_player());
+        message("my_action", "You have not yet voted for your class leader.  Please do so now.", this_player());
+        call_out("move_me", 5, this_player());
     }
     return ::CanReceive(ob);
 }
@@ -50,10 +50,10 @@ void create() {
       "<help skills> will list all skills with their full, proper names.");
     SetExits( 
       (["up" : "/domains/Praxis/mage_join",
-	"council" : "/domains/Praxis/council_hall",
-	"east" : "/domains/Praxis/mage_vote",
-	"down" : "/domains/Praxis/roots",
-	"stairs" : "/domains/Praxis/trunk"]) );
+        "council" : "/domains/Praxis/council_hall",
+        "east" : "/domains/Praxis/mage_vote",
+        "down" : "/domains/Praxis/roots",
+        "stairs" : "/domains/Praxis/trunk"]) );
 
     ob = new("/lib/bboard");
     ob->SetKeyName("board");
@@ -81,8 +81,8 @@ void init() {
 
 int roll(string str) {
     if(str != "stats") {
-	notify_fail("Correct syntax: <roll stats>\n");
-	return 0;
+        notify_fail("Correct syntax: <roll stats>\n");
+        return 0;
     }
     //ROOM_SETTER->do_rolls();
     return 1;
@@ -151,18 +151,18 @@ int train(string str) {
     int amount;
 
     if(!str) {
-	notify_fail("Corract syntax: <train skill amount.\n");
-	return 0;
+        notify_fail("Corract syntax: <train skill amount.\n");
+        return 0;
     }
     if(sscanf(str, "%s %s %d", which, which_tmp, amount) == 3) which = which +" "+ which_tmp;
     else if(sscanf(str, "%s %d", which, amount) !=2) {
-	notify_fail("Correct syntax: <train skill amount>\n");
-	return 0;
+        notify_fail("Correct syntax: <train skill amount>\n");
+        return 0;
     }
     which = lower_case(which);
     if(!this_player()->skill_exists(which)) {
-	notify_fail("No such skill.\n");
-	return 0;
+        notify_fail("No such skill.\n");
+        return 0;
     }
     return (int)ADVANCE_D->train_player(this_player(), which, amount);
 }
@@ -173,18 +173,18 @@ int improve(string str) {
 
     stats = ({ "strength", "intelligence", "wisdom", "dexterity", "constitution", "charisma" });
     if(!str) {
-	notify_fail("Improve what?\n");
-	return 0;
+        notify_fail("Improve what?\n");
+        return 0;
     }
     str = lower_case(str);
     if(member_array(str, stats) == -1) {
-	notify_fail("You have no such stat.\n");
-	return 0;
+        notify_fail("You have no such stat.\n");
+        return 0;
     }
     stat_cost = get_cost(str, (int)this_player()->query_base_stats(str));
     if( (int)this_player()->query_exp()-stat_cost < (int)ADVANCE_D->get_exp( (int)this_player()->query_level() ) ) {
-	notify_fail("You are not experienced enough to improve yourself in that way.\n");
-	return 0;
+        notify_fail("You are not experienced enough to improve yourself in that way.\n");
+        return 0;
     }
     this_player()->SetStat(str, (int)this_player()->query_base_stats(str) + 1);
     this_player()->add_exp(-stat_cost);

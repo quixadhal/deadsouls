@@ -13,14 +13,14 @@ mixed cmd(string timezone) {
     int offset, x, hour, min, sec;
 
     if(timezone && timezone != "" && valid_timezone(timezone)){
-	write(local_time(timezone));
-	return 1;
+        write(local_time(timezone));
+        return 1;
     }
 
     offset = (int)TIME_D->GetOffset(local_time()[9]);
     offset += EXTRA_TIME_OFFSET;
     if(query_os_type() != "windows" ) 
-	x = offset * 3600;
+        x = offset * 3600;
     else x = 0;
     time = ctime( time() + x );
     x = sizeof(parts = explode(time, " "));
@@ -29,12 +29,12 @@ mixed cmd(string timezone) {
     if( !hour ) hour = 12;
     message("info",
       sprintf("Time: %d:%s%d %s\nDate: %s, %s",
-	(hour>12 ? (hour-12) : hour),
-	(min < 10 ? "0" : ""),
-	min,
-	(hour>11 ? "pm" : "am"),
-	implode(parts[0..(x-3)], " "),
-	year),
+        (hour>12 ? (hour-12) : hour),
+        (min < 10 ? "0" : ""),
+        min,
+        (hour>11 ? "pm" : "am"),
+        implode(parts[0..(x-3)], " "),
+        year),
       this_player() );
     return 1;
 }

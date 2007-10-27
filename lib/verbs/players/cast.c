@@ -30,11 +30,11 @@ mixed can_cast_str(string spell) {
     object tmp = SPELLS_D->GetSpell(spell);
 
     if( tmp ) {
-	string verb = tmp->GetVerb();
+        string verb = tmp->GetVerb();
 
-	if( verb != "cast" ) {
-	    return "That is not a spell you cast.";
-	}
+        if( verb != "cast" ) {
+            return "That is not a spell you cast.";
+        }
     }
     if(intp(this_player()->CanManipulate())) return this_player()->CanCast(tmp);
 }

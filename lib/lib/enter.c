@@ -23,19 +23,19 @@ string ResolveObjectName(string file) {
 
 mixed direct_close_obj(object target) {
     if( !Door ) {
-	return 0;
+        return 0;
     }
     else {
-	return Door->CanClose(this_player());
+        return Door->CanClose(this_player());
     }
 }
 
 mixed direct_enter_obj() {
     if( !Enter ) {
-	return environment()->GetEnterMessage();
+        return environment()->GetEnterMessage();
     }
     else {
-	return 1;
+        return 1;
     }
 }
 
@@ -45,19 +45,19 @@ mixed direct_enter_into_obj() {
 
 varargs mixed direct_lock_obj_with_obj(object target, object tool) {
     if( !Door ) {
-	return 0;
+        return 0;
     }
     else {
-	return Door->CanLock(this_player());
+        return Door->CanLock(this_player());
     }
 }
 
 mixed direct_open_obj(object target) {
     if( !Door ) {
-	return 0;
+        return 0;
     }
     else {
-	return Door->CanOpen(this_player());
+        return Door->CanOpen(this_player());
     }
 }
 
@@ -67,10 +67,10 @@ mixed direct_open_obj_with_obj(object target, object ob) {
 
 mixed direct_pick_str_on_obj(string str, object ob, string id1, string id2) {
     if( !Door || remove_article(lower_case(str)) != "lock" ) {
-	return 0;
+        return 0;
     }
     else {
-	return Door->CanPick(this_player(), remove_article(lower_case(id2)));
+        return Door->CanPick(this_player(), remove_article(lower_case(id2)));
     }
 }
 
@@ -81,10 +81,10 @@ mixed direct_pick_str_on_obj_with_obj(string str, object ob, object w,
 
 mixed direct_unlock_obj_with_obj(object target, object w) {
     if( !Door ) {
-	return 0;
+        return 0;
     }
     else {
-	return Door->CanUnlock(this_player());
+        return Door->CanUnlock(this_player());
     }
 }
 
@@ -95,26 +95,26 @@ mixed eventClose(object who) {
 varargs mixed eventEnter(object who, string what, string verb) {
     if(!verb) verb = "NOVERB";
     if( Door && Door->GetClosed() ) {
-	who->eventPrint("You bump into " + Door->GetShort(what) + ".");
-	environment(who)->eventPrint(who->GetName() + " bumps into " +
-	  Door->GetShort(what) + ".", who);
-	return 1;
+        who->eventPrint("You bump into " + Door->GetShort(what) + ".");
+        environment(who)->eventPrint(who->GetName() + " bumps into " +
+          Door->GetShort(what) + ".", who);
+        return 1;
     }
     if( who->GetPosition() != POSITION_STANDING ) {
-	if(verb != "crawl" && verb != "fly") who->eventStand();
-	if( who->GetPosition() != POSITION_STANDING && verb != "crawl" 
-	  && verb != "fly") {
-	    who->eventPrint("weird.");
-	    return 0;
-	}
+        if(verb != "crawl" && verb != "fly") who->eventStand();
+        if( who->GetPosition() != POSITION_STANDING && verb != "crawl" 
+          && verb != "fly") {
+            who->eventPrint("weird.");
+            return 0;
+        }
     }
     if( Enter["pre"] && !evaluate(Enter["pre"], what) ) {
-	return 1;
+        return 1;
     }
     if(verb == "crawl") who->eventMoveLiving(Enter["room"],"into the " + what );
     else who->eventMoveLiving(Enter["room"], "$N enters into the " + what + ".");
     if( Enter["post"] ) {
-	evaluate(Enter["post"], what);
+        evaluate(Enter["post"], what);
     }
     return 1;
 }
@@ -149,8 +149,8 @@ void SetDoor(string door) {
 
 varargs void SetEnter(string dest, function pre, function post) {
     if( !dest ) {
-	Enter = 0;
-	return;
+        Enter = 0;
+        return;
     }
     dest = ResolveObjectName(dest);
     Enter = ([ "room" : dest, "pre" : pre, "post" : post ]);
@@ -158,10 +158,10 @@ varargs void SetEnter(string dest, function pre, function post) {
 
 string GetEnter() {
     if( !Enter ) {
-	return 0;
+        return 0;
     }
     else {
-	return Enter["room"];
+        return Enter["room"];
     }
 }
 

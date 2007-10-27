@@ -12,30 +12,30 @@ static void create() {
       "notes and books. The reception and waiting area is "
       "east of here.");
     SetItems( ([
-	"desk" : "This is where Clepius does "
-	"paperwork and research.",
-	({"notes","books","notes and books"}) : "These "
-	"are the contents of the doctor's desk.",
-	"corner" : "Location of the desk."
+        "desk" : "This is where Clepius does "
+        "paperwork and research.",
+        ({"notes","books","notes and books"}) : "These "
+        "are the contents of the doctor's desk.",
+        "corner" : "Location of the desk."
       ]) );
     SetRead( ({"notes","books","notes and books"}) , "That belongs to Clepius and it's private." ); 
     SetProperty("no attack", 1);
     SetInventory(([
-	"/domains/town/obj/bbucket" :1,
-	"/domains/town/npc/clepius" :1
+        "/domains/town/obj/bbucket" :1,
+        "/domains/town/npc/clepius" :1
       ]) );
     SetExits( ([
-	"east" : "/domains/town/room/healer",
-	"west" : "/domains/town/room/healer2",
+        "east" : "/domains/town/room/healer",
+        "west" : "/domains/town/room/healer2",
       ]) );
     SetProperty("busy",0);
 
 }
 int CanReceive(object ob) {
     if(playerp(ob) && !creatorp(ob) && GetProperty("busy") == 1){
-	message("info","The doctor is with a patient right now. Please "+
-	  "wait until you are called.",ob);
-	return 0;
+        message("info","The doctor is with a patient right now. Please "+
+          "wait until you are called.",ob);
+        return 0;
     }
     return 1;
 }

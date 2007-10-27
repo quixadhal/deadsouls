@@ -40,16 +40,16 @@ string GetExternalDesc() {
     string tmp;
 
     if( desc == "" ) {
-	return "";
+        return "";
     }
     if( tmp = GetEquippedDescription() ) {
-	desc += tmp + "\n";
+        desc += tmp + "\n";
     }
     if( GetBroken() ) {
-	desc += "It appears to be broken.";
+        desc += "It appears to be broken.";
     }
     else if( tmp = GetItemCondition() ) {
-	desc += tmp;
+        desc += tmp;
     }
     return desc;
 }
@@ -72,32 +72,32 @@ string GetItemCondition() {
     if(nocondition) return "";
 
     if( GetMaxClass() ) {
-	float i = to_float(GetClass()) / GetMaxClass() * 100.0;
+        float i = to_float(GetClass()) / GetMaxClass() * 100.0;
 
-	if( i > 95.0 ) {
-	    return " It is as good as new.";
-	}
-	else if( i > 80.0 ) {
-	    return " It is in good condition.";
-	}
-	else if( i > 70.0 ) {
-	    return " It is in decent condition.";
-	}
-	else if( i > 50.0 ) {
-	    return " It is somewhat worn and battered.";
-	}
-	else if( i > 30.0 ) {
-	    return " It is worn down and dented.";
-	}
-	else if( i > 10.0 ) {
-	    return " It is very worn down and in bad shape.";
-	}
-	else {
-	    return " It has worn down completely.";
-	}
+        if( i > 95.0 ) {
+            return " It is as good as new.";
+        }
+        else if( i > 80.0 ) {
+            return " It is in good condition.";
+        }
+        else if( i > 70.0 ) {
+            return " It is in decent condition.";
+        }
+        else if( i > 50.0 ) {
+            return " It is somewhat worn and battered.";
+        }
+        else if( i > 30.0 ) {
+            return " It is worn down and dented.";
+        }
+        else if( i > 10.0 ) {
+            return " It is very worn down and in bad shape.";
+        }
+        else {
+            return " It has worn down completely.";
+        }
     }
     else {
-	return deterioration::GetItemCondition();
+        return deterioration::GetItemCondition();
     }
 }
 
@@ -128,7 +128,7 @@ mixed CanRepair(object who) {
 
 mixed CanSteal(object who) {
     if( GetWorn() ) {
-	return "You can't steal something equipped!";
+        return "You can't steal something equipped!";
     }
     return steal::CanSteal(who);
 }
@@ -140,7 +140,7 @@ varargs mixed CanThrow(object who, object target) {
 /* ********************* item.c events ************************ */ 
 static int Destruct() {
     if( GetWorn() && environment() ) {
-	eventUnequip(environment());
+        eventUnequip(environment());
     }
     return object::Destruct();
 }
@@ -148,13 +148,13 @@ static int Destruct() {
 int eventMove(mixed dest) {
     if(!this_object()) return 0;
     if( !environment() && GetWorn() ) {
-	mixed array limbs = GetWorn();
+        mixed array limbs = GetWorn();
 
-	SetWorn(0);
-	call_out((: eventRestoreEquip :), 0, limbs);
+        SetWorn(0);
+        call_out((: eventRestoreEquip :), 0, limbs);
     }
     if( GetWorn() && environment() ) {
-	eventUnequip(environment());
+        eventUnequip(environment());
     }
     return move::eventMove(dest);
 }
@@ -168,9 +168,9 @@ void eventDeteriorate(int type) {
 void eventRemoveBlessing() {
     SetProperty("blessed", 0);
     if( living(environment()) ) {
-	environment()->eventPrint("%^YELLOW%^"
-	  + capitalize((string)GetDefiniteShort()) +
-	  " returns to its normal state.");
+        environment()->eventPrint("%^YELLOW%^"
+          + capitalize((string)GetDefiniteShort()) +
+          " returns to its normal state.");
     }
 }
 
@@ -180,64 +180,64 @@ int eventBless(int amount, int time) {
     SetProperty("blessed", amount);
     call_out( (: eventRemoveBlessing :), time);
     if(GetProperty("blessed") > 0) {
-	SetProperty("magic item", "blessed");
+        SetProperty("magic item", "blessed");
     }
     if(GetProperty("blessed") < 0) {
-	SetProperty("magic item", "cursed");
+        SetProperty("magic item", "cursed");
     }
     return 1;
 }
 
 mixed eventThrow(object who, object target) {
     if( target && living(target) ) {
-	int skill;
+        int skill;
 
-	who->eventPrint("You throw " + GetShort() + " at " +
-	  target->GetName() + ".");
-	target->eventPrint(who->GetName() + " throws " + GetShort() +" at you.");
-	environment(who)->eventPrint(who->GetName() + " throws " +
-	  GetShort() + " at " + target->GetName() +
-	  ".", ({ who, target }) );
-	skill = (who->GetSkillLevel("projectile attack") +
-	  who->GetStatLevel("coordination"));
-	skill -= (target->GetSkillLevel("projectile defense") +
-	  target->GetStatLevel("agility"))/2;
-	if( GetWeaponType() != "projectile" ) {
-	    skill = skill/2;
-	}
-	if( skill > random(100) + 1 ) {
-	    who->AddSkillPoints("projectile attack",
-	      target->GetSkillLevel("projectile defense") *
-	      target->GetLevel() + 10);
-	    target->AddSkillPoints("projectile defense", 10);
-	    target->eventReceiveThrow(who, this_object());
-	}
-	else {
-	    target->AddSkillPoints("proectile defense",
-	      who->GetSkillLevel("projectile attack") *
-	      who->GetLevel() + 10);
-	    who->AddSkillPoints("projectile attack", 10);
-	    environment(who)->eventPrint(capitalize(GetShort()) + " does not "
-	      "hit "+target->GetName() + ".",({ target, who }));
-	    write("Your throw misses its mark.");
-	    tell_object(target, capitalize(GetShort()) + " does not hit you.");
-	    eventMove(environment(who));
-	}
-	return 1;
+        who->eventPrint("You throw " + GetShort() + " at " +
+          target->GetName() + ".");
+        target->eventPrint(who->GetName() + " throws " + GetShort() +" at you.");
+        environment(who)->eventPrint(who->GetName() + " throws " +
+          GetShort() + " at " + target->GetName() +
+          ".", ({ who, target }) );
+        skill = (who->GetSkillLevel("projectile attack") +
+          who->GetStatLevel("coordination"));
+        skill -= (target->GetSkillLevel("projectile defense") +
+          target->GetStatLevel("agility"))/2;
+        if( GetWeaponType() != "projectile" ) {
+            skill = skill/2;
+        }
+        if( skill > random(100) + 1 ) {
+            who->AddSkillPoints("projectile attack",
+              target->GetSkillLevel("projectile defense") *
+              target->GetLevel() + 10);
+            target->AddSkillPoints("projectile defense", 10);
+            target->eventReceiveThrow(who, this_object());
+        }
+        else {
+            target->AddSkillPoints("proectile defense",
+              who->GetSkillLevel("projectile attack") *
+              who->GetLevel() + 10);
+            who->AddSkillPoints("projectile attack", 10);
+            environment(who)->eventPrint(capitalize(GetShort()) + " does not "
+              "hit "+target->GetName() + ".",({ target, who }));
+            write("Your throw misses its mark.");
+            tell_object(target, capitalize(GetShort()) + " does not hit you.");
+            eventMove(environment(who));
+        }
+        return 1;
     }
     else if( target ) {
-	who->eventPrint("You throw " + GetShort() + " at " +
-	  target->GetShort() + ".");
-	environment(who)->eventPrint(who->GetName() + " throws " +
-	  GetShort() + " at " + target->GetShort() +
-	  ".", ({ who, target }));	
-	tell_object(target, capitalize(GetShort()) + " throws " +
-	  GetShort() + " at you.");
-	return target->eventReceiveThrow(who, this_object());
+        who->eventPrint("You throw " + GetShort() + " at " +
+          target->GetShort() + ".");
+        environment(who)->eventPrint(who->GetName() + " throws " +
+          GetShort() + " at " + target->GetShort() +
+          ".", ({ who, target }));	
+        tell_object(target, capitalize(GetShort()) + " throws " +
+          GetShort() + " at you.");
+        return target->eventReceiveThrow(who, this_object());
     }
     if( !eventMove(environment(who)) ) {
-	who->eventPrint("You are not too good at throwing things.");
-	return 1;
+        who->eventPrint("You are not too good at throwing things.");
+        return 1;
     }
     who->eventPrint("You throw " + GetShort() + ".");
     environment(who)->eventPrint(who->GetName() + " throws " +
@@ -249,11 +249,11 @@ varargs mixed eventRepair(object who, int strength, int type) {
     if( !who || !strength ) return 0;
     if( !GetMaxClass() ) return 0;
     while(strength--) {
-	if( GetClass() < GetMaxClass() ) {
-	    SetClass(GetClass() + 1);
-	    SetValue(GetValue() + (GetValue() / 3));
-	}
-	else break;
+        if( GetClass() < GetMaxClass() ) {
+            SetClass(GetClass() + 1);
+            SetValue(GetValue() + (GetValue() / 3));
+        }
+        else break;
     }
     return 1;
 }
@@ -262,12 +262,12 @@ mixed eventShow(object who, string component) {
     mixed tmp = object::eventShow(who, component);
 
     if( component || tmp != 1 ) {
-	return tmp;
+        return tmp;
     }
     if( GetPoison() ) {
-	if( random(100) < who->GetSkillLevel("stealth") ) {
-	    who->eventPrint("You notice a strange substance on it.");
-	}
+        if( random(100) < who->GetSkillLevel("stealth") ) {
+            who->eventPrint("You notice a strange substance on it.");
+        }
     }
     return 1;
 }
@@ -319,7 +319,7 @@ mixed indirect_judge_obj_to_obj() {
 
 mixed direct_use_obj_to_str() {
     if( environment() != this_player() )
-	return "#You need better access to it.";
+        return "#You need better access to it.";
     else return 1;
 }
 
@@ -329,7 +329,7 @@ mixed direct_use_obj() {
 
 mixed direct_throw_obj_word_obj() {
     if( environment() != this_player() ) {
-	return "#Throw something you are not holding?";
+        return "#Throw something you are not holding?";
     }
     else return 1;
 }
@@ -347,8 +347,8 @@ int direct_sacrifice_obj_to_str(string deus) {
     if( !env = environment(this_player()) ) return 0;
     tmp = (mixed)env->CanSacrifice(this_player(), this_object(), deus);
     if( !tmp ) {
-	this_player()->eventPrint("This is not the place for sacrifices.");
-	return 0;
+        this_player()->eventPrint("This is not the place for sacrifices.");
+        return 0;
     }
     else return 1;
 }
@@ -356,14 +356,14 @@ int direct_sacrifice_obj_to_str(string deus) {
 
 mixed direct_bless_obj() {
     if( environment() != this_player() ) {
-	return "#You don't have that!";
+        return "#You don't have that!";
     }
     return 1;
 }
 
 mixed direct_curse_obj() {
     if( environment() != this_player() ) {
-	return "#You don't have that!";
+        return "#You don't have that!";
     }
     return 1;
 }

@@ -14,20 +14,20 @@ void create() {
     SetBaseCost("silver",150);
     SetMaxCarry(1000);
     SetInventory(([
-	"/domains/town/armor/long_boot_l": 1,
-	"/domains/town/armor/long_boot_r": 1,
-	"/domains/town/armor/belt": 1,
-	"/domains/town/armor/vest": 1,
-	"/domains/town/armor/goggles": 1,
-	"/domains/town/armor/hunting_cap": 1,
-	"/domains/town/armor/glove_r": 1,
-	"/domains/town/armor/glove_l": 1,
-	"/domains/town/armor/bearsuit": 1,
-	"/domains/town/armor/overcoat": 1,
-	"/domains/town/armor/jacket": 1,
-	"/domains/town/armor/jeans": 1,
-	"/domains/town/armor/shirt": 1,
-	"/domains/town/armor/scarf": 1,
+        "/domains/town/armor/long_boot_l": 1,
+        "/domains/town/armor/long_boot_r": 1,
+        "/domains/town/armor/belt": 1,
+        "/domains/town/armor/vest": 1,
+        "/domains/town/armor/goggles": 1,
+        "/domains/town/armor/hunting_cap": 1,
+        "/domains/town/armor/glove_r": 1,
+        "/domains/town/armor/glove_l": 1,
+        "/domains/town/armor/bearsuit": 1,
+        "/domains/town/armor/overcoat": 1,
+        "/domains/town/armor/jacket": 1,
+        "/domains/town/armor/jeans": 1,
+        "/domains/town/armor/shirt": 1,
+        "/domains/town/armor/scarf": 1,
       ]));
     SetCanClose(1);
     SetClosed(1);

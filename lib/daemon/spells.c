@@ -26,23 +26,23 @@ void eventReloadSpells() {
     Spells = ([]);
     spells = get_dir(DIR_SPELLS "/*.c");
     foreach(string spell in spells) {
-	object ob = find_object(DIR_SPELLS "/" + spell);
+        object ob = find_object(DIR_SPELLS "/" + spell);
 
-	if( ob ) {
-	    ob->eventDestruct();
-	}
-	if( ob = load_object(DIR_SPELLS "/" + spell) ) {
-	    spell = ob->GetSpell();
-	    if( spell ) {
-		Spells[spell] = ob;
-	    }
-	}
+        if( ob ) {
+            ob->eventDestruct();
+        }
+        if( ob = load_object(DIR_SPELLS "/" + spell) ) {
+            spell = ob->GetSpell();
+            if( spell ) {
+                Spells[spell] = ob;
+            }
+        }
     }
 }
 
 object GetSpell(string spell) {
     if( !Spells[spell] ) {
-	eventReloadSpells();
+        eventReloadSpells();
     }
     return Spells[spell];
 }

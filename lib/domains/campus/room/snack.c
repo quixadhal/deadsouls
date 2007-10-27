@@ -15,29 +15,29 @@ static void create() {
       "behind which a food service employee stands. There is a menu "+
       "hanging on the wall next to the bar. The main hallway lies south of here.");
     SetItems(([
-	"menu": "A menu of snack items available here.",
-	"sign":"A sign over the snack bar.",
-	({"tile","tiles","floor","linoleum"}):"These are here because you "+
-	"are not trusted to keep food off of carpets.",
-	({"chair","chairs","table","table"}):"Token furniture, not very functional "+
-	"or comfortable-looking. You aren't really expected to hang "+
-	"around in here, apparently.",
-	"bar" : "Really a window set into the wall and connecting the snack bar "+
-	"to the adjoining kitchen.",
-	({"wall","walls"}) : "The walls are painted blue and white, the school's colors. "+
-	"It's fairly unattractive and institutional.",
-	"hallway" : "The administration building's main hallway lies south.",
-	({"light","lights","fluorescent lights","fluorescents"}) : "Cheap, standard "+
-	"lighting. Like all fluorescents, these lights give everything an unappealing, "+
-	"sickly look.",
-	"employee" : "An underpaid, unappreciated, and resentful state employee. "+
-	"No surprise there.",
+        "menu": "A menu of snack items available here.",
+        "sign":"A sign over the snack bar.",
+        ({"tile","tiles","floor","linoleum"}):"These are here because you "+
+        "are not trusted to keep food off of carpets.",
+        ({"chair","chairs","table","table"}):"Token furniture, not very functional "+
+        "or comfortable-looking. You aren't really expected to hang "+
+        "around in here, apparently.",
+        "bar" : "Really a window set into the wall and connecting the snack bar "+
+        "to the adjoining kitchen.",
+        ({"wall","walls"}) : "The walls are painted blue and white, the school's colors. "+
+        "It's fairly unattractive and institutional.",
+        "hallway" : "The administration building's main hallway lies south.",
+        ({"light","lights","fluorescent lights","fluorescents"}) : "Cheap, standard "+
+        "lighting. Like all fluorescents, these lights give everything an unappealing, "+
+        "sickly look.",
+        "employee" : "An underpaid, unappreciated, and resentful state employee. "+
+        "No surprise there.",
       ]));
     SetExits( ([ "south" : "/domains/campus/room/corridor",
       ]));
     SetRead("menu", (: eventReadMenu :));
     SetInventory(([
-	"/domains/campus/npc/gloria.c" : 1 ]));
+        "/domains/campus/npc/gloria.c" : 1 ]));
     SetProperty("no attack", 1);
 }
 int eventReadMenu(string str){

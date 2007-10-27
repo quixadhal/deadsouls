@@ -85,10 +85,10 @@ int SetSaveRecurse(int x) {
 
 mixed CanClose(object who, string id) {
     if( !GetCanClose() ) {
-	return 0;
+        return 0;
     }
     else {
-	return seal::CanClose(who, id);
+        return seal::CanClose(who, id);
     }
 }
 
@@ -96,38 +96,38 @@ mixed CanGetFrom(object who, object item) {
     mixed tmp = holder::CanGetFrom(who, item);
 
     if( tmp != 1 ) {
-	return tmp;
+        return tmp;
     }
     if( GetClosed() ) {
-	return capitalize(GetDefiniteShort()) + " is closed.";
+        return capitalize(GetDefiniteShort()) + " is closed.";
     }
     return 1;
 }
 
 mixed CanLock(object who, string id) {
     if( !GetCanLock() ) {
-	return 0;
+        return 0;
     }
     else {
-	return seal::CanLock(who, id);
+        return seal::CanLock(who, id);
     }
 }
 
 mixed CanOpen(object who, string id) {
     if( !GetCanClose() ) {
-	return 0;
+        return 0;
     }
     else {
-	return seal::CanOpen(who, id);
+        return seal::CanOpen(who, id);
     }
 }
 
 mixed CanPick(object who, string id) {
     if( !GetCanLock() ) {
-	return "It isn't lockable in the first place.";
+        return "It isn't lockable in the first place.";
     }
     else {
-	return seal::CanPick(who, id);
+        return seal::CanPick(who, id);
     }
 }
 
@@ -138,8 +138,8 @@ mixed CanPutInto(object who, object what) {
     string *callstack;
 
     if(!tmp = holder::CanPutInto(who, what)){
-	if(GetClosed()) return capitalize(GetDefiniteShort()) + " is closed right now.";
-	else return "You can't do that right now.";
+        if(GetClosed()) return capitalize(GetDefiniteShort()) + " is closed right now.";
+        else return "You can't do that right now.";
     }
 
     wherefrom=origin();
@@ -150,21 +150,21 @@ mixed CanPutInto(object who, object what) {
 
 
     if( tmp != 1 ) {
-	if( GetClosed() ) return capitalize(GetDefiniteShort()) + " is closed.";
-	else return "You can't do that at this time.";
-	//if( GetClosed() ) write("It is closed.");
-	//else write("You can't do that at this time.");
-	//return tmp;
+        if( GetClosed() ) return capitalize(GetDefiniteShort()) + " is closed.";
+        else return "You can't do that at this time.";
+        //if( GetClosed() ) write("It is closed.");
+        //else write("You can't do that at this time.");
+        //return tmp;
     }
     if( GetClosed() ) {
-	return capitalize(GetDefiniteShort()) + " is closed.";
+        return capitalize(GetDefiniteShort()) + " is closed.";
     }
 
     if(inherits("/lib/std/storage",what) ) {
-	yourdepth = what->GetRecurseDepth();
-	mydepth = this_object()->GetRecurseDepth();
-	if(yourdepth && mydepth) total = yourdepth + mydepth;
-	if(total && total > this_object()->GetMaxRecurseDepth()) return "Doesn't fit.";
+        yourdepth = what->GetRecurseDepth();
+        mydepth = this_object()->GetRecurseDepth();
+        if(yourdepth && mydepth) total = yourdepth + mydepth;
+        if(total && total > this_object()->GetMaxRecurseDepth()) return "Doesn't fit.";
     }
 
     return 1;
@@ -172,23 +172,23 @@ mixed CanPutInto(object who, object what) {
 
 varargs mixed CanShowInterior(object who, object target) {
     if( GetClosed() && this_object()->GetOpacity() > 33) {
-	return capitalize(GetDefiniteShort()) + " is closed.";
+        return capitalize(GetDefiniteShort()) + " is closed.";
     }
     else return holder::CanShowInterior();
 }
 
 mixed CanUnlock(object who, string id, object key) {
     if( !GetCanLock() ) {
-	return 0;
+        return 0;
     }
     else {
-	return seal::CanUnlock(who, id, key);
+        return seal::CanUnlock(who, id, key);
     }
 }
 
 int eventReceiveObject(object ob) {
     if( GetClosed() ) {
-	return 0;
+        return 0;
     }
 
     return holder::eventReceiveObject(ob);
@@ -197,7 +197,7 @@ int eventReceiveObject(object ob) {
 void PutCheck(){
 
     if(RecurseDepth >= MaxRecurseDepth) {
-	SetPreventPut("You have enough containers inside containers there. This one will have to stay out.");
+        SetPreventPut("You have enough containers inside containers there. This one will have to stay out.");
     }
 
 

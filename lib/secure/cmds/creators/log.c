@@ -10,8 +10,8 @@ inherit LIB_DAEMON;
 
 int cmd(string str) {
     if(!str) {
-	notify_fail("Correct syntax: <log [log file]>\n");
-	return 0;
+        notify_fail("Correct syntax: <log [log file]>\n");
+        return 0;
     }
     write(str+":\n");
     if(!tail(DIR_LOGS+"/"+str)) write("No such log file: "+str+"\n");

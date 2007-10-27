@@ -27,10 +27,10 @@ static void create() {
 
 mixed can_lie_down() {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     if( this_player()->GetPosition() == POSITION_LYING ) {
-	return "You are already lying down!";
+        return "You are already lying down!";
     }
     return 1;
 }

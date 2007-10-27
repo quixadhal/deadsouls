@@ -18,15 +18,15 @@ static void create() {
       "\nThere is a framed portrait on the wall.\n"
     );
     SetItems(([
-	({ "portrait", "framed portrait", "frame", "picture" }) : "It is a dramatic portrait of an ancient dragon of immense beauty and grace. It is titled \"Daelas: Heir of Arodaleas\".",
+        ({ "portrait", "framed portrait", "frame", "picture" }) : "It is a dramatic portrait of an ancient dragon of immense beauty and grace. It is titled \"Daelas: Heir of Arodaleas\".",
       ]));
     SetInventory(([
-	"/domains/town/obj/bbucket" :1,
-	"/domains/town/npc/lars" :1
+        "/domains/town/obj/bbucket" :1,
+        "/domains/town/npc/lars" :1
       ]) );
     SetExits( ([
-	"west" : "/domains/town/room/road",
-	"out" : "/domains/town/room/road",
+        "west" : "/domains/town/room/road",
+        "out" : "/domains/town/room/road",
       ]) );
 }
 void init(){

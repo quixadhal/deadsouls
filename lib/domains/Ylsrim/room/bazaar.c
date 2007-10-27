@@ -58,12 +58,12 @@ static void create() {
     SetRead("sign", (: ReadSign :) );
     ob = new(LIB_DUMMY, ({ "armory", "shop" }),
       function(string str) {
-	  if( query_night() ) {
-	      return "It is closed.";
-	  }
-	  else {
-	      return "It is open.";
-	  }
+          if( query_night() ) {
+              return "It is closed.";
+          }
+          else {
+              return "It is open.";
+          }
       }, ({ "armor" }));
     // set it so when people 'enter armory', they move to the armory
     ob->SetEnter("/domains/Ylsrim/room/"+ "armory");
@@ -72,18 +72,18 @@ static void create() {
     // do the same stuff for the weaponry
     ob = new(LIB_DUMMY, ({ "weaponry", "shop" }),
       function(string str) {
-	  if( query_night() ) {
-	      return "It is closed.";
-	  }
-	  else {
-	      return "It is open.";
-	  }
+          if( query_night() ) {
+              return "It is closed.";
+          }
+          else {
+              return "It is open.";
+          }
       }, ({ "weapon" }));
     ob->SetEnter("/domains/Ylsrim/room/"+ "weaponry");
     AddItem(ob);
     // set the directional exits
     SetExits( ([ "north" : "/domains/Ylsrim/room/"+ "kaliid4",
-	"south" : "/domains/Ylsrim/room/"+ "s_bazaar" ]) );
+        "south" : "/domains/Ylsrim/room/"+ "s_bazaar" ]) );
 }
 void init(){
     ::init();

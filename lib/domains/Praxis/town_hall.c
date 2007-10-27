@@ -17,14 +17,14 @@ void create()
 {
     ::create();
     SetProperties( ([
-	"indoors" : 1,
-	"light" : 2,
-	"no castle" : 1,
-	"no teleport" : 1,
-	"no bump" : 1,
-	"no attack" : 1,
-	"no steal" : 1,
-	"no magic" : 1,
+        "indoors" : 1,
+        "light" : 2,
+        "no castle" : 1,
+        "no teleport" : 1,
+        "no bump" : 1,
+        "no attack" : 1,
+        "no steal" : 1,
+        "no magic" : 1,
       ]) );
     SetShort( "Praxis Town Hall" );
     SetLong(
@@ -35,27 +35,27 @@ void create()
       // "  South lies the Court of Justice."
     );
     SetItems( ([
-	"hall" : "It is five times the height of a tall man.",
-	"roof" : "If you \"listen to council\", perhaps you will hear them.",
-	"hangings" : "They depict the noble self-sacrifice of being a councilor.",
-	"columns" : "They have gargoyles at their tops.",
-	"staircase" : "It goes between two of the columns.",
-	"chambers" : "If you listen, perhaps you can hear the council.",
-	"court" : "This is where trials are held.",
-	"street" : "It is Boc La Road south of the monastary.",
-	"gargoyles" : "They look innocently inanimate.",
-	"gargoyle" : "It is impenetrateable as a stone wall.",
+        "hall" : "It is five times the height of a tall man.",
+        "roof" : "If you \"listen to council\", perhaps you will hear them.",
+        "hangings" : "They depict the noble self-sacrifice of being a councilor.",
+        "columns" : "They have gargoyles at their tops.",
+        "staircase" : "It goes between two of the columns.",
+        "chambers" : "If you listen, perhaps you can hear the council.",
+        "court" : "This is where trials are held.",
+        "street" : "It is Boc La Road south of the monastary.",
+        "gargoyles" : "They look innocently inanimate.",
+        "gargoyle" : "It is impenetrateable as a stone wall.",
       ]) );
     SetExits( ([
-	"south" : "/domains/Praxis/court_room",
-	"north" : "/domains/Praxis/e_boc_la1",
+        "south" : "/domains/Praxis/court_room",
+        "north" : "/domains/Praxis/e_boc_la1",
       ]) );
     SetListen( "council", (: "listen_council" :) );
 }
 int pre_exit_up()
 {
     if( leaderp( this_player() ) || creatorp( this_player() ) )
-	return 1;
+        return 1;
     write( "A gargoyle blocks your way.\n" );
     return 0;
 }
@@ -75,8 +75,8 @@ int release_objects( object ob )
 {
     if( -1 != member_array( ob, listeners ) )
     {
-	tell_object( ob, "You stop listening to the council.\n" );
-	listeners -= ({ ob });
+        tell_object( ob, "You stop listening to the council.\n" );
+        listeners -= ({ ob });
     }
     return 1;
 }

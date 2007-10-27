@@ -23,22 +23,22 @@ void create() {
       "<preview> will tell you about becoming a rogue.");
     SetItems(
       (["hideout" : "Rogues come here to plot wicked acts.",
-	"shack" : "It is not really a shack, but a fortress.",
-	"fortress" : "The rogues make this place their hideout.",
-	"light" : "Only rogues can pass beyond it.",
-	"stairs" : "They lead down into the heart of the rogue hideout.",
-	({"rogue", "master", "grand master rogue"}) : "He initiates "
-	"new rogues."]) );
+        "shack" : "It is not really a shack, but a fortress.",
+        "fortress" : "The rogues make this place their hideout.",
+        "light" : "Only rogues can pass beyond it.",
+        "stairs" : "They lead down into the heart of the rogue hideout.",
+        ({"rogue", "master", "grand master rogue"}) : "He initiates "
+        "new rogues."]) );
     SetExits( ([
-	"west" : "/domains/Praxis/rain_forest.c",
+        "west" : "/domains/Praxis/rain_forest.c",
       ]) );
     AddExit("down","/domains/Praxis/rogue_hall",(:go_down:));
 }
 
 int preview() {
     if((string)this_player()->query_class() != "explorer") {
-	write("This is not for you.");
-	return 1;
+        write("This is not for you.");
+        return 1;
     }
     say(this_player()->query_cap_name()+" seeks to learn about rogues.", this_player());
     write("Welcome, explorer!\n");
@@ -57,16 +57,16 @@ int preview() {
 
 int become(string str) {
     if(!str) {
-	notify_fail("Become what?\n");
-	return 0;
+        notify_fail("Become what?\n");
+        return 0;
     }
     if(str != "rogue") {
-	notify_fail("You cannot become that here.\n");
-	return 0;
+        notify_fail("You cannot become that here.\n");
+        return 0;
     }
     if((string)this_player()->query_class() != "explorer") {
-	write("You are much too old to start learning our ways now!");
-	return 1;
+        write("You are much too old to start learning our ways now!");
+        return 1;
     }
     write("The Grand Master Rogue initiates you into the class of rogues.");
     say(this_player()->query_cap_name()+" becomes a rogue.", this_player());
@@ -79,9 +79,9 @@ int become(string str) {
 
 int go_down() {
     if((string)this_player()->query_class() != "rogue") {
-	write("You cannot penetrate the force field that blocks the passage.");
-	say(this_player()->query_cap_name()+" tries to get into the heart of the fortress, but fails.", this_player());
-	return 0;
+        write("You cannot penetrate the force field that blocks the passage.");
+        say(this_player()->query_cap_name()+" tries to get into the heart of the fortress, but fails.", this_player());
+        return 0;
     }
     return 1;
 }

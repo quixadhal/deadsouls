@@ -15,8 +15,8 @@ int MustWield(int i){
 int eventShoot(mixed shooter, mixed target){
     string tmp;
     if(target && objectp(target)){
-	tmp=target->GetName();
-	target = tmp;
+        tmp=target->GetName();
+        target = tmp;
     }
     if(target) write("You shoot at "+target+" with your weapon.");
 
@@ -29,20 +29,20 @@ int CanShoot(object shooter, mixed target){
 
     if(living(shooter)) return 0;
     if(mustcarry > 0 && environment(this_object()) != this_player()) {
-	write("You are not holding the weapon.");
-	return 1;
+        write("You are not holding the weapon.");
+        return 1;
     } 
     if(mustwield > 0 && this_object()->GetWorn() == 0 && !creatorp(this_player())) {
-	write("You are not wielding the weapon.");
-	return 1;
+        write("You are not wielding the weapon.");
+        return 1;
     }
 
     if(!present(target,environment(this_player())) && !present(target,environment(this_object()))){
-	write("That target is not here.");
-	return 1;
+        write("That target is not here.");
+        return 1;
     }
     if(stringp(target) && !cible=present(target,environment(this_object()))){
-	cible=present(target,environment(this_player()));
+        cible=present(target,environment(this_player()));
     }
 
     if(objectp(target)) cible = target;
@@ -50,8 +50,8 @@ int CanShoot(object shooter, mixed target){
     attackable = cible->GetAttackable();
 
     if(!attackable || !intp(attackable) || attackable != 1){
-	write("You are unable to shoot "+objective(cible)+".");
-	return 0;
+        write("You are unable to shoot "+objective(cible)+".");
+        return 0;
     }
 
     if(this_object()->eventFireWeapon(shooter,cible)) return 1;

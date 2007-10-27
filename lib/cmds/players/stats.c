@@ -16,12 +16,12 @@ mixed cmd(string args) {
     ret = "You are " +(string)this_player()->GetShort() + ", level " +
     (int)this_player()->GetLevel();
     if( (tmp = (string)this_player()->GetClass()) ) 
-	ret += " " + capitalize(tmp);
+        ret += " " + capitalize(tmp);
     else ret += " Drifter";
     ret += " (" + (string)this_player()->GetRace() + ")\n";
     stats = map((string)this_player()->GetStats(),
       (: sprintf("%:-20s: %:-3d", $1, 
-	  (int)this_player()->GetStatLevel($1)) :));
+          (int)this_player()->GetStatLevel($1)) :));
     i = sizeof(stats);
     while(i--) if( (y = strlen(stats[i])) > x ) x = y;
     x = ((int *)this_player()->GetScreen())[0]/(x+2);

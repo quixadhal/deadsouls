@@ -37,10 +37,10 @@ int GetDeterioration() {
 
 string GetItemCondition() {
     if( Deterioration ) {
-	return "It has worn down completely.";
+        return "It has worn down completely.";
     }
     else {
-	return 0;
+        return 0;
     }
 }
 
@@ -52,9 +52,9 @@ string array GetSave() {
 int eventReceiveDamage(object agent, int type, int amt, int d, mixed array l) {
     DamagePoints -= (amt * 5);
     if( DamagePoints < 1 ) {
-	Deterioration++;
-	DamagePoints = MaxDamagePoints;
-	eventDeteriorate(type);
+        Deterioration++;
+        DamagePoints = MaxDamagePoints;
+        eventDeteriorate(type);
     }
     return amt;
 }

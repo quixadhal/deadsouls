@@ -13,7 +13,7 @@ mixed cmd(string args) {
     write("Wimpy mode: \t\t"+ ( ((int)this_player()->GetWimpy()) ? "on" : "off" ));
     write("Automap mode: \t\t"+ ( this_player()->GetProperty("automapping") ? "on" : "off" ));
     if(creatorp(this_player())){ 
-	write("Debug mode: \t\t"+ ( (this_player()->GetProperty("debug")) ? "on" : "off" ));
+        write("Debug mode: \t\t"+ ( (this_player()->GetProperty("debug")) ? "on" : "off" ));
     }
     return 1;
 }

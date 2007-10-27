@@ -13,13 +13,13 @@ static void create() {
       "north and south from here. You feel a slight breeze coming from the "+
       "north.");
     SetItems(([
-	({"wall","walls","corridor","hall"}) : "The thick, metal walls here are scarred "+
-	"and badly corroded. Wherever you are, it's seen heavy use in the distant past.",
-	({"lights","light","neon lights"}) : "Overhead neon lights. They appear on the "+
-	"verge of failure.",
-	({"floor","ground"}) : "The floor is composed of metal plates welded together, "+
-	"with raised traction cleats.",
-	({"cleat","cleats"}) : "Little raised bumps on the floor so you won't slip and fall.",
+        ({"wall","walls","corridor","hall"}) : "The thick, metal walls here are scarred "+
+        "and badly corroded. Wherever you are, it's seen heavy use in the distant past.",
+        ({"lights","light","neon lights"}) : "Overhead neon lights. They appear on the "+
+        "verge of failure.",
+        ({"floor","ground"}) : "The floor is composed of metal plates welded together, "+
+        "with raised traction cleats.",
+        ({"cleat","cleats"}) : "Little raised bumps on the floor so you won't slip and fall.",
       ]));
     AddExit("north","/domains/campus/room/access0");
     AddExit("south","/domains/campus/room/access2");

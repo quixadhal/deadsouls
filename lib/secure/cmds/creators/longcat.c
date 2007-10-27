@@ -10,10 +10,10 @@ mixed cmd(string str) {
     else str = absolute_path((string)this_player()->query_cwd(), str);
     if( !file_exists(str) ) return "File " + str + " not found.";
     else if( !(tmp = read_file(str)) )
-	return "Unable to read file " + str + ".";
+        return "Unable to read file " + str + ".";
     arr = explode(tmp,"\n");
     foreach(string line in arr){
-	message("system", line, this_player());
+        message("system", line, this_player());
     }
     return 1;
 }

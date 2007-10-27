@@ -38,15 +38,15 @@ varargs int CanCast(object who, int level, string limb, object array targs) {
     targ_rel = target->GetReligion(1);
     my_rel = who->GetReligion(1);
     if( !(int)target->GetUndead() ) {
-	who->eventPrint((string)target->GetName() + " is not undead!");
-	return 0;
+        who->eventPrint((string)target->GetName() + " is not undead!");
+        return 0;
     }
     if( (int)who->ClassMember("cleric") ) return 1;
     if( targ_rel != my_rel ) {
-	send_messages("are", "$target_name $target_verb not of ",
-	  "$agent_possessive faith.",
-	  who, target);
-	return 0;
+        send_messages("are", "$target_name $target_verb not of ",
+          "$agent_possessive faith.",
+          who, target);
+        return 0;
     }
     return spell::CanCast(who, level, limb, targs);
 }
@@ -56,19 +56,19 @@ varargs int eventCast(object who, int level, string limb, object array targs) {
     //int chance = level + random((int)who->GetSkillLevel("healing"));
 
     if( level < (30 + random(30)) ) {
-	target->AddStaminaPoints(-(int)target->GetStaminaPoints());
-	who->AddStaminaPoints(-(int)who->GetStaminaPoints());
-	who->eventPrint("You feel utterly drained as your "
-	  "spell of restoration goes awry.", target);
-	target->eventPrint("You feel a draining effect as " +
-	  possessive_noun(who) + " attempt to resurrect you "
-	  "goes awry.", who);
-	environment(who)->eventPrint( (string)who->GetCapName()+" and "+
-	  (string)target->GetCapName()+" both double over in pain "
-	  "as "+possessive_noun(who)+" spell fails.",
-	  ({ who, target }) );      
-	who->AddMagicPoints(-(int)who->GetMagicPoints());
-	return 0;
+        target->AddStaminaPoints(-(int)target->GetStaminaPoints());
+        who->AddStaminaPoints(-(int)who->GetStaminaPoints());
+        who->eventPrint("You feel utterly drained as your "
+          "spell of restoration goes awry.", target);
+        target->eventPrint("You feel a draining effect as " +
+          possessive_noun(who) + " attempt to resurrect you "
+          "goes awry.", who);
+        environment(who)->eventPrint( (string)who->GetCapName()+" and "+
+          (string)target->GetCapName()+" both double over in pain "
+          "as "+possessive_noun(who)+" spell fails.",
+          ({ who, target }) );      
+        who->AddMagicPoints(-(int)who->GetMagicPoints());
+        return 0;
     }
 
     send_messages(({ "bring" }), "$agent_name $agent_verb "

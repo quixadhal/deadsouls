@@ -28,34 +28,34 @@ static void create() {
 mixed can_marry_liv_to_liv() {
 
     if( (int)this_player()->GetSkillLevel("faith") < 5 )
-	return "You do not have enough faith to join to people.";
+        return "You do not have enough faith to join to people.";
     return 1;;
 }
 
 mixed do_marry_liv_to_liv(object spouse1, object spouse2) {
     mixed tmp;
     if( this_player() == spouse1 || this_player() == spouse2 )
-	return "You may not perform a marriage on yourself.";
+        return "You may not perform a marriage on yourself.";
     tmp = (mixed)environment(this_player())->CanMarry(this_player(),
       spouse1, spouse2);
     if( !tmp ) {
-	this_player()->eventPrint("This place is not holy to you.");
-	return 1;
+        this_player()->eventPrint("This place is not holy to you.");
+        return 1;
     }
     else if( stringp(tmp) ) {
-	this_player()->eventPrint(tmp);
-	return 1;
+        this_player()->eventPrint(tmp);
+        return 1;
     }
     tmp = (mixed)environment(this_player())->eventMarry(this_player(),
       spouse1, spouse2);
     if( tmp == 1 ) {
-	object ring;
+        object ring;
 
-	ring = new(OBJ_WED_RING);
-	ring->SetSpouse((string)spouse2->GetCapName());
-	ring->eventMove(spouse1);
-	ring = new(OBJ_WED_RING);
-	ring->SetSpouse((string)spouse1->GetCapName());
-	ring->eventMove(spouse2);
+        ring = new(OBJ_WED_RING);
+        ring->SetSpouse((string)spouse2->GetCapName());
+        ring->eventMove(spouse1);
+        ring = new(OBJ_WED_RING);
+        ring->SetSpouse((string)spouse1->GetCapName());
+        ring->eventMove(spouse2);
     }
 }

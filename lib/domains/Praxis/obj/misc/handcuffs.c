@@ -36,9 +36,9 @@ mixed *query_auto_load() {
 int all_cmds(string str) {
 
     if(member_array(query_verb(), ALLOWED_COMMANDS) == -1) {
-	message("say", "%^RED%^You cannot do that with the handcuffs on.",
-	  this_player());
-	return 1;
+        message("say", "%^RED%^You cannot do that with the handcuffs on.",
+          this_player());
+        return 1;
     }
     if(this_player()->query_ghost()) call_out("destroy_me", 0);
     return 0;

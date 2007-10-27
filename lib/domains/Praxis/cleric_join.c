@@ -23,19 +23,19 @@ void create() {
       "There is a passage north.");
     SetItems(
       (["church" : "It holds a small chapel for wedding ceremonies "
-	"west, and there is an inner sanctum for clerics north",
-	"chapel" : "The clerics of the church perform wedding "
-	"ceremonies there.",
-	"light" : "A %^BLUE%^blue%^RESET%^ light protects this place.",
-	"passage" : "It leads north into the cleric's inner sanctum."]) );
+        "west, and there is an inner sanctum for clerics north",
+        "chapel" : "The clerics of the church perform wedding "
+        "ceremonies there.",
+        "light" : "A %^BLUE%^blue%^RESET%^ light protects this place.",
+        "passage" : "It leads north into the cleric's inner sanctum."]) );
     SetExits( 
       (["east" : "/domains/Praxis/n_centre1"]) );
 }
 
 int preview() {
     if((string)this_player()->query_class() != "explorer") {
-	message("info", "This is not for you.", this_player());
-	return 1;
+        message("info", "This is not for you.", this_player());
+        return 1;
     }
     message("info", (string)this_player()->query_cap_name()+" seeks to learn about clerics.", this_object(), ({ this_player() }));
     message("info", "Welcome, explorer!", this_player());
@@ -51,16 +51,16 @@ int preview() {
 
 int become(string str) {
     if(!str) {
-	notify_fail("Become what?\n");
-	return 0;
+        notify_fail("Become what?\n");
+        return 0;
     }
     if(str != "cleric") {
-	notify_fail("You cannot become that here.\n");
-	return 0;
+        notify_fail("You cannot become that here.\n");
+        return 0;
     }
     if((string)this_player()->query_class() != "explorer") {
-	write("You are much too old to start learning our ways now!");
-	return 1;
+        write("You are much too old to start learning our ways now!");
+        return 1;
     }
     write("The High Priestess of Clerics initiates you into the class of clerics.");
     say(this_player()->query_cap_name()+" becomes a cleric.", this_player());
@@ -74,10 +74,10 @@ int become(string str) {
 int go_north(string str) {
     if(str !="north") return notify_fail("What?\n");
     if((string)this_player()->query_class() != "cleric") {
-	write("You cannot penetrate the force field that blocks the passage.");
-	say(this_player()->query_cap_name()+" tries to get into the "
-	  "church's inner sanctum, but fails.", this_player());
-	return 1;
+        write("You cannot penetrate the force field that blocks the passage.");
+        say(this_player()->query_cap_name()+" tries to get into the "
+          "church's inner sanctum, but fails.", this_player());
+        return 1;
     }
     this_player()->eventMoveLiving("/domains/Praxis/cleric_hall", "through the light in the passage");
     return 1;

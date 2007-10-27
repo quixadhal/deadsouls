@@ -28,8 +28,8 @@ mixed eventEquip(object who, string array limbs){
     mixed success = armor::eventEquip(who, limbs);
     object bearshadow = new("/shadows/bear");
     if(success){
-	tc("success");
-	bearshadow->eventShadow(who);
+        tc("success");
+        bearshadow->eventShadow(who);
     }
     else destruct(bearshadow);
     return success;
@@ -40,7 +40,7 @@ varargs mixed eventUnequip(object who) {
     if(!who) who = this_player();
     success = armor::eventUnequip(who);
     if(success){
-	who->unbearshadow();
+        who->unbearshadow();
     }
     return success;
 }

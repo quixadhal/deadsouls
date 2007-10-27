@@ -22,8 +22,8 @@ void create() {
 void CanReceive(object ob){
     ::CanReceive();
     if(ob->GetKeyName() != "357round") {
-	tell_object(this_player(),"This cardboard case is for .357 ammunition only.");
-	return;
+        tell_object(this_player(),"This cardboard case is for .357 ammunition only.");
+        return;
     }
 }
 void init(){

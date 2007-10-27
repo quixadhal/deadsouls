@@ -49,13 +49,13 @@ int GetUndead() {
 
 int SetUndead(int x) {
     if( GetUndead() == x ) {
-	return x;
+        return x;
     }
     if( x ) {
-	SetUndeadType("ghost");
+        SetUndeadType("ghost");
     }
     else {
-	SetUndeadType(0);
+        SetUndeadType(0);
     }
     return (Undead = x);
 }
@@ -67,15 +67,15 @@ mixed eventBite(object target) {
 
 mixed eventTurn(object who) {
     if( who ) {
-	environment()->eventPrint(GetName() + " is turned from the world of "
-	  "the living.", this_object());
-	eventPrint(who->GetName() +" turns you from the world of the living.");
-	who->eventDestroyEnemy(this_object());
+        environment()->eventPrint(GetName() + " is turned from the world of "
+          "the living.", this_object());
+        eventPrint(who->GetName() +" turns you from the world of the living.");
+        who->eventDestroyEnemy(this_object());
     }
     else {
-	environment()->eventPrint(GetName() + " is turned from the world "
-	  "of the living.", this_object());
-	eventPrint("You have been turned from the world of the living.");
+        environment()->eventPrint(GetName() + " is turned from the world "
+          "of the living.", this_object());
+        eventPrint("You have been turned from the world of the living.");
     }
     return 1;
 }
@@ -84,20 +84,20 @@ static void heart_beat() {
     string type;
 
     if( !GetUndead() ) {
-	return;
+        return;
     }
     type = GetUndeadType();
     if( random(100) + 1 > 90 ) {
-	if( type == "ghost" || type == "phantom" ) {
-	    eventPrint("You wail mournfully.");
-	    environment()->eventPrint(GetName() + " wails mournfully.",
-	      this_object());
-	}
-	else if( type == "zombie" || type == "ghoul" ) {
-	    eventPrint("You groan painfully.");
-	    environment()->eventPrint(GetName() + " groans painfully.",
-	      this_object());
-	}
+        if( type == "ghost" || type == "phantom" ) {
+            eventPrint("You wail mournfully.");
+            environment()->eventPrint(GetName() + " wails mournfully.",
+              this_object());
+        }
+        else if( type == "zombie" || type == "ghoul" ) {
+            eventPrint("You groan painfully.");
+            environment()->eventPrint(GetName() + " groans painfully.",
+              this_object());
+        }
     }
 }
 

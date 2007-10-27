@@ -25,7 +25,7 @@ static void create() {
     AddItem("road", "The main street for Ylsrim.", ({ "kaliid" }));
     SetObviousExits("e, w, enter hall");
     SetExits( ([ "east" : "/domains/Ylsrim/room/"+ "kaliid4",
-	"west" : "/domains/Ylsrim/room/"+ "kaliid6" ]));
+        "west" : "/domains/Ylsrim/room/"+ "kaliid6" ]));
     SetEnters( ([ "hall" : "/domains/Ylsrim/room/"+ "fighter_hall" ]));
 }
 void init(){

@@ -6,10 +6,10 @@ void set(mixed arg1, mixed arg2){
     arg1 = capitalize(arg1);
     if(!grepp(arg1,"/")) call_other( previous_object(), ({ "Set"+arg1, arg2 }) );
     else {
-	sscanf(arg1,"%s/%s",s1,s2);
-	arg1 = s1;
-	arg2 = "([\""+s2+"\":"+identify(arg2)+"])";
-	call_other( previous_object(), ({ "Set"+arg1, arg2 }) );
+        sscanf(arg1,"%s/%s",s1,s2);
+        arg1 = s1;
+        arg2 = "([\""+s2+"\":"+identify(arg2)+"])";
+        call_other( previous_object(), ({ "Set"+arg1, arg2 }) );
     }
     return;
 }
@@ -19,10 +19,10 @@ void add(mixed arg1, mixed arg2){
     arg1 = capitalize(arg1);
     if(!grepp(arg1,"/")) call_other( previous_object(), ({ "Add"+arg1, arg2 }) );
     else {
-	sscanf(arg1,"%s/%s",s1,s2);
-	arg1 = s1;
-	arg2 = "([\""+s2+"\":"+identify(arg2)+"])";
-	call_other( previous_object(), ({ "Add"+arg1, arg2 }) );
+        sscanf(arg1,"%s/%s",s1,s2);
+        arg1 = s1;
+        arg2 = "([\""+s2+"\":"+identify(arg2)+"])";
+        call_other( previous_object(), ({ "Add"+arg1, arg2 }) );
     }
     return;
 }

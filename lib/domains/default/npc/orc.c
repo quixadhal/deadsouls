@@ -17,7 +17,7 @@ static void create() {
     SetMaxHealthPoints(100);
     SetEncounter(0);
     SetInventory(([
-	"/domains/default/weap/axe":"wield axe",
+        "/domains/default/weap/axe":"wield axe",
       ]) );
 
 }

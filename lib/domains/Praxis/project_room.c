@@ -17,12 +17,12 @@ void init() {
 void create() {
     ::create();
     SetProperties( ([
-	"light" : 2, 
-	"no kill" : 1,
-	"no steal" : 1,
-	"no magic" : 1,
-	"no teleport" : 1,
-	"no castle" : 1
+        "light" : 2, 
+        "no kill" : 1,
+        "no steal" : 1,
+        "no magic" : 1,
+        "no teleport" : 1,
+        "no castle" : 1
       ]) );
     SetShort("Project Room");
     SetLong("Welcome to the Project Tracking Department!\n"
@@ -34,8 +34,8 @@ void create() {
 
 int start_fun(string group) {
     if(!group) {
-	message("my_action", "Start what?", this_player());
-	return 1;
+        message("my_action", "Start what?", this_player());
+        return 1;
     }
     //if(!PROJECT_D->add_group(group, (string)this_player()->query_name()))
     //   return notify_fail("Error in the daemon.\n");
@@ -46,7 +46,7 @@ int start_fun(string group) {
 
 int list_fun(string which) {
     if(!which)
-	return notify_fail("List what?\n");
+        return notify_fail("List what?\n");
     if(which == "groups")
-	return;
+        return;
 }

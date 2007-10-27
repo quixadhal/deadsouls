@@ -12,17 +12,17 @@ mixed cmd(string args) {
     alphabet += ({ "\\", "\/", "\|" });
 
     if(!archp(previous_object()) || this_player()->GetForced()){
-	return "No.";
+        return "No.";
     }
 
     if(!args || args == "" || args == "/domains" || args == "/domains/" ||
       args == "domain"){
-	write(this_object()->GetHelp());
-	return 1;
+        write(this_object()->GetHelp());
+        return 1;
     }
 
     if(first(args, 9) == "/domains/"){
-	domain_path = args;
+        domain_path = args;
     }
     else domain_path = "/domains/"+args;
 
@@ -30,7 +30,7 @@ mixed cmd(string args) {
     if(last(args,1) == "/") args = truncate(args,1);
 
     foreach(string booboo in alphabet){
-	args = replace_string(args, booboo, "_");
+        args = replace_string(args, booboo, "_");
     }
 
     domain_path = "/domains/"+args;
@@ -38,16 +38,16 @@ mixed cmd(string args) {
     write("Domain path is: "+domain_path);
 
     if(directory_exists(domain_path)){
-	write("That domain already exists.");
-	return 1;
+        write("That domain already exists.");
+        return 1;
     }
 
     mkdir(domain_path);
 
     foreach(string dir in subdirs){
-	string newdir = domain_path + "/" + dir;
-	write("Creating: "+newdir);
-	mkdir(newdir);
+        string newdir = domain_path + "/" + dir;
+        write("Creating: "+newdir);
+        mkdir(newdir);
     }
 
     cp("/obj/room.c",domain_path+"/room/start.c");

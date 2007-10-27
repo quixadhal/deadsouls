@@ -18,7 +18,7 @@ static void create() {
 
 mixed can_mount_liv() {
     if(this_player()->CanManipulate()) 
-	return bool_reverse(this_player()->GetParalyzed());
+        return bool_reverse(this_player()->GetParalyzed());
 }
 
 mixed do_mount_liv(object ob) {

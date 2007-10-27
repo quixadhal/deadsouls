@@ -38,17 +38,17 @@ string GetRace(){
 int eventShadow(object whom){
     object *shadows = keys(whom->GetShadows());
     if(sizeof(shadows)){
-	foreach(object shade in shadows){
-	    if(base_name(shade) == base_name(me)) return 0;
-	}
+        foreach(object shade in shadows){
+            if(base_name(shade) == base_name(me)) return 0;
+        }
     }
     if(base_name(previous_object()) == "/domains/town/armor/bearsuit"){
-	pre_shadowed_id = whom->GetCanonicalId();
-	if(!sizeof(pre_shadowed_id)) pre_shadowed_id = whom->GetId();
-	::eventShadow(whom);
-	SetId(pre_shadowed_id + ({ "bear", "brown bear" }));
-	parse_refresh();
-	return 1;
+        pre_shadowed_id = whom->GetCanonicalId();
+        if(!sizeof(pre_shadowed_id)) pre_shadowed_id = whom->GetId();
+        ::eventShadow(whom);
+        SetId(pre_shadowed_id + ({ "bear", "brown bear" }));
+        parse_refresh();
+        return 1;
     }
     return 0;
 }

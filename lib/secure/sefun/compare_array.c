@@ -10,11 +10,11 @@ int compare_array(mixed *arr1, mixed *arr2){
     if(sizeof(temparr1) != sizeof(temparr2)) return 0;
 
     foreach(mixed item in temparr1){
-	if(member_array(item, temparr2) == -1) return 0;
+        if(member_array(item, temparr2) == -1) return 0;
     }
 
     foreach(mixed item2 in temparr2){
-	if(member_array(item2, temparr1) == -1) return 0;
+        if(member_array(item2, temparr1) == -1) return 0;
     }
 
     return 1;

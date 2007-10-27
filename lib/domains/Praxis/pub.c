@@ -23,37 +23,37 @@ void create() {
       "rogues of this land.");
     SetItems(
       (["pub" : "The most hoppin' place in Praxis.",
-	"wall" : "The walls are covered with various pictures.",
-	({ "posters", "poster", "wanted posters" }) :
-	"The wanted posters are very old and brittle. They mark "
-	"the faces of the rogues of this land.",
-	({ "pictures" , "picture" }) :
-	"The pictures are of different parts of Nightmare, painted "
-	"by several of the villages' aspiring artists.",
-	"bar" : "The bar is actually Lars' Tavern. It is a very "
-	"clean and well run establishment.",
-	"counter" : "The wooden counter stands at the back of the "
-	"room and houses all of Lars' drinks.",
-	"room" : "You are in the main room of Lars' Tavern.",
-	"foo" : "bar",
-	"tavern" : "The tavern is the place that the people of "
-	"Praxis come to when they want to have a drink or just "
-	"be social.",
-	"floor" : "The floor is made out of solid oak.",
-	"list" : "It looks like a list of drinks. Read it to see "
-	"what's available."]) );
+        "wall" : "The walls are covered with various pictures.",
+        ({ "posters", "poster", "wanted posters" }) :
+        "The wanted posters are very old and brittle. They mark "
+        "the faces of the rogues of this land.",
+        ({ "pictures" , "picture" }) :
+        "The pictures are of different parts of Nightmare, painted "
+        "by several of the villages' aspiring artists.",
+        "bar" : "The bar is actually Lars' Tavern. It is a very "
+        "clean and well run establishment.",
+        "counter" : "The wooden counter stands at the back of the "
+        "room and houses all of Lars' drinks.",
+        "room" : "You are in the main room of Lars' Tavern.",
+        "foo" : "bar",
+        "tavern" : "The tavern is the place that the people of "
+        "Praxis come to when they want to have a drink or just "
+        "be social.",
+        "floor" : "The floor is made out of solid oak.",
+        "list" : "It looks like a list of drinks. Read it to see "
+        "what's available."]) );
     SetExits( 
       (["north" : "/domains/Praxis/w_boc_la1",
-	"east" : "/domains/Praxis/s_centre1"]) );
+        "east" : "/domains/Praxis/s_centre1"]) );
     SetProperties( ([  "no castle": 1, "no attack" : 1 ]) );
 }
 
 void reset() {
     ::reset();
     if(!present("list")) 
-	//new("std/obj/player_list")->move(this_object());
-	if(!present("lars")) 
-	    new("/domains/Praxis/obj/mon/lars")->move(this_object());
+        //new("std/obj/player_list")->move(this_object());
+        if(!present("lars")) 
+            new("/domains/Praxis/obj/mon/lars")->move(this_object());
 }
 
 int read(string str) {
@@ -62,8 +62,8 @@ int read(string str) {
 
     ob = present("lars");
     if(!ob) {
-	write("You cannot read the menu, as it is splattered with blood.");
-	return 1;
+        write("You cannot read the menu, as it is splattered with blood.");
+        return 1;
     }
     message("Ninfo", "The following classic drinks are served at the Lars Pub!\n", this_player());
     message("Ninfo", "-----------------------------------------------------------\n", this_player());

@@ -28,20 +28,20 @@ static void create() {
       "It seems that the doctor's work area is "
       "west of here. Tavern Road is east.");
     SetItems( ([
-	({"list","list on the wall"}) : "A list of available procedures",
-	"wall" : "A flat, vertical structure supporting the ceiling.",
-	({"work area","doctor's work area"}) : "It is west of here.",
-	({"road","tavern road"}) : "The road is outside, east of here."
+        ({"list","list on the wall"}) : "A list of available procedures",
+        "wall" : "A flat, vertical structure supporting the ceiling.",
+        ({"work area","doctor's work area"}) : "It is west of here.",
+        ({"road","tavern road"}) : "The road is outside, east of here."
       ]) );
     SetRead( ({"list","list on wall"}) , (: ReadList :) );
     SetInventory(([
-	"/domains/town/obj/bbucket" :1,
-	"/domains/town/npc/james" :1
+        "/domains/town/obj/bbucket" :1,
+        "/domains/town/npc/james" :1
       ]) );
     SetExits( ([
-	"east" : "/domains/town/room/road",
-	"out" : "/domains/town/room/road",
-	"west" : "/domains/town/room/chamber",
+        "east" : "/domains/town/room/road",
+        "out" : "/domains/town/room/road",
+        "west" : "/domains/town/room/chamber",
       ]) );
     SetProperty("no attack", 1);
 

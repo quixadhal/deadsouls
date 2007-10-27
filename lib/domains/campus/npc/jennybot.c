@@ -10,18 +10,18 @@ string *watchlist;
 string LongDesc(){
     string ret;
     if(!active){
-	ret = "On closer inspection, this attractive "+
-	"young lady is no lady at all...she's an android! "+
-	"She appears to be totally motionless and frozen "+
-	"in place, with a friendly smile. Perhaps you "+
-	"can make her do something by typing: activate bot ";
+        ret = "On closer inspection, this attractive "+
+        "young lady is no lady at all...she's an android! "+
+        "She appears to be totally motionless and frozen "+
+        "in place, with a friendly smile. Perhaps you "+
+        "can make her do something by typing: activate bot ";
     }
     else {
-	ret = "On closer inspection, this attractive "+
-	"young lady is no lady at all...she's an android! "+
-	"She appears to be in the middle of giving an orientation "+
-	"on this mud, with bizarrely friendly mannerisms. Perhaps you "+
-	"can make her be quiet by typing: deactivate bot ";
+        ret = "On closer inspection, this attractive "+
+        "young lady is no lady at all...she's an android! "+
+        "She appears to be in the middle of giving an orientation "+
+        "on this mud, with bizarrely friendly mannerisms. Perhaps you "+
+        "can make her be quiet by typing: deactivate bot ";
     }
     return ret;
 }
@@ -37,19 +37,19 @@ static void create(){
     SetShort("a polite young woman");
     SetLong( (: LongDesc :) );
     SetInventory(([
-	"/domains/campus/armor/pillbox_hat" : "wear hat",
-	"/domains/campus/armor/wglove_r" : "wear white right glove",
-	"/domains/campus/armor/wglove_l" : "wear white left glove",
-	"/domains/campus/armor/necklace" : "wear necklace on neck",
-	"/domains/campus/armor/bluedress" : "wear dress",
+        "/domains/campus/armor/pillbox_hat" : "wear hat",
+        "/domains/campus/armor/wglove_r" : "wear white right glove",
+        "/domains/campus/armor/wglove_l" : "wear white left glove",
+        "/domains/campus/armor/necklace" : "wear necklace on neck",
+        "/domains/campus/armor/bluedress" : "wear dress",
       ]));
     SetMelee(1);
     SetLevel(99);
     SetRace("android");
     SetAction(1, ({
-	"Jenny straightens her hair.",
-	"Jenny the guide bot touches up her rouge a bit.", 
-	"Jenny smiles."}));
+        "Jenny straightens her hair.",
+        "Jenny the guide bot touches up her rouge a bit.", 
+        "Jenny smiles."}));
     AddCommandResponse("shutdown", (: eventTurnOff :));
     AddCommandResponse("shut down", (: eventTurnOff :) );
     AddCommandResponse("shut up", (: eventTurnOff :));
@@ -67,7 +67,7 @@ varargs int eventGreet(string newbie){
     object noob;
     string guy,prespiel,spiel;
     if((!newbie || newbie == "") || !noobster){
-	return 0;
+        return 0;
     }
     if(!newbie || newbie == "") newbie = noobster->GetKeyName();
     if(newbie && newbie != "there") noob = find_player(newbie);
@@ -90,14 +90,14 @@ int eventCheckNoob(){
     object array people;
     people=(get_livings(environment(this_object()),1));
     if(sizeof(people)){
-	foreach(object dude in people){
-	    int greeted;
-	    greeted = dude->GetProperty("greeted");
-	    if(!greeted && dude->GetLevel() < 2 ) {
-		greeting = 1;
-		noobster = dude;
-	    }
-	}
+        foreach(object dude in people){
+            int greeted;
+            greeted = dude->GetProperty("greeted");
+            if(!greeted && dude->GetLevel() < 2 ) {
+                greeting = 1;
+                noobster = dude;
+            }
+        }
     }
     return 1;
 }
@@ -112,12 +112,12 @@ int next_tip(string str){
     if(!str) return 0;
     if(str=="") return 0;
     if(str="tip"){
-	if(active != 1) { write("Jennybot is not active."); return 1; }
-	if(tip == tipnumber) ob->eventForce("say Sorry. No more tips.");
-	else {
-	    this_object()->eventDoTip(tip);
-	}
-	return 1;
+        if(active != 1) { write("Jennybot is not active."); return 1; }
+        if(tip == tipnumber) ob->eventForce("say Sorry. No more tips.");
+        else {
+            this_object()->eventDoTip(tip);
+        }
+        return 1;
     }
 }
 int refreshlist(){
@@ -125,8 +125,8 @@ int refreshlist(){
     playername = this_player()->GetName();
     watchlist=explode(read_file("/domains/campus/txt/moochers.txt"),":");
     if(member_array(playername,watchlist) != -1) {
-	mooch = 1;
-	return 1;
+        mooch = 1;
+        return 1;
     }
     watchlist = ({ playername }) + watchlist;
     watchline = implode(watchlist,":");
@@ -135,14 +135,14 @@ int refreshlist(){
 }
 int eventTurnOff(){
     if( active == 0 ){
-	write("Jennybot is already inactive.");
+        write("Jennybot is already inactive.");
     }
     //set_heart_beat(0);
     tip = 0;
     if( active != 0) {
-	tell_room(environment(this_object()),"Jenny nods and becomes motionless again, "+
-	  "her expression now fixed and staring out into "+
-	  "space.");
+        tell_room(environment(this_object()),"Jenny nods and becomes motionless again, "+
+          "her expression now fixed and staring out into "+
+          "space.");
     }
     active=0;
     return 1;
@@ -152,8 +152,8 @@ int eventTurnOn(){
     player=this_player();
     name=this_player()->GetName();
     if(active==1){
-	write("Jennybot has already been activated.");
-	return 1;
+        write("Jennybot has already been activated.");
+        return 1;
     }
     refreshlist();
     active=1;
@@ -174,63 +174,63 @@ int eventTurnOn(){
 }
 int eventAct4(){
     if(!new("/domains/campus/obj/note")->eventMove(this_object())){
-	tell_room(environment(this_object()),"Oops! There's a bug, "+
-	  "and I don't have a note for you. Let's pretend I gave you "+
-	  "one and move on. Please email Cratylus about this, though.");
-	return 1;
+        tell_room(environment(this_object()),"Oops! There's a bug, "+
+          "and I don't have a note for you. Let's pretend I gave you "+
+          "one and move on. Please email Cratylus about this, though.");
+        return 1;
     }
     if(player && environment(this_object()) == environment(player)) {
-	eventForce("give note to "+player->GetName());
+        eventForce("give note to "+player->GetName());
     }
     return 1;
 }
 int eventAct6(){
     if(!new("/domains/campus/obj/map")->eventMove(this_object())){ 
-	tell_room(environment(this_object()),"Oops! There's a bug, "+
-	  "and I don't have a map for you. Let's pretend I gave you "+ 
-	  "one and move on. Please email Cratylus about this, though."); 
-	return 1;
+        tell_room(environment(this_object()),"Oops! There's a bug, "+
+          "and I don't have a map for you. Let's pretend I gave you "+ 
+          "one and move on. Please email Cratylus about this, though."); 
+        return 1;
     }
     if(player && environment(this_object()) == environment(player)) {
-	eventForce("give map to "+player->GetName());
+        eventForce("give map to "+player->GetName());
     }
     return 1;
 }
 int eventAct8(){
     if(mooch == 1 || !new("/domains/campus/armor/newbie_cap")->eventMove(this_object())){
-	tell_room(environment(this_object()),"Oops! There's a bug, "+
-	  "and I don't have a hat for you. Let's pretend I gave you "+
-	  "one and move on. Please email Cratylus about this, though.");
+        tell_room(environment(this_object()),"Oops! There's a bug, "+
+          "and I don't have a hat for you. Let's pretend I gave you "+
+          "one and move on. Please email Cratylus about this, though.");
     }
     if(mooch == 1 || !new("/domains/campus/obj/squirtbag")->eventMove(this_object())){
-	tell_room(environment(this_object()),"Oops! There's a bug, "+
-	  "and I don't have a bag for you. Let's pretend I gave you "+
-	  "one and move on. Please email Cratylus about this, though.");
+        tell_room(environment(this_object()),"Oops! There's a bug, "+
+          "and I don't have a bag for you. Let's pretend I gave you "+
+          "one and move on. Please email Cratylus about this, though.");
     }
     if(player && environment(this_object()) == environment(player)) {
-	eventForce("give cap to "+player->GetName());
+        eventForce("give cap to "+player->GetName());
     }
     if(player && environment(this_object()) == environment(player)) {
-	eventForce("give bag to "+player->GetName());
+        eventForce("give bag to "+player->GetName());
     }
     return 1;
 }
 int eventAct9(){
     eventForce("smile "+player->GetName());
     if(!new("/domains/campus/meals/badapple")->eventMove(this_object())){
-	tell_room(environment(this_object()),"Oops! There's a bug, "+
-	  "and I don't have a rotten apple for you. Let's pretend I gave you "+
-	  "one and move on. Please email Cratylus about this, though.");
+        tell_room(environment(this_object()),"Oops! There's a bug, "+
+          "and I don't have a rotten apple for you. Let's pretend I gave you "+
+          "one and move on. Please email Cratylus about this, though.");
     }
     if(!new("/domains/campus/meals/apple")->eventMove(this_object())){
-	tell_room(environment(this_object()),"Oops! There's a bug, "+
-	  "and I don't have an apple for you. Let's pretend I gave you "+
-	  "one and move on. Please email Cratylus about this, though.");
+        tell_room(environment(this_object()),"Oops! There's a bug, "+
+          "and I don't have an apple for you. Let's pretend I gave you "+
+          "one and move on. Please email Cratylus about this, though.");
     }
     if(player && environment(this_object()) == environment(player)) {
-	eventForce("give first apple to "+player->GetName());
-	eventForce("give my apple to "+player->GetName());
-	return 1;
+        eventForce("give first apple to "+player->GetName());
+        eventForce("give my apple to "+player->GetName());
+        return 1;
     }
 }
 int eventAct11(){
@@ -245,7 +245,7 @@ int eventSwitch(int arg){
     case 9:eventAct9();break;
     case 11:eventAct11();break;
     default:write("");break;
-	return 1;
+        return 1;
     }
 }
 int eventDoTip(int i){
@@ -253,8 +253,8 @@ int eventDoTip(int i){
     hb=0;
     eventSwitch(i);
     if(tip > tipnumber) {
-	this_object()->eventTurnOff("bot");
-	return 1;
+        this_object()->eventTurnOff("bot");
+        return 1;
     }
     tell_room(environment(this_object()),read_file("/domains/campus/txt/jenny/"+i+".txt"));
 
@@ -263,10 +263,10 @@ void heart_beat(){
     hb++;
     if(greeting) greetwait++;
     if(noobster && greetwait > 0){
-	eventGreet();
-	noobster = 0;
-	greetwait = 0;
-	greeting = 0;
+        eventGreet();
+        noobster = 0;
+        greetwait = 0;
+        greeting = 0;
     }
     if(hb > 20 && active) eventDoTip(tip);
 }

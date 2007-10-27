@@ -13,19 +13,19 @@ static void create() {
       "circular marble staircase leads up to the "
       "second floor."); 
     SetItems( ([
-	"hallway" : "An interior area providing access to "
-	"other places in the house.",
-	({"mansion","house"}) : "You are in a beautiful mansion.",
-	({"stairs","staircase"}) : "A marvelously sculpted "
-	"series of steps spiraling upward to the "
-	"second floor. It is carved from marble."
+        "hallway" : "An interior area providing access to "
+        "other places in the house.",
+        ({"mansion","house"}) : "You are in a beautiful mansion.",
+        ({"stairs","staircase"}) : "A marvelously sculpted "
+        "series of steps spiraling upward to the "
+        "second floor. It is carved from marble."
       ]) );
 
     SetExits( ([
-	"north" : "/domains/town/room/mansion_dhall2",
-	"up" : "/domains/town/room/mansion_uhall3",
-	"east" : "/domains/town/room/mansion_room7",
-	"west" : "/domains/town/room/mansion_room8"
+        "north" : "/domains/town/room/mansion_dhall2",
+        "up" : "/domains/town/room/mansion_uhall3",
+        "east" : "/domains/town/room/mansion_room7",
+        "west" : "/domains/town/room/mansion_room8"
       ]) );
 }
 void init(){

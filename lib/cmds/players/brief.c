@@ -9,10 +9,10 @@ inherit LIB_DAEMON;
 
 mixed cmd(string str) {
     if( !sizeof(str) )
-	return "Syntax: brief <on or off>";
+        return "Syntax: brief <on or off>";
     str = lower_case(str);
     if( str != "on" && str != "off" )
-	return "You can only turn brief 'on' or 'off'";
+        return "You can only turn brief 'on' or 'off'";
     this_player()->SetBriefMode(str == "on");
     message("system",
       "Brief mode turned "+str+".",

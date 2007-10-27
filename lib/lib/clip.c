@@ -20,28 +20,28 @@ int CanReceive(object ob){
     string *namen;
     namen=ob->GetId();
     if(member_array("bullet",namen) == -1){
-	write("Only bullets fit into the magazine.");
-	return 0;
+        write("Only bullets fit into the magazine.");
+        return 0;
     }
     if(ob->GetAmmoType() != this_object()->GetAmmoType() ){
-	write("That round is not the correct type for the magazine.");
-	return 0;
+        write("That round is not the correct type for the magazine.");
+        return 0;
     }
     if(ob->GetMillimeter() != this_object()->GetMillimeter() ){
-	write("That round is not the correct size for the magazine.");
-	return 0;
+        write("That round is not the correct size for the magazine.");
+        return 0;
     }
     if(ob->GetCaliber() != this_object()->GetCaliber() ){
-	write("That round is not the correct caliber for the magazine.");
-	return 0;
+        write("That round is not the correct caliber for the magazine.");
+        return 0;
     }
     if(ob->GetPistolType() != "auto" && ob->GetRifleType() != "auto"){
-	write("That round is not a semiautomatic round.");
-	return 0;
+        write("That round is not a semiautomatic round.");
+        return 0;
     }
     if(ammo == MaxAmmo){
-	write("The magazine is filled to capacity.");
-	return 0;
+        write("The magazine is filled to capacity.");
+        return 0;
     }
     ammo++;
     return 1;

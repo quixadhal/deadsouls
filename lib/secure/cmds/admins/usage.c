@@ -14,7 +14,7 @@ mixed cmd(string str) {
     cles = keys(info);
 
     foreach(string schlussel in cles){
-	write(schlussel + ": "+info[schlussel]);
+        write(schlussel + ": "+info[schlussel]);
     }
 
     x = (info["utime"] + info["stime"])/1000;

@@ -18,7 +18,7 @@ static void create() {
       "and a pub.  The central area of the Bazaar is just north of "
       "here.");
     SetInventory(([
-	"/domains/Ylsrim/npc/traveler" : 1,
+        "/domains/Ylsrim/npc/traveler" : 1,
       ]));
     AddItem("pub", "You can buy yourself an ale from one of Ylsrim's most "
       "respected residents.", ({ "lars" }));
@@ -27,7 +27,7 @@ static void create() {
     SetObviousExits("n, enter pub");
     SetExits( ([ "north" : "/domains/Ylsrim/room/"+ "bazaar" ]) );
     SetEnters( ([ 
-	"pub" : "/domains/Ylsrim/room/"+ "pub" ]) );
+        "pub" : "/domains/Ylsrim/room/"+ "pub" ]) );
 }
 void init(){
     ::init();

@@ -8,11 +8,11 @@ int Spent(){
     string *tmp;
     if(rechargeable == 1) return 1;
     if(!charge || charge <= 0){
-	charge = 0;
-	SetShort("a spent power cell");
-	tmp = GetAdjectives();
-	tmp += ({"spent", "empty", "drained", "used"});
-	SetAdjectives(tmp);
+        charge = 0;
+        SetShort("a spent power cell");
+        tmp = GetAdjectives();
+        tmp += ({"spent", "empty", "drained", "used"});
+        SetAdjectives(tmp);
     }
     return 1;
 }
@@ -80,8 +80,8 @@ int eventCharge(int i){
 
 int eventUse(int i){
     if(i == 0) {
-	set_heart_beat(0);
-	return 1;
+        set_heart_beat(0);
+        return 1;
     }
     if(!drainable) drainable = 1;
     if(drainable && drainable == 0) drainrate = 0;

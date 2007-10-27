@@ -21,9 +21,9 @@ void create() {
       "runs Sun Alley." );
     SetItems(
       (["restaurant" : "The Last Dragon Restaurant, home of "
-	"great Praxian cuisine.",
-	"wall" : "The menu is posted there.",
-	"menu" : "You may read it if you like."]) );
+        "great Praxian cuisine.",
+        "wall" : "The menu is posted there.",
+        "menu" : "You may read it if you like."]) );
     SetExits( 
       (["north" : "/domains/Praxis/sun2"]) );
 }
@@ -31,7 +31,7 @@ void create() {
 void reset() {
     ::reset();
     if(!present("waitress")) 
-	new("/domains/Praxis/obj/mon/waitress")->move(this_object());
+        new("/domains/Praxis/obj/mon/waitress")->move(this_object());
 }
 
 int read(string str) {
@@ -40,8 +40,8 @@ int read(string str) {
 
     ob = present("waitress");
     if(!ob) {
-	write("You cannot read the menu, as it is splattered with blood.");
-	return 1;
+        write("You cannot read the menu, as it is splattered with blood.");
+        return 1;
     }
     write("The following great foods are served here at the Last Dragon Restaurant.");
     write("--------------------------------------------------------------------");

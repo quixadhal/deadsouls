@@ -7,17 +7,17 @@ int cmd(string str) {
     object ob;
 
     if(!archp(previous_object())) {
-	write("Only an arch may halt a monitoring process.");
-	return 0;
+        write("Only an arch may halt a monitoring process.");
+        return 0;
     }
     if( !str || str == "" ) {
-	write("Unmonitor whom?\n");
+        write("Unmonitor whom?\n");
     }
     else if(!user_exists(str))
-	write(str+": no such player.\n");
+        write(str+": no such player.\n");
     else{
-	SNOOP_D->RemoveMonitor(this_player(), str);
-	write("The snoop daemon has received your request.");
+        SNOOP_D->RemoveMonitor(this_player(), str);
+        write("The snoop daemon has received your request.");
     }
     return 1;
 }

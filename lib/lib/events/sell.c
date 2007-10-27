@@ -14,7 +14,7 @@ mixed CanSell(object seller) {
 
 mixed direct_sell_obj_to_liv() {
     if( environment() != this_player() ) {
-	return "#You don't have that!";
+        return "#You don't have that!";
     }
     return CanSell(this_player());
 }

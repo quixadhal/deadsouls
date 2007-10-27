@@ -37,7 +37,7 @@ static void create() {
       "the position of the town's Adventurers' Guild master. "
       "If you feel you deserve it, \"ask dirk to advance\".");
     SetInventory(([
-	"/domains/town/armor/collar" : "wear collar",
+        "/domains/town/armor/collar" : "wear collar",
       ]));
     SetLevel(15);
     SetRace("human");
@@ -45,7 +45,7 @@ static void create() {
     SetAction(5, (: TalkFunc :));
     AddTalkResponse("hello", "hi!");
     SetCommandResponses( ([ 
-	"advance": (: AdvanceDude :) 
+        "advance": (: AdvanceDude :) 
       ]) );
     advancement = ([ 
       1:(["title":"the utter novice","xp":0,"qp":0]),
@@ -85,21 +85,21 @@ int AdvanceDude(mixed arg){
     statlist = this_player()->GetStats();
 
     if(this_player()->GetKeyName() == "guest"){
-	this_object()->eventForce("say I don't promote temporary players.");
-	return 1;
+        this_object()->eventForce("say I don't promote temporary players.");
+        return 1;
     }
 
     if(!level = this_player()->GetLevel()){
-	this_object()->eventForce("say You are confusing me.");
-	return 1;
+        this_object()->eventForce("say You are confusing me.");
+        return 1;
     }
 
     if(level > 19){
-	this_object()->eventForce("say Whoa there, big "
-	  "stuff. Advancement past level 20 is the "
-	  "purview of the Trans-Human Elder Guild. "
-	  "I'm sorry but I can't help you.");
-	return 1;
+        this_object()->eventForce("say Whoa there, big "
+          "stuff. Advancement past level 20 is the "
+          "purview of the Trans-Human Elder Guild. "
+          "I'm sorry but I can't help you.");
+        return 1;
     }
 
     xp = this_player()->GetExperiencePoints();
@@ -114,26 +114,26 @@ int AdvanceDude(mixed arg){
       required_qp+" quest points.");
 
     if( xp > required_xp-1 && qp > required_qp-1){
-	this_object()->eventForce("say Congratulations! "
-	  "You are promoted to level "+desired_level+" and "
-	  "have earned the name "+this_player()->GetName()+" "
-	  +advancement[desired_level]["title"]+".");
+        this_object()->eventForce("say Congratulations! "
+          "You are promoted to level "+desired_level+" and "
+          "have earned the name "+this_player()->GetName()+" "
+          +advancement[desired_level]["title"]+".");
 
-	this_player()->ChangeLevel(desired_level);
-	this_player()->AddTrainingPoints(desired_level);
-	this_player()->AddTitle(advancement[desired_level]["title"]);
-	this_player()->RemoveTitle(advancement[desired_level-1]["title"]);
+        this_player()->ChangeLevel(desired_level);
+        this_player()->AddTrainingPoints(desired_level);
+        this_player()->AddTitle(advancement[desired_level]["title"]);
+        this_player()->RemoveTitle(advancement[desired_level-1]["title"]);
 
-	this_player()->save_player((string)this_player()->GetKeyName());
+        this_player()->save_player((string)this_player()->GetKeyName());
 
-	return 1;
+        return 1;
     }
 
     else this_object()->eventForce("say I'm sorry, "+
-	  this_player()->GetName()+", but you have not "
-	  "fulfilled all the requirements of level "+
-	  desired_level+". Please come back and try "
-	  "again once you have fulfilled them.");
+          this_player()->GetName()+", but you have not "
+          "fulfilled all the requirements of level "+
+          desired_level+". Please come back and try "
+          "again once you have fulfilled them.");
     return 0;
 }
 

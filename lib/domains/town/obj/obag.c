@@ -19,12 +19,12 @@ static void create() {
     SetClosed(1);
     SetMaxCarry(450);
     SetInventory(([
-	"/domains/town/armor/jacket" : 1,
-	"/domains/town/armor/pants" : 1,
-	"/domains/town/armor/mhelmet" : 1,
-	"/domains/town/armor/glove_l" : 1,
-	"/domains/town/armor/glove_r" : 1,
-	"/domains/town/armor/tshirt" : 1,
+        "/domains/town/armor/jacket" : 1,
+        "/domains/town/armor/pants" : 1,
+        "/domains/town/armor/mhelmet" : 1,
+        "/domains/town/armor/glove_l" : 1,
+        "/domains/town/armor/glove_r" : 1,
+        "/domains/town/armor/tshirt" : 1,
       ]) );
 }
 void init(){

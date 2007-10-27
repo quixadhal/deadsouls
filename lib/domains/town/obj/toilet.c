@@ -20,9 +20,9 @@ void init(){
 }
 int flush(string str){
     if(!str || str == "" ||str == "toilet"){
-	write("ba-WHOOSH!");
-	say(this_player()->GetName()+" flushes the toilet. ba-WHOOSH!");
-	return 1;
+        write("ba-WHOOSH!");
+        say(this_player()->GetName()+" flushes the toilet. ba-WHOOSH!");
+        return 1;
     }
     else return 0;
 }

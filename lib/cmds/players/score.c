@@ -44,35 +44,35 @@ mixed eventScore() {
     str  = ({ "You are "+(string)this_player()->GetShort() + " (" +
       (string)this_player()->GetMoralityDescription() + ")." });
     str += ({ sprintf("You are a level %d %s%s %s.",
-	(int)this_player()->GetLevel(),
-	( (int)this_player()->GetUndead() ? "undead " : ""),
-	capitalize((string)this_player()->GetRace() || "nothing"),
-	capitalize((string)this_player()->GetClass() || "commoner")) });
+        (int)this_player()->GetLevel(),
+        ( (int)this_player()->GetUndead() ? "undead " : ""),
+        capitalize((string)this_player()->GetRace() || "nothing"),
+        capitalize((string)this_player()->GetClass() || "commoner")) });
     str += ({ "Your native town is "+(string)this_player()->GetTown()+", and "
       "you are " + ((string)this_player()->GetReligion() ||
-	"agnostic") + " in faith." });
+        "agnostic") + " in faith." });
     str += ({ sprintf("You've solved %s, and have %s.",
-	consolidate(sizeof((string *)this_player()->GetQuests()),
-	  "one quest"),
-	consolidate(sizeof((string *)this_player()->GetTitles()),
-	  "one title") ) });
+        consolidate(sizeof((string *)this_player()->GetQuests()),
+          "one quest"),
+        consolidate(sizeof((string *)this_player()->GetTitles()),
+          "one title") ) });
     birth = (int)this_player()->GetBirth();
     age = ( query_year(time()) - query_year(birth) );
     str += ({ sprintf("You were born on the %d%s day of %s, year %d. "
-	"(%d years old)", query_date(birth), ordinal(query_date(birth)),
-	query_month(birth), query_year(birth), age) });
+        "(%d years old)", query_date(birth), ordinal(query_date(birth)),
+        query_month(birth), query_year(birth), age) });
     if( x = (int)this_player()->GetTrainingPoints() < 1 ) {
-	y = (int)this_player()->GetLevel() + 1 + (x / -4);
-	str += ({ "Training points await you at level " + y + "." });
+        y = (int)this_player()->GetLevel() + 1 + (x / -4);
+        str += ({ "Training points await you at level " + y + "." });
     }
     else str += ({ "You have " + consolidate(
-	    (int)this_player()->GetTrainingPoints(),
-	    "one training point") + "." });
+            (int)this_player()->GetTrainingPoints(),
+            "one training point") + "." });
     if( (int)this_player()->GetWimpy() )
-	str += ({ "You are feeling wimpy." }); else
-	str += ({ "You are feeling brave." });
+        str += ({ "You are feeling wimpy." }); else
+        str += ({ "You are feeling brave." });
     if( (int)this_player()->GetPoison() > 0 )
-	str += ({ "You are poisoned." });
+        str += ({ "You are poisoned." });
     x = (int)this_player()->GetFood() / 17;
     if( x > sizeof(FoodDegree) - 1 ) x = (sizeof(FoodDegree) - 1);
     y = (int)this_player()->GetDrink() / 17;
@@ -83,7 +83,7 @@ mixed eventScore() {
     str += ({ sprintf("You are %s and %s.", DrinkDegree[y], DrunkDegree[z]) });
     x = (int)this_player()->GetCustomStats();
     if(x){
-	str += ({ "You have "+x+" customization points left. Type: help customize" });
+        str += ({ "You have "+x+" customization points left. Type: help customize" });
     }
     this_player()->eventPage(str, "info");
     return 1;

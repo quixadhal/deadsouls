@@ -40,46 +40,46 @@ void catch_tell(string str) {
     string a, b, c;
 
     if(sscanf(str, "%s quest%*s", a)) {
-	call_out("say_line", 2, "The beggar says: What quest?  I know nothing of any quests.\n");
-	return;
+        call_out("say_line", 2, "The beggar says: What quest?  I know nothing of any quests.\n");
+        return;
     }
     if(sscanf(str, "%s regenerates your %s", a, b) == 2) {
-	if(left_hand) return;
-	if(!(ob=present((a=lower_case(a)), environment(this_object())))) return;
-	//if(!query_is_limb("left hand")) return;
-	left_hand = 1;
-	call_out("complete_quest", 1, ob);
-	return;
+        if(left_hand) return;
+        if(!(ob=present((a=lower_case(a)), environment(this_object())))) return;
+        //if(!query_is_limb("left hand")) return;
+        left_hand = 1;
+        call_out("complete_quest", 1, ob);
+        return;
     }
     if(sscanf(str, "%s says: %s hand%*s", a, b) == 2) {
-	//if(query_is_limb("left hand")) 
-	//call_out("say_line", 2, "The beggar says: My left hand is doing fine now!\n");
-	//        else 
-	call_out("say_line", 2, "The beggar says: I wish it could be replaced.\n");
-	return;
+        //if(query_is_limb("left hand")) 
+        //call_out("say_line", 2, "The beggar says: My left hand is doing fine now!\n");
+        //        else 
+        call_out("say_line", 2, "The beggar says: I wish it could be replaced.\n");
+        return;
     }
     if(sscanf(str, "%s gives %s you", a, b) == 2) {
-	ob = present( lower_case(a), environment(this_object()));
-	if(ob) {
-	    tell_object(ob, "The beggar thanks you for your generousity.\n");
-	    tell_room(environment(this_object()), "The beggar thanks "+a+" for "+ob->query_possessive()+" generousity.\n", ({this_object(), ob}));
-	}
+        ob = present( lower_case(a), environment(this_object()));
+        if(ob) {
+            tell_object(ob, "The beggar thanks you for your generousity.\n");
+            tell_room(environment(this_object()), "The beggar thanks "+a+" for "+ob->query_possessive()+" generousity.\n", ({this_object(), ob}));
+        }
     }
     if(sscanf(str, "%s?", a)) {
-	call_out("say_line", 2, "The beggar says: I do not understand the question.\n");
-	return;
+        call_out("say_line", 2, "The beggar says: I do not understand the question.\n");
+        return;
     }
     if(sscanf(str, "%ssmiles%s", a, b) == 2)
-	call_out("say_line", 2, "The beggar smiles happily.\n");
+        call_out("say_line", 2, "The beggar smiles happily.\n");
     AddAlcohol(200);
 }
 void complete_quest(object ob) {
     if(!ob->set_mini_quest("beggar", 5000,
-	"You replaced the missing left hand of a poor beggar.\n")) {
-	tell_object(ob, "The beggar thanks you.\n");
-	tell_room(environment(this_object()), "The beggar thanks "+ob->query_cap_name()+".\n", ({ ob, this_object() }) );
-	SetAction(5, ob->query_cap_name()+" replaced my missing left hand!");
-	return;
+        "You replaced the missing left hand of a poor beggar.\n")) {
+        tell_object(ob, "The beggar thanks you.\n");
+        tell_room(environment(this_object()), "The beggar thanks "+ob->query_cap_name()+".\n", ({ ob, this_object() }) );
+        SetAction(5, ob->query_cap_name()+" replaced my missing left hand!");
+        return;
     }
     tell_object(ob, "The beggar glows in satisfaction!\n");
     tell_object(ob, "The beggar says: Thank you so much!\n");

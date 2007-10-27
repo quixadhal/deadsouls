@@ -14,11 +14,11 @@ inherit LIB_DAEMON;
 mixed cmd(string args) {
     previous_object()->SetBlocked("all");
     if( previous_object()->GetBlocked("all") ) {
-	previous_object()->eventPrint("All channels are being blocked.",
-	  MSG_SYSTEM);
+        previous_object()->eventPrint("All channels are being blocked.",
+          MSG_SYSTEM);
     }
     else {
-	previous_object()->eventPrint("Codeblock is now off.", MSG_SYSTEM);
+        previous_object()->eventPrint("Codeblock is now off.", MSG_SYSTEM);
     }
     return 1;
 }

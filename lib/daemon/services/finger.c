@@ -17,11 +17,11 @@ void eventReceiveFingerRequest(mixed array packet) {
 
     if( file_name(previous_object()) != INTERMUD_D ) return;
     if( !(ret = (mixed array)FINGER_D->GetRemoteFinger(packet[6])) ) {
-	INTERMUD_D->eventWrite(({ "error", 5, mud_name(), 0, packet[2],
-	    packet[3], "unk-user",
-	    capitalize(packet[6]) + " is not involved.",
-	    packet }));
-	return;
+        INTERMUD_D->eventWrite(({ "error", 5, mud_name(), 0, packet[2],
+            packet[3], "unk-user",
+            capitalize(packet[6]) + " is not involved.",
+            packet }));
+        return;
     }
     ret = ({ "finger-reply", 5, mud_name(), 0, packet[2], packet[3] }) + ret;
     INTERMUD_D->eventWrite(ret);
@@ -45,11 +45,11 @@ void eventReceiveFingerReply(mixed array packet) {
     fing += "Level: " + (packet[13] ? packet[13] : "Confidential") + "\n";
     fing += "Email: " + (packet[9] ? packet[9] : "Confidential") + "\n";
     if( (i = packet[11]) != -1 ) {
-	fing += (packet[10] ? "On since: " + packet[10] : "Online");
-	fing += sprintf(" (idle %02d:%02d:%02d)\n", i/3600, (i/60)%60, i%60);
+        fing += (packet[10] ? "On since: " + packet[10] : "Online");
+        fing += sprintf(" (idle %02d:%02d:%02d)\n", i/3600, (i/60)%60, i%60);
     }
     else fing += (packet[10] ? "Last logged in: " + packet[10] + "\n" :
-	  "Not logged in.\n");
+          "Not logged in.\n");
     fing += "Site: " + (packet[12] ? packet[12] : "Confidential") + "\n";
     fing += (packet[14] ? packet[14] : "\n");
     ob->eventPrint(fing, MSG_SYSTEM);
@@ -61,6 +61,6 @@ void eventSendFingerRequest(string who, string where) {
 
     if( !(pl = (string)this_player(1)->GetKeyName()) ) return;
     INTERMUD_D->eventWrite( ({ "finger-req", 5, mud_name(), pl, where, 0, 
-	who }) );
+        who }) );
     tn("eventSendFingerRequest: "+identify( ({ "finger-req", 5, mud_name(), pl, where, 0,who }) ),"cyan");
 }

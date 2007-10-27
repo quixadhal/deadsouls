@@ -33,21 +33,21 @@ static int Destruct() {
     object env, furn; 
 
     if( !this_object() ) {
-	return 1;
+        return 1;
     }
 
     env = environment();
 
     foreach(object ob in all_inventory()) {
-	if( ob ) {
-	    if(env) ob->eventMove(env);
-	    else ob->eventMove(ROOM_FURNACE);
-	}
+        if( ob ) {
+            if(env) ob->eventMove(env);
+            else ob->eventMove(ROOM_FURNACE);
+        }
     }
 
     if(this_object()){
-	if(living(this_object()) && furn = this_object()->GetProperty("furniture_object"))
-	    if(objectp(furn)) furn->eventReleaseStand(this_object());
+        if(living(this_object()) && furn = this_object()->GetProperty("furniture_object"))
+            if(objectp(furn)) furn->eventReleaseStand(this_object());
     }
 
     remove_call_out();
@@ -64,46 +64,46 @@ int clean_up(int ref_exists) {
     object array inv; 
     object env;
     if( NoClean || ref_exists ) {
-	return NEVER_AGAIN;
+        return NEVER_AGAIN;
     }
     if( !this_object() ) {
-	return NEVER_AGAIN;
+        return NEVER_AGAIN;
     }
     env = environment();
     if( env ) { 
-	if( env->isBag() ) {
-	    return TRY_AGAIN_LATER;
-	}
-	if( env->GetProperty("storage room") ) {
-	    return TRY_AGAIN_LATER;
-	}
+        if( env->isBag() ) {
+            return TRY_AGAIN_LATER;
+        }
+        if( env->GetProperty("storage room") ) {
+            return TRY_AGAIN_LATER;
+        }
     } 
     inv = deep_inventory(this_object());
     if(inv && sizeof(inv)){
-	if( sizeof(filter(inv, (: interactive($1) :))) ) {
-	    return TRY_AGAIN_LATER;
-	}
-	if( sizeof(filter(inv, (: $1->GetNoClean() :))) ) {
-	    return TRY_AGAIN_LATER;
-	}
+        if( sizeof(filter(inv, (: interactive($1) :))) ) {
+            return TRY_AGAIN_LATER;
+        }
+        if( sizeof(filter(inv, (: $1->GetNoClean() :))) ) {
+            return TRY_AGAIN_LATER;
+        }
     }
     if( !env ) { 
 
-	if(this_object() && !strsrch(base_name(this_object()),"/lib/")){
-	    return NEVER_AGAIN;
-	}
+        if(this_object() && !strsrch(base_name(this_object()),"/lib/")){
+            return NEVER_AGAIN;
+        }
 
-	if(inv) catch(inv->eventMove(ROOM_FURNACE));
-	if( this_object() ) {
-	    Destruct();
-	}
-	if( this_object() ) {
-	    destruct(this_object());
-	}
-	return NEVER_AGAIN; 
+        if(inv) catch(inv->eventMove(ROOM_FURNACE));
+        if( this_object() ) {
+            Destruct();
+        }
+        if( this_object() ) {
+            destruct(this_object());
+        }
+        return NEVER_AGAIN; 
     } 
     if( interactive(env) ) {
-	return TRY_AGAIN_LATER;
+        return TRY_AGAIN_LATER;
     }
     return env->clean_up(); 
 } 

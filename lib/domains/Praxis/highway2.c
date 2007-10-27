@@ -16,21 +16,21 @@ void create() {
       "can see the beginnings of the Qajip Desert.");
     SetItems(
       (["highway" : "A well-traveled dirt road between the "
-	"mountains in the west and the populated towns of the east.",
-	"lands" : "You are in a forested valley with the Daroq "
-	"Mountains in the west.",
-	"mountains" : "The Daroq Mountains, home of vile goblins.",
-	"mountain" : "Trendahl Mountain.",
-	"daroq mountains" : "Evil goblins live in the "
-	"tunnels that thread the mountains."]) );
+        "mountains in the west and the populated towns of the east.",
+        "lands" : "You are in a forested valley with the Daroq "
+        "Mountains in the west.",
+        "mountains" : "The Daroq Mountains, home of vile goblins.",
+        "mountain" : "Trendahl Mountain.",
+        "daroq mountains" : "Evil goblins live in the "
+        "tunnels that thread the mountains."]) );
     SetExits( ([ 
-	"west" : "/domains/Praxis/highway3",
-	"east" : "/domains/Praxis/highway1",
+        "west" : "/domains/Praxis/highway3",
+        "east" : "/domains/Praxis/highway1",
       ]) );
 }
 
 void reset() {
     ::reset();
     if(!present("bag")) 
-	new("/domains/Praxis/obj/misc/bag")->move(this_object());
+        new("/domains/Praxis/obj/misc/bag")->move(this_object());
 }

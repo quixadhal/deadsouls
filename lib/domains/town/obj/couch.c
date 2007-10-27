@@ -18,7 +18,7 @@ static void create() {
     SetMaxLiers(1);
 
     SetSmell( ([
-	"default" : "It smells dirty and gross. There's a "
-	"faint whiff of dog urine."
+        "default" : "It smells dirty and gross. There's a "
+        "faint whiff of dog urine."
       ]) );
 }

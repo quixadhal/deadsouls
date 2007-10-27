@@ -7,13 +7,13 @@ int cmd(string str) {
     object ob;
 
     if( !str || str == "" ) {
-	write("Monitor whom?\n");
+        write("Monitor whom?\n");
     }
     else if(!user_exists(str))
-	write(str+": no such player.\n");
+        write(str+": no such player.\n");
     else{
-	SNOOP_D->AddMonitor(this_player()->GetKeyName(), str);
-	write("The snoop daemon has received your request.");
+        SNOOP_D->AddMonitor(this_player()->GetKeyName(), str);
+        write("The snoop daemon has received your request.");
     }
     return 1;
 }

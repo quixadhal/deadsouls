@@ -52,13 +52,13 @@ mapping SetNativeLanguage(string lang){
 
 varargs void SetLanguageComprehension(function check, int time, function end) {
     if( !check ) {
-	Comprehension = 0;
+        Comprehension = 0;
     }
     else {
-	Comprehension = new(class comprehension);
-	Comprehension->check = check;
-	Comprehension->time = time;
-	Comprehension->end = end;
+        Comprehension = new(class comprehension);
+        Comprehension->check = check;
+        Comprehension->time = time;
+        Comprehension->end = end;
     }
 }
 
@@ -66,7 +66,7 @@ mixed SetDefaultLanguage(string str){
     if(!str || str == "") return DefaultLanguage = GetNativeLanguage();
     if(member_array(lower_case(str),keys(Languages)) != -1 ||
       member_array(capitalize(lower_case(str)),keys(Languages)) != -1)
-	return DefaultLanguage = capitalize(lower_case(str));
+        return DefaultLanguage = capitalize(lower_case(str));
     else return DefaultLanguage = GetNativeLanguage();
 }
 
@@ -77,11 +77,11 @@ string GetDefaultLanguage(){
 
 int GetLanguageLevel(string lang) {
     if( Comprehension ) {
-	int fp = functionp(Comprehension->check);
+        int fp = functionp(Comprehension->check);
 
-	if( fp && !(fp & FP_OWNER_DESTED) ) {
-	    return evaluate(Comprehension->check, this_object(), lang);
-	}
+        if( fp && !(fp & FP_OWNER_DESTED) ) {
+            return evaluate(Comprehension->check, this_object(), lang);
+        }
     }
     lang = convert_name(lang);
     if( !Languages[lang] ) return 0;
@@ -147,14 +147,14 @@ int GetPolyglot(){
 
 static void heart_beat() {
     if( Comprehension ) {
-	Comprehension->time -= GetHeartRate();
-	if( Comprehension->time < 1 ) {
-	    function tmp = Comprehension->end;
+        Comprehension->time -= GetHeartRate();
+        if( Comprehension->time < 1 ) {
+            function tmp = Comprehension->end;
 
-	    Comprehension = 0;
-	    if( functionp(tmp) && !(functionp(tmp) & FP_OWNER_DESTED) ) {
-		evaluate(tmp, this_object());
-	    }
-	}
+            Comprehension = 0;
+            if( functionp(tmp) && !(functionp(tmp) & FP_OWNER_DESTED) ) {
+                evaluate(tmp, this_object());
+            }
+        }
     }
 }

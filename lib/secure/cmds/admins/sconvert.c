@@ -13,19 +13,19 @@ string ConvertLine(string str, int change, int line, string search)
 
     if(!archp(previous_object())) return 0;
     while( (a = strsrch(str, search)) > -1 ) {
-	tmp = str[a..];
-	b = strsrch(tmp, ")");
-	if( b < 0) break;
-	cut = tmp[0..b];
-	if( sscanf(cut, "%s,%s", s1, s2) != 2 ) break;
-	s2 = replace_string(s2, " ", "");
-	sscanf(s2, "%s)", s2);
-	val = to_int(s2);
-	if( !val ) break;
-	val = val - (val / (100 / change));
-	n = sprintf("%s, %d)", s1[0] + "@@@" + s1[1..], val);
-	str = replace_string(str, cut, n);
-	write("Line "+line+": "+cut+" -> "+val+".");
+        tmp = str[a..];
+        b = strsrch(tmp, ")");
+        if( b < 0) break;
+        cut = tmp[0..b];
+        if( sscanf(cut, "%s,%s", s1, s2) != 2 ) break;
+        s2 = replace_string(s2, " ", "");
+        sscanf(s2, "%s)", s2);
+        val = to_int(s2);
+        if( !val ) break;
+        val = val - (val / (100 / change));
+        n = sprintf("%s, %d)", s1[0] + "@@@" + s1[1..], val);
+        str = replace_string(str, cut, n);
+        write("Line "+line+": "+cut+" -> "+val+".");
     }
     str = replace_string(str, search[0] + "@@@" + search[1..], search);
     return str;
@@ -41,30 +41,30 @@ void Convert(string s, int change) {
     else args = s;
     files = (string *)this_player()->wild_card(args);
     if( !i = sizeof(files) ) {
-	message("info", "No file(s) found: "+implode(files, " "),
-	  this_player() );
-	return;
+        message("info", "No file(s) found: "+implode(files, " "),
+          this_player() );
+        return;
     }
     foreach(file in files) {
-	string line;
-	int    changed = 0;
+        string line;
+        int    changed = 0;
 
-	str = read_file(file);
-	if( !sizeof(str) ) continue;
-	i = sizeof(tmp = explode(str, "\n"));
-	write("Checking: "+file);
-	while(i--) {
-	    line = tmp[i];
-	    line = ConvertLine(line, change, i, "SetSkill");
-	    line = ConvertLine(line, change, i, "SetStat");
-	    if( tmp[i] != line ) changed = 1;
-	    if( changed ) tmp[i] = line;
-	}
-	if( changed ) {
-	    rename(file, file+"~");
-	    write(file+": Writing new file...");
-	    write_file(file, implode(tmp, "\n"));
-	}
+        str = read_file(file);
+        if( !sizeof(str) ) continue;
+        i = sizeof(tmp = explode(str, "\n"));
+        write("Checking: "+file);
+        while(i--) {
+            line = tmp[i];
+            line = ConvertLine(line, change, i, "SetSkill");
+            line = ConvertLine(line, change, i, "SetStat");
+            if( tmp[i] != line ) changed = 1;
+            if( changed ) tmp[i] = line;
+        }
+        if( changed ) {
+            rename(file, file+"~");
+            write(file+": Writing new file...");
+            write_file(file, implode(tmp, "\n"));
+        }
     }
 }
 
@@ -74,8 +74,8 @@ mixed cmd(string str) {
 
     if(!archp(previous_object())) return 0;
     if( !sizeof(str) || (sscanf(str, "%s %d", files, change) != 2) || !change) {
-	GetHelp(0);
-	return 1;
+        GetHelp(0);
+        return 1;
     }
     files = absolute_path((string)this_player()->query_cwd(), files);
     Convert(files, change);

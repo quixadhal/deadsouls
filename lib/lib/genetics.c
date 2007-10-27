@@ -36,10 +36,10 @@ static void create() {
 
 int GetBlind() {
     if( Blind ) {
-	return 1;
+        return 1;
     }
     else {
-	return 0;
+        return 0;
     }
 }
 
@@ -48,13 +48,13 @@ static void RemoveBlindness() {
 
     Blind = 0;
     if( arrayp(val) ) {
-	send_messages(val[0], val[1], this_object());
+        send_messages(val[0], val[1], this_object());
     }
     else if( functionp(val) && !(functionp(val) & FP_OWNER_DESTED) ) {
-	evaluate(val, this_object());
+        evaluate(val, this_object());
     }
     else {
-	eventPrint("You can see again.");
+        eventPrint("You can see again.");
     }
 }
 
@@ -68,10 +68,10 @@ varargs mixed eventBlind(object who, int amt, mixed end) {
 mixed eventCustomizeStat(string stat, int amount) {
     if( amount < 1 ) return "That is not a valid amount.";
     if( amount > CustomStats )
-	return "You do not have enough points to spend on customization.";
+        return "You do not have enough points to spend on customization.";
     if( !Stats[stat] ) return "You have no such stat.";
     if( Stats[stat]["level"] + amount > 100 )
-	return "You cannot make a stat exceed 100.";
+        return "You cannot make a stat exceed 100.";
     Stats[stat]["level"] += amount;
     Stats[stat]["points"] = 0;
     CustomStats -= amount;
@@ -80,12 +80,12 @@ mixed eventCustomizeStat(string stat, int amount) {
 
 mixed eventRestoreSight(object who, int amt) {
     if( !Blind ) {
-	return GetName() + " is not blind!";
+        return GetName() + " is not blind!";
     }
     Blind->count -= amt;
     if( Blind->count < 1 ) {
-	RemoveBlindness();
-	return 1;
+        RemoveBlindness();
+        return 1;
     }
     return 0;
 }
@@ -129,7 +129,7 @@ int GetStatLevel(string stat) {
     x = (GetBaseStatLevel(stat) + GetStatBonus(stat));
     switch(stat) {
     case "coordination": case "wisdom":
-	x -= GetAlcohol();
+        x -= GetAlcohol();
     }
     return x;
 }
@@ -140,21 +140,21 @@ int AddStatPoints(string stat, int x) {
     if( !Stats[stat] ) return 0;
     Stats[stat]["points"] += x;
     while( Stats[stat]["points"] < 0 ) {
-	if( Stats[stat]["level"] == 1 ) Stats[stat]["points"] = 0;
-	else {
-	    int tmp;
+        if( Stats[stat]["level"] == 1 ) Stats[stat]["points"] = 0;
+        else {
+            int tmp;
 
-	    tmp = --Stats[stat]["level"];
-	    Stats[stat]["points"] += GetMaxStatPoints(stat, tmp);
-	}
+            tmp = --Stats[stat]["level"];
+            Stats[stat]["points"] += GetMaxStatPoints(stat, tmp);
+        }
     }
     while(Stats[stat]["points"] > (y = GetMaxStatPoints(stat,
-	  Stats[stat]["level"]))) {
-	if(Stats[stat]["level"] >= GetLevel()*4) Stats[stat]["points"] = y;
-	else {
-	    Stats[stat]["level"]++;
-	    Stats[stat]["points"] -= y;
-	}
+          Stats[stat]["level"]))) {
+        if(Stats[stat]["level"] >= GetLevel()*4) Stats[stat]["points"] = y;
+        else {
+            Stats[stat]["level"]++;
+            Stats[stat]["points"] -= y;
+        }
     }
     return Stats[stat]["level"];
 }
@@ -165,12 +165,12 @@ mapping GetStatsMap() { return copy(Stats); }
 int GetMaxStatPoints(string stat, int level) {
     if( !Stats[stat] ) return 0;
     else {
-	int cl, x;
+        int cl, x;
 
-	if( !(cl = Stats[stat]["class"]) ) return level * 600;
-	x = level;
-	while( cl-- ) x *= level;
-	return x * 600;
+        if( !(cl = Stats[stat]["class"]) ) return level * 600;
+        x = level;
+        while( cl-- ) x *= level;
+        return x * 600;
     }
 }
 
@@ -193,8 +193,8 @@ int GetStatBonus(string stat) {
     if( !StatsBonus[stat] ) return 0;
     i = sizeof(obs = keys(StatsBonus[stat]));
     while(i--) {
-	if( !obs[i] ) map_delete(StatsBonus[stat], obs[i]);
-	else x += (int)evaluate(StatsBonus[stat][obs[i]], stat);
+        if( !obs[i] ) map_delete(StatsBonus[stat], obs[i]);
+        else x += (int)evaluate(StatsBonus[stat][obs[i]], stat);
     }
     return x;
 }
@@ -242,32 +242,32 @@ varargs mixed GetEffectiveVision(mixed location, int raw_score) {
     int a, y, x = 0;
 
     if(raw_score && !intp(raw_score)){
-	location = raw_score;
-	raw_score = 0;
+        location = raw_score;
+        raw_score = 0;
     }
 
     if(sizeof(get_livings(this_object())) && 
       rider = get_random_living(this_object())){
-	if(rider->GetProperty("mount") == this_object() &&
-	  environment(this_object())){
-	    return rider->GetEffectiveVision(environment(this_object()));
-	}
+        if(rider->GetProperty("mount") == this_object() &&
+          environment(this_object())){
+            return rider->GetEffectiveVision(environment(this_object()));
+        }
     }
 
     if(location){
-	if(objectp(location)) env = location;
-	if(stringp(location)){
-	    if(!file_exists(location)) location += ".c";
-	    if(!file_exists(location)) return 0;
-	    env = load_object(location);
-	    if(!env) return 0;
-	}
+        if(objectp(location)) env = location;
+        if(stringp(location)){
+            if(!file_exists(location)) location += ".c";
+            if(!file_exists(location)) return 0;
+            env = load_object(location);
+            if(!env) return 0;
+        }
     }
     if( Blind && !raw_score) {
-	return VISION_BLIND;
+        return VISION_BLIND;
     }
     if( !location ) {
-	env = environment();
+        env = environment();
     }
     x = GetRadiantLight(0);
     a = env->GetAmbientLight();
@@ -278,7 +278,7 @@ varargs mixed GetEffectiveVision(mixed location, int raw_score) {
     l[1] += bonus;
 
     if(raw_score && !location){
-	return "Low: "+l[0]+", High: "+l[1];
+        return "Low: "+l[0]+", High: "+l[1];
     } 
     if( x >= l[0] && x <= l[1] ) return VISION_CLEAR;
     y = l[0]/3;
@@ -300,7 +300,7 @@ varargs static int array SetLightSensitivity(mixed array val...) {
     if( !val ) error("Null argument to SetLightSensitivity().\n");
     if( sizeof(val) == 1 ) val = val[0];
     if( sizeof(val) != 2 )
-	error(sprintf("Invalid arguments to SetLightSensitivity(): %O\n",  val));
+        error(sprintf("Invalid arguments to SetLightSensitivity(): %O\n",  val));
     return (LightSensitivity = val);
 }
 
@@ -315,9 +315,9 @@ int GetVisionBonus() {
 
 static void heart_beat() {
     if( Blind ) {
-	Blind->count--;
-	if( Blind->count < 1 ) {
-	    RemoveBlindness();
-	}
+        Blind->count--;
+        if( Blind->count < 1 ) {
+            RemoveBlindness();
+        }
     }
 }

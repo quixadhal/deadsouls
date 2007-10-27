@@ -18,11 +18,11 @@ mixed can_teach_str_to_liv(string str, object ob)
 {
     int pos = this_player()->GetPosition();
     if( (int)this_player()->GetParalyzed() ) {
-	return "You cannot move!";
+        return "You cannot move!";
     }
     if( pos == POSITION_SITTING || pos == POSITION_LYING &&
       !RACES_D->GetLimblessCombatRace(this_player()->GetRace()) ){
-	return "You cannot teach in that position!";
+        return "You cannot teach in that position!";
     }
     return 1;
 }

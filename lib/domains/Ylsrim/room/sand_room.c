@@ -21,8 +21,8 @@ mixed buryHole(object who, object shovel) {
     closed = "/domains/Ylsrim/etc/dug_hole"->GetClosed();
 
     if( closed ) {
-	who->eventPrint("Perhaps you want to dig the hole?");
-	return 1;
+        who->eventPrint("Perhaps you want to dig the hole?");
+        return 1;
     }
     send_messages("bury", "$agent_name $agent_verb a deep, gaping "
       "hole in the sand.", who, 0, environment(who));
@@ -36,8 +36,8 @@ mixed digHole(object who, object shovel) {
     closed = "/domains/Ylsrim/etc/dug_hole"->GetClosed();
 
     if( !closed ) {
-	who->eventPrint("Perhaps you want to bury the hole?");
-	return 1;
+        who->eventPrint("Perhaps you want to bury the hole?");
+        return 1;
     }
     send_messages("dig", "$agent_name $agent_verb up a deep, gaping "
       "hole in the sand.", who, 0, environment(who));
@@ -54,10 +54,10 @@ string describeRoom() {
     "sand.  About all you could possibly do is sit and dig.";
 
     if( "/domains/Ylsrim/etc/dug_hole"->GetClosed() ) {
-	return str;  // no hole to see
+        return str;  // no hole to see
     }
     else {
-	return str + "  A hole opens up in the middle of the sand.";
+        return str + "  A hole opens up in the middle of the sand.";
     }
 }
 
@@ -71,8 +71,8 @@ static void create() {
     AddItem("ylsrim", "It is east of here.");
     SetObviousExits("e, w");
     SetExits( ([ "east" : "/domains/Ylsrim/room/"+ "kaliid7",
-	"west" : "/domains/Ylsrim/virtual/desert/7,7" ,
-	"down" : "/domains/Ylsrim/room/"+ "sand_hole" ]));
+        "west" : "/domains/Ylsrim/virtual/desert/7,7" ,
+        "down" : "/domains/Ylsrim/room/"+ "sand_hole" ]));
     SetInventory( ([ "/domains/Ylsrim/etc/shovel" : 1 ]) );
     // use a door to act as a hole, as that is what the hole really is
     SetDoor("down", "/domains/Ylsrim/etc/dug_hole");

@@ -15,14 +15,14 @@ int openDoor(object who) {
     send_messages("press", "$agent_name $agent_verb the button.",
       who, 0, environment(who));
     if( !door->GetClosed() ) {
-	return 1;
+        return 1;
     }
     environment(who)->eventPrint("You hear a click from the door.");
     if( door->GetLocked() ) {
-	door->SetLocked(0);
+        door->SetLocked(0);
     }
     else {
-	door->SetLocked(1);
+        door->SetLocked(1);
     }
     return 1;
 }

@@ -30,14 +30,14 @@ static void create() {
       "is north."
       "\n%^GREEN%^There is a list of spells you can read.%^RESET%^");
     SetItems( ([
-	({"list","list on the wall"}) : "A list of available spells",
+        ({"list","list on the wall"}) : "A list of available spells",
       ]) );
     SetInventory(([
-	"/domains/town/npc/herkimer" : 1,
+        "/domains/town/npc/herkimer" : 1,
       ]));
     SetRead(({"list","list on wall"}) , (: ReadList :) );
     SetExits( ([
-	"north" : "/domains/town/room/magic_shop"
+        "north" : "/domains/town/room/magic_shop"
       ]) );
     SetObviousExits("n");
 

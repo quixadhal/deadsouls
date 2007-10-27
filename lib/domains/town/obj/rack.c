@@ -16,17 +16,17 @@ void create() {
     SetBaseCost("silver",50);
     SetMaxCarry(5);
     SetInventory(([
-	//"/domains/town/weap/paring_knife" : 1,
-	"/domains/town/weap/butcher_knife" : 1,
-	"/domains/town/weap/carving_knife" : 1,
+        //"/domains/town/weap/paring_knife" : 1,
+        "/domains/town/weap/butcher_knife" : 1,
+        "/domains/town/weap/carving_knife" : 1,
       ]));
     SetCanClose(0);
 }
 mixed CanGet(object ob) { return "The rack does not budge.";}
 int CanReceive(object ob) {
     if(!ob->GetFancy()) {
-	write("This is a rack for fine, expensive kitchen knives only.");
-	return 0;
+        write("This is a rack for fine, expensive kitchen knives only.");
+        return 0;
     }
     else return 1;
 }

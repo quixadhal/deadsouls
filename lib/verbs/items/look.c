@@ -51,10 +51,10 @@ mixed can_look_obj(string verb, string id) {
 mixed can_look_at_str(string str, string verb) {
     if( !environment(this_player()) ) return "You are nowhere.";
     if( SEASONS_D->GetLong(str) == 0 ) {
-	//return "There is no " + remove_article(str) + " here.";
+        //return "There is no " + remove_article(str) + " here.";
     }
     else {
-	return check_light();
+        return check_light();
     }
 }
 
@@ -86,8 +86,8 @@ mixed can_look_at_str_on_obj(string targ, string verb, string id1, string id2){
 mixed do_look() {
     if(environment(this_player()) && !this_player()->GetInvis() &&  
       !environment(this_player())->GetProperty("meeting room"))
-	environment(this_player())->eventPrint((string)this_player()->GetName() +
-	  " looks around.", this_player());
+        environment(this_player())->eventPrint((string)this_player()->GetName() +
+          " looks around.", this_player());
     this_player()->eventDescribeEnvironment(0);
     return 1;
 }
@@ -103,8 +103,8 @@ mixed do_look_str(string str) {
 varargs mixed do_look_at_obj(object ob, mixed arg) {
     if(ob->GetInvis() && !archp(this_player()) && 
       base_name(ob) != LIB_DUMMY && !inherits(LIB_DUMMY,ob) ){
-	write("There is no "+arg+" here.");
-	return 1;
+        write("There is no "+arg+" here.");
+        return 1;
     }
     return ob->eventShow(this_player());
 }
@@ -124,7 +124,7 @@ mixed do_look_in_obj(object ob, mixed arg){
 mixed do_look_inside_obj(object ob,mixed arg) {
     if(ob->GetInvis() && !archp(this_player()) &&
       base_name(ob) != LIB_DUMMY && !inherits(LIB_DUMMY,ob) ){
-	return write("There is no "+arg+" here.");
+        return write("There is no "+arg+" here.");
     }
     return (mixed)ob->eventShowInterior(this_player());
 }
@@ -132,7 +132,7 @@ mixed do_look_inside_obj(object ob,mixed arg) {
 mixed do_look_at_obj_word_obj(object target, object storage, mixed arg) {
     if(target->GetInvis() && !archp(this_player()) &&
       base_name(target) != LIB_DUMMY && !inherits(LIB_DUMMY,target) ){
-	return write("There is no "+arg+" here.");
+        return write("There is no "+arg+" here.");
     }
     return (mixed)target->eventShow(this_player());
 }

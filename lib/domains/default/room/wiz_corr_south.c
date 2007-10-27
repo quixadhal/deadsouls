@@ -10,8 +10,8 @@ static void create() {
     SetShort("Menagerie Corridor");
     SetLong("This short corridor leads south to the menagerie. This corridor has been specially created to repel NPC's, so that the creatures south of here do not escape. The main test lab corridor is north.");
     SetExits( ([
-	"north" : "/domains/default/room/wiz_corr1",
-	"south" : "/domains/default/room/menagerie.c",
+        "north" : "/domains/default/room/wiz_corr1",
+        "south" : "/domains/default/room/menagerie.c",
       ]) );
 
     SetInventory(([
@@ -24,8 +24,8 @@ int CanReceive(object ob) {
     //	return 0;
     //   }
     if(living(ob) && !interactive(ob)){
-	message("info","NPC's not allowed, sorry.", ob);
-	return 0;
+        message("info","NPC's not allowed, sorry.", ob);
+        return 0;
     }
     return room::CanReceive(ob);
 }

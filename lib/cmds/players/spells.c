@@ -17,21 +17,21 @@ mixed cmd(string args) {
 
     tmp = "You know the following spells:\n";
     foreach(string spell, int val in who->GetSpellBook()) {
-	spells += ({ sprintf("%:-20s: %:-3d%%", spell, val) });
+        spells += ({ sprintf("%:-20s: %:-3d%%", spell, val) });
     }
     if( !sizeof(spells) ) {
-	tmp += "You know no spells.";
+        tmp += "You know no spells.";
     }
     else {
-	foreach(string spell in spells) {
-	    int i = strlen(spell);
+        foreach(string spell in spells) {
+            int i = strlen(spell);
 
-	    if( i > len ) {
-		len = i;
-	    }
-	}
-	len = (who->GetScreen())[0]/(len+2);
-	tmp += format_page(spells, len);
+            if( i > len ) {
+                len = i;
+            }
+        }
+        len = (who->GetScreen())[0]/(len+2);
+        tmp += format_page(spells, len);
     }
     who->eventPrint(tmp);
     return 1;

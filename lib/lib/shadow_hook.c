@@ -17,8 +17,8 @@ nomask int AddShadow(object sombra){
 
 nomask int RemoveShadow(object sombra){
     if(!Shadows){
-	Shadows = ([]);
-	return 0;
+        Shadows = ([]);
+        return 0;
     }
     if(!Shadows[sombra]) return 0;
     map_delete(Shadows,sombra);

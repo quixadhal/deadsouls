@@ -6,7 +6,7 @@ inherit LIB_DAEMON;
 
 mixed cmd(string args) {
     foreach(string str in RACES_D->GetRaces()){
-	RACES_D->RemoveRace(str);
+        RACES_D->RemoveRace(str);
     }
     write("Done.");
     return 1;

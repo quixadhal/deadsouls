@@ -7,7 +7,7 @@ inherit LIB_ITEM;
 int CheckOrc(){
     string ret = "The runes' meaning is undecipherable to you.";
     if(this_player()->GetRace() == "orc"){
-	write("You get an uneasy feeling.");
+        write("You get an uneasy feeling.");
     }
     return write(ret);
 }
@@ -26,10 +26,10 @@ static void create() {
     SetDamageType(BLADE);
     SetWeaponType("blade");
     SetItems( ([
-	({"rune","runes"}) : (: CheckOrc :),
+        ({"rune","runes"}) : (: CheckOrc :),
       ]) );
     SetRead( ([
-	({"rune","runes"}) : "You do not understand them."
+        ({"rune","runes"}) : "You do not understand them."
       ]) );
 }
 

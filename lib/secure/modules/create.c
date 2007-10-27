@@ -63,7 +63,7 @@ string GetSettings(string str){
     default : name = room_arr;
     }
     foreach(string thing in name){
-	ret += thing+", ";
+        ret += thing+", ";
     }
     ret = truncate(ret,2)+".";
     return ret;
@@ -95,8 +95,8 @@ mixed eventModify(object ob, string str){
     inheritance = "";
 
     if(ob->GetDoor() && sizeof(ob->GetDoor())) {
-	inheritance = "door";
-	ob = load_object(ob->GetDoor());
+        inheritance = "door";
+        ob = load_object(ob->GetDoor());
     }
 
     filename = base_name(ob)+".c";
@@ -104,13 +104,13 @@ mixed eventModify(object ob, string str){
     special_map_array = ({ "SetProperties", "SetStats", "SetSkills"});
 
     if(!check_privs(this_player(),filename)){
-	write("You do not appear to have access to this file. Modification aborted.");
-	return 1;
+        write("You do not appear to have access to this file. Modification aborted.");
+        return 1;
     }
 
     if(!check_privs(this_player(),tmpfile)){
-	write("You do not appear to have access to this file. Modification aborted.");
-	return 1;
+        write("You do not appear to have access to this file. Modification aborted.");
+        return 1;
     }
 
     this_object()->eventGeneralStuff(filename);
@@ -137,26 +137,26 @@ mixed eventModify(object ob, string str){
     if(inherits(LIB_WORN_STORAGE,ob)) inheritance += " worn_storage";
 
     if(!inheritance || inheritance == ""){
-	write("The object you want to modify lacks an init() function.");
-	write("Please correct this by issuing the initfix command, then try again.");
-	write("\nIf you are certain the object has a working init(), then");
-	write("This error indicates that its library object type is not");
-	write("currently supported by the Quick Creation System.");
-	return 1;
+        write("The object you want to modify lacks an init() function.");
+        write("Please correct this by issuing the initfix command, then try again.");
+        write("\nIf you are certain the object has a working init(), then");
+        write("This error indicates that its library object type is not");
+        write("currently supported by the Quick Creation System.");
+        return 1;
     }
 
     if(sscanf(str,"%s %s %d",mode, metamode, value) != 3) sscanf(str,"%s %s %s",mode, metamode, value);
     if(member_array(mode,special_map_array) == -1){
-	if(sscanf(str,"%s %d",mode, value) != 2) sscanf(str,"%s %s",mode, value); 
+        if(sscanf(str,"%s %d",mode, value) != 2) sscanf(str,"%s %s",mode, value); 
     }
     if(!value) {
-	value = 0;
-	if(!mode) mode = str;
+        value = 0;
+        if(!mode) mode = str;
     }
 
     if(mode == "delete") {
-	if(value) mode = value;
-	value = "delete";
+        if(value) mode = value;
+        value = "delete";
     }
 
     setmap = 0;
@@ -331,176 +331,176 @@ mixed eventModify(object ob, string str){
     }
 
     if(!out){
-	switch(mode){
-	case "position" : out = "SetPosition";break;
-	case "setposition" : out = "SetPosition";break;
-	case "autostand" : out = "SetAutoStand";break;
-	case "setautostand" : out = "SetAutoStand";break;
-	case "damagepoints" : out = "SetDamagePoints";break;
-	case "setdamagepoints" : out = "SetDamagePoints";break;
-	case "wanderspeed" : out = "SetWanderSpeed";break;
-	case "setwanderspeed" : out = "SetWanderSpeed";break;
-	case "encounter" : out = "SetEncounter";break;
-	case "setencounter" : out = "SetEncounter";break;
-	case "sethostile" : out = "SetEncounter";break;
-	case "hostile" : out = "SetEncounter";break;
-	case "aggressive" : out = "SetEncounter";break;
-	case "setaggressive" : out = "SetEncounter";break;
-	case "morality" : out = "SetMorality";break;
-	case "setmorality" : out = "SetMorality";break;
-	case "setheartbeat" : out = "SetHeartBeat";break;
-	case "heartbeat" : out = "SetHeartBeat";break;
-	case "include" : out = "include";break;
-	case "inherit" : out = "inherit";break;
-	case "load" : out = "SetPermitLoad";break;
-	case "permitload" : out = "SetPermitLoad";break;
-	case "setpermitload" : out = "SetPermitLoad";break;
-	case "modify" : if(value && intp(value)) value = bool_reverse(value);out = "SetNoModify";break;
-	case "setmodify" : if(value && intp(value)) value = bool_reverse(value); out = "SetNoModify";break;
-	case "setnomodify" : out = "SetNoModify";break;
-	case "nomodify" : out = "SetNoModify";break;
-	case "open" : if(value && intp(value)) value = bool_reverse(value);out = "SetClosed";break;
-	case "setopen" : if(value && intp(value)) value = bool_reverse(value);out = "SetClosed";break;
-	case "sleep" : out = "SetSleeping";break;
-	case "setsleep" : out = "SetSleeping";break;
-	case "sleeping" : out = "SetSleeping";break;
-	case "setsleeping" : out = "SetSleeping";break;
-	case "disable" : out = "SetDisableChance";break;
-	case "disablechance" : out = "SetDisableChance";break;
-	case "setdisable" : out = "SetDisableChance";break;
-	case "setdisablechance" : out = "SetDisableChance";break;
-	case "noclean" : out = "SetNoClean";break;
-	case "setnoclean" : out = "SetNoClean";break;
-	case "bodycomp" : out = "SetBodyComposition";break;
-	case "bodycomposition" : out = "SetBodyComposition";break;
-	case "setbodycomposition" : out = "SetBodyComposition";break;
-	case "setpacifist" : out = "SetPacifist";break;
-	case "pacifist" : out = "SetPacifist";break;
-	case "unique" : out = "SetUnique";break;
-	case "setunique" : out = "SetUnique";break;
-	case "setwimpy" : out = "SetWimpy";break;
-	case "wimpy" : out = "SetWimpy";break;
-	case "wimpycommand" : out = "SetWimpyCommand";break;
-	case "setwimpycommand" : out = "SetWimpyCommand";break;
-	case "setcanbite" : out = "SetCanBite";break;
-	case "canbite" : out = "SetCanBite";break;
-	case "localcurrency" : out = "SetLocalCurrency";break;
-	case "setlocalcurrency" : out = "SetLocalCurrency";break;
-	case "menuitems" : out = "SetMenuItems";setmap = 1;break;
-	case "setmenuitems" : out = "SetMenuItems";setmap = 1;break;
-	case "menu" : out = "SetMenuItems";setmap = 1;break;
-	case "maxitems" : out = "SetMaxItems";break;
-	case "setmaxitems" : out = "SetMaxItems";break;
-	case "setstorageroom" : out = "SetStorageRoom";break;
-	case "storageroom" : out = "SetStorageRoom";break;
-	case "defaultread" : out = "SetDefaultRead";break;
-	case "setdefaultread" : out = "SetDefaultRead";break;
-	case "setread" : out = "SetRead";setmap = 1;break;
-	case "read" : out = "SetRead";setmap = 1;break;
-	case "language" : out = "SetLanguage";break;
-	case "lang" : out = "SetLanguage";break;
-	case "setlang" : out = "SetLanguage";break;
-	case "setlanguage" : out = "SetLanguage";break;
-	case "setspellbook" : out = "SetSpellBook";break;
-	case "spellbook" : out = "SetSpellBook";break;
-	case "spells" : out = "SetSpellBook";break;
-	case "addtrainingskills" : out = "AddTrainingSkills";break;
-	case "settrainingskills" : out = "AddTrainingSkills";break;
-	case "trainingskills" : out = "AddTrainingSkills";break;
-	case "training" : out = "AddTrainingSkills";break;
-	case "nospells" : out = "SetNoSpells";break;
-	case "setnospells" : out = "SetNoSpells";break;
-	case "defaultexits" : out = "SetDefaultExits";break;
-	case "setdefaultexits" : out = "SetDefaultExits";break;
-	case "setnoobviousexits" : out = "SetNoObviousExits";break;
-	case "noobviousexits" : out = "SetNoObviousExits";break;
-	case "xp" : out = "SetCustomXP";break;
-	case "setxp" : out = "SetCustomXP";break;
-	case "setcustomxp" : out = "SetCustomXP";break;
-	case "customxp" : out = "SetCustomXP";break;
-	case "nativelanguage" : out = "SetNativeLanguage";break;
-	case "setnativelanguage" : out = "SetNativeLanguage";break;
-	case "heartbeat" : out = "set_heart_beat";break;
-	case "setheartbeat" : out = "set_heart_beat";break;
-	case "set_heart_beat" : out = "set_heart_beat";break;
-	case "heart_beat" : out = "set_heart_beat";break;
-	case "hiddendoor" : out = "SetHiddenDoor";break;
-	case "sethiddendoor" : out = "SetHiddenDoor";break;
-	case "opacity" : out = "SetOpacity";break;
-	case "setopacity" : out = "SetOpacity";break;
-	case "setterraintype" : out = "SetTerrainType";break;
-	case "terraintype" : out = "AddTerrainType";break;
-	case "addterraintype" : out = "AddTerrainType";break;
-	case "terrain" : out = "AddTerrainType";break;
-	case "defaultlanguage" : out = "SetDefaultLanguage";break;
-	case "defaultlang" : out = "SetDefaultLanguage";break;
-	case "setdefaultlanguage" : out = "SetDefaultLanguage";break;
-	case "bodytype" : out = "SetBodyType";break;
-	case "setbodytype" : out = "SetBodyType";break;
-	case "setsize" : out = "SetSize";break;
-	case "size" : out = "SetSize";break;
-	case "respiration" : out = "SetRespiration";break;
-	case "setrespiration" : out = "SetRespiration";break;
-	case "setinvis" : out = "SetInvis";break;
-	case "invis" : out = "SetInvis";break;
-	case "attackable" : out = "SetAttackable";break;
-	case "setattackable" : out = "SetAttackable";break;
-	default : out = mode;
-	}
+        switch(mode){
+        case "position" : out = "SetPosition";break;
+        case "setposition" : out = "SetPosition";break;
+        case "autostand" : out = "SetAutoStand";break;
+        case "setautostand" : out = "SetAutoStand";break;
+        case "damagepoints" : out = "SetDamagePoints";break;
+        case "setdamagepoints" : out = "SetDamagePoints";break;
+        case "wanderspeed" : out = "SetWanderSpeed";break;
+        case "setwanderspeed" : out = "SetWanderSpeed";break;
+        case "encounter" : out = "SetEncounter";break;
+        case "setencounter" : out = "SetEncounter";break;
+        case "sethostile" : out = "SetEncounter";break;
+        case "hostile" : out = "SetEncounter";break;
+        case "aggressive" : out = "SetEncounter";break;
+        case "setaggressive" : out = "SetEncounter";break;
+        case "morality" : out = "SetMorality";break;
+        case "setmorality" : out = "SetMorality";break;
+        case "setheartbeat" : out = "SetHeartBeat";break;
+        case "heartbeat" : out = "SetHeartBeat";break;
+        case "include" : out = "include";break;
+        case "inherit" : out = "inherit";break;
+        case "load" : out = "SetPermitLoad";break;
+        case "permitload" : out = "SetPermitLoad";break;
+        case "setpermitload" : out = "SetPermitLoad";break;
+        case "modify" : if(value && intp(value)) value = bool_reverse(value);out = "SetNoModify";break;
+        case "setmodify" : if(value && intp(value)) value = bool_reverse(value); out = "SetNoModify";break;
+        case "setnomodify" : out = "SetNoModify";break;
+        case "nomodify" : out = "SetNoModify";break;
+        case "open" : if(value && intp(value)) value = bool_reverse(value);out = "SetClosed";break;
+        case "setopen" : if(value && intp(value)) value = bool_reverse(value);out = "SetClosed";break;
+        case "sleep" : out = "SetSleeping";break;
+        case "setsleep" : out = "SetSleeping";break;
+        case "sleeping" : out = "SetSleeping";break;
+        case "setsleeping" : out = "SetSleeping";break;
+        case "disable" : out = "SetDisableChance";break;
+        case "disablechance" : out = "SetDisableChance";break;
+        case "setdisable" : out = "SetDisableChance";break;
+        case "setdisablechance" : out = "SetDisableChance";break;
+        case "noclean" : out = "SetNoClean";break;
+        case "setnoclean" : out = "SetNoClean";break;
+        case "bodycomp" : out = "SetBodyComposition";break;
+        case "bodycomposition" : out = "SetBodyComposition";break;
+        case "setbodycomposition" : out = "SetBodyComposition";break;
+        case "setpacifist" : out = "SetPacifist";break;
+        case "pacifist" : out = "SetPacifist";break;
+        case "unique" : out = "SetUnique";break;
+        case "setunique" : out = "SetUnique";break;
+        case "setwimpy" : out = "SetWimpy";break;
+        case "wimpy" : out = "SetWimpy";break;
+        case "wimpycommand" : out = "SetWimpyCommand";break;
+        case "setwimpycommand" : out = "SetWimpyCommand";break;
+        case "setcanbite" : out = "SetCanBite";break;
+        case "canbite" : out = "SetCanBite";break;
+        case "localcurrency" : out = "SetLocalCurrency";break;
+        case "setlocalcurrency" : out = "SetLocalCurrency";break;
+        case "menuitems" : out = "SetMenuItems";setmap = 1;break;
+        case "setmenuitems" : out = "SetMenuItems";setmap = 1;break;
+        case "menu" : out = "SetMenuItems";setmap = 1;break;
+        case "maxitems" : out = "SetMaxItems";break;
+        case "setmaxitems" : out = "SetMaxItems";break;
+        case "setstorageroom" : out = "SetStorageRoom";break;
+        case "storageroom" : out = "SetStorageRoom";break;
+        case "defaultread" : out = "SetDefaultRead";break;
+        case "setdefaultread" : out = "SetDefaultRead";break;
+        case "setread" : out = "SetRead";setmap = 1;break;
+        case "read" : out = "SetRead";setmap = 1;break;
+        case "language" : out = "SetLanguage";break;
+        case "lang" : out = "SetLanguage";break;
+        case "setlang" : out = "SetLanguage";break;
+        case "setlanguage" : out = "SetLanguage";break;
+        case "setspellbook" : out = "SetSpellBook";break;
+        case "spellbook" : out = "SetSpellBook";break;
+        case "spells" : out = "SetSpellBook";break;
+        case "addtrainingskills" : out = "AddTrainingSkills";break;
+        case "settrainingskills" : out = "AddTrainingSkills";break;
+        case "trainingskills" : out = "AddTrainingSkills";break;
+        case "training" : out = "AddTrainingSkills";break;
+        case "nospells" : out = "SetNoSpells";break;
+        case "setnospells" : out = "SetNoSpells";break;
+        case "defaultexits" : out = "SetDefaultExits";break;
+        case "setdefaultexits" : out = "SetDefaultExits";break;
+        case "setnoobviousexits" : out = "SetNoObviousExits";break;
+        case "noobviousexits" : out = "SetNoObviousExits";break;
+        case "xp" : out = "SetCustomXP";break;
+        case "setxp" : out = "SetCustomXP";break;
+        case "setcustomxp" : out = "SetCustomXP";break;
+        case "customxp" : out = "SetCustomXP";break;
+        case "nativelanguage" : out = "SetNativeLanguage";break;
+        case "setnativelanguage" : out = "SetNativeLanguage";break;
+        case "heartbeat" : out = "set_heart_beat";break;
+        case "setheartbeat" : out = "set_heart_beat";break;
+        case "set_heart_beat" : out = "set_heart_beat";break;
+        case "heart_beat" : out = "set_heart_beat";break;
+        case "hiddendoor" : out = "SetHiddenDoor";break;
+        case "sethiddendoor" : out = "SetHiddenDoor";break;
+        case "opacity" : out = "SetOpacity";break;
+        case "setopacity" : out = "SetOpacity";break;
+        case "setterraintype" : out = "SetTerrainType";break;
+        case "terraintype" : out = "AddTerrainType";break;
+        case "addterraintype" : out = "AddTerrainType";break;
+        case "terrain" : out = "AddTerrainType";break;
+        case "defaultlanguage" : out = "SetDefaultLanguage";break;
+        case "defaultlang" : out = "SetDefaultLanguage";break;
+        case "setdefaultlanguage" : out = "SetDefaultLanguage";break;
+        case "bodytype" : out = "SetBodyType";break;
+        case "setbodytype" : out = "SetBodyType";break;
+        case "setsize" : out = "SetSize";break;
+        case "size" : out = "SetSize";break;
+        case "respiration" : out = "SetRespiration";break;
+        case "setrespiration" : out = "SetRespiration";break;
+        case "setinvis" : out = "SetInvis";break;
+        case "invis" : out = "SetInvis";break;
+        case "attackable" : out = "SetAttackable";break;
+        case "setattackable" : out = "SetAttackable";break;
+        default : out = mode;
+        }
     }
     if(!value) value = 0;
 
     if(value == "delete") {
-	eventDelete(ob, out);
-	unguarded( (: rm(global2) :) );
-	return 1;
+        eventDelete(ob, out);
+        unguarded( (: rm(global2) :) );
+        return 1;
     }
 
     if(out == "SetExits") {
-	write("SetExits is a special setting, which isn't modified like others.");
-	write("To make an exit to a room, or to create a new room, type:\n");
-	write("create room DIRECTION FILE");
-	write("For example : create room east test_room1");
-	write("To get rid of an exit, it's: delete exit DIRECTION");
-	write("For example: delete exit east");
-	return 1;
+        write("SetExits is a special setting, which isn't modified like others.");
+        write("To make an exit to a room, or to create a new room, type:\n");
+        write("create room DIRECTION FILE");
+        write("For example : create room east test_room1");
+        write("To get rid of an exit, it's: delete exit DIRECTION");
+        write("For example: delete exit east");
+        return 1;
     }
 
     if(out == "SetEnters") {
-	write("SetExits is a special setting, which isn't modified like others.");
-	write("To make an Enter, first identify an item that already exists ");
-	write("in SetItems. For example, if SetItems contains a pub:\n");
-	write("create enter pub test_pub1\n");
-	write("To get rid of that enter: delete enter pub");
-	write("Please note that if the \"thing to be entered\" isn't already ");
-	write("in SetItems, things won't work right.");
-	return 1;
+        write("SetExits is a special setting, which isn't modified like others.");
+        write("To make an Enter, first identify an item that already exists ");
+        write("in SetItems. For example, if SetItems contains a pub:\n");
+        write("create enter pub test_pub1\n");
+        write("To get rid of that enter: delete enter pub");
+        write("Please note that if the \"thing to be entered\" isn't already ");
+        write("in SetItems, things won't work right.");
+        return 1;
     }
 
     if(out == "SetInventory"){
-	write("SetInventory is a special setting, which isn't modified like others.");
-	write("To add something to something else's inventory, the \"thing ");
-	write("to be added\" has to be in your environment, or carried by you.");
-	write("So if you want to add a chair to your sample room:\n");
-	write("home");
-	write("go east");
-	write("cd /domains/town/obj");
-	write("clone chair");
-	write("add chair to room");
-	write("1\n");
-	write("If you want to add a sword to your fighter: \n");
-	write("clone sword");
-	write("add sword to fighter");
-	write("wield sword\n");
-	write("To remove items from a thing's permanent inventory:");
-	write("delete chair");
-	write("delete sword from fighter");
-	return 1;
+        write("SetInventory is a special setting, which isn't modified like others.");
+        write("To add something to something else's inventory, the \"thing ");
+        write("to be added\" has to be in your environment, or carried by you.");
+        write("So if you want to add a chair to your sample room:\n");
+        write("home");
+        write("go east");
+        write("cd /domains/town/obj");
+        write("clone chair");
+        write("add chair to room");
+        write("1\n");
+        write("If you want to add a sword to your fighter: \n");
+        write("clone sword");
+        write("add sword to fighter");
+        write("wield sword\n");
+        write("To remove items from a thing's permanent inventory:");
+        write("delete chair");
+        write("delete sword from fighter");
+        return 1;
     }
 
     if(out == "include" || out == "inherit"){
-	this_object()->eventModHeader(ob, out,value);
-	return 1;
+        this_object()->eventModHeader(ob, out,value);
+        return 1;
     }
 
 
@@ -522,78 +522,78 @@ mixed eventModify(object ob, string str){
     else if(grepp(inheritance,"item") && member_array(out,item_arr) != -1) invalid = 0;
 
     if(invalid) {
-	write("Invalid Property.");
-	return 1;
+        write("Invalid Property.");
+        return 1;
     }
     if(out == "SetProtection"){
-	this_object()->eventStartArmorQuestions(value,ob);
-	return 1;
+        this_object()->eventStartArmorQuestions(value,ob);
+        return 1;
     }
 
     if(out == "SetBaseCost"){
-	this_object()->eventModCost(ob, metamode, value);
-	return 1;
+        this_object()->eventModCost(ob, metamode, value);
+        return 1;
     }
 
     if(member_array(out,special_map_array) != -1) {
-	this_object()->eventSpecialMapHandler(ob,out,metamode,value);
-	return 1;
+        this_object()->eventSpecialMapHandler(ob,out,metamode,value);
+        return 1;
     }
 
     if(out == "SetMoney" || out == "SetCurrency"){
-	this_object()->eventModMoney(ob, metamode, value);
-	return 1;
+        this_object()->eventModMoney(ob, metamode, value);
+        return 1;
     }
 
     if(setmap == 1) {
-	temp_map = QueryMap(out, ob);
-	temp_map = this_object()->eventStartMappingQuestions(temp_map, ob, tmpfile, out);
-	return 1;
+        temp_map = QueryMap(out, ob);
+        temp_map = this_object()->eventStartMappingQuestions(temp_map, ob, tmpfile, out);
+        return 1;
     }
 
     array_props = ({"AddTrainingSkills", "SetId","SetAdjectives","SetRestrictLimbs"});
     if(member_array(out,array_props) != -1){
-	this_object()->eventStartGenericQuestions(ob, tmpfile, ({value}), out);
-	return 1;
+        this_object()->eventStartGenericQuestions(ob, tmpfile, ({value}), out);
+        return 1;
     }
 
     if(grepp(inheritance,"door") && out != "SetHiddenDoor" ){
-	string cote = this_object()->eventEvaluateDoorSide(ob);
-	if(cote) this_object()->eventProcessDoor(ob, out, value, cote);
-	else this_object()->eventProcessDoor(ob, out, value);
-	return 1;
+        string cote = this_object()->eventEvaluateDoorSide(ob);
+        if(cote) this_object()->eventProcessDoor(ob, out, value, cote);
+        else this_object()->eventProcessDoor(ob, out, value);
+        return 1;
     }
 
     else {
-	switch(out){
-	case "SetLong" : p_array = ({"SetShort","SetAmbientLight","SetDayLight","SetNightLight","create()","create ()","create"}); break;
-	case "SetDayLong" : p_array = ({"SetShort","SetAmbientLight","SetDayLight","SetNightLight","SetNightLong","SetLong","create()","create ()","create"}); break;
-	case "SetNightLong" : p_array = ({"SetShort","SetAmbientLight","SetDayLight","SetNightLight","SetDayLong","SetLong","create()","create ()","create"}); break;
-	case "SetShort" : p_array = ({"SetAmbientLight","SetDayLight","SetNightLight","create()","create ()","create"}); break;
-	case "SetHealthPoints" : p_array = ({"SetInventory","SetMaxHealhPoints","SetClass","SetRace","SetLong"});break;
-	case "SetMaxHealthPoints" : p_array = ({"SetInventory","SetHealhPoints","SetClass","SetRace","SetLong"});break;
-	case "SetNativeLanguage" : p_array = ({"SetRace"});break;
-	case "SetSize" : p_array = ({"SetRace"});break;
-	case "SetBodyType" : p_array = ({"SetRace"});break;
-	case "SetRespiration" : p_array = ({"SetRace"});break;
-	case "SetClass" : p_array = ({"SetRace","SetLong"});break;
-	case "SetMass" : p_array = ({"SetRace","SetLong"});break;
-	case "SetSmell" : p_array = ({"SetItems","SetInventory","SetListen","SetLong","SetDayLong","SetNightLong","SetShort"});break;
-	case "SetListen" : p_array = ({"SetItems","SetInventory","SetSmell","SetLong","SetDayLong","SetNightLong","SetShort"});break;
-	case "SetItems" : p_array = ({"SetAmbientLight","SetDayLight","SetNightLight","create()","create ()","SetShort","SetLong","SetDayLong","SetNightLong"});break;
-	case "SetAmbientLight" : p_array = ({"SetDayLight","SetNightLight","create()","create ()","SetShort","SetLong","SetDayLong","SetNightLong"});break;
-	case "SetDayLight" : p_array = ({"SetAmbientLight","SetNightLight","create()","create ()","SetShort","SetLong","SetDayLong","SetNightLong"});break;
-	case "SetNightLight" : p_array = ({"SetAmbientLight","SetDayLight","create()","create ()","SetShort","SetLong","SetDayLong","SetNightLong"});break;
-	case "SetHiddenDoor" : p_array = ({ "SetClosed", "SetLocked" }); break;
-	default : p_array = ({"SetItems","SetLong","SetDayLong","SetNightLong","SetShort"});
-	}
+        switch(out){
+        case "SetLong" : p_array = ({"SetShort","SetAmbientLight","SetDayLight","SetNightLight","create()","create ()","create"}); break;
+        case "SetDayLong" : p_array = ({"SetShort","SetAmbientLight","SetDayLight","SetNightLight","SetNightLong","SetLong","create()","create ()","create"}); break;
+        case "SetNightLong" : p_array = ({"SetShort","SetAmbientLight","SetDayLight","SetNightLight","SetDayLong","SetLong","create()","create ()","create"}); break;
+        case "SetShort" : p_array = ({"SetAmbientLight","SetDayLight","SetNightLight","create()","create ()","create"}); break;
+        case "SetHealthPoints" : p_array = ({"SetInventory","SetMaxHealhPoints","SetClass","SetRace","SetLong"});break;
+        case "SetMaxHealthPoints" : p_array = ({"SetInventory","SetHealhPoints","SetClass","SetRace","SetLong"});break;
+        case "SetNativeLanguage" : p_array = ({"SetRace"});break;
+        case "SetSize" : p_array = ({"SetRace"});break;
+        case "SetBodyType" : p_array = ({"SetRace"});break;
+        case "SetRespiration" : p_array = ({"SetRace"});break;
+        case "SetClass" : p_array = ({"SetRace","SetLong"});break;
+        case "SetMass" : p_array = ({"SetRace","SetLong"});break;
+        case "SetSmell" : p_array = ({"SetItems","SetInventory","SetListen","SetLong","SetDayLong","SetNightLong","SetShort"});break;
+        case "SetListen" : p_array = ({"SetItems","SetInventory","SetSmell","SetLong","SetDayLong","SetNightLong","SetShort"});break;
+        case "SetItems" : p_array = ({"SetAmbientLight","SetDayLight","SetNightLight","create()","create ()","SetShort","SetLong","SetDayLong","SetNightLong"});break;
+        case "SetAmbientLight" : p_array = ({"SetDayLight","SetNightLight","create()","create ()","SetShort","SetLong","SetDayLong","SetNightLong"});break;
+        case "SetDayLight" : p_array = ({"SetAmbientLight","SetNightLight","create()","create ()","SetShort","SetLong","SetDayLong","SetNightLong"});break;
+        case "SetNightLight" : p_array = ({"SetAmbientLight","SetDayLight","create()","create ()","SetShort","SetLong","SetDayLong","SetNightLong"});break;
+        case "SetHiddenDoor" : p_array = ({ "SetClosed", "SetLocked" }); break;
+        default : p_array = ({"SetItems","SetLong","SetDayLong","SetNightLong","SetShort"});
+        }
 
-	this_object()->eventModString(tmpfile, out, value, p_array);
+        this_object()->eventModString(tmpfile, out, value, p_array);
     }
     mixed_tmp = reload(tmpfile);
     if(!mixed_tmp || !intp(mixed_tmp)) {
-	write("This would screw up your file. Aborting modification.");
-	return 1;
+        write("This would screw up your file. Aborting modification.");
+        return 1;
     }
     this_object()->eventGeneralStuff(tmpfile);
     global1 = tmpfile;
@@ -615,13 +615,13 @@ int eventDelete(object ob, string value){
 
     if(!check_privs(this_player(),filename)){
 
-	write("You do not appear to have access to this file. Modification aborted.");
-	return 1;
+        write("You do not appear to have access to this file. Modification aborted.");
+        return 1;
     }
 
     if(!check_privs(this_player(),tmpfile)){
-	write("You do not appear to have access to this file. Modification aborted.");
-	return 1;
+        write("You do not appear to have access to this file. Modification aborted.");
+        return 1;
     }
 
     global1 = filename;
@@ -629,16 +629,16 @@ int eventDelete(object ob, string value){
     unguarded( (: cp(global1,global2) :) );
     mixed_tmp = reload(tmpfile);
     if(!mixed_tmp || !intp(mixed_tmp)) {
-	write("Target file is screwed up. Aborting delete.");
-	return 1;
+        write("Target file is screwed up. Aborting delete.");
+        return 1;
     }
     globalvalue = value;
     unguarded( (: globaltmp = remove_matching_line(read_file(global2),globalvalue,1) :) );
     unguarded( (: write_file(global2,globaltmp,1) :) );
     mixed_tmp = reload(tmpfile);
     if(!mixed_tmp || !intp(mixed_tmp)) {
-	write("This change would screw up your file. Aborting delete.");
-	return 1;
+        write("This change would screw up your file. Aborting delete.");
+        return 1;
     }
     else unguarded( (: cp(global2, global1) :) );
     reload(ob);
@@ -654,15 +654,15 @@ int eventResumeArrayMod(object target, string tmpfile, string *NewArr, string fu
     filename = base_name(target)+".c";
 
     if(!check_privs(this_player(),filename)){
-	write("You do not appear to have access to this file. Modification aborted.");
-	return 1;
+        write("You do not appear to have access to this file. Modification aborted.");
+        return 1;
     }
     global2 = tmpfile;
     global1 = filename;
     unguarded( (: cp(global1, global2) :) );
     array_string = func + "( ({";
     foreach(string foo in NewArr){
-	array_string += "\""+foo+"\", ";
+        array_string += "\""+foo+"\", ";
     }
     array_string = truncate(array_string, 2);
     array_string +=  "}) );";
@@ -679,8 +679,8 @@ int eventResumeArrayMod(object target, string tmpfile, string *NewArr, string fu
     this_object()->eventGeneralStuff(tmpfile);
     mx = reload(tmpfile);
     if(!mx || !intp(mx)){
-	write("This change would screw up the object. Aborting.");
-	return 1;
+        write("This change would screw up the object. Aborting.");
+        return 1;
     }
     global1 = tmpfile;
     global2 = filename;
@@ -700,8 +700,8 @@ int eventResumeMappingChange(object target, string tmpfile, mapping NewMap, stri
     filename = base_name(target)+".c";
 
     if(!check_privs(this_player(),filename)){
-	write("You do not appear to have access to this file. Modification aborted.");
-	return 1;
+        write("You do not appear to have access to this file. Modification aborted.");
+        return 1;
     }
 
     global2 = tmpfile;
@@ -722,8 +722,8 @@ int eventResumeMappingChange(object target, string tmpfile, mapping NewMap, stri
     unguarded( (: write_file(global1,global2,1) :) );
     mx = reload(tmpfile);
     if(!mx || !intp(mx)){
-	write("This change would screw up the object. Aborting.");
-	return 1;
+        write("This change would screw up the object. Aborting.");
+        return 1;
     }
     this_object()->eventGeneralStuff(tmpfile);
     global1 = tmpfile;
@@ -740,8 +740,8 @@ int eventAddSettings(object ob, string tmp, mapping NewMap, string func){
     filename = base_name(ob)+".c";
 
     if(!check_privs(this_player(),filename)){
-	write("You do not have sufficient privileges to perform this action.");
-	return 1;
+        write("You do not have sufficient privileges to perform this action.");
+        return 1;
     }
     global2 = filename;
     unguarded( (: global1 = read_file(global2) :) );
@@ -750,8 +750,8 @@ int eventAddSettings(object ob, string tmp, mapping NewMap, string func){
     global2 = tmp;
     new_lines = "\n";
     foreach(string key, mixed val in NewMap){
-	if(intp(val)) new_lines += func+"(\""+key+"\", "+val+");\n";
-	else new_lines += func+"(\""+key+"\", \""+val+"\");\n";
+        if(intp(val)) new_lines += func+"(\""+key+"\", "+val+");\n";
+        else new_lines += func+"(\""+key+"\", \""+val+"\");\n";
     }
     global1 = this_object()->eventAppend(global1,({func,"SetClass","SetRace","SetLevel","SetItems","SetInventory","SetLong", "SetClosed"}),new_lines);
     unguarded( (: write_file(global2, global1,1) :) );

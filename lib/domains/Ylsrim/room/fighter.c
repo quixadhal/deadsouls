@@ -17,7 +17,7 @@ static void create() {
     SetLong("Fighters sort of lounge around in here.");
     SetObviousExits("s");
     SetExits( ([
-	"south" : "/domains/Ylsrim/room/"+ "fighter_hall",
+        "south" : "/domains/Ylsrim/room/"+ "fighter_hall",
       ]) );
     SetItems( ([
       ]) );

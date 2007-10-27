@@ -11,17 +11,17 @@ static void create() {
       "the east and west, and the hallway continues "
       "south. To the north is the entrance foyer.");
     SetItems( ([ 
-	"hallway" : "An interior area providing access to "
-	"other places in the house.",
-	({"mansion","house"}) : "You are in a beautiful mansion.",
-	"foyer" : "The mansion's entry area is north of here."
+        "hallway" : "An interior area providing access to "
+        "other places in the house.",
+        ({"mansion","house"}) : "You are in a beautiful mansion.",
+        "foyer" : "The mansion's entry area is north of here."
       ]) );
 
     SetExits( ([
-	"north" : "/domains/town/room/mansion_int",
-	"south" : "/domains/town/room/mansion_dhall3",
-	"east" : "/domains/town/room/mansion_room9",
-	"west" : "/domains/town/room/mansion_room10"
+        "north" : "/domains/town/room/mansion_int",
+        "south" : "/domains/town/room/mansion_dhall3",
+        "east" : "/domains/town/room/mansion_room9",
+        "west" : "/domains/town/room/mansion_room10"
       ]) );
 }
 void init(){

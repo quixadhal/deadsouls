@@ -3,14 +3,14 @@
    you can bait it with anything that returns an id of bait and also
    in that it has the following functions called by fishing rooms:
    query_pole_class() returns an integer, the higher the number, the
-	better the pole is for fishing.
+        better the pole is for fishing.
    query_bait() returns an integer which is the strength of the bait,
-	the higher the number, the better the bait is for fishing
+        the higher the number, the better the bait is for fishing
    pole class should range from 2 (a horrible pole) to 7 (an absolutely
-	awesome pole)
+        awesome pole)
    bait strength, which is found out by the pole by calling a function
-	in items which return an id of true for bait, should be a
-	number between 0 (items fish wont eat) to 4 (yummy fish food)
+        in items which return an id of true for bait, should be a
+        number between 0 (items fish wont eat) to 4 (yummy fish food)
 */
 
 #include <lib.h>
@@ -40,20 +40,20 @@ void create() {
 
 string GetLong(string str) {
     if(str == "hook") {
-	if(!bait) return ("Perhaps you could bait this with something?\n");
-	else return ("It has bait on it.\n");
+        if(!bait) return ("Perhaps you could bait this with something?\n");
+        else return ("It has bait on it.\n");
     }
     else if(str == "string") return ("A string with a hook at the end.\n");
     else {
-	return ("A bamboo stick with a piece of string connected to the end.\n"
-	  "At the end of the string is a hook.  What a primitive looking fishing tool!\n");
+        return ("A bamboo stick with a piece of string connected to the end.\n"
+          "At the end of the string is a hook.  What a primitive looking fishing tool!\n");
     }
 }
 
 string GetShort() {
     if(!broken) {
-	if(!bait) return "A bamboo stick";
-	else return "A bamboo stick (baited)";
+        if(!bait) return "A bamboo stick";
+        else return "A bamboo stick (baited)";
     }
     else return "A bamboo stick (broken)";
 }
@@ -72,23 +72,23 @@ int bait_it(string str) {
     if((sscanf(str, "%s with %s", pole, the_bait)) !=2) return 0;
     if(pole != "stick" && pole != "hook") return 0;
     if(!present(the_bait,this_player())) {
-	write("You do not have any "+the_bait+" to bait your stick!\n");
-	return 1;
+        write("You do not have any "+the_bait+" to bait your stick!\n");
+        return 1;
     }
     if(!(present(the_bait,this_player())->id("bait"))) {
-	write("You can't use that as bait!\n");
-	return 1;
+        write("You can't use that as bait!\n");
+        return 1;
     }
     if(!bait) {
-	bait = (100-(int)present(the_bait, this_player())->query_strength())/7;
-	write("You bait your hook with "+the_bait+".\n");
+        bait = (100-(int)present(the_bait, this_player())->query_strength())/7;
+        write("You bait your hook with "+the_bait+".\n");
 
-	say(this_player()->query_cap_name()+" baits "+(string)this_player()->query_possessive()+" stick.\n");
-	find_object(the_bait)->remove();
-	return 1;
+        say(this_player()->query_cap_name()+" baits "+(string)this_player()->query_possessive()+" stick.\n");
+        find_object(the_bait)->remove();
+        return 1;
     }
     else {
-	write("You already have bait on your hook!");
+        write("You already have bait on your hook!");
     }
     return 1;
 }

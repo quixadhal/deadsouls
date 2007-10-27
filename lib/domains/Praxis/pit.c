@@ -16,7 +16,7 @@ create() {
       "smooth with no sign of hand holds or other ways "
       "to get out.");
     SetItems( ([ ({ "walls", "wall" }) : "A smooth, circular wall, "
-	"about 50 cubits deep and unnaturaly smooth." ]) );
+        "about 50 cubits deep and unnaturaly smooth." ]) );
 }
 
 void reset() {
@@ -24,8 +24,8 @@ void reset() {
 
     ::reset();
     if(!present("spider")) {
-	for(x=0; x<15; ++x) {
-	    new("/domains/Praxis/obj/mon/spider")->move(this_object());
-	}
+        for(x=0; x<15; ++x) {
+            new("/domains/Praxis/obj/mon/spider")->move(this_object());
+        }
     }
 }

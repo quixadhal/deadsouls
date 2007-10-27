@@ -28,8 +28,8 @@ mixed do_wizunlock_obj(object ob){
     string name;
 
     if(living(ob)) {
-	write("You can only wizunlock non-living things.");
-	return 1;
+        write("You can only wizunlock non-living things.");
+        return 1;
     }
     else name = ob->GetShort();
     if(ob->GetDoor()) ob = load_object(ob->GetDoor());

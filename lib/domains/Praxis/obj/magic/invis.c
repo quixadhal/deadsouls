@@ -23,14 +23,14 @@ void create_invis(object who, string what, int x) {
 
 int test_invis(object who, object whom) {
     if(!__Invis) {
-	if(this_object()) this_object()->reeventMove();
-	return 0;
+        if(this_object()) this_object()->reeventMove();
+        return 0;
     }
     if(__InvisTime < time()) {
-	message("environment", "You are feeling more vulnerable now.",
-	  __Invis[0]);
-	this_object()->reeventMove();
-	return 0;
+        message("environment", "You are feeling more vulnerable now.",
+          __Invis[0]);
+        this_object()->reeventMove();
+        return 0;
     }
     if(__Invis[0] != who) return 0;
     if((string)whom->query_race() == __Invis[1]) return 1;

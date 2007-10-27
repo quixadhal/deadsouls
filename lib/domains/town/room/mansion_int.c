@@ -11,16 +11,16 @@ static void create() {
       "beautiful all the same. A hallway runs south "
       "from here."); 
     SetItems( ([
-	"foyer" : "This is the interior entry area of the "
-	"mansion, where the front door is.",
-	({"hall","hallway"}) : "A wide corridor "
-	"leading south to the rest of the mansion.",
-	"dust" : "Tiny particulate material dispersed "
-	"on visible surfaces."
+        "foyer" : "This is the interior entry area of the "
+        "mansion, where the front door is.",
+        ({"hall","hallway"}) : "A wide corridor "
+        "leading south to the rest of the mansion.",
+        "dust" : "Tiny particulate material dispersed "
+        "on visible surfaces."
       ]) );
     SetExits( ([
-	"south" : "/domains/town/room/mansion_dhall2",
-	"north" : "/domains/town/room/mansion_ext",
+        "south" : "/domains/town/room/mansion_dhall2",
+        "north" : "/domains/town/room/mansion_ext",
       ]) );
     SetDoor("north","/domains/town/doors/mansion");
 }

@@ -13,19 +13,19 @@ static void create() {
       "is a sense of dignified majesty about "
       "this place.");
     SetItems( ([
-	({"tapestry","tapestries"}) : "Fascinating "
-	"tapestries here apear to document the conquest "
-	"of Anglia by a Norman king.",
-	({"painting","paintings"}) : "These are "
-	"extraordinary oil portraits of renaissance "
-	"nobility, and they are rendered with an "
-	"eerily lifelike realism.",
+        ({"tapestry","tapestries"}) : "Fascinating "
+        "tapestries here apear to document the conquest "
+        "of Anglia by a Norman king.",
+        ({"painting","paintings"}) : "These are "
+        "extraordinary oil portraits of renaissance "
+        "nobility, and they are rendered with an "
+        "eerily lifelike realism.",
       ]) );
     SetInventory( ([ 
-	"/domains/town/obj/dining_table" : 1,
+        "/domains/town/obj/dining_table" : 1,
       ]) );
     SetExits( ([
-	"east" : "/domains/town/room/mansion_dhall2"
+        "east" : "/domains/town/room/mansion_dhall2"
       ]) );
 }
 void init(){

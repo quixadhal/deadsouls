@@ -16,9 +16,9 @@ mixed cmd(string args) {
     ret += " "+ this_player()->GetScreen()[1];
 
     if( args == "" || !args ) 
-	return chide + ret;
+        return chide + ret;
     if( sscanf(args, "%d %d", w, h) != 2 )
-	return chide + ret;
+        return chide + ret;
     this_player()->SetScreen(w, h);
     message("system", "Screen set to " + w + " by " + h + ".", this_player());
     return 1;

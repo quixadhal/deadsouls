@@ -9,14 +9,14 @@ mixed cmd(string chan) {
 
     if(!archp(previous_object())) return 0;
     if( !chan || chan == "") {
-	return "Huh?";
+        return "Huh?";
     }
     if(member_array(chan,INTERMUD_D->GetChannels()) == -1) 
-	return "No such channel.";
+        return "No such channel.";
 
     else INTERMUD_D->eventWrite( ({ "channel-remove", 5, mud_name(), 
-	    this_player()->GetKeyName(), INTERMUD_D->GetNameserver(), 
-	    0, chan }) );
+            this_player()->GetKeyName(), INTERMUD_D->GetNameserver(), 
+            0, chan }) );
 
     //unguarded( (: update("/daemon/intermud") :) );
     load_object("/secure/cmds/creators/update")->cmd("/daemon/intermud");

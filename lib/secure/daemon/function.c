@@ -16,29 +16,29 @@ mapping FunctionCache = ([]);
 static private void validate() {
     if(!this_player()) return 0;
     if( !((int)master()->valid_apply(({ "ASSIST" }))) )
-	error("Illegal attempt access FUNCTIONS_D: "+get_stack()+" "+identify(previous_object(-1)));
+        error("Illegal attempt access FUNCTIONS_D: "+get_stack()+" "+identify(previous_object(-1)));
 }
 
 void heart_beat(){
     if(seeking){
-	foreach(mixed arr in call_out_info()){
-	    if(arr[0] == this_object()){
-		return ;
-	    }
-	}
-	save_object(SaveFuns);
-	seeking = 0;
+        foreach(mixed arr in call_out_info()){
+            if(arr[0] == this_object()){
+                return ;
+            }
+        }
+        save_object(SaveFuns);
+        seeking = 0;
     }
     count++;
     if(count > 700){
-	save_object(SaveFuns);
-	count = 0;
+        save_object(SaveFuns);
+        count = 0;
     }
 }
 
 mixed SendFiles(string *arr){
     foreach(string sub in arr){
-	load_object("/secure/cmds/creators/showfuns")->cmd(sub);
+        load_object("/secure/cmds/creators/showfuns")->cmd(sub);
     }
     return 1;
 }
@@ -58,10 +58,10 @@ mixed ReadFuns(string str){
     foreach(string file in files){
     }
     while(sizeof(files) > 0){
-	interval++;
-	subfiles = ({ files[0] }) ;
-	files -= subfiles;
-	call_out( (: SendFiles, subfiles :), interval);
+        interval++;
+        subfiles = ({ files[0] }) ;
+        files -= subfiles;
+        call_out( (: SendFiles, subfiles :), interval);
     }
     return 1;
 }
@@ -98,13 +98,13 @@ varargs mixed GetInstances(string str, string where){
     string cooked_list = "";
     if(!where || ! sizeof(where)) where = "/lib/";
     foreach(string key, string val in FunctionCache){
-	string funex;
-	if(grepp(val, str) && !strsrch(key,where)){
-	    funex = function_exists(str,load_object(key),1);
-	    if(funex && !grepp(cooked_list,funex+"\n")){
-		cooked_list += funex+"\n";
-	    }
-	}
+        string funex;
+        if(grepp(val, str) && !strsrch(key,where)){
+            funex = function_exists(str,load_object(key),1);
+            if(funex && !grepp(cooked_list,funex+"\n")){
+                cooked_list += funex+"\n";
+            }
+        }
     }
     return cooked_list;
 }

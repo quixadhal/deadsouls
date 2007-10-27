@@ -18,13 +18,13 @@ the spider in the long, cause it COULD be dead.
 EndText
     );
     SetExits( ([
-	"south" : "/domains/examples/room/exroom5",
+        "south" : "/domains/examples/room/exroom5",
       ]) );
 
     AddExit("north", EXPATH + "exroom7", (: pre_north :));
 
     SetInventory(  ([  
-	SPIDER :  1,
+        SPIDER :  1,
       ]));
 }
 
@@ -41,19 +41,19 @@ void init()
 int pre_north(string dir) 
 {
     if( this_player()->GetInvis(1))
-	return 1;
+        return 1;
     /*  If the spider is present, the player can not go that way. We
-	are also checking to see if the spider is still alive since
-	we don't want a corpse to click  menacingly. :)
-	If I were to only put if(present("spider")), then the dead
-	corpse would block the path and click menacingly.
-	By putting the if(living(present("spider", this_object())))
-	we accomplish two checks on one line. Simple and elegant.*/
+        are also checking to see if the spider is still alive since
+        we don't want a corpse to click  menacingly. :)
+        If I were to only put if(present("spider")), then the dead
+        corpse would block the path and click menacingly.
+        By putting the if(living(present("spider", this_object())))
+        we accomplish two checks on one line. Simple and elegant.*/
     if(present("spider", this_object()) && living(present("spider",this_object())) )
     {
-	write("The spider blocks your exit and clicks menacingly!\n");
-	say("The spider blocks " + possessive_noun(this_player()->GetName()) + " exit and clicks menacingly!\n");
-	return 0;
+        write("The spider blocks your exit and clicks menacingly!\n");
+        say("The spider blocks " + possessive_noun(this_player()->GetName()) + " exit and clicks menacingly!\n");
+        return 0;
     }  
     //if we get to here, the spider is not present, so we treat as a
     //normal exit. ie: do nothing. return 1 allows the exit, if you remember.

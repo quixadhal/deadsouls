@@ -18,46 +18,46 @@ mixed cmd(string args) {
     int i, maxi;
 
     if(!member_group(previous_object(), PRIV_SECURE)) {
-	log_file("adm/call", query_privs(previous_object())
-	  +" ("+ctime(time())+"): call "+args+"\n");
+        log_file("adm/call", query_privs(previous_object())
+          +" ("+ctime(time())+"): call "+args+"\n");
     }
     if( !args || args == "" ) return "Call ob->func(arg1, arg2)\n";
     if( sscanf(args, "%s->%s(%s", arg_targ, arg_func, args) != 3 )
-	return "Call ob->func(arg1, arg2)\n";
+        return "Call ob->func(arg1, arg2)\n";
     args = trim(args);
     if( args != ")" ) args = args[0..<2];
     else args = "";
     if( !(target = to_object(arg_targ)) )
-	return "Cannot identify any object as \"" + arg_targ + "\".";
+        return "Cannot identify any object as \"" + arg_targ + "\".";
     if( !function_exists(arg_func, target) )
-	return "The function " + arg_func +"() is not in " +
-	identify(target) + "\n";
+        return "The function " + arg_func +"() is not in " +
+        identify(target) + "\n";
     f = (: call_other, target, arg_func :);
     if( args == "" ) {
-	err = catch(val = evaluate(f));
-	if( err) {
-	    message("error", identify(target) + " -> " + arg_func + "()",
-	      this_player());
-	    message("error", "Error in execution: " + err, this_player());
-	    return 1;
-	}
-	else {
-	    message("system", identify(target) + " -> " + arg_func + "() = " +
-	      identify(val), this_player());
-	    return 1;
-	}
+        err = catch(val = evaluate(f));
+        if( err) {
+            message("error", identify(target) + " -> " + arg_func + "()",
+              this_player());
+            message("error", "Error in execution: " + err, this_player());
+            return 1;
+        }
+        else {
+            message("system", identify(target) + " -> " + arg_func + "() = " +
+              identify(val), this_player());
+            return 1;
+        }
     }
     arg_arr = convert_string("({"+args+"})");
     err = catch(val = call_other(target, ({ arg_func }) + arg_arr));
     args = identify(target) + " -> " + arg_func + "( ";
     for(i = 0, maxi = sizeof(arg_arr); i<maxi; i++) {
-	args += identify(arg_arr[i]);
-	if( i < maxi - 1 ) args += ", ";
+        args += identify(arg_arr[i]);
+        if( i < maxi - 1 ) args += ", ";
     }
     if( err ) {
-	message("error", args + ")", this_player());
-	message("error", "Error in execution: " + err, this_player());
-	return 1;
+        message("error", args + ")", this_player());
+        message("error", "Error in execution: " + err, this_player());
+        return 1;
     }
     args += " ) = " + identify(val);
     message("system", args, this_player());

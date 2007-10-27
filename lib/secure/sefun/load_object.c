@@ -22,24 +22,24 @@ int update(string file){
     if(!file_exists(file)) return 1;
     if(last(file,2) == ".c") file = truncate(file,2);
     if(ob = find_object(file)) {
-	global_load_ob = ob;
-	unguarded( (: global_load_ob->eventDestruct() :) );
+        global_load_ob = ob;
+        unguarded( (: global_load_ob->eventDestruct() :) );
     }
     if(find_object(file)) {
-	if(find_object(file)) destruct(ob);
+        if(find_object(file)) destruct(ob);
     }
     if(find_object(file)) {
-	if(find_object(file)) reap_other();
+        if(find_object(file)) reap_other();
     }
     if(find_object(file)) {
-	return 2;
+        return 2;
     }
     catch(call_other(file, "???"));
     if(!find_object(file)) {
-	load_object(file);
+        load_object(file);
     }
     if(!find_object(file)) {
-	return 3;
+        return 3;
     }
     return 4;
 }

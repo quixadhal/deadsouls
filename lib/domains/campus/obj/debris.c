@@ -6,15 +6,15 @@ int ringfound;
 string SearchCrap(){
     string result;
     if(!ringfound){
-	result="Rummaging through the disgusting pile, you "+
-	"discover a beautiful gold ring mixed in with the "+
-	"crap.";
-	say(this_player()->GetName()+" searches the pile of debris "+
-	  "and seems to have found something of value.");
-	if(!new("/domains/campus/armor/ring")->eventMove(this_player()))
-	    new("/domains/campus/armor/ring")->eventMove(environment(this_object()));
-	ringfound=1;
-	return result; 
+        result="Rummaging through the disgusting pile, you "+
+        "discover a beautiful gold ring mixed in with the "+
+        "crap.";
+        say(this_player()->GetName()+" searches the pile of debris "+
+          "and seems to have found something of value.");
+        if(!new("/domains/campus/armor/ring")->eventMove(this_player()))
+            new("/domains/campus/armor/ring")->eventMove(environment(this_object()));
+        ringfound=1;
+        return result; 
     }
 
     result="You rummage through the disgusting pile "+

@@ -41,21 +41,21 @@ void init() {
 static int cmd_build(string str) {
     if(str != "estate") return 0;
     if(!high_mortalp(this_player())) 
-	return notify_fail("Only high mortals may build!\n");
+        return notify_fail("Only high mortals may build!\n");
     if((int)environment(this_player())->GetProperty("indoors")) {
-	message("system", "You cannot build an estate indoors!", this_player());
-	return 1;
+        message("system", "You cannot build an estate indoors!", this_player());
+        return 1;
     }
     if(sizeof(filter_array(all_inventory(environment(this_player())),
-	  "estates", this_object())) >=
+          "estates", this_object())) >=
       (int)environment(this_player())->GetProperty("allow estate")) {
-	message("system", "This area cannot support an estate.",this_player());
-	return 1;
+        message("system", "This area cannot support an estate.",this_player());
+        return 1;
     }
     if(file_size(ESTATES_DIRS+"/"+geteuid(this_player())) != -2) {
-	//seteuid(UID_ESTATES);
-	mkdir(ESTATES_DIRS+"/"+geteuid(this_player()));
-	seteuid(getuid());
+        //seteuid(UID_ESTATES);
+        mkdir(ESTATES_DIRS+"/"+geteuid(this_player()));
+        seteuid(getuid());
     }
     __Exit = "$"+file_name(environment(this_player()))+";$exit";
     message("system", "Give a one to two line description of your estate:",
@@ -66,8 +66,8 @@ static int cmd_build(string str) {
 
 static void input_long(string str) {
     if(str == "") {
-	message("system", "Invalid entry.", this_player());
-	return;
+        message("system", "Invalid entry.", this_player());
+        return;
     }
     __EstateLong = str;
     message("system", "Please give a short description for the room "
@@ -90,8 +90,8 @@ static void input_indoors(string str) {
 
     x = to_int(str);
     if(x && x != 1) {
-	message("system", "That was not a valid value.", this_player());
-	return;
+        message("system", "That was not a valid value.", this_player());
+        return;
     }
     __Indoors = x;
     message("system", "How well lit is the room?", this_player());
@@ -105,8 +105,8 @@ static void input_light(string str) {
 
     x = to_int(str);
     if(x && x != 1 && x != 2 && x != 3) {
-	message("system", "Invalid light number.", this_player());
-	return;
+        message("system", "Invalid light number.", this_player());
+        return;
     }
     __Light = x;
     message("system", "Enter in a long description for the room.  "
@@ -130,8 +130,8 @@ void done_edit(mixed *unused) {
     string str;
 
     if(!(str = read_file(DIR_TMP+"/"+geteuid(this_player())+".estate"))) {
-	message("system", "No long!", this_player());
-	return;
+        message("system", "No long!", this_player());
+        return;
     }
     __Long = replace_string(str, "\n", " ");
     __NewRoom= create_file();

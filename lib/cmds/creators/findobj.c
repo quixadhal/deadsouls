@@ -15,21 +15,21 @@ mixed cmd(string args) {
     else obs = findobs(args);
 
     if(!sizeof(obs)) {
-	write("No such objects found.");
-	return 1;
+        write("No such objects found.");
+        return 1;
     }
 
     write(sizeof(obs)+" matches found. They are:\n\n");
 
     foreach(object ob in obs){
-	string name;
-	string str = "%^BOLD%^BLUE%^Object: "+identify(ob)+", ";
-	if(args != "door" && name = ob->GetName()) str += "%^BOLD%^GREEN%^name: "+name+", ";
-	str += "%^BOLD%^WHITE%^";
-	if(environment(ob)) str += "environment: "+identify(environment(ob))+".\n";
-	else str += "environment: None.\n";
-	str += "%^RESET%^\n";
-	ret += str;
+        string name;
+        string str = "%^BOLD%^BLUE%^Object: "+identify(ob)+", ";
+        if(args != "door" && name = ob->GetName()) str += "%^BOLD%^GREEN%^name: "+name+", ";
+        str += "%^BOLD%^WHITE%^";
+        if(environment(ob)) str += "environment: "+identify(environment(ob))+".\n";
+        else str += "environment: None.\n";
+        str += "%^RESET%^\n";
+        ret += str;
     }
 
     tmpfile = generate_tmp();

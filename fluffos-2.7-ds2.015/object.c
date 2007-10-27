@@ -1749,8 +1749,8 @@ int restore_object (object_t * ob, const char * file, int noclear)
         theBuff = DXALLOC(tmp_len + 1, TAG_TEMPORARY, "restore_object: 4");
         buff_len = tmp_len;
     }
-#if defined(WIN32) && !defined(MINGW)
-    tmp_len = read(_fileno(f), theBuff, i);
+#if defined(WIN32)
+    tmp_len = read(_fileno(f), theBuff, tmp_len);
 #else
     fread(theBuff, 1, tmp_len, f);
 #endif

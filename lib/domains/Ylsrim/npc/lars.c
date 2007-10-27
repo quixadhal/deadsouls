@@ -32,7 +32,7 @@ static void create() {
     SetLocalCurrency("electrum");
     // What he sells
     SetMenuItems(([
-	({ "ale", "beer" }) : "/domains/Ylsrim/meal/ale",
+        ({ "ale", "beer" }) : "/domains/Ylsrim/meal/ale",
       ]));
 }
 void init(){

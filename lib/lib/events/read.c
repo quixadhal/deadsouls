@@ -14,10 +14,10 @@ string GetShort();
 
 string GetRead(string str) {
     if( !str || str == "default" ) {
-	return Read;
+        return Read;
     }
     else {
-	return Reads[str];
+        return Reads[str];
     }
 }
 
@@ -27,58 +27,58 @@ string array GetReads() {
 
 void RemoveRead(string item) {
     if( !item || item == "default" ) {
-	Read = 0;
+        Read = 0;
     }
     else {
-	map_delete(Reads, item);
+        map_delete(Reads, item);
     }
     return;
 }
 
 varargs mixed SetRead(mixed arg1, mixed desc) {
     if( mapp(arg1) ) {
-	Reads = expand_keys(arg1);
-	if( Reads["default"] ) {
-	    Read = Reads["default"];
-	    map_delete(Reads, "default");
-	}
+        Reads = expand_keys(arg1);
+        if( Reads["default"] ) {
+            Read = Reads["default"];
+            map_delete(Reads, "default");
+        }
     }
     if( !desc ) {
-	Read = arg1;
-	return Read;
+        Read = arg1;
+        return Read;
     }
     if( !arg1 || arg1 == "default" ) {
-	Read = desc;
-	return Read;
+        Read = desc;
+        return Read;
     }
     if( arrayp(arg1) ) {
-	foreach(string element in arg1) {
-	    Reads[element] = desc;
-	}
+        foreach(string element in arg1) {
+            Reads[element] = desc;
+        }
     }
     else {
-	Reads[arg1] = desc;
+        Reads[arg1] = desc;
     }
     return Reads;
 }
 
 void SetReads(mapping ReadMap){
     foreach(mixed key, mixed val in ReadMap){
-	SetRead(key, val);
+        SetRead(key, val);
     }
 }
 
 varargs mixed SetDefaultRead(mixed arg1, mixed desc) {
     if( mapp(arg1) ) {
-	return 0;
+        return 0;
     }
     if( !desc ) {
-	Read = arg1;
-	return Read;
+        Read = arg1;
+        return Read;
     }
     if( !arg1 || arg1 == "default" ) {
-	Read = desc;
-	return Read;
+        Read = desc;
+        return Read;
     }
 }
 
@@ -97,52 +97,52 @@ varargs mixed eventRead(object who, string str) {
     mixed val = GetRead(str);
 
     if( arrayp(val) ) {
-	val = val[query_night()];
+        val = val[query_night()];
     }
     if(mapp(val)) val = val[str];
 
     if( functionp(val) ) {
-	if( functionp(val) & FP_OWNER_DESTED ) {
-	    who->eventPrint("There was a problem with the read.");
-	    return 1;
-	}
-	//The funtion being evaluated, GetRead, only takes one arg.
-	//return evaluate(val, who, str);
-	ret = evaluate(val, str);
-	if(!stringp(ret)) return 1;
+        if( functionp(val) & FP_OWNER_DESTED ) {
+            who->eventPrint("There was a problem with the read.");
+            return 1;
+        }
+        //The funtion being evaluated, GetRead, only takes one arg.
+        //return evaluate(val, who, str);
+        ret = evaluate(val, str);
+        if(!stringp(ret)) return 1;
     }
     environment(who)->eventPrint(who->GetName() + " reads " + GetShort() + ".",
       who);
     if(ret) val = ret;
     if( !val ) {
-	who->eventPrint("There is nothing to read.");
-	return 1;
+        who->eventPrint("There is nothing to read.");
+        return 1;
     }
     tmpfile = generate_tmp();
     globalwho = who;
     globalval = val;
 
     if(Language){
-	write("The language appears to be "+capitalize(Language)+".");
+        write("The language appears to be "+capitalize(Language)+".");
     }
 
     if(!globalval){
-	write("You can't read that.");
-	return 0;
+        write("You can't read that.");
+        return 0;
     } 
 
     if(Language && (this_player()->GetLanguageLevel(Language) < 100 &&
-	!(this_player()->GetPolyglot()))){
-	if(sizeof(globalval) > 4800){
-	    globalval = "It is too long and you are too unfamiliar with the language to make sense of it.";
+        !(this_player()->GetPolyglot()))){
+        if(sizeof(globalval) > 4800){
+            globalval = "It is too long and you are too unfamiliar with the language to make sense of it.";
 
-	}
-	else {
-	    globalval = translate(val, this_player()->GetLanguageLevel(Language));
-	}
+        }
+        else {
+            globalval = translate(val, this_player()->GetLanguageLevel(Language));
+        }
     }
     else {
-	globalval = val;
+        globalval = val;
     }
     unguarded( (: write_file(tmpfile, globalval,1) :) );
 
@@ -153,14 +153,14 @@ varargs mixed eventRead(object who, string str) {
 
 mixed direct_read_obj() {
     if( !Read ) {
-	return 0;
+        return 0;
     }
     else {
-	if( environment() != this_player()  && environment(this_player()) !=
-	  environment()) {
-	    return "#You don't have that!";
-	}
-	else return 1;
+        if( environment() != this_player()  && environment(this_player()) !=
+          environment()) {
+            return "#You don't have that!";
+        }
+        else return 1;
 
     }
 }
@@ -168,14 +168,14 @@ mixed direct_read_obj() {
 mixed direct_read_str_word_obj(string str) {
     str = remove_article(lower_case(str));
     if( !Reads[str] ) {
-	return 0;
+        return 0;
     }
     else {
-	if( environment() != this_player()  && environment(this_player()) !=
-	  environment()) {
-	    return "#You don't have that!";
-	}
-	else return 1;
+        if( environment() != this_player()  && environment(this_player()) !=
+          environment()) {
+            return "#You don't have that!";
+        }
+        else return 1;
 
     }
 }

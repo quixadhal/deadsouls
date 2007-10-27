@@ -44,10 +44,10 @@ static void create() {
 
 mixed can_wield_obj() { 
     if( !sizeof(this_player()->GetWieldingLimbs()) ) {
-	return "You have no limbs with which to wield!";
+        return "You have no limbs with which to wield!";
     }
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything";
+        return "You cannot do anything";
     }
     return 1;
 }
@@ -61,13 +61,13 @@ mixed do_wield_obj(object ob) {
     int hands = ob->GetHands();
 
     if(ob->GetEquipped())
-	return write("You're already wielding it!");
+        return write("You're already wielding it!");
 
     if( hands < sizeof(limbs) ) {
-	limbs = limbs[0..(hands-1)];
+        limbs = limbs[0..(hands-1)];
     }
     else if( hands > sizeof(limbs) ) {
-	return write("You're out of limbs to wield with!");
+        return write("You're out of limbs to wield with!");
     }
     return ob->eventEquip(this_player(), limbs);
 }
@@ -80,46 +80,46 @@ mixed do_wield_obs(mixed array targs) {
     object array obs;
 
     if( !sizeof(targs) ) {
-	this_player()->eventPrint("There is no such thing to be wielded.");
-	return 1;
+        this_player()->eventPrint("There is no such thing to be wielded.");
+        return 1;
     }
     obs = filter(targs, (: objectp :));
     if( !sizeof(obs) ) {
-	mapping messages = unique_mapping(targs, (: $1 :));
+        mapping messages = unique_mapping(targs, (: $1 :));
 
-	foreach(string msg in keys(messages)) {
-	    this_player()->eventPrint(msg);
-	}
-	return 1;
+        foreach(string msg in keys(messages)) {
+            this_player()->eventPrint(msg);
+        }
+        return 1;
     }
     foreach(object item in obs) {
-	string array limbs = GetFreeLimbs(this_player());
-	int hands = item->GetHands();
+        string array limbs = GetFreeLimbs(this_player());
+        int hands = item->GetHands();
 
-	if( sizeof(limbs) < hands ) {
-	    this_player()->eventPrint("You don't have anywhere to wield " +
-	      item->GetDefiniteShort() + ".");
-	}
-	else {
-	    mixed tmp;
+        if( sizeof(limbs) < hands ) {
+            this_player()->eventPrint("You don't have anywhere to wield " +
+              item->GetDefiniteShort() + ".");
+        }
+        else {
+            mixed tmp;
 
-	    if( hands < sizeof(limbs) ) {
-		limbs = limbs[0..(hands-1)];
-	    }
-	    tmp = item->CanEquip(this_player(), limbs);
-	    if( tmp != 1 ) {
-		if( !tmp ) {
-		    this_player()->eventPrint("You cannot wield " +
-		      item->GetDefiniteShort() + ".");
-		}
-		else {
-		    this_player()->eventPrint(tmp);
-		}
-	    }
-	    else {
-		item->eventEquip(this_player(), limbs);
-	    }
-	}
+            if( hands < sizeof(limbs) ) {
+                limbs = limbs[0..(hands-1)];
+            }
+            tmp = item->CanEquip(this_player(), limbs);
+            if( tmp != 1 ) {
+                if( !tmp ) {
+                    this_player()->eventPrint("You cannot wield " +
+                      item->GetDefiniteShort() + ".");
+                }
+                else {
+                    this_player()->eventPrint(tmp);
+                }
+            }
+            else {
+                item->eventEquip(this_player(), limbs);
+            }
+        }
     }
     return 1;
 }

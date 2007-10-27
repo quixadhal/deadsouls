@@ -16,8 +16,8 @@ void abort();
 int cmd(string str) {
     if(!archp(previous_object())) return 0;
     if(!str) {
-	notify_fail("Syntax: register <site-ip>\n\n");
-	return 0;
+        notify_fail("Syntax: register <site-ip>\n\n");
+        return 0;
     }
     write("%^RED%^Enter all applicable information, including names, "
       "offenses and email addresses.");
@@ -40,10 +40,10 @@ void end_edit(string site) {
     str += "   by "+(string)previous_object()->GetName()+": "+
     ctime(time())+"\n";
     for(x=0; x<num; x++) 
-	str +=  "      * "+lines[x]+"\n";
+        str +=  "      * "+lines[x]+"\n";
 
     if(res = catch(call_other(BANISH_D, "register_site", site))) 
-	write("Error in registering site: "+res+"\n");
+        write("Error in registering site: "+res+"\n");
 
     log_file("watch/register", "\n" + str);
     write("%^RED%^%^BOLD%^"+site+" is now on registration!");

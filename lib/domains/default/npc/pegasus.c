@@ -16,9 +16,9 @@ static void create() {
     SetGender("male");
     SetMelee(1);
     SetAction(5, ({ 
-	"The winged horse snorts.", "You hear the winged horse flap its wings a bit.", 
-	"The winged horse flips its tail in the air.",
-	"The winged horse looks around."}));
+        "The winged horse snorts.", "You hear the winged horse flap its wings a bit.", 
+        "The winged horse flips its tail in the air.",
+        "The winged horse looks around."}));
 }
 void init(){
     ::init();

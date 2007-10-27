@@ -86,7 +86,7 @@ void SetOrigin(string o, string d){
     if (o == "" || d == "") return;    
     origin = lower_case(o);
     if(!sizeof(STARGATE_D->GetStargate(origin))){
-	STARGATE_D->SetStargate(origin, d);
+        STARGATE_D->SetStargate(origin, d);
     }
 }
 
@@ -100,19 +100,19 @@ void eventConnect(string destination){
     destination = lower_case(destination);
 
     if (origin == destination){
-	write("You attempt to dial the gate, but the last chevron does not engage");
-	say(this_player()->GetName() + " tries to dial the gate but the last chevron does not engage");
-	return;
+        write("You attempt to dial the gate, but the last chevron does not engage");
+        say(this_player()->GetName() + " tries to dial the gate but the last chevron does not engage");
+        return;
     }
 
     ret = STARGATE_D->eventConnect(origin, destination);
     if (ret){
-	string d = STARGATE_D->GetDestination(destination);
-	write("The ancient rings lock into place and a portal forms in an explosion of energy.");
-	say("The ancient rings lock into place and a portal forms in an explosion of energy.");
-	tell_room(d, "The ancient rings lock into place and a portal forms in an explosion of energy");
-	call_out("eventDisconnect", 10+random(5));
-	return;
+        string d = STARGATE_D->GetDestination(destination);
+        write("The ancient rings lock into place and a portal forms in an explosion of energy.");
+        say("The ancient rings lock into place and a portal forms in an explosion of energy.");
+        tell_room(d, "The ancient rings lock into place and a portal forms in an explosion of energy");
+        call_out("eventDisconnect", 10+random(5));
+        return;
     }
 
     write("You attempt to dial the stargate, but nothing happens.");
@@ -140,15 +140,15 @@ mixed cmdDial(string s){
     string flipside;
     if (s)
     {
-	if(STARGATE_D->GetDestination(s)) 
-	    flipside = STARGATE_D->GetDestination(s);
-	eventConnect(s);
-	if(sizeof(flipside) && !ob) ob = load_object(flipside);
-	if(!ob){
-	    write("The Stargate abruptly begins to shuts down.");
-	    eventDisconnect();
-	}
-	return 1;
+        if(STARGATE_D->GetDestination(s)) 
+            flipside = STARGATE_D->GetDestination(s);
+        eventConnect(s);
+        if(sizeof(flipside) && !ob) ob = load_object(flipside);
+        if(!ob){
+            write("The Stargate abruptly begins to shuts down.");
+            eventDisconnect();
+        }
+        return 1;
     }
 
     return 0;
@@ -161,12 +161,12 @@ int cmdEnter(string what){
 
     if (what != "gate" && what != "stargate")
     {
-	return 0;
+        return 0;
     }
 
     if (status() != "outbound")
     {
-	return 0;
+        return 0;
     }
 
     who = this_player();
@@ -188,10 +188,10 @@ int eventEnter(object who){
     endpoint = STARGATE_D->GetEndpoint(origin);
     if (status() == "connected")
     {
-	who->eventPrint("You step through the event horizon of the stargate.");
-	who->eventMoveLiving(endpoint, 
-	  "$N steps into the event horizon and disappears", 
-	  "$N steps out of the event horizon");
+        who->eventPrint("You step through the event horizon of the stargate.");
+        who->eventMoveLiving(endpoint, 
+          "$N steps into the event horizon and disappears", 
+          "$N steps out of the event horizon");
     }
     return 1;
 }
@@ -209,11 +209,11 @@ string displayLong(){
 
     if (stat == "outbound" || stat == "inbound")
     {
-	buf += " There is an event horizon in the center of the ring that looks like shimmering water.";
+        buf += " There is an event horizon in the center of the ring that looks like shimmering water.";
     }
     else if (stat == "idle")
     {
-	buf += " This gate is currently idle.";
+        buf += " This gate is currently idle.";
     }
     return buf;
 }
@@ -224,12 +224,12 @@ string displayShort(){
     switch (stat)
     {
     case "inbound":
-	return "an inbound stargate";
+        return "an inbound stargate";
     case "outbound":
-	return "an outbound stargate";
+        return "an outbound stargate";
     case "idle":
-	return "an idle stargate";
+        return "an idle stargate";
     default:
-	return "a broken stargate";
+        return "a broken stargate";
     }
 }

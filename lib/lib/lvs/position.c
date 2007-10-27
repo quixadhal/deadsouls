@@ -38,22 +38,22 @@ mixed eventFall() {
     mixed rumbo;
     if(!env || !(rumbo = env->GetExit("down"))) return 0;
     if(env->GetMedium() != MEDIUM_AIR){
-	send_messages("fall", "$agent_name $agent_verb to the ground.",
-	  this_object(), 0, environment());
-	Position = POSITION_LYING;
-	return 1;
+        send_messages("fall", "$agent_name $agent_verb to the ground.",
+          this_object(), 0, environment());
+        Position = POSITION_LYING;
+        return 1;
     }
     else {
-	rumbo = load_object(rumbo);
-	if(!rumbo) return 0; 
-	say(this_object()->GetName()+" plummets in from above.");
-	write("You plummet downward!");
-	if(this_object()->eventMove(rumbo)){
-	    env->eventPrint(this_object()->GetName()+" continues "+
-	      possessive(this_player())+" fall downward.", MSG_ENV);
-	    call_out( "eventFall", 1);
-	}
-	return 1;
+        rumbo = load_object(rumbo);
+        if(!rumbo) return 0; 
+        say(this_object()->GetName()+" plummets in from above.");
+        write("You plummet downward!");
+        if(this_object()->eventMove(rumbo)){
+            env->eventPrint(this_object()->GetName()+" continues "+
+              possessive(this_player())+" fall downward.", MSG_ENV);
+            call_out( "eventFall", 1);
+        }
+        return 1;
     }
     return 0;
 }
@@ -63,24 +63,24 @@ varargs mixed eventLay(object target) {
     mixed tmp;
 
     if( Position != POSITION_STANDING && Position != POSITION_SITTING) {
-	eventPrint("You must be standing or sitting in order to lie.");
-	return 1;
+        eventPrint("You must be standing or sitting in order to lie.");
+        return 1;
     }
     if( !target ) {
-	send_messages("lie", "$agent_name $agent_verb down.", this_object(),
-	  0, environment());
-	Position = POSITION_LYING;
-	return 1;
+        send_messages("lie", "$agent_name $agent_verb down.", this_object(),
+          0, environment());
+        Position = POSITION_LYING;
+        return 1;
     }
     tmp = target->eventReceiveLay(this_object());
     if( tmp != 1 ) {
-	if( !tmp ) {
-	    eventPrint("You cannot lie there!");
-	}
-	else {
-	    eventPrint(tmp);
-	}
-	return 1;
+        if( !tmp ) {
+            eventPrint("You cannot lie there!");
+        }
+        else {
+            eventPrint(tmp);
+        }
+        return 1;
     }
     send_messages("lie", "$agent_name $agent_verb down on " +
       target->GetShort() + ".", this_object(), 0, environment());
@@ -94,30 +94,30 @@ varargs mixed eventSit(object target) {
     mixed tmp;
 
     if( Position != POSITION_STANDING && Position != POSITION_LYING ) {
-	//eventPrint("You must be standing in order to sit!");
-	eventPrint("You can't sit from that position.");
-	return 1;
+        //eventPrint("You must be standing in order to sit!");
+        eventPrint("You can't sit from that position.");
+        return 1;
     }
     if( !target ) {
-	if( Position == POSITION_STANDING) {
-	    send_messages("sit", "$agent_name $agent_verb down.", 
-	      this_object(),0, environment());
-	}
-	else send_messages("sit", "$agent_name $agent_verb up.",
-	      this_object(),0, environment());
+        if( Position == POSITION_STANDING) {
+            send_messages("sit", "$agent_name $agent_verb down.", 
+              this_object(),0, environment());
+        }
+        else send_messages("sit", "$agent_name $agent_verb up.",
+              this_object(),0, environment());
 
-	Position = POSITION_SITTING;
-	return 1;
+        Position = POSITION_SITTING;
+        return 1;
     }
     tmp = target->eventReceiveSit(this_object());
     if( tmp != 1 ) {
-	if( !tmp ) {
-	    eventPrint("You cannot sit there!");
-	}
-	else {
-	    eventPrint(tmp);
-	}
-	return 1;
+        if( !tmp ) {
+            eventPrint("You cannot sit there!");
+        }
+        else {
+            eventPrint(tmp);
+        }
+        return 1;
     }
     send_messages("sit", "$agent_name $agent_verb down on " +
       target->GetShort() + ".", this_object(), 0, environment());
@@ -128,23 +128,23 @@ varargs mixed eventSit(object target) {
 
 mixed eventFly(){
     if( Chair ) {
-	mixed tmp = Chair->eventReleaseStand(this_object());
+        mixed tmp = Chair->eventReleaseStand(this_object());
 
-	if( tmp != 1 ) {
-	    if( !tmp ) {
-		eventPrint("You cannot get up!");
-	    }
-	    else {
-		eventPrint(tmp);
-	    }
-	    return 1;
-	}
-	Chair = 0;
+        if( tmp != 1 ) {
+            if( !tmp ) {
+                eventPrint("You cannot get up!");
+            }
+            else {
+                eventPrint(tmp);
+            }
+            return 1;
+        }
+        Chair = 0;
     }
     if(this_object()->CanFly() && Position != POSITION_FLYING){
-	tell_object(this_object(),"You begin flying.");
-	say(this_player()->GetName()+" begins flying and hovers in the air.");
-	Position = POSITION_FLYING;
+        tell_object(this_object(),"You begin flying.");
+        say(this_player()->GetName()+" begins flying and hovers in the air.");
+        Position = POSITION_FLYING;
     }
     return 1;
 }
@@ -164,34 +164,34 @@ mixed eventLand(){
 
 mixed eventStand() {
     if(!stringp(hobbled(this_player()))){
-	eventPrint("Your injuries prevent you from standing.");
-	return 1;
+        eventPrint("Your injuries prevent you from standing.");
+        return 1;
     }
     if(RACES_D->GetLimblessRace(this_player()->GetRace()) ){
-	eventPrint("You aren't endowed with limbs with which to stand.");
-	return 1;
+        eventPrint("You aren't endowed with limbs with which to stand.");
+        return 1;
     }
     if( Position == POSITION_STANDING ) {
-	eventPrint("You are already standing!");
-	return 1;
+        eventPrint("You are already standing!");
+        return 1;
     }
     if( Position == POSITION_FLYING){
-	return eventLand();
+        return eventLand();
     }
 
     if( Chair ) {
-	mixed tmp = Chair->eventReleaseStand(this_object());
+        mixed tmp = Chair->eventReleaseStand(this_object());
 
-	if( tmp != 1 ) {
-	    if( !tmp ) {
-		eventPrint("You cannot get up!");
-	    }
-	    else {
-		eventPrint(tmp);
-	    }
-	    return 1;
-	}
-	Chair = 0;
+        if( tmp != 1 ) {
+            if( !tmp ) {
+                eventPrint("You cannot get up!");
+            }
+            else {
+                eventPrint(tmp);
+            }
+            return 1;
+        }
+        Chair = 0;
     }
     Position = POSITION_STANDING;
     send_messages("stand", "$agent_name $agent_verb up.", this_object(), 0,

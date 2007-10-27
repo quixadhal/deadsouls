@@ -10,16 +10,16 @@ mixed cmd(string str) {
     int room;
 
     if(!str || str == "") {
-	write("You'll need to be more specific. Try 'help create'");
-	return 1;
+        write("You'll need to be more specific. Try 'help create'");
+        return 1;
     }
 
     staff = present("tanstaafl",this_player());
     if(!staff) {
-	write("You must be holding the creator staff in order to use this command.");
-	write("If you don't know where you put it, get another one from the chest ");
-	write("in your workroom.");
-	return 1;
+        write("You must be holding the creator staff in order to use this command.");
+        write("If you don't know where you put it, get another one from the chest ");
+        write("in your workroom.");
+        return 1;
     }
 
     if(sscanf(str,"room%s",arg) == 1 ||

@@ -17,13 +17,13 @@ void create() {
       "you can see a small brown thatch house. " );
     SetItems(
       (["alley" : "It is bright and cheerful, not like that alley on "
-	"the south end.",
-	"path" : "The main north-south road of Praxis.",
-	"intersection" : "Sun alley meets Centre Path there.",
-	"house" : "It's a small thatch house, nothing special."]) );
+        "the south end.",
+        "path" : "The main north-south road of Praxis.",
+        "intersection" : "Sun alley meets Centre Path there.",
+        "house" : "It's a small thatch house, nothing special."]) );
     SetExits( 
       (["east" : "/domains/Praxis/sun2",
-	"west" : "/domains/Praxis/n_centre2",
-	"south"	 : "/domains/Praxis/house"]) );
+        "west" : "/domains/Praxis/n_centre2",
+        "south"	 : "/domains/Praxis/house"]) );
 }
 

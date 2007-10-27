@@ -76,7 +76,7 @@ mixed do_whisper_in_wrd_to_liv_str(string lang, object targ, string str) {
 
 mixed do_whisper_to_liv_in_wrd_str(object targ, string lang, string str) {
     if( str[<1] != '?' && str[<2] != '!' && str[<1] != '.' )
-	str = capitalize(str) + ".";
+        str = capitalize(str) + ".";
     else str = capitalize(str);
     return (mixed)this_player()->eventSpeak(targ, TALK_SEMI_PRIVATE, str,lang);
 }

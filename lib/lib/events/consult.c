@@ -8,7 +8,7 @@ string GetDefiniteShort();
 
 varargs mixed GetConsult(string str) {
     if( !str ) {
-	str = "default";
+        str = "default";
     }
     return Consult[str];
 }
@@ -24,18 +24,18 @@ mapping RemoveConsult(string item) {
 
 varargs mapping SetConsult(mixed key, mixed desc) {
     if( !key ) {
-	key = "default";
+        key = "default";
     }
     if( !desc ) {
-	if( mapp(key) ) {
-	    Consult = expand_keys(key);
-	}
-	else {
-	    Consult["default"] = key;
-	}
+        if( mapp(key) ) {
+            Consult = expand_keys(key);
+        }
+        else {
+            Consult["default"] = key;
+        }
     }
     else {
-	Consult[key] = desc;
+        Consult[key] = desc;
     }
     return Consult;
 }
@@ -44,17 +44,17 @@ varargs mixed CanConsult(object who, string component) {
     mixed val;
 
     if( !component ) {
-	component = "default";
+        component = "default";
     }
     val = Consult[component];
     if( !val ) {
-	if( component == "default" ) {
-	    return 0;
-	}
-	else {
-	    return "#There is no " + component + " on " +
-	    GetDefiniteShort() + ".";
-	}
+        if( component == "default" ) {
+            return 0;
+        }
+        else {
+            return "#There is no " + component + " on " +
+            GetDefiniteShort() + ".";
+        }
     }
     else return 1;
 }
@@ -63,34 +63,34 @@ varargs mixed eventConsult(object who, string component) {
     mixed val;
 
     if( !component ) {
-	val = Consult["default"];
+        val = Consult["default"];
     }
     else {
-	val = Consult[component];
+        val = Consult[component];
     }
     if( arrayp(val) ) {
-	val = val[query_night()];
+        val = val[query_night()];
     }
     if( stringp(val) ) {
-	object env;
+        object env;
 
-	env = environment(who);
-	who->eventPrint(val);
-	if( component ) {
-	    env->eventPrint(who->GetName() + " consults the " + component +
-	      " on " + GetDefiniteShort() + ".", who);
-	}
-	else {
-	    env->eventPrint(who->GetName() + " consults " +
-	      GetDefiniteShort() + ".", who);
-	}
-	return 1;
+        env = environment(who);
+        who->eventPrint(val);
+        if( component ) {
+            env->eventPrint(who->GetName() + " consults the " + component +
+              " on " + GetDefiniteShort() + ".", who);
+        }
+        else {
+            env->eventPrint(who->GetName() + " consults " +
+              GetDefiniteShort() + ".", who);
+        }
+        return 1;
     }
     else {
-	if( functionp(val) & FP_OWNER_DESTED ) {
-	    return "Error in evaluating functional.";
-	}
-	return evaluate(val, who, component);
+        if( functionp(val) & FP_OWNER_DESTED ) {
+            return "Error in evaluating functional.";
+        }
+        return evaluate(val, who, component);
     }
 }
 

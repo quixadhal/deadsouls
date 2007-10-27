@@ -9,12 +9,12 @@ mapping expand_keys(mapping mp) {
     mixed key, val;
 
     foreach(key, val in mp) {
-	if( arrayp(key) ) {
-	    string elem;
+        if( arrayp(key) ) {
+            string elem;
 
-	    foreach(elem in key) tmp[elem] = val;
-	}
-	else tmp[key] = val;
+            foreach(elem in key) tmp[elem] = val;
+        }
+        else tmp[key] = val;
     }
     return tmp;
 }

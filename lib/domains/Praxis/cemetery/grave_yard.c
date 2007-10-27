@@ -7,7 +7,7 @@ void create() {
     SetProperty("light", 2);
     SetExits( 
       (["west" : "/domains/Praxis/east_road2",
-	"east" : "/domains/Praxis/cemetery/grave_yard2"]) );
+        "east" : "/domains/Praxis/cemetery/grave_yard2"]) );
     SetShort("Cemetary Entrance");
     SetLong(
       "You stand between the gates of an ancient, nearly "
@@ -17,7 +17,7 @@ void create() {
       "You see a headstone off to the east. ");
     SetItems(
       (["headstone" : "The headstone is too far away to read.",
-	"gates" : "The gates are antiques.  No one makes gates "
-	"like these anymore."]) );
+        "gates" : "The gates are antiques.  No one makes gates "
+        "like these anymore."]) );
 }
 

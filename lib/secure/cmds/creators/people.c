@@ -42,47 +42,47 @@ int cmd(string str) {
     else args = explode(str[1..strlen(str)-1], "");
     i = sizeof(args);
     while(i--) {
-	switch(args[i]) {
-	case "a": aflag = 1; break; /* list arches */
-	case "b": bflag = 1; break; /* list ambassadors */
-	case "c": cflag = 1; break; /* list creators */
-	case "e": eflag = 1; break; /* sort by race */
-	case "g": gflag = 1; break; /* sort by age */
-	case "h": hflag = 1; break; /* list high mortals */
-	case "l": lflag = 1; break; /* sort by level */
-	case "m": mflag = 1; break; /* page through eventPage */
-	case "n": nflag = 1; break; /* list newbies */
-	case "p": pflag = 1; break; /* list regular mortals */
-	case "r": rflag = 1; break; /* sort by realm location */
-	case "s": sflag = 1; break; /* sort by class */
-	case "u": uflag = 1; break; /* list undead */
-	}
+        switch(args[i]) {
+        case "a": aflag = 1; break; /* list arches */
+        case "b": bflag = 1; break; /* list ambassadors */
+        case "c": cflag = 1; break; /* list creators */
+        case "e": eflag = 1; break; /* sort by race */
+        case "g": gflag = 1; break; /* sort by age */
+        case "h": hflag = 1; break; /* list high mortals */
+        case "l": lflag = 1; break; /* sort by level */
+        case "m": mflag = 1; break; /* page through eventPage */
+        case "n": nflag = 1; break; /* list newbies */
+        case "p": pflag = 1; break; /* list regular mortals */
+        case "r": rflag = 1; break; /* sort by realm location */
+        case "s": sflag = 1; break; /* sort by class */
+        case "u": uflag = 1; break; /* list undead */
+        }
     }
     who = filter(users(), "filter_invis", this_object());
     foreach(object real_person in who){
-	if(sizeof(base_name(real_person))) whom += ({ real_person });
+        if(sizeof(base_name(real_person))) whom += ({ real_person });
     }
 
     who = whom;
 
     if(!aflag && !bflag && !cflag && !hflag && !nflag && !pflag && !uflag)
-	display = who;
+        display = who;
     else {
-	display = ({});
-	if(aflag) display += filter(who, "filter_arches", this_object());
-	if(bflag) display += filter(who, "filter_ambass", this_object());
-	if(cflag) display += filter(who, "filter_cres", this_object());
-	if(hflag) display += filter(who, "filter_hms", this_object());
-	if(nflag) display += filter(who, "filter_newbie", this_object());
-	if(pflag) display += filter(who, "filter_mortal", this_object());
-	if(uflag) display += filter(who, "filter_undead", this_object());
-	display = distinct_array(display);
+        display = ({});
+        if(aflag) display += filter(who, "filter_arches", this_object());
+        if(bflag) display += filter(who, "filter_ambass", this_object());
+        if(cflag) display += filter(who, "filter_cres", this_object());
+        if(hflag) display += filter(who, "filter_hms", this_object());
+        if(nflag) display += filter(who, "filter_newbie", this_object());
+        if(pflag) display += filter(who, "filter_mortal", this_object());
+        if(uflag) display += filter(who, "filter_undead", this_object());
+        display = distinct_array(display);
     }
     if(!eflag && !gflag && !lflag && !rflag && !sflag) 
-	maxi = sizeof(display=sort_array(display,"general_sort",this_object()));
+        maxi = sizeof(display=sort_array(display,"general_sort",this_object()));
     else {
-	__SortFlags = ({ eflag, gflag, lflag, rflag, sflag });
-	maxi = sizeof(display = sort_array(display,"special_sort",this_object()));
+        __SortFlags = ({ eflag, gflag, lflag, rflag, sflag });
+        maxi = sizeof(display = sort_array(display,"special_sort",this_object()));
     }
     screenSize = ((int*)this_player()->GetScreen())[0];
     formatString = calculateFormatString(screenSize);
@@ -125,7 +125,7 @@ static int filter_hms(object ob) { return high_mortalp(ob); }
 
 static int filter_newbie(object ob) {
     return (!creatorp(ob) && !ambassadorp(ob) && (MAX_NEWBIE_LEVEL >=
-	(int)ob->GetLevel()));
+        (int)ob->GetLevel()));
 }
 
 static int filter_mortal(object ob) {
@@ -140,28 +140,28 @@ static int general_sort(object alpha, object beta) {
     int x, y;
 
     if(archp(alpha)) {
-	if(!archp(beta)) return -1;
-	else return strcmp((string)alpha->GetCapName(), 
-	      (string)beta->GetCapName());
+        if(!archp(beta)) return -1;
+        else return strcmp((string)alpha->GetCapName(), 
+              (string)beta->GetCapName());
     }
     else if(archp(beta)) return 1;
     if(creatorp(alpha)) {
-	if(!creatorp(beta)) return -1;
-	else return strcmp((string)alpha->GetCapName(),
-	      (string)beta->GetCapName());
+        if(!creatorp(beta)) return -1;
+        else return strcmp((string)alpha->GetCapName(),
+              (string)beta->GetCapName());
     }
     else if(creatorp(beta)) return 1;
     if(ambassadorp(alpha)) {
-	if(!ambassadorp(beta)) return -1;
-	else return strcmp((string)alpha->GetCapName(),
-	      (string)beta->GetCapName());
+        if(!ambassadorp(beta)) return -1;
+        else return strcmp((string)alpha->GetCapName(),
+              (string)beta->GetCapName());
     }
     else if(ambassadorp(beta)) return 1;
     if((x = (int)alpha->GetLevel()) > (y = (int)beta->GetLevel()))
-	return -1;
+        return -1;
     else if(x < y) return 1;
     else return strcmp((string)alpha->GetCapName(),
-	  (string)beta->GetCapName());
+          (string)beta->GetCapName());
 }
 
 static int special_sort(object alpha, object beta) {
@@ -169,34 +169,34 @@ static int special_sort(object alpha, object beta) {
     int x, y;
 
     if(__SortFlags[4]) {
-	if((a=(string)alpha->query_class())!=(b=(string)beta->query_class())) {
-	    if(!a) a = "zzzz";
-	    if(!b) b= "zzzz";
-	    return strcmp(a, b);
-	}
+        if((a=(string)alpha->query_class())!=(b=(string)beta->query_class())) {
+            if(!a) a = "zzzz";
+            if(!b) b= "zzzz";
+            return strcmp(a, b);
+        }
     }
     if(__SortFlags[0]) {
-	if((a=(string)alpha->query_race()) != (b=(string)beta->query_race())) {
-	    if(!a) a = "zzzz";
-	    if(!b) b = "zzzz";
-	    return strcmp(a, b);
-	}
+        if((a=(string)alpha->query_race()) != (b=(string)beta->query_race())) {
+            if(!a) a = "zzzz";
+            if(!b) b = "zzzz";
+            return strcmp(a, b);
+        }
     }
     if(__SortFlags[3]) {
-	if((a = file_name(room_env(alpha))) != 
-	  (b = file_name(room_env(beta)))) return strcmp(a, b);
+        if((a = file_name(room_env(alpha))) != 
+          (b = file_name(room_env(beta)))) return strcmp(a, b);
     }
     if(__SortFlags[2]) {
-	if((x = (int)alpha->GetLevel()) != (y=(int)beta->GetLevel())) {
-	    if(x > y) return -1;
-	    else return 1;
-	}
+        if((x = (int)alpha->GetLevel()) != (y=(int)beta->GetLevel())) {
+            if(x > y) return -1;
+            else return 1;
+        }
     }
     if(__SortFlags[1]) {
-	if((x = (int)alpha->GetAge()) != (y = (int)beta->GetAge())) {
-	    if(x > y) return -1;
-	    else return 1;
-	}
+        if((x = (int)alpha->GetAge()) != (y = (int)beta->GetAge())) {
+            if(x > y) return -1;
+            else return 1;
+        }
     }
     return 0;
 }
@@ -226,13 +226,13 @@ static string map_info(object ob, string formatString) {
     if((int)ob->GetInvis()) nom = "("+nom+")";
     if(in_edit(ob) || in_input(ob)) nom = "["+nom+"]";
     if(creatorp(ob)) {
-	if((int)ob->GetBlocked("all")) blk = "ACG";
-	else {
-	    if((int)ob->GetBlocked("cre")) blk = " C";
-	    else blk = "  ";
-	    if((int)ob->GetBlocked("gossip")) blk += "G";
-	    else blk += " ";
-	}
+        if((int)ob->GetBlocked("all")) blk = "ACG";
+        else {
+            if((int)ob->GetBlocked("cre")) blk = " C";
+            else blk = "  ";
+            if((int)ob->GetBlocked("gossip")) blk += "G";
+            else blk += " ";
+        }
     }
     else blk = "   ";
     if(!(x = (int)ob->GetLevel())) lev = "-";
@@ -244,9 +244,9 @@ static string map_info(object ob, string formatString) {
     if(!room_env(ob)) env = "no environment";
     else env = file_name(room_env(ob));
     if(!strsrch(env, REALMS_DIRS)) 
-	env = "~" + env[strlen(REALMS_DIRS)+1..];
+        env = "~" + env[strlen(REALMS_DIRS)+1..];
     else if(!strsrch(env, DOMAINS_DIRS))
-	env = "^"+env[strlen(DOMAINS_DIRS)+1..strlen(env)-1];
+        env = "^"+env[strlen(DOMAINS_DIRS)+1..strlen(env)-1];
     return sprintf(formatString, age, lev, nom, ip, idle, blk, env);
 }
 

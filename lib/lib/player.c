@@ -39,16 +39,16 @@ static void create() {
 static void heart_beat() {
 
     if(!interactive(this_object())) {
-	set_heart_beat(0);
-	return;
+        set_heart_beat(0);
+        return;
     }
     interactive::heart_beat();
     if( IDLE_TIMEOUT && query_idle(this_object()) >= IDLE_TIMEOUT 
       && !creatorp(this_object()) 
       && !present("testchar badge",this_object()) 
       && !testp(this_object()) ) {
-	cmdQuit();
-	return;
+        cmdQuit();
+        return;
     }
     living::heart_beat();
 }
@@ -86,7 +86,7 @@ void eventReconnect() {
 varargs int eventShow(object who, string str) {
     if( !living::eventShow(who, str) ) return 0;
     if( this_player() != this_object() )
-	eventPrint((string)this_player()->GetName() + " looks you over.");
+        eventPrint((string)this_player()->GetName() + " looks you over.");
     return 1;
 }
 
@@ -106,13 +106,13 @@ int eventDisplayStatus() {
     qp = GetQuestPoints();
 
     if( percent(hp, max_hp) < 20.0 )
-	str = "%^YELLOW%^hp: %^RED%^" + hp + "%^RESET%^/" + max_hp;
+        str = "%^YELLOW%^hp: %^RED%^" + hp + "%^RESET%^/" + max_hp;
     else str = "%^YELLOW%^hp: %^RESET%^" + hp + "/" + max_hp;
     if( percent(mp, max_mp) < 20.0 )
-	str += "   %^BLUE%^mp: %^RED%^" + mp + "%^RESET%^/" + max_mp;
+        str += "   %^BLUE%^mp: %^RED%^" + mp + "%^RESET%^/" + max_mp;
     else str += "   %^BLUE%^mp: %^RESET%^" + mp + "/" + max_mp;
     if( percent(sp, max_sp) < 20.0 )
-	str += "   %^GREEN%^sp: %^RED%^" + sp + "%^RESET%^/" + max_sp;
+        str += "   %^GREEN%^sp: %^RED%^" + sp + "%^RESET%^/" + max_sp;
     else str += "   %^GREEN%^sp: %^RESET%^" + sp + "/" + max_sp;
     str += "   %^MAGENTA%^xp: %^RESET%^" + xp;
     str += "   %^CYAN%^qp: %^RESET%^" + qp;
@@ -135,39 +135,39 @@ varargs int eventDie(mixed agent) {
     if( (x = living::eventDie(agent)) != 1 ) return x;
 
     if(!Deaths || !sizeof(Deaths)) 
-	Deaths = ({([ "date" : ctime(time()), "enemy" : agentname ])});
+        Deaths = ({([ "date" : ctime(time()), "enemy" : agentname ])});
     else Deaths += ({ ([ "date" : ctime(time()), "enemy" : agentname ]) });
 
     if( !GetUndead() ) {
-	eventDestroyUndead(agent);
+        eventDestroyUndead(agent);
     }
     else {
-	message("my_action", "Consciousness passes from you after one last "
-	  "gasp for air.", this_object());
-	message("my_action", "You awake, but you find your body feels "
-	  "different, and the world about you is unfamiliar.",
-	  this_object());
-	if( agent ) {
-	    message("other_action", GetName() + " drops dead by the hand "
-	      "of " + agentname + ".",
-	      environment(this_object()), ({ agent, this_object() }));
-	    message("other_action", "You send " + GetName() + " into the "
-	      "Underworld.", agent);
-	}
-	else message("other_action", GetName() + " drops dead.",
-	      environment(), ({ this_object() }) );
+        message("my_action", "Consciousness passes from you after one last "
+          "gasp for air.", this_object());
+        message("my_action", "You awake, but you find your body feels "
+          "different, and the world about you is unfamiliar.",
+          this_object());
+        if( agent ) {
+            message("other_action", GetName() + " drops dead by the hand "
+              "of " + agentname + ".",
+              environment(this_object()), ({ agent, this_object() }));
+            message("other_action", "You send " + GetName() + " into the "
+              "Underworld.", agent);
+        }
+        else message("other_action", GetName() + " drops dead.",
+              environment(), ({ this_object() }) );
 
-	NewBody(GetRace());
+        NewBody(GetRace());
 
-	expee = this_object()->GetExperiencePoints();
-	subexpee = to_int(expee * 0.25);
+        expee = this_object()->GetExperiencePoints();
+        subexpee = to_int(expee * 0.25);
 
-	eventCompleteHeal(GetMaxHealthPoints()/2);
-	AddMagicPoints(-(random(GetMagicPoints())));
-	this_object()->eventMove(ROOM_DEATH);
-	this_object()->AddExperiencePoints(-subexpee);
-	this_object()->save_player((string)this_object()->GetKeyName());
-	this_object()->eventForce("look");
+        eventCompleteHeal(GetMaxHealthPoints()/2);
+        AddMagicPoints(-(random(GetMagicPoints())));
+        this_object()->eventMove(ROOM_DEATH);
+        this_object()->AddExperiencePoints(-subexpee);
+        this_object()->save_player((string)this_object()->GetKeyName());
+        this_object()->eventForce("look");
     }
     flush_messages();
     return 1;
@@ -175,7 +175,7 @@ varargs int eventDie(mixed agent) {
 
 mixed eventTurn(object who) {
     if( !living::eventTurn(who) ) {
-	return 0;
+        return 0;
     }
     eventDestroyUndead(who);
     return 1;
@@ -190,28 +190,28 @@ void eventRevive() {
     if( !GetUndead() ) return;
     SetUndead(0);
     if(this_player()->GetPoison() > 0){
-	this_player()->AddPoison(0 - this_player()->GetPoison());
+        this_player()->AddPoison(0 - this_player()->GetPoison());
     }
     foreach(skill in GetSkills()) {
-	int x;
+        int x;
 
-	if( !random(4) ) {
-	    continue;
-	}
-	if( newbiep(this_object()) ) {
-	    x = 2;
-	}
-	else {
-	    x = 10;
-	}
-	x = random(x - (2*GetSkillClass(skill)))/2;
-	if( x > 0 ) {
-	    while( x-- ) {
-		AddSkillPoints(skill,
-		  -GetMaxSkillPoints(skill,
-		    GetBaseSkillLevel(skill)));
-	    }
-	}
+        if( !random(4) ) {
+            continue;
+        }
+        if( newbiep(this_object()) ) {
+            x = 2;
+        }
+        else {
+            x = 10;
+        }
+        x = random(x - (2*GetSkillClass(skill)))/2;
+        if( x > 0 ) {
+            while( x-- ) {
+                AddSkillPoints(skill,
+                  -GetMaxSkillPoints(skill,
+                    GetBaseSkillLevel(skill)));
+            }
+        }
     }
     NewBody(GetRace());
     eventCompleteHeal(GetMaxHealthPoints());
@@ -244,139 +244,139 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
     string prevclim, newclim;
 
     if( prev = environment() ) {
-	prevclim = (string)prev->GetClimate();
-	if( stringp(dest) ) {
-	    if(dest[0] != '/') {
-		string *arr;
+        prevclim = (string)prev->GetClimate();
+        if( stringp(dest) ) {
+            if(dest[0] != '/') {
+                string *arr;
 
-		arr = explode(file_name(prev), "/");
-		dest = "/"+implode(arr[0..sizeof(arr)-2], "/")+"/"+dest;
-	    }
-	}
-	if( !eventMove(dest) ) {
-	    eventPrint("You remain where you are.", MSG_SYSTEM);
-	    return 0;
-	}
-	inv = filter(all_inventory(prev), (: (!GetInvis($1) && living($1) &&
-	      !GetProperty("stealthy") &&    
-	      ($1 != this_object())) :));
-	if( !omsg || omsg == "" || query_verb() == "home" ) {
-	    omsg = GetMessage("telout");
-	    imsg = GetMessage("telin");
-	}
-	else if(GetPosition() == POSITION_SITTING ||
-	  GetPosition() == POSITION_LYING ){
-	    omsg = GetName()+" crawls "+omsg+".";
-	    imsg = GetName()+" crawls in.";
-	}
-	else if(GetPosition() == POSITION_FLYING ){
-	    omsg = GetName()+" flies "+omsg+".";
-	    imsg = GetName()+" flies in.";
-	}
+                arr = explode(file_name(prev), "/");
+                dest = "/"+implode(arr[0..sizeof(arr)-2], "/")+"/"+dest;
+            }
+        }
+        if( !eventMove(dest) ) {
+            eventPrint("You remain where you are.", MSG_SYSTEM);
+            return 0;
+        }
+        inv = filter(all_inventory(prev), (: (!GetInvis($1) && living($1) &&
+              !GetProperty("stealthy") &&    
+              ($1 != this_object())) :));
+        if( !omsg || omsg == "" || query_verb() == "home" ) {
+            omsg = GetMessage("telout");
+            imsg = GetMessage("telin");
+        }
+        else if(GetPosition() == POSITION_SITTING ||
+          GetPosition() == POSITION_LYING ){
+            omsg = GetName()+" crawls "+omsg+".";
+            imsg = GetName()+" crawls in.";
+        }
+        else if(GetPosition() == POSITION_FLYING ){
+            omsg = GetName()+" flies "+omsg+".";
+            imsg = GetName()+" flies in.";
+        }
 
-	else {
-	    omsg = GetMessage("leave", omsg);
-	    imsg = GetMessage("come", imsg);
-	}
-	inv->eventPrint(omsg, MSG_ENV);
+        else {
+            omsg = GetMessage("leave", omsg);
+            imsg = GetMessage("come", imsg);
+        }
+        inv->eventPrint(omsg, MSG_ENV);
     }
     else if( !eventMove(dest) ) {
-	eventPrint("You remain where you are.", MSG_SYSTEM);
-	return 0;
+        eventPrint("You remain where you are.", MSG_SYSTEM);
+        return 0;
     }
     inv = filter(all_inventory(environment()),
       (: (!GetInvis($1) && !GetProperty("stealthy") &&
-	  living($1) && ($1 != this_object())) :));
+          living($1) && ($1 != this_object())) :));
 
     inv->eventPrint(imsg, MSG_ENV);
     if(GetInvis()) {
-	if(!creatorp(this_object())) AddStaminaPoints(-(15-(GetSkillLevel("stealth")/10)));
-	AddSkillPoints("stealth", 30 + GetSkillLevel("stealth")*2);
-	eventPrint("%^RED%^You move along quietly....%^RESET%^\n");
+        if(!creatorp(this_object())) AddStaminaPoints(-(15-(GetSkillLevel("stealth")/10)));
+        AddSkillPoints("stealth", 30 + GetSkillLevel("stealth")*2);
+        eventPrint("%^RED%^You move along quietly....%^RESET%^\n");
     }
     if(GetProperty("stealthy")) {
-	if(!creatorp(this_object())) AddStaminaPoints(-3 - random(3));
-	AddSkillPoints("stealth", 10 + GetSkillLevel("stealth")*2);
+        if(!creatorp(this_object())) AddStaminaPoints(-3 - random(3));
+        AddSkillPoints("stealth", 10 + GetSkillLevel("stealth")*2);
     }
     eventDescribeEnvironment(GetBriefMode());
     newclim = (string)environment()->GetClimate();
     if( !GetUndead() ) switch( newclim ) {
     case "arid":
-	if(!creatorp(this_object())) AddStaminaPoints(-0.3);
-	break;
+        if(!creatorp(this_object())) AddStaminaPoints(-0.3);
+        break;
     case "tropical":
-	if(!creatorp(this_object())) AddStaminaPoints(-0.3);
-	break;
+        if(!creatorp(this_object())) AddStaminaPoints(-0.3);
+        break;
     case "sub-tropical":
-	if(!creatorp(this_object())) AddStaminaPoints(-0.2);
-	break;
+        if(!creatorp(this_object())) AddStaminaPoints(-0.2);
+        break;
     case "sub-arctic":
-	if(!creatorp(this_object())) AddStaminaPoints(-0.2);
-	break;
+        if(!creatorp(this_object())) AddStaminaPoints(-0.2);
+        break;
     case "arctic":
-	if(!creatorp(this_object())) AddStaminaPoints(-0.3);	  
-	break;
+        if(!creatorp(this_object())) AddStaminaPoints(-0.3);	  
+        break;
     default:
-	if(!creatorp(this_object())) AddStaminaPoints(-0.1);	  
-	break;	    
+        if(!creatorp(this_object())) AddStaminaPoints(-0.1);	  
+        break;	    
     }
     if( prevclim != newclim && prevclim != "indoors" && newclim != "indoors" ){
-	switch(prevclim) {
-	case "arid":
-	    if( newclim == "tropical" || newclim == "sub-tropical" )
-		message("environment", "The air is much more humid.",
-		  this_object());
-	    else message("environment", "The air is getting a bit cooler.",
-		  this_object());
-	    break;
-	case "tropical":
-	    if( newclim != "arid" )
-		message("environment", "The air is not quite as humid.",
-		  this_object());
-	    else message("environment", "The air has become suddenly dry.",
-		  this_object());
-	    break;
-	case "sub-tropical":
-	    if( newclim == "arid" )
-		message("environment", "The air has become suddenly dry.",
-		  this_object());
-	    else if( newclim == "tropical" )
-		message("environment","The air has gotten a bit more humid.",
-		  this_object());
-	    else message("environment", "The air is not quite as humid.",
-		  this_object());
-	    break;
-	case "temperate":
-	    if( newclim == "arid" )
-		message("environment", "The air is a bit drier and warmer.",
-		  this_object());
-	    else if( newclim == "tropical" )
-		message("environment", "The air is much more humid.",
-		  this_object());
-	    else if( newclim == "sub-tropical" )
-		message("environment", "The air is a bit more humid.",
-		  this_object());
-	    else message("environment", "The air is a bit colder now.",
-		  this_object());
-	    break;
-	case "sub-arctic":
-	    if( newclim == "arid" || newclim == "tropical" ||
-	      newclim == "sub-tropical" )
-		message("environment", "It has suddenly grown very hot.",
-		  this_object());
-	    else if( newclim == "arctic" )
-		message("environment", "It is a bit cooler than before.",
-		  this_object());
-	    else message("environment", "It is not quite as cold as "
-		  "before.", this_object());
-	    break;
-	case "arctic":
-	    if( newclim == "sub-arctic" )
-		message("environment", "It is not quite as cold now.",
-		  this_object());
-	    else message("environment", "It is suddenly much warmer than "
-		  "before.", this_object());
-	}
+        switch(prevclim) {
+        case "arid":
+            if( newclim == "tropical" || newclim == "sub-tropical" )
+                message("environment", "The air is much more humid.",
+                  this_object());
+            else message("environment", "The air is getting a bit cooler.",
+                  this_object());
+            break;
+        case "tropical":
+            if( newclim != "arid" )
+                message("environment", "The air is not quite as humid.",
+                  this_object());
+            else message("environment", "The air has become suddenly dry.",
+                  this_object());
+            break;
+        case "sub-tropical":
+            if( newclim == "arid" )
+                message("environment", "The air has become suddenly dry.",
+                  this_object());
+            else if( newclim == "tropical" )
+                message("environment","The air has gotten a bit more humid.",
+                  this_object());
+            else message("environment", "The air is not quite as humid.",
+                  this_object());
+            break;
+        case "temperate":
+            if( newclim == "arid" )
+                message("environment", "The air is a bit drier and warmer.",
+                  this_object());
+            else if( newclim == "tropical" )
+                message("environment", "The air is much more humid.",
+                  this_object());
+            else if( newclim == "sub-tropical" )
+                message("environment", "The air is a bit more humid.",
+                  this_object());
+            else message("environment", "The air is a bit colder now.",
+                  this_object());
+            break;
+        case "sub-arctic":
+            if( newclim == "arid" || newclim == "tropical" ||
+              newclim == "sub-tropical" )
+                message("environment", "It has suddenly grown very hot.",
+                  this_object());
+            else if( newclim == "arctic" )
+                message("environment", "It is a bit cooler than before.",
+                  this_object());
+            else message("environment", "It is not quite as cold as "
+                  "before.", this_object());
+            break;
+        case "arctic":
+            if( newclim == "sub-arctic" )
+                message("environment", "It is not quite as cold now.",
+                  this_object());
+            else message("environment", "It is suddenly much warmer than "
+                  "before.", this_object());
+        }
     }
     eventMoveFollowers(environment(this_object()));
     return 1;
@@ -399,8 +399,8 @@ int eventReleaseObject(object foo) {
     ob = previous_object();
     if( !ob || !interactive::eventReleaseObject() ) return 0;
     if( ob->GetMass() ){
-	AddCarriedMass( -(ob->GetMass()) );
-	if(environment()) environment()->AddCarriedMass(-(ob->GetMass()));
+        AddCarriedMass( -(ob->GetMass()) );
+        if(environment()) environment()->AddCarriedMass(-(ob->GetMass()));
     }
     return 1;
 }
@@ -441,75 +441,75 @@ int Setup() {
     if( !interactive::Setup() ) return 0;
     if( !GetClass() ) SetClass("explorer");
     if( GetClass() ) {
-	foreach(classes in (string array)CLASSES_D->GetClasses())
-	if( ClassMember(classes) && classes != GetClass() )
-	    AddChannel(classes);
+        foreach(classes in (string array)CLASSES_D->GetClasses())
+        if( ClassMember(classes) && classes != GetClass() )
+            AddChannel(classes);
     }
     if(sizeof(GetExtraChannels())) AddChannel(GetExtraChannels());
     set_heart_beat(GetHeartRate());
 
     if(GetProperty("brand_spanking_new")){
-	object jeans, shirt, book;
+        object jeans, shirt, book;
 
-	if(ENGLISH_ONLY) this_object()->SetNativeLanguage("English");
-	PLAYERS_D->AddPlayerInfo(this_object());
+        if(ENGLISH_ONLY) this_object()->SetNativeLanguage("English");
+        PLAYERS_D->AddPlayerInfo(this_object());
 
-	foreach(classes in (string array)CLASSES_D->GetClasses())
-	if( ClassMember(classes) && classes != GetClass() )
-	    AddChannel(classes);
-	if( avatarp() ) AddChannel(({ "avatar" }));
-	if( high_mortalp() ) AddChannel( ({ "newbie", "hm" }) );
-	if( newbiep() ) AddChannel( ({ "newbie" }) );
-	else {
-	    RemoveChannel( ({ "newbie" }) );
-	}
-	AddChannel( ({ "gossip" }) );
-	if( councilp() ) AddChannel( ({ "council" }) );
-	AddChannel(GetClass());
+        foreach(classes in (string array)CLASSES_D->GetClasses())
+        if( ClassMember(classes) && classes != GetClass() )
+            AddChannel(classes);
+        if( avatarp() ) AddChannel(({ "avatar" }));
+        if( high_mortalp() ) AddChannel( ({ "newbie", "hm" }) );
+        if( newbiep() ) AddChannel( ({ "newbie" }) );
+        else {
+            RemoveChannel( ({ "newbie" }) );
+        }
+        AddChannel( ({ "gossip" }) );
+        if( councilp() ) AddChannel( ({ "council" }) );
+        AddChannel(GetClass());
 
-	jeans = new("/domains/default/armor/jeans");
-	shirt = new("/domains/default/armor/shirt");
-	book = new("/domains/default/obj/handbook");
+        jeans = new("/domains/default/armor/jeans");
+        shirt = new("/domains/default/armor/shirt");
+        book = new("/domains/default/obj/handbook");
 
-	if(jeans) jeans->eventMove(this_object());
-	if(shirt) shirt->eventMove(this_object());
-	if(book && !present("handbook",this_object()))  book->eventMove(this_object());
-	else if(book) book->eventMove(ROOM_FURNACE);
+        if(jeans) jeans->eventMove(this_object());
+        if(shirt) shirt->eventMove(this_object());
+        if(book && !present("handbook",this_object()))  book->eventMove(this_object());
+        else if(book) book->eventMove(ROOM_FURNACE);
 
-	if(jeans) this_object()->eventForce("wear jeans");
-	if(shirt) this_object()->eventForce("wear shirt");
-	SetProperty("brand_spanking_new",0);
+        if(jeans) this_object()->eventForce("wear jeans");
+        if(shirt) this_object()->eventForce("wear shirt");
+        SetProperty("brand_spanking_new",0);
     }
 
     if(this_object()->GetTown() == "FirstAdmin"){
-	object robe, hat, staff, book, book2;
-	string home;
+        object robe, hat, staff, book, book2;
+        string home;
 
-	this_object()->SetTown("World");
+        this_object()->SetTown("World");
 
-	robe = new("/domains/default/armor/robe");
-	hat = new("/domains/default/armor/wizard_hat");
-	staff = new("/secure/obj/staff");
-	book = new("/domains/default/obj/guide");
-	book2 = new("/domains/default/obj/handbook");
+        robe = new("/domains/default/armor/robe");
+        hat = new("/domains/default/armor/wizard_hat");
+        staff = new("/secure/obj/staff");
+        book = new("/domains/default/obj/guide");
+        book2 = new("/domains/default/obj/handbook");
 
-	if(robe) robe->eventMove(this_object());
-	if(hat) hat->eventMove(this_object());
-	if(staff) staff->eventMove(this_object());
-	if(book) book->eventMove(this_object());
-	if(book2) book2->eventMove(this_object());
+        if(robe) robe->eventMove(this_object());
+        if(hat) hat->eventMove(this_object());
+        if(staff) staff->eventMove(this_object());
+        if(book) book->eventMove(this_object());
+        if(book2) book2->eventMove(this_object());
 
-	if(robe) this_object()->eventForce("wear robe");
-	if(hat) this_object()->eventForce("wear hat");
+        if(robe) this_object()->eventForce("wear robe");
+        if(hat) this_object()->eventForce("wear hat");
 
-	home = "/realms/"+this_player()->GetKeyName()+"/workroom";
+        home = "/realms/"+this_player()->GetKeyName()+"/workroom";
 
-	if(file_exists(home+".c")) 
-	    this_object()->eventMoveLiving(home);
+        if(file_exists(home+".c")) 
+            this_object()->eventMoveLiving(home);
 
-	this_object()->AddChannel( ({"admin", "error", "cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat","inews","ichat","pchat"}) );
+        this_object()->AddChannel( ({"admin", "error", "cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat","inews","ichat","pchat"}) );
 
-	SetShort("First Admin $N");
+        SetShort("First Admin $N");
     }
 
     return 1;
@@ -519,16 +519,16 @@ int Setup() {
 
 int AddCurrency(string type, int amount) {
     if( currency_value(amount, type) > 999 )
-	log_file("currency", GetCapName() + " received "+amount+" "+type+
-	  " "+ctime(time())+"\n"+identify(previous_object(-1))+"\n");
+        log_file("currency", GetCapName() + " received "+amount+" "+type+
+          " "+ctime(time())+"\n"+identify(previous_object(-1))+"\n");
     return living::AddCurrency(type, amount);
 }
 
 int AddBank(string bank, string type, int amount) {
     if( currency_value(amount, type) > 999 )
-	log_file("bank", GetCapName() + " deposited "+amount+" "+type+
-	  " "+ctime(time())+" into bank: "+bank+"\n" +
-	  identify(previous_object(-1))+"\n");
+        log_file("bank", GetCapName() + " deposited "+amount+" "+type+
+          " "+ctime(time())+" into bank: "+bank+"\n" +
+          identify(previous_object(-1))+"\n");
     return living::AddBank(bank, type, amount);
 }
 
@@ -546,7 +546,7 @@ string *AddMuffed(string muffed){
     string tmpstr;
     if(!muffed || muffed == "" || !sizeof(muffed)) return Muffed;
     if(grepp(muffed,"@")) {
-	tmpstr = INTERMUD_D->GetMudName(muffed[1..sizeof(muffed)-1]);
+        tmpstr = INTERMUD_D->GetMudName(muffed[1..sizeof(muffed)-1]);
     }
     if(sizeof(tmpstr)) muffed = tmpstr;
     muffed = lower_case(muffed);
@@ -558,7 +558,7 @@ string *RemoveMuffed(string unmuffed){
     string tmpstr;
     if(!sizeof(unmuffed)) return Muffed;
     if(grepp(unmuffed,"@")) {
-	tmpstr = INTERMUD_D->GetMudName(unmuffed[1..sizeof(unmuffed)-1]);
+        tmpstr = INTERMUD_D->GetMudName(unmuffed[1..sizeof(unmuffed)-1]);
     }
     if(sizeof(tmpstr)) unmuffed = tmpstr;
     unmuffed = lower_case(unmuffed);
@@ -576,9 +576,9 @@ string *AddTitle(string title) {
     if( !stringp(title) ) return Titles;
     else if( member_array(title, Titles) != -1 ) return Titles;
     else {
-	Titles = ({ title }) + Titles;
-	SetShort("whatever");
-	return Titles;
+        Titles = ({ title }) + Titles;
+        SetShort("whatever");
+        return Titles;
     }
 }
 
@@ -586,9 +586,9 @@ string *RemoveTitle(string title) {
     if( !stringp(title) ) return Titles;
     if( member_array(title, Titles) == -1 ) return Titles;
     else {
-	Titles -= ({ title });
-	SetShort("whatever");
-	return Titles;
+        Titles -= ({ title });
+        SetShort("whatever");
+        return Titles;
     }
 }
 
@@ -609,11 +609,11 @@ void AddQuest(string title, string desc) {
     if( !title || !desc ) return;
 
     if( (string)GetParty() ) {
-	pname = (string)GetParty();
-	PartyMember = "/daemon/party"->GetPartyMembers(pname) - ({ this_player() });;
-	foreach(ob in PartyMember) {
-	    ob->AddPartyQuest(title,desc);
-	}
+        pname = (string)GetParty();
+        PartyMember = "/daemon/party"->GetPartyMembers(pname) - ({ this_player() });;
+        foreach(ob in PartyMember) {
+            ob->AddPartyQuest(title,desc);
+        }
     }
     tmp = new(class quest);
     tmp->Date = time();
@@ -630,11 +630,11 @@ void AddQuestSkillPoints(string skill, int amount) {
     if(!skill || !amount) return;
 
     if( (string)GetParty() ) {
-	pname = (string)GetParty();
-	PartyMember = "/daemon/party"->GetPartyMembers(pname);
-	foreach(ob in PartyMember) {
-	    ob->AddSkillPoints(skill, amount);
-	}
+        pname = (string)GetParty();
+        PartyMember = "/daemon/party"->GetPartyMembers(pname);
+        foreach(ob in PartyMember) {
+            ob->AddSkillPoints(skill, amount);
+        }
     }
     else AddSkillPoints(skill, amount);
 }
@@ -649,11 +649,11 @@ void AddQuestStatPoints(string stat, int amount) {
 
 
     if( (string)GetParty() ) {
-	pname = (string)GetParty();
-	PartyMember = "/daemon/party"->GetPartyMembers(pname);
-	foreach(ob in PartyMember) {
-	    ob->AddStatPoints(stat, amount);
-	}
+        pname = (string)GetParty();
+        PartyMember = "/daemon/party"->GetPartyMembers(pname);
+        foreach(ob in PartyMember) {
+            ob->AddStatPoints(stat, amount);
+        }
     }
     else AddStatPoints(stat, amount);
 }
@@ -667,11 +667,11 @@ void AddQuestCurrency(string type, int amount) {
     if(!type || !amount) return;
 
     if( (string)GetParty() ) {
-	pname = (string)GetParty();
-	PartyMember = "/daemon/party"->GetPartyMembers(pname);
-	foreach(ob in PartyMember) {
-	    ob->AddCurrency(type, amount);
-	}
+        pname = (string)GetParty();
+        PartyMember = "/daemon/party"->GetPartyMembers(pname);
+        foreach(ob in PartyMember) {
+            ob->AddCurrency(type, amount);
+        }
     }
     else AddCurrency(type, amount);
 }
@@ -690,12 +690,12 @@ void AddPartyQuest(string title, string desc) {
 
 mixed *GetQuests() {
     return map(Quests, (: ({ ((class quest)$1)->Date,
-	  ((class quest)$1)->Description }) :));
+          ((class quest)$1)->Description }) :));
 }
 
 int GetQuest(string str){
     foreach(mixed component in GetQuests()){
-	if(str == component[1]) return 1;
+        if(str == component[1]) return 1;
     }
     return 0;
 }
@@ -709,12 +709,12 @@ string SetShort(string irrelevant) {
     if(title && title != "") title += " $N ";
     else title = "$N ";
     if( GetUndead() && (tmp = GetUndeadType()) )
-	return interactive::SetShort(title + "the " + tmp);
+        return interactive::SetShort(title + "the " + tmp);
     if( avatarp() || creatorp() ) {
-	return interactive::SetShort(irrelevant);
+        return interactive::SetShort(irrelevant);
     }
     if( !(i = sizeof(Titles)) )
-	return interactive::SetShort(title + "the unaccomplished");
+        return interactive::SetShort(title + "the unaccomplished");
     else title += Titles[0];
     if( i > 1 && TitleLength > 1 ) title += " and " + Titles[1];
     return interactive::SetShort(title);
@@ -740,15 +740,15 @@ varargs string GetLong(string str) {
     str += interactive::GetLong() + "\n";
     str += living::GetLong(nominative(this_object()));
     foreach(item in map(all_inventory(),
-	(: (string)$1->GetAffectLong(this_object()) :))){
-	if(item && member_array(item,affects) == -1) affects += ({ item });
+        (: (string)$1->GetAffectLong(this_object()) :))){
+        if(item && member_array(item,affects) == -1) affects += ({ item });
     }
     if(sizeof(affects)) str += implode(affects,"\n")+"\n";
     if(this_object()->GetAffectLong()) str += this_object()->GetAffectLong();
     counts = ([]);
     foreach(item in map(
-	filter(all_inventory(), (: !((int)$1->GetInvis(this_object())) :)),
-	(: (string)$1->GetEquippedShort() :)))
+        filter(all_inventory(), (: !((int)$1->GetInvis(this_object())) :)),
+        (: (string)$1->GetEquippedShort() :)))
     if( item ) counts[item]++;
     if( sizeof(counts) ) str += GetCapName() + " is carrying:\n";
     foreach(item in keys(counts))
@@ -763,36 +763,36 @@ int ResetLevel() {
 
     x = GetLevel();
     if( x != (y = living::ResetLevel()) ) {
-	string file;
+        string file;
 
-	if( x > y ) file = "decline";
-	else file = "advance";
-	log_file(file, GetCapName() + " went from level " + x + " to "
-	  "level " + y + " (" + ctime(time()) + ")\n");
-	if( x < y ) {
-	    eventPrint("%^YELLOW%^You are now a more experienced " + 
-	      GetClass() + ".");
-	    TrainingPoints += ( (y-x) * 4 );
-	}
-	else TrainingPoints -= ( (x-y) * 4 );
-	SetShort("whatever");
-	if( x > 49 && y < 50 ) RemoveChannel("avatar");
-	if( x > 24 && y < 25 ) RemoveChannel("hm");
+        if( x > y ) file = "decline";
+        else file = "advance";
+        log_file(file, GetCapName() + " went from level " + x + " to "
+          "level " + y + " (" + ctime(time()) + ")\n");
+        if( x < y ) {
+            eventPrint("%^YELLOW%^You are now a more experienced " + 
+              GetClass() + ".");
+            TrainingPoints += ( (y-x) * 4 );
+        }
+        else TrainingPoints -= ( (x-y) * 4 );
+        SetShort("whatever");
+        if( x > 49 && y < 50 ) RemoveChannel("avatar");
+        if( x > 24 && y < 25 ) RemoveChannel("hm");
     }
     return y;
 }
 
 string SetClass(string str) {
     if( GetClass() != living::SetClass(str) ) {
-	int points = TrainingPoints;
-	string classes;
+        int points = TrainingPoints;
+        string classes;
 
-	ResetLevel();
-	TrainingPoints = points;   /* leave points alone */
-	AddChannel(GetClass());
-	foreach(classes in (string array)CLASSES_D->GetClasses())
-	if( ClassMember(classes) && classes != GetClass() )
-	    AddChannel(classes);
+        ResetLevel();
+        TrainingPoints = points;   /* leave points alone */
+        AddChannel(GetClass());
+        foreach(classes in (string array)CLASSES_D->GetClasses())
+        if( ClassMember(classes) && classes != GetClass() )
+            AddChannel(classes);
     }
     return GetClass();
 }
@@ -846,16 +846,16 @@ varargs int eventTrain(string skill, int points) {
     if( !(mp = GetSkill(skill)) ) return 0;
     if( TrainingPoints < points ) return 0;
     while( points-- ) {
-	int max = GetMaxSkillPoints(skill, mp["level"]);
-	switch( mp["class"] ) {
-	case 1: x = 50.0; break;
-	case 2: x = 40.0; break;
-	case 3: x = 30.0; break;
-	case 4: x = 20.0; break;
-	default: return 0;
-	}
-	TrainingPoints--;
-	AddSkillPoints(skill, to_int( (max * x) / 100 ));
+        int max = GetMaxSkillPoints(skill, mp["level"]);
+        switch( mp["class"] ) {
+        case 1: x = 50.0; break;
+        case 2: x = 40.0; break;
+        case 3: x = 30.0; break;
+        case 4: x = 20.0; break;
+        default: return 0;
+        }
+        TrainingPoints--;
+        AddSkillPoints(skill, to_int( (max * x) / 100 ));
     }
     return 1;
 }

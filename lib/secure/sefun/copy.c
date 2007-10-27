@@ -11,14 +11,14 @@ mixed copy(mixed val) {
     int i, maxi;
 
     if(mapp(val)) {
-	ret = allocate_mapping(maxi = sizeof(cles = keys(val)));
-	for(i= 0; i< maxi; i++) ret[cles[i]] = copy(val[cles[i]]);
-	return ret;
+        ret = allocate_mapping(maxi = sizeof(cles = keys(val)));
+        for(i= 0; i< maxi; i++) ret[cles[i]] = copy(val[cles[i]]);
+        return ret;
     }
     else if(pointerp(val)) {
-	ret = allocate(maxi = sizeof(val));
-	for(i=0; i<maxi; i++) ret[i] = copy(val[i]);
-	return ret;
+        ret = allocate(maxi = sizeof(val));
+        for(i=0; i<maxi; i++) ret[i] = copy(val[i]);
+        return ret;
     }
     return val;
 }

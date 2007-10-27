@@ -45,28 +45,28 @@ mixed SetPreventLand(mixed val) {
 
 mixed CanFly(object who, string dir) {
     if( !dir || dir == "" ) {
-	return "Fly where?";
+        return "Fly where?";
     }
     //if( dir == "up" ) {
     //	return "You cannot get any higher than you already are!";
     //}
     else if( dir == "down" ) {
-	if( stringp(PreventLand) ) {
-	    return PreventLand;
-	}
-	else if( functionp(PreventLand) ) {
-	    mixed tmp = evaluate(PreventLand, who);
+        if( stringp(PreventLand) ) {
+            return PreventLand;
+        }
+        else if( functionp(PreventLand) ) {
+            mixed tmp = evaluate(PreventLand, who);
 
-	    if( tmp != 1 ) {
-		return tmp;
-	    }
-	}
-	if( !GetGround() ) {
-	    return "There is nothing below you but open sea.";
-	}
+            if( tmp != 1 ) {
+                return tmp;
+            }
+        }
+        if( !GetGround() ) {
+            return "There is nothing below you but open sea.";
+        }
     }
     if( who->GetPosition() != POSITION_FLYING ) {
-	return "You are not flying!";
+        return "You are not flying!";
     }
     return virt_land::CanGo(who, dir);
 }
@@ -79,21 +79,21 @@ mixed eventFly(object who, string dir) {
     mapping exit = GetExitData(dir);
 
     if( GetDoor(dir) && GetDoor(dir)->GetClosed() ) {
-	who->eventPrint("You fly into " + GetDoor(dir)->GetShort(dir) + ".");
-	eventPrint(who->GetName() + " flies into " +
-	  GetDoor(dir)->GetShort(dir) + ".", who);
-	return 1;
+        who->eventPrint("You fly into " + GetDoor(dir)->GetShort(dir) + ".");
+        eventPrint(who->GetName() + " flies into " +
+          GetDoor(dir)->GetShort(dir) + ".", who);
+        return 1;
     }
     if( exit["pre"] && !evaluate(exit["pre"], dir) ) {
-	return 1;
+        return 1;
     }
     //who->eventMoveLiving(exit["room"], "$N flies " + dir + ".", "$N flies in.");
     who->eventMoveLiving(exit["room"], dir, "$N flies in.");
     if( dir =="down" ) {
-	//who->eventLand();
+        //who->eventLand();
     }
     if( exit["post"] ) {
-	evaluate(exit["post"], dir);
+        evaluate(exit["post"], dir);
     }
     return 1;
 }
@@ -111,24 +111,24 @@ mixed eventReceiveObject(object ob) {
     //tc("rtn: "+identify(rtn));
     if(GetMedium() != MEDIUM_AIR) return rtn;
     if( !ob->CanFly() ) { // Things that cannot fly fall down
-	if( ob ) {
-	    ob->eventFall();
-	}
-	else
-	{
-	    if( !GetGround() ) {   // Over uncharted areas, die!
-		ob->eventDestruct();
-	    }
-	    else {
-		string short;
+        if( ob ) {
+            ob->eventFall();
+        }
+        else
+        {
+            if( !GetGround() ) {   // Over uncharted areas, die!
+                ob->eventDestruct();
+            }
+            else {
+                string short;
 
-		if( !ob->GetInvis() && (short = ob->GetShort()) ) {
-		    GetGround()->eventPrint(capitalize(short) + " comes raining "
-		      "down from the sky.");
-		}
-		ob->eventMove(GetGround());
-	    }
-	}
+                if( !ob->GetInvis() && (short = ob->GetShort()) ) {
+                    GetGround()->eventPrint(capitalize(short) + " comes raining "
+                      "down from the sky.");
+                }
+                ob->eventMove(GetGround());
+            }
+        }
     }
     return rtn;
 #endif
@@ -141,12 +141,12 @@ mixed eventReceiveObject(object ob) {
     rtn = virt_land::eventReceiveObject(ob);
     if(GetMedium() != MEDIUM_AIR) return rtn;
     if( !ob->CanFly() || ob->GetSleeping() ) { // Things that cannot fly fall down
-	string short;
-	if( !ob->GetInvis() && (short = ob->GetShort()) ) {
-	    GetGround()->eventPrint(capitalize(short) + " comes raining "
-	      "down from the sky.");
-	}
-	return ob->eventFall();
+        string short;
+        if( !ob->GetInvis() && (short = ob->GetShort()) ) {
+            GetGround()->eventPrint(capitalize(short) + " comes raining "
+              "down from the sky.");
+        }
+        return ob->eventFall();
     }
     return rtn;
 }

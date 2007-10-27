@@ -41,7 +41,7 @@ static void create() {
     SetShort("Shore Edge");
     SetLong("You are on the shore, at the far eastern end of town. A road travels west into the heart of town. A great sea stretches out into the eastern horizon.");
     SetExits( ([
-	"west" : "/domains/town/room/vill_road4.c",
+        "west" : "/domains/town/room/vill_road4.c",
       ]) );
     //SetFrequency determines how often the room checks 
     //whether it should perform an action. If it is set
@@ -56,22 +56,22 @@ static void create() {
     //that string is displayed to the living things in the room.
     //If it is a function, that function is evaluated.
     SetAction(2, ({"A cool breeze flows in from the east, "
-	"bringing with it the bracing salty smells of the sea.",
-	(: ActionFunction :) }) );
+        "bringing with it the bracing salty smells of the sea.",
+        (: ActionFunction :) }) );
     SetChance(90);
     SetFish( ([
-	"/domains/town/meals/shark" : 1,
-	"/domains/town/meals/herring" : 10,
+        "/domains/town/meals/shark" : 1,
+        "/domains/town/meals/herring" : 10,
       ]) );
     //This is a function that allows for a set of actions
     //with different trigger frequencies.
     SetActionsMap( ([ 
-	"A soft breeze cools your brow." : 5,
-	"You briefly hear seagulls far in the distance." : 7,
-	(: ActionFunction2 :) : 2,
+        "A soft breeze cools your brow." : 5,
+        "You briefly hear seagulls far in the distance." : 7,
+        (: ActionFunction2 :) : 2,
       ]) );
     SetInventory( ([
-	"/domains/town/obj/seawater" : 1,
+        "/domains/town/obj/seawater" : 1,
       ]) );
 }
 void init(){

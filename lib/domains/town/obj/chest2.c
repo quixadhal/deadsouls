@@ -13,9 +13,9 @@ void create() {
     SetMaxCarry(500);
     SetPreventPut("You cannot put this in there!");
     SetInventory(([
-	"/domains/town/obj/gcoinbag" : 1,
-	"/domains/town/obj/maglite" : 1,
-	"/domains/town/obj/m_key" : 1,
+        "/domains/town/obj/gcoinbag" : 1,
+        "/domains/town/obj/maglite" : 1,
+        "/domains/town/obj/m_key" : 1,
       ]));
     SetCanClose(1);
     SetClosed(1);

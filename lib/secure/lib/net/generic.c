@@ -19,20 +19,20 @@ void StartServer(){
 
     listsock = socket_create(STREAM,"read_callback","close_callback");
     if(listsock < 0){
-	debug("Couldn't create socket. errorcode: "+listsock);
-	return;
+        debug("Couldn't create socket. errorcode: "+listsock);
+        return;
     }
 
     sockstat = socket_bind(listsock,port);
     if(sockstat < 0){
-	debug("Couldn't bind socket. errorcode: "+sockstat);
-	return;
+        debug("Couldn't bind socket. errorcode: "+sockstat);
+        return;
     }
 
     sockstat = socket_listen(listsock,"listen_callback");
     if(sockstat < 0){
-	debug("Couldn't listen on socket. errorcode: "+sockstat);
-	return;
+        debug("Couldn't listen on socket. errorcode: "+sockstat);
+        return;
     }
 
 }
@@ -41,8 +41,8 @@ static void listen_callback(int fd){
     int sockstat = socket_accept(fd,"read_callback","write_callback");
 
     if(sockstat < 0){
-	debug("Couldn't accept on socket. errorcode: "+sockstat);
-	return;
+        debug("Couldn't accept on socket. errorcode: "+sockstat);
+        return;
     }
     debug("generic: listening.");
 }
@@ -56,7 +56,7 @@ static void read_callback(int fd, buffer data){
     string tmp="";
     debug("fd is: "+fd);
     for(i=0;i<sizeof(data);i++){
-	tmp += sprintf("%c",data[i]);
+        tmp += sprintf("%c",data[i]);
     }
     debug("tmp: "+tmp);
     debug("data: "+identify(read_buffer(data)));

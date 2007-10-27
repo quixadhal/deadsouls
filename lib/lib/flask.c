@@ -42,8 +42,8 @@ static void create() {
 string GetExternalDesc(){
     string ret = "";
     if(!inherits(LIB_DUMMY,this_object())){
-	if(FlaskContents == "empty") ret = "\nIt is empty.";
-	else ret = "\nIt contains some "+FlaskContents+".";
+        if(FlaskContents == "empty") ret = "\nIt is empty.";
+        else ret = "\nIt contains some "+FlaskContents+".";
     }
     return item::GetExternalDesc()+ret;
 }
@@ -89,17 +89,17 @@ varargs mixed eventEmpty(object who){
     string *tmpid = GetId();
     if(FlaskContents != "empty") tmpid -= ({ FlaskContents });
     if(environment(this_object()) != who){
-	write("You aren't holding it.");
-	return 1;
+        write("You aren't holding it.");
+        return 1;
     }
     if(!FlaskUses){
-	write("The "+GetShort()+" is already empty.");
-	say(who->GetName()+" fiddles with "+GetShort()+".");
-	return 1;
+        write("The "+GetShort()+" is already empty.");
+        say(who->GetName()+" fiddles with "+GetShort()+".");
+        return 1;
     }
     if(EverFill){
-	write("This cannot be emptied.");
-	return 1;
+        write("This cannot be emptied.");
+        return 1;
     }
     write("You pour the "+FlaskContents+" out of "+GetShort()+".");
     say(who->GetName()+" pours the "+FlaskContents+" out of "+GetShort()+".");
@@ -116,36 +116,36 @@ mixed eventFill(object who, object from){
     int howmuch_them = from->CanFillOther();
     if(!from->isDummy() &&
       environment(from) != this_player()){
-	write("You aren't holding the "+from->GetKeyName()+".");
-	return 1;
+        write("You aren't holding the "+from->GetKeyName()+".");
+        return 1;
     }
 
     if(from->isDummy() &&
       environment(this_object()) != this_player()){
-	write("You aren't holding the "+this_object()->GetKeyName()+".");
-	return 1;
+        write("You aren't holding the "+this_object()->GetKeyName()+".");
+        return 1;
     }
 
     if(from == this_object()){
-	write("You can't fill it with itself!");
-	return 1;
+        write("You can't fill it with itself!");
+        return 1;
     }
     if(!howmuch_them) {
-	write("The "+from->GetKeyName()+" is empty.");
-	return 1;
+        write("The "+from->GetKeyName()+" is empty.");
+        return 1;
     }
     if(FlaskUses >= MaxFlask) {
-	FlaskUses = MaxFlask;
-	write("The "+this_object()->GetKeyName()+" is already full.");
-	return 1;
+        FlaskUses = MaxFlask;
+        write("The "+this_object()->GetKeyName()+" is already full.");
+        return 1;
     }
     if(from->GetFlaskContents() != GetFlaskContents() && GetFlaskContents() != "empty"){
-	write("Those are incompatible fluids, and you cannot mix them.");
-	return 1;
+        write("Those are incompatible fluids, and you cannot mix them.");
+        return 1;
     }
     if(from->GetStrength() != GetStrength() && GetStrength()){
-	write("Those are incompatible fluids, and you cannot mix them.");
-	return 1;
+        write("Those are incompatible fluids, and you cannot mix them.");
+        return 1;
     }
     if(howmuch_them < howmuch_me) howmuch_me = howmuch_them;
     FlaskUses += howmuch_me;
@@ -156,7 +156,7 @@ mixed eventFill(object who, object from){
     FlaskContents = from->GetFlaskContents();
     FlaskStrength = from->GetStrength();
     if(member_array(FlaskContents, GetId()) == -1) 
-	SetId(GetId() + ({ FlaskContents }) );
+        SetId(GetId() + ({ FlaskContents }) );
     parse_refresh();
     return 1;
 }
@@ -167,18 +167,18 @@ varargs mixed eventDrink(object who, object target, string foo) {
     if(!EverFill) FlaskUses--;
     who->eventDrink(this_object());
     if(!FlaskUses) {
-	SetId(GetId() - ({ FlaskContents }) );
-	parse_refresh();
-	FlaskContents = "empty";
-	SetStrength(0);
+        SetId(GetId() - ({ FlaskContents }) );
+        parse_refresh();
+        FlaskContents = "empty";
+        SetStrength(0);
     }
     return 1;
 }
 
 mixed CanDrink(object who, string what){
     if(!FlaskUses) {
-	say(who->GetName()+" sadly looks at "+GetShort()+".");
-	return "The "+GetKeyName()+" is empty.";
+        say(who->GetName()+" sadly looks at "+GetShort()+".");
+        return "The "+GetKeyName()+" is empty.";
     }
     return who->CanDrink(this_object());
 }

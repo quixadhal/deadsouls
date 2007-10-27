@@ -18,12 +18,12 @@ static void create() {
       "adventurers from all over gather to meet one another.  Kaliid Road "
       "lies to the south.  Stairs lead up to the tower.");
     SetItems( ([ "stairs" : "They spiral up into the tower which looks over "
-	"Kaliid Road.",
-	"tower" : "You can't see much in the darkness into which the "
-	"stairs disappear." ]));
+        "Kaliid Road.",
+        "tower" : "You can't see much in the darkness into which the "
+        "stairs disappear." ]));
     SetExits( ([
-	"up" : "/domains/Ylsrim/room/"+ "tower",
-	"south" : "/domains/Ylsrim/room/"+ "kaliid4" ]) );
+        "up" : "/domains/Ylsrim/room/"+ "tower",
+        "south" : "/domains/Ylsrim/room/"+ "kaliid4" ]) );
     SetObviousExits("u, s");
     ob = new("/domains/Ylsrim/etc/adv_board");
     ob->set_max_posts(30);

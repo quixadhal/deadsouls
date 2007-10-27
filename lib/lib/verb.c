@@ -32,13 +32,13 @@ string GetErrorMessage() { return ErrorMessage; }
 varargs static string *SetRules(mixed *args...) {
     if( sizeof(Rules) ) error("Cannot reset rules list.");
     foreach(mixed arg in args) {
-	if( stringp(arg) ) Rules += ({ arg });
-	else Rules += arg;
+        if( stringp(arg) ) Rules += ({ arg });
+        else Rules += arg;
     }
     if( Verb ) {
-	foreach(string rule in Rules) parse_add_rule(Verb, rule);
-	if( sizeof(Synonyms) ) 
-	    foreach(string cmd in Synonyms) parse_add_synonym(cmd, Verb);
+        foreach(string rule in Rules) parse_add_rule(Verb, rule);
+        if( sizeof(Synonyms) ) 
+            foreach(string cmd in Synonyms) parse_add_synonym(cmd, Verb);
     }
     return Rules;
 }
@@ -48,11 +48,11 @@ string *GetRules() { return copy(Rules); }
 varargs static string *SetSynonyms(mixed *args...) {
     if( sizeof(Synonyms) ) error("Cannot reset synonym list.\n");
     foreach(mixed arg in args) {
-	if( stringp(arg) ) Synonyms += ({ arg });
-	else Synonyms += arg;
+        if( stringp(arg) ) Synonyms += ({ arg });
+        else Synonyms += arg;
     }
     if( Verb && sizeof(Rules) )
-	foreach(string cmd in Synonyms) parse_add_synonym(cmd, Verb);
+        foreach(string cmd in Synonyms) parse_add_synonym(cmd, Verb);
     return Synonyms;
 }
 
@@ -62,9 +62,9 @@ static string SetVerb(string str) {
     if( !stringp(str) ) error("Bad argument 1 to SetVerb().\n");
     Verb = str;
     if( sizeof(Rules) )
-	foreach(string rule in Rules) parse_add_rule(Verb, rule);
+        foreach(string rule in Rules) parse_add_rule(Verb, rule);
     if( sizeof(Synonyms) )
-	foreach(string cmd in Synonyms) parse_add_synonym(cmd, Verb);
+        foreach(string cmd in Synonyms) parse_add_synonym(cmd, Verb);
     return Verb;
 }
 

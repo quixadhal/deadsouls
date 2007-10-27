@@ -32,8 +32,8 @@ varargs int total_light(object ob) {
     switch((string)SEASONS_D->query_time_of_day()) {
     case "day": return x;
     case "night":
-	x += (int)SEASONS_D->GetMoonLight();
-	return x;
+        x += (int)SEASONS_D->GetMoonLight();
+        return x;
     case "dawn": case "twilight": return (x-1);
     default: return x;
     }
@@ -56,20 +56,20 @@ mixed check_light(object who) {
     env = environment(who);
     if(!env) return "You are nowhere.";
     if(env->GetMount() || base_name(env) == LIB_CORPSE){
-	env = environment(environment(this_player()));
-	if(!env){
-	    return "You are in serious trouble. Ask an admin for help.";
-	}
+        env = environment(environment(this_player()));
+        if(!env){
+            return "You are in serious trouble. Ask an admin for help.";
+        }
     }
     light = who->GetEffectiveVision(env);
     if( light < 3 ) {
-	return "It's too dark to see.";
+        return "It's too dark to see.";
     }
     else if( light > 6 ) {
-	return "It's too bright to see.";
+        return "It's too bright to see.";
     }
     else {
-	return 1;
+        return 1;
     }
 }
 

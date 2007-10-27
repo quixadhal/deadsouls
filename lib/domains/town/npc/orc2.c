@@ -27,7 +27,7 @@ static void create() {
     SetMaxHealthPoints(100);
     SetEncounter(  (: CheckOrc :) );
     SetInventory(([
-	"/domains/town/weap/axe":"wield axe",
+        "/domains/town/weap/axe":"wield axe",
       ]) );
 
 }

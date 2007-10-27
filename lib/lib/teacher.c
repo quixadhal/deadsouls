@@ -34,8 +34,8 @@ int GetCommercial(){
 
 int SetCommercial(int i){
     if(i) {
-	commercial = i;
-	if(!teaching_fee) teaching_fee = 50;
+        commercial = i;
+        if(!teaching_fee) teaching_fee = 50;
     }
     else commercial = 0;
     return commercial;
@@ -56,12 +56,12 @@ int GetTeachingFee(){
 
 int SetTeachingFee(int i){
     if(i) {
-	teaching_fee = i;
-	commercial = 1;
+        teaching_fee = i;
+        commercial = 1;
     }
     else {
-	teaching_fee = 0;
-	commercial = 0;
+        teaching_fee = 0;
+        commercial = 0;
     }
     return teaching_fee;
 }
@@ -74,14 +74,14 @@ static void create() {
     Students = ([]);
     SetNoClean(1);
     SetCommandResponses( ([
-	"teach" : (: eventTeachLanguage :),
-	"teach" : (: eventTeachLanguage :),
-	"default" : (: eventHelp :),
-	"help" : (: eventHelp :),
+        "teach" : (: eventTeachLanguage :),
+        "teach" : (: eventTeachLanguage :),
+        "default" : (: eventHelp :),
+        "help" : (: eventHelp :),
       ]) );
     SetRequestResponses( ([
-	"default" : (: eventHelp :),
-	"help" : (: eventHelp :),
+        "default" : (: eventHelp :),
+        "help" : (: eventHelp :),
       ]) );
 }
 
@@ -91,9 +91,9 @@ static void init() {
     if( !living(this_player()) ) return;
     str = (string)this_player()->GetKeyName();
     if( Students[str] ) {
-	eventForce("speak You will have to start your "             
-	  "studies anew, "+(string)this_player()->GetName());
-	map_delete(Students, str);
+        eventForce("speak You will have to start your "             
+          "studies anew, "+(string)this_player()->GetName());
+        map_delete(Students, str);
     }
 }
 
@@ -102,16 +102,16 @@ static void init() {
 mixed AddTeachingLanguages(string *args){
     string *tmp_array = ({});
     if( !args )
-	error("Bad argument 1 to AddTeachingLanguages.");
+        error("Bad argument 1 to AddTeachingLanguages.");
     foreach(string lang in args){
-	tmp_array += ({ capitalize(lower_case(lang)) });
+        tmp_array += ({ capitalize(lower_case(lang)) });
     }
     return (TeachingLanguages = distinct_array(TeachingLanguages + tmp_array));
 }
 
 mixed RemoveTeachingLanguages(string *args...) {
     if( !args || !arrayp(args) ) 
-	error("Bad argument 1 to RemoveTeachingLanguages.");
+        error("Bad argument 1 to RemoveTeachingLanguages.");
     TeachingLanguages -= args;
     return TeachingLanguages;
 }
@@ -122,15 +122,15 @@ string Expertise(){
     string tmp, expertises;
     if(!sizeof(GetTeachingLanguages())) return "none";
     else if(sizeof(GetTeachingLanguages()) == 1) {
-	return GetTeachingLanguages()[0];
+        return GetTeachingLanguages()[0];
     }
     expertises = implode(GetTeachingLanguages(), ", ");
     if(sizeof(GetTeachingLanguages()) == 2){
-	expertises = replace_string(expertises,", "," and ");
+        expertises = replace_string(expertises,", "," and ");
     }
     else if(sizeof(GetTeachingLanguages()) > 2){
-	tmp = last_string_element(expertises,",");
-	expertises = replace_string(expertises, tmp, " and"+tmp);
+        tmp = last_string_element(expertises,",");
+        expertises = replace_string(expertises, tmp, " and"+tmp);
     }
     return expertises;
 }
@@ -143,45 +143,45 @@ int eventHelp(object who, string unused) {
     eventForce("speak I am not sure of what you are "
       "asking, " + (string)who->GetName() + ".");
     if(sizeof( GetTeachingLanguages() )){
-	eventForce("speak My area of expertise covers " +
-	  Expertise() + ".");
-	eventForce("speak You can \"ask "+GetKeyName()+" to teach "
-	  "<LANGUAGE>\" if you have training points.");
+        eventForce("speak My area of expertise covers " +
+          Expertise() + ".");
+        eventForce("speak You can \"ask "+GetKeyName()+" to teach "
+          "<LANGUAGE>\" if you have training points.");
     }
     return 1;
 }
 
 int eventTeachLanguage(object who, string verb, string language) {
     if( !who || environment(who) != environment() ) {
-	return 0;
+        return 0;
     }
     if( !sizeof(language) || !sizeof(verb) ) return eventHelp(who, 0);
     if( verb == "teach" ) {
 
-	language = capitalize(language);
+        language = capitalize(language);
 
-	if( Students[ (string)who->GetKeyName() ] ) {
-	    eventForce("speak I am already teaching you!");
-	    return 0;
-	}
-	if( !GetAllLanguages() &&
-	  member_array(language, this_object()->GetTeachingLanguages()) == -1 ) {
-	    eventForce("speak I know nothing about the " +capitalize(language)+" language.");
-	    return 0;
-	}
-	if( !commercial && (int)this_player()->GetTrainingPoints() < 1 ) {
-	    eventForce("speak You need more training points.");        
-	    return 0;
-	}
-	if(commercial && this_player()->GetCurrency(GetLocalCurrency()) < teaching_fee){
-	    eventForce("speak I charge "+teaching_fee+" "+GetLocalCurrency()+" per lesson. "+
-	      "You don't seem to have the right amount of the right currency.");
-	    return 0;
-	}
-	Students[ (string)who->GetKeyName() ] = language;
-	eventStart(who, language);
-	call_out((: ContinueTeaching, who, language, 0 :), TEACHING_WAIT);
-	return 1;
+        if( Students[ (string)who->GetKeyName() ] ) {
+            eventForce("speak I am already teaching you!");
+            return 0;
+        }
+        if( !GetAllLanguages() &&
+          member_array(language, this_object()->GetTeachingLanguages()) == -1 ) {
+            eventForce("speak I know nothing about the " +capitalize(language)+" language.");
+            return 0;
+        }
+        if( !commercial && (int)this_player()->GetTrainingPoints() < 1 ) {
+            eventForce("speak You need more training points.");        
+            return 0;
+        }
+        if(commercial && this_player()->GetCurrency(GetLocalCurrency()) < teaching_fee){
+            eventForce("speak I charge "+teaching_fee+" "+GetLocalCurrency()+" per lesson. "+
+              "You don't seem to have the right amount of the right currency.");
+            return 0;
+        }
+        Students[ (string)who->GetKeyName() ] = language;
+        eventStart(who, language);
+        call_out((: ContinueTeaching, who, language, 0 :), TEACHING_WAIT);
+        return 1;
     }
     return 1;
 }
@@ -191,16 +191,16 @@ static int ContinueTeaching(object who, string language, int x) {
     if( !present(who, environment()) ) return 0;
     if( !Students[(string)who->GetKeyName()] ) return 0;
     if( x > 4 ) {
-	map_delete(Students, (string)who->GetKeyName());
-	eventComplete(who, language);
-	who->AddLanguagePoints(language,5+((who->GetStatLevel("intelligence")/10)*2)+random(10));
-	if(!commercial) who->AddTrainingPoints(-1);
-	else who->AddCurrency(GetLocalCurrency(),-teaching_fee);
-	return 1;
+        map_delete(Students, (string)who->GetKeyName());
+        eventComplete(who, language);
+        who->AddLanguagePoints(language,5+((who->GetStatLevel("intelligence")/10)*2)+random(10));
+        if(!commercial) who->AddTrainingPoints(-1);
+        else who->AddCurrency(GetLocalCurrency(),-teaching_fee);
+        return 1;
     } else {
-	eventContinue(who, language, ++x);
-	call_out((: ContinueTeaching, who, language, x :), TEACHING_WAIT);
-	return 1;
+        eventContinue(who, language, ++x);
+        call_out((: ContinueTeaching, who, language, x :), TEACHING_WAIT);
+        return 1;
     }
 }
 

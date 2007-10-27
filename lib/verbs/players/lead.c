@@ -26,12 +26,12 @@ mixed can_lead_liv() { return 1; }
 
 mixed do_lead_liv(object ob) {
     if(!ob->IsFollowing(this_player())) {
-	this_player()->eventPrint(ob->GetName() + " is not following you.");
-	return 1;
+        this_player()->eventPrint(ob->GetName() + " is not following you.");
+        return 1;
     }
     if( this_player()->SetFollowed(ob, 1) ) {
-	ob->eventPrint((string)this_player()->GetName() + " is now leading you.");
-	this_player()->eventPrint("You are now leading " + ob->GetName() + ".");
+        ob->eventPrint((string)this_player()->GetName() + " is now leading you.");
+        this_player()->eventPrint("You are now leading " + ob->GetName() + ".");
     }
     else this_player()->eventPrint("You are not empowered to lead " + ob->GetName() + ".");
     return 1;

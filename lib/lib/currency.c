@@ -23,15 +23,15 @@ static void create() {
 
 int AddCurrency(string type, int amount) { 
     if( amount > 0 ) {
-	int curr_mass;
-	curr_mass = to_int(currency_mass(amount, type));
-	if(curr_mass < 1 ) curr_mass = 1;
-	if( !CanCarry(curr_mass) ) {
-	    return -1;
-	}
+        int curr_mass;
+        curr_mass = to_int(currency_mass(amount, type));
+        if(curr_mass < 1 ) curr_mass = 1;
+        if( !CanCarry(curr_mass) ) {
+            return -1;
+        }
     }
     if( amount + Currency[type] < 0 ) {
-	return -1;
+        return -1;
     }
     return (Currency[type] += amount);
 }
@@ -43,10 +43,10 @@ varargs int GetCurrencyMass(string type) {
     int total;
 
     if( stringp(type) ) {
-	return currency_mass(Currency[type], type);
+        return currency_mass(Currency[type], type);
     }
     foreach(string currency, int amount in Currency) {
-	total += currency_mass(amount, currency);
+        total += currency_mass(amount, currency);
     }
     return total;
 }
@@ -54,10 +54,10 @@ varargs int GetCurrencyMass(string type) {
 int AddBank(string bank, string type, int amount) {
     if( !stringp(bank) ) error("Bad argument 1 to AddBank().");
     if( !Bank[bank] ) {
-	if( amount < 1 ) return -1;
-	Bank[bank] = ([ "open" : time(), type : amount, "last time" : time(),
-	  "last trans" : "opened account", 
-	  "audit" : identify(previous_object(-1)) ]);
+        if( amount < 1 ) return -1;
+        Bank[bank] = ([ "open" : time(), type : amount, "last time" : time(),
+          "last trans" : "opened account", 
+          "audit" : identify(previous_object(-1)) ]);
     return amount;
 }
 if( Bank[bank][type] + amount < 0 ) return -1;
@@ -84,23 +84,23 @@ varargs int GetNetWorth(string benjamins) {
     float net_worth = 0.0;
     int amt;
     foreach(curr, amt in Currency) {
-	if(valid_currency(curr))
-	    net_worth += amt * currency_rate(curr);
+        if(valid_currency(curr))
+            net_worth += amt * currency_rate(curr);
 
     }
     foreach(string bank, mapping balance in Bank) {
-	foreach(curr, amt in balance) {
-	    float tmp;
+        foreach(curr, amt in balance) {
+            float tmp;
 
-	    switch(curr) {
-	    case "last trans": case "last time": case "audit": case "open":
-		break;
-	    default:
-		if( (tmp = currency_rate(curr)) < 1 ) break;
-		net_worth += amt * tmp;
-		break;
-	    }
-	}
+            switch(curr) {
+            case "last trans": case "last time": case "audit": case "open":
+                break;
+            default:
+                if( (tmp = currency_rate(curr)) < 1 ) break;
+                net_worth += amt * tmp;
+                break;
+            }
+        }
     }
     if(!benjamins || benjamins == ""||!stringp(benjamins)) benjamins = "gold";
     if(member_array(benjamins,mud_currencies()) == -1) benjamins = "gold";

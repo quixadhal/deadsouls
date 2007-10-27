@@ -32,8 +32,8 @@ void create()
     );
 
     SetExits( ([
-	"north" : EXPATH + "exroom2",
-	"south" : EXPATH + "entrance",
+        "north" : EXPATH + "exroom2",
+        "south" : EXPATH + "entrance",
       ]));
 
     //   Here, take a look at how I set the lever item.  It is different
@@ -43,7 +43,7 @@ void create()
     //     I'll explain later in this file.
 
     SetItems( ([
-	"lever" : ((: lever_pulled :))
+        "lever" : ((: lever_pulled :))
       ]) );
 
 }
@@ -73,8 +73,8 @@ mixed aa_pull(string str)
 {
     if ( str != "lever")
     {
-	write( "Pull what?\n" );
-	return 1;
+        write( "Pull what?\n" );
+        return 1;
     }
 
     //   Here we are going to check if the lever has been pulled.  If it has, 
@@ -83,8 +83,8 @@ mixed aa_pull(string str)
 
     if( once ==1 )
     {
-	write( "The lever's already pulled." );
-	return 1;
+        write( "The lever's already pulled." );
+        return 1;
     }
 
     //  If the lever has not been pulled, this part starts.  As you'll notice, we
@@ -105,6 +105,6 @@ mixed aa_pull(string str)
 mixed lever_pulled()
 {
     if( !once )
-	return "The lever is pushed into the wall.  Perhaps you could pull it.";
+        return "The lever is pushed into the wall.  Perhaps you could pull it.";
     return "The lever has already been pulled.  You're too late!";
 }

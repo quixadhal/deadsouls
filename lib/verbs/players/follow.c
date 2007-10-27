@@ -39,10 +39,10 @@ mixed do_follow() {
 
     // Format follow string.
     if(this_player()->CanLead() && leader = this_player()->GetLeader()) {
-	tmp = "You are ";
-	if(leader->GetFollowed(this_player())) tmp += "following";
-	else tmp += "trailing";
-	tmp += " " + leader->GetName() + ".\n";
+        tmp = "You are ";
+        if(leader->GetFollowed(this_player())) tmp += "following";
+        else tmp += "trailing";
+        tmp += " " + leader->GetName() + ".\n";
     }
     else tmp = "You are trailing no one." + "\n";
 
@@ -80,13 +80,13 @@ mixed do_follow_liv(object ob) {
     object leader;
 
     if(leader = this_player()->GetLeader()) {
-	leader->RemoveFollower(this_player());
-	this_player()->eventPrint("You stop trailing " + leader->GetName() + ".");
-	return 1;
+        leader->RemoveFollower(this_player());
+        this_player()->eventPrint("You stop trailing " + leader->GetName() + ".");
+        return 1;
     }
 
     if(member_array(this_player(), ob->AddFollower(this_player())) == -1)
-	this_player()->eventPrint("You are not empowered to follow " + ob->GetName() + ".");
+        this_player()->eventPrint("You are not empowered to follow " + ob->GetName() + ".");
     else this_player()->eventPrint("You are now trailing " + ob->GetName() + ".");
 
     return 1;

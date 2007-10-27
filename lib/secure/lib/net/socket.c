@@ -31,14 +31,14 @@ static int eventCloseSocket() {
 int eventRead(mixed data) {
     //trr("SOCKETREAD: "+identify(data),"cyan");
     if( previous_object() != Owner ) {
-	return 0;
+        return 0;
     }
     return 1;
 }
 
 int eventSocketClosed() {
     if(!Owner || previous_object() != Owner ) {
-	return 0;
+        return 0;
     }
     daemon::eventDestruct();
     return 1;

@@ -66,7 +66,7 @@ mixed direct_dismount_from_liv(){
 
 mixed direct_attack_liv(){
     if(intp(Attackable) && !Attackable){
-	return "You are unable to attack "+this_object()->GetShort()+".";
+        return "You are unable to attack "+this_object()->GetShort()+".";
     }
     if(stringp(Attackable)) return Attackable;
     return 1;
@@ -74,20 +74,20 @@ mixed direct_attack_liv(){
 
 mixed CanAttack(){
     if( userp(this_player()) && userp(this_object()) ) {
-	if(!(int)environment(this_player())->CanAttack(this_object())){
-	    return "Player killing is not permitted in this area!";
-	}
-	if(intp(Attackable) && !Attackable){
-	    return "You are unable to attack "+this_object()->GetShort()+".";
-	}
-	if(this_player()->GetPK() && this_object()->GetPK()){
-	    if(!PLAYER_KILL) return "This is not a PK mud.";
-	}
-	else return "One of you is not a player killer. You cannot fight them.";
+        if(!(int)environment(this_player())->CanAttack(this_object())){
+            return "Player killing is not permitted in this area!";
+        }
+        if(intp(Attackable) && !Attackable){
+            return "You are unable to attack "+this_object()->GetShort()+".";
+        }
+        if(this_player()->GetPK() && this_object()->GetPK()){
+            if(!PLAYER_KILL) return "This is not a PK mud.";
+        }
+        else return "One of you is not a player killer. You cannot fight them.";
     }
     if(functionp(Attackable)) return evaluate(Attackable, this_player());
     else {
-	return (Attackable || 0);
+        return (Attackable || 0);
     }
 }
 
@@ -165,7 +165,7 @@ mixed indirect_give_obj_to_liv(object item) {
     if( this_player() == this_object() ) return "Are you confused?";
     if( environment(item) != this_player() ) return "You don't have that!";
     if(!CanCarry((int)item->GetMass())){
-	return this_object()->GetName()+" is carrying too much.";
+        return this_object()->GetName()+" is carrying too much.";
     }
     else return CanCarry((int)item->GetMass());
 }
@@ -191,7 +191,7 @@ mixed direct_give_wrd_wrd_to_liv(string num, string curr) {
     int amt;
 
     if( this_object() == this_player() )
-	return "Are you feeling a bit confused?";
+        return "Are you feeling a bit confused?";
     if( (amt = to_int(num)) < 1 ) return "What sort of amount is that?";
     tmp = CanCarry(currency_mass(amt, curr));
     if( tmp != 1 ) return GetName() + " cannot carry that much "+ curr+ ".";
@@ -209,7 +209,7 @@ mixed direct_steal_wrd_from_liv(string wrd) {
     //if( userp(this_object()) && !((int)this_player()->GetPK()) )
     //	return "You do not have your player killer flag set.";
     if( this_player()->GetInCombat() )
-	return "You are too busy fighting at the moment.";
+        return "You are too busy fighting at the moment.";
     return 1;
 }
 
@@ -217,7 +217,7 @@ mixed indirect_steal_obj_from_liv(object item, mixed args...) {
     mixed tmp;
 
     if( environment()->GetProperty("no attack") )
-	return "Mystical forces prevent your malice.";
+        return "Mystical forces prevent your malice.";
     if( !item ) return 1;
     if( environment(item) != this_object() ) return 0;
     if( this_player() == this_object() ) return "Are you a fool?";
@@ -225,21 +225,21 @@ mixed indirect_steal_obj_from_liv(object item, mixed args...) {
     //  if( userp(this_object()) && !((int)this_player()->GetPK()) )
     //	return "You do not have your player killer flag set.";    
     if( this_player()->GetInCombat() )
-	return "You are too busy fighting at the moment.";
+        return "You are too busy fighting at the moment.";
     tmp = (mixed)item->CanDrop(this_object());
     if( tmp != 1 )
-	return GetName() + " will not let go of " + (string)item->GetShort()+".";
+        return GetName() + " will not let go of " + (string)item->GetShort()+".";
     return 1;
 }
 
 mixed direct_backstab_liv() {
     if( this_object() == this_player() )
-	return "That would be messy.";
+        return "That would be messy.";
     if( member_array(this_object(), this_player()->GetEnemies()) != -1 )
-	return "%^RED%^You have lost the element of surprise.";
+        return "%^RED%^You have lost the element of surprise.";
     if( environment()->GetProperty("no attack") ||
       GetProperty("no backstab") )
-	return "A mysterious forces stays your hand.";
+        return "A mysterious forces stays your hand.";
     return 1;
 }
 
@@ -249,24 +249,24 @@ mixed direct_heal_str_of_liv(string limb) {
 
     limb = lower_case(remove_article(limb));
     if( !limbs ) {
-	if( this_object() == this_player() ) {
-	    return "You have no limbs!";
-	}
-	else {
-	    return GetName() + " has no limbs!";
-	}
+        if( this_object() == this_player() ) {
+            return "You have no limbs!";
+        }
+        else {
+            return GetName() + " has no limbs!";
+        }
     }
     else if( member_array(limb, limbs) == -1 ) {
-	if( this_object() == this_player() ) {
-	    return "You have no " + limb + ".";
-	}
-	else {
-	    return GetName() + " has no " + limb + ".";
-	}
+        if( this_object() == this_player() ) {
+            return "You have no " + limb + ".";
+        }
+        else {
+            return GetName() + " has no " + limb + ".";
+        }
     }
     tmp = CanReceiveHealing(this_player(), limb);
     if( tmp != 1 ) {
-	return tmp;
+        return tmp;
     }
     return CanReceiveMagic(0, "heal");
 }
@@ -276,12 +276,12 @@ mixed direct_remedy_str_of_liv(string limb) {
     string *limbs;
     limbs = GetLimbs();
     if( !limbs ) {
-	if( this_object() == this_player() ) return "You have no limbs!";
-	else return GetName() + " has no limbs!";
+        if( this_object() == this_player() ) return "You have no limbs!";
+        else return GetName() + " has no limbs!";
     }
     else if( member_array(limb, limbs) == -1 ) {
-	if( this_object() == this_player() ) return "You have no " + limb + ".";
-	else return GetName() + " has no " + limb + ".";
+        if( this_object() == this_player() ) return "You have no " + limb + ".";
+        else return GetName() + " has no " + limb + ".";
     }
     return CanReceiveMagic(0, "remedy");
 }
@@ -289,7 +289,7 @@ mixed direct_remedy_str_of_liv(string limb) {
 mixed direct_regen_str_on_liv(string limb) {
     if( !limb ) return 0;
     if( member_array(limb, GetMissingLimbs()) == -1 ) {
-	return "That is not a missing limb!";
+        return "That is not a missing limb!";
     }
     return CanReceiveMagic(0, "regen");
 }
@@ -298,7 +298,7 @@ mixed direct_regen_str_on_liv(string limb) {
 mixed direct_teleport_to_liv() {
     if( environment()->GetProperty("no teleport") ||
       environment()->GetProperty("no magic") ) {
-	return "Mystical forces prevent your magic.";
+        return "Mystical forces prevent your magic.";
     }
     else return CanReceiveMagic(0, "teleport");
 }
@@ -309,9 +309,9 @@ mixed direct_portal_to_liv() {
 
 mixed direct_resurrect_liv() {
     if( this_player() == this_object() )
-	return "You cannot resurrect yourself.";
+        return "You cannot resurrect yourself.";
     if( !GetUndead() ) 
-	return GetName() + " is not dead!";
+        return GetName() + " is not dead!";
     return CanReceiveMagic(0, "resurrect");
 }
 
@@ -319,10 +319,10 @@ mixed direct_scry_liv() {
     object env = environment();
 
     if( this_player() == this_object() )
-	return "Scry yourself??";
+        return "Scry yourself??";
     if( !env ) return GetName() + " is nowhere.";
     if( env->GetProperty("no magic") || env->GetProperty("no scry") )
-	return GetName() + " is beyond your reach.";
+        return GetName() + " is beyond your reach.";
     return CanReceiveMagic(0, "scry");
 }
 
@@ -409,25 +409,25 @@ varargs mixed CanReceiveHealing(object who, string limb) {
     max = GetMaxHealthPoints(limb);
     hp = GetHealthPoints(limb);
     if( (max-hp) < max/20 ) {
-	if( limb ) {
-	    return possessive_noun(GetName()) + " " + limb + " needs no help.";
-	}
-	else {
-	    return GetName() + " needs no help.";
-	}
+        if( limb ) {
+            return possessive_noun(GetName()) + " " + limb + " needs no help.";
+        }
+        else {
+            return GetName() + " needs no help.";
+        }
     }
     return 1;
 }
 
 mixed CanReceiveMagic(int hostile, string spell) {
     if( GetProperty(spell) == "immune" ) {
-	this_player()->eventPrint(GetName() + " is immune to such magic.");
-	return 0;
+        this_player()->eventPrint(GetName() + " is immune to such magic.");
+        return 0;
     }
     if( !hostile ) return 1;
     if( this_player() == this_object() ) {
-	eventPrint("That would be construed as quite foolish.");
-	return 0;
+        eventPrint("That would be construed as quite foolish.");
+        return 0;
     }
     return 1;
 }
@@ -437,17 +437,17 @@ varargs mixed CanCastMagic(int hostile, string spell) {
 
     if( !env ) eventPrint("You are nowhere!");
     if( spell && GetProperty("no " + spell) ) {
-	eventPrint("A mysterious forces prevents you from doing that.");
-	return 0;
+        eventPrint("A mysterious forces prevents you from doing that.");
+        return 0;
     }
     if( env->GetProperty("no magic") ) {
-	eventPrint("Mystical forces prevent your magic.");
-	return 0;
+        eventPrint("Mystical forces prevent your magic.");
+        return 0;
     }
     if( !hostile ) return 1;
     if( env->GetProperty("no attack" ) ) {
-	eventPrint("Mystical forces prevent your hostile intentions.");
-	return 0;
+        eventPrint("Mystical forces prevent your hostile intentions.");
+        return 0;
     }
     return 1;
 }
@@ -459,7 +459,7 @@ mixed eventCure(object who, int amount, string type) {
       (: $1->IsGerm() && $1->GetType()== $(type) :));
 
     if( !sizeof(germs) ) {
-	return GetName() + " suffers from no such affliction.";
+        return GetName() + " suffers from no such affliction.";
     }
     return germs[0]->eventCure(who, amount, type);
 }
@@ -468,11 +468,11 @@ int eventFollow(object dest, int followChance) {
     string dir;
 
     if( objectp(dest) ) {
-	if( !environment() ) {
-	    Destruct();
-	    return 0;
-	}
-	dir = environment()->GetDirection(base_name(dest));
+        if( !environment() ) {
+            Destruct();
+            return 0;
+        }
+        dir = environment()->GetDirection(base_name(dest));
     }
     if( !stringp(dir) ) dir = "";
     if( dir != "" && followChance > random(100) ) eventForce(dir);
@@ -500,99 +500,99 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill) {
     int i, sr;
 
     if( who == this_object() ) {
-	mixed tmp;
-	int amt, skill2;
+        mixed tmp;
+        int amt, skill2;
 
-	skill2 = to_int(to_float(GetSkillLevel("stealing"))*2.5);
-	skill2 += GetMobility();
-	skill2 += GetStatLevel("coordination");
-	skill2 += GetStatLevel("charisma");
-	skill2 += to_int(GetStatLevel("luck")/2);
-	if( ClassMember("rogue") ) skill2 += (int)GetLevel();
-	if( ClassMember("thief") ) skill2 += (int)GetLevel();
+        skill2 = to_int(to_float(GetSkillLevel("stealing"))*2.5);
+        skill2 += GetMobility();
+        skill2 += GetStatLevel("coordination");
+        skill2 += GetStatLevel("charisma");
+        skill2 += to_int(GetStatLevel("luck")/2);
+        if( ClassMember("rogue") ) skill2 += (int)GetLevel();
+        if( ClassMember("thief") ) skill2 += (int)GetLevel();
 
-	if( !stringp(what) ) {
-	    int x;
+        if( !stringp(what) ) {
+            int x;
 
-	    x = sizeof(what);
-	    if( GetStaminaPoints() < 20.0*x ) {
-		eventPrint("You are clumsy in your fatigue.");
-		if(target->GetRace() != "kender"){
-		    target->SetAttack(this_object());
-		    target->eventExecuteAttack(this_object());
-		}
-		return 1;
-	    }
-	    AddStaminaPoints(-20);
+            x = sizeof(what);
+            if( GetStaminaPoints() < 20.0*x ) {
+                eventPrint("You are clumsy in your fatigue.");
+                if(target->GetRace() != "kender"){
+                    target->SetAttack(this_object());
+                    target->eventExecuteAttack(this_object());
+                }
+                return 1;
+            }
+            AddStaminaPoints(-20);
 
-	    tmp = (mixed)target->eventSteal(who, what, target,skill2);
+            tmp = (mixed)target->eventSteal(who, what, target,skill2);
 
-	    /* You can't steal from this target */
-	    if( !tmp )
-		return "You cannot steal from " + (string)target->GetName() +".";
+            /* You can't steal from this target */
+            if( !tmp )
+                return "You cannot steal from " + (string)target->GetName() +".";
 
-	    /* Steal from target was succesful */
-	    else if( tmp == 1 ) {
+            /* Steal from target was succesful */
+            else if( tmp == 1 ) {
 
-		what = filter(what, (: $1 :));
-		AddSkillPoints("stealing", implode(map(what,
-		      (: $1->GetMass() :)),
-		    (: $1 + $2 :)) +
-		  GetSkillLevel("stealing") * GetSkillLevel("stealing")*3);
-		AddSkillPoints("stealth", random(sizeof(what)) * 20);
-		AddStaminaPoints(-2);
-		this_player()->eventPrint(sprintf("You steal %s from %s.",
-		    "something", (string)target->GetName()) );
-		what->eventMove(this_object());
-		return 1;
-	    }
+                what = filter(what, (: $1 :));
+                AddSkillPoints("stealing", implode(map(what,
+                      (: $1->GetMass() :)),
+                    (: $1 + $2 :)) +
+                  GetSkillLevel("stealing") * GetSkillLevel("stealing")*3);
+                AddSkillPoints("stealth", random(sizeof(what)) * 20);
+                AddStaminaPoints(-2);
+                this_player()->eventPrint(sprintf("You steal %s from %s.",
+                    "something", (string)target->GetName()) );
+                what->eventMove(this_object());
+                return 1;
+            }
 
-	    /* Steal was unsuccesful */
-	    else if( tmp == 2 ) {
-		AddSkillPoints("stealing", GetSkillLevel("stealing")*2);
-		AddStaminaPoints(-5);
-		return 1;
-	    }
+            /* Steal was unsuccesful */
+            else if( tmp == 2 ) {
+                AddSkillPoints("stealing", GetSkillLevel("stealing")*2);
+                AddStaminaPoints(-5);
+                return 1;
+            }
 
-	    else return tmp;
-	}
-	/********************************************/
-	/* This part deals with stealing money */
+            else return tmp;
+        }
+        /********************************************/
+        /* This part deals with stealing money */
 
-	amt = GetNetWorth();
-	eventPrint("You reach for " + possessive_noun(target) + " money.");
-	tmp = (mixed)target->eventSteal(who, what, target, skill2);
+        amt = GetNetWorth();
+        eventPrint("You reach for " + possessive_noun(target) + " money.");
+        tmp = (mixed)target->eventSteal(who, what, target, skill2);
 
-	/* You can't steal from this target */
-	if( !tmp )
-	    return "You cannot steal from " + (string)target->GetName() + ".";
+        /* You can't steal from this target */
+        if( !tmp )
+            return "You cannot steal from " + (string)target->GetName() + ".";
 
-	/* Steal from target was succesful */
-	else if( tmp == 1 ) {
-	    amt = GetNetWorth() - amt;
-	    if( amt < 1 ) return tmp;
-	    AddSkillPoints("stealing", random(7*amt) +
-	      GetSkillLevel("stealing") * GetSkillLevel("stealing") * 2);
-	    AddSkillPoints("stealth", random(amt));
-	    AddStatPoints("coordination", random(amt));
-	    AddStaminaPoints(-3);
-	    eventPrint("You come away with some money!");
-	    return tmp;
-	}
+        /* Steal from target was succesful */
+        else if( tmp == 1 ) {
+            amt = GetNetWorth() - amt;
+            if( amt < 1 ) return tmp;
+            AddSkillPoints("stealing", random(7*amt) +
+              GetSkillLevel("stealing") * GetSkillLevel("stealing") * 2);
+            AddSkillPoints("stealth", random(amt));
+            AddStatPoints("coordination", random(amt));
+            AddStaminaPoints(-3);
+            eventPrint("You come away with some money!");
+            return tmp;
+        }
 
-	/* Steal was unsuccesful */
-	else if( tmp == 2) {
-	    AddSkillPoints("stealing", GetSkillLevel("stealing")*2);
-	    AddStaminaPoints(-5);
-	    return 1;
-	}
+        /* Steal was unsuccesful */
+        else if( tmp == 2) {
+            AddSkillPoints("stealing", GetSkillLevel("stealing")*2);
+            AddStaminaPoints(-5);
+            return 1;
+        }
 
-	return tmp;
+        return tmp;
     }
     /*******************************************************************/
     if( GetInCombat() ) {
-	who->eventPrint(GetName() + " is busy in combat.");
-	return 0;
+        who->eventPrint(GetName() + " is busy in combat.");
+        return 0;
     }
     skill -= to_int(GetMobility()/2);
     skill -= GetStatLevel("agility");
@@ -602,39 +602,39 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill) {
     if( objectp(what) ) sr = 100 * sizeof(what);
     else sr = 100;
     if( random(sr) > skill ) {
-	target->eventPrint("You notice " + (string)who->GetName() + " trying "
-	  "to steal from you!");
-	if( !userp(this_object()) ) {
-	    who->eventPrint("%^RED%^" + (string)GetName() + "%^RED%^ "
-	      "notices your attempt at treachery!",
-	      environment(who) );
-	    eventForce("attack " + (string)who->GetKeyName());
-	    this_object()->SetProperty("steal victim", 1);
-	}
-	return 2;
+        target->eventPrint("You notice " + (string)who->GetName() + " trying "
+          "to steal from you!");
+        if( !userp(this_object()) ) {
+            who->eventPrint("%^RED%^" + (string)GetName() + "%^RED%^ "
+              "notices your attempt at treachery!",
+              environment(who) );
+            eventForce("attack " + (string)who->GetKeyName());
+            this_object()->SetProperty("steal victim", 1);
+        }
+        return 2;
     }
 
     if( random(2*sr) > skill ) {
-	who->eventPrint("You are unsure if anyone noticed your foolish "
-	  "attempt at thievery.",environment(who) );
-	return 2;
+        who->eventPrint("You are unsure if anyone noticed your foolish "
+          "attempt at thievery.",environment(who) );
+        return 2;
     }
 
     if( stringp(what) ) {
 
-	foreach(string curr in GetCurrencies()) {
-	    int x;
+        foreach(string curr in GetCurrencies()) {
+            int x;
 
-	    if( !(x = random(GetCurrency(curr)/5)) ) continue;
-	    if( x > 100 ) x = 100;
-	    x = (x * skill)/100;
-	    AddCurrency(curr, -x);
-	    who->AddCurrency(curr, x);
-	}
-	return 1;
+            if( !(x = random(GetCurrency(curr)/5)) ) continue;
+            if( x > 100 ) x = 100;
+            x = (x * skill)/100;
+            AddCurrency(curr, -x);
+            who->AddCurrency(curr, x);
+        }
+        return 1;
     }
     for(i=0; i<sizeof(what); i++) {
-	if( (mixed)what[i]->eventSteal(who) != 1 ) what[i] = 0;
+        if( (mixed)what[i]->eventSteal(who) != 1 ) what[i] = 0;
     }
     return 1;
 }

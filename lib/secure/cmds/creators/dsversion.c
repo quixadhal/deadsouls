@@ -53,18 +53,18 @@ mixed ProcessHTTPResult()
 
     arg_array = explode( args_list, " " );
     foreach( string str in arg_array ){
-	temp = regexp( parts, args_list+" +" );
-	if( sizeof( temp ) > 1 ) temp = regexp( parts, args_list+" " );
-	if( sizeof( temp ) > 3 ){
-	    player->eventPrint( "Too many results, truncating..." );
-	    return print_long_string(player, temp[0]+temp[1]+temp[2],1 );
-	}
-	else{
-	    s = implode(temp,"\n%^CYAN%^----%^RESET%^ ");
-	    write_file( SAVE_FILE, results, 1 );
-	    s += "\nFor complete release notes refer to "+SAVE_FILE;
-	    print_long_string(player, "%^CYAN%^----%^RESET%^ "+s,1 );
-	}
+        temp = regexp( parts, args_list+" +" );
+        if( sizeof( temp ) > 1 ) temp = regexp( parts, args_list+" " );
+        if( sizeof( temp ) > 3 ){
+            player->eventPrint( "Too many results, truncating..." );
+            return print_long_string(player, temp[0]+temp[1]+temp[2],1 );
+        }
+        else{
+            s = implode(temp,"\n%^CYAN%^----%^RESET%^ ");
+            write_file( SAVE_FILE, results, 1 );
+            s += "\nFor complete release notes refer to "+SAVE_FILE;
+            print_long_string(player, "%^CYAN%^----%^RESET%^ "+s,1 );
+        }
     }
     return 1;
 }
@@ -72,20 +72,20 @@ mixed ProcessHTTPResult()
 void read_callback( int fd, mixed message )
 {
     if( !http_file_found ){
-	if( message[9..11] != "200" ){
-	    player->eventPrint( "Error, unable to locate page requested." );
+        if( message[9..11] != "200" ){
+            player->eventPrint( "Error, unable to locate page requested." );
 
-	    http_file_found = 3;
-	}
-	else
-	{
-	    //player->eventPrint( message ); Uncomment this to see http header debug
-	    http_file_found = 1;
-	}
+            http_file_found = 3;
+        }
+        else
+        {
+            //player->eventPrint( message ); Uncomment this to see http header debug
+            http_file_found = 1;
+        }
     }
     else if( http_file_found == 1 ){
-	//player->eventPrint( message );
-	results += message;
+        //player->eventPrint( message );
+        results += message;
     }
     else{
 
@@ -110,15 +110,15 @@ void close_callback( int fd )
 {
     if( status == SOCK_CONNECTED )
     {
-	// Process HTML here
+        // Process HTML here
 #ifdef _DEBUG
-	player->eventPrint("Connection closed by host.");
+        player->eventPrint("Connection closed by host.");
 #endif
-	ProcessHTTPResult();
+        ProcessHTTPResult();
     }
     if( status == SOCK_CONNECTING )
     {       
-	player->eventPrint("Connection attempt failed.");
+        player->eventPrint("Connection attempt failed.");
     }
     socket_close( fd ) ;
     status = SOCK_DISCONNECTED;
@@ -138,9 +138,9 @@ void sendHTTPGet()
 #endif
     if( status == SOCK_CONNECTED )
     {
-	result = socket_write( socket, (string)str );
+        result = socket_write( socket, (string)str );
 #ifdef _DEBUG
-	player->eventPrint( "HTTP request sent to " + socket + " result = "+result );
+        player->eventPrint( "HTTP request sent to " + socket + " result = "+result );
 #endif
     }
 }
@@ -156,33 +156,33 @@ int openHTTPConnection()
     status = SOCK_CONNECTING;
     sock = socket_create( STREAM, "read_callback", "close_callback" ) ;
     if (sock < 0) { 
-	switch( sock )
-	{
-	case EEMODENOTSUPP :
-	    error = "Socket mode not supported.\n" ;
-	    break ;
-	case EESOCKET :
-	    error = "Problem creating socket.\n" ;
-	    break ;
-	case EESETSOCKOPT :
-	    error = "Problem with setsockopt.\n" ;
-	    break ;
-	case EENONBLOCK :
-	    error = "Problem with setting non-blocking mode.\n" ;
-	    break ;
-	case EENOSOCKS :
-	    error = "No more available efun sockets.\n" ;
-	    break ;
-	case EESECURITY :
-	    error = "Security violation attempted.\n" ;
-	    break ;
-	default :
-	    error = "Unknown error code: " + sock + ".\n" ;
-	    break ;
-	}
-	notify_fail( "Unable to connect, problem with socket_create.\n"
-	  "Reason: " + error ) ;
-	return 0 ;
+        switch( sock )
+        {
+        case EEMODENOTSUPP :
+            error = "Socket mode not supported.\n" ;
+            break ;
+        case EESOCKET :
+            error = "Problem creating socket.\n" ;
+            break ;
+        case EESETSOCKOPT :
+            error = "Problem with setsockopt.\n" ;
+            break ;
+        case EENONBLOCK :
+            error = "Problem with setting non-blocking mode.\n" ;
+            break ;
+        case EENOSOCKS :
+            error = "No more available efun sockets.\n" ;
+            break ;
+        case EESECURITY :
+            error = "Security violation attempted.\n" ;
+            break ;
+        default :
+            error = "Unknown error code: " + sock + ".\n" ;
+            break ;
+        }
+        notify_fail( "Unable to connect, problem with socket_create.\n"
+          "Reason: " + error ) ;
+        return 0 ;
     }
 #ifdef _DEBUG
     write("Attempting to connect to "+HTTP_HOST+ " on port "+ HTTP_PORT + "\n");
@@ -191,13 +191,13 @@ int openHTTPConnection()
       "read_callback", "write_callback" ) ;
     if( sc_result != EESUCCESS )
     {
-	status = SOCK_DISCONNECTED;
-	notify_fail( "Failed to connect.\n" ) ;
-	return 0 ;
+        status = SOCK_DISCONNECTED;
+        notify_fail( "Failed to connect.\n" ) ;
+        return 0 ;
     }
     else{
 #ifdef _DEBUG
-	player->eventPrint( "Socket connecting..." );
+        player->eventPrint( "Socket connecting..." );
 #endif
     }
 
@@ -209,9 +209,9 @@ void hostResolved( string address, string resolved, int key )
 {
     if( !resolved ){
 #ifdef _DEBUG
-	player->eventPrint( "Unable to resolve "+address );
+        player->eventPrint( "Unable to resolve "+address );
 #endif
-	return;
+        return;
     }
 #ifdef _DEBUG
     player->eventPrint( "Resolved "+address+" to "+ resolved );

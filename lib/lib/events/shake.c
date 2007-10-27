@@ -8,7 +8,7 @@ string GetDefiniteShort();
 
 varargs mixed GetShake(string str) {
     if( !str ) {
-	str = "default";
+        str = "default";
     }
     return Shake[str];
 }
@@ -24,18 +24,18 @@ mapping RemoveShake(string item) {
 
 varargs mapping SetShake(mixed key, mixed desc) {
     if( !key ) {
-	key = "default";
+        key = "default";
     }
     if( !desc ) {
-	if( mapp(key) ) {
-	    Shake = expand_keys(key);
-	}
-	else {
-	    Shake["default"] = key;
-	}
+        if( mapp(key) ) {
+            Shake = expand_keys(key);
+        }
+        else {
+            Shake["default"] = key;
+        }
     }
     else {
-	Shake[key] = desc;
+        Shake[key] = desc;
     }
     return Shake;
 }
@@ -44,17 +44,17 @@ varargs mixed CanShake(object who, string component) {
     mixed val;
 
     if( !component ) {
-	component = "default";
+        component = "default";
     }
     val = Shake[component];
     if( !val ) {
-	if( component == "default" ) {
-	    return 0;
-	}
-	else {
-	    return "#There is no " + component + " on " +
-	    GetDefiniteShort() + ".";
-	}
+        if( component == "default" ) {
+            return 0;
+        }
+        else {
+            return "#There is no " + component + " on " +
+            GetDefiniteShort() + ".";
+        }
     }
     else return 1;
 }
@@ -63,34 +63,34 @@ varargs mixed eventShake(object who, string component) {
     mixed val;
 
     if( !component ) {
-	val = Shake["default"];
+        val = Shake["default"];
     }
     else {
-	val = Shake[component];
+        val = Shake[component];
     }
     if( arrayp(val) ) {
-	val = val[query_night()];
+        val = val[query_night()];
     }
     if( stringp(val) ) {
-	object env;
+        object env;
 
-	env = environment(who);
-	who->eventPrint(val);
-	if( component ) {
-	    env->eventPrint(who->GetName() + " shakes the " + component +
-	      " on " + GetDefiniteShort() + ".", who);
-	}
-	else {
-	    env->eventPrint(who->GetName() + " shakes " +
-	      GetDefiniteShort() + ".", who);
-	}
-	return 1;
+        env = environment(who);
+        who->eventPrint(val);
+        if( component ) {
+            env->eventPrint(who->GetName() + " shakes the " + component +
+              " on " + GetDefiniteShort() + ".", who);
+        }
+        else {
+            env->eventPrint(who->GetName() + " shakes " +
+              GetDefiniteShort() + ".", who);
+        }
+        return 1;
     }
     else {
-	if( functionp(val) & FP_OWNER_DESTED ) {
-	    return "Error in evaluating functional.";
-	}
-	return evaluate(val, who, component);
+        if( functionp(val) & FP_OWNER_DESTED ) {
+            return "Error in evaluating functional.";
+        }
+        return evaluate(val, who, component);
     }
 }
 

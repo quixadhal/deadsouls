@@ -14,7 +14,7 @@ int cmd(string str){
     if(archp(this_player())) boards += ({ "admin_board" });
 
     for(x = 0; x < sizeof(boards); x++)
-	write("/secure/daemon/bboard.c"->list_new_posts(boards[x]));
+        write("/secure/daemon/bboard.c"->list_new_posts(boards[x]));
 
     return 1;
 }

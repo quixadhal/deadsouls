@@ -16,12 +16,12 @@ void create() {
       "back out of the forest.");
     SetItems(
       ([
-	({"path", "footpath"}) : "A small path running through North Forest.",
-	"forest" : "North Forest is a very dark and evil place.",
-	"undergrowth" : "The undergrowth slowly is assimilating the path.",
-	"cavern" : "Its mysterious maw beckons you to enter."]) );
+        ({"path", "footpath"}) : "A small path running through North Forest.",
+        "forest" : "North Forest is a very dark and evil place.",
+        "undergrowth" : "The undergrowth slowly is assimilating the path.",
+        "cavern" : "Its mysterious maw beckons you to enter."]) );
     SetExits( ([ 
-	"south" : "/domains/Praxis/forest2",
-	"down" : "/domains/Praxis/kataan_join",
+        "south" : "/domains/Praxis/forest2",
+        "down" : "/domains/Praxis/kataan_join",
       ]) );
 }

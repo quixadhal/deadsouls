@@ -16,13 +16,13 @@ void create(){
       "of mysterious composition. A button is "
       "on it.");
     SetItems( ([
-	({"button","red button"})  : "A red button."
+        ({"button","red button"})  : "A red button."
       ]) );
     SetMass(20);
     SetDollarCost(10);
     SetVendorType(VT_TREASURE);
     SetPress( ([
-	({"button","red button"}) : (: PushTheButton :)
+        ({"button","red button"}) : (: PushTheButton :)
       ]) );
 }
 mixed CanGet(object ob) { return "The pedestal does not budge.";}
@@ -42,15 +42,15 @@ int ResetGame(){
     objects +=({ find_object("/domains/campus/doors/blue_door") });
 
     foreach(object ding in objects){
-	if(ding) ding->SetClosed(1);
-	if(ding) ding->SetLocked(1);
+        if(ding) ding->SetClosed(1);
+        if(ding) ding->SetLocked(1);
     }
 
 
     if(sscanf(gagnant,"%s door",color)>0){
-	string where;
-	where="/domains/campus/room/"+color+"_room2";
-	new(prize)->eventMove(find_object(where));
+        string where;
+        where="/domains/campus/room/"+color+"_room2";
+        new(prize)->eventMove(find_object(where));
     }
 }
 
@@ -62,11 +62,11 @@ int PushTheButton(){
     send_messages("press", "$agent_name $agent_verb the button.",
       this_player(), 0, environment(this_player()));
     if(!genrand || genrand == 0){
-	tell_room(environment(),"A voice from the pedestal says: "
-	  "Whoops! There's been a minor glitch, but "
-	  "it's nothing to worry about. Please "
-	  "try again.");
-	return 1;
+        tell_room(environment(),"A voice from the pedestal says: "
+          "Whoops! There's been a minor glitch, but "
+          "it's nothing to worry about. Please "
+          "try again.");
+        return 1;
     }
     tell_room(environment(),"A voice from the pedestal says: "
       "PRECOG: genrand is: "+genrand);
@@ -91,31 +91,31 @@ int PushTheButton(){
 
 void init(){
     if(gagnant != "" && my_door !=""){
-	add_action("doStay","stay");
-	add_action("doSwitch","switch");
+        add_action("doStay","stay");
+        add_action("doSwitch","switch");
     }
     if(gagnant != "" && my_door == ""){
-	add_action("choose","choose");
+        add_action("choose","choose");
     }
 }
 
 int choose(string str){
     if(!str || str == ""){
-	tell_room(environment(),"A voice from the pedestal says: "
-	  "Please try choosing a door, ok?");
+        tell_room(environment(),"A voice from the pedestal says: "
+          "Please try choosing a door, ok?");
     }
     else if(str == "door"){
-	tell_room(environment(),"A voice from the pedestal says: "
-	  "You'll need to be more specific.");
+        tell_room(environment(),"A voice from the pedestal says: "
+          "You'll need to be more specific.");
     }
     else if(str == "red door" || str == "blue door" ||str == "green door"){
-	tell_room(environment(),"A voice from the pedestal says: "
-	  "You choose the "+str+".");
-	this_object()->MontyMagic(str);
+        tell_room(environment(),"A voice from the pedestal says: "
+          "You choose the "+str+".");
+        this_object()->MontyMagic(str);
     }
     else {
-	tell_room(environment(),"A voice from the pedestal says: "
-	  "I don't understand that.");
+        tell_room(environment(),"A voice from the pedestal says: "
+          "I don't understand that.");
     }
     reap_dummies();
     reap_other("/domains/campus/armor/silverring");
@@ -159,8 +159,8 @@ int MontyMagic(string str){
 int CheckWin(string str){
     if(sscanf(str,"%s door",color)>0) color = color;
     if(str == gagnant) {
-	this_object()->WinFun();
-	return 1;
+        this_object()->WinFun();
+        return 1;
     }
     find_object("/domains/campus/doors/"+color+"_door")->SetLocked(0);
     find_object("/domains/campus/doors/"+color+"_door")->SetClosed(0);

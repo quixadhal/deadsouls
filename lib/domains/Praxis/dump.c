@@ -15,9 +15,9 @@ void create() {
       "unidentifiable things.  A small alley leads east.");
     SetItems(
       (["mounds" : "Who knows what might be in amoung that crap?",
-	"dump" : "The people of Praxis bring their junk here.",
-	"trash" : "Anything and everything.",
-	"alley" : "It leads back to Centre Path."]) );
+        "dump" : "The people of Praxis bring their junk here.",
+        "trash" : "Anything and everything.",
+        "alley" : "It leads back to Centre Path."]) );
     SetExits( 
       (["east" : "/domains/Praxis/alley2"]) );
 }

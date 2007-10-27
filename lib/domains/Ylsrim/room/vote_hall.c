@@ -18,7 +18,7 @@ static void create() {
     SetTown("Ylsrim");
     SetClimate("indoors");
     SetProperties( ([ "no kill" : 1, "no attack" : 1, "no steal" : 1,
-	"no magic" : 1, "light" : 3, "no bump" : 1, "no teleport" : 1 ]) );
+        "no magic" : 1, "light" : 3, "no bump" : 1, "no teleport" : 1 ]) );
     SetShort("voting hall");
     SetLong("You are in the voting hall of Ylsrim. This is where people come to nominate candidates for class leader and to cast their vote.  There is a list posted on the wall here.");
     SetItems( ([ "list" : "This is the list of candidates." ]) );
@@ -31,20 +31,20 @@ mixed ReadList() {
     string msg;
 
     if( VOTING_D->GetStatus() == VOTE_NOT_RUNNING ) {
-	this_player()->eventPrint("Since the elections are not "
-	  "currently running, the list is blank.");
-	return 1;
+        this_player()->eventPrint("Since the elections are not "
+          "currently running, the list is blank.");
+        return 1;
     }
 
     msg = "\tCandidates for Dead Souls Offices\n\n";
 
     foreach( string sClass in CLASSES_D->GetClasses() ) {
-	msg += capitalize( sClass ) + " : ";
-	foreach( string sName in VOTING_D->GetCandidates(sClass) )
-	msg += capitalize(sName) + ", ";
-	if( msg[strlen(msg)-2] == ',' )        
-	    msg = msg[0..strlen(msg)-3];
-	msg += "\n";
+        msg += capitalize( sClass ) + " : ";
+        foreach( string sName in VOTING_D->GetCandidates(sClass) )
+        msg += capitalize(sName) + ", ";
+        if( msg[strlen(msg)-2] == ',' )        
+            msg = msg[0..strlen(msg)-3];
+        msg += "\n";
     }
 
     this_player()->eventPrint( msg );
@@ -59,29 +59,29 @@ mixed eventNominate( object who, string str ) {
     int iErr;
 
     if( creatorp( who ) ) {
-	who->eventPrint("Creators cannot vote!");
-	return 1;
+        who->eventPrint("Creators cannot vote!");
+        return 1;
     }
 
     iErr = VOTING_D->eventAddCandidate( who->GetClass(), str );
 
     switch( iErr ) {
     case VOTE_NOT_RUNNING :
-	this_player()->eventPrint("The elections are not running now!");
-	break;
+        this_player()->eventPrint("The elections are not running now!");
+        break;
 
     case VOTE_MODE_VOTING :
-	this_player()->eventPrint("The time for nominating "
-	  "candidates is past, cast your vote instead.");
-	break;
+        this_player()->eventPrint("The time for nominating "
+          "candidates is past, cast your vote instead.");
+        break;
 
     case VOTE_ERROR :
-	this_player()->eventPrint("There was an error, you cannot "
-	  "nominate someone at this time.");
-	break;
+        this_player()->eventPrint("There was an error, you cannot "
+          "nominate someone at this time.");
+        break;
 
     case VOTE_NOT_CLASS_MEMBER :
-	this_player()->eventPrint( capitalize(str) + " is not a member
+        this_player()->eventPrint( capitalize(str) + " is not a member
 of "
             "the " + pluralize( who->GetClass() ) + ".");
             break;

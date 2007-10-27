@@ -31,13 +31,13 @@ mixed can_dest_str(){
 mixed do_dest_obj(object ob){
     string name;
     if(base_name(ob) == LIB_DUMMY) {
-	write(capitalize(ob->GetShort())+" isn't a normal destable item. It remains in place.");
-	return 1;
+        write(capitalize(ob->GetShort())+" isn't a normal destable item. It remains in place.");
+        return 1;
     }
     if(archp(ob) && !archp(this_player())){
-	write("You can't dest an admin.");
-	tell_player(ob, this_player()->GetName()+" just tried to dest you.");
-	return 1;
+        write("You can't dest an admin.");
+        tell_player(ob, this_player()->GetName()+" just tried to dest you.");
+        return 1;
     }
     if(!living(ob)) name = ob->GetShort();
     else name = ob->GetName();
@@ -50,7 +50,7 @@ mixed do_dest_obj(object ob){
 
 mixed do_dest_obs(object *obs) {
     foreach(object ob in obs){
-	if(!interactive(ob)) do_dest_obj(ob);
+        if(!interactive(ob)) do_dest_obj(ob);
     }
     write("Desting complete.");
     return 1;
@@ -59,12 +59,12 @@ mixed do_dest_obs(object *obs) {
 mixed do_dest_str(string str){
     object *objects;
     if(!objects = findobs(str)){
-	write("No such thing was found.");
-	return 1;
+        write("No such thing was found.");
+        return 1;
     }
     if(sizeof(objects) != 1){
-	write("The return list is ambiguous. Nothing was dested.");
-	return 1;
+        write("The return list is ambiguous. Nothing was dested.");
+        return 1;
     }
 
     objects[0]->eventDestruct();

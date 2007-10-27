@@ -21,8 +21,8 @@ int PreExit(mixed arg1, mixed arg2){
     object ob = this_player();
     if(!ob) return 0;
     if(ob->GetPosition() != POSITION_FLYING){
-	write("You are not flying!");
-	return 0;
+        write("You are not flying!");
+        return 0;
     }
     return 1;
 }
@@ -72,30 +72,30 @@ varargs static void create(int x, int y) {
     AddExit("up", __DIR__ + "sky/"+x+","+y+",1", (: PreExit :) );
 
     if(x == 5 && y == 1){
-	RemoveExit("south");
-	AddExit("south","/domains/default/room/wiz_corr_east2");
-	AddItem("sign" , "This is a sign planted on the ground.");
-	SetRead( ({"sign"}) , "Wiz labs south of here.");
+        RemoveExit("south");
+        AddExit("south","/domains/default/room/wiz_corr_east2");
+        AddItem("sign" , "This is a sign planted on the ground.");
+        SetRead( ({"sign"}) , "Wiz labs south of here.");
     }
     else if(y == 1){
-	RemoveExit("south");
-	RemoveExit("southeast");
-	RemoveExit("southwest");
+        RemoveExit("south");
+        RemoveExit("southeast");
+        RemoveExit("southwest");
     }
     else if(y == 10){
-	RemoveExit("north");
-	RemoveExit("northeast");
-	RemoveExit("northwest");
+        RemoveExit("north");
+        RemoveExit("northeast");
+        RemoveExit("northwest");
     }
     if(x == 1){
-	RemoveExit("west");
-	RemoveExit("northwest");
-	RemoveExit("southwest");
+        RemoveExit("west");
+        RemoveExit("northwest");
+        RemoveExit("southwest");
     }
     if(x == 10){
-	RemoveExit("east");
-	RemoveExit("northeast");
-	RemoveExit("southeast");
+        RemoveExit("east");
+        RemoveExit("northeast");
+        RemoveExit("southeast");
     }
 }
 
@@ -119,21 +119,21 @@ varargs void SetLongAndItems(int x, int y, int z) {
       ]) );
 
     if(y == 10) {
-	AddItem( ({ "rock wall","wall","stone wall"}), 
-	  "This vast stone wall prevents further travel north." );
+        AddItem( ({ "rock wall","wall","stone wall"}), 
+          "This vast stone wall prevents further travel north." );
     }
     else if(y == 1) {
-	AddItem( ({ "rock wall","wall","stone wall"}),
-	  "This vast stone wall prevents further travel south." );
+        AddItem( ({ "rock wall","wall","stone wall"}),
+          "This vast stone wall prevents further travel south." );
     }
 
     if(x == 10) {
-	AddItem( ({ "rock wall","wall","stone wall"}),
-	  "This vast stone wall prevents further travel east." );
+        AddItem( ({ "rock wall","wall","stone wall"}),
+          "This vast stone wall prevents further travel east." );
     }
     if(x == 1) {
-	AddItem( ({ "rock wall","wall","stone wall"}),
-	  "This vast stone wall prevents further travel west." );
+        AddItem( ({ "rock wall","wall","stone wall"}),
+          "This vast stone wall prevents further travel west." );
     }
     AddItem( ({ "walls","rock walls","stone walls" }),
       "Large walls form the bounds of this killing field." );

@@ -43,31 +43,31 @@ mixed GetOwner(){
 int SetRecordingFile(string str){
     string pprefix, filename;
     if(!sizeof(str) && sizeof(recfile)){
-	write("The recording file is currently: "+recfile);
-	return 1;
+        write("The recording file is currently: "+recfile);
+        return 1;
     }
     if(!sizeof(str)){
-	str = truncate(generate_tmp(),2)+".txt";
+        str = truncate(generate_tmp(),2)+".txt";
     }
     if(directory_exists(str)){
-	write("Please specify a file, not a directory.");
-	return 1;
+        write("Please specify a file, not a directory.");
+        return 1;
     }
     pprefix = path_prefix(str);
     if(!directory_exists(pprefix)){
-	write("That is not a valid path.");
-	return 1;
+        write("That is not a valid path.");
+        return 1;
     }
     filename = last_string_element(str);
     gstr2 = str;
     if(!check_privs(this_player(),str) || !unguarded( (: write_file(gstr2,"New log: "+timestamp()+"\n") :) )){
-	write("That is not a valid path.");
-	return 1;
+        write("That is not a valid path.");
+        return 1;
     }
     if(last(str,2) == ".c" || last(str,2) == ".h" ||
       last(str,4) == ".cfg"){
-	write("That file has an invalid extension for recording over.");
-	return 1;
+        write("That file has an invalid extension for recording over.");
+        return 1;
     }
     recfile = str;
     owner = previous_object();
@@ -104,85 +104,85 @@ varargs int eventPrint(string msg, string msg_class){
 
 int eventTurnOn(object ob){
     if(this_player() != environment()  && environment(this_player()) !=environment()) {
-	write("It isn't within reach.");
-	return 1;
+        write("It isn't within reach.");
+        return 1;
     }
     if(!archp(this_player())){
-	write("This is an arch-level cambot. You may not tamper with it.");
-	return 0;
+        write("This is an arch-level cambot. You may not tamper with it.");
+        return 0;
     }
     if(!recording){
-	write("You turn on the cambot.");
-	say(this_player()->GetName()+" turns on a cambot.");
-	SetShort(baseshort+" %^BOLD%^RED%^%^FLASH%^recording%^RESET%^");
-	if(!sizeof(recfile)) recfile = truncate(generate_tmp(),2)+".txt";
-	write("Recording file is: "+recfile);
-	unguarded( (: write_file(recfile,"New log: "+timestamp()+"\n") :) );
-	recording = 1;
-	return 1;
+        write("You turn on the cambot.");
+        say(this_player()->GetName()+" turns on a cambot.");
+        SetShort(baseshort+" %^BOLD%^RED%^%^FLASH%^recording%^RESET%^");
+        if(!sizeof(recfile)) recfile = truncate(generate_tmp(),2)+".txt";
+        write("Recording file is: "+recfile);
+        unguarded( (: write_file(recfile,"New log: "+timestamp()+"\n") :) );
+        recording = 1;
+        return 1;
     }
     if(recording){
-	write("It is already on.");
-	return 1;
+        write("It is already on.");
+        return 1;
     }
 }
 
 varargs mixed eventTurnOff(string str){
     if(this_player() != environment()  && environment(this_player()) !=environment()) { write("It isn't within reach."); return 1; }
     if(!archp(this_player())){
-	write("This is an arch-level cambot. You may not tamper with it.");
-	return 0;
+        write("This is an arch-level cambot. You may not tamper with it.");
+        return 0;
     }
     if(recording){
-	write("You turn off the cambot.");
-	say(this_player()->GetName()+" turns off a cambot.");
-	SetShort(baseshort);
-	recording = 0;
-	return 1;
+        write("You turn off the cambot.");
+        say(this_player()->GetName()+" turns off a cambot.");
+        SetShort(baseshort);
+        recording = 0;
+        return 1;
     }
     if(!recording){
-	write("It is already off.");
-	return 1;
+        write("It is already off.");
+        return 1;
     }
 }
 
 int eventDestruct(){
     if(!this_player() || (this_player() && !archp(this_player()))){
-	write("This is an arch-level cambot. You may not tamper with it.");
-	return 0;
+        write("This is an arch-level cambot. You may not tamper with it.");
+        return 0;
     }
     else return sentient::eventDestruct();
 }
 
 int eventDie(){
     if(!this_player() || (this_player() && !archp(this_player()))){
-	write("This is an arch-level cambot. You may not tamper with it.");
-	this_object()->AddHP(1000);
-	return 0;
+        write("This is an arch-level cambot. You may not tamper with it.");
+        this_object()->AddHP(1000);
+        return 0;
     }
     else return sentient::eventDie();
 }
 
 int eventForce(string str){
     if(!this_player() || (this_player() && !archp(this_player()))){
-	write("This is an arch-level cambot. You may not tamper with it.");
-	return 0;
+        write("This is an arch-level cambot. You may not tamper with it.");
+        return 0;
     }
     else return sentient::eventForce(str);
 }
 
 int eventMove(mixed dest){
     if(recording){
-	write("Cambot cannot move while in recording mode.");
-	return 0;
+        write("Cambot cannot move while in recording mode.");
+        return 0;
     }
     else return sentient::eventMove(dest);
 }
 
 int eventMoveLiving(mixed dest){
     if(recording){
-	write("Cambot cannot travel while in recording mode.");
-	return 0;
+        write("Cambot cannot travel while in recording mode.");
+        return 0;
     }
     else return sentient::eventMoveLiving(dest);
 }

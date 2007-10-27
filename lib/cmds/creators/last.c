@@ -17,26 +17,26 @@ mixed cmd(string args) {
     int x = to_int(args);
 
     if( file ) {
-	lines = explode(file, "\n");
+        lines = explode(file, "\n");
     }
     else {
-	lines = ({});
+        lines = ({});
     }
     if( x < 0 ) {
-	x = absolute_value(x);
+        x = absolute_value(x);
     }
     if( x > 0 ) {
-	int y = sizeof(lines);
+        int y = sizeof(lines);
 
-	if( x <= y ) {
-	    lines = lines[(y-x)..];
-	}
+        if( x <= y ) {
+            lines = lines[(y-x)..];
+        }
     }
     if( !sizeof(lines) ) {
-	previous_object()->eventPrint(DIR_LOGS "/enter is empty.", MSG_SYSTEM);
+        previous_object()->eventPrint(DIR_LOGS "/enter is empty.", MSG_SYSTEM);
     }
     else {
-	previous_object()->eventPage(lines, MSG_SYSTEM);
+        previous_object()->eventPage(lines, MSG_SYSTEM);
     }
     return 1;
 }

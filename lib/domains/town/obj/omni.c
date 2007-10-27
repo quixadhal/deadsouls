@@ -24,10 +24,10 @@ void init() {
 }
 mixed CanPress(object who, string target) {
     if(!present(this_object()->GetKeyName(),who ) && target == "button"){
-	return "You do not have the Omni!";
+        return "You do not have the Omni!";
     }
     if(this_object()->GetId() == target){
-	return "You cannot push that.";
+        return "You cannot push that.";
     }
     return 1;
 }
@@ -40,21 +40,21 @@ mixed eventPress(object who, string target) {
 void heart_beat(){
     vanish_count--;
     if(vanish_count < 0){
-	tell_object(environment(),"The omni glows brightly and disappears!");
-	this_object()->eventDestruct();
+        tell_object(environment(),"The omni glows brightly and disappears!");
+        this_object()->eventDestruct();
     }
     if(vanish_count == 50){
-	tell_object(environment(),"The omni begins to glow a dull red.");
-	this_object()->SetLong("This is a small, round metal device, copper in color, "+
-	  "and similar in appearance to a pocket watch. There is a blinking red light "+
-	  "next to the tiny metal button at its top. It is glowing a dull red.");
-	this_object()->SetShort("an omni (glowing)");
+        tell_object(environment(),"The omni begins to glow a dull red.");
+        this_object()->SetLong("This is a small, round metal device, copper in color, "+
+          "and similar in appearance to a pocket watch. There is a blinking red light "+
+          "next to the tiny metal button at its top. It is glowing a dull red.");
+        this_object()->SetShort("an omni (glowing)");
     }
 }
 int check_environs(){
     if( interactive(environment()) ){
-	set_heart_beat(1);
-	return 1;
+        set_heart_beat(1);
+        return 1;
     }
     return 1;
 }

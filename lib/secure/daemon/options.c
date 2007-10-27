@@ -28,7 +28,7 @@ static private int valid_access() {
     switch(base_name(previous_object(0))) {
     case OBJ_POST: case FOLDERS_D: case LETTERS_D:
     case LOCALPOST_D: case REMOTEPOST_D: case OPTIONS_D:
-	return 1;
+        return 1;
     default: return 0;
     }
 }
@@ -55,7 +55,7 @@ static private void load_options(string who) {
     if(who == __Owner) return;
     this_object()->assure_box_exists(who);
     if(__Owner == who) {
-	return;
+        return;
     }
     __Owner = who;
     file = DIR_POSTAL+"/"+who[0..0]+"/"+who+"/postalrc";

@@ -34,16 +34,16 @@ mixed do_copy_obj_str(object ob, string str) {
     object staff;
     staff = present("tanstaafl",this_player());
     if(!staff) {
-	write("You must be holding the creator staff in order to use this command.");
-	write("If you don't know where you put it, get another one from the chest ");
-	write("in your workroom.");
-	return 1;
+        write("You must be holding the creator staff in order to use this command.");
+        write("If you don't know where you put it, get another one from the chest ");
+        write("in your workroom.");
+        return 1;
     }
     //debug("str: ",str);
     //debug("path_prefix(str): ",path_prefix(str));
     if(userp(ob)){
-	write("No.");
-	return 1;
+        write("No.");
+        return 1;
     }
     success = 0;
     sourcefile = "";
@@ -53,27 +53,27 @@ mixed do_copy_obj_str(object ob, string str) {
     //debug("str: ",str);
     //debug("path_prefix(str): ",path_prefix(str));
     if( !directory_exists(path_prefix(str)) ) {
-	write("Directory not found.");
-	return 1;
+        write("Directory not found.");
+        return 1;
     }
 
     sourcefile = base_name(ob)+".c";
     targetfile = str;
     if(!check_privs(this_player(),str) || 
       (!check_privs(this_player(),sourcefile) && 
-	strsrch(sourcefile,"/obj/"))){
-	write("You lack sufficient privileges for this operation. Copy failed.");
-	return 0;
+        strsrch(sourcefile,"/obj/"))){
+        write("You lack sufficient privileges for this operation. Copy failed.");
+        return 0;
     }
     if(!file_exists(sourcefile)) {
-	write("That file no longer exists.");
-	return 0;
+        write("That file no longer exists.");
+        return 0;
     }
     //else unguarded( (: success = cp(sourcefile, targetfile) :) );
     else unguarded( (: success = cp(sourcefile, targetfile) :) );
     if(success) {
-	write("Copy successful.");
-	return 1;
+        write("Copy successful.");
+        return 1;
     }
     else write("Copy failed.");
     return 0;
@@ -85,10 +85,10 @@ mixed do_copy_str(string str) {
     object staff;
     staff = present("tanstaafl",this_player());
     if(!staff) {
-	write("You must be holding the creator staff in order to use this command.");
-	write("If you don't know where you put it, get another one from the chest ");
-	write("in your workroom.");
-	return 1;
+        write("You must be holding the creator staff in order to use this command.");
+        write("If you don't know where you put it, get another one from the chest ");
+        write("in your workroom.");
+        return 1;
     }
     //debug("str: ",str,"yellow");
     str2 = str;
@@ -101,34 +101,34 @@ mixed do_copy_str(string str) {
     //debug("str: ",str,"yellow");
 
     if( !file_exists(str) ){
-	str = path_prefix(base_name(environment(this_player())))+"/"+str2;
-	if(last(str,2) != ".c") str += ".c";
+        str = path_prefix(base_name(environment(this_player())))+"/"+str2;
+        if(last(str,2) != ".c") str += ".c";
     }
 
     if( !file_exists(str) ){
-	write("Directory not found.");
-	return 1;
+        write("Directory not found.");
+        return 1;
     }
 
     else if( !(tmp = read_file(str)) || !tmp || tmp == ""){
-	write("Unable to read file " + str + ".");
-	return 1;
+        write("Unable to read file " + str + ".");
+        return 1;
     }
 
     if((!check_privs(this_player(),str) && strsrch(str,"/obj/") ) || 
       !check_privs(this_player(),base_name(environment(this_player()))+".c")){
-	write("You lack sufficient privileges for this operation. Copy failed.");
-	return 1;
+        write("You lack sufficient privileges for this operation. Copy failed.");
+        return 1;
     }
     source_update = load_object("/secure/cmds/creators/update")->cmd("-a "+str);
     if(!source_update || !intp(source_update) || source_update == 0) {
-	write("Your source file doesn't update correctly. Fix it first. Copy aborted.");
-	return 1;
+        write("Your source file doesn't update correctly. Fix it first. Copy aborted.");
+        return 1;
     }
 
     if(!inherits("/lib/std/room",load_object(str))) {
-	write("The file you want to copy isn't a recognized room. Copy aborted.");
-	return 1;
+        write("The file you want to copy isn't a recognized room. Copy aborted.");
+        return 1;
     }
 
     new_room = base_name(environment(this_player()));

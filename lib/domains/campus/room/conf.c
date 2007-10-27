@@ -17,30 +17,30 @@ static void create() {
       "a very comfortable, relaxing environment. The main hallway is north of here.\n"+
       "%^GREEN%^There is a sign you can read here.%^RESET%^");
     SetItems(([
-	({"panels","paneling","wall","walls","mahogany","wood"}) : "The walls are "+
-	"paneled in rich, dark mahogany. The wood is intricately carved with "+
-	"exquisite designs. This sort of craftmanship must have cost a fortune.",
-	({"room","conference room","ad hoc conference room"}) : "This is a "+
-	"well-appointed, comfortable room to hold meetings in.",
-	({"carving","carvings","design","designs","craftmanship"}) : "The carvings "+
-	"are mostly abstract shapes that seem so detailed and tightly interwoven "+
-	"they almost squirm before your eyes.",
-	({"leaf","gold-leaf trim","trim","gold leaf trim"}) : "The trim along the walls' "+
-	"baseboards and doorframe is a beautiful gold leaf design.",
-	({"floor","carpet","carpeting","luxurious carpeting"}) : "The carpet is thick, and "+
-	"a rich maroon color.",
-	({"lighting","lights","moody lighting"}) : "The lighting here is indirect and diffused, "+
-	"giving everything a warm glow.",
-	"environment" : "Very comfortable indeed.",
-	"sign" : "Try: read sign",
+        ({"panels","paneling","wall","walls","mahogany","wood"}) : "The walls are "+
+        "paneled in rich, dark mahogany. The wood is intricately carved with "+
+        "exquisite designs. This sort of craftmanship must have cost a fortune.",
+        ({"room","conference room","ad hoc conference room"}) : "This is a "+
+        "well-appointed, comfortable room to hold meetings in.",
+        ({"carving","carvings","design","designs","craftmanship"}) : "The carvings "+
+        "are mostly abstract shapes that seem so detailed and tightly interwoven "+
+        "they almost squirm before your eyes.",
+        ({"leaf","gold-leaf trim","trim","gold leaf trim"}) : "The trim along the walls' "+
+        "baseboards and doorframe is a beautiful gold leaf design.",
+        ({"floor","carpet","carpeting","luxurious carpeting"}) : "The carpet is thick, and "+
+        "a rich maroon color.",
+        ({"lighting","lights","moody lighting"}) : "The lighting here is indirect and diffused, "+
+        "giving everything a warm glow.",
+        "environment" : "Very comfortable indeed.",
+        "sign" : "Try: read sign",
       ]));
     SetExits( (["north" : "/domains/campus/room/corridor4",
       ]));
     SetInventory((["/domains/campus/obj/podium" : 1,
-	"/secure/npc/cambot" : 1
+        "/secure/npc/cambot" : 1
       ]));
     SetRead( ([
-	"sign" :  (: ReadSign :)
+        "sign" :  (: ReadSign :)
       ]) );
     SetProperty("no attack", 1);
     SetProperty("meeting room", 1);
@@ -48,13 +48,13 @@ static void create() {
 }
 int CanReceive(object ob) {
     if(ob && interactive(ob) && !environment(ob)){
-	write("You are whisked to the main start point.");
-	ob->eventMoveLiving(ROOM_START);
-	return 0;
+        write("You are whisked to the main start point.");
+        ob->eventMoveLiving(ROOM_START);
+        return 0;
     }
     if(member_array(ob, ejected_players) != -1) {
-	write("You have been ejected from the meeting room and may not return.");
-	return 0;
+        write("You have been ejected from the meeting room and may not return.");
+        return 0;
     }
     return 1;
 }
@@ -65,8 +65,8 @@ void init(){
 
 object *AddEjected(object punk){
     if(member_array(punk, ejected_players) == -1){
-	write(capitalize(punk->GetKeyName())+" has been added to the ejected list.");
-	ejected_players += ({ punk });
+        write(capitalize(punk->GetKeyName())+" has been added to the ejected list.");
+        ejected_players += ({ punk });
     }
     else write(capitalize(punk->GetKeyName())+" is already on the ejected list.");
     return ejected_players;
@@ -78,8 +78,8 @@ object *GetEjected(){
 
 object *RemoveEjected(object punk){
     if(member_array(punk, ejected_players) != -1){
-	write(capitalize(punk->GetKeyName())+" has been removed from the ejected list.");
-	ejected_players -= ({ punk });
+        write(capitalize(punk->GetKeyName())+" has been removed from the ejected list.");
+        ejected_players -= ({ punk });
     }
     else write(capitalize(punk->GetKeyName())+" is not on the ejected list.");
     return ejected_players;
@@ -96,6 +96,6 @@ string ReadSign(){
 
 int eventDestruct(){
     if( !((int)master()->valid_apply(({ "ASSIST" }))) )
-	error("Illegal attempt to destroy object: "+get_stack()+" "+identify(previous_object(-1)));
+        error("Illegal attempt to destroy object: "+get_stack()+" "+identify(previous_object(-1)));
     else return ::eventDestruct();
 }

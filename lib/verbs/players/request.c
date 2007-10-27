@@ -22,10 +22,10 @@ static void create() {
 
 mixed can_request_str_from_liv() {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     else {
-	return 1;
+        return 1;
     }
 }
 
@@ -37,8 +37,8 @@ mixed do_request_str_from_liv(string str, object who) {
       (string)who->GetName() + ".",
       ({ who, this_player() }));
     if( !((int)who->eventRequest(this_player(),
-	  remove_article(lower_case(str)))) )
-	who->eventPrint((string)this_player()->GetName() + " requests " +
-	  str + " from you.");
+          remove_article(lower_case(str)))) )
+        who->eventPrint((string)this_player()->GetName() + " requests " +
+          str + " from you.");
     return 1;
 }

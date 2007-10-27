@@ -24,7 +24,7 @@ inherit LIB_SHOOT;
 mixed CanDest(){
     if(environment() && environment() != environment(this_player()) &&
       environment() != this_player())
-	return "#That's not accessible to you.";
+        return "#That's not accessible to you.";
     else return 1;
 }
 
@@ -37,12 +37,12 @@ static int Destruct() {
     int x;
 
     if( env = environment() ) {
-	env->eventReleaseObject(this_object());
-	x = clean::Destruct();
-	if( !x ) {
-	    env->eventReceiveObject(this_object());
-	}
-	return x;
+        env->eventReleaseObject(this_object());
+        x = clean::Destruct();
+        if( !x ) {
+            env->eventReceiveObject(this_object());
+        }
+        return x;
     }
     else return clean::Destruct();
 }

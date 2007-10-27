@@ -19,7 +19,7 @@ static void create(){
     SetProtection(BLADE, 1);
     SetProtection(KNIFE, 1);
     SetItems( ([
-	({"pheasant","feather"})  : "Looks like a pheasant feather.",
+        ({"pheasant","feather"})  : "Looks like a pheasant feather.",
       ]) );
 }
 void init(){

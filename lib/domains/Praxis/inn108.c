@@ -12,18 +12,18 @@ void create() {
       "A crystal vase filled with roses has been placed on the bureau "
       "against the back wall. To exit the room, type 'leave'.");
     SetItems( ([ ({ "rooms", "room" }) :
-	"The room is one of the deluxe suites at the Nightmare Inn.",
-	"bed" : "The bed is very large and comfortable looking.",
-	"closet" : "The wooden closet is off in the corner.",
-	"vase" : "The vase is filled with fresh roses.",
-	"bureau" : "The wooden bureau has been placed against the far wall.",
-	"wall" : "The wall has been recently painted a creamy white colour.",
-	"nightstand" : "The nightstand have been made out of a high quality "
-	"wood.",
+        "The room is one of the deluxe suites at the Nightmare Inn.",
+        "bed" : "The bed is very large and comfortable looking.",
+        "closet" : "The wooden closet is off in the corner.",
+        "vase" : "The vase is filled with fresh roses.",
+        "bureau" : "The wooden bureau has been placed against the far wall.",
+        "wall" : "The wall has been recently painted a creamy white colour.",
+        "nightstand" : "The nightstand have been made out of a high quality "
+        "wood.",
       ]) );
     SetExits( ([
-	"leave" : "/domains/Praxis/hall3",
-	"east" : "/domains/Praxis/hall4.c",
+        "leave" : "/domains/Praxis/hall3",
+        "east" : "/domains/Praxis/hall4.c",
       ]) );
 }
 void init(){

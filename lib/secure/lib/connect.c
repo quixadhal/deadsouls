@@ -26,10 +26,10 @@ static void InputPassword(string str);
 
 static void InputName(string str) {
     if( !((int)BANISH_D->valid_name(Name = convert_name(CapName = str))) ) {
-	receive("That is not a valid name.\n");
-	receive("Name:\n ");
-	input_to((: InputName :));
-	return;
+        receive("That is not a valid name.\n");
+        receive("Name:\n ");
+        input_to((: InputName :));
+        return;
     }
     Admin = (object)master()->player_object(Name);
     Admin->SetKeyName(Name);
@@ -42,10 +42,10 @@ static void ConfirmPassword(string str);
 
 static void InputPassword(string str) {
     if( strlen(str) < 5 ) {
-	receive("Password must be at least 5 letters.\n");
-	receive("Password:\n ");
-	input_to((: InputPassword :), I_NOECHO | I_NOESC);
-	return;
+        receive("Password must be at least 5 letters.\n");
+        receive("Password:\n ");
+        input_to((: InputPassword :), I_NOECHO | I_NOESC);
+        return;
     }
     Password = str;
     receive("Confirm password:\n ");
@@ -56,9 +56,9 @@ static void InputCapName(string str);
 
 static void ConfirmPassword(string str) {
     if( str != Password) {
-	receive("Passwords do not match.  Password:\n ");
-	input_to((: InputPassword :), I_NOECHO | I_NOESC);
-	return;
+        receive("Passwords do not match.  Password:\n ");
+        input_to((: InputPassword :), I_NOECHO | I_NOESC);
+        return;
     }
     Admin->SetPassword(crypt(Password, 0));
     CapName = capitalize(CapName);
@@ -71,9 +71,9 @@ static void InputGender(string str);
 static void InputCapName(string str) {
     if( !str || str == "" ) str = CapName;
     if( convert_name(str) != Name ) {
-	receive("You cannot do that! Display name:\n ");
-	input_to((: InputCapName :), I_NOESC);
-	return;
+        receive("You cannot do that! Display name:\n ");
+        input_to((: InputCapName :), I_NOESC);
+        return;
     }
     Admin->SetCapName(CapName = capitalize(str));
     receive("\nPlease choose a gender (male, female, neutral, or none): \n");
@@ -85,11 +85,11 @@ static void InputRealName(string str);
 static void InputGender(string str) {
     if( str ) str = lower_case(str);
     if( !str || str == "" || ((str[0] != 'f' && str[0] != 'm') &&
-	member_array(str, ({"male","female","neutral","none"})) == -1)){
-	receive("\nPlease choose a gender (male, female, neutral, or none): \n");
-	receive("Male, female, neutral or none?\n ");
-	input_to((: InputGender :));
-	return;
+        member_array(str, ({"male","female","neutral","none"})) == -1)){
+        receive("\nPlease choose a gender (male, female, neutral, or none): \n");
+        receive("Male, female, neutral or none?\n ");
+        input_to((: InputGender :));
+        return;
     }
     if( str[0] == 'f' ) Admin->SetGender("female");
     else if( str[0] == 'm' ) Admin->SetGender("male");
@@ -140,9 +140,9 @@ static void InputEmail(string str) {
     tmp = read_file("/secure/include/config.h");
 
     if(sizeof(tmp)){
-	rm("/secure/include/config.h");
-	tmp = replace_string(tmp, "DEBUG_NAME", Name);
-	write_file("/secure/include/config.h", tmp);
+        rm("/secure/include/config.h");
+        tmp = replace_string(tmp, "DEBUG_NAME", Name);
+        write_file("/secure/include/config.h", tmp);
     }
 
     if( ob = find_object(LIB_CONNECT) ) destruct(ob);
@@ -160,11 +160,11 @@ static void InputEmail(string str) {
     tool = load_object("/secure/cmds/admins/admintool");
     if(tool) foo = tool->eventChangeName("Dead_Souls_"+Name, 1); 
     if(foo){
-	receive("\n\nMud name changed. Use admintool to customize it.");
-	receive("\nFor more info, log in and type: help admintool\n");
+        receive("\n\nMud name changed. Use admintool to customize it.");
+        receive("\nFor more info, log in and type: help admintool\n");
     }
     else {
-	receive("Mud name unchanged.\n");
+        receive("Mud name unchanged.\n");
     }
     IMC2_D->eventChangeIMC2Passwords();
     PLAYERS_D->AddPlayerInfo(Name);

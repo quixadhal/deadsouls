@@ -12,28 +12,28 @@ int cmd(string str) {
     channels = distinct_array((string *)this_player()->GetChannels());
 
     if(!str) {
-	for(i=0; i<sizeof(channels); i++) {
-	    if(this_player()->GetBlocked(channels[i]))
-		message("info","You are blocking "+channels[i]+".",this_player());
-	    else message("info","You are not blocking "+channels[i]+".",this_player());
-	}
-	return 1;
+        for(i=0; i<sizeof(channels); i++) {
+            if(this_player()->GetBlocked(channels[i]))
+                message("info","You are blocking "+channels[i]+".",this_player());
+            else message("info","You are not blocking "+channels[i]+".",this_player());
+        }
+        return 1;
     }
 
     if(str=="on"){
-	for(i=0; i<sizeof(channels);i++){
-	    if(this_player()->GetBlocked(channels[i]))
-		this_player()->SetBlocked(channels[i]);
-	}
-	return 1;
+        for(i=0; i<sizeof(channels);i++){
+            if(this_player()->GetBlocked(channels[i]))
+                this_player()->SetBlocked(channels[i]);
+        }
+        return 1;
     }
 
     if(str=="off"){
-	for(i=0; i<sizeof(channels);i++){
-	    if(!this_player()->GetBlocked(channels[i]))
-		this_player()->SetBlocked(channels[i]);
-	}
-	return 1;
+        for(i=0; i<sizeof(channels);i++){
+            if(!this_player()->GetBlocked(channels[i]))
+                this_player()->SetBlocked(channels[i]);
+        }
+        return 1;
     }
 
 }		

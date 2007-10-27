@@ -22,9 +22,9 @@ static void clean_room() {
     int i;
 
     if(!sizeof(in_here = livings() & all_inventory(this_object()))) { 
-	old = in_here;
-	call_out("clean_room", MAX_NET_DEAD_TIME);
-	return;
+        old = in_here;
+        call_out("clean_room", MAX_NET_DEAD_TIME);
+        return;
     }
     i = sizeof(to_clean = in_here & (pointerp(old) ? old : ({})));
     old = in_here - to_clean;

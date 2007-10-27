@@ -17,7 +17,7 @@ static void create() {
 static void init() {
     if( (string)this_player()->ClassMember((string)GetOwner()) ||
       (string)this_player()->GetClan() == (string)GetOwner() ) {
-	add_action( (: eventDonate :) , "donate" );
+        add_action( (: eventDonate :) , "donate" );
     }
 }
 
@@ -50,26 +50,26 @@ int eventDonate(string amt, string type) {
     object tp = this_player();   
 
     if(sscanf(amt,"%d", amount) < 1) {
-	write("That isn't a proper amount.");
-	return 1;
+        write("That isn't a proper amount.");
+        return 1;
     }
 
     if(!valid_currency(type)){
-	write("That isn't a valid currency.");
-	return 1;
+        write("That isn't a valid currency.");
+        return 1;
     }
 
     if(!amount) {
-	tp->eventPrint("Donate how much?\n");
-	return 0;
+        tp->eventPrint("Donate how much?\n");
+        return 0;
     }   
     if(amount < 0) {
-	tp->eventPrint("Nice try!\n");
-	return 0;
+        tp->eventPrint("Nice try!\n");
+        return 0;
     }
     if((int)tp->GetCurrency(type) < amount) {
-	tp->eventPrint("You don't have that much " + type + "!\n");
-	return 0;
+        tp->eventPrint("You don't have that much " + type + "!\n");
+        return 0;
     }
     tp->AddCurrency(type, -amount);
     AddAssets(amount);

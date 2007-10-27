@@ -16,18 +16,18 @@ void create() {
       "Sun alley runs east.");
     SetExits( 
       (["north" : "/domains/Praxis/forest1",
-	"south" : "/domains/Praxis/n_centre1",
-	"east" : "/domains/Praxis/sun1",
-	"west"	 : "/domains/Praxis/hospital"]) );
+        "south" : "/domains/Praxis/n_centre1",
+        "east" : "/domains/Praxis/sun1",
+        "west"	 : "/domains/Praxis/hospital"]) );
     SetItems(
       (["path" : "Centre Path leads to Krasna Square south and out "
-	"of town north.",
-	"road" : "Boc La Road is the main east-west road.",
-	"church" : "It is a small church run by the local clerics.",
-	"forest" : "The North Forest.  It is not a very well-"
-	"traveled place.",
-	"village" : "The grand village of Praxis",
-	"hospital" : "It is a primson white building jutting out "
-	"from the landscape"]) );
+        "of town north.",
+        "road" : "Boc La Road is the main east-west road.",
+        "church" : "It is a small church run by the local clerics.",
+        "forest" : "The North Forest.  It is not a very well-"
+        "traveled place.",
+        "village" : "The grand village of Praxis",
+        "hospital" : "It is a primson white building jutting out "
+        "from the landscape"]) );
 }
 

@@ -12,8 +12,8 @@ mixed cmd(mixed args) {
     if(!archp(previous_object())) return 0;
     if(!args) args = 0;
     if(stringp(args)){
-	if(sscanf(args,"%d",integer) != 1) return "Failed.";
-	args = integer;
+        if(sscanf(args,"%d",integer) != 1) return "Failed.";
+        args = integer;
     }
 
     if(args != 0 || SEASONS_D->GetTickTock()) SEASONS_D->eventTickTock(args);
@@ -25,8 +25,8 @@ mixed cmd(mixed args) {
     //tod = SEASONS_D->GetTimeOfDay();
 
     if(hours >= 12  && hours != 24) {
-	if(hours != 12) hours -= 12;
-	meridiem = " pm";
+        if(hours != 12) hours -= 12;
+        meridiem = " pm";
     }
 
     if(!hours || hours == 0) hours = 12;

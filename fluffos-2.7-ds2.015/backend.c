@@ -11,7 +11,7 @@
 #include "master.h"
 #include "eval.h"
 
-#ifdef WIN32
+#if defined(WIN32)
 #include <process.h>
 void CDECL alarm_loop (void *);
 #endif
@@ -322,12 +322,15 @@ static int num_hb_to_do = 0;
 static int num_hb_calls = 0;  /* starts */
 static float perc_hb_probes = 100.0;  /* decaying avge of how many complete */
 
-#ifdef WIN32
+#if defined(WIN32) 
 void CDECL alarm_loop (void * ignore)
 {
+#if 0
     while (1) {
   Sleep(HEARTBEAT_INTERVAL / 1000);
+
     }
+#endif
 }       /* alarm_loop() */
 #endif
 

@@ -19,9 +19,9 @@ string itoa(int i){
 int bitshiftedp(int x){
     int i;
     if(!sizeof(bitses)){ ;
-	for(i=0;i<32;i++){
-	    bitses += ({ ( 1 << i ) });
-	}
+        for(i=0;i<32;i++){
+            bitses += ({ ( 1 << i ) });
+        }
     }
     //tc("bitses is "+sizeof(bitses)+" and is "+identify(bitses));
     if(member_array(x,bitses) != -1) return 1;

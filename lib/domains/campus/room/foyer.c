@@ -17,20 +17,20 @@ static void create() {
       "the world outside.\n%^GREEN%^There is a large sign on the wall "+
       "you can read.%^RESET%^");
     SetExits( ([
-	"west" : "/domains/campus/room/usquare",
-	"east" : "/domains/campus/room/corridor3"
+        "west" : "/domains/campus/room/usquare",
+        "east" : "/domains/campus/room/corridor3"
       ]) );
     SetItems( (["corridor" : "This is a carpeted corridor, leading west.",
-	"floor" : "The carpet is purple, and somewhat institutional.",
-	"sign":"A large sign on the wall. To read it, 'read sign'.",
-	"carpet" : "The carpet is purple, and somewhat institutional."]) );
+        "floor" : "The carpet is purple, and somewhat institutional.",
+        "sign":"A large sign on the wall. To read it, 'read sign'.",
+        "carpet" : "The carpet is purple, and somewhat institutional."]) );
     SetRead("sign", (: readSign :) );
     SetProperty("no attack", 1);
 }
 int CanReceive(object ob) {
     if(ob && ob->GetRace() == "rodent"){
-	message("info","You are repelled by rodenticide.",ob);
-	return 0;
+        message("info","You are repelled by rodenticide.",ob);
+        return 0;
     }
     return 1;
 }

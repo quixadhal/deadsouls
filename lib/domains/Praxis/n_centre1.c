@@ -13,15 +13,15 @@ void create() {
     SetProperty("night light", 1);
     SetItems(
       (["path" : "Centre Path leads to Monument square south and out "
-	"of town north.",
-	"road" : "Boc La Road is the main east-west road.",
-	"church" : "It is a small church run by the local clerics.",
-	"square" : "The central square of Praxis."]) );
+        "of town north.",
+        "road" : "Boc La Road is the main east-west road.",
+        "church" : "It is a small church run by the local clerics.",
+        "square" : "The central square of Praxis."]) );
     SetExits( ([
-	"south" : "/domains/Praxis/square",
-	"west" : "/domains/Praxis/cleric_join",
-	"north" : "/domains/Praxis/n_centre2",
-	"east" : "/domains/Praxis/hotel.c",
+        "south" : "/domains/Praxis/square",
+        "west" : "/domains/Praxis/cleric_join",
+        "north" : "/domains/Praxis/n_centre2",
+        "east" : "/domains/Praxis/hotel.c",
       ]) );
 }
 void init(){

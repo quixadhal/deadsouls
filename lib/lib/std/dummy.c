@@ -29,10 +29,10 @@ int isDummy() {
 varargs string array SetId(mixed ids...) {
     ids = id::SetId(ids);
     if( sizeof(ids) && !GetKeyName() ) {
-	SetKeyName(ids[0]);
-	if( !GetShort() ) {
-	    SetShort(add_article(ids[0]));
-	}
+        SetKeyName(ids[0]);
+        if( !GetShort() ) {
+            SetShort(add_article(ids[0]));
+        }
     }
     return ids;
 }
@@ -46,12 +46,12 @@ static int Destruct() {
     int x;
 
     if( env = environment() ) {
-	env->eventReleaseObject(this_object());
-	x = clean::Destruct();
-	if( !x ) {
-	    env->eventReceiveObject(this_object());
-	}
-	return x;
+        env->eventReleaseObject(this_object());
+        x = clean::Destruct();
+        if( !x ) {
+            env->eventReceiveObject(this_object());
+        }
+        return x;
     }
     else return clean::Destruct();
 }
@@ -69,23 +69,23 @@ mixed eventMove(mixed dest) {
     else str += "\nI currently have no environment.";
 
     if( stringp(dest) ) {
-	ob = load_object(dest);
+        ob = load_object(dest);
 
     }
     else {
-	ob = dest;
+        ob = dest;
     }
     str += "\nMy intended destination is "+file_name(ob)+". ";
     move_object(ob);
     //eventMove(ob);
     if( environment() != ob ) {
-	str += "\nThe move was not successful";
-	return 0;
+        str += "\nThe move was not successful";
+        return 0;
     }
     else {
-	str += "\nThe move was successful.";
-	eventAnnounceCanonicalId(environment());
-	return 1;
+        str += "\nThe move was successful.";
+        eventAnnounceCanonicalId(environment());
+        return 1;
     }
 }
 
@@ -102,10 +102,10 @@ varargs static void create(string array id, mixed long, string array adj) {
     enter::create();
     parse_init();
     if( adj ) {
-	SetAdjectives(adj...);
+        SetAdjectives(adj...);
     }
     if( id ) {
-	SetId(id...);
+        SetId(id...);
     }
     SetExternalDesc(long || "");
 }

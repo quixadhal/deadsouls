@@ -12,20 +12,20 @@ mixed cmd(string args) {
     if( !((int)master()->valid_apply(({ "ASSIST" }))) &&
       base_name(previous_object()) != "/secure/cmds/creators/findfun" && 
       base_name(previous_object()) != "/secure/cmds/creators/showfuns" )
-	error("Illegal attempt to access file command: "+
-	  get_stack()+" "+identify(previous_object(-1)));
+        error("Illegal attempt to access file command: "+
+          get_stack()+" "+identify(previous_object(-1)));
 
     if(args){
-	if(grepp(args,"-x ")){
-	    args = replace_string(args,"-x ","");
-	    x = 1;
-	    tmp = args;
-	}
-	if(grepp(args,"-c ")){
-	    args = replace_string(args,"-c ","");
-	    c = 1;
-	    tmp = args;
-	}
+        if(grepp(args,"-x ")){
+            args = replace_string(args,"-x ","");
+            x = 1;
+            tmp = args;
+        }
+        if(grepp(args,"-c ")){
+            args = replace_string(args,"-c ","");
+            c = 1;
+            tmp = args;
+        }
     }
 
     write("Number of directories: "+sizeof(FILE_D->GetDirs()));
@@ -33,16 +33,16 @@ mixed cmd(string args) {
     write("Number of files: "+sizeof(filenames));
     if(!args || args == "")    return 1;
     if(!strsrch(args,"-x ")){
-	args = replace_string(args,"-x ","");
-	x = 1;
-	tmp = args;
+        args = replace_string(args,"-x ","");
+        x = 1;
+        tmp = args;
     }
     ret_arr = regexp(filenames, args);
     if(x) ret_arr = filter(ret_arr, (: !strsrch($1, tmp) :) );
     if(interactive(previous_object())){
-	if(sizeof(implode(ret_arr,"\n"))) print_long_string(this_player(),implode(ret_arr,"\n"));
-	else write("Too many matches.");
-	return 1;
+        if(sizeof(implode(ret_arr,"\n"))) print_long_string(this_player(),implode(ret_arr,"\n"));
+        else write("Too many matches.");
+        return 1;
     }
     else return ret_arr;
 }

@@ -19,7 +19,7 @@ static void create() {
 
 mixed can_dismount_liv() {
     if(this_player()->CanManipulate()) 
-	return bool_reverse(this_player()->GetParalyzed());
+        return bool_reverse(this_player()->GetParalyzed());
 }
 
 mixed can_dismount_from_liv() {
@@ -42,14 +42,14 @@ mixed do_dismount() {
     object mount = this_player()->GetProperty("mount");
     if(mount) return do_dismount_liv(mount);
     if(base_name(environment(this_player())) == LIB_CORPSE){
-	object new_env = environment(environment(this_player()));
-	if(!new_env) new_env = find_object(ROOM_START);
-	else {
-	    write("You get off your dead mount.");
-	    say(this_player()->GetName()+" gets off "+possessive(this_player())+
-	      " dead mount.");
-	}
-	this_player()->eventMoveLiving(new_env);
+        object new_env = environment(environment(this_player()));
+        if(!new_env) new_env = find_object(ROOM_START);
+        else {
+            write("You get off your dead mount.");
+            say(this_player()->GetName()+" gets off "+possessive(this_player())+
+              " dead mount.");
+        }
+        this_player()->eventMoveLiving(new_env);
     }
     else return write("You don't seem to have a mount.");
 

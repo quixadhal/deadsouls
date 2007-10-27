@@ -23,7 +23,7 @@ string SetMessage(string msg, string str) {
     case "come": case "leave": case "telin": case "telout": case "home": 
     case "say": case "ask": case "exclaim": case "login": case "logout":
     case "dest": case "clone": case "vis" : case "invis" :
-	return (Messages[msg] = str);
+        return (Messages[msg] = str);
     default: return 0;
     }
 }
@@ -35,20 +35,20 @@ varargs string GetMessage(string msg, mixed arg) {
     if( !(tmp = Messages[msg]) ) return 0;
     switch(msg) {
     case "dest": case "clone":
-	tmp = replace_string(tmp, "$O", (string)arg->GetShort());
-	break;
+        tmp = replace_string(tmp, "$O", (string)arg->GetShort());
+        break;
     case "leave":
-	if(strsrch(arg, "$N") == -1) tmp = replace_string(tmp, "$D", arg);
-	else tmp = arg;
-	break;
-	//The following case is a bugfix courtesy of Memrosh @ Ascension
+        if(strsrch(arg, "$N") == -1) tmp = replace_string(tmp, "$D", arg);
+        else tmp = arg;
+        break;
+        //The following case is a bugfix courtesy of Memrosh @ Ascension
     case "come":
-	if(stringp(arg)){ tmp = arg;}
-	break; 
+        if(stringp(arg)){ tmp = arg;}
+        break; 
     case "say": case "ask": case "exclaim": return tmp;
     case "login": case "logout":
-	tmp = replace_string(tmp, "$M", mud_name());
-	break;
+        tmp = replace_string(tmp, "$M", mud_name());
+        break;
     }
     if(strsrch(tmp, "$N") == -1) tmp = "$N "+tmp;
     return capitalize(replace_string(tmp, "$N", this_object()->GetName()));

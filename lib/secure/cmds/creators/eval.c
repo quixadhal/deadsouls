@@ -16,8 +16,8 @@ int cmd( string a )
     mixed ret;
 
     if(!member_group(previous_object(), PRIV_SECURE)) {
-	log_file("adm/eval", query_privs(previous_object())
-	  +" ("+ctime(time())+"): eval "+a+"\n");
+        log_file("adm/eval", query_privs(previous_object())
+          +" ("+ctime(time())+"): eval "+a+"\n");
     }
     if( !a ) { notify_fail( SYNTAX ); return 0; }
 
@@ -49,8 +49,8 @@ int cmd( string a )
     "";
     filename = user_path((string)previous_object()->GetKeyName());
     if( file_size( filename ) != -2 && !securep(previous_object()) ) {
-	notify_fail( "You must have a valid home directory!\n" );
-	return 0;
+        notify_fail( "You must have a valid home directory!\n" );
+        return 0;
     }
     filename += "CMD_EVAL_TMP_FILE.c";
     if(securep(previous_object())) filename = "/secure/tmp/"+previous_object()->GetKeyName()+"_CMD_EVAL_TMP_FILE.c";

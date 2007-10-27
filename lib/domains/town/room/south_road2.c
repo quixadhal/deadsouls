@@ -13,14 +13,14 @@ static void create() {
     SetShort("South Saquivor Road");
     SetLong("This is a cobblestone road, leading north into town and south away from it. South of here appears to be some sort of University campus.");
     SetItems( ([
-	({"road","cobblestone road"}) : "A "
-	"cobblestone road, running north and south.",
-	"sign":"A large sign on the road. To read it, 'read sign'.",
+        ({"road","cobblestone road"}) : "A "
+        "cobblestone road, running north and south.",
+        "sign":"A large sign on the road. To read it, 'read sign'.",
       ]) );
     AddTerrainType(T_ROAD);
     SetExits( ([
-	"north" : "/domains/town/room/south_road1",
-	"south" : "/domains/campus/room/npath2.c",
+        "north" : "/domains/town/room/south_road1",
+        "south" : "/domains/campus/room/npath2.c",
       ]) );
     SetInventory(([
       ]));

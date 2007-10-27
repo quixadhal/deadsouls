@@ -22,18 +22,18 @@ int rock(string str){
     object *dupes;
     dupes = get_dupes(this_object(),environment(this_object()) );
     if(!str || str =="" || str == "in chair" || str == "in the chair"){
-	hit = 42;
-	for(i=0;i<sizeof(dupes);i++){
-	    if( member_array(this_player(),dupes[i]->GetSitters()) != -1) hit = 7;
-	    if( member_array(this_player(),this_object()->GetSitters()) != -1) hit = 7;
-	}
-	if( hit == 7) {
-	    write("You gently rock in your rocking chair.");
-	    say(this_player()->GetName()+" gently rocks in "+possessive(this_player())+" "+
-	      "rocking chair.");
-	    return 1;
-	}
-	else { write("You are not sitting in a rocking chair."); }
+        hit = 42;
+        for(i=0;i<sizeof(dupes);i++){
+            if( member_array(this_player(),dupes[i]->GetSitters()) != -1) hit = 7;
+            if( member_array(this_player(),this_object()->GetSitters()) != -1) hit = 7;
+        }
+        if( hit == 7) {
+            write("You gently rock in your rocking chair.");
+            say(this_player()->GetName()+" gently rocks in "+possessive(this_player())+" "+
+              "rocking chair.");
+            return 1;
+        }
+        else { write("You are not sitting in a rocking chair."); }
     }
     if(hit == 42) return 1;
     else return 0;

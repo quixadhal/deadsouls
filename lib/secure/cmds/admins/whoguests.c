@@ -13,8 +13,8 @@ int cmd(string str) {
 
     if(!archp(previous_object())) return 0;
     if(str) {
-	notify_fail("Correct syntax: whoguests\n");
-	return 0;
+        notify_fail("Correct syntax: whoguests\n");
+        return 0;
     }
     catch(guests = (string *)BANISH_D->query_guests());
     message("info", "The following people are currently allowed in when "

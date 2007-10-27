@@ -6,7 +6,7 @@ mixed cmd(string args) {
     int i, lines = 2 * this_player()->GetScreen()[1];
     write("lines: "+lines);
     for(i=lines;i>0;i--){
-	write("Loading memtest...\n");
+        write("Loading memtest...\n");
     }
     this_player()->eventPage(explode(mud_status(1), "\n"));
     return 1;

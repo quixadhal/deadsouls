@@ -19,8 +19,8 @@ static void create() {
     SetShort("the Ylsrim weaponry");
     SetLong((: CheckOpen :));
     SetItems( ([ ({ "case", "cases" }) : (: CheckItem :),
-	"bazaar" : "People from all about are wandering around, looking "
-	"for a bargain." ]) );
+        "bazaar" : "People from all about are wandering around, looking "
+        "for a bargain." ]) );
     SetObviousExits("e");
     SetExits( ([ "east" : "/domains/Ylsrim/room/"+ "bazaar" ]) );
     SetInventory( ([ "/domains/Ylsrim"+ "/npc/shiela" : 1 ]) );
@@ -31,16 +31,16 @@ string CheckOpen(string str) {
 
     ob = present("vendor");
     if( query_night() ) {
-	if( ob ) ob->eventDestruct();
-	return ("The cases of the weaponry are empty, as the weaponry "
-	  "has closed for the night.  The bazaar is "
-	  "east.");
+        if( ob ) ob->eventDestruct();
+        return ("The cases of the weaponry are empty, as the weaponry "
+          "has closed for the night.  The bazaar is "
+          "east.");
     }
     if( !ob )
-	return ("Fresh blood is splattered across broken cases which once "
-	  "housed display weapons sold in this weaponry.  The weapons are "
-	  "gone, and the vendor clearly murdered.  All you can do is "
-	  "shake your head and exit to the east.");
+        return ("Fresh blood is splattered across broken cases which once "
+          "housed display weapons sold in this weaponry.  The weapons are "
+          "gone, and the vendor clearly murdered.  All you can do is "
+          "shake your head and exit to the east.");
     return ("Sealed cases contain display weapons, exemplifying what the "
       "local vendor has to offer.  She buys and sells all sorts of "
       "weapons from adventurers who come here to sell of their "

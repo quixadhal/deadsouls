@@ -42,23 +42,23 @@ int eventCreateSocket(string host, int port) {
     if( SocketType == -1 ) SocketType = MUD;
     x = socket_create(SocketType, "eventReadCallback", "eventAbortCallback");
     if( x < 0 ) {
-	eventSocketError("Error in socket_create().", x);
-	return x;
+        eventSocketError("Error in socket_create().", x);
+        return x;
     }
     ret = x;
     Socket->Descriptor = x;
     x = socket_bind(Socket->Descriptor, 0);
     if( x != EESUCCESS ) {
-	eventClose(Socket);
-	eventSocketError("Error in socket_bind().", x);
-	return x;
+        eventClose(Socket);
+        eventSocketError("Error in socket_bind().", x);
+        return x;
     }
     x = socket_connect(Socket->Descriptor, host + " " + port, 
       "eventReadCallback", "eventWriteCallback");
     if( x != EESUCCESS ) {
-	eventClose(Socket);
-	eventSocketError("Error in socket_connect().", x);
-	return x;
+        eventClose(Socket);
+        eventSocketError("Error in socket_connect().", x);
+        return x;
     }
     return ret;
 }
@@ -82,29 +82,29 @@ static void eventWriteCallback(int fd) {
     Socket->Blocking = 0;
     x = EESUCCESS;
     while( Socket->Buffer && x == EESUCCESS ) {
-	switch( x = socket_write(Socket->Descriptor, Socket->Buffer[0]) ) {
-	case EESUCCESS:
-	    break;
-	case EECALLBACK:
-	    Socket->Blocking = 1;
-	    break;
-	case EEWOULDBLOCK:
-	    call_out( (: eventWriteCallback($(fd)) :), 0);
-	    return;
-	case EEALREADY:
-	    Socket->Blocking = 1;
-	    return;
-	default:
-	    eventClose(Socket);
-	    eventSocketError("Error in socket_write().", x);
-	    return;
-	}
-	if( sizeof(Socket->Buffer) == 1 ) {
-	    Socket->Buffer = 0;
-	}
-	else {
-	    Socket->Buffer = Socket->Buffer[1..];
-	}
+        switch( x = socket_write(Socket->Descriptor, Socket->Buffer[0]) ) {
+        case EESUCCESS:
+            break;
+        case EECALLBACK:
+            Socket->Blocking = 1;
+            break;
+        case EEWOULDBLOCK:
+            call_out( (: eventWriteCallback($(fd)) :), 0);
+            return;
+        case EEALREADY:
+            Socket->Blocking = 1;
+            return;
+        default:
+            eventClose(Socket);
+            eventSocketError("Error in socket_write().", x);
+            return;
+        }
+        if( sizeof(Socket->Buffer) == 1 ) {
+            Socket->Buffer = 0;
+        }
+        else {
+            Socket->Buffer = Socket->Buffer[1..];
+        }
     }
 }
 
@@ -113,10 +113,10 @@ void eventWrite(mixed val) {
     if( Socket->Buffer ) Socket->Buffer += ({ val });
     else Socket->Buffer = ({ val });
     if( Socket->Blocking ) {
-	return;
+        return;
     }
     else {
-	eventWriteCallback(Socket->Descriptor);
+        eventWriteCallback(Socket->Descriptor);
     }
 }
 
@@ -125,12 +125,12 @@ static void eventClose(mixed arg) {
     if(!arg) return;
     if(classp(arg)) sock = arg; 
     if(!classp(arg)){
-	trr("arg: "+identify(arg),"yellow");
-	trr("prevs: "+identify(previous_object(-1)),"yellow");
-	trr("i am: "+identify(this_object()),"yellow");
-	if(mapp(arg)) socket_close(arg["Descriptor"]);
-	if(objectp(arg)) socket_close(arg->GetDescriptor());
-	return;
+        trr("arg: "+identify(arg),"yellow");
+        trr("prevs: "+identify(previous_object(-1)),"yellow");
+        trr("i am: "+identify(this_object()),"yellow");
+        if(mapp(arg)) socket_close(arg["Descriptor"]);
+        if(objectp(arg)) socket_close(arg->GetDescriptor());
+        return;
     }
     //else trr("Yes, I am a class.");
     socket_close(sock->Descriptor);
@@ -148,5 +148,5 @@ int eventDestruct() {
 
 static void eventSocketError(string str, int x) { 
     if( LogFile ) 
-	log_file(LogFile, ctime(time()) + "\n" + socket_error(x) + "\n");
+        log_file(LogFile, ctime(time()) + "\n" + socket_error(x) + "\n");
 }

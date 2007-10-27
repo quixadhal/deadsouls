@@ -13,11 +13,11 @@ inherit LIB_DAEMON;
 
 mixed cmd(string args) {
     if( !args || args == "" ) {
-	return "Remove which adverb?";
+        return "Remove which adverb?";
     }
     if( !SOUL_D->RemoveAdverb(args) ) {
-	previous_object()->eventPrint("Removal of adverb failed.");
-	return 1;
+        previous_object()->eventPrint("Removal of adverb failed.");
+        return 1;
     }
     previous_object()->eventPrint("Adverb removed.");
     return 1;

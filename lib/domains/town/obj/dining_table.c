@@ -16,7 +16,7 @@ void create() {
     inventory_visible();
     inventory_accessible();
     SetInventory( ([
-	"/domains/town/obj/candlestick" : 2
+        "/domains/town/obj/candlestick" : 2
       ]) );
 
 }

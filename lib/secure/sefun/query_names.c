@@ -6,21 +6,21 @@ string *query_names(object whom) {
     if(!whom) return name;
     if(inherits(LIB_DOOR,whom) || base_name(whom) == LIB_DOOR) 
     {
-	name = ({ "door" });
+        name = ({ "door" });
     }
     else {
-	if(whom->GetName()) name += ({ lower_case(whom->GetName()) });
-	if(whom->GetKeyName()) name += ({ lower_case(whom->GetKeyName()) });
-	if(sizeof(whom->GetId())) {
-	    if(arrayp(whom->GetId()))name += whom->GetId();
-	    else name += ({ whom->GetId() });
-	}
+        if(whom->GetName()) name += ({ lower_case(whom->GetName()) });
+        if(whom->GetKeyName()) name += ({ lower_case(whom->GetKeyName()) });
+        if(sizeof(whom->GetId())) {
+            if(arrayp(whom->GetId()))name += whom->GetId();
+            else name += ({ whom->GetId() });
+        }
     }
     if(sizeof(name)){
-	foreach(mixed subst in name){
-	    if(arrayp(subst)) names += subst;
-	    else names += ({ lower_case(subst) });
-	}
+        foreach(mixed subst in name){
+            if(arrayp(subst)) names += subst;
+            else names += ({ lower_case(subst) });
+        }
     }
     return names;
 }
@@ -46,7 +46,7 @@ int answers_to(string name, object what){
     preargs -= ({ preargs[hits] });
 
     foreach(string prearg in preargs){
-	if(member_array(prearg, adjs) == -1) return 0;
+        if(member_array(prearg, adjs) == -1) return 0;
     }
     return 1;
 }

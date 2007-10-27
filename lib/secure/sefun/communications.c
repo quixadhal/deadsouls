@@ -48,8 +48,8 @@ varargs void tc(string str, string col, object dude){
     }
     if(!dude) dude = find_player(DEBUGGER);
     if(dude){
-	tell_player(dude ,prefix+str+"%^RESET%^");
-	if(dude) flush_messages(dude);
+        tell_player(dude ,prefix+str+"%^RESET%^");
+        if(dude) flush_messages(dude);
     }
     debug_message(str);
 }
@@ -68,8 +68,8 @@ varargs int tn(string str, string col, object room, int mclass){
     }
     if(!room) tell_object(load_object(ROOM_NETWORK) ,prefix+str+"%^RESET%^");
     else {
-	if(!mclass) tell_object(room, prefix+str+"%^RESET%^");
-	else tell_object(room, prefix+str+"%^RESET%^",mclass);
+        if(!mclass) tell_object(room, prefix+str+"%^RESET%^");
+        else tell_object(room, prefix+str+"%^RESET%^",mclass);
     }
     return 1;
 }
@@ -92,8 +92,8 @@ varargs int debug(mixed msg, mixed val, string color){
     if(val) ret += identify(val);
     if(!color || !sizeof(color)) color = "green";
     foreach(object guy in players){
-	tc("%^BOLD%^WHITE%^DEBUG: %^RESET%^ "+prevob,color,guy);
-	tc(ret, color, guy);
+        tc("%^BOLD%^WHITE%^DEBUG: %^RESET%^ "+prevob,color,guy);
+        tc(ret, color, guy);
     }
     return 1;
 }
@@ -107,7 +107,7 @@ varargs int tell_creators(string msg, string color){
     if(!msg) msg = "";
     if(!color) color = "red";
     foreach(object guy in cres){
-	tc(msg, color, guy);
+        tc(msg, color, guy);
     }
     return 1;
 }

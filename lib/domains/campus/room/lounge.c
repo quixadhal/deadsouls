@@ -28,25 +28,25 @@ static void create() {
       "placed. The main corridor lies north, and a window overlooks the campus "+
       "on the south wall.");
     SetItems(([
-	({"here","room","lounge"}) : "This seems to be intended to be a student "+
-	"lounge.",
-	"building" : "You are in New Main, LPC University' main administrative building.",
-	({"mark","marks"}) : "Some small chalkmarks and tape strips indicate "+
-	"where furniture is to go.",
-	({"floor","ground"}) : "Standard off-white linoleum tile floor, in case clumsy students "+
-	"plan on eating in here.",
-	({"corridor","hall"}) : "The main corridor on the first floor of New Main.",
-	"window" : "A window set into the south wall, overlooking the campus. Strangely, "+
-	"there seems to be nothing outside the window...no campus, no light, no stars...nothing. "+
-	"It's as though the administrative building were suspended in a vacuum.",
-	"campus" : "It seems oddly absent.",
-	({"wall","south wall"}) : "A wall with a window in it."]));
+        ({"here","room","lounge"}) : "This seems to be intended to be a student "+
+        "lounge.",
+        "building" : "You are in New Main, LPC University' main administrative building.",
+        ({"mark","marks"}) : "Some small chalkmarks and tape strips indicate "+
+        "where furniture is to go.",
+        ({"floor","ground"}) : "Standard off-white linoleum tile floor, in case clumsy students "+
+        "plan on eating in here.",
+        ({"corridor","hall"}) : "The main corridor on the first floor of New Main.",
+        "window" : "A window set into the south wall, overlooking the campus. Strangely, "+
+        "there seems to be nothing outside the window...no campus, no light, no stars...nothing. "+
+        "It's as though the administrative building were suspended in a vacuum.",
+        "campus" : "It seems oddly absent.",
+        ({"wall","south wall"}) : "A wall with a window in it."]));
     SetExits( ([
-	"north" : "/domains/campus/room/corridor2.c",
+        "north" : "/domains/campus/room/corridor2.c",
       ]) );
     SetInventory(([
-	"/domains/town/obj/btable" : 1,
-	"/domains/campus/obj/locker" : 1,
+        "/domains/town/obj/btable" : 1,
+        "/domains/campus/obj/locker" : 1,
       ]));
     SetProperty("no attack", 1);
     AddStuff();

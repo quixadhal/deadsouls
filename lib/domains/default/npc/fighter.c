@@ -15,11 +15,11 @@ static void create(){
     SetRace("human");
     SetGender("male");
     SetInventory(([
-	"/domains/default/armor/chainmail.c" : "wear chainmail",
-	"/domains/default/weap/sharpsword.c" : "wield sword"
+        "/domains/default/armor/chainmail.c" : "wear chainmail",
+        "/domains/default/weap/sharpsword.c" : "wield sword"
       ]));
     SetCurrency( ([
-	"silver" : 100,
+        "silver" : 100,
       ]) );
     SetHealthPoints(549);
     SetMaxHealthPoints(550);
