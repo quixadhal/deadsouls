@@ -110,7 +110,7 @@ static void InputRealName(string str) {
 
 static void InputEmail(string str) {
     object ob, tool;
-    string tmp;
+    string tmp = "";
     int foo;
 
     if( !str || str == "" ) str = "Unknown";
@@ -131,22 +131,26 @@ static void InputEmail(string str) {
     PLAYERS_D->AddPlayerInfo(Name);
 
     tmp = read_file(CFG_GROUPS);
+
+    if(sizeof(tmp)) cp(CFG_GROUPS, "/secure/save/backup/groups.orig");
+
     rm(CFG_GROUPS);
     tmp = replace_string(tmp, "ADMIN", Name);
     write_file(CFG_GROUPS, tmp);
 
     tmp = "";
-
+    
     tmp = read_file("/secure/include/config.h");
 
     if(sizeof(tmp)){
+        cp("/secure/include/config.h", "/secure/save/backup/config.orig");
         rm("/secure/include/config.h");
         tmp = replace_string(tmp, "DEBUG_NAME", Name);
         write_file("/secure/include/config.h", tmp);
     }
 
     if( ob = find_object(LIB_CONNECT) ) destruct(ob);
-    cp(DIR_SECURE_LIB "/connect.c", DIR_SECURE_LIB "/connect.first");
+    cp(DIR_SECURE_LIB "/connect.c", DIR_SECURE_LIB "/connect.first.c");
     //rename(DIR_SECURE_LIB "/connect.real", DIR_SECURE_LIB "/connect.c");
     rm(DIR_SECURE_LIB "/connect.c");
     cp(DIR_SECURE_LIB "/connect.real", DIR_SECURE_LIB "/connect.c");
@@ -166,6 +170,7 @@ static void InputEmail(string str) {
     else {
         receive("Mud name unchanged.\n");
     }
+    cp(IMC2_D+".c", "/secure/save/backup/imc2.orig");
     IMC2_D->eventChangeIMC2Passwords();
     PLAYERS_D->AddPlayerInfo(Name);
     shutdown();
