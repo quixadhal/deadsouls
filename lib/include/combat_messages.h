@@ -1,5 +1,9 @@
 /* compiled by Blitz@Dead Souls and Mikla@Dead Souls */
 
+#define SOBER_COMBAT
+
+#ifndef SOBER_COMBAT
+
 #define MOVE_TYPES ({\
 ({ "feint deceptively", "feints deceptively" }),\
 ({ "dance around", "dances around" }),\
@@ -34,6 +38,24 @@
 ({ "do a cunning move", "does a cunning move" }),\
 ({ "twirl with finesse", "twirls with finesse" }),\
 })
+
+#else
+
+#define MOVE_TYPES ({\
+({ "feint", "feints" }),\
+({ "twist swiftly", "twists swiftly" }),\
+({ "lunge quickly", "lunges quickly" }),\
+({ "duck", "ducks" }),\
+({ "move fast", "moves fast" }),\
+({ "strike rapidly", "strikes rapidly" }),\
+({ "sidestep", "sidesteps" }),\
+({ "gyrate briskly", "gyrates briskly" }),\
+({ "whirl around quickly", "whirls around quickly" }),\
+({ "whirl blurringly", "whirls blurringly" }),\
+})
+
+#endif
+
  
 #define BLADE_DEGREES ({\
 ({\

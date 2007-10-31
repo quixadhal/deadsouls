@@ -1,4 +1,6 @@
 #include <lib.h>
+#include <daemons.h>
+
 inherit LIB_FISHING;
 
 int ActionFunction(){
@@ -9,6 +11,7 @@ int ActionFunction(){
     //The next line picks a living being here at random
     dude = get_random_living(this_object());
     if(!dude) return 0;
+    if((RACES_D->GetNonMeatRace(dude->GetRace()))) return 0;
     //The next line makes that person sigh. Note that since
     //creators normally can't be forced by non-privileged objects,
     //only npc's and players will be affected.
@@ -27,6 +30,7 @@ int ActionFunction2(){
     cres = filter(get_livings(this_object()), (: creatorp($1) :) );
     dude = get_random_living(this_object());
     if(!dude) return 0;
+    if((RACES_D->GetNonMeatRace(dude->GetRace()))) return 0;
     dude->eventForce("ponder");
     if(!sizeof(cres)) return 0;
     cres->eventPrint("%^GREEN%^ActionFunction2 activates. Dude is: "+

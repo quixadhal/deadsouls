@@ -17,7 +17,7 @@
 <div id="header">
 <p id="headertext">Dead Souls - Installation FAQ</p>
 <p id="subheadertext">By Cratylus @ Frontiers, February 2006. Updated
-March 2007.<br>
+October 2007.<br>
 </p>
 </div>
 <!-- End: Header -->
@@ -39,19 +39,26 @@ and Windows versions?</a></li>
   <li><a href="#4">Should I apply the available patches during an
 install?</a></li>
   <li><a href="#6">How do I install the Windows version of Dead Souls?</a></li>
+  <li><a href="#6a">Migrating from Windows to UNIX fails horribly.</a><br>
+  </li>
   <li><a href="#7">Hold up, these Windows instructions aren't working</a></li>
   <li><a href="#8">How do I install the UNIX version of Dead Souls?</a></li>
   <li><a href="#9">I'm having trouble getting Dead Souls for UNIX to
 work</a></li>
-  <li><a href="#10">Why does compiling MudOS for Dead Souls throw so
+  <li><a href="#10">Why does compiling the driver for Dead Souls throw
+so
 many warnings?</a></li>
   <li><a href="#11">Why is there a windows-format mudos.cfg in
 /secure/cfg? I'm running unix.</a></li>
   <li><a href="#12">How do I enable database support?</a></li>
   <li><a href="#13">How do I upgrade from one version of Dead Souls to
-another?</a></li>
+another?<big><span style="font-weight: bold;"></span></big></a></li>
+  <li><small><a href="#13b"><big>I upgraded with the 2.1 to 2.4 patch
+but I'm at 2.4.0, not 2.4.1. What gives?</big></a></small></li>
   <li><a href="#14">When I log out after starting the mud, problems
 happen.</a></li>
+  <li><a href="#15">I put the mud in a Linux startup script, but it
+won't start when I reboot!</a></li>
   <li><a href="#16">Ok, it's running. Now what?</a></li>
 </ul>
 <a name="1"></a>
@@ -72,14 +79,12 @@ regularly. The following will always have the most recent versions.</p>
 <p>Download the stable version from the following:
 </p>
 <ul>
-  <big> </big><li><big><a
- href="http://lpmuds.net/files/deadsouls/ds2.4.zip"><span
- style="text-decoration: underline;">http://lpmuds.net/files/deadsouls/ds2.4.zip</span></a></big></li>
+  <big> </big>
+  <li><big><a href="http://lpmuds.net/files/deadsouls/ds2.4.4.zip"><span
+ style="text-decoration: underline;">http://lpmuds.net/files/deadsouls/ds2.4.4.zip</span></a></big></li>
 </ul>
 <br>
-Download the <span
- style="font-weight: bold; text-decoration: underline;">latest</span><span
- style="text-decoration: underline;"> </span>version here:<br>
+Download the latest alpha version here:<br>
 <br>
 <ul>
   <li><a href="http://dead-souls.net/code/alpha/"><big><span
@@ -87,7 +92,8 @@ Download the <span
  style="text-decoration: underline;">http://dead-souls.net/code/alpha/</span></big></a></li>
 </ul>
 <br>
-The alpha version has lots of neat new stuff. Some of the new stuff is
+The alpha version often has lots of neat new stuff. Some of the new
+stuff is
 still not 100% production quality. If new features that are still under
 development are upsetting to you, you may be better off using the
 "stable" version instead.<br>
@@ -115,6 +121,9 @@ versions.</li>
 Top)</a></h1>
 <p>
 </p>
+Patches are deprecated in favor of <span style="font-weight: bold;">liveupgrade</span>.
+For exceptional situations, however, or for old muds that still need
+them, they are here:<br>
 <br>
 <ul>
   <li><a href="http://dead-souls.net/code/patches/"><big><span
@@ -164,8 +173,37 @@ desired, allow the mud to shut down.</li>
   <li>check the <a href="http://dead-souls.net/hotfix.html">HOTFIX PAGE</a>
 for
 late-breaking fixes.</li>
-  <li>start reading the guide and the handbook and the manual.</li>
+  <li>See if any upgrades are available by typing: <span
+ style="font-weight: bold;">liveupgrade all</span></li>
+  <li>If files are downloaded, apply the upgrades by typing: <span
+ style="font-weight: bold;">liveupgrade apply</span></li>
+  <li>If you get nothing but a repeating message, cancel the upgrade by
+typing: <span style="font-weight: bold;">liveupgrade cancel</span><br>
+  </li>
+  <li>Start reading the guide and the handbook and the manual.</li>
 </ol>
+<h1><br>
+</h1>
+<h1><a name="6a"></a>Migrating from Windows to UNIX fails horribly <a
+ class="backtotop" href="http://dead-souls.net/ds-inst-faq.html#top">(Back
+to Top)</a></h1>
+<p>The main problem you're likely running into is that Windows and UNIX
+handle text files differently. In particular, object persistence files
+(.o files) saved under Windows may have additional characters that the
+UNIX driver won't tolerate.&nbsp; The&nbsp; UNIX command "dos2unix"
+might help...or it might not. You might need to use the .o files from
+the default distribution (sadly losing whatever was in your old ones). <br>
+</p>
+<p>It may also be that your Windows driver is much older than the
+driver for the UNIX version you're migrating to. It might be a good
+idea to hunt down the source code for the specific lib release you're
+using (for example, 2.1.1) and compile that for your driver.<br>
+</p>
+<p>The short and sad answer is that such a migration can go wrong in so
+many ways that it's beyond the scope of help this document, or I as
+maintainer, can provide.<br>
+</p>
+<br>
 <a name="7"></a>
 <h1>Hold up, these Windows instructions aren't working <a
  class="backtotop" href="#top">(Back to Top)</a></h1>
@@ -202,7 +240,16 @@ look in c:\ds\lib\log\runtime and c:\ds\lib\log\catch. Those are error
 log files. If you see stuff about files or directories not existing,
 then the problem is probably that your decompression program didn't
 unpack the files right. Start over. Download winrar and use that to
-uncompress.<br>
+uncompress.</li>
+  <li>If you're seeing errors about stuff like economy.o, and your
+computer uses a non-English version of Windows, you may be running into
+a character-set problem. On the UNIX version of DS, this is pretty easy
+to fix with a runtime variable. On Windows, I am not sure it is
+possible. What is happening is that the mud expects numbers in the
+form: 3.15 rather than 3,15 and is unable to handle your computer's way
+of notating the decimal. I do not know the fix for this: if you find
+it, <span style="font-weight: bold;">please</span> <a
+ href="http://lpmuds.net/forum/">share it with us</a>.<br>
   </li>
   <li>If the mud starts but you get lots of bizarre errors, there may
 be a couple of reasons for this:
@@ -266,7 +313,9 @@ directory by typing <span
  style="font-weight: bold; color: rgb(255, 0, 0);">pwd</span><span
  style="color: rgb(255, 0, 0);"> </span>at the shell prompt.<br>
   </li>
-  <li>cd to v22.2b14</li>
+  <li>cd to the driver source. This may be "v22.2b14" or it may be
+"fluffos-2.*"<br>
+  </li>
   <li>type: <span class="command">./configure</span></li>
   <li>type: <span class="command">make</span></li>
   <li>type: <span class="command">make install</span></li>
@@ -299,6 +348,14 @@ restart automatically.</li>
   <li>check the <a href="http://dead-souls.net/hotfix.html">HOTFIX PAGE</a>
 for
 late-breaking fixes.</li>
+  <li>See if any upgrades are available by typing: <span
+ style="font-weight: bold;">liveupgrade all</span></li>
+  <li>If files are downloaded, apply the upgrades by typing: <span
+ style="font-weight: bold;">liveupgrade apply</span></li>
+  <li>If you get nothing but a repeating message, cancel the upgrade by
+typing: <span style="font-weight: bold;">liveupgrade cancel</span></li>
+  <li>Start reading the guide and the handbook and the manual.<br>
+  </li>
 </ul>
 <a name="9"></a>
 <h1>I'm having trouble getting Dead Souls for UNIX to work <a
@@ -310,6 +367,10 @@ late-breaking fixes.</li>
  style="font-weight: bold; color: rgb(255, 0, 0);">make</span>" again,
 or "<span style="color: rgb(255, 0, 0); font-weight: bold;">make -j 1</span>"<br>
   </li>
+  <li>If you are using a 64 bit Linux SMP kernel, and when you try
+to log in the login freezes, try this: <a
+ href="http://lpmuds.net/forum/index.php?topic=490.msg2274#msg2274">
+http://lpmuds.net/forum/index.php?topic=490.msg2274#msg2274</a> </li>
   <li>Some hosting providers give you a robust environment that
 requires UNIX expertise to handle. For example, I know of folks that
 use Genesis Muds to host, and run into all sorts of file permission
@@ -428,7 +489,8 @@ for you.<br>
   <br>
 </ul>
 <a name="10"></a>
-<h1>Why does compiling MudOS for Dead Souls throw so many warnings?
+<h1>Why does compiling the driver for Dead Souls throw so many
+warnings?
 <a class="backtotop" href="#top">(Back to Top)</a></h1>
 <p> Beats me. This is one of those complaints I don't really know how
 to respond to. At the end of the compile, you'll have a driver that
@@ -448,7 +510,7 @@ overwritten with a unix version, if you follow the install instructions.</p>
 <a class="backtotop" href="#top">(Back to Top)</a></h1>
 <p>I don't know. I don't understand databases at all, so it's pointless
 for me
-to try to get that MudOS functionality working. If you develop a
+to try to get that driver functionality working. If you develop a
 procedure for it, please share it with me and I will document it so
 others can
 benefit from your leetness. I might suggest that it's probably easier
@@ -460,30 +522,18 @@ and then revisit the question.<br>
 <a name="13"></a>
 <h1>How do I upgrade from one version of Dead Souls to another?
 <a class="backtotop" href="#top">(Back to Top)</a></h1>
-<p>For your convenience, patches are available to move from one minor
-revision of Dead Souls to another. But there isn't a patch for every
-possible upgrade.
-There is a patch to upgrade from ds2.0r12 to ds2.0r14, for example, but
-there is no patch to upgrade from ds2.0r10 to ds2.0r14. As of now,
-there are no plans to make patches to upgrade from one version of Dead
-Souls to another. For example, do not expect a ds2.0 -&gt; ds2.1 patch.</p>
+<p>Patches used to be provided, but this was a cumbersome and tedious
+process. There is now a liveupgrade command for painless upgrading.<br>
+</p>
 <p>The upgrade for both Windows and UNIX is the same. Basically a Dead
-Souls patch is a pretty unsophisticated upgrade system. In the case of
-the UNIX patch, you use the tar command to copy the patch files over
-your existing lib directory.</p>
-<p>In the case of the Windows patch, it is a folder called lib which
-you copy over your mud's c:\ds\lib folder. Sometimes just overwriting
-is insufficient to fully bring up a previous release to the current
-release. In such cases, a daemon called update.c is included, which
-contains instructions for detailed modification of specific files.
-These instructions are read by the mud and executed automatically after
-reboot.</p>
-<p>Obviously, this kind of update patching is intended for muds that do
-not do extensive lib system rewrites. For example, if you are running
-ds2.0r21, and
-your mud creation has been limited to individual home directories and
-the domains/ directories, then an upgrade to ds2.0r22 and beyond will
-be utterly
+Souls liveupgrade is a pretty unsophisticated system. It just copies
+over new files over old files.<br>
+</p>
+<p>Obviously, this kind of updating is intended for muds that do
+not do extensive lib system rewrites. For example, if your mud creation
+has been limited to individual home directories and
+the domains/ directories, then an upgrade should
+be mostly
 painless.</p>
 <p>On the other hand, if you've done extensive customizing of the
 player object,
@@ -492,16 +542,49 @@ problems after an update. The typical update patch does include some
 changes to the player object, for example, so the indiscriminate
 overwriting of the previous information with the updated files means
 that your work basically disappears.</p>
-<p>For this reason it is critical always to perform a full backup of
+<p>For this reason it is critical always to perform a <span
+ style="text-decoration: underline; font-style: italic;">full backup</span>
+of
 all your mud files before implementing a patch upgrade. Carefully
-follow the instructions included in the patch releases to ensure
+follow the instructions included in the liveupgrade command to ensure
 optimal effect. Because these instructions are not expected to be
 static, the details will not be included in this document. Read the <a
  href="http://dead-souls.net/RELEASE_NOTES">/doc/RELEASE_NOTES</a> file
 to know what has changed between releases and to determine whether an
 upgrade is worth the risk. Please note that RELEASE_NOTES contains an
 overview of major changes. It does not document every difference
-between versions.&nbsp;</p>
+between versions. <br>
+</p>
+<br>
+<p><big><span style="font-weight: bold;"><a name="13b"></a>I upgraded
+with the
+2.1 to 2.4 patch but I'm at 2.4.0, not 2.4.1. What gives?</span></big><br>
+</p>
+<p>Upgrading from 2.1 or 2.1.1 to 2.4 is a good thing, and will give
+you access to important new features and security fixes.<br>
+However, 2.1.x and 2.4.x are different enough that to get the full
+benefit of 2.4.x, you need to recompile the driver.<br>
+Your mud lib version of 2.4.0 is a reminder that you need to recompile
+the driver using the source from <a
+ href="http://dead-souls.net/code/dead_souls.zip">the full<br>
+install</a>. Once you've done that, edit /secure/sefun/mud_info.c to
+read "2.4" instead of "2.4.0" and reboot.<br>
+</p>
+<p>You will then be able to perform liveupgrades, and you will be able
+to enable the cool new<br>
+2.4.x parsing features with these commands:<br>
+</p>
+<p><span style="font-weight: bold;">mudconfig defaultparse yes</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">mudconfig matchcommand yes</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">mudconfig matchobject yes</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">mudconfig exitsbare yes</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">shutdown now</span><br>
+<br>
+</p>
 <h1><a name="14"></a>When I log out after starting the mud, problems
 happen.
 <a class="backtotop" href="#top">(Back to Top)</a></h1>
@@ -611,6 +694,28 @@ need to <a
  href="http://www.google.com/search?hl=en&amp;q=how+do+i+run+a+program+as+a+service%3F&amp;btnG=Google+Search">search
 Google</a> for the appropriate docs.<br>
 <br>
+<br>
+<a name="15"></a>I<span style="font-weight: bold;"> put the mud in a
+Linux startup script, but it won't start when I reboot!</span><br>
+<br>
+An apparent peculiarity of Fedora is that if the command line specified
+in your start script<br>
+doesn't redirect stderr and stdout to /dev/null, the program fails to
+run. Also, if you don't<br>
+properly background it, you may end up hanging the computer and
+preventing anything<br>
+else from running.<br>
+<br>
+<br>
+Therefore, in your start script, your command line should have
+redirection and backgrounding.<br>
+It might look something like this:<br>
+<br>
+&nbsp;/mud/ds/bin/startmud &gt; /dev/null 2&gt;&amp;1 &amp;<br>
+<br>
+Other recent Linux distributions may have the same quirk.<br>
+<br>
+<br>
 <h1><a name="16"></a>Ok, it's running. Now what? <a class="backtotop"
  href="#top">(Back
 to Top)</a></h1>
@@ -635,6 +740,6 @@ Tutorial</a>.</li>
 <p><a href="http://dead-souls.net/index.html">Return to Dead Souls
 Homepage</a></p>
 <hr>
-<p style="text-align: center;">Last Updated August 2006</p>
+<p style="text-align: center;">Last Updated October 2007</p>
 </body>
 </html>

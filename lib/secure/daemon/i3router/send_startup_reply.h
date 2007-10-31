@@ -7,26 +7,26 @@ static void send_startup_reply(string mudname){
     //  or when the set of routers change for some reason.
 
     if(!connected_muds[mudname]) {
-	//trr("PROBLEM","red");
-	return;
+        //trr("PROBLEM","red");
+        return;
     }
 
     else {
-	//if(mudinfo[mudname] && mudinfo[mudname]["password"])
-	//trr(mudname +" apparently exists. password: "+mudinfo[mudname]["password"],"white");
-	//else //trr(mudname +" apparently exists, but I can't find a password for it.","white");
+        //if(mudinfo[mudname] && mudinfo[mudname]["password"])
+        //trr(mudname +" apparently exists. password: "+mudinfo[mudname]["password"],"white");
+        //else //trr(mudname +" apparently exists, but I can't find a password for it.","white");
     }
 
 
     write_data(connected_muds[mudname], ({
-	"startup-reply",
-	5,
-	router_name,
-	0,
-	mudname,
-	0,
-	router_list,
-	mudinfo[mudname]["password"]
+        "startup-reply",
+        5,
+        router_name,
+        0,
+        mudname,
+        0,
+        router_list,
+        mudinfo[mudname]["password"]
       }) );
 
     //trr("connected_muds[mudname]: "+identify(connected_muds[mudname]),"blue");

@@ -9,7 +9,7 @@
 #include <daemons.h>
 #include <message_class.h>
 
-#define IMC2_DISABLED
+#define IMC2_ENABLED
 
 // Connection data...
 #define HOSTNAME "server01.intermud.us"
@@ -50,7 +50,7 @@
 // DATA_LOG is where packets are logged to.
 // Turn this off when not working on the system, as it invades privacy.
 // Comment this out to turn it off.
-//#define DATA_LOG "imc2.log"
+#define DATA_LOG "imc2.log"
 
 // UNKNOWN_DATA_LOG is where unrecognized packets are logged to.
 // I wrote handlers for all packets I know of, so this should only pick
@@ -1556,9 +1556,9 @@ EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
 
           if(!file || !sizeof(file)) return;
 
-          file = replace_string(file,"clientpass",cpass);
-          file = replace_string(file,"serverpass",spass);
-          file = replace_string(file,"define IMC2_DISABLED","define IMC2_ENABLED");
+          file = replace_string(file,"kffogimden",cpass);
+          file = replace_string(file,"dgcgeoefka",spass);
+          file = replace_string(file,"define IMC2_ENABLED","define IMC2_ENABLED");
 
           write_file(filename, file, 1);
 

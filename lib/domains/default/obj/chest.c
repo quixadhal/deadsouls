@@ -21,6 +21,7 @@ void create() {
         "/secure/obj/staff" : 1,
         "/domains/default/obj/pinger" : 1,
         "/secure/obj/medtric" : 1,
+        "/domains/default/armor/jade_ring" : 1,
       ]));
     SetMass(2000);
     SetBaseCost(50);

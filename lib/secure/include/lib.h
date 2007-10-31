@@ -37,6 +37,7 @@
 #define LIB_CREATOR        DIR_LIB        "/creator"
 #define LIB_CURRENCY       DIR_LIB        "/currency"
 #define LIB_DETECT         DIR_LIB        "/detect"
+#define LIB_DIE            DIR_LIB        "/die"
 #define LIB_DIGGING        DIR_LIB        "/digging"
 #define LIB_DISASTER       DIR_LIB        "/disaster"
 #define LIB_DOMESTICATE	   DIR_LIB        "/domesticate"

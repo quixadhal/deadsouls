@@ -11,7 +11,7 @@
 
 inherit LIB_DAEMON;
 
-static private string Error;
+static private string Error, SeeAlso = "";
 static private mapping Indices;
 
 static private void LoadIndices();
@@ -134,7 +134,7 @@ static private void LoadIndices() {
     }
 
       string GetHelp(string str) {
-          string *tmp;
+          string *tmp, choice,ret ="";
           string topic;
           int x;
 
@@ -162,13 +162,21 @@ static private void LoadIndices() {
               return (string)SOUL_D->GetHelp(str);
           }
           tmp = GetIndices(str);
-          if( sizeof(tmp) == 1 ) {
-              return GetHelpByIndex(tmp[0], str);
-          }
-          else if( sizeof(tmp) > 1 ) {
-              Error = "There exists help for \"" + str + "\" under the following "
-              "indices:\n" + implode(tmp, ", ");
-              return 0;
+          if( sizeof(tmp) > 0){
+              if( sizeof(tmp) > 1){
+                  if(member_array("admin commands",tmp) != -1) choice = "admin commands";
+                  else if(member_array("creator commands",tmp) != -1) choice = "creator commands";
+                  else if(member_array("player commands",tmp) != -1) choice = "player commands";
+              }
+              if(!choice) choice = tmp[0];
+              tmp -= ({ choice });
+
+              if(sizeof(tmp)) SeeAlso = "\nThere also exists help for \"" + str + "\" under the following "
+                  "indices:\n" + implode(tmp, ", ");
+              ret = GetHelpByIndex(choice, str);
+              if(ret) ret += SeeAlso;
+              SeeAlso = "";
+              return ret;
           }
           topic = "";
           str = trim(str);
@@ -261,6 +269,8 @@ static private void LoadIndices() {
                       if( function_exists("help", load_object(file)) ) {
                           Error = " ";
                           file->help();
+                          write(SeeAlso);
+                          SeeAlso = "";
                           return 0;
                       }
                       Error = "Unable to locate any syntax information on " +
@@ -389,8 +399,8 @@ static private void LoadIndices() {
 
       case "daemon objects":
           topic = GetTopic(index, topic);
-          if( catch(help = topic->GetHelp(topic)) ) {
-              Error = "An error occurred in attempting to access help.";
+          if( !topic || catch(help = topic->GetHelp(topic)) ) {
+              Error = "An error occurred in attempting to access help for that.";
               return 0;
           }
           if( !help ) {

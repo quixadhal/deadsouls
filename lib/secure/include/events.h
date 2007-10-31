@@ -31,6 +31,7 @@
 #define LIB_PULL         DIR_EVENTS "/pull"
 #define LIB_PUT          DIR_EVENTS "/put"
 #define LIB_READ         DIR_EVENTS "/read"
+#define LIB_ROLL         DIR_EVENTS "/roll"
 #define LIB_SEARCH       DIR_EVENTS "/search"
 #define LIB_SHAKE        DIR_EVENTS "/shake"
 #define LIB_SIT          DIR_EVENTS "/sit"

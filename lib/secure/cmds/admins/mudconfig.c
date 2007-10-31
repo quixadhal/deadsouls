@@ -14,10 +14,10 @@ string array yesbools = ({ "enable","on","1","yes" });
 string array nobools = ({ "disable","off","0","no" });
 string array restrict_tokens = ({ "restrict","unrestrict" });
 string array nonmodals = ({ "liveupgrade", "prompt","status","email","websource",
-  "debugger", "access", "pinging" });
+  "debugger", "access", "pinging", "pinginterval" });
 string array modals = ({ "catchtell","matchcommand", "matchobject", "autowiz", "locked","localtime", 
   "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
-  "retain", "defaultparse", "disablereboot" });
+  "retain", "defaultparse", "disablereboot", "loglocal", "logremote" });
 string array inet_services = ({ "oob", "hftp", "ftp", "http", "rcp", "inet" });
 
 static int NotImplemented(string which);
@@ -77,6 +77,7 @@ mixed cmd(string str) {
     case "newbielevel" : which = "MAX_NEWBIE_LEVEL";ProcessOther(which,arg);break;
     case "monitor" : which = "GLOBAL_MONITOR";ProcessOther(which,arg);break;
     case "maxip" : which = "SAME_IP_MAX";ProcessOther(which,arg);break;
+    case "pinginterval" : which = "PING_INTERVAL";ProcessOther(which,arg);break;
     case "maxcommands" : which = "MAX_COMMANDS_PER_SECOND";ProcessOther(which,arg);break;
     case "maxidle" : which = "IDLE_TIMEOUT";ProcessOther(which,arg);break;
     case "hostip" : which = "HOST_IP";ProcessString(which,arg);break;
@@ -375,6 +376,7 @@ static int ProcessOther(string which, string arg){
         write("This configuration will take effect for each user the next time they log in.");
         return 1;
     }
+    if(which == "PING_INTERVAL") reload (PING_D,1,1);
     return 1;
 }
 
@@ -405,6 +407,10 @@ static int ProcessString(string which, string arg){
 static int ProcessModal(string which, string arg){
     int junk;
     validate();
+    if(!arg){
+        arg = "no";
+        write("No argument: Assuming you want to disable this feature.");
+    }
     if(member_array(arg,yesbools) != -1) arg = "1";
     if(member_array(arg,nobools) != -1) arg = "0";
     if(sscanf(arg,"%d",junk) != 1){
@@ -431,6 +437,8 @@ static int ProcessModal(string which, string arg){
     case "matchcommand" : which = "COMMAND_MATCHING";break;
     case "matchobject" : which = "OBJECT_MATCHING";break;
     case "catchtell" : which = "NPC_CATCH_TELL_DEBUG";break;
+    case "loglocal" : which = "LOG_LOCAL_CHANS";break;
+    case "logremote" : which = "LOG_REMOTE_CHANS";break;
     default : break;
     }
     foreach(string element in config){
@@ -467,6 +475,9 @@ static int ProcessModal(string which, string arg){
     }
     if(which == "RETAIN_ON_QUIT" || which == "OBJECT_MATCHING") 
         write("To make this configuration take effect, reboot the mud.");
+    if(which == "LOG_LOCAL_CHANS" || which == "LOG_REMOTE_CHANS"){
+        reload(CHAT_D,1,1);
+    }
     return 1;
 }
 
@@ -699,6 +710,7 @@ void help() {
       "\nmudconfig extraoffset <offset from GMT in hours>"
       "\nmudconfig maxcommands <max number of commands per second>"
       "\nmudconfig maxip <max connections per IP>"
+      "\nmudconfig pinginterval <i3 ping interval in seconds>"
       "\nmudconfig monitor <monitoring level, 0 to 2>"
       "\nmudconfig newbielevel <max newbie level>"
       "\nmudconfig resets <interval between resets>"
@@ -716,6 +728,8 @@ void help() {
       "\nmudconfig http [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig rcp [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig oob [ enable | disable | start | stop | restart | status ]"
-      "\n\nSee also: admintool", this_player()
+      "\nmudconfig loglocal [ enable | disable ] (whether local channels are logged)"
+      "\nmudconfig logremote [ enable | disable ] (whether remote channels are logged)"
+      "\n\nSee also: admintool, config", this_player()
     );
 }

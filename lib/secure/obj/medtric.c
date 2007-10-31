@@ -11,8 +11,11 @@ int allowed,statpoints,statlevel,statclass,tempint,i;
 int skilllevel,skillclass,skillpoints;
 string name;
 string *stumps;
+string warning = "We remind you that the tricorder cannot speak. In the event "+
+"that it does speak, you are instructed to disregard its advice.";
+
 void create(){
-    ::create();
+    item::create();
     SetKeyName("creator tricorder");
     SetId(({"tricorder","scanner","device","tool","medtric","tric"}));
     SetAdjectives(({"electronic","admin","diagnostic"}));
@@ -23,6 +26,7 @@ void create(){
       "USE ONLY%^RESET%^\".\n%^YELLOW%^NOTE: Some functions do not work "+
       "with drones. This is due to safeguards in the master object security "+
       "model, and it will not be \"fixed\".%^RESET%^\n"+
+      "There is a warning on the tricorder you can read.\n"+
       "\n Labeled buttons on this device read:\n"+
       //"* medscan: scan for disease, poison, etc\t%^RED%^offline%^RESET%^\n"+
       "* fscan: readout of all files inherited\t\t%^GREEN%^ONLINE%^RESET%^\n"+
@@ -47,6 +51,8 @@ void create(){
       //"* inoculate: raise immunity to a disease\t%^RED%^offline%^RESET%^\n"+
       //"* posture: change your own posture.\t\t%^RED%^offline%^RESET%^\n"+
       "");
+    SetRead( "default" , warning);
+    SetRead( "warning", warning );
     SetProperties(([
         "no steal" : 1,
       ]));

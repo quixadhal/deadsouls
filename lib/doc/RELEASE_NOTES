@@ -1,4 +1,25 @@
----- 2.5a17 ---
+---- 2.5a19 ---
+- Released 2007-10-31
+- Enabling/disabling the logging of remote or local channels can now
+  be done with the mudconfig command.
+- rwho now defaults to i3. imc2 can be specified. See "help rwho"
+- Ping interval now changed to about 5 minutes. Now configurable
+  with the mudconfig command.
+- The help command now defaults to displaying command help, if the
+  argument to "help" is under multiple categories. The additional
+  categories are listed in the command output as well.
+- Added commands: file, wizroll, roll, inherits
+- Added sefun: roll()
+- Tidied up get_object() to fail gracefully if necessary.
+- New  or newly working lib objects/events: LIB_ROLL, LIB_DIE (for dice), LIB_VEHICLE
+- Added sample vehicles in /domains/default/vehicles: hoverpod and strider
+  Vehicles are still *experimental* and under development!
+- The command showtree will now try to resolve the most sensible local object,
+  if it can't find a file with the name you specify.
+- Miscellaneous cleanup of loose tc()'s.
+
+---- 2.5a18 ---
+- Released 2007-10-27
 - Win32 FluffOS executable problems fixed, and the current windows
   driver is now FluffOS.
 - Compile time compat fixes added for Wolfpaw hosts.

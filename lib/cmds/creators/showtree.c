@@ -13,6 +13,7 @@ private string Error;
 
 mixed cmd(string str) {
     string func, file;
+    object tmp;
 
     if( !str || str == "" )
         return "Syntax: <showtree FILE> or <showtree FUNCTION in FILE>";
@@ -22,7 +23,16 @@ mixed cmd(string str) {
             file = str;
         }
     }	
+    tmp = get_object(file);
     file = absolute_path((string)this_player()->query_cwd(), file);
+    if(!file_exists(file) && !file_exists(file+".c")){
+        if(tmp)
+            file = base_name(tmp);
+    }
+    if(!file_exists(file) && !file_exists(file+".c")){
+        write("Cannot find the file specified.");
+        return 1;
+    }
     str = ShowTree(file, func, 0);
     if( !str ) return Error;
     this_player()->eventPage(explode(str, "\n"), "system");

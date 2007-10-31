@@ -80,6 +80,7 @@ varargs int eventGreet(string newbie){
     spiel = read_file("/domains/campus/txt/jenny/spiel.txt");
     tell_room(environment(this_object()),prespiel+spiel);
     tell_room(environment(this_object()),"\n\t%^RED%^activate bot%^RESET%^\n");
+    eventForce("yell DEDDA SORUZE: GETTO DA ZE!");
     tell_room(environment(this_object()),"The polite young "+
       "woman becomes totally motionless again.");
     noob->SetProperty("greeted",1);
@@ -140,6 +141,7 @@ int eventTurnOff(){
     //set_heart_beat(0);
     tip = 0;
     if( active != 0) {
+        eventForce("yell DEDDA SORUZE: GETTO DA ZE!");
         tell_room(environment(this_object()),"Jenny nods and becomes motionless again, "+
           "her expression now fixed and staring out into "+
           "space.");

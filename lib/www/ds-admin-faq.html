@@ -12,7 +12,7 @@
  style="font-weight: bold;">Dead Souls Admin FAQ</span></big><br>
 <br>
 Written by Cratylus @ Dead Souls, October 2005<br>
-Updated April 2007<br>
+Updated October 2007<br>
 <span style="font-weight: bold; text-decoration: underline;"><br>
 </span>Note: commands are displayed in boldface, like this: <span
  style="font-weight: bold;">ls -a</span><span
@@ -343,10 +343,30 @@ a new skill?</big></a><br>
 <br>
 <a href="#116"><big style="font-family: courier new,courier,monospace;">116
 Why was Descartes so lame?</big></a><br>
-<big style="font-family: courier new,courier,monospace;"><br>
-</big><br>
-<big style="font-family: courier new,courier,monospace;"><br>
+<br>
+<a href="#117"><big style="font-family: courier new,courier,monospace;">117
+The mud is locked whats the command to add someone to the allow list?</big></a><big
+ style="font-family: courier new,courier,monospace;"><br>
 </big><big style="font-family: courier new,courier,monospace;"><br>
+</big><a href="#118"><big
+ style="font-family: courier new,courier,monospace;">118 Shouldn't you
+change all the documentation to reflect the move to FluffOS?</big></a><br>
+<big style="font-family: courier new,courier,monospace;"><br>
+</big><big style="font-family: courier new,courier,monospace;"><a
+ href="#119">119 How do I change my timezone?</a><br>
+<a href="#120"><br>
+</a></big><big style="font-family: courier new,courier,monospace;"><a
+ href="#120">120 So I herd u liek mudkip</a><br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
+</big><a href="http://dead-souls.net/ds-admin-faq.html#121"><big
+ style="font-family: courier new,courier,monospace;">121 Where is all
+the player information stored?</big></a><br>
+<br>
+<a href="#122"><big style="font-family: courier new,courier,monospace;">122
+The addrace command complains that the race already exists.</big></a><br>
+<big><a href="http://dead-souls.net/ds-admin-faq.html#121"><big
+ style="font-family: courier new,courier,monospace;"></big></a></big><big
+ style="font-family: courier new,courier,monospace;"><br>
 </big><big style="font-family: courier new,courier,monospace;"><br>
 <span style="font-weight: bold; text-decoration: underline;"><a name="0"></a>How
 do I start?</span><br>
@@ -1055,11 +1075,19 @@ room, as it is very messy and very noisy.<br>
  style="font-weight: bold; text-decoration: underline;">The web server
 and FTP server don't work</span><br>
 <br>
-To enable them at mud boot time, uncomment the "inet" line in<br>
+To enable them at mud boot time for 2.1 and below, uncomment the "inet"
+line in<br>
 /secure/cfg/preload.cfg<br>
 <br>
 To enable it temporarily, type: <span style="font-weight: bold;">update
 /secure/daemon/inet</span><br>
+<br>
+On 2.3 and above, use the commands: <span style="font-weight: bold;">
+<br>
+mudconfig inet enable
+<br>
+mudconfig http enable
+</span><br>
 <br>
 These servers do not use the standard ports. The internet standard<br>
 http port is 80 and for ftp it is 21. Your mud ftp and web servers<br>
@@ -1280,7 +1308,7 @@ leetness to others.<br>
  style="font-weight: bold; text-decoration: underline;">I found a bug.
 For real. Can you please fix it?</span><br>
 <br>
-Please post on the forum: <a href="http://lpmuds.net/forum/">http://lpmuds.net/forum/</a><br>
+Email me: &lt;put my name here&gt;@comcast.net<br>
 <br>
 Please include a detailed description of the bug, and the exact<br>
 error text and commands that produced it. A log file or<br>
@@ -1563,6 +1591,10 @@ type:<br>
 But you are still using that same old body as<br>
 before, so you'll need to quit and log back in to <br>
 get a new body using the new code.<br>
+<br>
+Note that disconnecting and logging back in is not enough.<br>
+You have to actually quit, so your old player object<br>
+is completely destroyed.<br>
 <br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"></span></big><big
@@ -2710,8 +2742,12 @@ GLOBAL_MONITOR, monitor data is logged into /secure/log/adm.<br>
  style="font-weight: bold; text-decoration: underline;">How would you
 set a race to be selectable by new players?</span><br>
 <br>
+If the race already exists, and it is, say, kobold, type:
 <br>
-See: <a href="http://dead-souls.net/ds-admin-faq.html#10">http://dead-souls.net/ds-admin-faq.html#10</a><br>
+<span style="font-weight: bold;">removerace kobold</span>
+<br>
+<br>
+Then see: <a href="http://dead-souls.net/ds-admin-faq.html#10">http://dead-souls.net/ds-admin-faq.html#10</a><br>
 <br>
 </big><big style="font-family: courier new,courier,monospace;"><span
  style="font-weight: bold;"><br>
@@ -3167,30 +3203,27 @@ have an unconscionably short timeout for idle connections. There is<br>
 usually enough intermud traffic that your conenction will receive a<br>
 packet within five minutes, but if your timeout interval appears to
 be<br>
-shorter than that, you can tweak your intermud ping interval by<br>
-changing this line in /secure/daemon/ping.c then updating the file:<br>
-<span style="font-family: courier new,courier,monospace;"></span><br
+shorter than that, you can tweak your intermud ping interval in<br>
+Dead Souls 2.5a19 and above by typing: <span style="font-weight: bold;">mudconfig
+pinginterval 120</span><br
  style="font-family: courier new,courier,monospace;">
-if(!(counter % 300)) eventPing();<br>
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">to this:</span><br
+</big><big style="font-family: courier new,courier,monospace;"></big><big
+ style="font-family: courier new,courier,monospace;"><br
  style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;"></span></big><big
- style="font-family: courier new,courier,monospace;">if(!(counter %
-60)) eventPing();</big><br
- style="font-family: courier new,courier,monospace;">
-<big style="font-family: courier new,courier,monospace;"><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
 <span style="font-family: courier new,courier,monospace;"> That will
-shorten your intermud ping interval to 1 minute,</span><br
+shorten your intermud ping interval to 2 minutes,</span><br
  style="font-family: courier new,courier,monospace;">
 <span style="font-family: courier new,courier,monospace;">which should
-keep most such aggressive timeouts from happening.</span><br
+keep most such aggressive timeouts from happening.<br>
+It's probably not a good idea to lower your interval below 2 minutes,<br>
+as your mud may wind up getting stuck in an i3 reconnect loop.<br
  style="font-family: courier new,courier,monospace;">
+</span></big><big style="font-family: courier new,courier,monospace;"><br>
+Dead Souls muds below 2.5a19 may need to manually edit PING_INTERVAL<br>
+in /secure/include/config.h or /secure/daemon/ping.c and reboot.<br>
 <br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
+</big><big style="font-family: courier new,courier,monospace;"><br
+ style="font-family: courier new,courier,monospace;">
 <a style="font-family: courier new,courier,monospace;" name="94"></a><span
  style="font-weight: bold; text-decoration: underline; font-family: courier new,courier,monospace;">I
 heard I can run my old TMI-2/Nightmare 3/Skylib/Lima code on Dead
@@ -3217,31 +3250,20 @@ licensing thing. Sourceforge insists on only having Open Source</span><br
  style="font-family: courier new,courier,monospace;">
 <span style="font-family: courier new,courier,monospace;">stuff on
 their site, so the version of Dead Souls you can download there is Open
-Source.</span><br style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;"> However, I
-have stopped developing the Open Source version of DS2. The latest</span><br
+Source.<br>
+<br>
+Strictly speaking it's "public domain". For more information on that<br>
+version, see: </span></big><big
+ style="font-family: courier new,courier,monospace;"><span
+ style="font-family: courier new,courier,monospace;"></span></big><big
+ style="font-family: courier new,courier,monospace;"><a
+ href="http://dead-souls.net/ds-II-faq.html">http://dead-souls.net/ds-II-faq.html</a></big><br
  style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">versions are
-not Open Source. You can always get the true, up to date, newest version</span><br
+<big style="font-family: courier new,courier,monospace;"><span
+ style="font-family: courier new,courier,monospace;"></span><br
  style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">from this
-URL: </span><a style="font-family: courier new,courier,monospace;"
- href="http://dead-souls.net/code/dead_souls.zip">http://dead-souls.net/code/dead_souls.zip</a><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;"> The GPL
-licensed version I'm leaving on Sourceforge works, but is older</span><br
- style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;">and contains
-many bugs. If you're planning on forking DS development, use the </span><a
- style="font-family: courier new,courier,monospace;"
- href="http://sourceforge.net/project/showfiles.php?group_id=148388">GPL<br>
-one from Sourceforge</a><span
- style="font-family: courier new,courier,monospace;">. </span><br
- style="font-family: courier new,courier,monospace;">
-<br style="font-family: courier new,courier,monospace;">
-<span style="font-family: courier new,courier,monospace;"> If all
+<span style="font-family: courier new,courier,monospace;"></span><span
+ style="font-family: courier new,courier,monospace;">If all
 you're looking to do is run a mud, use the </span><a
  style="font-family: courier new,courier,monospace;"
  href="http://dead-souls.net/code/dead_souls.zip">latest version</a><span
@@ -3252,13 +3274,6 @@ need to worry about licensing issues. Only <br>
 those looking to distribute </span><span
  style="font-family: courier new,courier,monospace;">or fork DS should
 be concerned with the licensing.<br>
-<br>
-For people who don't like running proprietary code, and don't trust me<br>
-to honor the GPL license, you have now a THIRD option, which is using<br>
-the public domain version of DS2 known as Dead Souls II. For more <br>
-details, please see this page: <a
- href="http://dead-souls.net/ds-II-faq.html">http://dead-souls.net/ds-II-faq.html</a>
-.<br>
 <br>
 <span style="font-weight: bold;">Short answer</span>: If you don't care
 what license you use, then you should<br>
@@ -4338,7 +4353,87 @@ Unless<br>
 you have comparable credentials, and/or have published a mudlib yourself<br>
 which thousands of people have used, then you might want to reconsider<br>
 complaining about Descartes and his competence in these areas.<br>
+<br>
+<br>
+<a name="117"></a><span
+ style="font-weight: bold; text-decoration: underline;">The mud is
+locked whats the command to add someone to the allow list?</span><br>
+<br>
+<span style="font-weight: bold;">groupmod -a test playername</span><br>
+<br>
+Note that this tags the player as a test char and<br>
+gives her access to normally restricted areas. For<br>
+details on what groups grant what access, see the <br>
+FAQ entry: <a href="http://dead-souls.net/ds-admin-faq.html#84">http://dead-souls.net/ds-admin-faq.html#84</a><br>
 &nbsp;&nbsp;&nbsp; <br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"><a
+ name="118"></a>Shouldn't you change all the documentation to reflect
+the move to FluffOS?</span><br
+ style="font-weight: bold; text-decoration: underline;">
+<br>
+No. See this faq entry: <a
+ href="http://dead-souls.net/ds-faq.html#driver">http://dead-souls.net/ds-faq.html#driver</a><br>
+<br>
+Referring to the driver as MudOS is imprecise for the reader if<br>
+she is currently running FluffOS, but it is not altogether <br>
+incorrect and her potential confusion so minimal that I do not<br>
+see a need to rephrase each instance of "MudOS" into "the driver you
+are <br>
+using, which may be MudOS for older releases, and FluffOS for newer
+ones,<br>
+although FluffOS is a derivative of MudOS and functionally<br>
+indistiguishable at runtime except if you use its extended features,<br>
+in which case you should not be confused anyway".<br>
+<br>
+Where appropriate and convenient, I do from time to time change the<br>
+docs to reflect the migration, but it's not going to be a to-do list
+item.<br>
+<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"><a
+ name="119"></a>How do I change my timezone?</span><br>
+<br>
+Use the command: <span style="font-weight: bold;">admintool</span><br>
+<br>
+Select option: c<br>
+<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"><a
+ name="120"></a>So I herd u liek mudkip</span><br>
+<br>
+You herd right.<br>
+<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"><a
+ name="121"></a>Where is all the player information stored?</span><br>
+<br>
+If you mean "where is each player's information stored?",<br>
+the answer is "in their playerfile." In my case, it's<br>
+/secure/save/creators/c/cratylus.o , for a non-creator,<br>
+it might be something like /secure/save/players/t/testguy.o .<br>
+<br>
+<a href="http://dead-souls.net/ds-admin-faq.html#80">Note that .o files
+should never be edited.</a><br>
+<br>
+If you mean "where is the information for all players?",<br>
+then there isn't really any such thing. The best answer to that<br>
+is /secure/save/creators and /secure/save/players, because<br>
+that's where the save files live.<br>
+<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"><a
+ name="122"></a>The addrace command complains that the race already
+exists.</span><br>
+<br>
+A very common error is to copy an old race file to <br>
+a new name, and try to add it just like that. The<br>
+problem is that the new file contains inside it a<br>
+race name that is already known to the races daemon.<br>
+<br>
+Edit the new file and change the race name in it to<br>
+reflect the name of the new race, and try again.<br>
+<br>
 </big><br style="font-family: courier new,courier,monospace;">
 <big style="font-family: courier new,courier,monospace;">-
 Cratylus</big><br style="font-family: courier new,courier,monospace;">

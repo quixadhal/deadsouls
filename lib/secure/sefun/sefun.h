@@ -62,7 +62,7 @@ int member_group(mixed who, string grp);
 int moral_act(object who, object target, int amount);
 string *mud_currencies();
 string mud_name();
-string imc2_mud_name();
+varargs string imc2_mud_name(string name);
 string mudlib();
 string mudlib_version();
 varargs int newbiep(object ob);
@@ -264,5 +264,6 @@ int mkdir_recurse(string path);
 mixed *socket_names();
 string morse(string msg);
 string unmorse(string msg);
+int *roll(string alea);
 
 #endif /* l_sefun_h */

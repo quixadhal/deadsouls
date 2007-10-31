@@ -10,6 +10,7 @@ void create() {
     SetLong("The University's research often yields mysterious, advanced, or alien artifacts which may pose a hazard to normal people. This laboratory is where such items are brought for analysis.");
     SetInventory(([
         "/domains/campus/obj/workbench" : 1,
+        "/domains/default/vehicles/hoverpod" : 1,
       ]));
     SetExits(([
         "north" : "/domains/campus/room/science2",

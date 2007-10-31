@@ -192,7 +192,8 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang) {
         object *riders = environment()->GetRiders();
         if(riders && sizeof(riders) ){
             if(member_array(this_object(),riders) != -1){
-                env = environment(environment());
+                if(environment()->GetVisibleRiders())
+                    env = environment(environment());
             }
         }
     }

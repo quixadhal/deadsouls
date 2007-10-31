@@ -23,6 +23,7 @@ void create() {
 	"/domains/default/obj/pinger" : 1,
 	"/secure/obj/medtric" : 1,
 	"/secure/obj/glasses" : 1,
+        "/domains/default/armor/jade_ring" : 1,
       ]));
     SetMass(2000);
     SetBaseCost(50);

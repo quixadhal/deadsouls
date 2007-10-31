@@ -12,11 +12,27 @@
 inherit LIB_DAEMON;
 
 mixed cmd(string str) {
-    string tmp;
+    string tmp, s1, s2;
+    string network = "i3";
 
     if( !str ) return "Get a remote who from where?";
 
-    if ( (tmp = IMC2_D->find_mud(str)) ) {
+    if(grepp(str,"@")){
+        if(sscanf(str,"%s@%s", s1, s2) < 2){
+            write("Malformed name. Trying anyway...");
+        }
+        else str = s1;
+
+        if(s2 && lower_case(s2) == "imc2"){
+            network = "imc2";
+            str = imc2_mud_name(s1);
+        }
+    }
+
+    //tc("str: "+str);
+    //tc("network: "+network);
+
+    if ( network == "imc2" && (tmp = IMC2_D->find_mud(str)) ) {
         IMC2_D->who_out(capitalize(this_player()->GetKeyName()),tmp);
         message("system", "Remote who query sent to " + tmp + " on the IMC2 network.", this_player());
         return 1;
@@ -36,5 +52,7 @@ void help() {
       "Gives you a who list in abbreviated form from a mud on the\n"
       "global network following the CD protocols for intermud communication.\n"
       "The information given by the who varies from mud to mud.\n"
+      "By default, this command consults the i3 network. You can specify IMC2\n"
+      "with the following syntax: rwho mudname@imc2\n"
     );
 }

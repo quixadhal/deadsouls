@@ -31,6 +31,8 @@ private string *EnemyNames;
 private static int NPCLevel, Unique;
 private static mixed Die, Action, CombatAction;
 private static mapping Inventory;
+private static string MountStyle = "ridden";
+private int VisibleRiders = 1;
 
 int eventExtraAction(){ return 1; }
 
@@ -415,20 +417,29 @@ void eventDescribeEnvironment(int brief) {
 
         varargs int eventDie(mixed agent) {
             int x;
+            string death_verb = "dies";
+            string death_action = "kill";
+            string death_descriptor = "dead";
+
+            if(RACES_D->GetNonMeatRace(GetRace())){
+                death_verb = "breaks down completely";
+                death_action = "destroy";
+                death_descriptor = "broken";
+            }
 
             if(this_object()->GetDead() || this_object()->GetDeathEvents()) return 0;
 
             if( (x = living::eventDie(agent)) != 1 ) return x;
             if( stringp(Die) )  {
                 message("other_action", Die, environment(), ({ this_object() }));
-                if( agent) message("my_action", "You kill " + GetName() + ".", agent);
+                if( agent) message("my_action", "You "+death_action+" " + GetName() + ".", agent);
             }
             else if( functionp(Die) && !evaluate(Die, agent) ) return 0;
             else {
-                if(GetPosition() == POSITION_STANDING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " drops dead.", environment(), ({ this_object() }) );
-                else if(GetPosition() == POSITION_FLYING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " falls dead.", environment(), ({ this_object() }) );
-                else message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " dies.", environment(), ({ this_object() }) );
-                if( agent ) message("my_action", "You kill " + GetName() + ".", agent);
+                if(GetPosition() == POSITION_STANDING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " drops "+death_descriptor+".", environment(), ({ this_object() }) );
+                else if(GetPosition() == POSITION_FLYING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " falls "+death_descriptor+".", environment(), ({ this_object() }) );
+                else message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " "+death_verb+".", environment(), ({ this_object() }) );
+                if( agent ) message("my_action", "You "+death_action+" " + GetName() + ".", agent);
             }
             set_heart_beat(0);
             call_out( (: Destruct :), 0);
@@ -516,6 +527,10 @@ void eventDescribeEnvironment(int brief) {
 
         varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
             object *riders = GetRiders();
+            object *targs = ({});
+            //tc("msg: "+msg);
+            //tc("arg2: "+identify(arg2));
+            //tc("arg3: "+identify(arg3));
             if(NPC_CATCH_TELL_DEBUG){
                 tell_room("/domains/default/room/catchtell","-------");
                 tell_room("/domains/default/room/catchtell",timestamp());
@@ -542,8 +557,15 @@ void eventDescribeEnvironment(int brief) {
                                 }
                             }
                         }
-                        if(arg2 & MSG_CONV && !rider_source) true();
-                        else tmp_riders->eventPrint(msg, arg2, arg3);
+                        //if(arg2 & MSG_CONV && !rider_source) true();
+                        //else tmp_riders->eventPrint(msg, arg2, arg3);
+                        if((arg2 & MSG_CONV))  true();
+                        else {
+                            if(objectp(arg2)) targs = tmp_riders - ({ arg2 });
+                            else if(arrayp(arg2)) targs =  tmp_riders - arg2;
+                            else targs = tmp_riders;
+                            targs->eventPrint(msg, arg3);
+                        }
                     }
                     i1 = sizeof(previous_object(-1)) -1;
                     if(i1 < 0) i1 = 0;
@@ -552,7 +574,11 @@ void eventDescribeEnvironment(int brief) {
                         member_array(previous_object(-1)[i1],riders) != -1) &&
                       (!intp(arg2) || (!(arg2 & MSG_CONV) && !(arg2 & MSG_ENV))) && 
                       member_array(this_object(),previous_object(-1)) == -1){ 
-                        environment()->eventPrint(msg, arg2, arg3);
+                        if(objectp(arg2)) targs = riders - ({ arg2 });
+                        else if(arrayp(arg2)) targs = riders - arg2;
+                        else targs = riders;
+                        if(VisibleRiders) environment()->eventPrint(msg, arg2, arg3);
+                        else targs->eventPrint(msg, arg2);
                     }
                 }
             }  
@@ -767,11 +793,11 @@ void eventDescribeEnvironment(int brief) {
             string ret = object::GetShort(); 
             object *riders = GetRiders();
             string *names = ({});
-            if(riders && sizeof(riders)){
+            if(riders && sizeof(riders) && VisibleRiders){
                 foreach(object rider in riders){
                     names += ({ rider->GetShort() });
                 }
-                ret += " ridden by "+conjunction(names);
+                ret += " "+MountStyle+" by "+conjunction(names);
             }
             return ret;
         }
@@ -796,11 +822,11 @@ void eventDescribeEnvironment(int brief) {
             }
             if(sizeof(affects)) str += implode(affects,"\n")+"\n";
             if(this_object()->GetAffectLong()) str += this_object()->GetAffectLong();
-            if(riders && sizeof(riders)){
+            if(riders && sizeof(riders) && VisibleRiders){
                 foreach(object rider in riders){
                     ridernames += ({ rider->GetShort() });
                 }
-                str += capitalize(GetPlainShort())+" is ridden by "+conjunction(ridernames)+".\n";
+                str += capitalize(GetPlainShort())+" is "+MountStyle+" by "+conjunction(ridernames)+".\n";
             }
             counts = ([]);
             foreach(item in map(
@@ -870,4 +896,23 @@ void eventDescribeEnvironment(int brief) {
         int SetAutoStand(int i){
             AutoStand = i;
             return AutoStand;
+        }
+
+        string GetMountStyle(){
+            return MountStyle;
+        }
+
+        string SetMountStyle(string str){
+            if(str && stringp(str)) MountStyle = str;
+            return MountStyle;
+        }
+
+        int GetVisibleRiders(){
+            return VisibleRiders;
+        }
+
+        int SetVisibleRiders(int i){
+            if(i) VisibleRiders = 1;
+            else VisibleRiders = 0;
+            return VisibleRiders;
         }

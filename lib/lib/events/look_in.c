@@ -55,9 +55,7 @@ varargs mixed CanShowInterior(object who, object target) {
         return "#You don't have that!";
     }
 
-    if(living()) {
-        //write("You can't look inside of a living being.");
-        //return 1;
+    if(living() && !inherits(LIB_VEHICLE,this_object())) {
         return "You can't look inside of a living being.";
     }
 

@@ -137,6 +137,7 @@ static void eventDawn() {
     TimeOfDay = "dawn";
     obs = filter(users(), (: environment($1) &&
         (string)environment($1)->GetClimate()!="indoors" &&
+        inherits(LIB_ROOM,environment($1)) &&
         !((int)environment($1)->GetProperty("no time")) :));
     message("environment", "%^YELLOW%^The sun appears just over the horizon.",
       obs );
@@ -152,6 +153,7 @@ static void eventMorning() {
     TimeOfDay = "day";
     obs = filter(users(), (: environment($1) &&
         (string)environment($1)->GetClimate()!="indoors" &&
+        inherits(LIB_ROOM,environment($1)) &&
         !((int)environment($1)->GetProperty("no time")) :));
     message("environment", "%^BOLD%^YELLOW%^The sun now shines completely "
       "on a new day.", obs);
@@ -167,6 +169,7 @@ static void eventTwilight() {
     TimeOfDay = "twilight";
     obs = filter(users(), (: environment($1) &&
         (string)environment($1)->GetClimate()!="indoors" &&
+        inherits(LIB_ROOM,environment($1)) &&
         !((int)environment($1)->GetProperty("no time")) :));
     message("environment", "%^CYAN%^The sun begins to fall away into "
       "twilight.", obs);
@@ -182,6 +185,7 @@ static void eventNight() {
     TimeOfDay = "night";
     obs = filter(users(), (: environment($1) &&
         (string)environment($1)->GetClimate()!="indoors" &&
+        inherits(LIB_ROOM,environment($1)) &&
         !((int)environment($1)->GetProperty("no time")) :));
     message("environment", "%^BOLD%^BLUE%^Night darkens all that is real.", obs);
     i = sizeof(NightCalls);

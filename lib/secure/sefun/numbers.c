@@ -27,3 +27,24 @@ int bitshiftedp(int x){
     if(member_array(x,bitses) != -1) return 1;
     else return 0;
 }
+
+int *roll(string alea){
+    int i,*ret,quot,quod;
+    if( !sscanf(alea,"d%d",quod )){
+        if(sscanf(alea,"%dd%d",quot,quod) != 2){
+            return 0;
+        }
+    }
+    else quot = 1;
+
+    ret = allocate(quot+1);
+    for(i=0;i<quot;i++){
+        ret[i+1] = random(quod)+1;
+        ret[0] += ret[i+1];
+    }
+
+    return ret;
+}
+
+
+

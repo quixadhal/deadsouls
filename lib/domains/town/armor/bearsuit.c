@@ -28,7 +28,7 @@ mixed eventEquip(object who, string array limbs){
     mixed success = armor::eventEquip(who, limbs);
     object bearshadow = new("/shadows/bear");
     if(success){
-        tc("success");
+        //tc("success");
         bearshadow->eventShadow(who);
     }
     else destruct(bearshadow);

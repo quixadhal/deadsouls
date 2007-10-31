@@ -115,7 +115,7 @@ mixed eventDismount(object who){
     }
     else {
         write("You dismount from "+this_object()->GetPlainShort()+".");
-        tell_room(environment(this_object()),who->GetName()+" dismounts from " +this_object()->GetPlainShort()+".", ({ this_object() }));
+        tell_room(environment(this_object()),who->GetName()+" dismounts from " +this_object()->GetPlainShort()+".", ({ this_object(), who }));
         who->RemoveProperty("mount");
         if(who->eventMove(environment(this_object()))) return RemoveRider(who);
         else return 0;
@@ -131,7 +131,7 @@ mixed eventBuck(object who){
     }
     else {
         tell_player(who,"You are thrown from"+this_object()->GetPlainShort()+"!");
-        tell_room(environment(this_object()),who->GetName()+" is thrown from " +this_object()->GetPlainShort()+"!", ({ this_object() }));
+        tell_room(environment(this_object()),who->GetName()+" is thrown from " +this_object()->GetPlainShort()+"!", ({ this_object(), who }));
         who->RemoveProperty("mount");
         who->SetPosition(POSITION_LYING);
         if(who->eventMove(environment(this_object()))) return RemoveRider(who);

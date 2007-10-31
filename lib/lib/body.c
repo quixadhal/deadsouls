@@ -292,53 +292,55 @@ void eventCheckHealing() {
         }
     }
 
-    if( (y = time() - LastHeal)  >= x ) {
-        LastHeal = time();
-        do {
-            eventCompleteHeal(GetHealRate());
-        } while( (y = y - x) >= x );
-        if( Alcohol > 0 ) {
-            Alcohol--;
-            if( !Alcohol ) {
-                message("my_action", "You are left with a pounding headache.",
-                  this_object());
-                AddHealthPoints(-(random(3) + 1));
-            }
-            else if( !GetSleeping() && random(100) < 8 ) {
-                string verb, adv;
-
-                switch(random(5)) {
-                case 0: verb = "burp"; adv = "rudely"; break;
-                case 1: verb = "look"; adv = "ill"; break;
-                case 2: verb = "hiccup"; adv = "loudly"; break;
-                case 3: verb = "stumble"; adv = "clumsily"; break;
-                case 4: verb = "appear"; adv = "drunk"; break;
+    if(!inherits(LIB_VEHICLE,this_object())){
+        if( (y = time() - LastHeal)  >= x ) {
+            LastHeal = time();
+            do {
+                eventCompleteHeal(GetHealRate());
+            } while( (y = y - x) >= x );
+            if( Alcohol > 0 ) {
+                Alcohol--;
+                if( !Alcohol ) {
+                    message("my_action", "You are left with a pounding headache.",
+                      this_object());
+                    AddHealthPoints(-(random(3) + 1));
                 }
-                message("my_action", "You " + verb + " " + adv + ".",
-                  this_object());
-                message("other_action", GetName() + " " + pluralize(verb) + " " +
-                  adv + ".", environment(), ({ this_object() }));
+                else if( !GetSleeping() && random(100) < 8 ) {
+                    string verb, adv;
+
+                    switch(random(5)) {
+                    case 0: verb = "burp"; adv = "rudely"; break;
+                    case 1: verb = "look"; adv = "ill"; break;
+                    case 2: verb = "hiccup"; adv = "loudly"; break;
+                    case 3: verb = "stumble"; adv = "clumsily"; break;
+                    case 4: verb = "appear"; adv = "drunk"; break;
+                    }
+                    message("my_action", "You " + verb + " " + adv + ".",
+                      this_object());
+                    message("other_action", GetName() + " " + pluralize(verb) + " " +
+                      adv + ".", environment(), ({ this_object() }));
+                }
             }
+            if( Sleeping > 0 ) {
+                Sleeping--;
+                if( !Sleeping || dude->GetInCombat() ) {
+                    Sleeping = 0;
+                    message("my_action", "You wake up!", this_object());
+                    message("other_action", GetName() + " wakes up from " +
+                      possessive(this_object()) + " deep sleep.",
+                      environment(this_object()), ({ this_object() }));
+                }
+                else if( random(100) < 8 ) {
+                    message("my_action", "You snore.", this_object());
+                    message("other_action", (string)this_player()->GetName() +
+                      " snores loudly.", environment(this_object()),
+                      ({ this_object() }));
+                }
+            }
+            if( Caffeine > 0 ) Caffeine--;
+            if( Food > 0 ) Food--;
+            if( Drink > 0 ) Drink--;
         }
-        if( Sleeping > 0 ) {
-            Sleeping--;
-            if( !Sleeping || dude->GetInCombat() ) {
-                Sleeping = 0;
-                message("my_action", "You wake up!", this_object());
-                message("other_action", GetName() + " wakes up from " +
-                  possessive(this_object()) + " deep sleep.",
-                  environment(this_object()), ({ this_object() }));
-            }
-            else if( random(100) < 8 ) {
-                message("my_action", "You snore.", this_object());
-                message("other_action", (string)this_player()->GetName() +
-                  " snores loudly.", environment(this_object()),
-                  ({ this_object() }));
-            }
-        }
-        if( Caffeine > 0 ) Caffeine--;
-        if( Food > 0 ) Food--;
-        if( Drink > 0 ) Drink--;
     }
 }
 
@@ -386,6 +388,9 @@ mixed eventFall() {
             p = (hp * p)/100;
             //eventReceiveDamage("Deceleration sickness", BLUNT, p, 0, ({ limb }));
             //tc("hmm.");
+            foreach(object passenger in get_livings(this_object())){
+                passenger->eventReceiveDamage("Deceleration sickness", BLUNT, p, 0, ({ passenger->GetTorso() }));
+            }
             eventReceiveDamage("Deceleration sickness", BLUNT, p, 0, ({ GetTorso() }));
             if( Dying || (was_undead != GetUndead()) ) {
                 break;
@@ -688,7 +693,9 @@ varargs int eventDie(mixed agent) {
         else killer = agent->GetName();
     }
 
-    death_annc = killer + " has slain "+ this_object()->GetName()+".";
+    if(RACES_D->GetNonMeatRace(GetRace()))
+        death_annc = killer + " has destroyed "+ this_object()->GetName()+".";
+    else death_annc = killer + " has slain "+ this_object()->GetName()+".";
 
     CHAT_D->eventSendChannel("SYSTEM","death",death_annc,0);
 
@@ -714,7 +721,8 @@ varargs int eventDie(mixed agent) {
         if(riders && sizeof(riders)){
             foreach(object rider in riders) eventBuck(rider);
         }
-        if(GetRace() == "android" || GetRace() == "bot" ) ob = new(LIB_BOT_CORPSE);
+        if(GetRace() == "android" || GetRace() == "bot" ||
+          inherits(LIB_VEHICLE,this_object())) ob = new(LIB_BOT_CORPSE);
         else if(member_array(GetRace(), RACES_D->GetNonMeatRaces()) != -1) {
             ob = crime_scene;
             if(GetBodyComposition()){
@@ -1211,7 +1219,8 @@ varargs int eventDie(mixed agent) {
                 if(GetBodyComposition()) objict->SetComposition(GetBodyComposition());
             }
             else {
-                if(GetRace() == "android" || GetRace() == "bot") objict = new(LIB_BOT_LIMB);
+                if(GetRace() == "android" || GetRace() == "bot" ||
+                  inherits(LIB_VEHICLE,this_object())) objict = new(LIB_BOT_LIMB);
                 else objict = new(LIB_LIMB);
                 objict->SetLimb(limb, GetCapName(), GetRace());
                 objict->SetId( ({ limb, limbname, "limb" }));
@@ -1249,12 +1258,15 @@ varargs int eventDie(mixed agent) {
                 if(GetBodyComposition()) ob->SetComposition(GetBodyComposition());
             }
             else {
-                if(GetRace() == "android" || GetRace() == "bot") ob = new(LIB_BOT_LIMB);
+                if(GetRace() == "android" || GetRace() == "bot" ||
+                  inherits(LIB_VEHICLE,this_object())) ob = new(LIB_BOT_LIMB);
                 else ob = new(LIB_LIMB);
                 ob->SetLimb(limb, GetCapName(), GetRace());
                 ob->SetId( ({ limb, limbname, "limb" }));
             }
             ob->eventMove(environment());
+            //tc("ob: "+identify(ob));
+            //if(environment(ob)) tc("env(ob): "+identify(environment(ob)));
             i = sizeof(WornItems[limb]);
             while(i--) {
                 WornItems[limb][i]->SetWorn(0);
@@ -1369,7 +1381,7 @@ varargs int eventDie(mixed agent) {
         float h;
 
         str = "";
-        exempt = ({"bot","android","tree","plant"});
+        exempt = ({"bot","android","tree","plant","vehicle","strider","mech"});
 
         if(!(this_object()->GetNoCondition())){
             if(member_array(this_object()->GetRace(),exempt) == -1 &&
@@ -1395,18 +1407,22 @@ varargs int eventDie(mixed agent) {
         }
 
         limbs = GetMissingLimbs();
-        if( sizeof(limbs) ) {
-            int i, maxi;
+        if(!(GetRace() == "android") && !(GetRace() == "bot") &&
+          !inherits(LIB_VEHICLE,this_object())){ 
 
-            str += capitalize(nom) + " is missing " + add_article(limbs[0]); 
-            for(i=1, maxi = sizeof(limbs); i<maxi; i++) {
-                if( i < maxi-1 ) str += ", " + add_article(limbs[i]);
-                else {
-                    if( maxi > 2 ) str += ",";
-                    str += " and " + add_article(limbs[i]);
+            if( sizeof(limbs) ) {
+                int i, maxi;
+
+                str += capitalize(nom) + " is missing " + add_article(limbs[0]); 
+                for(i=1, maxi = sizeof(limbs); i<maxi; i++) {
+                    if( i < maxi-1 ) str += ", " + add_article(limbs[i]);
+                    else {
+                        if( maxi > 2 ) str += ",";
+                        str += " and " + add_article(limbs[i]);
+                    }
                 }
+                str += ".\n";
             }
-            str += ".\n";
         }
         return str;
     }

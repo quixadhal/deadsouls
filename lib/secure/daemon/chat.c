@@ -8,6 +8,14 @@
  *    "mapping tags" added by Shadyman 2007-Sep-24
  */
 
+#ifndef LOG_REMOTE_CHANS
+#define LOG_REMOTE_CHANS 0
+#endif
+
+#ifndef LOG_LOCAL_CHANS
+#define LOG_LOCAL_CHANS 1
+#endif
+
 #include <lib.h>
 #include <config.h>
 #include <pov.h>
@@ -18,7 +26,7 @@
 
 inherit LIB_DAEMON;
 
-string suspect,site,plainmsg,chan;
+string suspect,site,chan;
 static private mapping Channels;
 static private mapping chanlast;
 
@@ -109,6 +117,12 @@ static void create() {
     daemon::create();
     SetNoClean(1);
     Channels = ([]);
+
+    if(find_object(INTERMUD_D)){
+        if(arrayp(INTERMUD_D->GetChannels()))
+            remote_chans += INTERMUD_D->GetChannels();
+    }
+
     foreach(string kanal in local_chans + syschans){
         if( !Channels[kanal] ) Channels[kanal] = ({});
     }
@@ -240,48 +254,48 @@ int cmdLast(string feep){
     return 1;
 }
 
+static int LogIt(string what, string where, string canale){
+    if( (member_array(canale,local_chans) != -1 && LOG_LOCAL_CHANS) ||
+      ( member_array(GetRemoteChannel(canale),remote_chans) != -1 && LOG_REMOTE_CHANS) ){
+        unguarded( (: write_file($(where), $(what)) :) );
+        return 1;
+    }
+    else return 0;
+}
+
 varargs int eventAddLast(string feep, string str, string pchan, string pmsg, string pwho)
 {
-    chan=feep;
+    string plainmsg;
+    string Chan=feep;
     if(!chanlast)
         chanlast=([]);
-    if(!sizeof(chanlast[chan]))
-        chanlast[chan] = ({});
-    if(sizeof(chanlast[chan]) == 50)
-        chanlast[chan] = chanlast[chan][1..sizeof(chanlast[chan])];
-    chanlast[chan] += ({ str });
-    chan = GetLocalChannel(chan);
+    if(!sizeof(chanlast[Chan]))
+        chanlast[Chan] = ({});
+    if(sizeof(chanlast[Chan]) == 50)
+        chanlast[Chan] = chanlast[Chan][1..sizeof(chanlast[Chan])];
+    chanlast[Chan] += ({ str });
+    Chan = GetLocalChannel(Chan);
 
-    if (chan == "death") return 1;
+    if (Chan == "death") return 1;
 
     //Log in either SQL or file
 #ifdef MYSQL
     if (MYSQL_D->sql_request("INSERT INTO LOG_CHAT (Channel,Who,What) VALUES (\'"+ escape(pchan) +"\',\'" + escape(pwho) + "\',\'" + escape(pmsg) + "\')") == 0) {
-        if(pchan && pchan != "admin"){
-            chan = GetLocalChannel(chan);
-            if(!pchan || pchan == "") pchan = "foo";
-            plainmsg = "bar";
-            if(pchan) plainmsg = "<" + pchan + "> ";
-            if(pmsg) plainmsg += pmsg;
-            if(pwho && pwho !="") plainmsg = pwho+" "+plainmsg;
-            unguarded( (: write_file("/log/chan/"+chan,"["+timestamp()+"] "+plainmsg+"\n") :) );
-            if( file_size("/log/chan/"+chan) > 200000) {
-                unguarded( (: rename("/log/chan/"+chan,"/log/chan/"+chan+"."+timestamp() ) :) );
-            }
-        } else {
-            unguarded( (: write_file("/secure/log/"+chan,"["+timestamp()+"] "+plainmsg+"\n") :) );
-            if( file_size("/secure/log/"+chan) > 200000) {
-                unguarded( (: rename("/secure/log/"+chan,"/secure/log/"+chan+"."+timestamp() ) :) );
-            }
-        }
-    }
-#else
-    unguarded( (: write_file("/secure/log/"+chan,"["+timestamp()+"] "+plainmsg+"\n") :) );
-    if( file_size("/secure/log/"+chan) > 200000) {
-        unguarded( (: rename("/secure/log/"+chan,"/secure/log/"+chan+"."+timestamp() ) :) );
+        true();
     }
 #endif
-
+    Chan = GetLocalChannel(Chan);
+    if(!pchan || pchan == "") pchan = "foo";
+    plainmsg = "bar";
+    if(pchan) plainmsg = "<" + pchan + "> ";
+    if(pmsg) plainmsg += pmsg;
+    if(pwho && pwho !="") plainmsg = pwho+" "+plainmsg;
+    if(pchan && pchan != "admin"){
+        LogIt("["+timestamp()+"] "+plainmsg+"\n", "/log/chan/"+Chan, Chan);
+    }
+    else {
+        LogIt("["+timestamp()+"] "+plainmsg+"\n", "/secure/log/"+Chan, Chan);
+    }
     return 1;
 }
 

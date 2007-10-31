@@ -3,8 +3,14 @@
 
 inherit LIB_SENTIENT;
 
+static int NoBotCondition = 0;
+
 static void create() {
-    ::create();
+    sentient::create();
+}
+
+void init(){
+    sentient::init();
 }
 
 varargs int eventDie(object agent) {
@@ -45,6 +51,21 @@ varargs int eventDie(object agent) {
     return 1;
 }
 
+string GetHealthShort() {
+    string cl, sh;
+    float h;
+
+    if( !(sh = this_object()->GetShort()) ) return 0;
+    h = percent(GetHealthPoints(), GetMaxHealthPoints());
+    if( this_object()->GetNoBotCondition() || h > 90.0 ) cl = "%^BOLD%^GREEN%^";
+    else if( h > 75.0 ) cl = "%^GREEN%^";
+    else if( h > 50.0 ) cl = "%^BOLD%^BLUE%^";
+    else if( h > 35.0 ) cl = "%^BLUE%^";
+    else if( h > 20.0 ) cl = "%^BOLD%^RED%^";
+    else cl = "%^RED%^";
+    return cl + capitalize(sh);
+}
+
 string GetLong(string nom) {
     string *limbs;
     string str;
@@ -52,7 +73,7 @@ string GetLong(string nom) {
 
     if(!nom) nom = this_object()->GetKeyName();
     str = ::GetLong();
-    if(!(this_object()->GetNoCondition())){
+    if(!(this_object()->GetNoBotCondition())){
         str += capitalize(nom);
         h = percent(GetHealthPoints(), GetMaxHealthPoints());
         if( h < 10.0 ) str += " is barely functional.\n";
@@ -82,3 +103,13 @@ string GetLong(string nom) {
     }
     return str;
 }
+
+int SetNoBotCondition(int foo){
+    NoBotCondition = foo;
+    return NoBotCondition;
+}
+
+int GetNoBotCondition(){
+    return NoBotCondition;
+}
+

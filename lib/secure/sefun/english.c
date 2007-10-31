@@ -213,7 +213,7 @@ string array explode_list(string list) {
         string clean_str = "";
         string modulo = "";
 
-        tc("foo!");
+        //tc("foo!");
 
         if(last(single,9) == "%^RESET%^"){
             reset = 1;
@@ -222,7 +222,7 @@ string array explode_list(string list) {
 
         if(objectp(single)) {
             if(str = (string)single->query_plural_name()){
-                tc("1");
+                //tc("1");
                 return str;
             }
             else str = (string)single->GetKeyName();
@@ -231,7 +231,7 @@ string array explode_list(string list) {
         else error("Bad argument 1 to pluralize()");
 
         if(!str){
-            tc("2");
+            //tc("2");
             return str;
         }
 
@@ -240,19 +240,19 @@ string array explode_list(string list) {
         x = strlen(clean_str);
 
         if(ABNORMAL[strip_colours(str)]){
-            tc("abnormal");
+            //tc("abnormal");
             if(reset){
                 ret = ABNORMAL[clean_str];
                 ret = modulo + ret + "%^RESET%^";
             }
             else ret = ABNORMAL[strip_colours(str)];
-            tc("3");
+            //tc("3");
             return ret;
         }
 
-        tc("ret: "+ret);
-        tc("str: "+str);
-        tc("clean_str: "+clean_str);
+        //tc("ret: "+ret);
+        //tc("str: "+str);
+        //tc("clean_str: "+clean_str);
 
         if(x > 1) {
             tmp = clean_str[x-2..x-1];
@@ -278,9 +278,9 @@ string array explode_list(string list) {
             //return ret;
         }
 
-        tc("ret: "+ret, "white");
-        tc("str: "+str, "white");
-        tc("clean_str: "+clean_str, "white");
+        //tc("ret: "+ret, "white");
+        //tc("str: "+str, "white");
+        //tc("clean_str: "+clean_str, "white");
 
         tmp = clean_str[x-1..x-1];
         switch(tmp) {
@@ -301,14 +301,14 @@ string array explode_list(string list) {
             if(reset){
                 ret = modulo + ret + "%^RESET%^";
             }    
-            tc("5"); 
+            //tc("5"); 
             return ret;
         }
         ret = sprintf("%ss", clean_str);
         if(reset){
             ret = modulo + ret + "%^RESET%^";
         }
-        tc("6");
+        //tc("6");
         return ret;
     }
 #endif

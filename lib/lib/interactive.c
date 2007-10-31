@@ -193,7 +193,7 @@ void eventReconnect() {
 }
 
 void eventDescribeEnvironment(int brief) {
-    object env;
+    object env, transport;
     mixed tmp;
     string *shorts;
     string desc, smell, sound, touch;
@@ -457,10 +457,10 @@ void eventDescribeEnvironment(int brief) {
             if( tmp ) {
                 desc = tmp + desc;
             }
-            if(this_player()->GetProperty("mount")) {
+            if(transport = this_player()->GetProperty("mount")) {
                 string mount_inv = "Nothing";
                 string *mount_stuffs = ({});
-                object *mount_obs = filter( all_inventory(this_player()->GetProperty("mount")),
+                object *mount_obs = filter( all_inventory(transport),
                   (: !($1->GetInvis()) && !($1 == this_player()) :));
                 if(sizeof(mount_obs)){
                     foreach(object element in mount_obs){
@@ -469,10 +469,21 @@ void eventDescribeEnvironment(int brief) {
                     mount_inv = conjunction(mount_stuffs);
                 }
                 if(!sizeof(desc)) desc = "";
-                desc += "\nYou are mounted on "+
-                (this_player()->GetProperty("mount"))->GetPlainShort()+".";
-                desc += "\nOn "+(this_player()->GetProperty("mount"))->GetPlainShort()+
-                " you see: "+mount_inv+".";
+                if(inherits(LIB_VEHICLE,transport)){
+                    string tmpdesc = transport->GetVehicleInterior();
+                    if(!tmpdesc || !sizeof(tmpdesc)){ 
+                        desc += "\nYou are riding in "+
+                        transport->GetPlainShort()+".";
+                    }
+                    else desc += "\n"+tmpdesc;
+                    desc += "\nHere you see: "+mount_inv+".";
+                }
+                else {
+                    desc += "\nYou are mounted on "+
+                    transport->GetPlainShort()+".";
+                    desc += "\nOn "+transport->GetPlainShort()+
+                    " you see: "+mount_inv+".";
+                }
             }
             if( sizeof(desc) ) {
                 if(check_string_length(desc)) eventPrint(desc + "\n", MSG_ROOMDESC);

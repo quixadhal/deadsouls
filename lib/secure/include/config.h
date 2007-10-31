@@ -31,7 +31,7 @@
 #define SUPPORTED_CLIENTS       ({ "amcp", "amcp/1.1" })
 #define HOUR_LENGTH              1200
 #define DAY_LENGTH               20
-#define MAX_NEWBIE_LEVEL         3
+#define MAX_NEWBIE_LEVEL         2
 #define AUTOSAVE_TIME            450
 #define MORTAL_POSITIONS         ({ "player", "high mortal", "ambassador" })
 #define DEFAULT_GRAVITY          1.0
@@ -40,7 +40,7 @@
 #define ENGLISH_ONLY             0
 #define HUMANS_ONLY              0
 #define PINGING_MUDS             ({})
-#define PING_INTERVAL            60
+#define PING_INTERVAL            290
 #define ENABLE_ENCUMBRANCE       0
 #define GLOBAL_MONITOR           0
 #define PLAYER_KILL              0
@@ -68,5 +68,7 @@
 #define IRN_PASSWORD2            "Charlie"
 #define IRN_PASSWORD3            "Delta"
 #define SEFUN_PLURALIZE          0
+#define LOG_REMOTE_CHANS         0
+#define LOG_LOCAL_CHANS          1
 
 #endif /* s_config_h */

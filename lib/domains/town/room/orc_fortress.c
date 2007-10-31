@@ -36,7 +36,7 @@ static void create() {
       ]) );
     AddExit("north", "/domains/town/room/orc_temple", (: PreExit :));
     SetInventory(([
-        "/domains/town/npc/orc" : 2,
+        "/domains/town/npc/orc" : 1,
         "/domains/town/npc/orc2" : 1,
         "/domains/town/npc/orc_boss" : 1,
       ]));

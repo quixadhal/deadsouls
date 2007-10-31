@@ -13,7 +13,7 @@ Souls Creator FAQ</span><br>
 <br>
 Written by Cratylus @ Dead Souls<br>
 <br>
-Updated April 2007.<br>
+Updated October 2007.<br>
 <span style="font-weight: bold; text-decoration: underline;"><br>
 </span>Note: commands are
 displayed in boldface, like this: <span style="font-weight: bold;">ls
@@ -65,6 +65,12 @@ bugs and problems in Dead Souls?</a><br>
 <br>
 <a href="#1.11">1.11 Why do you keep
 asking me to post my code?</a><br>
+<br>
+<a href="#1.12">1.12 "help modify" breaks.</a><br>
+<br>
+<a href="#1.13">1.13 There are no help files!</a><br>
+<br>
+<a href="#1.14">1.14 Where are the help files for skills and stats?</a><br>
 <br>
 <br>
 <span style="font-weight: bold;">Section 2: Code</span><br>
@@ -284,6 +290,9 @@ my workrom really IS broke!!1!</big></big></a></small><span
 <br>
 <a href="#2.71">2.71 I can't find the SetQuatloos() lfun anywhere!</a><br>
 <br>
+<a href="#2.72">2.72 You said that what I want to do requires a daemon.
+I am afraid.</a><br>
+<br>
 </big><big style="font-family: courier new;"><br>
 <span style="font-weight: bold;">Section 3:
 Intermud and channel stuff</span><br>
@@ -322,8 +331,12 @@ to. You're not the boss of me.<br>
 hassling me on an intermud channel</a><br>
 <br>
 <a href="#3.11">3.11 What's the deal
-with channel rules and banning and whatnot?</a><a href="#3.11"><br>
-</a><br>
+with channel rules and banning and whatnot?</a><br>
+<a href="#3.12"><br>
+3.12 Hello? Anyone here? Can someone answer a question for me?</a><br>
+<br>
+<a href="#3.13">3.13 How come people on IMC2 can't rwho me?</a><br>
+<a href="#3.11"></a><br>
 <br>
 <span style="font-weight: bold;">Section 4:
 Miscellanea</span><br>
@@ -392,6 +405,8 @@ without having to type it all out again?</a><br>
 4.21 When I'm in combat, I keep getting messages about not being<br>
 able to fight while carrying stuff, but I only have X, Y, and Z on me.</a><br>
 <br>
+<a href="#4.22">4.22 How do light sources work?</a><br>
+<br>
 <br>
 <span style="font-weight: bold;">Section 5:
 Building</span><br>
@@ -433,6 +448,14 @@ How do I make a weapon more powerful?</a><br>
 <a href="#5.12">5.12 My NPC refuses to
 wield his weapon.</a></big><small style="font-family: courier new;"><br>
 </small><big style="font-family: courier new;"><br>
+</big><a href="#5.13"><big style="font-family: courier new;">5.13 How
+do I add colors to exits?</big></a><br>
+<big style="font-family: courier new;"><br>
+</big><big style="font-family: courier new;"><a href="#5.14">5.14 How
+do i refresh a room?</a><br>
+<br>
+<a href="#5.15">5.15 The new room I created with QCS has SetItems I
+don't want</a><br>
 <br>
 <br>
 </big>
@@ -1193,6 +1216,67 @@ Remember that I release 99% of my code for the<br>
 whole world to see, so I've got limited patience if you're<br>
 going to hoard your precious uber sword of wounding code.<br>
 <br>
+<br>
+</big><big style="font-family: courier new;"><span
+ style="font-weight: bold; text-decoration: underline;"><a name="1.12"></a>"help
+modify" breaks.</span><br>
+<br>
+This is typically the result of your columns screen <br>
+setting being very large. Type:<br>
+<br>
+<span style="font-weight: bold;">screen 80 24</span><br>
+<br>
+This is fixed in Dead Souls 2.5a18 and above.<br>
+<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"><a
+ name="1.13"></a>There are no help files!</span><br>
+<br>
+You probably downloaded the public domain version of <br>
+Dead Souls. This version is not recommended for newcomers<br>
+to Dead Souls...it is really for experts or for people<br>
+who have special needs like developing their own lib<br>
+or selling their software. For normal people who are just<br>
+interested in running a mud, the regular version is<br>
+the right choice. <a href="http://dead-souls.net/ds-inst-faq.html#2">Download
+and install the regular<br>
+distribution</a>, instead.<br>
+<br>
+<br style="font-weight: bold; text-decoration: underline;">
+<span style="font-weight: bold; text-decoration: underline;"><a
+ name="1.14"></a>Where are the help files for skills and stats?</span><br>
+<br>
+Things like "strength" or "intelligence" or "knife<br>
+defense" are stats and skills that are used by the<br>
+mud in calculating things like combat effectiveness.<br>
+<br>
+For the most part, they are self-explanatory..."strength"<br>
+is how strong you are, "magic attack" is how good you are<br>
+at, say, hurling fireballs.<br>
+<br>
+For the most part these are not documented in the help<br>
+system because their use should be self-explanatory<br>
+and may not even exist from mud to mud. Please see the<br>
+other faq articles for more details:<br>
+<br>
+<a href="http://dead-souls.net/ds-creator-faq.html#2.16">http://dead-souls.net/ds-creator-faq.html#2.16</a><br>
+<a href="http://dead-souls.net/ds-creator-faq.html#2.56">http://dead-souls.net/ds-creator-faq.html#2.56</a><br>
+<a href="http://dead-souls.net/ds-admin-faq.html#115">http://dead-souls.net/ds-admin-faq.html#115</a><br>
+<br>
+Often what querents mean when they ask this question <br>
+is "exactly how does strength and knife attack interact<br>
+in the combat system with the opponent's dexterity,<br>
+armor and knife defense?"<br>
+<br>
+The only answer to this question that I can give and<br>
+retain my sanity is "You're going to have to get familiar<br>
+with the lib, test different weapons and skill/stat<br>
+levels, and see for yourself."<br>
+<br>
+<br>
+<br>
+<br>
+</big><big style="font-family: courier new;"><br>
 </big>
 <hr
  style="width: 100%; height: 2px; font-weight: bold; font-family: courier new;"><big
@@ -1307,6 +1391,14 @@ the objects they were carrying
 when they quit. The file is<br>
 in /secure/save/[ players |
 creators ]/&lt;first initial&gt;/&lt;name&gt;.o<br>
+<br>
+Note that AddSave() is not responsible for the act of<br>
+saving data to the playerfile. AddSave() sets in the object<br>
+which variables should be saved. When the player quits<br>
+or the automatic save time is reached (about every 5 minutes),<br>
+the save_player() lfun in LIB_AUTOSAVE checks each carried <br>
+object for its AddSaves(), and saves that data in the<br>
+player object accordingly.<br>
 <br>
 <br style="font-weight: bold; text-decoration: underline;">
 <span style="font-weight: bold; text-decoration: underline;"></span><a
@@ -2459,37 +2551,40 @@ set by default in /lib/races.c <br>
 <br>
 Dead Souls alpha libs have the following additional racial options:<br>
 </big>
+<small> </small><small> </small><small> </small><small> </small><small>
+</small><small> </small><small> </small><small> </small><small> </small><small>
+</small><small> </small><small> </small><small> </small><small> </small><small>
+</small><small> </small><small> </small><small> </small> <small></small>
 <table style="width: 100%; text-align: left; font-family: courier new;"
  border="1" cellpadding="2" cellspacing="2">
-  <small> </small><tbody>
-    <small> </small><tr>
-      <small> </small><td style="vertical-align: top;"><small>MASS<br>
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><small>MASS<br>
       </small></td>
-      <small> </small><td style="vertical-align: top;"><small>An
+      <td style="vertical-align: top;"><small>An
 integer corresponding roughly
 to weight on planet Earth, in pounds, multiplied by 10.<br>
       </small></td>
-      <small> </small></tr>
-    <small> </small><tr>
-      <small> </small><td style="vertical-align: top;"><small>SIZE<br>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><small>SIZE<br>
       </small></td>
-      <small> </small><td style="vertical-align: top;"><small>/include/size_types.h<br>
+      <td style="vertical-align: top;"><small>/include/size_types.h<br>
       </small></td>
-      <small> </small></tr>
-    <small> </small><tr>
-      <small> </small><td style="vertical-align: top;"><small>RESPIRATION_TYPE<br>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><small>RESPIRATION_TYPE<br>
       </small></td>
-      <small> </small><td style="vertical-align: top;"><small>/include/respiration_types.h<br>
+      <td style="vertical-align: top;"><small>/include/respiration_types.h<br>
       </small></td>
-      <small> </small></tr>
-    <small> </small><tr>
-      <small> </small><td style="vertical-align: top;"><small>BODY_TYPE<br>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><small>BODY_TYPE<br>
       </small></td>
-      <small> </small><td style="vertical-align: top;"><small>/include/body_types.h<br>
+      <td style="vertical-align: top;"><small>/include/body_types.h<br>
       </small></td>
-      <small> </small></tr>
-    <small> </small>
-  </tbody><small></small>
+    </tr>
+  </tbody>
 </table>
 <big style="font-family: courier new;"><br>
 <br>
@@ -3173,12 +3268,16 @@ key rules to keep in mind when <br>
 doing this:<br>
 </big>
 <ol style="font-family: courier new;">
-  <small> </small><big> </big><li><big>Always inherit LIB_DUMMY first.</big></li>
-  <small> </small><big> </big><li><big>Always invoke dummy::create()
+  <small> </small><big> </big>
+  <li><big>Always inherit LIB_DUMMY first.</big></li>
+  <small> </small><big> </big>
+  <li><big>Always invoke dummy::create()
 before other ::creates()'s.</big></li>
-  <small> </small><big> </big><li><big>Make sure you have CanGet()
+  <small> </small><big> </big>
+  <li><big>Make sure you have CanGet()
 return an error string.</big></li>
-  <small> </small><big> </big><li><big>Make sure the item is
+  <small> </small><big> </big>
+  <li><big>Make sure the item is
 SetInvis(1).<br>
     </big></li>
   <small> </small>
@@ -3580,6 +3679,36 @@ For more information on finding and analyzing library functions, see:<br>
  style="font-weight: bold;"><br>
 </span><br>
 </big><big style="font-family: courier new;">
+<br style="font-weight: bold; text-decoration: underline;">
+<span style="font-weight: bold; text-decoration: underline;"><a
+ name="2.72"></a>You said that what I want to do requires a daemon. I
+am afraid.</span><br>
+<br>
+Think of a daemon as a kind of server program inside the mud. It<br>
+just runs in the background, waiting to be called upon to perform<br>
+some action. What daemons are commonly used for is managing information.<br>
+If I told you that your project probably needs a daemon, it's probably<br>
+because you're planning on saving some kind of information across
+reboots<br>
+that needs to be accessible to everyone. For example, if you're going<br>
+to implement a railroad, you probably want to keep track of which<br>
+train is where, what the different ticket prices are, etc. A daemon<br>
+would serve as a repository of that data, managing the information<br>
+and saving it in an object persistence file so it is preserved in<br>
+case of reboot.<br>
+<br>
+There are many kinds of daemons. Some handle intermud connectivity, <br>
+some handle player information. They are nothing to be afraid of, they<br>
+are LPC objects with a job to do. Some of them are very large<br>
+and have complicated code because they have big, complicated jobs.<br>
+If, for example, you aim to play with the "master daemon", which<br>
+handles mud security, you should be very sure you know what you're
+doing.<br>
+<br>
+But by examining how other daemons do their thing, and by keeping<br>
+frequent backups, and by the process of patient, persistent trial-<br>
+and-error, you'll eventually ramp up to where your daemon code <br>
+does what you want.<br>
 <br>
 </big>
 <hr style="width: 100%; height: 2px; font-family: courier new;"><big
@@ -3869,6 +3998,45 @@ For more context:<br>
 <br>
 <a href="http://lpmuds.net/forum/index.php?webtag=LPC&amp;msg=177.22">http://lpmuds.net/forum/index.php?webtag=LPC&amp;msg=177.22</a><br>
 <br>
+</big><big style="font-family: courier new;"><br>
+<a name="3.12"></a><span
+ style="font-weight: bold; text-decoration: underline;">3.12 Hello?
+Anyone here? Can someone answer a question for me?</span><br
+ style="font-weight: bold; text-decoration: underline;">
+<br>
+It's usually better just to ask the question. If you just<br>
+ask the question, then someone who is idle that moment,<br>
+but comes back in a half hour, can see it, and answer it<br>
+if they can. However, if they come back after a half<br>
+hour and what they see is "can someone help me?", then<br>
+they my have less interest in seeing if you're still online<br>
+and still have a question.<br>
+<br>
+Also, keep in mind that if someone says "yes, I'm here,"<br>
+now they are on the spot, and may feel obligated to<br>
+help you. Folks unsure whether they can help may be <br>
+reluctant to put themselves in a position where they <br>
+could look silly. If you just ask, and they *do* know,<br>
+they can respond.<br>
+<br>
+So, just ask, and realize sometimes it takes a while <br>
+to get a response. If you can't wait around for an<br>
+answer and don't know when you'll be back online, then<br>
+post your question on the <a href="http://lpmuds.net/forum/">forum</a>.<br>
+<br>
+<br>
+<a name="3.13"></a><span
+ style="font-weight: bold; text-decoration: underline;">How come people
+on IMC2 can't rwho me?</span><br>
+<br>
+Dead Souls 2.5a16 and above include Shadyman@QuantumScape's<br>
+updates to Tim@TimMUD's IMC2 client. It works great for<br>
+connecting and chatting on IMC2 channels.<br>
+<br>
+There may be a few kinks remaining with the other functions<br>
+of IMC2 clients. This is something I hope to improve on<br>
+an ongoing basis.<br>
+</big><big style="font-family: courier new;"><br>
 <br>
 </big>
 <hr style="width: 100%; height: 2px; font-family: courier new;"><big
@@ -3892,7 +4060,7 @@ makes you a
 wimp. Raise your level with this command:<br>
 <br>
 <span style="font-weight: bold;">call
-me-&gt;ChangeLevel(20)</span><br>
+me-&gt;SetLevel(20)</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;
 Now get the medical tricorder from your workroom's<br>
@@ -4294,7 +4462,10 @@ citizen. Merely doing my job. <br>
 Just let me
 know what bugs you find, and how I can<br>
 make the lib
-better.<br>
+better. Also, provide help on the<br>
+intermud channels for those who ask. That's how<br>
+you can "give back."<br>
+<br>
 <br>
 <a name="4.18"></a><span
  style="text-decoration: underline; font-weight: bold;">Dude
@@ -4391,6 +4562,20 @@ the encumbrance define in
 See also questions <a href="#2.41">2.41</a> and <a href="#4.1">4.1</a><br>
 <br>
 <br>
+</big><big style="font-family: courier new;"><a name="4.22"></a><span
+ style="font-weight: bold; text-decoration: underline;">How do light
+sources work?<br>
+<br>
+</span>Your player object looks. This initiates a check of the
+environment <br>
+for light. The room has ambient light. Things in the room may have <br>
+radiant light. Ambient light plus radiant light is added together. <br>
+This number is given to your player object. If the number is in your<br>
+vision range, you can see. Torches and flashlights work by having <br>
+radiant light set.<span
+ style="font-weight: bold; text-decoration: underline;"><br>
+</span><br>
+</big><big style="font-family: courier new;"><br>
 </big>
 <hr style="width: 100%; height: 2px; font-family: courier new;"><big
  style="font-family: courier new;"><br>
@@ -4782,6 +4967,33 @@ specific limbs to see if that works. For example,<br>
 right hand</span><br>
 <br>
 etc.<br>
+<br>
+<br>
+<a name="5.13"></a><span
+ style="font-weight: bold; text-decoration: underline;">How do I add
+colors to exits?</span><br>
+<br>
+<span style="font-weight: bold;">modify here obvious %^YELLOW%^east,
+west%^RESET%^</span><br>
+<br>
+To make all exit messages colored, your admin would<br>
+have to edit /lib/std/room.c and add the appropriate<br>
+tags to the obvious exits string.<br>
+<br>
+<br>
+<a name="5.14"></a><span
+ style="font-weight: bold; text-decoration: underline;">How do i
+refresh a room?</span><br>
+<br>
+Go to the room and type: <span style="font-weight: bold;">update<br>
+<br>
+<br>
+<span style="text-decoration: underline;"><a name="5.15"></a>The new
+room I created with QCS has SetItems I don't want</span><br>
+<br>
+</span>Type:<span style="font-weight: bold;"> modify here delete
+SetItems<br>
+</span><br>
 <br>
 <br>
 -

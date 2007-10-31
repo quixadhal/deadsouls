@@ -8,7 +8,14 @@
 
 string mud_name() { return MUD_NAME; }
 
-string imc2_mud_name() { return replace_string(MUD_NAME," ","_"); }
+varargs string imc2_mud_name(string name){ 
+    string mudname;
+
+    if(name) mudname = name;
+    else mudname = MUD_NAME;
+
+    return replace_string(mudname," ","_");
+}
 
 string admin_email() { return ADMIN_EMAIL; }
 
@@ -30,7 +37,7 @@ string architecture() { return __ARCH__; }
 
 string mudlib() { return "Dead Souls"; }
 
-string mudlib_version() { return "2.5a18"; }
+string mudlib_version() { return "2.5a19"; }
 
 int query_host_port() { return __PORT__; }
 

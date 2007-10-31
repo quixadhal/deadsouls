@@ -139,7 +139,7 @@ static void InputEmail(string str) {
     write_file(CFG_GROUPS, tmp);
 
     tmp = "";
-    
+
     tmp = read_file("/secure/include/config.h");
 
     if(sizeof(tmp)){

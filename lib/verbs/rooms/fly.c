@@ -48,32 +48,49 @@ mixed can_fly() {
 }
 
 mixed can_fly_str(string str) {
-    if( !environment(this_player()) ) {
+    object env = environment(this_player());
+    int envpos = env->GetPosition();
+    //tc("1");
+    if( !env ) {
+        //tc("2");
         return "You are nowhere.";
     }
-    if( (int)this_player()->GetStaminaPoints() < 15 )
+    if( (int)this_player()->GetStaminaPoints() < 15 ){
+        //tc("3");
         return "You are too tired to fly anywhere right now.";
-    if(this_player()->GetPosition() != POSITION_FLYING){
-        return "You are not flying.";
     }
-    if((mixed)environment(this_player())->CanFly(this_player(), str)){
+    //tc(identify(env)+"->CanFly("+identify(this_player())+", "+str+"): "+identify(env->CanFly(this_player(), str)));
+    if(env->CanFly(this_player(), str)){
+        //tc("42");
+        if(envpos == POSITION_FLYING) return 1;
         return this_player()->CanFly();
     }
-    else return 0;
+    if(this_player()->GetPosition() != POSITION_FLYING &&
+      envpos != POSITION_FLYING){
+        return "You are not flying.";
+    }
+    //tc("999");
+    return 0;
 }
 
 mixed can_fly_into_str(string str) {
-    if( !environment(this_player()) ) {
+    object env = environment(this_player());
+    int envpos = env->GetPosition();
+    if( !env ) {
         return "You are nowhere.";
     }
     if( (int)this_player()->GetStaminaPoints() < 3 )
         return "You are too tired right now.";
-    if(this_player()->GetPosition() != POSITION_FLYING){
-        return "You are not flying.";
-    }
     if((mixed)environment(this_player())->CanEnter(this_player(), str)){
+        //tc("23");
+        if(envpos == POSITION_FLYING) return 1;
         return this_player()->CanFly();
     }
+    if(this_player()->GetPosition() != POSITION_FLYING &&
+      envpos != POSITION_FLYING){
+        return "You are not flying.";
+    }
+
     else return 0;
 }
 

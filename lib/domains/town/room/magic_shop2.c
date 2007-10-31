@@ -8,24 +8,32 @@ static void create() {
     SetShort("The Magic Shop Storeroom");
     SetLong("This is the storeroom where magical items are kept."); 
     SetInventory(([
-        "/domains/town/meals/potion_strength" : 5,
         "/domains/town/meals/potion_bigheal" : 2,
-        "/domains/town/obj/omni" : 1,
-        "/domains/town/obj/8ball" : 3,
         "/domains/town/meals/potion_healing" : 10,
+        "/domains/town/obj/8ball" : 3,
+        "/domains/town/obj/d6" : 5,
+        "/domains/town/meals/potion_strength" : 5,
+        "/domains/town/obj/omni" : 1,
+        "/domains/town/obj/d20" : 5,
       ]));
     SetExits( ([
         "east" : "/domains/town/room/magic_shop",
       ]) );
     SetObviousExits("e");
 }
-int CanReceive(object ob) {
-    if( playerp(ob) && !creatorp(ob)  && !present("testchar badge",ob) ) {
-        message("info","The storeroom is for authorized personnel only.",ob);
-        return 0;
+int CanReceive(object sneak) {
+    object *living_stack = get_livings(sneak);
+    if(!living_stack || !arrayp(living_stack)) living_stack = ({ sneak });
+    foreach(object ob in living_stack){
+        if(playerp(ob) && !creatorp(ob) && !present("testchar badge",ob) &&
+          !member_group(ob,"TEST")) {
+            message("info","Oana's back room area is for authorized personnel only.", ob);
+            return 0;
+        }
     }
     return 1;
 }
+
 void init(){
     ::init();
 }

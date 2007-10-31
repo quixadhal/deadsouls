@@ -40,3 +40,23 @@ int eventDecay() {
     return Count;
 }
 
+void SetCorpse(object who) {
+    string tmpshort = (string)who->GetShort();
+    if(sizeof(who->GetRiders())) tmpshort = (string)who->GetPlainShort();
+    if( DecayLife < 100 ) {
+        DecayLife = 500;
+    }
+    SetKeyName(who->GetKeyName());
+    //SetId(who->GetId()...);
+    SetId(({ "remains","wreckage",who->GetId()... }) );
+    Owner = who->GetCapName();
+    Race = who->GetRace();
+    Count = 1;
+    Fresh = 1;
+    SetShort("the wreckage of "+tmpshort);
+    SetLong("As you look closely at " + who->GetCapName() +
+      ", you notice that " +  nominative(who) +
+      " does not appear to be moving.");
+    //CallOut = call_out((: eventDecay :), DecayLife/3);
+}
+

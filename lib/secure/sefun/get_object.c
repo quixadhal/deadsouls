@@ -22,7 +22,7 @@
 
 varargs object get_object( string str, object player )
 {
-    object what;
+    object what,ret;
     mixed tmp;
 
     // Prevent wizards finding things they shouldn't.
@@ -65,13 +65,13 @@ varargs object get_object( string str, object player )
         str = absolute_path( (string)player-> get_path(), str );
     }
 
-    //  Make sure the object is loaded into memory, if it exists
+    ret = find_object(str);
 
-    catch( call_other( str, "???" ) );
+    if(!ret && (file_exists(str) || file_exists(str+".c"))) ret = load_object(str);
 
     //  Finally return any object found matching the requested name
 
-    return find_object( str );
+    return ret;
 }
 
 // Created by Pallando@Tabor (93-03-02)

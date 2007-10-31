@@ -71,11 +71,11 @@ string clean_fd(string fd){
 
 void Report(){
     validate();
-    tc("SentMudTokens: "+identify(SentMudTokens),"yellow");
-    tc("ReceivedMudTokens: "+identify(ReceivedMudTokens),"cyan");
-    tc("IncomingSessions: "+identify(IncomingSessions),"white");
-    tc("OutgoingSessions: "+identify(OutgoingSessions),"green");
-    tc("RequestedFiles: "+identify(RequestedFiles),"blue");
+    trr("SentMudTokens: "+identify(SentMudTokens),"yellow");
+    trr("ReceivedMudTokens: "+identify(ReceivedMudTokens),"cyan");
+    trr("IncomingSessions: "+identify(IncomingSessions),"white");
+    trr("OutgoingSessions: "+identify(OutgoingSessions),"green");
+    trr("RequestedFiles: "+identify(RequestedFiles),"blue");
 }
 
 void SentToken(string mud, int token){

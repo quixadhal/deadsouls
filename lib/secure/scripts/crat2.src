@@ -22,8 +22,12 @@ clone 8ball
 cd /domains/campus/weap
 clone grenade
 clone waterpistol
+dest ring
+clone /domains/default/armor/jade_ring.c
 wear all
+wear jade ring on right hand
 put all in overalls
+protection on
 put pass in overalls
 put collar in overalls
 save
