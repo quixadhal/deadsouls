@@ -6,7 +6,7 @@ Then perform the following steps:
 1) cd to the directory where all mud files reside. Called $MUDHOME
    in the rest of this document.
 
-2) cd to v22.2b14-dsouls2
+2) cd to fluffos-2.7-ds2.015
 
 3) type ./configure
 
@@ -29,7 +29,7 @@ and bin:
 7) edit $MUDHOME/bin/startmud (provided) and change the $MUDHOME
     stuff.
 
-8) manually run the mud $MUDHOME/bin/driver $MUDHOME/bin/mudos.cfg
+8) manually run the mud: $MUDHOME/bin/driver $MUDHOME/bin/mudos.cfg
 
 9)  telnet to your machine, using the port specified in mudos.cfg. For
 example: telnet localhost 6666
