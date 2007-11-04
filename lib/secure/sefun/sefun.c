@@ -232,17 +232,29 @@ varargs mixed objects(mixed arg1, mixed arg2){
     else return ({});
 }
 
+#ifdef __FLUFFOS__
+mixed array users(){
+    object *ret = filter(efun::users(), (: ($1) && environment($1) :) );
+    if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
+      base_name(previous_object())  != SERVICES_D)
+        ret = filter(ret, (: !($1->GetInvis() && archp($1)) :) );
+    return ret;
+}
+#else
 mixed array users(){
     object *ret = ({});
     if(sizeof(efun::users()))
         foreach(mixed foo in efun::users()){
-           if(foo && environment(foo)) ret += ({ foo });
+        if(objectp(foo) && environment(foo)) ret += ({ foo });
     }
     if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
       base_name(previous_object())  != SERVICES_D)
-	ret = filter(ret, (: !($1->GetInvis() && archp($1)) :) );
+        foreach(mixed foo in ret){
+        if(foo->GetInvis() && archp(foo)) ret -= ({ foo });
+    }
     return ret;
 }
+#endif
 
 int destruct(object ob) {
     string *privs;
