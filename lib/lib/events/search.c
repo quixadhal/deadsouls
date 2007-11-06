@@ -171,4 +171,3 @@ mixed direct_search_str_word_obj(string str) {
         return 1;
     }
 }
-

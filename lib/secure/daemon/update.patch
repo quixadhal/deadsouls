@@ -27,9 +27,9 @@ static void eventUpdate(){
             config_file = append_line(config_file,"#define DISABLE_INTERMUD",
               "#define DISABLE_IMC2             0");
 
-	if(!grepp(config_file, "PING_INTERVAL"))
-	    config_file = append_line(config_file,"#define PINGING_MUDS",
-	      "#define PING_INTERVAL            290");
+        if(!grepp(config_file, "PING_INTERVAL"))
+            config_file = append_line(config_file,"#define PINGING_MUDS",
+              "#define PING_INTERVAL            290");
 
         if(!grepp(config_file, "DESTRUCT_LOGGING"))
             config_file = append_line(config_file,"#define WEB_SOURCE",
@@ -67,8 +67,10 @@ static void eventUpdate(){
             config_file = append_line(config_file,"#define IRN_PASSWORD2",
               "#define IRN_PASSWORD3            \"gimel\"");
 
-	write_file("/secure/include/config.h", config_file+"\n", 1);
+        write_file("/secure/include/config.h", config_file+"\n", 1);
     }
+
+    rm("/cmds/players/where.c");
 
     remote = load_object("/secure/cmds/admins/removeemote");
     if(remote) remote->cmd("roll");
@@ -79,17 +81,17 @@ static void eventUpdate(){
         event_funs += ({ val["function"] });
     }
     if(member_array("ReadDir",event_funs) == -1)
-    EVENTS_D->AddEvent("/secure/daemon/file","/secure/daemon/file","ReadDir",({ }),90000,1);
+        EVENTS_D->AddEvent("/secure/daemon/file","/secure/daemon/file","ReadDir",({ }),90000,1);
     if(member_array("ReadFuns",event_funs) == -1)
-    EVENTS_D->AddEvent("/secure/daemon/function","/secure/daemon/function","ReadFuns",({ }),100000,1);
+        EVENTS_D->AddEvent("/secure/daemon/function","/secure/daemon/function","ReadFuns",({ }),100000,1);
     if(member_array("RotateLogs",event_funs) == -1)
-    EVENTS_D->AddEvent("/secure/daemon/log","/secure/daemon/log","RotateLogs",({ }),3600,1);
+        EVENTS_D->AddEvent("/secure/daemon/log","/secure/daemon/log","RotateLogs",({ }),3600,1);
 
     if(file_exists("/secure/scripts/qcs_check.scr"))
-    rename("/secure/scripts/qcs_check.scr", "/secure/scripts/qcs_check.txt");
+        rename("/secure/scripts/qcs_check.scr", "/secure/scripts/qcs_check.txt");
 
     tc("Doing race stuff...");
-   
+
     load_object("/secure/cmds/admins/removeraces")->cmd();
     load_object("/secure/cmds/admins/addraces")->cmd();
 
@@ -104,5 +106,5 @@ static void eventUpdate(){
 
 static void create() {
     daemon::create();
-    call_out((: eventUpdate :), 30);
+    call_out((: eventUpdate :), 2);
 }

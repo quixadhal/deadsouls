@@ -59,4 +59,3 @@ void SetCorpse(object who) {
       " does not appear to be moving.");
     //CallOut = call_out((: eventDecay :), DecayLife/3);
 }
-

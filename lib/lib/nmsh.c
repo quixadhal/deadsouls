@@ -470,4 +470,3 @@ varargs int GetInvis() { return 0; }
 
 string GetKeyName() { return 0; }
 
-

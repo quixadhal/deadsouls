@@ -311,4 +311,3 @@ varargs int CanFly(mixed who, mixed where){
     if(this_object()->GetPosition() == POSITION_FLYING) return 1;
     return 0;
 }
-

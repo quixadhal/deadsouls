@@ -271,4 +271,3 @@ string query_board_time(int x) {
     return(hour+ret+" "+day+" "+date+" "+mon);
 }
 
-

@@ -818,4 +818,3 @@ int send_pings(){
         irn_ping(node);
     }
 }
-

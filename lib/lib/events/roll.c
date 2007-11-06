@@ -61,4 +61,3 @@ varargs mixed eventResults(mixed args){
     write("The result of your roll is: "+identify(args));
     return args;
 }
-

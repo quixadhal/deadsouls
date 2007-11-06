@@ -47,4 +47,3 @@ int *roll(string alea){
 }
 
 
-

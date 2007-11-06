@@ -46,4 +46,3 @@ mixed indirect_pick_str_on_obj_with_obj(string str, object target, object tool,
 varargs mixed eventPickLock(mixed who, mixed id, mixed tool){
     return picking_quality;
 }
-

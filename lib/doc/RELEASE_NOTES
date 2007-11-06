@@ -1,5 +1,6 @@
----- 2.5a20 ---
+---- 2.5a21 ---
 - Released 2007-11-05
+- Improvements to router code.
 - Added basic support for boobytraps. Verbs are: boobytrap and disarm. Lib
   objects are LIB_BOOBYTRAP_SHADOW and LIB_BOOBYTRAP_OBJECT. A sample
   trap object can be found at: /domains/town/obj/needle_trap.c

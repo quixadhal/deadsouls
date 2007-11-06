@@ -112,4 +112,3 @@ int SetNoBotCondition(int foo){
 int GetNoBotCondition(){
     return NoBotCondition;
 }
-

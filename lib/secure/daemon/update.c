@@ -70,6 +70,8 @@ static void eventUpdate(){
         write_file("/secure/include/config.h", config_file+"\n", 1);
     }
 
+    rm("/cmds/players/where.c");
+
     remote = load_object("/secure/cmds/admins/removeemote");
     if(remote) remote->cmd("roll");
 
@@ -104,5 +106,5 @@ static void eventUpdate(){
 
 static void create() {
     daemon::create();
-    call_out((: eventUpdate :), 30);
+    call_out((: eventUpdate :), 2);
 }
