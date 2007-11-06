@@ -2,6 +2,7 @@
 
 inherit LIB_TORCH;
 
+
 static void create() {
     torch::create();
     SetKeyName("torch");
@@ -18,4 +19,7 @@ static void create() {
     SetMass(50);
     SetBurntValue(10);
     SetClass(10);
+}
+void init(){
+    ::init();
 }

@@ -9,8 +9,6 @@
 #include <daemons.h>
 #include <message_class.h>
 
-#define IMC2_ENABLED
-
 // Connection data...
 #define HOSTNAME "server01.intermud.us"
 #define HOSTPORT 5000
@@ -480,20 +478,22 @@ private void send_text(string text){
 }
 
 void create(){
-    int temp;
     set_heart_beat(1);
-    //tn("IMC2: created "+ctime(time()));
-    call_out( (: Setup :), 2);
+    tn("IMC2: created "+ctime(time()));
+    call_out( (: Setup :), 1);
 }
 
 void Setup(){
-#ifdef IMC2_DISABLED
-    call_out( (: destruct(this_object()) :), 2);
-    return;
+    int temp;
+#ifdef DISABLE_IMC2
+    if(DISABLE_IMC2){
+        call_out( (: remove() :), 1);
+        return;
+    }
 #endif
 
     if(DISABLE_INTERMUD == 1){
-        call_out( (: destruct(this_object()) :), 2);
+        call_out( (: remove() :), 1);
         return;
     }
 
@@ -536,14 +536,15 @@ void heart_beat(){
         if(!sstat || sstat[1] != "DATA_XFER"){
             socket_close(socket_num);
             //tn("reloading");
-            RELOAD_D->eventReload(this_object(), 2);
+            RELOAD_D->eventReload(this_object(), 2, 1);
         }
     }
 }
 
 void remove(){
     // This object is getting destructed.
-    if(!socket_num) socket_close(socket_num);
+    socket_close(socket_num);
+    mode=2;
     //	if(imc2_socket) imc2_socket->remove();
 #ifdef DATA_LOG
     log_file(DATA_LOG,"IMC2 OBJECT REMOVED\n");
@@ -1551,14 +1552,13 @@ EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
       void eventChangeIMC2Passwords(){
           string cpass = alpha_crypt(10);
           string spass = alpha_crypt(10);
-          string filename = "/secure/daemon/imc2.c";
+          string filename = IMC2_D+".c";
           string file = read_file(filename);
 
           if(!file || !sizeof(file)) return;
 
-          file = replace_string(file,"kffogimden",cpass);
-          file = replace_string(file,"dgcgeoefka",spass);
-          file = replace_string(file,"define IMC2_ENABLED","define IMC2_ENABLED");
+          file = replace_string(file,"clientpass",cpass);
+          file = replace_string(file,"serverpass",spass);
 
           write_file(filename, file, 1);
 

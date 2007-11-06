@@ -142,12 +142,6 @@ varargs mixed eventPick(object who, string id, object tool) {
     }
     else {
         tmp = tool->eventPickLock(who, id, this_object());
-        if( tmp != 1 ) {
-            if( !tmp ) {
-                return "Tools not supported.";
-            }
-            return tmp;
-        }
         strength = tmp + who->GetSkillLevel("stealth");
     }
     who->AddSkillPoints("stealth", strength + 1);
@@ -169,9 +163,7 @@ varargs mixed eventPick(object who, string id, object tool) {
     }
     if( strength > ( LockStrength / 10 + random(LockStrength) ) ) {
         who->AddSkillPoints("stealth", 2*(LockStrength + strength));	
-        if( SetLocked(0) ) {
-            return 0;
-        }
+        SetLocked(0);
         send_messages("pick", "$agent_name $agent_verb the lock on "
           "$target_name!", who, this_object(), environment(who));
         return 1;

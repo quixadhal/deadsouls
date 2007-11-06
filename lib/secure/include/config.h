@@ -10,6 +10,7 @@
 #define AUTO_WIZ                 0
 #define RESTRICTED_INTERMUD      0
 #define DISABLE_INTERMUD         0
+#define DISABLE_IMC2             1
 #define MINUTES_REBOOT_WARNING   20
 #define TIME_TO_RESET            20000
 #define RESET_ALL                0
@@ -67,6 +68,7 @@
 #define IRN_PASSWORD1            "Bravo"
 #define IRN_PASSWORD2            "Charlie"
 #define IRN_PASSWORD3            "Delta"
+#define ROUTER_TESTING           1
 #define SEFUN_PLURALIZE          0
 #define LOG_REMOTE_CHANS         0
 #define LOG_LOCAL_CHANS          1

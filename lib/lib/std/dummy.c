@@ -17,9 +17,10 @@ inherit LIB_LISTEN;
 inherit LIB_LOOK;
 inherit LIB_RADIANCE;
 inherit LIB_READ;
-inherit LIB_SEARCH;
+//inherit LIB_SEARCH;
 inherit LIB_SMELL;
 inherit LIB_TOUCH;
+inherit LIB_SHADOW_HOOK;
 
 /* ***************** dummy.c attributes ***************** */
 

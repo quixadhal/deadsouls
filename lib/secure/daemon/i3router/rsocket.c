@@ -46,6 +46,7 @@ void close_connection(int fd){
 
     validate();
 
+    //trr("%^B_BLACK%^request to kill socket "+fd+" requested by: "+get_stack(),"red");
     sockstat = socket_status(fd);
     if(!sockstat || !sizeof(sockstat)) return;
     if(sockstat[1] == "LISTEN") return;

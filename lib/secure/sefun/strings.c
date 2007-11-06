@@ -497,12 +497,16 @@ string replace_line(string file, string *params, string repl){
     return implode(file_arr,"\n");
 }
 
-string append_line(string file, string *params, string repl){
+string append_line(string file, mixed params, string repl){
     string *file_arr;
     int alarm;
 
     if(!file || !stringp(file)) return "";
     file_arr = explode(file, "\n");
+
+    if(params){
+        if(stringp(params)) params = ({ params });
+    }
 
     foreach(string line in file_arr){
         alarm = 0;

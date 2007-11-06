@@ -9,6 +9,9 @@
 #include <lib.h>
 #include <function.h>
 
+inherit LIB_SEARCH;
+inherit LIB_DISARM;
+
 private int   ProperNoun = 0;
 private int   Modify     = 1;
 private mixed Short      = 0;

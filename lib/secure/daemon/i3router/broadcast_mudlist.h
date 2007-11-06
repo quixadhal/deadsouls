@@ -29,60 +29,59 @@ varargs void broadcast_mudlist(string mudname, int remote, string single){
     //trr("mud: "+mudname);
 
     if(mudinfo[mudname]){
-        //trr("router: disconnect time for "+mudname+": "+mudinfo[mudname]["disconnect_time"]);
+        if(!connected_muds[mudname] && mudinfo[mudname]){
+            //trr("disconnect time for "+mudname+": "+mudinfo[mudname]["disconnect_time"]);
+            if(!mudinfo[mudname]["disconnect_time"] && mudinfo[mudname]["connect_time"]) mudstat = -1;
+            else mudstat = 0;
+        }
+        else {
+            //trr("evidently i think we are connected.");
+            mudstat = -1;
+        }
+        if(!mapp(mudinfo[mudname])){
+            //trr("WTF. NOT A MAPPING: "+get_stack(),"red");
+            return;
+        }
+        //trr("mudstat: "+mudstat,"white");
+        //trr("mud: "+identify(mudinfo[mudname]),"green");
+        //trr("broadcasting mudlist to let them know about "+mudname,"red");
+        packet1 = ({ "mudlist", 5, router_name, 0, 0, 0, mudinfo_update_counter,([
+            mudname:({
+              mudstat,
+              // -1=up, 0=down, n=down for n secs
+              mudinfo[mudname]["ip"], // ip_addr
+              mudinfo[mudname]["player_port"], // player_port
+              mudinfo[mudname]["imud_tcp_port"], // imud_tcp_port
+              mudinfo[mudname]["imud_udp_port"], // imud_udp_port
+              mudinfo[mudname]["mudlib"], // mudlib
+              mudinfo[mudname]["base_mudlib"], // base_mudlib
+              mudinfo[mudname]["driver"], // driver
+              mudinfo[mudname]["mud_type"], // mud_type
+              mudinfo[mudname]["open_status"], // open_status
+              mudinfo[mudname]["services"], // services
+            })
+          ]) });
+        packet3 = ({ "mudlist", 5, router_name, 0, 0, 0, mudinfo_update_counter,([
+            mudname:({
+              mudstat,
+              // -1=up, 0=down, n=down for n secs
+              mudinfo[mudname]["ip"], // ip_addr
+              mudinfo[mudname]["player_port"], // player_port
+              mudinfo[mudname]["imud_tcp_port"], // imud_tcp_port
+              mudinfo[mudname]["imud_udp_port"], // imud_udp_port
+              mudinfo[mudname]["mudlib"], // mudlib
+              mudinfo[mudname]["base_mudlib"], // base_mudlib
+              mudinfo[mudname]["driver"], // driver
+              mudinfo[mudname]["mud_type"], // mud_type
+              mudinfo[mudname]["open_status"], // open_status
+              mudinfo[mudname]["admin_email"], // admin_email
+              mudinfo[mudname]["services"], // services
+              mudinfo[mudname]["other_data"], // other_data
+            })
+          ]) });
     }
-    //else //trr("apparently i know nothing of "+mudname);
-    if(!connected_muds[mudname] && mudinfo[mudname]){
-        //trr("disconnect time for "+mudname+": "+mudinfo[mudname]["disconnect_time"]);
-        if(!mudinfo[mudname]["disconnect_time"]) mudstat = -1;
-        else mudstat = 0;
-    }
-    else {
-        //trr("evidently i think we are connected.");
-        mudstat = -1;
-    }
-    if(!mapp(mudinfo[mudname])){
-        //trr("WTF. NOT A MAPPING: "+get_stack(),"red");
-        return;
-    }
-    //trr("mudstat: "+mudstat,"white");
-    //trr("mud: "+identify(mudinfo[mudname]),"green");
-    //trr("broadcasting mudlist to let them know about "+mudname,"red");
-    packet1 = ({ "mudlist", 5, router_name, 0, 0, 0, mudinfo_update_counter,([
-        mudname:({
-          mudstat,
-          // -1=up, 0=down, n=down for n secs
-          mudinfo[mudname]["ip"], // ip_addr
-          mudinfo[mudname]["player_port"], // player_port
-          mudinfo[mudname]["imud_tcp_port"], // imud_tcp_port
-          mudinfo[mudname]["imud_udp_port"], // imud_udp_port
-          mudinfo[mudname]["mudlib"], // mudlib
-          mudinfo[mudname]["base_mudlib"], // base_mudlib
-          mudinfo[mudname]["driver"], // driver
-          mudinfo[mudname]["mud_type"], // mud_type
-          mudinfo[mudname]["open_status"], // open_status
-          mudinfo[mudname]["services"], // services
-        })
-      ]) });
-    packet3 = ({ "mudlist", 5, router_name, 0, 0, 0, mudinfo_update_counter,([
-        mudname:({
-          mudstat,
-          // -1=up, 0=down, n=down for n secs
-          mudinfo[mudname]["ip"], // ip_addr
-          mudinfo[mudname]["player_port"], // player_port
-          mudinfo[mudname]["imud_tcp_port"], // imud_tcp_port
-          mudinfo[mudname]["imud_udp_port"], // imud_udp_port
-          mudinfo[mudname]["mudlib"], // mudlib
-          mudinfo[mudname]["base_mudlib"], // base_mudlib
-          mudinfo[mudname]["driver"], // driver
-          mudinfo[mudname]["mud_type"], // mud_type
-          mudinfo[mudname]["open_status"], // open_status
-          mudinfo[mudname]["admin_email"], // admin_email
-          mudinfo[mudname]["services"], // services
-          mudinfo[mudname]["other_data"], // other_data
-        })
-      ]) });
     if(!mudinfo[mudname]){ // deleted mud...
+        trr("%^B_RED%^%^BLACK%^No mudinfo for "+mudname);
         // just send a 0 to everyone
         foreach(string targ_mudname in audience){
             write_data(connected_muds[targ_mudname], ({
@@ -93,8 +92,11 @@ varargs void broadcast_mudlist(string mudname, int remote, string single){
         return;
     }
     if(!remote){
-        //trr("mudstat for "+mudname+": "+mudstat);
-        this_object()->SendList( ([ mudname : mudinfo[mudname] ]) );
+        if(!single){
+            //trr("%^RESET%^%^B_MAGENTA%^sending IRN mudstat for "+mudname+": "+identify(mudinfo[mudname]));
+            trr("%^RESET%^%^B_MAGENTA%^sending IRN mudstat for "+mudname);
+            this_object()->SendList( ([ mudname : mudinfo[mudname] ]) );
+    }
 }
 foreach(string targ_mudname in audience){
     int womble;

@@ -1,5 +1,12 @@
 /* compiled by Blitz@Dead Souls and Mikla@Dead Souls */
 
+// The SOBER_COMBAT define is intended to make combat messages a
+// bit less emo. The problem with the original combat messages is
+// that if you have, say, two robots fighting, it's weird and 
+// jarring to see them foaming at the mouth or grunting angrily.
+// Just remove the define for the old-style behavior, if you want
+// the bellowing and ranting back. -Crat 05Nov2007
+
 #define SOBER_COMBAT
 
 #ifndef SOBER_COMBAT

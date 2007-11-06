@@ -32,7 +32,6 @@ varargs void remove_mud(string mudname, int forced){
         if(mudinfo[mudname] && connected_muds[mudname]){ 
             mudinfo[mudname]["disconnect_time"] = time();
             map_delete(connected_muds, mudname);
-            schedule_broadcast(mudname);
         }
     }
 
@@ -47,11 +46,12 @@ varargs void remove_mud(string mudname, int forced){
         this_object()->close_connection(targetfd);
     }
     if(forced){
-        SendList( ([ mudname : -1 ]), 0, "mudlist" );
         server_log("Deleting "+mudname+" from mud list!");
         map_delete(mudinfo, mudname);
     }
     server_log("Removing mud: "+mudname+" on fd: "+targetfd);
+    SendList( ([ mudname : 0 ]), 0, "mudlist" );
+    schedule_broadcast(mudname);
 }
 
 varargs void disconnect_mud(string mudname, int remote){

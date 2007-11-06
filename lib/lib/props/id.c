@@ -129,7 +129,6 @@ int id(string str) {
 
 string array parse_command_id_list() {
     string array ids = (this_object()->GetId() || ({}));
-
     return filter(ids, (: stringp($1) && ($1 != "") :));
 }
 

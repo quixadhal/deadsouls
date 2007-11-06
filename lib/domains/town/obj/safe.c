@@ -2,6 +2,7 @@
 
 inherit LIB_STORAGE;
 
+
 void create() {
     ::create();
     SetKeyName("safe");
@@ -22,7 +23,11 @@ void create() {
     SetClosed(1);
     SetCanLock(1);
     SetLocked(1);
+    SetLockStrength(80);
     SetKey("mansion safe key");
     AddMoney("silver",1000);
 }
 mixed CanGet(object ob) { return "The safe is bolted to the floor and does not move.";}
+void init(){
+    ::init();
+}

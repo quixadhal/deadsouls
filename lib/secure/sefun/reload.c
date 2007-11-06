@@ -88,6 +88,6 @@ varargs mixed reload(mixed ob, int recursive,int quiet) {
         ob->eventMove(ROOM_FURNACE);
         if(next && env) next->eventMove(env);
     }
-    if(!quiet) write("Done.");
+    if(!quiet && this_player()) write("Done.");
     return 1;
 }

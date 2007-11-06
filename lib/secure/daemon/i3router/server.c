@@ -53,6 +53,7 @@ int channel_update_counter; // Counter for the most recent change.
 mapping mudinfo_updates; // Like channel_updates except for muds.
 int mudinfo_update_counter; // Similar to channel_update_counter
 static int max_age = 604800;
+//static int max_age = 86400;
 mapping Blacklist = ([]);
 
 // Prototypes
@@ -114,37 +115,32 @@ static void close_connection(int fd){
     RSOCKET_D->close_connection(fd);
 }
 
-#if 0 
-static void queue_data(int fd, mixed data){
-    RSOCKET_D->write_data(fd, data);
-}
-
-void write_data(int fd, mixed data){
-    call_out( (: write_data :), 0, fd, data);
-}
-#endif
-
 #if 1
 varargs void write_data(int fd, mixed data, int override){
+    mixed *sstat = socket_status(fd);
     string targetmud;
 #if DEB_OUT_LOG
     write_file("/secure/log/tmp.txt","Trying to send at "+ctime(time()));
     write_file("/secure/log/tmp.txt"," packet size:"+sizeof(data));
     write_file("/secure/log/tmp.txt"," "+identify(data)+"\n---\n\n");
 #endif
+    if(data[0] == "irn-startup-req"){
+        trr("%^B_YELLOW%^ATTENTION: IRN startup about to be sent to fd"+fd+":%^RESET%^ "+ identify(data),"red");
+    }
     targetmud = this_object()->query_connected_fds()[fd];
     //trr("the number sent is "+debug);
     //trr("the fd received is "+fd);
     //trr("They "+(debug == fd ? "do" : "%^RED%^DO NOT%^RESET%^")+" match.");
     //trr("this_object()->query_connected_fds()["+fd+"]: "+ targetmud);
     //trr("data[4] is: "+data[4]);
+    if(!sstat || sstat[1] != "DATA_XFER") return;
     if(!fd || (!data[4] && targetmud) ||  member_array(fd, keys(irn_sockets)) != -1 ||
       (targetmud && targetmud == data[4]) ){  
         RSOCKET_D->write_data(fd, data);
     }
     else  {
-        trr("Avoided sending data to the wrong mud. Packet wanted: "+
-          data[4]+" on fd"+fd+", but that fd has: "+targetmud);
+        //trr("Avoided sending data to the wrong mud. Packet wanted: "+
+        //data[4]+" on fd"+fd+", but that fd has: "+targetmud);
         //trr("Stack info: "+get_stack());
     }
 }
@@ -185,30 +181,34 @@ int *open_socks(){
     return ret;
 }
 
-void get_info() {
+mixed get_info(int auto) {
     mixed *socky = sort_array(values(connected_muds), 1);
     mixed *muddy = sort_array(keys(connected_muds), 1);
     string socks = implode(socky, " ");
     string muddies = implode(muddy, ", ");
     int socknum = sizeof(socky);
+    string ret = "";
     validate();
 
     socks += "\nTotal number of connected muds: "+socknum+"\n";
     //tc("channels: "+identify(channels));
-    write("router_name: "+router_name+
-      "\nrouter_ip: "+router_ip+
-      "\nrouter_port: "+router_port+
-      "\nrouter_list"+identify(router_list)+
-      "\nchannel_update_counter: "+ channel_update_counter+
-      ((sizeof(channels)) ? "\nchannels:"+implode(sort_array(keys(channels),1),", ") : "")+
-      "\nmudinfo_update_counter: "+ mudinfo_update_counter+
-      "\nsockets: "+socks+
-      "\nmuds: "+muddies+
-      "\nRouter socket daemon uptime: "+
-      time_elapsed(time()-RSOCKET_D->GetInceptDate())+
-      ", up since "+ctime(RSOCKET_D->GetInceptDate())+
-      "\n"+Report()
-    );
+    ret = "router_name: "+router_name+
+    "\nrouter_ip: "+router_ip+
+    "\nrouter_port: "+router_port+
+    "\nrouter_list"+identify(router_list)+
+    "\nchannel_update_counter: "+ channel_update_counter+
+    ((sizeof(channels)) ? "\nchannels:"+implode(sort_array(keys(channels),1),", ") : "")+
+    "\nmudinfo_update_counter: "+ mudinfo_update_counter+
+    "\nsockets: "+socks+
+    "\nmuds: "+muddies+
+    "\nRouter socket daemon uptime: "+
+    time_elapsed(time()-RSOCKET_D->GetInceptDate())+
+    ", up since "+ctime(RSOCKET_D->GetInceptDate())+
+    "\n"+Report();
+
+    if(auto) return ret;
+    write(ret);
+    return 1;
 }
 
 void clear(){ 
@@ -388,7 +388,7 @@ void check_blacklist(){
         if((timenow - val) == timenow) continue;
         if((timenow - val) > max_age){
             RemoveBlacklistedMud(key);
-            trr("Removed "+key+" from blacklist.","white");
+            trr("%^B_BLACK%^Removed "+key+" from blacklist.","white");
         }
     }
 }
@@ -396,6 +396,23 @@ void check_blacklist(){
 void check_discs(){
     int *fds = values(connected_muds);
     int i = 1;
+
+    foreach(string mudname in keys(mudinfo)){
+        //tc("checking "+mudname);
+        if(!connected_muds[mudname] && mudinfo[mudname]["router"]){
+            if(mudinfo[mudname]["router"] != my_name &&
+              member_array(mudinfo[mudname]["router"],keys(irn_connections)) == -1){
+                if(!mudinfo[mudname]["disconnect_time"]){
+                    trr("killing "+mudname);
+                    mudinfo[mudname]["disconnect_time"] = 100;
+                    if(mudinfo[mudname]["connect_time"])
+                        mudinfo[mudname]["connect_time"] = 0;
+                    schedule_broadcast(mudname);
+                }
+            }
+        }
+    }
+
     if(sizeof(fds))
         foreach(mixed element in sort_array(fds,1)){
         string lost_mud;
@@ -404,12 +421,21 @@ void check_discs(){
           socket_status(element)[1] == "CLOSED" || !GetRemoteIP(element) ||
           GetRemoteIP(element) != mudinfo[query_connected_fds()[element]]["ip"]){
             foreach(string key, mixed val in mudinfo){
-                if(!connected_muds[key] && mudinfo[key]["router"] && mudinfo[key]["router"] == my_name){
-                    server_log("Cleaning connection info from "+key);
-                    if(!mudinfo[key]["disconnect_time"])
-                        mudinfo[key]["disconnect_time"] = time();
-                    if(mudinfo[key]["connect_time"]) 
-                        mudinfo[key]["connect_time"] = 0;
+                if(!connected_muds[key] && mudinfo[key]["router"]){
+                    if(mudinfo[key]["router"] == my_name){
+                        server_log("Cleaning connection info from "+key);
+                        if(!mudinfo[key]["disconnect_time"])
+                            mudinfo[key]["disconnect_time"] = time();
+                        if(mudinfo[key]["connect_time"]) 
+                            mudinfo[key]["connect_time"] = 0;
+                    }
+                    else {
+                        server_log("Cleaning connection info from "+key);
+                        if(!mudinfo[key]["disconnect_time"])
+                            mudinfo[key]["disconnect_time"] = 0;
+                        if(mudinfo[key]["connect_time"]) 
+                            mudinfo[key]["connect_time"] = 0;
+                    }
                 }
             }
 
@@ -424,30 +450,73 @@ void check_discs(){
     }
 }
 
+void clean_ghosts(){
+    int tmp,i;
+    object rsockd = find_object(RSOCKET_D);
+    mixed array incoming = socket_status();
+    mixed *legit_socks = keys(this_object()->query_socks());
+    legit_socks += keys(this_object()->query_irn_sockets());
+
+    if(!rsockd) return;
+
+    tmp =sizeof(socket_status())-1;
+
+    for(i=0;i < tmp;i++){ 
+        if(!incoming[i][5] || incoming[i][5] != rsockd) continue;
+        if(member_array(i, legit_socks) == -1 && incoming[i][1] == "DATA_XFER"){ 
+            this_object()->close_connection(i);
+        }
+    }
+}
+
+void clean_chans(){
+    string *cleaned = ({});
+    foreach(mixed key, mixed val in listening){
+        if(arrayp(val)){
+            foreach(string listening_mud in val){
+                if(!mudinfo[listening_mud]){
+                    listening[key] -= ({ listening_mud });
+                    cleaned += ({ listening_mud });
+                }
+            }
+        }
+        else trr("huh? not an array?");
+    }
+    cleaned = singular_array(cleaned);
+    trr("cleaned from channels: "+implode(cleaned,"\n"));
+    //write_file("/tmp/cleaned.txt",implode(cleaned,"\n"));
+}
+
 void clear_discs(){ 
     string mudname; 
     int i = 1;
 
     validate();
 
-    trr("Discarding excessively old disconnects.","white");
-    trr("Max age is "+time_elapsed(max_age)+".","white");
+    trr("%^B_BLACK%^Discarding excessively old disconnects.","white");
+    trr("%^B_BLACK%^Max age is "+time_elapsed(max_age)+".","white");
     foreach(mudname in keys(mudinfo)) {
         int deadsince = time() - mudinfo[mudname]["disconnect_time"];
+
+        if(!connected_muds[mudname] && mudinfo[mudname]["router"]){
+            if(mudinfo[mudname]["router"] != my_name && 
+              member_array(mudinfo[mudname]["router"],keys(irn_connections)) == -1){
+                if(!mudinfo[mudname]["disconnect_time"])
+                    mudinfo[mudname]["disconnect_time"] = 0;
+                if(mudinfo[mudname]["connect_time"])
+                    mudinfo[mudname]["connect_time"] = 0;
+            }
+        }
+
         if(!mudinfo[mudname]["disconnect_time"]) continue;
-        tc(mudname+": "+ctime((mudinfo[mudname]["disconnect_time"]) || time()),"white");
-        tc("dead age: "+time_elapsed(deadsince),"white");
+        trr("%^B_BLACK%^"+mudname+": "+ctime((mudinfo[mudname]["disconnect_time"]) || time()),"white");
+        trr("%^B_BLACK%^dead age: "+time_elapsed(deadsince),"white");
         if(mudinfo[mudname]["disconnect_time"] && deadsince > max_age ){
-            tc(mudname+": "+time_elapsed(deadsince),"red");
-            if(mudinfo[mudname]["router"] && mudinfo[mudname]["router"] == my_name){
-                server_log("I want to remove "+mudname+". Its disconnect time is "+ctime(query_mud(mudname)["disconnect_time"]));
-                server_log("Which was "+time_elapsed(time() - query_mud(mudname)["disconnect_time"])+" ago.");
-                i = i+1;
-                remove_mud(mudname,1);
-            }
-            else {
-                server_log(mudname+" is not listed as a local mud.");
-            }
+            trr(mudname+": "+time_elapsed(deadsince),"red");
+            server_log("I want to remove "+mudname+". Its disconnect time is "+ctime(query_mud(mudname)["disconnect_time"]));
+            server_log("Which was "+time_elapsed(time() - query_mud(mudname)["disconnect_time"])+" ago.");
+            i = i+1;
+            remove_mud(mudname,1);
         }
 
         if(mudinfo[mudname] && mudinfo[mudname]["disconnect_time"] > 0 &&
@@ -455,10 +524,10 @@ void clear_discs(){
             i = 1;
             server_log("I want to remove "+mudname+". It is in a paradox state.");
             if(member_array(mudname,keys(query_connected_muds())) != -1){
-                trr("Its fd is: "+query_connected_muds()[mudname],"white");
+                trr("%^B_BLACK%^Its fd is: "+query_connected_muds()[mudname],"white");
             }
             else {
-                trr("It is not listed as a connected mud.","white");
+                trr("%^B_BLACK%^It is not listed as a connected mud.","white");
             }
             server_log("Removing disconnected mud: "+identify(mudname));
             i = i+2;
@@ -489,7 +558,7 @@ string query_fd_info(mixed foo){
 
 int GetMaxRetries(){ return MAXIMUM_RETRIES; }
 
-varargs void ReceiveList(mixed data, string type){
+varargs void ReceiveList(mixed data, string type, string who){
     string *cmuds = keys(connected_muds);
     //trr("ReceiveList: " +identify(keys(data)),"red");
     //trr("ReceiveList ("+type+"): " +identify(data),"red");
@@ -502,28 +571,32 @@ varargs void ReceiveList(mixed data, string type){
     if(type == "mudlist"){
         foreach(mixed key, mixed val in data){
             if(member_array(key,cmuds) != -1) continue;
-            if(mudinfo[key] && intp(val)){
+            if(mudinfo[key] && (!val || intp(val))){
                 trr("ROUTER_D: deleting "+key);
-                mudinfo[key]["disconnect_time"] = time();
-                mudinfo[key]["connect_time"] = 0;
-                //broadcast_mudlist(key, 1);
-                //call_out( (: broadcast_mudlist :), 2 , key, 1 );
-                schedule_broadcast(key, 1);
-                map_delete(mudinfo, key);
+                remove_mud(key,1);
                 continue;
             }
-            //trr("received remote list: "+key,"white");
+            //trr("%^B_BLACK%^received remote list: "+key,"white");
             if(!mapp(val)){
                 //trr("VAL NOT A MAPPING. key: "+identify(key)+", val: "+identify(val),"blue");
                 return;
             }
-            //trr("accepting "+key+" into mudinfo mapping.","cyan");
             mudinfo_update_counter++;
-            mudinfo_updates[key] = mudinfo_update_counter;
-            mudinfo[key]=val;
-            //broadcast_mudlist(key, 1);
-            //call_out( (: broadcast_mudlist :), 2 , key, 1 );
-            schedule_broadcast(key, 1);
+            //            if(!connected_muds[key] && (!mudinfo[key] || (mudinfo[key]["router"])
+            //                && who && mudinfo[key]["router"] == who) ){
+            if(!connected_muds[key]){
+                trr("%^B_GREEN%^%^BLACK%^accepting "+key+
+                  " update from "+(mudinfo[key] ? mudinfo[key]["router"] : who ));
+                mudinfo_updates[key] = mudinfo_update_counter;
+                mudinfo[key]=val;
+                //broadcast_mudlist(key, 1);
+                //call_out( (: broadcast_mudlist :), 2 , key, 1 );
+                schedule_broadcast(key, 1);
+            }
+            else {
+                trr("%^RESET%^Looks like I'm %^B_RED%^%^BLACK%^REJECTING%^RESET%^ "+key+"."
+                  +mudinfo[key]["router"]+" update from "+who);
+            }
         }
     }
     else if(type == "chanlist"){

@@ -16,7 +16,7 @@ inherit LIB_LISTEN;
 inherit LIB_LOOK;
 inherit LIB_PROPERTIES;
 inherit LIB_RADIANCE;
-inherit LIB_SEARCH;
+//inherit LIB_SEARCH;
 inherit LIB_SMELL;
 inherit LIB_TOUCH;
 inherit LIB_SHOOT;

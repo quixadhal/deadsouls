@@ -15,8 +15,9 @@ string array nobools = ({ "disable","off","0","no" });
 string array restrict_tokens = ({ "restrict","unrestrict" });
 string array nonmodals = ({ "liveupgrade", "prompt","status","email","websource",
   "debugger", "access", "pinging", "pinginterval" });
-string array modals = ({ "catchtell","matchcommand", "matchobject", "autowiz", "locked","localtime", 
-  "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
+string array antimodals = ({ "imc2" });
+string array modals = antimodals + ({ "catchtell","matchcommand", "matchobject", "autowiz", "locked",
+  "localtime", "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
   "retain", "defaultparse", "disablereboot", "loglocal", "logremote" });
 string array inet_services = ({ "oob", "hftp", "ftp", "http", "rcp", "inet" });
 
@@ -411,12 +412,19 @@ static int ProcessModal(string which, string arg){
         arg = "no";
         write("No argument: Assuming you want to disable this feature.");
     }
-    if(member_array(arg,yesbools) != -1) arg = "1";
-    if(member_array(arg,nobools) != -1) arg = "0";
+    if(member_array(arg,yesbools) != -1) junk = 1;
+    if(member_array(arg,nobools) != -1) junk = 0;
+    if(member_array(which,antimodals) != -1) junk = ( junk ^ 1 ); 
+
+    if(junk) junk = 1;
+    else junk = 0;
+    arg = itoa(junk);
+
     if(sscanf(arg,"%d",junk) != 1){
         write("This parameter is a modal or quasi-modal. I have a hunch it requires an integer as an argument, or at least a \"yes\" or \"no\".");
         return 1;
     }
+
     if(member_array(upper_case(which),keywords) != -1){
         which = upper_case(which);
     }
@@ -439,6 +447,7 @@ static int ProcessModal(string which, string arg){
     case "catchtell" : which = "NPC_CATCH_TELL_DEBUG";break;
     case "loglocal" : which = "LOG_LOCAL_CHANS";break;
     case "logremote" : which = "LOG_REMOTE_CHANS";break;
+    case "imc2" : which = "DISABLE_IMC2";break;
     default : break;
     }
     foreach(string element in config){
@@ -478,6 +487,13 @@ static int ProcessModal(string which, string arg){
     if(which == "LOG_LOCAL_CHANS" || which == "LOG_REMOTE_CHANS"){
         reload(CHAT_D,1,1);
     }
+
+    if(which == "DISABLE_IMC2"){
+        if(!junk) reload(IMC2_D);
+        else IMC2_D->remove();
+        reload(CHAT_D);
+    }
+
     return 1;
 }
 
@@ -722,6 +738,7 @@ void help() {
       "\nmudconfig hostip <the computer's ip address (eg 111.222.333.444)>"
       "\nmudconfig websource <the remote web server's ip address (eg 111.222.333.444)>"
       "\nmudconfig intermud [ enable | disable | restrict | unrestrict | reset ]"
+      "\nmudconfig imc2 [ enable | disable ]"
       "\nmudconfig inet [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig ftp [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig hftp [ enable | disable | start | stop | restart | status ]"

@@ -1,3 +1,16 @@
+---- 2.5a20 ---
+- Released 2007-11-05
+- Added basic support for boobytraps. Verbs are: boobytrap and disarm. Lib
+  objects are LIB_BOOBYTRAP_SHADOW and LIB_BOOBYTRAP_OBJECT. A sample
+  trap object can be found at: /domains/town/obj/needle_trap.c
+- Re-enabled support for lockpicking tools. See /domains/town/obj/lockpick.c
+- Added missing race files.
+- Fixed append_line() sefun.
+- Added ReadDir and ReadFuns events.
+- Fixed log rotation problem in snooper object.
+- IMC2 daemon reloading should no longer spam stdout with "Done."
+- IMC2 connectivity can now be enabled/disabled with the mudconfig command.
+
 ---- 2.5a19 ---
 - Released 2007-10-31
 - Enabling/disabling the logging of remote or local channels can now
@@ -135,6 +148,21 @@
   with many objects (caused by a buggy new parser feature).
 - Fixed bug in /lib/body.c that caused an erroneous eventFall() where
   eventCollapse() was called for.
+
+---- 2.4.6 ---
+- Released 2007-11-04
+- Bundled driver is now FluffOS.
+- users() sefun override properly fixed.
+
+---- 2.4.4 ---
+- Released 2007-10-12
+- Miscellaneous minor bugfixes.
+- Fixed driver problem that stopped compile at malloc.c (stole the
+  fix from FluffOS!)
+- Fixed driver problem that made timekeeping fail (ualarm).
+- Bonus object works properly now.
+- Fixed a problem in the users() sefun that mysteriously hosed
+  64-bit Linux installs.
 
 ---- 2.4.2 ---
 - Released 2007-04-23
