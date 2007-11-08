@@ -25,6 +25,7 @@ int cmd(string args) {
 
         for (int i=0; i<sizeof(users()); i++) {
             if(!obs[i] || !environment(obs[i])) continue;
+            if(obs[i]->GetKeyName() != last_string_element(base_name(obs[i]),"/")) continue;
             if(!obs[i]->GetInvis()) {
                 if(archp(obs[i])) tmp+="[%^BLUE%^ARCH%^RESET%^]";
                 else if(creatorp(obs[i]) ) tmp+="[%^CYAN%^WIZ%^RESET%^]";

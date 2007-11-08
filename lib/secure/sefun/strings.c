@@ -296,14 +296,8 @@ int starts_with_arr(string primary, string *sub){
 
 // returns the last [i] characters of a string.
 varargs string last(string str, int i, int significant){
-    string ret, tmp;
     if(!str || !sizeof(str) || !stringp(str)) return "";
-    ret = str[(strlen(str) - i )..(strlen(str) -1)];
-    if(significant) {
-        tmp = trim(str);
-        ret = tmp[(strlen(tmp) - i )..(strlen(tmp) -1)];
-    }
-    return ret;
+    return str[<i..];
 }
 
 // returns the first [i] characters of a string.

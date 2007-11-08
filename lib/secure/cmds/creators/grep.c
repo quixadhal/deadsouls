@@ -11,12 +11,17 @@
 
 inherit LIB_DAEMON;
 
+int max_files = 1000;
+string *allowed_types3 = ({ ".txt", ".cfg" });
+string *allowed_types1 = ({ ".c", ".h" });
+
 int cmd(string str) {
     mapping borg;
     string *lines, *files, *r_files;
-    string output, exp, file, tmp, txt;
+    string output, exp, file, tmp;
+    mixed txt;
 
-    int i, i_lines, max, max_lines, flags;
+    int err, i, i_lines, max, max_lines, flags;
 
     notify_fail("Correct syntax: <grep [-nr] '[pattern]' [file] (> [output])>\n");
     if(!str) return 0;
@@ -32,6 +37,7 @@ int cmd(string str) {
         }
         str = txt;
     }
+
     if(sscanf(str, "%s > %s", tmp, output) == 2) {
         if(output[0] != '/') output = (string)previous_object()->get_path()+"/"+output;
         str = tmp;
@@ -47,11 +53,29 @@ int cmd(string str) {
         for(i=0, borg = ([]); i<max; i++) {
             if((file_size(files[i]) == -2)&&(flags&GREP_RECURSE_DIRECTORIES)){
                 r_files = (string *)previous_object()->wild_card(files[i]+"/"+file);
+                if(max + sizeof(r_files) > max_files){
+                    write("Too many files in the recurse. Aborting grep.");
+                    return 1;
+                }
                 files += r_files;
                 max += sizeof(r_files);
                 continue;
             }
-            if(!(txt = read_file(files[i]))) continue;
+            if(file_size(files[i]) > 20000){
+                write(files[i]+": too large. Skipping.");
+                continue;
+            }
+            if(member_array(last(files[i],2), allowed_types1) == -1 &&
+              member_array(last(files[i],4), allowed_types3) == -1 &&
+              grepp(files[i],".")){
+                write(files[i]+": unrecognized extension. Skipping.");
+                continue;
+            }
+            err = catch(txt = read_file(files[i]));
+            if(err){
+                write(files[i]+": corrupted file, or not text. Skipping.");
+                continue;
+            }
             lines = explode(txt, "\n");
             borg[files[i]] = ({});
             for(i_lines = 0, max_lines = sizeof(lines); i_lines<max_lines; i_lines++){
@@ -67,11 +91,30 @@ int cmd(string str) {
 
             if((file_size(files[i]) == -2)&&(flags&GREP_RECURSE_DIRECTORIES)){
                 r_files = (string *)previous_object()->wild_card(files[i]+"/"+file);
+                if(max + sizeof(r_files) > max_files){
+                    write("Too many files in the recurse. Aborting grep.");
+                    return 1;
+                }
                 files += r_files;
                 max += sizeof(r_files);
                 continue;
             }
-            if(!(txt = read_file(files[i]))) continue;
+            //tc("file: "+identify(files[i]));
+            if(file_size(files[i]) > 20000){
+                write(files[i]+": too large. Skipping.");
+                continue;
+            }
+            if(member_array(last(files[i],2), allowed_types1) == -1 &&
+              member_array(last(files[i],4), allowed_types3) == -1 &&
+              grepp(files[i],".")){
+                write(files[i]+": unrecognized extension. Skipping.");
+                continue;
+            }
+            err = catch(txt = read_file(files[i]));
+            if(err){
+                write(files[i]+": corrupted file, or not text. Skipping.");
+                continue;
+            }
             borg[files[i]] = regexp(explode(txt, "\n"), exp);
             if(!sizeof(borg[files[i]])) map_delete(borg, files[i]);
         }

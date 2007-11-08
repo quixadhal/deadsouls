@@ -1,5 +1,6 @@
 #include <lib.h>
 #include <meal_types.h>
+
 inherit LIB_ITEM;
 inherit LIB_DRINK;
 
@@ -41,7 +42,7 @@ static void create() {
 
 string GetExternalDesc(){
     string ret = "";
-    if(!inherits(LIB_DUMMY,this_object())){
+    if(!inherits(LIB_BASE_DUMMY,this_object())){
         if(FlaskContents == "empty") ret = "\nIt is empty.";
         else ret = "\nIt contains some "+FlaskContents+".";
     }

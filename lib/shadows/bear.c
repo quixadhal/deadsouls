@@ -5,7 +5,6 @@ inherit LIB_SHADOW;
 inherit LIB_ID;
 
 object me = this_object();
-string *pre_shadowed_id = ({});
 
 varargs string GetExternalDesc(object who){
     return "A large brown bear. Not as huge as a grizzly, but plenty big enough to knock your block off.";
@@ -43,27 +42,35 @@ int eventShadow(object whom){
         }
     }
     if(base_name(previous_object()) == "/domains/town/armor/bearsuit"){
-        pre_shadowed_id = whom->GetCanonicalId();
-        if(!sizeof(pre_shadowed_id)) pre_shadowed_id = whom->GetId();
         ::eventShadow(whom);
-        SetId(pre_shadowed_id + ({ "bear", "brown bear" }));
-        parse_refresh();
+        whom->SetId(({"bear"}));
+        whom->cmdParseRefresh();
         return 1;
     }
     return 0;
 }
 
-string *GetId(){
-    return pre_shadowed_id + ({ "bear", "brown bear" });
-}
-
 int unbearshadow(){
-    SetId(pre_shadowed_id);
+    object ob = GetShadowedObject();
+    //tc("ob: "+identify(ob));
+    if(!ob) return 0;
+    ob->SetId();
+    ob->cmdParseRefresh();
+    //tc("ob->GetId(): "+identify(ob->GetId()));
     eventUnshadow();
 }
 
 string array parse_command_id_list() {
-    string array ids = (this_object()->GetId() || ({}));
+
+    string array ids = (this_object()->GetId() + ({ "bear" }) || ({}));
 
     return filter(ids, (: stringp($1) && ($1 != "") :));
+
+}
+
+string array parse_command_plural_id_list() {
+    string array ids = (this_object()->GetId() + ({"bear"}) || ({}));
+
+    ids = filter(ids, (: stringp($1) && ($1 != "") :));
+    return map(ids, (: pluralize :));
 }

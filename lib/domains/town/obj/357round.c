@@ -1,15 +1,21 @@
 #include <lib.h>
 #include <vendor_types.h>
-inherit "/lib/round";
+inherit LIB_ROUND;
+
 void create(){
-    ::create();
-    SetKeyName("357round");
+    round::create();
+    SetKeyName(".357 round");
     SetId(({"round","bullet"}));
-    SetAdjectives(({"357",".357","pistol"}));
+    SetAdjectives(({"357","caliber","revolver","pistol"}));
     SetShort("a .357 pistol round");
     SetLong("This is a .357 caliber revolver bullet. It has not been fired.");
     SetCaliber(357);
     SetPistolType("revolver");
     SetAmmoType("magnum");
     SetVendorType(VT_TREASURE);
+    SetMass(1);
+}
+
+void init(){
+    round::init();
 }

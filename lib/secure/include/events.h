@@ -35,6 +35,7 @@
 #define LIB_ROLL         DIR_EVENTS "/roll"
 #define LIB_SEARCH       DIR_EVENTS "/search"
 #define LIB_SHAKE        DIR_EVENTS "/shake"
+#define LIB_SHOW         DIR_EVENTS "/show"
 #define LIB_SIT          DIR_EVENTS "/sit"
 #define LIB_SELL         DIR_EVENTS "/sell"
 #define LIB_SMELL        DIR_EVENTS "/smell"

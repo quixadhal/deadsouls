@@ -13,11 +13,11 @@ void init(){
     sentient::init();
 }
 
-varargs int eventDie(object agent) {
+varargs int eventDie(mixed agent) {
     int x;
 
     SetUndead(!(x = GetUndead()));
-    if( agent ) {
+    if( objectp(agent) ) {
         if( x ) agent->eventDestroyEnemy(this_object());
         else agent->eventKillEnemy(this_object());
     }

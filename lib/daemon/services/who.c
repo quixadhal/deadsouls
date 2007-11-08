@@ -40,9 +40,11 @@ void eventReceiveWhoReply(mixed *packet) {
 
 void eventReceiveWhoRequest(mixed *packet) {
     mixed *msg;
+    string *real_users = ({});
     string ret = "";
+    real_users = filter(users(), (: $1->GetKeyName() == last_string_element(base_name($1),"/") :));
     if( file_name(previous_object()) != INTERMUD_D ) return;
-    msg = map(filter(users(), (: (environment($1) && !((int)$1->GetInvis()))  :)),
+    msg = map(filter(real_users, (: (environment($1) && !((int)$1->GetInvis()))  :)),
       (: ({ (string)$1->GetCapName(), query_idle($1),
           (string)$1->GetShort() }) :));
     INTERMUD_D->eventWrite(({ "who-reply", 5, mud_name(), 0, packet[2],

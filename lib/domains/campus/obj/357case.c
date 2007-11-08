@@ -1,17 +1,11 @@
-/*    /domains/Examples/etc/bag.c
- *    from the Dead Souls LPC Library
- *    a sample bag object
- *    created by Descartes of Borg 950529
- */
-
 #include <lib.h>
 
 inherit LIB_STORAGE;
 
 void create() {
-    ::create();
+    storage::create();
     SetKeyName("cardboard case");
-    SetAdjectives( ({"small", "cardboard", ".357 ammo", "ammo"}) );
+    SetAdjectives( ({"small", "cardboard", "357", "ammo"}) );
     SetId( ({ "case" }) );
     SetShort("a small .357 ammo case");
     SetLong("A small cardboard case designed to carry .357 caliber amunition.");
@@ -19,13 +13,15 @@ void create() {
     SetDollarCost(1);
     SetMaxCarry(12);
 }
-void CanReceive(object ob){
-    ::CanReceive();
-    if(ob->GetKeyName() != "357round") {
+
+mixed CanReceive(object ob){
+    if(ob->GetKeyName() != ".357 round") {
         tell_object(this_player(),"This cardboard case is for .357 ammunition only.");
-        return;
+        return 0;
     }
+    return storage::CanReceive(ob);
 }
+
 void init(){
-    ::init();
+    storage::init();
 }

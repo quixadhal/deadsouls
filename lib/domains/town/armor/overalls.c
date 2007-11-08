@@ -2,6 +2,7 @@
 #include <armor_types.h>
 #include <damage_types.h>
 inherit LIB_WORN_STORAGE;
+
 static void create(){
     ::create();
     SetKeyName("overalls");
@@ -19,4 +20,7 @@ static void create(){
     SetProtection(KNIFE,1);
     SetArmorType(A_CUSTOM);
     SetRestrictLimbs( ({ "right leg","left leg","torso" }) );
+}
+void init(){
+    ::init();
 }

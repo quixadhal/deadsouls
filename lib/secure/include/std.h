@@ -6,6 +6,7 @@
 #define LIB_ACCESS       DIR_SSTD "/access"
 #define LIB_ARMOR        DIR_STD  "/armor"
 #define LIB_BARKEEP      DIR_STD  "/barkeep"
+#define LIB_BASE_DUMMY   DIR_STD  "/base_dummy"
 #define LIB_BOOBYTRAP_OBJECT    DIR_STD  "/boobytrap_object"
 #define LIB_BOOBYTRAP_SHADOW    DIR_STD  "/boobytrap_shadow"
 #define LIB_BOOK         DIR_STD  "/book"

@@ -366,7 +366,7 @@ static string user_names(object ob) {
 private static int set_cwd(string str) { 
     int x;
     string tmpstr = str;
-    if(str == "~-") str = PreviousWorkingDirectory;
+    if(str == "~-" || str == "-") str = PreviousWorkingDirectory;
     if(!str || str == "") str = user_path(GetKeyName()); 
     if (str[<1] == '/' && str != "/") str = str[0..<2];
     replace_string(str, "//", "/"); 
@@ -469,4 +469,3 @@ string get_path() { return query_cwd(); }
 varargs int GetInvis() { return 0; }
 
 string GetKeyName() { return 0; }
-

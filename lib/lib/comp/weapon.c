@@ -30,13 +30,10 @@ int GetWielded(){
 }
 
 varargs string GetEquippedDescription(object who) {
+    if(!who) who = this_player();
     if( GetWorn() ) {
         string tmp = " It is wielded in ";
-
-        if( !who ) {
-            who = this_player();
-        }
-        if( who == environment() ) {
+        if(who == environment()) {
             tmp += "your";
         }
         else {
@@ -47,7 +44,6 @@ varargs string GetEquippedDescription(object who) {
     }
     return 0;
 }
-
 
 string GetEquippedShort() {
     object env = environment();

@@ -83,6 +83,7 @@ int SetBonuses(){
         case "XP" : env->AddExperiencePoints(val);break;
         case "SP" : env->AddStaminaPoints(val);break;
         case "MP" : env->AddMagicPoints(val);break;
+        case "poison" : env->AddPoison(val);break;
         default : break;
         }
     }

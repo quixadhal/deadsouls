@@ -4,6 +4,7 @@ inherit LIB_ITEM;
 
 int traptype = 0;
 int traplevel = 0;
+int autoresets = 0;
 string shadow_object = "";
 
 int SetTrapType(int i){
@@ -13,6 +14,15 @@ int SetTrapType(int i){
 
 int GetTrapType(){
     return traptype;
+}
+
+int SetAutoResets(int i){
+    autoresets = i;
+    return autoresets;
+}
+
+int GetAutoResets(){
+    return autoresets;
 }
 
 string SetShadowObject(string str){
@@ -62,19 +72,21 @@ varargs int eventBoobytrap(object who, mixed target, mixed trap){
         write("There is somethign wrong with the boobytrap. You fail to set it.");
         return 1;
     }
-    traplevel = 0;
-    if(this_player()->GetSkill("concealment"))
-        traplevel += this_player()->GetSkill("concealment")["level"];
-    traplevel += random(this_player()->GetStat("luck")["level"]);
-    traplevel += this_player()->GetStat("coordination")["level"];
+    if(this_player()){
+        if(this_player()->GetSkill("concealment"))
+            traplevel += this_player()->GetSkill("concealment")["level"];
+        traplevel += random(this_player()->GetStat("luck")["level"]);
+        traplevel += this_player()->GetStat("coordination")["level"];
+        write("You boobytrap "+target->GetShort()+" with your "+remove_article(trap->GetShort())+".");
+        say(this_player()->GetCapName()+" seems to attach something to "+target->GetShort()+".");
+    }
 
     shadowtrap->SetTrapDescription(this_object()->GetLong());
     shadowtrap->SetTrapType(traptype);
     shadowtrap->SetTrapLevel(traplevel);
+    shadowtrap->SetTrapLevel(traplevel);
+    shadowtrap->SetAutoResets(autoresets);
     shadowtrap->eventShadow(target);
-    write("You boobytrap "+target->GetShort()+" with your "+remove_article(trap->GetShort())+".");
-    say(this_player()->GetCapName()+" seems to attach something to "+target->GetShort()+".");
     this_object()->eventMove(ROOM_FURNACE);
     return 1;
 }
-

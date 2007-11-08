@@ -1,10 +1,10 @@
 #include <lib.h>
 #include <vendor_types.h>
-inherit "/lib/clip";
+inherit LIB_CLIP;
 
 void create(){
-    ::create();
-    SetKeyName("9mmclip");
+    clip::create();
+    SetKeyName("9mm clip");
     SetId(({"clip","magazine"}));
     SetAdjectives(({"9mm","ammunition","ammo","9 millimeter","pistol"}));
     SetShort("a 9 millimeter pistol ammunition clip");
@@ -13,12 +13,12 @@ void create(){
     SetMillimeter(9);
     SetMaxAmmo(15);
     SetAmmoType("acp");
-    SetAmmoType("acp");
     SetVendorType(VT_TREASURE);
     SetInventory(([
-        "/domains/campus/obj/round2" : 15,
+        "/domains/campus/obj/9mmround" : 15
       ]));
 }
+
 void init(){
-    ::init();
+    clip::init();
 }

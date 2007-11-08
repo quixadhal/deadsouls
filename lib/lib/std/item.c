@@ -24,6 +24,7 @@ inherit LIB_PERSIST;
 inherit LIB_PUT;
 inherit LIB_READ;
 inherit LIB_SELL;
+inherit LIB_SHOW;
 inherit LIB_STEAL;
 inherit LIB_UNIQUENESS;
 inherit LIB_VALUE;
@@ -35,14 +36,14 @@ private int RetainOnDeath, nocondition;
 private string QuestId = "";
 
 /* ******************** item.c attributes ******************** */
-string GetExternalDesc() {
-    string desc = object::GetExternalDesc();
+string GetExternalDesc(object who) {
+    string desc = object::GetExternalDesc(who);
     string tmp;
 
     if( desc == "" ) {
         return "";
     }
-    if( tmp = GetEquippedDescription() ) {
+    if( tmp = GetEquippedDescription(who) ) {
         desc += tmp + "\n";
     }
     if( GetBroken() ) {

@@ -5,7 +5,6 @@
 inherit LIB_ROOM;
 
 
-static private object *Old;
 void create() {
     room::create();
     SetNoClean(1);
@@ -14,26 +13,22 @@ void create() {
     SetLong( "The local freezer.  Go down to leave.");
     SetObviousExits("d");
     SetExits( ([ "down" : ROOM_START ]) );
-    Old = ({});
     call_out("clean_room", MAX_NET_DEAD_TIME);
     SetNoModify(1);
 }
-static void clean_room() {
-    object *clean_me;
-    object ob;
 
-    foreach(ob in filter(all_inventory(), (: !living($1) :)))
-    ob->eventDestruct();
-    if( !sizeof(filter(all_inventory(), (: living :))) ) {
-	Old = ({});
-	call_out((: clean_room :), MAX_NET_DEAD_TIME);
-	return;
+static void clean_room(){
+    object ob;
+ 
+    foreach(ob in filter(all_inventory(), (: living($1) :))){
+        string name = last_string_element(base_name(ob),"/");
+        if(!user_exists(name)) continue;
+        ob->eventDestruct();
     }
-    clean_me = (all_inventory() & Old);
-    Old = all_inventory() - clean_me;
-    foreach(ob in clean_me) ob->eventDestruct();
+
     call_out((: clean_room :), MAX_NET_DEAD_TIME);
 }
+
 void init(){
     ::init();
 }

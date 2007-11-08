@@ -151,6 +151,22 @@ mixed direct_get_obj_from_obj() {
     return "You can't get a living thing!";
 }
 
+mixed direct_show_liv_obj() {
+    if( this_player() == this_object() ) return "Are you confused?";
+    return 1;
+}
+
+mixed indirect_show_obj_to_liv(object item) {
+    if( !item ) return 0;
+    if( this_player() == this_object() ) return "Are you confused?";
+    if( environment(item) != this_player() ) return "You don't have that!";
+    else return 1;
+}
+
+mixed indirect_show_obj_liv(object item) {
+    return indirect_show_obj_to_liv(item);
+}
+
 mixed direct_give_liv_obs() {
     return direct_give_liv_obj();
 }

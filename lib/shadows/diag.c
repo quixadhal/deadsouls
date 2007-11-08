@@ -1,11 +1,13 @@
 #include <damage_types.h>
 inherit LIB_SHADOW;
 
-varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixed limbs) {
+varargs int eventReceiveDamage(mixed agent, int type, int x, int internal, mixed limbs) {
     int hp, damage, damdiff;
+    object ob = GetShadowedObject();
     string evidence, limb_string;
     evidence = "";
-    if(agent) evidence += "I receive damage from "+agent->GetKeyName();
+    if(objectp(agent)) evidence += "You receive damage from "+agent->GetKeyName();
+    else if(stringp(agent)) evidence += "You receive damage from "+agent;
     if(type) {
         switch(type){
         case BLUNT : evidence += ", damage type is BLUNT";break; 
@@ -59,7 +61,7 @@ varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixe
     if(!internal) internal = 0;
     if(!limbs) limbs = "";
 
-    GetShadowedObject()->eventReceiveDamage(agent, type, x, internal, limbs);
+    if(ob) ob->eventReceiveDamage(agent, type, x, internal, limbs);
 
     damage = this_object()->GetHealthPoints();
     damdiff = hp - damage;
@@ -67,7 +69,12 @@ varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixe
 }
 
 int RemoveLimb(string limb, object agent){
-    this_object()->eventForce("say My "+limb+" has received enough damage to sever it. "
-      "However, since I am a training dummy, I'll be keeping it.");
-    return 1;
+    object ob = GetShadowedObject();
+    if(!ob) return;
+    if(ob->GetKeyName() == "dummy"){
+        this_object()->eventForce("say My "+limb+" has received enough damage to sever it. "
+          "However, since I am a training dummy, I'll be keeping it.");
+        return 1;
+    }
+    return ob->RemoveLimb(limb, agent);
 }

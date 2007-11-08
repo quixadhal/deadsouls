@@ -2551,10 +2551,10 @@ set by default in /lib/races.c <br>
 <br>
 Dead Souls alpha libs have the following additional racial options:<br>
 </big>
-<small> </small><small> </small><small> </small><small> </small><small>
-</small><small> </small><small> </small><small> </small><small> </small><small>
-</small><small> </small><small> </small><small> </small><small> </small><small>
-</small><small> </small><small> </small><small> </small> <small></small>
+<small> </small><small> </small><small> </small><small> </small><small></small><small></small><small>
+</small><small> </small><small> </small><small>
+</small><small> </small><small> </small><small> </small><small> </small><small></small><small></small><small>
+</small><small> </small> <small></small>
 <table style="width: 100%; text-align: left; font-family: courier new;"
  border="1" cellpadding="2" cellspacing="2">
   <tbody>
@@ -3234,25 +3234,46 @@ things a sittable object needs.
 For example:<br>
 <br>
 #include &lt;lib.h&gt;<br>
-inherit LIB_DUMMY;<br>
+inherit LIB_BASE_DUMMY;<br>
 inherit LIB_SIT;<br>
 inherit LIB_SURFACE;<br>
+<br>
 static void create() {<br>
-dummy::create();<br>
+</big><big style="font-family: courier new;">&nbsp;&nbsp;&nbsp; </big><big
+ style="font-family: courier new;">base_dummy::create();<br>
+</big><big style="font-family: courier new;">&nbsp;&nbsp;&nbsp; </big><big
+ style="font-family: courier new;">
 surface::create();<br>
+</big><big style="font-family: courier new;">&nbsp;&nbsp;&nbsp; </big><big
+ style="font-family: courier new;">
 SetKeyName("bench");<br>
+</big><big style="font-family: courier new;">&nbsp;&nbsp;&nbsp; </big><big
+ style="font-family: courier new;">
 SetId("bench");<br>
+</big><big style="font-family: courier new;">&nbsp;&nbsp;&nbsp; </big><big
+ style="font-family: courier new;">
 SetAdjectives("wooden");<br>
+</big><big style="font-family: courier new;">&nbsp;&nbsp;&nbsp; </big><big
+ style="font-family: courier new;">
 SetShort("a wooden bench");<br>
+</big><big style="font-family: courier new;">&nbsp;&nbsp;&nbsp; </big><big
+ style="font-family: courier new;">
 SetLong("This is a typical
 wooden bench, the sort you might "+<br>
+</big><big style="font-family: courier new;">&nbsp;&nbsp;&nbsp; </big><big
+ style="font-family: courier new;">&nbsp;&nbsp;&nbsp; </big><big
+ style="font-family: courier new;">
 "see in a park. It appears
 designed for sitting on.");<br>
+</big><big style="font-family: courier new;">&nbsp;&nbsp;&nbsp; </big><big
+ style="font-family: courier new;">
 SetMaxSitters(3);<br>
+</big><big style="font-family: courier new;">&nbsp;&nbsp;&nbsp; </big><big
+ style="font-family: courier new;">
 SetInvis(1);<br>
-}<br>
-mixed CanGet(object ob) { return
-"The bench does not budge.";}<br>
+&nbsp;&nbsp;&nbsp; SetPreventGet(</big><big
+ style="font-family: courier new;">"The bench does not budge.");</big><br>
+<big style="font-family: courier new;">}<br>
 <br>
 <br>
 You can then add this file to
@@ -3269,7 +3290,7 @@ doing this:<br>
 </big>
 <ol style="font-family: courier new;">
   <small> </small><big> </big>
-  <li><big>Always inherit LIB_DUMMY first.</big></li>
+  <li><big>Always inherit LIB_BASE_DUMMY first.</big></li>
   <small> </small><big> </big>
   <li><big>Always invoke dummy::create()
 before other ::creates()'s.</big></li>
@@ -3278,12 +3299,17 @@ before other ::creates()'s.</big></li>
 return an error string.</big></li>
   <small> </small><big> </big>
   <li><big>Make sure the item is
-SetInvis(1).<br>
-    </big></li>
+SetInvis(1).</big></li>
+</ol>
+<ol style="font-family: courier new;">
   <small> </small>
 </ol>
-<big style="font-family: courier new;"><br>
+<big style="font-family: courier new;">In Dead Souls 2.5a21 and below,
+inherit LIB_DUMMY, not<br>
+LIB_BASE_DUMMY, and use dummy::create(); rather than<br>
+base_dummy::create();<br>
 <br>
+</big><big style="font-family: courier new;"><br>
 <a name="2.63"></a><span
  style="font-weight: bold; text-decoration: underline;">What
 is pass by reference? What is pass by value?</span><br>
@@ -4797,8 +4823,7 @@ are the vehicles and mounts?</span><br>
 <br>
 As of Dead Souls 2.4.1 mounts
 work for getting around and<br>
-storing stuff. Mounted combat and vehicles are slated for <br>
-future releases.<br>
+storing stuff. <br>
 <br>
 You can see an example of a mount by cloning a mountable horse:<br>
 <br>
@@ -4812,7 +4837,15 @@ You can see an example of a mount by cloning a mountable horse:<br>
  style="font-weight: bold;">
 <span style="font-weight: bold;">dismount</span><br
  style="font-weight: bold;">
-<span style="font-weight: bold;">abandon horse</span><br>
+<span style="font-weight: bold;">abandon horse</span></big><big
+ style="font-family: courier new;"><br>
+<br>
+Mounted combat is slated for future releases.<br>
+<br>
+</big><big style="font-family: courier new;">As of 2.5a19, you can see
+some basic sample vehicles in<br>
+/domains/default/vehicles</big><big style="font-family: courier new;"><span
+ style="font-weight: bold;"></span><br>
 <br>
 <br>
 <a name="5.7"></a><span

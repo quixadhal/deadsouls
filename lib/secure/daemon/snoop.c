@@ -77,8 +77,8 @@ int CheckBot(string str){
         if(archp(find_player(str)) && GLOBAL_MONITOR == 2) return 0;
         cloan=new("/secure/obj/snooper");
         cloan->eventStartSnoop(str);
+        err = catch(unguarded( (: save_object, SAVE_SNOOP, 1 :) ));
     }
-    err = catch(unguarded( (: save_object, SAVE_SNOOP, 1 :) ));
     return 1;
 }
 

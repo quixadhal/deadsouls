@@ -35,6 +35,14 @@ void init(){
     add_action("UnsetNPCReporting", "disablereport");
 }
 
+mixed CanEquip(object who, string array limbs){
+    if(who && !creatorp(who) && !member_group(who,"TEST")){
+        return "Somehow it just won't go on. Strange, isn't it?";
+        return 0;
+    }
+    else return armor::CanEquip(who, limbs);
+}
+
 int eventRegenerate(object who){
     int i;
     string *stumps;
@@ -188,8 +196,10 @@ mixed eventEquip(object who, string array limbs){
     }
     if(success){
         PerformHeal();
-        if(ok) ringshadow->eventShadow(who);
-        //if(ringshadow) tc("shadow: "+identify(ringshadow));
+        if(ok){
+            ringshadow->eventShadow(who);
+            ringshadow->JadeProtection(1);
+        }
     }
     else if(ringshadow) destruct(ringshadow);
     return success;

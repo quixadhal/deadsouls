@@ -1,9 +1,35 @@
+---- 2.5a22 ---
+- COMPAT BUSTER: Objects that used to inherit LIB_DUMMY for special
+  invisible-but-manipulable functionality (see: http://dead-souls.net/ds-creator-faq.html#2.62 )
+  now need to inherit LIB_BASE_DUMMY instead, to avoid nomask problems
+  with shadow hooks.
+- Fixes to shadows to better handle calls to nonexistent shadowed objects.
+- Jade ring now autoprotects when worn, and cannot be worn by players unless they are
+  in the TEST group.
+- Most bearsuit bugs fixed. However, a disguised player can be detected by another clever
+  player with some persistence and simple commands. The point is not foolproof
+  anonymity, but a bit of fun. Creators can very easily detect disguised players
+  using the command: scan here
+- The grep command now prevents you from victimizing the mud with
+  an excessive recurse.
+- The clone command will now try to figure out a nearby matching object
+  to clone if it doesn't find the file you specify.
+- Ammunition and ammo case bugs fixed. 
+- "cd ~-" and "cd -" will both now change to your previous working dir.
+- Added commands: morse, unmorse
+- The Healers Guild now sells poison antidote and claritin.
+- Added verb: show
+- Fixed verb/item conflict when two people in the same room try to shoot each other.
+- The heal command now does a more thorough job of it.
+- Germs no longer get dropped on login.
+
 ---- 2.5a21 ---
 - Released 2007-11-05
 - Improvements to router code.
 - Added basic support for boobytraps. Verbs are: boobytrap and disarm. Lib
   objects are LIB_BOOBYTRAP_SHADOW and LIB_BOOBYTRAP_OBJECT. A sample
   trap object can be found at: /domains/town/obj/needle_trap.c
+  Finding boobytraps is done with the command: search
 - Re-enabled support for lockpicking tools. See /domains/town/obj/lockpick.c
 - Added missing race files.
 - Fixed append_line() sefun.

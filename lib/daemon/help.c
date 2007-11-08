@@ -192,7 +192,12 @@ static private void LoadIndices() {
                   return GetHelpByIndex(topic, str);
               }
           }
-          Error = "Help for the topic \"" + str + "\" could not be found.";
+          if(this_player() && adminp(this_player())){
+              Error = "Help for the topic \"" + str + "\" could not be found.";
+          }
+          else {
+              Error = "The search for help on the topic \"" + str + "\" yields you no results.";
+          }
           return 0;
       }
 

@@ -101,6 +101,7 @@ int Setup() {
     set_living_name(GetKeyName());
     interface::Setup();
     add_action((: cmdQuit :), "quit");
+    add_action((: cmdParseRefresh :), "parserefresh");
     HostSite = query_ip_name(this_object());
     LoginTime = time();
     SetId(({}));
@@ -538,6 +539,10 @@ void eventDescribeEnvironment(int brief) {
             return x;
         }
 
+        void cmdParseRefresh(){
+            parse_refresh();
+        }
+
         int cmdQuit() {
             string tmp;
             object env = environment(this_object());
@@ -550,7 +555,7 @@ void eventDescribeEnvironment(int brief) {
               ! sizeof(previous_object(-1)) ) {
                 message("system", "You are unable to escape this reality!",
                   this_object());
-                return 1;
+                return 0;
             }
             message("system", "Please come back another time!", this_object());
             if(!creatorp(this_object())){
@@ -561,7 +566,7 @@ void eventDescribeEnvironment(int brief) {
                     if((!retain && !ob->GetRetain()) || !ob->GetRetain()) ob->eventMove(env);
                 }
             }
-            this_object()->AddCarriedMass(-5000);
+            this_object()->AddCarriedMass(-(this_object()->GetCarriedMass()));
             tmp = GetMessage("logout") || (GetName() + " is gone from this reality!");
             save_player(GetKeyName());
             if(!(archp(this_object()) && this_object()->GetInvis())){
@@ -605,16 +610,27 @@ void eventDescribeEnvironment(int brief) {
         varargs string array SetId(string *bogus) {
             int i;
 
-            if(UserId) return UserId;
-            if(!GetCapName()) {
-                UserId = ({ GetKeyName() });
-                return UserId;
+            UserId = ({ GetKeyName() });
+            if(GetCapName()) UserId += ({ lower_case(GetCapName()) });
+
+            if(sizeof(bogus)){
+                if(this_player() && this_player() == this_object()){
+                    if(!arrayp(bogus)) bogus = ({ bogus });
+                    if(!UserId) UserId = bogus;
+                    else UserId += bogus;
+                }
             }
-            UserId = ({ GetKeyName(), lower_case(GetCapName()) });
-            if((i=sizeof(bogus = explode(lower_case(GetCapName()), " "))) == 1)
-                return UserId;
-            while(i--)
-                if(!user_exists(bogus[i])) UserId += ({ bogus[i] });
+
+            UserId = singular_array(UserId);
+
+            foreach(string sub in UserId){
+                if(user_exists(sub) && GetKeyName() != sub){
+                    if(member_array(sub,RACES_D->GetRaces()) == -1 || find_player(sub)){
+                        UserId -= ({ sub });
+                    }
+                }
+            }
+            parse_init();
             return UserId;
         }
 

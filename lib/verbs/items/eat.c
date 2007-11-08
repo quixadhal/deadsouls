@@ -15,6 +15,7 @@ inherit LIB_VERB;
 static void create() {
     verb::create();
     SetVerb("eat");
+    SetSynonyms("swallow");
     SetErrorMessage("Eat what?");
     SetRules("OBJ");
     SetHelp("Syntax: <eat FOOD>\n\n"

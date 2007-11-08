@@ -1607,7 +1607,6 @@ varargs int eventDie(mixed agent) {
         return 0;
     }
 
-
     float AddStaminaPoints(mixed x) {
         float y;
 

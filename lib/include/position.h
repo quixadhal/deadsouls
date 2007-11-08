@@ -5,5 +5,6 @@
 #define POSITION_SITTING            (1 << 2)
 #define POSITION_LYING              (1 << 3)
 #define POSITION_FLYING             (1 << 4)
+#define POSITION_KNEELING           (1 << 5)
 
 #endif /* s_position_h */

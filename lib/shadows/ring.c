@@ -1,13 +1,16 @@
 #include <damage_types.h>
 inherit LIB_SHADOW;
-int reporting, protecting;
+int reporting = 1;
+int protecting = 1;
 
-varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixed limbs) {
+varargs int eventReceiveDamage(mixed agent, int type, int x, int internal, mixed limbs) {
     int stamina, fatigue, hp, damage, damdiff;
+    object ob = GetShadowedObject();
     string evidence, limb_string;
     if(reporting){
         evidence = "%^BOLD%^%^RED%^";
-        if(agent) evidence += "You receive damage from "+agent->GetKeyName();
+        if(objectp(agent)) evidence += "You receive damage from "+agent->GetKeyName();
+        else if(stringp(agent)) evidence += "You receive damage from "+agent;
         if(type) {
             switch(type){
             case BLUNT : evidence += ", damage type is BLUNT";break; 
@@ -69,33 +72,36 @@ varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixe
             return 1;
         }
 
-        GetShadowedObject()->eventReceiveDamage(agent, type, x, internal, limbs);
+        if(ob) ob->eventReceiveDamage(agent, type, x, internal, limbs);
 
         damage = this_object()->GetHealthPoints();
         fatigue = stamina - this_object()->GetStaminaPoints();
         damdiff = hp - damage;
         this_object()->eventPrint("%^RED%^Actual damage done: "+damdiff+"%^RESET%^");
         this_object()->eventPrint("%^YELLOW%^Stamina sapped: "+fatigue+"%^RESET%^");
-        if(protecting){
-            GetShadowedObject()->AddHP(damdiff+1);
+        if(protecting && ob){
+            ob->AddHP(damdiff+1);
             this_object()->AddStaminaPoints(fatigue+1);
         }
     }
-    else if(!protecting) 
-        return GetShadowedObject()->eventReceiveDamage(agent, type, x, internal, limbs);
+    else if(!protecting && ob) 
+        return ob->eventReceiveDamage(agent, type, x, internal, limbs);
     return 1;
 }
 
 int RemoveLimb(string limb, object agent){
+    object ob = GetShadowedObject();
+    if(!ob) return 0;
     if(protecting){
         this_object()->eventPrint("you have received enough damage to sever it. "+
           "However, The ring's protection prevents that.");
         return 1;
     }
-    else return GetShadowedObject()->RemoveLimb(limb, agent);
+    else return ob->RemoveLimb(limb, agent);
 }
 
 int AddHP(int hp){
+    object ob = GetShadowedObject();
     if(protecting && hp < 0){
         if(reporting)
             this_object()->eventPrint(identify(previous_object())+" tried to "+
@@ -108,25 +114,29 @@ int AddHP(int hp){
         this_object()->eventPrint(identify(previous_object())+" tried to "+
           operation+" "+abs(hp)+" health.");
     }
-    return GetShadowedObject()->AddHP(hp);
+    if(ob) return ob->AddHP(hp);
+    else return 1;
 }
 
 int JadeProtection(int i){
+    object ob = GetShadowedObject();
     if(!this_player()) return 0;
-    if(!(this_player() == this_object()->GetShadowedObject())) return 0;
+    if(!ob || !(this_player() == ob )) return 0;
     protecting = i;
     return protecting;
 }
 
 int JadeReporting(int i){
+    object ob = GetShadowedObject();
     if(!this_player()) return 0;
-    if(!(this_player() == this_object()->GetShadowedObject())) return 0;
+    if(!ob || !(this_player() == ob )) return 0;
     reporting = i;
     return reporting;
 }
 
 int eventUnshadow(){
+    object ob = GetShadowedObject();
     if(!this_player()) return 0;
-    if(!(this_player() == this_object()->GetShadowedObject())) return 0;
+    if(!ob || !(this_player() == ob )) return 0;
     return ::eventUnshadow();
 }

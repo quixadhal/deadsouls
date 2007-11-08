@@ -46,6 +46,7 @@ static void heart_beat() {
     if( IDLE_TIMEOUT && query_idle(this_object()) >= IDLE_TIMEOUT 
       && !creatorp(this_object()) 
       && !present("testchar badge",this_object()) 
+      && !present("idler_amulet",this_object()) 
       && !testp(this_object()) ) {
         cmdQuit();
         return;
@@ -185,6 +186,7 @@ void eventRevive() {
     string skill;
 
     this_object()->SetDead(0);
+    if(!creatorp(this_object())) this_object()->SetInvis(0);
     this_object()->SetDeathEvents(0);
 
     if( !GetUndead() ) return;

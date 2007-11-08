@@ -1,3 +1,4 @@
+title Optimus $N Maximus
 home
 update
 remove all
@@ -19,15 +20,20 @@ cd /realms/cratylus/area/armor
 clone cap
 cd /domains/town/obj
 clone 8ball
+clone d20
+clone d6
 cd /domains/campus/weap
 clone grenade
 clone waterpistol
 dest ring
 clone /domains/default/armor/jade_ring.c
+clone /domains/default/armor/gray_amulet.c
 wear all
 wear jade ring on right hand
 put all in overalls
 protection on
 put pass in overalls
-put collar in overalls
+wear collar
+put gray amulet in overalls
+put dice in overalls
 save

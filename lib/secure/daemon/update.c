@@ -19,8 +19,6 @@ static void eventUpdate(){
     newfile += "    call_out((: eventUpdate :), 60);\n";
     newfile += "}\n";
 
-    tc("Performing update tasks...");
-
     if(sizeof(config_file)){
 
         if(!grepp(config_file, "DISABLE_IMC2"))
@@ -90,21 +88,18 @@ static void eventUpdate(){
     if(file_exists("/secure/scripts/qcs_check.scr"))
         rename("/secure/scripts/qcs_check.scr", "/secure/scripts/qcs_check.txt");
 
-    tc("Doing race stuff...");
-
     load_object("/secure/cmds/admins/removeraces")->cmd();
     load_object("/secure/cmds/admins/addraces")->cmd();
 
-    tc("Doing class stuff...");
-    CLASSES_D->RemoveClass("thief");
-    CLASSES_D->AddClass("thief");
-
-    tc("Almost done...");
     write_file("/secure/daemon/update.c",newfile,1);
-    tc("Update tasks complete.");
+
+    CLASSES_D->RemoveClass("thief");
+    CLASSES_D->AddClass("/secure/cfg/classes/thief");
+
+    write_file("/secure/daemon/update.c",newfile,1);
 }
 
 static void create() {
     daemon::create();
-    call_out((: eventUpdate :), 2);
+    call_out((: eventUpdate :), 1);
 }

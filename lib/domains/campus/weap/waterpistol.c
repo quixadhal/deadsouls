@@ -10,6 +10,7 @@
 
 inherit LIB_PISTOL;
 
+
 static void create() {
     ::create();
     SetKeyName("water pistol");
@@ -26,8 +27,7 @@ static void create() {
     SetPistolType("auto");
     SetWeaponType("blunt");
 }
-
-int eventFireWeapon(object shooter, object target){
+mixed eventShoot(object shooter, object target){
     string name,patsy;
     object killer, env;
     killer = this_player();
@@ -44,7 +44,6 @@ int eventFireWeapon(object shooter, object target){
     return 1;
 }
 
-
-
-
-
+void init(){
+    ::init();
+}

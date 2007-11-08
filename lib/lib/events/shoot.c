@@ -12,7 +12,7 @@ int MustWield(int i){
     else return 0;
 }
 
-int eventShoot(mixed shooter, mixed target){
+mixed eventShoot(mixed shooter, mixed target){
     string tmp;
     if(target && objectp(target)){
         tmp=target->GetName();
@@ -23,23 +23,20 @@ int eventShoot(mixed shooter, mixed target){
     return 1;
 }
 
-int CanShoot(object shooter, mixed target){
+mixed CanShoot(object shooter, mixed target){
     object cible;
     mixed attackable;
 
     if(living(shooter)) return 0;
     if(mustcarry > 0 && environment(this_object()) != this_player()) {
-        write("You are not holding the weapon.");
-        return 1;
+        return "#You are not holding the weapon.";
     } 
     if(mustwield > 0 && this_object()->GetWorn() == 0 && !creatorp(this_player())) {
-        write("You are not wielding the weapon.");
-        return 1;
+        return "#You are not wielding the weapon.";
     }
 
     if(!present(target,environment(this_player())) && !present(target,environment(this_object()))){
-        write("That target is not here.");
-        return 1;
+        return "#That target is not here.";
     }
     if(stringp(target) && !cible=present(target,environment(this_object()))){
         cible=present(target,environment(this_player()));
@@ -50,13 +47,9 @@ int CanShoot(object shooter, mixed target){
     attackable = cible->GetAttackable();
 
     if(!attackable || !intp(attackable) || attackable != 1){
-        write("You are unable to shoot "+objective(cible)+".");
-        return 0;
+        return "#You are unable to shoot "+objective(cible)+".";
     }
 
-    if(this_object()->eventFireWeapon(shooter,cible)) return 1;
-
-    eventShoot(shooter,target);
     return 1;
 }
 
@@ -73,7 +66,7 @@ int direct_shoot_obj_at_str(object shooter, string target){
 }
 
 int indirect_shoot_obj_with_obj(mixed ob1,mixed ob2){
-    return 1;
+    return CanShoot(ob2,ob1);
 }
 
 int indirect_shoot_obj_at_obj(mixed ob1,mixed ob2){

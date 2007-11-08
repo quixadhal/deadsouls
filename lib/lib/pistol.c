@@ -126,7 +126,7 @@ int CanRelease(object ob){
     return 1;
 }
 
-int eventShoot(object ob, mixed target){
+mixed eventShoot(object ob, mixed target){
     object cible;
     if(stringp(target)) cible = present(target,environment(environment(this_object())));
     if(objectp(target)){

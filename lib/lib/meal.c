@@ -19,6 +19,7 @@ inherit LIB_ITEM;
 private int MealStrength, MealType;
 private string EmptyItem, EmptyName, OtherMessage;
 private mixed EmptyShort, EmptyLong, MyMessage;
+function MealAction;
 
 static void create() {
     item::create();
@@ -30,7 +31,12 @@ static void create() {
     MyMessage = "You drink your drink.";
     OtherMessage = "$N drinks $P drink.";
     SetVendorType(VT_DRINK);
+    SetNoCondition(1);
     AddSave( ({ "MealStrength", "MealType", "BaitStrength" }) );
+}
+
+int SetMealAction(function f){
+    MealAction = f;
 }
 
 mixed direct_drink_obj() { 
@@ -107,14 +113,12 @@ mixed eventDrink(object who) {
 mixed eventEat(object who) {
     mixed tmp;
     int x;
-
     if( (tmp = (mixed)who->eventEat(this_object())) != 1 ) return tmp;
     if( (x = functionp(MyMessage)) && !(x & FP_OWNER_DESTED) ) {
         evaluate(MyMessage, who);
     }
     else {
         string mymsg, othermsg;
-
         mymsg = replace_string(MyMessage, "$P", "your");
         othermsg = replace_string(OtherMessage, "$P",
           possessive(who));
@@ -127,6 +131,9 @@ mixed eventEat(object who) {
         if( random((int)who->GetStatLevel("luck")) > 35 )
             who->eventPrint("You notice a strange aftertaste.");
         who->AddPoison(x);
+    }
+    if( (x = functionp(MealAction)) && !(x & FP_OWNER_DESTED) ) {
+        evaluate(MealAction, who);
     }
     Destruct();
     return 1;

@@ -23,7 +23,8 @@ void create(){
     SetShadowObject("/shadows/needle_trap");
     SetTrapType(BOOBYTRAP_OPEN | BOOBYTRAP_CLOSE | BOOBYTRAP_GET | BOOBYTRAP_STEAL | BOOBYTRAP_PICK);
     SetMass(50);
-    SetBaseCost(1);
+    SetAutoResets(2);
+    SetBaseCost(100);
 }
 
 void init(){

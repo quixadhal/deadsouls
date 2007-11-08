@@ -28,6 +28,7 @@ inherit LIB_POISON;
 inherit LIB_PUT;
 inherit LIB_READ;
 inherit LIB_SELL;
+inherit LIB_SHOW;
 inherit LIB_STEAL;
 inherit LIB_UNIQUENESS;
 inherit LIB_VALUE;
@@ -50,13 +51,10 @@ int GetRetainOnDeath() { return RetainOnDeath; }
 
 /*  ***************  /lib/armor.c data functions  ***************  */
 varargs string GetEquippedDescription(object who) {
+    if(!who) who = this_player();
     if( GetWorn() ) {
         string tmp = "It is worn on ";
-
-        if( !who ) {
-            who = this_player();
-        }
-        if( who == environment()) {
+        if(who == environment()) {
             tmp += "your";
         }
         else {
@@ -68,14 +66,12 @@ varargs string GetEquippedDescription(object who) {
     return 0;
 }
 
-varargs string GetExternalDesc(){
+varargs string GetExternalDesc(object who){
     string desc;
-    desc = ::GetExternalDesc();
-    if(GetWorn()) desc += " "+GetEquippedDescription();
+    desc = ::GetExternalDesc(who);
+    if(GetWorn()) desc += " "+GetEquippedDescription(who);
     return desc;
 }
-
-
 
 string GetEquippedShort() {
     string tmp = GetShort();

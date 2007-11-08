@@ -1,11 +1,11 @@
 #include <lib.h>
 #include <meal_types.h>
 
-inherit LIB_DUMMY;
+inherit LIB_BASE_DUMMY;
 inherit LIB_FLASK; 
 
 static void create() {
-    dummy::create();
+    base_dummy::create();
     flask::create();
     SetKeyName("water");
     SetId(({"river","riverwater" }));

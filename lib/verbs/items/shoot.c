@@ -29,14 +29,14 @@ mixed can_shoot_obj_at_str(object shooter, string target) {
 }
 
 varargs mixed do_shoot_obj_at_obj(mixed shooter,mixed target) {
-    return (mixed)shooter->CanShoot(shooter,target);
+    return (mixed)shooter->eventShoot(shooter,target);
 }
 
 varargs mixed do_shoot_obj_at_str(object shooter, string target) {
-    return (mixed)shooter->CanShoot(shooter,target);
+    return (mixed)shooter->eventShoot(shooter,target);
     return 1;
 }
 
 varargs mixed do_shoot_obj_with_obj(mixed target,mixed shooter) {
-    return (mixed)shooter->CanShoot(shooter,target);
+    return (mixed)shooter->eventShoot(shooter,target);
 }

@@ -18,6 +18,14 @@ private string calculateFormatString(int screenSize);
 object *whom, *who, *display;
 string *args;
 
+string GetBaseName(object ob){
+    string ret;
+    if(ob) ret = capitalize(last_string_element(base_name(ob),"/"));
+    if(!ret && ob) ret = ob->GetCapName();
+    if(!ret) ret = "";
+    return ret;
+}
+
 mixed room_env(object ob){
     string *riders;
     object env = environment(ob);
@@ -141,27 +149,27 @@ static int general_sort(object alpha, object beta) {
 
     if(archp(alpha)) {
         if(!archp(beta)) return -1;
-        else return strcmp((string)alpha->GetCapName(), 
-              (string)beta->GetCapName());
+        else return strcmp((string)GetBaseName(alpha), 
+              (string)GetBaseName(beta));
     }
     else if(archp(beta)) return 1;
     if(creatorp(alpha)) {
         if(!creatorp(beta)) return -1;
-        else return strcmp((string)alpha->GetCapName(),
-              (string)beta->GetCapName());
+        else return strcmp((string)GetBaseName(alpha),
+              (string)GetBaseName(beta));
     }
     else if(creatorp(beta)) return 1;
     if(ambassadorp(alpha)) {
         if(!ambassadorp(beta)) return -1;
-        else return strcmp((string)alpha->GetCapName(),
-              (string)beta->GetCapName());
+        else return strcmp((string)GetBaseName(alpha),
+              (string)GetBaseName(beta));
     }
     else if(ambassadorp(beta)) return 1;
     if((x = (int)alpha->GetLevel()) > (y = (int)beta->GetLevel()))
         return -1;
     else if(x < y) return 1;
-    else return strcmp((string)alpha->GetCapName(),
-          (string)beta->GetCapName());
+    else return strcmp((string)GetBaseName(alpha),
+          (string)GetBaseName(beta));
 }
 
 static int special_sort(object alpha, object beta) {
@@ -222,7 +230,7 @@ static string map_info(object ob, string formatString) {
     if(x > 86400) age = sprintf("%:-2d D", x/86400);
     else if(x > 3600) age = sprintf("%:-2d h", x/3600);
     else age = sprintf("%:-2d m", x/60);
-    nom = (string)ob->GetCapName();
+    nom = (string)GetBaseName(ob);
     if((int)ob->GetInvis()) nom = "("+nom+")";
     if(in_edit(ob) || in_input(ob)) nom = "["+nom+"]";
     if(creatorp(ob)) {

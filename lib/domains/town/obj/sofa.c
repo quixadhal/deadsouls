@@ -1,9 +1,3 @@
-/*    /domains/campus/etc/stool.c
- *    From the Nightmare V Object Library
- *    An example of a chair object
- *    Created by Descartes of Borg 961221
- */
-
 #include <lib.h>
 
 inherit LIB_BED;

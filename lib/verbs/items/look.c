@@ -102,7 +102,7 @@ mixed do_look_str(string str) {
 
 varargs mixed do_look_at_obj(object ob, mixed arg) {
     if(ob->GetInvis() && !archp(this_player()) && 
-      base_name(ob) != LIB_DUMMY && !inherits(LIB_DUMMY,ob) ){
+      base_name(ob) != LIB_BASE_DUMMY && !inherits(LIB_BASE_DUMMY,ob) ){
         write("There is no "+arg+" here.");
         return 1;
     }
@@ -123,7 +123,7 @@ mixed do_look_in_obj(object ob, mixed arg){
 
 mixed do_look_inside_obj(object ob,mixed arg) {
     if(ob->GetInvis() && !archp(this_player()) &&
-      base_name(ob) != LIB_DUMMY && !inherits(LIB_DUMMY,ob) ){
+      base_name(ob) != LIB_BASE_DUMMY && !inherits(LIB_BASE_DUMMY,ob) ){
         return write("There is no "+arg+" here.");
     }
     return (mixed)ob->eventShowInterior(this_player());
@@ -131,7 +131,7 @@ mixed do_look_inside_obj(object ob,mixed arg) {
 
 mixed do_look_at_obj_word_obj(object target, object storage, mixed arg) {
     if(target->GetInvis() && !archp(this_player()) &&
-      base_name(target) != LIB_DUMMY && !inherits(LIB_DUMMY,target) ){
+      base_name(target) != LIB_BASE_DUMMY && !inherits(LIB_BASE_DUMMY,target) ){
         return write("There is no "+arg+" here.");
     }
     return (mixed)target->eventShow(this_player());

@@ -270,4 +270,3 @@ string query_board_time(int x) {
     sscanf(hour, "%s:%s:%*s", hour, ret);
     return(hour+ret+" "+day+" "+date+" "+mon);
 }
-

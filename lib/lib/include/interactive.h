@@ -17,6 +17,7 @@ int eventDestruct();
 mixed eventDivorce();
 mixed eventMarry(object who, object to_whom);
 int eventMove(mixed dest);
+void cmdParseRefresh();
 int cmdQuit();
 int GetAge();
 int GetBirth();
