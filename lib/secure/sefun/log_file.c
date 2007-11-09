@@ -15,7 +15,8 @@ void log_file(string fl, string msg) {
         fl = DIR_LOGS + "/" + fl;
     else if((int)master()->valid_apply(({ PRIV_CMDS, PRIV_MUDLIB }))) 
         fl = DIR_LOGS+"/"+fl;
-    else if(member_array(PRIV_SECURE,explode(query_privs(previous_object()),":"))
+    else if(previous_object() && query_privs(previous_object()) &&
+      member_array(PRIV_SECURE,explode(query_privs(previous_object()),":"))
       != -1) fl = DIR_LOGS+"/"+fl;
     else fl = DIR_LOGS+"/open/"+fl;
     master()->master_log_file(fl, msg);

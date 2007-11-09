@@ -1,4 +1,4 @@
-/*   sconvert.c
+/*   statconvert.c
  *   A utility which reduces or raises SetSkill and SetStat lines
  *   in a file by a specified percentage.
  *   created by Blitz@Dead Souls
@@ -85,11 +85,11 @@ mixed cmd(string str) {
 
 void GetHelp(string str) {
     message("info",
-      "Syntax: sconvert <filename | wild card> <percentage>\n\n"
+      "Syntax: statconvert <filename | wild card> <percentage>\n\n"
       "This command searches through the specified file(s) and lowers "
       "all occurrences of SetSkill and SetStat by a <percentage> "
       "amount.\n\n"
-      "Example: sconvert *.c 10\n"
+      "Example: statconvert *.c 10\n"
       "  - Searches all .c files in your currenct path, and reduces\n"
       "    all skill and stat settings by 10%\n\n"
       "Note: It is possible to raise settings by passing a negative number.",

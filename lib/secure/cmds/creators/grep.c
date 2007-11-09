@@ -111,7 +111,7 @@ int cmd(string str) {
                 continue;
             }
             err = catch(txt = read_file(files[i]));
-            if(err){
+            if(err || !txt){
                 write(files[i]+": corrupted file, or not text. Skipping.");
                 continue;
             }

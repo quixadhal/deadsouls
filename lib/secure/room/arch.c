@@ -1,8 +1,10 @@
 #include <lib.h>
 #include <daemons.h>
+#include <message_class.h>
 inherit LIB_ROOM;
 
 int imud_enabled = 0;
+string tmpfile;
 
 mixed eventReadPrintout(){
     mapping MudMap2;
@@ -22,11 +24,12 @@ mixed eventReadPrintout(){
         ret += mud + "\t\t" +MudMap2[mud][5] + "%^RESET%^\n";
     }
     ret += "\nTotal: "+sizeof(all_dead_souls);
-    write_file(tmpfile,ret);
-    this_player()->eventPage(tmpfile);
-    rm(tmpfile);
+    this_player()->eventPage( explode(ret,"\n") );
+    //tc("tmpfile: "+tmpfile);
+    //write_file(tmpfile,ret);
+    //cp(tmpfile,"/tmp/"+last_string_element(tmpfile,"/"));
+    //this_player()->eventPage(tmpfile, MSG_ENV);
     return "";
-
 }
 
 mixed eventReadScreen(){
@@ -37,7 +40,7 @@ mixed eventReadScreen(){
     string *online_muds = ({});
     string ret = "";
     string canonical = "UNKNOWN";
-    string tmpfile = generate_tmp();
+    tmpfile = generate_tmp();
     MudMap = INTERMUD_D->GetMudList();
     if(!sizeof(MudMap)){
         write("Intermud3 link down. Stats unavailable.");
@@ -77,10 +80,10 @@ mixed eventReadScreen(){
     foreach(string mud in online_muds){
         ret += mud + "\t\t" +MudMap[mud][5] + "%^RESET%^\n";
     }
-
-    write_file(tmpfile,ret);
-    this_player()->eventPage(tmpfile);
-    rm(tmpfile);
+    this_player()->eventPage( explode(ret,"\n") );
+    //write_file(tmpfile,ret);
+    //this_player()->eventPage(tmpfile);
+    //rm(tmpfile);
     return "";
 
 }

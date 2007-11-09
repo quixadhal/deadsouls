@@ -1,6 +1,9 @@
 #include <lib.h>
+#include <dirs.h>
 #include <vendor_types.h>
-inherit LIB_ITEM;
+#include <daemons.h>
+
+inherit LIB_DAEMON;
 
 string original, digested;
 mapping AreaMap = ([]);
@@ -23,21 +26,22 @@ int weight, cost, cost_per_day;
 int lock, key, room, direction;
 int ok, ok2;
 
-void create(){
-    ::create();
-    SetKeyName("converter");
-    SetId( ({"device"}) );
-    SetAdjectives( ({"conversion"}) );
-    SetShort("a conversion device");
-    SetLong("This is an object that lets you convert Smaug areas into Dead Souls domains.");
-    SetMass(200);
-    SetDollarCost(10);
-    SetVendorType(VT_TREASURE);
+mixed cmd(string args){
+if(args == "clear"){
+write("Resetting the converter variables.");
+RELOAD_D->eventReload(this_object(),0);
+return 1;
 }
-void init(){
-    ::init();
-    add_action("ConvertArea","convert");
-    add_action("Report","report");
+if(grepp(args,"-r ")){
+args = replace_string(args,"-r ","");
+return this_object()->Report(args);
+}
+return this_object()->ConvertArea(args);
+}
+
+string clean_string(string str){
+str = replace_string(str,"\"","\'",);
+return str;
 }
 
 int Report(string str){
@@ -77,12 +81,18 @@ int ConvertArea(string arg){
         write("No such area file exists.");
         return 1;
     }
+
+if(directory_exists(DOMAINS_DIRS+"/"+name)){
+write("That domain already exists. Backing up the current domain to a unique name.");
+rename(DOMAINS_DIRS+"/"+name, DOMAINS_DIRS+"/"+name+"."+time());
+}
+
     original = read_file(str);
     digested = original;
     foreach(string element in delimiters){
         tmp = replace_string(element,"#","0^0");
         //tc("tmp: "+tmp);
-        digested = replace_string(digested,element,tmp);
+        digested = clean_string(replace_string(digested,element,tmp));
         new_delimiters += ({ tmp });
     }
 
@@ -100,7 +110,7 @@ int ConvertArea(string arg){
     /////
 
     tmp = implode(RawMap["OBJECTS"],"\n");
-    prefix = "/domains/"+name+"/obj/";
+    prefix = DOMAINS_DIRS+"/"+name+"/obj/";
     obs_arr = explode(tmp,"#");
     foreach(mixed block in obs_arr){
         string *ob_id;
@@ -156,10 +166,13 @@ int ConvertArea(string arg){
         header += "}\nvoid init(){\n::init();\n}\n";
 
         //print_long_string(this_player(), header, 1);
-        //tc("file above was: "+prefix+lines[0]+"_"+ob_name+".c");
+        //write("file above was: "+prefix+lines[0]+"_"+ob_name+".c");
+mkdir_recurse(truncate(prefix,1));
         if(directory_exists(truncate(prefix,1))){
+            //write("Directory "+truncate(prefix,1)+" exists. Wrtiting.");
             write_file(prefix+lines[0]+"_"+ob_name+".c",header,1);
         }
+else write("Directory "+truncate(prefix,1)+" does not exist.");
 
         if(!AreaMap) AreaMap = ([]);
 
@@ -172,7 +185,7 @@ int ConvertArea(string arg){
     /////
 
     tmp = implode(RawMap["MOBILES"],"\n");
-    prefix = "/domains/"+name+"/npc/";
+    prefix = DOMAINS_DIRS+"/"+name+"/npc/";
     obs_arr = explode(tmp,"#");
     foreach(mixed block in obs_arr){
         string *ob_id;
@@ -221,10 +234,13 @@ int ConvertArea(string arg){
             header += "}\nvoid init(){\n::init();\n}\n";
 
             //print_long_string(this_player(), header, 1);
-            //tc("file above was: "+prefix+lines[0]+"_"+ob_name+".c");
+            //write("file above was: "+prefix+lines[0]+"_"+ob_name+".c");
+mkdir_recurse(truncate(prefix,1));
             if(directory_exists(truncate(prefix,1))){
+//write("Directory "+truncate(prefix,1)+" exists. Wrtiting.");
                 write_file(prefix+lines[0]+"_"+ob_name+".c",header,1);
             }
+else write("Directory "+truncate(prefix,1)+" does not exist.");
 
             if(!AreaMap) AreaMap = ([]);
 
@@ -237,7 +253,7 @@ int ConvertArea(string arg){
     /////
 
     tmp = implode(RawMap["ROOMS"],"\n");
-    prefix = "/domains/"+name+"/room/";
+    prefix = DOMAINS_DIRS+"/"+name+"/room/";
     rooms_arr = explode(tmp,"#");
     foreach(mixed block in rooms_arr){
         string *lines = explode(block,"\n");
@@ -296,10 +312,13 @@ int ConvertArea(string arg){
         header += "}\n";
 
         //print_long_string(this_player(),header,1);
-        //tc("file above was: "+prefix+lines[0]+".c");
+        //write("file above was: "+prefix+lines[0]+".c");
+mkdir_recurse(truncate(prefix,1));
         if(directory_exists(truncate(prefix,1))){
+//write("Directory "+truncate(prefix,1)+" exists. Wrtiting.");
             write_file(prefix+lines[0]+".c",header,1);
         }
+else write("Directory "+truncate(prefix,1)+" does not exist.");
 
         if(!AreaMap) AreaMap = ([]);
 

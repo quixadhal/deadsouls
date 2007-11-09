@@ -20,6 +20,7 @@
 #include <network.h>
 #include <parser_error.h>
 #include <message_class.h>
+#include <function.h>
 #include "master.h"
 
 #ifndef COMPAT_MODE
@@ -446,6 +447,16 @@ private static void load_access(string cfg, mapping resource) {
         object previous_unguarded;
         string err;
         mixed val;
+
+        if(!f || !functionp(f)){
+            error("Invalid function passed.");
+            return 0;
+        }
+
+        if((functionp(f) & FP_OWNER_DESTED)){
+            error("Function owner dested: invalid function.");
+            return 0;
+        }
 
         if(base_name(previous_object(0)) != SEFUN) {
             error("Illegal unguarded apply.");

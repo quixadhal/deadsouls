@@ -1226,8 +1226,8 @@ int yylex()
 	case '\t':
 #ifdef WARN_TAB
 	    yywarn("<TAB>");
-	    break;
 #endif
+	    break;
         case '\n':
 	    nexpands = 0;
 	    current_line++;
