@@ -5,8 +5,7 @@ static private string Language;
 static private mixed Read    = 0;
 static private mapping Reads = ([]);
 
-private string tmpfile, globalval;
-private object globalwho;
+private string tmpfile;
 
 // abstract methods
 string GetShort();
@@ -118,36 +117,28 @@ varargs mixed eventRead(object who, string str) {
         who->eventPrint("There is nothing to read.");
         return 1;
     }
-    tmpfile = generate_tmp();
-    globalwho = who;
-    globalval = val;
 
     if(Language){
         write("The language appears to be "+capitalize(Language)+".");
     }
 
-    if(!globalval){
+    if(!val){
         write("You can't read that.");
         return 0;
     } 
 
     if(Language && (this_player()->GetLanguageLevel(Language) < 100 &&
         !(this_player()->GetPolyglot()))){
-        if(sizeof(globalval) > 4800){
-            globalval = "It is too long and you are too unfamiliar with the language to make sense of it.";
+        if(sizeof(val) > 4800){
+            val = "It is too long and you are too unfamiliar with the language to make sense of it.";
 
         }
         else {
-            globalval = translate(val, this_player()->GetLanguageLevel(Language));
+            val = translate(val, this_player()->GetLanguageLevel(Language));
         }
     }
-    else {
-        globalval = val;
-    }
-    unguarded( (: write_file(tmpfile, globalval,1) :) );
 
-    unguarded( (: globalwho->eventPage(tmpfile) :) );
-    unguarded( (: rm(tmpfile) :) );
+    who->eventPage(explode(val,"\n"));
     return 1;
 }
 

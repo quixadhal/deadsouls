@@ -151,7 +151,6 @@ static void InputEmail(string str) {
 
     if( ob = find_object(LIB_CONNECT) ) destruct(ob);
     cp(DIR_SECURE_LIB "/connect.c", DIR_SECURE_LIB "/connect.first.c");
-    //rename(DIR_SECURE_LIB "/connect.real", DIR_SECURE_LIB "/connect.c");
     rm(DIR_SECURE_LIB "/connect.c");
     cp(DIR_SECURE_LIB "/connect.real", DIR_SECURE_LIB "/connect.c");
     destruct(Admin);

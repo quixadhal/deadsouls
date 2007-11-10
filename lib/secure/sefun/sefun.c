@@ -96,21 +96,6 @@ int last_regexp = time();
 int regexp_count = 1;
 int max_regexp = 200;
 
-#if 0
-varargs mixed regexp(mixed arg1, string arg2, int arg3){
-    if(last_regexp == time()) regexp_count++;
-    else {
-        last_regexp = time();
-        regexp_count = 1;
-    }
-
-    if(regexp_count > max_regexp && !(int)master()->valid_apply(({ "SECURE", "ASSIST" }))){
-        tc("Too many regexp operations.");
-    }
-    return efun::regexp(arg1, arg2, arg3);
-}
-#endif
-
 string debug_info(int debuglevel, mixed arg){
     if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
         return efun::debug_info(debuglevel, arg);

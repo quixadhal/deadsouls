@@ -95,7 +95,7 @@ static int Page(mixed tmpfile) {
 
     foreach(mixed key, mixed val in tmpfile){
         if(sizeof(val) == 1) val = ({});
-        file += ([ key : val ]);
+        if(key) file += ([ key : val ]);
     }
     endline = file["CurrentLine"] + (GetScreen()[1] - 3);
     if( endline < file["CurrentLine"] ) endline = file["CurrentLine"];

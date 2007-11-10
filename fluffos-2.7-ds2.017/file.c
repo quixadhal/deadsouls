@@ -498,7 +498,19 @@ char *read_file (const char * file, int start, int len) {
     if (len == 0) len = READ_FILE_MAX_SIZE; 
     
     str = new_string(READ_FILE_MAX_SIZE, "read_file: str"); 
-    if (st.st_size== 0) { 
+
+    if ( st.st_size > READ_FILE_MAX_SIZE) {
+        /* file too large */
+        str[0] = 0;
+#ifndef PACKAGE_COMPRESS
+        fclose(f);
+#else
+        gzclose(f);
+#endif
+        error("File size exceeds READ_FILE_MAX_SIZE.");
+    }
+
+    if (st.st_size == 0 || st.st_size > READ_FILE_MAX_SIZE) { 
         /* zero length file */ 
         str[0] = 0; 
 #ifndef PACKAGE_COMPRESS
@@ -506,7 +518,7 @@ char *read_file (const char * file, int start, int len) {
 #else
 	gzclose(f);
 #endif
-        return str;
+        return 0;
     }
 
     do{

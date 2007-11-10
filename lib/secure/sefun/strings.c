@@ -616,7 +616,7 @@ varargs string generate_tmp(mixed arg){
     //string randy = replace_string(replace_string(crypt(""+random(88)+11,""+random(88)+11),"/","XXX"),".","YYY");
     string randy = alpha_crypt(8);
 
-    if(!arg) return "/open/"+time()+".c";
+    if(!arg) return "/open/"+time()+"_"+randy+".c";
 
     if(objectp(arg) && this_player() && creatorp(this_player()))
         ret = homedir(this_player())+"/tmp/"+last_string_element(base_name(arg),"/")+randy+time()+".c";

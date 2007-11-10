@@ -22,7 +22,7 @@
 inherit LIB_CLIENT;
 
 private int Password;
-private class list MudList, ChannelList;
+private mapping MudList, ChannelList;
 private mapping Banned;
 private mixed *Nameservers;
 private static int Tries;
@@ -30,6 +30,7 @@ private static int SocketStat = -1;
 private static int Online = 0;
 
 mapping ExtraInfo();
+void ConvertLists();
 
 static void create() {
     client::create();
@@ -37,14 +38,15 @@ static void create() {
     Password = 0;
     Tries = 0;
     Banned = ([]);
-    MudList = new(class list);
-    ChannelList = new(class list);
-    MudList->ID = -1;
-    MudList->List = ([]);
-    ChannelList->ID = -1;
-    ChannelList->List = ([]);
+    MudList = ([]);
+    ChannelList = ([]);
+    MudList["ID"] = -1;
+    MudList["List"] = ([]);
+    ChannelList["ID"] = -1;
+    ChannelList["List"] = ([]);
     if( file_size( SAVE_INTERMUD __SAVE_EXTENSION__ ) > 0 )
         unguarded( (: restore_object, SAVE_INTERMUD, 1 :) );
+    ConvertLists();
     Nameservers = ({ ({ "*i4", "204.209.44.3 8080" }) });
     SetNoClean(1);
     tn("INTERMUD_D reloaded.");
@@ -72,14 +74,14 @@ static void Setup() {
     if( SocketStat < 0 ) return;
     tn("INTERMUD_D: SocketStat: "+SocketStat);
     eventWrite( ({ "startup-req-3", 5, mud_name(), 0, Nameservers[0][0], 0,
-        Password, MudList->ID, ChannelList->ID, query_host_port(),
+        Password, MudList["ID"], ChannelList["ID"], query_host_port(),
         PORT_OOB, PORT_UDP, mudlib() + " " + mudlib_version(), 
         mudlib() + " " + mudlib_version(), version(), "LPMud",
         MUD_STATUS, ADMIN_EMAIL,
         (mapping)SERVICES_D->GetServices(), ExtraInfo() }) );
     tn("INTERMUD_D setup: "+identify( ({
           "startup-req-3", 5, mud_name(), 0, Nameservers[0][0], 0,
-          Password, MudList->ID, ChannelList->ID, query_host_port(),
+          Password, MudList["ID"], ChannelList["ID"], query_host_port(),
           PORT_OOB, PORT_UDP, mudlib() + " " + mudlib_version(),
           mudlib() + " " + mudlib_version(), version(), "LPMud",
           MUD_STATUS, ADMIN_EMAIL,
@@ -99,12 +101,12 @@ void eventClearVars(){
     if( !((int)master()->valid_apply(({ PRIV_ASSIST, INTERMUD_D }))) )
         error("Illegal attempt to reset intermud: "+get_stack()+" "+identify(previous_object(-1)));
     Tries = 0;
-    MudList = new(class list);
-    ChannelList = new(class list);
-    MudList->ID = -1;
-    MudList->List = ([]);
-    ChannelList->ID = -1;
-    ChannelList->List = ([]);
+    MudList = ([]);
+    ChannelList = ([]);
+    MudList["ID"] = -1;
+    MudList["List"] = ([]);
+    ChannelList["ID"] = -1;
+    ChannelList["List"] = ([]);
     save_object(SAVE_INTERMUD);
 }
 
@@ -158,7 +160,7 @@ static void eventRead(mixed *packet) {
             //tn("We don't like the mudlist packet size.","red");
             return;  
         }
-        if( packet[6] == MudList->ID )  {
+        if( packet[6] == MudList["ID"] )  {
             //tn("We don't like packet element 6. It is: "+identify(packet[6]),"red");
             //tn("We will continue anyway.","red");
         }
@@ -167,7 +169,7 @@ static void eventRead(mixed *packet) {
             return;
         }
 
-        MudList->ID = packet[6];
+        MudList["ID"] = packet[6];
         foreach(cle, val in packet[7]) {
             string tmp = "";
             if(cle){
@@ -183,9 +185,9 @@ static void eventRead(mixed *packet) {
                 tn(tmp);
                 tn(tmp,"cyan",ROOM_ARCH);
             }
-            if( !val && MudList->List[cle] != 0 ) 
-                map_delete(MudList->List, cle);
-            else if( val ) MudList->List[cle] = val;
+            if( !val && MudList["List"][cle] != 0 ) 
+                map_delete(MudList["List"], cle);
+            else if( val ) MudList["List"][cle] = val;
         }
         save_object(SAVE_INTERMUD);
         return;
@@ -222,14 +224,14 @@ static void eventRead(mixed *packet) {
     case "chanlist-reply":
         tn("chanlist reply: "+identify(packet), "blue");
         if( packet[2] != Nameservers[0][0] ) return;
-        ChannelList->ID = packet[6];
+        ChannelList["ID"] = packet[6];
         foreach(cle, val in packet[7]) { 
-            if( !val && ChannelList->List != 0 ){ 
-                map_delete(ChannelList->List, cle);
+            if( !val && ChannelList["List"] != 0 ){ 
+                map_delete(ChannelList["List"], cle);
                 CHAT_D->RemoveRemoteChannel(cle);
             }
             else if( val ){
-                ChannelList->List[cle] = val;
+                ChannelList["List"][cle] = val;
                 CHAT_D->AddRemoteChannel(cle);
             }
         } 
@@ -318,8 +320,8 @@ string GetMudName(string mud) {
     mapping mudses = GetMudList();
     int x;
 
-    if( MudList->List[mud] ) return mud;
-    lc = map(uc = keys(MudList->List), function(string str) {
+    if( MudList["List"][mud] ) return mud;
+    lc = map(uc = keys(MudList["List"]), function(string str) {
           if( !str ) return "";
           else return lower_case(str);
         });
@@ -334,9 +336,9 @@ string GetMudName(string mud) {
       else return uc[x];
   }
 
-    mapping GetMudList() { return copy(MudList->List); }
+    mapping GetMudList() { return copy(MudList["List"]); }
 
-    string *GetMuds() { return keys(MudList->List); }
+    string *GetMuds() { return keys(MudList["List"]); }
 
     string *GetLCMuds() {
         string *orig_arr, *new_arr;
@@ -348,15 +350,15 @@ string GetMudName(string mud) {
         return new_arr;
     }
 
-    mapping GetChannelList() { return copy(ChannelList->List); }
+    mapping GetChannelList() { return copy(ChannelList["List"]); }
 
-    string *GetChannels() { return keys(ChannelList->List); }
+    string *GetChannels() { return keys(ChannelList["List"]); }
 
     string *GetMatch(string mud) {
         string *uc, *lc;
 
         mud = lower_case(mud);
-        lc = map(uc = keys(MudList->List), (: lower_case :));
+        lc = map(uc = keys(MudList["List"]), (: lower_case :));
         return map(filter(regexp(lc, "^"+mud, 1), (: intp :)), (: $(uc)[$1] :));
     }
 
@@ -415,6 +417,24 @@ string GetMudName(string mud) {
           "oob port" : PORT_OOB,
         ]);
     }
+
+    void ConvertLists(){
+        if(classp(MudList)){
+            mapping TmpMap = ([]);
+            MudList = TmpMap;
+            MudList["ID"] = -1;
+            MudList["List"] = ([]);
+            save_object(SAVE_INTERMUD);
+        }
+        if(classp(ChannelList)){
+            mapping TmpMap = ([]);
+            ChannelList = TmpMap;
+            ChannelList["ID"] = -1;
+            ChannelList["List"] = ([]);
+            save_object(SAVE_INTERMUD);
+        }
+    }
+
 
 
 #endif /* __PACKAGE_SOCKETS__ */

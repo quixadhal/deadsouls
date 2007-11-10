@@ -4,13 +4,13 @@
 inherit LIB_ROOM;
 
 int imud_enabled = 0;
-string tmpfile;
+//string tmpfile;
 
 mixed eventReadPrintout(){
     mapping MudMap2;
     string *all_dead_souls = ({});
     string ret = "";
-    string tmpfile = generate_tmp();
+    //string tmpfile = generate_tmp();
     MudMap2 = INTERMUD_D->GetMudList();
     if(!sizeof(MudMap2)){
         write("Intermud3 link down. Stats unavailable.");
@@ -40,7 +40,7 @@ mixed eventReadScreen(){
     string *online_muds = ({});
     string ret = "";
     string canonical = "UNKNOWN";
-    tmpfile = generate_tmp();
+    //tmpfile = generate_tmp();
     MudMap = INTERMUD_D->GetMudList();
     if(!sizeof(MudMap)){
         write("Intermud3 link down. Stats unavailable.");
