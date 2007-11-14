@@ -24,15 +24,16 @@ void create() {
 	"/secure/obj/medtric" : 1,
 	"/secure/obj/glasses" : 1,
         "/domains/default/armor/jade_ring" : 1,
+        "/domains/default/armor/gray_amulet" : 1,
       ]));
     SetMass(2000);
     SetBaseCost(50);
     SetMaxCarry(10000);
-    SetPreventPut("You cannot put this in there!");
     SetCanClose(1);
     SetClosed(1);
+    SetPreventGet("The chest does not budge.");
 }
-mixed CanGet(object ob) { return "The chest does not budge.";}
+
 void init(){
     ::init();
 }

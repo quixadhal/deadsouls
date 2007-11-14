@@ -446,7 +446,7 @@ int restrict(mixed arg){
 
 /* ******************** armor.c driver applies ******************** */
 static void create() {
-    AddSave( ({ "CanClose", "CanLock", "RecurseDepth" , "MaxRecurseDepth" }) +
+    AddSave( ({ "Closed", "CanClose", "CanLock", "RecurseDepth" , "MaxRecurseDepth" }) +
       (equip::GetSave()) + (value::GetSave()) + (mass::GetSave()) +
       (poison::GetSave()) + (deterioration::GetSave()));
     steal::create();

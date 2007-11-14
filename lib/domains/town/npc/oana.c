@@ -3,6 +3,7 @@
 
 inherit LIB_VENDOR;
 
+
 static void create() {
     ::create();
     SetKeyName("oana");
@@ -25,4 +26,7 @@ static void create() {
     SetMaxItems(10000);
     SetVendorType(VT_MAGIC);
     SetSkill("bargaining", 1);
+}
+void init(){
+    ::init();
 }

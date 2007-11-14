@@ -69,6 +69,9 @@ static void eventUpdate(){
     }
 
     rm("/cmds/players/where.c");
+    rm("/domains/Praxis/obj/mon/execution.c");
+    rm("/domains/campus/txt/moochers.txt");
+    rm("/secure/save/players/g/guest.o");
 
     remote = load_object("/secure/cmds/admins/removeemote");
     if(remote) remote->cmd("roll");

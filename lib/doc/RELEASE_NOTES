@@ -1,4 +1,31 @@
----- 2.5a22 ---
+---- 2.5a25 ---
+- Released 2007-11-14
+- Implemented MudOS v22.2b14 behavior into uncompressed read_file operations
+  in FluffOS to avoid a potential crasher.
+- INTERMUD_D no longer uses the class data type.
+- LIB_READ is now more economical on disk i/o.
+- Fixed a recursion bug in check_user() in MASTER_D.
+- Creators can now follow/lead each other.
+- LIB_LEAD no longer uses the class data type.
+- answers_to() has been buffed up to better handle complex adjectives.
+- Injury/damage when lockpicking fails now limited to prehensile limbs.
+- New properties added to QCS: SetPolyglot, SetPreventGet, SetPreventPut,
+  SetPreventDrop, SetDestructOnDrop.
+- LIB_WORN_STORAGE now saves its copen/closed state across logins.
+- Fixed parsing problem when using multiple adjectives in get/put operations.
+- Error messages when a container is closed now make more sense.
+- LIB_INTERFACE changed to avoid puking when the user is sent unusually
+  large strings (e.g. "help modify").
+- Bug in LIB_PAGER callback function fixed.
+- Default reset interval is now 2 hours.
+- Fixed a misleading message when giving multiple objects to an overloaded living.
+- Added sample "pre-boobytrapped" objects: /domains/town/weap/boobytrap_dagger.c ,
+  amd /domains/town/armor/boobytrap_ring.c
+- Further fixes for conflicts in the shooting system.
+- Fixed a problem with guest logins.
+
+---- 2.5a23 ---
+- Released 2007-11-09
 - COMPAT BUSTER: Objects that used to inherit LIB_DUMMY for special
   invisible-but-manipulable functionality (see: http://dead-souls.net/ds-creator-faq.html#2.62 )
   now need to inherit LIB_BASE_DUMMY instead, to avoid nomask problems
@@ -22,6 +49,7 @@
 - Fixed verb/item conflict when two people in the same room try to shoot each other.
 - The heal command now does a more thorough job of it.
 - Germs no longer get dropped on login.
+- LIB_PAGER now uses mappings rather than classes, and been fixed a bit.
 
 ---- 2.5a21 ---
 - Released 2007-11-05
@@ -37,6 +65,11 @@
 - Fixed log rotation problem in snooper object.
 - IMC2 daemon reloading should no longer spam stdout with "Done."
 - IMC2 connectivity can now be enabled/disabled with the mudconfig command.
+
+---- 2.4.6 ---
+- Released 2007-11-04
+- Bundled driver is now FluffOS.
+- users() sefun override properly fixed.
 
 ---- 2.5a19 ---
 - Released 2007-10-31
@@ -108,6 +141,16 @@
 - Fixed a problem in the users() sefun that mysteriously hosed
   64-bit Linux installs.
 
+---- 2.4.4 ---
+- Released 2007-10-12
+- Miscellaneous minor bugfixes.
+- Fixed driver problem that stopped compile at malloc.c (stole the
+  fix from FluffOS!)
+- Fixed driver problem that made timekeeping fail (ualarm).
+- Bonus object works properly now.
+- Fixed a problem in the users() sefun that mysteriously hosed
+  64-bit Linux installs.
+
 ---- 2.5a12 ---
 - Released 2007-06-24
 - Nailed some really pesky router crashers involving null socket owner
@@ -175,21 +218,6 @@
   with many objects (caused by a buggy new parser feature).
 - Fixed bug in /lib/body.c that caused an erroneous eventFall() where
   eventCollapse() was called for.
-
----- 2.4.6 ---
-- Released 2007-11-04
-- Bundled driver is now FluffOS.
-- users() sefun override properly fixed.
-
----- 2.4.4 ---
-- Released 2007-10-12
-- Miscellaneous minor bugfixes.
-- Fixed driver problem that stopped compile at malloc.c (stole the
-  fix from FluffOS!)
-- Fixed driver problem that made timekeeping fail (ualarm).
-- Bonus object works properly now.
-- Fixed a problem in the users() sefun that mysteriously hosed
-  64-bit Linux installs.
 
 ---- 2.4.2 ---
 - Released 2007-04-23

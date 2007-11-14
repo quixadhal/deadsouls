@@ -10,7 +10,6 @@ mixed eventReadPrintout(){
     mapping MudMap2;
     string *all_dead_souls = ({});
     string ret = "";
-    //string tmpfile = generate_tmp();
     MudMap2 = INTERMUD_D->GetMudList();
     if(!sizeof(MudMap2)){
         write("Intermud3 link down. Stats unavailable.");
@@ -25,10 +24,6 @@ mixed eventReadPrintout(){
     }
     ret += "\nTotal: "+sizeof(all_dead_souls);
     this_player()->eventPage( explode(ret,"\n") );
-    //tc("tmpfile: "+tmpfile);
-    //write_file(tmpfile,ret);
-    //cp(tmpfile,"/tmp/"+last_string_element(tmpfile,"/"));
-    //this_player()->eventPage(tmpfile, MSG_ENV);
     return "";
 }
 
@@ -40,7 +35,6 @@ mixed eventReadScreen(){
     string *online_muds = ({});
     string ret = "";
     string canonical = "UNKNOWN";
-    //tmpfile = generate_tmp();
     MudMap = INTERMUD_D->GetMudList();
     if(!sizeof(MudMap)){
         write("Intermud3 link down. Stats unavailable.");
@@ -81,9 +75,6 @@ mixed eventReadScreen(){
         ret += mud + "\t\t" +MudMap[mud][5] + "%^RESET%^\n";
     }
     this_player()->eventPage( explode(ret,"\n") );
-    //write_file(tmpfile,ret);
-    //this_player()->eventPage(tmpfile);
-    //rm(tmpfile);
     return "";
 
 }

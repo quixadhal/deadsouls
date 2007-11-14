@@ -3,9 +3,10 @@ inherit LIB_BOT;
 inherit LIB_ACTIVATE;
 
 object player, bot, ob, noobster;
-string name, watchline;
-int count, active, tip, tipnumber, current_tip, hb, mooch, greeting, greetwait;
-string *watchlist;
+static string name, watchline;
+static int count, active, tip, tipnumber, current_tip, hb, mooch, greeting, greetwait;
+string *watchlist = ({});
+static string save_file = "/domains/campus/save/jennybot.o";
 
 string LongDesc(){
     string ret;
@@ -31,7 +32,7 @@ static void create(){
     AddSave(({ "players" }) );
     ::create();
     SetKeyName("jennybot");
-    SetId(({"guide","guidebot","fembot","bot","jennifer","android","jenny","robot","woman","lady"}));
+    SetId(({"guide","guidebot","fembot","bot","jennifer","niffy","android","jenny","robot","woman","lady"}));
     SetAdjectives(({"orientation","young","female","polite","pretty","guide","newbie","simple","extremely"}));
     SetGender("female");
     SetShort("a polite young woman");
@@ -61,6 +62,7 @@ static void create(){
     tipnumber = 16;
     greeting = 0;
     greetwait = 0;
+    restore_object(save_file);
 }
 
 varargs int eventGreet(string newbie){
@@ -75,7 +77,6 @@ varargs int eventGreet(string newbie){
     else guy = "there";
     tell_room(environment(this_object()),"The polite young "+
       "lady springs to life!\n");
-    //spiel = "%^BOLD%^CYAN%^ Hello, "+noob->GetName()+"! "+
     prespiel = "Jennybot says, \"%^BOLD%^CYAN%^ Hello, "+guy;
     spiel = read_file("/domains/campus/txt/jenny/spiel.txt");
     tell_room(environment(this_object()),prespiel+spiel);
@@ -121,24 +122,24 @@ int next_tip(string str){
         return 1;
     }
 }
+
 int refreshlist(){
     string playername;
-    playername = this_player()->GetName();
-    watchlist=explode(read_file("/domains/campus/txt/moochers.txt"),":");
-    if(member_array(playername,watchlist) != -1) {
-        mooch = 1;
-        return 1;
+    playername = this_player()->GetKeyName();
+    if(member_array(playername, watchlist) != -1) mooch = 1;
+    else {
+        watchlist += ({ playername });
+        mooch = 0;
     }
-    watchlist = ({ playername }) + watchlist;
-    watchline = implode(watchlist,":");
-    unguarded( (: write_file("/domains/campus/txt/moochers.txt",watchline,1) :) );
+    watchlist = singular_array(watchlist);
+    unguarded( (: save_object(save_file,1) :) );
     return 1;
 }
+
 int eventTurnOff(){
     if( active == 0 ){
         write("Jennybot is already inactive.");
     }
-    //set_heart_beat(0);
     tip = 0;
     if( active != 0) {
         eventForce("yell DEDDA SORUZE: GETTO DA ZE!");
@@ -151,8 +152,10 @@ int eventTurnOff(){
 }
 
 int eventTurnOn(){
+    if(!ob) ob = this_object();
     player=this_player();
     name=this_player()->GetName();
+    if(!name || !sizeof(name)) name = "player";
     if(active==1){
         write("Jennybot has already been activated.");
         return 1;
@@ -161,7 +164,6 @@ int eventTurnOn(){
     active=1;
     hb=0;
     tip=1;
-    //set_heart_beat(1);
     write("The female android comes to life! She "+
       "smiles at you and straightens her dress.");
     ob->eventForce("say Hello, "+name+"! I'm Jenny, the LPC University "+
@@ -174,11 +176,12 @@ int eventTurnOn(){
       "To jump to the next tip, type: next tip");
     return 1;
 }
+
 int eventAct4(){
     if(!new("/domains/campus/obj/note")->eventMove(this_object())){
         tell_room(environment(this_object()),"Oops! There's a bug, "+
           "and I don't have a note for you. Let's pretend I gave you "+
-          "one and move on. Please email Cratylus about this, though.");
+          "one and move on. Please email your admin about this, though.");
         return 1;
     }
     if(player && environment(this_object()) == environment(player)) {
@@ -186,11 +189,12 @@ int eventAct4(){
     }
     return 1;
 }
+
 int eventAct6(){
     if(!new("/domains/campus/obj/map")->eventMove(this_object())){ 
         tell_room(environment(this_object()),"Oops! There's a bug, "+
           "and I don't have a map for you. Let's pretend I gave you "+ 
-          "one and move on. Please email Cratylus about this, though."); 
+          "one and move on. Please email your admin about this, though."); 
         return 1;
     }
     if(player && environment(this_object()) == environment(player)) {
@@ -198,16 +202,17 @@ int eventAct6(){
     }
     return 1;
 }
+
 int eventAct8(){
-    if(mooch == 1 || !new("/domains/campus/armor/newbie_cap")->eventMove(this_object())){
-        tell_room(environment(this_object()),"Oops! There's a bug, "+
-          "and I don't have a hat for you. Let's pretend I gave you "+
-          "one and move on. Please email Cratylus about this, though.");
+    if(mooch || !new("/domains/campus/armor/newbie_cap")->eventMove(this_object())){
+        tell_room(environment(this_object()),
+          "I don't have a hat for you. Let's pretend I gave you "+
+          "one and move on.");
     }
-    if(mooch == 1 || !new("/domains/campus/obj/squirtbag")->eventMove(this_object())){
-        tell_room(environment(this_object()),"Oops! There's a bug, "+
-          "and I don't have a bag for you. Let's pretend I gave you "+
-          "one and move on. Please email Cratylus about this, though.");
+    if(mooch || !new("/domains/campus/obj/squirtbag")->eventMove(this_object())){
+        tell_room(environment(this_object()),
+          "I don't have a bag for you. Let's pretend I gave you "+
+          "one and move on.");
     }
     if(player && environment(this_object()) == environment(player)) {
         eventForce("give cap to "+player->GetName());
@@ -217,17 +222,18 @@ int eventAct8(){
     }
     return 1;
 }
+
 int eventAct9(){
     eventForce("smile "+player->GetName());
     if(!new("/domains/campus/meals/badapple")->eventMove(this_object())){
         tell_room(environment(this_object()),"Oops! There's a bug, "+
           "and I don't have a rotten apple for you. Let's pretend I gave you "+
-          "one and move on. Please email Cratylus about this, though.");
+          "one and move on. Please email your admin about this, though.");
     }
     if(!new("/domains/campus/meals/apple")->eventMove(this_object())){
         tell_room(environment(this_object()),"Oops! There's a bug, "+
           "and I don't have an apple for you. Let's pretend I gave you "+
-          "one and move on. Please email Cratylus about this, though.");
+          "one and move on. Please email your admin about this, though.");
     }
     if(player && environment(this_object()) == environment(player)) {
         eventForce("give first apple to "+player->GetName());
@@ -235,10 +241,12 @@ int eventAct9(){
         return 1;
     }
 }
+
 int eventAct11(){
     eventForce("smirk");
     return 1;
 }
+
 int eventSwitch(int arg){
     switch(arg){
     case 4:eventAct4();break;
@@ -250,6 +258,7 @@ int eventSwitch(int arg){
         return 1;
     }
 }
+
 int eventDoTip(int i){
     tip++;
     hb=0;
@@ -261,6 +270,7 @@ int eventDoTip(int i){
     tell_room(environment(this_object()),read_file("/domains/campus/txt/jenny/"+i+".txt"));
 
 }
+
 void heart_beat(){
     hb++;
     if(greeting) greetwait++;

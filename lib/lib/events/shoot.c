@@ -24,52 +24,30 @@ mixed eventShoot(mixed shooter, mixed target){
 }
 
 mixed CanShoot(object shooter, mixed target){
-    object cible;
-    mixed attackable;
 
-    if(living(shooter)) return 0;
-    if(mustcarry > 0 && environment(this_object()) != this_player()) {
-        return "#You are not holding the weapon.";
+    if(this_object() == shooter && mustcarry > 0 && environment(this_object()) != this_player()) {
+        return "#You are not holding the "+remove_article(shooter->GetShort())+".";
     } 
-    if(mustwield > 0 && this_object()->GetWorn() == 0 && !creatorp(this_player())) {
-        return "#You are not wielding the weapon.";
-    }
-
-    if(!present(target,environment(this_player())) && !present(target,environment(this_object()))){
-        return "#That target is not here.";
-    }
-    if(stringp(target) && !cible=present(target,environment(this_object()))){
-        cible=present(target,environment(this_player()));
-    }
-
-    if(objectp(target)) cible = target;
-
-    attackable = cible->GetAttackable();
-
-    if(!attackable || !intp(attackable) || attackable != 1){
-        return "#You are unable to shoot "+objective(cible)+".";
+    if(this_object() == shooter && mustwield > 0 && this_object()->GetWorn() == 0 && !creatorp(this_player())) {
+        return "#You are not wielding the "+remove_article(shooter->GetShort())+".";
     }
 
     return 1;
 }
 
-int direct_shoot_obj_at_obj(object shooter, object target){
+varargs mixed direct_shoot_obj_at_obj(mixed args...){
+    return CanShoot(args[0],args[1]);
+}
+
+varargs mixed direct_shoot_obj_with_obj(mixed args...){
     return 1;
 }
 
-int direct_shoot_obj_with_obj(object shooter, object target){
-    return 1;
+varargs mixed indirect_shoot_obj_with_obj(mixed args...){
+    return CanShoot(args[1],args[0]);
 }
 
-int direct_shoot_obj_at_str(object shooter, string target){
-    return 1;
-}
-
-int indirect_shoot_obj_with_obj(mixed ob1,mixed ob2){
-    return CanShoot(ob2,ob1);
-}
-
-int indirect_shoot_obj_at_obj(mixed ob1,mixed ob2){
+varargs mixed indirect_shoot_obj_at_obj(mixed args...){
     return 1;
 }
 

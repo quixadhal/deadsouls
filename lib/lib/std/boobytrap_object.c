@@ -84,7 +84,6 @@ varargs int eventBoobytrap(object who, mixed target, mixed trap){
     shadowtrap->SetTrapDescription(this_object()->GetLong());
     shadowtrap->SetTrapType(traptype);
     shadowtrap->SetTrapLevel(traplevel);
-    shadowtrap->SetTrapLevel(traplevel);
     shadowtrap->SetAutoResets(autoresets);
     shadowtrap->eventShadow(target);
     this_object()->eventMove(ROOM_FURNACE);

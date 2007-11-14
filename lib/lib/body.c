@@ -352,6 +352,7 @@ void eventCompleteHeal(int x) {
 
 mixed eventFall() {
     object env = environment();
+    object *riders;
     string dest;
 
     if( !env ) {
@@ -373,7 +374,7 @@ mixed eventFall() {
     }
 #endif
     if(!dest){
-        int p = random(100) + 1;
+        int p;
         int was_undead = GetUndead();
 
         send_messages("fall", "$agent_name $agent_verb through the sky "
@@ -385,16 +386,18 @@ mixed eventFall() {
         foreach(string limb in GetLimbs()) {
             int hp = GetHealthPoints(limb);
 
-            p = (hp * p)/100;
-            //eventReceiveDamage("Deceleration sickness", BLUNT, p, 0, ({ limb }));
-            //tc("hmm.");
-            foreach(object passenger in get_livings(this_object())){
-                passenger->eventReceiveDamage("Deceleration sickness", BLUNT, p, 0, ({ passenger->GetTorso() }));
-            }
-            eventReceiveDamage("Deceleration sickness", BLUNT, p, 0, ({ GetTorso() }));
+            p = random(hp);
+            eventReceiveDamage("Deceleration sickness", BLUNT, p, 0, ({ limb }));
             if( Dying || (was_undead != GetUndead()) ) {
                 break;
             }
+        }
+        riders = get_livings(this_object());
+        if(sizeof(riders)){
+            foreach(object passenger in riders){
+                passenger->eventReceiveDamage("Deceleration sickness", BLUNT, p, 0,
+                  ({ passenger->GetTorso() }));
+            } 
         }
     }
 }

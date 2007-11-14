@@ -26,27 +26,33 @@ string *query_names(object whom) {
 }
 
 int answers_to(string name, object what){
-    string *adjs = what->GetAdjectives();
-    string *preargs = ({});
-    string s1,s2,s3,s4;
-    int hits;
-    if(member_array(lower_case(name),query_names(what)) != -1) return 1;
+    string *adjs, *names, *arg_arr, *tmp_arr;
+    int i, j, arrsize;
+    if(!name || !what) return 0;
+    adjs = filter((what->GetAdjectives() || ({})), (: lower_case($1) :));
+    names = filter(query_names(what), (: lower_case($1) :));
+    name = lower_case(name);
+    if(member_array(name, names) != -1) return 1;
     if(!sizeof(adjs)) return 0;
-    hits = sscanf(name,"%s %s %s %s",s1, s2, s3, s4);
-    if(hits < 4) hits = sscanf(name,"%s %s %s",s1, s2, s3);
-    if(hits < 3) hits = sscanf(name,"%s %s",s1, s2);
-    if(!hits) return 0;
-    hits--;
-    if(sizeof(s1)) preargs += ({s1});
-    if(sizeof(s2)) preargs += ({s2});
-    if(sizeof(s3)) preargs += ({s3});
-    if(sizeof(s4)) preargs += ({s4});
-
-    if(member_array(preargs[hits],query_names(what)) == -1) return 0;
-    preargs -= ({ preargs[hits] });
-
-    foreach(string prearg in preargs){
-        if(member_array(prearg, adjs) == -1) return 0;
+    arg_arr = explode(name," ");
+    arrsize = sizeof(arg_arr);
+    if(arrsize == 1) return 0;
+    tmp_arr = arg_arr;
+    for(i=0; i < arrsize-1; i++){
+        string *elision = ({});
+        for(j=i; j < arrsize-1; j++){
+            string current_adj = implode(arg_arr[i..j]," ");
+            if(member_array(current_adj,adjs) != -1){
+                elision = arg_arr[i..j];
+                break;
+            }
+        }
+        if(!sizeof(elision)){
+            return 0;
+        }
+        tmp_arr -= elision;
+        if(!sizeof(tmp_arr)) return 0;
+        if(member_array(implode(tmp_arr," "), names) != -1) return 1;
     }
-    return 1;
+    return 0;
 }

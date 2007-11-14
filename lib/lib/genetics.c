@@ -108,6 +108,11 @@ varargs void AddStat(string stat, int base, int cls) {
     SetStat(stat, base, cls);
 }
 
+varargs void RemoveStat(string stat) {
+    if(!stat) return;
+    if(Stats[stat]) map_delete(Stats, stat);
+}
+
 mapping GetStat(string stat) {
     if(!stat) return 0;
     else return copy(Stats[stat]);

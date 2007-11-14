@@ -26,17 +26,16 @@ mixed direct_evade_liv() {
 }
 
 object *AddFollower(object follower) {
-    class FollowerClass tmp;
+    mapping tmp = ([]);
 
     if( !objectp(follower) ) error("Bad argument 1 to AddFollower().\n");
     if( follower != this_object() && !Followers[follower]
       && !follower->GetProperty("no follow") ) {
         if( !follower->IsFollowing(this_object()) ) {
             if( follower->SetLeader(this_object()) ) {
-                tmp = new(class FollowerClass);
-                tmp->followed = 0;
-                tmp->bonus = 0;
-                tmp->lost = 0;
+                tmp["followed"] = 0;
+                tmp["bonus"] = 0;
+                tmp["lost"] = 0;
                 Followers[follower] = tmp;
                 numberOfFollowers++;
             }
@@ -55,30 +54,32 @@ object *RemoveFollower(object follower) {
 
 object *GetFollowers() { return filter(keys(Followers), (: $1 :)); }
 
+mapping GetFollowerMap() { return copy(Followers); }
+
 int SetFollowed(object follower, int followed) {
     if( !objectp(follower) ) error("Bad argument 1 to SetFollowed().\n");
     if( !intp(followed) ) error("Bad argument 2 to SetFollowed().\n");
     if( !Followers[follower] ) return 0;
-    return(((class FollowerClass)Followers[follower])->followed = followed);
+    return(Followers[follower]["followed"] = followed);
 }
 
 int GetFollowed(object follower) {
     if( !objectp(follower) ) error("Bad argument 1 to GetFollowBonus().\n");
     if( !Followers[follower] ) return 0;
-    return ((class FollowerClass)Followers[follower])->followed;
+    return Followers[follower]["followed"];
 }
 
 int AddFollowBonus(object follower, int bonus) {
     if( !objectp(follower) ) error("Bad argument 1 to AddFollowBonus().\n");
     if( !intp(bonus) ) error("Bad argument 2 to AddFollowBonus().\n");
     if( !Followers[follower] ) return 0;
-    return( ((class FollowerClass)Followers[follower])->bonus += bonus );
+    return( Followers[follower]["bonus"] += bonus );
 }
 
 int GetFollowBonus(object follower) {
     if( !objectp(follower) ) error("Bad argument 1 to GetFollowBonus().\n");
     if( !Followers[follower] ) return 0;
-    return ((class FollowerClass)Followers[follower])->bonus;
+    return Followers[follower]["bonus"];
 }
 
 varargs mixed CanLead(object ob) {
@@ -102,7 +103,7 @@ varargs mixed CanEvade(object ob) {
 }
 
 int eventMoveFollowers(object dest) {
-    class FollowerClass follower;
+    mapping follower;
     object ob;
     int followChance;
 
@@ -110,11 +111,14 @@ int eventMoveFollowers(object dest) {
         follower = Followers[ob];
 
         followChance = 100;
-        if( !follower->followed ) followChance -= 20 + this_object()->GetSkillLevel("stealth");
+        if( !follower["followed"] ) followChance -= 20 + this_object()->GetSkillLevel("stealth");
         followChance += ob->GetSkillLevel("tracking");
-        followChance += follower->bonus;
-        if( ob->eventFollow(dest, followChance) ) follower->lost = 0;
-        else if( follower->lost++ && eventEvade(ob) ) RemoveFollower(ob);
+        followChance += follower["bonus"];
+        if( ob->eventFollow(dest, followChance) ) follower["lost"] = 0;
+        else if( follower["lost"]++ && eventEvade(ob) ){
+            //tc("follower evaded: "+identify(ob));
+            RemoveFollower(ob);
+        }
     }
     return 1;
 }

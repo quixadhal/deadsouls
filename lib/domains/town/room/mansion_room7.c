@@ -1,6 +1,9 @@
 #include <lib.h>
 inherit LIB_ROOM;
 
+private int Rats;
+int Rats = random(2);
+
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -15,8 +18,10 @@ static void create() {
     SetInventory( ([
         "/domains/town/obj/rack" : 1,
         "/domains/town/obj/stove" : 1,
+        "/domains/town/npc/rat" : Rats,
       ]) );
 }
+
 void init(){
-    ::init();
+    room::init();
 }

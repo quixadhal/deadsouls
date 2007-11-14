@@ -15,11 +15,11 @@ int eventDelete(object ob, string value);
 string global1, global2, globaltmp, globalvalue;
 
 string *base_arr = ({"set_heart_beat", "SetUnique", "SetNoClean","SetNoModify","SetProperties","SetLong","SetShort","SetItems","SetListen","SetSmell","SetInvis"});
-string *item_arr = base_arr + ({"SetLanguage","SetRead","SetDefaultRead","SetDisableChance", "SetDamagePoints", "SetVendorType","SetNoCondition","SetMoney","SetKeyName", "SetId", "SetMass","SetCost","SetValue","SetAdjectives","SetDamagePoints","SetBaseCost" });
+string *item_arr = base_arr + ({"SetLanguage","SetRead","SetDefaultRead","SetDisableChance", "SetDamagePoints", "SetVendorType","SetNoCondition","SetMoney","SetKeyName", "SetId", "SetMass","SetCost","SetValue","SetAdjectives","SetDamagePoints","SetBaseCost", "SetPreventGet", "SetPreventPut", "SetDestructOnDrop", "SetPreventDrop" });
 string *meal_arr = item_arr + ({ "SetMealType", "SetStrength"}) -({"SetDamagePoints"});
 string *storage_arr = item_arr + ({"SetOpacity", "SetMaxCarry","SetInventory", "SetCanClose", "SetCanLock","SetMaxRecurse","SetLocked","SetClosed","SetKey"});
 string *room_arr = base_arr - ({"SetUnique"}) + ({"SetTerrainType","AddTerrainType","SetLanguage", "SetRead", "SetDefaultRead", "SetNoObviousExits","SetDefaultExits","SetTown","SetNightLong","SetDayLong","SetClimate","SetAmbientLight","SetNightLight","SetDayLight","SetObviousExits", "SetInventory", "SetEnters"});
-string *npc_arr = base_arr - ({"SetItems"}) + ({"SetMass","SetBodyType","SetSize","SetRespiration","SetMount","SetCanBefriend","SetDefaultLanguage","SetNativeLanguage","SetCustomXP", "SetSpellBook", "SetCanBite", "SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat", "SetNoCondition", "SetAttackable"});
+string *npc_arr = base_arr - ({"SetItems"}) + ({"SetMass","SetBodyType","SetSize","SetRespiration","SetMount","SetCanBefriend","SetDefaultLanguage","SetNativeLanguage","SetCustomXP", "SetSpellBook", "SetCanBite", "SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat", "SetNoCondition", "SetAttackable", "SetPolyglot"});
 string *barkeep_arr = npc_arr + ({"SetLocalCurrency","SetMenuItems"});
 string *trainer_arr = npc_arr + ({"SetNoSpells", "AddTrainingSkills"});
 string *vendor_arr = npc_arr + ({"SetLocalCurrency","SetStorageRoom","SetMaxItems","SetVendorType"});
@@ -31,6 +31,7 @@ string *table_arr = storage_arr + bed_arr;
 string *door_arr = ({"SetHiddenDoor", "SetLong","SetShort","SetLocked","SetClosed","SetCanLock","SetKey","SetId"});
 string *book_arr = item_arr + ({"SetTitle","SetSource"});
 string *worn_storage_arr = armor_arr + storage_arr;
+string *vehicle_arr =  npc_arr + ({"SetVehicleInterior"});
 
 string *all_arr = storage_arr + door_arr + room_arr + barkeep_arr + armor_arr + weapon_arr + bed_arr +meal_arr + vendor_arr +trainer_arr;
 
@@ -60,6 +61,7 @@ string GetSettings(string str){
     case "worn storage" : name = worn_storage_arr; break;
     case "wornstorage" : name = worn_storage_arr; break;
     case "worn_storage" : name = worn_storage_arr; break;
+    case "vehicle" : name = vehicle_arr; break;
     default : name = room_arr;
     }
     foreach(string thing in name){
@@ -135,6 +137,7 @@ mixed eventModify(object ob, string str){
     if(inherits(LIB_BOOK,ob)) inheritance += " book";
     if(inherits(LIB_DOOR,ob)) inheritance += " door";
     if(inherits(LIB_WORN_STORAGE,ob)) inheritance += " worn_storage";
+    if(inherits(LIB_VEHICLE,ob)) inheritance += " vehicle";
 
     if(!inheritance || inheritance == ""){
         write("The object you want to modify lacks an init() function.");
@@ -445,9 +448,26 @@ mixed eventModify(object ob, string str){
         case "invis" : out = "SetInvis";break;
         case "attackable" : out = "SetAttackable";break;
         case "setattackable" : out = "SetAttackable";break;
+        }
+    }
+
+    if(!out){
+        switch(mode){
+        case "polyglot" : out = "SetPolyglot";break;
+        case "setpolyglot" : out = "SetPolyglot";break;
+        case "setvehicleinterior" : out = "SetVehicleInterior";break;
+        case "vehicleinterior" : out = "SetVehicleInterior";break;
+        case "interior" : out = "SetVehicleInterior";break;
+        case "preventget" : out = "SetPreventGet";break;
+        case "setpreventget" : out = "SetPreventGet";break;
+        case "setpreventdrop" : out = "SetPreventDrop";break;
+        case "preventdrop" : out = "SetPreventDrop";break;
+        case "setdestructondrop" : out = "SetDestructOnDrop";break;
+        case "destructondrop" : out = "SetDestructOnDrop";break;
         default : out = mode;
         }
     }
+
     if(!value) value = 0;
 
     if(value == "delete") {
@@ -503,7 +523,6 @@ mixed eventModify(object ob, string str){
         return 1;
     }
 
-
     if(grepp(inheritance,"room") && member_array(out,room_arr) != -1) invalid = 0;
     if(grepp(inheritance,"barkeep") && member_array(out,barkeep_arr) != -1) invalid = 0;
     if(grepp(inheritance,"vendor") && member_array(out,vendor_arr) != -1) invalid = 0;
@@ -519,6 +538,7 @@ mixed eventModify(object ob, string str){
     if(grepp(inheritance,"door") && member_array(out,door_arr) != -1) invalid = 0;
     if(grepp(inheritance,"book") && member_array(out,book_arr) != -1) invalid = 0;
     if(grepp(inheritance,"worn_storage") && member_array(out,worn_storage_arr) != -1) invalid = 0;
+    if(grepp(inheritance,"vehicle") && member_array(out,vehicle_arr) != -1) invalid = 0;
     else if(grepp(inheritance,"item") && member_array(out,item_arr) != -1) invalid = 0;
 
     if(invalid) {
@@ -577,6 +597,7 @@ mixed eventModify(object ob, string str){
         case "SetBodyType" : p_array = ({"SetRace"});break;
         case "SetRespiration" : p_array = ({"SetRace"});break;
         case "SetClass" : p_array = ({"SetRace","SetLong"});break;
+        case "SetStats" : p_array = ({"SetRace"});break;
         case "SetMass" : p_array = ({"SetRace","SetLong"});break;
         case "SetSmell" : p_array = ({"SetItems","SetInventory","SetListen","SetLong","SetDayLong","SetNightLong","SetShort"});break;
         case "SetListen" : p_array = ({"SetItems","SetInventory","SetSmell","SetLong","SetDayLong","SetNightLong","SetShort"});break;

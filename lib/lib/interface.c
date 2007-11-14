@@ -62,6 +62,19 @@ static void terminal_type(string str) {
 
 static void window_size(int width, int height) { SetScreen(width, height); }
 
+int eventReceive(string message){
+    int max_length = __LARGEST_PRINTABLE_STRING__ - 192;
+    if(sizeof(message) > max_length){
+        while(sizeof(message)){
+            string tmp = message[0..max_length];
+            receive(tmp);
+            message = replace_string(message, tmp, "");
+        }
+    }
+    else receive(message);
+}
+
+
 void receive_message(string msg_class, string msg) {
     int cl = 0;
 
@@ -181,8 +194,8 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
         MessageQueue += msg;
     }
     else {
-        if( Client ) receive("<" + msg_class + " " + msg + " " + msg_class +">\n");
-        else receive(msg);
+        if( Client ) eventReceive("<" + msg_class + " " + msg + " " + msg_class +">\n");
+        else eventReceive(msg);
     }
     return 1;
 }

@@ -16,12 +16,13 @@ inherit LIB_BOOBYTRAP_OBJECT;
 void create(){
     ::create();
     SetKeyName("trap");
-    SetId( ({ "trap", "sample trap" }) );
-    SetAdjectives( ({ "simple","sample", "poison", "needle" }) );
-    SetShort("a sample trap");
-    SetLong("It is a simple poison needle trap.");
+    SetId( ({ "trap" }) );
+    SetAdjectives( ({ "simple","weapon", "poison", "needle" }) );
+    SetShort("a weapon trap");
+    SetLong("It is a simple poison needle trap designed to trigger when a "
+      "weapon is wielded.");
     SetShadowObject("/shadows/needle_trap");
-    SetTrapType(BOOBYTRAP_ALL);
+    SetTrapType(BOOBYTRAP_WIELD);
     SetMass(50);
     SetAutoResets(2);
     SetBaseCost(100);

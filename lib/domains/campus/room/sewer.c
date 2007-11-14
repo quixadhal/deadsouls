@@ -42,7 +42,6 @@ static void create() {
     SetInventory(([
         "/domains/campus/obj/debris" :1
       ]));
-    SetObviousExits("w");
     set_heart_beat(10);
 }
 int SteamBlast(){

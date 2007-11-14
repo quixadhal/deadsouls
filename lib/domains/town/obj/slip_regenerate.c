@@ -7,7 +7,7 @@ void create(){
     ::create();
     SetKeyName("regeneration slip");
     SetId( ({"slip","leaf","paper","healer token"}) );
-    SetAdjectives( ({"medical","paper"}) );
+    SetAdjectives( ({"regeneration","medical","paper"}) );
     SetShort("a regeneration slip");
     SetLong("This is a small, fragile piece of paper, possibly even a leaf. "
       "It has some script scribbled on it.");

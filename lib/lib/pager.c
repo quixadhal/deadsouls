@@ -79,11 +79,11 @@ varargs mixed eventPage(mixed val, mixed msg_class, function f,mixed args...) {
                 files[i]["Args"] = 0;
             }
         }
+        if(files[<1]["Args"] && files[<1]["Callback"]) 
+            files[<1]["Args"] = ({ files[<1]["Callback"] }) + files[<1]["Args"];
+        else if(files[<1]["Callback"]) files[<1]["Args"] = ({ files[<1]["Callback"] });
+        files[<1]["Callback"] = (: RazzleDazzle :);
     }
-    if(files[<1]["Args"] && files[<1]["Callback"]) 
-        files[<1]["Args"] = ({ files[<1]["Callback"] }) + files[<1]["Args"];
-    else if(files[<1]["Callback"]) files[<1]["Args"] = ({ files[<1]["Callback"] });
-    files[<1]["Callback"] = (: RazzleDazzle :);
     return Page(files[0]+([]));
 }
 

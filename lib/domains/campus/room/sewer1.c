@@ -38,7 +38,6 @@ static void create() {
     SetExits( ([ "east" : "/domains/campus/room/sewer.c",
         "west" : "/domains/campus/room/sewer2.c"
       ]) );
-    SetObviousExits("e, w");
     set_heart_beat(10);
 }
 int SteamBlast(){

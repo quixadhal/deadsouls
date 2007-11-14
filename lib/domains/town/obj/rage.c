@@ -138,7 +138,6 @@ int damage2(){
     if(victim){
         tell_object(victim,"%^BOLD%^RED%^You feel your body exploding with rage!%^RESET%^");
         tell_room(environment(victim),victimname+" is shaking with fury.", ({victim}) );
-        victim->AddHP(-(random(50)+10));
         victim->AddStaminaPoints(random(50)+20);
         victim->AddStatBonus("strength", 20);
         victim->AddStatBonus("durability", 20);
@@ -146,6 +145,7 @@ int damage2(){
         victim->AddStatBonus("coordination", 20);
         victim->AddStatBonus("speed", 20);
         MakeHostile(victim);
+        victim->AddHP(-(random(50)+10));
     }
     return 1;
 }
@@ -154,7 +154,6 @@ int damage3(){
     if(victim){
         tell_room(environment(victim),victimname+" lets out a horrific roar!", ({victim}) );
         tell_object(victim,"%^BOLD%^RED%^You let out a horrific roar as a spasm of fury rips through you!%^RESET%^");
-        victim->AddHP(-(random(60)+30));
         victim->AddStaminaPoints(random(60)+30);
         victim->AddStatBonus("strength", 30);
         victim->AddStatBonus("durability", 30);
@@ -162,6 +161,7 @@ int damage3(){
         victim->AddStatBonus("coordination", 30);
         victim->AddStatBonus("speed", 30);
         MakeHostile(victim);
+        victim->AddHP(-(random(60)+30));
     }
     return 1;
 }
@@ -170,7 +170,6 @@ int damage4(){
     if(victim){
         tell_room(environment(victim),victimname+"'s entire body vibrates madly, throwing off hot blood drops, sweat, and saliva.", ({victim}) );
         tell_object(victim,"%^BOLD%^RED%^Your entire body vibrates uncontrollably, spraying blood, sweat, and spit everywhere.%^RESET%^");
-        victim->AddHP(-(random(70)+40));
         victim->AddStaminaPoints(random(70)+40);
         victim->AddStatBonus("strength", 40);
         victim->AddStatBonus("durability", 40);
@@ -184,6 +183,7 @@ int damage4(){
                 if(bystander && random(100) > 50) this_object()->eventInfect(bystander);
             }
         }
+        victim->AddHP(-(random(70)+40));
     }
     return 1;
 }
@@ -194,7 +194,6 @@ int damage5(){
           "a huge glob of phlegm.", ({victim}) );
         tell_object(victim,"You cough up a huge glob of phlegm, accidentally inhale it, and choke while coughing it "+
           "back up.");
-        victim->AddHP(-(random(80)+50));
         //Fix below courtesy of Jonez
         victim->AddStaminaPoints(random(80)+50);
         victim->AddStatBonus("strength", 50);
@@ -203,6 +202,7 @@ int damage5(){
         victim->AddStatBonus("coordination", 50);
         victim->AddStatBonus("speed", 50);
         MakeHostile(victim);
+        victim->AddHP(-(random(80)+50));
     }
     return 1;
 }

@@ -147,7 +147,8 @@ varargs mixed eventTurnOff(string str){
 }
 
 int eventDestruct(){
-    if(!this_player() || (this_player() && !archp(this_player()))){
+    if(!this_player()) return 0;
+    if(!archp(this_player())){
         write("This is an arch-level cambot. You may not tamper with it.");
         return 0;
     }
@@ -155,7 +156,8 @@ int eventDestruct(){
 }
 
 int eventDie(){
-    if(!this_player() || (this_player() && !archp(this_player()))){
+    if(!this_player()) return 0;
+    if(!archp(this_player())){
         write("This is an arch-level cambot. You may not tamper with it.");
         this_object()->AddHP(1000);
         return 0;
@@ -164,7 +166,8 @@ int eventDie(){
 }
 
 int eventForce(string str){
-    if(!this_player() || (this_player() && !archp(this_player()))){
+    if(!this_player()) return 0;
+    if(!archp(this_player())){
         write("This is an arch-level cambot. You may not tamper with it.");
         return 0;
     }

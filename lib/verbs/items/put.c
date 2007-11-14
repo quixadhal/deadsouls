@@ -47,7 +47,46 @@ mixed can_put_obj_obj(object target, string wrd, object storage){
     return can_put_obj_word_obj(target, wrd, storage);
 }
 
+//mixed can_put_wrd_wrd_word_obj(string num, string curr,string wrd, mixed container) {
+mixed can_put_wrd_wrd_word_obj(mixed args...) {
+    int amt;
+    string num, curr, wrd;
+    mixed container;
+    object ob1, ob2;
+
+    num = args[0];
+    curr = args[1];
+    wrd = args[2];
+    container = args[3];
+
+    ob1 = get_object(num+" "+curr);
+    ob2 = get_object(implode(args[6..]," "));
+
+    if(ob1 && ob2) return can_put_obj_word_obj(ob1, wrd, ob2);
+
+    if( !num || !curr ) return 0;
+    if( (amt = to_int(num)) < 1 ) return "You cannot do that!";
+    if( (int)this_player()->GetCurrency(curr) < amt )
+        return "You don't have that much " + curr + ".";
+    if(this_player()->GetLevel() < 4) {
+        write("Newbies cannot drop money.");
+        return "Newbies can't drop money.";
+    }
+    if(wrd == "on" || wrd == "onto"){
+        if(container && !inherits( LIB_SURFACE, container ) ) return "#That isn't a load-bearing surface.";
+    }
+    if(container && container->GetClosed()){
+        return "#That's closed.";
+    }
+    if(intp(check_light())) return this_player()->CanManipulate();
+    else return check_light();
+}
+
 mixed do_put_obj_word_obj(object what, string wrd, object storage) {
+    if(storage && storage->GetClosed()){ 
+        write(capitalize(storage->GetShort())+" is closed.");
+        return 1;
+    }
     if(wrd == "in" || wrd == "into") return (mixed)storage->eventPutInto(this_player(), what);
     if(wrd == "on" || wrd == "onto") return (mixed)storage->eventPutOnto(this_player(), what);
 }
@@ -108,31 +147,24 @@ mixed do_put_obs_obj(mixed *res, object storage){
     return do_put_obs_word_obj(res, prepo, storage);
 }
 
-mixed can_put_wrd_wrd_word_obj(string num, string curr,string wrd, mixed container) {
-    int amt;
-
-    if( !num || !curr ) return 0;
-    if( (amt = to_int(num)) < 1 ) return "You cannot do that!";
-    if( (int)this_player()->GetCurrency(curr) < amt )
-        return "You don't have that much " + curr + ".";
-    if(this_player()->GetLevel() < 4) {
-        write("Newbies cannot drop money.");
-        return "Newbies can't drop money.";
-    }
-    if(wrd == "on" || wrd == "onto"){
-        if(container && !inherits( LIB_SURFACE, container ) ) return "#That isn't a load-bearing surface.";
-    }
-    if(container && container->GetClosed()){
-        return "#That's closed.";
-    }
-    if(intp(check_light())) return this_player()->CanManipulate();
-    else return check_light();
-}
-
-
-mixed do_put_wrd_wrd_word_obj(string num, string curr, mixed wort, object ob) {
+//mixed do_put_wrd_wrd_word_obj(string num, string curr, mixed wort, object ob) {
+mixed do_put_wrd_wrd_word_obj(mixed args...) {
     object pile, env;
     int amt;
+    string num, curr, wort;
+    mixed container;
+    object ob, ob1, ob2;
+
+    num = args[0];
+    curr = args[1];
+    wort = args[2];
+    ob = args[3];
+
+    ob1 = get_object(num+" "+curr);
+    ob2 = get_object(implode(args[6..]," "));
+
+    if(ob1 && ob2) return do_put_obj_word_obj(ob1, wort, ob2);
+
     if(wort == "on") wort = "onto";
     if(wort == "in") wort = "into";
 

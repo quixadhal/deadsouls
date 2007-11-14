@@ -5,6 +5,7 @@
  *    Version: @(#) lock.c 1.4@(#)
  *    Last modified: 96/12/23
  */
+#include <damage_types.h>
 
 private string array    Keys         = ({});
 private int             Locked       = 0;
@@ -136,6 +137,18 @@ varargs mixed eventLock(object who, mixed arg1, mixed arg2) {
 varargs mixed eventPick(object who, string id, object tool) {
     mixed tmp;
     int strength;
+    mixed *prehensiles = ({});
+    string limb;
+
+    if(!who) return 0;
+
+    prehensiles = who->GetWieldingLimbs();
+    if(!sizeof(prehensiles)){
+        who->eventPrint("You lack prehensile limbs with which to do that.");
+        return 1;
+    }
+
+    limb = prehensiles[random(sizeof(prehensiles))];
 
     if( !tool ) {
         strength = (int)who->GetSkillLevel("stealth");
@@ -174,7 +187,7 @@ varargs mixed eventPick(object who, string id, object tool) {
     if( random(100) > strength ) {
         send_messages("cut", "$agent_name $agent_verb $agent_reflexive "
           "on the lock.", who, this_object(), environment(who));
-        who->eventReceiveDamage(this_object(), 8, random(10) + 1);
+        who->eventReceiveDamage(this_object(), PIERCE, random(10) + 1, 0, limb);
     }
     return 1;
 }

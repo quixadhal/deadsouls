@@ -8,7 +8,7 @@ static void create() {
     potion::create();
     SetKeyName("potion");
     SetId( ({ "bottle", "potion","philtrum","potion of healing","potion of greater healing" }) );
-    SetAdjectives( "healing","greater healing" );
+    SetAdjectives(({"green", "healing","greater healing"}));
     SetShort("a green potion of greater healing");
     SetLong("A bottle containing a green fluid with the magical property of restoring much health.");
     SetMass(60);

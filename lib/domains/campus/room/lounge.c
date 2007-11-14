@@ -45,7 +45,6 @@ static void create() {
         "north" : "/domains/campus/room/corridor2.c",
       ]) );
     SetInventory(([
-        "/domains/town/obj/btable" : 1,
         "/domains/campus/obj/locker" : 1,
       ]));
     SetProperty("no attack", 1);

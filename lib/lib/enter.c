@@ -111,8 +111,8 @@ varargs mixed eventEnter(object who, string what, string verb) {
     if( Enter["pre"] && !evaluate(Enter["pre"], what) ) {
         return 1;
     }
-    if(verb == "crawl") who->eventMoveLiving(Enter["room"],"into the " + what );
-    else who->eventMoveLiving(Enter["room"], "$N enters into the " + what + ".");
+    if(verb == "crawl") who->eventMoveLiving(Enter["room"],"into the " + this_object()->GetKeyName() );
+    else who->eventMoveLiving(Enter["room"], "$N enters into the " + this_object()->GetKeyName() + ".");
     if( Enter["post"] ) {
         evaluate(Enter["post"], what);
     }

@@ -482,6 +482,7 @@ mixed eventCure(object who, int amount, string type) {
 
 int eventFollow(object dest, int followChance) {
     string dir;
+    int ret;
 
     if( objectp(dest) ) {
         if( !environment() ) {
@@ -491,9 +492,19 @@ int eventFollow(object dest, int followChance) {
         dir = environment()->GetDirection(base_name(dest));
     }
     if( !stringp(dir) ) dir = "";
-    if( dir != "" && followChance > random(100) ) eventForce(dir);
+    if( dir != "" && followChance > random(100) ){
+        eventForce(dir);
+    }
     if( environment() == dest ) return 1;
-    return 0;
+    else {
+        string newdir = replace_string(dir,"go ","");
+        if(newdir) ret = environment(this_object())->eventGo(this_object(), newdir);
+        if(!ret){
+            newdir = replace_string(dir,"enter ","");
+            ret = environment(this_object())->eventEnter(this_object(), newdir);
+        }
+    }
+    return ret;
 }
 
 mixed eventInfect(object germ) {

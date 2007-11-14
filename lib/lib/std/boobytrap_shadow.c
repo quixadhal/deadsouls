@@ -58,10 +58,7 @@ int eventShadow(object ob){
 }
 
 varargs mixed SpringTrap(mixed arg1, mixed arg2){
-    //write("You set off a trap!");
-    //say(this_player()->GetCapName()+" sets off a trap!");
     if(!autoresets){
-        //call_out( (: eventUnshadow :), 0);
         eventUnshadow();
     }
     else autoresets--;
@@ -268,4 +265,28 @@ string GetKeyName(){
     object ob = GetShadowedObject();
     if(!ob) return "";
     return ob->GetKeyName();
+}
+
+mixed eventEquip(object who, string array limbs) {
+    object ob = GetShadowedObject();
+    mixed ret;
+    if(!ob) return 0;
+    ret = ob->eventEquip(who, limbs);
+    if(function_exists("GetWear",ob)){
+        if(traptype & BOOBYTRAP_WEAR) SpringTrap(who);
+    }
+    else if(traptype & BOOBYTRAP_WIELD) SpringTrap(who);
+    return ret;
+}
+
+mixed eventUnequip(object who) {
+    object ob = GetShadowedObject();
+    mixed ret;
+    if(!ob) return 0;
+    ret = ob->eventUnequip(who);
+    if(function_exists("GetWear",ob)){
+        if(traptype & BOOBYTRAP_REMOVE) SpringTrap(who);
+    }
+    else if(traptype & BOOBYTRAP_UNWIELD) SpringTrap(who);
+    return ret;
 }

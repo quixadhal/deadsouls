@@ -60,7 +60,7 @@ int SpamSpamSpamSpam(string spam){
     }
     spamspam=unguarded((: read_file(DIR_TXT+"/"+spam2+".txt") :));
     say(this_player()->GetName()+" spams "+ob->GetName()+" with a "+
-      "giant "+spam2+".\n");
+      "giant "+spam2+".\n", ob);
     tell_object(ob, this_player()->GetName()+" spams you with:\n"+spamspam+"\n");
     write("You spam "+ob->GetName()+" with a giant "+spam2+"!\n");
     return 1;

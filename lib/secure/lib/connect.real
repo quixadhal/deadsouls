@@ -143,50 +143,51 @@ static void InputName(string namen, string kill_me) {
 
     if( find_player(Name) ) NetDead = 1;
 
-    if(lower_case(Name) == "guest"){
-        if( !NetDead ) eventEnterGame();
-        else eventReEnterGame(0);
-        return;
+    if(Name != "guest"){
+        receive("Password: \n");
+        input_to((: InputPassword :), I_NOECHO | I_NOESC, name);
     }
-    receive("Password: \n");
-    input_to((: InputPassword :), I_NOECHO | I_NOESC, name);
+    else InputPassword("guest","Guest");
 } 
 
 static void InputPassword(string pass, string cap) {
     string control;
 
-    if( !pass || pass == "" ) {
-        receive("\nYou must enter a password.  Please try again later.\n");
-        Destruct();
-        return;
-    }
-    if(!cap || cap == "") {
-        receive("\nAn unusual error has occurred.  Please try again.\n");
-        Destruct();
-        return;
-    }
+    if(Name != "guest"){
 
-    control = PLAYERS_D->GetPlayerData(Name,"Password");
-    if( control != crypt(pass, control) ) {
-        receive("\nInvalid password.\n");
-        if( ++CrackCount > MAX_PASSWORD_TRIES ) {
-            receive("\nNo more attempts allowed\n");
-            log_file("security", "Maximum password tries exceeded by " +
-              Name + " from " + query_ip_number() + "\n");
-            filter(users(), (: archp :))->eventPrint("System %^MAGENTA%^"
-              "<error>%^RESET%^ Maximum password "
-              "attempts exceeded by " + cap +
-              " from " + query_ip_number() + ".\n",
-              MSG_ERROR);
+        if( !pass || pass == "" ) {
+            receive("\nYou must enter a password.  Please try again later.\n");
             Destruct();
             return;
         }
-        receive("Password: \n");
-        input_to( (: InputPassword :), I_NOECHO | I_NOESC, cap);
-        return;
-    }
+        if(!cap || cap == "") {
+            receive("\nAn unusual error has occurred.  Please try again.\n");
+            Destruct();
+            return;
+        }
 
-    if(rescue) unguarded( (: wipe_inv(name) :) );
+        control = PLAYERS_D->GetPlayerData(Name,"Password");
+        if( control != crypt(pass, control) ) {
+            receive("\nInvalid password.\n");
+            if( ++CrackCount > MAX_PASSWORD_TRIES ) {
+                receive("\nNo more attempts allowed\n");
+                log_file("security", "Maximum password tries exceeded by " +
+                  Name + " from " + query_ip_number() + "\n");
+                filter(users(), (: archp :))->eventPrint("System %^MAGENTA%^"
+                  "<error>%^RESET%^ Maximum password "
+                  "attempts exceeded by " + cap +
+                  " from " + query_ip_number() + ".\n",
+                  MSG_ERROR);
+                Destruct();
+                return;
+            }
+            receive("Password: \n");
+            input_to( (: InputPassword :), I_NOECHO | I_NOESC, cap);
+            return;
+        }
+
+        if(rescue) unguarded( (: wipe_inv(name) :) );
+    }
 
     Player = (object)master()->player_object(Name);
     if( !Player ) {
@@ -195,7 +196,8 @@ static void InputPassword(string pass, string cap) {
         return;
     }
     PLAYERS_D->AddPlayerInfo(Player);
-    if( !(string)Player->GetRace() || (string)Player->GetRace() == "blob" ) {
+    if( !(string)Player->GetRace() || (string)Player->GetRace() == "blob"
+      || Name == "guest" ) {
         Player->SetRace("human");
     }
 

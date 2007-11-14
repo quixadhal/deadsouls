@@ -39,7 +39,6 @@ static void create() {
     SetExits( ([
         "north" : "/domains/town/room/magic_shop"
       ]) );
-    SetObviousExits("n");
 
 }
 void init(){

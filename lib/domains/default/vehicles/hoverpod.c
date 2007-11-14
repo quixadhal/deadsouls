@@ -10,7 +10,7 @@ static void create() {
     SetAdjectives(({"small","shiny","cramped","metallic","hovering"}));
     SetShort("a small hoverpod");
     SetLong("This is a shiny metallic sphere about 1.5 meters across, designed for containing "
-      "an occupant and their stuff  in its cramped interior and providing transportation.");
+      "an occupant and their stuff in its cramped interior and providing transportation.");
     SetVehicleInterior("This is the cramped interior of a shiny sphere used for "
       "transportation. Since it hovers, you can use the command \"fly\" to get "
       "around with it, like: fly north");

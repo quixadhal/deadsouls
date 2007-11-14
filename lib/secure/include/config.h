@@ -12,7 +12,7 @@
 #define DISABLE_INTERMUD         0
 #define DISABLE_IMC2             1
 #define MINUTES_REBOOT_WARNING   20
-#define TIME_TO_RESET            20000
+#define TIME_TO_RESET            7200
 #define RESET_ALL                0
 #define GMT_OFFSET               -32000
 #define LOCAL_TIME               1

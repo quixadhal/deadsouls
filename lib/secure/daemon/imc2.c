@@ -192,6 +192,18 @@ private void resolve_callback(string address, string resolved, int key);
 // Add stuff in here if you want to see messages.
 //}
 
+// Sanity check: a null socket write tends to be a crasher
+varargs static void validate(int i){
+    if(i){
+        //yenta("Hit validate on fd "+i);
+        if(!socket_status(i) || !socket_status(i)[5]){
+            tc("%^RED%^BAD SOCKET ALERT. fd "+i+":  "+
+              identify(socket_status(i)),"red");
+            error("Bad socket, fd "+i);
+        }
+    }
+}
+
 // Functions for users to change.
 int can_use(object user){ return 1; } // Is this person allowed to use IMC2 at all?  This function determines if tells can be sent to the person and such.
 
@@ -472,6 +484,7 @@ private void send_text(string text){
 #endif
     //debug(save_variable(text), DEB_OUT);
     //	debug("writing to socket: "+socket_num);
+    validate(socket_num);
     socket_write(socket_num,text);
     //	imc2_socket->send(text);
     return;
@@ -1361,6 +1374,8 @@ EndText,
           int x,y;
           int emote,reply;
           object usr, *usrs=({ });
+
+          if(IMC2_D->getonline() != 1) return 0;
 
           if(!str) str = "help";
           sscanf(str,"%s %s",cmd,args);

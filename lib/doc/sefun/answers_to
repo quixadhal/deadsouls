@@ -1,0 +1,26 @@
+ANSWERS_TO(1)                                 ANSWERS_TO(1)
+
+NAME
+       answers_to() - Determines whether an object answers to a string.
+
+SYNOPSIS
+       int answers_to(string name, object what)
+
+DESCRIPTION
+       If the specified object answers to the name, 1 is returned,
+       lese 0 is returned.
+
+EXAMPLES
+       o   answers_to("big hairy monster", this_object())
+
+LOCATION
+       /secure/sefun/query_name.c
+
+SEE ALSO
+       query_name()
+
+Author
+       Cratylus
+
+                                                                1
+

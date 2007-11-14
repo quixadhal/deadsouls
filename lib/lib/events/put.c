@@ -72,7 +72,7 @@ varargs mixed eventPut(object who, object storage, string prep) {
 
 
     if( !eventMove(storage) ) {
-        who->eventPrint("There is not enough room in there!");
+        who->eventPrint("The "+remove_article(this_object()->GetShort())+" stays where it is.");
         return 0;
     }
     who->eventPrint("You put " + GetShort() + prep +

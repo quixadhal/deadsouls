@@ -27,21 +27,21 @@ int lock, key, room, direction;
 int ok, ok2;
 
 mixed cmd(string args){
-if(args == "clear"){
-write("Resetting the converter variables.");
-RELOAD_D->eventReload(this_object(),0);
-return 1;
-}
-if(grepp(args,"-r ")){
-args = replace_string(args,"-r ","");
-return this_object()->Report(args);
-}
-return this_object()->ConvertArea(args);
+    if(args == "clear"){
+        write("Resetting the converter variables.");
+        RELOAD_D->eventReload(this_object(),0);
+        return 1;
+    }
+    if(grepp(args,"-r ")){
+        args = replace_string(args,"-r ","");
+        return this_object()->Report(args);
+    }
+    return this_object()->ConvertArea(args);
 }
 
 string clean_string(string str){
-str = replace_string(str,"\"","\'",);
-return str;
+    str = replace_string(str,"\"","\'",);
+    return str;
 }
 
 int Report(string str){
@@ -82,10 +82,10 @@ int ConvertArea(string arg){
         return 1;
     }
 
-if(directory_exists(DOMAINS_DIRS+"/"+name)){
-write("That domain already exists. Backing up the current domain to a unique name.");
-rename(DOMAINS_DIRS+"/"+name, DOMAINS_DIRS+"/"+name+"."+time());
-}
+    if(directory_exists(DOMAINS_DIRS+"/"+name)){
+        write("That domain already exists. Backing up the current domain to a unique name.");
+        rename(DOMAINS_DIRS+"/"+name, DOMAINS_DIRS+"/"+name+"."+time());
+    }
 
     original = read_file(str);
     digested = original;
@@ -167,12 +167,12 @@ rename(DOMAINS_DIRS+"/"+name, DOMAINS_DIRS+"/"+name+"."+time());
 
         //print_long_string(this_player(), header, 1);
         //write("file above was: "+prefix+lines[0]+"_"+ob_name+".c");
-mkdir_recurse(truncate(prefix,1));
+        mkdir_recurse(truncate(prefix,1));
         if(directory_exists(truncate(prefix,1))){
             //write("Directory "+truncate(prefix,1)+" exists. Wrtiting.");
             write_file(prefix+lines[0]+"_"+ob_name+".c",header,1);
         }
-else write("Directory "+truncate(prefix,1)+" does not exist.");
+        else write("Directory "+truncate(prefix,1)+" does not exist.");
 
         if(!AreaMap) AreaMap = ([]);
 
@@ -235,12 +235,12 @@ else write("Directory "+truncate(prefix,1)+" does not exist.");
 
             //print_long_string(this_player(), header, 1);
             //write("file above was: "+prefix+lines[0]+"_"+ob_name+".c");
-mkdir_recurse(truncate(prefix,1));
+            mkdir_recurse(truncate(prefix,1));
             if(directory_exists(truncate(prefix,1))){
-//write("Directory "+truncate(prefix,1)+" exists. Wrtiting.");
+                //write("Directory "+truncate(prefix,1)+" exists. Wrtiting.");
                 write_file(prefix+lines[0]+"_"+ob_name+".c",header,1);
             }
-else write("Directory "+truncate(prefix,1)+" does not exist.");
+            else write("Directory "+truncate(prefix,1)+" does not exist.");
 
             if(!AreaMap) AreaMap = ([]);
 
@@ -313,12 +313,12 @@ else write("Directory "+truncate(prefix,1)+" does not exist.");
 
         //print_long_string(this_player(),header,1);
         //write("file above was: "+prefix+lines[0]+".c");
-mkdir_recurse(truncate(prefix,1));
+        mkdir_recurse(truncate(prefix,1));
         if(directory_exists(truncate(prefix,1))){
-//write("Directory "+truncate(prefix,1)+" exists. Wrtiting.");
+            //write("Directory "+truncate(prefix,1)+" exists. Wrtiting.");
             write_file(prefix+lines[0]+".c",header,1);
         }
-else write("Directory "+truncate(prefix,1)+" does not exist.");
+        else write("Directory "+truncate(prefix,1)+" does not exist.");
 
         if(!AreaMap) AreaMap = ([]);
 

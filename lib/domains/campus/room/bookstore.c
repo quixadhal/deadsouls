@@ -7,7 +7,7 @@ static void create() {
     SetAmbientLight(30);
     SetShort("the campus bookstore");
     SetLong("This is the Virtual Campus Bookstore. It is a fairly small place, "+
-      "and in fact has no books available, since the campus is not open for classes as of yet. "+
+      "and in fact has few books available, since the campus is not open for classes yet. "+
       "There is, however, a wide assortment of useful items available, which you can "+
       "browse by typing the \"list\" command. There is a register on the counter, and a "+
       "sign on the wall behind it.");

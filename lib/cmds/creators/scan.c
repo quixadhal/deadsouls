@@ -46,7 +46,7 @@ mixed cmd(string args) {
     else tmp = "Scanning " + identify(ob) + ":\n";
     for(i=0, maxi = sizeof(inv = all_inventory(ob)); i<maxi; i++)
         tmp += inventory(inv[i], 1, scan);
-    this_player()->eventPage(explode(tmp, "\n"), "system");
+    this_player()->eventPage(explode(tmp, "\n") + ({""}), "system");
     return 1;
 }
 

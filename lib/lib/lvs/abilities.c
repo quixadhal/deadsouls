@@ -42,6 +42,10 @@ int GetLevel() {
  *
  * returns the new level
  */
+/*
+ * Excuse me, wtf is the point of this?
+ */
+
 int ResetLevel() {
     string array skills = GetPrimarySkills();
     int num = sizeof(skills);
@@ -64,7 +68,6 @@ int SetLevel(int x) {
     string array skills = GetPrimarySkills();
 
     if(!Level){
-        //tc("hmmm.","red");
         foreach(string skill in skills) {
             SetSkill(skill, 2*x);
         }
@@ -147,7 +150,7 @@ void RemoveSkill(string skill) {
         return;
     }
     map_delete(Skills, skill);
-    ResetLevel();
+    //ResetLevel();
 }
 
 /* varargs void SetSkill(string skill, int level, int classes)
@@ -279,7 +282,7 @@ int AddSkillPoints(string name, int x) {
             tmp = --Skills[name]["level"];
             Skills[name]["points"] += GetMaxSkillPoints(name, tmp);
             if( Skills[name]["class"] == 1 ) {
-                ResetLevel();
+                //ResetLevel();
             }
         }
     }
@@ -302,7 +305,7 @@ int AddSkillPoints(string name, int x) {
             Skills[name]["level"]++;
             Skills[name]["points"] -= y;
             if( Skills[name]["class"] == 1 ) {
-                ResetLevel();
+                //ResetLevel();
             }
         }
         y = GetMaxSkillPoints(name, Skills[name]["level"]);

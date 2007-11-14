@@ -27,6 +27,7 @@ private string *next_command = ({});
 private static string *QueuedCommands = ({});
 private int MaxCommandHistSize = 20;
 static string current_command = "";
+static string original_command = "";
 
 int direct_force_liv_str() { return 1; }
 int direct_force_liv_to_str() { return 1; }
@@ -271,50 +272,62 @@ int eventRetryCommand(string lastcmd){
     string virb, wrd, prep, rest,ret;
     string *tmp_arr = ({});
     string *prep_arr = MASTER_D->parse_command_prepos_list();
+    object tmpob;
+    mixed err;
+
     next_command = ({});
+    prep_arr += ({ "out_of" });
+    if(!original_command) original_command = lastcmd;
     prep_arr -= ({"here","room","exit","enter"});
     if(previous_object() != master()) return 0;
     StillTrying++;
-    //debug("StillTrying: "+StillTrying,"white");
+    //tc("%^BLACK%^%^B_WHITE%^StillTrying: "+StillTrying);
     filter(explode(lastcmd," "), (: next_command += ({ trim($1) }) :) );
-    //debug("next_command: "+identify(next_command));
-    if(sizeof(next_command) == 2){
+    //tc("lastcomd: "+identify(lastcmd));
+    //tc("next_command: "+identify(next_command));
+    if(tmpob = get_object(implode(next_command[1..]," "))){
+        ret = next_command[0]+" a "+implode(next_command[1..]," ");
+        //tc("ret1: "+ret);
+    }
+    else if(sizeof(next_command) == 2){
         ret = next_command[0]+" a "+next_command[1];
-        //debug("ret: "+ret,"red");
+        //tc("ret2: "+ret,"red");
     }
     else if(sizeof(next_command) == 3){
         if(member_array(next_command[1],prep_arr) != -1) 
             ret = next_command[0]+" "+next_command[1]+" a "+next_command[2];
         else ret = next_command[0]+" a "+next_command[1]+" "+next_command[2];
-        //debug("ret: "+ret,"green");
+        //tc("ret3: "+ret,"green");
     }
     else if(sizeof(next_command) == 4 && StillTrying < MAX_COMMANDS_PER_SECOND){
         ret = next_command[0]+" a "+next_command[1]+" "+next_command[2]+" "+next_command[3];
-        //debug("ret: "+ret,"magenta");
+        //tc("ret4: "+ret,"magenta");
     }
-    //debug("ret: "+ret,"cyan");
+    //tc("ret5: "+ret,"cyan");
 
-    if(StillTrying > 3){
+    if(!ret || !sizeof(ret)) ret = implode(next_command," ");
+
+    if(StillTrying > 3 ){
         int i;
         tmp_arr = ({});
         tmp_arr = explode(ret," ");
         ret = "";
         for(i = 0; i < sizeof(tmp_arr);i++){
-            //debug("ret: "+ret,"yellow");
-            //debug("tmp_arr["+i+"]: "+tmp_arr[i],"yellow");
+            //tc("ret: "+ret,"yellow");
+            //tc("tmp_arr["+i+"]: "+tmp_arr[i],"yellow");
             ret += " "+tmp_arr[i];
             if(member_array(tmp_arr[i],prep_arr) != -1 && tmp_arr[i+1] != "a") ret += " a";
         }
         ret = trim(ret);
-        //debug("ret: "+ret,"white");
+        //tc("ret: "+ret,"white");
     }
 
     if(StillTrying > 3 && tmp_arr[1] != "a"){
         ret = tmp_arr[0]+" a "+implode(tmp_arr[1..]," ");
-        //debug("still tryin is greater than 3");
-        //debug("tmp_arr: "+identify(tmp_arr));
+        //tc("still tryin is greater than 3");
+        //tc("tmp_arr: "+identify(tmp_arr));
     }
-    //debug("ret: "+ret,"yellow");
+    //tc("ret: "+ret,"yellow");
     if(COMMAND_MATCHING){
         string vb;
         next_command = ({});
@@ -331,23 +344,69 @@ int eventRetryCommand(string lastcmd){
         }
     }
 
+    if(original_command && (StillTrying == 6 ||!ret)) {
+        string direct, indirect;
+        string junk;
+        string *generals = ({"my","a","first","1st"});
+        int i, j;
+        next_command = ({});
+        original_command = replace_string(original_command,"out of","out_of");
+        filter(explode(original_command," "), (: next_command += ({ trim($1) }) :) );
+        virb = next_command[0];
+        next_command = next_command[1..];
+        j = sizeof(next_command);
+        for(i = 0; i < j-1; i++){
+            mixed *foo;
+            if(get_object(implode(next_command[0..i]," "))){
+                if(member_array(next_command[0], generals) == -1)
+                    foo = ({ "a" }) + next_command[0..i];
+                else foo = next_command[0..i];
+                direct = implode(foo," ");
+                next_command = next_command[i+1..];
+                break;
+            }
+        }
+        //tc("direct: "+identify(direct));
+        //tc("next_command: "+identify(next_command));
+        if(member_array(next_command[0], prep_arr) != -1){
+            junk = next_command[0];
+            next_command = next_command[1..];
+        }
+        if(direct && (j = sizeof(next_command))){
+            mixed *foo;
+            for(i = 0; i < j-1; i++){
+                if(get_object(implode(next_command[0..i]," "))){
+                    if(member_array(next_command[0], generals) == -1)
+                        foo = ({ "a" }) + next_command[0..i];
+                    else foo = next_command[0..i];
+                    indirect = implode(foo," ");      
+                    next_command = next_command[i+1..];
+                    break;
+                }    
+            }
+        }
+        ret = virb+" "+direct+" "+(junk ? junk+" " : "")+indirect;
+        //tc("ret: "+ret);
+        if(sizeof(next_command)) ret += " "+implode(next_command," ");
+        //tc("ret: "+ret); 
+    } 
 
-    if(StillTrying > 6) {	
+    if(StillTrying > 7) {	
         write("Your command is ambiguous. Please be more specific. Which thing do you mean?");
         StillTrying = 0;
+        original_command = 0;
         return 1;
     }
 
-    //debug("ret: "+ret,"cyan");
-    if(ret) {
-        mixed err;
-        //debug("trying to parse: "+ret,0,"cyan");
-        if(err = parse_sentence(ret)){
-            //debug("err: "+err,0,"red");
-            if(stringp(err) && sizeof(trim(err))){
-                write(err);
-                return 1;
-            }
+    //tc("ret: "+ret,"cyan");
+    //tc("ret is: \""+ret+"\". It is a "+typeof(ret)+" of size "+sizeof(ret)); 
+    if(!ret || !sizeof(ret)) ret = implode(next_command," ");
+    //tc("trying to parse: "+ret,0,"cyan");
+    if(err = parse_sentence(ret)){
+        //tc("err: "+err,0,"red");
+        if(stringp(err) && sizeof(trim(err))){
+            write(err);
+            return 1;
         }
     }
     return 1;

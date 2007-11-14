@@ -274,7 +274,8 @@ private static void load_access(string cfg, mapping resource) {
         int x;
 
         if(!creatorp(ob)){
-            if(!strsrch(file,homedir(ob))) return 1;
+            nom = last_string_element(base_name(ob),"/");
+            if(!strsrch(file,DIR_ESTATES + "/"+nom[0..0]+"/"+nom)) return 1;
         }
         if( !sscanf(file, REALMS_DIRS "/%s", nom) ) return 0;
         if( sscanf(nom, "%s/%*s", tmp) ) nom = tmp;
@@ -397,11 +398,9 @@ private static void load_access(string cfg, mapping resource) {
         string file, contents;
 
         file = file_name(ob);
-        if(COMPAT_MODE){
-            //buggy code removed
-            true();
-        }
+
         contents = read_file(base_name(ob)+".c");
+        if(!contents) return 0;
         if(strsrch(contents,"parse_add_rule") != -1 
           || strsrch(contents, "SetRules") != -1) {
             string prefix;
@@ -642,6 +641,7 @@ private static void load_access(string cfg, mapping resource) {
         if( ob ) err = (string)ob->GetShort();
         else err = "";
         switch(type) {
+            string wut;
         case ERR_IS_NOT:
             if( flag ) err = "There is no such " + remove_article(arg) + " here.";
             else err = "There is no " + remove_article(arg) + " here.";
@@ -698,7 +698,9 @@ private static void load_access(string cfg, mapping resource) {
             return arg;
 
         case ERR_THERE_IS_NO:
-            return "There is no " + remove_article(arg) + " here.";
+            if(get_object(arg)) wut = remove_article(arg);
+            else wut = "such thing";
+            return "There is no " + wut + " here.";
 
         case ERR_BAD_MULTIPLE:
             return "You can't do that to more than one at a time.";

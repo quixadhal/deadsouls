@@ -32,15 +32,15 @@ static void create() {
       "See also: drop, get, put");
 }
 
-mixed can_give_liv_obj() {
+mixed can_give_liv_obj(mixed args...) {
     return can_give_obj_to_liv();
 }
 
-mixed can_give_obj_liv(mixed arg1, mixed arg2) {
+mixed can_give_obj_liv(mixed args...) {
     return can_give_obj_to_liv();
 }
 
-mixed can_give_obj_to_liv(mixed arg1, mixed arg2) { 
+mixed can_give_obj_to_liv(mixed args...) { 
     return this_player()->CanManipulate(); }
 
 mixed can_give_liv_wrd_wrd(object targ, string num, string curr) {
@@ -67,15 +67,28 @@ mixed can_give_wrd_wrd_to_liv(string num, string curr, object targ) {
     return this_player()->CanManipulate();
 }
 
-mixed do_give_liv_obj(object target, object what) {
+//mixed do_give_liv_obj(object target, object what) {
+mixed do_give_liv_obj(mixed args...) {
+    object target, what;
+    target = args[0];
+    what = args[1];
     return do_give_obj_to_liv(what, target);
 }
 
-mixed do_give_obj_liv(object what, object target) {
+//mixed do_give_obj_liv(object what, object target) {
+mixed do_give_obj_liv(mixed args...) {
+    object target, what;
+    target = args[1];
+    what = args[0];
     return do_give_obj_to_liv(what, target);
 }
 
-mixed do_give_obj_to_liv(object what, object target) {
+//mixed do_give_obj_to_liv(object what, object target) {
+mixed do_give_obj_to_liv(mixed args...) {
+    object target, what;
+    target = args[1];
+    what = args[0];
+
     if(!intp(target->CanManipulate())){
         this_player()->eventPrint(target->GetName()+" is incapable "+
           "of holding that.");
@@ -135,6 +148,7 @@ mixed do_give_obs_liv(mixed *items, object target) {
 
 mixed do_give_obs_to_liv(mixed *items, object target) {
     object *obs;
+
 
     if( sizeof(items) < 1 ) {
         this_player()->eventPrint("You don't have any to give.");

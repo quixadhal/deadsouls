@@ -138,7 +138,7 @@ varargs mixed eventRead(object who, string str) {
         }
     }
 
-    who->eventPage(explode(val,"\n"));
+    who->eventPage(explode(val,"\n") +({""}));
     return 1;
 }
 

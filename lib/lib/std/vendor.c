@@ -189,7 +189,7 @@ mixed eventBuy(object who, object *obs) {
             eventForce("say I am having terrific difficulties today");
             return 1;
         }
-        if( !(maxi = sizeof(obs = all_inventory(sroom))) ) {
+        if( !(maxi = sizeof(obs = filter(all_inventory(sroom), (: !userp($1) :) ))) ) {
             eventForce("say I have nothing to sell right now.");
             return 1;
         }
@@ -452,7 +452,7 @@ mixed eventBuy(object who, object *obs) {
         int cost,number,maxi;
 
         sroom = load_object(StorageRoom);
-        obs = all_inventory(sroom);
+        obs = filter(all_inventory(sroom), (: !userp($1) :));
         obs2 = ({});
         foreach(object tempob in obs){
             string *base_names = ({});
@@ -482,7 +482,7 @@ mixed eventBuy(object who, object *obs) {
             if( !(ob = present(what, sroom))) 
                 foreach(object tempob in obs2) 
                 if(answers_to(what,tempob)) ob = tempob;
-            if(!ob){
+            if(!ob || userp(ob)){
                 eventForce("say I have nothing like that to sell");
                 return 1;
             }

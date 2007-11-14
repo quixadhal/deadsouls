@@ -121,10 +121,14 @@ string GetName() {
 }
 
 int id(string str) {
+    int ret;
     if( !stringp(str) ) {
         return 0;
     }
-    return (member_array(lower_case(str), this_object()->GetId()) != -1);
+    str = lower_case(str);
+    ret = (member_array(str, this_object()->GetId()) != -1);
+    if(!ret && OBJECT_MATCHING && answers_to(str,this_object())) ret = 1;
+    return ret;
 }
 
 string array parse_command_id_list() {

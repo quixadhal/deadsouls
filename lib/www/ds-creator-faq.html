@@ -293,6 +293,12 @@ my workrom really IS broke!!1!</big></big></a></small><span
 <a href="#2.72">2.72 You said that what I want to do requires a daemon.
 I am afraid.</a><br>
 <br>
+</big><a href="#2.72"><big style="font-family: courier new;"></big></a><big
+ style="font-family: courier new;"><a href="#2.73">2.73 LOL I tried to
+show something to someone in the shop
+but the vendor gave an error.</a></big><big
+ style="font-family: courier new;"><br>
+<br>
 </big><big style="font-family: courier new;"><br>
 <span style="font-weight: bold;">Section 3:
 Intermud and channel stuff</span><br>
@@ -336,7 +342,7 @@ with channel rules and banning and whatnot?</a><br>
 3.12 Hello? Anyone here? Can someone answer a question for me?</a><br>
 <br>
 <a href="#3.13">3.13 How come people on IMC2 can't rwho me?</a><br>
-<a href="#3.11"></a><br>
+<br>
 <br>
 <span style="font-weight: bold;">Section 4:
 Miscellanea</span><br>
@@ -407,6 +413,11 @@ able to fight while carrying stuff, but I only have X, Y, and Z on me.</a><br>
 <br>
 <a href="#4.22">4.22 How do light sources work?</a><br>
 <br>
+</big><a href="#4.22"><big style="font-family: courier new;"></big></a><big
+ style="font-family: courier new;"><a href="#4.23">4.23 When I control
+an NPC, sometimes my commands fail
+oddly.</a></big><big style="font-family: courier new;"><br>
+<br>
 <br>
 <span style="font-weight: bold;">Section 5:
 Building</span><br>
@@ -455,7 +466,13 @@ do I add colors to exits?</big></a><br>
 do i refresh a room?</a><br>
 <br>
 <a href="#5.15">5.15 The new room I created with QCS has SetItems I
-don't want</a><br>
+don't want</a></big><a href="#5.15"><big
+ style="font-family: courier new;"><br>
+</big></a><br>
+<a href="#5.15"><big style="font-family: courier new;"></big></a><big
+ style="font-family: courier new;"><a href="#5.16">5.16
+I'm trying to set my fighter to have a strength of 50 but it won't work.</a></big><big
+ style="font-family: courier new;"><br>
 <br>
 <br>
 </big>
@@ -2551,10 +2568,8 @@ set by default in /lib/races.c <br>
 <br>
 Dead Souls alpha libs have the following additional racial options:<br>
 </big>
-<small> </small><small> </small><small> </small><small> </small><small></small><small></small><small>
-</small><small> </small><small> </small><small>
-</small><small> </small><small> </small><small> </small><small> </small><small></small><small></small><small>
-</small><small> </small> <small></small>
+<small> </small><small> </small><small> </small><small> </small><small></small><small></small><small></small><small></small><small></small><small>
+</small><small> </small><small> </small><small> </small><small> </small><small></small><small></small><small></small><small></small><small></small>
 <table style="width: 100%; text-align: left; font-family: courier new;"
  border="1" cellpadding="2" cellspacing="2">
   <tbody>
@@ -3736,6 +3751,39 @@ frequent backups, and by the process of patient, persistent trial-<br>
 and-error, you'll eventually ramp up to where your daemon code <br>
 does what you want.<br>
 <br>
+<br>
+</big><big style="font-family: courier new;"><a name="2.73"></a><span
+ style="font-weight: bold; text-decoration: underline;">LOL I tried to
+show something to someone in the shop but the vendor gave an error.</span><br>
+<br>
+This, and some other situations on the lib, are "bugs" that I plan<br>
+to leave in place on purpose.<br>
+<br>
+The point is to illustrate an important aspect of parsing on Dead<br>
+Souls. The shops inherit LIB_SHOP, meaning that they have add_action()'s<br>
+that try to intercept some commands and feed them to the vendor in<br>
+a way the vendor finds meaningful...for example, rather than<br>
+"<span style="font-weight: bold;">ask oana to show omni</span>", you
+can just "<span style="font-weight: bold;">show omni</span>" and Oana
+gets the <br>
+right idea as to what to do.<br>
+<br>
+If you then want to use the "show" verb, like "<span
+ style="font-weight: bold;">show omni to cratylus</span>"<br>
+because you want me to see what you just bought, the shop will intercept<br>
+that "show" command before the verb gets processed, and Oana will<br>
+get involved. If you leave the room, though, the "show" verb is<br>
+no longer overridden by the shop's add_action() and you'll be<br>
+able to impress me with your purchase.<br>
+<br>
+Why am I leaving this "broken" behavior in place? It's important for<br>
+new admins to understand this interaction between add_action()<br>
+parsing and verb parsing. It helps you understand how messy it can<br>
+be when 3 or 4 objects in the same room have add_action()'s with<br>
+the same trigger command, and it makes it more obvious why a lib-wide<br>
+verb handler makes so much sense. <br>
+<br>
+</big><big style="font-family: courier new;"><br>
 </big>
 <hr style="width: 100%; height: 2px; font-family: courier new;"><big
  style="font-family: courier new;">Section 3: Intermud and channel stuff<br>
@@ -4598,9 +4646,38 @@ for light. The room has ambient light. Things in the room may have <br>
 radiant light. Ambient light plus radiant light is added together. <br>
 This number is given to your player object. If the number is in your<br>
 vision range, you can see. Torches and flashlights work by having <br>
-radiant light set.<span
- style="font-weight: bold; text-decoration: underline;"><br>
-</span><br>
+radiant light set.<br>
+<br>
+<br>
+</big><big style="font-family: courier new;"><a name="4.23"></a><span
+ style="font-weight: bold; text-decoration: underline;">When I control
+an NPC, sometimes my commands fail oddly.</span><br
+ style="font-weight: bold; text-decoration: underline;">
+<br>
+NPC's are intentionally simpler creatures than players. When<br>
+a player's command fails, it's very important that she know why,<br>
+otherwise the game can lose its fun. NPC's are not entitled to<br>
+the same regard as players, and therefore their parsing and<br>
+error messages are more primitive, if they exist at all.<br>
+<br>
+If, for example, you try to "force fighter to drop boot",<br>
+you may not only have nothing happen...it might actually<br>
+barf up a runtime error, on older versions of the lib.<br>
+<br>
+This is because NPC's don't get the full luxury of "default<br>
+parsing" that players do. You can "drop boot", and if the lib<br>
+has default parsing enabled, you'll just drop the first <br>
+boot in your inventory. An NPC, however, may need to specify<br>
+"drop first boot". And if it doesn't get the command right,<br>
+that NPC may simply not receive a very helpful error message<br>
+as to why.<br>
+<br>
+Perhaps someday the NPC's will march en masse into my workroom<br>
+and demand equal rights and back pay. Until that day, however,<br>
+please accept that they are just not meant to be as versatile<br>
+in-game avatars as proper player objects are.<br>
+</big><big style="font-family: courier new;"><span
+ style="font-weight: bold; text-decoration: underline;"></span><br>
 </big><big style="font-family: courier new;"><br>
 </big>
 <hr style="width: 100%; height: 2px; font-family: courier new;"><big
@@ -5026,8 +5103,16 @@ room I created with QCS has SetItems I don't want</span><br>
 <br>
 </span>Type:<span style="font-weight: bold;"> modify here delete
 SetItems<br>
-</span><br>
 <br>
+<br>
+</span></big><big style="font-family: courier new;"><a name="5.16"></a><span
+ style="font-weight: bold; text-decoration: underline;">I'm trying to
+set my NPC to have a strength of 30 but it won't work.</span><br>
+<br>
+You have to place the SetStat() directive *below* SetRace(), because<br>
+otherwise his body's default race characteristics will clobber<br>
+your custom setting.<br>
+</big><big style="font-family: courier new;"><br>
 <br>
 -
 Cratylus<br>

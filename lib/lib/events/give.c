@@ -28,9 +28,9 @@ mixed indirect_give_liv_obj(object target) {
     return 1;
 }
 
-mixed direct_give_obj_to_liv() {
+mixed direct_give_obj_to_liv(object what, object target) {
     mixed tmp;
-    if(environment() == this_player() && CanDrop(this_player())) return 1;
+
     if( environment() != this_player() ) {
         return "#You cannot give what is not yours.";
     }
@@ -38,9 +38,15 @@ mixed direct_give_obj_to_liv() {
     if( tmp != 1 ) {
         return (tmp || "#You can't drop " + GetDefiniteShort() + ".");
     }
-    else return 1;
+    if(target && objectp(target)){
+        tmp = target->CanCarry(GetMass());
+        if( tmp != 1 ) {
+            return capitalize(this_object()->GetDefiniteShort()) + " is too heavy.";
+        }
+    }
+    return 1;
 }
 
-mixed direct_give_obj_liv(){
-    return direct_give_obj_to_liv();
+mixed direct_give_obj_liv(object what, object target){
+    return direct_give_obj_to_liv(what, target);
 }

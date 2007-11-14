@@ -282,18 +282,25 @@ mixed eventWander() {
         sorties = ({});
         foreach(tmp in (string *)environment()->GetExits()) {
             string dest, door;
+            object ob;
+            if(!permit_load) ob=find_object(dest = (string)environment()->GetExit(tmp));
+            else ob=load_object(dest = (string)environment()->GetExit(tmp));
 
-            if( !permit_load && !find_object(dest = (string)environment()->GetExit(tmp)) )
+            if(!ob)
                 continue;
             door = (string)environment()->GetDoor(tmp);
             if( door  &&
               (int)door->GetClosed() ) continue;
             sorties += ({ "go " + tmp });
         }
-        foreach(tmp in (string *)environment()->GetEnters()) {
-            string dest, door;
 
-            if( !find_object(dest = (string)environment()->GetEnter(tmp)) )
+        foreach(tmp in (string *)environment()->GetEnters(1)) {
+            string dest, door;
+            object ob;
+            if(!permit_load) ob=find_object(dest = (string)environment()->GetEnter(tmp));
+            else ob=load_object(dest = (string)environment()->GetEnter(tmp));
+
+            if(!ob)
                 continue;
             door = (string)environment()->GetDoor(tmp);
             if( door  &&

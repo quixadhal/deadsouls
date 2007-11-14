@@ -39,11 +39,6 @@ int eventBeginPlay(){
     response = "";
     playing = 1;
     eventForce("say If successful, this will be run "+run+".");
-    //eventForce("say out of "+runs+" runs, I've  "
-    //"switched "+switches+" times, and "
-    //"stayed "+stays+" times.");
-    //eventForce("say my first choices have been: "
-    //"red: "+fred+" green: "+fgreen+" blue: "+fblue);
     eventForce("say the winners have been: "
       "red: "+red_wins+" green: "+green_wins+" blue: "+blue_wins);
     eventForce("say I've switched "+percent(switches,runs)+"% "

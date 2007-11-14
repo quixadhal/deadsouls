@@ -30,8 +30,20 @@ static void create() {
 
 mixed can_drop_obj(object ob) { return this_player()->CanManipulate(); }
 
-mixed can_drop_wrd_wrd(string num, string curr) {
+//mixed can_drop_wrd_wrd(string num, string curr) {
+mixed can_drop_wrd_wrd(mixed args...) {
+    string num, curr;
     int amt;
+    object ob;
+
+    num = args[0];
+    curr = args[1];
+
+    //tc("can_drop_wrd_wrd args: "+identify(args));
+    ob = get_object(num+" "+curr);
+    //tc("ob: "+identify(ob));
+
+    if(ob) return can_drop_obj(ob);
 
     if( !num || !curr ) return 0;
     if( (amt = to_int(num)) < 1 ) return "You cannot do that!";
@@ -76,9 +88,16 @@ mixed do_drop_obs(mixed *res) {
     return 1;
 }
 
-mixed do_drop_wrd_wrd(string num, string curr) {
-    object pile, env;
+//mixed do_drop_wrd_wrd(string num, string curr) {
+mixed do_drop_wrd_wrd(mixed args...) {
+    object ob, pile, env;
+    string num, curr;
     int amt;
+
+    num = args[0];
+    curr = args[1];
+
+    if(ob = get_object(num+" "+curr)) return do_drop_obj(ob);
 
     amt = to_int(num);
     env = environment(this_player());

@@ -1,0 +1,103 @@
+#/domains/campus/npc/jennybot.c
+RestrictedChannels ({})
+NoChanColors 0
+Paused 0
+CommandHist ({"smirk","yell DEDDA SORUZE: GETTO DA ZE!","smirk","yell DEDDA SORUZE: GETTO DA ZE!","wear white right glove","wear white left glove","wear hat","wear necklace on neck","wear dress","wear white right glove","wear white left glove","wear hat","wear necklace on neck","wear dress","wear white right glove","wear white left glove","wear hat","wear necklace on neck","wear dress",})
+localcmds ({"",})
+next_command ({})
+MaxCommandHistSize 20
+InternalDesc 0
+Opacity 0
+MaxCarry 0
+Position 2
+Undead 0
+UndeadType 0
+Mount 0
+Riders ({})
+BodyMass 0
+SaveRecurse 1
+Saved ({"players",})
+HealthPoints 790
+MagicPoints 1050
+ExperiencePoints 50
+QuestPoints 0
+melee 1
+Alcohol 0
+Caffeine 0
+Food 100
+Drink 100
+Poison 0
+Sleeping 0
+DeathEvents 0
+StaminaPoints 920.000000
+Torso "torso"
+Biter 0
+Fingers (["right hand":5,"left hand":5,])
+Limbs (["left leg":(["children":({"left foot",}),"parent":"torso","armors":1049761,"class":2,"health":380,]),"right arm":(["children":({"right hand",}),"parent":"torso","armors":1253385,"class":2,"health":380,]),"right leg":(["children":({"right foot",}),"parent":"torso","armors":1049761,"class":2,"health":380,]),"neck":(["children":({"head",}),"parent":"torso","armors":786433,"class":1,"health":750,]),"left foot":(["children":({}),"parent":"left leg","armors":241,"class":4,"health":190,]),"left arm":(["children":({"left hand",}),"parent":"torso","armors":1253385,"class":2,"health":380,]),"head":(["children":({}),"parent":"neck","armors":262913,"class":1,"health":750,]),"right hand":(["children":({}),"parent":"right arm","armors":98319,"class":4,"health":190,]),"right foot":(["children":({}),"parent":"right leg","armors":241,"class":4,"health":190,]),"left hand":(["children":({}),"parent":"left arm","armors":98319,"class":4,"health":190,]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"parent":0,"armors":1538049,"class":1,"health":750,]),])
+MissingLimbs ([])
+ExtraChannels ({})
+Agent 0
+Blind 0
+CustomStats 15
+LightSensitivity ({25,75,})
+Resistance (["high":0,"none":4194302,"medium":0,"low":0,"immune":0,])
+Stats (["agility":(["level":87,"class":3,"points":0,]),"durability":(["level":74,"class":4,"points":0,]),"wisdom":(["level":87,"class":3,"points":0,]),"intelligence":(["level":100,"class":1,"points":0,]),"speed":(["level":87,"class":3,"points":0,]),"luck":(["level":35,"class":3,"points":0,]),"strength":(["level":71,"class":4,"points":0,]),"charisma":(["level":100,"class":2,"points":0,]),"coordination":(["level":100,"class":2,"points":0,]),])
+Polyglot 0
+Languages (["english":(["level":100,"native":1,"name":"English","points":0,]),])
+DefaultLanguage ""
+SpeakColor "CYAN%^"
+Town "Town"
+Race "android"
+Gender "female"
+Level 1
+Skills ([])
+Morality 0
+Class 0
+Clan 0
+SkillModifiers ([])
+Religion ({0,0,})
+Wimpy 0
+Dead 0
+WimpyCommand "go out"
+Currency ([])
+Bank ([])
+SpellBook ([])
+isPK 1
+Attackable 1
+NoCondition 0
+Messages (["telout":"$N teleports away.","dest":"$N dests $O.","come":"$N enters.","clone":"$N clones $O.","invis":"$N disappears.","vis":"$N appears.","telin":"$N teleports in.","home":"$N goes home.","leave":"$N leaves $D.",])
+ProperNoun 0
+Modify 1
+Short "a polite young woman"
+CapName "Jennybot"
+ExternalDesc 0
+Invisible 0
+Items ([])
+Properties ([])
+TrainedSkills ({})
+Befriendable 0
+Trainable 0
+Commandable 0
+Owner 0
+CustomXP 0
+ActionChance 1
+CombatActionChance 0
+AutoStand 1
+MaximumHealth 0
+Encounter 0
+EnemyNames ({})
+VisibleRiders 1
+CommandResponses (["shut down":0,"go away":0,"shutdown":0,"shut up":0,])
+EmoteResponses ([])
+RequestResponses ([])
+TalkResponses ([])
+WanderPath ({})
+WanderRecurse 0
+WanderSpeed 0
+permit_load 0
+SpellChance 50
+player 
+bot 0
+ob 
+noobster 0
+watchlist ({"one",})

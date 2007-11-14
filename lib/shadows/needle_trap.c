@@ -11,5 +11,5 @@ varargs mixed SpringTrap(mixed arg1, mixed arg2){
 }
 
 void create(){
-    SetTrapType(BOOBYTRAP_OPEN | BOOBYTRAP_CLOSE);
+    SetTrapType(BOOBYTRAP_ALL);
 }

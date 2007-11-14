@@ -474,8 +474,10 @@ temporary account for testing purposes, I'll take a look and see if I
 can help.</li>
   <li>If you've tried everything but the compile keeps breaking, try
 compiling as root (obviously a last resort, and just for testing).</li>
-  <li>On Ubuntu, before running the compile, try typing: <span
- class="sb_messagebody">export CC=gcc-3.4</span></li>
+  <li>On Ubuntu, you will probably need to change your apt-get source
+(System-&gt;Administration-&gt;Software Sources) then <span
+ style="font-weight: bold;">apt-get install bison</span> and <span
+ style="font-weight: bold;">apt-get install libc6-dev</span></li>
   <li><span class="sb_messagebody">If you get errors complaining about
 not finding bison or yacc, what this means is that compiling the driver
 requires these tools, and the configure script can't find them. They
@@ -484,7 +486,7 @@ have them installed. If you run the host box, either install bison (or
 yacc), or add their path to your PATH environment variable. If you are
 not the host computer admin, politely explain to the admins that you
 can't compile without bison (or yacc) and could they please install it
-for you.<br>
+for you. <br>
     </span></li>
   <br>
 </ul>

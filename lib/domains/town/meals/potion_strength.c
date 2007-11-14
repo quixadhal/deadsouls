@@ -8,7 +8,7 @@ static void create() {
     potion::create();
     SetKeyName("potion");
     SetId( ({ "bottle", "potion","philtrum","potion of strength" }) );
-    SetAdjectives( "strength", "strongitude", "strongicity" );
+    SetAdjectives( "red", "strength", "strongitude", "strongicity" );
     SetShort("a red potion of strength");
     SetLong("A bottle containing a red fluid with the magical property of making one stronger.");
     SetMass(60);
