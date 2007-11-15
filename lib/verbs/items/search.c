@@ -27,7 +27,7 @@ static void create() {
 
 mixed can_search() {
     if( !environment(this_player()) ) {
-	return "You are nowhere.";
+        return "You are nowhere.";
     }
     return 1;
 }
@@ -45,15 +45,15 @@ mixed do_search() {
     mixed val = environment(this_player())->GetSearch();
 
     if( functionp(val) ) {
-	if( !(functionp(val) & FP_OWNER_DESTED) ) {
-	    val = evaluate(val, this_player());
-	}
-	else {
-	    val = 0;
-	}
+        if( !(functionp(val) & FP_OWNER_DESTED) ) {
+            val = evaluate(val, this_player());
+        }
+        else {
+            val = 0;
+        }
     }
     if( !val ) {
-	val = "You don't find a thing.";
+        val = "You don't find a thing.";
     }
     environment(this_player())->eventPrint(this_player()->GetName() +
       " searches around.", this_player());

@@ -6,13 +6,13 @@ inherit LIB_DAEMON;
 
 mixed cmd(string args) {
     if(!args) 
-	this_player()->eventPrint("Syntax: <hist [channel]>");
+        this_player()->eventPrint("Syntax: <hist [channel]>");
 
     this_player()->eventPrint("Retrieving history...");
 
     if(args == "tell"){
-	load_object("/secure/cmds/players/tell")->cmd("hist");
-	return 1;
+        load_object("/secure/cmds/players/tell")->cmd("hist");
+        return 1;
     }
 
     return CHAT_D->cmdLast(args);

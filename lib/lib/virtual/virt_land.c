@@ -34,22 +34,22 @@ varargs void SetLongAndItems(int x, int y, int z) {
 
 int SetMasterMap(mixed map_name){
     if(!stringp(map_name) && !objectp(map_name)){
-	error("Bad argument 1 to SetMasterMap()\n\t"
-	  "Expected: string or object, Got: " + typeof(map_name)
-	  + ".");
-	return 0;
+        error("Bad argument 1 to SetMasterMap()\n\t"
+          "Expected: string or object, Got: " + typeof(map_name)
+          + ".");
+        return 0;
     }
     if(stringp(map_name)){
-	if( !(Map_Master = load_object(map_name)) ) {
-	    string str;
+        if( !(Map_Master = load_object(map_name)) ) {
+            string str;
 
-	    if( str = catch(call_other(map_name, "???")) ) {
-		if( creatorp() ) message("error", str,
-		      previous_object());
-		return 0;
-	    }
-	    Map_Master = load_object(map_name);
-	}
+            if( str = catch(call_other(map_name, "???")) ) {
+                if( creatorp() ) message("error", str,
+                      previous_object());
+                return 0;
+            }
+            Map_Master = load_object(map_name);
+        }
     }
 
     else Map_Master=map_name;
@@ -60,8 +60,8 @@ int SetMasterMap(mixed map_name){
 int SetVirtFile( string file ){
     string str;
     if( str = catch(call_other(file, "???")) ) {
-	if( creatorp() ) message("error", str, previous_object());
-	return 0;
+        if( creatorp() ) message("error", str, previous_object());
+        return 0;
     }
     Virt_Room=file;
     SetMasterMap( file );
@@ -100,7 +100,7 @@ string GetReverseDirection(string dir){
 
 varargs mixed GetMapType(int x, int y, int z){
     if(!objectp(Map_Master) || nullp(x) ||nullp(y) || nullp(z) ) 
-	return 0;
+        return 0;
     return Map_Master->GetAreaMap(x,y,z);
 }
 
@@ -114,48 +114,48 @@ mapping SetSurroundAreas(int x, int y, int z){
 
 void ResetSurroundExits(){
     foreach(string dir, string atype in Surrounding_Areas){
-	if(atype != "0" && atype != "@"){
-	    (Virt_Room + "/" 
-	      + ( CoordX + GetDirectionMap()[dir][1]) + ","
-	      + ( CoordY + GetDirectionMap()[dir][0]) + ","    
-	      + ( CoordZ + GetDirectionMap()[dir][2]))->ResetLocation();
-	}
+        if(atype != "0" && atype != "@"){
+            (Virt_Room + "/" 
+              + ( CoordX + GetDirectionMap()[dir][1]) + ","
+              + ( CoordY + GetDirectionMap()[dir][0]) + ","    
+              + ( CoordZ + GetDirectionMap()[dir][2]))->ResetLocation();
+        }
     }
 }
 
 
 void SetVirtualExits(int x, int y, int z){
     if(sizeof(Virt_Room)){
-	string * obexits=({});
+        string * obexits=({});
 
-	SetSurroundAreas(x,y,z);
+        SetSurroundAreas(x,y,z);
 
-	foreach(string dir, string atype in Surrounding_Areas){
-	    if(atype != "0" && atype != "@"){
-		AddExit(dir,Virt_Room+"/"
-		  + ( x + GetDirectionMap()[dir][1])+","
-		  + ( y + GetDirectionMap()[dir][0])+ ","    
-		  + ( z + GetDirectionMap()[dir][2]));
-		obexits += ({dir[0..0]+dir[5..5]});
-	    }
-	    else if( atype == "@"){
-		mixed exit = 
-		Map_Master->GetExternalRoom(
-		  sprintf("%d,%d,%d",
-		    ( x + GetDirectionMap()[dir][1]),
-		    ( y + GetDirectionMap()[dir][0]),    
-		    ( z + GetDirectionMap()[dir][2])),
-		  sprintf("%d,%d,%d",x,y,z)
-		);
-		if(exit){
-		    AddExit(dir, exit);
-		    obexits += ({dir[0..0]+dir[5..5]});
-		}
-	    }
-	}
+        foreach(string dir, string atype in Surrounding_Areas){
+            if(atype != "0" && atype != "@"){
+                AddExit(dir,Virt_Room+"/"
+                  + ( x + GetDirectionMap()[dir][1])+","
+                  + ( y + GetDirectionMap()[dir][0])+ ","    
+                  + ( z + GetDirectionMap()[dir][2]));
+                obexits += ({dir[0..0]+dir[5..5]});
+            }
+            else if( atype == "@"){
+                mixed exit = 
+                Map_Master->GetExternalRoom(
+                  sprintf("%d,%d,%d",
+                    ( x + GetDirectionMap()[dir][1]),
+                    ( y + GetDirectionMap()[dir][0]),    
+                    ( z + GetDirectionMap()[dir][2])),
+                  sprintf("%d,%d,%d",x,y,z)
+                );
+                if(exit){
+                    AddExit(dir, exit);
+                    obexits += ({dir[0..0]+dir[5..5]});
+                }
+            }
+        }
 
-	SetObviousExits(implode(obexits,", "));
-	AreaType = GetMapType(x,y,z);
+        SetObviousExits(implode(obexits,", "));
+        AreaType = GetMapType(x,y,z);
     }
 }
 
@@ -198,9 +198,9 @@ void ResetLocation(){
     SetVirtualExits(CoordX,CoordY,CoordZ);
     SetLongAndItems(CoordX,CoordY,CoordZ);
     if(Reset_Message){
-	eventPrint(Reset_Message);
-	if(sizeof(objects=filter(objects,(:playerp:))))
-	    objects->eventDescribeEnvironment(0);
+        eventPrint(Reset_Message);
+        if(sizeof(objects=filter(objects,(:playerp:))))
+            objects->eventDescribeEnvironment(0);
     }
 }
 

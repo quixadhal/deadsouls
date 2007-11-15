@@ -16,29 +16,29 @@ mixed cmd(string args) {
     object ob;
 
     if( !args || args == "" ) {
-	ob = environment(previous_object());
+        ob = environment(previous_object());
     }
     else {
-	ob = to_object(args);
+        ob = to_object(args);
     }
     if( !ob ) {
-	return "No " + args + " found.";
+        return "No " + args + " found.";
     }
     previous_object()->eventPrint(sprintf("Cleaning %O", ob), MSG_SYSTEM);
     obs = deep_inventory(ob);
     users = filter(obs, (: userp :));
     items = obs - users;
     foreach(object user in users) {
-	object tmp = user;
+        object tmp = user;
 
-	while( tmp = environment(tmp) ) {
-	    items -= ({ tmp });
-	}
+        while( tmp = environment(tmp) ) {
+            items -= ({ tmp });
+        }
     }
     foreach(object item in items) {
-	if( item ) {
-	    item->eventDestruct();
-	}
+        if( item ) {
+            item->eventDestruct();
+        }
     }
     return 1;
 }

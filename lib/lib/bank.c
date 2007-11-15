@@ -10,8 +10,8 @@ mixed teller_check(){
     object *livs = get_livings(this_object());
     object teller;
     if(sizeof(livs))
-	foreach(object liv in livs){
-	if(inherits(LIB_TELLER,liv)) return liv;
+        foreach(object liv in livs){
+        if(inherits(LIB_TELLER,liv)) return liv;
     }
     return 0;
 }

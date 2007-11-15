@@ -26,18 +26,18 @@ mixed can_resurrect_obj(string str) {
 
 mixed do_resurrect_obj(object ob) {
     if(!interactive(ob)) {
-	write("You may only resurrect dead players.");
-	return 1;
+        write("You may only resurrect dead players.");
+        return 1;
     }
 
     if(!ob->GetGhost()) {
-	write("You can't resurrect the living.");
-	return 1;
+        write("You can't resurrect the living.");
+        return 1;
     }
 
     if(environment(ob) != environment(this_player())) {
-	write(capitalize(ob->GetKeyName())+" isn't here.");
-	return 1;
+        write(capitalize(ob->GetKeyName())+" isn't here.");
+        return 1;
     }
 
     tell_player(this_player(),"You wave your hand, and with a flash "+

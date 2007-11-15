@@ -16,7 +16,7 @@ string GetDefiniteShort();
 
 varargs mixed GetPress(string str) {
     if( !str ) {
-	str = "default";
+        str = "default";
     }
     return Press[str];
 }
@@ -32,18 +32,18 @@ mapping RemovePress(string item) {
 
 varargs mapping SetPress(mixed key, mixed desc) {
     if( !key ) {
-	key = "default";
+        key = "default";
     }
     if( !desc ) {
-	if( mapp(key) ) {
-	    Press = expand_keys(key);
-	}
-	else {
-	    Press["default"] = key;
-	}
+        if( mapp(key) ) {
+            Press = expand_keys(key);
+        }
+        else {
+            Press["default"] = key;
+        }
     }
     else {
-	Press[key] = desc;
+        Press[key] = desc;
     }
     return Press;
 }
@@ -52,17 +52,17 @@ varargs mixed CanPress(object who, string component) {
     mixed val;
 
     if( !component ) {
-	component = "default";
+        component = "default";
     }
     val = Press[component];
     if( !val ) {
-	if( component == "default" ) {
-	    return 0;
-	}
-	else {
-	    return "#There is no " + component + " on " +
-	    GetDefiniteShort() + ".";
-	}
+        if( component == "default" ) {
+            return 0;
+        }
+        else {
+            return "#There is no " + component + " on " +
+            GetDefiniteShort() + ".";
+        }
     }
     else return 1;
 }
@@ -71,34 +71,34 @@ varargs mixed eventPress(object who, string component) {
     mixed val;
 
     if( !component ) {
-	val = Press["default"];
+        val = Press["default"];
     }
     else {
-	val = Press[component];
+        val = Press[component];
     }
     if( arrayp(val) ) {
-	val = val[query_night()];
+        val = val[query_night()];
     }
     if( stringp(val) ) {
-	object env;
+        object env;
 
-	env = environment(who);
-	who->eventPrint(val);
-	if( component ) {
-	    env->eventPrint(who->GetName() + " presses the " + component +
-	      " on " + GetDefiniteShort() + ".", who);
-	}
-	else {
-	    env->eventPrint(who->GetName() + " presses " +
-	      GetDefiniteShort() + ".", who);
-	}
-	return 1;
+        env = environment(who);
+        who->eventPrint(val);
+        if( component ) {
+            env->eventPrint(who->GetName() + " presses the " + component +
+              " on " + GetDefiniteShort() + ".", who);
+        }
+        else {
+            env->eventPrint(who->GetName() + " presses " +
+              GetDefiniteShort() + ".", who);
+        }
+        return 1;
     }
     else {
-	if( functionp(val) & FP_OWNER_DESTED ) {
-	    return "Error in evaluating functional.";
-	}
-	return evaluate(val, who, component);
+        if( functionp(val) & FP_OWNER_DESTED ) {
+            return "Error in evaluating functional.";
+        }
+        return evaluate(val, who, component);
     }
 }
 

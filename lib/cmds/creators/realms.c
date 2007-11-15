@@ -20,10 +20,10 @@ mixed cmd(string str) {
     text  += ({ "Creator        Moves    Size     Errors   Objs   HBs" });
     text  += ({ "-----------------------------------------------------" });
     foreach(string name in names) {
-	mapping foo = Stats[name];
-	text += ({ sprintf("%-14s %-8d %-8d %-8d %-6d %d", name, 
-	    foo["moves"], foo["array_size"], foo["errors"], 
-	    foo["objects"], foo["heart_beats"]) });
+        mapping foo = Stats[name];
+        text += ({ sprintf("%-14s %-8d %-8d %-8d %-6d %d", name, 
+            foo["moves"], foo["array_size"], foo["errors"], 
+            foo["objects"], foo["heart_beats"]) });
     }
     this_player()->eventPage(text);
     return 1;

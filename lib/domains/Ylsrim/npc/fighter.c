@@ -32,6 +32,6 @@ static void create() {
     SetProperty("no bump", 1);
     // stick him on the fighter line
     if( clonep() ) {
-	AddChannel("fighter");
+        AddChannel("fighter");
     }
 }

@@ -13,15 +13,15 @@ static void create() {
       "snow-capped mountains can be seen. The road runs south into "
       "the heart of the town.");
     SetItems( ([
-	({"rubble","stone","stones","road"}) : "Looks like "
-	"the road is still being built. Further travel north "
-	"is impossible.",
-	({"mountains","beautiful","snow-capped mountains"}) : "Beautiful "
-	"mountains, far off in the northern distance."
+        ({"rubble","stone","stones","road"}) : "Looks like "
+        "the road is still being built. Further travel north "
+        "is impossible.",
+        ({"mountains","beautiful","snow-capped mountains"}) : "Beautiful "
+        "mountains, far off in the northern distance."
       ]) );
     AddTerrainType(T_ROAD);
     SetExits( ([ 
-	"south" : "/domains/town/room/road",
+        "south" : "/domains/town/room/road",
       ]) );
 
 }

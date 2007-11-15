@@ -1,11 +1,6 @@
 #ifndef l_intermud_h
 #define l_intermud_h
 
-class list {
-    int ID;
-    mapping List;
-}
-
 static void create();
 static void Setup();
 static void eventRead(mixed *packet);

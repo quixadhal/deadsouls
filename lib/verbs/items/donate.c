@@ -28,13 +28,13 @@ mixed do_donate_str_str(string amount, string currency) {
     stuff = all_inventory(environment(this_player()));
 
     foreach(object thing in stuff){
-	if(inherits(LIB_DONATE,thing)){
-	    donate_boxes += ({ thing });
-	}
+        if(inherits(LIB_DONATE,thing)){
+            donate_boxes += ({ thing });
+        }
     }
 
     if(sizeof(donate_boxes)){
-	donate_boxes[0]->eventDonate(amount, currency);
+        donate_boxes[0]->eventDonate(amount, currency);
     }
 
     else write("There is nowhere to donate that.");

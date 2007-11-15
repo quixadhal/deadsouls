@@ -31,10 +31,10 @@ string eventShowPortal() {
     "shades of white and blue. It was created by Talima "
     "for her faithful servent " + Caster + ". ";
     if( sizeof(LinkRoom) ) {
-	object ob = load_object(LinkRoom);
-	if( !ob ) return "There are problems with this portal.";
-	str += "Gazing into its fitful depths, you can barely see "
-	"an occasional glimpse of " + ob->GetShort() + ".";
+        object ob = load_object(LinkRoom);
+        if( !ob ) return "There are problems with this portal.";
+        str += "Gazing into its fitful depths, you can barely see "
+        "an occasional glimpse of " + ob->GetShort() + ".";
     }
     else str += "You see nothing in its depths.";
     return str;
@@ -42,8 +42,8 @@ string eventShowPortal() {
 
 int SetLink(mixed dest) {
     if( stringp(dest) ) {
-	dest = load_object(dest);
-	if( !dest ) return 0;
+        dest = load_object(dest);
+        if( !dest ) return 0;
     }
     else if( !objectp(dest) ) error("Invalid argument 1 to SetLink!");
     LinkRoom = base_name(dest);
@@ -82,7 +82,7 @@ int eventEnter(object who) {
 int eventDestruct() {
     object env = environment();
     if( env ) {
-	env->eventPrint("A shimmering portal winks out of existance.");
+        env->eventPrint("A shimmering portal winks out of existance.");
     }
     ::eventDestruct();
 }

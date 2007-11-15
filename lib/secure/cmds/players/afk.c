@@ -11,12 +11,12 @@ mixed cmd(string args) {
     int afk;
     afk = this_player()->GetProperty("afk");
     if(afk){
-	afk = 0;
-	message("system", "You are back.", this_player() );
+        afk = 0;
+        message("system", "You are back.", this_player() );
     }
     else {
-	afk = 1;
-	message("system", "You are away from your keyboard.", this_player() );
+        afk = 1;
+        message("system", "You are away from your keyboard.", this_player() );
     }
     this_player()->SetProperty("afk", afk);
     return 1;

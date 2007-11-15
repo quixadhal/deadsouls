@@ -5,8 +5,8 @@ int revealed;
 int PreExit(){
     object ob = present("thief in a bathtowel",this_object());
     if(ob && base_name(ob) != "/lib/std/corpse"){
-	write("The wet thief bars your way!");
-	return 0;
+        write("The wet thief bars your way!");
+        return 0;
     }
     return 1;
 }
@@ -20,16 +20,16 @@ static void create() {
       "attention to detail as the rest of the "
       "mansion.");
     SetItems( ([
-	({"furniture","furnishings","decorations"}) :
-	"You see evidence of a refined aesthetic "
-	"sensibility."
+        ({"furniture","furnishings","decorations"}) :
+        "You see evidence of a refined aesthetic "
+        "sensibility."
       ]) );
     SetInventory( ([
-	"/domains/town/obj/rug" :1,
-	"/domains/town/npc/thief" :1
+        "/domains/town/obj/rug" :1,
+        "/domains/town/npc/thief" :1
       ]) );
     SetExits( ([
-	"west" : "/domains/town/room/mansion_dhall2"
+        "west" : "/domains/town/room/mansion_dhall2"
       ]) );
     revealed = 0;
 }
@@ -39,8 +39,8 @@ int TellRevealed(){
 }
 int RevealDoor(){
     if(revealed == 1) {
-	tell_room(this_object(),"The trapdoor is already visible.");	
-	return 1;
+        tell_room(this_object(),"The trapdoor is already visible.");	
+        return 1;
     }
     revealed = 1;
 

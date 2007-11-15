@@ -1,0 +1,83 @@
+Shadows are means to simulate the addition
+of functions to an already existing object.
+
+For example, one way to "enchant" a player might
+be to make it so that any object that tries to 
+do damage to her fails. This would mean that
+somehow you have to override eventReceiveDamage in
+that player (there are other ways, but let's pretend 
+this is a good idea).
+
+A shadow would do it. You could code an with
+the following code:
+
+varargs int eventReceiveDamage() {
+return 0;
+}
+
+And then use the shadow() efun to attach it to
+the player. Now when something tries to call the
+eventReceiveDamage function on the player, the
+shadow intercepts that call, and nothing happens at all.
+
+Neat, huh?
+
+There are, however, problems with shadows, which 
+we'll go over here:
+
+1) SECURITY
+-----------
+The main problem with shadows is security. If anybody on
+a mud can create shadows, then your mud basically 
+has no security at all, because a creator can enshadow
+an admin (or some other privileged object) in such
+a way as to elevate their own privilege.
+
+This would be bad.
+
+The way this is handled in Dead Souls is that the mud
+won't allow an object to be shadowed unless the shadowing
+object's code lives in /shadows. This means that it takes
+an admin to put the code there so that at least there is
+someone who *should* know what they're doing who is
+responsible for putting this code into play.
+
+This "only stuff in the /shadows directory" behavior
+is defined in the valid_shadow() master apply.
+
+2) MANAGEMENT
+-------------
+The other headache when it comes to shadows is managing
+them. The MudOS shadow() efun is simple enough to use,
+but suppose an object has more than one shadow and you
+only want to remove one. This is problematic because
+remove_shadow() doesn't distinguish between shadows...it'll
+remove *all* shadows from an object. While this may sometimes
+be desirable, it may not always be the right thing.
+
+Starting in Dead Souls 2.5a8, a system for basic management
+of multiple shadows is included. The system relies on the
+following rules on a mud to work properly:
+
+*) All shadows must inherit LIB_SHADOW.
+*) Any shadow must be attached to an object via the eventShadow() lfun. 
+*) Any shadow must be removed via the eventUnshadow() lfun.
+
+This is because tangible items (cans of spam, swords, players, etc)
+now all inherit LIB_SHADOW_HOOK. What this means is that any shadow
+that is to be attached to an item will first identify itself to
+the item, and that item will maintain a list of objects that are
+shadowing it. This allows you to query that item for its shadows,
+and to then remove individual shadows. For example:
+
+find_player("xyzzy")->GetShadows()
+find_player("xyzzy")->eventUnshadow(find_object("/shadows/clan#9"))
+
+So that only that specific shadow is removed from Xyzzy.
+
+Note that this system does not prevent people from using
+shadow() and remove_shadow() independently, so for things to
+work properly, your mud needs to have it be a standard that
+shadows are removed and attached according to the rules above.
+
+For more information on shadows in general, please see: /doc/guide/chapter07

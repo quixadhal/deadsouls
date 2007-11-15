@@ -8,8 +8,8 @@ void create() {
     SetItems(
       ([ "forest" : "A very humid jungle away from civilization."]) );
     SetExits( ([
-	"southwest" : "/domains/Praxis/jungle",
-	"east" : "/domains/Praxis/rogue_join.c",
+        "southwest" : "/domains/Praxis/jungle",
+        "east" : "/domains/Praxis/rogue_join.c",
       ]) );
 }
 void init(){

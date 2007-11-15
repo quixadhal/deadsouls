@@ -19,9 +19,9 @@ static void create() {
     SetEncounter(100);
     SetMaxHealthPoints(25);
     SetInventory(([
-	"/domains/town/armor/towel":"wear towel",
-	"/domains/town/weap/brush":"wield brush",
-	"/domains/town/obj/safe_key":1,
+        "/domains/town/armor/towel":"wear towel",
+        "/domains/town/weap/brush":"wield brush",
+        "/domains/town/obj/safe_key":1,
       ]) );
     SetHealthPoints(50);
 }

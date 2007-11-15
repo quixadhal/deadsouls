@@ -22,22 +22,22 @@ void create() {
     "/domains/Praxis/sewer_ent"->SetOpen("manhole", 0);
     SetExits( 
       (["west" : "/domains/Praxis/s_centre2",
-	"north" : "/domains/Praxis/sheriff",
-	"down" : "/domains/Praxis/sewer_ent"]) );
+        "north" : "/domains/Praxis/sheriff",
+        "down" : "/domains/Praxis/sewer_ent"]) );
     SetItems(
       (["alley" : "It looks beautiful here.",
-	({ "lamp", "lamps" }) : "Dimly illuminated lights.",
-	"manhole" : (: this_object(), "look_at_manhole" :) ]) );
+        ({ "lamp", "lamps" }) : "Dimly illuminated lights.",
+        "manhole" : (: this_object(), "look_at_manhole" :) ]) );
     SetInventory(([
-	"/domains/Praxis/obj/mon/beggar" : 1,
+        "/domains/Praxis/obj/mon/beggar" : 1,
       ]));
 }
 
 void reset() {
     ::reset();
     if(!find_living("beggar") || !environment(find_living("beggar")))
-	new("/domains/Praxis/obj/mon/beggar")->move(this_object());
+        new("/domains/Praxis/obj/mon/beggar")->move(this_object());
     if(query_reset_number() != 1) {
-	"/domains/Praxis/sewer_ent"->SetOpen("manhole", 0);
+        "/domains/Praxis/sewer_ent"->SetOpen("manhole", 0);
     }
 }

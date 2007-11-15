@@ -25,12 +25,12 @@ static void create() {
     SetAutoDamage(3);
     SetDamage(MAGIC|BLUNT, ({15, 15}) );
     SetMessages(({ ({ "are", "$target_name $target_verb "
-	  "unharmed by $agent_possessive "
-	  "missile." }),
-	({ "stings", "$agent_possessive_noun missile "
-	  "$agent_verb $target_name." }),
-	({ "slams", "$agent_possessive_noun missile "
-	  "$agent_verb $target_name." }) }));
+          "unharmed by $agent_possessive "
+          "missile." }),
+        ({ "stings", "$agent_possessive_noun missile "
+          "$agent_verb $target_name." }),
+        ({ "slams", "$agent_possessive_noun missile "
+          "$agent_verb $target_name." }) }));
     SetHelp("Syntax: <cast missile>\n"
       "        <cast missile on LIVING>\n\n"
       "This spell creates a conjures a magic missile out of "

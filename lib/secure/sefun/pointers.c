@@ -92,7 +92,7 @@ int councilp(object ob) {
 
     if(!ob) ob = previous_object();
     if( ! catch( val = (int)VOTING_D->IsCouncilMember(ob) ) )
-	return (!creatorp(ob) && ( val ));
+        return (!creatorp(ob) && ( val ));
     return 0;
 }
 

@@ -24,9 +24,9 @@ void eventReceiveChannelWhoReply(mixed array packet) {
     if( !(ob = find_player(packet[5])) ) return;
     packet[6] = (string)CHAT_D->GetLocalChannel(packet[6]);
     if( !sizeof(packet[7]) ) {
-	ob->eventPrint("No one is listening to " + packet[6] + " at " +
-	  packet[2] + ".", MSG_SYSTEM);
-	return;
+        ob->eventPrint("No one is listening to " + packet[6] + " at " +
+          packet[2] + ".", MSG_SYSTEM);
+        return;
     }
     ob->eventPrint("Listening to " + packet[6] + " at " + packet[2] + ":" +
       implode(packet[7], "   "), MSG_SYSTEM);
@@ -38,10 +38,10 @@ void eventReceiveChannelWhoRequest(mixed array packet) {
     if( file_name(previous_object()) != INTERMUD_D ) return;
     who = (string array)CHAT_D->GetChannelList(packet[6]);
     INTERMUD_D->eventWrite(({ "chan-who-reply", 5, mud_name(), 0, packet[2],
-	packet[3], packet[6], who }));
+        packet[3], packet[6], who }));
 
     foreach(string entry in who){
-	ret += entry+", ";
+        ret += entry+", ";
     }
     ret = truncate(ret,2);
     tn("eventReceiveChannelWhoRequest: "+identify(packet),"green");
@@ -56,10 +56,10 @@ void eventReceiveChannelUserRequest(mixed array packet) {
     if( file_name(previous_object()) != INTERMUD_D ) return;
     tn("eventReceiveChannelUserRequest: "+identify(packet),"green");
     if( !(ob = find_player(packet[6])) ) {
-	INTERMUD_D->eventWrite( ({ "error", 5, mud_name(), 0, packet[2], 0,
-	    "unk-user", packet[6] + " is not a valid "
-	    "player.", packet }) );
-	return;
+        INTERMUD_D->eventWrite( ({ "error", 5, mud_name(), 0, packet[2], 0,
+            "unk-user", packet[6] + " is not a valid "
+            "player.", packet }) );
+        return;
     }
     visname = (string)ob->GetCapName();
     switch( (string)ob->GetGender() ) {
@@ -68,7 +68,7 @@ void eventReceiveChannelUserRequest(mixed array packet) {
     default: gender = 2; break;
     }
     INTERMUD_D->eventWrite( ({ "chan-user-reply", 5, mud_name(), 0, 
-	packet[2], 0, packet[6], visname, gender }));
+        packet[2], 0, packet[6], visname, gender }));
 }
 
 void eventReceiveChannelMessage(mixed array packet) {
@@ -117,32 +117,32 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
     tn("eventSendChannel raw: "+identify( packet_thing ),"green");
 
     if( emote ) {
-	if( target && targmsg ) {
-	    if( sscanf(target, "%s@%s", targpl, where) != 2 ) {
-		targpl = convert_name(target);
-		where = mud_name();
-	    }
-	    else {
-		where = trim(where);
-		if(!alphap(last(where,1))) where = truncate(where,1);
-		if(member_array(lower_case(where), INTERMUD_D->GetLCMuds()) == -1) {
-		    write("No such mud.");
-		    return;
-		}
-		target = SERVICES_D->GetRemoteDisplayName(targpl, where);
-		if( !target ) target = capitalize(targpl);
-	    }
-	    packet = ({ "channel-t", 5, mud_name(), convert_name(who), 0, 0,
-	      ch, where, targpl, msg, targmsg, who, target });
-	}
-	else packet = ({ "channel-e", 5, mud_name(), convert_name(who), 0, 0,
-	      ch, who, msg });
+        if( target && targmsg ) {
+            if( sscanf(target, "%s@%s", targpl, where) != 2 ) {
+                targpl = convert_name(target);
+                where = mud_name();
+            }
+            else {
+                where = trim(where);
+                if(!alphap(last(where,1))) where = truncate(where,1);
+                if(member_array(lower_case(where), INTERMUD_D->GetLCMuds()) == -1) {
+                    write("No such mud.");
+                    return;
+                }
+                target = SERVICES_D->GetRemoteDisplayName(targpl, where);
+                if( !target ) target = capitalize(targpl);
+            }
+            packet = ({ "channel-t", 5, mud_name(), convert_name(who), 0, 0,
+              ch, where, targpl, msg, targmsg, who, target });
+        }
+        else packet = ({ "channel-e", 5, mud_name(), convert_name(who), 0, 0,
+              ch, who, msg });
     }
     else packet = ({ "channel-m", 5, mud_name(), convert_name(who), 0, 0, ch, 
-	  who, msg });
+          who, msg });
     if(member_array(ch, local_chans) == -1){
-	INTERMUD_D->eventWrite(packet);
-	tn("eventSendChannel processed: "+identify(packet),"green");
+        INTERMUD_D->eventWrite(packet);
+        tn("eventSendChannel processed: "+identify(packet),"green");
     }
 }
 
@@ -151,7 +151,7 @@ void eventSendChannelWhoRequest(string channel, string mud) {
 
     pl = (string)this_player(1)->GetKeyName();
     INTERMUD_D->eventWrite(({ "chan-who-req", 5, mud_name(), pl, mud, 0,
-	channel }));
+        channel }));
     tn("eventSendChannelWhoRequest: "+identify( ({ "chan-who-req", 5, mud_name(), pl, mud, 0, channel })) , "green");
 }
 
@@ -162,15 +162,15 @@ void eventRegisterChannels(mapping list) {
     if( file_name(previous_object()) != INTERMUD_D ) return;
     ns = (string)INTERMUD_D->GetNameserver();
     foreach(channel, val in list) {
-	if( !val ) continue;
-	if( member_array(channel, CHAT_D->GetLocalChannels()) == -1){
-	    INTERMUD_D->eventWrite(({ "channel-listen", 5, mud_name(), 0, ns, 
-		0, channel, 1 }));
-	    log_file("channels", "New channel: " + channel + " recognized " +
-	      ctime(time()) + "\nValue: " + identify(val) + "\n\n");
-	}
-	else INTERMUD_D->eventWrite(({ "channel-listen", 5, mud_name(), 0, ns,
-		0, channel, 0 }));
+        if( !val ) continue;
+        if( member_array(channel, CHAT_D->GetLocalChannels()) == -1){
+            INTERMUD_D->eventWrite(({ "channel-listen", 5, mud_name(), 0, ns, 
+                0, channel, 1 }));
+            log_file("channels", "New channel: " + channel + " recognized " +
+              ctime(time()) + "\nValue: " + identify(val) + "\n\n");
+        }
+        else INTERMUD_D->eventWrite(({ "channel-listen", 5, mud_name(), 0, ns,
+                0, channel, 0 }));
     }
     tn("eventRegisterChannels: "+identify(list),"green");
 
@@ -182,11 +182,11 @@ int eventAdministerChannel(string channel, string array additions,
 
     if( !((int)master()->valid_apply( ({}) )) ) return 0;
     if( member_array(channel, (string array)INTERMUD_D->GetChannels()) == -1 )
-	return 0;
+        return 0;
     INTERMUD_D->eventWrite(({ "channel-admin", 5, mud_name(),
-	(string)this_player(1)->GetKeyName(),
-	(string)INTERMUD_D->GetNameserver(),
-	0, channel, additions, subs }));
+        (string)this_player(1)->GetKeyName(),
+        (string)INTERMUD_D->GetNameserver(),
+        0, channel, additions, subs }));
 
     tn("eventAdministerChannel: "+channel+" "+identify(additions)+" "+identify(subs),"green");
     return 1;
@@ -196,15 +196,15 @@ int AddChannel(string channel, int privee) {
     tn("eventAdministerChannel: "+channel+", "+privee,"green");
 
     if( !((int)master()->valid_apply( ({}) )) ){ 
-	return 0;
+        return 0;
     }
     if( member_array(channel, (string array)INTERMUD_D->GetChannels()) != -1 ){
-	return 0;
+        return 0;
     }
     INTERMUD_D->eventWrite(({ "channel-add", 5, mud_name(), 
-	(string)this_player(1)->GetKeyName(),
-	(string)INTERMUD_D->GetNameserver(), 0,
-	channel, privee }));
+        (string)this_player(1)->GetKeyName(),
+        (string)INTERMUD_D->GetNameserver(), 0,
+        channel, privee }));
     return 1;
 }
 
@@ -212,11 +212,11 @@ int RemoveChannel(string channel) {
     tn("RemoveChannel: "+identify(channel),"green");
 
     if( member_array(channel, (string array)INTERMUD_D->GetChannels()) == -1 ){
-	return 0;
+        return 0;
     }
     INTERMUD_D->eventWrite(({ "channel-remove", 5, mud_name(),
-	(string)this_player(1)->GetKeyName(),
-	(string)INTERMUD_D->GetNameserver(), 0,
-	channel }));
+        (string)this_player(1)->GetKeyName(),
+        (string)INTERMUD_D->GetNameserver(), 0,
+        channel }));
     return 1;
 }

@@ -10,16 +10,16 @@ int StealAttempt(){
     int which, whether;
 
     if(sizeof(players)){
-	which = random(sizeof(players));
-	target = players[which];
-	name = target->GetKeyName();
-	stuff = all_inventory(target);
-	if(!sizeof(stuff) || random(100) > 50) whether = 1;
-	if(whether) this_object()->eventForce("steal money from "+name);
-	else {
-	    thing = stuff[random(sizeof(stuff))]->GetKeyName();
-	    this_object()->eventForce("steal "+thing+" from "+name);
-	}
+        which = random(sizeof(players));
+        target = players[which];
+        name = target->GetKeyName();
+        stuff = all_inventory(target);
+        if(!sizeof(stuff) || random(100) > 50) whether = 1;
+        if(whether) this_object()->eventForce("steal money from "+name);
+        else {
+            thing = stuff[random(sizeof(stuff))]->GetKeyName();
+            this_object()->eventForce("steal "+thing+" from "+name);
+        }
     }
     whether = 0;
     return 1;
@@ -38,7 +38,7 @@ static void create() {
     SetRace("kender");
     SetGender("female");
     SetAction(25, ({
-	(: StealAttempt :),
+        (: StealAttempt :),
       }) );
 }
 void init(){

@@ -3,7 +3,7 @@ inherit "/lib/std/room";
 void init() {
     ::init();
     if(!archp(this_player()))
-	this_player()->eventMoveLiving("/domains/Praxis/planning_room", "down");
+        this_player()->eventMoveLiving("/domains/Praxis/planning_room", "down");
 }
 
 void create() {

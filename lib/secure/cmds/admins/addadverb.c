@@ -15,12 +15,12 @@ mixed cmd(string args) {
     string array adverbs;
 
     if( !args || args == "" ) {
-	return "Add which adverb?";
+        return "Add which adverb?";
     }
     adverbs = map(explode(args, ","), (: trim :));
     if( !SOUL_D->AddAdverbs(adverbs...) ) {
-	previous_object()->eventPrint("Addition of adverbs failed.");
-	return 1;
+        previous_object()->eventPrint("Addition of adverbs failed.");
+        return 1;
     }
     previous_object()->eventPrint("Adverbs added.");
     return 1;

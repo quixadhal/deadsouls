@@ -21,11 +21,11 @@ void create() {
       "<preview> will tell you about becoming a Kataan. ");
     SetItems(
       (["mural" : "It is very old and depicts gruesome cult practices.",
-	"murals" : "They are quite ancient and are made up of "
-	"pictures depicting bizarre rituals.",
-	"light" : "You are certain that it is a field which allows "
-	"only kataans to pass.",
-	"cavern" : "The cavern almost pulses with hidden evil."]) );
+        "murals" : "They are quite ancient and are made up of "
+        "pictures depicting bizarre rituals.",
+        "light" : "You are certain that it is a field which allows "
+        "only kataans to pass.",
+        "cavern" : "The cavern almost pulses with hidden evil."]) );
     SetExits( 
       (["up" : "/domains/Praxis/forest3"]) );
     AddExit("down","/domains/Praxis/kataan_hall",(:go_down:));
@@ -33,8 +33,8 @@ void create() {
 
 int preview() {
     if((string)this_player()->query_class() != "explorer") {
-	write("This is not for you.");
-	return 1;
+        write("This is not for you.");
+        return 1;
     }
     say(this_player()->query_cap_name()+" seeks to learn about "
       "kataans.", this_player());
@@ -50,16 +50,16 @@ int preview() {
 
 int become(string str) {
     if(!str) {
-	notify_fail("Become what?\n");
-	return 0;
+        notify_fail("Become what?\n");
+        return 0;
     }
     if(str != "kataan") {
-	notify_fail("You cannot become that here.\n");
-	return 0;
+        notify_fail("You cannot become that here.\n");
+        return 0;
     }
     if((string)this_player()->query_class() != "explorer") {
-	write("You are much too old to start learning our ways now!");
-	return 1;
+        write("You are much too old to start learning our ways now!");
+        return 1;
     }
     write("The Master Kataan initiates you into the class of kataans.");
     say(this_player()->query_cap_name()+" becomes a kataan.", this_player());
@@ -72,9 +72,9 @@ int become(string str) {
 
 int go_down() {
     if((string)this_player()->query_class() != "kataan") {
-	write("You cannot penetrate the force field that blocks the passage.");
-	say(this_player()->query_cap_name()+" tries to get into the kataan's sanctuary, but fails.", this_player());
-	return 0;
+        write("You cannot penetrate the force field that blocks the passage.");
+        say(this_player()->query_cap_name()+" tries to get into the kataan's sanctuary, but fails.", this_player());
+        return 0;
     }
     return 1;
 }

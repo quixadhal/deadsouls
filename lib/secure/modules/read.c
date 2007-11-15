@@ -34,25 +34,25 @@ varargs string ReadMatchingLine(string target, string substring, string exclude)
 
     omit = 1;
     for(i=1; !done; i++){
-	line = read_file(filename, i, 1);
-	if(!line) break;
-	if(grepp(line,substring) ) {
-	    omit =0;
-	}
-	if(!omit && truncate(last(line,2,1),1) != ";") {
-	    tail_search = 1;
-	}
-	else {
-	    tail_search = 0;
-	}
+        line = read_file(filename, i, 1);
+        if(!line) break;
+        if(grepp(line,substring) ) {
+            omit =0;
+        }
+        if(!omit && truncate(last(line,2,1),1) != ";") {
+            tail_search = 1;
+        }
+        else {
+            tail_search = 0;
+        }
 
-	if(!omit) {
-	    new_file += line;
-	}
+        if(!omit) {
+            new_file += line;
+        }
 
-	if(!tail_search) omit = 1;
-	if(!line) done = 100;
-	if(i == 999) done = 100;
+        if(!tail_search) omit = 1;
+        if(!line) done = 100;
+        if(i == 999) done = 100;
     }
 
     rm(filename);
@@ -67,7 +67,7 @@ mapping eventParsePair(string file, string param, string type, string mode){
     string line = this_object()->ReadMatchingLine(file, param);
     sscanf(line,"%s(%s,%s);%s",func,key,val,junk);
     if(!key || !val) {
-	return ([]);
+        return ([]);
     }
     if(sscanf(val,"%d",tempint) && !alphap(val)) val = tempint;
     key = this_object()->eventCleanString(key);
@@ -99,13 +99,13 @@ mapping eventMappifyLine(string file, string param){
     schmutz = replace_string(schmutz,", \"",",\"");
     schmutz = trim(schmutz);
     if(last(schmutz,1) != ","){
-	schmutz = "(["+schmutz+",])";
+        schmutz = "(["+schmutz+",])";
     }
     else schmutz = "(["+schmutz+"])";
     RetMap = restore_variable(schmutz);
     if(!mapp(RetMap)){
-	write("Mappification unsuccessful.");
-	return ([]);
+        write("Mappification unsuccessful.");
+        return ([]);
     }
     else return RetMap;
 }

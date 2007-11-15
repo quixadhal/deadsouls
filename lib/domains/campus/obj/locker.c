@@ -21,9 +21,9 @@ void create() {
     SetDollarCost(50);
     SetMaxCarry(500);
     SetInventory(([
-	"/domains/campus/obj/bag": 1,
-	"/domains/campus/obj/dcell_std": 4,
-	"/domains/campus/weap/waterpistol" : 1
+        "/domains/campus/obj/bag": 1,
+        "/domains/campus/obj/dcell_std": 4,
+        "/domains/campus/weap/waterpistol" : 1
       ]));
     SetCanClose(1);
     SetClosed(1);

@@ -23,46 +23,46 @@ int cmd(string str) {
     if(!str) return notify_fail("No current working directory.\n");
     i = sizeof(args = explode(str, " "));
     if(args[0][0] == '-') {
-	if((x = strlen(args[0])) > 1) options = explode(args[0][1..x-1], "");
-	else options = ({});
-	if(i == 1) paths = ({ (string)previous_object()->query_cwd() });
-	else paths = args[1..i-1];
+        if((x = strlen(args[0])) > 1) options = explode(args[0][1..x-1], "");
+        else options = ({});
+        if(i == 1) paths = ({ (string)previous_object()->query_cwd() });
+        else paths = args[1..i-1];
     }
     else {
-	options = ({});
-	paths = args;
+        options = ({});
+        paths = args;
     }
     i = sizeof(options);
     while(i--) {
-	switch(options[i]) {
-	case "a": all_files = 1; break;
-	case "l": long_details = 1; break;
-	case "t": time_sort = 1; break;
-	case "m": moref = 1; break;
-	case "n": no_load_info = 1; break;
-	case "b": brief = 1; break;
-	case "s": size = 1; break;
-	}
+        switch(options[i]) {
+        case "a": all_files = 1; break;
+        case "l": long_details = 1; break;
+        case "t": time_sort = 1; break;
+        case "m": moref = 1; break;
+        case "n": no_load_info = 1; break;
+        case "b": brief = 1; break;
+        case "s": size = 1; break;
+        }
     }
     for(i=0, maxi = sizeof(paths), files = ({}); i<maxi; i++)
-	if(tmp = (string *)previous_object()->wild_card(paths[i])) files += tmp;
+        if(tmp = (string *)previous_object()->wild_card(paths[i])) files += tmp;
     if(!sizeof(files)) { 
-	message("error", "No such file or directory.", this_player());
-	return 1;
+        message("error", "No such file or directory.", this_player());
+        return 1;
     }
     dirs = filter(files, "is_dir", this_object());
     if(sizeof(files = files - dirs))
-	show = display_ls(file_mapping(files),all_files,long_details, time_sort,
-	  no_load_info, brief, size);
+        show = display_ls(file_mapping(files),all_files,long_details, time_sort,
+          no_load_info, brief, size);
     else show = "";
     if(!(maxi = sizeof(dirs))) {
-	if(moref) previous_object()->more(explode(show, "\n"), "system");
-	else message("system", show, previous_object());
-	return 1;
+        if(moref) previous_object()->more(explode(show, "\n"), "system");
+        else message("system", show, previous_object());
+        return 1;
     }
     for(i=0; i<maxi; i++)
-	show += display_ls(dirs[i], all_files, long_details, time_sort, 
-	  no_load_info, brief, size);
+        show += display_ls(dirs[i], all_files, long_details, time_sort, 
+          no_load_info, brief, size);
     if(!moref && check_string_length(show)) previous_object()->eventPrint(show);
     else print_long_string(this_player(),show);
     return 1;
@@ -77,11 +77,11 @@ static private mapping file_mapping(string *files) {
     int i, maxi, x;
 
     for(i=0, maxi = sizeof(files), borg = ([]); i<maxi; i++) {
-	x = sizeof(tmp = explode(files[i], "/"));
-	if(x == 1) dir = "/";
-	else dir = "/"+implode(tmp[0..x-2], "/")+"/";
-	if(borg[dir]) borg[dir] += get_dir(dir+tmp[x-1], -1);
-	else borg[dir] = get_dir(dir+tmp[x-1], -1);
+        x = sizeof(tmp = explode(files[i], "/"));
+        if(x == 1) dir = "/";
+        else dir = "/"+implode(tmp[0..x-2], "/")+"/";
+        if(borg[dir]) borg[dir] += get_dir(dir+tmp[x-1], -1);
+        else borg[dir] = get_dir(dir+tmp[x-1], -1);
     }
     return borg;
 }
@@ -97,9 +97,9 @@ else if(stringp(targ)) targ = ([ targ+"/" : get_dir(targ+"/", -1) ]);
 for(i=0, maxi = sizeof(cles = keys(targ)); i<maxi; i++) {
     if(!bflag) ret = cles[i]+":\n";
     if(!aflag) targ[cles[i]] = filter(targ[cles[i]], "filter_dots",
-	  this_object());
+          this_object());
     if(tflag) 
-	targ[cles[i]]=sort_array(targ[cles[i]],"time_sort",this_object());
+        targ[cles[i]]=sort_array(targ[cles[i]],"time_sort",this_object());
     if(lflag) ret += long_list(cles[i], targ[cles[i]]);
     else ret += short_list(cles[i], targ[cles[i]], nflag, sflag);
     ret += "\n";
@@ -126,16 +126,16 @@ static private string long_list(string dir, mixed *files) {
     if((int)master()->valid_write(dir, previous_object())) acc += "w";
     else acc += "-";
     if(member_array(dir[0..strlen(dir)-2],
-	(string *)previous_object()->GetSearchPath()) != -1) acc += "x";
+        (string *)previous_object()->GetSearchPath()) != -1) acc += "x";
     else acc += "-";
     for(i=0, maxi=sizeof(files); i<maxi; i++) {
-	if(files[i][1] == -2) loaded = "";
-	else loaded = (find_object(dir+files[i][0]) ? "*" : "");
-	ret += sprintf("%:-3s%:-5s%:-30s %d\t%s", 
-	  loaded, acc, ctime(files[i][2]),
-	  files[i][1], files[i][0]);
-	if(files[i][1] == -2) ret += "/\n";
-	else ret += "\n";
+        if(files[i][1] == -2) loaded = "";
+        else loaded = (find_object(dir+files[i][0]) ? "*" : "");
+        ret += sprintf("%:-3s%:-5s%:-30s %d\t%s", 
+          loaded, acc, ctime(files[i][2]),
+          files[i][1], files[i][0]);
+        if(files[i][1] == -2) ret += "/\n";
+        else ret += "\n";
     }
     return ret;
 }
@@ -156,12 +156,12 @@ static private string short_list(string dir, mixed *files, int n, int s) {
     if(max % cols) rows++;
     ret = "";
     for(i=0; i<rows; i++) {
-	for(j=0; j<cols; j++) {
-	    ind = (rows * j) + i;
-	    if(ind < max) ret += sprintf("%:-"+(long+3)+"s", newfiles[ind]);
-	    else ret += sprintf("%:-"+(long+3)+"s", "");
-	}
-	ret += "\n";
+        for(j=0; j<cols; j++) {
+            ind = (rows * j) + i;
+            if(ind < max) ret += sprintf("%:-"+(long+3)+"s", newfiles[ind]);
+            else ret += sprintf("%:-"+(long+3)+"s", "");
+        }
+        ret += "\n";
     }
     return ret;
 }
@@ -170,19 +170,19 @@ static string map_files(mixed *file, int *flags) {
     string tmp;
 
     if(flags[1] && flags[2]) {
-	if(file[1] == -2) return file[0]+"/";
-	else return file[0];
+        if(file[1] == -2) return file[0]+"/";
+        else return file[0];
     }
     if(!flags[1]) {
-	if(find_object((string)flags[0]+file[0]) && file[1] != -2) tmp = "*";
-	else tmp = " ";
+        if(find_object((string)flags[0]+file[0]) && file[1] != -2) tmp = "*";
+        else tmp = " ";
     }
     else tmp = "";
     if(!flags[2]) {
-	if(file[1] == -2) tmp = tmp + "    ";
-	else if(!file[1]) tmp = tmp + "0   ";
-	else if(file[1] < 1024) tmp = " 1   ";
-	else tmp = sprintf("%s%:-3d ", tmp, (file[1]/1024));
+        if(file[1] == -2) tmp = tmp + "    ";
+        else if(!file[1]) tmp = tmp + "0   ";
+        else if(file[1] < 1024) tmp = " 1   ";
+        else tmp = sprintf("%s%:-3d ", tmp, (file[1]/1024));
     }
     return tmp + file[0] + ((file[1] == -2) ? "/" : "");
 }

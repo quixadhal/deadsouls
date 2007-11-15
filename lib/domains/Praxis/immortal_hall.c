@@ -22,6 +22,6 @@ void create() {
 void reset() {
     ::reset();
     if(!present("unity")) 
-	new("/domains/Praxis/obj/mon/unity")->move(this_object());
+        new("/domains/Praxis/obj/mon/unity")->move(this_object());
 }
 

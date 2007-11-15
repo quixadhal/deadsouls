@@ -14,7 +14,7 @@ void create(){
       "start with chapter 31.");
     SetNoCondition(1);
     SetProperties(([
-	"no steal" : 1,
+        "no steal" : 1,
       ]));
     SetMass(20);
     SetBaseCost("silver",10);

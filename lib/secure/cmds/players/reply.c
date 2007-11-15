@@ -17,12 +17,12 @@ int cmd(string str) {
     reply = (string)this_player()->GetProperty("reply");
     if(!reply) reply = "no one";
     if(!str) {
-	notify_fail("Current reply addressee: "+capitalize(reply)+"\n");
-	return 0;
+        notify_fail("Current reply addressee: "+capitalize(reply)+"\n");
+        return 0;
     }
     if(reply == "no one") {
-	notify_fail("No current reply addressee.\n");
-	return 0;
+        notify_fail("No current reply addressee.\n");
+        return 0;
     }
     load_object("/secure/cmds/players/tell")->cmd(reply+" "+str);
     return 1;

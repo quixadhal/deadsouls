@@ -17,36 +17,36 @@ mixed cmd(string args) {
     mixed res;
 
     if(!args || args == ""){
-	return "Syntax: <transfer OBJECT INTO OBJECT>\n\n";
+        return "Syntax: <transfer OBJECT INTO OBJECT>\n\n";
     }
 
     if( sscanf(args, "%s into %s", a, b) != 2 &&
       sscanf(args, "%s to %s", a, b) != 2 ) {
-	return "Syntax: <transfer OBJECT INTO OBJECT>\n\n";
+        return "Syntax: <transfer OBJECT INTO OBJECT>\n\n";
     }
     what = to_object(a);
     destination = to_object(b);
     if( !what ) {
-	return "Unable to find " + a + ".";
+        return "Unable to find " + a + ".";
     }
     if( !destination ) {
-	return "Unable to find " + b + ".";
+        return "Unable to find " + b + ".";
     }
     if( living(what) && living(destination) ) {
-	return "None of that nonsense.";
+        return "None of that nonsense.";
     }
     res = what->eventMove(destination);
     if( !res ) {
-	return "Failed to transfer " + identify(what) + " into " +
-	identify(destination) + ".";
+        return "Failed to transfer " + identify(what) + " into " +
+        identify(destination) + ".";
     }
     else if( res != 1 ) {
-	return res;
+        return res;
     }
     previous_object()->eventPrint("Transferred " + identify(what) + " into " +
       identify(destination) + ".", MSG_SYSTEM);
     if( living(what) ) {
-	what->eventDescribeEnvironment();
+        what->eventDescribeEnvironment();
     }
     return 1;
 }

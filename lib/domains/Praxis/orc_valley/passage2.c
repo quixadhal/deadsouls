@@ -11,6 +11,6 @@ void create() {
       (["passage" : "You cannot see much of anything."]) );
     SetExits( 
       (["west" : "/domains/Praxis/orc_valley/chamber2",
-	"east" : "/domains/Praxis/orc_valley/open"]) );
+        "east" : "/domains/Praxis/orc_valley/open"]) );
 }
 

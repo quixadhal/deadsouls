@@ -17,41 +17,41 @@ mixed cmd(string text) {
     string secondary, tmp, file;
 
     if( text ) {
-	string *words;
-	object env;
-	int i, maxi;
+        string *words;
+        object env;
+        int i, maxi;
 
-	maxi = sizeof( words = explode(text, " ") );
-	for(i=0, tmp = ""; i<maxi; i++ ) {
-	    tmp += words[i];
-	    if( ob = present(tmp, this_player()) ) {
-		if( i == maxi - 1 ) text = "";
-		else text = implode(words[i+1..], " ");
-		break;
-	    }
-	    if( (env=environment(this_player())) && ob = present(tmp, env) ) {
-		if( i == maxi - 1 ) text = "";
-		else text = implode(words[i+1..], " ");
-		break;
-	    }
-	    tmp += " ";
-	}
+        maxi = sizeof( words = explode(text, " ") );
+        for(i=0, tmp = ""; i<maxi; i++ ) {
+            tmp += words[i];
+            if( ob = present(tmp, this_player()) ) {
+                if( i == maxi - 1 ) text = "";
+                else text = implode(words[i+1..], " ");
+                break;
+            }
+            if( (env=environment(this_player())) && ob = present(tmp, env) ) {
+                if( i == maxi - 1 ) text = "";
+                else text = implode(words[i+1..], " ");
+                break;
+            }
+            tmp += " ";
+        }
     }
     else text = "";
     ob = (ob || environment(this_player()));
     if( text != "" ) {
-	if( ob ) {
-	    tmp = (string)this_player()->GetCapName() + " reports praise in: " +
-	    identify(ob) + "\non " + ctime(time()) + "\n";
-	    secondary = GetCreator(ob);
-	}
-	else 
-	    tmp = (string)this_player()->GetCapName() + " reports praise on: " +
-	    ctime(time()) + ":\n";
-	log_file("praise", tmp + text + "\n\n");
-	if( secondary ) log_file("reports/" + secondary, tmp + text + "\n\n");
-	message("system", "Praise reported!!! Thank you!!!", this_player());
-	return 1;
+        if( ob ) {
+            tmp = (string)this_player()->GetCapName() + " reports praise in: " +
+            identify(ob) + "\non " + ctime(time()) + "\n";
+            secondary = GetCreator(ob);
+        }
+        else 
+            tmp = (string)this_player()->GetCapName() + " reports praise on: " +
+            ctime(time()) + ":\n";
+        log_file("praise", tmp + text + "\n\n");
+        if( secondary ) log_file("reports/" + secondary, tmp + text + "\n\n");
+        message("system", "Praise reported!!! Thank you!!!", this_player());
+        return 1;
     }
     rm( file = DIR_TMP "/" + (string)this_player()->GetKeyName() );
     this_player()->eventEdit( file, (: eventEndEdit, ob :) );
@@ -63,18 +63,18 @@ void eventEndEdit(object ob) {
 
     file = DIR_TMP "/" + (string)this_player()->GetKeyName();
     if( !file_exists(file) || !(text = read_file(file)) ) {
-	message("system", "Praise report aborted.", this_player());
-	return;
+        message("system", "Praise report aborted.", this_player());
+        return;
     }
     rm(file);
     if( ob ) {
-	tmp = (string)this_player()->GetCapName() + " reports praise in: " +
-	identify(ob) + "\non: " + ctime(time()) + "\n";
-	secondary = GetCreator(ob);
+        tmp = (string)this_player()->GetCapName() + " reports praise in: " +
+        identify(ob) + "\non: " + ctime(time()) + "\n";
+        secondary = GetCreator(ob);
     }
     else 
-	tmp = (string)this_player()->GetCapName() + " reports praise on " +
-	ctime(time()) + ":\n";
+        tmp = (string)this_player()->GetCapName() + " reports praise on " +
+        ctime(time()) + ":\n";
     log_file("praise", tmp + text + "\n\n");
     if( secondary ) log_file("reports/" + secondary, tmp + text + "\n\n"); 
     message("system", "Praise reported!!! Thank you!!!", this_player());

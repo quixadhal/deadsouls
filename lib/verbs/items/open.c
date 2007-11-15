@@ -25,14 +25,14 @@ static void create() {
 
 mixed can_open_obj(string verb, string id) {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     return this_player()->CanManipulate();
 }
 
 mixed can_open_obj_with_obj(string verb, string id1, string id2) {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     return this_player()->CanManipulate();
 }

@@ -48,9 +48,9 @@ mixed PassByRef(mixed ref arg){
     else if(stringp(arg)) arg += "localvar";
     else if(mapp(arg)) arg[identify(this_object())] = this_object();
     else if(arrayp(arg) && sizeof(arg)){
-	if(stringp(arg[0])) arg += ({ "localvar" });
-	else if(intp(arg[0])) arg += ({ 1 });
-	else if(objectp(arg[0])) arg += ({ this_object() });
+        if(stringp(arg[0])) arg += ({ "localvar" });
+        else if(intp(arg[0])) arg += ({ 1 });
+        else if(objectp(arg[0])) arg += ({ this_object() });
     }
     return arg;
 }

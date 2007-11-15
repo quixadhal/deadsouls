@@ -36,27 +36,27 @@ int eventModMoney(object ob, string type, mixed val){
     globalstr = generate_tmp(ob);
     unguarded( (: cp(globalstr3, globalstr) :) );
     if(!check_privs(this_player(),globalstr3)){
-	write("You do not appear to have access to this file. Modification aborted.");
-	return 1;
+        write("You do not appear to have access to this file. Modification aborted.");
+        return 1;
     }
     if(npc){
-	unguarded( (: TmpMap = this_object()->eventMappifyLine(globalstr,"SetCurrency") :) );
-	LoadMap = this_object()->eventParsePair(globalstr,"AddCurrency","string","literal");
-	foreach(string foo, mixed bar in LoadMap) if(stringp(bar)) LoadMap[foo] = amount;
-	unguarded( (: globaltmp = remove_matching_line(globalstr,"AddCurrency",1) :) );
-	unguarded( (: globaltmp = remove_matching_line(globaltmp,"SetCurrency",1) :) );
-	globalstr2 = "SetCurrency( ";
-	NewMap = add_maps(LoadMap,TmpMap);
+        unguarded( (: TmpMap = this_object()->eventMappifyLine(globalstr,"SetCurrency") :) );
+        LoadMap = this_object()->eventParsePair(globalstr,"AddCurrency","string","literal");
+        foreach(string foo, mixed bar in LoadMap) if(stringp(bar)) LoadMap[foo] = amount;
+        unguarded( (: globaltmp = remove_matching_line(globalstr,"AddCurrency",1) :) );
+        unguarded( (: globaltmp = remove_matching_line(globaltmp,"SetCurrency",1) :) );
+        globalstr2 = "SetCurrency( ";
+        NewMap = add_maps(LoadMap,TmpMap);
     }
 
     else {
-	unguarded( (: TmpMap = this_object()->eventMappifyLine(globalstr,"SetMoney") :) );
-	LoadMap = this_object()->eventParsePair(globalstr,"AddMoney","string","literal");
-	foreach(string foo, mixed bar in LoadMap) if(stringp(bar)) LoadMap[foo] = amount;
-	unguarded( (: globaltmp = remove_matching_line(globalstr,"AddMoney",1) :) );
-	unguarded( (: globaltmp = remove_matching_line(globaltmp,"SetMoney",1) :) );
-	globalstr2 = "SetMoney( ";
-	NewMap = add_maps(copy(LoadMap),copy(TmpMap));
+        unguarded( (: TmpMap = this_object()->eventMappifyLine(globalstr,"SetMoney") :) );
+        LoadMap = this_object()->eventParsePair(globalstr,"AddMoney","string","literal");
+        foreach(string foo, mixed bar in LoadMap) if(stringp(bar)) LoadMap[foo] = amount;
+        unguarded( (: globaltmp = remove_matching_line(globalstr,"AddMoney",1) :) );
+        unguarded( (: globaltmp = remove_matching_line(globaltmp,"SetMoney",1) :) );
+        globalstr2 = "SetMoney( ";
+        NewMap = add_maps(copy(LoadMap),copy(TmpMap));
     }
 
     if(stringp(val)) val = amount;
@@ -79,8 +79,8 @@ int eventModCost(object ob, string type, mixed val){
     else amount = val;
     globalstr = base_name(ob)+".c";
     if(!check_privs(this_player(),globalstr)){
-	write("You do not appear to have access to this file. Modification aborted.");
-	return 1;
+        write("You do not appear to have access to this file. Modification aborted.");
+        return 1;
     }
 
     unguarded( (: globalstr2 = read_file(globalstr) :) );

@@ -7,21 +7,21 @@ mixed cmd(string args) {
     string sstatus = "are";
     if(!status) sstatus = "are not";
     if(!args){
-	write("You "+sstatus+" automapping.");
-	return 1;
+        write("You "+sstatus+" automapping.");
+        return 1;
     }
     if(args == "on"){
-	if(status) write("You are already automapping.");
-	else write("You enable automapping.");
-	this_player()->SetProperty("automapping", 1);
-	return 1;
+        if(status) write("You are already automapping.");
+        else write("You enable automapping.");
+        this_player()->SetProperty("automapping", 1);
+        return 1;
     }
 
     if(args == "off"){
-	if(!status) write("You are already not automapping.");
-	else write("You disable automapping.");
-	this_player()->SetProperty("automapping", 0);
-	return 1;
+        if(!status) write("You are already not automapping.");
+        else write("You disable automapping.");
+        this_player()->SetProperty("automapping", 0);
+        return 1;
     }
 
     write("Try: help automap");

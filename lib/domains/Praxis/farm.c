@@ -15,12 +15,12 @@ void create() {
       "what appears to be a farmhouse.");
     SetItems(
       (["stalks" : "Huge stalks of corn covering so many acres of land.",
-	"stalk" : "A huge stalk of corn.",
-	"farmhouse" : "The farmhouse is far off in the distance, and "
-	"impossible to get to.",
-	"field" : "This place must supply the entire area with food.",
-	"corn" : "A food some people like to eat.  It is "
-	"%^YELLOW%^yellow%^RESET%^."]) );
+        "stalk" : "A huge stalk of corn.",
+        "farmhouse" : "The farmhouse is far off in the distance, and "
+        "impossible to get to.",
+        "field" : "This place must supply the entire area with food.",
+        "corn" : "A food some people like to eat.  It is "
+        "%^YELLOW%^yellow%^RESET%^."]) );
     SetExits( 
       (["north"	: "/domains/Praxis/w_boc_la2"]) );
 }

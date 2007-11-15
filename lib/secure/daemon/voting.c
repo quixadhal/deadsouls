@@ -21,24 +21,24 @@ static void create() {
     daemon::create();
     SetNoClean(1);
     if( file_exists( SAVE_VOTES __SAVE_EXTENSION__ ) ) {
-	unguarded( (: restore_object, SAVE_VOTES :) );
-	if( mapVoting["status"] == VOTE_RUNNING )
-	    call_out( (: eventNextDay :), DAY );
+        unguarded( (: restore_object, SAVE_VOTES :) );
+        if( mapVoting["status"] == VOTE_RUNNING )
+            call_out( (: eventNextDay :), DAY );
     }
 
     if( ! mapVoting ) {
-	mapVoting = ([]);
-	mapVoting["candidates"] = ([]);
-	mapVoting["votes"] = ([]);
-	mapVoting["voted"] = ({});
-	foreach( string sClass in CLASSES_D->GetClasses() ) {
-	    mapVoting["candidates"][sClass] = ({});
-	    mapVoting["votes"][sClass] = ([]);
-	}
-	mapVoting["status"] = VOTE_NOT_RUNNING;
+        mapVoting = ([]);
+        mapVoting["candidates"] = ([]);
+        mapVoting["votes"] = ([]);
+        mapVoting["voted"] = ({});
+        foreach( string sClass in CLASSES_D->GetClasses() ) {
+            mapVoting["candidates"][sClass] = ({});
+            mapVoting["votes"][sClass] = ([]);
+        }
+        mapVoting["status"] = VOTE_NOT_RUNNING;
     }
     if( ! mapCouncil ) 
-	mapCouncil = ([]);
+        mapCouncil = ([]);
 
     eventSave();
 }
@@ -50,14 +50,14 @@ mixed eventSave() {
 
 mixed eventStartVoting() {
     if( GetStatus() == VOTE_RUNNING )
-	return VOTE_ALREADY_RUNNING;
+        return VOTE_ALREADY_RUNNING;
 
     mapVoting["candidates"] = ([]);
     mapVoting["votes"] = ([]);
     mapVoting["voted"] = ({});
     foreach( string sClass in CLASSES_D->GetClasses() ) {
-	mapVoting["candidates"][sClass] = ({});
-	mapVoting["votes"][sClass] = ([]);
+        mapVoting["candidates"][sClass] = ({});
+        mapVoting["votes"][sClass] = ([]);
     }
 
     mapVoting["status"] = VOTE_RUNNING;
@@ -85,16 +85,16 @@ mixed eventAddCandidate( string sClass, string sWho ) {
     ob = find_player( sWho );
 
     if( GetStatus() == VOTE_NOT_RUNNING )
-	return VOTE_NOT_RUNNING;
+        return VOTE_NOT_RUNNING;
     if( mapVoting["mode"] != VOTE_MODE_CANDIDATES )
-	return VOTE_MODE_VOTING;
+        return VOTE_MODE_VOTING;
     if( ! ob ) return VOTE_ERROR;
     if( ! ob->ClassMember(sClass) )
-	return VOTE_NOT_CLASS_MEMBER;
+        return VOTE_NOT_CLASS_MEMBER;
 
     foreach( string cls in CLASSES_D->GetClasses() )            
     if( member_array( sWho, mapVoting["candidates"][cls] ) != -1 )
-	return VOTE_ALREADY_RUNNING;
+        return VOTE_ALREADY_RUNNING;
 
     mapVoting["candidates"][sClass] += ({ sWho });
     mapVoting["votes"][sClass][sWho] = 0;
@@ -109,11 +109,11 @@ mixed eventRemoveCandidate( string sClass, string sWho ) {
     sWho = convert_name( sWho );
 
     if( GetStatus() == VOTE_NOT_RUNNING )
-	return VOTE_NOT_RUNNING;
+        return VOTE_NOT_RUNNING;
     if( mapVoting["mode"] != VOTE_MODE_CANDIDATES )
-	return VOTE_MODE_VOTING;
+        return VOTE_MODE_VOTING;
     if( member_array( sWho, mapVoting["candidates"][sClass] ) == -1 )
-	return VOTE_NOT_CANDIDATE;
+        return VOTE_NOT_CANDIDATE;
 
     mapVoting["candidates"][sClass] -= ({ sWho });
     map_delete( mapVoting["votes"][sClass], sWho );
@@ -131,22 +131,22 @@ mixed eventCastVote( string sClass, string sVoter, string sVotee ) {
     sVotee = convert_name( sVotee );
 
     if( GetStatus() == VOTE_NOT_RUNNING )
-	return VOTE_NOT_RUNNING;
+        return VOTE_NOT_RUNNING;
 
     if( mapVoting["mode"] != VOTE_MODE_VOTING )
-	return VOTE_MODE_CANDIDATES;
+        return VOTE_MODE_CANDIDATES;
 
     mapChar = CHARACTER_D->GetLink( sVoter );
 
     if( mapChar )
-	if( mapChar["primary"] != sVoter )
-	    return VOTE_NOT_PRIMARY;
+        if( mapChar["primary"] != sVoter )
+            return VOTE_NOT_PRIMARY;
 
     if( member_array( sVotee, mapVoting["candidates"][sClass] ) == -1 )
-	return VOTE_NOT_CLASS_MEMBER;
+        return VOTE_NOT_CLASS_MEMBER;
 
     if( member_array( sVoter, mapVoting["voted"] ) != -1 )
-	return VOTE_ALREADY_VOTED;
+        return VOTE_ALREADY_VOTED;
 
     mapVoting["voted"] += ({ sVoter });
     mapVoting["votes"][sClass][sVotee]++;
@@ -158,17 +158,17 @@ mixed eventNextDay() {
     mapVoting["daycount"]--;
 
     if( !mapVoting["daycount"] ) {
-	if( mapVoting["mode"] == VOTE_MODE_CANDIDATES ) {
-	    mapVoting["mode"] = VOTE_MODE_VOTING;
-	    mapVoting["daycount"] = VOTE_DAY_COUNT;
-	    call_out( (: eventNextDay :), DAY );
-	    message("shout", "%^YELLOW%^Election announcement:%^RESET%^ " +
-	      "Nominations are closed, go vote for the candidates!!", users() );
-	    eventSave();
-	    return VOTE_SUCCESS;
-	}
-	eventEndVoting();
-	return VOTE_SUCCESS;
+        if( mapVoting["mode"] == VOTE_MODE_CANDIDATES ) {
+            mapVoting["mode"] = VOTE_MODE_VOTING;
+            mapVoting["daycount"] = VOTE_DAY_COUNT;
+            call_out( (: eventNextDay :), DAY );
+            message("shout", "%^YELLOW%^Election announcement:%^RESET%^ " +
+              "Nominations are closed, go vote for the candidates!!", users() );
+            eventSave();
+            return VOTE_SUCCESS;
+        }
+        eventEndVoting();
+        return VOTE_SUCCESS;
     }
 
     call_out( (: eventNextDay :), DAY );
@@ -183,23 +183,23 @@ mixed eventTallyVotes() {
     mapCouncil = ([]);
 
     foreach( string sClass in CLASSES_D->GetClasses() ) {
-	mapWho = mapVoting["votes"][lower_case(sClass)];
-	if( ! ( sizeof( asWho = keys( mapWho ) ) ) ){
-	}
+        mapWho = mapVoting["votes"][lower_case(sClass)];
+        if( ! ( sizeof( asWho = keys( mapWho ) ) ) ){
+        }
 
-	while( sizeof( asWho ) >= 2 ) {
-	    string player1, player2;
+        while( sizeof( asWho ) >= 2 ) {
+            string player1, player2;
 
-	    player1 = asWho[0];
-	    player2 = asWho[1];
+            player1 = asWho[0];
+            player2 = asWho[1];
 
-	    if( mapWho[player1] > mapWho[player2] )
-		asWho -= ({ player2 });
-	    else
-		asWho -= ({ player1 });
-	}
+            if( mapWho[player1] > mapWho[player2] )
+                asWho -= ({ player2 });
+            else
+                asWho -= ({ player1 });
+        }
 
-	if(asWho && sizeof(asWho)) mapCouncil[lower_case(sClass)] = asWho[0];
+        if(asWho && sizeof(asWho)) mapCouncil[lower_case(sClass)] = asWho[0];
     }
 
     eventSave();
@@ -232,10 +232,10 @@ string GetCouncilMember( string sClass ) {
 string GetCurrentCouncil(){
     string ret = "Current council:\n";
     foreach( string sClass in CLASSES_D->GetClasses() ){
-	string councillor;
-	if(mapCouncil[sClass]) councillor = mapCouncil[sClass];
-	else councillor = "NONE";
-	ret += capitalize(sClass)+": "+capitalize(councillor)+"\n";
+        string councillor;
+        if(mapCouncil[sClass]) councillor = mapCouncil[sClass];
+        else councillor = "NONE";
+        ret += capitalize(sClass)+": "+capitalize(councillor)+"\n";
     }
     return ret;
 }
@@ -247,18 +247,18 @@ int GetVoteStatus( object ob ) {
     sVoter = convert_name( ob->GetName() );
 
     if( mapVoting["status"] == VOTE_NOT_RUNNING )
-	return VOTE_ALREADY_VOTED;
+        return VOTE_ALREADY_VOTED;
     if( mapVoting["mode"] == VOTE_MODE_CANDIDATES )
-	return VOTE_ALREADY_VOTED;
+        return VOTE_ALREADY_VOTED;
     if( member_array( sVoter, mapVoting["voted"] ) != -1 )
-	return VOTE_ALREADY_VOTED;
+        return VOTE_ALREADY_VOTED;
     if( ! ob->GetClass() )
-	return VOTE_ALREADY_VOTED;
+        return VOTE_ALREADY_VOTED;
     mapChar = CHARACTER_D->GetLink( sVoter );
 
     if( mapChar )
-	if( mapChar["primary"] != sVoter )
-	    return VOTE_ALREADY_VOTED;
+        if( mapChar["primary"] != sVoter )
+            return VOTE_ALREADY_VOTED;
 
     return VOTE_SUCCESS;
 }
@@ -268,7 +268,7 @@ string GetVoteRoom() { return VOTE_ROOM; }
 int IsCouncilMember( object ob ) {
     foreach( string sClass in CLASSES_D->GetClasses() )
     if( mapCouncil[sClass] == convert_name(ob->GetName()) )
-	return 1;
+        return 1;
     return 0;
 }
 

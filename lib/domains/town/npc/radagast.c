@@ -28,6 +28,6 @@ void init() {
     trainer::init();
     SetSmell(([  "default" : "A rather odd, musty smell."]));
     SetListen(([  "default" : "Radagast seems to be constantly "+
-	"humming a quiet tune to himself."]));
+        "humming a quiet tune to himself."]));
     //eventForce("cast buffer");
 }

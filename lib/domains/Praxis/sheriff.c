@@ -31,7 +31,7 @@ void create() {
     room::create();
     SetNoClean(1);
     SetProperties( ([ "light":2, "indoors":1, "no bump":1, "no kill":1,
-	"no steal":1 ]) );
+        "no steal":1 ]) );
     SetShort("praxis sheriff's office");
     SetLong(
       "In the corner of this small, one room wooden building is "
@@ -41,23 +41,23 @@ void create() {
       "west and south respectively."
     );
     SetItems( ([ "desk":"A rickety wooden desk hardly ever used, as the "
-	"sheriff never does seem to be able to sit for any period of time.",
-	({ "building", "office", "room" }): "A wooden building constructed "
-	"long ago for a lawless era.  There is a jail cell in one area.",
-	"area": "A jail cell.",
-	({ "cell", "jail cell", "jail" }): (: "la_jail" :),
-	"exits": "Boc La Road and Centre Path."]) );
+        "sheriff never does seem to be able to sit for any period of time.",
+        ({ "building", "office", "room" }): "A wooden building constructed "
+        "long ago for a lawless era.  There is a jail cell in one area.",
+        "area": "A jail cell.",
+        ({ "cell", "jail cell", "jail" }): (: "la_jail" :),
+        "exits": "Boc La Road and Centre Path."]) );
     SetSmell("default", "You can smell the residue of sweaty outlaws.");
     SetExits( ([ "south":"/"+__DIR__+"yard",
-	"west":"/"+__DIR__+"court_room" ]) );
+        "west":"/"+__DIR__+"court_room" ]) );
     x = (int)POLITICS_D->query_personnel("police");
     y = (int)POLITICS_D->query_spending("police");
     //if(!(tot = (y/x)/currency_rate("gold"))) return;
     for(i=0, obs = allocate(x); i<x; i++)
-	obs[i] = new("/"+__DIR__+"obj/mon/police");
+        obs[i] = new("/"+__DIR__+"obj/mon/police");
     obs->SetKeyName("deputy");
     obs->SetId( ({ "law officer", "praxis police", "police", "deputy",
-	"officer" }) );
+        "officer" }) );
     obs->SetShort("a Praxis deputy");
     obs->SetLong("A law officer charged with preserving the peace in "
       "Praxis.  If you are hunted by this officer, type \"surrender\" "
@@ -98,10 +98,10 @@ void rescue_me(object victim, object outlaw) {
     else x = x/5;
     i = sizeof(obs = all_inventory(this_object()));
     while(i-- && x) {
-	if((int)obs[i]->id("deputy")) {
-	    obs[i]->set_target(outlaw);
-	    x--;
-	}
+        if((int)obs[i]->id("deputy")) {
+            obs[i]->set_target(outlaw);
+            x--;
+        }
     }
 }
 
@@ -133,7 +133,7 @@ object *clone_guards(int num) {
     y = (int)POLITICS_D->query_spending("police");
     x = (int)POLITICS_D->query_personnel("police");
     for(i=0, obs = allocate(num); i<num; i++)
-	obs[i] = new("/"+__DIR__+"obj/mon/guard");
+        obs[i] = new("/"+__DIR__+"obj/mon/guard");
     tot = (y/x)/currency_rate("gold");
     tell_object(find_player("manny"), "tot = "+tot);
     obs->SetKeyName("guard");
@@ -155,7 +155,7 @@ object *clone_guards(int num) {
 
 string death_by_hanging(object who) {
     if(member_array(who, __Prisoners) == -1) 
-	return (string)who->query_cap_name()+" is not a prisoner.";
+        return (string)who->query_cap_name()+" is not a prisoner.";
     message("say", "%^RED%^You hear the rythmic pounding of "
       "the city guard approaching the door.  Two large, burly "
       "men in blue step through the door and, without emotion, "
@@ -261,7 +261,7 @@ void hanging_part_eight(object where) {
 string death_by_firing_squad(object who) {
     object *obs;
     if(member_array(who, __Prisoners) == -1) 
-	return who->query_cap_name()+" is not a prisoner.";
+        return who->query_cap_name()+" is not a prisoner.";
     message("say", "%^RED%^A large, burly guard enters, accompanied by "
       "a priest in black robes mumbling a prose from a small book "
       "he carries.", who);
@@ -309,10 +309,10 @@ void squad_part_two(object who) {
 void squad_part_three(object who) {
     object thing;
     if(thing=present("guard", environment(who))) 
-	thing->move(DIR_STANDARD_DOMAIN+"/square");
+        thing->move(DIR_STANDARD_DOMAIN+"/square");
     else clone_guards(1)->move(DIR_STANDARD_DOMAIN+"/square");
     if(thing=present("priest", environment(who))) 
-	thing->move(DIR_STANDARD_DOMAIN+"/square");
+        thing->move(DIR_STANDARD_DOMAIN+"/square");
     else clone_guards(1)->move(DIR_STANDARD_DOMAIN+"/square");
     who->eventMoveLiving(DIR_STANDARD_DOMAIN+"/square");
     message("say", "\n%^RED%^In the once familar town square, a large "
@@ -368,7 +368,7 @@ void squad_part_six(object who) {
     present("hood", who)->destruct();
     present("handcuffs", who)->destruct();
     for(x=0; x<6; ++x) 
-	who->do_damage("torso", dam + 10);
+        who->do_damage("torso", dam + 10);
     call_out("squad_part_seven", 4, environment(who));
     who->die();
 }
@@ -381,13 +381,13 @@ void squad_part_seven(object place) {
       DIR_STANDARD_DOMAIN+"/square");
     place->SetProperty("no bump", 0);
     while(thing = present("guard", place)) 
-	thing->destruct();
+        thing->destruct();
     if(thing=present("pole", place)) thing->destruct();
 }
 
 string death_by_torture(object who) {
     if(member_array(who, __Prisoners) == -1) 
-	return who->query_cap_name()+" is not a prisoner.";
+        return who->query_cap_name()+" is not a prisoner.";
     message("say", "%^RED%^A large guard enters your cell and ties "
       "your hands with a large rope.  Saying nothing, he drags you "
       "out of the room.", who);
@@ -453,20 +453,20 @@ void torture_part_seven(mixed *stuff) {
     case 0:
     case 1:
     case 2: tell_object(who, "\n%^RED%^You notice the swinging blade seems "
-	  "to be getting closer"); break;
+          "to be getting closer"); break;
     case 3: tell_object(who, "\n%^RED%^You feel a very strong urge to "
-	  "use the restroom."); break;
+          "use the restroom."); break;
     case 4: tell_object(who, "\n%^RED%^Shivers run through your body.");
-	break;
+        break;
     case 5: tell_object(who, "\n%^RED%^A small rat scurries across the "
-	  "floor");
+          "floor");
     case 6: tell_object(who, "\n%^RED%^With closer examination, the blade "
-	  "swinging just above your neck seems remarkably clean.  "
-	  "You can't help but to wonder if you're the first life "
-	  "to be claimed by this horrific device.");
+          "swinging just above your neck seems remarkably clean.  "
+          "You can't help but to wonder if you're the first life "
+          "to be claimed by this horrific device.");
     }
     if(++stuff[1] == 10) 
-	call_out("torture_part_eight", 5, who);
+        call_out("torture_part_eight", 5, who);
     else call_out("torture_part_seven", 6, stuff);
 }
 
@@ -490,7 +490,7 @@ void torture_part_nine(object who) {
 
 string death_by_the_pit(object who) {
     if(member_array(who, __Prisoners) == -1)
-	return who->query_cap_name()+" is not a prisoner.";
+        return who->query_cap_name()+" is not a prisoner.";
     message("say", "%^RED%^A large, burly guard enters the cell and "
       "securly ties your hands with a peice of rope.", who);
     message("say", "\n%^RED%^%^BOLD%^The guard tells you:%^RESET%^ It's "
@@ -575,7 +575,7 @@ int prevent_down() {
 
 string death_by_stoning(object who) {
     if(member_array(who, __Prisoners) == -1) 
-	return who->query_cap_name()+" is not a prisoner.";
+        return who->query_cap_name()+" is not a prisoner.";
     message("say", "%^RED%^A guard enters and ties your hands together "
       "with a thick rope.", who);
     message("say", "\n%^BOLD%^%^RED%^A guard tells you:%^RESET%^ Right "
@@ -596,12 +596,12 @@ void stoning_part_two(object who) {
     townsfolk=({ });
     homes = ({ });
     for(x=0, y=0; y<sizeof(wanted); y++)
-	if(find_living(wanted[y])) {
-	    homes[x]=environment(townsfolk[x]);
-	    message("say", townsfolk[x]->query_cap_name()+" cheers in excitment "
-	      "for the upcomming execution!", environment(townsfolk[x]));
-	    x++;
-	}
+        if(find_living(wanted[y])) {
+            homes[x]=environment(townsfolk[x]);
+            message("say", townsfolk[x]->query_cap_name()+" cheers in excitment "
+              "for the upcomming execution!", environment(townsfolk[x]));
+            x++;
+        }
     townsfolk->eventMoveLiving(DIR_STANDARD_DOMAIN+"/square", "to join in the "
       "stoning of "+who->query_cap_name());
     call_out("control_townsfolk", 1, ({ who, townsfolk, homes }));
@@ -624,23 +624,23 @@ void control_townsfolk(mixed *them) {
     int x;
 
     for(x=0; x<sizeof(them[1]); x++)
-	switch(random(5)) {
+        switch(random(5)) {
     case 0 : message("saY", them[1][x]->query_cap_name()+" cheers "
-	  "enthustically!", environment(them[1][x])); break;
+          "enthustically!", environment(them[1][x])); break;
     case 1 : message("say", them[1][x]->query_cap_name()+"yells: "
-	  "Scumbag!!", environment(them[1][x])); break;
+          "Scumbag!!", environment(them[1][x])); break;
     case 2 : message("say", them[1][x]->query_cap_name()+" spits on " +
-	  them[0]->query_cap_name()+"!", environment(them[1][x]));
-	break;
+          them[0]->query_cap_name()+"!", environment(them[1][x]));
+        break;
     case 3 : message("say", them[1][x]->query_cap_name()+"boos "
-	  "and hisses.", environment(them[1][x])); break;
+          "and hisses.", environment(them[1][x])); break;
     case 4 : them[1][x]->command("get stone");
-	them[1][x]->command("throw stone at "+them[0]->query_name());
-	break;
+        them[1][x]->command("throw stone at "+them[0]->query_name());
+        break;
     }
     if(them[0]->query_ghost()) {
-	them[1]->command("cheer");
-	call_out("stoning_part_three", 3, ({ them[1], them[2] }) );
+        them[1]->command("cheer");
+        call_out("stoning_part_three", 3, ({ them[1], them[2] }) );
     } else call_out("control_townsfolk", 1, them);
 }
 
@@ -650,12 +650,12 @@ void stoning_part_three(mixed *townsfolk) {
       "homes.", environment(townsfolk[0][0]));
     present("stone pile", environment(townsfolk[0][0]))->destruct();
     for(x=0; x < sizeof(townsfolk[0]); x++)
-	townsfolk[0][x]->eventMoveLiving(townsfolk[1][x]);
+        townsfolk[0][x]->eventMoveLiving(townsfolk[1][x]);
 }
 
 string death_by_beheading(object who) {
     if(member_array(who, __Prisoners) == -1) 
-	return who->query_cap_name()+" is not a prisoner.";
+        return who->query_cap_name()+" is not a prisoner.";
     message("say", "%^RED%^A large, burly guard enters your cell and securly "
       "ties your hands with a thick rope.  He grabs your arm and pulls "
       "you towards the exit of the prison, in the direction of the town "

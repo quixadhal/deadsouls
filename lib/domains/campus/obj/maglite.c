@@ -20,7 +20,7 @@ void create(){
     SetVendorType(VT_TREASURE);
 
     SetInventory(([
-	"/domains/campus/obj/dcell_good":4
+        "/domains/campus/obj/dcell_good":4
       ]));
 
 }

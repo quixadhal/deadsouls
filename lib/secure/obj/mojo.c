@@ -21,7 +21,7 @@ void create(){
 
 void init(){
     if(living(environment())){
-	victim = environment();
+        victim = environment();
     }
 }
 
@@ -59,8 +59,8 @@ int damage4(){
 void heart_beat(){
     if(environment() && !living(environment())) this_object()->eventDestruct();
     if(counter == 100){
-	if(environment()) tell_object(environment(),"You feel the effects of the healing salve wear off.");
-	this_object()->eventMove("/domains/town/room/furnace");
+        if(environment()) tell_object(environment(),"You feel the effects of the healing salve wear off.");
+        this_object()->eventMove("/domains/town/room/furnace");
     }
 
     counter++;

@@ -5,8 +5,8 @@ inherit LIB_ROOM;
 void create() {
     ::create();
     SetProperties( ([
-	"light":2,
-	"indoors":1
+        "light":2,
+        "indoors":1
       ]) );
     SetShort("approval room");
     SetLong("This is the meeting room of the approval team. In this room "
@@ -14,7 +14,7 @@ void create() {
       "board so that everyone is informed about the newest stuff. Up from this "
       "room is the hall of immortals.");
     SetExits( ([
-	"up": __DIR__ "adv_inner"
+        "up": __DIR__ "adv_inner"
       ]) );
 }
 void reset() {

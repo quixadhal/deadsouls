@@ -31,29 +31,29 @@ mixed cmd(string str) {
     env = environment(this_player());
     if( !file = (string)env->GetExit(str) ) file = (string)env->GetEnter(str);
     if( !sizeof(file) )
-	return "You cannot peer that way.";
+        return "You cannot peer that way.";
     if( (i = this_player()->GetEffectiveVision()) > 5 )
-	return "It is too bright to do that.";
+        return "It is too bright to do that.";
     if( i < 3 )
-	return "It is too dark to attempt that.";
+        return "It is too dark to attempt that.";
     if( env->GetDoor(str) && ((string)env->GetDoor(str))->GetClosed() ) {
-	message("my_action", sprintf("%s is blocking your view %s.",
-	    (capitalize(env->GetDoor(str)->GetShort(str))), str),
-	  this_player() );
-	return 1;
+        message("my_action", sprintf("%s is blocking your view %s.",
+            (capitalize(env->GetDoor(str)->GetShort(str))), str),
+          this_player() );
+        return 1;
     }
     if( !unguarded((: file_exists, file + ".c" :)) ||
       (!env = load_object(file)) ) {
-	message("my_action", "It is not safe to peer "+str+"!", this_player() );
-	return 1;
+        message("my_action", "It is not safe to peer "+str+"!", this_player() );
+        return 1;
     }
     if(env->GetProperty("no peer")){
-	return "You can't see in that direction.";
+        return "You can't see in that direction.";
     }
     if( (i = this_player()->GetEffectiveVision(file,1)) > 5 )
-	return "It is too bright in that direction.";
+        return "It is too bright in that direction.";
     else if( i < 3 )
-	return "It is too dark there.";
+        return "It is too dark there.";
 
     items = filter(all_inventory(env),
       (: !(int)$1->GetInvis(this_player()) :) );
@@ -68,13 +68,13 @@ mixed cmd(string str) {
       ("\n"+(string)env->GetLong(0)+"\n" || "\nA void.\n"),
       this_player() );
     if( sizeof(items) )
-	message("room_inventory",
-	  "%^MAGENTA%^" + DescribeItems(items) + "%^RESET%^\n",
-	  this_player() );
+        message("room_inventory",
+          "%^MAGENTA%^" + DescribeItems(items) + "%^RESET%^\n",
+          this_player() );
     if( sizeof(livings) )
-	message("room_inventory",
-	  "%^BOLD%^%^RED%^" + DescribeLiving(livings) + "%^RESET%^",
-	  this_player() );
+        message("room_inventory",
+          "%^BOLD%^%^RED%^" + DescribeLiving(livings) + "%^RESET%^",
+          this_player() );
     return 1;
 }
 
@@ -86,21 +86,21 @@ string DescribeItems(mixed var) {
     if( !arrayp(var) ) return "";
     i = sizeof( shorts = map(var, (: $1->GetShort() :)) );
     while(i--) {
-	if( !sizeof(shorts[i]) ) continue;
-	if( m[ shorts[i] ] ) m[ shorts[i] ]++;
-	else m[ shorts[i] ] = 1;
+        if( !sizeof(shorts[i]) ) continue;
+        if( m[ shorts[i] ] ) m[ shorts[i] ]++;
+        else m[ shorts[i] ] = 1;
     }
     i = max = sizeof( shorts = keys(m) );
     ret = "";
     for(i=0; i<max; i++) {
-	if( m[ shorts[i] ] < 2 ) ret += shorts[i];
-	else ret += consolidate(m[shorts[i]], shorts[i]);
-	if( i == (max - 1) ) {
-	    if( max>1 || m[ shorts[i] ] > 1 ) ret += " are here.";
-	    else ret += " is here.";
-	}
-	else if( i == (max - 2) ) ret += ", and ";
-	else ret += ", ";
+        if( m[ shorts[i] ] < 2 ) ret += shorts[i];
+        else ret += consolidate(m[shorts[i]], shorts[i]);
+        if( i == (max - 1) ) {
+            if( max>1 || m[ shorts[i] ] > 1 ) ret += " are here.";
+            else ret += " is here.";
+        }
+        else if( i == (max - 2) ) ret += ", and ";
+        else ret += ", ";
     }
     return capitalize(ret);
 }
@@ -112,15 +112,15 @@ string DescribeLiving(mixed var) {
     if( !arrayp(var) ) return "";
     i = sizeof( shorts = map(var, (: $1->GetShort() :)) );
     while(i--) {
-	if( !sizeof(shorts[i]) ) continue;
-	if( m[ shorts[i] ] ) m[ shorts[i] ]++;
-	else m[ shorts[i] ] = 1;
+        if( !sizeof(shorts[i]) ) continue;
+        if( m[ shorts[i] ] ) m[ shorts[i] ]++;
+        else m[ shorts[i] ] = 1;
     }
     ret = "";
     i = sizeof( shorts = keys(m) );
     while(i--) if( m[ shorts[i] ] > 1 )
-	    ret += (consolidate(m[shorts[i]], shorts[i]) + "\n");
-	else ret += (shorts[i] + "\n");
+            ret += (consolidate(m[shorts[i]], shorts[i]) + "\n");
+        else ret += (shorts[i] + "\n");
     return ret;
 }
 

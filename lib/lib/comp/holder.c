@@ -36,21 +36,21 @@ varargs string GetInternalDesc() {
 
     desc = (container::GetInternalDesc() || "");
     if(this_object()->CanClose() && GetOpacity() > 33){
-	if(this_object()->GetClosed()) desc += " It is closed. ";
-	else desc += " It is open. ";
+        if(this_object()->GetClosed()) desc += " It is closed. ";
+        else desc += " It is open. ";
     }
     if(!surfacep) desc = desc + capitalize(add_article(GetShort(), 1));
     if(surfacep) desc = "On "+add_article(GetShort(), 1);
     items = filter(items, (: !($1->isDummy()) && !($1->GetInvis()) :));
     if( sizeof(items) ) {
-	if(surfacep){ 
-	    desc = desc+" you see " + item_list(items) + ".";
-	}
-	else desc = desc + " contains " + item_list(items) + ".";
+        if(surfacep){ 
+            desc = desc+" you see " + item_list(items) + ".";
+        }
+        else desc = desc + " contains " + item_list(items) + ".";
     }
     else {
-	if(!surfacep) desc = desc + " is completely empty.";
-	else desc = desc + " you see nothing.";
+        if(!surfacep) desc = desc + " is completely empty.";
+        else desc = desc + " you see nothing.";
     }
     return desc;
 }
@@ -65,14 +65,14 @@ int SetSaveRecurse(int x) {
 
 int CanReceive(object ob) {
     if( !CanCarry(ob->GetMass()) ) {
-	return 0;
+        return 0;
     }
     return container::CanReceive(ob);
 }
 
 static void eventLoadInventory() {
     if( !environment() || Persist ) {
-	return;
+        return;
     }
     Persist = 1;
     inventory::eventLoadInventory();
@@ -82,7 +82,7 @@ int eventReceiveObject(object ob) {
     mixed tmp = container::eventReceiveObject(ob);
 
     if( tmp != 1 ) {
-	return tmp;
+        return tmp;
     }
     AddCarriedMass(ob->GetMass());
     if(environment()) environment()->AddCarriedMass((int)ob->GetMass());
@@ -95,8 +95,8 @@ int eventReleaseObject(object ob) {
 
     x = container::eventReleaseObject(ob);
     if(ob->GetMass()){
-	AddCarriedMass(-(ob->GetMass()));
-	if(environment()) environment()->AddCarriedMass(-(ob->GetMass()));
+        AddCarriedMass(-(ob->GetMass()));
+        if(environment()) environment()->AddCarriedMass(-(ob->GetMass()));
     }
     parse_refresh();
     return x;

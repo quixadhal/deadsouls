@@ -20,8 +20,6 @@ varargs mixed CanTurnOff(object who, object what) {
 
 int eventTurn(object who) {
     if(!who) who = this_player();
-    //    send_messages("turn", "$agent_name $agent_verb $target_name.",
-    //                  who, this_object(), environment(who));
     return 1;
 }
 

@@ -15,13 +15,13 @@ void create() {
       "and north leads back to Sun Alley.");
     SetItems(
       (["thatch" : "It is beginning to suffer from the weather "
-	"and ill-keeping.",
-	"house" : "It is very unimpressive.",
-	"furnishing" : "Nothing.",
-	"decoration" : "Absolutely nothing.",
-	"door" : (: this_object(), "look_at_door" :) ]) );
+        "and ill-keeping.",
+        "house" : "It is very unimpressive.",
+        "furnishing" : "Nothing.",
+        "decoration" : "Absolutely nothing.",
+        "door" : (: this_object(), "look_at_door" :) ]) );
     SetExits( ([ 
-	"north" : "/domains/Praxis/sun1",
+        "north" : "/domains/Praxis/sun1",
       ]) );
     SetDoor("/domains/Praxis/locked", "south");
     //present("knight")->eventForce("close door");
@@ -33,24 +33,24 @@ void reset() {
 
     ::reset();
     if(!present("knight")) {
-	mon = new("/domains/Praxis/obj/mon/knight");
-	mon->move(this_object());
-	new("/domains/Praxis/obj/armour/helm")->move(mon);
-	mon->command("wear helm");
-	key = new(LIB_ITEM);
-	key->SetKeyName("key");
-	key->SetId( ({ "key", "honor key" }) );
-	key->SetShort( "a wooden key");
-	key->SetLong("The wooden key is very coarse, and rough. "
-	  "It doesn't look like it would lead to anything of "
-	  "importance.");
-	key->SetValue(15);
-	key->SetMass(40);
-	key->move(mon);
+        mon = new("/domains/Praxis/obj/mon/knight");
+        mon->move(this_object());
+        new("/domains/Praxis/obj/armour/helm")->move(mon);
+        mon->command("wear helm");
+        key = new(LIB_ITEM);
+        key->SetKeyName("key");
+        key->SetId( ({ "key", "honor key" }) );
+        key->SetShort( "a wooden key");
+        key->SetLong("The wooden key is very coarse, and rough. "
+          "It doesn't look like it would lead to anything of "
+          "importance.");
+        key->SetValue(15);
+        key->SetMass(40);
+        key->move(mon);
     }
     if(query_reset_number() != 1) {
-	//present("knight")->eventForce("close door");
-	//present("knight")->eventForce("lock door with key");
+        //present("knight")->eventForce("close door");
+        //present("knight")->eventForce("lock door with key");
     }
 }
 

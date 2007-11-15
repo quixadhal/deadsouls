@@ -37,7 +37,7 @@ varargs int eventStartArmorQuestions(string what, object ob){
     prot_array = ({});
     if(what && what != "") prot_array = ({ what });
     foreach(string prot in Protections) {
-	protections += lower_case(prot)+", ";
+        protections += lower_case(prot)+", ";
     }
 
     truncate(protections,2);
@@ -56,26 +56,26 @@ varargs int eventStartArmorQuestions(string what, object ob){
 int GetProts(string str){
     string *temp_array;
     if(!str || str == "" || str == "."){
-	prot_array -= ({0});
-	if(sizeof(prot_array)) foreach(string element in prot_array){
-	    if(member_array(upper_case(element),Protections) == -1) prot_array -= ({ element });
-	}
+        prot_array -= ({0});
+        if(sizeof(prot_array)) foreach(string element in prot_array){
+            if(member_array(upper_case(element),Protections) == -1) prot_array -= ({ element });
+        }
 
-	if(!sizeof(prot_array)){
-	    write("Modification cancelled.");
-	    return 1;
-	}
+        if(!sizeof(prot_array)){
+            write("Modification cancelled.");
+            return 1;
+        }
 
-	else {
-	    write("Protections list complete.");
-	    eventProcessValues();
-	    return 1;
-	}
+        else {
+            write("Protections list complete.");
+            eventProcessValues();
+            return 1;
+        }
     }
 
     if(grepp(str," ")){
-	temp_array = explode(str," ");
-	prot_array += temp_array;
+        temp_array = explode(str," ");
+        prot_array += temp_array;
     }
     else prot_array += ({ str });
 
@@ -89,10 +89,10 @@ int GetProts(string str){
 
 int eventProcessValues(){
     if(sizeof(prot_array)){
-	current = upper_case(prot_array[0]);
-	prot_array -= ({ prot_array[0] });
-	eventStartQuery(current);
-	return 1;
+        current = upper_case(prot_array[0]);
+        prot_array -= ({ prot_array[0] });
+        eventStartQuery(current);
+        return 1;
     }
     eventModifyProtections(ProtectionsMap, base_name(armor_item)+".c", armor_item);
     return 1;
@@ -107,15 +107,15 @@ int eventStartQuery(string str){
 int eventReceiveValue(string str){
     int val;
     if(!sscanf(str,"%d",val)) {
-	write("Please enter an integer value.");
-	eventStartQuery(current);
-	return 1;
+        write("Please enter an integer value.");
+        eventStartQuery(current);
+        return 1;
     }
 
     else {
-	ProtectionsMap[current] = val;
-	eventProcessValues();
-	return 1;
+        ProtectionsMap[current] = val;
+        eventProcessValues();
+        return 1;
     }
 }
 
@@ -127,43 +127,43 @@ mixed eventReadProtectionSettings(string str){
     string tmp_str = "";
     if(file_exists(str+".c")) str += ".c";
     if(file_exists(str)) {
-	if(!check_privs(this_player(),str)) {
-	    write("You lack sufficient privileges for this.");
-	    return 1;
-	}
-	else {
-	    globalstr = str;
-	    unguarded( (: globalstr = read_file(globalstr) :) );
-	}
-	if(globalstr && globalstr != ""){
-	    str = globalstr;
-	    globalstr = "";
-	}
+        if(!check_privs(this_player(),str)) {
+            write("You lack sufficient privileges for this.");
+            return 1;
+        }
+        else {
+            globalstr = str;
+            unguarded( (: globalstr = read_file(globalstr) :) );
+        }
+        if(globalstr && globalstr != ""){
+            str = globalstr;
+            globalstr = "";
+        }
     }
 
     fun_array = this_object()->eventReadFunctions(str);   
     if(!sizeof(fun_array)) {
-	write("Unknown error.");
-	return 1;
+        write("Unknown error.");
+        return 1;
     }
     foreach(string element in fun_array){
-	if(grepp(element,"SetProtection(")) tmp_str +=  element ;
+        if(grepp(element,"SetProtection(")) tmp_str +=  element ;
     }
 
     temp_array = explode(tmp_str,"\n");
     if(!sizeof(temp_array)){
-	return ([]);
+        return ([]);
     }
     else {
-	foreach(string element in temp_array){
-	    if(sscanf(element,"SetProtection(%s)%s",s1,junk) == 2){
-		sscanf(s1,"%s,%s",prot,num);
-		num = trim(num);
-		prot = trim(prot);
-		sscanf(num,"%d",val);
-		ProtectionsMap[prot] = val;
-	    }
-	}
+        foreach(string element in temp_array){
+            if(sscanf(element,"SetProtection(%s)%s",s1,junk) == 2){
+                sscanf(s1,"%s,%s",prot,num);
+                num = trim(num);
+                prot = trim(prot);
+                sscanf(num,"%d",val);
+                ProtectionsMap[prot] = val;
+            }
+        }
     }
 
     return ProtectionsMap;
@@ -173,8 +173,8 @@ varargs int eventModifyProtections(mapping Protecciones, string filename, object
     string new_lines;
 
     if(!check_privs(this_player(),filename)){
-	write("You do not have sufficient privileges to perform this action.");
-	return 1;
+        write("You do not have sufficient privileges to perform this action.");
+        return 1;
     }
     globaltmp = filename;
     unguarded( (: globalstr = read_file(globaltmp) :) );
@@ -183,7 +183,7 @@ varargs int eventModifyProtections(mapping Protecciones, string filename, object
     globaltmp = generate_tmp();
     new_lines = "\n";
     foreach(string key, string val in ProtectionsMap){
-	new_lines += "SetProtection("+key+", "+val+");\n";
+        new_lines += "SetProtection("+key+", "+val+");\n";
     }
     globalstr = this_object()->eventAppend(globalstr,({"SetArmorType","SetRestrictLimbs","SetLong"}),new_lines);
     unguarded( (: write_file(globaltmp, globalstr,1) :) );
@@ -192,7 +192,7 @@ varargs int eventModifyProtections(mapping Protecciones, string filename, object
     unguarded( (: cp(globaltmp, globalstr) :) );
     rm(globaltmp);
     if(ob && grepp(filename,base_name(ob))){
-	reload(ob);
+        reload(ob);
     }
     return 1;
 }

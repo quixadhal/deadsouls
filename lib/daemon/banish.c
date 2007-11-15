@@ -62,7 +62,7 @@ void create() {
     __IllegalSubStrings = ({}); 
     __TmpBanish=([]);
     if(file_exists(SAVE_BANISH+__SAVE_EXTENSION__))
-	restore_banish();
+        restore_banish();
     if(!__TmpBanish) __TmpBanish = ([]);
     clean_temp_sites();
 } 
@@ -86,14 +86,14 @@ int valid_cap_name(string cap, string nom) {
     if(strsrch(cap, " -") != -1) return 0;
     if(strsrch(cap, "  ") != -1) return 0;
     if(lower_case(cap[i-1..i-1]) != nom[strlen(nom)-1..strlen(nom)-1])
-	return 0;
+        return 0;
     return 1;
 }
 
 void register_site(string str) { 
     if(!valid_access(previous_object())) return; 
     if(member_array(str, keys(__TmpBanish))!=-1)
-	map_delete(__TmpBanish,str);   
+        map_delete(__TmpBanish,str);   
     __Sites = distinct_array(__Sites + ({ str }) ); 
     save_banish(); 
 } 
@@ -112,7 +112,7 @@ string query_temp_site_info() {
 
     if(!valid_access(previous_object())) return "";
     for(i=0,info="";i<sizeof(site=keys(__TmpBanish));i++)
-	info+= site[i]+" will expire at "+ctime(__TmpBanish[site[i]])+".\n";
+        info+= site[i]+" will expire at "+ctime(__TmpBanish[site[i]])+".\n";
     if(!info) info = "No sites are on temporary registration.";
     return info;
 }
@@ -135,10 +135,10 @@ void clean_temp_sites() {
     sites=keys(__TmpBanish);
 
     for(i=0;i<sizeof(times);i++) {
-	if(times[i]<time()) {
-	    map_delete(__TmpBanish,sites[i]);
-	    __Sites -= ({sites[i]});
-	}
+        if(times[i]<time()) {
+            map_delete(__TmpBanish,sites[i]);
+            __Sites -= ({sites[i]});
+        }
     }
     save_banish();
     call_out("clean_temp_sites", 900); 
@@ -158,7 +158,7 @@ string *query_registered() {
 void banish_name(string str) { 
     if(!valid_access(previous_object())) return;
     unguarded( (: log_file, "banish", 
-	(string)this_player()->GetName() + " banished " + str + "." :) );
+        (string)this_player()->GetName() + " banished " + str + "." :) );
     __Names = distinct_array(__Names + ({ lower_case(str) })); 
     save_banish(); 
 } 
@@ -283,53 +283,53 @@ int valid_name(string str) {
     if((x = strlen(str)) > MAX_USER_NAME_LENGTH) return 0; 
     if(x < MIN_USER_NAME_LENGTH) return 0; 
     for(i=0; i<x; i++)  
-	if(str[i] < 'a' || str[i] > 'z') return 0; 
+        if(str[i] < 'a' || str[i] > 'z') return 0; 
     return 1; 
 } 
 
 int eventConnect(string nom, string ip) {
     if(base_name(previous_object()) != LIB_CONNECT ) return 0;
     if(member_array(nom, __WatchNames) != -1) { 
-	log_file("watch/names", sprintf("%s from %s at %s\n", nom, ip,
-	    ctime(time()))); 
+        log_file("watch/names", sprintf("%s from %s at %s\n", nom, ip,
+            ctime(time()))); 
     } 
     if(match_ip(ip, __WatchSites)) { 
-	log_file("watch/"+ip, sprintf("%s at %s\n", nom, ctime(time()))); 
+        log_file("watch/"+ip, sprintf("%s at %s\n", nom, ctime(time()))); 
     } 
     if(member_array(nom, __Allowed) != -1) { 
-	log_file("watch/allowed", sprintf("%s from %s at %s\n", nom, ip,
-	    ctime(time()))); 
-	__Allowed -= ({ nom }); 
-	save_banish(); 
-	return 1; 
+        log_file("watch/allowed", sprintf("%s from %s at %s\n", nom, ip,
+            ctime(time()))); 
+        __Allowed -= ({ nom }); 
+        save_banish(); 
+        return 1; 
     }
     if(match_ip(ip, __Sites)) { 
-	if(user_exists(nom)) { 
-	    log_file("watch/"+ip, sprintf("%s allowed in from %s at %s\n",
-		nom, ip, 
-		ctime(time()))); 
-	    return 1; 
-	} 
-	else { 
-	    log_file("watch/"+ip, sprintf("%s failed from %s at %s\n"
-		, nom,
-		ip, 
-		ctime(time()))); 
-	    return 0; 
-	} 
+        if(user_exists(nom)) { 
+            log_file("watch/"+ip, sprintf("%s allowed in from %s at %s\n",
+                nom, ip, 
+                ctime(time()))); 
+            return 1; 
+        } 
+        else { 
+            log_file("watch/"+ip, sprintf("%s failed from %s at %s\n"
+                , nom,
+                ip, 
+                ctime(time()))); 
+            return 0; 
+        } 
     } 
     return 1; 
 } 
 
 static private int match_ip(string ip, string *sites) { 
     foreach(string site in sites) {
-	int i;
+        int i;
 
-	if( site == ip ) return 1;
-	i = strsrch(site, "*");
-	if( i > 0 ) {
-	    if( ip[0..(i-1)] == site[0..(i-1)] ) return 1;
-	}
+        if( site == ip ) return 1;
+        i = strsrch(site, "*");
+        if( i > 0 ) {
+            if( ip[0..(i-1)] == site[0..(i-1)] ) return 1;
+        }
     }
     return 0;
 }

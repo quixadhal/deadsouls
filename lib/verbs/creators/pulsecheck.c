@@ -29,8 +29,8 @@ mixed do_pulsecheck_liv(object ob){
     int mhp;
 
     if(!living(ob)) {
-	write("You can only pulsecheck living things.");
-	return 1;
+        write("You can only pulsecheck living things.");
+        return 1;
 
     }
     write(ob->GetName()+"'s heart_beat is "+query_heart_beat(ob)+".");
@@ -40,7 +40,7 @@ mixed do_pulsecheck_liv(object ob){
 
 mixed do_pulsecheck_lvs(object *obs) {
     foreach(object ob in obs){
-	if(!(ob == this_player())) do_pulsecheck_liv(ob);
+        if(!(ob == this_player())) do_pulsecheck_liv(ob);
     }
     return 1;
 }

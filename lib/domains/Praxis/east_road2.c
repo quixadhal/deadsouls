@@ -18,19 +18,19 @@ void create() {
       "here, and a feeling of foreboding hangs in the air.");
     SetItems(
       (["alley" : "A bright and cheery alley which marks the northern "
-	"boarder of Praxis.",
-	"road" : "East Road is a curvy road running north and south "
-	"on the east side of Praxis.",
-	"cemetery" : "The residents of Praxis get buried there. It "
-	"looks spooky.",
-	"trees" : "The trees are large drooping willow trees.",
-	"forest" : "A great forest the marks the northern end of Praxis."])
+        "boarder of Praxis.",
+        "road" : "East Road is a curvy road running north and south "
+        "on the east side of Praxis.",
+        "cemetery" : "The residents of Praxis get buried there. It "
+        "looks spooky.",
+        "trees" : "The trees are large drooping willow trees.",
+        "forest" : "A great forest the marks the northern end of Praxis."])
     );
     SetExits( 
       (["north" : "/domains/Praxis/east_road3",
-	"south" : "/domains/Praxis/east_road1",
-	"east" : "/domains/Praxis/cemetery/grave_yard",
-	"west"	 : "/domains/Praxis/sun2"]) );
+        "south" : "/domains/Praxis/east_road1",
+        "east" : "/domains/Praxis/cemetery/grave_yard",
+        "west"	 : "/domains/Praxis/sun2"]) );
 }
 
 

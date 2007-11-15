@@ -19,7 +19,7 @@ int tidy_up(){
     object *inv;
     inv = all_inventory(this_object());
     foreach(object thing in inv){
-	if(thing) thing->eventMove(load_object("/domains/town/room/furnace"));
+        if(thing) thing->eventMove(load_object("/domains/town/room/furnace"));
     }
     return 1;
 }

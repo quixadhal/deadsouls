@@ -7,24 +7,24 @@ int cmd(string str) {
     string ret = "";
 
     if (!str || (sscanf(str, "%d", num)==0 && sscanf(str, "%s %d", who, num)==0)) {
-	write("dbxframe [<who>] <frame>");
-	return 1;
+        write("dbxframe [<who>] <frame>");
+        return 1;
     }
     if (who) {
-	ob = find_player(who);
-	if (!ob) {
-	    write("No such player.");
-	    return 1;
-	}
+        ob = find_player(who);
+        if (!ob) {
+            write("No such player.");
+            return 1;
+        }
     }
     else ob = this_player();
     frame = ob->GetLastError();
     if (!frame) {
-	write("No error.");
-	return 1;
+        write("No error.");
+        return 1;
     }
     if (num<0 || num>=sizeof(frame["trace"]))
-	return notify_fail("No such frame.\n");
+        return notify_fail("No such frame.\n");
     frame = frame["trace"][num];
 
     ret += sprintf("------\n%s:%i - %s(%s)\n", frame["program"], frame["line"],

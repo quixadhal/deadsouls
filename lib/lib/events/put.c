@@ -26,28 +26,21 @@ mixed CanPut(object who) {
     mixed tmp;
 
     if( (tmp = CanDrop(who)) != 1 ) return tmp;
-    //debug("i dunno 1");
     if( !environment() ) { destruct(this_object()); return 1; }
-    //debug("i dunno 2");
     if( environment() != this_player() &&
       environment() != environment(this_player())) return 0;
-    //debug("i dunno 3");
     if( !PreventPut ) return 1;
-    //debug("i dunno 4");
     if( stringp(PreventPut) && PreventPut == "PERMIT" ) return 1;
-    //debug("i dunno 5");
     if( intp(PreventPut) ) return 0;
-    //debug("i dunno 6");
     if( stringp(PreventPut) ) return PreventPut;
-    //debug("i dunno 7");
     if( objectp(PreventPut) ) {
-	if( PreventPut == who )
-	    return "You cannot put " + GetShort() + " anywhere.";
-	else return 1;
+        if( PreventPut == who )
+            return "You cannot put " + GetShort() + " anywhere.";
+        else return 1;
     }
     else if(functionp(PreventPut)) return evaluate(PreventPut, who);
     else {
-	return "It seems you're unable to do that right now.";
+        return "It seems you're unable to do that right now.";
     }
 }
 
@@ -55,25 +48,25 @@ varargs mixed eventPut(object who, object storage, string prep) {
     int depth;
     if(!prep || prep == "") prep = " into ";
     if(prep == " onto " && !inherits( LIB_SURFACE, previous_object() ) ) {
-	who->eventPrint("That isn't a load-bearing surface.");
-	return 0;
+        who->eventPrint("That isn't a load-bearing surface.");
+        return 0;
     }
 
     if(prep == " into " && inherits( LIB_SURFACE, previous_object() ) ) {
-	who->eventPrint("That's a surface. Try \"put on\"");
-	return 0;
+        who->eventPrint("That's a surface. Try \"put on\"");
+        return 0;
     }
 
     if((inherits(LIB_SIT,storage) && sizeof(storage->GetSitters())) ||
       (inherits(LIB_LIE,storage) && sizeof(storage->GetLiers()))){
-	write("There appears to be someone blocking your access.");
-	return 0;
+        write("There appears to be someone blocking your access.");
+        return 0;
     }
 
 
     if( !eventMove(storage) ) {
-	who->eventPrint("There is not enough room in there!");
-	return 0;
+        who->eventPrint("The "+remove_article(this_object()->GetShort())+" stays where it is.");
+        return 0;
     }
     who->eventPrint("You put " + GetShort() + prep +
       (string)storage->GetShort() + ".");
@@ -81,8 +74,8 @@ varargs mixed eventPut(object who, object storage, string prep) {
       GetShort() + prep +
       (string)storage->GetShort() + ".", who);
     if(inherits("/lib/std/storage",this_object())) {
-	depth = this_object()->GetRecurseDepth();
-	if(depth && inherits("/lib/std/storage",storage)) storage->AddRecurseDepth(depth); 
+        depth = this_object()->GetRecurseDepth();
+        if(depth && inherits("/lib/std/storage",storage)) storage->AddRecurseDepth(depth); 
     }
 
     return 1;
@@ -92,7 +85,6 @@ static void create() {
     PreventPut = 0;
 }
 
-//mixed direct_put_obj_word_obj(object ob, string wrd, object ob2) {
 mixed direct_put_obj_word_obj() {
     return CanPut(this_player());
 }

@@ -9,7 +9,7 @@ int CanReceive(object ob) {
     if((!previous_object()->is_player()) ||
       creatorp(previous_object()) ||
       (-1!=member_array(previous_object()->query_name(), COUNCIL)))
-	return ::CanReceive(ob);
+        return ::CanReceive(ob);
     message("my_action", "You are not allowed in the council room. If you are "+
       "a council member, try contacting Nialson, advocate, and law in "+
       "that order.", previous_object());
@@ -21,12 +21,12 @@ void create() {
 
     ::create();
     SetProperties( (["light"       : 2, 
-	"indoors"     : 1,
-	"no attack"   : 1,
-	"no steal"    : 1,
-	"no magic"    : 1,
-	"no teleport" : 1,
-	"no castle"   : 1]) );
+        "indoors"     : 1,
+        "no attack"   : 1,
+        "no steal"    : 1,
+        "no magic"    : 1,
+        "no teleport" : 1,
+        "no castle"   : 1]) );
     SetShort( "The private meeting hall of the council");
     SetLong( "Welcome to the cavern beneath the square. This is the meeting "+
       "hall of the councils of the classes. " );
@@ -60,12 +60,12 @@ int leave() {
 
     if( this_player()->query_disable() &&
       sizeof(this_player()->query_attackers()) ) {
-	write("You can not exit while doing something else.");
-	return 1; }
+        write("You can not exit while doing something else.");
+        return 1; }
     if (creatorp(this_player()))
-	this_player()->eventMoveLiving("/domains/Praxis/adv_inner", "leave");
+        this_player()->eventMoveLiving("/domains/Praxis/adv_inner", "leave");
     else
-	this_player()->eventMoveLiving("/domains/Praxis/"+this_player()->query_class()+
-	  "_hall", "leave");
+        this_player()->eventMoveLiving("/domains/Praxis/"+this_player()->query_class()+
+          "_hall", "leave");
     return 1;
 }

@@ -28,7 +28,7 @@ static void create() {
 
 mixed can_listen() {
     if( !environment(this_player()) ) {
-	return "You are nowhere.";
+        return "You are nowhere.";
     }
     return 1;
 }
@@ -49,15 +49,15 @@ mixed do_listen() {
     mixed val = environment(this_player())->GetListen();
 
     if( functionp(val) ) {
-	if( !(functionp(val) & FP_OWNER_DESTED) ) {
-	    val = evaluate(val, this_player());
-	}
-	else {
-	    val = 0;
-	}
+        if( !(functionp(val) & FP_OWNER_DESTED) ) {
+            val = evaluate(val, this_player());
+        }
+        else {
+            val = 0;
+        }
     }
     if( !val ) {
-	val = "You don't hear a thing.";
+        val = "You don't hear a thing.";
     }
     environment(this_player())->eventPrint(this_player()->GetName() +
       " puts an ear to the air.",

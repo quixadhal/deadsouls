@@ -22,43 +22,43 @@ mixed cmd(string str) {
     bkname = homedir(this_player())+"/bak/bk.db";
 
     if(!file_exists(bkname)) {
-	write("The backup database file does not exist. Aborting.");
-	return 1;
+        write("The backup database file does not exist. Aborting.");
+        return 1;
     }
 
     bkcontents = read_file(bkname);
     bkarr = explode(bkcontents,"\n");
 
     foreach(string zline in bkarr){
-	if(!strsrch(zline,str)) new_arr += ({ zline });
+        if(!strsrch(zline,str)) new_arr += ({ zline });
     }
 
     if(!sizeof(new_arr) && str == "here"){
-	here = environment(this_player());
-	str = last_string_element(base_name(here),"/");
-	foreach(string zline in bkarr){
-	    if(!strsrch(zline,str)) new_arr += ({ zline });
-	}
+        here = environment(this_player());
+        str = last_string_element(base_name(here),"/");
+        foreach(string zline in bkarr){
+            if(!strsrch(zline,str)) new_arr += ({ zline });
+        }
     }
 
     if(!sizeof(new_arr)){
-	write("You haven't backed up a file by that name."); 
-	return 1;
+        write("You haven't backed up a file by that name."); 
+        return 1;
     }
 
     if(str == "workroom.orig") {
-	unguarded( (: globalint = cp(homedir(this_player())+"/bak/workroom.orig",
-	      homedir(this_player())+"/workroom.c") :) );
-	if(globalint) {
-	    write("Workroom file restored.");
-	    load_object(CMD_UPDATE)->cmd("-a "+homedir(this_player())+"/workroom.c");
-	}
-	else write("Workroom could not be restored.");
-	return 1;
+        unguarded( (: globalint = cp(homedir(this_player())+"/bak/workroom.orig",
+              homedir(this_player())+"/workroom.c") :) );
+        if(globalint) {
+            write("Workroom file restored.");
+            load_object(CMD_UPDATE)->cmd("-a "+homedir(this_player())+"/workroom.c");
+        }
+        else write("Workroom could not be restored.");
+        return 1;
     }
 
     foreach(string zline in bkarr){
-	if(strsrch(zline,str) != -1) new_arr += ({ zline });
+        if(strsrch(zline,str) != -1) new_arr += ({ zline });
     }
 
     if(!number || number < 1) number = 1;
@@ -68,8 +68,8 @@ mixed cmd(string str) {
 
     sub_arr = explode(line," : ");
     if(!file_exists(REALMS_DIRS + "/" + this_player()->GetKeyName()+"/bak/"+sub_arr[0])){
-	write("That file has an entry in the backup database but can't be found in your backup directory.");
-	return 1;
+        write("That file has an entry in the backup database but can't be found in your backup directory.");
+        return 1;
     }
     globalstr1 = REALMS_DIRS + "/" + this_player()->GetKeyName()+"/bak/"+sub_arr[0];
     globalstr2 = sub_arr[1];

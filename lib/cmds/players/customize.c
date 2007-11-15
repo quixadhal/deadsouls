@@ -16,10 +16,10 @@ mixed cmd(string args) {
     int amt;
 
     if( !args || args == "" ) {
-	amt = (int)this_player()->GetCustomStats();
-	this_player()->eventPrint("You have " + amt + " points left to "
-	  "spend on stats.", MSG_SYSTEM);
-	return 1;
+        amt = (int)this_player()->GetCustomStats();
+        this_player()->eventPrint("You have " + amt + " points left to "
+          "spend on stats.", MSG_SYSTEM);
+        return 1;
     }
     amt = to_int((tmp = explode(args, " "))[<1]);
     if( sizeof(tmp) == 1 ) return "Customize which stat how much?";

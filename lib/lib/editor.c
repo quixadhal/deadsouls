@@ -25,14 +25,14 @@ static string process_input(string str) {
     if( (x = query_ed_mode()) == -1 ) return str;
     if( str && str[0..0] == "!" && strlen(str) > 1 ) return str[1..];
     if( !x ) {
-	str = ed_cmd(str);
-	message("editor", str, this_object());
-	if( query_ed_mode() == -1 ) {
-	    if( functionp(EditCallback) ) evaluate(EditCallback);
-	    EditCallback = 0;
-	    return "";
-	}
-	return "";
+        str = ed_cmd(str);
+        message("editor", str, this_object());
+        if( query_ed_mode() == -1 ) {
+            if( functionp(EditCallback) ) evaluate(EditCallback);
+            EditCallback = 0;
+            return "";
+        }
+        return "";
     }
     else str = ed_cmd(str);
     message("editor", str, this_object());

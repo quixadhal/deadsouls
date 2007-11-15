@@ -16,7 +16,7 @@ mixed cmd(string args) {
 
     if( !args || args == "" ) return "Syntax: <addclass CLASS>";
     if( !file_exists(file=DIR_SECURE_CFG "/classes/" + args) )
-	return "File not found: " + file;
+        return "File not found: " + file;
     CLASSES_D->AddClass(file);
     previous_object()->eventPrint("Class added.");
     return 1;

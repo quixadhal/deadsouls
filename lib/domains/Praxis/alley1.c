@@ -17,12 +17,12 @@ void create() {
       "a large bulding which serves as the bank of Praxis.");
     SetItems( 
       (["path" : "The path is a small dirt road leading from Centre Path.",
-	"bank" :"The bank of Praxis is a very well known establishment.",
-	({"office", "post", "post office"}) : "You can send and receive "
-	"mail to other people here or on other muds there.",
-	"alley" : "The alley is a very small dirt path."]) );
+        "bank" :"The bank of Praxis is a very well known establishment.",
+        ({"office", "post", "post office"}) : "You can send and receive "
+        "mail to other people here or on other muds there.",
+        "alley" : "The alley is a very small dirt path."]) );
     SetExits( ([ 
-	"west" : "/domains/Praxis/alley2",
-	"east" : "/domains/Praxis/s_centre2",
+        "west" : "/domains/Praxis/alley2",
+        "east" : "/domains/Praxis/s_centre2",
       ]) );
 }

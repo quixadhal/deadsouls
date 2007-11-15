@@ -62,6 +62,7 @@ int member_group(mixed who, string grp);
 int moral_act(object who, object target, int amount);
 string *mud_currencies();
 string mud_name();
+varargs string imc2_mud_name(string name);
 string mudlib();
 string mudlib_version();
 varargs int newbiep(object ob);
@@ -131,7 +132,7 @@ varargs void reap_other(string str);
 mixed reap_list();
 string timestamp();
 object *get_dupes(object ob, object where);
-string get_stack();
+varargs string get_stack(int x);
 mixed hobbled(object ob);
 string query_base_currency();
 int query_base_rate();
@@ -260,5 +261,9 @@ int check_read(string file);
 varargs string simple_map(mixed arg);
 string query_door(object what, string direction);
 int mkdir_recurse(string path);
+mixed *socket_names();
+string morse(string msg);
+string unmorse(string msg);
+int *roll(string alea);
 
 #endif /* l_sefun_h */

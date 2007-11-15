@@ -17,7 +17,7 @@ static void create() {
     SetWimpy(90);
     SetPacifist(1);
     SetInventory(([
-	"/domains/town/obj/map" : 1,
+        "/domains/town/obj/map" : 1,
       ]));
     SetLevel(1);
     SetAutoStand(0);
@@ -39,12 +39,12 @@ int GiveMap(object ob){
       member_array(ob->GetRace(),RACES_D->GetRaces(1)) != -1 &&
       !creatorp(ob) &&
       !stringp(ob->CanManipulate()) ){
-	eventForce("say here, you might need this");
-	eventForce("give my first map to "+ob->GetKeyName());
+        eventForce("say here, you might need this");
+        eventForce("give my first map to "+ob->GetKeyName());
     }
     if(map = present("map",this_object())) {
-	map->eventDestruct(); 
-	eventForce("shrug");
+        map->eventDestruct(); 
+        eventForce("shrug");
     }
     return 1;
 }
@@ -53,7 +53,7 @@ int SayHi(object ob){
     if(present(ob->GetKeyName(),environment(this_object()))
       && !this_object()->GetInCombat() &&
       member_array(ob->GetRace(),RACES_D->GetRaces(1)) != -1)
-	eventForce("say Hi, "+this_player()->GetName());
+        eventForce("say Hi, "+this_player()->GetName());
     return 1;
 }
 
@@ -63,10 +63,10 @@ void init(){
     call_out((: SayHi, this_player() :), 1);
 
     if(!present("town map",this_player())){
-	new("/domains/town/obj/map")->eventMove(this_object());
-	call_out((: GiveMap, this_player() :), 4);
+        new("/domains/town/obj/map")->eventMove(this_object());
+        call_out((: GiveMap, this_player() :), 4);
     }
     if(!present("cold virus",this_object())){
-	new("/domains/town/obj/cold")->eventInfect(this_object());
+        new("/domains/town/obj/cold")->eventInfect(this_object());
     }
 }

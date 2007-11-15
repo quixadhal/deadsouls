@@ -12,15 +12,15 @@ static void create() {
       "side. The Virtual Campus is south of here. To "
       "the north you see what appears to be a town.");
     SetItems( ([
-	({ "bush","bushes","side","sides"}) : "Large, thick "
-	"bushes crowd the sides of the path.",
-	"path" : "A wide, cobblestone path running north "
-	"and south.",
-	"town" : "You can't quite see much of it from here."
+        ({ "bush","bushes","side","sides"}) : "Large, thick "
+        "bushes crowd the sides of the path.",
+        "path" : "A wide, cobblestone path running north "
+        "and south.",
+        "town" : "You can't quite see much of it from here."
       ]) );
 
     SetExits( ([ "south" : "/domains/campus/room/usquare",
-	"north" : "/domains/campus/room/npath2",
+        "north" : "/domains/campus/room/npath2",
       ]) );
 }
 void init(){

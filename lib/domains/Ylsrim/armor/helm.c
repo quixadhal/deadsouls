@@ -35,9 +35,9 @@ static void create() {
 
 int WearHelm(object who) {
     if( (int)who->GetMorality() < 300 ) {
-	who->eventPrint("The helm burns your head!");
-	who->eventReceiveDamage(0, HEAT, random(10) + 10, 0, "head");
-	return 0;
+        who->eventPrint("The helm burns your head!");
+        who->eventReceiveDamage(0, HEAT, random(10) + 10, 0, "head");
+        return 0;
     }
     who->eventPrint("You wear the desert helm.");
     return 1;

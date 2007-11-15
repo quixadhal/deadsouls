@@ -17,7 +17,7 @@ void create() {
     SetLong("It is a simple cloth bag used to hold things. It has a cute Virtual Campus "+
       "logo on it.");
     SetInventory(([
-	"/domains/campus/weap/waterpistol" : 1,
+        "/domains/campus/weap/waterpistol" : 1,
       ]));
     SetMass(10);
     SetDollarCost(1);

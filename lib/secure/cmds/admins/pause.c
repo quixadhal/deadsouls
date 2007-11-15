@@ -6,12 +6,12 @@ inherit LIB_DAEMON;
 mixed cmd(string args) {
     object ob;
     if(!ob=find_player(args)){
-	write("Unable to find that player.");
-	return 1;
+        write("Unable to find that player.");
+        return 1;
     }
     if(ob == this_player()){
-	write("You can't pause yourself.");
-	return 1;
+        write("You can't pause yourself.");
+        return 1;
     }
     write("You pause "+capitalize(args)+".");
     ob->SetPlayerPaused(1);

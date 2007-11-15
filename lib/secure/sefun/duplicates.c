@@ -21,15 +21,15 @@ object *get_dupes(object ob, object where){
     object *allstuff,*dupes;
     int i;
     if(!where || !ob) {
-	//write("missing something");
-	return 0;
+        //write("missing something");
+        return 0;
     }
     allstuff = all_inventory(where);
     if(!sizeof(allstuff)) return 0;
     if(member_array(ob,allstuff) == -1) return 0;
     for(i=0;i<sizeof(allstuff);i++){
-	if( query_dupes(allstuff[i],ob) == 1 && !sizeof(dupes) ) dupes = ({allstuff[i]});
-	if( query_dupes(allstuff[i],ob) == 1 && sizeof(dupes) > 0 ) dupes += ({allstuff[i]});
+        if( query_dupes(allstuff[i],ob) == 1 && !sizeof(dupes) ) dupes = ({allstuff[i]});
+        if( query_dupes(allstuff[i],ob) == 1 && sizeof(dupes) > 0 ) dupes += ({allstuff[i]});
     }
     if(sizeof(dupes) > 0) return dupes;
     else return ({});

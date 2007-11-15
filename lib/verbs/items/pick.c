@@ -32,27 +32,27 @@ static void create() {
 
 mixed can_pick_obj() {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     return this_player()->CanManipulate();
 }
 
 mixed can_pick_str_on_obj(string str) {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     if( (int)this_player()->GetStaminaPoints() < 20 ) {
-	return "You are too tired.";
+        return "You are too tired.";
     }
     return this_player()->CanManipulate();
 }
 
 mixed can_pick_str_on_obj_with_obj(string str) {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     if( (int)this_player()->GetStaminaPoints() < 30 ) {
-	return "You are too tired.";
+        return "You are too tired.";
     }
     return this_player()->CanManipulate();
 }
@@ -65,8 +65,8 @@ mixed do_pick_str_on_obj(string wrd, object ob, mixed *args...) {
     wrd = remove_article(lower_case(args[1]));
     this_player()->eventPrint("You eye the lock for weaknesses.");
     if( (int)this_player()->GetInCombat() )
-	this_player()->SetAttack(0, (: $(ob)->eventPick(this_player(), $(wrd)):),
-	  ROUND_OTHER);
+        this_player()->SetAttack(0, (: $(ob)->eventPick(this_player(), $(wrd)):),
+          ROUND_OTHER);
     else ob->eventPick(this_player(), wrd);
     return 1;
 }
@@ -76,8 +76,8 @@ mixed do_pick_str_on_obj_with_obj(string wrd, object ob, object tool,
     wrd = remove_article(lower_case(args[1]));
     this_player()->eventPrint("You eye the lock for weaknesses.");
     if( (int)this_player()->GetInCombat() )
-	this_player()->SetAttack(0, (: $(ob)->eventPick(this_player(), $(wrd),
-	      $(tool)) :),ROUND_OTHER);
+        this_player()->SetAttack(0, (: $(ob)->eventPick(this_player(), $(wrd),
+              $(tool)) :),ROUND_OTHER);
     else ob->eventPick(this_player(), wrd, tool);
     return 1;
 }

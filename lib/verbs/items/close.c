@@ -25,7 +25,7 @@ static void create() {
 
 mixed can_close_obj(string verb) {
     if( this_player()->GetParalyzed() ) {
-	return "You are unable to do anything.";
+        return "You are unable to do anything.";
     }
     return this_player()->CanManipulate();
 }

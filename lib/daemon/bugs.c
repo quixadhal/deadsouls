@@ -22,20 +22,20 @@ static void create() {
 
     daemon::create();
     if( file_size(SAVE_BUGS __SAVE_EXTENSION__) > 0 )
-	unguarded( (: restore_object, SAVE_BUGS :));
+        unguarded( (: restore_object, SAVE_BUGS :));
     if( NextID < 1 || !Bugs ) {
-	NextID = 1;
-	Bugs = ([]);
+        NextID = 1;
+        Bugs = ([]);
     }
     t = time();
     foreach(bug_id, bug in Bugs) {
-	if( !bug["date assigned"] ) continue;
-	if( t - bug["date assigned"] > UNCOMPLETED_LIFE ) 
-	    map_delete(Bugs, bug_id);
-	else if( bug["date assigned"] && bug["date fixed"] ) {
-	    if( t - bug["date fixed"] > COMPLETED_LIFE )
-		map_delete(Bugs, bug_id);
-	}
+        if( !bug["date assigned"] ) continue;
+        if( t - bug["date assigned"] > UNCOMPLETED_LIFE ) 
+            map_delete(Bugs, bug_id);
+        else if( bug["date assigned"] && bug["date fixed"] ) {
+            if( t - bug["date fixed"] > COMPLETED_LIFE )
+                map_delete(Bugs, bug_id);
+        }
     }
     unguarded( (: save_object, SAVE_BUGS :));
 }
@@ -55,9 +55,9 @@ int eventComplete(int bug, string resolution) {
     Bugs[bug]["resolution"] = resolution;
     if( unguarded( (: save_object, SAVE_BUGS :) ) ) return 1;
     else {
-	Bugs[bug]["date fixed"] = 0;
-	Bugs[bug]["resolution"] = 0;
-	return 0;
+        Bugs[bug]["date fixed"] = 0;
+        Bugs[bug]["resolution"] = 0;
+        return 0;
     }
 }
 
@@ -68,8 +68,8 @@ int eventDelete(int bug) {
     fu = copy(Bugs);
     map_delete(Bugs, bug);
     if( !save_object(SAVE_BUGS) ) {
-	Bugs = fu;
-	return 0; /* some asshole tried to delete this bug */
+        Bugs = fu;
+        return 0; /* some asshole tried to delete this bug */
     }
     else return 1;
 }
@@ -82,8 +82,8 @@ int eventReport(string who, string type, string bug, string data) {
       "assigned" : 0, "date fixed" : 0, "resolution" : 0 ]);
     if( unguarded( (: save_object, SAVE_BUGS :) ) ) return x;
     else {
-	map_delete(Bugs, x);
-	return 0;
+        map_delete(Bugs, x);
+        return 0;
     }
 }
 
@@ -107,8 +107,8 @@ string AddComment(int bug, string comment) {
     tmp = Bugs[bug]["data"];
     Bugs[bug]["data"] += "\n" + comment;
     if( !unguarded( (: save_object, SAVE_BUGS :) ) ) {
-	Bugs[bug]["data"] = tmp;
-	return 0;
+        Bugs[bug]["data"] = tmp;
+        return 0;
     }
     return Bugs[bug]["data"];
 }

@@ -14,24 +14,24 @@ static void create() {
       "altar, and skulls of various types adorn the walls. "+
       "The rest of the fort is south of here.");
     SetItems(([
-	({ "skull","skulls" }) : "You see some skulls whose race you "+
-	"recognize, but most you don't. There is at least one "+
-	"human skull here. Some of them are so fresh they are "+
-	"still wet and have tissue hanging from them.",
-	({"chamber","ceremonial chamber","temple"}) : "A place "+
-	"where orcish rituals are performed.",
-	({"blood","dried blood"}) : "Evidently the ground around "+
-	"the altar has collected blood from whatever happens on "+
-	"the altar.",
-	({"wall","walls"}) : "Rough-hewn walls of earth and wood.",
+        ({ "skull","skulls" }) : "You see some skulls whose race you "+
+        "recognize, but most you don't. There is at least one "+
+        "human skull here. Some of them are so fresh they are "+
+        "still wet and have tissue hanging from them.",
+        ({"chamber","ceremonial chamber","temple"}) : "A place "+
+        "where orcish rituals are performed.",
+        ({"blood","dried blood"}) : "Evidently the ground around "+
+        "the altar has collected blood from whatever happens on "+
+        "the altar.",
+        ({"wall","walls"}) : "Rough-hewn walls of earth and wood.",
       ]) );
     SetSmell( ([ "default" : "The stench of garbage and animal waste hangs here."]) );
     SetExits( ([
-	"south" : "/domains/town/room/orc_fortress",
+        "south" : "/domains/town/room/orc_fortress",
       ]) );
     SetInventory(([
-	"/domains/town/obj/altar" : 1,
-	"/domains/town/npc/orc_shaman" : 1,
+        "/domains/town/obj/altar" : 1,
+        "/domains/town/npc/orc_shaman" : 1,
       ]));
 
 }

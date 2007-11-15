@@ -31,6 +31,24 @@ alias cweapon cd /domains/campus/weap
 alias cnpc cd /domains/campus/npc
 alias croom cd /domains/campus/room
 alias cdoor cd /domains/campus/doors
+alias default cd /domains/default
+alias dobj cd /domains/default/obj
+alias darm cd /domains/default/armor
+alias darmor cd /domains/default/armor
+alias dweap cd /domains/default/weap
+alias dweapon cd /domains/default/weap
+alias dnpc cd /domains/default/npc
+alias droom cd /domains/default/room
+alias ddoor cd /domains/default/doors
+alias fort cd /domains/fort
+alias fobj cd /domains/fort/obj
+alias farm cd /domains/fort/armor
+alias farmor cd /domains/fort/armor
+alias fweap cd /domains/fort/weap
+alias fweapon cd /domains/fort/weap
+alias fnpc cd /domains/fort/npc
+alias froom cd /domains/fort/room
+alias fdoor cd /domains/fort/doors
 alias ige intergossipemote $*
 alias ice intercreemote $*
 alias ce creemote $*
@@ -46,9 +64,20 @@ alias aw adminemote waves.
 alias cw creemote waves.
 alias welcome ds hi, $*. you can use this channel to ask questions. it's an intermud channel that dead souls muds listen to.
 call me->AddChannel("intergossip")
+call me->AddChannel("coffeemud_universe")
+call me->AddChannel("free_speech")
+call me->AddChannel("ibuild")
+call me->AddChannel("ichat")
+call me->AddChannel("pchat")
+call me->AddChannel("i2chat")
+call me->AddChannel("i3chat")
+call me->AddChannel("i2code")
+call me->AddChannel("i2game")
+call me->AddChannel("i2news")
+call me->AddChannel("irc")
 alias intermud intergossip http://lpmuds.net/intermud.html
 alias porch goto /domains/town/room/porch
-prompt %^GREEN%^$M%^RESET%^ %^BOLD%^$P%^RESET%^ > 
+prompt %^BLUE%^$M%^RESET%^ %^BOLD%^$P%^RESET%^ > 
 alias crat source -q /secure/scripts/crat2.src
 alias indentall source /secure/scripts/indent.src
 save

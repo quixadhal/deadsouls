@@ -19,8 +19,8 @@ void create() {
     Commands = ([]);
     Paths = ({});
     eventRehash( ({ DIR_PLAYER_CMDS, DIR_CREATOR_CMDS, 
-	DIR_SECURE_PLAYER_CMDS, DIR_SECURE_CREATOR_CMDS, 
-	DIR_ADMIN_CMDS, DIR_SECURE_ADMIN_CMDS }) );
+        DIR_SECURE_PLAYER_CMDS, DIR_SECURE_CREATOR_CMDS, 
+        DIR_ADMIN_CMDS, DIR_SECURE_ADMIN_CMDS }) );
 }
 
 void eventRehash(mixed paths) {
@@ -29,17 +29,17 @@ void eventRehash(mixed paths) {
     if( stringp(paths) ) paths = ({ paths });
     else if( !pointerp(paths) ) return;
     foreach(path in paths) {
-	string file;
+        string file;
 
-	if( file_size(path) != -2 ) continue;
-	foreach(file in get_dir(path + "/*.c")) {
-	    string cmd;
+        if( file_size(path) != -2 ) continue;
+        foreach(file in get_dir(path + "/*.c")) {
+            string cmd;
 
-	    cmd = file[0..<3];
-	    if( pointerp(Commands[cmd]) ) Commands[cmd] += ({ path });
-	    else Commands[cmd] = ({ path });
-	}
-	Paths = singular_array( distinct_array(Paths + ({ path })) );
+            cmd = file[0..<3];
+            if( pointerp(Commands[cmd]) ) Commands[cmd] += ({ path });
+            else Commands[cmd] = ({ path });
+        }
+        Paths = singular_array( distinct_array(Paths + ({ path })) );
     }
 }
 
@@ -47,12 +47,12 @@ string GetCommand(string cmd, string *path) {
     string *tmp;
 
     if( Commands[cmd] && sizeof(tmp = (path & (string *)Commands[cmd])) )
-	return sprintf("%s/%s", tmp[0], cmd);
+        return sprintf("%s/%s", tmp[0], cmd);
     else {
-	tmp = (path & Paths);
-	if( sizeof(tmp = path - tmp) ) eventRehash(tmp);
-	if( Commands[cmd] && sizeof(tmp = (path & (string *)Commands[cmd])) )
-	    return sprintf("%s/%s", tmp[0], cmd);
+        tmp = (path & Paths);
+        if( sizeof(tmp = path - tmp) ) eventRehash(tmp);
+        if( Commands[cmd] && sizeof(tmp = (path & (string *)Commands[cmd])) )
+            return sprintf("%s/%s", tmp[0], cmd);
     }
     return 0;
 }

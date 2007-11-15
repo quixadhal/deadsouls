@@ -16,7 +16,7 @@ string GetLine(string skill) {
 
     if( !sizeof(mp) ) return 0;
     x = to_int(percent(mp["points"],
-	(int)this_player()->GetMaxSkillPoints(skill, mp["level"])));
+        (int)this_player()->GetMaxSkillPoints(skill, mp["level"])));
     max = ( mp["class"] == 1 ? 2 : 1 ) + (int)this_player()->GetLevel();
     max *= 2;
     if( max < mp["level"] ) max = mp["level"];
@@ -32,27 +32,27 @@ mixed cmd(string args) {
     ret = "You are " +(string)this_player()->GetShort() + ", level " +
     (int)this_player()->GetLevel();
     if( (tmp = (string)this_player()->GetClass()) )
-	ret += " " + capitalize(tmp);
+        ret += " " + capitalize(tmp);
     else ret += " Drifter";
     ret += " (" + (string)this_player()->GetRace() + ")\n";
     scr = ((int *)this_player()->GetScreen())[0];
 
     skills = sort_array((string *)this_player()->GetSkills(), 1);
     if( !sizeof(skills) ) {
-	ret += "You are without skills.\n";
-	this_player()->eventPrint(ret);
-	return 1;
+        ret += "You are without skills.\n";
+        this_player()->eventPrint(ret);
+        return 1;
     }
     skills = skills - (primes = filter(skills,
-	(: this_player()->GetSkillClass($1) == 1 :)));
+        (: this_player()->GetSkillClass($1) == 1 :)));
     skills = skills - (secs = filter(skills,
-	(: this_player()->GetSkillClass($1) == 2 :)));
+        (: this_player()->GetSkillClass($1) == 2 :)));
     skills = map(skills, (: GetLine :));
     primes = map(primes, (: GetLine :));
     secs   = map(secs, (: GetLine :));
     foreach(mixed sarray in ({ primes, secs, skills }) ) {
-	int y, i = sizeof(sarray);
-	while(i--) if( (y = strlen(sarray[i])) > x ) x = y;
+        int y, i = sizeof(sarray);
+        while(i--) if( (y = strlen(sarray[i])) > x ) x = y;
     }
     x = scr/(x+2);
     ret += "%^BOLD%^%^BLUE%^Primary skills:%^RESET%^\n";

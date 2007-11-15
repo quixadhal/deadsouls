@@ -12,7 +12,7 @@ static void create() {
     SetLong("You are standing on some sturdy branches of the large "+ 
       "tree in University Square. ");
     SetExits( ([ 
-	"down" : "/domains/campus/room/usquare"
+        "down" : "/domains/campus/room/usquare"
       ]) );
     SetProperty("no attack", 1);
     SetClimb( (: ClimbDown :) ,2);

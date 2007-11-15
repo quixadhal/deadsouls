@@ -11,14 +11,14 @@ static void create() {
       "the east and west, and the hallway continues "
       "north and south."); 
     SetItems( ([
-	({"hall","hallway"}) : "A corridor permitting "+
-	"travel from one part of the mansion to another."
+        ({"hall","hallway"}) : "A corridor permitting "+
+        "travel from one part of the mansion to another."
       ]) );
     SetExits( ([
-	"south" : "/domains/town/room/mansion_uhall3",
-	"north" : "/domains/town/room/mansion_uhall1",
-	"east" : "/domains/town/room/mansion_room3",
-	"west" : "/domains/town/room/mansion_room4"
+        "south" : "/domains/town/room/mansion_uhall3",
+        "north" : "/domains/town/room/mansion_uhall1",
+        "east" : "/domains/town/room/mansion_room3",
+        "west" : "/domains/town/room/mansion_room4"
       ]) );
 }
 void init(){

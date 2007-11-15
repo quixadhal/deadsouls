@@ -28,14 +28,14 @@ mixed do_wizlock_obj(object ob){
     string name;
 
     if(living(ob)) {
-	write("You can only wizlock non-living things.");
-	return 1;
+        write("You can only wizlock non-living things.");
+        return 1;
     }
     else name = ob->GetShort();
     if(ob->GetDoor()) ob = load_object(ob->GetDoor());
     if(!ob->GetClosed()){
-	write("You can't wizlock it because it is not closed.");
-	return 1;
+        write("You can't wizlock it because it is not closed.");
+        return 1;
     } 
     write("You wizlock "+name+".");
     say(this_player()->GetName()+" makes a closed-fist gesture at"+

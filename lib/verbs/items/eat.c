@@ -15,6 +15,7 @@ inherit LIB_VERB;
 static void create() {
     verb::create();
     SetVerb("eat");
+    SetSynonyms("swallow");
     SetErrorMessage("Eat what?");
     SetRules("OBJ");
     SetHelp("Syntax: <eat FOOD>\n\n"
@@ -26,25 +27,25 @@ static void create() {
 
 void eventEat(object who, object what) {
     if( !what ) {
-	return;
+        return;
     }
     return (mixed)what->eventEat(who);
 }
 
 mixed can_eat_obj() { 
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     return this_player()->CanManipulate();
 }
 
 mixed do_eat_obj(object ob) {
     if( this_player()->GetInCombat() ) {
-	this_player()->SetAttack(0, (: eventEat, this_player(), ob :),
-	  ROUND_OTHER);
+        this_player()->SetAttack(0, (: eventEat, this_player(), ob :),
+          ROUND_OTHER);
     }
     else {
-	eventEat(this_player(), ob);
+        eventEat(this_player(), ob);
     }
     return 1;
 }

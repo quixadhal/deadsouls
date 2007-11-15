@@ -11,8 +11,8 @@ int cmd(string str){
     say(this_player()->GetCapName()+" snaps "+possessive()+" fingers "+
       "and permits hostilities to resume.");
     foreach(object combatant in get_livings(environment(this_player()))){
-	combatant->eventUnQuell();
-	if(combatant->GetInCombat()) tell_object(combatant,"You resume fighting.");
+        combatant->eventUnQuell();
+        if(combatant->GetInCombat()) tell_object(combatant,"You resume fighting.");
     }
 
     return 1;

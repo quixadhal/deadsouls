@@ -17,33 +17,33 @@ mixed cmd(string args) {
 
     if( args == "" || !args ) return "Syntax: <lsed [script] [filelist]>";
     if( (maxi = sizeof(files = explode(args, " "))) == 1 )
-	return "You must specify the name of a file to run the script on.";
+        return "You must specify the name of a file to run the script on.";
     pwd = (string)this_player()->query_cwd();
     script = absolute_path( pwd, files[0] );
     files = files[1..];
     maxi--;
     for(i=0, tmp = ({}); i<maxi; i++) {
-	files[i] = absolute_path(pwd, files[i]);
-	tmp += (string *)this_player()->wild_card(files[i]);
+        files[i] = absolute_path(pwd, files[i]);
+        tmp += (string *)this_player()->wild_card(files[i]);
     }
     maxi = sizeof(files = tmp);
     if( !(total = read_file(script)) ) return "Failed to load script: "+script;
     x = sizeof(lines = explode(total, "\n"));
     for(i=0; i<maxi; i++){
-	int y;
+        int y;
 
-	y = file_size(files[i]);
-	if( y == -2 ) {
-	    message("system", "lsed: File " + files[i] + " is a directory.",
-	      this_player());
-	    continue;
-	}
-	else if( y == -1 ) {
-	    message("system", "lsed: File " + files[i] + " does not exist.",
-	      this_player());
-	    continue;
-	}
-	LsedFile(files[i], lines, x);
+        y = file_size(files[i]);
+        if( y == -2 ) {
+            message("system", "lsed: File " + files[i] + " is a directory.",
+              this_player());
+            continue;
+        }
+        else if( y == -1 ) {
+            message("system", "lsed: File " + files[i] + " does not exist.",
+              this_player());
+            continue;
+        }
+        LsedFile(files[i], lines, x);
     }
     return 1;
 }
@@ -54,24 +54,24 @@ static void LsedFile(string file, string *cmds, int num_cmds) {
 
     ed_start(file, 0);
     if( query_ed_mode() == -1 ) {
-	message("system", "lsed: Failed to read file " + file, this_player());
-	return;
+        message("system", "lsed: Failed to read file " + file, this_player());
+        return;
     }
     for(i=0; i<num_cmds; i++) {
-	ret = ed_cmd(cmds[i]);
-	if( query_ed_mode() == -1 ) {
-	    message("system", "lsed: Script quit unexpectedly on line " +
-	      (i+1) + " for file " + file + " with message: " + ret, 
-	      this_player());
-	    return;
-	}
+        ret = ed_cmd(cmds[i]);
+        if( query_ed_mode() == -1 ) {
+            message("system", "lsed: Script quit unexpectedly on line " +
+              (i+1) + " for file " + file + " with message: " + ret, 
+              this_player());
+            return;
+        }
     }
     ret = ed_cmd("x");
     if( query_ed_mode() != -1 ) {
-	ed_cmd("Q");
-	message("system", "lsed: permission denied for " + file,
-	  this_player());
-	return;
+        ed_cmd("Q");
+        message("system", "lsed: permission denied for " + file,
+          this_player());
+        return;
     }
     message("system", ret, this_player());
 }

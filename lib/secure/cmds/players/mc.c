@@ -14,21 +14,21 @@ mixed cmd(string args) {
     file = MONEY_DIR + (string)previous_object()->GetKeyName();
     account = ([]);
     if( !file_exists(file + __SAVE_EXTENSION__) )
-	return "You have no bank account on the old Dead Souls.";
+        return "You have no bank account on the old Dead Souls.";
     restore_object(file);
     foreach(string bank, mapping data in account) {
-	foreach(string curr, int val in data) {
-	    float tmp;
+        foreach(string curr, int val in data) {
+            float tmp;
 
-	    if( curr == "time" || curr == "transaction" ) continue;
-	    if( (tmp = currency_rate(curr)) < 1 ) continue;
-	    net_worth += val / tmp;
-	}
+            if( curr == "time" || curr == "transaction" ) continue;
+            if( (tmp = currency_rate(curr)) < 1 ) continue;
+            net_worth += val / tmp;
+        }
     }
     max_worth = (int)previous_object()->GetLevel() * 2000;
     if( net_worth  > max_worth ) net_worth = max_worth;
     if( previous_object()->AddBank("Mariner's Bank of Praxis", "electrum",
-	to_int(currency_value(net_worth, "electrum")))
+        to_int(currency_value(net_worth, "electrum")))
       < 0 ) return "An error occurred in conversion.";
     unguarded((: rm, file + __SAVE_EXTENSION__ :));
     previous_object()->eventPrint("You should now save, since a game crash "

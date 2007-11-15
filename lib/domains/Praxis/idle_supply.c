@@ -18,8 +18,8 @@ void create() {
       "north guarded by a magic field.");
     SetItems(
       (["shop" : "You can buy and sell things here.",
-	"passage" : "Horace keeps the things he has for sale back there.",
-	"road" : "Boc La Road."]) );
+        "passage" : "Horace keeps the things he has for sale back there.",
+        "road" : "Boc La Road."]) );
     SetExits( 
       (["south"	: "/domains/Praxis/e_boc_la2"]) );
     SetProperty("no castle", 1);
@@ -28,16 +28,16 @@ void create() {
 void reset() {
     ::reset();
     if(!present("horace")) 
-	new("/domains/Praxis/obj/mon/horace")->move(this_object());
+        new("/domains/Praxis/obj/mon/horace")->move(this_object());
 }
 
 int go_north() {
     if((string)this_player()->query_position() == "player" || 
       (string)this_player()->query_position() == "high mortal") {
-	write("The magic of Horace stops you.");
-	say(this_player()->query_cap_name()+" is stopped by the magic of Horace.",
-	  this_player());
-	return 1;
+        write("The magic of Horace stops you.");
+        say(this_player()->query_cap_name()+" is stopped by the magic of Horace.",
+          this_player());
+        return 1;
     }
     write("You cannot be stopped by Horace's magic.");
     say(this_player()->query_cap_name()+" cannot be stopped by Horace's "+

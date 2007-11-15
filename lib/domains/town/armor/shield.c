@@ -5,6 +5,7 @@
 
 inherit LIB_ARMOR;
 
+
 static void create() {
     armor::create();
     SetKeyName("large shield");
@@ -22,4 +23,6 @@ static void create() {
     SetProtection(KNIFE, 10);
     //SetRestrictLimbs( ({"left hand"}) );
 }
-
+void init(){
+    ::init();
+}

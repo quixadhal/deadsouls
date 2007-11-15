@@ -12,71 +12,42 @@ int MustWield(int i){
     else return 0;
 }
 
-int eventShoot(mixed shooter, mixed target){
+mixed eventShoot(mixed shooter, mixed target){
     string tmp;
     if(target && objectp(target)){
-	tmp=target->GetName();
-	target = tmp;
+        tmp=target->GetName();
+        target = tmp;
     }
     if(target) write("You shoot at "+target+" with your weapon.");
 
     return 1;
 }
 
-int CanShoot(object shooter, mixed target){
-    object cible;
-    mixed attackable;
+mixed CanShoot(object shooter, mixed target){
 
-    if(living(shooter)) return 0;
-    if(mustcarry > 0 && environment(this_object()) != this_player()) {
-	write("You are not holding the weapon.");
-	return 1;
+    if(this_object() == shooter && mustcarry > 0 && environment(this_object()) != this_player()) {
+        return "#You are not holding the "+remove_article(shooter->GetShort())+".";
     } 
-    if(mustwield > 0 && this_object()->GetWorn() == 0 && !creatorp(this_player())) {
-	write("You are not wielding the weapon.");
-	return 1;
+    if(this_object() == shooter && mustwield > 0 && this_object()->GetWorn() == 0 && !creatorp(this_player())) {
+        return "#You are not wielding the "+remove_article(shooter->GetShort())+".";
     }
 
-    if(!present(target,environment(this_player())) && !present(target,environment(this_object()))){
-	write("That target is not here.");
-	return 1;
-    }
-    if(stringp(target) && !cible=present(target,environment(this_object()))){
-	cible=present(target,environment(this_player()));
-    }
-
-    if(objectp(target)) cible = target;
-
-    attackable = cible->GetAttackable();
-
-    if(!attackable || !intp(attackable) || attackable != 1){
-	write("You are unable to shoot "+objective(cible)+".");
-	return 0;
-    }
-
-    if(this_object()->eventFireWeapon(shooter,cible)) return 1;
-
-    eventShoot(shooter,target);
     return 1;
 }
 
-int direct_shoot_obj_at_obj(object shooter, object target){
+varargs mixed direct_shoot_obj_at_obj(mixed args...){
+    return CanShoot(args[0],args[1]);
+}
+
+varargs mixed direct_shoot_obj_with_obj(mixed args...){
     return 1;
 }
 
-int direct_shoot_obj_with_obj(object shooter, object target){
-    return 1;
+varargs mixed indirect_shoot_obj_with_obj(mixed args...){
+    return CanShoot(args[1],args[0]);
 }
 
-int direct_shoot_obj_at_str(object shooter, string target){
-    return 1;
-}
-
-int indirect_shoot_obj_with_obj(mixed ob1,mixed ob2){
-    return 1;
-}
-
-int indirect_shoot_obj_at_obj(mixed ob1,mixed ob2){
+varargs mixed indirect_shoot_obj_at_obj(mixed args...){
     return 1;
 }
 

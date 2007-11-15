@@ -25,7 +25,7 @@ mixed can_ride_str(string str) {
     if( !mount ) return "You are nowhere.";
     if( !where ) return "Your mount is nowhere.";
     if( mount->GetStaminaPoints() <3 )
-	return "Your mount is too tired to go anywhere right now.";
+        return "Your mount is too tired to go anywhere right now.";
     if(!stringp(hobbled(mount))) return "Your mount is incapacitated.";
     if(str) switch(str){
     case "n" : str = "north"; break;
@@ -52,7 +52,7 @@ mixed can_ride_into_str(string str) {
     if( !mount ) return "You are nowhere.";
     if( !where ) return "Your mount is nowhere.";
     if( mount->GetStaminaPoints() <3 )
-	return "Your mount is too tired to go anywhere right now.";
+        return "Your mount is too tired to go anywhere right now.";
     if(!stringp(hobbled(mount))) return "Your mount is incapacitated.";
     return where->CanEnter(mount, str);
 }

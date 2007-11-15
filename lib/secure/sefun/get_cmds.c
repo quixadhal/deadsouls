@@ -16,22 +16,22 @@ string *get_cmds(){
 
     foreach(str in get_dir("/cmds/"))
     {
-	temparr=get_dir("/cmds/"+str+"/*.c");
-	for(i=0;i<sizeof(temparr);i++){
-	    //write(temparr[i]);
-	    if(temparr[i] && !sizeof(cmds)) cmds = ({temparr[i]});
-	    if(temparr[i] && sizeof(cmds) > 0)  cmds += ({temparr[i]});
-	}
+        temparr=get_dir("/cmds/"+str+"/*.c");
+        for(i=0;i<sizeof(temparr);i++){
+            //write(temparr[i]);
+            if(temparr[i] && !sizeof(cmds)) cmds = ({temparr[i]});
+            if(temparr[i] && sizeof(cmds) > 0)  cmds += ({temparr[i]});
+        }
     }
 
     foreach(str in get_dir("/secure/cmds/"))
     {
-	temparr=get_dir("/secure/cmds/"+str+"/*.c");
-	for(i=0;i<sizeof(temparr);i++){
-	    //write(temparr[i]);
-	    if(temparr[i] && !sizeof(cmds)) cmds = ({temparr[i]});
-	    if(temparr[i] && sizeof(cmds) > 0)  cmds += ({temparr[i]});
-	}
+        temparr=get_dir("/secure/cmds/"+str+"/*.c");
+        for(i=0;i<sizeof(temparr);i++){
+            //write(temparr[i]);
+            if(temparr[i] && !sizeof(cmds)) cmds = ({temparr[i]});
+            if(temparr[i] && sizeof(cmds) > 0)  cmds += ({temparr[i]});
+        }
     }
 
     return cmds;

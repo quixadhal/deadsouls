@@ -27,6 +27,6 @@ static void create() {
     SetReligion("Dalin", "Dalite");
     SetProperty("no bump", 1);
     if( clonep() ) {
-	AddChannel("priest");
+        AddChannel("priest");
     }
 }

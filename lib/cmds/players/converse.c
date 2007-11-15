@@ -25,8 +25,8 @@ mixed cmd(string args) {
 
 static void eventChat(string args) {
     if( trim(args) == "." ) {
-	message("system", "Exiting conversation mode.", this_player());
-	return;
+        message("system", "Exiting conversation mode.", this_player());
+        return;
     }
     else this_player()->eventSpeak(0, TALK_LOCAL, args);
     input_to( (: eventChat :) );

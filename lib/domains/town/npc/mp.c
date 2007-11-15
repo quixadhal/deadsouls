@@ -17,9 +17,9 @@ static void create(){
     SetClass("fighter");
     SetGender("male");
     SetInventory(([
-	"/domains/town/weap/9mmpistol_mp" : "wield pistol",
-	"/domains/town/armor/helmet2" : "wear helmet",
-	"/domains/town/armor/bdu" : "wear bdu"
+        "/domains/town/weap/9mmpistol_mp" : "wield pistol",
+        "/domains/town/armor/helmet2" : "wear helmet",
+        "/domains/town/armor/bdu" : "wear bdu"
       ]));
 }
 void init(){

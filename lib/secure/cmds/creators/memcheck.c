@@ -15,8 +15,8 @@ string cmd(string unused) {
       "as a historical curiosity, but is not necessarily reliable.%^RESET%^");
     if(sizeof(ret) < 7000) write(ret);
     else {
-	write_file(tmpfile,ret);
-	this_player()->eventPage(tmpfile);
+        write_file(tmpfile,ret);
+        this_player()->eventPage(tmpfile);
     }
     rm(tmpfile);
     return "%^RED%^The output for this command may be misleading. It is kept "+

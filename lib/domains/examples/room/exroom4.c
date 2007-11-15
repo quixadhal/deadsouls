@@ -48,37 +48,37 @@ int aa_pull(string str)
 {
     if (str!="lever" && str!="lever out")
     {
-	write( "Pull what?\n" );
-	return 1;
+        write( "Pull what?\n" );
+        return 1;
     }
     /*  Now, we can find out if the lever has been already pulled
-	  in one of two ways. 
-	Method one: we test to see if the exit to the south is open.
-	  Since pulling the lever does this, and the only way to
-	  create that exit is pulling the lever -- this is a valid method.
+          in one of two ways. 
+        Method one: we test to see if the exit to the south is open.
+          Since pulling the lever does this, and the only way to
+          create that exit is pulling the lever -- this is a valid method.
 
-	Method two: we use a variable and change it's value when the lever
-	  is pushed or pulled.  Since we have a method that works without
-	  using an additional variable, that is the method I'll pick here.
-	  It will also show you how to query for an exit.
+        Method two: we use a variable and change it's value when the lever
+          is pushed or pulled.  Since we have a method that works without
+          using an additional variable, that is the method I'll pick here.
+          It will also show you how to query for an exit.
 
-	Note:  GetExits() returns a mapping for all the exits in a room
-	GetExit("dir") returns the value for that specific direction.
-	if there is NOT an exit in that direction it will return UNDEFINED
-	and can be detected using the ! operator. (! means 'not') 
-	conversely, if GetExit("dir") is true, then there IS an exit
-	to that direction.  Got it?  Good.
+        Note:  GetExits() returns a mapping for all the exits in a room
+        GetExit("dir") returns the value for that specific direction.
+        if there is NOT an exit in that direction it will return UNDEFINED
+        and can be detected using the ! operator. (! means 'not') 
+        conversely, if GetExit("dir") is true, then there IS an exit
+        to that direction.  Got it?  Good.
     */
 
     if ( GetExit("south") )
     {
-	write("The lever is already pulled out!\n");
-	return 1;
+        write("The lever is already pulled out!\n");
+        return 1;
     }
 
     /*  If you don't know by now, this_player() indicates the player doing the actions
-	  So when I do this_player()->GetName() it gives me the name of the player
-	  who is doing the actions and allows me to tell the room who it is.
+          So when I do this_player()->GetName() it gives me the name of the player
+          who is doing the actions and allows me to tell the room who it is.
     */
 
     write( "You pull the lever and an invisible crack appears in the south wall. "+
@@ -98,20 +98,20 @@ int aa_push(string str)
 {
     if (str!="lever" && str!="lever in")
     {
-	write( "Push what?\n" );
-	return 1;
+        write( "Push what?\n" );
+        return 1;
     }
 
     /*  Since there's more then one way for the exit to dissappear (see the post-exit
-	function for south) and there may be more then one player wandering the halls
-	we don't want to assume that 'this' player pushed the lever.  So we wouldn't
-	say "You've already pushed the lever."
+        function for south) and there may be more then one player wandering the halls
+        we don't want to assume that 'this' player pushed the lever.  So we wouldn't
+        say "You've already pushed the lever."
     */
 
     if ( ! GetExit("south") )
     {
-	write( "The lever is pushed in as far as it will go.\n");
-	return 1;
+        write( "The lever is pushed in as far as it will go.\n");
+        return 1;
     }
     write( "You push the lever in and an unseen door slides shut in the south wall."+
       "The wall now appears solid and unpenatrable." );
@@ -129,8 +129,8 @@ int aa_ring(string str)
 {
     if (str!="bell" && str!="doorbell" && str!="door bell")
     {
-	write( "Ring what?\n" );
-	return 1;
+        write( "Ring what?\n" );
+        return 1;
     }
     //if we only want to let them ring it once, we can check for the
     //temp var here.  This version will let them ring it many times.
@@ -165,8 +165,8 @@ int pre_north()
 {
     if( !this_player()->GetProperty("rung_bell") )
     {
-	write("Ring the doorbell first!\n");
-	return 0;  
+        write("Ring the doorbell first!\n");
+        return 0;  
     }
     //  Now that the pre_north() function has done what it needs to do, we 
     //   will call the post_north() function here

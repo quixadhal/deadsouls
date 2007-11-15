@@ -14,34 +14,34 @@ mixed cmd(string args) {
     int x;
 
     if( x = to_int(args) ) {
-	if( (int)previous_object()->SetHistorySize(x) != x ) {
-	    if( x < MIN_HISTORY_SIZE )
-		return "History size must be at least " + MIN_HISTORY_SIZE + ".";
-	    else if( x > MAX_HISTORY_SIZE )
-		return "History size can be no larger than " + MAX_HISTORY_SIZE +
-		".";
-	    else return "Invalid history size.";
-	}
-	else {
-	    previous_object()->eventPrint("History size set to: " + x);
-	}
+        if( (int)previous_object()->SetHistorySize(x) != x ) {
+            if( x < MIN_HISTORY_SIZE )
+                return "History size must be at least " + MIN_HISTORY_SIZE + ".";
+            else if( x > MAX_HISTORY_SIZE )
+                return "History size can be no larger than " + MAX_HISTORY_SIZE +
+                ".";
+            else return "Invalid history size.";
+        }
+        else {
+            previous_object()->eventPrint("History size set to: " + x);
+        }
     }
     else {
-	string array history, arr, tmp = ({});
-	int cmd_num, i;
+        string array history, arr, tmp = ({});
+        int cmd_num, i;
 
-	history = (string array)previous_object()->GetHistoryList();
-	cmd_num = (int)previous_object()->GetCommandNumber();
-	x = (cmd_num - 2) % sizeof(history);
-	if( x == 9 ) arr = history;
-	else arr = history[(x+1)..] + history[0..x];
-	if( cmd_num < sizeof(history) + 1 ) i = 1;
-	else i = cmd_num - sizeof(history);
-	foreach(string cmd in arr) {
-	    if( !cmd ) continue;
-	    tmp += ({ sprintf("%:-5d %s", i++, cmd) });
-	}
-	previous_object()->eventPage(tmp, MSG_SYSTEM);
+        history = (string array)previous_object()->GetHistoryList();
+        cmd_num = (int)previous_object()->GetCommandNumber();
+        x = (cmd_num - 2) % sizeof(history);
+        if( x == 9 ) arr = history;
+        else arr = history[(x+1)..] + history[0..x];
+        if( cmd_num < sizeof(history) + 1 ) i = 1;
+        else i = cmd_num - sizeof(history);
+        foreach(string cmd in arr) {
+            if( !cmd ) continue;
+            tmp += ({ sprintf("%:-5d %s", i++, cmd) });
+        }
+        previous_object()->eventPage(tmp, MSG_SYSTEM);
     }
     return 1;
 }

@@ -28,29 +28,29 @@ mixed can_codesay_str(string str) {
 varargs mixed do_codesay_str(string str) {
     string filename = DIR_TMP + "/" + this_player()->GetKeyName() + ".codesay";
     if( !str ) {
-	write("Huh?");
-	return 1;
+        write("Huh?");
+        return 1;
     }
     if(!creatorp(this_player())) {
-	write("This is a command for creators.");
-	return 1;
+        write("This is a command for creators.");
+        return 1;
     }
     if(strsrch(str,";") == -1){
-	write("You codesay: "+"%^BOLD%^CYAN%^"+str+"%^RESET%^");
-	say(this_player()->GetCapName()+" codesays: "+
-	  "%^BOLD%^CYAN%^"+str+"%^RESET%^");
+        write("You codesay: "+"%^BOLD%^CYAN%^"+str+"%^RESET%^");
+        say(this_player()->GetCapName()+" codesays: "+
+          "%^BOLD%^CYAN%^"+str+"%^RESET%^");
     }
     else {
-	str = replace_string(str, ";", ";\n");
-	str = replace_string(str, "{", "{\n");
-	str = replace_string(str, "}", "}\n");
-	write_file(filename,str,1);
-	write_file(filename+"_rule","I",1);
-	load_object("/secure/cmds/creators/lsed")->cmd(filename+"_rule "+filename);
-	write("You codesay: ");
-	say(this_player()->GetCapName()+" codesays: ");
-	tell_room(environment(this_player()),"\n"+
-	  "%^BOLD%^CYAN%^"+read_file(filename)+"%^RESET%^");
+        str = replace_string(str, ";", ";\n");
+        str = replace_string(str, "{", "{\n");
+        str = replace_string(str, "}", "}\n");
+        write_file(filename,str,1);
+        write_file(filename+"_rule","I",1);
+        load_object("/secure/cmds/creators/lsed")->cmd(filename+"_rule "+filename);
+        write("You codesay: ");
+        say(this_player()->GetCapName()+" codesays: ");
+        tell_room(environment(this_player()),"\n"+
+          "%^BOLD%^CYAN%^"+read_file(filename)+"%^RESET%^");
     }
     return 1;
 }

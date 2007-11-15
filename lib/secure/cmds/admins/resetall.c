@@ -14,18 +14,18 @@ int cmd(string str) {
 
     if(archp(previous_object())){
 
-	foreach(object room in rooms){
-	    write("Updating: "+base_name(room));
-	    update(base_name(room));
-	}
+        foreach(object room in rooms){
+            write("Updating: "+base_name(room));
+            update(base_name(room));
+        }
 
-	update(ROOM_FURNACE);
-	reap_other();
-	reap_other();
+        update(ROOM_FURNACE);
+        reap_other();
+        reap_other();
 
-	write("Done.");
+        write("Done.");
 
-	return 1;
+        return 1;
     }
     write("You are not admin. This is command forbidden.");
     return 1;

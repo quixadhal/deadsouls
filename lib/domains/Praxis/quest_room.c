@@ -18,7 +18,7 @@ void create() {
     quest_ls = get_dir(QUEST_DIR);
     if(!sizeof(quest_ls)) return;
     for(i=0; i<sizeof(quest_ls); i++) {
-	new(QUEST_DIR+quest_ls[i])->move(this_object());
+        new(QUEST_DIR+quest_ls[i])->move(this_object());
     }
 }
 
@@ -29,26 +29,26 @@ void list_quests(object tp, int x) {
 
     inv = all_inventory(this_object());
     if(!sizeof(inv)) {
-	tell_object(tp, "There are no quests.");
-	return;
+        tell_object(tp, "There are no quests.");
+        return;
     }
     quest_list = ({});
     for(i=0; i<sizeof(inv); i++) {
-	if(member_array((string)inv[i]->query_name(), (string *)tp->query_quests()) == -1) quest_list += ({ inv[i] });
+        if(member_array((string)inv[i]->query_name(), (string *)tp->query_quests()) == -1) quest_list += ({ inv[i] });
     }
     if(!x) {
-	tell_object(tp, "There are "+sizeof(quest_list)+" quests you "
-	  "have not solved. They are these quests:\n");
-	for(i=0; i<sizeof(quest_list); i++) {
-	    tell_object(tp, (i+1)+": "+(string)present(quest_list[i], this_object())->GetShort()+"\n");
-	}
+        tell_object(tp, "There are "+sizeof(quest_list)+" quests you "
+          "have not solved. They are these quests:\n");
+        for(i=0; i<sizeof(quest_list); i++) {
+            tell_object(tp, (i+1)+": "+(string)present(quest_list[i], this_object())->GetShort()+"\n");
+        }
     }
     else {
-	if(x > sizeof(quest_list)) {
-	    tell_object(tp, "No such quest.\n");
-	    return;
-	}
-	tell_object(tp, (string)present(quest_list[x-1], this_object())->GetLong());
+        if(x > sizeof(quest_list)) {
+            tell_object(tp, "No such quest.\n");
+            return;
+        }
+        tell_object(tp, (string)present(quest_list[x-1], this_object())->GetLong());
     }
 }
 
@@ -67,9 +67,9 @@ int check_quests(object tp, int lev) {
 
     qp= (int)tp->query_quest_points();
     if(lev>=5) if(qp < POINTS_NEEDED/4) return 0;
-	else if(lev >= 10) if(qp < POINTS_NEEDED/2) return 0;
-	    else if(lev >= 15) if(qp < (3*POINTS_NEEDED)/4) return 0;
-		else if(lev > 19) if(qp < POINTS_NEEDED) return 0;
+        else if(lev >= 10) if(qp < POINTS_NEEDED/2) return 0;
+            else if(lev >= 15) if(qp < (3*POINTS_NEEDED)/4) return 0;
+                else if(lev > 19) if(qp < POINTS_NEEDED) return 0;
     return 1;
 }
 

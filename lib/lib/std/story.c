@@ -72,29 +72,29 @@ void PickTale( string taletotell ) {
     int y;
 
     if( ! AlreadyTellingTale ) {
-	int x = 0;
-	if( TalesDir ) {
-	    files = get_dir( GetTalesDir() );
-	    if(taletotell){
-		y = member_array(taletotell,files);
-		if( y != -1 )
-		    file = taletotell;
-		else {
-		    environment(this_object())->eventPrint(NoTaleMessage);
-		    return;
-		}
-	    }
-	    else 
-		file = files[random(sizeof(files))];
-	    AlreadyTellingTale = 1;
-	    Tales = ([]);
-	    msg = explode( read_file( TalesDir + file ), "\n" );
-	    foreach( string str in msg ) {
-		Tales[x++] = explode( str, "#" );
-	    }
-	}
-	if( !Tales ) return; 
-	call_out( (: TellTale :), 1, 0 );
+        int x = 0;
+        if( TalesDir ) {
+            files = get_dir( GetTalesDir() );
+            if(taletotell){
+                y = member_array(taletotell,files);
+                if( y != -1 )
+                    file = taletotell;
+                else {
+                    environment(this_object())->eventPrint(NoTaleMessage);
+                    return;
+                }
+            }
+            else 
+                file = files[random(sizeof(files))];
+            AlreadyTellingTale = 1;
+            Tales = ([]);
+            msg = explode( read_file( TalesDir + file ), "\n" );
+            foreach( string str in msg ) {
+                Tales[x++] = explode( str, "#" );
+            }
+        }
+        if( !Tales ) return; 
+        call_out( (: TellTale :), 1, 0 );
     }
 
 }
@@ -102,8 +102,8 @@ void PickTale( string taletotell ) {
 
 void TellTale( int part ) {
     if( part == sizeof( keys( Tales ) ) ) {
-	AlreadyTellingTale = 0;
-	return;
+        AlreadyTellingTale = 0;
+        return;
     }
     if( living(this_object()) ) this_object()->eventForce( Tales[part][0] );
     else environment(this_object())->eventPrint( Tales[part][0] );

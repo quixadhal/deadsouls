@@ -28,13 +28,13 @@ static void create() {
     SetLong("This is the test laboratory for the new Dead Souls Stargate system.\n"
       "%^BOLD%^%^GREEN%^An instruction sign is here.%^RESET%^");
     SetItems(([
-	({ "sign", "instruction sign", "instructions sign", "instruction", "instructions" }) : "A sign you can read. It appears to be instructions for operating the stargate.",
+        ({ "sign", "instruction sign", "instructions sign", "instruction", "instructions" }) : "A sign you can read. It appears to be instructions for operating the stargate.",
       ]));
     SetInventory(([
-	"/domains/default/obj/stargate" : 1,
+        "/domains/default/obj/stargate" : 1,
       ]));
     SetExits(([
-	"north" : "/domains/default/room/wiz_corr_east",
+        "north" : "/domains/default/room/wiz_corr_east",
       ]));
     SetRead("sign", (: SignRead() :) );
     SetProperty("no attack", 1);

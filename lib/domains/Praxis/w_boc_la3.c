@@ -15,14 +15,14 @@ void create() {
       "town.  West Road travels north from here.");
     SetExits( 
       (["north" : "/domains/Praxis/west_road1",
-	"west" : "/domains/Praxis/highway1",
-	"east" : "/domains/Praxis/w_boc_la2"]) );
+        "west" : "/domains/Praxis/highway1",
+        "east" : "/domains/Praxis/w_boc_la2"]) );
     SetItems(
       (["road" : "Boc La Road runs east and west through Praxis. ",
-	"roads" : "West Road and Boc La Road. ",
-	"highway" : "A very heavily travelled highway to the western "
-	"lands of Nightmare. Beware of the Daroq Mountains. ",
-	"mountains" : "The Daroq Mountains.  Vile creatures are "
-	"rumoured to live in and about them."]) );
+        "roads" : "West Road and Boc La Road. ",
+        "highway" : "A very heavily travelled highway to the western "
+        "lands of Nightmare. Beware of the Daroq Mountains. ",
+        "mountains" : "The Daroq Mountains.  Vile creatures are "
+        "rumoured to live in and about them."]) );
 }
 

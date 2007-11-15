@@ -14,27 +14,27 @@ static void create() {
       "main counter where a teller can assist you.\n"
       "%^GREEN%^A sign you can read hangs here.%^RESET%^");
     SetInventory( ([
-	"/domains/town/npc/zoe" : 1
+        "/domains/town/npc/zoe" : 1
       ]) );
     SetItems( ([
-	"sign" : "A sign you can read.",
-	({"bank","First Village Bank"}) : "The primary financial "
-	"institution in town.",
-	({"floor","floors","marble floor","marble floors"}) :
-	"The floor is lustrous, clean, and beautiful.",
-	({"sculpture","sculptures"}) : "Graceful marble statues "
-	"are here, depicting various characters from an "
-	"ancient mythological pantheon.",
-	({"painting","paintings"}) : "Extraordinary paintings "
-	"hang here, testifying to a brilliant local art community.",
-	({"carpet","red carpet"}) : "A thick, fine red carpet "
-	"leads from the bank entrance to the main counter.",
-	"entrance" : "The entrace of the bank.",
-	({"counter","main counter"}) : "An area where a "
-	"teller waits to assist you."
+        "sign" : "A sign you can read.",
+        ({"bank","First Village Bank"}) : "The primary financial "
+        "institution in town.",
+        ({"floor","floors","marble floor","marble floors"}) :
+        "The floor is lustrous, clean, and beautiful.",
+        ({"sculpture","sculptures"}) : "Graceful marble statues "
+        "are here, depicting various characters from an "
+        "ancient mythological pantheon.",
+        ({"painting","paintings"}) : "Extraordinary paintings "
+        "hang here, testifying to a brilliant local art community.",
+        ({"carpet","red carpet"}) : "A thick, fine red carpet "
+        "leads from the bank entrance to the main counter.",
+        "entrance" : "The entrace of the bank.",
+        ({"counter","main counter"}) : "An area where a "
+        "teller waits to assist you."
       ]) );
     SetExits( ([ 
-	"west" : "/domains/town/room/south_road1",
+        "west" : "/domains/town/room/south_road1",
       ]) );
     SetRead( ({"sign","sign hanging here"}) , (: ReadSign :) );
     SetProperty("no attack", 1);

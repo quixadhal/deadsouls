@@ -18,22 +18,22 @@ string LocalCurrency = "gold";
 static void create() {
     sentient::create();
     SetRequestResponses(([ "citizenship" : (: EvaluateCitizenshipRequest :),
-	"help" : (: this_object()->eventForce("say You can request "
-	    "citizenship from me.") :) ]));
+        "help" : (: this_object()->eventForce("say You can request "
+            "citizenship from me.") :) ]));
 }
 
 mixed CanRequestCitizenship(object who) {
     if( Tax > 0 ) {
-	int cost = (Tax);
+        int cost = (Tax);
 
-	if( who->GetCurrency(LocalCurrency) < cost ) {
-	    this_object()->eventForce("say I'm sorry, but we have a new citizen tax of " + Tax + " " +
-	      LocalCurrency + ".");
-	    return 0;
-	}
+        if( who->GetCurrency(LocalCurrency) < cost ) {
+            this_object()->eventForce("say I'm sorry, but we have a new citizen tax of " + Tax + " " +
+              LocalCurrency + ".");
+            return 0;
+        }
     }
     if( who->GetTown() == GetTown() ) {
-	return "You are already a citizen of " + GetTown() + ".";
+        return "You are already a citizen of " + GetTown() + ".";
     }
     return 1;
 }
@@ -46,11 +46,11 @@ mixed eventRequestCitizenship(object who) {
     who->SetTown(GetTown());
     who->eventPrint("You are now a citizen of " + GetTown() + ".");
     if( Tax > 0 ) {
-	int cost = Tax;
+        int cost = Tax;
 
-	who->AddCurrency(LocalCurrency, -cost);
-	this_object()->AddCurrency(LocalCurrency, cost);
-	this_object()->eventForce("say Congratulations, citizen!");
+        who->AddCurrency(LocalCurrency, -cost);
+        this_object()->AddCurrency(LocalCurrency, cost);
+        this_object()->eventForce("say Congratulations, citizen!");
     }
     return 1;
 }
@@ -59,13 +59,13 @@ static void EvaluateCitizenshipRequest() {
     mixed tmp = CanRequestCitizenship(this_player());
 
     if( tmp != 1 ) {
-	if( !tmp  || tmp == 0 ) {
-	    this_object()->eventForce("say Your request is denied.");
-	}
-	else {
-	    this_player()->eventPrint(tmp);
-	}
-	return;
+        if( !tmp  || tmp == 0 ) {
+            this_object()->eventForce("say Your request is denied.");
+        }
+        else {
+            this_player()->eventPrint(tmp);
+        }
+        return;
     }
     eventRequestCitizenship(this_player());
 }

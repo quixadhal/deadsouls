@@ -15,17 +15,17 @@ mixed cmd(string str) {
     if( !str || str == "" ) return "Syntax: <about OBJECT>";
     if(!present(str, this_player()) && str != "here" &&
       !present(str, environment(this_player())))
-	return notify_fail("You don't see that.\n");
+        return notify_fail("You don't see that.\n");
     if(str == "here") thing = environment(this_player());
     else thing = present( str, this_player());
     if(!thing) thing = present(str, environment(this_player()));
     if(thing->GetDoor()) thing = load_object(thing->GetDoor());
     if(!thing) return notify_fail("Uh oh, error.\n");
     if(interactive(thing)){
-	message( "info","Players do not have files with LPC code. "
-	  "Player save files are not subject to examination with this command.",
-	  this_player());
-	return 1;
+        message( "info","Players do not have files with LPC code. "
+          "Player save files are not subject to examination with this command.",
+          this_player());
+        return 1;
     }
     name = base_name(thing) + ".c";
     message( "info", name + "\n", this_player() );

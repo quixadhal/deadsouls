@@ -31,14 +31,14 @@ static private void load_folder(string who, string folder) {
     OPTIONS_D->assure_box_exists(who);
     file = sprintf("%s/%s/%s/%s", DIR_POSTAL, who[0..0], who, folder);
     if(!unguarded((: file_exists, file+__SAVE_EXTENSION__ :))) {
-	__BoxInfo = ({});
-	__Folder = folder;
-	__Owner = who;
+        __BoxInfo = ({});
+        __Folder = folder;
+        __Owner = who;
     }
     else {
-	__Folder = folder;
-	__Owner = who;
-	if(!unguarded((: restore_object, file :))) __BoxInfo = ({});
+        __Folder = folder;
+        __Owner = who;
+        if(!unguarded((: restore_object, file :))) __BoxInfo = ({});
     }
 }
 
@@ -65,16 +65,16 @@ void add_post(string who, string folder, mapping borg) {
       tmp != LOCALPOST_D) return;
     if(folder=="new" && (fwd=(string)OPTIONS_D->query_option(who, "forward")) &&
       strsrch(borg["subject"], "[FORWARD]") == -1) {
-	borg["subject"] += " [FORWARD]";
-	if(sscanf(fwd, "%s@%s", a, b) == 2) {
-	    borg["message"] = (string)LETTERS_D->query_letter(borg["id"]);
-	    LOCALPOST_D->send_post(borg, fwd);
-	    return;
-	} 
-	else if(user_exists(fwd)) {
-	    this_object()->add_post(fwd, "new", borg);
-	    return;
-	}
+        borg["subject"] += " [FORWARD]";
+        if(sscanf(fwd, "%s@%s", a, b) == 2) {
+            borg["message"] = (string)LETTERS_D->query_letter(borg["id"]);
+            LOCALPOST_D->send_post(borg, fwd);
+            return;
+        } 
+        else if(user_exists(fwd)) {
+            this_object()->add_post(fwd, "new", borg);
+            return;
+        }
     }
     load_folder(who, folder);
     if(__Folder != "new") borg["read"] = 1;
@@ -84,14 +84,14 @@ void add_post(string who, string folder, mapping borg) {
     save_folder();
     if(folder != "new") return;
     if((pl=find_player(who)) && (int)OPTIONS_D->query_option(who, "notify")) {
-	msg = (string)OPTIONS_D->query_option(who, "message");
-	if( !stringp(msg) ) msg = "%^RED%^%^BOLD%^New mail from $N!%^RESET%^\n";
-	msg = replace_string(replace_string(msg, "$S", borg["subject"]),
-	  "$N", capitalize(borg["from"]));
-	message("system", msg, pl);
+        msg = (string)OPTIONS_D->query_option(who, "message");
+        if( !stringp(msg) ) msg = "%^RED%^%^BOLD%^New mail from $N!%^RESET%^\n";
+        msg = replace_string(replace_string(msg, "$S", borg["subject"]),
+          "$N", capitalize(borg["from"]));
+        message("system", msg, pl);
     }
     if(pl && ob = present(POSTAL_ID, pl)) {
-	ob->incoming_post();
+        ob->incoming_post();
     }
 }
 
@@ -102,13 +102,13 @@ void delete_posts(string who, string folder, int *del) {
     load_folder(who, folder);
     if((i = sizeof(del)) != sizeof(__BoxInfo)) return;
     while(i--) {
-	if(del[i]) {
-	    LETTERS_D->delete_folder(__Owner, __Folder, __BoxInfo[i]["id"]);
-	    __BoxInfo[i] = 0;
-	}
+        if(del[i]) {
+            LETTERS_D->delete_folder(__Owner, __Folder, __BoxInfo[i]["id"]);
+            __BoxInfo[i] = 0;
+        }
     }
     __BoxInfo = sort_array(filter(__BoxInfo, "filter_folder", 
-	this_object()), "sort_folder", this_object());
+        this_object()), "sort_folder", this_object());
     save_folder();
 }
 
@@ -125,8 +125,8 @@ mapping mail_status(string who) {
     load_folder(who, "new");
     i = sizeof(__BoxInfo);
     while(i--) {
-	total++;
-	if(!__BoxInfo[i]["read"]) unread++;
+        total++;
+        if(!__BoxInfo[i]["read"]) unread++;
     }
     return ([ "unread" : unread, "total" : total ]);
 }

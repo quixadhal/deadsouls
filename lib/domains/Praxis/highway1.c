@@ -17,15 +17,15 @@ void create() {
       "East leads to West Boc La road and east takes you to the highway ");
     SetItems(
       (["highway" : "A highway linking Praxis to the western lands "
-	"of Nightmare.",
-	({ "trees", "tree" }) : "The trees are very small. This isn't "
-	"a very good environment for them to grow in.",
-	"village" : "A tiny adventuring village. They have many "
-	"services there.",
-	"mountains" : "The Daroq Mountains are far to the west."
+        "of Nightmare.",
+        ({ "trees", "tree" }) : "The trees are very small. This isn't "
+        "a very good environment for them to grow in.",
+        "village" : "A tiny adventuring village. They have many "
+        "services there.",
+        "mountains" : "The Daroq Mountains are far to the west."
       ]) );
     SetExits( 
       (["west" : "/domains/Praxis/highway2",
-	"east" : "/domains/Praxis/w_boc_la3"]) );
+        "east" : "/domains/Praxis/w_boc_la3"]) );
 }
 

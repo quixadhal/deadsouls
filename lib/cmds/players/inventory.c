@@ -13,7 +13,7 @@ void eventInventory();
 
 mixed cmd(string args) {
     if( (int)this_player()->GetInCombat() )
-	this_player()->SetAttack(0, (: eventInventory :), ROUND_OTHER);
+        this_player()->SetAttack(0, (: eventInventory :), ROUND_OTHER);
     else eventInventory();
     return 1;
 }
@@ -25,12 +25,12 @@ void eventInventory() {
     int i;
 
     shorts = map(filter(all_inventory(this_player()), 
-	(: !((int)$1->GetInvis(this_player())) :)),
+        (: !((int)$1->GetInvis(this_player())) :)),
       (: (string)$1->GetEquippedShort() :));
     borg = ([]);
     if( !(i = sizeof(shorts)) ) {
-	message("system", "You are carrying nothing.", this_player());
-	return;
+        message("system", "You are carrying nothing.", this_player());
+        return;
     }
     if( i == 1 ) ret = "You are carrying just this one item:\n";
     else ret = "You are carrying the following items:\n";
@@ -39,9 +39,9 @@ void eventInventory() {
     while(i--) ret += capitalize(consolidate(borg[shorts[i]], shorts[i]))+"\n";
     message("look", ret, this_player());
     if(!this_player()->GetInvis() && !environment(this_player())->GetProperty("meeting room"))
-	message("other_action", (string)this_player()->GetName() + " checks " +
-	  possessive(this_player()) + " possessions.", 
-	  environment(this_player()), ({ this_player() }));
+        message("other_action", (string)this_player()->GetName() + " checks " +
+          possessive(this_player()) + " possessions.", 
+          environment(this_player()), ({ this_player() }));
 }
 
 void help() {

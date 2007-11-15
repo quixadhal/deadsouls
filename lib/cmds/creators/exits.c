@@ -15,7 +15,7 @@ mixed cmd()
     object oEnv;
 
     if ( !( oEnv = environment( this_player() ) ) )
-	return "You do not have a valid environment.";
+        return "You do not have a valid environment.";
 
     asExits = oEnv->GetExits();
     asEnters = oEnv->GetEnters();
@@ -24,25 +24,25 @@ mixed cmd()
       this_player() );
 
     if ( !( sizeof( asExits ) ) )
-	message( "my_action", "This room has no exits.", this_player() );
+        message( "my_action", "This room has no exits.", this_player() );
     else {
-	message( "Nmy_action", "This room has the following exits :\n\n",
-	  this_player() );
-	foreach( sExit in asExits ) {
-	    message( "my_action", sprintf( "\t%10s -> %s", sExit,
-		oEnv->GetExit( sExit ) ), this_player() );
-	}
+        message( "Nmy_action", "This room has the following exits :\n\n",
+          this_player() );
+        foreach( sExit in asExits ) {
+            message( "my_action", sprintf( "\t%10s -> %s", sExit,
+                oEnv->GetExit( sExit ) ), this_player() );
+        }
     }
 
     if ( !( sizeof( asEnters ) ) )
-	message( "my_action", "\nThis room has no enters.", this_player() );
+        message( "my_action", "\nThis room has no enters.", this_player() );
     else {
-	message( "Nmy_action", "\nThis room has the following enters :\n\n",
-	  this_player() );
-	foreach( sExit in asEnters ) {
-	    message( "my_action", sprintf( "\t%10s -> %s", sExit,
-		oEnv->GetEnter( sExit ) ), this_player() );
-	}
+        message( "Nmy_action", "\nThis room has the following enters :\n\n",
+          this_player() );
+        foreach( sExit in asEnters ) {
+            message( "my_action", sprintf( "\t%10s -> %s", sExit,
+                oEnv->GetEnter( sExit ) ), this_player() );
+        }
     }
 
     return 1;

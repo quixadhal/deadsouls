@@ -29,11 +29,11 @@ string query_base_currency(){
     int base;
     monies = ECONOMY_D->__QueryCurrencies();
     foreach(string currency in monies){
-	if(!base) base = ECONOMY_D->__Query(currency,"rate");
-	if(ECONOMY_D->__Query(currency,"rate") <= base){
-	    base = ECONOMY_D->__Query(currency,"rate");
-	    least_valuable = currency;
-	}
+        if(!base) base = ECONOMY_D->__Query(currency,"rate");
+        if(ECONOMY_D->__Query(currency,"rate") <= base){
+            base = ECONOMY_D->__Query(currency,"rate");
+            least_valuable = currency;
+        }
     }
     return least_valuable;
 }
@@ -49,9 +49,9 @@ int query_player_money(object who) {
     monies = ECONOMY_D->__QueryCurrencies();
     base = ECONOMY_D->__Query(query_base_currency(),"rate");
     foreach(string currency in monies){
-	float rate;
-	rate = base/ECONOMY_D->__Query(currency,"rate");
-	x += who->GetCurrency(currency) * rate;
+        float rate;
+        rate = base/ECONOMY_D->__Query(currency,"rate");
+        x += who->GetCurrency(currency) * rate;
     }
     return x;
 }

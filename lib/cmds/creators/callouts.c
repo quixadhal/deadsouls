@@ -17,14 +17,14 @@ mixed cmd(string args) {
 
     callouts = call_out_info();
     if( !sizeof(callouts) ) {
-	previous_object()->eventPrint("No pending callouts.", MSG_SYSTEM);
-	return 1;
+        previous_object()->eventPrint("No pending callouts.", MSG_SYSTEM);
+        return 1;
     }
     tmp = sprintf("%:-40s %:-25s Delay\n", "Object", "Function");
     tmp += "--------------------------------------------------"
     "-------------------------\n";
     foreach(mixed array callout in callouts) {
-	tmp += sprintf("%:-40O %:-25s %d\n", callout...);
+        tmp += sprintf("%:-40O %:-25s %d\n", callout...);
     }
     this_player()->eventPage(explode(tmp, "\n"), MSG_SYSTEM);
     return 1;

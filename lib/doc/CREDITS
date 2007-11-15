@@ -3,7 +3,9 @@ otherwise, in making the new release of Dead Souls possible:
 
 Sine qua non: Descartes, the legion of MudOS developers, and
               all those coders who toiled at Nightmare, and Lars Pensjö.
-              Marius for his kind permission to bundle MudOS.
+              Marius for his permission to bundle MudOS, and
+              Wodan for his permission to bundle FluffOS and his
+              ongoing support therein.
 
 Direct conributors: Haderach and his clever code and inspiration, Duuk
               and his willingness to let me poke through his lib and
@@ -14,7 +16,7 @@ Direct conributors: Haderach and his clever code and inspiration, Duuk
                   Thanks also to the following for code donation,
               support, and/or contribution: Tim@TimMUD, Manchi, 
               Brodbane, Ashon, Shadyman, Jonez, Cecil, Daelas, Tricky, 
-              K'Azdean.
+              K'Azdean, Raudhrskal, Alecksy.
 
 Appreciation of: Jayren, Kaylus, Arianrhod, Nosmo, Pyro, Abby, Balmung, 
               Aten, Metiscus, Garfield, Javelin, Alensin, Daelas, Root,
@@ -25,6 +27,7 @@ Appreciation of: Jayren, Kaylus, Arianrhod, Nosmo, Pyro, Abby, Balmung,
 * Thanks to Frostmud.com for letting me test on their box.
 * Thanks to Wolfpaw.com for letting me test on their box.
 * Thanks to murpe.com for letting me test on their box.
+* Thanks to JohnOC for letting me test on his box.
 
 Much gratitude to playtesters: Karri, Aten, Tacitus, Kaatil, Atomic, Daelas.
 
@@ -32,4 +35,4 @@ Also: Xyzzy He Is Cool
 
 Cratylus @ Dead Souls
 July 2006
-Last update: January 2007
+Last update: October 2007

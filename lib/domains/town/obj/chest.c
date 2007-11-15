@@ -13,11 +13,11 @@ void create() {
     SetMaxCarry(500);
     SetPreventPut("You cannot put this in there!");
     SetInventory(([
-	"/secure/obj/memo" : 1,
-	"/secure/obj/medtric" : 1,
-	"/secure/obj/control" : 1,
-	"/secure/obj/roommaker" : 1,
-	"/domains/town/armor/badge" : 1,
+        "/secure/obj/memo" : 1,
+        "/secure/obj/medtric" : 1,
+        "/secure/obj/control" : 1,
+        "/secure/obj/roommaker" : 1,
+        "/domains/town/armor/badge" : 1,
       ]));
     SetCanClose(1);
     SetClosed(1);

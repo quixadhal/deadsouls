@@ -15,25 +15,25 @@ inherit LIB_DAEMON;
 
 mixed cmd(string args) {
     if( !args || (args != "on" && args != "off") ) {
-	return "Syntax: <classblock on|off>";
+        return "Syntax: <classblock on|off>";
     }
     if( args == "on" ) {
-	foreach(string class_name in CLASSES_D->GetClasses()) {
-	    if( !previous_object()->GetBlocked(class_name) ) {
-		previous_object()->SetBlocked(class_name);
-	    }
-	}
-	previous_object()->eventPrint("You are now blocking all class lines.",
-	  MSG_SYSTEM);
+        foreach(string class_name in CLASSES_D->GetClasses()) {
+            if( !previous_object()->GetBlocked(class_name) ) {
+                previous_object()->SetBlocked(class_name);
+            }
+        }
+        previous_object()->eventPrint("You are now blocking all class lines.",
+          MSG_SYSTEM);
     }
     else {
-	foreach(string class_name in CLASSES_D->GetClasses()) {
-	    if( previous_object()->GetBlocked(class_name) ) {
-		previous_object()->SetBlocked(class_name);
-	    }
-	}
-	previous_object()->eventPrint("You are no longer blocking any class "
-	  "lines.", MSG_SYSTEM);
+        foreach(string class_name in CLASSES_D->GetClasses()) {
+            if( previous_object()->GetBlocked(class_name) ) {
+                previous_object()->SetBlocked(class_name);
+            }
+        }
+        previous_object()->eventPrint("You are no longer blocking any class "
+          "lines.", MSG_SYSTEM);
     }
     return 1;
 }

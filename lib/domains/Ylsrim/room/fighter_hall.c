@@ -22,13 +22,13 @@ static void create() {
       "fighters into the fold.  A magnificent oak door stands north.");
     SetObviousExits("s, n");
     SetExits( ([
-	"north" : ({ "/domains/Ylsrim/room/"+ "fighter", (: CheckFighter :) }),
-	"south" : "/domains/Ylsrim/room/"+ "kaliid5"
+        "north" : ({ "/domains/Ylsrim/room/"+ "fighter", (: CheckFighter :) }),
+        "south" : "/domains/Ylsrim/room/"+ "kaliid5"
       ]) );
     SetInventory(([ "/domains/Ylsrim/npc/fighter" : 1 ]));
     SetItems( ([
-	({ "meeting","room","hall","fighter hall" }) : 
-	"New adventurers may become fighters here.",
+        ({ "meeting","room","hall","fighter hall" }) : 
+        "New adventurers may become fighters here.",
       ]) );
     SetDoor( "north", "/domains/Ylsrim/etc/fighter_door");
     SetListen("default","Sounds of old veterans recalling battles of "
@@ -41,8 +41,8 @@ int CheckFighter(string dir) {
     if( (int)this_player()->ClassMember("fighter") ||
       (int)creatorp(this_player()) ) return 1;
     if( ob = present("fighter", this_object()) ) {
-	ob->eventForce("speak I cannot allow you to enter the halls of the great warriors of Ylsrim");
-	return 0;
+        ob->eventForce("speak I cannot allow you to enter the halls of the great warriors of Ylsrim");
+        return 0;
     }
     else return 1;
 }

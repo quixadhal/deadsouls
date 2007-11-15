@@ -9,18 +9,18 @@ int cmd(string str) {
 
     if(!archp(previous_object())) return 0;
     if(res=catch(sites = (string *)call_other(BANISH_D, "query_registered"))) {
-	write("Error in checking sites: "+res+"\n");
-	return 1;
+        write("Error in checking sites: "+res+"\n");
+        return 1;
     }
     sites = sort_array(sites, "order_sites", this_object());
     if(str) {
-	if(member_array(str, sites) == -1)
-	    write("Site \""+str+"\" is not currently on registration.\n");
-	else write("Site \""+str+"\" is currently on registration.\n");
+        if(member_array(str, sites) == -1)
+            write("Site \""+str+"\" is not currently on registration.\n");
+        else write("Site \""+str+"\" is currently on registration.\n");
     }
     else {
-	write("These sites must currently registered in order to get characters:\n");
-	this_player()->more(explode(format_page(sites, 5), "\n"));
+        write("These sites must currently registered in order to get characters:\n");
+        this_player()->more(explode(format_page(sites, 5), "\n"));
     }
     return 1;
 }
@@ -32,10 +32,10 @@ int order_sites(string alpha, string beta) {
     a = explode(alpha, ".");
     b = explode(beta, ".");
     for(i=0; i<sizeof(a) && i<sizeof(b); i++) {
-	if(!(x = to_int(a[i]))) return -1;
-	if(!(y = to_int(b[i]))) return 1;
-	if(x > y) return 1;
-	if(y > x) return -1;
+        if(!(x = to_int(a[i]))) return -1;
+        if(!(y = to_int(b[i]))) return 1;
+        if(x > y) return 1;
+        if(y > x) return -1;
     }
     if(sizeof(a) < sizeof(b)) return -1;
     else return (sizeof(a) > sizeof(b));

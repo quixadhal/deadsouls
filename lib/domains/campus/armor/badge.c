@@ -26,22 +26,22 @@ void init(){
 }
 int nplh(string str){
     if(str=="heels"){
-	if(present(this_object()->GetKeyName(),this_player() ) ){
-	    write("There's no place like home!\n"+
-	      "You are transported by an awesome whirlwind somewhere "+
-	      "else...\n");
-	    this_player()->eventMoveLiving("/domains/campus/room/start");
-	    return 1;
-	}
-	write("You click your heels together...but feel "+
-	  "as though you're missing something.\n");
-	return 1;
+        if(present(this_object()->GetKeyName(),this_player() ) ){
+            write("There's no place like home!\n"+
+              "You are transported by an awesome whirlwind somewhere "+
+              "else...\n");
+            this_player()->eventMoveLiving("/domains/campus/room/start");
+            return 1;
+        }
+        write("You click your heels together...but feel "+
+          "as though you're missing something.\n");
+        return 1;
     }
 }
 int post_it(string str){
     if(present("chalkboard",environment(this_player())) && !creatorp(this_player()) ){
-	write("As a visitor, you are not allowed to post on creator boards.");
-	return 1;
+        write("As a visitor, you are not allowed to post on creator boards.");
+        return 1;
     }
 }
 string GetAffectLong(object ob) {

@@ -25,15 +25,15 @@ static void checkDisaster() {
 
     call_out((: checkDisaster :), 300);
     if( chance == 100 ) {
-	return;
+        return;
     }
     foreach(object room in rooms) {
-	count--;
-	if( room->eventDisaster(chance) ) {
-	    return;
-	}
-	if( count < 1 ) {
-	    return;
-	}
+        count--;
+        if( room->eventDisaster(chance) ) {
+            return;
+        }
+        if( count < 1 ) {
+            return;
+        }
     }
 }

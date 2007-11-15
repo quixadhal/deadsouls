@@ -84,7 +84,7 @@ void eventReconnect() {
     player::eventReconnect();
     LastCreatorAge = time();
     if( file_exists(tmp = user_path(GetKeyName()) + "dead.edit") )
-	message("system", "\nYour edit file was saved as: "+tmp, this_object());
+        message("system", "\nYour edit file was saved as: "+tmp, this_object());
 }
 
 varargs int eventShow(object who, string str, string on_id) {
@@ -98,8 +98,8 @@ void eventDescribeEnvironment(int verbose) {
     object env;
 
     if( !(env = environment()) ) {
-	message("room_description", "No environment.", this_object());
-	return;
+        message("room_description", "No environment.", this_object());
+        return;
     }
     message("system", file_name(env), this_object());
     player::eventDescribeEnvironment(verbose);
@@ -126,12 +126,12 @@ int Setup() {
     if( archp() ) AddChannel( ({ "admin", "error" }) );
     AddSearchPath( ({ DIR_CREATOR_CMDS, DIR_SECURE_CREATOR_CMDS }) );
     if( file_size(tmp = user_path(GetKeyName()) + "cmds") == -2 )
-	AddSearchPath( ({ tmp }) );
+        AddSearchPath( ({ tmp }) );
     if( archp() ) AddSearchPath( ({ DIR_ADMIN_CMDS, DIR_SECURE_ADMIN_CMDS }) );
     if( bugs = (int)BUGS_D->GetAssignedBugs(GetKeyName()) )
-	message("system", "\n        >>>  You have " +
-	  consolidate(bugs, "an incomplete bug") +
-	  " assigned to you!!!!  <<<\n", this_object());
+        message("system", "\n        >>>  You have " +
+          consolidate(bugs, "an incomplete bug") +
+          " assigned to you!!!!  <<<\n", this_object());
     NOTIFY_D->eventPrintNotices(this_object(), laston);
     return 1;
 }

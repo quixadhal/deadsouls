@@ -34,7 +34,7 @@ mixed can_shout_str(string str) {
 mixed can_shout_in_wrd_str(string lang, string str) {
     if( !lang || !str ) return 0;
     if( !creatorp(this_player()) && (int)this_player()->GetStaminaPoints()<100 )
-	return "You are too tired to shout.";
+        return "You are too tired to shout.";
     if( strlen(str) > 250 ) return "That is way too much to shout!";
     return (mixed)this_player()->CanSpeak(0, TALK_WORLD, str, lang);
 }
@@ -51,7 +51,7 @@ mixed do_shout_str(string str) {
 
 mixed do_shout_in_wrd_str(string lang, string str) {
     if( str[<1] != '!' && str[<1] != '?' && str[<1] != '.' )
-	str = capitalize(str) + ".";
+        str = capitalize(str) + ".";
     else str = capitalize(str);
     this_player()->AddStaminaPoints(-100);
     return (mixed)this_player()->eventSpeak(0, TALK_WORLD, str, lang);

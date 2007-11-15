@@ -15,6 +15,6 @@ void create() {
     SetItems( 
       (["road" : "It is temporarily blocked going east."]) );
     SetExits( ([ 
-	"west" : "/domains/Praxis/s_centre3",
+        "west" : "/domains/Praxis/s_centre3",
       ]) );
 }

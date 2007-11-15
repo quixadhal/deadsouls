@@ -10,6 +10,8 @@ projectile defense:0:0
 bargaining:0:0
 stealth:0:0
 stealing:0:0
+detection:0:0
+concealment:0:0
 fishing:0:1
 murder:0:2
 blunt defense:1:1

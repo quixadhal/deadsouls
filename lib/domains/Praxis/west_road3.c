@@ -19,23 +19,23 @@ void create() {
       "lies far south of here.");
     SetItems(
       (["tree" : "It must be older than Praxis itself.",
-	"hole" : "You might even be able to enter the tree.",
-	"road" : "This end of the road is shaded by the huge "
-	"tree of mysterious origins.",
-	"foo" : "You're daft.",
-	"bar" : "Had to check that too, eh?"]) );
+        "hole" : "You might even be able to enter the tree.",
+        "road" : "This end of the road is shaded by the huge "
+        "tree of mysterious origins.",
+        "foo" : "You're daft.",
+        "bar" : "Had to check that too, eh?"]) );
     SetExits( 
       (["south" : "/domains/Praxis/west_road2"]) );
 }
 
 int enter(string str) {
     if(!str) {
-	notify_fail("Enter what?\n");
-	return 0;
+        notify_fail("Enter what?\n");
+        return 0;
     }
     if(str != "hole" && str != "tree") {
-	notify_fail("You can't do that here.\n");
-	return 0;
+        notify_fail("You can't do that here.\n");
+        return 0;
     }
     this_player()->eventMoveLiving("/domains/Praxis/mage_join", "into the tree");
     return 1;

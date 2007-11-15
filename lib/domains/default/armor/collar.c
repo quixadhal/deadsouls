@@ -15,7 +15,7 @@ static void create(){
       "seems to be coated with a fine, clear resin. There is something "+
       "written on the collar.");
     SetProperties(([
-	"no steal" : 1,
+        "no steal" : 1,
       ]));
     SetRead("Disease and parasite repellent collar, test character use only.");
     SetMass(10);

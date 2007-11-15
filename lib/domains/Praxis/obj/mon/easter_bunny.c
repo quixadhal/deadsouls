@@ -18,9 +18,9 @@ void create() {
     SetHealthPoints(500000);
     SetAction(10,
       ({ "The Easter Bunny drools.\n",
-	"The Easter Bunny farts at you.\n",
-	"The Easter bunny looks around, confused.\n",
-	"The Easter Bunny mumbles about rotten eggs.\n" })
+        "The Easter Bunny farts at you.\n",
+        "The Easter bunny looks around, confused.\n",
+        "The Easter Bunny mumbles about rotten eggs.\n" })
     );
     SetSkill("melee", 400);
     SetRace("rodent");
@@ -41,10 +41,10 @@ void egghead(string who) {
     ob = present(who, environment(this_object()));
     if(!ob) return;
     if(random(101) < 25) {
-	tell_object(ob, "The Easter Bunny throws an egg at you!\n");
-	tell_room(environment(this_object()), "The Easter Bunny throws an egg at "+ob->query_cap_name()+".\n", ({ ob }));
-	it = new("/domains/Praxis/obj/misc/easter_egg");
-	it->move(ob);
+        tell_object(ob, "The Easter Bunny throws an egg at you!\n");
+        tell_room(environment(this_object()), "The Easter Bunny throws an egg at "+ob->query_cap_name()+".\n", ({ ob }));
+        it = new("/domains/Praxis/obj/misc/easter_egg");
+        it->move(ob);
     }
 }
 
@@ -52,10 +52,10 @@ void heart_beat() {
     object it;
     count_eggs++;
     if(count_eggs > 60) {
-	count_eggs = 0;
-	it = new("/domains/Praxis/obj/misc/easter_egg");
-	it->move(this_object());
-	eventForce("hide egg");
+        count_eggs = 0;
+        it = new("/domains/Praxis/obj/misc/easter_egg");
+        it->move(this_object());
+        eventForce("hide egg");
     }
     ::heart_beat();
 }

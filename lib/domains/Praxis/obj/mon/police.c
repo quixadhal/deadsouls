@@ -16,7 +16,7 @@ void heart_beat() {
     if(!__Target || (int)__Target->query_ghost()) go_home();
     ::heart_beat();
     if(__Target && environment(__Target) != environment(this_object()))
-	go_home();
+        go_home();
 }
 
 void set_target(object ob) {

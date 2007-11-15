@@ -20,14 +20,14 @@ int GetClass() {
     int blessing = GetProperty("blessed");
 
     if( !intp(blessing) ) {
-	blessing = 0;
+        blessing = 0;
     }
     return (Class + blessing);
 }
 
 int SetClass(int x) {
     if( x > MaxClass ) {
-	MaxClass = x;
+        MaxClass = x;
     }
     return (Class = x);
 }

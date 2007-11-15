@@ -24,8 +24,8 @@ mixed can_speak() { return "Speak what? In what language?"; }
 mixed can_speak_in_wrd(string str) {
     mixed ret = this_player()->CanSpeak(0, TALK_LOCAL, "foo", str);
     if(intp(ret)) {
-	write("You are now speaking in "+capitalize(lower_case(str))+".");
-	return 1;
+        write("You are now speaking in "+capitalize(lower_case(str))+".");
+        return 1;
     }
     else return ret;
 }
@@ -63,7 +63,7 @@ mixed do_speak_str(string str) {
 
 mixed do_speak_in_wrd_str(string lang, string str) {
     if( str[<1] != '.' && str[<1] != '?' && str[<1] != '!' )
-	str = capitalize(str) + ".";
+        str = capitalize(str) + ".";
     else str = capitalize(str);
     return (mixed)this_player()->eventSpeak(0, TALK_LOCAL, str, lang);
 }

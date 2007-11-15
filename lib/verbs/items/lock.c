@@ -26,7 +26,7 @@ static void create() {
 
 mixed can_lock_obj_with_obj(string verb) {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     return this_player()->CanManipulate();
 }

@@ -35,40 +35,40 @@ varargs string SetComposition(string comp, string name, string *nouns, string *a
     string tmp;
 
     if(name) {
-	Name = name;
-	SetKeyName(name);
+        Name = name;
+        SetKeyName(name);
     }
 
     if(comp) Composition = comp;
 
     if(comp && !Desc){
-	tmp = replace_string(GetLong(),"clay",comp);
-	SetLong(tmp);
+        tmp = replace_string(GetLong(),"clay",comp);
+        SetLong(tmp);
     }
 
     if(comp && !ShortDesc){
-	tmp = replace_string(GetShort(),"clay",comp);
-	SetShort(tmp);
+        tmp = replace_string(GetShort(),"clay",comp);
+        SetShort(tmp);
     }
 
     if(sizeof(nouns)){
-	Nouns = nouns;
-	SetId(nouns);
+        Nouns = nouns;
+        SetId(nouns);
     }
 
     if(desc){
-	Desc = desc;
-	SetLong(desc);
+        Desc = desc;
+        SetLong(desc);
     }
 
     if(short){
-	ShortDesc = short;
-	SetShort(short);
+        ShortDesc = short;
+        SetShort(short);
     }
 
     if(sizeof(adjs)){
-	Adjs = adjs;
-	SetAdjectives(adjs);
+        Adjs = adjs;
+        SetAdjectives(adjs);
     }
 
     return Composition;

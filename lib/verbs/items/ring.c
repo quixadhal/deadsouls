@@ -23,7 +23,7 @@ static void create() {
 
 mixed can_ring_obj() {
     if( this_player()->GetParalized() > 0 ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     return this_player()->CanManipulate();
 }

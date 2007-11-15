@@ -16,9 +16,9 @@ static void create() {
     SetGender("male");
     SetMelee(1);
     SetAction(5, ({ 
-	"The horse snorts.", "You hear the horse whinny.", 
-	"The horse flips its tail in the air.",
-	"The horse looks around."}));
+        "The horse snorts.", "You hear the horse whinny.", 
+        "The horse flips its tail in the air.",
+        "The horse looks around."}));
     SetNoClean(1);
 }
 void init(){

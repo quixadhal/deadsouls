@@ -28,35 +28,35 @@ mixed can_party_wrd(string cmd) {
     if( !cmd ) return 0;
     switch( cmd ) {
     case "disband":
-	return (mixed)PARTY_D->CanRemoveParty(this_player());
+        return (mixed)PARTY_D->CanRemoveParty(this_player());
 
     case "leave":
-	return (mixed)PARTY_D->CanLeaveParty(this_player());
+        return (mixed)PARTY_D->CanLeaveParty(this_player());
 
     default:
-	return "That doesn't seem to be something you can do.";
+        return "That doesn't seem to be something you can do.";
     }
 }
 
 mixed can_party_wrd_wrd(string cmd, string party) {
     if( !cmd || !party ) return 0;
     if(cmd == "invite"){
-	if(!party || !present(party,environment(this_player()))){
-	    return "That person isn't here.";
-	}
-	if(!living(present(party,environment(this_player())))){
-	    return "That is not a living thing.";
-	}
+        if(!party || !present(party,environment(this_player()))){
+            return "That person isn't here.";
+        }
+        if(!living(present(party,environment(this_player())))){
+            return "That is not a living thing.";
+        }
     }
     switch(cmd) {
     case "create":
-	return (mixed)PARTY_D->CanCreateParty(this_player(), party);
+        return (mixed)PARTY_D->CanCreateParty(this_player(), party);
 
     case "join":
-	return (mixed)PARTY_D->CanJoinParty(this_player(), party);
+        return (mixed)PARTY_D->CanJoinParty(this_player(), party);
 
     default:
-	return "It doesn't work that way.";
+        return "It doesn't work that way.";
     }
 }
 
@@ -66,30 +66,30 @@ mixed can_party_wrd_liv(string cmd) {
     case "invite":
     case "leader":
     case "remove":
-	return 1;
+        return 1;
 
     default:
-	return "That is an unknown party action.";
+        return "That is an unknown party action.";
     }
 }
 
 mixed do_party_wrd(string cmd) {
     switch(cmd) {
     case "disband":
-	return (mixed)PARTY_D->eventRemoveParty(this_player());
+        return (mixed)PARTY_D->eventRemoveParty(this_player());
 
     case "leave":
-	return (mixed)PARTY_D->eventLeaveParty(this_player());
+        return (mixed)PARTY_D->eventLeaveParty(this_player());
     }
 }
 
 mixed do_party_wrd_wrd(string cmd, string party) {
     switch(cmd) {
     case "create":
-	return (mixed)PARTY_D->eventCreateParty(this_player(), party);
+        return (mixed)PARTY_D->eventCreateParty(this_player(), party);
 
     case "join":
-	return (mixed)PARTY_D->eventJoinParty(this_player(), party);
+        return (mixed)PARTY_D->eventJoinParty(this_player(), party);
     }
 }
 
@@ -97,29 +97,29 @@ mixed do_party_wrd_liv(string cmd, object targ) {
     mixed foo;
     switch(cmd) {
     case "invite":
-	foo = (mixed)PARTY_D->CanInviteMember(this_player(), targ);
-	break; 
+        foo = (mixed)PARTY_D->CanInviteMember(this_player(), targ);
+        break; 
     case "leader":
-	foo = (mixed)PARTY_D->CanChangeLeader(this_player(), targ);
-	break;    
+        foo = (mixed)PARTY_D->CanChangeLeader(this_player(), targ);
+        break;    
     case "remove":
-	foo = (mixed)PARTY_D->CanRemoveMember(this_player(), targ);
-	break;
+        foo = (mixed)PARTY_D->CanRemoveMember(this_player(), targ);
+        break;
     default:
-	return "You fail to do that.";
+        return "You fail to do that.";
     }
     if( stringp(foo) ) 
-	return this_player()->eventPrint(foo), 1;    
+        return this_player()->eventPrint(foo), 1;    
     if( !foo || !intp(foo) ) return foo;
     switch(cmd) {
     case "invite":
-	return (mixed)PARTY_D->eventInviteMember(this_player(), targ);
+        return (mixed)PARTY_D->eventInviteMember(this_player(), targ);
 
     case "leader":
-	return (mixed)PARTY_D->eventChangeLeader(this_player(), targ);
+        return (mixed)PARTY_D->eventChangeLeader(this_player(), targ);
 
     case "remove":
-	return (mixed)PARTY_D->eventRemoveMember(this_player(), targ);
+        return (mixed)PARTY_D->eventRemoveMember(this_player(), targ);
     }
 }
 

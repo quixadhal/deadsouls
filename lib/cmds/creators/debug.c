@@ -9,9 +9,9 @@ mixed cmd(string str) {
     else if(!str && status) str = "off";
     if(str != "on" && str != "off") return 0;
     if(str == "on"){
-	write("You enable debugging.");
-	this_player()->SetProperty("debug", 1);
-	return 1;
+        write("You enable debugging.");
+        this_player()->SetProperty("debug", 1);
+        return 1;
     }
     write("You disable debugging.");
     this_player()->SetProperty("debug", 0);

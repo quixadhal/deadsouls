@@ -9,12 +9,12 @@ mixed cmd(string args) {
     string ret, where;
 
     if(!args || args == ""){
-	write("You'll need to be more specific. Try: help findfun");
-	return 1;
+        write("You'll need to be more specific. Try: help findfun");
+        return 1;
     }
     if(grepp(args,"-a ")){
-	where = "/";
-	args = replace_string(args,"-a ","");
+        where = "/";
+        args = replace_string(args,"-a ","");
     }
     else where = "/lib";
 

@@ -10,17 +10,17 @@ int cmd(string str) {
     object ob;
 
     if(!str || str == "here") {
-	environment(this_player())->reset();
-	write("You reset the room.\n");
-	return 1;
+        environment(this_player())->reset();
+        write("You reset the room.\n");
+        return 1;
     }
     ob = present(str, environment(this_player()));
     if(!ob) ob = present(str, this_player());
     if(!ob) ob = parse_objects(environment(this_player()), str);
     if(!ob) ob = parse_objects(this_player(), str);
     if(!ob) {
-	write("That object can't be found.");
-	return 1;
+        write("That object can't be found.");
+        return 1;
     }
     else ob->reset();
     write("You reset "+str+".\n");

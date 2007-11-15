@@ -18,29 +18,29 @@ mixed cmd(string str) {
     if(!ob) ob = find_living(lower_case(str));
     if(ob) dude = ob;
     if(ob && objectp(ob) && (!ob->GetInvis() || !archp(ob)) && ob=environment(ob)) {
-	if(ob == environment(this_player())) {
-	    message("my_action", "You twitch.", this_player());
-	    if(hiddenp(this_player())) return 1;
-	    message("other_action", (string)this_player()->GetName()+
-	      " twitches.", ob, ({ this_player() }));
-	    return 1;
-	}
-	riders=ob->GetRiders();
-	if(riders && sizeof(riders) && member_array(dude,riders) != -1 &&
-	  environment(ob)){
-	    ob = environment(ob);
-	}
+        if(ob == environment(this_player())) {
+            message("my_action", "You twitch.", this_player());
+            if(hiddenp(this_player())) return 1;
+            message("other_action", (string)this_player()->GetName()+
+              " twitches.", ob, ({ this_player() }));
+            return 1;
+        }
+        riders=ob->GetRiders();
+        if(riders && sizeof(riders) && member_array(dude,riders) != -1 &&
+          environment(ob)){
+            ob = environment(ob);
+        }
     }
     if(ob && ob->GetInvis() && creatorp(ob) && !archp(this_player())) ob = 0;
     if(!ob) str = absolute_path((string)this_player()->query_cwd(), str);
     if(ob) {
-	this_player()->eventMoveLiving(ob);
-	return 1;
+        this_player()->eventMoveLiving(ob);
+        return 1;
     }
     if(!file_exists(str)) str += ".c";
     if(!file_exists(str)) {
-	write("Location not found.");
-	return 1;
+        write("Location not found.");
+        return 1;
     }
     else this_player()->eventMoveLiving(str);
     return 1;

@@ -16,15 +16,15 @@ static void create() {
     //\n%^GREEN%^There is a small sign "+  
     // "you can read, posted over a porthole set in the wall.");
     SetItems(([
-	({"wall","walls","corridor","hall"}) : "The thick, metal walls here are scarred "+
-	"and badly corroded. Wherever you are, it's seen heavy use in the distant past.",
-	({"lights","light","neon lights"}) : "Overhead neon lights. They appear on the "+
-	"verge of failure.",
-	({"floor","ground"}) : "The floor is composed of metal plates welded together, "+
-	"with raised traction cleats.",
-	({"cleat","cleats"}) : "Little raised bumps on the floor so you won't slip and fall.",
-	({"hole","port","porthole","access port"}) : "An exit set in the wall, providing maintenance access.",
-	({"sign"}) : "A small, stenciled sign with writing on it.",
+        ({"wall","walls","corridor","hall"}) : "The thick, metal walls here are scarred "+
+        "and badly corroded. Wherever you are, it's seen heavy use in the distant past.",
+        ({"lights","light","neon lights"}) : "Overhead neon lights. They appear on the "+
+        "verge of failure.",
+        ({"floor","ground"}) : "The floor is composed of metal plates welded together, "+
+        "with raised traction cleats.",
+        ({"cleat","cleats"}) : "Little raised bumps on the floor so you won't slip and fall.",
+        ({"hole","port","porthole","access port"}) : "An exit set in the wall, providing maintenance access.",
+        ({"sign"}) : "A small, stenciled sign with writing on it.",
       ]));
     SetEnters( ([ 
       ]) );
@@ -32,7 +32,7 @@ static void create() {
     AddExit("north","/domains/campus/room/access4");
     AddExit("south","/domains/campus/room/access6");
     SetInventory(([
-	"/domains/campus/npc/rat" :1
+        "/domains/campus/npc/rat" :1
       ]));
     ob=new("/domains/campus/npc/rat");
     ob->SetMaxHealthPoints(4);

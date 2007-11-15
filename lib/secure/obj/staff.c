@@ -24,7 +24,7 @@ static void create(){
       "and lumpy. However, it feels quite sturdy "+
       "and solid. For more info: help staff");
     SetProperties(([
-	"no steal" : 1,
+        "no steal" : 1,
       ]));
     SetVendorType(VT_WEAPON);
     SetDamagePoints(50);

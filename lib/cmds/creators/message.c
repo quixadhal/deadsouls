@@ -12,19 +12,19 @@ mixed cmd(string args) {
     string type, msg;
 
     if( !args || args == "" ) {
-	mapping msgs;
-	string *cles;
-	int i;
-	string tmp = "";
+        mapping msgs;
+        string *cles;
+        int i;
+        string tmp = "";
 
-	i = sizeof(cles = keys(msgs = (mapping)this_player()->GetMessages()));
-	while(i--) tmp += sprintf("%:-10s %s\n", cles[i], msgs[cles[i]]);
-	message("system", tmp, this_player());
-	return 1;
+        i = sizeof(cles = keys(msgs = (mapping)this_player()->GetMessages()));
+        while(i--) tmp += sprintf("%:-10s %s\n", cles[i], msgs[cles[i]]);
+        message("system", tmp, this_player());
+        return 1;
     }
     if( sscanf(args, "%s %s", type, msg) != 2) return "Set it to what?";
     if( !((int)this_player()->SetMessage(type, msg)) )
-	return "Invalid message type.";
+        return "Invalid message type.";
     message("system", "Message " + type + " changed to:\n" + msg, 
       this_player());
     return 1;

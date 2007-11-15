@@ -16,14 +16,14 @@ void create() {
       "back towards the main village. East you can see another path heading off."); 
     SetItems(
       (["footpath" : "A small path through the huge North Forest.",
-	"forest" : "The North Forest.  It is not a very well-traveled "
-	"place.",
-	({ "trees", "tree" }) : "The trees are huge and forebodding.",
-	"foliage" : "The foliage is a very dark coloured green."
+        "forest" : "The North Forest.  It is not a very well-traveled "
+        "place.",
+        ({ "trees", "tree" }) : "The trees are huge and forebodding.",
+        "foliage" : "The foliage is a very dark coloured green."
       ]) );
     SetExits( ([ 
-	"south" : "/domains/Praxis/forest1",
-	"north" : "/domains/Praxis/forest3",
+        "south" : "/domains/Praxis/forest1",
+        "north" : "/domains/Praxis/forest3",
       ]) );
 }
 

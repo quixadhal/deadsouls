@@ -52,14 +52,14 @@ int eventCast(object who, int level, string race, object array targets) {
     protection->end = (: endCallback :);
     target->AddMagicProtection(protection);
     if( target == who ) {
-	send_messages("", "A %^BOLD%^CYAN%^translucent magical shield%^RESET%^ "
-	  "suddenly appears around $agent_possessive_noun body.", who, 0,
-	  environment(target));
+        send_messages("", "A %^BOLD%^CYAN%^translucent magical shield%^RESET%^ "
+          "suddenly appears around $agent_possessive_noun body.", who, 0,
+          environment(target));
     }
     else {
-	send_messages("", "A %^BOLD%^CYAN%^translucent magical shield%^RESET%^ "
-	  "suddenly appears around $target_possessive_noun body.", who,
-	  target, environment(target));
+        send_messages("", "A %^BOLD%^CYAN%^translucent magical shield%^RESET%^ "
+          "suddenly appears around $target_possessive_noun body.", who,
+          target, environment(target));
     }
     return 1;
 }
@@ -71,10 +71,10 @@ int hitCallback(object who, object agent, int x, class MagicProtection cl) {
     if( (int)agent->GetUndead() ) return 0;
     str = (string)agent->GetName() || (string)agent->GetShort();
     if( who == Caster ) {
-	who->eventTrainSkill("magic defense",cl->args,x,1);
+        who->eventTrainSkill("magic defense",cl->args,x,1);
     }
     else if( Caster && playerp(who) && Caster != who ) {
-	Caster->eventTrainSkill("magic defense",cl->args,0,1);
+        Caster->eventTrainSkill("magic defense",cl->args,0,1);
     } 
 
     send_messages("", "The %^YELLOW%^magical shield%^RESET%^ around "
@@ -85,7 +85,7 @@ int hitCallback(object who, object agent, int x, class MagicProtection cl) {
 
 void endCallback(object who) {
     if( who ) {
-	send_messages("", "The %^BOLD%^CYAN%^magical shield%^RESET%^ around "
-	  "$agent_name shatters into nothingness.", who, 0, environment(who));
+        send_messages("", "The %^BOLD%^CYAN%^magical shield%^RESET%^ around "
+          "$agent_name shatters into nothingness.", who, 0, environment(who));
     }
 }

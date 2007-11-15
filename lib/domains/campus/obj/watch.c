@@ -28,21 +28,21 @@ void init(){
 }
 int pre_check(string str){
     if(!str){
-	this_object()->check_time("time");
-	return 1;
+        this_object()->check_time("time");
+        return 1;
     }
 }
 int check_time(string str){
     if(str=="time" || str=="watch"){
-	if(present("pocket watch",this_player())){
-	    tzone="/daemon/timezone"->GetTZ();
-	    l_time="/daemon/current_time"->GetCurrentTime(tzone);
-	    write("Checking the pocket watch, you see it is "+l_time+".\n");
-	    say(this_player()->GetName()+" checks "+possessive(this_player())+
-	      " pocket watch.\n");
-	    return 1;
-	}
-	write("You cannot read the watch face from here.\n");
-	return 1;
+        if(present("pocket watch",this_player())){
+            tzone="/daemon/timezone"->GetTZ();
+            l_time="/daemon/current_time"->GetCurrentTime(tzone);
+            write("Checking the pocket watch, you see it is "+l_time+".\n");
+            say(this_player()->GetName()+" checks "+possessive(this_player())+
+              " pocket watch.\n");
+            return 1;
+        }
+        write("You cannot read the watch face from here.\n");
+        return 1;
     }
 }

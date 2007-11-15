@@ -30,26 +30,26 @@ mixed CanMarry(object who, object spouse1, object spouse2) {
     mixed tmp;
 
     if( (tmp = spouse1->CanMarry(who, spouse2)) != 1 ) {
-	if( tmp ) return tmp;
-	else return (string)spouse1->GetName() + " cannot be married.";
+        if( tmp ) return tmp;
+        else return (string)spouse1->GetName() + " cannot be married.";
     }
     if( (tmp = spouse2->CanMarry(who, spouse1)) != 1 ) {
-	if( tmp ) return tmp;
-	else return (string)spouse2->GetName() + " cannot be married.";
+        if( tmp ) return tmp;
+        else return (string)spouse2->GetName() + " cannot be married.";
     }
     if( archp(who) ) {
-	return 1;
+        return 1;
     }
     return 1;
 }
 
 mixed CanSacrifice(object who, object what, string deus) {
     if( (string)who->GetReligion(1) != Religion[1] )
-	return "You must hold the beliefs of " + Religion[1] + " to do that.";
+        return "You must hold the beliefs of " + Religion[1] + " to do that.";
     if( !((int)what->GetVendorType() & SacrificeType) )
-	return "You cannot sacrifice that here.";
+        return "You cannot sacrifice that here.";
     if( member_array(deus, DeityIds) == -1 )
-	return "You do not worship anything called \"" + deus + "\".";
+        return "You do not worship anything called \"" + deus + "\".";
     return AllowSacrifice;
 }
 
@@ -58,8 +58,8 @@ mixed eventMarry(object who, object spouse1, object spouse2) {
 
     if( (tmp = spouse1->eventMarry(who, spouse2)) != 1 ) return tmp;
     if( (tmp = spouse2->eventMarry(who, spouse1)) != 1 ) {
-	spouse1->SetMarried(0);
-	return tmp;
+        spouse1->SetMarried(0);
+        return tmp;
     }
     spouse1->eventPrint((string)who->GetName() + " weds you to " +
       (string)spouse2->GetName() + ".");

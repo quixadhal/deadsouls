@@ -22,13 +22,13 @@ static void create() {
 static void heart_beat() {
     eventDecreaseFuel(1);
     if( GetFuelAmount() < 1) {
-	eventDarken();
+        eventDarken();
     }
 }
 
 mixed direct_light_obj() {
     if( GetFuelAmount() < 1 )
-	return "There is no " + GetFuelType() + " in " + GetShort() + ".";
+        return "There is no " + GetFuelType() + " in " + GetShort() + ".";
     return 1;
 }
 

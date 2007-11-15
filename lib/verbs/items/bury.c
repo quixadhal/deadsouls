@@ -12,11 +12,11 @@ inherit LIB_VERB;
 
 static void eventBury(object who, object tool, object what, object check) {
     if( !who || environment(who) != check ) {
-	return;
+        return;
     }
     if( !tool || (environment(tool) != who) ) {
-	who->eventPrint("You have lost your digging equipment.");
-	return;
+        who->eventPrint("You have lost your digging equipment.");
+        return;
     }
     tool->eventBuryWith(who, what);
 }
@@ -25,13 +25,13 @@ varargs static void eventPrepareBury(object who, object tool, object what) {
     function f = (: eventBury($(who), $(tool), $(what),environment($(who))) :);
 
     if( who->GetInCombat() ) {
-	send_messages("start", "$agent_name $agent_verb to bury " +
-	  "with " + tool->GetShort() + ".", who, 0,
-	  environment(who));
-	who->SetAttack(0, f, ROUND_OTHER);
+        send_messages("start", "$agent_name $agent_verb to bury " +
+          "with " + tool->GetShort() + ".", who, 0,
+          environment(who));
+        who->SetAttack(0, f, ROUND_OTHER);
     }
     else {
-	evaluate(f);
+        evaluate(f);
     }
 }
 
@@ -47,10 +47,10 @@ static void create() {
 
 mixed can_bury_str_with_obj() {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything!";
+        return "You cannot do anything!";
     }
     if( this_player()->GetPosition() != POSITION_STANDING ) {
-	return "You can only bury things while standing!";
+        return "You can only bury things while standing!";
     }
     return this_player()->CanManipulate();
 }

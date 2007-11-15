@@ -34,8 +34,8 @@ EndText
     SetProperty( "no peer", 1);
 
     SetExits( ([  
-	"north" : EXPATH + "exroom6",
-	"south" : EXPATH + "exroom4",
+        "north" : EXPATH + "exroom6",
+        "south" : EXPATH + "exroom4",
       ]));
 }
 
@@ -63,13 +63,13 @@ mixed aa_ring(string str)
 {
     int numrings;
     if (str!="bell" && str!="doorbell" && str!="door bell")
-	return notify_fail("Ring what?\n");
+        return notify_fail("Ring what?\n");
     /* if "rung_bell" has not been set in the player, a query() for it
        will return UNDEFINED.  you CAN add 1 to an undefined to get 1.
 
-	they just rang it one more time, so we'll take what was there and
-	add one.  Then we'll put the new value back into the temp var
-	**see note at bottom of file.
+        they just rang it one more time, so we'll take what was there and
+        add one.  Then we'll put the new value back into the temp var
+        **see note at bottom of file.
     */
     numrings=this_player()->GetProperty("rung_bell")+1;  
     this_player()->SetProperty("rung_bell",numrings);
@@ -78,13 +78,13 @@ mixed aa_ring(string str)
 
     if ( numrings>5  )
     {
-	if (!present("orc",this_object())) //nested if. see NOTE 2.
-	{
-	    write("Now you've done it!  An orc walks in a bonks you on the head.\n");
-	    say("Now " + this_player()->GetName() + " has done it!  An orc walks in a bonks " +
-	      objective(this_player()) +  " on the head.\n");
-	    clone_object(ORC)->eventMove(this_object());  //this_object IS -this- room!
-	}
+        if (!present("orc",this_object())) //nested if. see NOTE 2.
+        {
+            write("Now you've done it!  An orc walks in a bonks you on the head.\n");
+            say("Now " + this_player()->GetName() + " has done it!  An orc walks in a bonks " +
+              objective(this_player()) +  " on the head.\n");
+            clone_object(ORC)->eventMove(this_object());  //this_object IS -this- room!
+        }
     }
     return 1;
 }
@@ -112,7 +112,7 @@ in the add_action i did the following:
 I COULD have eliminated the variable numrings :
 
     this_player()->SetProperty("rung_bell",
-	this_player()->GetProperty("rung_bell") + 1);
+        this_player()->GetProperty("rung_bell") + 1);
     if (this_player()->GetProperty("rung_bell") > 5)
        etc...
 
@@ -128,10 +128,10 @@ as well as good comments.  Never be afraid of comments!
 NOTE 2! The nested if.  Could also have been written:
     if ( numrings>5 && ! present("orc",this_object()))
     {
-	 write("Now you've done it!  An ord walks in a bonks you on the head.\n");
-	 say("Now " + this_player->GetName() + " has done it!  An orc walks in a bonks " +
-	     objective(this_player()) " +  " on the head.\n");
-	 clone_object(ORC)->eventMove(this_object());  //this_object IS -this- room!
+         write("Now you've done it!  An ord walks in a bonks you on the head.\n");
+         say("Now " + this_player->GetName() + " has done it!  An orc walks in a bonks " +
+             objective(this_player()) " +  " on the head.\n");
+         clone_object(ORC)->eventMove(this_object());  //this_object IS -this- room!
     }
   But, if you are having problems with the booleans && || and the code
   is pretty clean & simple already, you might want to go the route

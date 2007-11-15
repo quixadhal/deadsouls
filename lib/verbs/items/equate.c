@@ -26,9 +26,9 @@ static void create() {
 
 mixed can_judge_obj_to_obj() {
     if( this_player()->GetLevel() < 6 ) {
-	this_player()->eventPrint("You are not experienced enough to judge "
-	  "the value of items accurately.");
-	return 0;
+        this_player()->eventPrint("You are not experienced enough to judge "
+          "the value of items accurately.");
+        return 0;
     }
     return this_player()->CanCastMagic(1, "judge");
 }
@@ -39,7 +39,7 @@ mixed do_judge_obj_to_obj(object obj1, object obj2) {
     string name1, name2;
     object caster = this_player();
     if( !((int)caster->GetSkillLevel("bargaining")) ) {
-	return "You do not have the skills to judge items."; }
+        return "You do not have the skills to judge items."; }
     if (!obj1 || !obj2) return "You must judge one thing vs another.";
     if (obj1 == obj2) return "That would do a lot of good!";
 
@@ -48,13 +48,13 @@ mixed do_judge_obj_to_obj(object obj1, object obj2) {
     name2 = obj2->GetShort();
 
     if( environment(obj1) != caster ) {
-	caster->eventPrint("You do not have "+name1+".");
-	return 1;
+        caster->eventPrint("You do not have "+name1+".");
+        return 1;
     }
 
     if( environment(obj2) != caster ) {
-	caster->eventPrint("You do not have "+name2+".");
-	return 1;
+        caster->eventPrint("You do not have "+name2+".");
+        return 1;
     }
 
     level = caster->GetSkillLevel("bargaining");
@@ -62,9 +62,9 @@ mixed do_judge_obj_to_obj(object obj1, object obj2) {
     environment(caster)->eventPrint( (string)caster->GetName() +
       " concentrates on " + name1 + " and " + name2 + ".", caster);
     if( (int)this_player()->GetInCombat() )
-	this_player()->SetAttack(0,
-	  (: eventJudge, this_player(), obj1, obj2, level :),
-	  ROUND_OTHER);
+        this_player()->SetAttack(0,
+          (: eventJudge, this_player(), obj1, obj2, level :),
+          ROUND_OTHER);
     else eventJudge(this_player(), obj1, obj2, level);
     return 1;
 }
@@ -79,15 +79,15 @@ int eventJudge(object caster, object obj1, object obj2, int level) {
 
     if( !(obj1 && obj2) ) return 0;
     if( (environment(obj1) != caster) || (environment(obj2) != caster) ) {
-	caster->eventPrint("You must have both items in your possesion "
-	  "to compare them.");
-	return 0;
+        caster->eventPrint("You must have both items in your possesion "
+          "to compare them.");
+        return 0;
     }
     if( cost > (int)caster->GetStaminaPoints() ) {
-	caster->eventPrint("You are too weary to judge right now.");
-	environment(caster)->eventPrint(
-	  (string)caster->GetName() + " looks tired.", caster);
-	return 0;
+        caster->eventPrint("You are too weary to judge right now.");
+        environment(caster)->eventPrint(
+          (string)caster->GetName() + " looks tired.", caster);
+        return 0;
 
     }
     caster->AddStaminaPoints(-cost);
@@ -96,31 +96,31 @@ int eventJudge(object caster, object obj1, object obj2, int level) {
 
     if( level < (5 + random(35))) {
 
-	if(random(7)) {
-	    if(random(5) < 2) {
-		better = obj2->GetShort();
-	    }
-	    else better = obj1->GetShort();
-	    caster->eventPrint("%^BOLD%^%^WHITE%^"
-	      "You determine that " + better + "%^BOLD%^%^WHITE%^"
-	      " is the more valuable object.%^RESET%^");
-	    return 0;
-	}
-	else caster->eventPrint("%^BOLD%^%^WHITE%^"
-	      "You determine that these two items are equally valuable."
-	      ".%^RESET%^");
-	caster->AddSkillPoints("bargaining",random(25));
-	return 1;
+        if(random(7)) {
+            if(random(5) < 2) {
+                better = obj2->GetShort();
+            }
+            else better = obj1->GetShort();
+            caster->eventPrint("%^BOLD%^%^WHITE%^"
+              "You determine that " + better + "%^BOLD%^%^WHITE%^"
+              " is the more valuable object.%^RESET%^");
+            return 0;
+        }
+        else caster->eventPrint("%^BOLD%^%^WHITE%^"
+              "You determine that these two items are equally valuable."
+              ".%^RESET%^");
+        caster->AddSkillPoints("bargaining",random(25));
+        return 1;
     }
     /* Return the right answer */
     if(obj1lvl == obj2lvl) {
-	caster->eventPrint("%^BOLD%^%^WHITE%^"
-	  "You determine that these two items are equally valuable."
-	  ".%^RESET%^");
-	return 1;
+        caster->eventPrint("%^BOLD%^%^WHITE%^"
+          "You determine that these two items are equally valuable."
+          ".%^RESET%^");
+        return 1;
     }
     if(obj1lvl > obj2lvl) {
-	better = obj1->GetShort();
+        better = obj1->GetShort();
     }
     else better = obj2->GetShort();
     caster->eventPrint("%^BOLD%^%^WHITE%^"

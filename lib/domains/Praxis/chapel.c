@@ -10,15 +10,15 @@ void create() {
     SetShort("The chapel");
     SetLong( 
       sprintf("The %s chapel is solemn and ancient with stained glass "
-	"windows and dark oak pews.  Most wedding ceremonies "
-	"are performed here.  Type <help marriage> for "
-	"information on weddings.", mud_name()) );
+        "windows and dark oak pews.  Most wedding ceremonies "
+        "are performed here.  Type <help marriage> for "
+        "information on weddings.", mud_name()) );
     SetItems(
       (["pews" : "Ancient oak seats, darkened by eons of "
-	"bottoms resting on them.",
-	"windows" : "The windows show highlights of "
-	"mud history, many of them gorey.",
-	"ceremony" : "The ceremony is only visible when you "
-	"scroll back."]) );
+        "bottoms resting on them.",
+        "windows" : "The windows show highlights of "
+        "mud history, many of them gorey.",
+        "ceremony" : "The ceremony is only visible when you "
+        "scroll back."]) );
 }
 

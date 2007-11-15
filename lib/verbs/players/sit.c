@@ -25,20 +25,20 @@ static void create() {
 
 mixed can_sit_down() {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything!";
+        return "You cannot do anything!";
     }
     if( this_player()->GetPosition() != POSITION_STANDING ) {
-	return "You must be standing in order to sit down!";
+        return "You must be standing in order to sit down!";
     }
     return 1;
 }
 
 mixed can_sit_up() {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything!";
+        return "You cannot do anything!";
     }
     if( this_player()->GetPosition() != POSITION_LYING ) {
-	return "You must be lying in order to sit up!";
+        return "You must be lying in order to sit up!";
     }
     return 1;
 }

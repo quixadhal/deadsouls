@@ -11,8 +11,8 @@ int cmd(string str){
     say(this_player()->GetCapName()+" waves "+possessive()+" hand "+
       "and brings peace to the area.");
     foreach(object combatant in get_livings(environment(this_player()))){
-	if(combatant->GetInCombat()) tell_object(combatant,"You stop fighting.");
-	combatant->eventQuell();
+        if(combatant->GetInCombat()) tell_object(combatant,"You stop fighting.");
+        combatant->eventQuell();
     }
 
     return 1;

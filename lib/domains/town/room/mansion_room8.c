@@ -13,7 +13,7 @@ static void create() {
       "the polished marble floors feature beautiful, "
       "dazzling designs.");
     SetExits( ([
-	"east" : "/domains/town/room/mansion_dhall3"
+        "east" : "/domains/town/room/mansion_dhall3"
       ]) );
 }
 void init(){

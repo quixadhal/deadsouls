@@ -25,8 +25,8 @@ void create() {
       "the list of races.");
     SetItems(
       (["room" : "The nothingness from which you will be born "
-	"into Nightmare.",
-	"list" : "A list of races that exist in the world of Nightmare."]) );
+        "into Nightmare.",
+        "list" : "A list of races that exist in the world of Nightmare."]) );
 }
 
 void init() {
@@ -34,11 +34,11 @@ void init() {
     add_action("read", "read");
     add_action("pick","pick");
     if (this_player()->query_exp() != 0) {
-	write("\nWelcome to Nightmare!\n"
-	  "Please choose a race for yourself.  Your race determines your main "
-	  "genetic attributes, strength, intelligence, dexterity, constitution, "
-	  "and charisma.");
-	this_player()->set_rolls(0); 
+        write("\nWelcome to Nightmare!\n"
+          "Please choose a race for yourself.  Your race determines your main "
+          "genetic attributes, strength, intelligence, dexterity, constitution, "
+          "and charisma.");
+        this_player()->set_rolls(0); 
     }
 }
 int pick(string str) {
@@ -49,23 +49,23 @@ int pick(string str) {
 
     Class = "child";
     if(!str) {
-	write("To pick a race, type \"pick whatever\", where whatever is the race.");
-	return 1;
+        write("To pick a race, type \"pick whatever\", where whatever is the race.");
+        return 1;
     }
     str = lower_case(str);
     if(str == "satyr" &&
       (string)this_player()->query_gender() != "male") {
-	write("You must be a male to be a satyr!\nPick again.");
-	return 1;
+        write("You must be a male to be a satyr!\nPick again.");
+        return 1;
     }
     else if(str == "nymph" && (string)this_player()->query_gender()
       != "female") {
-	write("You must be a female to be a nymph!\nPick again.");
-	return 1;
+        write("You must be a female to be a nymph!\nPick again.");
+        return 1;
     }
     if(member_array(str, (string *)RACES_D->query_races()) == -1) {
-	write("You must pick a race from the list!\nType <read list>\n");
-	return 1;
+        write("You must pick a race from the list!\nType <read list>\n");
+        return 1;
     }
     this_player()->SetRace(str);
     this_player()->new_body();
@@ -87,12 +87,12 @@ void do_rolls() {
     int i, tmp;
 
     if((int)this_player()->query_rolls() >3) {
-	write("You can roll your stats no more.");
-	return;
+        write("You can roll your stats no more.");
+        return;
     }
     write("You roll your stats.");
     for(i=0, tmp=sizeof(which=keys(borg=(mapping)RACES_D->do_rolls((string)this_player()->query_race()))); i<tmp; i++) 
-	this_player()->SetStat(which[i], borg[which[i]]);
+        this_player()->SetStat(which[i], borg[which[i]]);
     this_player()->set_rolls(this_player()->query_rolls()+1);
     return;
 }
@@ -101,12 +101,12 @@ int read(string str) {
     string *res;
     int i, j, tmp;
     if(!str) {
-	notify_fail("What do you want to read? A list?\n");
-	return 0;
+        notify_fail("What do you want to read? A list?\n");
+        return 0;
     }
     if(str != "list") {
-	notify_fail("That is not here to be read.\n");
-	return 0;
+        notify_fail("That is not here to be read.\n");
+        return 0;
     }
     write("These are the following races available in our reality:");
     write("-----------------------------------------------------------");

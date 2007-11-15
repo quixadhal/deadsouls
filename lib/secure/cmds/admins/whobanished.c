@@ -14,13 +14,13 @@ int cmd(string str) {
     if(!archp(previous_object())) return 0;
     noms = (string *)BANISH_D->query_banished();
     if(str) {
-	if(member_array(lower_case(str), noms) == -1) 
-	    write(str+" is not currently a banished name.\n");
-	else write(str+" is a banished name.\n");
+        if(member_array(lower_case(str), noms) == -1) 
+            write(str+" is not currently a banished name.\n");
+        else write(str+" is a banished name.\n");
     }
     else {
-	write("These names are currently banished:\n");
-	this_player()->more(explode(format_page(noms, 4), "\n"));
+        write("These names are currently banished:\n");
+        this_player()->more(explode(format_page(noms, 4), "\n"));
     }
     return 1;
 }

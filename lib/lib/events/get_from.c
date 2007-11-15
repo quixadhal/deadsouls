@@ -16,19 +16,19 @@ string GetShort();
 mixed CanGetFrom(object who, object item) {
 
     if( !item ) {
-	return 0;
+        return 0;
     }
     if( environment(item) != this_object() ) {
-	return 0;
+        return 0;
     }
     if( environment(item) != this_object() ) {
-	item = present(item->GetKeyName(),this_object());
-	if(!item) return 0;
+        item = present(item->GetKeyName(),this_object());
+        if(!item) return 0;
     }
 
     if( (environment() != environment(this_player())) &&
       (environment() != this_player()) ) {
-	return "#" + capitalize(GetShort()) + " is not in reach.";
+        return "#" + capitalize(GetShort()) + " is not in reach.";
     }
     return 1;
 }
@@ -38,20 +38,20 @@ mixed CanPutInto(object who, object item) {
 
     if((inherits(LIB_SIT,item) && sizeof(item->GetSitters())) ||
       (inherits(LIB_LIE,item) && sizeof(item->GetLiers()))){
-	write("There appears to be someone in your way.");
-	return 0;
+        write("There appears to be someone in your way.");
+        return 0;
     }
 
     if( item == this_object() ) {
-	return "#You cannot change the laws of physics.";
+        return "#You cannot change the laws of physics.";
     }
     env = environment();
     if( env != this_player() && env != environment(this_player()) ) {
-	return "#It is not within reach.";
+        return "#It is not within reach.";
     }
 
     if( this_object()->GetClosed() ){
-	return "#It's closed!";
+        return "#It's closed!";
     }
     return 1;
 }
@@ -61,19 +61,19 @@ mixed CanPutOnto(object who, object item) {
 
     if((inherits(LIB_SIT,item) && sizeof(item->GetSitters())) ||
       (inherits(LIB_LIE,item) && sizeof(item->GetLiers()))){
-	write("There appears to be someone preventing your access.");
-	return 0;
+        write("There appears to be someone preventing your access.");
+        return 0;
     }
 
     if(!inherits( LIB_SURFACE, item ) ){
-	return "#That isn't a load-bearing surface.";
+        return "#That isn't a load-bearing surface.";
     }
     if( item == this_object() ) {
-	return "#You cannot change the laws of physics.";
+        return "#You cannot change the laws of physics.";
     }
     env = environment();
     if( env != this_player() && env != environment(this_player()) ) {
-	return "#It is not within reach.";
+        return "#It is not within reach.";
     }
     return 1;
 }
@@ -88,52 +88,52 @@ mixed eventGetFrom(object who, object array what) {
 
     if((inherits(LIB_SIT,this_object()) && sizeof(this_object()->GetSitters())) || 
       (inherits(LIB_LIE,this_object()) && sizeof(this_object()->GetLiers()))){
-	write("There appears to be someone on there.");
-	return 0;
+        write("There appears to be someone on there.");
+        return 0;
     }
 
     foreach(object ob in what ) {
-	if( environment(ob) != this_object() ) {
-	    continue;
-	}
-	if( ob->CanGet(who) != 1 ) {
-	    write("It would appear you can't get "+ob->GetShort()+" right now.");
-	    continue;
-	}
-	if( !who->CanCarry(ob->GetMass()) ) {
-	    write("It seems you can't carry it.");
-	    continue;
-	}
-	if( !ob->eventMove(who) ) {
-	    who->eventPrint("You have a problem getting " +
-	      ob->GetShort() + ".");
-	    continue;
-	}
-	AddCarriedMass( -(ob->GetMass()) );
-	fin += ({ ob });
+        if( environment(ob) != this_object() ) {
+            continue;
+        }
+        if( ob->CanGet(who) != 1 ) {
+            write("It would appear you can't get "+ob->GetShort()+" right now.");
+            continue;
+        }
+        if( !who->CanCarry(ob->GetMass()) ) {
+            write("It seems you can't carry it.");
+            continue;
+        }
+        if( !ob->eventMove(who) ) {
+            who->eventPrint("You have a problem getting " +
+              ob->GetShort() + ".");
+            continue;
+        }
+        AddCarriedMass( -(ob->GetMass()) );
+        fin += ({ ob });
     }
     what = fin;
     if( !(maxi = sizeof(what)) ) {
-	return 0;
+        return 0;
     }
     shorts = map(what, (: (string)$1->GetShort() :));
     for(i=0; i<maxi; i++) {
-	mp[shorts[i]]++;
+        mp[shorts[i]]++;
     }
     maxi = sizeof(shorts = keys(mp));
     for(i=0, msg = ""; i<maxi; i++) {
-	if( mp[shorts[i]] < 2 ) {
-	    msg += shorts[i] + "%^RESET%^";
-	}
-	else {
-	    msg += consolidate(mp[shorts[i]], shorts[i]) +  "%^RESET%^";
-	}
-	if( i == maxi-2 ) {
-	    msg += ", and ";
-	}
-	else if( i != maxi-1 ) {
-	    msg += ", ";
-	}
+        if( mp[shorts[i]] < 2 ) {
+            msg += shorts[i] + "%^RESET%^";
+        }
+        else {
+            msg += consolidate(mp[shorts[i]], shorts[i]) +  "%^RESET%^";
+        }
+        if( i == maxi-2 ) {
+            msg += ", and ";
+        }
+        else if( i != maxi-1 ) {
+            msg += ", ";
+        }
     }
     send_messages("get", "$agent_name $agent_verb " + msg +
       " from $target_name.", who, this_object(), environment(who));
@@ -147,8 +147,8 @@ mixed eventPutInto(object who, object what) {
 mixed eventPutOnto(object who, object what) {
     if((inherits(LIB_SIT,this_object()) && sizeof(this_object()->GetSitters())) ||
       (inherits(LIB_LIE,this_object()) && sizeof(this_object()->GetLiers()))){
-	write("There appears to be someone in the way of that.");
-	return 0;
+        write("There appears to be someone in the way of that.");
+        return 0;
     }
     return what->eventPut(who, this_object()," onto ");
 }
@@ -164,7 +164,7 @@ int inventory_visible() {
 
 mixed indirect_get_obj_from_obj(object item, object container) {
     if(!item){
-	return 0;
+        return 0;
     }
 
     if(environment(item) != this_object()) return 0;
@@ -182,7 +182,7 @@ mixed indirect_get_obj_obj(object item, object container) {
 
 mixed indirect_get_obs_from_obj(object array items, object storage) {
     if( !items ) {
-	return (storage == this_object());
+        return (storage == this_object());
     }
     return 1;
 }
@@ -197,7 +197,7 @@ mixed indirect_get_obs_obj(object array items, object storage) {
 
 mixed indirect_put_obj_word_obj(object what, string word, object storage) {
     if( !what ) {
-	return (storage == this_object());
+        return (storage == this_object());
     }
     return CanPutInto(this_player(), what);
 }
@@ -208,7 +208,7 @@ mixed indirect_put_obj_obj(object what, string word, object storage) {
 
 mixed indirect_put_obs_word_obj(object *items, string wrd, object storage) {
     if( !items ) {
-	return (storage == this_object());
+        return (storage == this_object());
     }
     return 1;
 }

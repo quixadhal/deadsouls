@@ -11,9 +11,9 @@ void eventReceiveError(mixed *packet) {
     tn("ERROR RECEIVED: "+identify(packet));
     log_file("errors/intermud",timestamp()+" "+identify(packet)+"\n");
     if( packet[5] ) {
-	tn("exceptio probat regulam");
-	target = convert_name(packet[5]);
-	if( !(ob = find_player(target)) ) write("Can't find "+packet[5]);;
+        tn("exceptio probat regulam");
+        target = convert_name(packet[5]);
+        if( !(ob = find_player(target)) ) write("Can't find "+packet[5]);;
     }
     mud = packet[2];
     error_code = packet[6];
@@ -22,14 +22,14 @@ void eventReceiveError(mixed *packet) {
     tn("errorcode: "+error_code);
     switch(error_code) {
     case "unk-src":
-	update("/daemon/intermud");
-	return;
+        update("/daemon/intermud");
+        return;
     case "unk-dst": case "not-imp": case "unk-type":
-	return;
+        return;
     case "unk-user":
-	if( !ob ) return;
-	message("system", (msg ? msg : "Unknown user reported from " + mud +
-	    "."), ob);
-	return;
+        if( !ob ) return;
+        message("system", (msg ? msg : "Unknown user reported from " + mud +
+            "."), ob);
+        return;
     }
 }

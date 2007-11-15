@@ -22,24 +22,24 @@ mixed GoHome(string str) {
     if(!directory_exists(str)) return "That person has no creator dir.";
     str = user_path(who)+"workroom.c";
     if(!file_exists(str))
-	return capitalize(who)+" has no active workroom.";
+        return capitalize(who)+" has no active workroom.";
     ob = load_object(str);
     if(!ob){
-	if(who != this_player()->GetKeyName())
-	    return "\n"+capitalize(who)+"'s workroom is broken.";
-	return "\nYour workroom is broken.";
+        if(who != this_player()->GetKeyName())
+            return "\n"+capitalize(who)+"'s workroom is broken.";
+        return "\nYour workroom is broken.";
     }
     if(ob == prev)
-	return "You twitch.";
+        return "You twitch.";
     if(who == this_player()->GetKeyName())
-	if( (int)this_player()->eventMoveLiving(ob,"$N goes home.","$N returns home.") ) {
-	    return 1;
-	}
+        if( (int)this_player()->eventMoveLiving(ob,"$N goes home.","$N returns home.") ) {
+            return 1;
+        }
     if(who != this_player()->GetKeyName())
-	if( (int)this_player()->eventMoveLiving(ob,"$N leaves to visit "+capitalize(who)+".",
-	    "$N comes in for a visit.") ) {
-	    return 1;
-	}
+        if( (int)this_player()->eventMoveLiving(ob,"$N leaves to visit "+capitalize(who)+".",
+            "$N comes in for a visit.") ) {
+            return 1;
+        }
     return "You stay where you are.";
 }
 

@@ -35,7 +35,11 @@
 "suoro","voi","debil","kunel","shinel",\
 "sasikumea","zakila","txakurra","soustat","irrumator",\
 "mentula","koproskilo","malakas","la'a'za'zel","zayin",\
-"STENDEC","CROATOAN","LATUALATUKA",\
+"haakskeekah",\
+"desu","desu","desu","desu","desu","desu",\
+"desu","desu","desu","desu","desu","desu",\
+"desu","desu","desu","desu","desu","desu",\
+"UNITINU","STENDEC","CROATOAN","LATUALATUKA",\
 "ar","ot","ti","fi","na",\
 "ar","ot","ti","fi","na",\
 "ar","ot","ti","fi","na",\
@@ -63,18 +67,18 @@
 string translate(string str, int prof) {
     if( prof >= 100 ) return str;
     else {
-	string *words;
-	int fs, i, maxi;
+        string *words;
+        int fs, i, maxi;
 
-	fs = sizeof(FLUBS);
-	words = explode(str, " ");
-	for(i=0, maxi = sizeof(words); i < maxi; i++){
-	    string prefix = "";
-	    string suffix = "";
-	    if(!alphap(first(words[i],1))) prefix = first(words[i],1);
-	    if(!alphap(last(words[i],1))) suffix = last(words[i],1);
-	    if( random(100) >= prof ) words[i] = prefix+FLUBS[random(fs)]+suffix;
-	}
-	return implode(words, " ");
+        fs = sizeof(FLUBS);
+        words = explode(str, " ");
+        for(i=0, maxi = sizeof(words); i < maxi; i++){
+            string prefix = "";
+            string suffix = "";
+            if(!alphap(first(words[i],1))) prefix = first(words[i],1);
+            if(!alphap(last(words[i],1))) suffix = last(words[i],1);
+            if( random(100) >= prof ) words[i] = prefix+FLUBS[random(fs)]+suffix;
+        }
+        return implode(words, " ");
     }
 }

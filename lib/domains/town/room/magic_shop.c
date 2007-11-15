@@ -12,18 +12,18 @@ static void create() {
       "west and the town Mages' Guild is south. "+
       "\n%^GREEN%^There is a sign here you can read.%^RESET%^");
     SetItems(([
-	({"store","shop","place"}) : "This is the local magic shop.",
-	({ "sign" ,"sign on the wall" }): "A sign on the wall, meant for reading.",
+        ({"store","shop","place"}) : "This is the local magic shop.",
+        ({ "sign" ,"sign on the wall" }): "A sign on the wall, meant for reading.",
       ]));
     SetExits( ([ 
-	"west" : "/domains/town/room/magic_shop2",
-	"east" : "/domains/town/room/south_road1",
-	"south" : "/domains/town/room/magic_guild",
+        "west" : "/domains/town/room/magic_shop2",
+        "east" : "/domains/town/room/south_road1",
+        "south" : "/domains/town/room/magic_guild",
       ]) );
     SetRead("sign", (: read_sign :) );
     SetInventory( ([
-	"/domains/town/npc/oana" : 1,
-	"/domains/town/obj/bbucket" : 1,
+        "/domains/town/npc/oana" : 1,
+        "/domains/town/obj/bbucket" : 1,
       ]) );
 }
 int read_sign(){

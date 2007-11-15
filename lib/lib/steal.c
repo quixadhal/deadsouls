@@ -17,14 +17,14 @@ mixed direct_steal_obj_from_liv() { return CanSteal(this_player()); }
 mixed CanSteal(object who) {
     if( GetInvis(who) ) return 0;
     if( PreventSteal ) {
-	if( PreventSteal == 1 ) return "You can't steal that!";
-	if( stringp(PreventSteal) ) return PreventSteal;
-	if( objectp(PreventSteal) ) {
-	    if( PreventSteal == who )
-		return "Mystical forces prevent your thievery.";
-	    return 1;
-	}
-	return evaluate(PreventSteal, who);
+        if( PreventSteal == 1 ) return "You can't steal that!";
+        if( stringp(PreventSteal) ) return PreventSteal;
+        if( objectp(PreventSteal) ) {
+            if( PreventSteal == who )
+                return "Mystical forces prevent your thievery.";
+            return 1;
+        }
+        return evaluate(PreventSteal, who);
     }
     return 1;
 }

@@ -15,33 +15,33 @@ static void create() {
       "in the west wall.\n%^GREEN%^There is a button next "
       "to the elevator.%^RESET%^");
     SetItems(([
-	({"elevator","elevator door","door"}) : "Set into the "
-	"west wall is a thoroughly modern-looking elevator, which seems "
-	"out of place in this rustic, colonial church. There is a button "+
-	"next to it, presumably to call the elevator car.",
-	"road" : "The road is south of here.",
-	({"wall","west wall"}) : "Set into the "
-	"west wall is a thoroughly modern-looking elevator, which seems "
-	"out of place in this rustic, colonial church. There is a button "+
-	"next to it, presumably to call the elevator car.",
-	"road" : "The road is south of here.",
-	({"church","place"}) : "An old church.",
-	({"cobwebs","webs","web","vermin","dust","dirt"}) : "No vermin can presently "
-	"be seen, but from the cobwebs and dirt it's pretty clear "
-	"minor pests have made their home here.",
-	"vandalism" : "You don't see any of that."
+        ({"elevator","elevator door","door"}) : "Set into the "
+        "west wall is a thoroughly modern-looking elevator, which seems "
+        "out of place in this rustic, colonial church. There is a button "+
+        "next to it, presumably to call the elevator car.",
+        "road" : "The road is south of here.",
+        ({"wall","west wall"}) : "Set into the "
+        "west wall is a thoroughly modern-looking elevator, which seems "
+        "out of place in this rustic, colonial church. There is a button "+
+        "next to it, presumably to call the elevator car.",
+        "road" : "The road is south of here.",
+        ({"church","place"}) : "An old church.",
+        ({"cobwebs","webs","web","vermin","dust","dirt"}) : "No vermin can presently "
+        "be seen, but from the cobwebs and dirt it's pretty clear "
+        "minor pests have made their home here.",
+        "vandalism" : "You don't see any of that."
       ]) );
     SetObviousExits("s, w");
     SetEnters( ([
-	"elevator" : "/domains/town/room/elevator",
+        "elevator" : "/domains/town/room/elevator",
       ]) );
     AddItem(new("/domains/town/obj/church_button"));
     SetExits( ([
-	"south" : "/domains/town/room/road1",
-	"west" : "/domains/town/room/elevator",
+        "south" : "/domains/town/room/road1",
+        "west" : "/domains/town/room/elevator",
       ]) );
     SetInventory( ([
-	"/domains/town/obj/donation_box" : 1,
+        "/domains/town/obj/donation_box" : 1,
       ]) );
 }
 

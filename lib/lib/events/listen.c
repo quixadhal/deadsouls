@@ -19,22 +19,22 @@ varargs string GetListen(string str, object who) {
     mixed val;
 
     if( !str || str == "default" ) {
-	val = Listen;
+        val = Listen;
     }
     else {
-	val = Listens[str];
+        val = Listens[str];
     }
     if( !val ) {
-	return 0;
+        return 0;
     }
     if( functionp(val) ) {
-	if( functionp(val) & FP_OWNER_DESTED ) {
-	    return "An error occured in a function pointer.";
-	}
-	return evaluate(val, who, str);
+        if( functionp(val) & FP_OWNER_DESTED ) {
+            return "An error occured in a function pointer.";
+        }
+        return evaluate(val, who, str);
     }
     else if( arrayp(val) ) {
-	return val[query_night()];
+        return val[query_night()];
     }
     else return val;
 }
@@ -45,60 +45,60 @@ string array GetListens() {
 
 mapping RemoveListen(string item) {
     if( !item || item == "default" ) {
-	Listen = 0;
+        Listen = 0;
     }
     else {
-	map_delete(Listens, item);
+        map_delete(Listens, item);
     }
     return Listens;
 }
 
 varargs mixed SetListen(mixed array args...) {
     if( sizeof(args) == 1 ) {
-	if( mapp(args[0]) ) {
-	    if( args[0]["default"] ) {
-		Listen = args[0]["default"];
-		map_delete(args[0], "default");
-	    }
-	    return (Listens = expand_keys(args[0]));
-	}
-	else {
-	    Listen = args[0];
-	}
-	return args[0];
+        if( mapp(args[0]) ) {
+            if( args[0]["default"] ) {
+                Listen = args[0]["default"];
+                map_delete(args[0], "default");
+            }
+            return (Listens = expand_keys(args[0]));
+        }
+        else {
+            Listen = args[0];
+        }
+        return args[0];
     }
     else if( sizeof(args) == 2 ) {
-	if( !args[1] ) {
-	    return SetListen(args[0]);
-	}
-	else if( arrayp(args[0]) ) {
-	    foreach(string item in args[0]) {
-		SetListen(item, args[1]);
-	    }
-	    return args[1];
-	}
-	else {
-	    if( !args[0] || args[0] == "default" ) {
-		Listen = args[1];
-		return Listen;
-	    }
-	    else {
-		Listens[args[0]] = args[1];
-		return Listens[args[0]];
-	    }
-	}
+        if( !args[1] ) {
+            return SetListen(args[0]);
+        }
+        else if( arrayp(args[0]) ) {
+            foreach(string item in args[0]) {
+                SetListen(item, args[1]);
+            }
+            return args[1];
+        }
+        else {
+            if( !args[0] || args[0] == "default" ) {
+                Listen = args[1];
+                return Listen;
+            }
+            else {
+                Listens[args[0]] = args[1];
+                return Listens[args[0]];
+            }
+        }
     }
     else {
-	error("Wrong number of arguments to SetListen():\n\t"
-	  "Expected 1 or 2, got " + sizeof(args) + "\n");
+        error("Wrong number of arguments to SetListen():\n\t"
+          "Expected 1 or 2, got " + sizeof(args) + "\n");
     }
 }
 
 varargs mixed eventListen(object who, string str) {
     str = GetListen(str, who);
     if( !str ) {
-	who->eventPrint("You hear nothing unusual.");
-	return 1;
+        who->eventPrint("You hear nothing unusual.");
+        return 1;
     }
     environment(who)->eventPrint(who->GetName() + " listens to " + GetShort() +
       ".", who);
@@ -108,10 +108,10 @@ varargs mixed eventListen(object who, string str) {
 
 mixed direct_listen_obj() {
     if( !Listen ) {
-	return "You hear nothing unusual.";
+        return "You hear nothing unusual.";
     }
     else {
-	return 1;
+        return 1;
     }
 }
 
@@ -122,19 +122,19 @@ mixed direct_listen_to_obj() {
 mixed direct_listen_to_str_word_obj(string str) {
     str = remove_article(lower_case(str));
     if( !Listens[str] ) {
-	return "You hear nothing special.";
+        return "You hear nothing special.";
     }
     else {
-	return 1;
+        return 1;
     }
 }
 
 mapping GetListenMap(){
     mapping Listens = ([]);
     foreach(object ob in this_object()->GetDummyItems()) {
-	if( ob->GetListen() ) {
-	    Listens[ob->GetId()] = ob->GetListen();
-	}
+        if( ob->GetListen() ) {
+            Listens[ob->GetId()] = ob->GetListen();
+        }
     }
     if(this_object()->GetListen()) Listens["default"] = this_object()->GetListen();
     return copy(Listens);

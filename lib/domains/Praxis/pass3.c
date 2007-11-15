@@ -15,22 +15,22 @@ void create() {
       "of the lands of Nightmare. The path leads east and west." );
     SetItems(
       (["point" : "From here it looks like you can see the entire world.",
-	"pass" : "The pass heads down into the loneliness of the "
-	"Qajip Desert.",
-	"mountains" : "A huge mountain range separating the fertile "
-	"lands of the east from the desert.",
-	"valley" : "A huge forested valley.",
-	"desert" : "The Qajip Desert where many travellers have "
-	"lost their way and not been found.",
-	"mountain" : "It is one of the lower ones, guarding the pass."]) );
+        "pass" : "The pass heads down into the loneliness of the "
+        "Qajip Desert.",
+        "mountains" : "A huge mountain range separating the fertile "
+        "lands of the east from the desert.",
+        "valley" : "A huge forested valley.",
+        "desert" : "The Qajip Desert where many travellers have "
+        "lost their way and not been found.",
+        "mountain" : "It is one of the lower ones, guarding the pass."]) );
     SetExits( ([ 
-	"east" : "/domains/Praxis/pass2",
+        "east" : "/domains/Praxis/pass2",
       ]) );
 }
 void reset() {
     ::reset();
     if(!present("balrog")) 
-	new("/domains/Praxis/obj/mon/balrog")->move(this_object());
+        new("/domains/Praxis/obj/mon/balrog")->move(this_object());
 }
 void init(){
     ::init();

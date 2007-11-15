@@ -27,11 +27,11 @@ EndText
     //   function.  This is a very useful tool.
 
     SetItems( ([
-	"chain" : (: is_pulled :),
+        "chain" : (: is_pulled :),
       ]));
 
     SetExits( ([
-	"south" : EXPATH + "exroom6",
+        "south" : EXPATH + "exroom6",
       ]));
 }
 
@@ -68,10 +68,10 @@ mixed aa_chain (string str)
 {
     string averb=query_verb();
     if (str!="chain")
-	return notify_fail(capitalize(averb)+ " what?\n");
+        return notify_fail(capitalize(averb)+ " what?\n");
     if (once)
-	return notify_fail("The chain has already been " +
-	  averb + "ed.\n");
+        return notify_fail("The chain has already been " +
+          averb + "ed.\n");
 
     //   We're returning the averb variable that was defined and set
     //     above in a message to the player and the room.  Then, we
@@ -87,7 +87,7 @@ mixed aa_chain (string str)
 string is_pulled()
 {
     if( once )
-	return "You see a plain chain.\n";
+        return "You see a plain chain.\n";
     else
-	return "Here's a chain begging to be yanked or pulled.\n";
+        return "Here's a chain begging to be yanked or pulled.\n";
 }

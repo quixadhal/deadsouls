@@ -35,10 +35,10 @@ static void create() {
 
 mixed can_climb_obj() { 
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything!";
+        return "You cannot do anything!";
     }
     if(this_player()->GetPosition() != POSITION_STANDING ) {
-	return "You must be standing in order to climb.";
+        return "You must be standing in order to climb.";
     }
     if(!stringp(hobbled(this_player()))) return "Your injuries prevent that movement.";
     return this_player()->CanManipulate();

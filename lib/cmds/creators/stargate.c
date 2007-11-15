@@ -12,26 +12,26 @@ mixed cmd(string str){
 
     network = STARGATE_D->GetStargates();
     if (str){ 
-	if (network[lower_case(str)]){
-	    write(str+" is part of the Stargate Network.\n");
-	    write(str+" data: "+identify(network[lower_case(str)]));
-	}
-	else {
-	    write(str+" is not currently part of the Stargate Network.\n");
-	}
-	return 1;
+        if (network[lower_case(str)]){
+            write(str+" is part of the Stargate Network.\n");
+            write(str+" data: "+identify(network[lower_case(str)]));
+        }
+        else {
+            write(str+" is not currently part of the Stargate Network.\n");
+        }
+        return 1;
     }
     else {
-	write("These are the current Stargate locations in the Network:\n");
-	if (!sizeof(network)){
-	    write("No locations found.");
-	    return 1;
-	}
-	else {
-	    string buf = "";
-	    string name;
-	    write(implode(keys(network), ", "));
-	}
+        write("These are the current Stargate locations in the Network:\n");
+        if (!sizeof(network)){
+            write("No locations found.");
+            return 1;
+        }
+        else {
+            string buf = "";
+            string name;
+            write(implode(keys(network), ", "));
+        }
     }
     return 1;
 }

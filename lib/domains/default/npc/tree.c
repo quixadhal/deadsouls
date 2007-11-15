@@ -27,24 +27,24 @@ int make_money(string str){
     string s1,s2;
     if(!str){ write("Get what?\n"); return 1; }
     if(sscanf(str,"%d %s from %s",d1,s1,s2) > 0){
-	if(s1 !="electrum" && s1 != "platinum" &&
-	  s1 !="gold" && s1 !="cents" &&
-	  s1 !="dollars" && s1 !="copper" &&
-	  s1 !="silver"){
-	    write("That kind of money doesn't grow on trees!\n");
-	    return 1;
-	}
-	if(s2=="tree" || s2=="the tree" ||
-	  s2=="the money tree" || s2=="arborus argentum"){
-	    if(d1 > 1000){
-		write("That is too much money to get from the tree at once.\n");
-		return 1;
-	    }
-	    this_player()->AddCurrency(s1, d1);
-	    write("You get "+d1+" "+s1+" from the money tree.");
-	    say(this_player()->GetCapName()+" gets money from the money tree.");
-	    return 1;
-	}
-	return 0;
+        if(s1 !="electrum" && s1 != "platinum" &&
+          s1 !="gold" && s1 !="cents" &&
+          s1 !="dollars" && s1 !="copper" &&
+          s1 !="silver"){
+            write("That kind of money doesn't grow on trees!\n");
+            return 1;
+        }
+        if(s2=="tree" || s2=="the tree" ||
+          s2=="the money tree" || s2=="arborus argentum"){
+            if(d1 > 1000){
+                write("That is too much money to get from the tree at once.\n");
+                return 1;
+            }
+            this_player()->AddCurrency(s1, d1);
+            write("You get "+d1+" "+s1+" from the money tree.");
+            say(this_player()->GetCapName()+" gets money from the money tree.");
+            return 1;
+        }
+        return 0;
     }
 }

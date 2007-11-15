@@ -13,44 +13,44 @@ mixed cmd(string args) {
     int queued;
 
     if(!args) {
-	write("Please specify a file as an argument.");
-	return 1;
+        write("Please specify a file as an argument.");
+        return 1;
     }
 
     if(grepp(args, "-q ")){
-	queued = 1;
-	args = replace_string(args, "-q ", "");
+        queued = 1;
+        args = replace_string(args, "-q ", "");
     }
 
     if(file_size(args) > 0 ) file = args;
     else if(file_size(this_player()->query_cwd()+"/"+args) > 0){
-	file = this_player()->query_cwd()+"/"+args;
+        file = this_player()->query_cwd()+"/"+args;
     }
     else {
-	write("That is not a valid file.");
-	return 1;
+        write("That is not a valid file.");
+        return 1;
     }
 
     lines = explode(read_file(file),"\n");
     if(!sizeof(lines)) {
-	write("Either the file is unreadable or it is empty.");
-	return 1;
+        write("Either the file is unreadable or it is empty.");
+        return 1;
     }
 
     if(queued){
-	foreach( string line in lines ){
-	    if(line && line != "") write("queuing command: "+line);
-	    this_player()->eventQueueCommand(line);
-	}
-	this_player()->eventExecuteQueuedCommands();
-	write("Commands queued.");
+        foreach( string line in lines ){
+            if(line && line != "") write("queuing command: "+line);
+            this_player()->eventQueueCommand(line);
+        }
+        this_player()->eventExecuteQueuedCommands();
+        write("Commands queued.");
     }
     else {
-	foreach( string line in lines ){
-	    if(line && line != "") write("sourcing command: "+line);
-	    this_player()->eventForce(line);
-	}
-	write("Sourcing complete.");
+        foreach( string line in lines ){
+            if(line && line != "") write("sourcing command: "+line);
+            this_player()->eventForce(line);
+        }
+        write("Sourcing complete.");
     }
     return 1;
 

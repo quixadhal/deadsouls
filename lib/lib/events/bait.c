@@ -30,7 +30,7 @@ string array GetSave() {
 
 mixed CanBait(object who) {
     if( GetBait() ) {
-	return "There is already bait on " + GetDefiniteShort() + ".";
+        return "There is already bait on " + GetDefiniteShort() + ".";
     }
     return 1;
 }
@@ -42,7 +42,7 @@ int eventBait(object who, object bait) {
 
 mixed direct_bait_obj_with_obj() { 
     if( environment() != this_player() ) {
-	return "#You don't have that!";
+        return "#You don't have that!";
     }
     return CanBait(this_player());
 }

@@ -4,8 +4,8 @@ inherit LIB_DAEMON;
 
 mixed cmd(string str) {
     if(!(this_player()->GetInCombat())){
-	write("You are not in combat.");
-	return 1;
+        write("You are not in combat.");
+        return 1;
     }
     this_player()->eventWimpy("go out");
     return 1;

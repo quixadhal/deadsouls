@@ -17,9 +17,9 @@ mixed cmd(string str) {
     else str = absolute_path((string)this_player()->query_cwd(), str);
     if( !file_exists(str) ) return "File " + str + " not found.";
     else if( !(tmp = read_file(str)) )
-	return "Unable to read file " + str + ".";
+        return "Unable to read file " + str + ".";
     if( sizeof(arr = explode(tmp, "\n")) > 100 ) 
-	tmp = implode(arr[0..99], "\n") + "\n\t***  TRUNCATED  ***";
+        tmp = implode(arr[0..99], "\n") + "\n\t***  TRUNCATED  ***";
     message("system", tmp, this_player());
     return 1;
 }

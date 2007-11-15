@@ -27,49 +27,49 @@ private static mixed eventGetFile(string name) {
 
     name = explode(name, " ")[0];
     if( name[0] != '/' ) {
-	name = "/" + name;
+        name = "/" + name;
     }
     parts = explode(name = absolute_path("/", name), "/");
     if( !sizeof(parts) ) {
-	name = DIR_WWW "/index.html";
+        name = DIR_WWW "/index.html";
     }
     else if( parts[0][0] == '~' ) {
-	parts[0] = user_path(parts[0][1..]) + "/public_html";
-	name = implode(parts, "/");
+        parts[0] = user_path(parts[0][1..]) + "/public_html";
+        name = implode(parts, "/");
     }
     if( strsrch(name, DIR_WWW) && strsrch(name, REALMS_DIRS) ) {
-	name = DIR_WWW + name;
+        name = DIR_WWW + name;
     }
     file = new(LIB_FILE, name);
     if( file->isDirectory() ) {
-	file = new(LIB_FILE, name = name + "/index.html");
+        file = new(LIB_FILE, name = name + "/index.html");
     }
     if( !strsrch(name, DIR_WWW_GATEWAYS) ) {
-	string id, args, str;
-	buffer b;
+        string id, args, str;
+        buffer b;
 
-	if( sscanf(name, DIR_WWW_GATEWAYS "/%s?%s", id, args) != 2 ) {
-	    args = 0;
-	    sscanf(name, DIR_WWW_GATEWAYS "/%s", id);
-	}
-	if( catch(str = (DIR_WWW_GATEWAYS "/"+id)->gateway(args)) ) {
-	    eventError(FILE_BAD_GATE);
-	    return 1;
-	}
-	str = strip_colours(str);
-	b = allocate_buffer(strlen(str));
-	for(int i=0; i<strlen(str); i++) {
-	    b[i] = str[i];
-	}
-	eventWrite(b, 1);
-	return 1;
+        if( sscanf(name, DIR_WWW_GATEWAYS "/%s?%s", id, args) != 2 ) {
+            args = 0;
+            sscanf(name, DIR_WWW_GATEWAYS "/%s", id);
+        }
+        if( catch(str = (DIR_WWW_GATEWAYS "/"+id)->gateway(args)) ) {
+            eventError(FILE_BAD_GATE);
+            return 1;
+        }
+        str = strip_colours(str);
+        b = allocate_buffer(strlen(str));
+        for(int i=0; i<strlen(str); i++) {
+            b[i] = str[i];
+        }
+        eventWrite(b, 1);
+        return 1;
     }
     else if( !file->isFile() ) {
-	eventError(FILE_NOT_FOUND);
-	return 1;
+        eventError(FILE_NOT_FOUND);
+        return 1;
     }
     else {
-	eventWrite(file->GetBuffer(), 1);
+        eventWrite(file->GetBuffer(), 1);
     }
 }
 
@@ -78,21 +78,21 @@ int eventRead(buffer data) {
     string str = read_buffer(data);
 
     if( !socket::eventRead(str) ) {
-	return 0;
+        return 0;
     }
     if( !str || str == "" ) {
-	eventError(FILE_BAD_CMD);
-	return 1;
+        eventError(FILE_BAD_CMD);
+        return 1;
     }
     args = explode(replace_string(str, CARRIAGE_RETURN, ""), "\n")[0];
     sscanf(args, "%s %s", cmd, args);
     switch(lower_case(cmd)) {
     case "get":
-	eventGetFile(args);
-	return 1;
+        eventGetFile(args);
+        return 1;
 
     default:
-	eventError(FILE_BAD_CMD);
-	return 1;
+        eventError(FILE_BAD_CMD);
+        return 1;
     }
 }

@@ -40,30 +40,30 @@ int vote(string str) {
 
     me=(string)this_player()->query_name();
     if(str!="a" && str!="b") {
-	notify_fail("You may only vote for a or b.\n");
-	return 0;
+        notify_fail("You may only vote for a or b.\n");
+        return 0;
     }
     if(PLAYERS_D->non_voter(me)) {
-	write("You are listed as a second character.  You may not vote.");
-	return 1;
+        write("You are listed as a second character.  You may not vote.");
+        return 1;
     }
     if(vote[me]) {
-	write("You have already voted.");
-	return 1;
+        write("You have already voted.");
+        return 1;
     }
     if(str=="a") {
-	vote[me]="a";
-	a++;
-	write("Vote counted.  Thank you.");
-	save_object(BOOTH_VOTES);
-	return 1;
+        vote[me]="a";
+        a++;
+        write("Vote counted.  Thank you.");
+        save_object(BOOTH_VOTES);
+        return 1;
     }
     if(str=="b") {
-	vote[me]="b";
-	b++;
-	write("Vote counted.  Thank you.");
-	save_object(BOOTH_VOTES);
-	return 1;
+        vote[me]="b";
+        b++;
+        write("Vote counted.  Thank you.");
+        save_object(BOOTH_VOTES);
+        return 1;
     }
 
 }

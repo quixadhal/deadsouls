@@ -21,11 +21,11 @@ mixed eventKill(object target) {
     nom = (string)pl->GetKeyName();
     file = DIR_KILLS "/" + nom[0..0];
     if( file_size(file) != -2 ) {
-	unguarded( (: mkdir, file :) );
+        unguarded( (: mkdir, file :) );
     }
     file = file + "/" + nom;
     if( file_size(file) < 1 ) {
-	kills = ([]);
+        kills = ([]);
     }
     else kills = restore_variable(unguarded((: read_file, file :)));
     nom = (string)target->GetShort() || (string)target->GetKeyName();

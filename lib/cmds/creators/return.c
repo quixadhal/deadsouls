@@ -8,45 +8,45 @@ mixed cmd(string args) {
     int result;
 
     if( !args || args == "" ){ 
-	ob = this_player();
-	name = "You";
+        ob = this_player();
+        name = "You";
     }
     else {
-	if( !(ob = find_player(convert_name(args))) && !(ob = find_living(args)) )
-	    return "No such being exists anywhere presently.";
-	name = "They";
+        if( !(ob = find_player(convert_name(args))) && !(ob = find_living(args)) )
+            return "No such being exists anywhere presently.";
+        name = "They";
     }
     if(!last_loc = ob->GetProperty("LastLocation")){
-	write(name+" have nowhere to return to.");
-	return 1;
+        write(name+" have nowhere to return to.");
+        return 1;
     }
 
     if(grepp(last_loc,"#")) where = find_object(last_loc);
     else where = load_object(last_loc);
 
     if(!where){
-	write("There is a problem with that location.");
-	write(name+" remain where "+lower_case(name)+" are.");
-	return 1;
+        write("There is a problem with that location.");
+        write(name+" remain where "+lower_case(name)+" are.");
+        return 1;
     }
 
     if(environment(ob) == where){
-	write(name+" are already there.");
-	return 1;
+        write(name+" are already there.");
+        return 1;
     }
 
     else result = ob->eventMoveLiving(where);
 
     if(ob != this_player()){
-	if(result){
-	    message("system", "You have been returned to your previous location by " +
-	      (string)this_player()->GetName() + ".", ob);
-	    message("system", "You return " + (string)ob->GetCapName() +
-	      " to their previous location.", this_player());
-	}
-	else {
-	    return "Failed to move " + (string)ob->GetCapName() + ".";
-	}
+        if(result){
+            message("system", "You have been returned to your previous location by " +
+              (string)this_player()->GetName() + ".", ob);
+            message("system", "You return " + (string)ob->GetCapName() +
+              " to their previous location.", this_player());
+        }
+        else {
+            return "Failed to move " + (string)ob->GetCapName() + ".";
+        }
     }
     return 1;
 }

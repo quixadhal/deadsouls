@@ -24,7 +24,7 @@ static void create() {
 mixed can_backstab_liv() {
     if( !environment(this_player()) ) return 0;
     if( this_player()->GetInCombat() )
-	return "You are too busy with combat!";
+        return "You are too busy with combat!";
     else return this_player()->CanManipulate();
 }
 
@@ -33,10 +33,10 @@ mixed do_backstab_liv(object ob) {
 
     if(!(env = environment(this_player()))) return 0;
     if( (int)this_player()->GetPosition() != POSITION_STANDING )
-	this_player()->eventStand();   
+        this_player()->eventStand();   
     if(!ob || !present(ob, env)) {
-	this_player()->eventPrint("Your hapless victim is no longer present.");
-	return 1;
+        this_player()->eventPrint("Your hapless victim is no longer present.");
+        return 1;
     }
     this_player()->eventPrint("%^RED%^You sneak up behind " + ob->GetName() + "...%^RESET%^");
     this_player()->SetAttack(ob, (:eventBackstab, this_player(), ob:));
@@ -54,8 +54,8 @@ int eventBackstab(object backstabber, object target) {
 
     if(!backstabber || !(env = environment(backstabber))) return 0;
     if(!target || !present(target, env)) {
-	backstabber->eventPrint("Your hapless victim is no longer present.");
-	return 1;
+        backstabber->eventPrint("Your hapless victim is no longer present.");
+        return 1;
     }
 
     tmp = backstabber->GetSkillLevel("stealth")*1.5;
@@ -74,37 +74,37 @@ int eventBackstab(object backstabber, object target) {
     moral_act(backstabber, target, -30);
 
     if(suprise < random(100) || !present(target, environment(backstabber))) {
-	backstabber->eventPrint("%^RED%^" + target->GetName()
-	  + " evades your poorly executed backstab.%^RESET%^");
-	target->eventPrint("%^RED%^You easily dodge " + possessive_noun(backstabber)
-	  + " attempted backstab.%^RESET%^");
-	environment(backstabber)->eventPrint("%^RED%^" + target->GetName()
-	  + " dodges " + possessive_noun(backstabber) + " attempted backstab.%^RESET%^",
-	  ({backstabber, target}));
-	return 1;
+        backstabber->eventPrint("%^RED%^" + target->GetName()
+          + " evades your poorly executed backstab.%^RESET%^");
+        target->eventPrint("%^RED%^You easily dodge " + possessive_noun(backstabber)
+          + " attempted backstab.%^RESET%^");
+        environment(backstabber)->eventPrint("%^RED%^" + target->GetName()
+          + " dodges " + possessive_noun(backstabber) + " attempted backstab.%^RESET%^",
+          ({backstabber, target}));
+        return 1;
     }  
 
     weapons = backstabber->GetWielded();
     numberOfWeapons = sizeof(weapons);
 
     if(!numberOfWeapons) {
-	backstabber->eventPrint("%^RED%^You beat your fists ineffectively on "
-	  + possessive_noun(target) + " back.%^RESET%^");
-	target->eventPrint("%^RED%^Somebody beats ineffectively upon your back.%^RESET%^");
-	environment(backstabber)->eventPrint("%^RED%^" + backstabber->GetName()
-	  + " backstabs " + target->GetName() + " expertly... unfortunately "
-	  + nominative(backstabber) + " forgot " + possessive(backstabber) + " knives.%^RESET%^",
-	  ({backstabber, target}));
-	return 1;
+        backstabber->eventPrint("%^RED%^You beat your fists ineffectively on "
+          + possessive_noun(target) + " back.%^RESET%^");
+        target->eventPrint("%^RED%^Somebody beats ineffectively upon your back.%^RESET%^");
+        environment(backstabber)->eventPrint("%^RED%^" + backstabber->GetName()
+          + " backstabs " + target->GetName() + " expertly... unfortunately "
+          + nominative(backstabber) + " forgot " + possessive(backstabber) + " knives.%^RESET%^",
+          ({backstabber, target}));
+        return 1;
     }
 
     numberOfStabs = 0;
     for(i = 0; i < numberOfWeapons && target; i++)
-	numberOfStabs += eventStab(backstabber, target, weapons[i]);
+        numberOfStabs += eventStab(backstabber, target, weapons[i]);
     if(!numberOfStabs) {
-	target->eventPrint("%^RED%^You dodge " + possessive_noun(backstabber)
-	  + " attempted backstab.%^RESET%^");
-	return 1;
+        target->eventPrint("%^RED%^You dodge " + possessive_noun(backstabber)
+          + " attempted backstab.%^RESET%^");
+        return 1;
     }
 
     backstabber->eventExecuteAttack(target);
@@ -128,8 +128,8 @@ int eventStab(object backstabber, object target, object weapon) {
     x += backstabber->GetStatLevel("luck")/3.0;
     x += backstabber->GetMobility()/3.0;
     if(numberWielded > 1) {
-	adjustment = backstabber->GetSkillLevel("multi-weapon") / (numberWielded / 2.0);
-	x *= adjustment/100.0;
+        adjustment = backstabber->GetSkillLevel("multi-weapon") / (numberWielded / 2.0);
+        x *= adjustment/100.0;
     }
     x -= target->GetStatLevel("luck")/3.0;
     x *= 0.5;
@@ -140,9 +140,9 @@ int eventStab(object backstabber, object target, object weapon) {
     damage = (int)target->eventReceiveDamage(backstabber,
       weapon->GetDamageType(), to_int(x), 0, target->GetTorso());
     if(damage > 0) {
-	weapon->eventReceiveDamage(BLUNT, damage, 0, target->GetTorso());
-	percentDamage = damage * 100 / target->GetMaxHealthPoints();
-	if(percentDamage < 1) percentDamage = 0;
+        weapon->eventReceiveDamage(BLUNT, damage, 0, target->GetTorso());
+        percentDamage = damage * 100 / target->GetMaxHealthPoints();
+        if(percentDamage < 1) percentDamage = 0;
     }
     else percentDamage = 0;
     eventPrintDamage(backstabber, target, weapon, percentDamage);
@@ -156,29 +156,29 @@ int eventPrintDamage(object backstabber, object target, object weapon, int perce
     string verb;
 
     if(!percentDamage) {
-	backstabber->eventPrint("%^RED%^You fumble awkwardly with your "
-	  + strip_article(weapon->GetShort()) + ".%^RESET%^");
-	environment(backstabber)->eventPrint("%^RED%^" + backstabber->GetName()
-	  + " fumbles awkwardly with " + possessive(backstabber) + " "
-	  + strip_article(weapon->GetShort()) + ".%^RESET%^",
-	  ({backstabber, target}));
-	return 1;
+        backstabber->eventPrint("%^RED%^You fumble awkwardly with your "
+          + strip_article(weapon->GetShort()) + ".%^RESET%^");
+        environment(backstabber)->eventPrint("%^RED%^" + backstabber->GetName()
+          + " fumbles awkwardly with " + possessive(backstabber) + " "
+          + strip_article(weapon->GetShort()) + ".%^RESET%^",
+          ({backstabber, target}));
+        return 1;
     }
 
     if(percentDamage < 15) {
-	myVerb = "jab ";
-	verb = "jabs ";
-	adverb = "sharply ";
+        myVerb = "jab ";
+        verb = "jabs ";
+        adverb = "sharply ";
     }
     else if(percentDamage < 30) {
-	myVerb = "stab ";
-	verb = "stabs ";
-	adverb = "painfully ";
+        myVerb = "stab ";
+        verb = "stabs ";
+        adverb = "painfully ";
     }
     else {
-	myVerb = "slam ";
-	verb = "slams ";
-	adverb = "deep ";
+        myVerb = "slam ";
+        verb = "slams ";
+        adverb = "deep ";
     }
 
     backstabber->eventPrint("%^RED%^You " + myVerb + "your "

@@ -21,11 +21,11 @@ static void create() {
       "bearing, and a sense of purpose, unlike the ragged, chaotic "
       "orcs you've heard talk about. He almost appears to be on a mission.");
     SetInventory(([
-	"/domains/town/weap/sword" : "wield sword",
-	"/domains/town/obj/rucksack" : "wear my sack",
-	"/domains/town/armor/leather_armor" : "wear leather armor",
-	"/domains/town/armor/orc_boot_l" : "wear left boot",
-	"/domains/town/armor/orc_boot_r" : "wear right boot",
+        "/domains/town/weap/sword" : "wield sword",
+        "/domains/town/obj/rucksack" : "wear my sack",
+        "/domains/town/armor/leather_armor" : "wear leather armor",
+        "/domains/town/armor/orc_boot_l" : "wear left boot",
+        "/domains/town/armor/orc_boot_r" : "wear right boot",
       ]));
     SetLevel(1);
     SetRace("orc");

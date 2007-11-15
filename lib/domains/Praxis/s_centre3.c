@@ -19,13 +19,13 @@ void create() {
       " An unnamed road heads east.");
     SetExits( 
       (["north" : "/domains/Praxis/s_centre2",
-	"southwest" : "/domains/Praxis/s_centre4",
-	"east" : "/domains/Praxis/unnamed1"]) );
+        "southwest" : "/domains/Praxis/s_centre4",
+        "east" : "/domains/Praxis/unnamed1"]) );
     SetItems( 
       ([({"path", "centre path"}) : "The main road leading north and "
-	"south through Praxis.",
-	({"port", "port of praxis"}) : "You cannot see that from here.", 
-	({"road", "unnamed road"}) : "It leads out of town."]) );
+        "south through Praxis.",
+        ({"port", "port of praxis"}) : "You cannot see that from here.", 
+        ({"road", "unnamed road"}) : "It leads out of town."]) );
     SetListen("road", "An eerie silence fills the air that way.");
 }
 

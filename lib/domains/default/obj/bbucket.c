@@ -20,7 +20,7 @@ int tidy_up(){
     object *inv;
     inv = all_inventory(this_object());
     foreach(object thing in inv){
-	if(thing) thing->eventMove(ROOM_FURNACE);
+        if(thing) thing->eventMove(ROOM_FURNACE);
     }
     return 1;
 }

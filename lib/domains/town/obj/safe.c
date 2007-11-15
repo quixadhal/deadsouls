@@ -2,6 +2,7 @@
 
 inherit LIB_STORAGE;
 
+
 void create() {
     ::create();
     SetKeyName("safe");
@@ -15,14 +16,18 @@ void create() {
     SetBaseCost("silver",50);
     SetMaxCarry(500);
     SetInventory(([
-	"/domains/town/weap/9mil": 1,
-	"/domains/town/obj/slip_heal": 4,
+        "/domains/town/weap/9mil": 1,
+        "/domains/town/obj/slip_heal": 4,
       ]));
     SetCanClose(1);
     SetClosed(1);
     SetCanLock(1);
     SetLocked(1);
+    SetLockStrength(80);
     SetKey("mansion safe key");
     AddMoney("silver",1000);
 }
 mixed CanGet(object ob) { return "The safe is bolted to the floor and does not move.";}
+void init(){
+    ::init();
+}

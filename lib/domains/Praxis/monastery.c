@@ -30,17 +30,17 @@ void create() {
       "Boc La Road is outside the monastary to the south. ");
     SetExits( 
       (["south" : "/domains/Praxis/e_boc_la1",
-	"east" : "/domains/Praxis/stairs",
-	"north" : "/domains/Praxis/chapel"]) );
+        "east" : "/domains/Praxis/stairs",
+        "north" : "/domains/Praxis/chapel"]) );
     SetProperty("light", 2);
     SetProperty("indoors", 1);
     SetItems(
       (["monastery" : "The home of the Nightmare monks.", 
-	"chamber" : "People come here to pray for resurrection "
-	"when they die.", 
-	"stairway" : "A small spiral set of stairs leading to "
-	"the attic and cellar.", 
-	"road" : "Boc La Road."]) );
+        "chamber" : "People come here to pray for resurrection "
+        "when they die.", 
+        "stairway" : "A small spiral set of stairs leading to "
+        "the attic and cellar.", 
+        "road" : "Boc La Road."]) );
     SetProperty("no attack", 1);
     SetProperty("no steal", 1);
     SetProperty("no castle", 1);
@@ -48,8 +48,8 @@ void create() {
 
 int pray() {
     if(!this_player()->query_ghost()) {
-	notify_fail("The living do not need to pray for revival.\n");
-	return 0;
+        notify_fail("The living do not need to pray for revival.\n");
+        return 0;
     }
     this_player()->revive();
     this_player()->SetHealthPoints(10);
@@ -64,25 +64,25 @@ int confess(string str) {
     string res;
 
     if(str != "murder") {
-	notify_fail("Confess what?\n");
-	return 0;
+        notify_fail("Confess what?\n");
+        return 0;
     }
     ok = 0;
     if(sscanf((string)this_player()->getenv("TITLE"), "%s murderer $N%*s", res)
       != 1) {
-	notify_fail("You are no murderer.\n");
-	return 0;
+        notify_fail("You are no murderer.\n");
+        return 0;
     }
     i = sizeof(inv = all_inventory(this_object()));
     while(i--) if((string)inv[i]->query_class() == "monk") ok = 1;
     if(!ok) {
-	write("There is no one here to whom you may confess.");
-	return 1;
+        write("There is no one here to whom you may confess.");
+        return 1;
     }
     message("my_action", "You beg the monks for forgiveness for "
       "your murder of a "+lower_case(res)+".", this_player());
     message("my_action", ("You pray that forgiveness does not mean "
-	"death."), this_player());
+        "death."), this_player());
     say(this_player()->query_cap_name()+" begs for "+
       this_player()->query_possessive()+" murder of a "+
       lower_case(str)+".");

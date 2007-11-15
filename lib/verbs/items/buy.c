@@ -27,7 +27,7 @@ static void create() {
 
 mixed can_buy_str_from_liv(string str) {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     return this_player()->CanManipulate();
 }

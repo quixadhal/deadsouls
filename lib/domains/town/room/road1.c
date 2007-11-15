@@ -12,10 +12,10 @@ static void create() {
       "town church is north. A grand mansion is south.");
     AddTerrainType(T_ROAD);
     SetExits( ([
-	"north" : "/domains/town/room/church",
-	"east" : "/domains/town/room/vill_road1",
-	"west" : "/domains/town/room/road2",
-	"south" : "/domains/town/room/gate",
+        "north" : "/domains/town/room/church",
+        "east" : "/domains/town/room/vill_road1",
+        "west" : "/domains/town/room/road2",
+        "south" : "/domains/town/room/gate",
       ]) );
 
 }

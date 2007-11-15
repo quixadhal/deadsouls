@@ -8,7 +8,7 @@ static void create() {
     SetLong("You are standing in a shower stall. People come "
       "here to get clean.");
     SetExits( ([
-	"out" : "/domains/town/room/mansion_room3"
+        "out" : "/domains/town/room/mansion_room3"
       ]) );
     SetObviousExits("out");
 }

@@ -9,22 +9,22 @@ varargs void broadcast_chanlist(string channame, string thismud){
 #ifdef SEND_WHOLE_CHANLIST
     //trr("broadcasting chanlist to let them know about "+channame);
     foreach(name in keys(channels)){
-	out[name]=({ channels[name][1], channels[name][0] });
+        out[name]=({ channels[name][1], channels[name][0] });
     }
 #else
     if(!channels[channame])
-	out = ([ channame:0 ]);
+        out = ([ channame:0 ]);
     else
-	out = ([ channame:({ channels[channame][1], channels[channame][0] }) ]);
+        out = ([ channame:({ channels[channame][1], channels[channame][0] }) ]);
 #endif
     foreach(name in mudses){
-	//trr("inside loop with "+name);
-	if(member_array("channel", keys(mudinfo[name]["services"]))!=-1){
-	    // only tell muds that have the "channel" service...
-	    write_data(connected_muds[name], ({
-		"chanlist-reply",5,router_name,0,name,0,channel_update_counter,out
-	      }));
-	}
-	//trr("done with: "+name);
+        //trr("inside loop with "+name);
+        if(member_array("channel", keys(mudinfo[name]["services"]))!=-1){
+            // only tell muds that have the "channel" service...
+            write_data(connected_muds[name], ({
+                "chanlist-reply",5,router_name,0,name,0,channel_update_counter,out
+              }));
+        }
+        //trr("done with: "+name);
     }
 }

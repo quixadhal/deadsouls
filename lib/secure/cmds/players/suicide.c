@@ -34,19 +34,19 @@ mixed cmd(string str) {
     if( sizeof(str) ) return "Suicide does not require any arguments.";
     ob = previous_object();
     if( this_player(1) != ob || !userp(ob) ) {
-	log_file("security", "** Illegal suicide attempt **\n "
-	  "Call stack:\n"+ sprintf("%O\n", previous_object(-1)));
-	return "Suicide failed.";
+        log_file("security", "** Illegal suicide attempt **\n "
+          "Call stack:\n"+ sprintf("%O\n", previous_object(-1)));
+        return "Suicide failed.";
     }
     if( this_player()->GetForced() ) {
-	log_file("security", "*** Illegal \"Forced\" Suicide **\n"
-	  "Call stack:\n"+ sprintf("%O\n", previous_object(-1)));
-	return 0;
+        log_file("security", "*** Illegal \"Forced\" Suicide **\n"
+          "Call stack:\n"+ sprintf("%O\n", previous_object(-1)));
+        return 0;
     }
     who = (string)this_player()->GetKeyName();
     if( who == "guest" ) return "Guest is not suicidal!";
     if( member_group(who, PRIV_SECURE) || member_group(who, PRIV_ASSIST) )
-	return "You must first have your security privileges removed.";
+        return "You must first have your security privileges removed.";
     this_player()->eventPrint("Committing suicide means having your character "
       "completely erased from "+mud_name()+"'s database.  If you "
       "are certain this is what you want, enter in your correct "
@@ -59,13 +59,13 @@ mixed cmd(string str) {
 static private void GetPassword(string input) {
     string tmp;
     if( !sizeof(input) ) {
-	this_player()->eventPrint("Suicide aborted.");
-	return;
+        this_player()->eventPrint("Suicide aborted.");
+        return;
     }
     tmp = (string)this_player()->GetPassword();
     if( tmp != crypt(input, tmp) ) {
-	this_player()->eventPrint("Wrong password.  Suicide aborted.");
-	return;
+        this_player()->eventPrint("Wrong password.  Suicide aborted.");
+        return;
     }
     this_player()->eventPrint("\nLeave a suicide note? (a)bort, (y)es, (N)o :\n",
       MSG_EDIT);
@@ -76,12 +76,12 @@ static private void GetPassword(string input) {
 static private void GetYesOrNo(string input) {
     string tmp = (string)this_player()->GetKeyName();
     if( !sizeof(input) || (input = lower_case(input))[0] != 'y' ) {
-	if( input && input[0] == 'a' ) {
-	    this_player()->eventPrint("Suicide has been aborted.");
-	    return;
-	}
-	EndSuicide(tmp);
-	return;
+        if( input && input[0] == 'a' ) {
+            this_player()->eventPrint("Suicide has been aborted.");
+            return;
+        }
+        EndSuicide(tmp);
+        return;
     }
     this_player()->eventPrint("\nYou may now enter a letter "
       "explaining why you suicided.  If you do not wish to write a "
@@ -100,10 +100,10 @@ static private void EndSuicide(string who) {
     file = DIR_TMP + "/" + who;
     newfile = DIR_TMP + "/suicide/" + who;
     if( file_size(file) > 0 ) {
-	tmp = possessive_noun(who)+" suicide note.\n"
-	"Dated: "+ctime(time())+"\n";
-	tmp += read_file(file);
-	write_file(newfile, tmp, 1);
+        tmp = possessive_noun(who)+" suicide note.\n"
+        "Dated: "+ctime(time())+"\n";
+        tmp += read_file(file);
+        write_file(newfile, tmp, 1);
     }
     if( file_exists(file) ) rm(file);
     log_file("suicide", who+" suicided at "+ctime(time())
@@ -111,19 +111,19 @@ static private void EndSuicide(string who) {
     tmp = save_file(who) + __SAVE_EXTENSION__;
     unguarded((: rename, tmp, DIR_SUICIDE + "/" + who + __SAVE_EXTENSION__ :));
     if(home_dir && directory_exists(home_dir)){
-	object *purge_array = filter(objects(), (: !strsrch(base_name($1), home_dir) :) );
-	foreach(object tainted in purge_array){
-	    if(clonep(tainted)){
-		tainted->eventMove(ROOM_FURNACE);
-		purge_array -= ({ tainted });
-	    }
-	}
-	foreach(object tainted in purge_array){
-	    tainted->eventDestruct();
-	}
-	unguarded( (: rename(home_dir,"/secure/save/decre/"+gwho+"."+timestamp()) :) );
-	home_dir = "";
-	gwho = "";
+        object *purge_array = filter(objects(), (: !strsrch(base_name($1), home_dir) :) );
+        foreach(object tainted in purge_array){
+            if(clonep(tainted)){
+                tainted->eventMove(ROOM_FURNACE);
+                purge_array -= ({ tainted });
+            }
+        }
+        foreach(object tainted in purge_array){
+            tainted->eventDestruct();
+        }
+        unguarded( (: rename(home_dir,"/secure/save/decre/"+gwho+"."+timestamp()) :) );
+        home_dir = "";
+        gwho = "";
     }
     this_player()->eventPrint("You have suicided.  Please try " 
       "again another time.");
@@ -132,8 +132,8 @@ static private void EndSuicide(string who) {
       possessive(this_player())+" own life before your very eyes.",
       this_player() );
     if( sizeof( ob = filter(users(), (: archp :)) ) )
-	ob->eventPrint("["+(string)this_player()->GetName()+" has "
-	  "comitted suicide]");
+        ob->eventPrint("["+(string)this_player()->GetName()+" has "
+          "comitted suicide]");
     PLAYERS_D->RemoveUser(who);
     this_player()->eventMove(ROOM_FURNACE);
     this_player()->eventDestruct();

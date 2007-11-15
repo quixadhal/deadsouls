@@ -17,18 +17,18 @@ void create() {
       "back and forth, going about their business.");
     SetExits( 
       (["north" : "/domains/Praxis/supply",
-	"south" : "/domains/Praxis/adv_main",
-	"east" : "/domains/Praxis/e_boc_la3",
-	"west" : "/domains/Praxis/e_boc_la1"]) );
+        "south" : "/domains/Praxis/adv_main",
+        "east" : "/domains/Praxis/e_boc_la3",
+        "west" : "/domains/Praxis/e_boc_la1"]) );
     SetItems(
       (["shop" : "A small place where items can be bought and sold.",
-	"road" : "A dirt path leading east and west through Praxis.",
-	"area" : "Adventurers gather there to form parties and "
-	"discuss their adventures.",
-	"square" : "You cannot see it very well from here.",
-	"people" : "The people walk by at a quicken pace, hardly bothering "
-	"you with a glance.",
-	"hall" : "The hall is where all the adventurer's of Praxis gather to "
-	"chat."]) );
+        "road" : "A dirt path leading east and west through Praxis.",
+        "area" : "Adventurers gather there to form parties and "
+        "discuss their adventures.",
+        "square" : "You cannot see it very well from here.",
+        "people" : "The people walk by at a quicken pace, hardly bothering "
+        "you with a glance.",
+        "hall" : "The hall is where all the adventurer's of Praxis gather to "
+        "chat."]) );
 }
 

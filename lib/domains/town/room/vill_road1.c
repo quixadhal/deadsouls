@@ -19,21 +19,21 @@ static void create() {
       "%^GREEN%^There is a sign here you can read.%^RESET%^");
 
     SetItems( ([
-	"sign":"A large sign on the road. To read it, 'read sign'.",
+        "sign":"A large sign on the road. To read it, 'read sign'.",
       ]) );
     AddTerrainType(T_ROAD);
     SetNoModify(0);
     SetInventory(([
-	"/domains/town/obj/clocktower" : 1,
+        "/domains/town/obj/clocktower" : 1,
       ]));
     SetEnters( ([
       ]) );
     SetRead("sign", (: readSign :) );
     SetExits( ([
-	"north" : "/domains/town/room/road",
-	"east" : "/domains/town/room/vill_road2",
-	"west" : "/domains/town/room/road1",
-	"south" : "/domains/town/room/south_road1",
+        "north" : "/domains/town/room/road",
+        "east" : "/domains/town/room/vill_road2",
+        "west" : "/domains/town/room/road1",
+        "south" : "/domains/town/room/south_road1",
       ]) );
 }
 

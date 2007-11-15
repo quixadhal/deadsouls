@@ -9,13 +9,13 @@
 object domain_master(mixed val) {
     if(!val) return 0;
     if(stringp(val)) {
-	if(!domain_exists(val)) return 0;
-	else return load_object(DOMAINS_DIRS+"/"+val+"/adm/master");
+        if(!domain_exists(val)) return 0;
+        else return load_object(DOMAINS_DIRS+"/"+val+"/adm/master");
     }
     else if(objectp(val)) {
-	if(val = domain(val)) 
-	    return load_object(DOMAINS_DIRS+"/"+val+"/adm/master");
-	else return 0;
+        if(val = domain(val)) 
+            return load_object(DOMAINS_DIRS+"/"+val+"/adm/master");
+        else return 0;
     }
     error("Bad argument 1 to load_object().\n");
 }
@@ -29,7 +29,7 @@ string domain(mixed val) {
     string nom, tmp;
 
     if(objectp(val) && domain_exists(tmp=(string)val->query_domain())) 
-	return tmp;
+        return tmp;
     else if(stringp(val) && val=load_object(val) &&
       domain_exists(tmp=(string)val->query_domain())) return tmp;
     nom = (objectp(val) ? file_name(val) : (string)val);

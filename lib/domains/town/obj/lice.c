@@ -34,20 +34,20 @@ void create(){
 
 void bonuses(){
     if(victim && environment(this_object()) == victim){
-	victim->AddStatBonus("intelligence", -15);
-	victim->AddStatBonus("strength", -25);
-	victim->AddStatBonus("charisma", -45);
-	victim->AddStatBonus("durability", -25);
-	victim->AddStatBonus("agility", -25);
-	victim->AddStatBonus("coordination", -15);
-	victim->AddStatBonus("speed", -15);
-	victim->AddStatBonus("wisdom", -2);
+        victim->AddStatBonus("intelligence", -15);
+        victim->AddStatBonus("strength", -25);
+        victim->AddStatBonus("charisma", -45);
+        victim->AddStatBonus("durability", -25);
+        victim->AddStatBonus("agility", -25);
+        victim->AddStatBonus("coordination", -15);
+        victim->AddStatBonus("speed", -15);
+        victim->AddStatBonus("wisdom", -2);
     }
     else if(victim) {
-	foreach( string stat in ({"intelligence", "strength",
-	    "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
-	    victim->RemoveStatBonus(stat);
-	}
+        foreach( string stat in ({"intelligence", "strength",
+            "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
+            victim->RemoveStatBonus(stat);
+        }
     }
     return;
 }

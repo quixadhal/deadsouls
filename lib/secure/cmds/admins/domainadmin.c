@@ -12,85 +12,85 @@ mixed cmd(string args) {
 
 
     if(!archp(previous_object()) || this_player()->GetForced()){
-	return "No.";
+        return "No.";
     }
 
     if(!args || args == ""){
-	write(this_object()->GetHelp());
-	return 1;
+        write(this_object()->GetHelp());
+        return 1;
     }
 
     if(sscanf(args,"%s %s %s", flag, domain, person) != 3){
-	write(this_object()->GetHelp());
-	return 1;
+        write(this_object()->GetHelp());
+        return 1;
     }
 
     person = lower_case(person);
 
     if(!user_exists(person)){
-	write("Invalid person.");
-	return 1;
+        write("Invalid person.");
+        return 1;
     }
 
     if(!directory_exists("/domains/"+domain)){
-	write("Invalid domain.");
-	return 1;
+        write("Invalid domain.");
+        return 1;
     }
 
     write_perms = replace_string(write_perms, "\n",";\n");
 
     foreach(string line in tmp_array){
-	string where, admins;
-	if(sscanf(line,"(/domains/%s/) %s", where, admins)){
-	    DomainsMap[where] = admins;
-	    if(sizeof(DomainsMap[domain])) admin_array = explode(DomainsMap[domain],":");
-	}
+        string where, admins;
+        if(sscanf(line,"(/domains/%s/) %s", where, admins)){
+            DomainsMap[where] = admins;
+            if(sizeof(DomainsMap[domain])) admin_array = explode(DomainsMap[domain],":");
+        }
     }
 
     if(flag == "-a"){
 
-	if(member_array(person, admin_array) != -1){
-	    write("That person already administers that domain.");
-	    return 1;
-	}
+        if(member_array(person, admin_array) != -1){
+            write("That person already administers that domain.");
+            return 1;
+        }
 
-	else admin_array += ({ person });
+        else admin_array += ({ person });
 
-	rep = "(/domains/"+domain+"/) "+implode(admin_array, ":");
+        rep = "(/domains/"+domain+"/) "+implode(admin_array, ":");
 
-	if(grepp(write_perms, "(/domains/"+domain+"/)")){
-	    write_perms = replace_matching_line(write_perms, "/domains/"+domain, rep);
-	    write_perms = replace_string(write_perms, ";\n","\n");
-	}
-	else{
-	    write_perms = replace_string(write_perms, ";\n","\n");
-	    write_perms = newline_trim(write_perms);
-	    write_perms += "\n(/domains/"+domain+"/) "+person+"\n";
-	}
+        if(grepp(write_perms, "(/domains/"+domain+"/)")){
+            write_perms = replace_matching_line(write_perms, "/domains/"+domain, rep);
+            write_perms = replace_string(write_perms, ";\n","\n");
+        }
+        else{
+            write_perms = replace_string(write_perms, ";\n","\n");
+            write_perms = newline_trim(write_perms);
+            write_perms += "\n(/domains/"+domain+"/) "+person+"\n";
+        }
     }
 
     else if(flag == "-d"){
-	if(member_array(person, admin_array) == -1){
-	    write("That person does not administer that domain.");
-	    return 1;
-	}
+        if(member_array(person, admin_array) == -1){
+            write("That person does not administer that domain.");
+            return 1;
+        }
 
-	else admin_array -= ({ person });
+        else admin_array -= ({ person });
 
-	if(!sizeof(admin_array)){
-	    write_perms = remove_matching_line(write_perms, "(/domains/"+domain+"/)",1);
-	    write_perms = replace_string(write_perms, ";\n","\n");
-	}
-	else {
-	    rep = "(/domains/"+domain+"/) "+implode(admin_array, ":");
-	    write_perms  = replace_matching_line(write_perms, "/domains/"+domain, rep);
-	    write_perms = replace_string(write_perms, ";\n","\n");
-	}
+        if(!sizeof(admin_array)){
+            write_perms = remove_matching_line(write_perms, "(/domains/"+domain+"/)",1);
+            write_perms = replace_string(write_perms, ";\n","\n");
+        }
+        else {
+            rep = "(/domains/"+domain+"/) "+implode(admin_array, ":");
+            write_perms  = replace_matching_line(write_perms, "/domains/"+domain, rep);
+            write_perms = replace_string(write_perms, ";\n","\n");
+        }
     }
 
     else {
-	write("Invalid flag.");
-	return 1;
+        write("Invalid flag.");
+        return 1;
     }
 
     write_file("/secure/cfg/write.cfg", write_perms, 1);

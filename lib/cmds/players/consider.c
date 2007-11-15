@@ -14,56 +14,56 @@ int eventConsider(object whom, object opponent){
     enemy_armor = filter(enemy_armor, (: !($1->GetWielded()) :) );
 
     if(sizeof(weapons)){
-	foreach(object weapon in weapons){
-	    if(weapon->GetWeaponType() && whom->GetSkill(weapon->GetWeaponType()+" attack")){
-		attack_types += ({ weapon->GetWeaponType() });
-		score += ( whom->GetSkill(weapon->GetWeaponType()+" attack")["level"] ) * 3;
-	    }
-	    if(weapon->GetClass())
-		score += ( weapon->GetClass() ) * 6;
-	    if(weapon->GetHands() > 1) {
-		if(!(whom->GetSkill("multi-hand"))) score /= 3;
-	    }
-	}
-	if(sizeof(weapons) >1) {
-	    if(!(whom->GetSkill("multi-weapon"))) score /= 3;
-	}
+        foreach(object weapon in weapons){
+            if(weapon->GetWeaponType() && whom->GetSkill(weapon->GetWeaponType()+" attack")){
+                attack_types += ({ weapon->GetWeaponType() });
+                score += ( whom->GetSkill(weapon->GetWeaponType()+" attack")["level"] ) * 3;
+            }
+            if(weapon->GetClass())
+                score += ( weapon->GetClass() ) * 6;
+            if(weapon->GetHands() > 1) {
+                if(!(whom->GetSkill("multi-hand"))) score /= 3;
+            }
+        }
+        if(sizeof(weapons) >1) {
+            if(!(whom->GetSkill("multi-weapon"))) score /= 3;
+        }
     }
 
     else if((whom->GetMelee())) {
-	if(whom->GetSkill("melee attack"))
-	    score += (((whom->GetSkill("melee attack")["level"]) * 3)); 
+        if(whom->GetSkill("melee attack"))
+            score += (((whom->GetSkill("melee attack")["level"]) * 3)); 
     }
     if(!sizeof(attack_types)) attack_types = ({"blunt"});
     foreach(string Type in attack_types){
-	int DamType = 0;
-	int tmp_prot = 0;
-	object *qual_armor = ({});
+        int DamType = 0;
+        int tmp_prot = 0;
+        object *qual_armor = ({});
 
-	switch(Type){
-	case "blade" : DamType = BLADE; break;
-	case "blunt" : DamType = BLUNT; break;
-	case "knife" : DamType = KNIFE; break;
-	case "water" : DamType = WATER; break;
-	case "shock" : DamType = SHOCK; break;
-	case "cold" : DamType = COLD; break;
-	case "heat" : DamType = HEAT; break;
-	case "gas" : DamType = GAS; break;
-	case "acid" : DamType = ACID; break;
-	case "magic" : DamType = MAGIC; break;
-	case "poison" : DamType = POISON; break;
-	case "disease" : DamType = DISEASE; break;
-	case "trauma" : DamType = TRAUMA; break;
-	default : DamType = BLUNT; break;
-	}
+        switch(Type){
+        case "blade" : DamType = BLADE; break;
+        case "blunt" : DamType = BLUNT; break;
+        case "knife" : DamType = KNIFE; break;
+        case "water" : DamType = WATER; break;
+        case "shock" : DamType = SHOCK; break;
+        case "cold" : DamType = COLD; break;
+        case "heat" : DamType = HEAT; break;
+        case "gas" : DamType = GAS; break;
+        case "acid" : DamType = ACID; break;
+        case "magic" : DamType = MAGIC; break;
+        case "poison" : DamType = POISON; break;
+        case "disease" : DamType = DISEASE; break;
+        case "trauma" : DamType = TRAUMA; break;
+        default : DamType = BLUNT; break;
+        }
 
-	foreach(object armor in enemy_armor){
-	    tmp_prot += armor->GetProtection(DamType);
-	    if(armor->GetProtection(DamType)) qual_armor += ({ armor });
-	}
-	if(sizeof(qual_armor)) protection += tmp_prot / sizeof(qual_armor);
-	tmp_prot = 0;
-	DamType = 0;
+        foreach(object armor in enemy_armor){
+            tmp_prot += armor->GetProtection(DamType);
+            if(armor->GetProtection(DamType)) qual_armor += ({ armor });
+        }
+        if(sizeof(qual_armor)) protection += tmp_prot / sizeof(qual_armor);
+        tmp_prot = 0;
+        DamType = 0;
     }
 
 
@@ -81,16 +81,16 @@ mixed cmd(string str) {
     int totalscore, myscore, theirscore;
 
     if(!str){
-	write("Consider what?");
-	return 1;
+        write("Consider what?");
+        return 1;
     }
     if(!(thing = present(str,environment(this_player())))){
-	write("That isn't here.");
-	return 1;
+        write("That isn't here.");
+        return 1;
     }
     if(!living(thing)){
-	write("That isn't a living thing.");
-	return 1;
+        write("That isn't a living thing.");
+        return 1;
     }
 
     theirscore = eventConsider(thing, this_player());

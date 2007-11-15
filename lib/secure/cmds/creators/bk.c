@@ -14,27 +14,27 @@ mixed cmd(string str) {
     else str = absolute_path((string)this_player()->query_cwd(), str);
     if( !file_exists(str) ) str2 = str+".c";
     if( !file_exists(str) && !file_exists(str2)) {
-	if(str == "here" || str == "room") ob = environment(this_player());
-	else {
-	    ob = present(orig,environment(this_player()));
-	    if(!ob) ob = present(orig, this_player());
-	    if(!ob) return "File not found.";
-	}
-	str2 = base_name(ob)+".c";
+        if(str == "here" || str == "room") ob = environment(this_player());
+        else {
+            ob = present(orig,environment(this_player()));
+            if(!ob) ob = present(orig, this_player());
+            if(!ob) return "File not found.";
+        }
+        str2 = base_name(ob)+".c";
     }
     if(str2 && !file_exists(str2)) return "File unfound.";
     else if(str2) str = str2;
     if( !(tmp = read_file(str)) )
-	return "Unable to read file " + str + ".";
+        return "Unable to read file " + str + ".";
 
     else {
-	time = time();
-	file_arr = explode(str,"/");
-	filename = REALMS_DIRS + "/" + this_player()->GetKeyName();
-	filename += "/bak/"+file_arr[sizeof(file_arr)-1]+"."+time;
-	write_file(REALMS_DIRS + "/" + this_player()->GetKeyName()+
-	  "/bak/bk.db",file_arr[sizeof(file_arr)-1]+"."+time+" : "+str+"\n");
-	load_object("/secure/cmds/creators/cp")->cmd(str + " " +filename);
+        time = time();
+        file_arr = explode(str,"/");
+        filename = REALMS_DIRS + "/" + this_player()->GetKeyName();
+        filename += "/bak/"+file_arr[sizeof(file_arr)-1]+"."+time;
+        write_file(REALMS_DIRS + "/" + this_player()->GetKeyName()+
+          "/bak/bk.db",file_arr[sizeof(file_arr)-1]+"."+time+" : "+str+"\n");
+        load_object("/secure/cmds/creators/cp")->cmd(str + " " +filename);
     }
     return 1;
 }

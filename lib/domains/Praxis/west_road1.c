@@ -17,11 +17,11 @@ void create() {
       "carry on with their lives.");
     SetItems(
       (["road" : "West Road, which marks the westernmost end of Praxis.",
-	"huts" : "They are small peasant huts.",
-	"hut" : "It has a thatch roofing, and is not really extravagant."
+        "huts" : "They are small peasant huts.",
+        "hut" : "It has a thatch roofing, and is not really extravagant."
       ]) );
     SetExits( 
       (["north" : "/domains/Praxis/west_road2",
-	"south" : "/domains/Praxis/w_boc_la3"]) );
+        "south" : "/domains/Praxis/w_boc_la3"]) );
 }
 

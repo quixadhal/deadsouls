@@ -7,7 +7,7 @@ void create(){
     ::create();
     SetKeyName("curing slip");
     SetId( ({"slip","leaf","paper","healer token"}) );
-    SetAdjectives( ({"medical","paper"}) );
+    SetAdjectives( ({"cure","curing","medical","paper"}) );
     SetShort("a curing slip");
     SetLong("This is a small, fragile piece of paper, possibly even a leaf. "
       "It has some script scribbled on it.");
@@ -15,10 +15,10 @@ void create(){
     SetBaseCost("silver",1500);
     SetVendorType(VT_HERB);
     SetItems( ([
-	({"script","writing","scribbling"}) : "There is writing on the slip."
+        ({"script","writing","scribbling"}) : "There is writing on the slip."
       ]) );
     SetRead( ([
-	({"script","writing","scribbling"}) : "The slip reads: \"vbgkqjxz\""
+        ({"script","writing","scribbling"}) : "The slip reads: \"vbgkqjxz\""
       ]) );
     SetDefaultRead("default", "The slip reads: \"etaoin\"");
     SetProperty("problem","cure");
@@ -26,7 +26,7 @@ void create(){
 
 void init(){
     if( living(environment()) && environment()->GetKeyName() != "clepius"){
-	patient = environment()->GetKeyName();
+        patient = environment()->GetKeyName();
     }
 }
 

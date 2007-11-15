@@ -28,14 +28,14 @@ static void create() {
     SetLong("This large room is the testing ground for the newly discovered stargate technology that allows for instant teleportation between distant locations. The main Science Building hallway is south.\n"
       "%^BOLD%^%^GREEN%^An instruction sign is here.%^RESET%^");
     SetItems(([
-	({ "sign", "instruction sign", "instructions sign", "instruction", "instructions" }) : "A sign you can read. It appears to be instructions for operating the stargate.",
+        ({ "sign", "instruction sign", "instructions sign", "instruction", "instructions" }) : "A sign you can read. It appears to be instructions for operating the stargate.",
       ]));
     SetExits(([
-	"south" : "/domains/campus/room/science2",
+        "south" : "/domains/campus/room/science2",
       ]));
 
     SetInventory(([
-	"/domains/campus/obj/stargate" : 1,
+        "/domains/campus/obj/stargate" : 1,
       ]));
     SetRead("sign", (: SignRead() :) );
     SetProperty("no attack", 1);

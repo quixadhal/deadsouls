@@ -17,25 +17,25 @@ void create() {
     );
     SetItems(
       (["jungle" : "A wilderness area full of outlaws and "
-	"mysterious things.\n",
-	"village" : "The adventurer's town of Praxis.",
-	"vegetation" : "It gets thicker to the east.",
-	"path" : "You can see it opening up towards the village west.",
-	//"opening" : "On second glance, its too small to enter"
+        "mysterious things.\n",
+        "village" : "The adventurer's town of Praxis.",
+        "vegetation" : "It gets thicker to the east.",
+        "path" : "You can see it opening up towards the village west.",
+        //"opening" : "On second glance, its too small to enter"
       ]) );
     SetExits( 
       (["northeast" : "/domains/Praxis/jungle",
-	"west" : "/domains/Praxis/wild1"]) );
+        "west" : "/domains/Praxis/wild1"]) );
 }
 
 int enter_opening(string str) {
     if(!str) {
-	notify_fail("Enter what?\n");
-	return 0;
+        notify_fail("Enter what?\n");
+        return 0;
     }
     if(str != "opening" && str != "hole" && str != "jungle") {
-	notify_fail("That is not here to be entered.\n");
-	return 0;
+        notify_fail("That is not here to be entered.\n");
+        return 0;
     }
     this_player()->eventMoveLiving("/domains/Praxis/outland1", "into the jungle");
     return 1;

@@ -15,59 +15,59 @@ mixed cmd(string args) {
     string cmd;
 
     if( !args || args == "" ) {
-	percentage = (int)this_player()->GetWimpy();
-	cmd = (string)this_player()->GetWimpyCommand();
-	if( !percentage )
-	    this_player()->eventPrint("You have wimpy turned off.", MSG_SYSTEM);
-	else this_player()->eventPrint("Percentage: " + percentage + "%\n"
-	      "Command: " + cmd, MSG_SYSTEM);
-	return 1;
+        percentage = (int)this_player()->GetWimpy();
+        cmd = (string)this_player()->GetWimpyCommand();
+        if( !percentage )
+            this_player()->eventPrint("You have wimpy turned off.", MSG_SYSTEM);
+        else this_player()->eventPrint("Percentage: " + percentage + "%\n"
+              "Command: " + cmd, MSG_SYSTEM);
+        return 1;
     }
     if( args == "0" ) {
-	percentage = 0;
-	cmd = 0;
+        percentage = 0;
+        cmd = 0;
     }
     else if( percentage = to_int(args) ) cmd = 0;
     else if( args == "on" ) {
-	percentage = 23;
-	cmd = 0;
+        percentage = 23;
+        cmd = 0;
     }
     else if( args == "off" ) {
-	percentage = 0;
-	cmd = 0;
+        percentage = 0;
+        cmd = 0;
     }
     else {
-	percentage = 0;
-	cmd = args;
+        percentage = 0;
+        cmd = args;
     }
     if( !cmd ) {
-	if( !percentage ) {
-	    this_player()->SetWimpy(0);
-	    this_player()->eventPrint("Wimpy is now off!  You are so brave!",
-	      MSG_SYSTEM);
-	    return 1;
-	}
-	if( percentage > 30 ) {
-	    this_player()->eventPrint("You may not set wimpy greater than "
-	      "30%.", MSG_SYSTEM);
-	    return 1;
-	}
-	else if( percentage < 1 ) return "That is not a valid percentage!";
-	this_player()->SetWimpy(percentage);
-	if( percentage > 20 ) {
-	    this_player()->eventPrint("What a weenie!  Get some backbone!",
-	      MSG_SYSTEM);
-	    return 1;
-	}
-	else if( percentage > 10 ) {
-	    this_player()->eventPrint("You are the cautious one!", MSG_SYSTEM);
-	    return 1;
-	}
-	else {
-	    this_player()->eventPrint("You are brave, but not foolish!",
-	      MSG_SYSTEM);
-	    return 1;
-	}
+        if( !percentage ) {
+            this_player()->SetWimpy(0);
+            this_player()->eventPrint("Wimpy is now off!  You are so brave!",
+              MSG_SYSTEM);
+            return 1;
+        }
+        if( percentage > 30 ) {
+            this_player()->eventPrint("You may not set wimpy greater than "
+              "30%.", MSG_SYSTEM);
+            return 1;
+        }
+        else if( percentage < 1 ) return "That is not a valid percentage!";
+        this_player()->SetWimpy(percentage);
+        if( percentage > 20 ) {
+            this_player()->eventPrint("What a weenie!  Get some backbone!",
+              MSG_SYSTEM);
+            return 1;
+        }
+        else if( percentage > 10 ) {
+            this_player()->eventPrint("You are the cautious one!", MSG_SYSTEM);
+            return 1;
+        }
+        else {
+            this_player()->eventPrint("You are brave, but not foolish!",
+              MSG_SYSTEM);
+            return 1;
+        }
     }
     this_player()->SetWimpyCommand(cmd);
     this_player()->eventPrint("You will execute the command: \"" + cmd +

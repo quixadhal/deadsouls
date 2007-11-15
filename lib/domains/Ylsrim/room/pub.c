@@ -18,16 +18,16 @@ int readMenu(object who, string str) {
     object ob = present("lars");
 
     if( !ob ) { // lars is dead!
-	this_player()->eventPrint("The menu is too bloodstained to read.");
-	return 1;
+        this_player()->eventPrint("The menu is too bloodstained to read.");
+        return 1;
     }
     foreach(string *item in keys(ob->GetMenuItems())) {
-	tmp += ({ sprintf("%:-20s %d electrum", capitalize(item[0]),
-	    to_int(ob->GetCost(item))) });
+        tmp += ({ sprintf("%:-20s %d electrum", capitalize(item[0]),
+            to_int(ob->GetCost(item))) });
     }
     foreach(string element in tmp){
-	element = translate(element,  this_player()->GetLanguageLevel("Edhellen"));
-	tmp2 += ({ element });
+        element = translate(element,  this_player()->GetLanguageLevel("Edhellen"));
+        tmp2 += ({ element });
     }
     tmp = tmp2;
     // show the menu a page at a time
@@ -48,7 +48,7 @@ static void create() {
       "readable thing on the wall.  If you read Edhellen.");
     SetLanguage("Edhellen");
     SetInventory(([
-	"/domains/Ylsrim/npc/lars" : 1,
+        "/domains/Ylsrim/npc/lars" : 1,
       ]));
     SetListen("Rowdy party sounds make it hard to hear anything else.");
     SetSmell("The place smells like it is soaked in ale.");

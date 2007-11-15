@@ -1,8 +1,6 @@
 #include <lib.h>
 
-inherit LIB_STORAGE;
-inherit LIB_CHAIR;
-inherit "/lib/comp/surface";
+inherit LIB_BED;
 
 
 void create() {
@@ -18,7 +16,7 @@ void create() {
     inventory_visible();
     inventory_accessible();
     SetInventory( ([
-	"/domains/town/obj/candlestick" : 2
+        "/domains/town/obj/candlestick" : 2
       ]) );
 
 }

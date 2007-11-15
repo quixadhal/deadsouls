@@ -23,9 +23,9 @@ void create() {
       "<preview> will tell you about becoming a monk.");
     SetItems(
       (["candles" : "They are all over the monastery.",
-	"candle" : "It burns brightly and helps light the room.",
-	"monk" : "She is wandering about peacefully.",
-	"passage" : "You sense that only monks may pass that way."]) );
+        "candle" : "It burns brightly and helps light the room.",
+        "monk" : "She is wandering about peacefully.",
+        "passage" : "You sense that only monks may pass that way."]) );
     SetExits( 
       (["down" : "/domains/Praxis/stairs"]) );
     AddExit("east","/domains/Praxis/monk_hall",(:go_east:));
@@ -33,8 +33,8 @@ void create() {
 
 int preview() {
     if((string)this_player()->query_class() != "explorer") {
-	message("info", "This is not for you.", this_player());
-	return 1;
+        message("info", "This is not for you.", this_player());
+        return 1;
     }
     say(this_player()->query_cap_name()+" seeks to learn about the monks.", 
       this_player());
@@ -49,16 +49,16 @@ int preview() {
 
 int become(string str) {
     if(!str) {
-	notify_fail("Become what?\n");
-	return 0;
+        notify_fail("Become what?\n");
+        return 0;
     }
     if(str != "monk") {
-	notify_fail("You cannot become that here.\n");
-	return 0;
+        notify_fail("You cannot become that here.\n");
+        return 0;
     }
     if((string)this_player()->query_class() != "explorer") {
-	message("my_action", "You are much too old to start learning our ways now!", this_player());
-	return 1;
+        message("my_action", "You are much too old to start learning our ways now!", this_player());
+        return 1;
     }
     message("my_action", "The Grand Lord High Priestess initiates you into the class of monks.", this_player());
     message("other_action", this_player()->query_cap_name()+" becomes a monk.",
@@ -72,13 +72,13 @@ int become(string str) {
 
 int go_east() {
     if(creatorp(this_player())){
-	write("Mighty immortals are always welcome into the humble monastary.");
-	return 1;
+        write("Mighty immortals are always welcome into the humble monastary.");
+        return 1;
     } else 
     if((string)this_player()->query_class() != "monk") {
-	write("You cannot penetrate the force field that blocks the passage.");
-	say(this_player()->query_cap_name()+" tries to get into the monk's sanctuary, but fails.", this_player());
-	return 0;
+        write("You cannot penetrate the force field that blocks the passage.");
+        say(this_player()->query_cap_name()+" tries to get into the monk's sanctuary, but fails.", this_player());
+        return 0;
     }
     return 1;
 }

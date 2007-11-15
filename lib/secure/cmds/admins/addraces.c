@@ -7,10 +7,10 @@ inherit LIB_DAEMON;
 mixed cmd() {
     string *races = get_dir(CFG_RACES+"/");
     foreach(string race in races){
-	string str = CFG_RACES+"/"+race;
-	if(file_exists(str)) {
-	    RACES_D->AddRace(str);
-	}
+        string str = CFG_RACES+"/"+race;
+        if(file_exists(str)) {
+            RACES_D->AddRace(str);
+        }
     }
     write("Done.");
     return 1;

@@ -10,8 +10,8 @@ inherit LIB_DAEMON;
 int
 cmd() {
     if(this_player()->query_disable()) {
-	write("Wait a minute.");
-	return 1;
+        write("Wait a minute.");
+        return 1;
     }
     this_player()->set_disable();
     this_player()->save_player((string)this_player()->GetKeyName());

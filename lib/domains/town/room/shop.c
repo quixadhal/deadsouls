@@ -12,17 +12,17 @@ static void create() {
       "explaining how things work. Try \"read sign\". East "
       "Village Road is south of here. The back storeroom is north.");
     SetItems(([
-	({"store","shop","place"}) : "This is the local store.",
-	({ "sign" ,"sign on the wall" }): "A sign on the wall, meant for reading.",
+        ({"store","shop","place"}) : "This is the local store.",
+        ({ "sign" ,"sign on the wall" }): "A sign on the wall, meant for reading.",
       ]));
     SetInventory(([
-	"/domains/town/obj/bbucket" : 1,
-	"/domains/town/npc/otik" : 1,
+        "/domains/town/obj/bbucket" : 1,
+        "/domains/town/npc/otik" : 1,
       ]));
     SetRead("sign", (: read_sign :) );
     SetExits( ([
-	"south" : "/domains/town/room/vill_road2",
-	"north" : "/domains/town/room/shop2",
+        "south" : "/domains/town/room/vill_road2",
+        "north" : "/domains/town/room/shop2",
       ]) );
 }
 

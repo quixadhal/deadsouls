@@ -4,10 +4,10 @@ inherit LIB_DAEMON;
 
 mixed cmd(string str) {
     if( !sizeof(str) )
-	return "Syntax: gag <on or off>";
+        return "Syntax: gag <on or off>";
     str = lower_case(str);
     if( str != "on" && str != "off" )
-	return "You can only turn gag 'on' or 'off'.";
+        return "You can only turn gag 'on' or 'off'.";
     this_player()->SetProperty("gag",str == "on");
     message("system",
       "Gag mode turned "+str+".",

@@ -18,7 +18,7 @@ static void create() {
 mixed can_sleep() {
 
     if( !creatorp(this_player()) && this_player()->GetCaffeine() > 10 ) {
-	return "You are too wired to sleep right now.";
+        return "You are too wired to sleep right now.";
     }
 
     return 1;

@@ -28,7 +28,7 @@ static void create() {
     light::create();
     this_object()->AddSave(({ "Heat" }));
     call_out(function() {
-	  if( GetBurning() ) set_heart_beat(BurnRate);
+          if( GetBurning() ) set_heart_beat(BurnRate);
       }, 0);
 }
 
@@ -79,10 +79,10 @@ static int SetMinHeat(int x) {
 mixed CanBurn(object who) {
     if( environment() != this_player() &&
       environment() != environment(this_player()) ) {
-	return "#That is not within your reach!";
+        return "#That is not within your reach!";
     }
     if( FuelRequired && !GetFuelAmount() )
-	return capitalize(GetShort()) + " is out of fuel.";
+        return capitalize(GetShort()) + " is out of fuel.";
     if( GetBurning() ) return "It is already burning!";
     return light::CanLight(who);
 }
@@ -94,7 +94,7 @@ mixed direct_burn_obj_with_obj() {
 mixed indirect_burn_obj_with_obj(object target, object source) {
     if( !target ) return (source == this_object());
     if( environment() != this_player() )
-	return "#You must possess the source to use it.";
+        return "#You must possess the source to use it.";
     if( !GetBurning() ) return capitalize(GetShort()) + " is not burning!";
     return 1;
 }
@@ -102,7 +102,7 @@ mixed indirect_burn_obj_with_obj(object target, object source) {
 mixed indirect_burn_obs_with_obj(object *targets, object source) {
     if( !targets ) return (source == this_object());
     if( environment() != this_player() )
-	return "#You must possess the source to use it.";
+        return "#You must possess the source to use it.";
     if( !GetBurning() ) return capitalize(GetShort()) + " is not burning!";
     return 1;
 }
@@ -111,7 +111,7 @@ mixed direct_light_obj() {
     mixed tmp = CanBurn(this_player());
 
     if( tmp == 1 ) {
-	return "Light it with what?";
+        return "Light it with what?";
     }
 }
 
@@ -130,7 +130,7 @@ mixed indirect_light_obs_with_obj(object *targets, object source) {
 mixed CanExtinguish(object who) {
     if( environment() != this_player() &&
       environment() != environment(this_player()) ) {
-	return "#That is not within your reach!";
+        return "#That is not within your reach!";
     }
     if( !GetBurning() ) return "It is not burning!";
     return 1;
@@ -148,7 +148,7 @@ mixed eventExtinguish(){
 
 mixed eventBurnOut() {
     if( FuelRequired ) {
-	SetFuelAmount(0);
+        SetFuelAmount(0);
     }
     SetValue(BurntValue);
     eventDarken();
@@ -160,16 +160,16 @@ varargs mixed eventBurn(object who, object what) {
     int y;
 
     if( !what ) {
-	if( Heat ) return 0;
-	else y = MinHeat;
+        if( Heat ) return 0;
+        else y = MinHeat;
     }
     else y = (Heat + (int)what->GetHeat())/2;
     if( y < Heat ) y = Heat;
     if( !GetBurning() && y >= MinHeat ) {
-	if( FuelRequired ) set_heart_beat(BurnRate);
+        if( FuelRequired ) set_heart_beat(BurnRate);
     }
     else if( GetBurning() && y < MinHeat ) {
-	if( FuelRequired ) set_heart_beat(0);
+        if( FuelRequired ) set_heart_beat(0);
     }
     Heat = y;
     if( Heat < 0 ) Heat = 0;
@@ -183,8 +183,8 @@ mixed eventLight(object who, object what) {
 
 static void heart_beat() {
     if( FuelRequired ) {
-	eventDecreaseFuel(1);
-	if( !GetFuelAmount() ) eventBurnOut();
+        eventDecreaseFuel(1);
+        if( !GetFuelAmount() ) eventBurnOut();
     }
 }
 

@@ -21,76 +21,76 @@ mixed cmd(string args) {
 
     // If no arguments are specified, dump all links. 
     if( !args || args == "" ) {
-	mapping links;
-	string formatString;
-	int screenSize = ((int *)this_player()->GetScreen())[0];
-	int playerSize = ((screenSize * 4) / 16) -1;
-	int emailSize = ((screenSize * 6) / 16) - 1;
-	int lastOnSize = ((screenSize * 6) / 16) - 1;
+        mapping links;
+        string formatString;
+        int screenSize = ((int *)this_player()->GetScreen())[0];
+        int playerSize = ((screenSize * 4) / 16) -1;
+        int emailSize = ((screenSize * 6) / 16) - 1;
+        int lastOnSize = ((screenSize * 6) / 16) - 1;
 
-	if(playerSize < 14) playerSize = 14;
-	if(emailSize < 25) emailSize = 25;
-	if(lastOnSize < 25) lastOnSize = 25;
+        if(playerSize < 14) playerSize = 14;
+        if(emailSize < 25) emailSize = 25;
+        if(lastOnSize < 25) lastOnSize = 25;
 
-	formatString = "%:-" + playerSize + "s %:-" + emailSize
-	+ "s %:-" + lastOnSize + "s";
+        formatString = "%:-" + playerSize + "s %:-" + emailSize
+        + "s %:-" + lastOnSize + "s";
 
-	tmp = ({ center("%^CYAN%^  " + mud_name()
-	    + " Approved Character Links%^YELLOW%^", screenSize) });
+        tmp = ({ center("%^CYAN%^  " + mud_name()
+            + " Approved Character Links%^YELLOW%^", screenSize) });
 
-	tmp += ({ sprintf(formatString, "Player", "Email", "Last On%^RESET%^") });
+        tmp += ({ sprintf(formatString, "Player", "Email", "Last On%^RESET%^") });
 
-	links = (mapping)CHARACTER_D->GetLinks();
-	foreach(string p in sort_array(keys(links), 1)) {   
-	    class char_link l;
-	    int maxi;
+        links = (mapping)CHARACTER_D->GetLinks();
+        foreach(string p in sort_array(keys(links), 1)) {   
+            class char_link l;
+            int maxi;
 
-	    l = links[p];
-	    if( !(maxi = sizeof(l->Secondaries)) ) continue;
-	    tmp += ({ sprintf(formatString, capitalize(p), l->Email,
-		((l->LastOnWith == p) ? ctime(l->LastOnDate) : "unknown")) });
-	    foreach(string pl in l->Secondaries)
-	    tmp += ({ sprintf(formatString, "  " + capitalize(pl), "",
-		((l->LastOnWith == pl) ? ctime(l->LastOnDate) : "unknown")) });
-	}
-	this_player(1)->eventPage(tmp, MSG_SYSTEM);
-	return 1;
+            l = links[p];
+            if( !(maxi = sizeof(l->Secondaries)) ) continue;
+            tmp += ({ sprintf(formatString, capitalize(p), l->Email,
+                ((l->LastOnWith == p) ? ctime(l->LastOnDate) : "unknown")) });
+            foreach(string pl in l->Secondaries)
+            tmp += ({ sprintf(formatString, "  " + capitalize(pl), "",
+                ((l->LastOnWith == pl) ? ctime(l->LastOnDate) : "unknown")) });
+        }
+        this_player(1)->eventPage(tmp, MSG_SYSTEM);
+        return 1;
     }
 
     // Or, link a secondary to a primary.
     else if( sscanf(args, "%s to %s", secondary, primary) == 2 ) {
-	this_player(1)->eventPrint("Email for player: ", MSG_PROMPT);
-	input_to(function(string email, string primary, string secondary) {
-	      mixed tmp;
+        this_player(1)->eventPrint("Email for player: ", MSG_PROMPT);
+        input_to(function(string email, string primary, string secondary) {
+              mixed tmp;
 
-	      if( !email || email == "" ) {
-		  this_player(1)->eventPrint("Aborted.", MSG_SYSTEM);
-		  return;
-	      }
-	      tmp = (mixed)CHARACTER_D->eventLink(primary, secondary, email);
-	      if( !tmp ) this_player(1)->eventPrint("Failed.", MSG_SYSTEM);
-	      else if( tmp == 1) this_player(1)->eventPrint("Linked.", MSG_SYSTEM);
-	      else this_player(1)->eventPrint(tmp, MSG_SYSTEM);
-	  }, primary, secondary);
-	return 1;
+              if( !email || email == "" ) {
+                  this_player(1)->eventPrint("Aborted.", MSG_SYSTEM);
+                  return;
+              }
+              tmp = (mixed)CHARACTER_D->eventLink(primary, secondary, email);
+              if( !tmp ) this_player(1)->eventPrint("Failed.", MSG_SYSTEM);
+              else if( tmp == 1) this_player(1)->eventPrint("Linked.", MSG_SYSTEM);
+              else this_player(1)->eventPrint(tmp, MSG_SYSTEM);
+          }, primary, secondary);
+        return 1;
     }
 
     // Otherwise, get link information on a specific player.
     else {
-	mapping mp;
-	string str;
+        mapping mp;
+        string str;
 
-	mp = (mapping)CHARACTER_D->GetLink(convert_name(args));
-	if( !mp ) this_player()->eventPrint(capitalize(args) + " has no "
-	      "links listed.", MSG_SYSTEM);
-	else {
-	    str = "Primary: " + capitalize(mp["primary"]) + "\n";
-	    str += "Last on " + ctime(mp["last on"]) + " with " +
-	    capitalize(mp["last char"]) + "\n";
-	    str += "Secondaries: " + implode(mp["secondaries"], ",");
-	    this_player()->eventPrint(str, MSG_SYSTEM);
-	}
-	return 1;
+        mp = (mapping)CHARACTER_D->GetLink(convert_name(args));
+        if( !mp ) this_player()->eventPrint(capitalize(args) + " has no "
+              "links listed.", MSG_SYSTEM);
+        else {
+            str = "Primary: " + capitalize(mp["primary"]) + "\n";
+            str += "Last on " + ctime(mp["last on"]) + " with " +
+            capitalize(mp["last char"]) + "\n";
+            str += "Secondaries: " + implode(mp["secondaries"], ",");
+            this_player()->eventPrint(str, MSG_SYSTEM);
+        }
+        return 1;
     }
 }
 

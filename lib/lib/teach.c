@@ -12,8 +12,8 @@ int CanTeach(){
 
 int eventOfferTeaching(object who, string what){
     if(!CanTeach()){
-	write("You can't teach that.");
-	return 0;
+        write("You can't teach that.");
+        return 0;
     }
     tell_player(who,this_object()->GetName()+" offers to teach you "+what+".");
     Teaching[who] = ({ what, time() });
@@ -22,21 +22,21 @@ int eventOfferTeaching(object who, string what){
 
 int eventTeach(object who, string what){
     if(!CanTeach()){
-	write("They can't teach that.");
-	return 0;
+        write("They can't teach that.");
+        return 0;
     }
     if(!Teaching[who]){
-	write("They're not interested in teaching you anything.");
-	return 0;
+        write("They're not interested in teaching you anything.");
+        return 0;
     }
     if(time() - Teaching[who][1] > OfferExpires){
-	write("It's too late. Their offer to teach you expired.");
-	map_delete(Teaching,who);
-	return 0;
+        write("It's too late. Their offer to teach you expired.");
+        map_delete(Teaching,who);
+        return 0;
     }
     if( !who->eventLearnSpell(what) ) {
-	write("You are not prepared for that spell!");
-	return 0;
+        write("You are not prepared for that spell!");
+        return 0;
     }
 
     who->eventPrint(this_object()->GetName() + " touches your forehead and gives "

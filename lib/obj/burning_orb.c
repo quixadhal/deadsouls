@@ -30,6 +30,6 @@ static void create() {
     SetBurntValue(1);
     SetDestroyOnSell(1);
     if( clonep() ) {
-	eventBurn();
+        eventBurn();
     }
 }

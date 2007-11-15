@@ -28,15 +28,15 @@ varargs mixed EvaluateRadiantLight(object ob, int report){
     string subrep = "";
     if(!ob) ob = this_player();
     foreach(object guy in get_livings(environment(ob))){
-	if(guy->GetRadiantLight()) 
-	    rep += guy->GetName()+"'s radiant light is: "+guy->GetRadiantLight()+".\n";
-	foreach(object item in all_inventory(guy)){
-	    x += item->GetRadiantLight();
-	    if(item->GetRadiantLight()){
-		subrep += guy->GetName()+"'s "+item->GetName()+"'s radiant light is: "+
-		item->GetRadiantLight()+".\n";
-	    }
-	}
+        if(guy->GetRadiantLight()) 
+            rep += guy->GetName()+"'s radiant light is: "+guy->GetRadiantLight()+".\n";
+        foreach(object item in all_inventory(guy)){
+            x += item->GetRadiantLight();
+            if(item->GetRadiantLight()){
+                subrep += guy->GetName()+"'s "+item->GetName()+"'s radiant light is: "+
+                item->GetRadiantLight()+".\n";
+            }
+        }
     }
     if(!report) return x;
     else return "Livings: \n"+rep+"\nObjects:\n"+subrep;
@@ -65,7 +65,7 @@ void create(){
     SetShort("a light meter");
     SetLong( (: DefaultReading :) );
     SetProperties(([
-	"no steal" : 1,
+        "no steal" : 1,
       ]));
     SetNoCondition(1);
     SetMass(20);

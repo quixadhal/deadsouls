@@ -14,6 +14,7 @@ private static string array Id           = ({});
 private static string array CanonicalId  = ({});
 private static string array ExcludedIds  = ({});
 private static string       KeyName      = 0;
+private static int          Matching     = 1;
 private static object array NotifiedObjects = ({});
 
 string GetKeyName();
@@ -24,19 +25,19 @@ string array GetAdjectives() {
 
 varargs string array SetAdjectives(mixed adjs...) {
     if( stringp(adjs) ) {
-	adjs = ({ adjs });
+        adjs = ({ adjs });
     }
     else if( !arrayp(adjs) ) {
-	error("Bad argument 1 to SetAdjectives().\n");
+        error("Bad argument 1 to SetAdjectives().\n");
     }
     Adjectives = ({});
     foreach(mixed val in adjs) {
-	if( arrayp(val) ) {
-	    Adjectives += val;
-	}
-	else {
-	    Adjectives += ({ val });
-	}
+        if( arrayp(val) ) {
+            Adjectives += val;
+        }
+        else {
+            Adjectives += ({ val });
+        }
     }
     parse_refresh();
     return Adjectives;
@@ -48,19 +49,18 @@ string GetCapName() {
 
 string SetCapName(string str) {
     if( !stringp(str) ) {
-	error("Bad argument 1 to SetCapName().\n");
+        error("Bad argument 1 to SetCapName().\n");
     }
     return (CapName = str);
 }
 
 string array GetId() {
     string tmp;
-    //if(!inherits(LIB_GERM,this_object())) tmp = GetKeyName();
     tmp = GetKeyName();
 
     if( tmp ) {
-	if(!OBJECT_MATCHING) return distinct_array(({ Id..., tmp }));
-	else return Id + ({ file_name(this_object()) }) + atomize_string(tmp) - ExcludedIds;
+        if(!OBJECT_MATCHING || !Matching) return distinct_array(({ CanonicalId..., tmp }));
+        else return Id + ({ file_name(this_object()) }) + atomize_string(tmp) - ExcludedIds;
     }
     else return Id;
 }
@@ -74,27 +74,28 @@ string array GetCanonicalId() {
 
 varargs string array SetId(mixed val...) {
     if( stringp(val) ) {
-	val = ({ val });
+        val = ({ val });
     }
     else if( !arrayp(val) ) {
-	error("Bad argument 1 to SetId().\n");
+        error("Bad argument 1 to SetId().\n");
     }
     Id = ({});
     foreach(mixed id in val) {
-	if( stringp(id) ) {
-	    Id = ({ Id..., id });
-	}
-	else if( arrayp(id) ) {
-	    Id = ({ Id..., id... });
-	}
+        if( stringp(id) ) {
+            Id = ({ Id..., id });
+        }
+        else if( arrayp(id) ) {
+            Id = ({ Id..., id... });
+        }
     }
+
     if(COMPAT_MODE) parse_init();
     parse_refresh();
 
     CanonicalId = Id;
 
-    if(OBJECT_MATCHING){
-	Id = atomize_array(Id);
+    if(OBJECT_MATCHING && Matching){
+        Id = atomize_array(Id);
     }
     return Id;
 }
@@ -105,11 +106,11 @@ string GetKeyName() {
 
 string SetKeyName(string nom) {
     if( !stringp(nom) ) {
-	error("Bad argument 1 to SetKeyName().\n");
+        error("Bad argument 1 to SetKeyName().\n");
     }
     KeyName = lower_case(nom);
     if( !CapName ) {
-	CapName = capitalize(nom);
+        CapName = capitalize(nom);
     }
     return KeyName;
 }
@@ -119,38 +120,40 @@ string GetName() {
 }
 
 int id(string str) {
+    int ret;
     if( !stringp(str) ) {
-	return 0;
+        return 0;
     }
-    return (member_array(lower_case(str), GetId()) != -1);
+    str = lower_case(str);
+    ret = (member_array(str, this_object()->GetId()) != -1);
+    if(!ret && OBJECT_MATCHING && answers_to(str,this_object())) ret = 1;
+    return ret;
 }
 
 string array parse_command_id_list() {
-    string array ids = (GetId() || ({}));
-
+    string array ids = (this_object()->GetId() || ({}));
     return filter(ids, (: stringp($1) && ($1 != "") :));
 }
 
 string array parse_command_plural_id_list() {
-    string array ids = (GetId() || ({}));
+    string array ids = (this_object()->GetId() || ({}));
 
     ids = filter(ids, (: stringp($1) && ($1 != "") :));
     return map(ids, (: pluralize :));
 }
 
 string array parse_command_adjectiv_id_list() {
-    return filter(GetAdjectives(), (: $1 && ($1 != "") :));
+    return filter(this_object()->GetAdjectives(), (: $1 && ($1 != "") :));
 }
 
 varargs void eventAnnounceCanonicalId(object env){
     object *inv;
-    if(!OBJECT_MATCHING) return;
+    if(!OBJECT_MATCHING || !Matching) return;
     if(!env) env = environment();
     if(!env) return;
     if(environment(env)) env = environment(env);
     inv = deep_inventory(env) - ({ this_object() });
-    if(sizeof(inv) > 30) return;
-    //tc("I am "+identify(this_object())+" and I'm trying to announce to: "+identify(inv),"green");
+    if(sizeof(inv) > 25) return;
     inv->ReceiveCanonicalId(CanonicalId);
     inv = all_inventory(this_object());
     if(inv && sizeof(inv)) inv->eventAnnounceCanonicalId(env);
@@ -158,40 +161,44 @@ varargs void eventAnnounceCanonicalId(object env){
 
 
 varargs void ReceiveCanonicalId(mixed foo, int leaving){
-    if(!OBJECT_MATCHING) return;
+    if(!OBJECT_MATCHING || !Matching) return;
     if(!foo || !sizeof(foo)) return;
     if(!leaving){
-	foreach(mixed element in foo){
-	    if(member_array(element, GetId()) != -1){
-		if(member_array(element, CanonicalId) == -1){
-		    ExcludedIds += ({ element });
-		    //tc("I am: "+identify(this_object())+", I am excluding: "+element,"red");
-		    //tc("Ids "+identify(GetId()),"red");
-		    parse_init();
-		    parse_refresh();
-		}
-	    }
-	}
+        foreach(mixed element in foo){
+            if(member_array(element, this_object()->GetId()) != -1){
+                if(member_array(element, CanonicalId) == -1){
+                    ExcludedIds += ({ element });
+                    parse_init();
+                    parse_refresh();
+                }
+            }
+        }
     }
     else {
-	foreach(mixed element in foo){
-	    ExcludedIds -= ({ element });
-	    //tc("I am: "+identify(this_object())+", I am unexcluding: "+element,"blue");
-	    parse_init();
-	    parse_refresh();
-	}
-	//if(environment()) eventAnnounceCanonicalId(environment());
+        foreach(mixed element in foo){
+            ExcludedIds -= ({ element });
+            parse_init();
+            parse_refresh();
+        }
     }
-    //tc("I am: "+identify(this_object())+", ExcludedIds: "+identify(ExcludedIds));
     if(previous_object() != this_object()){
-	//tc("I am: "+identify(this_object())+", and I ant to send a ReceiveCanonicalId to "+identify(previous_object()),"white");
-	if(member_array(previous_object(), NotifiedObjects) == -1){
-	    //previous_object()->ReceiveCanonicalId(CanonicalId);
-	    //tc("I am: "+identify(this_object())+", I am sending a ReceiveCanonicalId to "+identify(previous_object()),"cyan");
-	    //tc("previous: "+identify(previous_object())+" NotifiedObjects: "+identify(NotifiedObjects),"white");
-	    NotifiedObjects += ({ previous_object() });
-	    //tc("previous: "+identify(previous_object())+" NotifiedObjects: "+identify(NotifiedObjects));
-	    previous_object()->ReceiveCanonicalId(CanonicalId);
-	}
+        if(member_array(previous_object(), NotifiedObjects) == -1){
+            NotifiedObjects += ({ previous_object() });
+            previous_object()->ReceiveCanonicalId(CanonicalId);
+        }
     }
+}
+
+//This is for explicitly enabling or disabling
+//object matching. For some items, object matching is
+//really inconvenient.
+
+int SetMatching(int i){
+    if(!i) Matching = 0;
+    else Matching = 1;
+    return Matching;
+}
+
+int GetMatching(){
+    return Matching;
 }

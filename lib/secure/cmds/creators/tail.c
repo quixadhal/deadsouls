@@ -20,7 +20,7 @@ mixed cmd(string args) {
     scr = (((int *)this_player()->GetScreen())[1] || 24);
     if( scr > 100 ) scr = 100;
     if( sizeof(lines = explode(buff, "\n")) > scr ) 
-	buff = implode(lines[<scr..], "\n");
+        buff = implode(lines[<scr..], "\n");
     message("system", buff, this_player());
     return 1;
 }

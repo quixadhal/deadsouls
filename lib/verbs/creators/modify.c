@@ -49,20 +49,20 @@ mixed do_modify_obj_str(object ob, string str) {
     object staff;
     staff = present("tanstaafl",this_player());
     if(!staff) {
-	write("You must be holding the creator staff in order to use this command.");
-	write("If you don't know where you put it, get another one from the chest ");
-	write("in your workroom.");
-	return 1;
+        write("You must be holding the creator staff in order to use this command.");
+        write("If you don't know where you put it, get another one from the chest ");
+        write("in your workroom.");
+        return 1;
     }
 
     if(ob->GetDirectionMap()){
-	write("This is a virtual thing. It cannot be modified with the QCS.");
-	return 1;
+        write("This is a virtual thing. It cannot be modified with the QCS.");
+        return 1;
     }
 
     if(ob->GetNoModify() && !grepp(lower_case(str),"modify")) {
-	write("This needs to be edited by hand.");
-	return 1;
+        write("This needs to be edited by hand.");
+        return 1;
     }
 
     if(base_name(ob) == LIB_DUMMY &&
@@ -70,13 +70,13 @@ mixed do_modify_obj_str(object ob, string str) {
     else if(base_name(ob) == LIB_DUMMY) ob = load_object(ob->GetDoor());
 
     if(starts_with(base_name(ob),"/lib/")) {
-	write("This appears to be a library object. Canceling modification.");
-	return 1;
+        write("This appears to be a library object. Canceling modification.");
+        return 1;
     }
 
     if(userp(ob)){
-	write("You may not modify a player.");
-	return 1;
+        write("You may not modify a player.");
+        return 1;
     }
 
     //staff->eventGeneralStuff(base_name(ob)+".c");
@@ -87,17 +87,17 @@ mixed do_modify_word_str(string wrd, string str) {
     object staff, ob;
     staff = present("tanstaafl",this_player());
     if(!staff) {
-	write("You must be holding the creator staff in order to use this command.");
-	write("If you don't know where you put it, get another one from the chest ");
-	write("in your workroom.");
-	return 1;
+        write("You must be holding the creator staff in order to use this command.");
+        write("If you don't know where you put it, get another one from the chest ");
+        write("in your workroom.");
+        return 1;
     }
 
     ob = environment(this_player());
 
     if(starts_with(base_name(ob),"/lib/")) {
-	write("This appears to be a library object. Canceling modification.");
-	return 1;
+        write("This appears to be a library object. Canceling modification.");
+        return 1;
     }
 
     return do_modify_obj_str(ob, str);

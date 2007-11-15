@@ -32,36 +32,36 @@ mixed CanGo(object who, string str) {
 
 mixed eventGo(object who, string str) {
     if(query_verb() == "go" && interactive(this_player())){	
-	if( who->GetPosition() != POSITION_STANDING && 
-	  who->GetPosition() != POSITION_FLYING) {
-	    if(stringp(hobbled(this_player()))) who->eventStand();
-	    if( who->GetPosition() != POSITION_STANDING ) {
-		return 0;
-	    }
-	}
+        if( who->GetPosition() != POSITION_STANDING && 
+          who->GetPosition() != POSITION_FLYING) {
+            if(stringp(hobbled(this_player()))) who->eventStand();
+            if( who->GetPosition() != POSITION_STANDING ) {
+                return 0;
+            }
+        }
     }
     else if(query_verb() == "crawl") {
-	if( who->GetPosition() != POSITION_LYING &&
-	  who->GetPosition() != POSITION_SITTING ) {
-	    return 0;
-	}
+        if( who->GetPosition() != POSITION_LYING &&
+          who->GetPosition() != POSITION_SITTING ) {
+            return 0;
+        }
     }
     else if(query_verb() == "fly") {
-	if( who->GetPosition() != POSITION_FLYING )
-	    return 0;
+        if( who->GetPosition() != POSITION_FLYING )
+            return 0;
     }
 
     if( sizeof(Doors) && Doors[str] && (int)Doors[str]->GetClosed() ) {
-	message("my_action", "You bump into " + 
-	  (string)Doors[str]->GetShort(str) + ".", who);
-	return 1;
+        message("my_action", "You bump into " + 
+          (string)Doors[str]->GetShort(str) + ".", who);
+        return 1;
     }
     if( Exits[str] && Exits[str]["pre"] && 
       !((int)evaluate(Exits[str]["pre"], str)) )
-	return 1;
+        return 1;
     if(!Exits[str]){
-	write("You can't go that way.");
-	return 0;
+        write("You can't go that way.");
+        return 0;
     }
     who->eventMoveLiving(Exits[str]["room"], str);
     if( Exits[str]["post"] ) evaluate(Exits[str]["post"], str);
@@ -81,11 +81,11 @@ string SetDoor(string dir, string file) {
     object ob = GetDummyItem(dir);
 
     if( ob ) {
-	ob->SetDoor(file);
+        ob->SetDoor(file);
     }
 
     if(!file_exists(file) && !file_exists(file+".c")){
-	return "Door not found.";
+        return "Door not found.";
     }
     file->eventRegisterSide(dir);
     return (Doors[dir] = file); 
@@ -97,7 +97,7 @@ varargs string CreateDoor(string dir, string odir, string long, string locked, s
     object ob = GetDummyItem(dir);
     if(!locked) locked = "";
     if( ob ) {
-	ob->SetDoor(doorfile);
+        ob->SetDoor(doorfile);
     }
     new_door->SetSide(dir, ([ "id" : ({"door", dir+" door", long}), "short" : "a door leading "+dir, "long" : long, "lockable" : 1 ]));
     new_door->SetSide(odir, ([ "id" : ({"door", odir+" door", long}), "short" : "a door leading "+odir, "long" : long, "lockable" : 1 ]));
@@ -109,16 +109,16 @@ varargs string CreateDoor(string dir, string odir, string long, string locked, s
 
 string GetDirection(string dest) {
     foreach(string dir, mapping data in Exits) {
-	if( data["room"] == dest ) {
-	    return "go " + dir;
-	}
+        if( data["room"] == dest ) {
+            return "go " + dir;
+        }
     }
     foreach(string dir in GetEnters()) {
-	string data = GetEnter(dir);
+        string data = GetEnter(dir);
 
-	if(data && data  == dest ) {
-	    return "enter " + dir;
-	}
+        if(data && data  == dest ) {
+            return "enter " + dir;
+        }
     }
     return 0;
 }
@@ -131,17 +131,17 @@ object GetDummyItem(mixed id) {
     dummies = ({});
 
     for(i=0; i<sizeof(all_inv); i++) {
-	if ( (mixed)all_inv[i]->isDummy() )  dummies += ({ all_inv[i] });
+        if ( (mixed)all_inv[i]->isDummy() )  dummies += ({ all_inv[i] });
     }
     if( stringp(id) ) {
-	id = ({ id });
+        id = ({ id });
     }
     if(arrayp(id)){
-	foreach(object dummy in dummies) {
-	    foreach(string element in id){
-		if(answers_to(element,dummy)) return dummy;
-	    }
-	}
+        foreach(object dummy in dummies) {
+            foreach(string element in id){
+                if(answers_to(element,dummy)) return dummy;
+            }
+        }
     }
     return 0;
 }
@@ -156,10 +156,10 @@ string GetEnter(string dir) {
     object ob = GetDummyItem(dir);
 
     if( !ob ) {
-	return 0;
+        return 0;
     }
     else {
-	return ob->GetEnter();
+        return ob->GetEnter();
     }
 }
 
@@ -167,10 +167,10 @@ static mapping GetEnterData(string dir) {
     object ob = GetDummyItem(dir);
 
     if( !ob ) {
-	return 0;
+        return 0;
     }
     else {
-	return ob->GetEnterData();
+        return ob->GetEnterData();
     }
 }
 
@@ -182,16 +182,16 @@ varargs string array GetEnters(int i) {
     ids = ({});
 
     foreach(object item in all_inventory(this_object())){
-	if(base_name(item) == LIB_DUMMY){
-	    obs += ({ item });
-	}
+        if(base_name(item) == LIB_DUMMY){
+            obs += ({ item });
+        }
     }
 
     foreach(object ob in obs) {
-	if( ob->GetEnter() ) {
-	    if(i) ids += ({ ob->GetId()[0] });
-	    else ids += ob->GetId();
-	}
+        if( ob->GetEnter() ) {
+            if(i) ids += ({ ob->GetId()[0] });
+            else ids += ob->GetId();
+        }
     }
     return ids;
 }
@@ -201,16 +201,16 @@ mapping GetEnterMap(){
     mapping EnterMap = ([]);
     object *obs = ({});
     foreach(object item in all_inventory(this_object())){
-	if(base_name(item) == LIB_DUMMY){
-	    obs += ({ item });
-	}
+        if(base_name(item) == LIB_DUMMY){
+            obs += ({ item });
+        }
     }
     if(!sizeof(obs)) return ([]);
     foreach(object ob in obs) {
-	if( ob->GetEnter() ) {
-	    schlussel = ob->GetId();
-	    EnterMap[schlussel] = ob->GetEnter();
-	}
+        if( ob->GetEnter() ) {
+            schlussel = ob->GetId();
+            EnterMap[schlussel] = ob->GetEnter();
+        }
     }
     return copy(EnterMap);
 }
@@ -223,14 +223,14 @@ void RemoveEnter(string dir) {
 
 void SetEnters(mapping mp) {
     foreach(mixed dir, mixed room_or_arr in mp) {
-	object ob = GetDummyItem(dir);
+        object ob = GetDummyItem(dir);
 
-	if( arrayp(room_or_arr) ) {
-	    ob->SetEnter(room_or_arr...);
-	}
-	else {
-	    ob->SetEnter(room_or_arr);
-	}
+        if( arrayp(room_or_arr) ) {
+            ob->SetEnter(room_or_arr...);
+        }
+        else {
+            ob->SetEnter(room_or_arr);
+        }
     }
 }
 
@@ -268,7 +268,7 @@ mapping GetFullExitData() {
 mapping GetExitMap() {
     mapping ret = ([]);
     foreach(string key in keys(Exits)){
-	ret[key] = Exits[key]["room"];
+        ret[key] = Exits[key]["room"];
     }  
 
     return ret;
@@ -287,18 +287,18 @@ mapping SetExits(mapping mp) {
 
     Exits = ([]);
     foreach(dir, room_or_arr in mp) {
-	if( arrayp(dir) ) {
-	    string real_dir;
+        if( arrayp(dir) ) {
+            string real_dir;
 
-	    foreach(real_dir in dir) {
-		if( arrayp(room_or_arr) ) AddExit(real_dir, room_or_arr...);
-		else AddExit(real_dir, room_or_arr);
-	    }
-	}
-	else {
-	    if( stringp(room_or_arr) ) AddExit(dir, room_or_arr);
-	    else if( arrayp(room_or_arr) ) AddExit(dir, room_or_arr...);
-	}
+            foreach(real_dir in dir) {
+                if( arrayp(room_or_arr) ) AddExit(real_dir, room_or_arr...);
+                else AddExit(real_dir, room_or_arr);
+            }
+        }
+        else {
+            if( stringp(room_or_arr) ) AddExit(dir, room_or_arr);
+            else if( arrayp(room_or_arr) ) AddExit(dir, room_or_arr...);
+        }
     }
     return Exits;
 }

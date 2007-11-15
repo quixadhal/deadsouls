@@ -10,19 +10,19 @@ inherit LIB_DOOR;
 
 string checkOpenDown(object who) {
     if( GetClosed() ) {
-	return "You would need to dig a hole.";
+        return "You would need to dig a hole.";
     }
     else {
-	return "It is a deep, dark hole in the desert sand.";
+        return "It is a deep, dark hole in the desert sand.";
     }
 }
 
 string checkOpenUp(object who) {
     if( GetClosed() ) {
-	return "There is no hole here.";
+        return "There is no hole here.";
     }
     else {
-	return "It leads into the open air.";
+        return "It leads into the open air.";
     }
 }
 

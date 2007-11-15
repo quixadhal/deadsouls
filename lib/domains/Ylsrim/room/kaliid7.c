@@ -25,7 +25,7 @@ static void create() {
     SetInventory(([ "/domains/Ylsrim/weapon/stick" : 1 ]));
     SetObviousExits("e, w");
     SetExits( ([ "east" : "/domains/Ylsrim/room/"+ "kaliid6",
-	"west" : "/domains/Ylsrim/room/"+ "sand_room" ]));
+        "west" : "/domains/Ylsrim/room/"+ "sand_room" ]));
 }
 void init(){
     ::init();

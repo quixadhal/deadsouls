@@ -17,10 +17,10 @@ mixed cmd(string args) {
 
     if( !args || args == "" ) return "Syntax: <addrace race (1|0)>";
     if( sscanf(args, "%s %d", file, player) != 2 ) {
-	file = args;
+        file = args;
     }
     if( !file_exists(file=DIR_SECURE_CFG "/races/" + file) )
-	return "File not found: " + file;
+        return "File not found: " + file;
     RACES_D->AddRace(file, player);
     previous_object()->eventPrint("Race added.");
     return 1;

@@ -30,13 +30,23 @@ static void create() {
 
 mixed can_drop_obj(object ob) { return this_player()->CanManipulate(); }
 
-mixed can_drop_wrd_wrd(string num, string curr) {
+//mixed can_drop_wrd_wrd(string num, string curr) {
+mixed can_drop_wrd_wrd(mixed args...) {
+    string num, curr;
     int amt;
+    object ob;
+
+    num = args[0];
+    curr = args[1];
+
+    ob = get_object(num+" "+curr);
+
+    if(ob) return can_drop_obj(ob);
 
     if( !num || !curr ) return 0;
     if( (amt = to_int(num)) < 1 ) return "You cannot do that!";
     if( (int)this_player()->GetCurrency(curr) < amt )
-	return "You don't have that much " + curr + ".";
+        return "You don't have that much " + curr + ".";
     if(this_player()->GetLevel() < 4) return "Newbies can't drop money.";
     return this_player()->CanManipulate();
 }
@@ -50,35 +60,42 @@ mixed do_drop_obs(mixed *res) {
     mixed tmp;
 
     if( !sizeof(res) ) {
-	this_player()->eventPrint("You don't have any to drop!");
-	return 1;
+        this_player()->eventPrint("You don't have any to drop!");
+        return 1;
     }
     obs = filter(res, (: objectp :));
     if( !sizeof(obs) ) {
-	mixed *ua;
+        mixed *ua;
 
-	ua = unique_array(res, (: $1 :));
-	foreach(string *list in ua) this_player()->eventPrint(list[0]);
-	return 1;
+        ua = unique_array(res, (: $1 :));
+        foreach(string *list in ua) this_player()->eventPrint(list[0]);
+        return 1;
     }
     eligible=filter(obs, (: (!($1->GetWorn()) && environment($1) == this_player()) :)); 
     if(!sizeof(eligible)){
-	write("Remove or unwield items before trying to drop them.");
-	eligible = ({});
-	return 1;
+        write("Remove or unwield items before trying to drop them.");
+        eligible = ({});
+        return 1;
     }
     foreach(object ob in eligible) 
     if( (tmp = (mixed)ob->eventDrop(this_player())) != 1 ) {
-	if( stringp(tmp) ) this_player()->eventPrint(tmp);
-	else this_player()->eventPrint("You cannot drop " +
-	      (string)ob->GetShort() + ".");
+        if( stringp(tmp) ) this_player()->eventPrint(tmp);
+        else this_player()->eventPrint("You cannot drop " +
+              (string)ob->GetShort() + ".");
     }
     return 1;
 }
 
-mixed do_drop_wrd_wrd(string num, string curr) {
-    object pile, env;
+//mixed do_drop_wrd_wrd(string num, string curr) {
+mixed do_drop_wrd_wrd(mixed args...) {
+    object ob, pile, env;
+    string num, curr;
     int amt;
+
+    num = args[0];
+    curr = args[1];
+
+    if(ob = get_object(num+" "+curr)) return do_drop_obj(ob);
 
     amt = to_int(num);
     env = environment(this_player());
@@ -86,9 +103,9 @@ mixed do_drop_wrd_wrd(string num, string curr) {
     pile->SetPile(curr, amt);
     if( !((int)pile->eventMove(env)) ||
       (int)this_player()->AddCurrency(curr, -amt) == -1 ) {
-	this_player()->eventPrint("Something prevents your action.");
-	pile->eventDestruct();
-	return 1;
+        this_player()->eventPrint("Something prevents your action.");
+        pile->eventDestruct();
+        return 1;
     }
     this_player()->eventPrint("You drop " + amt + " " + curr + ".");
     environment(this_player())->eventPrint((string)this_player()->GetName() +

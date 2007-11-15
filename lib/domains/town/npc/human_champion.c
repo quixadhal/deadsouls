@@ -13,9 +13,9 @@ static void create(){
     SetClass("fighter");
     SetGender("male");
     SetInventory(([
-	"/domains/campus/armor/chainmail.c" : "wear chainmail",
-	//"/domains/campus/armor/shield.c" : "wear shield",
-	"/domains/campus/weap/sharpsword.c" : "wield sword"
+        "/domains/campus/armor/chainmail.c" : "wear chainmail",
+        //"/domains/campus/armor/shield.c" : "wear shield",
+        "/domains/campus/weap/sharpsword.c" : "wield sword"
       ]));
     //SetMaxHealthPoints(550);
 }

@@ -1,5 +1,16 @@
 /* compiled by Blitz@Dead Souls and Mikla@Dead Souls */
 
+// The SOBER_COMBAT define is intended to make combat messages a
+// bit less emo. The problem with the original combat messages is
+// that if you have, say, two robots fighting, it's weird and 
+// jarring to see them foaming at the mouth or grunting angrily.
+// Just remove the define for the old-style behavior, if you want
+// the bellowing and ranting back. -Crat 05Nov2007
+
+#define SOBER_COMBAT
+
+#ifndef SOBER_COMBAT
+
 #define MOVE_TYPES ({\
 ({ "feint deceptively", "feints deceptively" }),\
 ({ "dance around", "dances around" }),\
@@ -34,6 +45,24 @@
 ({ "do a cunning move", "does a cunning move" }),\
 ({ "twirl with finesse", "twirls with finesse" }),\
 })
+
+#else
+
+#define MOVE_TYPES ({\
+({ "feint", "feints" }),\
+({ "twist swiftly", "twists swiftly" }),\
+({ "lunge quickly", "lunges quickly" }),\
+({ "duck", "ducks" }),\
+({ "move fast", "moves fast" }),\
+({ "strike rapidly", "strikes rapidly" }),\
+({ "sidestep", "sidesteps" }),\
+({ "gyrate briskly", "gyrates briskly" }),\
+({ "whirl around quickly", "whirls around quickly" }),\
+({ "whirl blurringly", "whirls blurringly" }),\
+})
+
+#endif
+
  
 #define BLADE_DEGREES ({\
 ({\

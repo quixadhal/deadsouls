@@ -28,12 +28,12 @@ mixed get( string property )
     if( !mapp( value = properties[parts[0]] ) ) return value;
     for( loop = 1 ; ( loop < size ) && mapp( value ) ; loop++ )
     {
-	// Allows default values.  Eg: if we are trying to find the density of lead
-	// but that hasn't been set, it will use the default metal density instead
-	if( undefinedp( tmp = value[parts[loop]] ) &&
-	  undefinedp( tmp = value["default"]   )   )
-	    return mapp( value ) ? tmp : value;
-	value = tmp;
+        // Allows default values.  Eg: if we are trying to find the density of lead
+        // but that hasn't been set, it will use the default metal density instead
+        if( undefinedp( tmp = value[parts[loop]] ) &&
+          undefinedp( tmp = value["default"]   )   )
+            return mapp( value ) ? tmp : value;
+        value = tmp;
     }
     return value;
 }
@@ -61,11 +61,11 @@ void init_properties()
     properties = allocate_mapping( size );
     for( loop = 0 ; loop < size ; loop++ )
     {
-	if( sscanf( lines[loop], "%s;%s", property, value ) < 2 ) continue;
-	if( sscanf( value, "%d", tmp ) ) value = tmp;
-	// Defined in /std/prop_logic
-	// Just does properties[property]=value in a heirachic way (see the .o)
-	_set( properties, explode( property, "/" ), value );
+        if( sscanf( lines[loop], "%s;%s", property, value ) < 2 ) continue;
+        if( sscanf( value, "%d", tmp ) ) value = tmp;
+        // Defined in /std/prop_logic
+        // Just does properties[property]=value in a heirachic way (see the .o)
+        _set( properties, explode( property, "/" ), value );
     }
     save_object( save_file );
 }
@@ -91,27 +91,27 @@ void setup_object( object ob, object pobj )
 
     if( !props )
     {
-	props = MATERIAL_PROPS;
-	num_props = sizeof( props );
+        props = MATERIAL_PROPS;
+        num_props = sizeof( props );
     }
     type = (string)ob-> query( "material_type" );
     if( !type || -1 == member_array( type, MATERIAL_TYPES ) )
     {
-	// Log the event here for QC
-	return;
+        // Log the event here for QC
+        return;
     }
     if( !( name = (string)ob-> query( "material_name" ) ) )
     {
-	// Log the event here for QC
-	return;
+        // Log the event here for QC
+        return;
     }
     material = "/"+type+"/"+name;
     for( loop = 0 ; loop < num_props ; loop++ )
-	ob-> set( props[loop], query( props[loop] + material ) );
+        ob-> set( props[loop], query( props[loop] + material ) );
     if( !( mass = (int)ob-> query( "mass" ) ) )
     {
-	// Log the event here for QC
-	return;
+        // Log the event here for QC
+        return;
     }
     // Until set_weight() is removed.
     ob-> set_weight( mass );
@@ -119,6 +119,6 @@ void setup_object( object ob, object pobj )
     if( !pobj ) return;
     if( !function_exists( "query", pobj ) ||
       undefinedp( temperature = pobj-> query( "temperature" ) ) )
-	temperature = query( "temperature/default" );
+        temperature = query( "temperature/default" );
     ob-> set( "temperature", temperature );
 }

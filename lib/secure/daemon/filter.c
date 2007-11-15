@@ -151,13 +151,13 @@ string PirateFilter(string str){
     //str = replace_string(str, "a ARRR", "a test");
     //str = replace_string(str, "to ARRR", "to test");
     if(random(100) < 1){
-	switch(random(5)){
-	case 0 : str = "Avast, me hearties! "+str;break;
-	case 1 : str += " ARRRR!!";break;
-	case 2 : str = "Well blow me down! "+str;break;
-	case 3 : str += " YO HO HO!";break;
-	case 4 : str += " Wench! Grog!";break;
-	}
+        switch(random(5)){
+        case 0 : str = "Avast, me hearties! "+str;break;
+        case 1 : str += " ARRRR!!";break;
+        case 2 : str = "Well blow me down! "+str;break;
+        case 3 : str += " YO HO HO!";break;
+        case 4 : str += " Wench! Grog!";break;
+        }
     }
     return str;
 }

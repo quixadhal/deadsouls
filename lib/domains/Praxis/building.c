@@ -18,12 +18,12 @@ void create() {
       "The alley lies north of here.");
     SetItems(
       (["board" : "It is rotting from exposure to the weather.",
-	"boards" : "You do not want to rely on them for support.",
-	"thatch" : "It once formed the roof of the building, but no more.",
-	"roof" : "A patchwork of rotting thatch.",
-	"evidence" : "Dust left unsettled.",
-	"dust" : "It looks like it has not been very long settled in places.",
-	"foo" : "What do you mean by foo?"]) );
+        "boards" : "You do not want to rely on them for support.",
+        "thatch" : "It once formed the roof of the building, but no more.",
+        "roof" : "A patchwork of rotting thatch.",
+        "evidence" : "Dust left unsettled.",
+        "dust" : "It looks like it has not been very long settled in places.",
+        "foo" : "What do you mean by foo?"]) );
     SetExits( 
       (["north" : "/domains/Praxis/alley2"]) );
 }
@@ -33,19 +33,19 @@ void reset() {
 
     ::reset();
     if(!present("rat")) {
-	rat = new("/lib/npc");
-	rat->SetKeyName("rat");
-	rat->SetId( ({ "rat", "filthy rat", "a filthy rat" }) );
-	rat->SetLevel(1);
-	rat->SetShort( "A filthy rat");
-	rat->SetLong("A disgusting little rodent.");
-	rat->SetRace( "rodent");
-	rat->SetCurrency("silver", random(10));
-	rat->SetHealthPoints(60+random(10));
-	rat->SetMorality(-1);
-	rat->move(this_object());
+        rat = new("/lib/npc");
+        rat->SetKeyName("rat");
+        rat->SetId( ({ "rat", "filthy rat", "a filthy rat" }) );
+        rat->SetLevel(1);
+        rat->SetShort( "A filthy rat");
+        rat->SetLong("A disgusting little rodent.");
+        rat->SetRace( "rodent");
+        rat->SetCurrency("silver", random(10));
+        rat->SetHealthPoints(60+random(10));
+        rat->SetMorality(-1);
+        rat->move(this_object());
     }
     if(!present("torch")) 
-	new("/domains/town/obj/torch")->move(this_object());
+        new("/domains/town/obj/torch")->move(this_object());
 }
 

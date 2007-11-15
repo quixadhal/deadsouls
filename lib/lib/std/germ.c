@@ -97,8 +97,8 @@ mixed GetCure() {
  */
 mixed SetCure(mixed val) {
     if(intp(val)){
-	Cure=val;
-	return;
+        Cure=val;
+        return;
     }
     return (Cure = val);
 }
@@ -167,27 +167,27 @@ string SetType(string type) {
  */
 mixed eventCure(object who, int x, string type) {
     if( type != GetType() ) { // Can't cure this
-	return 0;
+        return 0;
     }
     if( Cure == -1 ) { // This is incureable
-	return 0;
+        return 0;
     }
     if( functionp(Cure) ) {
-	mixed tmp = evaluate(Cure, who, x, type);
+        mixed tmp = evaluate(Cure, who, x, type);
 
-	if( tmp != 1 ) {
-	    return tmp;
-	}
-	Cure = 0;
+        if( tmp != 1 ) {
+            return tmp;
+        }
+        Cure = 0;
     }
     else if( intp(Cure) ) {
-	Cure -= x;
+        Cure -= x;
     }
     else {
-	error("Bad argument 2 to eventCure().");
+        error("Bad argument 2 to eventCure().");
     }
     if( Cure > 0 ) {
-	return 0;
+        return 0;
     }
     set_heart_beat(0);
     if(this_object()) this_object()->eventMove(ROOM_FURNACE);
@@ -197,10 +197,10 @@ mixed eventCure(object who, int x, string type) {
 
 mixed eventEncounter(object who) {
     if( !living(who) ) {
-	return 1;
+        return 1;
     }
     if( !query_heart_beat() ) {
-	set_heart_beat(5);
+        set_heart_beat(5);
     }
     if(this_object() && environment(this_object())) eventMultiply();
     return 1;
@@ -221,11 +221,11 @@ mixed eventInfect(object ob) {
     presbane = present("bane",ob);
     if(presbane) bane = presbane->QueryBane();
     if(bane){
-	if(member_array(GetKeyName(),bane) != -1) return 0;
-	if(member_array("all",bane) != -1) return 0;
-	foreach(string foo in GetId()){
-	    if(member_array(foo,bane) != -1) return 0;
-	}
+        if(member_array(GetKeyName(),bane) != -1) return 0;
+        if(member_array("all",bane) != -1) return 0;
+        foreach(string foo in GetId()){
+            if(member_array(foo,bane) != -1) return 0;
+        }
     }
 
     if(present(this_object()->GetKeyName(),ob) ) return 0;
@@ -235,17 +235,17 @@ mixed eventInfect(object ob) {
     if(ob->GetNonCarbonBased() == 1) return 0;
 
     if( functionp(Infect) ) {
-	if(!this_object()) return 0;
-	tmp = evaluate(Infect, ob);
-	if( tmp == 1 ) {
-	    eventMove(ob);
-	    if(this_object() && environment(this_object()) != ob) {
-		eventMove(ROOM_FURNACE);
-		set_heart_beat(0);
-	    }
-	    else set_heart_beat(5);
-	    return tmp;
-	}
+        if(!this_object()) return 0;
+        tmp = evaluate(Infect, ob);
+        if( tmp == 1 ) {
+            eventMove(ob);
+            if(this_object() && environment(this_object()) != ob) {
+                eventMove(ROOM_FURNACE);
+                set_heart_beat(0);
+            }
+            else set_heart_beat(5);
+            return tmp;
+        }
     }
 
     if(!eventMove(ob)) eventMove(ROOM_FURNACE);
@@ -260,24 +260,24 @@ mixed eventMultiply() {
 
     if( Communicable > random(1000) && !CannotInfect) {
 
-	if( (ob = environment()) && living(ob) ) {
-	    if(environment(environment())) ob = environment(environment());
-	}
+        if( (ob = environment()) && living(ob) ) {
+            if(environment(environment())) ob = environment(environment());
+        }
 
-	if(!ob) return 0;
+        if(!ob) return 0;
 
-	//move to the host's environment
-	if(!present(this_object()->GetName(),ob) ) {
-	    germ = new(base_name(this_object()));
-	    if( germ && living(ob)  ) germ->eventInfect(ob);
-	    else if(!germ->eventMove(ob)) germ->eventMove(ROOM_FURNACE);
-	}
+        //move to the host's environment
+        if(!present(this_object()->GetName(),ob) ) {
+            germ = new(base_name(this_object()));
+            if( germ && living(ob)  ) germ->eventInfect(ob);
+            else if(!germ->eventMove(ob)) germ->eventMove(ROOM_FURNACE);
+        }
 
-	//find someone to infect
-	if(!sizeof(get_livings(ob))) return 0;
-	targs = filter(get_livings(ob), (: !query_carrying($1,base_name(this_object())) :) );
-	if(sizeof(targs)) winner = targs[random(sizeof(targs))];
-	if(this_object() && winner) new(base_name(this_object()))->eventInfect(winner);
+        //find someone to infect
+        if(!sizeof(get_livings(ob))) return 0;
+        targs = filter(get_livings(ob), (: !query_carrying($1,base_name(this_object())) :) );
+        if(sizeof(targs)) winner = targs[random(sizeof(targs))];
+        if(this_object() && winner) new(base_name(this_object()))->eventInfect(winner);
     }
     return 1; 
 }
@@ -308,18 +308,18 @@ static void heart_beat() {
     LastHeartBeat = time();
 
     if( Communicable ) {
-	eventMultiply();
+        eventMultiply();
     }
 
     if( env && living(env) && environment(env)  && member_array(env->GetRace(),ImmuneRaces) == -1) {
-	eventSuffer(env);
+        eventSuffer(env);
     }
 
     if(LifeSpan == -1) return;
     LifeSpan -= interval;
     if( LifeSpan < 5 ) {
-	if(this_object()) this_object()->eventMove(ROOM_FURNACE);
-	eventDestruct();
-	return;
+        if(this_object()) this_object()->eventMove(ROOM_FURNACE);
+        eventDestruct();
+        return;
     }
 }

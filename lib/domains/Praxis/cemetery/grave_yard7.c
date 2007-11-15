@@ -12,10 +12,10 @@ void create() {
       "soil presses in around you claustrophobicly.");
     SetItems(
       (["under" : "You can't look under the coffin, you're "
-	"standing on it.",
-	"soil" : "The dirt walls of the grave are soft and "
-	"smell of the earth.",
-	"grave" : "The grave is horribly empty and sad."]) );
+        "standing on it.",
+        "soil" : "The dirt walls of the grave are soft and "
+        "smell of the earth.",
+        "grave" : "The grave is horribly empty and sad."]) );
     SetExits( 
       ([ "up" :	"/domains/Praxis/cemetery/grave_yard2"]) );
 }

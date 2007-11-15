@@ -11,7 +11,7 @@ int wipe_inv(mixed dude){
 
     str = DIR_PLAYERS "/" + nom[0..0] + "/" + nom;
     if( !str || !file_exists(str + __SAVE_EXTENSION__) ) 
-	str = DIR_CRES "/" + nom[0..0] + "/" + nom;
+        str = DIR_CRES "/" + nom[0..0] + "/" + nom;
 
     orig_file = str + __SAVE_EXTENSION__;
     bak_file = str + "_rescue" + __SAVE_EXTENSION__;

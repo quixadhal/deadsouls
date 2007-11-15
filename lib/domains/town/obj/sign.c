@@ -11,10 +11,10 @@ void create(){
     SetShort("a sign");
     SetLong("This is an object of indeterminate nature and proportions.");
     SetItems(([
-	({ "words", "word", "this is the first read" }) : "These are the smallest units of vocabulary of a language.",
+        ({ "words", "word", "this is the first read" }) : "These are the smallest units of vocabulary of a language.",
       ]));
     SetRead(([
-	({ "word", "words", "this is the first read" }) : "this is the first read",
+        ({ "word", "words", "this is the first read" }) : "this is the first read",
       ]));
     SetLanguage("farsi");
     SetDefaultRead("Hopefully this is not garbled.");

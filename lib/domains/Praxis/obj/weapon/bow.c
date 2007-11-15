@@ -21,8 +21,8 @@ create() {
 void init() {
     ::init();
     if(environment(this_object())->query_name() != "guard") {
-	write("The short bow crumbles in your hands.");
-	destruct();
+        write("The short bow crumbles in your hands.");
+        destruct();
     }
 }
 

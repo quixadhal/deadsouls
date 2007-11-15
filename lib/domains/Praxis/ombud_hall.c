@@ -13,8 +13,8 @@ void create() {
       "you have that you wish for the wizards to address on the board.");
     SetExits( 
       ([
-	"up" : "/domains/Praxis/adv_main",
-	"west" : "/domains/Praxis/hm_chamber.c"
+        "up" : "/domains/Praxis/adv_main",
+        "west" : "/domains/Praxis/hm_chamber.c"
       ]) 
     );
 

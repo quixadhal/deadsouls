@@ -33,7 +33,7 @@ static void create() {
 
 mixed can_throw_obj() {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     if(intp(check_light())) return this_player()->CanManipulate();
     else return check_light();
@@ -51,18 +51,18 @@ mixed do_throw_obj_word_obj(object what, string word, object where) {
     object enemy;
 
     if( where && living(where) && (int)what->GetClass() > 1 ) {
-	enemy = where;
+        enemy = where;
     }
     else {
-	enemy = 0;
+        enemy = 0;
     }
     if( this_player()->GetInCombat() || enemy ) {
-	this_player()->eventPrint("You prepare to throw " +
-	  (string)what->GetShort() + ".");
-	this_player()->SetAttack(enemy, (: eventThrow, this_player(), what,
-	    where :), (enemy ? ROUND_WEAPON :
-	    ROUND_OTHER));
-	return 1;
+        this_player()->eventPrint("You prepare to throw " +
+          (string)what->GetShort() + ".");
+        this_player()->SetAttack(enemy, (: eventThrow, this_player(), what,
+            where :), (enemy ? ROUND_WEAPON :
+            ROUND_OTHER));
+        return 1;
     }
     eventThrow(this_player(), what, where);
     return 1;
@@ -71,11 +71,11 @@ mixed do_throw_obj_word_obj(object what, string word, object where) {
 void eventThrow(object who, object what, object where) {
 
     if( !who ) {
-	return;
+        return;
     }
     if( !what || environment(what) != who ) {
-	who->eventPrint("You no longer have anything to throw.");
-	return;
+        who->eventPrint("You no longer have anything to throw.");
+        return;
     }
     what->eventThrow(who, where);
 }

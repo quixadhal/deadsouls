@@ -14,8 +14,8 @@ int round(string f){
     int frac,num;
     string str;
     if(strsrch(f,".") == -1) {
-	if(!sscanf(f,"%d",num)) return 0;
-	else return num;
+        if(!sscanf(f,"%d",num)) return 0;
+        else return num;
     }
 
     if(sscanf(f,"%d.%s",num,str) < 2) sscanf(f,".%s",str);

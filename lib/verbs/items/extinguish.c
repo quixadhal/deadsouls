@@ -27,16 +27,16 @@ mixed do_extinguish_obs(mixed *targs) {
     string tmp;
 
     if( !sizeof(targs) ) {
-	this_player()->eventPrint("There is no such thing to be extinguished.");
-	return 1;
+        this_player()->eventPrint("There is no such thing to be extinguished.");
+        return 1;
     }
     obs = filter(targs, (: objectp :));
     if( !sizeof(obs) ) {
-	mixed *ua;
+        mixed *ua;
 
-	ua = unique_array(targs, (: $1 :));
-	foreach(string *list in ua) this_player()->eventPrint(list[0]);
-	return 1;
+        ua = unique_array(targs, (: $1 :));
+        foreach(string *list in ua) this_player()->eventPrint(list[0]);
+        return 1;
     }
     obs = filter(obs, (: (int)$1->eventExtinguish(this_player()) :));
     if( !sizeof(obs) ) return 1;

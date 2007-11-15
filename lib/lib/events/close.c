@@ -31,11 +31,11 @@ varargs mixed CanClose(object who, string id) {
 
     if(who && environment() && environment() != environment(who) &&
       environment() != who)
-	return "#That's not accessible to you.";
+        return "#That's not accessible to you.";
 
     if( Closed ) {
-	id = capitalize(GetDefiniteShort()) + " is already closed.";
-	return id;
+        id = capitalize(GetDefiniteShort()) + " is already closed.";
+        return id;
     }
     else return 1;
 }
@@ -43,17 +43,17 @@ varargs mixed CanClose(object who, string id) {
 varargs mixed CanOpen(object who, object tool) {
     if(environment() && environment() != environment(who) &&
       environment() != who)
-	return "#That's not accessible to you.";
+        return "#That's not accessible to you.";
 
     if( !Closed ) {
-	return capitalize(GetDefiniteShort()) + " is already open.";
+        return capitalize(GetDefiniteShort()) + " is already open.";
     }
     else return 1;
 }
 
 mixed eventClose(object who) {
     if( !SetClosed(1) ) {
-	return 0;
+        return 0;
     }
     send_messages("close", "$agent_name $agent_verb $target_name.",
       who, this_object(), environment(who));
@@ -62,7 +62,7 @@ mixed eventClose(object who) {
 
 varargs mixed eventOpen(object who, object tool) {
     if( SetClosed(0) ) {
-	return 0;
+        return 0;
     }
     send_messages("open", "$agent_name $agent_verb $target_name.",
       who, this_object(), environment(who));

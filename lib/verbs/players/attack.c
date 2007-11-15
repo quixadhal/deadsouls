@@ -34,14 +34,14 @@ varargs mixed can_attack_liv(object target) {
     int pos = this_player()->GetPosition();
 
     if( (int)this_player()->GetParalyzed() ) {
-	return "You cannot move!";
+        return "You cannot move!";
     }
     if( pos == POSITION_SITTING || pos == POSITION_LYING &&
       !RACES_D->GetLimblessCombatRace(this_player()->GetRace()) ){
-	return "You cannot attack in that position!";
+        return "You cannot attack in that position!";
     }
     if( (int)environment(this_player())->GetProperty("no attack") ) {
-	return "A mystical force prevents your malice.";
+        return "A mystical force prevents your malice.";
     }
     return 1;
 }
@@ -75,27 +75,27 @@ varargs mixed do_attack_lvs(mixed *targets, int exclusive) {
     tmpobs = ({});
     obs = filter(targets, (: objectp :));
     if( !sizeof(obs) ) {
-	mixed *ua;
+        mixed *ua;
 
-	ua = unique_array(targets, (: $1 :));
-	foreach(string *lines in ua) this_player()->eventPrint(lines[0]);
-	return 1;
+        ua = unique_array(targets, (: $1 :));
+        foreach(string *lines in ua) this_player()->eventPrint(lines[0]);
+        return 1;
     }
     if(exclusive){
-	foreach(object entity in get_livings(environment(this_player()))){
-	    if(member_array(entity,obs) == -1) noattack += ({ entity });
-	}
-	if(sizeof(noattack)) this_player()->AddNonTargets(noattack);
+        foreach(object entity in get_livings(environment(this_player()))){
+            if(member_array(entity,obs) == -1) noattack += ({ entity });
+        }
+        if(sizeof(noattack)) this_player()->AddNonTargets(noattack);
     }
     foreach(object subobj in obs){
-	if(member_array(this_player(),subobj->GetEnemies()) != -1){
-	    write("You are already fighting "+subobj->GetName()+"!");
-	}
-	else {
-	    mixed attackable = subobj->CanAttack(this_player());
-	    if(intp(attackable) && attackable) tmpobs += ({ subobj });
-	    else if(stringp(attackable)) write(attackable);
-	}
+        if(member_array(this_player(),subobj->GetEnemies()) != -1){
+            write("You are already fighting "+subobj->GetName()+"!");
+        }
+        else {
+            mixed attackable = subobj->CanAttack(this_player());
+            if(intp(attackable) && attackable) tmpobs += ({ subobj });
+            else if(stringp(attackable)) write(attackable);
+        }
     }
 
     obs = tmpobs;

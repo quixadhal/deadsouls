@@ -12,6 +12,10 @@ STATS wisdom:10:4
 STATS speed:31:2
 STATS strength:31:2
 STATS coordination:31:2
+STATS psi:50:2
+SKILL psionic defense:8:1:0:0
+SKILL psionic attack:8:1:0:0
+SKILL psionic detection:8:1:0:0
 LIMB torso:0:1:A_ARMOR,A_BODY_ARMOR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT,A_CUSTOM
 LIMB neck:torso:1:A_COLLAR,A_AMULET,A_CUSTOM
 LIMB head:neck:1:A_HELMET,A_VISOR,A_AMULET,A_CUSTOM

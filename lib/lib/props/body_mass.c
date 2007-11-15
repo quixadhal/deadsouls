@@ -7,10 +7,10 @@ int BodyMass = 0;
 
 int AddBodyMass(int x) {
     if( BodyMass + x > 0 ) {
-	x = -BodyMass;
+        x = -BodyMass;
     }
     if( environment() ) {
-	environment()->AddCarriedBodyMass(x);
+        environment()->AddCarriedBodyMass(x);
     }
     return (BodyMass -= x);
 }
@@ -23,7 +23,7 @@ int GetBodyMass() {
 
 int SetBodyMass(int x) {
     if( x < 0 ) {
-	x = 0;
+        x = 0;
     }
     return (BodyMass = x);
 }
@@ -32,10 +32,10 @@ int GetWeight() {
     float h;
 
     if( environment() ) {
-	h = environment()->GetGravity();
+        h = environment()->GetGravity();
     }
     else {
-	h = DEFAULT_GRAVITY;
+        h = DEFAULT_GRAVITY;
     }
     return to_int(GetBodyMass() * h);
 }

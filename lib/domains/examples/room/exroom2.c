@@ -30,12 +30,12 @@ EndText
     //    at the top, type 'margins'
 
     SetExits( ([
-	"south" : EXPATH + "exroom1",
-	"north" : EXPATH + "exroom3",
-	"east"  : EXPATH + "exroom2a"
+        "south" : EXPATH + "exroom1",
+        "north" : EXPATH + "exroom3",
+        "east"  : EXPATH + "exroom2a"
       ]) );
     SetItems( ([
-	"lever" : "A lever for pulling.",
+        "lever" : "A lever for pulling.",
       ]) );
 
     myvar = 0;
@@ -50,7 +50,7 @@ EndText
 int CanReceive(object ob)
 {
     if ( creatorp(ob) )
-	write( "%^BOLD%^BLUE%^Room tells you: %^BOLD%^GREEN%^You're a creator! %^BOLD%^BLUE%^(This is from the master file.)%^RESET%^\n");
+        write( "%^BOLD%^BLUE%^Room tells you: %^BOLD%^GREEN%^You're a creator! %^BOLD%^BLUE%^(This is from the master file.)%^RESET%^\n");
     return 1;
 }
 
@@ -69,7 +69,7 @@ void init()
 mixed aa_pull(string str)
 {
     if (str!="lever")
-	return notify_fail("Pull what?\n");
+        return notify_fail("Pull what?\n");
     myvar ++;
     write("You pull the lever and the value of 'myvar' is now " + myvar + "\n");
     say(this_player()->GetName() + " pulls the lever!\n");

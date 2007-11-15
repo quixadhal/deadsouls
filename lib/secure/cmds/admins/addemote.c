@@ -22,16 +22,16 @@ static void EnterEmote(string emote, string array emotes) {
     int x = to_int(emote);
 
     if( x < 1 || x > sizeof(emotes) ) {
-	if( member_array(emote, emotes) == -1 ) {
-	    if( emote[0] == 'q' ) {
-		return;
-	    }
-	    MainMenu();
-	    return;
-	}
+        if( member_array(emote, emotes) == -1 ) {
+            if( emote[0] == 'q' ) {
+                return;
+            }
+            MainMenu();
+            return;
+        }
     }
     else {
-	emote = emotes[x-1];
+        emote = emotes[x-1];
     }
     ShowEmote(emote);
 }
@@ -40,32 +40,32 @@ static void EnterEditChoice(string str, string array rules, string emote) {
     int x = to_int(str);
 
     if( x < 1 || x > sizeof(rules) ) {
-	if( member_array(str, rules) == -1 ) {
-	    if( !str || str == "" ) {
-		MainMenu();
-		return;
-	    }
-	    if( str[0] == 'q' ) {
-		return;
-	    }
-	    else if( str[0] == 'e' ) {
-		EditErrorMessage(emote);
-		return;
-	    }
-	    else if( str[0] == 'a' ) {
-		this_player()->eventPrint("Enter verb rule: ", MSG_PROMPT);
-		input_to((: AddRule :), emote);
-		return;
-	    }
-	    else {
-		ShowEmote(emote);
-		return;
-	    }
-	}
-	AddRule(str, emote);
+        if( member_array(str, rules) == -1 ) {
+            if( !str || str == "" ) {
+                MainMenu();
+                return;
+            }
+            if( str[0] == 'q' ) {
+                return;
+            }
+            else if( str[0] == 'e' ) {
+                EditErrorMessage(emote);
+                return;
+            }
+            else if( str[0] == 'a' ) {
+                this_player()->eventPrint("Enter verb rule: ", MSG_PROMPT);
+                input_to((: AddRule :), emote);
+                return;
+            }
+            else {
+                ShowEmote(emote);
+                return;
+            }
+        }
+        AddRule(str, emote);
     }
     else {
-	AddRule(rules[x-1], emote);
+        AddRule(rules[x-1], emote);
     }
 }
 
@@ -74,13 +74,13 @@ static void AddAdverbs(string adv, string emote, string array rules,
     string array adverbs;
 
     if( !adv || adv == "" ) {
-	adverbs = ({});
+        adverbs = ({});
     }
     else {
-	adverbs = map(explode(adv, ","), (: trim :));
+        adverbs = map(explode(adv, ","), (: trim :));
     }
     foreach(string rule in rules) {
-	SOUL_D->AddRule(emote, rule, ({ verbs, msg }), adverbs);
+        SOUL_D->AddRule(emote, rule, ({ verbs, msg }), adverbs);
     }
     this_player()->eventPrint("Emote '" + emote + "' added.");
 }
@@ -88,13 +88,13 @@ static void AddAdverbs(string adv, string emote, string array rules,
 static void AddMessage(string msg, string emote, string array rules,
   string array verbs) {
     if( !msg || msg == "" ) {
-	this_player()->eventPrint("Which message? [q to quit] ", MSG_PROMPT);
-	input_to((: AddMessage :), emote, rules, verbs);
-	return;
+        this_player()->eventPrint("Which message? [q to quit] ", MSG_PROMPT);
+        input_to((: AddMessage :), emote, rules, verbs);
+        return;
     }
     if( lower_case(msg) == "q" ) {
-	this_player()->eventPrint("Addition of rule aborted.");
-	return;
+        this_player()->eventPrint("Addition of rule aborted.");
+        return;
     }
     this_player()->eventPrint("Enter adverbs: ", MSG_PROMPT);
     input_to((: AddAdverbs :), emote, rules, verbs, msg);
@@ -111,7 +111,7 @@ static void AddRule(string rule, string emote) {
     string array rules = map(explode(rule, ","), (: trim :));
 
     if( !sizeof(rules) ) {
-	rules = ({ "" });
+        rules = ({ "" });
     }
     this_player()->eventPrint("Enter the verbs: ", MSG_PROMPT);
     input_to((: AddVerbs :), emote, rules);
@@ -119,19 +119,19 @@ static void AddRule(string rule, string emote) {
 
 static void AddErrorMessage(string msg, string emote) {
     if( !msg || msg == "" ) {
-	this_player()->eventPrint("Which message? [q to quit] ", MSG_PROMPT);
-	input_to((: AddErrorMessage :), emote);
-	return;
+        this_player()->eventPrint("Which message? [q to quit] ", MSG_PROMPT);
+        input_to((: AddErrorMessage :), emote);
+        return;
     }
     if( !emote || emote == "" ) {
-	this_player()->eventPrint("Which emote? [q to quit] ", MSG_PROMPT);
-	input_to((: AddEmote :));
-	return;
+        this_player()->eventPrint("Which emote? [q to quit] ", MSG_PROMPT);
+        input_to((: AddEmote :));
+        return;
     }	
     emote = lower_case(emote);
     if( lower_case(msg) == "q" ) {
-	this_player()->eventPrint("Addition of emote aborted.");
-	return;
+        this_player()->eventPrint("Addition of emote aborted.");
+        return;
     }
     SOUL_D->AddVerb(emote, msg);
     this_player()->eventPrint("Enter a parser rule for " + emote + ": ",
@@ -141,14 +141,14 @@ static void AddErrorMessage(string msg, string emote) {
 
 static void AddEmote(string emote) {
     if( !emote || emote == "" ) {
-	this_player()->eventPrint("Which emote? [q to quit] ", MSG_PROMPT);
-	input_to((: AddEmote :));
-	return;
+        this_player()->eventPrint("Which emote? [q to quit] ", MSG_PROMPT);
+        input_to((: AddEmote :));
+        return;
     }
     emote = lower_case(emote);
     if( emote == "q" ) {
-	this_player()->eventPrint("Addition of emote aborted.");
-	return;
+        this_player()->eventPrint("Addition of emote aborted.");
+        return;
     }
     this_player()->eventPrint("Enter error message: ", MSG_PROMPT);
     input_to((: AddErrorMessage :), emote);
@@ -163,7 +163,7 @@ static void MainMenu() {
 
     tmp = center("Dead Souls V Emote Editor", screen[0]) + "\n";
     for(i=0; i<sizeof(display); i++) {
-	display[i] = "[" + (i+1) + "] " + emotes[i];
+        display[i] = "[" + (i+1) + "] " + emotes[i];
     }
     tmp += format_page(display, screen[0]/17) + "\n";
     this_player()->eventPrint(tmp, MSG_SYSTEM);
@@ -174,10 +174,10 @@ static void MainMenu() {
 static void EditErrorMessage(string emote) {
     this_player()->eventPrint("Enter new error message: ", MSG_PROMPT);
     input_to(function(string str, string emote) {
-	  if( str && str != "" ) {
-	      SOUL_D->SetErrorMessage(emote, str);
-	  }
-	  ShowEmote(emote);
+          if( str && str != "" ) {
+              SOUL_D->SetErrorMessage(emote, str);
+          }
+          ShowEmote(emote);
       }, emote);
 }
 
@@ -193,46 +193,46 @@ static void ShowEmote(string emote) {
     tmp += "%^GREEN%^Error Message%^RESET%^: " + err + "\n";
     tmp += "%^GREEN%^Rules%^RESET%^:\n";
     foreach(string rule, mixed array data in rules) {
-	rule_array[i] = rule;
-	tmp += "[" + (i+1) + "] \"" + rule + "\": " + data[1][1] + "\n";
-	tmp += "  Adverbs: " + wrap(item_list(data[0]), screen[0]) + "\n";
-	i++;
+        rule_array[i] = rule;
+        tmp += "[" + (i+1) + "] \"" + rule + "\": " + data[1][1] + "\n";
+        tmp += "  Adverbs: " + wrap(item_list(data[0]), screen[0]) + "\n";
+        i++;
     }
     this_player()->eventPage(explode(tmp, "\n"), MSG_SYSTEM,
       function(mixed args) {
-	  string tmp = "Enter rule to edit, 'a' to "
-	  "add rule, 'e' to edit error "
-	  "msg, or 'q' to quit: ";
+          string tmp = "Enter rule to edit, 'a' to "
+          "add rule, 'e' to edit error "
+          "msg, or 'q' to quit: ";
 
-	  this_player()->eventPrint(tmp, MSG_PROMPT);
-	  input_to((: EnterEditChoice :), args...);
+          this_player()->eventPrint(tmp, MSG_PROMPT);
+          input_to((: EnterEditChoice :), args...);
       }, ({ rule_array, emote }));
 }
 
 mixed cmd(string args) {
     if( !args || args == "" ) {
-	this_player()->eventPrint("Enter emote name: ", MSG_PROMPT);
-	input_to((: AddEmote :));
+        this_player()->eventPrint("Enter emote name: ", MSG_PROMPT);
+        input_to((: AddEmote :));
     }
     else if( args[0] == '-' ) {
-	if( args == "-edit" ) {
-	    MainMenu();
-	}
-	else if( args == "-add") {
-	    this_player()->eventPrint("Enter emote name: ", MSG_PROMPT);
-	    input_to((: AddEmote :));
-	}
-	else {
-	    MainMenu();
-	}
+        if( args == "-edit" ) {
+            MainMenu();
+        }
+        else if( args == "-add") {
+            this_player()->eventPrint("Enter emote name: ", MSG_PROMPT);
+            input_to((: AddEmote :));
+        }
+        else {
+            MainMenu();
+        }
     }
     else {
-	if( member_array(args, SOUL_D->GetEmotes()) == -1 ) {
-	    AddEmote(args);
-	}
-	else {
-	    ShowEmote(args);
-	}
+        if( member_array(args, SOUL_D->GetEmotes()) == -1 ) {
+            AddEmote(args);
+        }
+        else {
+            ShowEmote(args);
+        }
     }
     return 1;
 }

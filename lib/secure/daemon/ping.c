@@ -3,6 +3,10 @@
 #include <rooms.h>
 #include <daemons.h>
 
+#ifndef PING_INTERVAL
+#define PING_INTERVAL 30
+#endif
+
 inherit LIB_DAEMON;
 
 int Pinging = 0;
@@ -18,23 +22,23 @@ int CheckOK(){
     Pinging = 0;
     if(DISABLE_INTERMUD) return 1;
     if(!OK){
-	Retries++;
-	update("/daemon/intermud");
+        Retries++;
+        update("/daemon/intermud");
     }
     else {
-	if(Retries > 0 && INTERMUD_D->GetConnectedStatus()){
-	    tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"
-	      "Intermud connection is %^BOLD%^GREEN%^ONLINE%^BOLD%^CYAN%^.%^RESET%^\"");
-	    load_object(ROOM_ARCH)->SetImud(1);
-	}
+        if(Retries > 0 && INTERMUD_D->GetConnectedStatus()){
+            tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"
+              "Intermud connection is %^BOLD%^GREEN%^ONLINE%^BOLD%^CYAN%^.%^RESET%^\"");
+            load_object(ROOM_ARCH)->SetImud(1);
+        }
 
-	Retries = 0;
+        Retries = 0;
     }
     if(Retries == 2 && !(INTERMUD_D->GetConnectedStatus())){
-	tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"
-	  "Intermud connection is %^BOLD%^RED%^OFFLINE%^BOLD%^CYAN%^.%^RESET%^\"");
-	rm("/tmp/muds.txt");
-	load_object(ROOM_ARCH)->SetImud(0);
+        tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"
+          "Intermud connection is %^BOLD%^RED%^OFFLINE%^BOLD%^CYAN%^.%^RESET%^\"");
+        rm("/tmp/muds.txt");
+        load_object(ROOM_ARCH)->SetImud(0);
     }
     write_file("/www/mudlist.txt",timestamp()+"\n",1);
     write_file("/www/mudlist.txt",""+list);
@@ -47,12 +51,12 @@ int eventPing(){
     OK = 0;
 
     if(!sizeof(muds)) {
-	Pinging = 0;
-	return 0;
+        Pinging = 0;
+        return 0;
     }
 
     foreach(string mud in muds){
-	INTERMUD_D->eventWrite(({ "auth-mud-req", 5, mud_name(), 0, mud, 0 }));
+        INTERMUD_D->eventWrite(({ "auth-mud-req", 5, mud_name(), 0, mud, 0 }));
     }
     return 1;
 }
@@ -62,8 +66,8 @@ void create() {
     SetNoClean(1);
     if(!DISABLE_INTERMUD) set_heart_beat(1);
     else {
-	set_heart_beat(0);
-	Pinging = 0;
+        set_heart_beat(0);
+        Pinging = 0;
     }
 }
 
@@ -84,10 +88,10 @@ void heart_beat(){
     counter++;
     DeadMan();
     if(!DISABLE_INTERMUD){
-	if(!(counter % 30)) CheckOK();
-	if(!(counter % 300)) eventPing();
+        if(!(counter % (PING_INTERVAL + 2))) CheckOK();
+        if(!(counter % (PING_INTERVAL))) eventPing();
     }
-    if(counter > 10000) counter = 0;
+    if(counter > (PING_INTERVAL * 1000)) counter = 0;
 }
 
 int GetPinging(){

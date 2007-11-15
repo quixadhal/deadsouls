@@ -26,7 +26,7 @@ static void create() {
     AddItem(new("/domains/Ylsrim/etc/church_button"));
     SetObviousExits("w, enter church");
     SetExits( ([ 
-	"west" : "/domains/Ylsrim/room/"+ "kaliid4" ]));
+        "west" : "/domains/Ylsrim/room/"+ "kaliid4" ]));
     SetEnters( ([ "church" : "/domains/Ylsrim/room/"+ "church" ]));
     SetDoor("church", "/domains/Ylsrim/etc/church_door");
 }

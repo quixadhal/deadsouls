@@ -13,8 +13,8 @@ static void create(){
       "has not been tanned, so it's rather "+
       "foul-smelling.");
     SetItems( ([
-	"hide" : "It is untanned and subject "+
-	"to natural decomposition."
+        "hide" : "It is untanned and subject "+
+        "to natural decomposition."
       ]) );
     SetSmell( ([ "default" : "It reeks of death." ]) );
     SetMass(75);

@@ -25,8 +25,8 @@ object array GetSitters() {
 
 mixed eventReceiveSit(object who) {
     if(who->GetProperty("furniture")){
-	write("You are already using a piece of furniture.");
-	return 1;
+        write("You are already using a piece of furniture.");
+        return 1;
     }
     Sitters = ({ Sitters..., who });
     who->SetProperty("furniture", " on "+this_object()->GetShort());
@@ -45,10 +45,10 @@ mixed eventReleaseStand(object who) {
 mixed direct_sit_word_obj() {
     Sitters = filter(Sitters, (: $1 && $1->GetPosition()==POSITION_SITTING :));
     if( sizeof(Sitters) >= MaxSitters ) {
-	return "There is no room to sit there.";
+        return "There is no room to sit there.";
     }
     if(environment() != environment(this_player())) {
-	return "That's not available for sitting right now.";
+        return "That's not available for sitting right now.";
     }
     return 1;
 }
@@ -60,13 +60,13 @@ mixed direct_sit_down_word_obj() {
 int CanGet(object who){
     object *sitters = this_object()->GetSitters();
     if(sizeof(sitters)){
-	foreach(object wer in sitters){
-	    if(!wer || environment(wer) != environment()) this_object()->eventReleaseStand(wer);
-	}         if(sizeof(this_object()->GetSitters())){
-	    write(this_object()->GetSitters()[0]->GetName()+" is using it right now.");
-	    return 0;
-	}
-	else return 1;
+        foreach(object wer in sitters){
+            if(!wer || environment(wer) != environment()) this_object()->eventReleaseStand(wer);
+        }         if(sizeof(this_object()->GetSitters())){
+            write(this_object()->GetSitters()[0]->GetName()+" is using it right now.");
+            return 0;
+        }
+        else return 1;
     }
     else return 1;
 }

@@ -31,10 +31,10 @@ void create() {
       "main road is east.");
     SetItems(
       (["list" : "You can read all the services by typing <read list>.",
-	"hospital" : "The clerics here specialize in regenerating "
-	"lost limbs.",
-	"clerics" : "They are mending the wounds of patients.",
-	"cleric" : "He is mending a patient's wounds."]));
+        "hospital" : "The clerics here specialize in regenerating "
+        "lost limbs.",
+        "clerics" : "They are mending the wounds of patients.",
+        "cleric" : "He is mending a patient's wounds."]));
     SetExits( 
       (["east" : "/domains/Praxis/n_centre2"]) );
     blood = ([ "who": ([]), "hp":200, "mp":200 ]);
@@ -46,12 +46,12 @@ int new_body(string str) {
     int i;
 
     if( (int)this_player()->query_level() != 1) {
-	notify_fail("The clerics only perform this service for the inexperienced.\n");
-	return 0;
+        notify_fail("The clerics only perform this service for the inexperienced.\n");
+        return 0;
     }
     inv = all_inventory(this_player());
     for(i=0; i<sizeof(inv); i++) {
-	inv[i]->unequip();
+        inv[i]->unequip();
     }
     write("A cleric comes over to you and mutters a small prayer.");
     write("You again have all the limbs you were born with!");
@@ -62,12 +62,12 @@ int new_body(string str) {
 
 int read(string str) {
     if(!str) {
-	notify_fail("Read what?\n");
-	return 0;
+        notify_fail("Read what?\n");
+        return 0;
     }
     if(str != "list") {
-	notify_fail("That is not here for reading.\n");
-	return 0;
+        notify_fail("That is not here for reading.\n");
+        return 0;
     }
     message("info", "Welcome to the Cleric's Hospital of Praxis!",this_player());
     message("Ninfo",
@@ -102,12 +102,12 @@ int clean_poison(string str) {
     if(str != "poison") return 0;
     tp = this_player();
     if((int)tp->query_poisoning()<1) {
-	notify_fail("A cleric whispers to you: But you are not poisoned!\n");
-	return 0;
+        notify_fail("A cleric whispers to you: But you are not poisoned!\n");
+        return 0;
     }
     if((int)tp->query_money("gold") < currency_value(50, "gold")) {
-	notify_fail("You do not have enough gold for the tithe.\n");
-	return 0;
+        notify_fail("You do not have enough gold for the tithe.\n");
+        return 0;
     }
     tp->AddCurrency("gold", -currency_value(50, "gold"));
     tp->add_poisoning(-10);
@@ -133,45 +133,45 @@ int regenerate(string limb) {
        versions of the mudlib
     */
     if(!missing) {
-	notify_fail("You aren't missing any limbs!\n");
-	return 0;
+        notify_fail("You aren't missing any limbs!\n");
+        return 0;
     }
     if(member_array(limb, missing) == -1) {
-	notify_fail("You are not missing that limb!\n");
-	return 0;
+        notify_fail("You are not missing that limb!\n");
+        return 0;
     }
     if(member_array(limb, there) != -1) {
-	notify_fail("You already have that one back!\n");
-	return 0;
+        notify_fail("You already have that one back!\n");
+        return 0;
     }
     limb_info= (mapping)RACES_D->query_limb_info(limb,(string)tp->query_race());
     if(!limb_info) {
-	notify_fail("That limb cannot be replaced!\n");
-	return 0;
+        notify_fail("That limb cannot be replaced!\n");
+        return 0;
     }
     if(limb_info["attach"] != "0") {
-	if(member_array(limb_info["attach"], there) == -1) {
-	    notify_fail("You would need a "+limb_info["attach"]+" for that!\n");
-	    return 0;
-	}
+        if(member_array(limb_info["attach"], there) == -1) {
+            notify_fail("You would need a "+limb_info["attach"]+" for that!\n");
+            return 0;
+        }
     }
     if(strsrch(limb, "hand") != -1 || strsrch(limb, "foot") != -1 || 
       strsrch(limb, "hoof") != -1) {
-	money = ((string)this_player()->query_class() == "cleric" ? 
-	  currency_value(240, "gold") : currency_value(320, "gold"));
+        money = ((string)this_player()->query_class() == "cleric" ? 
+          currency_value(240, "gold") : currency_value(320, "gold"));
     }
     else money = ((string)this_player()->query_class() == "cleric" ? 
-	  currency_value(600, "gold") : currency_value(800, "gold"));
+          currency_value(600, "gold") : currency_value(800, "gold"));
     if((int)tp->query_money("gold") < COST) {
-	notify_fail("The cleric tells you:  You do not have enough gold.\n");
-	return 0;
+        notify_fail("The cleric tells you:  You do not have enough gold.\n");
+        return 0;
     }
     tp->AddLimb(limb, limb_info["ref"], (int)tp->query_max_hp()/limb_info["max"], 0, 0);
     if(member_array(limb, (string *)RACES_D->query_wielding_limbs((string)tp->query_race())) != -1) 
-	tp->add_wielding_limb(limb);
+        tp->add_wielding_limb(limb);
     this_player()->AddCurrency("gold", -COST);
     say(sprintf("%s asks the clerics for some help with %s missing %s.",
-	this_player()->query_cap_name(), possessive(this_player()), limb));
+        this_player()->query_cap_name(), possessive(this_player()), limb));
     write("The clerics restore your "+limb+"!");
     return 1;
 }
@@ -181,25 +181,25 @@ int donate(string str) {
     int amount, tmp;
 
     if(!str) {
-	notify_fail("Donate what?\n");
-	return 0;
+        notify_fail("Donate what?\n");
+        return 0;
     }
     if(sscanf(str, "%d %s of blood", amount, what) !=2) {
-	notify_fail("Correct syntax: <donate [#] [hp | mp] of blood>\n");
-	return 0;
+        notify_fail("Correct syntax: <donate [#] [hp | mp] of blood>\n");
+        return 0;
     }
     if(what != "mp" && what != "hp") {
-	notify_fail("Donate what?\n");
-	return 0;
+        notify_fail("Donate what?\n");
+        return 0;
     }
     if(blood[(string)this_player()->query_name()]+amount > MAX_DONATION) {
-	write("You will have to wait before giving that much blood.");
-	return 1;
+        write("You will have to wait before giving that much blood.");
+        return 1;
     }
     tmp = (int)call_other(this_player(), "query_"+what);
     if(tmp < amount + 5) {
-	notify_fail("You must have at least 5 more than you plan to give!\n");
-	return 0;
+        notify_fail("You must have at least 5 more than you plan to give!\n");
+        return 0;
     }
     call_other(this_player(), "add_"+what, -amount);
     this_player()->AddCurrency("gold", currency_value(amount/5, "gold"));
@@ -216,28 +216,28 @@ int transfuse(string str) {
     int amount;
 
     if(!str) {
-	notify_fail("Transfuse what?\n");
-	return 0;
+        notify_fail("Transfuse what?\n");
+        return 0;
     }
     if(sscanf(str, "%d %s", amount, what) != 2) {
-	notify_fail("Correct syntax: <transfuse [#] [mp | hp]>\n");
-	return 0;
+        notify_fail("Correct syntax: <transfuse [#] [mp | hp]>\n");
+        return 0;
     }
     if(what != "hp" && what != "mp") {
-	notify_fail("You cannot do that!\n");
-	return 0;
+        notify_fail("You cannot do that!\n");
+        return 0;
     }
     if(amount < 1) {
-	notify_fail("Are you crazy?!?\n");
-	return 0;
+        notify_fail("Are you crazy?!?\n");
+        return 0;
     }
     if(blood[what] < amount) {
-	notify_fail("We do not have that much blood in right now.\n");
-	return 0;
+        notify_fail("We do not have that much blood in right now.\n");
+        return 0;
     }
     if((int)this_player()->query_money("gold") < currency_value(amount*3, "gold")) {
-	notify_fail("You do not have enough gold for the tithe.\n");
-	return 0;
+        notify_fail("You do not have enough gold for the tithe.\n");
+        return 0;
     }
     this_player()->AddCurrency("gold", -currency_value(amount*3, "gold"));
     call_other(this_player(), "add_"+what, amount);

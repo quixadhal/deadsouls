@@ -88,36 +88,36 @@ int eventDeleteObject(object ob1, object ob2){
     object staff;
     staff = present("tanstaafl",this_player());
     if(!staff) {
-	write("You must be holding the creator staff in order to use this command.");
-	write("If you don't know where you put it, get another one from the chest ");
-	write("in your workroom.");
-	return 1;
+        write("You must be holding the creator staff in order to use this command.");
+        write("If you don't know where you put it, get another one from the chest ");
+        write("in your workroom.");
+        return 1;
     }
 
     if(userp(ob1) || userp(ob2)){
-	write("No.");
-	return 1;
+        write("No.");
+        return 1;
     }
 
     if(environment(ob1) != ob2) {
-	write("That doesn't exist there.");
-	return 1;
+        write("That doesn't exist there.");
+        return 1;
     }
 
     door = ob1->GetDoor();
     if(door){
-	staff->eventDeleteDoor(door);
-	return 1;
+        staff->eventDeleteDoor(door);
+        return 1;
     }
 
     if(starts_with(base_name(ob2),"/lib/")) {
-	write("This appears to be a library object. Canceling modification.");
-	return 1;
+        write("This appears to be a library object. Canceling modification.");
+        return 1;
     }
 
     if(ob2->GetNoModify()){
-	write("This object must be modified by hand.");
-	return 1;
+        write("This object must be modified by hand.");
+        return 1;
     }
 
     staff->eventGeneralStuff(base_name(ob1)+".c");
@@ -134,10 +134,10 @@ int eventDeleteExit(string str){
     object staff;
     staff = present("tanstaafl",this_player());
     if(!staff) {
-	write("You must be holding the creator staff in order to use this command.");
-	write("If you don't know where you put it, get another one from the chest ");
-	write("in your workroom.");
-	return 1;
+        write("You must be holding the creator staff in order to use this command.");
+        write("If you don't know where you put it, get another one from the chest ");
+        write("in your workroom.");
+        return 1;
     }
 
     filename = base_name(environment(this_player()))+".c";
@@ -145,18 +145,18 @@ int eventDeleteExit(string str){
     enters = load_object(filename)->GetEnters();
 
     if(member_array(str,exits) == -1 && member_array(str,enters) == -1) {
-	write("That exit does not exist here.");
-	return 1;
+        write("That exit does not exist here.");
+        return 1;
     }
 
     if(base_name(environment(this_player())) == ROOM_START){
-	write("You should edit the start room by hand. Change cancelled.");
-	return 1;
+        write("You should edit the start room by hand. Change cancelled.");
+        return 1;
     }
 
     if(!check_privs(this_player(),filename)){
-	write("You can't delete an exit from a room that is not yours.");
-	return 1;
+        write("You can't delete an exit from a room that is not yours.");
+        return 1;
     }
 
     players = get_livings(environment(this_player()),1);
@@ -168,14 +168,14 @@ int eventDeleteExit(string str){
     exits = load_object(filename)->GetExits();
 
     if(member_array(str,exits) == -1) {
-	write("Exit successfully removed.");
-	say(this_player()->GetCapName()+" removes an exit.");
-	return 1;
+        write("Exit successfully removed.");
+        say(this_player()->GetCapName()+" removes an exit.");
+        return 1;
     }
 
     else {
-	write("Exit removal failed.");
-	return 1;
+        write("Exit removal failed.");
+        return 1;
     }
 
 }

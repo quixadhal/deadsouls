@@ -8,18 +8,18 @@ int cmd(string str) {
 
     if(!archp(previous_object())) return 0;
     if(!str) {
-	notify_fail("Unwatch which name or site?\n");
-	return 0;
+        notify_fail("Unwatch which name or site?\n");
+        return 0;
     }
     if(sscanf(str, "%s %s", which, nom) != 2) {
-	notify_fail("Correct syntax: <unwatch [name|site] [ip or name]>\n");
-	return 0;
+        notify_fail("Correct syntax: <unwatch [name|site] [ip or name]>\n");
+        return 0;
     }
     if(which == "name") BANISH_D->unwatch_name(nom);
     else if(which == "site") BANISH_D->unwatch_site(nom);
     else {
-	notify_fail("Undefined unwatch type: "+str+"\n");
-	return 0;
+        notify_fail("Undefined unwatch type: "+str+"\n");
+        return 0;
     }
     message("info", nom+" is now an unwatched "+which, this_player());
     return 1;

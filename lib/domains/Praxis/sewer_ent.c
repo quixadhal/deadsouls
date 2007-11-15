@@ -16,13 +16,13 @@ void create() {
     SetItems(
       ([ "manhole" : "It is a hole that leads to the surface."]) );
     SetExits( ([ 
-	"up" : "/domains/Praxis/yard",
-	"east" : "/domains/Praxis/sewer",
+        "up" : "/domains/Praxis/yard",
+        "east" : "/domains/Praxis/sewer",
       ]) );
 }
 
 void reset() {
     ::reset();
     if(!present("sword")) 
-	new("/domains/Praxis/obj/weapon/sword")->move(this_object());
+        new("/domains/Praxis/obj/weapon/sword")->move(this_object());
 }

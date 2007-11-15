@@ -15,25 +15,25 @@ mixed cmd(string args) {
     string verb, rule;
 
     if( !args || args == "" ) {
-	return "Remove which emote?";
+        return "Remove which emote?";
     }
     if( sscanf(args, "%s %s", verb, rule) != 2 ) {
-	verb = args;
-	rule = 0;
+        verb = args;
+        rule = 0;
     }
     if( !rule ) {
-	if( !SOUL_D->RemoveVerb(verb) ) {
-	    previous_object()->eventPrint("Removal of verb failed.");
-	    return 1;
-	}
-	previous_object()->eventPrint("Verb removed.");
+        if( !SOUL_D->RemoveVerb(verb) ) {
+            previous_object()->eventPrint("Removal of verb failed.");
+            return 1;
+        }
+        previous_object()->eventPrint("Verb removed.");
     }
     else {
-	if( !SOUL_D->RemoveRule(verb, rule) ) {
-	    previous_object()->eventPrint("Removal of rule failed.");
-	    return 1;
-	}
-	previous_object()->eventPrint("Rule removed.");
+        if( !SOUL_D->RemoveRule(verb, rule) ) {
+            previous_object()->eventPrint("Removal of rule failed.");
+            return 1;
+        }
+        previous_object()->eventPrint("Rule removed.");
     }
     return 1;
 }

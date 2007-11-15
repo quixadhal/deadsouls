@@ -16,16 +16,16 @@ void create() {
     );
     SetExits( 
       (["north" : "/domains/Praxis/square",
-	"south" : "/domains/Praxis/s_centre2",
-	"west" : "/domains/Praxis/pub"]) );
+        "south" : "/domains/Praxis/s_centre2",
+        "west" : "/domains/Praxis/pub"]) );
     SetProperty("light", 3);
     SetProperty("night light", 1);
     SetItems(
       (["path" : "Centre Path leads to Monument Square south and out "
-	"of town north.",
-	"road" : "Boc La Road is the main east-west road.",
-	"pub" : "Lars Pub, now mostly obsolete, but it is the original.",
-	"square" : "The central square of Praxis."]) );
+        "of town north.",
+        "road" : "Boc La Road is the main east-west road.",
+        "pub" : "Lars Pub, now mostly obsolete, but it is the original.",
+        "square" : "The central square of Praxis."]) );
     SetProperty("no castle", 1);
 }
 

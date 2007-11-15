@@ -8,12 +8,13 @@
 #include <lib.h>
 
 inherit LIB_VERB;
+int yes;
 
 static void create() {
     verb::create();
     SetVerb("get");
-    SetRules("OBS OBJ", "WRD WRD from OBJ", "WRD WRD out of OBJ", "OBS",
-      "OBS out of OBJ", "OBS from OBJ");
+    SetRules("OBS OBJ", "WRD from OBJ", "WRD out of OBJ", "WRD WRD from OBJ", "WRD WRD out of OBJ",
+      "OBS", "OBS out of OBJ", "OBS from OBJ");
     SetSynonyms("take");
     SetErrorMessage("Get what?  Or perhaps get something from somewhere?");
     SetHelp("Syntax: <get ITEM>\n"
@@ -33,14 +34,14 @@ mixed eventCheckLight(object who) {
     int light;
 
     if( (light = who->GetEffectiveVision()) < 2 ) {
-	if( 100 + (10*light) < random(100) )
-	    return "You fumble around in the darkness.";
-	else return this_player()->CanManipulate();
+        if( 100 + (10*light) < random(100) )
+            return "You fumble around in the darkness.";
+        else return this_player()->CanManipulate();
     }
     else if( light > 5 ) {
-	if( 100 - (10*light) < random(100) )
-	    return "You fumble around in the blinding light.";
-	else return this_player()->CanManipulate();
+        if( 100 - (10*light) < random(100) )
+            return "You fumble around in the blinding light.";
+        else return this_player()->CanManipulate();
     }
     else return this_player()->CanManipulate();
 }
@@ -49,46 +50,76 @@ mixed can_get_obj(string verb) {
     return eventCheckLight(this_player());
 }
 
-varargs mixed can_get_obj_out_of_obj(string verb, string rule, object item, object container, mixed poo) {
-    return eventCheckLight(this_player());
+//varargs mixed can_get_obj_out_of_obj(string verb, string rule, object item, object container, mixed poo) {
+varargs mixed can_get_obj_out_of_obj(mixed args...) {
+    mixed ret = eventCheckLight(this_player());
+    object ob;
+    int which;
+    if(!(args[3] && ob = get_object(args[3])))
+        return ret;
+    else {
+        if(ob->GetClosed()){
+            return "The "+remove_article(ob->GetShort())+" is closed.";
+        }
+    }
+    return ret;
 }
 
 mixed can_get_obj_obj(string verb, string rule, object item, object container) {
     return can_get_obj_out_of_obj(verb, rule, item, container);
 }
 
-mixed can_get_obj_from_obj(string verb, string rule, object item, object container) {
-    return can_get_obj_out_of_obj(verb, rule, item, container);
+//mixed can_get_obj_from_obj(string verb, string rule, object item, object container) {
+mixed can_get_obj_from_obj(mixed args...) {
+    return can_get_obj_out_of_obj(args...);
 }
 
-mixed can_get_wrd_wrd_out_of_obj(string num, string curr) {
-    return eventCheckLight(this_player());
+//mixed can_get_wrd_wrd_out_of_obj(string num, string curr) {
+mixed can_get_wrd_wrd_out_of_obj(mixed args...) {
+    mixed ret = eventCheckLight(this_player());
+    object ob;
+    if(sizeof(args) > 5)
+        if(args[5]) ob = get_object(args[5]);
+        else if(args[3]) ob = get_object(args[3]);
+
+    if(ob && ob->GetClosed()){
+        return "The "+remove_article(ob->GetShort())+" is closed." ;
+    }
+    return ret;
 }
 
-mixed can_get_wrd_wrd_from_obj(string num, string curr) {
-    return can_get_wrd_wrd_out_of_obj(num, curr);
+//mixed can_get_wrd_wrd_from_obj(string num, string curr) {
+mixed can_get_wrd_wrd_from_obj(mixed args...) {
+    return can_get_wrd_wrd_out_of_obj(args...);
+}
+
+mixed can_get_wrd_out_of_obj(mixed args...) {
+    mixed ret = eventCheckLight(this_player());
+    object ob;
+    if(args[3]) ob = get_object(args[3]);
+
+    if(ob && ob->GetClosed()){
+        return "The "+remove_article(ob->GetShort())+" is closed." ;
+    }
+    return ret;
+}
+
+mixed can_get_wrd_from_obj(mixed args...) {
+    return can_get_wrd_out_of_obj(args...);
 }
 
 mixed do_get_obj(object ob) {
     return ob->eventGet(this_player());
 }
 
-mixed do_get_wrd_wrd_out_of_obj(string num, string curr, object pile) {
-    return pile->eventGetMoney(this_player(), to_int(num), curr);
-}
-
-mixed do_get_wrd_wrd_from_obj(string num, string curr, object pile) {
-    return do_get_wrd_wrd_out_of_obj(num, curr, pile);
-}
-
 mixed do_get_obj_out_of_obj(object ob, object storage) {
     if(!ob) return "No object";
     if(!(environment(ob) == storage)){
-	ob = present(ob->GetKeyName(), storage);
-	if(!ob){
-	    write("That's not in there.");
-	    return "";
-	}
+        ob = present(ob->GetKeyName(), storage);
+        if(!ob){
+            write("That's not in there.");
+            return "";
+        }
     }
     return (mixed)storage->eventGetFrom(this_player(), ({ ob }));
 }
@@ -104,22 +135,22 @@ mixed do_get_obj_obj(object ob, object storage) {
 mixed do_get_obs(mixed *targs) {
     object *obs;
     if( !sizeof(targs) ) {
-	this_player()->eventPrint("There is no such thing to be taken.");
-	return 1;
+        this_player()->eventPrint("There is no such thing to be taken.");
+        return 1;
     }
     obs = filter(targs, (: objectp :));
     if( !sizeof(obs) ) {
-	mapping messages = unique_mapping(targs, (: $1 :));
+        mapping messages = unique_mapping(targs, (: $1 :));
 
-	foreach(string msg in keys(messages)) {
-	    this_player()->eventPrint(msg);
-	}
-	return 1;
+        foreach(string msg in keys(messages)) {
+            this_player()->eventPrint(msg);
+        }
+        return 1;
     }
     foreach(object item in obs) {
 
-	if( (mixed)item->CanGet(this_player()) != 1 ) continue;
-	item->eventGet(this_player());
+        if( (mixed)item->CanGet(this_player()) != 1 ) continue;
+        item->eventGet(this_player());
     }
     return 1;
 }
@@ -127,17 +158,17 @@ mixed do_get_obs(mixed *targs) {
 mixed do_get_obs_out_of_obj(mixed *targs, object storage) {
     object *obs;
     if( !sizeof(targs) ) {
-	this_player()->eventPrint("There is no such thing to be taken.");
-	return 1;
+        this_player()->eventPrint("There is no such thing to be taken.");
+        return 1;
     }
     obs = filter(targs, (: objectp :));
     if( !sizeof(obs) ) {
-	mapping messages = unique_mapping(targs, (: $1 :));
+        mapping messages = unique_mapping(targs, (: $1 :));
 
-	foreach(string msg in keys(messages)) {
-	    this_player()->eventPrint(msg);
-	}
-	return 1;
+        foreach(string msg in keys(messages)) {
+            this_player()->eventPrint(msg);
+        }
+        return 1;
     }
     return (mixed)storage->eventGetFrom(this_player(), obs);
 }
@@ -149,3 +180,48 @@ mixed do_get_obs_from_obj(mixed *obs, object storage) {
 mixed do_get_obs_obj(mixed *obs, object storage) {
     return do_get_obs_out_of_obj(obs, storage);
 }
+
+//mixed do_get_wrd_wrd_from_obj(string num, string curr, object pile) {
+mixed do_get_wrd_wrd_from_obj(mixed args...) {
+    string num, curr;
+    mixed pile;
+    object ob1, ob2;
+
+    num = args[0];
+    curr = args[1];
+    pile = args[2];
+
+    ob1 = get_object(num+" "+curr);
+    ob2 = get_object(implode(args[6..]," "));
+
+    if(ob1 && ob2) return do_get_obj_from_obj(ob1, ob2);
+
+    return pile->eventGetMoney(this_player(), to_int(num), curr);
+}
+
+//mixed do_get_wrd_wrd_out_of_obj(string num, string curr, object pile) {
+mixed do_get_wrd_wrd_out_of_obj(mixed args...) {
+    return do_get_wrd_wrd_from_obj(args);
+}
+
+mixed do_get_wrd_from_obj(mixed args...) {
+    string num, curr;
+    mixed pile;
+    object ob1, ob2;
+
+    num = args[0];
+    curr = args[1];
+    pile = args[2];
+
+    ob1 = get_object(num+" "+curr);
+    ob2 = get_object(implode(args[6..]," "));
+
+    if(ob1 && ob2) return do_get_obj_from_obj(ob1, ob2);
+
+    return pile->eventGetMoney(this_player(), to_int(num), curr);
+}
+
+mixed do_get_wrd_out_of_obj(mixed args...) {
+    return do_get_wrd_from_obj(args);
+}
+

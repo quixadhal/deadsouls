@@ -6,22 +6,22 @@
  *    Last modified: 96/12/22
  */
 
-//private static mapping Properties   = ([]);
 mapping Properties   = ([]);
 
 mixed AddProperty(string prop, mixed val) {
     if( Properties[prop] ) {
-	Properties[prop] += val;
+        Properties[prop] += val;
     }
     else {
-	Properties[prop] = val;
+        Properties[prop] = val;
     }
     return Properties[prop];
 }
 
 mixed GetProperty(string prop) {
-    return Properties[prop];
-    //else return 0;
+    if(Properties && Properties[prop])
+        return Properties[prop];
+    else return 0;
 }
 
 mapping GetProperties() {
@@ -30,10 +30,10 @@ mapping GetProperties() {
 
 int RemoveProperty(string prop) {
     if( undefinedp(Properties[prop]) ) {
-	return 1;
+        return 1;
     }
     else {
-	map_delete(Properties, prop);
+        map_delete(Properties, prop);
     }
     return !Properties[prop];
 }

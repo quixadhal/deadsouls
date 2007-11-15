@@ -32,7 +32,7 @@ void eventSave(){
 
 void eventLoad(){
     if (file_size(SAVE_STARGATE __SAVE_EXTENSION__) > 0){
-	unguarded( (: restore_object, SAVE_STARGATE :) );
+        unguarded( (: restore_object, SAVE_STARGATE :) );
     }
     return;
 }
@@ -75,7 +75,7 @@ string GetStatus(string address){
 
 string GetDestination(string address){
     if(sizeof(Stargates[address]) && sizeof(Stargates[address]["destination"]))
-	return Stargates[address]["destination"];
+        return Stargates[address]["destination"];
     else return "";
 }
 
@@ -88,23 +88,23 @@ int eventConnect(string from, string to){
     if (from == to) return 0;
 
     if (!Stargates[from] || !sizeof(Stargates[from])){ 
-	return 0;
+        return 0;
     }
 
     if (!Stargates[to] || !sizeof(Stargates[to])){ 
-	return 0;
+        return 0;
     }
 
     if (Stargates[from]["status"] == "idle" && Stargates[to]["status"] == "idle"){
 
-	Stargates[from]["endpoint"] = to;
-	Stargates[from]["status"] = "outbound";
+        Stargates[from]["endpoint"] = to;
+        Stargates[from]["status"] = "outbound";
 
-	Stargates[to]["endpoint"] = from;
-	Stargates[to]["status"] = "inbound";
-	eventSave();
+        Stargates[to]["endpoint"] = from;
+        Stargates[to]["status"] = "inbound";
+        eventSave();
 
-	return 1;
+        return 1;
     }
     return 0;
 }
@@ -119,8 +119,8 @@ int eventDisconnect(string from){
     if (!endpoint) return 0;
 
     if(sizeof(Stargates[endpoint])){
-	Stargates[endpoint]["endpoint"] = "";
-	Stargates[endpoint]["status"] = "idle";
+        Stargates[endpoint]["endpoint"] = "";
+        Stargates[endpoint]["status"] = "idle";
     }
 
     Stargates[from]["endpoint"] = "";

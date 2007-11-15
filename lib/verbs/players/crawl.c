@@ -22,10 +22,10 @@ static void create() {
 mixed can_crawl_str(string str) {
     if( !environment(this_player()) ) return "You are nowhere.";
     if( (int)this_player()->GetStaminaPoints() <3 )
-	return "You are too tired to crawl anywhere right now.";
+        return "You are too tired to crawl anywhere right now.";
     if(this_player()->GetPosition() != POSITION_LYING &&
       this_player()->GetPosition() != POSITION_SITTING){
-	return "You can't crawl in your current position.";
+        return "You can't crawl in your current position.";
     }
     return 1;
 }
@@ -33,10 +33,10 @@ mixed can_crawl_str(string str) {
 mixed can_crawl_into_str(string str) {
     if( !environment(this_player()) ) return "You are nowhere.";
     if( (int)this_player()->GetStaminaPoints() <3 )
-	return "You are too tired right now.";
+        return "You are too tired right now.";
     if(this_player()->GetPosition() != POSITION_LYING &&
       this_player()->GetPosition() != POSITION_SITTING){
-	return "You can't crawl in your current position.";
+        return "You can't crawl in your current position.";
     }
     return 1;
 }

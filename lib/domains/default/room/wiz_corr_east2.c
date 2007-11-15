@@ -10,8 +10,8 @@ static void create() {
     SetShort("Test Labs Corridor East");
     SetLong("This is the main corridor of the test labs. North is the mounted combat arena. The corridor runs west from here.");
     SetExits( ([
-	"west" : "/domains/default/room/wiz_corr_east",
-	"north" : "/domains/default/virtual/arena/5,1.c",
+        "west" : "/domains/default/room/wiz_corr_east",
+        "north" : "/domains/default/virtual/arena/5,1.c",
       ]) );
 
     SetInventory(([

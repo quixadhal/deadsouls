@@ -6,10 +6,10 @@ int reload_room(object ob) {
     name=base_name(ob);
     stuff = deep_inventory(ob);
     foreach(object item in stuff){
-	if(!interactive(item) &&
-	  !interactive(environment(item)) &&
-	  !interactive(environment(environment(item))) )  
-	    item->eventDestruct();
+        if(!interactive(item) &&
+          !interactive(environment(item)) &&
+          !interactive(environment(environment(item))) )  
+            item->eventDestruct();
     }
     ob->eventDestruct();
     load_object(name);

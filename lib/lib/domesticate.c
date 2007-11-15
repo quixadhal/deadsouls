@@ -87,10 +87,10 @@ int SetCanCommand(int i){
 
 int eventBefriend(object who){
     if(!CanBefriend(who)){
-	write("You fail to befriend "+this_object()->GetName()+".");
-	say(who->GetName()+" fails to befriend "+this_object()->GetName()+
-	  ". "+capitalize(nominative(who))+" looks very silly!");
-	return 1;
+        write("You fail to befriend "+this_object()->GetName()+".");
+        say(who->GetName()+" fails to befriend "+this_object()->GetName()+
+          ". "+capitalize(nominative(who))+" looks very silly!");
+        return 1;
     }
     write("You befriend "+this_object()->GetName()+".");
     say(who->GetName()+" befriends "+this_object()->GetName()+
@@ -101,8 +101,8 @@ int eventBefriend(object who){
 
 int eventAbandon(object who){
     if(!CanAbandon(who)){
-	write("You can't abandon "+this_object()->GetName()+".");
-	return 1;
+        write("You can't abandon "+this_object()->GetName()+".");
+        return 1;
     }
     write("You abandon "+this_object()->GetName()+".");
     say(who->GetName()+" abandons "+this_object()->GetName()+
@@ -115,19 +115,19 @@ varargs int eventTrainLiving(object who, string what){
     if(what) what = replace_string(what, "to ", "");
     if(!who) who = this_player();
     if(Owner != who) {
-	write("You are not this mount's owner.");
-	return 0;
+        write("You are not this mount's owner.");
+        return 0;
     }
     if(what && member_array(what, TrainedSkills) != -1){
-	write(this_object()->GetName()+" already possesses that skill.");
-	return 1;
+        write(this_object()->GetName()+" already possesses that skill.");
+        return 1;
     }
     if(!what || what == "") return 1;
     else {
-	tell_player(who,"You train "+this_object()->GetShort()+"."); 
-	tell_room(environment(who),who->GetName()+" trains "+
-	  this_object()->GetShort()+".", ({ who,this_object() }) );
-	TrainedSkills += ({ what });
+        tell_player(who,"You train "+this_object()->GetShort()+"."); 
+        tell_room(environment(who),who->GetName()+" trains "+
+          this_object()->GetShort()+".", ({ who,this_object() }) );
+        TrainedSkills += ({ what });
     }
     return 1;
 }
@@ -136,14 +136,14 @@ varargs int eventUnTrainLiving(object who, string what){
     if(what) what = replace_string(what, "to ", "");
     if(!who) who = this_player();
     if(Owner != who) {
-	write("You are not this mount's owner.");
-	return 0;
+        write("You are not this mount's owner.");
+        return 0;
     }
     if(!what || what == ""){
-	Owner = 0;
+        Owner = 0;
     }
     if(what &&  member_array(what, TrainedSkills) != -1){
-	TrainedSkills -= ({ what });
+        TrainedSkills -= ({ what });
     }
     tell_player(who,"You untrain "+this_object()->GetShort()+".");
     tell_room(environment(who),who->GetName()+" untrains "+

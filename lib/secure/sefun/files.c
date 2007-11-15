@@ -29,17 +29,17 @@ int indent_file(string filename){
     gtempname = tempname;
     gfilename = filename;
     if(!cp(filename,tempname+".dat")){
-	write("You don't have read access to "+filename);
-	return 0;
+        write("You don't have read access to "+filename);
+        return 0;
     }
 
     load_object("/secure/cmds/creators/lsed")->cmd(tempname+" "+tempname+".dat");
 
     if(!unguarded((: cp(gtempname+".dat", gfilename) :)) ){
-	write("You don't have write access to "+filename);
-	rm(tempname+".dat");
-	rm(tempname);
-	return 0;
+        write("You don't have write access to "+filename);
+        rm(tempname+".dat");
+        rm(tempname);
+        return 0;
     }
 
     rm(tempname+".dat");
@@ -54,10 +54,10 @@ int mkdir_recurse(string path){
     if(directory_exists(path)) return 0;
 
     foreach(string element in path_arr){
-	agglutinate += "/"+element;
-	if(!directory_exists(agglutinate)){
-	    if(!mkdir(agglutinate)) return 0;
-	}
+        agglutinate += "/"+element;
+        if(!directory_exists(agglutinate)){
+            if(!mkdir(agglutinate)) return 0;
+        }
     }
     return 1;
 }

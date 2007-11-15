@@ -25,16 +25,16 @@ void create() {
       "be a fighter.");
     SetItems( 
       ([({"tapestry", "tapestries", "wall"}) : "The walls are all "
-	"covered with some of the most ornate tapestries from "
-	"all over.  The one you are looking at depicts a heroic "
-	"battle between a dragon and a human combatant.",
-	({"hole", "light", "opening", "ceiling"}) : "Up in the ceiling, "
-	"the staircase leads through a mystical light up "
-	"to the second floor.",
-	"staircase" : "It leads through the opening in the ceiling "
-	"to the second floor.",
-	"fighters" : "They are loud and obnoxious.", 
-	({"warriors", "young warriors"}) : "They look clueless."]) );
+        "covered with some of the most ornate tapestries from "
+        "all over.  The one you are looking at depicts a heroic "
+        "battle between a dragon and a human combatant.",
+        ({"hole", "light", "opening", "ceiling"}) : "Up in the ceiling, "
+        "the staircase leads through a mystical light up "
+        "to the second floor.",
+        "staircase" : "It leads through the opening in the ceiling "
+        "to the second floor.",
+        "fighters" : "They are loud and obnoxious.", 
+        ({"warriors", "young warriors"}) : "They look clueless."]) );
     SetExits( 
       (["southeast" : "/domains/Praxis/s_centre4"]) );
     AddExit("up", "/domains/Praxis/fighter_hall", (:go_up:));
@@ -44,8 +44,8 @@ void create() {
 
 int preview() {
     if((string)this_player()->query_class() != "explorer") {
-	write("This is not for you.\n");
-	return 1;
+        write("This is not for you.\n");
+        return 1;
     }
     say(this_player()->query_cap_name()+" seeks to learn about fighter.", 
       this_player());
@@ -62,16 +62,16 @@ int preview() {
 
 int become(string str) {
     if(!str) {
-	notify_fail("Become what?\n");
-	return 0;
+        notify_fail("Become what?\n");
+        return 0;
     }
     if(str != "fighter") {
-	notify_fail("You cannot become that here.\n");
-	return 0;
+        notify_fail("You cannot become that here.\n");
+        return 0;
     }
     if((string)this_player()->query_class() != "explorer") {
-	write("You are much too old to start learning our ways now!");
-	return 1;
+        write("You are much too old to start learning our ways now!");
+        return 1;
     }
     write("The Great Warrior initiates you into the class of fighters.");
     say(this_player()->query_cap_name()+" becomes a fighter.", this_player());
@@ -84,10 +84,10 @@ int become(string str) {
 
 int go_up() {
     if((string)this_player()->query_class() != "fighter") {
-	write("You cannot penetrate the force field that blocks the passage.");
-	say(this_player()->query_cap_name()+" tries to get into the "
-	  "fighter's sanctuary, but fails.", this_player());
-	return 0;
+        write("You cannot penetrate the force field that blocks the passage.");
+        say(this_player()->query_cap_name()+" tries to get into the "
+          "fighter's sanctuary, but fails.", this_player());
+        return 0;
     }
     return 1;
 }

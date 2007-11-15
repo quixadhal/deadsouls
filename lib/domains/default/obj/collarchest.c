@@ -20,8 +20,8 @@ void create() {
     SetMaxCarry(500);
     SetPreventPut("You cannot put this in there!");
     SetInventory(([
-	"/secure/obj/medtric" : 1,
-	"/domains/default/armor/collar" : 5,
+        "/secure/obj/medtric" : 1,
+        "/domains/default/armor/collar" : 5,
       ]) );
     SetCanClose(1);
     SetClosed(1);

@@ -25,16 +25,16 @@ mixed CanChangeLeader(object who, object targ) {
 
     if( !(p = Parties[pname]) ) return "No such party exists.";
     if( p->Leader != who )
-	return "You must be the party leader in order to change leaders.";
+        return "You must be the party leader in order to change leaders.";
     if( member_array(targ, p->Members) == -1 )
-	return (string)targ->GetName() + " is not in the party.";
+        return (string)targ->GetName() + " is not in the party.";
     return 1;
 }
 
 mixed CanCreateParty(object who, string name) {
     if( Parties[name] ) return "A party by that name already exists.";
     if( member_array(name, (string *)CHAT_D->GetChannels()) != -1 )
-	return "You cannot use the name " + name + " for your party.";
+        return "You cannot use the name " + name + " for your party.";
     if( (string)who->GetParty() ) return "You are already in a party!";
     return 1;
 }
@@ -45,21 +45,21 @@ mixed CanInviteMember(object who, object member) {
     pname = (string)who->GetParty();
     if( !Parties[pname] ) return "There is no such party!";
     if( ((class party)Parties[pname])->Leader != who )
-	return "Only the party leader may add members!";
+        return "Only the party leader may add members!";
     if( (string)member->GetParty() )
-	return (string)member->GetName() + " is already in a party.";
+        return (string)member->GetName() + " is already in a party.";
     if( environment(member) != environment(who) )
-	return (string)member->GetName() + " must be somewhere near you.";
+        return (string)member->GetName() + " must be somewhere near you.";
     return 1;
 }
 
 mixed CanJoinParty(object who, string pname) {
     if( !Parties[pname] ) return "There is no such party.";
     if( member_array(who, ((class party)Parties[pname])->Invited) == -1 )
-	return "You have not been invited to join that party.";
+        return "You have not been invited to join that party.";
     if( (string)who->GetParty() ) return "You are already in a party.";
     if( environment(who) != environment(((class party)Parties[pname])->Leader) )
-	return "You are nowhere the leader of the party.";
+        return "You are nowhere the leader of the party.";
     return 1;
 }
 
@@ -70,7 +70,7 @@ mixed CanLeaveParty(object who) {
     pname = (string)who->GetParty();
     if( !pname || !(p = Parties[pname]) ) return "There is no such party.";
     if( member_array(who, p->Members) == -1 )
-	return "You are not in that party.";
+        return "You are not in that party.";
     return 1;
 }
 
@@ -91,7 +91,7 @@ mixed CanRemoveParty(object who) {
     pname = (string)who->GetParty();
     if( !(p = Parties[pname]) ) return "There is no such party!";
     if( p->Leader != who )
-	return "Only the party leader may disband the party.";
+        return "Only the party leader may disband the party.";
     return 1;
 }
 
@@ -111,7 +111,7 @@ mixed eventCreateParty(object who, string name) {
     class party this_party;
 
     if( (string)who->SetParty(name) != name )
-	return "There was some bizarre problem sticking you in a party.";
+        return "There was some bizarre problem sticking you in a party.";
     this_party = new(class party);
     this_party->Leader = who;
     this_party->Members = ({ who });
@@ -144,7 +144,7 @@ mixed eventJoinParty(object who, string name) {
     if( (tmp = CanJoinParty(who, name)) != 1 ) return tmp;
     this_party = Parties[name];
     if( (string)who->SetParty(name) != name )
-	return "Bogus error in joining party.";
+        return "Bogus error in joining party.";
     this_party->Invited -= ({ who });
     this_party->Members += ({ who });
     CHAT_D->eventSendChannel("System", name, (string)who->GetName() +
@@ -163,22 +163,22 @@ mixed eventRemoveMember(object who, object targ) {
 
     p = Parties[name = (string)who->GetParty()];
     if( targ == p->Leader ) {
-	if( sizeof(p->Members) == 1 ) return eventRemoveParty(who);
-	else {
-	    foreach(ob in p->Members) if( ob != targ ) break;
-	    if( !ob ) return eventRemoveParty(who);
-	    else {
-		p->Leader = ob;
-		ob->eventPrint("You are now the leader of the party " + name +
-		  ".", MSG_SYSTEM);
-	    }
-	}
+        if( sizeof(p->Members) == 1 ) return eventRemoveParty(who);
+        else {
+            foreach(ob in p->Members) if( ob != targ ) break;
+            if( !ob ) return eventRemoveParty(who);
+            else {
+                p->Leader = ob;
+                ob->eventPrint("You are now the leader of the party " + name +
+                  ".", MSG_SYSTEM);
+            }
+        }
     }
     targ->SetParty(0);
     if( Parties[name] ) {
-	p->Members -= ({ targ });
-	CHAT_D->eventSendChannel("System", name, (string)targ->GetName() +
-	  " is no longer in the party.");
+        p->Members -= ({ targ });
+        CHAT_D->eventSendChannel("System", name, (string)targ->GetName() +
+          " is no longer in the party.");
     }
     targ->eventPrint("You are no longer a member of the party " + name +
       ".", MSG_SYSTEM);
@@ -217,6 +217,6 @@ object *GetPartyMembers(string name) {
 static void RemoveInvitiation(string name, object who) {
     if( !Parties[name] ) return;
     if( member_array(who, ((class party)Parties[name])->Invited) == -1 )
-	return;
+        return;
     ((class party)Parties[name])->Invited -= ({ who });
 }

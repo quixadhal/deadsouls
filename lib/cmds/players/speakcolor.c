@@ -4,7 +4,7 @@ inherit LIB_DAEMON;
 
 mixed cmd(string str) {
     if( !sizeof(str) )
-	return "Syntax: speakcolor <color>";
+        return "Syntax: speakcolor <color>";
     this_player()->SetSpeakColor(str);
     write("%^BOLD%^"+this_player()->GetSpeakColor()+"This is your current color for "+
       "receiving spoken messages.");

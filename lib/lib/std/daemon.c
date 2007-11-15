@@ -26,26 +26,26 @@ static string SetSaveFile(string str) {
 int eventDestruct() {
 
     if( !master()->valid_apply(({ PRIV_ASSIST })) ) {
-	return 0;
+        return 0;
     }
     return clean::eventDestruct();
 }
 
 varargs int eventRestore(int do_not_zero_out) {
     if( !SaveFile ) {
-	return 0;
+        return 0;
     }
     if( unguarded((: file_exists(SaveFile + __SAVE_EXTENSION__) :)) ) {
-	return unguarded((: restore_object, SaveFile, do_not_zero_out :));
+        return unguarded((: restore_object, SaveFile, do_not_zero_out :));
     }
     else {
-	return 1;
+        return 1;
     }
 }
 
 varargs int eventSave(int save_zero_values) {
     if( !SaveFile ) {
-	return 0;
+        return 0;
     }
     return unguarded((: save_object, SaveFile, save_zero_values :));
 }

@@ -50,7 +50,6 @@ void SetLimb(string limb, string owner, string race) {
     Count = 1;
     SetShort("a rotting " + possessive_noun(Race) + " " + Limb);
     SetLong("This limb has a horrible stench as it rots to nothing.");
-    //CallOut = call_out((: eventDecay :), DecayLife/3);
 }
 
 string GetOwner() {
@@ -69,7 +68,7 @@ string GetShort() {
     string str = surface::GetShort();
 
     if( !str ) {
-	str = "a limb";
+        str = "a limb";
     }
     return str;
 }
@@ -79,34 +78,28 @@ int CanReceive(object ob) {
 }
 
 int Destruct() {
-    //if( CallOut > -1 ) {
-    //remove_call_out(CallOut);
-    //}
     return surface::Destruct();
 }
 
 int eventDecay() {
     if( !environment() ) {
-	//CallOut = -1;
-	Destruct();
-	return 0;
+        Destruct();
+        return 0;
     }
     switch(Count) {
     case 10:
-	message("smell", "The "+Limb+" really stinks.", environment());
-	SetShort("the stinky remains of a rotting " + Limb);
-	break;
+        message("smell", "The "+Limb+" really stinks.", environment());
+        SetShort("the stinky remains of a rotting " + Limb);
+        break;
     case 20:
-	message("smell", "A rotting stench fills the entire area.",
-	  environment());
-	SetShort("a pile of rotting flesh");
-	break;
+        message("smell", "A rotting stench fills the entire area.",
+          environment());
+        SetShort("a pile of rotting flesh");
+        break;
     case 30:
-	//CallOut = -1;
-	Destruct();
-	return 0;
+        Destruct();
+        return 0;
     }
     Count++;
-    //CallOut = call_out((: eventDecay :), DecayLife/3);
     return Count;
 }

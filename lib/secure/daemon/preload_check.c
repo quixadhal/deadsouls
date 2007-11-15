@@ -8,9 +8,9 @@ string *preloads;
 
 static void checkPreloads(){
     foreach(string daemon in preloads){
-	if(!find_object(daemon) && daemon != INTERMUD_D &&
-	  daemon != AUTOEXEC_D) 
-	    update(daemon);
+        if(!find_object(daemon) && daemon != INTERMUD_D &&
+          daemon != AUTOEXEC_D) 
+            update(daemon);
     }
     call_out((: checkPreloads :), 300);
 }

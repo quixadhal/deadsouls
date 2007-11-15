@@ -1,12 +1,6 @@
 #ifndef l_lead_h
 #define l_lead_h
 
-class FollowerClass {
-    int followed;
-    int bonus;
-    int lost;
-}
-
 static void create();
 object *AddFollower(object follower);
 object *RemoveFollower(object follower);

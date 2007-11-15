@@ -28,15 +28,15 @@ void catch_tell(string str) {
     string a, b, c;
 
     if(sscanf(str, "%suest%s", a, b) == 2) {
-	tell_room(environment(this_object()), "The knight says: I ventured into the goblin caves on a quest for glory.\nI ended up barely escaping with my life.\nAlthough I am now quite respected, I still feel honorless over the loss of\nmy great-grandfather's magic crystal ball.\nPlease return it to me!\n", ({ this_object() }));
-	return;
+        tell_room(environment(this_object()), "The knight says: I ventured into the goblin caves on a quest for glory.\nI ended up barely escaping with my life.\nAlthough I am now quite respected, I still feel honorless over the loss of\nmy great-grandfather's magic crystal ball.\nPlease return it to me!\n", ({ this_object() }));
+        return;
     }
     if(sscanf(str, "%s gives you %s", a, b) == 2) {
-	a = lower_case(a);
-	tp = present(a, environment(this_object()));
-	if(!tp) return;
-	call_out("check_ball", 2, tp);
-	return;
+        a = lower_case(a);
+        tp = present(a, environment(this_object()));
+        if(!tp) return;
+        call_out("check_ball", 2, tp);
+        return;
     }
 }
 
@@ -45,8 +45,8 @@ void check_ball(object tp) {
 
     ob = present("honor_quest_ob", this_object());
     if(!ob) {
-	tell_object(tp, "This is very nice, but it is not what I seek.\n");
-	return;
+        tell_object(tp, "This is very nice, but it is not what I seek.\n");
+        return;
     }
     ob->destruct();
     if(!tp->set_quest("honor")) return;

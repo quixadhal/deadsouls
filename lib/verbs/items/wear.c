@@ -29,7 +29,7 @@ static void create() {
 
 mixed can_wear_obj() {
     if( this_player()->GetParalyzed() ) {
-	return "You cannot do anything.";
+        return "You cannot do anything.";
     }
     return this_player()->CanManipulate();
 }
@@ -51,21 +51,21 @@ mixed do_wear_obs(object array armors) {
     object array obs;
 
     if( !sizeof(armors) ) {
-	this_player()->eventPrint("There is no such thing to be worn.");
-	return 1;
+        this_player()->eventPrint("There is no such thing to be worn.");
+        return 1;
     }
     obs = filter(armors, (: objectp :));
     if( !sizeof(obs) ) {
-	mixed array ua;
+        mixed array ua;
 
-	ua = unique_array(armors, (: $1 :));
-	foreach(string array list in ua) {
-	    this_player()->eventPrint(list[0]);
-	}
-	return 1;
+        ua = unique_array(armors, (: $1 :));
+        foreach(string array list in ua) {
+            this_player()->eventPrint(list[0]);
+        }
+        return 1;
     }
     foreach(object armor in obs) {
-	do_wear_obj(armor);
+        do_wear_obj(armor);
     }
     return 1;
 }

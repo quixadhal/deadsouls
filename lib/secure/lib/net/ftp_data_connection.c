@@ -52,49 +52,49 @@ int eventCreateSocket(string host, int port) {
     Socket = new(class data_conn);
 
     if(PassiveMode)
-	Socket->Blocking = 0;
+        Socket->Blocking = 0;
     else
-	Socket->Blocking = 1;
+        Socket->Blocking = 1;
     if( SocketType == -1 ) SocketType = MUD;
     x = socket_create(SocketType, "eventReadCallback", "eventAbortCallback");
     if( x < 0 ) {
-	eventSocketError("Error in socket_create().", x);
-	return x;
+        eventSocketError("Error in socket_create().", x);
+        return x;
     }
     Socket->Descriptor = x;
 
     if(PassiveMode)
-	x = socket_bind(Socket->Descriptor, port);
+        x = socket_bind(Socket->Descriptor, port);
 
     else
-	x = socket_bind(Socket->Descriptor, 0);
+        x = socket_bind(Socket->Descriptor, 0);
     if( x != EESUCCESS ) {
-	eventClose(Socket);
-	eventSocketError("Error in socket_bind().", x);
-	return x;
+        eventClose(Socket);
+        eventSocketError("Error in socket_bind().", x);
+        return x;
     }
 
     /* Added by Zaxan@Haven */
     if(PassiveMode)
     {
-	x = socket_listen(Socket->Descriptor, "eventListenCallback");
-	if(x != EESUCCESS)
-	{
-	    eventClose(Socket);
-	    eventSocketError("Error in socket_listen().", x);
-	    return x;
-	}
+        x = socket_listen(Socket->Descriptor, "eventListenCallback");
+        if(x != EESUCCESS)
+        {
+            eventClose(Socket);
+            eventSocketError("Error in socket_listen().", x);
+            return x;
+        }
     }
     else
     {
 
-	x = socket_connect(Socket->Descriptor, host + " " + port, 
-	  "eventReadCallback", "eventWriteCallback");
-	if( x != EESUCCESS ) {
-	    eventClose(Socket);
-	    eventSocketError("Error in socket_connect().", x);
-	    return x;
-	}
+        x = socket_connect(Socket->Descriptor, host + " " + port, 
+          "eventReadCallback", "eventWriteCallback");
+        if( x != EESUCCESS ) {
+            eventClose(Socket);
+            eventSocketError("Error in socket_connect().", x);
+            return x;
+        }
     }
 }
 
@@ -115,8 +115,8 @@ static void eventListenCallback(int fd)
     Socket->PassiveDescriptor = x;
     if(x < 0)
     {
-	eventSocketError("Error in socket_accept().", x);
-	return;
+        eventSocketError("Error in socket_accept().", x);
+        return;
     }
 }
 
@@ -130,50 +130,50 @@ static void eventRead(mixed val) { }
 static void eventWriteCallback(int fd) {
     int x;
     if( !Socket ){
-	eventDestruct();
-	return;
+        eventDestruct();
+        return;
     }
     if ( !sizeof(Socket->Buffer) && Write && Socket->Blocking ){
-	Socket->Buffer = ({ evaluate(Write, this_object()) });
+        Socket->Buffer = ({ evaluate(Write, this_object()) });
     }
 
     Socket->Blocking = 0;
     Socket->NoDestruct = 1;
     x = EESUCCESS;
     while( Socket->Buffer && x == EESUCCESS ) {
-	switch( x = socket_write(fd, Socket->Buffer[0]) ) {
-	case EESUCCESS:
-	    if (Write ){
-		mixed tmp;
+        switch( x = socket_write(fd, Socket->Buffer[0]) ) {
+        case EESUCCESS:
+            if (Write ){
+                mixed tmp;
 
-		tmp = evaluate(Write, this_object());
-		if ( sizeof(tmp) ){
-		    Socket->Buffer += ({ tmp });
-		}
-	    }
-	    Socket->NoDestruct = 0;
-	    break;
-	case EECALLBACK:
-	    Socket->Blocking = 1;
+                tmp = evaluate(Write, this_object());
+                if ( sizeof(tmp) ){
+                    Socket->Buffer += ({ tmp });
+                }
+            }
+            Socket->NoDestruct = 0;
+            break;
+        case EECALLBACK:
+            Socket->Blocking = 1;
 
-	    Socket->NoDestruct = 1;
-	    break;
-	case EEWOULDBLOCK:
-	    call_out( (: eventWriteCallback($(fd)) :), 0);
-	    Socket->NoDestruct = 1;
-	    return;
-	case EEALREADY:
-	    Socket->Blocking = 1;
-	    eventDestruct();
-	    return;
-	default:
-	    eventClose(Socket);
-	    eventSocketError("Error in socket_write().", x);
-	    eventDestruct();
-	    return ;
-	}
-	if( sizeof(Socket->Buffer) == 1 ) Socket->Buffer = 0;
-	else Socket->Buffer = Socket->Buffer[1..];
+            Socket->NoDestruct = 1;
+            break;
+        case EEWOULDBLOCK:
+            call_out( (: eventWriteCallback($(fd)) :), 0);
+            Socket->NoDestruct = 1;
+            return;
+        case EEALREADY:
+            Socket->Blocking = 1;
+            eventDestruct();
+            return;
+        default:
+            eventClose(Socket);
+            eventSocketError("Error in socket_write().", x);
+            eventDestruct();
+            return ;
+        }
+        if( sizeof(Socket->Buffer) == 1 ) Socket->Buffer = 0;
+        else Socket->Buffer = Socket->Buffer[1..];
 
     } 
     eventWriteDestruct();
@@ -186,13 +186,13 @@ void eventWrite(mixed val) {
     else Socket->Buffer = ({ val });
     if( Socket->Blocking ) return;
     else eventWriteCallback(PassiveMode ? Socket->PassiveDescriptor :
-	  Socket->Descriptor);
+          Socket->Descriptor);
 }
 
 varargs static int eventClose(class data_conn sock, int aborted) {
     if( !sock ) return 0;
     if( !aborted && socket_close(sock->Descriptor) != EESUCCESS ) {
-	return 0;
+        return 0;
     }
     sock = 0;
     if( functionp(Close) ) evaluate(Close);
@@ -216,7 +216,7 @@ int eventWriteDestruct() {
 
 static void eventSocketError(string str, int x) { 
     if( LogFile ) 
-	log_file(LogFile, ctime(time()) + " - " + str + " (" + socket_error(x)
-	  + ")\n");
+        log_file(LogFile, ctime(time()) + " - " + str + " (" + socket_error(x)
+          + ")\n");
 }
 

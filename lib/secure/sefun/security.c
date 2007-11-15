@@ -23,11 +23,11 @@ string file_privs(string file) {
     case "verbs": return PRIV_CMDS;
     case "www": return PRIV_GENERAL;
     case "realms":
-	if(sizeof(path) > 1) return lower_case(path[1]);
-	else return 0;
+        if(sizeof(path) > 1) return lower_case(path[1]);
+        else return 0;
     case "domains":
-	if(sizeof(path) > 1) return capitalize(lower_case(path[1]));
-	else return 0;
+        if(sizeof(path) > 1) return capitalize(lower_case(path[1]));
+        else return 0;
     default: return 0;
     }
 }
@@ -47,18 +47,18 @@ int domain_admin(mixed pretender, string domain){
     string *admin_array = ({});
     if(objectp(pretender)) pretender = pretender->GetKeyName();
     foreach(string line in tmp_array){
-	string where, admins;
-	if(sscanf(line,"(/domains/%s/) %s", where, admins)){
-	    DomainsMap[where] = admins;
-	}
+        string where, admins;
+        if(sscanf(line,"(/domains/%s/) %s", where, admins)){
+            DomainsMap[where] = admins;
+        }
     }
     if(!sizeof(DomainsMap[domain])) return 0;
     admin_array = explode(DomainsMap[domain],":");
     if(member_array(lower_case(pretender), admin_array) == -1){
-	return 0;
+        return 0;
     }
     else {
-	return 1;
+        return 1;
     }
 }
 
@@ -71,7 +71,7 @@ int check_privs(mixed pretender, mixed target){
     if(!pretender) x= 2;
     if(pretender->GetForced() ) x= 3;
     foreach(object ob in previous_object(-1)){
-	if(ob && ob->GetForced() ) x= 4;
+        if(ob && ob->GetForced() ) x= 4;
     }
     if(first_string_element(target,"/",1) == "tmp" ) x= 15;
     else if(first_string_element(target,"/",1) == "open") x= 16;
@@ -81,9 +81,9 @@ int check_privs(mixed pretender, mixed target){
     else x= 9;
 
     if(stringp(target) && first_string_element(target,"/",1) == "domains"){
-	if(sscanf(target,"/domains/%s/%s", domain, junk) == 2){
-	    if(domain_admin(pretender, domain)) x = 19;
-	}
+        if(sscanf(target,"/domains/%s/%s", domain, junk) == 2){
+            if(domain_admin(pretender, domain)) x = 19;
+        }
     }
     if(x < 10) return 0;
     if(x > 10) return 1;

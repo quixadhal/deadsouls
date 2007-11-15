@@ -20,24 +20,24 @@ mixed cmd(string args) {
     mapping vals = ([]);
 
     foreach(object ob in obs) {
-	string str = file_privs(file_name(ob));
+        string str = file_privs(file_name(ob));
 
-	if( !vals[str] ) {
-	    vals[str] = ({ 0, ({}) });
-	}
-	vals[str][0]++;
-	vals[str][1] = ({ vals[str][1]..., ob });
+        if( !vals[str] ) {
+            vals[str] = ({ 0, ({}) });
+        }
+        vals[str][0]++;
+        vals[str][1] = ({ vals[str][1]..., ob });
     }
     foreach(string who, mixed array data in vals) {
-	mapping mp = ([]);
+        mapping mp = ([]);
 
-	output += ({ who + ": " + data[0] });
-	foreach(object ob in data[1]) {
-	    mp[base_name(ob)]++;
-	}
-	foreach(string str, int count in mp) {
-	    output += ({ "\t" + str + ": " + count });
-	}
+        output += ({ who + ": " + data[0] });
+        foreach(object ob in data[1]) {
+            mp[base_name(ob)]++;
+        }
+        foreach(string str, int count in mp) {
+            output += ({ "\t" + str + ": " + count });
+        }
     }
     previous_object()->eventPage(output, MSG_SYSTEM);
     return 1;

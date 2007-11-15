@@ -8,7 +8,7 @@ string GetDefiniteShort();
 
 varargs mixed GetManipulate(string str) {
     if( !str ) {
-	str = "default";
+        str = "default";
     }
     return Manipulate[str];
 }
@@ -24,18 +24,18 @@ mapping RemoveManipulate(string item) {
 
 varargs mapping SetManipulate(mixed key, mixed desc) {
     if( !key ) {
-	key = "default";
+        key = "default";
     }
     if( !desc ) {
-	if( mapp(key) ) {
-	    Manipulate = expand_keys(key);
-	}
-	else {
-	    Manipulate["default"] = key;
-	}
+        if( mapp(key) ) {
+            Manipulate = expand_keys(key);
+        }
+        else {
+            Manipulate["default"] = key;
+        }
     }
     else {
-	Manipulate[key] = desc;
+        Manipulate[key] = desc;
     }
     return Manipulate;
 }
@@ -44,17 +44,17 @@ varargs mixed CanManipulate(object who, string component) {
     mixed val;
 
     if( !component ) {
-	component = "default";
+        component = "default";
     }
     val = Manipulate[component];
     if( !val ) {
-	if( component == "default" ) {
-	    return 0;
-	}
-	else {
-	    return "#There is no " + component + " on " +
-	    GetDefiniteShort() + ".";
-	}
+        if( component == "default" ) {
+            return 0;
+        }
+        else {
+            return "#There is no " + component + " on " +
+            GetDefiniteShort() + ".";
+        }
     }
     else return 1;
 }
@@ -63,34 +63,34 @@ varargs mixed eventManipulate(object who, string component) {
     mixed val;
 
     if( !component ) {
-	val = Manipulate["default"];
+        val = Manipulate["default"];
     }
     else {
-	val = Manipulate[component];
+        val = Manipulate[component];
     }
     if( arrayp(val) ) {
-	val = val[query_night()];
+        val = val[query_night()];
     }
     if( stringp(val) ) {
-	object env;
+        object env;
 
-	env = environment(who);
-	who->eventPrint(val);
-	if( component ) {
-	    env->eventPrint(who->GetName() + " moves the " + component +
-	      " on " + GetDefiniteShort() + ".", who);
-	}
-	else {
-	    env->eventPrint(who->GetName() + " moves " +
-	      GetDefiniteShort() + ".", who);
-	}
-	return 1;
+        env = environment(who);
+        who->eventPrint(val);
+        if( component ) {
+            env->eventPrint(who->GetName() + " moves the " + component +
+              " on " + GetDefiniteShort() + ".", who);
+        }
+        else {
+            env->eventPrint(who->GetName() + " moves " +
+              GetDefiniteShort() + ".", who);
+        }
+        return 1;
     }
     else {
-	if( functionp(val) & FP_OWNER_DESTED ) {
-	    return "Error in evaluating functional.";
-	}
-	return evaluate(val, who, component);
+        if( functionp(val) & FP_OWNER_DESTED ) {
+            return "Error in evaluating functional.";
+        }
+        return evaluate(val, who, component);
     }
 }
 

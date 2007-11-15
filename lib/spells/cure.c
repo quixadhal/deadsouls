@@ -32,35 +32,35 @@ int eventCast(object who, int level, mixed limbs, object array targets) {
     int health,magic,stamina,tot;
     if(!spell::eventCast(who,level,targets)) return 0;
     if( target == who ) {
-	who->eventPrint("You can't cast cure on yourself!");
-	return 0;
+        who->eventPrint("You can't cast cure on yourself!");
+        return 0;
     }
     else {
-	send_messages("", "$agent_possessive_noun spell completely heals "
-	  "$target_name!",who,
-	  target, environment(target));
-	health = target->GetMaxHealthPoints()-target->GetHealthPoints();
-	magic = target->GetMaxMagicPoints()-target->GetMagicPoints();
-	stamina = target->GetMaxStaminaPoints()-target->GetStaminaPoints();
-	if(health) target->eventHealDamage(health);
-	if(magic) target->AddMagicPoints(magic);
-	if(stamina) target->AddStaminaPoints(stamina);
-	tot = health+magic+stamina;
-	if(tot) 
-	    who->eventTrainSkill("healing",0,0,1,tot);
-	health -= level * 3;
-	stamina -= level * 3;
-	send_messages("collapse","%^RED%^$agent_name $agent_verb "
-	  "from the effort of casting " 
-	  "such a spell!%^RESET%^", who,
-	  0, environment(target));        
-	if(health > who->GetHealthPoints()) 
-	    who->eventReceiveDamage(who,SHOCK,who->GetHealthPoints()-1);
-	else who->eventReceiveDamage(who,SHOCK,health);
-	who->AddStaminaPoints(-stamina);
-	who->AddMagicPoints(-who->GetMagicPoints());
-	who->eventForce("lie down");
-	who->SetParalyzed(3+random(3));
+        send_messages("", "$agent_possessive_noun spell completely heals "
+          "$target_name!",who,
+          target, environment(target));
+        health = target->GetMaxHealthPoints()-target->GetHealthPoints();
+        magic = target->GetMaxMagicPoints()-target->GetMagicPoints();
+        stamina = target->GetMaxStaminaPoints()-target->GetStaminaPoints();
+        if(health) target->eventHealDamage(health);
+        if(magic) target->AddMagicPoints(magic);
+        if(stamina) target->AddStaminaPoints(stamina);
+        tot = health+magic+stamina;
+        if(tot) 
+            who->eventTrainSkill("healing",0,0,1,tot);
+        health -= level * 3;
+        stamina -= level * 3;
+        send_messages("collapse","%^RED%^$agent_name $agent_verb "
+          "from the effort of casting " 
+          "such a spell!%^RESET%^", who,
+          0, environment(target));        
+        if(health > who->GetHealthPoints()) 
+            who->eventReceiveDamage(who,SHOCK,who->GetHealthPoints()-1);
+        else who->eventReceiveDamage(who,SHOCK,health);
+        who->AddStaminaPoints(-stamina);
+        who->AddMagicPoints(-who->GetMagicPoints());
+        who->eventForce("lie down");
+        who->SetParalyzed(3+random(3));
     }
     return 1;
 } 

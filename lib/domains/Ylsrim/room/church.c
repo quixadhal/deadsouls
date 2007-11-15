@@ -12,14 +12,14 @@ int CheckPriest(string dir) {
     object ob;
 
     if( this_player()->ClassMember("priest") || creatorp(this_player()) ) {
-	return 1;
+        return 1;
     }
     if( ob = present("priest", this_object()) ) {
-	ob->eventForce("speak I cannot allow you in this sacred rooms.");
-	return 0;
+        ob->eventForce("speak I cannot allow you in this sacred rooms.");
+        return 0;
     }
     else {
-	return 1;
+        return 1;
     }
 }
 
@@ -38,7 +38,7 @@ static void create() {
     AddItem(new("/domains/Ylsrim/etc/church_button"));
     SetObviousExits("s, n");
     SetExits(([ 
-	"south" : "/domains/Ylsrim/room/"+ "kaliid3"]));
+        "south" : "/domains/Ylsrim/room/"+ "kaliid3"]));
     SetDoor("south", "/domains/Ylsrim/etc/church_door");
     SetInventory(([ "/domains/Ylsrim/npc/priest" : 1 ]));
 }

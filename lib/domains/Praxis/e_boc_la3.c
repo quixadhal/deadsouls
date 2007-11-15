@@ -19,16 +19,16 @@ void create() {
       "Praxis' cemetery. West takes you back along East Boc La road.");
     SetItems(
       (["road" : "It leads west toward the village center.",
-	"village" : "Praxis is a small adventuring community "
-	"of the Nightmare reality.",
-	"wilderness" : "Stories tell of bandits and rogues out "
-	"in the wilderness.",
-	"path" : "The path leads in many directions from here, towards the "
-	"Praxis cemetery, the wilderness, and back towards Monument Square.",
-	"cemetery": "The Praxis cemetery is off to the north on East Road." ]) );
+        "village" : "Praxis is a small adventuring community "
+        "of the Nightmare reality.",
+        "wilderness" : "Stories tell of bandits and rogues out "
+        "in the wilderness.",
+        "path" : "The path leads in many directions from here, towards the "
+        "Praxis cemetery, the wilderness, and back towards Monument Square.",
+        "cemetery": "The Praxis cemetery is off to the north on East Road." ]) );
     SetExits( ([ 
-	"west" : "/domains/Praxis/e_boc_la2",
-	"north" : "/domains/Praxis/east_road1",
-	"east" : "/domains/Praxis/wild1",
+        "west" : "/domains/Praxis/e_boc_la2",
+        "north" : "/domains/Praxis/east_road1",
+        "east" : "/domains/Praxis/wild1",
       ]) );
 }

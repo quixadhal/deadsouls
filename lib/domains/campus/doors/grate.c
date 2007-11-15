@@ -12,18 +12,18 @@ inherit LIB_DOOR;
 static void create() {
     door::create();
     SetSide("down", ([ "id" : ({"grate","metal grate","sewer","sewer grate","rainwater grate","water grate"}),
-	"short" : "a drainage grate",
-	"long" : "This is a standard grate "+
-	"for draining excess water from the road into the sewer system below.",
-	//Though "+
-	//"it is man-sized and apparently can be opened, there is no visible way "+
-	//"of opening it from up here.",
-	"lockable" : 0 ]) );
+        "short" : "a drainage grate",
+        "long" : "This is a standard grate "+
+        "for draining excess water from the road into the sewer system below.",
+        //Though "+
+        //"it is man-sized and apparently can be opened, there is no visible way "+
+        //"of opening it from up here.",
+        "lockable" : 0 ]) );
     SetSide("up", ([ "id" : ({"grate","metal grate","sewer","sewer grate","rainwater grate","water grate"}),
-	"short" : "a drainage grate",
-	"long" : "This is a standard drainage grate. You can see "+
-	"light through it, and hear the sounds of the village above.",
-	"lockable" : 0 ]) );
+        "short" : "a drainage grate",
+        "long" : "This is a standard drainage grate. You can see "+
+        "light through it, and hear the sounds of the village above.",
+        "lockable" : 0 ]) );
     SetClosed(1);
 }
 //int CanOpen(object ob){

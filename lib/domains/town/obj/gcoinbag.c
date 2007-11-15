@@ -14,12 +14,12 @@ void create() {
     SetBaseCost("silver",1);
     SetMaxCarry(50);
     SetMoney( ([
-	"gold" : 5,
-	"silver" : 15,
-	"copper" : 10,
-	"electrum" : 100,
-	"platinum" : 1,
-	"silver" : 20,
+        "gold" : 5,
+        "silver" : 15,
+        "copper" : 10,
+        "electrum" : 100,
+        "platinum" : 1,
+        "silver" : 20,
       ]) );
 }
 void init(){

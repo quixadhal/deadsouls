@@ -22,21 +22,21 @@ void create() {
       "a small break in the forest that surrounds you to the north.");
     SetItems(
       (["peaks" : "The peaks you see are the twin peaks of the "
-	"Destiny Mountains.",
-	"path" : "The path is very overgrown and seems to go in "
-	"the direction of the peaks in\nthe distance.",
-	"mountains" : "A huge mountain range that seperates the "
-	"barren Qajip Desert from the fertile lands of the east.",
-	"mountain" : "Kateihl Mountain, a known stronghold of goblins.",
-	"highway" : "The Great Western Highway ends here at a "
-	"mountain pass.",
-	({"pass", "break"}) : "It is just large enough for you to get "
-	"through.",
-	"forest" : "A very dark, uninviting forest."]) );
+        "Destiny Mountains.",
+        "path" : "The path is very overgrown and seems to go in "
+        "the direction of the peaks in\nthe distance.",
+        "mountains" : "A huge mountain range that seperates the "
+        "barren Qajip Desert from the fertile lands of the east.",
+        "mountain" : "Kateihl Mountain, a known stronghold of goblins.",
+        "highway" : "The Great Western Highway ends here at a "
+        "mountain pass.",
+        ({"pass", "break"}) : "It is just large enough for you to get "
+        "through.",
+        "forest" : "A very dark, uninviting forest."]) );
     SetExits( 
       (["west" : "/domains/Praxis/pass1",
-	"north" : "/domains/Praxis/orc_valley/guard",
-	"east" : "/domains/Praxis/highway2"])  );
+        "north" : "/domains/Praxis/orc_valley/guard",
+        "east" : "/domains/Praxis/highway2"])  );
 }
 
 int go_north() {

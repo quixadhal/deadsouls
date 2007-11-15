@@ -36,81 +36,81 @@ void heart_beat() {
     fishing_counter = 0;
 
     if( !sizeof(Fishing) ) {
-	return;
+        return;
     }
     tmp = Fishing;
     Fishing = ([]);
     foreach(fisher, pole in tmp) {
-	object ob;
+        object ob;
 
-	if( !fisher ) continue;
-	if( !(ob = present(fisher)) || !living(ob) || !pole ) continue;
-	if( !present(pole, ob) ) continue;
-	if( (int)pole->GetBroken() ) continue;
-	if( (object)ob->GetInCombat() ) {
-	    message("my_action", "You are no longer fishing.", ob);
-	    RemoveFishing(ob);
-	    continue;
-	}
-	if( (object)ob->GetSleeping() ) {
-	    message("my_action", "You are no longer fishing.", ob);
-	    RemoveFishing(ob);
-	    continue;
-	}
-	Fishing[fisher] = pole;
+        if( !fisher ) continue;
+        if( !(ob = present(fisher)) || !living(ob) || !pole ) continue;
+        if( !present(pole, ob) ) continue;
+        if( (int)pole->GetBroken() ) continue;
+        if( (object)ob->GetInCombat() ) {
+            message("my_action", "You are no longer fishing.", ob);
+            RemoveFishing(ob);
+            continue;
+        }
+        if( (object)ob->GetSleeping() ) {
+            message("my_action", "You are no longer fishing.", ob);
+            RemoveFishing(ob);
+            continue;
+        }
+        Fishing[fisher] = pole;
     }
     if( !sizeof(Fishing) ) {
-	return;
+        return;
     }
     foreach(fisher, pole in Fishing) {
-	object who;
-	string fish;
-	int chance, x, y, i;
-	int pro;
+        object who;
+        string fish;
+        int chance, x, y, i;
+        int pro;
 
-	who = present(fisher, this_object());
-	/* if this room is impossible to fish, or if using a non-fishing 
-	 * device, no fishing can really occur
-	 */
-	if( !Chance || !(x = (int)pole->eventFish(who)) ) chance = 0;
-	else {
-	    pro = (Chance + x + who->GetStatLevel("luck"))/3;
-	    chance = (Chance + x + (int)who->GetStatLevel("luck")) /
-	    (1 + random(5));
-	}
-	/* Give extra weight to fishing skill */
-	if( chance ) 
-	    chance = random(chance/2 + (int)who->GetSkillLevel("fishing")/2);
-	y = 0;
-	foreach(fish, x in Fish) y += x;
-	y = random(y);
-	if( y < 1 || chance <= random(100) ) {
-	    who->eventTrainSkill("fishing", pro, 100-Chance/(y+1), 0);
-	    send_messages("cast", "$agent_name $agent_verb again, hoping "
-	      "for better luck.", who, 0, this_object());
-	    continue;
-	}
-	i = 0;
-	foreach(fish, x in Fish) {
-	    i += x;
-	    if( x >= y ) break;
-	}
-	who->eventTrainSkill("fishing", pro, (100-Chance)/(i+1), 1);
-	send_messages("struggle", "$agent_name $agent_verb with "
-	  "something on $agent_possessive " +
-	  pole->GetKeyName() + ".", who, 0, this_object());
-	Fish[fish]--;
-	call_out( (: eventCatch, who, fish, pole :), 1 );
+        who = present(fisher, this_object());
+        /* if this room is impossible to fish, or if using a non-fishing 
+         * device, no fishing can really occur
+         */
+        if( !Chance || !(x = (int)pole->eventFish(who)) ) chance = 0;
+        else {
+            pro = (Chance + x + who->GetStatLevel("luck"))/3;
+            chance = (Chance + x + (int)who->GetStatLevel("luck")) /
+            (1 + random(5));
+        }
+        /* Give extra weight to fishing skill */
+        if( chance ) 
+            chance = random(chance/2 + (int)who->GetSkillLevel("fishing")/2);
+        y = 0;
+        foreach(fish, x in Fish) y += x;
+        y = random(y);
+        if( y < 1 || chance <= random(100) ) {
+            who->eventTrainSkill("fishing", pro, 100-Chance/(y+1), 0);
+            send_messages("cast", "$agent_name $agent_verb again, hoping "
+              "for better luck.", who, 0, this_object());
+            continue;
+        }
+        i = 0;
+        foreach(fish, x in Fish) {
+            i += x;
+            if( x >= y ) break;
+        }
+        who->eventTrainSkill("fishing", pro, (100-Chance)/(i+1), 1);
+        send_messages("struggle", "$agent_name $agent_verb with "
+          "something on $agent_possessive " +
+          pole->GetKeyName() + ".", who, 0, this_object());
+        Fish[fish]--;
+        call_out( (: eventCatch, who, fish, pole :), 1 );
     }
 }
 
 mixed CanCast(object who, string where) {
     if( (int)this_player()->GetInCombat() ) 
-	return "You are too busy to fish!";
+        return "You are too busy to fish!";
     if( Fishing[(string)this_player()->GetKeyName()] )
-	return "You are already fishing!";
+        return "You are already fishing!";
     if( GetMaxFishing() <= sizeof(Fishing) ) 
-	return "It is too crowded here to fish.";
+        return "It is too crowded here to fish.";
     return 1;
 }
 
@@ -140,9 +140,9 @@ static void eventCatch(object who, string fish, object pole) {
 
     if( !who || !present(who) ) return;
     if( !pole || !present(pole, who) ) {
-	message("my_action", "Having given up " + (string)pole->GetShort() + 
-	  ", you lose your catch!", who);
-	return;
+        message("my_action", "Having given up " + (string)pole->GetShort() + 
+          ", you lose your catch!", who);
+        return;
     }
     if( !((int)pole->eventCatch(who, fish)) ) return;
     food=new(fish);
@@ -154,11 +154,11 @@ static void eventCatch(object who, string fish, object pole) {
       (string)fish->GetShort() + " on " + (string)pole->GetShort() + 
       "!", this_object(), ({ who }));
     if( !((int)food->eventMove(who)) ) {
-	message("my_action", "You drop " + (string)food->GetShort() + "!",
-	  who);
-	message("other_action", (string)who->GetName() + " drops " +
-	  (string)food->GetShort() + "!", this_object(), ({ who }) );
-	food->eventMove(this_object());
+        message("my_action", "You drop " + (string)food->GetShort() + "!",
+          who);
+        message("other_action", (string)who->GetName() + " drops " +
+          (string)food->GetShort() + "!", this_object(), ({ who }) );
+        food->eventMove(this_object());
     }
 }
 
@@ -201,7 +201,7 @@ mapping RemoveFishing(object who) {
 
     if( !who ) return Fishing;
     if( Fishing[str = (string)who->GetKeyName()] ) 
-	map_delete(Fishing, str);
+        map_delete(Fishing, str);
     if( !sizeof(Fishing) ) return ([]);
     return Fishing;
 }

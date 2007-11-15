@@ -11,78 +11,120 @@
 
 inherit LIB_DAEMON;
 
+int max_files = 1000;
+string *allowed_types3 = ({ ".txt", ".cfg" });
+string *allowed_types1 = ({ ".c", ".h" });
+
 int cmd(string str) {
     mapping borg;
     string *lines, *files, *r_files;
-    string output, exp, file, tmp, txt;
+    string output, exp, file, tmp;
+    mixed txt;
 
-    int i, i_lines, max, max_lines, flags;
+    int err, i, i_lines, max, max_lines, flags;
 
     notify_fail("Correct syntax: <grep [-nr] '[pattern]' [file] (> [output])>\n");
     if(!str) return 0;
     //CHECK FOR FLAGS
     if(str[0] == '-'){
-	if(sscanf(str, "-%s %s", tmp, txt) == 2){
-	    for(i = 0, max = sizeof(tmp); i<max; i++){
-		switch(tmp[i]){
-		case 'n' : flags = flags|GREP_NUMBERED_LINES ;break;
-		case 'r' : flags = flags|GREP_RECURSE_DIRECTORIES ;break;
-		}
-	    }
-	}
-	str = txt;
+        if(sscanf(str, "-%s %s", tmp, txt) == 2){
+            for(i = 0, max = sizeof(tmp); i<max; i++){
+                switch(tmp[i]){
+                case 'n' : flags = flags|GREP_NUMBERED_LINES ;break;
+                case 'r' : flags = flags|GREP_RECURSE_DIRECTORIES ;break;
+                }
+            }
+        }
+        str = txt;
     }
+
     if(sscanf(str, "%s > %s", tmp, output) == 2) {
-	if(output[0] != '/') output = (string)previous_object()->get_path()+"/"+output;
-	str = tmp;
+        if(output[0] != '/') output = (string)previous_object()->get_path()+"/"+output;
+        str = tmp;
     }
     else output = 0;
     if(sscanf(str, "'%s' %s", exp, file) != 2 &&
       sscanf(str, "%s %s", exp, file) != 2) return 0;
     if(!(max = sizeof(files = (string *)previous_object()->wild_card(file)))) {         message("system", "File not found.", this_player());
-	return 1;
+        return 1;
     }
 
     if(flags&GREP_NUMBERED_LINES){
-	for(i=0, borg = ([]); i<max; i++) {
-	    if((file_size(files[i]) == -2)&&(flags&GREP_RECURSE_DIRECTORIES)){
-		r_files = (string *)previous_object()->wild_card(files[i]+"/"+file);
-		files += r_files;
-		max += sizeof(r_files);
-		continue;
-	    }
-	    if(!(txt = read_file(files[i]))) continue;
-	    lines = explode(txt, "\n");
-	    borg[files[i]] = ({});
-	    for(i_lines = 0, max_lines = sizeof(lines); i_lines<max_lines; i_lines++){
-		if(regexp(lines[i_lines], exp)){
-		    borg[files[i]] += ({sprintf("%d: %s", i_lines, lines[i_lines]) });
-		}
-	    }
-	    if(!sizeof(borg[files[i]])) map_delete(borg, files[i]);
-	}
+        for(i=0, borg = ([]); i<max; i++) {
+            if((file_size(files[i]) == -2)&&(flags&GREP_RECURSE_DIRECTORIES)){
+                r_files = (string *)previous_object()->wild_card(files[i]+"/"+file);
+                if(max + sizeof(r_files) > max_files){
+                    write("Too many files in the recurse. Aborting grep.");
+                    return 1;
+                }
+                files += r_files;
+                max += sizeof(r_files);
+                continue;
+            }
+            if(file_size(files[i]) > 20000){
+                write(files[i]+": too large. Skipping.");
+                continue;
+            }
+            if(member_array(last(files[i],2), allowed_types1) == -1 &&
+              member_array(last(files[i],4), allowed_types3) == -1 &&
+              grepp(files[i],".")){
+                write(files[i]+": unrecognized extension. Skipping.");
+                continue;
+            }
+            err = catch(txt = read_file(files[i]));
+            if(err){
+                write(files[i]+": corrupted file, or not text. Skipping.");
+                continue;
+            }
+            lines = explode(txt, "\n");
+            borg[files[i]] = ({});
+            for(i_lines = 0, max_lines = sizeof(lines); i_lines<max_lines; i_lines++){
+                if(regexp(lines[i_lines], exp)){
+                    borg[files[i]] += ({sprintf("%d: %s", i_lines, lines[i_lines]) });
+                }
+            }
+            if(!sizeof(borg[files[i]])) map_delete(borg, files[i]);
+        }
     }
     else {
-	for(i=0, borg = ([]); i<max; i++) {
+        for(i=0, borg = ([]); i<max; i++) {
 
-	    if((file_size(files[i]) == -2)&&(flags&GREP_RECURSE_DIRECTORIES)){
-		r_files = (string *)previous_object()->wild_card(files[i]+"/"+file);
-		files += r_files;
-		max += sizeof(r_files);
-		continue;
-	    }
-	    if(!(txt = read_file(files[i]))) continue;
-	    borg[files[i]] = regexp(explode(txt, "\n"), exp);
-	    if(!sizeof(borg[files[i]])) map_delete(borg, files[i]);
-	}
+            if((file_size(files[i]) == -2)&&(flags&GREP_RECURSE_DIRECTORIES)){
+                r_files = (string *)previous_object()->wild_card(files[i]+"/"+file);
+                if(max + sizeof(r_files) > max_files){
+                    write("Too many files in the recurse. Aborting grep.");
+                    return 1;
+                }
+                files += r_files;
+                max += sizeof(r_files);
+                continue;
+            }
+            if(file_size(files[i]) > 20000){
+                write(files[i]+": too large. Skipping.");
+                continue;
+            }
+            if(member_array(last(files[i],2), allowed_types1) == -1 &&
+              member_array(last(files[i],4), allowed_types3) == -1 &&
+              grepp(files[i],".")){
+                write(files[i]+": unrecognized extension. Skipping.");
+                continue;
+            }
+            err = catch(txt = read_file(files[i]));
+            if(err || !txt){
+                write(files[i]+": corrupted file, or not text. Skipping.");
+                continue;
+            }
+            borg[files[i]] = regexp(explode(txt, "\n"), exp);
+            if(!sizeof(borg[files[i]])) map_delete(borg, files[i]);
+        }
     }
     if(!(max = sizeof(files = keys(borg)))) str = "No matches found.\n";
     else {
-	for(i=0, str = ""; i<max; i++)           str += sprintf("%s:\n%s\n\n", files[i], implode(borg[files[i]],"\n"));
+        for(i=0, str = ""; i<max; i++)           str += sprintf("%s:\n%s\n\n", files[i], implode(borg[files[i]],"\n"));
     }
     if(output) {
-	if(!write_file(output, str)) message("system", "Failed to write to: "+output, this_player());
-	else message("system", "Grep sent to: "+output, this_player());
+        if(!write_file(output, str)) message("system", "Failed to write to: "+output, this_player());
+        else message("system", "Grep sent to: "+output, this_player());
     }
     else message("Nsystem", str, this_player());
     return 1;
