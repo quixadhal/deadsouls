@@ -105,8 +105,6 @@ varargs mixed eventRead(object who, string str) {
             who->eventPrint("There was a problem with the read.");
             return 1;
         }
-        //The funtion being evaluated, GetRead, only takes one arg.
-        //return evaluate(val, who, str);
         ret = evaluate(val, str);
         if(!stringp(ret)) return 1;
     }

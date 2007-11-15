@@ -22,9 +22,6 @@ mixed cmd(string args) {
             this_player()->GetKeyName(), INTERMUD_D->GetNameserver(), 
             0, chan, ({ mud }), ({}) }) );
 
-    //unguarded( (: update("/daemon/intermud") :) );
-    //load_object("/secure/cmds/creators/update")->cmd("/daemon/intermud");
-
     write(mud+" has been banned from "+chan+".");
 
     return 1;

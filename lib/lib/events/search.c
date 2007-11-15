@@ -145,8 +145,6 @@ varargs mixed eventSearch(object who, string str) {
         who->eventPrint("There is nothing to search.");
         return 1;
     }
-    //environment(who)->eventPrint(who->GetName() + " searches " + GetShort() +
-    //				 ".", who);
     environment(who)->eventPrint(who->GetName() + " searches "
       "for something.", who);
     who->eventPrint(str);

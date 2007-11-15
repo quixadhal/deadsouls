@@ -19,7 +19,6 @@ object router = find_object(ROUTER_D);
 
 varargs static void validate(int i){
     if(i){
-        //yenta("Hit validate on fd "+i);
         if(!socket_status(i) || !socket_status(i)[5]){
             server_log("%^RED%^BAD SOCKET ALERT. fd "+i+":  "+
               identify(socket_status(i)),"rsocket");
@@ -46,7 +45,6 @@ void close_connection(int fd){
 
     validate();
 
-    //trr("%^B_BLACK%^request to kill socket "+fd+" requested by: "+get_stack(),"red");
     sockstat = socket_status(fd);
     if(!sockstat || !sizeof(sockstat)) return;
     if(sockstat[1] == "LISTEN") return;
@@ -88,7 +86,6 @@ static void listen_callback(int fd){
 
     validate(fd);
 
-    //server_log("rsocket: listen_callback: socket_status("+fd+"): "+identify(socket_status(fd)),"rsocket");
     if ((fdstat = socket_accept(fd, "read_callback", "write_callback")) < 0) {
         trr("listen_callback couldn't accept socket "+fd+", errorcode "+fdstat);
         return;

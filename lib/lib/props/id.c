@@ -56,7 +56,6 @@ string SetCapName(string str) {
 
 string array GetId() {
     string tmp;
-    //if(!inherits(LIB_GERM,this_object())) tmp = GetKeyName();
     tmp = GetKeyName();
 
     if( tmp ) {
@@ -155,7 +154,6 @@ varargs void eventAnnounceCanonicalId(object env){
     if(environment(env)) env = environment(env);
     inv = deep_inventory(env) - ({ this_object() });
     if(sizeof(inv) > 25) return;
-    //tc("I am "+identify(this_object())+" and I'm trying to announce to: "+identify(inv),"green");
     inv->ReceiveCanonicalId(CanonicalId);
     inv = all_inventory(this_object());
     if(inv && sizeof(inv)) inv->eventAnnounceCanonicalId(env);
@@ -170,8 +168,6 @@ varargs void ReceiveCanonicalId(mixed foo, int leaving){
             if(member_array(element, this_object()->GetId()) != -1){
                 if(member_array(element, CanonicalId) == -1){
                     ExcludedIds += ({ element });
-                    //tc("I am: "+identify(this_object())+", I am excluding: "+element,"red");
-                    //tc("Ids "+identify(this_object()->GetId()),"red");
                     parse_init();
                     parse_refresh();
                 }
@@ -181,21 +177,13 @@ varargs void ReceiveCanonicalId(mixed foo, int leaving){
     else {
         foreach(mixed element in foo){
             ExcludedIds -= ({ element });
-            //tc("I am: "+identify(this_object())+", I am unexcluding: "+element,"blue");
             parse_init();
             parse_refresh();
         }
-        //if(environment()) eventAnnounceCanonicalId(environment());
     }
-    //tc("I am: "+identify(this_object())+", ExcludedIds: "+identify(ExcludedIds));
     if(previous_object() != this_object()){
-        //tc("I am: "+identify(this_object())+", and I ant to send a ReceiveCanonicalId to "+identify(previous_object()),"white");
         if(member_array(previous_object(), NotifiedObjects) == -1){
-            //previous_object()->ReceiveCanonicalId(CanonicalId);
-            //tc("I am: "+identify(this_object())+", I am sending a ReceiveCanonicalId to "+identify(previous_object()),"cyan");
-            //tc("previous: "+identify(previous_object())+" NotifiedObjects: "+identify(NotifiedObjects),"white");
             NotifiedObjects += ({ previous_object() });
-            //tc("previous: "+identify(previous_object())+" NotifiedObjects: "+identify(NotifiedObjects));
             previous_object()->ReceiveCanonicalId(CanonicalId);
         }
     }

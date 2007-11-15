@@ -23,7 +23,6 @@ int bitshiftedp(int x){
             bitses += ({ ( 1 << i ) });
         }
     }
-    //tc("bitses is "+sizeof(bitses)+" and is "+identify(bitses));
     if(member_array(x,bitses) != -1) return 1;
     else return 0;
 }

@@ -26,20 +26,13 @@ mixed CanPut(object who) {
     mixed tmp;
 
     if( (tmp = CanDrop(who)) != 1 ) return tmp;
-    //debug("i dunno 1");
     if( !environment() ) { destruct(this_object()); return 1; }
-    //debug("i dunno 2");
     if( environment() != this_player() &&
       environment() != environment(this_player())) return 0;
-    //debug("i dunno 3");
     if( !PreventPut ) return 1;
-    //debug("i dunno 4");
     if( stringp(PreventPut) && PreventPut == "PERMIT" ) return 1;
-    //debug("i dunno 5");
     if( intp(PreventPut) ) return 0;
-    //debug("i dunno 6");
     if( stringp(PreventPut) ) return PreventPut;
-    //debug("i dunno 7");
     if( objectp(PreventPut) ) {
         if( PreventPut == who )
             return "You cannot put " + GetShort() + " anywhere.";
@@ -92,7 +85,6 @@ static void create() {
     PreventPut = 0;
 }
 
-//mixed direct_put_obj_word_obj(object ob, string wrd, object ob2) {
 mixed direct_put_obj_word_obj() {
     return CanPut(this_player());
 }

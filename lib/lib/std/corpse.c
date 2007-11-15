@@ -10,7 +10,6 @@
 #include <message_class.h>
 
 inherit LIB_SURFACE;
-//inherit LIB_SMELL;
 
 int DecayLife, Count, CallOut, Fresh;
 string Owner, Race;
@@ -42,25 +41,16 @@ int eventDecay() {
         return 0;
     }
     Count++;
-    //CallOut = call_out((: eventDecay :), DecayLife/3);
     return Count;
 }
 
 static int Destruct() {
-    //if( CallOut ) {
-    //	remove_call_out(CallOut);
-    //   }
     return ::Destruct();
 }
 
 int SetDecayLife(int x) { return (DecayLife = x); }
 
 int GetDecayLife() { return DecayLife; }
-
-//void init(){
-//	::init();
-//	SetId(({ "body","corpse",who->GetId()... }) );
-//}
 
 void SetCorpse(object who) {
     string tmpshort = (string)who->GetShort();
@@ -69,7 +59,6 @@ void SetCorpse(object who) {
         DecayLife = 500;
     }
     SetKeyName(who->GetKeyName());
-    //SetId(who->GetId()...);
     SetId(({ "body","corpse",who->GetId()... }) );
     Owner = who->GetCapName();
     Race = who->GetRace();
@@ -79,7 +68,6 @@ void SetCorpse(object who) {
     SetLong("As you look closely at " + who->GetCapName() +
       ", you notice that " +  nominative(who) +
       " does not appear to be moving.");
-    //CallOut = call_out((: eventDecay :), DecayLife/3);
 }
 
 int isFreshCorpse() {

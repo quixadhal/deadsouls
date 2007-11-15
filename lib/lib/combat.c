@@ -947,8 +947,6 @@ int eventExecuteAttack(mixed target) {
       mixed limbs) {
         int hp,encumbrance;
 
-        //tc("ok.","green");
-
         encumbrance = this_object()->GetEncumbrance();
 
         if(Dead) return 0;

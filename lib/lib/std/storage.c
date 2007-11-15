@@ -61,10 +61,7 @@ void SetKey(string key) {
 } 
 
 int GetOpacity() {
-    //if( GetClosed() ) {
     return holder::GetOpacity();
-    //}
-    //else return 0;
 }
 
 int SetOpacity(mixed arg){
@@ -152,9 +149,6 @@ mixed CanPutInto(object who, object what) {
     if( tmp != 1 ) {
         if( GetClosed() ) return capitalize(GetDefiniteShort()) + " is closed.";
         else return "You can't do that at this time.";
-        //if( GetClosed() ) write("It is closed.");
-        //else write("You can't do that at this time.");
-        //return tmp;
     }
     if( GetClosed() ) {
         return capitalize(GetDefiniteShort()) + " is closed.";

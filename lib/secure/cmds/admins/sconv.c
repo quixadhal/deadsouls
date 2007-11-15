@@ -91,13 +91,11 @@ int ConvertArea(string arg){
     digested = original;
     foreach(string element in delimiters){
         tmp = replace_string(element,"#","0^0");
-        //tc("tmp: "+tmp);
         digested = clean_string(replace_string(digested,element,tmp));
         new_delimiters += ({ tmp });
     }
 
     segmented = explode(digested,"0^0");
-    //print_long_string(this_player(),identify(segmented),1);
 
     foreach(mixed element in segmented){
         string *minced = explode(element,"\n");
@@ -118,7 +116,6 @@ int ConvertArea(string arg){
         string short, long, ob_name;
         string header = "";
         ok = 0;
-        //tc("block: "+block);
         if(block && sizeof(lines) > 1){
             ob_id = explode(truncate(lines[1],1)," ");
             if(!sizeof(ob_id)) continue;
@@ -165,11 +162,8 @@ int ConvertArea(string arg){
         header += "    SetBaseCost("+cost+");\n";
         header += "}\nvoid init(){\n::init();\n}\n";
 
-        //print_long_string(this_player(), header, 1);
-        //write("file above was: "+prefix+lines[0]+"_"+ob_name+".c");
         mkdir_recurse(truncate(prefix,1));
         if(directory_exists(truncate(prefix,1))){
-            //write("Directory "+truncate(prefix,1)+" exists. Wrtiting.");
             write_file(prefix+lines[0]+"_"+ob_name+".c",header,1);
         }
         else write("Directory "+truncate(prefix,1)+" does not exist.");
@@ -194,7 +188,6 @@ int ConvertArea(string arg){
         string header = "";
         ok = 0;
         ok2 = 0;
-        //tc("block: "+block);
         if(block && sizeof(lines) > 1){
             ob_id = explode(truncate(lines[1],1)," ");
             if(!sizeof(ob_id)) continue;
@@ -207,7 +200,6 @@ int ConvertArea(string arg){
                     ok =1;
                 }
                 if( ok == 1 && sizeof(explode(lines[i]," ")) == 3 && sscanf(lines[i],"%d %d %d",value_2, value_3, value_4) == 3){
-                    //tc("Gender: "+value_4);
                     ok++;
                 }
                 if(!ok2 && i > 3){
@@ -233,11 +225,8 @@ int ConvertArea(string arg){
             header += "    SetGender(\""+Genders[value_4]+"\");\n";
             header += "}\nvoid init(){\n::init();\n}\n";
 
-            //print_long_string(this_player(), header, 1);
-            //write("file above was: "+prefix+lines[0]+"_"+ob_name+".c");
             mkdir_recurse(truncate(prefix,1));
             if(directory_exists(truncate(prefix,1))){
-                //write("Directory "+truncate(prefix,1)+" exists. Wrtiting.");
                 write_file(prefix+lines[0]+"_"+ob_name+".c",header,1);
             }
             else write("Directory "+truncate(prefix,1)+" does not exist.");
@@ -279,7 +268,6 @@ int ConvertArea(string arg){
         header += "    SetExits( ([\n";
 
         for(i=i;i < sizeof(lines);i++){
-            //int lock, key, room, direction;
             lock = key = room = direction = 0;
             if(lines[i] == "S") break;
             if(sscanf(lines[i],"%d %d %d",lock, key, room) == 3){
@@ -311,11 +299,8 @@ int ConvertArea(string arg){
         header += "   ::init();\n";
         header += "}\n";
 
-        //print_long_string(this_player(),header,1);
-        //write("file above was: "+prefix+lines[0]+".c");
         mkdir_recurse(truncate(prefix,1));
         if(directory_exists(truncate(prefix,1))){
-            //write("Directory "+truncate(prefix,1)+" exists. Wrtiting.");
             write_file(prefix+lines[0]+".c",header,1);
         }
         else write("Directory "+truncate(prefix,1)+" does not exist.");

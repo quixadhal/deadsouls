@@ -28,7 +28,6 @@ int eventDecay() {
         return 0;
     }
     Count++;
-    //CallOut = call_out((: eventDecay :), DecayLife/3);
     return Count;
 }
 
@@ -40,5 +39,4 @@ void SetLimb(string limb, string owner, string race) {
     Count = 1;
     SetShort("a melting " + possessive_noun(Race) + " " +Limb);
     SetLong("This limb is rapidly corroding into its component chemicals.");
-    //CallOut = call_out((: eventDecay :), DecayLife/3);
 }

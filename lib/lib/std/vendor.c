@@ -85,7 +85,6 @@ mixed eventBuy(object who, object *obs) {
               (: $1->GetShort() == (string)$(ob)->GetShort() :)))
           > 3 ) {
             if( (int)this_player()->AddCurrency(GetLocalCurrency(),value) == -1 ){
-                //eventForce("say you cannot carry that much money!");
                 eventForce("say you cannot carry "+value+" "+
                   GetLocalCurrency()+"!");
                 ob->eventMove(environment());
@@ -106,7 +105,6 @@ mixed eventBuy(object who, object *obs) {
             return 1;
         }
         if( (int)this_player()->AddCurrency(GetLocalCurrency(), value) == -1 ){
-            //eventForce("say you cannot carry that much money!");
             eventForce("say you cannot carry "+value+" "+
               GetLocalCurrency()+"!");
             ob->eventMove(environment());
@@ -200,11 +198,6 @@ mixed eventBuy(object who, object *obs) {
                 list2 += ({ ( obs[counter]->GetKeyName()) });
             }
         }
-        //obs2 = ({ present(list2[0],sroom) });
-        //maxi = sizeof(list2);
-        //for(int counter = 1;counter < maxi;++counter) {
-        //    obs2 += ({ present(list2[counter],sroom) });
-        //	}
         obs2 = ({});
         foreach(object tempob in obs){
             string *base_names = ({});
@@ -296,7 +289,6 @@ mixed eventBuy(object who, object *obs) {
             ok = GetCost(obs2[ii], who);
             if(!ii) ii = 0;
             list += ({ sprintf("%d      %:-35s %d", (ii+1), (string)obs2[ii]->GetShort(), to_int(ok)) });
-            //list += ({ sprintf("%:-7d %:-35s %d", (ii+1), (string)obs2[ii]->GetShort(), (ok)) });
         }
         if( !sizeof(list) ) {
             eventForce("frown");
@@ -510,7 +502,6 @@ mixed eventBuy(object who, object *obs) {
             eventForce("drop " + (string)ob->GetKeyName());
         }
         if(bargain) who->AddSkillPoints("bargaining", random(to_int(floor(cost))));
-        //Payment(who, cost);
         who->AddCurrency(GetLocalCurrency(), -cost);
         return 1;
     }

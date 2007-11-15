@@ -17,8 +17,10 @@ private mapping         WriteAccess   = ([]);
 private static function WriteFunction = 0;
 
 /* ****************** access.c attributes ****************** */
-// Note: this uses the old NM 3 naming scheme and is not worth the
-// trouble of changing
+/*
+ * Note: this uses the old NM 3 naming scheme and is not worth the
+ * trouble of changing
+ */
 static void set_access(string type, function f) {
     if( type == "read" ) {
         ReadFunction = f;

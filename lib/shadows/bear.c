@@ -52,11 +52,9 @@ int eventShadow(object whom){
 
 int unbearshadow(){
     object ob = GetShadowedObject();
-    //tc("ob: "+identify(ob));
     if(!ob) return 0;
     ob->SetId();
     ob->cmdParseRefresh();
-    //tc("ob->GetId(): "+identify(ob->GetId()));
     eventUnshadow();
 }
 

@@ -29,9 +29,6 @@ mixed cmd(string str) {
         }
     }
 
-    //tc("str: "+str);
-    //tc("network: "+network);
-
     if ( network == "imc2" && (tmp = IMC2_D->find_mud(str)) ) {
         IMC2_D->who_out(capitalize(this_player()->GetKeyName()),tmp);
         message("system", "Remote who query sent to " + tmp + " on the IMC2 network.", this_player());

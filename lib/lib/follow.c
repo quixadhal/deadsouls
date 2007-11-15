@@ -47,8 +47,10 @@ int IsFollowing(object ob) {
     return 0;
 }
 
-// eventFollow() needs to be overriden by child classes to provide the
-// actual move support.
+/* 
+ * eventFollow() needs to be overriden by child classes to provide the
+ * actual move support.
+ */
 int eventFollow(object dest, int fC) { return 0; }
 
 

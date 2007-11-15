@@ -99,7 +99,6 @@ int cmd(string str) {
                 max += sizeof(r_files);
                 continue;
             }
-            //tc("file: "+identify(files[i]));
             if(file_size(files[i]) > 20000){
                 write(files[i]+": too large. Skipping.");
                 continue;

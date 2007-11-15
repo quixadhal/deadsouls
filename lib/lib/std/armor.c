@@ -332,7 +332,6 @@ mixed eventEquip(object who, string array limbs) {
     }
     if( functionp(Wear) ) {
         if( functionp(Wear) & FP_OWNER_DESTED ) {
-            //return "Error in evaluating function pointer.";
             return "You can't wear that there at the moment.";
         }
         if( !evaluate(Wear, who, limbs) ) {
@@ -345,7 +344,6 @@ mixed eventEquip(object who, string array limbs) {
             who->eventPrint(tmp);
         }
         else {
-            //who->eventPrint("Error in wearing armor.");
             who->eventPrint("You can't wear that there right now.");
         }
         return 1;

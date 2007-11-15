@@ -49,7 +49,6 @@ mixed cmd(string args) {
 
     if(args == "show"){
         write("Router config:");
-        //write("sample mud: "+identify(mudlist[allmuds[0]]));
         router->get_info();
         return 1;
     }
@@ -62,7 +61,6 @@ mixed cmd(string args) {
     scannedp = sscanf(args,"%s %s", arg1, arg2);
 
     if(args == "mudlist" || arg1 == "mudlist"){
-        //write("Mudlist: \n"+identify(mudlist));
         mapping info;
         string *list;
         mapping borg;
@@ -227,14 +225,6 @@ mixed cmd(string args) {
         else write("Router loaded.");
         return 1;
     }
-    //if(args == "reset"){
-    //if(router) router->eventDestruct();
-    //unguarded( (: rename(SAVE_ROUTER, "/secure/save/backup/router."+time()) :) );
-    //router = load_object(ROUTER_D);
-    //if(!router) write("Router load failed.");
-    //else write("Router reset to default settings.");
-    //return 1;
-    //}
 
     if(args == "on" || args == "online"){
         if(router){
@@ -307,11 +297,6 @@ mixed cmd(string args) {
             write("Unbanned muds: "+unbanned);
             return 1;
         }
-        //tmp = match_mud_name(arg2, allmuds);
-        //if(!sizeof(tmp)){
-        //   write("There is no such mud, but I am removing the name from the list.");
-        //}
-        //else arg2 = tmp;
 
         router->RemoveBannedMud(arg2);
         write(arg2+" has been removed from the banned list.");
@@ -351,11 +336,6 @@ mixed cmd(string args) {
             write("Unblacklisted muds: "+unblacklisted);
             return 1;
         }
-        //tmp = match_mud_name(arg2, allmuds);
-        //if(!sizeof(tmp)){
-        //   write("There is no such mud, but I am removing the name from the list.");
-        //}
-        //else arg2 = tmp;
 
         router->RemoveBlacklistedMud(arg2);
         write(arg2+" has been removed from the blacklisted list.");

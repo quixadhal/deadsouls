@@ -50,7 +50,6 @@ void SetLimb(string limb, string owner, string race) {
     Count = 1;
     SetShort("a rotting " + possessive_noun(Race) + " " + Limb);
     SetLong("This limb has a horrible stench as it rots to nothing.");
-    //CallOut = call_out((: eventDecay :), DecayLife/3);
 }
 
 string GetOwner() {
@@ -79,15 +78,11 @@ int CanReceive(object ob) {
 }
 
 int Destruct() {
-    //if( CallOut > -1 ) {
-    //remove_call_out(CallOut);
-    //}
     return surface::Destruct();
 }
 
 int eventDecay() {
     if( !environment() ) {
-        //CallOut = -1;
         Destruct();
         return 0;
     }
@@ -102,11 +97,9 @@ int eventDecay() {
         SetShort("a pile of rotting flesh");
         break;
     case 30:
-        //CallOut = -1;
         Destruct();
         return 0;
     }
     Count++;
-    //CallOut = call_out((: eventDecay :), DecayLife/3);
     return Count;
 }

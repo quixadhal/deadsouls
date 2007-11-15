@@ -93,12 +93,6 @@ int AddSurcharge(object who, string currency, int amount) {
             "surcharge of %d %s.", type, charge, currency));
         return amount;
     }
-    //else if( (amount + charge) <= (int)who->GetCurrency(currency) ) {
-    //	who->eventPrint(sprintf("The bank charges you a %s %d %s "
-    //	    "surcharge.", type, charge, currency));
-    //who->AddCurrency(currency, -charge);
-    //	return amount;
-    //    } 
     else {
         who->eventPrint(sprintf("You are unable to afford the "
             "%s surcharge of %d %s.", type, charge, currency));
@@ -193,10 +187,7 @@ int eventWithdraw(object who, string currency, int amount) {
     if( (int)who->AddCurrency(currency, x) < 0 ) {
         eventForce("speak You are unable to carry that "
           "much "+currency+"!");
-        //if( x > amount ) {
         who->eventPrint("The bank credits your account with the fee.");
-        //who->AddCurrency(currency, (amount - x));
-        //}
         return 1;
     }
     who->AddCurrency(currency, -charge);
@@ -218,7 +209,7 @@ int eventExchange(object who, int amount, string str1, string str2) {
         return 1;
     }
     if( amount > (int)who->GetCurrency(str1) ) {
-        eventForce("speak You do not have that much "+str1+" to exchange.");
+        eventForce("speak You do not have enough of that currency to exchange.");
         return 1;
     }
     if( str1 == str2 ) {
@@ -226,17 +217,15 @@ int eventExchange(object who, int amount, string str1, string str2) {
         return 1;
     }
     if( member_array(str1, GetCurrencies()) == -1 ) {
-        eventForce("speak You cannot exchange "+str1+" here.");
+        eventForce("speak You cannot exchange that currency here.");
         return 1;
     }
     if( member_array(str2, GetCurrencies()) == -1 ) {
-        eventForce("speak You cannot exchange "+str2+" here.");
+        eventForce("speak You cannot exchange that currency here.");
         return 1;
     }
-    //val = amount / currency_rate(str1);
     val = query_base_value(str1,amount);
     x = to_int( (amount * 0.01) + amount );
-    //i = to_int( val * currency_rate(str2) );
     i = val / currency_rate(str2);
     if( GetExchangeFee() )
         charge = to_int(i / (100 / GetExchangeFee()));
@@ -256,7 +245,6 @@ int eventExchange(object who, int amount, string str1, string str2) {
         amount, str1, i, str2));
     if( charge )
         who->eventPrint(sprintf("You were charged a fee of %d %s.",      
-            //GetExchangeFee(), "%", 
             charge, str2) );
     environment()->eventPrint((string)who->GetName()+" exchanges some "+
       str1+" for "+str2+".", who);

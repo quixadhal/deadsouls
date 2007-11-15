@@ -82,8 +82,7 @@ varargs mixed eventShowInterior(object who, object target) {
     dabei=present(this,who);
 
     if( target ) {
-        //return target->eventShow(who);
-        return "well, well, well.";
+        return "A strange event has occurred, which you should report.";
     }
 
     if(!imhere && !dabei) {

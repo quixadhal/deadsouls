@@ -25,8 +25,6 @@ inherit LIB_DAEMON;
 #define SOCK_DISCONNECTED 3
 #define SOC_ERROR 4
 
-//#define _DEBUG
-
 int socket;
 int status;
 object player;
@@ -79,21 +77,15 @@ void read_callback( int fd, mixed message )
         }
         else
         {
-            //player->eventPrint( message ); Uncomment this to see http header debug
             http_file_found = 1;
         }
     }
     else if( http_file_found == 1 ){
-        //player->eventPrint( message );
         results += message;
     }
     else{
 
     }
-    //player->eventPrint( message );
-    //results += message;
-    //player->eventPrint( message );
-    //player->eventPrint( "------------------" );
 }
 
 void write_callback( int fd )
@@ -230,7 +222,6 @@ mixed cmd(string args) {
     player = previous_object();
     if(args) args_list = args;
     else args_list = "";
-    //resolveHost();
     openHTTPConnection();
     return 1;
 }

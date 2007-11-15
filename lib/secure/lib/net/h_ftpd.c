@@ -138,7 +138,6 @@ private void eventCmdPasv(string arg)
       :));
     eventWrite(sprintf("227 Entering Passive Mode (%s,%d,%d)\n",
         implode(explode(host_ip, "."), ","), PassivePort >> 8, PassivePort & 0x00FF));
-    //implode(explode(host_ip, "."), ","), PassivePort, 0 ));
     return;
 }
 
@@ -400,7 +399,6 @@ private void eventCmdPort(string arg){
     ip = implode(parts[0..3],".");
     port = (to_int(parts[4]) << 8) + to_int(parts[5]);
     if(Session->dataPipe) eventDestructDataPipe(0);
-    //Session->dataPipe = new(LIB_FTP_CLIENT);
     Session->dataPipe = new(LIB_FTP_DATA_CONN);
     Session->dataPipe->SetSocketType(Session->binary?STREAM_BINARY:STREAM);
     Session->dataPipe->eventCreateSocket(ip, port);
@@ -415,7 +413,6 @@ private void do_list( string arg, int ltype){
     string array 	files;
     string flags;
     string output;
-    //buffer data = allocate_buffer(MaxBuffer);
 
     if(arg){
         flags = find_flags(arg);

@@ -146,10 +146,6 @@ varargs static void create(string virt_file) {
 
 /******************* virt_map.c optional settings *************/
 
-// AddLocation(string str, int array where)
-// string = unique identifier
-// where==({0,0,0}) will randomly place the location
-
 int AddLocation(string str, int array where){ 
     if(!nullp(Location[str])) return 0;
     Location[str]=where; 

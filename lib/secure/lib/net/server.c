@@ -21,7 +21,6 @@ mapping ServerMap = ([]);
 mapping Listen = ([]);
 
 private static int          DestructOnClose= 0;
-//private static class server Listen         = 0;
 private static int          MaxBytes       = get_config(__MAX_BYTE_TRANSFER__);
 private static int          Port           = 0;
 private static string       SocketObject   = 0;
@@ -83,7 +82,6 @@ static int eventClose(mixed sock) {
 
 int eventCreateSocket(int port) {
     int x;
-    //Listen = new(class server);
     Listen["Blocking"] = 0; /* servers are not blocking to start */
     x = socket_create(SocketType,
       "eventServerReadCallback", 
@@ -131,7 +129,6 @@ int eventDestruct() {
 }
 
 static void eventNewConnection(object socket) {
-    //class server s = new(class server);
     int fd = socket->GetDescriptor();
     if(!Sockets[fd]) Sockets[fd] = ([]);
     trr("LIB_SERVER: eventNewConnection, socket: "+identify(socket),mcolor,mclass);

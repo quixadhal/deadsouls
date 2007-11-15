@@ -7,10 +7,6 @@
 #include "include/npc.h"
 
 private int Mount;
-//string DismountedShort = this_object()->GetShort();
-//string MountedShort = "";
-//string DismountedLong = this_object()->GetLong();
-//string MountedLong = "";
 
 object *Riders = ({});
 

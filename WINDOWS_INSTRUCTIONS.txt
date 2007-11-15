@@ -9,7 +9,7 @@ mud, use the admintool command after you log in.
 
 
 
-WARNING: This will not work on WinME or Win98 or earlier
+WARNING: Dead Souls is NOT supported on WinME or Win98 or earlier
 versions of windows.
 -------------------------------------------------------------
 
@@ -34,10 +34,9 @@ given admin privileges.
 7) You'll get booted out. Telnet back in, and you're now running Your
 Very Own MUD.
 
-8) This Windows port is beta. We welcome suggestions for improvement.
+8) If there is something actually wrong or missing in this documentation, please
+ask for help on the Dead Souls support forum at http://lpmuds.net/forum/
 
-9) If there is something actually wrong with this documentation, please visit Frontiers MUD and mudmail Cratylus. Details on this are in the /doc/SUPPORT file.
+9) If you have connection problems, try again with your firewall disabled.
 
-10) If you have connection problems, try again with your firewall disabled.
-
-11) See the FAQ if you still have problems: http://dead-souls.net/ds-inst-faq.html
+10) See the FAQ if you still have problems: http://dead-souls.net/ds-inst-faq.html

@@ -333,7 +333,6 @@ mixed eventEquip(object who, string array limbs) {
     }
     if( functionp(Wear) ) {
         if( functionp(Wear) & FP_OWNER_DESTED ) {
-            //return "Error in evaluating function pointer.";
             return "You can't wear that there at the moment.";
         }
         if( !evaluate(Wear, who, limbs) ) {
@@ -346,7 +345,6 @@ mixed eventEquip(object who, string array limbs) {
             who->eventPrint(tmp);
         }
         else {
-            //who->eventPrint("Error in wearing armor.");
             who->eventPrint("You can't wear that there right now.");
         }
         return 1;
@@ -596,9 +594,6 @@ mixed CanPutInto(object who, object what) {
     if( tmp != 1 ) {
         if( GetClosed() ) return capitalize(GetDefiniteShort()) + " is closed.";
         else return "You can't do that at this time.";
-        //if( GetClosed() ) write("It is closed.");
-        //else write("You can't do that at this time.");
-        //return tmp;
     }
     if( GetClosed() ) {
         return capitalize(GetDefiniteShort()) + " is closed.";

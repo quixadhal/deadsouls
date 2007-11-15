@@ -1,5 +1,5 @@
-		    The Dead Souls Mud Library 2.1
-		         Released July 2006
+		    The Dead Souls Mud Library 2.6
+		         Released November 2007
 
 GENERAL FAQ: http://dead-souls.net/ds-faq.html
 

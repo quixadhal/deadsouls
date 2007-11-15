@@ -6,7 +6,6 @@
  *    Last modified: 96/12/22
  */
 
-//private static mapping Properties   = ([]);
 mapping Properties   = ([]);
 
 mixed AddProperty(string prop, mixed val) {

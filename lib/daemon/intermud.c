@@ -91,9 +91,6 @@ static void Setup() {
 }
 
 int GetConnectedStatus(){
-    //tc("socketstat: "+identify(socket_status(SocketStat)),"cyan");
-    //if(SocketStat > -1 && socket_status(SocketStat)[1] == "DATA_XFER") return 1;
-    //else return 0;
     return Online;
 }
 
@@ -289,13 +286,6 @@ static void eventRead(mixed *packet) {
 
 static void eventSocketClose() {
     Online = 0;
-    //int extra_wait;
-
-    //This appears to be malfunctioning.
-    //
-    //extra_wait = (Tries++) * 20;
-    //if( extra_wait > 600 ) extra_wait = 600;
-    //call_out( (: Setup :), 20 + extra_wait);
 }
 
 static void eventConnectionFailure() {
@@ -328,7 +318,6 @@ string GetMudName(string mud) {
       x = member_array(lower_case(mud), lc);
       if( x < 0 ){
           foreach(string name in GetMuds()){
-              //if(mudses[name][1] == mud) return name;
               if(mudses[name][1] +" "+mudses[name][2] == mud) return name;
           }
           return 0;

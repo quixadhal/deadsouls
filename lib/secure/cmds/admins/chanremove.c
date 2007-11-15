@@ -18,7 +18,6 @@ mixed cmd(string chan) {
             this_player()->GetKeyName(), INTERMUD_D->GetNameserver(), 
             0, chan }) );
 
-    //unguarded( (: update("/daemon/intermud") :) );
     load_object("/secure/cmds/creators/update")->cmd("/daemon/intermud");
 
     write("Channel removal request sent.");

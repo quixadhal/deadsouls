@@ -75,11 +75,8 @@ int eventMove(mixed dest) {
         if(OBJECT_MATCHING){ 
             object *prev_inv = ({});
             eventAnnounceCanonicalId();
-            //tc("I am "+identify(this_object())+" and I am here: "+identify(environment()),"yellow");
-#if 1
             if(prev && sizeof(prev_inv = deep_inventory(prev)))
                 prev_inv->ReceiveCanonicalId(ob->GetCanonicalId(), 1);
-#endif
         }
     }
 

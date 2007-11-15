@@ -39,9 +39,7 @@ mixed can_drop_wrd_wrd(mixed args...) {
     num = args[0];
     curr = args[1];
 
-    //tc("can_drop_wrd_wrd args: "+identify(args));
     ob = get_object(num+" "+curr);
-    //tc("ob: "+identify(ob));
 
     if(ob) return can_drop_obj(ob);
 

@@ -15,19 +15,6 @@ mapping GetJumps() {
     return Jumps;
 }
 
-//varargs mixed SetJump(mixed args) {
-//    if(!mapp(args)) return "Bad argument to SetJump.";
-//    foreach(mixed key, mixed val in args) {
-//	if(!stringp(key)) return "Bad key value in SetJump";
-//	if(!arrayp(val)) return "Bad element to SetJump key \""+key+"\". An array is required.";
-//	if(!stringp(val[0]) && !functionp(val[0])) return "Bad element 0 in array for key \""+key+"\". A string or function is required.";
-//	if(!intp(val[1])) return "Bad element 1 in array for key \""+key+"\". A jump type is required.";
-//    }
-//
-//    return Jumps = args;
-//
-//}
-
 varargs mixed AddJump(string name, mixed saute, int type){
     Jumps[name] = ({ saute , type });
 }

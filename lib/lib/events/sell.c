@@ -6,8 +6,6 @@
  *    Last modified: 97/01/01
  */
 
-//inherit LIB_COST;
-
 mixed CanSell(object seller) {
     return 1;
 }

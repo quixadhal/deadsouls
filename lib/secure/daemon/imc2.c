@@ -197,7 +197,7 @@ varargs static void validate(int i){
     if(i){
         //yenta("Hit validate on fd "+i);
         if(!socket_status(i) || !socket_status(i)[5]){
-            tc("%^RED%^BAD SOCKET ALERT. fd "+i+":  "+
+            tn("%^RED%^BAD SOCKET ALERT. fd "+i+":  "+
               identify(socket_status(i)),"red");
             error("Bad socket, fd "+i);
         }

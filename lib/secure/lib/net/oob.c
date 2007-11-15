@@ -35,13 +35,8 @@ void eventID(string str){
 }
 
 static void create(mixed alpha, mixed beta, mixed gamma, mixed delta){
-    //if(alpha) trr("LIB_OOB.create alpha: "+identify(alpha),"green",MSG_OOB);
-    //if(beta) trr("LIB_OOB.create beta: "+identify(beta),"green",MSG_OOB);
-    //if(gamma) trr("LIB_OOB.create gamma: "+identify(gamma),"green",MSG_OOB);
-    //if(delta) trr("LIB_OOB.create delta: "+identify(delta),"green",MSG_OOB);
     trr("LIB_OOB.create: I am a new OOB object, name: "+file_name(),mcolor,MSG_OOB);
     set_heart_beat(1);
-    //SetDestructOnClose(0);
     if(clonep()){
         if(intp(alpha)){
             socket::create(alpha, beta);
@@ -59,12 +54,10 @@ static void create(mixed alpha, mixed beta, mixed gamma, mixed delta){
                 trr("LIB_OOB.create: Apparently I opened an outbound socket.",mcolor,MSG_OOB);
                 client::eventWrite( begin_packet );
                 if( delta && arrayp(delta)) {
-                    //trr("LIB_OOB.create Setting globalvar.",mcolor,MSG_OOB);
                     globalvar = delta;
                     trr("payload type: "+identify(globalvar[0]),"white",MSG_OOB);
                 }
                 else {
-                    //trr("LIB_OOB.create Sending the oob-begin.",mcolor,MSG_OOB);
                     trr("no payload","white",MSG_OOB);
                 }
             }

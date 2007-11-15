@@ -98,8 +98,11 @@ void reset() {
         key->move(mon);
     }
     if(query_reset_number() != 1) {
-        present("guard")->eventForce("close vault");
-        present("guard")->eventForce("lock vault with key");
+        object tmpob = present("guard");
+        if(tmpob){
+            tmpob->eventForce("close vault");
+            tmpob->eventForce("lock vault with key");
+        }
     }
 }
 

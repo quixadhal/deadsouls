@@ -12,7 +12,6 @@
 
 inherit LIB_DAEMON;
 inherit LIB_SEAL;
-//inherit LIB_LOCK_WITH;
 
 private mapping Sides;
 private static int Hidden = 1;
@@ -28,11 +27,6 @@ int GetHiddenDoor(){
 }
 
 string *GetSides(){
-    //string ret, tmp;
-    //ret = "";
-    //foreach(string key, class door_side val in Sides){
-    //ret += key +"\n";
-    //ret += save_variable(val);
     return keys(Sides);
 }
 
@@ -172,7 +166,6 @@ varargs int eventOpen(object who, object tool) {
     object room;
     string tmp;
 
-    //if( tool ) return seal::eventOpen(who, tool);
     SetClosed(0);
     room = environment(who);
     foreach(string side, class door_side val in Sides) {

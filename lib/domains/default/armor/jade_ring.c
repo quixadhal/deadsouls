@@ -132,7 +132,6 @@ int UnsetNPCReporting(string name){
         return 1;
     }
     sombras = keys(ob->GetShadows());
-    //tc("sombras: "+identify(sombras));
     if(sizeof(sombras)){
         foreach(mixed element in sombras){
             if(element && objectp(element) && base_name(element) == "/shadows/diag"){
@@ -185,7 +184,6 @@ mixed eventEquip(object who, string array limbs){
         object *sombras = keys(who->GetShadows());
         ok = 1;
         ringshadow = new("/shadows/ring");
-        //tc("new shadow: "+identify(ringshadow));
         foreach(object element in sombras){
             if(base_name(element) == base_name(ringshadow)){
                 ok = 0;

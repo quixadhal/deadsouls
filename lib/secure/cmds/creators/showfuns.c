@@ -2,9 +2,6 @@
 #include <daemons.h>
 
 inherit LIB_DAEMON;
-//mapping FileSize = ([]);
-//mapping FunctionCache = ([]);
-//string SaveFile = "/tmp/showfuns.o";
 string *arr = ({});
 string *types = ({ "void ", "status ",
   "string ", "string \*", "string array ",
@@ -54,24 +51,10 @@ mixed cmd(string str) {
                 }
             }
         }
-        //FileSize[str] = stat(str)[0];
-        //FunctionCache[str] = tmp;
         FUNCTION_D->ReceiveFunctionData(str, tmp, stat(str)[0]);
     }
-    //message("system", FunctionCache[str], this_player());
-    //return FunctionCache[str];
     return tmp;
 }
-
-//int eventDestruct(){
-//save_object(SaveFile);
-//return ::eventDestruct();
-//}
-
-//int SaveMe(){
-//save_object(SaveFile);
-//return 1;
-//}
 
 int help() {
     message("help", "Syntax: <showfuns [file]>\n\n"

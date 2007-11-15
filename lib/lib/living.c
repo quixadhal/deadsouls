@@ -38,8 +38,6 @@ int is_living() { return 1; }
 
 int inventory_accessible() { return 1; }
 
-//int inventory_visible() { return 1; }
-
 mixed direct_verb_rule(string verb) {
     return SOUL_D->CanTarget(this_player(), verb, this_object());
 }
@@ -214,16 +212,9 @@ mixed direct_give_wrd_wrd_to_liv(string num, string curr) {
     return 1;
 }
 
-//mixed direct_look_obj() { return 1; }
-
-//mixed direct_look_at_obj() { return 1; }
-
 mixed direct_steal_wrd_from_liv(string wrd) {
     if( wrd != "money" ) return 0;
     if( this_player() == this_object() ) return "Are you fool?";
-    //if( !GetPK() ) return "You cannot act like a jerk today.";
-    //if( userp(this_object()) && !((int)this_player()->GetPK()) )
-    //	return "You do not have your player killer flag set.";
     if( this_player()->GetInCombat() )
         return "You are too busy fighting at the moment.";
     return 1;
@@ -237,9 +228,6 @@ mixed indirect_steal_obj_from_liv(object item, mixed args...) {
     if( !item ) return 1;
     if( environment(item) != this_object() ) return 0;
     if( this_player() == this_object() ) return "Are you a fool?";
-    //   if( !GetPK() ) return "You cannot act like a jerk today.";
-    //  if( userp(this_object()) && !((int)this_player()->GetPK()) )
-    //	return "You do not have your player killer flag set.";    
     if( this_player()->GetInCombat() )
         return "You are too busy fighting at the moment.";
     tmp = (mixed)item->CanDrop(this_object());

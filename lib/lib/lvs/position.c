@@ -94,7 +94,6 @@ varargs mixed eventSit(object target) {
     mixed tmp;
 
     if( Position != POSITION_STANDING && Position != POSITION_LYING ) {
-        //eventPrint("You must be standing in order to sit!");
         eventPrint("You can't sit from that position.");
         return 1;
     }

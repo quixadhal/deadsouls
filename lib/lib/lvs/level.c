@@ -39,26 +39,21 @@ varargs int ChangeLevel(int i){
         moduli[i] = collect_moduli(i, ({ current_level, desired_level }) );
     }
 
-    //tc("moduli: "+identify(moduli));
     skills = subject->GetSkillsMap();
     stats = subject->GetStatsMap();
 
     foreach(mixed key, mixed val in skills){
-        //tc(key+": "+identify(skills[key]));
         if(skills[key]["class"] > 3) skills[key]["class"] = 4;
         subject->SetSkill(key, 
           skills[key]["level"] + moduli[skills[key]["class"]],
           skills[key]["class"]);
-        //tc("current: "+identify(subject->GetSkill(key)),"blue");
     }
 
     foreach(mixed key, mixed val in stats){
-        //tc(key+": "+identify(stats[key]));
         if(stats[key]["class"] > 3) stats[key]["class"] = 4;
         subject->SetStat(key,
           stats[key]["level"] + moduli[stats[key]["class"]],
           stats[key]["class"]);
-        //tc("current: "+identify(subject->GetStat(key)),"green");
     }
 
     subject->SetLevel(desired_level);

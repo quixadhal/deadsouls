@@ -12,13 +12,7 @@ static string display_name, email, real_name, race;
 static string *exits, previous_command;
 static string travel = "go ";
 static int enable = 0;
-//static string ip = "70.85.244.100 6502";
-//static string ip = "192.168.0.3 4000";
-//static string ip = "72.24.247.42 23";
 static string ip = "192.168.0.224 6666";
-//static string ip = "192.168.0.5 5050";
-//static string ip = "192.168.0.6 7777";
-//static string ip = "192.168.0.3 4000";
 static string local_currency = "silver";
 static string watching = "";
 static int broadcast, onhand, open_account, balance, wander;
@@ -59,8 +53,6 @@ static void create(mixed arg)
     if(!email) email = "me@here";
     if(!real_name) real_name = "John Smith";
     if(!race) race = "human";
-    //if(clonep(this_object())) call_out( (: do_connect, ip :), 1);
-    //if(clonep(this_object())) call_out( (: Setup :), 60);
 }
 
 int eventBroadcastGreen(){
@@ -228,9 +220,6 @@ int think(string str){
     }
     ret = trim(ret);
     if(ret && ret != "" && sizeof(ret)) {
-        //tc("sizeof ret:"+sizeof(ret));
-        //tc(timestamp()+" in response to: "+str,"blue");
-        //tc(time()+"I am: "+identify(file_name(this_object()))+". I am sending: \""+ret+"\"\n");
         this_object()->parse_comm(ret);
     }
     return 1;
@@ -412,19 +401,14 @@ int eventScanExits(string str){
     string *oldexits = ({"go north","go south","go east","go west", "go up", "go down"});
     string *newexits = ({});
     string *dirs = ({});
-    //tc("str: \""+str+"\"");
     str = strip_colours(str);
-    //tc("str: \""+str+"\"");
     if(sscanf(str,"%sObvious exit: %s\n%s",s1,s2,s3) ||
       sscanf(str,"%sObvious exits: %s\n%s",s1,s2,s3)){
         dirs = explode(s2,", ");
-        //tc("s2a: "+s2,"yellow");
     }
     else if(sscanf(str,"%s [%s]%s", s1, s2, s3) ){
-        //tc("s2b: "+s2,"yellow");
         dirs = explode(s2,",");
     }
-    //tc("dirs: "+identify(dirs),"green");
     if(sizeof(dirs)){
         string Esc = sprintf("%c",27);
         oldexits = ({});
@@ -435,7 +419,6 @@ int eventScanExits(string str){
             }
             if(!dir || !sizeof(dir)) continue;
             dir = trim(dir);
-            //tc("dir: "+dir,"green");
             switch(dir){
             case "u" : dir = "up";break;
             case "d" : dir = "down";break;
@@ -458,7 +441,6 @@ int eventScanExits(string str){
         }
     }
     if(!sizeof(exits)) exits = oldexits;
-    //tc("exits: "+identify(exits),"red");
     return 1;
 }
 
@@ -466,7 +448,6 @@ int eventWalkabout(){
     int randy = random(sizeof(exits));
     if(in_combat) return 0;
     parse_comm(exits[randy]);
-    //tc("trying: \""+exits[randy]+"\"");
     parse_comm("get all");
     return 1;
 }
@@ -608,7 +589,6 @@ int do_connect(string args)
     socket = new_socket ;
     person = (object)previous_object() ;
     player=this_object();
-    //tc("stack: "+get_stack());
     tell_object(environment(),"I am "+name+", a.k.a "+file_name(this_object())+
       " and I am connected to "+ip+" on socket"+socket+"\n");
     spent = 0;
@@ -646,14 +626,11 @@ int parse_comm( string str )
     int write_stat = 0;
     string tmpstr = "";
     int i = sizeof(str);
-    //tc("hit parse comm with: \""+str+"\", size is: "+sizeof(str),"red");
     for(int j = 0;j < i;j++){
-        //tc("str["+j+"] is "+str[j]+", aka: "+convert_ascii(str[j]),"cyan");
         if(str[j] == 32) tmpstr += " ";
         else if(str[j] > 32 && str[j] < 128) tmpstr += str[j..j];
     }
     str = replace_string(tmpstr,sprintf("%c",27)+"[0m","");
-    //tc("size  of \""+str+"\" now is: "+sizeof(str),"red");
     if(str=="dcon" || str=="quit")
     {
         socket_close( socket ) ;
@@ -667,7 +644,6 @@ int parse_comm( string str )
         if( !connected )
         {
             int fco;
-            //tc("hmm. not connected.");
             enable = 0;
             fco = find_call_out("Setup");
             if(fco == -1) Setup();
@@ -676,15 +652,12 @@ int parse_comm( string str )
         if( attempting )
         {
             int fco;
-            //tc("hmmm. attempting.");
             enable = 0;
             fco = find_call_out("Setup");
             if(fco == -1) Setup();
             return 1 ;
         }
-        //tc("socket status for socket "+socket+": "+identify(socket_status(socket)));
         write_stat = socket_write( socket, str + "\n" ) ;
-        //tc("write result ("+write_stat+"): "+socket_error(write_stat));
         return 1 ;
     }
 }

@@ -37,7 +37,6 @@ private int VisibleRiders = 1;
 int eventExtraAction(){ return 1; }
 
 static void create() {
-    //AddSave( ({ "CarriedMass" }) );
     SetSaveRecurse(1);
     chat::create();
     command::create();
@@ -465,7 +464,6 @@ void eventDescribeEnvironment(int brief) {
             int ret;
 
             ret = eventCompleteMove(dest);
-            //if(environment(this_object())) eventMoveFollowers(environment(this_object()));
             return ret;
         }
 
@@ -528,9 +526,6 @@ void eventDescribeEnvironment(int brief) {
         varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
             object *riders = GetRiders();
             object *targs = ({});
-            //tc("msg: "+msg);
-            //tc("arg2: "+identify(arg2));
-            //tc("arg3: "+identify(arg3));
             if(NPC_CATCH_TELL_DEBUG){
                 tell_room("/domains/default/room/catchtell","-------");
                 tell_room("/domains/default/room/catchtell",timestamp());
@@ -557,8 +552,6 @@ void eventDescribeEnvironment(int brief) {
                                 }
                             }
                         }
-                        //if(arg2 & MSG_CONV && !rider_source) true();
-                        //else tmp_riders->eventPrint(msg, arg2, arg3);
                         if((arg2 & MSG_CONV))  true();
                         else {
                             if(objectp(arg2)) targs = tmp_riders - ({ arg2 });
@@ -637,7 +630,6 @@ void eventDescribeEnvironment(int brief) {
         mapping GetInventory() { return copy(Inventory); }
 
         varargs string SetRace(string race, mixed extra) {
-            //if(arrayp(extra) && !sizeof(extra)) extra = ({ ({}), ({}), ({}), ({}), ({}) });
             race = living::SetRace(race, extra);
             eventCompleteHeal(GetMaxHealthPoints());
             return race;

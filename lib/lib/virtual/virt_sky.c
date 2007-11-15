@@ -47,9 +47,6 @@ mixed CanFly(object who, string dir) {
     if( !dir || dir == "" ) {
         return "Fly where?";
     }
-    //if( dir == "up" ) {
-    //	return "You cannot get any higher than you already are!";
-    //}
     else if( dir == "down" ) {
         if( stringp(PreventLand) ) {
             return PreventLand;
@@ -87,10 +84,8 @@ mixed eventFly(object who, string dir) {
     if( exit["pre"] && !evaluate(exit["pre"], dir) ) {
         return 1;
     }
-    //who->eventMoveLiving(exit["room"], "$N flies " + dir + ".", "$N flies in.");
     who->eventMoveLiving(exit["room"], dir, "$N flies in.");
     if( dir =="down" ) {
-        //who->eventLand();
     }
     if( exit["post"] ) {
         evaluate(exit["post"], dir);
@@ -104,50 +99,6 @@ mixed eventGo(object who, string dir) {
 }
 
 mixed eventReceiveObject(object ob) {
-    //mixed rtn;
 
     return virt_land::eventReceiveObject(ob);
-#if 0
-    //tc("rtn: "+identify(rtn));
-    if(GetMedium() != MEDIUM_AIR) return rtn;
-    if( !ob->CanFly() ) { // Things that cannot fly fall down
-        if( ob ) {
-            ob->eventFall();
-        }
-        else
-        {
-            if( !GetGround() ) {   // Over uncharted areas, die!
-                ob->eventDestruct();
-            }
-            else {
-                string short;
-
-                if( !ob->GetInvis() && (short = ob->GetShort()) ) {
-                    GetGround()->eventPrint(capitalize(short) + " comes raining "
-                      "down from the sky.");
-                }
-                ob->eventMove(GetGround());
-            }
-        }
-    }
-    return rtn;
-#endif
 }
-
-#if 0
-mixed eventReceiveObject(object ob) {
-    mixed rtn;
-
-    rtn = virt_land::eventReceiveObject(ob);
-    if(GetMedium() != MEDIUM_AIR) return rtn;
-    if( !ob->CanFly() || ob->GetSleeping() ) { // Things that cannot fly fall down
-        string short;
-        if( !ob->GetInvis() && (short = ob->GetShort()) ) {
-            GetGround()->eventPrint(capitalize(short) + " comes raining "
-              "down from the sky.");
-        }
-        return ob->eventFall();
-    }
-    return rtn;
-}
-#endif

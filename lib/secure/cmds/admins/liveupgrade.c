@@ -22,7 +22,6 @@ inherit LIB_DAEMON;
 string array allnames = ({});
 string array tmpnames;
 string reverts_dir, revert_name;
-//static string reverts_prefix = "/secure/upgrades/";
 static string upgrade_prefix = "/code/upgrades/"+mudlib_version();
 static string reverts_prefix = "/secure/upgrades/reverts/"+mudlib_version();
 static string upgrades_txt = "/secure/upgrades/txt";
@@ -71,8 +70,6 @@ int eventBackup(string file){
 int eventRevert(string revert_path){
     string *files;
 
-    //tc("got revert path: "+revert_path);
-
     if(!revert_path){
         return 0;
     }
@@ -93,7 +90,6 @@ int eventRevert(string revert_path){
 
     foreach(string line in files){
         string backup, target;
-        //tc("line: "+line);
         if(sscanf(line,"%s : %s", backup, target) != 2) continue;
         if(!directory_exists(path_prefix(target))){
             mkdir_recurse(path_prefix(target));
@@ -143,14 +139,12 @@ mixed cmd(string str) {
             return 1;
         }
         else ver = vers[0];
-        //tc("ver: "+ver);
         vers = get_dir("/secure/upgrades/reverts/"+ver+"/");
         if(!vers || !sizeof(vers)){
             write("There is no backup instance to revert to.");
             return 1;
         }
         else subver = "/secure/upgrades/reverts/"+ver+"/"+vers[0];
-        //tc("subver: "+subver);
         eventRevert(subver);
         rename(subver,"/secure/upgrades/bak/"+last_string_element(subver,"/"));
         rmdir(path_prefix(subver));
@@ -204,8 +198,6 @@ mixed cmd(string str) {
                 if(thingy){
                     string current_ver = mudlib_version();
                     vers = thingy->mudlib_version();
-                    //tc("vers: "+vers);
-                    //tc("current_ver: "+current_ver);
                     if(((grepp(vers,"a") && !grepp(current_ver, "a")) ||
                         (!grepp(vers,"a") && grepp(current_ver, "a"))) &&
                       !transver){
@@ -231,10 +223,7 @@ mixed cmd(string str) {
             else {
                 string path = path_prefix(NewFiles[element]);
                 if(!directory_exists(path)) mkdir_recurse(path);
-                //tc("moving "+element+" to "+NewFiles[element]);
-                //tc("element: "+file_size(element)+", NewFiles[element]: "+file_size(NewFiles[element]));
                 rename(element, NewFiles[element]);
-                //tc("element: "+file_size(element)+", NewFiles[element]: "+file_size(NewFiles[element]));
             }
         }
         if(member_array(INET_D,preload_file) == -1 && inet) inet->eventDestruct();
@@ -325,7 +314,6 @@ mixed cmd(string str) {
         }
 
         if(!file_exists(upgrades_txt+"/list.txt")){
-            //tc("downloading: "+upgrade_prefix+"/upgrades.txt");
             player->eventPrint("Downloading updates table. Please wait...");
             rename("/secure/upgrades/files","/secure/upgrades/bak/"+time());
             mkdir("/secure/upgrades/files");

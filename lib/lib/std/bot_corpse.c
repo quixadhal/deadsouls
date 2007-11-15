@@ -36,7 +36,6 @@ int eventDecay() {
         return 0;
     }
     Count++;
-    //CallOut = call_out((: eventDecay :), DecayLife/3);
     return Count;
 }
 
@@ -47,7 +46,6 @@ void SetCorpse(object who) {
         DecayLife = 500;
     }
     SetKeyName(who->GetKeyName());
-    //SetId(who->GetId()...);
     SetId(({ "remains","wreckage",who->GetId()... }) );
     Owner = who->GetCapName();
     Race = who->GetRace();
@@ -57,5 +55,4 @@ void SetCorpse(object who) {
     SetLong("As you look closely at " + who->GetCapName() +
       ", you notice that " +  nominative(who) +
       " does not appear to be moving.");
-    //CallOut = call_out((: eventDecay :), DecayLife/3);
 }

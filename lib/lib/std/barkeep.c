@@ -91,7 +91,6 @@ mixed CanSell(object who, string item) {
     if( !MenuItems[what] ) {
         return "There is no such thing for sale.";
     }
-    //return buy::CanSell(who, what);
     return 1;
 }
 

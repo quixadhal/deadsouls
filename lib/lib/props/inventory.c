@@ -19,7 +19,6 @@ static void eventLoadItem(string file, mixed args, int count) {
             foreach(object guy in findobs(file)){
                 if(environment(guy)) return;
             }
-            //ob = unique(file, -args);
             ob = new(file);
             if( ob ) {
                 ob->eventMove(this_object());
@@ -33,7 +32,6 @@ static void eventLoadItem(string file, mixed args, int count) {
                     foreach(object guy in findobs(file)){
                         if(environment(guy)) return;
                     }
-                    //ob = unique(file, u);
                     ob = new(file);
                 }
                 else {
@@ -41,7 +39,6 @@ static void eventLoadItem(string file, mixed args, int count) {
                 }
                 if( ob ) {
                     ob->eventMove(this_object());
-                    //ob->eventAnnounceCanonicalId();
                 }
                 args--;
             }

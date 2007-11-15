@@ -483,16 +483,10 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
     string agentname;
     int fp;
 
-    //tc("wtf");
-    //tc("agent: "+identify(agent),"red");
-
     if(agent && stringp(agent)){
         agentname = agent;
         agent = 0;
     }
-
-    //tc("stack: "+get_stack(),"red");
-    //tc("agent: "+identify(agent),"red");
 
     if( tmp == "immune") {
         return 0;
@@ -686,10 +680,6 @@ varargs int eventDie(mixed agent) {
     if(DeathEvents) return 1;
     DeathEvents = 1;
 
-    //tc("stack: "+get_stack());
-    //if(agent) tc("agent: "+identify(agent),"green");
-    //tc("prevs: "+identify(previous_object(-1)));
-
     if(agent && stringp(agent)) killer = agent;
     else {
         if(!agent) killer = "UNKNOWN";
@@ -719,7 +709,6 @@ varargs int eventDie(mixed agent) {
 
         //I'd like to move the living body out first, but for now this
         //misfeature stays.
-        //this_object()->eventMove(ROOM_VOID);
 
         if(riders && sizeof(riders)){
             foreach(object rider in riders) eventBuck(rider);
@@ -1268,8 +1257,6 @@ varargs int eventDie(mixed agent) {
                 ob->SetId( ({ limb, limbname, "limb" }));
             }
             ob->eventMove(environment());
-            //tc("ob: "+identify(ob));
-            //if(environment(ob)) tc("env(ob): "+identify(environment(ob)));
             i = sizeof(WornItems[limb]);
             while(i--) {
                 WornItems[limb][i]->SetWorn(0);
@@ -1512,7 +1499,6 @@ varargs int eventDie(mixed agent) {
         int y = 0;
         string agentname;
 
-        //tc("gent: "+identify(agent),"blue");
         if(agent && stringp(agent)){
             agentname = agent;
             agent = 0;

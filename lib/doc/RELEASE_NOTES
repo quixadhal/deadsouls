@@ -1,3 +1,7 @@
+---- 2.6 ---
+- Minor fixes to tellers.
+- Miscellaneous cleanup of commented-out code.
+
 ---- 2.5a25 ---
 - Released 2007-11-14
 - Implemented MudOS v22.2b14 behavior into uncompressed read_file operations

@@ -116,7 +116,6 @@ int eventMoveFollowers(object dest) {
         followChance += follower["bonus"];
         if( ob->eventFollow(dest, followChance) ) follower["lost"] = 0;
         else if( follower["lost"]++ && eventEvade(ob) ){
-            //tc("follower evaded: "+identify(ob));
             RemoveFollower(ob);
         }
     }

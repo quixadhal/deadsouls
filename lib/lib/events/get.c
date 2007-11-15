@@ -25,7 +25,6 @@ mixed SetPreventGet(mixed val) {
 }
 
 mixed CanGet(object who) {
-    //tc("I am "+identify(this_object())+" and "+identify(who)+" wants to get me.","green");
     if( !((int)who->CanCarry(GetMass())) ) return "It is too heavy for you!";
     if( !PreventGet && !GetProperty("keep") ) return 1;
     if( stringp(GetProperty("keep")) ) {
@@ -42,7 +41,6 @@ mixed CanGet(object who) {
         else return 1;
     }
     else{
-        //tc("????");
         return evaluate(PreventGet, who);
     }
 }
@@ -80,18 +78,12 @@ mixed direct_get_obj_out_of_obj(object target, object src) {
     object env;
     string str;
 
-    //tc("target: "+identify(target),"red");
-    //tc("src: "+identify(src),"red");
-
     env = environment();
     if( !(str = this_object()->GetShort()) ) str = "It";
     else str = capitalize(str);
-    //tc("0","red");
     if( env==this_player() || env ==environment(this_player()) || living(env) ){
-        //tc("1 wuuuuuuut?","red");
         return "#You can't do that right now.";
     }
-    //tc("2","red");
     return CanGet(this_player());
 }
 

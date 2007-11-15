@@ -76,7 +76,6 @@ mixed eventMove(mixed dest) {
     }
     str += "\nMy intended destination is "+file_name(ob)+". ";
     move_object(ob);
-    //eventMove(ob);
     if( environment() != ob ) {
         str += "\nThe move was not successful";
         return 0;

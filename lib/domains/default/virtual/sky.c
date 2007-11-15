@@ -36,7 +36,6 @@ varargs static void create(int x, int y, int z) {
     SetAmbientLight(30);
     SetLongAndItems(x, y, z);
     SetShort("The sky above a flat plain");
-    //tc("x: "+x+", y: "+y+", z: "+z);
     if( x == max_east ) e = "sky/" + (x) + "," + y + "," + z;
     else e = "sky/" + (x+1) + "," + y + "," + z;
     if( x == max_west ) w = "sky/" + (x) + "," + y + "," + z;

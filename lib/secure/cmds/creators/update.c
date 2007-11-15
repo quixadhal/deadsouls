@@ -78,7 +78,6 @@ mixed cmd(string args) {
         file = base_name(ob);
         this_player()->eventPrint("Updating environment");
         obs = filter(all_inventory(ob), (: userp :));
-        //if( sizeof(obs) ) obs->eventMove(ROOM_VOID);
         if( sizeof(obs) ) CacheAndCarry(obs);
         if( !eventUpdate(base_name(ob), flags) ) {
             obs->eventPrint("You are thrown into the void as your "
@@ -86,7 +85,6 @@ mixed cmd(string args) {
             return "Error in reloading environment.";
         }
         obs = filter(obs, (: $1 :));
-        //if( sizeof(obs) ) obs->eventMove(file);
         if( sizeof(obs) ) ReturnAndRelease(obs, file);
         return 1;
     }

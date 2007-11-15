@@ -150,7 +150,6 @@ void RemoveSkill(string skill) {
         return;
     }
     map_delete(Skills, skill);
-    //ResetLevel();
 }
 
 /* varargs void SetSkill(string skill, int level, int classes)
@@ -282,7 +281,6 @@ int AddSkillPoints(string name, int x) {
             tmp = --Skills[name]["level"];
             Skills[name]["points"] += GetMaxSkillPoints(name, tmp);
             if( Skills[name]["class"] == 1 ) {
-                //ResetLevel();
             }
         }
     }
@@ -305,7 +303,6 @@ int AddSkillPoints(string name, int x) {
             Skills[name]["level"]++;
             Skills[name]["points"] -= y;
             if( Skills[name]["class"] == 1 ) {
-                //ResetLevel();
             }
         }
         y = GetMaxSkillPoints(name, Skills[name]["level"]);

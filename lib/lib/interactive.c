@@ -122,7 +122,6 @@ int Setup() {
         eventMove( VOTING_D->GetVoteRoom() );
     } else {
         object room;
-        //tc("LoginSite: "+LoginSite);
         if(grepp(LoginSite,"#")){
             room = find_object(LoginSite);
         }
@@ -135,7 +134,6 @@ int Setup() {
             LoginSite = ROOM_START;
             eventMove(ROOM_START);
             SetRescueBit(0);
-            //eventMove(LoginSite = ROOM_START);
         }
     }
     environment()->eventPrint(tmp, MSG_ENV, this_object());
@@ -244,7 +242,6 @@ void eventDescribeEnvironment(int brief) {
                 desc = capitalize((string)env->GetShort()+"\n" || "\n");
                 altern_obvious = "Obvious exit$Q: "+(string)env->GetObviousExits() || "none";
             }
-            //if(this_object()->GetProperty("automapping")) desc += simple_map(env)+"\n";
         }
         else desc = "\n";
         if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM ){
@@ -317,8 +314,6 @@ void eventDescribeEnvironment(int brief) {
                   else desc += consolidate(val, key) +
                       "%^RESET%^MAGENTA%^";
               }
-              //globaltmp = "";
-              //if(grepp(desc," corpse of ") || grepp(desc," corpses of ")) globaltmp = "lying ";
               if( i == maxi - 1 ) {
                   if( maxi > 1 || val >1 )
                       desc += " are here.%^RESET%^\n";
@@ -765,7 +760,7 @@ void eventDescribeEnvironment(int brief) {
                 else return HostSite;
             }
             return HostSite;
-        }	//void eventLoadObject(mixed *value, int recurse) { }
+        }
 
         int GetRadiantLight(int ambient) {
             return container::GetRadiantLight(ambient);

@@ -88,8 +88,6 @@ nomask static int cmd_alias(string str) {
         if(str[0] == '$') { 
             str = str[1..strlen(str)-1]; 
             if(Xverbs[str]) { 
-                //map_delete(Xverbs, str); 
-                //message("system", sprintf("Alias $%s removed.", str), this_player()); 
                 write(str+": "+Xverbs[str]);
                 return 1;
             } 
@@ -97,8 +95,6 @@ nomask static int cmd_alias(string str) {
             return 1; 
         } 
         if(Aliases[str]) { 
-            //map_delete(Aliases, str); 
-            //message("system", sprintf("Alias %s removed.", str), this_player()); 
             write(str+": "+Aliases[str]);
             return 1;
         } 
@@ -271,8 +267,6 @@ nomask string write_prompt() {
 
     if( (y = query_ed_mode()) != -1 ) {
         if( !y ) {
-            //if( creatorp() ) ret = ":";
-            //else
             ret = "\tQ)uit without saving, save and ex)it, h)elp\nCommand: ";
         }
         else if( y == -2 ) ret = "Help: ";
@@ -436,7 +430,6 @@ nomask static string replace_nickname(string str) {
 } 
 
 void reset_prompt() { 
-    //Prompt = GetPrompt(); 
     if(!stringp(Prompt)) Prompt = "> ";
     Prompt =replace_string(Prompt, "$M", mud_name()); 
     Prompt =replace_string(Prompt, "$m", lower_case(mud_name())); 

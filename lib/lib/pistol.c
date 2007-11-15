@@ -18,13 +18,10 @@ private int dam;
 
 static void create(){
     string *s_save, *a_save;
-    //string *s_save, *w_save, *a_save;
 
     ::create();
 
     s_save = storage::GetSave();
-    //w_save = weapon::GetSave();
-    //a_save = s_save + w_save;
     a_save = s_save;
 
     AddSave( a_save );
@@ -119,7 +116,6 @@ int CanReceive(object ob){
 }
 int CanRelease(object ob){
     if(ob->GetKeyName()=="revolver cylinder"){
-        //write("The cylinder is not a removable part of the pistol.");
         return 0;
 
     }

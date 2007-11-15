@@ -14,7 +14,6 @@ private mixed   ExternalDesc = 0;
 private int     Invisible    = 0;
 private static string  look_globalval;
 static function f;
-//private mapping Items        = ([]);
 mapping Items        = ([]);
 
 // abstract methods
@@ -115,11 +114,8 @@ mixed AddItem_func(mixed foo){
 mixed SetItem_func(mixed foo){
     foreach(mixed key, mixed val in foo){
         look_globalval = val;
-        //f =  call_other(this_object(), look_globalval);
         f =  functionify(look_globalval);
-        //AddItem(key,  (: look_globalval :) );
         call_other( this_object(), ({ "AddItem", key,  (: f :) }) );
-        //call_out( AddItem, 1, key, (: look_globalval :) );
     }
     return foo;
 }

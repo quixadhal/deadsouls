@@ -102,7 +102,6 @@ int CheckPower(){
         level = batt->GetCharge();
         if(level == 10 || level == 30 || level == 50 ) flicker();
         noflicker = 1;
-        //write("The "+me+" flickers.");
         if( level < 1) powered = 0; 
     }
     noflicker = 0;

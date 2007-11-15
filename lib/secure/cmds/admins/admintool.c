@@ -114,7 +114,6 @@ varargs int Menu(string str){
 }
 
 string process_input(string str){
-    //write("Input is "+str+".");
     validate();
     switch (str) {
     case "q" : write("Ok, quitting admintool.\nBye.\n");return " ";
@@ -137,8 +136,6 @@ string process_input(string str){
     case "i" : RemoveRace();break;
     case "j" : AddCurrency();break;
     case "k" : RemoveCurrency();break;
-        //case "l" : EncrePlayer();break;
-        //case "m" : DecreCreator();break;
     case "n" : RidUser();break;
     case "o" : BanishUser();break;
     case "p" : UnBanishUser();break;
@@ -219,8 +216,6 @@ int UsersMenu() {
     validate();
     tmp = "\tDead Souls Admin Tool Users Menu\n";
     tmp += "\t\n\n";
-    //tmp += "\t\tl) promote player to creator\n";
-    //tmp += "\t\tm) demote a creator to player\n";
     tmp += "\t\tn) completely erase a user\n";
     tmp += "\t\to) banish a username\n";
     tmp += "\t\tp) unbanish a username\n\n";
@@ -701,9 +696,6 @@ int eventRemoveCurrency(string str){
 int RidUser(){
     validate();
     write("Please enter the name of the player you'd like to erase.\n");
-    //write("You will be asked to enter a reason for this ridding.");
-    //write("When you have finished, Type a single period on a blank line, ");
-    //write("then the letter x and enter.\n");
     input_to( (: eventRidUser :) );
     return 1;
 }
@@ -742,16 +734,8 @@ int DoRid(string who) {
         message("system", "You are being ridded from " + mud_name() + ".",
           ob);
         ob->eventForce("quit");
-        //if( !((int)ob->eventDestruct()) ) destruct(ob);
     }
     file = save_file(ridded) + __SAVE_EXTENSION__;
-    //if( rename(file, DIR_RID + "/" + str + __SAVE_EXTENSION__) ) {
-    //	write("Rename failed, security violation logged.");
-    //	log_file("security", "\n*****\nRid violation attempted\n"
-    //	  "Target: " + who + "\nCall stack:\n" + 
-    //	  sprintf("%O\n", previous_object(-1)));
-    //	return 1;
-    //   }
     write("Target is: "+ridded);
     write("Please enter the reason for ridding " + ridded + ".\n");
     unguarded( (: rm(file) :) );
@@ -763,7 +747,6 @@ int LogRid(string str){
     validate();
     globalstr = str;
     log_file("rid", "\n" + ridded + " by " + (string)this_player()->GetCapName() + "\n" + str + "\n");
-    //unguarded( (: write_file("/log/rid",timestamp()+" "+globalstr) :) );
     write(ridded + " has been ridded from " + mud_name() + ".");
     Menu();
     return 1;
@@ -928,7 +911,6 @@ varargs int eventChangePort(string newport, int automated){
     }
 
     newline = junk + " : telnet " + newport;
-    //write("newline is: "+newline);
     newfile = replace_string(line_string, nameline, newline);
     write_file("/secure/cfg/mudos.cfg",newfile,1);
     if(!automated)  {

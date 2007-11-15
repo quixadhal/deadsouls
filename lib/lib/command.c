@@ -109,7 +109,6 @@ static int cmdAll(string args) {
                     continue;
                 }
             }
-            //start single-number check
             if(numba = atoi(element)){
                 object o1;
                 string e1, e2;
@@ -260,7 +259,6 @@ int eventQueueCommand(string line){
         if(this_player() && this_player() != this_object()) return 0;
     }
     if(line != "") QueuedCommands += ({ line });
-    //if(sizeof(QueuedCommands)) eventExecuteQueuedCommands();
     return 1;
 }
 
@@ -281,29 +279,21 @@ int eventRetryCommand(string lastcmd){
     prep_arr -= ({"here","room","exit","enter"});
     if(previous_object() != master()) return 0;
     StillTrying++;
-    //tc("%^BLACK%^%^B_WHITE%^StillTrying: "+StillTrying);
     filter(explode(lastcmd," "), (: next_command += ({ trim($1) }) :) );
-    //tc("lastcomd: "+identify(lastcmd));
-    //tc("next_command: "+identify(next_command));
     if(tmpob = get_object(implode(next_command[1..]," "))){
         ret = next_command[0]+" a "+implode(next_command[1..]," ");
-        //tc("ret1: "+ret);
     }
     else if(sizeof(next_command) == 2){
         ret = next_command[0]+" a "+next_command[1];
-        //tc("ret2: "+ret,"red");
     }
     else if(sizeof(next_command) == 3){
         if(member_array(next_command[1],prep_arr) != -1) 
             ret = next_command[0]+" "+next_command[1]+" a "+next_command[2];
         else ret = next_command[0]+" a "+next_command[1]+" "+next_command[2];
-        //tc("ret3: "+ret,"green");
     }
     else if(sizeof(next_command) == 4 && StillTrying < MAX_COMMANDS_PER_SECOND){
         ret = next_command[0]+" a "+next_command[1]+" "+next_command[2]+" "+next_command[3];
-        //tc("ret4: "+ret,"magenta");
     }
-    //tc("ret5: "+ret,"cyan");
 
     if(!ret || !sizeof(ret)) ret = implode(next_command," ");
 
@@ -313,21 +303,15 @@ int eventRetryCommand(string lastcmd){
         tmp_arr = explode(ret," ");
         ret = "";
         for(i = 0; i < sizeof(tmp_arr);i++){
-            //tc("ret: "+ret,"yellow");
-            //tc("tmp_arr["+i+"]: "+tmp_arr[i],"yellow");
             ret += " "+tmp_arr[i];
             if(member_array(tmp_arr[i],prep_arr) != -1 && tmp_arr[i+1] != "a") ret += " a";
         }
         ret = trim(ret);
-        //tc("ret: "+ret,"white");
     }
 
     if(StillTrying > 3 && tmp_arr[1] != "a"){
         ret = tmp_arr[0]+" a "+implode(tmp_arr[1..]," ");
-        //tc("still tryin is greater than 3");
-        //tc("tmp_arr: "+identify(tmp_arr));
     }
-    //tc("ret: "+ret,"yellow");
     if(COMMAND_MATCHING){
         string vb;
         next_command = ({});
@@ -366,8 +350,6 @@ int eventRetryCommand(string lastcmd){
                 break;
             }
         }
-        //tc("direct: "+identify(direct));
-        //tc("next_command: "+identify(next_command));
         if(member_array(next_command[0], prep_arr) != -1){
             junk = next_command[0];
             next_command = next_command[1..];
@@ -386,9 +368,7 @@ int eventRetryCommand(string lastcmd){
             }
         }
         ret = virb+" "+direct+" "+(junk ? junk+" " : "")+indirect;
-        //tc("ret: "+ret);
         if(sizeof(next_command)) ret += " "+implode(next_command," ");
-        //tc("ret: "+ret); 
     } 
 
     if(StillTrying > 7) {	
@@ -398,12 +378,8 @@ int eventRetryCommand(string lastcmd){
         return 1;
     }
 
-    //tc("ret: "+ret,"cyan");
-    //tc("ret is: \""+ret+"\". It is a "+typeof(ret)+" of size "+sizeof(ret)); 
     if(!ret || !sizeof(ret)) ret = implode(next_command," ");
-    //tc("trying to parse: "+ret,0,"cyan");
     if(err = parse_sentence(ret)){
-        //tc("err: "+err,0,"red");
         if(stringp(err) && sizeof(trim(err))){
             write(err);
             return 1;
