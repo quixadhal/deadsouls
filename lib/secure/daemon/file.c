@@ -44,6 +44,9 @@ mixed ReadDir(string str){
             if(file_exists(str+element)) all_files += ({ str+element });
             if(directory_exists(str+element) && 
               strsrch(str+element,"/realms") &&
+              strsrch(str+element,"/estates") &&
+              strsrch(str+element,"/secure/save") &&
+              strsrch(str+element,"/secure/log") &&
               strsrch(str+element,"/secure/upgrades")) {
                 all_dirs += ({ str+element });
                 current_level_dirs += ({ str+element });

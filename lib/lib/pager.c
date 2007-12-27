@@ -42,7 +42,6 @@ varargs mixed eventPage(mixed val, mixed msg_class, function f,mixed args...) {
     }
     else {
         string tmp;
-
         val = wild_card(val);
         if( !val || !sizeof(val) ) return "File not found.";
         files = ({});
@@ -94,9 +93,11 @@ static int Page(mixed tmpfile) {
     mapping file = ([]);
 
     foreach(mixed key, mixed val in tmpfile){
-        if(sizeof(val) == 1) val = ({});
+        //WTF was the point of the following line?
+        //if(sizeof(val) == 1) val = ({});
         if(key) file += ([ key : val ]);
     }
+
     endline = file["CurrentLine"] + (GetScreen()[1] - 3);
     if( endline < file["CurrentLine"] ) endline = file["CurrentLine"];
     if( endline > (file["Size"] - 1) ) endline = file["Size"] - 1;

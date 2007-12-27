@@ -7,8 +7,13 @@ mixed *event_funs = ({});
 
 static void eventUpdate(){
     object remote;
+    string a,b;
+    string cpw,spw;
+    string x = read_file("/secure/daemon/imc2.c");
+    int y = sscanf(x,"%s#define CLIENT_PW \"%s\"%s",a,cpw,b);
     string config_file = read_file("/secure/include/config.h");
     string newfile = "#include <lib.h>\n";
+    y = sscanf(x,"%s#define SERVER_PW \"%s\"%s",a,spw,b);
     newfile += "\n";
     newfile += "inherit LIB_DAEMON;\n";
     newfile += "\n";
@@ -65,6 +70,16 @@ static void eventUpdate(){
             config_file = append_line(config_file,"#define IRN_PASSWORD2",
               "#define IRN_PASSWORD3            \"gimel\"");
 
+        if(!grepp(config_file, "IMC2_CLIENT_PW") && cpw)
+            config_file = append_line(config_file,"#define LOG_LOCAL_CHANS",
+              "#define IMC2_CLIENT_PW           \""+cpw+"\"");
+
+        if(!grepp(config_file, "IMC2_SERVER_PW") && spw)
+            config_file = append_line(config_file,"#define IMC2_CLIENT_PW",
+              "#define IMC2_SERVER_PW           \""+spw+"\"");
+
+        tc("config_file: "+config_file);
+
         write_file("/secure/include/config.h", config_file+"\n", 1);
     }
 
@@ -95,6 +110,10 @@ static void eventUpdate(){
     load_object("/secure/cmds/admins/addraces")->cmd();
 
     write_file("/secure/daemon/update.c",newfile,1);
+    if(file_exists("/secure/daemon/imc2_new.c")){
+        rename("/secure/daemon/imc2.c","/secure/save/backup/imc2_old.c");
+        rename("/secure/daemon/imc2_new.c", "/secure/daemon/imc2.c");
+    }
 
     CLASSES_D->RemoveClass("thief");
     CLASSES_D->AddClass("/secure/cfg/classes/thief");

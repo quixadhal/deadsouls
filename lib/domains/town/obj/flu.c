@@ -143,7 +143,7 @@ int damage5(){
             victim->SetPosition(1);
         }
         if(victim->GetPosition() == 1){
-            tell_room(environment(victim),victimname+" makes a horrendous flatulent noise as "+nominative(this_player())+" lies helplessly on the ground.");
+            tell_room(environment(victim),victimname+" makes a horrendous flatulent noise as "+nominative(victim)+" lies helplessly on the ground.", ({ victim}));
             tell_object(victim,"You make a horrendous flatulent noise as you lie helplessly on the ground.");
         }
         if(DangerLevel() != 100) victim->AddHP(-(random(35)+15));

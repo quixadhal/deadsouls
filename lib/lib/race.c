@@ -164,14 +164,17 @@ varargs void SetStat(string stat, int level, int classes) {
 }
 
 varargs int GetMaxHealthPoints(string limb) {
-    if(!limb) return ( 50 + (GetStatLevel("durability") * 10) );
+    int ret = 1;
+    if(!limb) ret = ( 50 + (GetStatLevel("durability") * 10) );
     else {
         int x;
 
         x = GetLimbClass(limb);
         if(!x) x = 5;
-        return ( (1 + GetStatLevel("durability")/x) * 10 );
+        ret = ( (1 + GetStatLevel("durability")/x) * 10 );
     }
+    if(ret < 1) return 1;
+    else return ret;
 }
 
 int GetMaxMagicPoints() {

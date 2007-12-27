@@ -697,7 +697,7 @@ void eventDescribeEnvironment(int brief) {
         }
 
         varargs int GetMaxHealthPoints(string limb){
-            if(MaximumHealth) return MaximumHealth;
+            if(!limb && MaximumHealth > 0) return MaximumHealth;
             else return living::GetMaxHealthPoints(limb);
         }
 

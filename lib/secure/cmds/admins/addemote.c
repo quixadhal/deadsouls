@@ -186,6 +186,7 @@ static void ShowEmote(string emote) {
     mapping rules = SOUL_D->GetRules(emote);
     int array screen = this_player()->GetScreen() || ({ 80, 25 });
     string tmp = center("Dead Souls V Emote Editor", screen[0]) + "\n\n";
+    string tmp2 = "";
     string array rule_array = allocate(sizeof(rules));
     int i = 0;
 
@@ -198,15 +199,11 @@ static void ShowEmote(string emote) {
         tmp += "  Adverbs: " + wrap(item_list(data[0]), screen[0]) + "\n";
         i++;
     }
-    this_player()->eventPage(explode(tmp, "\n"), MSG_SYSTEM,
-      function(mixed args) {
-          string tmp = "Enter rule to edit, 'a' to "
-          "add rule, 'e' to edit error "
-          "msg, or 'q' to quit: ";
-
-          this_player()->eventPrint(tmp, MSG_PROMPT);
-          input_to((: EnterEditChoice :), args...);
-      }, ({ rule_array, emote }));
+    //Following fix courtesy of Alecksy
+    this_player()->eventPage(explode(tmp,"\n"), MSG_SYSTEM);
+    tmp2 = "Enter rule to edit, 'a' to add rule, 'e' to edit error msg, or 'q' to quit: ";
+    this_player()->eventPrint(tmp2,MSG_PROMPT);
+    input_to( (: EnterEditChoice :), rule_array, emote );
 }
 
 mixed cmd(string args) {

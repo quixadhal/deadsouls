@@ -80,4 +80,7 @@ alias porch goto /domains/town/room/porch
 prompt %^BLUE%^$M%^RESET%^ %^BOLD%^$P%^RESET%^ > 
 alias crat source -q /secure/scripts/crat2.src
 alias indentall source /secure/scripts/indent.src
+earmuff MUDBytes
+earmuff smaugmuds
+earmuff reuters
 save
