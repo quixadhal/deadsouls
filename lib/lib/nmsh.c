@@ -165,10 +165,11 @@ nomask static int cmd_nickname(string str) {
     if(this_player() != this_object()) return 0;
     if(!str) {
         i = sizeof(cles = keys(Nicknames));
-        while(i--)
+        while(i--){
             cles[i] = sprintf("%s%s", arrange_string(cles[i], 15),
               Nicknames[cles[i]]);
-        this_player()->eventPage(cles);
+        }
+        this_player()->eventPage( cles + ({}) );
         return 1;
     }
     if(sscanf(str, "%s %s", key, thing) != 2) { 

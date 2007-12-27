@@ -8,6 +8,7 @@
 
 #define GREP_NUMBERED_LINES            (1<<0)
 #define GREP_RECURSE_DIRECTORIES    (1<<1)
+#define MAX_FILE_SIZE 200000
 
 inherit LIB_DAEMON;
 
@@ -61,7 +62,7 @@ int cmd(string str) {
                 max += sizeof(r_files);
                 continue;
             }
-            if(file_size(files[i]) > 20000){
+            if(file_size(files[i]) > MAX_FILE_SIZE){
                 write(files[i]+": too large. Skipping.");
                 continue;
             }
@@ -73,7 +74,7 @@ int cmd(string str) {
             }
             err = catch(txt = read_file(files[i]));
             if(err){
-                write(files[i]+": corrupted file, or not text. Skipping.");
+                if(file_exists(files[i])) write(files[i]+": corrupted file, or not text. Skipping.");
                 continue;
             }
             lines = explode(txt, "\n");
@@ -99,7 +100,7 @@ int cmd(string str) {
                 max += sizeof(r_files);
                 continue;
             }
-            if(file_size(files[i]) > 20000){
+            if(file_size(files[i]) > MAX_FILE_SIZE){
                 write(files[i]+": too large. Skipping.");
                 continue;
             }
@@ -111,7 +112,7 @@ int cmd(string str) {
             }
             err = catch(txt = read_file(files[i]));
             if(err || !txt){
-                write(files[i]+": corrupted file, or not text. Skipping.");
+                if(file_exists(files[i])) write(files[i]+": corrupted file, or not text. Skipping.");
                 continue;
             }
             borg[files[i]] = regexp(explode(txt, "\n"), exp);

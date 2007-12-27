@@ -14,7 +14,8 @@ string array yesbools = ({ "enable","on","1","yes" });
 string array nobools = ({ "disable","off","0","no" });
 string array restrict_tokens = ({ "restrict","unrestrict" });
 string array nonmodals = ({ "liveupgrade", "prompt","status","email","websource",
-  "debugger", "access", "pinging", "pinginterval" });
+  "debugger", "access", "pinging", "pinginterval",
+  "imc2serverpass", "imc2clientpass" });
 string array antimodals = ({ "imc2" });
 string array modals = antimodals + ({ "catchtell","matchcommand", "matchobject", "autowiz", "locked",
   "localtime", "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
@@ -87,6 +88,8 @@ mixed cmd(string str) {
     case "mudstatus" : which = "MUD_STATUS";ProcessString(which,arg);break;
     case "debugger" : which = "DEBUGGER";ProcessString(which,arg);break;
     case "websource" : which = "WEB_SOURCE";ProcessString(which,arg);break;
+    case "imc2clientpass" : which = "IMC2_CLIENT_PW";ProcessString(which,arg);break;
+    case "imc2serverpass" : which = "IMC2_SERVER_PW";ProcessString(which,arg);break;
     default : NotImplemented(which);break;
     }
     return 1;
@@ -739,6 +742,8 @@ void help() {
       "\nmudconfig websource <the remote web server's ip address (eg 111.222.333.444)>"
       "\nmudconfig intermud [ enable | disable | restrict | unrestrict | reset ]"
       "\nmudconfig imc2 [ enable | disable ]"
+      "\nmudconfig imc2clientpass <client password for IMC2>"
+      "\nmudconfig imc2serverpass <server password for IMC2>"
       "\nmudconfig inet [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig ftp [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig hftp [ enable | disable | start | stop | restart | status ]"

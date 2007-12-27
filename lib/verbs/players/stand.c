@@ -16,7 +16,7 @@ static void create() {
     SetVerb("stand");
     SetRules("", "up");
     SetErrorMessage("Stand up?");
-    SetSynonyms("get");
+    SetSynonyms("get up");
     SetHelp("Syntax: <stand up>\n"
       "When sitting down or lying down, you can get up in this "
       "most intuitive manner.\n\n"

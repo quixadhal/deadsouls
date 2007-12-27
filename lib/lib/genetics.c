@@ -114,8 +114,12 @@ varargs void RemoveStat(string stat) {
 }
 
 mapping GetStat(string stat) {
+    mapping ret = ([]);
     if(!stat) return 0;
-    else return copy(Stats[stat]);
+    ret = copy(Stats[stat]);
+    if(!sizeof(ret)) return 0;
+    if(ret["level"] < 0) ret["level"] = 0;
+    return ret;
 }
 
 int GetStatClass(string stat) {

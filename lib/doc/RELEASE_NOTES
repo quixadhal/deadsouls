@@ -1,3 +1,15 @@
+---- 2.6.1 ---
+- IMC2 emotes now display better (Thanks, Tricky!)
+- Fix to addemote command with the -edit parameter (Thanks, Alecksy!)
+- IMC2 passwords are now stored in /secure/include/config.h
+- Miscellaneous tidying up of GetEnters() (Thanks, Raudhrskal!)
+- mudconfig command now handles imc2 password changing.
+- grep command is somewhat less restrictive now.
+- Fixed odd "feature" in LIB_PAGER that ignored an array argument with only one element
+  (Fixes things such as blank nickname and screwy help index output).
+- GetMaxHealthPoints() can no longer report below 1. This prevents some situations (such as
+  multiple infections) that cause player to die over and over again.
+
 ---- 2.6 ---
 - Minor fixes to tellers.
 - Miscellaneous cleanup of commented-out code.

@@ -848,7 +848,7 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
             if( (door = GetDoor(exit)) && (int)door->GetClosed() ) continue;
             tmp->eventHearTalk(who, target, TALK_LOCAL, verb, msg, lang);
         }
-        foreach(exit in GetEnters()) {
+        foreach(exit in GetEnters(1)) {
             string tmp;
 
             tmp = GetEnter(exit);
