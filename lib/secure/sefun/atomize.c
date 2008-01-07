@@ -13,5 +13,5 @@ string *atomize_array(string *temp_arr){
         ret += atomize_string(element);
     }
     ret += temp_arr;
-    return singular_array(ret);
+    return distinct_array(ret);
 }

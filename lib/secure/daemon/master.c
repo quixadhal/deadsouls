@@ -320,7 +320,7 @@ private static void load_access(string cfg, mapping resource) {
         else if(sscanf(str, DOMAINS_DIRS+"/%s/%*s", nom))
             tmp = sprintf("%s/%s/virtual/server", DOMAINS_DIRS, nom);
         else if(strsrch(str, ESTATES_DIRS) == 0)
-            tmp = sprintf("%s/adm/server", ESTATES_DIRS);
+            tmp = sprintf("%s/virtual/server", ESTATES_DIRS);
         else if(sscanf(str, DIR_PLAYERS+"/%*s/%s", nom)) {
             if(!NewPlayer) return 0;
             if((string)NewPlayer->GetKeyName() != nom) return 0;

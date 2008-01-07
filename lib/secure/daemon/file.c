@@ -72,9 +72,9 @@ static mixed Report(){
         }
     }
     all_dirs = sort_array(all_dirs,1);
-    all_dirs = singular_array(all_dirs);
+    all_dirs = distinct_array(all_dirs);
     all_files = sort_array(all_files,1);
-    all_files = singular_array(all_files);
+    all_files = distinct_array(all_files);
     rm("/secure/tmp/dirs.txt");
     rm("/secure/tmp/files.txt");
     foreach(string dir in all_dirs){

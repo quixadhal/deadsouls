@@ -39,7 +39,7 @@ void eventRehash(mixed paths) {
             if( pointerp(Commands[cmd]) ) Commands[cmd] += ({ path });
             else Commands[cmd] = ({ path });
         }
-        Paths = singular_array( distinct_array(Paths + ({ path })) );
+        Paths = distinct_array(Paths + ({ path }));
     }
 }
 

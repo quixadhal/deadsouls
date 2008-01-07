@@ -109,7 +109,7 @@ int send_post(mapping borg, string mud) {
     borg["from"] = sprintf("%s@%s", convert_name(borg["from"]),
       mud_name());
 
-    foreach(string destination in singular_array(muds)){
+    foreach(string destination in distinct_array(muds)){
         string *tmp_to = ({});
         string *tmp_cc = ({});
 

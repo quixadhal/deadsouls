@@ -131,7 +131,7 @@ int refreshlist(){
         watchlist += ({ playername });
         mooch = 0;
     }
-    watchlist = singular_array(watchlist);
+    watchlist = distinct_array(watchlist);
     unguarded( (: save_object(save_file,1) :) );
     return 1;
 }

@@ -99,18 +99,27 @@ mixed CanUnlock(object who) {
  */
 
 varargs mixed eventClose(object who) {
-    object room;
+    object room,whom;
     string tmp;
 
-    SetClosed(1);
-    room = environment(who);
-    foreach(string side, class door_side val in Sides) {
-        if( member_array(environment(who), val->Rooms) != -1 ) tmp = side;
-        filter(val->Rooms, (: $1 && ($1 != $(room)):))->eventPrint(capitalize(GetShort(side)) + " closes.");
+    if(!GetClosed()){
+        SetClosed(1);
+        if(who) room = environment(who);
+        else room = environment(this_player());
+        if(!who) whom = this_player();
+        else whom = who;
+        foreach(string side, class door_side val in Sides) {
+            if( member_array(environment(whom), val->Rooms) != -1 ) tmp = side;
+            if(who)
+                filter(val->Rooms, (: $1 && ($1 != $(room)):))->eventPrint(capitalize(GetShort(side)) + " closes.");
+            else (val->Rooms)->eventPrint(capitalize(GetShort(side)) + " closes.");
+        }
+        if(who){
+            who->eventPrint("You close " + GetShort(tmp) + ".");
+            room->eventPrint((string)who->GetName() + " closes " + GetShort(tmp) + ".",
+              who);
+        }
     }
-    who->eventPrint("You close " + GetShort(tmp) + ".");
-    room->eventPrint((string)who->GetName() + " closes " + GetShort(tmp) + ".",
-      who);
     return 1;
 }
 
@@ -163,18 +172,27 @@ varargs mixed eventLock(object who, mixed key, mixed foo) {
  */
 
 varargs int eventOpen(object who, object tool) {
-    object room;
+    object room, whom;
     string tmp;
 
-    SetClosed(0);
-    room = environment(who);
-    foreach(string side, class door_side val in Sides) {
-        if( member_array(environment(who), val->Rooms) != -1 ) tmp = side;
-        filter(val->Rooms, (: $1 && ($1 != $(room)) :))->eventPrint(capitalize(GetShort(side)) + " opens.");
+    if(GetClosed()){
+        SetClosed(0);
+        if(who) room = environment(who);
+        else room = environment(this_player());
+        if(!who) whom = this_player();
+        else whom = who;
+        foreach(string side, class door_side val in Sides) {
+            if( member_array(environment(whom), val->Rooms) != -1 ) tmp = side;
+            if(who)
+                filter(val->Rooms, (: $1 && ($1 != $(room)) :))->eventPrint(capitalize(GetShort(side)) + " opens.");
+            else (val->Rooms)->eventPrint(capitalize(GetShort(side)) + " opens.");
+        }
+        if(who){
+            who->eventPrint("You open " + GetShort(tmp) + ".");
+            room->eventPrint((string)who->GetName() + " opens " + GetShort(tmp) + ".",
+              who);
+        }
     }
-    who->eventPrint("You open " + GetShort(tmp) + ".");
-    room->eventPrint((string)who->GetName() + " opens " + GetShort(tmp) + ".",
-      who);
     return 1;
 }
 
