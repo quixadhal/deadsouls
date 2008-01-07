@@ -1,4 +1,16 @@
+---- 2.6.2 ---
+- Released 2008-01-06
+- Fixed some confusing behavior with ":" and ";" as emote characters
+  in CHAT_D, as well as some confusing channel renaming.
+- Fixed security bug that allowed an unprivileged creator access to privileged files.
+- The goto command now handles virtual rooms.
+- The sefun singular_array() is now just another name for distinct_array(),
+  and scramble_array() has been added.
+- Doors can now be externally called to open or close and will behave properly.
+- Armor worn on multiple limbs now does not automatically move to the severed limb.
+
 ---- 2.6.1 ---
+- Released 2007-12-27
 - IMC2 emotes now display better (Thanks, Tricky!)
 - Fix to addemote command with the -edit parameter (Thanks, Alecksy!)
 - IMC2 passwords are now stored in /secure/include/config.h
@@ -11,6 +23,7 @@
   multiple infections) that cause player to die over and over again.
 
 ---- 2.6 ---
+- Released 2007-11-15
 - Minor fixes to tellers.
 - Miscellaneous cleanup of commented-out code.
 

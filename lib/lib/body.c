@@ -1259,8 +1259,10 @@ varargs int eventDie(mixed agent) {
             ob->eventMove(environment());
             i = sizeof(WornItems[limb]);
             while(i--) {
+                int number_of_slots = sizeof(WornItems[limb][i]->GetWorn());
                 WornItems[limb][i]->SetWorn(0);
-                WornItems[limb][i]->eventMove(ob);
+                if(number_of_slots == 1) WornItems[limb][i]->eventMove(ob);
+                else WornItems[limb][i]->eventMove(this_object());
             }
             while( i = sizeof(WornItems[limb]) )
                 eventRemoveItem(WornItems[limb][i]);

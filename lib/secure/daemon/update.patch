@@ -5,15 +5,15 @@ inherit LIB_DAEMON;
 mapping EventsMap = ([]);
 mixed *event_funs = ({});
 
-static void eventUpdate(){
+varargs static void eventUpdate(object whom){
     object remote;
     string a,b;
     string cpw,spw;
     string x = read_file("/secure/daemon/imc2.c");
-    int y = sscanf(x,"%s#define CLIENT_PW \"%s\"%s",a,cpw,b);
+    int y = sscanf(x,"%s#define IMC2_CLIENT_PW \"%s\"%s",a,cpw,b);
     string config_file = read_file("/secure/include/config.h");
     string newfile = "#include <lib.h>\n";
-    y = sscanf(x,"%s#define SERVER_PW \"%s\"%s",a,spw,b);
+    y = sscanf(x,"%s#define IMC2_SERVER_PW \"%s\"%s",a,spw,b);
     newfile += "\n";
     newfile += "inherit LIB_DAEMON;\n";
     newfile += "\n";
@@ -23,6 +23,7 @@ static void eventUpdate(){
     newfile += "    daemon::create();\n";
     newfile += "    call_out((: eventUpdate :), 60);\n";
     newfile += "}\n";
+    write_file("/secure/daemon/update.c",newfile,1);
 
     if(sizeof(config_file)){
 
@@ -78,15 +79,14 @@ static void eventUpdate(){
             config_file = append_line(config_file,"#define IMC2_CLIENT_PW",
               "#define IMC2_SERVER_PW           \""+spw+"\"");
 
-        tc("config_file: "+config_file);
-
         write_file("/secure/include/config.h", config_file+"\n", 1);
     }
 
     rm("/cmds/players/where.c");
     rm("/domains/Praxis/obj/mon/execution.c");
     rm("/domains/campus/txt/moochers.txt");
-    rm("/secure/save/players/g/guest.o");
+    rm("/secure/sefun/distinct_array.c");
+    rm("/secure/sefun/singular_array.c");
 
     remote = load_object("/secure/cmds/admins/removeemote");
     if(remote) remote->cmd("roll");
@@ -109,7 +109,16 @@ static void eventUpdate(){
     load_object("/secure/cmds/admins/removeraces")->cmd();
     load_object("/secure/cmds/admins/addraces")->cmd();
 
-    write_file("/secure/daemon/update.c",newfile,1);
+    newfile = read_file("/secure/cfg/read.cfg");
+    newfile = replace_string(newfile,"(/log/secure)","(/log/secure/)");
+    newfile = replace_string(newfile,"(/secure/log)","(/secure/log/)");
+    newfile = replace_string(newfile,"(/log/router)","(/log/router/)");
+    write_file("/secure/cfg/read.cfg",newfile,1);
+    newfile = read_file("/secure/cfg/write.cfg");
+    newfile = replace_string(newfile,"(/log/router)","(/log/router/)");
+    newfile = replace_string(newfile,"(/log/secure)","(/log/secure/)");
+    write_file("/secure/cfg/write.cfg",newfile,1); 
+
     if(file_exists("/secure/daemon/imc2_new.c")){
         rename("/secure/daemon/imc2.c","/secure/save/backup/imc2_old.c");
         rename("/secure/daemon/imc2_new.c", "/secure/daemon/imc2.c");
@@ -118,10 +127,23 @@ static void eventUpdate(){
     CLASSES_D->RemoveClass("thief");
     CLASSES_D->AddClass("/secure/cfg/classes/thief");
 
-    write_file("/secure/daemon/update.c",newfile,1);
+    reload("/secure/sefun/arrays");
+    reload("/secure/sefun/sefun");
+    reload("/secure/daemon/master");
+
+    if(whom){
+        tell_player(whom,"Update daemon finished. Rebooting now is a good idea.");
+    }
 }
 
 static void create() {
+    object whom;
     daemon::create();
-    call_out((: eventUpdate :), 1);
+    if(this_player()) whom = this_player();
+    call_out((: eventUpdate :), 1, whom);
+    if(whom){
+        tell_player(whom,"Please stand by until you see the \"Update daemon finished.\" message.");
+        tell_player(whom,"If you do not see it after a few seconds, you may need to restore "
+            "your mud from backup.");
+    }
 }

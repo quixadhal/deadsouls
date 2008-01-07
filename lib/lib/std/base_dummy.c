@@ -35,9 +35,9 @@ varargs string array SetId(mixed ids...) {
     }
     return ids;
 }
-varargs int GetInvis(object ob) {
-    return 1;
-}
+//varargs int GetInvis(object ob) {
+//    return 1;
+//}
 
 /* ********************* dummy.c events ****************** */
 static int Destruct() {
@@ -106,4 +106,5 @@ varargs static void create(string array id, mixed long, string array adj) {
         SetId(id...);
     }
     SetExternalDesc(long || "");
+    SetInvis(1);
 }

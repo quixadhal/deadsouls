@@ -265,5 +265,6 @@ mixed *socket_names();
 string morse(string msg);
 string unmorse(string msg);
 int *roll(string alea);
+mixed *scramble_array(mixed *arr);
 
 #endif /* l_sefun_h */

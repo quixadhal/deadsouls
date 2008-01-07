@@ -526,7 +526,7 @@ void AddRace(string file, int player) {
         h_file = "/doc/help/races/"+lower_case(race);
         if(file_exists(h_file)) return read_file(h_file); 
         limbs = map(res->Limbs, (: $1[0] :));
-        limbs = singular_array(limbs);
+        limbs = distinct_array(limbs);
         help += "Limbs:\n";
         help += capitalize(item_list(map(limbs, (: add_article :)))) + ".\n";
         help += "\nFingered limbs:\n";

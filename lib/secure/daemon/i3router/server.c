@@ -367,7 +367,7 @@ void check_blacklist(){
     string *bms;
     trr("Checking old blacklists");
     if(!Blacklist) Blacklist = ([]);
-    blacklisted_muds = singular_array(blacklisted_muds);
+    blacklisted_muds = distinct_array(blacklisted_muds);
     bms = keys(Blacklist);
 
     foreach(string element in blacklisted_muds){
@@ -472,7 +472,7 @@ void clean_chans(){
         }
         else trr("huh? not an array?");
     }
-    cleaned = singular_array(cleaned);
+    cleaned = distinct_array(cleaned);
     trr("cleaned from channels: "+implode(cleaned,"\n"));
 }
 
@@ -596,7 +596,7 @@ varargs void ReceiveList(mixed data, string type, string who){
                 if(val == -1) map_delete(channels, key);
                 if(val == -1) map_delete(listening, key);
                 else {
-                    val[2] = singular_array(val[2]);
+                    val[2] = distinct_array(val[2]);
                     channels[key] = val;
                 }
                 broadcast_chanlist(key);

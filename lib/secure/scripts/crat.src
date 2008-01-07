@@ -53,6 +53,9 @@ alias ige intergossipemote $*
 alias ice intercreemote $*
 alias ce creemote $*
 alias ae adminemote $*
+alias fs free_speech $*
+alias dw discworld-chat $*
+alias cm coffeemud_universe $*
 alias err tail /log/runtime
 alias ecc tail /log/catch
 alias perr tail /log/player_errors
@@ -66,6 +69,9 @@ alias welcome ds hi, $*. you can use this channel to ask questions. it's an inte
 call me->AddChannel("intergossip")
 call me->AddChannel("coffeemud_universe")
 call me->AddChannel("free_speech")
+call me->AddChannel("discworld-chat")
+call me->AddChannel("discworld-cre")
+call me->AddChannel("dgd")
 call me->AddChannel("ibuild")
 call me->AddChannel("ichat")
 call me->AddChannel("pchat")
@@ -77,10 +83,15 @@ call me->AddChannel("i2news")
 call me->AddChannel("irc")
 alias intermud intergossip http://lpmuds.net/intermud.html
 alias porch goto /domains/town/room/porch
-prompt %^BLUE%^$M%^RESET%^ %^BOLD%^$P%^RESET%^ > 
+prompt %^BOLD%^%^GREEN%^$M%^RESET%^ %^BOLD%^$P%^RESET%^ > 
 alias crat source -q /secure/scripts/crat2.src
 alias indentall source /secure/scripts/indent.src
-earmuff MUDBytes
+earmuff mudbytes
 earmuff smaugmuds
 earmuff reuters
+earmuff sapid
+earmuff NZHerald
+earmuff Gammon
+earmuff TheOnion
+earmuff Sandbox
 save

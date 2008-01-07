@@ -37,12 +37,21 @@ mixed cmd(string str) {
         this_player()->eventMoveLiving(ob);
         return 1;
     }
-    if(!file_exists(str)) str += ".c";
-    if(!file_exists(str)) {
-        write("Location not found.");
+
+    if(last_string_element(path_prefix(path_prefix(str)),"/") != "virtual"){
+        if(!file_exists(str)  && !file_exists(str + ".c")){
+            write("Location not found.");
+            return 1;
+        }
+    }
+
+    catch( ob = load_object(str) );
+
+    if(!ob) {
+        write("\n\nCould not load that location.");
         return 1;
     }
-    else this_player()->eventMoveLiving(str);
+    else this_player()->eventMoveLiving(ob);
     return 1;
 }
 

@@ -46,9 +46,9 @@ static private mapping localchans = ([
   "dead_test4": "ds_test",
   "dead_souls": "ds",
 
-  "free_speech": "fs",
-  "discworld-chat": "dw",
-  "discworld-cre": "dwcre",
+  //"free_speech": "fs",
+  //"discworld-chat": "dw",
+  //"discworld-cre": "dwcre",
   "lpuni": "lpuni",
   //IMC2 Channels
   "Server01:ibuild": "ibuild",
@@ -70,9 +70,9 @@ static private mapping remotechans = ([
   "dutch": "dutch",
   "ds_test": "dead_test4",
   "ds": "dead_souls",
-  "fs": "free_speech",
-  "dw": "discworld-chat",
-  "dwcre": "discworld-cre",
+  //"fs": "free_speech",
+  //"dw": "discworld-chat",
+  //"dwcre": "discworld-cre",
   "lpuni": "lpuni",
 
   //IMC2 Channels
@@ -88,16 +88,17 @@ static private mapping remotechans = ([
 ]);
 
 static private mapping tags = ([
-  "connections" : "%^WHITE%^",
-  "death"       : "%^RED%^",
-  "cre"         : "%^GREEN%^",
-  "admin"       : "%^MAGENTA%^",
-  "newbie"      : "%^B_YELLOW%^",
-  "gossip"      : "%^B_BLUE%^",
+  "connections" : "%^BOLD%^WHITE%^",
+  "death"       : "%^BOLD%^RED%^",
+  "cre"         : "%^BOLD%^GREEN%^",
+  "admin"       : "%^BOLD%^MAGENTA%^",
+  "newbie"      : "%^BOLD%^B_YELLOW%^",
+  "gossip"      : "%^BOLD%^B_BLUE%^",
+
   "ds"          : "%^YELLOW%^",
-  "dchat"	 : "%^CYAN%^",
-  "intergossip" : "%^CYAN%^",
-  "intercre"    : "%^YELLOW%^",
+  "dchat"	 :"%^CYAN%^",
+  "intergossip" : "%^GREEN%^",
+  "intercre"    : "%^ORANGE%^",
 
   "ibuild"      : "%^B_RED%^%^YELLOW%^",
   "ichat"       : "%^B_RED%^%^GREEN%^",
@@ -108,6 +109,7 @@ static private mapping tags = ([
   "i2code"      : "%^B_YELLOW%^%^RED%^",
   "i2news"      : "%^B_YELLOW%^%^BLUE%^",
   "irc"         : "%^B_BLUE%^%^GREEN%^",
+
   "default"     : "%^BOLD%^BLUE%^",
 ]);
 
@@ -306,6 +308,26 @@ int cmdChannel(string verb, string str) {
     object ob = 0;
     int i, emote, forcedemote;
 
+    if(grepp(verb, ":")){
+        verb = replace_string(verb,":","emote");
+    }
+
+    if(grepp(verb, ";")){
+        verb = replace_string(verb,";","forcedemote");
+    }
+
+
+    if(sizeof(str) > 2){
+
+        if((str[0..0] == ":" || str[0..0] == ";") &&
+          alphap(str[1..1]) && str[2..2] != " "){
+            if(str[0..0] == ";" && !grepp(verb,"forcedemote")) 
+                verb = replace_string(verb,"emote","") + "forcedemote";
+            else if(str[0..0] == ":" && !grepp(verb,"emote")) verb += "emote";
+            str = str[1..];
+        }
+
+    }
 
     //******LIST******
               //allow "list <chan>" to list users listening
@@ -367,26 +389,12 @@ int cmdChannel(string verb, string str) {
     //If it's a verb+emote, de-emote the verb, and mark as an emote
     if(grepp(verb, "emote")) {
         //Get the real channel
-        verb = replace_string(verb,"emote","");
+        if(grepp(verb, "forcedemote")){
+            verb = replace_string(verb,"forcedemote","");   
+            forcedemote = 1;
+        }
+        else verb = replace_string(verb,"emote","");
         emote = 1;
-        //If it's got a : and NOT an emoticon, emote it. We want to SAY emoticons, not emote them.
-    } else if(first(str,1) == ":" && (sizeof(str) > 2)) {
-        str = trim(replace_string(str,":","",1));
-        emote = 1;
-        //If it's a : on the end of the verb, make it an emote anyways
-    } else if ((last(verb, 1) == ":")) {
-        str = trim(replace_string(verb,";","",1));
-        emote = 1;
-        //If it's a forced emote, with a ";", check that it's valid or fail horribly.
-    } else if ((first(str,1) == ";")) {
-        str = trim(replace_string(str,";","",1));
-        emote = 1;
-        forcedemote = 1;
-        //If it's a ; on the verb, make it a forced emote anyways.
-    } else if ((last(verb, 1) == ";")) {
-        str = trim(replace_string(verb,";","",1));
-        emote = 1;
-        forcedemote = 1;
     }
 
     if(!strsrch(str,"^encode")) str = morse("(encoded):  "+str[7..]);

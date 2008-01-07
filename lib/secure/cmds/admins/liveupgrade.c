@@ -231,7 +231,7 @@ mixed cmd(string str) {
         RELOAD_D->eventReload(this_object(), 2);
         reload(WGET_D);
         rm("/secure/upgrades/txt/list.txt");
-        player->eventPrint("\nDone. It is now a very good time to reboot the mud.");
+        player->eventPrint("\nAlmost done...");
         player = 0;
         return 1;
     }

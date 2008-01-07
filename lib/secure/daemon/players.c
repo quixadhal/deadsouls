@@ -79,11 +79,11 @@ void create() {
     ::create();
     if(unguarded((: file_exists, SAVE_PLAYER_LIST+__SAVE_EXTENSION__ :)))
         unguarded((: restore_object, SAVE_PLAYER_LIST :));
-    if(PendingEncres) PendingEncres = singular_array(PendingEncres);
-    if(PendingDecres) PendingDecres = singular_array(PendingDecres);
-    if(players) players = singular_array(players);
-    if(creators) creators = singular_array(creators);
-    if(user_list) user_list = singular_array(user_list);
+    if(PendingEncres) PendingEncres = distinct_array(PendingEncres);
+    if(PendingDecres) PendingDecres = distinct_array(PendingDecres);
+    if(players) players = distinct_array(players);
+    if(creators) creators = distinct_array(creators);
+    if(user_list) user_list = distinct_array(user_list);
     unguarded((: save_object, SAVE_PLAYER_LIST :));
     call_out( (: CompileCreList :), 1);
     call_out( (: CompilePlayerList :), 5);

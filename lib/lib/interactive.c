@@ -616,7 +616,7 @@ void eventDescribeEnvironment(int brief) {
                 }
             }
 
-            UserId = singular_array(UserId);
+            UserId = distinct_array(UserId);
 
             foreach(string sub in UserId){
                 if(user_exists(sub) && GetKeyName() != sub){
