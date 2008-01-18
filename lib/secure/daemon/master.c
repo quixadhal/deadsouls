@@ -400,7 +400,7 @@ private static void load_access(string cfg, mapping resource) {
         file = file_name(ob);
 
         contents = read_file(base_name(ob)+".c");
-        if(!contents) contents = "";
+        if(!contents) return 0;
         if(strsrch(contents,"parse_add_rule") != -1 
           || strsrch(contents, "SetRules") != -1) {
             string prefix;

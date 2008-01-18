@@ -8,7 +8,7 @@ object next;
 object *dudes;
 string filename, args;
 
-varargs mixed reload(mixed ob, int recursive, int quiet){
+varargs mixed reload(mixed ob, int recursive,int quiet) {
     mapping StringFellows = ([]);
     int stringed;
     object env;

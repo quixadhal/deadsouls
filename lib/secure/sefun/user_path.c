@@ -1,5 +1,5 @@
-#include <daemons.h>
-
-string user_path(string name){
-    return PLAYERS_D->GetUserPath(name);
+string user_path(string name)
+{
+    return ("/realms/"+name+"/");
 }
+

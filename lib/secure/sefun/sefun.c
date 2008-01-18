@@ -76,7 +76,7 @@
 #include "/secure/sefun/reload.c"
 #include "/secure/sefun/wipe_inv.c"
 #include "/secure/sefun/numbers.c"
-#include "/secure/sefun/inventory.c"
+#include "/secure/sefun/query_carrying.c"
 #include "/secure/sefun/findobs.c"
 #include "/secure/sefun/query_names.c"
 #include "/secure/sefun/ascii.c"
@@ -95,28 +95,10 @@ int last_regexp = time();
 int regexp_count = 1;
 int max_regexp = 200;
 
-//For some reason, FluffOS read_file() will read
-//a zero-length file as a 65535 length T_INVALID variable.
-//This tends to screw things up for Dead Souls.
-varargs string read_file(string file, int start_line, int number_of_lines){
-    if(file_size(file) == 0) return "";
-    return efun::read_file(file, start_line, number_of_lines);
-}
-
-void reset_eval_cost(){
-    if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
-        efun::reset_eval_cost();
-}
-
-void set_eval_limit(int i){
-    if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
-        efun::set_eval_limit(i);
-}
-
 string debug_info(int debuglevel, mixed arg){
     if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
         return efun::debug_info(debuglevel, arg);
-    else return "This sefun is not available to unprivileged objects.";
+    else return "";
 }
 
 string array groups(){
@@ -213,15 +195,7 @@ object find_player( string str ){
 
 object *livings() {
     object *privlivs = efun::livings();
-    object *unprivlivs = ({});
-#ifdef __FLUFFOS__
-    unprivlivs = filter(privlivs, (: !($1->GetInvis() && archp($1)) :) );
-#else
-    foreach(mixed dude in privlivs){
-        if(archp(dude) && dude->GetInvis()) continue;
-        unprivlivs += ({ dude });
-    }
-#endif
+    object *unprivlivs = filter(privlivs, (: !($1->GetInvis() && archp($1)) :) );
     if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return privlivs;
     if(base_name(previous_object()) == SERVICES_D) return privlivs;
     else return unprivlivs;
@@ -229,20 +203,12 @@ object *livings() {
 }
 
 varargs mixed objects(mixed arg1, mixed arg2){
-    object array tmp_obs;
-    if(arg1) tmp_obs = efun::objects(arg1);
-    else tmp_obs = efun::objects();
+    object array tmp_obs = efun::objects();
 
     if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
-      base_name(previous_object())  != SERVICES_D){
-#ifdef __FLUFFOS__
+      base_name(previous_object())  != SERVICES_D)
         tmp_obs = filter(tmp_obs, (: !($1->GetInvis() && archp($1)) :) );
-#else
-        foreach(mixed dude in tmp_obs){
-            if(dude && archp(dude) && dude->GetInvis()) tmp_obs -= ({ dude });
-        }
-#endif
-    }
+
     if(base_name(previous_object()) == SNOOP_D || archp(this_player())){
         return tmp_obs;
     }
@@ -314,6 +280,7 @@ int destruct(object ob) {
         if(ok) stat = "success";
         log_file("destructs",timestamp()+"\n"+stat+"\n"+get_stack(1)+"\n--\n");
     }
+
     if(ok) return efun::destruct(ob);
     else return 0;
 }
@@ -373,9 +340,7 @@ int exec(object target, object src) {
     string tmp;
     int ret;
     tmp = base_name(previous_object());
-    if(tmp != LIB_CONNECT && tmp != CMD_ENCRE && tmp != CMD_DECRE 
-      && tmp != SU && tmp != RELOAD_D) return 0;
-    //tc("exec("+identify(target)+", "+identify(src)+")","red");
+    if(tmp != LIB_CONNECT && tmp != CMD_ENCRE && tmp != CMD_DECRE && tmp != SU) return 0;
     ret = efun::exec(target, src);
     return ret;
 }
@@ -386,6 +351,11 @@ void write(string str) {
 }
 
 void set_privs(object ob, string str) { return; }
+
+void set_eval_limit(int x) {
+    if(previous_object() != master()) return;
+    efun::set_eval_limit(x);
+}
 
 void notify_fail(string str) {
     if( !this_player() ) return;
@@ -411,22 +381,4 @@ string capitalize(mixed str) {
     for(i=0; i<sizeof(tmp); i++) tmp[i] = efun::capitalize(tmp[i]);
     words[0] = "%^" + implode(tmp, "%^") + "%^";
     return implode(words, " ");
-}
-
-string *efuns(){
-    return sort_array(MASTER_D->GetEfuns(),1);
-}
-
-string *sefuns(){
-    return sort_array(functions(this_object()),1);
-}
-
-int efun_exists(string str){
-    if(member_array(str,MASTER_D->GetEfuns()) != -1) return 1;
-    return 0;
-}
-
-int sefun_exists(string str){
-    if(member_array(str,functions(this_object())) != -1) return 1;
-    return 0;
 }

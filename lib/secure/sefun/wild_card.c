@@ -4,16 +4,11 @@
 */
 varargs string *wild_card(string str) {
     mixed pf; string *tmp, cwd;
-    //tc("wtf","green");
     if((cwd = absolute_path("cwd",str)) == "/") return ({ "/" });
     if((string)(pf= path_file(cwd)) == "/") pf[0] = "";
     if(!(tmp = get_dir(cwd))) tmp = ({});
-    //tc("cwd: "+identify(cwd));
-    //tc("tmp: "+identify(tmp));
     tmp -= ({ ".", ".." });
-    //tc("tmp: "+identify(tmp));
-    //if(!str || str[0] != '.') tmp = filter_array(tmp,"remove_dots",this_object());
-    //tc("tmp: "+identify(tmp),"red");
+    if(!str || str[0] != '.') tmp = filter_array(tmp,"remove_dots",this_object());
     for(int i=0;i<sizeof(tmp);i++) {
         if(file_size(sprintf("%s/%s", pf[0], pf[1])) == -2) tmp[i] = pf[0];
         else tmp[i] = sprintf("%s/%s", pf[0], tmp[i]);
@@ -23,9 +18,6 @@ varargs string *wild_card(string str) {
     return tmp;
 }
 
-nomask int remove_dots(string str){ 
-    //tc("remove_dots("+identify(str)+")");
-    return !(str[0] == '.'); 
-}
+nomask int remove_dots(string str) { return !(str[0] == '.'); }
 
 

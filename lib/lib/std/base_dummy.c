@@ -22,39 +22,39 @@ inherit LIB_TOUCH;
 
 /* ***************** dummy.c attributes ***************** */
 
-int isDummy(){
+int isDummy() {
     return 1;
 }
-varargs string array SetId(mixed ids...){
+varargs string array SetId(mixed ids...) {
     ids = id::SetId(ids);
-    if( sizeof(ids) && !GetKeyName() ){
+    if( sizeof(ids) && !GetKeyName() ) {
         SetKeyName(ids[0]);
-        if( !GetShort() ){
+        if( !GetShort() ) {
             SetShort(add_article(ids[0]));
         }
     }
     return ids;
 }
-//varargs int GetInvis(object ob){
+//varargs int GetInvis(object ob) {
 //    return 1;
 //}
 
 /* ********************* dummy.c events ****************** */
-static int Destruct(){
+static int Destruct() {
     object env;
     int x;
 
-    if( env = environment() ){
+    if( env = environment() ) {
         env->eventReleaseObject(this_object());
         x = clean::Destruct();
-        if( !x ){
+        if( !x ) {
             env->eventReceiveObject(this_object());
         }
         return x;
     }
     else return clean::Destruct();
 }
-mixed eventMove(mixed dest){
+mixed eventMove(mixed dest) {
     object ob;
     string str;
 
@@ -67,7 +67,7 @@ mixed eventMove(mixed dest){
     if(environment()) str += "\nMy current environment is "+file_name(environment())+".";
     else str += "\nI currently have no environment.";
 
-    if( stringp(dest) ){
+    if( stringp(dest) ) {
         ob = load_object(dest);
 
     }
@@ -76,7 +76,7 @@ mixed eventMove(mixed dest){
     }
     str += "\nMy intended destination is "+file_name(ob)+". ";
     move_object(ob);
-    if( environment() != ob ){
+    if( environment() != ob ) {
         str += "\nThe move was not successful";
         return 0;
     }
@@ -88,7 +88,7 @@ mixed eventMove(mixed dest){
 }
 
 /* ******************* dummy.c driver applies ******************** */
-varargs static void create(string array id, mixed long, string array adj){
+varargs static void create(string array id, mixed long, string array adj) {
     string str;
     str = "I am "+file_name(this_object())+" and I have been created ";
     str += "by "+identify(previous_object(-1));
@@ -99,13 +99,10 @@ varargs static void create(string array id, mixed long, string array adj){
 
     enter::create();
     parse_init();
-    if( adj ){
+    if( adj ) {
         SetAdjectives(adj...);
     }
-    if( id ){
-        if(objectp(id)) id = id->GetId();
-        SetKeyName(id[0]);
-        if(!GetShort()) SetShort(add_article(id[0]));
+    if( id ) {
         SetId(id...);
     }
     SetExternalDesc(long || "");

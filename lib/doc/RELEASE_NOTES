@@ -1,11 +1,7 @@
----- 2.6.4 ---
-- Released 2008-05-16
-- Fixed a parsing bug in dummy items that reported oddly abbreviated names.
-- Fixed a crasher when reading zero-length files.
-- Driver: Fixed a crasher when some command actions fail to return properly.
-- Dummy object handling improved: church elevator should work ok.
-- Command for liveupgrades improved for stability.
-- Fixed some broken defaults in class files.
+---- 2.7a1 ---
+- Released 2008-01-18
+- No lib changes.
+- Bundled driver is now a slightly modified FluffOS 2.9.
 
 ---- 2.6.2 ---
 - Released 2008-01-06

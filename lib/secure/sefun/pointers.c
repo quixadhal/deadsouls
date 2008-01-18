@@ -40,11 +40,6 @@ int imud_privp(mixed guy) {
     else return 0;
 }
 
-int telnet_privp(mixed guy) {
-    if(member_group(guy, "TELNET")) return 1;
-    else return 0;
-}
-
 int securep(mixed guy) {
     mixed dude = guy;
     if(!guy) guy = previous_object();
@@ -71,12 +66,6 @@ varargs int creatorp(object ob) {
 
 varargs int wizardp(object ob){
     return creatorp(ob);
-}
-
-int builderp(object ob) {
-    if(!ob) ob = previous_object();
-    if(creatorp(ob)) return 1;
-    return (userp(ob) && member_group(ob, "BUILDER"));
 }
 
 int snooperp(mixed guy) {
@@ -126,9 +115,4 @@ varargs int playerp(object ob) {
 varargs int newbiep(object ob) {
     if( !ob ) ob = previous_object();
     return (!creatorp(ob) && ((int)ob->GetLevel() <= MAX_NEWBIE_LEVEL));
-}
-
-varargs int estatep(object ob){
-    if( !ob ) ob = previous_object();
-    return (!(strsrch(base_name(ob), ESTATES_DIRS)));
 }

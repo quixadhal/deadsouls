@@ -124,8 +124,8 @@ varargs static void eventUpdate(object whom){
         rename("/secure/daemon/imc2_new.c", "/secure/daemon/imc2.c");
     }
 
-    catch( CLASSES_D->RemoveClass("thief"));
-    catch( CLASSES_D->AddClass("/secure/cfg/classes/thief"));
+    CLASSES_D->RemoveClass("thief");
+    CLASSES_D->AddClass("/secure/cfg/classes/thief");
 
     reload("/secure/sefun/arrays");
     reload("/secure/sefun/sefun");

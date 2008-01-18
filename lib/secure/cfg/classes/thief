@@ -1,16 +1,17 @@
 thief
-melee attack:2:2
-blunt attack:2:2
-knife attack:1:2
-projectile attack:1:4
-melee defense:1:2
+melee attack:0:3
+blunt attack:1:2
+knife attack:0:0
+projectile attack:0:1
+melee defense:0:2
 blade defense:1:2
-knife defense:1:3
-projectile defense:1:4
-bargaining:1:4
-stealth:1:1
-stealing:1:1
-detection:1:1
-concealment:1:1
-fishing:1:1
-murder:1:2
+knife defense:0:3
+projectile defense:0:0
+bargaining:0:0
+stealth:0:0
+stealing:0:0
+detection:0:0
+concealment:0:0
+fishing:0:1
+murder:0:2
+blunt defense:1:1

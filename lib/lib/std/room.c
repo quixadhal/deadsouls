@@ -296,7 +296,7 @@ varargs void AddItem(mixed item, mixed val, mixed adjectives) {
     global_item = item;
 
     if( objectp(item) ) {
-        same_dummy = filter(all_inventory(),(: base_name($1) == base_name(global_item) :));
+        same_dummy = filter(dummies,(: ($1->GetId())[0] == (global_item->GetId())[0] :));
         if(sizeof(same_dummy)) return;
         ob = item;
     }
@@ -345,14 +345,6 @@ mapping SetItems(mixed items) {
         foreach(mixed key, mixed val in items) {
             string array adjs = ({});
             object ob;
-
-            if( objectp(key) ){
-                object *same_dummy = ({});
-                global_item = key;
-                same_dummy = filter(all_inventory() ,(: base_name($1) == base_name(global_item) :));
-                if(sizeof(same_dummy)) continue;
-                ob = key;
-            }
 
             if( stringp(key) ) {
                 key = ({ key });
