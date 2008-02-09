@@ -26,6 +26,7 @@
 
 #define DIR_VERBS               "/verbs"
 #define DIR_ADMIN_VERBS         DIR_VERBS "/admins"
+#define DIR_BUILDER_VERBS       DIR_VERBS "/builders"
 #define DIR_COMMON_VERBS        DIR_VERBS "/common"
 #define DIR_CREATOR_VERBS       DIR_VERBS "/creators"
 #define DIR_ITEM_VERBS          DIR_VERBS "/items"
@@ -95,7 +96,7 @@
 #define DIR_WWW_EFUNS          DIR_WWW_DOCS "/efun"
 #define DIR_WWW_SIMULEFUNS     DIR_WWW_DOCS "/sefun"
 #define DIR_WWW_ERRORS         DIR_WWW "/errors"
-#define DIR_WWW_GATEWAYS       DIR_WWW "/gateways"
+#define DIR_WWW_GATEWAYS       DIR_WWW "/cgi"
 
 #define DIR_UNDEAD_CMDS         DIR_CMDS "/undead"
 

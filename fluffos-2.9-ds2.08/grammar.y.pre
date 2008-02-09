@@ -1,7 +1,7 @@
 /* This is to make emacs edit this in C mode: -*-C-*- */
 
 %{
-extern char *outp;
+extern char *outP;
 #include "std.h"
 #include "compiler.h"
 #include "lex.h"
@@ -284,18 +284,21 @@ inheritance:
 		if (func_present)
 		    yyerror("Illegal to inherit after defining functions.");
 #endif
+#ifndef ALLOW_INHERIT_AFTER_GLOBAL_VARIABLES
 		if (var_defined)
 		    yyerror("Illegal to inherit after defining global variables.");
-#ifndef ALLOW_INHERIT_AFTER_FUNCTION
-		if (func_present || var_defined){
-#else
-		if (var_defined){
 #endif
+#ifndef ALLOW_INHERIT_AFTER_FUNCTION
+		if (func_present){
 		  inherit_file = 0;
 		  YYACCEPT;
 		}
-#ifdef NEVER
-		} //stupid bison
+#endif
+#ifndef ALLOW_INHERIT_AFTER_GLOBAL_VARIABLES
+               if (var_defined && inherit_file){
+                  inherit_file = 0;
+                  YYACCEPT;
+                }
 #endif
 		ob = find_object2($3);
 		if (ob == 0) {
@@ -3032,7 +3035,7 @@ expr4:
 %endif
             {
 #ifdef WOMBLES
-	        if(*(outp-2) != ':')
+	        if(*(outP-2) != ':')
 		  yyerror("End of functional not found");
 #endif
 		$$ = new_node();
@@ -3069,7 +3072,7 @@ expr4:
     |   l_new_function_open ',' expr_list2 ':' ')'
             {
 #ifdef WOMBLES
-	        if(*(outp-2) != ':')
+	        if(*(outP-2) != ':')
 		  yyerror("End of functional not found");
 #endif
 		$$ = new_node();
@@ -3163,7 +3166,7 @@ expr4:
     |   L_FUNCTION_OPEN comma_expr ':' ')'
              {
 #ifdef WOMBLES
-	         if(*(outp-2) != ':')
+	         if(*(outP-2) != ':')
 		   yyerror("End of functional not found");
 #endif
 		 if (current_function_context->num_locals)
@@ -3185,7 +3188,7 @@ expr4:
     |   L_MAPPING_OPEN expr_list3 ']' ')'
 	    {
 #ifdef WOMBLES
-	        if(*(outp-2) != ']')
+	        if(*(outP-2) != ']')
 		  yyerror("End of mapping not found");
 #endif
 		CREATE_CALL($$, F_AGGREGATE_ASSOC, TYPE_MAPPING, $2);
@@ -3193,7 +3196,7 @@ expr4:
     |   L_ARRAY_OPEN expr_list '}' ')'
 	    {
 #ifdef WOMBLES
-	        if(*(outp-2) != '}')
+	        if(*(outP-2) != '}')
 		  yyerror("End of array not found");
 #endif  
 		CREATE_CALL($$, F_AGGREGATE, TYPE_ANY | TYPE_MOD_ARRAY, $2);

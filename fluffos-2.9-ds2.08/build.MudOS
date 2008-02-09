@@ -115,6 +115,10 @@ INSTALL_DIR="../bin"
 # SCO 3.2v4.2
 # ARCH: *sigh* and this one ...
 #OSFLAGS=-DSCO
+
+#Static for compiling Discworld on MINGW
+#OSFLAGS=-static
+
 # try uncommenting this if you are using gcc and at runtime you see socket
 # errors saying that the "set socket nonblocking" operation is not supported.
 # That error is caused by old-style macros (that gcc doesn't normally grok)

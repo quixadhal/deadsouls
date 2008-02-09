@@ -1,0 +1,80 @@
+#!/bin/sh
+
+#To make this script work under Solaris, change the
+#top line to point to wherever bash is on your system.
+
+#Make the non-argument config be Dead Souls
+if ! [ $1 ]; then
+ARG="ds"
+else
+ARG=$1
+fi
+
+if [ $ARG == "--help" ] ||  [ $ARG == "-h"  ]; then
+echo "Available options:"
+echo "A generic build:	./configure generic"
+echo "For Dead Souls 2:	./configure ds"
+echo "For Discworld: 	./configure dw"
+echo "For Lima: 	./configure lima"
+echo "For Skylib: 	./configure skylib"
+echo "For TMI-2:	./configure tmi2"
+echo "For Merentha:	./configure merentha"
+echo "For Nightmare 3:	./configure nm3"
+echo "For LPUniversity:	./configure lpuni"
+echo "----"
+echo "With no options, this script defaults to Dead Souls."
+exit
+fi
+
+echo "Option selected: $ARG"
+sleep 1
+
+./build.MudOS
+
+# Some stuff for Dead Souls
+if [ $ARG == "ds" ]; then
+\mv -f ../bin/mudos.cfg ../bin/mudos.bak
+\cp -f ../bin/mudos.cfg.orig ../lib/secure/cfg/mudos.cfg
+\cp -f ../extra/creremote/remote.c ../lib/lib/
+ln -s ../lib/secure/cfg/mudos.cfg ../bin/mudos.cfg
+fi
+
+#start local_options check
+if [ -f local_options.$ARG ]; then
+
+if ! [ -f local_options ]; then
+echo "Copying local_options.$ARG to local_options"
+cp local_options.$ARG local_options
+else
+echo "local_options already exists. Not overwriting. Exiting."
+echo "If you want to completely start over, type: make distclean"
+exit
+fi
+
+else
+echo "local_options.$ARG not found. Exiting."
+fi
+#end local_options check
+
+if uname -a | grep "MINGW" | grep -v grep ; then
+echo "MinGW detected. Adding appropriate config"
+#echo " -lwsock32 -lws2_32 -lz" > system_libs
+\cp -f ../extra/mingw/configur* .
+echo "#define MINGW" >> local_options
+else
+echo "No MinGW config needed."
+fi
+
+if uname -a | grep "WOLF/OS" | grep -v grep ; then
+echo "Wolfpaw detected."
+echo "Running Wolfpaw-specific modification."
+echo "When this is done, please enter the following command line:"
+echo " "
+echo "make -j 1"
+cp -f ../extra/wolfpaw/* . 
+echo "#include \"../extra/wolfpaw/configure.h\"" >> local_options
+else
+echo "No Wolfpaw config needed."
+fi
+
+echo "Configuration script complete."

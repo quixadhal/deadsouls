@@ -266,5 +266,7 @@ string morse(string msg);
 string unmorse(string msg);
 int *roll(string alea);
 mixed *scramble_array(mixed *arr);
+int builderp(object ob);
+string socket_ip(int fd);
 
 #endif /* l_sefun_h */

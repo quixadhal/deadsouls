@@ -22,6 +22,7 @@ int make_workroom(mixed dude) {
         mkdir(cdir+"/tmp");
         mkdir(cdir+"/area");
         mkdir(cdir+"/adm");
+        mkdir(cdir+"/public_html");
         mkdir(cdir+"/area/room");
         mkdir(cdir+"/area/weap");
         mkdir(cdir+"/area/obj");

@@ -23,6 +23,7 @@
 #define SAVE_RACES         DIR_SAVE "/races"
 #define SAVE_ROUTER        DIR_SECURE_SAVE "/router"
 #define SAVE_SERVICES      DIR_SAVE "/services"
+#define SAVE_SESSIONS      DIR_SECURE_SAVE "/sessions"
 #define SAVE_SNOOP         DIR_SECURE_SAVE "/snoop"
 #define SAVE_SOUL          DIR_SAVE "/soul"
 #define SAVE_STARGATE      DIR_SAVE "/stargate"

@@ -68,6 +68,12 @@ varargs int wizardp(object ob){
     return creatorp(ob);
 }
 
+int builderp(object ob) {
+    if(!ob) ob = previous_object();
+    if(creatorp(ob)) return 1;
+    return (userp(ob) && member_group(ob, "BUILDER"));
+}
+
 int snooperp(mixed guy) {
     mixed dude = guy;
     if(!guy) guy = previous_object();

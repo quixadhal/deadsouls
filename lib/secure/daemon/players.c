@@ -39,7 +39,8 @@ mapping Currency, Bank, SpellBook;
 //end player vars
 
 void validate(){
-    if(!(int)master()->valid_apply(({ "SECURE", "ASSIST", "LIB_CONNECT" })) ){
+    if(!(int)master()->valid_apply(({ "SECURE", "ASSIST", "LIB_CONNECT" })) &&
+      base_name(previous_object()) != "/www/cgi/login"){
         string offender = identify(previous_object(-1));
         debug("PLAYERS_D SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
         log_file("security", "\n"+timestamp()+" PLAYERS_D breach: "+offender+" "+get_stack());

@@ -1606,21 +1606,15 @@ static void handle_configure() {
 
 #ifdef WIN32
     system("echo Windows detected. Applying libs.");
-    system("echo  -lwsock32 -lws2_32 > system_libs");
+    if (lookup_define("HAVE_ZLIB")){
+        system("echo  -lwsock32 -lws2_32 -lz> system_libs");
+    }
+        else system("echo  -lwsock32 -lws2_32 > system_libs");
     system("copy windows\\configure.h tmp.config.h");
     system("type configure.h >> tmp.config.h");
     system("del configure.h");
     system("rename tmp.config.h configure.h");
 #else
-
-system("echo HIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHI");
-system("echo HIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHI");
-system("echo HIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHI");
-system("echo HIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHI");
-system("echo HIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHI");
-system("echo HIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHI");
-system("echo HIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHI");
-system("echo HIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHI");
 
     open_output_file("system_libs");
     check_library("-lresolv");

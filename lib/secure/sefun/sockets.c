@@ -33,3 +33,10 @@ mixed *socket_names(){
 
     return finalsocks;
 }
+
+string socket_ip(int fd){
+    string ret = "0";
+    mixed sock_stat = socket_status(fd);
+    if(sock_stat) ret = implode(explode(sock_stat[4],".")[0..3], ".");
+    return ret;
+}

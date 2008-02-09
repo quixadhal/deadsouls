@@ -17,7 +17,7 @@ string array nonmodals = ({ "liveupgrade", "prompt","status","email","websource"
   "debugger", "access", "pinging", "pinginterval",
   "imc2serverpass", "imc2clientpass" });
 string array antimodals = ({ "imc2" });
-string array modals = antimodals + ({ "catchtell","matchcommand", "matchobject", "autowiz", "locked",
+string array modals = antimodals + ({ "fastcombat", "catchtell","matchcommand", "matchobject", "autowiz", "locked",
   "localtime", "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
   "retain", "defaultparse", "disablereboot", "loglocal", "logremote" });
 string array inet_services = ({ "oob", "hftp", "ftp", "http", "rcp", "inet" });
@@ -375,7 +375,7 @@ static int ProcessOther(string which, string arg){
         write("This configuration change will require a few minutes to take effect completely.");
     }
     if(which == "GLOBAL_MONITOR") reload(SNOOP_D,0,1);
-    if(which == "IDLE_TIMEOUT" || which == "MAX_NEWBIE_LEVEL"){ 
+    if(which == "IDLE_TIMEOUT" || which == "MAX_NEWBIE_LEVEL" || which == "FAST_COMBAT"){ 
         reload(LIB_CREATOR,1,1);
         write("This configuration will take effect for each user the next time they log in.");
         return 1;
@@ -451,6 +451,7 @@ static int ProcessModal(string which, string arg){
     case "loglocal" : which = "LOG_LOCAL_CHANS";break;
     case "logremote" : which = "LOG_REMOTE_CHANS";break;
     case "imc2" : which = "DISABLE_IMC2";break;
+    case "fastcombat" : which = "FAST_COMBAT";break;
     default : break;
     }
     foreach(string element in config){
@@ -496,7 +497,11 @@ static int ProcessModal(string which, string arg){
         else IMC2_D->remove();
         reload(CHAT_D);
     }
-
+    if(which == "FAST_COMBAT"){
+        reload(LIB_CREATOR,1,1);
+        write("This configuration will take effect for each user the next time they log in.");
+        return 1;
+    }
     return 1;
 }
 
@@ -724,6 +729,7 @@ void help() {
       "\nmudconfig matchobject [ yes | no ]"
       "\nmudconfig exitsbare [ yes | no ]"
       "\nmudconfig nmexits [ yes | no ] (This togggles where default exits are displayed)"
+      "\nmudconfig fastcombat [ yes | no ] (heart rate overridden in combat)"
       "\nmudconfig localtime [ yes | no ]"
       "\nmudconfig offset <offset from gmt in seconds>"
       "\nmudconfig extraoffset <offset from GMT in hours>"

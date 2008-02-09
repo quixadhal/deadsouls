@@ -275,7 +275,7 @@ private static void load_access(string cfg, mapping resource) {
 
         if(!creatorp(ob)){
             nom = last_string_element(base_name(ob),"/");
-            if(!strsrch(file,DIR_ESTATES + "/"+nom[0..0]+"/"+nom)) return 1;
+            if(!strsrch(file, ESTATES_DIRS + "/"+nom[0..0]+"/"+nom)) return 1;
         }
         if( !sscanf(file, REALMS_DIRS "/%s", nom) ) return 0;
         if( sscanf(nom, "%s/%*s", tmp) ) nom = tmp;
@@ -499,17 +499,18 @@ private static void load_access(string cfg, mapping resource) {
     }
 
     void log_error(string file, string msg) {
-        string nom, tmp;
+        string nom, tmp, tmp2;
 
         if( file[0] != '/' ) {
             file = "/" + file;
         }
-        if( sscanf(file, REALMS_DIRS+"/%s/%s", nom, tmp) != 2  && 
-          sscanf(file, DOMAINS_DIRS+"/%s/%s", nom, tmp) != 2 ) 
+        if( sscanf(file, REALMS_DIRS+"/%s/%s", nom, tmp) != 2 && 
+          sscanf(file, DOMAINS_DIRS+"/%s/%s", nom, tmp) != 2 && 
+          sscanf(file, ESTATES_DIRS+"/%s/%s/%s", tmp, nom, tmp2) != 3 ) 
             sscanf(file, "/%s/%s", nom, tmp);
         if( !nom ) nom = "log";
         catch(write_file(DIR_ERROR_LOGS "/" + nom, timestamp()+" "+msg));
-        if(msg && this_player(1) && creatorp(this_player(1))){
+        if(msg && this_player(1) && builderp(this_player(1))){
             catch(tell_player(this_player(1),msg));
         }
     }
@@ -579,9 +580,10 @@ private static void load_access(string cfg, mapping resource) {
     }
 
     string author_file(string str) {
-        string nom, tmp;
+        string nom, tmp, tmp2;
 
         if(sscanf(str, REALMS_DIRS+"/%s/%s", nom, tmp) == 2) return nom;
+        else if(sscanf(str, ESTATES_DIRS+"/%s/%s/%s", tmp, nom, tmp2) == 3) return nom;
         return 0;
     }
 

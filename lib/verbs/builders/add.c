@@ -28,7 +28,7 @@ static void create() {
 
 
 mixed can_add_obj_to_obj(string one, string two){
-    if(!creatorp(this_player())) return "This command is for creators only.";
+    if(!builderp(this_player())) return "This command is not for regular players.";
     return 1; 
 }
 mixed can_add_obj_to_here(string one) { return 1; }

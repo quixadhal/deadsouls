@@ -15,6 +15,10 @@
 #include "add_action.h"
 #include "eval.h"
 
+#ifdef MINGW
+#define ENOSR 63
+#endif
+
 #define TELOPT_COMPRESS 85
 #define TELOPT_COMPRESS2 86
 #define TELOPT_MXP  91  // mud extension protocol

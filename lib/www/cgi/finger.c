@@ -1,0 +1,35 @@
+#include <daemons.h>
+
+string gateway(mixed who){
+    string ret = "";
+    string *ret_array;
+
+    if(!who || !stringp(who)) who = "123456789101112";
+
+    //tc("who: "+who);
+
+    if(!strsrch(who,"user=")) who = replace_string(who,"user=","",1);
+
+    //tc("who: "+who);
+
+    if(!user_exists(who)){
+        ret = "No such user.";
+    }
+
+    else {
+        ret_array = FINGER_D->GetRemoteFinger(who);
+        ret += "Name: "+ret_array[0]+"<br>";
+        ret += "Title: "+replace_string(ret_array[1],"$N",ret_array[0])+"<br>";
+        ret += (find_player(who) ? "On since: " : "Last on: ")+ ret_array[4]+"<br>";
+        ret += "Level: "+ret_array[7]+"<br>";
+        ret += (ret_array[8] ? ret_array[8]+"<br>" : "");
+    }
+
+    ret += "<br><br>";
+    ret += "<FORM ACTION=\"finger.html\">Finger a user: <INPUT name=\"user\">";
+    ret += "<INPUT TYPE=SUBMIT VALUE=\"Submit\"></FORM><br><br>";
+    ret += "<a href=\"/index.html\">Home</a><br>";
+    ret += "<a href=\"http://dead-souls.net\">Dead Souls Home</a>";
+
+    return ret;
+}

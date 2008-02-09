@@ -244,7 +244,6 @@ int GetMaxCarry() {
 
 int GetHeartRate() {
     int x, y;
-
     x = body::GetHeartRate();
     y = GetStatLevel("speed");
     if( y > 80 ) x -= 2;
@@ -253,7 +252,10 @@ int GetHeartRate() {
     else if( y > 20 ) x += 1;
     else x += 2;
     if( x > 6 ) x = 6;
-    else if( x < 2 ) x = 2;
+    else if( x < 1 ) x = 1;
+#ifdef FAST_COMBAT
+    if(FAST_COMBAT && this_object()->GetInCombat()) return 1;
+#endif
     return x;
 }
 
@@ -273,4 +275,5 @@ static void heart_beat() {
     body::heart_beat();
     language::heart_beat();
     genetics::heart_beat();
+    set_heart_beat(GetHeartRate());
 }
