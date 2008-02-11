@@ -1,0 +1,65 @@
+Creweb is  a set of CGI scripts written in LPC that
+together with the mud web server allow creators to
+view and edit their files from the internet, using
+their browser.
+
+A creator simply visits the mud home page and clicks on
+the CreWeb link, then uses their mud name and mud
+password to login.
+
+The interface is primitive, just plain old black-on
+white and HTML form controls. Perhaps a better way to
+look at is is "clean and uncluttered".
+
+Creators can upload files, and edit files. However,
+they cannot navigate beyond their home directory. This
+is for security reasons, and probably will not change.
+
+To enable CreWeb on your mud:
+
+1) Choose a port for your web server. In this example
+   we'll use port 8001
+
+
+2) Issue the following commands:
+
+mudconfig http port 8001
+mudconfig http disable
+mudconfig cgi enable
+mudconfig dirlist enable
+mudconfig creweb enable
+mudconfig http enable
+
+
+3) Use your favorite browser to go to port 8001 on your
+   mud computer. For example:
+
+http://your.mud.address:8001
+
+
+4) Click on the CreWeb link, log in, and have fun!
+
+
+Important things to keep in mind about CreWeb:
+---------------------------------------------
+
+* This is an experimental system. It probably contains
+bugs or problems. 
+
+* It requires cookies and javascript enabled.
+
+* It was built with security as a priority but it is
+still a web-facing file modification system, meaning it 
+is not and never can be 100% safe.
+
+* If you decide not to use it, just use the following
+command to disable it: mudconfig creweb disable
+
+* It is intentionally limited to home directories
+only. You are strongly advised not to try to change
+CreWeb to circumvent this.
+
+* If you need to use CreWeb to edit files outside your
+home directory, simply copy them into your home directory
+while logged into the mud, edit, then copy them back.
+
