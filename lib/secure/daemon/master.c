@@ -472,9 +472,17 @@ private static void load_access(string cfg, mapping resource) {
     string error_handler(mapping mp, int caught) {
         string ret, file;
 
+        //tc("error_handler get_stack: "+get_stack());
         ret = "---\n"+timestamp()+"\n"+ standard_trace(mp);
         if( caught ) write_file(file = "/log/catch", ret);
         else write_file(file = "/log/runtime", ret);
+        //if(!this_player()){
+        //    object *object_stack = call_stack(1);
+        //    object web_sessions = load_object(WEB_SESSIONS_D);
+        //    if(web_sessions && member_array(web_sessions, object_stack) != -1){
+        //        web_sessions->ReceiveErrorReport(ret);
+        //    }
+        //}
         if( this_player(1) && find_object(SEFUN) ) {
             this_player(1)->SetLastError(mp);
             if( creatorp(this_player(1)) ) {
@@ -503,6 +511,13 @@ private static void load_access(string cfg, mapping resource) {
 
         if( file[0] != '/' ) {
             file = "/" + file;
+        }
+        if(!this_player()){
+            object *object_stack = call_stack(1);
+            object web_sessions = load_object(WEB_SESSIONS_D);
+            if(web_sessions && member_array(web_sessions, object_stack) != -1){
+                web_sessions->ReceiveErrorReport(msg);
+            }
         }
         if( sscanf(file, REALMS_DIRS+"/%s/%s", nom, tmp) != 2 && 
           sscanf(file, DOMAINS_DIRS+"/%s/%s", nom, tmp) != 2 && 

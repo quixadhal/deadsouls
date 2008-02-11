@@ -8,7 +8,7 @@ string gateway(mixed who){
 
     //tc("who: "+who);
 
-    if(!strsrch(who,"user=")) who = replace_string(who,"user=","",1);
+    if(!strsrch(who,"user=")) who = lower_case(replace_string(who,"user=","",1));
 
     //tc("who: "+who);
 
@@ -28,7 +28,7 @@ string gateway(mixed who){
     ret += "<br><br>";
     ret += "<FORM ACTION=\"finger.html\">Finger a user: <INPUT name=\"user\">";
     ret += "<INPUT TYPE=SUBMIT VALUE=\"Submit\"></FORM><br><br>";
-    ret += "<a href=\"/index.html\">Home</a><br>";
+    ret += "<a href=\"/index.html\">Home</a><br><br>";
     ret += "<a href=\"http://dead-souls.net\">Dead Souls Home</a>";
 
     return ret;

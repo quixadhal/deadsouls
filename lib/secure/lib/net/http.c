@@ -6,6 +6,25 @@
  *    Last modified: 96/12/19
  */
 
+/* Note on how this works:
+ * On Dead Souls, this http program is in fact not so much a "daemon"
+ * as an "applet". The inet daemon starts a server program that 
+ * watches the http port. When a request comes in, that server program
+ * fires up a *clone* of this here file. Therefore, you will not see
+ * multiple-connection handling here. This http applet services a
+ * single connection, and dies happy when its job is done.
+ *
+ * The CGI stuff is basically just sending the post and get requests to
+ * LPC objects in the cgi/ directory. The key thing to remember if you're 
+ * going to play around here is that this object closes and dies on write. So
+ * if you're going to receive post data in multiple chunks (as is common)
+ * you will want to ensure it is either queued here until sent to the
+ * cgi object, or that the cgi object somehow prevents this object from
+ * writing its data to the client til all chunks are received and processed.
+ * 
+ * -Crat 09Feb2008
+ */
+
 #include <lib.h>
 #include <dirs.h>
 #include <daemons.h>
@@ -23,14 +42,16 @@
 #define WWW_DIR_LIST 1
 #endif
 
+#define TAB "&nbsp&nbsp&nbsp&nbsp"
 
 inherit LIB_SOCKET;
 
 string ip = "";
 string out = "";
 mapping Cookie = ([]);
-string login_data, current_page, boundary, cookie, cmd, read_args, filename;
+string gateway, login_data, current_page, boundary, cookie, cmd, read_args, filename, user_agent;
 int ok_to_send, boundary_count;
+int logging = 1;
 
 void validate(){
     if(!(int)master()->valid_apply(({ "SECURE", "ASSIST" })) &&
@@ -39,6 +60,27 @@ void validate(){
         debug("HTTPD SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
         log_file("security", "\n"+timestamp()+" HTTPD breach: "+offender+" "+get_stack());
         error("HTTPD SECURITY VIOLATION: "+offender+" "+get_stack());
+    }
+}
+
+void eventSendData(string str){
+    buffer b;
+    int i;
+    validate();
+    //tc("str is: "+typeof(str));
+    //tc("str is: "+identify(str));
+    if(!str || !sizeof(str)) return;
+    str = strip_colours(str);
+    b = allocate_buffer(strlen(str));
+    for(i=0; i<strlen(str); i++) {
+        b[i] = str[i];
+    }
+    eventWrite(b, 1);
+}
+
+void eventLogConnection(){
+    if(logging){
+        log_file("http",ip+" "+timestamp()+" "+identify(read_args)+" "+current_page+"\n");
     }
 }
 
@@ -65,6 +107,10 @@ int authenticate(string path){
 
 string GetReferer(){
     return current_page;
+}
+
+string GetBoundary(){
+    return boundary;
 }
 
 mapping GetCookie(){
@@ -102,18 +148,25 @@ mixed GenerateIndex(string dir, string requested){
     prefix = path_prefix(requested);
     if(!sizeof(prefix)) prefix = "/";
     //tc("listing: "+identify(listing));
-    ret += "<a href=\""+prefix+"\">Parent Directory   </a>\n";
+    //ret += "<a href=\""+prefix+"\">Parent Directory   </a>\n";
     if(WEB_SESSIONS_D->GetSession(Cookie["name"])){
         if(authenticate(dir) && requested[1..1] != "~"){
             ret += "<FORM METHOD=POST ENCTYPE=\"multipart/form-data\" ACTION=\"/cgi/upload.html\">";
             ret += "Upload file (text files only): <INPUT TYPE=FILE NAME=\"upfile\">";
             ret += "<INPUT TYPE=SUBMIT VALUE=\"Submit\"></FORM>";
-            ret += "<br>\n";
+            ret += "<FORM ACTION=\"/cgi/new\">Create a folder <INPUT name=\"dir\" VALUE=\""+dir+"/\" SIZE=40></FORM>";
+            ret += "<FORM ACTION=\"/cgi/new\">Create a file <INPUT name=\"file\" VALUE=\""+dir+"/\" SIZE=40></FORM>";
         }
     }
+    ret += "<a href=\""+prefix+"\">Parent Directory   </a>\n";
     ret +="<hr style=\"width: 100%; height: 2px;\"><br>\n";
     foreach(string sub in listing){
-        ret +="<a href=\""+requested+"/"+sub+"\">"+sub+(directory_exists(dir+"/"+sub) ? "/" : "")+"</a><br>\n";
+        string ed_req = "<a href=\"/cgi/edit.html?"+dir+"/"+sub+"\">Edit</a>";
+        //tc("ed_req: "+ed_req);
+        //ret += (directory_exists(dir+"/"+sub) ? TAB+TAB : ed_req+TAB); 
+        ret +="<a href=\""+requested+"/"+sub+"\">"+sub+(directory_exists(dir+"/"+sub) ? "/" : "")+"</a>";
+        ret += (directory_exists(dir+"/"+sub) ? "" : TAB + ed_req);
+        ret += "<br>\n";
     }
     ret +="</html>";
     ret = replace_string(ret,"//","/");
@@ -127,7 +180,7 @@ void eventRemoveTmp(string file){
     else tc("succeeded.");
 }
 
-private static mixed eventGetFile(string name) {
+varargs private static mixed eventGetFile(string name, string type, string payload) {
     string array parts;
     string tmpfile, orig, requested;
     object file;
@@ -175,6 +228,7 @@ private static mixed eventGetFile(string name) {
         if( sscanf(id, "%s.%s", foo, str) == 2 ) {
             id = foo+".c";
         }
+        if(payload) args = payload;
         //tc("gateway: "+DIR_WWW_GATEWAYS "/"+id);
         if( catch(str = (DIR_WWW_GATEWAYS "/"+id)->gateway(args)) ) {
             //tc("str: "+str);
@@ -247,28 +301,41 @@ int eventRead(buffer data) {
     foreach(mixed element in args_tmp){
         string junk1, junk2;
         //tc("element: "+element);
-        if(!strsrch(element,"Cookie:")) cookie = element;
-        if(boundary && grepp(element,boundary)) boundary_count++;
+        if(!strsrch(element,"Cookie:") && !cookie) cookie = element;
+        if(boundary && grepp(element,boundary)){
+            boundary_count++;
+            //tc("boundary count: "+boundary_count,"yellow");
+        }
         if(grepp(element, "boundary=")){
             sscanf(element,"%sboundary=%s",junk1,boundary);
             //tc("boundary: "+boundary,"red");
+            args_tmp -= ({ element });
         }
-        else out += element + "\n";
-        if(!strsrch(element, "Referer:")){
+        //else out += element + "\n";
+        if(!strsrch(element, "Referer:") && !current_page){
             sscanf(element,"Referer: %s",current_page);
             //tc("current_page: "+current_page,"red");
         }
-        if(!strsrch(element, "Content-Disposition: form-data;")){
+        if(!strsrch(element, "User-Agent:") && !user_agent){
+            sscanf(element,"User-Agent: %s",user_agent);
+            //tc("user_agent: "+user_agent,"red");
+        }
+        if(!strsrch(element, "Content-Disposition: form-data;") && !filename){
             if(sscanf(element,"%sfilename=\"%s\"",junk1, filename) != 2)
                 sscanf(element,"%sfilename=\"%s\"%s",junk1, filename, junk2);
+            if(filename && filename[1..2]==":\\"){
+                tc("lol mircosoft");
+                filename=last_string_element(filename,"\\");
+            }
             //tc("filename: "+filename,"red");
         }
-        if(!strsrch(element, "username=")){
+        if(!strsrch(element, "username=") && !login_data){
             login_data = element;
             //tc("login_data: "+login_data,"red");
         }
     }
 
+    out += implode(args_tmp,"\n");
     //tc("cookie: "+cookie);
     if(cookie){
         string name, shib, junk1, junk2;
@@ -283,7 +350,9 @@ int eventRead(buffer data) {
     //tc("cmd: "+identify(cmd),"white");
     if(!cmd) sscanf(read_args, "%s %s", cmd, read_args);
     if(!read_args) sscanf(read_args, "%s %s", cmd, read_args);
+    eventLogConnection();
     switch(lower_case(cmd)) {
+        string junk;
     case "get":
         //tc("GET");
         eventGetFile(read_args);
@@ -295,16 +364,32 @@ int eventRead(buffer data) {
             eventError(FILE_BAD_CMD);
             return 1;
         }
+        if(!gateway) sscanf(read_args,"%s HTTP%s",gateway,junk);
+
         if(boundary_count && boundary_count > 1){
             string junk1, junk2, tmp;
+#if 0
             if(sscanf(out,"%s"+boundary+"%s--"+boundary+"%s",junk1,tmp,junk2) == 3){
                 out = tmp;
                 args_tmp=explode(out,"\n");
-                out = implode(args_tmp[3..],"\n");
-                //tc("out is: "+out,"cyan");
+                if(filename) out = implode(args_tmp[2..],"\n");
+                else out = implode(args_tmp[1..],"\n");
+                //tc("TRYING TO WRITE, out is: "+out,"green");
             }
             //else tc("hmmm. out is: "+out,"red");
-            if( catch(str = ((DIR_WWW_GATEWAYS +"/upload")->gateway(out, current_page, filename,
+#endif
+
+            if(grepp(out,boundary+"--")) eventGetFile(read_args, "POST", out);
+            return 1;
+
+#if 0       
+            if(!filename){
+                if( catch(str = ((DIR_WWW_GATEWAYS +"/save")->gateway(out)) ) ){
+                    eventError(FILE_BAD_GATE);
+                    return 1;
+                }
+            }
+            else if( catch(str = ((DIR_WWW_GATEWAYS +"/upload")->gateway(out, current_page, filename,
                     Cookie["name"], Cookie["shib"]))) ) {
                 //tc("out: "+out,"red");
                 //tc("read_args: "+read_args,"red");
@@ -319,11 +404,11 @@ int eventRead(buffer data) {
                 b[j] = str[j];
             }
             eventWrite(b, 1);
+#endif
         }
         else if(login_data){
             eventGetFile("cgi/login.html?"+login_data);
         }
-
         return 1;
 
     default:

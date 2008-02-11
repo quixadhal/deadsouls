@@ -81,15 +81,19 @@ varargs static void eventUpdate(object whom){
 
         if(!grepp(config_file, "FAST_COMBAT"))
             config_file = append_line(config_file,"#define RETAIN_ON_QUIT",
-              "#define FAST_COMBAT           0");
+              "#define FAST_COMBAT              0");
 
         if(!grepp(config_file, "ENABLE_CGI"))
             config_file = append_line(config_file,"#define IMC2_SERVER_PW",
-              "#define ENABLE_CGI           0");
+              "#define ENABLE_CGI               0");
 
         if(!grepp(config_file, "WWW_DIR_LIST"))
             config_file = append_line(config_file,"#define ENABLE_CGI",
-              "#define WWW_DIR_LIST           0");
+              "#define WWW_DIR_LIST             0");
+
+        if(!grepp(config_file, "ENABLE_CREWEB"))
+            config_file = append_line(config_file,"#define WWW_DIR_LIST",
+              "#define ENABLE_CREWEB            0");
 
         write_file("/secure/include/config.h", config_file+"\n", 1);
     }

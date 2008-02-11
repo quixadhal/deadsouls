@@ -49,6 +49,7 @@
 #define SAME_IP_MAX              4
 #define COMPAT_MODE              1
 #define RETAIN_ON_QUIT           1
+#define FAST_COMBAT              0
 #define MAX_COMMANDS_PER_SECOND  10
 #define DEFAULT_PARSING          1
 #define CALL_OUT_LOGGING         0
@@ -74,5 +75,8 @@
 #define LOG_LOCAL_CHANS          1
 #define IMC2_CLIENT_PW           "abcdefghij"
 #define IMC2_SERVER_PW           "jihgfedcba"
+#define ENABLE_CGI               0
+#define WWW_DIR_LIST             0
+#define ENABLE_CREWEB            0
 
 #endif /* s_config_h */

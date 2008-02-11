@@ -1,3 +1,9 @@
+---- 2.7a4 (unreleased) ---
+- Added CreWeb system to allow web editing. See: help creweb
+- Added sefuns: unpinkfish(), repinkfish(), socket_ip(), builderp(), web_translate().
+- The mudconfig command can now change the port numbers for inet servers.
+- Build-specific verbs moved to /verbs/builders/
+
 ---- 2.7a1 ---
 - Released 2008-01-18
 - No lib changes.

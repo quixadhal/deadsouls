@@ -79,6 +79,22 @@ varargs static void eventUpdate(object whom){
             config_file = append_line(config_file,"#define IMC2_CLIENT_PW",
               "#define IMC2_SERVER_PW           \""+spw+"\"");
 
+        if(!grepp(config_file, "FAST_COMBAT"))
+            config_file = append_line(config_file,"#define RETAIN_ON_QUIT",
+              "#define FAST_COMBAT              0");
+
+        if(!grepp(config_file, "ENABLE_CGI"))
+            config_file = append_line(config_file,"#define IMC2_SERVER_PW",
+              "#define ENABLE_CGI               0");
+
+        if(!grepp(config_file, "WWW_DIR_LIST"))
+            config_file = append_line(config_file,"#define ENABLE_CGI",
+              "#define WWW_DIR_LIST             0");
+
+        if(!grepp(config_file, "ENABLE_CREWEB"))
+            config_file = append_line(config_file,"#define WWW_DIR_LIST",
+              "#define ENABLE_CREWEB            0");
+
         write_file("/secure/include/config.h", config_file+"\n", 1);
     }
 
@@ -87,6 +103,15 @@ varargs static void eventUpdate(object whom){
     rm("/domains/campus/txt/moochers.txt");
     rm("/secure/sefun/distinct_array.c");
     rm("/secure/sefun/singular_array.c");
+    rm("/verbs/creators/add.c");
+    rm("/verbs/creators/copy.c");
+    rm("/verbs/creators/createfix.c");
+    rm("/verbs/creators/delete.c");
+    rm("/verbs/creators/dest.c");
+    rm("/verbs/creators/initfix.c");
+    rm("/verbs/creators/modify.c");
+    rm("/verbs/creators/pulsecheck.c");
+    rm("/verbs/creators/reload.c");
 
     remote = load_object("/secure/cmds/admins/removeemote");
     if(remote) remote->cmd("roll");

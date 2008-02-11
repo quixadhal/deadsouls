@@ -3,6 +3,7 @@
 #include <sockets.h>
 
 inherit LIB_DAEMON;
+inherit LIB_CGI;
 mapping UploadsMap = ([]);
 
 void validate(){
@@ -15,43 +16,64 @@ void validate(){
     }
 }
 
-string gateway(mixed posted_file, mixed current_page, string filename, string name, string shib) {
+string gateway(mixed args) {
     string err, full_name, path, junk1, junk2;
     int i;
     object ob = previous_object();
+    string current_page = ob->GetReferer();
+    mapping cookie = ob->GetCookie();
+    string name = cookie["name"];
+    string shib = cookie["shib"];
+    mapping ProcessedPost = ParsePost(args);
+    string posted_file = ProcessedPost["upfile"];
+    string filename = ProcessedPost["filename"];
     string ret = "";
 
-    validate();
 
-    //tc("ob: "+identify(ob),"yellow");
-    //tc("posted_file: "+posted_file,"white");
-    //tc("current_page: "+current_page,"white");
+    tc("UPLOAD GATEWAY","red");
 
-    i = sscanf(current_page,"http://%s/%s",junk1, path);
-    if(i != 2) i = sscanf(current_page,"/%s",path);
-    if(i != 1) i = sscanf(current_page,"./%s",path);
+    if(ENABLE_CREWEB){
 
-    path = "/"+path;
-    if(last(path,1) != "/") path += "/";
-    //tc("path: "+path);
-    //tc("filename: "+filename);
-    full_name = path+filename;
-    //tc("full_name: "+full_name);
+        validate();
 
-    if(!filename || !sizeof(filename)){
-        ret += "No file selected.<br>";
+        //tc("ob: "+identify(ob),"yellow");
+        //tc("posted_file: "+posted_file,"white");
+        //tc("current_page: "+current_page,"white");
+        //tc("ProcessedPost: "+identify(ProcessedPost),"white");
+
+        i = sscanf(current_page,"http://%s/%s",junk1, path);
+        if(i != 2) i = sscanf(current_page,"/%s",path);
+        if(i != 1) i = sscanf(current_page,"./%s",path);
+
+        path = "/"+path;
+        if(last(path,1) != "/") path += "/";
+        //tc("path: "+path);
+        //tc("filename: "+filename);
+        full_name = path+filename;
+        //tc("full_name: "+full_name);
+
+        if(!filename || !sizeof(filename)){
+            ret += "No file selected.<br>";
+            ret += "<META http-equiv=\"refresh\" content=\"1;URL="+current_page+"\">";
+            return ret;
+        }
+
+        if(stringp(err = WEB_SESSIONS_D->eventWriteFile(full_name, posted_file, name, shib))){
+            ret += err+"<br>";
+            ret += "<a href=\""+current_page+"\">Return</a><br>";
+            return ret;
+        }
+
+        ret += "Success!<br>";
         ret += "<META http-equiv=\"refresh\" content=\"1;URL="+current_page+"\">";
-        return ret;
     }
 
-    if(stringp(err = WEB_SESSIONS_D->eventWriteFile(full_name, posted_file, name, shib))){
-        ret += err+"<br>";
-        ret += "<a href=\""+current_page+"\">Return</a><br>";
-        return ret;
+    else {
+        ret += "CreWeb is disabled. To enable it: mudconfig creweb enable<br><br>";
+        ret += "<a href=\"/index.html\">Home</a><br>";
+        ret += "<a href=\"http://dead-souls.net\">Dead Souls Home</a><br>";
     }
 
-    ret += "Success!<br>";
-    ret += "<META http-equiv=\"refresh\" content=\"1;URL="+current_page+"\">";
     return ret;
 }
 

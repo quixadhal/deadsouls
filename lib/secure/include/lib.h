@@ -24,6 +24,7 @@
 #define LIB_BURN           DIR_LIB        "/burn"
 #define LIB_CAPTURE        DIR_LIB        "/capture"
 #define LIB_CHAPEL         DIR_LIB        "/chapel"
+#define LIB_CGI            DIR_LIB        "/cgi"
 #define LIB_CHAT           DIR_LIB        "/chat"
 #define LIB_CLASSES        DIR_LIB        "/classes"
 #define LIB_CLAY           DIR_LIB        "/clay"

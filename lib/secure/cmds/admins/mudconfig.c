@@ -3,6 +3,7 @@
 #include <save.h>
 #include <daemons.h>
 #include <network.h>
+#include <sockets.h>
 void help();
 
 inherit LIB_DAEMON;
@@ -19,6 +20,7 @@ string array nonmodals = ({ "liveupgrade", "prompt","status","email","websource"
 string array antimodals = ({ "imc2" });
 string array modals = antimodals + ({ "fastcombat", "catchtell","matchcommand", "matchobject", "autowiz", "locked",
   "localtime", "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
+  "cgi", "dirlist", "creweb",
   "retain", "defaultparse", "disablereboot", "loglocal", "logremote" });
 string array inet_services = ({ "oob", "hftp", "ftp", "http", "rcp", "inet" });
 
@@ -48,6 +50,8 @@ mixed cmd(string str) {
         help();
         return 1;
     }
+    //tc("which: "+which);
+    //tc("arg: "+arg);
     cp("/secure/include/config.h","/secure/save/backup/config."+time());
     config = explode( read_file("/secure/include/config.h"),"\n" );
     config2 = ({});
@@ -104,6 +108,72 @@ varargs static int CompleteConfig(string file){
     reload(MASTER_D,0,1);
     reload(LIB_CONNECT,0,1);
     write("Command complete.");
+    return 1;
+}
+
+int ModPortOffset(string which, string arg){
+    string out, service, svc, junk, offset, new_offset;
+    string *new_array = ({});
+    string netcfg = read_file("/secure/include/network.h");
+    string *net_array = explode(netcfg,"\n");
+
+    new_offset = arg;
+    service = which;
+    service = upper_case(service);
+    foreach(string element in net_array){
+        //tc("element: "+element);
+        if(sscanf(element,"#define OFFSET_%s %s %d",svc, junk, offset) == 3){
+            //tc("HIT!","red");
+            if(lower_case(svc) == lower_case(service)){
+                //tc("HIT!","cyan");
+                out = "#define OFFSET_"+service+"               "+new_offset;
+            }
+            else out = element;
+        }
+        else out = element;
+        new_array += ({ out });
+    }
+    out = implode(new_array,"\n");
+    //tc("out: \n"+out);
+    write_file("/secure/include/network.h",out,1);
+    return 1;
+}             
+
+int ModPort(string which, mixed arg){
+    string out, service, svc, junk, new_offset, new_port;
+    string *new_array = ({});
+    string netcfg = read_file("/secure/include/network.h");
+    string *net_array = explode(netcfg,"\n");
+    int offset;
+
+    if(stringp(arg)) new_port = arg;
+    else new_port = itoa(arg);
+    service = which;
+    service = upper_case(service);
+    foreach(string element in net_array){
+        //tc("element: "+element);
+        if(sscanf(element,"#define OFFSET_%s %s %d",svc, junk, offset) == 3){
+            //tc("HIT!","red");
+            if(lower_case(svc) == lower_case(service)){
+                //tc("HIT!","cyan");
+                new_offset = ""+(atoi(new_port) - query_host_port());
+                out = "#define OFFSET_"+service+"               "+new_offset;
+            }
+            else out = element;
+        }
+        else out = element;
+        new_array += ({ out });
+    }
+    out = implode(new_array,"\n");
+    //tc("out: \n"+out);
+    if(last(out,1) != "\n") out += "\n";
+    write_file("/secure/include/network.h",out,1);
+    RELOAD_D->eventReload(this_object(), 1, 1);
+    reload(MASTER_D,0,1);
+    write("The "+service+" port is being set to "+atoi(new_port)+".");
+    write("To complete this configuration, wait 2 seconds, then issue the following commands:");
+    write("mudconfig "+lower_case(service)+" disable");
+    write("mudconfig "+lower_case(service)+" enable");
     return 1;
 }
 
@@ -452,6 +522,9 @@ static int ProcessModal(string which, string arg){
     case "logremote" : which = "LOG_REMOTE_CHANS";break;
     case "imc2" : which = "DISABLE_IMC2";break;
     case "fastcombat" : which = "FAST_COMBAT";break;
+    case "cgi" : which = "ENABLE_CGI";break;
+    case "dirlist" : which = "WWW_DIR_LIST";break;
+    case "creweb" : which = "ENABLE_CREWEB";break;
     default : break;
     }
     foreach(string element in config){
@@ -500,14 +573,24 @@ static int ProcessModal(string which, string arg){
     if(which == "FAST_COMBAT"){
         reload(LIB_CREATOR,1,1);
         write("This configuration will take effect for each user the next time they log in.");
-        return 1;
+    }
+
+    if(which == "ENABLE_CGI" || which == "WWW_DIR_LIST" || which == "ENABLE_CREWEB"){
+        reload(WEB_SESSIONS_D,1,1);
+        reload(SOCKET_HTTP,1,1);
+        foreach(string element in get_dir(DIR_WWW_GATEWAYS+"/")){
+            if(last(element,2) == ".c") reload(DIR_WWW_GATEWAYS+"/"+element,1,1);
+        }
     }
     return 1;
 }
 
 int ProcessService(string which, string what){
-    int port_offset, type;
+    int port_offset, type, port;
     string sclass;
+    if(sscanf(what,"port %d",port)){
+        what = "port";
+    }
     switch(which){
     case "hftp": port_offset=OFFSET_HFTP;sclass="/secure/lib/net/h_ftpd";type=1;break;
     case "ftp": port_offset=OFFSET_FTP;sclass="/secure/lib/net/ftp";type=1;break;
@@ -521,6 +604,7 @@ int ProcessService(string which, string what){
     case "start": INET_D->eventStartServer(which);break;
     case "restart": INET_D->eventRestartServer(which,1);break;
     case "stop": INET_D->eventStopServer(which);break;
+    case "port": ModPort(which, port);break;
     }
     if(which == "oob"){
         if( what == "start" || what == "restart")
@@ -706,6 +790,10 @@ int ProcessInet(string which, string arg){
             write("The "+which+" service is "+(INET_D->GetServer(which) ? "running." : "stopped."));
         return 1;
     }
+    if(!strsrch(arg,"port ")){
+        ProcessService(which,arg);
+        return 1;
+    }
     write("Unsupported mudconfig inet service subcommand.");
     return 1;
 }
@@ -753,9 +841,12 @@ void help() {
       "\nmudconfig inet [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig ftp [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig hftp [ enable | disable | start | stop | restart | status ]"
-      "\nmudconfig http [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig rcp [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig oob [ enable | disable | start | stop | restart | status ]"
+      "\nmudconfig http [ enable | disable | start | stop | restart | status ]"
+      "\nmudconfig cgi [ enable | disable ] (Whether the mud webserver should use CGI)"
+      "\nmudconfig dirlist [ enable | disable ] (Allow the webserver to display dir contents)"
+      "\nmudconfig creweb [ enable | disable ] (Allow web based editing [requires cgi and dirlist])"
       "\nmudconfig loglocal [ enable | disable ] (whether local channels are logged)"
       "\nmudconfig logremote [ enable | disable ] (whether remote channels are logged)"
       "\n\nSee also: admintool, config", this_player()

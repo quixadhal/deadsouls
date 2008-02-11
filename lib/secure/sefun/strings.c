@@ -782,3 +782,24 @@ string unmorse(string msg) {
     } 
     return tmp;
 }
+
+string unpinkfish(string str){
+    if(!str) error("String required.");
+    str = replace_string(str,"\%\%\^\^","0^^0");
+    str = replace_string(str,"\%\^","\%\%\^\^");
+    str = replace_string(str,"0^^0","\%\%\^\^");
+    return str;
+}
+
+string repinkfish(string str){
+    if(!str) error("String required.");
+    str = replace_string(str,"\%\%\^\^","\%\^");
+    return str;
+}
+
+string web_translate(string str){
+    if(!str) error("String required");
+    str = replace_string(str,"%2F","/");
+    str = replace_string(str,"%2B","+");
+    return str;
+}

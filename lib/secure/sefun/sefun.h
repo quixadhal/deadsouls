@@ -268,5 +268,8 @@ int *roll(string alea);
 mixed *scramble_array(mixed *arr);
 int builderp(object ob);
 string socket_ip(int fd);
+string unpinkfish(string str);
+string repinkfish(string str);
+string web_translate(string str);
 
 #endif /* l_sefun_h */
