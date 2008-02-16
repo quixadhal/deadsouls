@@ -379,6 +379,12 @@ int eventMove(mixed dest) {
 int eventReceiveDamage(object agent, int type, int amt, int i, mixed array l) {
     int x = -1;
 
+    if(objectp(agent) && !strsrch(base_name(this_object()), ESTATES_DIRS)){
+        if(strsrch(base_name(agent), ESTATES_DIRS)){
+            return amt;
+        }
+    }
+
     foreach(int t, int val in Protection) {
         if( t & type ) {
             if( x == -1 || val < x ) {

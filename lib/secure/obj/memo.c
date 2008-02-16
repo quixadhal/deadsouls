@@ -16,7 +16,7 @@ void create(){
     SetLong("A yellow pad of papers to write your memos on. "+
       "There seems to be instructions on the reverse side.");
     SetMass(20);
-    SetValue(10);
+    SetValue(1);
     SetVendorType(VT_TREASURE);
 }
 void init(){
@@ -41,7 +41,7 @@ int memo(string str){
         write("You do not write anything on your memo pad.\n");
         return 1;
     }
-    write_file("/realms/"+ownerstr+"/log/memo",str+"\n");
+    write_file(homedir(this_player())+"/log/memo",str+"\n");
     write("You add a memorandum to your memo pad.\n");
     say(capownerstr+" scribbles in "+possessive(this_player())+" memo pad.");
     return 1;
@@ -51,7 +51,7 @@ int read_memo(string str){
         if(!dirchecked){
             this_object()->checkdir();
         }
-        fileread=read_file("/realms/"+ownerstr+"/log/memo");
+        fileread=read_file(homedir(this_player())+"/log/memo");
         if(!fileread){
             write("The memo pad is blank.\n");
             return 1;
@@ -89,7 +89,7 @@ int exa_inst(string str){
     }
 }
 int checkdir(){
-    if(file_size("/realms/"+ownerstr+"/log") != -2) mkdir("/realms/"+ownerstr+"/log");
+    if(file_size(homedir(this_player())+"/log") != -2) mkdir(homedir(this_player())+"/log");
     dirchecked=1;
     return 1;
 }

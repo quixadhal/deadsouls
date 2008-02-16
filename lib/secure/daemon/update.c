@@ -112,6 +112,9 @@ varargs static void eventUpdate(object whom){
     rm("/verbs/creators/modify.c");
     rm("/verbs/creators/pulsecheck.c");
     rm("/verbs/creators/reload.c");
+    rm("/secure/cmds/creators/create.c");
+    rm("/secure/cmds/creators/home.c");
+    rm("/secure/cmds/creators/grant.c");
 
     remote = load_object("/secure/cmds/admins/removeemote");
     if(remote) remote->cmd("roll");

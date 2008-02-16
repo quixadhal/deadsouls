@@ -382,3 +382,21 @@ string capitalize(mixed str) {
     words[0] = "%^" + implode(tmp, "%^") + "%^";
     return implode(words, " ");
 }
+
+string *efuns(){
+    return sort_array(MASTER_D->GetEfuns(),1);
+}
+
+string *sefuns(){
+    return sort_array(functions(this_object()),1);
+}
+
+int efun_exists(string str){
+    if(member_array(str,MASTER_D->GetEfuns()) != -1) return 1;
+    return 0;
+}
+
+int sefun_exists(string str){
+    if(member_array(str,functions(this_object())) != -1) return 1;
+    return 0;
+}

@@ -1,5 +1,4 @@
-string user_path(string name)
-{
-    return ("/realms/"+name+"/");
+string user_path(string name){
+    return (homedir(name)+"/");
 }
 

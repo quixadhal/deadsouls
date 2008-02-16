@@ -38,12 +38,12 @@ static void create() {
 }
 
 mixed can_reload_obj(string str) { 
-    if(!creatorp(this_player())) return "This command is only available to builders and creators.";
+    if(!builderp(this_player())) return "This command is only available to builders and creators.";
     else return 1;
 }
 
 mixed can_reload_every_str(string str){
-    if(!creatorp(this_player())) return "This command is only available to builders and creators.";
+    if(!builderp(this_player())) return "This command is only available to builders and creators.";
     else return 1;
 }
 
@@ -60,6 +60,10 @@ mixed can_reload_str_word(string str, string str2) {
 mixed do_reload_obj(object ob) {
     string s1,s2, foo = "Null object: ";
     if(ob && ob->GetDoor()) ob = load_object(ob->GetDoor());
+    if(!creatorp(ob) && strsrch(base_name(ob), homedir(this_player()))){
+        write("Boilders can only reload things that belong to them.");
+        return 1;
+    }
     if(!ob || userp(ob)) {
         if(ob) foo = base_name(ob)+": ";
         write(foo+"Invalid for reloading.");

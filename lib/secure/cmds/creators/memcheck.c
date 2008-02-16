@@ -9,18 +9,27 @@
 inherit LIB_DAEMON;
 
 string cmd(string unused) {
-    string ret = check_memory(1);
-    string tmpfile = generate_tmp();
-    write("%^RED%^The output for this command may be misleading. It is kept "+
-      "as a historical curiosity, but is not necessarily reliable.%^RESET%^");
-    if(sizeof(ret) < 7000) write(ret);
-    else {
-        write_file(tmpfile,ret);
-        this_player()->eventPage(tmpfile);
+    string ret = "";
+    if(efun_exists("check_memory")){
+#ifdef __DEBUGMALLOC__
+#ifdef __DEBUGMALLOC_EXTENSIONS__
+#ifdef __PACKAGE_DEVELOP__
+        ret = check_memory(1);
+#endif
+#endif
+#endif
+        write("%^RED%^The output for this command may be misleading. It is kept "+
+          "as a historical curiosity, but is not necessarily reliable.%^RESET%^");
+        if(sizeof(ret) < 7000) write(ret);
+        else {
+            this_player()->eventPage(({ret}));
+        }
+        return "%^RED%^The output for this command may be misleading. It is kept "+
+        "as a historical curiosity, but is not necessarily reliable.%^RESET%^";
     }
-    rm(tmpfile);
-    return "%^RED%^The output for this command may be misleading. It is kept "+
-    "as a historical curiosity, but is not necessarily reliable.%^RESET%^";
+    else {
+        return "This command relies on an efun that is not currently available.";
+    }
 }
 
 void help() {

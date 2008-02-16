@@ -1,0 +1,183 @@
+70a71
+> #undef MMALLOC
+133c134
+<  *									    *
+---
+>  *                                                                          *
+169c170
+< #define SANE_EXPLODE_STRING
+---
+> #undef SANE_EXPLODE_STRING
+187c188
+< #define NONINTERACTIVE_STDERR_WRITE
+---
+> #undef NONINTERACTIVE_STDERR_WRITE
+202c203
+< #undef NO_ADD_ACTION
+---
+> #define NO_ADD_ACTION
+207a209,211
+> /* NO_ADD_ACTION: define this to remove add_action, commands, livings, etc.
+>    process_input() then becomes the only way to deal with player input. */
+> 
+359,363c363
+< #ifndef LATTICE
+< #define CONFIG_FILE_DIR "/u/tim/COMP/bin"
+< #else
+< #define CONFIG_FILE_DIR "etc:"
+< #endif
+---
+> #define CONFIG_FILE_DIR "/home/atuin/bin"
+514c514
+< #undef RECEIVE_SNOOP
+---
+> #define RECEIVE_SNOOP
+557c557
+< #define ARRAY_RESERVED_WORD
+---
+> #undef ARRAY_RESERVED_WORD
+623c623
+< #undef PACKAGE_EXTERNAL
+---
+> #define PACKAGE_EXTERNAL
+627c627
+< #define NUM_EXTERNAL_CMDS
+---
+> #define NUM_EXTERNAL_CMDS 100
+637,639c637,640
+< #define USE_MSQL 1		/* MiniSQL, it's small; it's free */
+< #undef USE_MYSQL 2		/* MySQL, bigger; it's free */
+< #define DEFAULT_DB USE_MSQL	/* default database */
+---
+> #undef USE_MSQL 
+> #undef MSQL
+> #define USE_MYSQL 2
+> #define MY_SQL
+659c660,665
+< #undef PACKAGE_UIDS
+---
+> #define PACKAGE_UIDS
+> 
+> /*PACKAGE DWLIB: some discworld mudlib simuls coded in C (well just one right
+>   now) */
+> 
+> #define PACKAGE_DWLIB
+665c671
+< #undef AUTO_SETEUID
+---
+> #define AUTO_SETEUID
+671c677
+< #define AUTO_TRUST_BACKBONE
+---
+> #undef AUTO_TRUST_BACKBONE
+702c708
+< #define HEARTBEAT_INTERVAL 2000000
+---
+> #define HEARTBEAT_INTERVAL 2
+711c717
+< #define CALLOUT_CYCLE_SIZE 32
+---
+> #define CALLOUT_CYCLE_SIZE 512
+738c744
+< #define APPLY_CACHE_BITS 12
+---
+> #define APPLY_CACHE_BITS 20
+748,755c754
+< #undef TRACE
+< 
+< /* LPC_TO_C: define this to enable LPC->C compilation.
+<  *
+<  * [NOTE: BINARIES must also be defined for LPC->C to work.  Actually
+<  *  using binaries is not required, though.]
+<  */
+< #define LPC_TO_C
+---
+> #define TRACE
+762c761
+<  * Linux does if you are using ELF.  Versions of FreeBSD prior to 3.0 don't.
+---
+>  * Linux does if you are using ELF.
+779,785c778,782
+< /* GET_CHAR_IS_BUFFERED: Normally get_char() is unbuffered.  That is, once
+<  * a character is received for get_char(), anything else is in the input
+<  * stream is immediately thrown away.  This can be very undesirable, especially
+<  * if you're calling get_char() again from the handler from the previous call.
+<  * Define this if you want get_char() to be buffered.  In this case, the buffer
+<  * will only get flushed if get_char() is not called from the first get_char()'s
+<  * LPC callback handler.
+---
+> /* SERVER_IP: For machines with multiple IP addresses, this specifies which
+>  * one to use.  This is useful for IP accounting and is necessary to be
+>  * able to do ident lookups on such machines.
+>  *
+>  * example: #define SERVER_IP "194.229.18.27"
+787c784
+< #undef GET_CHAR_IS_BUFFERED
+---
+> #undef SERVER_IP
+792a790
+> #define COMMAND_BUF_SIZE      2000
+798c796
+< #define MAX_SAVE_SVALUE_DEPTH 25
+---
+> #define MAX_SAVE_SVALUE_DEPTH 100
+804c802
+< #define CFG_MAX_LOCAL_VARIABLES		25
+---
+> #define CFG_MAX_LOCAL_VARIABLES         50
+806,807c804,806
+< #define CFG_EVALUATOR_STACK_SIZE 	1000
+< #define CFG_MAX_CALL_DEPTH		50
+---
+> #define CFG_EVALUATOR_STACK_SIZE        3000
+> #define CFG_COMPILER_STACK_SIZE         600
+> #define CFG_MAX_CALL_DEPTH              150
+809c808
+< #define CFG_LIVING_HASH_SIZE		256
+---
+> #define CFG_LIVING_HASH_SIZE            256
+837a837,878
+> 
+> /* GET_CHAR_IS_BUFFERED: Normally get_char() is unbuffered.  That is, once
+>  * a character is received for get_char(), anything else is in the input
+>  * stream is immediately thrown away.  This can be very undesirable, especially
+>  * if you're calling get_char() again from the handler from the previous call.
+>  * Define this if you want get_char() to be buffered.  In this case, the buffer
+>  * will only get flushed if get_char() is not called from the first get_char()'s
+>  * LPC callback handler.
+>  */
+> #undef GET_CHAR_IS_BUFFERED
+> 
+> /* PACKAGE_COMPRESS: Enable MCCP support and compressed save files
+>    SAVE_GZ_EXTENSION: save extension for compressed files
+>  */
+> #define HAVE_ZLIB
+> #define PACKAGE_COMPRESS
+> #define SAVE_GZ_EXTENSION ".o.gz"
+> 
+> /* CALL_OTHER_TYPE_CHECK: enable type checking for call_other()
+>  * (-> operator on objects)
+>  */
+> #undef CALL_OTHER_TYPE_CHECK
+> 
+> /* CALL_OTHER_WARN, make it warning instead of errors */
+> #undef CALL_OTHER_WARN
+> 
+> /* WARN_TAB: Some versions of the editor built in indent function use
+>  *   tabs for indenting. This options turns on a warning message for
+>  *   files indented with tabs instead of spaces.
+>  */
+> #define WARN_TAB
+> 
+> /* USE_ICONV: Use iconv to translate input and output from/to the users char 
+>  * encoding
+>  */
+> #define USE_ICONV
+> 
+> /* WOMBLES: don't allow spaces between start/end of array/mapping/functional token chars so ({1,2,3}) still works, but ( { 1 , 2 , 3 } ) doesn't and ({ 1 , 2 , 3 }) does.*/
+> #define WOMBLES
+> 
+> /* ALLOW_INHERIT_AFTER_FUNCTION: allow inheriting after functions have been defined (this includes prototypes). This caused crashes in v22.2a but it may have been fixed since */
+> #undef ALLOW_INHERIT_AFTER_FUNCTION
+838a880
+> 

@@ -79,7 +79,6 @@ int query_date(int x);
 string query_day_name(int x);
 int query_host_port();
 int query_hour(int x);
-string GetIdle_string(object ob);
 int query_minutes(int x);
 string query_month(int x);
 int query_night();
@@ -271,5 +270,9 @@ string socket_ip(int fd);
 string unpinkfish(string str);
 string repinkfish(string str);
 string web_translate(string str);
+string *efuns();
+string *sefuns();
+int efun_exists(string str);
+int sefun_exists(string str);
 
 #endif /* l_sefun_h */

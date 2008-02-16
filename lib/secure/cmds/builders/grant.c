@@ -16,9 +16,10 @@ int cmd(string str) {
         return notify_fail("Syntax: grant [access] to [who] on [file]\n");
     if(sizeof(tmp = explode(file, "/")) < 2)
         return notify_fail("You cannot grant such access.\n");
-    if(tmp[0] != "domains" && tmp[0] != "realms")
+    if(tmp[0] != "domains" && tmp[0] != "realms" && tmp[0] != "estates")
         return notify_fail("You cannot grant such access.\n");
     path = "/"+tmp[0]+"/"+tmp[1]+"/";
+    if(tmp[0] == "estates") path += tmp[2] + "/" + tmp[3] + "/";
     if(file_size(path+"adm") != -2) mkdir(path+"adm");
     file = absolute_path((string)this_player()->query_cwd(), file);
     if(!file_exists(path+"adm/access.c"))
@@ -49,12 +50,10 @@ int cmd(string str) {
 
 void help() {
     message("help", "Syntax: <grant [access] to [whom] on [file|directory]>\n\n"
-      "Allows you to give other creators access to files or directories "
+      "Allows you to give creators access to files or directories "
       "under your control.  The access parameter is \"read\", "
       "\"write\", or \"all\".\n" 
-      "There is no \"ungrant\" or \"deny\" command. Delete the "
-      "access file created in the subdirectory, to revoke the privileges "
-      "in it."
+      "There is no \"ungrant\" or \"deny\" command. "
       "",
       this_player());
 }

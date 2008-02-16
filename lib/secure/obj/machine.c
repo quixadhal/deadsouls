@@ -49,7 +49,7 @@ void heart_beat(){
     if(count > 720){
         count = 0;
         if(creatorp(environment(this_object())) &&
-          file_exists("/realms/"+name+"/messages/messages")){
+          file_exists(homedir(this_player())+"/log/messages")){
             tell_object(environment(this_object()),"The answering machine %^BOLD%^YELLOW%^BEEPS%^RESET%^.");
         }
     }
@@ -102,14 +102,14 @@ int log_it(string str){
     f_global=str;
     owner=environment(this_object());
     name=lower_case(owner->GetKeyName());
-    if(file_size("/realms/"+name+"/messages") > 0) {
-        cp("/realms/"+name+"/messages","/realms/"+name+"/messages.bak");
-        rm("/realms/"+name+"/messages");
+    if(file_size(homedir(this_player())+"/log/messages") > 0) {
+        cp(homedir(this_player())+"/log/messages",homedir(this_player())+"/log/messages.bak");
+        rm(homedir(this_player())+"/log/messages");
     }
-    if(file_size("/realms/"+name+"/messages") != -2) {
-        mkdir("/realms/"+name+"/messages");
+    if(file_size(homedir(this_player())+"/messages") != -2) {
+        mkdir(homedir(this_player())+"/messages");
     }
-    unguarded((: write_file("/realms/"+name+"/messages/messages", f_global+"\n") :));
+    unguarded((: write_file(homedir(this_player())+"/log/messages", f_global+"\n") :));
     return 1;
 }
 
@@ -135,8 +135,8 @@ int set_ann(string str){
         return 1;
     }
     announce=str;
-    rm("/realms/"+name+"/messages/annc");
-    write_file("/realms/"+name+"/messages/annc", announce);
+    rm(homedir(this_player())+"/log/annc");
+    write_file(homedir(this_player())+"/log/annc", announce);
     return 1;
 }
 
@@ -144,8 +144,8 @@ int get_ann(){
     owner=environment(this_object());
     if(creatorp(owner)){
         name=lower_case(owner->GetKeyName());
-        if(file_size("/realms/"+name+"/messages/annc") > 0){
-            announce=read_file("/realms/"+name+"/messages/annc");
+        if(file_size(homedir(this_player())+"/log/annc") > 0){
+            announce=read_file(homedir(this_player())+"/log/annc");
             return 1;
         }
         announce=owner->GetName()+" cannot "
@@ -157,7 +157,7 @@ int get_ann(){
 
 int check_mess(string str){
     if(!str){
-        this_player()->more("/realms/"+name+"/messages/messages");
+        this_player()->more(homedir(this_player())+"/log/messages");
         return 1;
     }
 }
@@ -176,7 +176,7 @@ int read_it(string str){
 int erase(string str){
     if(str=="tape"){
         write("You erase the answering machine tape.\n");
-        rm("/realms/"+name+"/messages/messages");
+        rm(homedir(this_player())+"/log/messages");
         return 1;
     }
 }
@@ -185,9 +185,9 @@ int arch_it(string str){
     string temp;
     if(str=="tape"){
         write("You save the contents of the answering machine tape "
-          "into /realms/"+name+"/messages/archive.\n");
-        temp=read_file("/realms/"+name+"/messages/messages");
-        write_file("/realms/"+name+"/messages/archive", temp);
+          "into "+homedir(this_player())+"/log/archive.\n");
+        temp=read_file(homedir(this_player())+"/log/messages");
+        write_file(homedir(this_player())+"/log/archive", temp);
         return 1;
     }
 }

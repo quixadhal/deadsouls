@@ -1,0 +1,224 @@
+chapter 35 "QCS: Modifying rooms"
+
+    Suppose you are in your sample room and you issued the
+command: 
+
+%^GREEN%^create room south testroom1%^RESET%^
+
+    You then travel south and see that you are in a room that is
+almost exactly like the sample room except for the exits. Well, 
+probably you don't want to have a mud with nothing but identical
+rooms, so let's modify it:
+
+%^GREEN%^modify here short Test Room One%^RESET%^
+
+%^GREEN%^modify here long This is the first test room. The walls are rather blank.%^RESET%^
+
+%^GREEN%^modify here climate indoors%^RESET%^
+
+%^GREEN%^modify here light 30%^RESET%^
+
+
+    Ok, so far so good. Standard interior. However, a good mud has
+rooms with details. Let's add some detail to this room.
+    I've omitted the system output for clarity. This is just what you
+would input.
+
+
+%^GREEN%^modify here item%^RESET%^
+
+%^GREEN%^wall%^RESET%^
+
+%^GREEN%^walls%^RESET%^
+
+%^GREEN%^blank wall%^RESET%^
+
+%^GREEN%^blank walls%^RESET%^
+
+%^GREEN%^.%^RESET%^
+
+%^GREEN%^These are just blank walls.%^RESET%^
+
+
+    Let's review what we've done here:
+1) You issued the modify command specifying your current room as the
+   target, and the SetItems directive as the argument.
+2) You entered a query session, and were asked to enter each element
+   of the item's key.
+3) You entered a single dot to indicate you were done entering 
+   key elements.
+4) You entered the value for the key, which is the description of the
+   item.
+
+    The result of all this is that now you can issue these commands:
+
+%^GREEN%^exa wall%^RESET%^
+%^GREEN%^look at blank walls%^RESET%^
+%^GREEN%^examine walls%^RESET%^
+
+    And the output will be:
+
+These are just blank walls.
+
+    Let's add a floor while we're at it:
+
+%^GREEN%^modify here item%^RESET%^
+
+%^GREEN%^floor%^RESET%^
+
+%^GREEN%^.%^RESET%^
+
+%^GREEN%^A floor like any other.%^RESET%^
+
+    In this case, you didn't feel like adding extra synonyms for "floor",
+so you entered the final dot rather than entering another key element.
+Then you added the description, and now if you "exa floor", you'll get
+that description.
+    "about here" will display to you the file you have modified.
+
+    Well, that's enough fun with indoor rooms. There's not much more
+to them. Let's go outdoors now:
+
+%^GREEN%^create room south exterior_room%^RESET%^
+
+%^GREEN%^create door south test_door%^RESET%^
+
+%^GREEN%^open door%^RESET%^
+
+%^GREEN%^go south%^RESET%^
+
+%^GREEN%^modify here short a small lawn%^RESET%^
+
+%^GREEN%^modify here daylong A small, well groomed lawn on a lovely sunny day. There is a small building north of here.%^RESET%^
+
+%^GREEN%^modify here nightlong This is a small lawn. Stars twinkle in the night sky above, and some light is coming from a small building to the north.%^RESET%^
+
+%^GREEN%^modify here daylight 30%^RESET%^
+
+%^GREEN%^modify here nightlight 20%^RESET%^
+
+%^GREEN%^modify here light delete%^RESET%^
+
+%^GREEN%^modify here long delete%^RESET%^
+
+%^GREEN%^modify here items delete%^RESET%^
+
+%^GREEN%^modify here items%^RESET%^
+
+%^GREEN%^building%^RESET%^
+
+%^GREEN%^small building%^RESET%^
+
+%^GREEN%^.%^RESET%^
+
+%^GREEN%^A small building, rather ramshackle as if hastily put together.%^RESET%^
+
+%^GREEN%^modify here climate temperate%^RESET%^
+
+    Ok! A few new things here. A neat thing about outdoor rooms is that
+typically they are subject to the time of day. A SetClimate directive
+that indicates an exterior environment causes the room to receive
+messages about the sun setting, rising, etc. 
+    The SetDayLong and SetNightLong directives allow you to more
+sensibly describe the area depending on the time of day. To avoid
+confusion, I deleted the SetLong directive. It is not mandatory to
+have different day and night descriptions, but players appreciate the
+effort.
+    It is also possible to have differing ambient light levels depending
+on the time of day, so we've added SetDayLight and SetNightLight, and
+we deleted the SetAmbientLight directive.
+
+    Let's continue to add detail:
+
+%^GREEN%^modify here item%^RESET%^
+
+%^GREEN%^lawn%^RESET%^
+
+%^GREEN%^grass%^RESET%^
+
+%^GREEN%^.%^RESET%^
+
+%^GREEN%^Healthy, well groomed and freshly cut grass.%^RESET%^
+
+%^GREEN%^modify here smell%^RESET%^
+
+%^GREEN%^default%^RESET%^
+
+%^GREEN%^.%^RESET%^
+
+%^GREEN%^You can smell the refreshing scent of freshly cut grass.%^RESET%^
+
+%^GREEN%^modify here smell%^RESET%^
+
+%^GREEN%^lawn%^RESET%^
+
+%^GREEN%^grass%^RESET%^
+
+%^GREEN%^.%^RESET%^
+
+%^GREEN%^Yep, it's got that new lawn smell.%^RESET%^
+
+%^GREEN%^modify here listen%^RESET%^
+
+%^GREEN%^building%^RESET%^
+
+%^GREEN%^.%^RESET%^
+
+%^GREEN%^Sounds like someone's fumbling about in there, making a mess. New creators can be so noisy.%^RESET%^
+
+%^GREEN%^modify here item%^RESET%^
+
+%^GREEN%^garden%^RESET%^
+
+%^GREEN%^.%^RESET%^
+
+%^GREEN%^You may enter the garden from here.%^RESET%^
+
+%^GREEN%^create room garden garden_room%^RESET%^
+
+
+
+    You now have a room with lots of charm and detail. You can "smell grass"
+and "listen to small building", if you like. Neat, huh? But there's something 
+very important to keep in mind:
+
+ Enters, listens and smells don't work properly if there is no item defined
+for that smell. For example, if you want to be able to listen to the sea,
+you must "modify here item" and add a "sea" item. Otherwise, "listen
+to the sea" will respond with "There is no sea here."
+    The only exception to this rule is the "default" smell.
+
+    Enters behave similarly. If you want to be able to "enter" something,
+you'll need to create the corresponding item first, as in the example above.
+
+    You can use the SetProperties directive to make the room 
+conform to some presets, like:
+
+%^GREEN%^modify here property no attack 1%^RESET%^
+
+    Read chapter 23 in the Creator's Manual for details on room properties.
+ 
+    Also, please note that indoor rooms can also have differing
+descriptions and light levels for night and day. It's just that
+indoor rooms don't get notification of daytime changes.
+
+    Finally, the SetTown directive allows the room to participate in
+area-wide events, and is useful for security purposes as well:
+
+%^GREEN%^modify here town MyTown%^RESET%^
+
+    
+Notes on room filenames:
+-----------------------
+By default, a filename without a leading path creates a room
+in your area room directory, which in my case would be 
+"/realms/cratylus/area/room". However, you can specify a different
+location for the new room. 
+
+To create a room in your current working directory:
+%^GREEN%^create room east ./newroom%^RESET%^
+
+To create a room in a specific directory:
+%^GREEN%^create room east /realms/cratylus/testrooms/newroom%^RESET%^
+
+

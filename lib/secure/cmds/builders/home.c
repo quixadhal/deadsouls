@@ -15,11 +15,11 @@ mixed GoHome(string str) {
     string who;
 
     prev = environment(this_player());
-    if( !str || str == "" ) who =(string)this_player()->GetKeyName();
+    if( !str || str == "" || !creatorp(this_player())) who =(string)this_player()->GetKeyName();
     else who = lower_case(str);
     if(!user_exists(who)) return "There's no such user.";
     str = user_path(who);
-    if(!directory_exists(str)) return "That person has no creator dir.";
+    if(!directory_exists(str)) return "That person has no home dir.";
     str = user_path(who)+"workroom.c";
     if(!file_exists(str))
         return capitalize(who)+" has no active workroom.";
@@ -51,7 +51,8 @@ void help() {
     message("help", "Syntax: <home>\n        <home [creator]>\n\n"
       "Without arguments, this command will take you to your workroom.  "
       "With arguments, it takes you to the workroom of the person "
-      "you specify.\n\n"
+      "you specify. Non-creator builders can only go to their own "
+      "workroom.\n\n"
       "See also: goto, trans", this_player());
 }
 

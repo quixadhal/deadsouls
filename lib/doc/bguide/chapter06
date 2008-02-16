@@ -1,0 +1,130 @@
+chapter 37 "QCS: Modifying things and stuff"
+
+    You should have a firm grasp now on how QCS works
+in relation to manipulable objects. Let's look at the
+settings for a few special kinds of items:
+
+chairs
+------
+
+%^GREEN%^modify stool maxsitters 1%^RESET%^
+
+%^GREEN%^modify stool setmaxcarry 200%^RESET%^
+
+
+beds
+----
+
+%^GREEN%^modify sofa maxsitters 2%^RESET%^
+
+%^GREEN%^modify sofa maxliers 1%^RESET%^
+
+%^GREEN%^modify sofa maxcarry 400%^RESET%^
+
+
+containers 
+----------
+
+%^GREEN%^modify box canclose 1%^RESET%^
+
+%^GREEN%^modify box closed 1%^RESET%^
+
+%^GREEN%^modify box locked 1%^RESET%^
+
+%^GREEN%^modify box key magic_skeleton_key%^RESET%^
+
+%^GREEN%^modify box maxcarry 200%^RESET%^
+
+%^GREEN%^modify box setmoney gold 15%^RESET%^
+
+
+tables
+------
+
+%^GREEN%^modify altar maxcarry 300%^RESET%^
+
+%^GREEN%^modify altar maxliers 1%^RESET%^
+
+
+meals/drinks
+------------
+
+%^GREEN%^modify burger mealtype food%^RESET%^
+
+%^GREEN%^modify schlitz mealtype alcohol%^RESET%^
+
+%^GREEN%^modify apple mealstrength 10%^RESET%^
+
+
+books
+-----
+
+%^GREEN%^modify journal title The Orc Within%^RESET%^
+
+%^GREEN%^modify journal source /domains/Orcland/etc/books/journal%^RESET%^
+
+
+Readable things:
+----------------
+
+If you want to be able to "read thing", for example, "read sign":
+
+%^GREEN%^modify sign defaultread This is a message written on the sign.%^RESET%^
+
+If you want to make a thing on a thing readable, as in
+"read inscription on ring":
+
+%^GREEN%^modify ring item%^RESET%^
+
+%^GREEN%^inscription%^RESET%^
+
+%^GREEN%^.%^RESET%^
+
+%^GREEN%^This is an inscription on the ring. Try 'read inscription on ring'%^RESET%^
+
+%^GREEN%^modify ring read%^RESET%^
+
+%^GREEN%^inscription%^RESET%^
+
+%^GREEN%^.%^RESET%^
+
+%^GREEN%^So! We, the spear-Danes%^RESET%^
+
+By default, readabale items are readable by anyone, regardless
+of the languages they know. If, however, your item should
+only be readable by someone who understands the elvish tongue:
+
+%^GREEN%^modify ring language edhellen%^RESET%^
+
+
+Miscellaneous:
+--------------
+
+To make a key have a 50% chance of breaking when it's used:
+
+%^GREEN%^modify golden key disablechance 50%^RESET%^
+
+
+To make a room or object immune to resets:
+
+%^GREEN%^modify sentry noclean 1%^RESET%^
+
+
+To make sure there is only one instance of an object or
+NPC loaded at any given time:
+
+%^GREEN%^modify tiamat unique 1%^RESET%^
+
+
+To make a thing or room immune to the QCS (except for this
+command):
+
+%^GREEN%^modify workroom nomodify 1%^RESET%^
+
+
+To specify what kind of vendor should be allowed to traffic
+in this item:
+
+%^GREEN%^modify necklace vendortype treasure%^RESET%^
+
+

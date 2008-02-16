@@ -31,7 +31,7 @@ static void create(){
     SetClass(100);
     SetMass(100);
     SetNoCondition(1);
-    SetBaseCost("silver", 2500);
+    SetBaseCost("silver", 1);
     SetWeaponType("blunt");
     SetHands(2);
     SetDamageType(BLUNT);

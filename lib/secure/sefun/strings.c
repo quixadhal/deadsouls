@@ -618,24 +618,25 @@ varargs string generate_tmp(mixed arg){
 
     if(!arg) return "/open/"+time()+"_"+randy+".c";
 
-    if(objectp(arg) && this_player() && creatorp(this_player()))
+    if(objectp(arg) && this_player() && builderp(this_player()))
         ret = homedir(this_player())+"/tmp/"+last_string_element(base_name(arg),"/")+randy+time()+".c";
 
     else if(objectp(arg) && this_player())
         ret = "/tmp/"+last_string_element(base_name(arg),"/")+randy+time()+".c";
 
-    else if(stringp(arg) && this_player() && creatorp(this_player())) {
+    else if(stringp(arg) && this_player() && builderp(this_player())) {
         if(file_exists(arg)) ret = homedir(this_player())+"/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
         else ret = homedir(this_player())+"/tmp/"+randy+time()+".c";
         //ret = homedir(this_player())+"/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
     }
 
-    else if(stringp(arg) && this_player()) {
+    else if(stringp(arg) && file_exists(arg) && this_player()) {
+        tc("arg: "+identify(arg));
         if(objectp(load_object(arg))) ret = "/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
         else ret = "/open/"+last_string_element(arg,"/")+randy+time()+".tmp";
     }
 
-    else if(creatorp(this_player())) ret = homedir(this_player())+"/tmp/"+randy+time()+".tmp";
+    else if(builderp(this_player())) ret = homedir(this_player())+"/tmp/"+randy+time()+".tmp";
 
     else ret = "/open/"+randy+time()+".c";
     return ret;

@@ -488,6 +488,12 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
         agent = 0;
     }
 
+    if(objectp(agent)){
+        if(strsrch(base_name(this_object()), ESTATES_DIRS + "/") &&
+          !(strsrch(base_name(agent), ESTATES_DIRS + "/"))){
+            return 0;
+        }
+    }
     if( tmp == "immune") {
         return 0;
     }

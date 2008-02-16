@@ -20,7 +20,7 @@ static void create() {
 }
 
 mixed can_dest_obj(string str) { 
-    if(!creatorp(this_player())) return "This command is only available to builders and creators.";
+    if(!builderp(this_player())) return "This command is only available to builders and creators.";
     else return 1;
 }
 
@@ -37,6 +37,10 @@ mixed do_dest_obj(object ob){
     if(archp(ob) && !archp(this_player())){
         write("You can't dest an admin.");
         tell_player(ob, this_player()->GetName()+" just tried to dest you.");
+        return 1;
+    }
+    if(!creatorp(this_player()) && strsrch(base_name(ob), homedir(this_player()))){
+        write("As a builder, you can only dest items that you created.");
         return 1;
     }
     if(!living(ob)) name = ob->GetShort();

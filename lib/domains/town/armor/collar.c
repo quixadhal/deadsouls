@@ -2,7 +2,7 @@
 #include <armor_types.h>
 #include <damage_types.h>
 inherit LIB_ARMOR;
-inherit "/lib/std/bane";
+inherit LIB_BANE;
 
 static void create(){
     armor::create();
@@ -19,7 +19,7 @@ static void create(){
       ]));
     SetRead("Disease and parasite repellent collar, test character use only.");
     SetMass(10);
-    SetBaseCost("silver",5000);
+    SetBaseCost("silver",1);
     SetDamagePoints(100);
     SetArmorType(A_COLLAR);
     SetBane(({"all"}));

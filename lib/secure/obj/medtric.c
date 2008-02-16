@@ -57,7 +57,7 @@ void create(){
         "no steal" : 1,
       ]));
     SetMass(12);
-    SetValue(10);
+    SetValue(1);
     SetVendorType(VT_TREASURE);
 }
 void init(){
@@ -92,14 +92,19 @@ int TestFun(){
     write("WOOHOO");
     return 1;
 }
-int preAction(){
+varargs int preAction(int restricted){
     scanner=this_player();
     tricorder=this_object();
     if(!present(tricorder, scanner)){
         write("You are not holding the tricorder.");
         return 2;
     }
-    if(!creatorp(scanner) && !present("visitor pass",scanner)){
+
+    if(restricted){
+        write("This function is not permitted to builders.");
+        return 2;
+    }
+    if(!builderp(this_player())){
         write("Your puny mortal mind can't wrap itself around the use "
           "of this powerful instrument.");
         log_file("adm/tricorder",capitalize(this_player()->GetKeyName())+
@@ -127,7 +132,7 @@ int posture(int i){
 }
 int deshadow(string str){
     object target;
-    allowed=preAction();
+    allowed=preAction(1);
     if(allowed == 2) return 1;
     if(str == "me") str = this_player()->GetKeyName();
     if(!target = present(str,this_player())){
@@ -149,7 +154,7 @@ int deshadow(string str){
 int enshadow(string str){
     object target;
     string s1,s2,s3,file;
-    allowed=preAction();
+    allowed=preAction(1);
     if(allowed == 2) return 1;
     if(sscanf(str,"%sshadow/%s %s",s1,s2,s3) > 0) file = s2;
     else if(sscanf(str,"%sshadow/%s.c %s",s1,s2,s3) > 0) file = s2;
@@ -246,7 +251,7 @@ int germ_scan(mixed strob ){
 int germ_squash(string str){
     int i,bar,c;
     object array whom;
-    allowed=preAction();
+    allowed=preAction(1);
     if(allowed == 2) return 1;
     if(!str || str == "") {
         write("Please specify a living thing, or \"all\" for everything in "+
@@ -298,7 +303,7 @@ int germ_squash(string str){
 int infect(string str){
     string whom,what,disease;
     object ob;
-    allowed=preAction();
+    allowed=preAction(1);
     if(allowed == 2) return 1;
     if(!str){
         write("Please indicate whom to infect, and with what. Example:");
@@ -370,6 +375,10 @@ int amputate(string str){
         say(scanner->GetName()+" fumbles with a medical tricorder.",scanner);
         return 1;
     }
+    if(!creatorp(this_player()) && strsrch(base_name(person), homedir(this_player()))){
+        write("Builders can only do this to NPC's that belong to them.");
+        return 1;
+    }
     both = limb;
     if(which && which !="") both = which+" "+limb;
     write("both: "+both);
@@ -429,6 +438,10 @@ int regenerate(string str){
         write(person->GetName()+" isn't missing any limbs."); 
         say(scanner->GetName()+" waves a tricorder at "+person->GetName()+".",scanner,person);
         tell_object(person,scanner->GetName()+" waves a tricorder at you.");
+        return 1;
+    }
+    if(!creatorp(this_player()) && strsrch(base_name(person), homedir(this_player()))){
+        write("Builders can only do this to NPC's that belong to them.");
         return 1;
     }
     for(i=0;i<sizeof(stumps);i++){
@@ -496,6 +509,10 @@ int setskill(string str){
         say(scanner->GetName()+" fumbles with a medical tricorder.",scanner);
         return 1;
     }
+    if(!creatorp(this_player()) && strsrch(base_name(person), homedir(this_player()))){
+        write("Builders can only do this to NPC's that belong to them.");
+        return 1;
+    }
     this_skill = ([]);
     skilllist = ({});
     skilllist = person->GetSkills();
@@ -561,6 +578,10 @@ int setstat(string str){
         say(scanner->GetName()+" fumbles with a medical tricorder.",scanner);
         return 1;
     }
+    if(!creatorp(this_player()) && strsrch(base_name(person), homedir(this_player()))){
+        write("Builders can only do this to NPC's that belong to them.");
+        return 1;
+    }
     this_stat = ([]);
     statlist = ({});
     statlist = person->GetStats();
@@ -608,6 +629,10 @@ int modstam(string str, int stamina){
     if(!person){
         write(capitalize(whom)+" isn't here.");
         say(scanner->GetName()+" fumbles with a medical tricorder.",scanner);
+        return 1;
+    }
+    if(!creatorp(this_player()) && strsrch(base_name(person), homedir(this_player()))){
+        write("Builders can only do this to NPC's that belong to them.");
         return 1;
     }
     staminalevel=person->GetStaminaPoints();
@@ -664,6 +689,10 @@ int modtox(string str, int poison){
     if(!person){
         write(capitalize(whom)+" isn't here.");
         say(scanner->GetName()+" fumbles with a medical tricorder.",scanner);
+        return 1;
+    }
+    if(!creatorp(this_player()) && strsrch(base_name(person), homedir(this_player()))){
+        write("Builders can only do this to NPC's that belong to them.");
         return 1;
     }
     poisonlevel=person->GetPoison();
@@ -724,6 +753,10 @@ int modmag(string str, int magic){
         say(scanner->GetName()+" fumbles with a medical tricorder.",scanner);
         return 1;
     }
+    if(!creatorp(this_player()) && strsrch(base_name(person), homedir(this_player()))){
+        write("Builders can only do this to NPC's that belong to them.");
+        return 1;
+    }
     magiclevel=person->GetMagicPoints();
     tempint = magiclevel + magic;
     if(tempint < 0) {
@@ -779,6 +812,10 @@ int moddrink(string str, int drink){
     if(!person){
         write(capitalize(whom)+" isn't here.");
         say(scanner->GetName()+" fumbles with a medical tricorder.",scanner);
+        return 1;
+    }
+    if(!creatorp(this_player()) && strsrch(base_name(person), homedir(this_player()))){
+        write("Builders can only do this to NPC's that belong to them.");
         return 1;
     }
     drinklevel=person->GetDrink();
@@ -838,6 +875,10 @@ int modfood(string str, int food){
         say(scanner->GetName()+" fumbles with a medical tricorder.",scanner);
         return 1;
     }
+    if(!creatorp(this_player()) && strsrch(base_name(person), homedir(this_player()))){
+        write("Builders can only do this to NPC's that belong to them.");
+        return 1;
+    }
     foodlevel=person->GetFood();
     tempint = foodlevel + food;
     if(tempint < 0) {
@@ -889,11 +930,14 @@ int modcaff(string str, int caff){
         say(scanner->GetName()+" fumbles stupidly with a medical tricorder.",scanner);
         return 1;
     }
-
     person=present(whom,environment(scanner));
     if(!person){
         write(capitalize(whom)+" isn't here.");
         say(scanner->GetName()+" fumbles with a medical tricorder.",scanner);
+        return 1;
+    }
+    if(!creatorp(this_player()) && strsrch(base_name(person), homedir(this_player()))){
+        write("Builders can only do this to NPC's that belong to them.");
         return 1;
     }
     cafflevel=person->GetCaffeine();
@@ -954,6 +998,10 @@ int modalc(string str, int alc){
         say(scanner->GetName()+" fumbles with a medical tricorder.",scanner);
         return 1;
     }
+    if(!creatorp(this_player()) && strsrch(base_name(person), homedir(this_player()))){
+        write("Builders can only do this to NPC's that belong to them.");
+        return 1;
+    }
     alclevel=person->GetAlcohol();
     tempint = alclevel + alc;
     if(tempint < 0) {
@@ -1011,6 +1059,10 @@ int addhp(string str, int hp){
         say(scanner->GetName()+" fumbles with a medical tricorder.",scanner);
         return 1;
     }
+    if(!creatorp(this_player()) && strsrch(base_name(person), homedir(this_player()))){
+        write("Builders can only do this to NPC's that belong to them.");
+        return 1;
+    }
     person->AddHP(hp);
     if(hp > 0){
         say(scanner->GetName()+" points a medical tricorder at "+capitalize(whom)+", "+
@@ -1056,6 +1108,10 @@ int extract(string str){
     if(!person){
         write(capitalize(whom)+" isn't here.");
         say(scanner->GetName()+" fumbles with a medical tricorder.",scanner);
+        return 1;
+    }
+    if(!creatorp(this_player()) && strsrch(base_name(person), homedir(this_player()))){
+        write("Builders can only do this to NPC's that belong to them.");
         return 1;
     }
     slug=present("firearms_wound",person);
@@ -1183,6 +1239,10 @@ mixed assess(string args) {
           !(ob = find_living(lower_case(args))) )
             return capitalize(args) + " is nowhere to be found.";
     if( creatorp(ob) ) return "You cannot get stat information on a creator.";
+    if(!creatorp(this_player()) && strsrch(base_name(ob), homedir(this_player()))){
+        write("Builders can only do this to NPC's that belong to them.");
+        return 1;
+    }
     if(tmp1 = ob->GetGender()) {
         cols = ((int *)this_player()->GetScreen())[0];
         tmp1 = (string)ob->GetCapName() + " aka " + (string)ob->GetShort() +

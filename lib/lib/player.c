@@ -44,7 +44,7 @@ static void heart_beat() {
     }
     interactive::heart_beat();
     if( IDLE_TIMEOUT && query_idle(this_object()) >= IDLE_TIMEOUT 
-      && !creatorp(this_object()) 
+      && !builderp(this_object()) 
       && !present("testchar badge",this_object()) 
       && !present("idler_amulet",this_object()) 
       && !testp(this_object()) ) {
@@ -449,6 +449,12 @@ int Setup() {
     }
     if(sizeof(GetExtraChannels())) AddChannel(GetExtraChannels());
     set_heart_beat(GetHeartRate());
+    if(builderp()){
+        AddChannel( ({ "builder" }) );
+        AddSearchPath( ({ DIR_BUILDER_CMDS, DIR_SECURE_BUILDER_CMDS }) );
+    }
+    tc("what the shit.");
+    PLAYERS_D->CheckBuilder(this_object());
 
     if(GetProperty("brand_spanking_new")){
         object jeans, shirt, book;

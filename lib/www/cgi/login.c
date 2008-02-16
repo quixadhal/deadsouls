@@ -26,6 +26,7 @@ varargs string gateway(mixed args){
         }
 
         else {
+            who = lower_case(who);
             //tc("who: "+who);
             //tc("password: "+password);
 

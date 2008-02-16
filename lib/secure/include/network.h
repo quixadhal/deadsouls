@@ -12,7 +12,7 @@
 
 #define OFFSET_FTP               -788
 #define OFFSET_HFTP               -6
-#define OFFSET_HTTP               -887
+#define OFFSET_HTTP               -5
 #define OFFSET_RCP                -10
 #define OFFSET_OOB                5
 

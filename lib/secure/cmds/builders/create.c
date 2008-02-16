@@ -1,6 +1,7 @@
 #include <lib.h>
 #include <modules.h>
 #include <rooms.h>
+#include <daemons.h>
 
 inherit LIB_DAEMON;
 
@@ -8,6 +9,11 @@ mixed cmd(string str) {
     string arg;
     object staff;
     int room;
+
+    if(!(PLAYERS_D->CheckBuilder(this_player()))){
+        write("This command is for builders and creators.");
+        return 1;
+    }
 
     if(!str || str == "") {
         write("You'll need to be more specific. Try 'help create'");

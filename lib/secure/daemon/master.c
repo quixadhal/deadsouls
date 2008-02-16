@@ -40,8 +40,29 @@ private static string PlayerName, rlog, gcmd;
 private static object NewPlayer;
 private static mapping Groups, ReadAccess, WriteAccess;
 private static string *ParserDirs = ({ "secure", "verbs", "daemon", "lib", "spells" });
+private static string array efuns_arr = ({});
 
 void create() {
+#ifdef __OPCPROF__
+    string tmpfun, junk, opstr;
+    string *oparr = ({});
+    string opfile = "/secure/tmp/opc";
+    opcprof(opfile);
+    if(file_exists(opfile+".efun")){
+        opstr = read_file(opfile+".efun");
+        if(opstr){ 
+            oparr = explode(opstr, "\n");
+        }
+        if(sizeof(oparr)){
+            foreach(string element in oparr){
+                if(sscanf(element,"%s %s",tmpfun, junk) == 2){
+                    if(tmpfun[0..0] == "_") tmpfun = tmpfun[1..];
+                    efuns_arr += ({ tmpfun });
+                }
+            }
+        }
+    }
+#endif
     Unguarded = 0;
     NewPlayer = 0;
     PlayerName = 0;
@@ -801,6 +822,10 @@ private static void load_access(string cfg, mapping resource) {
     }
 
     int GetResetNumber() { return ResetNumber; }
+
+    string *GetEfuns(){
+        return (({})+ efuns_arr);
+    }
 
     object *parse_command_users() {
         return filter(users(), (: creatorp($1) || (int)$1->is_living() :));

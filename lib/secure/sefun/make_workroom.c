@@ -1,28 +1,49 @@
-string nom;
+#include <daemons.h>
+
+private string nom, cdir;
 
 int make_workroom(mixed dude) {
-    string cdir, tdir, dir_line, bakdata;
+    string tdir, dir_line, bakdata;
+    int creator;
 
     if(!dude) return 0;
 
-    if(objectp(dude) && !nom = dude->GetKeyName()) return 3;
-    if(stringp(dude) && !nom = lower_case(dude)) return 2;
+    if(objectp(dude)){
+        cdir = homedir(dude);
+        creator = creatorp(dude);
+        nom = dude->GetKeyName();
+    }
+
+    if(stringp(dude)){
+        dude = lower_case(dude);
+        if(member_array(dude, PLAYERS_D->GetCreatorList()) != -1){
+            creator = 1;
+            cdir = REALMS_DIRS + "/" + dude;
+        }
+        else {
+            cdir = ESTATES_DIRS + "/" + dude[0..0] + "/" + dude;
+        }
+        nom = dude;
+    } 
+
+    tc("cdir: "+cdir);
 
     if(unguarded( (: file_size("/realms/template/") :) ) == -1) return 4;
 
-    if(unguarded( (: file_size("/realms/"+nom) :) ) == -1){
-        cdir = "/realms/"+nom;
+    tc("mmhmm");
+
+    if(unguarded( (: file_size(cdir+"/area") :) ) == -1){
+        tc("so far so good");
         tdir = "/realms/template/";
-        dir_line = "#define MY_DIR          \"/realms/"+nom+"\"";
-        bakdata = "workroom.orig : /realms/"+nom+"/workroom.c\n";
+        dir_line = "#define MY_DIR          \""+cdir+"\"";
+        bakdata = "workroom.orig : "+cdir+"/workroom.c\n";
         mkdir(cdir);
-        mkdir(cdir+"/cmds");
         mkdir(cdir+"/log");
+        mkdir(cdir+"/log/archive");
         mkdir(cdir+"/bak");
         mkdir(cdir+"/tmp");
         mkdir(cdir+"/area");
         mkdir(cdir+"/adm");
-        mkdir(cdir+"/public_html");
         mkdir(cdir+"/area/room");
         mkdir(cdir+"/area/weap");
         mkdir(cdir+"/area/obj");
@@ -31,15 +52,26 @@ int make_workroom(mixed dude) {
         mkdir(cdir+"/area/etc");
         mkdir(cdir+"/area/doors");
         mkdir(cdir+"/area/meals");
+
+        if(creator){
+            mkdir(cdir+"/cmds");
+            mkdir(cdir+"/public_html");
+            cp(tdir+"plan", cdir+"/.plan");
+            cp(tdir+"profile", cdir+"/.profile");
+            cp(tdir+"cmds/custom.c", cdir+"/cmds/custom.c");
+            cp(tdir+"workroom.c", cdir+"/workroom.c");
+            cp(tdir+"workroom.c", cdir+"/workroom.bak");
+            cp(tdir+"workroom.c", cdir+"/bak/workroom.orig");
+        }
+
+        else {
+            cp(tdir+"workroom_builder.c", cdir+"/workroom.c");
+            cp(tdir+"workroom_builder.c", cdir+"/workroom.bak");
+            cp(tdir+"workroom_builder.c", cdir+"/bak/workroom.orig");
+        }
+
         cp(tdir+"adm/remote.c",cdir+"/adm/remote.c");
-        cp(tdir+"workroom.c", cdir+"/workroom.c");
-        cp(tdir+"workroom.bak", cdir+"/workroom.bak");
-        cp(tdir+"bak/workroom.orig", cdir+"/bak/workroom.orig");
-        //cp(tdir+"bak/bk.db", cdir+"/bak/bk.db");
         write_file(cdir+"/bak/bk.db",bakdata);
-        cp(tdir+"plan", cdir+"/.plan");
-        cp(tdir+"profile", cdir+"/.profile");
-        cp(tdir+"cmds/custom.c", cdir+"/cmds/custom.c");
         cp(tdir+"customdefs.part1", cdir+"/customdefs.h");
         write_file(cdir+"/customdefs.h","\n"+dir_line+"\n");
         write_file(cdir+"/customdefs.h",read_file(tdir+"customdefs.part2"));

@@ -1,8 +1,15 @@
----- 2.7a4 (unreleased) ---
+---- 2.7a6 (unreleased) ---
+- Added sefuns:  efuns(), sefuns(), efun_exists(), sefun_exists().
+- Build-specific verbs and commands moved to builders/ directories.
+- Updated memcheck.
+- Added commands: arealist, areaclone.
+- Modified QCS verbs to better handle non-creator builders.
+
+---- 2.7a5 ---
+- Released 2008-02-10
 - Added CreWeb system to allow web editing. See: help creweb
 - Added sefuns: unpinkfish(), repinkfish(), socket_ip(), builderp(), web_translate().
 - The mudconfig command can now change the port numbers for inet servers.
-- Build-specific verbs moved to /verbs/builders/
 
 ---- 2.7a1 ---
 - Released 2008-01-18

@@ -50,7 +50,7 @@ int control(string str){
         write("There is no such thing to be controlled here.");
         return 1;
     }
-    if(!creatorp(this_player()) && !present("visitor pass",this_player())){
+    if(!builderp(this_player())){
         write("Your puny mortal mind can't wrap itself around the use "
           "of this powerful instrument.");
         log_file("adm/control",capitalize(this_player()->GetKeyName())+
@@ -61,6 +61,12 @@ int control(string str){
     }
     if(!living(ob)){
         write(capitalize(ob->GetKeyName())+" is not a living thing.");
+        return 1;
+    }
+
+    if(!creatorp(this_player()) && strsrch(base_name(ob), homedir(this_player()))){
+        write("Only creators can control NPC's that don't belong to them.");
+        say(this_player()->GetName()+" tries to establish control over "+ob->GetName()+" and fails.\n");
         return 1;
     }
     if(!strsrch(base_name(ob),"/secure") ){

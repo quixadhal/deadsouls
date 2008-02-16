@@ -1,0 +1,70 @@
+chapter 38 "QCS: Adding and deleting"
+
+    Rooms, containers and NPC's all are capable of holding
+items, and often it is convenient to have them already holding certain
+items upon creation.
+    The SetInventory directive in an object's file provides us with
+a list of that object's "permanent inventory". To modify an object's
+inventory, we use the add and delete commands.
+
+    Let's say that we want our cowboy to be wielding a
+hammer when he appears...
+
+%^GREEN%^clone cowboy%^RESET%^
+
+%^GREEN%^cd ../weap%^RESET%^
+
+%^GREEN%^clone hammer%^RESET%^
+
+%^GREEN%^add hammer to cowboy%^RESET%^
+
+%^GREEN%^wield hammer%^RESET%^
+
+    Believe it or not, it's that simple. The add command will ask
+you a question after you issue it. What it wants to know is if you
+want the NPC to do anything special when the hammer appears on him.
+In this case, yes, we wanted him to wield it.
+    However, if you want to add something to an NPC and don't
+have anything interesting for him to do with it, respond to the
+question with the number of items that you want to appear. For
+example, if I want the cowboy to be carrying a key:
+
+%^GREEN%^cd ../obj%^RESET%^
+
+%^GREEN%^clone key%^RESET%^
+
+%^GREEN%^add key to cowboy%^RESET%^
+
+%^GREEN%^1%^RESET%^
+
+    And that's it. Now if I want the cowboy to be a permanent 
+resident of this room:
+
+%^GREEN%^add cowboy%^RESET%^
+
+%^GREEN%^1%^RESET%^
+
+    The add command understands that if you don't specify a
+target argument, you must mean the room. You can also be specific:
+
+%^GREEN%^add cowboy to room%^RESET%^
+
+%^GREEN%^1%^RESET%^
+
+    The delete command works the opposite way. It removes items from
+an object's permanent inventory:
+
+%^GREEN%^delete hammer from cowboy%^RESET%^
+
+%^GREEN%^delete cowboy%^RESET%^
+
+    The delete command is also the way to get rid of rooms. You won't
+be removing the file from disk, you'll just be deleting that exit
+from the room:
+
+%^GREEN%^delete exit garden%^RESET%^
+
+NOTE: When you delete an exit, only the connection from your room to
+the other room is removed. The connection from the other room to
+your room remains. This is not a bug, it's a feature. There are plenty
+of circumstances where one-way travel is desirable.
