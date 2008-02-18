@@ -2,21 +2,22 @@
 
 private string nom, cdir;
 
-int make_workroom(mixed dude) {
+varargs int make_workroom(mixed dude, int cre) {
     string tdir, dir_line, bakdata;
     int creator;
 
     if(!dude) return 0;
 
     if(objectp(dude)){
-        cdir = homedir(dude);
-        creator = creatorp(dude);
+        //tc("test 1");
+        cdir = homedir(dude, cre);
+        creator = (cre || creatorp(dude));
         nom = dude->GetKeyName();
     }
 
     if(stringp(dude)){
         dude = lower_case(dude);
-        if(member_array(dude, PLAYERS_D->GetCreatorList()) != -1){
+        if(cre ||  member_array(dude, PLAYERS_D->GetCreatorList()) != -1){
             creator = 1;
             cdir = REALMS_DIRS + "/" + dude;
         }
@@ -26,14 +27,14 @@ int make_workroom(mixed dude) {
         nom = dude;
     } 
 
-    tc("cdir: "+cdir);
+    //tc("cdir: "+cdir);
 
     if(unguarded( (: file_size("/realms/template/") :) ) == -1) return 4;
 
-    tc("mmhmm");
+    //tc("mmhmm");
 
     if(unguarded( (: file_size(cdir+"/area") :) ) == -1){
-        tc("so far so good");
+        //tc("so far so good");
         tdir = "/realms/template/";
         dir_line = "#define MY_DIR          \""+cdir+"\"";
         bakdata = "workroom.orig : "+cdir+"/workroom.c\n";

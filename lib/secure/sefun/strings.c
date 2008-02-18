@@ -33,8 +33,19 @@ varargs string center(string str, int x) {
 }
 
 varargs string arrange_string(string str, int x) {
+    string orig = str;
+    //string bare = strip_colours(copy(str));
+    //string bare = TERMINAL_D->no_colours(str);
+    string bare = strip_colors(str);
+    //tc("x: "+x);
     if(!x) x = 80;
-    x += strlen(str) - strlen(strip_colours(str));
+    //tc("x: "+x);
+    //tc("strlen(\""+orig+"\"): "+strlen(orig));
+    //tc("strlen(\""+bare+"\"): "+strlen(bare));
+    //x += strlen(str) - strlen(strip_colours(str));
+    x += (strlen(orig) - strlen(bare));
+    //tc("x: "+x);
+    //tc("arrange_string(\""+str+"\", "+x+"): "+sprintf(sprintf("%%:-%ds", x), str),);
     return sprintf(sprintf("%%:-%ds", x), str);
 }
 
@@ -556,7 +567,7 @@ string path_prefix(string str){
     return str[0..i-2];
 }
 
-mixed homedir(mixed ob){
+varargs mixed homedir(mixed ob, int cre){
     string name = "";
     string initial = "";
     if(!ob) ob = this_player();
@@ -567,7 +578,7 @@ mixed homedir(mixed ob){
     if(!sizeof(name)) return 0;
     initial = name[0..0];
     if(!user_exists(name)) return 0;
-    if(directory_exists("/realms/"+name)) return "/realms/"+name;
+    if(cre || directory_exists("/realms/"+name)) return "/realms/"+name;
     else return DIR_ESTATES + "/"+initial+"/"+name; 
 }
 
@@ -631,7 +642,7 @@ varargs string generate_tmp(mixed arg){
     }
 
     else if(stringp(arg) && file_exists(arg) && this_player()) {
-        tc("arg: "+identify(arg));
+        //tc("arg: "+identify(arg));
         if(objectp(load_object(arg))) ret = "/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
         else ret = "/open/"+last_string_element(arg,"/")+randy+time()+".tmp";
     }

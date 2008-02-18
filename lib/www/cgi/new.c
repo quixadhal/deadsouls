@@ -25,7 +25,7 @@ string gateway(string args) {
 
     sscanf(args,"%s=%s",args, operand);
 
-    tc("NEW GATEWAY","red");
+    //tc("NEW GATEWAY","red");
 
     if(ENABLE_CREWEB){
 

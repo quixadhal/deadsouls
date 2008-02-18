@@ -225,13 +225,13 @@ int eventGeneralStuff(string str){
     string fpath = path_prefix(str);
     repstr = "";
     globalstr = str;
-    tc("eventGeneralStuff("+str+")");
+    //tc("eventGeneralStuff("+str+")");
     unguarded( (: globalstr2 = read_file(globalstr) :) );
     unguarded( (: this_object()->eventAddInit(globalstr) :) );
     if(query_verb() != "copy"){
         if(grepp(globalstr2,"./customdefs.h")){
             string j1, j2, tmppath;
-            tc("hmm\nhmm\nhmm\nhmm\nhmm\n","blue");
+            //tc("hmm\nhmm\nhmm\nhmm\nhmm\n","blue");
             sscanf(globalstr2,"%sinclude \"%scustomdefs.h%s",j1,tmppath,j2);
             if(tmppath) repstr = absolute_path(fpath,tmppath+"customdefs.h");
             unguarded( (: globalstr2 = replace_line(globalstr2 ,({"./customdefs.h"}), "#include \""+repstr+"\"") :) );
@@ -241,8 +241,8 @@ int eventGeneralStuff(string str){
     globalstr2 = replace_string(globalstr2,"//funs","");
     globalstr2 = replace_string(globalstr2,"//snuf","");
     globalstr2 = replace_string(globalstr2,"//extras","");
-    tc("globalstr: "+globalstr,"red");
-    tc("globalstr2: "+globalstr2,"green");
+    //tc("globalstr: "+globalstr,"red");
+    //tc("globalstr2: "+globalstr2,"green");
     unguarded( (: write_file(globalstr, globalstr2, 1) :) );
     write("Indenting file...");
     unguarded( (: indent_file(globalstr) :) );

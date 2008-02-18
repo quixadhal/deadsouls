@@ -18,6 +18,7 @@ object *heart_beats();
 object *heart_beat_info heart_beats();
 #endif
 string terminal_colour(string, mapping, void | int, void | int);
+string terminal_color(string, mapping, void | int, void | int);
 string pluralize(string);
 int file_length(string);
 string upper_case(string);

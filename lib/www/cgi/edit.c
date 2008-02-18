@@ -43,7 +43,7 @@ string gateway(string args) {
     string current_page = ob->GetReferer();
     string ret = "";
 
-    tc("EDIT GATEWAY","red");
+    //tc("EDIT GATEWAY","red");
 
     if(ENABLE_CREWEB){
 

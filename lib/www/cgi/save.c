@@ -27,7 +27,7 @@ string gateway(string args) {
     mapping Result = ([]);
     mapping ParsedPost = ([]);
 
-    tc("SAVE GATEWAY","red");
+    //tc("SAVE GATEWAY","red");
 
     if(ENABLE_CREWEB){
 

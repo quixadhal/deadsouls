@@ -128,7 +128,7 @@ static void InputEmail(string str) {
     Admin->SetLanguage("Common",100);
     Admin->SetDefaultLanguage("Common");
     Admin->save_player(Name);
-    make_workroom(Name);
+    make_workroom(Name,1);
     PLAYERS_D->AddPlayerInfo(Name);
 
     tmp = read_file(CFG_GROUPS);

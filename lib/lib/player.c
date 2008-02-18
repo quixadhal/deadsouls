@@ -453,7 +453,7 @@ int Setup() {
         AddChannel( ({ "builder" }) );
         AddSearchPath( ({ DIR_BUILDER_CMDS, DIR_SECURE_BUILDER_CMDS }) );
     }
-    tc("what the shit.");
+    //tc("what the shit.");
     PLAYERS_D->CheckBuilder(this_object());
 
     if(GetProperty("brand_spanking_new")){

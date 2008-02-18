@@ -176,8 +176,8 @@ mixed GenerateIndex(string dir, string requested){
 void eventRemoveTmp(string file){
     //tc("removing "+file);
     rm(file);
-    if(file_exists(file)) tc("failed.");
-    else tc("succeeded.");
+    //if(file_exists(file)) tc("failed.");
+    //else tc("succeeded.");
 }
 
 varargs private static mixed eventGetFile(string name, string type, string payload) {
@@ -324,7 +324,7 @@ int eventRead(buffer data) {
             if(sscanf(element,"%sfilename=\"%s\"",junk1, filename) != 2)
                 sscanf(element,"%sfilename=\"%s\"%s",junk1, filename, junk2);
             if(filename && filename[1..2]==":\\"){
-                tc("lol mircosoft");
+                //tc("lol mircosoft");
                 filename=last_string_element(filename,"\\");
             }
             //tc("filename: "+filename,"red");

@@ -51,7 +51,7 @@ int cmd(string str) {
         return 1;
     }
 
-    tc("category selected: "+str);
+    //tc("category selected: "+str);
     str = homedir(this_player()) + "/area/" + str + "/" + what;
     if(last(str,2) != ".c") str += ".c";
     write("File selected: "+str);
@@ -91,6 +91,9 @@ int cmd(string str) {
 
 void help() {
     message("help", "Syntax: areaclone [ npc | weapon | armor | obj ] <name>\n\n"
-      "", 
+      "Allows a builder to bring into existence a copy of one of "
+      "her creations. To see the available items, use the arealist "
+      "command.\n\n"
+      "See also: arealist, areagoto", 
       this_player());
 }

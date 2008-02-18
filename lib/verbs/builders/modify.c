@@ -39,7 +39,7 @@ static void create() {
 }
 
 mixed can_modify_obj_str(string str) { 
-    if(!creatorp(this_player())) return "This command is only available to builders and creators.";
+    if(!builderp(this_player())) return "This command is only available to builders and creators.";
     else return 1;
 }
 

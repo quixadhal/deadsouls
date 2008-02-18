@@ -30,7 +30,7 @@ string gateway(mixed args) {
     string ret = "";
 
 
-    tc("UPLOAD GATEWAY","red");
+    //tc("UPLOAD GATEWAY","red");
 
     if(ENABLE_CREWEB){
 
