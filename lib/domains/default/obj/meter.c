@@ -69,7 +69,6 @@ void create(){
       ]));
     SetNoCondition(1);
     SetMass(20);
-    SetBaseCost("silver",1);
     SetVendorType(VT_TREASURE);
 }
 void init(){

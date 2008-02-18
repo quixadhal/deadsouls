@@ -199,7 +199,7 @@ int eventDeleteItem(object ob1, object ob2){
 int eventAddItem(object ob, string addendum){
     target = ob;
     v2 = addendum;
-    if(!check_privs(this_player(), base_name(target)) || !check_privs(this_player(), addendum)){
+    if(!check_privs(this_player(), base_name(target))){
         write("Insufficient privileges. Addition halted.");
         return 1;
     }

@@ -61,7 +61,7 @@ mixed do_reload_obj(object ob) {
     string s1,s2, foo = "Null object: ";
     if(ob && ob->GetDoor()) ob = load_object(ob->GetDoor());
     if(!creatorp(ob) && strsrch(base_name(ob), homedir(this_player()))){
-        write("Boilders can only reload things that belong to them.");
+        write("Builders can only reload things that belong to them.");
         return 1;
     }
     if(!ob || userp(ob)) {

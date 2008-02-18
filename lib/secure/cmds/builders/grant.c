@@ -8,7 +8,7 @@
 inherit LIB_DAEMON;
 
 int cmd(string str) {
-    string *tmp;
+    string *tmp = ({});
     string type, file, who, path;
 
     if(!str) return notify_fail("Syntax: grant [access] to [who] on [file]\n");
@@ -16,10 +16,12 @@ int cmd(string str) {
         return notify_fail("Syntax: grant [access] to [who] on [file]\n");
     if(sizeof(tmp = explode(file, "/")) < 2)
         return notify_fail("You cannot grant such access.\n");
+    //tc("tmp: "+identify(tmp));
     if(tmp[0] != "domains" && tmp[0] != "realms" && tmp[0] != "estates")
         return notify_fail("You cannot grant such access.\n");
-    path = "/"+tmp[0]+"/"+tmp[1]+"/";
-    if(tmp[0] == "estates") path += tmp[2] + "/" + tmp[3] + "/";
+    //path = "/"+tmp[0]+"/"+tmp[1]+"/";
+    //if(tmp[0] == "estates") path += tmp[2] + "/" + tmp[3] + "/";
+    path = homedir(this_player()) + "/";
     if(file_size(path+"adm") != -2) mkdir(path+"adm");
     file = absolute_path((string)this_player()->query_cwd(), file);
     if(!file_exists(path+"adm/access.c"))

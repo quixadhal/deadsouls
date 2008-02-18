@@ -12,7 +12,6 @@ void create(){
     SetNoCondition(1);
     SetSource("/doc/bguide");
     SetMass(20);
-    SetBaseCost("silver",1);
     SetVendorType(VT_TREASURE);
     SetTitle("Builder's Guidebook");
 }

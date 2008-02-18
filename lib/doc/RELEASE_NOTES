@@ -1,11 +1,15 @@
----- 2.7a7 (unreleased) ---
-- Added sefuns:  efuns(), sefuns(), efun_exists(), sefun_exists().
+---- 2.7a8 ---
+- Released 2008-02-18
+- Added sefuns: efuns(), sefuns(), efun_exists(), sefun_exists().
 - Build-specific verbs and commands moved to builders/ directories.
 - Updated memcheck.
 - Added commands: arealist, areaclone, areagoto.
 - Modified QCS verbs to better handle non-creator builders.
 - Added terminal_color() efun to the driver that behaves the
   way the FluffOS 2.7 terminal_colour() used to work.
+- Added support for the class data type in the identify() sefun.
+- Builders now have a workroom and sample areas after logging in
+  after their addition to the builder group.
 
 ---- 2.7a5 ---
 - Released 2008-02-10

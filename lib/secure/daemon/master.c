@@ -123,8 +123,16 @@ private static void load_access(string cfg, mapping resource) {
               error("Error in loading config file " + cfg + ".");
           }
           ac = trim(ac);
-          resource[fl] = explode(ac, ":");
+          if(last(fl,3) == "/*/"){
+              string tmp = truncate(fl,2);
+              foreach(string element in get_dir(tmp)){
+                  resource[tmp+element+"/"] = explode(ac, ":");
+              }
+          }
+
+          else resource[fl] = explode(ac, ":");
       }
+      //tc("resource: "+identify(resource));
   }
 
     void flag(string str) {
@@ -290,13 +298,36 @@ private static void load_access(string cfg, mapping resource) {
         return 1;
     }
 
+#if 0
+    nomask static int check_user(object ob, string fun, string file, string oper) {
+        string nom, tmp, junk;
+        int x;
+        //tc("mmhmmm...","blue");
+        //tc("ob: "+identify(ob)," yellow");
+        //tc("fun: "+identify(fun)," yellow");
+        //tc("file: "+identify(file)," yellow");
+        //tc("oper: "+identify(oper)," yellow");
+
+        if( !sscanf(file, REALMS_DIRS "/%s", nom) ){
+            //x = sscanf(file, ESTATES_DIRS "/%s/%s", junk, nom);
+            if(x != 2) return 0;
+        }
+        //tc("good...","blue");
+        if( sscanf(nom, "%s/%*s", tmp) ) nom = tmp;
+        nom = user_path(nom)+"adm/access";
+        if(file_size(nom+".c") < 0) return 0;
+        //tc("checking...","blue");
+        catch(x = (int)call_other(nom, "check_access", ob, fun, file, oper));
+        return x;
+    }
+#else
     nomask static int check_user(object ob, string fun, string file, string oper) {
         string nom, tmp;
         int x;
 
         if(!creatorp(ob)){
             nom = last_string_element(base_name(ob),"/");
-            if(!strsrch(file, ESTATES_DIRS + "/"+nom[0..0]+"/"+nom)) return 1;
+            if(!strsrch(file,DIR_ESTATES + "/"+nom[0..0]+"/"+nom)) return 1;
         }
         if( !sscanf(file, REALMS_DIRS "/%s", nom) ) return 0;
         if( sscanf(nom, "%s/%*s", tmp) ) nom = tmp;
@@ -305,6 +336,7 @@ private static void load_access(string cfg, mapping resource) {
         catch(x = (int)call_other(nom, "check_access", ob, fun, file, oper));
         return x;
     }
+#endif
 
     nomask static int check_domain(object ob, string fun, string file, string o) {
         string nom;

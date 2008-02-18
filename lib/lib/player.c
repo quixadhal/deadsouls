@@ -618,7 +618,7 @@ void AddQuest(string title, string desc) {
 
     if( (string)GetParty() ) {
         pname = (string)GetParty();
-        PartyMember = "/daemon/party"->GetPartyMembers(pname) - ({ this_player() });;
+        PartyMember = PARTY_D->GetPartyMembers(pname) - ({ this_player() });;
         foreach(ob in PartyMember) {
             ob->AddPartyQuest(title,desc);
         }

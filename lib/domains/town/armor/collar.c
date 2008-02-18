@@ -19,7 +19,6 @@ static void create(){
       ]));
     SetRead("Disease and parasite repellent collar, test character use only.");
     SetMass(10);
-    SetBaseCost("silver",1);
     SetDamagePoints(100);
     SetArmorType(A_COLLAR);
     SetBane(({"all"}));

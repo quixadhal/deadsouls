@@ -26,12 +26,10 @@ static void create(){
     SetProperties(([
         "no steal" : 1,
       ]));
-    SetVendorType(VT_WEAPON);
     SetDamagePoints(50);
     SetClass(100);
     SetMass(100);
     SetNoCondition(1);
-    SetBaseCost("silver", 1);
     SetWeaponType("blunt");
     SetHands(2);
     SetDamageType(BLUNT);

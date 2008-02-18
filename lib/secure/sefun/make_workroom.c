@@ -63,12 +63,14 @@ varargs int make_workroom(mixed dude, int cre) {
             cp(tdir+"workroom.c", cdir+"/workroom.c");
             cp(tdir+"workroom.c", cdir+"/workroom.bak");
             cp(tdir+"workroom.c", cdir+"/bak/workroom.orig");
+            cp(tdir+"area/obj/chest.c", cdir+"/area/obj/chest.c");
         }
 
         else {
             cp(tdir+"workroom_builder.c", cdir+"/workroom.c");
             cp(tdir+"workroom_builder.c", cdir+"/workroom.bak");
             cp(tdir+"workroom_builder.c", cdir+"/bak/workroom.orig");
+            cp(tdir+"area/obj/builder_chest.c", cdir+"/area/obj/builder_chest.c");
         }
 
         cp(tdir+"adm/remote.c",cdir+"/adm/remote.c");
@@ -83,7 +85,6 @@ varargs int make_workroom(mixed dude, int cre) {
         cp(tdir+"area/obj/key.c", cdir+"/area/obj/key.c");
         cp(tdir+"area/obj/case.c", cdir+"/area/obj/case.c");
         cp(tdir+"area/obj/cup.c", cdir+"/area/obj/cup.c");
-        cp(tdir+"area/obj/chest.c", cdir+"/area/obj/chest.c");
         cp(tdir+"area/obj/pitcher.c", cdir+"/area/obj/pitcher.c");
         cp(tdir+"area/obj/watch.c", cdir+"/area/obj/watch.c");
         cp(tdir+"area/npc/fighter.c", cdir+"/area/npc/fighter.c");

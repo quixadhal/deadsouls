@@ -27,7 +27,6 @@ static void create(){
     SetShort("wire-rimmed glasses");
     SetLong("A pair of glasses with magic properties for Creators.");
     SetMass(5);
-    SetBaseCost("silver",30);
     SetDamagePoints(1);
     SetProtection(BLUNT,1);
     SetProtection(BLADE,1);

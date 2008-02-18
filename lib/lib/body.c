@@ -1674,15 +1674,24 @@ varargs int eventDie(mixed agent) {
 
     int GetDying() { return Dying; }
 
-    int SetSleeping(int x) { return (Sleeping = x); }
+    int SetSleeping(int x) {
+        if(RACES_D->GetNonMeatRace(GetRace()) || GetRace() == "elf") return 0;
+        return (Sleeping = x);
+    }
 
     int GetSleeping() { return Sleeping; }
 
-    int AddAlcohol(int x) { return (Alcohol += x); }
+    int AddAlcohol(int x) { 
+        if(RACES_D->GetNonMeatRace(GetRace())) return 0; 
+        return (Alcohol += x);
+    }
 
     int GetAlcohol() { return Alcohol; }
 
-    int AddCaffeine(int x) { return (Caffeine += x); }
+    int AddCaffeine(int x) { 
+        if(RACES_D->GetNonMeatRace(GetRace())) return 0;
+        return (Caffeine += x);
+    }
 
     int GetCaffeine() { return Caffeine; }
 

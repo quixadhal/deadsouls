@@ -96,7 +96,7 @@ int JoinGuild(object ob, string verb, string what){
         eventForce("say very well, "+ob->GetName()+".");
         eventForce("say Welcome to the mages' guild! Now you are *extremely* magic! You must practice your magic often, since you are now physically weaker than before. The stronger your magic, the stronger you are!");
         ob->ChangeClass("mage");
-        if(ob-GetLevel() == 1){
+        if(ob->GetLevel() == 1){
             eventForce("say you have been demoted to a Level 1 player. However, you still retain your experience and your questing history, so just ask Dirk to promote you again a few times.");
         }
         return 1;

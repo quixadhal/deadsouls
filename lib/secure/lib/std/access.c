@@ -43,6 +43,10 @@ mapping query_access(string type) {
 nomask int check_access(object ob, string fun, string file, string oper) {
     string array who;
     mapping access;
+    //tc("ob : "+identify(ob));
+    //tc("fun : "+identify(fun));
+    //tc("file : "+identify(file));
+    //tc("oper : "+identify(oper));
 
     if( oper == "read" ) {
         if( functionp(ReadFunction) ) {
@@ -134,7 +138,8 @@ nomask int remove_access(string type, string file, string who) {
 void create() {
     string file = base_name(this_object());
 
-    if( strsrch(file, REALMS_DIRS) == 0 || strsrch(file, DOMAINS_DIRS) == 0 ) {
+    if( !strsrch(file, REALMS_DIRS) || !strsrch(file, DOMAINS_DIRS) 
+      || !strsrch(file, ESTATES_DIRS) ) {
         SetSaveFile(file);
     }
     daemon::create();

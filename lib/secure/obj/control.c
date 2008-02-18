@@ -25,7 +25,6 @@ void create(){
         "no steal" : 1,
       ]));
     SetMass(20);
-    SetValue(10);
     SetVendorType(VT_TREASURE);
     control_code = alpha_crypt(16);
 }

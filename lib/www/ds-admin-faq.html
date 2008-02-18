@@ -389,8 +389,12 @@ How do I prevent people from using channels?</a><br>
 <a href="#132">132 I heard you can edit stuff from the interwebs?</a><br>
 <br>
 <a href="#133">133 I want to let people build but I don't want them to
-be full creators</a></big><br>
+be full creators</a><br>
 <br>
+<a href="#134">134 How do I enable IMC2?</a><br>
+<br>
+<a href="#135">135 Combat is too slow!</a><br>
+</big><br>
 <big><a href="http://dead-souls.net/ds-admin-faq.html#121"><big
  style="font-family: courier new,courier,monospace;"></big></a></big><big
  style="font-family: courier new,courier,monospace;"><br>
@@ -4811,8 +4815,12 @@ the BUILDER group with this command:<br>
 <br>
 <span style="font-weight: bold;">groupmod -a builder newbuilder</span><br>
 <br>
-And give her a creator staff, then have her quit <br>
-and log back in. Her stuff will be in /estates/n/newbuilder<br>
+And then have her quit and log back in. <br>
+Her stuff will be in /estates/n/newbuilder<br>
+<br>
+Have her issue the command "<span style="font-weight: bold;">home</span>",
+then get the<br>
+staff and guidebook from her chest, and start reading.<br>
 <br>
 Note that builders do not have access to commands like<br>
 ed, cd, ls, more, etc. They are meant to be isolated <br>
@@ -4829,9 +4837,46 @@ at shops, the armor won't protect from "real" in-game <br>
 attacks, and weapons will be effective only against npc's<br>
 from the builder's estate.<br>
 <br>
-</big><big style="font-family: courier new,courier,monospace;"><span
- style="font-weight: bold;"></span></big><br
- style="font-family: courier new,courier,monospace;">
+<br>
+</big><big style="font-family: courier new,courier,monospace;"><a
+ name="134"></a><span
+ style="text-decoration: underline; font-weight: bold;">How do I enable
+IMC2?</span><br>
+<br>
+<span style="font-weight: bold;">mudconfig imc2 enable</span><br>
+<br>
+To start listening to specific channels, you add them<br>
+to yourself in the same manner as Intermud-3 channels:<br>
+<br>
+<span style="font-weight: bold;">call me-&gt;AddChannel("ichat")</span><br>
+<br>
+<br>
+<a name="135"></a><span
+ style="font-weight: bold; text-decoration: underline;">Combat is too
+slow!</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; Combat in Dead Souls depends on individual stats.<br>
+If you're a stone golem, your speed will be low, meaning<br>
+your heartbeats are slow, and you only get an attack in<br>
+every 4 seconds or so.<br>
+<br>
+&nbsp;&nbsp;&nbsp; On the other hand, someone with a very high speed
+stat<br>
+could get an attack every two, or even every second.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The idea is that in having varying combat speeds,<br>
+it makes things a bit more realistic and it means you<br>
+need to use some strategy.<br>
+<br>
+&nbsp;&nbsp;&nbsp; However, some people are used to codebases that do<br>
+not bother with this sort of thing. They want to see fighting<br>
+scream by their screen, never mind stats. For such people,<br>
+a new configuration option, FAST_COMBAT, has been added to<br>
+config.h. To enable "fast combat, regardless of speed stat",<br>
+issue the command:<br>
+<br>
+<span style="font-weight: bold;">mudconfig fastcombat enable</span></big><br>
+<br style="font-family: courier new,courier,monospace;">
 <big style="font-family: courier new,courier,monospace;">-
 Cratylus</big><br style="font-family: courier new,courier,monospace;">
 <br style="font-family: courier new,courier,monospace;">

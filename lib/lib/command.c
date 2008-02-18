@@ -328,14 +328,18 @@ int eventRetryCommand(string lastcmd){
         }
     }
 
-    if(original_command && (StillTrying == 6 ||!ret)) {
+    if(original_command && sizeof(original_command) && (StillTrying == 6 ||!ret)) {
         string direct, indirect;
         string junk;
         string *generals = ({"my","a","first","1st"});
         int i, j;
+        //tc("original_command: "+identify(original_command),"blue");
         next_command = ({});
         original_command = replace_string(original_command,"out of","out_of");
         filter(explode(original_command," "), (: next_command += ({ trim($1) }) :) );
+        //tc("next_command: "+identify(next_command),"green");
+        if(!sizeof(next_command)) next_command = ({ original_command });
+        //tc("next_command: "+identify(next_command),"green");
         virb = next_command[0];
         next_command = next_command[1..];
         j = sizeof(next_command);

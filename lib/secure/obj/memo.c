@@ -16,7 +16,6 @@ void create(){
     SetLong("A yellow pad of papers to write your memos on. "+
       "There seems to be instructions on the reverse side.");
     SetMass(20);
-    SetValue(1);
     SetVendorType(VT_TREASURE);
 }
 void init(){

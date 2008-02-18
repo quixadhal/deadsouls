@@ -20,7 +20,7 @@ mixed direct_strike_obj() {
 mixed eventStrike(object who) {
     if( !GetFuelAmount() || StrikeChance < random(100) || !eventBurn(who) ) {
         who->eventPrint("You strike " + GetShort() + ", but nothing happens.");
-        environment(who)->eventPrint((string)who->GetName() + " stikes " +
+        environment(who)->eventPrint((string)who->GetName() + " strikes " +
           GetShort() + ", but nothing happens.",
           who);
         return 1;

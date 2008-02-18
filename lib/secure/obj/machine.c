@@ -26,7 +26,6 @@ void create(){
         "no steal" : 1,
       ]));
     SetMass(1);
-    SetValue(1);
     SetVendorType(VT_TREASURE);
     state=0;
     count = 0;

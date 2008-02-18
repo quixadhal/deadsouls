@@ -77,12 +77,12 @@ mixed do_add_obj_to_obj(object ob, object ob2) {
     }
 
     if(!check_privs(this_player(),str)){ 
-        write("You lack sufficient privileges for this operation on "+str+". Copy failed.");
+        write("You lack sufficient privileges for this operation on "+str+". Addition failed.");
         return 0;
     }
 
     if(!check_read(sourcefile)){
-        write("You lack sufficient privileges for this operation on "+sourcefile+". Copy failed.");
+        write("You lack sufficient privileges for this operation on "+sourcefile+". Addition failed.");
         return 0;
     }
 

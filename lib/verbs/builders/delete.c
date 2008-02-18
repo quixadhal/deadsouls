@@ -104,6 +104,11 @@ int eventDeleteObject(object ob1, object ob2){
         return 1;
     }
 
+    if(!check_privs(this_player(),base_name(ob2))){
+        write("You lack sufficient privileges for this operation on "+ob2->GetShort()+". Fail.");
+        return 0;
+    }
+
     door = ob1->GetDoor();
     if(door){
         staff->eventDeleteDoor(door);

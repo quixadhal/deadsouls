@@ -1416,7 +1416,7 @@ static private void confirm_send() {
 }
 
 static void handle_send_choice(string str) {
-    string tmp;
+    string tmp = tmpmail();
 
     if(str == "" || !str) str = "s";
     else str = lower_case(str)[0..0];
@@ -1429,7 +1429,7 @@ static void handle_send_choice(string str) {
         postal_error("Mail aborted!");
         break;
     case "e":
-        if(file_exists(tmpmail())) rm(tmp); 
+        if(file_exists(tmp)) rm(tmp); 
         write_file(tmp, __TmpPost["message"]);
         map_delete(__TmpPost, "message");
         this_player()->eventEdit(tmp, (: complete_send :));
