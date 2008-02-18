@@ -633,23 +633,23 @@ int eventExecuteAttack(mixed target) {
         con = target->GetDefenseChance(target->GetSkillLevel(weapon_type +
             " defense"));
         if( !TargetLimb ) { // If the thing stood still, I still missed
-            eventTrainSkill(weapon_type + " attack", pro, 0, 0, bonus);
+            if(!estatep(target)) eventTrainSkill(weapon_type + " attack", pro, 0, 0, bonus);
             if( hands > 1 ) {
-                eventTrainSkill("multi-hand", pro, 0, 0, bonus);
+                if(!estatep(target)) eventTrainSkill("multi-hand", pro, 0, 0, bonus);
             }
             if( num > 1 ) {
-                eventTrainSkill("multi-weapon", pro, 0, 0, bonus);
+                if(!estatep(target)) eventTrainSkill("multi-weapon", pro, 0, 0, bonus);
             }
             SendWeaponMessages(target, -2, weapon, TargetLimb);
         }
         else if( !target->eventReceiveAttack(power, weapon_type, this_object()) ) {
             // Target avoided the attack
-            eventTrainSkill(weapon_type + " attack", pro, con, 0, bonus);
+            if(!estatep(target)) eventTrainSkill(weapon_type + " attack", pro, con, 0, bonus);
             if( hands > 1 ) {
-                eventTrainSkill("multi-hand", pro, con, 0, bonus);
+                if(!estatep(target)) eventTrainSkill("multi-hand", pro, con, 0, bonus);
             }
             if( num > 1 ) {
-                eventTrainSkill("multi-weapon", pro, con, 0, bonus);
+                if(!estatep(target)) eventTrainSkill("multi-weapon", pro, con, 0, bonus);
             }
             SendWeaponMessages(target, -1, weapon, TargetLimb);
         }
@@ -659,7 +659,7 @@ int eventExecuteAttack(mixed target) {
             if(encumbrance > 20){
                 tell_object(this_object(),"You struggle to fight while carrying stuff.");
             }
-            eventTrainSkill(weapon_type + " attack", pro*2, con, 1, bonus);
+            if(!estatep(target)) eventTrainSkill(weapon_type + " attack", pro*2, con, 1, bonus);
             damage_type = weapon->GetDamageType();
             damage = (weapon->eventStrike(target) * pro)/(GetLevel()*2);
             damage = GetDamage(damage, weapon_type + " attack");
@@ -738,13 +738,13 @@ int eventExecuteAttack(mixed target) {
         chance = random(pro);
         if( !TargetLimb ) { // I *really* missed
             SendMeleeMessages(target, -2);
-            eventTrainSkill("melee attack", pro, 0, 0,
+            if(!estatep(target)) eventTrainSkill("melee attack", pro, 0, 0,
               GetCombatBonus(target->GetLevel()));
         }
         else if( !target->eventReceiveAttack(chance, "melee", this_object()) ) {
             // Enemy dodged my attack
             SendMeleeMessages(target, -1);
-            eventTrainSkill("melee attack", pro, con, 0,
+            if(!estatep(target)) eventTrainSkill("melee attack", pro, con, 0,
               GetCombatBonus(target->GetLevel()));
         }
         else {
@@ -754,7 +754,7 @@ int eventExecuteAttack(mixed target) {
                 tell_object(this_object(),"You struggle to fight while carrying stuff.");
             }
             // I hit, how hard?
-            eventTrainSkill("melee attack", pro, con, 1,
+            if(!estatep(target)) eventTrainSkill("melee attack", pro, con, 1,
               GetCombatBonus(target->GetLevel()));
             if(this_object()->GetMelee()) x = GetDamage(3*chance/4, "melee attack");
             else x = GetDamage(3*chance/20, "melee attack");
@@ -818,7 +818,7 @@ int eventExecuteAttack(mixed target) {
                       TargetLimb + "!",
                       ({ target, this_object() }));
                 }
-                eventTrainSkill("melee attack", pro, con, 1,
+                if(!estatep(target)) eventTrainSkill("melee attack", pro, con, 1,
                   GetCombatBonus(target->GetLevel()));
             }
             else {
@@ -829,7 +829,7 @@ int eventExecuteAttack(mixed target) {
                   possessive_noun(this_object()) +
                   " bite.",
                   ({ this_object(), target }));
-                eventTrainSkill("melee attack", pro, con, 0,
+                if(!estatep(target)) eventTrainSkill("melee attack", pro, con, 0,
                   GetCombatBonus(target->GetLevel()));
             }
         }
@@ -884,11 +884,11 @@ int eventExecuteAttack(mixed target) {
         if( def == "magic" ) {
             pro = GetMagicResistance();
             if( (x = random(pro)) > speed ) {
-                eventTrainSkill("magic defense", pro, speed, 1, bonus);
+                if(!estatep(agent)) eventTrainSkill("magic defense", pro, speed, 1, bonus);
                 return 0;
             }
             else {
-                eventTrainSkill("magic defense", pro, speed, 0, bonus);
+                if(!estatep(agent)) eventTrainSkill("magic defense", pro, speed, 0, bonus);
                 return 1;
             }
         }
@@ -896,11 +896,11 @@ int eventExecuteAttack(mixed target) {
             pro = GetDefenseChance(GetSkillLevel(def + " defense"));
             x = random(pro = pro/2);
             if( x > speed ) {
-                eventTrainSkill(def + " defense", pro, speed, 1, bonus);
+                if(!estatep(agent)) eventTrainSkill(def + " defense", pro, speed, 1, bonus);
                 return 0;
             }
             else {
-                eventTrainSkill(def + " defense", pro, speed, 0, bonus);
+                if(!estatep(agent)) eventTrainSkill(def + " defense", pro, speed, 0, bonus);
                 return 1;
             }
         }
@@ -916,7 +916,7 @@ int eventExecuteAttack(mixed target) {
         if( member_array(ob, GetHostiles()) == -1 ) {
             int x;
 
-            eventTrainSkill("murder", GetLevel(), level, 1,GetCombatBonus(level)); 
+            if(!estatep(ob)) eventTrainSkill("murder", GetLevel(), level, 1,GetCombatBonus(level)); 
             x = (int)ob->GetMorality();
             if( x > 0 ) x = -x;
             else if( GetMorality() > 200 ) x = 100;
@@ -932,7 +932,7 @@ int eventExecuteAttack(mixed target) {
         level = ob->GetLevel();
         if(ob->GetCustomXP()) this_object()->AddExperiencePoints(ob->GetCustomXP());
         else this_object()->AddExperiencePoints(level * 80);
-        eventTrainSkill("faith", GetLevel(), level, 1, GetCombatBonus(level));
+        if(!estatep(ob)) eventTrainSkill("faith", GetLevel(), level, 1, GetCombatBonus(level));
     }
 
     void eventEnemyDied(object ob) {
@@ -946,6 +946,11 @@ int eventExecuteAttack(mixed target) {
     varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
       mixed limbs) {
         int hp,encumbrance;
+
+        if(objectp(agent)){
+            if(estatep(agent) && !estatep(this_object())) return 0;
+            if(!estatep(agent) && estatep(this_object())) return 0;
+        }
 
         encumbrance = this_object()->GetEncumbrance();
 
@@ -998,7 +1003,7 @@ int eventExecuteAttack(mixed target) {
             environment(who)->eventPrint(who->GetName() + " writhes in pain.",
               who);
             who->eventReceiveDamage(this_object(), MAGIC, random(defense), 1);
-            eventTrainSkill("magic defense", defense, who->GetSkillLevel("faith"),
+            if(!estatep(who)) eventTrainSkill("magic defense", defense, who->GetSkillLevel("faith"),
               1, GetCombatBonus(who->GetLevel()));
             return 0;
         }

@@ -1,6 +1,6 @@
----- 2.7a8 ---
+---- 2.7a9 ---
 - Released 2008-02-18
-- Added sefuns: efuns(), sefuns(), efun_exists(), sefun_exists().
+- Added sefuns: efuns(), sefuns(), efun_exists(), sefun_exists(), estatep().
 - Build-specific verbs and commands moved to builders/ directories.
 - Updated memcheck.
 - Added commands: arealist, areaclone, areagoto.
@@ -10,6 +10,11 @@
 - Added support for the class data type in the identify() sefun.
 - Builders now have a workroom and sample areas after logging in
   after their addition to the builder group.
+- NPC's in builder estates do not give XP when killed and do not deal damage to non-
+  estate NPC's.
+- Items in builder estates are not worth money in shops.
+- Weapons in builder estates are ineffective against normal opponents.
+- Armor in builder estates affords little protection.
 
 ---- 2.7a5 ---
 - Released 2008-02-10

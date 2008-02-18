@@ -491,8 +491,9 @@ static int CanSpellAttack(object who, object array enemies, int power) {
         bonus = who->GetCombatBonus(misses/miss_count);
         bonus *= GetTrainingModifier();
         foreach(string skill in GetSkills()) {
-            who->eventTrainSkill(skill, power/(hit_count+miss_count),
-              miss_con/miss_count, 0, bonus);
+            if(!estatep(enemies[i]))
+                who->eventTrainSkill(skill, power/(hit_count+miss_count),
+                  miss_con/miss_count, 0, bonus);
         }			 
     }
     if( hit_count < 1 ) {
@@ -501,8 +502,9 @@ static int CanSpellAttack(object who, object array enemies, int power) {
     bonus = who->GetCombatBonus(hits/hit_count);
     bonus *= GetTrainingModifier();	
     foreach(string skill in GetSkills()) {
-        who->eventTrainSkill(skill, power/(hit_count+miss_count),
-          hit_con/hit_count, 1, bonus);
+        if(!estatep(enemies[i]))
+            who->eventTrainSkill(skill, power/(hit_count+miss_count),
+              hit_con/hit_count, 1, bonus);
     }
     return 1;
 }
@@ -569,8 +571,9 @@ varargs int CanCast(object who, int level, string limb, object array targets) {
     x = who->GetMagicChance(level/2 + random(level/2));
     if( x < GetDifficulty() ) { // Can't even cast it...
         foreach(string skill in skills) {
-            who->eventTrainSkill(skill, level, GetDifficulty(),
-              0, GetTrainingModifier());
+            if(!estatep(targets[i]))
+                who->eventTrainSkill(skill, level, GetDifficulty(),
+                  0, GetTrainingModifier());
         }
         who->eventPrint("You must have gotten the words wrong.");
         return 0;
@@ -586,8 +589,9 @@ varargs int CanCast(object who, int level, string limb, object array targets) {
             moral_act(who, 0, GetMorality());
         }
         foreach(string skill in skills) {
-            who->eventTrainSkill(skill, level, GetDifficulty(), 
-              1, GetTrainingModifier());
+            if(!estatep(targets[i]))
+                who->eventTrainSkill(skill, level, GetDifficulty(), 
+                  1, GetTrainingModifier());
         }
     }
     return 1;

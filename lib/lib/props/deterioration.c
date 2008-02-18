@@ -51,6 +51,10 @@ string array GetSave() {
 // args d and l not used
 int eventReceiveDamage(object agent, int type, int amt, int d, mixed array l) {
     if(query_verb() == "pick") return 0;
+    if(objectp(agent)){
+        if(estatep(agent) && !estatep(this_object())) return amt;
+        if(!estatep(agent) && estatep(this_object())) return amt;
+    }
     DamagePoints -= (amt * 5);
     if( DamagePoints < 1 ) {
         Deterioration++;

@@ -274,5 +274,6 @@ string *efuns();
 string *sefuns();
 int efun_exists(string str);
 int sefun_exists(string str);
+varargs int estatep(object ob);
 
 #endif /* l_sefun_h */

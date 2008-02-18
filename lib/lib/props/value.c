@@ -33,8 +33,8 @@ string array GetSave() {
 }
 
 varargs int GetValue(string str) {
+    if(estatep(this_object())) return 0;
     if(Cost && str && valid_currency(str)) return query_value(Cost,query_base_currency(),str);
-    if(strsrch(base_name(this_object()), ESTATES_DIRS + "/")) return 0;
     return Value;
 }
 
@@ -86,9 +86,8 @@ varargs mixed SetBaseCost(mixed arg, int i){
 }  
 
 int GetBaseCost(string str){
+    if(estatep(this_object())) return 0;
     if(!str)return Cost;
-
-    if(strsrch(base_name(this_object()), ESTATES_DIRS + "/")) return 0;
 
     if(member_array(str,ECONOMY_D->__QueryCurrencies()) == -1){
         return 0;

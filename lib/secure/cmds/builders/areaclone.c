@@ -16,8 +16,9 @@ int cmd(string str) {
     str = which;
 
     switch(str){
-    case "weap" : str = "weapon";break;
-    case "weapons" : str = "weapon";break;
+    case "weap" : str = "weap";break;
+    case "weapons" : str = "weap";break;
+    case "weapon" : str = "weap";break;
     case "ob" : str = "obj";break;
     case "obs" : str = "obj";break;
     case "objs" : str = "obj";break;

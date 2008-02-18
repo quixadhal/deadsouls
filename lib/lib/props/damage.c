@@ -19,6 +19,8 @@ mixed GetProperty(string key);
 int GetClass() {
     int blessing = GetProperty("blessed");
 
+    //if(estatep(this_object())) return 1;
+
     if( !intp(blessing) ) {
         blessing = 0;
     }
@@ -49,6 +51,8 @@ string array GetSave() {
 }
 
 int eventStrike(object ob) {
+    //tc("eventStrike! I am "+identify(this_object())+" other guy is: "+identify(ob));
+    if(estatep(this_object()) && !estatep(ob)) return 1;
     return GetClass();
 }
 

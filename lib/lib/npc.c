@@ -686,6 +686,9 @@ void eventDescribeEnvironment(int brief) {
         }
 
         int GetCustomXP(){
+            if(!strsrch(base_name(this_object()), ESTATES_DIRS)){
+                return -1;
+            }
             return CustomXP;
         }
 

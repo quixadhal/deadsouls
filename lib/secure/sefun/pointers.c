@@ -122,3 +122,8 @@ varargs int newbiep(object ob) {
     if( !ob ) ob = previous_object();
     return (!creatorp(ob) && ((int)ob->GetLevel() <= MAX_NEWBIE_LEVEL));
 }
+
+varargs int estatep(object ob){
+    if( !ob ) ob = previous_object();
+    return (!(strsrch(base_name(ob), ESTATES_DIRS)));
+}
