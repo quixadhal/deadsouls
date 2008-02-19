@@ -571,7 +571,7 @@ varargs int CanCast(object who, int level, string limb, object array targets) {
     x = who->GetMagicChance(level/2 + random(level/2));
     if( x < GetDifficulty() ) { // Can't even cast it...
         foreach(string skill in skills) {
-            if(!estatep(targets[i]))
+            if(!sizeof(filter(targets, (: estatep($1) :))))
                 who->eventTrainSkill(skill, level, GetDifficulty(),
                   0, GetTrainingModifier());
         }
@@ -589,7 +589,7 @@ varargs int CanCast(object who, int level, string limb, object array targets) {
             moral_act(who, 0, GetMorality());
         }
         foreach(string skill in skills) {
-            if(!estatep(targets[i]))
+            if(!sizeof(filter(targets, (: estatep($1) :))))
                 who->eventTrainSkill(skill, level, GetDifficulty(), 
                   1, GetTrainingModifier());
         }

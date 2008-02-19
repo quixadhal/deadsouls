@@ -308,6 +308,25 @@ int cmdChannel(string verb, string str) {
     object ob = 0;
     int i, emote, forcedemote;
 
+    //tc("verb: "+verb);
+
+    if(grepp(verb,"|morse")){
+        str = morse(str);
+        verb = replace_string(verb,"|morse","");
+    }
+
+    if(grepp(verb,"|colorize")){
+        str = dbz_colors(str);
+        verb = replace_string(verb,"|colorize","");
+    }
+
+    if(grepp(verb,"|annoy")){
+        str = dbz_colors(str,2);
+        verb = replace_string(verb,"|annoy","");
+    }
+
+    //tc("verb: "+verb);
+
     if(grepp(verb, ":")){
         verb = replace_string(verb,":","emote");
     }

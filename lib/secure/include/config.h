@@ -78,5 +78,6 @@
 #define ENABLE_CGI               0
 #define WWW_DIR_LIST             0
 #define ENABLE_CREWEB            0
+#define F_TERMINAL_COLOR         1
 
 #endif /* s_config_h */

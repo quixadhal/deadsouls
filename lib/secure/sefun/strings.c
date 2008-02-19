@@ -815,3 +815,29 @@ string web_translate(string str){
     str = replace_string(str,"%2B","+");
     return str;
 }
+
+string dbz_colors(string str, int annoying){
+    string ret = "";
+    string *colors = ({ "RED", "BLUE", "CYAN", "MAGENTA", "ORANGE",
+      "YELLOW", "GREEN", "WHITE%^B_BLACK", "BLACK%^B_WHITE" });
+    string *b_colors = ({ "B_RED", "B_BLUE", "B_CYAN", "B_MAGENTA", "B_ORANGE",
+      "B_YELLOW", "B_GREEN" });
+
+    foreach(mixed element in str){
+        int close;
+        if(random(2)) ret += "%^BOLD%^";
+        if(annoying && !random(3) && element != 32){
+            ret += "%^" + b_colors[random(sizeof(b_colors)-1)] + "%^";
+            close = 1;
+        }
+        if(annoying > 1 && !random(5) && element != 32){
+            ret += "%^FLASH%^";
+            close = 1;
+        }
+        ret += "%^" + colors[random(sizeof(colors)-1)] + "%^";
+        ret += convert_ascii(element);
+        if(close) ret += "%^RESET%^";
+    }
+    return ret + "%^RESET%^";
+}
+

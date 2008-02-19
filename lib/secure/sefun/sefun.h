@@ -244,6 +244,7 @@ int bitshiftedp(int x);
 int call_out(mixed args...);
 #endif
 string strip_colors(string str);
+string strip_colors_old(string str);
 varargs string *chunk_string(string str, int width);
 string array groups();
 string query_intermud_ip();
@@ -275,5 +276,6 @@ string *sefuns();
 int efun_exists(string str);
 int sefun_exists(string str);
 varargs int estatep(object ob);
+string dbz_colors(string str, int annoying);
 
 #endif /* l_sefun_h */

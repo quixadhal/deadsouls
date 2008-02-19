@@ -95,6 +95,15 @@ varargs static void eventUpdate(object whom){
             config_file = append_line(config_file,"#define WWW_DIR_LIST",
               "#define ENABLE_CREWEB            0");
 
+        if(!grepp(config_file, "F_TERMINAL_COLOR")){
+            if(efun_exists("terminal_color"))
+                config_file = append_line(config_file,"#define ENABLE_CREWEB",
+                  "#define F_TERMINAL_COLOR         1");
+            else
+                config_file = append_line(config_file,"#define ENABLE_CREWEB",
+                  "#define F_TERMINAL_COLOR         0");
+        }
+
         write_file("/secure/include/config.h", config_file+"\n", 1);
     }
 
@@ -155,9 +164,9 @@ varargs static void eventUpdate(object whom){
     CLASSES_D->RemoveClass("thief");
     CLASSES_D->AddClass("/secure/cfg/classes/thief");
 
+    reload("/secure/daemon/master");
     reload("/secure/sefun/arrays");
     reload("/secure/sefun/sefun");
-    reload("/secure/daemon/master");
 
     if(whom){
         tell_player(whom,"Update daemon finished. Rebooting now is a good idea.");
