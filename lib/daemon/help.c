@@ -75,7 +75,7 @@ static private void LoadIndices() {
 
     tmp = get_dir(DIR_SECURE_BUILDER_CMDS + "/*.c") +
     get_dir(DIR_BUILDER_VERBS + "/*.c") +
-    get_dir(DIR_BUILDER_CMDS + "/*.c");
+    (get_dir(DIR_BUILDER_CMDS + "/*.c") || ({}));
     Indices["builder commands"] = map(tmp, f);
 
     tmp = get_dir(DIR_UNDEAD_VERBS "/*.c");

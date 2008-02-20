@@ -55,4 +55,3 @@ void help() {
       "workroom.\n\n"
       "See also: goto, trans", this_player());
 }
-

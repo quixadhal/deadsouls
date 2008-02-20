@@ -55,4 +55,3 @@ int eventStrike(object ob) {
     if(estatep(this_object()) && !estatep(ob)) return 1;
     return GetClass();
 }
-

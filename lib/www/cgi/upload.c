@@ -76,4 +76,3 @@ string gateway(mixed args) {
 
     return ret;
 }
-

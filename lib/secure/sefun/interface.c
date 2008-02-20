@@ -31,11 +31,13 @@ string strip_colors_old(string str){
 
 string strip_colors(string str){
 #ifdef F_TERMINAL_COLOR
-    if(F_TERMINAL_COLOR) return terminal_color(str, Uncolor);
-    else return strip_colors_old(str);
+#if F_TERMINAL_COLOR
+    return terminal_color(str, Uncolor);
+#else
+    return strip_colors_old(str);
+#endif
 #else
     if(grepp(version(),"FluffOS v2.9")) return strip_colors_old(str);
     else return terminal_colour(str, Uncolor);
 #endif
 }
-

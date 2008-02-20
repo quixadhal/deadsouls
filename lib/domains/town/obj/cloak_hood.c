@@ -17,4 +17,3 @@ static void create() {
     SetInvis(0);
     //SetWear((: eventWear :));
 }
-

@@ -5,6 +5,11 @@ inherit LIB_DAEMON;
 mapping EventsMap = ([]);
 mixed *event_funs = ({});
 
+int check_function(string str){
+ if(member_array(str,MASTER_D->GetEfuns()) != -1) return 1;
+    return 0;
+}
+
 varargs static void eventUpdate(object whom){
     object remote;
     string a,b;
@@ -24,6 +29,10 @@ varargs static void eventUpdate(object whom){
     newfile += "    call_out((: eventUpdate :), 60);\n";
     newfile += "}\n";
     write_file("/secure/daemon/update.c",newfile,1);
+
+    reload("/secure/sefun/pointers");
+    reload("/secure/sefun/sefun");
+    reload("/secure/daemon/master");
 
     if(sizeof(config_file)){
 
@@ -96,7 +105,7 @@ varargs static void eventUpdate(object whom){
               "#define ENABLE_CREWEB            0");
 
         if(!grepp(config_file, "F_TERMINAL_COLOR")){
-            if(efun_exists("terminal_color"))
+            if(check_function("terminal_color"))
                 config_file = append_line(config_file,"#define ENABLE_CREWEB",
                   "#define F_TERMINAL_COLOR         1");
             else

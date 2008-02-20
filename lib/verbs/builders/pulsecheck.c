@@ -1,5 +1,3 @@
-
-
 #include <lib.h>
 #include <daemons.h>
 #include <damage_types.h>
@@ -44,4 +42,3 @@ mixed do_pulsecheck_lvs(object *obs) {
     }
     return 1;
 }
-

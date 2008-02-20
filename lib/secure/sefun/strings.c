@@ -840,4 +840,3 @@ string dbz_colors(string str, int annoying){
     }
     return ret + "%^RESET%^";
 }
-

@@ -73,4 +73,3 @@ string gateway(string args) {
     ret += "</html>";
     return ret;
 }
-
