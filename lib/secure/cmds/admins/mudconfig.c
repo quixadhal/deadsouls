@@ -18,7 +18,7 @@ string array nonmodals = ({ "liveupgrade", "prompt","status","email","websource"
   "debugger", "access", "pinging", "pinginterval",
   "imc2serverpass", "imc2clientpass" });
 string array antimodals = ({ "imc2" });
-string array modals = antimodals + ({ "fastcombat", "catchtell","matchcommand", "matchobject", "autowiz", "locked",
+string array modals = antimodals + ({ "channelpipes", "fastcombat", "catchtell","matchcommand", "matchobject", "autowiz", "locked",
   "localtime", "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
   "cgi", "dirlist", "creweb",
   "retain", "defaultparse", "disablereboot", "loglocal", "logremote" });
@@ -522,6 +522,7 @@ static int ProcessModal(string which, string arg){
     case "logremote" : which = "LOG_REMOTE_CHANS";break;
     case "imc2" : which = "DISABLE_IMC2";break;
     case "fastcombat" : which = "FAST_COMBAT";break;
+    case "channelpipes" : which = "CHANNEL_PIPES";break;
     case "cgi" : which = "ENABLE_CGI";break;
     case "dirlist" : which = "WWW_DIR_LIST";break;
     case "creweb" : which = "ENABLE_CREWEB";break;
@@ -834,6 +835,7 @@ void help() {
       "\nmudconfig liveupgrade <the default liveupgrade mud's name>"
       "\nmudconfig hostip <the computer's ip address (eg 111.222.333.444)>"
       "\nmudconfig websource <the remote web server's ip address (eg 111.222.333.444)>"
+      "\nmudconfig channelpipes [ enable | disable ] (whether to allow piping messages. not recommended.)"
       "\nmudconfig intermud [ enable | disable | restrict | unrestrict | reset ]"
       "\nmudconfig imc2 [ enable | disable ]"
       "\nmudconfig imc2clientpass <client password for IMC2>"

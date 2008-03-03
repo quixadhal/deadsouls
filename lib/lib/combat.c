@@ -739,13 +739,13 @@ int eventExecuteAttack(mixed target) {
         if( !TargetLimb ) { // I *really* missed
             SendMeleeMessages(target, -2);
             if(!estatep(target)) eventTrainSkill("melee attack", pro, 0, 0,
-              GetCombatBonus(target->GetLevel()));
+                  GetCombatBonus(target->GetLevel()));
         }
         else if( !target->eventReceiveAttack(chance, "melee", this_object()) ) {
             // Enemy dodged my attack
             SendMeleeMessages(target, -1);
             if(!estatep(target)) eventTrainSkill("melee attack", pro, con, 0,
-              GetCombatBonus(target->GetLevel()));
+                  GetCombatBonus(target->GetLevel()));
         }
         else {
             int x, encumbrance;
@@ -755,7 +755,7 @@ int eventExecuteAttack(mixed target) {
             }
             // I hit, how hard?
             if(!estatep(target)) eventTrainSkill("melee attack", pro, con, 1,
-              GetCombatBonus(target->GetLevel()));
+                  GetCombatBonus(target->GetLevel()));
             if(this_object()->GetMelee()) x = GetDamage(3*chance/4, "melee attack");
             else x = GetDamage(3*chance/20, "melee attack");
             x -= encumbrance;
@@ -819,7 +819,7 @@ int eventExecuteAttack(mixed target) {
                       ({ target, this_object() }));
                 }
                 if(!estatep(target)) eventTrainSkill("melee attack", pro, con, 1,
-                  GetCombatBonus(target->GetLevel()));
+                      GetCombatBonus(target->GetLevel()));
             }
             else {
                 target->eventPrint("You avoid " + possessive_noun(this_object()) +
@@ -830,7 +830,7 @@ int eventExecuteAttack(mixed target) {
                   " bite.",
                   ({ this_object(), target }));
                 if(!estatep(target)) eventTrainSkill("melee attack", pro, con, 0,
-                  GetCombatBonus(target->GetLevel()));
+                      GetCombatBonus(target->GetLevel()));
             }
         }
         else {
@@ -1004,7 +1004,7 @@ int eventExecuteAttack(mixed target) {
               who);
             who->eventReceiveDamage(this_object(), MAGIC, random(defense), 1);
             if(!estatep(who)) eventTrainSkill("magic defense", defense, who->GetSkillLevel("faith"),
-              1, GetCombatBonus(who->GetLevel()));
+                  1, GetCombatBonus(who->GetLevel()));
             return 0;
         }
         race::eventTurn(who);

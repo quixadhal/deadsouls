@@ -166,8 +166,8 @@ void eventRegisterChannels(mapping list) {
         if( member_array(channel, CHAT_D->GetLocalChannels()) == -1){
             INTERMUD_D->eventWrite(({ "channel-listen", 5, mud_name(), 0, ns, 
                 0, channel, 1 }));
-            log_file("channels", "New channel: " + channel + " recognized " +
-              ctime(time()) + "\nValue: " + identify(val) + "\n\n");
+            //log_file("channels", "New channel: " + channel + " recognized " +
+            //  ctime(time()) + "\nValue: " + identify(val) + "\n\n");
         }
         else INTERMUD_D->eventWrite(({ "channel-listen", 5, mud_name(), 0, ns,
                 0, channel, 0 }));

@@ -322,7 +322,7 @@ static private void eventEnterGame() {
 } 
 
 static void CreatePassword(string pass, string cap) {
-    if( strlen(pass) < 5) {
+    if( strlen(pass) < 3) {
         receive("\nYour password must be at least 5 letters in length.\n");
         receive("Please choose another password: \n");
         input_to( (: CreatePassword :), I_NOECHO | I_NOESC, cap);

@@ -24,7 +24,7 @@ string LongDesc(){
         "on this mud, with bizarrely friendly mannerisms. Perhaps you "+
         "can make her be quiet by typing: deactivate bot ";
     }
-return ret;
+    return ret;
 }
 
 

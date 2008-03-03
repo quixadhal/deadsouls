@@ -146,10 +146,10 @@ void help(string str) {
       "        <tell [player]@[mud] [message]>\n\n"
       "Sends the message to the player named either on this mud if no "
       "mud is specified, or to the player named on another mud when "
-      "another mud is specified.  For muds with more than one word in their "
-      "names, use . (periods) to take place of spaces.  Example: tell "
-      "descartes@realms.of.chaos hi\n\n"
-      "See also: say, shout, yell, emote",this_player());
+      "another mud is specified. If the other mud is on an IMC2 network "
+      "rather than an Intermud-3 network, use \"imc2 tell\""
+      "\n\n"
+      "See also: imc2, say, shout, yell, emote",this_player());
 }
 
 string morse(string msg) {

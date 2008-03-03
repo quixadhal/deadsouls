@@ -3,6 +3,8 @@
 // Use this however you want.
 
 #include <lib.h>
+#include <logs.h>
+#include <cgi.h>
 #include <save.h>
 #include <network.h>
 #include <socket_err.h>
@@ -46,14 +48,20 @@
 #define NETWORK_ID "IMC2"
 
 // DATA_LOG is where packets are logged to.
-// Turn this off when not working on the system, as it invades privacy.
+// Turn IMC2_logging off when not working on the system, as it invades privacy.
 // Comment this out to turn it off.
-#define DATA_LOG "imc2.log"
+#undef IMC2_LOGGING
+
+#ifndef LOG_IMC2
+#define DATA_LOG "/secure/log/imc2"
+#else 
+#define DATA_LOG LOG_IMC2
+#endif
 
 // UNKNOWN_DATA_LOG is where unrecognized packets are logged to.
 // I wrote handlers for all packets I know of, so this should only pick
 // up tests and possibly if anyone is creating new packets.
-#define UNKNOWN_DATA_LOG "imc2.log"
+#define UNKNOWN_DATA_LOG DATA_LOG ".unk"
 
 // Your MUD's URL is shared with other muds when building the mud list.
 // This you could also put this in your who reply.
@@ -72,7 +80,7 @@
 #define BACKLOG_WEB_LEVEL 0
 
 // WHO_STR is the code that you want a who request to display.
-#define WHO_STR "/cmds/players/who.c"->cmd()+URL+"\ntelnet://rugose.com 6666\n"+"______________________________________________________________________________"
+#define WHO_STR CGI_WHO->gateway(1)+URL+"\ntelnet://rugose.com 6666\n"+"______________________________________________________________________________"
 
 // What's the file for the channel daemon?
 #ifndef CHANNEL_BOT
@@ -257,7 +265,7 @@ int chan_perm_allowed(object user, string chan){
 // Shouldn't have to change anything beyond this point.
 
 void write_callback(int fd){
-#ifdef DATA_LOG
+#ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"Write_Callback. \n");
 #endif
     start_logon();
@@ -268,7 +276,7 @@ void read_callback(int socket, mixed info){
     string a,b;
     int done=0;
 
-#ifdef DATA_LOG
+#ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"SERVER: "+info+"\n");
 #endif
 
@@ -321,7 +329,7 @@ private void got_packet(string info){
     object who;
     if(!sizeof(info)) return;
     //debug(save_variable(info),DEB_PAK);;
-#ifdef DATA_LOG
+#ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"GOT PACKET: "+info+"\n");
 #endif
 
@@ -475,7 +483,7 @@ private void got_packet(string info){
 
 private int close_callback(object socket){
     // Connection was closed.
-#ifdef DATA_LOG
+#ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"DISCONNECTED\n");
 #endif
     socket_close(socket_num);
@@ -487,7 +495,7 @@ private int close_callback(object socket){
 private void send_text(string text){
     // Send a literal string.
     // Almost everything should use the send_packet function instead of this.
-#ifdef DATA_LOG
+#ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"CLIENT: "+save_variable(text)+"\n");
 #endif
     //debug(save_variable(text), DEB_OUT);
@@ -521,8 +529,8 @@ void Setup(){
 #ifndef NO_UIDS
     seteuid(getuid());
 #endif
-    //tn("Creating IMC2 object at "+ctime(time())+".\n");
-#ifdef DATA_LOG
+    tn("Creating IMC2 object at "+ctime(time())+".\n");
+#ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"Creating IMC2 object at "+ctime(time())+".\n");
 #endif
     if(sizeof(get_dir(SAVE_FILE+".o"))) restore_object(SAVE_FILE);
@@ -540,7 +548,7 @@ void Setup(){
     temp = resolve(HOSTNAME, "resolve_callback");
     if(temp == 0){
         //debug("Addr_server is not running, resolve failed.");
-#ifdef DATA_LOG
+#ifdef IMC2_LOGGING
         write_to_log(DATA_LOG,"Addr_server is not running, resolve failed.\n");
 #endif
         remove();
@@ -567,7 +575,7 @@ void remove(){
     socket_close(socket_num);
     mode=2;
     //	if(imc2_socket) imc2_socket->remove();
-#ifdef DATA_LOG
+#ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"IMC2 OBJECT REMOVED\n");
 #endif
     save_object(SAVE_FILE);
@@ -587,27 +595,27 @@ void resolve_callback( string address, string resolved, int key ) {
     //socket_num = socket_create(STREAM, "close_callback");
     socket_num = socket_create(STREAM, "read_callback", "close_callback");
     if (socket_num < 0) {
-#ifdef DATA_LOG
+#ifdef IMC2_LOGGING
         write_to_log(DATA_LOG,"socket_create: " + socket_error(socket_num) + "\n");
 #endif
         //tn("IMC2: socket_create: " + socket_error(socket_num) + "\n");
         //tn("IMC2: stack: " + get_stack());
         return;
     }
-#ifdef DATA_LOG
+#ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"socket_create: Created Socket " + socket_num + "\n");
 #endif
 
     error = socket_connect(socket_num, resolved+" "+HOSTPORT, "read_callback", "write_callback");
     if (error != EESUCCESS) {
-#ifdef DATA_LOG
+#ifdef IMC2_LOGGING
         write_to_log(DATA_LOG,"socket_connect: " + socket_error(error) + "\n");
 #endif
         //debug("socket_connect, error="+error+": " + socket_error(error) + "\n");
         socket_close(socket_num);
         return;
     }
-#ifdef DATA_LOG
+#ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"socket_connect: connected socket " + socket_num + " to " + resolved+" "+HOSTPORT + "\n");
 #endif
 
@@ -765,10 +773,11 @@ void start_logon(){
           send_packet(user,"ice-msg-b","*","*", sprintf("channel=%s text=%s emote=%d echo=0", chan,escape(pinkfish_to_imc2(msg)),emote));
       }
 
-      varargs void tell_out(object from, string targname, string targmud, string msg, int reply, int emote){
+      varargs static void tell_out(object from, string targname, string targmud, string msg, int reply, int emote){
           // Send outgoing tell.
+          tc("tell_out("+identify(from)+", "+targname+". "+targmud+", "+msg+", "+reply+", "+emote+")","cyan");
           if(!reply) reply=0;
-          send_packet(GET_CAP_NAME(from),"tell",targname,targmud,
+          send_packet(capitalize(from->GetKeyName()),"tell",targname,targmud,
             sprintf("level=%d text=%s reply=%d emote=%d", level(from),escape(msg),reply,emote));
           from->eventPrint("%^BOLD%^RED%^You tell " + capitalize(targname) + "@" + targmud + ":%^RESET%^ " + msg, MSG_CONV);
       }
@@ -835,6 +844,24 @@ void start_logon(){
                 sprintf("level=-1 text=\"%s is not online on this mud.\" isreply=1",target));
           }
       }
+
+      int tell(mixed arg, object who){
+          string targmud,targplayer,msg;
+          int i;
+          if(!who || !this_player() || who != this_player()) return 0;
+          if(who->GetForced()){
+              tc("forced!");
+              return 0;
+          }
+          i = sscanf(arg,"%s@%s %s",targplayer, targmud, msg);
+          if(i != 3 ){
+              write("There was an error in your message. See: \"help imc2\"");
+              tc("i: "+i+", arg: "+identify(arg),"yellow");
+              return 1;
+          }
+          tell_out(who, targplayer, targmud, msg, 0, 0);
+          return 1;
+      } 
 
       string pinkfish_to_imc2(string str){
           // Foreground
@@ -1270,7 +1297,7 @@ EndText,
             HOSTIP,
 #endif
             HOSTPORT,hub_name,network_name,COMMAND_NAME,NETWORK_ID,
-#ifdef DATA_LOG
+#ifdef IMC2_LOGGING
             "on",
 #else
             "off",
@@ -1412,6 +1439,10 @@ EndText,
               break;
           case "who":
               mudwho(args,this_player());
+              return 1;
+              break;
+          case "tell":
+              tell(args,this_player());
               return 1;
               break;
           case "finger":

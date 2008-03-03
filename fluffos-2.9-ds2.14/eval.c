@@ -20,7 +20,7 @@ int get_eval(){
   uvalarm(ret, 0);
   return ret;
 #else
-  return 100;
+  return -8000;
 #endif
 }
 

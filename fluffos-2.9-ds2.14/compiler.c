@@ -1261,11 +1261,11 @@ int define_variable (char * name, int type)
         ihe->sem_value++;
         ihe->dn.global_num = n;
 
-        if (n >= 256) {
+        if (n >= CFG_MAX_GLOBAL_VARIABLES) {
             yyerror("Too many global variables");
         }
     } else {
-        char buf[256];
+        char buf[CFG_MAX_GLOBAL_VARIABLES];
         char *end = EndOf(buf);
         char *p;
         
@@ -1275,7 +1275,7 @@ int define_variable (char * name, int type)
         yywarn(buf);
         
         if (VAR_TEMP(ihe->dn.global_num)->type & DECL_NOMASK) {
-            char buf[256];
+            char buf[CFG_MAX_GLOBAL_VARIABLES];
             char *end = EndOf(buf);
             char *p;
             

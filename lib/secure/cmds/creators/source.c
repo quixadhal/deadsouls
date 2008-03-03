@@ -8,7 +8,7 @@
 inherit LIB_DAEMON;
 
 mixed cmd(string args) {
-    string file;
+    string file, contents;
     string *lines;
     int queued;
 
@@ -31,11 +31,25 @@ mixed cmd(string args) {
         return 1;
     }
 
-    lines = explode(read_file(file),"\n");
-    if(!sizeof(lines)) {
+    if(!strsrch(file,"/secure/scripts/") ||
+      !strsrch(file,user_path(this_player())) ){
+        write("Processing "+file+"...");
+    }
+    else {
+        write(file+" is not in a permitted script directory. Aborting.");
+        return 1;
+    }
+
+    contents = read_file(file);
+
+    if(!contents || !sizeof(contents)) {
         write("Either the file is unreadable or it is empty.");
         return 1;
     }
+
+    contents = replace_string(contents,"$N",this_player()->GetKeyName());
+
+    lines = explode(contents,"\n");
 
     if(queued){
         foreach( string line in lines ){

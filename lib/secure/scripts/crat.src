@@ -5,14 +5,14 @@ unalias sc
 unalias practice 
 unalias trophy
 alias start goto /domains/campus/room/start
-alias obj cd /realms/cratylus/area/obj
-alias arm cd /realms/cratylus/area/armor
-alias armor cd /realms/cratylus/area/armor
-alias weap cd /realms/cratylus/area/weap
-alias weapon cd /realms/cratylus/area/weap
-alias npc cd /realms/cratylus/area/npc
-alias room cd /realms/cratylus/area/room
-alias door cd /realms/cratylus/area/doors
+alias obj cd /realms/$N/area/obj
+alias arm cd /realms/$N/area/armor
+alias armor cd /realms/$N/area/armor
+alias weap cd /realms/$N/area/weap
+alias weapon cd /realms/$N/area/weap
+alias npc cd /realms/$N/area/npc
+alias room cd /realms/$N/area/room
+alias door cd /realms/$N/area/doors
 alias town cd /domains/town
 alias tobj cd /domains/town/obj
 alias tarm cd /domains/town/armor
@@ -59,7 +59,7 @@ alias cm coffeemud_universe $*
 alias err tail /log/runtime
 alias ecc tail /log/catch
 alias perr tail /log/player_errors
-alias area cd /realms/cratylus/area/
+alias area cd /realms/$N/area/
 alias cs codesay $*
 alias sec cd /secure
 alias sef cd /secure/sefun
@@ -91,8 +91,8 @@ earmuff smaugmuds
 earmuff reuters
 earmuff sapid
 earmuff NZHerald
-earmuff Gammon
 earmuff TheOnion
 earmuff Sandbox
 earmuff TMS
+earmuff arthmoor
 save

@@ -1,229 +1,204 @@
+/* This daemon is not intended to be monolithic. It should
+ * be cloned, with each cloned version handling a single
+ * connection and transfer.
+ */
+
 #include <lib.h>
-#include <config.h>
 #include <network.h>
+#include <socket_err.h>
+#include <message_class.h>
+#include <daemons.h>
+#define _DEBUG
 
 inherit LIB_DAEMON;
-string gfile, ghost;
-int upgrading = 0;
-int max_outbound = 5;
-int max_retries = 200;
-mapping FilesMap = ([]);
-mapping FileQueue = ([]);
-string lucmd = "/secure/cmds/admins/liveupgrade";
 
-void validate(){
-    if(!(int)master()->valid_apply(({ "SECURE" })) ){
-        string offender = identify(previous_object(-1));
-        debug("WGET_D SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
-        log_file("security", "\n"+timestamp()+" WGET_D breach: "+offender+" "+get_stack());
-        error("WGET_D SECURITY VIOLATION: "+offender+" "+get_stack());
-    }
-}
+int socket;
+int status;
+object Owner;
+mapping PendingResolves = ([]);
 
-static void create() {
+string path, host, address, port, results, s;
+
+void sendHTTPGet();
+
+int http_file_found;
+
+private string args_list;
+
+varargs void create(object owner){
     daemon::create();
-    set_heart_beat(1);
+    Owner = owner;
+    if(!PendingResolves) PendingResolves = ([]);
 }
 
-varargs string convname(string raw, int rev){
-    string ret = replace_string(raw,"/","0^0");
-    if(rev){
-        ret = replace_string(raw,"0^0","/");
-        ret = replace_string(ret,"/secure/upgrades/files/","");
-    }
-    else ret = "/secure/upgrades/files/"+ret;
-    return ret;
-}
-
-static void LUReport(string str){
-    if(upgrading) lucmd->eventReceiveReport(str);
-}
-
-static int ProcessData(int fd){
-    int i;
-    int nullify = 0;
-    string where;
-    string tmp="";
-    string data= FilesMap[fd]["contents"];
-    mixed tmp2 = "";
-    string *nullifiers = ({ "HTTP/", "HTTP0^0", "Date:", "Server:", "Last-Modified:", "ETag:",
-      "Accept-Ranges:", "Content-Length:", "Connection:", "Content-Type:", "X-Pad:" });
-    string *tmparr = ({});
-    FilesMap[fd]["last_char"] = last(data,1);
-    FilesMap[fd]["first_char"] = first(data,1);
-    tmparr = explode(data,"\n");
-    i = sizeof(tmparr);
-
-    foreach(string element in tmparr){
-        if(!strsrch(element,"<title>404 Not Found</title>")) nullify = 1;
-        foreach(string nully in nullifiers){
-            if(!strsrch(element,nully)){
-                tmparr -= ({ element });
-            }
-        }
-    }
-
-    if(!strsrch(tmparr[0],"Location: ")) nullify = 1;
-
-    if(!nullify){
-        while(!sizeof(tmparr[0]) || sizeof(tmparr[0]) < 2){
-            tmparr = tmparr[1..];
-        }
-    }
-    data = implode(tmparr,"\n");
-
-    if(!FilesMap[fd]["started"]) FilesMap[fd]["started"] = 1;
-
-    where = FilesMap[fd]["where"];
-    FilesMap[fd]["where"] = replace_string(where,"0^0code0^0upgrades0^0"+mudlib_version(),"");
-    foreach(string nully in nullifiers){
-        if(grepp(where, nully)) nullify = 1;
-    }
-    FilesMap[fd]["normalname"] = convname(FilesMap[fd]["where"],1);
-    if(directory_exists(FilesMap[fd]["normalname"])) nullify = 1;
-    if(!nullify){
-        if(data && (data[0] == 10 || data[0] == 13)) data = data[1..];
-        if(last(data,1) != "\n") data += "\n";
-        FilesMap[fd]["contents"] = data;
-    }
-    else FilesMap[fd]["contents"] = 0;
-}
-
-void close_callback(int fd){
-    validate();
-
-    if(FilesMap[fd]){
-        LUReport("Received "+FilesMap[fd]["file"]);
-        ProcessData(fd);
-        if(FilesMap[fd]["contents"] && sizeof(FilesMap[fd]["contents"]))
-            write_file(FilesMap[fd]["where"], FilesMap[fd]["contents"]);
-        map_delete(FilesMap,fd);
-        this_object()->eventRetryGet(1);
-    }
-}
-
-varargs int GetFile(string source, string file, string host, string where, int port){
-    int fd, status;
-
-    validate();
-
-    if(sizeof(FilesMap) > max_outbound){
-        if(!FileQueue) FileQueue = ([]);
-        if(!FileQueue[file]) FileQueue[file] = ([ "source" : source, "file" : file, "host" : host,
-              "where" : where, "port" : (port || 80), "creation" : time(), "started" : 0,
-              "user" : (this_player() ? this_player()->GetName() : identify(this_object())),
-              "first_char" : "", "last_char" : "" ]);
-        return 0;
-    }
-
-    fd = socket_create(STREAM, "read_callback", "close_callback");
-    if( fd < 0 ){
-        return 0;
-    }
-
-    FilesMap[fd] = ([ "source" : source, "file" : file, "host" : host,
-      "where" : where, "port" : (port || 80), "creation" : time(), "started" : 0,
-      "user" : (this_player() ? this_player()->GetName() : identify(this_object())) ]);
-
-status = socket_connect(fd, source +" "+port, "read_callback", "write_callback");
-if( status < 0 ){
-    return 0;
-}
-
-return fd;
-}
-
-static varargs void RetryGet(int i){
-    mixed *queue = keys(FileQueue);
-    if(!i) i = 2;
-    if(i > max_outbound) i = max_outbound;
-    if(!FileQueue || !sizeof(FileQueue)){
-        return 0;
-    }
-    foreach(mixed element in queue[0..i]){
-        mapping  TmpMap = FileQueue[element];
-        mixed foo = GetFile(TmpMap["source"],TmpMap["file"],TmpMap["host"],TmpMap["where"],TmpMap["port"]);
-        if(foo){
-            LUReport("%^CYAN%^Requesting: file: "+TmpMap["file"]+"%^RESET%^");
-            map_delete(FileQueue, element);
-        }
-    }
-}
-
-static void CleanFD(int fd){
-    if(!FilesMap[fd]) socket_close(fd);
-    else if(!socket_status(fd)) map_delete(FilesMap,fd);
-    else if(socket_status(fd)[1] != "DATA_XFER"){
-        map_delete(FilesMap,fd);
-        socket_close(fd);
-    }
-}
-
-void heart_beat(){
-    if((!FileQueue || !sizeof(FileQueue)) &&
-      (!FilesMap || !sizeof(FilesMap))){
-        if(upgrading){
-            LUReport("\nFile download complete. After backing up your mud, issue the command: liveupgrade apply");
-            upgrading = 0;
-        }
-        return;
-    }
-    RetryGet();
-}
-
-void write_callback(int fd){
-    string str;
-    int result = 0;
-    validate();
-    if(!FilesMap[fd] || !socket_status(fd)){
-        CleanFD(fd);
-        return; 
-    }
-    str ="GET "+FilesMap[fd]["file"]+" HTTP/1.0"+CARRIAGE_RETURN+"\n"+
-    "Host: "+FilesMap[fd]["host"]+CARRIAGE_RETURN+"\n" +
-    "User-Agent: "+ FilesMap[fd]["user"] + "@" + mud_name() + " " +
-    mudlib()+ "/" + mudlib_version() +" ("+ query_os_type()+";) "+ 
-    version() + " "+
-    CARRIAGE_RETURN+"\n"+CARRIAGE_RETURN+"\n";
-    result = socket_write(fd, (string)str);
-}
-
-void read_callback(int fd, mixed data){
-    validate();
-
-    if(!FilesMap[fd]){
-        return;
-    }
-    if(!FilesMap[fd]["contents"]) FilesMap[fd]["contents"] = data;
-    else FilesMap[fd]["contents"] += data;
-}
-
-varargs int eventMajorUpgrade(string source, string *files, string host, int port){
-    string *allfiles = sort_array(files,1);
-    validate();
-    if(upgrading){
-        LUReport("There is a liveupgrade already in progress.");
-        return 0;
-    }
-    upgrading = 1;
-    foreach(string element in allfiles){
-        if(last_string_element(element,1) == "/") continue;
-        GetFile(source, element, host, convname(element), (port || 80));
+mixed ProcessHTTPResult()
+{
+    if(Owner){
+        Owner->eventReceiveWebData(results,path);
     }
     return 1;
 }
 
-int eventDestruct(){
-    int *fds = keys(FilesMap);
-    validate();
-    if(sizeof(fds)){
-        foreach(int fd in fds){
-            socket_close(fd);
-        }
-    }
-    return ::eventDestruct();
+void read_callback( int fd, mixed message )
+{
+    results += message;
+    //tc("resultS: "+message,"green");
 }
 
-int GetUpgrading(){
-    return upgrading;
+void write_callback( int fd )
+{
+    http_file_found = 0;
+    sendHTTPGet();
 }
+
+void close_callback( int fd )
+{
+    ProcessHTTPResult();
+    socket_close( fd ) ;
+    ::eventDestruct();
+}
+
+void sendHTTPGet()
+{
+    string str ="GET "+path+" HTTP/1.0"+CARRIAGE_RETURN+"\n"+
+    "Host: "+host+CARRIAGE_RETURN"\n" +
+    "User-Agent: WGET_D@" + mud_name() + " " +
+    mudlib()+ "/" + mudlib_version() +" ("+ query_os_type()+";) "+ 
+    version() + CARRIAGE_RETURN+"\n"+CARRIAGE_RETURN+"\n";
+    int result = 0;
+    results = "";
+    //tc("str: "+str);
+    result = socket_write( socket, (string)str );
+}
+
+int openHTTPConnection()
+{
+
+    int sock, sc_result;
+    string error;
+
+    sock = socket_create( STREAM, "read_callback", "close_callback" ) ;
+    if (sock < 0) { 
+        switch( sock )
+        {
+        case EEMODENOTSUPP :
+            error = "Socket mode not supported.\n" ;
+            break ;
+        case EESOCKET :
+            error = "Problem creating socket.\n" ;
+            break ;
+        case EESETSOCKOPT :
+            error = "Problem with setsockopt.\n" ;
+            break ;
+        case EENONBLOCK :
+            error = "Problem with setting non-blocking mode.\n" ;
+            break ;
+        case EENOSOCKS :
+            error = "No more available efun sockets.\n" ;
+            break ;
+        case EESECURITY :
+            error = "Security violation attempted.\n" ;
+            break ;
+        default :
+            error = "Unknown error code: " + sock + ".\n" ;
+            break ;
+        }
+        notify_fail( "Unable to connect, problem with socket_create.\n"
+          "Reason: " + error ) ;
+        return 0 ;
+    }
+#ifdef _DEBUG
+    write("Attempting to connect to "+host+ " on port "+ port + "\n");
+#endif	
+    //tc("socket_connect("+identify(sock)+", "+identify(address)+", "+identify(port)+", read_callback, write_callback)");
+    sc_result = socket_connect( sock, address + " " + port,
+      "read_callback", "write_callback" ) ;
+    if( sc_result != EESUCCESS )
+    {
+        //tc("bummer");
+        notify_fail( "Failed to connect.\n" ) ;
+        return 0 ;
+    }
+    else{
+    }
+
+    socket = sock;
+    //tc("socket_status("+sock+"): "+identify(socket_status(sock)));
+    return 1;
+}
+
+void hostResolved( string address, string resolved, int key )
+{
+    if( !resolved ){
+        return;
+    }
+    openHTTPConnection();
+}
+
+void resolveHost()
+{
+    resolve( host, "hostResolved" );
+}
+
+
+mixed eventGet(string args) {
+    string foo, bar;
+    int baz, key, a, b, c, d;
+
+    //tc("args: "+args,"yellow");
+    if(!strsrch(args,"http://")){
+        args = replace_string(args,"http://","",1);
+    }
+    address = first_string_element(args,"/");
+    args = replace_string(args,address,"");
+    if(sscanf(args, "%s -n %s", foo, bar) == 2){
+        host = bar;
+        args = foo;
+    }
+    else host = address;
+    path = args;
+    if(sscanf(address,"%s:%d",foo, baz) == 2){
+        address = foo;
+        port = ""+baz;
+    }
+    else port = "80";
+    if(args) args_list = args;
+    else args_list = "";
+    if(sscanf(address,"%d.%d.%d.%d",a,b,c,d) != 4){
+        //tc("Trying to resolve...","green");
+        if(!RESOLV_D->GetResolving()){
+            //tc("BAD","red");
+            return "Mud is not resolving. Try again with a numerical address.";
+        }
+        //tc("key1: "+key,"red");
+        PendingResolves[key] = ([ "port" : port, "path" : path ]);
+        key = RESOLV_D->eventResolve(address,"resolve_callback");
+        //tc("key2: "+key,"red");
+        //tc("PendingResolves: "+identify(PendingResolves),"white");
+        return key;
+    }
+    openHTTPConnection();
+    return 1;
+}
+
+void resolve_callback(string name, string ip, int key){
+    string ret = ip+":"+port + path+" -n "+name;
+    //tc("prevs: "+identify(previous_object(-1)));
+    //tc("name: "+name+", ip: "+ip+", key: "+key,"red");
+    //tc("PendingResolves: "+identify(PendingResolves),"cyan");
+    //tc("ret: "+ret);
+    eventGet(ret);
+    //cmd(ip+":"+PendingResolves[key]["port"] + PendingResolves[key]["path"]+" -n "+name);
+}
+
+
+string GetErorMessage() {
+    return "There was a problem";
+}
+
+string GetHelp() {
+    return ("Syntax: dsversion [version]\n\n" +
+      "Shows the latest version of Dead Souls and release notes.\n"+
+      "e.g. dsversion, dsversion r1, dsversion 2.0r1");
+}
+

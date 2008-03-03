@@ -8,9 +8,9 @@
 
 inherit LIB_DAEMON;
 
-#define SEP repeat_string("*=",39)+"*<br>";
+#define SEP repeat_string("*=",37)+"*<br>";
 
-string gateway(string args) {
+varargs string gateway(int strip_html) {
     int p;
     string x, tmp="", ret="";
     object *obs;
@@ -45,7 +45,12 @@ string gateway(string args) {
             p++;
         }
     }
-    ret+="<center>"+mud_name()+"</center><br>";
+    if(!strip_html){
+        ret+="<center>"+mud_name()+"</center><br>";
+    }
+    else {
+        ret+=mud_name()+"\n";
+    }
     ret+=SEP;
     ret+=tmp;
     ret+=SEP;
@@ -55,7 +60,8 @@ string gateway(string args) {
     (p==1) ? x+=" member " : x+=" members ";
     x+="of our reality.<br>";
     ret+=center(x);
-    //if(check_string_length(ret)) this_player()->eventPrint(""+ret+"");
-    //else print_long_string(this_player(),ret);
+    if(strip_html){
+        ret = replace_string(ret,"<br>","\n");
+    }
     return ret;
 }

@@ -27,6 +27,7 @@
 
 #include <lib.h>
 #include <dirs.h>
+#include <logs.h>
 #include <daemons.h>
 
 #define FILE_BAD_CMD     DIR_WWW_ERRORS "/badcmd.html"
@@ -58,7 +59,7 @@ void validate(){
       strsrch(base_name(previous_object()), DIR_WWW_GATEWAYS)){
         string offender = identify(previous_object(-1));
         debug("HTTPD SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
-        log_file("security", "\n"+timestamp()+" HTTPD breach: "+offender+" "+get_stack());
+        log_file("/secure/security", "\n"+timestamp()+" HTTPD breach: "+offender+" "+get_stack());
         error("HTTPD SECURITY VIOLATION: "+offender+" "+get_stack());
     }
 }
@@ -80,7 +81,7 @@ void eventSendData(string str){
 
 void eventLogConnection(){
     if(logging){
-        log_file("http",ip+" "+timestamp()+" "+identify(read_args)+" "+current_page+"\n");
+        log_file(LOG_HTTP,ip+" "+timestamp()+" "+identify(read_args)+" "+current_page+"\n");
     }
 }
 

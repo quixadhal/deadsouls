@@ -36,7 +36,7 @@ static string chat_command(string str) {
     if( cmd == "list" && (int)CHAT_D->cmdChannel(cmd, arg) ) return "";
     else if( Channels[cmd] && (int)CHAT_D->cmdChannel(cmd, arg) ) return "";
     else if( (sscanf(cmd, "%semote", tmp) || sscanf(cmd, "%s:", tmp)
-      || sscanf(cmd, "%s|%*s", tmp))
+        || sscanf(cmd, "%s|%*s", tmp))
       && Channels[tmp] ) {
         if( (int)CHAT_D->cmdChannel(cmd, arg) ) return "";
         else return str;

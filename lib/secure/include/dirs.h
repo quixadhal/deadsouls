@@ -54,8 +54,12 @@
 #define DIR_SSTD                DIR_SECURE_LIB "/std"
 
 #define DIR_LOGS                "/log"
+#define DIR_SECURE_LOGS         DIR_SECURE "/log"
+#define DIR_CHANNEL_LOGS        DIR_LOGS "/chan"
 #define DIR_DEBUG               DIR_LOGS "/debug"
 #define DIR_ERROR_LOGS          DIR_LOGS "/errors"
+#define DIR_INTERMUD_LOGS       DIR_SECURE_LOGS "/intermud"
+#define DIR_NETWORK_LOGS       DIR_SECURE_LOGS "/network"
 #define DIR_PERSONAL_LOGS       DIR_LOGS "/personal"
 #define DIR_REPORTS_LOGS        DIR_LOGS "/reports"
 #define DIR_WATCH_LOGS          DIR_LOGS "/watch"
@@ -99,6 +103,7 @@
 #define DIR_WWW_SIMULEFUNS     DIR_WWW_DOCS "/sefun"
 #define DIR_WWW_ERRORS         DIR_WWW "/errors"
 #define DIR_WWW_GATEWAYS       DIR_WWW "/cgi"
+#define DIR_CGI                DIR_WWW_GATEWAYS
 
 #define DIR_UNDEAD_CMDS         DIR_CMDS "/undead"
 

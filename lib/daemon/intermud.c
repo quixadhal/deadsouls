@@ -11,6 +11,8 @@
 #else
 
 #include <lib.h>
+#include <dirs.h>
+#include <logs.h>
 #include <privs.h>
 #include <save.h>
 #include <config.h>
@@ -124,7 +126,7 @@ static void eventRead(mixed *packet) {
     }
     switch(packet[0]) {
     case "startup-reply":
-        log_file("intermud",identify(packet));
+        log_file(LOG_I3,identify(packet));
         tn("INTERMUD_D: "+identify(packet),"red");
         if( sizeof(packet) != 8 ) {
             //tn("We don't like the mudlist packet size.","red");
@@ -152,7 +154,7 @@ static void eventRead(mixed *packet) {
         return;
     case "mudlist":
         tn("INTERMUD_D mudlist received.","red");
-        log_file("mudlist_packet",identify(packet),1);
+        //log_file("mudlist_packet",identify(packet),1);
         if( sizeof(packet) != 8 ) {
             //tn("We don't like the mudlist packet size.","red");
             return;  

@@ -1,6 +1,6 @@
 #include <daemons.h>
 
-string gateway(mixed who){
+varargs string gateway(mixed who, int strip_html){
     string ret = "";
     string *ret_array;
 

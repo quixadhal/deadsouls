@@ -332,7 +332,7 @@
  *
  * The only down side is some people like their logs shorter
  */
-#undef ARGUMENTS_IN_TRACEBACK
+#define ARGUMENTS_IN_TRACEBACK
 
 /* LOCALS_IN_TRACEBACK: similar to ARGUMENTS_IN_TRACEBACK, but for local
  *   variables.  The output looks more or less like:
@@ -342,7 +342,7 @@
  * Same as above.  Tends to produce even longer logs, but very useful for
  * tracking errors.
  */
-#undef LOCALS_IN_TRACEBACK
+#define LOCALS_IN_TRACEBACK
 
 /* MUDLIB_ERROR_HANDLER: If you define this, the driver doesn't do any
  *   handling of runtime errors, other than to turn the heartbeats of
@@ -390,7 +390,7 @@
  * PRAGMA_ERROR_CONTEXT:include some text telling where on the line a
  *                      compilation error occured.
  */
-#define DEFAULT_PRAGMAS 0
+#define DEFAULT_PRAGMAS PRAGMA_STRICT_TYPES
 
 /* supress warnings about unused arguments; only warn about unused local
  * variables.  Makes older code (where argument names were required) compile
@@ -440,7 +440,7 @@
 /* OPCPROF: define this if you wish to enable OPC profiling. Allows a dump
  *   of the # of times each efun is invoked (via the opcprof() efun).
  */
-#define OPCPROF
+#undef OPCPROF
 
 /* OPCPROF_2D: define this if you wish to enable 2-D OPC profiling. Allows a 
  *   dump of the # of times each *pair* of eoperators is invoked.
@@ -489,7 +489,7 @@
  *   interactives as well as NPCs.  If this is defined, user.c will need a
  *   catch_tell(msg) method that calls receive(msg);
 */
-#define INTERACTIVE_CATCH_TELL
+#undef INTERACTIVE_CATCH_TELL
 
 /* RESTRICTED_ED: define this if you want restricted ed mode enabled.
  */
@@ -545,7 +545,7 @@
  *   saved.  Allowing any file by any wizard to be saved as a
  *   binary is convenient, but may take up a lot of disk space.
  */
-#undef BINARIES
+#define BINARIES
 
 /* ARRAY_RESERVED_WORD: If this is defined then the word 'array' can
  *   be used to define arrays, as in:
@@ -572,7 +572,7 @@
  * through their arguments, and against forgetting to pass a reference 
  * to a function which wants one (or accidentally having a variable modified!)
  */
-#define REF_RESERVED_WORD
+#undef REF_RESERVED_WORD
 
 /****************************************************************************
  *                              PACKAGES                                    *
@@ -672,7 +672,7 @@
  *   uid to automatically be trusted and to have their euid set to the uid of
  *   the object that forced the object's creation.
  */
-#undef AUTO_TRUST_BACKBONE
+#define AUTO_TRUST_BACKBONE
 
 /*************************************************************************
  *                       FOR EXPERIENCED USERS                           *
@@ -798,6 +798,8 @@
  */
 /* MAX_LOCAL: maximum number of local variables allowed per LPC function */
 #define CFG_MAX_LOCAL_VARIABLES         50
+/* Increasing max global vars beyond 256 is not recommended */
+#define CFG_MAX_GLOBAL_VARIABLES         256
 
 #define CFG_EVALUATOR_STACK_SIZE        3000
 #define CFG_COMPILER_STACK_SIZE         600000

@@ -16,6 +16,10 @@
 #define LOG_LOCAL_CHANS 1
 #endif
 
+#ifndef CHANNEL_PIPES
+#define  CHANNEL_PIPES 0
+#endif
+
 #include <lib.h>
 #include <config.h>
 #include <pov.h>
@@ -309,20 +313,29 @@ int cmdChannel(string verb, string str) {
     int i, emote, forcedemote;
 
     //tc("verb: "+verb);
+    //tc("str: "+str);
 
-    if(grepp(verb,"|morse")){
-        str = morse(str);
-        verb = replace_string(verb,"|morse","");
-    }
+    if(grepp(verb,"|")){
+        string foo, bar;
 
-    if(grepp(verb,"|colorize")){
-        str = dbz_colors(str);
-        verb = replace_string(verb,"|colorize","");
-    }
+        if(CHANNEL_PIPES){
+            if(grepp(verb,"|morse")){
+                str = morse(str);
+                verb = replace_string(verb,"|morse","");
+            }
 
-    if(grepp(verb,"|annoy")){
-        str = dbz_colors(str,2);
-        verb = replace_string(verb,"|annoy","");
+            if(grepp(verb,"|colorize")){
+                str = dbz_colors(str);
+                verb = replace_string(verb,"|colorize","");
+            }
+
+            if(grepp(verb,"|annoy")){
+                str = dbz_colors(str,2);
+                verb = replace_string(verb,"|annoy","");
+            }
+        }
+
+        if(sscanf(verb, "%s|%s", foo, bar) == 2) verb = foo;
     }
 
     //tc("verb: "+verb);
