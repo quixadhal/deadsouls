@@ -98,7 +98,7 @@ int max_regexp = 200;
 string debug_info(int debuglevel, mixed arg){
     if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
         return efun::debug_info(debuglevel, arg);
-    else return "";
+    else return "This sefun is not available to unprivileged objects.";
 }
 
 string array groups(){

@@ -26,29 +26,39 @@ static void create() {
 
 mixed CanGo(object who, string str) {
     if( (int)who->GetParalyzed() ) return "You are unable to move.";
-    if( !Exits[str] ) return GoMessage;
+    if( !Exits[str] && str != "up" && str != "down" &&
+      !(sizeof(this_object()->GetFlyRoom())) &&
+      !(sizeof(this_object()->GetSinkRoom())) ) return GoMessage;
     else return 1;
 }
 
 mixed eventGo(object who, string str) {
+    //tc("eventGo("+identify(who)+", "+identify(str)+"): "+query_verb(),"green");
     if(query_verb() == "go" && interactive(this_player())){	
-        if( who->GetPosition() != POSITION_STANDING && 
-          who->GetPosition() != POSITION_FLYING) {
-            if(stringp(hobbled(this_player()))) who->eventStand();
-            if( who->GetPosition() != POSITION_STANDING ) {
-                return 0;
-            }
+        if( who->GetPosition() != POSITION_STANDING ){  
+            write("You are not standing.");
+            return 0;
         }
     }
     else if(query_verb() == "crawl") {
         if( who->GetPosition() != POSITION_LYING &&
+          who->GetPosition() != POSITION_KNEELING &&
           who->GetPosition() != POSITION_SITTING ) {
+            write("You are not in the correct position for crawling.");
             return 0;
         }
     }
     else if(query_verb() == "fly") {
-        if( who->GetPosition() != POSITION_FLYING )
+        if( who->GetPosition() != POSITION_FLYING ){
+            write("You are not flying.");
             return 0;
+        }
+    }
+    else if(query_verb() == "swim") {
+        if( who->GetPosition() != POSITION_SWIMMING ){
+            write("You are not swimming.");
+            return 0;
+        }
     }
 
     if( sizeof(Doors) && Doors[str] && (int)Doors[str]->GetClosed() ) {
@@ -60,6 +70,21 @@ mixed eventGo(object who, string str) {
       !((int)evaluate(Exits[str]["pre"], str)) )
         return 1;
     if(!Exits[str]){
+        if( str == "up" && sizeof(this_object()->GetFlyRoom())){
+            if(who->GetPosition() == POSITION_FLYING){
+                string omsg = who->GetName()+" flies up.";
+                string imsg = who->GetName()+" flies in.";
+                who->eventMoveLiving(this_object()->GetFlyRoom(),omsg,imsg,str);
+                return 1;
+            }
+        }
+
+        if(str == "down" && sizeof(this_object()->GetSinkRoom())){
+            string omsg = who->GetName()+" sinks down.";
+            string imsg = who->GetName()+" sinks in.";
+            who->eventMoveLiving(this_object()->GetSinkRoom(),omsg,imsg,str);
+            return 1;
+        }
         write("You can't go that way.");
         return 0;
     }

@@ -136,7 +136,7 @@ static void eventDawn() {
     call_out( (: eventMorning :), Morning - GetCurrentTime() );
     TimeOfDay = "dawn";
     obs = filter(users(), (: environment($1) &&
-        (string)environment($1)->GetClimate()!="indoors" &&
+        environment($1)->GetClimateExposed() &&
         inherits(LIB_ROOM,environment($1)) &&
         !((int)environment($1)->GetProperty("no time")) :));
     message("environment", "%^YELLOW%^The sun appears just over the horizon.",
@@ -152,7 +152,7 @@ static void eventMorning() {
     call_out( (: eventTwilight :), Twilight - GetCurrentTime());
     TimeOfDay = "day";
     obs = filter(users(), (: environment($1) &&
-        (string)environment($1)->GetClimate()!="indoors" &&
+        (string)environment($1)->GetClimateExposed() &&
         inherits(LIB_ROOM,environment($1)) &&
         !((int)environment($1)->GetProperty("no time")) :));
     message("environment", "%^BOLD%^YELLOW%^The sun now shines completely "
@@ -168,7 +168,7 @@ static void eventTwilight() {
     call_out( (: eventNight :), Night - GetCurrentTime() );
     TimeOfDay = "twilight";
     obs = filter(users(), (: environment($1) &&
-        (string)environment($1)->GetClimate()!="indoors" &&
+        (string)environment($1)->GetClimateExposed() &&
         inherits(LIB_ROOM,environment($1)) &&
         !((int)environment($1)->GetProperty("no time")) :));
     message("environment", "%^CYAN%^The sun begins to fall away into "
@@ -184,7 +184,7 @@ static void eventNight() {
     call_out( (: eventMidnight :), DAY_LENGTH - GetCurrentTime() );
     TimeOfDay = "night";
     obs = filter(users(), (: environment($1) &&
-        (string)environment($1)->GetClimate()!="indoors" &&
+        (string)environment($1)->GetClimateExposed() &&
         inherits(LIB_ROOM,environment($1)) &&
         !((int)environment($1)->GetProperty("no time")) :));
     message("environment", "%^BOLD%^BLUE%^Night darkens all that is real.", obs);
@@ -537,8 +537,8 @@ string GetLong(string arg) {
         string str;
         if( !who || !sizeof(args) ) return 0;
         if( !str = GetLong(args) ) return 0;
-        if( (string)environment(who)->GetClimate() == "indoors" ) {
-            who->eventPrint("You are indoors!");
+        if( (string)environment(who)->GetClimateExposed() ) {
+            who->eventPrint("You can't see that from here!");
             return 1;
         }
         who->eventPrint(str);

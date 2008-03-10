@@ -16,7 +16,6 @@ private int CoordX = 0;
 private int CoordY = 0;
 private int CoordZ = 0;
 private object Map_Master;
-private int Medium;
 private string Virt_Room = "";
 private string AreaType = "";
 private string Reset_Message;
@@ -79,8 +78,6 @@ void SetCoordinates(int x, int y, int z) {
     CoordY = y;
     CoordZ = z;
 }
-
-int SetMedium(int medium){ return Medium = medium;}
 
 mapping GetDirectionMap(){ 
     return (["north":({-1,0,0}),"south":({1,0,0}),
@@ -172,10 +169,6 @@ varargs mixed GetCoordinates(int level) {
 }
 
 object GetMasterMap(){ return Map_Master;}
-
-int GetMedium() {
-    return nullp(Medium)?MEDIUM_LAND:Medium;
-}
 
 varargs string array GetNonExits(string array extra){
     if(nullp(extra)) extra=({});

@@ -46,6 +46,7 @@ static void create() {
     SetLong("You are on the shore, at the far eastern end of town. A road travels west into the heart of town. A great sea stretches out into the eastern horizon.");
     SetExits( ([
         "west" : "/domains/town/room/vill_road4.c",
+        "east" : "/domains/town/virtual/surface/33,100000",
       ]) );
     //SetFrequency determines how often the room checks 
     //whether it should perform an action. If it is set
@@ -77,6 +78,7 @@ static void create() {
     SetInventory( ([
         "/domains/town/obj/seawater" : 1,
       ]) );
+    SetFlyRoom("/domains/town/virtual/sky/32,100000,1");
 }
 void init(){
     ::init();

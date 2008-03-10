@@ -17,7 +17,7 @@ static void create() {
         "west" : "/domains/town/room/road2",
         "south" : "/domains/town/room/gate",
       ]) );
-
+    SetFlyRoom("/domains/town/virtual/sky/27,100000,1");
 }
 void init(){
     ::init();

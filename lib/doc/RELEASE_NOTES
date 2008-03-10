@@ -1,3 +1,19 @@
+---- 2.7a13 ---
+- Released 2008-03-09
+- Added commands: position, var, variables, cconv, cwgconv.
+- Added sample virtual planet composed of sea bottom area,
+  underwater area, surface area, sky area, and outer space.
+- Updated the sconv command to convert Smaug areas more sanely.
+- Added verbs: swim, kneel.
+- Rapid death occurs when air-breathing creatures are deprived of oxygen.
+- Added a breathing device for exploring non-air environments:
+  /domains/default/armor/breather.c
+- Added a rocket pack for traveling in space. Do NOT "activate" it in
+  space or you will accelerate out of control. "boost" only, for example
+  "boost +x+z" then to stop: "boost -x-z"
+- Stargates added underwater and in outer space for convenient exploration.
+  Beware fatal anoxia.
+
 ---- 2.7a12 ---
 - Released 2008-03-03
 - IMC2 now supports who requests and tells. "imc2 tell joe@dead_souls_joe hello!"
@@ -17,7 +33,6 @@
   to look up names.
 - Modified WGET_D to be more generic, added "wget" command for downloading arbitrary
   files from the intertubes.
-
 
 ---- 2.7a9 ---
 - Released 2008-02-18

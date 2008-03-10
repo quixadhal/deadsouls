@@ -31,6 +31,7 @@ inherit LIB_VALUE;
 inherit LIB_WEAPON;
 inherit LIB_MONEY;
 inherit LIB_FALL;
+inherit LIB_SINK;
 
 private int RetainOnDeath, nocondition;
 private string QuestId = "";

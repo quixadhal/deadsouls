@@ -7,6 +7,7 @@
  */
 
 #include <lib.h>
+#include <medium.h>
 #include <message_class.h>
 
 inherit LIB_SURFACE;
@@ -15,26 +16,32 @@ int DecayLife, Count, CallOut, Fresh;
 string Owner, Race;
 
 int eventDecay() {
+    int smell;
     if( !environment() ) {
         Destruct();
         return 0;
     }
     Fresh = 0;
+    if(environment()->GetMedium() == MEDIUM_LAND) smell = 1;
     switch(Count) {
     case 10:
-        environment()->eventPrint(possessive_noun(Owner) + " corpse " +
-          "is starting to stink.", MSG_ROOMDESC);
-        SetId(GetId()..., "corpse", "remains","flesh","pile","pile of flesh");
-        SetAdjectives(GetAdjectives()..., "stinky", "rotting");
-        SetShort("the stinky remains of a rotting corpse");
-        SetSmell("This corpse is beginning to stink up the entire area.");
+        if(smell){
+            environment()->eventPrint(possessive_noun(Owner) + " corpse " +
+              "is starting to stink.", MSG_ROOMDESC);
+            SetId(GetId()..., "corpse", "remains","flesh","pile","pile of flesh");
+            SetAdjectives(GetAdjectives()..., "stinky", "rotting");
+            SetShort("the stinky remains of a rotting corpse");
+            SetSmell("This corpse is beginning to stink up the entire area.");
+        }
         break;
     case 20:
-        environment()->eventPrint("A rotting stench fills the entire "
-          "area.", MSG_ROOMDESC);
-        SetId(GetId()..., "flesh", "pile", "pile of flesh");
-        SetShort("a pile of rotting flesh");
-        SetSmell("Its smell is nearly unbearable.");
+        if(smell){
+            environment()->eventPrint("A rotting stench fills the entire "
+              "area.", MSG_ROOMDESC);
+            SetId(GetId()..., "flesh", "pile", "pile of flesh");
+            SetShort("a pile of rotting flesh");
+            SetSmell("Its smell is nearly unbearable.");
+        }
         break;
     case 30:
         Destruct();

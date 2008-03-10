@@ -12,6 +12,7 @@
 #include <daemons.h>
 
 inherit LIB_FALL;
+inherit LIB_SINK;
 
 private int           Position = POSITION_STANDING;
 private static object Chair    = 0;
@@ -90,6 +91,38 @@ varargs mixed eventLay(object target) {
 
 }
 
+varargs mixed eventKneel(object target) {
+    mixed tmp;
+
+    if( Position != POSITION_STANDING && Position != POSITION_SITTING) {
+        eventPrint("You must be standing or sitting in order to kneel.");
+        return 1;
+    }
+    if( !target ) {
+        send_messages("kneel", "$agent_name $agent_verb down.", this_object(),
+          0, environment());
+        Position = POSITION_KNEELING;
+        return 1;
+    }
+#if 0
+    tmp = target->eventReceiveLay(this_object());
+    if( tmp != 1 ) {
+        if( !tmp ) {
+            eventPrint("You cannot lie there!");
+        }
+        else {
+            eventPrint(tmp);
+        }
+        return 1;
+    }
+    send_messages("lie", "$agent_name $agent_verb down on " +
+      target->GetShort() + ".", this_object(), 0, environment());
+    Position = POSITION_LYING;
+    Chair = target;
+#endif
+    return 1;
+}
+
 varargs mixed eventSit(object target) {
     mixed tmp;
 
@@ -148,14 +181,60 @@ mixed eventFly(){
     return 1;
 }
 
+mixed eventSwim(){
+    if( Chair ) {
+        mixed tmp = Chair->eventReleaseStand(this_object());
+
+        if( tmp != 1 ) {
+            if( !tmp ) {
+                eventPrint("You cannot!");
+            }
+            else {
+                eventPrint(tmp);
+            }
+            return 1;
+        }
+        Chair = 0;
+    }
+    if(this_object()->CanSwim() && Position != POSITION_SWIMMING){
+        tell_object(this_object(),"You begin swimming.");
+        say(this_player()->GetName()+" begins swimming.");
+        Position = POSITION_SWIMMING;
+    }
+    return 1;
+}
+
+mixed eventFloat(){
+    if( Chair ) {
+        mixed tmp = Chair->eventReleaseStand(this_object());
+
+        if( tmp != 1 ) {
+            if( !tmp ) {
+                eventPrint("You can't!");
+            }
+            else {
+                eventPrint(tmp);
+            }
+            return 1;
+        }
+        Chair = 0;
+    }
+    if(this_object()->CanFloat() && Position != POSITION_FLOATING){
+        tell_object(this_object(),"You begin floating.");
+        say(this_player()->GetName()+" begins floating.");
+        Position = POSITION_FLOATING;
+    }
+    return 1;
+}
+
 mixed eventLand(){
     object env = environment();
     if(!env) return 0;
     if(! Position == POSITION_FLYING ) return 0;
     if( env->GetMedium() == MEDIUM_AIR || env->GetMedium() == MEDIUM_WATER ||
       env->GetMedium() == MEDIUM_SPACE ) return 0;  
-    write("You stop flying and land gracefully.");
-    say(this_player()->GetName()+" stops flying and lands gracefully.");
+    write("You stop flying.");
+    say(this_player()->GetName()+" stops flying.");
     if(stringp(hobbled(this_player()))) Position = POSITION_STANDING;
     else Position = POSITION_LYING;
     return 1;

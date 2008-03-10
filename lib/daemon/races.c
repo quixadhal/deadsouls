@@ -52,6 +52,12 @@ int CanFly(string str){
     else return 0;
 }
 
+int CanSwim(string str){
+    if( !Races[str] ) return 0;
+    if(member_array(str, SwimmingRaces) != -1) return 1;
+    else return 0;
+}
+
 int GetNonMeatRace(string str){
     if(member_array(str,NonMeatRaces) == -1) return 0;
     else return 1;

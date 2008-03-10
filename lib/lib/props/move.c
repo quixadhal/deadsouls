@@ -1,4 +1,6 @@
 #include <message_class.h>
+#include <terrain_types.h>
+#include <position.h>
 #include <medium.h>
 
 private static object LastEnvironment = 0;
@@ -53,13 +55,14 @@ int eventMove(mixed dest) {
     }
     if( objectp(to) && LastEnvironment = environment() ) {
         environment()->eventReleaseObject(this_object());
-        if(inherits("/lib/std/storage",to) && inherits("/lib/std/storage",environment() ) ) {
+        if(!undefinedp(to->GetRecurseDepth()) && 
+          !undefinedp(environment()->GetRecurseDepth())){
+            //if(inherits(LIB_STORAGE,to) && inherits(LIB_STORAGE,environment() ) ) {
             depth = to->GetRecurseDepth();
             depth += 1;
             if(depth) environment()->AddRecurseDepth(-depth);
             if(environment()->GetRecurseDepth() < 1) environment()->SetRecurseDepth(1);
         }
-
     }
     if(!objectp(to) ) return 0; 
     prev = environment(ob);
@@ -89,9 +92,34 @@ int eventMove(mixed dest) {
             this_object()->RemoveProperty("mount");
             furn->eventDismount(this_object());
         }
-    if(environment()->GetMedium() == MEDIUM_AIR){
+    if(environment()->GetMedium() == MEDIUM_AIR &&
+      this_object()->GetPosition() != POSITION_FLYING){
         if(!(this_object()->CanFly())) call_out("eventFall", 1);
         else this_object()->eventFly();
+    }
+    if(environment()->GetMedium() == MEDIUM_LAND &&
+      (this_object()->GetPosition() == POSITION_FLOATING ||
+        this_object()->GetPosition() == POSITION_SWIMMING)){
+        call_out("eventCollapse", 1);
+    }
+    else if((environment()->GetMedium() == MEDIUM_WATER ||
+        environment()->GetMedium() == MEDIUM_SURFACE) &&
+      this_object()->GetPosition() != POSITION_SWIMMING &&
+      this_object()->GetPosition() != POSITION_FLOATING){
+        if(living(this_object())){
+            //if(!(this_object()->CanSwim())) call_out("eventSink", 1);
+            //else this_object()->eventSwim();
+            if(!(this_object()->GetPosition() == POSITION_FLYING &&
+                environment()->GetMedium() == MEDIUM_SURFACE)){
+                if(!(environment()->GetTerrainType() & (T_SEAFLOOR)) && this_object()->CanSwim()){
+                    this_object()->eventSwim();
+                }
+                else call_out("eventSink", 1);
+            }
+        }
+        else {
+            if(!this_object()->GetProperty("buoyant")) call_out("eventSink", 1);
+        }
     }
     return (LastEnvironment != environment());
 }

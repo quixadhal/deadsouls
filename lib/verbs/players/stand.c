@@ -31,6 +31,10 @@ mixed can_stand_up() {
         return "You aren't endowed with limbs with which to stand.";
     }
 
+    if(!environment(this_player())->CanStand(this_player())){ 
+        return "You can't stand here.";
+    }
+
     if( this_player()->GetPosition() != POSITION_STANDING ) {
         return 1;
     }

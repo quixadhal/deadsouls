@@ -22,7 +22,7 @@ static void create() {
       ]) );
     SetEnters( ([ 
       ]) );
-
+    SetFlyRoom("/domains/town/virtual/sky/31,100000,1");
 }
 void init(){
     ::init();

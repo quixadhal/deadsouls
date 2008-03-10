@@ -184,6 +184,9 @@ varargs static void eventUpdate(object whom){
     reload("/secure/sefun/arrays");
     reload("/secure/sefun/sefun");
 
+    load_object("/domains/town/obj/stargate");
+    load_object("/domains/town/obj/stargate2");
+
     if(whom){
         tell_player(whom,"Update daemon finished. Rebooting now is a good idea.");
     }

@@ -43,7 +43,7 @@ static void create() {
         "healers guild" : "/domains/town/room/healer"
       ]) );
     SetNoModify(0);
-
+    SetFlyRoom("/domains/town/virtual/sky/28,1,1");
 }
 
 void init(){

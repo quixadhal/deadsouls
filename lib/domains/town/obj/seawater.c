@@ -20,6 +20,7 @@ static void create() {
     SetMealType(MEAL_DRINK);
     SetNoCondition(1);
     SetInvis(1);
+    SetProperty("buoyant",1);
 }
 
 mixed CanGet(object ob) { return "#The sea stays in place.";}

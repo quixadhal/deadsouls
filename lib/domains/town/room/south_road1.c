@@ -35,6 +35,7 @@ static void create() {
     SetEnters( ([
         "well" : "/domains/town/room/well1"
       ]) );
+    SetFlyRoom("/domains/town/virtual/sky/28,99999,1");
 }
 void init(){
     room::init();

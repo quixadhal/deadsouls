@@ -333,11 +333,14 @@ void eventDescribeEnvironment(int brief) {
         i = GetEffectiveVision(env);
         if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM ) {
             mapping lying = ([]), sitting = ([]), standing = ([]), flying = ([]);
+            mapping floating = ([]), kneeling = ([]), swimming = ([]);
             mapping furniture = ([]);
-            object mount = this_player()->GetProperty("mount");
+            //object mount = this_player()->GetProperty("mount");
+            object mount;
             object *obs;
             string key;
             int val;
+            if(this_player()) mount = this_player()->GetProperty("mount");
 
             obs = filter(all_inventory(env), function(object ob) {
                   if( (int)ob->GetInvis(this_object()) ) return 0;
@@ -347,6 +350,7 @@ void eventDescribeEnvironment(int brief) {
                 }) - ({ this_object(), mount });
               maxi = sizeof(shorts = map(obs, (: (string)$1->GetHealthShort() :)));
               foreach(object liv in obs) {
+                  int envtype = environment()->GetMedium();
                   string s = (string)liv->GetHealthShort();
                   int pos = (int)liv->GetPosition();
                   if( !s ) continue;
@@ -359,10 +363,16 @@ void eventDescribeEnvironment(int brief) {
                   else if(!furniture[s]) furniture[s] = 0;
 
                   if( pos == POSITION_STANDING) standing[s]++;
-                  else if( pos == POSITION_LYING || (int)liv->isFreshCorpse() )
+                  else if( pos == POSITION_LYING || 
+                    ((int)liv->isFreshCorpse() && envtype == MEDIUM_LAND) )
                       lying[s]++;
                   else if( pos == POSITION_SITTING ) sitting[s]++;
                   else if( pos == POSITION_FLYING ) flying[s]++;
+                  else if( pos == POSITION_FLOATING ||
+                    ((int)liv->isFreshCorpse() && envtype != MEDIUM_LAND) )
+                      floating[s]++;
+                  else if( pos == POSITION_SWIMMING ) swimming[s]++;
+                  else if( pos == POSITION_KNEELING ) kneeling[s]++;
                   else lying[s]++;
               }
               if( !desc ) {
@@ -448,12 +458,32 @@ void eventDescribeEnvironment(int brief) {
                       "%^RESET%^ are hovering here.";
                   desc += "\n";
               }
-
+              foreach(key, val in floating) {
+                  if( val<2 )
+                      desc += capitalize(key) + "%^RESET%^ is floating here.";
+                  else desc += capitalize(consolidate(val, key)) +
+                      "%^RESET%^ are floating here.";
+                  desc += "\n";
+              }
+              foreach(key, val in swimming) {
+                  if( val<2 )
+                      desc += capitalize(key) + "%^RESET%^ is swimming here.";
+                  else desc += capitalize(consolidate(val, key)) +
+                      "%^RESET%^ are swimming here.";
+                  desc += "\n";
+              }
+              foreach(key, val in kneeling) {
+                  if( val<2 )
+                      desc += capitalize(key) + "%^RESET%^ is kneeling here.";
+                  else desc += capitalize(consolidate(val, key)) +
+                      "%^RESET%^ are kneeling here.";
+                  desc += "\n";
+              }
           }
             if( tmp ) {
                 desc = tmp + desc;
             }
-            if(transport = this_player()->GetProperty("mount")) {
+            if(this_player() && transport = this_player()->GetProperty("mount")) {
                 string mount_inv = "Nothing";
                 string *mount_stuffs = ({});
                 object *mount_obs = filter( all_inventory(transport),

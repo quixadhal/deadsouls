@@ -40,6 +40,7 @@ int cmd( string a )
     "#include <position.h>\n"+
     "#include <runtime_config.h>\n"+
     "#include <terrain_types.h>\n"+
+    "#include <medium.h>\n"+
     "#include <body_types.h>\n"+
     "#include <size_types.h>\n"+
     "#include <respiration_types.h>\n"+

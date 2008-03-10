@@ -21,9 +21,10 @@
 #define T_SAND              (1 << 17)
 #define T_ICE               (1 << 18)
 #define T_BIOLOGICAL        (1 << 19)
+#define T_SEAFLOOR          (1 << 20)
 #define T_ALL_OUTDOORS_LAND T_OUTDOORS | T_ROAD | T_SWAMP | T_WOODS | T_JUNGLE | T_ROUGH | T_SNOW | T_SAND | T_ICE
-#define T_ALL_SEA           T_UNDERWATER | T_SURFACE
+#define T_ALL_SEA           T_SEAFLOOR | T_UNDERWATER | T_SURFACE
 
-#define T_MAX_TERRAIN_BIT    T_BIOLOGICAL
+#define T_MAX_TERRAIN_BIT    T_SEAFLOOR
 
 #endif /* __TERRAIN_TYPES_H__ */

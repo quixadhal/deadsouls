@@ -25,7 +25,7 @@ static void create() {
         "east" : "/domains/town/room/road1",
         "west" : "/domains/town/room/bridge",
       ]) );
-
+    SetFlyRoom("/domains/town/virtual/sky/26,100000,1");
 }
 
 void init(){

@@ -32,7 +32,7 @@ static void create() {
         "/domains/town/npc/orc" : 1,
         "/domains/town/npc/orc2" : 1,
       ]) );
-
+    SetFlyRoom("/domains/town/virtual/sky/22,100000,1");
 }
 void init(){
     ::init();

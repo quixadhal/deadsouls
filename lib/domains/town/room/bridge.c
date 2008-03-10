@@ -37,6 +37,7 @@ static void create() {
         "down" : "/domains/town/room/riverbank",
       ]) );
     SetRead(({"writing","scrawl","grafitti","grafitto"}),"HVMANES EVNT DOMVS");
+    SetFlyRoom("/domains/town/virtual/sky/25,100000,1");
 }
 void init(){
     ::init();

@@ -26,7 +26,7 @@ static void create() {
         "valley" : "A valley is west of here.",
         "town" : "A town, far in the eastern distance."
       ]) );
-
+    SetFlyRoom("/domains/town/virtual/sky/23,100000,1");
 }
 void init(){
     ::init();

@@ -14,6 +14,8 @@
 #include <medium.h>
 #include <position.h>
 #include <armor_types.h>
+#include <respiration_types.h>
+#include <terrain_types.h>
 #include <damage_types.h>
 #include <magic_protection.h>
 #include "include/body.h"
@@ -22,6 +24,7 @@ inherit LIB_POSITION;
 inherit LIB_UNDEAD;
 inherit LIB_CRAWL;
 inherit LIB_FLY;
+inherit LIB_SWIM;
 inherit LIB_MOUNT;
 inherit LIB_BODY_MASS;
 inherit LIB_PERSIST;
@@ -194,6 +197,80 @@ mixed direct_turn_liv() {
     }
 }
 
+void eventCheckEnvironment(){
+    object env = environment();
+    int i;
+    int restype = RACES_D->GetRaceRespirationType(this_object()->GetRace());
+    float j = percent(GetHealthPoints(), GetMaxHealthPoints());
+    float k = percent(GetStaminaPoints(), GetMaxStaminaPoints());
+
+    if( j < COLLAPSE_AT  || k < COLLAPSE_AT ) {
+        this_object()->eventCollapse();
+    }
+
+    if(!env) return;
+    if(env->GetMedium() == MEDIUM_AIR &&
+      this_object()->GetPosition() != POSITION_FLYING){
+        if(!(this_object()->CanFly())){
+            this_object()->SetPosition(POSITION_FLOATING);
+            call_out("eventFall", 1);
+        }
+        else this_object()->eventFly();
+    }
+    else if((env->GetTerrainType() & (T_SEAFLOOR | T_SPACE | T_UNDERWATER)) && 
+      this_object()->GetPosition() == POSITION_FLYING){
+        this_object()->SetPosition(POSITION_FLOATING);
+    }
+    else if((env->GetMedium() == MEDIUM_WATER ||
+        env->GetMedium() == MEDIUM_SURFACE) &&
+      this_object()->GetPosition() != POSITION_SWIMMING){
+        if(!(this_object()->GetPosition() == POSITION_FLYING &&
+            environment()->GetMedium() == MEDIUM_SURFACE)){
+            if(!(environment()->GetTerrainType() & (T_SEAFLOOR)) && this_object()->CanSwim()){
+                this_object()->eventSwim();
+            }
+            else if(!(environment()->GetTerrainType() & (T_SEAFLOOR))){
+                this_object()->SetPosition(POSITION_FLOATING);
+                call_out("eventSink", 1);
+            }
+        }
+
+        //if(!(this_object()->CanSwim())){
+        //    this_object()->SetPosition(POSITION_FLOATING);
+        //    call_out("eventSink", 1);
+        //}
+    }
+    else if(env->GetMedium() == MEDIUM_SPACE){
+        this_object()->SetPosition(POSITION_FLOATING);
+        if(restype != R_VACUUM){
+            if(!this_object()->CanBreathe()){
+                eventPrint("You are asphyxiating.");
+                eventReceiveDamage("Outer space", ANOXIA, 200, 1);
+            }
+        }
+    }
+    if(env->GetMedium() == MEDIUM_WATER){
+        if(restype != R_VACUUM && restype != R_WATER){
+            if(!this_object()->CanBreathe()){
+                eventPrint("You are drowning.");
+                eventReceiveDamage("Water", ANOXIA, 100, 1);
+            }
+        }
+    }
+    if(restype == R_WATER && env->GetMedium() != MEDIUM_WATER){
+        if(!this_object()->CanBreathe()){
+            eventPrint("You are asphyxiating.");
+            eventReceiveDamage("Air", ANOXIA, 100, 1);
+        }
+    }
+    if( (i = env->GetPoisonGas()) > 0 ) {
+        if( GetResistance(GAS) != "immune" ) {
+            eventPrint("You choke on the poisonous gases.");
+            eventReceiveDamage("Poison gas", GAS, i, 1);
+        }
+    }
+}
+
 static void heart_beat() {
     object env = environment();
     int i;
@@ -204,18 +281,10 @@ static void heart_beat() {
             if( Protection[i]->time && (--Protection[i]->time < 1) )
                 RemoveMagicProtection(i);
     }
-    if( env && (i = env->GetPoisonGas()) > 0 ) {
-        if( GetResistance(GAS) != "immune" ) {
-            eventPrint("You choke on the poisonous gases.");
-            eventReceiveDamage("Poison gas", GAS, i);
-        }
-    }
+    eventCheckEnvironment();
     eventCheckHealing();
     if(!stringp(hobbled(this_player()))) {
         this_object()->eventCollapse();
-    }
-    if(this_object()->GetPosition() == POSITION_FLYING && !this_object()->CanFly()){
-        eventFall();
     }
 }
 
@@ -236,16 +305,19 @@ mixed CanRemoveItem(object ob) { return 1; }
 
 private void checkCollapse() {
     float h = percent(GetHealthPoints(), GetMaxHealthPoints());
+    float i = percent(GetStaminaPoints(), GetMaxStaminaPoints());
 
-    if( h < COLLAPSE_AT ) {
+    if( h < COLLAPSE_AT  || i < COLLAPSE_AT ) {
         SetParalyzed(3, (: checkCollapse :));
         return;
     }
-    eventPrint("You feel some strength returning.");
+    this_object()->eventPrint("You feel some strength returning.");
 }
 
 int eventCollapse() {
     int position = GetPosition();
+    int medium;
+    if(environment()) medium = environment()->GetMedium();
 
     if(!this_object() || !environment()) return 0;
 
@@ -256,12 +328,25 @@ int eventCollapse() {
     }
 
     SetParalyzed(3, (: checkCollapse :));
-    if( position == POSITION_LYING ) {
+
+
+
+    if(medium == MEDIUM_LAND){
+        if( position == POSITION_LYING ) {
+            return 1;
+        }
+        send_messages("collapse", "$agent_name $agent_verb to the ground.",
+          this_object(), 0, environment());
+        SetPosition(POSITION_LYING);
         return 1;
     }
-    send_messages("collapse", "$agent_name $agent_verb to the ground.",
+
+    if( position == POSITION_FLOATING ) {
+        return 1;
+    }
+    send_messages("go", "$agent_name $agent_verb limp.",
       this_object(), 0, environment());
-    SetPosition(POSITION_LYING);
+    SetPosition(POSITION_FLOATING);
     return 1;
 }
 
@@ -377,11 +462,12 @@ mixed eventFall() {
         int p;
         int was_undead = GetUndead();
 
-        send_messages("fall", "$agent_name $agent_verb through the sky "
-          "towards the world below.", this_object(), 0, env);
+        //send_messages("fall", "$agent_name $agent_verb through the sky "
+        //  "towards the world below.", this_object(), 0, env);
         eventMove(dest);
-        environment()->eventPrint(GetName() + " comes falling in from above.",
-          this_object());
+        //environment()->eventPrint(GetName() + " comes falling in from above.",
+        //this_object());
+        //flush_messages();
         this_object()->eventCollapse();
         foreach(string limb in GetLimbs()) {
             int hp = GetHealthPoints(limb);
@@ -483,6 +569,8 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
     string agentname;
     int fp;
 
+    //tc("agent: "+identify(agent)+", internal: "+internal);
+
     if(agent && stringp(agent)){
         agentname = agent;
         agent = 0;
@@ -527,8 +615,8 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
         return -1;
     }
     if( internal ) {
-        limbs = filter(limbs, (: !AddHealthPoints(-$(x), $1, $(agent)) :));
-        map(limbs, (: (Limbs[$1] ? this_object()->RemoveLimb($1, $(agent)) : 0) :));
+        //limbs = filter(limbs, (: !AddHealthPoints(-$(x), $1, $(agent)) :));
+        //map(limbs, (: (Limbs[$1] ? this_object()->RemoveLimb($1, $(agent)) : 0) :));
         AddHealthPoints(-x, 0, (agent || agentname));
         return x;
     }
@@ -1063,17 +1151,45 @@ varargs int eventDie(mixed agent) {
     }
 
     int CanFly(){
-        string clipped = identify(this_player()->GetMissingLimbs());
+        float j = percent(GetHealthPoints(), GetMaxHealthPoints());
+        float k = percent(GetStaminaPoints(), GetMaxStaminaPoints());
+        string clipped = identify(this_object()->GetMissingLimbs());
 
-        if(creatorp(this_player())) return 1;
+        if( j < COLLAPSE_AT  || k < COLLAPSE_AT ) {
+            return 0;
+        }
 
-        if(!RACES_D->CanFly(this_player()->GetRace())) {
+        if(creatorp(this_object())) return 1;
+
+        if(!RACES_D->CanFly(this_object()->GetRace())) {
             return 0;
         }
 
         if(!clipped || !sizeof(clipped)) return 1;
         if(!grepp(lower_case(clipped),"wing")) return 1;
+
+        if(this_object()->GetStaminaPoints() < 5) return 0;
         return 0;
+    }
+
+    int CanSwim(){
+        float j = percent(GetHealthPoints(), GetMaxHealthPoints());
+        float k = percent(GetStaminaPoints(), GetMaxStaminaPoints());
+
+        if( j < COLLAPSE_AT  || k < COLLAPSE_AT ) {
+            return 0;
+        }
+
+        if(creatorp(this_object())) return 1;
+        if(sizeof(this_object()->GetMissingLimbs())) return 0;
+
+        if(!RACES_D->CanSwim(this_object()->GetRace())) {
+            return 0;
+        }
+
+        if(this_object()->GetStaminaPoints() < 5) return 0;
+
+        return 1;
     }
 
 

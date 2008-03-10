@@ -56,6 +56,10 @@ private static mixed    Touch         = 0;
 private string          Town          = "wilderness";
 private int		DefaultExits  = 1;
 private int		Flying        = 1;
+private int		Sitting       = 0;
+private int		Kneeling      = 0;
+private int		Standing      = 0;
+private int		Swimming      = 0;
 private int		ObviousVisible       = 1;
 private int		ActionChance  = 10;
 mapping			ItemsMap      = ([]);
@@ -63,7 +67,10 @@ private static mixed    global_item;
 private static mixed	Action;
 private int		tick_resolution	= 5;
 private int		TerrainType	= T_OUTDOORS;
-private mapping         ActionsMap     = ([]);
+private int		Medium  	= MEDIUM_LAND;
+private mapping         ActionsMap      = ([]);
+private string          SinkRoom        = "";
+private string          FlyRoom         = "";
 
 
 string GetClimate();
@@ -465,12 +472,26 @@ varargs void SetListen(mixed items, mixed arg) {
     }
 }
 
+int SetMedium(int medium) {
+    Medium = medium;
+    return Medium;
+}
+
 int GetMedium() {
-    return MEDIUM_LAND;
+    return Medium;;
 }
 
 int GetNightLight() {
     return NightLight;
+}
+
+int GetClimateExposed(){
+    string *nonexposed_media = ({ MEDIUM_SPACE, MEDIUM_WATER });
+    int nonexposed_terrain = (T_SEAFLOOR|T_INDOORS|T_UNDERWATER|T_UNDERGROUND|T_SPACE|T_PLANAR|T_BIOLOGICAL);
+    if(GetClimate()=="indoors") return 0;
+    if(GetTerrainType() & (nonexposed_terrain)) return 0;
+    if(member_array(GetMedium(), nonexposed_media) != -1) return 0;
+    return 1;
 }
 
 static int SetNightLight(int x) {
@@ -970,7 +991,67 @@ int SetCanFly(int i){
 mixed CanFly(object who, string dest){
     if(!who) who = this_player();
     if(!dest) dest = "";
+    if(MEDIUM_WATER == Medium || MEDIUM_SPACE == Medium) return 0;
+    if(sizeof(FlyRoom)) return 1;
     return Flying;
+}
+
+int SetCanSwim(int i){
+    if(i && i > 0) Swimming = 1;
+    else Swimming = 0;
+}
+
+mixed CanSwim(object who, string dest){
+    if(!who) who = this_player();
+    if(!dest) dest = "";
+    if((MEDIUM_WATER == Medium) || (MEDIUM_SURFACE == Medium) ) return 1;
+    if(GetTerrainType() & (T_ALL_SEA)) return 1;
+    return Swimming;
+}
+
+int SetCanStand(int i){
+    if(i && i > 0) Standing = 1;
+    else Standing = 0;
+}
+
+mixed CanStand(object who, string dest){
+    if(!who) who = this_player();
+    if(!dest) dest = "";
+    if(GetTerrainType() & (T_SPACE | T_UNDERWATER | T_SURFACE)) return 0;
+    if(GetTerrainType() & (T_SEAFLOOR)) return 1;
+    if((MEDIUM_AIR == Medium)) return 0;
+    if((MEDIUM_LAND == Medium)) return 1;
+    return Standing;
+}
+
+int SetCanSit(int i){
+    if(i && i > 0) Sitting = 1;
+    else Sitting = 0;
+}
+
+mixed CanSit(object who, string dest){
+    if(!who) who = this_player();
+    if(!dest) dest = "";
+    if(GetTerrainType() & (T_SPACE | T_UNDERWATER | T_SURFACE)) return 0;
+    if(GetTerrainType() & (T_SEAFLOOR)) return 1;
+    if((MEDIUM_AIR == Medium)) return 0;
+    if((MEDIUM_LAND == Medium)) return 1;
+    return Sitting;
+}
+
+int SetCanKneel(int i){
+    if(i && i > 0) Kneeling = 1;
+    else Kneeling = 0;
+}
+
+mixed CanKneel(object who, string dest){
+    if(!who) who = this_player();
+    if(!dest) dest = "";
+    if(GetTerrainType() & (T_SPACE | T_UNDERWATER | T_SURFACE)) return 0;
+    if(GetTerrainType() & (T_SEAFLOOR)) return 1;
+    if((MEDIUM_AIR == Medium)) return 0;
+    if((MEDIUM_LAND == Medium)) return 1;
+    return Kneeling;
 }
 
 int SetNoObviousExits(int i){
@@ -1028,6 +1109,24 @@ int GenerateObviousExits(){
 
 int eventReceiveObject(object ob){
     return container::eventReceiveObject(ob);
+}
+
+string SetFlyRoom(string str){
+    FlyRoom = str;
+    return FlyRoom;
+}
+
+string GetFlyRoom(){
+    return FlyRoom;
+}
+
+string SetSinkRoom(string str){
+    SinkRoom = str;
+    return SinkRoom;
+}
+
+string GetSinkRoom(){
+    return SinkRoom;
 }
 
 static void init() {

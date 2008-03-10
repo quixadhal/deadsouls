@@ -52,6 +52,40 @@ string opposite_dir(string str){
     case "southwest" : ret = "northeast";break;
     case "up" : ret = "down";break;
     case "down" : ret = "up";break;
+
+    case "+y" : ret = "-y";break;
+    case "-y" : ret = "+y";break;
+    case "+x" : ret = "-x";break;
+    case "-x" : ret = "+x";break;
+    case "+z" : ret = "-z";break;
+    case "-z" : ret = "+z";break;
+
+
+    case "+x+y" : ret = "-x-y";break;
+    case "-x-y" : ret = "+x+y";break;
+    case "+x-y" : ret = "-x+y";break;
+    case "-x+y" : ret = "+x-y";break;
+
+    case "+x+z" : ret = "-x-z";break;
+    case "-x-z" : ret = "+x+z";break;
+    case "+x-z" : ret = "-x+z";break;
+    case "-x+z" : ret = "+x-z";break;
+
+    case "+y+z" : ret = "-y-z";break;
+    case "-y-z" : ret = "+y+z";break;
+    case "+y-z" : ret = "-y+z";break;
+    case "-y+z" : ret = "+y-z";break;
+
+
+    case "+x+y-z" : ret = "-x-y+z";break;
+    case "+x+y+z" : ret = "-x-y-z";break;
+    case "-x-y-z" : ret = "+x+y+z";break;
+    case "-x-y+z" : ret = "+x+y-z";break;
+    case "+x-y-z" : ret = "-x+y+z";break;
+    case "+x-y+z" : ret = "-x+y-z";break;
+    case "-x+y-z" : ret = "+x-y+z";break;
+    case "-x+y+z" : ret = "+x-y-z";break;
+
     default : ret = "";break;
     }
     return ret;

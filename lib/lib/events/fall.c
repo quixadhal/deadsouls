@@ -12,7 +12,7 @@ mixed eventFall() {
     if(!env || !(rumbo = env->GetExit("down"))) return 0;
     if(env == rumbo) return 0;
     if(env->GetMedium() != MEDIUM_AIR){
-        send_messages("fall", "$agent_name $agent_verb to the ground.",
+        send_messages("crash", "$agent_name $agent_verb down!",
           this_object(), 0, env);
         if(living(this_object())) this_object()->SetPosition(POSITION_LYING);
         return 1;
@@ -25,10 +25,10 @@ mixed eventFall() {
         }
         tell_object(this_object(),"You plummet downward!");
         if(this_object()->eventMove(rumbo)){
-            tell_room(env,capitalize(name)+" continues "+
-              possessive(this_object())+" fall downward.", ({ this_object() }));
             tell_room(rumbo,capitalize(name)+" plummets in from above.",
               ({ this_object() }));
+            tell_room(env,capitalize(name)+" continues "+
+              possessive(this_object())+" fall downward.", ({ this_object() }));
 
             if(rumbo->GetMedium() == MEDIUM_AIR && !(this_object()->CanFly())){ 
                 call_out( "eventFall", 1);

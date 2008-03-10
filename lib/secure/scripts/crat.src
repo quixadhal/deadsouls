@@ -72,6 +72,7 @@ call me->AddChannel("free_speech")
 call me->AddChannel("discworld-chat")
 call me->AddChannel("discworld-cre")
 call me->AddChannel("dgd")
+call me->AddChannel("dutch")
 call me->AddChannel("ibuild")
 call me->AddChannel("ichat")
 call me->AddChannel("pchat")
@@ -95,4 +96,5 @@ earmuff TheOnion
 earmuff Sandbox
 earmuff TMS
 earmuff arthmoor
+gag on
 save

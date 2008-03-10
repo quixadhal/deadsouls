@@ -1,0 +1,83 @@
+#include <lib.h>
+#include <daemons.h>
+
+inherit LIB_DAEMON;
+
+void help();
+mixed var, newval;
+object ob;
+
+int cmd(string str) {
+    int i;
+    mixed ret;
+    string cmd, what;
+
+    if(!str || str == ""){
+        help();
+        return 1;
+    }
+
+    i = sscanf(str,"%s %s %s", cmd, var, what);
+
+    if(i != 3 || (cmd != "get" && cmd != "set")){
+        help();
+        return i;
+    }
+
+    if(cmd == "set"){
+        int tmp;
+        i = sscanf(what,"%s %s", newval, what);
+        if(i != 2){
+            help();
+            return i;
+        }
+        if(sscanf(newval,"%d",tmp)) newval = tmp;
+    }
+
+    ob = to_object(what);
+
+    if(!ob){
+        string path = this_player()->query_cwd()+"/";
+        if(last(what,2) != ".c") what += ".c";
+        if(file_exists(what)) ob = load_object(what);
+        else if(file_exists(path+what)) ob = load_object(path+what);
+    }
+
+    if(!ob){
+        write(truncate(what,2)+" not found.");
+        return 1;
+    }
+
+    i = catch( ret = evaluate(bind( (: fetch_variable($(var)) :), ob)) );
+
+    if(i){
+        write("Error in variable query.");
+        return 1;
+    }
+
+    write(var+" in "+identify(ob)+" is "+identify(ret));
+
+    if(cmd == "get"){
+        return 1;
+    }
+
+    if(cmd == "set"){
+        evaluate(bind( (: store_variable($(var), $(newval)) :), ob));
+        ret = evaluate(bind( (: fetch_variable($(var)) :), ob));
+        write(var+" in "+identify(ob)+" is now "+identify(ret));
+        return 1;
+    }
+
+    write("Error.");
+    return 1;
+}
+
+void help() {
+    write("Syntax: var get <variable name> <object or file>\n"
+      "        var set <variable name> <new value> <object or file>\n\n"
+      "Sets or gets the value of a variable in an object.\n"
+      "Examples:\n"
+      "var get isPK me\n"
+      "var set Attackable 0 fighter\n\n"
+      "Use with EXTREME caution.");
+}

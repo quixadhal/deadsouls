@@ -25,6 +25,7 @@ static void create() {
     SetExits( ([ "south" : "/domains/campus/room/npath",
         "north" : "/domains/town/room/south_road2",
       ]) );
+    SetFlyRoom("/domains/town/virtual/sky/28,99997,1");
 }
 void init(){
     ::init();

@@ -23,6 +23,7 @@ static void create() {
     SetExits( ([ 
         "south" : "/domains/town/room/road",
       ]) );
+    SetFlyRoom("/domains/town/virtual/sky/28,2,1");
 
 }
 void init(){

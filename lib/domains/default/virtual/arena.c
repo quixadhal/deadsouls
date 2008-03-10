@@ -17,6 +17,7 @@ varargs int LimitTravel(int requested, int maximum, int lessthan){
     else return requested;
 }
 
+#if 0
 int PreExit(mixed arg1, mixed arg2){
     object ob = this_player();
     if(!ob) return 0;
@@ -26,10 +27,12 @@ int PreExit(mixed arg1, mixed arg2){
     }
     return 1;
 }
+#endif
 
 varargs static void create(int x, int y) {
     string n, s, e, w;
     string ne, nw, se, sw;
+    string fly;
 
     int max_north = 10;
     int max_south = 1;
@@ -52,12 +55,14 @@ varargs static void create(int x, int y) {
     else n = "arena/" + x + "," + (y+1);
     if( y == max_south ) s = "arena/" + x+ "," + (y);
     else s = "arena/" + x + "," + (y-1);
+    fly = "sky/" + x + "," + y + "," + 1;
 
     nw = "arena/" + LimitTravel(x - 1, max_west, 1) + "," + LimitTravel(y+1, max_north);
     ne = "arena/" + LimitTravel(x + 1, max_east) + "," + LimitTravel(y+1, max_north);
     sw = "arena/" + LimitTravel(x - 1, max_west, 1) + "," + LimitTravel(y-1, max_south, 1);
     se = "arena/" + LimitTravel(x + 1, max_east) + "," + LimitTravel(y-1, max_south, 1);
 
+    SetFlyRoom(__DIR__+fly);
 
     SetGoMessage("You can't travel in that direction.");
     if( n ) AddExit("north", __DIR__ + n);
@@ -69,7 +74,8 @@ varargs static void create(int x, int y) {
     if( se ) AddExit("southeast", __DIR__ + se);
     if( sw ) AddExit("southwest", __DIR__ + sw);
 
-    AddExit("up", __DIR__ + "sky/"+x+","+y+",1", (: PreExit :) );
+    //AddExit("up", __DIR__ + "sky/"+x+","+y+",1", (: PreExit :) );
+    //AddExit("up", __DIR__ + "sky/"+x+","+y+",1", (: PreExit :) );
 
     if(x == 5 && y == 1){
         RemoveExit("south");

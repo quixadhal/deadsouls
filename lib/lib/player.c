@@ -149,13 +149,13 @@ varargs int eventDie(mixed agent) {
           "different, and the world about you is unfamiliar.",
           this_object());
         if( agent ) {
-            message("other_action", GetName() + " drops dead by the hand "
-              "of " + agentname + ".",
+            message("other_action", GetName() + " is killed by "
+              + agentname + ".",
               environment(this_object()), ({ agent, this_object() }));
             message("other_action", "You send " + GetName() + " into the "
               "Underworld.", agent);
         }
-        else message("other_action", GetName() + " drops dead.",
+        else message("other_action", GetName() + " dies.",
               environment(), ({ this_object() }) );
 
         NewBody(GetRace());
@@ -240,10 +240,12 @@ int eventMove(mixed dest) {
     return ret;
 }
 
-varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
+varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir) {
     object *inv;
     object prev;
     string prevclim, newclim;
+    //tc("dest: "+dest+", omsg: "+omsg+", imsg: "+imsg+", dir: "+identify(dir));
+    //tc("stack: "+get_stack(),"red");
 
     if( prev = environment() ) {
         prevclim = (string)prev->GetClimate();
@@ -262,23 +264,24 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
         inv = filter(all_inventory(prev), (: (!GetInvis($1) && living($1) &&
               !GetProperty("stealthy") &&    
               ($1 != this_object())) :));
-        if( !omsg || omsg == "" || query_verb() == "home" ) {
-            omsg = GetMessage("telout");
-            imsg = GetMessage("telin");
-        }
-        else if(GetPosition() == POSITION_SITTING ||
-          GetPosition() == POSITION_LYING ){
-            omsg = GetName()+" crawls "+omsg+".";
-            imsg = GetName()+" crawls in.";
-        }
-        else if(GetPosition() == POSITION_FLYING ){
-            omsg = GetName()+" flies "+omsg+".";
-            imsg = GetName()+" flies in.";
-        }
-
-        else {
-            omsg = GetMessage("leave", omsg);
-            imsg = GetMessage("come", imsg);
+        if(!dir){
+            if( !omsg || omsg == "" || query_verb() == "home" ) {
+                omsg = GetMessage("telout");
+                imsg = GetMessage("telin");
+            }
+            else if(GetPosition() == POSITION_SITTING ||
+              GetPosition() == POSITION_LYING ){
+                omsg = GetName()+" crawls "+omsg+".";
+                imsg = GetName()+" crawls in.";
+            }
+            else if(GetPosition() == POSITION_FLYING ){
+                omsg = GetName()+" flies "+omsg+".";
+                imsg = GetName()+" flies in.";
+            }
+            else {
+                omsg = GetMessage("leave", omsg);
+                imsg = GetMessage("come", imsg);
+            }
         }
         inv->eventPrint(omsg, MSG_ENV);
     }
@@ -296,7 +299,7 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg) {
         AddSkillPoints("stealth", 30 + GetSkillLevel("stealth")*2);
         eventPrint("%^RED%^You move along quietly....%^RESET%^\n");
     }
-    if(GetProperty("stealthy")) {
+    if(GetProperty("stealthy") && interactive(this_object())) {
         if(!creatorp(this_object())) AddStaminaPoints(-3 - random(3));
         AddSkillPoints("stealth", 10 + GetSkillLevel("stealth")*2);
     }
