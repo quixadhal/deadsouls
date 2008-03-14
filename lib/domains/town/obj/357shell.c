@@ -1,6 +1,7 @@
 #include <lib.h>
 #include <vendor_types.h>
-inherit "/lib/shell";
+inherit LIB_SHELL;
+
 void create(){
     ::create();
     SetKeyName("357shell");
@@ -9,7 +10,11 @@ void create(){
     SetShort("a .357 shell casing");
     SetLong("This is the spent casing of a .357 magnum bullet.");
     SetCaliber(357);
-    SetPistolType("revolver");
+    SetFirearmType("revolver");
     SetAmmoType("magnum");
     SetVendorType(VT_TREASURE);
+}
+
+void init(){
+    ::init();
 }

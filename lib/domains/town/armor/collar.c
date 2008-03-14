@@ -6,7 +6,6 @@ inherit LIB_BANE;
 
 static void create(){
     armor::create();
-    bane::create();
     SetKeyName("collar");
     SetId(({"repellent_collar","bane"}));
     SetAdjectives( ({"repellent","odd","plastic","white"}) );

@@ -1,7 +1,6 @@
 #include <lib.h>
 inherit LIB_NPC;
 
-
 static void create(){
     npc::create();
     SetKeyName("gate guard");
@@ -12,15 +11,15 @@ static void create(){
       "spent many months in arduous training, and by the looks of him, has seen "+
       "plenty of action in his lifetime.  He is extremely large, looks very "+
       "tough, and whatever he is guarding is probably very safe.");
+    SetInventory(([
+        "/domains/town/armor/bdu" : "wear bdu",
+        "/domains/town/armor/helmet2" : "wear helmet",
+        "/domains/town/weap/m16rifle_mp" : "wield rifle",
+      ]));
     SetLevel(20);
     SetRace("human");
     SetClass("fighter");
     SetGender("male");
-    SetInventory(([
-        "/domains/town/weap/9mmpistol_mp" : "wield pistol",
-        "/domains/town/armor/helmet2" : "wear helmet",
-        "/domains/town/armor/bdu" : "wear bdu"
-      ]));
 }
 void init(){
     ::init();

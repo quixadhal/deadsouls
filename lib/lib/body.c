@@ -44,7 +44,7 @@ private static class MagicProtection *Protection;
 static private int HeartModifier = 0;
 private static string PoliticalParty, BodyComposition;
 private static int Pacifist, rifleshot_wounds, gunshot_wounds, globalint1;
-private static int Size, Respiration, BodyType;
+private static int Size, BodyType;
 string *ExtraChannels;
 mixed Agent;
 
@@ -87,12 +87,6 @@ int GetSize(){
     return size;
 }
 
-int GetRespiration(){
-    int resp = RACES_D->GetRaceRespirationType(GetRace());
-    if(Respiration) return Respiration;
-    return resp;
-}
-
 int GetBodyType(){
     int body_type = RACES_D->GetRaceBodyType(GetRace());
     if(BodyType) return BodyType;
@@ -105,10 +99,6 @@ int SetMass(int i){
 
 int SetSize(int i){
     return Size = i;
-}
-
-int SetRespiration(int i){
-    return Respiration = i;
 }
 
 int SetBodyType(int i){
@@ -200,12 +190,17 @@ mixed direct_turn_liv() {
 void eventCheckEnvironment(){
     object env = environment();
     int i;
-    int restype = RACES_D->GetRaceRespirationType(this_object()->GetRace());
+    int restype = this_object()->GetRespiration();
     float j = percent(GetHealthPoints(), GetMaxHealthPoints());
     float k = percent(GetStaminaPoints(), GetMaxStaminaPoints());
 
     if( j < COLLAPSE_AT  || k < COLLAPSE_AT ) {
         this_object()->eventCollapse();
+    }
+
+    if(RACES_D->GetLimblessRace(this_object()->GetRace()) &&
+      this_object()->GetPosition() == POSITION_STANDING){
+        this_object()->SetPosition(POSITION_FLOATING);
     }
 
     if(!env) return;
@@ -227,7 +222,10 @@ void eventCheckEnvironment(){
         if(!(this_object()->GetPosition() == POSITION_FLYING &&
             environment()->GetMedium() == MEDIUM_SURFACE)){
             if(!(environment()->GetTerrainType() & (T_SEAFLOOR)) && this_object()->CanSwim()){
-                this_object()->eventSwim();
+                if(this_object()->GetPosition() != POSITION_FLOATING){
+                    //tc("hmm");
+                    this_object()->eventSwim();
+                }
             }
             else if(!(environment()->GetTerrainType() & (T_SEAFLOOR))){
                 this_object()->SetPosition(POSITION_FLOATING);
@@ -240,7 +238,7 @@ void eventCheckEnvironment(){
         //    call_out("eventSink", 1);
         //}
     }
-    else if(env->GetMedium() == MEDIUM_SPACE){
+    if(env->GetMedium() == MEDIUM_SPACE){
         this_object()->SetPosition(POSITION_FLOATING);
         if(restype != R_VACUUM){
             if(!this_object()->CanBreathe()){
@@ -249,7 +247,7 @@ void eventCheckEnvironment(){
             }
         }
     }
-    if(env->GetMedium() == MEDIUM_WATER){
+    else if(env->GetMedium() == MEDIUM_WATER){
         if(restype != R_VACUUM && restype != R_WATER){
             if(!this_object()->CanBreathe()){
                 eventPrint("You are drowning.");
@@ -257,7 +255,7 @@ void eventCheckEnvironment(){
             }
         }
     }
-    if(restype == R_WATER && env->GetMedium() != MEDIUM_WATER){
+    else if(restype == R_WATER && env->GetMedium() != MEDIUM_WATER){
         if(!this_object()->CanBreathe()){
             eventPrint("You are asphyxiating.");
             eventReceiveDamage("Air", ANOXIA, 100, 1);
@@ -314,7 +312,7 @@ private void checkCollapse() {
     this_object()->eventPrint("You feel some strength returning.");
 }
 
-int eventCollapse() {
+varargs int eventCollapse(int noparalyze) {
     int position = GetPosition();
     int medium;
     if(environment()) medium = environment()->GetMedium();
@@ -327,9 +325,7 @@ int eventCollapse() {
         }
     }
 
-    SetParalyzed(3, (: checkCollapse :));
-
-
+    if(!noparalyze) SetParalyzed(3, (: checkCollapse :));
 
     if(medium == MEDIUM_LAND){
         if( position == POSITION_LYING ) {
@@ -883,6 +879,7 @@ varargs int eventDie(mixed agent) {
         if( CanWear(ob, limbs) != 1 ) {
             return 0;
         }
+#if 0
         if(!inherits(LIB_WEAPON, ob)){
             foreach(limb in limbs) {
                 if(sscanf(limb,"%s foot",s1) || sscanf(limb,"%s hand",s1) ){
@@ -890,7 +887,8 @@ varargs int eventDie(mixed agent) {
                 }
             }
         }
-        if(sizeof(target_limb)) limbs = target_limb;
+#endif
+        if(sizeof(target_limb) && sizeof(limbs) == 1) limbs = target_limb;
         foreach(limb in limbs) {
             if( !WornItems[limb] ) WornItems[limb] = ({ ob });
             else WornItems[limb] += ({ ob });
@@ -1787,7 +1785,10 @@ varargs int eventDie(mixed agent) {
     int GetMelee() { return melee; }
 
 
-    int GetDying() { return Dying; }
+    int GetDying() {
+        if(HealthPoints < 1) return 1;
+        return Dying; 
+    }
 
     int SetSleeping(int x) {
         if(RACES_D->GetNonMeatRace(GetRace()) || GetRace() == "elf") return 0;

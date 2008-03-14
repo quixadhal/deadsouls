@@ -157,7 +157,7 @@ int SetProtection(string str){
     } 
     if(str == "on") booly=1;
     write("You set the ring's protection to: "+(booly ? "on" : "off")+".");
-    ringshadow->JadeProtection(booly);
+    if(ringshadow) ringshadow->JadeProtection(booly);
     return 1;
 }
 
@@ -173,7 +173,7 @@ int SetReporting(string str){
     }
     if(str == "on") booly=1;
     write("You set the ring's reporting to: "+(booly ? "on" : "off")+".");
-    ringshadow->JadeReporting(booly);
+    if(ringshadow) ringshadow->JadeReporting(booly);
     return 1;
 }
 
@@ -187,7 +187,7 @@ mixed eventEquip(object who, string array limbs){
         foreach(object element in sombras){
             if(base_name(element) == base_name(ringshadow)){
                 ok = 0;
-                destruct(ringshadow);
+                if(ringshadow) destruct(ringshadow);
                 ringshadow = element;
             }
         }
@@ -195,8 +195,8 @@ mixed eventEquip(object who, string array limbs){
     if(success){
         PerformHeal();
         if(ok){
-            ringshadow->eventShadow(who);
-            ringshadow->JadeProtection(1);
+            if(ringshadow) ringshadow->eventShadow(who);
+            if(ringshadow) ringshadow->JadeProtection(1);
         }
     }
     else if(ringshadow) destruct(ringshadow);
@@ -208,7 +208,7 @@ varargs mixed eventUnequip(object who) {
     if(!who) who = this_player();
     success = armor::eventUnequip(who);
     if(success){
-        ringshadow->eventUnshadow(ringshadow);
+        if(ringshadow) ringshadow->eventUnshadow(ringshadow);
     }
     return success;
 }

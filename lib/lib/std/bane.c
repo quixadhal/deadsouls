@@ -12,7 +12,3 @@ int SetBane(array arr){
     if(arr) bane = arr;
     return 1;
 }
-
-void create(){
-}
-

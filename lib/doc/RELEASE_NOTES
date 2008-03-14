@@ -1,3 +1,15 @@
+---- 2.7a14 ---
+- Released 2008-03-13
+- Added example of an environmental suit: /domains/default/armor/scoutsuit.c
+- Modified firearms code to include rifles: /domains/town/weap/m16rifle.c
+- NPC's now try to shoot weapons they're wielding, if they're loaded.
+- Removed out of date faqs.
+- Tweaks and fixes to room, rocketpack, and position code.
+- Fixed module id bug in Yautja wrist computer.
+- eventDescribeEnvironment() moved to /lib/events/describe.c in order
+  to consolidate player/npc behavior, and to simplify things for people
+  wanting to customize room appearance.
+
 ---- 2.7a13 ---
 - Released 2008-03-09
 - Added commands: position, var, variables, cconv, cwgconv.

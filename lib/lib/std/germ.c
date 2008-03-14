@@ -208,9 +208,9 @@ mixed eventEncounter(object who) {
 
 mixed eventInfect(object ob) {
     mixed tmp;
-    object presbane;
+    object *presbane;
     string race;
-    string *bane;
+    string *bane = ({});
     if(!ob) return;
 
     if(!this_object()) return 0;
@@ -218,9 +218,15 @@ mixed eventInfect(object ob) {
     if(!ob->CanReceive(this_object())) return 0;
     race = ob->GetRace();
 
-    presbane = present("bane",ob);
-    if(presbane) bane = presbane->QueryBane();
-    if(bane){
+    //presbane = present("bane",ob);
+    presbane = filter(all_inventory(ob), (: inherits(LIB_BANE,$1) :) );
+    if(sizeof(presbane)){
+        foreach(object foo in presbane){
+            bane += foo->QueryBane();
+        }
+    }
+
+    if(sizeof(bane)){
         if(member_array(GetKeyName(),bane) != -1) return 0;
         if(member_array("all",bane) != -1) return 0;
         foreach(string foo in GetId()){

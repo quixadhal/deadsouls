@@ -42,7 +42,7 @@ varargs static void create(int x, int y) {
     else n = "bottom/" + x + "," + (y+1);
     if( y <= max_south ) s = "bottom/" + x+ "," + (max_north);
     else s = "bottom/" + x + "," + (y-1);
-    u = "sub/" + x + "," + y + ",50";
+    u = "sub/" + x + "," + y + ",10";
 
     nw = "bottom/" + LimitTravel(x - 1, max_east, 1, max_west) + "," + LimitTravel(y+1, max_north);
     ne = "bottom/" + LimitTravel(x + 1, max_east) + "," + LimitTravel(y+1, max_north);

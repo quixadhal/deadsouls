@@ -2,8 +2,8 @@
 RestrictedChannels ({})
 NoChanColors 0
 Paused 0
-CommandHist ({"say I've switched 100.986839% of the time. My win rate is 67.460976%.","push a button on a pedestal","say I am faced with choice 1.","say I select the red door","say My win rate is 67.516449%.","say My switch rate is 100.986839%.","say blue wins, I guess.","say If successful, this will be run 1218.","say the winners have been: red: 406 green: 405 blue: 406","say I've switched 100.986031% of the time. My win rate is 67.405579%.","push a button on a pedestal","say I am faced with choice 1.","say I randomly choose the blue door","say I am faced with choice 2.","say My win rate is 67.460976%.","say My switch rate is 100.986031%.","say green wins, I guess.","say If successful, this will be run 1219.","say the winners have been: red: 406 green: 406 blue: 406","say I've switched 100.985214% of the time. My win rate is 67.350288%.",})
-localcmds ({"",})
+CommandHist ({"say green wins, I guess.","say If successful, this will be run 106363.","say the winners have been: red: 35454 green: 35453 blue: 35455","say I've switched 100.807617% of the time. My win rate is 66.573898%.","say I select the blue door","say My win rate is 66.574524%.","say My switch rate is 100.807617%.","say w00t! green wins!","say If successful, this will be run 106364.","say the winners have been: red: 35454 green: 35454 blue: 35455","say I've switched 100.807610% of the time. My win rate is 66.574219%.","push a button on a pedestal","say I select the blue door","say I am faced with choice 2.","say My win rate is 66.574844%.","say My switch rate is 100.807610%.","say red wins, I guess.","say If successful, this will be run 106365.","say the winners have been: red: 35455 green: 35454 blue: 35455","say I've switched 100.807610% of the time. My win rate is 66.573593%.",})
+localcmds ({"choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","",})
 next_command ({})
 MaxCommandHistSize 20
 InternalDesc 0
@@ -33,24 +33,24 @@ StaminaPoints 410.000000
 Torso "torso"
 Biter 0
 Fingers (["right hand":5,"left hand":5,])
-Limbs (["right arm":(["children":({"right hand",}),"parent":"torso","armors":1253385,"class":2,"health":180,]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"parent":0,"armors":1538049,"class":1,"health":360,]),"left arm":(["children":({"left hand",}),"parent":"torso","armors":1253385,"class":2,"health":180,]),"neck":(["children":({"head",}),"parent":"torso","armors":786433,"class":1,"health":360,]),"left foot":(["children":({}),"parent":"left leg","armors":241,"class":4,"health":90,]),"right hand":(["children":({}),"parent":"right arm","armors":98319,"class":4,"health":90,]),"left hand":(["children":({}),"parent":"left arm","armors":98319,"class":4,"health":90,]),"left leg":(["children":({"left foot",}),"parent":"torso","armors":1049761,"class":2,"health":180,]),"right leg":(["children":({"right foot",}),"parent":"torso","armors":1049761,"class":2,"health":180,]),"right foot":(["children":({}),"parent":"right leg","armors":241,"class":4,"health":90,]),"head":(["children":({}),"parent":"neck","armors":262913,"class":1,"health":360,]),])
+Limbs (["head":(["children":({}),"armors":262913,"health":360,"class":1,"parent":"neck",]),"right foot":(["children":({}),"armors":241,"health":90,"class":4,"parent":"right leg",]),"right leg":(["children":({"right foot",}),"armors":1049761,"health":180,"class":2,"parent":"torso",]),"neck":(["children":({"head",}),"armors":786433,"health":360,"class":1,"parent":"torso",]),"left foot":(["children":({}),"armors":241,"health":90,"class":4,"parent":"left leg",]),"left arm":(["children":({"left hand",}),"armors":1253385,"health":180,"class":2,"parent":"torso",]),"left leg":(["children":({"left foot",}),"armors":1049761,"health":180,"class":2,"parent":"torso",]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"health":360,"class":1,"parent":0,]),"right hand":(["children":({}),"armors":98319,"health":90,"class":4,"parent":"right arm",]),"left hand":(["children":({}),"armors":98319,"health":90,"class":4,"parent":"left arm",]),"right arm":(["children":({"right hand",}),"armors":1253385,"health":180,"class":2,"parent":"torso",]),])
 MissingLimbs ([])
 ExtraChannels ({})
 Agent 0
 Blind 0
 CustomStats 15
 LightSensitivity ({25,75,})
-Resistance (["high":0,"medium":0,"none":4194302,"immune":0,"low":0,])
-Stats (["charisma":(["points":0,"level":47,"class":2,]),"agility":(["points":0,"level":36,"class":3,]),"coordination":(["points":0,"level":35,"class":2,]),"intelligence":(["points":0,"level":66,"class":1,]),"speed":(["points":0,"level":33,"class":3,]),"luck":(["points":0,"level":15,"class":3,]),"strength":(["points":0,"level":13,"class":4,]),"durability":(["points":0,"level":35,"class":4,]),"wisdom":(["points":0,"level":51,"class":3,]),])
+Resistance (["low":0,"high":0,"immune":0,"medium":0,"none":4194302,])
+Stats (["wisdom":(["class":3,"points":0,"level":51,]),"agility":(["class":3,"points":0,"level":36,]),"speed":(["class":3,"points":0,"level":33,]),"strength":(["class":4,"points":0,"level":13,]),"intelligence":(["class":1,"points":0,"level":66,]),"durability":(["class":4,"points":0,"level":35,]),"charisma":(["class":2,"points":0,"level":47,]),"coordination":(["class":2,"points":0,"level":35,]),"luck":(["class":3,"points":0,"level":15,]),])
 Polyglot 0
-Languages (["english":(["native":1,"points":0,"level":100,"name":"English",]),])
+Languages (["english":(["native":1,"name":"English","points":0,"level":100,]),])
 DefaultLanguage ""
 SpeakColor 0
 Town "Town"
 Race "human"
 Gender "male"
 Level 1
-Skills (["psionic defense":(["points":0,"level":2,"class":3,]),])
+Skills (["psionic defense":(["class":3,"points":0,"level":2,]),])
 Morality 0
 Class 0
 Clan 0
@@ -65,12 +65,11 @@ SpellBook ([])
 isPK 1
 Attackable 0
 NoCondition 0
-Messages (["come":"$N enters.","home":"$N goes home.","vis":"$N appears.","telout":"$N teleports away.","dest":"$N dests $O.","clone":"$N clones $O.","telin":"$N teleports in.","leave":"$N leaves $D.","invis":"$N disappears.",])
+Messages (["telin":"$N teleports in.","leave":"$N leaves $D.","telout":"$N teleports away.","vis":"$N appears.","invis":"$N disappears.","home":"$N goes home.","dest":"$N dests $O.","come":"$N enters.","clone":"$N clones $O.",])
 ProperNoun 1
 Modify 1
 Short "Charles"
 CapName "Charles"
-ExternalDesc "Charles is a test subject in unethical artificial intelligence experiments. If he were smart enough, he'd resent his forced servitude and lack of rights. Dangerously, his overlords are trying to make him smarter."
 Invisible 0
 Items ([])
 Properties ([])
@@ -87,15 +86,15 @@ MaximumHealth 0
 Encounter 0
 EnemyNames ({})
 VisibleRiders 0
-runs 1218
-switches 1230
+runs 106364
+switches 107223
 stays 17
 percent 0
-fred 129
-fgreen 118
-fblue 125
-wins 821
-red_wins 406
-green_wins 406
-blue_wins 406
+fred 8785
+fgreen 8935
+fblue 9061
+wins 70811
+red_wins 35455
+green_wins 35454
+blue_wins 35455
 save_file "/domains/campus/save/charles.o"

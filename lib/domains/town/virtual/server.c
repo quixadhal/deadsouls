@@ -9,6 +9,7 @@ mixed compile_object(string file) {
     path = explode(file, "/");
     //if( sizeof(path) != 5 ) return "Wrong size path";
     if( file_size(__DIR__ + path[3] + ".c") < 1 ) return "bad file";
+    if( sizeof(path) < 5 ) return 0;
     if( (elements = sscanf(path[4], "%d,%d,%d", x, y, z)) != 3 ) {
         if( (elements = sscanf(path[4], "%d,%d", x, y)) != 2 ) return "missing comma";
     }

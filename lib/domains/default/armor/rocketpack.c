@@ -29,9 +29,9 @@ static void create(){
     SetAdjectives(({"large","rocket"}));
     SetShort("a small rocket pack");
     SetLong( (: LongD :) );
-    SetMass(1500);
+    SetMass(800);
     SetBaseCost(18000);
-    SetArmorType(A_CUSTOM);
+    SetArmorType(A_VEST);
     AddSave( ({ "charge", "Directions" }) );
     SetRestrictLimbs( ({ "torso" }) );
     set_heart_beat(1);
@@ -146,6 +146,12 @@ int boost(string str, int coasting){
         //return 1;
     }
 
+    //tc("dest: ("+dest+")");
+    if(!sizeof(dest)){
+        write("You can't go that way.");
+        return 1;
+    }
+
     omsg = owner->GetName()+" rockets "+str+".";
     imsg = owner->GetName()+" rockets in.";
 
@@ -198,9 +204,9 @@ mixed eventEquip(object who, string array limbs){
     rocketshadow = new("/shadows/rocketpack");
     owner = who;
     if(success){
-        rocketshadow->eventShadow(who);
+        if(rocketshadow) rocketshadow->eventShadow(who);
     }
-    else destruct(rocketshadow);
+    else if(rocketshadow) destruct(rocketshadow);
     activated = 0;
     return success;
 }
@@ -210,7 +216,7 @@ varargs mixed eventUnequip(object who) {
     if(!who) who = this_player();
     success = armor::eventUnequip(who);
     if(success){
-        rocketshadow->eventUnshadow();
+        if(rocketshadow) rocketshadow->eventUnshadow();
     }
     if(rocketshadow) destruct(rocketshadow);
     return success;
@@ -238,5 +244,4 @@ int eventDecrementCharge(){
 int GetRemainingCharge(){
     return charge;
 }
-
 

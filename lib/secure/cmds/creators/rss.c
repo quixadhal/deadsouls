@@ -245,7 +245,7 @@ void sendHTTPGet()
     version() + CARRIAGE_RETURN+"\n"+CARRIAGE_RETURN+"\n";
     int result = 0;
     results = "";
-    tc("str: "+str);
+    //tc("str: "+str);
 #ifdef _DEBUG
     player->eventPrint("Sending HTTP get request..." );
 #endif

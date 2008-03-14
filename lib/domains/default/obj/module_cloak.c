@@ -16,7 +16,7 @@ void create(){
 
     SetKeyName("data module");
     SetId( ({"module", "cartridge"}) );
-    SetAdjectives( ({"data","Yautja","stealth"}) );
+    SetAdjectives( ({"data","yautja","stealth"}) );
     SetShort("a Yautja data module");
     SetLong("This is a small cartridge that contains programming intended "
       "for a Yautja wrist computer. It appears to have writing on it.");

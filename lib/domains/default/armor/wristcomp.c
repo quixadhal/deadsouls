@@ -34,7 +34,7 @@ static void create() {
     SetDamagePoints(75);
     SetVendorType(VT_ARMOR);
     SetMass(10);
-    SetBaseCost("silver",17000);
+    SetBaseCost("silver", 1000);
     SetArmorType(A_CUSTOM);
     SetProtection(BLUNT, 10);
     SetProtection(BLADE, 10);
@@ -132,7 +132,7 @@ varargs mixed eventInstall(object what, object where){
 }
 
 int CanReceive(object ob){
-    if(!answers_to("Yautja data module",ob)){
+    if(!answers_to("yautja data module",ob)){
         write("That is not a proper data module for this computer.");
         return 0;
     }

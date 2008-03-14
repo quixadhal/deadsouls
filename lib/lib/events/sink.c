@@ -2,6 +2,9 @@
 #include <medium.h>
 #include <message_class.h>
 
+//int direct_sink(){ return 1; }
+//int direct_sink_down(){ return 1; }
+
 mixed eventSink() {
     object env = environment();
     mixed rumbo = 0;
@@ -13,7 +16,7 @@ mixed eventSink() {
         !(sizeof(rumbo = env->GetSinkRoom())))) return 0;
     if(env == rumbo) return 0;
     if(this_object()->GetPosition() == POSITION_SWIMMING){
-        return 1;
+        return 2;
     }
     if(living(this_object())) this_object()->SetPosition(POSITION_FLOATING);
     if(!rumbo) return 0;
@@ -28,10 +31,10 @@ mixed eventSink() {
         tell_room(rumbo,capitalize(name)+" floats in from above.",
           ({ this_object() }));
 
-        if(sizeof(rumbo->GetSinkRoom())){ 
+        if(rumbo || sizeof(rumbo->GetSinkRoom())){ 
             call_out( "eventSink", 2);
         }
-        return 1;
+        return 3;
     }
     return 0;
 }

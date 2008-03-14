@@ -17,7 +17,7 @@ void create() {
         "/domains/town/armor/breather" : 1,
       ]));
     SetBaseCost("silver",1);
-    SetMaxCarry(2000);
+    SetMaxCarry(5000);
 
 }
 void init(){

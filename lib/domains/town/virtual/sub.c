@@ -27,7 +27,7 @@ varargs static void create(int x, int y, int z) {
     int max_east = 100000;
     int max_west = 1;
     int max_up = 1;
-    int max_down = 50;
+    int max_down = 10;
 
     SetNoReplace(1);
     virt_subsurface::create();
@@ -75,7 +75,7 @@ varargs static void create(int x, int y, int z) {
         AddExit("up", __DIR__ + "surface/" + x + "," + y);
     }
 
-    if(z == 50){
+    if(z == 10){
         RemoveExit("down");
         AddExit("down", __DIR__ + "bottom/" + x + "," + y);
     }

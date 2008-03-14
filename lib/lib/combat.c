@@ -430,7 +430,7 @@ int CanMelee(object target) {
     if(!this_object()->GetMelee()){
 
         string limb = target->GetRandomLimb(TargetLimb);
-        int chance = ( 6*GetSkillLevel("melee attack") +
+        int chance = ( 6*this_object()->GetSkillLevel("melee attack") +
           2*GetStatLevel("coordination") )/20;
         int y = random(10);
         int x;
@@ -452,7 +452,7 @@ int CanMelee(object target) {
     }
     else {
         string limb = target->GetRandomLimb(TargetLimb);
-        int chance = ( 7*GetSkillLevel("melee attack") +
+        int chance = ( 7*this_object()->GetSkillLevel("melee attack") +
           3*GetStatLevel("coordination") )/10;
         int y = random(10);
         int x;
@@ -628,6 +628,12 @@ int eventExecuteAttack(mixed target) {
         if( target->GetDying() ) {
             return;
         }
+
+        if(weapon->GetLoaded() && !interactive()){
+            weapon->eventShoot(weapon, target);
+            return;
+        }
+
         pro = CanWeapon(target, weapon_type, hands, num);
         power = random(pro);
         con = target->GetDefenseChance(target->GetSkillLevel(weapon_type +
@@ -706,7 +712,7 @@ int eventExecuteAttack(mixed target) {
             else return 0;
         }
         if( !f || (functionp(f) & FP_OWNER_DESTED) ) {
-            attacks = 1 + random(GetSkillLevel("melee attack"))/30;
+            attacks = 1 + random(this_object()->GetSkillLevel("melee attack"))/30;
             while( attacks-- ) {
                 if( target->GetDying() ) {
                     break;

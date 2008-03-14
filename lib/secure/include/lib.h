@@ -49,6 +49,7 @@
 #define LIB_EXITS          DIR_LIB        "/exits"
 #define LIB_FILE           DIR_SECURE_LIB "/file"
 #define LIB_FILES          DIR_LIB        "/files"
+#define LIB_FIREARM        DIR_LIB        "/firearm"
 #define LIB_FISH           DIR_LIB        "/fish"
 #define LIB_FISHING        DIR_LIB        "/fishing"
 #define LIB_FLASHLIGHT     DIR_LIB        "/flashlight"

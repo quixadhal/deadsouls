@@ -100,7 +100,7 @@ int eventMove(mixed dest) {
     if(environment()->GetMedium() == MEDIUM_LAND &&
       (this_object()->GetPosition() == POSITION_FLOATING ||
         this_object()->GetPosition() == POSITION_SWIMMING)){
-        call_out("eventCollapse", 1);
+        call_out("eventCollapse", 1, 1);
     }
     else if((environment()->GetMedium() == MEDIUM_WATER ||
         environment()->GetMedium() == MEDIUM_SURFACE) &&
@@ -112,7 +112,9 @@ int eventMove(mixed dest) {
             if(!(this_object()->GetPosition() == POSITION_FLYING &&
                 environment()->GetMedium() == MEDIUM_SURFACE)){
                 if(!(environment()->GetTerrainType() & (T_SEAFLOOR)) && this_object()->CanSwim()){
-                    this_object()->eventSwim();
+                    if(this_object()->GetPosition() != POSITION_FLOATING){
+                        this_object()->eventSwim();
+                    }
                 }
                 else call_out("eventSink", 1);
             }

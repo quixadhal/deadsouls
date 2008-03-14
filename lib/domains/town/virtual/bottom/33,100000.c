@@ -16,15 +16,15 @@ static void create() {
     SetShort("the sea floor");
     SetLong("This is the bottom of a vast sea.");
     SetExits(([
-"north" : "/domains/town/virtual/bottom/1,2",
-"south" : "/domains/town/virtual/bottom/1,100000",
-"east" : "/domains/town/virtual/bottom/2,1",
-"northeast" : "/domains/town/virtual/bottom/2,2",
-"southeast" : "/domains/town/virtual/bottom/2,100000",
-"west" : "/domains/town/virtual/bottom/100000,1",
-"northwest" :"/domains/town/virtual/bottom/100000,2",
+"north" :"/domains/town/virtual/bottom/33,1", 
+"south" : "/domains/town/virtual/bottom/33,99999", 
+"east" : "/domains/town/virtual/bottom/34,100000", 
+"northeast" : "/domains/town/virtual/bottom/34,100000", 
+"southeast" : "/domains/town/virtual/bottom/34,100000", 
+"west" : "/domains/town/virtual/bottom/32,100000", 
+"northwest" : "/domains/town/virtual/bottom/100000,100000", 
 "southwest" : "/domains/town/virtual/bottom/100000,100000", 
-"up" : "/domains/town/virtual/sub/1,1,50" 
+"up" : "/domains/town/virtual/sub/33,100000,10"
       ]));
 
     SetInventory(([

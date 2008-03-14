@@ -12,6 +12,8 @@
 #include <armor_types.h>
 #include <damage_types.h>
 #include <meal_types.h>
+#include <medium.h>
+#include <respiration_types.h>
 #include "include/race.h"
 
 inherit LIB_BODY;
@@ -20,7 +22,47 @@ inherit LIB_LANGUAGE;
 inherit LIB_TALK;
 
 private string Town, Race, Gender;
-private static int Bulk;
+private static int Bulk, Respiration;
+
+int GetRespiration(){
+    int resp = RACES_D->GetRaceRespirationType(this_object()->GetRace());
+    if(Respiration) return Respiration;
+    return resp;
+}
+
+int SetRespiration(int i){
+    return Respiration = i;
+}
+
+varargs int CanBreathe(object what, object where){
+    object env = environment(this_object());
+    int medium, restype; 
+    if(env && living(env)) env = environment(env);
+    if(!env) return 0;
+    medium = env->GetMedium();
+    restype = this_object()->GetRespiration();
+
+    //tc("restype: "+restype);
+    //tc("medium: "+medium);
+
+    if(restype & R_VACUUM) return 1;
+
+    if((medium == MEDIUM_AIR || medium == MEDIUM_LAND || 
+        medium == MEDIUM_SURFACE) && (restype & R_AIR) ) return 1;
+
+    //tc("hmm.");
+
+    if((medium == MEDIUM_WATER || medium == MEDIUM_SURFACE)
+      && (restype & R_WATER) ) return 1;
+
+    //tc("hmm2");
+
+    if( medium == MEDIUM_METHANE && (restype & R_METHANE) ) return 1;
+
+    //tc("hmm3");
+
+    return 0;
+}
 
 // abstract methods
 int GetParalyzed();
@@ -222,7 +264,7 @@ int GetMobility() {
         max = 1;
     }
     encum = (GetCarriedMass() * 100)/max;
-    encum -= (encum * GetStatLevel("agility"))/200;
+    encum -= (encum * this_object()->GetStatLevel("agility"))/200;
     mob = 100 - encum;
     if( mob > 100 ) {
         mob = 100;
@@ -239,7 +281,7 @@ int GetMaxCarry() {
     int carry_max;
     carry_max = this_object()->GetLivingMaxCarry();
     if(carry_max) return carry_max;
-    else return ((2 + GetStatLevel("strength")) * 50); 
+    else return ((2 + this_object()->GetStatLevel("strength")) * 50); 
 }
 
 int GetHeartRate() {

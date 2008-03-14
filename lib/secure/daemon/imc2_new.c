@@ -775,7 +775,7 @@ void start_logon(){
 
       varargs static void tell_out(object from, string targname, string targmud, string msg, int reply, int emote){
           // Send outgoing tell.
-          tc("tell_out("+identify(from)+", "+targname+". "+targmud+", "+msg+", "+reply+", "+emote+")","cyan");
+          //tc("tell_out("+identify(from)+", "+targname+". "+targmud+", "+msg+", "+reply+", "+emote+")","cyan");
           if(!reply) reply=0;
           send_packet(capitalize(from->GetKeyName()),"tell",targname,targmud,
             sprintf("level=%d text=%s reply=%d emote=%d", level(from),escape(msg),reply,emote));
@@ -850,13 +850,13 @@ void start_logon(){
           int i;
           if(!who || !this_player() || who != this_player()) return 0;
           if(who->GetForced()){
-              tc("forced!");
+              //tc("forced!");
               return 0;
           }
           i = sscanf(arg,"%s@%s %s",targplayer, targmud, msg);
           if(i != 3 ){
               write("There was an error in your message. See: \"help imc2\"");
-              tc("i: "+i+", arg: "+identify(arg),"yellow");
+              //tc("i: "+i+", arg: "+identify(arg),"yellow");
               return 1;
           }
           tell_out(who, targplayer, targmud, msg, 0, 0);

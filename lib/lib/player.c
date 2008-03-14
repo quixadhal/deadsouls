@@ -303,7 +303,7 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir) {
         if(!creatorp(this_object())) AddStaminaPoints(-3 - random(3));
         AddSkillPoints("stealth", 10 + GetSkillLevel("stealth")*2);
     }
-    eventDescribeEnvironment(GetBriefMode());
+    this_object()->eventDescribeEnvironment(GetBriefMode());
     newclim = (string)environment()->GetClimate();
     if( !GetUndead() ) switch( newclim ) {
     case "arid":

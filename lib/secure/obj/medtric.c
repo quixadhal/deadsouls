@@ -94,12 +94,15 @@ int TestFun(){
 varargs int preAction(int restricted){
     scanner=this_player();
     tricorder=this_object();
+
+    if(!this_player()) return 0;
+
     if(!present(tricorder, scanner)){
         write("You are not holding the tricorder.");
         return 2;
     }
 
-    if(restricted){
+    if(restricted && !creatorp(this_player())){
         write("This function is not permitted to builders.");
         return 2;
     }

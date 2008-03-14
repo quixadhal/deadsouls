@@ -20,11 +20,16 @@ int eventShadow(object whom){
 }
 
 varargs int CanBreathe(mixed args...){
-    if(rtype == R_VACUUM) return 1;
-    if(breatherob && (rtype == R_WATER || rtype == R_METHANE)) return 0;
-    if(!breatherob) return 0;
-    if(!breatherob->GetRemainingCharge()) return 0;
-    breatherob->eventDecrementCharge();
-    return 1;
-}
+    object ob = GetShadowedObject();
+    if(!ob) return 0;
+    rtype = ob->GetRespiration();
 
+    if(breatherob && breatherob->GetRemainingCharge()){
+        if(rtype & R_AIR){
+            breatherob->eventDecrementCharge();
+            return 1;
+        } 
+        if(rtype & R_WATER || rtype & R_METHANE) return 0;
+    }
+    return ob->CanBreathe(args);
+}

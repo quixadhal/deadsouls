@@ -68,9 +68,9 @@ mixed CanFly(object who, string dir) {
     return virt_land::CanGo(who, dir);
 }
 
-mixed CanGo(object who, string dir) {
-    return CanFly(who, dir);
-}
+//mixed CanGo(object who, string dir) {
+//    return CanFly(who, dir);
+//}
 
 mixed eventFly(object who, string dir) {
     mapping exit = GetExitData(dir);
@@ -93,10 +93,10 @@ mixed eventFly(object who, string dir) {
     return 1;
 }
 
-mixed eventGo(object who, string dir) {
-    if(GetMedium()==MEDIUM_AIR) return eventFly(who, dir);
-    return ::eventGo(who, dir);
-}
+//mixed eventGo(object who, string dir) {
+//    if(GetMedium()==MEDIUM_AIR) return eventFly(who, dir);
+//    return ::eventGo(who, dir);
+//}
 
 mixed eventReceiveObject(object ob) {
 

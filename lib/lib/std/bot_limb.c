@@ -1,9 +1,17 @@
 #include <lib.h>
+#include <medium.h>
 
 inherit LIB_LIMB;
 
+int stank;
+
 static void create() {
     limb::create();
+}
+
+void init(){
+    ::init();
+    if(environment() && environment()->GetMedium() == MEDIUM_LAND) stank = 1;
 }
 
 int eventDecay() {
@@ -14,12 +22,14 @@ int eventDecay() {
     }
     switch(Count) {
     case 10:
-        message("smell", "The "+Limb+" rapidly corrodes.", environment());
+        if(stank)
+            message("smell", "The "+Limb+" rapidly corrodes.", environment());
         SetShort("the corroding remnant of a " + Limb);
         break;
     case 20:
-        message("smell", "An acrid chemical odor fills the area.",
-          environment());
+        if(stank)
+            message("smell", "An acrid chemical odor fills the area.",
+              environment());
         SetShort("some corroded chemicals");
         break;
     case 30:
