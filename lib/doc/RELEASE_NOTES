@@ -1,3 +1,7 @@
+---- 2.7a16 ---
+- Released 2008-03-16
+- Bundled driver is now a customized FluffOS 2.11
+
 ---- 2.7a14 ---
 - Released 2008-03-13
 - Added example of an environmental suit: /domains/default/armor/scoutsuit.c
