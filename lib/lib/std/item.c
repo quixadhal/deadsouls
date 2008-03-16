@@ -215,7 +215,7 @@ mixed eventThrow(object who, object target) {
             target->eventReceiveThrow(who, this_object());
         }
         else {
-            target->AddSkillPoints("proectile defense",
+            target->AddSkillPoints("projectile defense",
               who->GetSkillLevel("projectile attack") *
               who->GetLevel() + 10);
             who->AddSkillPoints("projectile attack", 10);
