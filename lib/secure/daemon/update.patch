@@ -1,5 +1,6 @@
 #include <lib.h>
 #include <daemons.h>
+#include <save.h>
 
 inherit LIB_DAEMON;
 mapping EventsMap = ([]);
@@ -29,6 +30,9 @@ varargs static void eventUpdate(object whom){
     newfile += "    call_out((: eventUpdate :), 60);\n";
     newfile += "}\n";
     write_file("/secure/daemon/update.c",newfile,1);
+
+    find_object(RACES_D)->eventDestruct();
+    rename(SAVE_RACES __SAVE_EXTENSION__, SAVE_RACES+"."+time());
 
     reload("/secure/sefun/pointers");
     reload("/secure/sefun/sefun");
@@ -137,6 +141,7 @@ varargs static void eventUpdate(object whom){
     rm("/secure/cmds/creators/create.c");
     rm("/secure/cmds/creators/home.c");
     rm("/secure/cmds/creators/grant.c");
+    rm("/daemon/include/races.h");
 
     mkdir("/secure/log/network");
     mkdir("/secure/log/intermud");
@@ -159,7 +164,6 @@ varargs static void eventUpdate(object whom){
     if(file_exists("/secure/scripts/qcs_check.scr"))
         rename("/secure/scripts/qcs_check.scr", "/secure/scripts/qcs_check.txt");
 
-    load_object("/secure/cmds/admins/removeraces")->cmd();
     load_object("/secure/cmds/admins/addraces")->cmd();
 
     newfile = read_file("/secure/cfg/read.cfg");

@@ -95,7 +95,7 @@ string *eventCre(string str){
     if(member_array(str,creators) == -1) creators += ({ str });
     if(member_array(str,players) != -1) players -= ({ str });
     unguarded((: save_object, SAVE_PLAYER_LIST :));
-    return creators;
+    return creators + ({});
 }
 
 string *eventDecre(string str){
@@ -103,7 +103,7 @@ string *eventDecre(string str){
     if(member_array(str,creators) != -1) creators -= ({ str });
     if(member_array(str,players) == -1) players += ({ str });
     unguarded((: save_object, SAVE_PLAYER_LIST :));
-    return players;
+    return players + ({});
 }
 
 void AddPlayerInfo(mixed arg) {
@@ -146,14 +146,15 @@ void AddPlayerInfo(mixed arg) {
 }
 
 string *GetPlayerList(){
-    return players;
+    return players + ({});
 }
 
-string *GetCreatorList(){    return creators;
+string *GetCreatorList(){    
+    return creators + ({});
 }
 
 string *GetUserList(){
-    return user_list;
+    return user_list + ({});
 }
 
 int RemoveUser(string str){
@@ -170,7 +171,7 @@ string *AddPendingEncre(string str){
     validate();
     if(str && str != "") PendingEncres += ({ lower_case(str) });
     unguarded((: save_object, SAVE_PLAYER_LIST :));
-    return PendingEncres;
+    return PendingEncres + ({});
 }
 
 string *RemovePendingEncre(string str){
@@ -179,19 +180,19 @@ string *RemovePendingEncre(string str){
     str = lower_case(str);
     if(member_array(str, PendingEncres) != -1) PendingEncres -= ({ lower_case(str) });
     unguarded((: save_object, SAVE_PLAYER_LIST :));
-    return PendingEncres;
+    return PendingEncres + ({});
 }
 
 string *GetPendingEncres(){
     validate();
-    return PendingEncres;
+    return PendingEncres + ({});
 }
 
 string *AddPendingDecre(string str){
     validate();
     if(str && str != "") PendingDecres += ({ lower_case(str) });
     unguarded((: save_object, SAVE_PLAYER_LIST :));
-    return PendingDecres;
+    return PendingDecres + ({});
 }
 
 string *RemovePendingDecre(string str){
@@ -200,12 +201,12 @@ string *RemovePendingDecre(string str){
     str = lower_case(str);
     if(member_array(str, PendingDecres) != -1) PendingDecres -= ({ lower_case(str) });
     unguarded((: save_object, SAVE_PLAYER_LIST :));
-    return PendingDecres;
+    return PendingDecres + ({});
 }
 
 string *GetPendingDecres(){
     validate();
-    return PendingDecres;
+    return PendingDecres + ({});
 }
 
 static int LoadPlayer(string str){
@@ -306,4 +307,17 @@ int CheckBuilder(object who){
         return 1;
     }
     return 0; 
+}
+
+string GetUserPath(string name){
+    string ret;
+    if(!name){
+       if(!this_player()) return "/tmp/";
+       else name = this_player()->GetKeyName();
+    }
+    if(member_array(name, creators) != -1){
+        ret = REALMS_DIRS+"/"+name+"/";
+    }
+    else ret = DIR_ESTATES + "/"+name[0..0]+"/"+name+"/";
+    return ret;
 }

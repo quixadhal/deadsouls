@@ -53,6 +53,11 @@ string opposite_dir(string str){
     case "up" : ret = "down";break;
     case "down" : ret = "up";break;
 
+    case "fore" : ret = "aft";break;
+    case "aft" : ret = "fore";break;
+    case "port" : ret = "starboard";break;
+    case "starboard" : ret = "port";break;
+
     case "+y" : ret = "-y";break;
     case "-y" : ret = "+y";break;
     case "+x" : ret = "-x";break;

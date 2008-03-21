@@ -132,7 +132,6 @@ private static void load_access(string cfg, mapping resource) {
 
           else resource[fl] = explode(ac, ":");
       }
-      //tc("resource: "+identify(resource));
   }
 
     void flag(string str) {
@@ -302,21 +301,13 @@ private static void load_access(string cfg, mapping resource) {
     nomask static int check_user(object ob, string fun, string file, string oper) {
         string nom, tmp, junk;
         int x;
-        //tc("mmhmmm...","blue");
-        //tc("ob: "+identify(ob)," yellow");
-        //tc("fun: "+identify(fun)," yellow");
-        //tc("file: "+identify(file)," yellow");
-        //tc("oper: "+identify(oper)," yellow");
-
         if( !sscanf(file, REALMS_DIRS "/%s", nom) ){
             //x = sscanf(file, ESTATES_DIRS "/%s/%s", junk, nom);
             if(x != 2) return 0;
         }
-        //tc("good...","blue");
         if( sscanf(nom, "%s/%*s", tmp) ) nom = tmp;
         nom = user_path(nom)+"adm/access";
         if(file_size(nom+".c") < 0) return 0;
-        //tc("checking...","blue");
         catch(x = (int)call_other(nom, "check_access", ob, fun, file, oper));
         return x;
     }
@@ -525,7 +516,6 @@ private static void load_access(string cfg, mapping resource) {
     string error_handler(mapping mp, int caught) {
         string ret, file;
 
-        //tc("error_handler get_stack: "+get_stack());
         ret = "---\n"+timestamp()+"\n"+ standard_trace(mp);
         if( caught ) write_file(file = "/log/catch", ret);
         else write_file(file = "/log/runtime", ret);

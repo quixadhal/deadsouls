@@ -10,8 +10,8 @@
 #include <save.h>
 #include <privs.h>
 #include <armor_types.h>
+#include <mouth_types.h>
 #include <size_types.h>
-#include "include/races.h"
 
 inherit LIB_DAEMON;
 
@@ -148,55 +148,66 @@ int RemoveRaceVars(string str){
 }
 
 int GetRaceMass(string str){
-    int Mass = Races[str]->Mass;
+    int Mass = Races[str]["Mass"];
     if(Mass) return Mass;
     else return 0;
 }
 
 int GetRaceSize(string str){
-    int Size = Races[str]->Size;
+    int Size = Races[str]["Size"];
     if(Size) return Size;
     else return 0;
 }
 
 int GetRaceBodyType(string str){
-    int Btype = Races[str]->Btype;
+    int Btype = Races[str]["Btype"];
     if(Btype) return Btype;
     else return 0;
 }
 
 int GetRaceRespirationType(string str){
-    int Btype = Races[str]->Btype;
+    int Btype = Races[str]["Btype"];
     if(Btype) return Btype;
     else return 0;
 }
+int GetRaceMouthType(string str){
+    int Mtype = Races[str]["Mouthtype"];
+    if(Mtype) return Mtype;
+    else return 0;
+}
+
+mapping GetRace(string str){
+    mapping ret = Races[str] + ([]);
+    return ret;
+}
 
 void AddRace(string file, int player) {
-    class Race res;
+    mapping res;
     string array tmp, parts;
     string race, test_string;
     int x;
     mixed array limb = allocate(4);
     mixed array tmp_limb = allocate(4);
-    class Stat s; 
+    mapping s; 
 
-    res = new(class Race);
+    res = ([]);
 
-    res->Resistance = ([]);
-    res->Skills = ([]);
-    res->Stats = ([]);
-    res->Limbs = ({});
-    res->Mass = 0;
-    res->Size = 0;
-    res->Btype = 0;
-    res->Rtype = 0;
+    res["Resistance"] = ([]);
+    res["Skills"] = ([]);
+    res["Stats"] = ([]);
+    res["Limbs"] = ({});
+    res["Mass"] = 0;
+    res["Size"] = 0;
+    res["Btype"] = 0;
+    res["Rtype"] = 0;
+    res["Mouthtype"] = 0;
 
     validate();
 
     if( !file_exists(file) ) error("No such file: " + file);
     race = last_string_element(file,"/");
 
-    res->Fingers = ([]);
+    res["Fingers"] = ([]);
 
 
     foreach(string line in explode(read_file(file),"\n")){
@@ -249,7 +260,7 @@ void AddRace(string file, int player) {
 
         case "SENSITIVITY":
             line = replace_string(line, "SENSITIVITY ", "");
-            res->Sensitivity = map(explode(line, ":"), (: to_int :));
+            res["Sensitivity"] = map(explode(line, ":"), (: to_int :));
             break;
 
         case "PLAYER_RACE":
@@ -261,55 +272,66 @@ void AddRace(string file, int player) {
         case "LANGUAGE":
             //TODO: This should be a Language array to handle multiple 
             //languages but further research is required first.
-            res->Language = replace_string(line, "LANGUAGE ", "");
+            res["Language"] = replace_string(line, "LANGUAGE ", "");
             break;
 
         case "RESISTANCE":			  
             tmp = explode(replace_string(line, "RESISTANCE ", ""), ":");
             x = to_int(tmp[0]);
-            if( x == 0 && tmp[0] != "0" ) x = GetResistance(tmp[0]);
-            res->Resistance[x] = tmp[1];
+            if( x == 0 && tmp[0] != "0" ) x = this_object()->GetResistance(tmp[0]);
+            res["Resistance"][x] = tmp[1];
             break;
 
         case "SKILL":      
             tmp = explode(replace_string(line, "SKILL ", ""), ":");
-            res->Skills[tmp[0]] = ({ tmp[1], tmp[2], tmp[3], tmp[4] });
+            res["Skills"][tmp[0]] = ({ tmp[1], tmp[2], tmp[3], tmp[4] });
             break;
 
         case "MASS":
             x = 0;
             sscanf(line, "MASS %d",x);
-            if(x) res->Mass = x;
+            if(x) res["Mass"] = x;
             break;
 
         case "SIZE":
             type = "";
             x = 0;
-            if(sscanf(line, "SIZE %s",type)) res->Size = GetSize(type);
-            else res->Size = x;
+            if(sscanf(line, "SIZE %s",type)) res["Size"] = this_object()->GetSize(type);
+            else res["Size"] = x;
             break;
 
         case "BODY_TYPE":
             type = "";
             x = 0;
-            if(sscanf(line, "BODY_TYPE %s",type)) res->Btype = GetBodyType(type);
-            else res->Btype = x;
+            if(sscanf(line, "BODY_TYPE %s",type)) res["Btype"] = this_object()->GetBodyType(type);
+            else res["Btype"] = x;
             break;
 
         case "RESPIRATION_TYPE":
             type = "";
             x = 0;
-            if(sscanf(line, "RESPIRATION_TYPE %s",type)) res->Btype = GetRespirationType(type);
-            else res->Btype = x;
+            if(sscanf(line, "RESPIRATION_TYPE %s",type)) res["Btype"] = this_object()->GetRespirationType(type);
+            else res["Btype"] = x;
             break;
 
         case "STATS":
             tmp = ({});
-            s = new (class Stat);
+            s = ([]);
             tmp = explode(replace_string(line, "STATS ",""), ":");
-            s->Average = copy(to_int(tmp[1]));
-            s->Class = copy(to_int(tmp[2]));
-            res->Stats[tmp[0]] = s;
+            s["Average"] = copy(to_int(tmp[1]));
+            s["Class"] = copy(to_int(tmp[2]));
+            res["Stats"][tmp[0]] = s;
+            break;
+
+        case "MOUTH":
+            type = "";
+            x = 0;
+            if(sscanf(line, "MOUTH %s",type)){
+                //tc("type: "+identify(type));
+                res["Mouthtype"] = this_object()->GetMouthType(type);
+                //tc("yay: "+res["Mouthtype"]);
+            }
+            else tc("boo!");
             break;
 
         case "LIMB":
@@ -320,17 +342,17 @@ void AddRace(string file, int player) {
             limb[2] = to_int(tmp_limb[2]);
             limb[3] = map(explode(tmp_limb[3], ","), function(string str) {
                   int x = to_int(str);
-                  if( x == 0 && str != "0" ) { return GetArmor(str); }
+                  if( x == 0 && str != "0" ) { return this_object()->GetArmor(str); }
                   return x;
                 });
 
-              res->Limbs = ({ res->Limbs..., limb });
-              res->Limbs += ({limb});
+              res["Limbs"] = ({ res["Limbs"]..., limb });
+              res["Limbs"] += ({limb});
               break;
 
               case "HAND":
               parts = explode(replace_string(line, "HAND ",""), ":");
-              res->Fingers[parts[0]] = to_int(parts[1]);
+              res["Fingers"][parts[0]] = to_int(parts[1]);
               break;
 
               default:
@@ -338,14 +360,14 @@ void AddRace(string file, int player) {
           } 
         }  
 
-        res->Complete = 1;
+        res["Complete"] = 1;
 
         if( player ) {
-            res->PlayerFlag = 1;
+            res["PlayerFlag"] = 1;
         }
 
         else {
-            res->PlayerFlag = 0;
+            res["PlayerFlag"] = 0;
         }
 
         Races[race] = res;
@@ -410,6 +432,17 @@ void AddRace(string file, int player) {
         return call_other(file, "rtype"); 
     }
 
+    int GetMouthType(string foo) {
+        string str = ConvertPipe(foo);
+        string file = DIR_DAEMONS "/tmp/" + str + ".c";
+
+        if( !unguarded((: file_exists($(file)) :)) ) {
+            unguarded((: write_file($(file), "#include <mouth_types.h>\n" +
+                  "int mtype() { return " + $(str) + "; }\n") :));
+        }
+        return call_other(file, "mtype"); 
+    }
+
     int GetResistance(string str) {
         string file = DIR_DAEMONS "/tmp/" + str + ".c";
 
@@ -427,42 +460,42 @@ void AddRace(string file, int player) {
         if(str && Races[str]) foo[str] = Races[str];
         else foo = copy(Races);
 
-        foreach(string race, class Race res in foo) {
+        foreach(string race, mapping res in foo) {
             mapping stats = ([]);
 
             mp[race] = ([]);
-            mp[race]["limbs"] = res->Limbs;
-            mp[race]["resistance"] = res->Resistance;
+            mp[race]["limbs"] = res["Limbs"];
+            mp[race]["resistance"] = res["Resistance"];
 
-            foreach(string stat, class Stat st in res->Stats) {
+            foreach(string stat, mapping st in res["Stats"]) {
                 stats[stat] = ([]);
-                stats[stat]["class"] = st->Class;
-                stats[stat]["average"] = st->Average;
+                stats[stat]["class"] = st["Class"];
+                stats[stat]["average"] = st["Average"];
             }
 
             mp[race]["stats"] = stats;
-            mp[race]["fingers"] = res->Fingers;
-            mp[race]["sensitivity"] = res->Sensitivity;
-            mp[race]["player"] = res->PlayerFlag;
-            mp[race]["language"] = res->Language;
+            mp[race]["fingers"] = res["Fingers"];
+            mp[race]["sensitivity"] = res["Sensitivity"];
+            mp[race]["player"] = res["PlayerFlag"];
+            mp[race]["language"] = res["Language"];
 
         }
         return mp;
     }
 
     void SetComplete(string race) {
-        class Race res;
+        mapping res;
 
         validate();
 
         if( !Races[race] ) error("No such race");
         else res = Races[race];
-        res->Complete = 1;
+        res["Complete"] = 1;
         save_object(SAVE_RACES);
     }
 
     void SetLightSensitivity(string race, int array sensitivity) {
-        class Race res;
+        mapping res;
 
         validate();
 
@@ -471,58 +504,58 @@ void AddRace(string file, int player) {
         if( sensitivity[0] < 1 ) error("Invalid sensitivity value");
         if( sensitivity[1] > 99 ) error("Invalid sensitivity value");
         if( sensitivity[0] > sensitivity[1] ) error("Invalid sensitivity value");
-        res->Sensitivity = sensitivity;
+        res["Sensitivity"] = sensitivity;
         save_object(SAVE_RACES);
     }
 
     void SetCharacterLimbs(string race, mixed array args) {
-        class Race res = Races[race];
+        mapping res = Races[race];
         mixed array tmp = ({});
 
-        if( !res || !res->Complete || sizeof(args) != 2 ) return;
-        args[0] = copy(res->Limbs);
-        foreach(string finger, int count in res->Fingers)
+        if( !res || !res["Complete"] || sizeof(args) != 2 ) return;
+        args[0] = copy(res["Limbs"]);
+        foreach(string finger, int count in res["Fingers"])
         tmp = ({ tmp..., ({ finger, count }) });
         args[1] = tmp;
     }
 
     void SetCharacterRace(string race, mixed array args) {
-        class Race res = Races[race];
+        mapping res = Races[race];
         mixed array tmp;
         mapping StatMap;
         string schluss;
 
-        if( !res || !res->Complete || sizeof(args) != 5 ) return;
+        if( !res || !res["Complete"] || sizeof(args) != 5 ) return;
         tmp = ({});
-        foreach(int key, string val in res->Resistance)
+        foreach(int key, string val in res["Resistance"])
         tmp = ({ tmp..., ({ key, val }) });
         args[0] = tmp;
         tmp = ({});
-        StatMap = copy(res->Stats);
+        StatMap = copy(res["Stats"]);
         schluss = "";
         foreach(schluss in keys(StatMap)){
-            tmp = ({ tmp..., ({ schluss, StatMap[schluss]->Average, StatMap[schluss]->Class }) });
+            tmp = ({ tmp..., ({ schluss, StatMap[schluss]["Average"], StatMap[schluss]["Class"] }) });
         }
         args[1] = tmp;
-        args[2] = res->Language;
-        args[3] = res->Sensitivity;
-        args[4] = res->Skills; 
+        args[2] = res["Language"];
+        args[3] = res["Sensitivity"];
+        args[4] = res["Skills"]; 
     }
 
     varargs string array GetRaces(int player_only) {
 
         return filter(keys(Races), function(string race, int player_only) {
-              class Race res = Races[race];
+              mapping res = Races[race];
 
-              if( !res->Complete ) return 0;
-              if( player_only && !res->PlayerFlag )
+              if( !res["Complete"] ) return 0;
+              if( player_only && !res["PlayerFlag"] )
                   return 0;
               return 1;
           }, player_only);
     }
 
     string GetHelp(string race) {
-        class Race res = Races[race];
+        mapping res = Races[race];
         string array limbs;
         string help = "Race: " + race + "\n\n";
         string tmp, h_file;
@@ -531,12 +564,12 @@ void AddRace(string file, int player) {
         if( !res ) return 0;
         h_file = "/doc/help/races/"+lower_case(race);
         if(file_exists(h_file)) return read_file(h_file); 
-        limbs = map(res->Limbs, (: $1[0] :));
+        limbs = map(res["Limbs"], (: $1[0] :));
         limbs = distinct_array(limbs);
         help += "Limbs:\n";
         help += capitalize(item_list(map(limbs, (: add_article :)))) + ".\n";
         help += "\nFingered limbs:\n";
-        foreach(string finger, int count in res->Fingers)
+        foreach(string finger, int count in res["Fingers"])
         help += "\t" + finger + " (" + count + ")\n";
         limbs = regexp(limbs, ".* wing");
         if( sizeof(limbs) ) {
@@ -547,7 +580,7 @@ void AddRace(string file, int player) {
             help += "\nNon-flying\n";
         }
 
-        x = res->Sensitivity[0];
+        x = res["Sensitivity"][0];
         if( x < 11 ) tmp = "excellent";
         else if( x < 16 ) tmp = "above average";
         else if( x < 21 ) tmp = "good";
@@ -556,7 +589,7 @@ void AddRace(string file, int player) {
         else if( x < 36 ) tmp = "very poor";    
         else tmp = "extremely poor";
         help += "\nNight vision: " + tmp + "\n";
-        x = res->Sensitivity[1];
+        x = res["Sensitivity"][1];
         if( x < 61 ) tmp = "extremely poor";
         else if( x < 66 ) tmp = "very poor";
         else if( x < 71 ) tmp = "below average";

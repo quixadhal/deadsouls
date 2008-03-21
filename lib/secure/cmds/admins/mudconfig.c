@@ -438,7 +438,7 @@ static int ProcessOther(string which, string arg){
         reload("/secure/sefun/timestamp",0,1);
         reload("/secure/sefun/sefun",0,1);
         reload("/daemon/time",0,1);
-        reload("/cmds/creators/people",0,1);
+        reload("/secure/cmds/creators/people",0,1);
         reload("/cmds/players/date",0,1);
         reload("/cmds/players/nextreboot",0,1);
         reload("/cmds/players/version",0,1);

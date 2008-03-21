@@ -1,3 +1,7 @@
+---- 2.7a17 ---
+- Added mouth types to races.
+- Removed instances of the class data type from RACES_D.
+
 ---- 2.7a16 ---
 - Released 2008-03-16
 - Bundled driver is now a customized FluffOS 2.11
