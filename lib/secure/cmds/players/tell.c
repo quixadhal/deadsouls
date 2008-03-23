@@ -122,7 +122,11 @@ mixed cmd(string str) {
             ob->eventTellHist(inv_ret);
             this_player()->eventTellHist("You tried to tell "+retname+": "+
               "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
-            return "Tell whom what?";
+            if(query_verb() == "tell") return "Tell whom what?";
+            else {
+                write("Tell whom what?");
+                return 1;
+            }
         }
 #ifdef BLOCK_TELLS_TO_AFK
         if(ob->GetProperty("afk")) {

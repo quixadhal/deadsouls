@@ -42,7 +42,8 @@ int eventDestruct() {
 }
 
 mapping GetServices() {
-    return ([
+    string *ports = ({ "ftp", "http", "oob", "nntp", "rcp", "smtp" });
+    mapping ret = ([
 #ifdef SERVICE_AUTH
       "auth" : 1,
 #endif
@@ -76,26 +77,16 @@ mapping GetServices() {
 #ifdef SERVICE_WHO
       "who" : 1,
 #endif
-#ifdef PORT_FTP
-      "ftp" : PORT_FTP,
-#endif
-#ifdef PORT_HTTP
-      "http" : PORT_HTTP,
-#endif
-#ifdef PORT_OOB
-      "oob" : PORT_OOB,
-      "mail" : 1,
-#endif
-#ifdef PORT_NNTP
-      "nntp" : PORT_NNTP,
-#endif
-#ifdef PORT_RCP
-      "rcp" : PORT_RCP,
-#endif
-#ifdef PORT_SMTP
-      "smtp" : PORT_SMTP,
-#endif
     ]);
+
+    foreach(string port in ports){
+        if(member_array(port, keys(INET_D->GetServices())) != -1){
+            ret[port] = INET_D->GetServicePort(port);
+        }
+    }
+
+    if(ret["oob"]) ret["mail"] = 1;
+    return ret;
 }
 
 #endif /* __PACKAGE_SOCKETS__ */

@@ -67,10 +67,10 @@ string GetSpeakColor() { return SpeakColor; }
 
 int eventTellHist(string str){
     string pob = base_name(previous_object());
-    string stack = get_stack();
+    string stack = implode(call_stack(2)," ");
     if(pob != SERVICES_D && pob != "/secure/cmds/players/tell" &&
-      stack != "get_stack eventTellHist eventHearTalk eventSpeak cmd cmdAll <function>" &&
-      stack != "get_stack eventTellHist eventHearTalk eventSpeak cmd cmd cmdAll <function>"){
+      stack != "eventTellHist eventHearTalk eventSpeak cmd cmdAll <function>" &&
+      stack != "eventTellHist eventHearTalk eventSpeak cmd cmd cmdAll <function>"){
         return 0; 
     }
     if(sizeof(TellHist) > MAX_TELL_HIST_SIZE) TellHist -= ({ TellHist[0] });

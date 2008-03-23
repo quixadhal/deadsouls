@@ -231,6 +231,10 @@ mixed direct_look_at_obj() {
     return direct_look_obj();
 }
 
+mixed direct_look_on_obj() {
+    return direct_look_obj();
+}
+
 mixed direct_look_at_obj_on_obj(object target, object ob,mixed arg, mixed arg2) {
     if(!ob) ob=environment(target);
     if((inherits(LIB_SIT,ob) && sizeof(ob->GetSitters())) ||

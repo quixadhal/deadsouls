@@ -137,13 +137,12 @@ mixed GetCombatMove(string type, int skill) {
     else return foo;
 }
 
-varargs void
-SendMeleeMessages(object target, int x, string targlimb, string limb) {
+varargs void SendMeleeMessages(object target, int x, string targlimb, string limb) {
     int i;
     string adverb;
     mixed verb, ptr, moves;
 
-    if(target->GetDead() || this_object()->GetDead()) return;
+    //if(target->GetDead() || this_object()->GetDead()) return;
     if( x < 0 ) {
         eventSendMissMessages(target, x, limb);
         return;
@@ -167,15 +166,15 @@ SendMeleeMessages(object target, int x, string targlimb, string limb) {
     environment()->eventPrint(sprintf("%s %s %s %s the %s with %s %s.",
         GetName(), verb[1], (string)target->GetName(), adverb, targlimb, 
         possessive(this_object()), limb), ({ target, this_object() }) );
+    flush_messages();
 }
 
-varargs void
-SendWeaponMessages(object target, int x, object weapon, string limb) {
+varargs void SendWeaponMessages(object target, int x, object weapon, string limb) {
     int i;
     string adverb, type, weap;
     mixed verb, ptr, moves;
 
-    if(target->GetDead() || this_object()->GetDead()) return;
+    //if(target->GetDead() || this_object()->GetDead()) return;
     if( x < 0 ) {
         eventSendMissMessages(target, x, limb);
         return;
@@ -206,4 +205,5 @@ SendWeaponMessages(object target, int x, object weapon, string limb) {
     environment()->eventPrint(sprintf("%s %s %s %s the %s with %s %s.",
         GetName(), verb[1], (string)target->GetName(), adverb, limb,
         possessive(this_object()), weap), ({ target, this_object() }) );
+    flush_messages();
 }

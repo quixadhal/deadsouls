@@ -1,3 +1,13 @@
+---- 2.7a19 ---
+- Released 2008-03-23
+- SERVICES_D now accurately reports current ports for active services.
+- Locate requests now adequately hide invis players.
+- The who command no longer counts color codes in title length.
+- The blow that kills a creature in combat is now more correctly displayed.
+- Fixed a parsing bug in dummy items that reported oddly abbreviated names.
+- Fixed various problems with the timing of combat messages.
+- Fixed bug in "hist tell"
+
 ---- 2.7a18 ---
 - Released 2008-03-23
 - Added sefun: telnet_privp()

@@ -223,7 +223,6 @@ void eventCheckEnvironment(){
             environment()->GetMedium() == MEDIUM_SURFACE)){
             if(!(environment()->GetTerrainType() & (T_SEAFLOOR)) && this_object()->CanSwim()){
                 if(this_object()->GetPosition() != POSITION_FLOATING){
-                    //tc("hmm");
                     this_object()->eventSwim();
                 }
             }
@@ -232,11 +231,6 @@ void eventCheckEnvironment(){
                 call_out("eventSink", 1);
             }
         }
-
-        //if(!(this_object()->CanSwim())){
-        //    this_object()->SetPosition(POSITION_FLOATING);
-        //    call_out("eventSink", 1);
-        //}
     }
     if(env->GetMedium() == MEDIUM_SPACE){
         this_object()->SetPosition(POSITION_FLOATING);
@@ -354,7 +348,8 @@ void eventCheckHealing() {
     //This resets the parser counter.
     this_object()->DoneTrying();
 
-    if(HealthPoints < 1) {
+    if(HealthPoints < 1 && !this_object()->GetDying()) {
+        this_object()->SetDying(1);
         this_object()->eventDie(previous_object());
         return;
     }
@@ -446,24 +441,11 @@ mixed eventFall() {
         return position::eventFall();
     }
     dest = env->GetGround();
-#if 0
-    if( !dest ) {
-        send_messages(({ "fall", "die" }), "$agent_name $agent_verb into a "
-          "dark abyss and $agent_verb.", this_object(), 0, env);
-        this_object()->eventCollapse();
-        eventDie("Deceleration sickness");
-    }
-#endif
     if(!dest){
         int p;
         int was_undead = GetUndead();
 
-        //send_messages("fall", "$agent_name $agent_verb through the sky "
-        //  "towards the world below.", this_object(), 0, env);
         eventMove(dest);
-        //environment()->eventPrint(GetName() + " comes falling in from above.",
-        //this_object());
-        //flush_messages();
         this_object()->eventCollapse();
         foreach(string limb in GetLimbs()) {
             int hp = GetHealthPoints(limb);
@@ -565,8 +547,6 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
     string agentname;
     int fp;
 
-    //tc("agent: "+identify(agent)+", internal: "+internal);
-
     if(agent && stringp(agent)){
         agentname = agent;
         agent = 0;
@@ -611,8 +591,6 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
         return -1;
     }
     if( internal ) {
-        //limbs = filter(limbs, (: !AddHealthPoints(-$(x), $1, $(agent)) :));
-        //map(limbs, (: (Limbs[$1] ? this_object()->RemoveLimb($1, $(agent)) : 0) :));
         AddHealthPoints(-x, 0, (agent || agentname));
         return x;
     }
@@ -631,8 +609,10 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
             }
             if(!(j = sizeof(obs = GetWorn(limbs[i])))) { /* no armor */
                 y += z;                     /* add to total damage */
-                if( !AddHealthPoints(-z, limbs[i], (agent || agentname)) )
-                    this_object()->RemoveLimb(limbs[i], (agent || agentname));
+                if( !AddHealthPoints(-z, limbs[i], (agent || agentname)) ){
+                    //this_object()->RemoveLimb(limbs[i], (agent || agentname));
+                    call_out("RemoveLimb",0,limbs[i], (agent || agentname));
+                }
                 continue;
             }
             while(j--) {
@@ -642,8 +622,10 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
             if(z < 1) continue;
             else {
                 y += z;
-                if(!AddHealthPoints(-z, limbs[i], agent))
-                    this_object()->RemoveLimb(limbs[i], (agent || agentname));
+                if(!AddHealthPoints(-z, limbs[i], agent)){
+                    //this_object()->RemoveLimb(limbs[i], (agent || agentname));
+                    call_out("RemoveLimb",0,limbs[i], (agent || agentname));
+                }
             }
         }
         y = y / (maxi ? maxi : 1);
@@ -655,7 +637,10 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
     }
     AddHealthPoints(-x, 0, agent);
     AddStaminaPoints(-x/2);
-    if(HealthPoints < 1) eventDie((agent || agentname));
+    if(HealthPoints < 1 && !this_object()->GetDying()){
+        this_object()->SetDying(1);
+        call_out("eventDie", 0, (agent || agentname));
+    }
     return x;
 }
 
@@ -768,6 +753,8 @@ varargs int eventDie(mixed agent) {
 
     if(DeathEvents) return 1;
     DeathEvents = 1;
+
+    this_object()->SetDying(0);
 
     if(agent && stringp(agent)) killer = agent;
     else {
@@ -1312,7 +1299,7 @@ varargs int eventDie(mixed agent) {
             agent = 0;
         }
 
-        if(limb == "torso" || limb == "neck") return 0;
+        if(limb == this_object()->GetTorso() || limb == "neck") return 0;
 
         if( sscanf(limb, "%s %s", adjname, templimbname) == 2 ) limbname=templimbname;
         else limbname=limb;
@@ -1345,11 +1332,10 @@ varargs int eventDie(mixed agent) {
             while( i = sizeof(WornItems[limb]) )
                 eventRemoveItem(WornItems[limb][i]);
 
-            HealthPoints = 0;
-            if( !Dying ) {
-                Dying = 1;
+            if( !this_object()->GetDying() ) {
+                this_object()->SetDying(1);
                 Agent = agent;
-                eventDie((Agent ? Agent : agentname));
+                call_out("eventDie", 0, (Agent ? Agent : agentname));
             }
             return 0;
         }
@@ -1364,6 +1350,7 @@ varargs int eventDie(mixed agent) {
             message("environment", possessive_noun(GetName()) + " " + limb +
               " is severed!", environment(), ({ this_object() }));
             message("environment", "Your "+ limb + " is severed!", this_object());
+
             if(GetRace() == "golem") {
                 ob = new(LIB_CLAY);
                 if(GetBodyComposition()) ob->SetComposition(GetBodyComposition());
@@ -1638,10 +1625,10 @@ varargs int eventDie(mixed agent) {
             if((HealthPoints += x) < 1) HealthPoints = 0;
             else if(HealthPoints > (y = GetMaxHealthPoints())) HealthPoints = y;
             if( HealthPoints < 1 ) {
-                if( !Dying ) {
-                    Dying = 1;
+                if( !this_object()->GetDying()) {
+                    this_object()->SetDying(1);
                     Agent = agent;
-                    eventDie((Agent ? Agent : agentname));
+                    call_out("eventDie", 0, (agent || agentname));
                 }
             }
             else {
@@ -1786,8 +1773,13 @@ varargs int eventDie(mixed agent) {
 
 
     int GetDying() {
-        if(HealthPoints < 1) return 1;
         return Dying; 
+    }
+
+    int SetDying(int x) {
+        if(x) Dying = 1;
+        else Dying = 0;
+        return Dying;
     }
 
     int SetSleeping(int x) {

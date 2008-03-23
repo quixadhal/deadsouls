@@ -244,8 +244,6 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir) {
     object *inv;
     object prev;
     string prevclim, newclim;
-    //tc("dest: "+dest+", omsg: "+omsg+", imsg: "+imsg+", dir: "+identify(dir));
-    //tc("stack: "+get_stack(),"red");
 
     if( prev = environment() ) {
         prevclim = (string)prev->GetClimate();
@@ -456,7 +454,6 @@ int Setup() {
         AddChannel( ({ "builder" }) );
         AddSearchPath( ({ DIR_BUILDER_CMDS, DIR_SECURE_BUILDER_CMDS }) );
     }
-    //tc("what the shit.");
     PLAYERS_D->CheckBuilder(this_object());
 
     if(GetProperty("brand_spanking_new")){

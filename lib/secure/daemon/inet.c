@@ -184,3 +184,11 @@ void heart_beat(){
         if((time() - val) > 60) map_delete(BlockedIps, key);
     }
 }
+
+int GetServicePort(string str){
+    int ret;
+    int offset;
+    if(Services[str]) offset = Services[str]->PortOffset;
+    ret = query_host_port() + offset;
+    return ret;
+}

@@ -681,17 +681,8 @@ int eventExecuteAttack(mixed target) {
                 weapon->eventReceiveDamage(this_object(), BLUNT, weapon_damage,
                   0, TargetLimb);
             }
-            if( !target->GetDying() ) {
-                SendWeaponMessages(target, actual_damage, weapon, TargetLimb);
-            }
-            else {
-                this_object()->eventPrint(possessive_noun(target) + " destruction is now on your "
-                  "head.");
-                target->eventPrint(GetName() + " is your murderer.");
-                environment()->eventPrint(possessive_noun(target) +
-                  " destruction is now on " +
-                  possessive_noun(this_object())
-                  + " head.", ({ this_object(), target }));
+            SendWeaponMessages(target, actual_damage, weapon, TargetLimb);
+            if( target->GetDying() ){
             }
         }
     }
@@ -768,17 +759,8 @@ int eventExecuteAttack(mixed target) {
             if(x < 0) x = 0;
             x = target->eventReceiveDamage(this_object(), BLUNT, x, 0,
               TargetLimb);
-            if( !target->GetDying() ) {
-                SendMeleeMessages(target, (x > 0) ? x : 0, TargetLimb);
-            }
-            else {
-                this_object()->eventPrint(possessive_noun(target) + " destruction is now "
-                  "on your head.");
-                target->eventPrint(GetName() + " is your murderer.");
-                environment()->eventPrint(possessive_noun(target) +
-                  " destruction is now on " +
-                  possessive_noun(this_object()) +
-                  " head.", ({ this_object(), target }));
+            SendMeleeMessages(target, (x > 0) ? x : 0, TargetLimb);
+            if( target->GetDying() ){
             }
         }
     }

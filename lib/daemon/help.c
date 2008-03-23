@@ -203,6 +203,7 @@ static private void LoadIndices() {
                   return GetHelpByIndex(topic, str);
               }
           }
+
           if(this_player() && adminp(this_player())){
               Error = "Help for the topic \"" + str + "\" could not be found.";
           }

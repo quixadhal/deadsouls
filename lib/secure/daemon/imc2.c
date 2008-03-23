@@ -50,7 +50,7 @@
 // DATA_LOG is where packets are logged to.
 // Turn IMC2_logging off when not working on the system, as it invades privacy.
 // Comment this out to turn it off.
-#define IMC2_LOGGING
+#undef IMC2_LOGGING
 
 #ifndef LOG_IMC2
 #define DATA_LOG "/secure/log/imc2"

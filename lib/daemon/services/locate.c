@@ -12,6 +12,18 @@
 #include <rooms.h>
 #include <message_class.h>
 
+static mapping locate_user_table = ([]);
+
+static string eventLookupLocateUser(string str){
+    if(!locate_user_table) locate_user_table = ([]);
+    if(!locate_user_table[str]) return str;
+    else {
+        string ret = locate_user_table[str];
+        //map_delete(locate_user_table, str);
+        return ret;
+    }
+}
+
 void eventReceiveLocateRequest(mixed array packet) {
     string status;
     int idl = 0;
@@ -44,8 +56,9 @@ void eventReceiveLocateReply(mixed array packet) {
     int idl;
 
     if( file_name(previous_object()) != INTERMUD_D ) return;
-    if( !stringp(packet[5]) || !(ob = find_player(convert_name(packet[5]))) ) 
+    if( !packet[5] || !(ob = find_player(convert_name(eventLookupLocateUser(packet[5])))) ){
         return;
+    }
     tn("Locate reply received: "+identify(packet),"white");
     m = packet[7] + " was just located on " + packet[6] + ".";
     if( (idl = (int)packet[8]) > 60 )
@@ -55,10 +68,28 @@ void eventReceiveLocateReply(mixed array packet) {
     ob->eventPrint(m, MSG_SYSTEM);
 }
 
-void eventSendLocateRequest(string who) {
-    string pl;
-    mixed *locate_request = ({ "locate-req", 5, mud_name(), pl, 0, 0, who });
-    if( !(pl = (string)this_player(1)->GetKeyName()) ) return;
-    INTERMUD_D->eventWrite( ({ "locate-req", 5, mud_name(), pl, 0, 0, who }) );
+void eventSendLocateRequest(string target) {
+    string who, crypt_who;
+    mixed *locate_request;
+
+    who = (string)this_player(1)->GetKeyName();
+
+    if(this_player(1)->GetInvis()){
+        foreach(string key, string val in locate_user_table){
+            if(!key || ! val) continue;
+            if(val == who){
+                crypt_who = key;
+            }
+        }
+        if(!crypt_who){
+            crypt_who = alpha_crypt(10);
+            locate_user_table[crypt_who] = who;
+        }
+    }
+
+    else crypt_who = who;
+
+    locate_request = ({ "locate-req", 5, mud_name(), crypt_who, 0, 0, target });
+    INTERMUD_D->eventWrite( locate_request );
     tn("Locate request being sent: "+identify(locate_request),"white");
 }

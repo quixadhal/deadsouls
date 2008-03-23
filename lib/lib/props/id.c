@@ -95,6 +95,7 @@ varargs string array SetId(mixed val...) {
     CanonicalId = Id;
 
     if(OBJECT_MATCHING && Matching){
+        if(!KeyName || !sizeof(KeyName)) KeyName = Id[0];
         Id = atomize_array(Id);
     }
     return Id;

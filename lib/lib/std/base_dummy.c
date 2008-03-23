@@ -105,6 +105,8 @@ varargs static void create(string array id, mixed long, string array adj) {
         SetAdjectives(adj...);
     }
     if( id ) {
+        SetKeyName(id[0]);
+        if(!GetShort()) SetShort(add_article(id[0]));
         SetId(id...);
     }
     SetExternalDesc(long || "");

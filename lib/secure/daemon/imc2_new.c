@@ -364,12 +364,18 @@ private void got_packet(string info){
             // example of info:
             // versionid=\"IMC2 AntiFreeze CL-2 SWR 1.0\" url=none md5=1
             //mudinfo[origin]["version"]="blah";
+            if(!mudinfo[origin]["online"]){
+                CHAT_D->eventSendChannel(origin+"@IMC2","muds","%^GREEN%^online%^RESET%^",0);
+            }
             mudinfo[origin]+=data;
             mudinfo[origin]["online"]=1;
             //debug("handled is-alive for mud "+origin);
             break;
         case "close-notify": // Someone disconnected.
             if(!mudinfo[data["host"]]) mudinfo[data["host"]] = ([]);
+            if(mudinfo[data["host"]]["online"]){
+                CHAT_D->eventSendChannel(data["host"]+"@IMC2","muds","%^RED%^offline%^RESET%^",0);
+            }
             mudinfo[data["host"]]["online"]=0;
             break;
         case "keepalive-request": // Request for is-alive.
@@ -400,6 +406,8 @@ private void got_packet(string info){
         case "who":
             send_packet("*","who-reply",sender,origin,
               "text="+escape(pinkfish_to_imc2(WHO_STR)));
+            CHAT_D->eventSendChannel("SYSTEM","intermud","[" + capitalize(sender)+"@"+origin+
+              " requests the IMC2 who list]",0);
             break;
         case "ice-destroy": // Deleting channel.
             map_delete(chaninfo,data["channel"]);
