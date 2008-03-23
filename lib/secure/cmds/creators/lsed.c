@@ -24,7 +24,7 @@ mixed cmd(string args) {
     maxi--;
     for(i=0, tmp = ({}); i<maxi; i++) {
         files[i] = absolute_path(pwd, files[i]);
-        tmp += (string *)this_player()->wild_card(files[i]);
+        tmp += (string *)wild_card(files[i]);
     }
     maxi = sizeof(files = tmp);
     if( !(total = read_file(script)) ) return "Failed to load script: "+script;

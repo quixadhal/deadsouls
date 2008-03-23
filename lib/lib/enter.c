@@ -131,6 +131,14 @@ varargs mixed eventOpen(object who, object tool) {
     return Door->eventOpen(who, tool);
 }
 
+varargs mixed eventKnock(object who, mixed what){
+    return Door->eventKnock(who, what);
+}
+
+varargs mixed eventScratch(object who, object tool){
+    return Door->eventScratch(who, tool);
+}
+
 varargs mixed eventPick(object who, string str, object tool) {
     return Door->eventPick(who, str, tool);
 }

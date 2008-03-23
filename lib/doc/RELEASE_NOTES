@@ -1,6 +1,20 @@
----- 2.7a17 ---
+---- 2.7a18 ---
+- Released 2008-03-23
+- Added sefun: telnet_privp()
+- Added commands: unvirt, telnet (user must be in the TELNET group)
+- Added TYPES_D to help decipher type names from their integer/bitshifted
+  designation: eval return TYPES_D->eventCalculateTypes("armor",196608)
+- Doors are now knockable and yelling from the opposite side of a
+  closed door is audible.
+- Fixed a bug in intermud-3 tells that allowed you to send tells
+  to disconnected muds.
+- "muds" channel added to report connecting and disconnecting muds.
+- "intermud" channel added to report finger, who, and locate requests.
+- wild_card() no longer an lfun, consolidated as a sefun.
+- Fixed problem in user_path() that caused recursion problems due
+  to the new "builder" player type.
 - Added mouth types to races.
-- Removed instances of the class data type from RACES_D.
+- Purged instances of the class data type from RACES_D.
 
 ---- 2.7a16 ---
 - Released 2008-03-16

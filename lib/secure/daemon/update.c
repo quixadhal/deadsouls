@@ -31,7 +31,8 @@ varargs static void eventUpdate(object whom){
     newfile += "}\n";
     write_file("/secure/daemon/update.c",newfile,1);
 
-    find_object(RACES_D)->eventDestruct();
+    if(find_object(RACES_D))
+        find_object(RACES_D)->eventDestruct();
     rename(SAVE_RACES __SAVE_EXTENSION__, SAVE_RACES+"."+time());
 
     reload("/secure/sefun/pointers");

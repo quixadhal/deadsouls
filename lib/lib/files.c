@@ -8,6 +8,7 @@
 #include <dirs.h>
 #include "include/files.h"
 
+#if 0
 string *wild_card(string str) {
     mixed pf;
     string *tmp;
@@ -32,5 +33,6 @@ string *wild_card(string str) {
 }
 
 nomask static int remove_dots(string str) { return !(str[0] == '.'); }
+#endif
 
 string query_cwd() { return DIR_TMP; }

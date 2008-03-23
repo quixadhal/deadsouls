@@ -34,12 +34,12 @@ string suspect,site,chan;
 static private mapping Channels;
 static private mapping chanlast;
 
-static private string *local_chans = ({"newbie","cre","gossip","admin","error",
-  "priest", "mage", "explorer", "thief", "fighter", "death", "connections" });
+static private string *local_chans = ({"newbie","cre","gossip","admin","error", "intermud",
+  "priest", "mage", "explorer", "thief", "fighter", "death", "connections", "muds" });
 static private string *remote_chans = ({ "Server01:ichat", "Server01:ibuild",
   "Server01:pchat", "Server02:i2chat", "Server02:i3chat", "Server02:icode",
   "Server02:igame", "Server02:inews", "Server02:irc" });
-static string *syschans = ({ "death", "connections" });
+static string *syschans = ({ "intermud", "death", "connections", "muds" });
 
 static private mapping localchans = ([
   //I3 Channels
@@ -92,6 +92,8 @@ static private mapping remotechans = ([
 ]);
 
 static private mapping tags = ([
+  "intermud"    : "%^WHITE%^",
+  "muds"        : "%^WHITE%^",
   "connections" : "%^BOLD%^WHITE%^",
   "death"       : "%^BOLD%^RED%^",
   "cre"         : "%^BOLD%^GREEN%^",
@@ -702,7 +704,6 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
             return;
         }
     }
-
     if( file_name(previous_object()) == SERVICES_D || file_name(previous_object()) == IMC2_D) {
         ch = GetLocalChannel(ch);
         if( emote && sizeof(who)) msg = replace_string(msg, "$N", who);

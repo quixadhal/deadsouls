@@ -310,9 +310,11 @@ static private void eventEnterGame() {
     if( Terminal ) Player->SetTerminal(Terminal);
     if( Screen ) Player->SetScreen(Screen[0], Screen[1]);
     Player->Setup();
-    if(creatorp(Player) && 
-      file_size(user_path(Player->GetKeyName())+".profile") > 0){
-        Player->eventForce("source "+user_path(Player->GetKeyName())+".profile");
+    if(creatorp(Player)){  
+        string profile = user_path(Player->GetKeyName())+".profile";
+        if(file_exists(profile)){
+            Player->eventForce("source "+profile);
+        }
     }
     Player->RemoveProperty("afk");
     if(creatorp(Player)) Player->AddChannel(CHAT_D->GetSystemChannels());

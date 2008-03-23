@@ -75,7 +75,6 @@ string eventAppend(string file, string *params, string addendum){
 
     foreach(string line in file_arr){
         if(line && line != "" && strsrch(line, search_str) != -1) {
-            //if(line && line != "") {
             primary_line = member_array(line, file_arr);
             count = primary_line;
         }
@@ -178,11 +177,7 @@ varargs mapping eventReadMapping(string file, string *params, int destructive){
     globalstr3 = search_str;
     unguarded( (: globalstr = remove_matching_line(read_file(first_arg),globalstr3,1) :) );
     globalstr2 = generate_tmp(file);
-    //write("globalstr2: "+globalstr2);
     if(destructive) {
-        //write("first arg: "+first_arg);
-        //unguarded( (: write_file("/realms/"+this_player()->GetKeyName()+"/tmp/mapping_destructive."+this_player()->GetKeyName(),globalstr,1) :) );
-        //unguarded( (: cp("/realms/"+this_player()->GetKeyName()+"/tmp/mapping_destructive."+this_player()->GetKeyName(),first_arg) :) );
         unguarded( (: write_file(globalstr2, globalstr,1) :) );
         unguarded( (: cp(globalstr2, first_arg) :) );
     }
@@ -287,9 +282,6 @@ int eventAddInit(string file){
     globalstr = tmpfile;
     globalstr2 = file;
 
-    //if(file == "/lib/std/dummy.c" || file == LIB_DUMMY || (load_object(file) && inherits(LIB_DUMMY, load_object(file))) ) return 0;
-    //if(file == "/lib/std/dummy.c" ) return 0;
-
     if(file_exists(file) && !check_privs(this_player(),file)){
         write("You do not appear to have access to this file. Modification aborted.");
         return 1;
@@ -324,11 +316,9 @@ int eventAddInit(string file){
             global_array = contents;
             globalstr3 = tmpfile;
             unguarded( (: write_file(globalstr3,implode(global_array,"\n"),1) :) );
-            //write_file(tmpfile,implode(contents,""));
         }
 
         else {
-            //write("File already contains a working init function.");
             return 2;
         }
     }
@@ -359,7 +349,6 @@ varargs int eventModString(string file, string param, mixed replace, string *par
 
     tmpfile = generate_tmp(file);
 
-    //if(!grepp(file,"\n") && file_exists(file)) globalstr = read_file(file);
     globalstr = file;
     globalstr2 = tmpfile;
     globalstr3 = param;
@@ -517,11 +506,9 @@ int eventAddCreate(string file){
             global_array = contents;
             globalstr3 = tmpfile;
             unguarded( (: write_file(globalstr3,implode(global_array,"\n"),1) :) );
-            //write_file(tmpfile,implode(contents,""));
         }
 
         else {
-            //write("File already contains a working init function.");
             return 2;
         }
     }

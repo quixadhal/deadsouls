@@ -309,11 +309,12 @@ int CheckBuilder(object who){
     return 0; 
 }
 
-string GetUserPath(string name){
+string GetUserPath(mixed name){
     string ret;
+    if(name && objectp(name)) name = name->GetKeyName();
     if(!name){
-       if(!this_player()) return "/tmp/";
-       else name = this_player()->GetKeyName();
+        if(!this_player()) return "/tmp/";
+        else name = this_player()->GetKeyName();
     }
     if(member_array(name, creators) != -1){
         ret = REALMS_DIRS+"/"+name+"/";

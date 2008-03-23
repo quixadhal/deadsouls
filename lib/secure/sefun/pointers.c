@@ -40,6 +40,11 @@ int imud_privp(mixed guy) {
     else return 0;
 }
 
+int telnet_privp(mixed guy) {
+    if(member_group(guy, "TELNET")) return 1;
+    else return 0;
+}
+
 int securep(mixed guy) {
     mixed dude = guy;
     if(!guy) guy = previous_object();

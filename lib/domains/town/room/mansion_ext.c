@@ -23,6 +23,7 @@ static void create() {
         ({"gate","mansion gate"}) : "The entry point into "
         "the estate on which you now stand."
       ]) );
+    SetFlyRoom("/domains/town/virtual/sky/27,99998,1");
     SetExits( ([
         "north" : "/domains/town/room/gate",
         "west" : "/domains/town/room/garden",

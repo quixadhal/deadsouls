@@ -19,6 +19,8 @@ inherit LIB_RADIANCE;
 inherit LIB_READ;
 inherit LIB_SMELL;
 inherit LIB_TOUCH;
+inherit LIB_KNOCK;
+inherit LIB_SCRATCH;
 
 /* ***************** dummy.c attributes ***************** */
 
@@ -108,3 +110,13 @@ varargs static void create(string array id, mixed long, string array adj) {
     SetExternalDesc(long || "");
     SetInvis(1);
 }
+
+varargs mixed eventKnock(object who, mixed what){
+    return enter::eventKnock(who, what);
+}
+
+varargs mixed eventScratch(object who, mixed what){
+    return enter::eventScratch(who, what);
+}
+
+

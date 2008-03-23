@@ -50,7 +50,7 @@
 // DATA_LOG is where packets are logged to.
 // Turn IMC2_logging off when not working on the system, as it invades privacy.
 // Comment this out to turn it off.
-#undef IMC2_LOGGING
+#define IMC2_LOGGING
 
 #ifndef LOG_IMC2
 #define DATA_LOG "/secure/log/imc2"
@@ -80,7 +80,7 @@
 #define BACKLOG_WEB_LEVEL 0
 
 // WHO_STR is the code that you want a who request to display.
-#define WHO_STR CGI_WHO->gateway(1)+URL+"\ntelnet://rugose.com 6666\n"+"______________________________________________________________________________"
+#define WHO_STR CGI_WHO->gateway(1)+URL+"\ntelnet://alcatraz.wolfpaw.com:8000\n"+"______________________________________________________________________________"
 
 // What's the file for the channel daemon?
 #ifndef CHANNEL_BOT
@@ -364,12 +364,18 @@ private void got_packet(string info){
             // example of info:
             // versionid=\"IMC2 AntiFreeze CL-2 SWR 1.0\" url=none md5=1
             //mudinfo[origin]["version"]="blah";
+            if(!mudinfo[origin]["online"]){
+                CHAT_D->eventSendChannel(origin+"@IMC2","muds","%^GREEN%^online%^RESET%^",0);
+            }
             mudinfo[origin]+=data;
             mudinfo[origin]["online"]=1;
             //debug("handled is-alive for mud "+origin);
             break;
         case "close-notify": // Someone disconnected.
             if(!mudinfo[data["host"]]) mudinfo[data["host"]] = ([]);
+            if(mudinfo[data["host"]]["online"]){
+                CHAT_D->eventSendChannel(data["host"]+"@IMC2","muds","%^RED%^offline%^RESET%^",0);
+            }
             mudinfo[data["host"]]["online"]=0;
             break;
         case "keepalive-request": // Request for is-alive.
@@ -400,6 +406,8 @@ private void got_packet(string info){
         case "who":
             send_packet("*","who-reply",sender,origin,
               "text="+escape(pinkfish_to_imc2(WHO_STR)));
+            CHAT_D->eventSendChannel("SYSTEM","intermud","[" + capitalize(sender)+"@"+origin+
+              " requests the IMC2 who list]",0);
             break;
         case "ice-destroy": // Deleting channel.
             map_delete(chaninfo,data["channel"]);

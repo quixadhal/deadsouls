@@ -10,6 +10,12 @@
 
 inherit LIB_DAEMON;
 
+int CheckMud(string name){
+    if(!(name = (string)INTERMUD_D->GetMudName(name)) ) return 0;
+    if(!INTERMUD_D->GetMudList()[name][0]) return 0;
+    return 1;
+}
+
 mixed cmd(string str) {
     string *words;
     mixed mud;
@@ -39,8 +45,7 @@ mixed cmd(string str) {
             tmp = lower_case(implode(words[0..i], " "));
             tmp2 = lower_case(implode(words[0..i+1], " "));
 
-            if( (string)INTERMUD_D->GetMudName(tmp) 
-              && !((string)INTERMUD_D->GetMudName(tmp2)) ) {
+            if( CheckMud(tmp) && !CheckMud(tmp2) ){ 
                 mud = tmp;
                 if(i+1 < maxi) msg = implode(words[i+1..maxi-1], " ");
                 else msg = "";
@@ -150,22 +155,4 @@ void help(string str) {
       "rather than an Intermud-3 network, use \"imc2 tell\""
       "\n\n"
       "See also: imc2, say, shout, yell, emote",this_player());
-}
-
-string morse(string msg) {
-    mapping __Morse;
-    string tmp;
-    int x, i;
-    __Morse = ([ "a" : ".-", "b" : "-...", "c" : "-.-.",
-      "d" : "-..", "e" : ".", "f" : "..-.", "g" : "--.", "h" : "....", "i" : "..",
-      "j" : ".---", "k" : "-.-", "l" : ".-..", "m" : "--", "n" : "-.", "o" : "---",
-      "p" : ".--.", "q" : "--.-", "r" : " .-.", "s" : "...", "t" : "-", "u" : "..-",
-      "v" : "...-", "w" : ".--", "x" : "-..-", "y" : "-.--", "z" : "--..",
-      "1" : ".----", "2" : "..---", "3" : "...--", "4" : "....-", "5" : ".....",
-      "6" : " -....", "7" : "--...", "8" : "---..", "9" : "----.","0" : " -----" ]);
-    for(tmp = "", x = strlen(msg), i=0; i< x; i++) {
-        if(__Morse[msg[i..i]]) tmp += __Morse[msg[i..i]]+" ";
-        else tmp += msg[i..i]+ " ";
-    }
-    return tmp;
 }

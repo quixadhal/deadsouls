@@ -114,7 +114,7 @@ varargs int tell_creators(string msg, string color){
 
 varargs void tell_room(mixed ob, mixed str, mixed exclude) {
     if(!ob ) return;
-    if(stringp(ob) && !file_exists(ob) && !file_exists(ob+".c")) return;
+    if(stringp(ob) && unguarded( (: !file_exists($(ob)) && !file_exists($(ob)+".c") :) )) return;
     if(stringp(ob) &&!(ob = load_object(ob))) return;
     ob->eventPrint(str, MSG_ENV, exclude);
 }

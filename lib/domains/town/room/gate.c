@@ -49,6 +49,7 @@ static void create() {
         "casual entry. They are made of brick and appear old "
         "and strong.",
       ]) );
+    SetFlyRoom("/domains/town/virtual/sky/27,99999,1");
     SetInventory(([
         "/domains/town/npc/mp" : 1,
       ]));

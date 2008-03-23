@@ -27,7 +27,8 @@ void eventReceiveFingerRequest(mixed array packet) {
     INTERMUD_D->eventWrite(ret);
     tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"+capitalize(packet[3])+" at "+packet[2]+" has requested finger information about "+capitalize(ret[6])+".%^RESET%^\"");
     tn("eventReceiveFingerRequest: "+identify(packet),"cyan");
-
+    CHAT_D->eventSendChannel("SYSTEM","intermud","[" + capitalize(packet[3])+"@"+
+      packet[2]+" fingers "+capitalize(ret[6])+ "]",0);
 }
 
 void eventReceiveFingerReply(mixed array packet) {

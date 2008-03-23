@@ -102,7 +102,7 @@ mixed cmd(string args) {
           i = sizeof(tmpfiles);
           files = ({});
           while(i--) {
-              if( sizeof(tmp = (string *)this_player()->wild_card(tmpfiles[i])) )
+              if( sizeof(tmp = (string *)wild_card(tmpfiles[i])) )
                   files += tmp;
               else this_player()->eventPrint(tmpfiles[i] + ": File not found.");
           }

@@ -138,6 +138,7 @@ static int cmdAll(string args) {
             if( (int)this_object()->GetProperty("parse debug") ) dbg = 1;
             else if( (int)this_object()->GetProperty("debug") ) dbg = 1;
             else dbg = 0;
+            //tc("cmd: "+identify(cmd));
             if( (err = parse_sentence(cmd, dbg)) == 1 ) {
                 this_agent(old_agent || 1);
                 return 1;

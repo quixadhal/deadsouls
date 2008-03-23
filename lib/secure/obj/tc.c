@@ -24,6 +24,15 @@ static void create()
     connected = 0 ;
     socket = 0 ;
     person = 0 ;
+    set_heart_beat(2);
+}
+
+void heart_beat(){
+    if(!clonep(this_object())) return;
+    if(!environment() || !living(environment()) || !environment(environment())) eventDestruct();
+    if(!connected && base_name(environment(environment())) != "/domains/default/room/telnet_room")
+        eventDestruct();
+
 }
 
 void init()
@@ -87,7 +96,7 @@ string help()
     "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n" ;
 }
 
-int do_connect(string args)
+varargs int do_connect(string args, object whom)
 {
     int new_socket, sc_result, port ;
     string error, ip_address ;
@@ -95,7 +104,7 @@ int do_connect(string args)
     if(preset) args = preset;
     else args = "204.209.44.3 8000";
 
-    tc("args: "+args);
+    //tc("args: "+args);
 
     if( !args || args == "" )
     {
@@ -117,9 +126,9 @@ int do_connect(string args)
         notify_fail( "Already connected...\n" ) ;
         return 0 ;
     }
-    tc("1");
+    //tc("1");
     new_socket = socket_create( STREAM, "read_callback", "close_callback" ) ;
-    tc("new_socket: "+new_socket);
+    //tc("new_socket: "+new_socket);
     if( new_socket < 0 )
     {
         switch( new_socket )
@@ -146,7 +155,7 @@ int do_connect(string args)
             error = "Unknown error code: " + new_socket + ".\n" ;
             break ;
         }
-        tc("hmm. error: "+error);
+        //tc("hmm. error: "+error);
         notify_fail( "Unable to connect, problem with socket_create.\n"
           "Reason: " + error ) ;
         return 0 ;
@@ -155,14 +164,15 @@ int do_connect(string args)
       "read_callback", "write_callback" ) ;
     if( sc_result != EESUCCESS )
     {
-        tc("strange.");
+        //tc("strange.");
         notify_fail( "Failed to connect.\n" ) ;
         return 0 ;
     }
     attempting = 1 ;
     socket = new_socket ;
     person = (object)previous_object() ;
-    player=this_player();
+    if(!whom) player=this_player();
+    else player = whom;
     input_to( "parse_comm", 0 ) ;
     return 1 ;
 }
@@ -199,7 +209,7 @@ int parse_comm( string str )
 {
     if(str=="dcon" || str=="quit")
     {
-        write("You return from Dead Souls!\n");
+        write("You return from your visit to another mud!\n");
         socket_close( socket ) ;
         attempting = 0 ;
         connected = 0 ;

@@ -45,7 +45,7 @@ int cmd(string str) {
         }
     }
     for(i=0, maxi = sizeof(paths), files = ({}); i<maxi; i++)
-        if(tmp = (string *)previous_object()->wild_card(paths[i])) files += tmp;
+        if(tmp = (string *)wild_card(paths[i])) files += tmp;
     if(!sizeof(files)) { 
         message("error", "No such file or directory.", this_player());
         return 1;

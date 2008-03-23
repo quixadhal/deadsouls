@@ -80,7 +80,7 @@
 #define BACKLOG_WEB_LEVEL 0
 
 // WHO_STR is the code that you want a who request to display.
-#define WHO_STR CGI_WHO->gateway(1)+URL+"\ntelnet://rugose.com 6666\n"+"______________________________________________________________________________"
+#define WHO_STR CGI_WHO->gateway(1)+URL+"\ntelnet://alcatraz.wolfpaw.com:8000\n"+"______________________________________________________________________________"
 
 // What's the file for the channel daemon?
 #ifndef CHANNEL_BOT

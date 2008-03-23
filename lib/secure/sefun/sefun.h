@@ -278,5 +278,6 @@ int sefun_exists(string str);
 varargs int estatep(object ob);
 string dbz_colors(string str, int annoying);
 mixed lpc_file(string str);
+int telnet_privp(mixed guy);
 
 #endif /* l_sefun_h */

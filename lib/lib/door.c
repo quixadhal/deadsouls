@@ -12,6 +12,8 @@
 
 inherit LIB_DAEMON;
 inherit LIB_SEAL;
+inherit LIB_KNOCK;
+inherit LIB_SCRATCH;
 
 private mapping Sides;
 private static int Hidden = 1;
@@ -291,8 +293,6 @@ mapping GetSide(string side){
     return copy(RetMap);
 }
 
-
-
 int SetLockable(string side, int x) {
     if( !Sides[side] )
         Sides[side] = new(class door_side, Rooms : ({}));
@@ -374,6 +374,58 @@ string *GetKeys(string side) { return ((class door_side)Sides[side])->Keys; }
 object *GetRooms(string side) { return ((class door_side)Sides[side])->Rooms; }
 
 int get_closed() { return GetClosed(); }
+
+varargs mixed eventKnock(object who, mixed what) {
+    object room,whom;
+    string tmp;
+    if(GetClosed()){
+        if(who) room = environment(who);
+        else room = environment(this_player());
+        if(!who) whom = this_player();
+        else whom = who;
+        foreach(string side, class door_side val in Sides) {
+            if( member_array(environment(whom), val->Rooms) != -1 ) tmp = side;
+            if(who)
+                filter(val->Rooms, (: $1 && ($1 != $(room)):))->eventPrint(
+                  "There is a knock at the "+remove_article(GetShort(side)) + ".");
+            else (val->Rooms)->eventPrint(
+                  "There is a knock at the "+remove_article(GetShort(side)) + ".");
+        }
+        if(who){
+            who->eventPrint("You knock on the " + remove_article(GetShort(tmp)) + ".");
+            room->eventPrint((string)who->GetName() + " knocks on the " + remove_article(GetShort(tmp)) + ".",
+              who);
+        }
+    }
+    else write("It isn't closed!");
+    return 1;
+}
+
+varargs mixed eventScratch(object who, mixed what) {
+    object room,whom;
+    string tmp;
+    if(GetClosed()){
+        if(who) room = environment(who);
+        else room = environment(this_player());
+        if(!who) whom = this_player();
+        else whom = who;
+        foreach(string side, class door_side val in Sides) {
+            if( member_array(environment(whom), val->Rooms) != -1 ) tmp = side;
+            if(who)
+                filter(val->Rooms, (: $1 && ($1 != $(room)):))->eventPrint(
+                  "There is a scratch at the "+remove_article(GetShort(side)) + ".");
+            else (val->Rooms)->eventPrint(
+                  "There is a scratch at the "+remove_article(GetShort(side)) + ".");
+        }
+        if(who){
+            who->eventPrint("You scratch on the " + remove_article(GetShort(tmp)) + ".");
+            room->eventPrint((string)who->GetName() + " scratches on the " + remove_article(GetShort(tmp)) + ".",
+              who);
+        }
+    }
+    else write("It isn't closed!");
+    return 1;
+}
 
 void init(){
 }

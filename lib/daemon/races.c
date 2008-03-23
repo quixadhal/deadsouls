@@ -331,7 +331,7 @@ void AddRace(string file, int player) {
                 res["Mouthtype"] = this_object()->GetMouthType(type);
                 //tc("yay: "+res["Mouthtype"]);
             }
-            else tc("boo!");
+            //else tc("boo!");
             break;
 
         case "LIMB":

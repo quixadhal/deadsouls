@@ -180,9 +180,14 @@ static void eventRead(mixed *packet) {
                     if(!val[0]) tmp += " %^RED%^BOLD%^offline%^RESET%^";
                     else tmp += " %^GREEN%^BOLD%^ONLINE%^RESET%^";
                 }
-                else tmp += " Status unknown";
+                else tmp += " removed from mudlist";
                 tn(tmp);
                 tn(tmp,"cyan",ROOM_ARCH);
+                if(val && sizeof(val) > 5 && arrayp(val))
+                    tmp = (val[0] ? "%^GREEN%^online" : "%^RED%^offline")+ 
+                    "%^RESET%^, lib: "+lib+", driver: "+val[7];
+                else tmp = "removed from mudlist.";
+                CHAT_D->eventSendChannel(cle+"@i3","muds",tmp,0);
             }
             if( !val && MudList["List"][cle] != 0 ) 
                 map_delete(MudList["List"], cle);

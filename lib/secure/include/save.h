@@ -7,6 +7,7 @@
 #define SAVE_BUGS          DIR_SAVE "/bugs"
 #define SAVE_CHARACTER     DIR_SECURE_SAVE "/character"
 #define SAVE_CLASSES       DIR_SAVE "/classes"
+#define SAVE_CONFIG        DIR_SAVE "/config"
 #define SAVE_ECONOMY       DIR_SAVE "/economy"
 #define SAVE_ESTATES       DIR_SAVE "/estates"
 #define SAVE_EVENTS        DIR_SAVE "/events"
@@ -27,6 +28,7 @@
 #define SAVE_SNOOP         DIR_SECURE_SAVE "/snoop"
 #define SAVE_SOUL          DIR_SAVE "/soul"
 #define SAVE_STARGATE      DIR_SAVE "/stargate"
+#define SAVE_TYPES         DIR_SAVE "/types"
 #define SAVE_UNIQUE        DIR_SAVE "/unique"
 #define SAVE_IMC2          DIR_SAVE "/imc2"
 

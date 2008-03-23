@@ -1,7 +1,6 @@
 #include <lib.h>
 #include <save.h>
 #include <privs.h>
-#include "/daemon/include/races.h"
 
 int eventReceiveCommand(string butt, string munch);
 //varargs int SetOwner(string str, mixed arg);

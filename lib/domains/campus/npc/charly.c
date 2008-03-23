@@ -1,7 +1,6 @@
 #include <lib.h>
 #include <save.h>
 #include <privs.h>
-#include "/daemon/include/races.h"
 
 inherit LIB_NPC;
 

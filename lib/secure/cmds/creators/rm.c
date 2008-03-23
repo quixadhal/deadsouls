@@ -22,7 +22,7 @@ int cmd(string str) {
         return 1;
     }
     tmp = absolute_path((string)ob->query_cwd(), str);
-    if(!archp(ob) || !sizeof(files = (string *)ob->wild_card(tmp)))
+    if(!archp(ob) || !sizeof(files = (string *)wild_card(tmp)))
         files = ({ tmp });
     if(!(i=sizeof(files))) {
         message("system", "File "+tmp+" does not exist.", this_player());

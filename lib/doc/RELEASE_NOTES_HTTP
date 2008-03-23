@@ -1,3 +1,55 @@
+---- 2.7a16 ---
+- Released 2008-03-16
+- Bundled driver is now a customized FluffOS 2.11
+
+---- 2.7a14 ---
+- Released 2008-03-13
+- Added example of an environmental suit: /domains/default/armor/scoutsuit.c
+- Modified firearms code to include rifles: /domains/town/weap/m16rifle.c
+- NPC's now try to shoot weapons they're wielding, if they're loaded.
+- Removed out of date faqs.
+- Tweaks and fixes to room, rocketpack, and position code.
+- Fixed module id bug in Yautja wrist computer.
+- eventDescribeEnvironment() moved to /lib/events/describe.c in order
+  to consolidate player/npc behavior, and to simplify things for people
+  wanting to customize room appearance.
+
+---- 2.7a13 ---
+- Released 2008-03-09
+- Added commands: position, var, variables, cconv, cwgconv.
+- Added sample virtual planet composed of sea bottom area,
+  underwater area, surface area, sky area, and outer space.
+- Updated the sconv command to convert Smaug areas more sanely.
+- Added verbs: swim, kneel.
+- Rapid death occurs when air-breathing creatures are deprived of oxygen.
+- Added a breathing device for exploring non-air environments:
+  /domains/default/armor/breather.c
+- Added a rocket pack for traveling in space. Do NOT "activate" it in
+  space or you will accelerate out of control. "boost" only, for example
+  "boost +x+z" then to stop: "boost -x-z"
+- Stargates added underwater and in outer space for convenient exploration.
+  Beware fatal anoxia.
+
+---- 2.7a12 ---
+- Released 2008-03-03
+- IMC2 now supports who requests and tells. "imc2 tell joe@dead_souls_joe hello!"
+- Driver workaround implemented for strip_colours() problem.
+- Channels can now accept filters. The two built-in filters are colorize and morse
+  example: cre|colorize hello there! 
+  This is not encouraged for use on intermud. CHANNEL_PIPES must be enabled.
+- Builder-generated items fixed up to limit cheating.
+- Added sefuns string_colors_old() and dbz_colors()
+- Inheritables for living creatures modified to limit cheating by builders.
+- MASTER_D can now accept some wildcards in read.cfg.
+- Fixed up various lib systems that previously did not expect players to
+  have home directories.
+- The source command will now accept the $N token in source files as a representation
+  of the player's key name.
+- Added RESOLV_D to handle internet name lookups and caching. Use the "resolve" command
+  to look up names.
+- Modified WGET_D to be more generic, added "wget" command for downloading arbitrary
+  files from the intertubes.
+
 ---- 2.7a9 ---
 - Released 2008-02-18
 - Added sefuns: efuns(), sefuns(), efun_exists(), sefun_exists(), estatep().

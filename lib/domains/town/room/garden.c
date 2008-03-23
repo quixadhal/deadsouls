@@ -16,6 +16,7 @@ static void create() {
         ({ "shack", "wooden shack" }) : "A beaten-up old wooden shack is north.",
         "garden" : "A mess of weeds and dirt.",
       ]));
+    SetFlyRoom("/domains/town/virtual/sky/26,99998,1");
     SetExits( ([
         "east" : "/domains/town/room/mansion_ext",
         "north" : "/domains/town/room/shack"
