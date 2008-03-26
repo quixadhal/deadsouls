@@ -266,7 +266,8 @@ static void eventReEnterGame(string cap) {
         log_file("enter", cap + " (exec): " + ctime(time()) + "\n"); 
         Player->eventReconnect();
         Player->RemoveProperty("afk");
-        if(creatorp(Player)) Player->AddChannel(CHAT_D->GetSystemChannels());
+        if(creatorp(Player)) 
+            Player->AddChannel((CHAT_D->GetSystemChannels() - ({"muds"})));
         SNOOP_D->ReportReconnect(Player->GetKeyName());
     }
     receive("\nProblem reconnecting.\n");
@@ -317,7 +318,8 @@ static private void eventEnterGame() {
         }
     }
     Player->RemoveProperty("afk");
-    if(creatorp(Player)) Player->AddChannel(CHAT_D->GetSystemChannels());
+    if(creatorp(Player)) 
+        Player->AddChannel(((CHAT_D->GetSystemChannels()) - ({"muds"})));
     SNOOP_D->CheckBot(Player->GetKeyName());
     call_out( (: destruct(this_object()) :), 10);
 

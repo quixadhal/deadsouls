@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <daemons.h>
 #include <dirs.h>
 #include <vision.h>
 #include <medium.h>
@@ -314,58 +315,44 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal, mixed
 
     if(!CheckSuit()) return 0;
     if(!ob) return 0;
-    if(!suit->GetActive()) return ob->eventReceiveDamage(agent, type, x, internal, limbs);
+    if(internal || !suit->GetActive()) return ob->eventReceiveDamage(agent, type, x, internal, limbs);
 
     if(reporting){
+        string *damtypes = TYPES_D->eventCalculateTypes("damage", type);
         evidence = "The powered suit's Heads-Up-Display issues an alert:\n";
         evidence += "%^BOLD%^%^RED%^";
         if(objectp(agent)) evidence += "Damage received!";
-        if(type) {
-            switch(type){
-            case BLUNT : evidence += " Damage type is BLUNT";break; 
-            case BLADE : evidence += " Damage type is BLADE";break;
-            case KNIFE : evidence += " Damage type is KNIFE";break;
-            case WATER : evidence += " Damage type is WATER";break;
-            case SHOCK : evidence += " Damage type is SHOCK";break;
-            case COLD : evidence += " Damage type is COLD";break;
-            case HEAT : evidence += " Damage type is HEAT";break;
-            case GAS : evidence += " Damage type is GAS";break;
-            case ACID : evidence += " Damage type is ACID";break;
-            case MAGIC : evidence += " Damage type is MAGIC";break;
-            case POISON : evidence += " Damage type is POISON";break;
-            case DISEASE : evidence += " Damage type is DISEASE";break;
-            case TRAUMA : evidence += " Damage type is TRAUMA";break;
-            case PIERCE : evidence += " Damage type is PIERCE";break;
-            case PSIONIC : evidence += " Damage type is PSIONIC";break;
-            case ANOXIA : evidence += " Damage type is ANOXIA";break;
-            case DEATHRAY : evidence += " Damage type is DEATHRAY";break;
-            case EMOTIONAL : evidence += " Damage type is EMOTIONAL";break;
-            case SONIC : evidence += " Damage type is SONIC";break;
-            case BITE : evidence += " Damage type is BITE";break;
-            case OTHER : evidence += " Damage type is OTHER";break;
-            default : evidence += " Damage type is UNKNOWN";break;
-            }
+        if(type && sizeof(damtypes)) {
+            string verboid;
+            if(sizeof(damtypes) > 1) verboid = "s are ";
+            else verboid = " is ";
+
+            evidence += " Damage type"+verboid;
+            evidence += lower_case(implode(damtypes,", "));
         }
-        if(limbs) {
-            if(stringp(limbs)) limb_string = limbs;
-            else if(arrayp(limbs)) {
-                if(stringp(limbs[0])) limb_string = implode(limbs,", ");
-                else if(objectp(limbs[0])){
-                    foreach(object limb in limbs){
-                        limb_string += limb->GetKeyName()+", ";
-                    }
+
+        else evidence += " Damage type is UNKNOWN";
+    }
+
+    if(limbs) {
+        if(stringp(limbs)) limb_string = limbs;
+        else if(arrayp(limbs)) {
+            if(stringp(limbs[0])) limb_string = implode(limbs,", ");
+            else if(objectp(limbs[0])){
+                foreach(object limb in limbs){
+                    limb_string += limb->GetKeyName()+", ";
                 }
             }
         }
-        else limb_string = ", location indeterminate. ";
-        if(limbs) { 
-            evidence += ", location: ";
-            evidence += limb_string + ".";
-        }
-        this_object()->eventPrint(evidence+"%^RESET%^");
-
-        this_object()->eventPrint("%^YELLOW%^Power level drained: "+x+" units.%^RESET%^");
-        suit->eventDecrementCharge(x);
     }
+    else limb_string = ". Location indeterminate. ";
+    if(limbs) { 
+        evidence += ". Location: ";
+        evidence += limb_string + ".";
+    }
+    this_object()->eventPrint(evidence+"%^RESET%^");
+
+    this_object()->eventPrint("%^YELLOW%^Power level drained: "+x+" units.%^RESET%^");
+    suit->eventDecrementCharge(x);
     return 1;
 }

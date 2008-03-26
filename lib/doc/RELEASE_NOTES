@@ -1,3 +1,10 @@
+---- 2.7a20 ---
+- Released 2008-03-26
+- Chan logs viewing added to creweb.
+- The "muds" channel is no longer added to creators by default.
+- The jade ring, powered scout armor, and training dummy now use TYPES_D
+  to work out the received damage type.
+
 ---- 2.7a19 ---
 - Released 2008-03-23
 - SERVICES_D now accurately reports current ports for active services.

@@ -35,10 +35,11 @@ varargs string gateway(mixed args){
         ret += "log in, browse their home directories, upload and edit files. <br>";
         ret += "<br>";
         ret += "To mitigate potential security hazards, ";
-        ret += "nothing outside home directories may be browsed.<br>";
+        ret += "directories outside home dirs may not be browsed.<br>";
         ret += "<br>";
         ret += "<br>";
-        ret += "<a href=\"/realms/"+cookie["name"]+"\">Click here to begin.</a><br>";
+        ret += "<a href=\"/realms/"+cookie["name"]+"\">Your home directory is here</a><br>";
+        ret += "<a href=\"chanlogs.html\">Click here to see channel logs.</a><br>";
         ret += "<a href=\"logout.html\">Click here to logout.</a><br>";
     }
     else {
