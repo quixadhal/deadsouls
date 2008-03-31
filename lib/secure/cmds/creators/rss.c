@@ -25,6 +25,8 @@ inherit LIB_DAEMON;
 #define SOCK_DISCONNECTED 3
 #define SOC_ERROR 4
 
+#define _DEBUG
+
 int socket;
 int status;
 object player;
@@ -297,9 +299,7 @@ int openHTTPConnection()
           "Reason: " + error ) ;
         return 0 ;
     }
-#ifdef _DEBUG
     write("Attempting to connect to "+HTTP_HOST+ " on port "+ HTTP_PORT + "\n");
-#endif	
     sc_result = socket_connect( sock, Feeds[args_list]["ip_port"],
       "read_callback", "write_callback" ) ;
     if( sc_result != EESUCCESS )

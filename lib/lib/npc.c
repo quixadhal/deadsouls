@@ -34,6 +34,7 @@ private static mixed Die, Action, CombatAction;
 private static mapping Inventory;
 private static string MountStyle = "ridden";
 private int VisibleRiders = 1;
+private int actions_enabled = 1;
 
 int eventExtraAction(){ return 1; }
 
@@ -115,7 +116,7 @@ static void heart_beat() {
           !RACES_D->GetLimblessRace(this_object()->GetRace()) ) 
             eventForce("stand up");
     }
-    if( !GetInCombat() && ActionChance > random(100) ) {
+    if( !GetInCombat() && actions_enabled && ActionChance > random(100) ) {
         int x;
 
         if( functionp(Action) ) evaluate(Action);
@@ -637,6 +638,22 @@ varargs string GetLong(string str) {
     foreach(item in keys(counts))
     str += capitalize(consolidate(counts[item], item)) + "\n";
     return str;
+}
+
+int DisableActions(int x){
+    if(x) actions_enabled = 0;
+    else actions_enabled = 1;
+    return actions_enabled;
+}
+
+int EnableActions(int x){
+    if(x) actions_enabled = 1;
+    else actions_enabled = 0;
+    return actions_enabled;
+}
+
+int GetActionsEnabled(){
+    return actions_enabled;
 }
 
 void SetAction(int chance, mixed val) {

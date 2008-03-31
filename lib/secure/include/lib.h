@@ -90,6 +90,7 @@
 #define LIB_PILE           DIR_LIB        "/pile"
 #define LIB_PISTOL         DIR_LIB        "/pistol"
 #define LIB_PLAYER         DIR_LIB        "/player"
+#define LIB_PLAYER_STUB    DIR_LIB        "/daemons/player_stub"
 #define LIB_PLAYERS        DIR_LIB        "/player"
 #define LIB_POLE           DIR_LIB        "/pole"
 #define LIB_POST_OFFICE    DIR_LIB        "/post_office"
@@ -120,7 +121,7 @@
 #define LIB_UNDEAD         DIR_LIB        "/undead"
 #define LIB_USED_MEAL      DIR_LIB        "/used_meal"
 #define LIB_VEHICLE        DIR_LIB        "/vehicle"
-#define LIB_VERB           DIR_LIB        "/verb"
+#define LIB_VERB           DIR_LIB        "/daemons/verb"
 #define LIB_VIRTUAL        DIR_LIB        "/virtual/virtual"
 #define LIB_WEB_CLIENT     DIR_SECURE_LIB "/net/web_client"
 

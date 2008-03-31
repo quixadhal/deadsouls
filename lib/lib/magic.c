@@ -53,10 +53,13 @@ varargs mixed CanCast(object spell) {
     if( spell->GetVerb() == "pray" ) {
         tmp = "prayer";
     }
+    else if( spell->GetVerb() == "perform" ) {
+        tmp = "feat";
+    }
     else {
         tmp = "spell";
     }
-    if( !SpellBook[spell->GetSpell()] ) {
+    if( !this_object()->GetSpellBook()[spell->GetSpell()] ) {
         return "You have never heard of that " + tmp + " before.";
     }
     if( GetMagicPoints() < spell->GetRequiredMagic() ) {
@@ -117,6 +120,9 @@ varargs mixed eventPrepareCast(string verb, mixed array args...) {
     if( spell->GetVerb() == "pray" ) {
         special = "a prayer";
     }
+    else if( spell->GetVerb() == "perform" ) {
+        special = "a mantra";
+    }
     else {
         special = "an incantation";
     }
@@ -150,11 +156,14 @@ varargs mixed eventPrepareCast(string verb, mixed array args...) {
 static varargs void eventCast(object spell, string limb, object array targs) {
     string name = spell->GetSpell();
 
-    if( SpellBook[name] < 100 ) {
+    //tc("LIB_MAGIC: eventCast("+identify(spell)+","+identify(limb)+", "+
+    //identify(targs)+")");
+
+    if( this_object()->GetSpellBook()[name] < 100 ) {
         eventTrainSpell(spell);
     }
-    if( spell->CanCast(this_object(), SpellBook[name], limb, targs) ) {
-        spell->eventCast(this_object(), SpellBook[name], limb, targs);
+    if( spell->CanCast(this_object(), this_object()->GetSpellBook()[name], limb, targs) ) {
+        spell->eventCast(this_object(), this_object()->GetSpellBook()[name], limb, targs);
     }
 }
 
@@ -166,7 +175,7 @@ mixed eventLearnSpell(string spell) {
             return 0;
         }
     }
-    if( !SpellBook[spell] ) {
+    if( !this_object()->GetSpellBook()[spell] ) {
         SpellBook[spell] = 1;
     }
     return 1;

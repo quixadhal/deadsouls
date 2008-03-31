@@ -29,8 +29,8 @@ mixed cmd(string str) {
 
     ret += "----------------------------------------\n";
 
-    foreach(string *quests in dude->GetQuests()){
-        ret += quests[1] + "\n";
+    foreach(string key, mapping val in dude->GetQuests()){
+        ret += val["Description"] + "\n";
     }
     write(ret);
     return 1;

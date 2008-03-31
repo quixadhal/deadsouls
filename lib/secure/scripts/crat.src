@@ -82,7 +82,8 @@ call me->AddChannel("i2code")
 call me->AddChannel("i2game")
 call me->AddChannel("i2news")
 call me->AddChannel("irc")
-call me->AddChannel("havenlib")
+call me->RemoveChannel("havenlib")
+call me->AddChannel("muds")
 alias intermud intergossip http://lpmuds.net/intermud.html
 alias porch goto /domains/town/room/porch
 prompt %^BOLD%^%^BLUE%^$M%^RESET%^ %^BOLD%^$P%^RESET%^ > 

@@ -92,13 +92,21 @@ string SetClass(string class_name) {
     return (Class = class_name);
 }
 
-string ChangeClass(string class_name)  {
+mixed ChangeClass(string class_name){
     string cl;
-    foreach(cl in GetSkills())  {
-        RemoveSkill(cl);
-    }
+    int lvl = this_object()->GetLevel();
+    mixed ret;
+    /* Not sure it makes sense that you'd forget
+     * everything you knew before
+     *
+     *   foreach(cl in GetSkills()){
+     *       RemoveSkill(cl);
+     *   }
+     */
     Class = 0;
-    return SetClass(class_name);
+    ret = SetClass(class_name);
+    this_object()->ChangeLevel(lvl);
+    return ret;
 }
 
 string GetClass() { return Class; }

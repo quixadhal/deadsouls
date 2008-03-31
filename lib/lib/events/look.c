@@ -193,13 +193,13 @@ varargs mixed eventShow(object who, string component) {
         component = remove_article(lower_case(component));
         desc = GetItem(component, who);
         environment(who)->eventPrint(who->GetName() + " looks at the " +
-          component + " on " + GetShort() + ".",
+          component + " on the " + remove_article(GetShort()) + ".",
           ({ who, this_object() }));
     }
     else {
         desc = GetExternalDesc(who);
-        environment(who)->eventPrint(who->GetName() + " looks at " +
-          GetShort() + ".",
+        environment(who)->eventPrint(who->GetName() + " looks at the " +
+          remove_article(GetShort()) + ".",
           ({ who, this_object() }));
     }
 

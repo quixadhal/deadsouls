@@ -21,6 +21,7 @@ string *eventLinkify(string *arg){
     string url, junk1, junk2;
     int i;
     string *ret = ({});
+    if(!sizeof(arg)) return ret;
     if(!grepp(implode(arg,"\n"),"ttp://")) return arg;
     foreach(string str in arg){
         if(!grepp(lower_case(str),"ttp://")) continue;
@@ -29,6 +30,8 @@ string *eventLinkify(string *arg){
         else if(i != 3) i = sscanf(str,"%sttp://%s)",junk1,url);
         else if(i != 2) i = sscanf(str,"%sttp://%s",junk1,url);
         else if(i != 2) continue;
+
+        if(!str || !url) continue;
 
         str = replace_string(str,url,"1010011101001110100111010011",1);
         ret += ({ replace_string(str,"1010011101001110100111010011",
@@ -48,15 +51,15 @@ string gateway(mixed args) {
     string shib = cookie["shib"];
     string ret = "";
 
-    tc("SHOWLOG GATEWAY","red");
+    //tc("SHOWLOG GATEWAY","red");
 
     if(ENABLE_CREWEB){
         string *logfiles = ({});
         validate();
 
-        tc("ob: "+identify(ob),"yellow");
-        tc("current_page: "+current_page,"white");
-        tc("args: "+args,"white");
+        //tc("ob: "+identify(ob),"yellow");
+        //tc("current_page: "+current_page,"white");
+        //tc("args: "+args,"white");
 
         if(!name || !shib || !WEB_SESSIONS_D->authenticate(name, shib)){
             ret += "Bad session. <br>";

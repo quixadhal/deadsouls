@@ -284,6 +284,8 @@ static void ConfirmReconnect(string ans, string cap) {
     }
     if(rescue)
         if(sizeof(deep_inventory(Player))) deep_inventory(Player)->eventMove(ROOM_FURNACE);
+    log_file("enter", cap + " (reconnect) from " + query_ip_number() + " (" +
+      ctime(time()) + ")\n");
     exec(tmp = new(LIB_PLAYER), Player); 
     exec(Player, this_object()); 
     destruct(tmp);

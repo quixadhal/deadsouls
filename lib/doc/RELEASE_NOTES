@@ -1,3 +1,18 @@
+---- 2.7a21 ---
+- Released 2008-03-30
+- Fixed runtime in unknown INTERMUD_D packet handling.
+- Fixed runtime in creweb logfile reading of empty files.
+- Creators can now cast any spell known to SPELLS_D. Their
+  default spell level is extremely high.
+- LIB_QUEST changes: variable name has been changed and is now
+  a mapping rather than a class. Quest-specific functions moved
+  out of LIB_PLAYER and into LIB_QUEST. RemoveQuest() is now
+  an option.
+- Dummy object handling improved...the church elevator should
+  now work somewhat better.
+- Taking over your char from a new session now logs in /log/enters.
+- Added commands: warmboot, userload
+
 ---- 2.7a20 ---
 - Released 2008-03-26
 - Chan logs viewing added to creweb.

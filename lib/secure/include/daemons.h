@@ -69,6 +69,7 @@
 #define VERBS_D              DIR_DAEMONS "/verbs"
 #define VIRTUAL_D            DIR_DAEMONS "/virtual"
 #define VOTING_D             DIR_SECURE_DAEMONS "/voting"
+#define WARM_BOOT_D          DIR_SECURE_DAEMONS "/warm_boot"
 #define WEATHER_D            DIR_DAEMONS "/weather"
 #define WEB_SESSIONS_D       DIR_SECURE_DAEMONS "/web_sessions"
 #define WGET_D               DIR_SECURE_DAEMONS "/wget"

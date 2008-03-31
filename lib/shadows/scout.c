@@ -25,7 +25,8 @@ int GetDisguised(){
 }
 
 int CheckDisguised(){
-    object ob = GetShadowedObject();
+    object ob;
+    if(clonep()) ob = GetShadowedObject();
     if(!ob || !disguised) return 0;
     else return 1;
 }
@@ -64,6 +65,7 @@ string GetCapName(){
 
 string GetKeyName(){
     object ob = GetShadowedObject();
+    if(!clonep()) return "";
     if(CheckDisguised()) return "scout";
     else return ob->GetKeyName();
 }

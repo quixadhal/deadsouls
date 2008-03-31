@@ -17,12 +17,12 @@ void eventReceiveError(mixed *packet) {
     }
     mud = packet[2];
     error_code = packet[6];
-    msg = packet[7];
-    packet = packet[8];
-    tn("errorcode: "+error_code);
+    //msg = packet[7];
+    //packet = packet[8];
+    //tn("errorcode: "+error_code);
     switch(error_code) {
     case "unk-src":
-        update("/daemon/intermud");
+        //update("/daemon/intermud");
         return;
     case "unk-dst": case "not-imp": case "unk-type":
         return;

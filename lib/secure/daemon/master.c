@@ -359,6 +359,8 @@ private static void load_access(string cfg, mapping resource) {
         string nom, tmp, where, which;
         object ob;
 
+        //tc("o hai");
+
         if(sscanf(str, REALMS_DIRS+"/%s/%*s", nom))
             tmp = sprintf("%svirtual/server", user_path(nom));
         else if(sscanf(str, DOMAINS_DIRS+"/%s/%*s", nom))
@@ -777,17 +779,20 @@ private static void load_access(string cfg, mapping resource) {
         mkdir(DIR_PLAYERS+"/"+str[0..0]);
     }
 
-    object player_object(string nom) {
+    varargs object player_object(string nom, object stub) {
         object ob;
         string err, tmp;
         int old_limit;
 
+        //tc("om nom:" + nom);
+
         tmp = base_name(ob = previous_object());
-        if( tmp != CMD_ENCRE && tmp != CMD_DECRE && tmp != LIB_CONNECT )
+        if( tmp != CMD_ENCRE && tmp != CMD_DECRE && tmp != LIB_CONNECT && tmp != RELOAD_D )
             return 0;
         old_limit = max_eval_cost();
         set_eval_limit(1000000000);
-        NewPlayer = ob;
+        if(tmp == RELOAD_D && stub) NewPlayer = stub;
+        else NewPlayer = ob;
         if(file_size(DIR_CRES+ "/" + nom[0..0]+ "/" +nom+__SAVE_EXTENSION__) > -1) 
             err = catch(ob = load_object(DIR_CRES+"/"+nom[0..0]+"/"+nom));
         else err = catch(ob = load_object(DIR_PLAYERS+"/"+nom[0..0]+"/"+nom));

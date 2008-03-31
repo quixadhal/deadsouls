@@ -3,6 +3,7 @@
 inherit LIB_ITEM;
 inherit LIB_BURN;
 
+
 void create(){
     item::create();
     burn::create();
@@ -20,16 +21,13 @@ void create(){
     SetFuelAmount(100);
     SetRefuelable(1);
 }
-
 int GetRadiantLight(int ambient) {
     if( !GetLit() ) return 0;
     else return item::GetRadiantLight(ambient);
 }
-
 string GetShort() {
     return item::GetShort() + burn::GetShort();
 }
-
 varargs string GetLong(string unused) {
     string tmp;
 
@@ -37,4 +35,6 @@ varargs string GetLong(string unused) {
     if( tmp != "" ) return item::GetLong(unused) + "\n" + tmp;
     else return item::GetLong(unused);
 }
-
+void init(){
+    ::init();
+}

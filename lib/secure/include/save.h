@@ -7,6 +7,7 @@
 #define SAVE_BUGS          DIR_SAVE "/bugs"
 #define SAVE_CHARACTER     DIR_SECURE_SAVE "/character"
 #define SAVE_CLASSES       DIR_SAVE "/classes"
+#define SAVE_CLASS         DIR_SAVE "/class"
 #define SAVE_CONFIG        DIR_SAVE "/config"
 #define SAVE_ECONOMY       DIR_SAVE "/economy"
 #define SAVE_ESTATES       DIR_SAVE "/estates"

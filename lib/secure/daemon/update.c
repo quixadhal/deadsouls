@@ -143,6 +143,8 @@ varargs static void eventUpdate(object whom){
     rm("/secure/cmds/creators/home.c");
     rm("/secure/cmds/creators/grant.c");
     rm("/daemon/include/races.h");
+    rm("/lib/verb.c");
+    rm("/lib/include/verb.h");
 
     mkdir("/secure/log/network");
     mkdir("/secure/log/intermud");

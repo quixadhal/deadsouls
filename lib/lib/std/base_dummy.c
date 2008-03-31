@@ -105,6 +105,7 @@ varargs static void create(string array id, mixed long, string array adj) {
         SetAdjectives(adj...);
     }
     if( id ) {
+        if(objectp(id)) id = id->GetId();
         SetKeyName(id[0]);
         if(!GetShort()) SetShort(add_article(id[0]));
         SetId(id...);

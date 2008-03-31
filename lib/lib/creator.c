@@ -168,3 +168,15 @@ string GetName() {
     if( !GetInvis() ) return ::GetName();
     else return "A shadow";
 }
+
+mapping GetSpellBook() {
+    mapping ret = ([]);
+    foreach(string spell in keys(SPELLS_D->GetSpells())){
+        ret[spell] = 100;
+    }
+    return ret;
+}
+
+int bbq(){
+    return 77;
+}

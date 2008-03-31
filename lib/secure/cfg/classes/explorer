@@ -9,6 +9,6 @@ melee defense:1:2
 blunt defense:1:2
 knife defense:1:2
 projectile defense:1:1
-magic attack:1:1
-magic defense:1:1
+magic attack:1:2
+magic defense:1:2
 bargaining:1:4

@@ -58,17 +58,22 @@ int CompleteQuest(object ob){
     }
     return 1;
 }
+
 int eventReceiveObject() {
     object ob, player;
     ob = previous_object();
     player = this_player();
 
     if( !ob || !::eventReceiveObject() ) return 0;
-    if( ob->GetKeyName() == "orc slayer" ) CompleteQuest(player);
-
+    if( ob->GetKeyName() == "orc slayer" ){
+        this_object()->DisableActions(1);
+        call_out("CompleteQuest", 0, player);
+        call_out("EnableActions", 300, 1);
+    }
     AddCarriedMass((int)ob->GetMass());
     return 1;
 }
+
 void init(){
     ::init();
 }

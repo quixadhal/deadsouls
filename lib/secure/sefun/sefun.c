@@ -203,7 +203,9 @@ object *livings() {
 }
 
 varargs mixed objects(mixed arg1, mixed arg2){
-    object array tmp_obs = efun::objects();
+    object array tmp_obs;
+    if(arg1) tmp_obs = efun::objects(arg1);
+    else tmp_obs = efun::objects();
 
     if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
       base_name(previous_object())  != SERVICES_D)
@@ -340,7 +342,9 @@ int exec(object target, object src) {
     string tmp;
     int ret;
     tmp = base_name(previous_object());
-    if(tmp != LIB_CONNECT && tmp != CMD_ENCRE && tmp != CMD_DECRE && tmp != SU) return 0;
+    if(tmp != LIB_CONNECT && tmp != CMD_ENCRE && tmp != CMD_DECRE 
+      && tmp != SU && tmp != RELOAD_D) return 0;
+    //tc("exec("+identify(target)+", "+identify(src)+")","red");
     ret = efun::exec(target, src);
     return ret;
 }

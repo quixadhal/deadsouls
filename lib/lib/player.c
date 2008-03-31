@@ -21,7 +21,6 @@ inherit LIB_LIVING;
 
 private string *Titles;
 string *Muffed = ({});
-private class quest *Quests;
 private mapping *Deaths;
 private int TrainingPoints, TitleLength;
 
@@ -33,7 +32,6 @@ static void create() {
 
     Titles = ({});
     TitleLength = 1;
-    Quests = ({});
 }
 
 static void heart_beat() {
@@ -608,106 +606,6 @@ int SetTitleLength(int x) {
 
 int GetTitleLength() { return TitleLength; }
 
-void AddQuest(string title, string desc) {
-    class quest tmp;
-    object * PartyMember;
-    object ob;
-    string pname;
-
-    if( !title || !desc ) return;
-
-    if( (string)GetParty() ) {
-        pname = (string)GetParty();
-        PartyMember = PARTY_D->GetPartyMembers(pname) - ({ this_player() });;
-        foreach(ob in PartyMember) {
-            ob->AddPartyQuest(title,desc);
-        }
-    }
-    tmp = new(class quest);
-    tmp->Date = time();
-    tmp->Description = desc;
-    Quests += ({ tmp });
-    AddTitle(title);
-}
-
-void AddQuestSkillPoints(string skill, int amount) {
-    object * PartyMember;
-    object ob;
-    string pname;
-
-    if(!skill || !amount) return;
-
-    if( (string)GetParty() ) {
-        pname = (string)GetParty();
-        PartyMember = "/daemon/party"->GetPartyMembers(pname);
-        foreach(ob in PartyMember) {
-            ob->AddSkillPoints(skill, amount);
-        }
-    }
-    else AddSkillPoints(skill, amount);
-}
-
-
-void AddQuestStatPoints(string stat, int amount) {
-    object * PartyMember;
-    object ob;
-    string pname;
-
-    if(!stat || !amount) return;
-
-
-    if( (string)GetParty() ) {
-        pname = (string)GetParty();
-        PartyMember = "/daemon/party"->GetPartyMembers(pname);
-        foreach(ob in PartyMember) {
-            ob->AddStatPoints(stat, amount);
-        }
-    }
-    else AddStatPoints(stat, amount);
-}
-
-
-void AddQuestCurrency(string type, int amount) {
-    object * PartyMember;
-    object ob;
-    string pname;
-
-    if(!type || !amount) return;
-
-    if( (string)GetParty() ) {
-        pname = (string)GetParty();
-        PartyMember = "/daemon/party"->GetPartyMembers(pname);
-        foreach(ob in PartyMember) {
-            ob->AddCurrency(type, amount);
-        }
-    }
-    else AddCurrency(type, amount);
-}
-
-void AddPartyQuest(string title, string desc) {
-    class quest tmp;
-
-    if( !title || !desc ) return;
-    if( member_array(title, Titles) != -1 ) return;
-    tmp = new(class quest);
-    tmp->Date = time();
-    tmp->Description = desc;
-    Quests += ({ tmp });
-    AddTitle(title);
-}
-
-mixed *GetQuests() {
-    return map(Quests, (: ({ ((class quest)$1)->Date,
-          ((class quest)$1)->Description }) :));
-}
-
-int GetQuest(string str){
-    foreach(mixed component in GetQuests()){
-        if(str == component[1]) return 1;
-    }
-    return 0;
-}
-
 string SetShort(string irrelevant) {
     string title, tmp;
     int i;
@@ -867,3 +765,8 @@ varargs int eventTrain(string skill, int points) {
     }
     return 1;
 }
+
+int wtf(){
+    return 76;
+}
+
