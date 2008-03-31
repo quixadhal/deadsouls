@@ -182,6 +182,7 @@ int ReloadMud(){
     string *dir1 = ({ "/cmds/", "/verbs/","/estates/", "/obj/", "/open/", "/shadows/", "/spells/", "/std/" });
     validate();
     shout("Warm boot initiated!");
+    flush_messages();
     ReloadBaseSystem();
     foreach(string dir in (dir2 + dir1)){
         ReloadDir(dir, ((member_array(dir, dir1) != -1) ? 1 : 2));

@@ -1,4 +1,4 @@
----- 2.7a21 ---
+---- 2.7a22 ---
 - Released 2008-03-30
 - Fixed runtime in unknown INTERMUD_D packet handling.
 - Fixed runtime in creweb logfile reading of empty files.
@@ -12,6 +12,10 @@
   now work somewhat better.
 - Taking over your char from a new session now logs in /log/enters.
 - Added commands: warmboot, userload
+- Windows users: FluffOS file operations tend to take a dramatically
+  longer time to complete on Windows than on UNIX. A warmboot, while
+  not disconnecting the users, may hang them for several minutes
+  such that they may consider it a "crash" of some sort and disconnect.
 
 ---- 2.7a20 ---
 - Released 2008-03-26
