@@ -383,7 +383,14 @@ int amputate(string str){
     }
     both = limb;
     if(which && which !="") both = which+" "+limb;
-    write("both: "+both);
+    //write("both: "+both);
+
+    if(!person->RemoveLimb(both, scanner)){
+        write("You wave your tricorder menacingly, but nothing happens.");
+        tell_room(environment(person),scanner->GetName()+" waves a tricorder at "+person->GetName()+" in a threatening manner.", ({ scanner,person }) );
+        tell_object(person,scanner->GetName()+" waves "+possessive(scanner)+" tricorder menacingly at you.");
+        return 1;
+    }
 
     if(both == "head"){
         tell_room(environment(person),scanner->GetName()+" waves a tricorder at "+person->GetName()+", and "+

@@ -15,6 +15,7 @@ varargs static void eventUpdate(object whom){
     object remote;
     string a,b;
     string cpw,spw;
+    string *file_arr;
     string x = read_file("/secure/daemon/imc2.c");
     int y = sscanf(x,"%s#define IMC2_CLIENT_PW \"%s\"%s",a,cpw,b);
     string config_file = read_file("/secure/include/config.h");
@@ -178,6 +179,12 @@ varargs static void eventUpdate(object whom){
     newfile = replace_string(newfile,"(/log/router)","(/log/router/)");
     newfile = replace_string(newfile,"(/log/secure)","(/log/secure/)");
     write_file("/secure/cfg/write.cfg",newfile,1); 
+    newfile = read_file("/secure/cfg/groups.cfg");
+    file_arr = explode(newfile,"\n");
+    if(!grepp(newfile,"(BUILDER)")) file_arr += ({"(BUILDER) "});
+    if(!grepp(newfile,"(TELNET)")) file_arr += ({"(TELNET) "});
+    newfile = implode(file_arr,"\n");
+    write_file("/secure/cfg/groups.cfg", newfile, 1);
 
     if(file_exists("/secure/daemon/imc2_new.c")){
         rename("/secure/daemon/imc2.c","/secure/save/backup/imc2_old.c");
@@ -193,9 +200,16 @@ varargs static void eventUpdate(object whom){
 
     load_object("/domains/town/obj/stargate");
     load_object("/domains/town/obj/stargate2");
+    update(RELOAD_D);
 
     if(whom){
-        tell_player(whom,"Update daemon finished. Rebooting now is a good idea.");
+        tell_player(whom,"Update daemon finished.");
+        if(query_os_type() == "windows") tell_player(whom,"Rebooting now is a good idea.");
+        else tell_player(whom,"Initiating warm boot.");
+    }
+   
+    if(query_os_type() != "windows"){
+        RELOAD_D->WarmBoot();
     }
 }
 

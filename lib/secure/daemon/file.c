@@ -33,7 +33,7 @@ mixed ReadDir(string str){
     int iteration = 1;
 
     validate();
-    log_file("adm/file","FILE_D ReadDir accessed and run by: "+identify(previous_object(-1))+"\n");
+    //log_file("adm/file","FILE_D ReadDir accessed and run by: "+identify(previous_object(-1))+"\n");
 
     if(!str ||  !sizeof(str)) str = "/";
 
@@ -99,7 +99,7 @@ int SearchFiles(string str){
     int strict = 0;
     string ret = "";
 
-    log_file("adm/file",timestamp()+" FILE_D search for "+str+" run by: "+identify(previous_object(-1))+"\n");
+    //log_file("adm/file",timestamp()+" FILE_D search for "+str+" run by: "+identify(previous_object(-1))+"\n");
 
     if(!str || str == ""){
         write("Please specify the filename or substring you're looking for.");

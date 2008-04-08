@@ -67,14 +67,14 @@ int CanReceive(object ob) {
 	    message("info","\n\nPRIVACY WARNING: "+ob->GetName()+" has entered the room.\n\n",this_object() );
 	}
 	else if(!archp(ob) &&
-	  this_player()->GetKeyName() != lower_case(privs)){
+	  ob->GetKeyName() != lower_case(privs)){
 	    message("info","You bounce off the privacy field.", ob);
 	    message("info",ob->GetName()+" bounced off the privacy field.",this_object());
 	    if(!environment(ob)) ob->eventMoveLiving(ROOM_START);
 	    return 0;
 	}
     }
-    return room::CanReceive();
+    return room::CanReceive(ob);
 }
 
 static int set_privacy(int i){

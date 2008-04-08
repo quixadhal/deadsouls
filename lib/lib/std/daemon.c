@@ -26,8 +26,10 @@ static string SetSaveFile(string str) {
 int eventDestruct() {
 
     if( !master()->valid_apply(({ PRIV_ASSIST })) ) {
+        //tc(base_name(this_object())+" invalid destruct. stack: "+get_stack(),"red");
         return 0;
     }
+    //tc(base_name(this_object())+" valid destruct.", "green");
     return clean::eventDestruct();
 }
 

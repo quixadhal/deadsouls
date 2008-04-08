@@ -1,3 +1,11 @@
+---- 2.7a23 ---
+- Released 2008-04-07
+- Warm boots no longer hang people in the process
+  of editing files. 
+- Various fixes to warm boots.
+- Fixed bug in strings.c that broke QCS.
+- Tells between invis cre's now behave more sensibly.
+
 ---- 2.7a22 ---
 - Released 2008-03-30
 - Fixed runtime in unknown INTERMUD_D packet handling.
@@ -15,7 +23,7 @@
 - Windows users: FluffOS file operations tend to take a dramatically
   longer time to complete on Windows than on UNIX. A warmboot, while
   not disconnecting the users, may hang them for several minutes
-  such that they may consider it a "crash" of some sort and disconnect.
+  such that they may consider it a "crash" of some sort.
 
 ---- 2.7a20 ---
 - Released 2008-03-26

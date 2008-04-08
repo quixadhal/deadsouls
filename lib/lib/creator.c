@@ -176,7 +176,3 @@ mapping GetSpellBook() {
     }
     return ret;
 }
-
-int bbq(){
-    return 77;
-}

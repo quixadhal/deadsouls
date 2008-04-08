@@ -1,5 +1,6 @@
 #include <lib.h>
 #include <network.h>
+#define DS_IP "204.209.44.3 8000"
 //#include <socket_err.h>
 inherit LIB_ITEM;
 
@@ -102,9 +103,16 @@ varargs int do_connect(string args, object whom)
     string error, ip_address ;
 
     if(preset) args = preset;
-    else args = "204.209.44.3 8000";
+    else args = DS_IP;
 
-    //tc("args: "+args);
+    if(args != DS_IP){
+        if(!this_player()) return 1;
+        if(!telnet_privp(this_player())){
+            this_player()->eventPrint("You aren't a member of the group of users permitted "
+              "to use this mud's telnet facility.");
+            return 1;
+        }
+    }
 
     if( !args || args == "" )
     {

@@ -765,8 +765,3 @@ varargs int eventTrain(string skill, int points) {
     }
     return 1;
 }
-
-int wtf(){
-    return 76;
-}
-

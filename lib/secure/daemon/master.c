@@ -670,9 +670,11 @@ private static void load_access(string cfg, mapping resource) {
         return to_int(read_file(file));    }
 
     string get_save_file_name() {
-        string str;
+        mixed str;
 
+        if(!this_player(1)) return DIR_TMP+"/.dead.edit";
         str = (string)this_player(1)->GetKeyName();
+        if(!str || !stringp(str)) return DIR_TMP+"/.dead.edit";
         if(file_size(user_path(str)) == -2)
             return user_path(str)+"dead.edit";
         else return DIR_TMP+"/"+str+".dead.edit";

@@ -528,8 +528,28 @@ string append_line(string file, mixed params, string repl){
     return implode(file_arr,"\n");
 }
 
+#if 0
 string last_string_element(string str, string delimiter){
-    return implode(explode(str, delimiter)[<1..], delimiter);
+    string rev, revd, revret, junk;
+    if(!str || !delimiter) return "";
+    if(!grepp(str,delimiter)) return "";
+    rev = reverse_string(str);
+    revd = reverse_string(delimiter);
+    sscanf(rev,"%s"+revd+"%s",revret,junk);
+    if(!revret || revret == "") return "";
+    return reverse_string(revret);
+}
+#endif
+
+string last_string_element(string str, string delimiter){
+    int i,strsize = sizeof(str);
+    string ret = "";
+    if(!str || !delimiter || !grepp(str,delimiter)) return "";
+    for(i = strsize; i > 0 ; i--){
+        if(str[i..i] == delimiter) break;
+        ret = str[i..i] + ret;
+    }
+    return ret;
 }
 
 varargs string first_string_element(string str, string delimiter, int stripfirst){
@@ -543,7 +563,8 @@ varargs string first_string_element(string str, string delimiter, int stripfirst
 }
 
 string path_prefix(string str){
-    return "/"+implode(explode(str, "/")[0..<2], "/");
+    int i = sizeof(str) - sizeof(last_string_element(str,"/"));
+    return str[0..i-2];
 }
 
 varargs mixed homedir(mixed ob, int cre){
@@ -566,6 +587,7 @@ varargs mixed random_numbers(int n, int integer){
     int i;
     if(integer && n > 9) n = 9;
     for(i=n;i>0;i--){
+        //int tmp = 1;
         int tmp = random(10);
         if(!sizeof(ret)) tmp = random(9)+1;
         ret += itoa(tmp);
@@ -579,6 +601,8 @@ varargs mixed alpha_crypt(mixed arg1, mixed arg2){
     if(!intp(arg1) && !arg2) return 0;
     if(intp(arg1)) {
         if(arg1 > 64) arg1 = 64;
+        //ret = crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
+        //ret += crypt(""+random(arg1+2)+arg1,""+random(arg1+2)+arg1);
         ret = crypt(""+random(arg1+2)+arg1,""+random(999999)*91);
         ret += crypt(""+random(arg1+2)+arg1,""+random(999999)*19);
         ret = replace_string(ret,"`","");
@@ -600,6 +624,7 @@ varargs mixed alpha_crypt(mixed arg1, mixed arg2){
 
 varargs string generate_tmp(mixed arg){
     string ret;
+    //string randy = replace_string(replace_string(crypt(""+random(88)+11,""+random(88)+11),"/","XXX"),".","YYY");
     string randy = alpha_crypt(8);
 
     if(!arg) return "/open/"+time()+"_"+randy+".c";
@@ -613,9 +638,11 @@ varargs string generate_tmp(mixed arg){
     else if(stringp(arg) && this_player() && builderp(this_player())) {
         if(file_exists(arg)) ret = homedir(this_player())+"/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
         else ret = homedir(this_player())+"/tmp/"+randy+time()+".c";
+        //ret = homedir(this_player())+"/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
     }
 
     else if(stringp(arg) && file_exists(arg) && this_player()) {
+        //tc("arg: "+identify(arg));
         if(objectp(load_object(arg))) ret = "/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
         else ret = "/open/"+last_string_element(arg,"/")+randy+time()+".tmp";
     }

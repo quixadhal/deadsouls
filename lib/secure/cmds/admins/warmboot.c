@@ -16,6 +16,8 @@ Syntax: warmboot
 Reloads and updates objects and users in memory such
 that changes to code come into effect, as if the mud
 had been rebooted. This command does not disconnect players.
+WARNING: People in the process of editing files will lose
+unsaved changes to the files being edited.
 See also: reload, update, userload
 EndText
     );

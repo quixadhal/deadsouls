@@ -41,24 +41,28 @@ int CheckSuit(){
 
 varargs string GetExternalDesc(object who){
     object ob = GetShadowedObject();
+    if(!clonep()) return "";
     if(CheckDisguised()) return "A scout of the Extant Authority military forces.";
     else return ob->GetExternalDesc(who);
 }
 
 varargs string GetLong(object who){
     object ob = GetShadowedObject();
+    if(!clonep()) return "";
     if(CheckDisguised()) return "A scout of the Extant Authority military forces.";
     else return ob->GetLong(who);
 }
 
 string GetName(){
     object ob = GetShadowedObject();
+    if(!clonep()) return "";
     if(CheckDisguised()) return "Scout";
     else return ob->GetName();
 }
 
 string GetCapName(){
     object ob = GetShadowedObject();
+    if(!clonep()) return "";
     if(CheckDisguised()) return "Scout";
     else return ob->GetCapName();
 }
@@ -72,12 +76,14 @@ string GetKeyName(){
 
 string GetShort(){
     object ob = GetShadowedObject();
+    if(!clonep()) return "";
     if(CheckDisguised()) return "a scout";
     else return ob->GetShort();
 }
 
 string GetRace(){
     object ob = GetShadowedObject();
+    if(!clonep()) return "";
     if(CheckDisguised()) return "human";
     else return ob->GetRace();
 }
@@ -125,6 +131,7 @@ string array parse_command_plural_id_list() {
 int GetSkillLevel(string skill) {
     object ob = GetShadowedObject();
     int ret;
+    if(!clonep()) return 0;
     if(!CheckSuit()) return 0;
     if(!ob) return 0;
     if(!suit->GetActive()) return ob->GetSkillLevel(skill);
@@ -146,6 +153,7 @@ int GetCanBite(){
 int GetStatLevel(string stat){
     object ob = GetShadowedObject();
     int ret;
+    if(!clonep()) return 0;
     if(!CheckSuit()) return 0;
     if(!ob) return 0;
     if(!suit->GetActive()) return ob->GetStatLevel(stat);
@@ -165,6 +173,7 @@ int GetStatLevel(string stat){
 
 int GetMelee(){
     object ob = GetShadowedObject();
+    if(!clonep()) return 0;
     if(!CheckSuit()) return 0;
     if(!ob) return 0;
     if(!suit->GetActive()) return ob->GetMelee();
@@ -175,6 +184,7 @@ int GetMelee(){
 float AddStaminaPoints(mixed x) {
     float y;
     object ob = GetShadowedObject();
+    if(!clonep()) return 0;
     if(!CheckSuit()) return 0;
     if(!ob) return 0;
     if(!suit->GetActive()) return ob->AddStaminaPoints(x);
@@ -196,6 +206,17 @@ int eventCollapse(){
     return suit->GetRemainingCharge();
 }
 #endif
+
+int RemoveLimb(string limb, mixed agent){
+    object ob = GetShadowedObject();
+    if(!CheckSuit()) return 0;
+    if(!ob) return 0;
+    if(suit->GetActive()){
+        suit->eventDecrementCharge();
+        return 0;
+    }
+    return ob->RemoveLimb(limb, agent);
+}
 
 varargs mixed GetEffectiveVision(mixed location, int raw_score){
     object ob = GetShadowedObject();
@@ -358,3 +379,4 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal, mixed
     suit->eventDecrementCharge(x);
     return 1;
 }
+

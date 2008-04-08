@@ -121,5 +121,3 @@ varargs mixed eventKnock(object who, mixed what){
 varargs mixed eventScratch(object who, mixed what){
     return enter::eventScratch(who, what);
 }
-
-

@@ -6,7 +6,10 @@
 
 inherit LIB_DAEMON;
 mapping Reloadees = ([]);
+static int *reload_handles = ({});
+static int warm_boot_in_progress = 0;
 string savefile = "/secure/save/reload";
+static string *exceptions = ({ RELOAD_D, RSOCKET_D });
 
 varargs void validate(){
     if((!(int)master()->valid_apply(({ "SECURE", "ASSIST" })))){
@@ -90,7 +93,12 @@ mixed ReloadPlayer(mixed who){
     return 1;
 }
 
-varargs int eventReload(mixed what, int when){
+varargs int eventUpdate(mixed what){
+    return update(what);
+}
+
+varargs int eventReload(mixed what, int when, int nodelay){
+    if(nodelay) reload(what, 0, 1);
     if(!when) when = time();
     else when += time();
     if(!what) return 0;
@@ -114,6 +122,24 @@ varargs int eventReload(mixed what, int when){
 }
 
 void heart_beat(){
+    if(warm_boot_in_progress){
+        Reloadees = ([]);
+        foreach(mixed element in reload_handles){
+            if(!intp(element)){
+                reload_handles -= ({ element });
+                continue;
+            }
+            if(find_call_out(element) == -1){
+                reload_handles -= ({ element });
+            }
+        }
+        if(!sizeof(reload_handles)){
+            warm_boot_in_progress = 0;
+            this_object()->ReloadUsers();
+            shout("Warm boot complete.");
+            eventSave();
+        }
+    }
     foreach(mixed key, mixed val in Reloadees){
         if(time() >= val){
             map_delete(Reloadees,key);
@@ -146,18 +172,23 @@ int eventDestruct(){
 }
 
 int ReloadDir(string dir, int passes){
-    object *lib_obs = objects( (: grepp(base_name($1),$(dir)) :) );
+    //object *lib_obs = objects( (: grepp(base_name($1),$(dir)) :) );
+    object *lib_obs = objects( (: !strsrch(base_name($1),$(dir)) :) );
     int err;
     validate();
+    //lib_obs = filter( lib_obs, (: !strsrch(base_name($1),$(dir)) :) );
     if(!passes) passes = 2;
     while(passes){
         //tc("Reloading "+dir);
         foreach(object ob in lib_obs){
-            if(ob != this_object()){
+            if(ob != this_object() && 
+              member_array(base_name(ob), exceptions) == -1){
                 if(ob && inherits(LIB_ROOM,ob) && sizeof(livings(ob))){
-                    err = catch(reload(ob, 0, 1));
+                    reload_handles += ({ call_out("eventReload", 5,ob, 0, 1) });
+                    //err = catch(reload(ob, 0, 1));
                 }
-                else err = catch(update(base_name(ob)));
+                else reload_handles += ({ call_out("eventUpdate", 5, base_name(ob)) });
+                //else err = catch(update(base_name(ob)));
             }
         }
         passes--;
@@ -166,19 +197,20 @@ int ReloadDir(string dir, int passes){
 }
 
 int ReloadUsers(){
-    int mx, ret = 1;
+    int err, mx, ret = 1;
     validate();
     mx = reload(load_object(LIB_CREATOR), 1, 1);
     if(!mx) error("OHFUC-");
 
     foreach(object player in users()){
-        if(!RELOAD_D->ReloadPlayer(player)) ret = 0;
+        err = catch(RELOAD_D->ReloadPlayer(player));
+        if(err) ret = 0;
     }
     return ret;
 }
 
 int ReloadMud(){
-    string *dir2 = ({ "/lib/", "/secure/","/daemons/", "/domains/", "/realms/" });
+    string *dir2 = ({ "/lib/", "/secure/","/daemon/" });
     string *dir1 = ({ "/cmds/", "/verbs/","/estates/", "/obj/", "/open/", "/shadows/", "/spells/", "/std/" });
     validate();
     shout("Warm boot initiated!");
@@ -187,8 +219,11 @@ int ReloadMud(){
     foreach(string dir in (dir2 + dir1)){
         ReloadDir(dir, ((member_array(dir, dir1) != -1) ? 1 : 2));
     }
-    ReloadUsers();
-    shout("Warm boot complete.");
+    ReloadDir("/domains/", 2);
+    ReloadDir("/realms/", 2);
+    warm_boot_in_progress = 1;
+    //ReloadUsers();
+    //shout("Warm boot complete.");
     return 1;
 }
 
@@ -197,4 +232,3 @@ int WarmBoot(){
     call_out("ReloadMud", 0);
     return 1;
 }
-

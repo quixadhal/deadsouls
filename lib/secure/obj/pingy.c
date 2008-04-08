@@ -6,6 +6,12 @@ int count = 0;
 int interval = 0;
 string keepalive = "";
 
+void validate(){
+    if(!this_player() || !environment() || !(this_player() == environment())){
+        error("Pingy violation. Stack: "+get_stack());
+    }
+}
+
 void create(){
     ::create();
 
@@ -19,11 +25,13 @@ void create(){
       "To set the string: keepalive <string>");
     SetNoCondition(1);
     SetMass(20);
-    AddSave( ({ "count", "interval", "keepalive" }) );
+    SetBaseCost("silver",10);
     set_heart_beat(1);
+    SetVendorType(VT_TREASURE);
 }
 
 int SetInterval(string str){
+    validate();
     interval = atoi(str);
     if(!intp(interval)){
         write("That is not a valid integer.");
@@ -35,6 +43,7 @@ int SetInterval(string str){
 }
 
 int SetKeepalive(string str){
+    validate();
     if(!str || str == "") keepalive = "\n";
     else keepalive = str;
     write("Keepalive set.");
@@ -53,8 +62,13 @@ void heart_beat(){
         count = 0;
         if(living(environment(this_object())) &&
           true()){
-            //query_idle(environment(this_object())) > 240){
-            tell_object(environment(this_object()),keepalive);
+            if(query_idle(environment(this_object())) > 240){
+                if(environment(this_object()))
+                    environment(this_object())->eventPrint(keepalive);
+                    //Do not use the below line unless you understand
+                    //the security hazard it poses
+                    //environment(this_object())->eventForce(keepalive);
+            }
         }
     }
 }

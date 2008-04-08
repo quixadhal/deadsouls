@@ -12,7 +12,7 @@ void log_file(string fl, string msg) {
     if(!stringp(fl)) error("Bad argument 1 to log_file().\n");
     if(!stringp(msg)) msg = identify(msg);
     if(strsrch(fl, "..") != -1) error("Illegal file reference.\n");
-    if(!directory_exists(prefix)){
+    if(fl[0..0] == "/" && !directory_exists(prefix)){
         fl = last_string_element(fl,"/");
     }
     if(fl[0..0] != "/"){
