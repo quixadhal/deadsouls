@@ -12,12 +12,8 @@ static void create() {
     SetClimate("outdoors");
     SetAmbientLight(30);
     SetShort("Village Road Intersection");
-    SetLong("You are in the main intersection of the village, "
-      "where Saquivor road extends north and south, and a "
-      "narrow track intersects the road from the west. The track "
-      "is somewhat better kept as it continues eastward as a road.\n"+
-      "%^GREEN%^There is a sign here you can read.%^RESET%^");
-
+    SetNightLong("You are in the main intersection of the village, lit by a town lamp post. Saquivor road extends north and south, intersected east to west by a road that leads west toward a wilderness, and east toward shore.\n%^GREEN%^There is a sign here you can read.%^RESET%^");
+    SetDayLong("You are in the main intersection of the village. Saquivor road extends north and south, intersected east to west by a road that leads west toward a wilderness, and east toward shore.\n%^GREEN%^There is a sign here you can read.%^RESET%^");
     SetItems( ([
         "sign":"A large sign on the road. To read it, 'read sign'.",
       ]) );
@@ -36,6 +32,7 @@ static void create() {
         "south" : "/domains/town/room/south_road1",
       ]) );
     SetFlyRoom("/domains/town/virtual/sky/28,100000,1");
+    AddItem(new("/domains/town/obj/lamp"));
 }
 
 void init(){

@@ -6,12 +6,8 @@ static void create() {
     SetClimate("outdoors");
     SetAmbientLight(30);
     SetShort("Saquivor Road");
-    SetLong("You are on a well-traveled road leading north-south "
-      " through the village.  To the east is the entrance to the " 
-      "Village Pub, a time-honored traditional gathering place for "
-      "adventurers of every race and creed.  To the west is "
-      "The Healers Guild. Far to the north, through the clouds, "
-      "you see a mountain range; to the south is a major intersection.");
+    SetNightLong("Illuminated by lamplight here is Saquivor road, leading north-south through the village. To the east is the village pub, the legendary watering hole used by thousands of rogues, paladins, and everyone in between. The Healers' Guild is west. To the south is a major intersection. The road continues north into the gloom.");
+    SetDayLong("You are on Saquivor road, leading north-south through the village. To the east is the village pub, the legendary watering hole used by thousands of rogues, paladins, and everyone in between. The Healers' Guild is west, and to the north you can see a road leading up to the plateau where the Fortress on the Frontiers stands. To the south is a major intersection.");
     SetItems( ([
         ({"pub","tavern","village pub"}) : "The is the town's "
         "legendary watering hole, where refreshments are served "
@@ -44,6 +40,7 @@ static void create() {
       ]) );
     SetNoModify(0);
     SetFlyRoom("/domains/town/virtual/sky/28,1,1");
+    AddItem(new("/domains/town/obj/lamp"));
 }
 
 void init(){

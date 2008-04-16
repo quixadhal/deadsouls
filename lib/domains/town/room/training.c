@@ -24,7 +24,7 @@ static void create() {
         "east" : "/domains/town/room/adv_guild",
       ]) );
     SetInventory(([
-        "/domains/town/npc/radagast" : 1,
+        "/domains/town/npc/radagast" : ({60, 1}),
         "/domains/town/obj/bbucket" : 1,
       ]));
     SetPlayerKill(1);

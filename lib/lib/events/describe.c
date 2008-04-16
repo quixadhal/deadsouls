@@ -4,14 +4,13 @@
 #include <medium.h>
 #include <position.h>
 
-private static mixed globaltmp;
+private static mixed globaltmp, tmp;
+private static string desc, smell, sound, touch;
+private static int i, maxi;
 
 void eventDescribeEnvironment(int brief) {
     object env, transport;
-    mixed tmp;
     string *shorts;
-    string desc, smell, sound, touch;
-    int i, maxi;
     string altern_obvious = "";
 
     if(!(env = environment(this_object()))) {

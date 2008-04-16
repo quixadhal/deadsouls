@@ -2,19 +2,13 @@
 #include <lib.h>
 inherit LIB_ROOM;
 
-string LongDesc(){
-    string desc = "This is a well-traveled road, leading east into town and west away from it. An old, humpbacked bridge is west of here.";
-    if(this_object()->GetExit("north")) 
-        desc += " A road north leads up to a plateau where a fortress stands in the  distance.";
-    return desc;
-}
-
 static void create() {
     room::create();
     SetClimate("outdoors");
     SetAmbientLight(30);
     SetShort("West Village road");
-    SetLong((: LongDesc :));
+    SetNightLong("This is a well-traveled road, illuminated by a lamp light. It leads east into town and west toward an old, humpbacked bridge.");
+    SetDayLong("This is a well-traveled road, leading east into town and west away from it. An old, humpbacked bridge is west of here.");
     SetItems(([
         ({ "fort", "fortress", "fortress in the distance" }) : "It can't be seen well from here, but far north is what appears to be a large fortress built on a high plateau.",
         ({ "road", "roads" }) : "This is a simple east-west road that goes east into town and west away from it. Another road, paved with cobblestones, intersects here to the north and leads high toward a fortress in the distance.",
@@ -26,6 +20,7 @@ static void create() {
         "west" : "/domains/town/room/bridge",
       ]) );
     SetFlyRoom("/domains/town/virtual/sky/26,100000,1");
+    AddItem(new("/domains/town/obj/lamp"));
 }
 
 void init(){

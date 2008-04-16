@@ -30,6 +30,7 @@ static int i = 0;
 static int oob = 0;
 static object player = 0;
 int transver = 0;
+static mapping NewFiles = ([]);
 
 void create(){
     daemon::create();
@@ -99,15 +100,30 @@ int eventRevert(string revert_path){
     return 1;
 }
 
+void eventReloads(){
+    reload(UPDATE_D);
+    reload(WGET_D);
+}
+
+int eventCopy(string element){
+    string path;
+    if(!NewFiles[element]) return 0;
+    path = path_prefix(NewFiles[element]);
+    if(!directory_exists(path)) mkdir_recurse(path);
+    rename(element, NewFiles[element]);
+    return 1;
+}
+
 mixed cmd(string str) {
     string mud = "Dead Souls"; 
     string file;
     string orig_str = str;
     int foo, tmpint = 0;
-    mapping NewFiles = ([]);
     object inet = find_object(INET_D);
     string *preload_file = explode(read_file(CFG_PRELOAD),"\n");
     mixed *socks = socket_status();
+
+    NewFiles = ([]);
 
     if(!revert_name){
         revert_name = itoa(time());
@@ -218,18 +234,19 @@ mixed cmd(string str) {
             if(!contents) contents = "";
             if(last(contents,1) != "\n") contents += "\n";
             write_file(element, contents, 1);
-            eventBackup(NewFiles[element]);
-            if(directory_exists(NewFiles[element])) rm(element);
+            //eventBackup(NewFiles[element]);
+            call_out( (: eventBackup :), 0, NewFiles[element]);
+            if(directory_exists(NewFiles[element])) true();
             else {
-                string path = path_prefix(NewFiles[element]);
-                if(!directory_exists(path)) mkdir_recurse(path);
-                rename(element, NewFiles[element]);
+                call_out( (: eventCopy :), 0, element);
+                //string path = path_prefix(NewFiles[element]);
+                //if(!directory_exists(path)) mkdir_recurse(path);
+                //rename(element, NewFiles[element]);
             }
         }
         if(member_array(INET_D,preload_file) == -1 && inet) inet->eventDestruct();
-        reload(UPDATE_D);
-        RELOAD_D->eventReload(this_object(), 2);
-        reload(WGET_D);
+        call_out( (: eventReloads :), 10);
+        RELOAD_D->eventReload(this_object(), 15);
         rm("/secure/upgrades/txt/list.txt");
         player->eventPrint("\nAlmost done...");
         player = 0;

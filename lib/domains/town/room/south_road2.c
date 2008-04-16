@@ -26,6 +26,7 @@ static void create() {
       ]));
     SetRead("sign", (: readSign :) );
     SetFlyRoom("/domains/town/virtual/sky/28,99998,1");
+    AddItem(new("/domains/town/obj/lamp"));
 }
 void init(){
     ::init();

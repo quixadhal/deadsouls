@@ -104,7 +104,9 @@ mixed cmd(string args) {
           while(i--) {
               if( sizeof(tmp = (string *)wild_card(tmpfiles[i])) )
                   files += tmp;
-              else this_player()->eventPrint(tmpfiles[i] + ": File not found.");
+              else {
+                  this_player()->eventPrint(tmpfiles[i] + ": File not found.");
+              }
           }
           i = sizeof(files);
           while(i--) eventUpdate(files[i], flags);

@@ -5,19 +5,20 @@
 
 inherit LIB_DAEMON;
 inherit LIB_CGI;
-mapping UploadsMap = ([]);
 
 void validate(){
     if(!(int)master()->valid_apply(({ "SECURE", "ASSIST" })) &&
       strsrch(base_name(previous_object()), SOCKET_HTTP)){
         string offender = identify(previous_object(-1));
-        debug("upload.c SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
-        log_file("security", "\n"+timestamp()+" upload.c breach: "+offender+" "+get_stack());
-        error("upload.c SECURITY VIOLATION: "+offender+" "+get_stack());
+        debug("chanlogs.c SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
+        log_file("security", "\n"+timestamp()+" chanlogs.c breach: "+offender+" "+get_stack());
+        error("chanlogs.c SECURITY VIOLATION: "+offender+" "+get_stack());
     }
 }
 
 string gateway(mixed args) {
+    mapping Logs = ([]);
+    int *times = ({});
     string err, full_name, path, junk1, junk2;
     int i;
     object ob = previous_object();
@@ -44,9 +45,29 @@ string gateway(mixed args) {
 
         foreach(string file in get_dir(DIR_CHANNEL_LOGS+"/")){
             if(!file_exists(DIR_CHANNEL_LOGS+"/"+file)) continue;
-            ret += "<a href=\"/cgi/showlog.html?"+file+"+20\"";
-            ret += ">"+file+"    (last modified "+ctime(stat(DIR_CHANNEL_LOGS+"/"+file)[1]);
-            ret += ")</a><br>";
+            Logs[file] = stat(DIR_CHANNEL_LOGS+"/"+file)[1];
+        }
+        times = sort_array(distinct_array(values(Logs)),-1);
+        //tc("Logs: "+identify(Logs));
+        //tc("times: "+identify(times));
+        foreach(mixed element in times){
+            foreach(mixed key, mixed val in Logs){
+                string tmp_ret = "";//This shouldn't be needed, but it is.
+                if(val == element){
+                    //tc("Key: "+key+", Val: "+val);
+                    //tc("sizeo of ret: "+sizeof(ret));
+                    //tc("ret: "+ret,"blue");
+                    tmp_ret += "<a href=\"/cgi/showlog.html?"+key+"+20\"";
+                    tmp_ret += ">"+key+"    (last modified ";
+                    tmp_ret += ctime(val);
+                    tmp_ret += ")</a><br>";
+                }
+                ret += tmp_ret;
+            }
+
+            //ret += "<a href=\"/cgi/showlog.html?"+file+"+20\"";
+            //ret += ">"+file+"    (last modified "+ctime(stat(DIR_CHANNEL_LOGS+"/"+file)[1]);
+            //ret += ")</a><br>";
         }
 
         ret += "<br>";
@@ -60,3 +81,4 @@ string gateway(mixed args) {
 
     return ret;
 }
+

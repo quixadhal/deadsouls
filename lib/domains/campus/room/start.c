@@ -15,7 +15,7 @@ static void create() {
     SetDoor("north","/domains/campus/doors/plain_door");
     SetInventory(([
         "/domains/campus/obj/bbucket" :1,
-        "/domains/campus/npc/jennybot" :1,
+        "/domains/campus/npc/jennybot" : ({60, 1}),
       ]));
     SetProperty("no attack", 1);
 }

@@ -1,3 +1,12 @@
+---- 2.7a24 ---
+- Released 2008-04-16
+- Creweb chanlogs now listed in "last modified" order.
+- Virtual rooms now destructed on warm boots.
+- Added day/night descs to outdoor town locations.
+- Important npc's in town are now set to respawn after
+  60 seconds, if killed or moved. See the SetInventory directive
+  in /domains/town/room/tavern.c for an example.
+
 ---- 2.7a23 ---
 - Released 2008-04-07
 - Warm boots no longer hang people in the process

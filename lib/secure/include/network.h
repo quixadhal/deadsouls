@@ -10,15 +10,17 @@
 #define STREAM_BINARY             3
 #define DATAGRAM_BINARY           4
 
-#define OFFSET_FTP               -788
+#define OFFSET_ECHO               2
+#define OFFSET_FTP                -1
 #define OFFSET_HFTP               -6
 #define OFFSET_HTTP               -5
 #define OFFSET_RCP                -10
 #define OFFSET_OOB                5
 
 #define PORT_ADMIN                17010
+#define PORT_ECHO                 (query_host_port() + OFFSET_ECHO)
 #define PORT_FTP                  (query_host_port() + OFFSET_FTP)
-#define PORT_HFTP                  (query_host_port() + OFFSET_HFTP)
+#define PORT_HFTP                 (query_host_port() + OFFSET_HFTP)
 #define PORT_HTTP                 (query_host_port() + OFFSET_HTTP)
 #define PORT_OOB                  (query_host_port() + OFFSET_OOB)
 #define PORT_RCP                  (query_host_port() + OFFSET_RCP)

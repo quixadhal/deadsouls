@@ -18,7 +18,7 @@ static void create() {
     SetItems(([  
         "clutter" : "There are papers and folders everywhere, but the stacks and piles seem somehow a well-organized mess." ,
         ({"mess","stack","stacks","pile","piles","papers","paper","folder","folders"}) : "Evidence of a busy man and strangely-organized mind."]));
-    SetInventory(([  "/domains/town/npc/mayor" : 1]));
+    SetInventory(([  "/domains/town/npc/mayor" : ({60, 1})]));
     SetObviousExits("s");
     AddExit("south", "/domains/town/room/thall");
 }

@@ -5,10 +5,10 @@
 static string my_name = ROUTER_NAME;
 static string my_password = IRN_PASSWORD;
 static string *ok_ips = ({});
-static int irn_enabled = 1;
+static int irn_enabled = 0;
 static int irn_reconnect = 0;
 static int irn_timeout = 120;
-static int irn_ping_enabled = 1;
+static int irn_ping_enabled = 0;
 static int irn_maxtry = 32;
 static int convert_channel = 1;
 static int convert_channel2 = 0;
@@ -16,8 +16,8 @@ mapping PingMap = ([]);
 
 #ifdef ROUTER_TESTING
 static mapping routers = ([
-  "*aleph" : ([ "ip" : "192.168.0.224", "port" : 4101, "password" : IRN_PASSWORD1 ]),
-  "*bet" : ([ "ip" : "192.168.0.224", "port" : 4201, "password" : IRN_PASSWORD2 ]),
+  "*i6" : ([ "ip" : "149.152.218.102", "port" : 25, "password" : IRN_PASSWORD1 ]),
+  "*i5" : ([ "ip" : "204.209.44.3", "port" : 8180, "password" : IRN_PASSWORD2 ]),
   //"*gimel" : ([ "ip" : "192.168.0.224", "port" : 4301, "password" : IRN_PASSWORD4 ])
 ]);
 #else
@@ -517,6 +517,7 @@ case "irn-chanlist-delta" :
         return;
     }
     //trr("irn: got new delta. sending to router.");
+    trr("this_object()->ReceiveList("+identify(data[7])+", chanlist, "+identify(data[2]));
     PingMap[data[2]] = time();
     this_object()->ReceiveList(data[7],"chanlist",data[2]);
     break;

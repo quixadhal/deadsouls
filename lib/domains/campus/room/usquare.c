@@ -33,6 +33,7 @@ static void create() {
     SetEnters( ([ 
       ]) );
     SetFlyRoom("/domains/town/virtual/sky/28,99995,1");
+    AddItem(new("/domains/campus/obj/lamp"));
 }
 void init(){
     ::init();

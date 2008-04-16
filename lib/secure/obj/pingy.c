@@ -65,9 +65,9 @@ void heart_beat(){
             if(query_idle(environment(this_object())) > 240){
                 if(environment(this_object()))
                     environment(this_object())->eventPrint(keepalive);
-                    //Do not use the below line unless you understand
-                    //the security hazard it poses
-                    //environment(this_object())->eventForce(keepalive);
+                //Do not use the below line unless you understand
+                //the security hazard it poses
+                //environment(this_object())->eventForce(keepalive);
             }
         }
     }

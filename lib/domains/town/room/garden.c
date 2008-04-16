@@ -5,6 +5,8 @@ static void create() {
     room::create();
     SetClimate("outdoors");
     SetAmbientLight(30);
+    SetNightLight(10);
+    SetDayLight(30);
     SetShort("Mansion Garden");
     SetLong("This is what is left of what was once a beautiful, "
       "if simple, garden. It is now badly overgrown with "

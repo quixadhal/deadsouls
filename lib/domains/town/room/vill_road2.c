@@ -7,7 +7,8 @@ static void create() {
     SetClimate("outdoors");
     SetAmbientLight(30);
     SetShort("East Village Road");
-    SetLong("You are on a long road. The general store is north. The road stretches east and west through the town. The Adventurers' Guild is south.");
+    SetNightLong("You are on a long road, lit by a lamp post. The general store is north. The road stretches east and west through the town. The Adventurers' Guild is south.");
+    SetDayLong("You are on a long road. The general store is north. The road stretches east and west through the town. The Adventurers' Guild is south.");
     SetItems( ([
         ({"adventurers guild","guild"}) : "This small "
         "building on the southern side of the road is where "
@@ -29,6 +30,7 @@ static void create() {
         "west" : "/domains/town/room/vill_road1",
       ]) );
     SetFlyRoom("/domains/town/virtual/sky/29,100000,1");
+    AddItem(new("/domains/town/obj/lamp"));
 }
 void init(){
     ::init();

@@ -14,7 +14,7 @@ static void create() {
       "main counter where a teller can assist you.\n"
       "%^GREEN%^A sign you can read hangs here.%^RESET%^");
     SetInventory( ([
-        "/domains/town/npc/zoe" : 1
+        "/domains/town/npc/zoe" : ({60, 1})
       ]) );
     SetItems( ([
         "sign" : "A sign you can read.",

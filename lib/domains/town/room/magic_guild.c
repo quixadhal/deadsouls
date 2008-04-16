@@ -33,7 +33,7 @@ static void create() {
         ({"list","list on the wall"}) : "A list of available spells",
       ]) );
     SetInventory(([
-        "/domains/town/npc/herkimer" : 1,
+        "/domains/town/npc/herkimer" : ({60, 1}),
       ]));
     SetRead(({"list","list on wall"}) , (: ReadList :) );
     SetExits( ([

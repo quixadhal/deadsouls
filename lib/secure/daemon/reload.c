@@ -94,11 +94,16 @@ mixed ReloadPlayer(mixed who){
 }
 
 varargs int eventUpdate(mixed what){
+    if(what->GetVirtual()){
+        return what->eventDestruct();
+    }
     return update(what);
 }
 
 varargs int eventReload(mixed what, int when, int nodelay){
-    if(nodelay) reload(what, 0, 1);
+    if(!what) return 0;
+    if(what->GetVirtual()) return what->eventDestruct();
+    if(nodelay) return reload(what, 0, 1);
     if(!when) when = time();
     else when += time();
     if(!what) return 0;

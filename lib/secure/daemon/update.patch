@@ -78,8 +78,12 @@ varargs static void eventUpdate(object whom){
             config_file = append_line(config_file,"#define ROUTER_NAME",
               "#define IRN_PASSWORD             \""+mud_name()+"\"");
 
-        if(!grepp(config_file, "IRN_PASSWORD2"))
+        if(!grepp(config_file, "IRN_PASSWORD1"))
             config_file = append_line(config_file,"#define IRN_PASSWORD",
+              "#define IRN_PASSWORD1            \"bet\"");
+
+        if(!grepp(config_file, "IRN_PASSWORD2"))
+            config_file = append_line(config_file,"#define IRN_PASSWORD1",
               "#define IRN_PASSWORD2            \"bet\"");
 
         if(!grepp(config_file, "IRN_PASSWORD3"))

@@ -6,13 +6,8 @@ static void create() {
     SetClimate("outdoors");
     SetAmbientLight(30);
     SetShort("Humpbacked bridge");
-    SetLong("You are on an old, humpbacked bridge. Although the bridge has "
-      "seen better days, the noticeable cracks in its "
-      "surface seem to have in no way affected its "
-      "stability. Some peculiar writing is scrawled on the bridge. "+
-      "The bridge spans a small yet nonetheless formidable river. "
-      "A town is visible east of here, and a dark forest looms west. "+
-      "A small path winds down below the bridge to the riverbank.");
+    SetNightLong("This is an old, humpbacked bridge, lit by a lamp post. It's seen better days, though it appears still quite stable enough. Some peculiar writing is scrawled on the bridge. A town is east of here. To the west is darkness. There is an unlit path leading down below the bridge.");
+    SetDayLong("This is an old, humpbacked bridge. It's seen better days, though it appears still quite stable enough. Some peculiar writing is scrawled on the bridge. The bridge spans a river below. A town is east of here, and a dark forest looms west. There is a small path leading down below the bridge.");
     SetItems( ([
         ({"cracks","surface","bridge"}) : "The bridge "
         "surface has a few cracks, but they seem old "
@@ -38,6 +33,7 @@ static void create() {
       ]) );
     SetRead(({"writing","scrawl","grafitti","grafitto"}),"HVMANES EVNT DOMVS");
     SetFlyRoom("/domains/town/virtual/sky/25,100000,1");
+    AddItem(new("/domains/town/obj/lamp"));
 }
 void init(){
     ::init();

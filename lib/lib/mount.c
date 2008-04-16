@@ -126,7 +126,7 @@ mixed eventBuck(object who){
         return 0;
     }
     else {
-        tell_player(who,"You are thrown from"+this_object()->GetPlainShort()+"!");
+        tell_player(who,"You are thrown from "+this_object()->GetPlainShort()+"!");
         tell_room(environment(this_object()),who->GetName()+" is thrown from " +this_object()->GetPlainShort()+"!", ({ this_object(), who }));
         who->RemoveProperty("mount");
         who->SetPosition(POSITION_LYING);

@@ -7,7 +7,8 @@ static void create() {
     SetClimate("outdoors");
     SetAmbientLight(30);
     SetShort("Village Path");
-    SetLong("As it travels from west to east, Village Road becomes less of a road here and more of a dirt path. The shore of the eastern sea is almost visible from here. The village schoolhouse is north, and the shore is east. The village stables are south.");
+    SetNightLong("Still illuminated by lamp post, Village Road becomes less of a road here and more of a dirt path. The shore of the eastern sea is almost visible from here. The village schoolhouse is north, and the shore is east. The village stables are south.");
+    SetDayLong("As it travels from west to east, Village Road becomes less of a road here and more of a dirt path. The shore of the eastern sea is almost visible from here. The village schoolhouse is north, and the shore is east. The village stables are south.");
     SetItems(([
         ({ "building", "schoolhouse", "school", "village school", "village schoolhouse" }) : "A small but well-kept wooden building where townsfolk and their children go to acquire knowledge.",
         ({ "building", "buildings" }) : "Structures designed for human occupancy.",
@@ -23,6 +24,7 @@ static void create() {
     SetEnters( ([ 
       ]) );
     SetFlyRoom("/domains/town/virtual/sky/31,100000,1");
+    AddItem(new("/domains/town/obj/lamp"));
 }
 void init(){
     ::init();

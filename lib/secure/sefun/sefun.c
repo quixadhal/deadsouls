@@ -195,7 +195,15 @@ object find_player( string str ){
 
 object *livings() {
     object *privlivs = efun::livings();
-    object *unprivlivs = filter(privlivs, (: !($1->GetInvis() && archp($1)) :) );
+    object *unprivlivs = ({});
+#ifdef __FLUFFOS__
+     unprivlivs = filter(privlivs, (: !($1->GetInvis() && archp($1)) :) );
+#else
+    foreach(mixed dude in privlivs){
+        if(archp(dude) && dude->GetInvis()) continue;
+        unprivlivs += ({ dude });
+    }
+#endif
     if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return privlivs;
     if(base_name(previous_object()) == SERVICES_D) return privlivs;
     else return unprivlivs;
@@ -208,9 +216,15 @@ varargs mixed objects(mixed arg1, mixed arg2){
     else tmp_obs = efun::objects();
 
     if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
-      base_name(previous_object())  != SERVICES_D)
+      base_name(previous_object())  != SERVICES_D){
+#ifdef __FLUFFOS__
         tmp_obs = filter(tmp_obs, (: !($1->GetInvis() && archp($1)) :) );
-
+#else
+        foreach(mixed dude in tmp_obs){
+            if(dude && archp(dude) && dude->GetInvis()) tmp_obs -= ({ dude });
+        }
+#endif
+    }
     if(base_name(previous_object()) == SNOOP_D || archp(this_player())){
         return tmp_obs;
     }

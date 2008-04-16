@@ -5,11 +5,10 @@ static void create() {
     room::create();
     SetClimate("outdoors");
     SetAmbientLight(30);
+    SetNightLight(10);
+    SetDayLight(30);
     SetShort("Forest Path");
-    SetLong("You are in a forest outside the town. "
-      "To the west the path continues toward a clearing. To the "
-      "east it leads to a bridge over a river and returns to the village. "
-      "Trees and bushes of various sorts border the path. ");
+    SetLong("You are in a forest outside the town. To the west the path continues toward a clearing. To the east it leads to a bridge over a river toward a town. Trees and bushes of various kinds border the path making it impossible to go south, but to the north the vegetation is less dense.");
     SetItems( ([
         "forest" : "You are on a path in a dark, creepy forest. The "
         "vegetation is thick and feels somehow oppressive.",

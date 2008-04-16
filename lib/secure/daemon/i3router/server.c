@@ -549,6 +549,7 @@ int GetMaxRetries(){ return MAXIMUM_RETRIES; }
 
 varargs void ReceiveList(mixed data, string type, string who){
     string *cmuds = keys(connected_muds);
+    //tc("ReceiveList("+identify(data)+", "+identify(type)+", "+identify(who)+")");
     if(!type || !sizeof(type)) type = "mudlist";
     if(!mapp(data)){
         return;

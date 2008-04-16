@@ -20,6 +20,8 @@ static void create() {
     room::create();
     SetClimate("outdoors");
     SetAmbientLight(30);
+    SetNightLight(10);
+    SetDayLight(30);
     SetShort("Orc Valley");
     SetLong("You are in a small valley below the sheer cliffs to the west. A band of orcs appears to have made this place their home, and you can see their ramshackle fortress toward the north. A well-traveled path leads east into a forest.");
     //A narrow path snakes its way southwest into the woods.");

@@ -22,7 +22,7 @@ static void create() {
     SetProperty("no attack", 1);
     SetInventory(([
         "/domains/town/obj/bbucket" :1,
-        "/domains/town/npc/clepius" :1
+        "/domains/town/npc/clepius" : ({60, 1})
       ]) );
     SetExits( ([
         "east" : "/domains/town/room/healer",

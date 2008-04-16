@@ -6,6 +6,8 @@ static void create() {
     SetClimate("outdoors");
     SetAmbientLight(40);
     SetShort("Mansion Exterior");
+    SetNightLong("You are standing outside a large, beautiful mansion to the south, illuminated by lamplight. It towers over you and overhead you can see one of the second floor windows is open. The grass seems a bit wild around here, and the lawn continues west into the darkness. The mansion gate is north.");
+    SetDayLong("You are standing outside a large, beautiful mansion to the south. It towers over you and overhead you can see one of the second floor windows is open. The grass seems a bit wild around here, and the lawn continues west into an overgrown garden. The mansion gate is north.");
     SetLong("You are standing outside a large, beautiful mansion "
       "that stands south of you. It towers over you and "
       "overhead you can see one of the second floor "
@@ -30,6 +32,7 @@ static void create() {
         "south" : "/domains/town/room/mansion_int",
       ]) );
     SetDoor("south","/domains/town/doors/mansion");
+    AddItem(new("/domains/town/obj/lamp"));
 }
 void init(){
     ::init();

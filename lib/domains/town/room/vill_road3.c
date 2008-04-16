@@ -7,7 +7,8 @@ static void create() {
     SetClimate("outdoors");
     SetAmbientLight(30);
     SetShort("East Village Road");
-    SetLong("A long road going through the village. Town Hall is north. The main part of the town is west of here. The post office is south.");
+    SetNightLong("A lamp-lit long road going through the village. Town Hall is north. The main part of the town is west of here. The post office is south.");
+    SetDayLong("A long road going through the village. Town Hall is north. The main part of the town is west of here. The post office is south.");
     SetItems(([
         ({ "office", "post office" }) : "Mail can be received and sent from the post office.",
         ({ "building", "buildings" }) : "Structures designed for human occupancy.",
@@ -21,6 +22,7 @@ static void create() {
         "east" : "/domains/town/room/vill_road4.c",
       ]) );
     SetFlyRoom("/domains/town/virtual/sky/30,100000,1");
+    AddItem(new("/domains/town/obj/lamp"));
 }
 void init(){
     ::init();

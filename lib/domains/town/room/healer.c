@@ -41,7 +41,7 @@ static void create() {
     SetRead( ({"list","list on wall"}) , (: ReadList :) );
     SetInventory(([
         "/domains/town/obj/bbucket" :1,
-        "/domains/town/npc/james" :1
+        "/domains/town/npc/james" : ({60, 1})
       ]) );
     SetExits( ([
         "east" : "/domains/town/room/road",

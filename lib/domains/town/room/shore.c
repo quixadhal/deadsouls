@@ -19,8 +19,10 @@ int ActionFunction(){
     //The next line tells any creators present the identitiy of the
     //target of the previous action.
     if(!sizeof(cres)) return 0;
-    cres->eventPrint("%^YELLOW%^The ActionFunction activates. Dude is: "+
-      identify(dude)+".%^RESET%^");
+    //The action below is commented out because it confused people.
+    //basically it tells creators about this function.
+    //cres->eventPrint("%^YELLOW%^The ActionFunction activates. Dude is: "+
+    //  identify(dude)+".%^RESET%^");
     return 1;
 }
 
@@ -33,8 +35,10 @@ int ActionFunction2(){
     if((RACES_D->GetNonMeatRace(dude->GetRace()))) return 0;
     dude->eventForce("ponder");
     if(!sizeof(cres)) return 0;
-    cres->eventPrint("%^GREEN%^ActionFunction2 activates. Dude is: "+
-      identify(dude)+".%^RESET%^");
+    //The action below is commented out because it confused people.
+    //basically it tells creators about this function.
+    //cres->eventPrint("%^GREEN%^ActionFunction2 activates. Dude is: "+
+    //  identify(dude)+".%^RESET%^");
     return 1;
 }
 
@@ -43,7 +47,8 @@ static void create() {
     SetClimate("outdoors");
     SetAmbientLight(30);
     SetShort("Shore Edge");
-    SetLong("You are on the shore, at the far eastern end of town. A road travels west into the heart of town. A great sea stretches out into the eastern horizon.");
+    SetNightLong("You are on the shore, at the far eastern end of town. A road travels west into the heart of town. A great sea stretches out into the eastern horizon. A lone lamp post lights this area.");
+    SetDayLong("You are on the shore, at the far eastern end of town. A road travels west into the heart of town. A great sea stretches out into the eastern horizon.");
     SetExits( ([
         "west" : "/domains/town/room/vill_road4.c",
         "east" : "/domains/town/virtual/surface/33,100000",
@@ -79,6 +84,7 @@ static void create() {
         "/domains/town/obj/seawater" : 1,
       ]) );
     SetFlyRoom("/domains/town/virtual/sky/32,100000,1");
+    AddItem(new("/domains/town/obj/lamp"));
 }
 void init(){
     ::init();

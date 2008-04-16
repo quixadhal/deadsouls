@@ -30,7 +30,7 @@ static void create() {
     SetInventory(([
         "/domains/town/obj/bin" : 1,
         "/domains/town/obj/table" : 1,
-        "/domains/town/npc/dirk" : 1
+        "/domains/town/npc/dirk" : ({60, 1})
       ]));
     SetRead( ([
         ({"list","scroll"}) : (: ReadScroll :),

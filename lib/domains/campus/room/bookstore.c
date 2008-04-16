@@ -28,7 +28,7 @@ static void create() {
     SetProperty("no attack", 1);
     SetInventory(([
         "/domains/campus/obj/bbucket" :1,
-        "/domains/campus/npc/kim" :1
+        "/domains/campus/npc/kim" : ({60, 1})
       ]) );
 }
 

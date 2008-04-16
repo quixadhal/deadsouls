@@ -335,6 +335,13 @@ int cmdChannel(string verb, string str) {
                 str = dbz_colors(str,2);
                 verb = replace_string(verb,"|annoy","");
             }
+            if(grepp(verb,"|file")){
+                if(!file_exists(str) || !(str = read_file(str))){
+                    write("Can't read that file.");
+                    return 0;
+                }
+                verb = replace_string(verb,"|file","");
+            }
         }
 
         if(sscanf(verb, "%s|%s", foo, bar) == 2) verb = foo;

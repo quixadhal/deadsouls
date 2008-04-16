@@ -7,6 +7,7 @@ object scoutshadow;
 int active = 1;
 int charge = 2000;
 int maxcharge = 2000;
+int disguised = 0;
 
 int GetSuitHelp();
 
@@ -30,7 +31,7 @@ static void create(){
         "right hand", "left hand",
         "right foot", "left foot",
       }) );
-    AddSave( ({ "charge" }) );
+    AddSave( ({ "charge", "disguised" }) );
     SetMaxCarry(500);
     SetWear((: GetSuitHelp :));
 }
@@ -75,7 +76,7 @@ mixed GetSuitHelp(string str){
 mixed eventEquip(object who, string array limbs){
     mixed success = ::eventEquip(who, limbs);
     scoutshadow = new("/shadows/scout");
-    if(scoutshadow) scoutshadow->SetDisguised(0);
+    if(scoutshadow) scoutshadow->SetDisguised(disguised);
     if(success){
         if(scoutshadow) scoutshadow->eventShadow(who);
     }

@@ -5,7 +5,7 @@
 */
 
 #include <network.h>
-int port = query_host_port()+1;
+int port = PORT_ECHO;
 
 void StartServer();
 

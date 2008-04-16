@@ -17,7 +17,7 @@ static void create() {
       ]));
     SetInventory(([
         "/domains/town/obj/bbucket" : 1,
-        "/domains/town/npc/otik" : 1,
+        "/domains/town/npc/otik" : ({60, 1}),
       ]));
     SetRead("sign", (: read_sign :) );
     SetExits( ([
