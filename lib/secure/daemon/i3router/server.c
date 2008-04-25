@@ -112,6 +112,7 @@ varargs string *SetList();
 #include "./send_full_mudlist.h"
 
 static void close_connection(int fd){
+    //tc("connection close request for fd "+fd+", stack: "+get_stack(),"red");
     RSOCKET_D->close_connection(fd);
 }
 
@@ -472,8 +473,16 @@ void clean_chans(){
         }
         else trr("huh? not an array?");
     }
+    foreach(mixed key, mixed val in channels){
+        mixed *tmp_chan = ({});
+        if(sizeof(val) == 3){
+            tmp_chan = ({ val[0], val[1], distinct_array(val[2]) });
+            channels[key] = tmp_chan;
+        }
+    }
     cleaned = distinct_array(cleaned);
-    trr("cleaned from channels: "+implode(cleaned,"\n"));
+    save_object(SAVE_ROUTER);
+    trr("channel cleanup: cleaned from listening: "+implode(cleaned,"\n"));
 }
 
 void clear_discs(){ 

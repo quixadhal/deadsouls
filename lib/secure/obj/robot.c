@@ -12,7 +12,7 @@ static string display_name, email, real_name, race;
 static string *exits, previous_command;
 static string travel = "go ";
 static int enable = 0;
-static string ip = "192.168.0.224 6666";
+static string ip = "192.168.0.224 8888";
 static string local_currency = "silver";
 static string watching = "";
 static int broadcast, onhand, open_account, balance, wander;

@@ -197,7 +197,7 @@ object *livings() {
     object *privlivs = efun::livings();
     object *unprivlivs = ({});
 #ifdef __FLUFFOS__
-     unprivlivs = filter(privlivs, (: !($1->GetInvis() && archp($1)) :) );
+    unprivlivs = filter(privlivs, (: !($1->GetInvis() && archp($1)) :) );
 #else
     foreach(mixed dude in privlivs){
         if(archp(dude) && dude->GetInvis()) continue;

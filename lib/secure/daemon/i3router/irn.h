@@ -5,22 +5,24 @@
 static string my_name = ROUTER_NAME;
 static string my_password = IRN_PASSWORD;
 static string *ok_ips = ({});
-static int irn_enabled = 0;
 static int irn_reconnect = 0;
 static int irn_timeout = 120;
-static int irn_ping_enabled = 0;
 static int irn_maxtry = 32;
 static int convert_channel = 1;
 static int convert_channel2 = 0;
 mapping PingMap = ([]);
 
-#ifdef ROUTER_TESTING
+#ifndef PRODUCTION_ROUTER
+static int irn_enabled = 0;
+static int irn_ping_enabled = 0;
 static mapping routers = ([
   "*i6" : ([ "ip" : "149.152.218.102", "port" : 25, "password" : IRN_PASSWORD1 ]),
   "*i5" : ([ "ip" : "204.209.44.3", "port" : 8180, "password" : IRN_PASSWORD2 ]),
   //"*gimel" : ([ "ip" : "192.168.0.224", "port" : 4301, "password" : IRN_PASSWORD4 ])
 ]);
 #else
+static int irn_enabled = 1;
+static int irn_ping_enabled = 1;
 static mapping routers = ([
   "*yatmim" : ([ "ip" : "149.152.218.102", "port" : 23, "password" : IRN_PASSWORD2 ]),
   "*i4" : ([ "ip" : "204.209.44.3", "port" : 8080, "password" : IRN_PASSWORD3 ])
@@ -235,12 +237,14 @@ void irn_clear(){
         foreach(mixed key, mixed val in irn_connections){
         if(!key || !sizeof(key)) continue;
         if(!irn_connections[key] || !irn_connections[key]["fd"]) continue;
+        //tc("irn_clear closing "+irn_connections[key]["fd"]);
         this_object()->close_connection(irn_connections[key]["fd"]);
         irn_connections[key]["connected"] = 0;
     }
     if(sizeof(irn_sockets))
         foreach(mixed key, mixed val in irn_sockets){
         if(!key || !sizeof(key)) continue;
+        //tc("irn_clear (2) closing "+key);
         this_object()->close_connection(key);
     }
 
@@ -277,10 +281,12 @@ varargs void irn_setup(int clear, string whom){
             foreach(mixed key, mixed val in irn_connections){
             if(!irn_connections[key] || !irn_connections[key]["fd"]) continue;
             irn_connections[key]["connected"] = 0;
+            //tc("irn_setup closing "+irn_connections[key]["fd"]);
             this_object()->close_connection(irn_connections[key]["fd"]);
         }
         if(sizeof(irn_sockets))
             foreach(mixed key, mixed val in irn_sockets){
+            //tc("irn_setup closing "+key);
             this_object()->close_connection(key);
         }
         irn_clear();
@@ -790,7 +796,7 @@ varargs mixed irn_ping(mixed target, int code){
         target = irn_connections[target];
         if(target && target["fd"]) target = target["fd"];
         else {
-            trr("badping: "+identify(target));
+            //trr("badping: "+identify(target));
             return 0;
         }
     }

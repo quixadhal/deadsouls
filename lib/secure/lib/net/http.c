@@ -300,13 +300,31 @@ int eventRead(buffer data) {
     if(!read_args) read_args = explode(replace_string(str, CARRIAGE_RETURN, ""), "\n")[0];
     args_tmp = explode(replace_string(str, CARRIAGE_RETURN, ""), "\n");
     foreach(mixed element in args_tmp){
+        int int1, int2;
         string junk1, junk2;
+        junk2 = reverse_string(element);
         //tc("element: "+element);
+        int2 = sscanf(junk2,"%s---%*s",junk1);
+        //tc("int2: "+int2,"green");
         if(!strsrch(element,"Cookie:") && !cookie) cookie = element;
         if(boundary && grepp(element,boundary)){
             boundary_count++;
             //tc("boundary count: "+boundary_count,"yellow");
         }
+        else if(boundary && int2 == 2){
+            junk2 = reverse_string(junk1);
+            junk1 = replace_string(boundary,"-","");
+            //tc("junk2: "+junk2);
+            //tc("junk1: "+junk1);
+            //tc("boundary: "+boundary);
+            //tc("first(junk1,sizeof("+junk2+")): "+first(junk1,sizeof(junk2)));
+            if(boundary && sizeof(junk2) > 5
+              && first(junk1,sizeof(junk2)) == junk2){
+                //tc("YESSSS","red");
+                boundary_count++;
+            }
+        }
+
         if(grepp(element, "boundary=")){
             sscanf(element,"%sboundary=%s",junk1,boundary);
             //tc("boundary: "+boundary,"red");
@@ -369,6 +387,7 @@ int eventRead(buffer data) {
 
         if(boundary_count && boundary_count > 1){
             string junk1, junk2, tmp;
+            //tc("hi mom!");
 #if 0
             if(sscanf(out,"%s"+boundary+"%s--"+boundary+"%s",junk1,tmp,junk2) == 3){
                 out = tmp;
@@ -379,7 +398,8 @@ int eventRead(buffer data) {
             }
             //else tc("hmmm. out is: "+out,"red");
 #endif
-
+            sscanf(out,"%s--%s",tmp,junk1);
+            //tc("tmp: "+tmp);
             if(grepp(out,boundary+"--")) eventGetFile(read_args, "POST", out);
             return 1;
 

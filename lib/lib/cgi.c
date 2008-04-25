@@ -21,7 +21,7 @@ mapping ParsePost(string args){
             ret["filename"] = file;
         }
         tmp_arr2 = explode(element,"\n");
-        if(grepp(tmp_arr2[1],"Content-Type:")) start = 2;
+        if(sizeof(tmp_arr2) > 1 && grepp(tmp_arr2[1],"Content-Type:")) start = 2;
         data = implode(tmp_arr2[start..],"\n");
         if(data[0..0] == "\n") data = data[1..];
         ret[name] = data;

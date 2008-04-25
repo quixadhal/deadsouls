@@ -24,7 +24,7 @@ void init(){
 
 string SpamSpam(string spamspam){
     string spamspamspam;
-    spamspamspam=read_file("/domain/campus/txt/spam.txt");
+    spamspamspam=read_file("/domains/campus/txt/spam.txt");
     return spamspamspam;
 }
 int SpamSpamSpamSpam(string spam){

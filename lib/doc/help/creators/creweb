@@ -62,3 +62,9 @@ CreWeb to circumvent this.
 * If you need to use CreWeb to edit files outside your
 home directory, simply copy them into your home directory
 while logged into the mud, edit, then copy them back.
+
+* Users of Microsoft Internet Explorer may have occasional
+difficulty when editing files. This is due to IE's default
+cache behavior. Change your preferences to reload pages:
+Tools->General->Settings->Every visit to the page
+  Then logout of creweb and restart IE.

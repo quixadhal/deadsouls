@@ -60,6 +60,7 @@ void heart_beat(){
     if(heart_count > 3600){
         heart_count = 0;
         this_object()->clean_ghosts();
+        this_object()->clean_chans();
         this_object()->clear_discs();
         this_object()->check_blacklist();
     }

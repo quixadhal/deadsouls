@@ -1,3 +1,12 @@
+---- 2.7a25 ---
+- Released 2008-04-24
+- Added periodic cleanup of channel mappings in the i3 router to
+  prevent peculiar runtimes when running for a long time.
+- Fixed channel banning in the i3 router.
+- The web server now handles POSTS where the boundary gets
+  split in separate packets (this caused mysterious hangs when
+  uploading some files but not others).
+
 ---- 2.7a24 ---
 - Released 2008-04-16
 - Creweb chanlogs now listed in "last modified" order.
