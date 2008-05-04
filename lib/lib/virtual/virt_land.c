@@ -25,7 +25,7 @@ void SetVirtualExits(int x, int y, int z);
 
 /******************* virt_land.c required overrides ***********/
 
-varargs void SetLongAndItems(int x, int y, int z) {
+varargs void SetLongAndItems(int x, int y, int z){
     SetVirtualExits(x, y, z);
 } 
 
@@ -39,10 +39,10 @@ int SetMasterMap(mixed map_name){
         return 0;
     }
     if(stringp(map_name)){
-        if( !(Map_Master = load_object(map_name)) ) {
+        if( !(Map_Master = load_object(map_name)) ){
             string str;
 
-            if( str = catch(call_other(map_name, "???")) ) {
+            if( str = catch(call_other(map_name, "???")) ){
                 if( creatorp() ) message("error", str,
                       previous_object());
                 return 0;
@@ -58,7 +58,7 @@ int SetMasterMap(mixed map_name){
 
 int SetVirtFile( string file ){
     string str;
-    if( str = catch(call_other(file, "???")) ) {
+    if( str = catch(call_other(file, "???")) ){
         if( creatorp() ) message("error", str, previous_object());
         return 0;
     }
@@ -73,7 +73,7 @@ string SetResetMessage(mixed str){ Reset_Message = str;}
 
 /******************* virt_land.c attributes *******************/
 
-void SetCoordinates(int x, int y, int z) {
+void SetCoordinates(int x, int y, int z){
     CoordX = x;
     CoordY = y;
     CoordZ = z;
@@ -158,7 +158,7 @@ void SetVirtualExits(int x, int y, int z){
 
 string GetAreaType(){ return AreaType;}
 
-varargs mixed GetCoordinates(int level) {
+varargs mixed GetCoordinates(int level){
     if(nullp(level)) return ({ CoordX, CoordY, CoordZ });
     else switch(level){
     case 0: return CoordX;
@@ -199,7 +199,7 @@ void ResetLocation(){
 
 /******************* virt_land.c driver applies ***************/
 
-varargs static void create(int x, int y,int z) {
+varargs static void create(int x, int y,int z){
     SetNoReplace(1);
     room::create();
     SetCoordinates(x, y, z);

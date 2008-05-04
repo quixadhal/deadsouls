@@ -114,7 +114,7 @@ int eventAbandon(object who){
 varargs int eventTrainLiving(object who, string what){
     if(what) what = replace_string(what, "to ", "");
     if(!who) who = this_player();
-    if(Owner != who) {
+    if(Owner != who){
         write("You are not this mount's owner.");
         return 0;
     }
@@ -135,7 +135,7 @@ varargs int eventTrainLiving(object who, string what){
 varargs int eventUnTrainLiving(object who, string what){
     if(what) what = replace_string(what, "to ", "");
     if(!who) who = this_player();
-    if(Owner != who) {
+    if(Owner != who){
         write("You are not this mount's owner.");
         return 0;
     }

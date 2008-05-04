@@ -69,7 +69,7 @@ object *GetRiders(){
     return ret;
 }
 
-int SetMount(int x) {
+int SetMount(int x){
     Mount = x;
     if(Mount) this_object()->SetNoClean(1);
     return Mount;

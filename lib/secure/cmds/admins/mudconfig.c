@@ -20,7 +20,7 @@ string array nonmodals = ({ "liveupgrade", "prompt","status","email","websource"
 string array antimodals = ({ "imc2" });
 string array modals = antimodals + ({ "channelpipes", "fastcombat", "catchtell","matchcommand", "matchobject", "autowiz", "locked",
   "localtime", "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
-  "cgi", "dirlist", "creweb",
+  "cgi", "dirlist", "creweb", "selectclass",
   "retain", "defaultparse", "disablereboot", "loglocal", "logremote" });
 string array inet_services = ({ "oob", "hftp", "ftp", "http", "rcp", "inet" });
 
@@ -105,7 +105,7 @@ varargs static int CompleteConfig(string file){
     validate();
     ret = replace_string(ret,"\n\n","\n");
     write_file(file,ret,1);
-    reload(MASTER_D,0,1);
+    RELOAD_D->ReloadBaseSystem();
     reload(LIB_CONNECT,0,1);
     write("Command complete.");
     return 1;
@@ -135,7 +135,15 @@ int ModPortOffset(string which, string arg){
     }
     out = implode(new_array,"\n");
     //tc("out: \n"+out);
+
     write_file("/secure/include/network.h",out,1);
+    write("The "+service+" port offset is being set to "+offset+".");
+    //write("The "+service+" port is being set to "+atoi(new_port)+".");
+    //write("To complete this configuration, wait 2 seconds, then issue the following commands:");
+    //write("mudconfig "+lower_case(service)+" disable");
+    //write("mudconfig "+lower_case(service)+" enable");
+    RELOAD_D->eventReload(this_object(), 1, 1);
+    reload(MASTER_D,0,1);
     return 1;
 }             
 
@@ -168,12 +176,12 @@ int ModPort(string which, mixed arg){
     //tc("out: \n"+out);
     if(last(out,1) != "\n") out += "\n";
     write_file("/secure/include/network.h",out,1);
-    RELOAD_D->eventReload(this_object(), 1, 1);
-    reload(MASTER_D,0,1);
     write("The "+service+" port is being set to "+atoi(new_port)+".");
     write("To complete this configuration, wait 2 seconds, then issue the following commands:");
     write("mudconfig "+lower_case(service)+" disable");
     write("mudconfig "+lower_case(service)+" enable");
+    RELOAD_D->eventReload(this_object(), 1, 1);
+    reload(MASTER_D,0,1);
     return 1;
 }
 
@@ -526,6 +534,7 @@ static int ProcessModal(string which, string arg){
     case "cgi" : which = "ENABLE_CGI";break;
     case "dirlist" : which = "WWW_DIR_LIST";break;
     case "creweb" : which = "ENABLE_CREWEB";break;
+    case "selectclass" : which = "CLASS_SELECTION";break;
     default : break;
     }
     foreach(string element in config){
@@ -819,6 +828,7 @@ void help() {
       "\nmudconfig exitsbare [ yes | no ]"
       "\nmudconfig nmexits [ yes | no ] (This togggles where default exits are displayed)"
       "\nmudconfig fastcombat [ yes | no ] (heart rate overridden in combat)"
+      "\nmudconfig selectclass [ yes | no ] (whether new players choose a class on login)"
       "\nmudconfig localtime [ yes | no ]"
       "\nmudconfig offset <offset from gmt in seconds>"
       "\nmudconfig extraoffset <offset from GMT in hours>"

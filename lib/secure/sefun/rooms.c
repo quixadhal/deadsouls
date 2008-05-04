@@ -1,15 +1,14 @@
 string namen, ret;
 
-int reload_room(object ob) {
+int reload_room(object ob){
     string name;
     object *stuff;
     name=base_name(ob);
     stuff = deep_inventory(ob);
     foreach(object item in stuff){
-        if(!interactive(item) &&
-          !interactive(environment(item)) &&
-          !interactive(environment(environment(item))) )  
-            item->eventDestruct();
+        object *int_inv = ({});
+        int_inv = filter(containers(item), (: interactive($1) :));
+        if(!sizeof(int_inv) && !interactive(item)) item->eventDestruct();
     }
     ob->eventDestruct();
     load_object(name);

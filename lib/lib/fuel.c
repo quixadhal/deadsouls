@@ -12,42 +12,42 @@ private int MaxFuel = 100;
 private int Refuelable = 1;
 private string FuelType = "oil";
 
-static void create() {
+static void create(){
     this_object()->AddSave(({ "FuelAmount" }));
 }
 
-mixed eventDecreaseFuel(int x) {
+mixed eventDecreaseFuel(int x){
     if( x < 1 ) return 0;
     FuelAmount -= x;
     if( FuelAmount < 1 ) FuelAmount = 0;
     return 1;
 }
 
-mixed eventRefuel(int x) {
+mixed eventRefuel(int x){
     if( x < 1 ) return 0;
     FuelAmount += x;
     if( FuelAmount > MaxFuel ) FuelAmount = MaxFuel;
     return 1;
 }
 
-int GetFuelAmount() {
+int GetFuelAmount(){
     return FuelAmount;
 }
 
-static int SetFuelAmount(int x) {
+static int SetFuelAmount(int x){
     return (FuelAmount = x);
 }
 
-string GetFuelType() {
+string GetFuelType(){
     return FuelType;
 }
 
-static string SetFuelType(string str) {
+static string SetFuelType(string str){
     return (FuelType = str);
 }
 
 
-varargs string GetLong(string val) {
+varargs string GetLong(string val){
     /*    string str;
     if(!(str = item::GetLong(val)) || str == "") return str;
     else return sprintf("%s%s", str, (GetFuel() ? "" :
@@ -58,19 +58,19 @@ varargs string GetLong(string val) {
     else return "";
 }
 
-int GetMaxFuel() {
+int GetMaxFuel(){
     return MaxFuel;
 }
 
-static int SetMaxFuel(int x) {
+static int SetMaxFuel(int x){
     return (MaxFuel = x);
 }
 
-int GetRefuelable() {
+int GetRefuelable(){
     return Refuelable;
 }
 
-static int SetRefuelable(int x) {
+static int SetRefuelable(int x){
     return (Refuelable = x);
 }
 

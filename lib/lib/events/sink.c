@@ -5,7 +5,7 @@
 //int direct_sink(){ return 1; }
 //int direct_sink_down(){ return 1; }
 
-mixed eventSink() {
+mixed eventSink(){
     object env = environment();
     mixed rumbo = 0;
     string name = this_object()->GetName();

@@ -34,7 +34,7 @@ int eventTeach(object who, string what){
         map_delete(Teaching,who);
         return 0;
     }
-    if( !who->eventLearnSpell(what) ) {
+    if( !who->eventLearnSpell(what) ){
         write("You are not prepared for that spell!");
         return 0;
     }

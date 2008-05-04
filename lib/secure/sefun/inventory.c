@@ -9,3 +9,12 @@ int query_carrying(object who, mixed thing){
     }
     return 0;
 }
+
+object *containers(object ob){
+    object *ret =({});
+    while(environment(ob)){
+        ret += ({ environment(ob) });
+        ob = environment(ob);
+    }
+    return ret;
+}

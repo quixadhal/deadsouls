@@ -11,21 +11,21 @@
 private static int array Rarity = 0;
 private static int       Unique = 0;
 
-int array GetRarity() {
+int array GetRarity(){
     return Rarity;
 }
 
-int array SetRarity(int count, int days) {
+int array SetRarity(int count, int days){
     return (Rarity = ({ count, days }));
 }
 
-int GetUnique() {
+int GetUnique(){
     return Unique;
 }
 
-int SetUnique(int x) {
+int SetUnique(int x){
     Unique = x;
-    if( Unique ) {
+    if( Unique ){
         UNIQUE_D->eventTouchObject();
         this_object()->SetRetain(0);
     }

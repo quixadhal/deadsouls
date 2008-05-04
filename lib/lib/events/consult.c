@@ -6,28 +6,28 @@ static private mapping Consult = ([]);
 string GetDefiniteShort();
 // end abstract methods
 
-varargs mixed GetConsult(string str) {
-    if( !str ) {
+varargs mixed GetConsult(string str){
+    if( !str ){
         str = "default";
     }
     return Consult[str];
 }
 
-string array GetConsults() {
+string array GetConsults(){
     return keys(Consult);
 }
 
-mapping RemoveConsult(string item) { 
+mapping RemoveConsult(string item){ 
     map_delete(Consult, item); 
     return Consult;
 }
 
-varargs mapping SetConsult(mixed key, mixed desc) {
-    if( !key ) {
+varargs mapping SetConsult(mixed key, mixed desc){
+    if( !key ){
         key = "default";
     }
-    if( !desc ) {
-        if( mapp(key) ) {
+    if( !desc ){
+        if( mapp(key) ){
             Consult = expand_keys(key);
         }
         else {
@@ -40,15 +40,15 @@ varargs mapping SetConsult(mixed key, mixed desc) {
     return Consult;
 }
 
-varargs mixed CanConsult(object who, string component) {
+varargs mixed CanConsult(object who, string component){
     mixed val;
 
-    if( !component ) {
+    if( !component ){
         component = "default";
     }
     val = Consult[component];
-    if( !val ) {
-        if( component == "default" ) {
+    if( !val ){
+        if( component == "default" ){
             return 0;
         }
         else {
@@ -59,24 +59,24 @@ varargs mixed CanConsult(object who, string component) {
     else return 1;
 }
 
-varargs mixed eventConsult(object who, string component) {
+varargs mixed eventConsult(object who, string component){
     mixed val;
 
-    if( !component ) {
+    if( !component ){
         val = Consult["default"];
     }
     else {
         val = Consult[component];
     }
-    if( arrayp(val) ) {
+    if( arrayp(val) ){
         val = val[query_night()];
     }
-    if( stringp(val) ) {
+    if( stringp(val) ){
         object env;
 
         env = environment(who);
         who->eventPrint(val);
-        if( component ) {
+        if( component ){
             env->eventPrint(who->GetName() + " consults the " + component +
               " on " + GetDefiniteShort() + ".", who);
         }
@@ -87,17 +87,17 @@ varargs mixed eventConsult(object who, string component) {
         return 1;
     }
     else {
-        if( functionp(val) & FP_OWNER_DESTED ) {
+        if( functionp(val) & FP_OWNER_DESTED ){
             return "Error in evaluating functional.";
         }
         return evaluate(val, who, component);
     }
 }
 
-mixed direct_consult_obj(object target) {
+mixed direct_consult_obj(object target){
     return CanConsult(this_player());
 }
 
-mixed direct_consult_str_on_obj(string str, object target) {
+mixed direct_consult_str_on_obj(string str, object target){
     return CanConsult(this_player(), remove_article(lower_case(str)));
 }

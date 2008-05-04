@@ -48,7 +48,7 @@ int GetDuration(){
     return Duration;
 }
 
-mixed eventDrink(object who) {
+mixed eventDrink(object who){
     object ob=new(LIB_BONUS);
     ob->SetPoints(Points); 
     ob->SetStats(Stats); 

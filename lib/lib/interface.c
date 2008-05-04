@@ -25,7 +25,7 @@ string MessageQueue;
 int PauseMessages;
 int MessageExceptions;
 
-static void create() {
+static void create(){
     chat::create();
     command::create();
     editor::create();
@@ -35,10 +35,10 @@ static void create() {
     Blocked = ([]);
 }
 
-static string process_input(string str) {
+static string process_input(string str){
     SetCommandFail(0);
     command::process_input(str);
-    if( Client ) {
+    if( Client ){
         int cl;
 
         sscanf(str, "%d %s", cl, str);
@@ -46,7 +46,7 @@ static string process_input(string str) {
     if( (str = editor::process_input(str)) == "" ) return "";
     else {
         str = nmsh::process_input(str);
-        if( str != "" ) {
+        if( str != "" ){
             return chat_command(str);
         }
         else {
@@ -55,12 +55,12 @@ static string process_input(string str) {
     }
 }
 
-static void terminal_type(string str) {
+static void terminal_type(string str){
     if( !stringp(str) ) return;
     else SetTerminal(lower_case(str));
 }
 
-static void window_size(int width, int height) { SetScreen(width, height); }
+static void window_size(int width, int height){ SetScreen(width, height); }
 
 int eventReceive(string message){
     int max_length = __LARGEST_PRINTABLE_STRING__ - 192;
@@ -75,15 +75,15 @@ int eventReceive(string message){
 }
 
 
-void receive_message(string msg_class, string msg) {
+void receive_message(string msg_class, string msg){
     int cl = 0;
 
-    if( msg_class[0] == 'N' ) {
+    if( msg_class[0] == 'N' ){
         msg_class = msg_class[1..];
         cl |= MSG_NOWRAP;
     }
     else if( msg_class == "prompt" && msg_class == "editor" ) cl |= MSG_NOWRAP;
-    switch(msg_class) {
+    switch(msg_class){
     case "smell": case "sound": case "touch": 
         cl |= MSG_ENV;
         break;
@@ -132,9 +132,9 @@ void receive_message(string msg_class, string msg) {
     eventPrint(msg, cl);
 }
 
-static void receive_snoop(string str) { receive_message("snoop", "%"+str); } 
+static void receive_snoop(string str){ receive_message("snoop", "%"+str); } 
 
-int Setup() {
+int Setup(){
     command::Setup();
     nmsh::Setup();
     TermInfo = (mapping)TERMINAL_D->query_term_info(Terminal);
@@ -160,12 +160,12 @@ varargs int eventPauseMessages(int x, int exceptions){
     return PauseMessages;
 }
 
-varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
+varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     int msg_class;
 
     if( !msg ) return 0;
     if( !arg2 && !arg3 ) msg_class = MSG_ENV;
-    else if( !arg2 ) {
+    else if( !arg2 ){
         if( !intp(arg3) ) msg_class = MSG_ENV;
         else msg_class = arg3;
     }
@@ -178,7 +178,7 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
         log_file("harass/" + GetKeyName(), strip_colours(msg) + "\n");
     if( !TermInfo )
         TermInfo = (mapping)TERMINAL_D->query_term_info(GetTerminal());
-    if( !(msg_class & MSG_NOCOLOUR) ) {
+    if( !(msg_class & MSG_NOCOLOUR) ){
         int indent;
 
         if( msg_class & MSG_CONV ) indent = 4;
@@ -200,10 +200,10 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3) {
     return 1;
 }
 
-varargs int SetBlocked(string type, int flag) {
+varargs int SetBlocked(string type, int flag){
     if( !type ) return 0;
     if( !flag ) flag = !Blocked[type];
-    if( Blocked[type] == 2 && !archp(this_player()) ) {
+    if( Blocked[type] == 2 && !archp(this_player()) ){
         this_player()->eventPrint("Unable to unblock " + type + ".");
         return -1;
     }
@@ -213,22 +213,22 @@ varargs int SetBlocked(string type, int flag) {
     return Blocked[type];
 }
 
-int GetBlocked(string type) { return (Blocked["all"] || Blocked[type]); }
+int GetBlocked(string type){ return (Blocked["all"] || Blocked[type]); }
 
-int SetClient(int x) {
+int SetClient(int x){
     return 0;
     if( x ) SetTerminal("unknown");
     return (Client = x);
 }
 
-int GetClient() { return Client; }
+int GetClient(){ return Client; }
 
-int SetLogHarass(int x) {
+int SetLogHarass(int x){
     string txt;
 
     if( GetForced() || (this_player(1) != this_object()) ) return LogHarass;
     if( LogHarass == x ) return LogHarass;
-    if( x ) {
+    if( x ){
         txt = "**************** Start of Log *****************\n"+
         "Time: " + ctime( time() ) + "\n";
         if( environment( this_object() ) ) txt += "Place: " +
@@ -241,12 +241,12 @@ int SetLogHarass(int x) {
     return (LogHarass = x);
 }
 
-int GetLogHarass() { return LogHarass; }
+int GetLogHarass(){ return LogHarass; }
 
-int *SetScreen(int width, int height) { 
+int *SetScreen(int width, int height){ 
     if( !width || !height ) return Screen;
     width--;
-    if( width * height > __LARGEST_PRINTABLE_STRING__ ) {
+    if( width * height > __LARGEST_PRINTABLE_STRING__ ){
         if( width > height ) width = __LARGEST_PRINTABLE_STRING__/height;
         else if( height > width ) height = __LARGEST_PRINTABLE_STRING__/width;
         else width = height = (__LARGEST_PRINTABLE_STRING__-1)/2;
@@ -254,10 +254,10 @@ int *SetScreen(int width, int height) {
     return (Screen = ({ width, height })); 
 }
 
-int *GetScreen() { return Screen; }
+int *GetScreen(){ return Screen; }
 
-string SetTerminal(string terminal) { 
-    switch( terminal ) {
+string SetTerminal(string terminal){ 
+    switch( terminal ){
     case "iris-ansi-net": case "vt100": case "vt220": case "vt102":
     case "vt300": case "dec-vt100":
         terminal = "ansi";
@@ -278,6 +278,6 @@ string SetTerminal(string terminal) {
     return Terminal = terminal;
 }
 
-string GetTerminal() { return Terminal; }
+string GetTerminal(){ return Terminal; }
 
-string GetKeyName() { return 0; }
+string GetKeyName(){ return 0; }

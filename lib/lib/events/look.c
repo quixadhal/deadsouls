@@ -20,7 +20,7 @@ mapping Items        = ([]);
 string GetShort();
 // end abstract methods
 
-varargs string GetExternalDesc(object who) {
+varargs string GetExternalDesc(object who){
     string openstate;
 
     if(this_object()->CanClose()){
@@ -29,16 +29,16 @@ varargs string GetExternalDesc(object who) {
     }
     else openstate = "";
 
-    if( !ExternalDesc ) {
+    if( !ExternalDesc ){
         return "";
     }
-    if( functionp(ExternalDesc) ) {
-        if( functionp(ExternalDesc) & FP_OWNER_DESTED ) {
+    if( functionp(ExternalDesc) ){
+        if( functionp(ExternalDesc) & FP_OWNER_DESTED ){
             return "";
         }
         return evaluate(ExternalDesc, who);
     }
-    else if( arrayp(ExternalDesc) ) {
+    else if( arrayp(ExternalDesc) ){
         return ExternalDesc[query_night()] + openstate;;
     }
     else {
@@ -46,22 +46,22 @@ varargs string GetExternalDesc(object who) {
     }
 }
 
-string SetExternalDesc(string desc) {
+string SetExternalDesc(string desc){
     return (ExternalDesc = desc);
 }
 
-varargs int GetInvis(object ob) {
-    if( !ob ) {
+varargs int GetInvis(object ob){
+    if( !ob ){
         ob = (this_player() || previous_object());
     }
-    if( functionp(Invisible) ) {
+    if( functionp(Invisible) ){
         return evaluate(Invisible, ob);
     }
     else return Invisible;
 }
 
-mixed SetInvis(mixed val) {
-    if( !val || intp(val) ) {
+mixed SetInvis(mixed val){
+    if( !val || intp(val) ){
         if(!val || val == 0){
             Invisible = 0;
             if(sizeof(get_livings(environment(this_object()),2))){
@@ -73,7 +73,7 @@ mixed SetInvis(mixed val) {
         }
         return (Invisible = val);
     }
-    else if( functionp(val) && !Invisible ) {
+    else if( functionp(val) && !Invisible ){
         return (Invisible = val);
     }
     else {
@@ -81,16 +81,16 @@ mixed SetInvis(mixed val) {
     }
 }
 
-varargs mixed AddItem(mixed item, mixed val) {
-    if( objectp(item) ) {
+varargs mixed AddItem(mixed item, mixed val){
+    if( objectp(item) ){
         item->eventMove(this_object());
         return 1;
     }
-    if( functionp(val) || stringp(val) || arrayp(val) ) {
-        if( stringp(item) ) {
+    if( functionp(val) || stringp(val) || arrayp(val) ){
+        if( stringp(item) ){
             Items[item] = val;
         }
-        else if( arrayp(item) ) {
+        else if( arrayp(item) ){
             map(item, (: AddItem($1, $(val)) :));
             return val;
         }
@@ -121,17 +121,17 @@ mixed SetItem_func(mixed foo){
 }
 
 
-varargs mixed GetItem(string item, object who) {
+varargs mixed GetItem(string item, object who){
     mixed val = mapping_member(Items, item);
 
-    if( !val ) {
+    if( !val ){
         return 0;
     }
-    if( stringp(val) || arrayp(val)) {
+    if( stringp(val) || arrayp(val)){
         return Items[val];
     }
-    else if( functionp(val) ) {
-        if( functionp(val) & FP_OWNER_DESTED ) {
+    else if( functionp(val) ){
+        if( functionp(val) & FP_OWNER_DESTED ){
             return "An error occurred evaulating a function pointer.";
         }
         return evaluate(val, who, item);
@@ -141,7 +141,7 @@ varargs mixed GetItem(string item, object who) {
     }
 }
 
-string array GetItems() {
+string array GetItems(){
     return keys(Items);
 }
 
@@ -149,9 +149,9 @@ mapping GetItemsMap(){
     return copy(Items);
 }
 
-mapping RemoveItem(mixed item) {
-    if( !stringp(item) ) {
-        if( !arrayp(item) ) {
+mapping RemoveItem(mixed item){
+    if( !stringp(item) ){
+        if( !arrayp(item) ){
             error("Bad argument 1 to RemoveItem().\n");
         }
         map(item, (: RemoveItem($1) :));
@@ -161,7 +161,7 @@ mapping RemoveItem(mixed item) {
     return copy(Items);
 }
 
-mapping SetItems(mapping items) {
+mapping SetItems(mapping items){
     foreach(mixed key, mixed val in items){
         AddItem(key, val);
     }
@@ -169,12 +169,12 @@ mapping SetItems(mapping items) {
 }
 
 //TMI2 compat hack
-mapping SetItem_desc(mapping items) {
+mapping SetItem_desc(mapping items){
     return SetItems(items);
 }
 
-varargs string GetLong(string str) {
-    if( str && Items[str] ) {
+varargs string GetLong(string str){
+    if( str && Items[str] ){
         return GetItem(str);
     }
     else {
@@ -182,14 +182,14 @@ varargs string GetLong(string str) {
     }
 }
 
-string SetLong(string str) {
+string SetLong(string str){
     return SetExternalDesc(str);
 }
 
-varargs mixed eventShow(object who, string component) {
+varargs mixed eventShow(object who, string component){
     mixed desc;
 
-    if( component ) {
+    if( component ){
         component = remove_article(lower_case(component));
         desc = GetItem(component, who);
         environment(who)->eventPrint(who->GetName() + " looks at the " +
@@ -216,10 +216,10 @@ varargs mixed eventShow(object who, string component) {
     return 1;
 }
 
-mixed direct_look_obj() {
+mixed direct_look_obj(){
     object env = environment();
     if(!this_object()->GetInvis()){
-        if( env != this_player() && env != environment(this_player()) ) {
+        if( env != this_player() && env != environment(this_player()) ){
             return "#Perhaps \"look at "+this_object()->GetKeyName()+
             " on\" something?"; 
         }
@@ -227,15 +227,15 @@ mixed direct_look_obj() {
     return 1;
 }
 
-mixed direct_look_at_obj() {
+mixed direct_look_at_obj(){
     return direct_look_obj();
 }
 
-mixed direct_look_on_obj() {
+mixed direct_look_on_obj(){
     return direct_look_obj();
 }
 
-mixed direct_look_at_obj_on_obj(object target, object ob,mixed arg, mixed arg2) {
+mixed direct_look_at_obj_on_obj(object target, object ob,mixed arg, mixed arg2){
     if(!ob) ob=environment(target);
     if((inherits(LIB_SIT,ob) && sizeof(ob->GetSitters())) ||
       (inherits(LIB_LIE,ob) && sizeof(ob->GetLiers()))){
@@ -256,17 +256,17 @@ mixed direct_look_at_obj_on_obj(object target, object ob,mixed arg, mixed arg2) 
             else return "#You can't quite make out its details.";
         }
     }
-    if( environment(target) != ob || target->GetInvis() ) {
+    if( environment(target) != ob || target->GetInvis() ){
         return "#There is no " + arg + " on " + ob->GetShort() + ".";
     }
     return 1;
 }
 
-mixed direct_look_at_obj_word_obj() {
+mixed direct_look_at_obj_word_obj(){
     return direct_look_obj();
 }
 
-mixed direct_look_at_str_on_obj(string str, object target) {
+mixed direct_look_at_str_on_obj(string str, object target){
     object dingus;
     str = remove_article(lower_case(str));
     if((inherits(LIB_SIT,target) && sizeof(target->GetSitters())) ||
@@ -281,7 +281,7 @@ mixed direct_look_at_str_on_obj(string str, object target) {
         }
         else return "#You can't quite make out its details.";
     }
-    if( !Items[str] ) {
+    if( !Items[str] ){
         return "#There is no " + str + " on " + GetShort() + ".";
     }
     return 1;

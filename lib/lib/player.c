@@ -26,7 +26,7 @@ private int TrainingPoints, TitleLength;
 
 /* *****************  /lib/player.c driver applies  ***************** */
 
-static void create() {
+static void create(){
     interactive::create();
     living::create();
 
@@ -34,9 +34,9 @@ static void create() {
     TitleLength = 1;
 }
 
-static void heart_beat() {
+static void heart_beat(){
 
-    if(!interactive(this_object())) {
+    if(!interactive(this_object())){
         set_heart_beat(0);
         return;
     }
@@ -45,44 +45,44 @@ static void heart_beat() {
       && !builderp(this_object()) 
       && !present("testchar badge",this_object()) 
       && !present("idler_amulet",this_object()) 
-      && !testp(this_object()) ) {
+      && !testp(this_object()) ){
         cmdQuit();
         return;
     }
     living::heart_beat();
 }
 
-static void net_dead() {
+static void net_dead(){
     interactive::net_dead();
     set_heart_beat(0);
 }
 
-static int Destruct() {
+static int Destruct(){
     CHARACTER_D->eventSaveTime();
     living::Destruct();
     return interactive::Destruct();
 }
 
-mixed eventAsk(object who, string what) {
+mixed eventAsk(object who, string what){
     if( what != "convert me" ) return 0;
     if( !GetReligion(1) ) return 0;
     who->SetProperty("converting", GetReligion(1));
     return 1;
 }
 
-void eventKillEnemy(object ob) {
+void eventKillEnemy(object ob){
     living::eventKillEnemy(ob);
     STATISTICS_D->eventKill(ob);
 }
 
-void eventReconnect() {
+void eventReconnect(){
     interactive::eventReconnect();
     living::eventReconnect();
     set_heart_beat(GetHeartRate());
 }
 
 /************** player.c command functions *************/
-varargs int eventShow(object who, string str) {
+varargs int eventShow(object who, string str){
     if( !living::eventShow(who, str) ) return 0;
     if( this_player() != this_object() )
         eventPrint((string)this_player()->GetName() + " looks you over.");
@@ -91,7 +91,7 @@ varargs int eventShow(object who, string str) {
 
 /* *****************  /lib/player.c events  *************** */
 
-int eventDisplayStatus() {
+int eventDisplayStatus(){
     string str;
     int qp, xp, hp, mp, sp, max_hp, max_mp, max_sp;
 
@@ -119,10 +119,10 @@ int eventDisplayStatus() {
     return 1;
 }
 
-static void eventDestroyUndead(object agent) {
+static void eventDestroyUndead(object agent){
 }
 
-varargs int eventDie(mixed agent) {
+varargs int eventDie(mixed agent){
     int x, expee, subexpee;
     string agentname;
 
@@ -137,7 +137,7 @@ varargs int eventDie(mixed agent) {
         Deaths = ({([ "date" : ctime(time()), "enemy" : agentname ])});
     else Deaths += ({ ([ "date" : ctime(time()), "enemy" : agentname ]) });
 
-    if( !GetUndead() ) {
+    if( !GetUndead() ){
         eventDestroyUndead(agent);
     }
     else {
@@ -146,7 +146,7 @@ varargs int eventDie(mixed agent) {
         message("my_action", "You awake, but you find your body feels "
           "different, and the world about you is unfamiliar.",
           this_object());
-        if( agent ) {
+        if( agent ){
             message("other_action", GetName() + " is killed by "
               + agentname + ".",
               environment(this_object()), ({ agent, this_object() }));
@@ -172,15 +172,15 @@ varargs int eventDie(mixed agent) {
     return 1;
 }
 
-mixed eventTurn(object who) {
-    if( !living::eventTurn(who) ) {
+mixed eventTurn(object who){
+    if( !living::eventTurn(who) ){
         return 0;
     }
     eventDestroyUndead(who);
     return 1;
 }
 
-void eventRevive() {
+void eventRevive(){
     string skill;
 
     this_object()->SetDead(0);
@@ -192,21 +192,21 @@ void eventRevive() {
     if(this_player()->GetPoison() > 0){
         this_player()->AddPoison(0 - this_player()->GetPoison());
     }
-    foreach(skill in GetSkills()) {
+    foreach(skill in GetSkills()){
         int x;
 
-        if( !random(4) ) {
+        if( !random(4) ){
             continue;
         }
-        if( newbiep(this_object()) ) {
+        if( newbiep(this_object()) ){
             x = 2;
         }
         else {
             x = 10;
         }
         x = random(x - (2*GetSkillClass(skill)))/2;
-        if( x > 0 ) {
-            while( x-- ) {
+        if( x > 0 ){
+            while( x-- ){
                 AddSkillPoints(skill,
                   -GetMaxSkillPoints(skill,
                     GetBaseSkillLevel(skill)));
@@ -222,7 +222,7 @@ void eventRevive() {
     if(creatorp()) interactive::SetShort("$N the reborn");
 }
 
-int eventMove(mixed dest) {
+int eventMove(mixed dest){
     int ret;
     object env = environment();
     string location;
@@ -238,22 +238,22 @@ int eventMove(mixed dest) {
     return ret;
 }
 
-varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir) {
+varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
     object *inv;
     object prev;
     string prevclim, newclim;
 
-    if( prev = environment() ) {
+    if( prev = environment() ){
         prevclim = (string)prev->GetClimate();
-        if( stringp(dest) ) {
-            if(dest[0] != '/') {
+        if( stringp(dest) ){
+            if(dest[0] != '/'){
                 string *arr;
 
                 arr = explode(file_name(prev), "/");
                 dest = "/"+implode(arr[0..sizeof(arr)-2], "/")+"/"+dest;
             }
         }
-        if( !eventMove(dest) ) {
+        if( !eventMove(dest) ){
             eventPrint("You remain where you are.", MSG_SYSTEM);
             return 0;
         }
@@ -261,7 +261,7 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir) {
               !GetProperty("stealthy") &&    
               ($1 != this_object())) :));
         if(!dir){
-            if( !omsg || omsg == "" || query_verb() == "home" ) {
+            if( !omsg || omsg == "" || query_verb() == "home" ){
                 omsg = GetMessage("telout");
                 imsg = GetMessage("telin");
             }
@@ -281,7 +281,7 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir) {
         }
         inv->eventPrint(omsg, MSG_ENV);
     }
-    else if( !eventMove(dest) ) {
+    else if( !eventMove(dest) ){
         eventPrint("You remain where you are.", MSG_SYSTEM);
         return 0;
     }
@@ -290,18 +290,18 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir) {
           living($1) && ($1 != this_object())) :));
 
     inv->eventPrint(imsg, MSG_ENV);
-    if(GetInvis()) {
+    if(GetInvis()){
         if(!creatorp(this_object())) AddStaminaPoints(-(15-(GetSkillLevel("stealth")/10)));
         AddSkillPoints("stealth", 30 + GetSkillLevel("stealth")*2);
         eventPrint("%^RED%^You move along quietly....%^RESET%^\n");
     }
-    if(GetProperty("stealthy") && interactive(this_object())) {
+    if(GetProperty("stealthy") && interactive(this_object())){
         if(!creatorp(this_object())) AddStaminaPoints(-3 - random(3));
         AddSkillPoints("stealth", 10 + GetSkillLevel("stealth")*2);
     }
     this_object()->eventDescribeEnvironment(GetBriefMode());
     newclim = (string)environment()->GetClimate();
-    if( !GetUndead() ) switch( newclim ) {
+    if( !GetUndead() ) switch( newclim ){
     case "arid":
         if(!creatorp(this_object())) AddStaminaPoints(-0.3);
         break;
@@ -322,7 +322,7 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir) {
         break;	    
     }
     if( prevclim != newclim && prevclim != "indoors" && newclim != "indoors" ){
-        switch(prevclim) {
+        switch(prevclim){
         case "arid":
             if( newclim == "tropical" || newclim == "sub-tropical" )
                 message("environment", "The air is much more humid.",
@@ -384,7 +384,7 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir) {
 }
 
 
-int eventReceiveObject(object foo) {
+int eventReceiveObject(object foo){
     object ob;
 
     ob = previous_object();
@@ -394,7 +394,7 @@ int eventReceiveObject(object foo) {
     return 1;
 }
 
-int eventReleaseObject(object foo) {
+int eventReleaseObject(object foo){
     object ob;
 
     ob = previous_object();
@@ -406,9 +406,9 @@ int eventReleaseObject(object foo) {
     return 1;
 }
 
-void eventLoadObject(mixed *value, int recurse) { }
+void eventLoadObject(mixed *value, int recurse){ }
 
-static mixed eventUse(object used, string cmd) {
+static mixed eventUse(object used, string cmd){
     object old_agent;
     mixed tmp;
     string mess = "";
@@ -431,17 +431,17 @@ static mixed eventUse(object used, string cmd) {
 
 /* *****************  /lib/player.c modal functions  ***************** */
 
-int CanReceive(object ob) { return CanCarry((int)ob->GetMass()); }
+int CanReceive(object ob){ return CanCarry((int)ob->GetMass()); }
 
-mixed CanUse() { return 1; }
+mixed CanUse(){ return 1; }
 
 /* *****************  /lib/player.c local functions  ***************** */
 
-int Setup() {
+int Setup(){
     string classes;
     if( !interactive::Setup() ) return 0;
     if( !GetClass() ) SetClass("explorer");
-    if( GetClass() ) {
+    if( GetClass() ){
         foreach(classes in (string array)CLASSES_D->GetClasses())
         if( ClassMember(classes) && classes != GetClass() )
             AddChannel(classes);
@@ -523,14 +523,14 @@ int Setup() {
 
 /* ***************** /lib/player.c data functions  ***************** */
 
-int AddCurrency(string type, int amount) {
+int AddCurrency(string type, int amount){
     if( currency_value(amount, type) > 999 )
         log_file("currency", GetCapName() + " received "+amount+" "+type+
           " "+ctime(time())+"\n"+identify(previous_object(-1))+"\n");
     return living::AddCurrency(type, amount);
 }
 
-int AddBank(string bank, string type, int amount) {
+int AddBank(string bank, string type, int amount){
     if( currency_value(amount, type) > 999 )
         log_file("bank", GetCapName() + " deposited "+amount+" "+type+
           " "+ctime(time())+" into bank: "+bank+"\n" +
@@ -551,7 +551,7 @@ string *SetMuffed(string *muffed){
 string *AddMuffed(string muffed){
     string tmpstr;
     if(!muffed || muffed == "" || !sizeof(muffed)) return Muffed;
-    if(grepp(muffed,"@")) {
+    if(grepp(muffed,"@")){
         tmpstr = INTERMUD_D->GetMudName(muffed[1..sizeof(muffed)-1]);
     }
     if(sizeof(tmpstr)) muffed = tmpstr;
@@ -563,7 +563,7 @@ string *AddMuffed(string muffed){
 string *RemoveMuffed(string unmuffed){
     string tmpstr;
     if(!sizeof(unmuffed)) return Muffed;
-    if(grepp(unmuffed,"@")) {
+    if(grepp(unmuffed,"@")){
         tmpstr = INTERMUD_D->GetMudName(unmuffed[1..sizeof(unmuffed)-1]);
     }
     if(sizeof(tmpstr)) unmuffed = tmpstr;
@@ -572,13 +572,13 @@ string *RemoveMuffed(string unmuffed){
     return Muffed;
 }
 
-string *SetTitles(string *titles) {
+string *SetTitles(string *titles){
     if( sizeof(distinct_array(titles)) != sizeof(titles) ) return Titles;
     Titles = titles;
     SetShort("whatever");
 }
 
-string *AddTitle(string title) {
+string *AddTitle(string title){
     if( !stringp(title) ) return Titles;
     else if( member_array(title, Titles) != -1 ) return Titles;
     else {
@@ -588,7 +588,7 @@ string *AddTitle(string title) {
     }
 }
 
-string *RemoveTitle(string title) {
+string *RemoveTitle(string title){
     if( !stringp(title) ) return Titles;
     if( member_array(title, Titles) == -1 ) return Titles;
     else {
@@ -598,15 +598,15 @@ string *RemoveTitle(string title) {
     }
 }
 
-string *GetTitles() { return Titles; }
-int SetTitleLength(int x) {
+string *GetTitles(){ return Titles; }
+int SetTitleLength(int x){
     if( x > 2 ) x = 2;
     return (TitleLength = x);
 }
 
-int GetTitleLength() { return TitleLength; }
+int GetTitleLength(){ return TitleLength; }
 
-string SetShort(string irrelevant) {
+string SetShort(string irrelevant){
     string title, tmp;
     int i;
 
@@ -616,7 +616,7 @@ string SetShort(string irrelevant) {
     else title = "$N ";
     if( GetUndead() && (tmp = GetUndeadType()) )
         return interactive::SetShort(title + "the " + tmp);
-    if( avatarp() || creatorp() ) {
+    if( avatarp() || creatorp() ){
         return interactive::SetShort(irrelevant);
     }
     if( !(i = sizeof(Titles)) )
@@ -626,18 +626,18 @@ string SetShort(string irrelevant) {
     return interactive::SetShort(title);
 }
 
-int SetUndead(int x) {
+int SetUndead(int x){
     x = living::SetUndead(x);
     SetShort("nonsense");
     return x;
 }
 
-string GetName() {
+string GetName(){
     if(GetInvis()) return "A shadow";
     else return interactive::GetName();
 }
 
-varargs string GetLong(string str) {
+varargs string GetLong(string str){
     mapping counts;
     string item;
     string *affects = ({});
@@ -662,20 +662,20 @@ varargs string GetLong(string str) {
     return str;
 }
 
-string GetCapName() { return interactive::GetCapName(); }
+string GetCapName(){ return interactive::GetCapName(); }
 
-int ResetLevel() {
+int ResetLevel(){
     int x, y;
 
     x = GetLevel();
-    if( x != (y = living::ResetLevel()) ) {
+    if( x != (y = living::ResetLevel()) ){
         string file;
 
         if( x > y ) file = "decline";
         else file = "advance";
         log_file(file, GetCapName() + " went from level " + x + " to "
           "level " + y + " (" + ctime(time()) + ")\n");
-        if( x < y ) {
+        if( x < y ){
             eventPrint("%^YELLOW%^You are now a more experienced " + 
               GetClass() + ".");
             TrainingPoints += ( (y-x) * 4 );
@@ -688,8 +688,8 @@ int ResetLevel() {
     return y;
 }
 
-string SetClass(string str) {
-    if( GetClass() != living::SetClass(str) ) {
+string SetClass(string str){
+    if( GetClass() != living::SetClass(str) ){
         int points = TrainingPoints;
         string classes;
 
@@ -703,14 +703,14 @@ string SetClass(string str) {
     return GetClass();
 }
 
-varargs mixed GetEffectiveVision(mixed location, int raw_score) {
+varargs mixed GetEffectiveVision(mixed location, int raw_score){
     if( newbiep(this_object()) ) return VISION_CLEAR;
     else if(raw_score && location) return living::GetEffectiveVision(location,raw_score);
     else if(location) return living::GetEffectiveVision(location);
     else return living::GetEffectiveVision();
 }
 
-varargs static int AddHealthPoints(int x, string limb, object agent) {
+varargs static int AddHealthPoints(int x, string limb, object agent){
     int hp, ret, undead;
 
     hp = GetHealthPoints();
@@ -721,39 +721,39 @@ varargs static int AddHealthPoints(int x, string limb, object agent) {
     return ret;
 }
 
-int GetLanguageLevel(string lang) {
+int GetLanguageLevel(string lang){
     if( newbiep() ) return 100;
     else return living::GetLanguageLevel(lang);
 }
 
-mapping *GetDeaths() {
+mapping *GetDeaths(){
     if( !Deaths ) return ({});
     return copy(Deaths);
 }
 
-int AddTrainingPoints(int x) {
+int AddTrainingPoints(int x){
     log_file("TrainingPoints", GetName() + " received " + x + " training "
       "points at " + ctime(time()) + "\ncall chain: " +
       sprintf("%O\n", previous_object(-1)) );
     return (TrainingPoints += x);
 }
 
-int RemoveTrainingPoints(int x) {
+int RemoveTrainingPoints(int x){
     return (TrainingPoints -= x);
 }
 
-int GetTrainingPoints() { return TrainingPoints; }
+int GetTrainingPoints(){ return TrainingPoints; }
 
-varargs int eventTrain(string skill, int points) {
+varargs int eventTrain(string skill, int points){
     float x = 0;
     mapping mp;
 
     if( points < 1 ) points = 1;
     if( !(mp = GetSkill(skill)) ) return 0;
     if( TrainingPoints < points ) return 0;
-    while( points-- ) {
+    while( points-- ){
         int max = GetMaxSkillPoints(skill, mp["level"]);
-        switch( mp["class"] ) {
+        switch( mp["class"] ){
         case 1: x = 50.0; break;
         case 2: x = 40.0; break;
         case 3: x = 30.0; break;

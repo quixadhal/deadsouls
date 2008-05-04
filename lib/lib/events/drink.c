@@ -6,23 +6,23 @@
  *    Last modified: %D%
  */
 
-varargs mixed CanDrink(object who, string substance) {
+varargs mixed CanDrink(object who, string substance){
     return 1;
 }
 
-varargs mixed eventDrink(object who, string substance) {
+varargs mixed eventDrink(object who, string substance){
     return 1;
 }
 
-mixed direct_drink_obj() {
+mixed direct_drink_obj(){
     return CanDrink(this_player());
 }
 
-mixed direct_drink_from_obj() {
+mixed direct_drink_from_obj(){
     return direct_drink_obj();
 }
 
-mixed direct_drink_str_from_obj(string str) {
+mixed direct_drink_str_from_obj(string str){
     return CanDrink(this_player(), remove_article(lower_case(str)));
 }
 

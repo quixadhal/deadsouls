@@ -15,28 +15,28 @@ private int MaxDamagePoints = 20000;
 void eventDeteriorate(int type);
 // end abstract methods
 
-int GetBroken() {
+int GetBroken(){
     return Broken;
 }
 
-int SetBroken(int x) {
+int SetBroken(int x){
     return (Broken = x);
 }
 
-int SetDamagePoints(int x) {
+int SetDamagePoints(int x){
     return (MaxDamagePoints = DamagePoints = x);
 }
 
-int GetDamagePoints() {
+int GetDamagePoints(){
     return DamagePoints;
 }
 
-int GetDeterioration() {
+int GetDeterioration(){
     return Deterioration;
 }
 
-string GetItemCondition() {
-    if( Deterioration ) {
+string GetItemCondition(){
+    if( Deterioration ){
         return "It has worn down completely.";
     }
     else {
@@ -44,19 +44,19 @@ string GetItemCondition() {
     }
 }
 
-string array GetSave() {
+string array GetSave(){
     return ({ "Broken", "DamagePoints", "Deterioration" });
 }
 
 // args d and l not used
-int eventReceiveDamage(object agent, int type, int amt, int d, mixed array l) {
+int eventReceiveDamage(object agent, int type, int amt, int d, mixed array l){
     if(query_verb() == "pick") return 0;
     if(objectp(agent)){
         if(estatep(agent) && !estatep(this_object())) return amt;
         if(!estatep(agent) && estatep(this_object())) return amt;
     }
     DamagePoints -= (amt * 5);
-    if( DamagePoints < 1 ) {
+    if( DamagePoints < 1 ){
         Deterioration++;
         DamagePoints = MaxDamagePoints;
         eventDeteriorate(type);

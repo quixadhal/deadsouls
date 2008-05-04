@@ -22,7 +22,7 @@ varargs void eventPrint(string str, mixed args...);
 nomask void restore_inventory();
 nomask void save_player(string nom);
 
-int Setup() {
+int Setup(){
 
     master()->create_save();
     call_out( (: save_player, GetKeyName() :), 2 );
@@ -30,20 +30,20 @@ int Setup() {
     return 1;
 }
 
-nomask void restore_inventory() {
-    if( Inventory ) {
-        foreach(string obdata in Inventory) {
+nomask void restore_inventory(){
+    if( Inventory ){
+        foreach(string obdata in Inventory){
             object ob;
             mixed tmp;
 
             tmp = restore_variable(obdata);
-            if( arrayp(tmp) ) {
+            if( arrayp(tmp) ){
                 ob = new(tmp[0]);
                 if( ob ) ob->eventConvertObject(tmp, 1);
             }
             else {
-                if( !catch(ob = new(tmp["#base_name#"])) ) {
-                    if( ob ) {
+                if( !catch(ob = new(tmp["#base_name#"])) ){
+                    if( ob ){
                         ob->eventLoadObject(tmp, 1);
                     }
                 }
@@ -53,20 +53,20 @@ nomask void restore_inventory() {
     Inventory = 0;
 }
 
-nomask int restore_player(string nom) {
+nomask int restore_player(string nom){
     string file;
 
-    if( previous_object(0) != master() ) {
+    if( previous_object(0) != master() ){
         return 0;
     }
     file = save_file(nom);
     return unguarded((: restore_object, file, 1 :));
 }
 
-nomask void save_player(string nom) {
+nomask void save_player(string nom){
     string file;
 
-    if( !nom || nom != GetKeyName() ) {
+    if( !nom || nom != GetKeyName() ){
         return;
     }
     Inventory = filter(map(all_inventory(), (: $1->GetSaveString() :)),
@@ -76,16 +76,16 @@ nomask void save_player(string nom) {
     Inventory = 0;
 }
 
-static void heart_beat() {
+static void heart_beat(){
     int x = time();
 
-    if( x - LastSave < AUTOSAVE_TIME ) {
+    if( x - LastSave < AUTOSAVE_TIME ){
         return;
     }
     LastSave = x;
     save_player(GetKeyName());
     if( !builderp(this_object()) && !present("visitor pass",this_object()) 
-      && !testp(this_object()) ) {
+      && !testp(this_object()) ){
         eventPrint("Autosaving...", MSG_SYSTEM);
     }
 }

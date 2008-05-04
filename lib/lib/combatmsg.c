@@ -7,12 +7,12 @@
 #include <combat_messages.h>
 #include "include/combatmsg.h"
 
-static mixed GetMissData(object targ, int type, string limb) {
+static mixed GetMissData(object targ, int type, string limb){
     string targ_name = (string)targ->GetName(); 
 
     if(targ->GetDead() || this_object()->GetDead()) return 0;
 
-    if( type == -2 ) switch( random(7) ) {
+    if( type == -2 ) switch( random(7) ){
     case 0:
         return ({ "%s completely %s %s.",
           ({ "You", "miss", targ_name }),
@@ -51,7 +51,7 @@ static mixed GetMissData(object targ, int type, string limb) {
     }
     else {
         string pos = possessive_noun(this_object());
-        switch( random(7) ) {
+        switch( random(7) ){
         case 0:
             return ({ "%s quickly %s out of %s way.",
               ({ targ_name, "jumps", "your" }),
@@ -92,7 +92,7 @@ static mixed GetMissData(object targ, int type, string limb) {
     return 0;
 }
 
-static void eventSendMissMessages(object target, int x, string limb) {
+static void eventSendMissMessages(object target, int x, string limb){
     mixed data;
 
     if(target->GetDead() || this_object()->GetDead()) return;
@@ -105,9 +105,9 @@ static void eventSendMissMessages(object target, int x, string limb) {
       ({ this_object(), target }) );
 }
 
-mixed GetCombatVerbs(string type, int damage) {
+mixed GetCombatVerbs(string type, int damage){
     mixed ptr;
-    switch(type) {
+    switch(type){
     case "knife": case "blade":
         ptr = BLADE_DEGREES;
         break;
@@ -126,7 +126,7 @@ mixed GetCombatVerbs(string type, int damage) {
     else return ptr[damage];
 }
 
-mixed GetCombatMove(string type, int skill) {
+mixed GetCombatMove(string type, int skill){
     int i;
     mixed foo;
 
@@ -137,13 +137,13 @@ mixed GetCombatMove(string type, int skill) {
     else return foo;
 }
 
-varargs void SendMeleeMessages(object target, int x, string targlimb, string limb) {
+varargs void SendMeleeMessages(object target, int x, string targlimb, string limb){
     int i;
     string adverb;
     mixed verb, ptr, moves;
 
     //if(target->GetDead() || this_object()->GetDead()) return;
-    if( x < 0 ) {
+    if( x < 0 ){
         eventSendMissMessages(target, x, limb);
         return;
     }
@@ -153,7 +153,7 @@ varargs void SendMeleeMessages(object target, int x, string targlimb, string lim
         adverb = (ptr[1][ random(i) ] + " in");
     else adverb = "in";
     if( moves = GetCombatMove("melee", 
-        (int)this_object()->GetSkillLevel("melee attack")) ) {
+        (int)this_object()->GetSkillLevel("melee attack")) ){
         verb[0] = moves[0] + " and " + verb[0];
         verb[1] = moves[1] + " and " + verb[1];
     }
@@ -169,17 +169,17 @@ varargs void SendMeleeMessages(object target, int x, string targlimb, string lim
     flush_messages();
 }
 
-varargs void SendWeaponMessages(object target, int x, object weapon, string limb) {
+varargs void SendWeaponMessages(object target, int x, object weapon, string limb){
     int i;
     string adverb, type, weap;
     mixed verb, ptr, moves;
 
     //if(target->GetDead() || this_object()->GetDead()) return;
-    if( x < 0 ) {
+    if( x < 0 ){
         eventSendMissMessages(target, x, limb);
         return;
     }
-    if( weapon ) {
+    if( weapon ){
         type = (string)weapon->GetWeaponType();
         weap = (string)weapon->GetKeyName();
     }
@@ -193,7 +193,7 @@ varargs void SendWeaponMessages(object target, int x, object weapon, string limb
         adverb = (ptr[1][ random(i) ] + " in");
     else adverb = "in";
     if( moves = GetCombatMove(type, 
-        (int)this_object()->GetSkillLevel(type + " attack")) ) {
+        (int)this_object()->GetSkillLevel(type + " attack")) ){
         verb[0] = moves[0] + " and " + verb[0];
         verb[1] = moves[1] + " and " + verb[1];
     }

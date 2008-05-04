@@ -21,15 +21,15 @@ int stank;
 
 int eventDecay();
 
-int GetDecayLife() {
+int GetDecayLife(){
     return DecayLife;
 }
 
-int SetDecayLife(int x) {
+int SetDecayLife(int x){
     return (DecayLife = x);
 }
 
-string GetLimb() {
+string GetLimb(){
     return Limb;
 }
 string GetItemCondition(){
@@ -45,7 +45,7 @@ void init(){
     if(environment() && environment()->GetMedium() == MEDIUM_LAND) stank = 1;
 }
 
-void SetLimb(string limb, string owner, string race) {
+void SetLimb(string limb, string owner, string race){
     SetKeyName(limb);
     SetId( ({ "flesh","pile", "limb", Limb = limb }) );
     Owner = owner;
@@ -55,41 +55,41 @@ void SetLimb(string limb, string owner, string race) {
     SetLong("This limb has a horrible stench as it rots to nothing.");
 }
 
-string GetOwner() {
+string GetOwner(){
     return Owner;
 }
 
-string GetRace() {
+string GetRace(){
     return Race;
 }
 
-int GetSaveString() {
+int GetSaveString(){
     return 0;
 }
 
-string GetShort() {
+string GetShort(){
     string str = surface::GetShort();
 
-    if( !str ) {
+    if( !str ){
         str = "a limb";
     }
     return str;
 }
 
-int CanReceive(object ob) {
+int CanReceive(object ob){
     return 1;
 }
 
-int Destruct() {
+int Destruct(){
     return surface::Destruct();
 }
 
-int eventDecay() {
-    if( !environment() ) {
+int eventDecay(){
+    if( !environment() ){
         Destruct();
         return 0;
     }
-    switch(Count) {
+    switch(Count){
     case 10:
         if(stank)
             message("smell", "The "+Limb+" really stinks.", environment());

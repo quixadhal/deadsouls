@@ -22,7 +22,7 @@ string SetNoTaleMessage(string notalemessage);
 string GetNoTaleMessage();
 int GetTellingTale();
 
-static void create() {
+static void create(){
     AlreadyTellingTale = 0;
     TalesDir = "";
     Tales = ([ ]);
@@ -45,35 +45,35 @@ SetTale( ([ 1 : ({"say this is the first part of the tale",5}),
 2 : ({"emote this is.....",4}), 3 : ({"speak last line",1}) ]) );
 */
 
-string SetTalesDir(string dir) {
+string SetTalesDir(string dir){
     TalesDir = dir;
     return TalesDir;
 }
 
-mapping SetTale(mapping tale) {
+mapping SetTale(mapping tale){
     Tales = tale;
     return Tales;
 }
 
-string SetNoTaleMessage(string notalemessage) {
+string SetNoTaleMessage(string notalemessage){
     NoTaleMessage = notalemessage;
     return NoTaleMessage;
 }
 
-string GetTalesDir() { return TalesDir; }
-mapping GetTale() { return Tales; }
-array GetTaleKeys() { return keys( Tales ); }
-string GetNoTaleMessage() { return NoTaleMessage; }
-int GetTellingTale() { return AlreadyTellingTale; }
+string GetTalesDir(){ return TalesDir; }
+mapping GetTale(){ return Tales; }
+array GetTaleKeys(){ return keys( Tales ); }
+string GetNoTaleMessage(){ return NoTaleMessage; }
+int GetTellingTale(){ return AlreadyTellingTale; }
 
-void PickTale( string taletotell ) {
+void PickTale( string taletotell ){
     array msg;
     string file, *files;
     int y;
 
-    if( ! AlreadyTellingTale ) {
+    if( ! AlreadyTellingTale ){
         int x = 0;
-        if( TalesDir ) {
+        if( TalesDir ){
             files = get_dir( GetTalesDir() );
             if(taletotell){
                 y = member_array(taletotell,files);
@@ -89,7 +89,7 @@ void PickTale( string taletotell ) {
             AlreadyTellingTale = 1;
             Tales = ([]);
             msg = explode( read_file( TalesDir + file ), "\n" );
-            foreach( string str in msg ) {
+            foreach( string str in msg ){
                 Tales[x++] = explode( str, "#" );
             }
         }
@@ -100,8 +100,8 @@ void PickTale( string taletotell ) {
 }
 
 
-void TellTale( int part ) {
-    if( part == sizeof( keys( Tales ) ) ) {
+void TellTale( int part ){
+    if( part == sizeof( keys( Tales ) ) ){
         AlreadyTellingTale = 0;
         return;
     }

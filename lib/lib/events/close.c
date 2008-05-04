@@ -12,7 +12,7 @@ int Closed;
 string GetDefiniteShort();
 // end abstract methods
 
-int GetClosed() {
+int GetClosed(){
     return Closed;
 }
 
@@ -21,38 +21,38 @@ int GetOpen(){
     else return 1;
 }
 
-int SetClosed(int x) { 
+int SetClosed(int x){ 
     Closed = x;
     parse_refresh();
     return Closed;
 }
 
-varargs mixed CanClose(object who, string id) {
+varargs mixed CanClose(object who, string id){
 
     if(who && environment() && environment() != environment(who) &&
       environment() != who)
         return "#That's not accessible to you.";
 
-    if( Closed ) {
+    if( Closed ){
         id = capitalize(GetDefiniteShort()) + " is already closed.";
         return id;
     }
     else return 1;
 }
 
-varargs mixed CanOpen(object who, object tool) {
+varargs mixed CanOpen(object who, object tool){
     if(environment() && environment() != environment(who) &&
       environment() != who)
         return "#That's not accessible to you.";
 
-    if( !Closed ) {
+    if( !Closed ){
         return capitalize(GetDefiniteShort()) + " is already open.";
     }
     else return 1;
 }
 
-mixed eventClose(object who) {
-    if( !SetClosed(1) ) {
+mixed eventClose(object who){
+    if( !SetClosed(1) ){
         return 0;
     }
     send_messages("close", "$agent_name $agent_verb $target_name.",
@@ -60,8 +60,8 @@ mixed eventClose(object who) {
     return 1;
 }
 
-varargs mixed eventOpen(object who, object tool) {
-    if( SetClosed(0) ) {
+varargs mixed eventOpen(object who, object tool){
+    if( SetClosed(0) ){
         return 0;
     }
     send_messages("open", "$agent_name $agent_verb $target_name.",
@@ -69,15 +69,15 @@ varargs mixed eventOpen(object who, object tool) {
     return 1;
 }
 
-int inventory_accessible() {
+int inventory_accessible(){
     return !GetClosed();
 }
 
-int inventory_visible() {
+int inventory_visible(){
     return !GetClosed();
 }
 
-int SetOpen(int x) {
+int SetOpen(int x){
     if(x) Closed = 0;
     else Closed = 1;
     parse_refresh();
@@ -85,14 +85,14 @@ int SetOpen(int x) {
 }
 
 
-mixed direct_close_obj(object target) {
+mixed direct_close_obj(object target){
     return CanClose(this_player());
 }
 
-mixed direct_open_obj(object target) {
+mixed direct_open_obj(object target){
     return CanOpen(this_player());
 }
 
-mixed direct_open_obj_with_obj(object target, object tool) {
+mixed direct_open_obj_with_obj(object target, object tool){
     return CanOpen(this_player(), tool);
 }

@@ -165,7 +165,7 @@ static private void LoadIndices() {
                 " ");
           }
           if(member_array(str, CHAT_D->GetChannels()) != -1 &&
-            str != "newbie"){
+            str != "newbie" && member_array(str, CLASSES_D->GetClasses()) == -1){
               return "See: help channels";
           }
           if( sscanf(str, "adverbs %s", topic) || str == "adverbs" ) {

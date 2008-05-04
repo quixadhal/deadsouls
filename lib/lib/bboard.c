@@ -15,7 +15,7 @@ inherit LIB_ITEM;
 static private string __BoardID;
 static private string *__EditOK;
 
-void create() {
+void create(){
     item::create();
     SetNoClean(1);
     SetId( ({ "board", "message board" }) );
@@ -29,7 +29,7 @@ void create() {
     __EditOK = ({});
 }
 
-void init() {
+void init(){
     item::init();
     add_action("cmd_post", "post");
     add_action("cmd_read", "read");
@@ -39,7 +39,7 @@ void init() {
     if(!creatorp(this_player())) return;
 }
 
-static private int valid_edit(string author) {
+static private int valid_edit(string author){
     string who;
 
     who = (string)this_player()->GetKeyName();
@@ -49,11 +49,11 @@ static private int valid_edit(string author) {
     return (int)master()->valid_apply(({}));
 }
 
-int cmd_post(string str) {
+int cmd_post(string str){
     string file;
 
     if(!str) return notify_fail("You must specify a subject.\n");
-    if(file_exists(file = DIR_TMP+"/"+(string)this_player()->GetKeyName())) {
+    if(file_exists(file = DIR_TMP+"/"+(string)this_player()->GetKeyName())){
         message("system", "You have an abandoned post waiting.",this_player());
         message("system", "        e)dit it, or start n)ew", this_player());
         message("prompt", "\nCommand (default 'n'): ", this_player());
@@ -68,10 +68,10 @@ int cmd_post(string str) {
     return 1;
 }
 
-static void begin_post(string cmd, string subj, string file, function f) {
+static void begin_post(string cmd, string subj, string file, function f){
     if(cmd == "" || !cmd) cmd = "n";
     else cmd = cmd[0..0];
-    if(cmd != "n" && cmd != "e") {
+    if(cmd != "n" && cmd != "e"){
         message("system", "Invalid bulletin board command.", this_player());
         return;
     }
@@ -79,15 +79,15 @@ static void begin_post(string cmd, string subj, string file, function f) {
     (*f)(subj, file);
 }
 
-void continue_post(string subj, string file) {
+void continue_post(string subj, string file){
     this_player()->eventEdit(file, (: end_post, subj, 0 :));
 }
 
-void end_post(string subj, string mail) {
+void end_post(string subj, string mail){
     string file, msg;
 
     file = DIR_TMP "/" + (string)this_player()->GetKeyName();
-    if(!(msg = read_file(file))) {
+    if(!(msg = read_file(file))){
         message("system", "No file read!", this_player());
         if(file_exists(file)) rm(file);
         return;
@@ -99,13 +99,13 @@ void end_post(string subj, string mail) {
     message("system", "Message posted!", this_player());
 }
 
-int cmd_read(string str) {
+int cmd_read(string str){
     string junk;
     mapping *posts;
     int x, i, maxi;
 
     if(str){
-        if(str == "board" || sscanf(str,"board %s",junk) ) {
+        if(str == "board" || sscanf(str,"board %s",junk) ){
             write("To read the first post, type: read 1");
             write("To read the second one: read 2");
             write("And so on.");
@@ -113,10 +113,10 @@ int cmd_read(string str) {
         }
 
         maxi = sizeof(posts = (mapping *)BBOARD_D->query_posts(query_board_id()));
-        if(!str) {
+        if(!str){
             for(i=0, x = -1; i<maxi; i++)
                 if(member_array((string)this_player()->GetKeyName(),
-                    posts[i]["read"]) == -1) {
+                    posts[i]["read"]) == -1){
                     x = i;
                     break;
                 }
@@ -137,7 +137,7 @@ int cmd_read(string str) {
     }
 }
 
-int cmd_followup_and_respond(string str) {
+int cmd_followup_and_respond(string str){
     mapping post;
     function f;
     string file, verb;
@@ -156,7 +156,7 @@ x>(int)BBOARD_D->query_number_posts(query_board_id()))
     str = post["subject"];
     if(!str) str = "Re: "+possessive_noun(post["author"])+" post";
     else if(strlen(str) <= 4 || str[0..3] != "Re: ") str = "Re: "+str;
-    if(file_exists(file = DIR_TMP+"/"+(string)this_player()->GetKeyName())) {
+    if(file_exists(file = DIR_TMP+"/"+(string)this_player()->GetKeyName())){
         message("system", "You have an abandoned post waiting.",this_player());
         message("system", "        e)dit it, or start n)ew", this_player());
         message("prompt", "\nCommand (default 'n'): ", this_player());
@@ -166,24 +166,24 @@ x>(int)BBOARD_D->query_number_posts(query_board_id()))
     return 1;
 }
 
-void continue_followup(mapping post, string subj, string file) {
+void continue_followup(mapping post, string subj, string file){
     message("prompt", "\nInclude original text (default 'n'): ",this_player());
     input_to("check_include_text", subj, file, post, 0);
 }
 
-void continue_mail(mapping post, string subj, string file) {
+void continue_mail(mapping post, string subj, string file){
     message("prompt", "\nInclude original text (default 'n'): ",this_player());
     input_to("check_include_text", subj, file, post, 1);
 }
 
 static void check_include_text(string ans, string subj, string file, mapping
-post, int mail) {
+post, int mail){
 
     string msg;
 
     if(ans == "" || !ans) ans = "n";
     else ans = ans[0..0];
-    if(ans == "y") {
+    if(ans == "y"){
         msg = post["author"] + " once wrote...\n>";
         msg += implode(explode(post["post"], "\n"), "\n> ")+"\n";
         write_file(file, msg);
@@ -191,7 +191,7 @@ post, int mail) {
     this_player()->eventEdit(file, (: end_post, subj, (mail ? post : 0) :));
 }
 
-int cmd_remove(string str) {
+int cmd_remove(string str){
     mapping post;
     int x;
 
@@ -206,7 +206,7 @@ int cmd_remove(string str) {
     return 1;
 }
 
-int cmd_edit(string str) {
+int cmd_edit(string str){
     mapping post;
     string file;
     int x;
@@ -224,11 +224,11 @@ int cmd_edit(string str) {
     return 1;
 }
 
-void end_edit(string subj, int num) {
+void end_edit(string subj, int num){
     string file, msg;
 
     file = DIR_TMP "/" + (string)this_player()->GetKeyName();
-    if(!(msg = read_file(file))) {
+    if(!(msg = read_file(file))){
         message("system", "No file read!", this_player());
         return;
     }
@@ -239,7 +239,7 @@ void end_edit(string subj, int num) {
     message("system", "Message posted!", this_player());
 }
 
-string GetExternalDesc() {
+string GetExternalDesc(){
     mapping *posts;
     string msg;
     int i, maxi;
@@ -248,7 +248,7 @@ string GetExternalDesc() {
     maxi = sizeof(posts = (mapping *)BBOARD_D->query_posts(query_board_id()));
     msg += "\n";
     if(!maxi) msg += "There are currently no posts.\n";
-    else for(i=0; i < maxi; i++) {
+    else for(i=0; i < maxi; i++){
         int lu;
 
         if(!this_player()) lu = 1;
@@ -262,11 +262,11 @@ string GetExternalDesc() {
     return msg;
 }
 
-void set_board_id(string str) { __BoardID = str; }
+void set_board_id(string str){ __BoardID = str; }
 
-string query_board_id() { return __BoardID; }
+string query_board_id(){ return __BoardID; }
 
-string query_board_time(int x) {
+string query_board_time(int x){
     string date, day, mon, year, hour, ret;
 
     if(sscanf(ctime(x), "%s %s  %s %s %s", day, mon, date, hour, year) !=5)

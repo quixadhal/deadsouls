@@ -2,14 +2,12 @@
 
 inherit LIB_SENTIENT;
 
+int hint;
 
 int AdvanceDude(mixed arg);
 mapping advancement;
 int TalkFunc(){
-    int rand1;
     string thing1, thing2, thing3, thing4, thing5;
-
-    rand1 = random(5);
 
     thing1 = "There's no shame in being wimpy. Live to fight another day. Death takes away valuable xp.";
     thing2 = "Let me know if you see Princess Daphne.";
@@ -17,7 +15,7 @@ int TalkFunc(){
     thing4 = "Learning spells from Herkimer is a good idea.";
     thing5 = "Food, drink, and caffeine help restore health and strength.";
 
-    switch(rand1){
+    switch(hint){
     case 0 : eventForce("say "+thing1);break;
     case 1 : eventForce("say "+thing2);break;
     case 2 : eventForce("say "+thing3);break;
@@ -25,7 +23,12 @@ int TalkFunc(){
     case 4 : eventForce("say "+thing5);break;
     default :  eventForce("smile");
     }
+
+    if(hint == 4) hint = 0;
+    else hint++;
+    return 1;
 }
+
 static void create() {
     sentient::create();
     SetKeyName("dirk");
@@ -42,10 +45,32 @@ static void create() {
     SetLevel(15);
     SetRace("human");
     SetGender("male");
-    SetAction(5, (: TalkFunc :));
+    //SetAction(5, (: TalkFunc :));
     AddTalkResponse("hello", "hi!");
     SetCommandResponses( ([ 
         "advance": (: AdvanceDude :) 
+      ]) );
+    SetRequestResponses( ([
+        ({ "a hint", "hints", "a clue", "clues" }) : (: TalkFunc :),
+      ]) );
+    SetConsultResponses( ([
+        ({ "level", "levels", "leveling", "advancement", "advancing" }) :
+        "To level, get some experience out there and then come back "+
+        "and ask me to advance. After a certain level you'll need "+
+        "some quest points to advance, not just experience.",
+        ({ "xp", "XP", "experience" }) : "You can score experience "+
+        "points by killing monsters or completing some quests. "+
+        "Sometimes you'll get xp for completing some task you didn't "+
+        "even know would give you points. Generally though, it's combat "+
+        "that results in XP rewards, if you win.",
+        ({ "points" }) : "It's how to keep track of your progress. The "+
+        "kinds of points I care about are experience points and "+
+        "quest points.",
+        ({ "quests", "quest", "quest points" }) : "Quests are missions "+
+        "you can try to complete that will usually reward you with "+
+        "quest points if you solve them. "+
+        "You'll need quest points to advance past a "+
+        "certain level.",
       ]) );
     advancement = ([ 
       1:(["title":"the utter novice","xp":0,"qp":0]),

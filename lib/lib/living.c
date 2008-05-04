@@ -27,7 +27,7 @@ private int NoCondition = 0;
 
 varargs mixed CanReceiveHealing(object who, string limb);
 
-static void create() {
+static void create(){
     combat::create();
     currency::create();
     follow::create();
@@ -35,11 +35,11 @@ static void create() {
     isPK = 0;
 }
 
-int is_living() { return 1; }
+int is_living(){ return 1; }
 
-int inventory_accessible() { return 1; }
+int inventory_accessible(){ return 1; }
 
-mixed direct_verb_rule(string verb) {
+mixed direct_verb_rule(string verb){
     return SOUL_D->CanTarget(this_player(), verb, this_object());
 }
 
@@ -72,7 +72,7 @@ mixed direct_attack_liv(){
 }
 
 mixed CanAttack(){
-    if( userp(this_player()) && userp(this_object()) ) {
+    if( userp(this_player()) && userp(this_object()) ){
         if(!(int)environment(this_player())->CanAttack(this_object())){
             return "Player killing is not permitted in this area!";
         }
@@ -110,72 +110,72 @@ mixed direct_target_liv_only(){
     return direct_attack_liv();
 }
 
-mixed direct_bite_liv() {
+mixed direct_bite_liv(){
     return 1;
 }
 
-mixed direct_capture_liv_word_obj() {
+mixed direct_capture_liv_word_obj(){
     return 1;
 }
 
-mixed direct_pray_for_str_against_str_for_liv() {
+mixed direct_pray_for_str_against_str_for_liv(){
     return 1;
 }
 
-mixed direct_cast_str_on_obj() {
+mixed direct_cast_str_on_obj(){
     return 1;
 }
 
-mixed direct_cast_str_against_str() {
+mixed direct_cast_str_against_str(){
     return 1;
 }
 
 
-mixed direct_cast_str_on_str_of_obj() {
+mixed direct_cast_str_on_str_of_obj(){
     return 1;
 }
 
-mixed direct_free_liv_from_obj() {
+mixed direct_free_liv_from_obj(){
     return 1;
 }
 
-mixed direct_resurrect_obj() { return 1; }
-mixed indirect_resurrect_obj() { return 1; }
+mixed direct_resurrect_obj(){ return 1; }
+mixed indirect_resurrect_obj(){ return 1; }
 
-mixed direct_get_obj() {
+mixed direct_get_obj(){
     return "You can't get a living thing!";
 }
 
-mixed direct_get_obj_from_obj() {
+mixed direct_get_obj_from_obj(){
     return "You can't get a living thing!";
 }
 
-mixed direct_show_liv_obj() {
+mixed direct_show_liv_obj(){
     if( this_player() == this_object() ) return "Are you confused?";
     return 1;
 }
 
-mixed indirect_show_obj_to_liv(object item) {
+mixed indirect_show_obj_to_liv(object item){
     if( !item ) return 0;
     if( this_player() == this_object() ) return "Are you confused?";
     if( environment(item) != this_player() ) return "You don't have that!";
     else return 1;
 }
 
-mixed indirect_show_obj_liv(object item) {
+mixed indirect_show_obj_liv(object item){
     return indirect_show_obj_to_liv(item);
 }
 
-mixed direct_give_liv_obs() {
+mixed direct_give_liv_obs(){
     return direct_give_liv_obj();
 }
 
-mixed direct_give_liv_obj() {
+mixed direct_give_liv_obj(){
     if( this_player() == this_object() ) return "Are you confused?";
     return 1;
 }
 
-mixed indirect_give_obj_to_liv(object item) {
+mixed indirect_give_obj_to_liv(object item){
     if( !item ) return 0;
     if( this_player() == this_object() ) return "Are you confused?";
     if( environment(item) != this_player() ) return "You don't have that!";
@@ -185,23 +185,23 @@ mixed indirect_give_obj_to_liv(object item) {
     else return CanCarry((int)item->GetMass());
 }
 
-mixed indirect_give_obj_liv(object item) {
+mixed indirect_give_obj_liv(object item){
     return indirect_give_obj_to_liv(item);
 }
 
-mixed indirect_give_obs_to_liv(object *items) {
+mixed indirect_give_obs_to_liv(object *items){
     return 1;
 }
 
-mixed indirect_give_obs_liv(object *items) {
+mixed indirect_give_obs_liv(object *items){
     return indirect_give_obs_to_liv(items);
 }
 
-mixed direct_give_liv_wrd_wrd(object targ, string num, string curr) {
+mixed direct_give_liv_wrd_wrd(object targ, string num, string curr){
     return direct_give_wrd_wrd_to_liv(num, curr);
 }
 
-mixed direct_give_wrd_wrd_to_liv(string num, string curr) {
+mixed direct_give_wrd_wrd_to_liv(string num, string curr){
     mixed tmp;
     int amt;
 
@@ -213,7 +213,7 @@ mixed direct_give_wrd_wrd_to_liv(string num, string curr) {
     return 1;
 }
 
-mixed direct_steal_wrd_from_liv(string wrd) {
+mixed direct_steal_wrd_from_liv(string wrd){
     if( wrd != "money" ) return 0;
     if( this_player() == this_object() ) return "Are you fool?";
     if( this_player()->GetInCombat() )
@@ -221,7 +221,7 @@ mixed direct_steal_wrd_from_liv(string wrd) {
     return 1;
 }
 
-mixed indirect_steal_obj_from_liv(object item, mixed args...) {
+mixed indirect_steal_obj_from_liv(object item, mixed args...){
     mixed tmp;
 
     if( environment()->GetProperty("no attack") )
@@ -237,7 +237,7 @@ mixed indirect_steal_obj_from_liv(object item, mixed args...) {
     return 1;
 }
 
-mixed direct_backstab_liv() {
+mixed direct_backstab_liv(){
     if( this_object() == this_player() )
         return "That would be messy.";
     if( member_array(this_object(), this_player()->GetEnemies()) != -1 )
@@ -248,21 +248,21 @@ mixed direct_backstab_liv() {
     return 1;
 }
 
-mixed direct_heal_str_of_liv(string limb) {
+mixed direct_heal_str_of_liv(string limb){
     string array limbs = GetLimbs();
     mixed tmp;
 
     limb = lower_case(remove_article(limb));
-    if( !limbs ) {
-        if( this_object() == this_player() ) {
+    if( !limbs ){
+        if( this_object() == this_player() ){
             return "You have no limbs!";
         }
         else {
             return GetName() + " has no limbs!";
         }
     }
-    else if( member_array(limb, limbs) == -1 ) {
-        if( this_object() == this_player() ) {
+    else if( member_array(limb, limbs) == -1 ){
+        if( this_object() == this_player() ){
             return "You have no " + limb + ".";
         }
         else {
@@ -270,49 +270,49 @@ mixed direct_heal_str_of_liv(string limb) {
         }
     }
     tmp = CanReceiveHealing(this_player(), limb);
-    if( tmp != 1 ) {
+    if( tmp != 1 ){
         return tmp;
     }
     return CanReceiveMagic(0, "heal");
 }
 
 
-mixed direct_remedy_str_of_liv(string limb) {
+mixed direct_remedy_str_of_liv(string limb){
     string *limbs;
     limbs = GetLimbs();
-    if( !limbs ) {
+    if( !limbs ){
         if( this_object() == this_player() ) return "You have no limbs!";
         else return GetName() + " has no limbs!";
     }
-    else if( member_array(limb, limbs) == -1 ) {
+    else if( member_array(limb, limbs) == -1 ){
         if( this_object() == this_player() ) return "You have no " + limb + ".";
         else return GetName() + " has no " + limb + ".";
     }
     return CanReceiveMagic(0, "remedy");
 }
 
-mixed direct_regen_str_on_liv(string limb) {
+mixed direct_regen_str_on_liv(string limb){
     if( !limb ) return 0;
-    if( member_array(limb, GetMissingLimbs()) == -1 ) {
+    if( member_array(limb, GetMissingLimbs()) == -1 ){
         return "That is not a missing limb!";
     }
     return CanReceiveMagic(0, "regen");
 }
 
 
-mixed direct_teleport_to_liv() {
+mixed direct_teleport_to_liv(){
     if( environment()->GetProperty("no teleport") ||
-      environment()->GetProperty("no magic") ) {
+      environment()->GetProperty("no magic") ){
         return "Mystical forces prevent your magic.";
     }
     else return CanReceiveMagic(0, "teleport");
 }
 
-mixed direct_portal_to_liv() {
+mixed direct_portal_to_liv(){
     return direct_teleport_to_liv();
 }
 
-mixed direct_resurrect_liv() {
+mixed direct_resurrect_liv(){
     if( this_player() == this_object() )
         return "You cannot resurrect yourself.";
     if( !GetUndead() ) 
@@ -320,7 +320,7 @@ mixed direct_resurrect_liv() {
     return CanReceiveMagic(0, "resurrect");
 }
 
-mixed direct_scry_liv() {
+mixed direct_scry_liv(){
     object env = environment();
 
     if( this_player() == this_object() )
@@ -331,90 +331,90 @@ mixed direct_scry_liv() {
     return CanReceiveMagic(0, "scry");
 }
 
-mixed indirect_zap_liv() { return 1; }
-mixed direct_zap_liv() { return 1; }
-mixed indirect_pulsecheck_liv() { return 1; }
-mixed direct_pulsecheck_liv() { return 1; }
+mixed indirect_zap_liv(){ return 1; }
+mixed direct_zap_liv(){ return 1; }
+mixed indirect_pulsecheck_liv(){ return 1; }
+mixed direct_pulsecheck_liv(){ return 1; }
 
 /* hostile spells */
 
-int direct_rockwhip_liv() { return CanReceiveMagic(1, "rockwhip"); }
-int direct_acidspray_liv() { return CanReceiveMagic(1, "acidspray"); }
-int direct_annihilate_at_liv() { return CanReceiveMagic(1, "annihilate"); }
-int direct_annihilate_liv() { return CanReceiveMagic(1, "annihilate"); }
-int direct_arrow_liv() { return CanReceiveMagic(1, "arrow"); }
-int direct_arrow_at_liv() { return CanReceiveMagic(1, "arrow"); }
-int direct_blades_at_liv() { return CanReceiveMagic(1, "blades"); }
-int direct_blades_liv() { return CanReceiveMagic(1, "blades"); }
-int direct_corrupt_liv() { return CanReceiveMagic(1, "currupt"); }
-int direct_demonclaw_liv() { return CanReceiveMagic(1, "demonclaw"); }
-int direct_dispel_liv() { return CanReceiveMagic(1, "dispel"); }
-int direct_drain_at_liv() { return CanReceiveMagic(1, "drain"); }
-int direct_drain_liv() { return CanReceiveMagic(1, "drain"); }
-int direct_fireball_at_liv() { return CanReceiveMagic(1, "fireball"); }
-int direct_fireball_liv() { return CanReceiveMagic(1, "fireball"); }
-int direct_frigidus_at_liv() { return CanReceiveMagic(1, "frigidus"); }
-int direct_frigidus_liv() { return CanReceiveMagic(1, "frigidus"); }
-int direct_holylight_liv() { return CanReceiveMagic(1, "holylight"); }
-int direct_missile_liv() { return CanReceiveMagic(1, "missile"); }
-int direct_missile_at_liv() { return CanReceiveMagic(1, "missile"); }
-int direct_shock_liv() { return CanReceiveMagic(1, "shock"); }
-int direct_palm_liv() { return CanReceiveMagic(1, "palm"); }
-int direct_immolate_liv() { return CanReceiveMagic(1, "immolate"); }
-int direct_gale_liv() { return CanReceiveMagic(1, "gale"); }
+int direct_rockwhip_liv(){ return CanReceiveMagic(1, "rockwhip"); }
+int direct_acidspray_liv(){ return CanReceiveMagic(1, "acidspray"); }
+int direct_annihilate_at_liv(){ return CanReceiveMagic(1, "annihilate"); }
+int direct_annihilate_liv(){ return CanReceiveMagic(1, "annihilate"); }
+int direct_arrow_liv(){ return CanReceiveMagic(1, "arrow"); }
+int direct_arrow_at_liv(){ return CanReceiveMagic(1, "arrow"); }
+int direct_blades_at_liv(){ return CanReceiveMagic(1, "blades"); }
+int direct_blades_liv(){ return CanReceiveMagic(1, "blades"); }
+int direct_corrupt_liv(){ return CanReceiveMagic(1, "currupt"); }
+int direct_demonclaw_liv(){ return CanReceiveMagic(1, "demonclaw"); }
+int direct_dispel_liv(){ return CanReceiveMagic(1, "dispel"); }
+int direct_drain_at_liv(){ return CanReceiveMagic(1, "drain"); }
+int direct_drain_liv(){ return CanReceiveMagic(1, "drain"); }
+int direct_fireball_at_liv(){ return CanReceiveMagic(1, "fireball"); }
+int direct_fireball_liv(){ return CanReceiveMagic(1, "fireball"); }
+int direct_frigidus_at_liv(){ return CanReceiveMagic(1, "frigidus"); }
+int direct_frigidus_liv(){ return CanReceiveMagic(1, "frigidus"); }
+int direct_holylight_liv(){ return CanReceiveMagic(1, "holylight"); }
+int direct_missile_liv(){ return CanReceiveMagic(1, "missile"); }
+int direct_missile_at_liv(){ return CanReceiveMagic(1, "missile"); }
+int direct_shock_liv(){ return CanReceiveMagic(1, "shock"); }
+int direct_palm_liv(){ return CanReceiveMagic(1, "palm"); }
+int direct_immolate_liv(){ return CanReceiveMagic(1, "immolate"); }
+int direct_gale_liv(){ return CanReceiveMagic(1, "gale"); }
 
 /* other spells */
 
-int direct_aura_liv() { return CanReceiveMagic(0, "aura"); }
-int direct_soulseek_liv() { return CanReceiveMagic(0, "soulseek"); } 
-int direct_cloak_wrd() { return CanReceiveMagic(0, "cloak"); }
-int direct_stealth_wrd() { return CanReceiveMagic(0, "stealth"); }
-int direct_backlash_for_liv() { return CanReceiveMagic(0, "backlash"); }
-int direct_backlash_for_liv_against_wrd() { return CanReceiveMagic(0, "backlash"); }
-int direct_balance_obj_to_obj() { return CanReceiveMagic(0, "balance"); }
-int direct_buffer_liv() { return CanReceiveMagic(0, "buffer"); }
-int direct_calm_liv() { return CanReceiveMagic(0, "calm"); }
-int direct_cleanse_liv() { return CanReceiveMagic(0, "cleanse"); }
-int direct_convert_liv() { return CanReceiveMagic(0, "convert"); }
-int direct_shield_liv() { return CanReceiveMagic(0, "shield"); }
-int direct_veil_liv_against_wrd_wrd() { return CanReceiveMagic(0, "veil"); }
-int direct_ward_liv_against_wrd() { return CanReceiveMagic(0, "ward"); }
-int direct_remedy_liv() { return CanReceiveMagic(0, "remedy"); }
-int direct_command_str_to_str() { return CanReceiveMagic(0, "command"); }
-int direct_gaze() { return CanReceiveMagic(0, "gaze"); }
-int direct_send_str_to_str() { return CanReceiveMagic(0, "send"); }
-int direct_connect_str() { return CanReceiveMagic(0, "connect"); }
-int direct_heal_liv() { return CanReceiveMagic(0, "heal"); }
-int direct_mend_liv() { return CanReceiveMagic(0, "mend"); }
-int direct_refresh_liv() { return CanReceiveMagic(0, "refresh"); }
-int direct_rejuvinate_liv() { return CanReceiveMagic(0, "rejuvinate"); }
-int direct_farsight_liv() { return 1; }
-int direct_bump_liv() { return 1; }
-int direct_evade_liv() { return 1; }
-int direct_follow_liv() { return 1; }
-int direct_lead_liv() { return 1; }
-int direct_marry_liv_to_liv() { return 1; }
-int direct_party_wrd_liv() { return 1; }
-int direct_challenge_liv() { return 1; }
-int direct_ignore_liv() { return 1; }
+int direct_aura_liv(){ return CanReceiveMagic(0, "aura"); }
+int direct_soulseek_liv(){ return CanReceiveMagic(0, "soulseek"); } 
+int direct_cloak_wrd(){ return CanReceiveMagic(0, "cloak"); }
+int direct_stealth_wrd(){ return CanReceiveMagic(0, "stealth"); }
+int direct_backlash_for_liv(){ return CanReceiveMagic(0, "backlash"); }
+int direct_backlash_for_liv_against_wrd(){ return CanReceiveMagic(0, "backlash"); }
+int direct_balance_obj_to_obj(){ return CanReceiveMagic(0, "balance"); }
+int direct_buffer_liv(){ return CanReceiveMagic(0, "buffer"); }
+int direct_calm_liv(){ return CanReceiveMagic(0, "calm"); }
+int direct_cleanse_liv(){ return CanReceiveMagic(0, "cleanse"); }
+int direct_convert_liv(){ return CanReceiveMagic(0, "convert"); }
+int direct_shield_liv(){ return CanReceiveMagic(0, "shield"); }
+int direct_veil_liv_against_wrd_wrd(){ return CanReceiveMagic(0, "veil"); }
+int direct_ward_liv_against_wrd(){ return CanReceiveMagic(0, "ward"); }
+int direct_remedy_liv(){ return CanReceiveMagic(0, "remedy"); }
+int direct_command_str_to_str(){ return CanReceiveMagic(0, "command"); }
+int direct_gaze(){ return CanReceiveMagic(0, "gaze"); }
+int direct_send_str_to_str(){ return CanReceiveMagic(0, "send"); }
+int direct_connect_str(){ return CanReceiveMagic(0, "connect"); }
+int direct_heal_liv(){ return CanReceiveMagic(0, "heal"); }
+int direct_mend_liv(){ return CanReceiveMagic(0, "mend"); }
+int direct_refresh_liv(){ return CanReceiveMagic(0, "refresh"); }
+int direct_rejuvinate_liv(){ return CanReceiveMagic(0, "rejuvinate"); }
+int direct_farsight_liv(){ return 1; }
+int direct_bump_liv(){ return 1; }
+int direct_evade_liv(){ return 1; }
+int direct_follow_liv(){ return 1; }
+int direct_lead_liv(){ return 1; }
+int direct_marry_liv_to_liv(){ return 1; }
+int direct_party_wrd_liv(){ return 1; }
+int direct_challenge_liv(){ return 1; }
+int direct_ignore_liv(){ return 1; }
 
-int indirect_throw_obj_at_obj() { return 1; }
-int indirect_toss_obj_at_obj() { return 1; }
-int indirect_buy_str_from_liv() { return 1; }
-int indirect_sell_obj_to_liv() { return 1; }
-int indirect_marry_liv_to_liv() { return 1; }
+int indirect_throw_obj_at_obj(){ return 1; }
+int indirect_toss_obj_at_obj(){ return 1; }
+int indirect_buy_str_from_liv(){ return 1; }
+int indirect_sell_obj_to_liv(){ return 1; }
+int indirect_marry_liv_to_liv(){ return 1; }
 
 
 /*     **********     /lib/living.c modal methods     **********     */
-int CanCarry(int amount) { return carry::CanCarry(amount); }
+int CanCarry(int amount){ return carry::CanCarry(amount); }
 
-varargs mixed CanReceiveHealing(object who, string limb) {
+varargs mixed CanReceiveHealing(object who, string limb){
     int max, hp;
 
     max = GetMaxHealthPoints(limb);
     hp = GetHealthPoints(limb);
-    if( (max-hp) < max/20 ) {
-        if( limb ) {
+    if( (max-hp) < max/20 ){
+        if( limb ){
             return possessive_noun(GetName()) + " " + limb + " needs no help.";
         }
         else {
@@ -424,33 +424,33 @@ varargs mixed CanReceiveHealing(object who, string limb) {
     return 1;
 }
 
-mixed CanReceiveMagic(int hostile, string spell) {
-    if( GetProperty(spell) == "immune" ) {
+mixed CanReceiveMagic(int hostile, string spell){
+    if( GetProperty(spell) == "immune" ){
         this_player()->eventPrint(GetName() + " is immune to such magic.");
         return 0;
     }
     if( !hostile ) return 1;
-    if( this_player() == this_object() ) {
+    if( this_player() == this_object() ){
         eventPrint("That would be construed as quite foolish.");
         return 0;
     }
     return 1;
 }
 
-varargs mixed CanCastMagic(int hostile, string spell) {
+varargs mixed CanCastMagic(int hostile, string spell){
     object env = environment();
 
     if( !env ) eventPrint("You are nowhere!");
-    if( spell && GetProperty("no " + spell) ) {
+    if( spell && GetProperty("no " + spell) ){
         eventPrint("A mysterious forces prevents you from doing that.");
         return 0;
     }
-    if( env->GetProperty("no magic") ) {
+    if( env->GetProperty("no magic") ){
         eventPrint("Mystical forces prevent your magic.");
         return 0;
     }
     if( !hostile ) return 1;
-    if( env->GetProperty("no attack" ) ) {
+    if( env->GetProperty("no attack" ) ){
         eventPrint("Mystical forces prevent your hostile intentions.");
         return 0;
     }
@@ -459,22 +459,22 @@ varargs mixed CanCastMagic(int hostile, string spell) {
 
 /*     **********     /lib/living.c event methods     **********     */
 
-mixed eventCure(object who, int amount, string type) {
+mixed eventCure(object who, int amount, string type){
     object array germs = filter(all_inventory(),
       (: $1->IsGerm() && $1->GetType()== $(type) :));
 
-    if( !sizeof(germs) ) {
+    if( !sizeof(germs) ){
         return GetName() + " suffers from no such affliction.";
     }
     return germs[0]->eventCure(who, amount, type);
 }
 
-int eventFollow(object dest, int followChance) {
+int eventFollow(object dest, int followChance){
     string dir;
     int ret;
 
-    if( objectp(dest) ) {
-        if( !environment() ) {
+    if( objectp(dest) ){
+        if( !environment() ){
             Destruct();
             return 0;
         }
@@ -496,11 +496,11 @@ int eventFollow(object dest, int followChance) {
     return ret;
 }
 
-mixed eventInfect(object germ) {
+mixed eventInfect(object germ){
     return germ->eventInfect(this_object());
 }
 
-varargs mixed eventShow(object who, string str) {
+varargs mixed eventShow(object who, string str){
     who->eventPrint(this_object()->GetLong(str));
     environment(who)->eventPrint((string)this_player()->GetName() +
       " looks at " + this_object()->GetShort() + ".",
@@ -511,11 +511,11 @@ varargs mixed eventShow(object who, string str) {
 /* when who == this_object(), I am doing the stealing
  * otherwise I am being stolen from
  */
-varargs mixed eventSteal(object who, mixed what, object target, int skill) {
+varargs mixed eventSteal(object who, mixed what, object target, int skill){
 
     int i, sr;
 
-    if( who == this_object() ) {
+    if( who == this_object() ){
         mixed tmp;
         int amt, skill2;
 
@@ -527,11 +527,11 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill) {
         if( ClassMember("rogue") ) skill2 += (int)GetLevel();
         if( ClassMember("thief") ) skill2 += (int)GetLevel();
 
-        if( !stringp(what) ) {
+        if( !stringp(what) ){
             int x;
 
             x = sizeof(what);
-            if( GetStaminaPoints() < 20.0*x ) {
+            if( GetStaminaPoints() < 20.0*x ){
                 eventPrint("You are clumsy in your fatigue.");
                 if(target->GetRace() != "kender"){
                     target->SetAttack(this_object());
@@ -548,7 +548,7 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill) {
                 return "You cannot steal from " + (string)target->GetName() +".";
 
             /* Steal from target was succesful */
-            else if( tmp == 1 ) {
+            else if( tmp == 1 ){
 
                 what = filter(what, (: $1 :));
                 AddSkillPoints("stealing", implode(map(what,
@@ -564,7 +564,7 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill) {
             }
 
             /* Steal was unsuccesful */
-            else if( tmp == 2 ) {
+            else if( tmp == 2 ){
                 AddSkillPoints("stealing", GetSkillLevel("stealing")*2);
                 AddStaminaPoints(-5);
                 return 1;
@@ -584,7 +584,7 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill) {
             return "You cannot steal from " + (string)target->GetName() + ".";
 
         /* Steal from target was succesful */
-        else if( tmp == 1 ) {
+        else if( tmp == 1 ){
             amt = GetNetWorth() - amt;
             if( amt < 1 ) return tmp;
             AddSkillPoints("stealing", random(7*amt) +
@@ -597,7 +597,7 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill) {
         }
 
         /* Steal was unsuccesful */
-        else if( tmp == 2) {
+        else if( tmp == 2){
             AddSkillPoints("stealing", GetSkillLevel("stealing")*2);
             AddStaminaPoints(-5);
             return 1;
@@ -606,7 +606,7 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill) {
         return tmp;
     }
     /*******************************************************************/
-    if( GetInCombat() ) {
+    if( GetInCombat() ){
         who->eventPrint(GetName() + " is busy in combat.");
         return 0;
     }
@@ -617,10 +617,10 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill) {
 
     if( objectp(what) ) sr = 100 * sizeof(what);
     else sr = 100;
-    if( random(sr) > skill ) {
+    if( random(sr) > skill ){
         target->eventPrint("You notice " + (string)who->GetName() + " trying "
           "to steal from you!");
-        if( !userp(this_object()) ) {
+        if( !userp(this_object()) ){
             who->eventPrint("%^RED%^" + (string)GetName() + "%^RED%^ "
               "notices your attempt at treachery!",
               environment(who) );
@@ -630,15 +630,15 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill) {
         return 2;
     }
 
-    if( random(2*sr) > skill ) {
+    if( random(2*sr) > skill ){
         who->eventPrint("You are unsure if anyone noticed your foolish "
           "attempt at thievery.",environment(who) );
         return 2;
     }
 
-    if( stringp(what) ) {
+    if( stringp(what) ){
 
-        foreach(string curr in GetCurrencies()) {
+        foreach(string curr in GetCurrencies()){
             int x;
 
             if( !(x = random(GetCurrency(curr)/5)) ) continue;
@@ -649,14 +649,14 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill) {
         }
         return 1;
     }
-    for(i=0; i<sizeof(what); i++) {
+    for(i=0; i<sizeof(what); i++){
         if( (mixed)what[i]->eventSteal(who) != 1 ) what[i] = 0;
     }
     return 1;
 }
-int AddCarriedMass(int x) { return carry::AddCarriedMass(x); }
+int AddCarriedMass(int x){ return carry::AddCarriedMass(x); }
 
-int GetCarriedMass() {
+int GetCarriedMass(){
     return (currency::GetCurrencyMass() + carry::GetCarriedMass());
 }
 
@@ -668,11 +668,11 @@ varargs int GetMaxHealthPoints(string limb){
     return combat::GetMaxHealthPoints(limb);
 }
 
-int GetMaxCarry() { return combat::GetMaxCarry(); }
+int GetMaxCarry(){ return combat::GetMaxCarry(); }
 
-int SetPK(int x) { return (isPK = x); }
+int SetPK(int x){ return (isPK = x); }
 
-int GetPK() { return isPK; }
+int GetPK(){ return isPK; }
 
 int SetDead(int i){
     return combat::SetDead(i);

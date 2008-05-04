@@ -19,20 +19,20 @@ private static object array NotifiedObjects = ({});
 
 string GetKeyName();
 
-string array GetAdjectives() {
+string array GetAdjectives(){
     return Adjectives;
 }
 
-varargs string array SetAdjectives(mixed adjs...) {
-    if( stringp(adjs) ) {
+varargs string array SetAdjectives(mixed adjs...){
+    if( stringp(adjs) ){
         adjs = ({ adjs });
     }
-    else if( !arrayp(adjs) ) {
+    else if( !arrayp(adjs) ){
         error("Bad argument 1 to SetAdjectives().\n");
     }
     Adjectives = ({});
-    foreach(mixed val in adjs) {
-        if( arrayp(val) ) {
+    foreach(mixed val in adjs){
+        if( arrayp(val) ){
             Adjectives += val;
         }
         else {
@@ -43,48 +43,48 @@ varargs string array SetAdjectives(mixed adjs...) {
     return Adjectives;
 }
 
-string GetCapName() {
+string GetCapName(){
     return CapName;
 }
 
-string SetCapName(string str) {
-    if( !stringp(str) ) {
+string SetCapName(string str){
+    if( !stringp(str) ){
         error("Bad argument 1 to SetCapName().\n");
     }
     return (CapName = str);
 }
 
-string array GetId() {
+string array GetId(){
     string tmp;
     tmp = GetKeyName();
 
-    if( tmp ) {
+    if( tmp ){
         if(!OBJECT_MATCHING || !Matching) return distinct_array(({ CanonicalId..., tmp }));
         else return Id + ({ file_name(this_object()) }) + atomize_string(tmp) - ExcludedIds;
     }
     else return Id;
 }
 
-string array GetCanonicalId() {
+string array GetCanonicalId(){
     string tmp;
     tmp = GetKeyName();
 
     return copy(CanonicalId);
 }
 
-varargs string array SetId(mixed val...) {
-    if( stringp(val) ) {
+varargs string array SetId(mixed val...){
+    if( stringp(val) ){
         val = ({ val });
     }
-    else if( !arrayp(val) ) {
+    else if( !arrayp(val) ){
         error("Bad argument 1 to SetId().\n");
     }
     Id = ({});
-    foreach(mixed id in val) {
-        if( stringp(id) ) {
+    foreach(mixed id in val){
+        if( stringp(id) ){
             Id = ({ Id..., id });
         }
-        else if( arrayp(id) ) {
+        else if( arrayp(id) ){
             Id = ({ Id..., id... });
         }
     }
@@ -101,28 +101,28 @@ varargs string array SetId(mixed val...) {
     return Id;
 }
 
-string GetKeyName() {
+string GetKeyName(){
     return KeyName;
 }
 
-string SetKeyName(string nom) {
-    if( !stringp(nom) ) {
+string SetKeyName(string nom){
+    if( !stringp(nom) ){
         error("Bad argument 1 to SetKeyName().\n");
     }
     KeyName = lower_case(nom);
-    if( !CapName ) {
+    if( !CapName ){
         CapName = capitalize(nom);
     }
     return KeyName;
 }
 
-string GetName() {
+string GetName(){
     return GetCapName();
 }
 
-int id(string str) {
+int id(string str){
     int ret;
-    if( !stringp(str) ) {
+    if( !stringp(str) ){
         return 0;
     }
     str = lower_case(str);
@@ -131,19 +131,19 @@ int id(string str) {
     return ret;
 }
 
-string array parse_command_id_list() {
+string array parse_command_id_list(){
     string array ids = (this_object()->GetId() || ({}));
     return filter(ids, (: stringp($1) && ($1 != "") :));
 }
 
-string array parse_command_plural_id_list() {
+string array parse_command_plural_id_list(){
     string array ids = (this_object()->GetId() || ({}));
 
     ids = filter(ids, (: stringp($1) && ($1 != "") :));
     return map(ids, (: pluralize :));
 }
 
-string array parse_command_adjectiv_id_list() {
+string array parse_command_adjectiv_id_list(){
     return filter(this_object()->GetAdjectives(), (: $1 && ($1 != "") :));
 }
 

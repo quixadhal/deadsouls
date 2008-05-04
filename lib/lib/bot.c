@@ -5,7 +5,7 @@ inherit LIB_SENTIENT;
 
 static int NoBotCondition = 0;
 
-static void create() {
+static void create(){
     sentient::create();
 }
 
@@ -13,15 +13,15 @@ void init(){
     sentient::init();
 }
 
-varargs int eventDie(mixed agent) {
+varargs int eventDie(mixed agent){
     int x;
 
     SetUndead(!(x = GetUndead()));
-    if( objectp(agent) ) {
+    if( objectp(agent) ){
         if( x ) agent->eventDestroyEnemy(this_object());
         else agent->eventKillEnemy(this_object());
     }
-    if( environment() ) {
+    if( environment() ){
         object *obs;
         string *currs;
         object ob;
@@ -35,11 +35,11 @@ varargs int eventDie(mixed agent) {
         i = sizeof(obs);
         while(i--) obs[i]->eventMove(ob);
         currs = (string *)this_object()->GetCurrencies() || ({});
-        foreach(curr in currs) {
+        foreach(curr in currs){
             object pile;
             int amt;
 
-            if( amt = (int)this_object()->GetCurrency(curr) ) {
+            if( amt = (int)this_object()->GetCurrency(curr) ){
                 pile = new(LIB_PILE);
                 pile->SetPile(curr, amt);
                 pile->eventMove(ob);
@@ -51,7 +51,7 @@ varargs int eventDie(mixed agent) {
     return 1;
 }
 
-string GetHealthShort() {
+string GetHealthShort(){
     string cl, sh;
     float h;
 
@@ -66,7 +66,7 @@ string GetHealthShort() {
     return cl + capitalize(sh);
 }
 
-string GetLong(string nom) {
+string GetLong(string nom){
     string *limbs;
     string str;
     float h;
@@ -88,11 +88,11 @@ string GetLong(string nom) {
         else str += " is operating at optimal levels.\n";
     }
     limbs = GetMissingLimbs();
-    if( sizeof(limbs) ) {
+    if( sizeof(limbs) ){
         int i, maxi;
 
         str += nom + " is missing " + add_article(limbs[0]); 
-        for(i=1, maxi = sizeof(limbs); i<maxi; i++) {
+        for(i=1, maxi = sizeof(limbs); i<maxi; i++){
             if( i < maxi-1 ) str += ", " + add_article(limbs[i]);
             else {
                 if( maxi > 2 ) str += ",";

@@ -14,12 +14,12 @@ private int Value         = 0;
 private int Cost          = 0;
 private int VendorType    = VT_TREASURE;
 
-int GetDestroyOnSell() {
+int GetDestroyOnSell(){
     return DestroyOnSell;
 }
 
-int SetDestroyOnSell(int x) {
-    if( x ) {
+int SetDestroyOnSell(int x){
+    if( x ){
         DestroyOnSell = 1;
     }
     else {
@@ -28,21 +28,21 @@ int SetDestroyOnSell(int x) {
     return DestroyOnSell;
 }
 
-string array GetSave() {
+string array GetSave(){
     return ({ "Value","Cost" });
 }
 
-varargs int GetValue(string str) {
+varargs int GetValue(string str){
     if(estatep(this_object())) return 0;
     if(Cost && str && valid_currency(str)) return query_value(Cost,query_base_currency(),str);
     return Value;
 }
 
-int SetValue(mixed y) {
+int SetValue(mixed y){
     mixed x;
     if(arrayp(y)) return this_object()->SetBaseCost(y[1],y[0]); 
     else x = y;
-    if( !intp(x) ) {
+    if( !intp(x) ){
         error("Bad argument 1 to SetValue().\n\tExpected: int, Got: " +
           typeof(x) + "\n");
     }
@@ -51,16 +51,16 @@ int SetValue(mixed y) {
     }
 }
 
-int GetVendorType() {
+int GetVendorType(){
     return VendorType;
 }
 
-int SetVendorType(int x) {
-    if( !intp(x) ) {
+int SetVendorType(int x){
+    if( !intp(x) ){
         error("Bad argument 1 to SetVendorType().\n\tExpected: int, Got: " +
           typeof(x) + "\n");
     }
-    if( !(x & VT_ALL) ) {
+    if( !(x & VT_ALL) ){
         error("Invalid vendor type.\n");
     }
     return (VendorType = x);

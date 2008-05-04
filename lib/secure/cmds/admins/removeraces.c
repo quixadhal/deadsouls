@@ -1,4 +1,3 @@
-
 #include <lib.h>
 #include <daemons.h>
 
@@ -13,8 +12,8 @@ mixed cmd(string args) {
 }
 
 string GetHelp(string str) {
-    return ("Syntax: <removeraces>\n"
+    return ("Syntax: removeraces\n"
       "Gets rid of ALL races known by the race daemon. "
       "Unless you want to be very sad later, you should "
-      "add your races with the addrace command immediately. ");
+      "add your races with the addraces command immediately. ");
 }

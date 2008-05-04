@@ -76,7 +76,7 @@
 #include "/secure/sefun/reload.c"
 #include "/secure/sefun/wipe_inv.c"
 #include "/secure/sefun/numbers.c"
-#include "/secure/sefun/query_carrying.c"
+#include "/secure/sefun/inventory.c"
 #include "/secure/sefun/findobs.c"
 #include "/secure/sefun/query_names.c"
 #include "/secure/sefun/ascii.c"
@@ -94,6 +94,16 @@ mixed globalmixed, gargs, gfun, gdelay;
 int last_regexp = time();
 int regexp_count = 1;
 int max_regexp = 200;
+
+void reset_eval_cost(){
+    if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
+        efun::reset_eval_cost();
+}
+
+void set_eval_limit(int i){
+    if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
+        efun::set_eval_limit(i);
+}
 
 string debug_info(int debuglevel, mixed arg){
     if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
@@ -369,11 +379,6 @@ void write(string str) {
 }
 
 void set_privs(object ob, string str) { return; }
-
-void set_eval_limit(int x) {
-    if(previous_object() != master()) return;
-    efun::set_eval_limit(x);
-}
 
 void notify_fail(string str) {
     if( !this_player() ) return;

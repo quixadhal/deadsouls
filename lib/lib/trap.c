@@ -14,72 +14,72 @@ inherit LIB_STORAGE;
 int EscapeChance = 0;
 int MaxCapture = 0;
 
-static void create() {
+static void create(){
     storage::create();
-    if( sizeof(GetCaptives()) ) {
+    if( sizeof(GetCaptives()) ){
         set_heart_beat(2);
     }
 }
 
-static void heart_beat() {
-    if( !sizeof(GetCaptives()) ) {
+static void heart_beat(){
+    if( !sizeof(GetCaptives()) ){
         set_heart_beat(0);
         return;
     }
-    if( !GetClosed() ) {
-        if( GetEscapeChance() > (1 + random(100)) ) {
+    if( !GetClosed() ){
+        if( GetEscapeChance() > (1 + random(100)) ){
             eventEscape();
         }
     }
 }
 
-mixed indirect_capture_liv_word_obj(object target) {
-    if( environment() != this_player() ) {
+mixed indirect_capture_liv_word_obj(object target){
+    if( environment() != this_player() ){
         return "#You do not have " + GetShort() + ".";
     }
-    if( !target ) {
+    if( !target ){
         return 1;
     }
     return CanCapture(this_player(), target);
 }
 
-mixed indirect_free_liv_from_obj(object target) {
-    if( environment() != this_player() ) {
+mixed indirect_free_liv_from_obj(object target){
+    if( environment() != this_player() ){
         return "#You do not have " + GetShort() + ".";
     }
-    if( !target ) {
+    if( !target ){
         return 1;
     }
     return CanFree(this_player(), target);
 }
 
-mixed CanCapture(object who, object target) {
-    if( environment(who) != environment(target) ) {
+mixed CanCapture(object who, object target){
+    if( environment(who) != environment(target) ){
         return "#You cannot get to it.";
     }
-    if( GetClosed() ) {
+    if( GetClosed() ){
         return capitalize(GetShort()) + " is closed.";
     }
-    if( sizeof(GetCaptives()) >= MaxCapture ) {
+    if( sizeof(GetCaptives()) >= MaxCapture ){
         return "You cannot capture anything else with " + GetShort() + ".";
     }
     return 1;
 }
 
-mixed CanFree(object who, object target) {
-    if( environment(target) != this_object() ) {
+mixed CanFree(object who, object target){
+    if( environment(target) != this_object() ){
         return "#" + target->GetName() + " is not in " + GetShort() + ".";
     }
-    if( GetClosed() ) {
+    if( GetClosed() ){
         return "You must open " + GetShort() + " before you can free "
         "things from it.";
     }
     return 1;
 }
 
-mixed eventCapture(object who, object target) {
+mixed eventCapture(object who, object target){
 
-    if( !target->eventMove(this_object()) ) {
+    if( !target->eventMove(this_object()) ){
         return target->GetShort() + " will not fit!";
     }
     who->eventPrint("You capture " + target->GetName() + " in " +
@@ -92,36 +92,36 @@ mixed eventCapture(object who, object target) {
     return 1;
 }
 
-mixed eventEscape() {
+mixed eventEscape(){
     object array captives;
     object captive, env;
 
-    if( GetClosed() ) {
+    if( GetClosed() ){
         return 0;
     }
     captives = GetCaptives();
-    if( !sizeof(captives) ) {
+    if( !sizeof(captives) ){
         return 0;
     }
     captive = captives[random(sizeof(captives))];
-    if( !captive ) {
+    if( !captive ){
         return 0;
     }
     env = environment();
-    if( living(env) ) {
+    if( living(env) ){
         env = environment(env);
-        if( !env ) {
+        if( !env ){
             return 0;
         }
     }
-    if( captive->eventMove(env) != 1 ) {
+    if( captive->eventMove(env) != 1 ){
         return 0;
     }
     env->eventPrint(captive->GetShort() + " escapes from " + GetShort() + ".");
     return 1;
 }
 
-mixed eventFree(object who, string target) {
+mixed eventFree(object who, string target){
     target->eventMove(environment(who));
     who->eventPrint("You release " + target->GetName() + " from " +
       GetShort() + ".");
@@ -132,22 +132,22 @@ mixed eventFree(object who, string target) {
     return 1;
 }
 
-object array GetCaptives() {
+object array GetCaptives(){
     return filter(all_inventory(), (: living :));
 }
 
-int GetEscapeChance() {
+int GetEscapeChance(){
     return EscapeChance;
 }
 
-int SetEscapeChance(int x) {
+int SetEscapeChance(int x){
     return (EscapeChance = x);
 }
 
-int GetMaxCapture() {
+int GetMaxCapture(){
     return MaxCapture;
 }
 
-int SetMaxCapture(int x) {
+int SetMaxCapture(int x){
     return (MaxCapture = x);
 }

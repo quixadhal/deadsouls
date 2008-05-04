@@ -15,15 +15,15 @@ inherit LIB_SURFACE;
 int DecayLife, Count, CallOut, Fresh;
 string Owner, Race;
 
-int eventDecay() {
+int eventDecay(){
     int smell;
-    if( !environment() ) {
+    if( !environment() ){
         Destruct();
         return 0;
     }
     Fresh = 0;
     if(environment()->GetMedium() == MEDIUM_LAND) smell = 1;
-    switch(Count) {
+    switch(Count){
     case 10:
         if(smell){
             environment()->eventPrint(possessive_noun(Owner) + " corpse " +
@@ -51,18 +51,18 @@ int eventDecay() {
     return Count;
 }
 
-static int Destruct() {
+static int Destruct(){
     return ::Destruct();
 }
 
-int SetDecayLife(int x) { return (DecayLife = x); }
+int SetDecayLife(int x){ return (DecayLife = x); }
 
-int GetDecayLife() { return DecayLife; }
+int GetDecayLife(){ return DecayLife; }
 
-void SetCorpse(object who) {
+void SetCorpse(object who){
     string tmpshort = (string)who->GetShort();
     if(sizeof(who->GetRiders())) tmpshort = (string)who->GetPlainShort();
-    if( DecayLife < 100 ) {
+    if( DecayLife < 100 ){
         DecayLife = 500;
     }
     SetKeyName(who->GetKeyName());
@@ -77,24 +77,24 @@ void SetCorpse(object who) {
       " does not appear to be moving.");
 }
 
-int isFreshCorpse() {
+int isFreshCorpse(){
     return Fresh;
 }
 
-string GetHealthShort() {
+string GetHealthShort(){
     return "%^RED%^" + GetShort();
 }
 
-string GetOwner() { return Owner; }
+string GetOwner(){ return Owner; }
 
-string GetRace() { return Race; }
+string GetRace(){ return Race; }
 
-string GetSaveString() { return 0; }
+string GetSaveString(){ return 0; }
 
-int CanReceive(object ob) { return 1; }
+int CanReceive(object ob){ return 1; }
 
 
-static void create() {
+static void create(){
     ::create();
     SetId( ({ "corpse", "flesh", "remains" }) );
     SetAdjectives( ({"pile of", "rotting", "stinky"}) );
@@ -106,12 +106,12 @@ static void create() {
     SetNoCondition(1);
 }
 
-int direct_animate_obj() {
+int direct_animate_obj(){
     return 1;
 }
 
-int direct_offer_obj() {
+int direct_offer_obj(){
     return 1;
 }
 
-string GetItemCondition() { return "";}
+string GetItemCondition(){ return "";}

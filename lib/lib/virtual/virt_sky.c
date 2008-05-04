@@ -16,89 +16,89 @@ inherit LIB_VIRT_LAND;
 
 private mixed PreventLand;
 
-varargs static void create(int x, int y,int z) {
+varargs static void create(int x, int y,int z){
     virt_land::create( x,  y, z);
     SetMedium(MEDIUM_AIR);
 }
 
-varargs static void Setup(int x, int y,int z) {
+varargs static void Setup(int x, int y,int z){
     virt_land::create( x,  y, z);
     SetMedium(MEDIUM_AIR);
 }
 
-string GetGround() {
+string GetGround(){
     return GetExit("down");
 }
 
-string SetGround(string str) {
+string SetGround(string str){
     AddExit("down", str);
     return str;
 }
 
-mixed GetPreventLand() {
+mixed GetPreventLand(){
     return PreventLand;
 }
 
-mixed SetPreventLand(mixed val) {
+mixed SetPreventLand(mixed val){
     return (PreventLand = val);
 }
 
-mixed CanFly(object who, string dir) {
-    if( !dir || dir == "" ) {
+mixed CanFly(object who, string dir){
+    if( !dir || dir == "" ){
         return "Fly where?";
     }
-    else if( dir == "down" ) {
-        if( stringp(PreventLand) ) {
+    else if( dir == "down" ){
+        if( stringp(PreventLand) ){
             return PreventLand;
         }
-        else if( functionp(PreventLand) ) {
+        else if( functionp(PreventLand) ){
             mixed tmp = evaluate(PreventLand, who);
 
-            if( tmp != 1 ) {
+            if( tmp != 1 ){
                 return tmp;
             }
         }
-        if( !GetGround() ) {
+        if( !GetGround() ){
             return "There is nothing below you but open sea.";
         }
     }
-    if( who->GetPosition() != POSITION_FLYING ) {
+    if( who->GetPosition() != POSITION_FLYING ){
         return "You are not flying!";
     }
     return virt_land::CanGo(who, dir);
 }
 
-//mixed CanGo(object who, string dir) {
+//mixed CanGo(object who, string dir){
 //    return CanFly(who, dir);
 //}
 
-mixed eventFly(object who, string dir) {
+mixed eventFly(object who, string dir){
     mapping exit = GetExitData(dir);
 
-    if( GetDoor(dir) && GetDoor(dir)->GetClosed() ) {
+    if( GetDoor(dir) && GetDoor(dir)->GetClosed() ){
         who->eventPrint("You fly into " + GetDoor(dir)->GetShort(dir) + ".");
         eventPrint(who->GetName() + " flies into " +
           GetDoor(dir)->GetShort(dir) + ".", who);
         return 1;
     }
-    if( exit["pre"] && !evaluate(exit["pre"], dir) ) {
+    if( exit["pre"] && !evaluate(exit["pre"], dir) ){
         return 1;
     }
     who->eventMoveLiving(exit["room"], dir, "$N flies in.");
-    if( dir =="down" ) {
+    if( dir =="down" ){
     }
-    if( exit["post"] ) {
+    if( exit["post"] ){
         evaluate(exit["post"], dir);
     }
     return 1;
 }
 
-//mixed eventGo(object who, string dir) {
+//mixed eventGo(object who, string dir){
 //    if(GetMedium()==MEDIUM_AIR) return eventFly(who, dir);
 //    return ::eventGo(who, dir);
 //}
 
-mixed eventReceiveObject(object ob) {
+mixed eventReceiveObject(object ob){
 
     return virt_land::eventReceiveObject(ob);
 }

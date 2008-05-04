@@ -1,0 +1,17 @@
+cleric
+melee attack:1:4
+blunt attack:1:2
+projectile attack:1:2
+magic attack:1:1
+melee defense:1:4
+blade defense:1:3
+knife defense:1:3
+projectile defense:1:3
+conjuring:1:1
+bargaining:1:1
+stealth:1:4
+fishing:1:1
+blunt defense:1:4
+magic defense:1:2
+faith:1:1
+healing:1:1

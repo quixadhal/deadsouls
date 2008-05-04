@@ -9,7 +9,7 @@
 
 private mapping Messages;
 
-static void create() {
+static void create(){
     Messages = ([ "come" : "$N enters.", "leave" : "$N leaves $D.",
       "telin" : "$N teleports in.", "telout" : "$N teleports away.",
       "home" : "$N goes home.", "vis" : "$N appears.",
@@ -17,9 +17,9 @@ static void create() {
       "dest" : "$N dests $O." ]);
 }
 
-string SetMessage(string msg, string str) {
+string SetMessage(string msg, string str){
     if(!stringp(msg) || !stringp(str)) error("Bad argument to SetMessage().");
-    switch(msg) {
+    switch(msg){
     case "come": case "leave": case "telin": case "telout": case "home": 
     case "say": case "ask": case "exclaim": case "login": case "logout":
     case "dest": case "clone": case "vis" : case "invis" :
@@ -28,12 +28,12 @@ string SetMessage(string msg, string str) {
     }
 }
 
-varargs string GetMessage(string msg, mixed arg) {
+varargs string GetMessage(string msg, mixed arg){
     string tmp;
 
     if( !stringp(msg) ) return 0;
     if( !(tmp = Messages[msg]) ) return 0;
-    switch(msg) {
+    switch(msg){
     case "dest": case "clone":
         tmp = replace_string(tmp, "$O", (string)arg->GetShort());
         break;
@@ -54,6 +54,6 @@ varargs string GetMessage(string msg, mixed arg) {
     return capitalize(replace_string(tmp, "$N", this_object()->GetName()));
 }
 
-string GetName() { return 0; }
+string GetName(){ return 0; }
 
-mapping GetMessages() { return copy(Messages); }
+mapping GetMessages(){ return copy(Messages); }

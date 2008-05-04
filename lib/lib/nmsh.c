@@ -23,7 +23,7 @@ private static int CWDCount, CWDBottom, CWDTop, CmdNumber;
 private string Prompt; 
 private static string *Stack; 
 
-static void create() {
+static void create(){
     history::create();
     Nicknames = ([]); 
     Aliases = ([ "l" : "look $*", "bio" : "biography", "i" : "inventory",
@@ -45,7 +45,7 @@ static void create() {
     Xverbs = (["]":"] $*", "'":"say $*",":":"emote $*","\"":"say $*",]);
 } 
 
-int Setup() { 
+int Setup(){ 
     if(this_player() != this_object()) return 0; 
     reset_prompt(); 
     if(!Nicknames) Nicknames = ([]);
@@ -54,7 +54,7 @@ int Setup() {
     add_action("cmd_alias", "alias",1); 
     add_action("cmd_unalias", "unalias",1); 
     add_action("cmd_nickname", "nickname",1); 
-    if(creatorp(this_object())) { 
+    if(creatorp(this_object())){ 
         Stack = allocate(DIRECTORY_STACK_SIZE); 
         CWDBottom = CWDTop = CWDCount = 0; 
         add_action("cmd_cd", "cd"); 
@@ -68,13 +68,13 @@ int Setup() {
     return 1;
 } 
 
-nomask static int cmd_alias(string str) { 
+nomask static int cmd_alias(string str){ 
     string *a, *b;
     string key, thing; 
     int i;
 
     if(this_player() != this_object()) return 0; 
-    if(!str) {
+    if(!str){
         i = sizeof(a = keys(Aliases));
         while(i--)
             a[i] = sprintf("%s%s", arrange_string(a[i],15),Aliases[a[i]]);
@@ -84,30 +84,30 @@ nomask static int cmd_alias(string str) {
         this_player()->eventPage(a+b);
         return 1;
     }
-    if(sscanf(str, "%s %s", key, thing) != 2) { 
-        if(str[0] == '$') { 
+    if(sscanf(str, "%s %s", key, thing) != 2){ 
+        if(str[0] == '$'){ 
             str = str[1..strlen(str)-1]; 
-            if(Xverbs[str]) { 
+            if(Xverbs[str]){ 
                 write(str+": "+Xverbs[str]);
                 return 1;
             } 
             else message("system", sprintf("No such alias $%s.", str), this_player()); 
             return 1; 
         } 
-        if(Aliases[str]) { 
+        if(Aliases[str]){ 
             write(str+": "+Aliases[str]);
             return 1;
         } 
         else message("system", sprintf("No such alias %s.", str), this_player()); 
         return 1; 
     } 
-    if(sizeof(Xverbs) + sizeof(Aliases) >= MAX_CMD_ALIASES) { 
+    if(sizeof(Xverbs) + sizeof(Aliases) >= MAX_CMD_ALIASES){ 
         message("system", "You must remove an alias before adding another.", 
           this_player()); 
         return 1; 
     } 
     if(key == "alias") return notify_fail("That would be a bad idea.\n");
-    if(key[0] == '$') { 
+    if(key[0] == '$'){ 
         key = key[1..strlen(key)]; 
         if(Xverbs[key])  
             message("system", sprintf("Alias for $%s altered to (%s).", 
@@ -126,15 +126,15 @@ nomask static int cmd_alias(string str) {
     return 1; 
 } 
 
-nomask static int cmd_unalias(string str) { 
+nomask static int cmd_unalias(string str){ 
     if(this_player() != this_object()) return 0; 
-    if(!str) {
+    if(!str){
         write("Unalias what?");
         return 1;
     }
-    if(str[0] == '$') { 
+    if(str[0] == '$'){ 
         str = str[1..strlen(str)-1]; 
-        if(Xverbs[str]) { 
+        if(Xverbs[str]){ 
             map_delete(Xverbs, str); 
             message("system", sprintf("Alias $%s removed.", str), this_player()); 
             return 1;
@@ -142,7 +142,7 @@ nomask static int cmd_unalias(string str) {
         else message("system", sprintf("No such alias $%s.", str), this_player()); 
         return 1; 
     } 
-    if(Aliases[str]) { 
+    if(Aliases[str]){ 
         map_delete(Aliases, str); 
         message("system", sprintf("Alias %s removed.", str), this_player()); 
         return 1;
@@ -151,19 +151,19 @@ nomask static int cmd_unalias(string str) {
     return 1; 
 } 
 
-nomask static int cmd_cd(string str) { 
+nomask static int cmd_cd(string str){ 
     if(this_player() != this_object()) return 0; 
     set_cwd(str); 
     return 1; 
 } 
 
-nomask static int cmd_nickname(string str) { 
+nomask static int cmd_nickname(string str){ 
     string *cles;
     string key, thing; 
     int i;
 
     if(this_player() != this_object()) return 0;
-    if(!str) {
+    if(!str){
         i = sizeof(cles = keys(Nicknames));
         while(i--){
             cles[i] = sprintf("%s%s", arrange_string(cles[i], 15),
@@ -172,8 +172,8 @@ nomask static int cmd_nickname(string str) {
         this_player()->eventPage( cles + ({}) );
         return 1;
     }
-    if(sscanf(str, "%s %s", key, thing) != 2) { 
-        if(Nicknames[str]) { 
+    if(sscanf(str, "%s %s", key, thing) != 2){ 
+        if(Nicknames[str]){ 
             message("system", sprintf("Nickname %s removed.", str), 
               this_player()); 
             map_delete(Nicknames, str); 
@@ -192,7 +192,7 @@ nomask static int cmd_nickname(string str) {
     return 1; 
 } 
 
-nomask static int cmd_nmsh(string str) { 
+nomask static int cmd_nmsh(string str){ 
     string *lines; 
     string tmp;
     int i, maxi; 
@@ -203,9 +203,9 @@ nomask static int cmd_nmsh(string str) {
     if(!(tmp = read_file(absolute_path(query_cwd(), str)))) 
         return notify_fail(sprintf("nmsh: script %s not found.\n")); 
     maxi = sizeof(lines = explode(tmp, "\n")); 
-    for(i=0; i < maxi; i++) { 
+    for(i=0; i < maxi; i++){ 
         if(lines[i][0] == '#') continue; 
-        if(!command(lines[i])) { 
+        if(!command(lines[i])){ 
             message("system", sprintf("nmsh: error in executing %s.", str), 
               this_player()); 
             return 1; 
@@ -214,37 +214,37 @@ nomask static int cmd_nmsh(string str) {
     return 1; 
 } 
 
-nomask static int cmd_pushd(string str) { 
+nomask static int cmd_pushd(string str){ 
     if(this_player() != this_object()) return 0; 
     if(!set_cwd(str)) return 0; 
     pushd(str); 
     return 1; 
 } 
 
-nomask static int cmd_popd() { 
+nomask static int cmd_popd(){ 
     if(this_player() != this_object()) return 0; 
     set_cwd(popd()); 
     return 1; 
 } 
 
-nomask static int cmd_pwd() {
+nomask static int cmd_pwd(){
     if(!query_cwd()) message("system", "No current directory.", this_object());
     else message("system", query_cwd()+":", this_object());
     return 1;
 }
 
-nomask static int cmd_work(string str) {
+nomask static int cmd_work(string str){
     string *tmp;
     object ob;
     string file;
     int flag;
 
     if(!str || str == "") ob = environment(this_object());
-    else if(str == "!") {
+    else if(str == "!"){
         flag = 1;
         ob = environment(this_object());
     }
-    else if(str[0] == '!') {
+    else if(str[0] == '!'){
         flag = 1;
         str = str[1..strlen(str)];
     }
@@ -253,7 +253,7 @@ nomask static int cmd_work(string str) {
     if(!ob) return notify_fail("No target object found.\n");
     tmp = explode(file = base_name(ob), "/");
     set_cwd("/"+implode(tmp[0..sizeof(tmp)-2], "/"));
-    if(flag) {
+    if(flag){
         message("system", file+".c, "+file_size(file+".c")+" bytes:",
           this_object());
         this_object()->eventEdit(file+".c");
@@ -261,13 +261,13 @@ nomask static int cmd_work(string str) {
     return 1;
 }
 
-nomask string write_prompt() {
+nomask string write_prompt(){
     string tmp, ret;
     string ret2 = "";
     int x, y;
 
-    if( (y = query_ed_mode()) != -1 ) {
-        if( !y ) {
+    if( (y = query_ed_mode()) != -1 ){
+        if( !y ){
             ret = "\tQ)uit without saving, save and ex)it, h)elp\nCommand: ";
         }
         else if( y == -2 ) ret = "Help: ";
@@ -275,7 +275,7 @@ nomask string write_prompt() {
         message("prompt", ret, this_object());
         return ret;
     }
-    if((ret = Prompt) == DEFAULT_PROMPT) {
+    if((ret = Prompt) == DEFAULT_PROMPT){
         message("prompt", ret, this_object());
         return ret;
     }
@@ -303,13 +303,13 @@ nomask string write_prompt() {
     return ret;
 }
 
-string process_input(string str) { 
+string process_input(string str){ 
     string tmp, xtra, request; 
 
     if(!str || str == "") return ""; 
     else if(GetClient() &&
-      member_array(GetClient(), SUPPORTED_CLIENTS) != -1) {
-        if(sscanf(str, "<%s>%s", request, xtra)) {
+      member_array(GetClient(), SUPPORTED_CLIENTS) != -1){
+        if(sscanf(str, "<%s>%s", request, xtra)){
             process_request(request, xtra ? xtra : "");
             return "";
         }
@@ -319,8 +319,8 @@ string process_input(string str) {
     return do_alias(do_nickname(tmp));
 } 
 
-nomask static void process_request(string request, string xtra) {
-    switch(request) {
+nomask static void process_request(string request, string xtra){
+    switch(request){
     case "ALIAS":
         receive("<ALIAS>[n,go north] [s,go south] [e,go east] [w,go west] "
           "[nw,go northwest] [ne,go northeast] [sw,go southwest] "
@@ -350,15 +350,15 @@ nomask static void process_request(string request, string xtra) {
     }
 }
 
-static int request_vis(object ob) {
+static int request_vis(object ob){
     return (userp(ob) && !((int)ob->GetInvis(this_object())));
 }
 
-static string user_names(object ob) {
+static string user_names(object ob){
     return (string)ob->GetName();
 }
 
-private static int set_cwd(string str) { 
+private static int set_cwd(string str){ 
     int x;
     string tmpstr = str;
     if(str == "~-" || str == "-") str = PreviousWorkingDirectory;
@@ -369,8 +369,8 @@ private static int set_cwd(string str) {
     if(!directory_exists(str) && tmpstr == "here" && environment(this_player())){
         str = path_prefix(base_name(environment(this_player())));
     } 
-    if((x=file_size(str)) != -2) { 
-        if(x > -1) { 
+    if((x=file_size(str)) != -2){ 
+        if(x > -1){ 
             message("system", sprintf("%s: Path is a file.", str), this_player()); 
             return 0; 
         } 
@@ -386,8 +386,8 @@ private static int set_cwd(string str) {
     return 1; 
 } 
 
-private static void pushd(string str) { 
-    if(CWDCount++ == DIRECTORY_STACK_SIZE) { 
+private static void pushd(string str){ 
+    if(CWDCount++ == DIRECTORY_STACK_SIZE){ 
         CWDCount--; 
         CWDBottom = (++CWDBottom) % DIRECTORY_STACK_SIZE; 
     } 
@@ -395,25 +395,25 @@ private static void pushd(string str) {
     CWDTop = (++CWDTop) % DIRECTORY_STACK_SIZE; 
 } 
 
-private static string popd() { 
+private static string popd(){ 
     if(!CWDCount) return 0; 
     CWDCount--; 
     return Stack[--CWDTop]; 
 } 
 
-nomask private static string do_nickname(string str) { 
+nomask private static string do_nickname(string str){ 
     if(!Nicknames) return str; 
     if(str[0..7] == "nickname") return str; 
     return implode(map_array(explode(str, " "), "replace_nickname", this_object()), " "); 
 } 
 
-nomask private static string do_alias(string str) { 
+nomask private static string do_alias(string str){ 
     string *words; 
     string tmp; 
     int x; 
 
     if(!sizeof(words = explode(str, " "))) return "";
-    if((x = strlen(words[0])) && (tmp = Xverbs[words[0][0..0]])) {
+    if((x = strlen(words[0])) && (tmp = Xverbs[words[0][0..0]])){
         words[0] = words[0][1..x-1];
         return replace_string(tmp, "$*", implode(words, " "));
     }
@@ -423,14 +423,14 @@ nomask private static string do_alias(string str) {
 
 } 
 
-nomask static string replace_nickname(string str) { 
+nomask static string replace_nickname(string str){ 
     if(str == "") return str; 
     if(str[0] == '\\') return str[1..(strlen(str)-1)]; 
     else if(Nicknames[str]) return Nicknames[str]; 
     else return str; 
 } 
 
-void reset_prompt() { 
+void reset_prompt(){ 
     if(!stringp(Prompt)) Prompt = "> ";
     Prompt =replace_string(Prompt, "$M", mud_name()); 
     Prompt =replace_string(Prompt, "$m", lower_case(mud_name())); 
@@ -438,28 +438,28 @@ void reset_prompt() {
     Prompt =replace_string(Prompt, "$n", GetKeyName());
 } 
 
-string query_cwd() { return CurrentWorkingDirectory; } 
+string query_cwd(){ return CurrentWorkingDirectory; } 
 
-string query_prev_wd() { return PreviousWorkingDirectory; } 
+string query_prev_wd(){ return PreviousWorkingDirectory; } 
 
-string GetPrompt() { return DEFAULT_PROMPT; }
+string GetPrompt(){ return DEFAULT_PROMPT; }
 
-string SetPrompt(string str) { return Prompt = str; }
+string SetPrompt(string str){ return Prompt = str; }
 
-int query_mp() { return 1; } 
+int query_mp(){ return 1; } 
 
-int query_max_mp() { return 10; } 
+int query_max_mp(){ return 10; } 
 
-int query_hp() { return 1; } 
+int query_hp(){ return 1; } 
 
-int query_max_hp() { return 10; } 
+int query_max_hp(){ return 10; } 
 
-int query_sp() { return 1; } 
+int query_sp(){ return 1; } 
 
-int query_max_sp() { return 10; } 
+int query_max_sp(){ return 10; } 
 
-string get_path() { return query_cwd(); }
+string get_path(){ return query_cwd(); }
 
-varargs int GetInvis() { return 0; }
+varargs int GetInvis(){ return 0; }
 
-string GetKeyName() { return 0; }
+string GetKeyName(){ return 0; }

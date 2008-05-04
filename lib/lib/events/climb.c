@@ -16,24 +16,24 @@ int ccc = 0;
 string GetDefiniteShort();
 // end abstract methods
 
-mapping GetClimbs() {
+mapping GetClimbs(){
     return Climb;
 }
 
-int SetCanClimbCarried(int i) { 
+int SetCanClimbCarried(int i){ 
     ccc = i; 
     return 1; 
 }
 
-int GetCanClimbCarried() { 
+int GetCanClimbCarried(){ 
     return ccc;  
 }
 
-varargs static mapping SetClimb(mixed val, int type) {
-    if( !type ) {
+varargs static mapping SetClimb(mixed val, int type){
+    if( !type ){
         type = CLIMB_UP;
     }
-    if( !Climb ) {
+    if( !Climb ){
         Climb = ([ type : val ]);
     }
     else {
@@ -42,7 +42,7 @@ varargs static mapping SetClimb(mixed val, int type) {
     return Climb;
 }
 
-mixed CanClimb(object who, int type) {
+mixed CanClimb(object who, int type){
     int array tmp;
     object dude;
     string thingname;
@@ -50,21 +50,21 @@ mixed CanClimb(object who, int type) {
     dude=this_player();
     thingname=this_object()->GetKeyName();
 
-    if(present(thingname,dude) && ccc == 0) {
+    if(present(thingname,dude) && ccc == 0){
         return "You can't climb that while it's being carried.";
     }
 
-    if( Climb[type] ) {
+    if( Climb[type] ){
         return 1;
     }
     tmp = keys(Climb);
-    if( !sizeof(tmp) ) {
+    if( !sizeof(tmp) ){
         return 0;
     }
     else {
         type = tmp[0];
     }
-    switch(type) {
+    switch(type){
     case CLIMB_UP:
         return "Perhaps you mean to climb up it?";
 
@@ -83,12 +83,12 @@ mixed CanClimb(object who, int type) {
     return 0;
 }
 
-varargs mixed eventClimb(object who, int type, string where) {
+varargs mixed eventClimb(object who, int type, string where){
     mixed dest = Climb[type];
     if(where && where !="") dest = where;
 
-    if( functionp(dest) ) {
-        if( functionp(dest) & FP_OWNER_DESTED ) {
+    if( functionp(dest) ){
+        if( functionp(dest) & FP_OWNER_DESTED ){
             who->eventPrint("There will be no climbing that today!");
             return 1;
         }
@@ -97,7 +97,7 @@ varargs mixed eventClimb(object who, int type, string where) {
     else {
         string omsg, imsg;
 
-        switch(type) {
+        switch(type){
         case CLIMB_UP:
             omsg = "$N climbs up " + GetDefiniteShort() + ".";
             imsg = "$N comes climbing in.";
@@ -128,19 +128,19 @@ varargs mixed eventClimb(object who, int type, string where) {
     }
 }
 
-mixed direct_climb_obj(object ob) {
+mixed direct_climb_obj(object ob){
     return CanClimb(this_player(), CLIMB_UP);
 }
 
-mixed direct_climb_out_of_obj(object ob) {
+mixed direct_climb_out_of_obj(object ob){
     return CanClimb(this_player(), CLIMB_OUT);
 }
 
-mixed direct_climb_word_obj(string word, object ob) {
-    if( !Climb ) {
+mixed direct_climb_word_obj(string word, object ob){
+    if( !Climb ){
         return 0;
     }
-    switch(word) {
+    switch(word){
     case "up":
         return CanClimb(this_player(), CLIMB_UP);
 

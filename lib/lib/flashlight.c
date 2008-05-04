@@ -44,11 +44,11 @@ int GetHB(){
 }
 
 int SetMaxCells(int i){ maxcells = i; return i; }
-int GetMaxCells() { return maxcells; }
+int GetMaxCells(){ return maxcells; }
 int SetMinCells(int i){ mincells = i; return i; }
-int GetMinCells() { return mincells; }
-int SetCellType(string str) {celltype=str; return 1; }
-string GetCellType() { return celltype; }
+int GetMinCells(){ return mincells; }
+int SetCellType(string str){celltype=str; return 1; }
+string GetCellType(){ return celltype; }
 
 int SetDrainRate(int i){
     drainrate = i;
@@ -108,8 +108,8 @@ int CheckPower(){
     return powered;
 }
 
-int CanReceive(object ob) {
-    if(ob->GetCellType() != celltype) {
+int CanReceive(object ob){
+    if(ob->GetCellType() != celltype){
         return 0;
     }
     if(sizeof(all_inventory(this_object())) >= maxcells ){
@@ -140,7 +140,7 @@ void regetID(){
 
 varargs mixed eventTurn(string str){
     regetID();
-    if( player != env ) { write("You don't have that."); return 0; }
+    if( player != env ){ write("You don't have that."); return 0; }
     write("You turn the "+me+" over in your hands.");
     say(name+" turns over a "+me+" in "+possessive(player)+" hands.");
     return 1;
@@ -155,7 +155,7 @@ int eventTurnOn(object ob){
         return 1;
     }
 
-    if(player != env  && environment(player) !=env) {
+    if(player != env  && environment(player) !=env){
         write("It isn't within reach.");
         return 1;
     }
@@ -177,7 +177,7 @@ int eventTurnOn(object ob){
 
 varargs mixed eventTurnOff(string str){
     regetID();
-    if(player != env  && environment(player) !=env) { write("It isn't within reach."); return 1; }
+    if(player != env  && environment(player) !=env){ write("It isn't within reach."); return 1; }
     if(Lit > 0){
         write("You turn off the "+me+".");
         say(name+" turns off a "+me+".");

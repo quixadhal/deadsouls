@@ -3,7 +3,7 @@
 
 inherit LIB_ROOM;
 
-void create() {
+void create(){
     room::create();
     SetAmbientLight(30);
     SetShort("the furnace");

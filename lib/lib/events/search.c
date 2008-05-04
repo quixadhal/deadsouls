@@ -40,7 +40,7 @@ mapping FoundTraps(){
     return Traps;
 }
 
-varargs string GetSearch(string str, object who) {
+varargs string GetSearch(string str, object who){
     mixed val;
     mapping Traps = FoundTraps();
     string trapdesc = "You discover it is boobytrapped!\n";
@@ -56,7 +56,7 @@ varargs string GetSearch(string str, object who) {
 
     if(!sizeof(Traps)) trapdesc = "";
 
-    if( !str || str == "default" ) {
+    if( !str || str == "default" ){
         val = Search;
     }
     else {
@@ -69,27 +69,27 @@ varargs string GetSearch(string str, object who) {
         val = trapdesc;
     }
 
-    if( !val ) {
+    if( !val ){
         return 0;
     }
-    if( functionp(val) ) {
-        if( functionp(val) & FP_OWNER_DESTED ) {
+    if( functionp(val) ){
+        if( functionp(val) & FP_OWNER_DESTED ){
             return "An error occured in a function pointer.";
         }
         return evaluate(val, who, str);
     }
-    else if( arrayp(val) ) {
+    else if( arrayp(val) ){
         return val[query_night()]+trapdesc;
     }
     else return val;
 }
 
-string array GetSearches() {
+string array GetSearches(){
     return keys(Searches);
 }
 
-mapping RemoveSearch(string item) {
-    if( !item || item == "default" ) {
+mapping RemoveSearch(string item){
+    if( !item || item == "default" ){
         Search = 0;
     }
     else {
@@ -98,10 +98,10 @@ mapping RemoveSearch(string item) {
     return Searches;
 }
 
-varargs mixed SetSearch(mixed array args...) {
-    if( sizeof(args) == 1 ) {
-        if( mapp(args[0]) ) {
-            if( args[0]["default"] ) {
+varargs mixed SetSearch(mixed array args...){
+    if( sizeof(args) == 1 ){
+        if( mapp(args[0]) ){
+            if( args[0]["default"] ){
                 Search = args[0]["default"];
                 map_delete(args[0], "default");
             }
@@ -112,18 +112,18 @@ varargs mixed SetSearch(mixed array args...) {
         }
         return args[0];
     }
-    else if( sizeof(args) == 2 ) {
-        if( !args[1] ) {
+    else if( sizeof(args) == 2 ){
+        if( !args[1] ){
             return SetSearch(args[0]);
         }
-        else if( arrayp(args[0]) ) {
-            foreach(string item in args[0]) {
+        else if( arrayp(args[0]) ){
+            foreach(string item in args[0]){
                 SetSearch(item, args[1]);
             }
             return args[1];
         }
         else {
-            if( !args[0] || args[0] == "default" ) {
+            if( !args[0] || args[0] == "default" ){
                 Search = args[1];
                 return Search;
             }
@@ -139,9 +139,9 @@ varargs mixed SetSearch(mixed array args...) {
     }
 }
 
-varargs mixed eventSearch(object who, string str) {
+varargs mixed eventSearch(object who, string str){
     str = GetSearch(str, who);
-    if( !str ) {
+    if( !str ){
         who->eventPrint("There is nothing to search.");
         return 1;
     }
@@ -151,8 +151,8 @@ varargs mixed eventSearch(object who, string str) {
     return 1;
 }
 
-mixed direct_search_obj() {
-    if( !Search && !sizeof(FoundTraps()) ) {
+mixed direct_search_obj(){
+    if( !Search && !sizeof(FoundTraps()) ){
         return 0;
     }
     else {
@@ -160,9 +160,9 @@ mixed direct_search_obj() {
     }
 }
 
-mixed direct_search_str_word_obj(string str) {
+mixed direct_search_str_word_obj(string str){
     str = remove_article(lower_case(str));
-    if( !Searches[str] || !sizeof(GetTraps()) ) {
+    if( !Searches[str] || !sizeof(GetTraps()) ){
         return 0;
     }
     else {

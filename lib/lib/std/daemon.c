@@ -14,18 +14,18 @@ inherit LIB_CLEAN;
 static private string SaveFile = 0;
 
 /* ******************** daemon.c attributes ********************** */
-string GetSaveFile() {
+string GetSaveFile(){
     return SaveFile;
 }
 
-static string SetSaveFile(string str) {
+static string SetSaveFile(string str){
     return (SaveFile = str);
 }
 
 /* ********************* daemon.c events ************************* */
-int eventDestruct() {
+int eventDestruct(){
 
-    if( !master()->valid_apply(({ PRIV_ASSIST })) ) {
+    if( !master()->valid_apply(({ PRIV_ASSIST })) ){
         //tc(base_name(this_object())+" invalid destruct. stack: "+get_stack(),"red");
         return 0;
     }
@@ -33,11 +33,11 @@ int eventDestruct() {
     return clean::eventDestruct();
 }
 
-varargs int eventRestore(int do_not_zero_out) {
-    if( !SaveFile ) {
+varargs int eventRestore(int do_not_zero_out){
+    if( !SaveFile ){
         return 0;
     }
-    if( unguarded((: file_exists(SaveFile + __SAVE_EXTENSION__) :)) ) {
+    if( unguarded((: file_exists(SaveFile + __SAVE_EXTENSION__) :)) ){
         return unguarded((: restore_object, SaveFile, do_not_zero_out :));
     }
     else {
@@ -45,14 +45,14 @@ varargs int eventRestore(int do_not_zero_out) {
     }
 }
 
-varargs int eventSave(int save_zero_values) {
-    if( !SaveFile ) {
+varargs int eventSave(int save_zero_values){
+    if( !SaveFile ){
         return 0;
     }
     return unguarded((: save_object, SaveFile, save_zero_values :));
 }
 
 /* ******************* daemon.c driver applies ********************* */
-static void create() {
+static void create(){
     eventRestore(1);
 }

@@ -27,18 +27,18 @@ mixed CanDest(){
     else return 1;
 }
 
-mixed indirect_dest_obj() { return CanDest(); }
-mixed direct_dest_obj() { return CanDest(); }
+mixed indirect_dest_obj(){ return CanDest(); }
+mixed direct_dest_obj(){ return CanDest(); }
 
 /* ************************ object.c events ********************* */
-static int Destruct() {
+static int Destruct(){
     object env;
     int x;
 
-    if( env = environment() ) {
+    if( env = environment() ){
         env->eventReleaseObject(this_object());
         x = clean::Destruct();
-        if( !x ) {
+        if( !x ){
             env->eventReceiveObject(this_object());
         }
         return x;
@@ -47,6 +47,6 @@ static int Destruct() {
 }
 
 /* ******************* object.c driver applies **************** */
-static void create() {
+static void create(){
     parse_init();
 }

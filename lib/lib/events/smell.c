@@ -15,36 +15,36 @@ static private mapping Smells = ([]);
 string GetShort();
 // end abstract methods
 
-varargs string GetSmell(string str, object who) {
+varargs string GetSmell(string str, object who){
     mixed val;
 
-    if( !str || str == "default" ) {
+    if( !str || str == "default" ){
         val = Smell;
     }
     else {
         val = Smells[str];
     }
-    if( !val ) {
+    if( !val ){
         return 0;
     }
-    if( functionp(val) ) {
-        if( functionp(val) & FP_OWNER_DESTED ) {
+    if( functionp(val) ){
+        if( functionp(val) & FP_OWNER_DESTED ){
             return "An error occured in a function pointer.";
         }
         return evaluate(val, who, str);
     }
-    else if( arrayp(val) ) {
+    else if( arrayp(val) ){
         return val[query_night()];
     }
     else return val;
 }
 
-string array GetSmells() {
+string array GetSmells(){
     return keys(Smells);
 }
 
-mapping RemoveSmell(string item) {
-    if( !item || item == "default" ) {
+mapping RemoveSmell(string item){
+    if( !item || item == "default" ){
         Smell = 0;
     }
     else {
@@ -60,10 +60,10 @@ mapping RemoveSmell(string item) {
  * SetSmell(mapping thing_desc_pairs)
  * SetSmell(string thing, string|function|string array description)
  */
-varargs mixed SetSmell(mixed array args...) {
-    if( sizeof(args) == 1 ) {
-        if( mapp(args[0]) ) {
-            if( args[0]["default"] ) {
+varargs mixed SetSmell(mixed array args...){
+    if( sizeof(args) == 1 ){
+        if( mapp(args[0]) ){
+            if( args[0]["default"] ){
                 Smell = args[0]["default"];
                 map_delete(args[0], "default");
             }
@@ -74,18 +74,18 @@ varargs mixed SetSmell(mixed array args...) {
         }
         return args[0];
     }
-    else if( sizeof(args) == 2 ) {
-        if( !args[1] ) {
+    else if( sizeof(args) == 2 ){
+        if( !args[1] ){
             return SetSmell(args[0]);
         }
-        else if( arrayp(args[0]) ) {
-            foreach(string item in args[0]) {
+        else if( arrayp(args[0]) ){
+            foreach(string item in args[0]){
                 SetSmell(item, args[1]);
             }
             return args[1];
         }
         else {
-            if( !args[0] || args[0] == "default" ) {
+            if( !args[0] || args[0] == "default" ){
                 Smell = args[1];
                 return Smell;
             }
@@ -101,9 +101,9 @@ varargs mixed SetSmell(mixed array args...) {
     }
 }
 
-varargs mixed eventSmell(object who, string str) {
+varargs mixed eventSmell(object who, string str){
     str = GetSmell(str, who);
-    if( !str ) {
+    if( !str ){
         who->eventPrint("There is nothing to smell.");
         return 1;
     }
@@ -113,8 +113,8 @@ varargs mixed eventSmell(object who, string str) {
     return 1;
 }
 
-mixed direct_smell_obj() {
-    if( !Smell ) {
+mixed direct_smell_obj(){
+    if( !Smell ){
         return "You notice no unusual odor.";
     }
     else {
@@ -122,9 +122,9 @@ mixed direct_smell_obj() {
     }
 }
 
-mixed direct_smell_str_word_obj(string str) {
+mixed direct_smell_str_word_obj(string str){
     str = remove_article(lower_case(str));
-    if( !Smells[str] ) {
+    if( !Smells[str] ){
         return "You notice no unusual odor.";
     }
     else {
@@ -134,8 +134,8 @@ mixed direct_smell_str_word_obj(string str) {
 
 mapping GetSmellMap(){
     mapping Smells = ([]);
-    foreach(object ob in this_object()->GetDummyItems()) {
-        if( ob->GetSmell() ) {
+    foreach(object ob in this_object()->GetDummyItems()){
+        if( ob->GetSmell() ){
             Smells[ob->GetId()] = ob->GetSmell();
         }
     }

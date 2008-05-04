@@ -15,7 +15,7 @@ inherit LIB_HELP;
 private string Verb, ErrorMessage;
 private string *Synonyms, *Rules;
 
-static void create() {
+static void create(){
     daemon::create();
     SetNoClean(1);
     parse_init();
@@ -25,17 +25,17 @@ static void create() {
     Synonyms = ({});
 }
 
-static string SetErrorMessage(string str) { return (ErrorMessage = str); }
+static string SetErrorMessage(string str){ return (ErrorMessage = str); }
 
-string GetErrorMessage() { return ErrorMessage; }
+string GetErrorMessage(){ return ErrorMessage; }
 
-varargs static string *SetRules(mixed *args...) {
+varargs static string *SetRules(mixed *args...){
     if( sizeof(Rules) ) error("Cannot reset rules list.");
-    foreach(mixed arg in args) {
+    foreach(mixed arg in args){
         if( stringp(arg) ) Rules += ({ arg });
         else Rules += arg;
     }
-    if( Verb ) {
+    if( Verb ){
         foreach(string rule in Rules) parse_add_rule(Verb, rule);
         if( sizeof(Synonyms) ) 
             foreach(string cmd in Synonyms) parse_add_synonym(cmd, Verb);
@@ -43,11 +43,11 @@ varargs static string *SetRules(mixed *args...) {
     return Rules;
 }
 
-string *GetRules() { return copy(Rules); }
+string *GetRules(){ return copy(Rules); }
 
-varargs static string *SetSynonyms(mixed *args...) {
+varargs static string *SetSynonyms(mixed *args...){
     if( sizeof(Synonyms) ) error("Cannot reset synonym list.\n");
-    foreach(mixed arg in args) {
+    foreach(mixed arg in args){
         if( stringp(arg) ) Synonyms += ({ arg });
         else Synonyms += arg;
     }
@@ -56,9 +56,9 @@ varargs static string *SetSynonyms(mixed *args...) {
     return Synonyms;
 }
 
-string *GetSynonyms() { return copy(Synonyms); }
+string *GetSynonyms(){ return copy(Synonyms); }
 
-static string SetVerb(string str) {
+static string SetVerb(string str){
     if( !stringp(str) ) error("Bad argument 1 to SetVerb().\n");
     Verb = str;
     if( sizeof(Rules) )
@@ -68,7 +68,7 @@ static string SetVerb(string str) {
     return Verb;
 }
 
-string GetVerb() { return Verb; }
+string GetVerb(){ return Verb; }
 
-string *GetVerbs() { return ({ Verb }); }
+string *GetVerbs(){ return ({ Verb }); }
 

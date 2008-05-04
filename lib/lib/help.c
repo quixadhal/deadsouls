@@ -8,15 +8,15 @@
 
 private static mapping Help = ([ "default" : "No help has been provided." ]);
 
-string GetHelp(string topic) {
-    if( !topic || !Help[topic] ) {
+string GetHelp(string topic){
+    if( !topic || !Help[topic] ){
         topic = "default";
     }
     return Help[topic];
 }
 
-static mapping SetHelp(mixed val) {
-    if( stringp(val) ) {
+static mapping SetHelp(mixed val){
+    if( stringp(val) ){
         val = ([ "default" : val ]);
     }
     return (Help = val);

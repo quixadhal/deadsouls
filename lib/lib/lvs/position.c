@@ -21,11 +21,11 @@ private static object Chair    = 0;
 varargs mixed eventPrint(string str, mixed args...);
 // end abstract methods
 
-int GetPosition() {
+int GetPosition(){
     return Position;
 }
 
-int SetPosition(int x) {
+int SetPosition(int x){
     Position = x;
 }
 
@@ -34,7 +34,7 @@ mixed eventFall(){
 }
 
 #if 0
-mixed eventFall() {
+mixed eventFall(){
     object env = environment();
     mixed rumbo;
     if(!env || !(rumbo = env->GetExit("down"))) return 0;
@@ -60,22 +60,22 @@ mixed eventFall() {
 }
 #endif
 
-varargs mixed eventLay(object target) {
+varargs mixed eventLay(object target){
     mixed tmp;
 
-    if( Position != POSITION_STANDING && Position != POSITION_SITTING) {
+    if( Position != POSITION_STANDING && Position != POSITION_SITTING){
         eventPrint("You must be standing or sitting in order to lie.");
         return 1;
     }
-    if( !target ) {
+    if( !target ){
         send_messages("lie", "$agent_name $agent_verb down.", this_object(),
           0, environment());
         Position = POSITION_LYING;
         return 1;
     }
     tmp = target->eventReceiveLay(this_object());
-    if( tmp != 1 ) {
-        if( !tmp ) {
+    if( tmp != 1 ){
+        if( !tmp ){
             eventPrint("You cannot lie there!");
         }
         else {
@@ -91,14 +91,14 @@ varargs mixed eventLay(object target) {
 
 }
 
-varargs mixed eventKneel(object target) {
+varargs mixed eventKneel(object target){
     mixed tmp;
 
-    if( Position != POSITION_STANDING && Position != POSITION_SITTING) {
+    if( Position != POSITION_STANDING && Position != POSITION_SITTING){
         eventPrint("You must be standing or sitting in order to kneel.");
         return 1;
     }
-    if( !target ) {
+    if( !target ){
         send_messages("kneel", "$agent_name $agent_verb down.", this_object(),
           0, environment());
         Position = POSITION_KNEELING;
@@ -106,8 +106,8 @@ varargs mixed eventKneel(object target) {
     }
 #if 0
     tmp = target->eventReceiveLay(this_object());
-    if( tmp != 1 ) {
-        if( !tmp ) {
+    if( tmp != 1 ){
+        if( !tmp ){
             eventPrint("You cannot lie there!");
         }
         else {
@@ -123,15 +123,15 @@ varargs mixed eventKneel(object target) {
     return 1;
 }
 
-varargs mixed eventSit(object target) {
+varargs mixed eventSit(object target){
     mixed tmp;
 
-    if( Position != POSITION_STANDING && Position != POSITION_LYING ) {
+    if( Position != POSITION_STANDING && Position != POSITION_LYING ){
         eventPrint("You can't sit from that position.");
         return 1;
     }
-    if( !target ) {
-        if( Position == POSITION_STANDING) {
+    if( !target ){
+        if( Position == POSITION_STANDING){
             send_messages("sit", "$agent_name $agent_verb down.", 
               this_object(),0, environment());
         }
@@ -142,8 +142,8 @@ varargs mixed eventSit(object target) {
         return 1;
     }
     tmp = target->eventReceiveSit(this_object());
-    if( tmp != 1 ) {
-        if( !tmp ) {
+    if( tmp != 1 ){
+        if( !tmp ){
             eventPrint("You cannot sit there!");
         }
         else {
@@ -159,11 +159,11 @@ varargs mixed eventSit(object target) {
 }
 
 mixed eventFly(){
-    if( Chair ) {
+    if( Chair ){
         mixed tmp = Chair->eventReleaseStand(this_object());
 
-        if( tmp != 1 ) {
-            if( !tmp ) {
+        if( tmp != 1 ){
+            if( !tmp ){
                 eventPrint("You cannot get up!");
             }
             else {
@@ -183,11 +183,11 @@ mixed eventFly(){
 
 mixed eventSwim(){
     //tc("foo: "+get_stack());
-    if( Chair ) {
+    if( Chair ){
         mixed tmp = Chair->eventReleaseStand(this_object());
 
-        if( tmp != 1 ) {
-            if( !tmp ) {
+        if( tmp != 1 ){
+            if( !tmp ){
                 eventPrint("You cannot!");
             }
             else {
@@ -206,11 +206,11 @@ mixed eventSwim(){
 }
 
 mixed eventFloat(){
-    if( Chair ) {
+    if( Chair ){
         mixed tmp = Chair->eventReleaseStand(this_object());
 
-        if( tmp != 1 ) {
-            if( !tmp ) {
+        if( tmp != 1 ){
+            if( !tmp ){
                 eventPrint("You can't!");
             }
             else {
@@ -241,7 +241,7 @@ mixed eventLand(){
     return 1;
 }
 
-mixed eventStand() {
+mixed eventStand(){
     if(!stringp(hobbled(this_player()))){
         eventPrint("Your injuries prevent you from standing.");
         return 1;
@@ -250,7 +250,7 @@ mixed eventStand() {
         eventPrint("You aren't endowed with limbs with which to stand.");
         return 1;
     }
-    if( Position == POSITION_STANDING ) {
+    if( Position == POSITION_STANDING ){
         eventPrint("You are already standing!");
         return 1;
     }
@@ -258,11 +258,11 @@ mixed eventStand() {
         return eventLand();
     }
 
-    if( Chair ) {
+    if( Chair ){
         mixed tmp = Chair->eventReleaseStand(this_object());
 
-        if( tmp != 1 ) {
-            if( !tmp ) {
+        if( tmp != 1 ){
+            if( !tmp ){
                 eventPrint("You cannot get up!");
             }
             else {

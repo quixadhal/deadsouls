@@ -5,7 +5,7 @@
 inherit LIB_CORPSE;
 int stank;
 
-void create() {
+void create(){
     corpse::create();
     SetId(({"chassis","body","synthetics"}));
     SetAdjectives(({"melting","corroding"}));
@@ -16,13 +16,13 @@ void init(){
     if(environment() && environment()->GetMedium() == MEDIUM_LAND) stank = 1;
 }
 
-int eventDecay() {
-    if( !environment() ) {
+int eventDecay(){
+    if( !environment() ){
         Destruct();
         return 0;
     }
     Fresh = 0;
-    switch(Count) {
+    switch(Count){
     case 10:
         if(stank)
             environment()->eventPrint(possessive_noun(Owner) + " chassis " +
@@ -48,10 +48,10 @@ int eventDecay() {
     return Count;
 }
 
-void SetCorpse(object who) {
+void SetCorpse(object who){
     string tmpshort = (string)who->GetShort();
     if(sizeof(who->GetRiders())) tmpshort = (string)who->GetPlainShort();
-    if( DecayLife < 100 ) {
+    if( DecayLife < 100 ){
         DecayLife = 500;
     }
     SetKeyName(who->GetKeyName());

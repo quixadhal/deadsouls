@@ -1,14 +1,14 @@
 #include <lib.h>
 
-mixed direct_boobytrap_obj_with_obj() {
+mixed direct_boobytrap_obj_with_obj(){
     return 1;
 }
 
-mixed indirect_boobytrap_obj_with_obj() {
+mixed indirect_boobytrap_obj_with_obj(){
     return 1;
 }
 
-mixed direct_disarm_obj() {
+mixed direct_disarm_obj(){
     if(sizeof(this_object()->FoundTraps())) return 1;
     return 0;
 }

@@ -14,20 +14,20 @@ private int Lit = 0;
 string GetKeyName();
 // end abstract methods
 
-static void create() {
+static void create(){
     this_object()->AddSave(({ "Lit" }));
     this_object()->SetVendorType(VT_LIGHT);
 }
 
-int GetLit() {
+int GetLit(){
     return Lit;
 }
 
-static int SetLit(int x) {
+static int SetLit(int x){
     return (Lit = x);
 }
 
-string GetShort() {
+string GetShort(){
     /*  string str;
 
     if(!(str = item::GetShort()) || str == "") return str;
@@ -37,23 +37,23 @@ string GetShort() {
     else return "";
 }
 
-mixed CanLight(object who) {
-    if( GetLit() ) {
+mixed CanLight(object who){
+    if( GetLit() ){
         return "#It is already lit.";
     }
     return 1;
 }
 
-mixed direct_light_obj() {
+mixed direct_light_obj(){
     return CanLight(this_player());
 }
 
-mixed eventDarken() {
+mixed eventDarken(){
     object env;
 
-    if( env = environment() ) {
+    if( env = environment() ){
         env->eventPrint("The " + GetKeyName() + " goes dark.");
-        if( living(env) ) {
+        if( living(env) ){
             environment(env)->eventPrint(possessive_noun(env) + " " +
               GetKeyName() + " goes dark.", env);
         }
@@ -62,7 +62,7 @@ mixed eventDarken() {
     return 1;
 }
 
-varargs mixed eventLight(object who, object tool) {
+varargs mixed eventLight(object who, object tool){
     SetLit(1);
     return 1;
 }

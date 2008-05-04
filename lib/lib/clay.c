@@ -34,7 +34,7 @@ void InitComposition(){
 varargs string SetComposition(string comp, string name, string *nouns, string *adjs, string short, string desc){
     string tmp;
 
-    if(name) {
+    if(name){
         Name = name;
         SetKeyName(name);
     }

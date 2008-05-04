@@ -15,19 +15,19 @@ string GetShort();
 static int Destruct();
 // end abstract methods
 
-int GetBaitStrength() {
+int GetBaitStrength(){
     return BaitStrength;
 }
 
-int SetBaitStrength(int x) {
+int SetBaitStrength(int x){
     return (BaitStrength = x);
 }
 
-mixed eventBait(object who, object pole) {
-    if( !(who && pole) ) {
+mixed eventBait(object who, object pole){
+    if( !(who && pole) ){
         return 0;
     }
-    if( !pole->eventBait(who, this_object()) ) {
+    if( !pole->eventBait(who, this_object()) ){
         who->eventPrint(capitalize(pole->GetDefiniteShort()) +
           "remains unbaited.");
         return 1;
@@ -38,8 +38,8 @@ mixed eventBait(object who, object pole) {
     return 1;
 }
 
-mixed indirect_bait_obj_with_obj() {
-    if( environment() != this_player() ) {
+mixed indirect_bait_obj_with_obj(){
+    if( environment() != this_player() ){
         return "#You don't have that bait!";
     }
     return 1;

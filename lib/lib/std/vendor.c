@@ -11,7 +11,7 @@ private static int MaxItems, VendorType, bargain;
 private static string StorageRoom, LocalCurrency;
 private static mapping Costs, Values;
 
-static void create() {
+static void create(){
     sentient::create();
     Costs = ([]);
     Values = ([]);
@@ -20,49 +20,49 @@ static void create() {
     MaxItems = 40;
 }
 
-mixed direct_buy_str_from_liv(string str) { 
+mixed direct_buy_str_from_liv(string str){ 
     return CanSell(this_player(), str); 
 }
 
-int indirect_sell_obj_to_liv() { return 1; }
+int indirect_sell_obj_to_liv(){ return 1; }
 
-int indirect_sell_obs_to_liv() { return 1; }
+int indirect_sell_obs_to_liv(){ return 1; }
 
-int CanCarry(int amount) { return 1; }
+int CanCarry(int amount){ return 1; }
 
-mixed CanBuy(object who, object *obs) {
+mixed CanBuy(object who, object *obs){
     if( !load_object(StorageRoom) ) 
         return "There is a bug with the vendor's storage, please report it.";
     return 1;
 }
 
-mixed CanSell(object who, string what) {
+mixed CanSell(object who, string what){
     if( !load_object(StorageRoom) ) 
         return "There is a bug with the vendor's storage, please report it.";
     return 1;
 }
 
-mixed eventBuy(object who, object *obs) {
+mixed eventBuy(object who, object *obs){
     object *tmp;
     object sroom, ob;
     int cost;
 
     sroom = load_object(StorageRoom);
-    if( sizeof(all_inventory(sroom)) > GetMaxItems() ) {
+    if( sizeof(all_inventory(sroom)) > GetMaxItems() ){
         eventForce("say I am having trouble getting rid of the things I "
           "have to sell right now.");
         return 1;
     }
-    if( !sizeof(obs) ) {
+    if( !sizeof(obs) ){
         eventForce("say you have nothing to sell!");
         return 1;
     }
     tmp = ({});
-    foreach(ob in obs) {
+    foreach(ob in obs){
         int value;
 
         if( !((string)ob->GetShort()) ) continue;
-        if( !((int)ob->GetVendorType() & GetVendorType()) ) {
+        if( !((int)ob->GetVendorType() & GetVendorType()) ){
             eventForce("say I do not buy things like " +
               (string)ob->GetShort());
             continue;
@@ -73,17 +73,17 @@ mixed eventBuy(object who, object *obs) {
         else bargain = 0;
         if(!bargain) value = cost;
 
-        if( !value ) {
+        if( !value ){
             eventForce("say " + (string)ob->GetShort() + " is worthless!");
             continue;
         }
-        if( !((int)ob->CanSell(who)) ) {
+        if( !((int)ob->CanSell(who)) ){
             eventForce("say You cannot sell " + (string)ob->GetShort() +".");
             continue;
         }
         if( sizeof(filter(all_inventory(sroom),
               (: $1->GetShort() == (string)$(ob)->GetShort() :)))
-          > 3 ) {
+          > 3 ){
             if( (int)this_player()->AddCurrency(GetLocalCurrency(),value) == -1 ){
                 eventForce("say you cannot carry "+value+" "+
                   GetLocalCurrency()+"!");
@@ -100,7 +100,7 @@ mixed eventBuy(object who, object *obs) {
             return 1;
         }
         eventForce("say " + (string)ob->GetShort() + "! Excellent!");
-        if( !((int)ob->eventMove(sroom)) ) {
+        if( !((int)ob->eventMove(sroom)) ){
             eventForce("say I cannot seem to carry that");
             return 1;
         }
@@ -120,26 +120,26 @@ mixed eventBuy(object who, object *obs) {
     if( !sizeof(tmp) )
         eventForce("say I am sorry, " + capitalize((string)who->GetKeyName()) + ", "
           "that we could not come to a better agreement.");
-    else map(tmp, function(object ob) {
+    else map(tmp, function(object ob){
               if( (int)ob->GetDestroyOnSell() )
                   ob->eventDestruct();
             });
           return 1;
       }
 
-        int cmdShow(object who, string args) {
+        int cmdShow(object who, string args){
         object ob, sroom;
         int x;
 
-        if( !args || args == "" ) {
+        if( !args || args == "" ){
             eventForce("say show you what?");
             return 1;
         }
-        if( !(sroom = load_object(StorageRoom)) ) {
+        if( !(sroom = load_object(StorageRoom)) ){
             eventForce("say I am having troubles right now");
             return 1;
         }
-        if( x = to_int(args) ) {
+        if( x = to_int(args) ){
             object *obs;
             object *obs2;
             string *list2;
@@ -149,22 +149,22 @@ mixed eventBuy(object who, object *obs) {
             obs = all_inventory(sroom);
             maxi = sizeof(obs);
             list2 = ({(obs[0]->GetKeyName())});
-            for(int counter = 1;counter < maxi;++counter) {
-                if(member_array((obs[counter]->GetKeyName()),list2) < 0) {
+            for(int counter = 1;counter < maxi;++counter){
+                if(member_array((obs[counter]->GetKeyName()),list2) < 0){
                     list2 += ({ ( obs[counter]->GetKeyName()) });
                 }
             }
             obs2 = ({ present(list2[0],sroom) });
             maxi = sizeof(list2);
-            for(int counter = 1;counter < maxi;++counter) {
+            for(int counter = 1;counter < maxi;++counter){
                 obs2 += ({ present(list2[counter],sroom) });
             }
-            if((x >= 0) && (x < sizeof(obs2))) {
+            if((x >= 0) && (x < sizeof(obs2))){
                 ob = obs2[x];
             }
         }
         else ob = present(args = lower_case(args), sroom);
-        if( !ob ) {
+        if( !ob ){
             eventForce("say I have no such thing to show you");
             return 1;
         }
@@ -174,7 +174,7 @@ mixed eventBuy(object who, object *obs) {
         return 1;
     }
 
-    int cmdBrowse(object who, string args) {
+    int cmdBrowse(object who, string args){
         object *obs;
         object *obs2;
         string *list2;
@@ -183,18 +183,18 @@ mixed eventBuy(object who, object *obs) {
         int i, ii, maxi, number;
 
         if( !args || args == "" ) args = "all";
-        if( !(sroom = load_object(StorageRoom)) ) {
+        if( !(sroom = load_object(StorageRoom)) ){
             eventForce("say I am having terrific difficulties today");
             return 1;
         }
-        if( !(maxi = sizeof(obs = filter(all_inventory(sroom), (: !userp($1) :) ))) ) {
+        if( !(maxi = sizeof(obs = filter(all_inventory(sroom), (: !userp($1) :) ))) ){
             eventForce("say I have nothing to sell right now.");
             return 1;
         }
         list = ({ "item #  Description                         Price", "" });
         list2 = ({(obs[0]->GetKeyName())});
-        for(int counter = 1;counter < maxi;++counter) {
-            if(member_array((obs[counter]->GetKeyName()),list2) < 0) {
+        for(int counter = 1;counter < maxi;++counter){
+            if(member_array((obs[counter]->GetKeyName()),list2) < 0){
                 list2 += ({ ( obs[counter]->GetKeyName()) });
             }
         }
@@ -202,15 +202,15 @@ mixed eventBuy(object who, object *obs) {
         foreach(object tempob in obs){
             string *base_names = ({});
             foreach( object tempob2 in obs2 ) base_names += ({ base_name(tempob2) });
-            if(!sizeof(obs2)) {
+            if(!sizeof(obs2)){
                 obs2 = ({tempob});
             }
             else if(member_array(base_name(tempob), base_names) == -1) obs2 += ({ tempob });
         }
         maxi = sizeof(obs2); 
         i = (int)this_player()->GetScreen()[0];
-        if(number = to_int(args)) {
-            if((number > 0) && (number <= maxi)) {
+        if(number = to_int(args)){
+            if((number > 0) && (number <= maxi)){
                 while( i-- ) list[1] += "_";
                 list += ({ sprintf("%d      %:-35s %d", number, (string)obs2[(number - 1)]->GetShort(), GetCost(obs2[(number - 1)],who)) });
                 this_player()->eventPage(list);
@@ -219,18 +219,18 @@ mixed eventBuy(object who, object *obs) {
         }
 
         while( i-- ) list[1] += "_";
-        for(ii=0; ii < maxi; ii++) {
+        for(ii=0; ii < maxi; ii++){
             int ok;
             int gat;
 
             ok = 0;
             gat = (int)(obs2[ii]->GetArmorType());
-            switch(args) {
+            switch(args){
             case "all": ok = 1; break;
             case "weapon": case "weapons":
                 break;
             case "armor": case "armors":
-                if(obs2[ii]->GetVendorType() == 8) {
+                if(obs2[ii]->GetVendorType() == 8){
                     ok = 1;
                 }
                 break;
@@ -290,7 +290,7 @@ mixed eventBuy(object who, object *obs) {
             if(!ii) ii = 0;
             list += ({ sprintf("%d      %:-35s %d", (ii+1), (string)obs2[ii]->GetShort(), to_int(ok)) });
         }
-        if( !sizeof(list) ) {
+        if( !sizeof(list) ){
             eventForce("frown");
             eventForce("say I have nothing like that to sell.");
             return 1;
@@ -299,19 +299,19 @@ mixed eventBuy(object who, object *obs) {
         return 1;
     }
 
-    int cmdAppraise(object who, string args) {
+    int cmdAppraise(object who, string args){
         object ob;
         int x,cost;
 
-        if( !args || args == "" ) {
+        if( !args || args == "" ){
             eventForce("say appraise what?");
             return 1;
         }
-        if( !(ob = present(args = lower_case(args), who)) ) {
+        if( !(ob = present(args = lower_case(args), who)) ){
             eventForce("say You have no such thing!");
             return 1;
         }
-        if( !((int)ob->GetVendorType() & GetVendorType()) ) {
+        if( !((int)ob->GetVendorType() & GetVendorType()) ){
             eventForce("say I have no use for " + (string)ob->GetShort());
             return 1;
         }
@@ -331,7 +331,7 @@ mixed eventBuy(object who, object *obs) {
         return 1;
     }
 
-    int cmdPrice(object who, string args) {
+    int cmdPrice(object who, string args){
         object *obs;
         string *list2;
         object *obs2;
@@ -339,11 +339,11 @@ mixed eventBuy(object who, object *obs) {
         int x;
         int maxi;
 
-        if( !args || args == "" ) {
+        if( !args || args == "" ){
             eventForce("say price what?");
             return 1;
         }
-        if( !(sroom = load_object(StorageRoom)) ) {
+        if( !(sroom = load_object(StorageRoom)) ){
             eventForce("say today is not really a good day for me");
             return 0;
         }
@@ -352,16 +352,16 @@ mixed eventBuy(object who, object *obs) {
         foreach(object tempob in obs){
             string *base_names = ({});
             foreach( object tempob2 in obs2 ) base_names += ({ base_name(tempob2) });
-            if(!sizeof(obs2)) {
+            if(!sizeof(obs2)){
                 obs2 = ({tempob});
             }
             else if(member_array(base_name(tempob), base_names) == -1) obs2 += ({ tempob });
         }
         maxi = sizeof(obs2);
-        if( x = to_int(args) ) {
+        if( x = to_int(args) ){
             list2 = ({(obs2[0]->GetKeyName())});
-            for(int counter = 1;counter < maxi;++counter) {
-                if(member_array((obs2[counter]->GetKeyName()),list2) < 0) {
+            for(int counter = 1;counter < maxi;++counter){
+                if(member_array((obs2[counter]->GetKeyName()),list2) < 0){
                     list2 += ({ ( obs2[counter]->GetKeyName()) });
                 }
             }
@@ -371,11 +371,11 @@ mixed eventBuy(object who, object *obs) {
         else ob = present(args = lower_case(args), sroom);
         if(!ob) foreach(object tempob in obs2) 
             if(answers_to(args,tempob)) ob = tempob;
-        if( !ob ) {
+        if( !ob ){
             eventForce("say I have no such thing!");
             return 1;
         }
-        if( !(x = to_int(ceil(GetCost(ob, this_player())))) ) {
+        if( !(x = to_int(ceil(GetCost(ob, this_player())))) ){
             eventForce("say that thing has no value!");
             return 1;
         }
@@ -385,20 +385,20 @@ mixed eventBuy(object who, object *obs) {
         return 1;
     }
 
-    mixed eventAsk(object who, string str) {
+    mixed eventAsk(object who, string str){
         object *obs;
         object ob;
         string cmd, args, tmp;
 
-        if( !str || str == "" ) {
+        if( !str || str == "" ){
             eventForce("say what do you want from me?");
             return 1;
         }
-        if( sscanf(str, "%s %s", cmd, args) != 2 ) {
+        if( sscanf(str, "%s %s", cmd, args) != 2 ){
             cmd = str;
             args = 0;
         }
-        switch(cmd) {
+        switch(cmd){
         case "appraise":
             return cmdAppraise(who, args);
 
@@ -409,7 +409,7 @@ mixed eventBuy(object who, object *obs) {
             if( str == "all" )
                 obs = filter(all_inventory(who), (: (int)$1->CanSell() :));
             else {
-                if( !(ob = present(args, who)) ) {
+                if( !(ob = present(args, who)) ){
                     eventForce("say Get out of here you cheat!");
                     eventForce("bump " + (string)this_player()->GetKeyName());
                     return 1;
@@ -436,7 +436,7 @@ mixed eventBuy(object who, object *obs) {
         }
     }
 
-    mixed eventSell(object who, mixed what) {
+    mixed eventSell(object who, mixed what){
         object ob, sroom;
         object *obs;
         string *list2;
@@ -449,22 +449,22 @@ mixed eventBuy(object who, object *obs) {
         foreach(object tempob in obs){
             string *base_names = ({});
             foreach( object tempob2 in obs2 ) base_names += ({ base_name(tempob2) });
-            if(!sizeof(obs2)) {
+            if(!sizeof(obs2)){
                 obs2 = ({tempob});
             }
             else if(member_array(base_name(tempob), base_names) == -1) obs2 += ({ tempob });
         }
         maxi = sizeof(obs2);
-        if(number = to_int(what)) {
+        if(number = to_int(what)){
             number = number - 1;
             list2 = ({(obs2[0]->GetKeyName())});
-            for(int counter = 1;counter < maxi;++counter) {
-                if(member_array((obs2[counter]->GetKeyName()),list2) < 0) {
+            for(int counter = 1;counter < maxi;++counter){
+                if(member_array((obs2[counter]->GetKeyName()),list2) < 0){
                     list2 += ({ ( obs2[counter]->GetKeyName()) });
                 }
             }
             maxi = sizeof(list2);
-            if((number >= 0) && (number < sizeof(obs2))) {
+            if((number >= 0) && (number < sizeof(obs2))){
                 ob = obs2[number];
             } else {
                 eventForce("say I have nothing like that to sell to you.");
@@ -480,7 +480,7 @@ mixed eventBuy(object who, object *obs) {
             }
         }
         cost=to_int(ob->GetBaseCost(GetLocalCurrency()));
-        if(!cost || cost < 0) {
+        if(!cost || cost < 0){
             cost = 0; 
             cost = to_int(ob->GetValue());
         }
@@ -489,7 +489,7 @@ mixed eventBuy(object who, object *obs) {
               " to buy that.");
             return 1;
         }
-        if( !((int)ob->eventMove(this_object())) ) {
+        if( !((int)ob->eventMove(this_object())) ){
             message("error", "An error occurred moving the object, use bug -r.",
               who);
             return 1;
@@ -497,7 +497,7 @@ mixed eventBuy(object who, object *obs) {
         eventForce("say here is " + (string)ob->GetShort() + " for " + to_int(cost) +
           " " + GetLocalCurrency() + "!");
         eventForce("give " + (string)ob->GetKeyName() + " to " + (string)who->GetKeyName());
-        if( environment(ob) == this_object() ) {
+        if( environment(ob) == this_object() ){
             eventForce("say you cannot carry that!");
             eventForce("drop " + (string)ob->GetKeyName());
         }
@@ -506,7 +506,7 @@ mixed eventBuy(object who, object *obs) {
         return 1;
     }
 
-    int GetCost(object ob, object who) {
+    int GetCost(object ob, object who){
         int x, mod,cost;
 
         cost=ob->GetBaseCost(LocalCurrency);
@@ -524,7 +524,7 @@ mixed eventBuy(object who, object *obs) {
         return x;
     }
 
-    int GetValue(object ob, object who) {
+    int GetValue(object ob, object who){
         int x, mod;
 
         if( Values[who] && Values[who][ob] ) return Values[who][ob];
@@ -539,21 +539,21 @@ mixed eventBuy(object who, object *obs) {
         return x;
     }
 
-    string SetLocalCurrency(string str) { return (LocalCurrency = str); }
+    string SetLocalCurrency(string str){ return (LocalCurrency = str); }
 
-    string GetLocalCurrency() { return LocalCurrency; }
+    string GetLocalCurrency(){ return LocalCurrency; }
 
-    string SetStorageRoom(string room) { return (StorageRoom = room); }
+    string SetStorageRoom(string room){ return (StorageRoom = room); }
 
-    string GetStorageRoom() { return StorageRoom; }
+    string GetStorageRoom(){ return StorageRoom; }
 
-    int SetMaxItems(int x) { return (MaxItems = x); }
+    int SetMaxItems(int x){ return (MaxItems = x); }
 
-    int GetMaxItems() { return MaxItems; }
+    int GetMaxItems(){ return MaxItems; }
 
-    int SetVendorType(int x) { return (VendorType = x); }
+    int SetVendorType(int x){ return (VendorType = x); }
 
-    int GetVendorType() { return VendorType; }
+    int GetVendorType(){ return VendorType; }
 
 
 

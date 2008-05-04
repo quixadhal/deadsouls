@@ -2,7 +2,7 @@
 
 inherit LIB_ROOM;
 
-static void create() {
+static void create(){
     room::create();
 }
 
@@ -16,7 +16,7 @@ mixed teller_check(){
     return 0;
 }
 
-void init() {
+void init(){
     ::init();
     add_action("HandleTeller","deposit");
     add_action("HandleTeller","withdraw");

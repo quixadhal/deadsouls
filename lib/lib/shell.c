@@ -15,11 +15,11 @@ void create(){
     SetValue(0);
     SetVendorType(VT_TREASURE);
 }
-int SetFirearmType(string str) {firearmtype=str; return 1; }
-int SetAmmoType(string str) {ammotype=str; return 1; }
-int SetCaliber(int x) { caliber=x; return 1; }
+int SetFirearmType(string str){firearmtype=str; return 1; }
+int SetAmmoType(string str){ammotype=str; return 1; }
+int SetCaliber(int x){ caliber=x; return 1; }
 int SetMillimeter(int x){ millimeter=x; return 1; }
-int GetMillimeter() { return millimeter; }
-int GetCaliber() { return caliber; }
-string GetFirearmType() { return firearmtype; }
-string GetAmmoType() { return ammotype; }
+int GetMillimeter(){ return millimeter; }
+int GetCaliber(){ return caliber; }
+string GetFirearmType(){ return firearmtype; }
+string GetAmmoType(){ return ammotype; }

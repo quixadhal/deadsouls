@@ -29,13 +29,13 @@ string GetName();
 varargs void eventPrint(string message, mixed args...);
 // end abstract methods
 
-static void create() {
+static void create(){
     Resistance = ([ "low" : 0, "medium" : 0, "high" : 0, "immune" : 0 ]);
     Resistance["none"] = ALL_DAMAGE;
 }
 
-int GetBlind() {
-    if( Blind ) {
+int GetBlind(){
+    if( Blind ){
         return 1;
     }
     else {
@@ -43,14 +43,14 @@ int GetBlind() {
     }
 }
 
-static void RemoveBlindness() {
+static void RemoveBlindness(){
     mixed val = Blind->end;
 
     Blind = 0;
-    if( arrayp(val) ) {
+    if( arrayp(val) ){
         send_messages(val[0], val[1], this_object());
     }
-    else if( functionp(val) && !(functionp(val) & FP_OWNER_DESTED) ) {
+    else if( functionp(val) && !(functionp(val) & FP_OWNER_DESTED) ){
         evaluate(val, this_object());
     }
     else {
@@ -58,14 +58,14 @@ static void RemoveBlindness() {
     }
 }
 
-varargs mixed eventBlind(object who, int amt, mixed end) {
+varargs mixed eventBlind(object who, int amt, mixed end){
     Blind = new(class blindness);
     Blind->count = amt;
     Blind->end = end;
     return 1;
 }
 
-mixed eventCustomizeStat(string stat, int amount) {
+mixed eventCustomizeStat(string stat, int amount){
     if( amount < 1 ) return "That is not a valid amount.";
     if( amount > CustomStats )
         return "You do not have enough points to spend on customization.";
@@ -78,26 +78,26 @@ mixed eventCustomizeStat(string stat, int amount) {
     return Stats[stat]["level"];
 }
 
-mixed eventRestoreSight(object who, int amt) {
-    if( !Blind ) {
+mixed eventRestoreSight(object who, int amt){
+    if( !Blind ){
         return GetName() + " is not blind!";
     }
     Blind->count -= amt;
-    if( Blind->count < 1 ) {
+    if( Blind->count < 1 ){
         RemoveBlindness();
         return 1;
     }
     return 0;
 }
 
-varargs void SetStat(string stat, int level, int classes) {
+varargs void SetStat(string stat, int level, int classes){
     if(!stat) return;
     if(level < 1) level = 1;
     if(!classes) classes = 1;
     Stats[stat] = ([ "points" : 0, "level" : level, "class" : classes ]);
 }
 
-varargs void AddStat(string stat, int base, int cls) {
+varargs void AddStat(string stat, int base, int cls){
     int level;
     if( userp(this_object()) ) level = 1;
     else level = GetLevel();
@@ -108,12 +108,12 @@ varargs void AddStat(string stat, int base, int cls) {
     SetStat(stat, base, cls);
 }
 
-varargs void RemoveStat(string stat) {
+varargs void RemoveStat(string stat){
     if(!stat) return;
     if(Stats[stat]) map_delete(Stats, stat);
 }
 
-mapping GetStat(string stat) {
+mapping GetStat(string stat){
     mapping ret = ([]);
     if(!stat) return 0;
     ret = copy(Stats[stat]);
@@ -122,33 +122,33 @@ mapping GetStat(string stat) {
     return ret;
 }
 
-int GetStatClass(string stat) {
+int GetStatClass(string stat){
     if(!Stats[stat]) return 0;
     else return Stats[stat]["class"];
 }
 
-int GetBaseStatLevel(string stat) {
+int GetBaseStatLevel(string stat){
     if(!Stats[stat]) return 0;
     else return Stats[stat]["level"];
 }
 
-int GetStatLevel(string stat) {
+int GetStatLevel(string stat){
     int x;
 
     x = (GetBaseStatLevel(stat) + GetStatBonus(stat));
-    switch(stat) {
+    switch(stat){
     case "coordination": case "wisdom":
         x -= GetAlcohol();
     }
     return x;
 }
 
-int AddStatPoints(string stat, int x) {
+int AddStatPoints(string stat, int x){
     int y;
 
     if( !Stats[stat] ) return 0;
     Stats[stat]["points"] += x;
-    while( Stats[stat]["points"] < 0 ) {
+    while( Stats[stat]["points"] < 0 ){
         if( Stats[stat]["level"] == 1 ) Stats[stat]["points"] = 0;
         else {
             int tmp;
@@ -158,7 +158,7 @@ int AddStatPoints(string stat, int x) {
         }
     }
     while(Stats[stat]["points"] > (y = GetMaxStatPoints(stat,
-          Stats[stat]["level"]))) {
+          Stats[stat]["level"]))){
         if(Stats[stat]["level"] >= GetLevel()*4) Stats[stat]["points"] = y;
         else {
             Stats[stat]["level"]++;
@@ -168,10 +168,10 @@ int AddStatPoints(string stat, int x) {
     return Stats[stat]["level"];
 }
 
-string *GetStats() { return keys(Stats); }
-mapping GetStatsMap() { return copy(Stats); }
+string *GetStats(){ return keys(Stats); }
+mapping GetStatsMap(){ return copy(Stats); }
 
-int GetMaxStatPoints(string stat, int level) {
+int GetMaxStatPoints(string stat, int level){
     if( !Stats[stat] ) return 0;
     else {
         int cl, x;
@@ -183,25 +183,25 @@ int GetMaxStatPoints(string stat, int level) {
     }
 }
 
-void AddStatBonus(string stat, mixed f) {
+void AddStatBonus(string stat, mixed f){
     if(!StatsBonus[stat]) StatsBonus[stat] = ([]);
     StatsBonus[stat][previous_object()] = f;
 }
 
-varargs void RemoveStatBonus(string stat, object ob) {
+varargs void RemoveStatBonus(string stat, object ob){
     if(!StatsBonus[stat]) return;
     if(!ob) ob = previous_object();
     if(!ob || !StatsBonus[stat][ob]) return;
     map_delete(StatsBonus[stat], ob);
 }
 
-int GetStatBonus(string stat) {
+int GetStatBonus(string stat){
     object *obs;
     int i, x = 0;
 
     if( !StatsBonus[stat] ) return 0;
     i = sizeof(obs = keys(StatsBonus[stat]));
-    while(i--) {
+    while(i--){
         if( !obs[i] ) map_delete(StatsBonus[stat], obs[i]);
         else x += (int)evaluate(StatsBonus[stat][obs[i]], stat);
     }
@@ -217,7 +217,7 @@ int GetStatBonus(string stat) {
  * setting a resistence level here unsets any other levels of resistence
  */
 
-varargs string SetResistance(int type, string level) {
+varargs string SetResistance(int type, string level){
     if(level == "none") Resistance["none"] |= type;
     else Resistance["none"] &= ~type;
     if(level == "low") Resistance["low"] |= type;
@@ -230,7 +230,7 @@ varargs string SetResistance(int type, string level) {
     else Resistance["immune"] &= ~type;
 }
 
-string GetResistance(int type) {
+string GetResistance(int type){
     if(Resistance["low"] & type) return "low";
     else if(Resistance["medium"] & type) return "medium";
     else if(Resistance["high"] & type) return "high";
@@ -242,9 +242,9 @@ mapping GetResistanceMap(){
     return copy(Resistance);
 }
 
-int GetCustomStats() { return CustomStats; }
+int GetCustomStats(){ return CustomStats; }
 
-varargs mixed GetEffectiveVision(mixed location, int raw_score) {
+varargs mixed GetEffectiveVision(mixed location, int raw_score){
     int array l;
     object env, rider;
     int bonus = GetVisionBonus();
@@ -272,10 +272,10 @@ varargs mixed GetEffectiveVision(mixed location, int raw_score) {
             if(!env) return 0;
         }
     }
-    if( Blind && !raw_score) {
+    if( Blind && !raw_score){
         return VISION_BLIND;
     }
-    if( !location ) {
+    if( !location ){
         env = environment();
     }
     x = GetRadiantLight(0);
@@ -300,12 +300,12 @@ varargs mixed GetEffectiveVision(mixed location, int raw_score) {
     return VISION_TOO_BRIGHT;
 }
 
-int array GetLightSensitivity() {
+int array GetLightSensitivity(){
     if( !LightSensitivity ) return ({ 25, 75 });
     else return LightSensitivity;
 }
 
-varargs static int array SetLightSensitivity(mixed array val...) {
+varargs static int array SetLightSensitivity(mixed array val...){
     if( !val ) error("Null argument to SetLightSensitivity().\n");
     if( sizeof(val) == 1 ) val = val[0];
     if( sizeof(val) != 2 )
@@ -313,19 +313,19 @@ varargs static int array SetLightSensitivity(mixed array val...) {
     return (LightSensitivity = val);
 }
 
-int AddVisionBonus(int x) {
+int AddVisionBonus(int x){
     VisionBonus += x;
     return VisionBonus;
 }
 
-int GetVisionBonus() {
+int GetVisionBonus(){
     return VisionBonus;
 }
 
-static void heart_beat() {
-    if( Blind ) {
+static void heart_beat(){
+    if( Blind ){
         Blind->count--;
-        if( Blind->count < 1 ) {
+        if( Blind->count < 1 ){
             RemoveBlindness();
         }
     }

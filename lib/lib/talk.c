@@ -17,25 +17,29 @@ private string SpeakColor = "CYAN%^";
 
 int GetPolyglot();
 
-int direct_ask_liv_str() { return 1; }
+int direct_ask_liv_str(){ return 1; }
 
-int direct_ask_liv_to_str() { return 1; }
+int direct_ask_liv_to_str(){ return 1; }
 
-int direct_request_str_from_liv() { return 1; }
+int direct_ask_liv_for_str(){ return 1; }
 
-int direct_say_to_liv() { return 1; }
+int direct_ask_liv_about_str(){ return 1; }
 
-int direct_say_to_liv_str() { return 1; }
+int direct_request_str_from_liv(){ return 1; }
 
-int direct_whisper_to_liv() { return 1; }
+int direct_say_to_liv(){ return 1; }
 
-int direct_whisper_in_wrd_to_liv() { return 1; }
+int direct_say_to_liv_str(){ return 1; }
 
-int direct_whisper_to_liv_str() { return 1; }
+int direct_whisper_to_liv(){ return 1; }
 
-int direct_whisper_in_wrd_to_liv_str() { return 1; }
+int direct_whisper_in_wrd_to_liv(){ return 1; }
 
-int direct_whisper_to_liv_in_wrd_str() { return 1; }
+int direct_whisper_to_liv_str(){ return 1; }
+
+int direct_whisper_in_wrd_to_liv_str(){ return 1; }
+
+int direct_whisper_to_liv_in_wrd_str(){ return 1; }
 
 string SetSpeakColor(string str){
     if(!str) str = "foo";
@@ -63,7 +67,7 @@ string SetSpeakColor(string str){
     return SpeakColor;
 }
 
-string GetSpeakColor() { return SpeakColor; }
+string GetSpeakColor(){ return SpeakColor; }
 
 int eventTellHist(string str){
     string pob = base_name(previous_object());
@@ -84,13 +88,13 @@ string array GetTellHistory(){
     return copy(TellHist);
 }
 
-varargs mixed CanSpeak(object target, string verb, string msg, string lang) {
+varargs mixed CanSpeak(object target, string verb, string msg, string lang){
     if(!this_player()->CanBreathe()){
         return "You can't even breathe.";
     }
     if( lang && (!GetLanguageLevel(lang) || !GetLanguageName(lang)) )
         return "You don't speak that language!";
-    if( target ) {
+    if( target ){
         if( target == this_object() )
             return "Are you really intent on talking to yourself?";
         if( userp(target) && !interactive(target) )
@@ -102,7 +106,7 @@ varargs mixed CanSpeak(object target, string verb, string msg, string lang) {
 }
 
 varargs mixed eventHearTalk(object who, object target, int cls, string verb,
-  string msg, string lang) {
+  string msg, string lang){
     string tmp;
     object *riders = this_object()->GetRiders() - ({ who });
 
@@ -110,7 +114,7 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
         riders->eventHearTalk(who, target, cls, verb, (msg ||0), (lang ||0));
 
     if( lang && !newbiep() && !GetPolyglot() ) msg = translate(msg, GetLanguageLevel(lang));
-    switch(cls) {
+    switch(cls){
     case TALK_PRIVATE:
         if( target != this_object() ) return 0;
         if( verb == "reply" )
@@ -132,8 +136,8 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
         break;
 
     case TALK_LOCAL:
-        if( target ) {
-            if( target != this_object() ) {
+        if( target ){
+            if( target != this_object() ){
                 if( msg[<1] == '?' ) tmp = (string)target->GetName();
                 else tmp = "to " + (string)target->GetName();
                 if( lang ) tmp += " in " + capitalize(lang);
@@ -148,7 +152,7 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
             tmp = tmp + "%^BOLD%^CYAN%^\"" + msg + "%^RESET%^\"";
             this_object()->eventPrint(tmp, MSG_CONV);
         }
-        else if( verb == "yell" ) {
+        else if( verb == "yell" ){
             tmp = "%^BOLD%^GREEN%^You hear a " + (string)who->GetGender()
             + " " + (string)who->GetRace() + " yell in " + capitalize(lang) +
             " from a distance,%^RESET%^ \"" + msg + "%^RESET%^\"";
@@ -182,11 +186,11 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
     return 1;
 }
 
-mixed eventTalkRespond(object who, object targ, int cls, string msg, string lang) {
+mixed eventTalkRespond(object who, object targ, int cls, string msg, string lang){
     return true(who,targ,cls,msg,lang);
 }
 
-varargs mixed eventSpeak(object target, int cls, string msg, string lang) {
+varargs mixed eventSpeak(object target, int cls, string msg, string lang){
     string verb, tmp;
     int cols;
     object env;
@@ -203,7 +207,7 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang) {
 
     if(!env) env = environment();
 
-    if( lang && !GetPolyglot() ) {
+    if( lang && !GetPolyglot() ){
         msg = translate(msg, GetLanguageLevel(lang));
         lang = GetLanguageName(lang);
     }
@@ -211,7 +215,7 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang) {
     if( msg[<1] != '?' && msg[<1] != '!' && msg[<1] != '.' )
         msg = capitalize(msg) + ".";
     else msg = capitalize(msg);
-    switch( cls ) {
+    switch( cls ){
     case TALK_PRIVATE:
         tmp = "%^BOLD%^RED%^You tell " + (string)target->GetName() +
         ",%^RESET%^ \"" + msg + "%^RESET%^\"";
@@ -238,11 +242,11 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang) {
             if ((msg[<1] >= 'a' && msg[<1] <= 'z') ||
               (msg[<1] >= 'A' && msg[<1] <= 'Z')) msg = msg + ".";
         }
-        if( target && msg[<1] == '?' ) {
+        if( target && msg[<1] == '?' ){
             tmp = "You " + verb + " " + (string)target->GetName();
             if( lang ) tmp = tmp + " in " + capitalize(lang);
         }
-        else if( target ) {
+        else if( target ){
             tmp = "You " + verb + " to " + (string)target->GetName();
             if( lang ) tmp = tmp + " in " + capitalize(lang);
         }

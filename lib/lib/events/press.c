@@ -14,28 +14,28 @@ static private mapping Press = ([]);
 string GetDefiniteShort();
 // end abstract methods
 
-varargs mixed GetPress(string str) {
-    if( !str ) {
+varargs mixed GetPress(string str){
+    if( !str ){
         str = "default";
     }
     return Press[str];
 }
 
-string array GetPresses() {
+string array GetPresses(){
     return keys(Press);
 }
 
-mapping RemovePress(string item) { 
+mapping RemovePress(string item){ 
     map_delete(Press, item); 
     return Press;
 }
 
-varargs mapping SetPress(mixed key, mixed desc) {
-    if( !key ) {
+varargs mapping SetPress(mixed key, mixed desc){
+    if( !key ){
         key = "default";
     }
-    if( !desc ) {
-        if( mapp(key) ) {
+    if( !desc ){
+        if( mapp(key) ){
             Press = expand_keys(key);
         }
         else {
@@ -48,15 +48,15 @@ varargs mapping SetPress(mixed key, mixed desc) {
     return Press;
 }
 
-varargs mixed CanPress(object who, string component) {
+varargs mixed CanPress(object who, string component){
     mixed val;
 
-    if( !component ) {
+    if( !component ){
         component = "default";
     }
     val = Press[component];
-    if( !val ) {
-        if( component == "default" ) {
+    if( !val ){
+        if( component == "default" ){
             return 0;
         }
         else {
@@ -67,24 +67,24 @@ varargs mixed CanPress(object who, string component) {
     else return 1;
 }
 
-varargs mixed eventPress(object who, string component) {
+varargs mixed eventPress(object who, string component){
     mixed val;
 
-    if( !component ) {
+    if( !component ){
         val = Press["default"];
     }
     else {
         val = Press[component];
     }
-    if( arrayp(val) ) {
+    if( arrayp(val) ){
         val = val[query_night()];
     }
-    if( stringp(val) ) {
+    if( stringp(val) ){
         object env;
 
         env = environment(who);
         who->eventPrint(val);
-        if( component ) {
+        if( component ){
             env->eventPrint(who->GetName() + " presses the " + component +
               " on " + GetDefiniteShort() + ".", who);
         }
@@ -95,17 +95,17 @@ varargs mixed eventPress(object who, string component) {
         return 1;
     }
     else {
-        if( functionp(val) & FP_OWNER_DESTED ) {
+        if( functionp(val) & FP_OWNER_DESTED ){
             return "Error in evaluating functional.";
         }
         return evaluate(val, who, component);
     }
 }
 
-mixed direct_press_obj(object target) {
+mixed direct_press_obj(object target){
     return CanPress(this_player());
 }
 
-mixed direct_press_str_on_obj(string str, object target) {
+mixed direct_press_str_on_obj(string str, object target){
     return CanPress(this_player(), remove_article(lower_case(str)));
 }

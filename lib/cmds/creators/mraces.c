@@ -21,7 +21,6 @@ mixed cmd(string str) {
 void help() {
     message("info",
       "Syntax: mraces\n"
-      "        mraces <search prefix>\n\n"
       "A simple tool for creators which will list available  npc races.",
       this_player() );
 }

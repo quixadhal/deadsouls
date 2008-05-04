@@ -21,7 +21,8 @@ private string          Type          = "cold";
 private string          GermName      = "generic germ";
 private string array    ImmuneRaces   = ({ "android", "tree", 
   "plant", "elemental", "fish", "gargoyle", "god", "golem", "insect", 
-  "slug", "snake", "wraith", "zombie" }); 
+  "slug", "snake", "wraith", "zombie", "bot", "strider", "vehicle",
+  "mech" }); 
 
 mixed eventMultiply();
 
@@ -32,11 +33,11 @@ void init(){
 }
 
 /* ***************  /lib/germ.c data functions  *************** */
-int isGerm() {
+int isGerm(){
     return 1;
 }
 
-int GetCommunicable() {
+int GetCommunicable(){
     return Communicable;
 }
 
@@ -71,12 +72,12 @@ string GetGermName(){
  *
  * returns the degree to which it is communicable
  */
-int SetCommunicable(int x) {
+int SetCommunicable(int x){
     if( x > 100 ) x = 100;
     return (Communicable = x);
 }
 
-mixed GetCure() {
+mixed GetCure(){
     return Cure;
 }
 
@@ -95,7 +96,7 @@ mixed GetCure() {
  *
  * returns the successfully set value
  */
-mixed SetCure(mixed val) {
+mixed SetCure(mixed val){
     if(intp(val)){
         Cure=val;
         return;
@@ -103,7 +104,7 @@ mixed SetCure(mixed val) {
     return (Cure = val);
 }
 
-function GetInfect() {
+function GetInfect(){
     return Infect;
 }
 
@@ -115,12 +116,12 @@ function GetInfect() {
  *
  * returns the function to be called
  */
-function SetInfect(function f) {
+function SetInfect(function f){
     Infect = f;
     return f;
 }
 
-int GetLifeSpan() {
+int GetLifeSpan(){
     return LifeSpan;
 }
 
@@ -134,12 +135,12 @@ int GetLifeSpan() {
  *
  * returns the new life span
  */
-int SetLifeSpan(int x) {
+int SetLifeSpan(int x){
     if( x > 600 ) x = 600;
     return (LifeSpan = x);
 }
 
-string GetType() {
+string GetType(){
     return Type;
 }
 
@@ -154,7 +155,7 @@ string GetType() {
  *     parasite
  * returns the new germ type
  */
-string SetType(string type) {
+string SetType(string type){
     Type=type;
     if(!Type || Type == "") Type = "foo";
     return Type;
@@ -165,28 +166,28 @@ string SetType(string type) {
  * This event is triggered from within the player object by some
  * attempt by a cleric or other some such thing to cure the player.
  */
-mixed eventCure(object who, int x, string type) {
-    if( type != GetType() ) { // Can't cure this
+mixed eventCure(object who, int x, string type){
+    if( type != GetType() ){ // Can't cure this
         return 0;
     }
-    if( Cure == -1 ) { // This is incureable
+    if( Cure == -1 ){ // This is incureable
         return 0;
     }
-    if( functionp(Cure) ) {
+    if( functionp(Cure) ){
         mixed tmp = evaluate(Cure, who, x, type);
 
-        if( tmp != 1 ) {
+        if( tmp != 1 ){
             return tmp;
         }
         Cure = 0;
     }
-    else if( intp(Cure) ) {
+    else if( intp(Cure) ){
         Cure -= x;
     }
     else {
         error("Bad argument 2 to eventCure().");
     }
-    if( Cure > 0 ) {
+    if( Cure > 0 ){
         return 0;
     }
     set_heart_beat(0);
@@ -195,18 +196,18 @@ mixed eventCure(object who, int x, string type) {
     return 1;
 }
 
-mixed eventEncounter(object who) {
-    if( !living(who) ) {
+mixed eventEncounter(object who){
+    if( !living(who) ){
         return 1;
     }
-    if( !query_heart_beat() ) {
+    if( !query_heart_beat() ){
         set_heart_beat(5);
     }
     if(this_object() && environment(this_object())) eventMultiply();
     return 1;
 }
 
-mixed eventInfect(object ob) {
+mixed eventInfect(object ob){
     mixed tmp;
     object *presbane;
     string race;
@@ -240,12 +241,12 @@ mixed eventInfect(object ob) {
     if(ob->GetAquatic() == 1) return 0;
     if(ob->GetNonCarbonBased() == 1) return 0;
 
-    if( functionp(Infect) ) {
+    if( functionp(Infect) ){
         if(!this_object()) return 0;
         tmp = evaluate(Infect, ob);
-        if( tmp == 1 ) {
+        if( tmp == 1 ){
             eventMove(ob);
-            if(this_object() && environment(this_object()) != ob) {
+            if(this_object() && environment(this_object()) != ob){
                 eventMove(ROOM_FURNACE);
                 set_heart_beat(0);
             }
@@ -260,20 +261,20 @@ mixed eventInfect(object ob) {
 }
 
 
-mixed eventMultiply() {
+mixed eventMultiply(){
     object ob, germ, winner;
     object *targs;
 
-    if( Communicable > random(1000) && !CannotInfect) {
+    if( Communicable > random(1000) && !CannotInfect){
 
-        if( (ob = environment()) && living(ob) ) {
+        if( (ob = environment()) && living(ob) ){
             if(environment(environment())) ob = environment(environment());
         }
 
         if(!ob) return 0;
 
         //move to the host's environment
-        if(!present(this_object()->GetName(),ob) ) {
+        if(!present(this_object()->GetName(),ob) ){
             germ = new(base_name(this_object()));
             if( germ && living(ob)  ) germ->eventInfect(ob);
             else if(!germ->eventMove(ob)) germ->eventMove(ROOM_FURNACE);
@@ -288,12 +289,12 @@ mixed eventMultiply() {
     return 1; 
 }
 
-void eventSuffer(object ob) {
+void eventSuffer(object ob){
 }
 
 /* ***************  /lib/germ.c driver applies  *************** */
 
-static void create() {
+static void create(){
     item::create();
     AddSave(({ "Communicable", "LifeSpan", "Type" }));
     SetInvis(1);
@@ -304,7 +305,7 @@ static void create() {
     SetPreventPut("");
 }
 
-static void heart_beat() {
+static void heart_beat(){
     object env;
     int interval;
 
@@ -313,17 +314,17 @@ static void heart_beat() {
     interval = time() - LastHeartBeat;
     LastHeartBeat = time();
 
-    if( Communicable ) {
+    if( Communicable ){
         eventMultiply();
     }
 
-    if( env && living(env) && environment(env)  && member_array(env->GetRace(),ImmuneRaces) == -1) {
+    if( env && living(env) && environment(env)  && member_array(env->GetRace(),ImmuneRaces) == -1){
         eventSuffer(env);
     }
 
     if(LifeSpan == -1) return;
     LifeSpan -= interval;
-    if( LifeSpan < 5 ) {
+    if( LifeSpan < 5 ){
         if(this_object()) this_object()->eventMove(ROOM_FURNACE);
         eventDestruct();
         return;

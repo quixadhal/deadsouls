@@ -17,7 +17,7 @@ private string Class, Clan;
 private mapping SkillModifiers;
 private string *Religion;
 
-static void create() {
+static void create(){
     abilities::create();
     SkillModifiers = ([]);
     Religion = allocate(2);
@@ -26,11 +26,11 @@ static void create() {
     Morality = 0;
 }
 
-int eventMoralAct(int degree) {
-    if( degree > 10 ) {
+int eventMoralAct(int degree){
+    if( degree > 10 ){
         degree = 10;
     }
-    else if( degree < -10 ) {
+    else if( degree < -10 ){
         degree = -10;
     }
     Morality += degree;
@@ -39,8 +39,8 @@ int eventMoralAct(int degree) {
     return Morality;
 }
 
-int AddSkillPoints(string skill, int x) {
-    if( SkillModifiers[skill] ) {
+int AddSkillPoints(string skill, int x){
+    if( SkillModifiers[skill] ){
         int stat_level; 
         stat_level = GetBaseStatLevel(SkillModifiers[skill]);
         if( stat_level < 20 ) x = x - x/2;
@@ -51,42 +51,42 @@ int AddSkillPoints(string skill, int x) {
     return abilities::AddSkillPoints(skill, x);
 }
 
-static string SetSkillModifier(string skill, string stat) {
+static string SetSkillModifier(string skill, string stat){
     if(!GetSkill(skill)) return 0;
     else return (SkillModifiers[skill] = stat);
 }
 
-string GetSkillModifier(string skill) { return SkillModifiers[skill]; }
+string GetSkillModifier(string skill){ return SkillModifiers[skill]; }
 
-string SetClass(string class_name) {
+string SetClass(string class_name){
     mixed array args = allocate(3);
     mixed array tmp;
 
     CLASSES_D->SetClass(class_name, args);
-    if( Class ) {
+    if( Class ){
         string multi;
 
-        if( !high_mortalp() ) { // Not high mortal
+        if( !high_mortalp() ){ // Not high mortal
             return Class;
         }
-        if( !args[0] ) { // No such secondary class
+        if( !args[0] ){ // No such secondary class
             return Class;
         }
         multi = args[0][Class];
-        if( !multi ) { // Can't multi-class in this combo
+        if( !multi ){ // Can't multi-class in this combo
             return Class;
         }
         class_name = multi;
     }
     else {
-        if( !args[0] ) { // No such class
+        if( !args[0] ){ // No such class
             return Class;
         }
-        foreach(tmp in args[2]) {
+        foreach(tmp in args[2]){
             SetSkill(tmp...);
         }
     }
-    foreach(tmp in args[1]) {
+    foreach(tmp in args[1]){
         SetSkill(tmp...);
     }
     return (Class = class_name);
@@ -106,26 +106,29 @@ mixed ChangeClass(string class_name){
     Class = 0;
     ret = SetClass(class_name);
     this_object()->ChangeLevel(lvl);
+    if(class_name == "fighter"){
+        this_object()->SetMelee(1);
+    }
     return ret;
 }
 
-string GetClass() { return Class; }
+string GetClass(){ return Class; }
 
-int ClassMember(string class_name) {
+int ClassMember(string class_name){
     return (int)CLASSES_D->ClassMember(Class, class_name);
 }
 
-string SetClan(string clan) { return (Clan = clan); }
+string SetClan(string clan){ return (Clan = clan); }
 
-string GetClan() { return Clan; }
+string GetClan(){ return Clan; }
 
-int GetBaseStatLevel(string stat) { return 0; }
+int GetBaseStatLevel(string stat){ return 0; }
 
-int SetMorality(int x) { return (Morality = x); }
+int SetMorality(int x){ return (Morality = x); }
 
-int GetMorality() { return Morality; }
+int GetMorality(){ return Morality; }
 
-string GetMoralityDescription() {
+string GetMoralityDescription(){
     string str;
     int x;
 
@@ -146,10 +149,10 @@ string GetMoralityDescription() {
     return str;
 }
 
-string *SetReligion(string adj, string noun) {
+string *SetReligion(string adj, string noun){
     Religion[0] = adj;
     Religion[1] = noun;
     return Religion;
 }
 
-varargs string GetReligion(int flag) { return Religion[flag]; } 
+varargs string GetReligion(int flag){ return Religion[flag]; } 

@@ -34,7 +34,7 @@ string *GetSides(){
 
 /*  ***************  /lib/door.c driver applies  ***************  */
 
-static void create() {
+static void create(){
     daemon::create();
     parse_init();
     SetNoClean(1);
@@ -53,12 +53,12 @@ static void create() {
  * Tests to see if a certain player can lock the door with a given
  * key
  */
-mixed CanLock(object who, string foo) {
+mixed CanLock(object who, string foo){
     object room;
 
     if( !(room = environment(who)) ) return 0;
-    foreach(string side, class door_side val in Sides) {
-        if( member_array(room, val->Rooms) != -1 ) {
+    foreach(string side, class door_side val in Sides){
+        if( member_array(room, val->Rooms) != -1 ){
             if( !GetLockable(side) ) return 0;
             else return seal::CanLock(who);
         }
@@ -76,12 +76,12 @@ mixed CanLock(object who, string foo) {
  * Tests to see if a certain player can unlock the door with a given
  * key
  */
-mixed CanUnlock(object who) {
+mixed CanUnlock(object who){
     object room;
 
     if( !(room = environment(who)) ) return 0;
-    foreach(string side, class door_side val in Sides) {
-        if( member_array(room, val->Rooms) != -1 ) {
+    foreach(string side, class door_side val in Sides){
+        if( member_array(room, val->Rooms) != -1 ){
             if( !GetLockable(side) ) return 0;
             else return seal::CanUnlock(who);
         }
@@ -100,7 +100,7 @@ mixed CanUnlock(object who) {
  * you may issue the appropriate message
  */
 
-varargs mixed eventClose(object who) {
+varargs mixed eventClose(object who){
     object room,whom;
     string tmp;
 
@@ -110,7 +110,7 @@ varargs mixed eventClose(object who) {
         else room = environment(this_player());
         if(!who) whom = this_player();
         else whom = who;
-        foreach(string side, class door_side val in Sides) {
+        foreach(string side, class door_side val in Sides){
             if( member_array(environment(whom), val->Rooms) != -1 ) tmp = side;
             if(who)
                 filter(val->Rooms, (: $1 && ($1 != $(room)):))->eventPrint(capitalize(GetShort(side)) + " closes.");
@@ -135,17 +135,17 @@ varargs mixed eventClose(object who) {
  * object by is required here
  */
 
-varargs mixed eventLock(object who, mixed key, mixed foo) {
+varargs mixed eventLock(object who, mixed key, mixed foo){
     object room;
 
     room = environment(who);
 
-    foreach(string side, class door_side val in Sides) {
-        if( member_array(room, val->Rooms) != -1 ) {
+    foreach(string side, class door_side val in Sides){
+        if( member_array(room, val->Rooms) != -1 ){
             string tmp;
 
             tmp = GetShort(side);
-            if( !(sizeof(key->GetId() & GetKeys(side))) ) {
+            if( !(sizeof(key->GetId() & GetKeys(side))) ){
                 who->eventPrint("You fail to lock " + tmp + ".");
                 room->eventPrint((string)who->GetName() + " attempts to " 
                   "lock " + tmp + " with " +
@@ -173,7 +173,7 @@ varargs mixed eventLock(object who, mixed key, mixed foo) {
  * check if it is already open so you can issue the appropriate messages
  */
 
-varargs int eventOpen(object who, object tool) {
+varargs int eventOpen(object who, object tool){
     object room, whom;
     string tmp;
 
@@ -183,7 +183,7 @@ varargs int eventOpen(object who, object tool) {
         else room = environment(this_player());
         if(!who) whom = this_player();
         else whom = who;
-        foreach(string side, class door_side val in Sides) {
+        foreach(string side, class door_side val in Sides){
             if( member_array(environment(whom), val->Rooms) != -1 ) tmp = side;
             if(who)
                 filter(val->Rooms, (: $1 && ($1 != $(room)) :))->eventPrint(capitalize(GetShort(side)) + " opens.");
@@ -209,7 +209,7 @@ varargs int eventOpen(object who, object tool) {
  * which is observing it
  */
 
-int eventRegisterSide(string side) {
+int eventRegisterSide(string side){
     string array id = GetId(side);
 
     if( !Sides[side] ) return 0;
@@ -217,11 +217,11 @@ int eventRegisterSide(string side) {
     distinct_array(((class door_side)Sides[side])->Rooms +
       ({ previous_object() }));
     previous_object()->AddItem(id, (: GetLong($(side)) :));
-    foreach(object ob in all_inventory(previous_object())) {
-        if( !ob->isDummy() ) {
+    foreach(object ob in all_inventory(previous_object())){
+        if( !ob->isDummy() ){
             continue;
         }
-        if( sizeof(id & ob->GetId()) ) {
+        if( sizeof(id & ob->GetId()) ){
             if(!ob->GetDoor()) ob->SetDoor(file_name(this_object()));
         }
     }
@@ -239,16 +239,16 @@ int eventRegisterSide(string side) {
  * Also check to see that the door is lockable from this side
  * object by is required here
  */
-mixed eventUnlock(object who, object key) {
+mixed eventUnlock(object who, object key){
     object room;
 
     room = environment(who);
-    foreach(string side, class door_side val in Sides) {
-        if( member_array(room, val->Rooms) != -1 ) {
+    foreach(string side, class door_side val in Sides){
+        if( member_array(room, val->Rooms) != -1 ){
             string tmp;
 
             tmp = GetShort(side);
-            if( !sizeof((string *)key->GetId() & GetKeys(side)) ) {
+            if( !sizeof((string *)key->GetId() & GetKeys(side)) ){
                 who->eventPrint("You fail to unlock " + tmp + ".");
                 room->eventPrint((string)who->GetName() + " attempts to "
                   "unlock " + tmp + " with " +
@@ -267,7 +267,7 @@ mixed eventUnlock(object who, object key) {
 
 /*  **************  /lib/door.c data functions  **************  */
 
-void SetSide(string side, mapping mp) {
+void SetSide(string side, mapping mp){
     class door_side new_side;
 
     new_side = new(class door_side);
@@ -293,41 +293,41 @@ mapping GetSide(string side){
     return copy(RetMap);
 }
 
-int SetLockable(string side, int x) {
+int SetLockable(string side, int x){
     if( !Sides[side] )
         Sides[side] = new(class door_side, Rooms : ({}));
     return (((class door_side)Sides[side])->Lockable = x); 
 }
 
-int GetLockable(string side) {
+int GetLockable(string side){
     return ((class door_side)Sides[side])->Lockable;
 }
 
-varargs string *SetId(string side, mixed *args...) { 
+varargs string *SetId(string side, mixed *args...){ 
     if( !Sides[side] ) Sides[side] = new(class door_side, Rooms : ({}));
     ((class door_side)Sides[side])->Ids = ({});
-    foreach(mixed val in args) {
+    foreach(mixed val in args){
         if( stringp(val) ) ((class door_side)Sides[side])->Ids += ({ val });
         else ((class door_side)Sides[side])->Ids += val;
     }
     return ((class door_side)Sides[side])->Ids;
 }
 
-string *GetId(string side) { return ((class door_side)Sides[side])->Ids; }
+string *GetId(string side){ return ((class door_side)Sides[side])->Ids; }
 
-mixed SetShort(string side, mixed short) {
+mixed SetShort(string side, mixed short){
     if( !Sides[side] )
         Sides[side] = new(class door_side, Rooms : ({}));
     return (((class door_side)Sides[side])->Short = short);
 }
 
-varargs string GetShort(string side) {
-    if( !side) { /* let's hack a side */
+varargs string GetShort(string side){
+    if( !side){ /* let's hack a side */
         object room;
 
         if( !this_player() ) room = previous_object();
         else room = environment(this_player());
-        foreach(string s, class door_side val in Sides) {
+        foreach(string s, class door_side val in Sides){
             side = s;
             if( member_array(room, val->Rooms) != -1 ) break;
         }
@@ -337,19 +337,19 @@ varargs string GetShort(string side) {
     else return (string)evaluate(((class door_side)Sides[side])->Short, side);
 }
 
-string GetDefiniteShort() {
+string GetDefiniteShort(){
     string tmp = GetShort();
 
     return add_article(tmp, 1);
 }
 
-mixed SetLong(string side, mixed long) {
+mixed SetLong(string side, mixed long){
     if( !Sides[side] )
         Sides[side] = new(class door_side, Rooms : ({}));
     return (((class door_side)Sides[side])->Long = long);
 }
 
-string GetLong(string side) {
+string GetLong(string side){
     string tmp;
 
     if( GetClosed() ) tmp = "It is closed.";
@@ -359,23 +359,23 @@ string GetLong(string side) {
     else return (string)evaluate(((class door_side)Sides[side])->Long, side);
 }
 
-varargs string *SetKeys(string side, mixed *args...) {
+varargs string *SetKeys(string side, mixed *args...){
     if( !Sides[side] ) Sides[side] = new(class door_side, Rooms : ({}));
     ((class door_side)Sides[side])->Keys = ({});
-    foreach(mixed val in args) {
+    foreach(mixed val in args){
         if( stringp(val) ) ((class door_side)Sides[side])->Keys += ({ val });
         else ((class door_side)Sides[side])->Keys += val;
     }
     return ((class door_side)Sides[side])->Keys;
 }
 
-string *GetKeys(string side) { return ((class door_side)Sides[side])->Keys; }
+string *GetKeys(string side){ return ((class door_side)Sides[side])->Keys; }
 
-object *GetRooms(string side) { return ((class door_side)Sides[side])->Rooms; }
+object *GetRooms(string side){ return ((class door_side)Sides[side])->Rooms; }
 
-int get_closed() { return GetClosed(); }
+int get_closed(){ return GetClosed(); }
 
-varargs mixed eventKnock(object who, mixed what) {
+varargs mixed eventKnock(object who, mixed what){
     object room,whom;
     string tmp;
     if(GetClosed()){
@@ -383,7 +383,7 @@ varargs mixed eventKnock(object who, mixed what) {
         else room = environment(this_player());
         if(!who) whom = this_player();
         else whom = who;
-        foreach(string side, class door_side val in Sides) {
+        foreach(string side, class door_side val in Sides){
             if( member_array(environment(whom), val->Rooms) != -1 ) tmp = side;
             if(who)
                 filter(val->Rooms, (: $1 && ($1 != $(room)):))->eventPrint(
@@ -401,7 +401,7 @@ varargs mixed eventKnock(object who, mixed what) {
     return 1;
 }
 
-varargs mixed eventScratch(object who, mixed what) {
+varargs mixed eventScratch(object who, mixed what){
     object room,whom;
     string tmp;
     if(GetClosed()){
@@ -409,7 +409,7 @@ varargs mixed eventScratch(object who, mixed what) {
         else room = environment(this_player());
         if(!who) whom = this_player();
         else whom = who;
-        foreach(string side, class door_side val in Sides) {
+        foreach(string side, class door_side val in Sides){
             if( member_array(environment(whom), val->Rooms) != -1 ) tmp = side;
             if(who)
                 filter(val->Rooms, (: $1 && ($1 != $(room)):))->eventPrint(

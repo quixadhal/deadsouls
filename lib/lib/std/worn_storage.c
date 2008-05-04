@@ -54,16 +54,16 @@ void PutCheck();
 
 int GetMaxProtection(int type);
 
-int SetRetainOnDeath(int x ) { return (RetainOnDeath = x); }
+int SetRetainOnDeath(int x ){ return (RetainOnDeath = x); }
 
-int GetRetainOnDeath() { return RetainOnDeath; }
+int GetRetainOnDeath(){ return RetainOnDeath; }
 
 /*  ***************  /lib/armor.c data functions  ***************  */
-varargs string GetEquippedDescription(object who) {
+varargs string GetEquippedDescription(object who){
     if(!who) who = this_player();
-    if( GetWorn() ) {
+    if( GetWorn() ){
         string tmp = "It is worn on ";
-        if(who == environment()) {
+        if(who == environment()){
             tmp += "your";
         }
         else {
@@ -82,20 +82,20 @@ varargs string GetExternalDesc(object who){
     return desc;
 }
 
-string GetEquippedShort() {
+string GetEquippedShort(){
     string tmp = GetShort();
 
-    if( GetWorn() ) {
+    if( GetWorn() ){
         tmp += " (%^GREEN%^worn%^RESET%^)";
     }
     return tmp;
 }
 
-int GetFingers() {
+int GetFingers(){
     return Fingers;
 }
 
-int SetFingers(int x) {
+int SetFingers(int x){
     return (Fingers = x);
 }
 
@@ -103,24 +103,24 @@ int SetFingers(int x) {
  *  Other damage types will be checked via more costly methods
  *  -blitz
  */
-string GetItemCondition() {
+string GetItemCondition(){
     int cuts, dents;
     string ret;
     cuts = dents = -1;
 
-    foreach(int type, int val in Protection) {
+    foreach(int type, int val in Protection){
         int x;
-        if( BLADE & type || KNIFE & type ) {
+        if( BLADE & type || KNIFE & type ){
             x = to_float(val) / GetMaxProtection(type) * 100;
             if( cuts == -1 || x < cuts ) cuts = x;
         }
-        else if( BLUNT & type ) {
+        else if( BLUNT & type ){
             x = to_float(val) / GetMaxProtection(type) * 100;
             if( dents == -1 || x > dents ) dents = x;
         }
     }
     if( cuts == -1 && dents == -1 ) return 0;
-    if( cuts > -1 ) switch( cuts ) {
+    if( cuts > -1 ) switch( cuts ){
     case 0..10: ret = "shredded to pieces"; break;
     case 11..20: ret = "shredded"; break;
     case 21..40: ret = "mildly shredded"; break;
@@ -129,10 +129,10 @@ string GetItemCondition() {
     case 81..90: ret = "somewhat nicked"; break;
     default: ret = "unbroken";
     }
-    if( dents > -1 ) {
+    if( dents > -1 ){
         if( ret ) ret += " and ";
         else ret = "";
-        switch( dents ) {
+        switch( dents ){
         case 0..10: ret += "utterly battered"; break;
         case 11..20: ret += "terribly pounded"; break;
         case 21..40: ret += "serverly dented"; break;
@@ -145,19 +145,19 @@ string GetItemCondition() {
     return "Its surface is " + ret + ".";
 }
 
-int GetMaxProtection(int type) {
+int GetMaxProtection(int type){
     return MaxProtection[type];
 }
 
-int GetProtection(int type) {
+int GetProtection(int type){
     int array types;
     int i;
 
-    foreach(int t, int val in Protection) {
-        if( t & type ) {
+    foreach(int t, int val in Protection){
+        if( t & type ){
             int blessing = GetProperty("blessed");
 
-            if( !intp(blessing) ) {
+            if( !intp(blessing) ){
                 blessing = 0;
             }
             return (val + blessing);
@@ -166,77 +166,77 @@ int GetProtection(int type) {
     return 0;
 }
 
-int SetProtection(int type, int amount) {
+int SetProtection(int type, int amount){
     MaxProtection[type] = amount;
     return (Protection[type] = amount);
 }
 
-string array GetRestrictLimbs() {
+string array GetRestrictLimbs(){
     return RestrictLimbs;
 }
 
-string array SetRestrictLimbs(string array limbs) {
+string array SetRestrictLimbs(string array limbs){
     return (RestrictLimbs = limbs);
 }
 
-static mixed array AddSave(mixed array vars) {
+static mixed array AddSave(mixed array vars){
     if(!vars) vars = ({});
     vars += ({ "Properties" });
     return persist::AddSave(vars);
 }
 
-string array GetSave() {
+string array GetSave(){
     return persist::GetSave();
 }
 
-mixed GetWear() {
+mixed GetWear(){
     return Wear;
 }
 
-mixed SetWear(mixed val) {
+mixed SetWear(mixed val){
     return (Wear = val);
 }
 
 /* ****************** armor.c modals ********************* */ 
-mixed CanEquip(object who, string array limbs) {
+mixed CanEquip(object who, string array limbs){
     mixed tmp;
 
-    if( !limbs ) { /* let's try and guess */
+    if( !limbs ){ /* let's try and guess */
         string array guess = who->GetLimbs();
         int armor = GetArmorType();
         string limb;
 
-        if( !guess ) {
+        if( !guess ){
             return "You have no limbs!";
         }
         limbs = ({});
-        foreach(limb in guess) {
+        foreach(limb in guess){
             mapping data;
 
             data = who->GetLimb(limb);
-            if( data["armors"] & armor ) {
+            if( data["armors"] & armor ){
                 limbs += ({ limb });
             }
         }
-        if( equip::CanEquip(who, limbs) != 1 ) {
+        if( equip::CanEquip(who, limbs) != 1 ){
             return "Wear " + GetDefiniteShort() + " on which limb?";
         }
         else {
             return 1;
         }
     }
-    else if( sizeof(limbs) == 1 ) {
+    else if( sizeof(limbs) == 1 ){
         string which;
 
-        switch(GetArmorType()) {
+        switch(GetArmorType()){
         case A_SHIELD:
-            if( which = who->GetLimbParent(limbs[0]) ) {
+            if( which = who->GetLimbParent(limbs[0]) ){
                 limbs = ({ limbs[0], "torso", which });
             }
             break;
 
         case A_LONG_GLOVE: case A_LONG_BOOT:
-            if( which = who->GetLimbParent(limbs[0]) ) {
+            if( which = who->GetLimbParent(limbs[0]) ){
                 limbs = ({ limbs[0], which });
             }
             else {
@@ -252,35 +252,35 @@ mixed CanEquip(object who, string array limbs) {
     return equip::CanEquip(who, limbs);
 }
 
-mixed CanRepair(object who) {
+mixed CanRepair(object who){
     return 1;
 }
 
-mixed CanSteal(object who) {
-    if( GetWorn() ) {
+mixed CanSteal(object who){
+    if( GetWorn() ){
         return "You can't steal something equipped!";
     }
     return steal::CanSteal(who);
 }
 
 /* ********************* armor.c events *********************** */ 
-static int Destruct() {
-    if( GetWorn() && environment() ) {
+static int Destruct(){
+    if( GetWorn() && environment() ){
         eventUnequip(environment());
     }
     return object::Destruct();
 }
 
-void eventDeteriorate(int type) {
-    foreach(int t, int val in Protection) {
-        if( (t & type) && val ) {
-            if( GetProperty("blessed") ) {
+void eventDeteriorate(int type){
+    foreach(int t, int val in Protection){
+        if( (t & type) && val ){
+            if( GetProperty("blessed") ){
                 Protection[t] -= 2;
             }
             else {
                 Protection[t]--;
             }
-            if( Protection[t] < 1 ) {
+            if( Protection[t] < 1 ){
                 Protection[t] = 0;
             }
         }
@@ -289,37 +289,37 @@ void eventDeteriorate(int type) {
     SetValue(GetValue()/2);
 }
 
-mixed eventEquip(object who, string array limbs) {
+mixed eventEquip(object who, string array limbs){
     mixed tmp;
 
-    if( !limbs ) { /* let's try and guess */
+    if( !limbs ){ /* let's try and guess */
         int armor = GetArmorType();
         string limb;
 
         limbs = ({});
-        foreach(limb in who->GetLimbs()) {
+        foreach(limb in who->GetLimbs()){
             mapping data = who->GetLimb(limb);
 
-            if( data["armors"] & armor ) {
+            if( data["armors"] & armor ){
                 limbs += ({ limb });
             }
         }
-        if( equip::CanEquip(who, limbs) != 1 ) {
+        if( equip::CanEquip(who, limbs) != 1 ){
             return "Wear " + GetDefiniteShort() + " on which limb?";
         }
     }
-    else if( sizeof(limbs) == 1 ) {
+    else if( sizeof(limbs) == 1 ){
         string which;
 
-        switch(GetArmorType()) {
+        switch(GetArmorType()){
         case A_SHIELD:
-            if( which = who->GetLimbParent(limbs[0]) ) {
+            if( which = who->GetLimbParent(limbs[0]) ){
                 limbs = ({ limbs[0], "torso", which });
             }
             break;
 
         case A_LONG_GLOVE: case A_LONG_BOOT:
-            if( which = who->GetLimbParent(limbs[0]) ) {
+            if( which = who->GetLimbParent(limbs[0]) ){
                 limbs = ({ limbs[0], which });
             }
             else {
@@ -332,17 +332,17 @@ mixed eventEquip(object who, string array limbs) {
             break;
         }
     }
-    if( functionp(Wear) ) {
-        if( functionp(Wear) & FP_OWNER_DESTED ) {
+    if( functionp(Wear) ){
+        if( functionp(Wear) & FP_OWNER_DESTED ){
             return "You can't wear that there at the moment.";
         }
-        if( !evaluate(Wear, who, limbs) ) {
+        if( !evaluate(Wear, who, limbs) ){
             return 1;
         }
     }
     tmp = equip::eventEquip(who, limbs);
-    if( tmp != 1 ) {
-        if( tmp ) {
+    if( tmp != 1 ){
+        if( tmp ){
             who->eventPrint(tmp);
         }
         else {
@@ -352,10 +352,10 @@ mixed eventEquip(object who, string array limbs) {
     }
     tmp = GetShort();
     SetWorn(limbs);
-    if( functionp(Wear) ) {
+    if( functionp(Wear) ){
         return 1;
     }
-    else if( stringp(Wear) ) {
+    else if( stringp(Wear) ){
         who->eventPrint(Wear);
     }
     else {
@@ -365,20 +365,20 @@ mixed eventEquip(object who, string array limbs) {
     return 1;
 }
 
-int eventMove(mixed dest) {
-    if( !environment() && GetWorn() ) {
+int eventMove(mixed dest){
+    if( !environment() && GetWorn() ){
         mixed array limbs = GetWorn();
 
         SetWorn(0);
         call_out((: eventRestoreEquip :), 0, limbs);
     }
-    if( GetWorn() && environment() ) {
+    if( GetWorn() && environment() ){
         eventUnequip(environment());
     }
     return move::eventMove(dest);
 }
 
-int eventReceiveDamage(object agent, int type, int amt, int i, mixed array l) {
+int eventReceiveDamage(object agent, int type, int amt, int i, mixed array l){
     int x = -1;
 
     if(objectp(agent)){
@@ -386,9 +386,9 @@ int eventReceiveDamage(object agent, int type, int amt, int i, mixed array l) {
         if(!estatep(agent) && estatep(this_object())) return 0;
     }
 
-    foreach(int t, int val in Protection) {
-        if( t & type ) {
-            if( x == -1 || val < x ) {
+    foreach(int t, int val in Protection){
+        if( t & type ){
+            if( x == -1 || val < x ){
                 x = val;
             }
         }
@@ -398,43 +398,43 @@ int eventReceiveDamage(object agent, int type, int amt, int i, mixed array l) {
     return x;
 }
 
-varargs mixed eventRepair(object who, int strength, int type) {
-    if( !who || !strength ) {
+varargs mixed eventRepair(object who, int strength, int type){
+    if( !who || !strength ){
         return 0;
     }
-    if( !type ) {
+    if( !type ){
         type = ALL_DAMAGE;
     }
-    foreach(int i in keys(Protection)) {
-        if( !(i & type) || !MaxProtection[i]) {
+    foreach(int i in keys(Protection)){
+        if( !(i & type) || !MaxProtection[i]){
             continue;
         }
         Protection[i] += strength;
-        if( Protection[i] > MaxProtection[i] ) {
+        if( Protection[i] > MaxProtection[i] ){
             Protection[i] = MaxProtection[i];
         }
     }
     return 1;
 }
 
-mixed eventShow(object who, string component) {
+mixed eventShow(object who, string component){
     mixed tmp = object::eventShow(who, component);
 
-    if( component || tmp != 1 ) {
+    if( component || tmp != 1 ){
         return tmp;
     }
-    if( GetPoison() ) {
-        if( random(100) < who->GetSkillLevel("stealth") ) {
+    if( GetPoison() ){
+        if( random(100) < who->GetSkillLevel("stealth") ){
             who->eventPrint("You notice a strange substance on it.");
         }
     }
     return 1;
 }
 
-varargs mixed eventUnequip(object who) {
+varargs mixed eventUnequip(object who){
     mixed tmp = equip::eventUnequip(who);
 
-    if( tmp != 1 ) {
+    if( tmp != 1 ){
         return tmp;
     }
     send_messages("remove", "$agent_name $agent_verb $target_name.",
@@ -449,7 +449,7 @@ int restrict(mixed arg){
 }
 
 /* ******************** armor.c driver applies ******************** */
-static void create() {
+static void create(){
     AddSave( ({ "Closed", "CanClose", "CanLock", "RecurseDepth" , "MaxRecurseDepth" }) +
       (equip::GetSave()) + (value::GetSave()) + (mass::GetSave()) +
       (poison::GetSave()) + (deterioration::GetSave()));
@@ -461,7 +461,7 @@ static void create() {
     SetVendorType(VT_ARMOR);
 }
 
-void init() {
+void init(){
     int atype;
     atype = GetArmorType();
     if(atype & A_HELMET ) restrict(({"head"}));
@@ -499,40 +499,40 @@ int AddRecurseDepth(int i){
     return 1;
 }
 
-int GetCanClose() {
+int GetCanClose(){
     return CanClose;
 }
 
-int SetCanClose(int x) {
+int SetCanClose(int x){
     CanClose = x;
 }
 
-int GetCanLock() {
+int GetCanLock(){
     return CanLock;
 }
 
-int SetCanLock(int x) {
+int SetCanLock(int x){
     return SetCanClose(CanLock = x);
 }
 
-void SetKey(string key) { 
+void SetKey(string key){ 
     SetKeys(key);
 } 
 
-int GetOpacity() {
+int GetOpacity(){
     return holder::GetOpacity();
 }
 
-int GetRadiantLight(int ambient) {
+int GetRadiantLight(int ambient){
     return (object::GetRadiantLight(ambient)) + (holder::GetRadiantLight(ambient));
 }
 
-int SetSaveRecurse(int x) {
+int SetSaveRecurse(int x){
     return persist::SetSaveRecurse(x);
 }
 
-mixed CanClose(object who, string id) {
-    if( !GetCanClose() ) {
+mixed CanClose(object who, string id){
+    if( !GetCanClose() ){
         return 0;
     }
     else {
@@ -540,20 +540,20 @@ mixed CanClose(object who, string id) {
     }
 }
 
-mixed CanGetFrom(object who, object item) {
+mixed CanGetFrom(object who, object item){
     mixed tmp = holder::CanGetFrom(who, item);
 
-    if( tmp != 1 ) {
+    if( tmp != 1 ){
         return tmp;
     }
-    if( GetClosed() ) {
+    if( GetClosed() ){
         return capitalize(GetDefiniteShort()) + " is closed.";
     }
     return 1;
 }
 
-mixed CanLock(object who, string id) {
-    if( !GetCanLock() ) {
+mixed CanLock(object who, string id){
+    if( !GetCanLock() ){
         return 0;
     }
     else {
@@ -561,8 +561,8 @@ mixed CanLock(object who, string id) {
     }
 }
 
-mixed CanOpen(object who, string id) {
-    if( !GetCanClose() ) {
+mixed CanOpen(object who, string id){
+    if( !GetCanClose() ){
         return 0;
     }
     else {
@@ -570,8 +570,8 @@ mixed CanOpen(object who, string id) {
     }
 }
 
-mixed CanPick(object who, string id) {
-    if( !GetCanLock() ) {
+mixed CanPick(object who, string id){
+    if( !GetCanLock() ){
         return "It isn't lockable in the first place.";
     }
     else {
@@ -579,7 +579,7 @@ mixed CanPick(object who, string id) {
     }
 }
 
-mixed CanPutInto(object who, object what) {
+mixed CanPutInto(object who, object what){
     mixed tmp;
     int mydepth,yourdepth,total,indirectp,indirectpp;
     string wherefrom,stackstring;
@@ -597,15 +597,15 @@ mixed CanPutInto(object who, object what) {
     indirectpp=member_array("indirect_put_objs_word_obj",callstack);
 
 
-    if( tmp != 1 ) {
+    if( tmp != 1 ){
         if( GetClosed() ) return capitalize(GetDefiniteShort()) + " is closed.";
         else return "You can't do that at this time.";
     }
-    if( GetClosed() ) {
+    if( GetClosed() ){
         return capitalize(GetDefiniteShort()) + " is closed.";
     }
 
-    if(inherits("/lib/std/storage",what) ) {
+    if(inherits("/lib/std/storage",what) ){
         yourdepth = what->GetRecurseDepth();
         mydepth = this_object()->GetRecurseDepth();
         if(yourdepth && mydepth) total = yourdepth + mydepth;
@@ -615,15 +615,15 @@ mixed CanPutInto(object who, object what) {
     return 1;
 }
 
-varargs mixed CanShowInterior(object who, object target) {
-    if( GetClosed() && this_object()->GetOpacity() > 33) {
+varargs mixed CanShowInterior(object who, object target){
+    if( GetClosed() && this_object()->GetOpacity() > 33){
         return capitalize(GetDefiniteShort()) + " is closed.";
     }
     else return holder::CanShowInterior();
 }
 
-mixed CanUnlock(object who, string id, object key) {
-    if( !GetCanLock() ) {
+mixed CanUnlock(object who, string id, object key){
+    if( !GetCanLock() ){
         return 0;
     }
     else {
@@ -631,8 +631,8 @@ mixed CanUnlock(object who, string id, object key) {
     }
 }
 
-int eventReceiveObject(object ob) {
-    if( GetClosed() ) {
+int eventReceiveObject(object ob){
+    if( GetClosed() ){
         return 0;
     }
 
@@ -641,17 +641,17 @@ int eventReceiveObject(object ob) {
 
 void PutCheck(){
 
-    if(RecurseDepth >= MaxRecurseDepth) {
+    if(RecurseDepth >= MaxRecurseDepth){
         SetPreventPut("You have enough containers inside containers there. This one will have to stay out.");
     }
 
 
 }
 
-int inventory_accessible() {
+int inventory_accessible(){
     return seal::inventory_accessible();
 }
 
-int inventory_visible() {
+int inventory_visible(){
     return (seal::inventory_visible() || holder::inventory_visible());
 }

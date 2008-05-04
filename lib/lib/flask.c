@@ -13,23 +13,23 @@ int direct_fill_obj_from_obj(){ return 1;}
 int indirect_fill_obj_with_obj(){ return 1;}
 int indirect_fill_obj_from_obj(){ return 1;}
 
-int indirect_pour_obj_into_obj() { return 1;}
-int direct_pour_obj_into_obj() { return 1;}
-int indirect_pour_from_obj_into_obj() { return 1;}
-int direct_pour_from_obj_into_obj() { return 1;}
+int indirect_pour_obj_into_obj(){ return 1;}
+int direct_pour_obj_into_obj(){ return 1;}
+int indirect_pour_from_obj_into_obj(){ return 1;}
+int direct_pour_from_obj_into_obj(){ return 1;}
 
-int direct_pour_obj_out() { return 1;}
-int direct_pour_out_obj() { return 1;}
+int direct_pour_obj_out(){ return 1;}
+int direct_pour_out_obj(){ return 1;}
 
-int direct_empty_obj() { return 1;}
+int direct_empty_obj(){ return 1;}
 
-mixed indirect_drink_from_obj() {
+mixed indirect_drink_from_obj(){
     if( environment() != this_player() ) return 0;
     if( FlaskUses < 1 ) return "The flask is empty.";
     return 1;
 }
 
-static void create() {
+static void create(){
     item::create();
     AddSave( ({ "FlaskUses", "FlaskStrength", "MealType", "FlaskContents" }) );
     FlaskUses = 0;
@@ -58,29 +58,29 @@ int CanFillOther(){
     else return FlaskUses;
 }
 
-int SetStrength(int x) { return (FlaskStrength = x); }
+int SetStrength(int x){ return (FlaskStrength = x); }
 
-mixed GetStrength() { return FlaskStrength; }
+mixed GetStrength(){ return FlaskStrength; }
 
-int SetFlaskUses(int x) { return (FlaskUses = x); }
+int SetFlaskUses(int x){ return (FlaskUses = x); }
 
-int GetFlaskUses() { return FlaskUses; }
+int GetFlaskUses(){ return FlaskUses; }
 
-int SetEverFill(int x) { return (EverFill = x); }
+int SetEverFill(int x){ return (EverFill = x); }
 
-int GetEverFill() { return EverFill; }
+int GetEverFill(){ return EverFill; }
 
-int SetMealType(int x) { return (MealType = x); }
+int SetMealType(int x){ return (MealType = x); }
 
-int GetMealType() { return MealType; }
+int GetMealType(){ return MealType; }
 
-int SetMaxFlask(int x) { return (MaxFlask = x); }
+int SetMaxFlask(int x){ return (MaxFlask = x); }
 
-int GetMaxFlask() { return MaxFlask; }
+int GetMaxFlask(){ return MaxFlask; }
 
-string GetFlaskContents() { return FlaskContents; }
+string GetFlaskContents(){ return FlaskContents; }
 
-string SetFlaskContents(string str) { 
+string SetFlaskContents(string str){ 
     SetId(GetId()+({ str }));
     parse_refresh();
     return (FlaskContents = str); 
@@ -131,11 +131,11 @@ mixed eventFill(object who, object from){
         write("You can't fill it with itself!");
         return 1;
     }
-    if(!howmuch_them) {
+    if(!howmuch_them){
         write("The "+from->GetKeyName()+" is empty.");
         return 1;
     }
-    if(FlaskUses >= MaxFlask) {
+    if(FlaskUses >= MaxFlask){
         FlaskUses = MaxFlask;
         write("The "+this_object()->GetKeyName()+" is already full.");
         return 1;
@@ -162,12 +162,12 @@ mixed eventFill(object who, object from){
     return 1;
 }
 
-varargs mixed eventDrink(object who, object target, string foo) {
+varargs mixed eventDrink(object who, object target, string foo){
     write("You drink from "+GetShort()+".");
     say(who->GetName()+" drinks from "+GetShort()+".");
     if(!EverFill) FlaskUses--;
     who->eventDrink(this_object());
-    if(!FlaskUses) {
+    if(!FlaskUses){
         SetId(GetId() - ({ FlaskContents }) );
         parse_refresh();
         FlaskContents = "empty";
@@ -177,7 +177,7 @@ varargs mixed eventDrink(object who, object target, string foo) {
 }
 
 mixed CanDrink(object who, string what){
-    if(!FlaskUses) {
+    if(!FlaskUses){
         say(who->GetName()+" sadly looks at "+GetShort()+".");
         return "The "+GetKeyName()+" is empty.";
     }

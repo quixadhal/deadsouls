@@ -18,7 +18,7 @@ static void process_channel(mixed fd, mixed *info){
         // Check if string parts are strings...
         if(info[0][8..]=="t"){
             if(sizeof(info)!=13 || !stringp(info[9]) || !stringp(info[10]) ||
-              !stringp(info[11]) || !stringp(info[12])){
+              !stringp(info[11]) || !stringp(info[12]) ||!sizeof(info[11])){
                 send_error(info[2],info[3],"bad-pkt","Bad packet format.",info);
                 return;
             }
@@ -34,9 +34,12 @@ static void process_channel(mixed fd, mixed *info){
             sendermsg = info[9];
         }
         else{ // m, e
-            if(sizeof(info)!=9){
+            if(sizeof(info)!=9 || !stringp(info[3]) || !sizeof(info[3])){
                 send_error(info[2],info[3],"bad-pkt","Bad packet format.",info);
                 return;
+            }
+            if(!stringp(info[7]) || !sizeof(info[7])){
+                info[7] = info[3];
             }
             if(info[0] == "channel-e" && !grepp(info[8],"$N"))
                 info[8] = info[8] + " (from "+info[7]+"@"+info[2]+")";

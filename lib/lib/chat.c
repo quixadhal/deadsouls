@@ -12,7 +12,7 @@ private string *RestrictedChannels;
 private static mapping Channels;
 int NoChanColors = 0;
 
-static void create() {
+static void create(){
     RestrictedChannels = ({ });
     Channels = ([ ]);
 }
@@ -21,11 +21,11 @@ mapping returnChannels(){
     return Channels;
 }
 
-static string chat_command(string str) {
+static string chat_command(string str){
     string cmd, arg, tmp;
     int x;
 
-    if( (x = strsrch(str, " ")) == -1) {
+    if( (x = strsrch(str, " ")) == -1){
         cmd = str;
         arg = "";
     }
@@ -37,27 +37,27 @@ static string chat_command(string str) {
     else if( Channels[cmd] && (int)CHAT_D->cmdChannel(cmd, arg) ) return "";
     else if( (sscanf(cmd, "%semote", tmp) || sscanf(cmd, "%s:", tmp)
         || sscanf(cmd, "%s|%*s", tmp))
-      && Channels[tmp] ) {
+      && Channels[tmp] ){
         if( (int)CHAT_D->cmdChannel(cmd, arg) ) return "";
         else return str;
     }
     else return str;
 }
 
-static void net_dead() {
+static void net_dead(){
     CHAT_D->eventRemoveMember(keys(Channels));
 }
 
-void eventReconnect() {
+void eventReconnect(){
     CHAT_D->eventRegisterMember(keys(Channels));
 }
 
-int eventDestruct() {
+int eventDestruct(){
     if(CHAT_D->eventRemoveMember(keys(Channels))) return 1;
     else return 0;
 }
 
-string *AddChannel(mixed val) {
+string *AddChannel(mixed val){
     string *tmp;
     int i, maxi;
 
@@ -77,7 +77,7 @@ string *AddChannel(mixed val) {
     return keys(Channels);
 }
 
-string *RemoveChannel(mixed val) {
+string *RemoveChannel(mixed val){
     string *tmp;
     int i, maxi;
 
@@ -95,7 +95,7 @@ string *RemoveChannel(mixed val) {
     return keys(Channels);
 }
 
-string *GetChannels() { return keys(Channels); }
+string *GetChannels(){ return keys(Channels); }
 
 int GetNoChanColors(){
     return NoChanColors;
@@ -107,7 +107,7 @@ int SetNoChanColors(int x){
     return NoChanColors;
 }
 
-string *RestrictChannel(mixed val) {
+string *RestrictChannel(mixed val){
     if( stringp(val) ) val = ({ val });
     else if( !pointerp(val) ) error("Bad argument 1 to RestrictChannel().\n");
 
@@ -118,7 +118,7 @@ string *RestrictChannel(mixed val) {
     return RestrictedChannels;
 }
 
-string *UnrestrictChannel(mixed val) {
+string *UnrestrictChannel(mixed val){
     if( stringp(val) ) val = ({ val });
     else if( !pointerp(val) ) error("Bad argument 1 to UnrestrictChannel().\n");
 
@@ -129,4 +129,4 @@ string *UnrestrictChannel(mixed val) {
     return RestrictedChannels;
 }
 
-string *GetRestrictedChannels() { return (RestrictedChannels + ({})); }
+string *GetRestrictedChannels(){ return (RestrictedChannels + ({})); }

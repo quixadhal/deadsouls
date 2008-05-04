@@ -9,7 +9,7 @@ mixed cmd() {
     foreach(string race in races){
         string str = CFG_RACES+"/"+race;
         if(file_exists(str)) {
-            RACES_D->AddRace(str);
+            catch( RACES_D->AddRace(str) );
         }
     }
     write("Done.");
@@ -17,8 +17,8 @@ mixed cmd() {
 }
 
 string GetHelp() {
-    return ("Syntax: <addraces>\n"
+    return ("Syntax: addraces\n"
       "Imports all the race files in CFG_RACES into  "
-      "RACES_D. It will fail if all races have not been "
+      "RACES_D. It may fail if all races have not been "
       "removed prior to its use.");
 }

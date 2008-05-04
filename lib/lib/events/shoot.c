@@ -25,10 +25,10 @@ mixed eventShoot(mixed shooter, mixed target){
 
 mixed CanShoot(object shooter, mixed target){
 
-    if(this_object() == shooter && mustcarry > 0 && environment(this_object()) != this_player()) {
+    if(this_object() == shooter && mustcarry > 0 && environment(this_object()) != this_player()){
         return "#You are not holding the "+remove_article(shooter->GetShort())+".";
     } 
-    if(this_object() == shooter && mustwield > 0 && this_object()->GetWorn() == 0 && !creatorp(this_player())) {
+    if(this_object() == shooter && mustwield > 0 && this_object()->GetWorn() == 0 && !creatorp(this_player())){
         return "#You are not wielding the "+remove_article(shooter->GetShort())+".";
     }
 

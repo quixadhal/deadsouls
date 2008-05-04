@@ -127,13 +127,19 @@ varargs static void eventUpdate(object whom){
                   "#define F_TERMINAL_COLOR         0");
         }
 
+        if(!grepp(config_file, "CLASS_SELECTION"))
+            config_file = append_line(config_file,"#define HUMANS_ONLY",
+              "#define CLASS_SELECTION          0");
+
         write_file("/secure/include/config.h", config_file+"\n", 1);
     }
 
     rm("/cmds/players/where.c");
     rm("/domains/Praxis/obj/mon/execution.c");
     rm("/domains/campus/txt/moochers.txt");
+    rm("/secure/cfg/classes/priest");
     rm("/secure/sefun/distinct_array.c");
+    rm("/secure/sefun/query_carrying.c");
     rm("/secure/sefun/singular_array.c");
     rm("/verbs/creators/add.c");
     rm("/verbs/creators/copy.c");
@@ -172,6 +178,7 @@ varargs static void eventUpdate(object whom){
     if(file_exists("/secure/scripts/qcs_check.scr"))
         rename("/secure/scripts/qcs_check.scr", "/secure/scripts/qcs_check.txt");
 
+    load_object("/secure/cmds/admins/removeraces")->cmd();
     load_object("/secure/cmds/admins/addraces")->cmd();
 
     newfile = read_file("/secure/cfg/read.cfg");
@@ -195,8 +202,10 @@ varargs static void eventUpdate(object whom){
         rename("/secure/daemon/imc2_new.c", "/secure/daemon/imc2.c");
     }
 
-    CLASSES_D->RemoveClass("thief");
+    catch( CLASSES_D->RemoveClass("thief") );
     CLASSES_D->AddClass("/secure/cfg/classes/thief");
+    catch( CLASSES_D->RemoveClass("priest") );
+    CLASSES_D->AddClass("/secure/cfg/classes/cleric");
 
     reload("/secure/daemon/master");
     reload("/secure/sefun/arrays");

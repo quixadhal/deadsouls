@@ -12,12 +12,12 @@
 
 static private int InPager = 0;
 
-mixed more(mixed val, string cl, function f, mixed args) {
+mixed more(mixed val, string cl, function f, mixed args){
     log_file("more", sprintf("%O", previous_object()) + "\n");
     return eventPage(val, cl, f, args);
 }
 
-varargs mixed eventPage(mixed val, mixed msg_class, function f,mixed args...) {
+varargs mixed eventPage(mixed val, mixed msg_class, function f,mixed args...){
     mixed array files;
     int maxi;
 
@@ -26,7 +26,7 @@ varargs mixed eventPage(mixed val, mixed msg_class, function f,mixed args...) {
         error("Bad argument 1 to eventPage().\n");
     if(!sizeof(val)) return 0;
     if( stringp(msg_class) || !msg_class ) msg_class = MSG_SYSTEM;
-    if( arrayp(val) ) {
+    if( arrayp(val) ){
         mapping file = ([]);
 
         if( !(file["Size"] = sizeof(val)) ) return 1;
@@ -47,11 +47,11 @@ varargs mixed eventPage(mixed val, mixed msg_class, function f,mixed args...) {
         //tc("val: "+identify(val));
         if( !val || !sizeof(val) ) return "File not found.";
         files = ({});
-        foreach(tmp in val) {
+        foreach(tmp in val){
             mapping file = ([]);
             string str;
 
-            if( file_size(tmp) == -2 ) {
+            if( file_size(tmp) == -2 ){
                 if( sizeof(val) == 1 ) return "That is a directory.";
                 else continue;
             }
@@ -70,12 +70,12 @@ varargs mixed eventPage(mixed val, mixed msg_class, function f,mixed args...) {
             files += ({ file });
         }
     }
-    if( (maxi = sizeof(files)) > 1 ) {
+    if( (maxi = sizeof(files)) > 1 ){
         int i;
-        for(i=0; i<maxi; i++) {
+        for(i=0; i<maxi; i++){
             mapping tmp = files[i];
 
-            if( i != maxi-1 ) {
+            if( i != maxi-1 ){
                 files[i]["Callback"] = (: Page, files[i+1] :);
                 files[i]["Args"] = 0;
             }
@@ -88,7 +88,7 @@ varargs mixed eventPage(mixed val, mixed msg_class, function f,mixed args...) {
     return Page(files[0]+([]));
 }
 
-static int Page(mixed tmpfile) {
+static int Page(mixed tmpfile){
     string page, prompt;
     int endline, tmpcurrline, err;
     mixed tmparr, tmparr2;
@@ -110,7 +110,7 @@ static int Page(mixed tmpfile) {
     eventPrint(page, file["MessageClass"]);
     if( creatorp() && file["Name"] != "" ) prompt = file["Name"] + " ";
     else prompt = "";
-    if( endline < file["Size"] - 1 ) {
+    if( endline < file["Size"] - 1 ){
         prompt += "(" + (file["CurrentLine"]+1) + "-" + (endline+1) + " ";
         prompt += ((endline * 100)/(file["Size"] - 1)) + "%) press enter: ";
         // Following fix courtesy of Brodbane
@@ -132,13 +132,13 @@ static int Page(mixed tmpfile) {
     return 1;
 }
 
-static void cmdPage(string str, mapping file) {
+static void cmdPage(string str, mapping file){
     string *tmp;
     string cmd, args;
     int fp, x, scrlen;
 
-    if( !str || trim(str) == "" ) {
-        if( file["CurrentLine"] >= (file["Size"]) ) {
+    if( !str || trim(str) == "" ){
+        if( file["CurrentLine"] >= (file["Size"]) ){
             fp = functionp(file["Callback"]);
             if( !fp || (fp == FP_OWNER_DESTED) ) return;
             if( file["Args"] ) evaluate(file["Callback"], file["Args"]...);
@@ -150,9 +150,9 @@ static void cmdPage(string str, mapping file) {
     cmd = str[0..0];
     if( strlen(str) > 1 ) args = str[1..];
     else args = 0;
-    switch(cmd) {
+    switch(cmd){
     case ",":
-        if( !args || !(file["Marks"][args]) ) {
+        if( !args || !(file["Marks"][args]) ){
             receive("\a");
             input_to((: cmdPage :), file);
             return;
@@ -161,27 +161,27 @@ static void cmdPage(string str, mapping file) {
         return;
 
     case "/":
-        if( file["CurrentLine"] >= (file["Size"] - 1) ) {
+        if( file["CurrentLine"] >= (file["Size"] - 1) ){
             eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
             input_to((: cmdPage :), file);
             return;
         }
-        if( !args && !(file["LastSearch"]) ) {
+        if( !args && !(file["LastSearch"]) ){
             eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
             input_to((: cmdPage :), file);
             return;
         }
         if( !args ) args = file["LastSearch"];
         tmp = regexp(file["Lines"][file["CurrentLine"]..], args);
-        if( !sizeof(tmp) ) {
+        if( !sizeof(tmp) ){
             eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
             input_to((: cmdPage :), file);
             return;
         }
-        for(x = file["CurrentLine"]; x < file["Size"]; x++) {
+        for(x = file["CurrentLine"]; x < file["Size"]; x++){
             if( tmp[0] == file["Lines"][x] ) break;
         }
-        if( x == file["Size"] ) {
+        if( x == file["Size"] ){
             eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
             input_to((: cmdPage :), file);
             return;
@@ -193,27 +193,27 @@ static void cmdPage(string str, mapping file) {
 
     case "?":
         x = file["CurrentLine"] - GetScreen()[1] - 3;
-        if( x < 1 ) {
+        if( x < 1 ){
             eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
             input_to((: cmdPage :), file);
             return;
         }
-        if( !args && !(file["LastSearch"]) ) {
+        if( !args && !(file["LastSearch"]) ){
             eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
             input_to((: cmdPage :), file);
             return;
         }
         if( !args ) args = file["LastSearch"];
         tmp = regexp(file["Lines"][0..x], args);
-        if( !sizeof(tmp) ) {
+        if( !sizeof(tmp) ){
             x = -1;
         }
         else {
-            for( ; x > -1; x--) {
+            for( ; x > -1; x--){
                 if( tmp[<1] == file["Lines"][x] ) break;
             }
         }
-        if( x == -1 ) {
+        if( x == -1 ){
             eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
             input_to((: cmdPage :), file);
             return;
@@ -226,7 +226,7 @@ static void cmdPage(string str, mapping file) {
 
     case "b": 
         scrlen = GetScreen()[1];
-        if( (file["CurrentLine"] - (2*(scrlen-3))) < 1 ) {
+        if( (file["CurrentLine"] - (2*(scrlen-3))) < 1 ){
             eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
             input_to((: cmdPage :), file);
             return;
@@ -244,11 +244,11 @@ static void cmdPage(string str, mapping file) {
             if( x < 1 ) x = 1;
         }
         if( !args ) args = x + "";
-        else if( args[0] == ' ') {
+        else if( args[0] == ' '){
             if( strlen(args) == 1 ) args = x + "";
             else args = trim(args);
         }
-        if( ((x = to_int(args)) < 1) || (x > file["Size"]) ) {
+        if( ((x = to_int(args)) < 1) || (x > file["Size"]) ){
             eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
             input_to((: cmdPage :), file);
             return;
@@ -264,7 +264,7 @@ static void cmdPage(string str, mapping file) {
         return;
 
     case "m":
-        if( !args ) {
+        if( !args ){
             eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
             input_to((: cmdPage :), file);
             return;
@@ -278,7 +278,7 @@ static void cmdPage(string str, mapping file) {
 
     case "n":
         fp = functionp(file["Callback"]);
-        if( !fp || (fp == FP_OWNER_DESTED) ) {
+        if( !fp || (fp == FP_OWNER_DESTED) ){
             eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
             input_to((: cmdPage :), file);
             return;
@@ -289,7 +289,7 @@ static void cmdPage(string str, mapping file) {
 
     case "p": case "%":
         if( args ) x = to_int(args);
-        if( !args || x < 1 || x > 100 ) {
+        if( !args || x < 1 || x > 100 ){
             eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
             input_to((: cmdPage :), file);
             return;
@@ -324,7 +324,7 @@ static void cmdPage(string str, mapping file) {
     }
 }
 
-varargs static private void RazzleDazzle(mixed args...) {
+varargs static private void RazzleDazzle(mixed args...){
     function f;
     InPager = 0;
     if(args && sizeof(args)){
@@ -337,7 +337,7 @@ varargs static private void RazzleDazzle(mixed args...) {
     }
 }
 
-static private string GetPagerPrompt(mapping file) {
+static private string GetPagerPrompt(mapping file){
     int x;
 
     if( creatorp() && file["Name"] != "" )
@@ -349,7 +349,7 @@ static private string GetPagerPrompt(mapping file) {
     return "%^BOLD%^" + x + "%:%^RESET%^ ";
 }
 
-string GetHelp(string str) {
+string GetHelp(string str){
     if( str != "pager" ) return 0;
     return ("/<pattern>, ?<pattern>\n"
       "The pattern is optional.  / searches forward for a pattern.  "

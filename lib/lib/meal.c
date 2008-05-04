@@ -21,7 +21,7 @@ private string EmptyItem, EmptyName, OtherMessage;
 private mixed EmptyShort, EmptyLong, MyMessage;
 function MealAction;
 
-static void create() {
+static void create(){
     item::create();
     MealType = MEAL_ALCOHOL;
     EmptyItem = 0;
@@ -39,37 +39,37 @@ int SetMealAction(function f){
     MealAction = f;
 }
 
-mixed direct_drink_obj() { 
+mixed direct_drink_obj(){ 
     if( environment() != this_player() ) return "#You don't have that!";
     if( MealType & MEAL_FOOD ) return "Wouldn't you rather eat it?";
     return this_player()->CanDrink(this_object());
 }
 
-mixed direct_drink_from_obj() {
+mixed direct_drink_from_obj(){
     if( MealType & MEAL_FOOD ) return 0;
     if( environment() != this_player() ) return "#You don't have that!";
     return this_player()->CanDrink(this_object());
 }
 
-mixed direct_eat_obj() {
+mixed direct_eat_obj(){
     if( environment() != this_player() ) return "#You don't have that!";
     if( !(MealType & MEAL_FOOD) ) return "Wouldn't you rather drink it?";
     return this_player()->CanEat(this_object());
 }
 
-static mixed AddSave(mixed *vars) { return item::AddSave(vars); }
+static mixed AddSave(mixed *vars){ return item::AddSave(vars); }
 
-string GetShort() { return item::GetShort(); }
+string GetShort(){ return item::GetShort(); }
 
-int eventDestruct() { return item::eventDestruct(); }
+int eventDestruct(){ return item::eventDestruct(); }
 
-mixed eventDrink(object who) {
+mixed eventDrink(object who){
     mixed tmp;
     int x;
     object ob;
 
     if( (tmp = (mixed)who->eventDrink(this_object())) != 1 ) return tmp;
-    if( (x = functionp(MyMessage)) && !(x & FP_OWNER_DESTED) ) {
+    if( (x = functionp(MyMessage)) && !(x & FP_OWNER_DESTED) ){
         evaluate(MyMessage, who);
     }
     else {
@@ -84,7 +84,7 @@ mixed eventDrink(object who) {
     }
 
     ob = new(GetEmptyItem() || LIB_USED_MEAL);
-    if( base_name(ob) == LIB_USED_MEAL ) {
+    if( base_name(ob) == LIB_USED_MEAL ){
         ob->SetKeyName(GetEmptyName());
         ob->SetId( ({ GetEmptyName(), "container", "empty container" }) );
         ob->SetShort(GetEmptyShort());
@@ -94,14 +94,14 @@ mixed eventDrink(object who) {
         ob->SetMass(10);
         ob->SetDestroyOnSell();
     }
-    if( !((int)ob->eventMove(who)) ) {
+    if( !((int)ob->eventMove(who)) ){
         who->eventPrint("You drop " + (string)ob->GetShort() + ".");
         environment(who)->eventPrint((string)who->GetName() +
           " drops " + (string)ob->GetShort() + ".", who);
         ob->eventMove(environment(who));
     }
 
-    if( x = GetPoison() ) {
+    if( x = GetPoison() ){
         if( random((int)who->GetStatLevel("luck")) > 35 )
             who->eventPrint("That didn't seem to taste quite right.");
         who->AddPoison(x);
@@ -110,11 +110,11 @@ mixed eventDrink(object who) {
     return 1;
 }
 
-mixed eventEat(object who) {
+mixed eventEat(object who){
     mixed tmp;
     int x;
     if( (tmp = (mixed)who->eventEat(this_object())) != 1 ) return tmp;
-    if( (x = functionp(MyMessage)) && !(x & FP_OWNER_DESTED) ) {
+    if( (x = functionp(MyMessage)) && !(x & FP_OWNER_DESTED) ){
         evaluate(MyMessage, who);
     }
     else {
@@ -127,19 +127,19 @@ mixed eventEat(object who) {
         who->eventPrint( capitalize(mymsg) );
         environment(who)->eventPrint( capitalize(othermsg), who );
     }
-    if( x = GetPoison() ) {
+    if( x = GetPoison() ){
         if( random((int)who->GetStatLevel("luck")) > 35 )
             who->eventPrint("You notice a strange aftertaste.");
         who->AddPoison(x);
     }
-    if( (x = functionp(MealAction)) && !(x & FP_OWNER_DESTED) ) {
+    if( (x = functionp(MealAction)) && !(x & FP_OWNER_DESTED) ){
         evaluate(MealAction, who);
     }
     Destruct();
     return 1;
 }
 
-int eventPoison(object who, object agent, int x) {
+int eventPoison(object who, object agent, int x){
     who->eventPrint("You put some poison "
       "in " + add_article(GetShort()) + ".");
     environment(who)->eventPrint( (string)who->GetName()+" puts something "
@@ -148,26 +148,26 @@ int eventPoison(object who, object agent, int x) {
     return 1;
 }
 
-string SetEmptyItem(string file) { return (EmptyItem = file); }
+string SetEmptyItem(string file){ return (EmptyItem = file); }
 
-string GetEmptyItem() { return EmptyItem; }
+string GetEmptyItem(){ return EmptyItem; }
 
-string SetEmptyName(string str) { return (EmptyName = str); }
+string SetEmptyName(string str){ return (EmptyName = str); }
 
-string GetEmptyName() { return EmptyName; }
+string GetEmptyName(){ return EmptyName; }
 
-mixed SetEmptyShort(mixed val) { return (EmptyShort = val); }
+mixed SetEmptyShort(mixed val){ return (EmptyShort = val); }
 
-mixed GetEmptyShort() { return EmptyShort; }
+mixed GetEmptyShort(){ return EmptyShort; }
 
-mixed SetEmptyLong(mixed val) { return (EmptyLong = val); }
+mixed SetEmptyLong(mixed val){ return (EmptyLong = val); }
 
-mixed GetEmptyLong() { return EmptyLong; }
+mixed GetEmptyLong(){ return EmptyLong; }
 
-int SetMealType(int x) {
+int SetMealType(int x){
     int vt = 0;
 
-    if( x & MEAL_FOOD ) {
+    if( x & MEAL_FOOD ){
         vt |= VT_FOOD;
         MyMessage = "You eat your food.";
         OtherMessage = "$N eats $P food.";
@@ -177,17 +177,17 @@ int SetMealType(int x) {
     return (MealType = x);
 }
 
-int GetMealType() { return MealType; }
+int GetMealType(){ return MealType; }
 
-int SetStrength(int x) { return (MealStrength = x); }
+int SetStrength(int x){ return (MealStrength = x); }
 
-int GetStrength() { return MealStrength; }
+int GetStrength(){ return MealStrength; }
 
-varargs void SetMealMessages(mixed array val...) {
-    if( !arrayp(val) ) {
+varargs void SetMealMessages(mixed array val...){
+    if( !arrayp(val) ){
         error(sprintf("Bad argument 1 to SetMealMessages(): %O\n", val));
     }
-    if( sizeof(val) == 1 ) {
+    if( sizeof(val) == 1 ){
         if( arrayp(val[0]) ) SetMealMessages(val[0]...);
         else if( stringp(val[0]) || functionp(val[0]) ) MyMessage = val[0];
         else error(sprintf("Bad argument 1 to SetMealMessages(): %O\n",
@@ -202,9 +202,9 @@ varargs void SetMealMessages(mixed array val...) {
     OtherMessage = val[1];
 }
 
-mixed *GetMealMessages() { return ({ MyMessage, OtherMessage }); }
+mixed *GetMealMessages(){ return ({ MyMessage, OtherMessage }); }
 
-int GetValue() {
+int GetValue(){
     int x;
 
     x = GetStrength();

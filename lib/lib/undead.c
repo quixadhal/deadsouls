@@ -26,11 +26,11 @@ void NewBody(string str);
 // end virtual method section
 
 /*****            Data manipulation              *****/
-string GetUndeadType() {
+string GetUndeadType(){
     return UndeadType;
 }
 
-string SetUndeadType(string str) {
+string SetUndeadType(string str){
     return (UndeadType = str);
 }
 
@@ -43,15 +43,15 @@ string SetUndeadType(string str) {
  * returns the current status of the body
  */
 
-int GetUndead() {
+int GetUndead(){
     return Undead;
 }
 
-int SetUndead(int x) {
-    if( GetUndead() == x ) {
+int SetUndead(int x){
+    if( GetUndead() == x ){
         return x;
     }
-    if( x ) {
+    if( x ){
         SetUndeadType("ghost");
     }
     else {
@@ -61,12 +61,12 @@ int SetUndead(int x) {
 }
 
 /*****                  Events                   *****/
-mixed eventBite(object target) {
+mixed eventBite(object target){
     return 0;
 }
 
-mixed eventTurn(object who) {
-    if( who ) {
+mixed eventTurn(object who){
+    if( who ){
         environment()->eventPrint(GetName() + " is turned from the world of "
           "the living.", this_object());
         eventPrint(who->GetName() +" turns you from the world of the living.");
@@ -80,20 +80,20 @@ mixed eventTurn(object who) {
     return 1;
 }
 
-static void heart_beat() {
+static void heart_beat(){
     string type;
 
-    if( !GetUndead() ) {
+    if( !GetUndead() ){
         return;
     }
     type = GetUndeadType();
-    if( random(100) + 1 > 90 ) {
-        if( type == "ghost" || type == "phantom" ) {
+    if( random(100) + 1 > 90 ){
+        if( type == "ghost" || type == "phantom" ){
             eventPrint("You wail mournfully.");
             environment()->eventPrint(GetName() + " wails mournfully.",
               this_object());
         }
-        else if( type == "zombie" || type == "ghoul" ) {
+        else if( type == "zombie" || type == "ghoul" ){
             eventPrint("You groan painfully.");
             environment()->eventPrint(GetName() + " groans painfully.",
               this_object());

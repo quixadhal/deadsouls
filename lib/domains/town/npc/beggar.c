@@ -23,7 +23,11 @@ static void create() {
     SetAutoStand(0);
     SetRace("human");
     SetGender("male");
-    SetOwner("The LPC Preservation Foundation");
+    SetConsultResponses( ([
+        "map" : "It's so you have an idea how to get around.",
+        ({ "levels", "leveling", "level" }) : "I don't know such stuff. "+
+        "Ask Dirk in the Adventurers' Guild."
+      ]) );
     SetPosition(POSITION_SITTING);
 }
 

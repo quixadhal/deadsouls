@@ -29,11 +29,11 @@ int GetWielded(){
     return Wielded;
 }
 
-varargs string GetEquippedDescription(object who) {
+varargs string GetEquippedDescription(object who){
     if(!who) who = this_player();
-    if( GetWorn() ) {
+    if( GetWorn() ){
         string tmp = " It is wielded in ";
-        if(who == environment()) {
+        if(who == environment()){
             tmp += "your";
         }
         else {
@@ -45,30 +45,30 @@ varargs string GetEquippedDescription(object who) {
     return 0;
 }
 
-string GetEquippedShort() {
+string GetEquippedShort(){
     object env = environment();
     string ret = GetShort();
     string array limbs;
 
-    if( !env || !living(env) ) {
+    if( !env || !living(env) ){
         return ret;
     }
     limbs = GetWorn();
-    if( sizeof(limbs) > 0 ) {
+    if( sizeof(limbs) > 0 ){
         ret += " (%^RED%^wielded in " + item_list(limbs) + "%^RESET%^)";
     }
     return ret;
 }
 
-int GetHands() {
+int GetHands(){
     return Hands;
 }
 
-int SetHands(int x) {
+int SetHands(int x){
     return (Hands = x);
 }
 
-string array GetSave() {
+string array GetSave(){
     string *d_save, *e_save, *p_save, *a_save;
 
     d_save = damage::GetSave();
@@ -78,53 +78,53 @@ string array GetSave() {
     return a_save; 
 }
 
-string GetWeaponType() {
+string GetWeaponType(){
     return WeaponType;
 }
 
-string SetWeaponType(string str) {
-    if( !stringp(str) ) {
+string SetWeaponType(string str){
+    if( !stringp(str) ){
         error("Bad argument 1 to SetWeaponType().\n\tExpected: string, Got: " +
           typeof(str) + "\n");
     }
     return (WeaponType = str);
 }
 
-mixed GetWield() {
+mixed GetWield(){
     return Wield;
 }
 
-mixed SetWield(mixed val) {
+mixed SetWield(mixed val){
     return (Wield = val);
 }
 
-mixed CanEquip(object who, string array limbs) {
+mixed CanEquip(object who, string array limbs){
     mixed tmp = equip::CanEquip(who, limbs);
 
-    if( tmp != 1 ) {
+    if( tmp != 1 ){
         return tmp;
     }
-    if( GetHands() != sizeof(limbs) ) {
+    if( GetHands() != sizeof(limbs) ){
         return "#You must use " + cardinal(Hands) + " hands to wield " +
         GetDefiniteShort() + ".";
     }
-    if( Hands > sizeof(who->GetWieldingLimbs()) ) {
+    if( Hands > sizeof(who->GetWieldingLimbs()) ){
         return "#You do not have enough limbs for that weapon!";
     }
-    if( newbiep(who) && GetClass() > 30 ) {
+    if( newbiep(who) && GetClass() > 30 ){
         return "You are not skilled enough to wield this weapon.";
     }
     return 1;
 }
 
-int eventDeteriorate(int type) {
+int eventDeteriorate(int type){
     int x = GetClass();
 
-    if( x ) {
+    if( x ){
         object env = environment();
 
-        if( living(env) ) {
-            if( x > 1 ) {
+        if( living(env) ){
+            if( x > 1 ){
                 env->eventPrint(capitalize(GetDefiniteShort()) +
                   " is wearing down.");
             }
@@ -133,7 +133,7 @@ int eventDeteriorate(int type) {
                   " is completely worn.");
             }
         }
-        if( GetProperty("blessed") ) {
+        if( GetProperty("blessed") ){
             SetClass(x-2);
         }
         else {
@@ -143,14 +143,14 @@ int eventDeteriorate(int type) {
     return 1;
 }
 
-mixed eventEquip(object who, string array limbs) {
+mixed eventEquip(object who, string array limbs){
     mixed tmp;
 
-    if( functionp(Wield) ) {
-        if( functionp(Wield) & FP_OWNER_DESTED ) {
+    if( functionp(Wield) ){
+        if( functionp(Wield) & FP_OWNER_DESTED ){
             return "Function pointer owner destructed.";
         }
-        if( !evaluate(Wield, who, limbs) ) {
+        if( !evaluate(Wield, who, limbs) ){
             return 1;
         }
         else {
@@ -160,11 +160,11 @@ mixed eventEquip(object who, string array limbs) {
     }
     Wielded = 1;
     tmp = equip::eventEquip(who, limbs);
-    if( tmp != 1 ) {
+    if( tmp != 1 ){
         Wielded = 0;
         return tmp;
     }
-    if( stringp(Wield) ) {
+    if( stringp(Wield) ){
         who->eventPrint(Wield);
     }
     else {
@@ -175,13 +175,13 @@ mixed eventEquip(object who, string array limbs) {
     return 1;
 }
 
-int eventStrike(object target) {
+int eventStrike(object target){
     int poison = GetPoison();
 
-    if( poison > 0 ) {
+    if( poison > 0 ){
         int x = random(poison) + 1;
 
-        if( x > 0 ) {
+        if( x > 0 ){
             send_messages("", "$agent_possessive_noun " + GetKeyName() +
               " poisons $target_name.", environment(), target,
               environment(environment()));
@@ -192,10 +192,10 @@ int eventStrike(object target) {
     return damage::eventStrike(target);
 }
 
-mixed eventUnequip(object who) {
+mixed eventUnequip(object who){
     mixed tmp = equip::eventUnequip(who);
 
-    if( tmp != 1 ) {
+    if( tmp != 1 ){
         Wielded = 1;
         return tmp;
     }
@@ -206,15 +206,15 @@ mixed eventUnequip(object who) {
 }
 
 // Some things to respond to provide friendly error messages
-mixed direct_remove_obj() {
-    if( environment() != this_player() ) {
+mixed direct_remove_obj(){
+    if( environment() != this_player() ){
         return "#You don't have that!";
     }
     return "#Do you mean to unwield it?";
 }
 
-mixed direct_wear_obj() {
-    if( environment() != this_player() ) {
+mixed direct_wear_obj(){
+    if( environment() != this_player() ){
         return "#You don't have that!";
     }
     return "#Do you mean to wield it?";

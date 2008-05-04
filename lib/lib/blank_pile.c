@@ -2,17 +2,17 @@
 
 inherit LIB_PILE;
 
-static void create() {
+static void create(){
     pile::create();
     SetKeyName("money");
 }
 
-string array GetId() {
+string array GetId(){
     string array id;
 
     id = pile::GetId();
-    if( PileType ) {
-        if(PileType != "dollars") {
+    if( PileType ){
+        if(PileType != "dollars"){
             id += ({ PileType, PileAmount + " " + PileType +" coins"});
             return ({ id..., "money", "pile","coins","coin" });
         }
@@ -23,11 +23,11 @@ string array GetId() {
     }
 }
 
-string GetShort() {
+string GetShort(){
     string sum;
     if(!PileAmount) sum = "some";
     else sum = cardinal(PileAmount);
-    if(PileType != "dollars") {
+    if(PileType != "dollars"){
         return sum + " " + PileType + " coins";
     }
     else return sum + " " + PileType ;

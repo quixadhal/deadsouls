@@ -11,8 +11,8 @@ private string tmpfile;
 string GetShort();
 // end abstract methods
 
-string GetRead(string str) {
-    if( !str || str == "default" ) {
+string GetRead(string str){
+    if( !str || str == "default" ){
         return Read;
     }
     else {
@@ -20,12 +20,12 @@ string GetRead(string str) {
     }
 }
 
-string array GetReads() {
+string array GetReads(){
     return keys(Reads);
 }
 
-void RemoveRead(string item) {
-    if( !item || item == "default" ) {
+void RemoveRead(string item){
+    if( !item || item == "default" ){
         Read = 0;
     }
     else {
@@ -34,24 +34,24 @@ void RemoveRead(string item) {
     return;
 }
 
-varargs mixed SetRead(mixed arg1, mixed desc) {
-    if( mapp(arg1) ) {
+varargs mixed SetRead(mixed arg1, mixed desc){
+    if( mapp(arg1) ){
         Reads = expand_keys(arg1);
-        if( Reads["default"] ) {
+        if( Reads["default"] ){
             Read = Reads["default"];
             map_delete(Reads, "default");
         }
     }
-    if( !desc ) {
+    if( !desc ){
         Read = arg1;
         return Read;
     }
-    if( !arg1 || arg1 == "default" ) {
+    if( !arg1 || arg1 == "default" ){
         Read = desc;
         return Read;
     }
-    if( arrayp(arg1) ) {
-        foreach(string element in arg1) {
+    if( arrayp(arg1) ){
+        foreach(string element in arg1){
             Reads[element] = desc;
         }
     }
@@ -67,15 +67,15 @@ void SetReads(mapping ReadMap){
     }
 }
 
-varargs mixed SetDefaultRead(mixed arg1, mixed desc) {
-    if( mapp(arg1) ) {
+varargs mixed SetDefaultRead(mixed arg1, mixed desc){
+    if( mapp(arg1) ){
         return 0;
     }
-    if( !desc ) {
+    if( !desc ){
         Read = arg1;
         return Read;
     }
-    if( !arg1 || arg1 == "default" ) {
+    if( !arg1 || arg1 == "default" ){
         Read = desc;
         return Read;
     }
@@ -91,17 +91,17 @@ mixed GetLanguage(){
     else return 0;
 }
 
-varargs mixed eventRead(object who, string str) {
+varargs mixed eventRead(object who, string str){
     mixed ret;
     mixed val = GetRead(str);
 
-    if( arrayp(val) ) {
+    if( arrayp(val) ){
         val = val[query_night()];
     }
     if(mapp(val)) val = val[str];
 
-    if( functionp(val) ) {
-        if( functionp(val) & FP_OWNER_DESTED ) {
+    if( functionp(val) ){
+        if( functionp(val) & FP_OWNER_DESTED ){
             who->eventPrint("There was a problem with the read.");
             return 1;
         }
@@ -111,7 +111,7 @@ varargs mixed eventRead(object who, string str) {
     environment(who)->eventPrint(who->GetName() + " reads " + GetShort() + ".",
       who);
     if(ret) val = ret;
-    if( !val ) {
+    if( !val ){
         who->eventPrint("There is nothing to read.");
         return 1;
     }
@@ -140,13 +140,13 @@ varargs mixed eventRead(object who, string str) {
     return 1;
 }
 
-mixed direct_read_obj() {
-    if( !Read ) {
+mixed direct_read_obj(){
+    if( !Read ){
         return 0;
     }
     else {
         if( environment() != this_player()  && environment(this_player()) !=
-          environment()) {
+          environment()){
             return "#You don't have that!";
         }
         else return 1;
@@ -154,14 +154,14 @@ mixed direct_read_obj() {
     }
 }
 
-mixed direct_read_str_word_obj(string str) {
+mixed direct_read_str_word_obj(string str){
     str = remove_article(lower_case(str));
-    if( !Reads[str] ) {
+    if( !Reads[str] ){
         return 0;
     }
     else {
         if( environment() != this_player()  && environment(this_player()) !=
-          environment()) {
+          environment()){
             return "#You don't have that!";
         }
         else return 1;

@@ -11,32 +11,32 @@ private int DisableChance = 50;
 string GetDefiniteShort();
 // end abstract methods
 
-int GetDisableChance() {
+int GetDisableChance(){
     return DisableChance;
 }
 
-int SetDisableChance(int x) {
+int SetDisableChance(int x){
     return (DisableChance = x);
 }
 
-int GetDisabled() {
+int GetDisabled(){
     return Disabled;
 }
 
-int SetDisabled(int x) {
+int SetDisabled(int x){
     return (Disabled = x);
 }
 
-mixed array GetSave() {
+mixed array GetSave(){
     return ({ "Disabled", "DisableChance" });
 }
 
-mixed eventLockLock(object who, object what) {
+mixed eventLockLock(object who, object what){
     return 1;
 }
 
-mixed eventUnlockLock(object who, object what) {
-    if( GetDisableChance() > random(100) ) {
+mixed eventUnlockLock(object who, object what){
+    if( GetDisableChance() > random(100) ){
         SetDisabled(1);
         who->eventPrint(capitalize(GetDefiniteShort()) + " gets twisted "
           "slightly out of shape as you try to use it.");
@@ -45,21 +45,21 @@ mixed eventUnlockLock(object who, object what) {
     return 1;
 }
 
-mixed indirect_lock_obj_with_obj(object target, object key, string id) {
-    if( environment() != this_player() ) {
+mixed indirect_lock_obj_with_obj(object target, object key, string id){
+    if( environment() != this_player() ){
         return "#You don't have " + GetDefiniteShort() + "!";
     }
-    if( GetDisabled() ) {
+    if( GetDisabled() ){
         return capitalize(GetDefiniteShort()) + " is broken.";
     }
     return 1;
 }    
 
-mixed indirect_unlock_obj_with_obj(object target, object key, string id) {
-    if( environment() != this_player() ) {
+mixed indirect_unlock_obj_with_obj(object target, object key, string id){
+    if( environment() != this_player() ){
         return "#You don't have " + GetDefiniteShort() + "!";
     }
-    if( GetDisabled() ) {
+    if( GetDisabled() ){
         return capitalize(GetDefiniteShort()) + " is broken.";
     }
     return 1;

@@ -51,7 +51,7 @@ void init(){
         inv=all_inventory(ob);
         filter(inv, (: this_object()->InitRevolver($1->GetId()) :) );
     }
-    if(FirearmType=="auto" && !present("clip",this_object()) ) {
+    if(FirearmType=="auto" && !present("clip",this_object()) ){
         mag=0;
         loaded=0;
         rounds=0;
@@ -78,11 +78,11 @@ int InitRevolver(string *arr){
         return 1;
     }
 }
-mixed CanGetFrom(object who, object item) {
+mixed CanGetFrom(object who, object item){
     return "It doesn't work that way. Try unloading it.";
 }
 
-mixed CanPutInto(object who, object what) {
+mixed CanPutInto(object who, object what){
     return "It doesn't work that way. Try loading the "+GetFirearmName()+" with something.";
 }
 
@@ -324,27 +324,27 @@ int CalculateAmmoSize(){
     AmmoSize=this_object()->GetMillimeter();
     return 1;
 }
-int ShowRounds() { environment(this_object())->eventPrint("Firearm has: "+rounds+" rounds.\n");
+int ShowRounds(){ environment(this_object())->eventPrint("Firearm has: "+rounds+" rounds.\n");
     environment(this_object())->eventPrint("Firearm has: "+shells+" shells.\n");
     return 1;
 }
-int SetAmmo(int i) { rounds=i; return 1; }
-int GetAmmo() { return rounds; }
-int GetMag() { return mag; }
-int SetMag(int i) { mag=i; return 1; }
-int SetLoaded(int i) { loaded=i; return 1; }
-int GetLoaded() { return loaded; }
-int SetAmmoFile(string str) { AmmoFile=str; return 1; }
-int SetAmmoType(string str) { AmmoType=str; return 1; }
-int SetFirearmType(string str) { FirearmType=str; return 1; }
-int SetMaxAmmo(int x) { MaxAmmo=x; return 1; }
-int SetCaliber(int x) { Caliber=x; return 1; }
-int SetMillimeter(int x) { Millimeter=x; return 1; }
-string GetAmmoType() { return AmmoType; }
-string GetFirearmType() { return FirearmType; }
-int GetMaxAmmo() { return MaxAmmo; }
-int GetCaliber() { return Caliber; }
-int GetMillimeter() { return Millimeter; }
+int SetAmmo(int i){ rounds=i; return 1; }
+int GetAmmo(){ return rounds; }
+int GetMag(){ return mag; }
+int SetMag(int i){ mag=i; return 1; }
+int SetLoaded(int i){ loaded=i; return 1; }
+int GetLoaded(){ return loaded; }
+int SetAmmoFile(string str){ AmmoFile=str; return 1; }
+int SetAmmoType(string str){ AmmoType=str; return 1; }
+int SetFirearmType(string str){ FirearmType=str; return 1; }
+int SetMaxAmmo(int x){ MaxAmmo=x; return 1; }
+int SetCaliber(int x){ Caliber=x; return 1; }
+int SetMillimeter(int x){ Millimeter=x; return 1; }
+string GetAmmoType(){ return AmmoType; }
+string GetFirearmType(){ return FirearmType; }
+int GetMaxAmmo(){ return MaxAmmo; }
+int GetCaliber(){ return Caliber; }
+int GetMillimeter(){ return Millimeter; }
 
 int startLoad(string str){
     string s1,s2;
@@ -391,7 +391,7 @@ int LoadAuto(string str){
       possessive(environment(this_object()))+" semiautomatic "+GetFirearmName()+".");
     ob->eventMove(this_object());
     if(!sizeof(deep_inventory(present("magazine",this_object())))) return 1;
-    if(!AmmoFile=file_name(first_inventory(present("magazine",this_object()))) ) {
+    if(!AmmoFile=file_name(first_inventory(present("magazine",this_object()))) ){
         AmmoFile="/lib/round";
     }
     else sscanf(AmmoFile,"%s#%s",AmmoFile,junk);

@@ -37,20 +37,20 @@ private int RetainOnDeath, nocondition;
 private string QuestId = "";
 
 /* ******************** item.c attributes ******************** */
-string GetExternalDesc(object who) {
+string GetExternalDesc(object who){
     string desc = object::GetExternalDesc(who);
     string tmp;
 
-    if( desc == "" ) {
+    if( desc == "" ){
         return "";
     }
-    if( tmp = GetEquippedDescription(who) ) {
+    if( tmp = GetEquippedDescription(who) ){
         desc += tmp + "\n";
     }
-    if( GetBroken() ) {
+    if( GetBroken() ){
         desc += "It appears to be broken.";
     }
-    else if( tmp = GetItemCondition() ) {
+    else if( tmp = GetItemCondition() ){
         desc += tmp;
     }
     return desc;
@@ -69,29 +69,29 @@ string GetQuestId(){
     return QuestId;
 }
 
-string GetItemCondition() {
+string GetItemCondition(){
 
     if(nocondition) return "";
 
-    if( GetMaxClass() ) {
+    if( GetMaxClass() ){
         float i = to_float(GetClass()) / GetMaxClass() * 100.0;
 
-        if( i > 95.0 ) {
+        if( i > 95.0 ){
             return " It is as good as new.";
         }
-        else if( i > 80.0 ) {
+        else if( i > 80.0 ){
             return " It is in good condition.";
         }
-        else if( i > 70.0 ) {
+        else if( i > 70.0 ){
             return " It is in decent condition.";
         }
-        else if( i > 50.0 ) {
+        else if( i > 50.0 ){
             return " It is somewhat worn and battered.";
         }
-        else if( i > 30.0 ) {
+        else if( i > 30.0 ){
             return " It is worn down and dented.";
         }
-        else if( i > 10.0 ) {
+        else if( i > 10.0 ){
             return " It is very worn down and in bad shape.";
         }
         else {
@@ -103,95 +103,95 @@ string GetItemCondition() {
     }
 }
 
-int GetRetainOnDeath() {
+int GetRetainOnDeath(){
     return RetainOnDeath;
 }
 
-int SetRetainOnDeath(int x) {
+int SetRetainOnDeath(int x){
     return (RetainOnDeath = x);
 }
 
-static mixed array AddSave(mixed array vars) {
+static mixed array AddSave(mixed array vars){
     if(!vars) vars = ({});
     vars += ({ "Properties" });
     return persist::AddSave(vars);
 }
 
-string array GetSave() {
+string array GetSave(){
     return persist::GetSave();
 }
 
 /* ************************ item.c modals *********************** */ 
-mixed CanRepair(object who) {
+mixed CanRepair(object who){
     if( GetBroken() ) return 1;
     else if( !GetMaxClass() ) return "It doesn't need repairing.";
     else return 1;
 }
 
-mixed CanSteal(object who) {
-    if( GetWorn() ) {
+mixed CanSteal(object who){
+    if( GetWorn() ){
         return "You can't steal something equipped!";
     }
     return steal::CanSteal(who);
 }
 
-varargs mixed CanThrow(object who, object target) {
+varargs mixed CanThrow(object who, object target){
     return 1;
 }
 
 /* ********************* item.c events ************************ */ 
-static int Destruct() {
-    if( GetWorn() && environment() ) {
+static int Destruct(){
+    if( GetWorn() && environment() ){
         eventUnequip(environment());
     }
     return object::Destruct();
 }
 
-int eventMove(mixed dest) {
+int eventMove(mixed dest){
     if(!this_object()) return 0;
-    if( !environment() && GetWorn() ) {
+    if( !environment() && GetWorn() ){
         mixed array limbs = GetWorn();
 
         SetWorn(0);
         call_out((: eventRestoreEquip :), 0, limbs);
     }
-    if( GetWorn() && environment() ) {
+    if( GetWorn() && environment() ){
         eventUnequip(environment());
     }
     return move::eventMove(dest);
 }
 
-void eventDeteriorate(int type) {
+void eventDeteriorate(int type){
     weapon::eventDeteriorate();
     SetDestroyOnSell(1);
     SetValue(GetValue()/2);
 }
 
-void eventRemoveBlessing() {
+void eventRemoveBlessing(){
     SetProperty("blessed", 0);
-    if( living(environment()) ) {
+    if( living(environment()) ){
         environment()->eventPrint("%^YELLOW%^"
           + capitalize((string)GetDefiniteShort()) +
           " returns to its normal state.");
     }
 }
 
-int eventBless(int amount, int time) {
+int eventBless(int amount, int time){
     if(!amount || !time) return 0;
     if(GetProperty("blessed")) return 0;
     SetProperty("blessed", amount);
     call_out( (: eventRemoveBlessing :), time);
-    if(GetProperty("blessed") > 0) {
+    if(GetProperty("blessed") > 0){
         SetProperty("magic item", "blessed");
     }
-    if(GetProperty("blessed") < 0) {
+    if(GetProperty("blessed") < 0){
         SetProperty("magic item", "cursed");
     }
     return 1;
 }
 
-mixed eventThrow(object who, object target) {
-    if( target && living(target) ) {
+mixed eventThrow(object who, object target){
+    if( target && living(target) ){
         int skill;
 
         who->eventPrint("You throw " + GetShort() + " at " +
@@ -204,10 +204,10 @@ mixed eventThrow(object who, object target) {
           who->GetStatLevel("coordination"));
         skill -= (target->GetSkillLevel("projectile defense") +
           target->GetStatLevel("agility"))/2;
-        if( GetWeaponType() != "projectile" ) {
+        if( GetWeaponType() != "projectile" ){
             skill = skill/2;
         }
-        if( skill > random(100) + 1 ) {
+        if( skill > random(100) + 1 ){
             who->AddSkillPoints("projectile attack",
               target->GetSkillLevel("projectile defense") *
               target->GetLevel() + 10);
@@ -227,7 +227,7 @@ mixed eventThrow(object who, object target) {
         }
         return 1;
     }
-    else if( target ) {
+    else if( target ){
         who->eventPrint("You throw " + GetShort() + " at " +
           target->GetShort() + ".");
         environment(who)->eventPrint(who->GetName() + " throws " +
@@ -237,7 +237,7 @@ mixed eventThrow(object who, object target) {
           GetShort() + " at you.");
         return target->eventReceiveThrow(who, this_object());
     }
-    if( !eventMove(environment(who)) ) {
+    if( !eventMove(environment(who)) ){
         who->eventPrint("You are not too good at throwing things.");
         return 1;
     }
@@ -247,11 +247,11 @@ mixed eventThrow(object who, object target) {
     return 1;
 }
 
-varargs mixed eventRepair(object who, int strength, int type) {
+varargs mixed eventRepair(object who, int strength, int type){
     if( !who || !strength ) return 0;
     if( !GetMaxClass() ) return 0;
-    while(strength--) {
-        if( GetClass() < GetMaxClass() ) {
+    while(strength--){
+        if( GetClass() < GetMaxClass() ){
             SetClass(GetClass() + 1);
             SetValue(GetValue() + (GetValue() / 3));
         }
@@ -260,14 +260,14 @@ varargs mixed eventRepair(object who, int strength, int type) {
     return 1;
 }
 
-mixed eventShow(object who, string component) {
+mixed eventShow(object who, string component){
     mixed tmp = object::eventShow(who, component);
 
-    if( component || tmp != 1 ) {
+    if( component || tmp != 1 ){
         return tmp;
     }
-    if( GetPoison() ) {
-        if( random(100) < who->GetSkillLevel("stealth") ) {
+    if( GetPoison() ){
+        if( random(100) < who->GetSkillLevel("stealth") ){
             who->eventPrint("You notice a strange substance on it.");
         }
     }
@@ -275,7 +275,7 @@ mixed eventShow(object who, string component) {
 }
 
 /* ***************** item.c driver applies ****************** */
-static void create() {
+static void create(){
     AddSave(weapon::GetSave() + value::GetSave() + mass::GetSave() +
       deterioration::GetSave());
     steal::create();
@@ -287,60 +287,60 @@ varargs mixed direct_get_obj_from_obj(object item, mixed gamma,mixed alfa, mixed
     return 0;
 }
 
-mixed direct_cast_str_on_obj() {
+mixed direct_cast_str_on_obj(){
     return 1;
 }
 
-mixed direct_cast_str_on_str_of_obj() {
+mixed direct_cast_str_on_str_of_obj(){
     return 1;
 }
 
-mixed direct_balance_obj_to_obj() {
+mixed direct_balance_obj_to_obj(){
     return 1;
 }
 
-mixed indirect_balance_obj_to_obj() {
+mixed indirect_balance_obj_to_obj(){
     return 1;
 }
 
-mixed direct_compare_obj_to_obj() {
+mixed direct_compare_obj_to_obj(){
     return 1;
 }
 
-mixed indirect_compare_obj_to_obj() {
+mixed indirect_compare_obj_to_obj(){
     return 1;
 }
 
-mixed direct_judge_obj_to_obj() {
+mixed direct_judge_obj_to_obj(){
     return 1;
 }
 
-mixed indirect_judge_obj_to_obj() {
+mixed indirect_judge_obj_to_obj(){
     return 1;
 }
 
-mixed direct_use_obj_to_str() {
+mixed direct_use_obj_to_str(){
     if( environment() != this_player() )
         return "#You need better access to it.";
     else return 1;
 }
 
-mixed direct_use_obj() {
+mixed direct_use_obj(){
     return direct_use_obj_to_str();
 }
 
-mixed direct_throw_obj_word_obj() {
-    if( environment() != this_player() ) {
+mixed direct_throw_obj_word_obj(){
+    if( environment() != this_player() ){
         return "#Throw something you are not holding?";
     }
     else return 1;
 }
 
-mixed indirect_throw_obj_into_obj() {
+mixed indirect_throw_obj_into_obj(){
     return 1;
 }
 
-int direct_sacrifice_obj_to_str(string deus) {
+int direct_sacrifice_obj_to_str(string deus){
     mixed tmp;
     object env;
 
@@ -348,7 +348,7 @@ int direct_sacrifice_obj_to_str(string deus) {
     deus = lower_case(remove_article(deus));
     if( !env = environment(this_player()) ) return 0;
     tmp = (mixed)env->CanSacrifice(this_player(), this_object(), deus);
-    if( !tmp ) {
+    if( !tmp ){
         this_player()->eventPrint("This is not the place for sacrifices.");
         return 0;
     }
@@ -356,18 +356,18 @@ int direct_sacrifice_obj_to_str(string deus) {
 }
 
 
-mixed direct_bless_obj() {
-    if( environment() != this_player() ) {
+mixed direct_bless_obj(){
+    if( environment() != this_player() ){
         return "#You don't have that!";
     }
     return 1;
 }
 
-mixed direct_curse_obj() {
-    if( environment() != this_player() ) {
+mixed direct_curse_obj(){
+    if( environment() != this_player() ){
         return "#You don't have that!";
     }
     return 1;
 }
 
-void init() { }
+void init(){ }

@@ -19,7 +19,7 @@
 inherit LIB_PAGER;
 
 static private int CrackCount, NetDead; 
-static private string name, Name, Terminal, raza, TrueName; 
+static private string name, Name, Terminal, raza, TrueName, trabajo; 
 static private string Passwort, Gendre, CapNamen, E_Mail; 
 static private object Player, pile; 
 static private mapping LastError;
@@ -35,6 +35,11 @@ static private int AllowColorSplash = 0;
 int eventCheckPending(string str);
 void eventCompleteChar();
 void InputCre(string str);
+static void cmdPickClass(string args);
+static void cmdListClasses();
+static void cmdHelpClass(string args);
+static void InputClass(string str);
+static void eventSelectClass();
 
 int CheckIp(){
     string my_ip = query_ip_number();
@@ -480,6 +485,132 @@ static void cmdList() {
     input_to((: InputRace :), I_NOESC);
 }
 
+static void cmdPick(string args) {
+    if( !args || args == "" ) {
+        receive("You must specify a race to pick.\n\nRace: \n");
+        input_to((: InputRace :), I_NOESC);
+        return;
+    }
+    if( member_array(args = lower_case(args),
+        (string array)RACES_D->GetRaces(1)) == -1 ) {
+        receive("No such race.\nRace: \n");
+        input_to((: InputRace :), I_NOESC);
+        return;
+    }
+    raza = args;
+    if(!AUTO_WIZ){
+        if(CLASS_SELECTION){
+            eventSelectClass();
+            return;
+        }
+        eventCompleteChar();
+    }
+    else {
+        receive("This mud has enabled AUTO_WIZ.\n");
+        receive("This means that if you wish, you may be automatically \n");
+        receive("promoted to creator status. \n\n");
+        receive("If you want to be a player, enter: player\n");
+        receive("If you want to be a creator, enter: creator\n");
+        receive("What is your choice?\n");
+        input_to((: InputCre :), I_NOESC);
+    }
+}
+
+static void eventSelectClass(){
+    receive("\n\nYou must now pick a class.\n");
+    receive("Picking a class influences what skills your character "
+      "will have.\n");
+    receive("\nYou may issue the following commands:\n");
+    receive("\tlist - lists all classes from which you can choose\n");
+    receive("\thelp - get help on what classes mean\n");
+    receive("\thelp CLASS - (e.g. \"help explorer\") gives you information on "
+      "a class\n");
+    receive("\tpick CLASS - pick a particular class for yourself\n");
+    receive("\nClass: \n");
+    input_to((: InputClass :), I_NOESC);
+}
+
+static void InputClass(string str){
+    string cmd, args;
+
+    if( str == "" || !str ) {
+        receive("\nClass: ");
+        input_to((: InputClass :), I_NOESC);
+        return;
+    }
+    if( sscanf(str, "%s %s", cmd, args) != 2 ) {
+        cmd = str;
+        args = 0;
+    }
+    switch(cmd) {
+    case "list":
+        cmdListClasses();
+        return;
+
+    case "help":
+        cmdHelpClass(args);
+        return;
+
+    case "pick":
+        cmdPickClass(args);
+        return;
+
+    default:
+        receive("\nInvalid command.\nClass: \n");
+        input_to((: InputClass :), I_NOESC);
+        return;
+    }
+}
+
+static void cmdHelpClass(string args){
+    function f;
+    string array Classes = (string array)CLASSES_D->GetClasses(1);
+    string help;
+
+    f = function(string str) {
+        receive("\nClass: \n");
+        input_to((: InputClass :), I_NOESC);
+    };
+    if( !args ) {
+        help = HELP_D->GetHelp("player documents classes") ||
+        "Error reading help file.\n";
+        eventPage(explode(help, "\n"), MSG_HELP, f);
+        return;
+    }
+    if( member_array(args = lower_case(args), Classes) == -1 ) {
+        receive("No such Class exists.\n\nClass: \n");
+        input_to((: InputClass :), I_NOESC);
+        return;
+    }
+    help = (string)HELP_D->GetHelp("classes "+args);
+    eventPage(explode(help, "\n"), MSG_HELP, f);
+}
+
+static void cmdListClasses() {
+    string list;
+
+    list = format_page((string array)CLASSES_D->GetClasses(1), 5);
+    receive(list);
+    receive("\nClass: \n");
+    input_to((: InputClass :), I_NOESC);
+}
+
+static void cmdPickClass(string args) {
+    if( !args || args == "" ) {
+        receive("You must specify a class to pick.\n\nClass: \n");
+        input_to((: InputClass :), I_NOESC);
+        return;
+    }
+    if( member_array(args = lower_case(args),
+        (string array)CLASSES_D->GetClasses(1)) == -1 ) {
+        receive("No such Class.\nClass: \n");
+        input_to((: InputClass :), I_NOESC);
+        return;
+    }
+    trabajo = args;
+    eventCompleteChar();
+}
+
 int eventCre(string str){
     mixed mixt;
     if(yescre && AUTO_WIZ == 1){
@@ -501,32 +632,6 @@ int eventCheckPending(string str){
     }
     destruct(this_object());
     return 1;
-}
-
-
-static void cmdPick(string args) {
-    if( !args || args == "" ) {
-        receive("You must specify a race to pick.\n\nRace: \n");
-        input_to((: InputRace :), I_NOESC);
-        return;
-    }
-    if( member_array(args = lower_case(args),
-        (string array)RACES_D->GetRaces(1)) == -1 ) {
-        receive("No such race.\nRace: \n");
-        input_to((: InputRace :), I_NOESC);
-        return;
-    }
-    raza = args;
-    if(!AUTO_WIZ) eventCompleteChar();
-    else {
-        receive("This mud has enabled AUTO_WIZ.\n");
-        receive("This means that if you wish, you may be automatically \n");
-        receive("promoted to creator status. \n\n");
-        receive("If you want to be a player, enter: player\n");
-        receive("If you want to be a creator, enter: creator\n");
-        receive("What is your choice?\n");
-        input_to((: InputCre :), I_NOESC);
-    }
 }
 
 void InputCre(string str){
@@ -554,7 +659,8 @@ void eventCompleteChar(){
     Player->SetEmail(E_Mail);
     Player->SetRealName(TrueName);    
     Player->SetLanguage("Common",100);    
-    Player->SetDefaultLanguage("Common");    
+    Player->SetDefaultLanguage("Common");   
+    if(trabajo) Player->ChangeClass(trabajo);
     this_player()->SetWimpy(20);
     this_player()->SetTerminal("ansi");
     PLAYERS_D->AddPlayerInfo(Name);

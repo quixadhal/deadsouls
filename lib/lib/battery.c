@@ -42,21 +42,21 @@ void init(){
     Spent();
 }
 
-int SetPowerType(string str) {powertype=str; return 1; }
-int SetCellType(string str) {celltype=str; return 1; }
-int SetCharge(int i) {charge = i; fullcharge = i; return 1; }
-int GetCharge() { return charge; }
-string GetPowerType() { return powertype; }
-string GetCellType() { return celltype; }
-int SetRechargeable(int i) { rechargeable = i; return i;}
-int GetRechargeable() { return rechargeable;}
-int SetDrainable(int i) { drainable = i; return i; }
-int GetDrainable() { return drainable; }
-int SetDrainRate(int i) { drainrate = i; return i; }
-int GetDrainRate() { return drainrate; }
+int SetPowerType(string str){powertype=str; return 1; }
+int SetCellType(string str){celltype=str; return 1; }
+int SetCharge(int i){charge = i; fullcharge = i; return 1; }
+int GetCharge(){ return charge; }
+string GetPowerType(){ return powertype; }
+string GetCellType(){ return celltype; }
+int SetRechargeable(int i){ rechargeable = i; return i;}
+int GetRechargeable(){ return rechargeable;}
+int SetDrainable(int i){ drainable = i; return i; }
+int GetDrainable(){ return drainable; }
+int SetDrainRate(int i){ drainrate = i; return i; }
+int GetDrainRate(){ return drainrate; }
 
 
-int ModCharge(int i) {
+int ModCharge(int i){
     if(!charge) charge = 0;
     if(i) charge += i;
     return charge;
@@ -79,7 +79,7 @@ int eventCharge(int i){
 }
 
 int eventUse(int i){
-    if(i == 0) {
+    if(i == 0){
         set_heart_beat(0);
         return 1;
     }

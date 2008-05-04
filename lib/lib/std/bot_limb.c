@@ -5,7 +5,7 @@ inherit LIB_LIMB;
 
 int stank;
 
-static void create() {
+static void create(){
     limb::create();
 }
 
@@ -14,13 +14,13 @@ void init(){
     if(environment() && environment()->GetMedium() == MEDIUM_LAND) stank = 1;
 }
 
-int eventDecay() {
-    if( !environment() ) {
+int eventDecay(){
+    if( !environment() ){
         CallOut = -1;
         Destruct();
         return 0;
     }
-    switch(Count) {
+    switch(Count){
     case 10:
         if(stank)
             message("smell", "The "+Limb+" rapidly corrodes.", environment());
@@ -41,7 +41,7 @@ int eventDecay() {
     return Count;
 }
 
-void SetLimb(string limb, string owner, string race) {
+void SetLimb(string limb, string owner, string race){
     SetKeyName(limb);
     SetId( ({ "limb", Limb = limb }) );
     Owner = owner;

@@ -9,7 +9,7 @@
 private string recursed = "";
 
 /****************************** events ************************************/
-mixed CreateVirtualObject(string fname) {
+mixed CreateVirtualObject(string fname){
     object daemon;
     string tmp, vname;
     int x, y, z, s;
@@ -22,13 +22,13 @@ mixed CreateVirtualObject(string fname) {
     }
 
     i = strsrch(fname, "/", -1);
-    if( i == -1 || i == 0 || i == strlen(fname)-1 ) {
+    if( i == -1 || i == 0 || i == strlen(fname)-1 ){
         return -1;
     }
     tmp = fname[(i+1)..];
-    if( sscanf(tmp, "%d,%d,%d,%d", x, y, z, s) != 4 ) {
-        if( sscanf(tmp, "%d,%d,%d", x, y, z) != 3 ) {
-            if( sscanf(tmp, "%d,%d", x, y) != 2 ) {
+    if( sscanf(tmp, "%d,%d,%d,%d", x, y, z, s) != 4 ){
+        if( sscanf(tmp, "%d,%d,%d", x, y, z) != 3 ){
+            if( sscanf(tmp, "%d,%d", x, y) != 2 ){
                 vname = tmp;
             }
             else {
@@ -46,7 +46,7 @@ mixed CreateVirtualObject(string fname) {
     daemon = load_object(tmp);
     recursed = "";
     if(!daemon) return 0;
-    if( vname ) {
+    if( vname ){
         return daemon->CreateNamedObject(vname);
     }
     else {
@@ -56,6 +56,6 @@ mixed CreateVirtualObject(string fname) {
 }
 
 /************************** driver applies ********************************/
-object compile_object(string fname) {
+object compile_object(string fname){
     return CreateVirtualObject(fname);
 }

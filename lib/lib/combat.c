@@ -40,7 +40,7 @@ void eventMeleeAttack(object target, string limb);
 int eventMagicRound(mixed target, function f);
 int eventWimpy(int i);
 
-static void create() {
+static void create(){
     race::create();
     classes::create();
     Hostiles = ({});
@@ -71,58 +71,58 @@ int SetDead(int i){
     return Dead;
 }
 
-object array GetEnemies() {
+object array GetEnemies(){
     return Enemies;
 }
 
-int AddEnemy(object ob) {
-    if( !ob || (member_array(ob, Enemies) != -1) ) {
+int AddEnemy(object ob){
+    if( !ob || (member_array(ob, Enemies) != -1) ){
         return 0;
     }
-    if( !living(ob) ) {
+    if( !living(ob) ){
         return 0;
     }
     Enemies += ({ ob });
     return 1;
 }
 
-int RemoveEnemy(object ob) {
-    if( !ob || (member_array(ob, Enemies) == -1) ) {
+int RemoveEnemy(object ob){
+    if( !ob || (member_array(ob, Enemies) == -1) ){
         return 0;
     }
     Enemies -= ({ ob });
     return 1;
 }
 
-object SetCurrentEnemy(object ob) {
-    if( !ob ) {
+object SetCurrentEnemy(object ob){
+    if( !ob ){
         return (CurrentEnemy = 0);
     }
-    if( !living(ob) ) {
+    if( !living(ob) ){
         return CurrentEnemy;
     }
-    if( member_array(ob, Enemies) == -1 ) {
+    if( member_array(ob, Enemies) == -1 ){
         AddEnemy(ob);
     }
     return (CurrentEnemy = ob);
 }
 
-static object ResetCurrentEnemy() {
+static object ResetCurrentEnemy(){
     object array obs;
 
     obs = filter(GetEnemies(), (: $1 && environment() == environment($1) :));
-    if( !sizeof(obs) ) {
+    if( !sizeof(obs) ){
         return 0;
     }
     return SetCurrentEnemy(obs[random(sizeof(obs))]);
 }
 
-object GetCurrentEnemy() {
+object GetCurrentEnemy(){
     return CurrentEnemy;
 }
 
-private static void SortEnemies() {
-    if( !sizeof(Enemies = filter(Enemies, (: ($1 && living($1)) :))) ) {
+private static void SortEnemies(){
+    if( !sizeof(Enemies = filter(Enemies, (: ($1 && living($1)) :))) ){
         Hostiles = ({});
         CurrentEnemy = 0;
         return;
@@ -160,40 +160,40 @@ object *GetNonTargets(){
 }
 
 
-int AddHostile(object ob) {
-    if( !ob || (member_array(ob, Hostiles) != -1) ) {
+int AddHostile(object ob){
+    if( !ob || (member_array(ob, Hostiles) != -1) ){
         return 0;
     }
-    if( !living(ob) ) {
+    if( !living(ob) ){
         return 0;
     }
     Hostiles += ({ ob });
     return 1;
 }
 
-int RemoveHostile(object ob) {
-    if( !ob || (member_array(ob, Hostiles) == -1) ) {
+int RemoveHostile(object ob){
+    if( !ob || (member_array(ob, Hostiles) == -1) ){
         return 0;
     }
     Hostiles -= ({ ob });
     return 1;
 }
 
-object array GetHostiles() {
+object array GetHostiles(){
     return Hostiles;
 }
 
-object array GetSpecialTarget() {
+object array GetSpecialTarget(){
     return SpecialTargets;
 }
 
-object array SetSpecialTarget(object *cibles) {
+object array SetSpecialTarget(object *cibles){
     if(cibles) SpecialTargets = cibles;
     return SpecialTargets;
 }
 
-varargs int SetParalyzed(int count, function f) {
-    if(count < 1) {
+varargs int SetParalyzed(int count, function f){
+    if(count < 1){
         count = cParalyzed = 0;
         fParalyzed = 0;
     }
@@ -204,7 +204,7 @@ varargs int SetParalyzed(int count, function f) {
     return count;
 }
 
-int GetParalyzed() { return cParalyzed; }
+int GetParalyzed(){ return cParalyzed; }
 
 int eventQuell(){
     object *truced;
@@ -223,23 +223,29 @@ int eventUnQuell(){
     return 1;
 }
 
-string SetParty(string str) {
+string SetParty(string str){
     if( file_name(previous_object()) != PARTY_D ) return Party;
     if( str ) AddChannel(str);
     else RemoveChannel(Party);
     return (Party = str);
 }
 
-string GetParty() {
+string GetParty(){
+    if(Party){
+        if(member_array(Party, PARTY_D->GetParties()) == -1) return 0;
+        if(member_array(this_object(), PARTY_D->GetPartyMembers(Party)) == -1){
+            return 0;
+        }
+    }
     return Party;
 }
 
-varargs int SetAttack(mixed target, function callback, int type) {
+varargs int SetAttack(mixed target, function callback, int type){
     int i;
     string *voibs = ({ "kill", "target", "smite", "waste", "hit", "attack" });
 
     if( objectp(target) ) target = ({ target });
-    if( target ) {
+    if( target ){
         if( member_array(this_object(), target) != -1 ) return 0;
         if(sizeof(NonTargets) && member_array(query_verb(),voibs) != -1){
             foreach(object individual in target){
@@ -272,54 +278,54 @@ varargs int SetAttack(mixed target, function callback, int type) {
     return 1;
 }
 
-int GetLevel() {
+int GetLevel(){
     return classes::GetLevel();
 }
 
-int GetInCombat() {
+int GetInCombat(){
     return sizeof(filter(GetEnemies(),
         (: $1 && (environment($1) == environment()) :)));
 }
 
-int GetBaseStatLevel(string stat) {
+int GetBaseStatLevel(string stat){
     return race::GetBaseStatLevel(stat);
 }
 
-float SetWimpy(float wimpy) {
+float SetWimpy(float wimpy){
     return (Wimpy = wimpy);
 }
 
-float GetWimpy() {
+float GetWimpy(){
     return Wimpy;
 }
 
-string SetWimpyCommand(string cmd) {
+string SetWimpyCommand(string cmd){
     return (WimpyCommand = cmd);
 }
 
-string GetWimpyCommand() {
+string GetWimpyCommand(){
     return WimpyCommand;
 }
 
-int GetMaxCarry() {
+int GetMaxCarry(){
     return race::GetMaxCarry();
 }
 
-int GetMagicChance(int val) {
+int GetMagicChance(int val){
     val = GetStatLevel("intelligence")/2 + (3*val)/2;
     return val + GetLuck();
 }
 
-int GetMagicResistance() {
+int GetMagicResistance(){
     int val = GetStatLevel("wisdom")/2 + (3*GetSkillLevel("magic defense"))/2;
 
     return val + GetLuck();
 }
 
-int GetCombatChance(int val) {
+int GetCombatChance(int val){
     val = val + random((val * GetMobility())/50);
     val = (val/(3- visibility()) + GetLuck());
-    if( GetBlind() ) {
+    if( GetBlind() ){
         return val/10;
     }
     else {
@@ -327,10 +333,10 @@ int GetCombatChance(int val) {
     }
 }
 
-int GetDefenseChance(int val) {
+int GetDefenseChance(int val){
     val = (val * GetMobility())/50;
     val = (val/(3- visibility()) + (GetLuck()/2));
-    if( GetBlind() ) {
+    if( GetBlind() ){
         return val/10;
     }
     else {
@@ -338,19 +344,19 @@ int GetDefenseChance(int val) {
     }
 }
 
-int GetCombatBonus(int level) {
+int GetCombatBonus(int level){
     int diff = level - GetLevel();
 
-    if( diff >= 6 && diff < 16 ) {
+    if( diff >= 6 && diff < 16 ){
         return 4;
     }
-    else if( diff >= 1 && diff < 6 ) {
+    else if( diff >= 1 && diff < 6 ){
         return 3;
     }
-    else if( diff >= -9 && diff < 1 ) {
+    else if( diff >= -9 && diff < 1 ){
         return 2;
     }
-    else if( diff >= -20 && diff < -9 ) {
+    else if( diff >= -20 && diff < -9 ){
         return 1;
     }
     else {
@@ -358,38 +364,38 @@ int GetCombatBonus(int level) {
     }
 }
 
-static int GetDamage(int power, string skill) {
+static int GetDamage(int power, string skill){
     int x = GetSkillLevel(skill);
 
-    if( power < 1 ) {
+    if( power < 1 ){
         return 0;
     }
-    else if( power > 100 ) {
+    else if( power > 100 ){
         power = 100;
     }
-    if( x < 1 ) {
+    if( x < 1 ){
         x = 1;
     }
-    else if( x > 100 ) {
+    else if( x > 100 ){
         x = 100;
     }
     x = (x * (power/2 + random(power/2))/10);
     x += (GetLuck()/2) + GetStatLevel("strength")/8;
-    if( x < 1 ) { // negative luck or cursed strength
+    if( x < 1 ){ // negative luck or cursed strength
         return 1;
     }
     return x;
 }
 
-int CanWeapon(object target, string type, int hands, int num) {
+int CanWeapon(object target, string type, int hands, int num){
     string limb = target->GetRandomLimb(TargetLimb);
     int chance = (7*GetSkillLevel(type+" attack") + 
       3*GetStatLevel("coordination"))/10;
     int div = 2;
     int x, y;
 
-    if(hands > 1) {  
-        if(GetSkillLevel("multi-hand")) {
+    if(hands > 1){  
+        if(GetSkillLevel("multi-hand")){
             chance = (chance/2) + 
             (GetSkillLevel("multi-hand")/75)*(chance/2);
         }
@@ -398,8 +404,8 @@ int CanWeapon(object target, string type, int hands, int num) {
             div += (hands-1);
         }
     }
-    if(num > 1) {
-        if(GetSkillLevel("multi-weapon")) {
+    if(num > 1){
+        if(GetSkillLevel("multi-weapon")){
             chance = (chance/2) + 
             (GetSkillLevel("multi-weapon")/75)*(chance/2);
         }    
@@ -411,8 +417,8 @@ int CanWeapon(object target, string type, int hands, int num) {
     chance = GetCombatChance(chance/div);
     x = random(chance);
     y = random(10);
-    if( x <= y ) {
-        if( x > y/2 ) { 
+    if( x <= y ){
+        if( x > y/2 ){ 
             TargetLimb = target->GetRandomLimb(0);
         }
         else { 
@@ -426,7 +432,7 @@ int CanWeapon(object target, string type, int hands, int num) {
 }
 
 
-int CanMelee(object target) {
+int CanMelee(object target){
     if(!this_object()->GetMelee()){
 
         string limb = target->GetRandomLimb(TargetLimb);
@@ -437,8 +443,8 @@ int CanMelee(object target) {
 
         chance = GetCombatChance(chance/3);
         x = random(chance);
-        if( x <= y ) {
-            if( x > y/2 ) {
+        if( x <= y ){
+            if( x > y/2 ){
                 TargetLimb = target->GetRandomLimb(0);
             }
             else {
@@ -459,8 +465,8 @@ int CanMelee(object target) {
 
         chance = GetCombatChance(chance/2);
         x = random(chance);
-        if( x <= y ) {
-            if( x > y/2 ) {
+        if( x <= y ){
+            if( x > y/2 ){
                 TargetLimb = target->GetRandomLimb(0);
             }
             else {
@@ -474,14 +480,14 @@ int CanMelee(object target) {
     }
 }
 
-static int Destruct() {
+static int Destruct(){
     if( GetParty() ) PARTY_D->eventLeaveParty(this_object());
     return 1;
 }
 
 /*  *****************   /lib/combat.c events  ***************** */
 
-varargs int eventDie(mixed agent) {
+varargs int eventDie(mixed agent){
     object ob;
     int x;
 
@@ -489,11 +495,11 @@ varargs int eventDie(mixed agent) {
     Dead = 1;
 
     x = race::eventDie(agent);
-    if( x != 1 ) {
+    if( x != 1 ){
         return x;
     }
-    foreach(ob in GetEnemies()) {
-        if( ob ) {
+    foreach(ob in GetEnemies()){
+        if( ob ){
             ob->eventEnemyDied(this_object());
         }
     }
@@ -503,7 +509,7 @@ varargs int eventDie(mixed agent) {
     return 1;
 }
 
-int eventExecuteAttack(mixed target) {
+int eventExecuteAttack(mixed target){
     object array weapons;
     function f = fNextRound;
     int type = tNextRound;
@@ -515,8 +521,8 @@ int eventExecuteAttack(mixed target) {
     fNextRound = 0;
     tNextRound = ROUND_UNDEFINED;
     if( position == POSITION_LYING || position == POSITION_SITTING &&
-      RACES_D->GetLimblessCombatRace(this_object()->GetRace()) != 1) {
-        if(this_object()->CanFly()) {
+      RACES_D->GetLimblessCombatRace(this_object()->GetRace()) != 1){
+        if(this_object()->CanFly()){
             this_object()->eventFly();
         }
         else if(RACES_D->GetLimblessCombatRace(GetRace()) != 1){
@@ -524,37 +530,37 @@ int eventExecuteAttack(mixed target) {
             return 0;
         }
     }
-    if(this_object()->GetPacifist()) {
+    if(this_object()->GetPacifist()){
         tell_object(this_object(),"As a pacifist, you choose not to fight.");
         return 0;
     }
-    if( arrayp(target) ) {
-        if( !f || (functionp(f) & FP_OWNER_DESTED) ) {
+    if( arrayp(target) ){
+        if( !f || (functionp(f) & FP_OWNER_DESTED) ){
             return 0; /* built in only handles 1 targ */
         }
-        target = filter(target, function(object ob) {
-              if( !ob ) {
+        target = filter(target, function(object ob){
+              if( !ob ){
                   return 0;
               }
-              if( !ob->eventPreAttack(this_object()) ) {
+              if( !ob->eventPreAttack(this_object()) ){
                   return 0;
               }
               return 1;
             });
-          if( !sizeof(target) ) {
+          if( !sizeof(target) ){
               return 0;
           }
       }
-        else if( !target->eventPreAttack(this_object()) ) {
+        else if( !target->eventPreAttack(this_object()) ){
             return 0;
         }
         this_object()->AddStaminaPoints(-1);
-        switch(type) {
+        switch(type){
         case ROUND_UNDEFINED:
-            if( functionp(f) && !(functionp(f) & FP_OWNER_DESTED) ) {
+            if( functionp(f) && !(functionp(f) & FP_OWNER_DESTED) ){
                 return evaluate(f, target);
             }
-            if( sizeof(weapons = GetWielded()) ) {
+            if( sizeof(weapons = GetWielded()) ){
                 return eventWeaponRound(target, weapons);
             }
             else {
@@ -571,7 +577,7 @@ int eventExecuteAttack(mixed target) {
             return eventWeaponRound(target, functionp(f) ? f : GetWielded());
 
         case ROUND_OTHER:
-            if( functionp(f) && !(functionp(f) & FP_OWNER_DESTED) ) {
+            if( functionp(f) && !(functionp(f) & FP_OWNER_DESTED) ){
                 return evaluate(f);
             }
             else {
@@ -583,30 +589,30 @@ int eventExecuteAttack(mixed target) {
         return 0;
     }
 
-    int eventWeaponRound(mixed target, mixed val) {
+    int eventWeaponRound(mixed target, mixed val){
         object array weapons = 0;
         function f = 0;
 
         if(Dead) return 1;
         if(target->GetDead()) return 1;
 
-        if( arrayp(val) ) {
+        if( arrayp(val) ){
             weapons = val;
         }
-        else if( functionp(val) && !(functionp(val) & FP_OWNER_DESTED) ) {
+        else if( functionp(val) && !(functionp(val) & FP_OWNER_DESTED) ){
             f = val;
         }
         else {
             return 0;
         }
-        if( f ) {
+        if( f ){
             evaluate(f, target);
         }
         else {
             int count = sizeof(weapons);
 
-            foreach(object weapon in weapons) {
-                if( !target ) {
+            foreach(object weapon in weapons){
+                if( !target ){
                     break;
                 }
                 eventWeaponAttack(target, weapon, count);
@@ -625,7 +631,7 @@ int eventExecuteAttack(mixed target) {
         if(Dead) return;
         if(target->GetDead()) return;
 
-        if( target->GetDying() ) {
+        if( target->GetDying() ){
             return;
         }
 
@@ -638,23 +644,23 @@ int eventExecuteAttack(mixed target) {
         power = random(pro);
         con = target->GetDefenseChance(target->GetSkillLevel(weapon_type +
             " defense"));
-        if( !TargetLimb ) { // If the thing stood still, I still missed
+        if( !TargetLimb ){ // If the thing stood still, I still missed
             if(!estatep(target)) eventTrainSkill(weapon_type + " attack", pro, 0, 0, bonus);
-            if( hands > 1 ) {
+            if( hands > 1 ){
                 if(!estatep(target)) eventTrainSkill("multi-hand", pro, 0, 0, bonus);
             }
-            if( num > 1 ) {
+            if( num > 1 ){
                 if(!estatep(target)) eventTrainSkill("multi-weapon", pro, 0, 0, bonus);
             }
             SendWeaponMessages(target, -2, weapon, TargetLimb);
         }
-        else if( !target->eventReceiveAttack(power, weapon_type, this_object()) ) {
+        else if( !target->eventReceiveAttack(power, weapon_type, this_object()) ){
             // Target avoided the attack
             if(!estatep(target)) eventTrainSkill(weapon_type + " attack", pro, con, 0, bonus);
-            if( hands > 1 ) {
+            if( hands > 1 ){
                 if(!estatep(target)) eventTrainSkill("multi-hand", pro, con, 0, bonus);
             }
-            if( num > 1 ) {
+            if( num > 1 ){
                 if(!estatep(target)) eventTrainSkill("multi-weapon", pro, con, 0, bonus);
             }
             SendWeaponMessages(target, -1, weapon, TargetLimb);
@@ -673,11 +679,11 @@ int eventExecuteAttack(mixed target) {
             if(damage < 0) damage = 0;
             actual_damage = target->eventReceiveDamage(this_object(), damage_type,
               damage, 0, TargetLimb);
-            if( actual_damage < 0 ) {
+            if( actual_damage < 0 ){
                 actual_damage = 0;
             }
             weapon_damage = damage - actual_damage;
-            if( weapon_damage > 0 ) {
+            if( weapon_damage > 0 ){
                 weapon->eventReceiveDamage(this_object(), BLUNT, weapon_damage,
                   0, TargetLimb);
             }
@@ -687,7 +693,7 @@ int eventExecuteAttack(mixed target) {
         }
     }
 
-    int eventMeleeRound(mixed target, function f) {
+    int eventMeleeRound(mixed target, function f){
         string array limbs = GetLimbs() - ({ GetTorso() });
         int count = sizeof(limbs);
         int attacks;
@@ -695,17 +701,17 @@ int eventExecuteAttack(mixed target) {
         if(Dead) return 1;
         if(target->GetDead()) return 1;
 
-        if( count < 2 ) {
+        if( count < 2 ){
             if(RACES_D->GetLimblessCombatRace(this_object()->GetRace())){
                 limbs = GetLimbs();
                 count = sizeof(limbs);
             }
             else return 0;
         }
-        if( !f || (functionp(f) & FP_OWNER_DESTED) ) {
+        if( !f || (functionp(f) & FP_OWNER_DESTED) ){
             attacks = 1 + random(this_object()->GetSkillLevel("melee attack"))/30;
-            while( attacks-- ) {
-                if( target->GetDying() ) {
+            while( attacks-- ){
+                if( target->GetDying() ){
                     break;
                 }
                 eventMeleeAttack(target, limbs[random(count)]);
@@ -717,15 +723,15 @@ int eventExecuteAttack(mixed target) {
         return target->GetDying();
     }
 
-    void eventMeleeAttack(object target, string limb) {
+    void eventMeleeAttack(object target, string limb){
         int pro, con;
         int chance;
 
-        if( target->GetDead() || Dead || target->GetDying() ) {
+        if( target->GetDead() || Dead || target->GetDying() ){
             return;
         }
 
-        if(limb == "head" && this_object()->GetCanBite()) {
+        if(limb == "head" && this_object()->GetCanBite()){
             eventBite(target);
             return;
         }
@@ -733,12 +739,12 @@ int eventExecuteAttack(mixed target) {
         pro = CanMelee(target);
         con = target->GetDefenseChance(target->GetSkillLevel("melee defense"));
         chance = random(pro);
-        if( !TargetLimb ) { // I *really* missed
+        if( !TargetLimb ){ // I *really* missed
             SendMeleeMessages(target, -2);
             if(!estatep(target)) eventTrainSkill("melee attack", pro, 0, 0,
                   GetCombatBonus(target->GetLevel()));
         }
-        else if( !target->eventReceiveAttack(chance, "melee", this_object()) ) {
+        else if( !target->eventReceiveAttack(chance, "melee", this_object()) ){
             // Enemy dodged my attack
             SendMeleeMessages(target, -1);
             if(!estatep(target)) eventTrainSkill("melee attack", pro, con, 0,
@@ -765,29 +771,29 @@ int eventExecuteAttack(mixed target) {
         }
     }
 
-    int eventMagicRound(mixed target, function f) {
+    int eventMagicRound(mixed target, function f){
         if(target->GetDead()) return 1;
         evaluate(f, target);
         return target->GetDying();
     }
 
-    mixed eventBite(object target) {
+    mixed eventBite(object target){
         int pro = CanMelee(target);
         int con = target->GetDefenseChance(target->GetSkillLevel("melee defense"));
         int x = random(pro);
 
         if(target->GetDead()) return 1;
 
-        if( environment() != environment(target) ) {
+        if( environment() != environment(target) ){
             this_object()->eventPrint(target->GetName() + " has gone away.");
             return 1;
         }
-        if( TargetLimb ) {
-            if( target->eventReceiveAttack(x, "melee", this_object()) ) { 
+        if( TargetLimb ){
+            if( target->eventReceiveAttack(x, "melee", this_object()) ){ 
                 x = GetDamage(pro*2, "melee attack");
                 x = target->eventReceiveDamage(this_object(), BITE, x, 0,
                   TargetLimb);
-                if( x < 1 ) {
+                if( x < 1 ){
                     target->eventPrint(possessive_noun(this_object()) + " bite "
                       "is nothing more than a pinch.");
                     this_object()->eventPrint("Your bite is nothing more than a pinch.");
@@ -829,36 +835,36 @@ int eventExecuteAttack(mixed target) {
         return 1;
     }
 
-    int eventPreAttack(object agent) {
-        if( agent == this_object() ) {
+    int eventPreAttack(object agent){
+        if( agent == this_object() ){
             return 0;
         }
-        if( environment()->GetProperty("no attack") ) {
+        if( environment()->GetProperty("no attack") ){
             return 0;
         }
-        if( GetDying() ) {
+        if( GetDying() ){
             return 0;
         }
-        if( playerp(this_object()) && playerp(agent) && !PLAYER_KILL) { 
-            if( !environment()->CanAttack( agent, this_object() ) ) {
+        if( playerp(this_object()) && playerp(agent) && !PLAYER_KILL){ 
+            if( !environment()->CanAttack( agent, this_object() ) ){
                 return 0;
             }
         }
-        if( AddEnemy(agent) ) {
+        if( AddEnemy(agent) ){
             AddHostile(agent);
         }
         return 1;
     }
 
-    varargs int eventReceiveAttack(int speed, string def, object agent) {
+    varargs int eventReceiveAttack(int speed, string def, object agent){
         int x, pro, level, bonus;
 
         if(Dead) return 0;
 
-        if( !agent ) {
+        if( !agent ){
             agent = previous_object();
         }
-        if( !living(agent) ) {
+        if( !living(agent) ){
             level = 1;
             bonus = 1;
         }
@@ -866,12 +872,12 @@ int eventExecuteAttack(mixed target) {
             level = agent->GetLevel();
             bonus = GetCombatBonus(level);
         }
-        if( AddEnemy(agent) ) {
+        if( AddEnemy(agent) ){
             AddHostile(agent);
         }
-        if( def == "magic" ) {
+        if( def == "magic" ){
             pro = GetMagicResistance();
-            if( (x = random(pro)) > speed ) {
+            if( (x = random(pro)) > speed ){
                 if(!estatep(agent)) eventTrainSkill("magic defense", pro, speed, 1, bonus);
                 return 0;
             }
@@ -883,7 +889,7 @@ int eventExecuteAttack(mixed target) {
         else {
             pro = GetDefenseChance(GetSkillLevel(def + " defense"));
             x = random(pro = pro/2);
-            if( x > speed ) {
+            if( x > speed ){
                 if(!estatep(agent)) eventTrainSkill(def + " defense", pro, speed, 1, bonus);
                 return 0;
             }
@@ -894,14 +900,37 @@ int eventExecuteAttack(mixed target) {
         }
     }
 
-    void eventKillEnemy(object ob) {
+    void eventKillEnemy(object ob){
         int level;
+        int reward;
 
         if( !ob ) return;
         level = ob->GetLevel();
-        if(ob->GetCustomXP()) this_object()->AddExperiencePoints(ob->GetCustomXP());
-        else this_object()->AddExperiencePoints(level * 80);
-        if( member_array(ob, GetHostiles()) == -1 ) {
+        //if(ob->GetCustomXP()) this_object()->AddExperiencePoints(ob->GetCustomXP());
+        //else this_object()->AddExperiencePoints(level * 80);
+        if(ob->GetCustomXP()) reward = ob->GetCustomXP();
+        else reward = (level * 80);
+
+        if(this_object()->GetParty()){
+            int spoils;
+            object *loot_sharers = ({ this_object() });
+            foreach(object member in PARTY_D->GetPartyMembers(this_object()->GetParty())){
+                if(environment(member) == environment(this_object())){
+                    loot_sharers += ({ member });
+                }
+            }
+            loot_sharers = distinct_array(loot_sharers);
+            spoils = reward / sizeof(loot_sharers);
+            foreach(object member in loot_sharers){
+                member->AddExperiencePoints(spoils);
+            }
+        } 
+
+        else {
+            this_object()->AddExperiencePoints(reward);
+        }
+
+        if( member_array(ob, GetHostiles()) == -1 ){
             int x;
 
             if(!estatep(ob)) eventTrainSkill("murder", GetLevel(), level, 1,GetCombatBonus(level)); 
@@ -913,7 +942,7 @@ int eventExecuteAttack(mixed target) {
         }
     }
 
-    void eventDestroyEnemy(object ob) {
+    void eventDestroyEnemy(object ob){
         int level;
 
         if( !ob ) return;
@@ -923,7 +952,7 @@ int eventExecuteAttack(mixed target) {
         if(!estatep(ob)) eventTrainSkill("faith", GetLevel(), level, 1, GetCombatBonus(level));
     }
 
-    void eventEnemyDied(object ob) {
+    void eventEnemyDied(object ob){
         if( !ob ) return;
         Enemies -= ({ ob });
         Hostiles -= ({ ob });
@@ -932,7 +961,7 @@ int eventExecuteAttack(mixed target) {
     }
 
     varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
-      mixed limbs) {
+      mixed limbs){
         int hp,encumbrance;
 
         if(objectp(agent)){
@@ -955,14 +984,14 @@ int eventExecuteAttack(mixed target) {
         return x;
     }
 
-    mixed eventTurn(object who) {
+    mixed eventTurn(object who){
         int defense;
 
-        if( !GetUndead() ) {
+        if( !GetUndead() ){
             return 0;
         }
-        if( GetProperty("no turn") ) {
-            if( !who ) {
+        if( GetProperty("no turn") ){
+            if( !who ){
                 return 0;
             }
             else {
@@ -972,7 +1001,7 @@ int eventExecuteAttack(mixed target) {
                   "turns on " + who->GetName() +
                   ".", who);
                 who->eventPrint("The power of the undead turns on you.");
-                if( x > random(100) + 1 ) {
+                if( x > random(100) + 1 ){
                     who->eventDie(this_object());
                 }
                 else {
@@ -981,12 +1010,12 @@ int eventExecuteAttack(mixed target) {
                 return 0;
             }
         }
-        if( !who ) {
+        if( !who ){
             race::eventTurn(who);
             return 1;
         }
         defense = GetMagicResistance();
-        if( who->GetSkillLevel("faith") < defense ) {
+        if( who->GetSkillLevel("faith") < defense ){
             who->eventPrint("You writhe in pain.");
             environment(who)->eventPrint(who->GetName() + " writhes in pain.",
               who);
@@ -999,24 +1028,24 @@ int eventExecuteAttack(mixed target) {
         return 1;
     }
 
-    int eventWimpy(int i) {
+    int eventWimpy(int i){
         object env = environment();
         string dir, cmd;
 
-        if( !env || !GetInCombat() ) {
+        if( !env || !GetInCombat() ){
             if(!i) return 0;
         }
         cmd = WimpyCommand || "go out";
         if( (sscanf(cmd, "go %s", dir) && !((string)env->GetExit(dir))) ||
-          (sscanf(cmd, "enter %s", dir) && !((string)env->GetEnter(dir))) ) {
+          (sscanf(cmd, "enter %s", dir) && !((string)env->GetEnter(dir))) ){
             string *tmp;
 
             tmp = filter((string *)environment()->GetExits(),
               (: !((string)environment()->GetDoor($1)) :));
-            if( !sizeof(tmp) ) {
+            if( !sizeof(tmp) ){
                 tmp = filter((string *)environment()->GetEnters(),
                   (: !((string)environment()->GetDoor($1)) :));
-                if( !sizeof(tmp) ) {
+                if( !sizeof(tmp) ){
                     this_object()->eventPrint("You need to escape, but you have nowhere to go!");
                     return 0;
                 }
@@ -1027,19 +1056,19 @@ int eventExecuteAttack(mixed target) {
         return eventForce(cmd);
     }
 
-    static void heart_beat() {
+    static void heart_beat(){
         race::heart_beat();
-        if( GetSleeping() || GetDying() ) {
+        if( GetSleeping() || GetDying() ){
             return;
         }
-        if( cParalyzed > 0 ) {
+        if( cParalyzed > 0 ){
             cParalyzed--;
-            if( cParalyzed < 1 ) {
+            if( cParalyzed < 1 ){
                 function f;
 
                 f = fParalyzed;
                 fParalyzed = 0;
-                if( functionp(f) && !(functionp(f) & FP_OWNER_DESTED) ) {
+                if( functionp(f) && !(functionp(f) & FP_OWNER_DESTED) ){
                     evaluate(f);
                 }
                 else {
@@ -1048,7 +1077,7 @@ int eventExecuteAttack(mixed target) {
             }
             return;
         }
-        if( sizeof(Enemies) ) {
+        if( sizeof(Enemies) ){
             SortEnemies();
             foreach(object dude in Enemies){
                 if(member_array(dude,NonTargets) != -1){
@@ -1057,26 +1086,26 @@ int eventExecuteAttack(mixed target) {
                 }
             }
         }
-        if( sizeof(Enemies) ) {
+        if( sizeof(Enemies) ){
             object ob;
 
             SortEnemies();
 
-            if( SpecialTargets ) {
-                foreach(object target in SpecialTargets) {
+            if( SpecialTargets ){
+                foreach(object target in SpecialTargets){
 
-                    if( objectp(SetCurrentEnemy(target)) ) {
+                    if( objectp(SetCurrentEnemy(target)) ){
                         break;
                     }
                 }
                 eventExecuteAttack(SpecialTargets);
                 SpecialTargets = 0;
             }
-            else if( ob = ResetCurrentEnemy() ) {
+            else if( ob = ResetCurrentEnemy() ){
                 eventExecuteAttack(ob);
             }
         }
-        else if( tNextRound != ROUND_UNDEFINED && functionp(fNextRound) ) {
+        else if( tNextRound != ROUND_UNDEFINED && functionp(fNextRound) ){
             function f;
 
             f = fNextRound;

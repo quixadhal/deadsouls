@@ -12,7 +12,7 @@
  style="font-weight: bold;">Dead Souls Admin FAQ</span></big><br>
 <br>
 Written by Cratylus @ Dead Souls, October 2005<br>
-Updated February 2008<br>
+Updated May 2008<br>
 <span style="font-weight: bold; text-decoration: underline;"><br>
 </span>Note: commands are displayed in boldface, like this: <span
  style="font-weight: bold;">ls -a</span><span
@@ -394,7 +394,10 @@ be full creators</a><br>
 <a href="#134">134 How do I enable IMC2?</a><br>
 <br>
 <a href="#135">135 Combat is too slow!</a><br>
-</big><br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;"><a
+ href="#136">136 I want players to select their class when they create
+their characters</a></big><br>
 <big><a href="http://dead-souls.net/ds-admin-faq.html#121"><big
  style="font-family: courier new,courier,monospace;"></big></a></big><big
  style="font-family: courier new,courier,monospace;"><br>
@@ -432,12 +435,14 @@ somewhere running Dead Souls I can log into?</span><br>
 <br>
 As a convenience to the curious, I have set up a "demo" mud<br>
 at alcatraz.wolfpaw.net, port 8000. To connect, either click on<br>
-<a href="telnet://alcatraz.wolfpaw.net:8000">this link</a> with your browser, or
+<a href="telnet://alcatraz.wolfpaw.net:8000">this link</a> with your
+browser, or
 open a terminal window <br>
 (or for windows users, Start -&gt; Run ) and <br>
 type: <span style="font-weight: bold;">telnet</span> </big><big
  style="font-family: courier new,courier,monospace;"><span
- style="font-weight: bold;">alcatraz.wolfpaw.net 8000 </span>, or use the java
+ style="font-weight: bold;">alcatraz.wolfpaw.net 8000 </span>, or use
+the java
 applet<br>
 at this page: <a href="http://dead-souls.net/javaclient/demo.html">http://dead-souls.net/javaclient/demo.html</a><br>
 <span style="font-weight: bold;"><br>
@@ -4875,8 +4880,24 @@ a new configuration option, FAST_COMBAT, has been added to<br>
 config.h. To enable "fast combat, regardless of speed stat",<br>
 issue the command:<br>
 <br>
-<span style="font-weight: bold;">mudconfig fastcombat enable</span></big><br>
-<br style="font-family: courier new,courier,monospace;">
+<span style="font-weight: bold;">mudconfig fastcombat enable<br>
+<br>
+<br>
+<a name="136"></a><span style="text-decoration: underline;">I want
+players to select their class when they create their characters</span><br>
+<br>
+</span></big><big style="font-family: courier new,courier,monospace;">Start<span
+ style="font-family: monospace;">ing in 2.7a26 this can be ena</span>bled
+with the command:<br>
+<br>
+<span style="font-weight: bold;">mudconfig selectclass yes</span><br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
+Note that the existing classes are just examples, and are therefore<br>
+unlikely to have all the neat things you will eventually have<br>
+in your mud.<br>
+<br>
+<span style="font-weight: bold;"></span></big><br
+ style="font-family: courier new,courier,monospace;">
 <big style="font-family: courier new,courier,monospace;">-
 Cratylus</big><br style="font-family: courier new,courier,monospace;">
 <br style="font-family: courier new,courier,monospace;">

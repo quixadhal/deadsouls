@@ -7,6 +7,14 @@ void help();
 mixed var, newval;
 object ob;
 
+int CheckVar(string var, object ob){
+    mixed *vars;
+    if(!var || !ob) return 0;
+    vars = variables(ob);
+    if(member_array(var, vars) == -1) return 0;
+    return 1;
+}
+
 int cmd(string str) {
     int i;
     mixed ret;
@@ -45,6 +53,11 @@ int cmd(string str) {
 
     if(!ob){
         write(truncate(what,2)+" not found.");
+        return 1;
+    }
+
+    if(!CheckVar(var, ob)){
+        write("No such variable exists in that object.");
         return 1;
     }
 

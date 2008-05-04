@@ -24,61 +24,61 @@ private static int LastCreatorAge;
 
 /* *****************  /lib/creator.c driver applies  ***************** */
 
-static void create() {
+static void create(){
     player::create();
     CreatorAge = 0;
     LastCreatorAge = time();
     CreatorBirth = time();
 }
 
-int is_living() { return 1; }
+int is_living(){ return 1; }
 
-int inventory_accessible() { return 1; }
+int inventory_accessible(){ return 1; }
 
-int inventory_visible() { return 1; }
+int inventory_visible(){ return 1; }
 
-mixed direct_verb_rule(string verb) {
+mixed direct_verb_rule(string verb){
     return SOUL_D->CanTarget(this_player(), verb, this_object());
 }
 
-mixed direct_give_liv_obj() {
+mixed direct_give_liv_obj(){
     if( this_player() == this_object() ) return "Are you confused?";
     return 1;
 }
 
-mixed direct_give_liv_obs() {
+mixed direct_give_liv_obs(){
     return direct_give_liv_obj();
 }
 
-mixed indirect_give_obj_to_liv(object item) {
+mixed indirect_give_obj_to_liv(object item){
     if( !item ) return 0;
     if( this_player() == this_object() ) return "Are you confused?";
     if( environment(item) != this_player() ) return "You don't have that!";
     return CanCarry((int)item->GetMass());
 }
 
-mixed indirect_give_obs_to_liv(object *item) {
+mixed indirect_give_obs_to_liv(object *item){
     return 1;
 }
 
-mixed direct_look_obj() { return 1; }
+mixed direct_look_obj(){ return 1; }
 
-mixed direct_look_at_obj() { return 1; }
+mixed direct_look_at_obj(){ return 1; }
 
-mixed direct_marry_liv_to_liv() {
+mixed direct_marry_liv_to_liv(){
     return 1;
 }
 
-mixed indirect_marry_liv_to_liv() {
+mixed indirect_marry_liv_to_liv(){
     return 1;
 }
 
-static void net_dead() {
+static void net_dead(){
     player::net_dead();
     CreatorAge += time() - LastCreatorAge;
     LastCreatorAge = time();}
 
-void eventReconnect() {
+void eventReconnect(){
     string tmp;
 
     player::eventReconnect();
@@ -87,17 +87,17 @@ void eventReconnect() {
         message("system", "\nYour edit file was saved as: "+tmp, this_object());
 }
 
-varargs int eventShow(object who, string str, string on_id) {
+varargs int eventShow(object who, string str, string on_id){
     player::eventShow(who, str);
     return 1;
 }
 
 /* *****************  /lib/creator.c events  ***************** */
 
-void eventDescribeEnvironment(int verbose) {
+void eventDescribeEnvironment(int verbose){
     object env;
 
-    if( !(env = environment()) ) {
+    if( !(env = environment()) ){
         message("room_description", "No environment.", this_object());
         return;
     }
@@ -105,7 +105,7 @@ void eventDescribeEnvironment(int verbose) {
     player::eventDescribeEnvironment(verbose);
 }
 
-static int Destruct() {
+static int Destruct(){
     int x;
 
     if( !(x = player::Destruct()) ) return 0;
@@ -117,7 +117,7 @@ static int Destruct() {
 
 /* *****************  /lib/creator.c  local functions ***************** */
 
-int Setup() {
+int Setup(){
     string tmp;
     int bugs, laston;
 
@@ -136,18 +136,18 @@ int Setup() {
     return 1;
 }
 
-int eventForce(string cmd) {
+int eventForce(string cmd){
     if( !((int)master()->valid_apply( ({ GetKeyName() }) )) ) return 0;
     else return player::eventForce(cmd);
 }
 
 /*  ***************  /lib/creator.c modal functions  *************** */
 
-int CanCarry(int amount) { return 1; }
+int CanCarry(int amount){ return 1; }
 
 /* ************  /lib/creator.c data manipulation functions  ************ */
 
-int GetCreatorAge() {
+int GetCreatorAge(){
     int x;
 
     if( !interactive(this_object()) ) return CreatorAge;
@@ -157,19 +157,19 @@ int GetCreatorAge() {
     return CreatorAge;
 }
 
-varargs string GetLong(string str) {
+varargs string GetLong(string str){
     str = player::GetLong() + "\n";
     return str;
 }
 
-int GetCreatorBirth() { return CreatorBirth; }
+int GetCreatorBirth(){ return CreatorBirth; }
 
-string GetName() { 
+string GetName(){ 
     if( !GetInvis() ) return ::GetName();
     else return "A shadow";
 }
 
-mapping GetSpellBook() {
+mapping GetSpellBook(){
     mapping ret = ([]);
     foreach(string spell in keys(SPELLS_D->GetSpells())){
         ret[spell] = 100;

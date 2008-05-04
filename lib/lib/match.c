@@ -11,14 +11,14 @@ inherit LIB_TORCH;
 
 private int StrikeChance = 50;
 
-mixed direct_strike_obj() {
+mixed direct_strike_obj(){
     if( environment() != this_player() ) return "#You don't have that!";
     if( GetBurning() ) return "It is already lit!";
     return 1;
 }
 
-mixed eventStrike(object who) {
-    if( !GetFuelAmount() || StrikeChance < random(100) || !eventBurn(who) ) {
+mixed eventStrike(object who){
+    if( !GetFuelAmount() || StrikeChance < random(100) || !eventBurn(who) ){
         who->eventPrint("You strike " + GetShort() + ", but nothing happens.");
         environment(who)->eventPrint((string)who->GetName() + " strikes " +
           GetShort() + ", but nothing happens.",
@@ -31,10 +31,10 @@ mixed eventStrike(object who) {
     return 1;
 }
 
-int GetStrikeChance() {
+int GetStrikeChance(){
     return StrikeChance;
 }
 
-static int SetStrikeChance(int x) {
+static int SetStrikeChance(int x){
     return (StrikeChance = x);
 }

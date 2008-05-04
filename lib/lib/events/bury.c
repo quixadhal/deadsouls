@@ -6,6 +6,6 @@
  *    Last modified: 97/01/01
  */
 
-mixed direct_bury_obj_with_obj() {
+mixed direct_bury_obj_with_obj(){
     return 1;
 }

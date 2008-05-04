@@ -44,7 +44,7 @@ private static object NetDiedHere;
 private static mapping LastError;
 private static string *UserId;
 
-static void create() {
+static void create(){
     object::create();
     messages::create();
     interface::create();
@@ -72,7 +72,7 @@ int SetRescueBit(int i){
 
 /* ***************  /lib/interactive.c modal functions  *************** */
 
-mixed CanDivorce() {
+mixed CanDivorce(){
     class marriage m;
 
     if( !Marriages || !sizeof(Marriages) )
@@ -82,18 +82,18 @@ mixed CanDivorce() {
     return 1;
 }
 
-mixed CanGet() {
+mixed CanGet(){
     return GetName() + " is a living being!";
 }
 
-mixed CanMarry() {
+mixed CanMarry(){
     if( !Marriages ) Marriages = ({});
     if( GetSpouse() ) return GetName() + " is currently married!";
     return 1;
 }
 
 /* ***************  /lib/interactive.c lfuns  *************** */
-int Setup() {
+int Setup(){
     mapping mp;
     string tmp;
 
@@ -108,7 +108,7 @@ int Setup() {
     SetId(({}));
     autosave::Setup();
     call_out("save_player", 2, GetKeyName());
-    if( VOTING_D->GetStatus() == VOTE_RUNNING ) {
+    if( VOTING_D->GetStatus() == VOTE_RUNNING ){
         if( VOTING_D->GetMode() == VOTE_MODE_CANDIDATES )
             eventPrint("%^YELLOW%^Class Elections are in progress!  "
               "Go nominate candidates!%^RESET%^");
@@ -117,7 +117,7 @@ int Setup() {
               "Go vote for the candidates!%^RESET%^");
     } 
 
-    if( VOTING_D->GetVoteStatus( this_object() ) != VOTE_ALREADY_VOTED ) {
+    if( VOTING_D->GetVoteStatus( this_object() ) != VOTE_ALREADY_VOTED ){
         eventPrint("%^YELLOW%^You have not yet voted!  "
           "Please vote now.%^RESET%^");
         eventMove( VOTING_D->GetVoteRoom() );
@@ -127,7 +127,7 @@ int Setup() {
             room = find_object(LoginSite);
         }
         if(!room) catch(room = load_object(LoginSite));
-        if( room && room->GetMedium() == MEDIUM_AIR ) {
+        if( room && room->GetMedium() == MEDIUM_AIR ){
         }
         if(!sizeof(LoginSite) || 
           (!room && !file_exists(LoginSite) && !file_exists(LoginSite+".c")) || 
@@ -146,8 +146,8 @@ int Setup() {
         CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " logs in]",0);
     }
 
-    if(!catch(mp = (mapping)FOLDERS_D->mail_status(GetKeyName()))) {
-        if(mp["unread"]) {
+    if(!catch(mp = (mapping)FOLDERS_D->mail_status(GetKeyName()))){
+        if(mp["unread"]){
             eventPrint("\n%^RED%^%^BOLD%^>>> " + mp["unread"] + " of your " +
               (mp["total"] == 1 ? mp["total"] + " letter is" :
                 mp["total"] + " letters remain") + " unread. <<<%^RESET%^\n",
@@ -158,7 +158,7 @@ int Setup() {
     return 1;
 }
 
-static void net_dead() {
+static void net_dead(){
     interface::net_dead();
     Age += time() - LastAge;
     LastAge = time();
@@ -177,7 +177,7 @@ static void net_dead() {
           "net-dead.", MSG_SYSTEM);
 }
 
-void eventReconnect() {
+void eventReconnect(){
     interface::eventReconnect();
     LastAge = time();
     HostSite = query_ip_name(this_object());
@@ -192,17 +192,17 @@ void eventReconnect() {
     NetDiedHere = 0;
 }
 
-int eventDestruct() {
+int eventDestruct(){
     object ob;
 
     interface::eventDestruct();
-    foreach(ob in deep_inventory(this_object())) {
+    foreach(ob in deep_inventory(this_object())){
         if( ob ) catch(ob->eventDestruct());
     }
     return object::Destruct();
 }
 
-mixed eventDivorce() {
+mixed eventDivorce(){
     class marriage m;
 
     m = Marriages[0];
@@ -210,7 +210,7 @@ mixed eventDivorce() {
     return 1;
 }
 
-mixed eventMarry(object who, object to_whom) {
+mixed eventMarry(object who, object to_whom){
     class marriage m;
     object env;
 
@@ -224,12 +224,12 @@ mixed eventMarry(object who, object to_whom) {
     return 1;
 }
 
-int eventMove(mixed dest) {
+int eventMove(mixed dest){
     string str;
     int x;
 
     x = move::eventMove(dest);
-    if( x ) {
+    if( x ){
         if( !(str = (string)environment()->GetProperty("login")) ){
             if(clonep(environment())) LoginSite = file_name(environment());
             else LoginSite = base_name(environment());
@@ -243,7 +243,7 @@ void cmdParseRefresh(){
     parse_refresh();
 }
 
-int cmdQuit() {
+int cmdQuit(){
     string tmp;
     object env = environment(this_object());
     int retain = RETAIN_ON_QUIT;
@@ -252,7 +252,7 @@ int cmdQuit() {
     if( previous_object() && !
       ((int)master()->valid_apply( ({ GetKeyName() }) )) ) return 0;
     if( env->GetProperty("no quit") &&
-      ! sizeof(previous_object(-1)) ) {
+      ! sizeof(previous_object(-1)) ){
         message("system", "You are unable to escape this reality!",
           this_object());
         return 0;
@@ -283,7 +283,7 @@ int cmdQuit() {
     return 1;
 }
 
-int GetAge() {
+int GetAge(){
     int x;
 
     if(!interactive(this_object())) return Age;
@@ -293,21 +293,21 @@ int GetAge() {
     return Age;
 }
 
-int GetBirth() { return BirthTime - (YEAR * 18); }
+int GetBirth(){ return BirthTime - (YEAR * 18); }
 
-string query_cwd() { return interface::query_cwd(); }
+string query_cwd(){ return interface::query_cwd(); }
 
-void SetEmail(string str) {
+void SetEmail(string str){
     if(!((int)master()->valid_apply(({ GetKeyName() })))) return;
     Email = str;
 }
 
-string GetEmail() {
+string GetEmail(){
     if(!((int)master()->valid_apply(({ GetKeyName() })))) return 0;
     else return Email;
 }
 
-varargs string array SetId(string *bogus) {
+varargs string array SetId(string *bogus){
     int i;
 
     UserId = ({ GetKeyName() });
@@ -334,49 +334,49 @@ varargs string array SetId(string *bogus) {
     return UserId;
 }
 
-string *GetId() { return UserId; }
+string *GetId(){ return UserId; }
 
-int id(string str) {
+int id(string str){
     if(!str || !UserId) return 0;
     else return member_array(lower_case(str), UserId) != -1;
 }
 
-int GetLoginTime() { return LoginTime; }
+int GetLoginTime(){ return LoginTime; }
 
-string SetKeyName(string str) {
+string SetKeyName(string str){
     if( previous_object() != master() ) return GetKeyName();
     return object::SetKeyName(str);
 }
 
-string GetKeyName() { return object::GetKeyName(); }
+string GetKeyName(){ return object::GetKeyName(); }
 
-void SetNews(string type, int sz) { News[type] = sz; }
+void SetNews(string type, int sz){ News[type] = sz; }
 
-int GetNews(string type) { return News[type]; }
+int GetNews(string type){ return News[type]; }
 
-void SetPassword(string str) {
+void SetPassword(string str){
     if(!((int)master()->valid_apply(({ GetKeyName() })))) return;
     Password = str;
     save_player(GetKeyName());
 }
 
-string GetPassword() {
+string GetPassword(){
     if(!((int)master()->valid_apply(({ GetKeyName() })))) return 0;
     else return Password;
 }
 
-void SetRank(string str) { Rank = str; }
+void SetRank(string str){ Rank = str; }
 
-string GetRank() { return Rank; }
+string GetRank(){ return Rank; }
 
-void SetRealName(string str) {
+void SetRealName(string str){
     if(!((int)master()->valid_apply(({ GetKeyName() })))) return;
     RealName = str;
 }
 
-string GetRealName() { return RealName; }
+string GetRealName(){ return RealName; }
 
-string GetShort() {
+string GetShort(){
     string str;
 
     str = object::GetShort(str);
@@ -387,7 +387,7 @@ string GetShort() {
     else return str + " (net-dead)";
 }
 
-varargs string GetLong() {
+varargs string GetLong(){
     string str;
     str = object::GetLong(str);
     if(!str || strsrch(str, "$N") == -1) str = "$N is nondescript.";
@@ -395,71 +395,71 @@ varargs string GetLong() {
     return str;
 }
 
-int SetBriefMode(int x) { return (Brief = x); }
+int SetBriefMode(int x){ return (Brief = x); }
 
-int GetBriefMode() { return Brief; }
+int GetBriefMode(){ return Brief; }
 
-int SetWhereBlock() { return (WhereBlock = !WhereBlock); }
+int SetWhereBlock(){ return (WhereBlock = !WhereBlock); }
 
-int GetWhereBlock() { return WhereBlock; }
+int GetWhereBlock(){ return WhereBlock; }
 
-string get_path() {
+string get_path(){
     log_file("get_path", identify(previous_object())+"\n");
     return query_cwd();
 }
 
-void SetLastError(mapping m) {
+void SetLastError(mapping m){
     if (previous_object() != master()) return;
     LastError = m;
 }
 
-mapping GetLastError() {
+mapping GetLastError(){
     string *allowed = ({ "/secure/cmds/creators/dbxwhere", "/secure/cmds/creators/dbxframe", "/secure/cmds/players/bug", file_name(master()) });
     string caller = file_name(previous_object());
-    if(member_array(caller, allowed) != -1 ) {
+    if(member_array(caller, allowed) != -1 ){
         if(LastError) return LastError;
     }
     else error("Privilege Violation: " + caller);
 }
 
-string SetCapName(string str) {
+string SetCapName(string str){
     if( base_name(previous_object(0)) != LIB_CONNECT ) return str;
     return object::SetCapName(str);
 }
 
-void move_or_destruct() {
+void move_or_destruct(){
     (eventMove(ROOM_START) || eventMove(ROOM_VOID));
 }
 
-string SetShort(string str) {
+string SetShort(string str){
     if( strsrch(str, "$N") == -1 ) return object::GetShort();
     else return object::SetShort(str);
 }
 
-string SetLong(string str) {
+string SetLong(string str){
     if(strsrch(str, "$N") == -1) return object::GetLong();
     else return object::SetLong(str);
 }
 
-string GetName() { return object::GetName(); }
+string GetName(){ return object::GetName(); }
 
-varargs int GetInvis(object ob) { return object::GetInvis(ob); }
+varargs int GetInvis(object ob){ return object::GetInvis(ob); }
 
-mixed *GetCommands() {
+mixed *GetCommands(){
     if( !((int)master()->valid_apply( ({ GetKeyName() }) )) ) return ({});
     else return commands();
 }
 
-string GetSpouse() {
+string GetSpouse(){
     if( !Marriages || !sizeof(Marriages) ) return 0;
     if( ((class marriage)Marriages[0])->DivorceDate ) return 0;
     return ((class marriage)Marriages[0])->Spouse;
 }
 
-class marriage *GetMarriages() { return Marriages; }
+class marriage *GetMarriages(){ return Marriages; }
 
-string GetHostSite() {
-    if( WhereBlock ) {
+string GetHostSite(){
+    if( WhereBlock ){
         if( !((int)master()->valid_access(({ PRIV_ASSIST }))) )
             return "Confidential";
         else return HostSite;
@@ -467,16 +467,16 @@ string GetHostSite() {
     return HostSite;
 }
 
-int GetRadiantLight(int ambient) {
+int GetRadiantLight(int ambient){
     return container::GetRadiantLight(ambient);
 }
 
-string GetWebPage() {
+string GetWebPage(){
     return WebPage;
 }
 
-string SetWebPage(string page) {
-    if( !master()->valid_apply(({ GetKeyName() })) ) {
+string SetWebPage(string page){
+    if( !master()->valid_apply(({ GetKeyName() })) ){
         return WebPage;
     }
     return (WebPage = page);

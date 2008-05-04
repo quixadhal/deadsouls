@@ -16,26 +16,26 @@ string GetKeyName();
 mixed eventMove(mixed dest);
 // end abstract methods
 
-mixed GetPreventGet() {
+mixed GetPreventGet(){
     return PreventGet;
 }
 
-mixed SetPreventGet(mixed val) {
+mixed SetPreventGet(mixed val){
     return (PreventGet = val);
 }
 
-mixed CanGet(object who) {
+mixed CanGet(object who){
     if( !((int)who->CanCarry(GetMass())) ) return "It is too heavy for you!";
     if( !PreventGet && !GetProperty("keep") ) return 1;
-    if( stringp(GetProperty("keep")) ) {
-        if( (string)who->GetKeyName() == GetProperty("keep") ) {
+    if( stringp(GetProperty("keep")) ){
+        if( (string)who->GetKeyName() == GetProperty("keep") ){
             if( !PreventGet ) return 1;
         }
         else return "Mystical forces prevent you from getting " + this_object()->GetShort() + ".";
     }
     if( intp(PreventGet) ) return 0;
     if( stringp(PreventGet) ) return PreventGet;
-    if( objectp(PreventGet) ) {
+    if( objectp(PreventGet) ){
         if( PreventGet == who )
             return capitalize(this_object()->GetShort()) + " simply will not be taken.";
         else return 1;
@@ -45,8 +45,8 @@ mixed CanGet(object who) {
     }
 }
 
-mixed eventGet(object who) {
-    if( !eventMove(who) ) {
+mixed eventGet(object who){
+    if( !eventMove(who) ){
         who->eventPrint("You fail to get it.");
         return 1;
     }
@@ -56,14 +56,14 @@ mixed eventGet(object who) {
     return 1;
 }
 
-static void create() {
+static void create(){
     PreventGet = 0;
 }
 
-mixed direct_get_obj(object target) {
+mixed direct_get_obj(object target){
     if(environment() == this_player())
         return "#You're already holding it.";
-    if( environment() != environment(this_player()) ) {
+    if( environment() != environment(this_player()) ){
         string str = this_object()->GetShort();
 
         if( !str ) str = "It";
@@ -74,7 +74,7 @@ mixed direct_get_obj(object target) {
     return CanGet(this_player());
 }
 
-mixed direct_get_obj_out_of_obj(object target, object src) {
+mixed direct_get_obj_out_of_obj(object target, object src){
     object env;
     string str;
 
@@ -87,10 +87,10 @@ mixed direct_get_obj_out_of_obj(object target, object src) {
     return CanGet(this_player());
 }
 
-mixed direct_get_obj_from_obj(object target, object src) {
+mixed direct_get_obj_from_obj(object target, object src){
     return direct_get_obj_out_of_obj(target, src);
 }
 
-mixed direct_get_obj_obj(object target, object src) {
+mixed direct_get_obj_obj(object target, object src){
     return direct_get_obj_out_of_obj(target, src);
 }

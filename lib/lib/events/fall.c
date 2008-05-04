@@ -2,7 +2,7 @@
 #include <medium.h>
 #include <message_class.h>
 
-mixed eventFall() {
+mixed eventFall(){
     object env = environment();
     mixed rumbo = 0;
     string name = this_object()->GetName();

@@ -110,8 +110,8 @@ int eventDestruct(){
     return ::eventDestruct();
 }
 
-mixed CanGet(object who) { return 0; }
-mixed CanGive(object who) { return 0; }
-mixed CanSell(object who) { return 0; }
-mixed CanDrop(object who) { return 0; }
-mixed CanPut(object who) { return 0; }
+mixed CanGet(object who){ return 0; }
+mixed CanGive(object who){ return 0; }
+mixed CanSell(object who){ return 0; }
+mixed CanDrop(object who){ return 0; }
+mixed CanPut(object who){ return 0; }
