@@ -203,9 +203,9 @@ varargs static void eventUpdate(object whom){
     }
 
     catch( CLASSES_D->RemoveClass("thief") );
-    CLASSES_D->AddClass("/secure/cfg/classes/thief");
+    catch( CLASSES_D->AddClass("/secure/cfg/classes/thief") );
     catch( CLASSES_D->RemoveClass("priest") );
-    CLASSES_D->AddClass("/secure/cfg/classes/cleric");
+    catch( CLASSES_D->AddClass("/secure/cfg/classes/cleric") );
 
     reload("/secure/daemon/master");
     reload("/secure/sefun/arrays");

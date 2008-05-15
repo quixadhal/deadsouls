@@ -95,6 +95,14 @@ int last_regexp = time();
 int regexp_count = 1;
 int max_regexp = 200;
 
+//For some reason, FluffOS read_file() will read
+//a zero-length file as a 65535 length T_INVALID variable.
+//This tends to screw things up for Dead Souls.
+varargs string read_file(string file, int start_line, int number_of_lines){
+    if(file_size(file) == 0) return "";
+    return efun::read_file(file, start_line, number_of_lines);
+}
+
 void reset_eval_cost(){
     if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
         efun::reset_eval_cost();
@@ -306,7 +314,6 @@ int destruct(object ob) {
         if(ok) stat = "success";
         log_file("destructs",timestamp()+"\n"+stat+"\n"+get_stack(1)+"\n--\n");
     }
-
     if(ok) return efun::destruct(ob);
     else return 0;
 }

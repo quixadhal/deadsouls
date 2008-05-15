@@ -11,14 +11,15 @@ static void create() {
         ({"wall","walls"}) : "The walls are smooth and cement.",
         ({"floor","ceiling"}) : "The floor and ceiling are, like the walls, made "+
         "of smooth cement." ]) );
+    SetInventory(([
+        "/domains/default/obj/bbucket" : 1,
+        "/domains/default/npc/fighter" : 1,
+        "/domains/default/npc/dummy" : 1,
+        "/domains/default/obj/rack" : 1,
+      ]));
     SetExits( ([ 
         "south" : "/domains/default/room/wiz_corr1",
       ]) );
-    SetInventory(([
-        "/domains/default/npc/fighter" : 1,
-        "/domains/default/npc/dummy" : 1,
-        "/domains/default/obj/bbucket" :1
-      ]));
     SetPlayerKill(1);
 
     SetDoor("south", "/domains/default/doors/steel_door2.c");

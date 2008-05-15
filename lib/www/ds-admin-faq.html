@@ -391,7 +391,7 @@ How do I prevent people from using channels?</a><br>
 <a href="#133">133 I want to let people build but I don't want them to
 be full creators</a><br>
 <br>
-<a href="#134">134 How do I enable IMC2?</a><br>
+<a href="#134">134 How do I enable IMC2? What is it?</a><br>
 <br>
 <a href="#135">135 Combat is too slow!</a><br>
 <br>
@@ -4846,16 +4846,34 @@ from the builder's estate.<br>
 </big><big style="font-family: courier new,courier,monospace;"><a
  name="134"></a><span
  style="text-decoration: underline; font-weight: bold;">How do I enable
-IMC2?</span><br>
+IMC2? What is it?</span><br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
+IMC2 is an intermud protocol, like <a
+ href="http://lpmuds.net/intermud.html">Intermud-3</a>, but it is<br>
+slightly different in how it works, its definition, and<br>
+implementation. You can think of it as another brand of<br>
+intermud...IMC2 and I3 being like Pepsi and Coca-Cola.<br>
 <br>
-<span style="font-weight: bold;">mudconfig imc2 enable</span><br>
+The folks at Mudbytes run an IMC2 server network, and your<br>
+mud is preconfigured for it. As of 2.7, Dead<br>
+Souls does not automatically connect to IMC2. To connect<br>
+to it, you would issue the following command:<br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;"><span
+ style="font-weight: bold;">mudconfig imc2 enable</span><br>
 <br>
 To start listening to specific channels, you add them<br>
 to yourself in the same manner as Intermud-3 channels:<br>
 <br>
-<span style="font-weight: bold;">call me-&gt;AddChannel("ichat")</span><br>
+<span style="font-weight: bold;">call me-&gt;AddChannel("ichat")<br>
 <br>
+</span></big><big style="font-family: courier new,courier,monospace;">I
+am not in charge of IMC2, do not complain to me about<br>
+it. For more information about channels, rules, specs,<br>
+etc, visit their <a href="http://www.mudbytes.net/intermud">IMC2
+support page</a>. <br>
 <br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
 <a name="135"></a><span
  style="font-weight: bold; text-decoration: underline;">Combat is too
 slow!</span><br>

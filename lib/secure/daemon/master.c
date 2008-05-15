@@ -359,8 +359,6 @@ private static void load_access(string cfg, mapping resource) {
         string nom, tmp, where, which;
         object ob;
 
-        //tc("o hai");
-
         if(sscanf(str, REALMS_DIRS+"/%s/%*s", nom))
             tmp = sprintf("%svirtual/server", user_path(nom));
         else if(sscanf(str, DOMAINS_DIRS+"/%s/%*s", nom))
@@ -446,7 +444,7 @@ private static void load_access(string cfg, mapping resource) {
         file = file_name(ob);
 
         contents = read_file(base_name(ob)+".c");
-        if(!contents) return 0;
+        if(!contents) contents = "";
         if(strsrch(contents,"parse_add_rule") != -1 
           || strsrch(contents, "SetRules") != -1) {
             string prefix;
@@ -785,8 +783,6 @@ private static void load_access(string cfg, mapping resource) {
         object ob;
         string err, tmp;
         int old_limit;
-
-        //tc("om nom:" + nom);
 
         tmp = base_name(ob = previous_object());
         if( tmp != CMD_ENCRE && tmp != CMD_DECRE && tmp != LIB_CONNECT && tmp != RELOAD_D )

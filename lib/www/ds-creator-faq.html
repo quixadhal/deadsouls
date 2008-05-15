@@ -1712,7 +1712,7 @@ See the <a href="ds-admin-faq.html">admin FAQ</a>.<br>
 <span style="font-weight: bold; text-decoration: underline;"></span><a
  name="2.20"></a><span
  style="font-weight: bold; text-decoration: underline;">What
-are lfuns, sefuns and efuns?</span><br>
+are applies, lfuns, sefuns and efuns?</span><br>
 <br>
 <br>
 Sefuns and efuns are functions
@@ -1743,6 +1743,19 @@ functions are library<br>
 functions, or lfuns. Typically
 they are found in the objects<br>
 defined by the files in /lib.<br>
+<br>
+<a name="applies"></a>An apply is a function that is called by the
+driver. Some<br>
+examples of applies are create() and reset(). Although you<br>
+can call many applies normally from within the mud, the<br>
+point of them is to have some common functions known to the<br>
+driver that it can call on objects. In the case of create(),<br>
+it is a function that the driver calls on any new object<br>
+loaded into memory (like main() in a C program). Many applies<br>
+are security oriented, and are called only in the master object,<br>
+such as valid_read() or valid_socket(). This is a way for the<br>
+driver to be assured that a trusted security object knows<br>
+it's ok to perform the pending "sensitive" operation.<br>
 <br>
 For a lot more detail on efuns
 and sefuns, see the <a href="ds-admin-faq.html">admin FAQ</a>.<br>
@@ -2594,8 +2607,8 @@ set by default in /lib/races.c <br>
 <br>
 Dead Souls alpha libs have the following additional racial options:<br>
 </big>
-<small> </small><small> </small><small> </small><small> </small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small>
-</small><small> </small><small></small><small></small><small></small><small></small><small></small>
+<small> </small><small> </small><small> </small><small> </small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small>
+</small><small></small><small></small><small></small><small></small><small></small>
 <table style="width: 100%; text-align: left; font-family: courier new;"
  border="1" cellpadding="2" cellspacing="2">
   <tbody>

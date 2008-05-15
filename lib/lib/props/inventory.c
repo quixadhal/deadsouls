@@ -122,9 +122,9 @@ void heart_beat(){
             string *obs;
             gkey = key;
             obs = filter(all_inventory(), (: base_name($1) == gkey :) );
-            if(!sizeof(obs)){
+            if(sizeof(obs) < InventoryCheck[key]["howmany"]){
                 object ob;
-                for(i=InventoryCheck[key]["howmany"]; i > 0; i--){
+                for(i=(InventoryCheck[key]["howmany"] - sizeof(obs)); i > 0; i--){
                     ob = new(key);
                     if(ob) ob->eventMove(this_object());
                 }

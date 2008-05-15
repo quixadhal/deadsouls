@@ -1,3 +1,16 @@
+---- 2.7a27 ---
+- Released 2008-05-15
+- Driver: Fixed a crasher when reading zero-length files.
+- Driver: Fixed a crasher when some command actions fail to return properly.
+- The SetInventory refill now will replenish inventory when
+  some is missing, not just when all is gone. For an example, see
+  the new weapons rack in /domains/default/room/arena.c
+- Driver: The driver no longer spams the console with address server
+  connection problems. To re-enable this, change ADDRFAIL_NOTIFY
+  in comm.c and recompile the driver.
+- The blackjack table now uses "stand pat" rather than "stand" for
+  ending the game. This avoids amusing problems with physical posture.
+
 ---- 2.7a26 ---
 - Released 2008-05-04
 - Added sefun: containers()

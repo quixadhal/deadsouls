@@ -172,8 +172,14 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     else if( !intp(arg2) ) msg_class = MSG_ENV;
     else msg_class = arg2;
     if( !(msg_class & MSG_NOBLOCK) && GetBlocked("all") ) return 0;
-    if((msg_class & MSG_CHAN) && environment() &&
-      environment()->GetProperty("meeting room")) return 0;
+
+    /* This is no longer necessary, since the commands
+     * "mute" and "gag" can now keep things quiet on
+     * on channels for individuals if they so wish.
+     * if((msg_class & MSG_CHAN) && environment() &&
+     *  environment()->GetProperty("meeting room")) return 0;
+     */
+
     if( GetLogHarass() )
         log_file("harass/" + GetKeyName(), strip_colours(msg) + "\n");
     if( !TermInfo )

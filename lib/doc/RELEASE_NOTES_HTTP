@@ -1,3 +1,83 @@
+---- 2.7a25 ---
+- Released 2008-04-24
+- Added periodic cleanup of channel mappings in the i3 router to
+  prevent peculiar runtimes when running for a long time.
+- Fixed channel banning in the i3 router.
+- The web server now handles POSTS where the boundary gets
+  split in separate packets (this caused mysterious hangs when
+  uploading some files but not others).
+
+---- 2.7a24 ---
+- Released 2008-04-16
+- Creweb chanlogs now listed in "last modified" order.
+- Virtual rooms now destructed on warm boots.
+- Added day/night descs to outdoor town locations.
+- Important npc's in town are now set to respawn after
+  60 seconds, if killed or moved. See the SetInventory directive
+  in /domains/town/room/tavern.c for an example.
+
+---- 2.7a23 ---
+- Released 2008-04-07
+- Warm boots no longer hang people in the process
+  of editing files. 
+- Various fixes to warm boots.
+- Fixed bug in strings.c that broke QCS.
+- Tells between invis cre's now behave more sensibly.
+
+---- 2.7a22 ---
+- Released 2008-03-30
+- Fixed runtime in unknown INTERMUD_D packet handling.
+- Fixed runtime in creweb logfile reading of empty files.
+- Creators can now cast any spell known to SPELLS_D. Their
+  default spell level is extremely high.
+- LIB_QUEST changes: variable name has been changed and is now
+  a mapping rather than a class. Quest-specific functions moved
+  out of LIB_PLAYER and into LIB_QUEST. RemoveQuest() is now
+  an option.
+- Dummy object handling improved...the church elevator should
+  now work somewhat better.
+- Taking over your char from a new session now logs in /log/enters.
+- Added commands: warmboot, userload
+- Windows users: FluffOS file operations tend to take a dramatically
+  longer time to complete on Windows than on UNIX. A warmboot, while
+  not disconnecting the users, may hang them for several minutes
+  such that they may consider it a "crash" of some sort.
+
+---- 2.7a20 ---
+- Released 2008-03-26
+- Chan logs viewing added to creweb.
+- The "muds" channel is no longer added to creators by default.
+- The jade ring, powered scout armor, and training dummy now use TYPES_D
+  to work out the received damage type.
+
+---- 2.7a19 ---
+- Released 2008-03-23
+- SERVICES_D now accurately reports current ports for active services.
+- Locate requests now adequately hide invis players.
+- The who command no longer counts color codes in title length.
+- The blow that kills a creature in combat is now more correctly displayed.
+- Fixed a parsing bug in dummy items that reported oddly abbreviated names.
+- Fixed various problems with the timing of combat messages.
+- Fixed bug in "hist tell"
+
+---- 2.7a18 ---
+- Released 2008-03-23
+- Added sefun: telnet_privp()
+- Added commands: unvirt, telnet (user must be in the TELNET group)
+- Added TYPES_D to help decipher type names from their integer/bitshifted
+  designation: eval return TYPES_D->eventCalculateTypes("armor",196608)
+- Doors are now knockable and yelling from the opposite side of a
+  closed door is audible.
+- Fixed a bug in intermud-3 tells that allowed you to send tells
+  to disconnected muds.
+- "muds" channel added to report connecting and disconnecting muds.
+- "intermud" channel added to report finger, who, and locate requests.
+- wild_card() no longer an lfun, consolidated as a sefun.
+- Fixed problem in user_path() that caused recursion problems due
+  to the new "builder" player type.
+- Added mouth types to races.
+- Purged instances of the class data type from RACES_D.
+
 ---- 2.7a16 ---
 - Released 2008-03-16
 - Bundled driver is now a customized FluffOS 2.11

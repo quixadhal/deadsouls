@@ -1651,9 +1651,12 @@ static void mudlib_error_handler (char * err, int katch) {
     if (current_object)
         add_mapping_object(m, "object", current_object);
     add_mapping_array(m, "trace", get_svalue_trace());
-    get_line_number_info(&file, &line);
-    add_mapping_malloced_string(m, "file", add_slash(file));
-    add_mapping_pair(m, "line", line);
+    if (current_prog)
+        get_line_number_info(&file, &line);
+    if(file)
+        add_mapping_malloced_string(m, "file", add_slash(file));
+    if(line)
+        add_mapping_pair(m, "line", line);
 
     push_refed_mapping(m);
     if (katch) {

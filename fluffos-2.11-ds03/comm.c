@@ -19,6 +19,10 @@
 #define ENOSR 63
 #endif
 
+#ifndef ADDRFAIL_NOTIFY
+#define ADDRFAIL_NOTIFY 0
+#endif
+
 #define TELOPT_COMPRESS 85
 #define TELOPT_COMPRESS2 86
 #define TELOPT_MXP  91  // mud extension protocol
@@ -373,7 +377,7 @@ void init_addr_server (char * hostname, int addr_server_port)
      * connect socket to server address.
      */
     if (connect(server_fd, (struct sockaddr *) & server, sizeof(server)) == -1) {
-        if (socket_errno == ECONNREFUSED)
+        if (socket_errno == ECONNREFUSED && ADDRFAIL_NOTIFY)
             debug_message("Connection to address server (%s %d) refused.\n",
                           hostname, addr_server_port);
         else
