@@ -1,15 +1,14 @@
 fighter
-blade attack:1:0
-multi-hand:1:1
-multi-weapon:1:1
-blade defense:1:0
-melee attack:0:1
-blunt attack:1:0
-knife attack:1:0
+blade attack:1:4
+multi-hand:1:4
+multi-weapon:1:4
+blade defense:1:4
+melee attack:1:4
+blunt attack:1:4
+knife attack:1:4
 projectile attack:1:1
-melee defense:1:0
-blunt defense:1:0
-knife defense:1:0
+melee defense:1:4
+blunt defense:1:4
+knife defense:1:4
 projectile defense:1:1
-bargaining:1:4
-
+bargaining:4:4

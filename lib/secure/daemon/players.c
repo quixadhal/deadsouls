@@ -39,7 +39,8 @@ mapping Currency, Bank, SpellBook;
 //end player vars
 
 void validate(){
-    if(!(int)master()->valid_apply(({ "SECURE", "ASSIST", "LIB_CONNECT" })) ){
+    if(!(int)master()->valid_apply(({ "SECURE", "ASSIST", "LIB_CONNECT" })) &&
+      base_name(previous_object()) != "/www/cgi/login"){
         string offender = identify(previous_object(-1));
         debug("PLAYERS_D SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
         log_file("security", "\n"+timestamp()+" PLAYERS_D breach: "+offender+" "+get_stack());
@@ -94,7 +95,7 @@ string *eventCre(string str){
     if(member_array(str,creators) == -1) creators += ({ str });
     if(member_array(str,players) != -1) players -= ({ str });
     unguarded((: save_object, SAVE_PLAYER_LIST :));
-    return creators;
+    return creators + ({});
 }
 
 string *eventDecre(string str){
@@ -102,7 +103,7 @@ string *eventDecre(string str){
     if(member_array(str,creators) != -1) creators -= ({ str });
     if(member_array(str,players) == -1) players += ({ str });
     unguarded((: save_object, SAVE_PLAYER_LIST :));
-    return players;
+    return players + ({});
 }
 
 void AddPlayerInfo(mixed arg) {
@@ -145,14 +146,15 @@ void AddPlayerInfo(mixed arg) {
 }
 
 string *GetPlayerList(){
-    return players;
+    return players + ({});
 }
 
-string *GetCreatorList(){    return creators;
+string *GetCreatorList(){    
+    return creators + ({});
 }
 
 string *GetUserList(){
-    return user_list;
+    return user_list + ({});
 }
 
 int RemoveUser(string str){
@@ -169,7 +171,7 @@ string *AddPendingEncre(string str){
     validate();
     if(str && str != "") PendingEncres += ({ lower_case(str) });
     unguarded((: save_object, SAVE_PLAYER_LIST :));
-    return PendingEncres;
+    return PendingEncres + ({});
 }
 
 string *RemovePendingEncre(string str){
@@ -178,19 +180,19 @@ string *RemovePendingEncre(string str){
     str = lower_case(str);
     if(member_array(str, PendingEncres) != -1) PendingEncres -= ({ lower_case(str) });
     unguarded((: save_object, SAVE_PLAYER_LIST :));
-    return PendingEncres;
+    return PendingEncres + ({});
 }
 
 string *GetPendingEncres(){
     validate();
-    return PendingEncres;
+    return PendingEncres + ({});
 }
 
 string *AddPendingDecre(string str){
     validate();
     if(str && str != "") PendingDecres += ({ lower_case(str) });
     unguarded((: save_object, SAVE_PLAYER_LIST :));
-    return PendingDecres;
+    return PendingDecres + ({});
 }
 
 string *RemovePendingDecre(string str){
@@ -199,12 +201,12 @@ string *RemovePendingDecre(string str){
     str = lower_case(str);
     if(member_array(str, PendingDecres) != -1) PendingDecres -= ({ lower_case(str) });
     unguarded((: save_object, SAVE_PLAYER_LIST :));
-    return PendingDecres;
+    return PendingDecres + ({});
 }
 
 string *GetPendingDecres(){
     validate();
-    return PendingDecres;
+    return PendingDecres + ({});
 }
 
 static int LoadPlayer(string str){
@@ -291,4 +293,32 @@ string array GetAdminIPs(){
         ret_array += ({ GetPlayerData(nombre,"HostSite") });
     }
     return ret_array;
+}
+
+int CheckBuilder(object who){
+    //tc("AAAAAAAAAAAAA");
+    if(creatorp(who)) return 1;
+    if(builderp(who)){
+        //tc("moo");
+        if(!directory_exists(homedir(who)+"/area")){
+            //tc("moo2");
+            unguarded( (: make_workroom($(who)) :) );
+        }
+        return 1;
+    }
+    return 0; 
+}
+
+string GetUserPath(mixed name){
+    string ret;
+    if(name && objectp(name)) name = name->GetKeyName();
+    if(!name){
+        if(!this_player()) return "/tmp/";
+        else name = this_player()->GetKeyName();
+    }
+    if(member_array(name, creators) != -1){
+        ret = REALMS_DIRS+"/"+name+"/";
+    }
+    else ret = DIR_ESTATES + "/"+name[0..0]+"/"+name+"/";
+    return ret;
 }
