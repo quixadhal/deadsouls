@@ -1,14 +1,14 @@
 explorer
-blade attack:1:1
-blade defense:1:1
-melee attack:0:1
+blade attack:2:1
+blade defense:2:1
+melee attack:2:1
 blunt attack:1:2
-knife attack:1:2
-projectile attack:0:1
-melee defense:1:2
+knife attack:1:3
+projectile attack:1:1
+melee defense:2:2
 blunt defense:1:2
 knife defense:1:2
-projectile defense:1:1
-magic attack:1:1
-magic defense:1:1
-bargaining:1:4
+projectile defense:2:1
+magic attack:2:3
+magic defense:2:3
+bargaining:2:4

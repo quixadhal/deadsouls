@@ -1,11 +1,11 @@
 mage
-magic attack:1:0
-magic defense:1:0
-conjuring:1:0
-bargaining:0:1
-blunt defense:0:2
-knife defense:0:2
-melee defense:0:2
-blunt attack:0:1
-knife attack:0:1
-melee attack:0:2
+magic attack:1:4
+magic defense:1:4
+conjuring:1:4
+bargaining:1:2
+blunt defense:3:1
+knife defense:3:1
+melee defense:3:1
+blunt attack:3:1
+knife attack:3:1
+melee attack:4:2

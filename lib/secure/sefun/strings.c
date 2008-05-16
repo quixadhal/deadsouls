@@ -33,8 +33,19 @@ varargs string center(string str, int x) {
 }
 
 varargs string arrange_string(string str, int x) {
+    string orig = str;
+    //string bare = strip_colours(copy(str));
+    //string bare = TERMINAL_D->no_colours(str);
+    string bare = strip_colors(str);
+    //tc("x: "+x);
     if(!x) x = 80;
-    x += strlen(str) - strlen(strip_colours(str));
+    //tc("x: "+x);
+    //tc("strlen(\""+orig+"\"): "+strlen(orig));
+    //tc("strlen(\""+bare+"\"): "+strlen(bare));
+    //x += strlen(str) - strlen(strip_colours(str));
+    x += (strlen(orig) - strlen(bare));
+    //tc("x: "+x);
+    //tc("arrange_string(\""+str+"\", "+x+"): "+sprintf(sprintf("%%:-%ds", x), str),);
     return sprintf(sprintf("%%:-%ds", x), str);
 }
 
@@ -556,7 +567,7 @@ string path_prefix(string str){
     return str[0..i-2];
 }
 
-mixed homedir(mixed ob){
+varargs mixed homedir(mixed ob, int cre){
     string name = "";
     string initial = "";
     if(!ob) ob = this_player();
@@ -567,7 +578,7 @@ mixed homedir(mixed ob){
     if(!sizeof(name)) return 0;
     initial = name[0..0];
     if(!user_exists(name)) return 0;
-    if(directory_exists("/realms/"+name)) return "/realms/"+name;
+    if(cre || directory_exists("/realms/"+name)) return "/realms/"+name;
     else return DIR_ESTATES + "/"+initial+"/"+name; 
 }
 
@@ -618,24 +629,25 @@ varargs string generate_tmp(mixed arg){
 
     if(!arg) return "/open/"+time()+"_"+randy+".c";
 
-    if(objectp(arg) && this_player() && creatorp(this_player()))
+    if(objectp(arg) && this_player() && builderp(this_player()))
         ret = homedir(this_player())+"/tmp/"+last_string_element(base_name(arg),"/")+randy+time()+".c";
 
     else if(objectp(arg) && this_player())
         ret = "/tmp/"+last_string_element(base_name(arg),"/")+randy+time()+".c";
 
-    else if(stringp(arg) && this_player() && creatorp(this_player())) {
+    else if(stringp(arg) && this_player() && builderp(this_player())) {
         if(file_exists(arg)) ret = homedir(this_player())+"/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
         else ret = homedir(this_player())+"/tmp/"+randy+time()+".c";
         //ret = homedir(this_player())+"/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
     }
 
-    else if(stringp(arg) && this_player()) {
+    else if(stringp(arg) && file_exists(arg) && this_player()) {
+        //tc("arg: "+identify(arg));
         if(objectp(load_object(arg))) ret = "/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
         else ret = "/open/"+last_string_element(arg,"/")+randy+time()+".tmp";
     }
 
-    else if(creatorp(this_player())) ret = homedir(this_player())+"/tmp/"+randy+time()+".tmp";
+    else if(builderp(this_player())) ret = homedir(this_player())+"/tmp/"+randy+time()+".tmp";
 
     else ret = "/open/"+randy+time()+".c";
     return ret;
@@ -781,4 +793,50 @@ string unmorse(string msg) {
         tmp += " ";
     } 
     return tmp;
+}
+
+string unpinkfish(string str){
+    if(!str) error("String required.");
+    str = replace_string(str,"\%\%\^\^","0^^0");
+    str = replace_string(str,"\%\^","\%\%\^\^");
+    str = replace_string(str,"0^^0","\%\%\^\^");
+    return str;
+}
+
+string repinkfish(string str){
+    if(!str) error("String required.");
+    str = replace_string(str,"\%\%\^\^","\%\^");
+    return str;
+}
+
+string web_translate(string str){
+    if(!str) error("String required");
+    str = replace_string(str,"%2F","/");
+    str = replace_string(str,"%2B","+");
+    return str;
+}
+
+string dbz_colors(string str, int annoying){
+    string ret = "";
+    string *colors = ({ "RED", "BLUE", "CYAN", "MAGENTA", "ORANGE",
+      "YELLOW", "GREEN", "WHITE%^B_BLACK", "BLACK%^B_WHITE" });
+    string *b_colors = ({ "B_RED", "B_BLUE", "B_CYAN", "B_MAGENTA", "B_ORANGE",
+      "B_YELLOW", "B_GREEN" });
+
+    foreach(mixed element in str){
+        int close;
+        if(random(2)) ret += "%^BOLD%^";
+        if(annoying && !random(3) && element != 32){
+            ret += "%^" + b_colors[random(sizeof(b_colors)-1)] + "%^";
+            close = 1;
+        }
+        if(annoying > 1 && !random(5) && element != 32){
+            ret += "%^FLASH%^";
+            close = 1;
+        }
+        ret += "%^" + colors[random(sizeof(colors)-1)] + "%^";
+        ret += convert_ascii(element);
+        if(close) ret += "%^RESET%^";
+    }
+    return ret + "%^RESET%^";
 }

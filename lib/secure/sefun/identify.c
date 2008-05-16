@@ -31,6 +31,10 @@ varargs string identify( mixed a )
         a = replace_string( a, "\t", "\\t" );
         return a;
     }
+    if(classp(a)){
+        ret = replace_string(sprintf("%O",a),"\n","");
+        return ret;
+    }
     if( pointerp( a ) ) 
     {
         ret = "({ ";

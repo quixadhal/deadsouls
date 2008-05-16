@@ -65,10 +65,12 @@ int domain_admin(mixed pretender, string domain){
 int check_privs(mixed pretender, mixed target){
     int x;
     string domain, junk;
+    string name = "";
     if(stringp(pretender)) pretender = load_object(pretender);
     if(objectp(target)) target = base_name(target)+".c";
-    if(!stringp(target)) x= 1;
+    if(!stringp(target)) return 0;
     if(!pretender) x= 2;
+    name = pretender->GetKeyName();
     if(pretender->GetForced() ) x= 3;
     foreach(object ob in previous_object(-1)){
         if(ob && ob->GetForced() ) x= 4;
@@ -80,11 +82,14 @@ int check_privs(mixed pretender, mixed target){
     else if(archp(pretender)) x= 18;
     else x= 9;
 
-    if(stringp(target) && first_string_element(target,"/",1) == "domains"){
+    if(first_string_element(target,"/",1) == "domains"){
         if(sscanf(target,"/domains/%s/%s", domain, junk) == 2){
             if(domain_admin(pretender, domain)) x = 19;
         }
     }
+
+    if(!strsrch(target, "/estates/"+name[0..0]+"/"+name)) x = 20;
+
     if(x < 10) return 0;
     if(x > 10) return 1;
 }

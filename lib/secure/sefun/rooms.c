@@ -1,15 +1,14 @@
 string namen, ret;
 
-int reload_room(object ob) {
+int reload_room(object ob){
     string name;
     object *stuff;
     name=base_name(ob);
     stuff = deep_inventory(ob);
     foreach(object item in stuff){
-        if(!interactive(item) &&
-          !interactive(environment(item)) &&
-          !interactive(environment(environment(item))) )  
-            item->eventDestruct();
+        object *int_inv = ({});
+        int_inv = filter(containers(item), (: interactive($1) :));
+        if(!sizeof(int_inv) && !interactive(item)) item->eventDestruct();
     }
     ob->eventDestruct();
     load_object(name);
@@ -52,6 +51,45 @@ string opposite_dir(string str){
     case "southwest" : ret = "northeast";break;
     case "up" : ret = "down";break;
     case "down" : ret = "up";break;
+
+    case "fore" : ret = "aft";break;
+    case "aft" : ret = "fore";break;
+    case "port" : ret = "starboard";break;
+    case "starboard" : ret = "port";break;
+
+    case "+y" : ret = "-y";break;
+    case "-y" : ret = "+y";break;
+    case "+x" : ret = "-x";break;
+    case "-x" : ret = "+x";break;
+    case "+z" : ret = "-z";break;
+    case "-z" : ret = "+z";break;
+
+
+    case "+x+y" : ret = "-x-y";break;
+    case "-x-y" : ret = "+x+y";break;
+    case "+x-y" : ret = "-x+y";break;
+    case "-x+y" : ret = "+x-y";break;
+
+    case "+x+z" : ret = "-x-z";break;
+    case "-x-z" : ret = "+x+z";break;
+    case "+x-z" : ret = "-x+z";break;
+    case "-x+z" : ret = "+x-z";break;
+
+    case "+y+z" : ret = "-y-z";break;
+    case "-y-z" : ret = "+y+z";break;
+    case "+y-z" : ret = "-y+z";break;
+    case "-y+z" : ret = "+y-z";break;
+
+
+    case "+x+y-z" : ret = "-x-y+z";break;
+    case "+x+y+z" : ret = "-x-y-z";break;
+    case "-x-y-z" : ret = "+x+y+z";break;
+    case "-x-y+z" : ret = "+x+y-z";break;
+    case "+x-y-z" : ret = "-x+y+z";break;
+    case "+x-y+z" : ret = "-x+y-z";break;
+    case "-x+y-z" : ret = "+x-y+z";break;
+    case "-x+y+z" : ret = "+x-y-z";break;
+
     default : ret = "";break;
     }
     return ret;
