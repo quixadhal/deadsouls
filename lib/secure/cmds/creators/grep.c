@@ -46,14 +46,14 @@ int cmd(string str) {
     else output = 0;
     if(sscanf(str, "'%s' %s", exp, file) != 2 &&
       sscanf(str, "%s %s", exp, file) != 2) return 0;
-    if(!(max = sizeof(files = (string *)previous_object()->wild_card(file)))) {         message("system", "File not found.", this_player());
+    if(!(max = sizeof(files = (string *)wild_card(file)))) {         message("system", "File not found.", this_player());
         return 1;
     }
 
     if(flags&GREP_NUMBERED_LINES){
         for(i=0, borg = ([]); i<max; i++) {
             if((file_size(files[i]) == -2)&&(flags&GREP_RECURSE_DIRECTORIES)){
-                r_files = (string *)previous_object()->wild_card(files[i]+"/"+file);
+                r_files = (string *)wild_card(files[i]+"/"+file);
                 if(max + sizeof(r_files) > max_files){
                     write("Too many files in the recurse. Aborting grep.");
                     return 1;
@@ -91,7 +91,7 @@ int cmd(string str) {
         for(i=0, borg = ([]); i<max; i++) {
 
             if((file_size(files[i]) == -2)&&(flags&GREP_RECURSE_DIRECTORIES)){
-                r_files = (string *)previous_object()->wild_card(files[i]+"/"+file);
+                r_files = (string *)wild_card(files[i]+"/"+file);
                 if(max + sizeof(r_files) > max_files){
                     write("Too many files in the recurse. Aborting grep.");
                     return 1;

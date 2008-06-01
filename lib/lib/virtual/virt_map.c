@@ -61,7 +61,7 @@ varargs mixed SetAreaMap(int y,int x ,int z, string str){
 
 int SetVirtFile( string file){
     string str;
-    if( str = catch(call_other(file, "???")) ) {
+    if( str = catch(call_other(file, "???")) ){
         if( creatorp() ) message("error", str, previous_object());
         return 0;
     }
@@ -137,7 +137,7 @@ void SwitchLocations(){
 
 /******************* virt_map.c driver applies ****************/
 
-varargs static void create(string virt_file) {
+varargs static void create(string virt_file){
     daemon::create();
     SetNoClean(1);
     if(!nullp(virt_file)) SetVirtFile(virt_file);

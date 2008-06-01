@@ -23,4 +23,6 @@ void create() {
         "alley" : "It opens up to a yard of houses east, and a post "
         "and bank west."]) );
 }
-
+void init(){
+    ::init();
+}

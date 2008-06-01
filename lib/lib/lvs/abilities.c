@@ -21,8 +21,8 @@ varargs void SetSkill(string skill, int level, mixed cls);
 
 /* ***************** abilities.c attributes ***************** */
 /* GetBaseSkillLevel() returns the unmodified skill level */
-int GetBaseSkillLevel(string skill) { 
-    if( !Skills[skill] ) {
+int GetBaseSkillLevel(string skill){ 
+    if( !Skills[skill] ){
         return 0;
     }
     else {
@@ -30,7 +30,7 @@ int GetBaseSkillLevel(string skill) {
     }
 }
 
-int GetLevel() {
+int GetLevel(){
     return Level;
 }
 
@@ -46,29 +46,29 @@ int GetLevel() {
  * Excuse me, wtf is the point of this?
  */
 
-int ResetLevel() {
+int ResetLevel(){
     string array skills = GetPrimarySkills();
     int num = sizeof(skills);
     int points = 0;
 
-    if( num < 1 ) {
+    if( num < 1 ){
         return (Level = 1);
     }
-    foreach(string skill in skills) {
+    foreach(string skill in skills){
         points += Skills[skill]["level"];
     }
     Level = (points/num)/2;
-    if( Level < 1 ) {
+    if( Level < 1 ){
         Level = 1;
     }
     return Level;
 }
 
-int SetLevel(int x) {
+int SetLevel(int x){
     string array skills = GetPrimarySkills();
 
     if(!Level){
-        foreach(string skill in skills) {
+        foreach(string skill in skills){
             SetSkill(skill, 2*x);
         }
     }
@@ -76,34 +76,34 @@ int SetLevel(int x) {
     return (Level = x);
 }
 
-int GetMaxSkillPoints(string skill, int level) {
-    if( !Skills[skill] ) {
+int GetMaxSkillPoints(string skill, int level){
+    if( !Skills[skill] ){
         return 0;
     }
-    else if( level == 0 ) {
+    else if( level == 0 ){
         return 200;
     }
     else {
         int cl, x;
 
-        if( !(cl = Skills[skill]["class"]) ) {
+        if( !(cl = Skills[skill]["class"]) ){
             return level * 600;
         }
-        if( cl > 4 ) {
+        if( cl > 4 ){
             cl = 4;
         }
-        if( cl < 1 ) {
+        if( cl < 1 ){
             cl = 4;
         }
         x = level;
-        while( cl-- ) {
+        while( cl-- ){
             x *= level;
         }
         return (x * 400);
     }
 }
 
-string array GetPrimarySkills() { 
+string array GetPrimarySkills(){ 
     return filter(keys(Skills), (: Skills[$1]["class"] == 1 :));
 }
 
@@ -120,33 +120,33 @@ string array GetPrimarySkills() {
  *
  * returns 1 on success, 0 on failure
  */
-varargs int AddSkill(string skill, int cls, int level) {
-    if( !stringp(skill) ) {
+varargs int AddSkill(string skill, int cls, int level){
+    if( !stringp(skill) ){
         error("Bad argument 1 to AddSkill().\n\tExpected: string, Got: " +
           typeof(skill) + "\n");
     }
-    if( !nullp(Skills[skill]) ) {
+    if( !nullp(Skills[skill]) ){
         return 0;
     }
-    if( !cls ) {
+    if( !cls ){
         cls = 1;
     }
     if(!level){
         level = 1;
     }
-    else if( cls < 0 || cls > 4) {
+    else if( cls < 0 || cls > 4){
         return 0;
     }
     Skills[skill] = ([ "points" : 0, "level" : level, "class" : cls ]);
     return 1;
 }
 
-mapping GetSkill(string skill) {
+mapping GetSkill(string skill){
     return copy(Skills[skill]);
 }
 
-void RemoveSkill(string skill) {
-    if( !Skills[skill] ) {
+void RemoveSkill(string skill){
+    if( !Skills[skill] ){
         return;
     }
     map_delete(Skills, skill);
@@ -167,31 +167,31 @@ void RemoveSkill(string skill) {
  * useful mostly for monster types, probably should have override
  * protections in the user object (should use AddSkill() for users)
  */
-varargs void SetSkill(string skill, int level, mixed cls) {
+varargs void SetSkill(string skill, int level, mixed cls){
     int tmp;
-    if(cls && !intp(cls)) {
+    if(cls && !intp(cls)){
         tmp = 1;
         cls = tmp;
     }
-    if( !stringp(skill) ) {
+    if( !stringp(skill) ){
         error("Bad argument 1 to SetSkill().\n\tExpected: string, Got: " +
           typeof(skill) + "\n");
     }
-    if( !cls ) {
-        if( Skills[skill] ) {
+    if( !cls ){
+        if( Skills[skill] ){
             cls = Skills[skill]["class"];
         }
         else {
             cls = 1;
         }
     }
-    else if( cls < 1 || cls > 4) {
+    else if( cls < 1 || cls > 4){
         return 0;
     }
     Skills[skill] = ([ "points" : 0, "level" : level, "class" : cls ]);
 }
 
-string array GetSkills() {
+string array GetSkills(){
     return keys(Skills);
 }
 
@@ -199,38 +199,38 @@ mapping GetSkillsMap(){
     return copy(Skills);
 }
 
-void AddSkillBonus(string skill, mixed f) {
-    if( !SkillsBonus[skill] ) {
+void AddSkillBonus(string skill, mixed f){
+    if( !SkillsBonus[skill] ){
         SkillsBonus[skill] = ([]);
     }
     SkillsBonus[skill][previous_object()] = f;
 }
 
-varargs void RemoveSkillBonus(string skill, object ob) {
-    if( !SkillsBonus[skill] ) {
+varargs void RemoveSkillBonus(string skill, object ob){
+    if( !SkillsBonus[skill] ){
         return;
     }
-    if( !ob ) {
+    if( !ob ){
         ob = previous_object();
     }
-    if( !ob || !SkillsBonus[skill][ob] ) {
+    if( !ob || !SkillsBonus[skill][ob] ){
         return;
     }
     map_delete(SkillsBonus[skill], ob);
 }
 
-int GetSkillBonus(string skill) {
+int GetSkillBonus(string skill){
     object ob;
     int x = 0;
 
-    if( !SkillsBonus[skill] ) {
+    if( !SkillsBonus[skill] ){
         return 0;
     }
 
     if(intp(SkillsBonus[skill]))
         return SkillsBonus[skill];
 
-    foreach(ob in keys(SkillsBonus[skill])) {
+    foreach(ob in keys(SkillsBonus[skill])){
         if( !ob ) continue;
         else if(intp(SkillsBonus[skill][ob])) x += SkillsBonus[skill][ob];
         else x += evaluate(SkillsBonus[skill][ob], skill);
@@ -238,8 +238,8 @@ int GetSkillBonus(string skill) {
     return x;
 }
 
-int GetSkillClass(string skill) { 
-    if( !Skills[skill] ) {
+int GetSkillClass(string skill){ 
+    if( !Skills[skill] ){
         return 0;
     }
     else {
@@ -248,7 +248,7 @@ int GetSkillClass(string skill) {
 }
 
 /* GetSkillLevel() returns the base skill level + any bonuses */
-int GetSkillLevel(string skill) { 
+int GetSkillLevel(string skill){ 
     return (GetBaseSkillLevel(skill) + GetSkillBonus(skill));
 }
 
@@ -264,15 +264,15 @@ int GetSkillLevel(string skill) {
  *
  * returns the skill level after addition
  */
-int AddSkillPoints(string name, int x) {
+int AddSkillPoints(string name, int x){
     int y;
 
-    if( !Skills[name] ) {
+    if( !Skills[name] ){
         return 0;
     }
     Skills[name]["points"] += x;
-    while( Skills[name]["points"] < 0 ) { /* lost skills! */
-        if( Skills[name]["level"] == 1 ) {
+    while( Skills[name]["points"] < 0 ){ /* lost skills! */
+        if( Skills[name]["level"] == 1 ){
             Skills[name]["points"] = 0;
         }
         else {
@@ -280,21 +280,21 @@ int AddSkillPoints(string name, int x) {
 
             tmp = --Skills[name]["level"];
             Skills[name]["points"] += GetMaxSkillPoints(name, tmp);
-            if( Skills[name]["class"] == 1 ) {
+            if( Skills[name]["class"] == 1 ){
             }
         }
     }
     y = GetMaxSkillPoints(name, Skills[name]["level"]);
-    while( Skills[name]["points"] > y ) {
+    while( Skills[name]["points"] > y ){
         int max;
 
-        if( Skills[name]["class"] == 1 ) {
+        if( Skills[name]["class"] == 1 ){
             max = 2;
         }
         else {
             max = 1;
         }
-        if( Skills[name]["level"] >= ((GetLevel()+max) *2) ) {
+        if( Skills[name]["level"] >= ((GetLevel()+max) *2) ){
             Skills[name]["points"] = y;
         }
         else {
@@ -302,7 +302,7 @@ int AddSkillPoints(string name, int x) {
               name + ".");
             Skills[name]["level"]++;
             Skills[name]["points"] -= y;
-            if( Skills[name]["class"] == 1 ) {
+            if( Skills[name]["class"] == 1 ){
             }
         }
         y = GetMaxSkillPoints(name, Skills[name]["level"]);
@@ -328,13 +328,13 @@ int AddSkillPoints(string name, int x) {
  * you get nothing.
  * Adjustments are made for your level and any multiplier bonuses.
  */
-varargs void  eventTrainSkill(string skill, int pro, int con, int array a...) {
+varargs void  eventTrainSkill(string skill, int pro, int con, int array a...){
     int level = (GetLevel()/8 + 1);
     int val, success, bonus;
 
-    if( sizeof(a) ) {
+    if( sizeof(a) ){
         success = a[0];
-        if( sizeof(a) == 2 ) {
+        if( sizeof(a) == 2 ){
             bonus = a[1];
         }
         else {
@@ -345,16 +345,16 @@ varargs void  eventTrainSkill(string skill, int pro, int con, int array a...) {
         success = 1;
         bonus = 1;
     }
-    if( con > 100 ) {
+    if( con > 100 ){
         con = 100;
     }
-    if( con < 0 ) {
+    if( con < 0 ){
         con = 0;
     }
-    if( pro > 100 ) {
+    if( pro > 100 ){
         pro = 100;
     }
-    if( pro < 0 ) {
+    if( pro < 0 ){
         pro = 0;
     }
     val = (con - pro + (200*success) + 100)/8;
@@ -362,6 +362,6 @@ varargs void  eventTrainSkill(string skill, int pro, int con, int array a...) {
 }
 
 /* ****************** abilities.c driver applies **************** */
-static void create() {
+static void create(){
 }
 

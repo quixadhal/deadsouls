@@ -12,6 +12,8 @@
 #include <armor_types.h>
 #include <damage_types.h>
 #include <meal_types.h>
+#include <medium.h>
+#include <respiration_types.h>
 #include "include/race.h"
 
 inherit LIB_BODY;
@@ -20,13 +22,46 @@ inherit LIB_LANGUAGE;
 inherit LIB_TALK;
 
 private string Town, Race, Gender;
-private static int Bulk;
+private static int Bulk, Respiration;
+
+int GetRespiration(){
+    int resp = RACES_D->GetRaceRespirationType(this_object()->GetRace());
+    if(Respiration) return Respiration;
+    return resp;
+}
+
+int SetRespiration(int i){
+    return Respiration = i;
+}
+
+varargs int CanBreathe(object what, object where){
+    object env = environment(this_object());
+    int medium, restype; 
+
+    if(this_object()->GetGodMode()) return 1;
+    if(env && living(env)) env = environment(env);
+    if(!env) return 0;
+    medium = env->GetMedium();
+    restype = this_object()->GetRespiration();
+
+    if(restype & R_VACUUM) return 1;
+
+    if((medium == MEDIUM_AIR || medium == MEDIUM_LAND || 
+        medium == MEDIUM_SURFACE) && (restype & R_AIR) ) return 1;
+
+    if((medium == MEDIUM_WATER || medium == MEDIUM_SURFACE)
+      && (restype & R_WATER) ) return 1;
+
+    if( medium == MEDIUM_METHANE && (restype & R_METHANE) ) return 1;
+
+    return 0;
+}
 
 // abstract methods
 int GetParalyzed();
 // end abstract methods
 
-static void create() {
+static void create(){
     body::create();
     genetics::create();
     Race = "blob";
@@ -34,7 +69,7 @@ static void create() {
     Town = "Town";
 }
 
-mixed CanDrink(object ob) {
+mixed CanDrink(object ob){
     int strength, type;
 
     if( !ob ) return 0;
@@ -51,20 +86,20 @@ mixed CanDrink(object ob) {
     return 1;
 }
 
-mixed CanEat(object ob) {
+mixed CanEat(object ob){
     if( ((int)ob->GetStrength() + GetFood()) > 100 )
         return "This is more food than you can handle right now.";
     else return 1;
 }
 
-varargs int eventDie(mixed agent) {
+varargs int eventDie(mixed agent){
     int x;
 
     if( (x = body::eventDie(agent)) != 1 ) return x;
     return 1;
 }
 
-mixed eventDrink(object ob) {
+mixed eventDrink(object ob){
     int type, strength;
 
     type = (int)ob->GetMealType();
@@ -76,14 +111,14 @@ mixed eventDrink(object ob) {
     return 1;
 }
 
-mixed eventEat(object ob) {
+mixed eventEat(object ob){
     AddFood((int)ob->GetStrength());
     if( (int)ob->GetMealType() & MEAL_POISON )
         AddPoison((int)ob->GetStrength());
     return 1;
 }
 
-varargs string SetRace(string race, mixed extra) {
+varargs string SetRace(string race, mixed extra){
     mixed array args = allocate(5);
     mixed array tmp;
     mixed mixt;
@@ -104,15 +139,15 @@ varargs string SetRace(string race, mixed extra) {
         }
     }
 
-    foreach(tmp in args[0]) {
+    foreach(tmp in args[0]){
         mixt = copy(args[0]);
         SetResistance(tmp...);
     }
-    foreach(tmp in args[1]) {
+    foreach(tmp in args[1]){
         mixt = copy(args[1]);
         AddStat(tmp...);
     }
-    if( stringp(args[2]) ) {
+    if( stringp(args[2]) ){
         mixt = copy(args[2]);
 
         if(!ENGLISH_ONLY){
@@ -122,7 +157,7 @@ varargs string SetRace(string race, mixed extra) {
             SetLanguage("English", 100, 1);
         }
     }
-    if( sizeof(args[3]) == 2 ) {
+    if( sizeof(args[3]) == 2 ){
         mixt = copy(args[3]);
 
         SetLightSensitivity(args[3]...);
@@ -139,17 +174,17 @@ varargs string SetRace(string race, mixed extra) {
 
 
 
-string GetRace() { return Race; }
+string GetRace(){ return Race; }
 
-string SetGender(string gender) { return (Gender = gender); }
+string SetGender(string gender){ return (Gender = gender); }
 
-string GetGender() { return Gender; }
+string GetGender(){ return Gender; }
 
-varargs void SetStat(string stat, int level, int classes) {
+varargs void SetStat(string stat, int level, int classes){
     int healthPoints;
 
     genetics::SetStat(stat, level, classes);
-    switch(stat) {
+    switch(stat){
     case "durability":
         eventCompleteHeal(healthPoints = GetMaxHealthPoints());
         eventHealDamage(healthPoints);
@@ -163,7 +198,7 @@ varargs void SetStat(string stat, int level, int classes) {
     }
 }
 
-varargs int GetMaxHealthPoints(string limb) {
+varargs int GetMaxHealthPoints(string limb){
     int ret = 1;
     if(!limb) ret = ( 50 + (GetStatLevel("durability") * 10) );
     else {
@@ -177,15 +212,15 @@ varargs int GetMaxHealthPoints(string limb) {
     else return ret;
 }
 
-int GetMaxMagicPoints() {
+int GetMaxMagicPoints(){
     return ( 50 + (GetStatLevel("intelligence") * 10) );
 }
 
-float GetMaxStaminaPoints() {
+float GetMaxStaminaPoints(){
     return (50.0 + (GetStatLevel("agility") * 10.0) );
 }
 
-void NewBody(string race) {
+void NewBody(string race){
     mixed array args = allocate(2);
     mixed array tmp;
 
@@ -196,13 +231,13 @@ void NewBody(string race) {
     foreach(tmp in args[1]) AddFingers(tmp...);
 }
 
-string SetTown(string str) { return (Town = str); }
+string SetTown(string str){ return (Town = str); }
 
-string GetTown() { return Town; }
+string GetTown(){ return Town; }
 
-string GetResistance(int type) { return genetics::GetResistance(type); }
+string GetResistance(int type){ return genetics::GetResistance(type); }
 
-int GetLuck() {
+int GetLuck(){
     int x;
 
     x = random(GetStatLevel("luck")) / 20;
@@ -211,40 +246,39 @@ int GetLuck() {
     return (x + random(4));
 }
 
-int GetMobility() {
+int GetMobility(){
     int max = GetMaxCarry();
     int encum, mob;
 
-    if( GetParalyzed() ) {
+    if( GetParalyzed() ){
         return 0;
     }
-    if( max < 1 ) {
+    if( max < 1 ){
         max = 1;
     }
     encum = (GetCarriedMass() * 100)/max;
-    encum -= (encum * GetStatLevel("agility"))/200;
+    encum -= (encum * this_object()->GetStatLevel("agility"))/200;
     mob = 100 - encum;
-    if( mob > 100 ) {
+    if( mob > 100 ){
         mob = 100;
     }
-    else if( mob < 1 ) {
+    else if( mob < 1 ){
         mob = 0;
     }
     return mob;
 }
 
-int GetCarriedMass() { return 0; }
+int GetCarriedMass(){ return 0; }
 
-int GetMaxCarry() { 
+int GetMaxCarry(){ 
     int carry_max;
     carry_max = this_object()->GetLivingMaxCarry();
     if(carry_max) return carry_max;
-    else return ((2 + GetStatLevel("strength")) * 50); 
+    else return ((2 + this_object()->GetStatLevel("strength")) * 50); 
 }
 
-int GetHeartRate() {
+int GetHeartRate(){
     int x, y;
-
     x = body::GetHeartRate();
     y = GetStatLevel("speed");
     if( y > 80 ) x -= 2;
@@ -253,11 +287,14 @@ int GetHeartRate() {
     else if( y > 20 ) x += 1;
     else x += 2;
     if( x > 6 ) x = 6;
-    else if( x < 2 ) x = 2;
+    else if( x < 1 ) x = 1;
+#ifdef FAST_COMBAT
+    if(FAST_COMBAT && this_object()->GetInCombat()) return 1;
+#endif
     return x;
 }
 
-int GetHealRate() {
+int GetHealRate(){
     int x;
 
     x = body::GetHealRate() + random((GetStatLevel("durability")/40) + 1);
@@ -265,12 +302,13 @@ int GetHealRate() {
     return x;
 }
 
-int GetStatLevel(string stat) { return genetics::GetStatLevel(stat); }
+int GetStatLevel(string stat){ return genetics::GetStatLevel(stat); }
 
-int GetAlcohol() { return body::GetAlcohol(); }
+int GetAlcohol(){ return body::GetAlcohol(); }
 
-static void heart_beat() {
+static void heart_beat(){
     body::heart_beat();
     language::heart_beat();
     genetics::heart_beat();
+    set_heart_beat(GetHeartRate());
 }

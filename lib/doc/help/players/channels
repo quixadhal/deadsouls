@@ -17,6 +17,8 @@ mage - channel for the mage class
 priest - channel for the priest class
 explorer - channel for the explorer class
 admin - only admins hear this
+muds - announcements of muds connecting or disconnecting from i3
+intermud - announcmenets of things like remote fingers and who
 
 The following are intermud channels:
 
@@ -58,3 +60,5 @@ list german@dead souls demo
 To see a brief history of channel messages: 
 hist newbie
 
+See also:
+mute, gag, earmuff, unmuff, lines, hist, chancolors

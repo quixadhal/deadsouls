@@ -11,7 +11,13 @@ static void eventRun() {
         rm("/save/intermud.o");
         update("/daemon/intermud");
     }
-    load_object("/secure/cmds/creators/dsversion")->cmd();
+    catch( load_object("/secure/cmds/creators/dsversion")->cmd());
+    catch( reload("/domains/default/room/stargate_lab.c"));
+    catch( reload("/domains/town/virtual/space/1,1,1"));
+    catch( reload("/domains/town/virtual/bottom/33,100000"));
+    catch( reload("/domains/Praxis/square.c"));
+    catch( reload("/domains/Ylsrim/room/tower"));
+    catch( reload("/domains/campus/room/slab"));
 }
 
 static void create() {

@@ -4,7 +4,7 @@ varargs int AddStuff(string *str, int q){
     for(i=0;i<sizeof(str);i++){
         object to,thing;
         if(!to=this_object()) return 0;
-        if(q) {
+        if(q){
             for(z=0;z<q;z++){
                 thing=new(str[i]);
                 if(!thing->eventMove(to)) problem = -1;

@@ -26,6 +26,7 @@
 
 #define DIR_VERBS               "/verbs"
 #define DIR_ADMIN_VERBS         DIR_VERBS "/admins"
+#define DIR_BUILDER_VERBS       DIR_VERBS "/builders"
 #define DIR_COMMON_VERBS        DIR_VERBS "/common"
 #define DIR_CREATOR_VERBS       DIR_VERBS "/creators"
 #define DIR_ITEM_VERBS          DIR_VERBS "/items"
@@ -53,8 +54,12 @@
 #define DIR_SSTD                DIR_SECURE_LIB "/std"
 
 #define DIR_LOGS                "/log"
+#define DIR_SECURE_LOGS         DIR_SECURE "/log"
+#define DIR_CHANNEL_LOGS        DIR_LOGS "/chan"
 #define DIR_DEBUG               DIR_LOGS "/debug"
 #define DIR_ERROR_LOGS          DIR_LOGS "/errors"
+#define DIR_INTERMUD_LOGS       DIR_SECURE_LOGS "/intermud"
+#define DIR_NETWORK_LOGS       DIR_SECURE_LOGS "/network"
 #define DIR_PERSONAL_LOGS       DIR_LOGS "/personal"
 #define DIR_REPORTS_LOGS        DIR_LOGS "/reports"
 #define DIR_WATCH_LOGS          DIR_LOGS "/watch"
@@ -81,6 +86,8 @@
 #define DIR_SECURE_ADMIN_CMDS   DIR_SECURE_CMDS "/admins"
 #define DIR_COMMON_CMDS         DIR_CMDS "/common"
 #define DIR_SECURE_COMMON_CMDS  DIR_SECURE_CMDS "/common"
+#define DIR_BUILDER_CMDS        DIR_CMDS "/builders"
+#define DIR_SECURE_BUILDER_CMDS DIR_SECURE_CMDS "/builders"
 #define DIR_CREATOR_CMDS        DIR_CMDS "/creators"
 #define DIR_SECURE_CREATOR_CMDS DIR_SECURE_CMDS "/creators"
 #define DIR_CLAN_CMDS          DIR_CMDS "/clan"
@@ -95,7 +102,8 @@
 #define DIR_WWW_EFUNS          DIR_WWW_DOCS "/efun"
 #define DIR_WWW_SIMULEFUNS     DIR_WWW_DOCS "/sefun"
 #define DIR_WWW_ERRORS         DIR_WWW "/errors"
-#define DIR_WWW_GATEWAYS       DIR_WWW "/gateways"
+#define DIR_WWW_GATEWAYS       DIR_WWW "/cgi"
+#define DIR_CGI                DIR_WWW_GATEWAYS
 
 #define DIR_UNDEAD_CMDS         DIR_CMDS "/undead"
 

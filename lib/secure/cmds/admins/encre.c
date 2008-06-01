@@ -60,8 +60,8 @@ mixed cmd(string args) {
         message("shout", (string)cre_ob->GetName() + " is now a creator!",
           users(), ({ this_player(), cre_ob }));
         if( file_size(file+__SAVE_EXTENSION__) > -1 ) rm(file+__SAVE_EXTENSION__);
-        make_workroom(cre_ob);
-        rename(home_dir, homedir(cre_ob)+"/estate");
+        make_workroom(cre_ob, 1);
+        rename(home_dir, homedir(cre_ob,1)+"/estate");
         cre_ob->eventForce("home");
         cre_ob->eventForce("cd");
         jeans = present("jeans",cre_ob);

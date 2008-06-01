@@ -6,28 +6,28 @@ static private mapping Manipulate = ([]);
 string GetDefiniteShort();
 // end abstract methods
 
-varargs mixed GetManipulate(string str) {
-    if( !str ) {
+varargs mixed GetManipulate(string str){
+    if( !str ){
         str = "default";
     }
     return Manipulate[str];
 }
 
-string array GetManipulates() {
+string array GetManipulates(){
     return keys(Manipulate);
 }
 
-mapping RemoveManipulate(string item) { 
+mapping RemoveManipulate(string item){ 
     map_delete(Manipulate, item); 
     return Manipulate;
 }
 
-varargs mapping SetManipulate(mixed key, mixed desc) {
-    if( !key ) {
+varargs mapping SetManipulate(mixed key, mixed desc){
+    if( !key ){
         key = "default";
     }
-    if( !desc ) {
-        if( mapp(key) ) {
+    if( !desc ){
+        if( mapp(key) ){
             Manipulate = expand_keys(key);
         }
         else {
@@ -40,15 +40,15 @@ varargs mapping SetManipulate(mixed key, mixed desc) {
     return Manipulate;
 }
 
-varargs mixed CanManipulate(object who, string component) {
+varargs mixed CanManipulate(object who, string component){
     mixed val;
 
-    if( !component ) {
+    if( !component ){
         component = "default";
     }
     val = Manipulate[component];
-    if( !val ) {
-        if( component == "default" ) {
+    if( !val ){
+        if( component == "default" ){
             return 0;
         }
         else {
@@ -59,24 +59,24 @@ varargs mixed CanManipulate(object who, string component) {
     else return 1;
 }
 
-varargs mixed eventManipulate(object who, string component) {
+varargs mixed eventManipulate(object who, string component){
     mixed val;
 
-    if( !component ) {
+    if( !component ){
         val = Manipulate["default"];
     }
     else {
         val = Manipulate[component];
     }
-    if( arrayp(val) ) {
+    if( arrayp(val) ){
         val = val[query_night()];
     }
-    if( stringp(val) ) {
+    if( stringp(val) ){
         object env;
 
         env = environment(who);
         who->eventPrint(val);
-        if( component ) {
+        if( component ){
             env->eventPrint(who->GetName() + " moves the " + component +
               " on " + GetDefiniteShort() + ".", who);
         }
@@ -87,17 +87,17 @@ varargs mixed eventManipulate(object who, string component) {
         return 1;
     }
     else {
-        if( functionp(val) & FP_OWNER_DESTED ) {
+        if( functionp(val) & FP_OWNER_DESTED ){
             return "Error in evaluating functional.";
         }
         return evaluate(val, who, component);
     }
 }
 
-mixed direct_move_obj(object target) {
+mixed direct_move_obj(object target){
     return CanManipulate(this_player());
 }
 
-mixed direct_move_str_on_obj(string str, object target) {
+mixed direct_move_str_on_obj(string str, object target){
     return CanManipulate(this_player(), remove_article(lower_case(str)));
 }

@@ -75,7 +75,7 @@ varargs void HelpMenu(string index) {
         tmp += format_page(map(indices, function(string str, string array ind) {
                 int num = member_array(str, ind) + 1;
                 return ("[%^CYAN%^"+(num)+"%^RESET%^] " + str);
-            }, indices), scr[0]/(y+2));
+            }, indices), scr[0]/(y+2), 4);
     }
     else if( !HELP_D->CanAccess(this_player(), index) ) {
         message("help", "Invalid index choice.", this_player());
@@ -97,7 +97,7 @@ varargs void HelpMenu(string index) {
                 }
                 bing[i++] = "[%^CYAN%^" + (i+1) + "%^RESET%^] " + topic;
             }
-            tmp += format_page(bing, scr[0]/(y+2));
+            tmp += format_page(bing, 3);
         }
         f = function(string ind) {
             if( !ind )

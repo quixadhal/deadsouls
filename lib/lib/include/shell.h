@@ -5,9 +5,9 @@ static void create();
 
 int SetCaliber(int x);
 int SetMillimeter(int x);
-int SetPistolType(string str);
+int SetFirearmType(string str);
 int SetAmmoType(string str);
-string GetType();
+string GetFirearmType();
 int GetCaliber();
 int GetMillimeter();
 string GetAmmoType();

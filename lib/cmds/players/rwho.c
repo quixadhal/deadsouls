@@ -11,6 +11,12 @@
 
 inherit LIB_DAEMON;
 
+int CheckMud(string name){
+    if(!(name = (string)INTERMUD_D->GetMudName(name)) ) return 0;
+    if(!INTERMUD_D->GetMudList()[name][0]) return 0;
+    return 1;
+}
+
 mixed cmd(string str) {
     string tmp, s1, s2;
     string network = "i3";
@@ -29,11 +35,12 @@ mixed cmd(string str) {
         }
     }
 
-    if ( network == "imc2" && (tmp = IMC2_D->find_mud(str)) ) {
+    if ( network == "imc2" && find_object(IMC2_D) && (tmp = IMC2_D->find_mud(str)) ) {
         IMC2_D->who_out(capitalize(this_player()->GetKeyName()),tmp);
         message("system", "Remote who query sent to " + tmp + " on the IMC2 network.", this_player());
         return 1;
-    } else if( (tmp = INTERMUD_D->GetMudName(str)) ) {
+    } else if( CheckMud(str) ) {
+        tmp = INTERMUD_D->GetMudName(str);
         SERVICES_D->eventSendWhoRequest(tmp);
         message("system", "Remote who query sent to " + tmp + " on the I3 network.", this_player());
         return 1;

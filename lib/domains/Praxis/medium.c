@@ -25,4 +25,6 @@ void reset() {
     if(present("mora")) return;
     new("/domains/Praxis/obj/mon/mora")->move(this_object());
 }
-
+void init(){
+    ::init();
+}

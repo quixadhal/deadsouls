@@ -53,4 +53,7 @@ void reset() {
         ob->eventForce("wield mace in right hand");
     }
 }
+void init(){
+    ::init();
+}
 

@@ -11,6 +11,7 @@ void create() {
     "It is an example of an opaque container.");
     SetInventory(([
 	"/domains/town/armor/collar" : 1,
+        "/domains/default/armor/breather" : 1,
 	"/domains/default/armor/badge" : 1,
 	"/domains/default/armor/wizard_hat" : 1,
 	"/domains/default/obj/manual" : 1,

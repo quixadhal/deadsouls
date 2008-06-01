@@ -71,6 +71,8 @@ varargs mixed do_attack_lvs(mixed *targets, int exclusive) {
     object *noattack;
     string tmp;
 
+    if(this_player()->GetDying()) return 0;
+
     noattack = ({});
     tmpobs = ({});
     obs = filter(targets, (: objectp :));

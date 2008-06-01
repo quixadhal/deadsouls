@@ -10,12 +10,18 @@
 
 inherit LIB_DAEMON;
 
+int CheckMud(string name){
+    if(!(name = (string)INTERMUD_D->GetMudName(name)) ) return 0;
+    if(!INTERMUD_D->GetMudList()[name][0]) return 0;
+    return 1;
+}
+
 mixed cmd(string str) {
     string *words;
     mixed mud;
     object ob, machine;
     int i, maxi;
-    string who, msg, tmp, tmp2, machine_message, retname;
+    string who, msg, tmp, tmp2, machine_message, retname, me;
 
     if(!str) return notify_fail("Syntax: <tell [who] [message]>\n");
 
@@ -39,8 +45,7 @@ mixed cmd(string str) {
             tmp = lower_case(implode(words[0..i], " "));
             tmp2 = lower_case(implode(words[0..i+1], " "));
 
-            if( (string)INTERMUD_D->GetMudName(tmp) 
-              && !((string)INTERMUD_D->GetMudName(tmp2)) ) {
+            if( CheckMud(tmp) && !CheckMud(tmp2) ){ 
                 mud = tmp;
                 if(i+1 < maxi) msg = implode(words[i+1..maxi-1], " ");
                 else msg = "";
@@ -87,18 +92,18 @@ mixed cmd(string str) {
         return 1;
     }
     if(ob) {
-        string frm;
         mixed err;
+        if(archp(ob) || (!archp(this_player()) && creatorp(ob))) 
+            me = capitalize(this_player()->GetKeyName());
+        else me = this_player()->GetName(); 
 
         machine=present("answering machine",ob);
-        if(archp(ob)) frm = (string)this_player()->GetCapName();
-        else frm = (string)this_player()->GetName();
         if(ob && !creatorp(ob)) this_player()->AddMagicPoints(-15);
         if(machine && base_name(machine) == "/secure/obj/machine"){
             int parse_it;
             parse_it=machine->query_answer();
             if(parse_it){
-                machine->get_message(frm+" tells you: "+msg+"\n");
+                machine->get_message(me+" tells you: "+msg+"\n");
                 machine_message=machine->send_message();
                 message("info", machine_message, this_player());
                 return 1;
@@ -110,14 +115,20 @@ mixed cmd(string str) {
               "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
             return err || "Tell whom what?";
         }
-        if( ob->GetInvis() && creatorp(ob) && !archp(this_player()) ) {
-            string inv_ret = "%^BLUE%^%^BOLD%^" + (string)this_player()->GetName() + 
+        if( ob->GetInvis() && ( ( archp(ob) && !archp(this_player()) ) 
+            || ( creatorp(ob) && !creatorp(this_player()) ) ) ){
+            string inv_ret = "%^BLUE%^%^BOLD%^" + me + 
             " unknowingly tells you, %^RESET%^\"" + msg + "\"";
             ob->eventPrint(inv_ret);
             ob->eventTellHist(inv_ret);
+            ob->SetProperty("reply", lower_case(me));
             this_player()->eventTellHist("You tried to tell "+retname+": "+
               "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
-            return "Tell whom what?";
+            if(query_verb() == "tell") return "Tell whom what?";
+            else {
+                write("Tell whom what?");
+                return 1;
+            }
         }
 #ifdef BLOCK_TELLS_TO_AFK
         if(ob->GetProperty("afk")) {
@@ -126,7 +137,7 @@ mixed cmd(string str) {
         }
 #endif
         else this_player()->eventSpeak(ob, TALK_PRIVATE, msg);
-        ob->SetProperty("reply", (string)this_player()->GetKeyName());
+        ob->SetProperty("reply", lower_case(me));
         if(!archp(ob) && userp(ob) && (query_idle(ob) > 60))
             message("my_action", (string)ob->GetName()+
               " is idle and may not have been paying attention.", this_player());
@@ -146,26 +157,8 @@ void help(string str) {
       "        <tell [player]@[mud] [message]>\n\n"
       "Sends the message to the player named either on this mud if no "
       "mud is specified, or to the player named on another mud when "
-      "another mud is specified.  For muds with more than one word in their "
-      "names, use . (periods) to take place of spaces.  Example: tell "
-      "descartes@realms.of.chaos hi\n\n"
-      "See also: say, shout, yell, emote",this_player());
-}
-
-string morse(string msg) {
-    mapping __Morse;
-    string tmp;
-    int x, i;
-    __Morse = ([ "a" : ".-", "b" : "-...", "c" : "-.-.",
-      "d" : "-..", "e" : ".", "f" : "..-.", "g" : "--.", "h" : "....", "i" : "..",
-      "j" : ".---", "k" : "-.-", "l" : ".-..", "m" : "--", "n" : "-.", "o" : "---",
-      "p" : ".--.", "q" : "--.-", "r" : " .-.", "s" : "...", "t" : "-", "u" : "..-",
-      "v" : "...-", "w" : ".--", "x" : "-..-", "y" : "-.--", "z" : "--..",
-      "1" : ".----", "2" : "..---", "3" : "...--", "4" : "....-", "5" : ".....",
-      "6" : " -....", "7" : "--...", "8" : "---..", "9" : "----.","0" : " -----" ]);
-    for(tmp = "", x = strlen(msg), i=0; i< x; i++) {
-        if(__Morse[msg[i..i]]) tmp += __Morse[msg[i..i]]+" ";
-        else tmp += msg[i..i]+ " ";
-    }
-    return tmp;
+      "another mud is specified. If the other mud is on an IMC2 network "
+      "rather than an Intermud-3 network, use \"imc2 tell\""
+      "\n\n"
+      "See also: imc2, say, shout, yell, emote",this_player());
 }

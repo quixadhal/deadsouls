@@ -24,7 +24,6 @@ static void create() {
     SetExits( ([
         "up" : "/domains/Ylsrim/room/"+ "tower",
         "south" : "/domains/Ylsrim/room/"+ "kaliid4" ]) );
-    SetObviousExits("u, s");
     ob = new("/domains/Ylsrim/etc/adv_board");
     ob->set_max_posts(30);
     ob->eventMove(this_object());

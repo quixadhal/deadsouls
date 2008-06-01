@@ -27,6 +27,17 @@ static void create() {
       "See also: climb, enter, go, jump");
 }
 
+int StaminaCost(){
+    int cost = 15;
+    int bonus = this_player()->GetStatLevel("durability")/10;
+    bonus += this_player()->GetStatLevel("coordination")/20;
+    bonus += this_player()->GetFood()/40;
+    bonus += this_player()->GetDrink()/40;
+    cost -= bonus;
+    if(cost < 1) cost = 1;
+    return cost;
+}
+
 mixed can_fly() {
     object env = environment(this_player());
 
@@ -37,14 +48,9 @@ mixed can_fly() {
     if(this_player()->GetPosition() == POSITION_FLYING) 
         return "You are already flying.";
 
-    switch( env->GetMedium() ) {
-    case MEDIUM_LAND:
-        if(env->CanFly(this_player())) return this_player()->CanFly();
-    case MEDIUM_AIR:
-        return this_player()->CanFly();
-    default:
-        return "You can't fly here.";
-    }
+    if(env->CanFly(this_player())) return this_player()->CanFly();
+
+    return "You can't fly here.";
 }
 
 mixed can_fly_str(string str) {
@@ -92,11 +98,11 @@ mixed do_fly() {
 }
 
 mixed do_fly_str(string str) {
-    this_player()->AddStaminaPoints(-1);
+    this_player()->AddStaminaPoints(-StaminaCost());
     return (mixed)environment(this_player())->eventGo(this_player(), str);
 }
 
 mixed do_fly_into_str(string str) {
-    this_player()->AddStaminaPoints(-1);
+    this_player()->AddStaminaPoints(-StaminaCost());
     return (mixed)environment(this_player())->eventEnter(this_player(), str);
 }

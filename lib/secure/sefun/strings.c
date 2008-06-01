@@ -34,18 +34,9 @@ varargs string center(string str, int x) {
 
 varargs string arrange_string(string str, int x) {
     string orig = str;
-    //string bare = strip_colours(copy(str));
-    //string bare = TERMINAL_D->no_colours(str);
     string bare = strip_colors(str);
-    //tc("x: "+x);
     if(!x) x = 80;
-    //tc("x: "+x);
-    //tc("strlen(\""+orig+"\"): "+strlen(orig));
-    //tc("strlen(\""+bare+"\"): "+strlen(bare));
-    //x += strlen(str) - strlen(strip_colours(str));
     x += (strlen(orig) - strlen(bare));
-    //tc("x: "+x);
-    //tc("arrange_string(\""+str+"\", "+x+"): "+sprintf(sprintf("%%:-%ds", x), str),);
     return sprintf(sprintf("%%:-%ds", x), str);
 }
 
@@ -642,7 +633,6 @@ varargs string generate_tmp(mixed arg){
     }
 
     else if(stringp(arg) && file_exists(arg) && this_player()) {
-        //tc("arg: "+identify(arg));
         if(objectp(load_object(arg))) ret = "/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
         else ret = "/open/"+last_string_element(arg,"/")+randy+time()+".tmp";
     }
@@ -654,13 +644,12 @@ varargs string generate_tmp(mixed arg){
 }
 
 int alphap(mixed arg){
-    string *alphabet = ({ "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" });
-    alphabet += ({ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" });
     if(!stringp(arg)) return 0;
-    foreach(string element in alphabet){
-        if(grepp(arg,element)) return 1;
+    foreach(int element in arg){
+        if(!((element >= 65 && element <= 90) ||
+            (element >= 97 && element <= 122))) return 0;
     }
-    return 0;
+    return 1;
 }
 
 string alpha_strip(mixed arg){
@@ -839,4 +828,30 @@ string dbz_colors(string str, int annoying){
         if(close) ret += "%^RESET%^";
     }
     return ret + "%^RESET%^";
+}
+
+int query_common_ascii(string str){
+    mixed *check_arr = ({});
+    mixed *ret_arr = ({});
+    int i;
+    int lst = sizeof(str) - 1;
+    if(sizeof(str) == 1){ 
+        check_arr = ({ str[0] });
+    }
+    else {
+        for(i = 0; i < lst; i++){
+            check_arr += ({ str[i] });
+        }
+    }
+    foreach(mixed element in check_arr){
+        if(intp(element)){
+            if((element >31 && element < 127)
+              || element == 10 || element == 9 ||
+              (element >160 && element < 256)){
+                ret_arr += ({ element });
+            }
+        }
+    }
+    if(sizeof(ret_arr) == sizeof(check_arr)) return 1;
+    return 0;
 }

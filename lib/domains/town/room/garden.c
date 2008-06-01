@@ -5,6 +5,8 @@ static void create() {
     room::create();
     SetClimate("outdoors");
     SetAmbientLight(30);
+    SetNightLight(10);
+    SetDayLight(30);
     SetShort("Mansion Garden");
     SetLong("This is what is left of what was once a beautiful, "
       "if simple, garden. It is now badly overgrown with "
@@ -16,6 +18,7 @@ static void create() {
         ({ "shack", "wooden shack" }) : "A beaten-up old wooden shack is north.",
         "garden" : "A mess of weeds and dirt.",
       ]));
+    SetFlyRoom("/domains/town/virtual/sky/26,99998,1");
     SetExits( ([
         "east" : "/domains/town/room/mansion_ext",
         "north" : "/domains/town/room/shack"

@@ -11,7 +11,7 @@
 
 private mapping Jumps = ([]);
 
-mapping GetJumps() {
+mapping GetJumps(){
     return Jumps;
 }
 
@@ -20,16 +20,16 @@ varargs mixed AddJump(string name, mixed saute, int type){
 }
 
 
-mixed CanJump(object who, string id, int type) {
+mixed CanJump(object who, string id, int type){
 
-    if( Jumps[id] && Jumps[id][1] == type ) {
+    if( Jumps[id] && Jumps[id][1] == type ){
         return 1;
     }
-    if( !sizeof(Jumps) ) {
+    if( !sizeof(Jumps) ){
         return 0;
     }
     type = Jumps[keys(Jumps)[0]][1];
-    switch(type) {
+    switch(type){
     case JUMP_INTO:
         return "Perhaps you mean to jump into it?";
 
@@ -48,19 +48,19 @@ mixed CanJump(object who, string id, int type) {
     return 0;
 }
 
-mixed eventJump(object who, string id, int type) {
+mixed eventJump(object who, string id, int type){
     mixed dest;
 
-    if( Jumps[id] && Jumps[id][1] == type ) {
+    if( Jumps[id] && Jumps[id][1] == type ){
         dest = Jumps[id][0];
     }
     else {
         return 0;
     }
-    if( stringp(dest) ) {
+    if( stringp(dest) ){
         string omsg, imsg;
 
-        switch(type) {
+        switch(type){
         case JUMP_INTO:
             omsg = "$N jumps into the " + id + ".";
             imsg = "$N comes landing in.";
@@ -85,17 +85,17 @@ mixed eventJump(object who, string id, int type) {
         return 1;
     }
     else {
-        if( functionp(dest) & FP_OWNER_DESTED ) {
+        if( functionp(dest) & FP_OWNER_DESTED ){
             return "You encountered an error in a functional.";
         }
         return evaluate(dest, who, id, type);
     }
 }
 
-mixed direct_jump_word_obj(string prep, object target, string id) {
+mixed direct_jump_word_obj(string prep, object target, string id){
     int type;
 
-    switch(prep) {
+    switch(prep){
     case "in": case "into":
         type = JUMP_INTO;
         break;
@@ -118,12 +118,12 @@ mixed direct_jump_word_obj(string prep, object target, string id) {
     return CanJump(this_player(), id, type);    
 }
 
-varargs mixed direct_jump_word_word_obj(mixed args...) {
+varargs mixed direct_jump_word_word_obj(mixed args...){
     string prep = args[0] + " " + args[1];
     string id = remove_article(lower_case(args[5]));
     int type;
 
-    switch(prep) {
+    switch(prep){
     case "out of": case "off of":
         type = JUMP_FROM;
     default:

@@ -15,7 +15,7 @@ inherit LIB_INVENTORY;  // Let's cres specify an initial inventory
 
 private static int Persist = 0;
 
-int isBag() {
+int isBag(){
     return 1;
 }
 
@@ -27,7 +27,7 @@ int SetOpacity(int x){
     return container::SetOpacity(x);
 }
 
-varargs string GetInternalDesc() {
+varargs string GetInternalDesc(){
     object array items = all_inventory();
     string desc;
     int surfacep;
@@ -42,7 +42,7 @@ varargs string GetInternalDesc() {
     if(!surfacep) desc = desc + capitalize(add_article(GetShort(), 1));
     if(surfacep) desc = "On "+add_article(GetShort(), 1);
     items = filter(items, (: !($1->isDummy()) && !($1->GetInvis()) :));
-    if( sizeof(items) ) {
+    if( sizeof(items) ){
         if(surfacep){ 
             desc = desc+" you see " + item_list(items) + ".";
         }
@@ -55,33 +55,33 @@ varargs string GetInternalDesc() {
     return desc;
 }
 
-static mixed array AddSave(mixed array vars) {
+static mixed array AddSave(mixed array vars){
     return ({});
 }
 
-int SetSaveRecurse(int x) {
+int SetSaveRecurse(int x){
     return 0;
 }
 
-int CanReceive(object ob) {
-    if( !CanCarry(ob->GetMass()) ) {
+int CanReceive(object ob){
+    if( !CanCarry(ob->GetMass()) ){
         return 0;
     }
     return container::CanReceive(ob);
 }
 
-static void eventLoadInventory() {
-    if( !environment() || Persist ) {
+static void eventLoadInventory(){
+    if( !environment() || Persist ){
         return;
     }
     Persist = 1;
     inventory::eventLoadInventory();
 }
 
-int eventReceiveObject(object ob) {
+int eventReceiveObject(object ob){
     mixed tmp = container::eventReceiveObject(ob);
 
-    if( tmp != 1 ) {
+    if( tmp != 1 ){
         return tmp;
     }
     AddCarriedMass(ob->GetMass());
@@ -90,7 +90,7 @@ int eventReceiveObject(object ob) {
     return 1;
 }
 
-int eventReleaseObject(object ob) {
+int eventReleaseObject(object ob){
     int x;
 
     x = container::eventReleaseObject(ob);
@@ -102,12 +102,12 @@ int eventReleaseObject(object ob) {
     return x;
 }
 
-static void create() {
+static void create(){
     AddSave(({ "Persist" }));
     SetSaveRecurse(1);
     call_out((: reset :), 0);
 }
 
-mixed inventory_visible() {
+mixed inventory_visible(){
     return container::inventory_visible();
 }

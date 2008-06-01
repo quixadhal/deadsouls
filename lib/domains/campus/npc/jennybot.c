@@ -31,6 +31,7 @@ string LongDesc(){
 static void create(){
     AddSave(({ "players" }) );
     ::create();
+    restore_object(save_file);
     SetKeyName("jennybot");
     SetId(({"guide","guidebot","fembot","bot","jennifer","niffy","android","jenny","robot","woman","lady"}));
     SetAdjectives(({"orientation","young","female","polite","pretty","guide","newbie","simple","extremely"}));
@@ -62,7 +63,6 @@ static void create(){
     tipnumber = 16;
     greeting = 0;
     greetwait = 0;
-    restore_object(save_file);
 }
 
 varargs int eventGreet(string newbie){

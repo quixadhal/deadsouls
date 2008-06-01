@@ -9,22 +9,22 @@
 
 private int PoisonUses, PoisonStrength;
 
-static void create() {
+static void create(){
     PoisonStrength = 0;
     PoisonUses = 0;
     this_object()->AddSave( ({ "PoisonUses" }) );
 }
 
-mixed indirect_poison_obj_with_obj() {
+mixed indirect_poison_obj_with_obj(){
     if( environment() != this_player() ) return 0;
     if( PoisonStrength < 1 ) return "The poison is all used up.";
     return 1;
 }
 
-mixed eventSpreadPoison(object who, object target) {
+mixed eventSpreadPoison(object who, object target){
     if( !who || !target || !PoisonUses ) return 0;
     PoisonUses--;
-    if( random(50) > (int)who->GetStatLevel("coordination") ) {
+    if( random(50) > (int)who->GetStatLevel("coordination") ){
         this_player()->eventPrint("You fumble around with the poison, "
           "spilling it on yourself.");
         environment(this_player())->eventPrint((string)who->GetName() +
@@ -39,11 +39,11 @@ mixed eventSpreadPoison(object who, object target) {
     return 1;
 }
 
-int SetPoisonStrength(int x) { return (PoisonStrength = x); }
+int SetPoisonStrength(int x){ return (PoisonStrength = x); }
 
-mixed GetPoisonStrength() { return PoisonStrength; }
+mixed GetPoisonStrength(){ return PoisonStrength; }
 
-int SetPoisonUses(int x) { return (PoisonUses = x); }
+int SetPoisonUses(int x){ return (PoisonUses = x); }
 
-int GetPoisonUses() { return PoisonUses; }
+int GetPoisonUses(){ return PoisonUses; }
 

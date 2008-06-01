@@ -7,7 +7,7 @@ static void create() {
     SetKeyName("horse");
     SetId(({"horse","large horse"}));
     SetShort("a large horse");
-    SetLong("A large, hooved quadruped, taller and more muscular than you.");
+    SetLong("A large, hooved quadruped, taller and more muscular than you. Perhaps if you befriend him, he'll allow you to mount him.");
     SetNoClean(1);
     SetWimpy(50);
     SetLevel(5);

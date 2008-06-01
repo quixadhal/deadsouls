@@ -25,4 +25,6 @@ void create() {
         "mountains" : "The Daroq Mountains.  Vile creatures are "
         "rumoured to live in and about them."]) );
 }
-
+void init(){
+    ::init();
+}

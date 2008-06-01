@@ -15,7 +15,7 @@ private int AllowSacrifice, SacrificeType;
 private string array Classes, Religion, Deities, DeityIds;
 
 /*     **********  /lib/chapel.c apply methods  **********     */
-static void create() {
+static void create(){
     room::create();
     Classes = ({});
     Religion = allocate(2);
@@ -26,24 +26,24 @@ static void create() {
 }
 
 /*     **********  /lib/chapel.c modal methods  **********     */
-mixed CanMarry(object who, object spouse1, object spouse2) {
+mixed CanMarry(object who, object spouse1, object spouse2){
     mixed tmp;
 
-    if( (tmp = spouse1->CanMarry(who, spouse2)) != 1 ) {
+    if( (tmp = spouse1->CanMarry(who, spouse2)) != 1 ){
         if( tmp ) return tmp;
         else return (string)spouse1->GetName() + " cannot be married.";
     }
-    if( (tmp = spouse2->CanMarry(who, spouse1)) != 1 ) {
+    if( (tmp = spouse2->CanMarry(who, spouse1)) != 1 ){
         if( tmp ) return tmp;
         else return (string)spouse2->GetName() + " cannot be married.";
     }
-    if( archp(who) ) {
+    if( archp(who) ){
         return 1;
     }
     return 1;
 }
 
-mixed CanSacrifice(object who, object what, string deus) {
+mixed CanSacrifice(object who, object what, string deus){
     if( (string)who->GetReligion(1) != Religion[1] )
         return "You must hold the beliefs of " + Religion[1] + " to do that.";
     if( !((int)what->GetVendorType() & SacrificeType) )
@@ -53,11 +53,11 @@ mixed CanSacrifice(object who, object what, string deus) {
     return AllowSacrifice;
 }
 
-mixed eventMarry(object who, object spouse1, object spouse2) {
+mixed eventMarry(object who, object spouse1, object spouse2){
     mixed tmp;
 
     if( (tmp = spouse1->eventMarry(who, spouse2)) != 1 ) return tmp;
-    if( (tmp = spouse2->eventMarry(who, spouse1)) != 1 ) {
+    if( (tmp = spouse2->eventMarry(who, spouse1)) != 1 ){
         spouse1->SetMarried(0);
         return tmp;
     }
@@ -75,21 +75,21 @@ mixed eventMarry(object who, object spouse1, object spouse2) {
     return 1;
 }
 
-mixed eventSacrifice(object who, object what, string deus) {
+mixed eventSacrifice(object who, object what, string deus){
     who->eventPrint("You attempt to make a sacrifice, but nothing happens.");
     return 1;
 }
 
 /*     **********  /lib/chapel.c event methods  **********     */
-int SetAllowSacrifice(int x) { return (AllowSacrifice = x); }
+int SetAllowSacrifice(int x){ return (AllowSacrifice = x); }
 
-int GetAllowSacrifice() { return AllowSacrifice; }
+int GetAllowSacrifice(){ return AllowSacrifice; }
 
-string *SetClasses(string *rc) { return (Classes = rc); }
+string *SetClasses(string *rc){ return (Classes = rc); }
 
-string *GetClasses() { return Classes; }
+string *GetClasses(){ return Classes; }
 
-string *SetDeities(string *deities) {
+string *SetDeities(string *deities){
     string *ids = ({});
 
     Deities = deities;
@@ -99,18 +99,18 @@ string *SetDeities(string *deities) {
     return Deities;
 }
 
-string *GetDeities() { return Deities; }
+string *GetDeities(){ return Deities; }
 
-string *SetReligion(string adj, string noun) {
+string *SetReligion(string adj, string noun){
     Religion[0] = adj;
     Religion[1] = noun;
     return Religion;
 }
 
-varargs string GetReligion(int flag) { return Religion[flag]; }
+varargs string GetReligion(int flag){ return Religion[flag]; }
 
-int SetSacrificeType(int x) { return (SacrificeType = x); }
+int SetSacrificeType(int x){ return (SacrificeType = x); }
 
-int AddSacrificeType(int x) { return (SacrificeType |= x); }
+int AddSacrificeType(int x){ return (SacrificeType |= x); }
 
-int GetSacrificeType() { return SacrificeType; }
+int GetSacrificeType(){ return SacrificeType; }

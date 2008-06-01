@@ -81,9 +81,11 @@ void catch_tell( string message ){
 }
 
 void receive_message(string s1, string s2){
-    gstr = replace_string(s2,"%^CYAN%^","");
-    gstr = replace_string(gstr,"%%^^CYAN%%^^","");
-    if(recording) unguarded( (: write_file(recfile,timestamp()+": "+gstr+"\n") :) );
+    if(s2){
+        gstr = replace_string(s2,"%^CYAN%^","");
+        gstr = replace_string(gstr,"%%^^CYAN%%^^","");
+        if(recording) unguarded( (: write_file(recfile,timestamp()+": "+gstr+"\n") :) );
+    }
 }
 
 varargs mixed eventHearTalk(object who, object target, int cls, string verb,

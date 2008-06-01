@@ -37,7 +37,7 @@ static void create() {
       ]));
     SetRead("menu", (: eventReadMenu :));
     SetInventory(([
-        "/domains/campus/npc/gloria.c" : 1 ]));
+        "/domains/campus/npc/gloria.c" : ({60, 1}) ]));
     SetProperty("no attack", 1);
 }
 int eventReadMenu(string str){

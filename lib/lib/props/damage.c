@@ -16,39 +16,41 @@ private int MaxClass   = 1;
 mixed GetProperty(string key);
 // end abstract methods
 
-int GetClass() {
+int GetClass(){
     int blessing = GetProperty("blessed");
 
-    if( !intp(blessing) ) {
+    //if(estatep(this_object())) return 1;
+
+    if( !intp(blessing) ){
         blessing = 0;
     }
     return (Class + blessing);
 }
 
-int SetClass(int x) {
-    if( x > MaxClass ) {
+int SetClass(int x){
+    if( x > MaxClass ){
         MaxClass = x;
     }
     return (Class = x);
 }
 
-int GetDamageType() {
+int GetDamageType(){
     return DamageType;
 }
 
-int SetDamageType(int x ) {
+int SetDamageType(int x ){
     return (DamageType = x);
 }
 
-int GetMaxClass() {
+int GetMaxClass(){
     return MaxClass;
 }
 
-string array GetSave() {
+string array GetSave(){
     return ({ "Class" });
 }
 
-int eventStrike(object ob) {
+int eventStrike(object ob){
+    if(estatep(this_object()) && !estatep(ob)) return 1;
     return GetClass();
 }
-

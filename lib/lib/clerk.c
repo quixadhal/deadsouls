@@ -40,7 +40,7 @@ int MarriageRequest(mixed arg1, mixed arg2, mixed arg3){
     }
 
     if(sscanf(arg3,"%s and %s", s1, s2) !=2 &&
-      sscanf(arg3,"%s to %s", s1, s2) !=2) {
+      sscanf(arg3,"%s to %s", s1, s2) !=2){
         eventForce("say "+arg1->GetName()+", you are confusing me.");
         return 1;
     }
@@ -49,14 +49,14 @@ int MarriageRequest(mixed arg1, mixed arg2, mixed arg3){
     if(s1 == "me" || s1 == "i") s1 = dudename;
     if(s2 == "me" || s2 == "i") s2 = dudename;
 
-    if(s1 != dudename && s2 != dudename ) {
+    if(s1 != dudename && s2 != dudename ){
         eventForce("say Those people will have to decide "+
           "to get married on their own. It isn't "+
           "any of your business.");
         return 1;
     }
 
-    if( s1 == s2) {
+    if( s1 == s2){
         eventForce("say we don't do single-member marriages here.");
         return 1;
     }
@@ -77,22 +77,22 @@ int MarriageRequest(mixed arg1, mixed arg2, mixed arg3){
     return 1;
 }
 
-mixed performMarriage(object spouse1, object spouse2) {
+mixed performMarriage(object spouse1, object spouse2){
     mixed tmp;
     eventForce("say hmmm...");
     tmp = (mixed)environment(this_player())->CanMarry(this_player(),
       spouse1, spouse2);
-    if( !tmp ) {
+    if( !tmp ){
         this_player()->eventPrint("This place is not holy to you.");
         return 1;
     }
-    else if( stringp(tmp) ) {
+    else if( stringp(tmp) ){
         this_player()->eventPrint(tmp);
         return 1;
     }
     tmp = (mixed)environment(this_player())->eventMarry(this_player(),
       spouse1, spouse2);
-    if( tmp == 1 ) {
+    if( tmp == 1 ){
         object ring;
 
         ring = new(OBJ_WED_RING);
@@ -116,7 +116,7 @@ int performDivorce(object ob1){
     spouse2 = lower_case(ob1->GetSpouse());
     ob2 = find_player(spouse2);
 
-    if(!ob1->CanDivorce(ob1)) {
+    if(!ob1->CanDivorce(ob1)){
         eventForce("say I cannot perform this divorce. Are you sure "+
           "you are still married?");
         return 1;

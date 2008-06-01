@@ -19,5 +19,7 @@ void create() {
       (["stairs" : "They spiral up and down in this old monastery."]) );
     SetProperty("no castle", 1);
 }
-
+void init(){
+    ::init();
+}
 

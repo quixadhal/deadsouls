@@ -8,8 +8,8 @@
 
 mapping Properties   = ([]);
 
-mixed AddProperty(string prop, mixed val) {
-    if( Properties[prop] ) {
+mixed AddProperty(string prop, mixed val){
+    if( Properties[prop] ){
         Properties[prop] += val;
     }
     else {
@@ -18,18 +18,18 @@ mixed AddProperty(string prop, mixed val) {
     return Properties[prop];
 }
 
-mixed GetProperty(string prop) {
+mixed GetProperty(string prop){
     if(Properties && Properties[prop])
         return Properties[prop];
     else return 0;
 }
 
-mapping GetProperties() {
+mapping GetProperties(){
     return Properties;
 }
 
-int RemoveProperty(string prop) {
-    if( undefinedp(Properties[prop]) ) {
+int RemoveProperty(string prop){
+    if( undefinedp(Properties[prop]) ){
         return 1;
     }
     else {
@@ -38,11 +38,11 @@ int RemoveProperty(string prop) {
     return !Properties[prop];
 }
 
-mixed SetProperty(string prop, mixed val) {
+mixed SetProperty(string prop, mixed val){
     return (Properties[prop] = val);
 }
 
-mapping SetProperties(mapping props) {
+mapping SetProperties(mapping props){
     if(sizeof(Properties)) return (Properties += props);
     else return (Properties = props);
 }

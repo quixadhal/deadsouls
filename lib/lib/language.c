@@ -26,7 +26,7 @@ string GetNativeLanguage();
 
 int GetNextLevel(string lang, int curr_level);
 
-varargs void SetLanguage(string lang, int level, int native) {
+varargs void SetLanguage(string lang, int level, int native){
     string key;
 
     key = convert_name(lang);
@@ -35,7 +35,7 @@ varargs void SetLanguage(string lang, int level, int native) {
       "native" : native ]);
 }
 
-mapping RemoveLanguage(string lang) {
+mapping RemoveLanguage(string lang){
     if(lang && sizeof(lang)) lang = convert_name(lang);
     else return Languages;
     map_delete(Languages, lang);
@@ -50,8 +50,8 @@ mapping SetNativeLanguage(string lang){
     return Languages;
 }
 
-varargs void SetLanguageComprehension(function check, int time, function end) {
-    if( !check ) {
+varargs void SetLanguageComprehension(function check, int time, function end){
+    if( !check ){
         Comprehension = 0;
     }
     else {
@@ -75,11 +75,11 @@ string GetDefaultLanguage(){
     else return GetNativeLanguage();
 }
 
-int GetLanguageLevel(string lang) {
-    if( Comprehension ) {
+int GetLanguageLevel(string lang){
+    if( Comprehension ){
         int fp = functionp(Comprehension->check);
 
-        if( fp && !(fp & FP_OWNER_DESTED) ) {
+        if( fp && !(fp & FP_OWNER_DESTED) ){
             return evaluate(Comprehension->check, this_object(), lang);
         }
     }
@@ -88,13 +88,13 @@ int GetLanguageLevel(string lang) {
     else return Languages[lang]["level"];
 }
 
-string GetLanguageName(string lang) {
+string GetLanguageName(string lang){
     lang = convert_name(lang);
     if( !Languages[lang] ) return 0;
     else return Languages[lang]["name"];
 }
 
-int AddLanguagePoints(string lang, int points) {
+int AddLanguagePoints(string lang, int points){
     string key;
 
     key = convert_name(lang);
@@ -105,17 +105,17 @@ int AddLanguagePoints(string lang, int points) {
     return Languages[key]["points"];
 }
 
-int GetLanguagePoints(string lang) {
+int GetLanguagePoints(string lang){
     lang = convert_name(lang);
     if( !Languages[lang] ) return 0;
     else return Languages[lang]["points"];
 }
 
-string array GetLanguages() {
+string array GetLanguages(){
     return map(keys(Languages), (: Languages[$1]["name"] :));
 }
 
-int GetNextLevel(string lang, int curr_level) {
+int GetNextLevel(string lang, int curr_level){
     int y;
 
     lang = lower_case(lang);
@@ -125,9 +125,9 @@ int GetNextLevel(string lang, int curr_level) {
     return y;
 }
 
-int GetStatLevel(string stat) { return 0; }
+int GetStatLevel(string stat){ return 0; }
 
-string GetNativeLanguage() {
+string GetNativeLanguage(){
     mapping val;
     string lang;
 
@@ -145,14 +145,14 @@ int GetPolyglot(){
     return Polyglot;
 }
 
-static void heart_beat() {
-    if( Comprehension ) {
+static void heart_beat(){
+    if( Comprehension ){
         Comprehension->time -= GetHeartRate();
-        if( Comprehension->time < 1 ) {
+        if( Comprehension->time < 1 ){
             function tmp = Comprehension->end;
 
             Comprehension = 0;
-            if( functionp(tmp) && !(functionp(tmp) & FP_OWNER_DESTED) ) {
+            if( functionp(tmp) && !(functionp(tmp) & FP_OWNER_DESTED) ){
                 evaluate(tmp, this_object());
             }
         }

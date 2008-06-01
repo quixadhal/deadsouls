@@ -15,63 +15,63 @@ int    Opacity = 100;
 string GetShort();
 // end abstract methods
 
-string GetInternalDesc() {
+string GetInternalDesc(){
     mixed val = InternalDesc;
 
-    if( arrayp(val) ) {
+    if( arrayp(val) ){
         val = val[query_night()];
     }
-    if( stringp(val) ) {
+    if( stringp(val) ){
         return val;
     }
-    else if( functionp(val) ) {
-        if( functionp(val) & FP_OWNER_DESTED ) {
+    else if( functionp(val) ){
+        if( functionp(val) & FP_OWNER_DESTED ){
             return "Error evaluating internal description.";
         }
         return evaluate(val, this_player());
     }
 }
 
-string SetInternalDesc(string str) {
+string SetInternalDesc(string str){
     return (InternalDesc = str);
 }
 
-int GetOpacity() {
+int GetOpacity(){
     return Opacity;
 }
 
-int SetOpacity(int x) {
+int SetOpacity(int x){
     Opacity = x;
     parse_refresh();
     return Opacity;
 }
 
-varargs mixed CanShowInterior(object who, object target) {
+varargs mixed CanShowInterior(object who, object target){
     int x;
     if(!who) who = this_player();
 
     if( environment() != this_player()  && environment(this_player()) !=
-      environment()) {
+      environment()){
         return "#You don't have that!";
     }
 
-    if(living() && !inherits(LIB_VEHICLE,this_object())) {
+    if(living() && !inherits(LIB_VEHICLE,this_object())){
         return "You can't look inside of a living being.";
     }
 
-    if( target ) {
+    if( target ){
         x = 66;
     }
     else {
         x = 33;
     }
-    if( this_object()->GetClosed() && this_object()->GetOpacity() > x ) {
+    if( this_object()->GetClosed() && this_object()->GetOpacity() > x ){
         return 0;
     }
     return 1;
 }
 
-varargs mixed eventShowInterior(object who, object target) {
+varargs mixed eventShowInterior(object who, object target){
     object here,me,imhere,dabei;
     string this,str;
     here=environment(this_object());
@@ -81,16 +81,16 @@ varargs mixed eventShowInterior(object who, object target) {
     imhere=present(this,environment(who));
     dabei=present(this,who);
 
-    if( target ) {
+    if( target ){
         return "A strange event has occurred, which you should report.";
     }
 
-    if(!imhere && !dabei) {
+    if(!imhere && !dabei){
         who->eventPrint("That is not here.");
         return 0;
     }
 
-    if( !str || str == "" ) {
+    if( !str || str == "" ){
         return 0;
     }
     if(!inherits("/lib/comp/surface",this_object())) environment(who)->eventPrint(who->GetName() + " looks inside " +
@@ -99,25 +99,25 @@ varargs mixed eventShowInterior(object who, object target) {
 
 }
 
-mixed direct_look_in_obj() {
+mixed direct_look_in_obj(){
     if(inherits("/lib/comp/surface",this_object())) return 0;
     return CanShowInterior(this_player());
 }
 
-mixed direct_look_inside_obj() {
+mixed direct_look_inside_obj(){
     if(inherits("/lib/comp/surface",this_object())) return 0;
     return CanShowInterior(this_player());
 }
 
-mixed indirect_look_at_obj_word_obj(object target) {
-    if( environment(target) != this_object() ) {
+mixed indirect_look_at_obj_word_obj(object target){
+    if( environment(target) != this_object() ){
         return "#That is not in there.";
     }
     return CanShowInterior(this_player(), target);
 }
 
-mixed inventory_visible() {
-    if( GetOpacity() > 33 ) {
+mixed inventory_visible(){
+    if( GetOpacity() > 33 ){
         return 0;
     }
     else {

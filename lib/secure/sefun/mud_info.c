@@ -10,6 +10,7 @@ string mud_name() { return MUD_NAME; }
 
 varargs string imc2_mud_name(string name){ 
     string mudname;
+    return "Cratylus_Test";
 
     if(name) mudname = name;
     else mudname = MUD_NAME;
@@ -37,7 +38,7 @@ string architecture() { return __ARCH__; }
 
 string mudlib() { return "Dead Souls"; }
 
-string mudlib_version() { return "2.6.4"; }
+string mudlib_version() { return "2.8"; }
 
 int query_host_port() { return __PORT__; }
 

@@ -43,4 +43,7 @@ int go_north() {
     this_player()->add_hp(-(random(10)));
     return 0;
 }
+void init(){
+    ::init();
+}
 

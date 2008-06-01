@@ -77,7 +77,14 @@ int ConvertArea(string arg){
         return 1;
     }
 
-    if(!str || !file_exists(str)){
+    if(!str){
+        write("Try: help sconv");
+        return 1;
+    }
+
+    if(!file_exists(str)){ str = this_player()->query_cwd()+"/"+str; }
+
+    if(!file_exists(str)){
         write("No such area file exists.");
         return 1;
     }
@@ -268,13 +275,19 @@ int ConvertArea(string arg){
         header += "    SetExits( ([\n";
 
         for(i=i;i < sizeof(lines);i++){
+            int rev = 1;
             lock = key = room = direction = 0;
             if(lines[i] == "S") break;
             if(sscanf(lines[i],"%d %d %d",lock, key, room) == 3){
-                if(sscanf(lines[i+1],"D%d",direction)){
+                while(rev){
+                    if(!sscanf(lines[((i-rev > -1) ? (i-rev) : 0)],"D%d",direction)) rev++;
+                    else rev = 0;
+                    if(rev > 20) rev = 0;
+                }
+                if(!rev){
                     if(room == 0){
                         gdirection = Directions[direction];
-                        continue;
+                        //continue;
                     }
                     else header += "    \""+Directions[direction]+"\" : \""+prefix+room+"\",\n";
                 }
@@ -313,3 +326,13 @@ int ConvertArea(string arg){
 
     return 1;
 }
+
+void help() {
+    message("help", "Syntax: sconv <file> <area>\n\n"
+      "Tries to convert a Smaug area file into a Dead Souls domain.\n"
+      "Example: sconv /tmp/fubar.are Foo\n"
+      "This would try to create /domains/Foo and convert the area described\n"
+      "in /tmp/fubar.are into LPC files in that domain."
+      "\n", this_player());
+}
+

@@ -69,7 +69,6 @@ static void create() {
     SetLong((: describeRoom :));
     AddItem("sand", "Boring stretches of sand extend to the horizon.");
     AddItem("ylsrim", "It is east of here.");
-    SetObviousExits("e, w");
     SetExits( ([ "east" : "/domains/Ylsrim/room/"+ "kaliid7",
         "west" : "/domains/Ylsrim/virtual/desert/7,7" ,
         "down" : "/domains/Ylsrim/room/"+ "sand_hole" ]));

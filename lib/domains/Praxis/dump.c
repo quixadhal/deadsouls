@@ -49,4 +49,6 @@ void smell_food(string str) {
     this_player()->add_hp(-3);
     this_player()->set_paralyzed(10, "You are too nauseated to move!");
 }
-
+void init(){
+    ::init();
+}

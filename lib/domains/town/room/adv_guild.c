@@ -21,16 +21,16 @@ static void create() {
         ({"building","small building","here"}) : "You are in the "
         "Adventurers' Guild.",
       ]) );
-    SetExits( ([ 
-        "south" : "/domains/default/room/wiz_hall",
-        "west" : "/domains/town/room/training",
+    SetExits( ([
         "north" : "/domains/town/room/vill_road2",
         "east" : "/domains/town/room/confroom",
+        "west" : "/domains/town/room/training",
+        "south" : "/domains/default/room/builder_hall.c",
       ]) );
     SetInventory(([
         "/domains/town/obj/bin" : 1,
         "/domains/town/obj/table" : 1,
-        "/domains/town/npc/dirk" : 1
+        "/domains/town/npc/dirk" : ({60, 1})
       ]));
     SetRead( ([
         ({"list","scroll"}) : (: ReadScroll :),

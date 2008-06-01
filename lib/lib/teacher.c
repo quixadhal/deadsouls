@@ -33,7 +33,7 @@ int GetCommercial(){
 }
 
 int SetCommercial(int i){
-    if(i) {
+    if(i){
         commercial = i;
         if(!teaching_fee) teaching_fee = 50;
     }
@@ -55,7 +55,7 @@ int GetTeachingFee(){
 }
 
 int SetTeachingFee(int i){
-    if(i) {
+    if(i){
         teaching_fee = i;
         commercial = 1;
     }
@@ -68,7 +68,7 @@ int SetTeachingFee(int i){
 
 /**** driver applies ****/
 
-static void create() {
+static void create(){
     sentient::create();
     TeachingLanguages = ({});   
     Students = ([]);
@@ -85,12 +85,12 @@ static void create() {
       ]) );
 }
 
-static void init() {
+static void init(){
     string str;
     sentient::init();
     if( !living(this_player()) ) return;
     str = (string)this_player()->GetKeyName();
-    if( Students[str] ) {
+    if( Students[str] ){
         eventForce("speak You will have to start your "             
           "studies anew, "+(string)this_player()->GetName());
         map_delete(Students, str);
@@ -109,19 +109,19 @@ mixed AddTeachingLanguages(string *args){
     return (TeachingLanguages = distinct_array(TeachingLanguages + tmp_array));
 }
 
-mixed RemoveTeachingLanguages(string *args...) {
+mixed RemoveTeachingLanguages(string *args...){
     if( !args || !arrayp(args) ) 
         error("Bad argument 1 to RemoveTeachingLanguages.");
     TeachingLanguages -= args;
     return TeachingLanguages;
 }
 
-string array GetTeachingLanguages() { return copy(TeachingLanguages); }
+string array GetTeachingLanguages(){ return copy(TeachingLanguages); }
 
 string Expertise(){
     string tmp, expertises;
     if(!sizeof(GetTeachingLanguages())) return "none";
-    else if(sizeof(GetTeachingLanguages()) == 1) {
+    else if(sizeof(GetTeachingLanguages()) == 1){
         return GetTeachingLanguages()[0];
     }
     expertises = implode(GetTeachingLanguages(), ", ");
@@ -135,11 +135,11 @@ string Expertise(){
     return expertises;
 }
 
-mapping GetStudents() { return copy(Students); }
+mapping GetStudents(){ return copy(Students); }
 
 /**** high-level events ****/
 
-int eventHelp(object who, string unused) {
+int eventHelp(object who, string unused){
     eventForce("speak I am not sure of what you are "
       "asking, " + (string)who->GetName() + ".");
     if(sizeof( GetTeachingLanguages() )){
@@ -151,25 +151,25 @@ int eventHelp(object who, string unused) {
     return 1;
 }
 
-int eventTeachLanguage(object who, string verb, string language) {
-    if( !who || environment(who) != environment() ) {
+int eventTeachLanguage(object who, string verb, string language){
+    if( !who || environment(who) != environment() ){
         return 0;
     }
     if( !sizeof(language) || !sizeof(verb) ) return eventHelp(who, 0);
-    if( verb == "teach" ) {
+    if( verb == "teach" ){
 
         language = capitalize(language);
 
-        if( Students[ (string)who->GetKeyName() ] ) {
+        if( Students[ (string)who->GetKeyName() ] ){
             eventForce("speak I am already teaching you!");
             return 0;
         }
         if( !GetAllLanguages() &&
-          member_array(language, this_object()->GetTeachingLanguages()) == -1 ) {
+          member_array(language, this_object()->GetTeachingLanguages()) == -1 ){
             eventForce("speak I know nothing about the " +capitalize(language)+" language.");
             return 0;
         }
-        if( !commercial && (int)this_player()->GetTrainingPoints() < 1 ) {
+        if( !commercial && (int)this_player()->GetTrainingPoints() < 1 ){
             eventForce("speak You need more training points.");        
             return 0;
         }
@@ -186,11 +186,11 @@ int eventTeachLanguage(object who, string verb, string language) {
     return 1;
 }
 
-static int ContinueTeaching(object who, string language, int x) {
+static int ContinueTeaching(object who, string language, int x){
     language = capitalize(language);
     if( !present(who, environment()) ) return 0;
     if( !Students[(string)who->GetKeyName()] ) return 0;
-    if( x > 4 ) {
+    if( x > 4 ){
         map_delete(Students, (string)who->GetKeyName());
         eventComplete(who, language);
         who->AddLanguagePoints(language,5+((who->GetStatLevel("intelligence")/10)*2)+random(10));
@@ -211,7 +211,7 @@ static int ContinueTeaching(object who, string language, int x) {
  *  more interesting teaching techniques. :) 
  */
 
-int eventStart(object who, string language) {
+int eventStart(object who, string language){
     who->eventPrint(GetName() + " begins teaching you "
       "about the " + language + " language.");
     environment()->eventPrint(GetName() + " begins teaching " +
@@ -219,14 +219,14 @@ int eventStart(object who, string language) {
     return 1;
 }
 
-int eventContinue(object who, string language, int x) {
+int eventContinue(object who, string language, int x){
     who->eventPrint("You listen intently as " + GetName()
       + " continues " + possessive(this_object())
       + " dissertation on " + language + ".");
     return 1;
 }
 
-int eventComplete(object who, string language) {
+int eventComplete(object who, string language){
     who->eventPrint("You feel somewhat more competent in " + language + ".");
     eventForce("speak I can teach you no more for now, " +
       (string)who->GetName() + ".");

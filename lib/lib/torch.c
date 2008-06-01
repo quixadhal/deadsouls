@@ -10,21 +10,21 @@
 inherit LIB_BURN;
 inherit LIB_ITEM;
 
-static void create() {
+static void create(){
     item::create();
     burn::create();
 }
 
-int GetRadiantLight(int ambient) {
+int GetRadiantLight(int ambient){
     if( !GetLit() ) return 0;
     else return item::GetRadiantLight(ambient);
 }
 
-string GetShort() {
+string GetShort(){
     return item::GetShort() + burn::GetShort();
 }
 
-varargs string GetLong(string unused) {
+varargs string GetLong(string unused){
     string tmp;
 
     tmp = burn::GetLong(unused);
@@ -32,4 +32,4 @@ varargs string GetLong(string unused) {
     else return item::GetLong(unused);
 }
 
-int direct_pray_for_str_for_obj() { return 1; }
+int direct_pray_for_str_for_obj(){ return 1; }

@@ -40,27 +40,27 @@ int AddRecurseDepth(int i){
     return 1;
 }
 
-int GetCanClose() {
+int GetCanClose(){
     return CanClose;
 }
 
-int SetCanClose(int x) {
+int SetCanClose(int x){
     CanClose = x;
 }
 
-int GetCanLock() {
+int GetCanLock(){
     return CanLock;
 }
 
-int SetCanLock(int x) {
+int SetCanLock(int x){
     return SetCanClose(CanLock = x);
 }
 
-void SetKey(string key) { 
+void SetKey(string key){ 
     SetKeys(key);
 } 
 
-int GetOpacity() {
+int GetOpacity(){
     return holder::GetOpacity();
 }
 
@@ -68,20 +68,20 @@ int SetOpacity(mixed arg){
     return holder::SetOpacity(arg);
 }
 
-int GetRadiantLight(int ambient) {
+int GetRadiantLight(int ambient){
     return item::GetRadiantLight(ambient) + holder::GetRadiantLight(ambient);
 }
 
-static mixed array AddSave(mixed array vars) {
+static mixed array AddSave(mixed array vars){
     return item::AddSave(vars);
 }
 
-int SetSaveRecurse(int x) {
+int SetSaveRecurse(int x){
     return item::SetSaveRecurse(x);
 }
 
-mixed CanClose(object who, string id) {
-    if( !GetCanClose() ) {
+mixed CanClose(object who, string id){
+    if( !GetCanClose() ){
         return 0;
     }
     else {
@@ -89,20 +89,20 @@ mixed CanClose(object who, string id) {
     }
 }
 
-mixed CanGetFrom(object who, object item) {
+mixed CanGetFrom(object who, object item){
     mixed tmp = holder::CanGetFrom(who, item);
 
-    if( tmp != 1 ) {
+    if( tmp != 1 ){
         return tmp;
     }
-    if( GetClosed() ) {
+    if( GetClosed() ){
         return capitalize(GetDefiniteShort()) + " is closed.";
     }
     return 1;
 }
 
-mixed CanLock(object who, string id) {
-    if( !GetCanLock() ) {
+mixed CanLock(object who, string id){
+    if( !GetCanLock() ){
         return 0;
     }
     else {
@@ -110,8 +110,8 @@ mixed CanLock(object who, string id) {
     }
 }
 
-mixed CanOpen(object who, string id) {
-    if( !GetCanClose() ) {
+mixed CanOpen(object who, string id){
+    if( !GetCanClose() ){
         return 0;
     }
     else {
@@ -119,8 +119,8 @@ mixed CanOpen(object who, string id) {
     }
 }
 
-mixed CanPick(object who, string id) {
-    if( !GetCanLock() ) {
+mixed CanPick(object who, string id){
+    if( !GetCanLock() ){
         return "It isn't lockable in the first place.";
     }
     else {
@@ -128,7 +128,7 @@ mixed CanPick(object who, string id) {
     }
 }
 
-mixed CanPutInto(object who, object what) {
+mixed CanPutInto(object who, object what){
     mixed tmp;
     int mydepth,yourdepth,total,indirectp,indirectpp;
     string wherefrom,stackstring;
@@ -146,15 +146,15 @@ mixed CanPutInto(object who, object what) {
     indirectpp=member_array("indirect_put_objs_word_obj",callstack);
 
 
-    if( tmp != 1 ) {
+    if( tmp != 1 ){
         if( GetClosed() ) return capitalize(GetDefiniteShort()) + " is closed.";
         else return "You can't do that at this time.";
     }
-    if( GetClosed() ) {
+    if( GetClosed() ){
         return capitalize(GetDefiniteShort()) + " is closed.";
     }
 
-    if(inherits("/lib/std/storage",what) ) {
+    if(inherits("/lib/std/storage",what) ){
         yourdepth = what->GetRecurseDepth();
         mydepth = this_object()->GetRecurseDepth();
         if(yourdepth && mydepth) total = yourdepth + mydepth;
@@ -164,15 +164,15 @@ mixed CanPutInto(object who, object what) {
     return 1;
 }
 
-varargs mixed CanShowInterior(object who, object target) {
-    if( GetClosed() && this_object()->GetOpacity() > 33) {
+varargs mixed CanShowInterior(object who, object target){
+    if( GetClosed() && this_object()->GetOpacity() > 33){
         return capitalize(GetDefiniteShort()) + " is closed.";
     }
     else return holder::CanShowInterior();
 }
 
-mixed CanUnlock(object who, string id, object key) {
-    if( !GetCanLock() ) {
+mixed CanUnlock(object who, string id, object key){
+    if( !GetCanLock() ){
         return 0;
     }
     else {
@@ -180,8 +180,8 @@ mixed CanUnlock(object who, string id, object key) {
     }
 }
 
-int eventReceiveObject(object ob) {
-    if( GetClosed() ) {
+int eventReceiveObject(object ob){
+    if( GetClosed() ){
         return 0;
     }
 
@@ -190,14 +190,14 @@ int eventReceiveObject(object ob) {
 
 void PutCheck(){
 
-    if(RecurseDepth >= MaxRecurseDepth) {
+    if(RecurseDepth >= MaxRecurseDepth){
         SetPreventPut("You have enough containers inside containers there. This one will have to stay out.");
     }
 
 
 }
 
-void create() {
+void create(){
     string *i_save, *s_save, *a_save;
     i_save = item::GetSave();
     s_save = seal::GetSave();
@@ -211,15 +211,15 @@ void create() {
     PutCheck();
 }
 
-string array GetSave() {
+string array GetSave(){
     return item::GetSave();
 }
 
 
-int inventory_accessible() {
+int inventory_accessible(){
     return seal::inventory_accessible();
 }
 
-int inventory_visible() {
+int inventory_visible(){
     return (seal::inventory_visible() || holder::inventory_visible());
 }

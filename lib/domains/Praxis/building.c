@@ -48,4 +48,6 @@ void reset() {
     if(!present("torch")) 
         new("/domains/town/obj/torch")->move(this_object());
 }
-
+void init(){
+    ::init();
+}

@@ -14,6 +14,8 @@
 #include <medium.h>
 #include <position.h>
 #include <armor_types.h>
+#include <respiration_types.h>
+#include <terrain_types.h>
 #include <damage_types.h>
 #include <magic_protection.h>
 #include "include/body.h"
@@ -22,14 +24,18 @@ inherit LIB_POSITION;
 inherit LIB_UNDEAD;
 inherit LIB_CRAWL;
 inherit LIB_FLY;
+inherit LIB_SWIM;
 inherit LIB_MOUNT;
 inherit LIB_BODY_MASS;
 inherit LIB_PERSIST;
 
 #define COLLAPSE_AT            10.0
+#ifndef SEVERABLE_LIMBS
+#define SEVERABLE_LIMBS 1
+#endif
 
-private int HealthPoints, MagicPoints, ExperiencePoints, QuestPoints;
-private int melee;
+private int HealthPoints, MagicPoints, ExperiencePoints;
+private int melee, godmode;
 private int Alcohol, Caffeine, Food, Drink, Poison, Sleeping, DeathEvents;
 private float StaminaPoints;
 private string Torso, Biter;
@@ -41,13 +47,13 @@ private static class MagicProtection *Protection;
 static private int HeartModifier = 0;
 private static string PoliticalParty, BodyComposition;
 private static int Pacifist, rifleshot_wounds, gunshot_wounds, globalint1;
-private static int Size, Respiration, BodyType;
+private static int Size, BodyType;
 string *ExtraChannels;
 mixed Agent;
 
 string GetRace();
 
-static void create() {
+static void create(){
     PoliticalParty = "UNDECIDED";
     rifleshot_wounds = 0;
     gunshot_wounds = 0;
@@ -61,7 +67,6 @@ static void create() {
     HealthPoints = MagicPoints = 50;
     StaminaPoints = 50.0;
     ExperiencePoints = 50;
-    QuestPoints = 0;
     Dying = 0;
     LastHeal = time();
     Protection = ({});
@@ -84,12 +89,6 @@ int GetSize(){
     return size;
 }
 
-int GetRespiration(){
-    int resp = RACES_D->GetRaceRespirationType(GetRace());
-    if(Respiration) return Respiration;
-    return resp;
-}
-
 int GetBodyType(){
     int body_type = RACES_D->GetRaceBodyType(GetRace());
     if(BodyType) return BodyType;
@@ -102,10 +101,6 @@ int SetMass(int i){
 
 int SetSize(int i){
     return Size = i;
-}
-
-int SetRespiration(int i){
-    return Respiration = i;
 }
 
 int SetBodyType(int i){
@@ -185,8 +180,8 @@ string *SetExtraChannels(string *chans){
     return ExtraChannels;
 }
 
-mixed direct_turn_liv() {
-    if( GetUndead() ) {
+mixed direct_turn_liv(){
+    if( GetUndead() ){
         return 1;
     }
     else {
@@ -194,32 +189,100 @@ mixed direct_turn_liv() {
     }
 }
 
-static void heart_beat() {
+void eventCheckEnvironment(){
+    object env = environment();
+    int i;
+    int restype = this_object()->GetRespiration();
+    float j = percent(GetHealthPoints(), GetMaxHealthPoints());
+    float k = percent(GetStaminaPoints(), GetMaxStaminaPoints());
+
+    if( j < COLLAPSE_AT  || k < COLLAPSE_AT ){
+        this_object()->eventCollapse();
+    }
+
+    if(RACES_D->GetLimblessRace(this_object()->GetRace()) &&
+      this_object()->GetPosition() == POSITION_STANDING){
+        this_object()->SetPosition(POSITION_FLOATING);
+    }
+
+    if(!env) return;
+    if(env->GetMedium() == MEDIUM_AIR &&
+      this_object()->GetPosition() != POSITION_FLYING){
+        if(!(this_object()->CanFly())){
+            this_object()->SetPosition(POSITION_FLOATING);
+            call_out("eventFall", 1);
+        }
+        else this_object()->eventFly();
+    }
+    else if((env->GetTerrainType() & (T_SEAFLOOR | T_SPACE | T_UNDERWATER)) && 
+      this_object()->GetPosition() == POSITION_FLYING){
+        this_object()->SetPosition(POSITION_FLOATING);
+    }
+    else if((env->GetMedium() == MEDIUM_WATER ||
+        env->GetMedium() == MEDIUM_SURFACE) &&
+      this_object()->GetPosition() != POSITION_SWIMMING){
+        if(!(this_object()->GetPosition() == POSITION_FLYING &&
+            environment()->GetMedium() == MEDIUM_SURFACE)){
+            if(!(environment()->GetTerrainType() & (T_SEAFLOOR)) && this_object()->CanSwim()){
+                if(this_object()->GetPosition() != POSITION_FLOATING){
+                    this_object()->eventSwim();
+                }
+            }
+            else if(!(environment()->GetTerrainType() & (T_SEAFLOOR))){
+                this_object()->SetPosition(POSITION_FLOATING);
+                call_out("eventSink", 1);
+            }
+        }
+    }
+    if(env->GetMedium() == MEDIUM_SPACE){
+        this_object()->SetPosition(POSITION_FLOATING);
+        if(restype != R_VACUUM){
+            if(!this_object()->CanBreathe()){
+                eventPrint("You are asphyxiating.");
+                eventReceiveDamage("Outer space", ANOXIA, 200, 1);
+            }
+        }
+    }
+    else if(env->GetMedium() == MEDIUM_WATER){
+        if(restype != R_VACUUM && restype != R_WATER){
+            if(!this_object()->CanBreathe()){
+                eventPrint("You are drowning.");
+                eventReceiveDamage("Water", ANOXIA, 100, 1);
+            }
+        }
+    }
+    else if(restype == R_WATER && env->GetMedium() != MEDIUM_WATER){
+        if(!this_object()->CanBreathe()){
+            eventPrint("You are asphyxiating.");
+            eventReceiveDamage("Air", ANOXIA, 100, 1);
+        }
+    }
+    if( (i = env->GetPoisonGas()) > 0 ){
+        if( GetResistance(GAS) != "immune" ){
+            eventPrint("You choke on the poisonous gases.");
+            eventReceiveDamage("Poison gas", GAS, i, 1);
+        }
+    }
+}
+
+static void heart_beat(){
     object env = environment();
     int i;
 
     undead::heart_beat();
-    if( i = sizeof(Protection) ) {
+    if( i = sizeof(Protection) ){
         while(i--)
             if( Protection[i]->time && (--Protection[i]->time < 1) )
                 RemoveMagicProtection(i);
     }
-    if( env && (i = env->GetPoisonGas()) > 0 ) {
-        if( GetResistance(GAS) != "immune" ) {
-            eventPrint("You choke on the poisonous gases.");
-            eventReceiveDamage("Poison gas", GAS, i);
-        }
-    }
+    eventCheckEnvironment();
     eventCheckHealing();
-    if(!stringp(hobbled(this_player()))) {
+    if(!stringp(hobbled(this_player()))){
         this_object()->eventCollapse();
-    }
-    if(this_object()->GetPosition() == POSITION_FLYING && !this_object()->CanFly()){
-        eventFall();
     }
 }
 
-void eventReconnect() {
+void eventReconnect(){
     LastHeal = time();
 }
 
@@ -230,22 +293,25 @@ void ParseHook(string str){
 
 /************      /lib/body.c Modal Methods Section      ************/
 
-mixed CanRemoveItem(object ob) { return 1; }
+mixed CanRemoveItem(object ob){ return 1; }
 
 /************      /lib/body.c Events Section      ************/
 
-private void checkCollapse() {
+private void checkCollapse(){
     float h = percent(GetHealthPoints(), GetMaxHealthPoints());
+    float i = percent(GetStaminaPoints(), GetMaxStaminaPoints());
 
-    if( h < COLLAPSE_AT ) {
+    if( h < COLLAPSE_AT  || i < COLLAPSE_AT ){
         SetParalyzed(3, (: checkCollapse :));
         return;
     }
-    eventPrint("You feel some strength returning.");
+    this_object()->eventPrint("You feel some strength returning.");
 }
 
-int eventCollapse() {
+varargs int eventCollapse(int noparalyze){
     int position = GetPosition();
+    int medium;
+    if(environment()) medium = environment()->GetMedium();
 
     if(!this_object() || !environment()) return 0;
 
@@ -255,17 +321,28 @@ int eventCollapse() {
         }
     }
 
-    SetParalyzed(3, (: checkCollapse :));
-    if( position == POSITION_LYING ) {
+    if(!noparalyze) SetParalyzed(3, (: checkCollapse :));
+
+    if(medium == MEDIUM_LAND){
+        if( position == POSITION_LYING ){
+            return 1;
+        }
+        send_messages("collapse", "$agent_name $agent_verb to the ground.",
+          this_object(), 0, environment());
+        SetPosition(POSITION_LYING);
         return 1;
     }
-    send_messages("collapse", "$agent_name $agent_verb to the ground.",
+
+    if( position == POSITION_FLOATING ){
+        return 1;
+    }
+    send_messages("go", "$agent_name $agent_verb limp.",
       this_object(), 0, environment());
-    SetPosition(POSITION_LYING);
+    SetPosition(POSITION_FLOATING);
     return 1;
 }
 
-void eventCheckHealing() {
+void eventCheckHealing(){
     int x, y;
     object dude;
     dude = this_object();
@@ -273,7 +350,8 @@ void eventCheckHealing() {
     //This resets the parser counter.
     this_object()->DoneTrying();
 
-    if(HealthPoints < 1) {
+    if(HealthPoints < 1 && !this_object()->GetDying()){
+        this_object()->SetDying(1);
         this_object()->eventDie(previous_object());
         return;
     }
@@ -287,28 +365,28 @@ void eventCheckHealing() {
 
     if(dude->GetInCombat()){
         if(dude->GetInvis()) dude->SetInvis(0);
-        if(!interactive(dude) && !RACES_D->GetLimblessRace(dude->GetRace())) {
+        if(!interactive(dude) && !RACES_D->GetLimblessRace(dude->GetRace())){
             dude->SetAutoStand(1);
         }
     }
 
     if(!inherits(LIB_VEHICLE,this_object())){
-        if( (y = time() - LastHeal)  >= x ) {
+        if( (y = time() - LastHeal)  >= x ){
             LastHeal = time();
             do {
                 eventCompleteHeal(GetHealRate());
             } while( (y = y - x) >= x );
-            if( Alcohol > 0 ) {
+            if( Alcohol > 0 ){
                 Alcohol--;
-                if( !Alcohol ) {
+                if( !Alcohol ){
                     message("my_action", "You are left with a pounding headache.",
                       this_object());
                     AddHealthPoints(-(random(3) + 1));
                 }
-                else if( !GetSleeping() && random(100) < 8 ) {
+                else if( !GetSleeping() && random(100) < 8 ){
                     string verb, adv;
 
-                    switch(random(5)) {
+                    switch(random(5)){
                     case 0: verb = "burp"; adv = "rudely"; break;
                     case 1: verb = "look"; adv = "ill"; break;
                     case 2: verb = "hiccup"; adv = "loudly"; break;
@@ -321,16 +399,16 @@ void eventCheckHealing() {
                       adv + ".", environment(), ({ this_object() }));
                 }
             }
-            if( Sleeping > 0 ) {
+            if( Sleeping > 0 ){
                 Sleeping--;
-                if( !Sleeping || dude->GetInCombat() ) {
+                if( !Sleeping || dude->GetInCombat() ){
                     Sleeping = 0;
                     message("my_action", "You wake up!", this_object());
                     message("other_action", GetName() + " wakes up from " +
                       possessive(this_object()) + " deep sleep.",
                       environment(this_object()), ({ this_object() }));
                 }
-                else if( random(100) < 8 ) {
+                else if( random(100) < 8 ){
                     message("my_action", "You snore.", this_object());
                     message("other_action", (string)this_player()->GetName() +
                       " snores loudly.", environment(this_object()),
@@ -344,51 +422,39 @@ void eventCheckHealing() {
     }
 }
 
-void eventCompleteHeal(int x) {
+void eventCompleteHeal(int x){
     eventHealDamage(x, 1, GetLimbs());
     AddMagicPoints(x + 1);
     AddStaminaPoints(x);
 }
 
-mixed eventFall() {
+mixed eventFall(){
     object env = environment();
     object *riders;
     string dest;
 
-    if( !env ) {
+    if( !env ){
         return 0;
     }
-    if( GetPosition() == POSITION_LYING ) {
+    if( GetPosition() == POSITION_LYING ){
         return 0;
     }
-    if( env->GetMedium() == MEDIUM_AIR ) {
+    if( env->GetMedium() == MEDIUM_AIR ){
         return position::eventFall();
     }
     dest = env->GetGround();
-#if 0
-    if( !dest ) {
-        send_messages(({ "fall", "die" }), "$agent_name $agent_verb into a "
-          "dark abyss and $agent_verb.", this_object(), 0, env);
-        this_object()->eventCollapse();
-        eventDie("Deceleration sickness");
-    }
-#endif
     if(!dest){
         int p;
         int was_undead = GetUndead();
 
-        send_messages("fall", "$agent_name $agent_verb through the sky "
-          "towards the world below.", this_object(), 0, env);
         eventMove(dest);
-        environment()->eventPrint(GetName() + " comes falling in from above.",
-          this_object());
         this_object()->eventCollapse();
-        foreach(string limb in GetLimbs()) {
+        foreach(string limb in GetLimbs()){
             int hp = GetHealthPoints(limb);
 
             p = random(hp);
             eventReceiveDamage("Deceleration sickness", BLUNT, p, 0, ({ limb }));
-            if( Dying || (was_undead != GetUndead()) ) {
+            if( Dying || (was_undead != GetUndead()) ){
                 break;
             }
         }
@@ -421,20 +487,20 @@ mixed eventFall() {
  *
  * returns the actual amount of healing done or -1 if an error occurs
  */
-varargs int eventHealDamage(int x, int internal, mixed limbs) {
-    if(!limbs && !internal) {
+varargs int eventHealDamage(int x, int internal, mixed limbs){
+    if(!limbs && !internal){
         limbs = GetLimbs(); internal = 1;
     }
-    else if(stringp(limbs)) {
+    else if(stringp(limbs)){
         limbs = ({ limbs });
     }
-    if(!limbs) {
+    if(!limbs){
         limbs = ({});
     }
-    if( !arrayp(limbs)) {
+    if( !arrayp(limbs)){
         error("Bad argument 3 to eventHealDamage().\n");
     }
-    if(internal) {
+    if(internal){
         AddHealthPoints(x);
     }
     map(limbs, (: AddHealthPoints($(x), $1) :));
@@ -478,7 +544,7 @@ varargs int eventHealDamage(int x, int internal, mixed limbs) {
  */
 
 varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
-  mixed limbs) {
+  mixed limbs){
     string tmp = GetResistance(type);
     string agentname;
     int fp;
@@ -488,16 +554,24 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
         agent = 0;
     }
 
-    if( tmp == "immune") {
+    if(objectp(agent)){
+        if(estatep(agent) && !estatep(this_object())) return 0;
+        if(!estatep(agent) && estatep(this_object())) return 0;
+    }
+
+    if( tmp == "immune"){
         return 0;
     }
-    switch(tmp) {
+
+    if(godmode) return 0;
+
+    switch(tmp){
     case "low": x = (3*x)/4; break;
     case "medium": x /= 2; break;
     case "high": x /= 4; break;
     }
-    if( fp = functionp(Protect) ) {
-        if( !(fp & FP_OWNER_DESTED) ) {
+    if( fp = functionp(Protect) ){
+        if( !(fp & FP_OWNER_DESTED) ){
             function f;
 
             f = Protect;
@@ -506,8 +580,8 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
         }
     }
     x = eventCheckProtection(agent, type, x);
-    if( !limbs ) {
-        if( internal ) {
+    if( !limbs ){
+        if( internal ){
             AddHealthPoints(-x, 0, (agent || agentname));
             return x;
         }
@@ -515,15 +589,13 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
             limbs = GetLimbs();
         }
     }
-    else if( stringp(limbs) ) {
+    else if( stringp(limbs) ){
         limbs = ({ limbs });
     }
-    else if( !arrayp(limbs) ) {
+    else if( !arrayp(limbs) ){
         return -1;
     }
-    if( internal ) {
-        limbs = filter(limbs, (: !AddHealthPoints(-$(x), $1, $(agent)) :));
-        map(limbs, (: (Limbs[$1] ? this_object()->RemoveLimb($1, $(agent)) : 0) :));
+    if( internal ){
         AddHealthPoints(-x, 0, (agent || agentname));
         return x;
     }
@@ -531,34 +603,38 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
         int i, y, maxi;
 
         y = 0;
-        for(i=0, maxi = sizeof(limbs); i < maxi; i++) {
+        for(i=0, maxi = sizeof(limbs); i < maxi; i++){
             object *obs;
             int j, z;
 
             z = x;
-            if(!Limbs[limbs[i]]) {          /* no limb, no damage */
+            if(!Limbs[limbs[i]]){          /* no limb, no damage */
                 y += z;
                 continue;
             }
-            if(!(j = sizeof(obs = GetWorn(limbs[i])))) { /* no armor */
+            if(!(j = sizeof(obs = GetWorn(limbs[i])))){ /* no armor */
                 y += z;                     /* add to total damage */
-                if( !AddHealthPoints(-z, limbs[i], (agent || agentname)) )
-                    this_object()->RemoveLimb(limbs[i], (agent || agentname));
+                if( !AddHealthPoints(-z, limbs[i], (agent || agentname)) ){
+                    //this_object()->RemoveLimb(limbs[i], (agent || agentname));
+                    call_out("RemoveLimb",0,limbs[i], (agent || agentname));
+                }
                 continue;
             }
-            while(j--) {
+            while(j--){
                 z -= (int)obs[j]->eventReceiveDamage((agent || agentname),type, z, 0, limbs[i]);
                 if(z < 1) break;
             }
             if(z < 1) continue;
             else {
                 y += z;
-                if(!AddHealthPoints(-z, limbs[i], agent))
-                    this_object()->RemoveLimb(limbs[i], (agent || agentname));
+                if(!AddHealthPoints(-z, limbs[i], agent)){
+                    //this_object()->RemoveLimb(limbs[i], (agent || agentname));
+                    call_out("RemoveLimb",0,limbs[i], (agent || agentname));
+                }
             }
         }
         y = y / (maxi ? maxi : 1);
-        if( y ) {
+        if( y ){
             AddHealthPoints(-y, 0, (agent || agentname));
             AddStaminaPoints(-y/2);
         }
@@ -566,7 +642,10 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
     }
     AddHealthPoints(-x, 0, agent);
     AddStaminaPoints(-x/2);
-    if(HealthPoints < 1) eventDie((agent || agentname));
+    if(HealthPoints < 1 && !this_object()->GetDying()){
+        this_object()->SetDying(1);
+        call_out("eventDie", 0, (agent || agentname));
+    }
     return x;
 }
 
@@ -581,15 +660,15 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
  *
  *  returns modified damage
  */
-int eventCheckProtection(object agent, int type, int damage) {
+int eventCheckProtection(object agent, int type, int damage){
     int i, y;
     if( !i = sizeof(Protection) ) return damage;
-    while(i--) {
+    while(i--){
         int x;
 
         if( (type & Protection[i]->bits) != type ) continue;
-        if( Protection[i]->absorb ) {
-            if( (x = (Protection[i]->absorb - damage)) < 1 ) {
+        if( Protection[i]->absorb ){
+            if( (x = (Protection[i]->absorb - damage)) < 1 ){
                 x = Protection[i]->absorb;
                 RemoveMagicProtection(i);
                 damage -= x;
@@ -605,8 +684,8 @@ int eventCheckProtection(object agent, int type, int damage) {
             RemoveMagicProtection(i);
             continue;
         }
-        if( y = functionp(Protection[i]->hit) ) {
-            if( y == FP_OWNER_DESTED ) {
+        if( y = functionp(Protection[i]->hit) ){
+            if( y == FP_OWNER_DESTED ){
                 RemoveMagicProtection(i);
                 continue;
             }
@@ -619,28 +698,28 @@ int eventCheckProtection(object agent, int type, int damage) {
     return damage;
 }
 
-mixed eventReceiveThrow(object who, object what) {
+mixed eventReceiveThrow(object who, object what){
     int x;
 
-    if( what->GetClass() > 1 ) {
+    if( what->GetClass() > 1 ){
         int mod = who->GetSkillLevel("projectile attack") +
         who->GetStatLevel("strength");
 
         x = what->eventStrike(this_object()) * 3;
         x = (x*mod)/100;
-        if( what->GetWeaponType() != "projectile" ) {
+        if( what->GetWeaponType() != "projectile" ){
             x = x/4;
         }
         x = eventReceiveDamage(who, what->GetDamageType(), x, 0, 
           GetRandomLimb("torso"));
-        if( x > 0 ) {
+        if( x > 0 ){
             who->AddSkillPoints("projectile attack", x);
         }
     }
     else {
         x = 0;
     }
-    if( x < 1 ) {
+    if( x < 1 ){
         environment()->eventPrint(GetName() + " catches " +
           possessive_noun(who->GetName()) + " " +
           what->GetKeyName() + ".",
@@ -672,13 +751,15 @@ mixed eventReceiveThrow(object who, object what) {
  *
  * returns true if the thing is dying
  */
-varargs int eventDie(mixed agent) {
+varargs int eventDie(mixed agent){
     int x;
     string killer, death_annc;
     object crime_scene;
 
     if(DeathEvents) return 1;
     DeathEvents = 1;
+
+    this_object()->SetDying(0);
 
     if(agent && stringp(agent)) killer = agent;
     else {
@@ -694,12 +775,12 @@ varargs int eventDie(mixed agent) {
 
     if( Sleeping > 0 ) Sleeping = 0;
 
-    if( agent && objectp(agent) ) {
+    if( agent && objectp(agent) ){
         if( x ) agent->eventDestroyEnemy(this_object());
         else agent->eventKillEnemy(this_object());
     }
     crime_scene = environment();
-    if( crime_scene ) {
+    if( crime_scene ){
         object *obs;
         string *currs;
         object ob;
@@ -715,7 +796,7 @@ varargs int eventDie(mixed agent) {
         }
         if(GetRace() == "android" || GetRace() == "bot" ||
           inherits(LIB_VEHICLE,this_object())) ob = new(LIB_BOT_CORPSE);
-        else if(member_array(GetRace(), RACES_D->GetNonMeatRaces()) != -1) {
+        else if(member_array(GetRace(), RACES_D->GetNonMeatRaces()) != -1){
             ob = crime_scene;
             if(GetBodyComposition()){
                 ob = new(LIB_CLAY);
@@ -731,11 +812,11 @@ varargs int eventDie(mixed agent) {
         i = sizeof(obs);
         obs->eventMove(ob);
         currs = (string *)this_object()->GetCurrencies() || ({});
-        foreach(curr in currs) {
+        foreach(curr in currs){
             object pile;
             int amt;
 
-            if( amt = (int)this_object()->GetCurrency(curr) ) {
+            if( amt = (int)this_object()->GetCurrency(curr) ){
                 pile = new(LIB_PILE);
                 pile->SetPile(curr, amt);
                 pile->eventMove(ob);
@@ -746,7 +827,7 @@ varargs int eventDie(mixed agent) {
 
     SetUndead(!(x = GetUndead()));
 
-    evaluate( function() { Dying = 0; });
+    evaluate( function(){ Dying = 0; });
       flush_messages();
       return 1;
   }
@@ -758,12 +839,12 @@ varargs int eventDie(mixed agent) {
    *
    * returns 1 on success, 0 on failure
    */
-    int eventRemoveItem(object ob) {
+    int eventRemoveItem(object ob){
         string limb;
 
-        foreach(limb in keys(WornItems)) {
+        foreach(limb in keys(WornItems)){
             if( !WornItems[limb] ) continue;
-            if( member_array(ob, WornItems[limb]) != -1) {
+            if( member_array(ob, WornItems[limb]) != -1){
                 WornItems[limb] -= ({ ob });
             }
         }
@@ -779,26 +860,28 @@ varargs int eventDie(mixed agent) {
      *
      * returns 1 if successful, 0 if failure
      */
-    int eventWear(object ob, mixed limbs) {
+    int eventWear(object ob, mixed limbs){
         string limb,s1;
         string *target_limb;
         target_limb = ({});
 
-        if( stringp(limbs) ) {
+        if( stringp(limbs) ){
             limbs = ({ limbs });
         }
-        if( CanWear(ob, limbs) != 1 ) {
+        if( CanWear(ob, limbs) != 1 ){
             return 0;
         }
+#if 0
         if(!inherits(LIB_WEAPON, ob)){
-            foreach(limb in limbs) {
+            foreach(limb in limbs){
                 if(sscanf(limb,"%s foot",s1) || sscanf(limb,"%s hand",s1) ){
                     if(!sizeof(GetWorn(limb))) target_limb = ({ limb });
                 }
             }
         }
-        if(sizeof(target_limb)) limbs = target_limb;
-        foreach(limb in limbs) {
+#endif
+        if(sizeof(target_limb) && sizeof(limbs) == 1) limbs = target_limb;
+        foreach(limb in limbs){
             if( !WornItems[limb] ) WornItems[limb] = ({ ob });
             else WornItems[limb] += ({ ob });
         }
@@ -815,7 +898,7 @@ varargs int eventDie(mixed agent) {
         return equipped_limbs;
     }
     /************     /lib/body.c Data manipulation functions      *************/
-    void NewBody(string race) {
+    void NewBody(string race){
         if(!race)
             Limbs = ([ (Torso = "ooze") : ([ "parent" : 0, "children" : ({}),
                 "health" : 50, "class" : 1, "armors" : 0 ]) ]);
@@ -837,7 +920,7 @@ varargs int eventDie(mixed agent) {
      * returns 0 if the armor cannot be worn there for any reason
      *
      */
-    mixed CanWear(object ob, string *limbs) {
+    mixed CanWear(object ob, string *limbs){
         string limb, verb_pr, verb_pt, short;
         int type, bad_types, i, maxi;
 
@@ -845,7 +928,7 @@ varargs int eventDie(mixed agent) {
         short = (string)ob->GetShort();
         if( !(type = (int)ob->GetArmorType()) )
             return capitalize(short) + " cannot be worn!";
-        if( type & A_WEAPON ) {
+        if( type & A_WEAPON ){
             verb_pr = "wield";
             verb_pt = "wielded";
         }
@@ -860,19 +943,19 @@ varargs int eventDie(mixed agent) {
 
         // Verify that the the item can be worn on each limb specified by limbs.
         i = 0;
-        foreach(limb in limbs) {
+        foreach(limb in limbs){
 
             // Nested arrays indicate that only one of the elements in the nested
             // array must be satisfied. Check for one valid limb, and replace the
             // nested array with the valid limb, if found.
-            if( arrayp(limb) ) {
+            if( arrayp(limb) ){
                 string limb2;
                 string validLimb = 0;
                 int leastRings = -1;
 
                 if(!sizeof(limb)) error("Bad limb specification to CanWear().\n");
                 // Iterate through the nested array.
-                foreach(limb2 in limb) {
+                foreach(limb2 in limb){
                     string* wornItems;
 
                     // The limb will be valid if:
@@ -884,7 +967,7 @@ varargs int eventDie(mixed agent) {
 
                     // If the item is a ring, attempt to distribute the rings evenly
                     // across the available hands.
-                    if(type == A_RING) {
+                    if(type == A_RING){
                         int currentRings;
 
                         if(!sizeof(wornItems)) currentRings = 0;
@@ -894,7 +977,7 @@ varargs int eventDie(mixed agent) {
                         leastRings = currentRings;
                         if(currentRings >= GetFingers(limb2)) continue;
                     }
-                    else if(wornItems) {
+                    else if(wornItems){
                         object wornItem;
                         int tmpType = 0;
 
@@ -908,12 +991,12 @@ varargs int eventDie(mixed agent) {
                 else return "You cannot " + verb_pr + " that.";
             }
             else {
-                if(!GetLimb(limb)) {
+                if(!GetLimb(limb)){
                     return "Try a different body part.";
                 }
                 globalint1 = Limbs[limb]["armors"];
                 if( !Limbs[limb] ) return "You have no " + limb + ".";
-                if( !(globalint1 & type) ) {
+                if( !(globalint1 & type) ){
                     if( type & A_WEAPON )
                         return "You cannot wield with " + limb + ".";
                     else return "You cannot wear " + short + " on your " + limb + ".";
@@ -921,7 +1004,7 @@ varargs int eventDie(mixed agent) {
             }
             i++;
         }
-        switch(type) {
+        switch(type){
         case A_RING:
             if(maxi != 1)
                 return "You can only wear " + short + " on one limb.";
@@ -934,7 +1017,7 @@ varargs int eventDie(mixed agent) {
             else return 1; /* ok */
         case A_GLOVE:
             if(maxi != 1)
-                if( GetFingers(limbs[0]) > (int)ob->GetFingers() ) {
+                if( GetFingers(limbs[0]) > (int)ob->GetFingers() ){
                     return capitalize(short) + " does not seem to fit well on "
                     "your " + limbs[0] + ".";
                 }
@@ -943,13 +1026,13 @@ varargs int eventDie(mixed agent) {
         case A_LONG_GLOVE:
             if(maxi != 2)
                 return capitalize(short) + " should be worn on two limbs.";
-            if( limbs[0] == Limbs[limbs[1]]["parent"] ) { /* which is hand? */
+            if( limbs[0] == Limbs[limbs[1]]["parent"] ){ /* which is hand? */
                 /* more fingers than this armor can stand */
                 if(GetFingers(limbs[1]) > (int)ob->GetFingers())
                     return capitalize(short) + " does not seem to fit well on "
                     "your " + limbs[1] + ".";
             }
-            else if(limbs[1] == Limbs[limbs[0]]["parent"]) {
+            else if(limbs[1] == Limbs[limbs[0]]["parent"]){
                 /* ok, first limb is hand, check it */
                 if(GetFingers(limbs[0]) > (int)ob->GetFingers())
                     return capitalize(short) + " does not seem to fit well on "
@@ -990,7 +1073,7 @@ varargs int eventDie(mixed agent) {
             bad_types = A_SHIELD | A_WEAPON;
             break;
 #if 0
-            foreach(limb in limbs) {
+            foreach(limb in limbs){
                 object worn_item;
                 int tmp = 0;
 
@@ -1007,12 +1090,12 @@ varargs int eventDie(mixed agent) {
             return 1; /* ok */
 #endif
         case A_WEAPON:
-            foreach(limb in limbs) {
+            foreach(limb in limbs){
                 object worn_item;
                 int tmp = 0;
 
                 if( !WornItems[limb] ) continue; /* nothing there, ok */
-                foreach(worn_item in WornItems[limb]) {
+                foreach(worn_item in WornItems[limb]){
                     if( !worn_item ) continue;
                     tmp += (int)worn_item->GetArmorType();
                 }
@@ -1033,11 +1116,11 @@ varargs int eventDie(mixed agent) {
 
         default: return 0; /* not any illegal stuff */
         }
-        foreach(limb in limbs) {
+        foreach(limb in limbs){
             object worn_item;
             int tmp = 0;
             if( !WornItems[limb] ) continue; /* no preventing types */
-            foreach( worn_item in WornItems[limb] ) {
+            foreach( worn_item in WornItems[limb] ){
                 if( !worn_item ) continue;
                 tmp |= (int)worn_item->GetArmorType();
             }
@@ -1058,17 +1141,45 @@ varargs int eventDie(mixed agent) {
     }
 
     int CanFly(){
-        string clipped = identify(this_player()->GetMissingLimbs());
+        float j = percent(GetHealthPoints(), GetMaxHealthPoints());
+        float k = percent(GetStaminaPoints(), GetMaxStaminaPoints());
+        string clipped = identify(this_object()->GetMissingLimbs());
 
-        if(creatorp(this_player())) return 1;
+        if( j < COLLAPSE_AT  || k < COLLAPSE_AT ){
+            return 0;
+        }
 
-        if(!RACES_D->CanFly(this_player()->GetRace())) {
+        if(creatorp(this_object())) return 1;
+
+        if(!RACES_D->CanFly(this_object()->GetRace())){
             return 0;
         }
 
         if(!clipped || !sizeof(clipped)) return 1;
         if(!grepp(lower_case(clipped),"wing")) return 1;
+
+        if(this_object()->GetStaminaPoints() < 5) return 0;
         return 0;
+    }
+
+    int CanSwim(){
+        float j = percent(GetHealthPoints(), GetMaxHealthPoints());
+        float k = percent(GetStaminaPoints(), GetMaxStaminaPoints());
+
+        if( j < COLLAPSE_AT  || k < COLLAPSE_AT ){
+            return 0;
+        }
+
+        if(creatorp(this_object())) return 1;
+        if(sizeof(this_object()->GetMissingLimbs())) return 0;
+
+        if(!RACES_D->CanSwim(this_object()->GetRace())){
+            return 0;
+        }
+
+        if(this_object()->GetStaminaPoints() < 5) return 0;
+
+        return 1;
     }
 
 
@@ -1089,11 +1200,11 @@ varargs int eventDie(mixed agent) {
      *
      * returns 1 on success, 0 on failure
      */
-    varargs int AddLimb(string limb, string parent, int classes, int *armors) {
+    varargs int AddLimb(string limb, string parent, int classes, int *armors){
         int arm = 0;
 
         if(!limb || Limbs[limb] || (parent && !Limbs[parent])) return 0;
-        if(armors) {
+        if(armors){
             int i;
 
             i = sizeof(armors);
@@ -1122,7 +1233,7 @@ varargs int eventDie(mixed agent) {
     // the recursive restore of the limb. Trying to restore 
     // a limb will fail if the parent is missing.
 
-    varargs int RestoreLimb(string limb, int recurse) {
+    varargs int RestoreLimb(string limb, int recurse){
         if( !MissingLimbs[limb] ) return 0;
         if(!sizeof(Limbs[MissingLimbs[limb]["parent"]])) return 0;  
         Limbs[limb] = MissingLimbs[limb];
@@ -1158,12 +1269,12 @@ varargs int eventDie(mixed agent) {
      *
      * returns -1 on error, 0 on failure, 1 on success
      */
-    int DestLimb(string limb) {
+    int DestLimb(string limb){
         string *kiddies;
         int i;
 
         if(!limb || !Limbs[limb]) return -1;
-        if(!Limbs[limb]["parent"]) {
+        if(!Limbs[limb]["parent"]){
             return -1;
         }
         Limbs[Limbs[limb]["parent"]]["children"] -= ({ limb });
@@ -1183,7 +1294,7 @@ varargs int eventDie(mixed agent) {
      *
      * returns -1 on error, 0 on failure, 1 on success
      */
-    int RemoveLimb(string limb, mixed agent) {
+    int RemoveLimb(string limb, mixed agent){
         string *kiddies;
         string limbname,adjname,templimbname, agentname;
         int i;
@@ -1193,20 +1304,21 @@ varargs int eventDie(mixed agent) {
             agent = 0;
         }
 
-        if(limb == "torso" || limb == "neck") return 0;
+        if(limb == this_object()->GetTorso() || limb == "neck") return 0;
+
+        if(godmode || !SEVERABLE_LIMBS) return 0;
 
         if( sscanf(limb, "%s %s", adjname, templimbname) == 2 ) limbname=templimbname;
         else limbname=limb;
 
         if(!limb || !Limbs[limb]) return -1;
-        if(!Limbs[limb]["parent"] || Limbs[limb]["class"] == 1) {
+        if(!Limbs[limb]["parent"] || Limbs[limb]["class"] == 1){
             object objict;
             message("environment", possessive_noun(GetName()) + " " + limb +
               " is severed!", environment(), ({ this_object() }));
             message("environment", "Your "+ limb + " is severed!", this_object());
 
-
-            if(GetRace() == "golem") {
+            if(GetRace() == "golem"){
                 objict = new(LIB_CLAY);
                 if(GetBodyComposition()) objict->SetComposition(GetBodyComposition());
             }
@@ -1219,18 +1331,17 @@ varargs int eventDie(mixed agent) {
             }
             objict->eventMove(environment());
             i = sizeof(WornItems[limb]);
-            while(i--) {
+            while(i--){
                 WornItems[limb][i]->SetWorn(0);
                 WornItems[limb][i]->eventMove(objict);
             }
             while( i = sizeof(WornItems[limb]) )
                 eventRemoveItem(WornItems[limb][i]);
 
-            HealthPoints = 0;
-            if( !Dying ) {
-                Dying = 1;
+            if( !this_object()->GetDying() ){
+                this_object()->SetDying(1);
                 Agent = agent;
-                eventDie((Agent ? Agent : agentname));
+                call_out("eventDie", 0, (Agent ? Agent : agentname));
             }
             return 0;
         }
@@ -1239,13 +1350,14 @@ varargs int eventDie(mixed agent) {
         if( (i = sizeof(kiddies = Limbs[limb]["children"])) )
             while(i--) this_object()->RemoveLimb(kiddies[i], agent);
         map_delete(Limbs, limb);
-        if( environment() ) {
+        if( environment() ){
             object ob;
 
             message("environment", possessive_noun(GetName()) + " " + limb +
               " is severed!", environment(), ({ this_object() }));
             message("environment", "Your "+ limb + " is severed!", this_object());
-            if(GetRace() == "golem") {
+
+            if(GetRace() == "golem"){
                 ob = new(LIB_CLAY);
                 if(GetBodyComposition()) ob->SetComposition(GetBodyComposition());
             }
@@ -1258,7 +1370,7 @@ varargs int eventDie(mixed agent) {
             }
             ob->eventMove(environment());
             i = sizeof(WornItems[limb]);
-            while(i--) {
+            while(i--){
                 int number_of_slots = sizeof(WornItems[limb][i]->GetWorn());
                 WornItems[limb][i]->SetWorn(0);
                 if(number_of_slots == 1) WornItems[limb][i]->eventMove(ob);
@@ -1271,7 +1383,7 @@ varargs int eventDie(mixed agent) {
         return 1;
     }
 
-    mapping GetLimb(string limb) {
+    mapping GetLimb(string limb){
         if(!limb || !Limbs[limb]) return 0;
         else return copy(Limbs[limb]);
     }
@@ -1283,46 +1395,46 @@ varargs int eventDie(mixed agent) {
      * returns a random limb weighted towards the targetted limb
      */
 
-    string GetRandomLimb(string targ) {
+    string GetRandomLimb(string targ){
         string array limbs;
 
-        if( !targ ) {
+        if( !targ ){
             targ = GetTorso();
         }
-        if( member_array(targ, (limbs=keys(Limbs))) == -1) {
+        if( member_array(targ, (limbs=keys(Limbs))) == -1){
             targ= GetTorso(); /* no target or illegal target, weight torso */
         }
         targ = (limbs + (targ ? ({ targ, targ }) : ({})))[random(sizeof(limbs)+2)];
         return targ;
     }
 
-    string GetTorso() {
+    string GetTorso(){
         string *limbs;
         int i;
 
         i = sizeof(limbs = keys(Limbs));
-        while(i--) {
-            if(!Limbs[limbs[i]]["parent"]) {
+        while(i--){
+            if(!Limbs[limbs[i]]["parent"]){
                 return limbs[i];
             }
         }
         return 0;
     }
 
-    string array GetLimbs() {
+    string array GetLimbs(){
         return (Limbs ? keys(Limbs) : 0);
     }
 
-    int GetLimbClass(string limb) { return Limbs[limb]["class"]; }
+    int GetLimbClass(string limb){ return Limbs[limb]["class"]; }
 
-    string GetLimbParent(string limb) { return Limbs[limb]["parent"]; }
+    string GetLimbParent(string limb){ return Limbs[limb]["parent"]; }
 
-
-    //The following function courtesy of Garfield @ M*U*D
-    string GetMissingLimbParent(string limb) { return MissingLimbs[limb]["parent"]; } 
 
     //The following function courtesy of Garfield @ M*U*D
-    string *GetMissingLimbParents(string limb) {
+    string GetMissingLimbParent(string limb){ return MissingLimbs[limb]["parent"]; } 
+
+    //The following function courtesy of Garfield @ M*U*D
+    string *GetMissingLimbParents(string limb){
         string *limbs;
 
         limbs = ({ limb });
@@ -1334,11 +1446,11 @@ varargs int eventDie(mixed agent) {
         return limbs;
     } 
 
-    string array GetLimbChildren(string limb) {
+    string array GetLimbChildren(string limb){
         return Limbs[limb]["children"] + ({});
     }
 
-    mapping GetMissingLimb(string limb) {
+    mapping GetMissingLimb(string limb){
         return (limb ? copy(MissingLimbs[limb]) : 0);
     }
 
@@ -1355,8 +1467,8 @@ varargs int eventDie(mixed agent) {
 
     // New comparison functionality courtesy of
     // Garfield and Javelin at M*U*D
-    varargs string array GetMissingLimbs(int not_default) {
-        if(not_default) {
+    varargs string array GetMissingLimbs(int not_default){
+        if(not_default){
             string *tmp_arr = ({});
             if(sizeof(keys(MissingLimbs))){ 
                 tmp_arr = sort_array(keys(MissingLimbs), (: eventCompareLimbs :) );
@@ -1366,7 +1478,7 @@ varargs int eventDie(mixed agent) {
         else return keys(MissingLimbs);
     }
 
-    string GetLong(string nom) {
+    string GetLong(string nom){
         string *limbs;
         string *exempt;
         string str;
@@ -1377,7 +1489,7 @@ varargs int eventDie(mixed agent) {
 
         if(!(this_object()->GetNoCondition())){
             if(member_array(this_object()->GetRace(),exempt) == -1 &&
-              !this_object()->GetUndead() ) {
+              !this_object()->GetUndead() ){
                 str = "The "+this_object()->GetGender()+" ";
                 str += this_object()->GetRace();
                 h = percent(GetHealthPoints(), GetMaxHealthPoints());
@@ -1393,7 +1505,7 @@ varargs int eventDie(mixed agent) {
                 else str += " is in top condition.\n";
             }
         }
-        if(this_object()->GetUndead()) {
+        if(this_object()->GetUndead()){
             str = capitalize(nominative(this_object()))+" has been killed, and ";
             str +=  "is one of the Walking Undead.\n";
         }
@@ -1402,11 +1514,11 @@ varargs int eventDie(mixed agent) {
         if(!(GetRace() == "android") && !(GetRace() == "bot") &&
           !inherits(LIB_VEHICLE,this_object())){ 
 
-            if( sizeof(limbs) ) {
+            if( sizeof(limbs) ){
                 int i, maxi;
 
                 str += capitalize(nom) + " is missing " + add_article(limbs[0]); 
-                for(i=1, maxi = sizeof(limbs); i<maxi; i++) {
+                for(i=1, maxi = sizeof(limbs); i<maxi; i++){
                     if( i < maxi-1 ) str += ", " + add_article(limbs[i]);
                     else {
                         if( maxi > 2 ) str += ",";
@@ -1419,7 +1531,7 @@ varargs int eventDie(mixed agent) {
         return str;
     }
 
-    string array GetWieldingLimbs() {
+    string array GetWieldingLimbs(){
         return filter(keys(Limbs), (: (Limbs[$1]["armors"] & A_WEAPON) :));
     }
 
@@ -1433,17 +1545,17 @@ varargs int eventDie(mixed agent) {
      * returns the total number of fingers after addition
      */
 
-    varargs int AddFingers(string limb, int x) {
+    varargs int AddFingers(string limb, int x){
         if((Fingers[limb] += x) < 1) Fingers[limb] = 1;
         return Fingers[limb];
     }
 
-    int GetFingers(string limb) {
+    int GetFingers(string limb){
         return Fingers[limb];
     }
 
-    varargs object *GetWorn(string limb) {
-        if(!limb) {
+    varargs object *GetWorn(string limb){
+        if(!limb){
             object *ret = ({});
             string *limbs;
             int i;
@@ -1456,14 +1568,14 @@ varargs int eventDie(mixed agent) {
         else return (WornItems[limb] + ({}));
     }
 
-    varargs mixed GetWielded(string limb) {
-        if(!limb) {
+    varargs mixed GetWielded(string limb){
+        if(!limb){
             object *ret = ({});
             string *limbs;
             int i;
 
             i = sizeof(limbs = keys(Limbs));
-            while(i--) {
+            while(i--){
                 if(!WornItems[limbs[i]]) continue;
                 else ret += filter(WornItems[limbs[i]],
                       (: (int)$1->GetArmorType() == A_WEAPON :));
@@ -1497,7 +1609,7 @@ varargs int eventDie(mixed agent) {
      * or for the overall health points
      */
 
-    varargs static int AddHealthPoints(int x, string limb, mixed agent) {
+    varargs static int AddHealthPoints(int x, string limb, mixed agent){
         int y = 0;
         string agentname;
 
@@ -1506,7 +1618,9 @@ varargs int eventDie(mixed agent) {
             agent = 0;
         }
 
-        if( limb ) {
+        if(godmode && x < 1) return 0;
+
+        if( limb ){
             if( !Limbs[limb] ) return -1;
             y = GetMaxHealthPoints(limb);
             if(y < 1) return y;
@@ -1518,17 +1632,17 @@ varargs int eventDie(mixed agent) {
         else {
             if((HealthPoints += x) < 1) HealthPoints = 0;
             else if(HealthPoints > (y = GetMaxHealthPoints())) HealthPoints = y;
-            if( HealthPoints < 1 ) {
-                if( !Dying ) {
-                    Dying = 1;
+            if( HealthPoints < 1 ){
+                if( !this_object()->GetDying()){
+                    this_object()->SetDying(1);
                     Agent = agent;
-                    eventDie((Agent ? Agent : agentname));
+                    call_out("eventDie", 0, (agent || agentname));
                 }
             }
             else {
                 float h = percent(GetHealthPoints(), GetMaxHealthPoints());
 
-                if( h < COLLAPSE_AT ) {
+                if( h < COLLAPSE_AT ){
                     eventCollapse();
                 }
             }
@@ -1536,15 +1650,15 @@ varargs int eventDie(mixed agent) {
         }
     }
 
-    varargs int GetHealthPoints(string limb) {
-        if(limb) {
+    varargs int GetHealthPoints(string limb){
+        if(limb){
             if(!Limbs[limb]) return -1;
             else return Limbs[limb]["health"];
         }
         else return HealthPoints;
     }
 
-    varargs int GetMaxHealthPoints(string limb) { return 0; }
+    varargs int GetMaxHealthPoints(string limb){ return 0; }
 
     /* int AddMagicPoints(int x)
      * int x - the number of magic points being added, may be negative
@@ -1555,7 +1669,7 @@ varargs int eventDie(mixed agent) {
      * returns the remaining magic points
      */
 
-    int AddMagicPoints(int x) {
+    int AddMagicPoints(int x){
         int y;
 
         if((MagicPoints += x) < 1) MagicPoints = 0;
@@ -1563,9 +1677,9 @@ varargs int eventDie(mixed agent) {
         return MagicPoints;
     }
 
-    int GetMagicPoints() { return MagicPoints; }
+    int GetMagicPoints(){ return MagicPoints; }
 
-    int GetMaxMagicPoints() { return 0; }
+    int GetMaxMagicPoints(){ return 0; }
 
     /* int AddStaminaPoints(int x)
      * int x - number of stamina points being added
@@ -1581,7 +1695,7 @@ varargs int eventDie(mixed agent) {
         if( !stringp(ammo) ) error("Bad argument 1 to AddLead().\n");
         if( ammo == "gunshot_wounds" ) gunshot_wounds += number;
         if( ammo == "rifleshot_wounds" ) rifleshot_wounds += number;
-        if( rifleshot_wounds + gunshot_wounds < 0 ) {
+        if( rifleshot_wounds + gunshot_wounds < 0 ){
             gunshot_wounds = 0;
             rifleshot_wounds = 0;
         }
@@ -1598,7 +1712,7 @@ varargs int eventDie(mixed agent) {
         return 0;
     }
 
-    float AddStaminaPoints(mixed x) {
+    float AddStaminaPoints(mixed x){
         float y;
 
         if( !intp(x) && !floatp(x) )
@@ -1609,32 +1723,24 @@ varargs int eventDie(mixed agent) {
         return StaminaPoints;
     }
 
-    int GetStaminaPoints() { return to_int(StaminaPoints); }
+    int GetStaminaPoints(){ return to_int(StaminaPoints); }
 
-    float GetMaxStaminaPoints() {  return 0; }
+    float GetMaxStaminaPoints(){  return 0; }
 
-    int AddExperiencePoints(mixed x) {
+    int AddExperiencePoints(mixed x){
         if( !intp(x)) error("Bad argument 1 to AddExperiencePoints().\n");
         if((ExperiencePoints += x) < 0) ExperiencePoints = 0;
         return ExperiencePoints;
     }
 
-    int GetExperiencePoints() { return ExperiencePoints; }
+    int GetExperiencePoints(){ return ExperiencePoints; }
 
-    int AddQuestPoints(mixed x) {
-        if( !intp(x)) error("Bad argument 1 to AddQuestPoints().\n");
-        if((QuestPoints+= x) < 0) QuestPoints = 0;
-        return QuestPoints;
-    }
-
-    int GetQuestPoints() { return QuestPoints; }
-
-    int AddMagicProtection(class MagicProtection cl) {
+    int AddMagicProtection(class MagicProtection cl){
         if( ( !cl->absorb && !(cl->protect && cl->time) ) ||
           ( cl->hit && !functionp(cl->hit) ) ||
           ( cl->end && !functionp(cl->end) ) ||
           ( !cl->bits )
-        ) {
+        ){
             error("Illegal class setting passed to AddMagicProtection.\n");
             return 0;
         }
@@ -1643,12 +1749,12 @@ varargs int eventDie(mixed agent) {
         return 1;
     }
 
-    class MagicProtection array GetMagicProtection() { return Protection; }
+    class MagicProtection array GetMagicProtection(){ return Protection; }
 
-    int RemoveMagicProtection(int i) {
+    int RemoveMagicProtection(int i){
         if( i > sizeof(Protection) - 1 ) return 0;
-        if( Protection[i]->end ) {
-            if( !(functionp(Protection[i]->end) & FP_OWNER_DESTED) ) {
+        if( Protection[i]->end ){
+            if( !(functionp(Protection[i]->end) & FP_OWNER_DESTED) ){
                 evaluate(Protection[i]->end, this_object());
             }
         }
@@ -1661,52 +1767,69 @@ varargs int eventDie(mixed agent) {
     // so if your npc's are, say, dumb animals, be sure
     // to include "SetMelee(1)" so they can fight
     //
-    int SetMelee(int i) { melee = i; return melee; }
+    int SetMelee(int i){ melee = i; return melee; }
 
-    int GetMelee() { return melee; }
+    int GetMelee(){ return melee; }
 
 
-    int GetDying() { return Dying; }
+    int GetDying(){
+        return Dying; 
+    }
 
-    int SetSleeping(int x) { return (Sleeping = x); }
+    int SetDying(int x){
+        if(x) Dying = 1;
+        else Dying = 0;
+        return Dying;
+    }
 
-    int GetSleeping() { return Sleeping; }
+    int SetSleeping(int x){
+        if(RACES_D->GetNonMeatRace(GetRace()) || GetRace() == "elf") return 0;
+        return (Sleeping = x);
+    }
 
-    int AddAlcohol(int x) { return (Alcohol += x); }
+    int GetSleeping(){ return Sleeping; }
 
-    int GetAlcohol() { return Alcohol; }
+    int AddAlcohol(int x){ 
+        if(RACES_D->GetNonMeatRace(GetRace())) return 0; 
+        return (Alcohol += x);
+    }
 
-    int AddCaffeine(int x) { return (Caffeine += x); }
+    int GetAlcohol(){ return Alcohol; }
 
-    int GetCaffeine() { return Caffeine; }
+    int AddCaffeine(int x){ 
+        if(RACES_D->GetNonMeatRace(GetRace())) return 0;
+        return (Caffeine += x);
+    }
 
-    int AddDrink(int x) { return (Drink += x); }
+    int GetCaffeine(){ return Caffeine; }
 
-    int GetDrink() { return Drink; }
+    int AddDrink(int x){ return (Drink += x); }
 
-    int AddFood(int x) { return (Food += x); }
+    int GetDrink(){ return Drink; }
 
-    int GetFood() { return Food; }
+    int AddFood(int x){ return (Food += x); }
 
-    int AddPoison(int x) {
+    int GetFood(){ return Food; }
+
+    int AddPoison(int x){
         Poison += x;
-        if( Poison < 1 ) {
+        if( Poison < 1 ){
             Poison = 0;
         }
         return Poison;
     }
 
-    int GetPoison() { return Poison; }
+    int GetPoison(){ return Poison; }
 
-    string GetResistance(int type) { return "none"; }
+    string GetResistance(int type){ return "none"; }
 
-    string GetRace() { return 0; }
+    string GetRace(){ return 0; }
 
-    string GetName() { return 0; }
+    string GetName(){ return 0; }
 
-    string GetCapName() { return 0; }
+    string GetCapName(){ return 0; }
 
-    int GetHeartRate() {
+    int GetHeartRate(){
         int rate;
 
         rate = (GetAlcohol() - GetCaffeine());
@@ -1716,16 +1839,16 @@ varargs int eventDie(mixed agent) {
         else if( rate > -25 ) rate = 3;
         else rate = 2;
         rate += HeartModifier;
-        if( rate < 1 ) {
+        if( rate < 1 ){
             rate = 1;
         }
-        else if( rate > 10 ) {
+        else if( rate > 10 ){
             rate = 10;
         }
         return rate;
     }
 
-    int GetHealRate() {
+    int GetHealRate(){
         int heal;
 
         heal = 1 - (GetPoison() / 5);
@@ -1734,7 +1857,7 @@ varargs int eventDie(mixed agent) {
         return heal;
     }
 
-    string GetHealthShort() {
+    string GetHealthShort(){
         string cl, sh;
         float h;
 
@@ -1749,23 +1872,24 @@ varargs int eventDie(mixed agent) {
         return cl + capitalize(sh);
     }
 
-    mixed SetProtect(function f) { return (Protect = f); }
+    mixed SetProtect(function f){ return (Protect = f); }
 
-    function GetProtect() { return Protect; }
+    function GetProtect(){ return Protect; }
 
-    int GetHeartModifier() {
+    int GetHeartModifier(){
         return HeartModifier;
     }
 
-    varargs int AddHeartModifier(int x, int t) {
+    varargs int AddHeartModifier(int x, int t){
         HeartModifier += x;
-        if( t > 0 ) {
+        if( t > 0 ){
             call_out((: AddHeartModifier(-$(x)) :), t);
         }
         return HeartModifier;
     }
 
     int AddHP(int hp){
+        if(hp < 1 && godmode) return 0;
         AddHealthPoints(hp);
         return hp;
     }
@@ -1779,7 +1903,7 @@ varargs int eventDie(mixed agent) {
         alclevel = dude->GetAlcohol();
         ret = "";
 
-        if(dude->GetSleeping() > 0) {
+        if(dude->GetSleeping() > 0){
             ret += dude->GetName()+" is asleep.\n";
         }
 
@@ -1803,3 +1927,17 @@ varargs int eventDie(mixed agent) {
         else DeathEvents = 1;
         return DeathEvents;
     }
+
+    int SetGodMode(int i){
+        if(!this_player()) return 0;
+        if(archp(this_object()) && !archp(this_player())) return 0;
+        if(!archp(this_object()) && this_player() != this_object()) return 0;
+        if(i) godmode = 1;
+        else godmode = 0;
+        return godmode;
+    }
+
+    int GetGodMode(){
+        return godmode;
+    }
+

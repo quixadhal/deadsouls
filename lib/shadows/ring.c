@@ -1,3 +1,4 @@
+#include <daemons.h>
 #include <damage_types.h>
 inherit LIB_SHADOW;
 int reporting = 1;
@@ -8,35 +9,23 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal, mixed
     object ob = GetShadowedObject();
     string evidence, limb_string;
     if(reporting){
+        string *damtypes = TYPES_D->eventCalculateTypes("damage", type);
         evidence = "%^BOLD%^%^RED%^";
+
         if(objectp(agent)) evidence += "You receive damage from "+agent->GetKeyName();
         else if(stringp(agent)) evidence += "You receive damage from "+agent;
-        if(type) {
-            switch(type){
-            case BLUNT : evidence += ", damage type is BLUNT";break; 
-            case BLADE : evidence += ", damage type is BLADE";break;
-            case KNIFE : evidence += ", damage type is KNIFE";break;
-            case WATER : evidence += ", damage type is WATER";break;
-            case SHOCK : evidence += ", damage type is SHOCK";break;
-            case COLD : evidence += ", damage type is COLD";break;
-            case HEAT : evidence += ", damage type is HEAT";break;
-            case GAS : evidence += ", damage type is GAS";break;
-            case ACID : evidence += ", damage type is ACID";break;
-            case MAGIC : evidence += ", damage type is MAGIC";break;
-            case POISON : evidence += ", damage type is POISON";break;
-            case DISEASE : evidence += ", damage type is DISEASE";break;
-            case TRAUMA : evidence += ", damage type is TRAUMA";break;
-            case PIERCE : evidence += ", damage type is PIERCE";break;
-            case PSIONIC : evidence += ", damage type is PSIONIC";break;
-            case ANOXIA : evidence += ", damage type is ANOXIA";break;
-            case DEATHRAY : evidence += ", damage type is DEATHRAY";break;
-            case EMOTIONAL : evidence += ", damage type is EMOTIONAL";break;
-            case SONIC : evidence += ", damage type is SONIC";break;
-            case BITE : evidence += ", damage type is BITE";break;
-            case OTHER : evidence += ", damage type is OTHER";break;
-            default : evidence += ", damage type is UNKNOWN";break;
-            }
+        evidence +=".";
+
+        if(type && sizeof(damtypes)) {
+            string verboid;
+            if(sizeof(damtypes) > 1) verboid = "s are ";
+            else verboid = " is ";
+
+            evidence += " Damage type"+verboid;
+            evidence += lower_case(implode(damtypes,", "));
         }
+        else evidence += " Damage type is UNKNOWN";
+
         if(x) evidence += ", raw damage is "+x;
         if(internal) evidence += ", internal variable is "+internal;
         if(limbs) {

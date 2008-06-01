@@ -5,7 +5,7 @@
 #include <daemons.h>
 #include <network.h>
 
-#define WGET_D "/secure/daemon/wget"
+#define WGET_D "/secure/daemon/luget"
 #ifndef WEB_SOURCE
 #define WEB_SOURCE "149.152.218.102"
 #endif

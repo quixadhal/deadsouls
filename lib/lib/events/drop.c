@@ -18,37 +18,37 @@ string GetDefiniteShort();
 mixed eventMove(mixed dest);
 // end abstract methods
 
-mixed GetPreventDrop() {
+mixed GetPreventDrop(){
     return PreventDrop;
 }
 
-mixed SetPreventDrop(mixed val) {
-    if(!intp(val) && !stringp(val) && !functionp(val) && !objectp(val) ) {
+mixed SetPreventDrop(mixed val){
+    if(!intp(val) && !stringp(val) && !functionp(val) && !objectp(val) ){
         error("Bad argument 1 to SetPreventDrop().\n");
     }
     return (PreventDrop = val);
 }
 
-int GetDestructOnDrop() {
+int GetDestructOnDrop(){
     return DestructOnDrop;
 }
 
-int SetDestructOnDrop(int val) {
+int SetDestructOnDrop(int val){
     return (DestructOnDrop = val);
 }
 
-mixed CanDrop(object who) {
-    if( !PreventDrop ) {
+mixed CanDrop(object who){
+    if( !PreventDrop ){
         return 1;
     }
-    if( intp(PreventDrop) ) {
+    if( intp(PreventDrop) ){
         return 0;
     }
-    if( stringp(PreventDrop) ) {
+    if( stringp(PreventDrop) ){
         return PreventDrop;
     }
-    if( objectp(PreventDrop) ) {
-        if( PreventDrop == who ) {
+    if( objectp(PreventDrop) ){
+        if( PreventDrop == who ){
             return capitalize(GetDefiniteShort()) +
             " simply will not leave your grasp.";
         }
@@ -57,29 +57,29 @@ mixed CanDrop(object who) {
         }
     }
     else {
-        if( functionp(PreventDrop) & FP_OWNER_DESTED ) {
+        if( functionp(PreventDrop) & FP_OWNER_DESTED ){
             return "There is a problem with a functional.";
         }
         return evaluate(PreventDrop, who);
     }
 }
 
-mixed eventDrop(object who) {
+mixed eventDrop(object who){
     mixed tmp;
 
-    if( who != environment() ) {
+    if( who != environment() ){
         return 0;
     }
 
     if(DestructOnDrop) tmp = eventMove(ROOM_FURNACE);
     else tmp = eventMove(environment(who));
 
-    if( !tmp ) {
+    if( !tmp ){
         who->eventPrint("Something prevents you from dropping "
           + GetDefiniteShort() + ".");
         return 1;
     }
-    if( tmp != 1 ) {
+    if( tmp != 1 ){
         return tmp;
     }
     send_messages("drop", "$agent_name $agent_verb $target_name.",
@@ -88,8 +88,8 @@ mixed eventDrop(object who) {
     return 1;
 }
 
-mixed direct_drop_obj(object target) {
-    if( environment() != this_player() ) {
+mixed direct_drop_obj(object target){
+    if( environment() != this_player() ){
         return "#You don't have that to drop.";
     }
     return CanDrop(this_player());

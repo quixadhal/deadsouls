@@ -8,3 +8,6 @@ void create() {
     SetLong("The void.  Go down to get out.");
     SetExits(([ "down": "/domains/Praxis/square" ]));
 }
+void init(){
+    ::init();
+}

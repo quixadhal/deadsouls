@@ -1,0 +1,67 @@
+chapter 36 "QCS: Modifying weapons"
+
+    Remember that the QCS chapters are supposed to be read in 
+sequence. This is important because as we progress, I will not make
+explanations about directives and concepts explained previously.
+
+    Weapons are different from rooms and NPC's in that they can
+be handled, sold, thrown, etc. They are manipulable objects. As such,
+we will see new directives:
+
+%^GREEN%^create weapon hammer%^RESET%^
+
+    You may be familiar with this example from the example webpage.
+Let's go ahead and plow through the commands:
+
+%^GREEN%^modify weapon id hammer%^RESET%^
+
+%^GREEN%^warhammer%^RESET%^
+
+%^GREEN%^.%^RESET%^
+
+%^GREEN%^modify hammer name hammer%^RESET%^
+
+%^GREEN%^modify hammer damagetype blunt%^RESET%^
+
+%^GREEN%^modify hammer weapontype blunt%^RESET%^
+
+%^GREEN%^modify hammer mass 700%^RESET%^
+
+%^GREEN%^modify hammer hands 2%^RESET%^
+
+%^GREEN%^modify hammer short a heavy war hammer%^RESET%^
+
+%^GREEN%^modify hammer long This is an extremely large and heavy hammer designed to be wielded in both hands and used to hurt people very badly indeed.%^RESET%^
+
+%^GREEN%^modify hammer adj%^RESET%^
+
+%^GREEN%^large%^RESET%^
+
+%^GREEN%^heavy%^RESET%^
+
+%^GREEN%^war%^RESET%^
+
+%^GREEN%^.%^RESET%^
+
+%^GREEN%^modify hammer basecost silver 750%^RESET%^
+
+%^GREEN%^about hammer%^RESET%^
+
+
+    Like a room and unlike an NPC, you can also modify the SetItems on
+manipulable objects like weapons, so you could do something like this:
+
+%^GREEN%^modify hammer item%^RESET%^
+
+%^GREEN%^shaft%^RESET%^
+
+%^GREEN%^handle%^RESET%^
+
+%^GREEN%^.%^RESET%^
+
+%^GREEN%^A thick, reinforced steel shaft with leather bands for a strong grip.%^RESET%^
+
+%^GREEN%^exa shaft on hammer%^RESET%^
+
+    
+    

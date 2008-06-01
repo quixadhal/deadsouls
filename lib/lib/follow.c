@@ -9,25 +9,25 @@
 
 private static object Leader;
 
-static void create() { Leader = 0; }
+static void create(){ Leader = 0; }
 
-mixed direct_follow_liv() {
+mixed direct_follow_liv(){
     if( this_object() == this_player() )
         return "It doesn't quite work that way.";
     return this_player()->CanFollow(this_object());
 }
 
-object SetLeader(object leader) {
+object SetLeader(object leader){
     if( leader == this_object() ) return 0;
     if( leader && Leader ) return 0;
     Leader = ( leader && leader->GetFollowers() ) ? leader : 0;
     return Leader;
 }
 
-object GetLeader() { return Leader; }
+object GetLeader(){ return Leader; }
 
-varargs mixed CanFollow(object ob) {
-    if( ob ) {
+varargs mixed CanFollow(object ob){
+    if( ob ){
         if( !ob->CanLead() )
             return "You are not empowered to follow " + ob->GetName();
         if( IsFollowing(ob) )
@@ -40,7 +40,7 @@ varargs mixed CanFollow(object ob) {
     return 1;
 }
 
-int IsFollowing(object ob) {
+int IsFollowing(object ob){
     if( !Leader ) return 0;
     if( Leader == ob ) return 1;
     if( Leader->IsFollowing(ob) ) return 1;
@@ -51,6 +51,6 @@ int IsFollowing(object ob) {
  * eventFollow() needs to be overriden by child classes to provide the
  * actual move support.
  */
-int eventFollow(object dest, int fC) { return 0; }
+int eventFollow(object dest, int fC){ return 0; }
 
 

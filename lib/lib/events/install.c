@@ -22,11 +22,11 @@ varargs mixed eventUninstall(object what, object where){
     return 1;
 }
 
-int direct_install_obj(object target) {
+int direct_install_obj(object target){
     return CanInstall(this_player());
 }
 
-int direct_uninstall_obj(object target) {
+int direct_uninstall_obj(object target){
     return CanUninstall(this_player(), target);
 }
 

@@ -26,4 +26,6 @@ void create() {
         "north" : "/domains/Praxis/forest3",
       ]) );
 }
-
+void init(){
+    ::init();
+}

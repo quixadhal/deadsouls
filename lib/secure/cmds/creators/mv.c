@@ -49,6 +49,10 @@ cmd(string str) {
             write(t1+": no such file or directory.");
             return 1;
         }
+        if(!dir && directory_exists(t2)){
+            if(last(t2,1) != "/") t2 += "/";
+            t2 += last_string_element(t1,"/");
+        } 
         rename(t1,t2);
         if((dir && directory_exists(t2) && !directory_exists(t1)) ||
           (!dir && file_exists(t2) && !file_exists(t1)) )

@@ -35,10 +35,10 @@ static void create() {
         ({"sign"}) : "A sign you can read.",
       ]) );
     SetExits( ([
-        "east" : "/domains/default/room/wiz_corr1",
         "south" : "/secure/room/arch",
-        "north" : "/domains/town/room/adv_guild",
-        "west" : "/domains/default/room/wiz_hall2.c",
+        "east" : "/domains/default/room/wiz_corr1",
+        "west" : "/domains/default/room/wiz_hall2",
+        "north" : "/domains/default/room/builder_hall.c",
       ]) );
     SetRead("sign", (: load_object(ROOM_ARCH)->SignRead() :) );
 }

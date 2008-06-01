@@ -19,3 +19,6 @@ void create() {
       (["west" : "/domains/Praxis/sewer_ent", 
       ]));
 }
+void init(){
+    ::init();
+}

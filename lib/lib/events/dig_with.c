@@ -8,33 +8,33 @@
 
 #include <function.h>
 
-varargs mixed CanBuryWith(object who, object what) {
+varargs mixed CanBuryWith(object who, object what){
     int fp = functionp(environment(who)->GetBury());
 
-    if( !fp || (fp & FP_OWNER_DESTED) ) {
+    if( !fp || (fp & FP_OWNER_DESTED) ){
         return "This is not a very good place for burying.";
     }
     return 1;
 }
 
-varargs mixed CanDigWith(object who, object what) {
-    if( what ) { // the parser will trigger CanDig() there
+varargs mixed CanDigWith(object who, object what){
+    if( what ){ // the parser will trigger CanDig() there
         return 1;
     }
     else {
         int fp = functionp(environment(who)->GetDig());
 
-        if( !fp || (fp & FP_OWNER_DESTED) ) {
+        if( !fp || (fp & FP_OWNER_DESTED) ){
             return "This is not a very good place for that kind of digging.";
         }
         return 1;
     }
 }
 
-mixed eventBuryWith(object who, object what) {
+mixed eventBuryWith(object who, object what){
     mixed tmp = environment(who)->eventBuryItem(who, this_object(), what);
 
-    if( tmp == 1 ) {
+    if( tmp == 1 ){
         return tmp;
     }
     else {
@@ -43,18 +43,18 @@ mixed eventBuryWith(object who, object what) {
     return 1;
 }
 
-varargs mixed eventDigWith(object who, object what) {
+varargs mixed eventDigWith(object who, object what){
     object target;
     mixed tmp;
 
-    if( what ) {
+    if( what ){
         target = what;
     }
     else {
         target = environment(who);
     }
     tmp = target->eventDig(who, this_object());
-    if( tmp == 1 ) {
+    if( tmp == 1 ){
         return tmp;
     }
     else {
@@ -63,39 +63,39 @@ varargs mixed eventDigWith(object who, object what) {
     }
 }
 
-mixed direct_bury_str_with_obj(string str) {
-    if( environment() != this_player() ) {
+mixed direct_bury_str_with_obj(string str){
+    if( environment() != this_player() ){
         return "#You must have it to dig with it!";
     }
     return CanBuryWith(this_player());
 }
 
-mixed direct_dig_with_obj() {
-    if( environment() != this_player() ) {
+mixed direct_dig_with_obj(){
+    if( environment() != this_player() ){
         return "#You must have it to dig with it!";
     }
     return CanDigWith(this_player());
 }
 
-mixed direct_dig_str_with_obj(string what) {
-    if( environment() != this_player() ) {
+mixed direct_dig_str_with_obj(string what){
+    if( environment() != this_player() ){
         return "#You must have it to dig with it!";
     }
-    if( remove_article(lower_case(what)) != "hole" ) {
+    if( remove_article(lower_case(what)) != "hole" ){
         return "Dig a what?";
     }
     return CanDigWith(this_player());
 }
 
-mixed indirect_bury_obj_with_obj(object what) {
-    if( environment() != this_player() ) {
+mixed indirect_bury_obj_with_obj(object what){
+    if( environment() != this_player() ){
         return "#You must have it to bury with it!";
     }
     return CanBuryWith(this_player(), what);
 }
 
-mixed indirect_dig_obj_with_obj(object what) { 
-    if( environment() != this_player() ) {
+mixed indirect_dig_obj_with_obj(object what){ 
+    if( environment() != this_player() ){
         return "#You must have it to dig with it!";
     }
     return CanDigWith(this_player(), what);

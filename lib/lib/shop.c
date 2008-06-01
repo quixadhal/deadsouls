@@ -7,11 +7,11 @@
 
 inherit LIB_ROOM;
 
-static void create() {
+static void create(){
     ::create();
 }
 
-void init() {
+void init(){
     ::init();
     add_action("list","list");
     add_action("show","show");
@@ -21,7 +21,7 @@ void init() {
 
 object *ob;
 object ob2;
-int list(string str) {
+int list(string str){
     if(!str || str == "") str = "all";
     present("vendor")->cmdBrowse(this_player(),str);
     return 1;
@@ -29,17 +29,17 @@ int list(string str) {
 
 
 
-int show(string str) {
+int show(string str){
     present("vendor")->cmdShow(this_player(),str);
     return 1;
 }
 
-int price(string str) {
+int price(string str){
     present("vendor")->cmdPrice(this_player(),str);
     return 1;
 }
 
-int appraise(string str) {
+int appraise(string str){
     present("vendor")->cmdAppraise(this_player(),str);
     return 1;
 } 

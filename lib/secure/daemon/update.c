@@ -1,14 +1,21 @@
 #include <lib.h>
 #include <daemons.h>
+#include <save.h>
 
 inherit LIB_DAEMON;
 mapping EventsMap = ([]);
 mixed *event_funs = ({});
 
+int check_function(string str){
+ if(member_array(str,MASTER_D->GetEfuns()) != -1) return 1;
+    return 0;
+}
+
 varargs static void eventUpdate(object whom){
     object remote;
     string a,b;
     string cpw,spw;
+    string *file_arr;
     string x = read_file("/secure/daemon/imc2.c");
     int y = sscanf(x,"%s#define IMC2_CLIENT_PW \"%s\"%s",a,cpw,b);
     string config_file = read_file("/secure/include/config.h");
@@ -24,6 +31,14 @@ varargs static void eventUpdate(object whom){
     newfile += "    call_out((: eventUpdate :), 60);\n";
     newfile += "}\n";
     write_file("/secure/daemon/update.c",newfile,1);
+
+    if(find_object(RACES_D))
+        find_object(RACES_D)->eventDestruct();
+    rename(SAVE_RACES __SAVE_EXTENSION__, SAVE_RACES+"."+time());
+
+    reload("/secure/sefun/pointers",0,1);
+    reload("/secure/sefun/sefun",0,1);
+    reload("/secure/daemon/master",0,1);
 
     if(sizeof(config_file)){
 
@@ -63,8 +78,12 @@ varargs static void eventUpdate(object whom){
             config_file = append_line(config_file,"#define ROUTER_NAME",
               "#define IRN_PASSWORD             \""+mud_name()+"\"");
 
-        if(!grepp(config_file, "IRN_PASSWORD2"))
+        if(!grepp(config_file, "IRN_PASSWORD1"))
             config_file = append_line(config_file,"#define IRN_PASSWORD",
+              "#define IRN_PASSWORD1            \"bet\"");
+
+        if(!grepp(config_file, "IRN_PASSWORD2"))
+            config_file = append_line(config_file,"#define IRN_PASSWORD1",
               "#define IRN_PASSWORD2            \"bet\"");
 
         if(!grepp(config_file, "IRN_PASSWORD3"))
@@ -79,19 +98,82 @@ varargs static void eventUpdate(object whom){
             config_file = append_line(config_file,"#define IMC2_CLIENT_PW",
               "#define IMC2_SERVER_PW           \""+spw+"\"");
 
+        if(!grepp(config_file, "FAST_COMBAT"))
+            config_file = append_line(config_file,"#define RETAIN_ON_QUIT",
+              "#define FAST_COMBAT              0");
+
+        if(!grepp(config_file, "ENABLE_CGI"))
+            config_file = append_line(config_file,"#define IMC2_SERVER_PW",
+              "#define ENABLE_CGI               0");
+
+        if(!grepp(config_file, "WWW_DIR_LIST"))
+            config_file = append_line(config_file,"#define ENABLE_CGI",
+              "#define WWW_DIR_LIST             0");
+
+        if(!grepp(config_file, "ENABLE_CREWEB"))
+            config_file = append_line(config_file,"#define WWW_DIR_LIST",
+              "#define ENABLE_CREWEB            0");
+
+        if(!grepp(config_file, "CHANNEL_PIPES"))
+            config_file = append_line(config_file,"#define RESTRICTED_INTERMUD",
+              "#define CHANNEL_PIPES            0");
+
+        if(!grepp(config_file, "F_TERMINAL_COLOR")){
+            if(check_function("terminal_color"))
+                config_file = append_line(config_file,"#define ENABLE_CREWEB",
+                  "#define F_TERMINAL_COLOR         1");
+            else
+                config_file = append_line(config_file,"#define ENABLE_CREWEB",
+                  "#define F_TERMINAL_COLOR         0");
+        }
+
+        if(!grepp(config_file, "CLASS_SELECTION"))
+            config_file = append_line(config_file,"#define HUMANS_ONLY",
+              "#define CLASS_SELECTION          0");
+
+        if(!grepp(config_file, "SEVERABLE_LIMBS"))
+            config_file = append_line(config_file,"#define HUMANS_ONLY",
+              "#define SEVERABLE_LIMBS          1");
+
         write_file("/secure/include/config.h", config_file+"\n", 1);
     }
 
+    rm("/secure/cmds/admins/addemote.c");
+    rm("/secure/cmds/admins/removeemote.c");
+    rm("/secure/cmds/admins/stupidemote.c");
+    rm("/daemon/class.c");
     rm("/cmds/players/where.c");
     rm("/domains/Praxis/obj/mon/execution.c");
     rm("/domains/campus/txt/moochers.txt");
+    rm("/secure/cfg/classes/priest");
     rm("/secure/sefun/distinct_array.c");
+    rm("/secure/sefun/query_carrying.c");
     rm("/secure/sefun/singular_array.c");
+    rm("/verbs/creators/add.c");
+    rm("/verbs/creators/copy.c");
+    rm("/verbs/creators/createfix.c");
+    rm("/verbs/creators/delete.c");
+    rm("/verbs/creators/dest.c");
+    rm("/verbs/creators/initfix.c");
+    rm("/verbs/creators/modify.c");
+    rm("/verbs/creators/pulsecheck.c");
+    rm("/verbs/creators/reload.c");
+    rm("/secure/cmds/creators/create.c");
+    rm("/secure/cmds/creators/home.c");
+    rm("/secure/cmds/creators/grant.c");
+    rm("/daemon/include/races.h");
+    rm("/lib/verb.c");
+    rm("/lib/include/verb.h");
+
+    mkdir("/domains/town/save");
+    mkdir("/domains/default/save");
+    mkdir("/secure/log/network");
+    mkdir("/secure/log/intermud");
 
     remote = load_object("/secure/cmds/admins/removeemote");
     if(remote) remote->cmd("roll");
 
-    reload(EVENTS_D);
+    reload(EVENTS_D,0,1);
     EventsMap = EVENTS_D->GetEvents();
     foreach(mixed key, mixed val in EventsMap){
         event_funs += ({ val["function"] });
@@ -118,21 +200,45 @@ varargs static void eventUpdate(object whom){
     newfile = replace_string(newfile,"(/log/router)","(/log/router/)");
     newfile = replace_string(newfile,"(/log/secure)","(/log/secure/)");
     write_file("/secure/cfg/write.cfg",newfile,1); 
+    newfile = read_file("/secure/cfg/groups.cfg");
+    file_arr = explode(newfile,"\n");
+    if(!grepp(newfile,"(BUILDER)")) file_arr += ({"(BUILDER) "});
+    if(!grepp(newfile,"(TELNET)")) file_arr += ({"(TELNET) "});
+    if(!grepp(newfile,"(EMOTES)")) file_arr += ({"(EMOTES) "});
+    newfile = implode(file_arr,"\n");
+    write_file("/secure/cfg/groups.cfg", newfile, 1);
 
     if(file_exists("/secure/daemon/imc2_new.c")){
         rename("/secure/daemon/imc2.c","/secure/save/backup/imc2_old.c");
         rename("/secure/daemon/imc2_new.c", "/secure/daemon/imc2.c");
     }
 
-    catch( CLASSES_D->RemoveClass("thief"));
-    catch( CLASSES_D->AddClass("/secure/cfg/classes/thief"));
+    catch( CLASSES_D->RemoveClass("thief") );
+    catch( CLASSES_D->AddClass("/secure/cfg/classes/thief") );
+    catch( CLASSES_D->RemoveClass("priest") );
+    catch( CLASSES_D->AddClass("/secure/cfg/classes/cleric") );
+    //tc("Done with classes...");
 
-    reload("/secure/sefun/arrays");
-    reload("/secure/sefun/sefun");
-    reload("/secure/daemon/master");
+    reload("/secure/daemon/master",0,1);
+    reload("/secure/sefun/arrays",0,1);
+    reload("/secure/sefun/sefun",0,1);
+
+    catch( reload("/domains/default/room/stargate_lab.c",0,1));
+    catch( reload("/domains/town/virtual/space/1,1,1",0,1));
+    catch( reload("/domains/town/virtual/bottom/33,100000",0,1));
+    catch( reload("/domains/Praxis/square.c",0,1));
+    catch( reload("/domains/Ylsrim/room/tower",0,1));
+    catch( reload("/domains/campus/room/slab",0,1));
+    update(RELOAD_D,0,1);
 
     if(whom){
-        tell_player(whom,"Update daemon finished. Rebooting now is a good idea.");
+        tell_player(whom,"Update daemon finished.");
+        if(query_os_type() == "windows") tell_player(whom,"Rebooting now is a good idea.");
+        else tell_player(whom,"Initiating warm boot.");
+    }
+   
+    if(query_os_type() != "windows"){
+        RELOAD_D->WarmBoot();
     }
 }
 

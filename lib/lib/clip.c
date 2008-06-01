@@ -50,14 +50,14 @@ int CanRelease(object ob){
     ammo--;
     return 1;
 }
-int MinusAmmo(int i) { ammo -= i; return 1; }
-int PlusAmmo(int i) { ammo += i; return 1; }
-int SetMaxAmmo(int i) { MaxAmmo=i; return 1; }
-int SetPistolType(string str) {pistoltype=str; return 1; }
-int SetAmmoType(string str) {ammotype=str; return 1; }
-int SetCaliber(int x) { caliber=x; return 1; }
+int MinusAmmo(int i){ ammo -= i; return 1; }
+int PlusAmmo(int i){ ammo += i; return 1; }
+int SetMaxAmmo(int i){ MaxAmmo=i; return 1; }
+int SetPistolType(string str){pistoltype=str; return 1; }
+int SetAmmoType(string str){ammotype=str; return 1; }
+int SetCaliber(int x){ caliber=x; return 1; }
 int SetMillimeter(int x){ millimeter=x; return 1; }
-int GetMillimeter() { return millimeter; }
-int GetCaliber() { return caliber; }
-string GetPistolType() { return pistoltype; }
-string GetAmmoType() { return ammotype; }
+int GetMillimeter(){ return millimeter; }
+int GetCaliber(){ return caliber; }
+string GetPistolType(){ return pistoltype; }
+string GetAmmoType(){ return ammotype; }

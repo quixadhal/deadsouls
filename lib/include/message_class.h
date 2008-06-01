@@ -27,6 +27,7 @@
 #define MSG_I3       (1 << 18)
 #define MSG_HFTP     (1 << 19)
 #define MSG_OOB      (1 << 20)
+#define MSG_ANNOYING (1 << 21)
 
 
 /* client command types */

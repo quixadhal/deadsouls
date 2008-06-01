@@ -16,6 +16,10 @@
 #define LOG_LOCAL_CHANS 1
 #endif
 
+#ifndef CHANNEL_PIPES
+#define  CHANNEL_PIPES 0
+#endif
+
 #include <lib.h>
 #include <config.h>
 #include <pov.h>
@@ -30,12 +34,12 @@ string suspect,site,chan;
 static private mapping Channels;
 static private mapping chanlast;
 
-static private string *local_chans = ({"newbie","cre","gossip","admin","error",
-  "priest", "mage", "explorer", "thief", "fighter", "death", "connections" });
+static private string *local_chans = ({"newbie","cre","gossip","admin","error", "intermud",
+  "priest", "mage", "explorer", "thief", "fighter", "death", "connections", "muds" });
 static private string *remote_chans = ({ "Server01:ichat", "Server01:ibuild",
   "Server01:pchat", "Server02:i2chat", "Server02:i3chat", "Server02:icode",
   "Server02:igame", "Server02:inews", "Server02:irc" });
-static string *syschans = ({ "death", "connections" });
+static string *syschans = ({ "intermud", "death", "connections", "muds" });
 
 static private mapping localchans = ([
   //I3 Channels
@@ -88,6 +92,8 @@ static private mapping remotechans = ([
 ]);
 
 static private mapping tags = ([
+  "intermud"    : "%^WHITE%^",
+  "muds"        : "%^WHITE%^",
   "connections" : "%^BOLD%^WHITE%^",
   "death"       : "%^BOLD%^RED%^",
   "cre"         : "%^BOLD%^GREEN%^",
@@ -307,6 +313,36 @@ int cmdChannel(string verb, string str) {
     mixed array msg_data;
     object ob = 0;
     int i, emote, forcedemote;
+
+    if(grepp(verb,"|")){
+        string foo, bar;
+
+        if(CHANNEL_PIPES){
+            if(grepp(verb,"|morse")){
+                str = morse(str);
+                verb = replace_string(verb,"|morse","");
+            }
+
+            if(grepp(verb,"|colorize")){
+                str = dbz_colors(str);
+                verb = replace_string(verb,"|colorize","");
+            }
+
+            if(grepp(verb,"|annoy")){
+                str = dbz_colors(str,2);
+                verb = replace_string(verb,"|annoy","");
+            }
+            if(grepp(verb,"|file")){
+                if(!file_exists(str) || !(str = read_file(str))){
+                    write("Can't read that file.");
+                    return 0;
+                }
+                verb = replace_string(verb,"|file","");
+            }
+        }
+
+        if(sscanf(verb, "%s|%s", foo, bar) == 2) verb = foo;
+    }
 
     if(grepp(verb, ":")){
         verb = replace_string(verb,":","emote");
@@ -670,7 +706,6 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
             return;
         }
     }
-
     if( file_name(previous_object()) == SERVICES_D || file_name(previous_object()) == IMC2_D) {
         ch = GetLocalChannel(ch);
         if( emote && sizeof(who)) msg = replace_string(msg, "$N", who);

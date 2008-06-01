@@ -19,9 +19,39 @@ class service {
 
 private static mapping Servers  = ([]);
 private mapping        Services = ([]);
+mapping BlockedIps = ([]);
 
 int eventStartServer(string svc);
 int eventStopServer(string svc);
+
+void validate(){
+    if(!(int)master()->valid_apply(({ "SECURE", "ASSIST" }))){
+        string offender = identify(previous_object(-1));
+        debug("INET_D SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
+        log_file("security", "\n"+timestamp()+" INET_D breach: "+offender+" "+get_stack());
+        error("INET_D SECURITY VIOLATION: "+offender+" "+get_stack());
+    }
+}
+
+void eventBlockIp(string ip){
+    log_file("security", "\n"+timestamp()+" INET_D ip block: "+ip+"\n");
+    if(ip != "*.*" && member_array(ip, keys(BlockedIps)) == -1){
+        BlockedIps[ip] = time();
+        eventSave();
+    }
+}
+
+string *GetBlockedIps(){
+    return keys(BlockedIps);
+}
+
+mapping eventClearBlockedIps(){
+    validate();
+    BlockedIps = ([]);
+    log_file("security", "\n"+timestamp()+" INET_D all IP's unblocked.\n");
+    eventSave();
+    return copy(BlockedIps);
+}
 
 mapping GetServers() {
     return copy(Servers);
@@ -128,7 +158,9 @@ int eventStopServer(string svc) {
 static void create() {
     SetSaveFile(SAVE_INET);
     daemon::create();
+    if(!BlockedIps) BlockedIps = ([]);
     SetNoClean(1);
+    set_heart_beat(10);
     foreach(string svc, class service s in Services) {
         Servers[svc] = new(LIB_SERVER, query_host_port() + s->PortOffset,
           s->SocketType,  s->SocketClass);
@@ -145,4 +177,17 @@ int eventDestruct(){
     return daemon::eventDestruct();
 }
 
+void heart_beat(){
+    validate();
+    foreach(mixed key, mixed val in BlockedIps){
+        if((time() - val) > 60) map_delete(BlockedIps, key);
+    }
+}
 
+int GetServicePort(string str){
+    int ret;
+    int offset;
+    if(Services[str]) offset = Services[str]->PortOffset;
+    ret = query_host_port() + offset;
+    return ret;
+}

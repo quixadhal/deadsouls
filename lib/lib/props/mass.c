@@ -10,36 +10,36 @@
 
 int Mass = 0;
 
-int AddMass(int x) {
-    if( Mass + x > 0 ) {
+int AddMass(int x){
+    if( Mass + x > 0 ){
         x = -Mass;
     }
-    if( environment() ) {
+    if( environment() ){
         environment()->AddCarriedMass(x);
     }
     return (Mass -= x);
 }
 
-int GetMass() {
+int GetMass(){
     int load = this_object()->GetCarriedMass();
     return (Mass + load);
 }
 
-int SetMass(int x) {
-    if( x < 0 ) {
+int SetMass(int x){
+    if( x < 0 ){
         x = 0;
     }
     return (Mass = x);
 }
 
-string array GetSave() {
+string array GetSave(){
     return ({ "Mass" });
 }
 
-int GetWeight() {
+int GetWeight(){
     float h;
 
-    if( environment() ) {
+    if( environment() ){
         h = environment()->GetGravity();
     }
     else {

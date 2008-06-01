@@ -19,6 +19,7 @@ varargs int LimitTravel(int requested, int maximum, int lessthan){
 varargs static void create(int x, int y) {
     string n, s, e, w;
     string ne, nw, se, sw;
+    string fly;
 
     int max_north = 25;
     int max_south = 1;
@@ -41,11 +42,14 @@ varargs static void create(int x, int y) {
     else n = "forest/" + x + "," + (y+1);
     if( y == max_south ) s = "forest/" + x+ "," + (y);
     else s = "forest/" + x + "," + (y-1);
+    fly = "sky/" + x + "," + y + "," + 1;
 
     nw = "forest/" + LimitTravel(x - 1, max_west, 1) + "," + LimitTravel(y+1, max_north);
     ne = "forest/" + LimitTravel(x + 1, max_east) + "," + LimitTravel(y+1, max_north);
     sw = "forest/" + LimitTravel(x - 1, max_west, 1) + "," + LimitTravel(y-1, max_south, 1);
     se = "forest/" + LimitTravel(x + 1, max_east) + "," + LimitTravel(y-1, max_south, 1);
+
+    SetFlyRoom(__DIR__+fly);
 
     SetGoMessage("You can't travel in that direction.");
     if( n ) AddExit("north", __DIR__ + n);

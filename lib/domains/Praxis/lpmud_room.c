@@ -26,3 +26,6 @@ void create() {
       "Please feel free to post about a mud you know of here.\n");
 }
 
+void init(){
+    ::init();
+} 

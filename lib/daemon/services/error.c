@@ -9,7 +9,7 @@ void eventReceiveError(mixed *packet) {
     string error_code, mud, target, msg;
 
     tn("ERROR RECEIVED: "+identify(packet));
-    log_file("errors/intermud",timestamp()+" "+identify(packet)+"\n");
+    log_file("/secure/log/intermud/i3error",timestamp()+" "+identify(packet)+"\n");
     if( packet[5] ) {
         tn("exceptio probat regulam");
         target = convert_name(packet[5]);
@@ -17,12 +17,12 @@ void eventReceiveError(mixed *packet) {
     }
     mud = packet[2];
     error_code = packet[6];
-    msg = packet[7];
-    packet = packet[8];
-    tn("errorcode: "+error_code);
+    //msg = packet[7];
+    //packet = packet[8];
+    //tn("errorcode: "+error_code);
     switch(error_code) {
     case "unk-src":
-        update("/daemon/intermud");
+        //update("/daemon/intermud");
         return;
     case "unk-dst": case "not-imp": case "unk-type":
         return;

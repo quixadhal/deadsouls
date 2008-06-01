@@ -13,18 +13,18 @@ inherit LIB_MEAL;
 static private int Fight;
 static private string Food;
 
-static void create() {
+static void create(){
     meal::create();
     Food = 0;
     Fight = 0;
 }
 
-int eventCatch(object who) { return 1; }
+int eventCatch(object who){ return 1; }
 
-int SetFight(int x) { return (Fight = x); }
+int SetFight(int x){ return (Fight = x); }
 
-int GetFight() { return Fight; }
+int GetFight(){ return Fight; }
 
-string SetFood(string str) { return (Food = str); }
+string SetFood(string str){ return (Food = str); }
 
-string GetFood() { return Food; }
+string GetFood(){ return Food; }

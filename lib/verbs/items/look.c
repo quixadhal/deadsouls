@@ -8,6 +8,7 @@
  */
 
 #include <lib.h>
+#include <message_class.h>
 #include <daemons.h>
 #include "include/look.h"
 
@@ -16,7 +17,7 @@ inherit LIB_VERB;
 static void create() {
     verb::create();
     SetVerb("look");
-    SetRules("", "STR", "OBJ", "at STR", "at OBJ", "in OBJ", "inside OBJ",
+    SetRules("", "STR", "on OBJ", "OBJ", "at STR", "at OBJ", "in OBJ", "inside OBJ",
       "at OBJ:v in OBJ", "at OBJ:v inside OBJ", "at OBJ on OBJ", "at STR on OBJ");
     SetErrorMessage("Look at or in something?");
     SetHelp("Syntax: <look>\n"
@@ -62,6 +63,10 @@ mixed can_look_at_obj(string verb, string id) {
     return check_light();
 }
 
+mixed can_look_on_obj(string verb, string id) {
+    return can_look_at_obj(verb, id);
+}
+
 mixed can_look_in_obj(string verb, string id) {
     return can_look_inside_obj(verb, id);
 }
@@ -87,7 +92,7 @@ mixed do_look() {
     if(environment(this_player()) && !this_player()->GetInvis() &&  
       !environment(this_player())->GetProperty("meeting room"))
         environment(this_player())->eventPrint((string)this_player()->GetName() +
-          " looks around.", this_player());
+          " looks around.", this_player(), (MSG_ENV|MSG_ANNOYING));
     this_player()->eventDescribeEnvironment(0);
     return 1;
 }
@@ -107,6 +112,10 @@ varargs mixed do_look_at_obj(object ob, mixed arg) {
         return 1;
     }
     return ob->eventShow(this_player());
+}
+
+varargs mixed do_look_on_obj(object ob, mixed arg){
+    return do_look_at_obj(ob, arg);
 }
 
 mixed do_look_at_str(string str) {

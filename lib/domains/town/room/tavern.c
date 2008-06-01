@@ -23,7 +23,7 @@ static void create() {
     SetInventory(([
         "/domains/town/obj/btable" : 1,
         "/domains/town/obj/bbucket" :1,
-        "/domains/town/npc/lars" :1
+        "/domains/town/npc/lars" : ({ 60, 1})
       ]) );
     SetExits( ([
         "west" : "/domains/town/room/road",

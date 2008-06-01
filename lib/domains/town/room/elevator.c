@@ -18,10 +18,11 @@ static void create() {
       ]) );
     SetObviousExits("e");
     SetItems(([
+        //new("/domains/town/obj/ebutton1") : 1,
+        //new("/domains/town/obj/ebutton2") : 1,
         "elevator" : "A means of vertical indoors transportation.",
         "wall" : "The buttons are on the wall.",
         ({"elevator door","door"}) : "The door to the outside."
-
       ]) );
     AddItem(new("/domains/town/obj/ebutton2"));
     AddItem(new("/domains/town/obj/ebutton1"));
@@ -69,11 +70,13 @@ int SetFloor(int i){
     return 1;
 }
 int CanReceive(object ob) {
-    if(closed > 0 && query_verb() != "goto" &&
+#if 1
+    if(living(ob) && closed > 0 && query_verb() != "goto" &&
       query_verb() != "trans"  ){
         message("info","The elevator door is closed.", ob);
         return 0;
     }
+#endif
     return 1;
 }
 int CanRelease(object ob){

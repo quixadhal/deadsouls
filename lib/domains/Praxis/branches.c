@@ -359,3 +359,6 @@ void create() {
         "connects with the trail that is the northern extension "+
         "of Centre Path, an exit leads west from the Highway "+
         "toward a small city with a big library."]) ) ; }
+void init(){
+    ::init();
+}

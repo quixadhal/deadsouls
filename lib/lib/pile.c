@@ -13,7 +13,7 @@ inherit LIB_ITEM;
 string PileType   = 0;
 int PileAmount = 0;
 
-static void create() {
+static void create(){
     string *saveds;
     item::create();
     SetNoCondition(1);
@@ -23,21 +23,21 @@ static void create() {
     SetKeyName("pile");
 }
 
-string array GetId() {
+string array GetId(){
     string array id;
 
     id = item::GetId();
-    if( PileType ) {
+    if( PileType ){
         id += ({ PileType, PileAmount + " " + PileType, "pile of "+PileType });
     }
     return ({ id..., "money", "pile", "pile of "+ PileAmount + " " + PileType });
 }
 
-int GetMass() {
+int GetMass(){
     return currency_mass(PileAmount, PileType);
 }
 
-void SetPile(string str, int amt) {
+void SetPile(string str, int amt){
     PileType = str;
     PileAmount = amt;
     if(!PileAmount || PileAmount < 1 ){ 
@@ -48,22 +48,22 @@ void SetPile(string str, int amt) {
     parse_refresh();
 }
 
-void SetCurrency(string str, int amt) {
+void SetCurrency(string str, int amt){
     SetPile(str,  amt);
 }
 
-string GetPileType() { return PileType; }
+string GetPileType(){ return PileType; }
 
-int GetPileAmount() { return PileAmount; }
+int GetPileAmount(){ return PileAmount; }
 
-string GetShort() {
+string GetShort(){
     string str = item::GetShort();
 
     if(!PileAmount || PileAmount < 1 ){
         call_out( (: eventDestruct :), 1);
         return "a pile of money";
     }
-    if( str ) {
+    if( str ){
         return str;
     }
     else {
@@ -71,15 +71,15 @@ string GetShort() {
     }
 }
 
-mixed eventGetMoney(object who, int amount, string curr) {
-    if( who->AddCurrency(curr, amount) == -1 ) {
+mixed eventGetMoney(object who, int amount, string curr){
+    if( who->AddCurrency(curr, amount) == -1 ){
         who->eventPrint("You had a problem getting the money.");
         return 1;
     }
     send_messages("get", "$agent_name $agent_verb " + amount + " " +
       curr + " from " + GetShort() + ".", who, 0, environment(who));
     PileAmount -= amount;
-    if( PileAmount < 1 ) {
+    if( PileAmount < 1 ){
         call_out((: Destruct :), 0);
         return 1;
     }
@@ -87,11 +87,11 @@ mixed eventGetMoney(object who, int amount, string curr) {
     return 1;
 }
 
-int eventMove(mixed dest) {
+int eventMove(mixed dest){
     int x;
 
     x = item::eventMove(dest);
-    if( environment() && !living(environment()) ) {
+    if( environment() && !living(environment()) ){
         return x;
     }
 
@@ -105,31 +105,31 @@ int eventMove(mixed dest) {
     }
 }
 
-mixed direct_get_wrd_wrd_out_of_obj(string num, string curr) {
+mixed direct_get_wrd_wrd_out_of_obj(string num, string curr){
     int amt;
 
-    if( environment() != environment(this_player()) ) {
+    if( environment() != environment(this_player()) ){
         return "#You cannot reach the pile!";
     }
-    if( num[0] < '0' || num[0] > '9' ) {
+    if( num[0] < '0' || num[0] > '9' ){
         return 0;
     }
-    if( (amt = to_int(num)) < 1 ) {
+    if( (amt = to_int(num)) < 1 ){
         return "That's a totally bogus amount.";
     }
-    if( curr != PileType ) {
+    if( curr != PileType ){
         return "#The pile has no " + curr + " in it, only " + PileType + ".";
     }
-    if( amt > PileAmount ) {
+    if( amt > PileAmount ){
         return "#There is not that much in the pile.";
     }
-    if( !this_player()->CanCarry(currency_mass(amt, curr)) ) {
+    if( !this_player()->CanCarry(currency_mass(amt, curr)) ){
         return "It is too heavy for you!";
     }
     return 1;    
 }
 
-mixed direct_get_wrd_wrd_from_obj(string amt, string curr) {
+mixed direct_get_wrd_wrd_from_obj(string amt, string curr){
     return direct_get_wrd_wrd_out_of_obj(amt, curr);
 }
 

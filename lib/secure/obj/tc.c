@@ -1,5 +1,6 @@
 #include <lib.h>
 #include <network.h>
+#define DS_IP "204.209.44.3 8000"
 //#include <socket_err.h>
 inherit LIB_ITEM;
 
@@ -24,6 +25,15 @@ static void create()
     connected = 0 ;
     socket = 0 ;
     person = 0 ;
+    set_heart_beat(2);
+}
+
+void heart_beat(){
+    if(!clonep(this_object())) return;
+    if(!environment() || !living(environment()) || !environment(environment())) eventDestruct();
+    if(!connected && base_name(environment(environment())) != "/domains/default/room/telnet_room")
+        eventDestruct();
+
 }
 
 void init()
@@ -87,13 +97,22 @@ string help()
     "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n" ;
 }
 
-int do_connect(string args)
+varargs int do_connect(string args, object whom)
 {
     int new_socket, sc_result, port ;
     string error, ip_address ;
 
     if(preset) args = preset;
-    else args = "71.234.154.99 6666";
+    else args = DS_IP;
+
+    if(args != DS_IP){
+        if(!this_player()) return 1;
+        if(!telnet_privp(this_player())){
+            this_player()->eventPrint("You aren't a member of the group of users permitted "
+              "to use this mud's telnet facility.");
+            return 1;
+        }
+    }
 
     if( !args || args == "" )
     {
@@ -156,7 +175,8 @@ int do_connect(string args)
     attempting = 1 ;
     socket = new_socket ;
     person = (object)previous_object() ;
-    player=this_player();
+    if(!whom) player=this_player();
+    else player = whom;
     input_to( "parse_comm", 0 ) ;
     return 1 ;
 }
@@ -193,7 +213,7 @@ int parse_comm( string str )
 {
     if(str=="dcon" || str=="quit")
     {
-        write("You return from Dead Souls!\n");
+        write("You return from your visit to another mud!\n");
         socket_close( socket ) ;
         attempting = 0 ;
         connected = 0 ;

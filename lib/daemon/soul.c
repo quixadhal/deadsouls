@@ -27,7 +27,15 @@ class rule {
 private mapping Emotes = ([]);
 private string array Adverbs = ({});
 
+static private void validate() {
+    if(!this_player()) return 0;
+    if( !((int)master()->valid_apply(({ "ASSIST" }))) && 
+      !member_group(this_player(), "EMOTES") )
+        error("Illegal attempt to access SOUL_D: "+get_stack()+" "+identify(previous_object(-1)));
+}
+
 varargs int AddAdverbs(string array advs...) {
+    validate();
     Adverbs = distinct_array(Adverbs + advs);
     eventSave();
     return 1;
@@ -37,6 +45,7 @@ varargs int AddRule(string verb, string rle, mixed array msg,
   string array advs) {
     class emote e = Emotes[verb];
     class rule r;
+    validate();
 
     if( !e ) {
         return 0;
@@ -54,6 +63,7 @@ varargs int AddRule(string verb, string rle, mixed array msg,
 
 int AddVerb(string verb, string err) {
     class emote e;
+    validate();
 
     if( Emotes[verb] ) {
         return 0;
@@ -70,10 +80,8 @@ int AddVerb(string verb, string err) {
 
 int RemoveRule(string emt, string rle) {
     class emote e = Emotes[emt];
+    validate();
 
-    if( !master()->valid_apply(({ PRIV_ASSIST })) ) {
-        return 0;
-    }
     if( !e ) {
         return 0;
     }
@@ -83,9 +91,7 @@ int RemoveRule(string emt, string rle) {
 }
 
 int RemoveVerb(string verb) {
-    if( !master()->valid_apply(({ PRIV_ASSIST })) ) {
-        return 0;
-    }
+    validate();
     map_delete(Emotes, verb);
     eventSave();
     return 1;
@@ -261,6 +267,7 @@ string GetHelp(string arg) {
 
 void SetErrorMessage(string verb, string msg) {
     class emote e = Emotes[verb];
+    validate();
 
     if( !e ) {
         AddVerb(verb, msg);
@@ -301,7 +308,8 @@ mapping GetRules(string emote) {
     foreach(string rle, class rule r in e->Rules) {
         m[rle] = ({ r->Adverbs, r->Message });
     }
-    if( !master()->valid_apply(({ PRIV_ASSIST })) ) {
+    if( !master()->valid_apply(({ PRIV_ASSIST }))  
+      || (this_player() && !member_group(this_player(), "EMOTES"))){
         return copy(m);
     }
     return m;

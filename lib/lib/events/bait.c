@@ -12,36 +12,36 @@ private int Bait = 0;
 string GetDefiniteShort();
 // end abstract methods
 
-int AddBait(int x) {
+int AddBait(int x){
     return (Bait += x);
 }
 
-int GetBait() {
+int GetBait(){
     return Bait;
 }
 
-int SetBait(int x) {
+int SetBait(int x){
     return (Bait = x);
 }
 
-string array GetSave() {
+string array GetSave(){
     return ({ "Bait" });
 }
 
-mixed CanBait(object who) {
-    if( GetBait() ) {
+mixed CanBait(object who){
+    if( GetBait() ){
         return "There is already bait on " + GetDefiniteShort() + ".";
     }
     return 1;
 }
 
-int eventBait(object who, object bait) {
+int eventBait(object who, object bait){
     AddBait(bait->GetBaitStrength());
     return 1;
 }
 
-mixed direct_bait_obj_with_obj() { 
-    if( environment() != this_player() ) {
+mixed direct_bait_obj_with_obj(){ 
+    if( environment() != this_player() ){
         return "#You don't have that!";
     }
     return CanBait(this_player());

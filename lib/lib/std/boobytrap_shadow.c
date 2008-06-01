@@ -71,14 +71,14 @@ varargs mixed eventDisarm(mixed args...){
     return 1;
 }
 
-varargs mixed CanOpen(object who, object tool) {
+varargs mixed CanOpen(object who, object tool){
     object ob = GetShadowedObject();
     if(!ob) return 0;
     if(ob->GetDoor()) ob = ob->GetDoor();
     return ob->CanOpen(who, tool);
 }
 
-varargs mixed eventOpen(object who, object tool) {
+varargs mixed eventOpen(object who, object tool){
     object ob = GetShadowedObject();
     mixed ret;
     if(!ob) return 0;
@@ -115,19 +115,19 @@ mixed direct_get_obj_out_of_obj(object target, object src){
     return ob->direct_get_obj_out_of_obj(target, src);
 }
 
-mixed direct_get_obj_from_obj(object target, object src) {
+mixed direct_get_obj_from_obj(object target, object src){
     object ob = GetShadowedObject();
     if(!ob) return 0;
     return  ob->direct_get_obj_out_of_obj(target, src);
 }
 
-mixed direct_get_obj_obj(object target, object src) {
+mixed direct_get_obj_obj(object target, object src){
     object ob = GetShadowedObject();
     if(!ob) return 0;
     return  ob->direct_get_obj_out_of_obj(target, src);
 }
 
-mixed GetPreventGet() {
+mixed GetPreventGet(){
     object ob = GetShadowedObject();
     if(!ob) return 0;
     return ob->GetPreventGet();
@@ -154,13 +154,13 @@ mixed direct_drop_obj(object target){
     return ob->direct_drop_obj(target);
 }
 
-int GetDestructOnDrop() {
+int GetDestructOnDrop(){
     object ob = GetShadowedObject();
     if(!ob) return 0;
     return ob->GetDestructOnDrop();
 }
 
-mixed GetPreventDrop() {
+mixed GetPreventDrop(){
     object ob = GetShadowedObject();
     if(!ob) return 0;
     return ob->GetPreventDrop();
@@ -242,14 +242,14 @@ varargs mixed eventPick(object who, string str, object tool){
 }
 
 mixed direct_pick_str_on_obj(string str, object target, string str2,
-  string id) {
+  string id){
     object ob = GetShadowedObject();
     if(!ob) return 0;
     return ob->direct_pick_str_on_obj(str,target,str2,id);
 }
 
 mixed direct_pick_str_on_obj_with_obj(string str, object target, object tool,
-  string str2, string targ_id) {
+  string str2, string targ_id){
     object ob = GetShadowedObject();
     if(!ob) return 0;
     return ob->direct_pick_str_on_obj_with_obj(str,target,tool,str2,targ_id);
@@ -267,7 +267,7 @@ string GetKeyName(){
     return ob->GetKeyName();
 }
 
-mixed eventEquip(object who, string array limbs) {
+mixed eventEquip(object who, string array limbs){
     object ob = GetShadowedObject();
     mixed ret;
     if(!ob) return 0;
@@ -279,7 +279,7 @@ mixed eventEquip(object who, string array limbs) {
     return ret;
 }
 
-mixed eventUnequip(object who) {
+mixed eventUnequip(object who){
     object ob = GetShadowedObject();
     mixed ret;
     if(!ob) return 0;

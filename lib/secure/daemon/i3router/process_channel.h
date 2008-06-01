@@ -18,7 +18,7 @@ static void process_channel(mixed fd, mixed *info){
         // Check if string parts are strings...
         if(info[0][8..]=="t"){
             if(sizeof(info)!=13 || !stringp(info[9]) || !stringp(info[10]) ||
-              !stringp(info[11]) || !stringp(info[12])){
+              !stringp(info[11]) || !stringp(info[12]) ||!sizeof(info[11])){
                 send_error(info[2],info[3],"bad-pkt","Bad packet format.",info);
                 return;
             }
@@ -34,9 +34,12 @@ static void process_channel(mixed fd, mixed *info){
             sendermsg = info[9];
         }
         else{ // m, e
-            if(sizeof(info)!=9){
+            if(sizeof(info)!=9 || !stringp(info[3]) || !sizeof(info[3])){
                 send_error(info[2],info[3],"bad-pkt","Bad packet format.",info);
                 return;
+            }
+            if(!stringp(info[7]) || !sizeof(info[7])){
+                info[7] = info[3];
             }
             if(info[0] == "channel-e" && !grepp(info[8],"$N"))
                 info[8] = info[8] + " (from "+info[7]+"@"+info[2]+")";
@@ -112,6 +115,14 @@ static void process_channel(mixed fd, mixed *info){
 
         server_log(sendername+"("+senderrealname+")@"+sendermud+" "+": "+
           sendermsg+" "+targstr+"\n",info[6]);
+
+        if(member_array(info[2],channels[info[6]][2])!=-1){
+            // in list, you're banned...
+            send_error(info[2],0,"not-allowed",
+              "Banned from "+info[6],info);
+            //save_object(SAVE_ROUTER);
+            return;
+        }
 
         if(intp(fd)) this_object()->SendMessage(info);
 
@@ -242,8 +253,7 @@ case "admin":
     }
     //trr("Channel data for "+info[6]+": "+identify(channels[info[6]]), "white");
     SendList( ([ "channels" : ([ info[6] : channels[info[6]] ]),
-      "listening" : ([ info[6] : listening[info[6]] ]) ]),
-0, "chanlist" );
+      "listening" : ([ info[6] : listening[info[6]] ]) ]), 0, "chanlist" );
 save_object(SAVE_ROUTER);
 return;
 case "listen": // mudname=info[2], channame=info[6], on_or_off=info[7]
@@ -270,7 +280,7 @@ case 0: // selectively banned
         // in list, you're banned...
         send_error(info[2],0,"not-allowed",
           "Banned from "+info[6],info);
-        save_object(SAVE_ROUTER);
+        //save_object(SAVE_ROUTER);
         return;
     }
     // not in ban list at this point

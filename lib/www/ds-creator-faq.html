@@ -302,7 +302,16 @@ but the vendor gave an error.</a><br>
 error.</a></big><br>
 <br>
 <a href="#2.75"><big style="font-family: courier new;">2.75 Please
-explain ( foo ? bar : baz )</big></a><big
+explain ( foo ? bar : baz )</big></a><br>
+<br>
+<a href="#2.76"><big style="font-family: courier new;">2.76 Where are
+things like Town and race and starting money set for new players?</big></a><br>
+<br>
+<a href="#2.77"><big style="font-family: courier new;">2.77 How do I
+make my NPC respawn sooner than the reset interval?</big></a><br>
+<br>
+<a href="#2.78"><big style="font-family: courier new;">2.78 My
+TalkResponse NPC doesn't work, but it really really should!</big></a><big
  style="font-family: courier new;"><br>
 <br>
 </big><big style="font-family: courier new;"><br>
@@ -2607,8 +2616,7 @@ set by default in /lib/races.c <br>
 <br>
 Dead Souls alpha libs have the following additional racial options:<br>
 </big>
-<small> </small><small> </small><small> </small><small> </small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small>
-</small><small></small><small></small><small></small><small></small><small></small>
+<small> </small><small> </small><small> </small><small> </small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small>
 <table style="width: 100%; text-align: left; font-family: courier new;"
  border="1" cellpadding="2" cellspacing="2">
   <tbody>
@@ -3343,16 +3351,14 @@ key rules to keep in mind when <br>
 doing this:<br>
 </big>
 <ol style="font-family: courier new;">
-  <small> </small><big> </big>
-  <li><big>Always inherit LIB_BASE_DUMMY first.</big></li>
-  <small> </small><big> </big>
-  <li><big>Always invoke dummy::create()
+  <small> </small><big> </big> <li><big>Always inherit
+LIB_BASE_DUMMY first.</big></li>
+  <small> </small><big> </big> <li><big>Always invoke
+dummy::create()
 before other ::creates()'s.</big></li>
-  <small> </small><big> </big>
-  <li><big>Make sure you have CanGet()
+  <small> </small><big> </big> <li><big>Make sure you have CanGet()
 return an error string.</big></li>
-  <small> </small><big> </big>
-  <li><big>Make sure the item is
+  <small> </small><big> </big> <li><big>Make sure the item is
 SetInvis(1).</big></li>
 </ol>
 <ol style="font-family: courier new;">
@@ -3892,8 +3898,60 @@ write("Pat folds a " + ( (pat-&gt;GetGender() == "female") ? "blouse."
 For the purposes of the test, the integer 0 counts as "not true" while<br>
 a non-zero integer counts as "true". A defined variable of a non-integer<br>
 type will tend to count as "true".<br>
+<br>
+This type of statement is sometimes referred to as a "ternary
+conditional".</big><big style="font-family: courier new;"><br>
+<br>
+<br>
+<a name="2.76"></a><span
+ style="font-weight: bold; text-decoration: underline;">Where are
+things like Town and race and starting money set for new players?</span><br>
+<br>
+The place to start looking is /secure/lib/connect.c<br>
+Then review /lib/player.c for the "enter the game" and setup<br>
+functions called by connect.c<br>
+<br>
 </big><big style="font-family: courier new;"><br>
-</big><big style="font-family: courier new;"><br>
+<a name="2.77"></a><span
+ style="font-weight: bold; text-decoration: underline;">How do I make
+my NPC respawn sooner than the reset interval?</span><br>
+<br>
+To make a room check its inventory every 60 seconds and clone<br>
+Lars if he's missing from that room:<br>
+<br>
+&nbsp;&nbsp;&nbsp; SetInventory(([<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "/domains/town/npc/lars" :
+({ 60, 1})<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]) );<br>
+<br>
+You can use this to restock containers as well. For an example<br>
+of an automatically restocking weapons rack, see
+/domains/default/obj/rack.c<br>
+in Dead Souls 2.7a27 and above. <br>
+</big><br>
+<big style="font-family: courier new;">Note that if you use this method
+for wandering monsters, your mud may<br>
+soon be swamped with them, because the room only checks whether<br>
+the object is in the <span style="font-weight: bold;">room</span>, not
+whether it is in the <span style="font-weight: bold;">mud</span>.<br>
+<br>
+<br>
+</big><big style="font-family: courier new;"><a name="2.78"></a><span
+ style="font-weight: bold; text-decoration: underline;">My TalkResponse
+NPC doesn't work, but it really really should!</span><br>
+<br>
+This is most often caused by the NPC not understanding the language<br>
+that the player speaks. If the NPC's level is above MAX_NEWBIE_LEVEL,<br>
+he only understands the languages his race gives him. Therefore<br>
+your 10th level elf soothsayer hears your human's request for<br>
+a prophecy just fine...he just doesn't understand Common or English,<br>
+so he doesn't know what the human is actually saying.<br>
+<br>
+To make an NPC understand all languages, add this to his create() apply:<br>
+<br>
+SetPolyglot(1);<br>
+<br>
+<br>
 </big>
 <hr style="width: 100%; height: 2px; font-family: courier new;"><big
  style="font-family: courier new;">Section 3: Intermud and channel stuff<br>

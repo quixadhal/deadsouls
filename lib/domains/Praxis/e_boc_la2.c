@@ -31,4 +31,6 @@ void create() {
         "hall" : "The hall is where all the adventurer's of Praxis gather to "
         "chat."]) );
 }
-
+void init(){
+    ::init();
+}

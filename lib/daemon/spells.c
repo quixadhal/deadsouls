@@ -46,3 +46,7 @@ object GetSpell(string spell) {
     }
     return Spells[spell];
 }
+
+mapping GetSpells(){
+    return (Spells + ([]));
+}

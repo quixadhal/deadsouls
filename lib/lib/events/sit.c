@@ -11,19 +11,19 @@
 private int          MaxSitters = 1;
 private object array Sitters    = ({});
 
-int GetMaxSitters() {
+int GetMaxSitters(){
     return MaxSitters;
 }
 
-static int SetMaxSitters(int x) {
+static int SetMaxSitters(int x){
     return (MaxSitters = x);
 }
 
-object array GetSitters() {
+object array GetSitters(){
     return copy(Sitters);
 }
 
-mixed eventReceiveSit(object who) {
+mixed eventReceiveSit(object who){
     if(who->GetProperty("furniture")){
         write("You are already using a piece of furniture.");
         return 1;
@@ -34,7 +34,7 @@ mixed eventReceiveSit(object who) {
     return 1;
 }
 
-mixed eventReleaseStand(object who) {
+mixed eventReleaseStand(object who){
     Sitters -= ({ who });
     Sitters = filter(Sitters, (: objectp($1) :) );
     if(who) who->RemoveProperty("furniture");
@@ -42,18 +42,18 @@ mixed eventReleaseStand(object who) {
     return 1;
 }
 
-mixed direct_sit_word_obj() {
+mixed direct_sit_word_obj(){
     Sitters = filter(Sitters, (: $1 && $1->GetPosition()==POSITION_SITTING :));
-    if( sizeof(Sitters) >= MaxSitters ) {
+    if( sizeof(Sitters) >= MaxSitters ){
         return "There is no room to sit there.";
     }
-    if(environment() != environment(this_player())) {
+    if(environment() != environment(this_player())){
         return "That's not available for sitting right now.";
     }
     return 1;
 }
 
-mixed direct_sit_down_word_obj() {
+mixed direct_sit_down_word_obj(){
     return direct_sit_word_obj();
 }
 

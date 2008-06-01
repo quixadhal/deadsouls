@@ -15,36 +15,36 @@ static private mapping Listens = ([]);
 string GetShort();
 // end abstract methods
 
-varargs string GetListen(string str, object who) {
+varargs string GetListen(string str, object who){
     mixed val;
 
-    if( !str || str == "default" ) {
+    if( !str || str == "default" ){
         val = Listen;
     }
     else {
         val = Listens[str];
     }
-    if( !val ) {
+    if( !val ){
         return 0;
     }
-    if( functionp(val) ) {
-        if( functionp(val) & FP_OWNER_DESTED ) {
+    if( functionp(val) ){
+        if( functionp(val) & FP_OWNER_DESTED ){
             return "An error occured in a function pointer.";
         }
         return evaluate(val, who, str);
     }
-    else if( arrayp(val) ) {
+    else if( arrayp(val) ){
         return val[query_night()];
     }
     else return val;
 }
 
-string array GetListens() {
+string array GetListens(){
     return keys(Listens);
 }
 
-mapping RemoveListen(string item) {
-    if( !item || item == "default" ) {
+mapping RemoveListen(string item){
+    if( !item || item == "default" ){
         Listen = 0;
     }
     else {
@@ -53,10 +53,10 @@ mapping RemoveListen(string item) {
     return Listens;
 }
 
-varargs mixed SetListen(mixed array args...) {
-    if( sizeof(args) == 1 ) {
-        if( mapp(args[0]) ) {
-            if( args[0]["default"] ) {
+varargs mixed SetListen(mixed array args...){
+    if( sizeof(args) == 1 ){
+        if( mapp(args[0]) ){
+            if( args[0]["default"] ){
                 Listen = args[0]["default"];
                 map_delete(args[0], "default");
             }
@@ -67,18 +67,18 @@ varargs mixed SetListen(mixed array args...) {
         }
         return args[0];
     }
-    else if( sizeof(args) == 2 ) {
-        if( !args[1] ) {
+    else if( sizeof(args) == 2 ){
+        if( !args[1] ){
             return SetListen(args[0]);
         }
-        else if( arrayp(args[0]) ) {
-            foreach(string item in args[0]) {
+        else if( arrayp(args[0]) ){
+            foreach(string item in args[0]){
                 SetListen(item, args[1]);
             }
             return args[1];
         }
         else {
-            if( !args[0] || args[0] == "default" ) {
+            if( !args[0] || args[0] == "default" ){
                 Listen = args[1];
                 return Listen;
             }
@@ -94,9 +94,9 @@ varargs mixed SetListen(mixed array args...) {
     }
 }
 
-varargs mixed eventListen(object who, string str) {
+varargs mixed eventListen(object who, string str){
     str = GetListen(str, who);
-    if( !str ) {
+    if( !str ){
         who->eventPrint("You hear nothing unusual.");
         return 1;
     }
@@ -106,8 +106,8 @@ varargs mixed eventListen(object who, string str) {
     return 1;
 }
 
-mixed direct_listen_obj() {
-    if( !Listen ) {
+mixed direct_listen_obj(){
+    if( !Listen ){
         return "You hear nothing unusual.";
     }
     else {
@@ -115,13 +115,13 @@ mixed direct_listen_obj() {
     }
 }
 
-mixed direct_listen_to_obj() {
+mixed direct_listen_to_obj(){
     return direct_listen_obj();
 }
 
-mixed direct_listen_to_str_word_obj(string str) {
+mixed direct_listen_to_str_word_obj(string str){
     str = remove_article(lower_case(str));
-    if( !Listens[str] ) {
+    if( !Listens[str] ){
         return "You hear nothing special.";
     }
     else {
@@ -131,8 +131,8 @@ mixed direct_listen_to_str_word_obj(string str) {
 
 mapping GetListenMap(){
     mapping Listens = ([]);
-    foreach(object ob in this_object()->GetDummyItems()) {
-        if( ob->GetListen() ) {
+    foreach(object ob in this_object()->GetDummyItems()){
+        if( ob->GetListen() ){
             Listens[ob->GetId()] = ob->GetListen();
         }
     }

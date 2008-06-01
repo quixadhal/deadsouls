@@ -15,7 +15,7 @@
 private static string Obvious, GoMessage, EnterMessage, Dir, Sky;
 private static mapping Exits, Doors;
 
-static void create() {
+static void create(){
     Exits = ([]);
     Doors = ([]);
     Obvious = "";
@@ -24,34 +24,43 @@ static void create() {
     EnterMessage = "You can't enter that!\n";
 }
 
-mixed CanGo(object who, string str) {
+mixed CanGo(object who, string str){
     if( (int)who->GetParalyzed() ) return "You are unable to move.";
-    if( !Exits[str] ) return GoMessage;
+    if( !Exits[str] && str != "up" && str != "down" &&
+      !(sizeof(this_object()->GetFlyRoom())) &&
+      !(sizeof(this_object()->GetSinkRoom())) ) return GoMessage;
     else return 1;
 }
 
-mixed eventGo(object who, string str) {
+mixed eventGo(object who, string str){
     if(query_verb() == "go" && interactive(this_player())){	
-        if( who->GetPosition() != POSITION_STANDING && 
-          who->GetPosition() != POSITION_FLYING) {
-            if(stringp(hobbled(this_player()))) who->eventStand();
-            if( who->GetPosition() != POSITION_STANDING ) {
-                return 0;
-            }
+        if( who->GetPosition() != POSITION_STANDING ){  
+            write("You are not standing.");
+            return 0;
         }
     }
-    else if(query_verb() == "crawl") {
+    else if(query_verb() == "crawl"){
         if( who->GetPosition() != POSITION_LYING &&
-          who->GetPosition() != POSITION_SITTING ) {
+          who->GetPosition() != POSITION_KNEELING &&
+          who->GetPosition() != POSITION_SITTING ){
+            write("You are not in the correct position for crawling.");
             return 0;
         }
     }
-    else if(query_verb() == "fly") {
-        if( who->GetPosition() != POSITION_FLYING )
+    else if(query_verb() == "fly"){
+        if( who->GetPosition() != POSITION_FLYING ){
+            write("You are not flying.");
             return 0;
+        }
+    }
+    else if(query_verb() == "swim"){
+        if( who->GetPosition() != POSITION_SWIMMING ){
+            write("You are not swimming.");
+            return 0;
+        }
     }
 
-    if( sizeof(Doors) && Doors[str] && (int)Doors[str]->GetClosed() ) {
+    if( sizeof(Doors) && Doors[str] && (int)Doors[str]->GetClosed() ){
         message("my_action", "You bump into " + 
           (string)Doors[str]->GetShort(str) + ".", who);
         return 1;
@@ -60,27 +69,42 @@ mixed eventGo(object who, string str) {
       !((int)evaluate(Exits[str]["pre"], str)) )
         return 1;
     if(!Exits[str]){
+        if( str == "up" && sizeof(this_object()->GetFlyRoom())){
+            if(who->GetPosition() == POSITION_FLYING){
+                string omsg = who->GetName()+" flies up.";
+                string imsg = who->GetName()+" flies in.";
+                who->eventMoveLiving(this_object()->GetFlyRoom(),omsg,imsg,str);
+                return 1;
+            }
+        }
+
+        if(str == "down" && sizeof(this_object()->GetSinkRoom())){
+            string omsg = who->GetName()+" sinks down.";
+            string imsg = who->GetName()+" sinks in.";
+            who->eventMoveLiving(this_object()->GetSinkRoom(),omsg,imsg,str);
+            return 1;
+        }
         write("You can't go that way.");
         return 0;
     }
-    who->eventMoveLiving(Exits[str]["room"], str);
+    who->eventMoveLiving(Exits[str]["room"],0,0,str);
     if( Exits[str]["post"] ) evaluate(Exits[str]["post"], str);
     return 1;
 }
 
-mixed GetDoor(string dir) {
+mixed GetDoor(string dir){
     if(sizeof(Doors)) return Doors[dir];
     else return 0;
 }
 
-string array GetDoors() {
+string array GetDoors(){
     return keys(Doors);
 }
 
-string SetDoor(string dir, string file) {
+string SetDoor(string dir, string file){
     object ob = GetDummyItem(dir);
 
-    if( ob ) {
+    if( ob ){
         ob->SetDoor(file);
     }
 
@@ -96,7 +120,7 @@ varargs string CreateDoor(string dir, string odir, string long, string locked, s
     string doorfile = file_name(new_door);
     object ob = GetDummyItem(dir);
     if(!locked) locked = "";
-    if( ob ) {
+    if( ob ){
         ob->SetDoor(doorfile);
     }
     new_door->SetSide(dir, ([ "id" : ({"door", dir+" door", long}), "short" : "a door leading "+dir, "long" : long, "lockable" : 1 ]));
@@ -107,37 +131,37 @@ varargs string CreateDoor(string dir, string odir, string long, string locked, s
     return (Doors[dir] = doorfile);
 }
 
-string GetDirection(string dest) {
-    foreach(string dir, mapping data in Exits) {
-        if( data["room"] == dest ) {
+string GetDirection(string dest){
+    foreach(string dir, mapping data in Exits){
+        if( data["room"] == dest ){
             return "go " + dir;
         }
     }
-    foreach(string dir in GetEnters()) {
+    foreach(string dir in GetEnters()){
         string data = GetEnter(dir);
 
-        if(data && data  == dest ) {
+        if(data && data  == dest ){
             return "enter " + dir;
         }
     }
     return 0;
 }
 
-object GetDummyItem(mixed id) {
+object GetDummyItem(mixed id){
     int i;
     object array dummies,all_inv;
 
     all_inv=all_inventory();
     dummies = ({});
 
-    for(i=0; i<sizeof(all_inv); i++) {
+    for(i=0; i<sizeof(all_inv); i++){
         if ( (mixed)all_inv[i]->isDummy() )  dummies += ({ all_inv[i] });
     }
-    if( stringp(id) ) {
+    if( stringp(id) ){
         id = ({ id });
     }
     if(arrayp(id)){
-        foreach(object dummy in dummies) {
+        foreach(object dummy in dummies){
             foreach(string element in id){
                 if(answers_to(element,dummy)) return dummy;
             }
@@ -146,16 +170,16 @@ object GetDummyItem(mixed id) {
     return 0;
 }
 
-varargs void AddEnter(string dir, string dest, function pre, function post) {
+varargs void AddEnter(string dir, string dest, function pre, function post){
     object ob = GetDummyItem(dir);
 
     ob->SetEnter(dest, pre, post);
 }
 
-string GetEnter(string dir) {
+string GetEnter(string dir){
     object ob = GetDummyItem(dir);
 
-    if( !ob ) {
+    if( !ob ){
         return 0;
     }
     else {
@@ -163,10 +187,10 @@ string GetEnter(string dir) {
     }
 }
 
-static mapping GetEnterData(string dir) {
+static mapping GetEnterData(string dir){
     object ob = GetDummyItem(dir);
 
-    if( !ob ) {
+    if( !ob ){
         return 0;
     }
     else {
@@ -174,7 +198,7 @@ static mapping GetEnterData(string dir) {
     }
 }
 
-varargs string array GetEnters(int i) {
+varargs string array GetEnters(int i){
     object *obs;
     string *ids;
 
@@ -187,9 +211,9 @@ varargs string array GetEnters(int i) {
         }
     }
 
-    foreach(object ob in obs) {
-        if( ob->GetEnter() ) {
-            if(i) ids += ({ ob->GetId()[0] });
+    foreach(object ob in obs){
+        if( ob->GetEnter() ){
+            if(i) ids += ({ ob->GetKeyName() });
             else ids += ob->GetId();
         }
     }
@@ -206,8 +230,8 @@ mapping GetEnterMap(){
         }
     }
     if(!sizeof(obs)) return ([]);
-    foreach(object ob in obs) {
-        if( ob->GetEnter() ) {
+    foreach(object ob in obs){
+        if( ob->GetEnter() ){
             schlussel = ob->GetId();
             EnterMap[schlussel] = ob->GetEnter();
         }
@@ -215,17 +239,17 @@ mapping GetEnterMap(){
     return copy(EnterMap);
 }
 
-void RemoveEnter(string dir) {
+void RemoveEnter(string dir){
     object ob = GetDummyItem(dir);
 
     ob->SetEnter(0);
 }
 
-void SetEnters(mapping mp) {
-    foreach(mixed dir, mixed room_or_arr in mp) {
+void SetEnters(mapping mp){
+    foreach(mixed dir, mixed room_or_arr in mp){
         object ob = GetDummyItem(dir);
 
-        if( arrayp(room_or_arr) ) {
+        if( arrayp(room_or_arr) ){
             ob->SetEnter(room_or_arr...);
         }
         else {
@@ -234,15 +258,15 @@ void SetEnters(mapping mp) {
     }
 }
 
-string GetEnterMessage() {
+string GetEnterMessage(){
     return EnterMessage[0..<2];
 }
 
-string SetEnterMessage(string str) {
+string SetEnterMessage(string str){
     return (EnterMessage = str + "\n");
 }
 
-varargs mapping AddExit(string dir, string dest, function pre, function post) {
+varargs mapping AddExit(string dir, string dest, function pre, function post){
     if(!stringp(dir)) error("Bad argument 1 to AddExit().\n");
     if(!stringp(dest)) error("Bad argument 2 to AddExit().\n");
     dest = ResolveObjectName(dest);
@@ -252,20 +276,20 @@ varargs mapping AddExit(string dir, string dest, function pre, function post) {
     return Exits[dir];
 }
 
-string GetExit(string str) {
+string GetExit(string str){
     if(!Exits[str]) return 0;
     else return Exits[str]["room"];
 }
 
-mapping GetExitData(string str) {
+mapping GetExitData(string str){
     return Exits[str];
 }
 
-mapping GetFullExitData() {
+mapping GetFullExitData(){
     return Exits;
 }
 
-mapping GetExitMap() {
+mapping GetExitMap(){
     mapping ret = ([]);
     foreach(string key in keys(Exits)){
         ret[key] = Exits[key]["room"];
@@ -274,23 +298,23 @@ mapping GetExitMap() {
     return ret;
 }
 
-string array GetExits() {
+string array GetExits(){
     return keys(Exits);
 }
 
-mapping RemoveExit(string dir) {
+mapping RemoveExit(string dir){
     if(Exits[dir]) map_delete(Exits, dir);
 }
 
-mapping SetExits(mapping mp) {
+mapping SetExits(mapping mp){
     mixed room_or_arr, dir;
 
     Exits = ([]);
-    foreach(dir, room_or_arr in mp) {
-        if( arrayp(dir) ) {
+    foreach(dir, room_or_arr in mp){
+        if( arrayp(dir) ){
             string real_dir;
 
-            foreach(real_dir in dir) {
+            foreach(real_dir in dir){
                 if( arrayp(room_or_arr) ) AddExit(real_dir, room_or_arr...);
                 else AddExit(real_dir, room_or_arr);
             }
@@ -303,31 +327,31 @@ mapping SetExits(mapping mp) {
     return Exits;
 }
 
-string GetGoMessage() {
+string GetGoMessage(){
     return GoMessage[0..<2];
 }
 
-string SetGoMessage(string str) {
+string SetGoMessage(string str){
     return (GoMessage = str + "\n");
 }
 
-string GetObviousExits() {
+string GetObviousExits(){
     return Obvious;
 }
 
-string SetObviousExits(string str) {
+string SetObviousExits(string str){
     return (Obvious = str);
 }
 
-string GetSky() {
+string GetSky(){
     return Sky;
 }
 
-string SetSky(string str) {
+string SetSky(string str){
     return (Sky = str);
 }
 
-string ResolveObjectName(string file) {
+string ResolveObjectName(string file){
     if( file[<2..] == ".c" ) file = file[0..<3];
     return absolute_path(Dir, file);
 }

@@ -34,4 +34,6 @@ string go_away() {
     "If your idea is taken, and you did not post it, you have only yourself to blame.";
     return str;
 }
-
+void init(){
+    ::init();
+}

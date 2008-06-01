@@ -5,7 +5,7 @@ private class ClanClass Clan;
 
 private int isWelcomed;
 
-static void create() {
+static void create(){
     Clan = new(class ClanClass);
     Clan->leader = 0;
     Clan->name = 0;
@@ -14,31 +14,31 @@ static void create() {
     isWelcomed = 0;
 }
 
-static void init() {
+static void init(){
     if(!present(this_object(), this_player())) return;
     if((string)this_player()->GetClan() != (string)GetClanName()) return;
-    if((string)this_player()->GetKeyName() == (string)GetLeader()) {
+    if((string)this_player()->GetKeyName() == (string)GetLeader()){
         add_action("eventBring", "bring");
         add_action("eventInitiate", "initiate");
         add_action("eventRetire", "retire");
     }
     this_player()->eventPrint("\n");
-    if(!isWelcomed) {
+    if(!isWelcomed){
         this_player()->AddChannel(GetClanName());
         eventWelcome(this_player());
         isWelcomed = 1;
     }
 }
 
-mixed CanJoin(object ob) { return 1; }
+mixed CanJoin(object ob){ return 1; }
 
-string GetAffectLong(object ob) {
+string GetAffectLong(object ob){
     if(!ob || !living(ob)) return 0;
     return ob->GetName() + " is a member of the "
     + pluralize(GetClanName()) + ".";
 }
 
-string SetLeader(string str) {
+string SetLeader(string str){
     if(!user_exists(str)) error("No such user: " + str
           + ". You must have a real leader.");
     if(!stringp(Clan->leader)) 
@@ -46,30 +46,30 @@ string SetLeader(string str) {
     return Clan->leader;
 }
 
-string GetLeader() { return Clan->leader; }
+string GetLeader(){ return Clan->leader; }
 
-string SetClanName(string str) {
+string SetClanName(string str){
     if(!stringp(Clan->name)) Clan->name = str;
     return Clan->name;
 }
 
-string GetClanName() { return Clan->name; }
+string GetClanName(){ return Clan->name; }
 
-string SetClanObject(string str) {
+string SetClanObject(string str){
     if(!stringp(Clan->objectName)) Clan->objectName = str;
     return Clan->objectName;
 }
 
-string GetClanObject() { return Clan->objectName; }
+string GetClanObject(){ return Clan->objectName; }
 
-string SetClanSkill(string str) {
+string SetClanSkill(string str){
     if(!stringp(Clan->skill)) Clan->skill = str;
     return Clan->skill;
 }
 
-string GetClanSkill() { return Clan->skill; }
+string GetClanSkill(){ return Clan->skill; }
 
-int eventBring(string str) {
+int eventBring(string str){
     object who;
 
     if(!str) return notify_fail("Bring whom?\n");
@@ -95,7 +95,7 @@ int eventBring(string str) {
     return 1;
 }
 
-int eventInitiate(string str) {
+int eventInitiate(string str){
     object initiate;
     object clanObject;
     mixed ret;
@@ -120,7 +120,7 @@ int eventInitiate(string str) {
     return 1;
 }
 
-void eventJoin(object ob) {
+void eventJoin(object ob){
     ob->eventPrint("%^YELLOW%^You are now a member of the "
       + pluralize((string)GetClanName()) + ".%^RESET%^");
     environment(ob)->eventPrint("%^YELLOW%^" +(string)ob->GetName()
@@ -128,7 +128,7 @@ void eventJoin(object ob) {
       + pluralize((string)GetClanName()) + ".%^RESET%^", ob);
 }
 
-int eventRetire(string str) {
+int eventRetire(string str){
     object retiree;
     object clanObject;
 
@@ -147,7 +147,7 @@ int eventRetire(string str) {
     return 1;
 }
 
-void eventUnjoin(object ob) {
+void eventUnjoin(object ob){
     ob->eventPrint("%^RED%^You are no longer a member of the "
       + pluralize((string)GetClanName()) + ".%^RESET%^");
     environment(ob)->eventPrint("%^RED%^" + (string)ob->GetName()
@@ -155,7 +155,7 @@ void eventUnjoin(object ob) {
       + pluralize((string)GetClanName()) + ".%^RESET%^", ob);
 }
 
-void eventWelcome(object ob) {
+void eventWelcome(object ob){
     ob->eventPrint("%^YELLOW%^Welcome, fellow " + (string)GetClanName()
       + ".%^RESET%^");
 }

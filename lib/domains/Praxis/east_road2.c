@@ -33,5 +33,7 @@ void create() {
         "west"	 : "/domains/Praxis/sun2"]) );
 }
 
-
+void init(){
+    ::init();
+}
 

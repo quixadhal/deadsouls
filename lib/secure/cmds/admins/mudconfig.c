@@ -3,6 +3,7 @@
 #include <save.h>
 #include <daemons.h>
 #include <network.h>
+#include <sockets.h>
 void help();
 
 inherit LIB_DAEMON;
@@ -17,8 +18,9 @@ string array nonmodals = ({ "liveupgrade", "prompt","status","email","websource"
   "debugger", "access", "pinging", "pinginterval",
   "imc2serverpass", "imc2clientpass" });
 string array antimodals = ({ "imc2" });
-string array modals = antimodals + ({ "catchtell","matchcommand", "matchobject", "autowiz", "locked",
+string array modals = antimodals + ({ "channelpipes", "fastcombat", "catchtell","matchcommand", "matchobject", "autowiz", "locked",
   "localtime", "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
+  "cgi", "dirlist", "creweb", "selectclass", "severable",
   "retain", "defaultparse", "disablereboot", "loglocal", "logremote" });
 string array inet_services = ({ "oob", "hftp", "ftp", "http", "rcp", "inet" });
 
@@ -101,9 +103,71 @@ varargs static int CompleteConfig(string file){
     validate();
     ret = replace_string(ret,"\n\n","\n");
     write_file(file,ret,1);
-    reload(MASTER_D,0,1);
+    RELOAD_D->ReloadBaseSystem();
     reload(LIB_CONNECT,0,1);
     write("Command complete.");
+    return 1;
+}
+
+int ModPortOffset(string which, string arg){
+    string out, service, svc, junk, offset, new_offset;
+    string *new_array = ({});
+    string netcfg = read_file("/secure/include/network.h");
+    string *net_array = explode(netcfg,"\n");
+
+    new_offset = arg;
+    service = which;
+    service = upper_case(service);
+    foreach(string element in net_array){
+        if(sscanf(element,"#define OFFSET_%s %s %d",svc, junk, offset) == 3){
+            if(lower_case(svc) == lower_case(service)){
+                out = "#define OFFSET_"+service+"               "+new_offset;
+            }
+            else out = element;
+        }
+        else out = element;
+        new_array += ({ out });
+    }
+    out = implode(new_array,"\n");
+
+    write_file("/secure/include/network.h",out,1);
+    write("The "+service+" port offset is being set to "+offset+".");
+    RELOAD_D->eventReload(this_object(), 1, 1);
+    reload(MASTER_D,0,1);
+    return 1;
+}             
+
+int ModPort(string which, mixed arg){
+    string out, service, svc, junk, new_offset, new_port;
+    string *new_array = ({});
+    string netcfg = read_file("/secure/include/network.h");
+    string *net_array = explode(netcfg,"\n");
+    int offset;
+
+    if(stringp(arg)) new_port = arg;
+    else new_port = itoa(arg);
+    service = which;
+    service = upper_case(service);
+    foreach(string element in net_array){
+        if(sscanf(element,"#define OFFSET_%s %s %d",svc, junk, offset) == 3){
+            if(lower_case(svc) == lower_case(service)){
+                new_offset = ""+(atoi(new_port) - query_host_port());
+                out = "#define OFFSET_"+service+"               "+new_offset;
+            }
+            else out = element;
+        }
+        else out = element;
+        new_array += ({ out });
+    }
+    out = implode(new_array,"\n");
+    if(last(out,1) != "\n") out += "\n";
+    write_file("/secure/include/network.h",out,1);
+    write("The "+service+" port is being set to "+atoi(new_port)+".");
+    write("To complete this configuration, wait 2 seconds, then issue the following commands:");
+    write("mudconfig "+lower_case(service)+" disable");
+    write("mudconfig "+lower_case(service)+" enable");
+    RELOAD_D->eventReload(this_object(), 1, 1);
+    reload(MASTER_D,0,1);
     return 1;
 }
 
@@ -368,14 +432,14 @@ static int ProcessOther(string which, string arg){
         reload("/secure/sefun/timestamp",0,1);
         reload("/secure/sefun/sefun",0,1);
         reload("/daemon/time",0,1);
-        reload("/cmds/creators/people",0,1);
+        reload("/secure/cmds/creators/people",0,1);
         reload("/cmds/players/date",0,1);
         reload("/cmds/players/nextreboot",0,1);
         reload("/cmds/players/version",0,1);
         write("This configuration change will require a few minutes to take effect completely.");
     }
     if(which == "GLOBAL_MONITOR") reload(SNOOP_D,0,1);
-    if(which == "IDLE_TIMEOUT" || which == "MAX_NEWBIE_LEVEL"){ 
+    if(which == "IDLE_TIMEOUT" || which == "MAX_NEWBIE_LEVEL" || which == "FAST_COMBAT"){ 
         reload(LIB_CREATOR,1,1);
         write("This configuration will take effect for each user the next time they log in.");
         return 1;
@@ -451,6 +515,13 @@ static int ProcessModal(string which, string arg){
     case "loglocal" : which = "LOG_LOCAL_CHANS";break;
     case "logremote" : which = "LOG_REMOTE_CHANS";break;
     case "imc2" : which = "DISABLE_IMC2";break;
+    case "fastcombat" : which = "FAST_COMBAT";break;
+    case "channelpipes" : which = "CHANNEL_PIPES";break;
+    case "cgi" : which = "ENABLE_CGI";break;
+    case "dirlist" : which = "WWW_DIR_LIST";break;
+    case "creweb" : which = "ENABLE_CREWEB";break;
+    case "selectclass" : which = "CLASS_SELECTION";break;
+    case "severable" : which = "SEVERABLE_LIMBS";break;
     default : break;
     }
     foreach(string element in config){
@@ -496,13 +567,27 @@ static int ProcessModal(string which, string arg){
         else IMC2_D->remove();
         reload(CHAT_D);
     }
+    if(which == "FAST_COMBAT"){
+        reload(LIB_CREATOR,1,1);
+        write("This configuration will take effect for each user the next time they log in.");
+    }
 
+    if(which == "ENABLE_CGI" || which == "WWW_DIR_LIST" || which == "ENABLE_CREWEB"){
+        reload(WEB_SESSIONS_D,1,1);
+        reload(SOCKET_HTTP,1,1);
+        foreach(string element in get_dir(DIR_WWW_GATEWAYS+"/")){
+            if(last(element,2) == ".c") reload(DIR_WWW_GATEWAYS+"/"+element,1,1);
+        }
+    }
     return 1;
 }
 
 int ProcessService(string which, string what){
-    int port_offset, type;
+    int port_offset, type, port;
     string sclass;
+    if(sscanf(what,"port %d",port)){
+        what = "port";
+    }
     switch(which){
     case "hftp": port_offset=OFFSET_HFTP;sclass="/secure/lib/net/h_ftpd";type=1;break;
     case "ftp": port_offset=OFFSET_FTP;sclass="/secure/lib/net/ftp";type=1;break;
@@ -516,6 +601,7 @@ int ProcessService(string which, string what){
     case "start": INET_D->eventStartServer(which);break;
     case "restart": INET_D->eventRestartServer(which,1);break;
     case "stop": INET_D->eventStopServer(which);break;
+    case "port": ModPort(which, port);break;
     }
     if(which == "oob"){
         if( what == "start" || what == "restart")
@@ -701,6 +787,10 @@ int ProcessInet(string which, string arg){
             write("The "+which+" service is "+(INET_D->GetServer(which) ? "running." : "stopped."));
         return 1;
     }
+    if(!strsrch(arg,"port ")){
+        ProcessService(which,arg);
+        return 1;
+    }
     write("Unsupported mudconfig inet service subcommand.");
     return 1;
 }
@@ -715,6 +805,7 @@ void help() {
       "\nmudconfig justenglish [ yes | no ]"
       "\nmudconfig justhumans [ yes | no ]"
       "\nmudconfig encumbrance [ yes | no ]"
+      "\nmudconfig severable [ yes | no ] (whether limbs can be severed in combat. Requires a warmboot.)"
       "\nmudconfig pk [ yes | no ]"
       "\nmudconfig compat [ yes | no ]"
       "\nmudconfig retain [ yes | no ]"
@@ -724,6 +815,8 @@ void help() {
       "\nmudconfig matchobject [ yes | no ]"
       "\nmudconfig exitsbare [ yes | no ]"
       "\nmudconfig nmexits [ yes | no ] (This togggles where default exits are displayed)"
+      "\nmudconfig fastcombat [ yes | no ] (heart rate overridden in combat)"
+      "\nmudconfig selectclass [ yes | no ] (whether new players choose a class on login)"
       "\nmudconfig localtime [ yes | no ]"
       "\nmudconfig offset <offset from gmt in seconds>"
       "\nmudconfig extraoffset <offset from GMT in hours>"
@@ -740,6 +833,7 @@ void help() {
       "\nmudconfig liveupgrade <the default liveupgrade mud's name>"
       "\nmudconfig hostip <the computer's ip address (eg 111.222.333.444)>"
       "\nmudconfig websource <the remote web server's ip address (eg 111.222.333.444)>"
+      "\nmudconfig channelpipes [ enable | disable ] (whether to allow piping messages. not recommended.)"
       "\nmudconfig intermud [ enable | disable | restrict | unrestrict | reset ]"
       "\nmudconfig imc2 [ enable | disable ]"
       "\nmudconfig imc2clientpass <client password for IMC2>"
@@ -747,9 +841,12 @@ void help() {
       "\nmudconfig inet [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig ftp [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig hftp [ enable | disable | start | stop | restart | status ]"
-      "\nmudconfig http [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig rcp [ enable | disable | start | stop | restart | status ]"
       "\nmudconfig oob [ enable | disable | start | stop | restart | status ]"
+      "\nmudconfig http [ enable | disable | start | stop | restart | status ]"
+      "\nmudconfig cgi [ enable | disable ] (Whether the mud webserver should use CGI)"
+      "\nmudconfig dirlist [ enable | disable ] (Allow the webserver to display dir contents)"
+      "\nmudconfig creweb [ enable | disable ] (Allow web based editing [requires cgi and dirlist])"
       "\nmudconfig loglocal [ enable | disable ] (whether local channels are logged)"
       "\nmudconfig logremote [ enable | disable ] (whether remote channels are logged)"
       "\n\nSee also: admintool, config", this_player()

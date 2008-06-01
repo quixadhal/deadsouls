@@ -7,6 +7,7 @@
  */
 
 #include <lib.h>
+#include <medium.h>
 
 inherit LIB_SURFACE;
 
@@ -16,18 +17,19 @@ string Limb        = 0;
 string Owner       = 0;
 string Race        = 0;
 int CallOut = -1;
+int stank;
 
 int eventDecay();
 
-int GetDecayLife() {
+int GetDecayLife(){
     return DecayLife;
 }
 
-int SetDecayLife(int x) {
+int SetDecayLife(int x){
     return (DecayLife = x);
 }
 
-string GetLimb() {
+string GetLimb(){
     return Limb;
 }
 string GetItemCondition(){
@@ -40,9 +42,10 @@ void create(){
 
 void init(){
     surface::init();
+    if(environment() && environment()->GetMedium() == MEDIUM_LAND) stank = 1;
 }
 
-void SetLimb(string limb, string owner, string race) {
+void SetLimb(string limb, string owner, string race){
     SetKeyName(limb);
     SetId( ({ "flesh","pile", "limb", Limb = limb }) );
     Owner = owner;
@@ -52,48 +55,50 @@ void SetLimb(string limb, string owner, string race) {
     SetLong("This limb has a horrible stench as it rots to nothing.");
 }
 
-string GetOwner() {
+string GetOwner(){
     return Owner;
 }
 
-string GetRace() {
+string GetRace(){
     return Race;
 }
 
-int GetSaveString() {
+int GetSaveString(){
     return 0;
 }
 
-string GetShort() {
+string GetShort(){
     string str = surface::GetShort();
 
-    if( !str ) {
+    if( !str ){
         str = "a limb";
     }
     return str;
 }
 
-int CanReceive(object ob) {
+int CanReceive(object ob){
     return 1;
 }
 
-int Destruct() {
+int Destruct(){
     return surface::Destruct();
 }
 
-int eventDecay() {
-    if( !environment() ) {
+int eventDecay(){
+    if( !environment() ){
         Destruct();
         return 0;
     }
-    switch(Count) {
+    switch(Count){
     case 10:
-        message("smell", "The "+Limb+" really stinks.", environment());
+        if(stank)
+            message("smell", "The "+Limb+" really stinks.", environment());
         SetShort("the stinky remains of a rotting " + Limb);
         break;
     case 20:
-        message("smell", "A rotting stench fills the entire area.",
-          environment());
+        if(stank)
+            message("smell", "A rotting stench fills the entire area.",
+              environment());
         SetShort("a pile of rotting flesh");
         break;
     case 30:

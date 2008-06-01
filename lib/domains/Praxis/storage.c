@@ -11,4 +11,6 @@ void create() {
     //for( i=0 ; i<5 ; i++ )
     //new("/realms/nialson/newspaper/paper")->move(this_object());
 }
-
+void init(){
+    ::init();
+}

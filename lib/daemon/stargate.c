@@ -70,6 +70,7 @@ int SetStatus(string address, string status){
 }
 
 string GetStatus(string address){
+    if(!Stargates || !Stargates[address]) return "unknown";
     return Stargates[address]["status"];
 }
 

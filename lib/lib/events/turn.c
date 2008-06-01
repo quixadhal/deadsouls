@@ -6,24 +6,24 @@ mixed eventTurnOff(object ob){
     return "#Please be more specific";
 }
 
-varargs mixed CanTurn(object who, object what) {
+varargs mixed CanTurn(object who, object what){
     return 1;
 }
 
-varargs mixed CanTurnOn(object who, object what) {
+varargs mixed CanTurnOn(object who, object what){
     return 1;
 }
 
-varargs mixed CanTurnOff(object who, object what) {
+varargs mixed CanTurnOff(object who, object what){
     return 1;
 }
 
-int eventTurn(object who) {
+int eventTurn(object who){
     if(!who) who = this_player();
     return 1;
 }
 
-int direct_turn_obj(object target) {
+int direct_turn_obj(object target){
     return CanTurn(this_player());
 }
 

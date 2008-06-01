@@ -12,25 +12,25 @@ private static mixed Dig = 0;
 string GetShort();
 // end abstract methods
 
-mixed GetDig() {
+mixed GetDig(){
     return Dig;
 }
 
-int RemoveDig() {
+int RemoveDig(){
     Dig = 0;
     return 1;
 }
 
-mixed SetDig(mixed val) {
-    if( !stringp(val) && !arrayp(val) && !functionp(val) ) {
+mixed SetDig(mixed val){
+    if( !stringp(val) && !arrayp(val) && !functionp(val) ){
         error("Bad argument 1 to SetDig().\n\tExpected: string or function "
           "or mixed array, Got: " + typeof(val) + "\n");
     }
     return (Dig = val);
 }
 
-mixed CanDig(object who) {
-    if( !Dig ) {
+mixed CanDig(object who){
+    if( !Dig ){
         return 0;
     }
     else {
@@ -38,13 +38,13 @@ mixed CanDig(object who) {
     }
 }
 
-mixed eventDig(object who, object tool) {
+mixed eventDig(object who, object tool){
     mixed val = Dig;
 
-    if( arrayp(val) ) {
+    if( arrayp(val) ){
         val = val[query_night()];
     }
-    if( stringp(val) ) {
+    if( stringp(val) ){
         environment(who)->eventPrint(who->GetName() + " digs " +
           GetShort() + " with " +
           tool->GetShort() + ".", who);
@@ -55,6 +55,6 @@ mixed eventDig(object who, object tool) {
     }
 }
 
-mixed direct_dig_obj_with_obj() {
+mixed direct_dig_obj_with_obj(){
     return CanDig(this_player());
 }

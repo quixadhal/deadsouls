@@ -5,11 +5,10 @@ static void create() {
     room::create();
     SetClimate("outdoors");
     SetAmbientLight(40);
+    SetNightLight(10);
+    SetDayLight(30);
     SetShort("Forest Clearing");
-    SetLong("This is a small clearing in a path through the forest. "
-      "The path splits here, continuing into the valley "
-      "west of here. The path to the east "
-      "leads back to the safety of the town.");
+    SetLong("This is a small clearing in a path through the forest. The path leads west into a small valley, and east toward a town.");
     SetExits( ([ 
         "west" : "/domains/town/room/valley",
         "east" : "/domains/town/room/forest_path1",
@@ -26,7 +25,7 @@ static void create() {
         "valley" : "A valley is west of here.",
         "town" : "A town, far in the eastern distance."
       ]) );
-
+    SetFlyRoom("/domains/town/virtual/sky/23,100000,1");
 }
 void init(){
     ::init();

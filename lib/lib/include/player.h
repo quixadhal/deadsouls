@@ -6,11 +6,6 @@ class death {
     string Enemy;
 }
 
-class quest {
-    int Date;
-    string Description;
-}
-
 static void create();
 static void heart_beat();
 static void net_dead();

@@ -32,3 +32,6 @@ void create() {
         "east" : "/domains/Praxis/wild1",
       ]) );
 }
+void init(){
+    ::init();
+}

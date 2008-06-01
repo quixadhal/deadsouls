@@ -14,26 +14,26 @@ mixed CanDrop(object who);
 mixed eventMove(mixed dest);
 // end abstract methods
 
-mixed SetPreventPut(mixed val) {
+mixed SetPreventPut(mixed val){
     return (PreventPut = val);
 }
 
-mixed GetPreventPut() {
+mixed GetPreventPut(){
     return PreventPut;
 }
 
-mixed CanPut(object who) {
+mixed CanPut(object who){
     mixed tmp;
 
     if( (tmp = CanDrop(who)) != 1 ) return tmp;
-    if( !environment() ) { destruct(this_object()); return 1; }
+    if( !environment() ){ destruct(this_object()); return 1; }
     if( environment() != this_player() &&
       environment() != environment(this_player())) return 0;
     if( !PreventPut ) return 1;
     if( stringp(PreventPut) && PreventPut == "PERMIT" ) return 1;
     if( intp(PreventPut) ) return 0;
     if( stringp(PreventPut) ) return PreventPut;
-    if( objectp(PreventPut) ) {
+    if( objectp(PreventPut) ){
         if( PreventPut == who )
             return "You cannot put " + GetShort() + " anywhere.";
         else return 1;
@@ -44,15 +44,15 @@ mixed CanPut(object who) {
     }
 }
 
-varargs mixed eventPut(object who, object storage, string prep) {
+varargs mixed eventPut(object who, object storage, string prep){
     int depth;
     if(!prep || prep == "") prep = " into ";
-    if(prep == " onto " && !inherits( LIB_SURFACE, previous_object() ) ) {
+    if(prep == " onto " && !inherits( LIB_SURFACE, previous_object() ) ){
         who->eventPrint("That isn't a load-bearing surface.");
         return 0;
     }
 
-    if(prep == " into " && inherits( LIB_SURFACE, previous_object() ) ) {
+    if(prep == " into " && inherits( LIB_SURFACE, previous_object() ) ){
         who->eventPrint("That's a surface. Try \"put on\"");
         return 0;
     }
@@ -64,7 +64,7 @@ varargs mixed eventPut(object who, object storage, string prep) {
     }
 
 
-    if( !eventMove(storage) ) {
+    if( !eventMove(storage) ){
         who->eventPrint("The "+remove_article(this_object()->GetShort())+" stays where it is.");
         return 0;
     }
@@ -73,7 +73,7 @@ varargs mixed eventPut(object who, object storage, string prep) {
     environment(who)->eventPrint((string)who->GetName() + " puts " +
       GetShort() + prep +
       (string)storage->GetShort() + ".", who);
-    if(inherits("/lib/std/storage",this_object())) {
+    if(inherits("/lib/std/storage",this_object())){
         depth = this_object()->GetRecurseDepth();
         if(depth && inherits("/lib/std/storage",storage)) storage->AddRecurseDepth(depth); 
     }
@@ -81,11 +81,11 @@ varargs mixed eventPut(object who, object storage, string prep) {
     return 1;
 }
 
-static void create() {
+static void create(){
     PreventPut = 0;
 }
 
-mixed direct_put_obj_word_obj() {
+mixed direct_put_obj_word_obj(){
     return CanPut(this_player());
 }
 
@@ -93,6 +93,6 @@ mixed direct_put_wrd_wrd_word_obj(){
     return CanPut(this_player());
 }
 
-mixed direct_put_obj_obj() {
+mixed direct_put_obj_obj(){
     return direct_put_obj_word_obj();
 }

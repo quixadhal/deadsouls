@@ -31,9 +31,12 @@ void heart_beat(){
 mixed ReadDir(string str){
     string *current_level_dirs = ({});
     int iteration = 1;
+#ifndef __FLUFFOS__
+    return 0;
+#endif
 
     validate();
-    log_file("adm/file","FILE_D ReadDir accessed and run by: "+identify(previous_object(-1))+"\n");
+    //log_file("adm/file","FILE_D ReadDir accessed and run by: "+identify(previous_object(-1))+"\n");
 
     if(!str ||  !sizeof(str)) str = "/";
 
@@ -98,8 +101,11 @@ int SearchFiles(string str){
     int cased = 1;
     int strict = 0;
     string ret = "";
+#ifndef __FLUFFOS__
+    return 0;
+#endif
 
-    log_file("adm/file",timestamp()+" FILE_D search for "+str+" run by: "+identify(previous_object(-1))+"\n");
+    //log_file("adm/file",timestamp()+" FILE_D search for "+str+" run by: "+identify(previous_object(-1))+"\n");
 
     if(!str || str == ""){
         write("Please specify the filename or substring you're looking for.");
@@ -140,6 +146,10 @@ int SearchFiles(string str){
 
 static void create() {
     object fun_d = find_object(FUNCTION_D);
+#ifndef __FLUFFOS__
+    return 0;
+#endif
+
     daemon::create();
     //call_out((: ReadDir,"/" :), 1);
     ReadDir("/");

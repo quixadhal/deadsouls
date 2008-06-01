@@ -30,4 +30,6 @@ void create() {
         "hospital" : "It is a primson white building jutting out "
         "from the landscape"]) );
 }
-
+void init(){
+    ::init();
+}

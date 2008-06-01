@@ -4,18 +4,19 @@
 inherit LIB_DAEMON;
 
 mixed cmd(string args) {
-    string cmd = args;
+    string tp, cmd = args;
     object who;
     mapping stumps;
     string *limb_arr = ({});
     object *germs;
     int i, mhp, msp, mmp, self;
 
+    if(this_player()) tp = this_player()->GetKeyName();
     if( !cmd || cmd == "" ) {
         return "Syntax: <heal LIVING>";
     }
 
-    if(member_array(args,({"me","myself"})) != -1 ) self = 1;
+    if(member_array(args,({ "me","myself", (tp || "") })) != -1 ) self = 1;
     else self = 0;
 
     if( !self && !who = find_living(args) ) {

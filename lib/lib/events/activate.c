@@ -2,11 +2,11 @@
 
 inherit LIB_TURN;
 
-int direct_activate_obj(object target) {
+int direct_activate_obj(object target){
     return turn::CanTurnOn(this_player());
 }
 
-int direct_deactivate_obj(object target) {
+int direct_deactivate_obj(object target){
     return turn::CanTurnOff(this_player());
 }
 

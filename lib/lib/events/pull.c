@@ -6,28 +6,28 @@ static private mapping Pull = ([]);
 string GetDefiniteShort();
 // end abstract methods
 
-varargs mixed GetPull(string str) {
-    if( !str ) {
+varargs mixed GetPull(string str){
+    if( !str ){
         str = "default";
     }
     return Pull[str];
 }
 
-string array GetPulls() {
+string array GetPulls(){
     return keys(Pull);
 }
 
-mapping RemovePull(string item) { 
+mapping RemovePull(string item){ 
     map_delete(Pull, item); 
     return Pull;
 }
 
-varargs mapping SetPull(mixed key, mixed desc) {
-    if( !key ) {
+varargs mapping SetPull(mixed key, mixed desc){
+    if( !key ){
         key = "default";
     }
-    if( !desc ) {
-        if( mapp(key) ) {
+    if( !desc ){
+        if( mapp(key) ){
             Pull = expand_keys(key);
         }
         else {
@@ -40,15 +40,15 @@ varargs mapping SetPull(mixed key, mixed desc) {
     return Pull;
 }
 
-varargs mixed CanPull(object who, string component) {
+varargs mixed CanPull(object who, string component){
     mixed val;
 
-    if( !component ) {
+    if( !component ){
         component = "default";
     }
     val = Pull[component];
-    if( !val ) {
-        if( component == "default" ) {
+    if( !val ){
+        if( component == "default" ){
             return 0;
         }
         else {
@@ -59,24 +59,24 @@ varargs mixed CanPull(object who, string component) {
     else return 1;
 }
 
-varargs mixed eventPull(object who, string component) {
+varargs mixed eventPull(object who, string component){
     mixed val;
 
-    if( !component ) {
+    if( !component ){
         val = Pull["default"];
     }
     else {
         val = Pull[component];
     }
-    if( arrayp(val) ) {
+    if( arrayp(val) ){
         val = val[query_night()];
     }
-    if( stringp(val) ) {
+    if( stringp(val) ){
         object env;
 
         env = environment(who);
         who->eventPrint(val);
-        if( component ) {
+        if( component ){
             env->eventPrint(who->GetName() + " pulls the " + component +
               " on " + GetDefiniteShort() + ".", who);
         }
@@ -87,17 +87,17 @@ varargs mixed eventPull(object who, string component) {
         return 1;
     }
     else {
-        if( functionp(val) & FP_OWNER_DESTED ) {
+        if( functionp(val) & FP_OWNER_DESTED ){
             return "Error in evaluating functional.";
         }
         return evaluate(val, who, component);
     }
 }
 
-mixed direct_pull_obj(object target) {
+mixed direct_pull_obj(object target){
     return CanPull(this_player());
 }
 
-mixed direct_pull_str_on_obj(string str, object target) {
+mixed direct_pull_str_on_obj(string str, object target){
     return CanPull(this_player(), remove_article(lower_case(str)));
 }

@@ -8,37 +8,37 @@
 
 private int Poison = 0;
 
-int AddPoison(int x) {
+int AddPoison(int x){
     Poison += x;
-    if( Poison < 1 ) {
+    if( Poison < 1 ){
         Poison = 0;
     }
     return Poison;
 }
 
-int GetPoison() {
+int GetPoison(){
     return Poison;
 }
 
-int SetPoison(int x) {
+int SetPoison(int x){
     return (Poison = x);
 }
 
-string array GetSave() {
+string array GetSave(){
     return ({ "Poison" });
 }
 
-mixed CanPoison(object who) {
+mixed CanPoison(object who){
     return 1;
 }
 
-mixed eventPoison(object who, object agent, int strength) {
+mixed eventPoison(object who, object agent, int strength){
     send_messages("spread", "$agent_name $agent_verb some poison onto "
       "$target_name.", who, this_object(), environment(who));
     AddPoison(strength);
     return 1;
 }
 
-mixed direct_poison_obj_with_obj() {
+mixed direct_poison_obj_with_obj(){
     return CanPoison(this_player());
 }

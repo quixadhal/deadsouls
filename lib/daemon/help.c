@@ -36,6 +36,9 @@ int CanAccess(object who, string index) {
     case "library objects": case "daemon objects":
         return creatorp(who);
 
+    case "builder commands":  
+        return builderp(who);
+
     default:
         return 1;
     }
@@ -61,12 +64,19 @@ static private void LoadIndices() {
     get_dir(DIR_PLAYER_CMDS+"/*.c") +
     get_dir(DIR_ROOM_VERBS + "/*.c") +	
     get_dir(DIR_SPELL_VERBS + "/*.c") +
+    //get_dir(DIR_SECURE_BUILDER_CMDS + "/*.c") +
+    //get_dir(DIR_BUILDER_CMDS + "/*.c") +
     get_dir(DIR_SECURE_PLAYER_CMDS + "/*.c");
     Indices["commands"] = map(tmp, f);
 
     tmp = get_dir(DIR_CREATOR_VERBS+"/*.c") + get_dir(DIR_CREATOR_CMDS+"/*.c")
     + get_dir(DIR_SECURE_CREATOR_CMDS + "/*.c");
     Indices["creator commands"] = map(tmp, f);
+
+    tmp = get_dir(DIR_SECURE_BUILDER_CMDS + "/*.c") +
+    get_dir(DIR_BUILDER_VERBS + "/*.c") +
+    (get_dir(DIR_BUILDER_CMDS + "/*.c") || ({}));
+    Indices["builder commands"] = map(tmp, f);
 
     tmp = get_dir(DIR_UNDEAD_VERBS "/*.c");
     Indices["undead commands"] = map(tmp, f);
@@ -155,7 +165,7 @@ static private void LoadIndices() {
                 " ");
           }
           if(member_array(str, CHAT_D->GetChannels()) != -1 &&
-            str != "newbie"){
+            str != "newbie" && member_array(str, CLASSES_D->GetClasses()) == -1){
               return "See: help channels";
           }
           if( sscanf(str, "adverbs %s", topic) || str == "adverbs" ) {
@@ -167,6 +177,7 @@ static private void LoadIndices() {
                   if(member_array("admin commands",tmp) != -1) choice = "admin commands";
                   else if(member_array("creator commands",tmp) != -1) choice = "creator commands";
                   else if(member_array("player commands",tmp) != -1) choice = "player commands";
+                  else if(member_array("builder commands",tmp) != -1) choice = "builder commands";
               }
               if(!choice) choice = tmp[0];
               tmp -= ({ choice });
@@ -192,6 +203,7 @@ static private void LoadIndices() {
                   return GetHelpByIndex(topic, str);
               }
           }
+
           if(this_player() && adminp(this_player())){
               Error = "Help for the topic \"" + str + "\" could not be found.";
           }
@@ -213,7 +225,7 @@ static private void LoadIndices() {
           }
           switch(index) {
           case "admin commands": case "creator commands": case "undead commands":
-          case "commands":
+          case "commands": case "builder commands" :
               switch(index) {
               case "admin commands":
                   if( file_exists( DIR_ADMIN_VERBS + "/" + topic + ".c") )
@@ -230,6 +242,14 @@ static private void LoadIndices() {
                       file = DIR_CREATOR_CMDS + "/" + topic;
                   else file = DIR_SECURE_CREATOR_CMDS + "/" + topic;
                   break;      
+
+              case "builder commands":
+                  if( file_exists( DIR_BUILDER_VERBS + "/" + topic + ".c") )
+                      file = DIR_BUILDER_VERBS + "/" + topic;
+                  else if( file_exists(DIR_BUILDER_CMDS + "/" + topic + ".c") )
+                      file = DIR_BUILDER_CMDS + "/" + topic;
+                  else file = DIR_SECURE_BUILDER_CMDS + "/" + topic;
+                  break;
 
               case "commands":
                   foreach(string directory in ({ DIR_COMMON_VERBS,

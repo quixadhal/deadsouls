@@ -1,4 +1,5 @@
 title Optimus $N Maximus
+describe $N looks a bit rumpled and tired.
 home
 update
 remove all
@@ -10,14 +11,11 @@ get all from chest
 dest staff
 dest robe
 dest hat
-cd /domains/town/armor
-clone overalls
-clone workboot_l
-clone workboot_r
-clone workglove_l
-clone workglove_r
-cd /realms/cratylus/area/armor
-clone cap
+clone /domains/default/armor/robe
+clone /secure/obj/glasses
+#clone /realms/$N/area/obj/key
+wear my robe
+wear my glasses
 cd /domains/town/obj
 clone 8ball
 clone d20
@@ -25,15 +23,5 @@ clone d6
 cd /domains/campus/weap
 clone grenade
 clone waterpistol
-dest ring
-clone /domains/default/armor/jade_ring.c
-clone /domains/default/armor/gray_amulet.c
-wear all
-wear jade ring on right hand
-put all in overalls
-protection on
-put pass in overalls
-wear collar
-put gray amulet in overalls
-put dice in overalls
+put all in my robe
 save

@@ -5,22 +5,16 @@
 inherit LIB_ROOM;
 
 string LoadIP(){
-    if(mud_name() != "Dead Souls Demo"){
-        if(INTERMUD_D->GetMudList()["Dead Souls Demo"])
-            return INTERMUD_D->GetMudList()["Dead Souls Demo"][1];
-    }
-    else if(INTERMUD_D->GetMudList()["Dead Souls"])
+    if(INTERMUD_D->GetMudList()["Dead Souls"]){
         return INTERMUD_D->GetMudList()["Dead Souls"][1];
+    }
     else return "127.0.0.1";
 }
 
 string LoadPort(){
-    if(mud_name() != "Dead Souls Demo"){
-        if(INTERMUD_D->GetMudList()["Dead Souls Demo"])
-            return INTERMUD_D->GetMudList()["Dead Souls Demo"][2];
-    }
-    else if(INTERMUD_D->GetMudList()["Dead Souls"])
+    if(INTERMUD_D->GetMudList()["Dead Souls"]){
         return INTERMUD_D->GetMudList()["Dead Souls"][2];
+    }
     else return ""+query_host_port();
 }
 

@@ -1,6 +1,7 @@
 #include <lib.h>
+#include <damage_types.h>
+
 inherit LIB_ROOM;
-inherit "/lib/props/ambiance";
 
 static void create() {
     room::create();
@@ -56,7 +57,8 @@ int SteamBlast(){
         if(living(stuff[i]) && sizeof(lstuff) > 0 && member_array(stuff[i],lstuff) == -1) lstuff += ({stuff[i]});
     }
     for(i=0;i<sizeof(lstuff);i++){
-        if(sizeof(lstuff) > 0 && !creatorp(lstuff[i]) ) lstuff[i]->eventReceiveDamage(0, 7,random(30)+10, "torso");
+        if(sizeof(lstuff) > 0 && !creatorp(lstuff[i]) ) 
+            lstuff[i]->eventReceiveDamage(HEAT, 7,random(30)+10, "torso");
 
     }
     tell_room(this_object(), "You are hit by a blast of scalding-hot steam!");

@@ -49,14 +49,15 @@ static void create() {
         "casual entry. They are made of brick and appear old "
         "and strong.",
       ]) );
+    SetFlyRoom("/domains/town/virtual/sky/27,99999,1");
     SetInventory(([
-        "/domains/town/npc/mp" : 1,
+        "/domains/town/npc/mp" : ({60, 1}),
       ]));
     SetExits( ([
         "north" : "/domains/town/room/road1",
       ]) );
     AddExit("south", "/domains/town/room/mansion_ext", (: PreExit :));
-
+    AddItem(new("/domains/town/obj/lamp"));
     SetProperty("no attack", 1);
 }
 void init(){

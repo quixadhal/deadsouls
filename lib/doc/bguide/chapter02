@@ -1,0 +1,93 @@
+chapter 33 "QCS: Creation"
+
+    Creation breaks down into three categories. "Things", rooms, and
+doors. Let's look at things first:
+
+Thing creation:
+---------------
+    In this category we're including NPC's, weapon, armor, unspecial items,
+tables, furniture, books and containers. Basically things that actually show
+up somewhere. A door is a very special sort of object and does not fall
+under this category.
+
+    To make a new thing, the syntax looks like this:
+
+create THING FILENAME
+
+    The THING is the category of item we are creating. The FILENAME is
+the name of the file that will contain this item's configuration data.
+You may enter an absolute path, or you may simply enter a filename. If
+you enter a filename, QCS will attempt to figure out the best place
+for this file. If your current working directory has a name QCS understands
+as being compatible with the type of object you are making (for example,
+your cwd is /realms/you/npc and you are making an NPC) it will use that.
+Otherwise it will search parent and children directories for a 
+directory name it understands this way. Finally, if it can find no
+compatible directories for your file near your cwd, it will put it in
+the appropriate directory in your home area (in this case, 
+/realms/you/area/npc ).
+    Avoid a relative path. It probably won't work the way you think.
+
+   When the command completes, FILENAME will be a file containing the
+data for your generic thing, and a copy of that generic thing will appear
+in the room you are in.
+    If, for example, you entered:
+
+%^GREEN%^create npc cowboy%^RESET%^
+
+    The room you are in will contain a generic NPC which *does not* 
+answer to the id of "cowboy". This NPC is just a generic NPC whose
+filename is (probably) /realms/you/npc/cowboy.c and isn't yet a real
+cowboy. You'll need to use the "modify" command to make a proper
+cowboy out of him.
+
+
+Room creation
+-------------
+
+    Naturally, if you create a room, a new room will not appear inside
+your current environment. Instead, the syntax of the "create" command
+is different when you want to create a new room.
+
+    You may have noticed that you can't use the "create" command to make
+a new room adjacent to your workroom. This is for your protection and
+my sanity. Files which contain the directive "SetNoModify(1)" are
+immune to QCS manipulation. 
+    Rooms like your workroom, the default start room, the void room, etc,
+are set nomodify. This is because if you screw it up, you will be
+sorry, and I just don't want to hear it.
+    So, suppose then that you're in your sample room (one room east 
+of your workroom) and you want to make a new room. You might issue
+the following command:
+
+%^GREEN%^create room south testroom1%^RESET%^
+
+    What this does is copy the room you are in (in this case,
+/realms/you/area/sample_room.c) to a new location (perhaps
+/realms/you/area/testroom1.c). But the neat thing is, this new room
+does not have the same exits as the room you are in. The new room
+has just one exit, leading back to where you are.
+    The net effect of all this is that when you issue this command, 
+you make a new room in the direction you specify, and this
+new room looks just like the room you're in, only the exits are such
+that you can travel back and forth between the rooms. 
+
+    
+Door creation
+-------------
+
+    Doors are funny things. In Dead Souls, they aren't objects in the 
+conventional sense of a thing which occupies a room you're in. Rather,
+they are really daemons which attach to adjoining rooms. If that doesn't
+make sense to you, don't worry. You're not alone.
+
+    The syntax for door creation is much like that for room creation.
+After you create that room south of your sample room, you can now create
+a door between them:
+
+%^GREEN%^create door south sample_door%^RESET%^
+
+    This brings into existence a generic door (closed by default) which
+is between the two rooms.
+
+

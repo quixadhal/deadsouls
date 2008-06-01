@@ -199,7 +199,7 @@ int eventDeleteItem(object ob1, object ob2){
 int eventAddItem(object ob, string addendum){
     target = ob;
     v2 = addendum;
-    if(!check_privs(this_player(), base_name(target)) || !check_privs(this_player(), addendum)){
+    if(!check_privs(this_player(), base_name(target))){
         write("Insufficient privileges. Addition halted.");
         return 1;
     }
@@ -227,7 +227,7 @@ int eventGeneralStuff(string str){
     globalstr = str;
     unguarded( (: globalstr2 = read_file(globalstr) :) );
     unguarded( (: this_object()->eventAddInit(globalstr) :) );
-    if(query_verb() != "copy" && query_verb() != "delete"){
+    if(query_verb() != "copy"){
         if(grepp(globalstr2,"./customdefs.h")){
             string j1, j2, tmppath;
             sscanf(globalstr2,"%sinclude \"%scustomdefs.h%s",j1,tmppath,j2);

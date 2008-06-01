@@ -19,17 +19,17 @@ int GetOpacity(){
     return look_in::GetOpacity();
 }
 
-int GetRadiantLight(int ambient) {
+int GetRadiantLight(int ambient){
     int r = this_object()->GetBaseRadiance(ambient);
     int o = GetOpacity();
-    if( o > 99 ) {
-        if( r < 1 ) {
+    if( o > 99 ){
+        if( r < 1 ){
             return 0;
         }
         else {
             int y = r / (ambient || 1);
 
-            if( y > r ) {
+            if( y > r ){
                 return r;
             }
             else {
@@ -37,14 +37,14 @@ int GetRadiantLight(int ambient) {
             }
         }
     }
-    foreach(object ob in all_inventory()) {
+    foreach(object ob in all_inventory()){
         r += ob->GetRadiantLight(ambient);
     }
-    if( ambient > 0 ) {
+    if( ambient > 0 ){
         int y;
 
         y = (r*10)/ambient;
-        if( y > r ) {
+        if( y > r ){
             y = r;
         }
         else {
@@ -54,18 +54,18 @@ int GetRadiantLight(int ambient) {
     return ( (r*(100-o))/100 );
 }
 
-int CanReceive(object ob) {
+int CanReceive(object ob){
     return 1;
 }
 
-int CanRelease(object ob) {
+int CanRelease(object ob){
     return 1;
 }
 
-int eventReceiveObject(object ob) {
+int eventReceiveObject(object ob){
     return !(!previous_object());
 }
 
-int eventReleaseObject(object ob) {
+int eventReleaseObject(object ob){
     return !(!previous_object());
 }

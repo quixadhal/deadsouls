@@ -4,15 +4,15 @@ varargs mixed CanRoll(object target, object where){
     return 1;
 }
 
-mixed direct_roll_obj(object target) {
-    if( environment(this_object()) != this_player() ) {
+mixed direct_roll_obj(object target){
+    if( environment(this_object()) != this_player() ){
         return "#You don't have that!";
     }
     return CanRoll(this_object());
 }
 
 mixed direct_roll_obj_on_obj(object target, object where, mixed wtf, mixed wtf2){
-    if( environment(this_object()) != this_player() ) {
+    if( environment(this_object()) != this_player() ){
         return "#You don't have that!";
     }
     if(!where && wtf2) where = present(wtf2, environment(this_player()));
@@ -24,22 +24,22 @@ mixed direct_roll_obj_on_obj(object target, object where, mixed wtf, mixed wtf2)
     return CanRoll(this_object(), where);
 }
 
-mixed direct_roll_obj_on_str(object target, string where) {
-    if( environment(this_object()) != this_player() ) {
+mixed direct_roll_obj_on_str(object target, string where){
+    if( environment(this_object()) != this_player() ){
         return "#You don't have that!";
     }
     return CanRoll(this_object());
 }
 
-mixed direct_roll_obj_here(object target) {
-    if( environment(this_object()) != this_player() ) {
+mixed direct_roll_obj_here(object target){
+    if( environment(this_object()) != this_player() ){
         return "#You don't have that!";
     }
     return CanRoll(this_object());
 }
 
 mixed indirect_roll_obj_on_obj(object target, object where){
-    if( environment(this_object()) != environment(this_player()) ) {
+    if( environment(this_object()) != environment(this_player()) ){
         return "#That's not here for rolling on.";
     }
     if(!inherits(LIB_SURFACE,where) ){

@@ -16,24 +16,24 @@ private static function Pick         = 0;
 string GetDefiniteShort();
 // end abstract methods
 
-string array AddKey(string key) {
+string array AddKey(string key){
     return (Keys = ({ Keys..., key }));
 }
 
-varargs string array GetKeys(string unused) {
+varargs string array GetKeys(string unused){
     return Keys;
 }
 
-varargs string array SetKeys(mixed array args...) {
-    if( !args ) {
+varargs string array SetKeys(mixed array args...){
+    if( !args ){
         error("Bad argument 1 to SetKeys().\n");
     }
     Keys = ({});
-    foreach(mixed val in args) {
-        if( !val ) {
+    foreach(mixed val in args){
+        if( !val ){
             continue;
         }
-        if( arrayp(val) ) {
+        if( arrayp(val) ){
             Keys = Keys + val;
         }
         else {
@@ -43,56 +43,56 @@ varargs string array SetKeys(mixed array args...) {
     return Keys;
 }
 
-int GetLocked() {
+int GetLocked(){
     return Locked;
 }
 
-int SetLocked(int x) {
+int SetLocked(int x){
     return (Locked = x);
 }
 
-int GetLockStrength() {
+int GetLockStrength(){
     return LockStrength;
 }
 
-int SetLockStrength(int x) {
+int SetLockStrength(int x){
     return (LockStrength = x);
 }
 
-function GetPick() {
+function GetPick(){
     return Pick;
 }
 
-function SetPick(function f) {
+function SetPick(function f){
     return (Pick = f);
 }
 
-string array GetSave() {
+string array GetSave(){
     return ({ "Locked", "Keys", "LockStrength" });
 }
 
-mixed CanLock(object who, string id) {
-    if( GetLocked() ) {
+mixed CanLock(object who, string id){
+    if( GetLocked() ){
         return "It is already locked.";
     }
     return 1;
 }
 
-mixed CanPick(object who, string id) {
-    if( !GetLocked() ) {
+mixed CanPick(object who, string id){
+    if( !GetLocked() ){
         return "Pick it when it is not even locked?";
     }
     return 1;
 }
 
-varargs mixed CanUnlock(object who, string id, object key) {
-    if( !GetLocked() ) {
+varargs mixed CanUnlock(object who, string id, object key){
+    if( !GetLocked() ){
         return "It is already unlocked.";
     }
     return 1;
 }
 
-varargs mixed eventLock(object who, mixed arg1, mixed arg2) {
+varargs mixed eventLock(object who, mixed arg1, mixed arg2){
     string array ids = ({});
     object key;
 
@@ -107,7 +107,7 @@ varargs mixed eventLock(object who, mixed arg1, mixed arg2) {
         return 1;
     }
 
-    if( !sizeof(ids & GetKeys()) ) {
+    if( !sizeof(ids & GetKeys()) ){
         send_messages("try", "$agent_name $agent_verb to lock $target_name "
           "with " + key->GetShort() + ", but it does not work.",
           who, this_object(), environment(who));
@@ -119,13 +119,13 @@ varargs mixed eventLock(object who, mixed arg1, mixed arg2) {
           "$target_name with " + key->GetShort() + ".",
           who, this_object(), environment(who));
         tmp = key->eventLockLock(who, this_object());
-        if( tmp != 1 ) {
-            if( tmp ) {
+        if( tmp != 1 ){
+            if( tmp ){
                 who->eventPrint(tmp);
             }
             return 1;
         }
-        if( !SetLocked(1) ) {
+        if( !SetLocked(1) ){
             return 0;
         }
         environment(who)->eventPrint(capitalize(GetDefiniteShort()) +
@@ -134,7 +134,7 @@ varargs mixed eventLock(object who, mixed arg1, mixed arg2) {
     return 1;
 }
 
-varargs mixed eventPick(object who, string id, object tool) {
+varargs mixed eventPick(object who, string id, object tool){
     mixed tmp;
     int strength;
     mixed *prehensiles = ({});
@@ -150,7 +150,7 @@ varargs mixed eventPick(object who, string id, object tool) {
 
     limb = prehensiles[random(sizeof(prehensiles))];
 
-    if( !tool ) {
+    if( !tool ){
         strength = (int)who->GetSkillLevel("stealth");
     }
     else {
@@ -159,22 +159,22 @@ varargs mixed eventPick(object who, string id, object tool) {
     }
     who->AddSkillPoints("stealth", strength + 1);
     who->AddStaminaPoints(-LockStrength/10.0);
-    if( Pick ) {
+    if( Pick ){
         tmp = evaluate(Pick, who, id, tool, strength);
-        if( tmp != 1 ) {
-            if( !tmp ) {
+        if( tmp != 1 ){
+            if( !tmp ){
                 who->eventPrint("You fail to pick it.");
                 return 1;
             }
             return tmp;
         }
         who->AddSkillPoints("stealth", 2*(LockStrength + strength));
-        if( SetLocked(0) ) {
+        if( SetLocked(0) ){
             return 0;
         }
         return 1;
     }
-    if( strength > ( LockStrength / 10 + random(LockStrength) ) ) {
+    if( strength > ( LockStrength / 10 + random(LockStrength) ) ){
         who->AddSkillPoints("stealth", 2*(LockStrength + strength));	
         SetLocked(0);
         send_messages("pick", "$agent_name $agent_verb the lock on "
@@ -184,7 +184,7 @@ varargs mixed eventPick(object who, string id, object tool) {
     send_messages("fail", "$agent_name $agent_verb in $agent_possessive "
       "attempt to pick the lock on $target_name.",
       who, this_object(), environment(who));
-    if( random(100) > strength ) {
+    if( random(100) > strength ){
         send_messages("cut", "$agent_name $agent_verb $agent_reflexive "
           "on the lock.", who, this_object(), environment(who));
         who->eventReceiveDamage(this_object(), PIERCE, random(10) + 1, 0, limb);
@@ -192,7 +192,7 @@ varargs mixed eventPick(object who, string id, object tool) {
     return 1;
 }
 
-varargs mixed eventUnlock(object who, mixed arg1, mixed arg2) {
+varargs mixed eventUnlock(object who, mixed arg1, mixed arg2){
     string array ids = ({});
     object key;
 
@@ -207,7 +207,7 @@ varargs mixed eventUnlock(object who, mixed arg1, mixed arg2) {
         return 1;
     }
 
-    if( !sizeof(ids & GetKeys()) ) {
+    if( !sizeof(ids & GetKeys()) ){
         send_messages("attempt", "$agent_name $agent_verb to unlock "
           "$target_name with " + key->GetShort() + ", but it "
           "does not work.", who, this_object(), environment(who));
@@ -219,13 +219,13 @@ varargs mixed eventUnlock(object who, mixed arg1, mixed arg2) {
           key->GetShort() + ".", who, this_object(),
           environment(who));
         tmp = key->eventUnlockLock(who, this_object());
-        if( tmp != 1 ) {
-            if( tmp ) {
+        if( tmp != 1 ){
+            if( tmp ){
                 who->eventPrint(tmp);
             }
             return 1;
         }
-        if( SetLocked(0) ) {
+        if( SetLocked(0) ){
             return 0;
         }
         environment(who)->eventPrint(capitalize(GetDefiniteShort()) +
@@ -234,28 +234,28 @@ varargs mixed eventUnlock(object who, mixed arg1, mixed arg2) {
     return 1;
 }
 
-mixed direct_lock_obj_with_obj(object target, object key, string id) {
+mixed direct_lock_obj_with_obj(object target, object key, string id){
     return CanLock(this_player(), remove_article(lower_case(id)));
 }
 
 mixed direct_pick_str_on_obj(string str, object target, string str2,
-  string id) {
-    if( remove_article(lower_case(str)) != "lock" ) {
+  string id){
+    if( remove_article(lower_case(str)) != "lock" ){
         return "Pick the what?";
     }
     return CanPick(this_player(), id);
 }
 
 mixed direct_pick_str_on_obj_with_obj(string str, object target, object tool,
-  string str2, string targ_id) {
-    if( remove_article(lower_case(str)) != "lock" ) {
+  string str2, string targ_id){
+    if( remove_article(lower_case(str)) != "lock" ){
         return "Pick the what?";
     }
     targ_id = remove_article(lower_case(targ_id));
     return CanPick(this_player(), targ_id);
 }
 
-mixed direct_unlock_obj_with_obj(object target, object key, string id) {
+mixed direct_unlock_obj_with_obj(object target, object key, string id){
     return CanUnlock(this_player(), remove_article(lower_case(id)));
 }
 

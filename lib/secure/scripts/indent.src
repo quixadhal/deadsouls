@@ -46,3 +46,5 @@ cd /secure/daemon/i3router
 indent *
 cd /shadows
 indent *
+cd /www/cgi
+indent *

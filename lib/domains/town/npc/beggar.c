@@ -23,7 +23,11 @@ static void create() {
     SetAutoStand(0);
     SetRace("human");
     SetGender("male");
-    SetOwner("The LPC Preservation Foundation");
+    SetConsultResponses( ([
+        "map" : "It's so you have an idea how to get around.",
+        ({ "levels", "leveling", "level" }) : "I don't know such stuff. "+
+        "Ask Dirk in the Adventurers' Guild."
+      ]) );
     SetPosition(POSITION_SITTING);
 }
 
@@ -66,7 +70,7 @@ void init(){
         new("/domains/town/obj/map")->eventMove(this_object());
         call_out((: GiveMap, this_player() :), 4);
     }
-    if(!present("cold virus",this_object())){
-        new("/domains/town/obj/cold")->eventInfect(this_object());
-    }
+    //if(!present("cold virus",this_object())){
+    //    new("/domains/town/obj/cold")->eventInfect(this_object());
+    //}
 }

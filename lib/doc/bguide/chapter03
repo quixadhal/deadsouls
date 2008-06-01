@@ -1,0 +1,328 @@
+chapter 34 "QCS: Modification of NPC's"
+
+    In the previous chapter we learned how to make a generic object.
+Now that we have it, what to do with it?
+
+    It's important to keep in mind that the generic thing now in
+front of you isn't just a clone from a template file. If the command
+you used was "create npc cowboy", there is now a file (probably)
+called /realms/you/area/npc/cowboy.c that contains the code for the
+creature in front of you.
+    However, this poor beast has the most uninteresting of features.
+It is in fact so boring that it responds only to its generic type.
+Such that "examine cowboy" or "kill tex" won't work. You'll need to
+"look at npc".
+
+    Accordingly, any modification commands need to be made referring
+to the new thing with an it responds to, until such a time as you
+change the id to suit your tastes. Let's carry on with the example
+of our generic npc. To make a cowboy out of him, we can either
+change his name, or his id, or both. Let's start with his name:
+
+%^GREEN%^modify npc name cowboy%^RESET%^
+
+    This makes the SetKeyName() directive in cowboy.c use "cowboy"
+as its argument, effectively allowing you to address this npc as "cowboy"
+from now on. Now you can "look at cowboy" with some results.
+    Obviously our NPC isn't *just* a cowboy. He's also a human, a dude,
+and his name is Tex. How do we make him respond to all of these nouns?
+
+%^GREEN%^modify cowboy id%^RESET%^
+
+    You'll notice there are no arguments following the word "id". Setting
+a thing's id is different from most other settings. If you'll think back
+to the LPC datatypes chapter of this manual (you did read the LPC
+chapters, didn't you?) you'll remember that some information about 
+objects is in the form of strings ("cowboy"), some is in the form of
+integers (the cowboy's health points, for example) and some is in the
+form of arrays, which are a group of data points. In this example we
+want the cowboy's id to be an array, because of the many ways we might
+want to address him. Therefore, we want the SetId directive in his
+file to look like this:
+
+SetId( ({"human", "dude", "tex" }) );
+
+    You might think that QCS should be able to accept multiple values
+like this on a line, perhaps with "modify cowboy id human dude tex" as
+the command. 
+    But what if you want this npc to be a "Boy Named Sue"? How would
+you accommodate id's that contain spaces? In designing QCS, I considered
+having escape characters to allow for such things, but ultimately
+reasoned that this was just way too much mess. Instead, SetId, and
+other directives that take arrays as arguments, are handled by entering
+a query session. Below is an example of what it might look like. The
+example is necessarily messy because I am including both the queries
+and the responses.
+
+---------------------------------------------------
+> %^GREEN%^modify npc name cowboy%^RESET%^
+Indenting file...
+"/tmp/indent.1136206130.tmp.dat" 15 lines 420 bytes
+Exit from ed.
+
+> %^GREEN%^modify cowboy id%^RESET%^
+This setting takes multiple values. If you have no more values to enter, then
+enter a dot on a blank line. To cancel, enter a single q on a blank line.
+You may now enter the next value. So far, it is blank.
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^dude%^RESET%^
+You may now enter the next value. So far, we have: ({ "dude" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^human%^RESET%^
+You may now enter the next value. So far, we have: ({ "dude", "human" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^tex%^RESET%^
+You may now enter the next value. So far, we have: ({ "dude", "human", "tex" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^boy named sue%^RESET%^
+You may now enter the next value. So far, we have: ({ "dude", "human", "tex",
+"boy named sue" })
+If you're done entering values, enter a dot on a blank line.
+%^GREEN%^.%^RESET%^
+Entries complete. Final array is: ({ "dude", "human", "tex", "boy named sue" })
+Indenting file...
+"/tmp/indent.1136206156.tmp.dat" 19 lines 459 bytes
+Exit from ed.
+
+/open/1136206138: Ok
+/realms/cratylus/area/npc/cowboy: Ok
+SetId modification complete.
+> %^GREEN%^exa tex%^RESET%^
+Other than being human, this npc is entirely unremarkable.
+The male human is in top condition.
+---------------------------------------------------
+
+    If you were now to examine Tex's code (with the command "about tex")
+you'd see that his SetId directive now looks like this:
+
+SetId( ({"dude", "human", "tex", "boy named sue"}) );
+
+    Other NPC features take arrays also. SetAdjectives is one. You
+might enter this (mud output omitted for clarity):
+
+%^GREEN%^modify tex adjectives%^RESET%^
+%^GREEN%^dusty%^RESET%^
+%^GREEN%^hardy%^RESET%^
+%^GREEN%^.%^RESET%^
+%^GREEN%^look at dusty cowboy%^RESET%^
+
+    There are two other directives that require queries. Things and
+NPC's can be looked at, but they can also be smelled and listened
+to, if you add SetSmell and SetListen. The syntax is:
+
+%^GREEN%^modify tex smell%^RESET%^
+
+   And you will then be asked a question about keys and mappings.
+Understanding mappings is important, but for now you just need to
+understand that you are being asked *two* separate questions: 
+1) What on the cowboy is being smelled/listened to?
+2) What is the smell/sound?
+
+    What this means is that your input will look something like
+this:
+
+%^GREEN%^modify tex smell%^RESET%^
+%^GREEN%^default%^RESET%^
+%^GREEN%^.%^RESET%^
+Tex smells of sweat and manure.
+
+    What happens is this:
+- You enter the modify command.
+- You enter the word "default" to indicate this is Tex's general smell.
+- You enter a dot to indicate that you are done specifying what
+  part of Tex is being smelled.
+- You then specify the smell.
+
+    This may seem odd until you realize you can also add smells/listens to
+parts of things. Not on NPC's, though. We'll look at this more closely in
+later chapters. For now, just use the syntax as shown above. For adding
+a listen to the cowboy, it works the same way:
+
+%^GREEN%^modify tex listen%^RESET%^
+%^GREEN%^default%^RESET%^
+%^GREEN%^.%^RESET%^
+Tex seems to be humming a jaunty melody.
+
+    Other features of an NPC do not take arrays, so one-line commands
+will do. For example:
+
+%^GREEN%^modify cowboy long This is a cowboy who calls himself Tex, but is in fact a Boy Named Sue.%^RESET%^
+
+%^GREEN%^modify cowboy short a cowboy%^RESET%^
+
+%^GREEN%^modify cowboy level 5%^RESET%^
+
+%^GREEN%^modify cowboy class fighter%^RESET%^
+
+%^GREEN%^modify tex currency gold 1%^RESET%^
+
+%^GREEN%^modify tex currency silver 12%^RESET%^
+
+%^GREEN%^modify tex skill bargaining 5%^RESET%^
+
+%^GREEN%^modify tex skill projectile attack 7%^RESET%^
+
+%^GREEN%^modify tex stat strength 33%^RESET%^
+
+%^GREEN%^modify tex property nice guy 1%^RESET%^
+
+%^GREEN%^modify tex healthpoints 150%^RESET%^
+
+%^GREEN%^modify tex maxhealthpoints 170%^RESET%^
+
+%^GREEN%^modify tex melee 0%^RESET%^
+
+%^GREEN%^modify tex unique 1%^RESET%^
+
+    If you now issue the "about tex" command you will see that all
+the changes you made have been put into the file.
+
+    You may have noticed the "melee" keyword. Dead Souls 2 NPC's come
+in various shapes and sizes, and some of them shouldn't wield weapons. A
+wolf with a battle axe would be a strange sight indeed. However, the
+default combat system makes unarmed creatures extremely vulnerable in
+combat.
+    To make an NPC combat-capable without weapons, use the new SetMelee
+directive. SetMelee(1) makes the NPC capable of proper unarmed combat.
+SetMelee(0) makes the NPC a weak opponent if unarmed. 
+    NPC's will generally try to bite during unarmed combat. If this
+is beneath the capability or dignity of your NPC, you can prevent
+this with:
+
+%^GREEN%^modify tex canbite 0%^RESET%^
+
+    If your NPC should try to escape when the battle isn't going
+his way, the wimpy settings should do:
+
+%^GREEN%^modify tex wimpy 30%^RESET%^
+
+%^GREEN%^modify tex wimpycommand climb ladder%^RESET%^
+
+    If you don't specify a wimpy command, Tex will leave the 
+room through a random exit. In this case, when Tex's health
+is down to 30% and he is in combat, he will try to climb a ladder.
+
+    Some NPC's are designed to travel about. To enable this
+feature, use the wanderspeed directive:
+
+%^GREEN%^modify tex wanderspeed 5%^RESET%^
+
+    If you want him to travel more quickly, use a
+lower number. By default, wandering NPC's only wander in rooms
+that have already been loaded into memory. They avoid loading
+rooms because loading a bunch of rooms that only the NPC
+will ever see is a waste of your mud's resources.
+    However, if you *do* want your NPC to wander in an
+unrestricted manner, regardless of whether a room is loaded,
+use the permitload directive:
+
+%^GREEN%^modify tex permitload 1%^RESET%^
+
+    By default, NPC's stand up when they can. This is
+so that if they collapse during combat, they try to
+get back up once they are able to do so.
+    If you prefer that your NPC maintain some other
+posture, you can set that posture, then disable
+autostanding like this:
+
+%^GREEN%^modify tex posture lying%^RESET%^
+
+%^GREEN%^modify tex autostand 0%^RESET%^
+
+    If he's especially lazy, you can have him take
+a nap this way:
+
+%^GREEN%^modify tex sleeping 10%^RESET%^
+
+    Which will have him wake up after about a minute.
+However, note that if you've disabled autostanding,
+he will remain lying down after he wakes up.
+
+    If the NPC should be hostile, that is, he should
+attack any creatures that it sees enter a room, 
+SetEncounter should do it:
+
+%^GREEN%^modify tex encounter 100%^RESET%^
+
+    This means that if the creature it sees has a
+charisma score of less than 100 (which should pretty
+much be always true), Tex will try to kill it. You
+can do some fancy stuff with SetEncounter, such
+as only attacking orcs, or actually doing something
+friendly, but to do so you can't use QCS. Read
+the NPC and Sentients chapter in the Creator's
+Manual for details on how to code such stuff.
+
+    If the NPC is a golem or other such non-biological
+creature, it may be useful to specify what they are
+made of. The SetComposition setting for a clay
+golem might look like this:
+
+%^GREEN%^modify golem composition clay%^RESET%^
+
+    If it happens to be a golem that does not believe
+in violence as a solution to problems, you can 
+make refuse to hurt others with the following:
+
+%^GREEN%^modify golem pacifist 1%^RESET%^
+
+
+Vendors:
+-------
+
+Vendors are a special kind of NPC that can sell stuff.
+Along with the standard NPC settings, vendors have
+the following:
+
+SetStorageRoom specifies where the vendor's stock
+is stored. If a valid room is specified, anything
+in that room can be sold by the vendor.
+
+SetLocalCurrency specifies the type of currency,
+such as gold or silver, that the vendor accepts.
+
+SetMaxItems is the maximum number of items in
+the storeroom that the vendor is permitted to sell.
+
+SetVendorType specifies the kind of stuff the vendor can
+trade in. "all" allows him to buy and sell whatever.
+But if he is a weapon vendor, he can't trade in armor,
+etc. See /include/vendor_types.h for the available
+vendor types. To have a "multi-type" vendor, you'll have to
+code it by hand. The result of that looks something
+like this:
+
+SetVendorType( VT_TREASURE | VT_ARMOR | VT_HERBS );
+
+
+Barkeeps:
+--------
+
+    Like vendors, barkeeps sell stuff, but they are
+limited to selling food and drink.
+
+    Unlike vendors, barkeeps have no limitation on
+the amount of stuff they can sell. They also do
+not have a storeroom. The stuff they can sell is
+specified in their SetMenu directive, like this:
+
+%^GREEN%^clone woody%^RESET%^
+You clone a generic barkeep (/realms/temujin/area/npc/woody.c).
+%^GREEN%^modify woody menu%^RESET%^
+If you don't understand these questions, type the letter q on a blank line and hit enter.
+
+Please enter the first key element for this mapping:
+
+%^GREEN%^bourbon%^RESET%^
+Please enter the next key element, or enter a single dot to finish entering key elements.
+%^GREEN%^whiskey%^RESET%^
+Please enter the next key element, or enter a single dot to finish entering key elements.
+%^GREEN%^.%^RESET%^
+Please enter the value for key ({ "bourbon", "whiskey" }):
+
+%^GREEN%^/domains/town/meals/bourbon%^RESET%^
+
+    Barkeeps also have the SetLocalCurrency directive
+to specify the currency they accept.
+
+

@@ -22,7 +22,7 @@ static void create() {
       ]) );
     SetRead("sign", (: read_sign :) );
     SetInventory( ([
-        "/domains/town/npc/oana" : 1,
+        "/domains/town/npc/oana" : ({60, 1}),
         "/domains/town/obj/bbucket" : 1,
       ]) );
 }

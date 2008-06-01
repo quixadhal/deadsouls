@@ -26,4 +26,6 @@ void create() {
       (["northwest" : "/domains/Praxis/pass2",
         "east" : "/domains/Praxis/highway3"]) );
 }
-
+void init(){
+    ::init();
+}

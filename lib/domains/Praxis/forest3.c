@@ -25,3 +25,7 @@ void create() {
         "down" : "/domains/Praxis/kataan_join",
       ]) );
 }
+
+void init(){
+    ::init();
+}

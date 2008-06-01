@@ -5,7 +5,7 @@ inherit LIB_DAEMON;
 
 mixed cmd(string args) {
     string domain_path;
-    string *subdirs = ({"room","weap","armor","npc","etc","adm","doors","meals","obj"});
+    string *subdirs = ({"save","room","weap","armor","npc","etc","adm","doors","meals","obj"});
     string *alphabet = ({",", "#", ";", "^", "&", "(", ")","\"","\'","\`","?", " " });
     subdirs += ({"txt","virtual"});
     alphabet += ({ "@", "!", "$", "%", "=", "{", "}", "[", "]", ":", "<", ">", "\*" });

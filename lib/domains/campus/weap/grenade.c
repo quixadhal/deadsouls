@@ -82,7 +82,7 @@ int detonate(){
     string *stuffs;
     int num;
     ob = environment(this_object());
-    if(living(ob) && !creatorp(ob)){
+    if(living(ob)){
         stuffs=ob->GetLimbs();
         tell_object(ob, "\nKABOOM! You are torn to pieces by your hand grenade!\n");
         tell_room(environment(ob), "\nKABOOM! "+ob->GetName()+" is torn to pieces by "+
@@ -94,8 +94,11 @@ int detonate(){
         ob = environment(ob);
     }
     if(detonated !=2) tell_room(environment(this_object()), "\nKABOOM! The grenade detonates!\n");
-    foreach(object victim in get_livings(ob)){
-        this_object()->HitLivings(victim);
+    if(!sizeof(get_livings(ob))) ob = environment(ob);
+    if(ob && sizeof(get_livings(ob))){
+        foreach(object victim in get_livings(ob)){
+            this_object()->HitLivings(victim);
+        }
     }
     this_object()->eventDestruct();
     return 1;

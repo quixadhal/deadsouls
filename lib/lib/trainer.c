@@ -18,7 +18,7 @@ int NoSpells = 0;
 
 /**** driver applies ****/
 
-static void create() {
+static void create(){
     sentient::create();
     TrainingSkills = ({});   
     Students = ([]);
@@ -34,12 +34,12 @@ static void create() {
       ]) );
 }
 
-static void init() {
+static void init(){
     string str;
     sentient::init();
     if( !living(this_player()) ) return;
     str = (string)this_player()->GetKeyName();
-    if( Students[str] ) {
+    if( Students[str] ){
         eventForce("speak You will have to start your "             
           "studies anew, "+(string)this_player()->GetName());
         map_delete(Students, str);
@@ -64,14 +64,14 @@ mixed AddTrainingSkills(string *args){
     return (TrainingSkills = distinct_array(TrainingSkills + args));
 }
 
-mixed RemoveTrainingSkills(string *args) {
+mixed RemoveTrainingSkills(string *args){
     if( !args || !arrayp(args) ) 
         error("Bad argument 1 to RemoveTrainingSkills.");
     TrainingSkills -= args;
     return TrainingSkills;
 }
 
-string array GetTrainingSkills() { return copy(TrainingSkills); }
+string array GetTrainingSkills(){ return copy(TrainingSkills); }
 
 string Expertise(){
     string tmp, expertises;
@@ -79,7 +79,7 @@ string Expertise(){
     mapping spellbook = this_object()->GetSpellBook();
 
     if(!sizeof(GetTrainingSkills())) return "none";
-    else if(sizeof(GetTrainingSkills()) == 1) {
+    else if(sizeof(GetTrainingSkills()) == 1){
         return GetTrainingSkills()[0];
     }
     expertises = implode(GetTrainingSkills(), ", ");
@@ -108,11 +108,11 @@ string Expertise(){
     return expertises + expertises2;
 }
 
-mapping GetStudents() { return copy(Students); }
+mapping GetStudents(){ return copy(Students); }
 
 /**** high-level events ****/
 
-int eventHelp(object who, string unused) {
+int eventHelp(object who, string unused){
     if(who) eventForce("speak I am not sure of what you are "
           "asking, " + (string)who->GetName() + ".");
     if(sizeof( GetTrainingSkills() )){
@@ -128,8 +128,8 @@ int eventHelp(object who, string unused) {
     return 1;
 }
 
-int eventTrain(object who, string verb, string skill) {
-    if( !who || environment(who) != environment() ) {
+int eventTrain(object who, string verb, string skill){
+    if( !who || environment(who) != environment() ){
         return 0;
     }
 
@@ -142,7 +142,7 @@ int eventTrain(object who, string verb, string skill) {
     if(first(skill, 3) == "in ") skill = replace_string(skill,"in ","",1);
     if(first(skill, 6) == "me in ") skill = replace_string(skill,"me in ","",1);
 
-    if( verb == "teach") {
+    if( verb == "teach"){
         object ob = SPELLS_D->GetSpell(skill);
 
         if(!sizeof(GetSpellBook()) || GetNoSpells()){
@@ -155,7 +155,7 @@ int eventTrain(object who, string verb, string skill) {
             return 0;
         }
 
-        if( !who->eventLearnSpell(skill) ) {
+        if( !who->eventLearnSpell(skill) ){
             eventForce("speak You are not prepared for that spell!");
             return 0;
         }
@@ -172,23 +172,23 @@ int eventTrain(object who, string verb, string skill) {
 
     if(skill) skill = lower_case(skill);
 
-    if( Students[ (string)who->GetKeyName() ] ) {
+    if( Students[ (string)who->GetKeyName() ] ){
         eventForce("speak I am already training you!");
         return 0;
     }
-    if( member_array(skill, this_object()->GetTrainingSkills()) == -1 ) {
+    if( member_array(skill, this_object()->GetTrainingSkills()) == -1 ){
         eventForce("speak I know nothing about the art of " +
           skill + ".");
         return 0;
     }
     if( member_array(skill, 
-        (string *)this_player()->GetSkills() ) == -1 ) {
+        (string *)this_player()->GetSkills() ) == -1 ){
         eventForce("speak You do not appear to be the type "
           "who would be skilled in " + skill + "!");
         eventForce("speak I cannot train you in a skill you don't know at all. You may need to join a guild or a class that enables you to train in this skill.");
         return 0;
     }
-    if( (int)this_player()->GetTrainingPoints() < 1 ) {
+    if( (int)this_player()->GetTrainingPoints() < 1 ){
         eventForce("speak You need more training points!");        
         return 0;
     }
@@ -198,10 +198,10 @@ int eventTrain(object who, string verb, string skill) {
     return 1;
 }
 
-static int ContinueTraining(object who, string skill, int x) {
+static int ContinueTraining(object who, string skill, int x){
     if( !present(who, environment()) ) return 0;
     if( !Students[(string)who->GetKeyName()] ) return 0;
-    if( x > 4 ) {
+    if( x > 4 ){
         map_delete(Students, (string)who->GetKeyName());
         eventComplete(who, skill);
         who->eventTrain(skill, 1);
@@ -220,7 +220,7 @@ static int ContinueTraining(object who, string skill, int x) {
  *  more interesting training techniques. :) 
  */
 
-int eventStart(object who, string skill) {
+int eventStart(object who, string skill){
     who->eventPrint(GetName() + " begins teaching you "
       "about the skill of " + skill + ".");
     environment()->eventPrint(GetName() + " begins teaching " +
@@ -228,14 +228,14 @@ int eventStart(object who, string skill) {
     return 1;
 }
 
-int eventContinue(object who, string skill, int x) {
+int eventContinue(object who, string skill, int x){
     who->eventPrint("You listen intently as " + GetName()
       + " continues " + possessive(this_object())
       + " dissertation on " + skill + ".");
     return 1;
 }
 
-int eventComplete(object who, string skill) {
+int eventComplete(object who, string skill){
     who->eventPrint("You feel more adept with your " + skill + ".");
     eventForce("speak I can teach you no more for now, " +
       (string)who->GetName() + ".");

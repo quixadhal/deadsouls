@@ -21,7 +21,7 @@ string SetLong(string str){
     return BaseLong;
 }
 
-static void create() {
+static void create(){
     item::create();
     SetKeyName("die");
     SetId(({"dado","bone", "alea"}));

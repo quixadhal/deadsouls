@@ -27,6 +27,12 @@ mixed can_sit_down() {
     if( this_player()->GetParalyzed() ) {
         return "You cannot do anything!";
     }
+    if(!environment(this_player())->CanSit(this_player())){
+        return "You can't sit here.";
+    }
+    if( this_player()->GetPosition() == POSITION_SITTING ) {
+        return "You are already seated!";
+    }
     if( this_player()->GetPosition() != POSITION_STANDING ) {
         return "You must be standing in order to sit down!";
     }
@@ -45,8 +51,7 @@ mixed can_sit_up() {
 
 mixed can_sit(){
     if(this_player()->GetPosition() == POSITION_LYING) return can_sit_up();
-    if(this_player()->GetPosition() == POSITION_STANDING) return can_sit_down();
-    else return 0;
+    else return can_sit_down();
 }
 
 mixed can_sit_word_obj() {

@@ -6,3 +6,6 @@ void create() {
     SetLong( "Things are hidden here.");
     SetProperty("storage room", 1);
 }
+void init(){
+    ::init();
+}

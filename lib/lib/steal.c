@@ -8,18 +8,18 @@
 
 static private mixed PreventSteal;
 
-static void create() {
+static void create(){
     PreventSteal = 0;
 }
 
-mixed direct_steal_obj_from_liv() { return CanSteal(this_player()); }
+mixed direct_steal_obj_from_liv(){ return CanSteal(this_player()); }
 
-mixed CanSteal(object who) {
+mixed CanSteal(object who){
     if( GetInvis(who) ) return 0;
-    if( PreventSteal ) {
+    if( PreventSteal ){
         if( PreventSteal == 1 ) return "You can't steal that!";
         if( stringp(PreventSteal) ) return PreventSteal;
-        if( objectp(PreventSteal) ) {
+        if( objectp(PreventSteal) ){
             if( PreventSteal == who )
                 return "Mystical forces prevent your thievery.";
             return 1;
@@ -29,10 +29,10 @@ mixed CanSteal(object who) {
     return 1;
 }
 
-mixed eventSteal(object who) {
+mixed eventSteal(object who){
     return eventMove(who);
 }
 
-mixed SetPreventSteal(mixed val) { return (PreventSteal = val); }
+mixed SetPreventSteal(mixed val){ return (PreventSteal = val); }
 
-mixed GetPreventSteal() { return PreventSteal; }
+mixed GetPreventSteal(){ return PreventSteal; }

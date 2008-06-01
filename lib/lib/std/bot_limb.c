@@ -1,25 +1,35 @@
 #include <lib.h>
+#include <medium.h>
 
 inherit LIB_LIMB;
 
-static void create() {
+int stank;
+
+static void create(){
     limb::create();
 }
 
-int eventDecay() {
-    if( !environment() ) {
+void init(){
+    ::init();
+    if(environment() && environment()->GetMedium() == MEDIUM_LAND) stank = 1;
+}
+
+int eventDecay(){
+    if( !environment() ){
         CallOut = -1;
         Destruct();
         return 0;
     }
-    switch(Count) {
+    switch(Count){
     case 10:
-        message("smell", "The "+Limb+" rapidly corrodes.", environment());
+        if(stank)
+            message("smell", "The "+Limb+" rapidly corrodes.", environment());
         SetShort("the corroding remnant of a " + Limb);
         break;
     case 20:
-        message("smell", "An acrid chemical odor fills the area.",
-          environment());
+        if(stank)
+            message("smell", "An acrid chemical odor fills the area.",
+              environment());
         SetShort("some corroded chemicals");
         break;
     case 30:
@@ -31,7 +41,7 @@ int eventDecay() {
     return Count;
 }
 
-void SetLimb(string limb, string owner, string race) {
+void SetLimb(string limb, string owner, string race){
     SetKeyName(limb);
     SetId( ({ "limb", Limb = limb }) );
     Owner = owner;

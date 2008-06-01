@@ -3,6 +3,8 @@
 #include <damage_types.h>
 inherit LIB_ARMOR;
 
+object bearshadow;
+
 static void create(){
     armor::create();
     SetKeyName("bearsuit");
@@ -26,11 +28,11 @@ void init(){
 }
 mixed eventEquip(object who, string array limbs){
     mixed success = armor::eventEquip(who, limbs);
-    object bearshadow = new("/shadows/bear");
+    bearshadow = new("/shadows/bear");
     if(success){
-        bearshadow->eventShadow(who);
+        if(bearshadow) bearshadow->eventShadow(who);
     }
-    else destruct(bearshadow);
+    else if(bearshadow) destruct(bearshadow);
     return success;
 }
 
@@ -39,7 +41,7 @@ varargs mixed eventUnequip(object who) {
     if(!who) who = this_player();
     success = armor::eventUnequip(who);
     if(success){
-        who->unbearshadow();
+        if(bearshadow) who->unbearshadow();
     }
     return success;
 }

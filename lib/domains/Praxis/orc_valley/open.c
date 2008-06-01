@@ -38,6 +38,6 @@ void create() {
     SetSearch("north wall", "You notice a secret passage.");
 }
 
-
-
-
+void init(){
+    ::init();
+}

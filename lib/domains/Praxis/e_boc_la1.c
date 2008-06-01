@@ -30,4 +30,6 @@ void create() {
         "all of Praxis. Many adventurers enjoying hanging out there, "
         "chatting with fellow citizens about life in Praxis."]) );
 }
-
+void init(){
+    ::init();
+}

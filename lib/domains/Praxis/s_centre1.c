@@ -29,3 +29,6 @@ void create() {
     SetProperty("no castle", 1);
 }
 
+void init(){
+    ::init();
+}

@@ -20,4 +20,6 @@ void create() {
         "forest" : "The North Forest. It is not a very well traveled place.",
         "village" : "The grand village of Praxis"]) );
 }
-
+void init(){
+    ::init();
+}

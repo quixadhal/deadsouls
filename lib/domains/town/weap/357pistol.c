@@ -1,9 +1,9 @@
 #include <lib.h>
 #include <vendor_types.h>
-inherit "/lib/pistol";
+inherit LIB_FIREARM;
 
 void create(){
-    pistol::create();
+    ::create();
     SetKeyName("gun");
     SetId(({"gun","pistol","piece","revolver"}));
     SetAdjectives(({".357","357","magnum"}));
@@ -12,7 +12,8 @@ void create(){
       "serious rounds. Bullets are loaded individually into it, and they, along with spent "+
       "shells, remain in the cylinder until unloaded.");
     SetCaliber(357);
-    SetPistolType("revolver");
+    SetFirearmType("revolver");
+    SetFirearmName("revolver");
     SetAmmoType("magnum");
     SetMaxAmmo(6);
     SetMass(20);

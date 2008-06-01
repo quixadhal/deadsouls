@@ -5,6 +5,7 @@
  */
 
 #include <lib.h>
+#include <save.h>
 #include <daemons.h>
 #include <message_class.h>
 #include "include/party.h"
@@ -15,8 +16,24 @@ mapping Parties;
 
 static void create() {
     daemon::create();
-    SetNoClean(1);
     Parties = ([]);
+    if( unguarded((: file_size(SAVE_PARTIES __SAVE_EXTENSION__) :)) > 0 )
+        unguarded((: restore_object(SAVE_PARTIES) :));
+    SetNoClean(1);
+    SetSaveFile(SAVE_PARTIES);
+    foreach(mixed key, mixed val in Parties){
+        mixed array members = this_object()->GetPartyMembers(key);
+        members -= ({ 0 });
+        if(!sizeof(members)) map_delete(Parties, key);
+    }
+}
+
+mixed array GetParties(){
+    return keys(Parties);
+}
+
+mapping GetPartiesMap(){
+    return copy(Parties);
 }
 
 mixed CanChangeLeader(object who, object targ) {
@@ -28,6 +45,7 @@ mixed CanChangeLeader(object who, object targ) {
         return "You must be the party leader in order to change leaders.";
     if( member_array(targ, p->Members) == -1 )
         return (string)targ->GetName() + " is not in the party.";
+    eventSave();
     return 1;
 }
 
@@ -36,6 +54,7 @@ mixed CanCreateParty(object who, string name) {
     if( member_array(name, (string *)CHAT_D->GetChannels()) != -1 )
         return "You cannot use the name " + name + " for your party.";
     if( (string)who->GetParty() ) return "You are already in a party!";
+    eventSave();
     return 1;
 }
 
@@ -104,6 +123,7 @@ mixed eventChangeLeader(object who, object targ) {
     p->Leader = targ;
     CHAT_D->eventSend("System", pname, (string)targ->GetName() + " is now "
       "the leader.");
+    eventSave();
     return 1;
 }
 
@@ -118,6 +138,7 @@ mixed eventCreateParty(object who, string name) {
     this_party->Invited = ({});
     Parties[name] = this_party;
     who->eventPrint("Party " + name + " successfully created.", MSG_SYSTEM);
+    eventSave();
     return 1;
 }
 
@@ -134,6 +155,7 @@ mixed eventInviteMember(object who, object targ) {
     targ->eventPrint("You have been invited to join the party \"" + name +
       "\".\nType \"party join " + name + "\" in 60 "
       "seconds to join.", MSG_SYSTEM);
+    eventSave();
     return 1;
 }
 
@@ -149,11 +171,14 @@ mixed eventJoinParty(object who, string name) {
     this_party->Members += ({ who });
     CHAT_D->eventSendChannel("System", name, (string)who->GetName() +
       " has joined the party.");    
+    eventSave();
     return 1;
 }
 
 mixed eventLeaveParty(object who) {
-    return eventRemoveMember(who, who);
+    mixed ret = eventRemoveMember(who, who);
+    eventSave();
+    return ret;
 }
 
 mixed eventRemoveMember(object who, object targ) {
@@ -182,6 +207,7 @@ mixed eventRemoveMember(object who, object targ) {
     }
     targ->eventPrint("You are no longer a member of the party " + name +
       ".", MSG_SYSTEM);
+    eventSave();
     return 1;
 }
 
@@ -195,6 +221,7 @@ mixed eventRemoveParty(object who) {
     foreach(ob in ((class party)Parties[name])->Members)
     ob->SetParty(0);
     map_delete(Parties, name);
+    eventSave();
     return 1;
 }
 

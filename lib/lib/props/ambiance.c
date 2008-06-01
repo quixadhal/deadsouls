@@ -8,10 +8,10 @@
 
 private int AmbientLight = 0;
 
-int GetAmbientLight() {
+int GetAmbientLight(){
     return AmbientLight;
 }
 
-static int SetAmbientLight(int x) {
+static int SetAmbientLight(int x){
     return (AmbientLight = x);
 }

@@ -24,4 +24,6 @@ void reset() {
     if(!present("unity")) 
         new("/domains/Praxis/obj/mon/unity")->move(this_object());
 }
-
+void init(){
+    ::init();
+}

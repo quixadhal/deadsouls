@@ -14,12 +14,13 @@ inherit LIB_VERB;
 static void create() {
     verb::create();
     SetVerb("ask");
-    SetRules("LIV STR", "STR", "LIV to STR", "LIV for STR");
+    SetRules("LIV STR", "STR", "LIV to STR", "LIV for STR", "LIV about STR");
     SetErrorMessage("Ask what?  Or ask whom to do what?");
     SetHelp("Syntax: <ask LIVING SOMETHING>\n"
       "        <ask SOMETHING>\n"
+      "        <ask LIVING about SOMETHING>\n"
       "        <ask LIVING to DO SOMETHING>\n"
-      "        <ask LIVING for SOMTHING>\n\n"
+      "        <ask LIVING for SOMETHING>\n\n"
       "Some npcs and perhaps some inanimate objects will respond "
       "when you query the target with a specific question.\n\n"
       "See also: reply, say, shout, speak, tell, whisper, yell");
@@ -28,6 +29,8 @@ static void create() {
 mixed can_ask_liv_to_str(string str) { return 1; }
 
 mixed can_ask_liv_for_str(string str) { return 1; }
+
+mixed can_ask_liv_about_str(string str) { return 1; }
 
 mixed can_ask_liv_str(string str) {
     string tmp;
@@ -68,11 +71,24 @@ mixed do_ask_liv_for_str(object ob, string str) {
     return 1;
 }
 
+mixed do_ask_liv_about_str(object ob, string str) {
+    message("my_action", "You ask "+(string)ob->GetName()+" about "+str+".",
+      this_player() );
+    message("other_action", (string)this_player()->GetName()+" asks "+
+      (string)ob->GetName()+" about "+str+".",
+      environment(ob), ({ ob, this_player() }) );
+    if( !((int)ob->eventConsult(this_player(), str)) )
+        message("other_action", (string)this_player()->GetName()+" asks "
+          "you about "+str+".", ob);
+    return 1;
+}
+
 mixed do_ask_liv_str(object ob, string str) {
     mixed tmp;
 
     if( sscanf(str, "to %s", tmp) ) return do_ask_liv_to_str(ob, tmp);
     if( sscanf(str, "for %s", tmp) ) return do_ask_liv_for_str(ob, tmp);
+    if( sscanf(str, "about %s", tmp) ) return do_ask_liv_about_str(ob, tmp);
     if( str[<1] != '?' ) str = capitalize(str) + "?";
     else str = capitalize(str);
     return (mixed)this_player()->eventSpeak(ob, TALK_LOCAL, str);

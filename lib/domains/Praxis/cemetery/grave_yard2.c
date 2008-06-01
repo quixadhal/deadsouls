@@ -35,4 +35,6 @@ void create() {
         "down" : "/domains/Praxis/cemetery/grave_yard7",
         "north"	 : "/domains/Praxis/cemetery/grave_yard8"]) );
 }
-
+void init(){
+    ::init();
+} 

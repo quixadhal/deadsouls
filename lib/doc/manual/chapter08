@@ -162,6 +162,8 @@ last act in native muds is to call eventMove() in the monster object to move
 it to this room (this_object()).  In compat muds, you call the efun
 move_object() which takes two parameters, the object to be moved, and the
 object into which it is being moved.
+// CORRECTION: move_object() does not take two arguments in recent 
+// versions of MudOS. -Crat 24Feb2007
  
 8.7 Chapter summary
 At this point, you now have enough knowledge to code some really nice

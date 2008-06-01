@@ -18,4 +18,6 @@ void create() {
       (["northeast" : "/domains/Praxis/rain_forest",
         "southwest" : "/domains/Praxis/wild2"]) );
 }
-
+void init(){
+    ::init();
+}

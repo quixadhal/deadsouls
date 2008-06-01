@@ -28,4 +28,3 @@ void create() {
     ob->SetLong( "A board for utter nonsense.\n");
 }
 
-

@@ -40,8 +40,29 @@ private static string PlayerName, rlog, gcmd;
 private static object NewPlayer;
 private static mapping Groups, ReadAccess, WriteAccess;
 private static string *ParserDirs = ({ "secure", "verbs", "daemon", "lib", "spells" });
+private static string array efuns_arr = ({});
 
 void create() {
+#ifdef __OPCPROF__
+    string tmpfun, junk, opstr;
+    string *oparr = ({});
+    string opfile = "/secure/tmp/opc";
+    opcprof(opfile);
+    if(file_exists(opfile+".efun")){
+        opstr = read_file(opfile+".efun");
+        if(opstr){ 
+            oparr = explode(opstr, "\n");
+        }
+        if(sizeof(oparr)){
+            foreach(string element in oparr){
+                if(sscanf(element,"%s %s",tmpfun, junk) == 2){
+                    if(tmpfun[0..0] == "_") tmpfun = tmpfun[1..];
+                    efuns_arr += ({ tmpfun });
+                }
+            }
+        }
+    }
+#endif
     Unguarded = 0;
     NewPlayer = 0;
     PlayerName = 0;
@@ -102,7 +123,14 @@ private static void load_access(string cfg, mapping resource) {
               error("Error in loading config file " + cfg + ".");
           }
           ac = trim(ac);
-          resource[fl] = explode(ac, ":");
+          if(last(fl,3) == "/*/"){
+              string tmp = truncate(fl,2);
+              foreach(string element in get_dir(tmp)){
+                  resource[tmp+element+"/"] = explode(ac, ":");
+              }
+          }
+
+          else resource[fl] = explode(ac, ":");
       }
   }
 
@@ -269,6 +297,21 @@ private static void load_access(string cfg, mapping resource) {
         return 1;
     }
 
+#if 0
+    nomask static int check_user(object ob, string fun, string file, string oper) {
+        string nom, tmp, junk;
+        int x;
+        if( !sscanf(file, REALMS_DIRS "/%s", nom) ){
+            //x = sscanf(file, ESTATES_DIRS "/%s/%s", junk, nom);
+            if(x != 2) return 0;
+        }
+        if( sscanf(nom, "%s/%*s", tmp) ) nom = tmp;
+        nom = user_path(nom)+"adm/access";
+        if(file_size(nom+".c") < 0) return 0;
+        catch(x = (int)call_other(nom, "check_access", ob, fun, file, oper));
+        return x;
+    }
+#else
     nomask static int check_user(object ob, string fun, string file, string oper) {
         string nom, tmp;
         int x;
@@ -284,6 +327,7 @@ private static void load_access(string cfg, mapping resource) {
         catch(x = (int)call_other(nom, "check_access", ob, fun, file, oper));
         return x;
     }
+#endif
 
     nomask static int check_domain(object ob, string fun, string file, string o) {
         string nom;
@@ -475,6 +519,13 @@ private static void load_access(string cfg, mapping resource) {
         ret = "---\n"+timestamp()+"\n"+ standard_trace(mp);
         if( caught ) write_file(file = "/log/catch", ret);
         else write_file(file = "/log/runtime", ret);
+        //if(!this_player()){
+        //    object *object_stack = call_stack(1);
+        //    object web_sessions = load_object(WEB_SESSIONS_D);
+        //    if(web_sessions && member_array(web_sessions, object_stack) != -1){
+        //        web_sessions->ReceiveErrorReport(ret);
+        //    }
+        //}
         if( this_player(1) && find_object(SEFUN) ) {
             this_player(1)->SetLastError(mp);
             if( creatorp(this_player(1)) ) {
@@ -499,17 +550,25 @@ private static void load_access(string cfg, mapping resource) {
     }
 
     void log_error(string file, string msg) {
-        string nom, tmp;
+        string nom, tmp, tmp2;
 
         if( file[0] != '/' ) {
             file = "/" + file;
         }
-        if( sscanf(file, REALMS_DIRS+"/%s/%s", nom, tmp) != 2  && 
-          sscanf(file, DOMAINS_DIRS+"/%s/%s", nom, tmp) != 2 ) 
+        if(!this_player()){
+            object *object_stack = call_stack(1);
+            object web_sessions = load_object(WEB_SESSIONS_D);
+            if(web_sessions && member_array(web_sessions, object_stack) != -1){
+                web_sessions->ReceiveErrorReport(msg);
+            }
+        }
+        if( sscanf(file, REALMS_DIRS+"/%s/%s", nom, tmp) != 2 && 
+          sscanf(file, DOMAINS_DIRS+"/%s/%s", nom, tmp) != 2 && 
+          sscanf(file, ESTATES_DIRS+"/%s/%s/%s", tmp, nom, tmp2) != 3 ) 
             sscanf(file, "/%s/%s", nom, tmp);
         if( !nom ) nom = "log";
         catch(write_file(DIR_ERROR_LOGS "/" + nom, timestamp()+" "+msg));
-        if(msg && this_player(1) && creatorp(this_player(1))){
+        if(msg && this_player(1) && builderp(this_player(1))){
             catch(tell_player(this_player(1),msg));
         }
     }
@@ -579,9 +638,10 @@ private static void load_access(string cfg, mapping resource) {
     }
 
     string author_file(string str) {
-        string nom, tmp;
+        string nom, tmp, tmp2;
 
         if(sscanf(str, REALMS_DIRS+"/%s/%s", nom, tmp) == 2) return nom;
+        else if(sscanf(str, ESTATES_DIRS+"/%s/%s/%s", tmp, nom, tmp2) == 3) return nom;
         return 0;
     }
 
@@ -608,9 +668,11 @@ private static void load_access(string cfg, mapping resource) {
         return to_int(read_file(file));    }
 
     string get_save_file_name() {
-        string str;
+        mixed str;
 
+        if(!this_player(1)) return DIR_TMP+"/.dead.edit";
         str = (string)this_player(1)->GetKeyName();
+        if(!str || !stringp(str)) return DIR_TMP+"/.dead.edit";
         if(file_size(user_path(str)) == -2)
             return user_path(str)+"dead.edit";
         else return DIR_TMP+"/"+str+".dead.edit";
@@ -717,17 +779,18 @@ private static void load_access(string cfg, mapping resource) {
         mkdir(DIR_PLAYERS+"/"+str[0..0]);
     }
 
-    object player_object(string nom) {
+    varargs object player_object(string nom, object stub) {
         object ob;
         string err, tmp;
         int old_limit;
 
         tmp = base_name(ob = previous_object());
-        if( tmp != CMD_ENCRE && tmp != CMD_DECRE && tmp != LIB_CONNECT )
+        if( tmp != CMD_ENCRE && tmp != CMD_DECRE && tmp != LIB_CONNECT && tmp != RELOAD_D )
             return 0;
         old_limit = max_eval_cost();
         set_eval_limit(1000000000);
-        NewPlayer = ob;
+        if(tmp == RELOAD_D && stub) NewPlayer = stub;
+        else NewPlayer = ob;
         if(file_size(DIR_CRES+ "/" + nom[0..0]+ "/" +nom+__SAVE_EXTENSION__) > -1) 
             err = catch(ob = load_object(DIR_CRES+"/"+nom[0..0]+"/"+nom));
         else err = catch(ob = load_object(DIR_PLAYERS+"/"+nom[0..0]+"/"+nom));
@@ -784,6 +847,10 @@ private static void load_access(string cfg, mapping resource) {
     }
 
     int GetResetNumber() { return ResetNumber; }
+
+    string *GetEfuns(){
+        return (({})+ efuns_arr);
+    }
 
     object *parse_command_users() {
         return filter(users(), (: creatorp($1) || (int)$1->is_living() :));

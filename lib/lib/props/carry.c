@@ -13,50 +13,50 @@ int MaxCarry    = 0;
 
 int CanCarry(int amount);
 
-int AddCarriedMass(int x) {
-    if( !CanCarry(x) ) {
+int AddCarriedMass(int x){
+    if( !CanCarry(x) ){
         return -1;
     }
     CarriedMass += x;
-    if( CarriedMass < 0 ) {
+    if( CarriedMass < 0 ){
         CarriedMass = 0;
     }
     return CarriedMass;
 }
 
-int GetCarriedMass() {
+int GetCarriedMass(){
     return CarriedMass ;
 }
 
-int GetCarriedWeight() {
+int GetCarriedWeight(){
     object env;
     float h = DEFAULT_GRAVITY;
 
-    if( env = environment() ) {
+    if( env = environment() ){
         h = env->GetGravity();
     }
     return to_int( GetCarriedMass() * h );
 }
 
-int GetMaxCarry() {
+int GetMaxCarry(){
     return MaxCarry;
 }
 
-int GetLivingMaxCarry() {
+int GetLivingMaxCarry(){
     return MaxCarry;
 }
 
-int SetMaxCarry(int x) {
+int SetMaxCarry(int x){
     return (MaxCarry = x);
 }
 
-int CanCarry(int amount) {
+int CanCarry(int amount){
     object env;
     float h;
 
     if( amount < 1 ) return 1;
-    if( env = environment() ) {
-        if( !(living(env)) ) {
+    if( env = environment() ){
+        if( !(living(env)) ){
             h = (float)env->GetGravity();
         }
         else {
@@ -66,7 +66,7 @@ int CanCarry(int amount) {
     else {
         h = DEFAULT_GRAVITY;
     }
-    if( ((GetCarriedMass() + amount) * h) > GetMaxCarry() ) {
+    if( ((GetCarriedMass() + amount) * h) > GetMaxCarry() ){
         return 0;
     }
     else {

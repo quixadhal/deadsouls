@@ -24,11 +24,10 @@ static void create() {
     AddItem("desert", "The town does all it can to keep from being swallowed "
       "by it.");
     AddItem(new("/domains/Ylsrim/etc/church_button"));
-    SetObviousExits("w, enter church");
     SetExits( ([ 
+        "north" : "/domains/Ylsrim/room/"+ "church",
         "west" : "/domains/Ylsrim/room/"+ "kaliid4" ]));
-    SetEnters( ([ "church" : "/domains/Ylsrim/room/"+ "church" ]));
-    SetDoor("church", "/domains/Ylsrim/etc/church_door");
+    SetDoor("north", "/domains/Ylsrim/etc/church_door");
 }
 
 void init(){

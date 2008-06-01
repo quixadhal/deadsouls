@@ -40,4 +40,3 @@ int enter(string str) {
     this_player()->eventMoveLiving("/domains/Praxis/mage_join", "into the tree");
     return 1;
 }
-

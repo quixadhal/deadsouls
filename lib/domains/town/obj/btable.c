@@ -23,9 +23,9 @@ void YouLose();
 
 int read(string args) {
     write("The small letters read...");
-    write(" %^CYAN%^Dealer stands at 17.");     write(" %^CYAN%^Ties go to the house.");
+    write(" %^CYAN%^Dealer stands pat at 17.");     write(" %^CYAN%^Ties go to the house.");
     write("deal <amount> : Starts the game, wagering <amount>");     write(" hit : Requests a new card");
-    write(" stand : Ends the game");
+    write(" stand pat : Ends the game");
     return 1;
 }
 
@@ -123,8 +123,10 @@ int eventHit() {
     }
     return 1;
 }
-int eventStand() {
+int eventStand(string str) {
     int lose;
+
+    if(str != "pat") return 0;
     if (gameon == 0) {
         write("A game has not started yet, type \"deal\" to start one");
         return 1;

@@ -40,7 +40,7 @@ mixed do_zap_liv(object ob){
     say(this_player()->GetName()+" raises a hand and %^RED%^ZAPS%^RESET%^"+
       " "+name+"!",({ob}));
     tell_object(ob,this_player()->GetName()+" raises a hand and %^RED%^ZAPS%^RESET%^ you!");
-    ob->eventReceiveDamage(this_player(),BLUNT,(mhp * 5),0,({"torso"}));
+    ob->eventReceiveDamage(this_player(),BLUNT,(mhp * 5),0,({ob->GetTorso()}));
 
     return 1;
 }

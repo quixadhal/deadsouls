@@ -15,6 +15,9 @@ static void create() {
         "clinic" : "This small clinic is where students in need of medical "+
         "attention go."
       ]) );
+    SetProperties(([
+        "no attack" : 0,
+      ]));
     SetExits( ([
         "south" : "/domains/campus/room/spath",
         "north" : "/domains/campus/room/npath",
@@ -29,8 +32,8 @@ static void create() {
       ]));
     SetEnters( ([ 
       ]) );
-    SetProperty("no attack", 1);
-
+    SetFlyRoom("/domains/town/virtual/sky/28,99995,1");
+    AddItem(new("/domains/campus/obj/lamp"));
 }
 void init(){
     ::init();

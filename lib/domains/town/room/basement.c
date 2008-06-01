@@ -14,12 +14,13 @@ static void create() {
       ]) );
     SetInventory(([
         "/domains/town/obj/couch" : 1,
+        "/domains/town/npc/leo" : ({60, 1})
       ]));
     SetExits( ([
         "west" : "/domains/town/room/elevator",
       ]) );
     SetObviousExits("w");
-    AddStuff( ({"/domains/town/npc/leo"}) );
+    //AddStuff( ({"/domains/town/npc/leo"}) );
 }
 void init(){
     ::init();

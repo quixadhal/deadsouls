@@ -1,3 +1,216 @@
+---- 2.8 ---
+- Released 2008-06-01
+- Cleanup of debug statements.
+- Fixed some typos.
+- Fixed mangled enters display in obvious exits.
+
+---- 2.7a28 ---
+- Released 2008-06-01
+- Various missing init()'s in Ylsrim & Praxis fixed. Note: those
+  are still unsupported areas, just kept for historical reasons. They
+  may eventually be dropped from the distribution.
+- Driver: FluffOS updated to handle being compiled with DEBUG defined.
+- Driver: Address server errors are now suppressed by default ( ADDRFAIL_NOTIFY 
+  in comm.c )
+- New commands: godmode, wizvision, annoyblock.
+- Warmboots are now even more thorough in their recursive loading.
+- Bug in player description fixed.
+- Finger daemon no longer divulges player email addresses except
+  to arches (top level admins).
+- Whispering now happens in your "current language", not
+  your native language.
+- eventMoveLiving() merged for both npc's and interactives in LIB_LIVING.
+  Odd messages from this function in LIB_STARGATE fixed.
+- Input now checked for non-alphabet characters before being
+  command-matched.
+- Global emotes can now be added by non-admin creators, if they are
+  members of the EMOTES group.
+
+---- 2.7a27 ---
+- Released 2008-05-15
+- Fixed a crasher when reading zero-length files.
+- Driver: Fixed a crasher when some command actions fail to return properly.
+- The SetInventory refill now will replenish inventory when
+  some is missing, not just when all is gone. For an example, see
+  the new weapons rack in /domains/default/room/arena.c
+- The blackjack table now uses "stand pat" rather than "stand" for
+  ending the game. This avoids amusing problems with physical posture.
+
+---- 2.7a26 ---
+- Released 2008-05-04
+- Added sefun: containers()
+- Sentients can now be asked about things, for example, 
+  "ask dirk about leveling". Example: /domains/town/npc/dirk.c
+- Added commands: praces, removeclasses, addclasses
+- The new CLASS_SELECTION option in config.h controls whether
+  new players are asked to select a class when they create their
+  character. Disabled by default. To enable: mudconfig selectclass yes
+- Fixed some odd defaults in class definition files.
+- Fixed a bug in questing that failed to award quest points.
+- XP for kills is now shared among party members if they
+  are in the same room as the kill.
+
+---- 2.7a25 ---
+- Released 2008-04-24
+- Added periodic cleanup of channel mappings in the i3 router to
+  prevent peculiar runtimes when running for a long time.
+- Fixed channel banning in the i3 router.
+- The web server now handles POSTS where the boundary gets
+  split in separate packets (this caused mysterious hangs when
+  uploading some files but not others).
+
+---- 2.7a24 ---
+- Released 2008-04-16
+- Creweb chanlogs now listed in "last modified" order.
+- Virtual rooms now destructed on warm boots.
+- Added day/night descs to outdoor town locations.
+- Important npc's in town are now set to respawn after
+  60 seconds, if killed or moved. See the SetInventory directive
+  in /domains/town/room/tavern.c for an example.
+
+---- 2.7a23 ---
+- Released 2008-04-07
+- Warm boots no longer hang people in the process
+  of editing files. 
+- Various fixes to warm boots.
+- Fixed bug in strings.c that broke QCS.
+- Tells between invis cre's now behave more sensibly.
+
+---- 2.7a22 ---
+- Released 2008-03-30
+- Fixed runtime in unknown INTERMUD_D packet handling.
+- Fixed runtime in creweb logfile reading of empty files.
+- Creators can now cast any spell known to SPELLS_D. Their
+  default spell level is extremely high.
+- LIB_QUEST changes: variable name has been changed and is now
+  a mapping rather than a class. Quest-specific functions moved
+  out of LIB_PLAYER and into LIB_QUEST. RemoveQuest() is now
+  an option.
+- Dummy object handling improved...the church elevator should
+  now work somewhat better.
+- Taking over your char from a new session now logs in /log/enters.
+- Added commands: warmboot, userload
+- Windows users: FluffOS file operations tend to take a dramatically
+  longer time to complete on Windows than on UNIX. A warmboot, while
+  not disconnecting the users, may hang them for several minutes
+  such that they may consider it a "crash" of some sort.
+
+---- 2.7a20 ---
+- Released 2008-03-26
+- Chan logs viewing added to creweb.
+- The "muds" channel is no longer added to creators by default.
+- The jade ring, powered scout armor, and training dummy now use TYPES_D
+  to work out the received damage type.
+
+---- 2.7a19 ---
+- Released 2008-03-23
+- SERVICES_D now accurately reports current ports for active services.
+- Locate requests now adequately hide invis players.
+- The who command no longer counts color codes in title length.
+- The blow that kills a creature in combat is now more correctly displayed.
+- Fixed a parsing bug in dummy items that reported oddly abbreviated names.
+- Fixed various problems with the timing of combat messages.
+- Fixed bug in "hist tell"
+
+---- 2.7a18 ---
+- Released 2008-03-23
+- Added sefun: telnet_privp()
+- Added commands: unvirt, telnet (user must be in the TELNET group)
+- Added TYPES_D to help decipher type names from their integer/bitshifted
+  designation: eval return TYPES_D->eventCalculateTypes("armor",196608)
+- Doors are now knockable and yelling from the opposite side of a
+  closed door is audible.
+- Fixed a bug in intermud-3 tells that allowed you to send tells
+  to disconnected muds.
+- "muds" channel added to report connecting and disconnecting muds.
+- "intermud" channel added to report finger, who, and locate requests.
+- wild_card() no longer an lfun, consolidated as a sefun.
+- Fixed problem in user_path() that caused recursion problems due
+  to the new "builder" player type.
+- Added mouth types to races.
+- Purged instances of the class data type from RACES_D.
+
+---- 2.7a16 ---
+- Released 2008-03-16
+- Bundled driver is now a customized FluffOS 2.11
+
+---- 2.7a14 ---
+- Released 2008-03-13
+- Added example of an environmental suit: /domains/default/armor/scoutsuit.c
+- Modified firearms code to include rifles: /domains/town/weap/m16rifle.c
+- NPC's now try to shoot weapons they're wielding, if they're loaded.
+- Removed out of date faqs.
+- Tweaks and fixes to room, rocketpack, and position code.
+- Fixed module id bug in Yautja wrist computer.
+- eventDescribeEnvironment() moved to /lib/events/describe.c in order
+  to consolidate player/npc behavior, and to simplify things for people
+  wanting to customize room appearance.
+
+---- 2.7a13 ---
+- Released 2008-03-09
+- Added commands: position, var, variables, cconv, cwgconv.
+- Added sample virtual planet composed of sea bottom area,
+  underwater area, surface area, sky area, and outer space.
+- Updated the sconv command to convert Smaug areas more sanely.
+- Added verbs: swim, kneel.
+- Rapid death occurs when air-breathing creatures are deprived of oxygen.
+- Added a breathing device for exploring non-air environments:
+  /domains/default/armor/breather.c
+- Added a rocket pack for traveling in space. Do NOT "activate" it in
+  space or you will accelerate out of control. "boost" only, for example
+  "boost +x+z" then to stop: "boost -x-z"
+- Stargates added underwater and in outer space for convenient exploration.
+  Beware fatal anoxia.
+
+---- 2.7a12 ---
+- Released 2008-03-03
+- IMC2 now supports who requests and tells. "imc2 tell joe@dead_souls_joe hello!"
+- Driver workaround implemented for strip_colours() problem.
+- Channels can now accept filters. The two built-in filters are colorize and morse
+  example: cre|colorize hello there! 
+  This is not encouraged for use on intermud. CHANNEL_PIPES must be enabled.
+- Builder-generated items fixed up to limit cheating.
+- Added sefuns string_colors_old() and dbz_colors()
+- Inheritables for living creatures modified to limit cheating by builders.
+- MASTER_D can now accept some wildcards in read.cfg.
+- Fixed up various lib systems that previously did not expect players to
+  have home directories.
+- The source command will now accept the $N token in source files as a representation
+  of the player's key name.
+- Added RESOLV_D to handle internet name lookups and caching. Use the "resolve" command
+  to look up names.
+- Modified WGET_D to be more generic, added "wget" command for downloading arbitrary
+  files from the intertubes.
+
+---- 2.7a9 ---
+- Released 2008-02-18
+- Added sefuns: efuns(), sefuns(), efun_exists(), sefun_exists(), estatep().
+- Build-specific verbs and commands moved to builders/ directories.
+- Updated memcheck.
+- Added commands: arealist, areaclone, areagoto.
+- Modified QCS verbs to better handle non-creator builders.
+- Added terminal_color() efun to the driver that behaves the
+  way the FluffOS 2.7 terminal_colour() used to work.
+- Added support for the class data type in the identify() sefun.
+- Builders now have a workroom and sample areas after logging in
+  after their addition to the builder group.
+- NPC's in builder estates do not give XP when killed and do not deal damage to non-
+  estate NPC's.
+- Items in builder estates are not worth money in shops.
+- Weapons in builder estates are ineffective against normal opponents.
+- Armor in builder estates affords little protection.
+
+---- 2.7a5 ---
+- Released 2008-02-10
+- Added CreWeb system to allow web editing. See: help creweb
+- Added sefuns: unpinkfish(), repinkfish(), socket_ip(), builderp(), web_translate().
+- The mudconfig command can now change the port numbers for inet servers.
+
+---- 2.7a1 ---
+- Released 2008-01-18
+- No lib changes.
+- Bundled driver is now a slightly modified FluffOS 2.9.
+
 ---- 2.6.4 ---
 - Released 2008-05-16
 - Fixed a parsing bug in dummy items that reported oddly abbreviated names.

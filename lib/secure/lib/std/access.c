@@ -134,7 +134,8 @@ nomask int remove_access(string type, string file, string who) {
 void create() {
     string file = base_name(this_object());
 
-    if( strsrch(file, REALMS_DIRS) == 0 || strsrch(file, DOMAINS_DIRS) == 0 ) {
+    if( !strsrch(file, REALMS_DIRS) || !strsrch(file, DOMAINS_DIRS) 
+      || !strsrch(file, ESTATES_DIRS) ) {
         SetSaveFile(file);
     }
     daemon::create();

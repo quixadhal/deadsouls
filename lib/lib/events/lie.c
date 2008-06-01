@@ -5,19 +5,19 @@ inherit LIB_SIT;
 private int          MaxLiers = 1;
 private object array Liers    = ({});
 
-int GetMaxLiers() {
+int GetMaxLiers(){
     return MaxLiers;
 }
 
-static int SetMaxLiers(int x) {
+static int SetMaxLiers(int x){
     return (MaxLiers = x);
 }
 
-object array GetLiers() {
+object array GetLiers(){
     return copy(Liers);
 }
 
-mixed eventReceiveLay(object who) {
+mixed eventReceiveLay(object who){
     if(who->GetProperty("furniture")){
         write("You are already using a piece of furniture.");
         return 1;
@@ -28,25 +28,25 @@ mixed eventReceiveLay(object who) {
     return 1;
 }
 
-mixed eventReleaseStand(object who) {
+mixed eventReleaseStand(object who){
     Liers -= ({ who });
     Liers = filter(Liers, (: objectp($1) :) );
     sit::eventReleaseStand(who);
     return 1;
 }
 
-mixed direct_lie_word_obj() {
+mixed direct_lie_word_obj(){
     Liers = filter(Liers, (: $1 && $1->GetPosition()==POSITION_LYING :));
-    if( sizeof(Liers) >= MaxLiers ) {
+    if( sizeof(Liers) >= MaxLiers ){
         return "There is no room to lie there.";
     }
-    if(environment() != environment(this_player())) {
+    if(environment() != environment(this_player())){
         return "That's not available for sitting right now.";
     }
     return 1;
 }
 
-mixed direct_lie_down_word_obj() {
+mixed direct_lie_down_word_obj(){
     return direct_lie_word_obj();
 }
 

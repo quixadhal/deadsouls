@@ -21,7 +21,7 @@ string match_command(string verb){
     localcmds += CMD_D->GetCommands();
     localcmds += keys(VERBS_D->GetVerbs());
     if(member_array(verb,localcmds) == -1){
-        if(alphap(verb[0..0])) local_arr = regexp(localcmds,"^"+verb);
+        if(alphap(verb)) local_arr = regexp(localcmds,"^"+verb);
         if(sizeof(local_arr) == 1) {
             return local_arr[0];
         }

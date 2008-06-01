@@ -23,7 +23,6 @@ static void create() {
       "their adventures, and novices sign up to become fighters.",
       ({ "fighter", "fighters" }));
     AddItem("road", "The main street for Ylsrim.", ({ "kaliid" }));
-    SetObviousExits("e, w, enter hall");
     SetExits( ([ "east" : "/domains/Ylsrim/room/"+ "kaliid4",
         "west" : "/domains/Ylsrim/room/"+ "kaliid6" ]));
     SetEnters( ([ "hall" : "/domains/Ylsrim/room/"+ "fighter_hall" ]));

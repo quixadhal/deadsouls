@@ -8,11 +8,11 @@
 
 private static int RadiantLight = 0;
 
-int GetRadiantLight(int ambient) {
+int GetRadiantLight(int ambient){
     return RadiantLight;
 }
 
-int SetRadiantLight(int x) {
+int SetRadiantLight(int x){
     return (RadiantLight = x);
 }
 

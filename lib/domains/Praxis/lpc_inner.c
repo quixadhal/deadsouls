@@ -22,4 +22,6 @@ void create() {
     ob->SetShort( "the LPC and MudOS Irreality Board");
     ob->SetLong( "Post your questions about coding here.\n");
 }
-
+void init(){
+    ::init();
+}

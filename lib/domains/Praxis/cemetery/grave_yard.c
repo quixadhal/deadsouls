@@ -20,4 +20,6 @@ void create() {
         "gates" : "The gates are antiques.  No one makes gates "
         "like these anymore."]) );
 }
-
+void init(){
+    ::init();
+} 

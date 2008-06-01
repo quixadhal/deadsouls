@@ -21,4 +21,6 @@ void create() {
         "ceremony" : "The ceremony is only visible when you "
         "scroll back."]) );
 }
-
+void init(){
+    ::init();
+}

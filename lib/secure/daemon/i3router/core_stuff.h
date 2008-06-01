@@ -30,6 +30,8 @@ static void create(){
     if(!router_ip) router_ip = "149.152.218.102";
     if(mud_name() == "Frontiers")
         router_list = ({ ({"*yatmim", "149.152.218.102 23"}) });
+    if(mud_name() == "Dead Souls Aleph")
+        router_list = ({ ({"*i6", "149.152.218.102 25"}) });
     server_log("Created when mud uptime = " + time_elapsed(uptime()) + "\n");
     server_log("rsocket uptime = " + time_elapsed(time()-RSOCKET_D->GetInceptDate()) + "\n");
     call_out("setup", 1);
@@ -58,6 +60,7 @@ void heart_beat(){
     if(heart_count > 3600){
         heart_count = 0;
         this_object()->clean_ghosts();
+        this_object()->clean_chans();
         this_object()->clear_discs();
         this_object()->check_blacklist();
     }

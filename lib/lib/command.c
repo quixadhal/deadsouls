@@ -29,30 +29,30 @@ private int MaxCommandHistSize = 20;
 static string current_command = "";
 static string original_command = "";
 
-int direct_force_liv_str() { return 1; }
-int direct_force_liv_to_str() { return 1; }
+int direct_force_liv_str(){ return 1; }
+int direct_force_liv_to_str(){ return 1; }
 
 
 /*  ***************  /lib/command.c driver applies  ***************  */
 
-static void create() {
+static void create(){
     SearchPath = ({ DIR_PLAYER_CMDS, DIR_SECURE_PLAYER_CMDS, DIR_CLAN_CMDS,
       DIR_COMMON_CMDS, DIR_SECURE_COMMON_CMDS });
 }
 
-static string process_input(string cmd) { 
+static string process_input(string cmd){ 
     current_command = cmd;
     return cmd;
 }
 
 /*  ***************  /lib/command.c command lfuns  ***************  */
 
-static int cmdAll(string args) {
+static int cmdAll(string args){
     object old_agent;
     mixed err;
     string verb, file;
 
-    if(Paused) {
+    if(Paused){
         return 0;
     }
 
@@ -62,7 +62,7 @@ static int cmdAll(string args) {
             last_cmd_time = time();
             cmd_count = 1;
         }
-        if(cmd_count > MAX_COMMANDS_PER_SECOND) {
+        if(cmd_count > MAX_COMMANDS_PER_SECOND){
             write("You have exceeded the "+MAX_COMMANDS_PER_SECOND+" commands per second limit.");
             return 1;
         }
@@ -75,8 +75,8 @@ static int cmdAll(string args) {
     old_agent = this_agent(this_object());
     verb = query_verb();
 
-    if(this_player()->GetSleeping() > 0) {
-        if(verb != "wake") {
+    if(this_player()->GetSleeping() > 0){
+        if(verb != "wake"){
             this_player()->eventPrint("You are asleep.");
             return 1;
         }
@@ -128,8 +128,8 @@ static int cmdAll(string args) {
         this_player()->eventPrint("How clever of you. Or lucky. In any case, this command is unavailable to you.");
         return 1;
     }
-    if( !(file = (query_custom_command(verb) )) || query_custom_command(verb) == "") {
-        if( !(file = (string)CMD_D->GetCommand(verb, GetSearchPath())) ) {
+    if( !(file = (query_custom_command(verb) )) || query_custom_command(verb) == ""){
+        if( !(file = (string)CMD_D->GetCommand(verb, GetSearchPath())) ){
             string cmd;
             int dbg;
 
@@ -138,14 +138,14 @@ static int cmdAll(string args) {
             if( (int)this_object()->GetProperty("parse debug") ) dbg = 1;
             else if( (int)this_object()->GetProperty("debug") ) dbg = 1;
             else dbg = 0;
-            if( (err = parse_sentence(cmd, dbg)) == 1 ) {
+            if( (err = parse_sentence(cmd, dbg)) == 1 ){
                 this_agent(old_agent || 1);
                 return 1;
             }
-            if( err ) {
-                if( err == -1 ) {
+            if( err ){
+                if( err == -1 ){
                     if( !(err = (string)VERBS_D->GetErrorMessage(verb)) &&
-                      !(err = (string)SOUL_D->GetErrorMessage(verb)) ) {
+                      !(err = (string)SOUL_D->GetErrorMessage(verb)) ){
                         err = "Such a command exists, but no default "
                         "syntax is known.";
                     }
@@ -159,13 +159,13 @@ static int cmdAll(string args) {
         }
     }
 
-    if( (err = (mixed)call_other(file, "cmd", args)) != 1 ) {
+    if( (err = (mixed)call_other(file, "cmd", args)) != 1 ){
         string cmd;
 
         if( err ) SetCommandFail(err);
         if( !args || args == "" ) cmd = verb;
         else cmd = verb + " " + args;
-        if( (err = parse_sentence(cmd)) == 1 ) {
+        if( (err = parse_sentence(cmd)) == 1 ){
             this_agent(old_agent || 1);
             return 1;
         }
@@ -178,19 +178,19 @@ static int cmdAll(string args) {
     return 1;
 }
 
-int cmdDebugAll(string args) {
+int cmdDebugAll(string args){
     object old_agent;
     mixed err;
     string verb, file;
 
     old_agent = this_agent(this_object());
     verb = query_verb();
-    if( !(file = (string)CMD_D->GetCommand(verb, GetSearchPath())) ) {
+    if( !(file = (string)CMD_D->GetCommand(verb, GetSearchPath())) ){
         string cmd;
 
         if( args ) cmd = verb + " " + args;
         else cmd = verb;
-        if( (err = parse_sentence(cmd, 3)) == 1 ) {
+        if( (err = parse_sentence(cmd, 3)) == 1 ){
             this_agent(old_agent || 1);
             return 1;
         }
@@ -199,13 +199,13 @@ int cmdDebugAll(string args) {
         this_agent(old_agent || 1);
         return 1;
     }
-    if( (err = (mixed)call_other(file, "cmd", args)) != 1 ) {
+    if( (err = (mixed)call_other(file, "cmd", args)) != 1 ){
         string cmd;
 
         if( err ) SetCommandFail(err);
         if( !args || args == "" ) cmd = verb;
         else cmd = verb + " " + args;
-        if( (err = parse_sentence(cmd, 3)) == 1 ) {
+        if( (err = parse_sentence(cmd, 3)) == 1 ){
             this_agent(old_agent || 1);
             return 1;
         }
@@ -220,12 +220,12 @@ int cmdDebugAll(string args) {
 
 /*  ***************  /lib/command.c lfuns  ***************  */
 
-int Setup() {
+int Setup(){
     enable_commands();
     add_action( (: cmdAll :), "", 1);
 }
 
-int eventForce(string cmd) {
+int eventForce(string cmd){
     string err;
     int res;
     if(!cmd) return 0;
@@ -328,7 +328,7 @@ int eventRetryCommand(string lastcmd){
         }
     }
 
-    if(original_command && (StillTrying == 6 ||!ret)) {
+    if(original_command && sizeof(original_command) && (StillTrying == 6 ||!ret)){
         string direct, indirect;
         string junk;
         string *generals = ({"my","a","first","1st"});
@@ -336,6 +336,7 @@ int eventRetryCommand(string lastcmd){
         next_command = ({});
         original_command = replace_string(original_command,"out of","out_of");
         filter(explode(original_command," "), (: next_command += ({ trim($1) }) :) );
+        if(!sizeof(next_command)) next_command = ({ original_command });
         virb = next_command[0];
         next_command = next_command[1..];
         j = sizeof(next_command);
@@ -371,7 +372,7 @@ int eventRetryCommand(string lastcmd){
         if(sizeof(next_command)) ret += " "+implode(next_command," ");
     } 
 
-    if(StillTrying > 7) {	
+    if(StillTrying > 7){	
         write("Your command is ambiguous. Please be more specific. Which thing do you mean?");
         StillTrying = 0;
         original_command = 0;
@@ -390,8 +391,8 @@ int eventRetryCommand(string lastcmd){
 
 /*  **********  /lib/command.c data manipulation functions  ********** */
 
-string *AddSearchPath(mixed val) {
-    if(stringp(val)) {
+string *AddSearchPath(mixed val){
+    if(stringp(val)){
         if(!strsrch(val,"/secure/cmds/admins") || !strsrch(val,"/cmds/admins")){
             if(!(int)master()->valid_apply(({ "SECURE", "ASSIST", "LIB_CONNECT" })) ){
                 tell_creators("Security violation in progress: "+identify(previous_object(-1)) + ", "+get_stack());
@@ -406,17 +407,17 @@ string *AddSearchPath(mixed val) {
     return (SearchPath = distinct_array(SearchPath + val));
 }
 
-string *RemoveSearchPath(mixed val) {
+string *RemoveSearchPath(mixed val){
     if(stringp(val)) val = ({ val });
     else if(!pointerp(val)) error("Bad argument 1 to RemoveSearchPath()\n");
     return (SearchPath -= val);
 }
 
-string *GetSearchPath() { return SearchPath; }
+string *GetSearchPath(){ return SearchPath; }
 
-int GetForced() { return Forced; }
+int GetForced(){ return Forced; }
 
-int GetClient() { return 0; }
+int GetClient(){ return 0; }
 
 static string *GetCommandHist(){
     return CommandHist;
@@ -457,7 +458,7 @@ int GetPlayerPaused(){
     return Paused;
 }
 
-string SetCommandFail(string str) { 
+string SetCommandFail(string str){ 
     if( !str || str == "" ){
         if(!creatorp(this_player())) CommandFail = "Try \"help commands\" for a list of some commands.";
         if(creatorp(this_player())) CommandFail = "Try \"help creator commands\" for a list of some creator commands.";
@@ -466,4 +467,4 @@ string SetCommandFail(string str) {
     else return (CommandFail = str);
 }
 
-string GetCommandFail() { return CommandFail; }
+string GetCommandFail(){ return CommandFail; }

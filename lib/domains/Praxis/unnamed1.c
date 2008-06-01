@@ -18,3 +18,6 @@ void create() {
         "west" : "/domains/Praxis/s_centre3",
       ]) );
 }
+void init(){
+    ::init();
+}

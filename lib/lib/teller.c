@@ -18,7 +18,7 @@ string *Currencies;
 int LocalFee, NonLocalFee, OpenFee;
 float ExchangeFee;
 
-static void create() {
+static void create(){
     sentient::create();
     BankName = "Town Trust";
     LocalCurrency = "silver";
@@ -34,20 +34,20 @@ static void create() {
       ]) );
 }
 
-string SetBankName(string str) { return (BankName = str); }
+string SetBankName(string str){ return (BankName = str); }
 
-string SetLocalCurrency(string str) { return (LocalCurrency = str); }
+string SetLocalCurrency(string str){ return (LocalCurrency = str); }
 
-int SetLocalFee(int x) { return (LocalFee = x); }
+int SetLocalFee(int x){ return (LocalFee = x); }
 
-int SetNonLocalFee(int x) { return (NonLocalFee = x); }
+int SetNonLocalFee(int x){ return (NonLocalFee = x); }
 
-int SetOpenFee(int x) { return (OpenFee = x); }
+int SetOpenFee(int x){ return (OpenFee = x); }
 
-float SetExchangeFee(float x) { return (ExchangeFee = x); }
+float SetExchangeFee(float x){ return (ExchangeFee = x); }
 
-mixed SetCurrencies(mixed var) {
-    if( arrayp(var) ) {
+mixed SetCurrencies(mixed var){
+    if( arrayp(var) ){
         if( member_array(LocalCurrency, var) == -1 )
             var += ({ LocalCurrency });
         return (Currencies = var);
@@ -55,31 +55,31 @@ mixed SetCurrencies(mixed var) {
     else error("Bad argument 1 to SetCurrencies()");
 }
 
-int GetLocalFee() { return LocalFee; }
+int GetLocalFee(){ return LocalFee; }
 
-int GetNonLocalFee() { return NonLocalFee; }
+int GetNonLocalFee(){ return NonLocalFee; }
 
-int GetExchangeFee() { return ExchangeFee; }
+int GetExchangeFee(){ return ExchangeFee; }
 
-int GetOpenFee() { return OpenFee; }
+int GetOpenFee(){ return OpenFee; }
 
-mixed GetCurrencies() { return copy(Currencies); }
+mixed GetCurrencies(){ return copy(Currencies); }
 
-string GetBankName() { return BankName; }
+string GetBankName(){ return BankName; }
 
-string GetLocalCurrency() { return LocalCurrency; }
+string GetLocalCurrency(){ return LocalCurrency; }
 
-mixed CanBank(object who) {
+mixed CanBank(object who){
     if( !(int)who->GetAccountInfo( GetBankName() ) )
         return "You must create an account with "+GetBankName()+" first.";
     return 1;
 }
 
-int AddSurcharge(object who, string currency, int amount) {
+int AddSurcharge(object who, string currency, int amount){
     int charge;
     string type;
 
-    if( (string)who->GetTown() == GetTown() ) {
+    if( (string)who->GetTown() == GetTown() ){
         type = "standard";
         charge = GetLocalFee();
     } else {
@@ -87,7 +87,7 @@ int AddSurcharge(object who, string currency, int amount) {
         charge = GetNonLocalFee();
     }
     if( !charge ) return amount;
-    if( amount > charge ) {
+    if( amount > charge ){
         amount -= charge;
         who->eventPrint(sprintf("The bank retains a %s "
             "surcharge of %d %s.", type, charge, currency));
@@ -101,7 +101,7 @@ int AddSurcharge(object who, string currency, int amount) {
     return amount;
 }
 
-int eventBalance(object who) {
+int eventBalance(object who){
     string str, ret, *tmp;
     mapping mp;
     float val;
@@ -118,11 +118,11 @@ int eventBalance(object who) {
     total = 0;
     if( !sizeof(tmp) )
         ret += "You have made no deposits.\n";
-    else foreach(str in tmp) {
+    else foreach(str in tmp){
         if( mp[str] < 1 ) continue;
         ret += sprintf("%-20s : %d\n", str+"", mp[str]);
         if( str == GetLocalCurrency() ) total += mp[str];
-        else if( mp[str] ) {
+        else if( mp[str] ){
             if( currency_rate(str) )
                 val = query_value(mp[str],str,GetLocalCurrency()); 
             else val = 0;
@@ -138,19 +138,19 @@ int eventBalance(object who) {
     return 1;
 }
 
-int eventDeposit(object who, string currency, int amount) {
+int eventDeposit(object who, string currency, int amount){
     int i;
-    if( amount < 1 ) {
+    if( amount < 1 ){
         eventForce("speak " + (string)who->GetName() + ", "
           "That transaction is unacceptable.");
         return 1;
     }
     if( !currency ) currency = GetLocalCurrency();
-    if( !(i = (int)who->GetCurrency(currency)) ) {
+    if( !(i = (int)who->GetCurrency(currency)) ){
         eventForce("speak You are not carrying any "+currency+".");
         return 1;
     }
-    if( amount > i ) {
+    if( amount > i ){
         eventForce("speak You are not carrying that much "+ currency +".");
         return 1;
     }
@@ -163,28 +163,28 @@ int eventDeposit(object who, string currency, int amount) {
     return 1;
 }
 
-int eventWithdraw(object who, string currency, int amount) {
+int eventWithdraw(object who, string currency, int amount){
     int i, x, charge;
 
     x = amount;
-    if( amount < 1 ) {
+    if( amount < 1 ){
         eventForce("speak Withdrawing a negative amount is not a prudent "
           "idea, "+ (string)who->GetName() +".");
         return 1;
     }
     if( !currency ) currency = GetLocalCurrency();
-    if( !(i = (int)who->GetBank(GetBankName(), currency)) ) {
+    if( !(i = (int)who->GetBank(GetBankName(), currency)) ){
         eventForce("speak You have no "+currency+" in your account.");
         return 1;
     }
-    if( amount > i ) {
+    if( amount > i ){
         eventForce("speak You do not have that much "+currency+" in your "
           "account.");
         return 1;
     }
     if( !(amount = AddSurcharge(who, currency, amount)) ) return 1;
     charge = x - amount;
-    if( (int)who->AddCurrency(currency, x) < 0 ) {
+    if( (int)who->AddCurrency(currency, x) < 0 ){
         eventForce("speak You are unable to carry that "
           "much "+currency+"!");
         who->eventPrint("The bank credits your account with the fee.");
@@ -199,28 +199,28 @@ int eventWithdraw(object who, string currency, int amount) {
     return 1;
 }
 
-int eventExchange(object who, int amount, string str1, string str2) {
+int eventExchange(object who, int amount, string str1, string str2){
     int i, x, charge;
     float val;
 
-    if( amount < 1 ) {
+    if( amount < 1 ){
         eventForce("speak " + (string)who->GetName() + ", that "
           "transaction cannot be completed.");
         return 1;
     }
-    if( amount > (int)who->GetCurrency(str1) ) {
+    if( amount > (int)who->GetCurrency(str1) ){
         eventForce("speak You do not have enough of that currency to exchange.");
         return 1;
     }
-    if( str1 == str2 ) {
+    if( str1 == str2 ){
         eventForce("speak That would be pointless.");
         return 1;
     }
-    if( member_array(str1, GetCurrencies()) == -1 ) {
+    if( member_array(str1, GetCurrencies()) == -1 ){
         eventForce("speak You cannot exchange that currency here.");
         return 1;
     }
-    if( member_array(str2, GetCurrencies()) == -1 ) {
+    if( member_array(str2, GetCurrencies()) == -1 ){
         eventForce("speak You cannot exchange that currency here.");
         return 1;
     }
@@ -231,11 +231,11 @@ int eventExchange(object who, int amount, string str1, string str2) {
         charge = to_int(i / (100 / GetExchangeFee()));
     else charge = 0;
     if( charge ) i -= charge;
-    if( i < 1 ) {
+    if( i < 1 ){
         eventForce("speak That isn't even worth one " + str2 + "!");
         return 1;
     }
-    if( (int)who->AddCurrency(str2, i) < 0 ) {
+    if( (int)who->AddCurrency(str2, i) < 0 ){
         eventForce("speak You cannot carry that much "+str2+", " +
           (string)who->GetName()+".");
         return 1;
@@ -251,13 +251,13 @@ int eventExchange(object who, int amount, string str1, string str2) {
     return 1;
 }
 
-int eventOpenAccount(object who) {
-    if( who->GetAccountInfo( GetBankName() ) ) {
+int eventOpenAccount(object who){
+    if( who->GetAccountInfo( GetBankName() ) ){
         eventForce("speak You already have an account with "+GetBankName()+", " +
           (string)who->GetName()+"!");
         return 1;
     }
-    if( (int)who->GetCurrency( GetLocalCurrency() ) < OpenFee ) {
+    if( (int)who->GetCurrency( GetLocalCurrency() ) < OpenFee ){
         eventForce(" speak "+ sprintf("You must have at least %d %s to open "
             "an account at this branch of %s, %s.", GetOpenFee(),
             GetLocalCurrency(), GetBankName(), (string)who->GetName()));
@@ -275,25 +275,25 @@ int eventOpenAccount(object who) {
     return 1;
 }
 
-int cmdParse(object who, string cmd, string str) {
+int cmdParse(object who, string cmd, string str){
     int x;
     string s1, s2, honorific;
     mixed err;
 
-    if( cmd != "account" && stringp(err = CanBank(who)) ) {
+    if( cmd != "account" && stringp(err = CanBank(who)) ){
         who->eventPrint(err);
         return 1;
     }
-    switch(cmd) {
+    switch(cmd){
     case "balance" :
         return eventBalance(who);
         break;
     case "deposit" : 
-        if( !str ) {
+        if( !str ){
             eventForce("speak How much of what?");
             return 1;
         }
-        if(str == "all") {
+        if(str == "all"){
             if(!sizeof(this_player()->GetCurrencies())){
                 who->eventPrint("You have no money to deposit.");
                 return 1;
@@ -305,25 +305,25 @@ int cmdParse(object who, string cmd, string str) {
             return 1;
         }
         sscanf(str, "%d %s", x, s1);
-        if( member_array(s1, Currencies) < 0 ) {
+        if( member_array(s1, Currencies) < 0 ){
             who->eventPrint("That's not a valid currency.");
             return 1;
         }
         return eventDeposit(who, s1, x);
         break;
     case "withdraw" :
-        if( !str ) {
+        if( !str ){
             eventForce("speak How much of what?");
             return 1;
         }
-        if(str == "all") {
+        if(str == "all"){
             if(this_player()->GetGender() == "female") honorific = "ma'am";
             else honorific = "sir";
             eventForce("speak I'm sorry, "+honorific+", but withdrawals must be specified explicitly in terms of currency type and amount.");
             return 1;
         }
         sscanf(str, "%d %s", x, s1);
-        if( member_array(s1, Currencies) < 0 ) {
+        if( member_array(s1, Currencies) < 0 ){
             if(!s1) who->eventPrint("Please specify a currency.");
             else who->eventPrint(s1 + " is not supported here!");
             return 1;
@@ -331,7 +331,7 @@ int cmdParse(object who, string cmd, string str) {
         return eventWithdraw(who, s1, x);
         break;
     case "exchange" :
-        if( !str ) {
+        if( !str ){
             eventForce("speak Exchange what for what?");
             return 1;
         }
