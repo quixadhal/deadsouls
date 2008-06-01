@@ -47,9 +47,6 @@ int cmd(string str) {
     ret_arr = sort_array(get_dir(str + "/"),1);
     ret = "";
 
-    //tc("str: "+str);
-    //tc("ret_arr: "+identify(ret_arr));
-
     foreach(string element in ret_arr){
         if(last(element,2) == ".c"){
             element = truncate(element,2);

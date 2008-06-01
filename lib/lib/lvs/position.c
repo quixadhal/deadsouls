@@ -182,7 +182,6 @@ mixed eventFly(){
 }
 
 mixed eventSwim(){
-    //tc("foo: "+get_stack());
     if( Chair ){
         mixed tmp = Chair->eventReleaseStand(this_object());
 

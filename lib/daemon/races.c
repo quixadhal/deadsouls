@@ -327,11 +327,8 @@ void AddRace(string file, int player) {
             type = "";
             x = 0;
             if(sscanf(line, "MOUTH %s",type)){
-                //tc("type: "+identify(type));
                 res["Mouthtype"] = this_object()->GetMouthType(type);
-                //tc("yay: "+res["Mouthtype"]);
             }
-            //else tc("boo!");
             break;
 
         case "LIMB":

@@ -22,7 +22,6 @@ varargs mixed eventResolve(string str, string callback){
     mixed a, b, c, d;
     object ob = previous_object();
     if(!ob) ob = this_object();
-    //tc("ob: "+identify(ob),"yellow");
     if(sscanf(str,"%d.%d.%d.%d",a,b,c,d) != 4){
         if(sscanf(str,"%s.%s",a,b) != 2){
             return 0;
@@ -42,28 +41,21 @@ varargs mixed eventResolve(string str, string callback){
                 name = str;
                 number = Cache[str];
             }
-            //tc("cache hit");
-            //tc("llave: "+llave);
             call_other(ob, callback, name, number, llave);
-            //tc("llave: "+llave);
             return llave;
         }    
 
     }
-    //tc("no cache");
     key = resolve(str,"resolve_callback");
     Requests[key] = ([ "object" : ob, "callback" : callback ]) ;
     return key;
 }
 
 mixed resolve_callback(string name, string number, int key){
-    //tc("name: "+name+", number: "+number+", key: "+key);
-    //tc("Requests: "+identify(Requests),"cyan");
     if(name && number) Resolving = 1;
     if(Requests[key] && Requests[key]["object"] && name && number){
         Requests[key]["object"]->eventPrint(number+" resolves to: "+name);
         if(Requests[key]["callback"]){ 
-            //tc("callback: "+Requests[key]["callback"],"cyan");
             call_other(Requests[key]["object"], Requests[key]["callback"], name, number, key);
         }
         map_delete(Requests,key);

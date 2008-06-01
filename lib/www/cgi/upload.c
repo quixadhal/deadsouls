@@ -29,17 +29,8 @@ string gateway(mixed args) {
     string filename = ProcessedPost["filename"];
     string ret = "";
 
-
-    //tc("UPLOAD GATEWAY","red");
-
     if(ENABLE_CREWEB){
-
         validate();
-
-        //tc("ob: "+identify(ob),"yellow");
-        //tc("posted_file: "+posted_file,"white");
-        //tc("current_page: "+current_page,"white");
-        //tc("ProcessedPost: "+identify(ProcessedPost),"white");
 
         i = sscanf(current_page,"http://%s/%s",junk1, path);
         if(i != 2) i = sscanf(current_page,"/%s",path);
@@ -47,10 +38,7 @@ string gateway(mixed args) {
 
         path = "/"+path;
         if(last(path,1) != "/") path += "/";
-        //tc("path: "+path);
-        //tc("filename: "+filename);
         full_name = path+filename;
-        //tc("full_name: "+full_name);
 
         if(!filename || !sizeof(filename)){
             ret += "No file selected.<br>";

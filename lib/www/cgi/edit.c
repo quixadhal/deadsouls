@@ -20,7 +20,6 @@ string eventGenerateEditor(string file, string name, string shib){
     string ret = "File not found.";
     validate();
     tmp = WEB_SESSIONS_D->eventReadFile(file, name, shib);
-    //tc("tmp: "+tmp);
     if(tmp){
         ret = read_file(DIR_WWW_GATEWAYS+"/edit_script.js")+"<br>\n";
         ret += "Editing "+file+"";
@@ -43,21 +42,10 @@ string gateway(string args) {
     string current_page = ob->GetReferer();
     string ret = "";
 
-    //tc("EDIT GATEWAY","red");
-
     if(ENABLE_CREWEB){
-
         validate();
 
-        //tc("args: "+args,"white");
-        //tc("cookie: "+identify(cookie),"white");
-
-
         ret += eventGenerateEditor(args, cookie["name"], cookie["shib"]);
-        //ret += "<br>args: "+args+"<br>";
-        //ret += "referer: "+current_page+"<br>";
-        //ret += "cookie: "+identify(cookie)+"<br>";
-        //ret += "<META http-equiv=\"refresh\" content=\"5;URL="+current_page+"\">";
     }
     else {
         ret += "CreWeb is disabled. To enable it: mudconfig creweb enable<br><br>";

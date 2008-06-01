@@ -52,7 +52,6 @@ int cmd(string str) {
         return 1;
     }
 
-    //tc("category selected: "+str);
     str = homedir(this_player()) + "/area/" + str + "/" + what;
     if(last(str,2) != ".c") str += ".c";
     write("File selected: "+str);

@@ -38,18 +38,11 @@ varargs string GetMessage(string msg, mixed arg){
         tmp = replace_string(tmp, "$O", (string)arg->GetShort());
         break;
     case "leave":
-        //tc("tmp: "+tmp);
-        //tc("msg: "+msg);
-        //tc("arg: "+arg);
         if(stringp(arg) && strsrch(arg, "$N") == -1) 
             tmp = replace_string(tmp, "$D", arg);
-        //if(stringp(arg)){ tmp = arg;}
         break;
         //The following case is a bugfix courtesy of Memrosh @ Ascension
     case "come":
-        //tc("tmp: "+tmp);
-        //tc("msg: "+msg);
-        //tc("arg: "+arg);
         if(stringp(arg)){ tmp = arg;}
         break; 
     case "say": case "ask": case "exclaim": return tmp;

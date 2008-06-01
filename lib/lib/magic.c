@@ -156,9 +156,6 @@ varargs mixed eventPrepareCast(string verb, mixed array args...){
 static varargs void eventCast(object spell, string limb, object array targs){
     string name = spell->GetSpell();
 
-    //tc("LIB_MAGIC: eventCast("+identify(spell)+","+identify(limb)+", "+
-    //identify(targs)+")");
-
     if( this_object()->GetSpellBook()[name] < 100 ){
         eventTrainSpell(spell);
     }

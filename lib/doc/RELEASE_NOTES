@@ -1,3 +1,9 @@
+---- 2.8 ---
+- Released 2008-06-01
+- Cleanup of debug statements.
+- Fixed some typos.
+- Fixed mangled enters display in obvious exits.
+
 ---- 2.7a28 ---
 - Released 2008-06-01
 - Various missing init()'s in Ylsrim & Praxis fixed. Note: those

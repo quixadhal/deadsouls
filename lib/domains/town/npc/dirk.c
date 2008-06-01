@@ -39,6 +39,7 @@ static void create() {
       "Today he just wants to rest and relax, and has accepted "
       "the position of the town's Adventurers' Guild master. "
       "If you feel you deserve it, \"ask dirk to advance\".");
+    SetPolyglot(1);
     SetInventory(([
         "/domains/town/armor/collar" : "wear collar",
       ]));
@@ -46,12 +47,14 @@ static void create() {
     SetRace("human");
     SetGender("male");
     //SetAction(5, (: TalkFunc :));
-    AddTalkResponse("hello", "hi!");
+    AddTalkResponse("hello", "hi! Ask me for a tip!");
+    AddTalkResponse("hi", "hi! Ask me for a tip!");
     SetCommandResponses( ([ 
         "advance": (: AdvanceDude :) 
       ]) );
     SetRequestResponses( ([
-        ({ "a hint", "hints", "a clue", "clues" }) : (: TalkFunc :),
+        ({ "a hint", "hints", "a clue", "clues", "a tip", "tips" }) : 
+        (: TalkFunc :),
       ]) );
     SetConsultResponses( ([
         ({ "level", "levels", "leveling", "advancement", "advancing" }) :
@@ -166,5 +169,3 @@ string GetLevelTitle(int level){
     if(!level) level = 1;
     return advancement[level]["title"];
 }
-
-

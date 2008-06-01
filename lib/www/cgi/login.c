@@ -10,31 +10,18 @@ varargs string gateway(mixed args){
 
     if(ENABLE_CREWEB){ 
 
-        //tc("login stack: "+get_stack());
-        //tc("previous_object(): "+identify(previous_object()));
         ip = previous_object()->GetIp();
 
-        //tc("ip: "+ip);
-        //tc("args: "+args);
-        //tc("typeof args: "+typeof(args));
-        //tc("args: "+identify(args));
-
         if(!args || !stringp(args)) args = "123456789101112";
-
         if(sscanf(args,"%s&%s",who, password) != 2){
             ret = "<br>";
         }
 
         else {
             who = lower_case(who);
-            //tc("who: "+who);
-            //tc("password: "+password);
 
             if(!strsrch(who,"username=")) who = replace_string(who,"username=","",1);
             if(!strsrch(password,"password=")) password = replace_string(password,"password=","",1);
-
-            //tc("who: "+who);
-            //tc("password: "+password);
 
             if(!ret && !user_exists(who)){
                 no_user = 1;

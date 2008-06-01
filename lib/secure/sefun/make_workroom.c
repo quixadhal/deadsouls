@@ -9,7 +9,6 @@ varargs int make_workroom(mixed dude, int cre) {
     if(!dude) return 0;
 
     if(objectp(dude)){
-        //tc("test 1");
         cdir = homedir(dude, cre);
         creator = (cre || creatorp(dude));
         if(sizeof(get_dir(REALMS_DIRS+"/")) ==1) creator = 1;
@@ -28,14 +27,9 @@ varargs int make_workroom(mixed dude, int cre) {
         nom = dude;
     } 
 
-    //tc("cdir: "+cdir);
-
     if(unguarded( (: file_size("/realms/template/") :) ) == -1) return 4;
 
-    //tc("mmhmm");
-
     if(unguarded( (: file_size(cdir+"/area") :) ) == -1){
-        //tc("so far so good");
         tdir = "/realms/template/";
         dir_line = "#define MY_DIR          \""+cdir+"\"";
         bakdata = "workroom.orig : "+cdir+"/workroom.c\n";

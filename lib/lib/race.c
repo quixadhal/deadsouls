@@ -44,24 +44,15 @@ varargs int CanBreathe(object what, object where){
     medium = env->GetMedium();
     restype = this_object()->GetRespiration();
 
-    //tc("restype: "+restype);
-    //tc("medium: "+medium);
-
     if(restype & R_VACUUM) return 1;
 
     if((medium == MEDIUM_AIR || medium == MEDIUM_LAND || 
         medium == MEDIUM_SURFACE) && (restype & R_AIR) ) return 1;
 
-    //tc("hmm.");
-
     if((medium == MEDIUM_WATER || medium == MEDIUM_SURFACE)
       && (restype & R_WATER) ) return 1;
 
-    //tc("hmm2");
-
     if( medium == MEDIUM_METHANE && (restype & R_METHANE) ) return 1;
-
-    //tc("hmm3");
 
     return 0;
 }

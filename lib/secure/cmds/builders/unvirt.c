@@ -29,9 +29,7 @@ mixed cmd(string str){
     }
 
     foreach(string feature in features){
-        //tc("feature: "+feature,"blue");
         RoomElements[feature] = call_other(here, feature);
-        //tc("RoomElements["+identify(feature)+"]: "+identify(RoomElements[feature]),"cyan");
     }
 
     cp("/obj/room.c", base_name(here)+".c");
@@ -52,13 +50,9 @@ mixed cmd(string str){
             case "SetListenMap" : key = "SetListen"; break;
             default :
             }
-            //tc("key: "+key,"yellow");
             if(key == "SetTerrainType"){
-                //tc("HERE HERE HERE HERE","yellow");
                 tmp = implode(TYPES_D->eventCalculateTypes("terrain",val),"|");
-                //tc("tmp: "+tmp);
                 tmp = "SetTerrainType("+tmp+");";
-                //tc("tmp: "+tmp);
                 staff->eventDelete(environment(this_player()), "SetTerrainType");
                 file_contents = staff->eventAppendLast(base_name(environment(this_player()))+".c", "create", tmp);
                 rm(base_name(environment(this_player()))+".c");
@@ -70,9 +64,7 @@ mixed cmd(string str){
             }
             else if(key == "SetMedium"){
                 tmp = TYPES_D->eventCalculateTypes("medium",val);
-                //tc("tmp: "+tmp);
                 tmp = "SetMedium("+tmp+");";
-                //tc("tmp: "+tmp);
                 staff->eventDelete(environment(this_player()), "SetMedium");
                 file_contents = staff->eventAppendLast(base_name(environment(this_player()))+".c", "create", tmp);
                 rm(base_name(environment(this_player()))+".c");
@@ -87,10 +79,7 @@ mixed cmd(string str){
                 val = staff->eventStringifyMap(val);
                 tmp = key + "( "+val+" );";
                 staff->eventDelete(environment(this_player()), key);
-                //file_contents = read_file(base_name(here)+".c");
                 file_contents = staff->eventAppendLast(base_name(environment(this_player()))+".c", "create", tmp);
-                //tc("tmp: "+identify(tmp));
-                //tc("file_contents: "+identify(file_contents));
                 write_file(base_name(environment(this_player()))+".c",file_contents,1);
             }
             else staff->eventModify(environment(this_player()),lower_case(key)+" "+val);

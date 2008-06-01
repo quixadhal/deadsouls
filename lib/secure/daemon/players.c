@@ -296,12 +296,9 @@ string array GetAdminIPs(){
 }
 
 int CheckBuilder(object who){
-    //tc("AAAAAAAAAAAAA");
     if(creatorp(who)) return 1;
     if(builderp(who)){
-        //tc("moo");
         if(!directory_exists(homedir(who)+"/area")){
-            //tc("moo2");
             unguarded( (: make_workroom($(who)) :) );
         }
         return 1;

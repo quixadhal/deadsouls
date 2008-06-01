@@ -50,8 +50,6 @@ mixed cmd(string str) {
         help();
         return 1;
     }
-    //tc("which: "+which);
-    //tc("arg: "+arg);
     cp("/secure/include/config.h","/secure/save/backup/config."+time());
     config = explode( read_file("/secure/include/config.h"),"\n" );
     config2 = ({});
@@ -121,11 +119,8 @@ int ModPortOffset(string which, string arg){
     service = which;
     service = upper_case(service);
     foreach(string element in net_array){
-        //tc("element: "+element);
         if(sscanf(element,"#define OFFSET_%s %s %d",svc, junk, offset) == 3){
-            //tc("HIT!","red");
             if(lower_case(svc) == lower_case(service)){
-                //tc("HIT!","cyan");
                 out = "#define OFFSET_"+service+"               "+new_offset;
             }
             else out = element;
@@ -134,14 +129,9 @@ int ModPortOffset(string which, string arg){
         new_array += ({ out });
     }
     out = implode(new_array,"\n");
-    //tc("out: \n"+out);
 
     write_file("/secure/include/network.h",out,1);
     write("The "+service+" port offset is being set to "+offset+".");
-    //write("The "+service+" port is being set to "+atoi(new_port)+".");
-    //write("To complete this configuration, wait 2 seconds, then issue the following commands:");
-    //write("mudconfig "+lower_case(service)+" disable");
-    //write("mudconfig "+lower_case(service)+" enable");
     RELOAD_D->eventReload(this_object(), 1, 1);
     reload(MASTER_D,0,1);
     return 1;
@@ -159,11 +149,8 @@ int ModPort(string which, mixed arg){
     service = which;
     service = upper_case(service);
     foreach(string element in net_array){
-        //tc("element: "+element);
         if(sscanf(element,"#define OFFSET_%s %s %d",svc, junk, offset) == 3){
-            //tc("HIT!","red");
             if(lower_case(svc) == lower_case(service)){
-                //tc("HIT!","cyan");
                 new_offset = ""+(atoi(new_port) - query_host_port());
                 out = "#define OFFSET_"+service+"               "+new_offset;
             }
@@ -173,7 +160,6 @@ int ModPort(string which, mixed arg){
         new_array += ({ out });
     }
     out = implode(new_array,"\n");
-    //tc("out: \n"+out);
     if(last(out,1) != "\n") out += "\n";
     write_file("/secure/include/network.h",out,1);
     write("The "+service+" port is being set to "+atoi(new_port)+".");

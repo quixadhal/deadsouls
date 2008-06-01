@@ -198,7 +198,6 @@ mixed ProcessHTTPResult(int fd)
     string * parts;
     string * arg_array;
     string * temp;
-    //tc("restults: "+Sockets[fd]["result"],"white");
     write_file("/tmp/"+Sockets[fd]["name"],Sockets[fd]["result"]);
     //parts = explode( results, NOTES_DELIM );
     return 1;
@@ -247,7 +246,6 @@ void sendHTTPGet()
     version() + CARRIAGE_RETURN+"\n"+CARRIAGE_RETURN+"\n";
     int result = 0;
     results = "";
-    //tc("str: "+str);
 #ifdef _DEBUG
     player->eventPrint("Sending HTTP get request..." );
 #endif

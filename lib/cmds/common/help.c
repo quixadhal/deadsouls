@@ -97,13 +97,8 @@ varargs void HelpMenu(string index) {
                 }
                 bing[i++] = "[%^CYAN%^" + (i+1) + "%^RESET%^] " + topic;
             }
-            //tc("columns are "+scr[0]+" / "+ (y+2) +" = "+(scr[0]/(y+2)));
-            //tc("bing: "+identify(bing));
-            //tc(format_page(bing, scr[0]/(y+2)),"yellow");
-            //tc(format_page(bing, 2),"yellow");
             tmp += format_page(bing, 3);
         }
-        //tc("foo:\n"+tmp);
         f = function(string ind) {
             if( !ind )
                 message("prompt", "\n\nEnter a index or 'q' to quit help: ",
@@ -163,6 +158,5 @@ varargs void HelpMenu(string index) {
                             }, ind);
                       }, ind);
               };
-              //tc("bar:\n"+tmp);
               this_player()->eventPage(explode(tmp, "\n"), "help", f, index);
           }

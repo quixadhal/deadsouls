@@ -149,7 +149,6 @@ void eventDescribeEnvironment(int brief){
             mapping lying = ([]), sitting = ([]), standing = ([]), flying = ([]);
             mapping floating = ([]), kneeling = ([]), swimming = ([]);
             mapping furniture = ([]);
-            //object mount = this_player()->GetProperty("mount");
             object mount;
             object *obs;
             string key;

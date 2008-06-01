@@ -43,8 +43,6 @@ void init(){
 
 mixed GetSuitHelp(string str){
     string ret;
-    //tc("str: "+identify(str));
-    //tc("qv: "+query_verb());
     if(!str) return 0;
     if(!stringp(str)) str = GetKeyName();
     if(query_verb() == "wear" || (str && answers_to(str, this_object()))){

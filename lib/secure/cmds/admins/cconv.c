@@ -109,7 +109,6 @@ int ConvertArea(string arg){
 
     foreach(string elemento in source_dirs){
         string path = str+"/"+area+"."+elemento;
-        //tc("evaluating path: "+path);
         if(!file_exists(path)){
             write(path+" does not exist. Skipping.");
             continue;

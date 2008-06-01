@@ -62,7 +62,6 @@ mixed can_swim_str(string str) {
       envpos != POSITION_SWIMMING){
         return "You are not swimming.";
     }
-    //tc("wtf");
     return 0;
 }
 
@@ -82,23 +81,19 @@ mixed can_swim_into_str(string str) {
       envpos != POSITION_SWIMMING){
         return "You are not swimming.";
     }
-    //tc("wtf2");
     return 0;
 }
 
 mixed do_swim() {
-    //tc("oh yeah");
     return this_player()->eventSwim();
 }
 
 mixed do_swim_str(string str) {
-    //tc("lala");
     this_player()->AddStaminaPoints(-StaminaCost());
     return (mixed)environment(this_player())->eventGo(this_player(), str);
 }
 
 mixed do_swim_into_str(string str) {
-    //tc("looloo");
     this_player()->AddStaminaPoints(-StaminaCost());
     return (mixed)environment(this_player())->eventEnter(this_player(), str);
 }

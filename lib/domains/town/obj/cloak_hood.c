@@ -4,7 +4,6 @@ inherit LIB_DUMMY; // These do not show up in desc, but you can look at them
 inherit LIB_WEAR; // Makes the item pressable
 
 varargs mixed eventWear(object who) {
-    //tc("hi");
     return 1;
 }
 

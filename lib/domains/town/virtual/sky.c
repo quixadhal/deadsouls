@@ -31,9 +31,6 @@ varargs static void create(int x, int y, int z) {
     int max_up = 1000;
     int max_down = 0;
 
-    //tc("stack: "+get_stack());
-    //tc("x: "+x+", y: "+y+", z: "+z);
-
     SetNoReplace(1);
     virt_sky::create();
     XPosition = x;

@@ -68,8 +68,6 @@ void eventSendData(string str){
     buffer b;
     int i;
     validate();
-    //tc("str is: "+typeof(str));
-    //tc("str is: "+identify(str));
     if(!str || !sizeof(str)) return;
     str = strip_colours(str);
     b = allocate_buffer(strlen(str));
@@ -87,20 +85,12 @@ void eventLogConnection(){
 
 int authenticate(string path){
     validate();
-    //tc("Cookie: "+identify(Cookie),"yellow");
-    //tc("WEB_SESSIONS_D->GetShibboleth("+Cookie["name"]+"): "+WEB_SESSIONS_D->GetShibboleth(Cookie["name"]));
     if(!Cookie || !sizeof(Cookie) || !Cookie["name"] || !Cookie["shib"]) return 0;
     if(!strsrch(path,REALMS_DIRS)){
-        //tc("ok I'm in realms","yellow");
         if(!strsrch(path,REALMS_DIRS+"/"+Cookie["name"])){
-            //tc("ok I'm in realms/"+Cookie["name"],"yellow");
             if(WEB_SESSIONS_D->GetShibboleth(Cookie["name"]) == Cookie["shib"]){
-                //tc("should be returning one","yellow");
                 return 1;
             }
-            //tc("wtf passwds don't match?","yellow");
-            //tc(WEB_SESSIONS_D->GetShibboleth(Cookie["name"]));
-            //tc(Cookie["shib"]);
         }
     }
     return 0;
@@ -116,7 +106,6 @@ string GetBoundary(){
 
 mapping GetCookie(){
     validate();
-    //tc("Cookie: "+identify(Cookie),"blue");
     return copy(Cookie);
 }
 
@@ -140,16 +129,11 @@ mixed GenerateIndex(string dir, string requested){
     string ret = "<html>\n";
     string prefix = "";
     mixed *listing;
-    //tc("dir: "+dir);
-    //tc("requested: "+requested);
-    //tc("directory_exists("+identify(dir)+"): "+directory_exists(dir));
     if(!dir || !directory_exists(dir)) return 0; 
     listing = get_dir(dir+"/");
     if(!strsrch(dir,DIR_WWW)) dir = replace_string(dir,DIR_WWW,"",1);
     prefix = path_prefix(requested);
     if(!sizeof(prefix)) prefix = "/";
-    //tc("listing: "+identify(listing));
-    //ret += "<a href=\""+prefix+"\">Parent Directory   </a>\n";
     if(WEB_SESSIONS_D->GetSession(Cookie["name"])){
         if(authenticate(dir) && requested[1..1] != "~"){
             ret += "<FORM METHOD=POST ENCTYPE=\"multipart/form-data\" ACTION=\"/cgi/upload.html\">";
@@ -163,8 +147,6 @@ mixed GenerateIndex(string dir, string requested){
     ret +="<hr style=\"width: 100%; height: 2px;\"><br>\n";
     foreach(string sub in listing){
         string ed_req = "<a href=\"/cgi/edit.html?"+dir+"/"+sub+"\">Edit</a>";
-        //tc("ed_req: "+ed_req);
-        //ret += (directory_exists(dir+"/"+sub) ? TAB+TAB : ed_req+TAB); 
         ret +="<a href=\""+requested+"/"+sub+"\">"+sub+(directory_exists(dir+"/"+sub) ? "/" : "")+"</a>";
         ret += (directory_exists(dir+"/"+sub) ? "" : TAB + ed_req);
         ret += "<br>\n";
@@ -175,23 +157,18 @@ mixed GenerateIndex(string dir, string requested){
 }
 
 void eventRemoveTmp(string file){
-    //tc("removing "+file);
     rm(file);
-    //if(file_exists(file)) tc("failed.");
-    //else tc("succeeded.");
 }
 
 varargs private static mixed eventGetFile(string name, string type, string payload) {
     string array parts;
     string tmpfile, orig, requested;
     object file;
-    //tc("name1: "+name);
 
     name = explode(name, " ")[0];
     if( name[0] != '/' ) {
         name = "/" + name;
     }
-    //tc("name2: "+name);
     requested = name;
     parts = explode(name = absolute_path("/", name), "/");
     if( !sizeof(parts) ) {
@@ -201,16 +178,13 @@ varargs private static mixed eventGetFile(string name, string type, string paylo
         parts[0] = user_path(parts[0][1..]) + "/public_html";
         name = implode(parts, "/");
     }
-    //tc("name3: "+name);
 
     if(name == REALMS_DIRS || name == REALMS_DIRS +"/") name = DIR_WWW + "/index.html";
 
     if( strsrch(name, DIR_WWW) && strsrch(name, REALMS_DIRS) ) {
         name = DIR_WWW + name;
     }
-    //tc("name4: "+name);
     if(!strsrch(name,REALMS_DIRS) && !grepp(name,"/public_html") ){
-        //tc("foo");
         if(!authenticate(name)) eventError(FILE_NOT_FOUND);
     }
     orig = name;
@@ -230,10 +204,7 @@ varargs private static mixed eventGetFile(string name, string type, string paylo
             id = foo+".c";
         }
         if(payload) args = payload;
-        //tc("gateway: "+DIR_WWW_GATEWAYS "/"+id);
         if( catch(str = (DIR_WWW_GATEWAYS "/"+id)->gateway(args)) ) {
-            //tc("str: "+str);
-            //tc("args: "+args);
             eventError(FILE_BAD_GATE);
             return 1;
         }
@@ -280,9 +251,7 @@ int eventRead(buffer data) {
         Cookie["shib"] = 0;
     }
 
-    //tc("descriptor: "+socket::GetDescriptor(),"red");
     ip = socket_ip(socket::GetDescriptor());
-    //tc("ip: "+ip,"red");
 
     if(member_array(ip,INET_D->GetBlockedIps()) != -1){
         eventError(ACCESS_DENIED);
@@ -296,66 +265,50 @@ int eventRead(buffer data) {
         eventError(FILE_BAD_CMD);
         return 1;
     }
-    //tc("str: "+identify(str),"green");
     if(!read_args) read_args = explode(replace_string(str, CARRIAGE_RETURN, ""), "\n")[0];
     args_tmp = explode(replace_string(str, CARRIAGE_RETURN, ""), "\n");
     foreach(mixed element in args_tmp){
         int int1, int2;
         string junk1, junk2;
         junk2 = reverse_string(element);
-        //tc("element: "+element);
         int2 = sscanf(junk2,"%s---%*s",junk1);
-        //tc("int2: "+int2,"green");
         if(!strsrch(element,"Cookie:") && !cookie) cookie = element;
         if(boundary && grepp(element,boundary)){
             boundary_count++;
-            //tc("boundary count: "+boundary_count,"yellow");
         }
         else if(boundary && int2 == 2){
             junk2 = reverse_string(junk1);
             junk1 = replace_string(boundary,"-","");
-            //tc("junk2: "+junk2);
-            //tc("junk1: "+junk1);
-            //tc("boundary: "+boundary);
-            //tc("first(junk1,sizeof("+junk2+")): "+first(junk1,sizeof(junk2)));
             if(boundary && sizeof(junk2) > 5
               && first(junk1,sizeof(junk2)) == junk2){
-                //tc("YESSSS","red");
                 boundary_count++;
             }
         }
 
         if(grepp(element, "boundary=")){
             sscanf(element,"%sboundary=%s",junk1,boundary);
-            //tc("boundary: "+boundary,"red");
             args_tmp -= ({ element });
         }
-        //else out += element + "\n";
         if(!strsrch(element, "Referer:") && !current_page){
             sscanf(element,"Referer: %s",current_page);
-            //tc("current_page: "+current_page,"red");
         }
         if(!strsrch(element, "User-Agent:") && !user_agent){
             sscanf(element,"User-Agent: %s",user_agent);
-            //tc("user_agent: "+user_agent,"red");
         }
         if(!strsrch(element, "Content-Disposition: form-data;") && !filename){
             if(sscanf(element,"%sfilename=\"%s\"",junk1, filename) != 2)
                 sscanf(element,"%sfilename=\"%s\"%s",junk1, filename, junk2);
             if(filename && filename[1..2]==":\\"){
-                //tc("lol mircosoft");
+                //lol mircosoft
                 filename=last_string_element(filename,"\\");
             }
-            //tc("filename: "+filename,"red");
         }
         if(!strsrch(element, "username=") && !login_data){
             login_data = element;
-            //tc("login_data: "+login_data,"red");
         }
     }
 
     out += implode(args_tmp,"\n");
-    //tc("cookie: "+cookie);
     if(cookie){
         string name, shib, junk1, junk2;
         if(sscanf(cookie,"%screweb=%s.%s;%s",junk1,name,shib,junk2) == 4 ||
@@ -364,21 +317,16 @@ int eventRead(buffer data) {
             Cookie["shib"] = shib;
         }
     }
-    //tc("Cookie: "+identify(Cookie),"white");
-    //tc("read_args: "+identify(read_args),"white");
-    //tc("cmd: "+identify(cmd),"white");
     if(!cmd) sscanf(read_args, "%s %s", cmd, read_args);
     if(!read_args) sscanf(read_args, "%s %s", cmd, read_args);
     eventLogConnection();
     switch(lower_case(cmd)) {
         string junk;
     case "get":
-        //tc("GET");
         eventGetFile(read_args);
         return 1;
 
     case "post":
-        //tc("POST");
         if(!ENABLE_CGI){
             eventError(FILE_BAD_CMD);
             return 1;
@@ -387,19 +335,15 @@ int eventRead(buffer data) {
 
         if(boundary_count && boundary_count > 1){
             string junk1, junk2, tmp;
-            //tc("hi mom!");
 #if 0
             if(sscanf(out,"%s"+boundary+"%s--"+boundary+"%s",junk1,tmp,junk2) == 3){
                 out = tmp;
                 args_tmp=explode(out,"\n");
                 if(filename) out = implode(args_tmp[2..],"\n");
                 else out = implode(args_tmp[1..],"\n");
-                //tc("TRYING TO WRITE, out is: "+out,"green");
             }
-            //else tc("hmmm. out is: "+out,"red");
 #endif
             sscanf(out,"%s--%s",tmp,junk1);
-            //tc("tmp: "+tmp);
             if(grepp(out,boundary+"--")) eventGetFile(read_args, "POST", out);
             return 1;
 
@@ -412,14 +356,10 @@ int eventRead(buffer data) {
             }
             else if( catch(str = ((DIR_WWW_GATEWAYS +"/upload")->gateway(out, current_page, filename,
                     Cookie["name"], Cookie["shib"]))) ) {
-                //tc("out: "+out,"red");
-                //tc("read_args: "+read_args,"red");
                 eventError(FILE_BAD_GATE);
                 return 1;
             }
-            //tc("YAAAAAAAAAY","green");
             str = strip_colours(str);
-            //str = replace_string(str,"\n","<br>");
             b = allocate_buffer(strlen(str));
             for(j=0; j<strlen(str); j++) {
                 b[j] = str[j];
@@ -433,7 +373,6 @@ int eventRead(buffer data) {
         return 1;
 
     default:
-        //tc("WUT");
         eventError(FILE_BAD_CMD);
         return 1;
     }

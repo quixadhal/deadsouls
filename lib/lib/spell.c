@@ -445,7 +445,6 @@ static int CanSpellAttack(object who, object array enemies, int power){
     int hit_con = 0;
     int miss_con = 0;
     int bonus;
-    //tc("CanSpellAttack("+identify(who)+", "+identify(enemies)+", "+identify(power)+")");
 
     if( !maxi ){
         return -1;
@@ -501,8 +500,6 @@ static int CanSpellAttack(object who, object array enemies, int power){
         }
         bonus = who->GetCombatBonus(hits/hit_count);
         bonus *= GetTrainingModifier();	
-        //tc("enemies: "+identify(enemies));
-        //tc("i: "+identify(i));
         foreach(string skill in GetSkills()){
             if(enemies[i] && !estatep(enemies[i]))
                 who->eventTrainSkill(skill, power/(hit_count+miss_count),
@@ -517,9 +514,6 @@ varargs int CanCast(object who, int level, string limb, object array targets){
     int count = sizeof(skills);
     int cost = GetMagicCost();
     int x;
-
-    //tc("CanCast("+identify(who)+", "+identify(level)+", "+identify(limb)+
-    //","+identify(targets)+")");
 
     if( Religions ){
         if( member_array(who->GetReligion(1), Religions) == -1 ){
@@ -609,9 +603,6 @@ varargs int CanCast(object who, int level, string limb, object array targets){
  * or heal amount for SPELL_HEAL
  */
 varargs int eventCast(object who, int level, mixed limb, object array targets){
-
-    //tc("eventCast("+identify(who)+", "+identify(level)+", "+identify(limb)+
-    //", "+identify(targets)+")");
 
     if( GetConjure() ){
         object ob = new(GetConjure());

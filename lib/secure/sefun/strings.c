@@ -34,18 +34,9 @@ varargs string center(string str, int x) {
 
 varargs string arrange_string(string str, int x) {
     string orig = str;
-    //string bare = strip_colours(copy(str));
-    //string bare = TERMINAL_D->no_colours(str);
     string bare = strip_colors(str);
-    //tc("x: "+x);
     if(!x) x = 80;
-    //tc("x: "+x);
-    //tc("strlen(\""+orig+"\"): "+strlen(orig));
-    //tc("strlen(\""+bare+"\"): "+strlen(bare));
-    //x += strlen(str) - strlen(strip_colours(str));
     x += (strlen(orig) - strlen(bare));
-    //tc("x: "+x);
-    //tc("arrange_string(\""+str+"\", "+x+"): "+sprintf(sprintf("%%:-%ds", x), str),);
     return sprintf(sprintf("%%:-%ds", x), str);
 }
 
@@ -642,7 +633,6 @@ varargs string generate_tmp(mixed arg){
     }
 
     else if(stringp(arg) && file_exists(arg) && this_player()) {
-        //tc("arg: "+identify(arg));
         if(objectp(load_object(arg))) ret = "/tmp/"+last_string_element(arg,"/")+randy+time()+".c";
         else ret = "/open/"+last_string_element(arg,"/")+randy+time()+".tmp";
     }
@@ -656,7 +646,6 @@ varargs string generate_tmp(mixed arg){
 int alphap(mixed arg){
     if(!stringp(arg)) return 0;
     foreach(int element in arg){
-        //tc("element: "+element);
         if(!((element >= 65 && element <= 90) ||
             (element >= 97 && element <= 122))) return 0;
     }
@@ -854,7 +843,6 @@ int query_common_ascii(string str){
             check_arr += ({ str[i] });
         }
     }
-    //tc("check_arr: "+identify(check_arr),"cyan");
     foreach(mixed element in check_arr){
         if(intp(element)){
             if((element >31 && element < 127)

@@ -77,7 +77,6 @@ void heart_beat(){
         foreach(mixed key, mixed val in Directions){
             if(val > 20) val = 20;
             for(i=val;i>0;i--){
-                //tc("key: "+key+", val: "+val+", i: "+i);
                 this_object()->boost(key,1);
             }
         }
@@ -94,8 +93,6 @@ int boost(string str, int coasting){
     env = environment(owner);
     current_direction = str;
     medium = environment(owner)->GetMedium();
-
-    //tc("coasting: "+coasting);
 
     if(medium == MEDIUM_SPACE && !coasting){
         if(Directions[opposite_dir(str)]){
@@ -116,7 +113,6 @@ int boost(string str, int coasting){
         write("You're not wearing the rocket pack.");
         return 1;
     }
-    //tc("0","green");
     if(!coasting && !str || !env){
         write("Boost in which direction?");
         return 1;
@@ -126,9 +122,7 @@ int boost(string str, int coasting){
         write("The rocket pack is out of fuel.");
         return 1;
     }
-    //tc("1","green");
     dest = env->GetExit(str);
-    //tc("checking for destination fun...","green");
     if(!dest){
         if(str == "up" && env->GetFlyRoom()) dest = env->GetFlyRoom();
         else if(str == "down" && env->GetSinkRoom()) dest = env->GetSinkRoom();
@@ -139,14 +133,12 @@ int boost(string str, int coasting){
     }
     Exit = environment(owner)->GetExitData(str);
 
-    //tc("checking for pre-exit fun...","green");
     if( Exit && Exit["pre"] &&
       !((int)evaluate(Exit["pre"], str)) ){
         return 1;
         //return 1;
     }
 
-    //tc("dest: ("+dest+")");
     if(!sizeof(dest)){
         write("You can't go that way.");
         return 1;
@@ -154,8 +146,6 @@ int boost(string str, int coasting){
 
     omsg = owner->GetName()+" rockets "+str+".";
     imsg = owner->GetName()+" rockets in.";
-
-    //tc("omsge: "+omsg+", imsg: "+imsg, "green");
 
     if(!coasting) write("You engage your rocket pack's boosters to rocket you "+str+".");
     if(!coasting) charge--;

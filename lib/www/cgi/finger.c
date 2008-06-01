@@ -6,11 +6,7 @@ varargs string gateway(mixed who, int strip_html){
 
     if(!who || !stringp(who)) who = "123456789101112";
 
-    //tc("who: "+who);
-
     if(!strsrch(who,"user=")) who = lower_case(replace_string(who,"user=","",1));
-
-    //tc("who: "+who);
 
     if(!user_exists(who)){
         ret = "No such user.";

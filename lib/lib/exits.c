@@ -33,7 +33,6 @@ mixed CanGo(object who, string str){
 }
 
 mixed eventGo(object who, string str){
-    //tc("eventGo("+identify(who)+", "+identify(str)+"): "+query_verb(),"green");
     if(query_verb() == "go" && interactive(this_player())){	
         if( who->GetPosition() != POSITION_STANDING ){  
             write("You are not standing.");
@@ -214,7 +213,7 @@ varargs string array GetEnters(int i){
 
     foreach(object ob in obs){
         if( ob->GetEnter() ){
-            if(i) ids += ({ ob->GetId()[0] });
+            if(i) ids += ({ ob->GetKeyName() });
             else ids += ob->GetId();
         }
     }

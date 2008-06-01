@@ -34,7 +34,6 @@ void validate(){
 }
 
 void eventBlockIp(string ip){
-    //tc("eventBlockIp stack: "+get_stack(),"green");
     log_file("security", "\n"+timestamp()+" INET_D ip block: "+ip+"\n");
     if(ip != "*.*" && member_array(ip, keys(BlockedIps)) == -1){
         BlockedIps[ip] = time();

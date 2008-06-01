@@ -42,7 +42,6 @@ mixed ProcessHTTPResult()
 void read_callback( int fd, mixed message )
 {
     results += message;
-    //tc("resultS: "+message,"green");
 }
 
 void write_callback( int fd )
@@ -67,7 +66,6 @@ void sendHTTPGet()
     version() + CARRIAGE_RETURN+"\n"+CARRIAGE_RETURN+"\n";
     int result = 0;
     results = "";
-    //tc("str: "+str);
     result = socket_write( socket, (string)str );
 }
 
@@ -110,12 +108,10 @@ int openHTTPConnection()
 #ifdef _DEBUG
     write("Attempting to connect to "+host+ " on port "+ port + "\n");
 #endif	
-    //tc("socket_connect("+identify(sock)+", "+identify(address)+", "+identify(port)+", read_callback, write_callback)");
     sc_result = socket_connect( sock, address + " " + port,
       "read_callback", "write_callback" ) ;
     if( sc_result != EESUCCESS )
     {
-        //tc("bummer");
         notify_fail( "Failed to connect.\n" ) ;
         return 0 ;
     }
@@ -123,7 +119,6 @@ int openHTTPConnection()
     }
 
     socket = sock;
-    //tc("socket_status("+sock+"): "+identify(socket_status(sock)));
     return 1;
 }
 
@@ -145,7 +140,6 @@ mixed eventGet(string args) {
     string foo, bar;
     int baz, key, a, b, c, d;
 
-    //tc("args: "+args,"yellow");
     if(!strsrch(args,"http://")){
         args = replace_string(args,"http://","",1);
     }
@@ -165,16 +159,11 @@ mixed eventGet(string args) {
     if(args) args_list = args;
     else args_list = "";
     if(sscanf(address,"%d.%d.%d.%d",a,b,c,d) != 4){
-        //tc("Trying to resolve...","green");
         if(!RESOLV_D->GetResolving()){
-            //tc("BAD","red");
             return "Mud is not resolving. Try again with a numerical address.";
         }
-        //tc("key1: "+key,"red");
         PendingResolves[key] = ([ "port" : port, "path" : path ]);
         key = RESOLV_D->eventResolve(address,"resolve_callback");
-        //tc("key2: "+key,"red");
-        //tc("PendingResolves: "+identify(PendingResolves),"white");
         return key;
     }
     openHTTPConnection();
@@ -183,12 +172,7 @@ mixed eventGet(string args) {
 
 void resolve_callback(string name, string ip, int key){
     string ret = ip+":"+port + path+" -n "+name;
-    //tc("prevs: "+identify(previous_object(-1)));
-    //tc("name: "+name+", ip: "+ip+", key: "+key,"red");
-    //tc("PendingResolves: "+identify(PendingResolves),"cyan");
-    //tc("ret: "+ret);
     eventGet(ret);
-    //cmd(ip+":"+PendingResolves[key]["port"] + PendingResolves[key]["path"]+" -n "+name);
 }
 
 

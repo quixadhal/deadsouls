@@ -134,9 +134,7 @@ varargs int do_connect(string args, object whom)
         notify_fail( "Already connected...\n" ) ;
         return 0 ;
     }
-    //tc("1");
     new_socket = socket_create( STREAM, "read_callback", "close_callback" ) ;
-    //tc("new_socket: "+new_socket);
     if( new_socket < 0 )
     {
         switch( new_socket )
@@ -163,7 +161,6 @@ varargs int do_connect(string args, object whom)
             error = "Unknown error code: " + new_socket + ".\n" ;
             break ;
         }
-        //tc("hmm. error: "+error);
         notify_fail( "Unable to connect, problem with socket_create.\n"
           "Reason: " + error ) ;
         return 0 ;
@@ -172,7 +169,6 @@ varargs int do_connect(string args, object whom)
       "read_callback", "write_callback" ) ;
     if( sc_result != EESUCCESS )
     {
-        //tc("strange.");
         notify_fail( "Failed to connect.\n" ) ;
         return 0 ;
     }

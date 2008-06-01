@@ -36,9 +36,9 @@ varargs static void eventUpdate(object whom){
         find_object(RACES_D)->eventDestruct();
     rename(SAVE_RACES __SAVE_EXTENSION__, SAVE_RACES+"."+time());
 
-    reload("/secure/sefun/pointers");
-    reload("/secure/sefun/sefun");
-    reload("/secure/daemon/master");
+    reload("/secure/sefun/pointers",0,1);
+    reload("/secure/sefun/sefun",0,1);
+    reload("/secure/daemon/master",0,1);
 
     if(sizeof(config_file)){
 
@@ -173,7 +173,7 @@ varargs static void eventUpdate(object whom){
     remote = load_object("/secure/cmds/admins/removeemote");
     if(remote) remote->cmd("roll");
 
-    reload(EVENTS_D);
+    reload(EVENTS_D,0,1);
     EventsMap = EVENTS_D->GetEvents();
     foreach(mixed key, mixed val in EventsMap){
         event_funs += ({ val["function"] });
@@ -217,19 +217,19 @@ varargs static void eventUpdate(object whom){
     catch( CLASSES_D->AddClass("/secure/cfg/classes/thief") );
     catch( CLASSES_D->RemoveClass("priest") );
     catch( CLASSES_D->AddClass("/secure/cfg/classes/cleric") );
-    tc("Done with classes...");
+    //tc("Done with classes...");
 
-    reload("/secure/daemon/master");
-    reload("/secure/sefun/arrays");
-    reload("/secure/sefun/sefun");
+    reload("/secure/daemon/master",0,1);
+    reload("/secure/sefun/arrays",0,1);
+    reload("/secure/sefun/sefun",0,1);
 
-    catch( reload("/domains/default/room/stargate_lab.c"));
-    catch( reload("/domains/town/virtual/space/1,1,1"));
-    catch( reload("/domains/town/virtual/bottom/33,100000"));
-    catch( reload("/domains/Praxis/square.c"));
-    catch( reload("/domains/Ylsrim/room/tower"));
-    catch( reload("/domains/campus/room/slab"));
-    update(RELOAD_D);
+    catch( reload("/domains/default/room/stargate_lab.c",0,1));
+    catch( reload("/domains/town/virtual/space/1,1,1",0,1));
+    catch( reload("/domains/town/virtual/bottom/33,100000",0,1));
+    catch( reload("/domains/Praxis/square.c",0,1));
+    catch( reload("/domains/Ylsrim/room/tower",0,1));
+    catch( reload("/domains/campus/room/slab",0,1));
+    update(RELOAD_D,0,1);
 
     if(whom){
         tell_player(whom,"Update daemon finished.");

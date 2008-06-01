@@ -54,9 +54,6 @@ cmd(string str) {
             t2 += last_string_element(t1,"/");
         } 
         rename(t1,t2);
-        //tc("t1: "+t1);
-        //tc("t2: "+t2);
-        //tc("dir: "+dir);
         if((dir && directory_exists(t2) && !directory_exists(t1)) ||
           (!dir && file_exists(t2) && !file_exists(t1)) )
             write("mv: Ok.");

@@ -26,7 +26,5 @@ void log_file(string fl, string msg) {
         else fl = DIR_LOGS+"/open/"+fl;
     }
 
-    //tc("prev: "+identify(previous_object())+", fl: "+fl);
-
     master()->master_log_file(fl, msg);
 }

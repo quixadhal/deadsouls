@@ -115,7 +115,6 @@ mixed eventCalculateTypes(string typename, int type){
             break;
         }
     }
-    //tc("typename: "+typename);
     if(!Types[typename]) return 0;
 
     if(member_array(typename,types) != -1){

@@ -28,14 +28,9 @@ string gateway(mixed args) {
     string shib = cookie["shib"];
     string ret = "";
 
-    //tc("CHANLOGS GATEWAY","red");
-
     if(ENABLE_CREWEB){
         string *logfiles = ({});
         validate();
-
-        //tc("ob: "+identify(ob),"yellow");
-        //tc("current_page: "+current_page,"white");
 
         if(!name || !shib || !WEB_SESSIONS_D->authenticate(name, shib)){
             ret += "Bad session. <br>";
@@ -48,15 +43,10 @@ string gateway(mixed args) {
             Logs[file] = stat(DIR_CHANNEL_LOGS+"/"+file)[1];
         }
         times = sort_array(distinct_array(values(Logs)),-1);
-        //tc("Logs: "+identify(Logs));
-        //tc("times: "+identify(times));
         foreach(mixed element in times){
             foreach(mixed key, mixed val in Logs){
                 string tmp_ret = "";//This shouldn't be needed, but it is.
                 if(val == element){
-                    //tc("Key: "+key+", Val: "+val);
-                    //tc("sizeo of ret: "+sizeof(ret));
-                    //tc("ret: "+ret,"blue");
                     tmp_ret += "<a href=\"/cgi/showlog.html?"+key+"+20\"";
                     tmp_ret += ">"+key+"    (last modified ";
                     tmp_ret += ctime(val);
@@ -64,10 +54,6 @@ string gateway(mixed args) {
                 }
                 ret += tmp_ret;
             }
-
-            //ret += "<a href=\"/cgi/showlog.html?"+file+"+20\"";
-            //ret += ">"+file+"    (last modified "+ctime(stat(DIR_CHANNEL_LOGS+"/"+file)[1]);
-            //ret += ")</a><br>";
         }
 
         ret += "<br>";

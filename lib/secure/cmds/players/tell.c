@@ -25,7 +25,6 @@ mixed cmd(string str) {
 
     if(!str) return notify_fail("Syntax: <tell [who] [message]>\n");
 
-    //tc("-6");
     if(str == "hist" || str == "history"){
         string ret = "Your tell history: \n\n"; 
         ret += implode(this_player()->GetTellHistory(),"\n");
@@ -38,7 +37,6 @@ mixed cmd(string str) {
         return 1;
     }
     mud = 0;
-    //tc("-5");
     if((maxi=sizeof(words = explode(str, "@"))) > 1) {
         who = convert_name(words[0]);
         if(maxi > 2) words[1] = implode(words[1..maxi-1], "@");
@@ -57,9 +55,7 @@ mixed cmd(string str) {
         if(msg == "") return notify_fail("Syntax: <tell [who] [message]>\n");
         if(!mud) mud = -1;
     }
-    //tc("-4");
     if(!mud || mud == -1) {
-        //tc("-3.5");
         maxi = sizeof(words = explode(str, " "));
         who = 0;
         for(i=0; i<maxi; i++) {
@@ -71,7 +67,6 @@ mixed cmd(string str) {
                 break;
             }
         }
-        //tc("-3.4");
         if(!who) {
             if(!mud){
                 words -= ({ retname });
@@ -79,7 +74,6 @@ mixed cmd(string str) {
                 this_player()->eventTellHist("You tried to tell "+retname+": "+
                   "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
                 write("Tell whom what?\n");
-                //tc("-3.3");
                 return 1;
             }
             else {
@@ -97,17 +91,13 @@ mixed cmd(string str) {
         SERVICES_D->eventSendTell(who, mud, msg);
         return 1;
     }
-    //tc("-3");
     if(ob) {
         mixed err;
         if(archp(ob) || (!archp(this_player()) && creatorp(ob))) 
             me = capitalize(this_player()->GetKeyName());
         else me = this_player()->GetName(); 
 
-        //tc("-2");
         machine=present("answering machine",ob);
-        //if(archp(ob)) frm = (string)this_player()->GetCapName();
-        //else frm = (string)this_player()->GetName();
         if(ob && !creatorp(ob)) this_player()->AddMagicPoints(-15);
         if(machine && base_name(machine) == "/secure/obj/machine"){
             int parse_it;
@@ -119,20 +109,16 @@ mixed cmd(string str) {
                 return 1;
             }
         }
-        //tc("-1");
         if( (err = (mixed)this_player()->CanSpeak(ob, "tell", msg)) != 1){
             if(ob && !creatorp(ob)) this_player()->AddMagicPoints(15);
             this_player()->eventTellHist("You tried to tell "+retname+": "+
               "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
             return err || "Tell whom what?";
         }
-        //tc("0");
         if( ob->GetInvis() && ( ( archp(ob) && !archp(this_player()) ) 
             || ( creatorp(ob) && !creatorp(this_player()) ) ) ){
-            //if( ob->GetInvis() && creatorp(ob) && !archp(this_player()) ) {
             string inv_ret = "%^BLUE%^%^BOLD%^" + me + 
             " unknowingly tells you, %^RESET%^\"" + msg + "\"";
-            //tc("1");
             ob->eventPrint(inv_ret);
             ob->eventTellHist(inv_ret);
             ob->SetProperty("reply", lower_case(me));

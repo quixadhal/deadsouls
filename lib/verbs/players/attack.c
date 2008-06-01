@@ -105,9 +105,6 @@ varargs mixed do_attack_lvs(mixed *targets, int exclusive) {
 
     this_player()->SetAttack(obs);
     tmp = item_list(obs);
-    //tc("hmm. this_player(): "+identify(this_player()));
-    //tc("hmm. GetDying(): "+identify(this_player()->GetDying()));
-    //tc("hmm. GetHealthPoints(): "+identify(this_player()->GetHealthPoints()));
     obs->eventPrint((string)this_player()->GetName() + " attacks you!");
     environment(this_player())->eventPrint((string)this_player()->GetName() +
       " attacks " + tmp + "!",

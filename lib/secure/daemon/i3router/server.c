@@ -112,7 +112,7 @@ varargs string *SetList();
 #include "./send_full_mudlist.h"
 
 static void close_connection(int fd){
-    //tc("connection close request for fd "+fd+", stack: "+get_stack(),"red");
+    //trr("connection close request for fd "+fd+", stack: "+get_stack(),"red");
     RSOCKET_D->close_connection(fd);
 }
 
@@ -558,7 +558,7 @@ int GetMaxRetries(){ return MAXIMUM_RETRIES; }
 
 varargs void ReceiveList(mixed data, string type, string who){
     string *cmuds = keys(connected_muds);
-    //tc("ReceiveList("+identify(data)+", "+identify(type)+", "+identify(who)+")");
+    //trr("ReceiveList("+identify(data)+", "+identify(type)+", "+identify(who)+")");
     if(!type || !sizeof(type)) type = "mudlist";
     if(!mapp(data)){
         return;

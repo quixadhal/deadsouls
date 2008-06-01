@@ -314,9 +314,6 @@ int cmdChannel(string verb, string str) {
     object ob = 0;
     int i, emote, forcedemote;
 
-    //tc("verb: "+verb);
-    //tc("str: "+str);
-
     if(grepp(verb,"|")){
         string foo, bar;
 
@@ -346,8 +343,6 @@ int cmdChannel(string verb, string str) {
 
         if(sscanf(verb, "%s|%s", foo, bar) == 2) verb = foo;
     }
-
-    //tc("verb: "+verb);
 
     if(grepp(verb, ":")){
         verb = replace_string(verb,":","emote");

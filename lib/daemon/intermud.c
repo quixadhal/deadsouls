@@ -114,8 +114,6 @@ static void eventRead(mixed *packet){
     string cle;
     Online = 1;
 
-    write_file("/tmp/pkt.txt",identify(packet));
-
     if( !packet || sizeof(packet) < 6 ) return; /* should send error */
     if( Banned[packet[2]] ){
 

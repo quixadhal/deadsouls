@@ -220,7 +220,6 @@ static private void LoadIndices() {
           string help, file, tmpstr;
 
           if( this_player() && !CanAccess(this_player(), index) ) {
-              //tc("bollox");
               Error = "You do not have access to that information.";
               return 0;
           }

@@ -51,8 +51,6 @@ void eventReceiveWhoRequest(mixed *packet) {
     msg = map(filter(real_users, (: (environment($1) && !((int)$1->GetInvis()))  :)),
       (: ({ (string)$1->GetCapName(), query_idle($1),
           (mini ? "" : (string)$1->GetShort()) }) :));
-    //tc("sizeof msg: "+sizeof(identify(msg)));
-    //tc("max string: "+__LARGEST_PRINTABLE_STRING__);
     if(sizeof(identify(msg)) >= __LARGEST_PRINTABLE_STRING__){
         msg = ({({"Number of users: "+sizeof(msg), 0, "Too many results." })});
     }

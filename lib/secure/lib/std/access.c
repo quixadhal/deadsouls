@@ -43,10 +43,6 @@ mapping query_access(string type) {
 nomask int check_access(object ob, string fun, string file, string oper) {
     string array who;
     mapping access;
-    //tc("ob : "+identify(ob));
-    //tc("fun : "+identify(fun));
-    //tc("file : "+identify(file));
-    //tc("oper : "+identify(oper));
 
     if( oper == "read" ) {
         if( functionp(ReadFunction) ) {

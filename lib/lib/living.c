@@ -709,11 +709,6 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
         imsg = replace_string(imsg, "$N", this_object()->GetName());
     }
 
-    //tc("dest: "+identify(dest),"red");
-    //tc("omsg: "+identify(omsg),"red");
-    //tc("imsg: "+identify(imsg),"red");
-    //tc("dir: "+identify(dir),"red");
-
     if( prev = environment() ){
         prevclim = (string)prev->GetClimate();
         if( stringp(dest) ){

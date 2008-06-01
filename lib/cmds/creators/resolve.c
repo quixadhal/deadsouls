@@ -21,11 +21,8 @@ varargs int cmd(string str)
 void resolve_callback(string name, string number, int key){
     string cle;
     object ob;
-    //tc("NamesMap: "+identify(NamesMap),"red");
-    //tc("name: "+name+", number: "+number+", key: "+key, "red");
     if(NamesMap[number]) cle = number;
     else if(NamesMap[name]) cle = name;
-    //tc("cle: "+cle,"red"); 
     ob = NamesMap[cle];
 
     map_delete(NamesMap, cle);

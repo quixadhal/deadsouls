@@ -36,7 +36,6 @@ int ReloadBaseSystem(){
         sefun_files += ({ "/secure/sefun/"+file });
     }
     foreach(string file in sefun_files){
-        //tc("file: "+file);
         catch(update(file));
     }
     catch( update(SEFUN) );
@@ -61,8 +60,6 @@ varargs mixed ReloadPlayer(mixed who, int deep){
     if(!who) return 0;
 
     name = who->GetKeyName();
-    //tc("who: "+identify(who));
-    //tc("name: "+identify(name));
     who->save_player(name);
     mx = reload(load_object(LIB_CREATOR), deep, 0);
     if(mx) mx = reload(load_object(LIB_PLAYER), deep, 0);
@@ -76,9 +73,6 @@ varargs mixed ReloadPlayer(mixed who, int deep){
 
     mx = exec(tmp_bod, who);
 
-    //tc("mx: "+identify(mx),"blue");
-    //tc("who: "+identify(who),"blue");
-    //tc("tmp_bod: "+identify(tmp_bod),"blue");
     who->eventMove(ROOM_FURNACE);
     who->eventDestruct();
 
@@ -86,12 +80,9 @@ varargs mixed ReloadPlayer(mixed who, int deep){
 
     if( !new_bod ) return 0;
 
-    //tc("new_bod: "+identify(new_bod));
-
     mx = exec(new_bod, tmp_bod);
 
     if(!mx){
-        //tc("exec faild!");
         return 0;
     }
 
@@ -185,23 +176,18 @@ int eventDestruct(){
 }
 
 int ReloadDir(string dir, int passes){
-    //object *lib_obs = objects( (: grepp(base_name($1),$(dir)) :) );
     object *lib_obs = objects( (: !strsrch(base_name($1),$(dir)) :) );
     int err;
     validate();
-    //lib_obs = filter( lib_obs, (: !strsrch(base_name($1),$(dir)) :) );
     if(!passes) passes = 3;
     while(passes){
-        //tc("Reloading "+dir);
         foreach(object ob in lib_obs){
             if(ob != this_object() && 
               member_array(base_name(ob), exceptions) == -1){
                 if(ob && inherits(LIB_ROOM,ob) && sizeof(livings(ob))){
                     reload_handles += ({ call_out("eventReload", 5,ob, 0, 1) });
-                    //err = catch(reload(ob, 0, 1));
                 }
                 else reload_handles += ({ call_out("eventUpdate", 5, base_name(ob)) });
-                //else err = catch(update(base_name(ob)));
             }
         }
         passes--;
@@ -216,6 +202,7 @@ int ReloadUsers(){
     if(!mx) error("OHFUC-");
 
     foreach(object player in users()){
+        reset_eval_cost();
         err = catch(RELOAD_D->ReloadPlayer(player));
         if(err) ret = 0;
     }
@@ -230,13 +217,12 @@ int ReloadMud(){
     flush_messages();
     ReloadBaseSystem();
     foreach(string dir in (dir2 + dir1)){
+        reset_eval_cost();
         ReloadDir(dir, ((member_array(dir, dir1) != -1) ? 1 : 2));
     }
     ReloadDir("/domains/", 3);
     ReloadDir("/realms/", 3);
     warm_boot_in_progress = 1;
-    //ReloadUsers();
-    //shout("Warm boot complete.");
     return 1;
 }
 

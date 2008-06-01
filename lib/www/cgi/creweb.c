@@ -9,8 +9,6 @@ varargs string gateway(mixed args){
 
         if(!args || !stringp(args)) args = "123456789101112";
 
-        //tc("args: "+args);
-
         cookie = previous_object()->GetCookie();
 
         if(!cookie || !cookie["shib"] || !cookie["name"]){
@@ -27,8 +25,6 @@ varargs string gateway(mixed args){
             ret += "<META http-equiv=\"refresh\" content=\"1;URL=login.html\">";
             return ret;
         }
-
-        //tc("cookie: "+identify(cookie), "white");
 
         ret += "Welcome to CreWeb.<br><br>";
         ret += "CreWeb is a very simple CGI web application that allows creators to<br>";

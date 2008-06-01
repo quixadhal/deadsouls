@@ -25,25 +25,13 @@ string gateway(string args) {
 
     sscanf(args,"%s=%s",args, operand);
 
-    //tc("NEW GATEWAY","red");
-
     if(ENABLE_CREWEB){
-
         validate();
 
-        //tc("args: "+args,"white");
         operand = web_translate(operand);
-        //tc("cookie: "+identify(cookie),"white");
-        //tc("operand: "+operand,"operand");
 
         if(!operand || strsrch(operand,REALMS_DIRS)) operand = REALMS_DIRS + "/" + cookie["name"];
-
         if(last(operand,1) == "/") operand = truncate(operand,1); 
-
-        //tc("args: "+args,"red");
-        //tc("operand: "+operand,"yellow");
-
-        //tc("current_page: "+current_page);
 
         tmp =  WEB_SESSIONS_D->eventWebCreate(operand, args, cookie["name"], cookie["shib"]);
 

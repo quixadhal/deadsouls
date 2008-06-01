@@ -15,7 +15,6 @@ static void create() {
 }
 
 mixed can_sink_down() {
-    //tc("can_sink_down");
     if( this_player()->GetParalyzed() ) {
         return "You cannot do anything!";
     }
@@ -29,18 +28,15 @@ mixed can_sink_down() {
 }
 
 mixed can_sink(){
-    //tc("wtf can_sink");
     return can_sink_down();
 }
 
 mixed do_sink_down(){
-    //tc("do_sink_down");
     this_player()->SetPosition(POSITION_FLOATING);
     return this_player()->eventSink();
 }
 
 mixed do_sink() {
-    //tc("do_sink");
     return do_sink_down();
 }
 

@@ -22,8 +22,6 @@ int cmd(string str) {
         return 1;
     }
 
-    //tc("str: "+str);
-
     if(strsrch(str,homedir(this_player()))){
         write("You can only use this command to travel to rooms "+
           "under your control.");

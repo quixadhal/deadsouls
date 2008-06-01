@@ -27,8 +27,6 @@ string gateway(string args) {
     mapping Result = ([]);
     mapping ParsedPost = ([]);
 
-    //tc("SAVE GATEWAY","red");
-
     if(ENABLE_CREWEB){
 
         ParsedPost = ParsePost(args);
@@ -37,35 +35,14 @@ string gateway(string args) {
 
         sscanf(current_page,"%s?%s",junk, file);
 
-        //tc("args: "+args,"white");
-        //tc("file: "+file,"file");
-        //tc("file prefix: "+path_prefix(file),"file");
-        //tc("current_page: "+current_page,"white");
-        //tc("cookie: "+identify(cookie),"white");
-
-        //ret += args + "<br>";
-        //ret += file + "<br>";
-        //ret += current_page + "<br>";
-        //ret += identify(cookie) + "<br>";
-
-        //ret += "<br><br>"+identify(ParsedPost);
-
         if(ParsedPost["copy"] && ParsedPost["copy"] != path_prefix(file)+"/") outfile = ParsedPost["copy"];
         else outfile = file;
 
-        //tc("outfile: "+outfile);
-
         Result = WEB_SESSIONS_D->eventSaveFile(outfile, ParsedPost["EditFile"], cookie["name"], cookie["shib"]);
-
-        //tc("Result: "+identify(Result));
 
         if(Result["error"]){
             ret += "<br>ERROR LOADING FILE!<br><br>";
             ret += replace_string(Result["report"],"\n","<br>")+"<br><br>";
-            //ret += "<br>args: "+args+"<br>";
-            //ret += "referer: "+current_page+"<br>";
-            //ret += "cookie: "+identify(cookie)+"<br>";
-            //ret += "<META http-equiv=\"refresh\" content=\"5;URL="+current_page+"\">";
             ret += "<a href=\"/index.html\">Home</a><br>";
             ret += "<a href=\""+current_page+"\">Back</a><br><br>";
             ret += "<a href=\"http://dead-souls.net\">Dead Souls Home</a><br>";

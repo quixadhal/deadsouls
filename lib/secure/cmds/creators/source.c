@@ -51,7 +51,6 @@ mixed cmd(string args) {
 
     foreach(string line in tmplines){
         if(!strsrch(line,"title ") || !strsrch(line,"describe ")){
-            tc("not replacing for: "+line);
         }
         else {
             line = replace_string(line,"$N",this_player()->GetKeyName());

@@ -42,9 +42,7 @@ varargs mixed eventPage(mixed val, mixed msg_class, function f,mixed args...){
     }
     else {
         string tmp;
-        //tc("val: "+identify(val));
         val = wild_card(val);
-        //tc("val: "+identify(val));
         if( !val || !sizeof(val) ) return "File not found.";
         files = ({});
         foreach(tmp in val){

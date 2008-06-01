@@ -37,9 +37,6 @@ mapping StartSession(string ip, string name, string shibboleth){
     validate();
     if(!Sessions) Sessions = ([]);
     if(!Sessions[name]) Sessions[name] = ([]);
-    //tc("sessions: ip: "+ip,"cyan");
-    //tc("sessions: name: "+name,"cyan");
-    //tc("sessions: shibboleth: "+shibboleth,"cyan");
     Sessions[name]["ip"] = ip;
     Sessions[name]["shibboleth"] = shibboleth;
     Sessions[name]["start"] = time();
@@ -115,7 +112,6 @@ mixed eventSaveFile(string file, string content, string name, string shibboleth 
 }
 
 void ReceiveErrorReport(string report){
-    //tc("report: "+report,"yellow");
     LastError += report;
 }
 
@@ -124,7 +120,6 @@ mixed eventWebCreate(string operand, string args, string name, string shibboleth
     int exists;
     validate(name, shibboleth);
     if(!operand || !args) return "Invalid arguments.";
-    //if(args != "file" && args != "dir") return "Invalid operation.";
     exists = unguarded( (: (file_exists($(operand)) || directory_exists($(operand))) :) );
     if(exists) return "Refusing to overwrite "+
         ( unguarded( (: file_exists($(operand)) :) ) ? "file." : "directory.");

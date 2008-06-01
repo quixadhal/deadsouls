@@ -50,8 +50,6 @@ mixed do_copy_obj_str(object ob, string str) {
     targetfile = "";
     if(last(str,2) != ".c") str += ".c";
     str = absolute_path((string)this_player()->query_cwd(), str);
-    //tc("str: ",str);
-    //tc("path_prefix(str): ",path_prefix(str));
     if( !directory_exists(path_prefix(str)) ) {
         write("Directory not found.");
         return 1;

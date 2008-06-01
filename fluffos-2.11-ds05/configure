@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #SOLARIS USERS:
 #To make this script work under Solaris, change the

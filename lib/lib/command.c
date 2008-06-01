@@ -138,7 +138,6 @@ static int cmdAll(string args){
             if( (int)this_object()->GetProperty("parse debug") ) dbg = 1;
             else if( (int)this_object()->GetProperty("debug") ) dbg = 1;
             else dbg = 0;
-            //tc("cmd: "+identify(cmd));
             if( (err = parse_sentence(cmd, dbg)) == 1 ){
                 this_agent(old_agent || 1);
                 return 1;
@@ -334,13 +333,10 @@ int eventRetryCommand(string lastcmd){
         string junk;
         string *generals = ({"my","a","first","1st"});
         int i, j;
-        //tc("original_command: "+identify(original_command),"blue");
         next_command = ({});
         original_command = replace_string(original_command,"out of","out_of");
         filter(explode(original_command," "), (: next_command += ({ trim($1) }) :) );
-        //tc("next_command: "+identify(next_command),"green");
         if(!sizeof(next_command)) next_command = ({ original_command });
-        //tc("next_command: "+identify(next_command),"green");
         virb = next_command[0];
         next_command = next_command[1..];
         j = sizeof(next_command);

@@ -18,9 +18,7 @@ static void create() {
     ob->set_board_id("builder_board");
     ob->set_max_posts(30);
     ob->SetShort("a dusty chalkboard");
-    //tc("ob: "+identify(ob));
     ob->eventMove(this_object());
-    //tc("env(ob): "+identify(environment(ob)));
     SetItems( ([
         ({"sign"}) : "A sign you can read.",
       ]) );

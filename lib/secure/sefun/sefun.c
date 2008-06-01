@@ -375,7 +375,6 @@ int exec(object target, object src) {
     tmp = base_name(previous_object());
     if(tmp != LIB_CONNECT && tmp != CMD_ENCRE && tmp != CMD_DECRE 
       && tmp != SU && tmp != RELOAD_D) return 0;
-    //tc("exec("+identify(target)+", "+identify(src)+")","red");
     ret = efun::exec(target, src);
     return ret;
 }

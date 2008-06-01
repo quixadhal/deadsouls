@@ -13,7 +13,7 @@ BUILDER COMMANDS
 
 home
 ----
-    This command magically teleports you yo your workroom.
+    This command magically teleports you to your workroom.
 
 arealist
 --------
@@ -37,7 +37,7 @@ dest
     This destroys one of your created objects. If you're done playing
 with a sword, for example, you can: dest sword
     Note that this does not delete the file, it just destroys the cloned
-copy. Also, it only works on items clone from files in your area. You
+copy. Also, it only works on items cloned from files in your area. You
 aren't allowed to dest other people's stuff!
 
 reload
