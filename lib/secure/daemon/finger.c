@@ -110,6 +110,7 @@ varargs string GetFinger(string who, int html) {
           query_date(BirthTime), ordinal(query_date(BirthTime)),
           query_month(BirthTime), yrstr) + "%^BR%^\n";
     }
+    if(!this_player() || !archp(this_player())) Email = "Unlisted";
     if( !Email ) Email = "#CHANGE";
     ret += "%^TABLE%^TR%^TD%^" +
     sprintf("In real life: %:-30s %%^/TD%%^TD%%^Email: %s", RealName ,
@@ -171,6 +172,7 @@ mixed array GetRemoteFinger(string who) {
         }
         else plan = 0;
     }
+    if(!this_player() || !archp(this_player()))  Email = "Unlisted";
     if( !Email ) Email = "#CHANGE";
     tmp = ({ CapName, GetTitle(), RealName, (Email[0] != '#' ? Email : 0),
       ctime(LoginTime), ((ob && interactive(ob) && !(ob->GetInvis())) ? query_idle(ob) : -1),

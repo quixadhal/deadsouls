@@ -397,7 +397,7 @@ int amputate(string str){
           person->GetName()+"'s head falls off!", ({ scanner,person }) );
         write("You decapitate "+person->GetName()+".");
         tell_object(person,scanner->GetName()+" decapitates you with a wave of "+possessive(scanner)+" tricorder!");
-        person->RemoveLimb(both, scanner);
+        //person->RemoveLimb(both, scanner);
         return 1;
     }
     stumps=person->GetLimbs();
@@ -417,7 +417,7 @@ int amputate(string str){
         return 1;
     }
     if(member_array(limb,stumps)!= -1){
-        person->RemoveLimb(limb, scanner);
+        //person->RemoveLimb(limb, scanner);
         write("You amputate "+person->GetName()+"'s "+limb+"."); 
         say(scanner->GetName()+" has amputated "+person->GetName()+"'s "+both+" "+
           "with an energy beam from a medical tricorder.",scanner,person);
@@ -425,8 +425,8 @@ int amputate(string str){
           "your "+limb+" is severed.");
         return 1;
     }
-    write("There is some sort of problem, it looks like. No "+
-      "limbs are severed.");
+    //write("There is some sort of problem, it looks like. No "+
+    //"limbs are severed.");
     return 1;
 }
 int regenerate(string str){

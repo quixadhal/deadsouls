@@ -10,7 +10,7 @@ static void create() {
     SetRules("", "down");
     SetErrorMessage("Sink down?");
     SetHelp("Syntax: <sink down>\n"
-      "Allows you to stop swimming, or otherwise attmept to sink in your current medium.\n"
+      "Allows you to stop swimming, or otherwise attempt to sink in your current medium.\n"
       "See also: sit, lie, stand, swim, fly");
 }
 

@@ -10,7 +10,7 @@
 #include <lib.h>
 #include <vision.h>
 
-static private mixed   ExternalDesc = 0;
+private mixed   ExternalDesc = 0;
 private int     Invisible    = 0;
 private static string  look_globalval;
 static function f;

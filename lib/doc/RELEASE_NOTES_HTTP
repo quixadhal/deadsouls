@@ -1,19 +1,4 @@
----- 2.7a25 ---
-- Released 2008-04-24
-- Added periodic cleanup of channel mappings in the i3 router to
-  prevent peculiar runtimes when running for a long time.
-- Fixed channel banning in the i3 router.
-- The web server now handles POSTS where the boundary gets
-  split in separate packets (this caused mysterious hangs when
-  uploading some files but not others).
-
----- 2.7a24 ---
-- Released 2008-04-16
-- Creweb chanlogs now listed in "last modified" order.
-- Virtual rooms now destructed on warm boots.
-- Added day/night descs to outdoor town locations.
-- Important npc's in town are now set to respawn after
-  60 seconds, if killed or moved. See the SetInventory directive
+d or moved. See the SetInventory directive
   in /domains/town/room/tavern.c for an example.
 
 ---- 2.7a23 ---
@@ -158,6 +143,15 @@
 - Released 2008-01-18
 - No lib changes.
 - Bundled driver is now a slightly modified FluffOS 2.9.
+
+---- 2.6.4 ---
+- Released 2008-05-16
+- Fixed a parsing bug in dummy items that reported oddly abbreviated names.
+- Fixed a crasher when reading zero-length files.
+- Driver: Fixed a crasher when some command actions fail to return properly.
+- Dummy object handling improved: church elevator should work ok.
+- Command for liveupgrades improved for stability.
+- Fixed some broken defaults in class files.
 
 ---- 2.6.2 ---
 - Released 2008-01-06

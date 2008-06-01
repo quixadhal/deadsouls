@@ -42,4 +42,6 @@ void reset() {
     i = 4;
     while(i--) new("/domains/Praxis/obj/misc/match")->move(this_object());
 }
-
+void init(){
+    ::init();
+}

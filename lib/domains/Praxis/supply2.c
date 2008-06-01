@@ -56,4 +56,6 @@ int go_north(string str) {
       ({ this_player() }));
     return 1;
 }
-
+void init(){
+    ::init();
+}

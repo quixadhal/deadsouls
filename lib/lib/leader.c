@@ -82,7 +82,7 @@ void eventConvert(object who, string args){
         }
         if( !living(ob) ){
             eventForce("laugh");
-            eventForce("speak would like to worsip some cheese too?");
+            eventForce("speak would you like to worship some cheese too?");
             return;
         }
         if( ob != who ){
@@ -92,7 +92,7 @@ void eventConvert(object who, string args){
         }
     }
     who->SetProperty("converting", GetReligion(1));
-    eventForce("speak I will give it a try, I hope my faith servers me");
+    eventForce("speak I will give it a try, I hope my faith serves me");
     call_out((: eventForce("convert " + (string)($(who))->GetKeyName()) :), 1);
 }
 

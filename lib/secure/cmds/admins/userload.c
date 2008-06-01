@@ -12,7 +12,7 @@ int cmd(string arg){
         write("The user was not found.");
         return 1;
     }
-    ret = RELOAD_D->ReloadPlayer(arg);
+    ret = RELOAD_D->ReloadPlayer(arg, 1);
     if(!ret) write("An error occurred.");
     else write("Done.");
 

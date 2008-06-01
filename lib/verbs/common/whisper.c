@@ -64,9 +64,8 @@ mixed do_whisper_in_wrd(string wrd) { return 1; }
 mixed do_whisper_in_wrd_to_liv(string str, object ob) { return 1; }
 
 mixed do_whisper_to_liv_str(object targ, string str) {
-    string lang;
-
-    lang = (string)this_player()->GetNativeLanguage() || "english";
+    string lang = (string)this_player()->GetDefaultLanguage() ||
+    (string)this_player()->GetNativeLanguage();
     return do_whisper_to_liv_in_wrd_str(targ, lang, str);
 }
 

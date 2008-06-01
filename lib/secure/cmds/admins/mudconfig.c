@@ -20,7 +20,7 @@ string array nonmodals = ({ "liveupgrade", "prompt","status","email","websource"
 string array antimodals = ({ "imc2" });
 string array modals = antimodals + ({ "channelpipes", "fastcombat", "catchtell","matchcommand", "matchobject", "autowiz", "locked",
   "localtime", "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
-  "cgi", "dirlist", "creweb", "selectclass",
+  "cgi", "dirlist", "creweb", "selectclass", "severable",
   "retain", "defaultparse", "disablereboot", "loglocal", "logremote" });
 string array inet_services = ({ "oob", "hftp", "ftp", "http", "rcp", "inet" });
 
@@ -535,6 +535,7 @@ static int ProcessModal(string which, string arg){
     case "dirlist" : which = "WWW_DIR_LIST";break;
     case "creweb" : which = "ENABLE_CREWEB";break;
     case "selectclass" : which = "CLASS_SELECTION";break;
+    case "severable" : which = "SEVERABLE_LIMBS";break;
     default : break;
     }
     foreach(string element in config){
@@ -818,6 +819,7 @@ void help() {
       "\nmudconfig justenglish [ yes | no ]"
       "\nmudconfig justhumans [ yes | no ]"
       "\nmudconfig encumbrance [ yes | no ]"
+      "\nmudconfig severable [ yes | no ] (whether limbs can be severed in combat. Requires a warmboot.)"
       "\nmudconfig pk [ yes | no ]"
       "\nmudconfig compat [ yes | no ]"
       "\nmudconfig retain [ yes | no ]"

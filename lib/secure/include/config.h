@@ -40,6 +40,7 @@
 #define RESET_INTERMUD           0
 #define ENGLISH_ONLY             0
 #define HUMANS_ONLY              0
+#define SEVERABLE_LIMBS          1
 #define CLASS_SELECTION          0
 #define PINGING_MUDS             ({})
 #define PING_INTERVAL            290

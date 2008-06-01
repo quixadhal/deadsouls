@@ -88,7 +88,7 @@ mixed eventGo(object who, string str){
         write("You can't go that way.");
         return 0;
     }
-    who->eventMoveLiving(Exits[str]["room"], str);
+    who->eventMoveLiving(Exits[str]["room"],0,0,str);
     if( Exits[str]["post"] ) evaluate(Exits[str]["post"], str);
     return 1;
 }

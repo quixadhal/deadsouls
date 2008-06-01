@@ -8,6 +8,8 @@
 
 #include <lib.h>
 #include <daemons.h>
+#include <position.h>
+#include <message_class.h>
 #include <config.h>
 #include "include/living.h"
 
@@ -215,7 +217,7 @@ mixed direct_give_wrd_wrd_to_liv(string num, string curr){
 
 mixed direct_steal_wrd_from_liv(string wrd){
     if( wrd != "money" ) return 0;
-    if( this_player() == this_object() ) return "Are you fool?";
+    if( this_player() == this_object() ) return "Are you a fool?";
     if( this_player()->GetInCombat() )
         return "You are too busy fighting at the moment.";
     return 1;
@@ -276,7 +278,6 @@ mixed direct_heal_str_of_liv(string limb){
     return CanReceiveMagic(0, "heal");
 }
 
-
 mixed direct_remedy_str_of_liv(string limb){
     string *limbs;
     limbs = GetLimbs();
@@ -298,7 +299,6 @@ mixed direct_regen_str_on_liv(string limb){
     }
     return CanReceiveMagic(0, "regen");
 }
-
 
 mixed direct_teleport_to_liv(){
     if( environment()->GetProperty("no teleport") ||
@@ -654,6 +654,7 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill){
     }
     return 1;
 }
+
 int AddCarriedMass(int x){ return carry::AddCarriedMass(x); }
 
 int GetCarriedMass(){
@@ -694,4 +695,161 @@ int SetNoCondition(int foo){
 
 int GetNoCondition(){
     return NoCondition;
+}
+
+varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
+    object *inv;
+    object prev;
+    string prevclim, newclim;
+
+    if(omsg && stringp(omsg)){
+        omsg = replace_string(omsg, "$N", this_object()->GetName());
+    }
+    if(imsg && stringp(imsg)){
+        imsg = replace_string(imsg, "$N", this_object()->GetName());
+    }
+
+    //tc("dest: "+identify(dest),"red");
+    //tc("omsg: "+identify(omsg),"red");
+    //tc("imsg: "+identify(imsg),"red");
+    //tc("dir: "+identify(dir),"red");
+
+    if( prev = environment() ){
+        prevclim = (string)prev->GetClimate();
+        if( stringp(dest) ){
+            if(dest[0] != '/'){
+                string *arr;
+
+                arr = explode(file_name(prev), "/");
+                dest = "/"+implode(arr[0..sizeof(arr)-2], "/")+"/"+dest;
+            }
+        }
+        if( !eventMove(dest) ){
+            eventPrint("You remain where you are.", MSG_SYSTEM);
+            return 0;
+        }
+        inv = filter(all_inventory(prev), (: (!this_object()->GetInvis($1) 
+              && living($1) && !GetProperty("stealthy") && ($1 != this_object())) :));
+        //if(!dir){
+        if(!dir) dir = "away";
+        if(query_verb() == "home" ){
+            if(!omsg || omsg == "") omsg = GetMessage("telout");
+            if(!imsg || imsg == "") imsg = GetMessage("telin");
+        }
+        else if(GetPosition() == POSITION_SITTING ||
+          GetPosition() == POSITION_LYING ){
+            if(!omsg || omsg == "") omsg = GetName()+" crawls "+dir+".";
+            if(!imsg || imsg == "") imsg = GetName()+" crawls in.";
+        }
+        else if(GetPosition() == POSITION_FLYING ){
+            if(!omsg || omsg == "") omsg = GetName()+" flies "+dir+".";
+            if(!imsg || imsg == "") imsg = GetName()+" flies in.";
+        }
+        else {
+            if(!omsg || omsg == "") omsg = GetMessage("leave",dir);
+            if(!imsg || imsg == "") imsg = GetMessage("come");
+        }
+        //}
+        inv->eventPrint(omsg, MSG_ENV);
+    }
+    else if( !eventMove(dest) ){
+        eventPrint("You remain where you are.", MSG_SYSTEM);
+        return 0;
+    }
+    inv = filter(all_inventory(environment()),
+      (: (!this_object()->GetInvis($1) && !GetProperty("stealthy") &&
+          living($1) && ($1 != this_object())) :));
+
+    inv->eventPrint(imsg, MSG_ENV);
+    if(this_object()->GetInvis()){
+        if(!creatorp(this_object())) AddStaminaPoints(-(15-(GetSkillLevel("stealth")/10)));
+        AddSkillPoints("stealth", 30 + GetSkillLevel("stealth")*2);
+        eventPrint("%^RED%^You move along quietly....%^RESET%^\n");
+    }
+    if(GetProperty("stealthy") && interactive(this_object())){
+        if(!creatorp(this_object())) AddStaminaPoints(-3 - random(3));
+        AddSkillPoints("stealth", 10 + GetSkillLevel("stealth")*2);
+    }
+    this_object()->eventDescribeEnvironment(this_object()->GetBriefMode());
+    newclim = (string)environment()->GetClimate();
+    if( !GetUndead() ) switch( newclim ){
+    case "arid":
+        if(!creatorp(this_object())) AddStaminaPoints(-0.3);
+        break;
+    case "tropical":
+        if(!creatorp(this_object())) AddStaminaPoints(-0.3);
+        break;
+    case "sub-tropical":
+        if(!creatorp(this_object())) AddStaminaPoints(-0.2);
+        break;
+    case "sub-arctic":
+        if(!creatorp(this_object())) AddStaminaPoints(-0.2);
+        break;
+    case "arctic":
+        if(!creatorp(this_object())) AddStaminaPoints(-0.3);	  
+        break;
+    default:
+        if(!creatorp(this_object())) AddStaminaPoints(-0.1);	  
+        break;	    
+    }
+    if( prevclim != newclim && prevclim != "indoors" && newclim != "indoors" ){
+        switch(prevclim){
+        case "arid":
+            if( newclim == "tropical" || newclim == "sub-tropical" )
+                message("environment", "The air is much more humid.",
+                  this_object());
+            else message("environment", "The air is getting a bit cooler.",
+                  this_object());
+            break;
+        case "tropical":
+            if( newclim != "arid" )
+                message("environment", "The air is not quite as humid.",
+                  this_object());
+            else message("environment", "The air has become suddenly dry.",
+                  this_object());
+            break;
+        case "sub-tropical":
+            if( newclim == "arid" )
+                message("environment", "The air has become suddenly dry.",
+                  this_object());
+            else if( newclim == "tropical" )
+                message("environment","The air has gotten a bit more humid.",
+                  this_object());
+            else message("environment", "The air is not quite as humid.",
+                  this_object());
+            break;
+        case "temperate":
+            if( newclim == "arid" )
+                message("environment", "The air is a bit drier and warmer.",
+                  this_object());
+            else if( newclim == "tropical" )
+                message("environment", "The air is much more humid.",
+                  this_object());
+            else if( newclim == "sub-tropical" )
+                message("environment", "The air is a bit more humid.",
+                  this_object());
+            else message("environment", "The air is a bit colder now.",
+                  this_object());
+            break;
+        case "sub-arctic":
+            if( newclim == "arid" || newclim == "tropical" ||
+              newclim == "sub-tropical" )
+                message("environment", "It has suddenly grown very hot.",
+                  this_object());
+            else if( newclim == "arctic" )
+                message("environment", "It is a bit cooler than before.",
+                  this_object());
+            else message("environment", "It is not quite as cold as "
+                  "before.", this_object());
+            break;
+        case "arctic":
+            if( newclim == "sub-arctic" )
+                message("environment", "It is not quite as cold now.",
+                  this_object());
+            else message("environment", "It is suddenly much warmer than "
+                  "before.", this_object());
+        }
+    }
+    eventMoveFollowers(environment(this_object()));
+    return 1;
 }

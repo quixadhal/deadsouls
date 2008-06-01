@@ -70,7 +70,7 @@ void init(){
         new("/domains/town/obj/map")->eventMove(this_object());
         call_out((: GiveMap, this_player() :), 4);
     }
-    if(!present("cold virus",this_object())){
-        new("/domains/town/obj/cold")->eventInfect(this_object());
-    }
+    //if(!present("cold virus",this_object())){
+    //    new("/domains/town/obj/cold")->eventInfect(this_object());
+    //}
 }

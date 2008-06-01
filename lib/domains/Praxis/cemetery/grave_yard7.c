@@ -19,4 +19,6 @@ void create() {
     SetExits( 
       ([ "up" :	"/domains/Praxis/cemetery/grave_yard2"]) );
 }
-
+void init(){
+    ::init();
+} 

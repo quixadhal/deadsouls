@@ -22,3 +22,6 @@ void reset() {
     //if(!present("approval board")) 
     //new( __DIR__ "obj/misc/app_board")->move(this_object());
 }
+void init(){
+    ::init();
+}

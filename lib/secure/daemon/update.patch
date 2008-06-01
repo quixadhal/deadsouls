@@ -131,9 +131,17 @@ varargs static void eventUpdate(object whom){
             config_file = append_line(config_file,"#define HUMANS_ONLY",
               "#define CLASS_SELECTION          0");
 
+        if(!grepp(config_file, "SEVERABLE_LIMBS"))
+            config_file = append_line(config_file,"#define HUMANS_ONLY",
+              "#define SEVERABLE_LIMBS          1");
+
         write_file("/secure/include/config.h", config_file+"\n", 1);
     }
 
+    rm("/secure/cmds/admins/addemote.c");
+    rm("/secure/cmds/admins/removeemote.c");
+    rm("/secure/cmds/admins/stupidemote.c");
+    rm("/daemon/class.c");
     rm("/cmds/players/where.c");
     rm("/domains/Praxis/obj/mon/execution.c");
     rm("/domains/campus/txt/moochers.txt");
@@ -157,6 +165,8 @@ varargs static void eventUpdate(object whom){
     rm("/lib/verb.c");
     rm("/lib/include/verb.h");
 
+    mkdir("/domains/town/save");
+    mkdir("/domains/default/save");
     mkdir("/secure/log/network");
     mkdir("/secure/log/intermud");
 
@@ -194,6 +204,7 @@ varargs static void eventUpdate(object whom){
     file_arr = explode(newfile,"\n");
     if(!grepp(newfile,"(BUILDER)")) file_arr += ({"(BUILDER) "});
     if(!grepp(newfile,"(TELNET)")) file_arr += ({"(TELNET) "});
+    if(!grepp(newfile,"(EMOTES)")) file_arr += ({"(EMOTES) "});
     newfile = implode(file_arr,"\n");
     write_file("/secure/cfg/groups.cfg", newfile, 1);
 
@@ -206,13 +217,18 @@ varargs static void eventUpdate(object whom){
     catch( CLASSES_D->AddClass("/secure/cfg/classes/thief") );
     catch( CLASSES_D->RemoveClass("priest") );
     catch( CLASSES_D->AddClass("/secure/cfg/classes/cleric") );
+    tc("Done with classes...");
 
     reload("/secure/daemon/master");
     reload("/secure/sefun/arrays");
     reload("/secure/sefun/sefun");
 
-    load_object("/domains/town/obj/stargate");
-    load_object("/domains/town/obj/stargate2");
+    catch( reload("/domains/default/room/stargate_lab.c"));
+    catch( reload("/domains/town/virtual/space/1,1,1"));
+    catch( reload("/domains/town/virtual/bottom/33,100000"));
+    catch( reload("/domains/Praxis/square.c"));
+    catch( reload("/domains/Ylsrim/room/tower"));
+    catch( reload("/domains/campus/room/slab"));
     update(RELOAD_D);
 
     if(whom){

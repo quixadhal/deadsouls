@@ -22,8 +22,8 @@ private int *Screen;
 private static int LogHarass, Client;
 private static mapping TermInfo;
 string MessageQueue;
-int PauseMessages;
-int MessageExceptions;
+int PauseMessages, annoyblock;
+int MessageExceptions, BlockAnnoying;
 
 static void create(){
     chat::create();
@@ -75,10 +75,16 @@ int eventReceive(string message){
 }
 
 
-void receive_message(string msg_class, string msg){
+void receive_message(mixed msg_class, string msg){
     int cl = 0;
 
-    if( msg_class[0] == 'N' ){
+    if(intp(msg_class)){
+        cl = msg_class;
+        eventPrint(msg, cl);
+        return;
+    }
+
+    else if( msg_class[0] == 'N' ){
         msg_class = msg_class[1..];
         cl |= MSG_NOWRAP;
     }
@@ -172,6 +178,8 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     else if( !intp(arg2) ) msg_class = MSG_ENV;
     else msg_class = arg2;
     if( !(msg_class & MSG_NOBLOCK) && GetBlocked("all") ) return 0;
+
+    if((msg_class & MSG_ANNOYING) && annoyblock) return 0;
 
     /* This is no longer necessary, since the commands
      * "mute" and "gag" can now keep things quiet on
@@ -287,3 +295,17 @@ string SetTerminal(string terminal){
 string GetTerminal(){ return Terminal; }
 
 string GetKeyName(){ return 0; }
+
+int SetAnnoyblock(int i){
+    if(!this_player()) return 0;
+    if(archp(this_object()) && !archp(this_player())) return 0;
+    if(!archp(this_object()) && this_player() != this_object()) return 0;
+    if(i) annoyblock = 1;
+    else annoyblock = 0;
+    return annoyblock;
+}
+
+int GetAnnoyblock(){
+    return annoyblock;
+}
+

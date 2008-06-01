@@ -118,3 +118,6 @@ int get_stat_cost(int x, int lev) {
     else return (lev/7)*(lev/7)*(lev*900);
 }
 
+void init(){
+    ::init();
+}

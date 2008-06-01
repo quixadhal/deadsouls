@@ -74,3 +74,7 @@ int go_north() {
     else return 1;
 }
 
+void init(){
+    ::init();
+}
+

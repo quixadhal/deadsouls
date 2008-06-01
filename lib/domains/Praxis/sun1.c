@@ -26,4 +26,6 @@ void create() {
         "west" : "/domains/Praxis/n_centre2",
         "south"	 : "/domains/Praxis/house"]) );
 }
-
+void init(){
+    ::init();
+}

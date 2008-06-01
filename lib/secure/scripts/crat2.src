@@ -1,4 +1,5 @@
 title Optimus $N Maximus
+describe $N looks a bit rumpled and tired.
 home
 update
 remove all
@@ -10,10 +11,11 @@ get all from chest
 dest staff
 dest robe
 dest hat
-clone /domains/default/armor/scoutsuit
-clone /secure/armor/glasses
-wear suit
-wear glasses
+clone /domains/default/armor/robe
+clone /secure/obj/glasses
+#clone /realms/$N/area/obj/key
+wear my robe
+wear my glasses
 cd /domains/town/obj
 clone 8ball
 clone d20
@@ -21,5 +23,5 @@ clone d6
 cd /domains/campus/weap
 clone grenade
 clone waterpistol
-put all in my suit
+put all in my robe
 save

@@ -262,7 +262,7 @@ void set_malloc_mask (int mask)
     malloc_mask = mask;
 }
 
-#ifdef DEBUGMALLOC_EXTENSIONS
+#if defined(DEBUGMALLOC_EXTENSIONS) && defined(DEBUG)
 static void mark_object (object_t * ob) {
 #ifndef NO_ADD_ACTION
     sentence_t *sent;

@@ -4,12 +4,12 @@ if test $# -ne 0; then
     case $1 in
         develop)
 	    echo Preparing to build developmental version of MudOS driver ...
-	    OPTIMIZE="-Wall -Wundef -DPEDANTIC -pedantic -Wmissing-declarations"
+	    OPTIMIZE="-O0 -Wall -Wundef -DPEDANTIC -pedantic -Wmissing-declarations"
 	    DEBUG="-g -DDEBUG -DDEBUG_MACRO"
             ;;
         debug)
 	    echo Preparing to build debugging version of MudOS driver ...
-	    OPTIMIZE=
+	    OPTIMIZE="-O0"
 	    DEBUG="-g -DDEBUG"
             ;;
         *)

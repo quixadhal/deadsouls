@@ -31,3 +31,6 @@ building, worn from the weather and a lack of care. To the north "
 		"south":"/domains/Praxis/building", 
 		"west":"/domains/Praxis/dump" ]) );
 }
+void init(){
+    ::init();
+}

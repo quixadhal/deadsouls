@@ -43,4 +43,3 @@ int enter_opening(string str) {
 
 
 
-

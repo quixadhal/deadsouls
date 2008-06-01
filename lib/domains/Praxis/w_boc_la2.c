@@ -39,4 +39,6 @@ void create() {
         "smoke" : "Lacey wisps of white smoke are coming out "
         "of the house to the north."]) );
 }
-
+void init(){
+    ::init();
+}

@@ -30,19 +30,27 @@ static void create() {
 int ReloadBaseSystem(){
     string *tmp = get_dir("/secure/sefun/");
     string *sefun_files = ({});
+    catch( update(MASTER_D) );
     foreach(string file in tmp){
         if(!strsrch(file,"sefun.")) continue;
         sefun_files += ({ "/secure/sefun/"+file });
     }
     foreach(string file in sefun_files){
-        update(file);
+        //tc("file: "+file);
+        catch(update(file));
     }
-    update(SEFUN);
-    update(MASTER_D);
+    catch( update(SEFUN) );
+    catch( update(MASTER_D) );
+    catch( reload(load_object(LIB_CREATOR), 1, 1) );
+    catch( reload(load_object(LIB_SENTIENT), 1, 1) );
+    catch( reload(load_object(LIB_ROOM), 1, 1) );
+    catch( reload(load_object(LIB_ARMOR), 1, 1) );
+    catch( reload(load_object(LIB_STORAGE), 1, 1) );
+    catch( reload(load_object(LIB_WORN_STORAGE), 1, 1) );
     return 1;
 }
 
-mixed ReloadPlayer(mixed who){
+varargs mixed ReloadPlayer(mixed who, int deep){
     mixed mx;
     string name;
     object tmp_bod, new_bod;
@@ -56,8 +64,8 @@ mixed ReloadPlayer(mixed who){
     //tc("who: "+identify(who));
     //tc("name: "+identify(name));
     who->save_player(name);
-    mx = reload(load_object(LIB_CREATOR), 0, 0);
-    if(mx) mx = reload(load_object(LIB_PLAYER), 0, 0);
+    mx = reload(load_object(LIB_CREATOR), deep, 0);
+    if(mx) mx = reload(load_object(LIB_PLAYER), deep, 0);
 
     if(!mx) error("OHSHI-");
 
@@ -182,7 +190,7 @@ int ReloadDir(string dir, int passes){
     int err;
     validate();
     //lib_obs = filter( lib_obs, (: !strsrch(base_name($1),$(dir)) :) );
-    if(!passes) passes = 2;
+    if(!passes) passes = 3;
     while(passes){
         //tc("Reloading "+dir);
         foreach(object ob in lib_obs){
@@ -224,8 +232,8 @@ int ReloadMud(){
     foreach(string dir in (dir2 + dir1)){
         ReloadDir(dir, ((member_array(dir, dir1) != -1) ? 1 : 2));
     }
-    ReloadDir("/domains/", 2);
-    ReloadDir("/realms/", 2);
+    ReloadDir("/domains/", 3);
+    ReloadDir("/realms/", 3);
     warm_boot_in_progress = 1;
     //ReloadUsers();
     //shout("Warm boot complete.");

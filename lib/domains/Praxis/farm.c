@@ -40,4 +40,6 @@ void stalk_searching() {
     RemoveSearch("stalks");
     RemoveSearch("field");
 }
-
+void init(){
+    ::init();
+}

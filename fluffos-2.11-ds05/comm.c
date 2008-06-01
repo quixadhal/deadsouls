@@ -377,11 +377,13 @@ void init_addr_server (char * hostname, int addr_server_port)
      * connect socket to server address.
      */
     if (connect(server_fd, (struct sockaddr *) & server, sizeof(server)) == -1) {
-        if (socket_errno == ECONNREFUSED && ADDRFAIL_NOTIFY)
-            debug_message("Connection to address server (%s %d) refused.\n",
-                          hostname, addr_server_port);
-        else
-            socket_perror("init_addr_server: connect", 0);
+        if(ADDRFAIL_NOTIFY){
+            if (socket_errno == ECONNREFUSED )
+                debug_message("Connection to address server (%s %d) refused.\n",
+                              hostname, addr_server_port);
+            else
+                socket_perror("init_addr_server: connect", 0);
+        }
         OS_socket_close(server_fd);
         return;
     }

@@ -34,3 +34,6 @@ void reset() {
     if(!present("bag")) 
         new("/domains/Praxis/obj/misc/bag")->move(this_object());
 }
+void init(){
+    ::init();
+}

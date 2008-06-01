@@ -1012,6 +1012,7 @@ void destruct2 (object_t * ob)
     if(obj_list_dangling)
        obj_list_dangling->prev_all = ob;
     obj_list_dangling = ob;
+    ob->prev_all = 0;
 #endif
 
     free_object(&ob, "destruct_object");

@@ -91,5 +91,3 @@ void fade() {
     call_out("fade", 10000);
     save_object("/domains/Praxis/data/wall");
 }
-
-

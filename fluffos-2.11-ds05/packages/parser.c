@@ -130,8 +130,10 @@ void parser_mark_verbs() {
 
     if (best_result) {
 #ifdef DEBUGMALLOC_EXTENSIONS
+#ifdef DEBUG
         if (best_result->ob)
             best_result->ob->extra_ref++;
+#endif
 #endif
         if (best_result->parallel)
             /* mark parallel errors */;
@@ -178,8 +180,10 @@ void parser_mark_verbs() {
     if (my_string)
         EXTRA_REF(BLOCK(my_string))++;
 #ifdef DEBUGMALLOC_EXTENSIONS
+#ifdef DEBUG
     if (master_user_list)
         master_user_list->extra_ref++;
+#endif
 #endif
 }
 
@@ -1014,7 +1018,7 @@ static hash_entry_t *add_hash_entry (const char * str) {
     return he;
 }
 
-void mark_hash_entry (char * str) {
+void mark_hash_entry (const char * str) {
     int h = DO_HASH(str, HASH_SIZE);
     hash_entry_t *he;
 

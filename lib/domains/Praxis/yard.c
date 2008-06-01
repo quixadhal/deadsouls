@@ -41,3 +41,6 @@ void reset() {
         "/domains/Praxis/sewer_ent"->SetOpen("manhole", 0);
     }
 }
+void init(){
+    ::init();
+}

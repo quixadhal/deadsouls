@@ -14,6 +14,10 @@ int GetMass();
 
 mixed indirect_give_liv_obj(object target){
     mixed tmp;
+
+    if(!target){
+        return "#That doesn't seem to be here.";
+    }
     if( environment() != this_player() ){
         return "#You cannot give what is not yours.";
     }

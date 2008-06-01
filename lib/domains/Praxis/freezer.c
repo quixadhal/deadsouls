@@ -33,3 +33,6 @@ static void clean_room() {
     while(i--) to_clean[i]->destruct();
     call_out("clean_room", MAX_NET_DEAD_TIME);
 }
+void init(){
+    ::init();
+}

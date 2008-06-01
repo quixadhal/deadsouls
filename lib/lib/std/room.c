@@ -910,10 +910,12 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
             if(riders) targs += riders;
         }
         targs -=  arg2;
-        msg_class = MSG_ENV;
+        if( !arg3 ) msg_class = MSG_ENV;
+        else if(intp(arg3)) msg_class = arg3;
     }
-    else if( !arg3 ){
-        msg_class = arg2;
+    else if(!arg3){
+        if(intp(arg2)) msg_class = arg2;
+        else msg_class = MSG_ENV;
     }
     else if( objectp(arg3) || arrayp(arg3) ){
         if( objectp(arg3) ) arg3 = ({ arg3 });

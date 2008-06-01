@@ -1,5 +1,6 @@
 #!/bin/sh
 
+#SOLARIS USERS:
 #To make this script work under Solaris, change the
 #top line to point to wherever bash is on your system.
 
@@ -31,10 +32,10 @@ echo "With no options, this script defaults to Dead Souls."
 exit
 fi
 
-echo "Option selected: $ARG"
+echo "Option selected: $ARG $2"
 sleep 1
 
-./build.MudOS
+./build.MudOS $2
 
 # Some stuff for Dead Souls
 if [ $ARG == "ds" ]; then

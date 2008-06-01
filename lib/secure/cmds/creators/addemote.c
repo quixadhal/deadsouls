@@ -18,9 +18,16 @@ static void ShowEmote(string emote);
 static void AddEmote(string emote);
 static void AddRule(string rule, string emote);
 
+static private void validate() {
+    if(!this_player()) return 0;
+    if( !((int)master()->valid_apply(({ "ASSIST" }))) &&
+      !member_group(this_player(), "EMOTES") )
+        error("Illegal attempt to access addemote: "+get_stack()+" "+identify(previous_object(-1)));
+}
+
 static void EnterEmote(string emote, string array emotes) {
     int x = to_int(emote);
-
+    validate();
     if( x < 1 || x > sizeof(emotes) ) {
         if( member_array(emote, emotes) == -1 ) {
             if( emote[0] == 'q' ) {
@@ -38,7 +45,7 @@ static void EnterEmote(string emote, string array emotes) {
 
 static void EnterEditChoice(string str, string array rules, string emote) {
     int x = to_int(str);
-
+    validate();
     if( x < 1 || x > sizeof(rules) ) {
         if( member_array(str, rules) == -1 ) {
             if( !str || str == "" ) {
@@ -72,7 +79,7 @@ static void EnterEditChoice(string str, string array rules, string emote) {
 static void AddAdverbs(string adv, string emote, string array rules,
   string array verbs, string msg) {
     string array adverbs;
-
+    validate();
     if( !adv || adv == "" ) {
         adverbs = ({});
     }
@@ -87,6 +94,7 @@ static void AddAdverbs(string adv, string emote, string array rules,
 
 static void AddMessage(string msg, string emote, string array rules,
   string array verbs) {
+    validate();
     if( !msg || msg == "" ) {
         this_player()->eventPrint("Which message? [q to quit] ", MSG_PROMPT);
         input_to((: AddMessage :), emote, rules, verbs);
@@ -102,6 +110,7 @@ static void AddMessage(string msg, string emote, string array rules,
 
 static void AddVerbs(string list, string emote, string array rules) {
     string array verbs = map(explode(list, ","), (: trim :));
+    validate();
 
     this_player()->eventPrint("Enter message: ", MSG_PROMPT);
     input_to((: AddMessage :), emote, rules, verbs);
@@ -109,6 +118,7 @@ static void AddVerbs(string list, string emote, string array rules) {
 
 static void AddRule(string rule, string emote) {
     string array rules = map(explode(rule, ","), (: trim :));
+    validate();
 
     if( !sizeof(rules) ) {
         rules = ({ "" });
@@ -118,6 +128,7 @@ static void AddRule(string rule, string emote) {
 }
 
 static void AddErrorMessage(string msg, string emote) {
+    validate();
     if( !msg || msg == "" ) {
         this_player()->eventPrint("Which message? [q to quit] ", MSG_PROMPT);
         input_to((: AddErrorMessage :), emote);
@@ -140,6 +151,7 @@ static void AddErrorMessage(string msg, string emote) {
 }
 
 static void AddEmote(string emote) {
+    validate();
     if( !emote || emote == "" ) {
         this_player()->eventPrint("Which emote? [q to quit] ", MSG_PROMPT);
         input_to((: AddEmote :));
@@ -160,6 +172,7 @@ static void MainMenu() {
     int array screen = this_player()->GetScreen() || ({ 80, 25 });
     string tmp;
     int i;
+    validate();
 
     tmp = center("Dead Souls V Emote Editor", screen[0]) + "\n";
     for(i=0; i<sizeof(display); i++) {
@@ -172,6 +185,7 @@ static void MainMenu() {
 }
 
 static void EditErrorMessage(string emote) {
+    validate();
     this_player()->eventPrint("Enter new error message: ", MSG_PROMPT);
     input_to(function(string str, string emote) {
           if( str && str != "" ) {
@@ -189,6 +203,7 @@ static void ShowEmote(string emote) {
     string tmp2 = "";
     string array rule_array = allocate(sizeof(rules));
     int i = 0;
+    validate();
 
     tmp += "%^GREEN%^Emote%^RESET%^: " + emote + "\n";
     tmp += "%^GREEN%^Error Message%^RESET%^: " + err + "\n";
@@ -207,6 +222,12 @@ static void ShowEmote(string emote) {
 }
 
 mixed cmd(string args) {
+    if( !((int)master()->valid_apply(({ "ASSIST" }))) &&
+      !member_group(this_player(), "EMOTES") ){
+        write("You are not admin, nor a member of the EMOTES group.");
+        return 1;
+    }
+
     if( !args || args == "" ) {
         this_player()->eventPrint("Enter emote name: ", MSG_PROMPT);
         input_to((: AddEmote :));

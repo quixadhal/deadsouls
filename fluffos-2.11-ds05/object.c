@@ -1791,7 +1791,10 @@ void dealloc_object (object_t * ob, const char * from)
     object_t *tmp, *prev_all = 0;
 #endif
 
-    debug(d_flag, ("free_object: /%s.\n", ob->obname));
+    //debug(d_flag, ("free_object: /%s.\n", ob->obname));
+#ifdef DEBUG
+    debug_message("free_object: /%s.\n", ob->obname);
+#endif
 
     if (!(ob->flags & O_DESTRUCTED)) {
         if(ob->next_all != ob)
@@ -1824,8 +1827,10 @@ void dealloc_object (object_t * ob, const char * from)
         free_string(ob->privs);
 #endif
     if (ob->obname) {
-        debug(d_flag, ("Free object /%s\n", ob->obname));
-
+        //debug(d_flag, ("Free object /%s\n", ob->obname));
+#ifdef DEBUG
+        debug_message("Free object /%s\n", ob->obname);
+#endif
         DEBUG_CHECK1(lookup_object_hash(ob->obname) == ob,
                      "Freeing object /%s but name still in name table", ob->obname);
         FREE((char *)ob->obname);
@@ -2037,6 +2042,7 @@ static object_t *command_giver_stack[CFG_MAX_CALL_DEPTH];
 object_t **cgsp = command_giver_stack;
 
 #ifdef DEBUGMALLOC_EXTENSIONS
+#ifdef DEBUG
 void mark_command_giver_stack (void)
 {
     object_t **ob;
@@ -2048,6 +2054,7 @@ void mark_command_giver_stack (void)
     if (command_giver)
         command_giver->extra_ref++;
 }
+#endif
 #endif
 
 /* set a new command giver, saving the old one */

@@ -24,5 +24,7 @@ void create() {
     ob->SetShort( "the Mudlib Board");
     ob->SetLong( "A board for complete and utter nonsense.\n");
 }
-
+void init(){
+    ::init();
+}
 

@@ -33,3 +33,6 @@ void print_long() {
     write (this_object()->GetLong());
     // write(this_object()->container::GetLong());
 }
+void init(){
+    ::init();
+}

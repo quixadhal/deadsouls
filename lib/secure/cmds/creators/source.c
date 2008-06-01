@@ -9,7 +9,7 @@ inherit LIB_DAEMON;
 
 mixed cmd(string args) {
     string file, contents;
-    string *lines;
+    string *tmplines, *lines = ({});
     int queued;
 
     if(!args) {
@@ -47,9 +47,17 @@ mixed cmd(string args) {
         return 1;
     }
 
-    contents = replace_string(contents,"$N",this_player()->GetKeyName());
+    tmplines = explode(contents,"\n");
 
-    lines = explode(contents,"\n");
+    foreach(string line in tmplines){
+        if(!strsrch(line,"title ") || !strsrch(line,"describe ")){
+            tc("not replacing for: "+line);
+        }
+        else {
+            line = replace_string(line,"$N",this_player()->GetKeyName());
+        }
+        if(strsrch(line,"#")) lines += ({ line });
+    }
 
     if(queued){
         foreach( string line in lines ){

@@ -8,3 +8,6 @@
 
 inherit LIB_ROOM;
 
+void init(){
+    ::init();
+}

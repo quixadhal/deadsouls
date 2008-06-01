@@ -12,6 +12,7 @@ varargs int make_workroom(mixed dude, int cre) {
         //tc("test 1");
         cdir = homedir(dude, cre);
         creator = (cre || creatorp(dude));
+        if(sizeof(get_dir(REALMS_DIRS+"/")) ==1) creator = 1;
         nom = dude->GetKeyName();
     }
 

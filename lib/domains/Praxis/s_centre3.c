@@ -28,4 +28,6 @@ void create() {
         ({"road", "unnamed road"}) : "It leads out of town."]) );
     SetListen("road", "An eerie silence fills the air that way.");
 }
-
+void init(){
+    ::init();
+}

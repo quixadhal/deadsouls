@@ -38,4 +38,6 @@ void create() {
         "square" : "At the centre of Praxis, it is where "
         "Boc La and Centre Path meet."]) );
 }
-
+void init(){
+    ::init();
+}

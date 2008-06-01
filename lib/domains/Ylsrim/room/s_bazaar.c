@@ -24,7 +24,6 @@ static void create() {
       "respected residents.", ({ "lars" }));
     AddItem("restaurant", "This restaurant is known for its stew.",
       ({ "toral" }));
-    SetObviousExits("n, enter pub");
     SetExits( ([ "north" : "/domains/Ylsrim/room/"+ "bazaar" ]) );
     SetEnters( ([ 
         "pub" : "/domains/Ylsrim/room/"+ "pub" ]) );

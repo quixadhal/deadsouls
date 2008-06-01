@@ -106,5 +106,7 @@ earmuff MudBytes-Files
 earmuff SlayRadio
 earmuff Metaplace
 gag on
+godmode on
+wizvision on
 save
 bk /secure/include/network.h

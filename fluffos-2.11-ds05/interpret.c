@@ -3952,6 +3952,7 @@ typedef struct cache_entry_s {
 static cache_entry_t cache[APPLY_CACHE_SIZE];
 
 #ifdef DEBUGMALLOC_EXTENSIONS
+#ifdef DEBUG
 void mark_apply_low_cache() {
   int i;
   for (i = 0; i < APPLY_CACHE_SIZE; i++) {
@@ -3963,6 +3964,7 @@ void mark_apply_low_cache() {
       cache[i].progp->extra_ref++;
   }
 }
+#endif
 #endif
 
 void check_co_args2 (unsigned short * types, int num_arg, char * name, char * ob_name){

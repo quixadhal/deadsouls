@@ -227,7 +227,7 @@ static void enable_commands (int num)
 	return;
 
     debug(d_flag, ("Enable commands /%s (ref %d)",
-		   current_object->name, current_object->ref));
+		   current_object->obname, current_object->ref));
 
     if (num) {
 	current_object->flags |= O_ENABLE_COMMANDS;
@@ -266,7 +266,7 @@ static int user_parser (char * buff)
     int where;
     int save_illegal_sentence_action;
     
-    debug(d_flag, ("cmd [/%s]: %s\n", command_giver->name, buff));
+    debug(d_flag, ("cmd [/%s]: %s\n", command_giver->obname, buff));
 
     /* strip trailing spaces. */
     for (p = buff + strlen(buff) - 1; p >= buff; p--) {

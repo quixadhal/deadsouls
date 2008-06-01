@@ -75,3 +75,6 @@ int CanReceive(object ob) {
     }
     return ::CanReceive(ob);
 }
+void init(){
+    ::init();
+}

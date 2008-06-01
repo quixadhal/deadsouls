@@ -1,5 +1,6 @@
 inherit "/lib/std/room";
 
+
 void create() {
     ::create();
     SetProperty("light", 3);
@@ -17,4 +18,6 @@ void create() {
       (["east" : "/domains/Praxis/wild2",
         "west" : "/domains/Praxis/e_boc_la3"]) );
 }
-
+void init(){
+    ::init();
+}

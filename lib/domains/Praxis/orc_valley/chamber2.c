@@ -52,4 +52,7 @@ void reset() {
         ob->eventForce("wield sword in right hand and left hand");
     }
 }
+void init(){
+    ::init();
+}
 

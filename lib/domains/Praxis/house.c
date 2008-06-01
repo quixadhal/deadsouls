@@ -57,3 +57,6 @@ void reset() {
 void look_at_door() {
     write("It is a door.");
 }
+void init(){
+    ::init();
+}

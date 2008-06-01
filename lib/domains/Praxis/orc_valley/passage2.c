@@ -13,4 +13,6 @@ void create() {
       (["west" : "/domains/Praxis/orc_valley/chamber2",
         "east" : "/domains/Praxis/orc_valley/open"]) );
 }
-
+void init(){
+    ::init();
+}

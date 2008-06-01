@@ -11,10 +11,15 @@
 
 inherit LIB_DAEMON;
 
-mixed cmd(string args) {
+mixed cmd(string args){
     string array rules = ({ "", "STR" });
     string array adverbs;
     string emote, xtra, prep;
+    if( !((int)master()->valid_apply(({ "ASSIST" }))) &&
+      !member_group(this_player(), "EMOTES") ){
+        write("You are not admin, nor a member of the EMOTES group.");
+        return 1;
+    }
 
     if( !args || args == "" ) {
         return "Add which emote?";

@@ -42,3 +42,6 @@ void create() {
     SetSmell("fish", "You smell that they have been lying all over "
       "the pier south.");
 }
+void init(){
+    ::init();
+}

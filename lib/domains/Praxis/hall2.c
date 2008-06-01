@@ -36,18 +36,6 @@ int room_104() {
     return 0;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void init(){
+    ::init();
+}

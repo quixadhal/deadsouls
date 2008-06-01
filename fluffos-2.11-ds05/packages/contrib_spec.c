@@ -53,4 +53,3 @@ mixed element_of(mixed *);
 mixed max( mixed *, int | void );
 mixed min( mixed *, int | void );
 mixed abs( int | float );
-string terminal_color(string, mapping, void | int, void | int);

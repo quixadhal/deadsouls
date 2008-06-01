@@ -1,11 +1,15 @@
 #include <lib.h>
 #include <network.h>
 #include <socket_err.h>
+#define ANSI(p) sprintf("%c["+(p)+"m", 27)
+#define ESC(p) sprintf("%c"+(p), 27)
+
 inherit LIB_ITEM;
 
 static int counter = 0, attempting, connected, socket ;
 static int dud_count = 0, spawning, last_action, loop_count = 0;
-static int maxbox = 50;
+static int maxbox = 1;
+static int newbot = 1;
 static object person, player;
 static string preset, name, passwd, gender;
 static string display_name, email, real_name, race;
@@ -20,6 +24,17 @@ static int pocket_money = 600;
 static int spent, in_combat;
 static mixed *socks_array = ({});
 
+mapping AnsiMap1 =
+([ "RESET":ANSI("0"), "BOLD":ANSI(1), "FLASH":ANSI(5),
+  "BLACK":ANSI(30), "RED":ANSI(31), "GREEN":ANSI(32),
+  "ORANGE":ANSI(33),     "YELLOW":ANSI(1)+ANSI(33), "BLUE": ANSI(34),
+  "CYAN":ANSI(36), "MAGENTA":ANSI(35), "BLACK":ANSI(30),
+  "WHITE": ANSI(37), "B_RED":ANSI(41), "B_GREEN":ANSI(42),
+  "B_ORANGE":ANSI(43), "B_YELLOW":ANSI(1)+ANSI(43), "B_BLUE":ANSI(44),
+  "B_CYAN":ANSI(46), "B_BLACK":ANSI(40), "B_WHITE": ANSI(47),
+  "CLEARLINE":ESC("[L")+ESC("[G"), "B_MAGENTA":ANSI(45), "STATUS":"",
+  "WINDOW":"", "INITTERM":ESC("[H")+ESC("[2J"), "ENDTERM":"" ]); 
+mapping AnsiMap2 = ([]);
 
 int parse_comm( string str );
 int DoorHandler(string str);
@@ -30,9 +45,18 @@ string eventBolo(string str);
 string eventWatch(string str, string watching);
 int eventCombatPrep();
 
+varargs static void validate(int i){
+    if(i){
+        if(!socket_status(i) || !socket_status(i)[5]){
+            error("Bad socket, fd "+i);
+        }
+    }
+}
+
 static void create(mixed arg)
 {
     item::create();
+    AnsiMap2 = ([]);
     if(arg && stringp(arg)) ip = arg;
     SetKeyName("gamebot");
     SetShort( "a gamebot" ) ;
@@ -53,6 +77,9 @@ static void create(mixed arg)
     if(!email) email = "me@here";
     if(!real_name) real_name = "John Smith";
     if(!race) race = "human";
+    foreach(mixed key, mixed val in AnsiMap1){
+        AnsiMap2[val] = key;
+    }
 }
 
 int eventBroadcastGreen(){
@@ -112,40 +139,52 @@ int Setup(){
 
 string random_act(){
     string ret;
-    int randy = random(25);
-    switch(randy){
-    case 0 : ret = "inventory";break;
-    case 1 : ret = "score";break;
-    case 2 : ret = "who";break;
-    case 3 : ret = "stat";break;
-    case 4 : ret = "uptime";break;
-    case 5 : ret = "hist";break;
-    case 6 : ret = "env";break;
-    case 7 : ret = "money";break;
-    case 8 : ret = "hist newbie";break;
-    case 9 : ret = "hist gossip";break;
-    case 10 : ret = "mudlist";break;
-    case 11 : ret = "version";break;
-    case 12 : ret = "open door";break;
-    case 13 : ret = "cast buffer";break;
-    case 14 : ret = "cast meditate";break;
-    case 15 : ret = "search";break;
-    case 16 : ret = "put all in my bag";break;
-    case 17 : ret = "put all in my box";break;
-    case 18 : ret = "put all in my chest";break;
-    case 19 : ret = "wear all";break;
-    case 20 : ret = "wield first sword in right hand";break;
-    case 21 : ret = "wield first knife in right hand";break;
-    case 22 : ret = "wield first club in right hand";break;
-    case 23 : ret = "kill all";break;
-    case 24 : ret = "wimpy 30";break;
-    case 25 : in_combat = 0;ret = "look";break;
-    default : ret = "reply :)";break;
+    int randy = random(27);
+    if(!newbot){
+        switch(randy){
+        case 0 : ret = "inventory";break;
+        case 1 : ret = "score";break;
+        case 2 : ret = "who";break;
+        case 3 : ret = "stat";break;
+        case 4 : ret = "uptime";break;
+        case 5 : ret = "hist";break;
+        case 6 : ret = "env";break;
+        case 7 : ret = "money";break;
+        case 8 : ret = "hist newbie";break;
+        case 9 : ret = "hist gossip";break;
+        case 10 : ret = "mudlist";break;
+        case 11 : ret = "version";break;
+        case 12 : ret = "open door";break;
+        case 13 : ret = "cast buffer";break;
+        case 14 : ret = "cast meditate";break;
+        case 15 : ret = "search";break;
+        case 16 : ret = "put all in my bag";break;
+        case 17 : ret = "put all in my box";break;
+        case 18 : ret = "put all in my chest";break;
+        case 19 : ret = "wear all";break;
+        case 20 : ret = "wield first sword in right hand";break;
+        case 21 : ret = "wield first knife in right hand";break;
+        case 22 : ret = "wield first club in right hand";break;
+        case 23 : ret = "kill all";break;
+        case 24 : ret = "wimpy 30";break;
+        case 25 : in_combat = 0;ret = "look";break;
+        case 26 : ret = "position";break;
+        default : ret = "reply :)";break;
+        }
+    }
+    else {
+        switch(newbot){
+        case 1 : ret = "terminal unknown";break;
+        default : ret = "customize strength 15";break;
+        }
+        if(newbot > 2) newbot = 0;
+        else newbot++;
     }
     return ret;
 }
 
 string eventStargate(string str){
+    //tc("stargate: "+str);
     if(grepp(str,"idle stargate")){
         int which = random(4);
         switch(which){
@@ -153,7 +192,6 @@ string eventStargate(string str){
         case 1 : parse_comm("dial tower");break;
         case 2 : parse_comm("dial campus lab");break;
         case 3 : parse_comm("dial praxis");break;
-        default : parse_comm("dial praxis");break;
         }
     }
     if(grepp(str,"outbound stargate")){
@@ -165,7 +203,29 @@ string eventStargate(string str){
 
 int think(string str){
     string ret = "";
+    //mixed *st_arr = explode(str,"");
     int this_action = time();
+    //str = "";
+    //str = replace_string(str,CARRIAGE_RETURN,"\n");
+    //str = replace_string(str,"\e","_");
+    //str = replace_string(str,"\n","_");
+    //str = replace_string(str,"\t","*");
+    //str = replace_string(str,"\b","#");
+    //str = strip_colors_old(str);
+    //str = strip_colours(str);
+    //str = strip_colors(str);
+    //foreach(mixed element in st_arr){
+    //    if(element[0] == 13) str += "_";
+    //    else if(element[0] == 27) str += "*";
+    //    else str += element;
+    //}
+    foreach(mixed element in values(AnsiMap1)){
+        str = replace_string(str,element,"");
+    }
+    str = strip_colours(str);
+    tell_player("cratylus",name+" think: "+str);
+    flush_messages();
+    //tc(name+" think: "+str2);
     this_object()->eventScanExits(str);
     if(this_action - last_action > 10 && enable){
         parse_comm("stand up");
@@ -175,11 +235,17 @@ int think(string str){
 
     if(enable) eventBolo(str);
     if(sizeof(watching) < 1){
+        //tc(name+" watching","green");
         if(grepp(str, "You bump into ") && grepp(lower_case(str), "door")) DoorHandler(str);
+        if(grepp(str, "A great sea")){
+            travel = "swim ";
+            ret = "swim west";
+        }
+        if(grepp(str, "You are prone.")) ret = "stand ";
         if(grepp(str, "You stand up.")) travel = "go ";
-        if(grepp(str, "a portal forms")) ret = "enter portal";
-        if(grepp(str, "stargate is here")) ret = eventStargate(str);
+        if(grepp(str, "a portal forms")) ret = "enter stargate";
         if(grepp(str, "Perhaps you should try crawling.")) travel = "crawl ";
+        if(grepp(str, "You are swimming.")) travel = "swim ";
         if(grepp(str, "What name do you wish")) ret = name;
         if(grepp(str, "Please enter a new name:")) ret = name;
         if(grepp(str, "Do you really wish to be known as ")) ret = "y";
@@ -212,6 +278,10 @@ int think(string str){
         if(grepp(str, "press enter:")) ret = "\n";
         if(grepp(str, "%:")) ret = "\n";
         if(grepp(str, "Press <return> to continue:")) ret = "\n";
+        if(grepp(str, "stargate is here")){
+            //tc("hmmmmmm");
+            ret = eventStargate(str);
+        }
         previous_command = ret;
     }
 
@@ -220,6 +290,7 @@ int think(string str){
     }
     ret = trim(ret);
     if(ret && ret != "" && sizeof(ret)) {
+        //tc(name+" command: "+ret,"yellow");
         this_object()->parse_comm(ret);
     }
     return 1;
@@ -227,6 +298,7 @@ int think(string str){
 
 string eventBolo(string str){
     string ret = "\n";
+    //tc(name+" bolo","red");
     wander = 0;
     if(grepp(str, "press enter:") || grepp(str, "%:") ||
       grepp(str,"Press <return> to continue:" )){
@@ -597,12 +669,14 @@ int do_connect(string args)
 
 void read_callback( int fd, mixed message )
 {
+    validate(fd);
     player->eventPrint(message);
     player->think(message);
 }
 
 void close_callback( int fd )
 {
+    validate(fd);
     if( connected )
     {
     }
@@ -617,6 +691,7 @@ void close_callback( int fd )
 
 void write_callback( int fd )
 {
+    validate(fd);
     attempting = 0 ;
     connected = 1 ;
 }
@@ -657,6 +732,7 @@ int parse_comm( string str )
             if(fco == -1) Setup();
             return 1 ;
         }
+        validate(socket);
         write_stat = socket_write( socket, str + "\n" ) ;
         return 1 ;
     }

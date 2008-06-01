@@ -26,7 +26,6 @@ static void create() {
     AddItem("holes", "You might be able to use them to climb the wall.");
     // here is the thing that can be climbed, have a look at it!
     AddItem(new("/domains/Ylsrim/etc/wall"));
-    SetObviousExits("e, w");
     SetExits( ([ "east" : "/domains/Ylsrim/room/"+ "kaliid5",
         "west" : "/domains/Ylsrim/room/"+ "kaliid7" ]));
 }

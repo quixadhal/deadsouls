@@ -29,3 +29,6 @@ void reset() {
         }
     }
 }
+void init(){
+    ::init();
+}

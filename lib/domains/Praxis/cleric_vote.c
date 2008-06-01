@@ -26,3 +26,6 @@ string new_long() {
     else return "This is the voting chamber of the Hall of Clerics.  "
         "Clerics will gather here for the next election: "+(string)VOTING_D->query_vote_date()+".";
 }
+void init(){
+    ::init();
+}

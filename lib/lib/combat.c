@@ -491,6 +491,8 @@ varargs int eventDie(mixed agent){
     object ob;
     int x;
 
+    if(this_object()->GetGodMode()) return 0;
+
     if(Dead) return 1;
     Dead = 1;
 

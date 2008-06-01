@@ -60,7 +60,6 @@ static void create() {
     AddItem(({ "writing", "walls" }), "Scribble in all different "
       "languages, and in many pens and many hands covers much of "
       "each wall.");
-    SetObviousExits("e");
     SetExits(([ "east" : "/domains/Ylsrim/room/"+ "s_bazaar" ]));
     // Bring in the Bar Keep
     // make the writing and the menu readable

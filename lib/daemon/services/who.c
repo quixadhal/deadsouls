@@ -10,6 +10,8 @@
 #include <rooms.h>
 static mapping user_table = ([]);
 
+int mini;
+
 static string eventLookupUser(string str){
     if(!user_table) user_table = ([]);
     if(!user_table[str]) return str;
@@ -42,11 +44,19 @@ void eventReceiveWhoRequest(mixed *packet) {
     mixed *msg;
     string *real_users = ({});
     string ret = "";
+    mini = 0;
     real_users = filter(users(), (: $1->GetKeyName() == last_string_element(base_name($1),"/") :));
     if( file_name(previous_object()) != INTERMUD_D ) return;
+    if(sizeof(real_users) > 100) mini = 1;
     msg = map(filter(real_users, (: (environment($1) && !((int)$1->GetInvis()))  :)),
       (: ({ (string)$1->GetCapName(), query_idle($1),
-          (string)$1->GetShort() }) :));
+          (mini ? "" : (string)$1->GetShort()) }) :));
+    //tc("sizeof msg: "+sizeof(identify(msg)));
+    //tc("max string: "+__LARGEST_PRINTABLE_STRING__);
+    if(sizeof(identify(msg)) >= __LARGEST_PRINTABLE_STRING__){
+        msg = ({({"Number of users: "+sizeof(msg), 0, "Too many results." })});
+    }
+    write_file("/tmp/thingy.txt",identify(msg),1);
     INTERMUD_D->eventWrite(({ "who-reply", 5, mud_name(), 0, packet[2],
         packet[3], msg }));
     foreach(string *entry in msg){

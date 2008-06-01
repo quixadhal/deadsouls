@@ -23,7 +23,6 @@ static void create() {
       "look so fragile.");
     AddItem("road", "The main street in Ylsrim.", "kaliid");
     SetInventory(([ "/domains/Ylsrim/weapon/stick" : 1 ]));
-    SetObviousExits("e, w");
     SetExits( ([ "east" : "/domains/Ylsrim/room/"+ "kaliid6",
         "west" : "/domains/Ylsrim/room/"+ "sand_room" ]));
 }

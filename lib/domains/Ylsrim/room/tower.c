@@ -31,7 +31,6 @@ void create() {
         "tower" : "The tower you are on.",
         ({ "stairs", "staircase" }) : "They lead down into the "
         "heart of the hall." ]) );
-    SetObviousExits("d");
     SetExits( ([ "down" : "/domains/Ylsrim/room/"+ "adv_hall" ]) );
     SetInventory(([
         "/domains/Ylsrim/obj/stargate" : 1,

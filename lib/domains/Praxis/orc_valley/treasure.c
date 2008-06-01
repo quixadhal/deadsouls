@@ -29,3 +29,7 @@ void reset() {
     new("/domains/Praxis/obj/weapon/orc_slayer")->move(present("chest"));
     //present("chest")->SetClosed(1);
 }
+void init(){
+    ::init();
+}
+

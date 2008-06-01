@@ -88,4 +88,3 @@ string is_dug() {
         "sign hanging outside of it.  A hole has been recently uncovered "
         "on the west side of the road.";
 }
-

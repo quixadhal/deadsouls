@@ -19,7 +19,7 @@ inherit LIB_PLAYER;
 inherit LIB_ISQL;
 #endif /* __PACKAGE_DATABASE_DB__ */
 
-private int CreatorAge, CreatorBirth;
+private int wizvision, CreatorAge, CreatorBirth;
 private static int LastCreatorAge;
 
 /* *****************  /lib/creator.c driver applies  ***************** */
@@ -176,3 +176,22 @@ mapping GetSpellBook(){
     }
     return ret;
 }
+
+varargs mixed GetEffectiveVision(mixed location, int raw_score){
+    if(wizvision) return VISION_CLEAR;
+    return player::GetEffectiveVision(location, raw_score);
+}
+
+int SetWizVision(int i){
+    if(!this_player()) return 0;
+    if(archp(this_object()) && !archp(this_player())) return 0;
+    if(!archp(this_object()) && this_player() != this_object()) return 0;
+    if(i) wizvision = 1;
+    else wizvision = 0;
+    return wizvision;
+}
+
+int GetWizVision(){
+    return wizvision;
+}
+

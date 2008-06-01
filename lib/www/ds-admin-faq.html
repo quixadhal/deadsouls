@@ -397,11 +397,20 @@ be full creators</a><br>
 <br>
 </big><big style="font-family: courier new,courier,monospace;"><a
  href="#136">136 I want players to select their class when they create
-their characters</a></big><br>
-<big><a href="http://dead-souls.net/ds-admin-faq.html#121"><big
- style="font-family: courier new,courier,monospace;"></big></a></big><big
+their characters</a><br>
+<br>
+</big><a href="#136"><big
+ style="font-family: courier new,courier,monospace;"><a href="#137">137
+I am strongly opposed to the use of intermud</a><br>
+</big></a><br>
+<a href="#136"><big style="font-family: courier new,courier,monospace;"><a
+ href="#138">138 I hate one of the sample domains and I want it GONE</a><br>
+<br>
+<a href="#139">139 How do I make help files?</a></big></a><br>
+<br>
+<br>
+<big style="font-family: courier new,courier,monospace;"></big><big
  style="font-family: courier new,courier,monospace;"><br>
-</big><big style="font-family: courier new,courier,monospace;"><br>
 <span style="font-weight: bold; text-decoration: underline;"><a name="0"></a>How
 do I start?</span><br>
 <br>
@@ -3072,6 +3081,20 @@ do's and don'ts?</span><br>
 There aren't too many, but they tend to<br>
 be important, so try to follow these guidelines:<br>
 <br>
+- Do not allow anyone other than full admins (people in<br>
+the SECURE group of /secure/cfg/groups.cfg) to edit<br>
+/lib files. Things like /lib/player.c and such must only<br>
+ever by edited by SECURE folks, because otherwise someone<br>
+can use that editing to elevate themselves to full<br>
+admin privileges. Do not mess with groups.cfg to let<br>
+normal creators edit /lib files, do not modify the mud to<br>
+allow write access there. If you need help with those files,<br>
+hire someone you trust to be full admin. Or simply<br>
+have folks submit code to you that you review before you<br>
+drop it into /lib yourself. By default, neither normal<br>
+creators nor assistant admins can write to /lib, and this<br>
+default is the way you should leave it.<br>
+<br>
 - Don't mess with /realms/template/ unless you know exactly<br>
 what you're doing. Breaking anything there will hose up<br>
 new creators. The same goes for /secure/sefun/make_workroom.c<br>
@@ -3093,7 +3116,7 @@ with. The <span style="font-weight: bold;">bk</span> and <span
 friends.<br>
 <br>
 - Don't let just anyone off the street become Creator. You<br>
-need to know and trust your builders.<br>
+need to know and trust your creators.<br>
 <br>
 - Don't let a week go by without a full backup of your mud.<br>
 <br>
@@ -4816,7 +4839,7 @@ full creators</span><br>
 Starting in 2.7a7, players can use the QCS to create<br>
 rooms, npc's, weapons, armor, etc, if they are members<br>
 of the BUILDER group. Simply add your new builder to<br>
-the BUILDER group with this command:<br>
+the BUILDER group with this command (if her name is "newbuilder"):<br>
 <br>
 <span style="font-weight: bold;">groupmod -a builder newbuilder</span><br>
 <br>
@@ -4904,8 +4927,8 @@ issue the command:<br>
 <a name="136"></a><span style="text-decoration: underline;">I want
 players to select their class when they create their characters</span><br>
 <br>
-</span></big><big style="font-family: courier new,courier,monospace;">Start<span
- style="font-family: monospace;">ing in 2.7a26 this can be ena</span>bled
+</span></big><big style="font-family: courier new,courier,monospace;">Starting
+in 2.7a26 this can be enabled
 with the command:<br>
 <br>
 <span style="font-weight: bold;">mudconfig selectclass yes</span><br>
@@ -4914,8 +4937,247 @@ Note that the existing classes are just examples, and are therefore<br>
 unlikely to have all the neat things you will eventually have<br>
 in your mud.<br>
 <br>
-<span style="font-weight: bold;"></span></big><br
- style="font-family: courier new,courier,monospace;">
+<br>
+<a name="137"></a><span
+ style="font-weight: bold; text-decoration: underline;">I am strongly
+opposed to the use of intermud</span><br
+ style="font-weight: bold; text-decoration: underline;">
+<br>
+There are a few common reasons for this, often based on old<br>
+or incorrect assumptions. Obviously you're going to run your<br>
+own mud however it pleases you, but if your decision to disable<br>
+intermud is based on the following beliefs, you may want to<br>
+re-evaluate those reasons:<br>
+<br>
+<span style="text-decoration: underline;"><a name="mean"></a>"People
+are mean on intermud"</span><br>
+<br>
+Some people on some channels are mean, yes. However, Dead Souls<br>
+does not enable those channels for your creators by default.<br>
+The default channels are newbie-friendly and have <a
+ href="http://lpmuds.net/intermud.html#rules">rules</a> which<br>
+are enforced.<br>
+<br>
+<a name="liar"></a><span style="text-decoration: underline;">"Liar. I
+have seen the <a href="http://dead-souls.net/duuk.txt">log</a>s.
+Newbies are eaten alive."</span><br>
+<br>
+Not anymore. Not on my watch. Old logs are old. If a newbie<br>
+is needlessly aggressed now, the <a
+ href="http://dead-souls.net/duuk2.txt">aggressor is confronted</a>.<br>
+If the aggressor does not behave, the aggressor faces...<br>
+consequences.<br>
+<br>
+<span style="text-decoration: underline;"><a name="distracting"></a>"Intermud
+is distracting"</span><br>
+<br>
+You don't have to prevent everyone on the mud from using<br>
+intermud just because you find channels distracting. If you<br>
+don't want to hear from a channel, for example the "ds_test"<br>
+channel, you can issue the command:<br>
+<br>
+<span style="font-weight: bold;">ds_test</span><br>
+<br>
+By itself, the channel name disables or enables the channel<br>
+for you personally, without affecting how others on the<br>
+mud use it.<br>
+<br>
+<span style="text-decoration: underline;"><a name="theft"></a>"People
+will try to steal my builders and coders"</span><br>
+<br>
+This is unlikely. I don't think I've seen very much of this<br>
+in the years I've run the network. It certainly *can* happen <br>
+that your staff leaves your mud for another one. I would<br>
+suggest that this would happen whether you enable intermud<br>
+or not. <br>
+<br>
+You see, when a coder has a question you can't answer, or<br>
+if you're not there, she's going to do a web search, and<br>
+find the <a href="http://lpmuds.net/forum/">lpmuds.net forum</a>, or
+log into the <a href="http://dead-souls.net/javaclient/demo.html">Dead
+Souls demo<br>
+mud</a>. She's going to run into friendly, helpful people who<br>
+share their ideas and suggestions, and she's going to<br>
+want more of that. If you block intermud on your mud,<br>
+she's just going to go somewhere else to find support,<br>
+and she might just stay there. <span style="font-style: italic;">And</span>
+tell your other staff<br>
+about the new place that isn't so restrictive.<br>
+<br>
+By blocking intermud, you actually make it <span
+ style="font-weight: bold; font-style: italic;">more</span> likely
+you'll<br>
+lose staff, not less.<br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;"><a
+ name="hog"></a><span style="text-decoration: underline;">"Intermud is
+a resource hog"</span><br>
+<br>
+This is not correct. Your intermud connection generates<br>
+about as much traffic/lag as a single moderately active<br>
+player. I have tested Dead Souls with very large numbers<br>
+of connections, and very large numbers of players, and<br>
+I can assure you, quite confidently, the default intermud<br>
+connection for your mud does not "lag" your mud. This<br>
+might have been true on some other driver, with some other<br>
+lib, in some other era...but not today.<br>
+<br>
+<a name="crat_sucks"></a><span style="text-decoration: underline;">"I
+just don't like you, Cratylus"</span><br>
+<br>
+You don't have to be a fan of mine to benefit from<br>
+intermud. Some of the most established oldbies on intermud<br>
+love nothing more than to give me a hard time on the intergossip<br>
+(read not-very-friendly) channel. If nothing else, intermud<br>
+would allow you to join the intergossip channel and tell<br>
+me exactly how much I suck in real-time.<br>
+<br>
+<a name="malware"></a><span style="text-decoration: underline;">"I am
+afraid that intermud is actually some sort of Trojan or spyware"</span><br>
+<br>
+Short answer: intermud doesn't spy on you.<br>
+<br>
+Long answer:<br>
+Dead Souls is an LP lib, meaning that it has no secrets. Its<br>
+code is not pre-compiled. What it does, and how it does so is<br>
+completely open for anyone to download and inspect. If you<br>
+know anything at all about me you know there are plenty of<br>
+people who would <span style="font-weight: bold; font-style: italic;">love</span>
+to find spyware/malware/whatever in<br>
+Dead Souls, and make a big deal of it. If intermud worked<br>
+as a spy tool for Dead Souls, it would be the worst thing that<br>
+ever happened to the project. <br>
+<br>
+You can rest assured that intermud is not something <br>
+used for collecting secrets about your mud.<br>
+<br>
+Having said that, intermud does allow people to see some<br>
+things you might not like:<br>
+<br>
+* The list of logged-on players.<br>
+* Finger information about players (except for their IP)<br>
+* Basic information about which driver and lib version you <br>
+run, as well as uptime and such miscellanea.<br>
+<br>
+If that information is something you don't want others to<br>
+see, then disabling intermud would do the trick. However,<br>
+it's really not very secret information...since logging<br>
+in as "guest" would let anyone see the exact same things!<br>
+<br>
+One thing to keep in mind is that even though I do not<br>
+monitor what people say to each other with "intermud tells"<br>
+(different from channels. intermud tells are just between the <br>
+two people), intermud tells go across the router in plain text, so<br>
+you cannot be guaranteed that your <a href="#90">intermud tell</a>
+will never <br>
+be read by another person. However, regular tells on<br>
+your mud are not intermud tells, and therefore regular<br>
+tells on your mud never reach the intermud.<br>
+<br>
+If you want to see the data your mud sends to the intermud<br>
+router, visit the network room:<br>
+<br>
+<span style="font-weight: bold;">goto /secure/room/network</span><br>
+<br>
+You'll see the raw intermud packets going in and out.<br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
+<a name="minors"></a><span style="text-decoration: underline;">"My game
+will have young children. I don't want them exposed to strangers."</span><br>
+<br>
+You should definitely block intermud then, or at<br>
+least <a href="#35">restrict it</a> to adult staff.<br>
+<br>
+<a name="criminal"></a><span style="text-decoration: underline;">"I am
+in a country where some opinions are criminal"</span><br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;">You
+should definitely block intermud then, or at<br>
+least <a href="ds-admin-faq.html#35">restrict it</a> to trusted staff.<br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;"><a
+ name="anarchist"></a><span style="text-decoration: underline;">"I
+refuse to obey your </span><a style="text-decoration: underline;"
+ href="http://lpmuds.net/intermud.html#rules">channel rules</a><span
+ style="text-decoration: underline;">"</span><br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;">You
+should definitely block intermud then, or at<br>
+least <a href="ds-admin-faq.html#35">restrict it</a> to responsible
+staff.</big><br>
+<big style="font-family: courier new,courier,monospace;"><br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"><a
+ name="138"></a>I hate one of the sample domains and I want it GONE</span><br>
+<br>
+If you feel strongly about it, then by all means get rid<br>
+of the domain that offends your sensibilities. Before<br>
+you do, however, ask yourself if what you dislike is<br>
+the domain itself and everything it stands for, or<br>
+if the problem is that you just don't want it to be<br>
+something your players see.<br>
+<br>
+The reason you should ask yourself this question is<br>
+that even if you really don't care for one of (or all<br>
+of) the sample domains, they really do serve the<br>
+incredibly useful purpose of providing many, many<br>
+good examples of how to do certain things in Dead Souls.<br>
+Without working examples, you'll be reinventing the<br>
+wheel anytime you want to do something you're <br>
+unfamiliar with that isn't explicitly detailed in<br>
+exisiting documentation.<br>
+<br>
+If you wipe the the Town domain, for example, and<br>
+then want to set up a quest for advancement, you're <br>
+going to have to figure it out by reading and <br>
+understanding the mechanics of the quest lib object <br>
+and level system...rather than just taking a quick <br>
+look at Leo and Dirk for how they implement those <br>
+mechanics. If you're ok with that, then fine, but don't<br>
+be surprised if your request for help on the intermud<br>
+goes something like:<br>
+<br>
+Newcomer@MyMud <span
+ style="color: rgb(0, 204, 204); font-weight: bold;">&lt;dchat&gt;</span>
+how do I get an npc to raise my level?<br>
+Cratylus@Dead Souls <span
+ style="color: rgb(0, 204, 204); font-weight: bold;">&lt;dchat&gt;</span>
+take a look at dirk <br>
+</big><big style="font-family: courier new,courier,monospace;">Newcomer@MyMud
+<span style="color: rgb(0, 204, 204); font-weight: bold;">&lt;dchat&gt;</span>
+nah, I deleted that domain, it sucks<br>
+</big><big style="font-family: courier new,courier,monospace;">Cratylus@Dead
+Souls <span style="color: rgb(0, 204, 204); font-weight: bold;">&lt;dchat&gt;</span>
+download dead souls again and take a look at dirk<br>
+<br>
+(This chat was simulated. No newbies were harmed in <br>
+the creation of that pretend log)<br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
+It's by far simpler and more convenient to <br>
+<a href="http://dead-souls.net/ds-admin-faq.html#108">change the
+default domain to something else</a>, rather<br>
+than deleting stuff.<br>
+<br>
+But hey, the beauty part is, it's <span style="font-weight: bold;">your</span>
+mud. I'm not<br>
+the boss of you, so if obliterating that horrible<br>
+awful set of bits is what you must do, then follow<br>
+your vision, man.<br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;"><span
+ style="font-weight: bold; text-decoration: underline;"><a name="139"></a>How
+do I make help files?</span><br>
+<br>
+Create a text file in the manner you normally do, then when<br>
+you're done, put it somewhere in /doc/help that makes sense.<br>
+for example, a help file about your new combat system might<br>
+be called /doc/help/players/karate<br>
+<br>
+Once you've made the helpfile and put it where it goes, <br>
+update the help daemon and you should be all set:<br>
+<br>
+<span style="font-weight: bold;">update /daemon/help</span><br>
+<br>
+</big><br style="font-family: courier new,courier,monospace;">
 <big style="font-family: courier new,courier,monospace;">-
 Cratylus</big><br style="font-family: courier new,courier,monospace;">
 <br style="font-family: courier new,courier,monospace;">

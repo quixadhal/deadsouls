@@ -37,6 +37,8 @@ int SetRespiration(int i){
 varargs int CanBreathe(object what, object where){
     object env = environment(this_object());
     int medium, restype; 
+
+    if(this_object()->GetGodMode()) return 1;
     if(env && living(env)) env = environment(env);
     if(!env) return 0;
     medium = env->GetMedium();

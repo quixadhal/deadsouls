@@ -8,6 +8,7 @@
  */
 
 #include <lib.h>
+#include <message_class.h>
 #include <daemons.h>
 #include "include/look.h"
 
@@ -91,7 +92,7 @@ mixed do_look() {
     if(environment(this_player()) && !this_player()->GetInvis() &&  
       !environment(this_player())->GetProperty("meeting room"))
         environment(this_player())->eventPrint((string)this_player()->GetName() +
-          " looks around.", this_player());
+          " looks around.", this_player(), (MSG_ENV|MSG_ANNOYING));
     this_player()->eventDescribeEnvironment(0);
     return 1;
 }

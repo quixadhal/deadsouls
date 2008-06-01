@@ -45,3 +45,6 @@ void create() {
 void print_long() {
     write (this_object()->GetLong());
 }
+void init(){
+    ::init();
+}

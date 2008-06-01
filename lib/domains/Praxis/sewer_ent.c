@@ -26,3 +26,6 @@ void reset() {
     if(!present("sword")) 
         new("/domains/Praxis/obj/weapon/sword")->move(this_object());
 }
+void init(){
+    ::init();
+}

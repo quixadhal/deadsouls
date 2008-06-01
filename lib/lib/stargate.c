@@ -174,10 +174,9 @@ int cmdEnter(string what){
     destination = STARGATE_D->GetDestination(endpoint);
     who->eventPrint("You step through the event horizon of the stargate.");
     who->eventMoveLiving(destination, 
-      "$N steps into the event horizon and disappears", 
-      "$N steps out of the event horizon");
+      "$N enters into the event horizon and disappears.", 
+      "$N emerges from the event horizon.");
     return 1;
-
 }
 
 int eventEnter(object who){
@@ -190,8 +189,8 @@ int eventEnter(object who){
     {
         who->eventPrint("You step through the event horizon of the stargate.");
         who->eventMoveLiving(endpoint, 
-          "$N steps into the event horizon and disappears", 
-          "$N steps out of the event horizon");
+          "$N enters into the event horizon and disappears.", 
+          "$N emerges from the event horizon.");
     }
     return 1;
 }

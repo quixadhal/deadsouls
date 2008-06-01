@@ -268,65 +268,8 @@ void eventEnemyDied(object ob){
 
 int eventMove(mixed dest){
     int ret;
-
     ret = eventCompleteMove(dest);
     return ret;
-}
-
-varargs int eventMoveLiving(mixed dest, string omsg, string imsg){
-    object *inv;
-    object prev;
-    string msgclass;
-
-    if( prev = environment() ){
-        if( stringp(dest) ){
-            if(dest[0] != '/'){
-                string *arr;
-
-                arr = explode(file_name(prev), "/");
-                dest = "/"+implode(arr[0..sizeof(arr)-2], "/")+"/"+dest;
-            }
-        }
-        if( !eventCompleteMove(dest) ){
-            eventPrint("You remain where you are.");
-            return 0;
-        }
-        inv = filter(all_inventory(prev), (: (!GetInvis($1) && living($1) &&
-              ($1 != this_object())) :));
-        if( !omsg || omsg == "" ) omsg = GetMessage("telout");
-        else if(GetPosition() == POSITION_SITTING ||
-          GetPosition() == POSITION_LYING ){
-            omsg = this_object()->GetName()+" crawls "+omsg+".";
-        }
-        else if(GetPosition() == POSITION_FLYING ){
-            omsg = this_object()->GetName()+" flies "+omsg+".";
-        }
-
-        else omsg = GetMessage("leave", omsg);
-        inv->eventPrint(omsg, MSG_ENV);
-    }
-    else if( !eventCompleteMove(dest) ){
-        eventPrint("You remain where you are.");
-        return 0;
-    }
-    inv = filter(all_inventory(environment()),
-      (: (!GetInvis($1) && living($1) && ($1 != this_object())) :));
-    if( (!imsg || imsg == "") && (!omsg || omsg == "") )
-        imsg = GetMessage(msgclass = "telin");
-    else if(GetPosition() == POSITION_SITTING ||
-      GetPosition() == POSITION_LYING ){
-        imsg = this_object()->GetName()+" crawls in";
-    }
-    else if(GetPosition() == POSITION_FLYING ){
-        imsg = this_object()->GetName()+" flies in.";
-    }
-
-    else if( !imsg || imsg == "" ) imsg = GetMessage(msgclass = "come", imsg);
-    else imsg = replace_string(imsg, "$N", GetName());
-    inv->eventPrint(imsg, MSG_ENV);
-    this_object()->eventDescribeEnvironment(0);
-    eventMoveFollowers(environment(this_player()));
-    return 1;
 }
 
 varargs int eventPrint(string msg, mixed arg2, mixed arg3){

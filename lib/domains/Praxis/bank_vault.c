@@ -26,4 +26,6 @@ void reset() {
         money->move(this_object());
     }
 }
-
+void init(){
+    ::init();
+}

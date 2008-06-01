@@ -1,13 +1,32 @@
+---- 2.7a28 ---
+- Released 2008-06-01
+- Various missing init()'s in Ylsrim & Praxis fixed. Note: those
+  are still unsupported areas, just kept for historical reasons. They
+  may eventually be dropped from the distribution.
+- Driver: FluffOS updated to handle being compiled with DEBUG defined.
+- Driver: Address server errors are now suppressed by default ( ADDRFAIL_NOTIFY 
+  in comm.c )
+- New commands: godmode, wizvision, annoyblock.
+- Warmboots are now even more thorough in their recursive loading.
+- Bug in player description fixed.
+- Finger daemon no longer divulges player email addresses except
+  to arches (top level admins).
+- Whispering now happens in your "current language", not
+  your native language.
+- eventMoveLiving() merged for both npc's and interactives in LIB_LIVING.
+  Odd messages from this function in LIB_STARGATE fixed.
+- Input now checked for non-alphabet characters before being
+  command-matched.
+- Global emotes can now be added by non-admin creators, if they are
+  members of the EMOTES group.
+
 ---- 2.7a27 ---
 - Released 2008-05-15
-- Driver: Fixed a crasher when reading zero-length files.
+- Fixed a crasher when reading zero-length files.
 - Driver: Fixed a crasher when some command actions fail to return properly.
 - The SetInventory refill now will replenish inventory when
   some is missing, not just when all is gone. For an example, see
   the new weapons rack in /domains/default/room/arena.c
-- Driver: The driver no longer spams the console with address server
-  connection problems. To re-enable this, change ADDRFAIL_NOTIFY
-  in comm.c and recompile the driver.
 - The blackjack table now uses "stand pat" rather than "stand" for
   ending the game. This avoids amusing problems with physical posture.
 
@@ -185,6 +204,15 @@
 - Released 2008-01-18
 - No lib changes.
 - Bundled driver is now a slightly modified FluffOS 2.9.
+
+---- 2.6.4 ---
+- Released 2008-05-16
+- Fixed a parsing bug in dummy items that reported oddly abbreviated names.
+- Fixed a crasher when reading zero-length files.
+- Driver: Fixed a crasher when some command actions fail to return properly.
+- Dummy object handling improved: church elevator should work ok.
+- Command for liveupgrades improved for stability.
+- Fixed some broken defaults in class files.
 
 ---- 2.6.2 ---
 - Released 2008-01-06

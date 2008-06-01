@@ -36,3 +36,6 @@ int room_110() {
     write( "You cannot go in there!");
     return 0;
 }
+void init(){
+    ::init();
+}

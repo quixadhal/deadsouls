@@ -30,9 +30,12 @@ inherit LIB_BODY_MASS;
 inherit LIB_PERSIST;
 
 #define COLLAPSE_AT            10.0
+#ifndef SEVERABLE_LIMBS
+#define SEVERABLE_LIMBS 1
+#endif
 
 private int HealthPoints, MagicPoints, ExperiencePoints;
-private int melee;
+private int melee, godmode;
 private int Alcohol, Caffeine, Food, Drink, Poison, Sleeping, DeathEvents;
 private float StaminaPoints;
 private string Torso, Biter;
@@ -559,6 +562,9 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
     if( tmp == "immune"){
         return 0;
     }
+
+    if(godmode) return 0;
+
     switch(tmp){
     case "low": x = (3*x)/4; break;
     case "medium": x /= 2; break;
@@ -1300,6 +1306,8 @@ varargs int eventDie(mixed agent){
 
         if(limb == this_object()->GetTorso() || limb == "neck") return 0;
 
+        if(godmode || !SEVERABLE_LIMBS) return 0;
+
         if( sscanf(limb, "%s %s", adjname, templimbname) == 2 ) limbname=templimbname;
         else limbname=limb;
 
@@ -1309,7 +1317,6 @@ varargs int eventDie(mixed agent){
             message("environment", possessive_noun(GetName()) + " " + limb +
               " is severed!", environment(), ({ this_object() }));
             message("environment", "Your "+ limb + " is severed!", this_object());
-
 
             if(GetRace() == "golem"){
                 objict = new(LIB_CLAY);
@@ -1611,6 +1618,8 @@ varargs int eventDie(mixed agent){
             agent = 0;
         }
 
+        if(godmode && x < 1) return 0;
+
         if( limb ){
             if( !Limbs[limb] ) return -1;
             y = GetMaxHealthPoints(limb);
@@ -1880,6 +1889,7 @@ varargs int eventDie(mixed agent){
     }
 
     int AddHP(int hp){
+        if(hp < 1 && godmode) return 0;
         AddHealthPoints(hp);
         return hp;
     }
@@ -1917,3 +1927,17 @@ varargs int eventDie(mixed agent){
         else DeathEvents = 1;
         return DeathEvents;
     }
+
+    int SetGodMode(int i){
+        if(!this_player()) return 0;
+        if(archp(this_object()) && !archp(this_player())) return 0;
+        if(!archp(this_object()) && this_player() != this_object()) return 0;
+        if(i) godmode = 1;
+        else godmode = 0;
+        return godmode;
+    }
+
+    int GetGodMode(){
+        return godmode;
+    }
+
