@@ -193,7 +193,7 @@ spotless: clean
 	-rm -f configure.h local_options system_libs configuration
 	-rm -f options_incl.h
 	-rm -f *.diffs
-	-find . -name "*~" -print | xargs rm
+	-find . -name "*~" -exec rm -f {} \;
 
 # get ready for recompile
 neat:
@@ -203,7 +203,7 @@ neat:
 	-rm -f opcodes.h efunctions.h opc.h efun_protos.h
 	-rm -f malloc.c mallocwrapper.c
 	-rm -f func_spec.cpp applies.h applies_table.c files
-	-rm -f grammar.y comptest* a.out
+	-rm -f grammar.y comptest* $(A_OUT)
 	-rm -f packages/Makefile packages/GNUmakefile packages/packages
 
 # remove everything except configuration
@@ -216,9 +216,9 @@ clean: neat
 	-rm -f testsuite/OBJ_DUMP* testsuite/test_file testsuite/testfile
 	-rm -f testsuite/tmp_eval_file.c testsuite/sf.o testsuite/ed_test
 	-rm -f testsuite/log/log testsuite/log/debug.log testsuite/log/compile
-	-find . -name "*~" -print | xargs rm
-	-find . -name "*.orig" -print | xargs rm
-	-find . -name "*.rej" -print | xargs rm
+	-find . -name "*~" -exec rm -f {} \;
+	-find . -name "*.orig" -exec rm -f {} \;
+	-find . -name "*.rej" -exec rm -f {} \;
 	-rm -f *.ln tags TAGS
 	-rm -f $(DRIVER_BIN) $(DRIVER_BIN).old addr_server portbind
 	-rm -f Dependencies tmpdepend
@@ -234,9 +234,9 @@ distclean: neat
 	-rm -f testsuite/OBJ_DUMP* testsuite/test_file testsuite/testfile
 	-rm -f testsuite/tmp_eval_file.c testsuite/sf.o testsuite/ed_test
 	-rm -f testsuite/log/log testsuite/log/debug.log testsuite/log/compile
-	-find . -name "*~" -print | xargs rm
-	-find . -name "*.orig" -print | xargs rm
-	-find . -name "*.rej" -print | xargs rm
+	-find . -name "*~" -exec rm -f {} \;
+	-find . -name "*.orig" -exec rm -f {} \;
+	-find . -name "*.rej" -exec rm -f {} \;
 	-rm -f *.ln tags TAGS
 	-rm -f $(DRIVER_BIN) $(DRIVER_BIN).old addr_server portbind
 	-rm -f *.exe

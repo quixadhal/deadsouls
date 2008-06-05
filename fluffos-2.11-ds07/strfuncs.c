@@ -5,7 +5,7 @@
 
 #include "std.h"
 
-#ifndef WIN32
+#if !defined(WIN32) && !defined(__CYGWIN__)
 strcspn (register char * s, char * set)
 {
     register char *t;

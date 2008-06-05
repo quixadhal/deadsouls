@@ -194,8 +194,11 @@ string *query_local_functions(mixed arg){
 }
 
 object find_object( string str ){
-    object ret = efun::find_object(str);
-    if(!ret) return 0;
+    object ret;
+    int err;
+    if(!str || !stringp(str)) return 0;
+    err = catch(ret = efun::find_object(str));
+    if(err || !ret) return 0;
     if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return ret;
     if(base_name(previous_object()) == SERVICES_D) return ret;
     if(base_name(ret) == "/secure/obj/snooper") return 0;

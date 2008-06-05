@@ -8,7 +8,7 @@ void create(){
     SetId( ({"teacher","dwarf","schoolteacher","bugg the schoolteacher"}) );
     SetGender("male");
     SetRace("dwarf");
-    SetNativeLanguage("english");
+    SetNativeLanguage("common");
     SetShort("Bugg the schoolteacher");
     SetLong("This is a person whose job it is to teach you things. "+
       "For example, 'ask teacher "+
@@ -19,7 +19,9 @@ void create(){
       "then be awarded training points."); 
     SetLevel(1);
     SetLanguage("Malkierien", 100);
-    AddTeachingLanguages( ({"Malkierien", "English" }) );
+    SetLanguage("English", 100);
+    SetLanguage("Edhellen", 100);
+    AddTeachingLanguages( ({"Malkierien", "English", "Common", "Edhellen" }) );
 }
 void init() {
     ::init();

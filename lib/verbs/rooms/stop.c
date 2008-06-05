@@ -4,8 +4,6 @@
  *    created by Descartes of Borg 951016
  */
 
-
-
 #include <lib.h>
 #include "include/stop.h"
 
@@ -18,24 +16,15 @@ static void create() {
 }
 
 mixed can_stop_str(string str) { 
-    object ob;
-    mixed err;
-
-    if( str != "fishing" ) return 0;
-    if( !(ob = environment(this_player())) ) return 0;
-    err = (mixed)ob->CanStop(this_player(), "fishing");
-    return (err || "You aren't fishing!");
+    return this_player()->CanStop(this_player(), str);
 }
 
 mixed do_stop_str(string str) {
-    object ob;
-
-    ob = environment(this_player());
-    return (mixed)ob->eventStop(this_player(), "fishing");
+    return this_player()->eventStop(this_player(), str);
 }
 
 string GetHelp(string str) {
-    return ("Syntax: <stop fishing>\n\n"
-      "If you are fishing, this command will stop you from fishing.\n\n"
-      "See also: cast, fish");
+    return ("Syntax: stop [ fishing | fighting ]\n\n"
+      "Puts an end to the specified activity.\n\n"
+      "See also: cast, fish, attack");
 }

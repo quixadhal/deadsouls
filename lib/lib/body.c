@@ -1790,8 +1790,10 @@ varargs int eventDie(mixed agent){
     int GetSleeping(){ return Sleeping; }
 
     int AddAlcohol(int x){ 
+        int i = Alcohol + x;
         if(RACES_D->GetNonMeatRace(GetRace())) return 0; 
-        return (Alcohol += x);
+        if(i < 0) i = 0;
+        return (Alcohol = i);
     }
 
     int GetAlcohol(){ return Alcohol; }

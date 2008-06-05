@@ -7,8 +7,6 @@
  *    created by Descartes of Borg 950113
  */
 
-
-
 #include <lib.h>
 #include "include/give.h"
 
@@ -63,7 +61,7 @@ mixed can_give_wrd_wrd_to_liv(string num, string curr, object targ) {
     if( amt < 1 ) return "What sort of amount is that?";
     if( amt > (int)this_player()->GetCurrency(lower_case(curr)) )
         return "You don't have that much " + curr + "."; 
-    if(this_player()->GetLevel() < 4) return "Newbies can't give money.";
+    if(newbiep(this_player())) return "Newbies can't give money.";
     return this_player()->CanManipulate();
 }
 

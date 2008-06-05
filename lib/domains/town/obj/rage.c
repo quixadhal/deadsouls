@@ -88,7 +88,7 @@ int eventDestruct(){
 
 int eventMove(mixed dest){
     int ret = germ::eventMove(dest);
-    if(environment() && !living(environment())) victim = 0;
+    if(this_object() && environment() && !living(environment())) victim = 0;
     bonuses();
     return ret;
 }

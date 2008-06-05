@@ -50,7 +50,7 @@ int eventCast(object who, int level, mixed limbs, object array targets) {
             who->eventTrainSkill("healing",0,0,1,tot);
         health -= level * 3;
         stamina -= level * 3;
-        send_messages("collapse","%^RED%^$agent_name $agent_verb "
+        send_messages("collapse","$agent_name $agent_verb "
           "from the effort of casting " 
           "such a spell!%^RESET%^", who,
           0, environment(target));        
@@ -59,7 +59,7 @@ int eventCast(object who, int level, mixed limbs, object array targets) {
         else who->eventReceiveDamage(who,SHOCK,health);
         who->AddStaminaPoints(-stamina);
         who->AddMagicPoints(-who->GetMagicPoints());
-        who->eventForce("lie down");
+        who->eventCollapse();
         who->SetParalyzed(3+random(3));
     }
     return 1;

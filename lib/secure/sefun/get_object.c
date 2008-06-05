@@ -65,7 +65,7 @@ varargs object get_object( string str, object player )
         str = absolute_path( (string)player-> get_path(), str );
     }
 
-    ret = find_object(str);
+    if( catch(ret = find_object(str)) ) return 0;
 
     if(!ret && (file_exists(str) || file_exists(str+".c"))) ret = load_object(str);
 
