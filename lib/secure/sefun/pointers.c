@@ -124,6 +124,7 @@ varargs int playerp(object ob) {
 }
 
 varargs int newbiep(object ob) {
+    if(!MAX_NEWBIE_LEVEL) return 0;
     if( !ob ) ob = previous_object();
     return (!creatorp(ob) && ((int)ob->GetLevel() <= MAX_NEWBIE_LEVEL));
 }

@@ -1,3 +1,12 @@
+---- 2.8.1 ---
+- Released 2008-06-05
+- Fixed a bug in IMC2 that made all muds connect with the same name.
+- Fixed inelegant handling of alcohol levels and their reporting.
+- Newbie level checking is now more uniform across the lib.
+- The "stop" verb can now be used to stop fighting.
+- Missing /open directory added.
+- Driver: source now compiles ok on Cygwin. (thanks, Tricky!)
+
 ---- 2.8 ---
 - Released 2008-06-01
 - Cleanup of debug statements.

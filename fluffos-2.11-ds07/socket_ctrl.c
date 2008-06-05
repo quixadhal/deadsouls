@@ -18,7 +18,7 @@
 
 INLINE int set_socket_owner (int fd, int which)
 {
-#ifdef OLD_ULTRIX
+#if (defined(OLD_ULTRIX) || defined(__CYGWIN__))
     return fcntl(fd, F_SETOWN, which);
 #else
 #ifdef WINSOCK

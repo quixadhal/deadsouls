@@ -77,7 +77,8 @@ mixed eventScore() {
     if( x > sizeof(FoodDegree) - 1 ) x = (sizeof(FoodDegree) - 1);
     y = (int)this_player()->GetDrink() / 17;
     if( y > sizeof(DrinkDegree) - 1 ) y = (sizeof(DrinkDegree) - 1);
-    z = (int)this_player()->GetAlcohol() / 17;
+    z = (int)this_player()->GetAlcohol();
+    if(z) z = (z/17) + 1;
     if( z > sizeof(DrunkDegree) - 1 ) z = (sizeof(DrunkDegree) - 1);
     str += ({ "You "+FoodDegree[x] });
     str += ({ sprintf("You are %s and %s.", DrinkDegree[y], DrunkDegree[z]) });

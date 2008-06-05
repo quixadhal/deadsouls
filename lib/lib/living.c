@@ -22,6 +22,7 @@ inherit LIB_LEAD;
 inherit LIB_TEACH;
 inherit LIB_LEARN;
 inherit LIB_QUEST;
+inherit LIB_STOP;
 
 private int isPK;
 private mixed Attackable = 1;

@@ -45,6 +45,7 @@
 #define LIB_SINK         DIR_EVENTS "/sink"
 #define LIB_SELL         DIR_EVENTS "/sell"
 #define LIB_SMELL        DIR_EVENTS "/smell"
+#define LIB_STOP         DIR_EVENTS "/stop"
 #define LIB_SWIM         DIR_EVENTS "/swim"
 #define LIB_TOUCH        DIR_EVENTS "/touch"
 #define LIB_WEAR         DIR_EVENTS "/wear"

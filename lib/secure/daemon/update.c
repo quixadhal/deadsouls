@@ -165,6 +165,7 @@ varargs static void eventUpdate(object whom){
     rm("/lib/verb.c");
     rm("/lib/include/verb.h");
 
+    mkdir("/open");
     mkdir("/domains/town/save");
     mkdir("/domains/default/save");
     mkdir("/secure/log/network");

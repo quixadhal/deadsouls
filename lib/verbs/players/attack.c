@@ -75,7 +75,14 @@ varargs mixed do_attack_lvs(mixed *targets, int exclusive) {
 
     noattack = ({});
     tmpobs = ({});
-    obs = filter(targets, (: objectp :));
+    obs = filter(targets, (: objectp($1) && !($1->GetInvis()) :));
+    targets -= ({ this_player() });
+
+    if(!sizeof(targets)){
+        write("There is nobody to attack.");
+        return 1;
+    }
+
     if( !sizeof(obs) ) {
         mixed *ua;
 
@@ -90,6 +97,7 @@ varargs mixed do_attack_lvs(mixed *targets, int exclusive) {
         if(sizeof(noattack)) this_player()->AddNonTargets(noattack);
     }
     foreach(object subobj in obs){
+        if(subobj == this_player()) continue;
         if(member_array(this_player(),subobj->GetEnemies()) != -1){
             write("You are already fighting "+subobj->GetName()+"!");
         }

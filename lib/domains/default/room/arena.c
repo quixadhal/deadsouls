@@ -14,7 +14,9 @@ static void create() {
     SetInventory(([
         "/domains/default/obj/bbucket" : 1,
         "/domains/default/npc/fighter" : 1,
+        "/domains/default/obj/locker" : 1,
         "/domains/default/npc/dummy" : 1,
+        "/domains/default/obj/abox" : 1,
         "/domains/default/obj/rack" : 1,
       ]));
     SetExits( ([ 
@@ -25,6 +27,20 @@ static void create() {
     SetDoor("south", "/domains/default/doors/steel_door2.c");
 
 }
+
+int CanReceive(object sneak) {
+    object *living_stack = get_livings(sneak);
+    if(!living_stack || !arrayp(living_stack)) living_stack = ({ sneak });
+    foreach(object ob in living_stack){
+        if(playerp(ob) && !creatorp(ob) && !present("testchar badge",ob) &&
+          !member_group(ob,"TEST")) {
+            message("info","Creator staff only, sorry.", ob);
+            return 0;
+        }
+    }
+    return 1;
+}
+
 void init(){
     ::init();
 }

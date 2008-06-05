@@ -35,10 +35,6 @@ void init(){
 }
 
 int GetPainting(string str){
-    str = " "+str;
-    if(!sscanf(str,"%spainting%son%swall") == 3) {
-        return 0;
-    }
     write("It appears firmly attached to the wall.");
     return 1;
 }

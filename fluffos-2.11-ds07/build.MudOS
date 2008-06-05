@@ -3,18 +3,18 @@
 if test $# -ne 0; then
     case $1 in
         develop)
-	    echo Preparing to build developmental version of MudOS driver ...
-	    OPTIMIZE="-O0 -Wall -Wundef -DPEDANTIC -pedantic -Wmissing-declarations"
-	    DEBUG="-g -DDEBUG -DDEBUG_MACRO"
+            echo Preparing to build developmental version of MudOS driver ...
+            OPTIMIZE="-O0 -Wall -Wundef -DPEDANTIC -pedantic -Wmissing-declarations"
+            DEBUG="-g -DDEBUG -DDEBUG_MACRO"
             ;;
         debug)
-	    echo Preparing to build debugging version of MudOS driver ...
-	    OPTIMIZE="-O0"
-	    DEBUG="-g -DDEBUG"
+            echo Preparing to build debugging version of MudOS driver ...
+            OPTIMIZE="-O0"
+            DEBUG="-g -DDEBUG"
             ;;
         *)
-	    echo Unknown build type
-	    exit 1
+            echo Unknown build type
+            exit 1
             ;;
     esac
 else
@@ -175,6 +175,18 @@ else
 fi
 
 echo MAKE=$MAKE >Makefile.tmp
+
+#
+# Determine if running under Cygwin-32 and use a.exe instead
+# of a.out if so
+#
+if test $CYGWIN; then
+  A_OUT=a.exe
+  echo Using a.exe for Cygwin GNU compiler default executable
+else
+  A_OUT=a.out
+  echo Using standard a.out for compiler default executable
+fi
 
 #
 # Figure out what to use for CC
@@ -352,7 +364,7 @@ int main() {
 }
 END
 $CC $CFLAGS comptest.c
-ARCH=`./a.out`
+ARCH=`./$A_OUT`
 
 cat >comptest.c <<END
 int main(int argc, char **argv) { return 0; }
@@ -386,30 +398,30 @@ esac
 #
 # check for some missing functions
 #
-rm a.out
+rm $A_OUT
 cat >comptest.c <<END
 int main() {
 strchr(0,0); strrchr(0,0);
 }
 END
 $CC $CFLAGS comptest.c
-if test ! -f a.out; then
+if test ! -f $A_OUT; then
     if uname -a | grep "MINGW" | grep -v grep ; then
     echo "MinGW detected. Skipping weird strchr thing."
     else
-    echo "MinGW not detected, and no a.out."
+    echo "MinGW not detected, and no $A_OUT."
     STR="-Dstrchr=index -Dstrrchr=rindex"
     fi
 fi
 
-rm a.out
+rm $A_OUT
 cat >comptest.c <<END
 int main() {
 memcpy(0,0,0);memset(0,0,0);strtol(0,0,0);strcspn(0,0);
 }
 END
 $CC $CFLAGS comptest.c
-if test ! -f a.out; then
+if test ! -f $A_OUT; then
     STRFUNCS=strfuncs.o
 fi
 
@@ -433,6 +445,7 @@ echo YACC=$YACC >>Makefile.tmp
 echo RANLIB=$RANLIB >>Makefile.tmp
 echo A=a >>Makefile.tmp
 echo O=o >>Makefile.tmp
+echo A_OUT=$A_OUT >>Makefile.tmp
 
 echo "***************** Configuration completed **************"
 echo "Installing MudOS on $ARCH"

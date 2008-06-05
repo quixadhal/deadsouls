@@ -47,7 +47,7 @@ mixed can_drop_wrd_wrd(mixed args...) {
     if( (amt = to_int(num)) < 1 ) return "You cannot do that!";
     if( (int)this_player()->GetCurrency(curr) < amt )
         return "You don't have that much " + curr + ".";
-    if(this_player()->GetLevel() < 4) return "Newbies can't drop money.";
+    if(newbiep(this_player())) return "Newbies can't drop money.";
     return this_player()->CanManipulate();
 }
 

@@ -20,9 +20,9 @@ void create() {
         "/domains/default/weap/sharpsword" : ({ 10, 5 }),
       ]));
     SetCanClose(0);
+    SetPreventGet("The rack does not budge.");
 }
 
-mixed CanGet(object ob) { return "The rack does not budge.";}
 int CanReceive(object ob) {
     if(ob->GetDamageType() != BLADE) {
         write("This is a rack for sword-like weapons only.");

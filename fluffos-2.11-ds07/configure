@@ -15,6 +15,7 @@ if [ $ARG == "--help" ] ||  [ $ARG == "-h"  ]; then
 echo "Available options:"
 echo "A generic build:	./configure generic"
 echo "For Dead Souls 2:	./configure ds"
+echo "For Sapidlib:	./configure sapid"
 echo "For Discworld: 	./configure dw"
 echo "For Lima: 	./configure lima"
 echo "For Skylib: 	./configure skylib"

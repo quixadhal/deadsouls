@@ -246,7 +246,7 @@ int eventFire(string str){
         dam += environment(this_object())->GetSkillLevel("projectile attack");
         if(creatorp(this_player())) write("you do "+dam+" points of damage");
 
-        ob->eventReceiveDamage(environment(this_object()),BLUNT, dam, 1, limbname);
+        ob->eventReceiveDamage(environment(this_object()),(PIERCE|TRAUMA), dam, 1, limbname);
         if(!ob->GetInCombat()){
             ob->eventForce("attack "+environment(this_object())->GetKeyName());
         }
