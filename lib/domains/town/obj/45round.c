@@ -15,3 +15,6 @@ void create(){
     SetVendorType(VT_TREASURE);
     SetMass(1);
 }
+void init(){
+    round::init();
+}

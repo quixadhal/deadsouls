@@ -134,7 +134,7 @@ rooms work?<br>
 <a href="#2.19">2.19 How are files
 organized in Dead Souls?</a><br>
 <br>
-<a href="#2.20">2.20 What are applies, lfuns,
+<a href="#2.20">2.20 What are lfuns,
 sefuns and efuns?</a><br>
 <br>
 <a href="#2.21">2.21 Why are there more
@@ -3351,18 +3351,14 @@ key rules to keep in mind when <br>
 doing this:<br>
 </big>
 <ol style="font-family: courier new;">
-  <small> </small><big> </big>
-  <li><big>Always inherit
+  <small> </small><big> </big> <li><big>Always inherit
 LIB_BASE_DUMMY first.</big></li>
-  <small> </small><big> </big>
-  <li><big>Always invoke
+  <small> </small><big> </big> <li><big>Always invoke
 dummy::create()
 before other ::creates()'s.</big></li>
-  <small> </small><big> </big>
-  <li><big>Make sure you have CanGet()
+  <small> </small><big> </big> <li><big>Make sure you have CanGet()
 return an error string.</big></li>
-  <small> </small><big> </big>
-  <li><big>Make sure the item is
+  <small> </small><big> </big> <li><big>Make sure the item is
 SetInvis(1).</big></li>
 </ol>
 <ol style="font-family: courier new;">

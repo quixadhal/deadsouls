@@ -73,7 +73,7 @@ mixed eventBuy(object who, object *obs){
         else bargain = 0;
         if(!bargain) value = cost;
 
-        if( !cost || cost < 1 || !value || value < 1){
+        if( !value ){
             eventForce("say " + (string)ob->GetShort() + " is worthless!");
             continue;
         }
@@ -90,9 +90,7 @@ mixed eventBuy(object who, object *obs){
                 ob->eventMove(environment());
                 continue;
             }
-            eventForce("say " + (string)ob->GetShort() + "! Great!");
-            tell_player(this_player(),GetShort()+" gives you "+value+
-              " "+GetLocalCurrency()+".");
+            eventForce("say " + (string)ob->GetShort() + "! Excellent!");
             if(bargain) who->AddSkillPoints("bargaining", value*5);
             message("my_action", "You sell " + (string)ob->GetShort() + ".", who);
             message("other_action", capitalize((string)who->GetKeyName()) + " sells " +
@@ -102,9 +100,6 @@ mixed eventBuy(object who, object *obs){
             return 1;
         }
         eventForce("say " + (string)ob->GetShort() + "! Excellent!");
-        tell_player(this_player(),GetShort()+" pays you "+value+
-          " "+GetLocalCurrency()+".");
-
         if( !((int)ob->eventMove(sroom)) ){
             eventForce("say I cannot seem to carry that");
             return 1;
@@ -375,7 +370,7 @@ mixed eventBuy(object who, object *obs){
         }
         else ob = present(args = lower_case(args), sroom);
         if(!ob) foreach(object tempob in obs2) 
-                if(answers_to(args,tempob)) ob = tempob;
+            if(answers_to(args,tempob)) ob = tempob;
         if( !ob ){
             eventForce("say I have no such thing!");
             return 1;
@@ -478,7 +473,7 @@ mixed eventBuy(object who, object *obs){
         } else {
             if( !(ob = present(what, sroom))) 
                 foreach(object tempob in obs2) 
-                    if(answers_to(what,tempob)) ob = tempob;
+                if(answers_to(what,tempob)) ob = tempob;
             if(!ob || userp(ob)){
                 eventForce("say I have nothing like that to sell");
                 return 1;

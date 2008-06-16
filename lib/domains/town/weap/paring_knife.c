@@ -15,7 +15,7 @@ static void create() {
     SetBaseCost("silver",55);
     SetVendorType(VT_WEAPON);
     SetClass(15);
-    SetDamageType(KNIFE);
+    SetDamageType(BLADE);
     SetWeaponType("knife");
 }
 int GetFancy(){

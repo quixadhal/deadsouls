@@ -4,16 +4,6 @@ unalias inf
 unalias sc
 unalias practice 
 unalias trophy
-unalias a
-unalias aa
-alias a admin $*
-alias nn newbie $*
-alias aa go aft
-alias sb go starboard
-alias pp go port
-alias ff go fore
-alias lab goto /domains/campus/room/slab
-alias shop goto /domains/town/room/shop
 alias start goto /domains/campus/room/start
 alias obj cd /realms/$N/area/obj
 alias arm cd /realms/$N/area/armor
@@ -76,8 +66,6 @@ alias sef cd /secure/sefun
 alias aw adminemote waves.
 alias cw creemote waves.
 alias welcome ds hi, $*. you can use this channel to ask questions. it's an intermud channel that dead souls muds listen to.
-alias ngreet newbie hi, $*. let me know if you have any questions
-alias cgreet cre hi, $*. let me know if you have any questions
 call me->AddChannel("french")
 call me->AddChannel("ascii_art")
 call me->AddChannel("intergossip")
@@ -104,7 +92,7 @@ alias porch goto /domains/town/room/porch
 prompt %^BOLD%^%^BLUE%^$M%^RESET%^ %^BOLD%^$P%^RESET%^ > 
 alias crat source -q /secure/scripts/crat2.src
 alias indentall source /secure/scripts/indent.src
-alias distclean source -q /secure/scripts/distclean.src
+alias distclean source /secure/scripts/distclean.src
 earmuff mudbytes
 earmuff smaugmuds
 earmuff reuters
@@ -120,9 +108,5 @@ earmuff Metaplace
 gag on
 godmode on
 wizvision on
-call me->SetSkill("magic attack",100)
-call me->SetSkill("magic defense",100)
-call me->SetSkill("conjuring",100)
-screen 80 30
 save
-
+bk /secure/include/network.h

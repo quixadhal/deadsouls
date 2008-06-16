@@ -7,86 +7,8 @@ mapping EventsMap = ([]);
 mixed *event_funs = ({});
 
 int check_function(string str){
-    if(member_array(str,MASTER_D->GetEfuns()) != -1) return 1;
+ if(member_array(str,MASTER_D->GetEfuns()) != -1) return 1;
     return 0;
-}
-
-int make_empties(){
-    string *removes = ({
-      "/spells",
-      "/psionics",
-      "/trades",
-      "/prayers",
-      "/feats",
-    });
-
-    string *empties = ({
-      "/cmds/hm",
-      "/cmds/builders",
-      "/secure/cmds/common",
-      "/secure/save/postal",
-      "/secure/save/binaries",
-      "/secure/save/decre",
-      "/secure/save/players",
-      "/secure/save/letters",
-      "/secure/save/backup",
-      "/secure/save/creators",
-      "/secure/save/suicide",
-      "/secure/save/rid",
-      "/secure/save/votes",
-      "/secure/upgrades/txt",
-      "/www/doc",
-      "/www/logs",
-      "/doc/lpc/advanced",
-      "/doc/tmp",
-      "/doc/help/avatars",
-      "/doc/help/hm",
-      "/doc/help/religion",
-      "/doc/help/law",
-      "/doc/faq",
-      "/log/author_stats",
-      "/realms/template/tmp",
-      "/realms/template/log",
-      "/realms/template/area/etc",
-      "/realms/template/area/meals",
-      "/realms/template/area/doors",
-      "/domains/town/save",
-      "/domains/town/virtual/forest",
-      "/domains/town/virtual/sub",
-      "/domains/town/virtual/surface",
-      "/domains/default/save",
-      "/domains/default/virtual/sky",
-      "/domains/default/virtual/arena",
-      "/domains/Ylsrim/save",
-      "/domains/Ylsrim/virtual/desert",
-      "/verbs/spells",
-      "/verbs/undead",
-      "/secure/log/intermud",
-      "/secure/log/network",
-      "/domains/default/save",
-      "/domains/town/save",
-      "/open",
-      "/powers",
-      "/powers/spells",
-      "/powers/prayers",
-      "/powers/feats",
-      "/powers/psionics",
-      "/powers/trades",
-      "/secure/log",
-      "/secure/log/adm",
-      "/secure/log/bak",
-      "/secure/log/intermud",
-      "/secure/log/network",
-    });
-
-    foreach(string dir in empties){
-        catch( mkdir(dir) );
-    }
-    foreach(string dir in removes){
-        catch( rmdir(dir) );
-    }
-
-    return 1;
 }
 
 varargs static void eventUpdate(object whom){
@@ -213,21 +135,14 @@ varargs static void eventUpdate(object whom){
             config_file = append_line(config_file,"#define HUMANS_ONLY",
               "#define SEVERABLE_LIMBS          1");
 
-        if(!grepp(config_file, "MAX_CALL_OUTS"))
-            config_file = append_line(config_file,"#define F_TERMINAL_COLOR",
-              "#define MAX_CALL_OUTS            500");
-
         write_file("/secure/include/config.h", config_file+"\n", 1);
     }
 
-    rm("/powers/prayers/cure.c");
-    rm("/powers/prayers/resurrection.c");
     rm("/secure/cmds/admins/addemote.c");
     rm("/secure/cmds/admins/removeemote.c");
     rm("/secure/cmds/admins/stupidemote.c");
     rm("/daemon/class.c");
     rm("/cmds/players/where.c");
-    rm("/cmds/creators/colors.c");
     rm("/domains/Praxis/obj/mon/execution.c");
     rm("/domains/campus/txt/moochers.txt");
     rm("/secure/cfg/classes/priest");
@@ -247,16 +162,23 @@ varargs static void eventUpdate(object whom){
     rm("/secure/cmds/creators/home.c");
     rm("/secure/cmds/creators/grant.c");
     rm("/daemon/include/races.h");
-    rm("/daemon/reaper.c");
     rm("/lib/verb.c");
     rm("/lib/include/verb.h");
-    rm("/secure/daemon/reload.proto");
-    rm("/domains/campus/obj/wound.c");
-    rm("/domains/town/obj/wound.c");
+    if(directory_exists("/spells")){
+        mkdir("/powers");
+        mkdir("/powers/spells");
+        foreach(string spell in get_dir("/spells/")){
+            rename("/spells/"+spell,"/powers/spells/"+spell);
+        }
+        rmdir("/spells");
+    }
+    mkdir("/open");
+    mkdir("/domains/town/save");
+    mkdir("/domains/default/save");
+    mkdir("/secure/log/network");
+    mkdir("/secure/log/intermud");
 
-    call_out( (: make_empties :),0);
-
-    catch( remote = load_object("/secure/cmds/admins/removeemote") );
+    remote = load_object("/secure/cmds/admins/removeemote");
     if(remote) remote->cmd("roll");
 
     reload(EVENTS_D,0,1);
@@ -274,8 +196,8 @@ varargs static void eventUpdate(object whom){
     if(file_exists("/secure/scripts/qcs_check.scr"))
         rename("/secure/scripts/qcs_check.scr", "/secure/scripts/qcs_check.txt");
 
-    catch( load_object("/secure/cmds/admins/removeraces")->cmd());
-    catch( load_object("/secure/cmds/admins/addraces")->cmd());
+    load_object("/secure/cmds/admins/removeraces")->cmd();
+    load_object("/secure/cmds/admins/addraces")->cmd();
 
     newfile = read_file("/secure/cfg/read.cfg");
     newfile = replace_string(newfile,"(/log/secure)","(/log/secure/)");
@@ -305,9 +227,9 @@ varargs static void eventUpdate(object whom){
     catch( CLASSES_D->AddClass("/secure/cfg/classes/cleric") );
     //tc("Done with classes...");
 
-    catch( reload("/secure/daemon/master",0,1) );
-    catch( reload("/secure/sefun/arrays",0,1) );
-    catch( reload("/secure/sefun/sefun",0,1) );
+    reload("/secure/daemon/master",0,1);
+    reload("/secure/sefun/arrays",0,1);
+    reload("/secure/sefun/sefun",0,1);
 
     catch( reload("/domains/default/room/stargate_lab.c",0,1));
     catch( reload("/domains/town/virtual/space/1,1,1",0,1));
@@ -322,7 +244,7 @@ varargs static void eventUpdate(object whom){
         if(query_os_type() == "windows") tell_player(whom,"Rebooting now is a good idea.");
         else tell_player(whom,"Initiating warm boot.");
     }
-
+   
     if(query_os_type() != "windows"){
         RELOAD_D->WarmBoot();
     }
@@ -336,6 +258,6 @@ static void create() {
     if(whom){
         tell_player(whom,"Please stand by until you see the \"Update daemon finished.\" message.");
         tell_player(whom,"If you do not see it after a few seconds, you may need to restore "
-          "your mud from backup.");
+            "your mud from backup.");
     }
 }

@@ -6,8 +6,5 @@
 #define MY_OBJ		MY_AREA "/obj"
 #define MY_ARMOR	MY_AREA "/armor"
 #define MY_NPC		MY_AREA "/npc"
-#define MY_DOORS	MY_AREA "/doors"
-#define MY_MEALS	MY_AREA "/meals"
-#define MY_ETC		MY_AREA "/etc"
 
 #endif /* r_mydirs_h */

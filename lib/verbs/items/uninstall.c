@@ -26,13 +26,12 @@ mixed can_uninstall_obj_word_obj(mixed foo) {
 }
 
 mixed do_uninstall() {
-    write("Uninstall what?");
+    return "Uninstall what?";
     return 1;
 }
 
 varargs mixed do_uninstall_obj(mixed foo) {
-    write("Uninstall what from where?");
-    return 1;
+    return foo->eventUninstall(foo);
 }
 
 varargs mixed do_uninstall_obj_word_obj(mixed foo, mixed foo2, mixed foo3) {

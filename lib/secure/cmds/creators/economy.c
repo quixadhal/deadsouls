@@ -13,10 +13,10 @@ int cmd(string str) {
 
         tmp = ({ "Currency        Rate    Infl    Mass" });
         foreach( curr in (string *)ECONOMY_D->__QueryCurrencies() )
-            tmp += ({ sprintf("%:-15s %:-7s %:-7s %f",
-                curr, currency_rate(curr) + "" ,
-                currency_inflation(curr) + "",
-                (float)ECONOMY_D->__Query(curr, "weight")) });
+        tmp += ({ sprintf("%:-15s %:-7s %:-7s %f",
+            curr, currency_rate(curr) + "" ,
+            currency_inflation(curr) + "",
+            (float)ECONOMY_D->__Query(curr, "weight")) });
         this_player()->more(tmp, "system");
         return 1;
     }

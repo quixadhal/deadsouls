@@ -2,12 +2,6 @@
 
 inherit LIB_NPC;
 
-int AllowPass(object who, object what){
-    string *allowed_races = ({ "orc", "half-orc", "bear" });
-    if(member_array(who->GetRace(), allowed_races) != -1) return 1;
-    return ::AllowPass(who, what);
-}
-
 int CheckOrc(mixed val){
     string *allowed_races = ({ "orc", "half-orc", "bear" });
     if(!val) return 0;
@@ -35,7 +29,7 @@ static void create() {
     SetInventory(([
         "/domains/town/weap/axe":"wield axe",
       ]) );
-    SetGuard("north","The orc bars your way!");
+
 }
 void init(){
     ::init();

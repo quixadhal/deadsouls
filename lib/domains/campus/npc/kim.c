@@ -29,7 +29,7 @@ static void create() {
     SetStorageRoom("/domains/campus/room/bookstore2");
     SetMaxItems(10000);
     SetVendorType(VT_TREASURE | VT_ARMOR);
-    SetGuard("/domains/campus/obj/register","Kim prevents your theft.");
+
 }
 void init(){
     ::init();

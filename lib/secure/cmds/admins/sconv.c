@@ -302,10 +302,10 @@ int ConvertArea(string arg){
         header += "    SetInventory( ([\n";
         if(AreaMap && AreaMap[lines[0]])
             foreach(cle, val in AreaMap[lines[0]]){
-                if(!grepp(val,"LIB_ROOM")){
-                    header += "        \""+cle+"\" : 1,\n";
-                }
+            if(!grepp(val,"LIB_ROOM")){
+                header += "        \""+cle+"\" : 1,\n";
             }
+        }
         header += "    ]) );\n";
         header += "}\n";
         header += "void init(){\n";

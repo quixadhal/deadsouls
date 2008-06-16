@@ -16,7 +16,7 @@ int cmd(string str) {
         return 1;
     }
 
-    ob = get_object(str);
+    ob = to_object(str);
 
     if(!ob){
         string path = this_player()->query_cwd()+"/";

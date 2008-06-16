@@ -96,10 +96,12 @@ void SetCorpse(object who){
     SetMaxCarry(who->GetMaxCarry());
     worn = who->GetWorn();
     worn += who->GetWielded();
+    //tc("worn: "+identify(worn));
     foreach(mixed thing in worn){
         if(arrayp(thing) && sizeof(thing)) thing = thing[0];
+        //tc("thing: "+identify(thing));
         if(!Equipped) Equipped = ([]);
-        if(!thing || !objectp(thing)) continue;
+        if(!thing) continue;
         if(Equipped[file_name(thing)]) continue;
         Equipped[file_name(thing)] = 
         ([ "object" : thing, "where" : thing->GetWorn() ]); 

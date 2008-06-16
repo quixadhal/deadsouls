@@ -35,18 +35,17 @@ int eventRead(mixed data) {
     return 1;
 }
 
-int eventDestruct(){
-    return daemon::eventDestruct();
-}
-
 int eventSocketClosed() {
     if(!Owner || previous_object() != Owner ) {
         return 0;
     }
-    eventDestruct();
+    daemon::eventDestruct();
     return 1;
 }
 
+int eventDestruct(){
+    return daemon::eventDestruct();
+}
 
 varargs static int eventWrite(mixed data, int close) {
     if(!close) close = 0;

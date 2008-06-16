@@ -159,8 +159,5 @@ mixed cmd(mixed args) {
 void help() {
     message("help", "Syntax: groupmod [-a|-r] GROUP NAME \n"
       "        groupmod [-c|-d] GROUP\n\n"
-      "Modifies /secure/cfg/groups.cfg with the desired information.\n"
-      "To create a group called MUDKIPZ: groupmod -c mudkipz\n"
-      "To add Yotsuba as member of that group: groupmod -a mudkipz yotsuba"
       "", this_player());
 }

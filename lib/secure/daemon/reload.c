@@ -22,8 +22,7 @@ varargs void validate(){
 
 static void create() {
     daemon::create();
-    if(!file_exists(savefile+__SAVE_EXTENSION__)) 
-        unguarded( (: save_object(savefile) :) );
+    if(!file_exists(savefile+__SAVE_EXTENSION__)) save_object(savefile);
     else restore_object(savefile);
     set_heart_beat(1);
 }
@@ -41,7 +40,7 @@ void eventResetEmptyRooms(){
     validate();
     foreach(object foo in objects((: inherits(LIB_ROOM, $1) :))){
         //tc("foo: "+identify(foo));
-        call_out( (: eventDestructEmptyRooms :), 0, foo );
+        call_out( "eventDestructEmptyRooms", 0, foo );
     }
 }
 
@@ -56,7 +55,7 @@ int ReloadBaseSystem(){
     foreach(string file in sefun_files){
         catch(update(file));
     }
-    RELOAD_D->eventReload(load_object(SEFUN), 1);
+    catch( update(SEFUN) );
     catch( update(MASTER_D) );
     catch( reload(load_object(LIB_CREATOR), 1, 1) );
     catch( reload(load_object(LIB_SENTIENT), 1, 1) );
@@ -228,9 +227,9 @@ int ReloadDir(string dir, int passes){
             if(ob != this_object() && 
               member_array(base_name(ob), exceptions) == -1){
                 if(ob && inherits(LIB_ROOM,ob) && sizeof(livings(ob,1))){
-                    reload_handles += ({ call_out((: eventReload :), 5,ob, 0, 1) });
+                    reload_handles += ({ call_out("eventReload", 5,ob, 0, 1) });
                 }
-                else reload_handles += ({ call_out((: eventUpdate :), 5, base_name(ob)) });
+                else reload_handles += ({ call_out("eventUpdate", 5, base_name(ob)) });
             }
         }
         passes--;
@@ -281,10 +280,11 @@ int ReloadMud(){
 
 int WarmBoot(){
     validate();
-    call_out( (: ReloadMud :), 0);
+    call_out("ReloadMud", 0);
     return 1;
 }
 
 int GetWarmBootInProgress(){
     return warm_boot_in_progress;
 }
+

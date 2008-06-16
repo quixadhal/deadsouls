@@ -166,7 +166,7 @@ string PirateFilter(string str){
 string eventFilter(string str){
     if(!str || !sizeof(str) || !stringp(str)) return "";
     //comment out the following line to enable the filter
-    //return str;
+    return str;
     write_file("/secure/log/prefilter.txt",str+"\n");
     str = PirateFilter(str);
     write_file("/secure/log/postfilter.txt",str+"\n");

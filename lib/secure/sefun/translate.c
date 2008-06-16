@@ -24,9 +24,9 @@
 "chonny","mola","chala","hala","hei","thlon","mey","nikto",\
 "ecgum", "eyne", "sobre","dupa","zum","schlampe","jodio","con",\
 "narfle", "garthak", "hokanda-matuso","oota-goota","mafi","makka",\
-"shukran", "akbar", "mokele", "dapku", "loituma",\
+"shukran", "akbar", "mokele",\
 "curiae", "aethelingas", "eorlas","carajo","oder",\
-"ae","aroha","awarua","atua","tenei", "dsfargeg",\
+"ae","aroha","awarua","atua","tenei",\
 "tangata","koa","kora","hupane","upane",\
 "baardaap","droogkloot","reetketelsteenbeeldhouwer","asbak","haka",\
 "zaadje","verkloten","teef","moffie","shele",\
@@ -35,16 +35,11 @@
 "suoro","voi","debil","kunel","shinel",\
 "sasikumea","zakila","txakurra","soustat","irrumator",\
 "mentula","koproskilo","malakas","la'a'za'zel","zayin",\
-"haakskeekah","noko","shizzle","nizzle","hizzle",\
+"haakskeekah",\
 "desu","desu","desu","desu","desu","desu",\
 "desu","desu","desu","desu","desu","desu",\
 "desu","desu","desu","desu","desu","desu",\
 "UNITINU","STENDEC","CROATOAN","LATUALATUKA",\
-"LMKUU","puka","degozaimasu","szysznyk", "syzygy",\
-"darklock","confutatis","maledictis","flammis","acribus",\
-"addictis","XYNTA","durian","adzuki",\
-"ХУИТА",\
-"sihulm",\
 "ar","ot","ti","fi","na",\
 "ar","ot","ti","fi","na",\
 "ar","ot","ti","fi","na",\

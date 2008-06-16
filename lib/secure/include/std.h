@@ -29,6 +29,5 @@
 #define LIB_BOT_CORPSE   DIR_STD  "/bot_corpse"
 #define LIB_BOT_LIMB     DIR_STD  "/bot_limb"
 #define LIB_WORN_STORAGE DIR_STD  "/worn_storage"
-#define LIB_WOUND        DIR_STD  "/wound"
 
 #endif /* s_std_h */

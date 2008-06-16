@@ -266,123 +266,128 @@ int DoneTrying(){
     return StillTrying = 0;
 }
 
-//Here we determine if the string corresponds unambiguously
-//to a limb possessed by the command issuer.
-int LimbCertain(string str){
-    object env = environment(this_player());
-    if(!env) env = this_player();
-    if(!str){
-        return 0;
-    }
-    foreach(mixed envs in ({ env, this_player() })){
-        if(present(str, env)){
-            return 0;
-        }
-    }
-    if(member_array(str, this_player()->GetLimbs()) != -1){
-        return 1;
-    }
-    return 0;
-}
-
-varargs int eventRetryCommand(string lastcmd, int errtype, mixed args){
+int eventRetryCommand(string lastcmd){
     string virb, wrd, prep, rest,ret;
     string *tmp_arr = ({});
     string *prep_arr = MASTER_D->parse_command_prepos_list();
     object tmpob;
     mixed err;
-    int i;
-    string tmpret, act, direct, indirect, odirect, oindirect;
-    mixed direct2, indirect2;
 
+    next_command = ({});
+    prep_arr += ({ "out_of" });
+    if(!original_command) original_command = lastcmd;
+    prep_arr -= ({"here","room","exit","enter"});
     if(previous_object() != master()) return 0;
+    StillTrying++;
+    filter(explode(lastcmd," "), (: next_command += ({ trim($1) }) :) );
+    if(tmpob = get_object(implode(next_command[1..]," "))){
+        ret = next_command[0]+" a "+implode(next_command[1..]," ");
+    }
+    else if(sizeof(next_command) == 2){
+        ret = next_command[0]+" a "+next_command[1];
+    }
+    else if(sizeof(next_command) == 3){
+        if(member_array(next_command[1],prep_arr) != -1) 
+            ret = next_command[0]+" "+next_command[1]+" a "+next_command[2];
+        else ret = next_command[0]+" a "+next_command[1]+" "+next_command[2];
+    }
+    else if(sizeof(next_command) == 4 && StillTrying < MAX_COMMANDS_PER_SECOND){
+        ret = next_command[0]+" a "+next_command[1]+" "+next_command[2]+" "+next_command[3];
+    }
 
-    if(StillTrying){
+    if(!ret || !sizeof(ret)) ret = implode(next_command," ");
+
+    if(StillTrying > 3 ){
+        int i;
+        tmp_arr = ({});
+        tmp_arr = explode(ret," ");
+        ret = "";
+        for(i = 0; i < sizeof(tmp_arr);i++){
+            ret += " "+tmp_arr[i];
+            if(member_array(tmp_arr[i],prep_arr) != -1 && tmp_arr[i+1] != "a") ret += " a";
+        }
+        ret = trim(ret);
+    }
+
+    if(StillTrying > 3 && tmp_arr[1] != "a"){
+        ret = tmp_arr[0]+" a "+implode(tmp_arr[1..]," ");
+    }
+    if(COMMAND_MATCHING){
+        string vb;
+        next_command = ({});
+        if(!ret) ret = "";
+        tmp_arr = explode(ret," ");
+        if(sizeof(tmp_arr)){
+            vb = match_command(tmp_arr[0]);
+            if(sizeof(vb)) next_command = ({ vb });
+            else next_command = ({ tmp_arr[0] });
+            foreach(string element in tmp_arr[1..]){
+                next_command += ({ element });
+            }
+            ret = implode(next_command," ");
+        }
+    }
+
+    if(original_command && sizeof(original_command) && (StillTrying == 6 ||!ret)){
+        string direct, indirect;
+        string junk;
+        string *generals = ({"my","a","first","1st"});
+        int i, j;
+        next_command = ({});
+        original_command = replace_string(original_command,"out of","out_of");
+        filter(explode(original_command," "), (: next_command += ({ trim($1) }) :) );
+        if(!sizeof(next_command)) next_command = ({ original_command });
+        virb = next_command[0];
+        next_command = next_command[1..];
+        j = sizeof(next_command);
+        for(i = 0; i < j-1; i++){
+            mixed *foo;
+            if(get_object(implode(next_command[0..i]," "))){
+                if(member_array(next_command[0], generals) == -1)
+                    foo = ({ "a" }) + next_command[0..i];
+                else foo = next_command[0..i];
+                direct = implode(foo," ");
+                next_command = next_command[i+1..];
+                break;
+            }
+        }
+        if(member_array(next_command[0], prep_arr) != -1){
+            junk = next_command[0];
+            next_command = next_command[1..];
+        }
+        if(direct && (j = sizeof(next_command))){
+            mixed *foo;
+            for(i = 0; i < j-1; i++){
+                if(get_object(implode(next_command[0..i]," "))){
+                    if(member_array(next_command[0], generals) == -1)
+                        foo = ({ "a" }) + next_command[0..i];
+                    else foo = next_command[0..i];
+                    indirect = implode(foo," ");      
+                    next_command = next_command[i+1..];
+                    break;
+                }    
+            }
+        }
+        ret = virb+" "+direct+" "+(junk ? junk+" " : "")+indirect;
+        if(sizeof(next_command)) ret += " "+implode(next_command," ");
+    } 
+
+    if(StillTrying > 7){	
+        write("Your command is ambiguous. Please be more specific. Which thing do you mean?");
         StillTrying = 0;
         original_command = 0;
         return 1;
     }
 
-    StillTrying = 1;
-
-    if(!original_command || !sizeof(original_command)) original_command = lastcmd;
-
-    tmpret = lastcmd;
-    foreach(string foo in prep_arr){
-        if(grepp(tmpret," "+foo+" ")){
-            tmpret = replace_string(tmpret," "+foo+" "," PREPO ");
+    if(!ret || !sizeof(ret)) ret = implode(next_command," ");
+    if(err = parse_sentence(ret)){
+        if(stringp(err) && sizeof(trim(err))){
+            write(err);
+            return 1;
         }
     }
-    tmpret = implode(explode(tmpret," ")," ");
-    i = sscanf(tmpret,"%s %s PREPO %s",act, direct, indirect);
-    if(i != 3) i = sscanf(tmpret,"%s %s PREPO PREPO %s",act, direct, indirect);
-    if(i != 3) i = sscanf(tmpret,"%s %s %s",act, direct, indirect);
-    if(i != 3) i = sscanf(tmpret,"%s %s",act, direct);
-    odirect = direct;
-    oindirect = indirect;
-
-    if(i > 1 ){
-        object ob1, ob2;
-        string tmpstr, s1, s2, article1, article2;
-        if(StillTrying){
-            tmpstr = remove_article(direct);
-            if(args && sizeof(args) && answers_to(tmpstr, args[0]) &&
-              present(args[0]))
-                ob1 = args[0];
-            else ob1 = get_object(tmpstr, this_object());
-        }
-        if(StillTrying && indirect){
-            tmpstr = remove_article(indirect);
-            if(args && sizeof(args) && answers_to(tmpstr, args[0]) &&
-              present(args[0]))
-                ob2 = args[0];
-            else ob2 = get_object(tmpstr, this_object());
-        }
-        if(ob1) direct = ob1->GetUniqueId();
-        else direct = remove_article(direct);
-        if(ob2) indirect = ob2->GetUniqueId();
-        else indirect = remove_article(indirect);
-        if(!ob1 && direct && grepp(direct," ")){
-            if(sscanf(direct,"%s %s",s1, s2) == 2 && 
-              !ordinalp(s1,1)){
-                direct2 = "a "+direct;
-            }
-        }
-        else if(!ob1 && direct){
-            if(first(direct,2) == "a " || first(direct,3) == "an "){
-                direct2 = direct;
-            }
-            else direct2 = "a "+direct;
-        }
-        if(!ob2 && indirect && grepp(indirect," ")){
-            if(sscanf(indirect,"%s %s",s1, s2) == 2 && 
-              !ordinalp(s1,1)){
-                if(!LimbCertain(indirect)) indirect2 = "a "+indirect;
-            }
-        }
-        else if(!ob2 && indirect){
-            if(first(indirect,2) == "a " || first(indirect,3) == "an "){
-                if(!LimbCertain(indirect)) indirect2 = indirect;
-            }
-            else if(!LimbCertain(indirect)) indirect2 = "a "+indirect;
-        }
-        if(direct && !direct2) direct2 = direct;
-        if(indirect && !indirect2) indirect2 = indirect;
-        tmpret = replace_string(lastcmd, odirect, direct2);
-        if(indirect2 && oindirect) tmpret = replace_string(tmpret, oindirect, indirect2); 
-    }
-
-    ret = tmpret;
-    err = parse_sentence(ret);
-    StillTrying = 0;
-    original_command = 0;
-    if( !stringp(err) && err > -1 ){
-        return 1;
-    }
-    write("It seems you'll have to be more specific.");
     return 1;
 }
-
 
 /*  **********  /lib/command.c data manipulation functions  ********** */
 

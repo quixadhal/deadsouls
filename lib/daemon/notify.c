@@ -71,7 +71,7 @@ int eventWriteNotices(string file, int start_time) {
     if( x < 0 || start_time > Notes[x][Date] ) return 0;
     while( x > 0 && Notes[x - 1][Date] > start_time ) x--;
     foreach(var in Notes[x..])
-        str += sprintf("Added %s by %s\n\t%s\n\n", ctime(var[Date]),
-          var[Author], var[Message]);
+    str += sprintf("Added %s by %s\n\t%s\n\n", ctime(var[Date]),
+      var[Author], var[Message]);
     return write_file(file, str);
 }

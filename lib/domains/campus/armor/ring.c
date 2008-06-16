@@ -12,7 +12,7 @@ static void create(){
     SetLong("This is a simple but beautiful ring made of "+
       "gold, suitable for wearing on one's finger.");
     SetMass(1);
-    SetDollarCost(1000);
+    SetDollarCost(5000);
     SetDamagePoints(100);
     SetArmorType(A_RING);
 }

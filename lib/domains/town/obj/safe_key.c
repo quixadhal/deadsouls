@@ -2,13 +2,14 @@
 
 inherit LIB_ITEM;
 
+
 static void create() {
     item::create();
-    SetKeyName("complex key");
+    SetKeyName("key");
     SetId( ({ "key", "mansion safe key" }) );
-    SetAdjectives( ({ "complex", "complicated", "complicated looking" }) );
-    SetShort("a complex key");
-    SetLong("It is a complicated-looking key.");
+    SetAdjectives( ({ "small" }) );
+    SetShort("a small key");
+    SetLong("It is a small key.");
     SetMass(10);
     SetBaseCost("silver",1);
     SetDisableChance(100);

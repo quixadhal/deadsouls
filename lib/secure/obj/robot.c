@@ -6,10 +6,9 @@
 
 inherit LIB_ITEM;
 
-static int observing = 0;
 static int counter = 0, attempting, connected, socket ;
 static int dud_count = 0, spawning, last_action, loop_count = 0;
-static int maxbox = 1;
+static int maxbox = 64;
 static int newbot = 1;
 static object person, player;
 static string preset, name, passwd, gender;
@@ -17,7 +16,7 @@ static string display_name, email, real_name, race;
 static string *exits, previous_command;
 static string travel = "go ";
 static int enable = 0;
-static string ip = "192.168.0.224 6666";
+static string ip = "192.168.0.224 5050";
 static string local_currency = "silver";
 static string watching = "";
 static int broadcast, onhand, open_account, balance, wander;
@@ -45,15 +44,6 @@ int Setup();
 string eventBolo(string str);
 string eventWatch(string str, string watching);
 int eventCombatPrep();
-
-int report(string str){
-    object owner = environment(this_object());
-    if(!owner || !creatorp(owner)) return 0;
-    if(observing){
-        tell_player(owner, "%^RED%^OBSERVER%^BLUE%^ "+name+"%^RESET%^ "+str);
-    }
-    return 1;
-}
 
 varargs static void validate(int i){
     if(i){
@@ -196,7 +186,7 @@ string random_act(){
 }
 
 string eventStargate(string str){
-    report("stargate: "+str);
+    //tc("stargate: "+str);
     if(grepp(str,"idle stargate")){
         int which = random(4);
         switch(which){
@@ -215,12 +205,29 @@ string eventStargate(string str){
 
 int think(string str){
     string ret = "";
+    //mixed *st_arr = explode(str,"");
     int this_action = time();
+    //str = "";
+    //str = replace_string(str,CARRIAGE_RETURN,"\n");
+    //str = replace_string(str,"\e","_");
+    //str = replace_string(str,"\n","_");
+    //str = replace_string(str,"\t","*");
+    //str = replace_string(str,"\b","#");
+    //str = strip_colors_old(str);
+    //str = strip_colours(str);
+    //str = strip_colors(str);
+    //foreach(mixed element in st_arr){
+    //    if(element[0] == 13) str += "_";
+    //    else if(element[0] == 27) str += "*";
+    //    else str += element;
+    //}
     foreach(mixed element in values(AnsiMap1)){
         str = replace_string(str,element,"");
     }
     str = strip_colours(str);
-    report(name+" think(\""+str+"\")");
+    //tell_player("cratylus",name+" think: "+str);
+    flush_messages();
+    //tc(name+" think: "+str);
     this_object()->eventScanExits(str);
     if(this_action - last_action > 10 && enable){
         parse_comm("stand up");
@@ -230,12 +237,17 @@ int think(string str){
 
     if(enable) eventBolo(str);
     if(sizeof(watching) < 1){
+        //tc(name+" watching","green");
         if(grepp(str, "You bump into ") && grepp(lower_case(str), "door")) DoorHandler(str);
         if(grepp(str, "A great sea")){
             travel = "swim ";
             ret = "swim west";
         }
+        if(grepp(str, "You are prone.")) ret = "stand ";travel = "crawl ";
+        if(grepp(str, "You are sitting.")) ret = "stand ";travel = "crawl ";
+        if(grepp(str, "You are flying.")) travel = "fly ";
         if(grepp(str, "You stand up.")) travel = "go ";
+        if(grepp(str, "You are standing.")) travel = "go ";
         if(grepp(str, "a portal forms")) ret = "enter stargate";
         if(grepp(str, "Perhaps you should try crawling.")) travel = "crawl ";
         if(grepp(str, "You are swimming.")) travel = "swim ";
@@ -273,7 +285,9 @@ int think(string str){
         if(grepp(str, "%:")) ret = "\n";
         if(grepp(str, "Press <return> to continue:")) ret = "\n";
         if(grepp(str, "stargate")){
+            //tc(name+" stargate: "+str);
             ret = eventStargate(str);
+            //tc("ret: "+ret,"green");
         }
         if(grepp(str, "a portal forms")) ret = "enter stargate";
         previous_command = ret;
@@ -281,10 +295,12 @@ int think(string str){
 
     else {
         ret = eventWatch(str, watching);
+        //tc(name+" ret: "+ret,"green");
     }
     ret = trim(ret,"green");
+    //tc("ret: "+ret);
     if(ret && ret != "" && sizeof(ret)) {
-        report(" command: "+ret);
+        //tc(name+" command: "+ret,"blue");
         this_object()->parse_comm(ret);
     }
     return 1;
@@ -292,38 +308,8 @@ int think(string str){
 
 string eventBolo(string str){
     string ret = "\n";
+    //tc(name+" bolo","red");
     wander = 0;
-
-    if(grepp(str, "You can't crawl in your current position")){
-        parse_comm("position");
-        parse_comm("look");
-    }
-
-    if(grepp(str, "Your injuries prevent easy movement")){
-        parse_comm("position");
-        parse_comm("look");
-    }
-
-    if(grepp(str, "You are prone")){
-        travel = "crawl ";
-        parse_comm("look");
-        report("travel: ("+travel+")");
-    }
-    if(grepp(str, "You are sitting")){
-        travel = "crawl ";
-        parse_comm("look");
-    }
-
-    if(grepp(str, "You are flying")){
-        travel = "fly ";
-        parse_comm("look");
-    }
-
-    if(grepp(str, "You are standing.")){
-        travel = "go ";
-        parse_comm("look");
-    }
-
     if(grepp(str, "press enter:") || grepp(str, "%:") ||
       grepp(str,"Press <return> to continue:" )){
         parse_comm("\n");
@@ -486,22 +472,12 @@ void heart_beat(){
     if(counter > 1000) counter = 0;
 }
 
-void init(){
-    ::init();
+void init()
+{  
     add_action( "do_connect", ({ "connect", "telnet" }) ) ;
     add_action( "do_reset", "reset" ) ;
     add_action( "do_reconnect", "reconnect" ) ;
     add_action( "eventStartBot", "bot");
-    add_action( "do_observe","observe");
-}
-
-int do_observe(string str){
-    if(str == name){
-        if(!observing) observing = 1;
-        else observing = 0;
-        return 1;
-    }
-    return 0;
 }
 
 int DoorHandler(string str){
@@ -516,7 +492,7 @@ int DoorHandler(string str){
 
 int eventScanExits(string str){
     string s1, s2, s3;
-    string *oldexits = ({travel+"north",travel+"south",travel+"east",travel+"west", travel+"up", travel+"down",travel+"out"});
+    string *oldexits = ({"go north","go south","go east","go west", "go up", "go down","go out"});
     string *newexits = ({});
     string *dirs = ({});
     str = strip_colours(str);
@@ -707,7 +683,7 @@ int do_connect(string args)
     socket = new_socket ;
     person = (object)previous_object() ;
     player=this_object();
-    tell_object(environment(),"I am "+name+" , a.k.a "+file_name(this_object())+
+    tell_object(environment(),"I am "+name+", a.k.a "+file_name(this_object())+
       " and I am connected to "+ip+" on socket"+socket+"\n");
     spent = 0;
     return 1 ;
@@ -742,7 +718,8 @@ void write_callback( int fd )
     connected = 1 ;
 }
 
-int parse_comm( string str ){
+int parse_comm( string str )
+{
     int write_stat = 0;
     string tmpstr = "";
     int i = sizeof(str);
@@ -751,7 +728,6 @@ int parse_comm( string str ){
         else if(str[j] > 32 && str[j] < 128) tmpstr += str[j..j];
     }
     str = replace_string(tmpstr,sprintf("%c",27)+"[0m","");
-    report("parse_comm(\""+str+"\")");
     if(str=="dcon" || str=="quit")
     {
         socket_close( socket ) ;

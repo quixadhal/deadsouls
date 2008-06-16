@@ -172,3 +172,4 @@ mixed direct_read_str_word_obj(string str){
 
     }
 }
+

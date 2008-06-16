@@ -6,7 +6,7 @@ void create(){
     trainer::create();
     SetKeyName("radagast");
     SetId("radagast the brown","wizard","mage","trainer");
-    SetAdjectives(({"friendly","tall","thin","old"}));
+    SetAdjectives("friendly");
     SetGender("male");
     SetRace("human");
     SetNoSpells(1);
@@ -24,12 +24,13 @@ void create(){
     AddTrainingSkills( ({ "magic defense", "magic attack", "conjuring" }) );
     SetSpellBook( ([ "buffer" : 100, "meditate" : 100, "missile" : 100, "fireball" : 100 ]) );
     SetPolyglot(1);
-    SetCustomXP(10);
+    SetLanguage("common", 100);
+    SetDefaultLanguage("common");
 }
-
 void init() {
     trainer::init();
     SetSmell(([  "default" : "A rather odd, musty smell."]));
     SetListen(([  "default" : "Radagast seems to be constantly "+
         "humming a quiet tune to himself."]));
+    //eventForce("cast buffer");
 }

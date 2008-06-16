@@ -228,3 +228,4 @@ mixed do_get_wrd_from_obj(mixed args...) {
 mixed do_get_wrd_out_of_obj(mixed args...) {
     return do_get_wrd_from_obj(args);
 }
+

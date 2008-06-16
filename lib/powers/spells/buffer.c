@@ -24,7 +24,7 @@ static void create() {
     SetRequiredMagic(50);
     SetSkills(([ "magic defense" : 1 ]));
     SetMagicCost(40, 40);
-    SetDifficulty(1);
+    SetDifficulty(50);
     SetMorality(10);
     SetHelp("Syntax: <cast buffer>\n"
       "	     <cast buffer on LIV>\n\n"

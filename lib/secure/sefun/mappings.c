@@ -47,15 +47,15 @@ varargs mapping add_maps(mapping FirstMapping,mapping  SecondMapping, int prefer
 
     if(sizeof(schluessel1))
         foreach(mixed element in schluessel1){
-            OutMap[element] = copy(FirstMap[element]);
-        }
+        OutMap[element] = copy(FirstMap[element]);
+    }
 
     if(sizeof(schluessel2))
         foreach(mixed element in schluessel2){
-            if(member_array(element,schluessel1) != -1 && preference == 1)
-                OutMap[element] = copy(FirstMap[element]);
-            else OutMap[element] = copy(SecondMap[element]);
-        }
+        if(member_array(element,schluessel1) != -1 && preference == 1)
+            OutMap[element] = copy(FirstMap[element]);
+        else OutMap[element] = copy(SecondMap[element]);
+    }
 
     return OutMap;
 }

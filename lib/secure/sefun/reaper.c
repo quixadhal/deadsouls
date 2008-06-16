@@ -1,18 +1,24 @@
-#include <sockets.h>
+#include <lib.h>
 #include <objects.h>
 
-private string *glist;
-private object thingy;
-
-string *ExemptArray = ({ LIB_CONNECT, OBJ_SNOOPER, LIB_DOOR, LIB_ROOM, LIB_SERVER, LIB_FTP_DATA_CONN, LIB_SOCKET, SOCKET_HTTP });
+string *ExemptArray = ({ LIB_SHADOW, OBJ_SNOOPER, LIB_DOOR, LIB_ROOM, LIB_SERVER, LIB_FTP_DATA_CONN});
 
 void  reap_dummies(){
     //
     // destroys any dummy objects that do not
     // have an environment
     //
-    object *dummies = objects((: $1 && base_name($1) == LIB_DUMMY :))[0..30000];
-    dummies += objects((: inherits(LIB_DUMMY, $1) :))[0..30000];
+    object *objects;
+    object *dummies;
+
+    objects = objects();
+    dummies = ({});
+
+    foreach(object ob in objects){
+        if(base_name(ob) == "/lib/std/dummy"){
+            dummies += ({ ob });
+        }
+    }
 
     foreach(object dummy in dummies){
         if(!environment(dummy)) catch( dummy->eventDestruct() );
@@ -21,38 +27,54 @@ void  reap_dummies(){
 
 varargs void reap_other(string s1){
     //
-    // destroys any non-special objects and clones that
+    // destroys any cloned objects that
     // do not have an environment
     //
     string s2;
-    int reap_again, fail;
-#ifndef __FLUFFOS__
-    object *others = objects((: $1 && clonep($1) && !userp($1) &&
-        !inherits(LIB_ROOM, $1) && !environment($1) &&
-        !inherits(LIB_SHADOW, $1) &&
-        member_array(base_name($1), ExemptArray) == -1 :))[0..6300];
-#else
-    object *others = get_garbage()[0..63000];
-#endif
-    if(sizeof(others) > 62000){
-        reap_again = 1;
+    object *objects;
+    object *others;
+
+    objects = objects();
+    others = ({});
+
+    foreach(object ob in objects){
+        if(sscanf(file_name(ob),"%s#%s",s1,s2) > 0) {
+            if(base_name(ob) != LIB_CONNECT) others += ({ ob });
+        }
     }
 
-    foreach(thingy in others){
-        int err;
-        if(thingy) err = catch( unguarded( (: destruct(thingy) :) ) );
-        if(thingy) fail = 1;
+    foreach(object thingy in others){
+        if(!userp(thingy) && !environment(thingy) && 
+          !inherits(LIB_SHADOW, thingy) &&
+          member_array(base_name(thingy), ExemptArray) == -1 ) {
+            catch( thingy->eventDestruct() );
+        }
     }
-    if(reap_again) call_out("reap_other",5);
 }
 
 mixed reap_list(){
     //
     // returns a list of cloned objects without an environment
     //
-    string s1,s2;
-    object *clones = objects((: $1 && clonep($1) && !environment($1) :))[0..6300];
-    glist = ({});
-    filter(clones, (: glist += ({ file_name($1) }) :));
-    return glist;
+    string s1,s2,list;
+    object *objects;
+    object *clones;
+
+    objects = objects();
+    clones = ({});
+    list = "";
+
+    foreach(object thing in objects){
+        if(sscanf(file_name(thing),"%s#%s",s1,s2) > 0) {
+            if(!environment(thing)) clones += ({ thing });
+        }
+    }
+
+    rm("/tmp/lost_object_list.txt");
+    foreach(object clone in clones){
+        write_file("/tmp/lost_object_list.txt", file_name(clone)+"\n");
+    }
+    //write("Total size of list: "+sizeof(clones)+" lost objects.");
+    return this_player()->eventPage("/tmp/lost_object_list.txt");
 }
+

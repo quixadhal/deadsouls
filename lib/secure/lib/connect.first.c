@@ -144,13 +144,11 @@ static void InputEmail(string str) {
     tmp = read_file("/secure/include/config.h");
 
     if(sizeof(tmp)){
-        cp("/secure/include/config.h", "/secure/save/backup/config.bak");
+        cp("/secure/include/config.h", "/secure/save/backup/config.orig");
         rm("/secure/include/config.h");
         tmp = replace_string(tmp, "DEBUG_NAME", Name);
         write_file("/secure/include/config.h", tmp);
     }
-
-    catch(cp("/secure/include/network.h","/secure/save/backup/network.orig"));
 
     if( ob = find_object(LIB_CONNECT) ) destruct(ob);
     cp(DIR_SECURE_LIB "/connect.c", DIR_SECURE_LIB "/connect.first.c");

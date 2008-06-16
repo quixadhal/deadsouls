@@ -2,16 +2,19 @@
 
 inherit LIB_VEHICLE;
 
+//mixed DirectMech(string str);
+
 string ReadInstructions(){
-    string ret = "To travel, use the \"drive\" command, for example: drive east\n"+ 
-    "To have the mech do something with its robotic arms, use the following syntax:\n"+ 
-    "direct mech to get boulder\n"+ 
-    "direct mech to kill orc\n\n";
-    if(environment(this_player()) == this_object()){
-        return ret;
-    }
-    else return "You can read no such thing from here.";
+    string ret = "To travel, use the \"drive\" command, for example: drive east\n\ 
+To have the mech do something with its robotic arms, use the following syntax:\n\ 
+direct mech to get boulder\n\ 
+direct mech to kill orc\n\n";
+if(environment(this_player()) == this_object()){
+return ret;
 }
+else return "You can read no such thing from here.";
+}
+
 
 static void create() {
     vehicle::create();
@@ -26,11 +29,11 @@ static void create() {
       "and ballistic plated, and not to be trifled "
       "with by meat-based creatures.");
     SetVehicleInterior("This is the interior of a highly advanced military mechanized "
-      "reconaissance vehicle. There are instructions here you can read.");
+         "reconaissance vehicle. There are instructions here you can read.");
     AddItem("instructions","Some documentation on the operation of this mech.");
     AddItem(({"landstrider","walker","scout","columbu","mech","here"}),
-      "This is the interior of a highly advanced military mechanized "
-      "reconaissance vehicle. There are instructions here you can read.");
+        "This is the interior of a highly advanced military mechanized "
+        "reconaissance vehicle. There are instructions here you can read.");
     SetRead("instructions", (: ReadInstructions :));
     SetRace("strider");
     SetClass("fighter");
@@ -51,13 +54,9 @@ void init(){
 }
 
 mixed DirectMech(string str){
-    string what, cmd;
-    int i = sscanf(str,"%s to %s",what, cmd);
-    if(i != 2) i = sscanf(str,"%s %s",what, cmd);
-    if(i != 2 || !answers_to(what,this_object())) return 0;
-    if(environment(this_player()) == this_object()){
-        write("You enter the commands into mech.");
-        call_out("eventForce", 2, cmd);
-        return 1;
-    }
+if(environment(this_player()) == this_object()){
+write("You enter the commands into mech.");
+this_object()->eventForce(str);
+return 1;
+}
 }

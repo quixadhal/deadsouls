@@ -221,12 +221,6 @@ varargs void eventRevive(int nopenalty){
     AddMagicPoints(-(GetMaxMagicPoints()/2));
     AddStaminaPoints(-(GetMaxStaminaPoints()/2));
     AddHealthPoints(-(GetMaxHealthPoints()/2));
-    if(this_object()->GetLead()){
-        int shots = this_object()->GetLead("gunshot_wounds");
-        if(shots) this_object()->AddLead("gunshot_wounds", -shots);
-        shots = this_object()->GetLead("rifleshot_wounds");
-        if(shots) this_object()->AddLead("rifleshot_wounds", -shots);
-    }
     if(creatorp()){
         string livingtitle = this_object()->GetLivingShort();
         if(!livingtitle) livingtitle = "$N the reborn";
@@ -309,8 +303,8 @@ int Setup(){
     if( !GetClass() ) SetClass("explorer");
     if( GetClass() ){
         foreach(classes in (string array)CLASSES_D->GetClasses())
-            if( ClassMember(classes) && classes != GetClass() )
-                AddChannel(classes);
+        if( ClassMember(classes) && classes != GetClass() )
+            AddChannel(classes);
     }
     if(sizeof(GetExtraChannels())) AddChannel(GetExtraChannels());
     set_heart_beat(GetHeartRate());
@@ -327,8 +321,8 @@ int Setup(){
         PLAYERS_D->AddPlayerInfo(this_object());
 
         foreach(classes in (string array)CLASSES_D->GetClasses())
-            if( ClassMember(classes) && classes != GetClass() )
-                AddChannel(classes);
+        if( ClassMember(classes) && classes != GetClass() )
+            AddChannel(classes);
         if( avatarp() ) AddChannel(({ "avatar" }));
         if( high_mortalp() ) AddChannel( ({ "newbie", "hm" }) );
         if( newbiep() ) AddChannel( ({ "newbie" }) );
@@ -383,7 +377,7 @@ int Setup(){
 
         SetShort("First Admin $N");
     }
-    if(!creatorp(this_object())) this_object()->SetInvis(0);
+
     return 1;
 }
 
@@ -499,7 +493,7 @@ int SetUndead(int x){
 }
 
 string GetName(){
-    if(GetInvis() && !this_player()->GetWizVision()) return "A shadow";
+    if(GetInvis()) return "A shadow";
     else return interactive::GetName();
 }
 
@@ -521,10 +515,10 @@ varargs string GetLong(string str){
     foreach(item in map(
         filter(all_inventory(), (: !((int)$1->GetInvis(this_object())) :)),
         (: (string)$1->GetEquippedShort() :)))
-        if( item ) counts[item]++;
+    if( item ) counts[item]++;
     if( sizeof(counts) ) str += GetCapName() + " is carrying:\n";
     foreach(item in keys(counts))
-        str += capitalize(consolidate(counts[item], item)) + "\n";
+    str += capitalize(consolidate(counts[item], item)) + "\n";
     return str;
 }
 
@@ -563,8 +557,8 @@ string SetClass(string str){
         TrainingPoints = points;   /* leave points alone */
         AddChannel(GetClass());
         foreach(classes in (string array)CLASSES_D->GetClasses())
-            if( ClassMember(classes) && classes != GetClass() )
-                AddChannel(classes);
+        if( ClassMember(classes) && classes != GetClass() )
+            AddChannel(classes);
     }
     return GetClass();
 }

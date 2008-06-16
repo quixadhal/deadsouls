@@ -7,7 +7,7 @@ static void create() {
     SetAmbientLight(25);
     SetClimate("outdoors");
     SetShort("University Square");
-    SetLong("You are at University Square, a cobblestone-paved crossroads with a large tree in the middle. To the east is the Virtual Campus administrative building entrance. There is a trash can here for keeping the area tidy. North is a path that seems to lead to a small town. The classroom building is south. The new Science Building is west.");
+    SetLong("You are at University Square, a cobblestone-paved crossroads with a large tree in the middle. To the east is the Virtual Campus administrative building entrance. North is a path that seems to lead to a small town. The classroom building is south. The new Science Building is west.");
     SetItems(([
         ({"building","administrative building"}) : "This large building houses the offices "+
         "of Virtual Campus staff, and is where most business is done. It also contains "+
@@ -29,7 +29,6 @@ static void create() {
         "/domains/campus/npc/wim" : 1,
         "/domains/campus/obj/tree" : 1,
         "/domains/campus/obj/bench" : 3,
-        "/domains/campus/obj/trashcan" : 1,
       ]));
     SetEnters( ([ 
       ]) );

@@ -5,7 +5,7 @@ inherit LIB_MEAL;
 
 int SetDesc(){
     string picture;
-    int which = random(16);
+    int which = random(11);
     switch(which){
     case 0 : picture = "Ashon";break;
     case 1 : picture = "Brodbane";break;
@@ -18,11 +18,6 @@ int SetDesc(){
     case 8 : picture = "Tigwyk";break;
     case 9 : picture = "Capo";break;
     case 10 : picture = "Keeperofkeys";break;
-    case 11 : picture = "Lars";break;
-    case 12 : picture = "Beek";break;
-    case 13 : picture = "Rust";break;
-    case 14 : picture = "Deathblade";break;
-    case 15 : picture = "Marius";break;
     }
     SetLong("This is a little carton of grade-A milk. The rear has a "+
       "picture of "+picture+", and reads \"Have you seen me?\"");

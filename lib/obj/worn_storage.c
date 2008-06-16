@@ -6,7 +6,7 @@ inherit LIB_WORN_STORAGE;
 static void create(){
     ::create();
     SetKeyName("generic worn storage");
-    SetId(({"thing","worn_storage","storage","article"}));
+    SetId(({"thing","storage","worn_storage","storage","article"}));
     SetAdjectives(({"article of","generic","worn"}));
     SetShort("a generic article of worn storage");
     SetLong("This is a thing that can be worn which can also hold things.");

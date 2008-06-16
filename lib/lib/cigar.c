@@ -46,3 +46,4 @@ mixed eventSmoke(object who, object what){
     return 1;
 }
 
+

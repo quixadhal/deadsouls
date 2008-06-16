@@ -1,31 +1,22 @@
 #include <lib.h>
 inherit LIB_ROOM;
 
-string ReadList(){
-    string muggleret = "AVAILABLE SPELLS:\n\n"
-    "\tfireball, cost 1000:\tput the hurt on an opponent\n"
-    "\tmissile, cost 500:\tCheaper and easier to learn than fireball\n"
-    "\tbuffer, cost 200:\tconjure an invisible shield around you\n"
-    "\tmeditate, cost 500:\tconjure an aura that speeds stamina recovery\n"
-    "\n"
-    "Example: If you want to learn the buffer spell:\n\n"
-    "\"ask herkimer to teach buffer\"\n"
-    "\n"
-    "Please note that the spell may fail many times before "
-    "you have enough practice and experience to cast "
-    "it properly. All sales final.\n";
-    string mageret = "AVAILABLE SPELLS:\n\n"
-    "\tfireball:\tput the hurt on an opponent\n"
-    "\tmissile:\tCheaper and easier to learn than fireball\n"
-    "\tbuffer:\t\tconjure an invisible shield around you\n"
-    "\tmeditate:\tconjure an aura that speeds stamina recovery\n"
-    "\twhip:\t\tconjure a powerful energy whip\n"
-    "\n"
-    "Example: If you want to learn the buffer spell:\n\n"
-    "\"ask herkimer to teach buffer\"\n"
-    "\n";
-    if(this_player()->GetClass() == "mage") return mageret;
-    return muggleret;
+int ReadList(){
+    write("AVAILABLE SPELLS:\n\n"
+      "\tfireball, cost 1000:\tput the hurt on an opponent\n"
+      "\tmissile, cost 500:\tCheaper and easier to learn than fireball\n"
+      "\tbuffer, cost 200:\tconjure an invisible shield around you\n"
+      "\tmeditate, cost 500:\tconjure an aura that speeds stamina recovery\n"
+      "\n"
+      "Example: If you want to learn the buffer spell:\n\n"
+      "\"ask herkimer to teach buffer\"\n"
+      "\n"
+      "Please note that the spell may fail many times before "
+      "you have enough practice and experience to cast "
+      "it properly. All sales final.\n"
+
+    );
+    return 1;
 }
 static void create() {
     room::create();

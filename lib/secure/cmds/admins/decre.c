@@ -55,16 +55,16 @@ mixed cmd(string args) {
         inv = deep_inventory(ob);
         if(sizeof(inv))
             foreach(object thing in inv){
-                if(thing) {
-                    thing->eventMove(ROOM_FURNACE);
-                }
-            }	//Save the user to sync its state with his inventory
+            if(thing) {
+                thing->eventMove(ROOM_FURNACE);
+            }
+        }	//Save the user to sync its state with his inventory
         unguarded( (: ob->save_player((string)ob->GetKeyName()) :) );
 
         //Move the user file to the player dir
         //
-        if( file_size(DIR_PLAYERS+"/"+nom[0..0]) != -2) 
-            mkdir(DIR_PLAYERS+"/"+nom[0..0]);
+           if( file_size(DIR_PLAYERS+"/"+nom[0..0]) != -2) 
+        mkdir(DIR_PLAYERS+"/"+nom[0..0]);
         if(rename(file+__SAVE_EXTENSION__, DIR_PLAYERS+"/"+nom[0..0]+"/"+nom+__SAVE_EXTENSION__))
             return "You failed due to lack of write access to "+DIR_PLAYERS+".";
         //Remove their homedir, save it to a backup dir.
@@ -92,7 +92,7 @@ mixed cmd(string args) {
         //Remove creator channels and such
         //
         foreach(string channel in player_ob->GetChannels())
-            player_ob->RemoveChannel(channel);
+        player_ob->RemoveChannel(channel);
         if( avatarp(player_ob) ) player_ob->AddChannel(({ "avatar" }));
         if( high_mortalp(player_ob) ) player_ob->AddChannel( ({ "hm" }) );
         if( newbiep(player_ob) ) player_ob->AddChannel( ({ "newbie" }) );

@@ -488,7 +488,7 @@ static int Destruct(){
 /*  *****************   /lib/combat.c events  ***************** */
 
 varargs int eventDie(mixed agent){
-    object ob, env = environment();
+    object ob;
     int x;
 
     if(this_object()->GetGodMode()) return 0;
@@ -505,7 +505,7 @@ varargs int eventDie(mixed agent){
             ob->eventEnemyDied(this_object());
         }
     }
-    if(env) env->eventLivingDied(this_object(), agent);
+    environment()->eventLivingDied(this_object(), agent);
     Enemies = ({});
     flush_messages();
     return 1;

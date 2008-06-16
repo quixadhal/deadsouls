@@ -142,8 +142,7 @@ int outgoing_sent(string destination, string id){
     if(base_name(previous_object(0)) != LIB_OOB){
         return 0;
     }
-    if(sizeof(Outgoing[destination]))
-        if(Outgoing[destination][id]) map_delete(Outgoing[destination], id);
+    map_delete(Outgoing[destination], id);
     if(!sizeof(Outgoing[destination])) map_delete(Outgoing, destination);
     save_mailqueue();
     return 1;
@@ -162,7 +161,7 @@ int incoming_post(mixed *packet){
       "from" : from,
       "to" : packet[3][mud_name()],
       "cc" : packet[4][mud_name()],
-      "date" : ( stringp(packet[6]) ? to_int(packet[6]) : packet[6] ),
+      "date" : packet[6],
       "subject" : packet[7],
       "message" : packet[8]
     ]);

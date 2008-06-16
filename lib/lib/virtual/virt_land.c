@@ -104,8 +104,8 @@ varargs mixed GetMapType(int x, int y, int z){
 mapping SetSurroundAreas(int x, int y, int z){
     mapping surrounds = ([]);
     foreach(string dir, int * offset in GetDirectionMap())
-        surrounds[dir] = GetMapType((x + offset[1]),
-          (y + offset[0]),(z + offset[2]));
+    surrounds[dir] = GetMapType((x + offset[1]),
+      (y + offset[0]),(z + offset[2]));
     return Surrounding_Areas=surrounds;
 }
 

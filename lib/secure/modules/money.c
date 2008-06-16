@@ -36,7 +36,7 @@ int eventModMoney(object ob, string type, mixed val){
     globalstr = generate_tmp(ob);
     unguarded( (: cp(globalstr3, globalstr) :) );
     if(!check_privs(this_player(),globalstr3)){
-        write("You do not appear to have write access to this file. Modification aborted.");
+        write("You do not appear to have access to this file. Modification aborted.");
         return 1;
     }
     if(npc){
@@ -79,7 +79,7 @@ int eventModCost(object ob, string type, mixed val){
     else amount = val;
     globalstr = base_name(ob)+".c";
     if(!check_privs(this_player(),globalstr)){
-        write("You do not appear to have write access to this file. Modification aborted.");
+        write("You do not appear to have access to this file. Modification aborted.");
         return 1;
     }
 

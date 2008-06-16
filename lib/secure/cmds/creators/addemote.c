@@ -260,7 +260,6 @@ string GetHelp(string str) {
       "        <addemote EMOTE>\n"
       "        <addemote -edit>\n"
       "        <addemote -add>\n\n"
-      "You must be admin or member of the EMOTES group to use this command.\n\n"
       "Used to add and edit emotes in the soul daemon using complex "
       "rules and the Dead Souls V messaging system.  In order to add "
       "a new emote using this command, you need to know the following "

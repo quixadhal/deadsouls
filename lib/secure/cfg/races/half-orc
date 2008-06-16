@@ -2,7 +2,7 @@ RACE half-orc
 PLAYER_RACE 1
 SENSITIVITY 12:62
 LANGUAGE Tangetto
-STATS agility:2:1
+STATS agility:2:4
 STATS charisma:4:5
 STATS coordination:20:3
 STATS durability:40:2

@@ -32,7 +32,7 @@ static void create() {
     SetBaseCost("silver",50);
     SetVendorType(VT_WEAPON);
     SetClass(10);
-    SetDamageType(KNIFE);
+    SetDamageType(BLADE);
     SetWeaponType("knife");
     boobytrap_me();
 }

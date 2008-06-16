@@ -3,7 +3,10 @@
 inherit LIB_SENTIENT;
 
 varargs int ReceiveCoat(mixed already, object who){
+    //tc("yep, got a coat.");
+    //tc("already: "+already);
     if(already > 1){
+        //tc("already had one");
         eventForce("say uh...no thanks. I'm set.");
         eventForce("drop a coat");
     }
@@ -81,18 +84,6 @@ static void create() {
     SetGender("male");
     SetLanguage("common",100);
     SetDefaultLanguage("common");
-    SetConsultResponses( ([ 
-        "default" : (: CheckResponse :),
-        ({ "gate", "gates", "stargate", "stargates", "portal", "portals" }) :
-        "Fascinating, aren't they? A legacy of some highly advanced "+ 
-        "civilization. Be very careful if you enter one!",
-        ({ "door", "badge", "sliding door" }) : "Oh yes, the security "+
-        "door. Sorry, only badged employees like me have access to "+
-        "the hazardous materials lab.",
-        ({ "hazardous materials lab", "materials lab", "lab" }) :
-        "I wouldn't try to get in there if I were you. The "+
-        "artifacts there can be too powerful for the unskilled.",
-      ]) );
     SetRequestResponses( ([
         "default" : (: CheckResponse :),
         ({"a good grade","good grades"}) : "Those are yours to earn.",
@@ -173,9 +164,13 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
 int eventReceiveObject(object ob) {
     int howmany = sizeof(filter(all_inventory(this_object()),
         (: answers_to("lab coat",$1) :) ));
+    //tc("howmany: "+identify(howmany),"red");
+    //tc("receive: "+identify(ob),"red");
+    //tc("inv: "+identify(all_inventory(this_object())),"red");
     if( !ob || !::eventReceiveObject(ob) ) return 0;
     if(answers_to("lab coat",ob)){
         call_out("ReceiveCoat", 0, howmany, this_player());
     }
     return 1;
 }
+

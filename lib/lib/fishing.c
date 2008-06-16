@@ -199,8 +199,8 @@ mapping SetFishing(object who, object pole){
 mapping RemoveFishing(object who){
     string str;
 
-    if( !who || !objectp(who) || !living(who) ) return Fishing;
-    if( Fishing[(str = who->GetKeyName())] ) 
+    if( !who ) return Fishing;
+    if( Fishing[str = (string)who->GetKeyName()] ) 
         map_delete(Fishing, str);
     if( !sizeof(Fishing) ) return ([]);
     return Fishing;

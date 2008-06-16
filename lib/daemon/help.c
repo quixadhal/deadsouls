@@ -306,7 +306,7 @@ static private void LoadIndices() {
                   if( sizeof(syn) == 1 ) help += "\n";
                   else {
                       foreach(line in syn[1..])
-                          help += "        " + topic + " " + line + "\n";
+                      help += "        " + topic + " " + line + "\n";
                       help += "\n";
                   }
                   help += "No detailed documentation exists for this command.";
@@ -458,8 +458,8 @@ static private void LoadIndices() {
           help += "Functions:\n";
           tmparr = sort_array(keys(tmpmap), 1);
           foreach(fnc in tmparr)
-              help += tmpmap[fnc]["type"] + fnc + "(" +
-              implode(tmpmap[fnc]["args"], ", ") + ")\n";
+          help += tmpmap[fnc]["type"] + fnc + "(" +
+          implode(tmpmap[fnc]["args"], ", ") + ")\n";
       }
       help = "Index: %^GREEN%^" + index + "%^RESET%^\n" +
       "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;

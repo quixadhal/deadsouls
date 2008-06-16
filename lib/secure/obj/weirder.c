@@ -8,7 +8,7 @@
 #include <vendor_types.h>
 inherit LIB_ITEM;
 
-string savefile = "/secure/save/weirder.o";
+static string savefile = "/secure/save/weirder.o";
 string *lib_dirs = ({ "/lib/comp","/lib/daemons","/lib/events/",
   "/lib/lvs", "/lib/lvs", "/lib/props", "/lib/std", 
   "/lib/user", "/lib/virtual", "/lib","/secure/lib","/secure/lib/net" });
@@ -52,8 +52,6 @@ string *daemons = ({});
 string *cmds = ({});
 string *verbs = ({});
 string *powers = ({});
-int nomore, yeik = 0;
-string *exceptions = ({});
 
 void validate(){
     if(!this_player() || !archp(this_player())){
@@ -61,45 +59,8 @@ void validate(){
     }
 }
 
-int yeik(string str){
-    int cout, err;
-    object *blanks;
-    validate();
-    err=catch(blanks=objects((: base_name($1)==LIB_BLANK :))[0..63000]);
-    if(str){
-        cout = call_out("yeik",1,"on");
-        nomore = 0;
-        yeik = 1;
-        if(err){
-            tc("foo!");
-        }
-        if(!environment() || !archp(this_player())){
-            error("no!");
-        }
-        tc("cloning");
-        for(int i = 400;i>0;i--){
-            call_out("yeik",1,"on");
-            new(LIB_BLANK);
-        }
-    }
-    else {
-        if(!nomore) cout = call_out("yeik",2);
-        yeik = 0;
-        if(sizeof(blanks)){
-            //cout = call_out("yeik",2);
-            foreach(object blank in blanks){
-                destruct(blank);
-            }
-
-        }
-        else nomore = 1;
-    }
-    return cout;
-}
-
 void create(){
     ::create();
-    exceptions = ({ "charles.c","charly.c" });
     SetKeyName("weirding module");
     SetId( ({"module", "box", "weirder"}) );
     SetAdjectives( ({"small","featureless","black"}) );
@@ -110,10 +71,8 @@ void create(){
     SetMass(20);
     SetBaseCost("silver",10);
     SetVendorType(VT_TREASURE);
-    //YES = 1000;
-    //NO = -1000;
     if(file_exists(savefile)){
-        //unguarded( (: restore_object(savefile) :) );
+        unguarded( (: restore_object(savefile) :) );
     }
 }
 void init(){
@@ -133,13 +92,11 @@ void init(){
     add_action("loadlibs","loadlibs");
     add_action("loadsys","loadsys");
     add_action("loadall","loadall");
-    add_action("yeik","yeik");
-    add_action("yeik2","yeik2");
 }
 int loadthing(string str){
     tc("lpc: "+str);
     if(last(str,2) == ".c"){
-        catch( update(str) );
+        update(str);
     }
     else tc("non lpc: "+str,"red");
     return 1;
@@ -163,8 +120,6 @@ int loadobs(){
     foreach(string obsdir in obj_dirs){
         foreach(string obfile in get_dir(obsdir+"/")){
             string loadee = obsdir+"/"+obfile;
-            if(!strsrch(loadee,"/obj/area_room")) continue;
-            if(!strsrch(loadee,"/obj/stargate")) continue;
             obs += ({ loadee });
             call_out("loadthing", 0, loadee);
         }
@@ -176,12 +131,7 @@ int loadnpcs(){
     if(!npcs) npcs = ({});
     foreach(string npcsdir in npc_dirs){
         foreach(string npcfile in get_dir(npcsdir+"/")){
-            string loadee;
-            if(member_array(npcfile, exceptions) != -1){
-                tc("skipping "+npcfile,"green");
-                continue;
-            }
-            loadee = npcsdir+"/"+npcfile;
+            string loadee = npcsdir+"/"+npcfile;
             npcs += ({ loadee });
             call_out("loadthing", 0, loadee);
         }
@@ -192,9 +142,7 @@ int loadweaps(){
     validate();
     if(!weapons) weapons = ({});
     foreach(string weapsdir in weap_dirs){
-        mixed wdir = get_dir(weapsdir+"/");
-        if(!wdir || !sizeof(wdir)) continue;
-        foreach(string weapfile in wdir){
+        foreach(string weapfile in get_dir(weapsdir+"/")){
             string loadee = weapsdir+"/"+weapfile;
             weapons += ({ loadee });
             call_out("loadthing", 0, loadee);
@@ -206,9 +154,7 @@ int loadarmors(){
     validate();
     if(!armors) armors = ({});
     foreach(string armsdir in armor_dirs){
-        mixed adir = get_dir(armsdir+"/");
-        if(!adir || !sizeof(adir)) continue;
-        foreach(string armorfile in adir){
+        foreach(string armorfile in get_dir(armsdir+"/")){
             string loadee = armsdir+"/"+armorfile;
             armors += ({ loadee });
             call_out("loadthing", 0, loadee);
@@ -220,9 +166,7 @@ int loadmeals(){
     validate();
     if(!meals) meals = ({});
     foreach(string mealsdir in meals_dirs){
-        mixed mdir = get_dir(mealsdir+"/");
-        if(!mdir || !sizeof(mdir)) continue;
-        foreach(string mealfile in mdir){
+        foreach(string mealfile in get_dir(mealsdir+"/")){
             string loadee = mealsdir+"/"+mealfile;
             meals += ({ loadee });
             call_out("loadthing", 0, loadee);
@@ -234,9 +178,7 @@ int loaddoors(){
     validate();
     if(!doors) doors = ({});
     foreach(string doorsdir in doors_dirs){
-        mixed ddir = get_dir(doorsdir+"/");
-        if(!ddir || !sizeof(ddir)) continue;
-        foreach(string doorfile in ddir){
+        foreach(string doorfile in get_dir(doorsdir+"/")){
             string loadee = doorsdir+"/"+doorfile;
             doors += ({ loadee });
             call_out("loadthing", 0, loadee);
@@ -248,9 +190,7 @@ int loadverbs(){
     validate();
     if(!verbs) verbs = ({});
     foreach(string verbsdir in verb_dirs){
-        mixed vdir = get_dir(verbsdir+"/");
-        if(!vdir || !sizeof(vdir)) continue;
-        foreach(string verbfile in vdir){
+        foreach(string verbfile in get_dir(verbsdir+"/")){
             string loadee = verbsdir+"/"+verbfile;
             verbs += ({ loadee });
             call_out("loadthing", 0, loadee);
@@ -262,9 +202,7 @@ int loadcmds(){
     validate();
     if(!cmds) cmds = ({});
     foreach(string cmdsdir in cmd_dirs){
-        mixed cdir = get_dir(cmdsdir+"/");
-        if(!cdir || !sizeof(cdir)) continue;
-        foreach(string cmdfile in cdir){
+        foreach(string cmdfile in get_dir(cmdsdir+"/")){
             string loadee = cmdsdir+"/"+cmdfile;
             cmds += ({ loadee });
             call_out("loadthing", 0, loadee);
@@ -380,44 +318,6 @@ int startstress(){
 }
 
 int eventDestruct(){
-    //unguarded( (: save_object(savefile) :) );
+    unguarded( (: save_object(savefile) :) );
     return ::eventDestruct();
 } 
-
-int yeik2(string str){
-    int dirty;
-    validate();
-    if(str == "dirty") dirty = 1;
-    if(str){
-        string file, what = "/lib/blank";
-        int on=1, clone, i=2100000000;
-        object ob=new(what);
-        write("Starting the bullshit. ob: "+identify(ob));
-        sscanf(file_name(ob), "%s#%d", file, clone);
-        if(!dirty) destruct(ob);
-        //if(clone > 5000){
-        //    tc("too many clones");
-        //    on = 0;
-        //}
-        if(on){
-            //tc("on");
-            call_out("yeik2", 2);
-        }
-        if(!on){
-            //tc("weird");
-            return;
-        }
-        while(i) {
-            i--;
-            ob =new(what);
-            sscanf(file_name(ob), "%s#%d", file, clone);
-            //tell_object(environment(this_object()), clone + " ");
-            if(!dirty) destruct(ob);
-        }
-        //tc("hmm");
-    }
-    else {
-        write("Stopping the bullshit.");
-    }
-    return 1;
-}

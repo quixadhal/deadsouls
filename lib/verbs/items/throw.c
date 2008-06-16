@@ -49,16 +49,12 @@ mixed do_throw_obj(object ob) {
 
 mixed do_throw_obj_word_obj(object what, string word, object where) {
     object enemy;
-    object env = environment(this_player());
+
     if( where && living(where) && (int)what->GetClass() > 1 ) {
         enemy = where;
     }
     else {
         enemy = 0;
-    }
-    if(env && env->GetProperty("no attack")){
-        write("A mystical force prevents your malice.");
-        return 1;
     }
     if( this_player()->GetInCombat() || enemy ) {
         this_player()->eventPrint("You prepare to throw " +

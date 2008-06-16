@@ -219,7 +219,7 @@ mixed eventRemoveParty(object who) {
     CHAT_D->eventSendChannel("System", name, "The party " + name + " has been "
       "disbanded.");
     foreach(ob in ((class party)Parties[name])->Members)
-        ob->SetParty(0);
+    ob->SetParty(0);
     map_delete(Parties, name);
     eventSave();
     return 1;

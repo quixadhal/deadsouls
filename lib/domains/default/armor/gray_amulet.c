@@ -1,5 +1,5 @@
 // The carrier of this amulet will not be forced to quit
-// if they hit their max idle time. Also speeds magic point refresh.
+// if they hit their max idle time.
 
 #include <lib.h>
 #include <rooms.h>
@@ -17,22 +17,13 @@ static void create(){
     SetProperties(([
         "no steal" : 1,
       ]));
-    SetMass(50);
-    SetBaseCost(100000);
+    SetMass(100);
+    SetBaseCost(2);
     SetArmorType(A_AMULET);
     SetRetainOnDeath(1);
     SetRestrictLimbs( ({ "torso" }) );
-    set_heart_beat(7);
 }
 
 void init(){
     ::init();
 }
-
-void heart_beat(){
-    object env = environment();
-    if(env && living(env) && GetWorn()){
-        env->AddMagicPoints(1);
-    }
-}
-

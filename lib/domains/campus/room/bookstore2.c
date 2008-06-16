@@ -8,7 +8,6 @@ static void create() {
     SetShort("a generic room");
     SetLong("This is an utterly plain, blank room.");
     SetInventory(([
-        "/domains/campus/obj/diamond" : 1,
         "/domains/default/obj/handbook" : 5,
         "/domains/campus/obj/pack" : 30,
         "/domains/campus/obj/bag" : 3,

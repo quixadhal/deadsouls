@@ -13,6 +13,10 @@ void create(){
       "piece of ammunition. It has not been fired.");
     SetCaliber(223);
     SetFirearmType("auto");
+    SetFirearmType("auto");
     SetAmmoType("nato");
     SetVendorType(VT_TREASURE);
+}
+void init(){
+    round::init();
 }

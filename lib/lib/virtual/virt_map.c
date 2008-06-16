@@ -101,12 +101,12 @@ varargs void InitializeLocations(string tmp){
           + (Location[tmp][2]))->ResetLocation();
     }
     else foreach(tmp in keys(Location)){
-            Location[tmp]=RecurseLocations();
-            SetAreaMap(Location[tmp][1], Location[tmp][0],
-              Location[tmp][2], tmp);
-            (Virt_Room+(Location[tmp][0] ) + "," + (Location[tmp][1])
-              + "," +(Location[tmp][2]))->ResetLocation(); 
-        }
+        Location[tmp]=RecurseLocations();
+        SetAreaMap(Location[tmp][1], Location[tmp][0],
+          Location[tmp][2], tmp);
+        (Virt_Room+(Location[tmp][0] ) + "," + (Location[tmp][1])
+          + "," +(Location[tmp][2]))->ResetLocation(); 
+    }
 
 }
 

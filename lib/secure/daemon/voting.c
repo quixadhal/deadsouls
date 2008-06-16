@@ -93,8 +93,8 @@ mixed eventAddCandidate( string sClass, string sWho ) {
         return VOTE_NOT_CLASS_MEMBER;
 
     foreach( string cls in CLASSES_D->GetClasses() )            
-        if( member_array( sWho, mapVoting["candidates"][cls] ) != -1 )
-            return VOTE_ALREADY_RUNNING;
+    if( member_array( sWho, mapVoting["candidates"][cls] ) != -1 )
+        return VOTE_ALREADY_RUNNING;
 
     mapVoting["candidates"][sClass] += ({ sWho });
     mapVoting["votes"][sClass][sWho] = 0;
@@ -219,7 +219,7 @@ string *GetCouncil() {
     asWho = ({});
 
     foreach( string sClass in CLASSES_D->GetClasses() )
-        asWho += ({ mapCouncil[sClass] });
+    asWho += ({ mapCouncil[sClass] });
 
     return asWho;
 }
@@ -267,14 +267,14 @@ string GetVoteRoom() { return VOTE_ROOM; }
 
 int IsCouncilMember( object ob ) {
     foreach( string sClass in CLASSES_D->GetClasses() )
-        if( mapCouncil[sClass] == convert_name(ob->GetName()) )
-            return 1;
+    if( mapCouncil[sClass] == convert_name(ob->GetName()) )
+        return 1;
     return 0;
 }
 
 mixed GetTest() {
     foreach( string sClass in CLASSES_D->GetClasses() )
-        this_player()->eventPrint( sClass + " : " + mapCouncil[sClass] );
+    this_player()->eventPrint( sClass + " : " + mapCouncil[sClass] );
     return 1;
 }
 

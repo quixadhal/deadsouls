@@ -65,7 +65,7 @@ static int ProcessData(int fd){
 
     if(!strsrch(tmparr[0],"Location: ")) nullify = 1;
 
-    if(!nullify && sizeof(tmparr)){
+    if(!nullify){
         while(!sizeof(tmparr[0]) || sizeof(tmparr[0]) < 2){
             tmparr = tmparr[1..];
         }

@@ -1,12 +1,13 @@
 #include <position.h>
-#include <rooms.h>
 #include <medium.h>
 #include <message_class.h>
 
+//int direct_sink(){ return 1; }
+//int direct_sink_down(){ return 1; }
+
 mixed eventSink(){
-    int err;
     object env = environment();
-    mixed tmprumbo, rumbo = 0;
+    mixed rumbo = 0;
     string name = this_object()->GetName();
 
     if(!living(this_object())) name = this_object()->GetShort();
@@ -19,15 +20,10 @@ mixed eventSink(){
     }
     if(living(this_object())) this_object()->SetPosition(POSITION_FLOATING);
     if(!rumbo) return 0;
-    tmprumbo = rumbo;
-    if(stringp(rumbo)) err = catch(rumbo = load_object(rumbo));
-    if(err || !rumbo){
-        err = catch(rumbo = load_object(ROOM_VOID));
-    }
-    if(err || !rumbo){
+    if(stringp(rumbo)) rumbo = load_object(rumbo);
+    if(!rumbo){
         return 0;
     }
-
     tell_object(this_object(),"You sink downward!");
     if(this_object()->eventMove(rumbo)){
         tell_room(env,capitalize(name)+" continues "+

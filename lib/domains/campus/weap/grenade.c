@@ -114,6 +114,7 @@ void analyze(string str){
 }
 
 int HitLivings(object ob){
-    ob->eventReceiveDamage("concussion",BLUNT, random(1000)+300, 0);
+    ob->eventReceiveDamage(this_object(),BLUNT, random(1000)+300, 1);
     return 1;
 }
+

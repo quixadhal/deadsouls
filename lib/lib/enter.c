@@ -9,7 +9,7 @@
 #include <position.h>
 
 private string Dir;
-private string Door, DoorSide = 0;
+private string Door = 0;
 private mapping Enter = 0;
 
 static void create(){
@@ -132,10 +132,6 @@ varargs mixed eventOpen(object who, object tool){
 }
 
 varargs mixed eventKnock(object who, mixed what){
-    if(!Door){
-        write("You can't knock on that.");
-        return 0;
-    }
     return Door->eventKnock(who, what);
 }
 
@@ -155,17 +151,8 @@ string GetDoor(){
     return Door;
 }
 
-varargs void SetDoor(string door, string side){
+void SetDoor(string door){
     Door = door;
-    if(side) DoorSide = side;
-}
-
-string GetDoorSide(){
-    return DoorSide;
-}
-
-void SetDoorSide(string doorside){
-    DoorSide = doorside;
 }
 
 varargs void SetEnter(string dest, function pre, function post){

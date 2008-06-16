@@ -8,9 +8,9 @@ STATS charisma:33:2
 STATS coordination:33:2
 STATS durability:30:4
 STATS intelligence:40:1
-STATS luck:20:3
-STATS speed:30:3
-STATS strength:20:3
+STATS luck:10:3
+STATS speed:20:3
+STATS strength:10:3
 STATS wisdom:40:3
 LIMB torso:0:1:A_SHIRT,A_CLOAK,A_VEST,A_SHIELD,A_ARMOR,A_BODY_ARMOR,A_BELT,A_AMULET,A_CUSTOM
 LIMB neck:torso:1:A_COLLAR,A_AMULET,A_CUSTOM

@@ -11,8 +11,8 @@ mixed teller_check(){
     object teller;
     if(sizeof(livs))
         foreach(object liv in livs){
-            if(inherits(LIB_TELLER,liv)) return liv;
-        }
+        if(inherits(LIB_TELLER,liv)) return liv;
+    }
     return 0;
 }
 

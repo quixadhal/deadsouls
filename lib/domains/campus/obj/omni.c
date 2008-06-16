@@ -39,7 +39,6 @@ mixed eventPress(object who, string where) {
             ROOM_ARCH, ROOM_NETWORK, ROOM_ROUTER, LIB_FURNACE,  
             ROOM_FREEZER }) ) == -1  && strsrch(base_name($1),"/realms/") &&
         !inherits(LIB_FURNACE,$1) && 
-        !($1->GetVirtual() && !grepp(base_name($1),",")) &&
         last_string_element(base_name($1),"/") != "death" :) );
     say(who->GetName()+" turns "+dbz_colors("multicolored")+" and disappears!");
     write("You feel momentarily disoriented and find yourself elsewhere!");
@@ -48,6 +47,7 @@ mixed eventPress(object who, string where) {
         success = who->eventMove(target);
     }
     who->eventDescribeEnvironment();
+    //tc("env: "+identify(target));
     tell_room(target, "With a multicolored flash, "+who->GetName()+
       " appears!",who);
     return 1;

@@ -4,7 +4,7 @@
 #include <rooms.h>
 #include <commands.h>
 mixed mx;
-mixed next;
+object next;
 object *dudes;
 string filename, args;
 
@@ -22,7 +22,6 @@ varargs mixed reload(mixed ob, int recursive, int quiet){
     if(objectp(ob) && inherits(LIB_DAEMON,ob) && !ob->GetDoor()){
         string obname = base_name(ob)+".c";
         ob->eventDestruct();
-        if(ob) destruct(ob);
         return load_object(obname);
     }
     if(objectp(ob) && environment(ob)) env = environment(ob);
@@ -91,7 +90,7 @@ varargs mixed reload(mixed ob, int recursive, int quiet){
     if(ob && !inherits(LIB_DOOR, ob) && !stringed && env) {
         unguarded( (: next = clone_object(filename) :) ); 
         ob->eventMove(ROOM_FURNACE);
-        if(next && objectp(next) && env) next->eventMove(env);
+        if(next && env) next->eventMove(env);
     }
     if(!quiet && this_player()) write("Done.");
     return 1;

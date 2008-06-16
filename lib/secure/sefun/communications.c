@@ -21,7 +21,7 @@ varargs void say(mixed str, mixed ob) {
 }
 
 varargs void tell_object(object ob, mixed str, int mclass){ 
-    if(ob) ob->eventPrint(str, (mclass || MSG_CONV)); 
+    ob->eventPrint(str, (mclass || MSG_CONV)); 
 }
 
 void tell_player(mixed player, string msg){

@@ -15,7 +15,6 @@ static void create() {
         "/domains/town/meals/potion_healing" : 10,
         "/domains/town/obj/8ball" : 3,
         "/domains/town/obj/d6" : 5,
-        "/domains/default/armor/gray_amulet" : 2,
         "/domains/town/obj/omni" : 1,
         "/domains/town/obj/pipe" : 5,
         "/domains/town/meals/potion_strength" : 5,

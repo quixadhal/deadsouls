@@ -294,7 +294,6 @@ int GetHeartRate(){
     return x;
 }
 
-#if 0
 int GetHealRate(){
     int x;
 
@@ -302,7 +301,6 @@ int GetHealRate(){
     if( x > 6 ) x = 6;
     return x;
 }
-#endif
 
 int GetStatLevel(string stat){ return genetics::GetStatLevel(stat); }
 

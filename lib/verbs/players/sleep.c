@@ -21,8 +21,6 @@ mixed can_sleep() {
         return "You are too wired to sleep right now.";
     }
 
-    if(this_player()->GetRace()=="elf") return "Elves don't sleep.";
-
     return 1;
 }
 

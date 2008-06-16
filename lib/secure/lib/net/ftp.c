@@ -429,7 +429,7 @@ private void do_list( string arg, int ltype){
         }
         if(strsrch(flags,'F') > -1){
             foreach(mixed array file in files)
-                if(file[1]==-2) file[0]=sprintf("%s/",file[0]);
+            if(file[1]==-2) file[0]=sprintf("%s/",file[0]);
         }
         if(strsrch(flags,'C')>-1){
             int lines;

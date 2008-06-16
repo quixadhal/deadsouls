@@ -5,10 +5,10 @@
 # Lines beginning with a # or a newline are ignored.                          #
 ###############################################################################
 # name of this mud
-name : Dead_Souls_cratylus
+name : Dead Souls Alpha Ceti V
 
 # port number to accept users on
-external_port_1 : telnet 6666
+external_port_1 : telnet 8888
 
 # the address server is an external program that lets the mud translate
 # internet names to numbers (and vice versa).  select an unused port.

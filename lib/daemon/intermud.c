@@ -154,7 +154,7 @@ static void eventRead(mixed *packet){
         return;
     case "mudlist":
         tn("INTERMUD_D mudlist received.","red");
-        //log_file(LOG_I3,identify(packet),1);
+        //log_file("mudlist_packet",identify(packet),1);
         if( sizeof(packet) != 8 ){
             //tn("We don't like the mudlist packet size.","red");
             return;  
@@ -415,7 +415,6 @@ string GetMudName(string mud){
         return ([
           "native version" : native_version(),
           "os build" : query_os_type(),
-          "architecture" : architecture(),
           "upsince" : ctime(time() - uptime()),
           "next boot" : nextboot(),
           "ip" : HOST_IP,

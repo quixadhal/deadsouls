@@ -6,9 +6,6 @@
  *    Last Modified: 96/12/21
  */
 
-#include <message_class.h>
-#include <daemons.h>
-
 private mixed PreventGet;
 
 // abstract methods
@@ -28,12 +25,6 @@ mixed SetPreventGet(mixed val){
 }
 
 mixed CanGet(object who){
-    int check = GUARD_D->CheckGet(who, this_object());
-    if(!check){
-        who->eventPrint("You are unable to get it.", MSG_SYSTEM);
-        return 0;
-    }
-
     if( !((int)who->CanCarry(GetMass())) ) return "It is too heavy for you!";
     if( !PreventGet && !GetProperty("keep") ) return 1;
     if( stringp(GetProperty("keep")) ){

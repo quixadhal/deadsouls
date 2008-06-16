@@ -637,7 +637,7 @@ private void start_logon(){
           usrs = ({ });
           data["text"]=imc2_to_pinkfish(data["text"]);
           foreach(user in users())
-              if(chan_listening(user,local)) usrs += ({ user });
+          if(chan_listening(user,local)) usrs += ({ user });
           if(emote==2){
               msg=sprintf("%s- [%%^GREEN%%^%s%%^RESET%%^] %%^CYAN%%^(from %s)%%^RESET%%^ %s",
                 NETWORK_ID,local,sender,data["text"]);
@@ -1174,10 +1174,10 @@ EndText,
               if(b==""){ // check who's on locally
                   c = "The following users are listening to "+a+":\n  ";
                   foreach(usr in users())
-                      if(chan_listening(usr,a)){
-                          usrs += ({ usr });
-                          c += " "+GET_CAP_NAME(usr);
-                      }
+                  if(chan_listening(usr,a)){
+                      usrs += ({ usr });
+                      c += " "+GET_CAP_NAME(usr);
+                  }
                   c += "\n";
                   if(!usrs) c="Nobody on this mud is listening to that channel.\n";
                   IMC2_MSG(c,THIS_PLAYER);

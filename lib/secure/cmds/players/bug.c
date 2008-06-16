@@ -423,26 +423,26 @@ static void Assign(string *args) {
                         return;
                     }
                     else foreach(bug_id, bug in bugs) {
-                            string opt1, opt2;
+                        string opt1, opt2;
 
-                            opt1 = args[0];
-                            opt2 = args[1];
-                            if( opt1 == "1" && opt2 == "1" ) 
+                        opt1 = args[0];
+                        opt2 = args[1];
+                        if( opt1 == "1" && opt2 == "1" ) 
+                            tmp += GetBugString(bug_id, bugs) + "\n*****\n\n";
+                        else {
+                            if( opt2 == "2" && (!bug["assigned"] || 
+                                convert_name(bug["assigned"]) != nom) ) 
+                                continue;
+                            else if(opt2 == "3" && convert_name(bug["who"]) != nom )
+                                continue;
+                            if( opt1 == "2" && !bug["assigned"] )
                                 tmp += GetBugString(bug_id, bugs) + "\n*****\n\n";
-                            else {
-                                if( opt2 == "2" && (!bug["assigned"] || 
-                                    convert_name(bug["assigned"]) != nom) ) 
-                                    continue;
-                                else if(opt2 == "3" && convert_name(bug["who"]) != nom )
-                                    continue;
-                                if( opt1 == "2" && !bug["assigned"] )
-                                    tmp += GetBugString(bug_id, bugs) + "\n*****\n\n";
-                                else if( opt1 == "3" && bug["assigned"] && !bug["date fixed"] )
-                                    tmp += GetBugString(bug_id, bugs) + "\n*****\n\n";
-                                else if( opt1 == "4" && bug["date fixed"] )
-                                    tmp += GetBugString(bug_id, bugs) + "\n*****\n\n";
-                            }
+                            else if( opt1 == "3" && bug["assigned"] && !bug["date fixed"] )
+                                tmp += GetBugString(bug_id, bugs) + "\n*****\n\n";
+                            else if( opt1 == "4" && bug["date fixed"] )
+                                tmp += GetBugString(bug_id, bugs) + "\n*****\n\n";
                         }
+                    }
                     if( tmp == "" ) {
                         message("system", "No bugs match your query.", this_player());
                         message("prompt", "Hit return: ", this_player());

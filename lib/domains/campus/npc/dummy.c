@@ -1,8 +1,6 @@
 #include <lib.h>
-#include <daemons.h>
 #include <damage_types.h>
 inherit LIB_NPC;
-
 static void create(){
     npc::create();
     SetKeyName("dummy");
@@ -12,36 +10,38 @@ static void create(){
       "logs, cut to the proportions of a human's "+
       "head, torso, and limbs. The logs are held "+
       "together by joints made of chains.");
-    SetPacifist(1);
-    SetBodyComposition("wood");
-    SetInventory(([
-      ]));
     SetLevel(10);
-    SetRace("golem");
-    SetNativeLanguage("english");
+    SetRace("human");
     SetClass("fighter");
-    SetGender("neuter");
+    SetGender("male");
     SetMaxHealthPoints(9000);
     SetHealthPoints(9000);
+    SetInventory(([
+        //"realms/cratylus/armor/chainmail.c" : "wear chainmail",
+        //"realms/cratylus/obj/sharpsword.c" : "wield sword"
+      ]));
 }
+
 varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixed limbs) {
     int hp, damage, damdiff;
     string evidence, limb_string;
     evidence = "";
-    if(objectp(agent)) evidence += "I receive damage from "+agent->GetKeyName();
-    else evidence += "I receive damage from "+(string)agent;
-    evidence += ".";
+    if(agent) evidence += "I receive damage from "+agent->GetKeyName();
     if(type) {
-        string *damtypes = TYPES_D->eventCalculateTypes("damage", type);
-        if(type && sizeof(damtypes)) {
-            string verboid;
-            if(sizeof(damtypes) > 1) verboid = "s are ";
-            else verboid = " is ";
-
-            evidence += " Damage type"+verboid;
-            evidence += implode(damtypes,", ");
-        }
-        else evidence += " Damage type is UNKNOWN";
+        if(type == BLUNT ) evidence += ", damage type is BLUNT"; 
+        if(type == BLADE ) evidence += ", damage type is BLADE";
+        if(type == KNIFE ) evidence += ", damage type is KNIFE";
+        if(type == WATER ) evidence += ", damage type is WATER";
+        if(type == SHOCK ) evidence += ", damage type is SHOCK";
+        if(type == COLD ) evidence += ", damage type is COLD";
+        if(type == HEAT ) evidence += ", damage type is HEAT";
+        if(type == GAS ) evidence += ", damage type is GAS";
+        if(type == ACID ) evidence += ", damage type is ACID";
+        if(type == MAGIC ) evidence += ", damage type is MAGIC";
+        if(type == POISON ) evidence += ", damage type is POISON";
+        if(type == DISEASE ) evidence += ", damage type is DISEASE";
+        if(type == TRAUMA ) evidence += ", damage type is TRAUMA";
+        //else evidence += ", damage type is indeterminate";
     }
     if(x) evidence += ", raw damage is "+x;
     if(internal) evidence += ", internal variable is "+internal;
@@ -58,6 +58,7 @@ varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixe
     }
     else limb_string = ", and I can't tell where I'm hit. ";
     if(limbs) { 
+        //limb_string += ". limbs data type is "+typeof(limbs)+" ";
         evidence += ", body part(s) affected: ";
         evidence += limb_string + ".";
     }
@@ -75,15 +76,8 @@ varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixe
     damage = GetHealthPoints();
     damdiff = hp - damage;
     eventForce("say actual damage done: "+damdiff);
-    AddHP(damdiff+1);
+    AddHealthPoints(damdiff+1);
 }
 
-int RemoveLimb(string limb, object agent){
-    eventForce("say My "+limb+" has received enough damage to sever it. "
-      "However, since I am a training dummy, I'll be keeping it.");
-    return 1;
-}
 
-void init(){
-    ::init();
-}
+

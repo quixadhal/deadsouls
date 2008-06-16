@@ -40,8 +40,7 @@ varargs mixed can_attack_liv(object target) {
       !RACES_D->GetLimblessCombatRace(this_player()->GetRace()) ){
         return "You cannot attack in that position!";
     }
-    if( this_player() && environment(this_player()) &&
-      (int)environment(this_player())->GetProperty("no attack") ) {
+    if( (int)environment(this_player())->GetProperty("no attack") ) {
         return "A mystical force prevents your malice.";
     }
     return 1;

@@ -24,8 +24,8 @@ mixed cmd(string args) {
       sscanf(args, "%s to %s", a, b) != 2 ) {
         return "Syntax: <transfer OBJECT INTO OBJECT>\n\n";
     }
-    what = get_object(a);
-    destination = get_object(b);
+    what = to_object(a);
+    destination = to_object(b);
     if( !what ) {
         return "Unable to find " + a + ".";
     }

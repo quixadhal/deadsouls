@@ -93,12 +93,6 @@ static private void GetYesOrNo(string input) {
 static private void EndSuicide(string who) {
     string tmp, file, newfile;
     object *ob;
-    string whocheck = last_string_element(base_name(this_player()),"/");
-    if(who != whocheck){
-        write("There seems to be a conflict in determining your identity.");
-        write("Suicide aborted.");
-        return;
-    }
     gwho = who;
     home_dir = homedir(this_player()); 
     if(!directory_exists(DIR_TMP + "/suicide/")) mkdir (DIR_TMP + "/suicide/");
@@ -149,7 +143,7 @@ static private void EndSuicide(string who) {
 string GetHelp(string str) {
     return "Syntax: suicide\n\n"
     "Ends your character's existence on "+mud_name()+" FOREVER.  "
-    "It is non-reversible.  Once you issue this command, you will be asked"
+    "It is non-reversible.  Once you issue this command, tyou will be asked"
     "for a password to confirm your identity.  Once password is confirmed, "
     "you will no longer exist in the MUD's database.  You may also opt "
     "to write a final suicide note.\n\n"

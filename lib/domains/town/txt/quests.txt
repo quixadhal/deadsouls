@@ -1,5 +1,5 @@
-The scroll is stained, old, and tattered. It seems that
-some lines can still be read:
+The scroll is stained, old, and tattered. It seems that only
+a few lines can be read:
 
 * Old Mansion: Legend has it that there are secrets in
 the old abandoned mansion south of the church.
@@ -9,5 +9,3 @@ Quest Points: 2
 Leo the archwizard. Leo was last seen going into the church.
 Quest Points: 10
 
-* Princess Daphne: Dirk is lonely! Bring him Princess Daphne.
-Quest Points: 10

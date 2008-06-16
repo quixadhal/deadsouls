@@ -31,7 +31,7 @@ void help() {
       "In yellow:\n"
       "prompt %%^^YELLOW%%^^$N $P >%%^^RESET%%^^\n"
       "Or for tactical info as a player:\n" 
-      "prompt hp:$h/$H mp:$g/$G sp:$i/$I > \n"
+      "prompt hp:$h/$H mp:$g/$G sp: $i/$I> \n"
       "\n\n",
       this_player() );
 }

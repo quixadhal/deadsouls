@@ -25,13 +25,7 @@ mixed cmd(string args) {
     }
     if( res = catch(ob = new(file)) ) 
         return "Error in cloning object: " + res;
-    if( !ob ){
-        write("Failed to clone file: " + file);
-        if(!file_exists(file)){
-            write("It seems that the file "+file+" does not exist.");
-        }
-        return 1;
-    }
+    if( !ob ) return "Failed to clone file: " + file;
     if( !((int)ob->eventMove(this_player())) &&
       !((int)ob->eventMove(environment(this_player()))) ) {
         message("system", "Failed to properly move the object.",

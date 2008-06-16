@@ -37,7 +37,7 @@ mixed cmd(string args) {
             if( strlen(args) > 3 ) args = trim(args[2..]);
             else args = "";
         }
-        if( args != "" ) ob = get_object(args);
+        if( args != "" ) ob = to_object(args);
         if( !ob ) ob = this_player();
     }
     if( scan & OPT_E ) ob = environment(ob);

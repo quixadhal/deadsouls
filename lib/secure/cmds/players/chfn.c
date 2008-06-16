@@ -60,7 +60,7 @@ mixed cmd(string args) {
                     }
                 }
                 if( !str ) {
-                    message("system", "Home page unchanged.", who);
+                    message("system", "Home paged unchanged.", who);
                 }
                 else {
                     who->SetWebPage(str);

@@ -17,11 +17,6 @@ static private void validate() {
     if(!this_player()) return 0;
     if( !((int)master()->valid_apply(({ "ASSIST" }))) )
         error("Illegal attempt access FUNCTIONS_D: "+get_stack()+" "+identify(previous_object(-1)));
-    if(query_os_type() == "windows"){
-        error("The functions daemon has been disabled for your mud "+
-          "because it is running on windows. Intensive file operations "+
-          "in windows are not yet supported on Dead Souls.");
-    }
 }
 
 void heart_beat(){
@@ -31,19 +26,17 @@ void heart_beat(){
                 return ;
             }
         }
-        unguarded( (: save_object(SaveFuns) :) );
+        save_object(SaveFuns);
         seeking = 0;
     }
     count++;
     if(count > 700){
-        unguarded( (: save_object(SaveFuns) :) );
+        save_object(SaveFuns);
         count = 0;
     }
 }
 
 mixed SendFiles(string *arr){
-    validate();
-    if(query_os_type() == "windows") return 0;
     foreach(string sub in arr){
         load_object("/secure/cmds/creators/showfuns")->cmd(sub);
     }
@@ -54,16 +47,14 @@ mixed ReadFuns(string str){
     int interval = 0;
     string *subfiles = ({});
     validate();
-    if(query_os_type() == "windows") return 0;
+
     seeking = 1;
     if(!str || !sizeof(str)) str = "/lib";
 
     files = FILE_D->GetFiles();
     globaltmp = str;
     files = filter(files, (: (!strsrch($1, globaltmp) && last($1,2) == ".c" ) :) );
-    files = filter(files, (: (!sizeof(FunctionCache[$1]) || 
-          ((sizeof(stat($1)) > 1) ? stat($1)[0] : FileSize[$1]) 
-          != FileSize[$1]) :) ); 
+    files = filter(files, (: (!sizeof(FunctionCache[$1]) || stat($1)[0] != FileSize[$1]) :) ); 
     foreach(string file in files){
     }
     while(sizeof(files) > 0){
@@ -77,10 +68,7 @@ mixed ReadFuns(string str){
 
 static void create() {
     daemon::create();
-    if(query_os_type() == "windows") return;
-    if(!file_exists(SaveFuns)){
-        unguarded( (: save_object(SaveFuns) :) );
-    }
+    if(!file_exists(SaveFuns)) save_object(SaveFuns);
     else restore_object(SaveFuns);
     call_out((: ReadFuns,"/lib/" :), 1);
     call_out((: ReadFuns,"/secure/sefun/" :), 30);
@@ -102,7 +90,7 @@ mixed GetFunctions(string str){
 }
 
 int eventDestruct(){
-    unguarded( (: save_object(SaveFuns) :) );
+    save_object(SaveFuns);
     return ::eventDestruct();
 }
 

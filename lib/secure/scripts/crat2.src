@@ -13,6 +13,7 @@ dest robe
 dest hat
 clone /domains/default/armor/robe
 #clone /secure/obj/glasses
+clone /secure/obj/weirder
 #clone /realms/$N/area/obj/key
 wear robe
 wear first glasses
@@ -21,13 +22,5 @@ clone /domains/town/obj/d20
 clone /domains/town/obj/d6
 clone /domains/campus/weap/grenade
 clone /domains/campus/weap/waterpistol
-clone /domains/campus/obj/omni
-clone /domains/town/obj/pipe
-clone /domains/town/obj/match
-clone /domains/town/obj/match
-clone /domains/town/obj/match
-clone /domains/town/obj/match
-clone /domains/town/obj/match
 put all in my robe
-clone /secure/obj/weirder.c
 save

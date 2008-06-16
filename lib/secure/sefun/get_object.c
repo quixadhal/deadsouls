@@ -20,9 +20,7 @@
 //            like referencing the monster attacking someone.
 */
 
-private static string gstr;
-
-varargs object get_object( string str, object player, int living )
+varargs object get_object( string str, object player )
 {
     object what,ret;
     mixed tmp;
@@ -33,69 +31,29 @@ varargs object get_object( string str, object player, int living )
     if( !player || !living( player ) ) player = this_player();
     if( sscanf( str, "@%s", tmp )         &&
       ( tmp = get_object( tmp, player ) ) &&
-      ( what = environment( tmp )       )    ){
+      ( what = environment( tmp )       )    )
         return what;
-    }
     if( player )    //  Check existance of this_player()
     {
-        if( str == "me" ){
-            return player;
-        }
-        if( what = present( str, player ) ){
-            object env = player;
-            object *candidates = ({});
-            if(!OBJECT_MATCHING){
-                return what;
-            }
-            gstr = str;
-            candidates = filter(all_inventory(player),
-              (: member_array(gstr, $1->GetCanonicalId()) != -1 :) );
-            if(living){
-                candidates = filter(candidates, (: living($1) :) );
-            }
-            if(sizeof(candidates)){
-                return candidates[0];
-            }
-        }
+        if( str == "me" ) return player;
+        if( what = present( str, player ) ) return what; // Inventory check
         if( what = environment( player ) )               // Environment check
         {
-            if (str == "here" || str == "env" || str == "environment"){
+            if (str == "here" || str == "env" || str == "environment")
                 return what;
-            }
-            if( what = present( str, what ) ){
-                object env = environment(player);
-                object *candidates = ({});
-                if(!OBJECT_MATCHING){
-                    return what;
-                }
-                gstr = str;
-                candidates = filter(all_inventory(player),
-                  (: member_array(gstr, $1->GetCanonicalId()) != -1 :) );
-                if(living){
-                    candidates = filter(candidates, (: living($1) :) );
-                }
-                if(sizeof(candidates)){
-                    return candidates[0];
-                }
-            }
+            if( what = present( str, what ) ) return what;
         }
     }
 
     // Call might be made by a room so make a previous_object() check
     // first just to be sure
 
-    if( what = present( str, previous_object() ) ){
-        return what;
-    }
+    if( what = present( str, previous_object() ) )  return what;
 
     //  Check to see if a living object matches the name
 
-    if( what = find_player( str ) ){
-        return what;
-    }
-    if( what = find_living( str ) ){
-        return what;
-    }
+    if( what = find_player( str ) ) return what;
+    if( what = find_living( str ) ) return what;
 
     //  Search for a matching file_name, completing path with 
     //  user's present path
@@ -104,16 +62,15 @@ varargs object get_object( string str, object player, int living )
     {
         //  this option removed because Dead Souls doesn't support cwf
         //  if( str == "cwf" ) str = (string)player-> query( "cwf" );
-        str = (absolute_path( (string)player-> get_path(), str ) || "");
+        str = absolute_path( (string)player-> get_path(), str );
     }
 
-    if( catch(ret = find_object(str)) ){
-        return 0;
-    }
+    if( catch(ret = find_object(str)) ) return 0;
 
     if(!ret && (file_exists(str) || file_exists(str+".c"))) ret = load_object(str);
 
     //  Finally return any object found matching the requested name
+
     return ret;
 }
 
@@ -205,23 +162,3 @@ varargs object get_object( string str, object player, int arr_poss )
   use the more complicated search routines and keeping get_objects() as
   a seperate simul_efun makes it easier to disable.
 */
-
-object *get_dummies(mixed where){
-    object *ret = ({});
-    if(stringp(where)) where = to_object(where);
-    if(!where || !objectp(where)) return ret;
-    ret = filter(deep_inventory(where), (: inherits(LIB_BASE_DUMMY, $1) ||
-        base_name($1) == LIB_BASE_DUMMY || base_name($1) == LIB_DUMMY :) );
-    return ret;
-}
-
-object *get_doors(mixed where){
-    object *ret = ({});
-    if(stringp(where)) where = to_object(where);
-    if(!where || !objectp(where)) return ret;
-    foreach(string element in where->GetDoors()){
-        catch( ret += ({ load_object(where->GetDoor(element)) }) );
-    }
-    return ret;
-}
-

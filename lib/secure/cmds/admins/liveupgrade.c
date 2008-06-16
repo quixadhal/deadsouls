@@ -384,14 +384,14 @@ void eventReceiveReport(string str){
 }
 
 string GetHelp() {
-    return ("Syntax: liveupgrade all\n"
+    return ("Syntax: liveupgrade [-o] all\n"
       "        liveupgrade apply\n"
       "        liveupgrade cancel\n"
       "        liveupgrade revert\n"
       "        liveupgrade alpha\n"
-      //"To use oob updates (not recommended), use the -o flag. The default "
-      //"is currently an http connection to dead-souls.net, which is vastly "
-      //"faster and more secure than oob.\n"
+      "To use oob updates (not recommended), use the -o flag. The default "
+      "is currently an http connection to dead-souls.net, which is vastly "
+      "faster and more secure than oob.\n"
       "To upgrade all files to the next appropriate level for your lib version:\n"
       "liveupgrade all\n"
       "Wait until you receive the completion message before finalizing the upgrade. "
@@ -405,6 +405,6 @@ string GetHelp() {
       "To restore your mud to the condition it was in prior to the last liveupgrade.\n"
       "liveupgrade revert\n"
       "To enable liveupgrading between alpha and stable versions:\n"
-      "liveupgrade alpha\n\n"
-      "Proxies are not supported. OOB is no longer supported.\n");
+      "liveupgrade alpha\n"
+      "");
 }

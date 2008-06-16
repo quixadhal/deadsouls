@@ -47,7 +47,7 @@ int exec(object target, object src);
 int file_exists(string str);
 string file_privs(string file);
 varargs string format_page(string *items, int columns, int modifier);
-varargs object get_object(string str, object player, int living);
+varargs object get_object(string str, object player);
 varargs mixed get_objects(string str, object player, int no_arr);
 int hiddenp(object ob);
 int high_mortalp(object ob);
@@ -280,8 +280,5 @@ string dbz_colors(string str, int annoying);
 mixed lpc_file(string str);
 int telnet_privp(mixed guy);
 object *containers(object ob);
-varargs mixed FAKE_NEW(string str, mixed args...);
-int ordinalp(string str);
-object *get_dummies(mixed where);
 
 #endif /* l_sefun_h */

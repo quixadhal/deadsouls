@@ -53,7 +53,7 @@ varargs string add_article(string str, int def) {
 string remove_article(string str) {
     string tmp;
 
-    if( !stringp(str) ) return("");
+    if( !stringp(str) ) error("Bad argument 1 to remove_article().\n");
     if( sscanf(str, "the %s", tmp) ) return tmp;
     if( sscanf(str, "a %s", tmp) ) return tmp;
     if( sscanf(str, "an %s", tmp) ) return tmp;
@@ -294,7 +294,6 @@ string array explode_list(string list) {
     }
 #endif
 
-#ifndef __FLUFFOS__
     string cardinal(int x) {
         string tmp;
         int a;
@@ -361,11 +360,6 @@ string array explode_list(string list) {
             }
         }
     }
-#else
-    string cardinal(int x){
-        return query_num(x);
-    }
-#endif
 
     varargs string conjunction(mixed expressions, string coordinator) {
         int size;
@@ -432,21 +426,4 @@ string array explode_list(string list) {
         if( member_array(lower_case(strip_colours(words[0])), 
             ({"a", "an", "the", "one"}) ) > -1 ) words = words[1..];
         return (cardinal(x) + " " + pluralize(implode(words, " ")));
-    }
-
-    varargs int ordinalp(string str, int parseflag){
-        string *ords = ({ "first", "second", "third", "fourth", "fifth",
-          "sixth", "seventh", "eighth", "ninth", "tenth", "twelfth" });
-        string *suffs = ({ "eenth", "ieth", "edth", "andth", "ionth" }) + ords;
-        if(parseflag){
-            ords += ({ "my", "any", "other", "a", "an" });
-        }
-        if(!str || !stringp(str)) return 0;
-        if(member_array(str, ords) != -1) return 1;
-        foreach(string element in suffs){
-            if(sizeof(str) >= sizeof(element) && 
-              str[<sizeof(element)..] == element)
-                return 1;
-        }
-        return 0;
     }

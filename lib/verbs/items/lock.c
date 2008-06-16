@@ -14,7 +14,7 @@ inherit LIB_VERB;
 static void create() {
     verb::create();
     SetVerb("lock");
-    SetRules("OBJ with OBJ","OBJ with STR");
+    SetRules("OBJ with OBJ");
     SetErrorMessage("Lock what with what?");
     SetHelp("Syntax: <lock OBJ with OBJ>\n\n"
       "The first object is something you wish to lock, like a "
@@ -24,26 +24,15 @@ static void create() {
       "See also: close, open, pick, unlock");
 }
 
-varargs mixed can_lock_obj_with_obj(mixed ob1, mixed ob2,
-  mixed mix1, mixed mix2) {
+mixed can_lock_obj_with_obj(string verb) {
     if( this_player()->GetParalyzed() ) {
         return "You cannot do anything.";
     }
     return this_player()->CanManipulate();
 }
 
-varargs mixed can_lock_obj_with_str(mixed ob1, mixed ob2, mixed words...) {
-    object wut = get_object(ob2);
-    if(wut) ob2 = wut->GetKeyName();
-    return can_lock_obj_with_obj(0, 0, words...);
-}
-
-varargs mixed do_lock_obj_with_obj(object target, object key, mixed words...) {
+varargs mixed do_lock_obj_with_obj(object target, object key, mixed *words...) {
     string id;
     id = remove_article(lower_case(words[0]));
     return (mixed)target->eventLock(this_player(), id, key);
-}
-
-varargs mixed do_lock_obj_with_str(mixed ob1, mixed ob2, mixed words...) {
-    return do_lock_obj_with_obj(ob1, (get_object(lower_case(ob2)) || ""));
 }

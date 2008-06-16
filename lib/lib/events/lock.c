@@ -234,15 +234,11 @@ varargs mixed eventUnlock(object who, mixed arg1, mixed arg2){
     return 1;
 }
 
-varargs mixed direct_lock_obj_with_obj(object target, object key, mixed id...){
-    return CanLock(this_player(), remove_article(lower_case(id[0])));
+mixed direct_lock_obj_with_obj(object target, object key, string id){
+    return CanLock(this_player(), remove_article(lower_case(id)));
 }
 
-varargs mixed direct_lock_obj_with_str(object target, mixed key, mixed id...){
-    return CanLock(this_player(), remove_article(lower_case(id[0])));
-}
-
-varargs mixed direct_pick_str_on_obj(string str, object target, string str2,
+mixed direct_pick_str_on_obj(string str, object target, string str2,
   string id){
     if( remove_article(lower_case(str)) != "lock" ){
         return "Pick the what?";
@@ -250,7 +246,7 @@ varargs mixed direct_pick_str_on_obj(string str, object target, string str2,
     return CanPick(this_player(), id);
 }
 
-varargs mixed direct_pick_str_on_obj_with_obj(string str, object target, object tool,
+mixed direct_pick_str_on_obj_with_obj(string str, object target, object tool,
   string str2, string targ_id){
     if( remove_article(lower_case(str)) != "lock" ){
         return "Pick the what?";
@@ -259,11 +255,7 @@ varargs mixed direct_pick_str_on_obj_with_obj(string str, object target, object 
     return CanPick(this_player(), targ_id);
 }
 
-varargs mixed direct_unlock_obj_with_obj(object target, object key, string id, string key2){
-    return CanUnlock(this_player(), remove_article(lower_case(id)));
-}
-
-varargs mixed direct_unlock_obj_with_str(object target, object key, string id, string key2){
+mixed direct_unlock_obj_with_obj(object target, object key, string id){
     return CanUnlock(this_player(), remove_article(lower_case(id)));
 }
 

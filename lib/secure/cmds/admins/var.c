@@ -20,11 +20,6 @@ int cmd(string str) {
     mixed ret;
     string cmd, what;
 
-    if(!this_player() || !archp(this_player())){
-        write("Sorry, this is an arch command.");
-        return 1;
-    }
-
     if(!str || str == ""){
         help();
         return 1;
@@ -47,7 +42,7 @@ int cmd(string str) {
         if(sscanf(newval,"%d",tmp)) newval = tmp;
     }
 
-    ob = get_object(what);
+    ob = to_object(what);
 
     if(!ob){
         string path = this_player()->query_cwd()+"/";

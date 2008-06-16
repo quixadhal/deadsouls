@@ -30,9 +30,7 @@ static void create() {
         Currencies[borg[i]]["rate"] += tmp*Currencies[borg[i]]["rate"];
     }
     LastInflation = time();
-    if(sizeof(Currencies)){
-        unguarded( (: save_object(SAVE_ECONOMY) :) );
-    }
+    unguarded( (: save_object(SAVE_ECONOMY) :) );
 }
 
 string ewrite(string str){
@@ -54,18 +52,14 @@ void add_currency(string type, float rate, float infl, float wt) {
     if(!mapp(Currencies)) Currencies = ([]);
     if(!type || !rate || !infl || !wt || Currencies[type]) return;
     Currencies[type] = ([ "rate":rate, "inflation":infl, "weight":wt ]);
-    if(sizeof(Currencies)){
-        unguarded( (: save_object(SAVE_ECONOMY) :) );
-    }
+    unguarded( (: save_object(SAVE_ECONOMY) :) );
 }
 
 void remove_currency(string type) {
     validate();
     if(!mapp(Currencies)) return;
     map_delete(Currencies, type);
-    if(sizeof(Currencies)){
-        unguarded( (: save_object(SAVE_ECONOMY) :) );
-    }
+    unguarded( (: save_object(SAVE_ECONOMY) :) );
 }
 
 
@@ -75,9 +69,7 @@ void change_currency(string type, string key, float x) {
     if(!type || !Currencies[type] || !key || !x) return;
     if(!Currencies[type][key]) return;
     Currencies[type][key] = x;
-    if(sizeof(Currencies)){
-        unguarded( (: save_object(SAVE_ECONOMY) :) );
-    }
+    unguarded( (: save_object(SAVE_ECONOMY) :) );
 }
 
 float __Query(string type, string key) {

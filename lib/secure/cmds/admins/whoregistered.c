@@ -19,7 +19,7 @@ int cmd(string str) {
         else write("Site \""+str+"\" is currently on registration.\n");
     }
     else {
-        write("People from these sites must currently register in order to get characters:\n");
+        write("These sites must currently registered in order to get characters:\n");
         this_player()->more(explode(format_page(sites, 5), "\n"));
     }
     return 1;

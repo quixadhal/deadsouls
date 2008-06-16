@@ -45,7 +45,7 @@ mixed eventUnlockLock(object who, object what){
     return 1;
 }
 
-varargs mixed indirect_lock_obj_with_obj(object target, object key, mixed id){
+mixed indirect_lock_obj_with_obj(object target, object key, string id){
     if( environment() != this_player() ){
         return "#You don't have " + GetDefiniteShort() + "!";
     }
@@ -55,12 +55,7 @@ varargs mixed indirect_lock_obj_with_obj(object target, object key, mixed id){
     return 1;
 }    
 
-varargs mixed indirect_lock_obj_with_str(object target, mixed key, mixed id...){
-    if(stringp(key)) key = (get_object(key) || "");
-    return indirect_lock_obj_with_obj(target, key, id);
-}
-
-mixed indirect_unlock_obj_with_obj(object target, object key, mixed id...){
+mixed indirect_unlock_obj_with_obj(object target, object key, string id){
     if( environment() != this_player() ){
         return "#You don't have " + GetDefiniteShort() + "!";
     }
@@ -68,9 +63,4 @@ mixed indirect_unlock_obj_with_obj(object target, object key, mixed id...){
         return capitalize(GetDefiniteShort()) + " is broken.";
     }
     return 1;
-}
-
-varargs mixed indirect_unlock_obj_with_str(object target, mixed key, mixed id){
-    if(stringp(key)) key = (get_object(key) || "");
-    return indirect_lock_obj_with_obj(target, key, id);
 }

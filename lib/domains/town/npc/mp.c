@@ -7,11 +7,11 @@ int ProcessTalk(mixed args...){
     string speech = lower_case(args[2]);
     if(sizeof(speech) > 1) speech = truncate(speech,1);
     if(manchurian){
-        //call_out( (: eventForce :), 1, speech);
+        call_out( (: eventForce :), 1, speech);
     }
     if(!manchurian && grepp(speech,"solitaire") && grepp(speech,"play")){
         manchurian = 1;
-        eventForce("say No, thank you. I'm on duty.");
+        eventForce("nod");
     }
     return 1;
 }

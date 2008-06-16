@@ -10,9 +10,9 @@
 #define AUTO_WIZ                 0
 #define RESTRICTED_INTERMUD      0
 #define DISABLE_INTERMUD         0
-#define DISABLE_IMC2             0
+#define DISABLE_IMC2             1
 #define MINUTES_REBOOT_WARNING   20
-#define TIME_TO_RESET            3600
+#define TIME_TO_RESET            1800
 #define RESET_ALL                0
 #define GMT_OFFSET               -32000
 #define LOCAL_TIME               1
@@ -75,12 +75,11 @@
 #define SEFUN_PLURALIZE          0
 #define LOG_REMOTE_CHANS         0
 #define LOG_LOCAL_CHANS          1
-#define IMC2_CLIENT_PW           "clientpass"
-#define IMC2_SERVER_PW           "serverpass"
+#define IMC2_CLIENT_PW           "abcdefghij"
+#define IMC2_SERVER_PW           "jihgfedcba"
 #define ENABLE_CGI               0
 #define WWW_DIR_LIST             0
 #define ENABLE_CREWEB            0
 #define F_TERMINAL_COLOR         1
-#define MAX_CALL_OUTS            750
 
 #endif /* s_config_h */

@@ -43,12 +43,8 @@ int instr(string str){
 }
 mixed CanMail(object who, string args) {
     if( who && !interactive(who) ) return 0;
-    //Normally only people from this town should be able to
-    //do mail stuff here, but this is a newbie area, and
-    //it's a little too confusing to newcomers not to be able
-    //to send mail from a post office.
-    //if( GetTown() != (string)who->GetTown() )
-    //    return "Any mail you might have will be at your home post office.";
+    if( GetTown() != (string)who->GetTown() )
+        return "Any mail you might have will be at your home post office.";
     return 1;
 }
 mixed eventMail(object who, string args) {

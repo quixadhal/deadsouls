@@ -129,11 +129,11 @@ mixed do_put_obs_word_obj(mixed *res, string wrd, object storage) {
     }
     if(wrd == "in" || wrd == "into") {
         foreach(object ob in eligible)
-            storage->eventPutInto(this_player(), ob);
+        storage->eventPutInto(this_player(), ob);
     }
     if(wrd == "on" || wrd == "onto") {
         foreach(object ob in eligible)
-            storage->eventPutOnto(this_player(), ob);
+        storage->eventPutOnto(this_player(), ob);
     }
     eligible = ({});
     return 1;

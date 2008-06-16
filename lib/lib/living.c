@@ -702,12 +702,6 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
     object *inv;
     object prev;
     string prevclim, newclim;
-    int check = GUARD_D->CheckMove(this_object(), dest, dir);
-
-    if(!check){
-        eventPrint("You remain where you are.", MSG_SYSTEM);
-        return 0;
-    }
 
     if(omsg && stringp(omsg)){
         omsg = replace_string(omsg, "$N", this_object()->GetName());

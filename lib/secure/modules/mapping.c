@@ -8,7 +8,7 @@ object target;
 mixed newval;
 
 int GetKey(string str);
-varargs mapping GetTheValue(string str, object targ, string tempy, string k1, string v1, mapping MapThing, string passed_fun);
+varargs mapping GetValue(string str, object targ, string tempy, string k1, string v1, mapping MapThing, string passed_fun);
 
 string *key_arr = ({});
 mapping NewMap = ([]);
@@ -16,7 +16,7 @@ mapping NewMap = ([]);
 int eventStoreMapping(string savefile, mapping plan){
     string filename = "/tmp/"+savefile;
     if(file_exists(filename) && !check_privs(this_player(),filename)){
-        write("You do not appear to have write access to this file. Modification aborted.");
+        write("You do not appear to have access to this file. Modification aborted.");
         return 1;
     }
     store_variable("data", plan);
@@ -31,12 +31,12 @@ varargs int eventStartMappingQuestions(mapping oldmap, object ob, string tmpfile
     }
 
     if(ob && !check_privs(this_player(),ob)){
-        write("You do not appear to have write access to this file. Modification aborted.");
+        write("You do not appear to have access to this file. Modification aborted.");
         return 1;
     }
 
     if(file_exists(temporary) && !check_privs(this_player(),temporary)){
-        write("You do not appear to have write access to this file. Modification aborted.");
+        write("You do not appear to have access to this file. Modification aborted.");
         return 1;
     }
     if(sizeof(oldmap)) NewMap = oldmap;
@@ -51,7 +51,7 @@ varargs int eventStartMappingQuestions(mapping oldmap, object ob, string tmpfile
 
 int GetKey(string str){
     if(file_exists(temporary) && !check_privs(this_player(),temporary)){
-        write("You do not appear to have write access to this file. Modification aborted.");
+        write("You do not appear to have access to this file. Modification aborted.");
         return 1;
     }
     if(str && str == "q" ) {
@@ -66,7 +66,7 @@ int GetKey(string str){
             return 1;
         }
         write("Please enter the value for key "+identify(key_arr)+":\n");
-        input_to( (: GetTheValue :) );
+        input_to( (: GetValue :) );
         return 1;
     }
     else {
@@ -78,7 +78,7 @@ int GetKey(string str){
     }
 }
 
-varargs mapping GetTheValue(string str, object targ, string tempy, string k1, string v1, mapping MapThing, string passed_fun){
+varargs mapping GetValue(string str, object targ, string tempy, string k1, string v1, mapping MapThing, string passed_fun){
     int i;
     string repl_key;
     string *mapkeys;
@@ -98,7 +98,7 @@ varargs mapping GetTheValue(string str, object targ, string tempy, string k1, st
         unguarded( (: cp(base_name(target)+".c",temporary) :) );
     }
     if(file_exists(temporary) && !check_privs(this_player(),temporary)){
-        write("You do not appear to have write access to this file. Modification aborted.");
+        write("You do not appear to have access to this file. Modification aborted.");
         return ([]);
     }
     if(!str || str == "" || str == "." || str == "q") {
@@ -253,7 +253,7 @@ int eventSpecialMapHandler(object ob, string func, mixed mode, mixed value){
 
     filename = base_name(ob)+".c";
     if(!check_privs(this_player(),filename)){
-        write("You do not appear to have write access to this file. Modification aborted.");
+        write("You do not appear to have access to this file. Modification aborted.");
         return 1;
     }
     if(!mode || !value){
@@ -295,7 +295,7 @@ mapping eventReadPair(string filename, string param, int destructive){
     mapping NewMap = ([]);
 
     if(file_exists(filename) && !check_privs(this_player(),filename)){
-        write("You do not appear to have write access to this file. Modification aborted.");
+        write("You do not appear to have access to this file. Modification aborted.");
         return ([]);
     }
 
@@ -340,6 +340,7 @@ mapping eventReadPair(string filename, string param, int destructive){
     }
     return copy(NewMap);
 }
+
 
 
 

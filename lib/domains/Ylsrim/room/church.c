@@ -11,10 +11,10 @@ inherit LIB_ROOM;
 int CheckPriest(string dir) {
     object ob;
 
-    if( this_player()->ClassMember("cleric") || creatorp(this_player()) ) {
+    if( this_player()->ClassMember("priest") || creatorp(this_player()) ) {
         return 1;
     }
-    if( ob = present("cleric", this_object()) ) {
+    if( ob = present("priest", this_object()) ) {
         ob->eventForce("speak I cannot allow you in this sacred rooms.");
         return 0;
     }

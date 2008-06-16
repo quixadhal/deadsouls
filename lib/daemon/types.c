@@ -25,7 +25,6 @@
 #include <soul.h>
 #include <talk_type.h>
 #include <vision.h>
-#include <parser_error.h>
 
 inherit LIB_DAEMON;
 
@@ -36,7 +35,7 @@ string *types = ({ "vendor_types", "terrain_types", "size_types",
 
 string *configs = ({ "assessment", "climb", "jump",
   "magic", "medium", "motion", "rounds",
-  "soul", "talk_type", "vision", "parser_error" });
+  "soul", "talk_type", "vision" });
 
 mapping Types = ([]);
 
@@ -59,7 +58,6 @@ int eventReadTypes(){
         int d1,d2,d3, i, j;
         if(!Types[file]) Types[file] = ([]);
         tmp = read_file("/include/"+file+".h");
-        if(!tmp) tmp = read_file("/secure/include/"+file+".h");
         tmp_arr = explode(tmp,"\n");
         foreach(string line in tmp_arr){
             i = sscanf(line,"#define %s (%s<<%s)",s1,s2,s3,s4);
@@ -86,10 +84,8 @@ int eventReadConfigs(){
         int d1, i, j;
         if(!Types[file]) Types[file] = ([]);
         tmp = read_file("/include/"+file+".h");
-        if(!tmp) tmp = read_file("/secure/include/"+file+".h");
         tmp_arr = explode(tmp,"\n");
         foreach(string line in tmp_arr){
-            line = trim(line);
             i = sscanf(line,"#define %s %s %s)",s1,s2,s3);
             if( i != 3) j = sscanf(line,"#define %s %s",s1,s2);
             if(i != 3 && j != 2) continue;

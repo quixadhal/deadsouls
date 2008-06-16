@@ -25,8 +25,7 @@ mixed eventAsk(object who, string str){
 
     if( (tmp = sentient::eventAsk(who, str)) == 1 ) return 1;
     if( !str || str == "" ){
-        eventForce("speak ask me to what? To describe " + 
-          (GetClass() || "thing") + "s?");
+        eventForce("speak ask me to what? To describe " + GetClass() + "s?");
         return 1;
     }
     if( sscanf(str, "%s %s", cmd, args) != 2 ){
@@ -57,7 +56,7 @@ mixed eventAsk(object who, string str){
         }
         else {
             eventForce("speak do you mean to ask me to describe " +
-              pluralize((GetClass()||"thing")) + "?");
+              pluralize(GetClass()) + "?");
         }
         break;
     }
@@ -99,7 +98,7 @@ void eventConvert(object who, string args){
 
 void eventPreview(object who, string args){
     if( args ) args = remove_article(lower_case(args));
-    if( args && args != "" && args != (""+GetClass()) ){
+    if( args && args != "" && args != GetClass() ){
         if( args[0..<2] != GetClass() ){
             eventForce("speak You want me to describe what?");
             return;
@@ -109,22 +108,20 @@ void eventPreview(object who, string args){
 }
 
 void eventJoin(object who, string args){
-    string myclass = (GetClass() || "thing");
     if( !args || args == "" ){
         eventForce("speak Do you mean you wish to become " +
-          add_article(myclass) + "?");
+          add_article(GetClass()) + "?");
         return;
     }
     args = remove_article(lower_case(args));
-    if( args != myclass && args[0..<2] != myclass && 
-      args != pluralize(myclass) ){
+    if( args != GetClass() && args[0..<2] != GetClass() && args != pluralize(GetClass()) ){
         eventForce("speak you want me to make you a what?");
         eventForce("speak people only ask me to join the " +
-          pluralize(myclass));
+          pluralize(GetClass()));
         return;
     }
-    if( (int)who->ClassMember(myclass) ){
-        eventForce("speak You are already " + add_article(myclass));
+    if( (int)who->ClassMember(GetClass()) ){
+        eventForce("speak You are already " + add_article(GetClass()));
         return;
     }
     if( (string)who->GetClass() == (string)who->SetClass(GetClass()) ){
@@ -147,7 +144,7 @@ void eventJoin(object who, string args){
 
 int eventPreAttack(object ob){
     if( member_array(ob, GetEnemies()) > -1 ) return sentient::eventPreAttack(ob);
-    eventForce(GetClass() + " " + pluralize((GetClass() || "citizen")) + "! Our home is " 
+    eventForce(GetClass() + " " + pluralize(GetClass()) + "! Our home is " 
       "being raided by " + (string)ob->GetName() + "!");
     return sentient::eventPreAttack(ob);
 }

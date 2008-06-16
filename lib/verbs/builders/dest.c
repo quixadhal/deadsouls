@@ -17,16 +17,13 @@ static void create() {
       "\nSee also: zap");
 }
 
-mixed can_dest_obj(string str){ 
+mixed can_dest_obj(string str) { 
     if(!builderp(this_player())) return "This command is only available to builders and creators.";
     else return 1;
 }
 
-mixed can_dest_str(string str){
-    if(!creatorp(this_player())){
-        return "Object not found.";
-    }
-    return can_dest_obj(str);
+mixed can_dest_str(){
+    return 0;
 }
 
 mixed do_dest_obj(object ob){
@@ -62,34 +59,19 @@ mixed do_dest_obs(object *obs) {
 }
 
 mixed do_dest_str(string str){
-    object ob;
-    string tmp;
-    if(last(str,2) == "_D"){
-        tmp = DEFINES_D->GetDefine(str);
-        if(!undefinedp(tmp)) str = tmp;
-    }
-    tmp = str;
-    if(!file_exists(tmp)) tmp += ".c";
-    if(!file_exists(tmp)) {
-        tmp = this_player()->query_cwd()+"/"+str;
-    }
-    if(!file_exists(tmp)) tmp += ".c";
-    if(!file_exists(tmp)){
-        write("Object not found.");
+    object *objects;
+    if(!objects = findobs(str)){
+        write("No such thing was found.");
         return 1;
     }
-    ob = find_object(tmp);
-    if(!ob){
-        write("Object is not loaded.");
+    if(sizeof(objects) != 1){
+        write("The return list is ambiguous. Nothing was dested.");
         return 1;
     }
-    write("ob: "+identify(ob));
-    ob->eventDestruct();
-    if(ob) destruct(ob);
-    if(ob){
-        write("Destruct failed.");
-        return 1;
-    }
-    write(str+" destructed.");
+
+    objects[0]->eventDestruct();
+    if(objects[0]) destruct(objects[0]);
+    if(objects[0]) write(file_name(objects[0])+" was not destructed.");
+    else write("Desting complete.");
     return 1;
 }

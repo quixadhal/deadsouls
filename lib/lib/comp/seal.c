@@ -33,11 +33,7 @@ varargs mixed CanOpen(object who, string id){
 
 varargs mixed eventOpen(object who, object tool){
     if( tool && GetLocked() ){
-        mixed tmp;
-        if(tool && objectp(tool)){
-            tmp =  eventPick(who, tool->GetKeyName(), tool);
-        }
-        else tmp = eventPick(who);
+        mixed tmp =  eventPick(who, tool);
 
         if( tmp != 1 || GetLocked() ){
             return tmp;

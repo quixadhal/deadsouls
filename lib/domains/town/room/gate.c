@@ -1,22 +1,16 @@
 #include <lib.h>
 inherit LIB_ROOM;
 
-int maxnoob = MAX_NEWBIE_LEVEL;
-
 int PreExit(){
     object guard = present("gate guard",this_object());
-    if(!MAX_NEWBIE_LEVEL) maxnoob = 3;
-    if(((MAX_NEWBIE_LEVEL && !newbiep(this_player())) || 
-        this_player()->GetLevel() > maxnoob) &&
-      (!this_player()->GetInvis() && !creatorp(this_player()) &&
-        !present("testchar badge",this_player()))){
+    if(MAX_NEWBIE_LEVEL && !newbiep(this_player()) && 
+      !creatorp(this_player()) && !present("testchar badge",this_player())){
         if(guard && living(guard)){
             present("gate guard",this_object())->eventForce("say You're too big to slip by me now. You're not going to the mansion any more.");
             return 0;
         }
     }
-    if((newbiep(this_player()) || this_player()->GetLevel() <= maxnoob)
-      && guard && living(guard)){
+    if(newbiep(this_player()) && guard && living(guard)){
         tell_object(this_player(),"You are such a newbie that the gate guard doesn't even notice you slip by him.");
         tell_room(this_object(),this_player()->GetName()+" sneaks past the gate guard.",({ this_player() }) );
     }
@@ -56,7 +50,7 @@ static void create() {
       ]) );
     SetFlyRoom("/domains/town/virtual/sky/27,99999,1");
     SetInventory(([
-        "/domains/town/npc/mp" : ({ 3600, 1 }),
+        "/domains/town/npc/mp" : ({3600, 1}),
       ]));
     SetExits( ([
         "north" : "/domains/town/room/road1",

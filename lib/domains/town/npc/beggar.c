@@ -41,7 +41,7 @@ string GetLong(string str){
 
 int GiveMap(object ob){
     object map;
-    if(ob && present(ob->GetKeyName(),environment(this_object()))
+    if(present(ob->GetKeyName(),environment(this_object()))
       && !this_object()->GetInCombat() &&
       member_array(ob->GetRace(),RACES_D->GetRaces(1)) != -1 &&
       !creatorp(ob) &&

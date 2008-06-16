@@ -93,9 +93,8 @@ int eventMove(mixed dest){
     return ret;
 }
 
-int eventSuffer(object ob){
+int eventSuffer(){
     int x;
-    if(!ob) return;
     x=random(50);
     if(x < 5) damage1();
     else if(x < 10) damage2();
@@ -179,9 +178,10 @@ int damage4(){
         victim->AddStatBonus("speed", 40);
         MakeHostile(victim);
 
-        foreach(object bystander in get_livings(environment(victim))){
-            if(bystander && random(100) > 50 && this_object()) 
-                eventInfect(bystander);
+        if(this_object()){
+            foreach(object bystander in get_livings(environment(victim))){
+                if(bystander && random(100) > 50) this_object()->eventInfect(bystander);
+            }
         }
         victim->AddHP(-(random(70)+40));
     }

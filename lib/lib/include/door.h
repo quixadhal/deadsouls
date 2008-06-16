@@ -1,6 +1,15 @@
 #ifndef l_door_h
 #define l_door_h
 
+class door_side {
+    int Lockable;
+    string *Ids;
+    mixed Short;
+    mixed Long;
+    string *Keys;
+    object *Rooms;
+}
+
 static void create();
 
 mixed CanLock(object who, string id);

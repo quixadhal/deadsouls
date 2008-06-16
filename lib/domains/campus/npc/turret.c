@@ -32,7 +32,7 @@ int eventShootDude(object ob){
     tell_object(ob,"The bullet smashes into your "+limbname+"!\n");
     ob->SetAttack(this_agent());
     if(!present("firearms_wound",ob)){
-        new(LIB_WOUND)->eventMove(ob);
+        new("/domains/campus/obj/wound")->eventMove(ob);
     }
     ob->AddLead("gunshot_wounds", 1);
     dam = 20;
@@ -108,7 +108,7 @@ static void create() {
     SetPosition(POSITION_STANDING);
     SetLevel(1);
     SetPacifist(1);
-    SetNoClean(0);
+    SetNoClean(1);
     SetRace("bot");
     SetClass("fighter");
     SetGender("neuter");
@@ -150,12 +150,5 @@ int eventTurnOff(){
 }
 
 void heart_beat(){
-    ::heart_beat();
     eventTargetScan();
-}
-
-varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
-  mixed limbs){
-    ActivateTurret();
-    return ::eventReceiveDamage(agent, type, x, internal, limbs);
 }

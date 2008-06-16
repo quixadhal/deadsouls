@@ -22,10 +22,9 @@
 #define SONIC              (1 << 19)
 #define BITE               (1 << 20)
 #define OTHER              (1 << 21)
-#define KARMA              (1 << 22)
 
 #define MAX_DAMAGE_BIT     OTHER
 
-#define ALL_DAMAGE  BLUNT | BLADE | KNIFE | WATER | SHOCK | COLD | HEAT | GAS | ACID | MAGIC | POISON | DISEASE | TRAUMA | PIERCE | PSIONIC | ANOXIA | DEATHRAY | EMOTIONAL | SONIC | BITE | OTHER | KARMA
+#define ALL_DAMAGE  BLUNT | BLADE | KNIFE | WATER | SHOCK | COLD | HEAT | GAS | ACID | MAGIC | POISON | DISEASE | TRAUMA | PIERCE | PSIONIC | ANOXIA | DEATHRAY | EMOTIONAL | SONIC | BITE | OTHER
 
 #endif /* s_damage_types_h */

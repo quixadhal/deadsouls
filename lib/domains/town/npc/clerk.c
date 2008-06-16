@@ -12,7 +12,7 @@ void create(){
     SetShort("the town clerk");
     SetLong("An officious-looking clerk. He is empowered to perform ceremonies of public record. You may \"ask clerk to marry me and PERSON\", and \"ask clerk for a divorce\".");
     SetLocalCurrency("silver");
-    SetClass("cleric");
+    SetClass("priest");
     SetLevel(4);
     SetTax(5);
     SetPolyglot(1);

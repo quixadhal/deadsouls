@@ -275,10 +275,9 @@ varargs mixed GetEffectiveVision(mixed location, int raw_score){
     if( Blind && !raw_score){
         return VISION_BLIND;
     }
-    if( !env && !location ){
+    if( !location ){
         env = environment();
     }
-    if(!env) return 0;
     x = GetRadiantLight(0);
     a = env->GetAmbientLight();
     if(x) x = x/2;

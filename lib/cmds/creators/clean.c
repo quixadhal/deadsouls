@@ -19,13 +19,12 @@ mixed cmd(string args) {
         ob = environment(previous_object());
     }
     else {
-        ob = get_object(args);
+        ob = to_object(args);
     }
     if( !ob ) {
         return "No " + args + " found.";
     }
     previous_object()->eventPrint(sprintf("Cleaning %O", ob), MSG_SYSTEM);
-    say(this_player()->GetName()+" cleans "+ob->GetShort()+".");
     obs = deep_inventory(ob);
     users = filter(obs, (: userp :));
     items = obs - users;

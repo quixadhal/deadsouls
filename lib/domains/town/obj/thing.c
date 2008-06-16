@@ -12,7 +12,3 @@ void create(){
     SetBaseCost("silver",10);
     SetVendorType(VT_TREASURE);
 }
-
-void init(){
-    ::init();
-}

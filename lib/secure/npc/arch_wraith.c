@@ -174,8 +174,8 @@ int track_target(string str){
 }
 
 int eventDestruct(){
-    if(this_player() && adminp(this_player())) return ::eventDestruct();;
-    return 0;
+    if(this_player() && !adminp(this_player())) return 0;
+    return ::eventDestruct();
 }
 
 int SetDraining(int i){

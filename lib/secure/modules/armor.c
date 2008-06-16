@@ -58,8 +58,8 @@ int GetProts(string str){
     if(!str || str == "" || str == "."){
         prot_array -= ({0});
         if(sizeof(prot_array)) foreach(string element in prot_array){
-                if(member_array(upper_case(element),Protections) == -1) prot_array -= ({ element });
-            }
+            if(member_array(upper_case(element),Protections) == -1) prot_array -= ({ element });
+        }
 
         if(!sizeof(prot_array)){
             write("Modification cancelled.");

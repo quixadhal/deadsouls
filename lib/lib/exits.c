@@ -36,14 +36,6 @@ mixed eventGo(object who, string str){
     if(query_verb() == "go" && interactive(this_player())){	
         if( who->GetPosition() != POSITION_STANDING ){  
             write("You are not standing.");
-            switch(who->GetPosition()){
-            case POSITION_LYING : write("Try: crawl "+str);break; 
-            case POSITION_SITTING : write("Try: crawl "+str);break; 
-            case POSITION_KNEELING : write("Try: crawl "+str);break; 
-            case POSITION_FLOATING : write("You are floating.");break; 
-            case POSITION_SWIMMING : write("Try: swim "+str);break; 
-            case POSITION_FLYING : write("Try: fly "+str);break; 
-            }
             return 0;
         }
     }
