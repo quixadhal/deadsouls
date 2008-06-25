@@ -37,17 +37,18 @@ string architecture() { return __ARCH__; }
 
 string mudlib() { return "Dead Souls"; }
 
-string mudlib_version() { return "2.8.1"; }
+string mudlib_version() { return "2.8.2"; }
 
 int query_host_port() { return __PORT__; }
 
 string query_os_type(){
     string config_file, s1, s2, s3;
     if(function_exists("architecture",load_object("/secure/sefun/sefun"))){
-        if(architecture() == "Cygwin-32") return "windows";
-        if(!file_exists("/secure/cfg/mudos.cfg")) return architecture();
+        string arch = lower_case(architecture());
+        if(grepp(arch,"windows") || grepp(arch,"cygwin")) return "windows";
+        else return "unix";
     }
-    if(!file_exists("/secure/cfg/mudos.cfg")) return "";
+    if(!file_exists("/secure/cfg/mudos.cfg")) return "unknown";
     config_file = read_matching_line("/secure/cfg/mudos.cfg","mudlib directory :");
     if(!config_file) return "";
     if(sscanf(config_file,"%s:%s:%s",s1,s2,s3) == 3){
