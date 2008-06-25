@@ -1,3 +1,9 @@
+---- 2.8.2 ---
+- Released 2008-06-25
+- Bundled driver is now Kalinash-improved.
+- Empty log dirs made non-empty to handle fileroller better.
+- query_os_type() fixed.
+
 ---- 2.8.1 ---
 - Released 2008-06-05
 - Fixed a bug in IMC2 that made all muds connect with the same name.

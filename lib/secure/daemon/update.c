@@ -7,11 +7,78 @@ mapping EventsMap = ([]);
 mixed *event_funs = ({});
 
 int check_function(string str){
- if(member_array(str,MASTER_D->GetEfuns()) != -1) return 1;
+    if(member_array(str,MASTER_D->GetEfuns()) != -1) return 1;
     return 0;
 }
 
+int make_empties(){
+    string *empties = ({
+      "/cmds/hm",
+      "/cmds/builders",
+      "/secure/cmds/common",
+      "/secure/save/postal",
+      "/secure/save/binaries",
+      "/secure/save/decre",
+      "/secure/save/players",
+      "/secure/save/letters",
+      "/secure/save/backup",
+      "/secure/save/creators",
+      "/secure/save/suicide",
+      "/secure/save/rid",
+      "/secure/save/votes",
+      "/secure/upgrades/txt",
+      "/www/doc",
+      "/www/logs",
+      "/doc/lpc/advanced",
+      "/doc/tmp",
+      "/doc/help/avatars",
+      "/doc/help/hm",
+      "/doc/help/religion",
+      "/doc/help/law",
+      "/doc/faq",
+      "/log/author_stats",
+      "/realms/template/tmp",
+      "/realms/template/log",
+      "/realms/template/area/etc",
+      "/realms/template/area/meals",
+      "/realms/template/area/doors",
+      "/domains/town/save",
+      "/domains/town/virtual/forest",
+      "/domains/town/virtual/sub",
+      "/domains/town/virtual/surface",
+      "/domains/default/save",
+      "/domains/default/virtual/sky",
+      "/domains/default/virtual/arena",
+      "/domains/Ylsrim/save",
+      "/domains/Ylsrim/virtual/desert",
+      "/verbs/spells",
+      "/verbs/undead",
+      "/secure/log/intermud",
+      "/secure/log/network",
+      "/domains/default/save",
+      "/domains/town/save",
+      "/open",
+      "/powers",
+      "/powers/spells",
+      "/powers/prayers",
+      "/powers/feats",
+      "/powers/psionics",
+      "/powers/trades",
+      "/secure/log",
+      "/secure/log/adm",
+      "/secure/log/bak",
+      "/secure/log/intermud",
+      "/secure/log/network",
+    });
+
+    foreach(string dir in empties){
+        catch( mkdir(dir) );
+    }
+    return 1;
+}
+
 varargs static void eventUpdate(object whom){
+    int err;
     object remote;
     string a,b;
     string cpw,spw;
@@ -165,13 +232,11 @@ varargs static void eventUpdate(object whom){
     rm("/lib/verb.c");
     rm("/lib/include/verb.h");
 
-    mkdir("/open");
-    mkdir("/domains/town/save");
-    mkdir("/domains/default/save");
-    mkdir("/secure/log/network");
-    mkdir("/secure/log/intermud");
+    call_out("make_empties",0);
 
-    remote = load_object("/secure/cmds/admins/removeemote");
+    err = catch( remote = load_object("/secure/cmds/admins/removeemote") );
+    if(err || !remote) 
+        catch( remote = load_object("/secure/cmds/creators/removeemote") );
     if(remote) remote->cmd("roll");
 
     reload(EVENTS_D,0,1);
@@ -189,8 +254,8 @@ varargs static void eventUpdate(object whom){
     if(file_exists("/secure/scripts/qcs_check.scr"))
         rename("/secure/scripts/qcs_check.scr", "/secure/scripts/qcs_check.txt");
 
-    load_object("/secure/cmds/admins/removeraces")->cmd();
-    load_object("/secure/cmds/admins/addraces")->cmd();
+    catch( load_object("/secure/cmds/admins/removeraces")->cmd());
+    catch( load_object("/secure/cmds/admins/addraces")->cmd());
 
     newfile = read_file("/secure/cfg/read.cfg");
     newfile = replace_string(newfile,"(/log/secure)","(/log/secure/)");
@@ -220,9 +285,9 @@ varargs static void eventUpdate(object whom){
     catch( CLASSES_D->AddClass("/secure/cfg/classes/cleric") );
     //tc("Done with classes...");
 
-    reload("/secure/daemon/master",0,1);
-    reload("/secure/sefun/arrays",0,1);
-    reload("/secure/sefun/sefun",0,1);
+    catch( reload("/secure/daemon/master",0,1) );
+    catch( reload("/secure/sefun/arrays",0,1) );
+    catch( reload("/secure/sefun/sefun",0,1) );
 
     catch( reload("/domains/default/room/stargate_lab.c",0,1));
     catch( reload("/domains/town/virtual/space/1,1,1",0,1));
@@ -237,7 +302,7 @@ varargs static void eventUpdate(object whom){
         if(query_os_type() == "windows") tell_player(whom,"Rebooting now is a good idea.");
         else tell_player(whom,"Initiating warm boot.");
     }
-   
+
     if(query_os_type() != "windows"){
         RELOAD_D->WarmBoot();
     }
@@ -251,6 +316,6 @@ static void create() {
     if(whom){
         tell_player(whom,"Please stand by until you see the \"Update daemon finished.\" message.");
         tell_player(whom,"If you do not see it after a few seconds, you may need to restore "
-            "your mud from backup.");
+          "your mud from backup.");
     }
 }
