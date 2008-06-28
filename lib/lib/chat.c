@@ -53,7 +53,7 @@ void eventReconnect(){
 }
 
 int eventDestruct(){
-    if(CHAT_D->eventRemoveMember(keys(Channels))) return 1;
+    if(CHAT_D->eventRemoveMember(keys((Channels || ([]))))) return 1;
     else return 0;
 }
 

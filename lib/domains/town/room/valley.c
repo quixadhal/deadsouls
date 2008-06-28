@@ -1,21 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
 
-int PreExit(){
-    object *livings;
-    string *allowed_races = ({ "orc", "half-orc", "bear" });
-    string duderace = this_player()->GetRace();
-    livings = get_livings(this_object());
-    foreach(object living in livings){
-        if(living->GetRace() == "orc" && !interactive(living) &&
-          member_array(duderace, allowed_races) == -1){
-            write("An orc bars your way!");	
-            return 0;
-        }
-    }
-    return 1;
-}
-
 static void create() {
     room::create();
     SetClimate("outdoors");
@@ -27,9 +12,9 @@ static void create() {
     //A narrow path snakes its way southwest into the woods.");
     SetExits( ([
         "east" : "/domains/town/room/clearing",
+        "north" : "/domains/town/room/orc_fortress",
         //"southwest" : "/domains/town/room/narrow_path.c",
       ]) );
-    AddExit("north", "/domains/town/room/orc_fortress", (: PreExit :));
     SetInventory(([
         "/domains/town/npc/orc" : 1,
         "/domains/town/npc/orc2" : 1,

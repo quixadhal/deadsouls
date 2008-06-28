@@ -23,14 +23,16 @@ static void create() {
       "See also: close, lock, open, pick");
 }
 
-mixed can_unlock_obj_with_obj() {
+mixed can_unlock_obj_with_obj(mixed args...) {
     if( this_player()->GetParalyzed() ) {
         return "You cannot do anything.";
     }
+    //tc("can_unlock_obj_with_obj("+identify(args)+")");
     return this_player()->CanManipulate();
 }
 
-mixed do_unlock_obj_with_obj(object target, object key) {
-    return target->eventUnlock(this_player(), key);
+mixed do_unlock_obj_with_obj(mixed args...) {
+    //tc("do_unlock_obj_with_obj("+identify(args)+")");
+    return args[0]->eventUnlock(this_player(), args[1]);
 }
 

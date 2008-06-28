@@ -7,6 +7,7 @@
  */
 
 #include <lib.h>
+#include <rooms.h>
 #include <daemons.h>
 #include <position.h>
 #include <armor_types.h>
@@ -24,6 +25,7 @@ inherit LIB_MOVE;
 inherit LIB_OBJECT;
 inherit LIB_SAVE;
 inherit LIB_DOMESTICATE;
+inherit LIB_GUARD;
 
 private int CustomXP, ActionChance, CombatActionChance, AutoStand;
 private int MaximumHealth = 0;
@@ -55,6 +57,7 @@ static void create(){
     CustomXP = 0;
     Inventory = ([]);
     AutoStand = 1;
+    set_heart_beat( GetHeartRate() );
 }
 
 void CheckEncounter(){
@@ -95,6 +98,7 @@ void CheckEncounter(){
 }
 
 static void init(){
+    guard::init();
     CheckEncounter();
 }
 
@@ -102,6 +106,7 @@ static void heart_beat(){
     int position;
 
     living::heart_beat();
+    guard::heart_beat();
     if( !ContinueHeart() ){
         set_heart_beat(0);
         return;
@@ -225,6 +230,7 @@ varargs int eventDie(mixed agent){
     string death_verb = "dies";
     string death_action = "kill";
     string death_descriptor = "dead";
+    object env = (environment() || load_object(ROOM_POD));
 
     if(RACES_D->GetNonMeatRace(GetRace())){
         death_verb = "breaks down completely";
@@ -236,14 +242,14 @@ varargs int eventDie(mixed agent){
 
     if( (x = living::eventDie(agent)) != 1 ) return x;
     if( stringp(Die) )  {
-        message("other_action", Die, environment(), ({ this_object() }));
+        message("other_action", Die, env, ({ this_object() }));
         if( agent) message("my_action", "You "+death_action+" " + GetName() + ".", agent);
     }
     else if( functionp(Die) && !evaluate(Die, agent) ) return 0;
     else {
-        if(GetPosition() == POSITION_STANDING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " drops "+death_descriptor+".", environment(), ({ this_object() }) );
-        else if(GetPosition() == POSITION_FLYING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " falls "+death_descriptor+".", environment(), ({ this_object() }) );
-        else message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " "+death_verb+".", environment(), ({ this_object() }) );
+        if(GetPosition() == POSITION_STANDING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " drops "+death_descriptor+".", env, ({ this_object() }) );
+        else if(GetPosition() == POSITION_FLYING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " falls "+death_descriptor+".", env, ({ this_object() }) );
+        else message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " "+death_verb+".", env, ({ this_object() }) );
         if( agent ) message("my_action", "You "+death_action+" " + GetName() + ".", agent);
     }
     set_heart_beat(0);

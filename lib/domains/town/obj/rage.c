@@ -93,8 +93,9 @@ int eventMove(mixed dest){
     return ret;
 }
 
-int eventSuffer(){
+int eventSuffer(object ob){
     int x;
+    if(!ob) return;
     x=random(50);
     if(x < 5) damage1();
     else if(x < 10) damage2();

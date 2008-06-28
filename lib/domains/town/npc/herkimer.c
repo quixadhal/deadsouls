@@ -7,6 +7,7 @@ int TeachSpell(object who, string verb, string spell);
 
 string *spells;
 mapping AvailableSpells;
+mapping RestrictedSpells = ([ "whip" : 0 ]);
 
 int WieldStaff(){
     if(!present("staff",this_object())){
@@ -43,7 +44,7 @@ static void create() {
         "/domains/town/armor/wizard_hat":"wear hat",
 
       ]));
-    SetSpellBook( ([ "buffer" : 100, "meditate" : 100, "missile" : 100, "fireball" : 100 ]) );
+    SetSpellBook( ([ "buffer" : 100, "meditate" : 100, "missile" : 100, "fireball" : 100, "whip" : 100 ]) );
     SetAction(25, ({
         "Herkimer scratches his beard thoughtfully.",
         "Herkimer seems to be trying to remember something.", "Herkimer ponders.",
@@ -68,6 +69,7 @@ static void create() {
         "buffer" : 200,
         "meditate" : 500,
         "inner strength" : 500,
+        "whip" : 10000,
       ]) );
     SetPolyglot(1);
     SetLanguage("common", 100);
@@ -119,6 +121,11 @@ int TeachSpell(object who, string verb, string spell){
     }
     if(!SPELLS_D->GetSpell(spell)){
         eventForce("say I'm sorry, that is not a spell I can teach you.");
+        return 1;
+    }
+    if(who->GetClass() != "mage" &&
+      member_array(spell, keys(RestrictedSpells)) != -1){
+        eventForce("That spell is for guild members only.");
         return 1;
     }
     if(member_array(spell,spells) == -1){

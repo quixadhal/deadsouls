@@ -519,38 +519,14 @@ string append_line(string file, mixed params, string repl){
     return implode(file_arr,"\n");
 }
 
-#if 0
 string last_string_element(string str, string delimiter){
-    string rev, revd, revret, junk;
-    if(!str || !delimiter) return "";
-    if(!grepp(str,delimiter)) return "";
-    rev = reverse_string(str);
-    revd = reverse_string(delimiter);
-    sscanf(rev,"%s"+revd+"%s",revret,junk);
-    if(!revret || revret == "") return "";
-    return reverse_string(revret);
-}
-#endif
-
-string last_string_element(string str, string delimiter){
-    int i,strsize = sizeof(str);
-    string ret = "";
     if(!str || !delimiter || !grepp(str,delimiter)) return "";
-    for(i = strsize; i > 0 ; i--){
-        if(str[i..i] == delimiter) break;
-        ret = str[i..i] + ret;
-    }
-    return ret;
+    return explode(str,delimiter)[<1..][0];
 }
 
-varargs string first_string_element(string str, string delimiter, int stripfirst){
-    string ret, junk;
-    if(!str || !delimiter) return "";
-    if(!grepp(str,delimiter)) return "";
-    if(stripfirst) str = str[1..sizeof(str)-1];
-    sscanf(str,"%s"+delimiter+"%s",ret,junk);
-    if(!ret || ret == "") return "";
-    return ret;
+varargs string first_string_element(string str, string delimiter, int stripfirst){    
+    if(!str || !delimiter || !grepp(str,delimiter)) return "";
+    return explode(str,delimiter)[0];
 }
 
 string path_prefix(string str){

@@ -24,9 +24,9 @@
 "chonny","mola","chala","hala","hei","thlon","mey","nikto",\
 "ecgum", "eyne", "sobre","dupa","zum","schlampe","jodio","con",\
 "narfle", "garthak", "hokanda-matuso","oota-goota","mafi","makka",\
-"shukran", "akbar", "mokele",\
+"shukran", "akbar", "mokele", "dapku", "loituma",\
 "curiae", "aethelingas", "eorlas","carajo","oder",\
-"ae","aroha","awarua","atua","tenei",\
+"ae","aroha","awarua","atua","tenei", "dsfargeg",\
 "tangata","koa","kora","hupane","upane",\
 "baardaap","droogkloot","reetketelsteenbeeldhouwer","asbak","haka",\
 "zaadje","verkloten","teef","moffie","shele",\
@@ -40,6 +40,7 @@
 "desu","desu","desu","desu","desu","desu",\
 "desu","desu","desu","desu","desu","desu",\
 "UNITINU","STENDEC","CROATOAN","LATUALATUKA",\
+"LMKUU",
 "ar","ot","ti","fi","na",\
 "ar","ot","ti","fi","na",\
 "ar","ot","ti","fi","na",\

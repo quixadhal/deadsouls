@@ -22,5 +22,12 @@ clone /domains/town/obj/d20
 clone /domains/town/obj/d6
 clone /domains/campus/weap/grenade
 clone /domains/campus/weap/waterpistol
+clone /domains/campus/obj/omni
+clone /domains/town/obj/pipe
+clone /domains/town/obj/match
+clone /domains/town/obj/match
+clone /domains/town/obj/match
+clone /domains/town/obj/match
+clone /domains/town/obj/match
 put all in my robe
 save

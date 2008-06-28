@@ -1,3 +1,39 @@
+---- 2.9a2 ---
+- Unreleased (available through liveupgrade only)
+- Added GUARD_D and LIB_GUARD to allow npc's to guard exits,
+  objects, and people without having to edit the room. For examples,
+  see /realms/template/area/npc/fighter.c and /domains/campus/npc/kim.c
+- Driver: Added fix by Kalinash that avoids a crasher when dealing
+  with unloading blank files.
+
+---- 2.9a1 ---
+- Released 2008-06-15
+- Fixed periodic check of preloaded objects.
+- The command "resurrect" now also works on npc's.
+- Added verbs for firearms: load, unload.
+- Added verbs for chairs: swivel, rock.
+- Driver (under Linux only) : Added enhancements by Kalinash that avoid
+  SIGPIPE crashes under heavy load and mass disconnections (thx dude).
+- Driver: Added fixes by Kalinash that avoid segfaults under
+  extreme loads (woo Kali again!).
+- Periodic check added to STARGATE_D to clear "stuck" gates.
+- Spells are now in /powers/spells, to accommodate new systems
+  of powers such as psi and physical feats.
+- Added smokable items: LIB_PIPE, LIB_CIGAR.
+- Driver: fixed up plurals for "remains" and "glasses".
+- Fixed name banishing in admintool.
+- Player teaching fixed up. For now, only spells are teachable.
+- Improved handling of corpse and severed limb id's.
+- Creators retain their selected title upon reviving from death.
+- Hazardous materials lab now requires players to solve a riddle
+  before letting them in.
+
+---- 2.8.2 ---
+- Released 2008-06-25
+- Bundled driver is now Kalinash-improved.
+- Empty log dirs made non-empty to handle fileroller better.
+- query_os_type() fixed.
+
 ---- 2.8.1 ---
 - Released 2008-06-05
 - Fixed a bug in IMC2 that made all muds connect with the same name.

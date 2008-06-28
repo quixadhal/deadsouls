@@ -16,6 +16,9 @@ mixed cmd()
 
     if ( !( oEnv = environment( this_player() ) ) )
         return "You do not have a valid environment.";
+    if(oEnv->GetRiders()) oEnv = environment( oEnv );
+    if ( !oEnv )
+        return "Invalid environment.";
 
     asExits = oEnv->GetExits();
     asEnters = oEnv->GetEnters();

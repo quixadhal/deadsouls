@@ -101,3 +101,8 @@ mixed direct_pull_obj(object target){
 mixed direct_pull_str_on_obj(string str, object target){
     return CanPull(this_player(), remove_article(lower_case(str)));
 }
+
+mixed direct_pull_str_from_obj(string str, object target){
+    return direct_pull_str_on_obj(str, target);
+}
+

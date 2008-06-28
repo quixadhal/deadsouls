@@ -1886,6 +1886,7 @@ eval_instruction (char * p)
                     current_object->obname, max_cost);
       set_eval(max_cost);
       max_eval_error = 1;
+      abort();
       error("Too long evaluation. Execution aborted.\n");
     }
     /*

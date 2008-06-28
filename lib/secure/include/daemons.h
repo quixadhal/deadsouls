@@ -26,6 +26,7 @@
 #define FINGER_D             DIR_SECURE_DAEMONS "/finger"
 #define FOLDERS_D            DIR_SECURE_DAEMONS "/folders"
 #define GOSSIP_D             DIR_SECURE_DAEMONS "/gossip"
+#define GUARD_D              DIR_DAEMONS "/guard"
 #define HELP_D               DIR_DAEMONS "/help"
 #define IMC2_D               DIR_SECURE_DAEMONS "/imc2"
 #define INET_D               DIR_SECURE_DAEMONS "/inet"

@@ -67,12 +67,13 @@ int choice1(){
         playing = 0;
         return 1;
     }
-    if(runs > 20){
+    percent_switch = percent(switches,runs);
+    percent_wins = percent(wins,runs);
+    eventForce("say My win rate is "+percent_wins+"%.");
+    eventForce("say My switch rate is "+percent_switch+"%.");
 
-        percent_switch = percent(switches,runs);
-        percent_wins = percent(wins,runs);
-        eventForce("say My win rate is "+percent_wins+"%.");
-        eventForce("say My switch rate is "+percent_switch+"%.");
+    if(runs > 20){
+        //Nothing. Charly ain't too bright.
     }
     genrand = genrand % 3;
     if(genrand == 1) { firstchoice = "red"; fred++; }
@@ -153,6 +154,7 @@ int eventFirstPass(string str){
 private void eventPrint(string str1, string str2);
 
 void init(){
+    ::init();
     set_heart_beat(1);
     SetNoClean(1);
 }
@@ -175,6 +177,10 @@ int eventPrint(string msg, string msg_class){
 
 void heart_beat(){
     //eventForce("say playing is: "+playing);
+    if(!environment() || !clonep()){
+        set_heart_beat(0);
+        return;
+    }
     if(playing && response != "" ) {
         if(firstchoice != ""){
             //eventForce("say response is: "+response);

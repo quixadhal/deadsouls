@@ -9,27 +9,25 @@ static void create() {
     SetLong("This is the Virtual Campus Bookstore. It is a fairly small place, "+
       "and in fact has few books available, since the campus is not open for classes yet. "+
       "There is, however, a wide assortment of useful items available, which you can "+
-      "browse by typing the \"list\" command. There is a register on the counter, and a "+
-      "sign on the wall behind it.");
+      "browse by typing the \"list\" command. There is a "+
+      "sign on the wall behind the counter.");
     SetItems(([
-        ({"store","bookstore"}) : "This is the Virtual Campus bookstore.",
         ({"store","bookstore","place"}) : "This is the Virtual Campus bookstore.",
         "books" : "There aren't any yet. Weren't you paying attention?",
         ({"assortment","items","stuff"}) : "To browse what you can buy, type: list.",
-        "register" : "A device to facilitate the organized collection of your money. A bit "+
-        "large and intimidating, actually.",
         "counter" : "A cheap wood-textured counter designed to make the surrender "+
         "of your money more convenient.",
         "sign" : "A sign on the wall, meant for reading.",
+      ]));
+    SetInventory(([
+        "/domains/campus/npc/kim" : 1,
+        "/domains/campus/obj/bbucket" : 1,
+        "/domains/campus/obj/register" : 1,
       ]));
     SetRead("sign", (: read_sign :) );
     SetExits((["south" : "/domains/campus/room/corridor4"
       ]));
     SetProperty("no attack", 1);
-    SetInventory(([
-        "/domains/campus/obj/bbucket" :1,
-        "/domains/campus/npc/kim" : ({60, 1})
-      ]) );
 }
 
 void init(){

@@ -83,12 +83,16 @@ int choice2(string str){
     genrand = random(100);
     which = genrand % 2;
 
+    eventForce("say switches: "+switches);
+    eventForce("say runs: "+runs);
+    percent_switch = percent(to_float(switches),to_float(runs));
+    percent_wins = percent(to_float(wins),to_float(runs));
+    eventForce("say My win rate is "+percent_wins+"%.");
+    eventForce("say My switch rate is "+percent_switch+"%.");
+
+
     if(runs > 20){
 
-        percent_switch = percent(switches,runs);
-        percent_wins = percent(wins,runs);
-        eventForce("say My win rate is "+percent_wins+"%.");
-        eventForce("say My switch rate is "+percent_switch+"%.");
         if( percent_wins < 50 && percent_switch > 50 ) response = "stay";
         else if( percent_wins < 50 && percent_switch < 50 ) response = "switch";
         else if( percent_wins > 50 && percent_switch < 50 ) response = "stay";
@@ -181,6 +185,10 @@ int eventPrint(string msg, string msg_class){
 }
 void heart_beat(){
     //eventForce("say playing is: "+playing);
+    if(!environment() || !clonep()){
+        set_heart_beat(0);
+        return;
+    }
     if(playing && response != "" ) {
         if(firstchoice != ""){
             //eventForce("say response is: "+response);

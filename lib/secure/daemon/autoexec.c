@@ -12,17 +12,23 @@ static void eventRun() {
         update("/daemon/intermud");
     }
     catch( load_object("/secure/cmds/creators/dsversion")->cmd());
-    catch( reload("/domains/default/room/stargate_lab.c"));
-    catch( reload("/domains/town/virtual/space/1,1,1"));
-    catch( reload("/domains/town/virtual/bottom/33,100000"));
-    catch( reload("/domains/Praxis/square.c"));
-    catch( reload("/domains/Ylsrim/room/tower"));
-    catch( reload("/domains/campus/room/slab"));
+    catch( reload("/domains/default/room/stargate_lab.c",0,1));
+    catch( reload("/domains/town/virtual/space/1,1,1",0,1));
+    catch( reload("/domains/town/virtual/bottom/33,100000",0,1));
+    catch( reload("/domains/Praxis/square.c",0,1));
+    catch( reload("/domains/Ylsrim/room/tower",0,1));
+    catch( reload("/domains/campus/room/slab",0,1));
+
+    //Put your start-on-boot stuff below:
+    debug_message("Autoexec daemon loaded.");
+
 }
 
 static void create() {
     daemon::create();
-    if(hasrun) return;
+    if(hasrun){
+        return;
+    }
     call_out((: eventRun :), 10);
     hasrun = 1;
 }

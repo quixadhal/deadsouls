@@ -26,12 +26,12 @@ void heart_beat(){
                 return ;
             }
         }
-        save_object(SaveFuns);
+        unguarded( (: save_object(SaveFuns) :) );
         seeking = 0;
     }
     count++;
     if(count > 700){
-        save_object(SaveFuns);
+        unguarded( (: save_object(SaveFuns) :) );
         count = 0;
     }
 }
@@ -68,7 +68,9 @@ mixed ReadFuns(string str){
 
 static void create() {
     daemon::create();
-    if(!file_exists(SaveFuns)) save_object(SaveFuns);
+    if(!file_exists(SaveFuns)){
+        unguarded( (: save_object(SaveFuns) :) );
+    }
     else restore_object(SaveFuns);
     call_out((: ReadFuns,"/lib/" :), 1);
     call_out((: ReadFuns,"/secure/sefun/" :), 30);
@@ -90,7 +92,7 @@ mixed GetFunctions(string str){
 }
 
 int eventDestruct(){
-    save_object(SaveFuns);
+    unguarded( (: save_object(SaveFuns) :) );
     return ::eventDestruct();
 }
 

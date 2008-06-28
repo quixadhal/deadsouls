@@ -5,7 +5,7 @@ inherit LIB_ITEM;
 
 static void create() {
     item::create();
-    SetKeyName("key");
+    SetKeyName("safe key");
     SetId( ({ "key", "mansion safe key" }) );
     SetAdjectives( ({ "small" }) );
     SetShort("a small key");

@@ -101,7 +101,7 @@ void SetCorpse(object who){
         if(arrayp(thing) && sizeof(thing)) thing = thing[0];
         //tc("thing: "+identify(thing));
         if(!Equipped) Equipped = ([]);
-        if(!thing) continue;
+        if(!thing || !objectp(thing)) continue;
         if(Equipped[file_name(thing)]) continue;
         Equipped[file_name(thing)] = 
         ([ "object" : thing, "where" : thing->GetWorn() ]); 

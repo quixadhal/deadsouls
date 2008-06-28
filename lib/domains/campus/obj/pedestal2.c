@@ -47,7 +47,7 @@ int ResetGame(){
     if(sscanf(gagnant,"%s door",color)>0){
         string where;
         where="/domains/campus/room/"+color+"_room2";
-        new(prize)->eventMove(find_object(where));
+        //new(prize)->eventMove(find_object(where));
     }
 }
 int PushTheButton(){

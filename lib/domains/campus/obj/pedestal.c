@@ -33,9 +33,9 @@ int ResetGame(){
     string prize;
     prize = "/domains/campus/armor/silverring";
     objects = ({});
-    objects+=({ find_object("/domains/campus/room/red_room2") });
-    objects+=({ find_object("/domains/campus/room/green_room2") });
-    objects+=({ find_object("/domains/campus/room/blue_room2") });
+    objects+=({ find_object("/domains/campus/room/red_room") });
+    objects+=({ find_object("/domains/campus/room/green_room") });
+    objects+=({ find_object("/domains/campus/room/blue_room") });
 
     objects = ({ find_object("/domains/campus/doors/red_door") });
     objects +=({ find_object("/domains/campus/doors/green_door") });
@@ -49,8 +49,8 @@ int ResetGame(){
 
     if(sscanf(gagnant,"%s door",color)>0){
         string where;
-        where="/domains/campus/room/"+color+"_room2";
-        new(prize)->eventMove(find_object(where));
+        where="/domains/campus/room/"+color+"_room";
+        //new(prize)->eventMove(find_object(where));
     }
 }
 

@@ -192,9 +192,14 @@ mixed direct_turn_liv(){
 void eventCheckEnvironment(){
     object env = environment();
     int i;
-    int restype = this_object()->GetRespiration();
-    float j = percent(GetHealthPoints(), GetMaxHealthPoints());
-    float k = percent(GetStaminaPoints(), GetMaxStaminaPoints());
+    int restype;
+    float j,k;
+
+    if(!userp(this_object()) && !clonep(this_object())) return;
+
+    restype = this_object()->GetRespiration();
+    j = percent(GetHealthPoints(), GetMaxHealthPoints());
+    k = percent(GetStaminaPoints(), GetMaxStaminaPoints());
 
     if( j < COLLAPSE_AT  || k < COLLAPSE_AT ){
         this_object()->eventCollapse();
@@ -266,19 +271,19 @@ void eventCheckEnvironment(){
 }
 
 static void heart_beat(){
-    object env = environment();
     int i;
-
     undead::heart_beat();
-    if( i = sizeof(Protection) ){
-        while(i--)
-            if( Protection[i]->time && (--Protection[i]->time < 1) )
-                RemoveMagicProtection(i);
-    }
-    eventCheckEnvironment();
-    eventCheckHealing();
-    if(!stringp(hobbled(this_player()))){
-        this_object()->eventCollapse();
+    if(!GetDying()){
+        if( i = sizeof(Protection) ){
+            while(i--)
+                if( Protection[i]->time && (--Protection[i]->time < 1) )
+                    RemoveMagicProtection(i);
+        }
+        eventCheckEnvironment();
+        eventCheckHealing();
+        if(!stringp(hobbled(this_player()))){
+            this_object()->eventCollapse();
+        }
     }
 }
 
@@ -763,7 +768,7 @@ varargs int eventDie(mixed agent){
 
     if(agent && stringp(agent)) killer = agent;
     else {
-        if(!agent) killer = "UNKNOWN";
+        if(!agent || !objectp(agent)) killer = "UNKNOWN";
         else killer = agent->GetName();
     }
 

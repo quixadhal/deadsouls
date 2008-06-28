@@ -106,12 +106,12 @@ mixed eventModify(object ob, string str){
     special_map_array = ({ "SetProperties", "SetStats", "SetSkills"});
 
     if(!check_privs(this_player(),filename)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return 1;
     }
 
     if(!check_privs(this_player(),tmpfile)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return 1;
     }
 
@@ -640,12 +640,12 @@ int eventDelete(object ob, string value){
 
     if(!check_privs(this_player(),filename)){
 
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return 1;
     }
 
     if(!check_privs(this_player(),tmpfile)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return 1;
     }
 
@@ -679,7 +679,7 @@ int eventResumeArrayMod(object target, string tmpfile, string *NewArr, string fu
     filename = base_name(target)+".c";
 
     if(!check_privs(this_player(),filename)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return 1;
     }
     global2 = tmpfile;
@@ -725,7 +725,7 @@ int eventResumeMappingChange(object target, string tmpfile, mapping NewMap, stri
     filename = base_name(target)+".c";
 
     if(!check_privs(this_player(),filename)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return 1;
     }
 

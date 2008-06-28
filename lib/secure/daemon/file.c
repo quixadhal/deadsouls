@@ -6,6 +6,7 @@
 inherit LIB_DAEMON;
 string *all_dirs = ({});
 string *all_files = ({});
+static string SaveFiles = "/secure/save/files.o";
 int ftilt, dtilt;
 string globaltemp;
 
@@ -16,6 +17,11 @@ static private void validate() {
         log_file("adm/file","Illegal attempt to access FILE_D: "+get_stack()+" "+identify(previous_object(-1))+"\n");
         error("Illegal attempt to access FILE_D: "+get_stack()+" "+identify(previous_object(-1)));
     }
+    if(query_os_type() == "windows"){
+        error("The file daemon has been disabled for your mud "+
+          "because it is running on windows. Intensive file operations "+
+          "in windows are not yet supported on Dead Souls.");
+    }
 }
 
 void heart_beat(){
@@ -25,6 +31,7 @@ void heart_beat(){
         }
     }
     Report();
+    unguarded( (: save_object(SaveFiles) :) );
     set_heart_beat(0);
 }
 
@@ -149,9 +156,18 @@ static void create() {
 #ifndef __FLUFFOS__
     return 0;
 #endif
-
     daemon::create();
+    if(!file_exists(SaveFiles)){
+        unguarded( (: save_object(SaveFiles) :) );
+    }
+    else restore_object(SaveFiles);
     //call_out((: ReadDir,"/" :), 1);
-    ReadDir("/");
+    catch( ReadDir("/") );
     if(!fun_d) fun_d = load_object(FUNCTION_D);
 }
+
+int eventDestruct(){
+    unguarded( (: save_object(SaveFiles) :) );
+    return ::eventDestruct();
+}
+

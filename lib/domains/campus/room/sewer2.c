@@ -58,7 +58,7 @@ int SteamBlast(){
     }
     for(i=0;i<sizeof(lstuff);i++){
         if(sizeof(lstuff) > 0 && !creatorp(lstuff[i]) ) 
-            lstuff[i]->eventReceiveDamage(HEAT, 7,random(30)+10, "torso");
+            lstuff[i]->eventReceiveDamage("steam",HEAT,random(30)+10,0,"torso");
 
     }
     tell_room(this_object(), "You are hit by a blast of scalding-hot steam!");

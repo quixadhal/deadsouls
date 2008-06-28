@@ -21,7 +21,7 @@ static void create() {
       "convert by asking her to \"convert me\".");
     SetLevel(45);
     SetRace("klingon");
-    SetClass("priest");
+    SetClass("cleric");
     SetGender("female");
     SetMorality(400);
     SetReligion("Dalin", "Dalite");

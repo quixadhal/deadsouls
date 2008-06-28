@@ -142,7 +142,8 @@ int outgoing_sent(string destination, string id){
     if(base_name(previous_object(0)) != LIB_OOB){
         return 0;
     }
-    map_delete(Outgoing[destination], id);
+    if(sizeof(Outgoing[destination]))
+        if(Outgoing[destination][id]) map_delete(Outgoing[destination], id);
     if(!sizeof(Outgoing[destination])) map_delete(Outgoing, destination);
     save_mailqueue();
     return 1;

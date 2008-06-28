@@ -25,6 +25,7 @@ static void create(){
     SetLong( (: LongRet :) );
     SetMass(1);
     SetBaseCost("silver",5000);
+    SetRestrictLimbs("right hand");
     SetArmorType(A_RING);
 }
 

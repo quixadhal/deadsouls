@@ -95,6 +95,32 @@ int last_regexp = time();
 int regexp_count = 1;
 int max_regexp = 200;
 
+object spew(mixed args...){
+    return efun::new(args);
+}
+
+varargs object clone_object(mixed args...){
+    int maxclones;
+    string basename;
+    tc("new("+identify(args)+")");
+    if(!args || !args[0]) return 0;
+    if(!stringp(args[0])) return efun::new(args);
+    basename = args[0];
+#ifdef MAX_CLONES
+#if MAX_CLONES
+    int clones;
+    string basename = args[0];
+    if(last(basename,2) == ".c") basename = trim(basename,2);
+    clones = sizeof(objects( (: !strsrch(file_name($1),basename+"#") :)));
+    if(clones >= MAX_CLONES) maxclones = 1;
+#endif
+#endif
+    if(maxclones) error("Maximum number of clones of that object already loaded.\n");
+    if(sizeof(args) > 1) return efun::new(basename, args[1..]);
+    return efun::new(basename);
+}
+
+
 //For some reason, FluffOS read_file() will read
 //a zero-length file as a 65535 length T_INVALID variable.
 //This tends to screw things up for Dead Souls.
@@ -233,6 +259,22 @@ object *livings() {
 
 varargs mixed objects(mixed arg1, mixed arg2){
     object array tmp_obs;
+
+    //tc(base_name(previous_object()));
+
+    if(!strsrch(base_name(previous_object()),"/secure/")){
+        if(base_name(previous_object()) == "/secure/obj/weirder"){
+            //tc("gut","red");
+            if(!arg1) return efun::objects();
+            return efun::objects(arg1);
+        }
+        if(this_player() && adminp(this_player())){
+            //tc("yah good");
+            if(!arg1) return efun::objects();
+            return efun::objects(arg1);
+        }
+    }
+
     if(arg1) tmp_obs = efun::objects(arg1);
     else tmp_obs = efun::objects();
 

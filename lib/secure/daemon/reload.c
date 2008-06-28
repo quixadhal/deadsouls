@@ -22,7 +22,8 @@ varargs void validate(){
 
 static void create() {
     daemon::create();
-    if(!file_exists(savefile+__SAVE_EXTENSION__)) save_object(savefile);
+    if(!file_exists(savefile+__SAVE_EXTENSION__)) 
+        unguarded( (: save_object(savefile) :) );
     else restore_object(savefile);
     set_heart_beat(1);
 }

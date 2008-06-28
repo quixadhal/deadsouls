@@ -60,6 +60,7 @@
 #define LIB_FTP_DATA_CONN  DIR_SECURE_LIB "/net/ftp_data_connection"
 #define LIB_FUEL           DIR_LIB        "/fuel"
 #define LIB_GENETICS       DIR_LIB        "/genetics"
+#define LIB_GUARD          DIR_LIB        "/guard"
 #define LIB_GUN            DIR_LIB        "/gun"
 #define LIB_CLAN           DIR_LIB        "/clan"
 #define LIB_HELP           DIR_LIB        "/help"

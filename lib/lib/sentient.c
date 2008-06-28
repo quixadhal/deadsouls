@@ -253,7 +253,7 @@ varargs mixed eventReceiveEmote(object who, string verb, string info){
 }
 
 mixed eventConsult(object who, string str){
-    if( !str || str == "" ) return 0;
+    if( !str || str == "" || !ConsultResponses) return 0;
     if( !ConsultResponses[str] ){
         if( !ConsultResponses["default"] ) return 0;
         else if( stringp(ConsultResponses["default"]) ){

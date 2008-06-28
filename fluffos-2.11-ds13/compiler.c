@@ -70,7 +70,7 @@ unsigned short *prog_flags, *comp_sorted_funcs;
 char *prog_code;
 char *prog_code_max;
 
-program_t NULL_program;
+program_t NULL_program = {0};
 
 program_t *prog;
 

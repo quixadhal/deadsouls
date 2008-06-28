@@ -52,11 +52,52 @@ string *daemons = ({});
 string *cmds = ({});
 string *verbs = ({});
 string *powers = ({});
+int nomore, yeik = 0;
 
 void validate(){
     if(!this_player() || !archp(this_player())){
         error("No.");
     }
+}
+
+int yeik(string str){
+    int cout, err;
+    if(str == "on" || yeik == 1){
+        object *blanks;
+        cout = call_out("yeik",2);
+        nomore = 0;
+        yeik = 1;
+        err = catch(blanks = objects( (: base_name($1) == "/lib/blank" :) ));
+        if(err){
+            tc("foo!");
+        }
+        if(sizeof(blanks)){
+            foreach(object blank in blanks){
+                destruct(blank);
+            }
+        }
+        if(!environment() || !archp(this_player())){
+            error("no!");
+        }
+        for(int i = 20000;i>0;i--){
+            new("/lib/blank");
+        }
+    }
+    else {
+        object *blanks;
+        if(!nomore) cout = call_out("yeik",2);
+        err = catch(blanks = objects( (: base_name($1) == "/lib/blank" :)));
+        yeik = 0;
+        if(sizeof(blanks)){
+            //cout = call_out("yeik",2);
+            foreach(object blank in blanks){
+                destruct(blank);
+            }
+
+        }
+        else nomore = 1;
+    }
+    return cout;
 }
 
 void create(){
@@ -92,6 +133,8 @@ void init(){
     add_action("loadlibs","loadlibs");
     add_action("loadsys","loadsys");
     add_action("loadall","loadall");
+    add_action("yeik","yeik");
+    add_action("yeik2","yeik2");
 }
 int loadthing(string str){
     tc("lpc: "+str);
@@ -321,3 +364,28 @@ int eventDestruct(){
     unguarded( (: save_object(savefile) :) );
     return ::eventDestruct();
 } 
+
+int yeik2(string str){
+    if(str){
+        string file;
+        int on=1, clone, i=2100000000;
+        object ob=new("/open/naff.c");
+        write("Starting the bullshit.");
+        sscanf(file_name(ob), "%s#%d", file, clone);
+        destruct(ob);
+        if(clone > 2000) on = 0;
+        if(on) call_out("yeik2", 2);
+        if(!on) return;
+        while(i) {
+            i--;
+            ob =new("/open/naff.c");
+            sscanf(file_name(ob), "%s#%d", file, clone);
+            tell_object(environment(this_object()), clone + " ");
+            destruct(ob);
+        }
+    }
+    else {
+        write("Stopping the bullshit.");
+    }
+    return 1;
+}

@@ -31,8 +31,16 @@ mixed cmd(string args) {
 }
 
 void help() {
-    message("help", "Syntax: <stats>\n\n"
-      "Lists all of your stats as well as how skilled you are "
-      "at the skill in question.\n\n"
-      "See also: stats, status", this_player());
+    if(!creatorp(this_player())){
+        message("help", "Syntax: <stats>\n\n"
+          "Lists all of your stats as well as how skilled you are "
+          "at the stat in question.\n\n"
+          "See also: stat, status, score", this_player());
+    }
+    else {
+        message("help", "Syntax: <stats>\n\n"
+          "Lists all of your stats as well as how skilled you are "
+          "at the stat in question.\n"
+          "See also: stat, status, score", this_player());
+    }
 }

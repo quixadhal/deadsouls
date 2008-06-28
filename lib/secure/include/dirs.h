@@ -25,6 +25,7 @@
 #define DIR_POWERS              "/powers"
 #define DIR_SPELLS              DIR_POWERS "/spells"
 #define DIR_FEATS               DIR_POWERS "/feats"
+#define DIR_PRAYERS             DIR_POWERS "/prayers"
 #define DIR_PSIONICS            DIR_POWERS "/psionics"
 #define DIR_TRADES              DIR_POWERS "/trades"
 

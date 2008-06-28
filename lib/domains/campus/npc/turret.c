@@ -150,5 +150,13 @@ int eventTurnOff(){
 }
 
 void heart_beat(){
+    ::heart_beat();
     eventTargetScan();
 }
+
+varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
+  mixed limbs){
+    ActivateTurret();
+    return ::eventReceiveDamage(agent, type, x, internal, limbs);
+}
+

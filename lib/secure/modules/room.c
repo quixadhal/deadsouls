@@ -54,7 +54,7 @@ mixed make(string str) {
     else room_dir = current_dir;
 
     if(file_exists(current_room+".c") && !check_privs(this_player(),current_room+".c")){
-        write("You do not appear to have access to this room file. Modification aborted.");
+        write("You do not appear to have write access to this room file. Modification aborted.");
         return 1;
     }
 
@@ -142,7 +142,7 @@ varargs int eventCreateExit(string dir, string room, string file, int remote){
     string *file_arr;
 
     if(file_exists(room) && !check_privs(this_player(),room)){
-        write("You do not appear to have access to this room file. Modification aborted.");
+        write("You do not appear to have write access to this room file. Modification aborted.");
         return 1;
     }
 
@@ -190,7 +190,7 @@ int eventRemoveExit(string dir, string filename){
     mapping ExitsMap = load_object(filename)->GetExitMap();
 
     if(file_exists(filename) && !check_privs(this_player(),filename)){
-        write("You do not appear to have access to this room's file. Modification aborted.");
+        write("You do not appear to have write access to this room's file. Modification aborted.");
         return 1;
     }
 
@@ -268,7 +268,7 @@ varargs mixed eventProcessExits(string filename, string dir, string location){
     mapping ExitsMap = load_object(filename)->GetExitMap();
 
     if(file_exists(filename) && !check_privs(this_player(),filename)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return 1;
     }
 
@@ -306,12 +306,12 @@ string eventCopyRoom(string source, string dest){
 
     if(file_exists(source) && (!check_privs(this_player(),source) &&
         strsrch(source,"/obj/"))){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return "";
     }
 
     if(file_exists(dest) && !check_privs(this_player(),dest)){
-        write("You do not appear to have access to that file. Modification aborted.");
+        write("You do not appear to have write access to that file. Modification aborted.");
         return "";
     }
 
@@ -378,7 +378,7 @@ string eventCopyRoom(string source, string dest){
 varargs int eventCreateEnter(string dir, string room, string file, int remote){
 
     if(file_exists(room) && !check_privs(this_player(),room)){
-        write("You do not appear to have access to this room file. Modification aborted.");
+        write("You do not appear to have write access to this room file. Modification aborted.");
         return 1;
     }
 
@@ -435,7 +435,7 @@ int eventRemoveEnter(string dir, string filename){
     mapping EntersMap = load_object(filename)->GetEnterMap();
 
     if(file_exists(filename) && !check_privs(this_player(),filename)){
-        write("You do not appear to have access to this room's file. Modification aborted.");
+        write("You do not appear to have write access to this room's file. Modification aborted.");
         return 1;
     }
 
@@ -522,7 +522,7 @@ varargs mixed eventProcessEnters(string filename, string dir, string location, o
     }
 
     if(file_exists(filename) && !check_privs(this_player(),filename)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return 1;
     }
 

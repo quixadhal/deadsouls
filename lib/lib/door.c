@@ -55,7 +55,7 @@ static void create(){
  */
 mixed CanLock(object who, string foo){
     object room;
-
+    //tc(identify(this_object())+" CanUnlock("+identify(who)+", "+identify(foo)+")");
     if( !(room = environment(who)) ) return 0;
     foreach(string side, class door_side val in Sides){
         if( member_array(room, val->Rooms) != -1 ){
@@ -78,6 +78,7 @@ mixed CanLock(object who, string foo){
  */
 mixed CanUnlock(object who){
     object room;
+    //tc(identify(this_object())+" CanUnlock("+identify(who)+")");
 
     if( !(room = environment(who)) ) return 0;
     foreach(string side, class door_side val in Sides){
@@ -137,6 +138,9 @@ varargs mixed eventClose(object who){
 
 varargs mixed eventLock(object who, mixed key, mixed foo){
     object room;
+
+    //tc(identify(this_object())+" eventLock("+identify(who)+
+    //", "+identify(key)+", "+identify(foo)+")");
 
     room = environment(who);
 
@@ -243,12 +247,15 @@ mixed eventUnlock(object who, object key){
     object room;
     string *key_id = key->GetId();
     room = environment(who);
+    //tc("door: "+identify(this_object()));
+    //tc("who: "+identify(who));
+    //tc("key: "+identify(key));
     foreach(string side, class door_side val in Sides){
         if( member_array(room, val->Rooms) != -1 ){
             string tmp;
 
             tmp = GetShort(side);
-            if(!sizeof((key_id & GetKeys(side)))){
+            if(!sizeof((key_id & (GetKeys(side) || ({}))))){
                 who->eventPrint("You fail to unlock " + tmp + ".");
                 room->eventPrint((string)who->GetName() + " attempts to "
                   "unlock " + tmp + " with " +

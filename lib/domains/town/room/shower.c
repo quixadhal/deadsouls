@@ -12,3 +12,7 @@ static void create() {
       ]) );
     SetObviousExits("out");
 }
+
+void init(){
+    ::init();
+}
