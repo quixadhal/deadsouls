@@ -17,6 +17,7 @@
 #define CMD_D                DIR_DAEMONS "/command"
 #define CONFIG_D             DIR_SECURE_DAEMONS "/config"
 #define DECAY_D              DIR_DAEMONS "/decay"
+#define DEFINES_D            DIR_DAEMONS "/defines"
 #define CREATE_D             DIR_SECURE_DAEMONS "/modules/create"
 #define ECONOMY_D            DIR_SECURE_DAEMONS "/economy"
 #define EVENTS_D             DIR_SECURE_DAEMONS "/events"

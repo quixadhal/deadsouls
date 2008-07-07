@@ -1,10 +1,15 @@
----- 2.9a2 ---
-- Released 2008-06-28
+---- 2.9a3 ---
+- Released 2008-07-07
 - Added GUARD_D and LIB_GUARD to allow npc's to guard exits,
   objects, and people without having to edit the room. For examples,
   see /realms/template/area/npc/fighter.c and /domains/campus/npc/kim.c
 - Driver: Added fix by Kalinash that avoids a crasher when dealing
   with unloading blank files.
+- The gag and mute commands can now accept keywords to indicate
+  whether you only want to mute/gag local channels or remote channels.
+- The reaper now exempts http sockets.
+- New defines daemon can identify things defined in standard includes.
+  Example: eval return DEFINES_D->GetDefine("ADMIN_EMAIL")
 
 ---- 2.9a1 ---
 - Released 2008-06-15

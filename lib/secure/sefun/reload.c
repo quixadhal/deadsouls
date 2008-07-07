@@ -88,7 +88,7 @@ varargs mixed reload(mixed ob, int recursive, int quiet){
     }
 
     if(ob && !inherits(LIB_DOOR, ob) && !stringed && env) {
-        unguarded( (: next = clone_object(filename) :) ); 
+        unguarded( (: next = new(filename) :) ); 
         ob->eventMove(ROOM_FURNACE);
         if(next && env) next->eventMove(env);
     }

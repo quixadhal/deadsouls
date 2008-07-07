@@ -35,4 +35,3 @@ mixed do_unlock_obj_with_obj(mixed args...) {
     //tc("do_unlock_obj_with_obj("+identify(args)+")");
     return args[0]->eventUnlock(this_player(), args[1]);
 }
-

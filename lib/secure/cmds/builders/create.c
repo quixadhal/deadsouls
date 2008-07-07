@@ -61,7 +61,7 @@ int help() {
       "copied into the direction you specify. In the case of other "
       "objects, a generic object appears in the room you are in. "
       "After that object materializes, you can make changes to it "
-      "with the \"modify\" command. These changes are saved to file "
+      "with the \"modify\" command. These changes are saved "
       "automatically.\n\n"
       "See also: modify, copy, delete, add, initfix\n",
       this_player());

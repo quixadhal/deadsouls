@@ -12,6 +12,14 @@ int check_function(string str){
 }
 
 int make_empties(){
+    string *removes = ({
+      "/spells",
+      "/psionics",
+      "/trades",
+      "/prayers",
+      "/feats",
+    });
+
     string *empties = ({
       "/cmds/hm",
       "/cmds/builders",
@@ -74,6 +82,10 @@ int make_empties(){
     foreach(string dir in empties){
         catch( mkdir(dir) );
     }
+    foreach(string dir in removes){
+        catch( rmdir(dir) );
+    }
+
     return 1;
 }
 

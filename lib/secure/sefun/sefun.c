@@ -95,14 +95,20 @@ int last_regexp = time();
 int regexp_count = 1;
 int max_regexp = 200;
 
-object spew(mixed args...){
+object spew(mixed args){
     return efun::new(args);
 }
+
+#if 0
+object new(mixed args...){
+    return efun::new(args);
+}
+#endif
 
 varargs object clone_object(mixed args...){
     int maxclones;
     string basename;
-    tc("new("+identify(args)+")");
+    //tc("new("+identify(args)+")");
     if(!args || !args[0]) return 0;
     if(!stringp(args[0])) return efun::new(args);
     basename = args[0];

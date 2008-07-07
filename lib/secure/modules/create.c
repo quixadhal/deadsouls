@@ -484,14 +484,14 @@ mixed eventModify(object ob, string str){
         write("SetExits is a special setting, which isn't modified like others.");
         write("To make an exit to a room, or to create a new room, type:\n");
         write("create room DIRECTION FILE");
-        write("For example : create room east test_room1");
+        write("For example: create room east test_room1");
         write("To get rid of an exit, it's: delete exit DIRECTION");
         write("For example: delete exit east");
         return 1;
     }
 
     if(out == "SetEnters") {
-        write("SetExits is a special setting, which isn't modified like others.");
+        write("SetEnters is a special setting, which isn't modified like others.");
         write("To make an Enter, first identify an item that already exists ");
         write("in SetItems. For example, if SetItems contains a pub:\n");
         write("create enter pub test_pub1\n");

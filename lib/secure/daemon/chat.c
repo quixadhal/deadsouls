@@ -465,7 +465,7 @@ int cmdChannel(string verb, string str) {
     }
 
     //If gagged, you can't talk on channels
-    if ( this_player()->GetProperty("gag") ) {
+    if ( this_player()->GetGagged(verb) ) {
         write("You have gag mode enabled. Type: 'gag off' to talk on channels.");
         return 1;
     }
@@ -765,7 +765,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
                     if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
                 }
                 if(listener->GetNoChanColors()) tmp = decolor(tmp);
-                if(!ignore && CanListen(listener,ch) && !(listener->GetProperty("mute")))
+                if(!ignore && CanListen(listener,ch) && !(listener->GetMuted(ch)))
                     listener->eventPrint(tmp, MSG_CHAN);
                 ignore = 0;
             }
@@ -781,7 +781,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
                         if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
                     }
                     if(ob->GetNoChanColors()) tmp = decolor(tmp);
-                    if(!ignore && CanListen(ob,ch)&& !(ob->GetProperty("mute")))
+                    if(!ignore && CanListen(ob,ch)&& !(ob->GetMuted(ch)))
                         ob->eventPrint(tmp, MSG_CHAN);
                     ignore = 0;
                 }
@@ -824,7 +824,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
                     if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
                 }
                 if(ob->GetNoChanColors()) msg = decolor(msg);
-                if(!ignore && CanListen(ob,ch)&& !(ob->GetProperty("mute")))
+                if(!ignore && CanListen(ob,ch)&& !(ob->GetMuted(ch)))
                     ob->eventPrint(msg, MSG_CHAN);
 
                 ignore = 0;

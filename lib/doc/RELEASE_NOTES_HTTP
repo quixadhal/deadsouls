@@ -5,6 +5,9 @@
   see /realms/template/area/npc/fighter.c and /domains/campus/npc/kim.c
 - Driver: Added fix by Kalinash that avoids a crasher when dealing
   with unloading blank files.
+- The gag and mute commands can now accept keywords to indicate
+  whether you only want to mute/gag local channels or remote channels.
+- The reaper now exempts http sockets.
 
 ---- 2.9a1 ---
 - Released 2008-06-15

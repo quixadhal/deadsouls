@@ -108,7 +108,7 @@ string GetHelp(string str) {
       "up as primary links, the one you specify with this command "
       "as primary becomes the sole primary link for these characters, "
       "and the secondary plus its secondaries all become secondaries "
-      "fot his primary.\n\n"
+      "for his primary.\n\n"
       "If you just pass a player name as an argument, this command "
       "will show you the link information on that player.\n\n"
       "If you give no arguments, then this command will list all "

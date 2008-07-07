@@ -159,4 +159,3 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
     ActivateTurret();
     return ::eventReceiveDamage(agent, type, x, internal, limbs);
 }
-

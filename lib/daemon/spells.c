@@ -29,17 +29,18 @@ void eventReloadSpells() {
     prayers = get_dir(DIR_PRAYERS "/*.c");
     foreach(string element in (prayers + spells)) {
         string spell, where;
-        object ob = find_object(DIR_SPELLS "/" + element);
-        if(!ob){
-            ob = find_object(DIR_PRAYERS "/" + element);
-            where = DIR_PRAYERS "/" + element;
-        }
-        else where = DIR_SPELLS "/" + element;
+        int err;
+        object ob;
+        where = DIR_PRAYERS "/" + element;
+        if(!file_exists(where)) where = DIR_SPELLS "/" + element;
+        ob = find_object(where);
 
         if( ob ) {
+            tc("destructing "+identify(ob));
             ob->eventDestruct();
         }
-        if( ob = load_object(where) ) {
+        err = catch(ob = load_object(where));
+        if(ob){
             spell = ob->GetSpell();
             if( spell ) {
                 if(member_array(element,spells) != -1)
@@ -48,6 +49,7 @@ void eventReloadSpells() {
                     Prayers[spell] = ob;
             }
         }
+        else debug("Error loading: "+identify(where));
     }
 }
 
@@ -72,4 +74,3 @@ object GetPrayer(string prayer) {
 mapping GetPrayers(){
     return (Prayers + ([]));
 }
-

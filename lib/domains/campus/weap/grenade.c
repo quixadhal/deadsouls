@@ -117,4 +117,3 @@ int HitLivings(object ob){
     ob->eventReceiveDamage("concussion",BLUNT, random(1000)+300, 0);
     return 1;
 }
-

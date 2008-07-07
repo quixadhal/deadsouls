@@ -174,4 +174,3 @@ string array QueryBane(){
     if(GetActive()) return ({ "all" });
     else return ({});
 }
-

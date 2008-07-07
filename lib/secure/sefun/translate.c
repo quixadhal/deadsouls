@@ -35,12 +35,15 @@
 "suoro","voi","debil","kunel","shinel",\
 "sasikumea","zakila","txakurra","soustat","irrumator",\
 "mentula","koproskilo","malakas","la'a'za'zel","zayin",\
-"haakskeekah",\
+"haakskeekah","noko","shizzle","nizzle","hizzle",\
 "desu","desu","desu","desu","desu","desu",\
 "desu","desu","desu","desu","desu","desu",\
 "desu","desu","desu","desu","desu","desu",\
 "UNITINU","STENDEC","CROATOAN","LATUALATUKA",\
-"LMKUU",
+"LMKUU","puka","degozaimasu","szysznyk", "syzygy",\
+"darklock","confutatis","maledictis","flammis","acribus",\
+"addictis","XYNTA","durian","adzuki",\
+"ХУИТА",\
 "ar","ot","ti","fi","na",\
 "ar","ot","ti","fi","na",\
 "ar","ot","ti","fi","na",\

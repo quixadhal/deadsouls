@@ -71,4 +71,3 @@ int CanGet(object who){
     }
     else return 1;
 }
-

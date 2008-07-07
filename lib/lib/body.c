@@ -1945,4 +1945,3 @@ varargs int eventDie(mixed agent){
     int GetGodMode(){
         return godmode;
     }
-

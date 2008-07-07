@@ -105,4 +105,3 @@ mixed direct_pull_str_on_obj(string str, object target){
 mixed direct_pull_str_from_obj(string str, object target){
     return direct_pull_str_on_obj(str, target);
 }
-

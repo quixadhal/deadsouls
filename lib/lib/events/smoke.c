@@ -9,4 +9,3 @@ int direct_smoke_obj(object who, object target){
 int direct_smoke_from_obj(object who, object target){
     return CanSmoke(this_player());
 }
-

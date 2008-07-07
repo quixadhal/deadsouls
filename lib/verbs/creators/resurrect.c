@@ -120,4 +120,3 @@ mixed do_resurrect_obj(object ob) {
     }
     return 1;
 }
-

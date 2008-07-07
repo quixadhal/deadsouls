@@ -8,7 +8,7 @@
 #include <vendor_types.h>
 inherit LIB_ITEM;
 
-static string savefile = "/secure/save/weirder.o";
+string savefile = "/secure/save/weirder.o";
 string *lib_dirs = ({ "/lib/comp","/lib/daemons","/lib/events/",
   "/lib/lvs", "/lib/lvs", "/lib/props", "/lib/std", 
   "/lib/user", "/lib/virtual", "/lib","/secure/lib","/secure/lib/net" });
@@ -112,6 +112,8 @@ void create(){
     SetMass(20);
     SetBaseCost("silver",10);
     SetVendorType(VT_TREASURE);
+    //YES = 1000;
+    //NO = -1000;
     if(file_exists(savefile)){
         unguarded( (: restore_object(savefile) :) );
     }
@@ -367,18 +369,18 @@ int eventDestruct(){
 
 int yeik2(string str){
     if(str){
-        string file;
+        string file, what = "/lib/pile";
         int on=1, clone, i=2100000000;
-        object ob=new("/open/naff.c");
-        write("Starting the bullshit.");
+        object ob=new(what);
+        write("Starting the bullshit. ob: "+identify(ob));
         sscanf(file_name(ob), "%s#%d", file, clone);
         destruct(ob);
-        if(clone > 2000) on = 0;
+        if(clone > 5000) on = 0;
         if(on) call_out("yeik2", 2);
         if(!on) return;
         while(i) {
             i--;
-            ob =new("/open/naff.c");
+            ob =new(what);
             sscanf(file_name(ob), "%s#%d", file, clone);
             tell_object(environment(this_object()), clone + " ");
             destruct(ob);

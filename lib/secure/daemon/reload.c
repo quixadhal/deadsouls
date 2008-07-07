@@ -288,4 +288,3 @@ int WarmBoot(){
 int GetWarmBootInProgress(){
     return warm_boot_in_progress;
 }
-

@@ -32,11 +32,14 @@
 #ifndef RESET_ALL
 #define RESET_ALL 1
 #endif
+#ifndef MAX_SINGLE_OBJECT
+#define MAX_SINGLE_OBJECT        4000
+#endif
 
 
 private static int ResetNumber;
 private static object Unguarded, gguy;
-private static string PlayerName, rlog, gcmd;
+private static string PlayerName, rlog, gcmd,bname;
 private static object NewPlayer;
 private static mapping Groups, ReadAccess, WriteAccess;
 private static string *ParserDirs = ({ "secure", "verbs", "daemon", "lib", "powers" });
@@ -442,7 +445,6 @@ private static void load_access(string cfg, mapping resource) {
 
     int valid_object(object ob) {
         string file, contents;
-
         file = file_name(ob);
 
         contents = read_file(base_name(ob)+".c");

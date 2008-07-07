@@ -1,7 +1,7 @@
-#include <lib.h>
+#include <sockets.h>
 #include <objects.h>
 
-string *ExemptArray = ({ LIB_SHADOW, OBJ_SNOOPER, LIB_DOOR, LIB_ROOM, LIB_SERVER, LIB_FTP_DATA_CONN});
+string *ExemptArray = ({ LIB_SHADOW, OBJ_SNOOPER, LIB_DOOR, LIB_ROOM, LIB_SERVER, LIB_FTP_DATA_CONN, LIB_SOCKET, SOCKET_HTTP });
 
 void  reap_dummies(){
     //
@@ -77,4 +77,3 @@ mixed reap_list(){
     //write("Total size of list: "+sizeof(clones)+" lost objects.");
     return this_player()->eventPage("/tmp/lost_object_list.txt");
 }
-

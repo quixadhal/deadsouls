@@ -29,4 +29,3 @@ mixed eventBurnOut(){
     eventDestruct();
     return 1;
 }
-

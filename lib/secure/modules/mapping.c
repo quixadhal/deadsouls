@@ -8,7 +8,7 @@ object target;
 mixed newval;
 
 int GetKey(string str);
-varargs mapping GetValue(string str, object targ, string tempy, string k1, string v1, mapping MapThing, string passed_fun);
+varargs mapping GetTheValue(string str, object targ, string tempy, string k1, string v1, mapping MapThing, string passed_fun);
 
 string *key_arr = ({});
 mapping NewMap = ([]);
@@ -66,7 +66,7 @@ int GetKey(string str){
             return 1;
         }
         write("Please enter the value for key "+identify(key_arr)+":\n");
-        input_to( (: GetValue :) );
+        input_to( (: GetTheValue :) );
         return 1;
     }
     else {
@@ -78,7 +78,7 @@ int GetKey(string str){
     }
 }
 
-varargs mapping GetValue(string str, object targ, string tempy, string k1, string v1, mapping MapThing, string passed_fun){
+varargs mapping GetTheValue(string str, object targ, string tempy, string k1, string v1, mapping MapThing, string passed_fun){
     int i;
     string repl_key;
     string *mapkeys;
@@ -340,7 +340,6 @@ mapping eventReadPair(string filename, string param, int destructive){
     }
     return copy(NewMap);
 }
-
 
 
 

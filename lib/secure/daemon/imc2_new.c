@@ -33,7 +33,7 @@
 
 // File to save data to, .o will be added automatically to the end.
 // This will have private stuff in it, don't put this in a directory where your wizards can read it.
-#define SAVE_FILE "/secure/save/imc2"
+#define SAVE_FILE "/secure/save/imc2.o"
 
 // COMMAND_NAME is the command that people type to use this network.
 // **OUTDATED (not really)
@@ -149,7 +149,7 @@ string tmpstr;
 
 static int socket_num;
 static int heart_count = 0;
-int mode;
+int mode, autodisabled = 1;
 mapping ping_requests; // Keeps track of who sent a ping request.
 // Ping requests aren't labelled with names, so replies are destined to this MUD
 // with no idea why, unless we keep track.
@@ -516,24 +516,27 @@ private void send_text(string text){
 
 void create(){
     set_heart_beat(1);
-    tn("IMC2: created "+ctime(time()));
+    //tn("IMC2: created "+ctime(time()));
+    if(unguarded( (: file_exists(SAVE_FILE) :) )) restore_object(SAVE_FILE);
     call_out( (: Setup :), 1);
 }
 
 void Setup(){
-    int temp;
+    int temp, kill;
 #ifdef DISABLE_IMC2
     if(DISABLE_IMC2){
-        call_out( (: remove() :), 1);
-        return;
+        kill = 1;
     }
 #endif
 
     if(DISABLE_INTERMUD == 1){
-        call_out( (: remove() :), 1);
+        kill = 1;
+    }
+    if(kill || autodisabled){
+        call_out( (: remove() :), 5);
         return;
     }
-
+    tn("IMC2: setup "+ctime(time()));
 #ifndef NO_UIDS
     seteuid(getuid());
 #endif
@@ -541,7 +544,6 @@ void Setup(){
 #ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"Creating IMC2 object at "+ctime(time())+".\n");
 #endif
-    if(sizeof(get_dir(SAVE_FILE+".o"))) restore_object(SAVE_FILE);
     if(!mudinfo) mudinfo = ([ ]);
     if(!chaninfo) chaninfo = ([ ]);
     if(!localchaninfo) localchaninfo = ([ ]);
@@ -580,13 +582,13 @@ void heart_beat(){
 
 void remove(){
     // This object is getting destructed.
-    socket_close(socket_num);
     mode=2;
+    save_object(SAVE_FILE, 1);
+    socket_close(socket_num);
     //	if(imc2_socket) imc2_socket->remove();
 #ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"IMC2 OBJECT REMOVED\n");
 #endif
-    save_object(SAVE_FILE);
     destruct(this_object());
 }
 
@@ -1625,4 +1627,13 @@ EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
           write_file(filename, file, 1);
 
           return;
+      }
+
+      int UnSetAutoDisabled(int x){
+          //This is just for taking away automatic disablement.
+          //For enabling/disabling, see the mudconfig command.
+          if(x) autodisabled = 0;
+          save_object(SAVE_FILE,1);
+          RELOAD_D->eventReload(this_object(), 2, 1);
+          return autodisabled;
       }

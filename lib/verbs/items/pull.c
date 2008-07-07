@@ -39,4 +39,3 @@ varargs mixed do_pull_str_on_obj(string thing, object target) {
 varargs mixed do_pull_str_from_obj(string thing, object target) {
     return do_pull_str_on_obj(thing, target);
 }
-

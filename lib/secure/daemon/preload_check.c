@@ -21,4 +21,3 @@ static void create() {
     preloads = filter(explode(read_file(CFG_PRELOAD),"\n"), (: !grepp($1,"#") :) );
     call_out("checkPreloads", 300);
 }
-

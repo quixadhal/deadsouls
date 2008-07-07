@@ -54,7 +54,9 @@ mixed ReadFuns(string str){
     files = FILE_D->GetFiles();
     globaltmp = str;
     files = filter(files, (: (!strsrch($1, globaltmp) && last($1,2) == ".c" ) :) );
-    files = filter(files, (: (!sizeof(FunctionCache[$1]) || stat($1)[0] != FileSize[$1]) :) ); 
+    files = filter(files, (: (!sizeof(FunctionCache[$1]) || 
+        ((sizeof(stat($1)) > 1) ? stat($1)[0] : FileSize[$1]) 
+        != FileSize[$1]) :) ); 
     foreach(string file in files){
     }
     while(sizeof(files) > 0){

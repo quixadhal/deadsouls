@@ -72,4 +72,3 @@ varargs mixed CanConsult(object who, string component){
 varargs mixed CanShake(object who, string component){
     return 1;
 }
-

@@ -162,7 +162,7 @@ int incoming_post(mixed *packet){
       "from" : from,
       "to" : packet[3][mud_name()],
       "cc" : packet[4][mud_name()],
-      "date" : packet[6],
+      "date" : ( stringp(packet[6]) ? to_int(packet[6]) : packet[6] ),
       "subject" : packet[7],
       "message" : packet[8]
     ]);

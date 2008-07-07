@@ -158,4 +158,3 @@ varargs int CheckGet(object who, object what){
     }
     return 1;
 }
-
