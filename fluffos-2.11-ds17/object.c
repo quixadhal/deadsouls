@@ -1793,7 +1793,7 @@ void dealloc_object (object_t * ob, const char * from)
 
     //debug(d_flag, ("free_object: /%s.\n", ob->obname));
 #ifdef DEBUG
-    debug_message("free_object: /%s.\n", ob->obname);
+    //debug_message("free_object: /%s.\n", ob->obname);
 #endif
 
     if (!(ob->flags & O_DESTRUCTED)) {
@@ -1829,7 +1829,7 @@ void dealloc_object (object_t * ob, const char * from)
     if (ob->obname) {
         //debug(d_flag, ("Free object /%s\n", ob->obname));
 #ifdef DEBUG
-        debug_message("Free object /%s\n", ob->obname);
+        //debug_message("Free object /%s\n", ob->obname);
 #endif
         DEBUG_CHECK1(lookup_object_hash(ob->obname) == ob,
                      "Freeing object /%s but name still in name table", ob->obname);

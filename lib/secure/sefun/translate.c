@@ -44,6 +44,7 @@
 "darklock","confutatis","maledictis","flammis","acribus",\
 "addictis","XYNTA","durian","adzuki",\
 "ХУИТА",\
+"SPLIT YOUR LUNGS WITH BLOOD AND THUNDER",\
 "ar","ot","ti","fi","na",\
 "ar","ot","ti","fi","na",\
 "ar","ot","ti","fi","na",\

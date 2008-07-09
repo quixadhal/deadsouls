@@ -15,7 +15,7 @@
 #include "add_action.h"
 #include "eval.h"
 
-#if defined(MINGW) || defined(__CYGWIN__)
+#if defined(MINGW)
 #define ENOSR 63
 #define MSG_NOSIGNAL 0
 #endif

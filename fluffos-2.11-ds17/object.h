@@ -67,10 +67,10 @@ typedef struct sentence_s {
 } sentence_t;
 
 typedef struct object_s {
-    unsigned short ref;         /* Reference count. */
-    unsigned short flags;       /* Bits or'ed together from above */
+    unsigned long ref;         /* Reference count. */
+    unsigned long flags;       /* Bits or'ed together from above */
 #ifdef DEBUG
-    unsigned int extra_ref;     /* Used to check ref count. */
+    unsigned long extra_ref;     /* Used to check ref count. */
 #endif
     const char * const obname;
     struct object_s *next_hash;
@@ -124,7 +124,7 @@ typedef int (* get_objectsfn_t) (object_t *, void *);
 
 #ifdef DEBUG
 #define add_ref(ob, str) SAFE(\
-                              if(ob->ref++ > 32000){\
+                              if(ob->ref++ > 2000000000){\
 				destruct_object(ob);\
 				error("ref count too high!\n");\
 			      } \
@@ -133,7 +133,7 @@ typedef int (* get_objectsfn_t) (object_t *, void *);
                                      ob->obname, ob->ref, str));\
                               )
 #else
-#define add_ref(ob, str) if(ob->ref++ > 32000){destruct_object(ob);error("ref count too high!\n");}
+#define add_ref(ob, str) if(ob->ref++ > 2000000000){destruct_object(ob);error("ref count too high!\n");}
 #endif
 
 #define ROB_STRING_ERROR 1

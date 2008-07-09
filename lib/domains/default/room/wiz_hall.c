@@ -2,12 +2,14 @@
 #include <rooms.h>
 
 inherit LIB_ROOM;
+int ds;
 
 string LongDesc(){
     string desc = "Immortals come here to communicate with each other about "+
     "the world they are building. The Adventurer's Guild "+
-    "is north. The Arch Room is south. To visit the Dead Souls "+
-    "test and development mud, go west. The test lab facilities are east.";
+    "is north. The Arch Room is south."+(!(ds) ? " To visit the Dead Souls "+
+      "test and development mud, go west." : "")+
+    " The test lab facilities are east.";
     desc += "\nA sign reads: "+load_object(ROOM_ARCH)->SignRead();
     return desc;
 }
@@ -15,6 +17,9 @@ string LongDesc(){
 static void create() {
     object ob;
     room::create();
+    if(mud_name() == "Dead Souls"){
+        ds = 1;
+    }
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("Creators' Hall");

@@ -1,3 +1,9 @@
+---- 2.9a4 ---
+- Released 2008-07-09
+- Fixed various runtimes in IMC2_D.
+- Driver: Crasher due to object ref count flip is now prevented (thx Wodan!)
+- Cleaned up some disharmonies in the reaper.
+
 ---- 2.9a3 ---
 - Released 2008-07-07
 - Added GUARD_D and LIB_GUARD to allow npc's to guard exits,

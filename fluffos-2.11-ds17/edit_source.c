@@ -1640,6 +1640,9 @@ static void handle_configure() {
     check_library("-lseq");
     check_library("-lm");
 
+    if (lookup_define("__CYGWIN__"))
+        check_library("-liconv");
+
     if (lookup_define("MINGW")){
         check_library("-lwsock32");
         check_library("-lws2_32");

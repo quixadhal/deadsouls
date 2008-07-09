@@ -12,6 +12,12 @@
  * defines a number of windows related things. These
  * must be undef'd so that the 'normal' windows port code
  * in MudOS is not used.
+ *
+ * Note on FD_SETSIZE: Feel free to change "#if 0" to
+ * "#if 1" in order to enable a larger file descriptor
+ * set size. However, as of Fluffos 2.11-ds16, this causes
+ * very strange things to happen when the limit is reached, 
+ * so that's not what we're defaulting to.
  */
 #ifdef __CYGWIN__
 #undef WINNT
@@ -20,6 +26,10 @@
 #undef WINSOCK
 #undef WIN32
 #define ARCH "Cygwin-32"
+#if 0
+#undef FD_SETSIZE
+#define FD_SETSIZE 256
+#endif
 #endif
 
 #ifdef WINNT

@@ -92,7 +92,9 @@ void backend()
   volatile int first_call = 1;
   int there_is_a_port = 0;
   error_context_t econ;
-
+#if defined(DEBUG) && defined(FD_SETSIZE)
+  debug_message("FD_SETSIZE %d\n",FD_SETSIZE);
+#endif
   debug_message("Initializations complete.\n\n");
   for (i = 0; i < 5; i++) {
     if (external_port[i].port) {

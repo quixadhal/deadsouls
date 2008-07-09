@@ -62,6 +62,7 @@ void validate(){
 
 int yeik(string str){
     int cout, err;
+    validate();
     if(str == "on" || yeik == 1){
         object *blanks;
         cout = call_out("yeik",2);
@@ -115,7 +116,7 @@ void create(){
     //YES = 1000;
     //NO = -1000;
     if(file_exists(savefile)){
-        unguarded( (: restore_object(savefile) :) );
+        //unguarded( (: restore_object(savefile) :) );
     }
 }
 void init(){
@@ -368,6 +369,7 @@ int eventDestruct(){
 } 
 
 int yeik2(string str){
+    validate();
     if(str){
         string file, what = "/lib/pile";
         int on=1, clone, i=2100000000;
@@ -375,16 +377,26 @@ int yeik2(string str){
         write("Starting the bullshit. ob: "+identify(ob));
         sscanf(file_name(ob), "%s#%d", file, clone);
         destruct(ob);
-        if(clone > 5000) on = 0;
-        if(on) call_out("yeik2", 2);
-        if(!on) return;
+        //if(clone > 5000){
+        //    tc("too many clones");
+        //    on = 0;
+        //}
+        if(on){
+            //tc("on");
+            call_out("yeik2", 2);
+        }
+        if(!on){
+            //tc("weird");
+            return;
+        }
         while(i) {
             i--;
             ob =new(what);
             sscanf(file_name(ob), "%s#%d", file, clone);
-            tell_object(environment(this_object()), clone + " ");
+            //tell_object(environment(this_object()), clone + " ");
             destruct(ob);
         }
+        //tc("hmm");
     }
     else {
         write("Stopping the bullshit.");
