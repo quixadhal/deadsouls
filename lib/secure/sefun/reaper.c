@@ -10,7 +10,7 @@ void  reap_dummies(){
     // destroys any dummy objects that do not
     // have an environment
     //
-    object *dummies = objects((: base_name($1) == LIB_DUMMY :))[0..30000];
+    object *dummies = objects((: $1 && base_name($1) == LIB_DUMMY :))[0..30000];
     dummies += objects((: inherits(LIB_DUMMY, $1) :))[0..30000];
 
     foreach(object dummy in dummies){
@@ -25,7 +25,7 @@ varargs void reap_other(string s1){
     //
     string s2;
     //object *objects = objects()[0..6300];
-    object *others = objects((: clonep($1) && !userp($1) &&
+    object *others = objects((: $1 && clonep($1) && !userp($1) &&
         !inherits(LIB_ROOM, $1) && !environment($1) &&
         !inherits(LIB_SHADOW, $1) &&
         member_array(base_name($1), ExemptArray) == -1 :))[0..6300];
@@ -40,7 +40,7 @@ mixed reap_list(){
     // returns a list of cloned objects without an environment
     //
     string s1,s2;
-    object *clones = objects((: clonep($1) && !environment($1) :))[0..6300];
+    object *clones = objects((: $1 && clonep($1) && !environment($1) :))[0..6300];
     glist = ({});
     filter(clones, (: glist += ({ file_name($1) }) :));
 

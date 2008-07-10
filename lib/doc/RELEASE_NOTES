@@ -1,3 +1,8 @@
+---- 2.9a5 ---
+- Released 2008-07-10
+- Driver: Fixed segfault for SPARC.
+- Minor sefun fixes.
+
 ---- 2.9a4 ---
 - Released 2008-07-09
 - Fixed various runtimes in IMC2_D.

@@ -36,7 +36,7 @@ void eventReloadSpells() {
         ob = find_object(where);
 
         if( ob ) {
-            tc("destructing "+identify(ob));
+            //tc("destructing "+identify(ob));
             ob->eventDestruct();
         }
         err = catch(ob = load_object(where));

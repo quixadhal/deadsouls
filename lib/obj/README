@@ -4,8 +4,8 @@ or modifying its contents may generate unexpected
 behavior from your mud.
 
 For example, do not attempt to "fix" area_room.c or
-stargate.c. Trying to load those fles in /obj will
-generate errors because it's is *supposed* to do that.
+stargate.c. Trying to load those files in /obj will
+generate errors because it is *supposed* to do that.
 
 Do not try to use these objects directly, and do not
 copy them into your area directories as templates. 

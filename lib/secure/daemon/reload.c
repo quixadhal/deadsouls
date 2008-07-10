@@ -56,7 +56,7 @@ int ReloadBaseSystem(){
     foreach(string file in sefun_files){
         catch(update(file));
     }
-    catch( update(SEFUN) );
+    RELOAD_D->eventReload(load_object(SEFUN), 1);
     catch( update(MASTER_D) );
     catch( reload(load_object(LIB_CREATOR), 1, 1) );
     catch( reload(load_object(LIB_SENTIENT), 1, 1) );

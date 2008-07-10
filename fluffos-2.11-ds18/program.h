@@ -199,11 +199,11 @@ typedef struct program_s {
     const char *filename;                 /* Name of file that defined prog */
     unsigned short flags;
     unsigned short last_inherited;
-    unsigned long ref;                 /* Reference count */
-    unsigned long func_ref;
+    unsigned short ref;                 /* Reference count */
+    unsigned short func_ref;
 #ifdef DEBUG
-    unsigned long extra_ref;              /* Used to verify ref count */
-    unsigned long extra_func_ref;
+    int extra_ref;              /* Used to verify ref count */
+    int extra_func_ref;
 #endif
     char *program;              /* The binary instructions */
     unsigned char *line_info;   /* Line number information */
