@@ -5,7 +5,7 @@
 # Lines beginning with a # or a newline are ignored.                          #
 ###############################################################################
 # name of this mud
-name : Hands of Fate
+name : Dead_Souls_cratylus
 
 # port number to accept users on
 external_port_1 : telnet 6666

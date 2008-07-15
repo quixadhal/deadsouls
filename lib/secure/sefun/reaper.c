@@ -2,6 +2,7 @@
 #include <objects.h>
 
 private string *glist;
+private object thingy;
 
 string *ExemptArray = ({ LIB_CONNECT, OBJ_SNOOPER, LIB_DOOR, LIB_ROOM, LIB_SERVER, LIB_FTP_DATA_CONN, LIB_SOCKET, SOCKET_HTTP });
 
@@ -24,15 +25,29 @@ varargs void reap_other(string s1){
     // do not have an environment
     //
     string s2;
-    //object *objects = objects()[0..6300];
+    int reap_again, fail;
+#ifndef __FLUFFOS__
     object *others = objects((: $1 && clonep($1) && !userp($1) &&
         !inherits(LIB_ROOM, $1) && !environment($1) &&
         !inherits(LIB_SHADOW, $1) &&
         member_array(base_name($1), ExemptArray) == -1 :))[0..6300];
-
-    foreach(object thingy in others){
-        catch( thingy->eventDestruct() );
+#else
+    object *others = get_garbage()[0..63000];
+#endif
+    if(sizeof(others) > 62000){
+        reap_again = 1;
     }
+
+    foreach(thingy in others){
+        int err;
+        //tc("thinggy: "+identify(thingy));
+        if(thingy) err = catch( unguarded( (: destruct(thingy) :) ) );
+        //else tc("wtf");
+        //if(err) tc("err: "+err);
+        if(thingy) fail = 1;
+    }
+    //if(fail) tc("fail! "+sizeof(filter(others,(: $1 :))),"red");
+    if(reap_again) call_out("reap_other",5);
 }
 
 mixed reap_list(){

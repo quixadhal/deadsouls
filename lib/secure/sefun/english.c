@@ -294,6 +294,7 @@ string array explode_list(string list) {
     }
 #endif
 
+#ifndef __FLUFFOS__
     string cardinal(int x) {
         string tmp;
         int a;
@@ -360,6 +361,11 @@ string array explode_list(string list) {
             }
         }
     }
+#else
+    string cardinal(int x){
+        return query_num(x);
+    }
+#endif
 
     varargs string conjunction(mixed expressions, string coordinator) {
         int size;

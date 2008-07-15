@@ -96,13 +96,11 @@ mixed ChangeClass(string class_name){
     string cl;
     int lvl = this_object()->GetLevel();
     mixed ret;
-    /* Not sure it makes sense that you'd forget
-     * everything you knew before
-     *
-     *   foreach(cl in GetSkills()){
-     *       RemoveSkill(cl);
-     *   }
-     */
+    if(GetClass() == "explorer"){
+        foreach(cl in GetSkills()){
+            RemoveSkill(cl);
+        }
+    }
     Class = 0;
     ret = SetClass(class_name);
     this_object()->ChangeLevel(lvl);

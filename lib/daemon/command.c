@@ -64,7 +64,7 @@ varargs string *GetCommands(string path) {
     if( !path ) return keys(Commands);
     tmp = ({ });
     foreach( cmd, paths in Commands) 
-    if( member_array(path, paths) != -1 ) tmp += ({ cmd });
+        if( member_array(path, paths) != -1 ) tmp += ({ cmd });
     return tmp;
 }
 

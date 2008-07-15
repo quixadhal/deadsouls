@@ -352,11 +352,11 @@ mixed eventWander(){
     }
     if( arrayp(WanderPath[WanderMarker]) ) 
         foreach(mixed cmd in WanderPath[WanderMarker]){
-        if( fp = functionp(cmd) ){
-            if( fp != FP_OWNER_DESTED ) evaluate(cmd);
+            if( fp = functionp(cmd) ){
+                if( fp != FP_OWNER_DESTED ) evaluate(cmd);
+            }
+            else eventForce(cmd);
         }
-        else eventForce(cmd);
-    }
     else if( fp = functionp(WanderPath[WanderMarker]) ){
         if( fp != FP_OWNER_DESTED ) evaluate(WanderPath[WanderMarker]);
     }

@@ -132,7 +132,7 @@ mixed eventCreateParty(object who, string name) {
 
     if( (string)who->SetParty(name) != name )
         return "There was some bizarre problem sticking you in a party.";
-    this_party = new(class party);
+    this_party = spew(class party);
     this_party->Leader = who;
     this_party->Members = ({ who });
     this_party->Invited = ({});
@@ -219,7 +219,7 @@ mixed eventRemoveParty(object who) {
     CHAT_D->eventSendChannel("System", name, "The party " + name + " has been "
       "disbanded.");
     foreach(ob in ((class party)Parties[name])->Members)
-    ob->SetParty(0);
+        ob->SetParty(0);
     map_delete(Parties, name);
     eventSave();
     return 1;

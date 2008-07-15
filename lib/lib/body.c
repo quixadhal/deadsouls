@@ -114,7 +114,7 @@ int GetEncumbrance(){
 
     if(!(ENABLE_ENCUMBRANCE) || inherits(LIB_NPC,this_object()) ) return encumbrance;
     if(sizeof(stuff)) foreach(object item in stuff) 
-        encumbrance += (item->GetMass())/2;
+            encumbrance += (item->GetMass())/2;
     if(sizeof(stuff)) encumbrance += sizeof(stuff);
     return encumbrance;
 }
@@ -326,8 +326,6 @@ varargs int eventCollapse(int noparalyze){
         }
     }
 
-    if(!noparalyze) SetParalyzed(3, (: checkCollapse :));
-
     if(medium == MEDIUM_LAND){
         if( position == POSITION_LYING ){
             return 1;
@@ -335,6 +333,7 @@ varargs int eventCollapse(int noparalyze){
         send_messages("collapse", "$agent_name $agent_verb to the ground.",
           this_object(), 0, environment());
         SetPosition(POSITION_LYING);
+        if(!noparalyze) SetParalyzed(3, (: checkCollapse :));
         return 1;
     }
 
@@ -344,6 +343,7 @@ varargs int eventCollapse(int noparalyze){
     send_messages("go", "$agent_name $agent_verb limp.",
       this_object(), 0, environment());
     SetPosition(POSITION_FLOATING);
+    if(!noparalyze) SetParalyzed(3, (: checkCollapse :));
     return 1;
 }
 
@@ -351,6 +351,10 @@ void eventCheckHealing(){
     int x, y;
     object dude;
     dude = this_object();
+
+    if(interactive() && !environment()){
+        this_object()->eventMove(ROOM_START); 
+    }
 
     //This resets the parser counter.
     this_object()->DoneTrying();
@@ -987,7 +991,7 @@ varargs int eventDie(mixed agent){
                         int tmpType = 0;
 
                         foreach(wornItem in wornItems)
-                        if(wornItem) tmpType |= (int)wornItem->GetArmorType();
+                            if(wornItem) tmpType |= (int)wornItem->GetArmorType();
                         if(tmpType & type) continue;
                     }
                     validLimb = limb2;

@@ -582,10 +582,10 @@ varargs string GetLong(string str){
     foreach(item in map(
         filter(all_inventory(), (: !((int)$1->GetInvis(this_object())) :)),
         (: (string)$1->GetEquippedShort() :)))
-    if( item ) counts[item]++;
+        if( item ) counts[item]++;
     if( sizeof(counts) ) str += GetCapName() + " is carrying:\n";
     foreach(item in keys(counts))
-    str += capitalize(consolidate(counts[item], item)) + "\n";
+        str += capitalize(consolidate(counts[item], item)) + "\n";
     return str;
 }
 

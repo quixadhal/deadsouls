@@ -1,3 +1,23 @@
+---- 2.9a6 ---
+- Released 2008-07-14
+- Driver is now a customized FluffOS 2.12.
+- Miscellaneous minor lib tweaks and fixes.
+- Added command: noclip
+- Fixed recursing paralysis bug in LIB_BODY.
+- The netstat command now includes summary statistics.
+- cardinal(), base_name(), and copy() now use efuns rather than sefuns
+  for improved performance.
+- The reaper now uses get_garbage() for improved performance.
+- The reaper is now more aggressive about spotting and cleaning
+  large garbage pileups.
+- The call_out efun is now overridden with a sefun that checks
+  for excessive call_outs and autoblacklists suspected problems. 
+  To tune the number of permitted call_outs, modify the new 
+  MAX_CALL_OUTS param in config.h. Note that objects in /secure and
+  /daemon are exempted from this check.
+- The update command no longer has a problem when you are mounted
+  on a creature or vehicle.
+
 ---- 2.9a5 ---
 - Released 2008-07-10
 - Driver: Fixed segfault for SPARC.

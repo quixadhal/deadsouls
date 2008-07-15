@@ -52,7 +52,7 @@ static void create() {
 }
 
 mixed cmd(string args) {
-    object *obs, ob;
+    object *obs, ob, mount;
     string *files, *tmpfiles;
     mixed tmp;
     string file;
@@ -74,10 +74,18 @@ mixed cmd(string args) {
     if( args == "" || !args ) {
         if(!this_player()) return "No player.";
         ob = environment(this_player());
+        if(ob && living(ob)){
+            object *conts = containers(this_player());
+            mount = ob;
+            foreach(mixed thing in conts){
+                if(thing && !living(thing)) ob = thing;
+            }
+        }
         if( !ob ) return "You have no environment.";
         file = base_name(ob);
         this_player()->eventPrint("Updating environment");
         obs = filter(all_inventory(ob), (: userp :));
+        if(mount) obs += ({ mount });
         if( sizeof(obs) ) CacheAndCarry(obs);
         if( !eventUpdate(base_name(ob), flags) ) {
             obs->eventPrint("You are thrown into the void as your "

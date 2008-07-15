@@ -94,7 +94,7 @@ string *SetDeities(string *deities){
 
     Deities = deities;
     foreach(string deus in deities)
-    ids += explode(lower_case(deus), " ");
+        ids += explode(lower_case(deus), " ");
     DeityIds = ids;
     return Deities;
 }

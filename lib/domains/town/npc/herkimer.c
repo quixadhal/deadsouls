@@ -45,7 +45,7 @@ static void create() {
 
       ]));
     SetSpellBook( ([ "buffer" : 100, "meditate" : 100, "missile" : 100, "fireball" : 100, "whip" : 100 ]) );
-    SetAction(25, ({
+    SetAction(5, ({
         "Herkimer scratches his beard thoughtfully.",
         "Herkimer seems to be trying to remember something.", "Herkimer ponders.",
         "Herkimer thinks.", "Herkimer thinks carefully.",

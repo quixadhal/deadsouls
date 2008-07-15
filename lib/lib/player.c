@@ -303,8 +303,8 @@ int Setup(){
     if( !GetClass() ) SetClass("explorer");
     if( GetClass() ){
         foreach(classes in (string array)CLASSES_D->GetClasses())
-        if( ClassMember(classes) && classes != GetClass() )
-            AddChannel(classes);
+            if( ClassMember(classes) && classes != GetClass() )
+                AddChannel(classes);
     }
     if(sizeof(GetExtraChannels())) AddChannel(GetExtraChannels());
     set_heart_beat(GetHeartRate());
@@ -321,8 +321,8 @@ int Setup(){
         PLAYERS_D->AddPlayerInfo(this_object());
 
         foreach(classes in (string array)CLASSES_D->GetClasses())
-        if( ClassMember(classes) && classes != GetClass() )
-            AddChannel(classes);
+            if( ClassMember(classes) && classes != GetClass() )
+                AddChannel(classes);
         if( avatarp() ) AddChannel(({ "avatar" }));
         if( high_mortalp() ) AddChannel( ({ "newbie", "hm" }) );
         if( newbiep() ) AddChannel( ({ "newbie" }) );
@@ -515,10 +515,10 @@ varargs string GetLong(string str){
     foreach(item in map(
         filter(all_inventory(), (: !((int)$1->GetInvis(this_object())) :)),
         (: (string)$1->GetEquippedShort() :)))
-    if( item ) counts[item]++;
+        if( item ) counts[item]++;
     if( sizeof(counts) ) str += GetCapName() + " is carrying:\n";
     foreach(item in keys(counts))
-    str += capitalize(consolidate(counts[item], item)) + "\n";
+        str += capitalize(consolidate(counts[item], item)) + "\n";
     return str;
 }
 
@@ -557,8 +557,8 @@ string SetClass(string str){
         TrainingPoints = points;   /* leave points alone */
         AddChannel(GetClass());
         foreach(classes in (string array)CLASSES_D->GetClasses())
-        if( ClassMember(classes) && classes != GetClass() )
-            AddChannel(classes);
+            if( ClassMember(classes) && classes != GetClass() )
+                AddChannel(classes);
     }
     return GetClass();
 }

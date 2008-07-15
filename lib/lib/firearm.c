@@ -196,6 +196,8 @@ int eventFire(string str){
         return 1;
     }
     if(ob && !living(ob) && base_name(ob) != LIB_CORPSE){
+        tell_room(environment(environment(this_object())),
+          "The bullet smashes into "+lower_case(ob->GetShort())+"!\n");
         if(!sscanf(ob->GetLong(),"%sIt has been damaged by gun%s",s1,s2)){
             tempclass=ob->GetClass();
             if(tempclass) ob->SetClass(tempclass/2);
@@ -209,10 +211,8 @@ int eventFire(string str){
             else
                 templong += " It has been damaged by gunfire.";
             ob->SetLong(templong);
-            tell_room(environment(environment(this_object())),"The bullet smashes into "+lower_case(ob->GetShort())+"!\n");
             return 1;
         }
-        tell_room(environment(environment(this_object())),"The bullet smashes into "+lower_case(ob->GetShort())+"!\n");
         tempclass=ob->GetClass();
         if(tempclass) ob->SetClass(tempclass/2);
         return 1;

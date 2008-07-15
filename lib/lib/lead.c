@@ -109,7 +109,11 @@ int eventMoveFollowers(object dest){
 
     foreach(ob in GetFollowers()){
         follower = Followers[ob];
-
+        if(ob->GetSleeping() || ob->GetParalyzed() || query_verb() == "noclip"){
+            eventEvade(ob);
+            RemoveFollower(ob);
+            continue;
+        }
         followChance = 100;
         if( !follower["followed"] ) followChance -= 20 + this_object()->GetSkillLevel("stealth");
         followChance += ob->GetSkillLevel("tracking");

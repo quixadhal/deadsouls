@@ -132,7 +132,7 @@ string GetNativeLanguage(){
     string lang;
 
     foreach(lang, val in Languages)
-    if( val["native"] ) return Languages[lang]["name"];
+        if( val["native"] ) return Languages[lang]["name"];
 }
 
 int SetPolyglot(int i){

@@ -518,8 +518,8 @@ varargs mixed eventProcessEnters(string filename, string dir, string location, o
     id_array = ({});
     dummies = load_object(filename)->GetDummyItems();
     if(sizeof(dummies)) foreach(object dumdum in dummies){
-        id_array += dumdum->GetId();
-    }
+            id_array += dumdum->GetId();
+        }
 
     if(file_exists(filename) && !check_privs(this_player(),filename)){
         write("You do not appear to have write access to this file. Modification aborted.");

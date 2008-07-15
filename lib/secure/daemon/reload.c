@@ -41,7 +41,7 @@ void eventResetEmptyRooms(){
     validate();
     foreach(object foo in objects((: inherits(LIB_ROOM, $1) :))){
         //tc("foo: "+identify(foo));
-        call_out( "eventDestructEmptyRooms", 0, foo );
+        call_out( (: eventDestructEmptyRooms :), 0, foo );
     }
 }
 
@@ -228,9 +228,9 @@ int ReloadDir(string dir, int passes){
             if(ob != this_object() && 
               member_array(base_name(ob), exceptions) == -1){
                 if(ob && inherits(LIB_ROOM,ob) && sizeof(livings(ob,1))){
-                    reload_handles += ({ call_out("eventReload", 5,ob, 0, 1) });
+                    reload_handles += ({ call_out((: eventReload :), 5,ob, 0, 1) });
                 }
-                else reload_handles += ({ call_out("eventUpdate", 5, base_name(ob)) });
+                else reload_handles += ({ call_out((: eventUpdate :), 5, base_name(ob)) });
             }
         }
         passes--;
@@ -281,7 +281,7 @@ int ReloadMud(){
 
 int WarmBoot(){
     validate();
-    call_out("ReloadMud", 0);
+    call_out( (: ReloadMud :), 0);
     return 1;
 }
 

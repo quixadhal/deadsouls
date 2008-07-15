@@ -156,6 +156,18 @@ int AdvanceDude(mixed arg){
 
         this_player()->save_player((string)this_player()->GetKeyName());
 
+        if(level == MAX_NEWBIE_LEVEL){
+            write("\nDirk raises his hand and sternly points to you.\n");
+            say("\nDirk raises his hand and sternly points to "+
+              this_player()->GetName()+".\n");
+            this_object()->eventForce("say "+this_player()->GetName()+","+
+              " you are no longer a newbie. From now on, you will need"+
+              " a light source to see in the dark. From now on, you will"+
+              " not understand languages you haven't learned. You have"+
+              " earned this promotion, and now face the future as a"+
+              " real adventurer.");
+        }
+
         return 1;
     }
 

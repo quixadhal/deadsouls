@@ -163,7 +163,7 @@ void eventDescribeEnvironment(int brief){
                 }) - ({ this_object(), mount });
               maxi = sizeof(shorts = map(obs, (: (string)$1->GetHealthShort() :)));
               foreach(object liv in obs){
-                  int envtype = environment()->GetMedium();
+                  int envtype = environment(liv)->GetMedium();
                   string s = (string)liv->GetHealthShort();
                   int pos = (int)liv->GetPosition();
                   if( !s ) continue;

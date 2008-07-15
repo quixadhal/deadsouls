@@ -72,23 +72,23 @@ int SetBonuses(){
     if(!env || ! living(env)) return 0;
     if(sizeof(Stats))
         foreach(string key, int val in Stats){
-        env->AddStatBonus(key, val);
-    }
+            env->AddStatBonus(key, val);
+        }
     if(sizeof(Skills))
         foreach(string key, int val in Skills){
-        env->AddSkillBonus(key, val);
-    }
+            env->AddSkillBonus(key, val);
+        }
     if(sizeof(Points))
         foreach(string key, int val in Points){
-        switch(key){
-        case "HP" : env->AddHP(val);break;
-        case "XP" : env->AddExperiencePoints(val);break;
-        case "SP" : env->AddStaminaPoints(val);break;
-        case "MP" : env->AddMagicPoints(val);break;
-        case "poison" : env->AddPoison(val);break;
-        default : break;
+            switch(key){
+            case "HP" : env->AddHP(val);break;
+            case "XP" : env->AddExperiencePoints(val);break;
+            case "SP" : env->AddStaminaPoints(val);break;
+            case "MP" : env->AddMagicPoints(val);break;
+            case "poison" : env->AddPoison(val);break;
+            default : break;
+            }
         }
-    }
     return 1;
 }
 
@@ -97,12 +97,12 @@ int RemoveBonuses(){
     if(!env || ! living(env)) return 0;
     if(sizeof(Stats))
         foreach(string key, int val in Stats){
-        env->RemoveStatBonus(key);
-    }
+            env->RemoveStatBonus(key);
+        }
     if(sizeof(Skills))
         foreach(string key, int val in Skills){
-        env->RemoveSkillBonus(key);
-    }
+            env->RemoveSkillBonus(key);
+        }
     return 1;
 }
 

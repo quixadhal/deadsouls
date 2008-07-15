@@ -4,7 +4,7 @@
 #include <rooms.h>
 #include <commands.h>
 mixed mx;
-object next;
+mixed next;
 object *dudes;
 string filename, args;
 
@@ -88,9 +88,9 @@ varargs mixed reload(mixed ob, int recursive, int quiet){
     }
 
     if(ob && !inherits(LIB_DOOR, ob) && !stringed && env) {
-        unguarded( (: next = new(filename) :) ); 
+        unguarded( (: next = clone_object(filename) :) ); 
         ob->eventMove(ROOM_FURNACE);
-        if(next && env) next->eventMove(env);
+        if(next && objectp(next) && env) next->eventMove(env);
     }
     if(!quiet && this_player()) write("Done.");
     return 1;

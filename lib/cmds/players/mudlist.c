@@ -68,7 +68,7 @@ mixed cmd(string str) {
     else {
         borg = ([ ]);
         foreach( mud, info in (mapping)INTERMUD_D->GetMudList() )
-        if( all == 1 || info[0] == -1 ) borg[mud] = info;
+            if( all == 1 || info[0] == -1 ) borg[mud] = info;
     }
     if( !sizeof(borg) ) {
         if(this_player()) message("system", "No MUDs match your query.", this_player());
@@ -109,8 +109,8 @@ mixed cmd(string str) {
     }
     list = ({});
     foreach(mud, info in borg)
-    list += ({ sprintf("%:-15s %:-6s %:-15s %:-18s %s %d",
-        replace_string(mud,"%^","%%^^"), info[8], info[7], info[5], info[1], info[2]) });
+        list += ({ sprintf("%:-15s %:-6s %:-15s %:-18s %s %d",
+            replace_string(mud,"%^","%%^^"), info[8], info[7], info[5], info[1], info[2]) });
     list = sort_array(list, 1);
     list = ({ replace_string(mud_name(),"%^","%%^^") + " recognizes " + consolidate(sizeof(borg), "a mud")+
       " matching your query: ", "" }) + list;

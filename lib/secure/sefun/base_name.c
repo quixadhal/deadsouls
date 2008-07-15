@@ -4,6 +4,7 @@
 //	based on the simul_efun originally by Truilkan@Basis
 //	created by Descartes of Borg 22 december 1992
 
+#ifndef __FLUFFOS__
 string base_name(mixed val) {
     string name, base;
     int borg;
@@ -15,3 +16,4 @@ string base_name(mixed val) {
     if(sscanf(name, "%s#%d", base, borg) ==2) return base;
     else return name;
 }
+#endif

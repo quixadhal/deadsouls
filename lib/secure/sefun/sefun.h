@@ -280,5 +280,6 @@ string dbz_colors(string str, int annoying);
 mixed lpc_file(string str);
 int telnet_privp(mixed guy);
 object *containers(object ob);
+varargs mixed FAKE_NEW(string str, mixed args...);
 
 #endif /* l_sefun_h */

@@ -39,8 +39,8 @@ static void create(){
       "west" : "go west", "up" : "go up", "down": "go down", 
       "ig" : "intergossip $*", "c" : "cre $*", "lp" : "lpuni $*",
       "inv" : "inventory", "x" : "look at $*", "examine" : "look at $*",
-      "ic" : "intercre $*", "aa" : "ascii_art $*", "chat" : "newbie $*",
-      "dc" : "dchat $*", "exit" : "go out", "t" : "tell $*",
+      "ic" : "intercre $*", "loot" : "get all from $*", "chat" : "newbie $*",
+      "dc" : "dchat $*", "exit" : "go out", "t" : "tell $*", "k" : "kill $*",
     ]);
     Xverbs = (["]":"] $*", "'":"say $*",":":"emote $*","\"":"say $*",]);
 } 

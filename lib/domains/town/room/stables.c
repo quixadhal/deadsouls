@@ -10,7 +10,6 @@ static void create() {
     SetItems(([
         ({ "building", "schoolhouse", "school", "village school", "village schoolhouse" }) : "A small but well-kept wooden building where townsfolk and their children go to acquire knowledge.",
         ({ "building", "buildings" }) : "Structures designed for human occupancy.",
-        ({ "shore", "village shore" }) : "The shore of the eastern sea is east of here.",
       ]));
     SetProperties(([
         "no attack" : 1,

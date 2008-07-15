@@ -10,7 +10,7 @@ int AllowPass(object who, object what){
 }
 
 int CheckVisitor(object who){
-    eventForce("say I'm sorry, "+who->GetShort()+
+    eventForce("say I'm sorry, "+remove_article(who->GetShort())+
       ". Only "+capitalize(privs)+" is allowed there.");
     return 1;
 }

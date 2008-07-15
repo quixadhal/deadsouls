@@ -4,6 +4,16 @@ unalias inf
 unalias sc
 unalias practice 
 unalias trophy
+unalias a
+unalias aa
+alias a admin $*
+alias nn newbie $*
+alias aa go aft
+alias sb go starboard
+alias pp go port
+alias ff go fore
+alias lab goto /domains/campus/room/slab
+alias shop goto /domains/town/room/shop
 alias start goto /domains/campus/room/start
 alias obj cd /realms/$N/area/obj
 alias arm cd /realms/$N/area/armor

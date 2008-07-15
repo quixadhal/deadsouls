@@ -180,7 +180,7 @@ private static void load_access(string cfg, mapping resource) {
 
                 str = nom;
                 foreach( grp in keys(Groups) )
-                if( member_array(nom, Groups[grp]) != -1) str = str + ":" + grp;
+                    if( member_array(nom, Groups[grp]) != -1) str = str + ":" + grp;
                 return str;
             }
             else if( file == DIR_PLAYERS + "/" + nom[0..0] + "/" + nom ) 
@@ -419,6 +419,7 @@ private static void load_access(string cfg, mapping resource) {
     int valid_bind(object binder, object old_owner, object new_owner) {
         true(old_owner,new_owner);
         if( binder == master() ) return 1;
+        if( base_name(binder) == SEFUN ) return 1;
         if( member_array(PRIV_SECURE, explode(query_privs(binder), ":")) != -1 )
             return 1;
         return 0;
@@ -433,7 +434,7 @@ private static void load_access(string cfg, mapping resource) {
         else return (member_array(PRIV_SECURE, explode(priv, ":")) != -1);
     }
 
-    int valid_override(string file, string nom) { true(file,nom); return (file == SEFUN); }
+    int valid_override(string file, string nom) { return (file == SEFUN); }
 
     int valid_save_binary(string str) { return true(str); }
 

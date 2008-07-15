@@ -50,8 +50,8 @@ mixed cmd(string args) {
             tmp += ({ sprintf(formatString, capitalize(p), l->Email,
                 ((l->LastOnWith == p) ? ctime(l->LastOnDate) : "unknown")) });
             foreach(string pl in l->Secondaries)
-            tmp += ({ sprintf(formatString, "  " + capitalize(pl), "",
-                ((l->LastOnWith == pl) ? ctime(l->LastOnDate) : "unknown")) });
+                tmp += ({ sprintf(formatString, "  " + capitalize(pl), "",
+                    ((l->LastOnWith == pl) ? ctime(l->LastOnDate) : "unknown")) });
         }
         this_player(1)->eventPage(tmp, MSG_SYSTEM);
         return 1;

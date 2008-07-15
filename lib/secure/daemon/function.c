@@ -43,6 +43,7 @@ void heart_beat(){
 
 mixed SendFiles(string *arr){
     validate();
+    if(query_os_type() == "windows") return 0;
     foreach(string sub in arr){
         load_object("/secure/cmds/creators/showfuns")->cmd(sub);
     }
@@ -53,7 +54,7 @@ mixed ReadFuns(string str){
     int interval = 0;
     string *subfiles = ({});
     validate();
-
+    if(query_os_type() == "windows") return 0;
     seeking = 1;
     if(!str || !sizeof(str)) str = "/lib";
 
@@ -76,6 +77,7 @@ mixed ReadFuns(string str){
 
 static void create() {
     daemon::create();
+    if(query_os_type() == "windows") return;
     if(!file_exists(SaveFuns)){
         unguarded( (: save_object(SaveFuns) :) );
     }

@@ -761,9 +761,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
                 if( listener == ob ) continue;
                 if(sizeof(listener->GetMuffed()))
                     foreach(string jerk in listener->GetMuffed()){
-                    if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
-                    if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
-                }
+                        if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
+                        if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
+                    }
                 if(listener->GetNoChanColors()) tmp = decolor(tmp);
                 if(!ignore && CanListen(listener,ch) && !(listener->GetMuted(ch)))
                     listener->eventPrint(tmp, MSG_CHAN);
@@ -777,9 +777,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
                     tmp = sprintf(emotelayout, this_msg, ch, "%^RESET%^", targmsg);
                     if(sizeof(ob->GetMuffed()))
                         foreach(string jerk in ob->GetMuffed()){
-                        if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
-                        if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
-                    }
+                            if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
+                            if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
+                        }
                     if(ob->GetNoChanColors()) tmp = decolor(tmp);
                     if(!ignore && CanListen(ob,ch)&& !(ob->GetMuted(ch)))
                         ob->eventPrint(tmp, MSG_CHAN);
@@ -820,9 +820,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 
                 if(sizeof(ob->GetMuffed()))
                     foreach(string jerk in ob->GetMuffed()){
-                    if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
-                    if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
-                }
+                        if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
+                        if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
+                    }
                 if(ob->GetNoChanColors()) msg = decolor(msg);
                 if(!ignore && CanListen(ob,ch)&& !(ob->GetMuted(ch)))
                     ob->eventPrint(msg, MSG_CHAN);

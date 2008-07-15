@@ -1,9 +1,13 @@
 #/domains/campus/npc/charly.c
 RestrictedChannels ({})
 NoChanColors 0
+local_mute 0
+remote_mute 0
+local_gag 0
+remote_gag 0
 Paused 0
-CommandHist ({"say I am faced with choice 2.","say green wins, I guess.","say If successful, this will be run 1181.","say the winners have been: red: 410 green: 391 blue: 379","say I've switched 47.457626% of the time. My win rate is 45.977985%.","push a button on a pedestal","say My win rate is 46.016949%.","say My switch rate is 47.457626%.","say I choose the red door","say I am faced with choice 2.","say w00t! green wins!","say If successful, this will be run 1182.","say the winners have been: red: 410 green: 392 blue: 379","say I've switched 47.502117% of the time. My win rate is 46.023689%.","push a button on a pedestal","say I am faced with choice 1.","say My win rate is 46.062660%.","say My switch rate is 47.502117%.","say I am faced with choice 2.",})
-localcmds ({"choose","",})
+CommandHist ({"say If successful, this will be run 5704.","say the winners have been: red: 1902 green: 1899 blue: 1902","say I've switched 49.763283% of the time. My win rate is 49.947403%.","push a button on a pedestal","say I randomly choose the blue door","say stats:switches: 2838stays: 2865wins: 2849losses: 2854runs: 5703","say My win rate is 49.956165%.My switch rate is 49.763283%.","say If successful, this will be run 5705.","say the winners have been: red: 1903 green: 1899 blue: 1902","say I've switched 49.772091% of the time. My win rate is 49.938648%.","push a button on a pedestal","say I am faced with choice 1.","say I select the red door","say I am faced with choice 2.","say stats:switches: 2839stays: 2865wins: 2849losses: 2855runs: 5704","say My win rate is 49.947403%.My switch rate is 49.772091%.","say I decide to stay.","say If successful, this will be run 5706.","say the winners have been: red: 1904 green: 1899 blue: 1902","say I've switched 49.763367% of the time. My win rate is 49.947422%.",})
+localcmds ({"",})
 next_command ({})
 MaxCommandHistSize 20
 InternalDesc 0
@@ -13,15 +17,15 @@ Position 2
 Undead 0
 UndeadType 0
 Mount 0
-Riders 0
+Riders ({})
 BodyMass 0
 SaveRecurse 1
 Saved ({})
-HealthPoints 440
-MagicPoints 750
+HealthPoints 101
+MagicPoints 770
 ExperiencePoints 50
-QuestPoints 0
 melee 0
+godmode 0
 Alcohol 0
 Caffeine 0
 Food 100
@@ -29,23 +33,23 @@ Drink 100
 Poison 0
 Sleeping 0
 DeathEvents 0
-StaminaPoints 550.000000
+StaminaPoints 274.000000
 Torso "torso"
 Biter 0
 Fingers (["right hand":5,"left hand":5,])
-Limbs (["right hand":(["class":4,"children":({}),"health":100,"armors":98319,"parent":"right arm",]),"torso":(["class":1,"children":({"neck","right leg","left leg","right arm","left arm",}),"health":400,"armors":1538049,"parent":0,]),"head":(["class":1,"children":({}),"health":400,"armors":262913,"parent":"neck",]),"left foot":(["class":4,"children":({}),"health":100,"armors":241,"parent":"left leg",]),"right foot":(["class":4,"children":({}),"health":100,"armors":241,"parent":"right leg",]),"right leg":(["class":2,"children":({"right foot",}),"health":200,"armors":1049761,"parent":"torso",]),"left hand":(["class":4,"children":({}),"health":100,"armors":98319,"parent":"left arm",]),"left leg":(["class":2,"children":({"left foot",}),"health":200,"armors":1049761,"parent":"torso",]),"neck":(["class":1,"children":({"head",}),"health":400,"armors":786433,"parent":"torso",]),"right arm":(["class":2,"children":({"right hand",}),"health":200,"armors":1253385,"parent":"torso",]),"left arm":(["class":2,"children":({"left hand",}),"health":200,"armors":1253385,"parent":"torso",]),])
+Limbs (["head":(["children":({}),"armors":262913,"parent":"neck","class":1,"health":340,]),"right leg":(["children":({"right foot",}),"armors":1049761,"parent":"torso","class":2,"health":122,]),"right foot":(["children":({}),"armors":241,"parent":"right leg","class":4,"health":90,]),"neck":(["children":({"head",}),"armors":786433,"parent":"torso","class":1,"health":296,]),"left foot":(["children":({}),"armors":241,"parent":"left leg","class":4,"health":51,]),"left arm":(["children":({"left hand",}),"armors":1253385,"parent":"torso","class":2,"health":158,]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"parent":0,"class":1,"health":269,]),"left leg":(["children":({"left foot",}),"armors":1049761,"parent":"torso","class":2,"health":147,]),"right hand":(["children":({}),"armors":98319,"parent":"right arm","class":4,"health":90,]),"right arm":(["children":({"right hand",}),"armors":1253385,"parent":"torso","class":2,"health":170,]),"left hand":(["children":({}),"armors":98319,"parent":"left arm","class":4,"health":48,]),])
 MissingLimbs ([])
 ExtraChannels ({})
 Agent 0
 Blind 0
 CustomStats 15
 LightSensitivity ({25,75,})
-Resistance (["medium":0,"immune":0,"low":0,"high":0,"none":4194302,])
-Stats (["agility":(["class":3,"points":0,"level":50,]),"strength":(["class":4,"points":0,"level":13,]),"luck":(["class":3,"points":0,"level":15,]),"charisma":(["class":2,"points":0,"level":35,]),"durability":(["class":4,"points":0,"level":39,]),"speed":(["class":3,"points":0,"level":29,]),"wisdom":(["class":3,"points":0,"level":65,]),"intelligence":(["class":1,"points":0,"level":70,]),"coordination":(["class":2,"points":0,"level":62,]),])
+Resistance (["low":0,"high":0,"immune":0,"medium":0,"none":4194302,])
+Stats (["wisdom":(["class":3,"points":0,"level":43,]),"agility":(["class":3,"points":0,"level":36,]),"speed":(["class":3,"points":0,"level":27,]),"strength":(["class":3,"points":0,"level":15,]),"intelligence":(["class":1,"points":0,"level":72,]),"durability":(["class":4,"points":0,"level":33,]),"charisma":(["class":2,"points":0,"level":38,]),"coordination":(["class":2,"points":0,"level":53,]),"luck":(["class":3,"points":0,"level":17,]),])
 Polyglot 0
-Languages (["english":(["name":"English","points":0,"native":1,"level":100,]),])
+Languages (["english":(["native":1,"name":"English","points":0,"level":100,]),])
 DefaultLanguage ""
-SpeakColor 0
+SpeakColor "CYAN%^"
 Town "Town"
 Race "human"
 Gender "male"
@@ -62,10 +66,12 @@ WimpyCommand "go out"
 Currency ([])
 Bank ([])
 SpellBook ([])
+QuestPoints 0
+QuestBook ([])
 isPK 1
-Attackable 0
+Attackable 1
 NoCondition 0
-Messages (["home":"$N goes home.","come":"$N enters.","telin":"$N teleports in.","invis":"$N disappears.","dest":"$N dests $O.","leave":"$N leaves $D.","telout":"$N teleports away.","vis":"$N appears.","clone":"$N clones $O.",])
+Messages (["telin":"$N teleports in.","leave":"$N leaves $D.","telout":"$N teleports away.","vis":"$N appears.","home":"$N goes home.","invis":"$N disappears.","come":"$N enters.","dest":"$N dests $O.","clone":"$N clones $O.",])
 ProperNoun 1
 Modify 1
 Short "Charly"
@@ -85,16 +91,19 @@ CombatActionChance 0
 AutoStand 1
 MaximumHealth 0
 Encounter 0
-EnemyNames ({})
-runs 1182
-switches 562
-stays 651
+EnemyNames ({"avidryl","klingon",})
+VisibleRiders 1
+actions_enabled 1
+runs 5705
+switches 2839
+stays 2866
 percent 0
-fred 436
-fgreen 392
-fblue 385
-wins 545
-red_wins 410
-green_wins 392
-blue_wins 380
+fred 303
+fgreen 301
+fblue 334
+wins 2850
+losses 2855
+red_wins 1904
+green_wins 1899
+blue_wins 1902
 save_file "/domains/campus/save/charly.o"

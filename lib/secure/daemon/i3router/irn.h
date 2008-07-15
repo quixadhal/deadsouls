@@ -235,18 +235,18 @@ static string id_mud(int fd){
 void irn_clear(){
     if(sizeof(irn_connections))
         foreach(mixed key, mixed val in irn_connections){
-        if(!key || !sizeof(key)) continue;
-        if(!irn_connections[key] || !irn_connections[key]["fd"]) continue;
-        //tc("irn_clear closing "+irn_connections[key]["fd"]);
-        this_object()->close_connection(irn_connections[key]["fd"]);
-        irn_connections[key]["connected"] = 0;
-    }
+            if(!key || !sizeof(key)) continue;
+            if(!irn_connections[key] || !irn_connections[key]["fd"]) continue;
+            //tc("irn_clear closing "+irn_connections[key]["fd"]);
+            this_object()->close_connection(irn_connections[key]["fd"]);
+            irn_connections[key]["connected"] = 0;
+        }
     if(sizeof(irn_sockets))
         foreach(mixed key, mixed val in irn_sockets){
-        if(!key || !sizeof(key)) continue;
-        //tc("irn_clear (2) closing "+key);
-        this_object()->close_connection(key);
-    }
+            if(!key || !sizeof(key)) continue;
+            //tc("irn_clear (2) closing "+key);
+            this_object()->close_connection(key);
+        }
 
     irn_connections = ([]);
     irn_sockets = ([]);
@@ -279,16 +279,16 @@ varargs void irn_setup(int clear, string whom){
     if(clear){
         if(sizeof(irn_connections))
             foreach(mixed key, mixed val in irn_connections){
-            if(!irn_connections[key] || !irn_connections[key]["fd"]) continue;
-            irn_connections[key]["connected"] = 0;
-            //tc("irn_setup closing "+irn_connections[key]["fd"]);
-            this_object()->close_connection(irn_connections[key]["fd"]);
-        }
+                if(!irn_connections[key] || !irn_connections[key]["fd"]) continue;
+                irn_connections[key]["connected"] = 0;
+                //tc("irn_setup closing "+irn_connections[key]["fd"]);
+                this_object()->close_connection(irn_connections[key]["fd"]);
+            }
         if(sizeof(irn_sockets))
             foreach(mixed key, mixed val in irn_sockets){
-            //tc("irn_setup closing "+key);
-            this_object()->close_connection(key);
-        }
+                //tc("irn_setup closing "+key);
+                this_object()->close_connection(key);
+            }
         irn_clear();
     }
 
@@ -448,16 +448,16 @@ static void irn_read_callback(int fd, mixed data){
         }
         if(sizeof(irn_sockets))
             foreach(mixed key, mixed val in irn_sockets){
-            trr("IRN: looking at: "+key+" "+identify(val),"cyan");
-            if(val["name"] == data[2]){
-                //this_object()->close_connection(key);
-                //map_delete(irn_connections, data[2]);
-                if(fd != key){
-                    map_delete(irn_sockets, key);
+                trr("IRN: looking at: "+key+" "+identify(val),"cyan");
+                if(val["name"] == data[2]){
                     //this_object()->close_connection(key);
-                } 
+                    //map_delete(irn_connections, data[2]);
+                    if(fd != key){
+                        map_delete(irn_sockets, key);
+                        //this_object()->close_connection(key);
+                    } 
+                }
             }
-        }
         if(!irn_connections[data[2]]) irn_connections[data[2]] = ([]);
         irn_connections[data[2]]["fd"] = fd;
         irn_connections[data[2]]["connected"] = 1;
@@ -722,10 +722,10 @@ string Report(){
     string ret = "IRN: connections: ";
     if(sizeof(irn_connections))
         foreach(mixed key, mixed val in irn_connections){
-        if(!key) continue;
-        if(!irn_connections[key]) return;
-        ret += key+":"+irn_connections[key]["fd"]+" ";
-    }
+            if(!key) continue;
+            if(!irn_connections[key]) return;
+            ret += key+":"+irn_connections[key]["fd"]+" ";
+        }
     ret += "\n";
     ret += "IRN: sockets: ";
     foreach(mixed key, mixed val in irn_sockets){

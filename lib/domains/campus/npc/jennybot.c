@@ -15,14 +15,14 @@ string LongDesc(){
         "young lady is no lady at all...she's an android! "+
         "She appears to be totally motionless and frozen "+
         "in place, with a friendly smile. Perhaps you "+
-        "can make her do something by typing: activate bot ";
+        "can make her do something by typing: %^RED%^activate bot%^RESET%^ ";
     }
     else {
         ret = "On closer inspection, this attractive "+
         "young lady is no lady at all...she's an android! "+
         "She appears to be in the middle of giving an orientation "+
         "on this mud, with bizarrely friendly mannerisms. Perhaps you "+
-        "can make her be quiet by typing: deactivate bot ";
+        "can make her be quiet by typing: %^RED%^deactivate bot%^RESET%^ ";
     }
     return ret;
 }
@@ -172,8 +172,8 @@ int eventTurnOn(){
     ob->eventForce("smile "+name);
     ob->eventForce("say I'm here to give you a few "+
       "tips. To deactivate me, simply "+
-      "type: deactivate bot.\n"+
-      "To jump to the next tip, type: next tip");
+      "type: %^RED%^deactivate bot%^CYAN%^.");
+    ob->eventForce("say To jump to the next tip, type: next tip");
     return 1;
 }
 

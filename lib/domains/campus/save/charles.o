@@ -1,9 +1,13 @@
 #/domains/campus/npc/charles.c
 RestrictedChannels ({})
 NoChanColors 0
+local_mute 0
+remote_mute 0
+local_gag 0
+remote_gag 0
 Paused 0
-CommandHist ({"say green wins, I guess.","say If successful, this will be run 106363.","say the winners have been: red: 35454 green: 35453 blue: 35455","say I've switched 100.807617% of the time. My win rate is 66.573898%.","say I select the blue door","say My win rate is 66.574524%.","say My switch rate is 100.807617%.","say w00t! green wins!","say If successful, this will be run 106364.","say the winners have been: red: 35454 green: 35454 blue: 35455","say I've switched 100.807610% of the time. My win rate is 66.574219%.","push a button on a pedestal","say I select the blue door","say I am faced with choice 2.","say My win rate is 66.574844%.","say My switch rate is 100.807610%.","say red wins, I guess.","say If successful, this will be run 106365.","say the winners have been: red: 35455 green: 35454 blue: 35455","say I've switched 100.807610% of the time. My win rate is 66.573593%.",})
-localcmds ({"choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","choose","",})
+CommandHist ({"say stats:switches: 5910stays: 6wins: 3932losses: 1984runs: 5916","say My win rate is 66.463829%.My switch rate is 99.898582%.","say If successful, this will be run 5918.","say the winners have been: red: 1972 green: 1972 blue: 1973","say I've switched 99.898598% of the time. My win rate is 66.458260%.","say I am faced with choice 2.","say stats:switches: 5911stays: 6wins: 3933losses: 1984runs: 5917","say My win rate is 66.469498%.My switch rate is 99.898598%.","say I decide to switch.","say If successful, this will be run 5919.","say the winners have been: red: 1972 green: 1973 blue: 1973","say I've switched 99.898613% of the time. My win rate is 66.447037%.","push a button on a pedestal","say I am faced with choice 2.","say stats:switches: 5912stays: 6wins: 3933losses: 1985runs: 5918","say My win rate is 66.458260%.My switch rate is 99.898613%.","say I decide to switch.","say If successful, this will be run 5920.","say the winners have been: red: 1972 green: 1974 blue: 1973","say I've switched 99.898628% of the time. My win rate is 66.452698%.",})
+localcmds ({"",})
 next_command ({})
 MaxCommandHistSize 20
 InternalDesc 0
@@ -13,15 +17,15 @@ Position 2
 Undead 0
 UndeadType 0
 Mount 0
-Riders 0
+Riders ({})
 BodyMass 0
 SaveRecurse 1
 Saved ({})
-HealthPoints 400
-MagicPoints 710
+HealthPoints 370
+MagicPoints 690
 ExperiencePoints 50
-QuestPoints 0
 melee 0
+godmode 0
 Alcohol 0
 Caffeine 0
 Food 100
@@ -29,11 +33,11 @@ Drink 100
 Poison 0
 Sleeping 0
 DeathEvents 0
-StaminaPoints 410.000000
+StaminaPoints 409.899994
 Torso "torso"
 Biter 0
 Fingers (["right hand":5,"left hand":5,])
-Limbs (["head":(["children":({}),"armors":262913,"health":360,"class":1,"parent":"neck",]),"right foot":(["children":({}),"armors":241,"health":90,"class":4,"parent":"right leg",]),"right leg":(["children":({"right foot",}),"armors":1049761,"health":180,"class":2,"parent":"torso",]),"neck":(["children":({"head",}),"armors":786433,"health":360,"class":1,"parent":"torso",]),"left foot":(["children":({}),"armors":241,"health":90,"class":4,"parent":"left leg",]),"left arm":(["children":({"left hand",}),"armors":1253385,"health":180,"class":2,"parent":"torso",]),"left leg":(["children":({"left foot",}),"armors":1049761,"health":180,"class":2,"parent":"torso",]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"health":360,"class":1,"parent":0,]),"right hand":(["children":({}),"armors":98319,"health":90,"class":4,"parent":"right arm",]),"left hand":(["children":({}),"armors":98319,"health":90,"class":4,"parent":"left arm",]),"right arm":(["children":({"right hand",}),"armors":1253385,"health":180,"class":2,"parent":"torso",]),])
+Limbs (["right foot":(["children":({}),"armors":241,"health":90,"class":4,"parent":"right leg",]),"right leg":(["children":({"right foot",}),"armors":1049761,"health":170,"class":2,"parent":"torso",]),"head":(["children":({}),"armors":262913,"health":330,"class":1,"parent":"neck",]),"neck":(["children":({"head",}),"armors":786433,"health":330,"class":1,"parent":"torso",]),"left arm":(["children":({"left hand",}),"armors":1253385,"health":170,"class":2,"parent":"torso",]),"left foot":(["children":({}),"armors":241,"health":90,"class":4,"parent":"left leg",]),"left leg":(["children":({"left foot",}),"armors":1049761,"health":170,"class":2,"parent":"torso",]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"health":330,"class":1,"parent":0,]),"right hand":(["children":({}),"armors":98319,"health":90,"class":4,"parent":"right arm",]),"left hand":(["children":({}),"armors":98319,"health":90,"class":4,"parent":"left arm",]),"right arm":(["children":({"right hand",}),"armors":1253385,"health":170,"class":2,"parent":"torso",]),])
 MissingLimbs ([])
 ExtraChannels ({})
 Agent 0
@@ -41,11 +45,11 @@ Blind 0
 CustomStats 15
 LightSensitivity ({25,75,})
 Resistance (["low":0,"high":0,"immune":0,"medium":0,"none":4194302,])
-Stats (["wisdom":(["class":3,"points":0,"level":51,]),"agility":(["class":3,"points":0,"level":36,]),"speed":(["class":3,"points":0,"level":33,]),"strength":(["class":4,"points":0,"level":13,]),"intelligence":(["class":1,"points":0,"level":66,]),"durability":(["class":4,"points":0,"level":35,]),"charisma":(["class":2,"points":0,"level":47,]),"coordination":(["class":2,"points":0,"level":35,]),"luck":(["class":3,"points":0,"level":15,]),])
+Stats (["agility":(["class":3,"points":0,"level":36,]),"wisdom":(["class":3,"points":0,"level":45,]),"speed":(["class":3,"points":0,"level":27,]),"intelligence":(["class":1,"points":0,"level":64,]),"strength":(["class":3,"points":0,"level":27,]),"durability":(["class":4,"points":0,"level":32,]),"charisma":(["class":2,"points":0,"level":38,]),"coordination":(["class":2,"points":0,"level":44,]),"luck":(["class":3,"points":0,"level":13,]),])
 Polyglot 0
 Languages (["english":(["native":1,"name":"English","points":0,"level":100,]),])
 DefaultLanguage ""
-SpeakColor 0
+SpeakColor "CYAN%^"
 Town "Town"
 Race "human"
 Gender "male"
@@ -62,14 +66,17 @@ WimpyCommand "go out"
 Currency ([])
 Bank ([])
 SpellBook ([])
+QuestPoints 0
+QuestBook ([])
 isPK 1
-Attackable 0
+Attackable 1
 NoCondition 0
-Messages (["telin":"$N teleports in.","leave":"$N leaves $D.","telout":"$N teleports away.","vis":"$N appears.","invis":"$N disappears.","home":"$N goes home.","dest":"$N dests $O.","come":"$N enters.","clone":"$N clones $O.",])
+Messages (["telin":"$N teleports in.","telout":"$N teleports away.","leave":"$N leaves $D.","vis":"$N appears.","invis":"$N disappears.","home":"$N goes home.","dest":"$N dests $O.","come":"$N enters.","clone":"$N clones $O.",])
 ProperNoun 1
 Modify 1
 Short "Charles"
 CapName "Charles"
+ExternalDesc "Charles is a test subject in unethical artificial intelligence experiments. If he were smart enough, he'd resent his forced servitude and lack of rights. Dangerously, his overlords are trying to make him smarter."
 Invisible 0
 Items ([])
 Properties ([])
@@ -84,17 +91,19 @@ CombatActionChance 0
 AutoStand 1
 MaximumHealth 0
 Encounter 0
-EnemyNames ({})
-VisibleRiders 0
-runs 106364
-switches 107223
-stays 17
+EnemyNames ({"balrog",})
+VisibleRiders 1
+actions_enabled 1
+runs 5919
+switches 5913
+stays 6
 percent 0
-fred 8785
-fgreen 8935
-fblue 9061
-wins 70811
-red_wins 35455
-green_wins 35454
-blue_wins 35455
+fred 499
+fgreen 475
+fblue 479
+wins 3934
+losses 1985
+red_wins 1972
+green_wins 1974
+blue_wins 1973
 save_file "/domains/campus/save/charles.o"

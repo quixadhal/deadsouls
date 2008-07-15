@@ -53,6 +53,7 @@ string *cmds = ({});
 string *verbs = ({});
 string *powers = ({});
 int nomore, yeik = 0;
+string *exceptions = ({});
 
 void validate(){
     if(!this_player() || !archp(this_player())){
@@ -62,32 +63,27 @@ void validate(){
 
 int yeik(string str){
     int cout, err;
+    object *blanks;
     validate();
-    if(str == "on" || yeik == 1){
-        object *blanks;
-        cout = call_out("yeik",2);
+    err=catch(blanks=objects((: base_name($1)==LIB_BLANK :))[0..63000]);
+    if(str){
+        cout = call_out("yeik",1,"on");
         nomore = 0;
         yeik = 1;
-        err = catch(blanks = objects( (: base_name($1) == "/lib/blank" :) ));
         if(err){
             tc("foo!");
-        }
-        if(sizeof(blanks)){
-            foreach(object blank in blanks){
-                destruct(blank);
-            }
         }
         if(!environment() || !archp(this_player())){
             error("no!");
         }
-        for(int i = 20000;i>0;i--){
-            new("/lib/blank");
+        tc("cloning");
+        for(int i = 400;i>0;i--){
+            call_out("yeik",1,"on");
+            new(LIB_BLANK);
         }
     }
     else {
-        object *blanks;
         if(!nomore) cout = call_out("yeik",2);
-        err = catch(blanks = objects( (: base_name($1) == "/lib/blank" :)));
         yeik = 0;
         if(sizeof(blanks)){
             //cout = call_out("yeik",2);
@@ -103,6 +99,7 @@ int yeik(string str){
 
 void create(){
     ::create();
+    exceptions = ({ "charles.c","charly.c" });
     SetKeyName("weirding module");
     SetId( ({"module", "box", "weirder"}) );
     SetAdjectives( ({"small","featureless","black"}) );
@@ -177,7 +174,12 @@ int loadnpcs(){
     if(!npcs) npcs = ({});
     foreach(string npcsdir in npc_dirs){
         foreach(string npcfile in get_dir(npcsdir+"/")){
-            string loadee = npcsdir+"/"+npcfile;
+            string loadee;
+            if(member_array(npcfile, exceptions) != -1){
+                tc("skipping "+npcfile,"green");
+                continue;
+            }
+            loadee = npcsdir+"/"+npcfile;
             npcs += ({ loadee });
             call_out("loadthing", 0, loadee);
         }
@@ -364,19 +366,21 @@ int startstress(){
 }
 
 int eventDestruct(){
-    unguarded( (: save_object(savefile) :) );
+    //unguarded( (: save_object(savefile) :) );
     return ::eventDestruct();
 } 
 
 int yeik2(string str){
+    int dirty;
     validate();
+    if(str == "dirty") dirty = 1;
     if(str){
-        string file, what = "/lib/pile";
+        string file, what = "/lib/blank";
         int on=1, clone, i=2100000000;
         object ob=new(what);
         write("Starting the bullshit. ob: "+identify(ob));
         sscanf(file_name(ob), "%s#%d", file, clone);
-        destruct(ob);
+        if(!dirty) destruct(ob);
         //if(clone > 5000){
         //    tc("too many clones");
         //    on = 0;
@@ -394,7 +398,7 @@ int yeik2(string str){
             ob =new(what);
             sscanf(file_name(ob), "%s#%d", file, clone);
             //tell_object(environment(this_object()), clone + " ");
-            destruct(ob);
+            if(!dirty) destruct(ob);
         }
         //tc("hmm");
     }

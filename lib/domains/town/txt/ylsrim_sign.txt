@@ -14,3 +14,7 @@ Whatever bugs you find in Ylsrim, therefore, are not
 going to be fixed. Consider it a museum piece, a mud
 area like a prehistoric insect caught in amber: perfect
 in its imperfection, sublime in its permanence.
+
+To return to the main sample area, use the stargate by typing:
+
+dial campus lab
