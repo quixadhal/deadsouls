@@ -22,6 +22,7 @@ varargs mixed reload(mixed ob, int recursive, int quiet){
     if(objectp(ob) && inherits(LIB_DAEMON,ob) && !ob->GetDoor()){
         string obname = base_name(ob)+".c";
         ob->eventDestruct();
+        if(ob) destruct(ob);
         return load_object(obname);
     }
     if(objectp(ob) && environment(ob)) env = environment(ob);

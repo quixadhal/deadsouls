@@ -145,6 +145,8 @@
 //#define DEB_PAK 3
 //#define DEB_OTHER 0
 
+inherit LIB_DAEMON;
+
 string tmpstr;
 
 static int socket_num, counter;
@@ -537,7 +539,7 @@ void Setup(){
         kill = 1;
     }
     if(kill || autodisabled){
-        call_out( (: remove() :), 5);
+        call_out( (: eventDestruct() :), 5);
         return;
     }
     tn("IMC2: setup "+ctime(time()));
@@ -565,7 +567,7 @@ void Setup(){
 #ifdef IMC2_LOGGING
         write_to_log(DATA_LOG,"Addr_server is not running, resolve failed.\n");
 #endif
-        remove();
+        eventDestruct();
         return;
     }
 #endif
@@ -598,7 +600,12 @@ void remove(){
 #ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"IMC2 OBJECT REMOVED\n");
 #endif
-    destruct(this_object());
+    //destruct(this_object());
+}
+
+int eventDestruct(){
+    remove();
+    return ::eventDestruct();
 }
 
 void resolve_callback( string address, string resolved, int key ) {

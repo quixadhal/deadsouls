@@ -40,24 +40,6 @@ varargs string arrange_string(string str, int x) {
     return sprintf(sprintf("%%:-%ds", x), str);
 }
 
-string evaluate_description(mixed val) {
-    if( stringp(val) ) {
-        return val;
-    }
-    if( functionp(val) ) {
-        if( functionp(val) & FP_OWNER_DESTED ) {
-            return 0;
-        }
-        else {
-            return evaluate(val);
-        }
-    }
-    if( arrayp(val) ) {
-        return evaluate_description(val[query_night()]);
-    }
-    return val;
-}
-
 string to_html(string str) {
     return TERMINAL_D->GetHTML(str);
 }

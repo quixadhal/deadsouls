@@ -171,11 +171,18 @@ string GetName(){
 }
 
 mapping GetSpellBook(){
-    mapping ret = ([]);
+    mapping ret = ::GetSpellBook();
     foreach(string spell in keys(SPELLS_D->GetSpells())){
         ret[spell] = 100;
     }
+    foreach(string spell in keys(SPELLS_D->GetPrayers())){
+        ret[spell] = 100;
+    }
     return ret;
+}
+
+varargs mixed CanCast(mixed spell...){
+    return 1;
 }
 
 varargs mixed GetEffectiveVision(mixed location, int raw_score){

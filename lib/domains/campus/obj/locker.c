@@ -8,7 +8,6 @@
 
 inherit LIB_STORAGE;
 
-
 void create() {
     ::create();
     SetKeyName("locker");
@@ -17,14 +16,15 @@ void create() {
     SetShort("a tall metal locker");
     SetLong("This is a large school locker, the kind one might find in any of "+
       "thousands of schools around the world.");
+    SetInventory(([
+        "/domains/campus/weap/waterpistol" : 1,
+        "/domains/town/obj/9mmclip" : 1,
+        "/domains/campus/obj/bag" : 1,
+        "/domains/campus/obj/dcell_std" : 4,
+      ]));
     SetMass(274);
     SetDollarCost(50);
     SetMaxCarry(500);
-    SetInventory(([
-        "/domains/campus/obj/bag": 1,
-        "/domains/campus/obj/dcell_std": 4,
-        "/domains/campus/weap/waterpistol" : 1
-      ]));
     SetCanClose(1);
     SetClosed(1);
     SetCanLock(1);

@@ -73,7 +73,7 @@ mixed eventBuy(object who, object *obs){
         else bargain = 0;
         if(!bargain) value = cost;
 
-        if( !value ){
+        if( !cost || cost < 1 || !value || value < 1){
             eventForce("say " + (string)ob->GetShort() + " is worthless!");
             continue;
         }

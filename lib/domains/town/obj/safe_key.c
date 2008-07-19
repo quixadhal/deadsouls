@@ -4,9 +4,9 @@ inherit LIB_ITEM;
 
 static void create() {
     item::create();
-    SetKeyName("safe key");
+    SetKeyName("complex key");
     SetId( ({ "key", "mansion safe key" }) );
-    SetAdjectives( ({ "complex" }) );
+    SetAdjectives( ({ "complex", "complicated", "complicated looking" }) );
     SetShort("a complex key");
     SetLong("It is a complicated-looking key.");
     SetMass(10);

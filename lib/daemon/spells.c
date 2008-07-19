@@ -57,7 +57,8 @@ object GetSpell(string spell) {
     if( !Spells[spell] ) {
         eventReloadSpells();
     }
-    return Spells[spell];
+    if(Prayers[spell]) return Prayers[spell];
+    else return Spells[spell];
 }
 
 mapping GetSpells(){

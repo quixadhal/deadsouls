@@ -17,6 +17,9 @@
 
 #ifdef MINGW
 #define ENOSR 63
+#endif
+
+#ifndef MSG_NOSIGNAL
 #define MSG_NOSIGNAL 0
 #endif
 
@@ -1812,7 +1815,7 @@ static void process_input (interactive_t * ip, char * user_command)
      */
     copy_and_push_string(user_command);
     ret = apply(APPLY_PROCESS_INPUT, command_giver, 1, ORIGIN_DRIVER);
-    if (!IP_VALID(ip, command_giver))
+    if (!IP_VALID(ip, command_giver) || (ip->iflags & NET_DEAD))
         return;
     if (!ret) {
         ip->iflags &= ~HAS_PROCESS_INPUT;
@@ -1887,7 +1890,7 @@ int process_user_command()
                 ip->iflags &= ~WAS_SINGLE_CHAR;
                 ip->iflags |= SINGLE_CHAR;
                 set_charmode(ip);
-                if (!IP_VALID(ip, command_giver)) {
+                if (!IP_VALID(ip, command_giver) || (ip->iflags & NET_DEAD)) {
                     goto exit;
                 }
             }
@@ -1917,7 +1920,7 @@ exit:
     /*
      * Print a prompt if user is still here.
      */
-    if (IP_VALID(ip, command_giver))
+    if (IP_VALID(ip, command_giver) && !(ip->iflags & NET_DEAD))
         print_prompt(ip);
 
     current_interactive = 0;
@@ -2188,7 +2191,7 @@ static int call_function_interactive (interactive_t * i, char * str)
     pop_stack();                /* remove `function' from stack */
 
 #ifdef GET_CHAR_IS_BUFFERED
-    if (IP_VALID(i, ob)) {
+    if (IP_VALID(i, ob) && !(ip->iflags & NET_DEAD)) {
         if (was_single && !(i->iflags & SINGLE_CHAR)) {
             i->text_start = i->text_end = 0;
             i->text[0] = '\0';
@@ -2244,14 +2247,14 @@ static void print_prompt (interactive_t* ip)
             tell_object(ip->ob, ip->prompt, strlen(ip->prompt));
 #endif
         else if (!apply(APPLY_WRITE_PROMPT, ip->ob, 0, ORIGIN_DRIVER)) {
-            if (!IP_VALID(ip, ob)) return;
+            if (!IP_VALID(ip, ob) || (ip->iflags & NET_DEAD)) return;
             ip->iflags &= ~HAS_WRITE_PROMPT;
             tell_object(ip->ob, ip->prompt, strlen(ip->prompt));
         }
 #if defined(F_INPUT_TO) || defined(F_GET_CHAR)
     }
 #endif
-    if (!IP_VALID(ip, ob)) return;
+    if (!IP_VALID(ip, ob) || (ip->iflags & NET_DEAD)) return;
     /*
      * Put the IAC GA thing in here... Moved from before writing the prompt;
      * vt src says it's a terminator. Should it be inside the no-input_to
@@ -2259,7 +2262,7 @@ static void print_prompt (interactive_t* ip)
      */
     if ((ip->iflags & USING_TELNET) && !(ip->iflags & SUPPRESS_GA))
         add_binary_message(command_giver, telnet_ga, sizeof(telnet_ga));
-    if (!IP_VALID(ip, ob)) return;
+    if (!IP_VALID(ip, ob) || (ip->iflags & NET_DEAD)) return;
 }                               /* print_prompt() */
 
 /*

@@ -23,12 +23,32 @@ static void create() {
       "See also: prayers");
 }
 
+mixed parse_spell(string spell){
+    string s1, s2;
+    int ret;
+    object target;
+    if(query_verb() == "cast") return ({ "cast" });
+    ret = sscanf(spell,"%s against %s",s1, s2);
+    if(ret != 2) ret = sscanf(spell,"%s for %s",s1, s2);
+    if(ret != 2) s1 = spell;
+    if(s2){
+        target = get_object(s2);
+    }
+    return ({ s1, ( target || s2 ) });
+}
+
 mixed can_pray_for_str(string spell) {
-    object tmp = SPELLS_D->GetSpell(spell);
+    object tmp;
+    string *tmpstr = parse_spell(spell);
+    tmp = SPELLS_D->GetSpell(spell);
+    if(!tmp) tmp = SPELLS_D->GetSpell(tmpstr[0]);
+
+    if(!tmp){
+        return 0;
+    }
 
     if( tmp ) {
         string verb = tmp->GetVerb();
-
         if( verb != "pray" ) {
             return "That is not something you pray for.";
         }
@@ -49,7 +69,10 @@ mixed can_pray_for_str_against_str_for_liv(string spell) {
 }
 
 mixed do_pray_for_str(string spell) {
-    return this_player()->eventPrepareCast(spell);
+    mixed foo = parse_spell(spell);
+    if(sizeof(foo) == 2 && foo[1])
+        return this_player()->eventPrepareCast(foo[0], foo[1]);
+    else return this_player()->eventPrepareCast(foo[0]);
 }
 
 mixed do_pray_for_str_against_str(string spell, string ag) {

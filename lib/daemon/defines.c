@@ -13,7 +13,9 @@ static void create() {
     foreach(string str in get_dir("/include/")){
         includes += ({ "#include <"+str+">" });
     } 
-    header = implode(includes,"\n");
+    header = implode(includes,"\n")+"\n";
+    header += "#ifndef $S\n#define $S \"DEFINED_D: undefined\"\n";
+    header += "#endif\n";
     program = "\nmixed defcheck(){"+
     "\nint err;"+
     "\nmixed ret;"+

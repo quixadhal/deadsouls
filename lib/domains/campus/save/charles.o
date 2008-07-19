@@ -6,14 +6,14 @@ remote_mute 0
 local_gag 0
 remote_gag 0
 Paused 0
-CommandHist ({"say stats:switches: 5910stays: 6wins: 3932losses: 1984runs: 5916","say My win rate is 66.463829%.My switch rate is 99.898582%.","say If successful, this will be run 5918.","say the winners have been: red: 1972 green: 1972 blue: 1973","say I've switched 99.898598% of the time. My win rate is 66.458260%.","say I am faced with choice 2.","say stats:switches: 5911stays: 6wins: 3933losses: 1984runs: 5917","say My win rate is 66.469498%.My switch rate is 99.898598%.","say I decide to switch.","say If successful, this will be run 5919.","say the winners have been: red: 1972 green: 1973 blue: 1973","say I've switched 99.898613% of the time. My win rate is 66.447037%.","push a button on a pedestal","say I am faced with choice 2.","say stats:switches: 5912stays: 6wins: 3933losses: 1985runs: 5918","say My win rate is 66.458260%.My switch rate is 99.898613%.","say I decide to switch.","say If successful, this will be run 5920.","say the winners have been: red: 1972 green: 1974 blue: 1973","say I've switched 99.898628% of the time. My win rate is 66.452698%.",})
+CommandHist ({"say the winners have been: red: 6935 green: 6936 blue: 6936","say I've switched 99.971161% of the time. My win rate is 66.830063%.","push a button on a pedestal","say I am faced with choice 1.","say I am faced with choice 2.","say stats:switches: 20801stays: 6wins: 13906losses: 6901runs: 20807","say My win rate is 66.833275%.My switch rate is 99.971161%.","say If successful, this will be run 20809.","say the winners have been: red: 6935 green: 6937 blue: 6936","say I've switched 99.971161% of the time. My win rate is 66.831657%.","push a button on a pedestal","say I am faced with choice 1.","say I select the green door","say I am faced with choice 2.","say stats:switches: 20802stays: 6wins: 13907losses: 6901runs: 20808","say My win rate is 66.834869%.My switch rate is 99.971161%.","say I decide to switch.","say If successful, this will be run 20810.","say the winners have been: red: 6935 green: 6937 blue: 6937","say I've switched 99.971169% of the time. My win rate is 66.833252%.",})
 localcmds ({"",})
 next_command ({})
 MaxCommandHistSize 20
 InternalDesc 0
 Opacity 0
 MaxCarry 0
-Position 2
+Position 8
 Undead 0
 UndeadType 0
 Mount 0
@@ -21,10 +21,10 @@ Riders ({})
 BodyMass 0
 SaveRecurse 1
 Saved ({})
-HealthPoints 370
+HealthPoints 21
 MagicPoints 690
 ExperiencePoints 50
-melee 0
+melee 1
 godmode 0
 Alcohol 0
 Caffeine 0
@@ -33,19 +33,19 @@ Drink 100
 Poison 0
 Sleeping 0
 DeathEvents 0
-StaminaPoints 409.899994
+StaminaPoints 279.899994
 Torso "torso"
 Biter 0
 Fingers (["right hand":5,"left hand":5,])
-Limbs (["right foot":(["children":({}),"armors":241,"health":90,"class":4,"parent":"right leg",]),"right leg":(["children":({"right foot",}),"armors":1049761,"health":170,"class":2,"parent":"torso",]),"head":(["children":({}),"armors":262913,"health":330,"class":1,"parent":"neck",]),"neck":(["children":({"head",}),"armors":786433,"health":330,"class":1,"parent":"torso",]),"left arm":(["children":({"left hand",}),"armors":1253385,"health":170,"class":2,"parent":"torso",]),"left foot":(["children":({}),"armors":241,"health":90,"class":4,"parent":"left leg",]),"left leg":(["children":({"left foot",}),"armors":1049761,"health":170,"class":2,"parent":"torso",]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"health":330,"class":1,"parent":0,]),"right hand":(["children":({}),"armors":98319,"health":90,"class":4,"parent":"right arm",]),"left hand":(["children":({}),"armors":98319,"health":90,"class":4,"parent":"left arm",]),"right arm":(["children":({"right hand",}),"armors":1253385,"health":170,"class":2,"parent":"torso",]),])
-MissingLimbs ([])
+Limbs (["head":(["children":({}),"armors":262913,"parent":"neck","class":1,"health":330,]),"right leg":(["children":({"right foot",}),"armors":1049761,"parent":"torso","class":2,"health":124,]),"right foot":(["children":({}),"armors":241,"parent":"right leg","class":4,"health":90,]),"neck":(["children":({"head",}),"armors":786433,"parent":"torso","class":1,"health":298,]),"left foot":(["children":({}),"armors":241,"parent":"left leg","class":4,"health":90,]),"left arm":(["children":({}),"armors":1253385,"parent":"torso","class":2,"health":170,]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"parent":0,"class":1,"health":330,]),"left leg":(["children":({"left foot",}),"armors":1049761,"parent":"torso","class":2,"health":157,]),"right hand":(["children":({}),"armors":98319,"parent":"right arm","class":4,"health":74,]),"right arm":(["children":({"right hand",}),"armors":1253385,"parent":"torso","class":2,"health":76,]),])
+MissingLimbs (["left hand":(["children":({}),"armors":98319,"health":0,"class":4,"parent":"left arm",]),])
 ExtraChannels ({})
 Agent 0
 Blind 0
 CustomStats 15
 LightSensitivity ({25,75,})
 Resistance (["low":0,"high":0,"immune":0,"medium":0,"none":4194302,])
-Stats (["agility":(["class":3,"points":0,"level":36,]),"wisdom":(["class":3,"points":0,"level":45,]),"speed":(["class":3,"points":0,"level":27,]),"intelligence":(["class":1,"points":0,"level":64,]),"strength":(["class":3,"points":0,"level":27,]),"durability":(["class":4,"points":0,"level":32,]),"charisma":(["class":2,"points":0,"level":38,]),"coordination":(["class":2,"points":0,"level":44,]),"luck":(["class":3,"points":0,"level":13,]),])
+Stats (["wisdom":(["class":3,"points":0,"level":45,]),"agility":(["class":3,"points":0,"level":36,]),"speed":(["class":3,"points":0,"level":27,]),"strength":(["class":3,"points":0,"level":27,]),"intelligence":(["class":1,"points":0,"level":64,]),"durability":(["class":4,"points":0,"level":32,]),"charisma":(["class":2,"points":0,"level":38,]),"coordination":(["class":2,"points":0,"level":44,]),"luck":(["class":3,"points":0,"level":13,]),])
 Polyglot 0
 Languages (["english":(["native":1,"name":"English","points":0,"level":100,]),])
 DefaultLanguage ""
@@ -71,7 +71,7 @@ QuestBook ([])
 isPK 1
 Attackable 1
 NoCondition 0
-Messages (["telin":"$N teleports in.","telout":"$N teleports away.","leave":"$N leaves $D.","vis":"$N appears.","invis":"$N disappears.","home":"$N goes home.","dest":"$N dests $O.","come":"$N enters.","clone":"$N clones $O.",])
+Messages (["telin":"$N teleports in.","leave":"$N leaves $D.","telout":"$N teleports away.","vis":"$N appears.","home":"$N goes home.","invis":"$N disappears.","come":"$N enters.","dest":"$N dests $O.","clone":"$N clones $O.",])
 ProperNoun 1
 Modify 1
 Short "Charles"
@@ -90,20 +90,20 @@ ActionChance 0
 CombatActionChance 0
 AutoStand 1
 MaximumHealth 0
-Encounter 0
-EnemyNames ({"balrog",})
+Encounter 100
+EnemyNames ({"balrog","yattering","hans","jboa","iocla","foemo","lknb","fij","odjhcin","bmcnmmm","gbhfcbhfojh","ki","gjhfngiak","eloho","lamhnigcimg","bi","if","egjem","bgoefal","mjka","blmlehmcnn","dnkdjhgio","aiohdfckab","cngdekjdkae","floodaka","ihkcoflc","nkalmhelekedkg","aehonoffe","ajoa","flkgk","gmm","hkjbnhbcbb","dlkkgbgno","ceahkbi","klkjac","ehgfe","facijo","egfa","gccf","lgfbbdkig","fihh","hecec","ddogjdd","cow","nemnjmene","cobnfjlbehh","cenhoe","ekloboiko","ofb","dafhhlh","gnmil","inlk","nfi","efchnl","kgmacg","dfki","cegdlb","khekif","io","bnfbmdfhnij","geaa","aalnikgghadljj","newt","okmhlamgfj","fmmk","aeegaknk","elkimihg","lcbiolihmh","fbbobmc","acdchfceeeh","nihghfj","fen","oage","lnjbebhfk","bgcbdanjg","cf","mf","iangcn","ghdgeoinho","jfglgmej","db","nfm","kmekalfjclg","fcn","ee","lho","dbggdjen","kmmje","noge","aaloeedd","hfgjcojkkj","ij","ljob","fc","ijkiiacce","bboihgmnh","mha","khmfg","oclnig","hjhojfcbm","haciccfa","mnedoajn","aco","conan","jjjnbebh","fcfokioc","kmfieil","hdnlaiac","ln","afdgcljgi","fhnfklhkd","em","kblg","ocamgfibomc","koegolh","ldn","kcdefeahocl","cafgkfki","ehconlagd","nkihodnmibo","bjlfglnjg","cabmgjl","dhe","od","hlamlinjfd","bbooealnkm","mmaaiiogogd","djhjcikjm","kf","hkcgjeoojji","keilcnicl","aikdl","bknadcdkeli","kdnab","djbfkglfk","do","co","dkojk","dibkmcn","ljbejadkf","hkgbcm","clceh","onmhegieimdeoj","gemfnndmog","ailn",})
 VisibleRiders 1
 actions_enabled 1
-runs 5919
-switches 5913
+runs 20809
+switches 20803
 stays 6
 percent 0
-fred 499
-fgreen 475
-fblue 479
-wins 3934
-losses 1985
-red_wins 1972
-green_wins 1974
-blue_wins 1973
+fred 1672
+fgreen 1569
+fblue 1671
+wins 13908
+losses 6901
+red_wins 6935
+green_wins 6937
+blue_wins 6937
 save_file "/domains/campus/save/charles.o"

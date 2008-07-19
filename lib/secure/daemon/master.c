@@ -406,7 +406,7 @@ private static void load_access(string cfg, mapping resource) {
     }
 
     static void crash(string err) {
-        string guilty_stack = get_stack();
+        string guilty_stack = get_stack(1);
         string guilty_obs = identify(previous_object(-1));
         write_file(DIR_LOGS "/crashes",
           mud_name() + " crashed " + ctime(time()) + " with error " +
@@ -704,14 +704,25 @@ private static void load_access(string cfg, mapping resource) {
 
     string parser_error_message(int type, object ob, mixed arg, int flag) {
         string err;
-
+        //tc("parser_error_message("+
+        //  TYPES_D->eventCalculateTypes("parser_error",type)+", "+
+        //  identify(ob)+", "+
+        //  identify(arg)+", "+
+        //  identify(flag)+") "
+        //  ,"yellow");
         if( ob ) err = (string)ob->GetShort();
         else err = "";
         switch(type) {
             string wut;
         case ERR_IS_NOT:
-            if( flag ) err = "There is no such " + remove_article(arg) + " here.";
-            else err = "There is no " + remove_article(arg) + " here.";
+            if(flag || (arg && stringp(arg))){
+                if(flag || get_object(arg)){
+                    return "It seems you must be more specific.";
+                }
+                else if(arg && stringp(arg)) wut = remove_article(arg);
+            }
+            else wut = "such thing";
+            err = "There is no "+ wut +" here.";
             break;
 
         case ERR_NOT_LIVING:
@@ -765,9 +776,15 @@ private static void load_access(string cfg, mapping resource) {
             return arg;
 
         case ERR_THERE_IS_NO:
-            if(get_object(arg)) wut = remove_article(arg);
+            if(flag || (arg && stringp(arg))){
+                if(flag || get_object(arg)){
+                    return "It seems you must be more specific.";
+                }
+                else if(arg && stringp(arg)) wut = remove_article(arg);
+            }
             else wut = "such thing";
-            return "There is no " + wut + " here.";
+            err = "There is no "+ wut +" here.";
+            break;
 
         case ERR_BAD_MULTIPLE:
             return "You can't do that to more than one at a time.";

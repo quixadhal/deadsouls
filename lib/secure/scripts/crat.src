@@ -122,4 +122,5 @@ save
 call me->SetSkill("magic attack",100)
 call me->SetSkill("magic defense",100)
 call me->SetSkill("conjuring",100)
-bk /secure/include/network.h
+save
+

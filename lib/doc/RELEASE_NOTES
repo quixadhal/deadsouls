@@ -1,3 +1,15 @@
+---- 2.9a7 ---
+- Released 2008-07-18
+- Driver: MSG_NOSIGNAL more promiscuously defined.
+- Driver: extra checks added to avoid obscure high-load crashes.
+- Parsing problem with doors and multiple keys fixed.
+- Miscellaneous minor lib fixes.
+- Improvements to sefun and warmboots to better interact with call_outs.
+- Added commands: defines, types
+- Fixed a bug that prevented receiving damage in a wielding limb.
+- Prayer parsing system updated/fixed: clerics can now perform prayers
+  with targets.
+
 ---- 2.9a6 ---
 - Released 2008-07-14
 - Driver is now a customized FluffOS 2.12.

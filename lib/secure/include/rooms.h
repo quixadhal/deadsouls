@@ -4,6 +4,7 @@
 #include <dirs.h>
 
 #define ROOM_ARCH        "/secure/room/arch"
+#define ROOM_CATCH_TELL  DIR_STANDARD_DOMAIN "/room/catchtell"
 #define ROOM_DEATH       DIR_STANDARD_DOMAIN "/room/death"
 #define ROOM_FREEZER 	 DIR_STANDARD_DOMAIN "/room/freezer"
 #define ROOM_FURNACE 	 DIR_STANDARD_DOMAIN "/room/furnace"

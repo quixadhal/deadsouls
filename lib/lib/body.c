@@ -556,7 +556,7 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
   mixed limbs){
     string tmp = GetResistance(type);
     string agentname;
-    int fp;
+    int fp, basedam;
 
     if(agent && stringp(agent)){
         agentname = agent;
@@ -568,16 +568,15 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
         if(!estatep(agent) && estatep(this_object())) return 0;
     }
 
-    if( tmp == "immune"){
-        return 0;
-    }
+    basedam = x;
 
-    if(godmode) return 0;
+    if(godmode) x = 0;
 
     switch(tmp){
     case "low": x = (3*x)/4; break;
     case "medium": x /= 2; break;
     case "high": x /= 4; break;
+    case "immune": x = 0; break;
     }
     if( fp = functionp(Protect) ){
         if( !(fp & FP_OWNER_DESTED) ){
@@ -630,32 +629,40 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
                 continue;
             }
             while(j--){
-                z -= (int)obs[j]->eventReceiveDamage((agent || agentname),type, z, 0, limbs[i]);
-                if(z < 1) break;
-            }
-            if(z < 1) continue;
-            else {
-                y += z;
-                if(!AddHealthPoints(-z, limbs[i], agent)){
-                    //this_object()->RemoveLimb(limbs[i], (agent || agentname));
-                    call_out("RemoveLimb",0,limbs[i], (agent || agentname));
+                int tmpdam;
+                tmpdam = (int)obs[j]->eventReceiveDamage((agent || agentname),
+                  type, z, 0, limbs[i]);
+                z -= tmpdam;
+                if(z < 1){
+                    //hrmmm
+                    //break;
+                }
+                if(z < 1){
+                    //continue;
+                }
+                else {
+                    y += z;
+                    if(!AddHealthPoints(-z, limbs[i], agent)){
+                        //this_object()->RemoveLimb(limbs[i], (agent || agentname));
+                        call_out("RemoveLimb",0,limbs[i], (agent || agentname));
+                    }
                 }
             }
+            y = y / (maxi ? maxi : 1);
+            if( y ){
+                AddHealthPoints(-y, 0, (agent || agentname));
+                AddStaminaPoints(-y/2);
+            }
+            return y;
         }
-        y = y / (maxi ? maxi : 1);
-        if( y ){
-            AddHealthPoints(-y, 0, (agent || agentname));
-            AddStaminaPoints(-y/2);
+        AddHealthPoints(-x, 0, agent);
+        AddStaminaPoints(-x/2);
+        if(HealthPoints < 1 && !this_object()->GetDying()){
+            this_object()->SetDying(1);
+            call_out("eventDie", 0, (agent || agentname));
         }
-        return y;
+        return x;
     }
-    AddHealthPoints(-x, 0, agent);
-    AddStaminaPoints(-x/2);
-    if(HealthPoints < 1 && !this_object()->GetDying()){
-        this_object()->SetDying(1);
-        call_out("eventDie", 0, (agent || agentname));
-    }
-    return x;
 }
 
 /*  int eventCheckProtection(object agent, int type, int damage)

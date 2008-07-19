@@ -55,7 +55,6 @@ static void create(){
  */
 mixed CanLock(object who, string foo){
     object room;
-    //tc(identify(this_object())+" CanUnlock("+identify(who)+", "+identify(foo)+")");
     if( !(room = environment(who)) ) return 0;
     foreach(string side, class door_side val in Sides){
         if( member_array(room, val->Rooms) != -1 ){
@@ -78,7 +77,6 @@ mixed CanLock(object who, string foo){
  */
 mixed CanUnlock(object who){
     object room;
-    //tc(identify(this_object())+" CanUnlock("+identify(who)+")");
 
     if( !(room = environment(who)) ) return 0;
     foreach(string side, class door_side val in Sides){
@@ -139,9 +137,6 @@ varargs mixed eventClose(object who){
 varargs mixed eventLock(object who, mixed key, mixed foo){
     object room;
 
-    //tc(identify(this_object())+" eventLock("+identify(who)+
-    //", "+identify(key)+", "+identify(foo)+")");
-
     room = environment(who);
 
     foreach(string side, class door_side val in Sides){
@@ -150,14 +145,16 @@ varargs mixed eventLock(object who, mixed key, mixed foo){
 
             tmp = GetShort(side);
             if( !(sizeof(key->GetId() & GetKeys(side))) ){
-                who->eventPrint("You fail to lock " + tmp + ".");
+                who->eventPrint("You fail to lock " + tmp +
+                  " with " + (string)key->GetShort()+".");
                 room->eventPrint((string)who->GetName() + " attempts to " 
                   "lock " + tmp + " with " +
                   (string)key->GetShort() + ", but fails.",who);
                 return 1;
             }
             SetLocked(1);
-            who->eventPrint("You lock " + tmp + ".");
+            who->eventPrint("You lock " + tmp +
+              " with " + (string)key->GetShort()+".");
             room->eventPrint((string)who->GetName() + " locks " + tmp +
               " with " + (string)key->GetShort() + ".", who);
             return 1;
@@ -247,9 +244,6 @@ mixed eventUnlock(object who, object key){
     object room;
     string *key_id = key->GetId();
     room = environment(who);
-    //tc("door: "+identify(this_object()));
-    //tc("who: "+identify(who));
-    //tc("key: "+identify(key));
     foreach(string side, class door_side val in Sides){
         if( member_array(room, val->Rooms) != -1 ){
             string tmp;

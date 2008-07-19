@@ -14,6 +14,3 @@ void create(){
     SetAmmoType("acp");
     SetVendorType(VT_TREASURE);
 }
-void init(){
-    ::init();
-}

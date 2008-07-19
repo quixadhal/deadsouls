@@ -60,9 +60,10 @@ int cmd(string str) {
         else message("system", show, previous_object());
         return 1;
     }
-    for(i=0; i<maxi; i++)
+    for(i=0; i<maxi; i++){
         show += display_ls(dirs[i], all_files, long_details, time_sort, 
           no_load_info, brief, size);
+    }
     if(!moref && check_string_length(show)) previous_object()->eventPrint(show);
     else print_long_string(this_player(),show);
     return 1;
@@ -93,7 +94,10 @@ static private string display_ls(mixed targ, int aflag, int lflag, int tflag,
     int i, maxi;
 
     if(stringp(targ) && targ == "/") targ = ([ "/" : get_dir("/", -1) ]);
-else if(stringp(targ)) targ = ([ targ+"/" : get_dir(targ+"/", -1) ]);
+else if(stringp(targ)){
+    targ = "/"+implode(explode(targ,"/"),"/");
+    targ = ([ targ : get_dir(targ+"/", -1) ]);
+}
 for(i=0, maxi = sizeof(cles = keys(targ)); i<maxi; i++) {
     if(!bflag) ret = cles[i]+":\n";
     if(!aflag) targ[cles[i]] = filter(targ[cles[i]], "filter_dots",

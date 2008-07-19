@@ -17,6 +17,3 @@ void create(){
     SetAmmoType("nato");
     SetVendorType(VT_TREASURE);
 }
-void init(){
-    round::init();
-}

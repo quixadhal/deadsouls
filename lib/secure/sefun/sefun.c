@@ -99,6 +99,8 @@ int last_regexp = time();
 int regexp_count = 1;
 int max_regexp = 200;
 private static string *blacklist = ({});
+private static string *jokes = ({"bind","call_out","call_other",
+  "unguarded","evaluate"});
 
 varargs 
 mixed 
@@ -155,9 +157,17 @@ varargs string read_file(string file, int start_line, int number_of_lines){
     return efun::read_file(file, start_line, number_of_lines);
 }
 
+string dump_file_descriptors(){
+    if(!this_player() || !archp(this_player())){
+        return "";
+    }
+    return efun::dump_file_descriptors();
+}
+
 void reset_eval_cost(){
     if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
         efun::reset_eval_cost();
+    else debug_message("failed reset_eval_cost: "+get_stack());
 }
 
 void set_eval_limit(int i){
@@ -207,7 +217,8 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
     else error("call_out with no previous_object()");
 
     if(sizeof(raw) > MAX_CALL_OUTS && (strsrch(prevbase,"/secure/") && 
-        strsrch(prevbase,"/daemon/"))){
+        strsrch(prevbase,"/lib/") &&
+        strsrch(prevbase,"/daemon/") && strsrch(prevbase,"/domains/"))){
         int err;
         globalmixed = prev;
         err = catch(unguarded( (: destruct( globalmixed ) :) ));
@@ -222,6 +233,9 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
     }
 
     if(stringp(fun)){
+        if(member_array(fun,jokes) != -1){
+            error("No jokes, please!");
+        }
         globalmixed = prev;
         fun = bind( (: call_other, globalmixed, gfun  :) ,prev);
     }

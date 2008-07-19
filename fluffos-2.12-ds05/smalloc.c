@@ -108,7 +108,7 @@ static void mark_block (u *);
 static char *esbrk (u);
 static int resort_free_list (void);
 #ifdef DEBUG
-static void walk_new_small_malloced (func);
+static void walk_new_small_malloced (void (* ()));
 #endif
 
 #define s_size_ptr(p)	(p)
@@ -1415,8 +1415,7 @@ POINTER CDECL smalloc_calloc (size_t nelem, size_t sizel)
  * Functions below can be used to debug malloc.
  */
 
-static void walk_new_small_malloced (func)
-    void (*func) (POINTER, int);
+static void walk_new_small_malloced(void (*func) (POINTER, int))
 {
     int i;
     u *p, *q;

@@ -15,6 +15,10 @@
 #include <vision.h>
 #include "include/npc.h"
 
+#ifndef CATCH_TELL_ROOM
+#define CATCH_TELL_ROOM "/domains/default/room/catchtell"
+#endif
+
 inherit LIB_DESCRIBE;
 inherit LIB_CHAT;
 inherit LIB_COMMAND;
@@ -250,7 +254,9 @@ varargs int eventDie(mixed agent){
         if(GetPosition() == POSITION_STANDING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " drops "+death_descriptor+".", env, ({ this_object() }) );
         else if(GetPosition() == POSITION_FLYING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " falls "+death_descriptor+".", env, ({ this_object() }) );
         else message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " "+death_verb+".", env, ({ this_object() }) );
-        if( agent ) message("my_action", "You "+death_action+" " + GetName() + ".", agent);
+        if( agent )
+            message("my_action", "You "+death_action+" " + GetName() + ".",
+              (objectp(agent) ? agent : load_object(CATCH_TELL_ROOM)) );
     }
     set_heart_beat(0);
     call_out( (: Destruct :), 0);
@@ -282,15 +288,15 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     object *riders = GetRiders();
     object *targs = ({});
     if(NPC_CATCH_TELL_DEBUG){
-        tell_room("/domains/default/room/catchtell","-------");
-        tell_room("/domains/default/room/catchtell",timestamp());
-        tell_room("/domains/default/room/catchtell","obj: "+identify(this_object()));
-        tell_room("/domains/default/room/catchtell","msg: "+msg);
-        tell_room("/domains/default/room/catchtell","arg2: "+identify(arg2));
-        tell_room("/domains/default/room/catchtell","arg3: "+identify(arg3));
-        tell_room("/domains/default/room/catchtell","stack: "+get_stack());
-        tell_room("/domains/default/room/catchtell","previous: "+identify(previous_object(-1)));
-        tell_room("/domains/default/room/catchtell","-------");
+        tell_room(ROOM_CATCH_TELL,"-------");
+        tell_room(ROOM_CATCH_TELL,timestamp());
+        tell_room(ROOM_CATCH_TELL,"obj: "+identify(this_object()));
+        tell_room(ROOM_CATCH_TELL,"msg: "+msg);
+        tell_room(ROOM_CATCH_TELL,"arg2: "+identify(arg2));
+        tell_room(ROOM_CATCH_TELL,"arg3: "+identify(arg3));
+        tell_room(ROOM_CATCH_TELL,"stack: "+get_stack());
+        tell_room(ROOM_CATCH_TELL,"previous: "+identify(previous_object(-1)));
+        tell_room(ROOM_CATCH_TELL,"-------");
     }
     if(riders && sizeof(riders)){
         int i1, rider_source;

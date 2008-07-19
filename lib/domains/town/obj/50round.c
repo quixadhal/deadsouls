@@ -16,6 +16,3 @@ void create(){
     SetAmmoType("bolt");
     SetVendorType(VT_TREASURE);
 }
-void init(){
-    round::init();
-}

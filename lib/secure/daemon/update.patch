@@ -220,6 +220,8 @@ varargs static void eventUpdate(object whom){
         write_file("/secure/include/config.h", config_file+"\n", 1);
     }
 
+    rm("/powers/prayers/cure.c");
+    rm("/powers/prayers/resurrection.c");
     rm("/secure/cmds/admins/addemote.c");
     rm("/secure/cmds/admins/removeemote.c");
     rm("/secure/cmds/admins/stupidemote.c");

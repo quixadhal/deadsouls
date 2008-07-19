@@ -30,10 +30,14 @@ static void create()
 
 void heart_beat(){
     if(!this_object() || !clonep(this_object())) return;
-    if(!environment() || !living(environment()) || !environment(environment())) eventDestruct();
-    if(!connected && base_name(environment(environment())) != "/domains/default/room/telnet_room")
+    if(!environment() || !living(environment()) 
+      || !environment(environment())) 
         eventDestruct();
-
+    if(environment(environment())){
+        if(!connected && base_name(environment(environment())) 
+          != "/domains/default/room/telnet_room")
+            eventDestruct();
+    }
 }
 
 void init()
