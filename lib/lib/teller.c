@@ -119,16 +119,16 @@ int eventBalance(object who){
     if( !sizeof(tmp) )
         ret += "You have made no deposits.\n";
     else foreach(str in tmp){
-        if( mp[str] < 1 ) continue;
-        ret += sprintf("%-20s : %d\n", str+"", mp[str]);
-        if( str == GetLocalCurrency() ) total += mp[str];
-        else if( mp[str] ){
-            if( currency_rate(str) )
-                val = query_value(mp[str],str,GetLocalCurrency()); 
-            else val = 0;
-            if(val) total += val;
+            if( mp[str] < 1 ) continue;
+            ret += sprintf("%-20s : %d\n", str+"", mp[str]);
+            if( str == GetLocalCurrency() ) total += mp[str];
+            else if( mp[str] ){
+                if( currency_rate(str) )
+                    val = query_value(mp[str],str,GetLocalCurrency()); 
+                else val = 0;
+                if(val) total += val;
+            }
         }
-    }
     ret += sprintf("%-20s ----------\n%-22s %d",
       "", "Total in "+GetLocalCurrency(), total);
     if( mp["last time"] )

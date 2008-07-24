@@ -11,8 +11,9 @@ void create() {
     SetLong("This large object is designed to hold "+
       "armor and related accessories.");
     SetInventory(([
-        "/domains/default/armor/scoutsuit" : ({ 60, 1 }),
-        "/domains/default/armor/chainmail" : ({ 60, 5 }),
+        "/domains/default/armor/scoutsuit" : 1,
+        "/domains/default/weap/grenade" : 5,
+        "/domains/default/armor/chainmail" : 5,
       ]));
     SetMass(2000);
     SetBaseCost("silver",150);

@@ -13,7 +13,6 @@ static void create() {
       "would not be found all crowded together like this, but a powerful "
       "magic keeps them bound here so that mud staff can analyze and test them. "
       "There are more creatures to the south, east, and west.");
-    SetNoClean(1);
     SetInventory(([
         "/domains/default/npc/horse" : 1,
         "/domains/default/npc/bird" : 1,

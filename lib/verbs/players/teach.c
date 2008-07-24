@@ -38,8 +38,8 @@ mixed can_teach()
 
 mixed do_teach_str_to_liv(string spell, object target){
     this_player()->eventOfferTeaching(target,spell);
-    write("You offer to teach "+spell+" to "+target->GetName()+".");
-    tell_player(target,this_player()->GetName()+" offers to teach you "+spell+".");
+    //write("You offer to teach "+spell+" to "+target->GetName()+".");
+    //tell_player(target,this_player()->GetName()+" offers to teach you "+spell+".");
     return 1;
 }
 

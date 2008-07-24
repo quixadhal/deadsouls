@@ -2,6 +2,7 @@
 
 inherit LIB_MATCH;
 
+
 static void create() {
     match::create();
     SetKeyName("match");
@@ -19,4 +20,7 @@ static void create() {
     SetMass(5);
     SetBaseCost("silver",2);
     SetBurntValue(1);
+}
+void init(){
+    ::init();
 }

@@ -103,7 +103,7 @@ varargs mixed AddItem(mixed item, mixed val){
 }
 
 //TMI2 back-compat hack
-mixed AddItem_func(mixed foo){
+static mixed AddItem_func(mixed foo){
     foreach(mixed key, mixed val in foo){
         look_globalval = val;
         AddItem(key, (: look_globalval :) );
@@ -111,15 +111,14 @@ mixed AddItem_func(mixed foo){
     return foo;
 }
 
-mixed SetItem_func(mixed foo){
+static mixed SetItem_func(mixed foo){
     foreach(mixed key, mixed val in foo){
         look_globalval = val;
-        f =  functionify(look_globalval);
-        call_other( this_object(), ({ "AddItem", key,  (: f :) }) );
+        f =  bind( (: call_other, this_object(), look_globalval :), this_object() );
+        AddItem(key, (: f :) );
     }
     return foo;
 }
-
 
 varargs mixed GetItem(string item, object who){
     mixed val = mapping_member(Items, item);

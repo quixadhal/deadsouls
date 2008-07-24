@@ -8,7 +8,7 @@ STATS coordination:10:2
 STATS durability:20:4
 STATS intelligence:50:1
 STATS luck:50:1
-STATS speed:30:3
+STATS speed:40:3
 STATS strength:15:5
 STATS wisdom:50:1
 LIMB torso:0:1:A_SHIRT,A_CLOAK,A_VEST,A_SHIELD,A_ARMOR,A_BODY_ARMOR,A_BELT,A_AMULET,A_CUSTOM

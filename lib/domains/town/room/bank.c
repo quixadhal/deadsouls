@@ -7,12 +7,7 @@ static void create() {
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("First Village Bank");
-    SetLong("You are standing in the new First Village Bank. "
-      "It is immaculate with white, blue-veined marble floors "
-      "and beautiful sculptures and paintings by local artists. "
-      "An expensive red carpet leads from the entrance to the "
-      "main counter where a teller can assist you.\n"
-      "%^GREEN%^A sign you can read hangs here.%^RESET%^");
+    SetLong("This simple place is the hub of financial activity for the village. Though not at all a fancy institution, this bank is trusted by the citizenry as being as safe as it gets for keeping their money.\n%^GREEN%^A sign you can read hangs here.%^RESET%^");
     SetInventory( ([
         "/domains/town/npc/zoe" : ({60, 1})
       ]) );
@@ -20,18 +15,6 @@ static void create() {
         "sign" : "A sign you can read.",
         ({"bank","First Village Bank"}) : "The primary financial "
         "institution in town.",
-        ({"floor","floors","marble floor","marble floors"}) :
-        "The floor is lustrous, clean, and beautiful.",
-        ({"sculpture","sculptures"}) : "Graceful marble statues "
-        "are here, depicting various characters from an "
-        "ancient mythological pantheon.",
-        ({"painting","paintings"}) : "Extraordinary paintings "
-        "hang here, testifying to a brilliant local art community.",
-        ({"carpet","red carpet"}) : "A thick, fine red carpet "
-        "leads from the bank entrance to the main counter.",
-        "entrance" : "The entrace of the bank.",
-        ({"counter","main counter"}) : "An area where a "
-        "teller waits to assist you."
       ]) );
     SetExits( ([ 
         "west" : "/domains/town/room/south_road1",

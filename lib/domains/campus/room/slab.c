@@ -30,16 +30,14 @@ static void create() {
     SetItems(([
         ({ "sign", "instruction sign", "instructions sign", "instruction", "instructions" }) : "A sign you can read. It appears to be instructions for operating the stargate.",
       ]));
+    SetInventory(([
+        "/domains/campus/obj/stargate" : 1,
+        "/domains/campus/npc/kleiner" : 1,
+      ]));
     SetExits(([
         "south" : "/domains/campus/room/science2",
       ]));
-
-    SetInventory(([
-        "/domains/campus/obj/stargate" : 1,
-      ]));
     SetRead("sign", (: SignRead() :) );
-    SetProperty("no attack", 1);
-
 }
 int CanReceive(object ob) {
     if(!ob) return 0;

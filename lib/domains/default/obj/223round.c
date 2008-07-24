@@ -12,11 +12,7 @@ void create(){
       "It is not very wide, but contains a large powder charge. It is no doubt a powerful "+
       "piece of ammunition. It has not been fired.");
     SetCaliber(223);
-    SetRifleType("auto");
-    SetPistolType("auto");
+    SetFirearmType("auto");
     SetAmmoType("nato");
     SetVendorType(VT_TREASURE);
-}
-void init(){
-    round::init();
 }

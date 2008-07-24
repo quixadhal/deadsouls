@@ -22,7 +22,7 @@ static void create() {
     SetMount(1);
     SetMountStyle("driven");
     SetVisibleRiders(0);
-    SetOpacity(100);
+    SetOpacity(0);
     SetMaxHealthPoints(20);
 }
 void init(){

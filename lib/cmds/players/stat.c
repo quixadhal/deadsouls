@@ -9,22 +9,28 @@
 
 inherit LIB_DAEMON;
 
+string gargs;
+
 mixed cmd(string args) {
     string *lines, *arr, *limbs;
-    object ob;
+    object ob, *candidates;
     string tmp1, tmp2, gold;
     int i, x, y, cols;
 
-    if( args == "" || !args || args == "me" ) args = this_player()->GetKeyName();
+    if( args == "" || !args || args == "me" ) ob = this_player();
     else if(args && !creatorp(this_player())) {
         write("You can only stat yourself.");
         return 1;
     }
     if(!environment(this_player())){
-        write("You have no environment. Your stats are the least of your worries.");
+        write("You have no environment. Stats are the least of your worries.");
         return 1;
     }
-    if( !(ob = present(args, environment(this_player()))) )
+    gargs = args;
+    candidates = filter(get_livings(environment(this_player())),
+      (: answers_to(gargs, $1) :) );
+    if(!ob && sizeof(candidates)) ob = candidates[0];
+    else if( !ob && !(ob = present(args, environment(this_player()))) )
         if( !(ob = find_player(convert_name(args))) &&
           !(ob = find_living(lower_case(args))) )
             return capitalize(args) + " is nowhere to be found.";
@@ -64,7 +70,7 @@ mixed cmd(string args) {
         "Quest Points: "+ (int)ob->GetQuestPoints() +
         "    " +
         //Fix below courtesy of Jonez
-        "Experience Points: "+ (int)ob->GetExperiencePoints()),cols 
+        "Experience Points: "+ (int)ob->GetExperiencePoints(),cols) 
     });
     lines += ({ "", "Limbs:" });
     limbs = (string *)ob->GetWieldingLimbs();

@@ -291,8 +291,8 @@ mixed GetFile(string mud, mixed file){
     if(stringp(file)) AddRequestedFile(mud, file);
     else if(arrayp(file))
         foreach(string element in file){
-        AddRequestedFile(mud, element);
-    }
+            AddRequestedFile(mud, element);
+        }
     RequestBegin(mud, ({ "oob-file-req", file }) );
     return 1;
 }

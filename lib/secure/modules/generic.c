@@ -217,7 +217,7 @@ int eventAddItem(object ob, string addendum){
 }
 
 int eventDoAddition(string str){
-    this_object()->GetValue("AUTOMATED",target, generate_tmp(target), v2, str, InvMap, "SetInventory");
+    this_object()->GetTheValue("AUTOMATED",target, generate_tmp(target), v2, str, InvMap, "SetInventory");
     return 1;
 }
 

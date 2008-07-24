@@ -378,26 +378,6 @@ int eventMove(mixed dest){
     return move::eventMove(dest);
 }
 
-int eventReceiveDamage(object agent, int type, int amt, int i, mixed array l){
-    int x = -1;
-
-    if(objectp(agent)){
-        if(estatep(agent) && !estatep(this_object())) return 0;
-        if(!estatep(agent) && estatep(this_object())) return 0;
-    }
-
-    foreach(int t, int val in Protection){
-        if( t & type ){
-            if( x == -1 || val < x ){
-                x = val;
-            }
-        }
-    }
-    x = x/2 + random(x/2);
-    x = deterioration::eventReceiveDamage(agent, type, x, i, l);
-    return x;
-}
-
 varargs mixed eventRepair(object who, int strength, int type){
     if( !who || !strength ){
         return 0;
@@ -654,4 +634,8 @@ int inventory_accessible(){
 
 int inventory_visible(){
     return (seal::inventory_visible() || holder::inventory_visible());
+}
+
+mapping GetProtectionMap(){
+    return copy(Protection);
 }

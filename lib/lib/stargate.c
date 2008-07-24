@@ -52,6 +52,7 @@
 inherit LIB_ITEM;
 
 static private string origin;
+static private int connect_time;
 
 string displayLong();
 string displayShort();
@@ -112,6 +113,7 @@ void eventConnect(string destination){
         say("The ancient rings lock into place and a portal forms in an explosion of energy.");
         tell_room(d, "The ancient rings lock into place and a portal forms in an explosion of energy");
         call_out("eventDisconnect", 10+random(5));
+        connect_time = time();
         return;
     }
 
@@ -127,7 +129,7 @@ int eventDisconnect(){
     string d = STARGATE_D->GetDestination(endpoint);
     if(d) tell_room(d, "The chevrons on the stargate disengage and the portal disappears.");
     if(e) tell_room(e, "The chevrons on the stargate disengage and the portal disappears.");
-
+    connect_time = 0;
     return STARGATE_D->eventDisconnect(origin);
 }
 
@@ -230,5 +232,11 @@ string displayShort(){
         return "an idle stargate";
     default:
         return "a broken stargate";
+    }
+}
+
+void heart_beat(){
+    if(connect_time && (time() - connect_time ) > 60){
+        eventDisconnect();
     }
 }

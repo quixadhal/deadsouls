@@ -1,6 +1,7 @@
 #include <lib.h>
 
 inherit LIB_CHAIR;
+inherit LIB_SWIVEL;
 
 static void create() {
     chair::create();
@@ -13,31 +14,23 @@ static void create() {
     SetMass(1500);
     SetDollarCost(15);
     SetMaxSitters(1);
+    SetPreventGet("The chair does not budge.");
 }
+
 void init(){
-    add_action("swivel","swivel");
+    ::init();
 }
 
-int swivel(string str){
-    int hit,i;
-    object *dupes;
-    dupes = get_dupes(this_object(),environment(this_object()) );
-    if(!str || str =="" || str == "in chair" || str == "in the chair"){
-        hit = 42;
-        for(i=0;i<sizeof(dupes);i++){
-            if( member_array(this_player(),dupes[i]->GetSitters()) != -1) hit = 7;
-            if( member_array(this_player(),this_object()->GetSitters()) != -1) hit = 7;
-        }
-        if( hit == 7) {
-            write("You swivel around in your swivel chair! Whee!");
-            say(this_player()->GetName()+" swivels around in "+possessive(this_player())+" "+
-              "swivel chair, yelling \"WHEEEE!!!\"");
-            return 1;
-        }
-        else { write("You are not sitting in a swivel chair."); }
+varargs mixed eventSwivel(object who){
+    if(member_array(who, GetSitters()) != -1){
+        write("You swivel around in your swivel chair! Whee!");
+        say(this_player()->GetName()+" swivels around in "
+          +possessive(this_player())+" "+
+          "swivel chair, yelling \"WHEEEE!!!\"");
+        return 1;
     }
-    if(hit == 42) return 1;
-    else return 0;
+    else {
+        write("You're not sitting in it!");
+        return 1;
+    }
 }
-
-mixed CanGet(object ob) { return "The chair does not budge.";}

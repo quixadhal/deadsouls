@@ -12,6 +12,14 @@ int check_function(string str){
 }
 
 int make_empties(){
+    string *removes = ({
+      "/spells",
+      "/psionics",
+      "/trades",
+      "/prayers",
+      "/feats",
+    });
+
     string *empties = ({
       "/cmds/hm",
       "/cmds/builders",
@@ -74,11 +82,14 @@ int make_empties(){
     foreach(string dir in empties){
         catch( mkdir(dir) );
     }
+    foreach(string dir in removes){
+        catch( rmdir(dir) );
+    }
+
     return 1;
 }
 
 varargs static void eventUpdate(object whom){
-    int err;
     object remote;
     string a,b;
     string cpw,spw;
@@ -202,14 +213,21 @@ varargs static void eventUpdate(object whom){
             config_file = append_line(config_file,"#define HUMANS_ONLY",
               "#define SEVERABLE_LIMBS          1");
 
+        if(!grepp(config_file, "MAX_CALL_OUTS"))
+            config_file = append_line(config_file,"#define F_TERMINAL_COLOR",
+              "#define MAX_CALL_OUTS            500");
+
         write_file("/secure/include/config.h", config_file+"\n", 1);
     }
 
+    rm("/powers/prayers/cure.c");
+    rm("/powers/prayers/resurrection.c");
     rm("/secure/cmds/admins/addemote.c");
     rm("/secure/cmds/admins/removeemote.c");
     rm("/secure/cmds/admins/stupidemote.c");
     rm("/daemon/class.c");
     rm("/cmds/players/where.c");
+    rm("/cmds/creators/colors.c");
     rm("/domains/Praxis/obj/mon/execution.c");
     rm("/domains/campus/txt/moochers.txt");
     rm("/secure/cfg/classes/priest");
@@ -229,14 +247,16 @@ varargs static void eventUpdate(object whom){
     rm("/secure/cmds/creators/home.c");
     rm("/secure/cmds/creators/grant.c");
     rm("/daemon/include/races.h");
+    rm("/daemon/reaper.c");
     rm("/lib/verb.c");
     rm("/lib/include/verb.h");
+    rm("/secure/daemon/reload.proto");
+    rm("/domains/campus/obj/wound.c");
+    rm("/domains/town/obj/wound.c");
 
-    call_out("make_empties",0);
+    call_out( (: make_empties :),0);
 
-    err = catch( remote = load_object("/secure/cmds/admins/removeemote") );
-    if(err || !remote) 
-        catch( remote = load_object("/secure/cmds/creators/removeemote") );
+    remote = load_object("/secure/cmds/admins/removeemote");
     if(remote) remote->cmd("roll");
 
     reload(EVENTS_D,0,1);

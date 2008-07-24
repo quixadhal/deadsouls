@@ -1,9 +1,10 @@
 #include <lib.h>
+#include <rooms.h>
 inherit LIB_ITEM;
 inherit LIB_PRESS;
 
 int check_environs();
-int vanish_count;
+int vanish_count = 50;
 static void create() {
     item::create();
     SetKeyName("omni");
@@ -18,7 +19,6 @@ static void create() {
 }
 void init() {
     ::init();
-    vanish_count=500;
     check_environs();
 }
 mixed CanPress(object who, string target) {
@@ -30,15 +30,33 @@ mixed CanPress(object who, string target) {
     }
     return 1;
 }
-mixed eventPress(object who, string target) {
-    say(this_player()->GetName()+" turns multicolored and disappears.\n");
-    write("You feel momentarily disoriented and find yourself back in the lab.\n");
-    this_player()->eventMove("/domains/campus/room/u_lab");
-    this_player()->eventForce("look");
+mixed eventPress(object who, string where) {
+    object *rooms = objects( (: inherits(LIB_ROOM, $1) :) );
+    object target;
+    int success = 0;
+    rooms = filter(rooms, (: member_array(base_name($1), ({ ROOM_START,
+            ROOM_FURNACE, ROOM_VOID, ROOM_POD, ROOM_DEATH, ROOM_WIZ,
+            ROOM_ARCH, ROOM_NETWORK, ROOM_ROUTER, LIB_FURNACE,  
+            ROOM_FREEZER }) ) == -1  && strsrch(base_name($1),"/realms/") &&
+        !inherits(LIB_FURNACE,$1) && 
+        !($1->GetVirtual() && !grepp(base_name($1),",")) &&
+        last_string_element(base_name($1),"/") != "death" :) );
+    say(who->GetName()+" turns "+dbz_colors("multicolored")+" and disappears!");
+    write("You feel momentarily disoriented and find yourself elsewhere!");
+    while(!success){
+        target = rooms[random(sizeof(rooms)-1)];
+        success = who->eventMove(target);
+    }
+    who->eventDescribeEnvironment();
+    //tc("env: "+identify(target));
+    tell_room(target, "With a multicolored flash, "+who->GetName()+
+      " appears!",who);
     return 1;
 }
 void heart_beat(){
-    vanish_count--;
+    object *holders = filter(containers(this_object()),
+      (: interactive($1) :) );
+    if(sizeof(holders)) vanish_count--;
     if(vanish_count < 0){
         tell_object(environment(),"The omni glows brightly and disappears!");
         this_object()->eventDestruct();
@@ -51,9 +69,10 @@ void heart_beat(){
         this_object()->SetShort("an omni (glowing)");
     }
 }
+
 int check_environs(){
     if( interactive(environment()) ){
-        set_heart_beat(1);
+        set_heart_beat(10);
         return 1;
     }
     return 1;

@@ -5,7 +5,6 @@ inherit LIB_PRESS;
 
 int PushTheButton();
 string color,gagnant,my_door,other_door,removed_door;
-
 void create(){
     ::create();
     SetKeyName("button pedestal");
@@ -26,16 +25,15 @@ void create(){
       ]) );
 }
 mixed CanGet(object ob) { return "The pedestal does not budge.";}
-
 int ResetGame(){
     object *objects;
     object *contents;
     string prize;
     prize = "/domains/campus/armor/silverring";
     objects = ({});
-    objects+=({ find_object("/domains/campus/room/red_room2") });
-    objects+=({ find_object("/domains/campus/room/green_room2") });
-    objects+=({ find_object("/domains/campus/room/blue_room2") });
+    objects+=({ find_object("/domains/campus/room/red_room") });
+    objects+=({ find_object("/domains/campus/room/green_room") });
+    objects+=({ find_object("/domains/campus/room/blue_room") });
 
     objects = ({ find_object("/domains/campus/doors/red_door") });
     objects +=({ find_object("/domains/campus/doors/green_door") });
@@ -46,37 +44,28 @@ int ResetGame(){
         if(ding) ding->SetLocked(1);
     }
 
-
     if(sscanf(gagnant,"%s door",color)>0){
         string where;
-        where="/domains/campus/room/"+color+"_room2";
-        new(prize)->eventMove(find_object(where));
+        where="/domains/campus/room/"+color+"_room";
+        //new(prize)->eventMove(find_object(where));
     }
 }
-
-
 int PushTheButton(){
     int genrand;
     gagnant = "";
-    genrand = random(256);
+    genrand = random(3);
     send_messages("press", "$agent_name $agent_verb the button.",
       this_player(), 0, environment(this_player()));
-    if(!genrand || genrand == 0){
-        tell_room(environment(),"A voice from the pedestal says: "
-          "Whoops! There's been a minor glitch, but "
-          "it's nothing to worry about. Please "
-          "try again.");
-        return 1;
-    }
-    tell_room(environment(),"A voice from the pedestal says: "
-      "PRECOG: genrand is: "+genrand);
-    genrand = genrand % 3;
     if(genrand == 0) gagnant = "red door";
     if(genrand == 1) gagnant = "green door";
     if(genrand == 2) gagnant = "blue door";
+#if 0
+    tell_room(environment(),"A voice from the pedestal says: "
+      "PRECOG: genrand is: "+genrand);
     tell_room(environment(),"A voice from the pedestal says: "
       "PRECOG: gagnant is: "+gagnant+".\n"
       "PRECOG: genrand modulus is: "+genrand);
+#endif
     remove_action("doStay","stay");
     remove_action("doSwitch","switch");
     add_action("choose","choose");
@@ -88,8 +77,8 @@ int PushTheButton(){
     ResetGame();
     return 1;
 }
-
 void init(){
+    ::init();
     if(gagnant != "" && my_door !=""){
         add_action("doStay","stay");
         add_action("doSwitch","switch");
@@ -98,7 +87,6 @@ void init(){
         add_action("choose","choose");
     }
 }
-
 int choose(string str){
     if(!str || str == ""){
         tell_room(environment(),"A voice from the pedestal says: "
@@ -121,7 +109,6 @@ int choose(string str){
     reap_other("/domains/campus/armor/silverring");
     return 1;
 }
-
 int MontyMagic(string str){
     int genrand,which;
     string *choices;
@@ -129,10 +116,10 @@ int MontyMagic(string str){
     if(str != "red door") choices += ({ "red door" });
     if(str != "green door") choices += ({ "green door" });
     if(str != "blue door") choices += ({ "blue door" });
-    genrand = random(256);
-    if( choices[1] == gagnant) which = 0;
-    else if( choices[0] == gagnant) which = 1;
-    else which = genrand % 2;;
+    genrand = random(2);
+    if(choices[1] == gagnant) which = 0;
+    else if(choices[0] == gagnant) which = 1;
+    else which = genrand;
     removed_door = choices[which];
     choices -= ({ choices[which] });
     other_door = choices[0];
@@ -155,7 +142,6 @@ int MontyMagic(string str){
     return 1;
 
 }
-
 int CheckWin(string str){
     if(sscanf(str,"%s door",color)>0) color = color;
     if(str == gagnant) {
@@ -170,7 +156,6 @@ int CheckWin(string str){
       "load of NOTHING. Haaa haa!");
     return 1;
 }
-
 int doStay(){
     tell_room(environment(),"A voice from the pedestal says: "
       "Oh, how loyal!");
@@ -179,7 +164,6 @@ int doStay(){
     CheckWin(my_door);
     return 1;
 }
-
 int doSwitch(){
     tell_room(environment(),"A voice from the pedestal says: "
       "Why you're inconstant as a feather!");
@@ -189,15 +173,12 @@ int doSwitch(){
     CheckWin(my_door);
     return 1;
 }
-
 int WinFun(){
     find_object("/domains/campus/doors/"+color+"_door")->SetLocked(0);
     find_object("/domains/campus/doors/"+color+"_door")->SetClosed(0);
     tell_room(environment(),"A voice from the pedestal says: "
       "You win, kid. Congrats!\n"
       "You may enter the "+color+" room and claim your prize.\n\n"
-      "Push the pedestal button to reset the game.");
+      "Push the button on the pedestal to reset the game.");
     return 1;
 }
-
-

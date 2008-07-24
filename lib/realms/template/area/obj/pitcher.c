@@ -8,7 +8,7 @@ void create(){
     SetKeyName("pitcher");
     SetId( ({"pitcher", "vessel", "pitcher made of clay"}) );
     SetAdjectives( ({"small","clay","vessel"}) );
-    SetShort("a small pitcher made of clay");
+    SetShort("a small clay pitcher");
     SetLong("A small, clay vessel for containing fluids. You may "+
     "want to \"pour from pitcher into cup\".");
     SetMass(20);

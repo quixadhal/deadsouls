@@ -19,13 +19,19 @@ static void create() {
     SetObviousExits("e");
 
 }
-int CanReceive(object ob) {
-    if(playerp(ob) && !creatorp(ob) && !present("testchar badge",ob)) {
-        message("info","The storeroom is for guild officers only.", ob);
-        return 0;
+int CanReceive(object sneak) {
+    object *living_stack = get_livings(sneak);
+    if(!living_stack || !arrayp(living_stack)) living_stack = ({ sneak });
+    foreach(object ob in living_stack){
+        if(living(ob) && !creatorp(ob) &&
+          !member_group(ob,"TEST")) {
+            message("info","The storeroom is for guild officers only.", ob);
+            return 0;
+        }
     }
     return 1;
 }
+
 void init(){
     ::init();
 }

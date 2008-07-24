@@ -47,31 +47,25 @@ int ResetGame(){
     if(sscanf(gagnant,"%s door",color)>0){
         string where;
         where="/domains/campus/room/"+color+"_room2";
-        new(prize)->eventMove(find_object(where));
+        //new(prize)->eventMove(find_object(where));
     }
 }
 int PushTheButton(){
     int genrand;
     gagnant = "";
-    genrand = random(256);
+    genrand = random(3);
     send_messages("press", "$agent_name $agent_verb the button.",
       this_player(), 0, environment(this_player()));
-    if(!genrand || genrand == 0){
-        tell_room(environment(),"A voice from the pedestal says: "
-          "Whoops! There's been a minor glitch, but "
-          "it's nothing to worry about. Please "
-          "try again.");
-        return 1;
-    }
-    tell_room(environment(),"A voice from the pedestal says: "
-      "PRECOG: genrand is: "+genrand);
-    genrand = genrand % 3;
     if(genrand == 0) gagnant = "red door";
     if(genrand == 1) gagnant = "green door";
     if(genrand == 2) gagnant = "blue door";
+#if 0
+    tell_room(environment(),"A voice from the pedestal says: "
+      "PRECOG: genrand is: "+genrand);
     tell_room(environment(),"A voice from the pedestal says: "
       "PRECOG: gagnant is: "+gagnant+".\n"
       "PRECOG: genrand modulus is: "+genrand);
+#endif
     remove_action("doStay","stay");
     remove_action("doSwitch","switch");
     add_action("choose","choose");
@@ -122,10 +116,10 @@ int MontyMagic(string str){
     if(str != "red door") choices += ({ "red door" });
     if(str != "green door") choices += ({ "green door" });
     if(str != "blue door") choices += ({ "blue door" });
-    genrand = random(256);
-    if( choices[1] == gagnant) which = 0;
-    else if( choices[0] == gagnant) which = 1;
-    else which = genrand % 2;;
+    genrand = random(2);
+    if(choices[1] == gagnant) which = 0;
+    else if(choices[0] == gagnant) which = 1;
+    else which = genrand;
     removed_door = choices[which];
     choices -= ({ choices[which] });
     other_door = choices[0];
@@ -185,6 +179,6 @@ int WinFun(){
     tell_room(environment(),"A voice from the pedestal says: "
       "You win, kid. Congrats!\n"
       "You may enter the "+color+" room and claim your prize.\n\n"
-      "Push the pedestal button to reset the game.");
+      "Push the button on the pedestal to reset the game.");
     return 1;
 }

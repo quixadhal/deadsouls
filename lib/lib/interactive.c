@@ -404,7 +404,7 @@ int SetWhereBlock(){ return (WhereBlock = !WhereBlock); }
 int GetWhereBlock(){ return WhereBlock; }
 
 string get_path(){
-    log_file("get_path", identify(previous_object())+"\n");
+    //log_file("get_path", identify(previous_object())+"\n");
     return query_cwd();
 }
 

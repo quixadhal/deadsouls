@@ -132,6 +132,10 @@ varargs mixed eventOpen(object who, object tool){
 }
 
 varargs mixed eventKnock(object who, mixed what){
+    if(!Door){
+        write("You can't knock on that.");
+        return 0;
+    }
     return Door->eventKnock(who, what);
 }
 

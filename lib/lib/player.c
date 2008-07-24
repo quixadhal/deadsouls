@@ -123,7 +123,7 @@ static void eventDestroyUndead(object agent){
 }
 
 varargs int eventDie(mixed agent){
-    int x, expee, subexpee;
+    int x;
     string agentname;
 
     if(!agent) agent = previous_object();
@@ -158,15 +158,11 @@ varargs int eventDie(mixed agent){
 
         NewBody(GetRace());
 
-        expee = this_object()->GetExperiencePoints();
-        subexpee = to_int(expee * 0.25);
-
         eventCompleteHeal(GetMaxHealthPoints()/2);
         AddMagicPoints(-(random(GetMagicPoints())));
         this_object()->eventMove(ROOM_DEATH);
-        this_object()->AddExperiencePoints(-subexpee);
         this_object()->save_player((string)this_object()->GetKeyName());
-        this_object()->eventForce("look");
+        this_object()->eventDescribeEnvironment();
     }
     flush_messages();
     return 1;
@@ -180,7 +176,7 @@ mixed eventTurn(object who){
     return 1;
 }
 
-void eventRevive(){
+varargs void eventRevive(int nopenalty){
     string skill;
 
     this_object()->SetDead(0);
@@ -192,26 +188,32 @@ void eventRevive(){
     if(this_player()->GetPoison() > 0){
         this_player()->AddPoison(0 - this_player()->GetPoison());
     }
-    foreach(skill in GetSkills()){
-        int x;
+    if(!nopenalty){
+        int expee, subexpee;
+        foreach(skill in GetSkills()){
+            int x;
 
-        if( !random(4) ){
-            continue;
-        }
-        if( newbiep(this_object()) ){
-            x = 2;
-        }
-        else {
-            x = 10;
-        }
-        x = random(x - (2*GetSkillClass(skill)))/2;
-        if( x > 0 ){
-            while( x-- ){
-                AddSkillPoints(skill,
-                  -GetMaxSkillPoints(skill,
-                    GetBaseSkillLevel(skill)));
+            if( !random(4) ){
+                continue;
+            }
+            if( newbiep(this_object()) ){
+                x = 2;
+            }
+            else {
+                x = 10;
+            }
+            x = random(x - (2*GetSkillClass(skill)))/2;
+            if( x > 0 ){
+                while( x-- ){
+                    AddSkillPoints(skill,
+                      -GetMaxSkillPoints(skill,
+                        GetBaseSkillLevel(skill)));
+                }
             }
         }
+        expee = this_object()->GetExperiencePoints();
+        subexpee = to_int(expee * 0.25);
+        this_object()->AddExperiencePoints(-subexpee);
     }
     NewBody(GetRace());
     eventCompleteHeal(GetMaxHealthPoints());
@@ -219,7 +221,17 @@ void eventRevive(){
     AddMagicPoints(-(GetMaxMagicPoints()/2));
     AddStaminaPoints(-(GetMaxStaminaPoints()/2));
     AddHealthPoints(-(GetMaxHealthPoints()/2));
-    if(creatorp()) interactive::SetShort("$N the reborn");
+    if(this_object()->GetLead()){
+        int shots = this_object()->GetLead("gunshot_wounds");
+        if(shots) this_object()->AddLead("gunshot_wounds", -shots);
+        shots = this_object()->GetLead("rifleshot_wounds");
+        if(shots) this_object()->AddLead("rifleshot_wounds", -shots);
+    }
+    if(creatorp()){
+        string livingtitle = this_object()->GetLivingShort();
+        if(!livingtitle) livingtitle = "$N the reborn";
+        interactive::SetShort(livingtitle);
+    }
 }
 
 int eventMove(mixed dest){
@@ -297,8 +309,8 @@ int Setup(){
     if( !GetClass() ) SetClass("explorer");
     if( GetClass() ){
         foreach(classes in (string array)CLASSES_D->GetClasses())
-        if( ClassMember(classes) && classes != GetClass() )
-            AddChannel(classes);
+            if( ClassMember(classes) && classes != GetClass() )
+                AddChannel(classes);
     }
     if(sizeof(GetExtraChannels())) AddChannel(GetExtraChannels());
     set_heart_beat(GetHeartRate());
@@ -315,8 +327,8 @@ int Setup(){
         PLAYERS_D->AddPlayerInfo(this_object());
 
         foreach(classes in (string array)CLASSES_D->GetClasses())
-        if( ClassMember(classes) && classes != GetClass() )
-            AddChannel(classes);
+            if( ClassMember(classes) && classes != GetClass() )
+                AddChannel(classes);
         if( avatarp() ) AddChannel(({ "avatar" }));
         if( high_mortalp() ) AddChannel( ({ "newbie", "hm" }) );
         if( newbiep() ) AddChannel( ({ "newbie" }) );
@@ -371,7 +383,7 @@ int Setup(){
 
         SetShort("First Admin $N");
     }
-
+    if(!creatorp(this_object())) this_object()->SetInvis(0);
     return 1;
 }
 
@@ -487,7 +499,7 @@ int SetUndead(int x){
 }
 
 string GetName(){
-    if(GetInvis()) return "A shadow";
+    if(GetInvis() && !this_player()->GetWizVision()) return "A shadow";
     else return interactive::GetName();
 }
 
@@ -509,10 +521,10 @@ varargs string GetLong(string str){
     foreach(item in map(
         filter(all_inventory(), (: !((int)$1->GetInvis(this_object())) :)),
         (: (string)$1->GetEquippedShort() :)))
-    if( item ) counts[item]++;
+        if( item ) counts[item]++;
     if( sizeof(counts) ) str += GetCapName() + " is carrying:\n";
     foreach(item in keys(counts))
-    str += capitalize(consolidate(counts[item], item)) + "\n";
+        str += capitalize(consolidate(counts[item], item)) + "\n";
     return str;
 }
 
@@ -551,8 +563,8 @@ string SetClass(string str){
         TrainingPoints = points;   /* leave points alone */
         AddChannel(GetClass());
         foreach(classes in (string array)CLASSES_D->GetClasses())
-        if( ClassMember(classes) && classes != GetClass() )
-            AddChannel(classes);
+            if( ClassMember(classes) && classes != GetClass() )
+                AddChannel(classes);
     }
     return GetClass();
 }

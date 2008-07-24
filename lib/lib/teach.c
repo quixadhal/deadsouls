@@ -6,22 +6,41 @@ private static int OfferExpires = 60;
 int direct_teach_str_to_liv(){ return 1;}
 int direct_teach_liv_to_str(){ return 1;}
 
-int CanTeach(){
-    return 1;
+varargs int CanTeach(object whom, string what){
+    if(whom == this_object()){
+        write("You are not a member of the autodidact guild.");
+        return 0;
+    }
+    if(member_array(what, keys(this_object()->GetSpellBook())) != -1){
+        int magpoint = this_object()->GetMagicPoints();
+        int maxmagpoint = this_object()->GetMaxMagicPoints();
+        if(magpoint < maxmagpoint){
+            write("You must have your full mana to teach magic.");
+            return 0;
+        }
+        return 1;
+    }
+    return 0;
 }
 
 int eventOfferTeaching(object who, string what){
-    if(!CanTeach()){
-        write("You can't teach that.");
+    if(!CanTeach(who, what)){
+        write("You are unable to teach that.");
         return 0;
     }
-    tell_player(who,this_object()->GetName()+" offers to teach you "+what+".");
+    //if(!Teaching[who] || !Teaching[who][0] || Teaching[who][0] != what){
+    tell_player(who,this_object()->GetName()+
+      " offers to teach you "+what+".");
+    tell_player(this_object(),"You offer to teach "+what+
+      " to "+who->GetName()+".");
+    //}
     Teaching[who] = ({ what, time() });
     return 1;
 }
 
 int eventTeach(object who, string what){
-    if(!CanTeach()){
+    int magpoint = this_object()->GetMagicPoints();
+    if(!CanTeach(who, what)){
         write("They can't teach that.");
         return 0;
     }
@@ -45,7 +64,13 @@ int eventTeach(object who, string what){
       possessive_noun(who) +
       " forehead and gives " +
       objective(who) + " knowledge of " +
-      what + ".", who);
+      what + ".", ({ who, this_object() }));
+    this_object()->eventPrint("You touch "+possessive_noun(who) + 
+      " forehead and give " + objective(who) + " knowledge of " +
+      what + ".");
+    if(!creatorp(this_object())){
+        this_object()->AddMagicPoints(-magpoint);
+    }
     map_delete(Teaching,who);
     return 1;
 }

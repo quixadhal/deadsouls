@@ -8,7 +8,7 @@ mixed cmd(string str) {
     object ob;
     string ret;
 
-    if(str) ob = to_object(str);
+    if(str) ob = get_object(str);
     if(!ob || !living(ob)){
         if(str){
             write("No such living thing found.");

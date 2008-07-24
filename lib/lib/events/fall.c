@@ -1,3 +1,4 @@
+#include <rooms.h>
 #include <position.h>
 #include <medium.h>
 #include <message_class.h>
@@ -5,6 +6,7 @@
 mixed eventFall(){
     object env = environment();
     mixed rumbo = 0;
+    mixed tmprumbo = 0;
     string name = this_object()->GetName();
 
     if(!living(this_object())) name = this_object()->GetShort();
@@ -18,9 +20,18 @@ mixed eventFall(){
         return 1;
     }
     else {
+        int err;
         if(!rumbo) return 0;
-        if(stringp(rumbo)) rumbo = load_object(rumbo);
-        if(!rumbo){
+        tmprumbo = rumbo;
+        if(stringp(rumbo)) err = catch(rumbo = load_object(rumbo));
+        if(err || !rumbo){
+            //tc("tmprumbo (fall) for failed roomload: "+identify(tmprumbo));
+            err = catch(rumbo = load_object(ROOM_VOID));
+        }
+        if(err || !rumbo){
+            //tc("eventFall failed for "+identify(this_object()),"red");
+            //if(environment()) tc("Current env: "+identify(environment()),"red");
+            //tc("desired location: "+identify(tmprumbo),"red");
             return 0;
         }
         tell_object(this_object(),"You plummet downward!");

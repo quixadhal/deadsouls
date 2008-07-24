@@ -5,8 +5,6 @@
  *    created by Descartes of Borg 951210
  */
 
-
-
 #include <lib.h>
 #include <objects.h>
 #include "include/marry.h"
@@ -19,9 +17,9 @@ static void create() {
     SetRules("LIV to LIV");
     SetErrorMessage("Marry whom to whom?");
     SetHelp("Syntax: <marry PLAYER to PLAYER>\n\n"
-      "Allows people of great faith to join to souls in marriage.  "
-      "In order to marry to people, you must however be in a place "
-      "which you find holy.\n\n"
+      "Allows people of proper divine or legal authority to join two "
+      "souls in marriage. In order to marry people, you must be in an "
+      "appropriate location for it.\n\n"
       "See also: divorce");
 }
 

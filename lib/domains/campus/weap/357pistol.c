@@ -1,6 +1,7 @@
 #include <lib.h>
 #include <vendor_types.h>
 inherit "/lib/pistol";
+
 void create(){
     pistol::create();
     SetKeyName("revolver");
@@ -11,10 +12,13 @@ void create(){
       "serious rounds. Bullets are loaded individually into it, and they, along with spent "+
       "shells, remain in the cylinder until unloaded.");
     SetCaliber(357);
-    SetPistolType("revolver");
+    SetFirearmType("revolver");
     SetAmmoType("magnum");
     SetMaxAmmo(6);
     SetMass(20);
     SetDollarCost(10);
     SetVendorType(VT_WEAPON);
+}
+void init(){
+    ::init();
 }

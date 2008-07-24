@@ -12,11 +12,21 @@
 
 inherit LIB_SURFACE;
 
-int DecayLife, Count, CallOut, Fresh;
+int Count, CallOut, Fresh;
 string Owner, Race;
+mapping Stats, Skills;
+string BaseFile, Class, Gender, LivingShort, LivingLong;
+int Player, Level, slowdecay, nodecay;
+string array MissingLimbs;
+object Playerob;
+mapping Equipped = ([]);
+
+mixed direct_resurrect_obj(){ return 1; }
+mixed indirect_resurrect_obj(){ return 1; }
 
 int eventDecay(){
     int smell;
+    if(nodecay) return 0;
     if( !environment() ){
         Destruct();
         return 0;
@@ -47,7 +57,10 @@ int eventDecay(){
         Destruct();
         return 0;
     }
-    Count++;
+    if(slowdecay){
+        if(random(100) > slowdecay) Count++;
+    }
+    else Count++;
     return Count;
 }
 
@@ -55,16 +68,10 @@ static int Destruct(){
     return ::Destruct();
 }
 
-int SetDecayLife(int x){ return (DecayLife = x); }
-
-int GetDecayLife(){ return DecayLife; }
-
 void SetCorpse(object who){
+    object *worn = ({});
     string tmpshort = (string)who->GetShort();
     if(sizeof(who->GetRiders())) tmpshort = (string)who->GetPlainShort();
-    if( DecayLife < 100 ){
-        DecayLife = 500;
-    }
     SetKeyName(who->GetKeyName());
     SetId(({ "body","corpse",who->GetId()... }) );
     Owner = who->GetCapName();
@@ -75,6 +82,38 @@ void SetCorpse(object who){
     SetLong("As you look closely at " + who->GetCapName() +
       ", you notice that " +  nominative(who) +
       " does not appear to be moving.");
+    Skills = who->GetSkillsMap();
+    Stats = who->GetStatsMap();
+    Level = who->GetLevel();
+    Gender = who->GetGender();
+    Class = who->GetClass();
+    MissingLimbs = who->GetMissingLimbs();
+    Player = interactive(who);
+    Playerob = who;
+    BaseFile = base_name(who)+".c";
+    LivingLong = who->GetLong();
+    LivingShort = who->GetShort();
+    SetMaxCarry(who->GetMaxCarry());
+    worn = who->GetWorn();
+    worn += who->GetWielded();
+    //tc("worn: "+identify(worn));
+    foreach(mixed thing in worn){
+        if(arrayp(thing) && sizeof(thing)) thing = thing[0];
+        //tc("thing: "+identify(thing));
+        if(!Equipped) Equipped = ([]);
+        if(!thing || !objectp(thing)) continue;
+        if(Equipped[file_name(thing)]) continue;
+        Equipped[file_name(thing)] = 
+        ([ "object" : thing, "where" : thing->GetWorn() ]); 
+}
+}
+
+int isPlayer(){
+    return Player;
+}
+
+int isCorpse(){
+    return 1;
 }
 
 int isFreshCorpse(){
@@ -100,7 +139,6 @@ static void create(){
     SetAdjectives( ({"pile of", "rotting", "stinky"}) );
     Count = 0;
     CallOut = 0;
-    DecayLife = 100;
     Owner = 0;
     Race = 0;
     SetNoCondition(1);
@@ -115,3 +153,118 @@ int direct_offer_obj(){
 }
 
 string GetItemCondition(){ return "";}
+
+mapping SetStats(mapping stats){
+    Stats = stats;
+    return Stats;
+}
+
+mapping GetStats(){
+    return Stats;
+}
+
+mapping SetSkills(mapping skills){
+    Skills = skills;
+    return Skills;
+}
+
+mapping GetSkills(){
+    return Skills;
+}
+
+string SetGender(string gender){
+    return Gender = gender;
+}
+
+string GetGender(){
+    return Gender;
+}
+
+int SetLevel(int level){
+    return Level = level;
+}
+
+int GetLevel(){
+    return Level;
+}
+
+string SetClass(string the_class){
+    return Class = the_class;
+}
+
+string GetClass(){
+    return Class;
+}
+
+string array SetMissingLimbs(string *limbs){
+    return MissingLimbs = limbs;
+}
+
+string array GetMissingLimbs(){
+    return MissingLimbs;
+}
+
+object GetPlayerob(){
+    return Playerob;
+}
+
+string GetCapName(){
+    return Owner;
+}
+
+string SetBaseFile(string file){
+    return BaseFile = file;
+}
+
+string GetBaseFile(){
+    return BaseFile;
+}
+
+string SetLivingShort(string short){
+    return LivingShort = short;
+}
+
+string GetLivingShort(){
+    return LivingShort;
+}
+
+string SetLivingLong(string long){
+    return LivingLong = long;
+}
+
+string GetLivingLong(){
+    return LivingLong;
+}
+
+int SetNoDecay(int i){
+    if(i) nodecay = 1;
+    else nodecay = 0;
+    return nodecay;
+}
+
+int GetNoDecay(){
+    return nodecay;
+}
+
+int SetSlowDecay(int i){
+    if(i) slowdecay = i;
+    else slowdecay = 0;
+    return slowdecay;
+}
+
+int GetSlowDecay(){
+    return slowdecay;
+}
+
+int SetCount(int i){
+    Count = i;
+    return Count;
+}
+
+int GetCount(int i){
+    return Count;
+}
+
+mapping GetEquipped(){
+    return copy(Equipped);
+}

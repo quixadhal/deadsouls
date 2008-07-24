@@ -59,7 +59,7 @@ mixed do_remove_obs(mixed *res) {
 
         ua = unique_array(res, (: $1 :));
         foreach(string *list in ua)
-        this_player()->eventPrint(list[0]);
+            this_player()->eventPrint(list[0]);
         return 1;
     }
     res = (mixed *)obs->eventUnequip(this_player()) - ({ 1 });

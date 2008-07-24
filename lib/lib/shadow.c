@@ -29,6 +29,11 @@ object GetShadowedObject(){
 }
 
 int eventUnshadow(){
-    shadowed->RemoveShadow(shadow_thing);
-    return destruct(shadow_thing);
+    if(shadowed){
+        shadowed->RemoveShadow(shadow_thing);
+    }
+    if(shadow_thing){
+        return destruct(shadow_thing);
+    }
+    else return 0;
 }

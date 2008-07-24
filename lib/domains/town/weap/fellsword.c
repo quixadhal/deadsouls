@@ -15,7 +15,7 @@ static void create() {
     SetMass(300);
     SetBaseCost("silver", 5000);
     SetVendorType(VT_WEAPON);
-    SetClass(35);
+    SetClass(40);
     SetDamageType(BLADE);
     SetWeaponType("blade");
 }

@@ -7,7 +7,7 @@ void eventDecay();
 static void create() {
     daemon::create();
     SetNoClean(1);
-    call_out((: eventDecay :), 30);
+    call_out("eventDecay", 30);
 }
 
 static void eventDecay() {
@@ -17,9 +17,9 @@ static void eventDecay() {
     corpses += find_inheritors(LIB_CORPSE);
     limbs += find_inheritors(LIB_LIMB);
 
-    limbs->eventDecay();
-    corpses->eventDecay();
+    catch( limbs->eventDecay() );
+    catch( corpses->eventDecay() );
 
-    call_out((: eventDecay :), 30);
+    call_out("eventDecay", 30);
     return;
 }

@@ -53,7 +53,6 @@ static void create() {
     SetLevel(5);
     SetRace("human");
     SetGender("male");
-    SetNoClean(1);
     AddTalkResponse(" ", (: TalkFunc :));
     AddTalkResponse("?", (: AnswerFunc :));
 }

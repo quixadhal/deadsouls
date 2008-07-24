@@ -91,7 +91,7 @@ varargs int eventProcessDoor(mixed door, string property, mixed value, string co
     string other_room;
 
     if(!door || ! property ){
-        write("Wrong number of arguments to evenProcessDoor");
+        write("Wrong number of arguments to eventProcessDoor");
         return 0;
     }
 
@@ -268,6 +268,5 @@ int eventCreateDoor(string dir, string filename){
 
 
 }
-
 
 

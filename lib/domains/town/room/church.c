@@ -31,7 +31,6 @@ static void create() {
         "minor pests have made their home here.",
         "vandalism" : "You don't see any of that."
       ]) );
-    SetObviousExits("s, w");
     SetEnters( ([
         "elevator" : "/domains/town/room/elevator",
       ]) );

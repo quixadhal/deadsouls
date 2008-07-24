@@ -16,6 +16,7 @@ private static string array ExcludedIds  = ({});
 private static string       KeyName      = 0;
 private static int          Matching     = 1;
 private static object array NotifiedObjects = ({});
+private static mixed array  rfn          = ({});
 
 string GetKeyName();
 
@@ -56,13 +57,23 @@ string SetCapName(string str){
 
 string array GetId(){
     string tmp;
-    tmp = GetKeyName();
 
+    if(Id && sizeof(Id)) return Id;
+
+    tmp = GetKeyName();
     if( tmp ){
-        if(!OBJECT_MATCHING || !Matching) return distinct_array(({ CanonicalId..., tmp }));
-        else return Id + ({ file_name(this_object()) }) + atomize_string(tmp) - ExcludedIds;
+        if(!OBJECT_MATCHING || !Matching) 
+            return distinct_array(({ CanonicalId..., tmp }));
+        else return Id + atomize_string(tmp) - ExcludedIds;
     }
     else return Id;
+}
+
+string GetUniqueId(){
+    string fn = file_name(this_object());
+    rfn = reg_assoc(fn, ({ "[A-Za-z0-9]+" }), ({ 1 }), 0);
+    fn = implode(filter(rfn[0], (: rfn[1][member_array($1,rfn[0])] :) ), "*");
+    return fn;
 }
 
 string array GetCanonicalId(){
@@ -73,6 +84,8 @@ string array GetCanonicalId(){
 }
 
 varargs string array SetId(mixed val...){
+    string tmp, fn, gs;
+    string *exclude = ({});
     if( stringp(val) ){
         val = ({ val });
     }
@@ -88,6 +101,22 @@ varargs string array SetId(mixed val...){
             Id = ({ Id..., id... });
         }
     }
+    if(gs = this_object()->GetShort()){
+        exclude = ({ lower_case(gs) });
+        exclude += ({ lower_case(remove_article(gs)) });
+        Id += exclude;
+    }
+    if(tmp = this_object()->GetRace()){
+        Id += ({ tmp });
+    }
+    if(tmp = this_object()->GetKeyName()){
+        Id += ({ tmp });
+    }
+    if(clonep(this_object())){
+        fn = GetUniqueId();
+        exclude += ({ fn });
+        Id += ({ fn });
+    }
 
     if(COMPAT_MODE) parse_init();
     parse_refresh();
@@ -96,7 +125,7 @@ varargs string array SetId(mixed val...){
 
     if(OBJECT_MATCHING && Matching){
         if(!KeyName || !sizeof(KeyName)) KeyName = Id[0];
-        Id = atomize_array(Id);
+        Id = distinct_array(atomize_array(Id - exclude) + Id); 
     }
     return Id;
 }

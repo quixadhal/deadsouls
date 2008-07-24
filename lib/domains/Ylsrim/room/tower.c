@@ -10,7 +10,7 @@ inherit LIB_ROOM;
 inherit LIB_JUMP; 
 
 int ReadSign() {
-    this_player()->more("/domains/town/txt/warning_sign.txt");
+    this_player()->more("/domains/town/txt/ylsrim_sign.txt");
     return 1;
 }
 

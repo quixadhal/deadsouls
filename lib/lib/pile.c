@@ -25,12 +25,14 @@ static void create(){
 
 string array GetId(){
     string array id;
+    string tender = "coins";
+    if(PileType == "dollars") tender = "bills";
 
     id = item::GetId();
     if( PileType ){
         id += ({ PileType, PileAmount + " " + PileType, "pile of "+PileType });
     }
-    return ({ id..., "money", "pile", "pile of "+ PileAmount + " " + PileType });
+    return ({ id..., tender, "money", "pile", "pile of "+ PileAmount + " " + PileType });
 }
 
 int GetMass(){

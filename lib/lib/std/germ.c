@@ -8,6 +8,7 @@
 
 #include <lib.h>
 #include <rooms.h>
+#include <daemons.h>
 
 inherit LIB_ITEM;
 
@@ -214,6 +215,8 @@ mixed eventInfect(object ob){
     string *bane = ({});
     if(!ob) return;
 
+    if(RELOAD_D->GetWarmBootInProgress()) return 0;
+    if(environment() && base_name(environment()) == ROOM_VOID) return 0;
     if(!this_object()) return 0;
     if(!ob) return 0;
     if(!ob->CanReceive(this_object())) return 0;

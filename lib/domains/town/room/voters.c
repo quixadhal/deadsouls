@@ -55,7 +55,7 @@ mixed ReadList() {
     foreach( string sClass in CLASSES_D->GetClasses() ) {
         msg += capitalize( sClass ) + " : ";
         foreach( string sName in VOTING_D->GetCandidates(sClass) )
-        msg += capitalize(sName) + ", ";
+            msg += capitalize(sName) + ", ";
         if( msg[strlen(msg)-2] == ',' )        
             msg = msg[0..strlen(msg)-3];
         msg += "\n";

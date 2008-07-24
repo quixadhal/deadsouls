@@ -29,15 +29,15 @@ string cmd(string str) {
             paths = ({});
             files = get_dir(this_player()->query_cwd()+"/");
             if(sizeof(files)) foreach(string s1 in files){
-                if(file_size(where + "/" +s1) == -2 ){
-                    paths += ({ where + "/" +s1 });
+                    if(file_size(where + "/" +s1) == -2 ){
+                        paths += ({ where + "/" +s1 });
+                    }
                 }
-            }
         }
         if(sizeof(paths)) foreach(string path in paths){
-            load_object("/secure/cmds/creators/lsed")->cmd(rulefile + " "+ path + "/*.c");
-            load_object("/secure/cmds/creators/lsed")->cmd(rulefile + " "+ path + "/*.h");
-        }
+                load_object("/secure/cmds/creators/lsed")->cmd(rulefile + " "+ path + "/*.c");
+                load_object("/secure/cmds/creators/lsed")->cmd(rulefile + " "+ path + "/*.h");
+            }
     }
 
     else {

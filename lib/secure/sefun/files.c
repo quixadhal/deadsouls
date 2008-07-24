@@ -7,7 +7,7 @@
 string gtempname, gfilename;
 
 int file_exists(string str) { 
-    if(!str) return 0;
+    if(!str || !stringp(str)) return 0;
     return (file_size(str) > -1);
 }
 

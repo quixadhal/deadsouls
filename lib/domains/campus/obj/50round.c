@@ -11,11 +11,8 @@ void create(){
     SetLong("This mammoth bullet is nearly five inches long. Anything this bad "+
       "boy hits is in for a rough time.");
     SetCaliber(50);
-    SetRifleType("bolt");
-    SetPistolType("bolt");
+    SetFirearmType("bolt");
+    SetFirearmType("bolt");
     SetAmmoType("bolt");
     SetVendorType(VT_TREASURE);
-}
-void init(){
-    round::init();
 }

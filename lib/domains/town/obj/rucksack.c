@@ -14,18 +14,15 @@ static void create() {
       "strong, canvas-like material. It appears suitable "+
       "for just about any adventure you'd find yourself in.");
     SetMass(100);
-    SetDollarCost(400);
+    SetDollarCost(200);
     SetCanClose(1);
     SetClosed(1);
-    SetMaxCarry(2000);
+    SetMaxCarry(1000);
     SetDamagePoints(100);
     SetArmorType(A_VEST);
     SetInventory(([
         "/domains/town/obj/torch" : 1,
         "/domains/town/obj/match" : 3,
-        "/domains/town/obj/map" : 1,
-        "/domains/town/meals/ale" : 3,
-        "/domains/town/meals/poison" : 1,
       ]));
 }
 void init(){

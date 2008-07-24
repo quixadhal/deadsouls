@@ -7,12 +7,17 @@
  */
 
 #include <lib.h>
+#include <rooms.h>
 #include <daemons.h>
 #include <position.h>
 #include <armor_types.h>
 #include <message_class.h>
 #include <vision.h>
 #include "include/npc.h"
+
+#ifndef CATCH_TELL_ROOM
+#define CATCH_TELL_ROOM "/domains/default/room/catchtell"
+#endif
 
 inherit LIB_DESCRIBE;
 inherit LIB_CHAT;
@@ -24,6 +29,7 @@ inherit LIB_MOVE;
 inherit LIB_OBJECT;
 inherit LIB_SAVE;
 inherit LIB_DOMESTICATE;
+inherit LIB_GUARD;
 
 private int CustomXP, ActionChance, CombatActionChance, AutoStand;
 private int MaximumHealth = 0;
@@ -55,6 +61,7 @@ static void create(){
     CustomXP = 0;
     Inventory = ([]);
     AutoStand = 1;
+    set_heart_beat( GetHeartRate() );
 }
 
 void CheckEncounter(){
@@ -95,6 +102,7 @@ void CheckEncounter(){
 }
 
 static void init(){
+    guard::init();
     CheckEncounter();
 }
 
@@ -102,6 +110,7 @@ static void heart_beat(){
     int position;
 
     living::heart_beat();
+    guard::heart_beat();
     if( !ContinueHeart() ){
         set_heart_beat(0);
         return;
@@ -225,6 +234,7 @@ varargs int eventDie(mixed agent){
     string death_verb = "dies";
     string death_action = "kill";
     string death_descriptor = "dead";
+    object env = (environment() || load_object(ROOM_POD));
 
     if(RACES_D->GetNonMeatRace(GetRace())){
         death_verb = "breaks down completely";
@@ -236,15 +246,17 @@ varargs int eventDie(mixed agent){
 
     if( (x = living::eventDie(agent)) != 1 ) return x;
     if( stringp(Die) )  {
-        message("other_action", Die, environment(), ({ this_object() }));
+        message("other_action", Die, env, ({ this_object() }));
         if( agent) message("my_action", "You "+death_action+" " + GetName() + ".", agent);
     }
     else if( functionp(Die) && !evaluate(Die, agent) ) return 0;
     else {
-        if(GetPosition() == POSITION_STANDING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " drops "+death_descriptor+".", environment(), ({ this_object() }) );
-        else if(GetPosition() == POSITION_FLYING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " falls "+death_descriptor+".", environment(), ({ this_object() }) );
-        else message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " "+death_verb+".", environment(), ({ this_object() }) );
-        if( agent ) message("my_action", "You "+death_action+" " + GetName() + ".", agent);
+        if(GetPosition() == POSITION_STANDING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " drops "+death_descriptor+".", env, ({ this_object() }) );
+        else if(GetPosition() == POSITION_FLYING) message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " falls "+death_descriptor+".", env, ({ this_object() }) );
+        else message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " "+death_verb+".", env, ({ this_object() }) );
+        if( agent )
+            message("my_action", "You "+death_action+" " + GetName() + ".",
+              (objectp(agent) ? agent : load_object(CATCH_TELL_ROOM)) );
     }
     set_heart_beat(0);
     call_out( (: Destruct :), 0);
@@ -276,15 +288,15 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     object *riders = GetRiders();
     object *targs = ({});
     if(NPC_CATCH_TELL_DEBUG){
-        tell_room("/domains/default/room/catchtell","-------");
-        tell_room("/domains/default/room/catchtell",timestamp());
-        tell_room("/domains/default/room/catchtell","obj: "+identify(this_object()));
-        tell_room("/domains/default/room/catchtell","msg: "+msg);
-        tell_room("/domains/default/room/catchtell","arg2: "+identify(arg2));
-        tell_room("/domains/default/room/catchtell","arg3: "+identify(arg3));
-        tell_room("/domains/default/room/catchtell","stack: "+get_stack());
-        tell_room("/domains/default/room/catchtell","previous: "+identify(previous_object(-1)));
-        tell_room("/domains/default/room/catchtell","-------");
+        tell_room(ROOM_CATCH_TELL,"-------");
+        tell_room(ROOM_CATCH_TELL,timestamp());
+        tell_room(ROOM_CATCH_TELL,"obj: "+identify(this_object()));
+        tell_room(ROOM_CATCH_TELL,"msg: "+msg);
+        tell_room(ROOM_CATCH_TELL,"arg2: "+identify(arg2));
+        tell_room(ROOM_CATCH_TELL,"arg3: "+identify(arg3));
+        tell_room(ROOM_CATCH_TELL,"stack: "+get_stack());
+        tell_room(ROOM_CATCH_TELL,"previous: "+identify(previous_object(-1)));
+        tell_room(ROOM_CATCH_TELL,"-------");
     }
     if(riders && sizeof(riders)){
         int i1, rider_source;
@@ -514,7 +526,7 @@ string *AddEncounter(string nom){
 string *RemoveEncounter(string nom){
     if( !stringp(nom) ) error("Bad argument 1 to RemoveEncounter()\n");
     if( Encounter && !pointerp(Encounter) ) return 0;
-    else Encounter -= ({ convert_name(nom) });
+    else if(Encounter) Encounter -= ({ convert_name(nom) });
     return Encounter;
 }
 
@@ -537,6 +549,8 @@ string GetShort(){
     string ret = object::GetShort(); 
     object *riders = GetRiders();
     string *names = ({});
+    if(sizeof(riders)) riders = filter(riders,
+          (: (!$1->GetInvis() || this_player()->GetWizVision()) :) );
     if(riders && sizeof(riders) && VisibleRiders){
         foreach(object rider in riders){
             names += ({ rider->GetShort() });
@@ -576,10 +590,10 @@ varargs string GetLong(string str){
     foreach(item in map(
         filter(all_inventory(), (: !((int)$1->GetInvis(this_object())) :)),
         (: (string)$1->GetEquippedShort() :)))
-    if( item ) counts[item]++;
+        if( item ) counts[item]++;
     if( sizeof(counts) ) str += GetCapName() + " is carrying:\n";
     foreach(item in keys(counts))
-    str += capitalize(consolidate(counts[item], item)) + "\n";
+        str += capitalize(consolidate(counts[item], item)) + "\n";
     return str;
 }
 

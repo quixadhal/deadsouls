@@ -76,6 +76,7 @@ int eventMove(mixed arg){
 varargs int YautLang(object whom){
     if(!whom) whom = this_player(); 
     if(!whom) return 0;
+    if(whom->GetPolyglot()) return 100;
     return whom->GetLanguageLevel("Yautja");
 }
 
@@ -95,8 +96,8 @@ varargs void yaut_say(string str, mixed whom){
     include -= exclude;
     if(sizeof(include))
         foreach(object dude in include){
-        yaut_write(str, dude);
-    }
+            yaut_write(str, dude);
+        }
 }
 
 int eventTurnOn(){
@@ -156,11 +157,11 @@ varargs mixed eventUninstallModule(object which, int auto){
     }
     if(SpecialFuns[module])
         foreach(mixed key, mixed val in SpecialFuns[module]){
-        remove_action("foo",SpecialFuns[module][key]["hook"]);
-        if(!auto){
-            yaut_say(key+" successfully uninstalled.");
+            remove_action("foo",SpecialFuns[module][key]["hook"]);
+            if(!auto){
+                yaut_say(key+" successfully uninstalled.");
+            }
         }
-    }
     map_delete(SpecialFuns, module);
     return 1;
 }
@@ -185,8 +186,8 @@ varargs mixed eventInstallModule(mapping ModuleData, int auto){
     }
     if(sizeof(all_inventory()))
         foreach(object element in all_inventory()){
-        contents += ({ base_name(element) });
-    }
+            contents += ({ base_name(element) });
+        }
     if(member_array(base_name(module),contents) != -1){
         if(!auto){
             write("The wrist computer already contains that type of module.");

@@ -78,11 +78,11 @@ mixed do_drop_obs(mixed *res) {
         return 1;
     }
     foreach(object ob in eligible) 
-    if( (tmp = (mixed)ob->eventDrop(this_player())) != 1 ) {
-        if( stringp(tmp) ) this_player()->eventPrint(tmp);
-        else this_player()->eventPrint("You cannot drop " +
-              (string)ob->GetShort() + ".");
-    }
+        if( (tmp = (mixed)ob->eventDrop(this_player())) != 1 ) {
+            if( stringp(tmp) ) this_player()->eventPrint(tmp);
+            else this_player()->eventPrint("You cannot drop " +
+                  (string)ob->GetShort() + ".");
+        }
     return 1;
 }
 

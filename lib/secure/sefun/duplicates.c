@@ -10,8 +10,8 @@
 // in memory.
 //
 int query_dupes(object ob1,object ob2){
-if(base_name(ob1) == base_name(ob2) && file_name(ob1) != file_name(ob2)) return 1;
-else return 0;
+    if(base_name(ob1) == base_name(ob2) && file_name(ob1) != file_name(ob2)) return 1;
+    else return 0;
 }
 
 // This function is supposed to return an array

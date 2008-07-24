@@ -1,6 +1,7 @@
 #include <lib.h>
 #include <vendor_types.h>
 inherit LIB_PISTOL;
+
 void create(){
     ::create();
     SetKeyName("gun");
@@ -10,9 +11,12 @@ void create(){
     SetLong("This is a large, semiautomatic pistol that fires 9mm rounds. It is "+
       "a heavy, serious-looking weapon.");
     SetMillimeter(9);
-    SetPistolType("auto");
+    SetFirearmType("auto");
     SetAmmoType("acp");
     SetMass(30);
     SetBaseCost("silver",900);
     SetVendorType(VT_WEAPON);
+}
+void init(){
+    ::init();
 }

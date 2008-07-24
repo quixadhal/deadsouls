@@ -57,7 +57,7 @@ static void create() {
     //whether it should perform an action. If it is set
     //at 1, it checks approximately every second. The
     //default is 5.
-    SetFrequency(1);
+    SetFrequency(5);
     //The first argument of SetAction is a number, indicating from
     //one to 100 the percentage of likelihood an event will occur.
     //The second argument is an array that contains strings,

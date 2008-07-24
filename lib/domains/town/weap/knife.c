@@ -15,6 +15,10 @@ static void create() {
     SetBaseCost("silver",5);
     SetVendorType(VT_WEAPON);
     SetClass(5);
-    SetDamageType(BLADE);
-    SetWeaponType("blade");
+    SetDamageType(KNIFE);
+    SetWeaponType("knife");
+}
+
+void init(){
+    ::init();
 }

@@ -29,6 +29,9 @@ static void create() {
         "Ask Dirk in the Adventurers' Guild."
       ]) );
     SetPosition(POSITION_SITTING);
+    SetPolyglot(1);
+    SetLanguage("common", 100);
+    SetDefaultLanguage("common");
 }
 
 //Fix courtesy of  Jonez
@@ -38,7 +41,7 @@ string GetLong(string str){
 
 int GiveMap(object ob){
     object map;
-    if(present(ob->GetKeyName(),environment(this_object()))
+    if(ob && present(ob->GetKeyName(),environment(this_object()))
       && !this_object()->GetInCombat() &&
       member_array(ob->GetRace(),RACES_D->GetRaces(1)) != -1 &&
       !creatorp(ob) &&

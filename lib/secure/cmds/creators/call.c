@@ -27,7 +27,7 @@ mixed cmd(string args) {
     args = trim(args);
     if( args != ")" ) args = args[0..<2];
     else args = "";
-    if( !(target = to_object(arg_targ)) )
+    if( !(target = get_object(arg_targ)) )
         return "Cannot identify any object as \"" + arg_targ + "\".";
     if( !function_exists(arg_func, target) )
         return "The function " + arg_func +"() is not in " +

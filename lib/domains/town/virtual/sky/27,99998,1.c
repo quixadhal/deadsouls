@@ -21,7 +21,7 @@ void create() {
       ]) );
     SetExits( ([
         "north" : "/domains/town/virtual/sky/27,99999,1",
-        "south" : "/domains/town/virtual/sky/27,99997,1",
+        "south" : "/domains/town/room/mansion_uhall1",
         "east" : "/domains/town/virtual/sky/28,99998,1",
         "down" : "/domains/town/room/mansion_ext",
         "southeast" : "/domains/town/virtual/sky/28,99997,1",

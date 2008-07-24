@@ -10,7 +10,7 @@ int TalkFunc(){
     string thing1, thing2, thing3, thing4, thing5;
 
     thing1 = "There's no shame in being wimpy. Live to fight another day. Death takes away valuable xp.";
-    thing2 = "Let me know if you see Princess Daphne.";
+    thing2 = "I wish I could see Princess Daphne again.";
     thing3 = "Don't fight drunk.";
     thing4 = "Learning spells from Herkimer is a good idea.";
     thing5 = "Food, drink, and caffeine help restore health and strength.";
@@ -40,6 +40,8 @@ static void create() {
       "the position of the town's Adventurers' Guild master. "
       "If you feel you deserve it, \"ask dirk to advance\".");
     SetPolyglot(1);
+    SetLanguage("common", 100);
+    SetDefaultLanguage("common");
     SetInventory(([
         "/domains/town/armor/collar" : "wear collar",
       ]));
@@ -154,6 +156,18 @@ int AdvanceDude(mixed arg){
 
         this_player()->save_player((string)this_player()->GetKeyName());
 
+        if(level == MAX_NEWBIE_LEVEL){
+            write("\nDirk raises his hand and sternly points to you.\n");
+            say("\nDirk raises his hand and sternly points to "+
+              this_player()->GetName()+".\n");
+            this_object()->eventForce("say "+this_player()->GetName()+","+
+              " you are no longer a newbie. From now on, you will need"+
+              " a light source to see in the dark. From now on, you will"+
+              " not understand languages you haven't learned. You have"+
+              " earned this promotion, and now face the future as a"+
+              " real adventurer.");
+        }
+
         return 1;
     }
 
@@ -169,3 +183,44 @@ string GetLevelTitle(int level){
     if(!level) level = 1;
     return advancement[level]["title"];
 }
+
+int DiamondReaction(){
+    eventForce("say The Princess Daphne diamond! Good heavens!");
+    eventForce("say May I please have it?");
+    return 1;
+}
+
+varargs int eventPrint(string msg, mixed arg2, mixed arg3){
+    if(grepp(msg,"fabled Princess Daphne diamond")){
+        call_out( (: DiamondReaction :), 0 );
+    }
+    return ::eventPrint(msg, arg2, arg3);
+}
+
+int CompleteQuest(object ob){
+    string *quests;
+    object gem = present("diamond", this_object());
+    quests = ob->GetQuests();
+    if(!ob->GetQuest("Princess Diamond Quest")){
+        ob->AddQuest("the Gemfinder","Princess Diamond Quest");
+        eventForce("say You have solved the Princess Diamond Quest. "
+          "Congratulations!");
+        eventForce("say I hereby award you 10 quest points!");
+        ob->AddQuestPoints(10);
+        if(gem) gem->eventMove("/domains/campus/room/bookstore2");
+    }
+    return 1;
+}
+
+int eventReceiveObject() {
+    object ob, player;
+    ob = previous_object();
+    player = this_player();
+
+    if( !ob || !::eventReceiveObject() ) return 0;
+    if(base_name(ob) == "/domains/campus/obj/diamond"){
+        call_out("CompleteQuest", 0, player);
+    }
+    return 1;
+}
+

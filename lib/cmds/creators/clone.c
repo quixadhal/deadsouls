@@ -23,12 +23,15 @@ mixed cmd(string args) {
             file = base_name(ob)+".c";
         }
     }
-    if(!file_exists(file))
-        return "No such file " + file;
-    //else write("File found for cloning: "+file);
     if( res = catch(ob = new(file)) ) 
         return "Error in cloning object: " + res;
-    if( !ob ) return "Failed to clone file: " + file;
+    if( !ob ){
+        write("Failed to clone file: " + file);
+        if(!file_exists(file)){
+            write("It seems that the file "+file+" does not exist.");
+        }
+        return 1;
+    }
     if( !((int)ob->eventMove(this_player())) &&
       !((int)ob->eventMove(environment(this_player()))) ) {
         message("system", "Failed to properly move the object.",

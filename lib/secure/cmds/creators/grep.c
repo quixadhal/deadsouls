@@ -137,7 +137,7 @@ void help() {
       "Searches a file or group of files for a specific pattern.  "
       "If the pattern is a single word, then no '' is needed.  Patterns "
       "of more than one word or beginning with a '-' however, need to be enclosed in ''.  "
-      "You may redirect the output of the grep to to a file using the >."
+      "You may redirect the output of the grep to a file using the >."
       "\n  Options:\n"
       "    -r  recursive search, search extends to child directories.\n"
       "    -n  numbered lines, includes line numbers of successful hits."

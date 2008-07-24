@@ -40,7 +40,6 @@ int GetSpellLevel(string spell){
 
 varargs mixed CanCast(object spell){
     string tmp;
-
     if( GetParalyzed() ){
         return "You cannot do anything.";
     }
@@ -82,6 +81,7 @@ varargs mixed eventPrepareCast(string verb, mixed array args...){
     string special, arg;
     mixed tmp;
     int type;
+    if(!spell) spell = SPELLS_D->GetPrayer(verb = lower_case(verb));
 
     tmp = spell->eventParse(this_object(), args...);
     if( !arrayp(tmp) ){
@@ -166,6 +166,10 @@ static varargs void eventCast(object spell, string limb, object array targs){
 
 mixed eventLearnSpell(string spell){
     object magic = SPELLS_D->GetSpell(spell = lower_case(spell));
+    if(!magic){
+        write("That's not a spell being offered to you for learning.");
+        return 0;
+    }
 
     foreach(string skill in magic->GetSkills()){
         if( magic->GetRequiredSkill(skill) > GetSkillLevel(skill) ){

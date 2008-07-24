@@ -380,3 +380,7 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal, mixed
     return 1;
 }
 
+int AddLead(string ammo,int number){
+    return 0;
+}
+

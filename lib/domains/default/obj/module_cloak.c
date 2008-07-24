@@ -120,7 +120,7 @@ varargs mixed eventUninstall(object what, mixed auto){
         success = this_object()->eventMove(this_player());
     if(success || auto) return 1;
     else {
-        if(!success) write("The uninstall failed.");
+        //if(!success) write("The uninstall failed.");
         return 0;
     }
 }
@@ -136,11 +136,12 @@ string Report(){
 
 int eventPowerOff(){
     object whom = this_player();
+    object env = environment();
     power = 0;
-    if(environment()) environment()->eventUninstallModule(this_object(),1);
+    if(env) env->eventUninstallModule(this_object(),1);
     else return 0;
     if(!whom){
-        if(environment() && whom = environment(environment()) && living(whom)){
+        if(env && environment(env) && whom = environment(env) && living(whom)){
             if(whom->GetInvis() && !creatorp(whom)){
                 write("Your wrist computer makes a croaking noise, and you become visible.");
                 say(whom->GetName()+"'s wrist computer makes a croaking noise, and "+

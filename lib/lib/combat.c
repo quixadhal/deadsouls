@@ -488,7 +488,7 @@ static int Destruct(){
 /*  *****************   /lib/combat.c events  ***************** */
 
 varargs int eventDie(mixed agent){
-    object ob;
+    object ob, env = environment();
     int x;
 
     if(this_object()->GetGodMode()) return 0;
@@ -505,7 +505,7 @@ varargs int eventDie(mixed agent){
             ob->eventEnemyDied(this_object());
         }
     }
-    environment()->eventLivingDied(this_object(), agent);
+    if(env) env->eventLivingDied(this_object(), agent);
     Enemies = ({});
     flush_messages();
     return 1;
@@ -637,7 +637,7 @@ int eventExecuteAttack(mixed target){
             return;
         }
 
-        if(weapon->GetLoaded() && !interactive()){
+        if(weapon->GetLive() && !interactive()){
             weapon->eventShoot(weapon, target);
             return;
         }

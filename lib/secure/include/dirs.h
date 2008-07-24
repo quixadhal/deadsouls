@@ -22,7 +22,12 @@
 #define DIR_VOTES               DIR_DATA "/votes"
 #define DIR_GOSSIP              DIR_DATA "/gossip"
 
-#define DIR_SPELLS              "/spells"
+#define DIR_POWERS              "/powers"
+#define DIR_SPELLS              DIR_POWERS "/spells"
+#define DIR_FEATS               DIR_POWERS "/feats"
+#define DIR_PRAYERS             DIR_POWERS "/prayers"
+#define DIR_PSIONICS            DIR_POWERS "/psionics"
+#define DIR_TRADES              DIR_POWERS "/trades"
 
 #define DIR_VERBS               "/verbs"
 #define DIR_ADMIN_VERBS         DIR_VERBS "/admins"

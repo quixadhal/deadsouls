@@ -5,6 +5,7 @@
  *    based upon an older simul_efun of the same name by Buddha@TMI-2
  */
 
+#ifndef __FLUFFOS__
 mixed copy(mixed val) {
     mixed *cles;
     mixed ret;
@@ -22,3 +23,4 @@ mixed copy(mixed val) {
     }
     return val;
 }
+#endif

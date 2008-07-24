@@ -52,6 +52,10 @@ string describeRoom() {
     "stand in the open desert with a dry, arid wind draining you "
     "of all strength.  Nothing at all exists here besides endless "
     "sand.  About all you could possibly do is sit and dig.";
+    SetExits( ([ 
+        "east" : "/domains/Ylsrim/room/kaliid7",
+        "down" : "/domains/Ylsrim/room/sand_hole",
+      ]) );
 
     if( "/domains/Ylsrim/etc/dug_hole"->GetClosed() ) {
         return str;  // no hole to see
@@ -69,9 +73,6 @@ static void create() {
     SetLong((: describeRoom :));
     AddItem("sand", "Boring stretches of sand extend to the horizon.");
     AddItem("ylsrim", "It is east of here.");
-    SetExits( ([ "east" : "/domains/Ylsrim/room/"+ "kaliid7",
-        "west" : "/domains/Ylsrim/virtual/desert/7,7" ,
-        "down" : "/domains/Ylsrim/room/"+ "sand_hole" ]));
     SetInventory( ([ "/domains/Ylsrim/etc/shovel" : 1 ]) );
     // use a door to act as a hole, as that is what the hole really is
     SetDoor("down", "/domains/Ylsrim/etc/dug_hole");

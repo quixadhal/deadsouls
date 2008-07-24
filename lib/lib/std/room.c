@@ -905,8 +905,10 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     }
     else if( objectp(arg2) || arrayp(arg2) ){
         if( objectp(arg2) ) arg2 = ({ arg2 });
-        foreach(object mount in arg2){
-            object *riders = mount->GetRiders();
+        foreach(mixed mount in arg2){
+            object *riders;
+            if(!mount) continue;
+            riders = mount->GetRiders();
             if(riders) targs += riders;
         }
         targs -=  arg2;
@@ -919,8 +921,10 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     }
     else if( objectp(arg3) || arrayp(arg3) ){
         if( objectp(arg3) ) arg3 = ({ arg3 });
-        foreach(object mount in arg3){
-            object *riders = mount->GetRiders();
+        foreach(mixed mount in arg3){
+            object *riders;
+            if(!mount) continue;
+            riders = mount->GetRiders();
             if(riders) targs += riders;
         }
         targs -= arg3;

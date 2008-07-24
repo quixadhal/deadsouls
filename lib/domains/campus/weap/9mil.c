@@ -10,7 +10,7 @@ void create(){
     SetLong("This is a large, semiautomatic pistol that fires 9mm rounds. It is "+
       "a heavy, serious-looking weapon.");
     SetMillimeter(9);
-    SetPistolType("auto");
+    SetFirearmType("auto");
     SetAmmoType("acp");
     SetMass(30);
     SetDollarCost(900);

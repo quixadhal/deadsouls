@@ -32,17 +32,22 @@
 #ifndef RESET_ALL
 #define RESET_ALL 1
 #endif
+#ifndef MAX_SINGLE_OBJECT
+#define MAX_SINGLE_OBJECT        4000
+#endif
+#define CRAT_PARSE 0
 
 
 private static int ResetNumber;
 private static object Unguarded, gguy;
-private static string PlayerName, rlog, gcmd;
+private static string PlayerName, rlog, gcmd,bname;
 private static object NewPlayer;
 private static mapping Groups, ReadAccess, WriteAccess;
-private static string *ParserDirs = ({ "secure", "verbs", "daemon", "lib", "spells" });
+private static string *ParserDirs = ({ "secure", "verbs", "daemon", "lib", "powers" });
 private static string array efuns_arr = ({});
 
 void create() {
+#if 0
 #ifdef __OPCPROF__
     string tmpfun, junk, opstr;
     string *oparr = ({});
@@ -62,6 +67,7 @@ void create() {
             }
         }
     }
+#endif
 #endif
     Unguarded = 0;
     NewPlayer = 0;
@@ -175,7 +181,7 @@ private static void load_access(string cfg, mapping resource) {
 
                 str = nom;
                 foreach( grp in keys(Groups) )
-                if( member_array(nom, Groups[grp]) != -1) str = str + ":" + grp;
+                    if( member_array(nom, Groups[grp]) != -1) str = str + ":" + grp;
                 return str;
             }
             else if( file == DIR_PLAYERS + "/" + nom[0..0] + "/" + nom ) 
@@ -401,7 +407,7 @@ private static void load_access(string cfg, mapping resource) {
     }
 
     static void crash(string err) {
-        string guilty_stack = get_stack();
+        string guilty_stack = get_stack(1);
         string guilty_obs = identify(previous_object(-1));
         write_file(DIR_LOGS "/crashes",
           mud_name() + " crashed " + ctime(time()) + " with error " +
@@ -414,6 +420,7 @@ private static void load_access(string cfg, mapping resource) {
     int valid_bind(object binder, object old_owner, object new_owner) {
         true(old_owner,new_owner);
         if( binder == master() ) return 1;
+        if( base_name(binder) == SEFUN ) return 1;
         if( member_array(PRIV_SECURE, explode(query_privs(binder), ":")) != -1 )
             return 1;
         return 0;
@@ -428,7 +435,7 @@ private static void load_access(string cfg, mapping resource) {
         else return (member_array(PRIV_SECURE, explode(priv, ":")) != -1);
     }
 
-    int valid_override(string file, string nom) { true(file,nom); return (file == SEFUN); }
+    int valid_override(string file, string nom) { return (file == SEFUN); }
 
     int valid_save_binary(string str) { return true(str); }
 
@@ -440,7 +447,6 @@ private static void load_access(string cfg, mapping resource) {
 
     int valid_object(object ob) {
         string file, contents;
-
         file = file_name(ob);
 
         contents = read_file(base_name(ob)+".c");
@@ -699,14 +705,59 @@ private static void load_access(string cfg, mapping resource) {
 
     string parser_error_message(int type, object ob, mixed arg, int flag) {
         string err;
-
+        object tmpob;
+#if CRAT_PARSE
+        tc("parser_error_message("+
+          TYPES_D->eventCalculateTypes("parser_error",type)+", "+
+          identify(ob)+", "+
+          identify(arg)+", "+
+          identify(flag)+") "
+          ,"yellow");
+        tc("type: "+type,"green");
+#endif
         if( ob ) err = (string)ob->GetShort();
         else err = "";
         switch(type) {
             string wut;
+            object wat;
+
+        case 0:
+#if CRAT_PARSE
+            tc("WTF. An unhandled error?","red");
+#endif
+            if(arg && objectp(arg)) wat = arg;
+            if(!wat && arg && arrayp(arg) && sizeof(arg)){
+                foreach(mixed element in arg){
+                    if(objectp(element)) wat = element;
+                }
+            }
+            if(ob && wat){
+                err = "You can't use "+ob->GetShort()+" with "+
+                wat->GetShort()+" that way.";
+            }
+            else if(ob){
+                err = "It seems you can't do that with " +ob->GetShort()+".";
+            }
+            else if(wat){
+                err = "It seems you can't do that to " +wat->GetShort()+".";
+            }
+            else {
+                err = "It seems you can't do that.";
+            }
+            break;
+
         case ERR_IS_NOT:
-            if( flag ) err = "There is no such " + remove_article(arg) + " here.";
-            else err = "There is no " + remove_article(arg) + " here.";
+#if CRAT_PARSE
+            tc(identify(this_player())+" ERR_IS_NOT: "+identify(ob)+", "+identify(arg)+", "+identify(flag),"green");
+#endif
+            if(flag || (arg && stringp(arg))){
+                if(flag || get_object(arg, this_player())){
+                    return "It appears you must be more specific.";
+                }
+                else if(arg && stringp(arg)) wut = remove_article(arg);
+            }
+            else wut = "that";
+            err = capitalize(wut) +" is not here.";
             break;
 
         case ERR_NOT_LIVING:
@@ -727,7 +778,7 @@ private static void load_access(string cfg, mapping resource) {
                 gguy = this_player();
                 if(DEFAULT_PARSING){
                     gcmd = this_player()->GetLastCommand();
-                    this_player()->eventRetryCommand(gcmd);
+                    this_player()->eventRetryCommand(gcmd, type, arg);
                     return " ";
                 }
 
@@ -760,12 +811,22 @@ private static void load_access(string cfg, mapping resource) {
             return arg;
 
         case ERR_THERE_IS_NO:
-            if(get_object(arg)) wut = remove_article(arg);
+#if CRAT_PARSE
+            tc(identify(this_player())+" ERR_THERE_IS_NO: "+identify(ob)+", "+identify(arg)+", "+identify(flag),"blue");
+#endif
+            if(flag || (arg && stringp(arg)) && environment(this_player())){
+                if(tmpob = present(arg, environment(this_player()))){
+                    return "It seems you must be more specific.";
+                }
+                else if(arg && stringp(arg)) wut = remove_article(arg);
+            }
             else wut = "such thing";
-            return "There is no " + wut + " here.";
+            err = "There is no "+ wut +" here.";
+            break;
 
         case ERR_BAD_MULTIPLE:
-            return "You can't do that to more than one at a time.";
+            err = "You can't do that to more than one at a time.";
+            break;
         }
         return err;
     }
@@ -823,7 +884,10 @@ private static void load_access(string cfg, mapping resource) {
         write_file(DIR_LOGS "/reset", "Reset " + ResetNumber + " occurred at: " +
           ctime(time()) + "\n");
         if(!RESET_ALL) obs = objects( (: !environment($1) && (random(100) < 26) :) );
-        else obs = objects();
+        else obs = objects( (: !environment($1) :) );
+        if(sizeof(obs) > 500){
+            obs = scramble_array(obs)[0..500];
+        }
         y = 0;
         foreach(ob in obs) {
             function f;

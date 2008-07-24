@@ -48,5 +48,6 @@ string GetHelp(string args) {
       "Allows you to remove an emote or a rule for an emote from "
       "the soul.  If you specify a rule, only that rule gets removed.  "
       "If you fail to specify a rule, the entire emote is removed.\n\n"
+      "You must be admin or member of the EMOTES group to use this command.\n\n"
       "See also: addadverb, addemote, removeadverb");
 }

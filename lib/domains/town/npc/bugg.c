@@ -16,12 +16,16 @@ void create(){
       "lesson to you, if he knows the language and you have "+
       "earned sufficient training points. If you lack training points, then "+
       "do some adventuring and earn a level promotion. You will "+
-      "then be awarded training points."); 
+      "then be awarded training points. To know more about what Bugg "+
+      "can teach: ask bugg for help"); 
     SetLevel(1);
     SetLanguage("Malkierien", 100);
     SetLanguage("English", 100);
     SetLanguage("Edhellen", 100);
     AddTeachingLanguages( ({"Malkierien", "English", "Common", "Edhellen" }) );
+    SetPolyglot(1);
+    SetLanguage("common", 100);
+    SetDefaultLanguage("common");
 }
 void init() {
     ::init();

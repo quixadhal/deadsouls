@@ -7,6 +7,8 @@
  */
 
 #include <lib.h>
+#include <message_class.h>
+#include <daemons.h>
 
 // abstract methods
 int AddCarriedMass(int amount);
@@ -14,6 +16,11 @@ string GetShort();
 // end abstract methods
 
 mixed CanGetFrom(object who, object item){
+    int check = GUARD_D->CheckGet(who, this_object());
+    if(!check){
+        who->eventPrint("You can't get it.", MSG_SYSTEM);
+        return 0;
+    }
 
     if( !item ){
         return 0;
@@ -97,7 +104,8 @@ mixed eventGetFrom(object who, object array what){
             continue;
         }
         if( ob->CanGet(who) != 1 ){
-            write("It would appear you can't get "+ob->GetShort()+" right now.");
+            write("It would appear you can't get "+
+              (ob->GetShort() || "that") +" right now.");
             continue;
         }
         if( !who->CanCarry(ob->GetMass()) ){
