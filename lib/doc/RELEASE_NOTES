@@ -1,3 +1,107 @@
+---- 2.8.3 ---
+- Released 2008-07-24
+- Merged 2.9a8 into the 2.8.x line. Due to the importance of some
+  security fixes, and that major changes have not been introduced
+  in 2.9, the improvements of 2.9a8 (unreleased) and below are being
+  folded into 2.8.
+- Fixed odd door id problem reported by Tricky when warmbooting.
+- Class data type removed from LIB_DOOR.
+- Added commands: pwhere, vars
+- Wizvision now lets creators see invisible creatures in a room.
+- Accuracy and performance improvements to default parsing.
+- Cleaned up and updated firearm code: targeting in a room full of
+  corpses is improved. Wounds no longer inflict continuing damage,
+  they simply interfere with player healing (NPC's heal normally).
+  Unless you are skilled with firearms, shooting an npc over and
+  over in rapid succession is extremely likely to miss.
+- Fixed typo in PARTY_D.
+- Healing is now largely dependent on whether you are hungry/thirsty,
+  with some modifiers for relevant stats like strength, luck,
+  and durability. Being asleep and drunk now actually do have a
+  positive effect on healing, as well as having the "faith" skill.
+  Overall this means healing *can* happen faster if you stay on
+  top of these items and don't catch flying bullets. However, if
+  you're not keeping fed and hydrated, healing will seem to have
+  got slower.
+
+---- 2.9a7 ---
+- Released 2008-07-18
+- Driver: MSG_NOSIGNAL more promiscuously defined.
+- Driver: extra checks added to avoid obscure high-load crashes.
+- Parsing problem with doors and multiple keys fixed.
+- Miscellaneous minor lib fixes.
+- Improvements to sefun and warmboots to better interact with call_outs.
+- Added commands: defines, types
+- Fixed a bug that prevented receiving damage in a wielding limb.
+- Prayer parsing system updated/fixed: clerics can now perform prayers
+  with targets.
+
+---- 2.9a6 ---
+- Released 2008-07-14
+- Driver is now a customized FluffOS 2.12.
+- Miscellaneous minor lib tweaks and fixes.
+- Added command: noclip
+- Fixed recursing paralysis bug in LIB_BODY.
+- The netstat command now includes summary statistics.
+- cardinal(), base_name(), and copy() now use efuns rather than sefuns
+  for improved performance.
+- The reaper now uses get_garbage() for improved performance.
+- The reaper is now more aggressive about spotting and cleaning
+  large garbage pileups.
+- The call_out efun is now overridden with a sefun that checks
+  for excessive call_outs and autoblacklists suspected problems. 
+  To tune the number of permitted call_outs, modify the new 
+  MAX_CALL_OUTS param in config.h. Note that objects in /secure and
+  /daemon are exempted from this check.
+- The update command no longer has a problem when you are mounted
+  on a creature or vehicle.
+
+---- 2.9a5 ---
+- Released 2008-07-10
+- Driver: Fixed segfault for SPARC.
+- Minor sefun fixes.
+
+---- 2.9a4 ---
+- Released 2008-07-09
+- Fixed various runtimes in IMC2_D.
+- Driver: Crasher due to object ref count flip is now prevented (thx Wodan!)
+- Cleaned up some disharmonies in the reaper.
+
+---- 2.9a3 ---
+- Released 2008-07-07
+- Added GUARD_D and LIB_GUARD to allow npc's to guard exits,
+  objects, and people without having to edit the room. For examples,
+  see /realms/template/area/npc/fighter.c and /domains/campus/npc/kim.c
+- Driver: Added fix by Kalinash that avoids a crasher when dealing
+  with unloading blank files.
+- The gag and mute commands can now accept keywords to indicate
+  whether you only want to mute/gag local channels or remote channels.
+- The reaper now exempts http sockets.
+- New defines daemon can identify things defined in standard includes.
+  Example: eval return DEFINES_D->GetDefine("ADMIN_EMAIL")
+
+---- 2.9a1 ---
+- Released 2008-06-15
+- Fixed periodic check of preloaded objects.
+- The command "resurrect" now also works on npc's.
+- Added verbs for firearms: load, unload.
+- Added verbs for chairs: swivel, rock.
+- Driver (under Linux only) : Added enhancements by Kalinash that avoid
+  SIGPIPE crashes under heavy load and mass disconnections (thx dude).
+- Driver: Added fixes by Kalinash that avoid segfaults under
+  extreme loads (woo Kali again!).
+- Periodic check added to STARGATE_D to clear "stuck" gates.
+- Spells are now in /powers/spells, to accommodate new systems
+  of powers such as psi and physical feats.
+- Added smokable items: LIB_PIPE, LIB_CIGAR.
+- Driver: fixed up plurals for "remains" and "glasses".
+- Fixed name banishing in admintool.
+- Player teaching fixed up. For now, only spells are teachable.
+- Improved handling of corpse and severed limb id's.
+- Creators retain their selected title upon reviving from death.
+- Hazardous materials lab now requires players to solve a riddle
+  before letting them in.
+
 ---- 2.8.2 ---
 - Released 2008-06-25
 - Bundled driver is now Kalinash-improved.

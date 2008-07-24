@@ -12,22 +12,13 @@
 inherit LIB_SURFACE;
 
 int Count          = 0;
-int DecayLife      = 500;
 string Limb        = 0;
 string Owner       = 0;
 string Race        = 0;
 int CallOut = -1;
-int stank;
+int stank, nodecay, slowdecay;
 
 int eventDecay();
-
-int GetDecayLife(){
-    return DecayLife;
-}
-
-int SetDecayLife(int x){
-    return (DecayLife = x);
-}
 
 string GetLimb(){
     return Limb;
@@ -43,11 +34,17 @@ void create(){
 void init(){
     surface::init();
     if(environment() && environment()->GetMedium() == MEDIUM_LAND) stank = 1;
+    //tc("limb: "+identify(GetId()),"red");
 }
 
 void SetLimb(string limb, string owner, string race){
+    string justlimb;
+    sscanf(limb,"%*s %s",justlimb);
     SetKeyName(limb);
-    SetId( ({ "flesh","pile", "limb", Limb = limb }) );
+    SetId( ({ limb, "flesh","pile","limb",(justlimb||"chunk") }) );
+    SetAdjectives(({"severed","rotting",race}));
+    Limb = limb;
+    //tc("limb: "+identify(GetId()));
     Owner = owner;
     Race = race;
     Count = 1;
@@ -105,6 +102,39 @@ int eventDecay(){
         Destruct();
         return 0;
     }
-    Count++;
+    if(slowdecay){
+        if(random(100) > slowdecay) Count++;
+    }
+    else Count++;
     return Count;
 }
+
+int SetNoDecay(int i){
+    if(i) nodecay = 1;
+    else nodecay = 0;
+    return nodecay;
+}
+
+int GetNoDecay(){
+    return nodecay;
+}
+
+int SetSlowDecay(int i){
+    if(i) slowdecay = i;
+    else slowdecay = 0;
+    return slowdecay;
+}
+
+int GetSlowDecay(){
+    return slowdecay;
+}
+
+int SetCount(int i){
+    Count = i;
+    return Count;
+}
+
+int GetCount(int i){
+    return Count;
+}
+

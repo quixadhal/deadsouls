@@ -17,7 +17,7 @@ static void create() {
         "no teleport":0]));
     SetItems(([]));
     SetInventory(([
-        "/domains/town/npc/bugg" : 1,
+        "/domains/town/npc/bugg" : ({60, 1}),
       ]));
     SetExits(([
         "south" : "/domains/town/room/vill_road4",

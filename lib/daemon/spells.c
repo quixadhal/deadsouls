@@ -11,6 +11,7 @@
 inherit LIB_DAEMON;
 
 private mapping Spells = ([]);
+private mapping Prayers = ([]);
 
 void eventReloadSpells();
 
@@ -21,22 +22,34 @@ static void create() {
 }
 
 void eventReloadSpells() {
-    string array spells;
+    string array spells, prayers;
 
     Spells = ([]);
     spells = get_dir(DIR_SPELLS "/*.c");
-    foreach(string spell in spells) {
-        object ob = find_object(DIR_SPELLS "/" + spell);
+    prayers = get_dir(DIR_PRAYERS "/*.c");
+    foreach(string element in (prayers + spells)) {
+        string spell, where;
+        int err;
+        object ob;
+        where = DIR_PRAYERS "/" + element;
+        if(!file_exists(where)) where = DIR_SPELLS "/" + element;
+        ob = find_object(where);
 
         if( ob ) {
+            //tc("destructing "+identify(ob));
             ob->eventDestruct();
         }
-        if( ob = load_object(DIR_SPELLS "/" + spell) ) {
+        err = catch(ob = load_object(where));
+        if(ob){
             spell = ob->GetSpell();
             if( spell ) {
-                Spells[spell] = ob;
+                if(member_array(element,spells) != -1)
+                    Spells[spell] = ob;
+                else if(member_array(element,prayers) != -1)
+                    Prayers[spell] = ob;
             }
         }
+        else debug("Error loading: "+identify(where));
     }
 }
 
@@ -44,9 +57,21 @@ object GetSpell(string spell) {
     if( !Spells[spell] ) {
         eventReloadSpells();
     }
-    return Spells[spell];
+    if(Prayers[spell]) return Prayers[spell];
+    else return Spells[spell];
 }
 
 mapping GetSpells(){
     return (Spells + ([]));
+}
+
+object GetPrayer(string prayer) {
+    if( !Prayers[prayer] ) {
+        eventReloadSpells();
+    }
+    return Prayers[prayer];
+}
+
+mapping GetPrayers(){
+    return (Prayers + ([]));
 }

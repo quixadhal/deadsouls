@@ -7,14 +7,24 @@ inherit LIB_NPC;
 static string firstchoice, secondchoice,mm, vv, printvar;
 static string response,s1,s2,s3;
 static object ww;
-static int playing;
+static int playing, smart;
 int runs,switches,stays,percent;
 int fred,fgreen,fblue;
-int wins,red_wins,green_wins,blue_wins;
+int wins,losses,red_wins,green_wins,blue_wins;
 string save_file = "/domains/campus/save/charles.o";
+
+mixed do_thing(string str){
+    mixed ret;
+    string msg = "%^YELLOW%^Charles decides to "+response+".%^RESET%^";
+    tell_room(environment(this_object()),msg);
+    ret = eventForce(str);
+    playing = 0;
+    return ret;
+}
 
 static void create() {
     npc::create();
+    smart = 1;
     SetKeyName("charles");
     SetId(({"charles"}));
     SetShort("Charles");
@@ -31,6 +41,7 @@ static void create() {
     playing = 0;
     response = "";
 }
+
 int eventBeginPlay(){
     int run;
     run = runs+1;
@@ -48,47 +59,43 @@ int eventBeginPlay(){
     eventForce("push button on pedestal");
     return 1;
 }
+
 int choice1(){
     int genrand;
     eventForce("say I am faced with choice 1.");
-    genrand = random(256);
-    if(!genrand || genrand == 0){
-        eventForce("say I cannot make up my mind right now.");
-        eventForce("say I will start over.");
-        playing = 0;
-        return 1;
-    }
+    genrand = random(3);
     if( runs > 10 ){
         if( red_wins > blue_wins ) firstchoice = "red";
         if( red_wins < blue_wins ) firstchoice = "blue";
         if( green_wins > blue_wins && green_wins > red_wins) firstchoice = "green";
     }
-
     if( !firstchoice || firstchoice == ""){
-        genrand = genrand % 3;
-        if(genrand == 1) { firstchoice = "red"; fred++; }
-        if(genrand == 2) { firstchoice = "green"; fgreen++; }
-        if(genrand == 0) { firstchoice = "blue"; fblue++; }
+        if(genrand == 0) { firstchoice = "red"; fred++; }
+        if(genrand == 1) { firstchoice = "green"; fgreen++; }
+        if(genrand == 2) { firstchoice = "blue"; fblue++; }
         eventForce("say I randomly choose the "+firstchoice+" door");
     }
     else eventForce("say I select the "+firstchoice+" door");
-
     eventForce("choose "+firstchoice+" door");
     return 1;
 }
+
 int choice2(string str){
     int genrand,which;
     float percent_wins,percent_switch;
     eventForce("say I am faced with choice 2.");
-    genrand = random(100);
-    which = genrand % 2;
-
-    if(runs > 20){
-
-        percent_switch = percent(switches,runs);
-        percent_wins = percent(wins,runs);
-        eventForce("say My win rate is "+percent_wins+"%.");
-        eventForce("say My switch rate is "+percent_switch+"%.");
+    which = random(2);
+    eventForce("say stats:\nswitches: "+switches+"\n"+
+      "stays: "+stays+"\n"+
+      "wins: "+wins+"\n"+
+      "losses: "+losses+"\n"+
+      "runs: "+runs);
+    percent_switch = percent(to_float(switches),to_float(runs));
+    percent_wins = percent(to_float(wins),to_float(runs));
+    eventForce("say \nMy win rate is "+percent_wins+"%.\n"+
+      "My switch rate is "+percent_switch+"%.");
+    runs++;
+    if(smart && runs > 20){
         if( percent_wins < 50 && percent_switch > 50 ) response = "stay";
         else if( percent_wins < 50 && percent_switch < 50 ) response = "switch";
         else if( percent_wins > 50 && percent_switch < 50 ) response = "stay";
@@ -96,28 +103,24 @@ int choice2(string str){
         else if(which == 1) response = "switch";
         else response = "stay";
     }
-
     else {
-
-        if(which == 1) {
+        if(which) {
             response = "switch";
         }
         else {
             response = "stay";
         }
     }
-
     if(sscanf(str,"%sswitch to the %s %s",s1,s2,s3) > 0) {
         secondchoice = s2;
     }
-
     eventForce("say I decide to "+response+".");
     if(response == "switch") switches++;
     if(response == "stay") stays++;
-
-    //eventForce("say gespielen is: "+playing);
+    call_out( "do_thing", 0, response );
     return 1;
 }
+
 int WinFun(string str){
     if(sscanf(str,"%smay enter the %s room and claim%s",s1,s2,s3) > 0){
         if(s2 == "red") red_wins++;
@@ -129,6 +132,7 @@ int WinFun(string str){
     }
     return 0;
 }
+
 int LoseFun(string str){
     string foo;
     if(sscanf(str,"%smay enter the %s room to get%s",s1,s2,s3) > 0){
@@ -139,8 +143,10 @@ int LoseFun(string str){
     else if(secondchoice == "green") green_wins++;
     else if(secondchoice == "blue") blue_wins++;
     else eventForce("say WTF? foo is "+firstchoice);
+    losses++;
     return 1;
 }
+
 int eventPedestalParse(string str){
     if(sscanf(str,"%schoose one door from%s",s1,s2) > 0) choice1();
     if(sscanf(str,"%sI have opened%s",s1,s2) > 0) choice2(str);
@@ -149,6 +155,7 @@ int eventPedestalParse(string str){
     if(sscanf(str,"%syour big load%s",s1,s2) > 0) LoseFun(str);
     return 1;
 }
+
 int eventFirstPass(string str){
     if(!str || str == "") return 0;
     if(sscanf(str,"A voice from the pedestal%s",s1) > 0){
@@ -157,16 +164,18 @@ int eventFirstPass(string str){
     }
     return 0;
 }
+
 private void eventPrint(string str1, string str2);
 void init(){
     ::init();
-    set_heart_beat(1);
+    set_heart_beat(5);
     SetNoClean(1);
 }
+
 void receive_message(string string1, string string2){
-    //tell_object(find_player("testylus"),"CHARLY: "+string2);
     eventFirstPass(string2);
 }
+
 varargs mixed eventHearTalk(object who, object target, int cls, string verb,
   string msg, string lang) {
     ww=who;
@@ -179,21 +188,13 @@ int eventPrint(string msg, string msg_class){
     printvar=msg;
     unguarded((: this_object()->receive_message("me again",printvar) :));
 }
-void heart_beat(){
-    //eventForce("say playing is: "+playing);
-    if(playing && response != "" ) {
-        if(firstchoice != ""){
-            //eventForce("say response is: "+response);
-            eventForce(response);
-            runs ++;
-            //playing = 0;
-        }
-        //else eventBeginPlay();
-        playing = 0;
-    }
 
+void heart_beat(){
+    if(!environment() || !clonep()){
+        set_heart_beat(0);
+        return;
+    }
     if(!playing){
-        //eventForce("say playing is zero, restarting.");
         eventBeginPlay();
     }
 }

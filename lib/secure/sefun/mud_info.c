@@ -12,7 +12,7 @@ varargs string imc2_mud_name(string name){
     string mudname;
 
     if(name) mudname = name;
-    else mudname = MUD_NAME;
+    else mudname = mud_name();
 
     return replace_string(mudname," ","_");
 }
@@ -37,7 +37,7 @@ string architecture() { return __ARCH__; }
 
 string mudlib() { return "Dead Souls"; }
 
-string mudlib_version() { return "2.8.2"; }
+string mudlib_version() { return "2.8.3"; }
 
 int query_host_port() { return __PORT__; }
 

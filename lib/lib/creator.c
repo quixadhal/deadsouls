@@ -21,6 +21,7 @@ inherit LIB_ISQL;
 
 private int wizvision, CreatorAge, CreatorBirth;
 private static int LastCreatorAge;
+private string LivingShort;
 
 /* *****************  /lib/creator.c driver applies  ***************** */
 
@@ -165,16 +166,23 @@ varargs string GetLong(string str){
 int GetCreatorBirth(){ return CreatorBirth; }
 
 string GetName(){ 
-    if( !GetInvis() ) return ::GetName();
+    if( !GetInvis() || previous_object()->GetWizVision() ) return ::GetName();
     else return "A shadow";
 }
 
 mapping GetSpellBook(){
-    mapping ret = ([]);
+    mapping ret = ::GetSpellBook();
     foreach(string spell in keys(SPELLS_D->GetSpells())){
         ret[spell] = 100;
     }
+    foreach(string spell in keys(SPELLS_D->GetPrayers())){
+        ret[spell] = 100;
+    }
     return ret;
+}
+
+varargs mixed CanCast(mixed spell...){
+    return 1;
 }
 
 varargs mixed GetEffectiveVision(mixed location, int raw_score){
@@ -195,3 +203,16 @@ int GetWizVision(){
     return wizvision;
 }
 
+string GetLivingShort(){
+    return LivingShort;
+}
+
+int eventDie(mixed agent){
+    string tmpshort = this_object()->GetShort();
+    if(this_object()->GetGodMode()) return 0;
+    if(!grepp(tmpshort,"the ghost") && !grepp(tmpshort,"the reborn")){
+        LivingShort = replace_string(tmpshort,this_object()->GetName(),
+          "$N");
+    }
+    return ::eventDie(agent);
+}

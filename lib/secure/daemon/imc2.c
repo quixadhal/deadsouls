@@ -33,7 +33,7 @@
 
 // File to save data to, .o will be added automatically to the end.
 // This will have private stuff in it, don't put this in a directory where your wizards can read it.
-#define SAVE_FILE "/secure/save/imc2"
+#define SAVE_FILE "/secure/save/imc2.o"
 
 // COMMAND_NAME is the command that people type to use this network.
 // **OUTDATED (not really)
@@ -145,11 +145,13 @@
 //#define DEB_PAK 3
 //#define DEB_OTHER 0
 
+inherit LIB_DAEMON;
+
 string tmpstr;
 
-static int socket_num;
+static int socket_num, counter;
 static int heart_count = 0;
-int mode;
+int mode, autodisabled = 1;
 mapping ping_requests; // Keeps track of who sent a ping request.
 // Ping requests aren't labelled with names, so replies are destined to this MUD
 // with no idea why, unless we keep track.
@@ -275,6 +277,7 @@ void write_callback(int fd){
 void read_callback(int socket, mixed info){
     string a,b;
     int done=0;
+    counter = time();
 
 #ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"SERVER: "+info+"\n");
@@ -333,6 +336,7 @@ private void got_packet(string info){
     write_to_log(DATA_LOG,"GOT PACKET: "+info+"\n");
 #endif
 
+    counter = time();
     str = info;
     // messages end with " \n\r" or "\n" or sometimes just a space
     sscanf(str, "%s\n^", str);
@@ -516,24 +520,29 @@ private void send_text(string text){
 
 void create(){
     set_heart_beat(1);
-    tn("IMC2: created "+ctime(time()));
+    counter = time();
+    //tn("IMC2: created "+ctime(time()));
+    if(unguarded( (: file_exists(SAVE_FILE) :) )) 
+        unguarded( (: restore_object(SAVE_FILE) :) );
     call_out( (: Setup :), 1);
 }
 
 void Setup(){
-    int temp;
+    int temp, kill;
 #ifdef DISABLE_IMC2
     if(DISABLE_IMC2){
-        call_out( (: remove() :), 1);
-        return;
+        kill = 1;
     }
 #endif
 
     if(DISABLE_INTERMUD == 1){
-        call_out( (: remove() :), 1);
+        kill = 1;
+    }
+    if(kill || autodisabled){
+        call_out( (: eventDestruct() :), 5);
         return;
     }
-
+    tn("IMC2: setup "+ctime(time()));
 #ifndef NO_UIDS
     seteuid(getuid());
 #endif
@@ -541,7 +550,6 @@ void Setup(){
 #ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"Creating IMC2 object at "+ctime(time())+".\n");
 #endif
-    if(sizeof(get_dir(SAVE_FILE+".o"))) restore_object(SAVE_FILE);
     if(!mudinfo) mudinfo = ([ ]);
     if(!chaninfo) chaninfo = ([ ]);
     if(!localchaninfo) localchaninfo = ([ ]);
@@ -559,7 +567,7 @@ void Setup(){
 #ifdef IMC2_LOGGING
         write_to_log(DATA_LOG,"Addr_server is not running, resolve failed.\n");
 #endif
-        remove();
+        eventDestruct();
         return;
     }
 #endif
@@ -570,9 +578,14 @@ void heart_beat(){
     if(heart_count > 30){
         mixed sstat = socket_status(socket_num);
         heart_count = 0;
-        if(!sstat || sstat[1] != "DATA_XFER"){
+        if( (time() - counter) > 3600 
+          ||!sstat || sstat[1] != "DATA_XFER"){
             socket_close(socket_num);
-            //tn("reloading");
+            tn("IMC2: reloading IMC2_D due to timeout");
+#ifdef IMC2_LOGGING
+            write_to_log(DATA_LOG,"IMC2 TIMEOUT! Reloading.\n");
+#endif
+
             RELOAD_D->eventReload(this_object(), 2, 1);
         }
     }
@@ -580,14 +593,19 @@ void heart_beat(){
 
 void remove(){
     // This object is getting destructed.
-    socket_close(socket_num);
     mode=2;
+    save_object(SAVE_FILE, 1);
+    socket_close(socket_num);
     //	if(imc2_socket) imc2_socket->remove();
 #ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"IMC2 OBJECT REMOVED\n");
 #endif
-    save_object(SAVE_FILE);
-    destruct(this_object());
+    //destruct(this_object());
+}
+
+int eventDestruct(){
+    remove();
+    return ::eventDestruct();
 }
 
 void resolve_callback( string address, string resolved, int key ) {
@@ -1625,4 +1643,13 @@ EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
           write_file(filename, file, 1);
 
           return;
+      }
+
+      int UnSetAutoDisabled(int x){
+          //This is just for taking away automatic disablement.
+          //For enabling/disabling, see the mudconfig command.
+          if(x) autodisabled = 0;
+          save_object(SAVE_FILE,1);
+          RELOAD_D->eventReload(this_object(), 2, 1);
+          return autodisabled;
       }

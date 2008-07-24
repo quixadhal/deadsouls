@@ -10,7 +10,8 @@
 
 private string *RestrictedChannels;
 private static mapping Channels;
-int NoChanColors = 0;
+private int NoChanColors = 0;
+private int local_mute, remote_mute, local_gag, remote_gag;
 
 static void create(){
     RestrictedChannels = ({ });
@@ -53,7 +54,7 @@ void eventReconnect(){
 }
 
 int eventDestruct(){
-    if(CHAT_D->eventRemoveMember(keys(Channels))) return 1;
+    if(CHAT_D->eventRemoveMember(keys((Channels || ([]))))) return 1;
     else return 0;
 }
 
@@ -130,3 +131,85 @@ string *UnrestrictChannel(mixed val){
 }
 
 string *GetRestrictedChannels(){ return (RestrictedChannels + ({})); }
+
+int GetMutedType(string type){
+    if(type == "local" && local_mute) return 1;
+    if(type == "remote" && remote_mute) return 1;
+    if(type == "all" && remote_mute && local_mute) return 1;
+    return 0;
+}
+
+int GetMuted(string channel){
+    channel = CHAT_D->GetRemoteChannel(channel);
+    //channel = CHAT_D->GetLocalChannel(channel);
+    if(remote_mute 
+      && member_array(channel, CHAT_D->GetRemoteChannels()) != -1
+      && member_array(channel, CHAT_D->GetLocalChannels()) == -1){
+        return 1;
+    }
+    if(local_mute
+      && ( member_array(channel, CHAT_D->GetRemoteChannels()) == -1
+        || member_array(channel, CHAT_D->GetLocalChannels()) != -1)){
+        return 1;
+    }
+    return 0;
+}
+
+int SetMuted(string type, mixed whether){
+    if(undefinedp(whether) || !intp(whether)) whether = 1;
+    if(!type) type = "all";
+    switch(type){
+    case "local" :
+        local_mute = whether;
+        break;
+    case "remote" :
+        remote_mute = whether;
+        break;
+    case "all" :
+        local_mute = whether;
+        remote_mute = whether;
+        break;
+    }
+    return whether;
+}
+
+int GetGaggedType(string type){
+    if(type == "local" && local_gag) return 1;
+    if(type == "remote" && remote_gag) return 1;
+    if(type == "all" && remote_gag && local_gag) return 1;
+    return 0;
+}
+
+int GetGagged(string channel){
+    channel = CHAT_D->GetRemoteChannel(channel);
+    //channel = CHAT_D->GetLocalChannel(channel);
+    if(remote_gag
+      && member_array(channel, CHAT_D->GetRemoteChannels()) != -1
+      && member_array(channel, CHAT_D->GetLocalChannels()) == -1){
+        return 1;
+    }
+    if(local_gag
+      && ( member_array(channel, CHAT_D->GetRemoteChannels()) == -1
+        || member_array(channel, CHAT_D->GetLocalChannels()) != -1)){
+        return 1;
+    }
+    return 0;
+}
+
+int SetGagged(string type, mixed whether){
+    if(undefinedp(whether) || !intp(whether)) whether = 1;
+    if(!type) type = "all";
+    switch(type){
+    case "local" :
+        local_gag = whether;
+        break;
+    case "remote" :
+        remote_gag = whether;
+        break;
+    case "all" :
+        local_gag = whether;
+        remote_gag = whether;
+        break;
+    }
+    return whether;
+}

@@ -29,11 +29,15 @@ static void create()
 }
 
 void heart_beat(){
-    if(!clonep(this_object())) return;
-    if(!environment() || !living(environment()) || !environment(environment())) eventDestruct();
-    if(!connected && base_name(environment(environment())) != "/domains/default/room/telnet_room")
+    if(!this_object() || !clonep(this_object())) return;
+    if(!environment() || !living(environment()) 
+      || !environment(environment())) 
         eventDestruct();
-
+    if(environment(environment())){
+        if(!connected && base_name(environment(environment())) 
+          != "/domains/default/room/telnet_room")
+            eventDestruct();
+    }
 }
 
 void init()
@@ -240,4 +244,3 @@ int parse_comm( string str )
         return 1 ;
     }
 }
-

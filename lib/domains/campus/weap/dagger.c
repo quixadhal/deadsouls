@@ -21,6 +21,6 @@ static void create() {
     SetDollarCost(50);
     SetVendorType(VT_WEAPON);
     SetClass(150);
-    SetDamageType(BLADE);
-    SetWeaponType("blade");
+    SetDamageType(KNIFE);
+    SetWeaponType("knife");
 }

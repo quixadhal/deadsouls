@@ -27,5 +27,11 @@ static void create() {
     SetMaxItems(10000);
     SetVendorType(VT_HERB);
     SetSkill("bargaining", 1);
+    SetPolyglot(1);
+    SetLanguage("common", 100);
+    SetDefaultLanguage("common");
+}
 
+void init(){
+    ::init();
 }

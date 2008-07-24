@@ -17,3 +17,6 @@ static void create(){
     SetProtection(KNIFE,100);
     SetArmorType(A_CLOAK);
 }
+void init(){
+    ::init();
+}

@@ -65,7 +65,11 @@ varargs mixed can_get_obj_out_of_obj(mixed args...) {
     return ret;
 }
 
-mixed can_get_obj_obj(string verb, string rule, object item, object container) {
+mixed can_get_obj_obj(string verb, string rule, mixed item, object container) {
+    return can_get_obj_out_of_obj(verb, rule, item, container);
+}
+
+mixed can_get_obs_obj(string verb,string rule,mixed *item,object container){
     return can_get_obj_out_of_obj(verb, rule, item, container);
 }
 
@@ -224,4 +228,3 @@ mixed do_get_wrd_from_obj(mixed args...) {
 mixed do_get_wrd_out_of_obj(mixed args...) {
     return do_get_wrd_from_obj(args);
 }
-

@@ -10,6 +10,8 @@ STATS luck:10:3
 STATS speed:90:1
 STATS strength:90:1
 STATS wisdom:1:3
+RESISTANCE BLADE:immune
+RESISTANCE KNIFE:immune
 LIMB turret:0:1:A_AMULET,A_CUSTOM
 LIMB right leg:turret:2:A_CUSTOM
 LIMB left leg:turret:2:A_CUSTOM

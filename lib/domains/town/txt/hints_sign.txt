@@ -5,9 +5,6 @@ It is not a mud. It is a set of examples that can be used in making
 a mud. If you are reading this, it's because you are in a mud that
 is under construction.
 
-- Since this is a sample area, the mud creators may have changed 
-things so much that the stuff below might not all apply to you.
-
 - Read the players handbook. It is really very helpful. You read
 it like this:
 
@@ -18,13 +15,10 @@ read chapter 2 in handbook
 - If you want to know what is inside a container (like a bag or
 a box) you have to look *in* it. Example: look in bag
 
-- It is almost imposible to fight well if you're carrying
-stuff. Anything you carry that is not wielded or worn is a
-major problem in combat, so wear a backpack to keep your stuff in.
-
 - If you don't have the "two-handed" or "two-weapon" combat
 skills, you will fight very poorly when wielding multiple or
 two-handed weapons. Generally only fighters train in these skills.
+Wield just one weapon, unless you're a fighter.
 
 - The wimpy command will make you automatically run away from 
 combat when your health hits the percentage you specify.
@@ -77,8 +71,8 @@ example, "crawl south".
 combat, defense, and stealing, all get better the more 
 you do it.
 
-- If you are badly overmatched in a fight, try hiring 
-mercenaries or finding magical items to enhance your abilities. 
+- If you are badly overmatched in a fight, try 
+finding magical items to enhance your abilities. 
 Or heck, ask a friend to connect and help you fight.
 
 - Room lighting can be deceptive. You might be able to see 

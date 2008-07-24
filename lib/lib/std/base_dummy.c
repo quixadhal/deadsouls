@@ -71,22 +71,24 @@ mixed eventMove(mixed dest){
 
     if( stringp(dest) ){
         ob = load_object(dest);
-
     }
     else {
         ob = dest;
     }
-    str += "\nMy intended destination is "+file_name(ob)+". ";
-    move_object(ob);
-    if( environment() != ob ){
-        str += "\nThe move was not successful";
-        return 0;
+    if(ob){
+        str += "\nMy intended destination is "+file_name(ob)+". ";
+        move_object(ob);
+        if( environment() != ob ){
+            str += "\nThe move was not successful";
+            return 0;
+        }
+        else {
+            str += "\nThe move was successful.";
+            eventAnnounceCanonicalId(environment());
+            return 1;
+        }
     }
-    else {
-        str += "\nThe move was successful.";
-        eventAnnounceCanonicalId(environment());
-        return 1;
-    }
+    return 0; 
 }
 
 /* ******************* dummy.c driver applies ******************** */

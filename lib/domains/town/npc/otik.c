@@ -22,8 +22,9 @@ static void create() {
     SetStorageRoom("/domains/town/room/shop2");
     SetMaxItems(10000);
     SetVendorType(VT_ALL);
-    SetSkill("bargaining", 1);
     SetAttackable(0);
+    SetLanguage("common", 100);
+    SetDefaultLanguage("common");
 }
 void init(){
     ::init();

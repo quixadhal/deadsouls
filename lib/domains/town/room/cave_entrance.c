@@ -26,7 +26,8 @@ void init(){
             ({"inscription"}) : "Words in the language of the elves.",
           ]) );
         door->SetRead( ([
-            ({"inscription"}) : "Speak, friend, and enter."
+            ({"inscription"}) : "Speak, friend, and enter.",
+            "default" : "Try: read inscription on door"
           ]) );
         door->SetLanguage("Edhellen");
         initialized = 1;
@@ -38,7 +39,8 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
     int decoded = 0;
     object door = present("stone door",this_object());
     if(door) door = door->GetDoor();
-    if(door && door->GetClosed() && lang == "Edhellen" && who->GetLanguageLevel(lang) > 50 && 
+    if(door && door->GetClosed() && lower_case(lang) == "edhellen"
+      && who->GetLanguageLevel(lang) > 50 && 
       grepp(lower_case(msg),"friend"))
         decoded = 1;
     room::eventHearTalk(who,target,cls,verb,msg,lang);

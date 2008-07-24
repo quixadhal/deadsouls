@@ -31,6 +31,9 @@ static void create() {
     SetProperty("no bump", 1);
     SetLocalCurrency("silver");
     SetAttackable( (: NoKill :) );
+    SetPolyglot(1);
+    SetLanguage("common", 100);
+    SetDefaultLanguage("common");
 }
 void init(){
     ::init();

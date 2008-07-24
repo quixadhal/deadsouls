@@ -17,7 +17,7 @@ string eventAppendLast(string file, string fun, string addendum){
     globalstr = file;
 
     if(!grepp(file,"\n") && unguarded( (:file_exists(globalstr):) ) && !check_privs(this_player(),globalstr)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return "";
     }
     if(!grepp(file,"\n") && unguarded( (: file_exists(globalstr):) )) {
@@ -51,7 +51,7 @@ string eventAppend(string file, string *params, string addendum){
     else globalstr = file;
 
     if(!grepp(globalstr,"\n") && unguarded( (: file_exists(globalstr):) ) && !check_privs(this_player(),globalstr)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return "";
     }
     if(!grepp(globalstr,"\n") && unguarded( (: file_exists(globalstr):) )) {
@@ -105,7 +105,7 @@ varargs mapping eventReadMapping(string file, string *params, int destructive){
     mixed mixed_var;
 
     if(file_exists(file) && !check_privs(this_player(),file)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return ([]);
     }
 
@@ -187,7 +187,7 @@ varargs mapping eventReadMapping(string file, string *params, int destructive){
 
 string array eventReadLines(string source){
     if(file_exists(source) && !check_privs(this_player(),source)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return ({});
     }
     globalstr = source;
@@ -218,12 +218,12 @@ string array eventReadFunctions(string source){
     tmpsource = generate_tmp(source);
 
     if(file_exists(source) && !check_privs(this_player(),source)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return ({});
     }
 
     if(file_exists(tmpsource) && !check_privs(this_player(),tmpsource)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return ({});
     }
     globalstr3 = tmpsource;
@@ -283,7 +283,7 @@ int eventAddInit(string file){
     globalstr2 = file;
 
     if(file_exists(file) && !check_privs(this_player(),file)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return 1;
     }
 
@@ -340,7 +340,7 @@ varargs int eventModString(string file, string param, mixed replace, string *par
     string check_include, ret, tmpfile;
     int terrain_include = 0;
     if(file_exists(file) && !check_privs(this_player(),file)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return 1;
     }
     if(!params) where_append = ({"SetLong","SetShort"});
@@ -473,7 +473,7 @@ int eventAddCreate(string file){
     globalstr2 = file;
 
     if(file_exists(file) && !check_privs(this_player(),file)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return 1;
     }
 
@@ -522,7 +522,6 @@ int eventAddCreate(string file){
     unguarded( (: rm(globalstr) :) );
     return done;
 }
-
 
 
 

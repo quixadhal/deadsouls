@@ -13,7 +13,8 @@ string GetShort();
 
 string GetRead(string str){
     if( !str || str == "default" ){
-        return Read;
+        if(Reads["default"]) return Reads["default"];
+        else return Read;
     }
     else {
         return Reads[str];
@@ -26,6 +27,7 @@ string array GetReads(){
 
 void RemoveRead(string item){
     if( !item || item == "default" ){
+        Reads["default"] = 0;
         Read = 0;
     }
     else {
@@ -39,7 +41,7 @@ varargs mixed SetRead(mixed arg1, mixed desc){
         Reads = expand_keys(arg1);
         if( Reads["default"] ){
             Read = Reads["default"];
-            map_delete(Reads, "default");
+            //map_delete(Reads, "default");
         }
     }
     if( !desc ){
@@ -93,7 +95,9 @@ mixed GetLanguage(){
 
 varargs mixed eventRead(object who, string str){
     mixed ret;
-    mixed val = GetRead(str);
+    mixed val;
+    if(str) val = GetRead(str);
+    else val = GetRead("default");
 
     if( arrayp(val) ){
         val = val[query_night()];
@@ -168,4 +172,3 @@ mixed direct_read_str_word_obj(string str){
 
     }
 }
-

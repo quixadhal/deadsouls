@@ -9,7 +9,7 @@ mapping Reloadees = ([]);
 static int *reload_handles = ({});
 static int warm_boot_in_progress = 0;
 string savefile = "/secure/save/reload";
-static string *exceptions = ({ RELOAD_D, RSOCKET_D });
+static string *exceptions = ({ RELOAD_D, RSOCKET_D, ROOM_POD });
 
 varargs void validate(){
     if((!(int)master()->valid_apply(({ "SECURE", "ASSIST" })))){
@@ -22,9 +22,40 @@ varargs void validate(){
 
 static void create() {
     daemon::create();
-    if(!file_exists(savefile+__SAVE_EXTENSION__)) save_object(savefile);
+    if(!file_exists(savefile+__SAVE_EXTENSION__)) 
+        unguarded( (: save_object(savefile) :) );
     else restore_object(savefile);
     set_heart_beat(1);
+}
+
+void eventDestructEmptyRooms(object room){
+    validate();
+    if(room && objectp(room) && !sizeof(get_livings(room,1))){
+        object *npcs = get_livings(room,2);
+#if 0
+        object *dummies = get_dummies(room);
+        object *doors = get_doors(room);
+        if(sizeof(doors)) doors->eventDestruct();
+        if(sizeof(dummies)){
+            dummies->eventMove(ROOM_FURNACE);
+            dummies->eventDestruct();
+        }
+#endif
+        if(sizeof(npcs)) npcs->eventDestruct();
+        catch( room->eventDestruct() );
+        if(room) catch(destruct(room));
+        if(room){
+            //tc("Failed to destruct "+identify(room),"red");
+        }
+    }
+}
+
+void eventResetEmptyRooms(){
+    validate();
+    foreach(object foo in objects((: inherits(LIB_ROOM, $1) :))){
+        //tc("foo: "+identify(foo));
+        call_out( (: eventDestructEmptyRooms :), 0, foo );
+    }
 }
 
 int ReloadBaseSystem(){
@@ -38,7 +69,7 @@ int ReloadBaseSystem(){
     foreach(string file in sefun_files){
         catch(update(file));
     }
-    catch( update(SEFUN) );
+    RELOAD_D->eventReload(load_object(SEFUN), 1);
     catch( update(MASTER_D) );
     catch( reload(load_object(LIB_CREATOR), 1, 1) );
     catch( reload(load_object(LIB_SENTIENT), 1, 1) );
@@ -93,15 +124,36 @@ varargs mixed ReloadPlayer(mixed who, int deep){
 }
 
 varargs int eventUpdate(mixed what){
+    mixed tmpwhat = what;
+    int err;
+    if(stringp(what)){
+        what = find_object(tmpwhat);
+    }
+    if(!objectp(what)){
+        err = catch(what = load_object(tmpwhat));
+    }
+    if(err || !objectp(what)){
+        return 0;
+    }
     if(what->GetVirtual()){
         return what->eventDestruct();
     }
-    return update(what);
+    if(!inherits(LIB_ROOM, what)) return update(base_name(what));
+    else {
+        tmpwhat = base_name(what);
+        what->eventDestruct();
+        if(what) destruct(what);
+        return update(tmpwhat);
+    }
 }
 
 varargs int eventReload(mixed what, int when, int nodelay){
     if(!what) return 0;
-    if(what->GetVirtual()) return what->eventDestruct();
+    if(what->GetVirtual()){
+        object *npcs = get_livings(what,2);
+        if(sizeof(npcs)) npcs->eventDestruct();
+        return what->eventDestruct();
+    }
     if(nodelay) return reload(what, 0, 1);
     if(!when) when = time();
     else when += time();
@@ -138,9 +190,11 @@ void heart_beat(){
             }
         }
         if(!sizeof(reload_handles)){
-            warm_boot_in_progress = 0;
+            shout("Reloading users...");
+            flush_messages();
             this_object()->ReloadUsers();
             shout("Warm boot complete.");
+            warm_boot_in_progress = 0;
             eventSave();
         }
     }
@@ -179,15 +233,18 @@ int ReloadDir(string dir, int passes){
     object *lib_obs = objects( (: !strsrch(base_name($1),$(dir)) :) );
     int err;
     validate();
+    lib_obs = filter(lib_obs, (: !clonep($1) || 
+        (clonep($1) && environment($1)) :));
     if(!passes) passes = 3;
     while(passes){
+        reset_eval_cost();
         foreach(object ob in lib_obs){
             if(ob != this_object() && 
               member_array(base_name(ob), exceptions) == -1){
-                if(ob && inherits(LIB_ROOM,ob) && sizeof(livings(ob))){
-                    reload_handles += ({ call_out("eventReload", 5,ob, 0, 1) });
+                if(ob && inherits(LIB_ROOM,ob) && sizeof(get_livings(ob,1))){
+                    catch( get_livings(ob,1)-> eventMove(ROOM_POD) );
                 }
-                else reload_handles += ({ call_out("eventUpdate", 5, base_name(ob)) });
+                reload_handles += ({ call_out((: eventUpdate :), 1, base_name(ob)) });
             }
         }
         passes--;
@@ -202,7 +259,21 @@ int ReloadUsers(){
     if(!mx) error("OHFUC-");
 
     foreach(object player in users()){
+        string last_loc;
+        object dest, env;
         reset_eval_cost();
+        if(player) env = environment(player);
+        //tc("environment("+identify(player)+"): "+identify(env));
+        if(!env || base_name(env) == ROOM_POD){
+            if(!last_loc = player->GetProperty("LastLocation")){
+                last_loc = ROOM_START;
+            }
+            err = catch( dest = load_object(last_loc) );
+            if(err || !dest) 
+                err = catch( dest = load_object(ROOM_VOID) );
+            //tc("last_loc: "+last_loc+", dest: "+identify(dest));
+            catch( player->eventMove(dest) );
+        }
         err = catch(RELOAD_D->ReloadPlayer(player));
         if(err) ret = 0;
     }
@@ -214,20 +285,35 @@ int ReloadMud(){
     string *dir1 = ({ "/cmds/", "/verbs/","/estates/", "/obj/", "/open/", "/shadows/", "/spells/", "/std/" });
     validate();
     shout("Warm boot initiated!");
-    flush_messages();
+    catch( update(ROOM_POD) );
+    warm_boot_in_progress = 1;
     ReloadBaseSystem();
+    shout("Initializing base system...");
+    flush_messages();
     foreach(string dir in (dir2 + dir1)){
+        shout("Initializing: "+dir);
+        flush_messages();
         reset_eval_cost();
         ReloadDir(dir, ((member_array(dir, dir1) != -1) ? 1 : 2));
     }
+    shout("Rooms resetting...");
+    flush_messages();
+    eventResetEmptyRooms();
+    shout("Reloading domains. This can take a few minutes...");
+    flush_messages();
     ReloadDir("/domains/", 3);
+    shout("Reloading realms...");
+    flush_messages();
     ReloadDir("/realms/", 3);
-    warm_boot_in_progress = 1;
     return 1;
 }
 
 int WarmBoot(){
     validate();
-    call_out("ReloadMud", 0);
+    call_out( (: ReloadMud :), 0);
     return 1;
+}
+
+int GetWarmBootInProgress(){
+    return warm_boot_in_progress;
 }

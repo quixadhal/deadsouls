@@ -759,7 +759,7 @@ int BanishUser(){
     return 1;
 }
 
-int evenBanishUser(string str){
+int eventBanishUser(string str){
     validate();
     if(member_array(str,BANISH_D->query_banished()) != -1) {
         write("That name is already banished.\n");

@@ -14,7 +14,7 @@
 inherit LIB_HISTORY;
 
 #define DIRECTORY_STACK_SIZE     5
-#define MAX_CMD_ALIASES          128
+#define MAX_CMD_ALIASES          192
 
 private string CurrentWorkingDirectory = "/";
 private string PreviousWorkingDirectory;
@@ -39,8 +39,10 @@ static void create(){
       "west" : "go west", "up" : "go up", "down": "go down", 
       "ig" : "intergossip $*", "c" : "cre $*", "lp" : "lpuni $*",
       "inv" : "inventory", "x" : "look at $*", "examine" : "look at $*",
-      "ic" : "intercre $*", "aa" : "ascii_art $*", "chat" : "newbie $*",
-      "dc" : "dchat $*", "exit" : "go out", "t" : "tell $*",
+      "ic" : "intercre $*", "loot" : "get all from $*", "chat" : "newbie $*",
+      "dc" : "dchat $*", "exit" : "go out", "t" : "tell $*", "k" : "kill $*",
+      "alist" : "ls /domains", "zlist" : "domains", "mwhere" : "findobj $*",
+      "owhere" : "findobj $*", "peace" : "quell", "vnum" : "help find",
     ]);
     Xverbs = (["]":"] $*", "'":"say $*",":":"emote $*","\"":"say $*",]);
 } 

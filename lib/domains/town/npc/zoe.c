@@ -27,7 +27,9 @@ static void create() {
     SetOpenFee(5);
     SetExchangeFee(2);
     SetCurrencies( ({ "dollars", "copper", "silver", "electrum", "gold", "platinum" }) );
-
+    SetPolyglot(1);
+    SetLanguage("common", 100);
+    SetDefaultLanguage("common");
 }
 void init(){
     ::init();

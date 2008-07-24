@@ -92,8 +92,8 @@ int GetAssignedBugs(string who) {
     int id, x = 0;
 
     foreach( id, rep in Bugs) 
-    if( rep["assigned"] && !rep["date fixed"] &&
-      (convert_name(rep["assigned"]) == who) ) x++;
+        if( rep["assigned"] && !rep["date fixed"] &&
+          (convert_name(rep["assigned"]) == who) ) x++;
     return x;
 }
 

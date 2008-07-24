@@ -51,9 +51,6 @@ int eventDecay(){
 void SetCorpse(object who){
     string tmpshort = (string)who->GetShort();
     if(sizeof(who->GetRiders())) tmpshort = (string)who->GetPlainShort();
-    if( DecayLife < 100 ){
-        DecayLife = 500;
-    }
     SetKeyName(who->GetKeyName());
     SetId(({ "remains","wreckage",who->GetId()... }) );
     Owner = who->GetCapName();

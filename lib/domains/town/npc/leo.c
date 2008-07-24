@@ -13,6 +13,7 @@ int WieldStaff(){
     }
     return 1;
 }
+
 static void create() {
     sentient::create();
     SetKeyName("leo");
@@ -42,9 +43,15 @@ static void create() {
         "Leo says, \"I just don't have time to fight those orcs.\""
       }));
     SetCombatAction(100, (: WieldStaff :));
+    SetPolyglot(1);
+    SetLanguage("common", 100);
+    SetDefaultLanguage("common");
+    SetCustomXP(10);
 }
+
 int CompleteQuest(object ob){
     string *quests;
+    object sword = present("orcslayer", this_object());
     quests = ob->GetQuests();
     if(!ob->GetQuest("Orc Slayer Quest")){
         ob->AddQuest("the Orc Slayer","Orc Slayer Quest");
@@ -52,6 +59,7 @@ int CompleteQuest(object ob){
         eventForce("say I hereby award you 10 quest points, and 2000 experience points!");
         ob->AddQuestPoints(10);
         ob->AddExperiencePoints(2000);
+        if(sword) sword->eventDestruct();
         reload("/domains/town/room/valley",0,1);
         reload("/domains/town/room/orc_fortress",0,1);
         reload("/domains/town/room/orc_temple",0,1);
@@ -65,12 +73,11 @@ int eventReceiveObject() {
     player = this_player();
 
     if( !ob || !::eventReceiveObject() ) return 0;
-    if( ob->GetKeyName() == "orc slayer" ){
+    if(base_name(ob) == "/domains/town/weap/orcslayer"){
         this_object()->DisableActions(1);
         call_out("CompleteQuest", 0, player);
         call_out("EnableActions", 300, 1);
     }
-    AddCarriedMass((int)ob->GetMass());
     return 1;
 }
 

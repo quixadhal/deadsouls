@@ -1,0 +1,26 @@
+GETAMMOTYPE
+
+NAME
+        GetAmmoType()
+
+SYNOPSIS
+        string GetAmmoType()
+
+DESCRIPTION
+        If the ammunition type is set on a clip or a round, they must match in order to be compatible. This function returns the string defined for that information.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/round
+/lib/firearm
+/lib/shell
+/lib/clip
+
+SEE ALSO
+        SetAmmoType, GetFirearmType, SetFirearmType
+
+Author
+        Cratylus
+

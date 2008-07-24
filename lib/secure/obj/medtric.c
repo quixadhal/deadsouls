@@ -328,7 +328,7 @@ int infect(string str){
         return 1;
     }
     if(whom == "me") whom = this_player()->GetKeyName();
-    person=find_living(whom);
+    person=present(whom,environment(scanner));
     if(!person  || !living(person)){
         write("This being was not found.");
         return 1;
@@ -342,7 +342,7 @@ int infect(string str){
         write("That isn't a valid disease.");
         return 1;
     }
-    if(person=find_living(whom)){	
+    if(person){	
         write(person->GetName()+" located. Infecting...");
         say(scanner->GetName()+" waves a tricorder at "+person->GetName()+".",person);
         if(present(whom,environment(scanner))) {

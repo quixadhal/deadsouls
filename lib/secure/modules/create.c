@@ -106,12 +106,12 @@ mixed eventModify(object ob, string str){
     special_map_array = ({ "SetProperties", "SetStats", "SetSkills"});
 
     if(!check_privs(this_player(),filename)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return 1;
     }
 
     if(!check_privs(this_player(),tmpfile)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return 1;
     }
 
@@ -484,14 +484,14 @@ mixed eventModify(object ob, string str){
         write("SetExits is a special setting, which isn't modified like others.");
         write("To make an exit to a room, or to create a new room, type:\n");
         write("create room DIRECTION FILE");
-        write("For example : create room east test_room1");
+        write("For example: create room east test_room1");
         write("To get rid of an exit, it's: delete exit DIRECTION");
         write("For example: delete exit east");
         return 1;
     }
 
     if(out == "SetEnters") {
-        write("SetExits is a special setting, which isn't modified like others.");
+        write("SetEnters is a special setting, which isn't modified like others.");
         write("To make an Enter, first identify an item that already exists ");
         write("in SetItems. For example, if SetItems contains a pub:\n");
         write("create enter pub test_pub1\n");
@@ -640,12 +640,12 @@ int eventDelete(object ob, string value){
 
     if(!check_privs(this_player(),filename)){
 
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return 1;
     }
 
     if(!check_privs(this_player(),tmpfile)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return 1;
     }
 
@@ -679,7 +679,7 @@ int eventResumeArrayMod(object target, string tmpfile, string *NewArr, string fu
     filename = base_name(target)+".c";
 
     if(!check_privs(this_player(),filename)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return 1;
     }
     global2 = tmpfile;
@@ -725,7 +725,7 @@ int eventResumeMappingChange(object target, string tmpfile, mapping NewMap, stri
     filename = base_name(target)+".c";
 
     if(!check_privs(this_player(),filename)){
-        write("You do not appear to have access to this file. Modification aborted.");
+        write("You do not appear to have write access to this file. Modification aborted.");
         return 1;
     }
 

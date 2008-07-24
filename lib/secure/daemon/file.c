@@ -19,7 +19,7 @@ static private void validate() {
     }
     if(query_os_type() == "windows"){
         error("The file daemon has been disabled for your mud "+
-          "because it is running windows. Intensive file operations "+
+          "because it is running on windows. Intensive file operations "+
           "in windows are not yet supported on Dead Souls.");
     }
 }
@@ -170,4 +170,3 @@ int eventDestruct(){
     unguarded( (: save_object(SaveFiles) :) );
     return ::eventDestruct();
 }
-

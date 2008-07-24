@@ -1,3 +1,9 @@
+// IMPORTANT NOTE
+// Zafo does not speak Common. He is a simple human and only
+// speaks English. For him to understand what you say, you
+// MUST SPEAK IN ENGLISH.
+// Or edit this file to make him know Common.
+
 /* This is an example of parsing talk. The CopResponse() function
  * is a bit silly, because it tries to parse words, and as such is
  * doomed to failure, since it is trying to be an language/meaning
@@ -63,7 +69,6 @@ static void create() {
     SetAdjectives(({"punk rock", "punkrock", "rock", "cool"}));
     SetShort("Zafo");
     SetLong("Zafo is a cool dude, and totally punk rock.");
-    SetPolyglot(1);
     SetLevel(10);
     SetRace("human");
     SetClass("fighter");

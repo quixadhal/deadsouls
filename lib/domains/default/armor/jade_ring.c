@@ -4,10 +4,11 @@
 inherit LIB_ARMOR;
 object ringshadow;
 
-string LongRet(){
+string LongRet(mixed whom){
     string ret = "A green ring, glowing with unearthly power.";
-    if(creatorp(this_player()) ||
-      member_group(this_player(),"TEST")){
+    if(!whom || !objectp(whom) || !living(whom)) whom = this_player();
+    if(creatorp(whom) ||
+      member_group(whom,"TEST")){
         ret += "\nTo enable damage protection, type: protection on";
         ret += "\nTo enable damage reporting, type: reporting on";
         ret += "\nTo make a creature report its damage: enablereport <name>";
@@ -25,6 +26,7 @@ static void create(){
     SetLong( (: LongRet :) );
     SetMass(1);
     SetBaseCost("silver",5000);
+    SetRestrictLimbs("right hand");
     SetArmorType(A_RING);
 }
 

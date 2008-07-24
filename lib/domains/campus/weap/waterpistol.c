@@ -24,7 +24,7 @@ static void create() {
     SetVendorType(VT_WEAPON);
     SetClass(20);
     SetDamageType(BLUNT);
-    SetPistolType("auto");
+    SetFirearmType("auto");
     SetWeaponType("blunt");
 }
 mixed eventShoot(object shooter, object target){

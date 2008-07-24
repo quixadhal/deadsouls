@@ -134,7 +134,9 @@ int eventTrain(object who, string verb, string skill){
     }
 
     if(who->GetLanguageLevel(this_object()->GetNativeLanguage()) < 100){
-        eventForce("speak You are not fluent in my language. We can't communicate well enough for me to teach or train you anything.");
+        write("You must be fluent in "+this_object()->GetNativeLanguage()+
+          " in order to understand the training provided by "+
+          this_object()->GetName()+".");
         return 1;
     }
 

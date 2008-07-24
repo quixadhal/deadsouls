@@ -1,0 +1,26 @@
+SETFIREARMTYPE
+
+NAME
+        SetFirearmType()
+
+SYNOPSIS
+        int SetFirearmType(string str)
+
+DESCRIPTION
+        If the firearm type is set on a clip or a round, they must match in order to be compatible. This function defines the string for that information.
+
+EXAMPLES
+        SetFirearmType("auto")
+
+LOCATION
+        /lib/round
+/lib/firearm
+/lib/shell
+/lib/clip
+
+SEE ALSO
+        GetAmmoType, SetAmmoType, GetFirearmType
+
+Author
+        Cratylus
+

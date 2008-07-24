@@ -32,7 +32,7 @@ int CanReceive(object sneak) {
     object *living_stack = get_livings(sneak);
     if(!living_stack || !arrayp(living_stack)) living_stack = ({ sneak });
     foreach(object ob in living_stack){
-        if(playerp(ob) && !creatorp(ob) && !present("testchar badge",ob) &&
+        if(playerp(ob) && !creatorp(ob) &&
           !member_group(ob,"TEST")) {
             message("info","Creator staff only, sorry.", ob);
             return 0;

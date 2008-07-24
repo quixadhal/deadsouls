@@ -211,6 +211,7 @@ void AddRace(string file, int player) {
 
 
     foreach(string line in explode(read_file(file),"\n")){
+        mixed *tmp_vision;
         test_string = first_string_element(line," ");
         if(!test_string || !sizeof(test_string)) test_string = line;
 
@@ -260,7 +261,8 @@ void AddRace(string file, int player) {
 
         case "SENSITIVITY":
             line = replace_string(line, "SENSITIVITY ", "");
-            res["Sensitivity"] = map(explode(line, ":"), (: to_int :));
+            tmp_vision = map(explode(line, ":"), (: to_int :));
+            res["Sensitivity"] = ({ tmp_vision[0], tmp_vision[1] * 10 });
             break;
 
         case "PLAYER_RACE":
@@ -512,7 +514,7 @@ void AddRace(string file, int player) {
         if( !res || !res["Complete"] || sizeof(args) != 2 ) return;
         args[0] = copy(res["Limbs"]);
         foreach(string finger, int count in res["Fingers"])
-        tmp = ({ tmp..., ({ finger, count }) });
+            tmp = ({ tmp..., ({ finger, count }) });
         args[1] = tmp;
     }
 
@@ -525,7 +527,7 @@ void AddRace(string file, int player) {
         if( !res || !res["Complete"] || sizeof(args) != 5 ) return;
         tmp = ({});
         foreach(int key, string val in res["Resistance"])
-        tmp = ({ tmp..., ({ key, val }) });
+            tmp = ({ tmp..., ({ key, val }) });
         args[0] = tmp;
         tmp = ({});
         StatMap = copy(res["Stats"]);
@@ -567,7 +569,7 @@ void AddRace(string file, int player) {
         help += capitalize(item_list(map(limbs, (: add_article :)))) + ".\n";
         help += "\nFingered limbs:\n";
         foreach(string finger, int count in res["Fingers"])
-        help += "\t" + finger + " (" + count + ")\n";
+            help += "\t" + finger + " (" + count + ")\n";
         limbs = regexp(limbs, ".* wing");
         if( sizeof(limbs) ) {
             help += "\nFlying\n";

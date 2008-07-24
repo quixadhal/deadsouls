@@ -10,11 +10,8 @@ void create(){
     SetShort("a .45 caliber pistol round");
     SetLong("This is a .45 caliber bullet for a semiautomatic pistol. It has not been fired.");
     SetCaliber(45);
-    SetPistolType("auto");
+    SetFirearmType("auto");
     SetAmmoType("acp");
     SetVendorType(VT_TREASURE);
     SetMass(1);
-}
-void init(){
-    round::init();
 }

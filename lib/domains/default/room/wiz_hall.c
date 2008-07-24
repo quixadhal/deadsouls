@@ -2,12 +2,14 @@
 #include <rooms.h>
 
 inherit LIB_ROOM;
+int ds;
 
 string LongDesc(){
     string desc = "Immortals come here to communicate with each other about "+
     "the world they are building. The Adventurer's Guild "+
-    "is north. The Arch Room is south. To visit the Dead Souls "+
-    "test and development mud, go west. The test lab facilities are east.";
+    "is north. The Arch Room is south."+(!(ds) ? " To visit the Dead Souls "+
+      "test and development mud, go west." : "")+
+    " The test lab facilities are east.";
     desc += "\nA sign reads: "+load_object(ROOM_ARCH)->SignRead();
     return desc;
 }
@@ -15,6 +17,9 @@ string LongDesc(){
 static void create() {
     object ob;
     room::create();
+    if(mud_name() == "Dead Souls"){
+        ds = 1;
+    }
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("Creators' Hall");
@@ -47,7 +52,8 @@ int CanReceive(object sneak) {
     object *living_stack = get_livings(sneak);
     if(!living_stack || !arrayp(living_stack)) living_stack = ({ sneak });
     foreach(object ob in living_stack){
-        if(playerp(ob) && !creatorp(ob) && !present("testchar badge",ob) &&
+        if(living(ob) && !creatorp(ob) && 
+          base_name(ob) != "/domains/default/npc/tree" &&
           !member_group(ob,"TEST")) {
             message("info","Creator staff only, sorry.", ob);
             return 0;

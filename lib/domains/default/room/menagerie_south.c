@@ -28,7 +28,6 @@ static void create() {
         "/domains/default/npc/gnoll" : 1,
         "/domains/default/npc/elemental" : 1,
       ]));
-    SetNoClean(1);
     SetExits(([
         "north" : "/domains/default/room/menagerie",
       ]));

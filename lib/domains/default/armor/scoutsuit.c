@@ -22,7 +22,7 @@ static void create(){
       "the scout variety.");
     SetMass(700);
     SetMatching(0);
-    SetBaseCost("silver",100000);
+    SetBaseCost("silver",5000);
     SetArmorType(A_CUSTOM);
     SetRestrictLimbs( ({ 
         "torso", "head", "neck",
@@ -174,4 +174,3 @@ string array QueryBane(){
     if(GetActive()) return ({ "all" });
     else return ({});
 }
-

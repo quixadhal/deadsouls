@@ -83,7 +83,7 @@ mixed aa_ring(string str)
             write("Now you've done it!  An orc walks in a bonks you on the head.\n");
             say("Now " + this_player()->GetName() + " has done it!  An orc walks in a bonks " +
               objective(this_player()) +  " on the head.\n");
-            clone_object(ORC)->eventMove(this_object());  //this_object IS -this- room!
+            new(ORC)->eventMove(this_object());  //this_object IS -this- room!
         }
     }
     return 1;
@@ -128,10 +128,10 @@ as well as good comments.  Never be afraid of comments!
 NOTE 2! The nested if.  Could also have been written:
     if ( numrings>5 && ! present("orc",this_object()))
     {
-         write("Now you've done it!  An ord walks in a bonks you on the head.\n");
+         write("Now you've done it!  An orc walks in a bonks you on the head.\n");
          say("Now " + this_player->GetName() + " has done it!  An orc walks in a bonks " +
              objective(this_player()) " +  " on the head.\n");
-         clone_object(ORC)->eventMove(this_object());  //this_object IS -this- room!
+         new(ORC)->eventMove(this_object());  //this_object IS -this- room!
     }
   But, if you are having problems with the booleans && || and the code
   is pretty clean & simple already, you might want to go the route

@@ -406,39 +406,39 @@ void check_discs(){
 
     if(sizeof(fds))
         foreach(mixed element in sort_array(fds,1)){
-        string lost_mud;
-        if(!intp(element)) continue;
-        if(!socket_status(element) ||
-          socket_status(element)[1] == "CLOSED" || !GetRemoteIP(element) ||
-          GetRemoteIP(element) != mudinfo[query_connected_fds()[element]]["ip"]){
-            foreach(string key, mixed val in mudinfo){
-                if(!connected_muds[key] && mudinfo[key]["router"]){
-                    if(mudinfo[key]["router"] == my_name){
-                        server_log("Cleaning connection info from "+key);
-                        if(!mudinfo[key]["disconnect_time"])
-                            mudinfo[key]["disconnect_time"] = time();
-                        if(mudinfo[key]["connect_time"]) 
-                            mudinfo[key]["connect_time"] = 0;
-                    }
-                    else {
-                        server_log("Cleaning connection info from "+key);
-                        if(!mudinfo[key]["disconnect_time"])
-                            mudinfo[key]["disconnect_time"] = 0;
-                        if(mudinfo[key]["connect_time"]) 
-                            mudinfo[key]["connect_time"] = 0;
+            string lost_mud;
+            if(!intp(element)) continue;
+            if(!socket_status(element) ||
+              socket_status(element)[1] == "CLOSED" || !GetRemoteIP(element) ||
+              GetRemoteIP(element) != mudinfo[query_connected_fds()[element]]["ip"]){
+                foreach(string key, mixed val in mudinfo){
+                    if(!connected_muds[key] && mudinfo[key]["router"]){
+                        if(mudinfo[key]["router"] == my_name){
+                            server_log("Cleaning connection info from "+key);
+                            if(!mudinfo[key]["disconnect_time"])
+                                mudinfo[key]["disconnect_time"] = time();
+                            if(mudinfo[key]["connect_time"]) 
+                                mudinfo[key]["connect_time"] = 0;
+                        }
+                        else {
+                            server_log("Cleaning connection info from "+key);
+                            if(!mudinfo[key]["disconnect_time"])
+                                mudinfo[key]["disconnect_time"] = 0;
+                            if(mudinfo[key]["connect_time"]) 
+                                mudinfo[key]["connect_time"] = 0;
+                        }
                     }
                 }
-            }
 
-            foreach(string key, int val in connected_muds){
-                if(val == element){
-                    trr("REMOVING DISCONNECTED: "+key+" from "+val);
-                    i++;
-                    call_out( (: disconnect_mud :), i, key);
+                foreach(string key, int val in connected_muds){
+                    if(val == element){
+                        trr("REMOVING DISCONNECTED: "+key+" from "+val);
+                        i++;
+                        call_out( (: disconnect_mud :), i, key);
+                    }
                 }
             }
         }
-    }
 }
 
 void clean_ghosts(){

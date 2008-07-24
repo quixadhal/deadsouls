@@ -27,11 +27,6 @@ int CanReceive(object ob) {
 
     if(inherits(LIB_GERM,ob)) return 0;
 
-    if(living(ob) && !creatorp(ob) && !present("testchar badge",ob)) {
-        message("info","Creator staff only, sorry.", ob);
-        return 0;
-    }
-
     inv = deep_inventory(ob);
     foreach(object thing in inv){
         if(inherits(LIB_GERM,thing)) {

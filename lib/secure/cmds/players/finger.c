@@ -55,11 +55,10 @@ void remote_finger(object ob, string who, string mud) {
 void help() {
     message("help",
       "Syntax: <finger (([player])(@)([mud]))>\n\n"
-      "Gives you information about a player named.  If you do not mention "
-      "a particular mud, it searches for that player info here.  If you "
-      "do not mention a player or a mud, it gives general finger info for "
-      "everyone on line here.  If you mention another mud but no player, "
-      "it gives you general info on the players on that mud.\n\n"
-      "See also: gmuds, mail, muds, rwho, tell, users, who", this_player()
+      "Gives you information about a player named. If you do not mention "
+      "a particular mud, it searches for that player info here. "
+      " If you mention another mud but no player, "
+      "it may give you general info on the players on that mud.\n\n"
+      "See also: mail, rwho, tell, users, who", this_player()
     );
 }

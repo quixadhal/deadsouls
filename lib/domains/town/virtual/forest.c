@@ -72,7 +72,7 @@ varargs static void create(int x, int y) {
     }
     if(x == 24 && y == 25){
         RemoveExit("north");
-        AddExit("north","/domains/town/room/cave_entrance");
+        //AddExit("north","/domains/town/room/cave_entrance");
     }
     else if(y == 25){
         RemoveExit("north");
@@ -141,7 +141,10 @@ varargs void SetLongAndItems(int x, int y, int z) {
           "This is a rather scary looking opening in the cliff wall, leading "
           "north into the ground.");
         AddEnter("cave","/domains/town/room/cave_entrance");
-        SetObviousExits("n, s, e, w, se, sw, enter cave");
+        RemoveExit("north");
+        RemoveExit("northeast");
+        RemoveExit("northwest");
+        //SetObviousExits("n, s, e, w, se, sw, enter cave");
     }
 
     if(x == 24 && y == 1) {
@@ -159,26 +162,26 @@ varargs void SetLongAndItems(int x, int y, int z) {
             string thing;
 
             foreach(thing in ({ "twigs", "sticks", "kindling", "wood" })) 
-            SetSearch(thing, function(object who, string str) {
-                  object ob;
-                  string thing2;
+                SetSearch(thing, function(object who, string str) {
+                      object ob;
+                      string thing2;
 
-                  if( !(ob = new("/domains/Ylsrim"+ "/etc/pole")) )
-                      return 0;
-                  who->eventPrint("You find a fishing pole!");
-                  eventPrint((string)who->GetName() + " finds a fishing pole "
-                    "among the abandoned campsite.", who);
-                  foreach(thing2 in ({ "twigs", "sticks", "kindling", "wood"}))
-                  RemoveSearch(thing2);
-                  if( !((int)ob->eventMove(this_player())) ) {
-                      who->eventPrint("You drop the pole!");
-                      eventPrint((string)who->GetName() + " drops the pole.",
-                        who);
-                      ob->eventMove(this_object());
-                  }
-                  return;
-                });
-          }
+                      if( !(ob = new("/domains/Ylsrim"+ "/etc/pole")) )
+                          return 0;
+                      who->eventPrint("You find a fishing pole!");
+                      eventPrint((string)who->GetName() + " finds a fishing pole "
+                        "among the abandoned campsite.", who);
+                      foreach(thing2 in ({ "twigs", "sticks", "kindling", "wood"}))
+                          RemoveSearch(thing2);
+                      if( !((int)ob->eventMove(this_player())) ) {
+                          who->eventPrint("You drop the pole!");
+                          eventPrint((string)who->GetName() + " drops the pole.",
+                            who);
+                          ob->eventMove(this_object());
+                      }
+                      return;
+                    });
+              }
         }
         else if( !random(10) ) 
             SetSmell("default", "You smell a distant camp fire.");

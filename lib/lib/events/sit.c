@@ -24,7 +24,8 @@ object array GetSitters(){
 }
 
 mixed eventReceiveSit(object who){
-    if(who->GetProperty("furniture")){
+    mixed furn = who->GetProperty("furniture");
+    if(furn && objectp(furn)){
         write("You are already using a piece of furniture.");
         return 1;
     }
@@ -70,4 +71,3 @@ int CanGet(object who){
     }
     else return 1;
 }
-

@@ -27,6 +27,10 @@ static void create() {
       ]) );
     slips = ({});
     busy=0;
+    SetPolyglot(1);
+    SetLanguage("common", 100);
+    SetDefaultLanguage("common");
+    SetCustomXP(10);
 }
 
 int CanReceive() {
@@ -232,5 +236,4 @@ int DiagPatient(string dude, string problem){
     }
 
 }
-
 

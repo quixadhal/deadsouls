@@ -2,6 +2,12 @@
 
 inherit LIB_NPC;
 
+int AllowPass(object who, object what){
+    string *allowed_races = ({ "orc", "half-orc", "bear" });
+    if(member_array(who->GetRace(), allowed_races) != -1) return 1;
+    return ::AllowPass(who, what);
+}
+
 int CheckOrc(mixed val){
     string *allowed_races = ({ "orc", "half-orc", "bear" });
     if(!val) return 0;
@@ -10,7 +16,6 @@ int CheckOrc(mixed val){
     else eventForce("growl at "+val->GetKeyName());
     return 1;
 }
-
 
 static void create() {
     npc::create();
@@ -29,5 +34,9 @@ static void create() {
     SetInventory(([
         "/domains/town/weap/dagger":"wield dagger",
       ]) );
+    SetGuard("north","The boss orc blocks your path!");
+}
 
+void init(){
+    ::init();
 }

@@ -22,6 +22,7 @@ static void create(){
     daemon::create();
     SetNoClean(1);
     eventLoad();
+    set_heart_beat(60);
     if (!Stargates) Stargates = ([]);
 }
 
@@ -64,9 +65,11 @@ mapping GetStargates(){
 }
 
 int SetStatus(string address, string status){
+    if(!Stargates[address]) return 0;
     Stargates[address]["status"] = status;
+    Stargates[address]["last_change"] = time();
     eventSave();
-    return 0;
+    return 1;
 }
 
 string GetStatus(string address){
@@ -74,14 +77,17 @@ string GetStatus(string address){
     return Stargates[address]["status"];
 }
 
-string GetDestination(string address){
+mixed GetDestination(string address){
     if(sizeof(Stargates[address]) && sizeof(Stargates[address]["destination"]))
         return Stargates[address]["destination"];
-    else return "";
+    else return 0;
 }
 
-string GetEndpoint(string address){
-    return Stargates[address]["endpoint"];
+mixed GetEndpoint(string address){
+    if(Stargates[address] && Stargates[address]["endpoint"]){
+        return Stargates[address]["endpoint"];
+    }
+    else return 0;
 }
 
 int eventConnect(string from, string to){
@@ -129,4 +135,28 @@ int eventDisconnect(string from){
 
     eventSave();
     return 1;
+}
+
+void ResetGates(){
+    foreach(mixed key, mixed val in Stargates){
+        Stargates[key]["endpoint"] = "";
+        Stargates[key]["status"] = "idle";
+        Stargates[key]["last_change"] = 0;
+        eventSave();
+    }
+}
+
+void heart_beat(){
+    foreach(mixed key, mixed val in Stargates){
+        if(undefinedp(val["last_change"])){
+            Stargates[key]["last_change"] = 0;
+        }
+        if((val["last_change"] && (time() - val["last_change"]) > 60) ||
+          (!val["last_change"] && val["status"] != "idle")){
+            Stargates[key]["endpoint"] = "";
+            Stargates[key]["status"] = "idle";
+            Stargates[key]["last_change"] = 0;
+            eventSave();
+        }
+    }
 }

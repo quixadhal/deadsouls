@@ -81,7 +81,9 @@ int eventLoadObject(mixed val, int recurse){
 
         if( !eventMove(prev) ){
             call_out(function(object p){
-                  object env = environment(p);
+                  object env;
+                  if(p && objectp(p)) env = environment(p);
+                  else return;
 
                   if( !env ){
                       p->eventPrint("You lose " + GetShort() + ".");
@@ -132,4 +134,3 @@ int SetRetain(int i){
 int GetRetain(){
     return Retain;
 }
-

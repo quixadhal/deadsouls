@@ -253,7 +253,8 @@ varargs mixed eventReceiveEmote(object who, string verb, string info){
 }
 
 mixed eventConsult(object who, string str){
-    if( !str || str == "" ) return 0;
+    if( !str || str == "" || !ConsultResponses) return 0;
+    str = remove_article(str);
     if( !ConsultResponses[str] ){
         if( !ConsultResponses["default"] ) return 0;
         else if( stringp(ConsultResponses["default"]) ){
@@ -352,11 +353,11 @@ mixed eventWander(){
     }
     if( arrayp(WanderPath[WanderMarker]) ) 
         foreach(mixed cmd in WanderPath[WanderMarker]){
-        if( fp = functionp(cmd) ){
-            if( fp != FP_OWNER_DESTED ) evaluate(cmd);
+            if( fp = functionp(cmd) ){
+                if( fp != FP_OWNER_DESTED ) evaluate(cmd);
+            }
+            else eventForce(cmd);
         }
-        else eventForce(cmd);
-    }
     else if( fp = functionp(WanderPath[WanderMarker]) ){
         if( fp != FP_OWNER_DESTED ) evaluate(WanderPath[WanderMarker]);
     }

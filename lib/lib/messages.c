@@ -29,13 +29,15 @@ string SetMessage(string msg, string str){
 }
 
 varargs string GetMessage(string msg, mixed arg){
-    string tmp;
+    string tmp, tmp2;
 
     if( !stringp(msg) ) return 0;
     if( !(tmp = Messages[msg]) ) return 0;
+    if(!stringp(tmp) || !sizeof(tmp)) return 0;
     switch(msg){
     case "dest": case "clone":
-        tmp = replace_string(tmp, "$O", (string)arg->GetShort());
+        if(stringp(tmp2 = arg->GetShort()))
+            tmp = replace_string(tmp, "$O", tmp2);
         break;
     case "leave":
         if(stringp(arg) && strsrch(arg, "$N") == -1) 

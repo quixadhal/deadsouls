@@ -303,7 +303,7 @@ static int CanLogin() {
 
     if( (int)BANISH_D->GetGuest(Name) ) return 1;
     foreach(group in LOCKED_ACCESS_ALLOWED)
-    if( member_group(Name, group) ) return 1;
+        if( member_group(Name, group) ) return 1;
     return 0;
 }
 

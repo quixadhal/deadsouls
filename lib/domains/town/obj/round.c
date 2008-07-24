@@ -10,12 +10,8 @@ void create(){
     SetShort("a .357 pistol round");
     SetLong("This is a .357 caliber revolver bullet. It has not been fired.");
     SetCaliber(357);
-    SetPistolType("revolver");
+    SetFirearmType("revolver");
     SetAmmoType("magnum");
     SetVendorType(VT_TREASURE);
     SetMass(1);
-}
-
-void init(){
-    round::init();
 }

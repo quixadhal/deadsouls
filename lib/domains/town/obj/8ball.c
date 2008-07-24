@@ -44,6 +44,7 @@ void create(){
     SetBaseCost("silver",10);
     SetVendorType(VT_TREASURE);
     answer = answers[random(sizeof(answers))];
+    SetRead( (: eventConsult :) );
 }
 
 void init(){
@@ -59,6 +60,7 @@ varargs mixed eventShake(object dude, string foo){
 
 varargs mixed eventConsult(object dude, string foo){
     write("The magic 8 ball answers: \n"+answer);
+    if(!dude) dude = this_player();
     say(dude->GetName()+" consults "+possessive(dude)+" magic 8 ball.");
     return 1;
 }
@@ -70,4 +72,3 @@ varargs mixed CanConsult(object who, string component){
 varargs mixed CanShake(object who, string component){
     return 1;
 }
-

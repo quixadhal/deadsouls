@@ -5,6 +5,7 @@
  *    Version: @(#) deterioration.c 1.1@(#)
  *    Last modified: 97/01/01
  */
+#include <daemons.h>
 
 private int Broken          = 0;
 private int DamagePoints    = 0;
@@ -48,18 +49,32 @@ string array GetSave(){
     return ({ "Broken", "DamagePoints", "Deterioration" });
 }
 
-// args d and l not used
-int eventReceiveDamage(object agent, int type, int amt, int d, mixed array l){
+int eventReceiveDamage(mixed agent, int type, int amt, int i, mixed array l){
+    int x = -1;
+    mixed worn = this_object()->GetWorn();
+    mapping temp_prot = this_object()->GetProtectionMap();
     if(query_verb() == "pick") return 0;
     if(objectp(agent)){
-        if(estatep(agent) && !estatep(this_object())) return amt;
-        if(!estatep(agent) && estatep(this_object())) return amt;
+        if(estatep(agent) && !estatep(this_object())) return 0;
+        if(!estatep(agent) && estatep(this_object())) return 0;
     }
-    DamagePoints -= (amt * 5);
+    if(sizeof(worn) && mapp(temp_prot) && sizeof(temp_prot)){
+        foreach(int t, int val in temp_prot){
+            if( t & type ){
+                if( x == -1 || val < x ){
+                    x = val;
+                }
+            }
+        }
+        x = x/2 + random(x/2);
+        DamagePoints -= ((amt * 5) - x);
+    }
+    else DamagePoints -= (amt * 5);
     if( DamagePoints < 1 ){
         Deterioration++;
         DamagePoints = MaxDamagePoints;
         eventDeteriorate(type);
     }
-    return amt;
+    return x;
 }
+
