@@ -256,7 +256,7 @@ varargs static void eventUpdate(object whom){
 
     call_out( (: make_empties :),0);
 
-    remote = load_object("/secure/cmds/admins/removeemote");
+    catch( remote = load_object("/secure/cmds/admins/removeemote") );
     if(remote) remote->cmd("roll");
 
     reload(EVENTS_D,0,1);

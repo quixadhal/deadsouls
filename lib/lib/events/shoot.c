@@ -40,7 +40,6 @@ mixed CanShoot(object shooter, mixed target){
 varargs mixed direct_shoot_obj_at_obj(mixed args...){
     mixed ret;
     ret = CanShoot(args[0],args[1]);
-    //tc("%^B_BLACK%^CanShoot("+identify(args[0])+", "+identify(args[1])+"): "+ret);
     return CanShoot(args[0],args[1]);
 }
 
@@ -51,7 +50,6 @@ varargs mixed direct_shoot_obj_with_obj(mixed args...){
 varargs mixed indirect_shoot_obj_with_obj(mixed args...){
     mixed ret;
     ret = CanShoot(args[1],args[0]);
-    //tc("%^B_RED%^ CanShoot("+identify(args[1])+", "+identify(args[0])+"): "+ret);
     return CanShoot(args[1],args[0]);
 }
 

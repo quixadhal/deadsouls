@@ -212,10 +212,6 @@ varargs int eventOpen(object who, object tool){
 
 int eventRegisterSide(string side){
     string array id = GetId(side);
-    //tc("door "+identify(this_object())+" registering "+identify(side)+
-    //" from "+identify(previous_object()));
-    //tc("I think the long shoudl be: "+GetLong(side));
-    //if( !Sides[side] ) return 0;
     Sides[side]["Rooms"] = 
     distinct_array(Sides[side]["Rooms"] +
       ({ previous_object() }));
@@ -225,7 +221,7 @@ int eventRegisterSide(string side){
             continue;
         }
         if( sizeof(id & ob->GetId()) ){
-            if(!ob->GetDoor()) ob->SetDoor(file_name(this_object()));
+            if(!ob->GetDoor()) ob->SetDoor(file_name(this_object()), side);
         }
     }
     return 1;
@@ -329,11 +325,11 @@ mixed SetShort(string side, mixed short){
 varargs string GetShort(string side){
     if( !side){ /* let's hack a side */
         object room;
-        //tc("You magnificent bastard.");
+        side = previous_object()->GetDoorSide();
         if( !this_player() ) room = previous_object();
         else room = environment(this_player());
         foreach(string s, mapping val in Sides){
-            side = s;
+            if(!side) side = s;
             if( member_array(room, val["Rooms"]) != -1 ) break;
         }
     }
@@ -359,7 +355,6 @@ string GetLong(string side){
 
     if( GetClosed() ) tmp = "It is closed.";
     else tmp = "It is open.";
-    //tc("GetLong("+side+"): "+Sides[side]["Long"],"red");
     if( stringp(Sides[side]["Long"] ) )
         return Sides[side]["Long"] + "\n" + tmp;
     else return (string)evaluate(Sides[side]["Long"], side);

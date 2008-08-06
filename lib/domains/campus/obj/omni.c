@@ -48,7 +48,6 @@ mixed eventPress(object who, string where) {
         success = who->eventMove(target);
     }
     who->eventDescribeEnvironment();
-    //tc("env: "+identify(target));
     tell_room(target, "With a multicolored flash, "+who->GetName()+
       " appears!",who);
     return 1;

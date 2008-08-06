@@ -6,7 +6,7 @@ remote_mute 0
 local_gag 0
 remote_gag 0
 Paused 0
-CommandHist ({"say I decide to switch.","say If successful, this will be run 25471.","say the winners have been: red: 8490 green: 8491 blue: 8489","say I've switched 99.976440% of the time. My win rate is 66.734718%.","say I select the green door","say stats:switches: 25464stays: 6wins: 16998losses: 8472runs: 25470","say My win rate is 66.737335%.My switch rate is 99.976440%.","say I decide to switch.","say If successful, this will be run 25472.","say the winners have been: red: 8491 green: 8491 blue: 8489","say I've switched 99.976440% of the time. My win rate is 66.736023%.","push a button on a pedestal","say I am faced with choice 1.","say I am faced with choice 2.","say stats:switches: 25465stays: 6wins: 16999losses: 8472runs: 25471","say My win rate is 66.738640%.My switch rate is 99.976440%.","say I decide to switch.","say If successful, this will be run 25473.","say the winners have been: red: 8491 green: 8492 blue: 8489","say I've switched 99.976440% of the time. My win rate is 66.733398%.",})
+CommandHist ({"say My win rate is 66.737862%.My switch rate is 99.977905%.","say I decide to switch.","say If successful, this will be run 27159.","say the winners have been: red: 9053 green: 9054 blue: 9051","say I've switched 99.977905% of the time. My win rate is 66.736626%.","say I select the green door","say stats:switches: 27152stays: 6wins: 18125losses: 9033runs: 27158","say My win rate is 66.739082%.My switch rate is 99.977905%.","say I decide to switch.","say If successful, this will be run 27160.","say the winners have been: red: 9053 green: 9054 blue: 9052","say I've switched 99.977913% of the time. My win rate is 66.734161%.","push a button on a pedestal","say I select the green door","say stats:switches: 27153stays: 6wins: 18125losses: 9034runs: 27159","say My win rate is 66.736626%.My switch rate is 99.977913%.","say I decide to switch.","say If successful, this will be run 27161.","say the winners have been: red: 9054 green: 9054 blue: 9052","say I've switched 99.977913% of the time. My win rate is 66.735390%.",})
 localcmds ({"",})
 next_command ({})
 MaxCommandHistSize 20
@@ -33,7 +33,7 @@ Drink 100
 Poison 0
 Sleeping 0
 DeathEvents 0
-StaminaPoints 279.899994
+StaminaPoints 338.899994
 Torso "torso"
 Biter 0
 Fingers (["right hand":5,"left hand":5,])
@@ -93,19 +93,19 @@ CombatActionChance 0
 AutoStand 1
 MaximumHealth 0
 Encounter 100
-EnemyNames ({"balrog","yattering","hans","jboa","iocla","foemo","lknb","fij","odjhcin","bmcnmmm","gbhfcbhfojh","ki","gjhfngiak","eloho","lamhnigcimg","bi","if","egjem","bgoefal","mjka","blmlehmcnn","dnkdjhgio","aiohdfckab","cngdekjdkae","floodaka","ihkcoflc","nkalmhelekedkg","aehonoffe","ajoa","flkgk","gmm","hkjbnhbcbb","dlkkgbgno","ceahkbi","klkjac","ehgfe","facijo","egfa","gccf","lgfbbdkig","fihh","hecec","ddogjdd","cow","nemnjmene","cobnfjlbehh","cenhoe","ekloboiko","ofb","dafhhlh","gnmil","inlk","nfi","efchnl","kgmacg","dfki","cegdlb","khekif","io","bnfbmdfhnij","geaa","aalnikgghadljj","newt","okmhlamgfj","fmmk","aeegaknk","elkimihg","lcbiolihmh","fbbobmc","acdchfceeeh","nihghfj","fen","oage","lnjbebhfk","bgcbdanjg","cf","mf","iangcn","ghdgeoinho","jfglgmej","db","nfm","kmekalfjclg","fcn","ee","lho","dbggdjen","kmmje","noge","aaloeedd","hfgjcojkkj","ij","ljob","fc","ijkiiacce","bboihgmnh","mha","khmfg","oclnig","hjhojfcbm","haciccfa","mnedoajn","aco","conan","jjjnbebh","fcfokioc","kmfieil","hdnlaiac","ln","afdgcljgi","fhnfklhkd","em","kblg","ocamgfibomc","koegolh","ldn","kcdefeahocl","cafgkfki","ehconlagd","nkihodnmibo","bjlfglnjg","cabmgjl","dhe","od","hlamlinjfd","bbooealnkm","mmaaiiogogd","djhjcikjm","kf","hkcgjeoojji","keilcnicl","aikdl","bknadcdkeli","kdnab","djbfkglfk","do","co","dkojk","dibkmcn","ljbejadkf","hkgbcm","clceh","onmhegieimdeoj","gemfnndmog","ailn","zookeeper bot","bat","a mangy little rat","artrell","lynx","slug","optis","bear",})
+EnemyNames ({"balrog","yattering","hans","jboa","iocla","foemo","lknb","fij","odjhcin","bmcnmmm","gbhfcbhfojh","ki","gjhfngiak","eloho","lamhnigcimg","bi","if","egjem","bgoefal","mjka","blmlehmcnn","dnkdjhgio","aiohdfckab","cngdekjdkae","floodaka","ihkcoflc","nkalmhelekedkg","aehonoffe","ajoa","flkgk","gmm","hkjbnhbcbb","dlkkgbgno","ceahkbi","klkjac","ehgfe","facijo","egfa","gccf","lgfbbdkig","fihh","hecec","ddogjdd","cow","nemnjmene","cobnfjlbehh","cenhoe","ekloboiko","ofb","dafhhlh","gnmil","inlk","nfi","efchnl","kgmacg","dfki","cegdlb","khekif","io","bnfbmdfhnij","geaa","aalnikgghadljj","newt","okmhlamgfj","fmmk","aeegaknk","elkimihg","lcbiolihmh","fbbobmc","acdchfceeeh","nihghfj","fen","oage","lnjbebhfk","bgcbdanjg","cf","mf","iangcn","ghdgeoinho","jfglgmej","db","nfm","kmekalfjclg","fcn","ee","lho","dbggdjen","kmmje","noge","aaloeedd","hfgjcojkkj","ij","ljob","fc","ijkiiacce","bboihgmnh","mha","khmfg","oclnig","hjhojfcbm","haciccfa","mnedoajn","aco","conan","jjjnbebh","fcfokioc","kmfieil","hdnlaiac","ln","afdgcljgi","fhnfklhkd","em","kblg","ocamgfibomc","koegolh","ldn","kcdefeahocl","cafgkfki","ehconlagd","nkihodnmibo","bjlfglnjg","cabmgjl","dhe","od","hlamlinjfd","bbooealnkm","mmaaiiogogd","djhjcikjm","kf","hkcgjeoojji","keilcnicl","aikdl","bknadcdkeli","kdnab","djbfkglfk","do","co","dkojk","dibkmcn","ljbejadkf","hkgbcm","clceh","onmhegieimdeoj","gemfnndmog","ailn","zookeeper bot","bat","a mangy little rat","artrell","lynx","slug","optis","bear","mock turtle","deer",})
 VisibleRiders 1
 actions_enabled 1
-runs 25472
-switches 25466
+runs 27160
+switches 27154
 stays 6
 percent 0
-fred 2043
-fgreen 1929
-fblue 2080
-wins 16999
-losses 8473
-red_wins 8491
-green_wins 8492
-blue_wins 8489
+fred 2195
+fgreen 2054
+fblue 2231
+wins 18126
+losses 9034
+red_wins 9054
+green_wins 9054
+blue_wins 9052
 save_file "/domains/campus/save/charles.o"

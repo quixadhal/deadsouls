@@ -47,7 +47,7 @@ echo "Cygwin detected."
 else
 # Some stuff for Dead Souls not on Cygwin
 echo "Moving around some DS specific files..."
-if [ $ARG == "ds.debug" ] && ! [ -f ../bin/mudos.bak ]; then
+if [ $ARG == "ds" ] && ! [ -f ../bin/mudos.bak ]; then
 \mv -f ../bin/mudos.cfg ../bin/mudos.bak
 \cp -f ../bin/mudos.cfg.orig ../lib/secure/cfg/mudos.cfg
 ln -s ../lib/secure/cfg/mudos.cfg ../bin/mudos.cfg

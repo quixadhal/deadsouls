@@ -25,13 +25,9 @@ mixed eventFall(){
         tmprumbo = rumbo;
         if(stringp(rumbo)) err = catch(rumbo = load_object(rumbo));
         if(err || !rumbo){
-            //tc("tmprumbo (fall) for failed roomload: "+identify(tmprumbo));
             err = catch(rumbo = load_object(ROOM_VOID));
         }
         if(err || !rumbo){
-            //tc("eventFall failed for "+identify(this_object()),"red");
-            //if(environment()) tc("Current env: "+identify(environment()),"red");
-            //tc("desired location: "+identify(tmprumbo),"red");
             return 0;
         }
         tell_object(this_object(),"You plummet downward!");

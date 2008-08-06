@@ -215,22 +215,7 @@ string eventStargate(string str){
 
 int think(string str){
     string ret = "";
-    //mixed *st_arr = explode(str,"");
     int this_action = time();
-    //str = "";
-    //str = replace_string(str,CARRIAGE_RETURN,"\n");
-    //str = replace_string(str,"\e","_");
-    //str = replace_string(str,"\n","_");
-    //str = replace_string(str,"\t","*");
-    //str = replace_string(str,"\b","#");
-    //str = strip_colors_old(str);
-    //str = strip_colours(str);
-    //str = strip_colors(str);
-    //foreach(mixed element in st_arr){
-    //    if(element[0] == 13) str += "_";
-    //    else if(element[0] == 27) str += "*";
-    //    else str += element;
-    //}
     foreach(mixed element in values(AnsiMap1)){
         str = replace_string(str,element,"");
     }
@@ -245,7 +230,6 @@ int think(string str){
 
     if(enable) eventBolo(str);
     if(sizeof(watching) < 1){
-        //report(name+" watching");
         if(grepp(str, "You bump into ") && grepp(lower_case(str), "door")) DoorHandler(str);
         if(grepp(str, "A great sea")){
             travel = "swim ";
@@ -289,9 +273,7 @@ int think(string str){
         if(grepp(str, "%:")) ret = "\n";
         if(grepp(str, "Press <return> to continue:")) ret = "\n";
         if(grepp(str, "stargate")){
-            //report(name+" stargate: "+str);
             ret = eventStargate(str);
-            //report("ret: "+ret);
         }
         if(grepp(str, "a portal forms")) ret = "enter stargate";
         previous_command = ret;
@@ -299,10 +281,8 @@ int think(string str){
 
     else {
         ret = eventWatch(str, watching);
-        //report(" ret: "+ret);
     }
     ret = trim(ret,"green");
-    //report("ret: "+ret);
     if(ret && ret != "" && sizeof(ret)) {
         report(" command: "+ret);
         this_object()->parse_comm(ret);
@@ -312,7 +292,6 @@ int think(string str){
 
 string eventBolo(string str){
     string ret = "\n";
-    //report(" bolo");
     wander = 0;
 
     if(grepp(str, "You can't crawl in your current position")){
@@ -571,10 +550,8 @@ int eventScanExits(string str){
             case "se" : dir = "southeast";break;
             case "sw" : dir = "southwest";break;
             }
-            //tc("dir: "+dir);
             if(grepp(dir,"enter ")) newexits += ({ dir });
             else newexits += ({ travel+dir });
-            //tc("newexits: "+identify(newexits),"blue");
         }
         if(sizeof(newexits)) {
             exits = newexits;
@@ -582,7 +559,6 @@ int eventScanExits(string str){
         }
     }
     if(!sizeof(exits)) exits = oldexits;
-    //tc("exits: "+identify(exits),"green");
     return 1;
 }
 

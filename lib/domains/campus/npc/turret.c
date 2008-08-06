@@ -32,7 +32,7 @@ int eventShootDude(object ob){
     tell_object(ob,"The bullet smashes into your "+limbname+"!\n");
     ob->SetAttack(this_agent());
     if(!present("firearms_wound",ob)){
-        new("/std/wound")->eventMove(ob);
+        new(LIB_WOUND)->eventMove(ob);
     }
     ob->AddLead("gunshot_wounds", 1);
     dam = 20;

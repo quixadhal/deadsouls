@@ -444,7 +444,6 @@ string array explode_list(string list) {
         if(!str || !stringp(str)) return 0;
         if(member_array(str, ords) != -1) return 1;
         foreach(string element in suffs){
-            //tc("str[<sizeof("+element+")..] == "+str[<sizeof(element)..]);
             if(sizeof(str) >= sizeof(element) && 
               str[<sizeof(element)..] == element)
                 return 1;
