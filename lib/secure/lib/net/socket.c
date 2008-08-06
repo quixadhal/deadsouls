@@ -36,7 +36,6 @@ int eventRead(mixed data) {
 }
 
 int eventDestruct(){
-    //tc("destructing: "+identify(this_object()));
     return daemon::eventDestruct();
 }
 

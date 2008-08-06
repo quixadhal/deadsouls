@@ -181,7 +181,7 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
     else error("call_out with no previous_object()");
 
     if(sizeof(raw) > MAX_CALL_OUTS && (strsrch(prevbase,"/secure/") && 
-        strsrch(prevbase,"/lib/") &&
+        strsrch(prevbase,"/lib/") && strsrch(prevbase,"/std/") &&
         strsrch(prevbase,"/daemon/") && strsrch(prevbase,"/domains/"))){
         int err;
         globalmixed = prev;
@@ -191,7 +191,6 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
 
     foreach(string foo in blacklist){
         if(!strsrch(prevbase,foo)){
-            //tc("been blacklisted");
             error("Object on call_out blacklist.");
         }
     }
@@ -205,51 +204,38 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
     }
     gfun = fun;
 
-    //tc(identify(previous_object(-1))+ " call_out("+identify(fun)+", "+identify(delay)+", "+identify(args)+")");
-
     if(!strsrch(prevbase,"/open/")) error("call_out from /open");
 
     if(strsrch(prevbase,"/secure/") && strsrch(prevbase,"/daemon/")){
-        //tc("call_out testing","yellow");
 #if CALL_OUT_LOGGING
         unguarded( (: write_file("/log/secure/callouts",timestamp()+" "+
               identify(previous_object(-1))+" "+identify((gargs || gfun))+"\n") :) );
 #endif
-        //tc("entering loop");
 
         while(i--){
-            //tc("raw["+i+"]: "+identify(raw[i]),"white");
             if(sizeof(raw[i]) && objectp(raw[i][0])){
                 string *lol = explode(base_name(raw[i][0]),"/");
                 string wut = "/"+lol[0]+"/"+lol[1]+"/";
-                //tc("lol: "+identify(lol)+", wut: "+identify(wut));
                 if(!(callers[wut])) callers[wut] = 1;
                 else callers[wut]++;
             }
         }
-        //tc("exiting loop. data: "+identify(callers));
         wat = "/"+explode(prevbase,"/")[0]+"/"+explode(prevbase,"/")[1];
         if(callers[wat] && callers[wat] > 10){
-            //tc("HAY! OVAR HEAR!","white");
             if(!strsrch(prevbase,REALMS_DIRS) || callers[wat] > 100){
                 globalmixed = prev;
-                //tc("blacklistein "+identify(globalmixed)+"'s "+wat,"yellow");
                 blacklist += ({ wat });
                 blacklist = singular_array(blacklist);
                 unguarded( (: destruct(globalmixed) :) );
-                //if(globalmixed) tc("wtf still there");
                 error("Too many callouts from an unprivileged directory.");
             }
         }
     }
-    //tc("alles gut","green");
 
     if(sizeof(gargs)){
-        //tc("GARGS","red");
         ret = efun::call_out(gfun, gdelay, gargs...);
     }
     else {
-        //tc("NO GARGS","red");
         ret = efun::call_out(gfun, gdelay);
     }
     return ret;
@@ -311,22 +297,17 @@ object *livings() {
     if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return privlivs;
     if(base_name(previous_object()) == SERVICES_D) return privlivs;
     else return unprivlivs;
-    //return efun::livings() - (efun::livings() - objects());
 }
 
 varargs mixed objects(mixed arg1, mixed arg2){
     object array tmp_obs;
 
-    //tc(base_name(previous_object()));
-
     if(!strsrch(base_name(previous_object()),"/secure/")){
         if(base_name(previous_object()) == "/secure/obj/weirder"){
-            //tc("gut","red");
             if(!arg1) return efun::objects();
             return efun::objects(arg1);
         }
         if(this_player() && adminp(this_player())){
-            //tc("yah good");
             if(!arg1) return efun::objects();
             return efun::objects(arg1);
         }
@@ -421,7 +402,6 @@ int destruct(object ob) {
         if( !((int)master()->valid_apply(({ "SECURE" }))) )
             error("Illegal attempt to destruct SEFUN: "+get_stack()+" "+identify(previous_object(-1)));
     }
-    //tc("ok: "+ok);
     if(ok) return efun::destruct(ob);
     else return 0;
 }

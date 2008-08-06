@@ -29,8 +29,6 @@ varargs mixed AddGuard(object guard, mixed what, mixed action){
     else if(living(what)) which = "livings";
     else which = "objects";
     if(!Guarded[which]) Guarded[which] = ([]);
-    //tc("which: "+which);
-    //tc("Guarded: "+identify(Guarded));
 
 
     if(Guards[guard] && member_array(what, keys(Guards[guard][which])) != -1){
@@ -94,17 +92,12 @@ varargs int CheckMove(object who, mixed dest, mixed dir){
         int err = catch( dest = load_object(dest) );
         if(err || !dest) return 0;
     }
-    //tc("Guarded[\"rooms\"]: "+identify(Guarded["rooms"]));
-    //tc("Guarded[\"rooms\"]["+identify(dest)+"]: "+  
-    //identify(Guarded["rooms"][dest]));
     if(!(guards = Guarded["rooms"][dest])){
-        //tc("returning 1");
         return 1;
     }
     if(member_array(query_verb(),go_verbs) == -1) return 1;
     guards = filter(guards, (: $1 && objectp($1) && environment($1) &&
         environment($1) == environment($(who)) :) );
-    //tc("guards: "+identify(guards));
     if(!sizeof(guards)) return 1;
     foreach(object guard in guards){
         mixed f;
@@ -128,16 +121,11 @@ varargs int CheckMove(object who, mixed dest, mixed dir){
 
 varargs int CheckGet(object who, object what){
     mixed guards;
-    //tc("Guarded[\"objects\"]: "+identify(Guarded["objects"]));
-    //tc("Guarded[\"objects\"]["+identify(what)+"]: "+
-    //identify(Guarded["objects"][what]));
     if(!(guards = Guarded["objects"][what])){
-        //tc("returning 1");
         return 1;
     }
     guards = filter(guards, (: $1 && objectp($1) && environment($1) &&
         environment($1) == environment($(who)) :) );
-    //tc("guards: "+identify(guards));
     if(!sizeof(guards)) return 1;
     foreach(object guard in guards){
         mixed f;

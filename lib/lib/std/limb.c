@@ -34,7 +34,6 @@ void create(){
 void init(){
     surface::init();
     if(environment() && environment()->GetMedium() == MEDIUM_LAND) stank = 1;
-    //tc("limb: "+identify(GetId()),"red");
 }
 
 void SetLimb(string limb, string owner, string race){
@@ -44,7 +43,6 @@ void SetLimb(string limb, string owner, string race){
     SetId( ({ limb, "flesh","pile","limb",(justlimb||"chunk") }) );
     SetAdjectives(({"severed","rotting",race}));
     Limb = limb;
-    //tc("limb: "+identify(GetId()));
     Owner = owner;
     Race = race;
     Count = 1;

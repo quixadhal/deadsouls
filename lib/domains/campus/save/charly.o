@@ -6,7 +6,7 @@ remote_mute 0
 local_gag 0
 remote_gag 0
 Paused 0
-CommandHist ({"say My win rate is 49.891567%.My switch rate is 49.987949%.","say If successful, this will be run 24902.","say the winners have been: red: 8301 green: 8301 blue: 8299","say I've switched 49.989960% of the time. My win rate is 49.891575%.","say I am faced with choice 1.","say I select the red door","say stats:switches: 12448stays: 12453wins: 12424losses: 12477runs: 24901","say My win rate is 49.893578%.My switch rate is 49.989960%.","say I decide to switch.","say If successful, this will be run 24903.","say the winners have been: red: 8301 green: 8302 blue: 8299","say I've switched 49.991970% of the time. My win rate is 49.893589%.","say I am faced with choice 1.","say I am faced with choice 2.","say stats:switches: 12449stays: 12453wins: 12425losses: 12477runs: 24902","say My win rate is 49.895592%.My switch rate is 49.991970%.","say I decide to stay.","say If successful, this will be run 24904.","say the winners have been: red: 8302 green: 8302 blue: 8299","say I've switched 49.989960% of the time. My win rate is 49.891586%.",})
+CommandHist ({"say If successful, this will be run 26605.","say the winners have been: red: 8868 green: 8867 blue: 8869","say I've switched 49.842129% of the time. My win rate is 49.881599%.","push a button on a pedestal","say I select the blue door","say stats:switches: 13260stays: 13344wins: 13271losses: 13333runs: 26604","say My win rate is 49.883476%.My switch rate is 49.842129%.","say If successful, this will be run 26606.","say the winners have been: red: 8868 green: 8868 blue: 8869","say I've switched 49.840256% of the time. My win rate is 49.879726%.","push a button on a pedestal","say I am faced with choice 1.","say I select the blue door","say I am faced with choice 2.","say stats:switches: 13260stays: 13345wins: 13271losses: 13334runs: 26605","say My win rate is 49.881599%.My switch rate is 49.840256%.","say If successful, this will be run 26607.","say the winners have been: red: 8868 green: 8869 blue: 8869","say I've switched 49.838383% of the time. My win rate is 49.877853%.",})
 localcmds ({"",})
 next_command ({})
 MaxCommandHistSize 20
@@ -96,16 +96,16 @@ Encounter 0
 EnemyNames ({"avidryl","klingon","thief",})
 VisibleRiders 1
 actions_enabled 1
-runs 24903
-switches 12449
-stays 12454
+runs 26606
+switches 13260
+stays 13346
 percent 0
-fred 1236
-fgreen 1176
-fblue 1231
-wins 12425
-losses 12478
-red_wins 8302
-green_wins 8302
-blue_wins 8299
+fred 1307
+fgreen 1250
+fblue 1306
+wins 13271
+losses 13335
+red_wins 8868
+green_wins 8869
+blue_wins 8869
 save_file "/domains/campus/save/charly.o"

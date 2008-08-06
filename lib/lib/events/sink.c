@@ -3,9 +3,6 @@
 #include <medium.h>
 #include <message_class.h>
 
-//int direct_sink(){ return 1; }
-//int direct_sink_down(){ return 1; }
-
 mixed eventSink(){
     int err;
     object env = environment();
@@ -25,13 +22,9 @@ mixed eventSink(){
     tmprumbo = rumbo;
     if(stringp(rumbo)) err = catch(rumbo = load_object(rumbo));
     if(err || !rumbo){
-        //tc("tmprumbo (sink) for failed roomload: "+identify(tmprumbo));
         err = catch(rumbo = load_object(ROOM_VOID));
     }
     if(err || !rumbo){
-        //tc("eventSink failed for "+identify(this_object()),"red");
-        //if(environment()) tc("Current env: "+identify(environment()),"red");
-        //tc("desired location: "+identify(tmprumbo),"red");
         return 0;
     }
 

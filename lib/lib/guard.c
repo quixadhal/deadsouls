@@ -49,17 +49,13 @@ varargs mixed SetGuard(mixed what, mixed action, int howlong){
             gwhat = exits[gwhat];
         }
         if(!unguarded( (: directory_exists(path_prefix(gwhat)) :) ) ){
-            //tc("bogus dir.");
             return 0;
         }
-        //tc("gwhat: "+gwhat);
         err = catch( unguarded( (: gwhat = load_object(gwhat) :) ) );
         if(err || !gwhat){
-            //tc("err: "+err+", gwhat: "+identify(gwhat));
             return 0;
         }
     }
-    //tc("gwhat: "+identify(gwhat));
 
     if(living(gwhat)){
         Principal = gwhat;
@@ -69,9 +65,7 @@ varargs mixed SetGuard(mixed what, mixed action, int howlong){
     else if(!inherits(LIB_ROOM,gwhat)){
         mixed inv = deep_inventory(env);
         inv = filter(inv, (: base_name($1) == base_name(gwhat) :)); 
-        //tc("inv: "+identify(inv));
         foreach(object ob in inv){
-            //tc("adding "+identify(gwhat));
             GUARD_D->AddGuard(this_object(), ob, action);
             if(living(ob)){
                 Principal = ob;
@@ -88,7 +82,6 @@ void init(){
     if(!clonep(this_object())) return;
     if(PendingGuard && sizeof(PendingGuard)){
         foreach(mixed guardmount in PendingGuard){
-            //tc("guardmount: "+identify(guardmount),"blue");
             SetGuard(guardmount["what"], guardmount["action"], 
               guardmount["howlong"]);
         }
@@ -105,7 +98,6 @@ void heart_beat(){
                     this_object()->AddEnemy(ob);
                 }
             }
-            //tc(identify(this_object())+" enemies: "+identify(this_object()->GetEnemies()));
         }
     }
 }

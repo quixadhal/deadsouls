@@ -39,7 +39,6 @@ string GetDefine(string str){
     }
     err = catch( tmpret = file->defcheck() );
     if(err || (stringp(tmpret) && !strsrch(tmpret,"DEFINED_D:"))){ 
-        //tc("bad.");
     }
     else ret = tmpret;
     return ret;

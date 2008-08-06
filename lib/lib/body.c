@@ -630,7 +630,6 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
             if(!(j = sizeof(obs = GetWorn(limbs[i])))){ /* no armor */
                 y += z;                     /* add to total damage */
                 if( !AddHealthPoints(-z, limbs[i], (agent || agentname)) ){
-                    //this_object()->RemoveLimb(limbs[i], (agent || agentname));
                     call_out("RemoveLimb",0,limbs[i], (agent || agentname));
                 }
                 continue;
@@ -641,16 +640,12 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
                   type, z, 0, limbs[i]);
                 z -= tmpdam;
                 if(z < 1){
-                    //hrmmm
-                    //break;
                 }
                 if(z < 1){
-                    //continue;
                 }
                 else {
                     y += z;
                     if(!AddHealthPoints(-z, limbs[i], agent)){
-                        //this_object()->RemoveLimb(limbs[i], (agent || agentname));
                         call_out("RemoveLimb",0,limbs[i], (agent || agentname));
                     }
                 }
@@ -729,25 +724,19 @@ mixed eventReceiveThrow(object who, object what){
         who->GetStatLevel("strength");
 
         x = what->eventStrike(this_object()) * 3;
-        //tc("x: "+x);
         x = (x*mod)/100;
-        //tc("x: "+x);
         if( what->GetWeaponType() != "projectile" ){
             x = x/4;
         }
-        //tc("x: "+x);
         x = eventReceiveDamage(who, what->GetDamageType(), x, 0, 
           GetRandomLimb("torso"));
-        //tc("x: "+x);
         if( x > 0 ){
             who->AddSkillPoints("projectile attack", x);
         }
-        //tc("x: "+x);
     }
     else {
         x = 0;
     }
-    //tc("x: "+x);
     if( x < 1 ){
         environment()->eventPrint(GetName() + " catches " +
           possessive_noun(who->GetName()) + " " +
@@ -1885,31 +1874,19 @@ varargs int eventDie(mixed agent){
         object dude = this_object();
 
         heal = 1 - (GetPoison() / 5);
-        //tc("heal: "+heal);
         heal += ( (GetDrink() + GetFood()) || 1 ) / 40;
-        //tc("heal: "+heal);
         if(GetSleeping()) mod++;
-        //tc("mod: "+mod);
         if(GetAlcohol() > 10) mod++;
-        //tc("mod: "+mod);
         if(dude->GetStatLevel("strength") > 50) mod++;
-        //tc("mod: "+mod);
         if(dude->GetStatLevel("durability") > 50) mod++;
-        //tc("mod: "+mod);
         if(dude->GetStatLevel("luck") > random(100)) mod++;
-        //tc("mod: "+mod);
         if(dude->GetSkillLevel("faith") > 10) mod++;
-        //tc("mod: "+mod);
         mod =  heal * to_float(mod * 0.1);
-        //tc("mod: "+mod);
         heal += mod;
-        //tc("heal: "+heal);
-        //heal *= (1 + (GetSleeping() > 1) + (GetAlcohol() > 10));
         if(lead && interactive(dude)){
             if(lead < 5) heal /= (lead + 1);
             else heal = 0;
         }
-        //tc("heal: "+heal);
         return heal;
     }
 
