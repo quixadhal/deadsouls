@@ -311,3 +311,18 @@ varargs int CanFly(mixed who, mixed where){
     if(this_object()->GetPosition() == POSITION_FLYING) return 1;
     return 0;
 }
+
+int eventMove(mixed dest){
+    int ret;
+    object env = environment();
+    string location;
+
+    if(!env) location = ROOM_START;
+    else if(clonep(env)) location = file_name(env);
+    else location = base_name(env);
+
+    if(location) this_object()->SetProperty("LastLocation", location);
+    ret = ::eventMove(dest);
+    AddStaminaPoints(GetMaxStaminaPoints());
+    return ret;
+}

@@ -5,7 +5,7 @@ inherit LIB_DAEMON;
 
 mixed cmd() {
     int *mudtime;
-    int integer, hours, minutes;
+    int hours, minutes;
     string meridiem = " am";
     string nulle = "";
     int daynum = query_date();
@@ -14,12 +14,14 @@ mixed cmd() {
     hours = mudtime[0];
     minutes = mudtime[1];
 
-    if(hours >= 12  && hours != 24) {
-        if(hours != 12) hours -= 12;
-        meridiem = " pm";
-    }
+    // if you want an odd (as in not even) number of hours in
+    // a day, this may need fiddling with.
 
-    if(!hours || hours == 0) hours = 12;
+    if(hours >= (DAY_LENGTH / 2))
+        meridiem = " pm";
+    if(hours > (DAY_LENGTH / 2)  && hours != DAY_LENGTH)
+        hours -= (DAY_LENGTH / 2);
+    if(!hours) hours = (DAY_LENGTH / 2);
 
     if(minutes < 10) nulle = "0";
 

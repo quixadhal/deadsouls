@@ -32,6 +32,11 @@ void init(){
     ::init();
 }
 
+varargs mixed eventLight(object who, object tool){
+    SetBaseCost("silver", 1);
+    return ::eventLight(who, tool);
+}
+
 mixed eventSmoke(object who, object what){
     if(!GetLit()){
         write("It is not lit!");

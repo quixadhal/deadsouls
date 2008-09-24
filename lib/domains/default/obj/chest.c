@@ -11,6 +11,7 @@ void create() {
     SetInventory(([
         "/domains/default/obj/meter" : 1,
         "/secure/obj/staff" : 1,
+        "/domains/default/obj/gps" : 1,
         "/domains/town/armor/collar" : 1,
         "/secure/obj/medtric" : 1,
         "/domains/default/armor/wizard_hat" : 1,

@@ -32,7 +32,7 @@ int eventShootDude(object ob){
     tell_object(ob,"The bullet smashes into your "+limbname+"!\n");
     ob->SetAttack(this_agent());
     if(!present("firearms_wound",ob)){
-        new("/domains/campus/obj/wound")->eventMove(ob);
+        new(LIB_WOUND)->eventMove(ob);
     }
     ob->AddLead("gunshot_wounds", 1);
     dam = 20;
@@ -40,7 +40,7 @@ int eventShootDude(object ob){
     dam -= random(ob->GetStatLevel("coordination"));
     ob->eventReceiveDamage(this_object(),(PIERCE), dam, 0, limbname);
     if(!ob->GetInCombat()){
-        ob->eventForce("attack "+environment(this_object())->GetKeyName());
+        ob->eventForce("attack "+this_object()->GetKeyName());
     }
     return 1;
 }
@@ -108,7 +108,7 @@ static void create() {
     SetPosition(POSITION_STANDING);
     SetLevel(1);
     SetPacifist(1);
-    SetNoClean(1);
+    SetNoClean(0);
     SetRace("bot");
     SetClass("fighter");
     SetGender("neuter");

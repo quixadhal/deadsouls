@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <daemons.h>
 
 inherit LIB_DAEMON;
 
@@ -6,6 +7,7 @@ varargs int cmd(string str){
     object env = environment(this_player());
     int err;
     mixed dest;
+    if(env && living(env)) env = environment(env);
     if(!env){
         write("There are no exits here.");
         return 1;
@@ -16,6 +18,21 @@ varargs int cmd(string str){
     } 
     dest = env->GetExit(str);
     if(!dest) dest = env->GetEnter(str);
+    if(!dest){
+        string coord = ROOMS_D->GetCoordinates(env);
+        if(coord){
+            int x, y, z, res = sscanf(coord,"%d,%d,%d",x,y,z);
+            string des_coord;
+            mixed tmp;
+            if(res == 3){
+                des_coord = calculate_coordinates(str, x, y, z, "string");
+            }
+            if(sizeof(des_coord)){
+                tmp = ROOMS_D->GetGrid(des_coord);
+                if(sizeof(tmp)) dest = tmp["room"];
+            }
+        }
+    }
     if(!dest || !stringp(dest)){
         write("It appears that you can't noclip in that direction.");
         return 1;

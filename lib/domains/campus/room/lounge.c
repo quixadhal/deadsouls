@@ -16,6 +16,7 @@ void AddStuff(){
       "finished writing, enter a single period on a blank line, then at "+
       "the colon prompt (:) type a lower-case x and return. \n");
     ob->eventMove(this_object());
+    ob->SetNoClean(0);
 }
 static void create() {
     room::create();

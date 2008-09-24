@@ -127,7 +127,7 @@ int cmd(string str) {
         if(!write_file(output, str)) message("system", "Failed to write to: "+output, this_player());
         else message("system", "Grep sent to: "+output, this_player());
     }
-    else message("Nsystem", str, this_player());
+    else message("system", str, this_player());
     return 1;
 }
 

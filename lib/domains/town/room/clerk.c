@@ -7,7 +7,7 @@ static void create() {
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("Town Clerk");
-    SetLong("This small office is where people come to conduct their official public\nbusiness. The main area of the town hall is east.");
+    SetLong("This small office is where people come to conduct their official public business. The main area of the town hall is south.");
     SetProperties (([
         "no attack":1, 
         "no bump":1, 
@@ -16,11 +16,12 @@ static void create() {
         "no paralyze":0, 
         "no teleport":0]));
     SetItems(([]));
+    SetExits( ([ 
+        "south" : "/domains/town/room/thall",
+      ]) );
     SetInventory(([
         "/domains/town/npc/clerk" : ({60, 1}),
       ]));
-    SetObviousExits("e");
-    AddExit("east", "/domains/town/room/thall");
 }
 void init() {
     ::init();

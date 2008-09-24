@@ -2,7 +2,6 @@
 
 inherit LIB_STORAGE;
 
-
 void create() {
     ::create();
     SetKeyName("safe");
@@ -12,13 +11,14 @@ void create() {
     SetLong("This is a small safe, about 2 feet high, where "+
       "one may store valuables. It looks quite "+
       "strong.");
+    SetInventory(([
+        "/domains/campus/weap/grenade" : 1,
+        "/domains/town/weap/9mil" : 1,
+        "/domains/town/obj/slip_heal" : 4,
+      ]));
     SetMass(274);
     SetBaseCost("silver",50);
     SetMaxCarry(500);
-    SetInventory(([
-        "/domains/town/weap/9mil": 1,
-        "/domains/town/obj/slip_heal": 4,
-      ]));
     SetCanClose(1);
     SetClosed(1);
     SetCanLock(1);

@@ -4,7 +4,7 @@ inherit LIB_MEAL;
 
 static void create() {
     meal::create();
-    SetKeyName("badapple");
+    SetKeyName("bad apple");
     SetId(({"fruit","apple"}));
     SetAdjectives( ({ "foul","yucky","rotten-looking","browned","rotten"}) );
     SetShort("a rotten apple");

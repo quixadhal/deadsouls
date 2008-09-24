@@ -12,11 +12,11 @@ static void create() {
       "a sewer system. The air here is quite foul, "+
       "and periodic blasts of steam from wall-mounted vents make it "+
       "very hot and very humid. There is a foot-high stream of dark liquid "+
-      "covering the bottom of this tunnel, running west to east along "+
+      "covering the bottom of this tunnel, running east to west along "+
       "the tunnel's length. The tunnel narrows dramatically here, and "+
-      "becomes so small that further movement east is not possible.");
+      "becomes so small that further movement west is not possible.");
     SetItems( ([ ({"tunnel","tunnels"}) : "Here the tunnel becomes so "+
-        "narrow that you can't go any further east. It looks like "+
+        "narrow that you can't go any further west. It looks like "+
         "some debris has accumulated here over time, almost "+
         "clogging the waste flow.", 
         ({"sewer","sewer system"}) : "Though evidently in good repair "+
@@ -34,18 +34,20 @@ static void create() {
         "of the tunnel.",
         ({"sewage","waste","garbage"}) : "It appears that the fluid on the "+
         "bottom of this tunnel is the result of garbage and waste "+
-        "processing. In liquid form, this garbage flows "+
-        "east from here.",
+        "processing. In liquid form, this garbage flows in here "+
+        "from the east.",
       ]) );
     SetSmell( ([ "default" : "The stench of sewage and waste hangs here."]) );
     SetListen("default","You hear faint echoes of dripping water.");
-    SetExits( ([ "west" : "/domains/campus/room/sewer1.c"
+    SetExits( ([ "east" : "/domains/campus/room/sewer1.c"
       ]) );
     SetInventory(([
         "/domains/campus/obj/debris" :1
       ]));
     set_heart_beat(10);
+    SetFlyRoom("/domains/campus/room/access0");
 }
+
 int SteamBlast(){
     object *temparr,*stuff,*lstuff;
     int i;

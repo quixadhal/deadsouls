@@ -28,7 +28,7 @@ int GetNextLevel(string lang, int curr_level);
 
 varargs void SetLanguage(string lang, int level, int native){
     string key;
-
+    if(!lang || !sizeof(lang)) return;
     key = convert_name(lang);
     if( !Languages[key] ) Languages[key] = ([]);
     Languages[key] = ([ "name" : lang, "points" : 0, "level" : level,
@@ -37,9 +37,9 @@ varargs void SetLanguage(string lang, int level, int native){
 
 mapping RemoveLanguage(string lang){
     if(lang && sizeof(lang)) lang = convert_name(lang);
-    else return Languages;
+    else return copy(Languages);
     map_delete(Languages, lang);
-    return Languages;
+    return copy(Languages);
 }
 
 mapping SetNativeLanguage(string lang){
@@ -47,7 +47,7 @@ mapping SetNativeLanguage(string lang){
     RemoveLanguage(old_lang);
     SetLanguage(old_lang, 100);
     SetLanguage(lang, 100, 1);
-    return Languages;
+    return copy(Languages);
 }
 
 varargs void SetLanguageComprehension(function check, int time, function end){

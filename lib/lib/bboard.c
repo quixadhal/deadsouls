@@ -17,7 +17,6 @@ static private string *__EditOK;
 
 void create(){
     item::create();
-    SetNoClean(1);
     SetId( ({ "board", "message board" }) );
     SetLong("A board for reading and posting messages. To read the "+
       "first message: read 1\nTo post a message: post <message title>\n");

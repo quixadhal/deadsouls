@@ -30,11 +30,11 @@ static void create() {
     SetItems(([
         ({ "sign", "instruction sign", "instructions sign", "instruction", "instructions" }) : "A sign you can read. It appears to be instructions for operating the stargate.",
       ]));
+    SetExits( ([
+        "north" : "/domains/default/room/wiz_corr_east2.c",
+      ]) );
     SetInventory(([
         "/domains/default/obj/stargate" : 1,
-      ]));
-    SetExits(([
-        "north" : "/domains/default/room/wiz_corr_east",
       ]));
     SetRead("sign", (: SignRead() :) );
     SetProperty("no attack", 1);

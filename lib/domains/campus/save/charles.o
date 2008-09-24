@@ -6,14 +6,14 @@ remote_mute 0
 local_gag 0
 remote_gag 0
 Paused 0
-CommandHist ({"say the winners have been: red: 6935 green: 6936 blue: 6936","say I've switched 99.971161% of the time. My win rate is 66.830063%.","push a button on a pedestal","say I am faced with choice 1.","say I am faced with choice 2.","say stats:switches: 20801stays: 6wins: 13906losses: 6901runs: 20807","say My win rate is 66.833275%.My switch rate is 99.971161%.","say If successful, this will be run 20809.","say the winners have been: red: 6935 green: 6937 blue: 6936","say I've switched 99.971161% of the time. My win rate is 66.831657%.","push a button on a pedestal","say I am faced with choice 1.","say I select the green door","say I am faced with choice 2.","say stats:switches: 20802stays: 6wins: 13907losses: 6901runs: 20808","say My win rate is 66.834869%.My switch rate is 99.971161%.","say I decide to switch.","say If successful, this will be run 20810.","say the winners have been: red: 6935 green: 6937 blue: 6937","say I've switched 99.971169% of the time. My win rate is 66.833252%.",})
+CommandHist ({"say the winners have been: red: 15361 green: 15361 blue: 15359","say I've switched 99.986984% of the time. My win rate is 66.787460%.","push a button on a pedestal","say I am faced with choice 1.","say I select the red door","say I am faced with choice 2.","say stats:switches: 46075stays: 6wins: 30777losses: 15304runs: 46081","say My win rate is 66.788918%.My switch rate is 99.986984%.","say If successful, this will be run 46083.","say the winners have been: red: 15361 green: 15362 blue: 15359","say I've switched 99.986984% of the time. My win rate is 66.788185%.","push a button on a pedestal","say I am faced with choice 1.","say I am faced with choice 2.","say stats:switches: 46076stays: 6wins: 30778losses: 15304runs: 46082","say My win rate is 66.789635%.My switch rate is 99.986984%.","say I decide to switch.","say If successful, this will be run 46084.","say the winners have been: red: 15361 green: 15362 blue: 15360","say I've switched 99.986984% of the time. My win rate is 66.788902%.",})
 localcmds ({"",})
 next_command ({})
 MaxCommandHistSize 20
 InternalDesc 0
 Opacity 0
 MaxCarry 0
-Position 8
+Position 2
 Undead 0
 UndeadType 0
 Mount 0
@@ -21,8 +21,8 @@ Riders ({})
 BodyMass 0
 SaveRecurse 1
 Saved ({})
-HealthPoints 21
-MagicPoints 690
+HealthPoints 380
+MagicPoints 810
 ExperiencePoints 50
 melee 1
 godmode 0
@@ -33,19 +33,22 @@ Drink 100
 Poison 0
 Sleeping 0
 DeathEvents 0
-StaminaPoints 279.899994
+StaminaPoints 550.000000
 Torso "torso"
 Biter 0
+keepalive 0
 Fingers (["right hand":5,"left hand":5,])
-Limbs (["head":(["children":({}),"armors":262913,"parent":"neck","class":1,"health":330,]),"right leg":(["children":({"right foot",}),"armors":1049761,"parent":"torso","class":2,"health":124,]),"right foot":(["children":({}),"armors":241,"parent":"right leg","class":4,"health":90,]),"neck":(["children":({"head",}),"armors":786433,"parent":"torso","class":1,"health":298,]),"left foot":(["children":({}),"armors":241,"parent":"left leg","class":4,"health":90,]),"left arm":(["children":({}),"armors":1253385,"parent":"torso","class":2,"health":170,]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"parent":0,"class":1,"health":330,]),"left leg":(["children":({"left foot",}),"armors":1049761,"parent":"torso","class":2,"health":157,]),"right hand":(["children":({}),"armors":98319,"parent":"right arm","class":4,"health":74,]),"right arm":(["children":({"right hand",}),"armors":1253385,"parent":"torso","class":2,"health":76,]),])
-MissingLimbs (["left hand":(["children":({}),"armors":98319,"health":0,"class":4,"parent":"left arm",]),])
+Limbs (["left leg":(["children":({"left foot",}),"armors":1049761,"health":170,"class":2,"parent":"torso",]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"health":340,"class":1,"parent":0,]),"right foot":(["children":({}),"armors":241,"health":90,"class":4,"parent":"right leg",]),"right leg":(["children":({"right foot",}),"armors":1049761,"health":170,"class":2,"parent":"torso",]),"head":(["children":({}),"armors":262913,"health":340,"class":1,"parent":"neck",]),"right hand":(["children":({}),"armors":98319,"health":90,"class":4,"parent":"right arm",]),"neck":(["children":({"head",}),"armors":786433,"health":340,"class":1,"parent":"torso",]),"left arm":(["children":({"left hand",}),"armors":1253385,"health":170,"class":2,"parent":"torso",]),"left foot":(["children":({}),"armors":241,"health":90,"class":4,"parent":"left leg",]),"left hand":(["children":({}),"armors":98319,"health":90,"class":4,"parent":"left arm",]),"right arm":(["children":({"right hand",}),"armors":1253385,"health":170,"class":2,"parent":"torso",]),])
+MissingLimbs ([])
+rifleshot_wounds 0
+gunshot_wounds 0
 ExtraChannels ({})
 Agent 0
 Blind 0
 CustomStats 15
-LightSensitivity ({25,75,})
+LightSensitivity ({25,750,})
 Resistance (["low":0,"high":0,"immune":0,"medium":0,"none":4194302,])
-Stats (["wisdom":(["class":3,"points":0,"level":45,]),"agility":(["class":3,"points":0,"level":36,]),"speed":(["class":3,"points":0,"level":27,]),"strength":(["class":3,"points":0,"level":27,]),"intelligence":(["class":1,"points":0,"level":64,]),"durability":(["class":4,"points":0,"level":32,]),"charisma":(["class":2,"points":0,"level":38,]),"coordination":(["class":2,"points":0,"level":44,]),"luck":(["class":3,"points":0,"level":13,]),])
+Stats (["wisdom":(["class":3,"points":0,"level":41,]),"agility":(["class":3,"points":0,"level":50,]),"speed":(["class":3,"points":0,"level":31,]),"strength":(["class":3,"points":0,"level":21,]),"intelligence":(["class":1,"points":0,"level":76,]),"durability":(["class":4,"points":0,"level":33,]),"charisma":(["class":2,"points":0,"level":38,]),"coordination":(["class":2,"points":0,"level":38,]),"luck":(["class":3,"points":0,"level":21,]),])
 Polyglot 0
 Languages (["english":(["native":1,"name":"English","points":0,"level":100,]),])
 DefaultLanguage ""
@@ -91,19 +94,18 @@ CombatActionChance 0
 AutoStand 1
 MaximumHealth 0
 Encounter 100
-EnemyNames ({"balrog","yattering","hans","jboa","iocla","foemo","lknb","fij","odjhcin","bmcnmmm","gbhfcbhfojh","ki","gjhfngiak","eloho","lamhnigcimg","bi","if","egjem","bgoefal","mjka","blmlehmcnn","dnkdjhgio","aiohdfckab","cngdekjdkae","floodaka","ihkcoflc","nkalmhelekedkg","aehonoffe","ajoa","flkgk","gmm","hkjbnhbcbb","dlkkgbgno","ceahkbi","klkjac","ehgfe","facijo","egfa","gccf","lgfbbdkig","fihh","hecec","ddogjdd","cow","nemnjmene","cobnfjlbehh","cenhoe","ekloboiko","ofb","dafhhlh","gnmil","inlk","nfi","efchnl","kgmacg","dfki","cegdlb","khekif","io","bnfbmdfhnij","geaa","aalnikgghadljj","newt","okmhlamgfj","fmmk","aeegaknk","elkimihg","lcbiolihmh","fbbobmc","acdchfceeeh","nihghfj","fen","oage","lnjbebhfk","bgcbdanjg","cf","mf","iangcn","ghdgeoinho","jfglgmej","db","nfm","kmekalfjclg","fcn","ee","lho","dbggdjen","kmmje","noge","aaloeedd","hfgjcojkkj","ij","ljob","fc","ijkiiacce","bboihgmnh","mha","khmfg","oclnig","hjhojfcbm","haciccfa","mnedoajn","aco","conan","jjjnbebh","fcfokioc","kmfieil","hdnlaiac","ln","afdgcljgi","fhnfklhkd","em","kblg","ocamgfibomc","koegolh","ldn","kcdefeahocl","cafgkfki","ehconlagd","nkihodnmibo","bjlfglnjg","cabmgjl","dhe","od","hlamlinjfd","bbooealnkm","mmaaiiogogd","djhjcikjm","kf","hkcgjeoojji","keilcnicl","aikdl","bknadcdkeli","kdnab","djbfkglfk","do","co","dkojk","dibkmcn","ljbejadkf","hkgbcm","clceh","onmhegieimdeoj","gemfnndmog","ailn",})
+EnemyNames ({"balrog","yattering","hans","jboa","iocla","foemo","lknb","fij","odjhcin","bmcnmmm","gbhfcbhfojh","ki","gjhfngiak","eloho","lamhnigcimg","bi","if","egjem","bgoefal","mjka","blmlehmcnn","dnkdjhgio","aiohdfckab","cngdekjdkae","floodaka","ihkcoflc","nkalmhelekedkg","aehonoffe","ajoa","flkgk","gmm","hkjbnhbcbb","dlkkgbgno","ceahkbi","klkjac","ehgfe","facijo","egfa","gccf","lgfbbdkig","fihh","hecec","ddogjdd","cow","nemnjmene","cobnfjlbehh","cenhoe","ekloboiko","ofb","dafhhlh","gnmil","inlk","nfi","efchnl","kgmacg","dfki","cegdlb","khekif","io","bnfbmdfhnij","geaa","aalnikgghadljj","newt","okmhlamgfj","fmmk","aeegaknk","elkimihg","lcbiolihmh","fbbobmc","acdchfceeeh","nihghfj","fen","oage","lnjbebhfk","bgcbdanjg","cf","mf","iangcn","ghdgeoinho","jfglgmej","db","nfm","kmekalfjclg","fcn","ee","lho","dbggdjen","kmmje","noge","aaloeedd","hfgjcojkkj","ij","ljob","fc","ijkiiacce","bboihgmnh","mha","khmfg","oclnig","hjhojfcbm","haciccfa","mnedoajn","aco","conan","jjjnbebh","fcfokioc","kmfieil","hdnlaiac","ln","afdgcljgi","fhnfklhkd","em","kblg","ocamgfibomc","koegolh","ldn","kcdefeahocl","cafgkfki","ehconlagd","nkihodnmibo","bjlfglnjg","cabmgjl","dhe","od","hlamlinjfd","bbooealnkm","mmaaiiogogd","djhjcikjm","kf","hkcgjeoojji","keilcnicl","aikdl","bknadcdkeli","kdnab","djbfkglfk","do","co","dkojk","dibkmcn","ljbejadkf","hkgbcm","clceh","onmhegieimdeoj","gemfnndmog","ailn","zookeeper bot","bat","a mangy little rat","artrell","lynx","slug","optis","bear","mock turtle","deer","elemental","chimera","lemur","cratylus","algcojcb","dgedohlhlmm","illjd","kb","jlkk","ncgncgl","amih","chnmndcahfc","djbj","eglie","mkabfef","ckddmhc","kdlnjdh","gobbhjige","fkoacm","lfmejkoe","dc","nhfcg","faeelmg","no","fnf","cinhaaollg","hlhn","koij","ghoehjhef","jnkn","jalk","lem","famc","ghgol","gkecdhl","bbjgn","kkejiffhg","necendei","ig","fhlle","ohkb","eejll","de","aoj","cmoolhj","iaahje","alhdnddhgf","gcf","jdgooo","cfkohkcnb","ilme","abdn","one","ingrid","boar",})
 VisibleRiders 1
 actions_enabled 1
-runs 20809
-switches 20803
+runs 46083
+switches 46077
 stays 6
 percent 0
-fred 1672
-fgreen 1569
-fblue 1671
-wins 13908
-losses 6901
-red_wins 6935
-green_wins 6937
-blue_wins 6937
-save_file "/domains/campus/save/charles.o"
+fred 3724
+fgreen 3651
+fblue 3797
+wins 30779
+losses 15304
+red_wins 15361
+green_wins 15362
+blue_wins 15360

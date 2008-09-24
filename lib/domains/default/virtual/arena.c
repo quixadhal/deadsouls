@@ -77,18 +77,12 @@ varargs static void create(int x, int y) {
     //AddExit("up", __DIR__ + "sky/"+x+","+y+",1", (: PreExit :) );
     //AddExit("up", __DIR__ + "sky/"+x+","+y+",1", (: PreExit :) );
 
-    if(x == 5 && y == 1){
-        RemoveExit("south");
-        AddExit("south","/domains/default/room/wiz_corr_east2");
-        AddItem("sign" , "This is a sign planted on the ground.");
-        SetRead( ({"sign"}) , "Wiz labs south of here.");
-    }
-    else if(y == 1){
+    if(y == 1){
         RemoveExit("south");
         RemoveExit("southeast");
         RemoveExit("southwest");
     }
-    else if(y == 10){
+    if(y == 10){
         RemoveExit("north");
         RemoveExit("northeast");
         RemoveExit("northwest");
@@ -103,6 +97,12 @@ varargs static void create(int x, int y) {
         RemoveExit("northeast");
         RemoveExit("southeast");
     }
+    if(x == 1 && y == 10){
+        RemoveExit("west");
+        AddExit("west","/domains/default/room/wiz_corr_east3");
+        AddItem("sign" , "This is a sign planted on the ground.");
+        SetRead( ({"sign"}) , "Wiz labs west of here.");
+    }
 }
 
 varargs void SetLongAndItems(int x, int y, int z) {
@@ -115,11 +115,11 @@ varargs void SetLongAndItems(int x, int y, int z) {
     "by stone walls, forming a large arena for heavy weapons and "
     "mounted combat.";
     if(query_night()) str += " The stars of the night sky glitter overhead.";
-    if(x == 1) str += " A stone wall prevents further travel west.";
+    if(x == 1 && y != 10) str += " A stone wall prevents further travel west.";
     if(x == 10) str += " A stone wall prevents further travel east.";
-    if(y == 1 && x != 5) str += " A stone wall prevents further travel south.";
+    if(y == 1 ) str += " A stone wall prevents further travel south.";
     if(y == 10) str += " A stone wall prevents further travel north.";
-    if(x == 5 && y == 1) str += "\n%^GREEN%^There is a sign here you can read.%^RESET%^";
+    if(x == 1 && y == 10) str += "\n%^GREEN%^There is a sign here you can read.%^RESET%^";
 
     SetItems( ([ "arena" : "A place of violent death and great destruction.",
       ]) );

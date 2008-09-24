@@ -12,11 +12,11 @@ static void create() {
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("Registrar of Voters");
-    SetLong("This small office is where people come to "
-      "perform their civic duty of voting. Here you may "
-      "also \"nominate CANDIDATE\". There is a list of candidates here. " 
-      " The main area of the town hall is west.");
+    SetLong("This small office is where people come to perform their civic duty of voting. Here you may also 'nominate CANDIDATE'. There is a list of candidates here. The main area of the town hall is southwest.");
     SetItems( ([ "list" : "This is the list of candidates." ]) );
+    SetExits( ([ 
+        "southwest" : "/domains/town/room/thall",
+      ]) );
     SetRead( "list", (: ReadList :) );
     SetProperties (([
         "no attack":1, 
@@ -27,7 +27,6 @@ static void create() {
         "no teleport":0]));
     SetInventory(([
       ]));
-    AddExit("west", "/domains/town/room/thall");
 }
 
 mixed ReadList() {
@@ -42,7 +41,6 @@ mixed ReadList() {
     admin += "votemode\t\tReports operating mode of voting daemon.\n\n";
 
     if(archp(this_player())) this_player()->eventPrint( admin );
-
 
     if( VOTING_D->GetStatus() == VOTE_NOT_RUNNING ) {
         this_player()->eventPrint(VOTING_D->GetCurrentCouncil());

@@ -24,13 +24,12 @@ static void create() {
         ({"road","cobblestone road"}) : "A "
         "cobblestone road running north and south."
       ]) );
-    AddTerrainType(T_ROAD);
-    SetExits( ([
-        "south" : "/domains/town/room/south_road2",
+    SetExits( ([ 
         "north" : "/domains/town/room/vill_road1",
-        "east" : "/domains/town/room/bank",
-        "west" : "/domains/town/room/magic_shop.c",
+        "south" : "/domains/town/room/south_road2",
+        "west" : "/domains/town/room/magic_shop",
       ]) );
+    AddTerrainType(T_ROAD);
     SetNoModify(0);
     SetEnters( ([
         "well" : "/domains/town/room/well1"

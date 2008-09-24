@@ -9,18 +9,20 @@ static void create() {
     SetLong("This is the storeroom where magical items are kept."); 
     SetExits( ([
         "east" : "/domains/town/room/magic_shop",
+        "up" : "/domains/town/room/magic_shop.c",
       ]) );
     SetInventory(([
+        "/domains/town/obj/scroll_raise_dead" : 5,
         "/domains/town/meals/potion_bigheal" : 2,
         "/domains/town/meals/potion_healing" : 10,
         "/domains/town/obj/8ball" : 3,
         "/domains/town/obj/d6" : 5,
+        "/domains/default/armor/gray_amulet" : 2,
         "/domains/town/obj/omni" : 1,
-        "/domains/town/obj/pipe" : 5,
         "/domains/town/meals/potion_strength" : 5,
+        "/domains/town/obj/pipe" : 5,
         "/domains/town/obj/d20" : 5,
       ]));
-    SetObviousExits("e");
 }
 int CanReceive(object sneak) {
     object *living_stack = get_livings(sneak);

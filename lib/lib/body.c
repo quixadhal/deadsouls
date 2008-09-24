@@ -19,6 +19,9 @@
 #include <damage_types.h>
 #include <magic_protection.h>
 #include "include/body.h"
+#ifndef AUTO_ADVANCE
+#define AUTO_ADVANCE 0
+#endif
 
 inherit LIB_POSITION;
 inherit LIB_UNDEAD;
@@ -38,7 +41,7 @@ private int HealthPoints, MagicPoints, ExperiencePoints;
 private int melee, godmode;
 private int Alcohol, Caffeine, Food, Drink, Poison, Sleeping, DeathEvents;
 private float StaminaPoints;
-private string Torso, Biter;
+private string Torso, Biter, keepalive;
 private mapping Fingers, Limbs, MissingLimbs;
 private static int Dying, LastHeal, Encumbrance;
 private static function Protect;
@@ -48,6 +51,7 @@ static private int HeartModifier = 0;
 private static string PoliticalParty, BodyComposition;
 private static int Pacifist, rifleshot_wounds, gunshot_wounds, globalint1;
 private static int Size, BodyType;
+private int rifleshot_wounds, gunshot_wounds;
 string *ExtraChannels;
 mixed Agent;
 
@@ -348,9 +352,15 @@ varargs int eventCollapse(int noparalyze){
 }
 
 void eventCheckHealing(){
-    int x, y;
+    int x, y, lead;
     object dude;
     dude = this_object();
+    lead = dude->GetLead();
+
+    if(lead && !present("firearms_wound", dude)){
+        object wound = new(LIB_WOUND);
+        if(wound) wound->eventMove(dude);
+    }
 
     if(interactive() && !environment()){
         this_object()->eventMove(ROOM_START); 
@@ -363,6 +373,10 @@ void eventCheckHealing(){
         this_object()->SetDying(1);
         this_object()->eventDie(previous_object());
         return;
+    }
+
+    if(AUTO_ADVANCE && interactive() && !this_object()->GetDying()){
+        PLAYERS_D->CheckAdvance(this_object());
     }
 
     x = GetHeartRate() * 10;
@@ -623,7 +637,6 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
             if(!(j = sizeof(obs = GetWorn(limbs[i])))){ /* no armor */
                 y += z;                     /* add to total damage */
                 if( !AddHealthPoints(-z, limbs[i], (agent || agentname)) ){
-                    //this_object()->RemoveLimb(limbs[i], (agent || agentname));
                     call_out("RemoveLimb",0,limbs[i], (agent || agentname));
                 }
                 continue;
@@ -634,16 +647,12 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
                   type, z, 0, limbs[i]);
                 z -= tmpdam;
                 if(z < 1){
-                    //hrmmm
-                    //break;
                 }
                 if(z < 1){
-                    //continue;
                 }
                 else {
                     y += z;
                     if(!AddHealthPoints(-z, limbs[i], agent)){
-                        //this_object()->RemoveLimb(limbs[i], (agent || agentname));
                         call_out("RemoveLimb",0,limbs[i], (agent || agentname));
                     }
                 }
@@ -785,7 +794,9 @@ varargs int eventDie(mixed agent){
 
     if(RACES_D->GetNonMeatRace(GetRace()))
         death_annc = killer + " has destroyed "+ this_object()->GetName()+".";
-    else death_annc = killer + " has slain "+ this_object()->GetName()+".";
+    else if(!this_object()->GetUndead())
+        death_annc = killer + " has slain "+ this_object()->GetName()+".";
+    else death_annc = killer + " has destroyed "+ this_object()->GetName()+".";
 
     CHAT_D->eventSendChannel("SYSTEM","death",death_annc,0);
 
@@ -1008,7 +1019,13 @@ varargs int eventDie(mixed agent){
             }
             else {
                 if(!GetLimb(limb)){
-                    return "Try a different body part.";
+                    string ret = "Try a different body part.";
+                    string *hands = GetWieldingLimbs();
+                    if(type & A_RING && sizeof(hands)){
+                        ret = "Try: wear " + ob->GetKeyName() + " on "+
+                        hands[0];
+                    }
+                    return ret;
                 }
                 globalint1 = Limbs[limb]["armors"];
                 if( !Limbs[limb] ) return "You have no " + limb + ".";
@@ -1310,7 +1327,7 @@ varargs int eventDie(mixed agent){
      *
      * returns -1 on error, 0 on failure, 1 on success
      */
-    int RemoveLimb(string limb, mixed agent){
+    int RemoveLimb(string limb, mixed agent, int quiet){
         string *kiddies;
         string limbname,adjname,templimbname, agentname;
         int i;
@@ -1330,10 +1347,11 @@ varargs int eventDie(mixed agent){
         if(!limb || !Limbs[limb]) return -1;
         if(!Limbs[limb]["parent"] || Limbs[limb]["class"] == 1){
             object objict;
-            message("environment", possessive_noun(GetName()) + " " + limb +
-              " is severed!", environment(), ({ this_object() }));
-            message("environment", "Your "+ limb + " is severed!", this_object());
-
+            if(!quiet){
+                message("environment", possessive_noun(GetName()) + " " + limb +
+                  " is severed!", environment(), ({ this_object() }));
+                message("environment", "Your "+ limb + " is severed!", this_object());
+            }
             if(GetRace() == "golem"){
                 objict = new(LIB_CLAY);
                 if(GetBodyComposition()) objict->SetComposition(GetBodyComposition());
@@ -1363,15 +1381,15 @@ varargs int eventDie(mixed agent){
         MissingLimbs[limb] = copy(Limbs[limb]);
         Limbs[Limbs[limb]["parent"]]["children"] -= ({ limb });
         if( (i = sizeof(kiddies = Limbs[limb]["children"])) )
-            while(i--) this_object()->RemoveLimb(kiddies[i], agent);
+            while(i--) this_object()->RemoveLimb(kiddies[i], agent,quiet);
         map_delete(Limbs, limb);
         if( environment() ){
             object ob;
-
-            message("environment", possessive_noun(GetName()) + " " + limb +
-              " is severed!", environment(), ({ this_object() }));
-            message("environment", "Your "+ limb + " is severed!", this_object());
-
+            if(!quiet){
+                message("environment", possessive_noun(GetName()) + " " + limb +
+                  " is severed!", environment(), ({ this_object() }));
+                message("environment", "Your "+ limb + " is severed!", this_object());
+            }
             if(GetRace() == "golem"){
                 ob = new(LIB_CLAY);
                 if(GetBodyComposition()) ob->SetComposition(GetBodyComposition());
@@ -1716,11 +1734,13 @@ varargs int eventDie(mixed agent){
         return 1;
     }
 
-    int GetLead(string ammo){
+    varargs int GetLead(string ammo){
         int number;
         number = 0;
-        if(!ammo || !stringp(ammo)) number = gunshot_wounds + rifleshot_wounds;
-        if(!ammo || !stringp(ammo)) return number;
+        if(!ammo || !stringp(ammo)){
+            number = gunshot_wounds + rifleshot_wounds;
+            return number;
+        }
         if(ammo == "gunshot_wounds") return gunshot_wounds;
         if(ammo == "rifleshot_wounds") return rifleshot_wounds;
         return 0;
@@ -1865,11 +1885,24 @@ varargs int eventDie(mixed agent){
     }
 
     int GetHealRate(){
-        int heal;
+        int heal, mod = 1;
+        int lead = GetLead();
+        object dude = this_object();
 
         heal = 1 - (GetPoison() / 5);
-        heal += (GetDrink() + GetFood()) / 10;
-        heal *= (1 + (GetSleeping() > 1) + (GetAlcohol() > 10));
+        heal += ( (GetDrink() + GetFood()) || 1 ) / 40;
+        if(GetSleeping()) mod++;
+        if(GetAlcohol() > 10) mod++;
+        if(dude->GetStatLevel("strength") > 50) mod++;
+        if(dude->GetStatLevel("durability") > 50) mod++;
+        if(dude->GetStatLevel("luck") > random(100)) mod++;
+        if(dude->GetSkillLevel("faith") > 10) mod++;
+        mod =  heal * to_float(mod * 0.1);
+        heal += mod;
+        if(lead && interactive(dude)){
+            if(lead < 5) heal /= (lead + 1);
+            else heal = 0;
+        }
         return heal;
     }
 
@@ -1955,4 +1988,12 @@ varargs int eventDie(mixed agent){
 
     int GetGodMode(){
         return godmode;
+    }
+
+    string SetKeepalive(string str){
+        keepalive = str;
+    }
+
+    string GetKeepalive(){
+        return keepalive;
     }

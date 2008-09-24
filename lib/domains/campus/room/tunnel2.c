@@ -17,13 +17,13 @@ static void create() {
         "walls" : "The walls are bare earth and rocks. It looks as though whoever "+
         "built this tunnel was in a big hurry to get it done.",
         ({"wall","south wall","southern wall"}) : "The south wall is heavily laden with "+
-        "thick cables and metal pipes running east along its length.",
+        "thick cables and metal pipes running along its length.",
         ({"rock","earth"}): "The walls are composed of this stuff...it's a rough excavation.",
         "darkness":"It's deep. It's dark. It's the absence of light, and there's lots of it.",
       ]));
     SetExits(([
-        "west" : "/domains/campus/room/tunnel",
-        "east" : "/domains/campus/room/access7"]));
+        "east" : "/domains/campus/room/tunnel",
+        "west" : "/domains/campus/room/access7"]));
     SetProperty("no attack", 1);
 }
 void init(){

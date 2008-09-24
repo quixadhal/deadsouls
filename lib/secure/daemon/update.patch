@@ -12,6 +12,7 @@ int check_function(string str){
 }
 
 int make_empties(){
+#if 1
     string *removes = ({
       "/spells",
       "/psionics",
@@ -85,7 +86,7 @@ int make_empties(){
     foreach(string dir in removes){
         catch( rmdir(dir) );
     }
-
+#endif
     return 1;
 }
 
@@ -110,6 +111,7 @@ varargs static void eventUpdate(object whom){
     newfile += "}\n";
     write_file("/secure/daemon/update.c",newfile,1);
 
+#if 0
     if(find_object(RACES_D))
         find_object(RACES_D)->eventDestruct();
     rename(SAVE_RACES __SAVE_EXTENSION__, SAVE_RACES+"."+time());
@@ -117,6 +119,7 @@ varargs static void eventUpdate(object whom){
     reload("/secure/sefun/pointers",0,1);
     reload("/secure/sefun/sefun",0,1);
     reload("/secure/daemon/master",0,1);
+#endif
 
     if(sizeof(config_file)){
 
@@ -217,9 +220,18 @@ varargs static void eventUpdate(object whom){
             config_file = append_line(config_file,"#define F_TERMINAL_COLOR",
               "#define MAX_CALL_OUTS            500");
 
+        if(!grepp(config_file, "REQUIRE_QUESTING"))
+            config_file = append_line(config_file,"#define MAX_CALL_OUTS",
+              "#define REQUIRE_QUESTING         1");
+
+        if(!grepp(config_file, "AUTO_ADVANCE"))
+            config_file = append_line(config_file,"#define REQUIRE_QUESTING",
+              "#define AUTO_ADVANCE             0");
+
         write_file("/secure/include/config.h", config_file+"\n", 1);
     }
 
+#if 0
     rm("/powers/prayers/cure.c");
     rm("/powers/prayers/resurrection.c");
     rm("/secure/cmds/admins/addemote.c");
@@ -251,12 +263,14 @@ varargs static void eventUpdate(object whom){
     rm("/lib/verb.c");
     rm("/lib/include/verb.h");
     rm("/secure/daemon/reload.proto");
+    rm("/domains/campus/obj/wound.c");
+    rm("/domains/town/obj/wound.c");
+
+    catch( remote = load_object("/secure/cmds/admins/removeemote") );
+    if(remote) remote->cmd("roll");
+#endif
 
     call_out( (: make_empties :),0);
-
-    remote = load_object("/secure/cmds/admins/removeemote");
-    if(remote) remote->cmd("roll");
-
     reload(EVENTS_D,0,1);
     EventsMap = EVENTS_D->GetEvents();
     foreach(mixed key, mixed val in EventsMap){
@@ -269,12 +283,9 @@ varargs static void eventUpdate(object whom){
     if(member_array("RotateLogs",event_funs) == -1)
         EVENTS_D->AddEvent("/secure/daemon/log","/secure/daemon/log","RotateLogs",({ }),3600,1);
 
+#if 0
     if(file_exists("/secure/scripts/qcs_check.scr"))
         rename("/secure/scripts/qcs_check.scr", "/secure/scripts/qcs_check.txt");
-
-    catch( load_object("/secure/cmds/admins/removeraces")->cmd());
-    catch( load_object("/secure/cmds/admins/addraces")->cmd());
-
     newfile = read_file("/secure/cfg/read.cfg");
     newfile = replace_string(newfile,"(/log/secure)","(/log/secure/)");
     newfile = replace_string(newfile,"(/secure/log)","(/secure/log/)");
@@ -300,9 +311,12 @@ varargs static void eventUpdate(object whom){
     catch( CLASSES_D->RemoveClass("thief") );
     catch( CLASSES_D->AddClass("/secure/cfg/classes/thief") );
     catch( CLASSES_D->RemoveClass("priest") );
+    catch( CLASSES_D->RemoveClass("cleric") );
     catch( CLASSES_D->AddClass("/secure/cfg/classes/cleric") );
     //tc("Done with classes...");
+#endif
 
+#if 1
     catch( reload("/secure/daemon/master",0,1) );
     catch( reload("/secure/sefun/arrays",0,1) );
     catch( reload("/secure/sefun/sefun",0,1) );
@@ -314,10 +328,13 @@ varargs static void eventUpdate(object whom){
     catch( reload("/domains/Ylsrim/room/tower",0,1));
     catch( reload("/domains/campus/room/slab",0,1));
     update(RELOAD_D,0,1);
+#endif
 
     if(whom){
         tell_player(whom,"Update daemon finished.");
-        if(query_os_type() == "windows") tell_player(whom,"Rebooting now is a good idea.");
+        if(query_os_type() == "windows" || uptime() < 240){
+            tell_player(whom,"Rebooting now is a good idea.");
+        }
         else tell_player(whom,"Initiating warm boot.");
     }
 
@@ -329,6 +346,8 @@ varargs static void eventUpdate(object whom){
 static void create() {
     object whom;
     daemon::create();
+    catch( load_object("/secure/cmds/admins/removeraces")->cmd());
+    catch( load_object("/secure/cmds/admins/addraces")->cmd());
     if(this_player()) whom = this_player();
     call_out((: eventUpdate :), 1, whom);
     if(whom){

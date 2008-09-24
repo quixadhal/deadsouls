@@ -102,42 +102,6 @@ private static string *blacklist = ({});
 private static string *jokes = ({"bind","call_out","call_other",
   "unguarded","evaluate"});
 
-varargs 
-mixed 
-spew(mixed str,
-  mixed args...){
-    mixed ret;
-    return efun::new(str, args...);
-    if(args && sizeof(args)) ret = new(str, args...);
-    else ret = new(str);
-    //tc("str: "+identify(str),"red");
-    //tc("args: "+identify(args),"green");
-    //tc("ret: "+identify(ret),"blue");
-    return ret;
-}
-
-#if 0
-varargs object clone_object(string str, mixed args...){
-    int maxclones;
-    string basename;
-    //tc("clone_object("+identify(args...)+")");
-    if(!args || !args[0]) return 0;
-    if(!stringp(args[0])) return efun::clone_object(str, args...);
-    basename = args[0];
-#ifdef MAX_CLONES
-#if MAX_CLONES
-    int clones;
-    string basename = args[0];
-    if(last(basename,2) == ".c") basename = trim(basename,2);
-    clones = sizeof(objects( (: !strsrch(file_name($1),basename+"#") :)));
-    if(clones >= MAX_CLONES) maxclones = 1;
-#endif
-#endif
-    if(maxclones) error("Maximum number of clones of that object already loaded.\n");
-    return efun::clone_object(str, args...);
-}
-#endif
-
 #ifdef __FLUFFOS__
 mixed copy(mixed val){
     return efun::copy(val);
@@ -155,6 +119,35 @@ string base_name(mixed val){
 varargs string read_file(string file, int start_line, int number_of_lines){
     if(file_size(file) == 0) return "";
     return efun::read_file(file, start_line, number_of_lines);
+}
+
+//In FluffOS 2.13 and early versions of 2.14, check_memory()
+//is a crasher.
+string check_memory(int flag){
+    string ret;
+#if 0
+#ifdef __DEBUGMALLOC__
+#ifdef __DEBUGMALLOC_EXTENSIONS__
+#ifdef __PACKAGE_DEVELOP__
+    ret = efun::check_memory(flag);
+#endif
+#endif
+#endif
+#endif
+    if(!ret) ret = "";
+    return ret;
+}
+
+mapping rusage(){
+#ifdef __HAS_RUSAGE__
+    return efun::rusage();
+#else
+    return ([ "nivcsw" : 0, "isrss" : 0, "nsignals" : 0, "utime" : 0,
+      "oublock" : 0, "maxrss" : 0, "stime" : 0, 
+      "nvcsw" : 0, "majflt" : 0, "nswap" : 0, "msgrcv" : 0, 
+      "inblock" : 0, "minflt" : 0, "ixrss" : 0,
+      "msgsnd" : 0, "idrss" : 0 ]);
+#endif
 }
 
 string dump_file_descriptors(){
@@ -217,7 +210,7 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
     else error("call_out with no previous_object()");
 
     if(sizeof(raw) > MAX_CALL_OUTS && (strsrch(prevbase,"/secure/") && 
-        strsrch(prevbase,"/lib/") &&
+        strsrch(prevbase,"/lib/") && strsrch(prevbase,"/std/") &&
         strsrch(prevbase,"/daemon/") && strsrch(prevbase,"/domains/"))){
         int err;
         globalmixed = prev;
@@ -227,7 +220,6 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
 
     foreach(string foo in blacklist){
         if(!strsrch(prevbase,foo)){
-            //tc("been blacklisted");
             error("Object on call_out blacklist.");
         }
     }
@@ -241,59 +233,41 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
     }
     gfun = fun;
 
-    //tc(identify(previous_object(-1))+ " call_out("+identify(fun)+", "+identify(delay)+", "+identify(args)+")");
-
     if(!strsrch(prevbase,"/open/")) error("call_out from /open");
 
     if(strsrch(prevbase,"/secure/") && strsrch(prevbase,"/daemon/")){
-        //tc("call_out testing","yellow");
 #if CALL_OUT_LOGGING
         unguarded( (: write_file("/log/secure/callouts",timestamp()+" "+
               identify(previous_object(-1))+" "+identify((gargs || gfun))+"\n") :) );
 #endif
-        //tc("entering loop");
 
         while(i--){
-            //tc("raw["+i+"]: "+identify(raw[i]),"white");
             if(sizeof(raw[i]) && objectp(raw[i][0])){
                 string *lol = explode(base_name(raw[i][0]),"/");
                 string wut = "/"+lol[0]+"/"+lol[1]+"/";
-                //tc("lol: "+identify(lol)+", wut: "+identify(wut));
                 if(!(callers[wut])) callers[wut] = 1;
                 else callers[wut]++;
             }
         }
-        //tc("exiting loop. data: "+identify(callers));
         wat = "/"+explode(prevbase,"/")[0]+"/"+explode(prevbase,"/")[1];
         if(callers[wat] && callers[wat] > 10){
-            //tc("HAY! OVAR HEAR!","white");
             if(!strsrch(prevbase,REALMS_DIRS) || callers[wat] > 100){
                 globalmixed = prev;
-                //tc("blacklistein "+identify(globalmixed)+"'s "+wat,"yellow");
                 blacklist += ({ wat });
                 blacklist = singular_array(blacklist);
                 unguarded( (: destruct(globalmixed) :) );
-                //if(globalmixed) tc("wtf still there");
                 error("Too many callouts from an unprivileged directory.");
             }
         }
     }
-    //tc("alles gut","green");
 
     if(sizeof(gargs)){
-#if 0
-        ret = evaluate( bind( (: call_out(gfun, gdelay, gargs...) :) , prev) );
+        ret = efun::call_out(gfun, gdelay, gargs...);
     }
-    else ret = evaluate( bind( (: call_out(gfun, gdelay) :) , prev) );
-#endif
-    //tc("GARGS","red");
-    ret = efun::call_out(gfun, gdelay, gargs...);
-}
-else {
-    //tc("NO GARGS","red");
-    ret = efun::call_out(gfun, gdelay);
-}
-return ret;
+    else {
+        ret = efun::call_out(gfun, gdelay);
+    }
+    return ret;
 }
 
 //addr_server calls don't work well on Solaris and spam stderr
@@ -352,22 +326,17 @@ object *livings() {
     if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return privlivs;
     if(base_name(previous_object()) == SERVICES_D) return privlivs;
     else return unprivlivs;
-    //return efun::livings() - (efun::livings() - objects());
 }
 
 varargs mixed objects(mixed arg1, mixed arg2){
     object array tmp_obs;
 
-    //tc(base_name(previous_object()));
-
     if(!strsrch(base_name(previous_object()),"/secure/")){
         if(base_name(previous_object()) == "/secure/obj/weirder"){
-            //tc("gut","red");
             if(!arg1) return efun::objects();
             return efun::objects(arg1);
         }
         if(this_player() && adminp(this_player())){
-            //tc("yah good");
             if(!arg1) return efun::objects();
             return efun::objects(arg1);
         }
@@ -462,7 +431,6 @@ int destruct(object ob) {
         if( !((int)master()->valid_apply(({ "SECURE" }))) )
             error("Illegal attempt to destruct SEFUN: "+get_stack()+" "+identify(previous_object(-1)));
     }
-    //tc("ok: "+ok);
     if(ok) return efun::destruct(ob);
     else return 0;
 }

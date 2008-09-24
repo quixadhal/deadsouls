@@ -16,6 +16,7 @@ void create() {
 	"/domains/default/armor/wizard_hat" : 1,
 	"/domains/default/obj/manual" : 1,
 	"/secure/obj/machine" : 1,
+        "/domains/default/obj/gps" : 1,
 	"/domains/default/armor/robe" : 1,
 	"/domains/default/obj/meter" : 1,
 	"/secure/obj/control" : 1,

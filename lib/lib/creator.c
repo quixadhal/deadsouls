@@ -19,7 +19,7 @@ inherit LIB_PLAYER;
 inherit LIB_ISQL;
 #endif /* __PACKAGE_DATABASE_DB__ */
 
-private int wizvision, CreatorAge, CreatorBirth;
+private int showgrid, wizvision, CreatorAge, CreatorBirth;
 private static int LastCreatorAge;
 private string LivingShort;
 
@@ -103,6 +103,16 @@ void eventDescribeEnvironment(int verbose){
         return;
     }
     message("system", file_name(env), this_object());
+    if(this_object()->GetVisibleGrid() && environment(this_object())){
+        string grid = ROOMS_D->GetCoordinates(environment(this_object()));
+        if(sizeof(grid) > 2){
+            grid = "Global coordinates: "+grid;
+        }
+        else {
+            grid = "Global coordinates unavailable.";
+        }
+        message("system", grid, this_object());
+    }
     player::eventDescribeEnvironment(verbose);
 }
 
@@ -166,7 +176,7 @@ varargs string GetLong(string str){
 int GetCreatorBirth(){ return CreatorBirth; }
 
 string GetName(){ 
-    if( !GetInvis() ) return ::GetName();
+    if( !GetInvis() || previous_object()->GetWizVision() ) return ::GetName();
     else return "A shadow";
 }
 
@@ -201,6 +211,19 @@ int SetWizVision(int i){
 
 int GetWizVision(){
     return wizvision;
+}
+
+int SetVisibleGrid(int i){
+    if(!this_player()) return 0;
+    if(archp(this_object()) && !archp(this_player())) return 0;
+    if(!archp(this_object()) && this_player() != this_object()) return 0;
+    if(i) showgrid = 1;
+    else showgrid = 0;
+    return showgrid;
+}
+
+int GetVisibleGrid(){
+    return showgrid;
 }
 
 string GetLivingShort(){

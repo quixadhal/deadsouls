@@ -10,7 +10,7 @@ static void create() {
       "is very dark here, and rather damp. The fluorescent lighting seems to be "+
       "on the verge of total failure, with only one or two flickering on and off enough "+
       "to see anything. The air here is damp, thick and musty. There is a small crawlspace you can enter under "+
-      "the stairs here, and the basement continues east into darkness.");
+      "the stairs here, and the basement continues west into darkness.");
     SetItems(([
         "stairs" : "A flight of stairs leading up. There is a crawlspace beneath them.",
         "basement" : "This is a dark, creepy basement.",
@@ -25,7 +25,7 @@ static void create() {
         "really wanted to."]));
     SetInventory((["/domains/campus/npc/rat" : 1]));
     AddExit("up","/domains/campus/room/stairwell");
-    AddExit("east","/domains/campus/room/basement2");
+    AddExit("west","/domains/campus/room/basement2");
     AddEnter("crawlspace" , "/domains/campus/room/crawlspace");
     SetProperty("no attack", 1);
 }

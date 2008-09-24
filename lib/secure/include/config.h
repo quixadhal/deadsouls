@@ -51,7 +51,7 @@
 #define SAME_IP_MAX              4
 #define COMPAT_MODE              1
 #define RETAIN_ON_QUIT           1
-#define FAST_COMBAT              0
+#define FAST_COMBAT              1
 #define MAX_COMMANDS_PER_SECOND  10
 #define DEFAULT_PARSING          1
 #define CALL_OUT_LOGGING         0
@@ -82,5 +82,7 @@
 #define ENABLE_CREWEB            0
 #define F_TERMINAL_COLOR         1
 #define MAX_CALL_OUTS            750
+#define REQUIRE_QUESTING         1
+#define AUTO_ADVANCE             1
 
 #endif /* s_config_h */

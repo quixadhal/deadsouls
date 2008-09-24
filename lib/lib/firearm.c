@@ -12,10 +12,10 @@ private float Caliber;
 private string *namen;
 private string *ammonamen;
 private int loaded, rounds;
-private int shells;
+private int shells, magnum;
 private int mag,cloned;
 private int autohit;
-private int dam;
+private int dam, last_shot;
 
 static void create(){
     string *s_save, *a_save;
@@ -138,11 +138,23 @@ int CanRelease(object ob){
 mixed eventShoot(object ob, mixed target){
     object cible;
     object shell;
-    if(stringp(target)) cible = present(target,environment(environment(this_object())));
+    object *obs;
     if(objectp(target)){
         cible = target;
-        target = cible->GetName(); 
     }
+    else {
+        obs = filter(get_livings(environment(this_player())),
+          (: answers_to($(target), $1) :));
+        if(!sizeof(obs)) cible = present(target,environment(this_player()));
+        else cible = obs[0];
+    }
+    if(cible) target = cible->GetName();
+
+    else {
+        write("It seems there's a problem targeting "+target+".");
+        return 1;
+    }
+
     if(!rounds || rounds == 0){
         write("Your weapon is not loaded.\n");
         say(environment(this_object())->GetName()+" tries to shoot "+capitalize(target)+" with an unloaded weapon.\n");
@@ -163,8 +175,9 @@ mixed eventShoot(object ob, mixed target){
     return 1;
 }
 
-int eventFire(string str){
+int eventFire(mixed str){
     object ob;
+    object *obs;
     int tempclass, i, dex;
     int TorsoNum, NumLimbs;
     mixed dexmap;
@@ -188,7 +201,12 @@ int eventFire(string str){
         new("/lib/shell")->eventMove(ob);
     }
     if(rounds <= 0) loaded=0;
-    ob=present(str,environment(environment(this_object())));
+    ob = 0;
+    if(objectp(str)) ob = str;
+    else obs = filter(get_livings(environment(this_player())),
+          (: answers_to($(str), $1) :));
+    if(!ob && !sizeof(obs)) ob = present(str,environment(this_player()));
+    else if(!ob) ob = obs[0];
     if(creatorp(ob)){
         write(ob->GetName()+" catches your bullet in "+possessive(ob)+" teeth.\n");
         say(ob->GetName()+" catches the bullet in "+possessive(ob)+" teeth.\n");
@@ -219,10 +237,16 @@ int eventFire(string str){
     }
     i = random(100);
     if(!creatorp(environment())){
-        dexmap=environment(this_object())->GetStat("coordination");
-        dex=dexmap["level"];
+        dex = environment(this_object())->GetStatLevel("coordination");
+        dex += (environment(this_object())->GetStatLevel("luck") / 3);
+        if(environment(this_object())->GetSkillLevel("firearms") < 10){
+            int now = time();
+            if(last_shot == now) dex -= 100;
+            else if((now - last_shot) < 2)  dex -= 50;
+        }
     }
     else dex = 200;
+    last_shot = time();
     if((ob && living(ob)) && (i < dex || autohit==1)){
         NumLimbs=sizeof(ob->GetLimbs());
         TorsoNum=member_array(ob->GetTorso(),ob->GetLimbs());
@@ -237,17 +261,41 @@ int eventFire(string str){
         ob->AddLead("gunshot_wounds", 1);
         ob->SetAttack(this_agent());
         if(!present("firearms_wound",ob)){
-            new("/domains/town/obj/wound")->eventMove(ob);
+            new(LIB_WOUND)->eventMove(ob);
         }
-        if(Caliber) dam = to_int(Caliber/6);
-        if(Millimeter) dam = Millimeter;
+        if(Caliber){
+            float tmp;
+            int extradam = this_object()->GetMagnum();
+            //debug("extradam: "+extradam);
+            if(to_float(Caliber) < 1.00) Caliber = to_float(Caliber) * 100.00;
+            //debug("Caliber: "+Caliber);
+            if(Caliber > 99) tmp = to_float(Caliber) * 0.10;
+            //else tc(Caliber +" is not larger than 99");
+            //debug("tmp: "+tmp);
+            dam = to_int(tmp);
+            //debug("pre magnum dam: "+dam);
+            if(extradam) dam += (random(extradam/2) + extradam/2);
+            //debug("post magnum dam: "+dam);
+        }
+        if(Millimeter){
+            dam = Millimeter;
+            dam *= random(10);
+        }
         if(!dam) dam = 7;
-        dam *= random(10);
+        //debug("pre modifiers dam: "+dam);
+
         dam += random(environment(this_object())->GetStatLevel("coordination"));
+        //debug("post coordination check dam: "+dam);
         dam += environment(this_object())->GetSkillLevel("projectile attack");
+        //debug("post skill level check dam: "+dam);
+        dam -= random(ob->GetStatLevel("luck"));
+        //debug("post luck check on target dam: "+dam);
+        dam -= random(ob->GetSkillLevel("projectile defense"));
+        //debug("post skill level check on target dam: "+dam);
+
         if(creatorp(this_player())) write("you do "+dam+" points of damage");
 
-        ob->eventReceiveDamage(environment(this_object()),(PIERCE|TRAUMA), dam, 0, limbname);
+        ob->eventReceiveDamage(environment(this_object()),(PIERCE), dam, 0, limbname);
         if(!ob->GetInCombat()){
             ob->eventForce("attack "+environment(this_object())->GetKeyName());
         }
@@ -259,6 +307,7 @@ int eventFire(string str){
     this_object()->missed_shot();
     return 1;
 }
+
 int missed_shot(){
     object ob,maghere,magstuff;
     string str;
@@ -447,3 +496,14 @@ int GetMaxLoaded(){
     if(rounds + shells >= MaxAmmo) return 1;
     return 0;
 }
+
+int GetMagnum(){
+    return magnum;
+}
+
+int SetMagnum(int i){
+    if(i > 0) magnum = i;
+    else magnum = 0;
+    return magnum;
+}
+

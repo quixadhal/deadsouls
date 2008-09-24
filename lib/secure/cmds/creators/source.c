@@ -8,18 +8,27 @@
 inherit LIB_DAEMON;
 
 mixed cmd(string args) {
-    string file, contents;
+    string file, contents,flags,tmpargs;
     string *tmplines, *lines = ({});
-    int queued;
+    int queued, gauged;
 
     if(!args) {
         write("Please specify a file as an argument.");
         return 1;
     }
+    if(sscanf(args,"-%s %s",flags, tmpargs) == 2){
+        args = tmpargs;
+    }
+    else flags = "";
 
-    if(grepp(args, "-q ")){
+    if(grepp(flags, "q")){
         queued = 1;
-        args = replace_string(args, "-q ", "");
+    }
+
+    if(grepp(flags, "g")){
+        if(query_os_type() != "windows"){
+            gauged = 1;
+        }
     }
 
     if(file_size(args) > 0 ) file = args;
@@ -55,7 +64,7 @@ mixed cmd(string args) {
         else {
             line = replace_string(line,"$N",this_player()->GetKeyName());
         }
-        if(strsrch(line,"#")) lines += ({ line });
+        if(strsrch(line,"#")) lines += ({ (gauged ? "gauge " + line : line) });
     }
 
     if(queued){
@@ -78,13 +87,14 @@ mixed cmd(string args) {
 }
 
 void help() {
-    message("system", "Syntax: <source [filename]>\n\n"
-      "If [filename] exists and is readable, this command "
+    message("system", "Syntax: source [-gq] <filename>\n\n"
+      "If <filename> exists and is readable, this command "
       "will read each line of that file and force you to "
       "execute that line as if you had entered it on the "
       "command line. If there is a file called .profile "
       "in your home directory, it is automatically executed "
       "in this way each time you log in.\n\n"
+      "To include system load output, use the -g flag.\n\n"
       "If a set of commands need to occur with some time between "
       "them (for example, to avois the MAX_COMMANDS_PER_SECOND limit) "
       "use the -q flag. For example:\n source -q /secure/scripts/crat2.src\n\n"

@@ -56,11 +56,13 @@ varargs void remove_mud(string mudname, int forced){
 
 varargs void disconnect_mud(string mudname, int remote){
     validate();
-    if(mudinfo[mudname] && connected_muds[mudname]){
+    if(mudinfo[mudname] && mudinfo[mudname]["connect_time"]){
         mudinfo[mudname]["disconnect_time"] = time();
         mudinfo[mudname]["connect_time"] = 0;
-        close_connection(connected_muds[mudname]);
-        map_delete(connected_muds, mudname);
+        if(connected_muds[mudname]){
+            close_connection(connected_muds[mudname]);
+            map_delete(connected_muds, mudname);
+        }
         schedule_broadcast(mudname, remote);
     }
 }

@@ -21,7 +21,7 @@ void eventLoadRogues();
 
 static void create() {
     daemon::create();
-    debug("SNOOP_D restarted.","red");
+    //debug("SNOOP_D restarted.","red");
     if( file_size( SAVE_SNOOP __SAVE_EXTENSION__ ) > 0 )
         unguarded( (: restore_object, SAVE_SNOOP, 1 :) );
     SetNoClean(1);

@@ -38,7 +38,7 @@ static private string *local_chans = ({"newbie","cre","gossip","admin","error", 
   "priest", "mage", "explorer", "thief", "fighter", "death", "connections", "muds" });
 static private string *remote_chans = ({ "Server01:ichat", "Server01:ibuild",
   "Server01:pchat", "Server02:i2chat", "Server02:i3chat", "Server02:icode",
-  "Server02:igame", "Server02:inews", "Server02:irc" });
+  "Server02:igame", "Server02:inews", "Server02:irc", "Server02:ivent" });
 static string *syschans = ({ "intermud", "death", "connections", "muds" });
 
 static private mapping localchans = ([
@@ -64,6 +64,7 @@ static private mapping localchans = ([
   "Server02:igame": "i2game",
   "Server02:inews": "i2news",
   "Server02:irc": "irc",
+  "Server02:ivent": "ivent",
 ]);
 
 static private mapping remotechans = ([
@@ -89,6 +90,7 @@ static private mapping remotechans = ([
   "i2game" : "Server02:igame",
   "i2news" : "Server02:inews",
   "irc" : "Server02:irc",
+  "ivent" : "Server02:ivent",
 ]);
 
 static private mapping tags = ([
@@ -115,6 +117,7 @@ static private mapping tags = ([
   "i2code"      : "%^B_YELLOW%^%^RED%^",
   "i2news"      : "%^B_YELLOW%^%^BLUE%^",
   "irc"         : "%^B_BLUE%^%^GREEN%^",
+  "ivent"         : "%^B_BLUE%^%^GREEN%^",
 
   "default"     : "%^BOLD%^BLUE%^",
 ]);
@@ -515,7 +518,7 @@ int cmdChannel(string verb, string str) {
             //If it's not there, get the emote's LVS text.
             //if (!msg_data)
             //	msg_data = SOUL_D->GetChannelEmote(emote_cmd, "LVS", remains);
-        } else if( strsrch(target, "@") == -1 || rc == verb ) { //If no living target
+        } else if( strsrch(target, "@") == -1 ) { //If no living target
             string array words = explode(remains, " ");
             target = "";
             for(i=0; i<sizeof(words); i++) {
@@ -538,7 +541,7 @@ int cmdChannel(string verb, string str) {
                 target = 0;
             }
 
-        } else if ( rc != verb ) {
+        } else {
             string array words;
 
             //Find any @'s in the remains.. Should be User@Mud
@@ -615,9 +618,8 @@ int cmdChannel(string verb, string str) {
         target_msg = create_message(POV_TARGET, msg_data[0][0],
           msg_data[0][1], "$N", sgen,
           "$O", tgen, msg_data[1]);
-        target_msg = replace_string(target_msg, "$O's", "your");
+        target_msg = replace_string(target_msg, "$O's", "your");    
     }
-
 } else { //There's no target. Spurt it out like the user put it in.
     //Forced emotes only allow real emotes, not custom ones.
     if (forcedemote == 1) {
@@ -856,6 +858,10 @@ string *GetLocalChannels(){
 }
 
 string GetLocalChannel(string ch) {
+    if(!strsrch(ch,"server0")){
+        ch = replace_string(ch, "server01", "Server01");
+        ch = replace_string(ch, "server02", "Server02");
+    }
     if (sizeof(localchans[ch])) return localchans[ch];
     else return ch;
 }

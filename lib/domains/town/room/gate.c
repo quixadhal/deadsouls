@@ -7,8 +7,9 @@ int PreExit(){
     object guard = present("gate guard",this_object());
     if(!MAX_NEWBIE_LEVEL) maxnoob = 3;
     if(((MAX_NEWBIE_LEVEL && !newbiep(this_player())) || 
-        this_player()->GetLevel() > maxnoob) && !this_player()->GetInvis() &&
-      !creatorp(this_player()) && !present("testchar badge",this_player())){
+        this_player()->GetLevel() > maxnoob) &&
+      (!this_player()->GetInvis() && !creatorp(this_player()) &&
+        !present("testchar badge",this_player()))){
         if(guard && living(guard)){
             present("gate guard",this_object())->eventForce("say You're too big to slip by me now. You're not going to the mansion any more.");
             return 0;
@@ -53,13 +54,13 @@ static void create() {
         "casual entry. They are made of brick and appear old "
         "and strong.",
       ]) );
-    SetFlyRoom("/domains/town/virtual/sky/27,99999,1");
+    SetExits( ([
+        "north" : "/domains/town/room/road2.c",
+      ]) );
+    SetFlyRoom("/domains/town/virtual/sky/26,99999,1");
     SetInventory(([
         "/domains/town/npc/mp" : ({ 3600, 1 }),
       ]));
-    SetExits( ([
-        "north" : "/domains/town/room/road1",
-      ]) );
     AddExit("south", "/domains/town/room/mansion_ext", (: PreExit :));
     AddItem(new("/domains/town/obj/lamp"));
     SetProperty("no attack", 1);

@@ -1,3 +1,108 @@
+---- 2.9a9 (unreleased) ---
+- Driver is now a slightly modified pre-release FluffOS 2.14.
+- Revolvers no longer change caliber spontaneously.
+- Basic IMC2 server added.
+- IRN "not my mud" endless loop when more than 2 nodes is fixed.
+- Added "chanlist-req" to the router. You can now get a chanlist
+  without having to reboot.
+- Packet floods from a given mud are now detected and temporarily
+  ignored.
+- The IMC2 ichat channel has been added as a default channel for
+  creators in /secure/cmds/admins/encre.c
+- The finger daemon no longer reports an incorrect birth year
+  when queried repeatedly.
+- Added commands: mudinfo, enemies, showgrid, whereis
+- Quest-dependent advancement can be disabled in config.h by
+  setting REQUIRE_QUESTING to 0.
+- Automatic advancement (i.e. not having to go to Dirk) can
+  be enabled by setting AUTO_ADVANCE to 1.
+- Added "questrequired" and "autoadvance" to mudconfig command.
+- The table of quest and experience points required for
+  advancement is now maintained in PLAYERS_D, not Dirk.
+- By default DS will now handle automatic advancement well beyond
+  level 100. Note that there has been no balancing attempted
+  beyond level 20. You will need to seriously adjust your mud's balance if
+  you allow advancement past level 20.
+- Bug fixed in quitting while invis.
+- Added a cgi gateway to the built-in webserver that allows you
+  to connect to the mud with a java client. To enable it:
+  -----------------------
+  mudconfig http port 8001
+  mudconfig http disable
+  mudconfig cgi enable
+  mudconfig dirlist enable
+  mudconfig creweb enable
+  mudconfig http enable
+  -----------------------
+  Then use your browser to connect to your mud's connection page 
+  (for example, http://your.muds.address.com:8001/cgi/connection.html )
+  NOTE: the mud www port does not have to be 8001. Change it to
+  whatever is appropriate for you.
+- The dest verb now behaves like before. Desting of non-cloned
+  objects by using their file names is again unsupported. This
+  fixes problems with desting a singular among plurals.
+- Some parsing issues in grenades fixed. They also do more
+  damage, but are limited to hurting the first dozen or so people.
+- Added a flash policy server. To enable, uncomment the flash_policy line
+  in /secure/cfg/preload.cfg, redirect your mud server's port 843 to
+  your mud port + 3 (for example 6669, if your mud is on 6666), 
+  and reboot your mud. 
+- Added MUDINFO_D to manage longterm intermud data (normal people 
+  will not have any use for this).
+- The answering machine now works again (when did this break??).
+- Added ROOMS_D to keep track of the relative locations of rooms. This
+  is necessary for some activities that involve distances, such as vehicle
+  combat in virtual areas.
+- Added sefuns: coordinates(), calculate_coordinates(),
+  room_environment(), query_windows()
+- Some rooms have been moved around to accommodate conflicts with
+  their coordinates.
+- Only Firefox is supported with creweb. I can no longer afford to
+  try to keep up with every browser's idea of how to conduct itself.
+  If creweb isn't working and you aren't using Firefox, please use Firefox.
+- The "noclip" command now accepts non-exit directions that have
+  an entry in ROOMS_D as having a room adjacent.
+- Books now do not individually hold their data, but rather cache and
+  query with BOOK_D, to cut down on memory abuse and disk I/O costs.
+
+---- 2.8.4 ---
+- Released 2008-07-24
+- Merged 2.9a8 into the 2.8.x line. Due to the importance of some
+  security fixes, and since major changes have not yet been introduced
+  in 2.9, the improvements of 2.9a8 (unreleased) and below are being
+  folded into 2.8.
+- Fixed odd door id problem reported by Tricky when warmbooting.
+- Class data type removed from LIB_DOOR.
+- Added commands: pwhere, vars
+- Wizvision now lets creators see invisible creatures in a room.
+- Accuracy and performance improvements to default parsing.
+- Cleaned up and updated firearm code: targeting in a room full of
+  corpses is improved. Wounds no longer inflict continuing damage,
+  they simply interfere with player healing (NPC's heal normally).
+  Unless you are skilled with firearms, shooting an npc over and
+  over in rapid succession is extremely likely to miss.
+- Fixed typo in PARTY_D.
+- Healing is now largely dependent on whether you are hungry/thirsty,
+  with some modifiers for relevant stats like strength, luck,
+  and durability. Being asleep and drunk now actually do have a
+  positive effect on healing, as well as having the "faith" skill.
+  Overall this means healing *can* happen faster if you stay on
+  top of these items and don't catch flying bullets. However, if
+  you're not keeping fed and hydrated, healing will seem to have
+  got slower.
+
+---- 2.9a7 ---
+- Released 2008-07-18
+- Driver: MSG_NOSIGNAL more promiscuously defined.
+- Driver: extra checks added to avoid obscure high-load crashes.
+- Parsing problem with doors and multiple keys fixed.
+- Miscellaneous minor lib fixes.
+- Improvements to sefun and warmboots to better interact with call_outs.
+- Added commands: defines, types
+- Fixed a bug that prevented receiving damage in a wielding limb.
+- Prayer parsing system updated/fixed: clerics can now perform prayers
+  with targets.
+
 ---- 2.9a6 ---
 - Released 2008-07-14
 - Driver is now a customized FluffOS 2.12.

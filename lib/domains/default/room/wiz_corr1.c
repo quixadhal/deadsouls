@@ -8,19 +8,17 @@ static void create() {
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("Test Labs Corridor West");
-    SetLong("This is the main corridor of the test labs. North is the combat arena. South is the menagerie. The Creators Hall is west of here, and the corridor continues east.");
-    SetExits( ([
-        "south" : "/domains/default/room/wiz_corr_south",
+    SetLong("This is the west end of main corridor of the test labs. North is the disease lab. The Creators Hall is west of here, and corridor continues east.");
+    SetExits( ([ 
+        "north" : "/domains/default/room/quarantine1",
+        "east" : "/domains/default/room/wiz_corr_east",
         "west" : "/domains/default/room/wiz_hall",
-        "north" : "/domains/default/room/arena",
-        "east" : "/domains/default/room/wiz_corr_east.c",
       ]) );
+
     SetInventory(([
       ]));
 
     SetProperty("no attack", 1);
-
-    SetDoor("north", "/domains/default/doors/steel_door2.c");
 
 }
 int CanReceive(object ob) {

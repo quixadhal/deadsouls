@@ -16,7 +16,9 @@ export LANG LANGUAGE LC_ALL MUDHOME
 
 umask 007
 
-ulimit -n 1024
+ulimit -a 
+ulimit -n 2048
+ulimit -a 
 
 while [ true ]; do
 

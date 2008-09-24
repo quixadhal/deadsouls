@@ -33,7 +33,6 @@ mixed can_say_to_liv_str(object targ, string str) {
 }
 
 mixed can_say(mixed args...) {
-    //tc("hrm. args: "+identify(args),"yellow");
     return 1;
 }
 
@@ -41,12 +40,10 @@ mixed can_say_str(string str) {
     string lang = (string)this_player()->GetDefaultLanguage() ||
     (string)this_player()->GetNativeLanguage();
     if( !str ) return 0;
-    //tc("can_say_str(\""+str+"\")");
     return (mixed)this_player()->CanSpeak(0, TALK_LOCAL, str, lang);
 }
 
 mixed do_say(mixed args...){
-    //tc("hrm. args: "+identify(args),"red");
     write("Say what?");
     return "Say whut?";
 }

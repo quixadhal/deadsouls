@@ -35,8 +35,13 @@ mixed do_resurrect_obj(object ob) {
         write("You cannot resurrect a player that isn't logged on.");
         return 1;
     }
-    if(playerob && !playerob->GetGhost()) {
+    if((playerob && !playerob->GetGhost()) || living(ob)) {
         write("You can't resurrect the living.");
+        return 1;
+    }
+
+    if(base_name(ob) != LIB_CORPSE){
+        write("You can only resurrect flesh-based creatures.");
         return 1;
     }
 

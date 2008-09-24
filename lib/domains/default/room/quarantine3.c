@@ -9,6 +9,9 @@ static void create() {
     SetAmbientLight(30);
     SetShort("Disease Lab Annex");
     SetLong("This room is designed for testing the effects and transmissibility of disease. Another testing area is west.");
+    SetExits( ([ 
+        "west" : "/domains/default/room/quarantine2",
+      ]) );
     SetInventory(([
         "/domains/default/npc/quarantine/nigel" : 1,
         "/domains/default/npc/quarantine/graham" : 1,
@@ -22,9 +25,6 @@ static void create() {
         "/domains/default/npc/quarantine/edmund" : 1,
         "/domains/default/npc/quarantine/wallace" : 1,
         "/domains/default/npc/quarantine/lester" : 1,
-      ]));
-    SetExits(([
-        "west" : "/domains/default/room/quarantine2",
       ]));
     SetNoClean(1);
     AddItem(new("/domains/default/obj/reset_button"));

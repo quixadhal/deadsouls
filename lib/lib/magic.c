@@ -82,8 +82,7 @@ varargs mixed eventPrepareCast(string verb, mixed array args...){
     mixed tmp;
     int type;
     if(!spell) spell = SPELLS_D->GetPrayer(verb = lower_case(verb));
-
-    tmp = spell->eventParse(this_object(), args...);
+    if(spell) tmp = spell->eventParse(this_object(), args...);
     if( !arrayp(tmp) ){
         if( stringp(tmp) ){
             eventPrint(tmp);

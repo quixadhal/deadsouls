@@ -44,7 +44,7 @@
 "darklock","confutatis","maledictis","flammis","acribus",\
 "addictis","XYNTA","durian","adzuki",\
 "ХУИТА",\
-"SPLIT YOUR LUNGS WITH BLOOD AND THUNDER",\
+"sihulm","koyaanisqatsi","tanstaafl",\
 "ar","ot","ti","fi","na",\
 "ar","ot","ti","fi","na",\
 "ar","ot","ti","fi","na",\
@@ -67,6 +67,9 @@
 "ig","ig","ig","ig","ig","ig",\
 "kii-oto","kii-oto","kii-oto","kii-oto","kii-oto",\
 "kii-ateh","kii-ateh","kii-ateh","kii-ateh","kii-ateh",\
+"galanga","wanga","ivlivs","kokoh-chula","birichoto",\
+"bukkakke","santorum","habeebit","yotsuba", "obama",\
+"mccain","biden","palin",\
 })
 
 string translate(string str, int prof) {

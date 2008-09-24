@@ -6,12 +6,7 @@ static void create() {
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("the training area");
-    SetLong("You are in a large room with "+
-      "a very high ceiling, mirrored walls, and a "+
-      "hardwood floor. This area is designed for skills "+
-      "training, though at the moment no workshops are "+
-      "scheduled. The rest of the Adventurers' Guild is "+
-      "east of here.");
+    SetLong("You are in a large room with a very high ceiling, mirrored walls, and a hardwood floor. This area is designed for skills training, though at the moment no workshops are scheduled. The rest of the Adventurers' Guild is downstairs.");
     SetItems( ([
         ({"wall","walls"}) : "The walls have mirrors set into them.",
         ({"mirror","mirrors"}) : "Peekaboo!",
@@ -21,7 +16,7 @@ static void create() {
         "provides plenty of headroom." 
       ]) );
     SetExits( ([ 
-        "east" : "/domains/town/room/adv_guild",
+        "down" : "/domains/town/room/adv_guild",
       ]) );
     SetInventory(([
         "/domains/town/npc/radagast" : ({60, 1}),

@@ -156,17 +156,23 @@ void eventDescribeEnvironment(int brief){
             if(this_player()) mount = this_player()->GetProperty("mount");
 
             obs = filter(all_inventory(env), function(object ob){
-                  if( (int)ob->GetInvis(this_object()) ) return 0;
+                  if( (int)ob->GetInvis(this_object()) &&
+                    !this_object()->GetWizVision() ) return 0;
                   if( living(ob) ) return 1;
                   if( (int)ob->isFreshCorpse() )
                       return 1;
                 }) - ({ this_object(), mount });
-              maxi = sizeof(shorts = map(obs, (: (string)$1->GetHealthShort() :)));
+              maxi = sizeof(shorts = map(obs, (: 
+                    ($1->GetInvis() ? "(invisible) " : "") + 
+                    (string)$1->GetHealthShort() :)));
               foreach(object liv in obs){
                   int envtype = environment(liv)->GetMedium();
                   string s = (string)liv->GetHealthShort();
                   int pos = (int)liv->GetPosition();
                   if( !s ) continue;
+                  if(liv->GetInvis() && this_object()->GetWizVision()){
+                      s = "(invis) " + s;
+                  }
                   if(liv->GetProperty("furniture")){
                       s += "BEGIN"+random(999999)+"END";
                   }
@@ -300,7 +306,9 @@ void eventDescribeEnvironment(int brief){
                 string mount_inv = "Nothing";
                 string *mount_stuffs = ({});
                 object *mount_obs = filter( all_inventory(transport),
-                  (: !($1->GetInvis()) && !($1 == this_player()) :));
+                  (: ( (($1->GetInvis()) && this_object()->GetWizVision() )
+                      || !($1->GetInvis()) ) 
+                    && !($1 == this_player()) :));
                 if(sizeof(mount_obs)){
                     foreach(object element in mount_obs){
                         mount_stuffs += ({ element->GetShort() });

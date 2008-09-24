@@ -10,6 +10,10 @@ varargs int cmd(string str){
     string s1, s2;
     string file = "/open/typecheck.c";
     mixed ret, tmpret;
+    if(!str){
+        write("Try: help types");
+        return 1;
+    }
     i = sscanf(str,"%s %s", s1, s2);
     if(i != 2 || member_array(s1, types) == -1){
         write("Try: help types");

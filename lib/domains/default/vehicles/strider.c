@@ -22,7 +22,7 @@ static void create() {
     SetLong("This is a Columbu class scout vehicle consisting of "
       "a human-sized transparent ball turret mounted on two large birdlike legs "
       "with two robotic arms on each side for manipulation and combat. "
-      "Though technically a \"scout\" class mech, it is three meters tall "
+      "Though technically a \"scout\" class mech, it is two meters tall "
       "and ballistic plated, and not to be trifled "
       "with by meat-based creatures.");
     SetVehicleInterior("This is the interior of a highly advanced military mechanized "

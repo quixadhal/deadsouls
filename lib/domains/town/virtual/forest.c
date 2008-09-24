@@ -64,17 +64,16 @@ varargs static void create(int x, int y) {
     if(x == 24 && y == 1){
         RemoveExit("south");
         AddExit("south","/domains/town/room/forest_path1");
+        RemoveExit("southeast");
+        RemoveExit("southwest");
+
     }
     else if(y == 1){
         RemoveExit("south");
         RemoveExit("southeast");
         RemoveExit("southwest");
     }
-    if(x == 24 && y == 25){
-        RemoveExit("north");
-        AddExit("north","/domains/town/room/cave_entrance");
-    }
-    else if(y == 25){
+    if(y == 25){
         RemoveExit("north");
         RemoveExit("northeast");
         RemoveExit("northwest");
@@ -89,8 +88,6 @@ varargs static void create(int x, int y) {
         RemoveExit("northeast");
         RemoveExit("southeast");
     }
-
-
 }
 
 varargs void SetLongAndItems(int x, int y, int z) {
@@ -141,7 +138,9 @@ varargs void SetLongAndItems(int x, int y, int z) {
           "This is a rather scary looking opening in the cliff wall, leading "
           "north into the ground.");
         AddEnter("cave","/domains/town/room/cave_entrance");
-        SetObviousExits("n, s, e, w, se, sw, enter cave");
+        RemoveExit("north");
+        RemoveExit("northeast");
+        RemoveExit("northwest");
     }
 
     if(x == 24 && y == 1) {

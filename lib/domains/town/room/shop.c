@@ -7,23 +7,20 @@ static void create() {
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("The General Store");
-    SetLong(" You are in the local general store. You can "
-      "buy or sell items here. A sign on the wall hangs here, "
-      "explaining how things work. Try \"read sign\". East "
-      "Village Road is south of here. The back storeroom is north.");
+    SetLong("This is the local general store. You can buy or sell items here. A sign on the wall hangs here, explaining how things work. Try 'read sign'. East Village Road is south of here. The storeroom is below.");
     SetItems(([
         ({"store","shop","place"}) : "This is the local store.",
         ({ "sign" ,"sign on the wall" }): "A sign on the wall, meant for reading.",
       ]));
+    SetExits( ([
+        "south" : "/domains/town/room/vill_road2",
+        "down" : "/domains/town/room/shop2.c",
+      ]) );
     SetInventory(([
         "/domains/town/obj/bbucket" : 1,
         "/domains/town/npc/otik" : ({60, 1}),
       ]));
     SetRead("sign", (: read_sign :) );
-    SetExits( ([
-        "south" : "/domains/town/room/vill_road2",
-        "north" : "/domains/town/room/shop2",
-      ]) );
 }
 
 int read_sign(){

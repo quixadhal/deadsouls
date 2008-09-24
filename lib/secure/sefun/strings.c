@@ -502,8 +502,11 @@ string append_line(string file, mixed params, string repl){
 }
 
 string last_string_element(string str, string delimiter){
+    mixed ret;
     if(!str || !delimiter || !grepp(str,delimiter)) return "";
-    return explode(str,delimiter)[<1..][0];
+    ret = explode(str,delimiter);
+    if(sizeof(ret)) return ret[<1..][0];
+    return "";
 }
 
 varargs string first_string_element(string str, string delimiter, int stripfirst){    
@@ -813,3 +816,5 @@ int query_common_ascii(string str){
     if(sizeof(ret_arr) == sizeof(check_arr)) return 1;
     return 0;
 }
+
+

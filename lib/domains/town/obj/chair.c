@@ -18,7 +18,7 @@ static void create() {
 }
 
 void init(){
-    ::init();
+    chair::init();
 }
 
 varargs mixed eventSwivel(object who){

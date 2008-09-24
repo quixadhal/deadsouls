@@ -6,9 +6,9 @@ inherit LIB_SMELL;
 
 static void create() {
     bed::create();
-    SetKeyName("orcish altar");
+    SetKeyName("altar");
     SetId( ({ "altar","platform","pedestal" }) );
-    SetAdjectives( ({ "simple","stone" }) );
+    SetAdjectives( ({ "orcish", "simple","stone" }) );
     SetShort("a simple stone altar, dripping blood");
     SetLong("This is a ceremonial orcish  altar, where "+
       "holy offerings and sacrifices are made. It is "+

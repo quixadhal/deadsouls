@@ -13,11 +13,7 @@ static void create() {
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("Creators' Hall West Wing");
-    SetLong("This is the west wing of the Creators' Hall."+
-      (!(ds) ?  " North is the telnet room where you can connect "+
-        "to the Dead Souls test and development mud." : "")+
-      " South is the domains room, where you can conveniently visit "+
-      " featured domains or realms.");
+    SetLong("This is the upstairs annex of the Creators' Hall. East is the telnet room where you can connect to the Dead Souls test and development mud. South is the domains room, where you can conveniently visit featured domains or realms. The main hall is below.");
     SetProperty("no attack", 1);
     SetProperty("nopeer",1);
     ob = new("/lib/bboard");
@@ -31,11 +27,11 @@ static void create() {
         ({"sign"}) : "A sign you can read.",
       ]) );
     SetExits( ([
-        "east" : "/domains/default/room/wiz_hall",
-        "south" : "/domains/default/room/domains_room.c",
+        "south" : "/domains/default/room/domains_room",
+        "down" : "/domains/default/room/wiz_hall",
+        "east" : "/domains/default/room/telnet_room.c",
       ]) );
     if(!ds){
-        AddExit("north", "/domains/default/room/telnet_room");
     }
     SetInventory(([
       ]));

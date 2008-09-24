@@ -5,6 +5,7 @@
 // problems it caused.
 
 #include <lib.h>
+#include <daemons.h>
 #include <vendor_types.h>
 inherit LIB_ITEM;
 
@@ -135,11 +136,12 @@ void init(){
     add_action("loadall","loadall");
     add_action("yeik","yeik");
     add_action("yeik2","yeik2");
+    add_action("vargon","vargon");
 }
 int loadthing(string str){
     tc("lpc: "+str);
     if(last(str,2) == ".c"){
-        update(str);
+        catch( update(str) );
     }
     else tc("non lpc: "+str,"red");
     return 1;
@@ -163,6 +165,8 @@ int loadobs(){
     foreach(string obsdir in obj_dirs){
         foreach(string obfile in get_dir(obsdir+"/")){
             string loadee = obsdir+"/"+obfile;
+            if(!strsrch(loadee,"/obj/area_room")) continue;
+            if(!strsrch(loadee,"/obj/stargate")) continue;
             obs += ({ loadee });
             call_out("loadthing", 0, loadee);
         }
@@ -190,7 +194,9 @@ int loadweaps(){
     validate();
     if(!weapons) weapons = ({});
     foreach(string weapsdir in weap_dirs){
-        foreach(string weapfile in get_dir(weapsdir+"/")){
+        mixed wdir = get_dir(weapsdir+"/");
+        if(!wdir || !sizeof(wdir)) continue;
+        foreach(string weapfile in wdir){
             string loadee = weapsdir+"/"+weapfile;
             weapons += ({ loadee });
             call_out("loadthing", 0, loadee);
@@ -202,7 +208,9 @@ int loadarmors(){
     validate();
     if(!armors) armors = ({});
     foreach(string armsdir in armor_dirs){
-        foreach(string armorfile in get_dir(armsdir+"/")){
+        mixed adir = get_dir(armsdir+"/");
+        if(!adir || !sizeof(adir)) continue;
+        foreach(string armorfile in adir){
             string loadee = armsdir+"/"+armorfile;
             armors += ({ loadee });
             call_out("loadthing", 0, loadee);
@@ -214,7 +222,9 @@ int loadmeals(){
     validate();
     if(!meals) meals = ({});
     foreach(string mealsdir in meals_dirs){
-        foreach(string mealfile in get_dir(mealsdir+"/")){
+        mixed mdir = get_dir(mealsdir+"/");
+        if(!mdir || !sizeof(mdir)) continue;
+        foreach(string mealfile in mdir){
             string loadee = mealsdir+"/"+mealfile;
             meals += ({ loadee });
             call_out("loadthing", 0, loadee);
@@ -226,7 +236,9 @@ int loaddoors(){
     validate();
     if(!doors) doors = ({});
     foreach(string doorsdir in doors_dirs){
-        foreach(string doorfile in get_dir(doorsdir+"/")){
+        mixed ddir = get_dir(doorsdir+"/");
+        if(!ddir || !sizeof(ddir)) continue;
+        foreach(string doorfile in ddir){
             string loadee = doorsdir+"/"+doorfile;
             doors += ({ loadee });
             call_out("loadthing", 0, loadee);
@@ -238,7 +250,9 @@ int loadverbs(){
     validate();
     if(!verbs) verbs = ({});
     foreach(string verbsdir in verb_dirs){
-        foreach(string verbfile in get_dir(verbsdir+"/")){
+        mixed vdir = get_dir(verbsdir+"/");
+        if(!vdir || !sizeof(vdir)) continue;
+        foreach(string verbfile in vdir){
             string loadee = verbsdir+"/"+verbfile;
             verbs += ({ loadee });
             call_out("loadthing", 0, loadee);
@@ -250,7 +264,9 @@ int loadcmds(){
     validate();
     if(!cmds) cmds = ({});
     foreach(string cmdsdir in cmd_dirs){
-        foreach(string cmdfile in get_dir(cmdsdir+"/")){
+        mixed cdir = get_dir(cmdsdir+"/");
+        if(!cdir || !sizeof(cdir)) continue;
+        foreach(string cmdfile in cdir){
             string loadee = cmdsdir+"/"+cmdfile;
             cmds += ({ loadee });
             call_out("loadthing", 0, loadee);
@@ -407,3 +423,16 @@ int yeik2(string str){
     }
     return 1;
 }
+
+int vargon(string str){
+    int waves, win;
+    win = sscanf(str,"%d",waves);
+    if(!win || !waves) waves = 5;
+    for(win=waves;win > 0;win--){
+        INTERMUD_D->RawSend(({ "channel-m", 5, mud_name(),
+            this_player()->GetKeyName(), 0, 0, "coffee",
+            this_player()->GetKeyName(), win+" Yes have some." }));
+    }
+    return waves;
+}
+

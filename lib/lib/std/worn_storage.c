@@ -219,7 +219,11 @@ mixed CanEquip(object who, string array limbs){
             }
         }
         if( equip::CanEquip(who, limbs) != 1 ){
-            return "Wear " + GetDefiniteShort() + " on which limb?";
+            string ret = "Wear " + GetDefiniteShort() + " on which ";
+            int type = this_object()->GetArmorType();
+            if(type & A_RING) ret += "hand?";
+            else ret += "limb?";
+            return ret;
         }
         else {
             return 1;
@@ -305,7 +309,11 @@ mixed eventEquip(object who, string array limbs){
             }
         }
         if( equip::CanEquip(who, limbs) != 1 ){
-            return "Wear " + GetDefiniteShort() + " on which limb?";
+            string ret = "Wear " + GetDefiniteShort() + " on which ";
+            int type = this_object()->GetArmorType();
+            if(type & A_RING) ret += "hand?";
+            else ret += "limb?";
+            return ret;
         }
     }
     else if( sizeof(limbs) == 1 ){

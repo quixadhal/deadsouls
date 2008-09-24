@@ -12,7 +12,7 @@
  style="font-weight: bold;">Dead Souls Admin FAQ</span></big><br>
 <br>
 Written by Cratylus @ Dead Souls, October 2005<br>
-Updated June 2008<br>
+Updated August 2008<br>
 <span style="font-weight: bold; text-decoration: underline;"><br>
 </span>Note: commands are displayed in boldface, like this: <span
  style="font-weight: bold;">ls -a</span><span
@@ -21,7 +21,7 @@ Updated June 2008<br>
 What's this FAQ about?</span><br>
 <br>
 The point of this document is to orient a new admin in<br>
-Dead Souls 2. Starting a MUD with a lib thatn is completely new to<br>
+Dead Souls 2. Starting a MUD with a lib that is completely new to<br>
 you can be confusing and discouraging. Hopefully this FAQ will<br>
 make the experience less difficult.<br>
 <br>
@@ -408,7 +408,16 @@ I am strongly opposed to the use of intermud</a><br>
  style="font-family: courier new,courier,monospace;"><a href="#138">138
 I hate one of the sample domains and I want it GONE</a><br>
 <br>
-<a href="#139">139 How do I make help files?</a></big><br>
+<a href="#139">139 How do I make help files?</a><br>
+<br>
+<a href="#140">140 How many players will DS handle simultaneously?<br>
+</a><br>
+<a href="#141">141 I heard that Dead Souls for Windows has limitations<br>
+</a><br>
+<a href="#142">142 What are the CPU/RAM/diskspace requirements for Dead
+Souls?</a><br>
+<br>
+<a href="#143">143 Who's awesome?</a></big><br>
 <br>
 <br>
 <big style="font-family: courier new,courier,monospace;"></big><big
@@ -596,7 +605,7 @@ to be a matter of historical, and not practical, relevance.<br>
 The ds channel is for Dead Souls-related conversation. Sometimes<br>
 the topic drifts, but "random chat" should be avoided<br>
 there. Use dchat for off-topic chat. If you don't already<br>
-hace dchat enabled, type: <span style="font-weight: bold;">call
+have dchat enabled, type: <span style="font-weight: bold;">call
 me-&gt;AddChannel("dchat")</span></big><big
  style="font-family: courier new,courier,monospace;"><br>
 <br>
@@ -968,7 +977,7 @@ remove all stock rooms from player view</span><br>
 my friend an admin?</span><br>
 <br>
 <span style="font-weight: bold;"><br>
-</span>To make a creator named Xyzzy an assistant admin, ype:<span
+</span>To make a creator named Xyzzy an assistant admin, type:<span
  style="font-weight: bold;"><br>
 <br>
 groupmod -a ASSIST xyzzy <br>
@@ -2973,7 +2982,7 @@ security model.<br>
 <span style="font-weight: bold;">read.cfg</span>:<br>
 1) If a file/directory is not in this file, anyone can read it.<br>
 2) If a file/directory is in this file, only the specified
-groups/prople can read it.<br>
+groups/people can read it.<br>
 <br>
 <span style="font-weight: bold;">write.cfg</span>:<br>
 1) If a file/directory is not in this file, only admins can write to it.<br>
@@ -3475,9 +3484,9 @@ they're there for.<br>
 &nbsp;&nbsp;&nbsp; Eventually, if all your questions are answered by<br>
 existing documentation, you might find that you get fewer<br>
 and fewer responses from people, as they start <a
- href="http://dead-souls.net/code/ds2.8.1/lib/cmds/players/earmuff.c">tuning<br>
+ href="http://dead-souls.net/code/ds2.8.4/lib/cmds/players/earmuff.c">tuning<br>
 you out</a>. Remember that most people refer to the docs:&nbsp; <br>
-the <a href="http://dead-souls.net/code/ds2.8.1/lib/doc/">help and
+the <a href="http://dead-souls.net/code/ds2.8.4/lib/doc/">help and
 manual files</a>, command help messages,<br>
 as well as the <a href="http://dead-souls.net/ds-admin-faq.html">admin</a>,
 <a href="http://dead-souls.net/ds-creator-faq.html">creator</a>, <a
@@ -4261,7 +4270,7 @@ Guide</a>.<br>
 <br>
 In order to make the Diku-style "skill", all you really need to <br>
 do is write a new command. For example, take a look at <a
- href="http://dead-souls.net/code/ds2.8.1/lib/cmds/players/flee.c">/cmds/players/flee.c</a><br>
+ href="http://dead-souls.net/code/ds2.8.4/lib/cmds/players/flee.c">/cmds/players/flee.c</a><br>
 <br>
 That's what a Dead Souls command looks like. Pretty straightforward,<br>
 but you'll need to become a little familiar with LPC to make your<br>
@@ -4830,7 +4839,7 @@ If you want to give it a whirl:<br>
 <br>
 (protip: It doesn't have to be port 8001)<br>
 <br>
-And then use your favorite web browser to go to your<br>
+And then use your web browser to go to your<br>
 mud's ip with the port you specified...for example:<br>
 <br>
 <a href="http://alcatraz.wolfpaw.net:8001/cgi/login.html">http://alcatraz.wolfpaw.net:8001/cgi/login.html</a><br>
@@ -4838,6 +4847,13 @@ mud's ip with the port you specified...for example:<br>
 Note that the alcatraz url is not your mud, so don't<br>
 bother trying to log in. That's just an example of<br>
 what the URL and the page looks like.<br>
+<br>
+While creweb in theory is browser-agnostic, the sad<br>
+truth is that Internet Explorer insists on doing weird<br>
+new things I can't keep up with, and it's easier to support<br>
+Firefox which everyone has than Explorer which is<br>
+Windows-specific. So if you run into problems, please<br>
+try using Firefox instead. <br>
 <br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"><a
@@ -5211,8 +5227,211 @@ be called /doc/help/players/karate<br>
 Once you've made the helpfile and put it where it goes, <br>
 update the help daemon and you should be all set:<br>
 <br>
-<span style="font-weight: bold;">update /daemon/help</span><br>
+<span style="font-weight: bold;">update /daemon/help<br>
 <br>
+<br>
+</span></big><big style="font-family: courier new,courier,monospace;"><span
+ style="font-weight: bold; text-decoration: underline;"><a name="140"></a>How
+many players will DS handle simultaneously?<br>
+</span><br style="text-decoration: underline;">
+<span style="text-decoration: underline;">General answer</span>:<br>
+As of Dead Souls 2.8.4, Dead Souls on a unix host<br>
+running a modern OS on modern hardware can handle<br>
+a couple hundred players with no software lag.<br>
+<br>
+<span style="text-decoration: underline;">Detailed answer</span>:<br>
+I have run tests on Linux and Solaris, firing playerbots<br>
+into a test mud. These bots walk around, pick fights,<br>
+get stuff, drop stuff, examine things, etc. They are<br>
+coded to be as unidle as an extremely busy player...<br>
+typically with less than 2 seconds between commands,<br>
+all the time.<br>
+<br>
+What I found is that with the default settings, a<br>
+DS mud on a unix host with a 2.5GHz proc doesn't<br>
+hit noticeable lag until you're roughly over 200<br>
+<span style="font-style: italic;">very active</span> players. At around
+250 V.A.P. you notice<br>
+a little lag, which doesn't change much until about<br>
+350 V.A.P., at which point you'll get occasional,<br>
+definitely noticeable lag.<br>
+<br>
+It doesn't get into "bad lag" territory until around<br>
+400 V.A.P. Above 500 you start getting into annoying<br>
+lag territory, and above 600 or 700 it's "not fun".<br>
+<br>
+Note, however, that <span style="font-style: italic;">real</span>
+players are rarely as intensely<br>
+busy as these bots. If you factor in the fact that<br>
+about half your players are idle about half the time,<br>
+the figure for "maximum players with no lag" goes<br>
+up pretty quickly. You can also optimize your mud<br>
+for high connection loads by disabling some of the<br>
+resource-intensive parsing defaults.<br>
+<br>
+So, in theory, a DS mud on unix running on cutting-edge <br>
+hardware and with normal players that are idle about <br>
+half the time and with performance optimized could probably<br>
+handle some 400 or 500 players simultaneously with<br>
+little to no noticeable software lag. I haven't<br>
+tested this, though, since I can't afford cutting<br>
+edge hardware.<br>
+<br>
+See the FAQ entry below for DS on Windows.<br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
+</big><big style="font-family: courier new,courier,monospace;"><span
+ style="font-weight: bold; text-decoration: underline;"><a name="141"></a>I
+heard that Dead Souls for Windows has limitations</span><br>
+<br>
+Yep. They're not on purpose though, and it isn't the<br>
+fault of Bill Gates or whatever. Basically, when<br>
+the driver DS uses was in its early development, <br>
+Windows was not a great target for mud development.<br>
+It wouldn't have been *crazy* to make a mud that<br>
+ran on, say, Windows NT 3.51, but it would be such a<br>
+small audience that that the focus was on a driver<br>
+that ran well on unix. <br>
+<br>
+MudOS therefore has had for a very long time a<br>
+major bias toward code that runs well on unix, and<br>
+this has been so for well over a decade. FluffOS,<br>
+derived from MudOS, shares this legacy.<br>
+<br>
+Nowadays, Windows systems are quite robust and<br>
+perfectly capable of handling even enterprise-level<br>
+server apps. Today is seems *weird* that it's so hard <br>
+to find a mud server that runs natively on Windows.<br>
+To me it seemed natural to try to spread the goodness<br>
+that is Dead Souls by making it easy to run on Windows.<br>
+You will now find in the standard Dead Souls download<br>
+an executable for Windows...and it's actually *easier*<br>
+to install and run DS on Windows now than on unix.<br>
+Go figure.<br>
+<br>
+However, the executable is compiled from unix source<br>
+that heavily favors the unix way of doing business,<br>
+and this is sadly not always compatible with Windows.<br>
+As a result, Dead Souls on Windows has the following<br>
+limitations:<br>
+<br>
+* DS on Windows will not accept more than 64 simultaneous <br>
+network connections, meaning you are limited in the number <br>
+of players you can have logged on at once.<br>
+<br>
+* DS file operations are dramatically slower on Windows.<br>
+This causes performance in general to be weaker in <br>
+comparison to the unix version, and it is the reason<br>
+that some file-intensive operations, such as file<br>
+indexing, are disabled in the Windows version.<br>
+<br>
+* DS CPU time is measured in a way that Windows doesn't<br>
+understand, meaning that operations that under unix DS would<br>
+get cancelled for being too CPU-greedy are allowed to<br>
+run indefinitely in Windows DS. This means it is trivial<br>
+to "lock up" a DS Windows mud by accident, forcing you<br>
+to kill the process and restart.<br>
+<br>
+There are probably a few other limitations, but these<br>
+three illustrate why Dead Souls on Windows is meant to be <br>
+used for testing, development, and evaluating, not for a <br>
+production mud. Your production DS mud (aka mud that is open<br>
+for players and has players logged on) should run on a <br>
+normal unix/Linux host.<br>
+<br>
+Note that if you use Cygwin to compile your own Windows<br>
+executable, you *might* get around some of this stuff...<br>
+but I don't support Cygwin so I can't vouch for it.<br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
+</big><big style="font-family: courier new,courier,monospace;"><span
+ style="font-weight: bold; text-decoration: underline;"><a name="142"></a>What
+are the CPU/RAM/diskspace requirements for Dead Souls?</span><br>
+<br>
+I usually get this question because someone wants<br>
+to get server hosting somewhere and they want to<br>
+know which "service package" to subscribe to. <br>
+Unfortunately, the answer depends on all sorts of<br>
+things I can't know, such as the speed of the<br>
+machine, how busy your mud will be, etc. Rather<br>
+than try to answer the question, what I can do<br>
+is simply tell you what my usage is.<br>
+<br>
+<span style="text-decoration: underline;">Dead Souls on Linux 3GHz,
+uptime 2w, currently on 8 players:</span><br>
+&nbsp; PID USER&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PR&nbsp; NI&nbsp;
+VIRT&nbsp; RES&nbsp; SHR S %CPU %MEM&nbsp;&nbsp;&nbsp; TIME+&nbsp;
+COMMAND<br>
+&nbsp; XXX XXX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9&nbsp;&nbsp; 0
+11976&nbsp; 11m 1216 S&nbsp; 0.0&nbsp; 0.6 152:48.51 fluffos<br>
+<br>
+So a pretty idle DS mud takes little CPU and about<br>
+11 megs ram, when it's mostly just a few people sitting<br>
+around testing a few objects and chatting on intermud.<br>
+<br>
+Now for a heavy test/dev mud...<br>
+<br style="text-decoration: underline;">
+<span style="text-decoration: underline;">Dead Souls on Solaris 2.5GHz,
+uptime 2d, currently on 130 players:</span><br>
+&nbsp;&nbsp; PID USERNAME LWP PRI NICE&nbsp; SIZE&nbsp;&nbsp; RES
+STATE&nbsp;&nbsp;&nbsp; TIME&nbsp;&nbsp;&nbsp; CPU COMMAND<br>
+&nbsp;&nbsp; XXX XXX&nbsp;&nbsp;&nbsp; 1&nbsp; 59&nbsp;&nbsp;&nbsp;
+0&nbsp;&nbsp; 30M&nbsp;&nbsp; 28M sleep&nbsp;&nbsp;&nbsp; 2:09&nbsp;
+3.86% driver<br>
+<br>
+In this particular case I think the 30M is probably<br>
+misleading. These 130 players do wander around and<br>
+load rooms and stuff, and I've seen the usage go<br>
+up past 50 megs after a while. Is 50 megs for 130<br>
+players a lot? I don't know. How much ram is your<br>
+browser using right now? <br>
+<br>
+The CPU percentage is also misleading, because "top"<br>
+on multiproc machines tends to divide that percent by<br>
+the number of cores, so in this case the CPU utilization<br>
+is actually more like 7.7%. Is that a lot for 130 very<br>
+active players? <span style="font-style: italic;">I</span> don't think
+so, but that's up to you<br>
+to decide.<br>
+<br>
+In any case, those are the two data points I can provide to<br>
+you as a guide of how to shop for your hosting. If you<br>
+find data that contradicts this, or is more useful, feel<br>
+free to post it on <a href="http://lpmuds.net/forum/">the forum</a>.<br>
+<br>
+As for diskspace, the download package itself is about 6M,<br>
+and uncompressed it is:<br>
+<br>
+$ du -ksh ds2.8.4<br>
+28M&nbsp;&nbsp;&nbsp;&nbsp; ds2.8.4<br>
+<br>
+However, remember that an LP mud is all about files in<br>
+LPC, which is plaintext and they'll take up a bunch of<br>
+room as you go along. And also remember you'll be making<br>
+backups, and possibly logging things, etc. <br>
+<br>
+My test mud takes up about 110M, and if you're going<br>
+to be hiring coders and such, I'd strongly advise going<br>
+above 200M. <br>
+<br>
+For just goofing around and testing, you could probably <br>
+keep it under 100M, but you need to keep an eye on<br>
+your usage.<br>
+<br>
+<span style="text-decoration: underline;">Summary</span>: Unless you
+know for a fact you will immediately<br>
+have hundreds of players, a low-tier plan will probably<br>
+suit you to begin with. Just don't lock yourself in to<br>
+a plan until you've had a chance to determine for yourself<br>
+what your needs are.<br>
+<br>
+<br>
+</big><big style="font-family: courier new,courier,monospace;"><span
+ style="font-weight: bold; text-decoration: underline;"><a name="143"></a>Who's
+awesome?</span><br>
+<br>
+I'm awesome.<br>
+</big><big style="font-family: courier new,courier,monospace;"><br>
 </big><br style="font-family: courier new,courier,monospace;">
 <big style="font-family: courier new,courier,monospace;">-
 Cratylus</big><br style="font-family: courier new,courier,monospace;">

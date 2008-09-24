@@ -32,5 +32,7 @@ mixed cmd(string args) {
 void help() {
     message("help", "Syntax: automap [on | off]\n\n"
       "If enabled, a simple map of your surroundings is displayed "
-      "when your environment is described to you.\n\n", this_player());
+      "when your environment is described to you.\nSee also: "
+      "env, terminal, brief, mute, gag.",
+      this_player());
 }

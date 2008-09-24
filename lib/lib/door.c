@@ -37,7 +37,7 @@ string *GetSides(){
 static void create(){
     daemon::create();
     parse_init();
-    SetNoClean(1);
+    SetNoClean(0);
     SetLockStrength(50);
     Sides = ([]);
 }
@@ -56,8 +56,8 @@ static void create(){
 mixed CanLock(object who, string foo){
     object room;
     if( !(room = environment(who)) ) return 0;
-    foreach(string side, class door_side val in Sides){
-        if( member_array(room, val->Rooms) != -1 ){
+    foreach(string side, mapping val in Sides){
+        if( member_array(room, val["Rooms"]) != -1 ){
             if( !GetLockable(side) ) return 0;
             else return seal::CanLock(who);
         }
@@ -79,8 +79,8 @@ mixed CanUnlock(object who){
     object room;
 
     if( !(room = environment(who)) ) return 0;
-    foreach(string side, class door_side val in Sides){
-        if( member_array(room, val->Rooms) != -1 ){
+    foreach(string side, mapping val in Sides){
+        if( member_array(room, val["Rooms"]) != -1 ){
             if( !GetLockable(side) ) return 0;
             else return seal::CanUnlock(who);
         }
@@ -109,11 +109,11 @@ varargs mixed eventClose(object who){
         else room = environment(this_player());
         if(!who) whom = this_player();
         else whom = who;
-        foreach(string side, class door_side val in Sides){
-            if( member_array(environment(whom), val->Rooms) != -1 ) tmp = side;
+        foreach(string side, mapping val in Sides){
+            if( member_array(environment(whom), val["Rooms"]) != -1 ) tmp = side;
             if(who)
-                filter(val->Rooms, (: $1 && ($1 != $(room)):))->eventPrint(capitalize(GetShort(side)) + " closes.");
-            else (val->Rooms)->eventPrint(capitalize(GetShort(side)) + " closes.");
+                filter(val["Rooms"], (: $1 && ($1 != $(room)):))->eventPrint(capitalize(GetShort(side)) + " closes.");
+            else (val["Rooms"])->eventPrint(capitalize(GetShort(side)) + " closes.");
         }
         if(who){
             who->eventPrint("You close " + GetShort(tmp) + ".");
@@ -139,8 +139,8 @@ varargs mixed eventLock(object who, mixed key, mixed foo){
 
     room = environment(who);
 
-    foreach(string side, class door_side val in Sides){
-        if( member_array(room, val->Rooms) != -1 ){
+    foreach(string side, mapping val in Sides){
+        if( member_array(room, val["Rooms"]) != -1 ){
             string tmp;
 
             tmp = GetShort(side);
@@ -184,11 +184,11 @@ varargs int eventOpen(object who, object tool){
         else room = environment(this_player());
         if(!who) whom = this_player();
         else whom = who;
-        foreach(string side, class door_side val in Sides){
-            if( member_array(environment(whom), val->Rooms) != -1 ) tmp = side;
+        foreach(string side, mapping val in Sides){
+            if( member_array(environment(whom), val["Rooms"]) != -1 ) tmp = side;
             if(who)
-                filter(val->Rooms, (: $1 && ($1 != $(room)) :))->eventPrint(capitalize(GetShort(side)) + " opens.");
-            else (val->Rooms)->eventPrint(capitalize(GetShort(side)) + " opens.");
+                filter(val["Rooms"], (: $1 && ($1 != $(room)) :))->eventPrint(capitalize(GetShort(side)) + " opens.");
+            else (val["Rooms"])->eventPrint(capitalize(GetShort(side)) + " opens.");
         }
         if(who){
             who->eventPrint("You open " + GetShort(tmp) + ".");
@@ -212,10 +212,8 @@ varargs int eventOpen(object who, object tool){
 
 int eventRegisterSide(string side){
     string array id = GetId(side);
-
-    if( !Sides[side] ) return 0;
-    ((class door_side)Sides[side])->Rooms = 
-    distinct_array(((class door_side)Sides[side])->Rooms +
+    Sides[side]["Rooms"] = 
+    distinct_array(Sides[side]["Rooms"] +
       ({ previous_object() }));
     previous_object()->AddItem(id, (: GetLong($(side)) :));
     foreach(object ob in all_inventory(previous_object())){
@@ -223,7 +221,7 @@ int eventRegisterSide(string side){
             continue;
         }
         if( sizeof(id & ob->GetId()) ){
-            if(!ob->GetDoor()) ob->SetDoor(file_name(this_object()));
+            if(!ob->GetDoor()) ob->SetDoor(file_name(this_object()), side);
         }
     }
     return 1;
@@ -244,13 +242,14 @@ mixed eventUnlock(object who, object key){
     object room;
     string *key_id = key->GetId();
     room = environment(who);
-    foreach(string side, class door_side val in Sides){
-        if( member_array(room, val->Rooms) != -1 ){
+    foreach(string side, mapping val in Sides){
+        if( member_array(room, val["Rooms"]) != -1 ){
             string tmp;
 
             tmp = GetShort(side);
             if(!sizeof((key_id & (GetKeys(side) || ({}))))){
-                who->eventPrint("You fail to unlock " + tmp + ".");
+                who->eventPrint("You fail to unlock " + tmp +
+                  " with " + (string)key->GetShort()+".");
                 room->eventPrint((string)who->GetName() + " attempts to "
                   "unlock " + tmp + " with " +
                   (string)key->GetShort() + ", but fails.",who);
@@ -269,73 +268,74 @@ mixed eventUnlock(object who, object key){
 /*  **************  /lib/door.c data functions  **************  */
 
 void SetSide(string side, mapping mp){
-    class door_side new_side;
+    mapping new_side = ([ "Rooms" : ({}) ]);
 
-    new_side = new(class door_side);
-    new_side->Rooms = ({});
-    if( stringp(mp["id"]) ) new_side->Ids = ({ mp["id"] });
-    else new_side->Ids = mp["id"];
-    new_side->Short = mp["short"];
-    new_side->Long = mp["long"];
-    if( stringp(mp["keys"]) ) new_side->Keys = ({ mp["keys"] });
-    else new_side->Keys = mp["keys"];
-    new_side->Lockable = mp["lockable"];
+    if( stringp(mp["id"]) ) new_side["Ids"] = ({ mp["id"] });
+    else new_side["Ids"] = mp["id"];
+    new_side["Short"] = mp["short"];
+    new_side["Long"] = mp["long"];
+    if( stringp(mp["keys"]) ) new_side["Keys"] = ({ mp["keys"] });
+    else new_side["Keys"] = mp["keys"];
+    new_side["Lockable"] = mp["lockable"];
     Sides[side] = new_side;
 }
 
 mapping GetSide(string side){
     mapping RetMap = ([]);
     if(!sizeof(Sides[side])) return ([]);
-    RetMap["id"] = Sides[side]->Ids;
-    RetMap["short"] = Sides[side]->Short;
-    RetMap["long"] = Sides[side]->Long;
-    RetMap["keys"] = Sides[side]->Keys;
-    RetMap["lockable"] = Sides[side]->Lockable;
+    RetMap["id"] = Sides[side]["Ids"];
+    RetMap["short"] = Sides[side]["Short"];
+    RetMap["long"] = Sides[side]["Long"];
+    RetMap["keys"] = Sides[side]["Keys"];
+    RetMap["lockable"] = Sides[side]["Lockable"];
     return copy(RetMap);
 }
 
 int SetLockable(string side, int x){
     if( !Sides[side] )
-        Sides[side] = new(class door_side, Rooms : ({}));
-    return (((class door_side)Sides[side])->Lockable = x); 
+        Sides[side] = ([ "Rooms" : ({}) ]);
+    return Sides[side]["Lockable"] = x; 
 }
 
 int GetLockable(string side){
-    return ((class door_side)Sides[side])->Lockable;
+    return Sides[side]["Lockable"];
 }
 
 varargs string *SetId(string side, mixed *args...){ 
-    if( !Sides[side] ) Sides[side] = new(class door_side, Rooms : ({}));
-    ((class door_side)Sides[side])->Ids = ({});
+    if( !Sides[side] ) Sides[side] = ([ "Rooms" : ({}) ]);
+    Sides[side]["Ids"] = ({});
     foreach(mixed val in args){
-        if( stringp(val) ) ((class door_side)Sides[side])->Ids += ({ val });
-        else ((class door_side)Sides[side])->Ids += val;
+        if( stringp(val) ) Sides[side]["Ids"] += ({ val });
+        else Sides[side]["Ids"] += val;
     }
-    return ((class door_side)Sides[side])->Ids;
+    return Sides[side]["Ids"];
 }
 
-string *GetId(string side){ return ((class door_side)Sides[side])->Ids; }
+string *GetId(string side){ 
+    if(!Sides[side]) return ({});
+    return Sides[side]["Ids"];
+}
 
 mixed SetShort(string side, mixed short){
     if( !Sides[side] )
-        Sides[side] = new(class door_side, Rooms : ({}));
-    return (((class door_side)Sides[side])->Short = short);
+        Sides[side] = ([ "Rooms" : ({}) ]);
+    return Sides[side]["Short"] = short;
 }
 
 varargs string GetShort(string side){
     if( !side){ /* let's hack a side */
         object room;
-
+        side = previous_object()->GetDoorSide();
         if( !this_player() ) room = previous_object();
         else room = environment(this_player());
-        foreach(string s, class door_side val in Sides){
-            side = s;
-            if( member_array(room, val->Rooms) != -1 ) break;
+        foreach(string s, mapping val in Sides){
+            if(!side) side = s;
+            if( member_array(room, val["Rooms"]) != -1 ) break;
         }
     }
-    if( stringp(((class door_side)Sides[side])->Short) )
-        return ((class door_side)Sides[side])->Short;
-    else return (string)evaluate(((class door_side)Sides[side])->Short, side);
+    if( stringp(Sides[side]["Short"]) )
+        return Sides[side]["Short"];
+    else return (string)evaluate(Sides[side]["Short"], side);
 }
 
 string GetDefiniteShort(){
@@ -346,8 +346,8 @@ string GetDefiniteShort(){
 
 mixed SetLong(string side, mixed long){
     if( !Sides[side] )
-        Sides[side] = new(class door_side, Rooms : ({}));
-    return (((class door_side)Sides[side])->Long = long);
+        Sides[side] = ([ "Rooms" : ({}) ]);
+    return Sides[side]["Long"] = long;
 }
 
 string GetLong(string side){
@@ -355,24 +355,24 @@ string GetLong(string side){
 
     if( GetClosed() ) tmp = "It is closed.";
     else tmp = "It is open.";
-    if( stringp(((class door_side)Sides[side])->Long) )
-        return ((class door_side)Sides[side])->Long + "\n" + tmp;
-    else return (string)evaluate(((class door_side)Sides[side])->Long, side);
+    if( stringp(Sides[side]["Long"] ) )
+        return Sides[side]["Long"] + "\n" + tmp;
+    else return (string)evaluate(Sides[side]["Long"], side);
 }
 
 varargs string *SetKeys(string side, mixed *args...){
-    if( !Sides[side] ) Sides[side] = new(class door_side, Rooms : ({}));
-    ((class door_side)Sides[side])->Keys = ({});
+    if( !Sides[side] ) Sides[side] = ([ "Rooms" : ({}) ]);
+    Sides[side]["Keys"] = ({});
     foreach(mixed val in args){
-        if( stringp(val) ) ((class door_side)Sides[side])->Keys += ({ val });
-        else ((class door_side)Sides[side])->Keys += val;
+        if( stringp(val) ) Sides[side]["Keys"] += ({ val });
+        else Sides[side]["Keys"] += val;
     }
-    return ((class door_side)Sides[side])->Keys;
+    return Sides[side]["Keys"];
 }
 
-string *GetKeys(string side){ return ((class door_side)Sides[side])->Keys; }
+string *GetKeys(string side){ return Sides[side]["Keys"]; }
 
-object *GetRooms(string side){ return ((class door_side)Sides[side])->Rooms; }
+object *GetRooms(string side){ return Sides[side]["Rooms"]; }
 
 int get_closed(){ return GetClosed(); }
 
@@ -384,12 +384,12 @@ varargs mixed eventKnock(object who, mixed what){
         else room = environment(this_player());
         if(!who) whom = this_player();
         else whom = who;
-        foreach(string side, class door_side val in Sides){
-            if( member_array(environment(whom), val->Rooms) != -1 ) tmp = side;
+        foreach(string side, mixed val in Sides){
+            if( member_array(environment(whom), val["Rooms"]) != -1 ) tmp = side;
             if(who)
-                filter(val->Rooms, (: $1 && ($1 != $(room)):))->eventPrint(
+                filter(val["Rooms"], (: $1 && ($1 != $(room)):))->eventPrint(
                   "There is a knock at the "+remove_article(GetShort(side)) + ".");
-            else (val->Rooms)->eventPrint(
+            else (val["Rooms"])->eventPrint(
                   "There is a knock at the "+remove_article(GetShort(side)) + ".");
         }
         if(who){
@@ -410,12 +410,12 @@ varargs mixed eventScratch(object who, mixed what){
         else room = environment(this_player());
         if(!who) whom = this_player();
         else whom = who;
-        foreach(string side, class door_side val in Sides){
-            if( member_array(environment(whom), val->Rooms) != -1 ) tmp = side;
+        foreach(string side, mixed val in Sides){
+            if( member_array(environment(whom), val["Rooms"]) != -1 ) tmp = side;
             if(who)
-                filter(val->Rooms, (: $1 && ($1 != $(room)):))->eventPrint(
+                filter(val["Rooms"], (: $1 && ($1 != $(room)):))->eventPrint(
                   "There is a scratch at the "+remove_article(GetShort(side)) + ".");
-            else (val->Rooms)->eventPrint(
+            else (val["Rooms"])->eventPrint(
                   "There is a scratch at the "+remove_article(GetShort(side)) + ".");
         }
         if(who){

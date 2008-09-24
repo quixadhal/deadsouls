@@ -24,8 +24,9 @@ static mapping routers = ([
 static int irn_enabled = 1;
 static int irn_ping_enabled = 1;
 static mapping routers = ([
+  "*i4" : ([ "ip" : "204.209.44.3", "port" : 8080, "password" : IRN_PASSWORD4 ]),
   "*yatmim" : ([ "ip" : "149.152.218.102", "port" : 23, "password" : IRN_PASSWORD2 ]),
-  "*i4" : ([ "ip" : "204.209.44.3", "port" : 8080, "password" : IRN_PASSWORD3 ])
+  "*dalet" : ([ "ip" : "204.209.44.3", "port" : 8787, "password" : IRN_PASSWORD3 ])
 ]);
 #endif
 
@@ -104,6 +105,7 @@ void irn_checkstat(){
             if(irn_connections[key] && irn_connections[key]["fd"]){
                 map_delete(irn_sockets, irn_connections[key]["fd"]);
                 map_delete(irn_connections, key);
+                this_object()->irn_setup(0, key);
                 return;
             }
         }
@@ -150,10 +152,20 @@ void irn_checkstat(){
     }
 
     if((sizeof(routers) -1) != sizeof(irn_connections)){
+        string *stragglers = ({});
         trr("expected "+(sizeof(routers) -1)+" connections, "+identify(routers));
         trr("got: "+sizeof(irn_connections)+", "+identify(irn_connections));
-        trr("reloading irn.");
-        this_object()->irn_setup(setuptype);
+        foreach(string key, mixed val in routers){
+            if(key != my_name && 
+              member_array(key, keys(irn_connections)) == -1){
+                stragglers += ({ key });
+            }
+        }
+        trr("stragglers: "+identify(stragglers));
+        foreach(string key in stragglers){
+            trr("reload irn for "+key);
+            this_object()->irn_setup(0, key);
+        }
     }
 
 }
@@ -193,6 +205,7 @@ static int GoodPeer(int fd, mixed data){
 
 static int ValidatePeer(int fd, mixed data){
     string ip = explode(socket_address(fd)," ")[0];
+    mixed tmp;
     if(!irn_enabled) return 0;
     //trr("IRN: hit ValidatePeer","green");
     if(member_array(ip,ok_ips) == -1){
@@ -208,18 +221,15 @@ static int ValidatePeer(int fd, mixed data){
         trr("IRN: unknown peer");
         return 0;
     }
-#if 0
-    foreach(mixed key, mixed val in routers){
-        if(routers[key]["ip"] == ip && irn_connections[key]["fd"] != -1 &&
-          irn_connections[key]["fd"] != fd ){
-            trr("IRN: wrong fd for "+key+". I got "+fd+" but expected "+ irn_connections[key]["fd"]);
-            trr("Here is the entire element: "+identify(irn_connections[key]));
-            trr("---\n");
+    if(sizeof(tmp = irn_connections[data[2]])){
+        //tc("validation. fd: "+fd+", tmp: "+identify(tmp));
+        if(tmp["fd"] && tmp["fd"] != fd){
+            trr("validation. fd: "+fd+", tmp: "+identify(tmp),"red");
+            trr("LOLOLOLOLOL","red");
             return 0;
         }
     }
-#endif
-
+    //else tc("validation. fd: "+fd+", no tmp? "+identify(tmp));
     //trr("returning 1!","green");
     return 1;
 }
@@ -548,6 +558,8 @@ case "irn-data" :
             }
         }
     } 
+    trr("irn_read_callback sending read_callback("+
+      identify(data[6][2])+", "+identify(data[6])+")");
     this_object()->read_callback(data[6][2],data[6]);
     break;
 case "irn-ping" :
@@ -679,11 +691,22 @@ varargs void SendWholeList(int fd, string type){
 }
 
 static void SendMessage(mixed data){
-    string routername;
+    string routername, cible;
+    mapping tmpinfo = this_object()->query_mudinfo();
     mixed tmpdata; 
-    //trr("irn: received SendMessage call","blue");
+    int *but;
+    trr("irn: received SendMessage call","white");
     if(!irn_enabled) return;
-    foreach(int router in keys(irn_sockets)){
+    if(tmpinfo && sizeof(data) > 4 && sizeof(tmpinfo[data[4]]) && 
+      cible = tmpinfo[data[4]]["router"]){
+        if(mapp(tmpdata = this_object()->query_irn_connections()[cible])){
+            but = ({ tmpdata["fd"] });
+        }
+    }
+    if(!but || !sizeof(but)) but = keys(irn_sockets);
+    foreach(int router in but){
+        trr("irn sending "+data[0]+" for "+identify(data[4])+
+          " to "+identify(irn_sockets[router]));
         tmpdata = copy(data);
         if((convert_channel || convert_channel2) && !strsrch(tmpdata[0],"chan") && strsrch(tmpdata[0],"chan-user")){
             routername = irn_sockets[router]["name"];

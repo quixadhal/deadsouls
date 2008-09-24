@@ -49,6 +49,8 @@ inherit LIB_SOCKET;
 
 string ip = "";
 string out = "";
+string host;
+int port;
 mapping Cookie = ([]);
 string gateway, login_data, current_page, boundary, cookie, cmd, read_args, filename, user_agent;
 int ok_to_send, boundary_count;
@@ -107,6 +109,14 @@ string GetBoundary(){
 mapping GetCookie(){
     validate();
     return copy(Cookie);
+}
+
+string GetHost(){
+    return host;
+}
+
+int GetPort(){
+    return port;
 }
 
 private static void eventError(string name) {
@@ -273,6 +283,14 @@ int eventRead(buffer data) {
         junk2 = reverse_string(element);
         int2 = sscanf(junk2,"%s---%*s",junk1);
         if(!strsrch(element,"Cookie:") && !cookie) cookie = element;
+        if(!strsrch(element,"Host:") && !host){
+            if(sscanf(element,"Host: %s:%s",junk1, junk2) != 2){
+                sscanf(element,"Host: %s",junk1);
+                port = 80;
+            }
+            else port = atoi(junk2);
+            host = junk1;
+        }
         if(boundary && grepp(element,boundary)){
             boundary_count++;
         }

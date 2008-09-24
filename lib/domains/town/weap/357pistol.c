@@ -19,6 +19,7 @@ void create(){
     SetMass(20);
     SetValue(10);
     SetVendorType(VT_WEAPON);
+    SetMagnum(30);
 }
 void init(){
     ::init();

@@ -526,7 +526,7 @@ string *AddEncounter(string nom){
 string *RemoveEncounter(string nom){
     if( !stringp(nom) ) error("Bad argument 1 to RemoveEncounter()\n");
     if( Encounter && !pointerp(Encounter) ) return 0;
-    else Encounter -= ({ convert_name(nom) });
+    else if(Encounter) Encounter -= ({ convert_name(nom) });
     return Encounter;
 }
 
@@ -549,6 +549,8 @@ string GetShort(){
     string ret = object::GetShort(); 
     object *riders = GetRiders();
     string *names = ({});
+    if(sizeof(riders)) riders = filter(riders,
+          (: (!$1->GetInvis() || this_player()->GetWizVision()) :) );
     if(riders && sizeof(riders) && VisibleRiders){
         foreach(object rider in riders){
             names += ({ rider->GetShort() });

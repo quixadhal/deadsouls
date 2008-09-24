@@ -35,7 +35,7 @@ static void create() {
     SetInventory(([
         "/domains/town/weap/dagger":"wield dagger",
       ]) );
-    SetGuard("north","The orc bars your way!");
+    SetGuard("west","The orc bars your way!");
 }
 void init(){
     ::init();

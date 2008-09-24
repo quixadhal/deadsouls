@@ -24,20 +24,20 @@ void create() {
     SetAmbientLight(30);
     SetShort("the telnet room");
     SetLong("From this room, you can attempt "+
-      "to connect to Dead Souls Demo MUD. This is useful if you "+
+      "to connect to Dead Souls MUD. This is useful if you "+
       "need to ask questions but the intermud connection is "+
       "down. It is also a way to get a sneak peek at what's "+
       "coming in the next release of Dead Souls, because "+
-      "Dead Souls Demo MUD is where all new fixes and features "+
+      "Dead Souls MUD is where all new fixes and features "+
       "are tested before release."+
       "\n\tIf the connection "+
       "fails, email cratylus@comcast.net to ask for help. "+
-      "Once you connect to Dead Souls Demo, type \"dcon\" to "+
+      "Once you connect to Dead Souls, type \"dcon\" to "+
       "return to your own mud. \n\n"+
       "To connect type \"connect\" \n"+
-      "The Creators' Hall west wing is south  of here.");
+      "The Creators' Hall annex is west of here.");
     SetExits( ([ 
-        "south" : "/domains/default/room/wiz_hall2",
+        "west" : "/domains/default/room/wiz_hall2",
       ]) );
     SetNoModify(1);
 }

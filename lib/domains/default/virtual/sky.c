@@ -72,7 +72,7 @@ varargs static void create(int x, int y, int z) {
         AddExit("down", __DIR__ + "arena/" + x + "," + y);
     }
 
-#if 0
+#if 1
     if(y == 1){
         RemoveExit("south");
         RemoveExit("southeast");

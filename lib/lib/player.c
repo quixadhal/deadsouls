@@ -221,6 +221,12 @@ varargs void eventRevive(int nopenalty){
     AddMagicPoints(-(GetMaxMagicPoints()/2));
     AddStaminaPoints(-(GetMaxStaminaPoints()/2));
     AddHealthPoints(-(GetMaxHealthPoints()/2));
+    if(this_object()->GetLead()){
+        int shots = this_object()->GetLead("gunshot_wounds");
+        if(shots) this_object()->AddLead("gunshot_wounds", -shots);
+        shots = this_object()->GetLead("rifleshot_wounds");
+        if(shots) this_object()->AddLead("rifleshot_wounds", -shots);
+    }
     if(creatorp()){
         string livingtitle = this_object()->GetLivingShort();
         if(!livingtitle) livingtitle = "$N the reborn";
@@ -317,6 +323,7 @@ int Setup(){
     if(GetProperty("brand_spanking_new")){
         object jeans, shirt, book;
 
+        this_object()->SetProperty("automapping", 1);
         if(ENGLISH_ONLY) this_object()->SetNativeLanguage("English");
         PLAYERS_D->AddPlayerInfo(this_object());
 
@@ -352,6 +359,7 @@ int Setup(){
         string home;
 
         this_object()->SetTown("World");
+        this_object()->SetProperty("automapping", 1);
 
         robe = new("/domains/default/armor/robe");
         hat = new("/domains/default/armor/wizard_hat");
@@ -373,11 +381,11 @@ int Setup(){
         if(file_exists(home+".c")) 
             this_object()->eventMoveLiving(home);
 
-        this_object()->AddChannel( ({"admin", "error", "cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat","inews","ichat","pchat"}) );
+        this_object()->AddChannel( ({"admin", "error", "cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat","inews"}) );
 
         SetShort("First Admin $N");
     }
-
+    if(!creatorp(this_object())) this_object()->SetInvis(0);
     return 1;
 }
 
@@ -493,7 +501,7 @@ int SetUndead(int x){
 }
 
 string GetName(){
-    if(GetInvis()) return "A shadow";
+    if(GetInvis() && !this_player()->GetWizVision()) return "A shadow";
     else return interactive::GetName();
 }
 

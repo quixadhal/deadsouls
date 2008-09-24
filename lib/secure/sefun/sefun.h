@@ -47,7 +47,7 @@ int exec(object target, object src);
 int file_exists(string str);
 string file_privs(string file);
 varargs string format_page(string *items, int columns, int modifier);
-varargs object get_object(string str, object player);
+varargs object get_object(string str, object player, int living);
 varargs mixed get_objects(string str, object player, int no_arr);
 int hiddenp(object ob);
 int high_mortalp(object ob);
@@ -278,8 +278,14 @@ int sefun_exists(string str);
 varargs int estatep(object ob);
 string dbz_colors(string str, int annoying);
 mixed lpc_file(string str);
+mixed object_file(string str);
 int telnet_privp(mixed guy);
 object *containers(object ob);
-varargs mixed FAKE_NEW(string str, mixed args...);
+int ordinalp(string str);
+object *get_dummies(mixed where);
+varargs mixed coordinates(object ob, string type);
+mixed calculate_coordinates(string str, int x, int y, int z, string type);
+object room_environment(object ob);
+int query_windows();
 
 #endif /* l_sefun_h */

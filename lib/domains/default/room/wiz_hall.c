@@ -6,9 +6,9 @@ int ds;
 
 string LongDesc(){
     string desc = "Immortals come here to communicate with each other about "+
-    "the world they are building. The Adventurer's Guild "+
-    "is north. The Arch Room is south."+(!(ds) ? " To visit the Dead Souls "+
-      "test and development mud, go west." : "")+
+    "the world they are building. The Builder's hall and Adventurer's Guild "+
+    "are north. The Arch Room is south."+(!(ds) ? " To visit the Dead Souls "+
+      "test and development mud, visit the upstairs annex." : "")+
     " The test lab facilities are east.";
     desc += "\nA sign reads: "+load_object(ROOM_ARCH)->SignRead();
     return desc;
@@ -41,9 +41,9 @@ static void create() {
       ]) );
     SetExits( ([
         "south" : "/secure/room/arch",
+        "north" : "/domains/default/room/builder_hall",
         "east" : "/domains/default/room/wiz_corr1",
-        "west" : "/domains/default/room/wiz_hall2",
-        "north" : "/domains/default/room/builder_hall.c",
+        "up" : "/domains/default/room/wiz_hall2.c",
       ]) );
     SetRead("sign", (: load_object(ROOM_ARCH)->SignRead() :) );
 }
@@ -64,7 +64,7 @@ int CanReceive(object sneak) {
             return 0;
         }
     }
-    return 1;
+    return ::CanReceive(sneak);
 }
 
 int eventReceiveObject(object ob){

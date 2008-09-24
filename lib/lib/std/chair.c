@@ -19,8 +19,8 @@ void create(){
 }
 
 int CanGet(object who){
-    if(::CanGet(who))
-        return ::CanGet(who);
+    if(sit::CanGet(who))
+        return surface::CanGet(who);
     else return 0;
 }
 

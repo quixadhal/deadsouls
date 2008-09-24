@@ -1,5 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
+
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -23,11 +24,12 @@ static void create() {
         "green room" : "There's no green room here.",
         "blue room" : "There's no blue room here.",
       ]) );
+    SetObviousExits("north");
+    SetExits( ([ 
+        "north" : "/domains/campus/room/wiz_lab",
+      ]) );
     AddItem( ({"sign","sign on the wall"}), "A sign you can read.",({"large"}) );
 
-    SetExits( ([
-        "south" : "/domains/campus/room/wiz_lab"
-      ]) );
     SetEnters( ([
         "red room" : "/domains/campus/room/red_room",
         "green room" : "/domains/campus/room/green_room",
@@ -36,11 +38,10 @@ static void create() {
     SetDoor("red room","/domains/campus/doors/red_door");
     SetDoor("green room","/domains/campus/doors/green_door");
     SetDoor("blue room","/domains/campus/doors/blue_door");
-    SetObviousExits("south");
     SetNoClean(1);
 }
-
 void init(){
+    ::init();
     SetRead(({"sign","sign on the wall"}), "Press the button on "
-      "the pedestal to reset the experiment.");
+      "the pedestal to reset the experiment.", "Common");
 }

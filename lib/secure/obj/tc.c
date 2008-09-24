@@ -33,7 +33,7 @@ void heart_beat(){
     if(!environment() || !living(environment()) 
       || !environment(environment())) 
         eventDestruct();
-    if(environment(environment())){
+    if(environment() && environment(environment())){
         if(!connected && base_name(environment(environment())) 
           != "/domains/default/room/telnet_room")
             eventDestruct();

@@ -16,8 +16,8 @@ static void create() {
         ({"bank","First Village Bank"}) : "The primary financial "
         "institution in town.",
       ]) );
-    SetExits( ([ 
-        "west" : "/domains/town/room/south_road1",
+    SetExits( ([
+        "west" : "/domains/town/room/mountain_road.c",
       ]) );
     SetRead( ({"sign","sign hanging here"}) , (: ReadSign :) );
     SetProperty("no attack", 1);

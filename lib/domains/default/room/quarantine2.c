@@ -9,11 +9,11 @@ static void create() {
     SetAmbientLight(30);
     SetShort("Disease Lab");
     SetLong("This room is designed for testing the effects and transmissibility of disease. Another testing area is east.");
-    SetNoClean(1);
-    SetExits( ([
-        "south" : "/domains/default/room/quarantine1",
-        "east" : "/domains/default/room/quarantine3.c",
+    SetExits( ([ 
+        "east" : "/domains/default/room/quarantine3",
+        "up" : "/domains/default/room/quarantine1",
       ]) );
+    SetNoClean(1);
     SetInventory(([
         "/domains/default/npc/quarantine/wim" : 1,
         "/domains/default/npc/quarantine/rik" : 1,

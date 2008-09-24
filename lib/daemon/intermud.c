@@ -440,6 +440,4 @@ string GetMudName(string mud){
         }
     }
 
-
-
 #endif /* __PACKAGE_SOCKETS__ */

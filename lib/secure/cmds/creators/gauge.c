@@ -13,11 +13,9 @@ mixed cmd(string args) {
     mapping before, after;
     int stime, usertime, eval_cost;
 
-    if(query_os_type() == "windows"){
-        write("This command does not work on Microsoft Windows.");
-        return 1;
-    }
-
+#ifndef __HAS_RUSAGE__
+    write("This command depends on an efun that is not available.");
+#else
     if( !args || args == "" ) return "You must specify a command to execute.";
     before = rusage();
     catch(eval_cost = (int)previous_object()->eventForce(args));
@@ -27,6 +25,7 @@ mixed cmd(string args) {
     message("system", "\n" + stime + " ms system time, " + usertime +
       " ms user time, and " + eval_cost + " CPU cycles eval cost.",
       this_player());
+#endif
     return 1;
 }
 

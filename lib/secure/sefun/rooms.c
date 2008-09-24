@@ -1,3 +1,5 @@
+#include <daemons.h>
+#include <lib.h>
 string namen, ret;
 
 int reload_room(object ob){
@@ -93,4 +95,61 @@ string opposite_dir(string str){
     default : ret = "";break;
     }
     return ret;
+}
+
+varargs mixed coordinates(object ob, string type){
+    mixed ret;
+    object env;
+    if(!ob) return;
+    if(!(ret = ROOMS_D->GetCoordinates(ob))){
+        if(env = environment(ob)){
+            ret = ROOMS_D->GetCoordinates(env);
+        }
+    }
+    return ret;
+}
+
+mixed calculate_coordinates(string str, int x, int y, int z, string type){
+    mixed ret, str_ret = ({});
+    switch(str){
+    case "north" : ret = ({ x, y+1, z });break;
+    case "south" : ret = ({ x, y-1, z });break;
+    case "east" : ret = ({ x+1, y, z });break;
+    case "west" : ret = ({ x-1, y, z });break;
+    case "northeast" : ret = ({ x+1, y+1, z });break;
+    case "northwest" : ret = ({ x-1, y+1, z });break;
+    case "southeast" : ret = ({ x+1, y-1, z });break;
+    case "southwest" : ret = ({ x-1, y-1, z });break;
+    case "up" : ret = ({ x, y, z+1 });break;
+    case "down" : ret = ({ x, y, z-1 });break;
+    default: ret = ({ x, y, z }); break;
+    }
+    if(type != "string") return ret;
+    foreach(int element in ret){
+        str_ret += ({ itoa(element) });
+    }
+    return implode(str_ret, ",");
+}
+
+object room_environment(object ob){
+#if 1
+    foreach(object element in containers(ob)){
+        if(inherits(LIB_ROOM, element)){
+            return element;
+        }
+    }
+    return 0;
+#else
+    object ret;
+    object *envs = containers(ob);
+    int i = sizeof(envs);
+    //tc("envs: "+identify(envs));
+    for(i--; i > 0; i--){
+        //tc("envs["+i+"]: "+identify(envs[i]));
+        if(inherits(LIB_ROOM, envs[i])){
+            return envs[i];
+        }
+    }
+    return 0;
+#endif
 }

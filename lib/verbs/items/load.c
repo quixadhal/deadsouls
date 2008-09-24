@@ -27,7 +27,7 @@ mixed can_load_obj_word_obj(mixed foo) {
 }
 
 mixed do_load() {
-    return "Load what?";
+    write("Load what?");
     return 1;
 }
 

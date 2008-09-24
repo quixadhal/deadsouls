@@ -1,4 +1,6 @@
 string *blacklisted_muds = ({});
+static string *graylisted_muds = ({});
+static mapping packet_counter = ([]); 
 
 void read_callback(mixed fd, mixed info){
     // This is called when messages come in from a MUD.
@@ -25,6 +27,9 @@ void read_callback(mixed fd, mixed info){
     int i;
     string *logspam = ({ "auth-mud-req", "auth-mud-reply", "tell", "emoteto",
       "ping","channel-listen", "ping-req", "ping-reply" });
+    string ip_addr = (stringp(fd) ? fd : clean_fd(socket_address(fd)));
+
+    if(!packet_counter) packet_counter = ([]);
 
     //trr("read_callback, fd"+fd+", info: "+identify(info));
     if(!strsrch(info[0],"irn-")){
@@ -43,9 +48,46 @@ void read_callback(mixed fd, mixed info){
             return;
         }
     validate();
+    //tc("passed validation");
+    if(!packet_counter[info[2]]){
+        //tc("Adding "+info[2]+" to packet_counter");
+        packet_counter[info[2]] = ([ "time" : time(), "count" : 0 ]);
+    }
+    if(packet_counter[info[2]]["time"] != time()){
+        packet_counter[info[2]]["count"] = 0;
+        packet_counter[info[2]]["time"] = time();
+    }
+    packet_counter[info[2]]["count"]++;
+    //tc(info[2]+" count: "+packet_counter[info[2]]["count"]);
+    if(packet_counter[info[2]]["count"] > 10 &&
+      info[0] != "channel-listen" &&
+      member_array(fd, keys(ROUTER_D->query_irn_sockets())) == -1){
+        if(true()){
+            if(info[2] && member_array(info[2], keys(connected_muds)) != -1){
+                send_error(info[2],info[3],"not-allowed",
+                  "Flood detected! Your packets will be temporarily ignored.",
+                  info);
+            }
+            graylisted_muds += ({ ip_addr });
+            return;
+            tc("Flood detected from "+ip_addr,"red");
+        }
+    }
     if(sizeof(blacklisted_muds)){
         if(member_array(info[2], blacklisted_muds) != -1) return;
-        if(intp(fd) && member_array(clean_fd(socket_address(fd)), blacklisted_muds) != -1) return;
+        if(intp(fd) && member_array(ip_addr, blacklisted_muds) != -1) return;
+    }
+    if(sizeof(graylisted_muds)){
+        if((info[2] && member_array(info[2], graylisted_muds) != -1) ||
+          (intp(fd) && member_array(ip_addr, graylisted_muds) != -1)){ 
+            if(info[2] && member_array(info[2], keys(connected_muds)) != -1){
+                send_error(info[2],info[3],"not-allowed",
+                  "Your packets are being temporarily dropped due to flooding.",
+                  info);
+            }
+            tc("Dropping packet from "+ip_addr,"yellow");
+            return;
+        }
     }
     if(member_array(info[0],logspam) == -1 && strsrch(info[0],"irn-")){
         string foo = "IRN";
@@ -73,7 +115,6 @@ void read_callback(mixed fd, mixed info){
           }));
         return;
     }
-    //if(lower_case(info[4]) == "yatmin") info[4] = "yatmim";
     if(info[4]!=0 && !mudinfo[info[4]] && info[4]!=router_name){
         // if target mud is not 0 (broadcasting), not the router name,
         // and not a known MUD
@@ -160,7 +201,8 @@ void read_callback(mixed fd, mixed info){
             this_object()->SendMessage(info);
         }
         broadcast_data(connected_muds,info);
-        return;    }
+        return;   
+    }
     if(info[4]==router_name) {
         switch(info[0]){
         case "shutdown" :
@@ -178,6 +220,9 @@ void read_callback(mixed fd, mixed info){
                   "request of "+info[2]);
                 this_object()->disconnect_mud(this_object()->query_connected_fds()[fd]);
             }
+            break;
+        case "chanlist-req" : case "chanlist-request" :
+            broadcast_chanlist("foo",info[2]);
             break;
         default :
             // Something meant for the router but not handled by now!

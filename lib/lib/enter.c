@@ -9,7 +9,7 @@
 #include <position.h>
 
 private string Dir;
-private string Door = 0;
+private string Door, DoorSide = 0;
 private mapping Enter = 0;
 
 static void create(){
@@ -155,8 +155,17 @@ string GetDoor(){
     return Door;
 }
 
-void SetDoor(string door){
+varargs void SetDoor(string door, string side){
     Door = door;
+    if(side) DoorSide = side;
+}
+
+string GetDoorSide(){
+    return DoorSide;
+}
+
+void SetDoorSide(string doorside){
+    DoorSide = doorside;
 }
 
 varargs void SetEnter(string dest, function pre, function post){

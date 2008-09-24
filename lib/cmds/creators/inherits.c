@@ -63,7 +63,8 @@ varargs int cmd(string str)
         }
     }
     if(!sizeof(inheriteds)){
-        write("No matches found. "+ob->GetShort()+" does not appear to inherit that file.");
+        write("No matches found. "+ thing +
+          " does not appear to inherit that file.");
         return 1;
     }
     write("Exact match not found, but here are some possible matches: ");

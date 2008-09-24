@@ -54,7 +54,8 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal, mixed
         if(!internal) internal = 0;
         if(!limbs) limbs = "";
 
-        if(x > this_object()->GetHealthPoints()){
+        if(x > this_object()->GetHealthPoints() &&
+          !(this_object()->GetGodMode()) ){
             this_object()->eventPrint("%^RED%^This could have been a fatal hit. "+
               "The ring's safety protocol prevents \"actual damage\" calculation "+
               "from proceeding.%^RESET%^");

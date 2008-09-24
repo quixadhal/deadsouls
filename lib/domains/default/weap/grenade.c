@@ -10,6 +10,9 @@ int count, armed;
 string *limbs;
 void analyze(string butt);
 int HitLivings(object munch);
+int radius = 0;
+object *whom;
+
 void create(){
     item::create();
     SetKeyName("concussion hand grenade");
@@ -44,6 +47,10 @@ mixed CanPull(object who, string target) {
     return 1;
 }
 mixed eventPull(object who, string target) {
+    if(!environment() || (this_player() && environment() != this_player())){
+        write("You are not holding it.");
+        return 1;
+    }
     if(target =="pin" || target == "pull-pin"){
         write("You pull the grenade's pin.\n");
         say(this_player()->GetName()+" pulls the pin from a hand grenade.\n");
@@ -95,8 +102,8 @@ int detonate(){
     }
     if(detonated !=2) tell_room(environment(this_object()), "\nKABOOM! The grenade detonates!\n");
     if(!sizeof(get_livings(ob))) ob = environment(ob);
-    if(ob && sizeof(get_livings(ob))){
-        foreach(object victim in get_livings(ob)){
+    if(ob && sizeof(whom = scramble_array(get_livings(ob)[0..12]))){
+        foreach(object victim in whom){
             this_object()->HitLivings(victim);
         }
     }
@@ -114,6 +121,16 @@ void analyze(string str){
 }
 
 int HitLivings(object ob){
-    ob->eventReceiveDamage("concussion",BLUNT, random(1000)+300, 0);
+    object env = environment();
+    int dam;
+    radius++;
+    if(radius < 6) dam = random(1000)+500;
+    else dam = (random(1000)+500) - (radius * 100);
+    if(env && !living(env)){
+        if(env->GetClimate() == "indoors") dam *= 2;
+    }
+    if(dam > 0){
+        ob->eventReceiveDamage("concussion",BLUNT, dam, 0);
+    }
     return 1;
 }

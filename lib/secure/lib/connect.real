@@ -64,6 +64,7 @@ static void create(int binary) {
 
 varargs static void logon(mixed foo) {
     string welcome = "Connected to "+mud_name()+", an LP mud";
+    //tc(typeof(foo)+" foo: "+identify(foo));
     if(sizeof(architecture())) welcome += " running on "+architecture()+".\n";
     else welcome += ".\n";
 
@@ -98,6 +99,7 @@ static void InputName(string namen, string kill_me) {
     string temp_name, news;
     mixed tmp;
     name = namen;
+    //tc("namen: ("+identify(namen)+") kill_me: ("+identify(kill_me)+")");
 
     if( !name || name == "" ) {
         if( kill_me ) {
@@ -652,7 +654,6 @@ void eventCompleteChar(){
     Player->SetRace(raza);
     Player->SetProperty("brand_spanking_new",1);
     Player->AddCurrency("silver",random(100)+57);
-    Player->SetRace(raza);
     Player->SetPassword(Passwort);
     Player->SetGender(Gendre);
     Player->SetCapName(CapNamen);

@@ -4,11 +4,6 @@
 #include <config.h>
 #include <lib.h>
 
-#if 0
-#define spew(x) FAKE_NEW(x)
-#define REAL_NEW "new"
-#endif
-
 #if COMPAT_MODE
 #include <compat.h>
 #endif

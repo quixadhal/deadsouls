@@ -548,7 +548,7 @@ int SetPoisonGas(int x){
     return (PoisonGas = x);
 }
 
-void AddRead(mixed item, mixed val){
+varargs void AddRead(mixed item, mixed val, string lang){
     if( stringp(item) ){
         item = ({ item });
     }
@@ -556,6 +556,7 @@ void AddRead(mixed item, mixed val){
         foreach(object ob in GetDummyItems()){
             if( ob->id(tmp) ){
                 ob->SetRead(val);
+                if(lang) ob->SetLanguage(lang);
                 break;
             }
         }
@@ -582,9 +583,9 @@ varargs void SetRead(mixed items, mixed arg){
         AddRead(items, arg);
         return;
     }
-    foreach(mixed key, mixed val in items){
-        AddRead(key, val);
-    }
+    else foreach(mixed key, mixed val in items){
+            AddRead(key, val, ((arg && stringp(arg)) ? arg : 0));
+        }
 }
 
 int GetShade(){
@@ -1144,7 +1145,11 @@ string GetSinkRoom(){
 }
 
 static void init(){
+    object prev = previous_object();
     if(this_object()->GetProperty("indoors")) SetClimate("indoors");
     if(!sizeof(GetObviousExits()) && DefaultExits > 0 && ObviousVisible) GenerateObviousExits();
     if((Action && sizeof(Action)) || sizeof(ActionsMap)) set_heart_beat(tick_resolution);
+    if(this_object() && prev && living(prev)){
+        ROOMS_D->SetRoom(this_object(), prev);
+    }
 }

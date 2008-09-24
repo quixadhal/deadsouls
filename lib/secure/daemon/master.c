@@ -35,6 +35,7 @@
 #ifndef MAX_SINGLE_OBJECT
 #define MAX_SINGLE_OBJECT        4000
 #endif
+#define CRAT_PARSE 0
 
 
 private static int ResetNumber;
@@ -46,11 +47,11 @@ private static string *ParserDirs = ({ "secure", "verbs", "daemon", "lib", "powe
 private static string array efuns_arr = ({});
 
 void create() {
-#if 0
+#if 1
 #ifdef __OPCPROF__
     string tmpfun, junk, opstr;
     string *oparr = ({});
-    string opfile = "/secure/tmp/opc";
+    string opfile = "/tmp/opc";
     opcprof(opfile);
     if(file_exists(opfile+".efun")){
         opstr = read_file(opfile+".efun");
@@ -193,14 +194,29 @@ private static void load_access(string cfg, mapping resource) {
     void preload(string str) {
         string err;
         int t;
+        mapping before, after;
 
         if( !file_exists(str + ".c") ) return;
         t = time();
         write("Preloading: " + str + "...");
-        if( err = catch(call_other(str, "???")) )
+#ifdef __HAS_RUSAGE__
+        before = rusage();
+#endif
+        if( err = catch(call_other(str, "???")) ){
             write("\nGot error "+err+" when loading "+str+".\n");
+        }
         else {
+#ifdef __HAS_RUSAGE__
+            after = rusage();
+#endif
             t = time() - t;
+#ifdef __HAS_RUSAGE__
+            if(sizeof(before) && sizeof(after)){
+                t = after["utime"] - before["utime"];
+                write("("+t+"ms)\n");
+            }            
+            return;
+#endif
             write("("+(t/60)+"."+(t%60)+")\n");
         }
     }
@@ -704,25 +720,59 @@ private static void load_access(string cfg, mapping resource) {
 
     string parser_error_message(int type, object ob, mixed arg, int flag) {
         string err;
-        //tc("parser_error_message("+
-        //  TYPES_D->eventCalculateTypes("parser_error",type)+", "+
-        //  identify(ob)+", "+
-        //  identify(arg)+", "+
-        //  identify(flag)+") "
-        //  ,"yellow");
+        object tmpob;
+#if CRAT_PARSE
+        tc("parser_error_message("+
+          TYPES_D->eventCalculateTypes("parser_error",type)+", "+
+          identify(ob)+", "+
+          identify(arg)+", "+
+          identify(flag)+") "
+          ,"yellow");
+        tc("type: "+type,"green");
+#endif
         if( ob ) err = (string)ob->GetShort();
         else err = "";
         switch(type) {
             string wut;
+            object wat;
+
+        case 0:
+#if CRAT_PARSE
+            tc("WTF. An unhandled error?","red");
+#endif
+            if(arg && objectp(arg)) wat = arg;
+            if(!wat && arg && arrayp(arg) && sizeof(arg)){
+                foreach(mixed element in arg){
+                    if(objectp(element)) wat = element;
+                }
+            }
+            if(ob && wat){
+                err = "You can't use "+ob->GetShort()+" with "+
+                wat->GetShort()+" that way.";
+            }
+            else if(ob){
+                err = "It seems you can't do that with " +ob->GetShort()+".";
+            }
+            else if(wat){
+                err = "It seems you can't do that to " +wat->GetShort()+".";
+            }
+            else {
+                err = "It seems you can't do that.";
+            }
+            break;
+
         case ERR_IS_NOT:
+#if CRAT_PARSE
+            tc(identify(this_player())+" ERR_IS_NOT: "+identify(ob)+", "+identify(arg)+", "+identify(flag),"green");
+#endif
             if(flag || (arg && stringp(arg))){
-                if(flag || get_object(arg)){
-                    return "It seems you must be more specific.";
+                if(flag || get_object(arg, this_player())){
+                    return "It appears you must be more specific.";
                 }
                 else if(arg && stringp(arg)) wut = remove_article(arg);
             }
-            else wut = "such thing";
-            err = "There is no "+ wut +" here.";
+            else wut = "that";
+            err = capitalize(wut) +" is not here.";
             break;
 
         case ERR_NOT_LIVING:
@@ -743,7 +793,7 @@ private static void load_access(string cfg, mapping resource) {
                 gguy = this_player();
                 if(DEFAULT_PARSING){
                     gcmd = this_player()->GetLastCommand();
-                    this_player()->eventRetryCommand(gcmd);
+                    this_player()->eventRetryCommand(gcmd, type, arg);
                     return " ";
                 }
 
@@ -776,18 +826,23 @@ private static void load_access(string cfg, mapping resource) {
             return arg;
 
         case ERR_THERE_IS_NO:
-            if(flag || (arg && stringp(arg))){
-                if(flag || get_object(arg)){
+#if CRAT_PARSE
+            tc(identify(this_player())+" ERR_THERE_IS_NO: "+identify(ob)+", "+identify(arg)+", "+identify(flag),"blue");
+#endif
+            if(flag || (arg && stringp(arg)) && environment(this_player())){
+                if(tmpob = present(arg, environment(this_player()))){
                     return "It seems you must be more specific.";
                 }
                 else if(arg && stringp(arg)) wut = remove_article(arg);
             }
             else wut = "such thing";
+            //tc("Bingo. stack: "+get_stack());
             err = "There is no "+ wut +" here.";
             break;
 
         case ERR_BAD_MULTIPLE:
-            return "You can't do that to more than one at a time.";
+            err = "You can't do that to more than one at a time.";
+            break;
         }
         return err;
     }

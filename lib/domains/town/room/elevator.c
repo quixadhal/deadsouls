@@ -16,7 +16,6 @@ static void create() {
     SetExits( ([
         "east" : "/domains/town/room/church",
       ]) );
-    SetObviousExits("e");
     SetItems(([
         //new("/domains/town/obj/ebutton1") : 1,
         //new("/domains/town/obj/ebutton2") : 1,

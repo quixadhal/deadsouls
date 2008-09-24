@@ -1,0 +1,26 @@
+EVENTUNLOAD
+
+NAME
+        eventUnload()
+
+SYNOPSIS
+        mixed eventUnload(mixed what)
+
+DESCRIPTION
+        Provides for unloading. If the argument is a nonzero integer, it is presumed that the object is a LIB_CLIP or LIB_FIREARM and a number of objects are being unloaded from it. In the case of unloading a LIB_ROUND or a LIB_CLIP from something, then the argument would be the object that contains it.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/round
+/lib/events/load
+/lib/firearm
+/lib/clip
+
+SEE ALSO
+        eventLoad
+
+Author
+        Cratylus
+

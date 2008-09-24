@@ -34,7 +34,7 @@ static void create() {
     SetInventory(([
         "/domains/town/weap/dagger":"wield dagger",
       ]) );
-    SetGuard("north","The boss orc blocks your path!");
+    SetGuard("west","The boss orc blocks your path!");
 }
 
 void init(){

@@ -6,6 +6,7 @@
 #define CFG_ALIASES		DIR_SECURE_CFG "/aliases.cfg"
 #define CFG_CLASSES             DIR_SECURE_CFG "/classes"
 #define CFG_DAYS                DIR_CFG "/days.cfg"
+#define CFG_FLASH_POLICY        DIR_SECURE_CFG "/flashpolicy.cfg"
 #define CFG_GROUPS		DIR_SECURE_CFG "/groups.cfg"
 #define CFG_IP_UNRESTRICT	DIR_SECURE_CFG "/ip_unrestrict.cfg"
 #define CFG_MONTHS              DIR_CFG "/months.cfg"

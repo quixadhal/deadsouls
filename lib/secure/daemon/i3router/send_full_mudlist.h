@@ -3,6 +3,7 @@ void send_full_mudlist(string mud){
     mixed *package = ({});
     mixed *names = ({});
     if(!connected_muds[mud]) return;
+    //trr("trying to send full mudlist to "+mud);
     foreach(string mudname in keys(mudinfo)){
         int mudstat;
         if(!connected_muds[mudname] && mudinfo[mudname]){

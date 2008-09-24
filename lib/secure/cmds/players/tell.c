@@ -73,7 +73,7 @@ mixed cmd(string str) {
                 msg = implode(words," ");
                 this_player()->eventTellHist("You tried to tell "+retname+": "+
                   "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
-                write("Tell whom what?\n");
+                write("Tell whom what?");
                 return 1;
             }
             else {
@@ -105,8 +105,9 @@ mixed cmd(string str) {
             if(parse_it){
                 machine->get_message(me+" tells you: "+msg+"\n");
                 machine_message=machine->send_message();
-                message("info", machine_message, this_player());
-                return 1;
+
+                //message("info", machine_message, this_player());
+                //return 1;
             }
         }
         if( (err = (mixed)this_player()->CanSpeak(ob, "tell", msg)) != 1){
@@ -119,7 +120,9 @@ mixed cmd(string str) {
             || ( creatorp(ob) && !creatorp(this_player()) ) ) ){
             string inv_ret = "%^BLUE%^%^BOLD%^" + me + 
             " unknowingly tells you, %^RESET%^\"" + msg + "\"";
-            ob->eventPrint(inv_ret);
+            if(!machine_message){
+                ob->eventPrint(inv_ret);
+            }
             ob->eventTellHist(inv_ret);
             ob->SetProperty("reply", lower_case(me));
             this_player()->eventTellHist("You tried to tell "+retname+": "+
@@ -130,6 +133,7 @@ mixed cmd(string str) {
                 return 1;
             }
         }
+        if(machine_message) message("info", machine_message, this_player());
 #ifdef BLOCK_TELLS_TO_AFK
         if(ob->GetProperty("afk")) {
             message("my_action", (string)ob->GetName()+

@@ -1,10 +1,12 @@
 #include <lib.h>
+#include <daemons.h>
 inherit LIB_ROOM;
 
 object ob;
-
+mapping Levels = PLAYERS_D->GetLevelList();
 int ReadSign();
 int ReadScroll();
+
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -23,9 +25,9 @@ static void create() {
       ]) );
     SetExits( ([
         "north" : "/domains/town/room/vill_road2",
+        "south" : "/domains/default/room/builder_hall",
         "east" : "/domains/town/room/confroom",
-        "west" : "/domains/town/room/training",
-        "south" : "/domains/default/room/builder_hall.c",
+        "up" : "/domains/town/room/training.c",
       ]) );
     SetInventory(([
         "/domains/town/obj/bin" : 1,
@@ -48,7 +50,17 @@ static void create() {
     SetNoClean(1);
 }
 mixed ReadSign(){
-    return (mixed)this_player()->eventPage("/domains/town/txt/advancement.txt");
+    int i;
+    string ret = read_file("/domains/town/txt/advancement.txt");
+    ret += "\n";
+    for(i=1;i<21;i++){
+        //tc("Levels["+i+"]: "+identify(Levels[i]));
+        ret +=  sprintf("%:-3s     %:-28s %:-5s %:16s\n", i+"",
+          Levels[i]["title"], Levels[i]["xp"]+"", (Levels[i]["qp"] || "none")+"");
+    }
+    ret += "\nTo advance, ask the guildmaster.\nExample:\n\n";
+    ret += "ask dirk to advance";
+    return (mixed)this_player()->eventPage(({ret}));
 }
 
 mixed ReadScroll(){

@@ -2,7 +2,7 @@ RACE orc
 PLAYER_RACE 1
 SENSITIVITY 21:71
 LANGUAGE Tangetto
-STATS agility:10:4
+STATS agility:10:2
 STATS charisma:1:5
 STATS coordination:33:3
 STATS durability:30:2

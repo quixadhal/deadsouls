@@ -267,7 +267,7 @@ void AddRace(string file, int player) {
 
         case "PLAYER_RACE":
             line = replace_string(line, "PLAYER_RACE ", "");
-            if(!player && atoi(line) > 0) player = 1;
+            if(player || atoi(line) > 0) player = 1;
             else player = 0;
             break;
 
@@ -604,10 +604,6 @@ void AddRace(string file, int player) {
         return copy(Resistances);
     }
 
-
-
     public mapping GetArmors() {
         return copy(Armors);
     }
-
-

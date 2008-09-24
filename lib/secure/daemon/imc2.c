@@ -11,32 +11,32 @@
 #include <daemons.h>
 #include <message_class.h>
 
-// Connection data...
-#define HOSTNAME "server01.intermud.us"
+//This is the LPMuds.net experimental IMC2 server. If you are
+//already connected to LPMuds.net intermud using Intermud-3, do
+//not use the LPMuds.net IMC2 server.
+//#define HOSTPORT 8888
+//#define HOSTIP "204.209.44.3"
+
+// Connection data for Davion's server
+// HostIP overrides HOSTNAME, in case the mud doesn't want to resolve addresses
+//#define HOSTNAME "server01.mudbytes.net"
 #define HOSTPORT 5000
-
-//define HOSTNAME "server02.intermud.us"
-//#define HOSTPORT 9000
-
-// HostIP overrides HOSTNAME, in case the mud doesn't want to resolve addresses.
 #define HOSTIP "209.190.9.170"
 
+// Connection data for Kayle's server
+// HostIP overrides HOSTNAME, in case the mud doesn't want to resolve addresses
+//#define HOSTNAME "server02.mudbytes.net"
+//#define HOSTPORT 9000
 //#define HOSTIP "66.218.49.113"
 
 // What name the network knows your mud as. Replace MUD_NAME with "whatever" if you want it to be different.
 #define MUDNAME (imc2_mud_name())
-
-// Passwords... make up a client and server password and **REGISTER IT ON INTERMUD.US**. 
-//NOTE: **IMC2 mayn't work until you register your mud***
-//#define IMC2_CLIENT_PW "clientpass"
-//#define IMC2_SERVER_PW "serverpass"
 
 // File to save data to, .o will be added automatically to the end.
 // This will have private stuff in it, don't put this in a directory where your wizards can read it.
 #define SAVE_FILE "/secure/save/imc2.o"
 
 // COMMAND_NAME is the command that people type to use this network.
-// **OUTDATED (not really)
 #define COMMAND_NAME "imc2"
 
 // NETWORK_ID is what your mud calls this network.
@@ -50,7 +50,7 @@
 // DATA_LOG is where packets are logged to.
 // Turn IMC2_logging off when not working on the system, as it invades privacy.
 // Comment this out to turn it off.
-#undef IMC2_LOGGING
+#define IMC2_LOGGING
 
 #ifndef LOG_IMC2
 #define DATA_LOG "/secure/log/imc2"
@@ -138,6 +138,7 @@
 // Not used yet, I need to see what the hub sends.
 #define MODE_HUB_DOWN 4
 // Not used yet either.
+#define MODE_BANNED 5
 
 // Debugging
 //#define DEB_IN  1
@@ -147,7 +148,7 @@
 
 inherit LIB_DAEMON;
 
-string tmpstr;
+string tmpstr, host;
 
 static int socket_num, counter;
 static int heart_count = 0;
@@ -159,7 +160,7 @@ string buf=""; // Buffer for incoming packets (aren't always sent 1 at a time)
 
 // Variables
 int xmit_to_network_room = 1; //enable this to make a lot of noise
-string hub_name, network_name;
+static string hub_name, network_name;
 string server_pass, server_version;
 mapping chaninfo;
 mapping localchaninfo; // (["chan": ([ "perm":1, "name":"something", "users":({ }) ]) ])
@@ -178,6 +179,7 @@ string escape(string str);
 string unescape(string str);
 mapping string_to_mapping(string str);
 string main_help();
+void keepalive(string args, object who);
 
 private void send_packet(string sender, string packet_type, string target, string destination, string data);
 private void send_text(string text);
@@ -292,7 +294,6 @@ void read_callback(int socket, mixed info){
     case MODE_WAITING_ACCEPT: // waiting for Hub to send autosetup
         if(sscanf(info, "autosetup %s accept %s\n\r",
             hub_name, network_name)==2){
-            //debug("Connected, hub is "+hub_name+", network is "+network_name);
             mode = MODE_CONNECTED;
             send_is_alive("*");
             send_keepalive_request();
@@ -304,8 +305,10 @@ void read_callback(int socket, mixed info){
             send_keepalive_request();
             send_ice_refresh();
         } else{ // Failed login sends plaintext error message.
-            //debug("Failed to connect... "+info);
+            tn("IMC2 Failed to connect... "+info);
         }
+        //network_name = replace_string(network_name,"\r","");
+        //network_name = replace_string(network_name,"\n","");
         buf=""; // clear buffer
         break;
     case MODE_CONNECTED:
@@ -383,7 +386,7 @@ private void got_packet(string info){
             mudinfo[data["host"]]["online"]=0;
             break;
         case "keepalive-request": // Request for is-alive.
-            send_is_alive(origin);
+            send_is_alive("*");
             break;
         case "ice-msg-b": // Broadcast channel message.
             channel_in(sender, origin, data);
@@ -557,6 +560,8 @@ void Setup(){
     if(!tells) tells=([ ]);
     ping_requests=([ ]);
     mode = MODE_WAITING_ACCEPT;
+    catch( host = query_intermud_ip() );
+    if(!sizeof(host)) host = "dead-souls.net";
 #ifdef HOSTIP
     // We already know the IP, go straight to the connecting, just do callback as if it found the IP.
     resolve_callback(HOSTIP,HOSTIP,1);
@@ -753,8 +758,7 @@ void start_logon(){
           sequence++;
           send_text(sprintf("%s@%s %d %s %s %s@%s %s\n",
               sender,	MUDNAME, sequence, MUDNAME, packet_type,
-              target, destination, data
-            ));
+              target, destination, data));
       }
 
       void send_keepalive_request(){
@@ -769,534 +773,540 @@ void start_logon(){
 
       varargs void send_is_alive(string origin){
           // Sends an is-alive packet to whoever requested it, or else broadcasts it.
-          send_packet("*","is-alive","*",(origin ? origin : "*"),
-            sprintf("versionid=\"%s\" networkname=%s url=%s",
-              VERSION, network_name, URL));
-      }
-
-      void channel_in(string fromname, string frommud, mapping data){
-          string sender;
-          string localchan;
-
-          int emote=0;
-
-          sender=fromname+"@"+frommud;
-          if(data["sender"]) sender = data["sender"];
-          if(data["realfrom"]) sender = data["realfrom"];
-          if(intp(data["text"])) data["text"]=sprintf("%d",data["text"]);
-
-          if(data["emote"]) emote = data["emote"];
-          //Following fix courtesy of Tricky
-          if (emote == 1 && strsrch(data["text"], "$N") == -1) 
-              data["text"] = "$N " + data["text"];
-
-          localchan = CHANNEL_BOT->GetLocalChannel(data["channel"]);
-          CHANNEL_BOT->eventSendChannel(sender, localchan, data["text"], emote, "", "");
-      }
-
-      void channel_out(string user,string chan,string msg,int emote){
-          // Send outgoing channel message.
-          send_packet(user,"ice-msg-b","*","*", sprintf("channel=%s text=%s emote=%d echo=0", chan,escape(pinkfish_to_imc2(msg)),emote));
-      }
-
-      varargs static void tell_out(object from, string targname, string targmud, string msg, int reply, int emote){
-          // Send outgoing tell.
-          if(!reply) reply=0;
-          send_packet(capitalize(from->GetKeyName()),"tell",targname,targmud,
-            sprintf("level=%d text=%s reply=%d emote=%d", level(from),escape(msg),reply,emote));
-          from->eventPrint("%^BOLD%^RED%^You tell " + capitalize(targname) + "@" + targmud + ":%^RESET%^ " + msg, MSG_CONV);
-      }
-
-      void tell_in(string sender, string origin, string target, mapping data){
-          // Incoming tell. Parse and display to user
-          object who;
-          int sz;
-          string blmsg;
-          who=FIND_PLAYER(lower_case(target));
-          target=GET_CAP_NAME(who);
-          data["text"]=imc2_to_pinkfish(data["text"]);
-          who->SetProperty("reply",sender+"@"+origin);
-          if(who
-#ifdef INVIS
-            && VISIBLE(who)
+          send_packet("*","is-alive","*", (origin ? origin : "*"),
+#if 1
+            "versionid=\""+VERSION+"\" networkname="+network_name+
+            " url="+URL+" host="+host+" port="+query_host_port());
+#else
+          "foo");
 #endif
-            && can_use(who)
-          ){
-              switch(data["isreply"]){
-              case 2: // emote
-                  who->eventPrint("%^BOLD%^RED%^" + sender + "@" + origin + " %^RESET%^ " + data["text"], MSG_CONV);
-                  //IMC2_MSG(sprintf("%%^CYAN%%^%s@%s%%^RESET%%^ %s\n", NETWORK_ID,sender,origin,data["text"]), who);
-                  blmsg=sprintf("%s@%s %s\n",sender,origin,data["text"]);
-                  break;
-              case 1: // reply
-                  who->eventPrint("%^BOLD%^RED%^" + sender + "@" + origin + " tells you:%^RESET%^ " + data["text"], MSG_CONV);
-                  //IMC2_MSG(sprintf("%s %%^CYAN%%^%s@%s%%^RESET%%^ replies to you: %s\n", NETWORK_ID,sender,origin,data["text"]), who);
-                  blmsg=sprintf("%s@%s replied to you: %s\n", NETWORK_ID,sender,origin,data["text"]);
-                  break;
-              default:
-                  who->eventPrint("%^BOLD%^RED%^" + sender + "@" + origin + " tells you:%^RESET%^ " + data["text"], MSG_CONV);
-                  //IMC2_MSG(sprintf("%s %%^CYAN%%^%s@%s%%^RESET%%^ tells you: %s\n", NETWORK_ID,sender,origin,data["text"]), who);
-                  blmsg=sprintf("%s@%s told you: %s\n", sender,origin,data["text"]);
-                  break;
-              }
-              if(!tells[target])
-                  tells[target]=([ ]);
-              tells[target]["reply"] = sprintf("%s@%s",sender,origin);
-              if(!tells[target]["backlog"] || !arrayp(tells[target]["backlog"]))
-                  tells[target]["backlog"]=({ });
-              tells[target]["backlog"] += ({ blmsg });
-              sz = sizeof(tells[target]["backlog"]);
-              if(sz>BACKLOG_SIZE)
-                  tells[target]["backlog"]=tells[target]["backlog"][(sz-BACKLOG_SIZE)..sz];
-          } else {
+  }
+
+    void channel_in(string fromname, string frommud, mapping data){
+        string sender;
+        string localchan;
+
+        int emote=0;
+
+        sender=fromname+"@"+frommud;
+        if(data["sender"]) sender = data["sender"];
+        if(data["realfrom"]) sender = data["realfrom"];
+        if(intp(data["text"])) data["text"]=sprintf("%d",data["text"]);
+
+        if(data["emote"]) emote = data["emote"];
+        //Following fix courtesy of Tricky
+        if (emote == 1 && strsrch(data["text"], "$N") == -1) 
+            data["text"] = "$N " + data["text"];
+
+        localchan = CHANNEL_BOT->GetLocalChannel(data["channel"]);
+        CHANNEL_BOT->eventSendChannel(sender, localchan, data["text"], emote, "", "");
+    }
+
+    void channel_out(string user,string chan,string msg,int emote){
+        // Send outgoing channel message.
+        send_packet(user,"ice-msg-b","*","*", sprintf("channel=%s text=%s emote=%d echo=0", chan,escape(pinkfish_to_imc2(msg)),emote));
+    }
+
+    varargs static void tell_out(object from, string targname, string targmud, string msg, int reply, int emote){
+        // Send outgoing tell.
+        if(!reply) reply=0;
+        send_packet(capitalize(from->GetKeyName()),"tell",targname,targmud,
+          sprintf("level=%d text=%s reply=%d emote=%d", level(from),escape(msg),reply,emote));
+        from->eventPrint("%^BOLD%^RED%^You tell " + capitalize(targname) + "@" + targmud + ":%^RESET%^ " + msg, MSG_CONV);
+    }
+
+    void tell_in(string sender, string origin, string target, mapping data){
+        // Incoming tell. Parse and display to user
+        object who;
+        int sz;
+        string blmsg;
+        who=FIND_PLAYER(lower_case(target));
+        target=GET_CAP_NAME(who);
+        data["text"]=imc2_to_pinkfish(data["text"]);
+        who->SetProperty("reply",sender+"@"+origin);
+        if(who
+#ifdef INVIS
+          && VISIBLE(who)
+#endif
+          && can_use(who)
+        ){
+            switch(data["isreply"]){
+            case 2: // emote
+                who->eventPrint("%^BOLD%^RED%^" + sender + "@" + origin + " %^RESET%^ " + data["text"], MSG_CONV);
+                //IMC2_MSG(sprintf("%%^CYAN%%^%s@%s%%^RESET%%^ %s\n", NETWORK_ID,sender,origin,data["text"]), who);
+                blmsg=sprintf("%s@%s %s\n",sender,origin,data["text"]);
+                break;
+            case 1: // reply
+                who->eventPrint("%^BOLD%^RED%^" + sender + "@" + origin + " tells you:%^RESET%^ " + data["text"], MSG_CONV);
+                //IMC2_MSG(sprintf("%s %%^CYAN%%^%s@%s%%^RESET%%^ replies to you: %s\n", NETWORK_ID,sender,origin,data["text"]), who);
+                blmsg=sprintf("%s@%s replied to you: %s\n", NETWORK_ID,sender,origin,data["text"]);
+                break;
+            default:
+                who->eventPrint("%^BOLD%^RED%^" + sender + "@" + origin + " tells you:%^RESET%^ " + data["text"], MSG_CONV);
+                //IMC2_MSG(sprintf("%s %%^CYAN%%^%s@%s%%^RESET%%^ tells you: %s\n", NETWORK_ID,sender,origin,data["text"]), who);
+                blmsg=sprintf("%s@%s told you: %s\n", sender,origin,data["text"]);
+                break;
+            }
+            if(!tells[target])
+                tells[target]=([ ]);
+            tells[target]["reply"] = sprintf("%s@%s",sender,origin);
+            if(!tells[target]["backlog"] || !arrayp(tells[target]["backlog"]))
+                tells[target]["backlog"]=({ });
+            tells[target]["backlog"] += ({ blmsg });
+            sz = sizeof(tells[target]["backlog"]);
+            if(sz>BACKLOG_SIZE)
+                tells[target]["backlog"]=tells[target]["backlog"][(sz-BACKLOG_SIZE)..sz];
+        } else {
 #ifdef TELL_BOTS
-              // Can have a mapping of bots which can get tells.
-              if(TELL_BOTS[target]){
-                  call_other(TELL_BOTS[target],"got_tell",sender, origin, target, data["text"]);
-                  return;
-              }
+            // Can have a mapping of bots which can get tells.
+            if(TELL_BOTS[target]){
+                call_other(TELL_BOTS[target],"got_tell",sender, origin, target, data["text"]);
+                return;
+            }
 #endif
 #ifdef TELL_BOT
-              // They should have got_tell(fromname, frommud, target, text)
-              // I'll assume bots don't care about emote/reply... tell me if you do?
-              // TELL_BOT will get told of all tells which don't have a valid target, and
-              // then the sender will be notified that it didn't get to anyone.
-              // This would be useful if for example you wanted all tells sent to
-              // offline people to be mudmailed to them or something.
-              call_other(TELL_BOT,"got_tell",sender, origin, target, data["text"]);
+            // They should have got_tell(fromname, frommud, target, text)
+            // I'll assume bots don't care about emote/reply... tell me if you do?
+            // TELL_BOT will get told of all tells which don't have a valid target, and
+            // then the sender will be notified that it didn't get to anyone.
+            // This would be useful if for example you wanted all tells sent to
+            // offline people to be mudmailed to them or something.
+            call_other(TELL_BOT,"got_tell",sender, origin, target, data["text"]);
 #endif
-              send_packet("*","tell",sender,origin,
-                sprintf("level=-1 text=\"%s is not online on this mud.\" isreply=1",target));
-          }
-      }
+            send_packet("*","tell",sender,origin,
+              sprintf("level=-1 text=\"%s is not online on this mud.\" isreply=1",target));
+        }
+    }
 
-      int tell(mixed arg, object who){
-          string targmud,targplayer,msg;
-          int i;
-          if(!who || !this_player() || who != this_player()) return 0;
-          if(who->GetForced()){
-              return 0;
-          }
-          i = sscanf(arg,"%s@%s %s",targplayer, targmud, msg);
-          if(i != 3 ){
-              write("There was an error in your message. See: \"help imc2\"");
-              return 1;
-          }
-          tell_out(who, targplayer, targmud, msg, 0, 0);
-          return 1;
-      } 
+    int tell(mixed arg, object who){
+        string targmud,targplayer,msg;
+        int i;
+        if(!who || !this_player() || who != this_player()) return 0;
+        if(who->GetForced()){
+            return 0;
+        }
+        i = sscanf(arg,"%s@%s %s",targplayer, targmud, msg);
+        if(i != 3 ){
+            write("There was an error in your message. See: \"help imc2\"");
+            return 1;
+        }
+        tell_out(who, targplayer, this_object()->find_mud(targmud), msg, 0, 0);
+        return 1;
+    } 
 
-      string pinkfish_to_imc2(string str){
-          // Foreground
-          str=replace_string(str,"%^BLACK%^","~x"); // Black
-          str=replace_string(str,"%^RED%^","~R"); // Red
-          str=replace_string(str,"%^GREEN%^","~G"); // Green
-          str=replace_string(str,"%^BLUE%^","~B"); // Blue
-          str=replace_string(str,"%^WHITE%^","~W"); // White
-          str=replace_string(str,"%^ORANGE%^","~y"); // Orange
-          str=replace_string(str,"%^CYAN%^","~c"); // Cyan
-          str=replace_string(str,"%^YELLOW%^","~Y"); // Yellow
-          str=replace_string(str,"%^MAGENTA%^","~p"); // Magenta -> purple sounds closest
-          str=replace_string(str,"%^GRAY%^","~w"); // Gray doesn't display on my MUD, bah :(
-          // Background
-          str=replace_string(str,"%^B_BLACK%^","^x");
-          str=replace_string(str,"%^B_RED%^","^R"); // Red
-          str=replace_string(str,"%^B_GREEN%^","^G"); // Green
-          str=replace_string(str,"%^B_BLUE%^","^b"); // Blue
-          str=replace_string(str,"%^B_WHITE%^","^W"); // White
-          str=replace_string(str,"%^B_ORANGE%^","^O"); // Orange
-          str=replace_string(str,"%^B_CYAN%^","^c"); // Cyan
-          str=replace_string(str,"%^B_YELLOW%^","^Y"); // Yellow
-          str=replace_string(str,"%^B_MAGENTA%^","^p"); // Magenta -> purple sounds closest
-          // Misc.
-          str=replace_string(str,"%^FLASH%^","~$"); // Flash -> Blink
-          str=replace_string(str,"%^BOLD%^","~L"); // Bold
-          str=replace_string(str,"%^RESET%^","~!");
-          //Replace anything that was done in %^BOLD%^RED%^ format and wasn't already caught
-          str=replace_string(str,"%^FLASH","~$"); // Flash -> Blink
-          str=replace_string(str,"%^BOLD","~L"); // Bold
-          str=replace_string(str,"%^RESET","~!");
-          str=replace_string(str,"FLASH%^","~$"); // Flash -> Blink
-          str=replace_string(str,"BOLD%^","~L"); // Bold
-          str=replace_string(str,"RESET%^","~!");
-          return str;
-      }
+    string pinkfish_to_imc2(string str){
+        // Foreground
+        str=replace_string(str,"%^BLACK%^","~x"); // Black
+        str=replace_string(str,"%^RED%^","~R"); // Red
+        str=replace_string(str,"%^GREEN%^","~G"); // Green
+        str=replace_string(str,"%^BLUE%^","~B"); // Blue
+        str=replace_string(str,"%^WHITE%^","~W"); // White
+        str=replace_string(str,"%^ORANGE%^","~y"); // Orange
+        str=replace_string(str,"%^CYAN%^","~c"); // Cyan
+        str=replace_string(str,"%^YELLOW%^","~Y"); // Yellow
+        str=replace_string(str,"%^MAGENTA%^","~p"); // Magenta -> purple sounds closest
+        str=replace_string(str,"%^GRAY%^","~w"); // Gray doesn't display on my MUD, bah :(
+        // Background
+        str=replace_string(str,"%^B_BLACK%^","^x");
+        str=replace_string(str,"%^B_RED%^","^R"); // Red
+        str=replace_string(str,"%^B_GREEN%^","^G"); // Green
+        str=replace_string(str,"%^B_BLUE%^","^b"); // Blue
+        str=replace_string(str,"%^B_WHITE%^","^W"); // White
+        str=replace_string(str,"%^B_ORANGE%^","^O"); // Orange
+        str=replace_string(str,"%^B_CYAN%^","^c"); // Cyan
+        str=replace_string(str,"%^B_YELLOW%^","^Y"); // Yellow
+        str=replace_string(str,"%^B_MAGENTA%^","^p"); // Magenta -> purple sounds closest
+        // Misc.
+        str=replace_string(str,"%^FLASH%^","~$"); // Flash -> Blink
+        str=replace_string(str,"%^BOLD%^","~L"); // Bold
+        str=replace_string(str,"%^RESET%^","~!");
+        //Replace anything that was done in %^BOLD%^RED%^ format and wasn't already caught
+        str=replace_string(str,"%^FLASH","~$"); // Flash -> Blink
+        str=replace_string(str,"%^BOLD","~L"); // Bold
+        str=replace_string(str,"%^RESET","~!");
+        str=replace_string(str,"FLASH%^","~$"); // Flash -> Blink
+        str=replace_string(str,"BOLD%^","~L"); // Bold
+        str=replace_string(str,"RESET%^","~!");
+        return str;
+    }
 
-      string imc2_to_pinkfish(string str){
-          string output="";
-          int sz;
-          /*
-          For colors explanation, refer to IMC Packet Documentation by Xorith.
-          Thanks very much for putting that out, by the way. :)
-          Found at http://hub00.muddomain.com/imc2_protocol_doc.txt
-          */
-          sz=sizeof(str)-1;
-          while(sizeof(str)>1){
-              switch(str[0]){
-              case '~': // Foreground
-                  switch(str[1]){
-                  case 'Z': break; // Random
-                  case 'x': output += "%^BLACK%^"; break; // Black
-                  case 'r': output += "%^RED%^"; break; // Dark Red
-                  case 'g': output += "%^GREEN%^"; break; // Dark Green
-                  case 'y': output += "%^ORANGE%^"; break; // Orange
-                  case 'b': output += "%^BLUE%^"; break; // Dark Blue
-                  case 'p': output += "%^MAGENTA%^"; break; // Purple
-                  case 'c': output += "%^CYAN%^"; break; // Cyan
-                  case 'w': output += "%^WHITE%^"; break; // Grey
-                  case 'D': output += "%^BLACK%^"; break; // Dark Grey
-                  case 'z': output += "%^BLACK%^"; break; // Same as ~D
-                  case 'R': output += "%^RED%^"; break; // Red
-                  case 'G': output += "%^GREEN%^"; break; // Green
-                  case 'Y': output += "%^YELLOW%^"; break; // Yellow
-                  case 'B': output += "%^BLUE%^"; break; // Blue
-                  case 'P': output += "%^MAGENTA%^"; break; // Pink
-                  case 'C': output += "%^BLUE%^"; break; // Light Blue
-                  case 'W': output += "%^WHITE%^"; break; // White
+    string imc2_to_pinkfish(string str){
+        string output="";
+        int sz;
+        /*
+        For colors explanation, refer to IMC Packet Documentation by Xorith.
+        Thanks very much for putting that out, by the way. :)
+        Found at http://hub00.muddomain.com/imc2_protocol_doc.txt
+        */
+        sz=sizeof(str)-1;
+        while(sizeof(str)>1){
+            switch(str[0]){
+            case '~': // Foreground
+                switch(str[1]){
+                case 'Z': break; // Random
+                case 'x': output += "%^BLACK%^"; break; // Black
+                case 'r': output += "%^RED%^"; break; // Dark Red
+                case 'g': output += "%^GREEN%^"; break; // Dark Green
+                case 'y': output += "%^ORANGE%^"; break; // Orange
+                case 'b': output += "%^BLUE%^"; break; // Dark Blue
+                case 'p': output += "%^MAGENTA%^"; break; // Purple
+                case 'c': output += "%^CYAN%^"; break; // Cyan
+                case 'w': output += "%^WHITE%^"; break; // Grey
+                case 'D': output += "%^BLACK%^"; break; // Dark Grey
+                case 'z': output += "%^BLACK%^"; break; // Same as ~D
+                case 'R': output += "%^RED%^"; break; // Red
+                case 'G': output += "%^GREEN%^"; break; // Green
+                case 'Y': output += "%^YELLOW%^"; break; // Yellow
+                case 'B': output += "%^BLUE%^"; break; // Blue
+                case 'P': output += "%^MAGENTA%^"; break; // Pink
+                case 'C': output += "%^BLUE%^"; break; // Light Blue
+                case 'W': output += "%^WHITE%^"; break; // White
 
-                  case 'm': output += "%^MAGENTA%^"; break; // same as p
-                  case 'd': output += "%^WHITE%^"; break; // same as w
-                  case 'M': output += "%^MAGENTA%^"; break; // same as P
-                      // Misc.
-                  case '!': output += "%^RESET%^"; break; // Reset
-                  case 'L': output += "%^BOLD%^"; break; // Bold
-                  case 'u': break; // Underline
-                  case '$': output += "%^FLASH%^"; break; // Blink
-                  case 'i': break; // Italic
-                  case 'v': break; // Reverse
-                  case 's': break; // Strike-thru
+                case 'm': output += "%^MAGENTA%^"; break; // same as p
+                case 'd': output += "%^WHITE%^"; break; // same as w
+                case 'M': output += "%^MAGENTA%^"; break; // same as P
+                    // Misc.
+                case '!': output += "%^RESET%^"; break; // Reset
+                case 'L': output += "%^BOLD%^"; break; // Bold
+                case 'u': break; // Underline
+                case '$': output += "%^FLASH%^"; break; // Blink
+                case 'i': break; // Italic
+                case 'v': break; // Reverse
+                case 's': break; // Strike-thru
 
-                  case '~': output += "~"; break; // ~~ prints as ~
-                  default : output += "~"; // Don't skip over this
-                      // (cheap hack is to add a character in front so the [2..] thing still works)
-                      str = " "+str;
-                      break;
-                  }
-                  str=str[2..];
-                  break;
-              case '^':  // Background
-                  switch(str[1]){
-                  case 'Z': break; // Random
-                  case 'x': output += "%^B_BLACK%^"; break; // Black
-                  case 'r': output += "%^B_RED%^"; break; // Dark Red
-                  case 'g': output += "%^B_GREEN%^"; break; // Dark Green
-                  case 'O': output += "%^B_ORANGE%^"; break; // Orange
-                  case 'B': output += "%^B_BLUE%^"; break; // Dark Blue
-                  case 'p': output += "%^B_MAGENTA%^"; break; // Purple
-                  case 'c': output += "%^B_CYAN%^"; break; // Cyan
-                  case 'w': output += "%^B_WHITE%^"; break; // Grey
-                  case 'z': output += "%^B_BLACK%^"; break; // Dark Grey
-                  case 'R': output += "%^B_RED%^"; break; // Red
-                  case 'G': output += "%^B_GREEN%^"; break; // Green
-                  case 'Y': output += "%^B_YELLOW%^"; break; // Yellow
-                  case 'b': output += "%^B_BLUE%^"; break; // Blue
-                  case 'P': output += "%^B_MAGENTA%^"; break; // Pink
-                  case 'C': output += "%^B_BLUE%^"; break; // Light Blue
-                  case 'W': output += "%^B_WHITE%^"; break; // White
-                  case '^': output += "^"; break; // ^^ prints as ^
-                  default : output += "^"; // Don't skip over this
-                      // (cheap hack is to add a character in front so the [2..] thing still works)
-                      str = " "+str;
-                      break;
-                  }
-                  str=str[2..];
-                  break;
-              case '`': // Blinking Foreground
-                  switch(str[1]){
-                  case 'Z': output += "%^FLASH%^"; break; // Random
-                  case 'x': output += "%^FLASH%^%^BLACK%^"; break; // Black
-                  case 'r': output += "%^FLASH%^%^RED%^"; break; // Dark Red
-                  case 'g': output += "%^FLASH%^%^GREEN%^"; break; // Dark Green
-                  case 'O': output += "%^FLASH%^%^ORANGE%^"; break; // Orange
-                  case 'b': output += "%^FLASH%^%^BLUE%^"; break; // Dark Blue
-                  case 'p': output += "%^FLASH%^%^MAGENTA%^"; break; // Purple
-                  case 'c': output += "%^FLASH%^%^CYAN%^"; break; // Cyan
-                  case 'w': output += "%^FLASH%^%^WHITE%^"; break; // Grey
-                  case 'z': output += "%^FLASH%^%^BLACK%^"; break; // Dark Grey
-                  case 'R': output += "%^FLASH%^%^RED%^"; break; // Red
-                  case 'G': output += "%^FLASH%^%^GREEN%^"; break; // Green
-                  case 'Y': output += "%^FLASH%^%^YELLOW%^"; break; // Yellow
-                  case 'B': output += "%^FLASH%^%^BLUE%^"; break; // Blue
-                  case 'P': output += "%^FLASH%^%^MAGENTA%^"; break; // Pink
-                  case 'C': output += "%^FLASH%^%^BLUE%^"; break; // Light Blue
-                  case 'W': output += "%^FLASH%^%^WHITE%^"; break; // White
-                  case '`': output += "`"; break; // `` prints as `
-                  default : output += "`"; // Don't skip over this
-                      // (cheap hack is to add a character in front so the [2..] thing still works)
-                      str = " "+str;
-                      break;
-                  }
-                  str=str[2..];
-                  break;
-              default:
-                  output += str[0..0];
-                  str=str[1..];
-                  break;
-              }
-          }
-          output += str;
-          return output;
-      }
+                case '~': output += "~"; break; // ~~ prints as ~
+                default : output += "~"; // Don't skip over this
+                    // (cheap hack is to add a character in front so the [2..] thing still works)
+                    str = " "+str;
+                    break;
+                }
+                str=str[2..];
+                break;
+            case '^':  // Background
+                switch(str[1]){
+                case 'Z': break; // Random
+                case 'x': output += "%^B_BLACK%^"; break; // Black
+                case 'r': output += "%^B_RED%^"; break; // Dark Red
+                case 'g': output += "%^B_GREEN%^"; break; // Dark Green
+                case 'O': output += "%^B_ORANGE%^"; break; // Orange
+                case 'B': output += "%^B_BLUE%^"; break; // Dark Blue
+                case 'p': output += "%^B_MAGENTA%^"; break; // Purple
+                case 'c': output += "%^B_CYAN%^"; break; // Cyan
+                case 'w': output += "%^B_WHITE%^"; break; // Grey
+                case 'z': output += "%^B_BLACK%^"; break; // Dark Grey
+                case 'R': output += "%^B_RED%^"; break; // Red
+                case 'G': output += "%^B_GREEN%^"; break; // Green
+                case 'Y': output += "%^B_YELLOW%^"; break; // Yellow
+                case 'b': output += "%^B_BLUE%^"; break; // Blue
+                case 'P': output += "%^B_MAGENTA%^"; break; // Pink
+                case 'C': output += "%^B_BLUE%^"; break; // Light Blue
+                case 'W': output += "%^B_WHITE%^"; break; // White
+                case '^': output += "^"; break; // ^^ prints as ^
+                default : output += "^"; // Don't skip over this
+                    // (cheap hack is to add a character in front so the [2..] thing still works)
+                    str = " "+str;
+                    break;
+                }
+                str=str[2..];
+                break;
+            case '`': // Blinking Foreground
+                switch(str[1]){
+                case 'Z': output += "%^FLASH%^"; break; // Random
+                case 'x': output += "%^FLASH%^%^BLACK%^"; break; // Black
+                case 'r': output += "%^FLASH%^%^RED%^"; break; // Dark Red
+                case 'g': output += "%^FLASH%^%^GREEN%^"; break; // Dark Green
+                case 'O': output += "%^FLASH%^%^ORANGE%^"; break; // Orange
+                case 'b': output += "%^FLASH%^%^BLUE%^"; break; // Dark Blue
+                case 'p': output += "%^FLASH%^%^MAGENTA%^"; break; // Purple
+                case 'c': output += "%^FLASH%^%^CYAN%^"; break; // Cyan
+                case 'w': output += "%^FLASH%^%^WHITE%^"; break; // Grey
+                case 'z': output += "%^FLASH%^%^BLACK%^"; break; // Dark Grey
+                case 'R': output += "%^FLASH%^%^RED%^"; break; // Red
+                case 'G': output += "%^FLASH%^%^GREEN%^"; break; // Green
+                case 'Y': output += "%^FLASH%^%^YELLOW%^"; break; // Yellow
+                case 'B': output += "%^FLASH%^%^BLUE%^"; break; // Blue
+                case 'P': output += "%^FLASH%^%^MAGENTA%^"; break; // Pink
+                case 'C': output += "%^FLASH%^%^BLUE%^"; break; // Light Blue
+                case 'W': output += "%^FLASH%^%^WHITE%^"; break; // White
+                case '`': output += "`"; break; // `` prints as `
+                default : output += "`"; // Don't skip over this
+                    // (cheap hack is to add a character in front so the [2..] thing still works)
+                    str = " "+str;
+                    break;
+                }
+                str=str[2..];
+                break;
+            default:
+                output += str[0..0];
+                str=str[1..];
+                break;
+            }
+        }
+        output += str;
+        return output;
+    }
 
-      private void who_reply_in(string origin, string target, mapping data){
-          string output;
-          object targuser;
-          targuser = FIND_PLAYER(lower_case(target));
-          if(targuser){
-              output = NETWORK_ID+" who reply from: %^CYAN%^"+origin+"%^RESET%^\n";
-              output += imc2_to_pinkfish(data["text"])+"\n";
-              IMC2_MSG(output,targuser);
-          }
-      }
+    private void who_reply_in(string origin, string target, mapping data){
+        string output;
+        object targuser;
+        targuser = FIND_PLAYER(lower_case(target));
+        if(targuser){
+            output = NETWORK_ID+" who reply from: %^CYAN%^"+origin+"%^RESET%^\n";
+            output += imc2_to_pinkfish(data["text"])+"\n";
+            IMC2_MSG(output,targuser);
+        }
+    }
 
-      private void whois_in(string fromname, string frommud, string targ, mapping data){
-          if(FIND_PLAYER(lower_case(targ))
+    private void whois_in(string fromname, string frommud, string targ, mapping data){
+        if(FIND_PLAYER(lower_case(targ))
 #ifdef INVIS
-            && !INVIS(FIND_PLAYER(lower_case(targ)))
+          && !INVIS(FIND_PLAYER(lower_case(targ)))
 #endif
-            && can_use(FIND_PLAYER(lower_case(targ)))
-          ){
-              send_packet(targ,"whois-reply",fromname,frommud,"text=Online");
-          }
+          && can_use(FIND_PLAYER(lower_case(targ)))
+        ){
+            send_packet(targ,"whois-reply",fromname,frommud,"text=Online");
+        }
 #ifdef USER_EXISTS
-          else if(USER_EXISTS(lower_case(targ))){
-              send_packet(targ,"whois-reply",fromname,frommud,
-                "text=\"Exists but is offline\"");
-          }
+        else if(USER_EXISTS(lower_case(targ))){
+            send_packet(targ,"whois-reply",fromname,frommud,
+              "text=\"Exists but is offline\"");
+        }
 #endif
-      }
+    }
 
-      private void whois_reply_in(string targ,string fromname,string frommud,mapping data){
-          object who;
-          who=FIND_PLAYER(lower_case(targ));
-          if(who){
-              IMC2_MSG(sprintf("%s whois reply: %s@%s: %s\n",
-                  NETWORK_ID,fromname,frommud,data["text"]),who);
-          }
-      }
+    private void whois_reply_in(string targ,string fromname,string frommud,mapping data){
+        object who;
+        who=FIND_PLAYER(lower_case(targ));
+        if(who){
+            IMC2_MSG(sprintf("%s whois reply: %s@%s: %s\n",
+                NETWORK_ID,fromname,frommud,data["text"]),who);
+        }
+    }
 
-      private void beep_in(string sender, string origin, string target, mapping data){
-          object who;
-          who=FIND_PLAYER(lower_case(target));
-          if(who && can_use(who)
+    private void beep_in(string sender, string origin, string target, mapping data){
+        object who;
+        who=FIND_PLAYER(lower_case(target));
+        if(who && can_use(who)
 #ifdef INVIS
-            && VISIBLE(who)
+          && VISIBLE(who)
 #endif
-          ){
-              IMC2_MSG(sprintf("%s- %%^CYAN%%^%s@%s%%^RESET%%^ \abeeps you.\n",
-                  NETWORK_ID,sender,origin,data["text"]), who);
-          }
-          else{
-              send_packet("*","tell",sender,origin,
-                sprintf("level=-1 text=\"%s is not online.\" isreply=1",target));
-          }
-      }
+        ){
+            IMC2_MSG(sprintf("%s- %%^CYAN%%^%s@%s%%^RESET%%^ \abeeps you.\n",
+                NETWORK_ID,sender,origin,data["text"]), who);
+        }
+        else{
+            send_packet("*","tell",sender,origin,
+              sprintf("level=-1 text=\"%s is not online.\" isreply=1",target));
+        }
+    }
 
-      void beep_out(object from, string targname, string targmud){
-          send_packet(GET_CAP_NAME(from),"beep",targname,targmud,
-            sprintf("level=%d ", level(from)));
-      }
+    void beep_out(object from, string targname, string targmud){
+        send_packet(GET_CAP_NAME(from),"beep",targname,targmud,
+          sprintf("level=%d ", level(from)));
+    }
 
-      void send_ice_refresh(){ send_packet("*","ice-refresh","*","*",""); }
+    void send_ice_refresh(){ send_packet("*","ice-refresh","*","*",""); }
 
-      void ping_reply_in(string sender,string origin,string target,mapping data){
-          object who;
-          if((target=="*") && target=ping_requests[sender]){
-              target=ping_requests[sender];
-              map_delete(ping_requests,sender);
-          }
-          who=FIND_PLAYER(lower_case(target));
-          if(who){
-              IMC2_MSG(sprintf("%s route to %%^CYAN%%^%s%%^RESET%%^ is: %s\n",
-                  NETWORK_ID,origin,data["path"]), who);
-          }
-      }
+    void ping_reply_in(string sender,string origin,string target,mapping data){
+        object who;
+        if((target=="*") && target=ping_requests[sender]){
+            target=ping_requests[sender];
+            map_delete(ping_requests,sender);
+        }
+        who=FIND_PLAYER(lower_case(target));
+        if(who){
+            IMC2_MSG(sprintf("%s route to %%^CYAN%%^%s%%^RESET%%^ is: %s\n",
+                NETWORK_ID,origin,data["path"]), who);
+        }
+    }
 
-      void ping_out(string from,string targmud){ send_packet(from,"ping","*",targmud,""); }
-      varargs void who_out(string from,string targmud,string type){ send_packet(from,"who","*",targmud,(type ? sprintf("type=\"%s\"",type) : "type=who")); }
+    void ping_out(string from,string targmud){ send_packet(from,"ping","*",targmud,""); }
+    varargs void who_out(string from,string targmud,string type){ send_packet(from,"who","*",targmud,(type ? sprintf("type=\"%s\"",type) : "type=who")); }
 
-      void chanwho_out(object from,string chan,string mud){
-          send_packet(GET_CAP_NAME(from),"ice-chan-who","*",mud,
-            sprintf("level=%d channel=%s lname=%s",level(from),
-              localchaninfo[chan]["name"],chan));
-      }
+    void chanwho_out(object from,string chan,string mud){
+        send_packet(GET_CAP_NAME(from),"ice-chan-who","*",mud,
+          sprintf("level=%d channel=%s lname=%s",level(from),
+            localchaninfo[chan]["name"],chan));
+    }
 
-      void chanwho_reply_in(string origin, string target, mapping data){
-          string output;
-          object targuser;
-          targuser = FIND_PLAYER(lower_case(target));
-          if(targuser){
-              output = NETWORK_ID+" chanwho reply from "+origin+" for "+data["channel"]+"\n";
-              output += imc2_to_pinkfish(data["list"]);
-              IMC2_MSG(output,targuser);
-          }
-      }
+    void chanwho_reply_in(string origin, string target, mapping data){
+        string output;
+        object targuser;
+        targuser = FIND_PLAYER(lower_case(target));
+        if(targuser){
+            output = NETWORK_ID+" chanwho reply from "+origin+" for "+data["channel"]+"\n";
+            output += imc2_to_pinkfish(data["list"]);
+            IMC2_MSG(output,targuser);
+        }
+    }
 
-      void chan_who_in(string fromname, string frommud, mapping data){
-          /*	  // Handles an incoming channel who request.
-                    object user, *usrs=({ });
-                    string local, lname;
-                    string output;
-                    local=localize_channel(data["channel"]);
-                    if(data["lname"]) lname = data["lname"];
-                    else lname = local;
-                    if(!local){ // Channel not used locally.
-                        output = sprintf("channel=%s list=\"%s (%s) is not configured on this MUD.\n\"",
-                          data["channel"],lname,data["channel"]);
-                    }
-                    else{ // Is used locally
-                        output = "The following users are listening to "+lname+" ("+local+"):\n  ";
-                        foreach(user in users()){
-                            if(chan_listening(user,local)
-#ifdef INVIS
-                              && !INVIS(user)
-#endif
-                            ){
-                                usrs += ({ GET_CAP_NAME(user) });
-                            }
-                        } // foreach
-                        output += implode(usrs,", ");
-                        output += "\n";
-                        if(!sizeof(usrs)){
-                            output=sprintf("channel=%s list=\"Nobody is listening to %s (%s) on this MUD.\n\"",
-                              lname,local);
-                        }
-                    }
-                    send_packet("*","ice-chan-whoreply",fromname,frommud,output);*/
-      }
-
-      string find_mud(string str){
-          // Makes case-insensitive mud name into the actual mud name, or else 0.
-          string mud;
-          if (!str) return 0;
-
-          str = lower_case(str);
-          foreach(mud in keys(mudinfo)){
-              if ( lower_case(mud)==str ) return mud;
-          }
-          return 0;
-      }
-
-      string localize_channel(string str){
-          // Tells what the local name for a channel is, given the network name for it, or else 0.
-          string a;
-          foreach(a in keys(localchaninfo)){
-              if(lower_case(localchaninfo[a]["name"])==lower_case(str)) return a;
-          }
-          return 0;
-      }
-
-      //Returns mud list to user object 'towho'
-      void mudlist(object towho) {
-          int x,y;
-          string output;
-          string mud,*muds;
-
-          muds = sort_array(keys(mudinfo),1);
-          if (!mode==MODE_CONNECTED) {
-              message("system",MUDNAME+" is not connected to the "+NETWORK_ID+" network!\n",towho);
-              return;
-          } else if (!sizeof(mudinfo)){
-              message("system","There are no muds on the "+NETWORK_ID+" network!\n",towho);
-              return;
-          } else {
-              x=0; y=0;
-              output=sprintf("[%s] %-20s %-20s %-20s\n","U/D?","Name","Network","IMC2 Version");
-              foreach (mud in muds){
-                  if(!mudinfo[mud]) output += "Error on mud: "+mud+"\n";
-                  else {
-                      if(mudinfo[mud]["online"]) x++; else y++;
-                      output += sprintf("[%s] %-20s %-20s %-20s\n",
-                        (mudinfo[mud]["online"] ? "%^GREEN%^ UP %^RESET%^" : "%^RED%^DOWN%^RESET%^"),
-                        mud, mudinfo[mud]["networkname"], mudinfo[mud]["versionid"]);
+    void chan_who_in(string fromname, string frommud, mapping data){
+        /*	  // Handles an incoming channel who request.
+                  object user, *usrs=({ });
+                  string local, lname;
+                  string output;
+                  local=localize_channel(data["channel"]);
+                  if(data["lname"]) lname = data["lname"];
+                  else lname = local;
+                  if(!local){ // Channel not used locally.
+                      output = sprintf("channel=%s list=\"%s (%s) is not configured on this MUD.\n\"",
+                        data["channel"],lname,data["channel"]);
                   }
-              }
-              output += sprintf("%d of %d MUDs are online.\n",x,x+y);
-              message("system",output,towho);
-              return;
-          }
-      }
+                  else{ // Is used locally
+                      output = "The following users are listening to "+lname+" ("+local+"):\n  ";
+                      foreach(user in users()){
+                          if(chan_listening(user,local)
+#ifdef INVIS
+                            && !INVIS(user)
+#endif
+                          ){
+                              usrs += ({ GET_CAP_NAME(user) });
+                          }
+                      } // foreach
+                      output += implode(usrs,", ");
+                      output += "\n";
+                      if(!sizeof(usrs)){
+                          output=sprintf("channel=%s list=\"Nobody is listening to %s (%s) on this MUD.\n\"",
+                            lname,local);
+                      }
+                  }
+                  send_packet("*","ice-chan-whoreply",fromname,frommud,output);*/
+    }
 
-      mapping getmudinfo() {
-          return mudinfo;
-      }
+    string find_mud(string str){
+        // Makes case-insensitive mud name into the actual mud name, or else 0.
+        string mud;
+        string *mudses = filter(keys(mudinfo), (: mudinfo[$1] &&
+            mudinfo[$1]["online"] == 1 :) );
+        if (!str) return 0;
+        if(member_array(str, mudses) != -1) return str;
+        str = lower_case(str);
+        foreach(mud in mudses){
+            if ( lower_case(mud)==str ) return mud;
+        }
+        return 0;
+    }
 
-      //pings mud 'mudname', returns it to user object 'towho'
-      void mudinfo(string args,object towho) {
-          string str;
-          string output;
+    string localize_channel(string str){
+        // Tells what the local name for a channel is, given the network name for it, or else 0.
+        string a;
+        foreach(a in keys(localchaninfo)){
+            if(lower_case(localchaninfo[a]["name"])==lower_case(str)) return a;
+        }
+        return 0;
+    }
 
-          if(!args) {
-              message("system","See info for which MUD?",towho);
-              return;
-          }
+    //Returns mud list to user object 'towho'
+    void mudlist(object towho) {
+        int x,y;
+        string output;
+        string mud,*muds;
 
-          str=find_mud(args);
-          if(!str) {
-              message("system","MUD isn't known on "+NETWORK_ID+".",towho);
-              return;
-          }
+        muds = sort_array(keys(mudinfo),1);
+        if (!mode==MODE_CONNECTED) {
+            message("system",MUDNAME+" is not connected to the "+NETWORK_ID+" network!\n",towho);
+            return;
+        } else if (!sizeof(mudinfo)){
+            message("system","There are no muds on the "+NETWORK_ID+" network!\n",towho);
+            return;
+        } else {
+            x=0; y=0;
+            output=sprintf("[%s] %-20s %-20s %-20s\n","U/D?","Name","Network","IMC2 Version");
+            foreach (mud in muds){
+                if(!mudinfo[mud]) output += "Error on mud: "+mud+"\n";
+                else {
+                    if(mudinfo[mud]["online"]) x++; else y++;
+                    output += sprintf("[%s] %-20s %-20s %-20s\n",
+                      (mudinfo[mud]["online"] ? "%^GREEN%^ UP %^RESET%^" : "%^RED%^DOWN%^RESET%^"),
+                      mud, mudinfo[mud]["networkname"], mudinfo[mud]["versionid"]);
+                }
+            }
+            output += sprintf("%d of %d MUDs are online.\n",x,x+y);
+            message("system",output,towho);
+            return;
+        }
+    }
 
-          output=("Mud info for: "+str+"\nStatus: ");
+    mapping getmudinfo() {
+        return mudinfo;
+    }
 
-          if(mudinfo[str]["online"]) output+=("%^GREEN%^Online%^RESET%^\n");
-          else output+=("%^RED%^Offline%^RESET%^\n");
+    //pings mud 'mudname', returns it to user object 'towho'
+    void mudinfo(string args,object towho) {
+        string str;
+        string output;
 
-          if(mudinfo[str]["versionid"])   output+=("Version ID: "+mudinfo[str]["versionid"]+"\n");
-          if(mudinfo[str]["url"]) 	    output+=("URL: "+mudinfo[str]["url"]+"\n");
-          if(mudinfo[str]["networkname"]) output+=("Network name: "+mudinfo[str]["networkname"]+"\n");
+        if(!args) {
+            message("system","See info for which MUD?",towho);
+            return;
+        }
 
-          message("system",output,towho);
-          return;
-      }
+        str=find_mud(args);
+        if(!str) {
+            message("system","MUD isn't known on "+NETWORK_ID+".",towho);
+            return;
+        }
 
-      //Gets WHO list from mud 'mudname', returns it to user object 'towho'
-      void mudwho(string mudname,object towho) {
-          string str;
-          if(!mudname) {
-              message("system","Send who request to which MUD?",towho);
-              return;
-          }
-          str=find_mud(mudname);
-          if(!str) {
-              message("system","MUD isn't known on "+NETWORK_ID+".",towho);
-              return;
-          }
-          if(!mudinfo[str]["online"]) {
-              message("system",str+" is offline right now.",towho);
-              return;
-          }
-          who_out(capitalize(this_player()->GetKeyName()),str);
-          message("system",NETWORK_ID+" sent a who request to "+str+"\n",towho);
-          return;
-      }
+        output=("Mud info for: "+str+"\nStatus: ");
 
-      //pings mud 'mudname', returns it to user object 'towho'
-      mixed pingmud(string mudname,object towho) {
-          string str;
-          if(!mudname) {
-              message("system","Send ping to which MUD?",towho);
-              return;
-          }
-          str=find_mud(mudname);
-          if(!str) {
-              message("system","MUD isn't known on "+NETWORK_ID+".",towho);
-              return;
-          }
-          if(!mudinfo[str]["online"]) {
-              message("system",str+" is offline right now.",towho);
-              return;
-          }
-          ping_out(capitalize(towho->GetKeyName()),str);
-          message("system","Sent a ping to "+str+".",towho);
-          return;
-      }
+        if(mudinfo[str]["online"]) output+=("%^GREEN%^Online%^RESET%^\n");
+        else output+=("%^RED%^Offline%^RESET%^\n");
 
-      //Displays status to user object 'towho'
-      void getstatus(object towho) {
-          string output;
+        if(mudinfo[str]["versionid"])   output+=("Version ID: "+mudinfo[str]["versionid"]+"\n");
+        if(mudinfo[str]["url"]) 	    output+=("URL: "+mudinfo[str]["url"]+"\n");
+        if(mudinfo[str]["networkname"]) output+=("Network name: "+mudinfo[str]["networkname"]+"\n");
 
-          output=sprintf(@EndText
+        message("system",output,towho);
+        return;
+    }
+
+    //Gets WHO list from mud 'mudname', returns it to user object 'towho'
+    void mudwho(string mudname,object towho) {
+        string str;
+        if(!mudname) {
+            message("system","Send who request to which MUD?",towho);
+            return;
+        }
+        str=find_mud(mudname);
+        if(!str) {
+            message("system","MUD isn't known on "+NETWORK_ID+".",towho);
+            return;
+        }
+        if(!mudinfo[str]["online"]) {
+            message("system",str+" is offline right now.",towho);
+            return;
+        }
+        who_out(capitalize(this_player()->GetKeyName()),str);
+        message("system",NETWORK_ID+" sent a who request to "+str+"\n",towho);
+        return;
+    }
+
+    //pings mud 'mudname', returns it to user object 'towho'
+    mixed pingmud(string mudname,object towho) {
+        string str;
+        if(!mudname) {
+            message("system","Send ping to which MUD?",towho);
+            return;
+        }
+        str=find_mud(mudname);
+        if(!str) {
+            message("system","MUD isn't known on "+NETWORK_ID+".",towho);
+            return;
+        }
+        if(!mudinfo[str]["online"]) {
+            message("system",str+" is offline right now.",towho);
+            return;
+        }
+        ping_out(capitalize(towho->GetKeyName()),str);
+        message("system","Sent a ping to "+str+".",towho);
+        return;
+    }
+
+    //Displays status to user object 'towho'
+    void getstatus(object towho) {
+        string output;
+
+        output=sprintf(@EndText
 IMC2 NETWORK INFORMATION
 ------------------------
 Status: %s
@@ -1313,225 +1323,234 @@ The network calls the MUD: %s
 The MUD's Version ID: %s
 The MUD's URL: %s
 EndText,
-            ((mode==MODE_CONNECTED) ? "Connected" : "Not connected"),
+          ((mode==MODE_CONNECTED) ? "Connected" : "Not connected"),
 #ifdef HOSTNAME
-            HOSTNAME,
+          HOSTNAME,
 #else
-            HOSTIP,
+          HOSTIP,
 #endif
-            HOSTPORT,hub_name,network_name,COMMAND_NAME,NETWORK_ID,
+          HOSTPORT,hub_name,network_name,COMMAND_NAME,NETWORK_ID,
 #ifdef IMC2_LOGGING
-            "on",
+          "on",
 #else
-            "off",
+          "off",
 #endif
-            MUDNAME,VERSION,URL);
+          MUDNAME,VERSION,URL);
 
-          message("system",output,towho);
-      }
+        message("system",output,towho);
+    }
 
-      //return mode
-      int getonline() {
-          return mode;
-      }
+    //return mode
+    int getonline() {
+        return mode;
+    }
 
-      //Beeps user@mud stored in 'args', returns it to user object 'towho'
-      void interbeep(string args, object towho) {
-          string a,b;
-          if(!args || sscanf(args,"%s@%s",a,b)!=2) {
-              message("system","Invalid syntax.",towho);
-              return;
-          }
-          b=find_mud(b);
-          if(!b) {
-              message("system","MUD isn't known on "+NETWORK_ID+".",towho);
-              return;
-          }
-          if(!mudinfo[b]["online"]) {
-              message("system",b+" is offline right now.",towho);
-              return;
-          }
-          beep_out(towho,a,b);
-          message("system",sprintf("You beep %s@%s.",capitalize(a),b),towho);
-          return;
-      }
+    //Beeps user@mud stored in 'args', returns it to user object 'towho'
+    void interbeep(string args, object towho) {
+        string a,b;
+        if(!args || sscanf(args,"%s@%s",a,b)!=2) {
+            message("system","Invalid syntax.",towho);
+            return;
+        }
+        b=find_mud(b);
+        if(!b) {
+            message("system","MUD isn't known on "+NETWORK_ID+".",towho);
+            return;
+        }
+        if(!mudinfo[b]["online"]) {
+            message("system",b+" is offline right now.",towho);
+            return;
+        }
+        beep_out(towho,a,b);
+        message("system",sprintf("You beep %s@%s.",capitalize(a),b),towho);
+        return;
+    }
 
-      //Fingers user@mud stored in 'args', returns it to user object 'towho'
-      void finger(string args, object towho) {
-          string a,b;
+    //Fingers user@mud stored in 'args', returns it to user object 'towho'
+    void finger(string args, object towho) {
+        string a,b;
 
-          if(!args) return notify_fail("Send finger request to who@where?\n");;
-          if(sscanf(args,"%s@%s",a,b)!=2){
-              return notify_fail("Send finger request to who@where?\n");;
-          }
-          b=find_mud(b);
-          who_out(GET_CAP_NAME(towho),b,"finger "+a);
-          IMC2_MSG(NETWORK_ID"- Sent a finger request to "+a+"@"+b+"\n",THIS_PLAYER);
-      }
+        if(!args) return notify_fail("Send finger request to who@where?\n");;
+        if(sscanf(args,"%s@%s",a,b)!=2){
+            return notify_fail("Send finger request to who@where?\n");;
+        }
+        b=find_mud(b);
+        who_out(GET_CAP_NAME(towho),b,"finger "+a);
+        IMC2_MSG(NETWORK_ID"- Sent a finger request to "+a+"@"+b+"\n",THIS_PLAYER);
+    }
 
-      //Gets whois for user@mud stored in 'args', returns it to user object 'towho'
-      void whois(string args, object towho) {
-          if(!args || !sizeof(args)) return notify_fail("Locate who?\n");
+    //Gets whois for user@mud stored in 'args', returns it to user object 'towho'
+    void whois(string args, object towho) {
+        if(!args || !sizeof(args)) return notify_fail("Locate who?\n");
 
-          send_packet(GET_CAP_NAME(THIS_PLAYER),"whois",args,"*", sprintf("level=%d ",level(THIS_PLAYER)));
+        send_packet(GET_CAP_NAME(THIS_PLAYER),"whois",args,"*", sprintf("level=%d ",level(THIS_PLAYER)));
 
-          IMC2_MSG("Sent a request on "+NETWORK_ID+" looking for "+args+"\n",THIS_PLAYER);
-      }
+        IMC2_MSG("Sent a request on "+NETWORK_ID+" looking for "+args+"\n",THIS_PLAYER);
+    }
 
-      //Gets MUD Info for a mud 'args', returns it to user object 'towho'
-      void getremotemudinfo(string args, object towho) {
-          string str;
+    //Gets MUD Info for a mud 'args', returns it to user object 'towho'
+    void getremotemudinfo(string args, object towho) {
+        string str;
 
-          if(!args) return notify_fail("Send info request to which MUD?\n");
+        if(!args) return notify_fail("Send info request to which MUD?\n");
 
-          str=find_mud(args);
+        str=find_mud(args);
 
-          if(!str) return notify_fail("MUD isn't known on "+NETWORK_ID+".\n");
-          if(!mudinfo[str]["online"]) return notify_fail(NETWORK_ID+"- "+str+" is offline right now.\n");
+        if(!str) return notify_fail("MUD isn't known on "+NETWORK_ID+".\n");
+        if(!mudinfo[str]["online"]) return notify_fail(NETWORK_ID+"- "+str+" is offline right now.\n");
 
-          who_out(GET_CAP_NAME(THIS_PLAYER),str,"info");
-          IMC2_MSG(NETWORK_ID"- Sent an info request to "+str+"\n",THIS_PLAYER);
-      }
+        who_out(GET_CAP_NAME(THIS_PLAYER),str,"info");
+        IMC2_MSG(NETWORK_ID"- Sent an info request to "+str+"\n",THIS_PLAYER);
+    }
 
-      //Write list of all channels to screen
-      void allchans(string args, object towho) {
-          string output;
-          string a;
+    //Write list of all channels to screen
+    void allchans(string args, object towho) {
+        string output;
+        string a;
 
-          output=NETWORK_ID+" channels:\n";
-          output += sprintf("%-23s %-17s %-7s %-6s %-10s %-10s\n",
-            "Name","Owner","Policy","Level","Suggested","Local Name");
+        output=NETWORK_ID+" channels:\n";
+        output += sprintf("%-23s %-17s %-7s %-6s %-10s %-10s\n",
+          "Name","Owner","Policy","Level","Suggested","Local Name");
 
-          foreach(a in sort_array(keys(chaninfo),1)){
-              output += sprintf("%-23s %-17s %-7s %-6s %-10s %-10s\n",
-                a,chaninfo[a]["owner"],
-                chaninfo[a]["policy"],
-                chaninfo[a]["level"],chaninfo[a]["localname"],
-                (localize_channel(a) ? localize_channel(a) : "<none>"));
-          }
-          IMC2_MSG(output,THIS_PLAYER);
+        foreach(a in sort_array(
+            filter(keys(chaninfo), (: stringp($1) :) ),1)){
+            output += sprintf("%-23s %-17s %-7s %-6s %-10s %-10s\n",
+              a,chaninfo[a]["owner"],
+              chaninfo[a]["policy"],
+              chaninfo[a]["level"],chaninfo[a]["localname"],
+              (localize_channel(a) ? localize_channel(a) : "<none>"));
+        }
+        IMC2_MSG(output,THIS_PLAYER);
 
-      }
+    }
 
-      //Send a channel command to the server
-      void chancmd(string args, object towho) {
-          string a, b, c;
+    //Send a channel command to the server
+    void chancmd(string args, object towho) {
+        string a, b, c;
 
-          if(!ADMIN(THIS_PLAYER)) return notify_fail("You aren't allowed to use chancmd.\n");
-          if(!args || (sscanf(args,"%s:%s %s",a,b,c)!=3))
-              return notify_fail("Syntax: "+COMMAND_NAME+" chancmd hub:channel command\n");
-          if(!chaninfo[a+":"+b])
-              write(a+" is not listed as a channel, sending command anyway...\n");
-          send_packet(GET_CAP_NAME(THIS_PLAYER),"ice-cmd","IMC",b, sprintf("channel=%s command=\"%s\"", a+":"+b,escape(c)));
+        if(!ADMIN(THIS_PLAYER)) return notify_fail("You aren't allowed to use chancmd.\n");
+        if(!args || (sscanf(args,"%s:%s %s",a,b,c)!=3))
+            return notify_fail("Syntax: "+COMMAND_NAME+" chancmd hub:channel command\n");
+        if(!chaninfo[a+":"+b])
+            write(a+" is not listed as a channel, sending command anyway...\n");
+        send_packet(GET_CAP_NAME(THIS_PLAYER),"ice-cmd","IMC",b, sprintf("channel=%s command=\"%s\"", a+":"+b,escape(c)));
 
-          IMC2_MSG(sprintf("%s- Sent a command for the %s channel to %s\n",NETWORK_ID,a,GET_CAP_NAME(THIS_PLAYER),b),THIS_PLAYER);
-      }
+        IMC2_MSG(sprintf("%s- Sent a command for the %s channel to %s\n",NETWORK_ID,a,GET_CAP_NAME(THIS_PLAYER),b),THIS_PLAYER);
+    }
 
-      int command(string str){
-          // Takes the arguments given to the command which does IMC2 stuff.
-          string cmd, args;
-          string output;
-          string a,b,c;
-          int x,y;
-          int emote,reply;
-          object usr, *usrs=({ });
+    int command(string str){
+        // Takes the arguments given to the command which does IMC2 stuff.
+        string cmd, args;
+        string output;
+        string a,b,c;
+        int x,y;
+        int emote,reply;
+        object usr, *usrs=({ });
 
-          if(IMC2_D->getonline() != 1) return 0;
+        if(IMC2_D->getonline() != 1) return 0;
 
-          if(!str) str = "help";
-          sscanf(str,"%s %s",cmd,args);
-          if(!cmd) cmd=str;
-          if(!args) args = "";
+        if(!str) str = "help";
+        sscanf(str,"%s %s",cmd,args);
+        if(!cmd) cmd=str;
+        if(!args) args = "";
 
-          switch(cmd){
-          case "list":
-              mudlist(this_player());
-              return 1;
-              break;
-          case "setup":
-              getstatus(this_player());
-              return 1;
-              break;
-          case "info":
-              mudinfo(args,this_player());
-              return 1;
-              break;
-          case "ping":
-              pingmud(args,this_player());
-              return 1;
-              break;
-          case "who":
-              mudwho(args,this_player());
-              return 1;
-              break;
-          case "tell":
-              tell(args,this_player());
-              return 1;
-              break;
-          case "finger":
-              finger(args,this_player());
-              return 1;
-              break;
-          case "mudinfo":
-              getremotemudinfo(args,this_player());
-              return 1;
-              break;
-              /*	  case "chanwho":
-                            if(!args) return notify_fail("What channel?\n");
-                            if(sscanf(args,"%s %s",a,b)!=2){
-                                a=args;
-                                b="";
-                            }
-                            else {
-                                if(b!="*") b=find_mud(b);
-                            }
-                            if(!b) return notify_fail("MUD isn't known on "+NETWORK_ID+".\n");
-                            if(!localchaninfo[a]) return notify_fail("Invalid channel.\n");
-                            if(b==""){ // check who's on locally
-                                c = "The following users are listening to "+a+":\n  ";
-                                foreach(usr in users())
-                                if(chan_listening(usr,a)){
-                                    usrs += ({ usr });
-                                    c += " "+GET_CAP_NAME(usr);
-                                }
-                                c += "\n";
-                                if(!usrs) c="Nobody on this mud is listening to that channel.\n";
-                                IMC2_MSG(c,THIS_PLAYER);
-                                return 1;
-                            }
-                            if((b!="*") && (!mudinfo[b]["online"]))
-                                return notify_fail(NETWORK_ID+"- "+b+" is offline right now.\n");
-                            chanwho_out(THIS_PLAYER,a,b);
-                            IMC2_MSG(sprintf("%s- Sent a channel who request to %s for the %s channel.\n",
-                                NETWORK_ID,b,a),THIS_PLAYER);
-                            return 1;
-                            break;*/
-          case "allchans":
-              allchans(args,this_player());
-              return 1;
-              break;
-          case "beep":
-              interbeep(args,this_player());
-              return 1;
-              break;
-          case "whois":
-              whois(args,this_player());
-              return 1;
-              break;
-          case "chancmd":
-              chancmd(args,this_player());
-              return 1;
-              break;
-          case "help": // drop through to default
-          default:
-              IMC2_MSG(main_help(),THIS_PLAYER);
-              return 1;
-              break;
-          }
-      }
+        switch(cmd){
+        case "list":
+            mudlist(this_player());
+            return 1;
+            break;
+        case "setup":
+            getstatus(this_player());
+            return 1;
+            break;
+        case "info":
+            mudinfo(args,this_player());
+            return 1;
+            break;
+        case "ping":
+            pingmud(args,this_player());
+            return 1;
+            break;
+        case "who":
+            mudwho(args,this_player());
+            return 1;
+            break;
+        case "tell":
+            tell(args,this_player());
+            return 1;
+            break;
+        case "finger":
+            finger(args,this_player());
+            return 1;
+            break;
+        case "mudinfo":
+            getremotemudinfo(args,this_player());
+            return 1;
+            break;
+            /*	  case "chanwho":
+                          if(!args) return notify_fail("What channel?\n");
+                          if(sscanf(args,"%s %s",a,b)!=2){
+                              a=args;
+                              b="";
+                          }
+                          else {
+                              if(b!="*") b=find_mud(b);
+                          }
+                          if(!b) return notify_fail("MUD isn't known on "+NETWORK_ID+".\n");
+                          if(!localchaninfo[a]) return notify_fail("Invalid channel.\n");
+                          if(b==""){ // check who's on locally
+                              c = "The following users are listening to "+a+":\n  ";
+                              foreach(usr in users())
+                              if(chan_listening(usr,a)){
+                                  usrs += ({ usr });
+                                  c += " "+GET_CAP_NAME(usr);
+                              }
+                              c += "\n";
+                              if(!usrs) c="Nobody on this mud is listening to that channel.\n";
+                              IMC2_MSG(c,THIS_PLAYER);
+                              return 1;
+                          }
+                          if((b!="*") && (!mudinfo[b]["online"]))
+                              return notify_fail(NETWORK_ID+"- "+b+" is offline right now.\n");
+                          chanwho_out(THIS_PLAYER,a,b);
+                          IMC2_MSG(sprintf("%s- Sent a channel who request to %s for the %s channel.\n",
+                              NETWORK_ID,b,a),THIS_PLAYER);
+                          return 1;
+                          break;*/
+        case "allchans": case "ice-update":
+            allchans(args,this_player());
+            return 1;
+            break;
+        case "beep":
+            interbeep(args,this_player());
+            return 1;
+            break;
+        case "whois":
+            whois(args,this_player());
+            return 1;
+            break;
+        case "chancmd":
+            chancmd(args,this_player());
+            return 1;
+            break;
+        case "keepalive":
+            send_keepalive_request();
+            return 1;
+            break;
+        case "is-alive":
+            send_is_alive();
+            return 1;
+            break;
+        case "help": // drop through to default
+        default:
+            IMC2_MSG(main_help(),THIS_PLAYER);
+            return 1;
+            break;
+        }
+    }
 
-      string main_help(){
-          return sprintf(@EndText
+    string main_help(){
+        return sprintf(@EndText
 IMC2 system by Tim, set up for %s.
 To use this, type the command '%s' followed by one of the following:
 	chans - lists the channels that this MUD uses
@@ -1561,95 +1580,100 @@ Admin commands:
 	chancmd (channel) (command) - for remote channel administration
 	chanperms - lists the permission levels that are possible for configchan
 EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
-      }
+    }
 
-      string html(string str){
-          string mud, *muds;
-          string a,b;
-          int x=0,y=0;
-          string output="";
-          if(!str) str="";
-          sscanf(str,"%s_%s",a,b);
-          if(!a) a=str;
-          switch(a){
-          case "list":
-              muds = sort_array(keys(mudinfo),1);
-              if (!sizeof(mudinfo)){
-                  return ("There are no muds on the "+NETWORK_ID+" network!\n");
-              }
-              else{
-                  output="<tr><td><b>Status</b></td><td><b>Name</b></td><td><b>Network</b></td><td><b>IMC2 Version</b></td></tr>\n";
-                  foreach (mud in muds){
-                      if(mudinfo[mud]["online"]) x++; else y++;
-                      output += sprintf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n",
-                        (mudinfo[mud]["online"] ? "UP" : "DOWN"),
-                        mudinfo[mud]["url"] ? "<a href=\""+
-                        ((mudinfo[mud]["url"][0..6]!="http://") ? "http://"+mudinfo[mud]["url"] : mudinfo[mud]["url"])
-                        +"\">"+mud+"</a>" : mud,
-                        mudinfo[mud]["networkname"],
-                        mudinfo[mud]["versionid"]);
-                  }
-              }
-              return sprintf("<B>%d of %d MUDs are on %s.</B.\n<BR><table>%s</table>",
-                x,x+y,NETWORK_ID,output);
-              break;
-          case "backlog":
-              if(b && localchaninfo[b] && (localchaninfo[b]["perm"]==BACKLOG_WEB_LEVEL)){
-                  // Show backlog for channel.
-                  return b+" channel backlog:\n"+implode(localchaninfo[b]["backlog"],"\n");
-              }
-              // List the channels
-              output = NETWORK_ID+" channels on "+MUDNAME+":\n";
-              foreach(b in sort_array(keys(localchaninfo),1)){
-                  if(localchaninfo[b]["perm"]==BACKLOG_WEB_LEVEL) // is public
-                      output += "<a href=\""+HTML_LOCATION+"backlog_"+b+"\">";
-                  output += b;
-                  output += " - "+chan_perm_desc(localchaninfo[b]["perm"]);
-                  if(localchaninfo[b]["perm"]==BACKLOG_WEB_LEVEL) // is public
-                      output += " - on web</a>";
-                  else
-                      output += " - not on web";
-                  output += "\n";
-              }
-              return output;
-              break;
-          default:
-              return MUDNAME+" uses Tim's LPC IMC2 system to connect to the "+
-              NETWORK_ID+" network.\n"+
-              "(version:"+VERSION+")\n"+
-              "From here, you can look at the <a href=\""+HTML_LOCATION+"list\">list of muds</a>,\n"+
-              "view the <a href=\""+HTML_LOCATION+"backlog\">public channel backlogs</a>,\n"+
-              "or go to the main <a href=\""+URL+"\">"+MUDNAME+"</a> web site.\n";
-              break;
-          }
-      }
+    string html(string str){
+        string mud, *muds;
+        string a,b;
+        int x=0,y=0;
+        string output="";
+        if(!str) str="";
+        sscanf(str,"%s_%s",a,b);
+        if(!a) a=str;
+        switch(a){
+        case "list":
+            muds = sort_array(keys(mudinfo),1);
+            if (!sizeof(mudinfo)){
+                return ("There are no muds on the "+NETWORK_ID+" network!\n");
+            }
+            else{
+                output="<tr><td><b>Status</b></td><td><b>Name</b></td><td><b>Network</b></td><td><b>IMC2 Version</b></td></tr>\n";
+                foreach (mud in muds){
+                    if(mudinfo[mud]["online"]) x++; else y++;
+                    output += sprintf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n",
+                      (mudinfo[mud]["online"] ? "UP" : "DOWN"),
+                      mudinfo[mud]["url"] ? "<a href=\""+
+                      ((mudinfo[mud]["url"][0..6]!="http://") ? "http://"+mudinfo[mud]["url"] : mudinfo[mud]["url"])
+                      +"\">"+mud+"</a>" : mud,
+                      mudinfo[mud]["networkname"],
+                      mudinfo[mud]["versionid"]);
+                }
+            }
+            return sprintf("<B>%d of %d MUDs are on %s.</B.\n<BR><table>%s</table>",
+              x,x+y,NETWORK_ID,output);
+            break;
+        case "backlog":
+            if(b && localchaninfo[b] && (localchaninfo[b]["perm"]==BACKLOG_WEB_LEVEL)){
+                // Show backlog for channel.
+                return b+" channel backlog:\n"+implode(localchaninfo[b]["backlog"],"\n");
+            }
+            // List the channels
+            output = NETWORK_ID+" channels on "+MUDNAME+":\n";
+            foreach(b in sort_array(keys(localchaninfo),1)){
+                if(localchaninfo[b]["perm"]==BACKLOG_WEB_LEVEL) // is public
+                    output += "<a href=\""+HTML_LOCATION+"backlog_"+b+"\">";
+                output += b;
+                output += " - "+chan_perm_desc(localchaninfo[b]["perm"]);
+                if(localchaninfo[b]["perm"]==BACKLOG_WEB_LEVEL) // is public
+                    output += " - on web</a>";
+                else
+                    output += " - not on web";
+                output += "\n";
+            }
+            return output;
+            break;
+        default:
+            return MUDNAME+" uses Tim's LPC IMC2 system to connect to the "+
+            NETWORK_ID+" network.\n"+
+            "(version:"+VERSION+")\n"+
+            "From here, you can look at the <a href=\""+HTML_LOCATION+"list\">list of muds</a>,\n"+
+            "view the <a href=\""+HTML_LOCATION+"backlog\">public channel backlogs</a>,\n"+
+            "or go to the main <a href=\""+URL+"\">"+MUDNAME+"</a> web site.\n";
+            break;
+        }
+    }
 
-      int clean_up(){ return 0; }
+    int clean_up(){ return 0; }
 
 
-      void forget_user(string str){ map_delete(tells,str); }
+    void forget_user(string str){ map_delete(tells,str); }
 
-      void eventChangeIMC2Passwords(){
-          string cpass = alpha_crypt(10);
-          string spass = alpha_crypt(10);
-          string filename = "/secure/include/config.h";
-          string file = read_file(filename);
+    void eventChangeIMC2Passwords(){
+        string cpass = alpha_crypt(10);
+        string spass = alpha_crypt(10);
+        string filename = "/secure/include/config.h";
+        string file = read_file(filename);
 
-          if(!file || !sizeof(file)) return;
+        if(!file || !sizeof(file)) return;
 
-          file = replace_string(file,"clientpass",cpass);
-          file = replace_string(file,"serverpass",spass);
+        file = replace_string(file,"clientpass",cpass);
+        file = replace_string(file,"serverpass",spass);
 
-          write_file(filename, file, 1);
+        write_file(filename, file, 1);
 
-          return;
-      }
+        return;
+    }
 
-      int UnSetAutoDisabled(int x){
-          //This is just for taking away automatic disablement.
-          //For enabling/disabling, see the mudconfig command.
-          if(x) autodisabled = 0;
-          save_object(SAVE_FILE,1);
-          RELOAD_D->eventReload(this_object(), 2, 1);
-          return autodisabled;
-      }
+    int UnSetAutoDisabled(int x){
+        //This is just for taking away automatic disablement.
+        //For enabling/disabling, see the mudconfig command.
+        if(x) autodisabled = 0;
+        save_object(SAVE_FILE,1);
+        RELOAD_D->eventReload(this_object(), 2, 1);
+        return autodisabled;
+    }
+
+    void keepalive(string args, object who){
+        send_packet(who->GetName(), "keepalive-request", "*", "*", 0);
+    }
+

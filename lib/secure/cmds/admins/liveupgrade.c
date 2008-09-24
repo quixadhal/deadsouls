@@ -406,5 +406,5 @@ string GetHelp() {
       "liveupgrade revert\n"
       "To enable liveupgrading between alpha and stable versions:\n"
       "liveupgrade alpha\n\n"
-      "Proxies are not supported. OOB is no longer supported.\n");
+      "Web proxies are *NOT* supported. OOB is no longer supported.\n");
 }

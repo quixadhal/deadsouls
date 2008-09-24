@@ -5,16 +5,41 @@
 int heart_count = 0;
 
 string router_port;
+static mixed alternates = ({});
+static int allow_multi_routers = 0;
 
 static void create(){ 
     object rsock = find_object(RSOCKET_D);
-    if(mud_name() == "Dead Souls Omega" || mud_name() == "A1") return;
+    object ssock = find_object(SSOCKET_D);
+    object sserver = find_object(IMC2_SERVER_D);
+
+    if(irn_enabled && allow_multi_routers){
+        foreach(string key, mixed val in routers){
+            mixed tmp = ({ ({ key, val["ip"] + " " + val["port"] }) });
+            if(key != "*dalet"){
+                alternates += tmp;
+            }
+            alternates = sort_array(alternates, 1);
+            tc("alternates: "+identify(alternates)); 
+        }
+    }
     if(!rsock){
         server_log("Strange. No rsocket.");
-        rsock = load_object(RSOCKET_D);
+        catch( rsock = load_object(RSOCKET_D) );
         rsock->irn_clear();
     }
-    if(!rsock) return;
+    if(!ssock && IMC2_SERVER_ENABLED){
+        server_log("Strange. No ssocket.");
+        catch( ssock = load_object(SSOCKET_D) );
+    }
+    if(!sserver && IMC2_SERVER_ENABLED){
+        server_log("Strange. No sserver.");
+        catch( sserver = load_object(IMC2_SERVER_D) );
+    }
+    if(!rsock && (!ssock || !sserver)) return;
+    //tc("rsock: "+identify(rsock));
+    //tc("ssock: "+identify(ssock));
+    //tc("sserver: "+identify(sserver));
     SetNoClean(1);
     connected_muds = ([]);
     unguarded( (: restore_object, SAVE_ROUTER, 1 :) );
@@ -28,10 +53,15 @@ static void create(){
     if(!router_name) router_name = "*yatmim";
     if(!router_port) router_port = "9000";
     if(!router_ip) router_ip = "149.152.218.102";
-    if(mud_name() == "Frontiers")
-        router_list = ({ ({"*yatmim", "149.152.218.102 23"}) });
-    if(mud_name() == "Dead Souls Aleph")
-        router_list = ({ ({"*i6", "149.152.218.102 25"}) });
+    if(sizeof(alternates)) router_list = alternates;
+    else {
+#if 0
+        if(mud_name() == "Frontiers" || mud_name() == "*yatmim")
+            router_list = ({ ({"*yatmim", "149.152.218.102 23"}) });
+        if(mud_name() == "Dead Souls Aleph")
+            router_list = ({ ({"*i6", "149.152.218.102 25"}) });
+#endif
+    }
     server_log("Created when mud uptime = " + time_elapsed(uptime()) + "\n");
     server_log("rsocket uptime = " + time_elapsed(time()-RSOCKET_D->GetInceptDate()) + "\n");
     call_out("setup", 1);
@@ -49,10 +79,10 @@ static void create(){
 }
 
 void heart_beat(){
-    if(mud_name() == "Dead Souls Omega" || mud_name() == "A1") this_object()->eventDestruct();
     heart_count++;
     this_object()->send_pings();
     this_object()->irn_checkstat();
+    this_object()->check_graylist();
     if(!(heart_count % 60)) {
         this_object()->check_discs();
         save_object(SAVE_ROUTER);
@@ -69,7 +99,7 @@ void heart_beat(){
 static void setup(){
     if( file_size( SAVE_ROUTER __SAVE_EXTENSION__ ) > 0 )
         unguarded( (: restore_object, SAVE_ROUTER, 1 :) );
-    //this_object()->irn_checkstat();
+    call_out("SetList",1);
 }
 
 int query_prevent_shadow(object ob){ return true(ob); }

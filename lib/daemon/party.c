@@ -121,7 +121,7 @@ mixed eventChangeLeader(object who, object targ) {
     pname = (string)who->GetParty();
     p = Parties[pname];
     p->Leader = targ;
-    CHAT_D->eventSend("System", pname, (string)targ->GetName() + " is now "
+    CHAT_D->eventSendChannel("System", pname, (string)targ->GetName() + " is now "
       "the leader.");
     eventSave();
     return 1;
@@ -132,7 +132,7 @@ mixed eventCreateParty(object who, string name) {
 
     if( (string)who->SetParty(name) != name )
         return "There was some bizarre problem sticking you in a party.";
-    this_party = spew(class party);
+    this_party = new(class party);
     this_party->Leader = who;
     this_party->Members = ({ who });
     this_party->Invited = ({});

@@ -9,7 +9,7 @@ inherit LIB_ITEM;
 static int observing = 0;
 static int counter = 0, attempting, connected, socket ;
 static int dud_count = 0, spawning, last_action, loop_count = 0;
-static int maxbox = 1;
+static int maxbox = 150;
 static int newbot = 1;
 static object person, player;
 static string preset, name, passwd, gender;
@@ -17,7 +17,7 @@ static string display_name, email, real_name, race;
 static string *exits, previous_command;
 static string travel = "go ";
 static int enable = 0;
-static string ip = "192.168.0.224 6666";
+static string ip = "192.168.0.201 1111";
 static string local_currency = "silver";
 static string watching = "";
 static int broadcast, onhand, open_account, balance, wander;
@@ -90,6 +90,7 @@ static void create(mixed arg)
     foreach(mixed key, mixed val in AnsiMap1){
         AnsiMap2[val] = key;
     }
+    if(!undefinedp(arg) && intp(arg)) maxbox = arg;
 }
 
 int eventBroadcastGreen(){
@@ -98,8 +99,15 @@ int eventBroadcastGreen(){
 }
 
 int eventStartBot(string str){
+    int tmp;
     if(attempting || connected) return 0;
     if(str) ip = str;
+    if(str && sscanf(str,"local %d",tmp)){
+        ip = "127.0.0.1 "+query_host_port();
+        maxbox = tmp;
+        write("maxbox: "+maxbox);
+        write("ip: "+ip);
+    } 
     set_heart_beat(1);
     if(clonep(this_object())) call_out( (: do_connect, ip :), 1);
     return 1;
@@ -118,7 +126,7 @@ int eventRespawn(){
             }
         }
         if(boxnum < maxbox){
-            newbox = new(base_name(this_object()));
+            newbox = new(base_name(this_object()), maxbox);
             newbox->eventMove(environment());
             tell_object(environment(newbox), "Respawned box "+boxnum+": "+file_name(newbox));
         }
@@ -215,22 +223,7 @@ string eventStargate(string str){
 
 int think(string str){
     string ret = "";
-    //mixed *st_arr = explode(str,"");
     int this_action = time();
-    //str = "";
-    //str = replace_string(str,CARRIAGE_RETURN,"\n");
-    //str = replace_string(str,"\e","_");
-    //str = replace_string(str,"\n","_");
-    //str = replace_string(str,"\t","*");
-    //str = replace_string(str,"\b","#");
-    //str = strip_colors_old(str);
-    //str = strip_colours(str);
-    //str = strip_colors(str);
-    //foreach(mixed element in st_arr){
-    //    if(element[0] == 13) str += "_";
-    //    else if(element[0] == 27) str += "*";
-    //    else str += element;
-    //}
     foreach(mixed element in values(AnsiMap1)){
         str = replace_string(str,element,"");
     }
@@ -245,7 +238,6 @@ int think(string str){
 
     if(enable) eventBolo(str);
     if(sizeof(watching) < 1){
-        //report(name+" watching");
         if(grepp(str, "You bump into ") && grepp(lower_case(str), "door")) DoorHandler(str);
         if(grepp(str, "A great sea")){
             travel = "swim ";
@@ -289,9 +281,7 @@ int think(string str){
         if(grepp(str, "%:")) ret = "\n";
         if(grepp(str, "Press <return> to continue:")) ret = "\n";
         if(grepp(str, "stargate")){
-            //report(name+" stargate: "+str);
             ret = eventStargate(str);
-            //report("ret: "+ret);
         }
         if(grepp(str, "a portal forms")) ret = "enter stargate";
         previous_command = ret;
@@ -299,10 +289,8 @@ int think(string str){
 
     else {
         ret = eventWatch(str, watching);
-        //report(" ret: "+ret);
     }
     ret = trim(ret,"green");
-    //report("ret: "+ret);
     if(ret && ret != "" && sizeof(ret)) {
         report(" command: "+ret);
         this_object()->parse_comm(ret);
@@ -312,10 +300,14 @@ int think(string str){
 
 string eventBolo(string str){
     string ret = "\n";
-    //report(" bolo");
     wander = 0;
 
     if(grepp(str, "You can't crawl in your current position")){
+        parse_comm("position");
+        parse_comm("look");
+    }
+
+    if(grepp(str, "Go in which direction?")){
         parse_comm("position");
         parse_comm("look");
     }
@@ -343,6 +335,10 @@ string eventBolo(string str){
     if(grepp(str, "You are standing.")){
         travel = "go ";
         parse_comm("look");
+    }
+
+    if(grepp(str, "You are not ")){
+        parse_comm("position");
     }
 
     if(grepp(str, "press enter:") || grepp(str, "%:") ||
@@ -491,6 +487,7 @@ void heart_beat(){
     counter++;
 
     if(!environment(this_object())) return;
+    if(!adminp(environment(this_object()))) return;
     if(!clonep(this_object())) return;
     bots = sizeof(filter(all_inventory(environment()),
         (: base_name($1) == base_name(this_object()) :)));
@@ -541,8 +538,10 @@ int eventScanExits(string str){
     string *newexits = ({});
     string *dirs = ({});
     str = strip_colours(str);
-    if(sscanf(str,"%sObvious exit: %s\n%s",s1,s2,s3) ||
-      sscanf(str,"%sObvious exits: %s\n%s",s1,s2,s3)){
+    if(sscanf(str,"%sObvious exit: %s\n%s",s1,s2,s3) == 3 ||
+      sscanf(str,"%sObvious exits: %s\n%s",s1,s2,s3) == 3 ||    
+      sscanf(str,"%sObvious exit: %s",s1,s2) == 2 ||
+      sscanf(str,"%sObvious exits: %s",s1,s2) == 2){
         dirs = explode(s2,", ");
     }
     else if(sscanf(str,"%s [%s]%s", s1, s2, s3) ){
@@ -571,10 +570,8 @@ int eventScanExits(string str){
             case "se" : dir = "southeast";break;
             case "sw" : dir = "southwest";break;
             }
-            //tc("dir: "+dir);
             if(grepp(dir,"enter ")) newexits += ({ dir });
             else newexits += ({ travel+dir });
-            //tc("newexits: "+identify(newexits),"blue");
         }
         if(sizeof(newexits)) {
             exits = newexits;
@@ -582,7 +579,6 @@ int eventScanExits(string str){
         }
     }
     if(!sizeof(exits)) exits = oldexits;
-    //tc("exits: "+identify(exits),"green");
     return 1;
 }
 

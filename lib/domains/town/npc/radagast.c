@@ -24,6 +24,7 @@ void create(){
     AddTrainingSkills( ({ "magic defense", "magic attack", "conjuring" }) );
     SetSpellBook( ([ "buffer" : 100, "meditate" : 100, "missile" : 100, "fireball" : 100 ]) );
     SetPolyglot(1);
+    SetCustomXP(10);
 }
 
 void init() {

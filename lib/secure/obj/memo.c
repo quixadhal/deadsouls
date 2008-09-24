@@ -6,7 +6,6 @@ int read_memo(string str);
 int help_msg();
 
 string ReadFun(mixed args...){
-    tc("args: "+identify(args));
     help_msg();   
     return "";
 } 
@@ -45,7 +44,6 @@ void init(){
     dirchecked=0;
 }
 int memo(string str){
-    tc("read_memo: "+identify(str));
     if(!dirchecked){
         this_object()->checkdir();
     }
@@ -59,7 +57,6 @@ int memo(string str){
     return 1;
 }
 int read_memo(mixed str...){
-    tc("read_memo str: "+identify(str));
     if(!dirchecked){
         this_object()->checkdir();
     }

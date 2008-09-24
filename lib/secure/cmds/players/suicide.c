@@ -93,6 +93,12 @@ static private void GetYesOrNo(string input) {
 static private void EndSuicide(string who) {
     string tmp, file, newfile;
     object *ob;
+    string whocheck = last_string_element(base_name(this_player()),"/");
+    if(who != whocheck){
+        write("There seems to be a conflict in determining your identity.");
+        write("Suicide aborted.");
+        return;
+    }
     gwho = who;
     home_dir = homedir(this_player()); 
     if(!directory_exists(DIR_TMP + "/suicide/")) mkdir (DIR_TMP + "/suicide/");
@@ -133,7 +139,7 @@ static private void EndSuicide(string who) {
       this_player() );
     if( sizeof( ob = filter(users(), (: archp :)) ) )
         ob->eventPrint("["+(string)this_player()->GetName()+" has "
-          "comitted suicide]");
+          "committed suicide]");
     PLAYERS_D->RemoveUser(who);
     this_player()->eventMove(ROOM_FURNACE);
     this_player()->eventDestruct();

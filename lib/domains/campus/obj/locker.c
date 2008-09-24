@@ -11,6 +11,7 @@ inherit LIB_STORAGE;
 void create() {
     ::create();
     SetKeyName("locker");
+    //SetMatching(0);
     SetId(({"locker"}));
     SetAdjectives(({"metal","tall","school"}));
     SetShort("a tall metal locker");

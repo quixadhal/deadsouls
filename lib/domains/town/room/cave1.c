@@ -10,6 +10,7 @@ void create() {
     SetLong("This is a small cave at the base of a cliff. A stone door is set into the south wall.");
     SetInventory(([
         "/domains/town/weap/fellsword" : 1,
+        "/domains/town/obj/scroll_resurrection" : 1,
       ]));
     SetExits(([
         "south" : "/domains/town/room/cave_entrance",

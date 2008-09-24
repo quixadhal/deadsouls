@@ -14,7 +14,7 @@
 
 inherit LIB_DAEMON;
 
-private int LoginTime, Level, BirthTime, CreatorBirth, WhereBlock;
+private int LoginTime, Level, Btime, BirthTime, CreatorBirth, WhereBlock;
 private string CurrentUser, Short, CapName, RealName, Email;
 private string Town, Race, Gender, HostSite;
 private string Class, Clan, Long;
@@ -103,12 +103,16 @@ varargs string GetFinger(string who, int html) {
         if( Clan ) ret += " of the " + pluralize(Clan);
         if( creatorp(this_player()) && Level ) ret += " ("+Level+")";
         ret += " is a " + Rank+" of " + Town + ".%^BR%^\n";
-        BirthTime = BirthTime - (18 * YEAR);
-        if( (yr = query_year(BirthTime)) < 0 ) yrstr = -yr + " BN";
-        else yrstr = "" + yr;
+        Btime = BirthTime - (18 * YEAR);
+        if( (yr = query_year(Btime)) < 0 ){
+            yrstr = -yr + " BN";
+        }
+        else {
+            yrstr = "" + yr;
+        }
         ret += sprintf("Birthday: the %d%s day of %s, %s",
-          query_date(BirthTime), ordinal(query_date(BirthTime)),
-          query_month(BirthTime), yrstr) + "%^BR%^\n";
+          query_date(Btime), ordinal(query_date(Btime)),
+          query_month(Btime), yrstr) + "%^BR%^\n";
     }
     if(!this_player() || !archp(this_player())) Email = "Unlisted";
     if( !Email ) Email = "#CHANGE";

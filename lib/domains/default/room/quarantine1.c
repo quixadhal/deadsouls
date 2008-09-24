@@ -9,14 +9,14 @@ static void create() {
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("Disease Lab Prep Room");
-    SetLong("This room is designed to repel the spread of diseases that are tested in the room north of here. It is also where you can get a disease repellent collar, so you may work in the quarantine area without becoming infected. To infect the test subjects use the medical tricorder. To make all of them healthy again, type 'update', which will reset the room. The test subjects are waiting for you north of here.");
+    SetLong("This room is designed to repel the spread of diseases that are tested in the room downstairs. It is also where you can get a disease repellent collar, so you may work in the quarantine area without becoming infected. To infect the test subjects use the medical tricorder. To make all of them healthy again, type 'update', which will reset the room. The test subjects are waiting for you below.");
+    SetExits( ([
+        "south" : "/domains/default/room/wiz_corr1",
+        "down" : "/domains/default/room/quarantine2.c",
+      ]) );
     SetInventory(([
         "/domains/default/obj/collarchest" : 1,
       ]));
-    SetExits( ([
-        "south" : "/domains/default/room/wiz_corr_east",
-        "north" : "/domains/default/room/quarantine2.c",
-      ]) );
 
     SetProperty("no attack", 1);
 

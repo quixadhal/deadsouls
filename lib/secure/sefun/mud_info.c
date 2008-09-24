@@ -37,7 +37,7 @@ string architecture() { return __ARCH__; }
 
 string mudlib() { return "Dead Souls"; }
 
-string mudlib_version() { return "2.9a7"; }
+string mudlib_version() { return "2.9a9"; }
 
 int query_host_port() { return __PORT__; }
 
@@ -55,6 +55,16 @@ string query_os_type(){
         return "windows";
     }
     else return "unix";
+}
+
+int query_windows(){
+    string arch = lower_case(architecture());
+#ifdef __WIN32__
+    return 1;
+#else
+    if(grepp(arch,"windows") || grepp(arch,"cygwin")) return 1;
+#endif
+    return 0;
 }
 
 string query_intermud_ip(){

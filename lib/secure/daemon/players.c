@@ -4,6 +4,12 @@
 #include <cfg.h>
 #include <daemons.h>
 #include <dirs.h>
+#ifndef AUTO_ADVANCE
+#define AUTO_ADVANCE 0
+#endif
+#ifndef REQUIRE_QUESTING
+#define REQUIRE_QUESTING 1
+#endif
 
 inherit LIB_DAEMON;
 
@@ -15,6 +21,7 @@ string *creators = ({});
 string *user_list = ({});
 static object ob;
 static string gplayer;
+static int maxlevel;
 
 string player_save_file;
 static string namestr = "";
@@ -38,6 +45,50 @@ mapping News, Fingers, Limbs, MissingLimbs, Resistance, Stats, Languages, Skills
 mapping Currency, Bank, SpellBook; 
 //end player vars
 
+mapping Levels = ([]);
+static mapping LevelTitles = ([
+  1:"the utter novice",
+  2:"the simple novice",
+  3:"the beginner",
+  4:"the adventurer",
+  5:"the experienced adventurer",
+  6:"the expert adventurer",
+  7:"the great adventurer",
+  8:"the master adventurer",
+  9:"the Freeman",
+  10:"the Citizen",
+  11:"the Knight",
+  12:"the Baron",
+  13:"the Count",
+  14:"the Earl",
+  15:"the Marquis",
+  16:"the Duke",
+  17:"the Arch Duke",
+  18:"the Praetor",
+  19:"the Quaestor",
+  20:"the Caesar"
+]);
+
+static mapping QuestLevels = ([
+  10:5,
+  12:12,
+  14:21,
+  16:32,
+  18:45,
+  20:60,
+  22:77,
+  24:96,
+  26:117,
+  28:140,
+  30:165,
+  32:192,
+  34:221,
+  36:252,
+  38:285,
+  40:450,
+]);
+
+
 void validate(){
     if(!(int)master()->valid_apply(({ "SECURE", "ASSIST", "LIB_CONNECT" })) &&
       base_name(previous_object()) != "/www/cgi/login"){
@@ -46,6 +97,40 @@ void validate(){
         log_file("security", "\n"+timestamp()+" PLAYERS_D breach: "+offender+" "+get_stack());
         error("PLAYERS_D SECURITY VIOLATION: "+offender+" "+get_stack());
     }
+}
+
+// This function generates a table of required xp per level.
+// The xp required for lower levels is high, approximately
+// half-again the xp required for the previous level. As the
+// player progresses, this ratio decreases.
+mapping CompileLevelList(){
+    int i=1;
+    int seed=300;
+    float mod;
+    Levels = ([ 0 : ([ "xp" : 0, "qp" : 0 ]) ]);
+    Levels[1] = ([ "title" : "the utter novice ", "xp" : 0, "qp" : 0 ]);
+    //for(i=3,mod = 100/i;i<1000;i++){
+    while(seed > 0){
+        i++;
+        mod = 50/i;
+        if(mod > 9) mod = 9.0;
+        if(mod < 1) mod = 0.5;
+        if(i > 100) mod = 0.1;
+        mod *= 0.1;
+        seed = seed * (1+mod); 
+        seed = ((seed/100) * 100);
+        //tc("mod: "+mod+", level: "+i+", exp: "+seed);
+        if(seed > 0){
+            Levels[i] = (["xp" : seed ]);
+            if(REQUIRE_QUESTING){
+                if(QuestLevels[i]) Levels[i]["qp"] = QuestLevels[i];
+            }
+            else Levels[i]["qp"] = 0;
+            if(LevelTitles[i]) Levels[i]["title"] = LevelTitles[i];
+            maxlevel = i;
+        }
+    }
+    return copy(Levels);
 }
 
 string *CompileCreList(){
@@ -86,6 +171,8 @@ void create() {
     if(creators) creators = distinct_array(creators);
     if(user_list) user_list = distinct_array(user_list);
     unguarded((: save_object, SAVE_PLAYER_LIST :));
+    if(!Levels) Levels = ([]);
+    call_out( (: CompileLevelList :), 3);
     call_out( (: CompileCreList :), 1);
     call_out( (: CompilePlayerList :), 5);
 }
@@ -104,6 +191,35 @@ string *eventDecre(string str){
     if(member_array(str,players) == -1) players += ({ str });
     unguarded((: save_object, SAVE_PLAYER_LIST :));
     return players + ({});
+}
+
+static int AutoAdvance(object ob, int level){
+    int ret;
+    ob->ChangeLevel(level);
+    ret = ob->GetLevel();
+    if(ret >= level){
+        ob->eventPrint("%^RED%^%^B_BLACK%^You automatically advance to "+
+          "level "+level+". Congratulations!%^RESET%^");
+        ob->AddTrainingPoints(level);
+        if(Levels[level]["title"]){
+            ob->AddTitle(Levels[level]["title"]);
+            ob->RemoveTitle(Levels[level-1]["title"]);
+        }
+    }
+    return ret;
+}
+
+int CheckAdvance(object ob){
+    int dlev, xp, qp;
+    if(!ob || !playerp(ob)) return 0;
+    dlev = (ob->GetLevel())+1;
+    xp = ob->GetExperiencePoints();
+    qp = ob->GetQuestPoints();
+    if(xp >= Levels[dlev]["xp"] && qp >= Levels[dlev]["qp"]){
+        if(AUTO_ADVANCE) AutoAdvance(ob, dlev);
+        return 1;
+    }
+    return 0;
 }
 
 void AddPlayerInfo(mixed arg) {
@@ -155,6 +271,10 @@ string *GetCreatorList(){
 
 string *GetUserList(){
     return user_list + ({});
+}
+
+mapping GetLevelList(){
+    return copy(Levels);
 }
 
 int RemoveUser(string str){

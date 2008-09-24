@@ -21,7 +21,8 @@ string array antimodals = ({ "imc2" });
 string array modals = antimodals + ({ "channelpipes", "fastcombat", "catchtell","matchcommand", "matchobject", "autowiz", "locked",
   "localtime", "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
   "cgi", "dirlist", "creweb", "selectclass", "severable",
-  "retain", "defaultparse", "disablereboot", "loglocal", "logremote" });
+  "retain", "defaultparse", "disablereboot", "loglocal", "logremote",
+  "questrequired","autoadvance" });
 string array inet_services = ({ "oob", "hftp", "ftp", "http", "rcp", "inet" });
 
 static int NotImplemented(string which);
@@ -105,6 +106,7 @@ varargs static int CompleteConfig(string file){
     write_file(file,ret,1);
     RELOAD_D->ReloadBaseSystem();
     reload(LIB_CONNECT,0,1);
+    reload(PLAYERS_D,0,1);
     write("Command complete.");
     return 1;
 }
@@ -522,6 +524,8 @@ static int ProcessModal(string which, string arg){
     case "creweb" : which = "ENABLE_CREWEB";break;
     case "selectclass" : which = "CLASS_SELECTION";break;
     case "severable" : which = "SEVERABLE_LIMBS";break;
+    case "questrequired" : which = "REQUIRE_QUESTING";break;
+    case "autoadvance" : which = "AUTO_ADVANCE";break;
     default : break;
     }
     foreach(string element in config){
@@ -539,7 +543,8 @@ static int ProcessModal(string which, string arg){
     }
     CompleteConfig();
     if(which == "DEFAULT_PARSING" || which == "ENABLE_ENCUMBRANCE" ||
-      which == "BARE_EXITS" || which == "COMMAND_MATCHING"){ 
+      which == "BARE_EXITS" || which == "COMMAND_MATCHING" ||
+      which == "AUTO_ADVANCE"){
         reload(LIB_CREATOR,1,1);
         write("This configuration will take effect for each user the next time they log in.");
         return 1;
@@ -821,6 +826,8 @@ void help() {
       "\nmudconfig offset <offset from gmt in seconds>"
       "\nmudconfig extraoffset <offset from GMT in hours>"
       "\nmudconfig maxcommands <max number of commands per second>"
+      "\nmudconfig questrequired [ yes | no ]"
+      "\nmudconfig autoadvance [ yes | no ]"
       "\nmudconfig maxip <max connections per IP>"
       "\nmudconfig pinginterval <i3 ping interval in seconds>"
       "\nmudconfig monitor <monitoring level, 0 to 2>"

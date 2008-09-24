@@ -20,7 +20,7 @@ static void create() {
         "/domains/default/obj/rack" : 1,
       ]));
     SetExits( ([ 
-        "south" : "/domains/default/room/wiz_corr1",
+        "south" : "/domains/default/room/wiz_corr_east",
       ]) );
     SetPlayerKill(1);
 

@@ -68,3 +68,10 @@ difficulty when editing files. This is due to IE's default
 cache behavior. Change your preferences to reload pages:
 Tools->General->Settings->Every visit to the page
   Then logout of creweb and restart IE.
+
+* Despite my best efforts, users of IE still sometimes have 
+problems. If you keep getting weird stuff like not being
+able to write to a file, or being unable to display the
+page, try using Firefox instead. And complain to MS. :(
+
+

@@ -5,14 +5,13 @@ inherit LIB_ROOM;
 
 static void create() {
     room::create();
-    SetClimate("indoors");
     SetAmbientLight(20);
     SetShort("sewer");
     SetLong("You are in the stinking underground tunnels of "+
       "a sewer system. The air here is quite foul, "+
       "and periodic blasts of steam from wall-mounted vents make it "+
       "very hot and very humid. There is a foot-high stream of dark liquid "+
-      "covering the bottom of this tunnel, running west to east along "+
+      "covering the bottom of this tunnel, running east to west along "+
       "the tunnel's length. Light streams in from a drainage grate above.");
     SetItems( ([ ({"tunnel","tunnels"}) : "You are in a sewer tunnel."+
         "It's foul, dark, and hot.",
@@ -34,16 +33,15 @@ static void create() {
         ({"sewage","waste","garbage"}) : "It appears that the fluid on the "+
         "bottom of this tunnel is the result of garbage and waste "+
         "processing. In liquid form, this garbage flows "+
-        "east from here.",
+        "west from here.",
+      ]) );
+    SetExits( ([
+        "west" : "/domains/campus/room/sewer1",
+        "up" : "/domains/campus/room/sewer3.c",
       ]) );
     SetSmell( ([ "default" : "The stench of sewage and waste hangs here."]) );
     SetListen("default","You hear faint echoes of dripping water.");
-    SetExits( ([
-        "east" : "/domains/campus/room/sewer1",
-        "up" : "/domains/town/room/vill_road1"
-      ]) );
 
-    SetDoor("up","/domains/campus/doors/grate");
     set_heart_beat(10);
 }
 int SteamBlast(){

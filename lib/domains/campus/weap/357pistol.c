@@ -18,6 +18,7 @@ void create(){
     SetMass(20);
     SetDollarCost(10);
     SetVendorType(VT_WEAPON);
+    SetMagnum(30);
 }
 void init(){
     ::init();

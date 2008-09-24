@@ -89,3 +89,12 @@ static void create() {
 void init(){
     ::init();
 }
+
+mixed CanReceive(object ob){
+    if(ob && ob->GetRace() == "drone"){
+        message("info","You are repelled by drone repellent.",ob);
+        return 0;
+    }
+    return 1;
+}
+

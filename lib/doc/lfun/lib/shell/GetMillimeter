@@ -1,0 +1,26 @@
+GETMILLIMETER
+
+NAME
+        GetMillimeter()
+
+SYNOPSIS
+        int GetMillimeter()
+
+DESCRIPTION
+        Millimeter is a measurement of ammunition size, different from caliber. This function returns that information for the given object, if it is set.
+
+EXAMPLES
+        .
+
+LOCATION
+        /lib/round
+/lib/firearm
+/lib/shell
+/lib/clip
+
+SEE ALSO
+        GetCaliber, SetCaliber, SetMillimeter
+
+Author
+        Cratylus
+

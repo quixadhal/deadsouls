@@ -107,6 +107,9 @@ string SignRead(){
     case 4:
         ret += "IMC2: %^BOLD%^RED%^OFFLINE: HUB DOWN%^RESET%^\"";
         break;
+    case 5:
+        ret += "IMC2: %^BOLD%^RED%^OFFLINE: BANNED%^RESET%^\"";
+        break;
     default:
         ret += "IMC2: %^BOLD%^RED%^OFFLINE%^RESET%^\"";
         break;

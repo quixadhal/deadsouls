@@ -64,7 +64,7 @@ mixed do_climb_word_obj(string word, object ob) {
     case "down": type = CLIMB_DOWN; break;
     case "out": type = CLIMB_OUT; break;
     case "in": case "into": type = CLIMB_INTO; break;
-    case "through": type = CLIMB_THROUGH;
+    case "through": type = CLIMB_THROUGH;break;
     default: type = CLIMB_UP; break;
     }
     return ob->eventClimb(this_player(), type);

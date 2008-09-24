@@ -232,7 +232,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
                 0,
                 "bad-mojo", 
                 "Another mud is trying to be you.", 
-                ({ explode(socket_address(fd)," ")[0], info[12], info[13], info[17] })
+                ({ explode(socket_address(fd)," ")[0], info[12], info[13], info[17], info[9] })
               }));
             return;
         }
@@ -252,6 +252,8 @@ static void process_startup_req(int protocol, mixed info, int fd){
         if(newinfo["ip"]==mudinfo[info[2]]["ip"] && info[2] != "Dead Souls"){
             // same IP as last time and it isn't Dead Souls
             server_log("Wrong password, but right IP");
+            trr("Expected "+mudinfo[info[2]]["password"]+
+              " but got "+newinfo["password"]);
             write_data(fd,({
                 "error",5,router_name,0,info[2],0,
                 "warning", // nothing in error summary that seems applicable?
@@ -286,7 +288,8 @@ static void process_startup_req(int protocol, mixed info, int fd){
     }
     if(!mudinfo[info[2]] || !newinfo["password"] || mudinfo[info[2]]["password"] != newinfo["password"] ){
         // if new MUD, assign it a password
-        newinfo["password"]=random_numbers(9,1);	trr("ROUTER_D: Assigning password "+newinfo["password"],"white");
+        newinfo["password"]=random_numbers(9,1);
+        trr("ROUTER_D: Assigning password "+newinfo["password"],"white");
         //trr("Ok. this is the password: "+newinfo["password"],"white");
         // Change this maybe... see if the password is supposed to be in a certain range
     }
@@ -305,6 +308,10 @@ static void process_startup_req(int protocol, mixed info, int fd){
     send_full_mudlist(info[2]);
     broadcast_mudlist(info[2]);
     broadcast_chanlist("foo",info[2]);
+    if(this_object()->query_imc(info[2])){ 
+        //tc(info[2]+" is a imc2 thing","cyan");
+        //IMC2_SERVER_D->acknowledge_startup(fd, info[2]);
+    }
     if(bad_connects[newinfo["ip"]]) bad_connects[newinfo["ip"]] = 0;
     if(member_array("channel", keys(newinfo["services"])) != -1){
         //send_chanlist_reply(info[2], ( newinfo["old_chanlist_id"]) ? newinfo["old_chanlist_id"] : (random(1138) * 1138)  );

@@ -13,7 +13,7 @@ void eventReceiveTell(mixed *packet) {
     object ob, machine;
     string who, ret;
     string adverb = "";
-
+    string machine_message;
     tn("eventReceiveTell: "+identify(packet),"yellow");
     if( file_name(previous_object()) != INTERMUD_D ) return;
     who = convert_name(packet[5]);
@@ -30,25 +30,25 @@ void eventReceiveTell(mixed *packet) {
     machine=present("answering machine",ob);
     if(machine && base_name(machine) == "/secure/obj/machine"){
         int parse_it;
-        string machine_message;
         parse_it=machine->query_answer();
-        if(parse_it && !(int)ob->GetInvis()){
+        if(parse_it){
             machine->get_message(packet[6] + "@" + packet[2]+
               " tells you: "+packet[7]+"\n");
             machine_message=machine->send_message();
-            INTERMUD_D->eventWrite(({ "error", 5, mud_name(), 0, packet[2],
-                packet[3], "unk-user",
-                machine_message,
-                packet }));
+            //INTERMUD_D->eventWrite(({ "error", 5, mud_name(), 0, packet[2],
+            //    packet[3], "unk-user",
+            //    machine_message,
+            //    packet }));
             return;
         }
     }
-
     ret = "%^BOLD%^RED%^" + packet[6] + "@" + packet[2] +
     adverb + " tells you:%^RESET%^ " + packet[7];
     if(member_array(lower_case(packet[6]),ob->GetMuffed()) == -1 &&
       member_array(lower_case(packet[2]),ob->GetMuffed()) == -1){
-        ob->eventPrint(ret, MSG_CONV);
+        if(!machine_message){
+            ob->eventPrint(ret, MSG_CONV);
+        }
         ob->eventTellHist(ret);
         if(!sizeof(adverb)) ob->SetProperty("reply", packet[6] + "@" + packet[2]);
     }

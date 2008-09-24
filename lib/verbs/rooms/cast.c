@@ -16,6 +16,7 @@ static void create() {
     verb::create();
     SetVerb("cast");
     SetRules("OBJ");
+    SetErrorMessage("Cast what?");
 }
 
 mixed can_cast_obj(object ob) {

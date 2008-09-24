@@ -32,7 +32,7 @@ static void create() {
         "whatever it is that lies below. It looks like there was once a metal ladder for easy "+
         "movement, but it's now gone, so any trip down is one-way.",
       ]));
-    AddExit("down","/domains/campus/room/sewer1", (: eventHopDown :) );
+    AddExit("down","/domains/campus/room/sewer", (: eventHopDown :) );
     AddExit("south","/domains/campus/room/access4");
 }
 int CanReceive(object ob){

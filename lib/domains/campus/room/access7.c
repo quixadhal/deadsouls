@@ -1,6 +1,5 @@
 #include <lib.h>
 inherit LIB_ROOM;
-inherit "/lib/props/ambiance";
 
 static void create() {
     room::create();
@@ -30,7 +29,7 @@ static void create() {
     SetRead("sign","Campus domain special room access port: INCEPT POD");
     AddExit("north","/domains/campus/room/access6");
     AddExit("south","/domains/campus/room/access9");
-    AddExit("west","/domains/campus/room/tunnel2");
+    AddExit("east","/domains/campus/room/tunnel2");
 }
 void init(){
     ::init();

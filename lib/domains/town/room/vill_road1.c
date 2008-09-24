@@ -17,6 +17,12 @@ static void create() {
     SetItems( ([
         "sign":"A large sign on the road. To read it, 'read sign'.",
       ]) );
+    SetExits( ([
+        "south" : "/domains/town/room/south_road1",
+        "east" : "/domains/town/room/vill_road2",
+        "west" : "/domains/town/room/road1",
+        "north" : "/domains/town/room/road0.c",
+      ]) );
     AddTerrainType(T_ROAD);
     SetNoModify(0);
     SetInventory(([
@@ -25,12 +31,6 @@ static void create() {
     SetEnters( ([
       ]) );
     SetRead("sign", (: readSign :) );
-    SetExits( ([
-        "north" : "/domains/town/room/road",
-        "east" : "/domains/town/room/vill_road2",
-        "west" : "/domains/town/room/road1",
-        "south" : "/domains/town/room/south_road1",
-      ]) );
     SetFlyRoom("/domains/town/virtual/sky/28,100000,1");
     AddItem(new("/domains/town/obj/lamp"));
 }

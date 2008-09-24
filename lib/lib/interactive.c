@@ -267,7 +267,8 @@ int cmdQuit(){
         }
     }
     this_object()->AddCarriedMass(-(this_object()->GetCarriedMass()));
-    tmp = GetMessage("logout") || (GetName() + " is gone from this reality!");
+    tmp = GetMessage("logout") || (this_object()->GetName() + 
+      " is gone from this reality!");
     save_player(GetKeyName());
     if(!(archp(this_object()) && this_object()->GetInvis())){
         log_file("enter", GetCapName()+" (quit): "+timestamp()+"\n");
@@ -382,7 +383,7 @@ string GetShort(){
     str = object::GetShort(str);
     if( !str ) str = "$N the unaccomplished";
     if( strsrch(str, "$N") == -1 ) str = "$N";
-    str = replace_string(str, "$N", GetName());
+    str = replace_string(str, "$N", (GetName() || ""));
     if( interactive(this_object()) ) return str;
     else return str + " (net-dead)";
 }
@@ -404,7 +405,6 @@ int SetWhereBlock(){ return (WhereBlock = !WhereBlock); }
 int GetWhereBlock(){ return WhereBlock; }
 
 string get_path(){
-    //log_file("get_path", identify(previous_object())+"\n");
     return query_cwd();
 }
 

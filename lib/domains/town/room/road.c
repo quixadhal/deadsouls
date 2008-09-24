@@ -5,7 +5,7 @@ static void create() {
     room::create();
     SetClimate("outdoors");
     SetAmbientLight(30);
-    SetShort("Saquivor Road");
+    SetShort("North Saquivor Road");
     SetNightLong("Illuminated by lamplight here is Saquivor road, leading north-south through the village. To the east is the village pub, the legendary watering hole used by thousands of rogues, paladins, and everyone in between. The Healers' Guild is west. To the south is a major intersection. The road continues north into the gloom.");
     SetDayLong("You are on Saquivor road, leading north-south through the village. To the east is the village pub, the legendary watering hole used by thousands of rogues, paladins, and everyone in between. The Healers' Guild is west, and to the north you can see a road leading up to the plateau where the Fortress on the Frontiers stands. To the south is a major intersection.");
     SetItems( ([
@@ -21,17 +21,16 @@ static void create() {
         "almost purple from here.",
         "intersection" : "The main town crossroads is south."
       ]) );
-    AddTerrainType(T_ROAD);
-    SetExits( ([ 
-        "east" : "/domains/town/room/tavern",
-        "south" : "/domains/town/room/vill_road1",
-        "west" : "/domains/town/room/healer",
-        "north" : "/domains/town/room/mountain_road",
-      ]) );
     SetInventory(([
-        "/domains/town/weap/knife" :1,
-        "/domains/town/npc/beggar" :1
+        "/domains/town/weap/knife" : 1,
+      ]));
+    SetExits( ([
+        "north" : "/domains/town/room/mountain_road",
+        "east" : "/domains/town/room/tavern",
+        "west" : "/domains/town/room/healer",
+        "south" : "/domains/town/room/road0.c",
       ]) );
+    AddTerrainType(T_ROAD);
 
     SetEnters( ([
         "pub" : "/domains/town/room/tavern",

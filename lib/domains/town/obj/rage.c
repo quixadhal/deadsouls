@@ -178,12 +178,12 @@ int damage4(){
         victim->AddStatBonus("coordination", 40);
         victim->AddStatBonus("speed", 40);
         MakeHostile(victim);
+        victim->AddHP(-(random(70)+40));
 
         foreach(object bystander in get_livings(environment(victim))){
             if(bystander && random(100) > 50 && this_object()) 
                 eventInfect(bystander);
         }
-        victim->AddHP(-(random(70)+40));
     }
     return 1;
 }

@@ -11,6 +11,7 @@
 #define DATAGRAM_BINARY           4
 
 #define OFFSET_ECHO               2
+#define OFFSET_FLASH              3
 #define OFFSET_FTP                -1
 #define OFFSET_HFTP               -6
 #define OFFSET_HTTP               -5
@@ -19,6 +20,7 @@
 
 #define PORT_ADMIN                17010
 #define PORT_ECHO                 (query_host_port() + OFFSET_ECHO)
+#define PORT_FLASH                (query_host_port() + OFFSET_FLASH)
 #define PORT_FTP                  (query_host_port() + OFFSET_FTP)
 #define PORT_HFTP                 (query_host_port() + OFFSET_HFTP)
 #define PORT_HTTP                 (query_host_port() + OFFSET_HTTP)

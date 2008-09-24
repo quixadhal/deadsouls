@@ -18,5 +18,5 @@ static void create(){
     SetArmorType(A_CLOAK);
 }
 void init(){
-    ::iit();
+    ::init();
 }

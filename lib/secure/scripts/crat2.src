@@ -28,7 +28,7 @@ clone /domains/town/obj/match
 clone /domains/town/obj/match
 clone /domains/town/obj/match
 clone /domains/town/obj/match
+#clone /domains/default/obj/gps
 put all in my robe
-cp /secure/obj/weirder.c ~/
-clone ~/weirder.c
+clone /secure/obj/weirder.c
 save

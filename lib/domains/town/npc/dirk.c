@@ -1,11 +1,15 @@
 #include <lib.h>
+#include <daemons.h>
+#ifndef REQUIRE_QUESTING
+#define REQUIRE_QUESTING 1
+#endif
 
 inherit LIB_SENTIENT;
 
 int hint;
 
 int AdvanceDude(mixed arg);
-mapping advancement;
+mapping advancement, Levels;
 int TalkFunc(){
     string thing1, thing2, thing3, thing4, thing5;
 
@@ -30,7 +34,10 @@ int TalkFunc(){
 }
 
 static void create() {
+    int i;
     sentient::create();
+    Levels = PLAYERS_D->GetLevelList();
+    advancement = ([]);
     SetKeyName("dirk");
     SetId(({"dirk"}));
     SetShort("Dirk the Tired");
@@ -61,7 +68,7 @@ static void create() {
     SetConsultResponses( ([
         ({ "level", "levels", "leveling", "advancement", "advancing" }) :
         "To level, get some experience out there and then come back "+
-        "and ask me to advance. After a certain level you'll need "+
+        "and ask me to advance. For some levels you may need "+
         "some quest points to advance, not just experience.",
         ({ "xp", "XP", "experience" }) : "You can score experience "+
         "points by killing monsters or completing some quests. "+
@@ -77,28 +84,9 @@ static void create() {
         "You'll need quest points to advance past a "+
         "certain level.",
       ]) );
-    advancement = ([ 
-      1:(["title":"the utter novice","xp":0,"qp":0]),
-      2:(["title":"the simple novice","xp":1000,"qp":0]),
-      3:(["title":"the beginner","xp":1500,"qp":0]),
-      4:(["title":"the adventurer","xp":2300,"qp":0]),
-      5:(["title":"the experienced adventurer","xp":3500,"qp":5]),
-      6:(["title":"the expert adventurer","xp":5100,"qp":12]),
-      7:(["title":"the great adventurer","xp":7700,"qp":21]),
-      8:(["title":"the master adventurer","xp":12000,"qp":32]),
-      9:(["title":"the Freeman","xp":17000,"qp":45]),
-      10:(["title":"the Citizen","xp":26000,"qp":60]),
-      11:(["title":"the Knight","xp":39000,"qp":77]),
-      12:(["title":"the Baron","xp":59000,"qp":96]),
-      13:(["title":"the Count","xp":88000,"qp":117]),
-      14:(["title":"the Earl","xp":130000,"qp":140]),
-      15:(["title":"the Marquis","xp":198000,"qp":165]),
-      16:(["title":"the Duke","xp":297000,"qp":192]),
-      17:(["title":"the Arch Duke","xp":444444,"qp":221]),
-      18:(["title":"Praetor","xp":666667,"qp":252]),
-      19:(["title":"Quaestor","xp":1000000,"qp":285]),
-      20:(["title":"Caesar","xp":2000000,"qp":450]),
-    ]);
+    for(i=0;i<21;i++){
+        advancement[i] = Levels[i];
+    }
 }
 
 void init(){
@@ -137,7 +125,7 @@ int AdvanceDude(mixed arg){
     desired_level = level+1;
     required_xp = advancement[desired_level]["xp"];
     if(!required_qp = advancement[desired_level]["qp"]) required_qp = 0;
-
+    if(!REQUIRE_QUESTING) required_qp = 0;
     this_object()->eventForce("say Level "+desired_level+" "
       "with the title of \""+advancement[desired_level]["title"]+"\" "
       "requires "+required_xp+" experience points and "+

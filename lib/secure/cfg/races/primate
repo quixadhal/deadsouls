@@ -9,13 +9,12 @@ RESISTANCE BLADE:low
 RESISTANCE BLUNT:low
 RESISTANCE KNIFE:low
 RESISTANCE WATER:low
-STATS charisma:21:3
+STATS charisma:15:3
 STATS durability:10:4
 STATS intelligence:21:3
 STATS luck:21:3
 STATS agility:21:3
 STATS wisdom:10:4
-STATS charisma:1:5
 STATS speed:21:3
 STATS strength:10:4
 STATS coordination:21:3

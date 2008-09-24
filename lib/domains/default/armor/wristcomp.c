@@ -76,6 +76,7 @@ int eventMove(mixed arg){
 varargs int YautLang(object whom){
     if(!whom) whom = this_player(); 
     if(!whom) return 0;
+    if(whom->GetPolyglot()) return 100;
     return whom->GetLanguageLevel("Yautja");
 }
 

@@ -16,10 +16,10 @@ address server ip : localhost
 address server port : 8099
 
 # absolute pathname of mudlib
-mudlib directory : /mud/alpha/lib
+mudlib directory : /CHANGE/THIS/PATH/lib
 
 # absolute pathname of driver/config dir
-binary directory : /mud/alpha/bin
+binary directory : /CHANGE/THIS/PATH/bin
 
 # debug.log and author/domain stats are stored here
 log directory : /log

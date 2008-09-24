@@ -19,6 +19,14 @@ mixed lpc_file(string str){
     else return str;
 }
 
+mixed object_file(string str){
+    if(!file_exists(str)){
+        if(file_exists(str+".o")) return str+".o";
+        else return 0;
+    }
+    else return str;
+}
+
 int directory_exists(string str) { return (file_size(str) == -2); }
 
 string save_file(string who) {

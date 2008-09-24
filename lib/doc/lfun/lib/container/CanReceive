@@ -1,0 +1,34 @@
+CANRECEIVE
+
+NAME
+        CanReceive()
+
+SYNOPSIS
+        int CanReceive(object ob)
+
+DESCRIPTION
+        Objects that can hold other objects use this function to determine whether the incoming objects 'ob' is allowed to enter. If it is allowed, this function should return 1. If it is not allowed, this function should return 0.
+
+EXAMPLES
+         
+
+LOCATION
+        /lib/flashlight
+/lib/npc
+/lib/post_office
+/lib/firearm
+/lib/comp/container
+/lib/player
+/lib/std/corpse
+/lib/comp/holder
+/lib/std/limb
+/lib/clip
+/lib/std/furnace
+/lib/std/room
+
+SEE ALSO
+        CanRelease
+
+Author
+        Cratylus
+

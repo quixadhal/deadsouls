@@ -2,6 +2,7 @@
 #include <position.h>
 
 private static mixed GuardAction;
+private static mixed globalwhat;
 private static array PendingGuard = ({});
 private static object gwhat;
 private static object Principal;
@@ -28,6 +29,7 @@ int AllowGet(object who, object what){
 
 varargs mixed SetGuard(mixed what, mixed action, int howlong){
     object env = environment();
+    if(!clonep(this_object())) return 0;
     if(!PendingGuard) PendingGuard = ({});
 
     if(!env){
@@ -42,25 +44,28 @@ varargs mixed SetGuard(mixed what, mixed action, int howlong){
         int err;
         mapping exits = env->GetExitMap();
         exits += env->GetEnterMap();
-        if(exits[what]) what = exits[what];
-
-        err = catch( what = load_object(what) );
-        if(err || !what) return 0;
+        gwhat = what;
+        if(exits[gwhat]){
+            gwhat = exits[gwhat];
+        }
+        if(!unguarded( (: directory_exists(path_prefix(gwhat)) :) ) ){
+            return 0;
+        }
+        err = catch( unguarded( (: gwhat = load_object(gwhat) :) ) );
+        if(err || !gwhat){
+            return 0;
+        }
     }
-    gwhat = what;
-    //tc("what: "+identify(what));
 
-    if(living(what)){
-        Principal = what;
-        this_object()->eventForce("follow "+what->GetKeyName());
+    if(living(gwhat)){
+        Principal = gwhat;
+        this_object()->eventForce("follow "+gwhat->GetKeyName());
     }
 
-    else if(!inherits(LIB_ROOM,what)){
+    else if(!inherits(LIB_ROOM,gwhat)){
         mixed inv = deep_inventory(env);
         inv = filter(inv, (: base_name($1) == base_name(gwhat) :)); 
-        //tc("inv: "+identify(inv));
         foreach(object ob in inv){
-            //tc("adding "+identify(what));
             GUARD_D->AddGuard(this_object(), ob, action);
             if(living(ob)){
                 Principal = ob;
@@ -68,15 +73,15 @@ varargs mixed SetGuard(mixed what, mixed action, int howlong){
         }
     }
 
-    else GUARD_D->AddGuard(this_object(), what, action);
+    else GUARD_D->AddGuard(this_object(), gwhat, action);
     gwhat = 0;
     return 1;
 }
 
 void init(){
+    if(!clonep(this_object())) return;
     if(PendingGuard && sizeof(PendingGuard)){
         foreach(mixed guardmount in PendingGuard){
-            //tc("guardmount: "+identify(guardmount),"blue");
             SetGuard(guardmount["what"], guardmount["action"], 
               guardmount["howlong"]);
         }
@@ -93,7 +98,6 @@ void heart_beat(){
                     this_object()->AddEnemy(ob);
                 }
             }
-            //tc(identify(this_object())+" enemies: "+identify(this_object()->GetEnemies()));
         }
     }
 }

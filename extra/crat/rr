@@ -1,0 +1,36 @@
+#!/usr/bin/bash
+cd i3router
+mkdir bak
+\mv -f * bak/
+wget http://alcatraz.wolfpaw.net/~cratylus/router/blacklist.cfg
+wget http://alcatraz.wolfpaw.net/~cratylus/router/broadcast_chanlist.h
+wget http://alcatraz.wolfpaw.net/~cratylus/router/broadcast_mudlist.h
+wget http://alcatraz.wolfpaw.net/~cratylus/router/clean_fd.h
+wget http://alcatraz.wolfpaw.net/~cratylus/router/core_stuff.h
+wget http://alcatraz.wolfpaw.net/~cratylus/router/debug.h
+wget http://alcatraz.wolfpaw.net/~cratylus/router/funcs.h
+wget http://alcatraz.wolfpaw.net/~cratylus/router/hosted_channels.h
+wget http://alcatraz.wolfpaw.net/~cratylus/router/irn.h
+wget http://alcatraz.wolfpaw.net/~cratylus/router/process_channel.h
+wget http://alcatraz.wolfpaw.net/~cratylus/router/process_startup_req.h
+wget http://alcatraz.wolfpaw.net/~cratylus/router/read_callback.h
+wget http://alcatraz.wolfpaw.net/~cratylus/router/readme.txt
+wget http://alcatraz.wolfpaw.net/~cratylus/router/remove_mud.h
+wget http://alcatraz.wolfpaw.net/~cratylus/router/rsocket.c
+wget http://alcatraz.wolfpaw.net/~cratylus/router/send_chanlist_reply.h
+wget http://alcatraz.wolfpaw.net/~cratylus/router/send_error.h
+wget http://alcatraz.wolfpaw.net/~cratylus/router/send_full_mudlist.h
+wget http://alcatraz.wolfpaw.net/~cratylus/router/send_mudlist_updates.h
+wget http://alcatraz.wolfpaw.net/~cratylus/router/send_startup_reply.h
+wget http://alcatraz.wolfpaw.net/~cratylus/router/server.c
+wget http://alcatraz.wolfpaw.net/~cratylus/router/server_log.h
+cd ../
+mkdir imc2server
+cd imc2server
+mkdir bak
+\mv -f * bak/
+wget http://alcatraz.wolfpaw.net/~cratylus/server/server.c
+wget http://alcatraz.wolfpaw.net/~cratylus/server/server_log.h
+wget http://alcatraz.wolfpaw.net/~cratylus/server/ssocket.c
+
+

@@ -46,6 +46,7 @@ static void create() {
     SetPolyglot(1);
     SetLanguage("common", 100);
     SetDefaultLanguage("common");
+    SetCustomXP(10);
 }
 
 int CompleteQuest(object ob){

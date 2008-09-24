@@ -853,5 +853,6 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
         }
     }
     eventMoveFollowers(environment(this_object()));
+    TRACKER_D->TrackLiving(this_object());
     return 1;
 }

@@ -93,7 +93,7 @@ mixed GetLanguage(){
     else return 0;
 }
 
-varargs mixed eventRead(object who, string str){
+varargs mixed eventRead(object who, mixed str){
     mixed ret;
     mixed val;
     if(str) val = GetRead(str);
@@ -161,6 +161,20 @@ mixed direct_read_obj(){
 mixed direct_read_str_word_obj(string str){
     str = remove_article(lower_case(str));
     if( !Reads[str] ){
+        return 0;
+    }
+    else {
+        if( environment() != this_player()  && environment(this_player()) !=
+          environment()){
+            return "#You don't have that!";
+        }
+        else return 1;
+
+    }
+}
+
+mixed direct_read_obj_at_obj(object reader, object readee){
+    if( !Read ){
         return 0;
     }
     else {

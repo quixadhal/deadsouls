@@ -62,7 +62,8 @@ static void process_channel(mixed fd, mixed *info){
               "Unknown channel: "+info[6],info);
             return;
         }
-        if(member_array(info[2],listening[info[6]])==-1){
+        if(listening[info[6]] &&
+          member_array(info[2],listening[info[6]])==-1){
             // if mud is not listening, then make them listen
             // and let them know they weren't listening.
             send_error(info[2],info[3],"warning",
@@ -218,6 +219,7 @@ case "admin":
     //trr("test2: "+router_ip);
     //trr("test3: "+channels[info[6]][1]);
     //trr("test4: "+info[2]);
+    if(info[2] == "Divided Sky") return;
     if(channels[info[6]][1]!=info[2] && 
       clean_fd(socket_address(fd)) != router_ip ){
         send_error(info[2],info[3],"not-allowed","Channel "+

@@ -9,6 +9,10 @@ static void create() {
     SetLong("This is a small, bare room where Otik "
       "keeps his goods. The main store "
       "is south.");
+    SetExits( ([
+        "south" : "/domains/town/room/shop",
+        "up" : "/domains/town/room/shop.c",
+      ]) );
     SetInventory(([
         "/domains/town/obj/match" : 15,
         "/domains/town/weap/sword" : 30,
@@ -28,10 +32,6 @@ static void create() {
       ]));
     SetNoClean(1);
 
-    SetExits( ([
-        "south" : "/domains/town/room/shop",
-      ]) );
-    SetObviousExits("s");
 }
 int CanReceive(object sneak) {
     object *living_stack = get_livings(sneak);

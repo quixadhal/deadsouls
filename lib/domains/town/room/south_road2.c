@@ -16,6 +16,8 @@ static void create() {
         ({"road","cobblestone road"}) : "A "
         "cobblestone road, running north and south.",
         "sign":"A large sign on the road. To read it, 'read sign'.",
+        ({"grate","drainage grate","sewer","sewer grate"}) : "A grate that "+
+        "seems to lead into sewers. It can't be opened from here.",
       ]) );
     AddTerrainType(T_ROAD);
     SetExits( ([

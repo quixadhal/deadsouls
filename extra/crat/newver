@@ -1,0 +1,107 @@
+#!/bin/bash
+
+export NEWLIB=$2
+export OLDLIB=$1
+
+cd /
+rm -rf /tmp/foo
+mkdir /tmp/foo
+
+cd /tmp/foo
+unzip -qd  $OLDLIB $HOME/mud/$OLDLIB.zip
+mv $OLDLIB/ds* next
+mkdir new
+
+cd ~/ds
+tar cfp - . |(cd /tmp/foo/new;tar xfp -)
+
+rm -rf /tmp/foo/new/lib/daemon/tmp
+rm -rf /tmp/foo/new/lib/secure/upgrades
+rm -rf /tmp/foo/new/lib/tmp
+mv /tmp/foo/new/lib/realms/template .
+rm -rf /tmp/foo/new/lib/realms/*
+rm -rf /tmp/foo/new/lib/open/*
+mv template /tmp/foo/new/lib/realms/
+rm -rf /tmp/foo/new/lib/log
+rm -rf /tmp/foo/new/lib/secure/log
+rm -rf /tmp/foo/new/lib/secure/save/postal
+rm -rf /tmp/foo/new/lib/secure/save/players
+rm -rf /tmp/foo/new/lib/secure/save/creators
+\rm -rf /tmp/foo/*~
+\rm -rf /tmp/foo/*/*~
+\rm -rf /tmp/foo/*/*/*~
+\rm -rf /tmp/foo/*/*/*/*~
+\rm -rf /tmp/foo/*/*/*/*/*~
+\rm -rf /tmp/foo/*/*/*/*/*/*~
+\rm -rf /tmp/foo/*/*/*/*/*/*/*~
+\rm -rf /tmp/foo/*/*/*/*/*/*/*/*~
+\rm -rf /tmp/foo/*/*/*/*/*/*/*/*/*~
+
+mkdir /tmp/foo/next/lib/www/cgi
+mkdir /tmp/foo/next/lib/cmds/builders
+mkdir /tmp/foo/next/lib/secure/cmds/builders
+mkdir /tmp/foo/next/lib/verbs/builders
+
+cd /tmp/foo
+
+\cp -f new/lib/secure/daemon/update.patch new/lib/secure/daemon/update.patch
+\mv -f new/lib/secure/lib/connect.c new/lib/secure/lib/connect.real
+\cp -f new/lib/secure/lib/connect.first.c new/lib/secure/lib/connect.c
+#\cp -f new/lib/secure/save/backup/imc2_old.c new/lib/secure/daemon/imc2_new.c
+\rm -f next/lib/lib/remote.c
+\rm -f new/lib/lib/remote.c
+
+#/opt/sfw/bin/gdiff -rq new/lib next/lib > diff.txt
+gdiff -rq new/lib next/lib > diff.txt
+
+perl -pi -e s/"\:\ "/"\/"/g diff.txt
+perl -pi -e s/"\ and\ "/"\ "/g diff.txt
+perl -pi -e s/"\ differ"/"\ "/g diff.txt
+
+echo "#!/bin/bash" > diff.sh.1
+echo "" >> diff.sh.1
+cat diff.txt |grep Files >> diff.sh.1
+
+perl -pi -e s/"Files\ "/"\\\\cp\ \-f\ "/g diff.txt
+perl -pi -e s/"Only\ in\ next"/"\\\\rm\ \-f\ "/g diff.txt
+perl -pi -e s/"Only\ in\ "/"\\\\cp\ \-rf\ "/g diff.txt
+
+perl -pi -e s/"Files\ "/"diff\ "/g diff.sh.1
+
+
+cat diff.txt | grep -v "lib/core" |grep -v CMD_EVAL_TMP_FILE|grep -v "lib/secure/tmp/"|grep -v "/lib/estates/"|grep -v "lib/secure/save"| grep -v "lib/save/"|grep -v "/mudos.cfg" |grep -v "/config.h"|grep -v "/groups.cfg" |grep -v "\.bak"|grep -v "\.swp"> diff2.txt
+cat diff.sh.1 | grep -v CMD_EVAL_TMP_FILE|grep -v "lib/secure/tmp/"|grep -v "/lib/estates/"|grep -v "lib/secure/save"| grep -v "lib/save/"|grep -v "/mudos.cfg" |grep -v "/config.h"|grep -v "/groups.cfg" |grep -v "\.bak"|grep -v "\.swp"> diff.sh
+
+chmod 755 diff.sh
+
+#vim diff.txt
+#echo "#!/usr/bin/bash" > copyfiles3
+echo "#!/bin/bash" > copyfiles3
+chmod 755 copyfiles3
+cat diff2.txt > copyfiles
+cat diff2.txt > copyfiles2
+perl -pi -e s/"\ "/"\^\^"/g copyfiles2
+#/contrib/parse_test
+for i in `cat copyfiles2`
+do
+export LINE=`(echo $i | perl -pi -e s/"\^\^"/"\ "/g)`
+#echo $LINE
+echo `/contrib/column_parse $LINE`
+done
+
+echo "mkdir next/lib/secure/log/intermud" >> copyfiles3
+echo "cp -f next/lib/log/open/foo.txt next/lib/secure/log/intermud/" >> copyfiles3
+
+
+
+#BLAH BLAH COPY COPY
+
+#cd /tmp/foo
+#mv next $NEWLIB
+#chown -R 513:513 $NEWLIB
+#chmod -R g+rwx $NEWLIB
+#zip -q9r $NEWLIB.zip $NEWLIB
+#\cp -f $NEWLIB.zip /mnt/data/mud/deadsouls/
+#\cp -f $NEWLIB.zip /mnt/media/open/
+#\cp -f $NEWLIB.zip /export/home/$HOME/mud/
+
