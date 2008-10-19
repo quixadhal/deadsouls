@@ -36,6 +36,9 @@
 #define MAX_SINGLE_OBJECT        4000
 #endif
 #define CRAT_PARSE 0
+#ifndef CONSOLE_TRACE
+#define CONSOLE_TRACE 0
+#endif
 
 
 private static int ResetNumber;
@@ -193,31 +196,27 @@ private static void load_access(string cfg, mapping resource) {
 
     void preload(string str) {
         string err;
-        int t;
         mapping before, after;
-
-        if( !file_exists(str + ".c") ) return;
-        t = time();
-        write("Preloading: " + str + "...");
+        int t;
 #ifdef __HAS_RUSAGE__
         before = rusage();
 #endif
+        if( !file_exists(str = lpc_file(str)) ) return;
+        write("Preloading: " + str + "...");
+
         if( err = catch(call_other(str, "???")) ){
             write("\nGot error "+err+" when loading "+str+".\n");
         }
         else {
 #ifdef __HAS_RUSAGE__
             after = rusage();
-#endif
-            t = time() - t;
-#ifdef __HAS_RUSAGE__
             if(sizeof(before) && sizeof(after)){
                 t = after["utime"] - before["utime"];
                 write("("+t+"ms)\n");
             }            
             return;
 #endif
-            write("("+(t/60)+"."+(t%60)+")\n");
+            write("(done)\n");
         }
     }
 
@@ -231,10 +230,11 @@ private static void load_access(string cfg, mapping resource) {
 
     int valid_read(string file, object ob, string fun) {
         string *ok;
-
+        int ret;
         if( ob == master() ) return 1;
         ok = match_path(ReadAccess, file);
-        return check_access(ob, fun, file, ok, "read");
+        ret = check_access(ob, fun, file, ok, "read");
+        return ret;
     }
 
     int valid_link(string from, string to) {
@@ -277,7 +277,7 @@ private static void load_access(string cfg, mapping resource) {
             else if( tmp + __SAVE_EXTENSION__ == file ) return 1;
             else i = sizeof(stack = ({ ob }));
         }
-        else if(Unguarded && base_name(ob) == "/secure/sefun/sefun") {
+        else if(Unguarded && base_name(ob) == SEFUN) {
             if(Unguarded == previous_object(1))
                 stack = ({ previous_object(1) });
             else stack = ({ ob }) + previous_object(-1);
@@ -500,9 +500,13 @@ private static void load_access(string cfg, mapping resource) {
         while(i--) {
             if( !obs[i] ) continue;
             if( userp(obs[i]) ) continue;
-            if( !(tmp = query_privs(obs[i])) ) return 0;
+            tmp = query_privs(obs[i]);
+            if(!tmp && base_name(obs[i]) == SEFUN) tmp = "SECURE";
+            if( !(tmp) ) return 0;
             if( !sizeof(explode(tmp, ":") &
-                ({ PRIV_SECURE, PRIV_MUDLIB, PRIV_CMDS, PRIV_GENERAL })) ) return 0;
+                ({ PRIV_SECURE, PRIV_MUDLIB, PRIV_CMDS, PRIV_GENERAL })) ){
+                return 0;
+            }
         }
         return 1;
     }
@@ -535,8 +539,21 @@ private static void load_access(string cfg, mapping resource) {
     }
 
     string error_handler(mapping mp, int caught) {
-        string ret, file;
+        string ret, file, dbg;
 
+        if(CONSOLE_TRACE){
+            dbg = "\n----\n";
+            foreach(mixed key, mixed val in mp){
+                dbg += identify(key) + " : "+identify(val)+"\n";
+            }
+            dbg += "\n----\n";
+            debug_message(dbg);
+        }
+        if(mp && mp["error"] && grepp(mp["error"], "Too many open files")){
+            if(!EVENTS_D->GetRebooting()){
+                EVENTS_D->eventReboot(1);
+            }
+        }
         ret = "---\n"+timestamp()+"\n"+ standard_trace(mp);
         if( caught ) write_file(file = "/log/catch", ret);
         else write_file(file = "/log/runtime", ret);
@@ -836,7 +853,6 @@ private static void load_access(string cfg, mapping resource) {
                 else if(arg && stringp(arg)) wut = remove_article(arg);
             }
             else wut = "such thing";
-            //tc("Bingo. stack: "+get_stack());
             err = "There is no "+ wut +" here.";
             break;
 
@@ -924,6 +940,15 @@ private static void load_access(string cfg, mapping resource) {
         write_file(DIR_LOGS "/reset", "\t" + x + " objects reclaimed, " +
           (sizeof(obs) - y) + " objects reset, " + y + " objects "
           "cleaned.\n");
+    }
+
+    int RequestReset(){
+        if(previous_object() && (base_name(previous_object()) == SEFUN 
+            || base_name(previous_object()) == REAPER_D)){
+            unguarded( (: eventReset :) );
+            return 1;
+        }
+        return 0;
     }
 
     int GetResetNumber() { return ResetNumber; }

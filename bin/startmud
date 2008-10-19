@@ -12,6 +12,14 @@ MUDHOME=""
 LANG=en_US
 LANGUAGE=en_US
 LC_ALL=en_US
+
+# Uncomment the following if you're on Solaris 10 with a
+# 32 bit compiler and need to get around the 256 FD limit.
+# NOTE: It will break things. The correct fix is to  compile 
+# with a 64 bit compiler and set ENABLE_M64 in build.FluffOS to 1
+#LD_PRELOAD_32=/usr/lib/extendedFILE.so.1
+#export LD_PRELOAD_32
+
 export LANG LANGUAGE LC_ALL MUDHOME
 
 umask 007

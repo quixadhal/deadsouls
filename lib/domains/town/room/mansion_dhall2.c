@@ -16,13 +16,13 @@ static void create() {
         ({"mansion","house"}) : "You are in a beautiful mansion.",
         "foyer" : "The mansion's entry area is north of here."
       ]) );
-
     SetExits( ([
         "north" : "/domains/town/room/mansion_int",
         "south" : "/domains/town/room/mansion_dhall3",
-        "east" : "/domains/town/room/mansion_room9",
-        "west" : "/domains/town/room/mansion_room10"
+        "west" : "/domains/town/room/mansion_room10",
+        "east" : "/domains/town/room/mansion_room7.c",
       ]) );
+
 }
 void init(){
     ::init();

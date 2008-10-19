@@ -18,7 +18,6 @@ static void create() {
     SetInventory(([
       ]));
 
-    SetProperty("no attack", 1);
 
     SetDoor("north", "/domains/default/doors/steel_door2.c");
 

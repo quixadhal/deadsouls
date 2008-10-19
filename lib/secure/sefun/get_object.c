@@ -110,7 +110,7 @@ varargs object get_object( string str, object player, int living )
     if( catch(ret = find_object(str)) ){
         return 0;
     }
-
+    if(!ret) ret = to_object(str);
     if(!ret && (file_exists(str) || file_exists(str+".c"))) ret = load_object(str);
 
     //  Finally return any object found matching the requested name

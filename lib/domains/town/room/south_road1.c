@@ -9,9 +9,8 @@ static void create() {
     SetShort("Saquivor Road");
     SetLong("This is a cobblestone road, leading "+
       "north into town and south away from it. "+
-      "The First Village Bank stands here on "+
-      "the east side of the road. The magic "+
-      "shop stands west. "+
+      "The magic "+
+      "shop is to the west. "+
       "\n%^GREEN%^An old well stands by the "+
       "side of the road.%^RESET%^");
     SetItems( ([

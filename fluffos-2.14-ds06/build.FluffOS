@@ -1,5 +1,6 @@
 #!/bin/sh
-ENABLE_M64=1
+ENABLE_M64=0
+export ENABLE_M64
 
 if test $# -ne 0; then
     case $1 in
@@ -208,9 +209,13 @@ else
         if test "${DEBUG-x}" = "x"; then
             OPTIMIZE=${OPTIMIZE-"-O2"}
         fi
-        if (test $? -eq 0) && ENABLE_M64; then
-            CC="gcc -m64"
+        if (test $? -eq 0); then
+            if (test $ENABLE_M64 -eq 1); then
+                CC="gcc -m64"
+                OPTIMIZE=$OPTIMIZE" -DM64"
+            fi
         fi
+        echo "CC: "$CC
 	GNUC=1
 	CCFLAGS=-D__USE_FIXED_PROTOTYPES__
     else

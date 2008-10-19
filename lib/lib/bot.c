@@ -1,5 +1,6 @@
 #include <lib.h>
 #include <rooms.h>
+#include <daemons.h>
 
 inherit LIB_SENTIENT;
 
@@ -15,19 +16,23 @@ void init(){
 
 varargs int eventDie(mixed agent){
     int x;
-
+    string killer, death_annc;
+    object env = room_environment(this_object());
+    if(objectp(agent)) killer = agent->GetName();
+    if(stringp(agent)) killer = agent;
+    if(!agent) killer = "UNKNOWN";
     SetUndead(!(x = GetUndead()));
     if( objectp(agent) ){
         if( x ) agent->eventDestroyEnemy(this_object());
         else agent->eventKillEnemy(this_object());
     }
-    if( environment() ){
+    if( env ){
         object *obs;
         string *currs;
         object ob;
         string curr;
         int i;
-
+        env = room_environment(this_object());
         ob = new(LIB_BOT_CORPSE);
         ob->SetCorpse(this_object());
         ob->eventMove(environment());
@@ -47,6 +52,12 @@ varargs int eventDie(mixed agent){
             }
         }
     }
+    death_annc = killer + " has destroyed "+ this_object()->GetName()+".";
+    //tc("death_annc: "+death_annc,"yellow");
+    if(env) tell_room(env,this_object()->GetName()+" breaks down!",
+          ({ this_object() }) ); 
+    CHAT_D->eventSendChannel("SYSTEM","death",death_annc,0);
+
     this_object()->eventMove(ROOM_FURNACE);
     return 1;
 }

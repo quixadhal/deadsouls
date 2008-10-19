@@ -6,11 +6,11 @@
 #include <network.h>
 
 #define WGET_D "/secure/daemon/luget"
-#ifndef WEB_SOURCE
-#define WEB_SOURCE "149.152.218.102"
+#ifndef WEB_SOURCE_IP
+#define WEB_SOURCE_IP "204.209.44.12"
 #endif
 #ifndef WEB_SOURCE_NAME
-#define WEB_SOURCE_NAME "dead-souls.net"
+#define WEB_SOURCE_NAME "lpmuds.net"
 #endif
 #define WEB_SOURCE_PORT 80
 #ifndef SAVE_LIVEUPGRADE
@@ -101,6 +101,7 @@ int eventRevert(string revert_path){
 }
 
 void eventReloads(){
+    cp("/secure/daemon/update.patch","/secure/daemon/update.c");
     reload(UPDATE_D);
     reload(WGET_D);
 }
@@ -169,7 +170,7 @@ mixed cmd(string str) {
     } 
 
     foreach(mixed element in socks){
-        if(element[1] == "DATA_XFER" && element[4] == WEB_SOURCE+"."+WEB_SOURCE_PORT &&
+        if(element[1] == "DATA_XFER" && element[4] == WEB_SOURCE_IP+"."+WEB_SOURCE_PORT &&
           str != "cancel"){
             player->eventPrint("A download is still in progress. Please wait until it is complete.");
             return 1;
@@ -338,7 +339,7 @@ mixed cmd(string str) {
                 OOB_D->GetFile(mud,upgrades_txt+"/upgrades.txt");
             }
             else {
-                WGET_D->GetFile(WEB_SOURCE, upgrade_prefix+"/upgrades.txt",WEB_SOURCE_NAME,
+                WGET_D->GetFile(WEB_SOURCE_IP, upgrade_prefix+"/upgrades.txt",WEB_SOURCE_NAME,
                   "/secure/upgrades/txt/list.txt",WEB_SOURCE_PORT);
             }
             call_out( (: cmd :), 5, orig_str);
@@ -355,7 +356,7 @@ mixed cmd(string str) {
             OOB_D->eventMajorUpgrade(mud, allnames);
         }
         else {
-            WGET_D->eventMajorUpgrade(WEB_SOURCE, allnames,WEB_SOURCE_NAME);
+            WGET_D->eventMajorUpgrade(WEB_SOURCE_IP, allnames,WEB_SOURCE_NAME);
         }
         rm(upgrades_txt+"/list.txt");
         player->eventPrint("Full upgrade begun.");
@@ -373,8 +374,8 @@ mixed cmd(string str) {
         player->eventPrint("Requesting the file \""+file+"\" from "+INTERMUD_D->GetMudName(mud)+".");
     }
     else {
-        player->eventPrint("Requesting the file \""+file+"\" from "+WEB_SOURCE);
-        WGET_D->GetFile(WEB_SOURCE, upgrade_prefix+file);
+        player->eventPrint("Requesting the file \""+file+"\" from "+WEB_SOURCE_IP);
+        WGET_D->GetFile(WEB_SOURCE_IP, upgrade_prefix+file);
     }
     return 1;
 }

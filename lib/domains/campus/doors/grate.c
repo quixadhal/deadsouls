@@ -26,8 +26,11 @@ static void create() {
         "lockable" : 0 ]) );
     SetClosed(1);
 }
-//int CanOpen(object ob){
-//if(base_name(environment(ob)) == "/domains/campus/room/sewer2") return 1;
-//else return 0;
-//}
+
+int CanOpen(object ob){
+    if(base_name(environment(ob)) == "/domains/campus/room/sewer3"){
+        return 1;
+    }
+    else return 0;
+}
 

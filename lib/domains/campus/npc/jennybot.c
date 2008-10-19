@@ -8,6 +8,16 @@ static int count, active, tip, tipnumber, current_tip, hb, mooch, greeting, gree
 string *watchlist = ({});
 static string save_file = "/domains/campus/save/jennybot.o";
 
+mixed GreetingResponse(object who, mixed foo, string message, mixed bar){
+    int greet;
+    message = lower_case(message);
+    if(!strsrch(message, "hi") || !strsrch(message, "hello")){
+        tell_player(who,"The woman does not respond to your greeting, "+
+          "but you sense that you can: \n%^BOLD%^look at woman%^RESET%^");
+    }
+    return 1;
+}
+
 string LongDesc(){
     string ret;
     if(!active){
@@ -46,6 +56,7 @@ static void create(){
         "/domains/campus/armor/bluedress" : "wear dress",
       ]));
     SetMelee(1);
+    SetPolyglot(1);
     SetLevel(99);
     SetRace("android");
     SetAction(1, ({
@@ -56,6 +67,10 @@ static void create(){
     AddCommandResponse("shut down", (: eventTurnOff :) );
     AddCommandResponse("shut up", (: eventTurnOff :));
     AddCommandResponse("go away", (: eventTurnOff :) );
+    SetTalkResponses( ([
+        "hi" : (: GreetingResponse :),
+        "hello" : (: GreetingResponse :),
+      ]) );
     set_heart_beat(1);
     ob=this_object();
     count=210;

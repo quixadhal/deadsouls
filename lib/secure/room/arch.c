@@ -1,10 +1,72 @@
 #include <lib.h>
 #include <daemons.h>
 #include <message_class.h>
+
+#ifndef DISABLE_IMC2
+#define DISABLE_IMC2 0
+#endif 
+
 inherit LIB_ROOM;
 
 int imud_enabled = 0;
-//string tmpfile;
+string gname;
+string *ulist = ({});
+mapping umap = ([]);
+
+void validate(){
+    if(!this_player() || !archp(this_player())){
+        error("No.");
+    }
+}
+
+int ReceiveObs(object ob){
+    string bname = base_name(ob);
+    umap[bname] = (umap[bname] + 1);
+    return 0;
+}
+
+string ReadScreen(){
+    string *base_names = ({});
+    string ret = "Top loaded objects:\n";
+    int rooms, npcs, meminf;
+    mixed *foo;
+    validate();
+    ulist = ({});
+    umap = ([]);
+    foo = objects( (: ReceiveObs($1) :) );
+    ulist = ({});
+    foreach(mixed key, mixed val in umap){
+        reset_eval_cost();
+        ulist += ({ ({ val, key }) });
+    }
+    //tc("base_names: "+identify(base_names));
+    ulist = sort_array(ulist, -1)[0..9];
+    foreach(mixed element in ulist){
+        ret += element[1]+" "+element[0]+"\n";
+    }
+    rooms = sizeof(objects( (: inherits(LIB_ROOM, $1) :) ) );
+    npcs = sizeof(objects( (: inherits(LIB_NPC, $1) :) ) );
+    ret += "\nTotal number of loaded objects: "+sizeof(objects())+"\n";
+    ret += "Loaded rooms: "+rooms+"\n";
+    ret += "Loaded NPC's: "+npcs+"\n\n";
+    ret += "Total number of connected users: "+sizeof(users())+"\n";
+    ret += "Pending callouts: "+sizeof(call_out_info())+"\n";
+    ret += "File descriptors in use: "+
+    (sizeof(explode(dump_file_descriptors(),"\n"))-3)+"\n";
+#if 0
+    meminf = memory_info();
+    if(meminf){
+        ret += "Memory in use (allocated memory will be higher): "+
+        meminf+"\n";
+    }
+#endif
+    return ret;
+} 
+
+string eventReadScreen(){
+    validate();
+    return unguarded( (: ReadScreen :) );
+}
 
 mixed eventReadPrintout(){
     mapping MudMap2;
@@ -27,58 +89,6 @@ mixed eventReadPrintout(){
     return "";
 }
 
-mixed eventReadScreen(){
-    mapping MudMap;
-    string *dead_keys = ({});
-    string *all_dead_keys = ({});
-    string *good_muds = ({});
-    string *online_muds = ({});
-    string ret = "";
-    string canonical = "UNKNOWN";
-    MudMap = INTERMUD_D->GetMudList();
-    if(!sizeof(MudMap)){
-        write("Intermud3 link down. Stats unavailable.");
-        return 1;
-    }
-    if(MudMap["Frontiers"]) canonical = MudMap["Frontiers"][5];
-    foreach(string key, mixed *val in MudMap){
-        if(!grepp(key,"Dead_Souls_")){
-            if(grepp(val[5],mudlib_version()))
-                dead_keys += ({ key });
-            if(grepp(val[5],"Dead Souls")) all_dead_keys += ({ key });
-            if(canonical != "UNKNOWN" && grepp(val[5],canonical)) good_muds += ({ key });
-            if(grepp(val[5],"Dead Souls") && val[0] == -1) online_muds += ({ key });
-        }
-    }
-    if(canonical != "UNKNOWN"){
-        ret += "%^GREEN%^Muds running the current version of Dead Souls:%^RESET%^\n";
-        foreach(string mud in good_muds){
-            if(mud != "DeadSoulsWin")
-                ret += mud + "\t\t" +MudMap[mud][5] + "%^RESET%^\n";
-        }
-    }
-    if(!grepp(ret,"current version") || !grepp(canonical,mudlib_version())){
-        ret += "\n%^CYAN%^Muds running our version of Dead Souls:%^RESET%^\n";
-        foreach(string mud in dead_keys){
-            ret += mud + "\t\t" +MudMap[mud][5] + "%^RESET%^\n";
-        }
-    }
-    ret += "\n%^RED%^Muds running any version of Dead Souls:%^RESET%^\n";
-    foreach(string mud in all_dead_keys){
-        ret += mud + "\t\t" +MudMap[mud][5] + "%^RESET%^\n";
-    }
-
-    ret += "\nTotal: "+sizeof(all_dead_keys);
-
-    ret+= "\n\n%^YELLOW%^Dead Souls muds online:%^RESET%^ \n";
-    foreach(string mud in online_muds){
-        ret += mud + "\t\t" +MudMap[mud][5] + "%^RESET%^\n";
-    }
-    this_player()->eventPage( explode(ret,"\n") );
-    return "";
-
-}
-
 void SetImud(int i){
     if(!i) i = 0;
     imud_enabled = i;
@@ -90,7 +100,11 @@ int GetImud(){
 
 string SignRead(){
     string ret = "";
-    if(INTERMUD_D->GetConnectedStatus())
+
+    if(!INTERMUD_D->GetEnabled()){
+        ret += "\"I3 connection: %^BOLD%^WHITE%^DISABLED%^RESET%^, ";
+    }
+    else if(INTERMUD_D->GetConnectedStatus())
         ret += "\"I3 connection: %^BOLD%^GREEN%^ONLINE%^RESET%^, ";
     else ret +=  "\"I3 connection: %^BOLD%^RED%^OFFLINE%^RESET%^, ";
 
@@ -99,7 +113,12 @@ string SignRead(){
         ret += "IMC2: %^BOLD%^GREEN%^ONLINE%^RESET%^\"";
         break;
     case 2:
-        ret += "IMC2: %^BOLD%^YELLOW%^WAITING FOR ACCEPTANCE%^RESET%^\"";
+        if(!IMC2_D->GetEnabled()){
+            ret += "IMC2: %^BOLD%^WHITE%^DISABLED%^RESET%^\"";
+        }
+        else {
+            ret += "IMC2: %^BOLD%^YELLOW%^WAITING FOR ACCEPTANCE%^RESET%^\"";
+        }
         break;
     case 3:
         ret += "IMC2: %^BOLD%^RED%^OFFLINE: CONNECT ERROR%^RESET%^\"";
@@ -120,7 +139,7 @@ string SignRead(){
 string LongDesc(){
     string desc = "This is a polished antiseptic room composed of some "+
     "white gleaming material. There is a viewscreen on a wall here, "+
-    "with a control panel alonside it. "+
+    "with a control panel alongside it. "+
     "A long printout hangs from the panel."
     "\nThe network troubleshooting room is down from here.";
     desc += "\nA sign on the wall reads: "+SignRead();

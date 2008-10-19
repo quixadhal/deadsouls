@@ -7,7 +7,7 @@ static void create() {
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("The Magic Shop");
-    SetLong("This is the local magic shop. Magical items can be bought and sold here. The storeroom is below and the town Mages' Guild is south.");
+    SetLong("This is the local magic shop. Magical items can be bought and sold here. The storeroom is upstairs and the town Mages' Guild is south.");
     SetItems(([
         ({"store","shop","place"}) : "This is the local magic shop.",
         ({ "sign" ,"sign on the wall" }): "A sign on the wall, meant for reading.",
@@ -15,7 +15,7 @@ static void create() {
     SetExits( ([
         "south" : "/domains/town/room/magic_guild",
         "east" : "/domains/town/room/south_road1",
-        "down" : "/domains/town/room/magic_shop2.c",
+        "up" : "/domains/town/room/magic_shop2.c",
       ]) );
     SetRead("sign", (: read_sign :) );
     SetInventory( ([

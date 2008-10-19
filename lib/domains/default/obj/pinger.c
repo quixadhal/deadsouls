@@ -10,7 +10,7 @@ void create(){
     ::create();
 
     SetKeyName("pinger");
-    SetId( ({"thing"}) );
+    SetId( ({"pinger"}) );
     SetAdjectives( ({"keepalive"}) );
     SetShort("a keepalive pinger");
     SetLong("This thing can be set to periodically output a string, "

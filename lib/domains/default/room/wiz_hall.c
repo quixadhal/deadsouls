@@ -58,21 +58,36 @@ int CanReceive(object sneak) {
             message("info","Creator staff only, sorry.", ob);
             return 0;
         }
-
-        if(ob->GetRace() == "rodent"){
-            message("info","You are repelled by rodenticide.",ob);
-            return 0;
-        }
     }
     return ::CanReceive(sneak);
 }
 
 int eventReceiveObject(object ob){
     string race = ob->GetRace();
+    int ret = ::eventReceiveObject(ob);
+    if(!ret) return 0;
     if(race && race == "orc"){
         ob->eventPrint("Welcome to our inclusive halls, proud orc!");
     }
-    return ::eventReceiveObject(ob);
+    if(ob->GetInvis()){
+        tell_room(this_object(), capitalize(ob->GetKeyName())+
+          " enters invisibly.", ({ ob }) );
+        ob->eventPrint("%^BOLD%^%^RED%^Your invisible entry has "+
+          "been announced.%^RESET%^");
+    }
+    return ret;
+}
+
+int eventReleaseObject(object ob){
+    int ret = ::eventReleaseObject(ob);
+    if(!ret) return 0;
+    if(ob->GetInvis()){
+        tell_room(this_object(), capitalize(ob->GetKeyName())+
+          " exits invisibly.", ({ ob }) );
+        ob->eventPrint("%^BOLD%^%^RED%^Your invisible exit has "+
+          "been announced.%^RESET%^");
+    }
+    return ret;
 }
 
 void init(){

@@ -95,10 +95,11 @@ void close_callback(int fd){
     if(FilesMap[fd]){
         LUReport("Received "+FilesMap[fd]["file"]);
         ProcessData(fd);
-        if(FilesMap[fd]["contents"] && sizeof(FilesMap[fd]["contents"]))
-            write_file(FilesMap[fd]["where"], FilesMap[fd]["contents"]);
+        if(FilesMap[fd]["contents"] && sizeof(FilesMap[fd]["contents"])){
+            write_file(FilesMap[fd]["where"], FilesMap[fd]["contents"],1);
+        }
+        FilesMap[fd] = 0;
         map_delete(FilesMap,fd);
-        this_object()->eventRetryGet(1);
     }
 }
 

@@ -7,7 +7,7 @@ static void create() {
     SetClimate("temperate");
     SetAmbientLight(30);
     SetShort("riverbank");
-    SetLong("This is the bank of a narrow but swift-moving river. A steep path leads back up to the bridge.");
+    SetLong("This is the bank of a narrow but swift-moving river. A steep path leads back up to the bridge. There is a cave in the steep east wall of the riverbank.");
     SetProperties (([
         "no attack":0, 
         "no bump":0, 
@@ -25,6 +25,9 @@ static void create() {
         "/domains/town/obj/riverwater" : 1,
       ]));
     AddExit("up", "/domains/town/room/bridge");
+    if(file_exists("/domains/cave/room/cave.c")){
+        AddExit("east", "/domains/cave/room/cave");
+    }
     SetChance(90);
     SetFish( ([
         "/domains/town/meals/shark" : 10,

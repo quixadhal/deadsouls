@@ -86,13 +86,15 @@ void heart_beat(){
 
 int boost(string str, int coasting){
     string dest,imsg,omsg;
-    mapping Exit;
+    mapping Exit, Doors;
     int ret, medium;
     object env;
     if(!owner) return 0;
     env = environment(owner);
     current_direction = str;
     medium = environment(owner)->GetMedium();
+    if(!env) return 0;
+    Doors = env->GetDoorsMap();
 
     if(medium == MEDIUM_SPACE && !coasting){
         if(Directions[opposite_dir(str)]){
@@ -132,6 +134,12 @@ int boost(string str, int coasting){
         }
     }
     Exit = environment(owner)->GetExitData(str);
+
+    if( sizeof(Doors) && Doors[str] && (int)Doors[str]->GetClosed() ){
+        message("my_action", "You bump into " +
+          (string)Doors[str]->GetShort(str) + ".", owner);
+        return 1;
+    }
 
     if( Exit && Exit["pre"] &&
       !((int)evaluate(Exit["pre"], str)) ){

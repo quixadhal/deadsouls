@@ -22,6 +22,7 @@ string *user_list = ({});
 static object ob;
 static string gplayer;
 static int maxlevel;
+static string LevelList = "";
 
 string player_save_file;
 static string namestr = "";
@@ -107,6 +108,7 @@ mapping CompileLevelList(){
     int i=1;
     int seed=300;
     float mod;
+    LevelList = "";
     Levels = ([ 0 : ([ "xp" : 0, "qp" : 0 ]) ]);
     Levels[1] = ([ "title" : "the utter novice ", "xp" : 0, "qp" : 0 ]);
     //for(i=3,mod = 100/i;i<1000;i++){
@@ -120,15 +122,25 @@ mapping CompileLevelList(){
         seed = seed * (1+mod); 
         seed = ((seed/100) * 100);
         //tc("mod: "+mod+", level: "+i+", exp: "+seed);
+        LevelList += "level: "+i+", ";
         if(seed > 0){
             Levels[i] = (["xp" : seed ]);
             if(REQUIRE_QUESTING){
-                if(QuestLevels[i]) Levels[i]["qp"] = QuestLevels[i];
+                if(QuestLevels[i]){
+                    Levels[i]["qp"] = QuestLevels[i];
+                }
             }
             else Levels[i]["qp"] = 0;
-            if(LevelTitles[i]) Levels[i]["title"] = LevelTitles[i];
+            if(LevelTitles[i]){
+                Levels[i]["title"] = LevelTitles[i];
+            }
             maxlevel = i;
+            LevelList += ( Levels[i]["title"] || "Untitled" );
+            LevelList += ", exp: "+seed;
+            LevelList += ( Levels[i]["qp"] ? ", qp: "+Levels[i]["qp"] : "");
+            LevelList += "\n";
         }
+        if(seed >= 2146000000) break;
     }
     return copy(Levels);
 }
@@ -275,6 +287,10 @@ string *GetUserList(){
 
 mapping GetLevelList(){
     return copy(Levels);
+}
+
+string GetLevels(){
+    return LevelList;
 }
 
 int RemoveUser(string str){

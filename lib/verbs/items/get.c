@@ -55,7 +55,7 @@ varargs mixed can_get_obj_out_of_obj(mixed args...) {
     mixed ret = eventCheckLight(this_player());
     object ob;
     int which;
-    if(!(args[3] && ob = get_object(args[3])))
+    if(!(args[3] && ob = to_object(args[3])))
         return ret;
     else {
         if(ob->GetClosed()){
@@ -83,8 +83,8 @@ mixed can_get_wrd_wrd_out_of_obj(mixed args...) {
     mixed ret = eventCheckLight(this_player());
     object ob;
     if(sizeof(args) > 5)
-        if(args[5]) ob = get_object(args[5]);
-        else if(args[3]) ob = get_object(args[3]);
+        if(args[5]) ob = to_object(args[5]);
+        else if(args[3]) ob = to_object(args[3]);
 
     if(ob && ob->GetClosed()){
         return "The "+remove_article(ob->GetShort())+" is closed." ;
@@ -100,7 +100,7 @@ mixed can_get_wrd_wrd_from_obj(mixed args...) {
 mixed can_get_wrd_out_of_obj(mixed args...) {
     mixed ret = eventCheckLight(this_player());
     object ob;
-    if(args[3]) ob = get_object(args[3]);
+    if(args[3]) ob = to_object(args[3]);
 
     if(ob && ob->GetClosed()){
         return "The "+remove_article(ob->GetShort())+" is closed." ;
@@ -195,8 +195,8 @@ mixed do_get_wrd_wrd_from_obj(mixed args...) {
     curr = args[1];
     pile = args[2];
 
-    ob1 = get_object(num+" "+curr);
-    ob2 = get_object(implode(args[6..]," "));
+    ob1 = to_object(num+" "+curr);
+    ob2 = to_object(implode(args[6..]," "));
 
     if(ob1 && ob2) return do_get_obj_from_obj(ob1, ob2);
 
@@ -217,8 +217,8 @@ mixed do_get_wrd_from_obj(mixed args...) {
     curr = args[1];
     pile = args[2];
 
-    ob1 = get_object(num+" "+curr);
-    ob2 = get_object(implode(args[6..]," "));
+    ob1 = to_object(num+" "+curr);
+    ob2 = to_object(implode(args[6..]," "));
 
     if(ob1 && ob2) return do_get_obj_from_obj(ob1, ob2);
 

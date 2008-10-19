@@ -145,13 +145,13 @@ mixed do_give_obs_liv(mixed *items, object target) {
 }
 
 mixed do_give_obs_to_liv(mixed *items, object target) {
-    object *obs;
-
+    object *obs, *eligible;
 
     if( sizeof(items) < 1 ) {
         this_player()->eventPrint("You don't have any to give.");
         return 1;
     }
+
     obs = filter(items, (: objectp :));
     if( !sizeof(obs) ) {
         mixed *ua;
@@ -160,6 +160,13 @@ mixed do_give_obs_to_liv(mixed *items, object target) {
         foreach(string *list in ua) this_player()->eventPrint(list[0]);
         return 1;
     }
-    foreach(object ob in obs) do_give_obj_to_liv(ob, target);
+    eligible=filter(obs, (: (!($1->GetWorn()) && environment($1) == this_player()) :));
+    if(!sizeof(eligible)){
+        write("Remove or unwield items before trying to sell them.");
+        eligible = ({});
+        return 1;
+    }
+
+    foreach(object ob in eligible) do_give_obj_to_liv(ob, target);
     return 1;
 }

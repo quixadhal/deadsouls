@@ -113,7 +113,8 @@ void eventDescribeEnvironment(int brief){
               }
           }
           for(i=0, desc = 0, maxi = sizeof(shorts = keys(lying)); i<maxi; i++){
-              string key = shorts[i];
+              string key = replace_string(shorts[i],"%^RESET%^",
+                "%^RESET%^MAGENTA%^");
               int val = lying[shorts[i]];
 
               if( val < 2 ){

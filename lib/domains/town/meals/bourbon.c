@@ -6,15 +6,16 @@ inherit LIB_MEAL;
 
 static void create() {
     meal::create();
-    SetKeyName("ale");
-    SetId( ({ "bottle", "bourbon" }) );
+    SetKeyName("bourbon");
+    SetAdjectives( ({ "dark","green","cheap","bourbon" }) );
+    SetId( ({ "bottle", "bottle of bourbon" }) );
     SetShort("a bottle of bourbon");
     SetLong("A dark green bottle of cheap bourbon.");
     SetMass(100);
-    SetBaseCost("silver",25);
+    SetBaseCost("silver",20);
     SetMealType(MEAL_DRINK | MEAL_ALCOHOL);
-    SetStrength(50);
-    SetMealMessages("You finish off the boubon and gasp! WHEW!! Mean stuff!",
+    SetStrength(30);
+    SetMealMessages("You finish off the bourbon and gasp! WHEW!! Mean stuff!",
       "$N finishes off a bottle of bourbon and gasps.");
 }
 void init(){

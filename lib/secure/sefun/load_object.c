@@ -4,11 +4,29 @@
  *    created by Descartes of Borg 940213
  */
 
+#include <daemons.h>
+
 object global_load_ob;
 
 object load_object(string str) {
     object ob;
     if(!str) return 0;
+    if(MEMUSE_HARD_LIMIT && memory_info() > MEMUSE_HARD_LIMIT){
+        if(EVENTS_D->GetRebooting()){
+            return 0;
+        }
+        reap_dummies();
+        reset_eval_cost();
+        reap_other();
+        reset_eval_cost();
+        reclaim_objects();
+        reset_eval_cost();
+        MASTER_D->RequestReset();
+        if(memory_info() > MEMUSE_HARD_LIMIT){
+            EVENTS_D->eventReboot(MINUTES_REBOOT_WARNING);
+            return 0;
+        }
+    }
     if(!stringp(str)) error("Bad argument 1 to load_object().\n");
     if(ob = find_object(str)) return ob;
     catch(call_other(str, "???"));

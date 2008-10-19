@@ -9,6 +9,8 @@ private static object Principal;
 
 int AllowPass(object who, object what){
     string race = this_object()->GetRace();
+    //tc(identify(this_object())+": AllowPass("+identify(who)+", "+
+    //identify(what)+")","green");
     if(who->GetInvis()) return 1;
     if(this_object()->GetSleeping()) return 1;
     if(this_object()->GetParalyzed()) return 1;
@@ -30,6 +32,8 @@ int AllowGet(object who, object what){
 varargs mixed SetGuard(mixed what, mixed action, int howlong){
     object env = environment();
     if(!clonep(this_object())) return 0;
+    //tc(identify(this_object())+" SetGuard("+identify(what)+", "+
+    //identify(action)+", "+howlong+")","blue");
     if(!PendingGuard) PendingGuard = ({});
 
     if(!env){

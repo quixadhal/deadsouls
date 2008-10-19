@@ -10,6 +10,8 @@
 #ifndef MAX_CALL_OUTS
 #define MAX_CALL_OUTS 500
 #endif
+#define MAX_DUMMIES 4098
+#define MAX_OBJECT 1024
 
 #include <lib.h>
 #include <dirs.h>
@@ -102,6 +104,32 @@ private static string *blacklist = ({});
 private static string *jokes = ({"bind","call_out","call_other",
   "unguarded","evaluate"});
 
+varargs object clone_object(string name, mixed args...){
+    int obsnum;
+    string prev;
+
+    prev = (base_name(previous_object()) || "");
+
+    if(strsrch(prev,"/realms/") && strsrch(prev,"/open/")){
+        return efun::clone_object(name, args...);
+    }
+
+    if(MEMUSE_SOFT_LIMIT && memory_info() > MEMUSE_SOFT_LIMIT){
+        return 0;
+    }
+
+    if(last(name,2) == ".c") name = truncate(name,2);
+    obsnum = sizeof( objects( (: base_name($1) == $(name) :) ) );
+    //The following means "allow new dummies up to a total
+    //of MAX_DUMMIES, but otherwise restrict the number of
+    //clones created of a particular file by a non-privileged
+    //object to MAX_OBJECT
+    if((name != LIB_DUMMY && obsnum > MAX_OBJECT) || obsnum > MAX_DUMMIES){
+        error("Too many cloned objects from an unprivileged source.");
+    }
+    return efun::clone_object(name, args...);
+}
+
 #ifdef __FLUFFOS__
 mixed copy(mixed val){
     return efun::copy(val);
@@ -125,7 +153,7 @@ varargs string read_file(string file, int start_line, int number_of_lines){
 //is a crasher.
 string check_memory(int flag){
     string ret;
-#if 0
+#if 1
 #ifdef __DEBUGMALLOC__
 #ifdef __DEBUGMALLOC_EXTENSIONS__
 #ifdef __PACKAGE_DEVELOP__

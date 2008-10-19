@@ -14,13 +14,17 @@
 #include <damage_types.h>
 #include <function.h>
 
+#ifndef MAX_ATTACKS_PER_HB
+#define MAX_ATTACKS_PER_HB 40
+#endif
+
 inherit LIB_RACE;
 inherit LIB_CLASSES;
 inherit LIB_COMBATMSG;
 
 private int Wimpy, Dead;
 private string WimpyCommand;
-private static int cParalyzed, tNextRound;
+private static int cParalyzed, tNextRound, AttacksPerHB;
 private static string TargetLimb, Party;
 private static object CurrentEnemy;
 private static function fParalyzed, fNextRound;
@@ -59,6 +63,13 @@ static void create(){
 /*  *****************  /lib/combat.c data functions  *****************  */
 varargs int GetMaxHealthPoints(string limb){
     return race::GetMaxHealthPoints(limb);
+}
+
+int GetVisibility(){
+    int x = this_object()->GetEffectiveVision();
+    if( x > 5 || x < 3 ) return 0;
+    if( x == 4 ) return 2;
+    else return 1;
 }
 
 int GetDead(){
@@ -322,26 +333,35 @@ int GetMagicResistance(){
     return val + GetLuck();
 }
 
+varargs int GetPenalty(object other){
+    int other_penalty, ret = 0;
+    if(other) other_penalty = other->GetPenalty();
+    if(GetBlind() || GetVisibility() < 1) ret += 10;
+    if(GetParalyzed()) ret += 10;
+    switch(GetPosition()){
+    case POSITION_LYING :
+        if(!(RACES_D->GetLimblessCombatRace(GetRace()))) ret += 10;
+        break;
+    case POSITION_SITTING : ret += 3;break;
+    case POSITION_KNEELING : ret += 3;break;
+    }
+    if(other_penalty) ret -= other_penalty;
+    if(ret < 0) ret = 0;
+    return ret;
+}
+
 int GetCombatChance(int val){
     val = val + random((val * GetMobility())/50);
-    val = (val/(3- visibility()) + GetLuck());
-    if( GetBlind() ){
-        return val/10;
-    }
-    else {
-        return val;
-    }
+    val = (val/(3- GetVisibility()) + GetLuck());
+    val = val/(GetPenalty() || 1);
+    return val;
 }
 
 int GetDefenseChance(int val){
     val = (val * GetMobility())/50;
-    val = (val/(3- visibility()) + (GetLuck()/2));
-    if( GetBlind() ){
-        return val/10;
-    }
-    else {
-        return val;
-    }
+    val = (val/(3- GetVisibility()) + (GetLuck()/2));
+    val = val/(GetPenalty() || 1);
+    return val;
 }
 
 int GetCombatBonus(int level){
@@ -517,8 +537,12 @@ int eventExecuteAttack(mixed target){
     int type = tNextRound;
     int position = GetPosition();
 
+    if(AttacksPerHB > MAX_ATTACKS_PER_HB) return 0;
     if(Dead) return 1;
     if(target->GetDead()) return 1;
+
+    AttacksPerHB++;
+    //tc(identify(this_object())+" AttacksPerHB: "+AttacksPerHB);
 
     fNextRound = 0;
     tNextRound = ROUND_UNDEFINED;
@@ -595,9 +619,10 @@ int eventExecuteAttack(mixed target){
         object array weapons = 0;
         function f = 0;
 
+        if(AttacksPerHB > MAX_ATTACKS_PER_HB) return 0;
         if(Dead) return 1;
         if(target->GetDead()) return 1;
-
+        AttacksPerHB++;
         if( arrayp(val) ){
             weapons = val;
         }
@@ -628,11 +653,12 @@ int eventExecuteAttack(mixed target){
         int hands = weapon->GetHands();
         int level = target->GetLevel();
         int bonus = GetCombatBonus(level);
-        int power, pro, con;
+        int power, pro, con, fail;
 
+        if(AttacksPerHB > MAX_ATTACKS_PER_HB) return 0;
         if(Dead) return;
         if(target->GetDead()) return;
-
+        AttacksPerHB++;
         if( target->GetDying() ){
             return;
         }
@@ -641,29 +667,29 @@ int eventExecuteAttack(mixed target){
             weapon->eventShoot(weapon, target);
             return;
         }
-
+        if(GetPenalty() > random(11)) fail = 1;
         pro = CanWeapon(target, weapon_type, hands, num);
         power = random(pro);
         con = target->GetDefenseChance(target->GetSkillLevel(weapon_type +
             " defense"));
         if( !TargetLimb ){ // If the thing stood still, I still missed
-            if(!estatep(target)) eventTrainSkill(weapon_type + " attack", pro, 0, 0, bonus);
+            if(!estatep(target) && !fail) eventTrainSkill(weapon_type + " attack", pro, 0, 0, bonus);
             if( hands > 1 ){
-                if(!estatep(target)) eventTrainSkill("multi-hand", pro, 0, 0, bonus);
+                if(!estatep(target) && !fail) eventTrainSkill("multi-hand", pro, 0, 0, bonus);
             }
             if( num > 1 ){
-                if(!estatep(target)) eventTrainSkill("multi-weapon", pro, 0, 0, bonus);
+                if(!estatep(target) && !fail) eventTrainSkill("multi-weapon", pro, 0, 0, bonus);
             }
             SendWeaponMessages(target, -2, weapon, TargetLimb);
         }
-        else if( !target->eventReceiveAttack(power, weapon_type, this_object()) ){
+        else if( fail || !target->eventReceiveAttack(power, weapon_type, this_object()) ){
             // Target avoided the attack
-            if(!estatep(target)) eventTrainSkill(weapon_type + " attack", pro, con, 0, bonus);
+            if(!estatep(target) && !fail) eventTrainSkill(weapon_type + " attack", pro, con, 0, bonus);
             if( hands > 1 ){
-                if(!estatep(target)) eventTrainSkill("multi-hand", pro, con, 0, bonus);
+                if(!estatep(target) && !fail) eventTrainSkill("multi-hand", pro, con, 0, bonus);
             }
             if( num > 1 ){
-                if(!estatep(target)) eventTrainSkill("multi-weapon", pro, con, 0, bonus);
+                if(!estatep(target) && !fail) eventTrainSkill("multi-weapon", pro, con, 0, bonus);
             }
             SendWeaponMessages(target, -1, weapon, TargetLimb);
         }
@@ -700,9 +726,10 @@ int eventExecuteAttack(mixed target){
         int count = sizeof(limbs);
         int attacks;
 
+        if(AttacksPerHB > MAX_ATTACKS_PER_HB) return 0;
         if(Dead) return 1;
         if(target->GetDead()) return 1;
-
+        AttacksPerHB++;
         if( count < 2 ){
             if(RACES_D->GetLimblessCombatRace(this_object()->GetRace())){
                 limbs = GetLimbs();
@@ -727,16 +754,19 @@ int eventExecuteAttack(mixed target){
 
     void eventMeleeAttack(object target, string limb){
         int pro, con;
-        int chance;
+        int chance, fail;
 
+        if(AttacksPerHB > MAX_ATTACKS_PER_HB) return;
         if( target->GetDead() || Dead || target->GetDying() ){
             return;
         }
-
+        AttacksPerHB++;
         if(limb == "head" && this_object()->GetCanBite()){
             eventBite(target);
             return;
         }
+
+        if(GetPenalty() > random(11)) fail = 1;
 
         pro = CanMelee(target);
         con = target->GetDefenseChance(target->GetSkillLevel("melee defense"));
@@ -746,10 +776,10 @@ int eventExecuteAttack(mixed target){
             if(!estatep(target)) eventTrainSkill("melee attack", pro, 0, 0,
                   GetCombatBonus(target->GetLevel()));
         }
-        else if( !target->eventReceiveAttack(chance, "melee", this_object()) ){
+        else if( fail || !target->eventReceiveAttack(chance, "melee", this_object()) ){
             // Enemy dodged my attack
             SendMeleeMessages(target, -1);
-            if(!estatep(target)) eventTrainSkill("melee attack", pro, con, 0,
+            if(!estatep(target) && !fail) eventTrainSkill("melee attack", pro, con, 0,
                   GetCombatBonus(target->GetLevel()));
         }
         else {
@@ -774,23 +804,27 @@ int eventExecuteAttack(mixed target){
     }
 
     int eventMagicRound(mixed target, function f){
+        if(AttacksPerHB > MAX_ATTACKS_PER_HB) return 0;
         if(target->GetDead()) return 1;
+        AttacksPerHB++;
         evaluate(f, target);
         return target->GetDying();
     }
 
     mixed eventBite(object target){
+        int fail;
         int pro = CanMelee(target);
         int con = target->GetDefenseChance(target->GetSkillLevel("melee defense"));
         int x = random(pro);
-
+        if(AttacksPerHB > MAX_ATTACKS_PER_HB) return 0;
         if(target->GetDead()) return 1;
-
+        if(GetPenalty() > random(11)) fail = 1;
+        AttacksPerHB++;
         if( environment() != environment(target) ){
             this_object()->eventPrint(target->GetName() + " has gone away.");
             return 1;
         }
-        if( TargetLimb ){
+        if( !fail && TargetLimb ){
             if( target->eventReceiveAttack(x, "melee", this_object()) ){ 
                 x = GetDamage(pro*2, "melee attack");
                 x = target->eventReceiveDamage(this_object(), BITE, x, 0,
@@ -859,10 +893,10 @@ int eventExecuteAttack(mixed target){
     }
 
     varargs int eventReceiveAttack(int speed, string def, object agent){
-        int x, pro, level, bonus;
-
+        int fail, x, pro, level, bonus, ret;
+        if(AttacksPerHB > MAX_ATTACKS_PER_HB) return 0;
         if(Dead) return 0;
-
+        if(GetPenalty() > random(11)) fail = 1;
         if( !agent ){
             agent = previous_object();
         }
@@ -880,26 +914,32 @@ int eventExecuteAttack(mixed target){
         if( def == "magic" ){
             pro = GetMagicResistance();
             if( (x = random(pro)) > speed ){
-                if(!estatep(agent)) eventTrainSkill("magic defense", pro, speed, 1, bonus);
-                return 0;
+                if(!fail && !estatep(agent)) 
+                    eventTrainSkill("magic defense", pro, speed, 1, bonus);
+                ret = 0;
             }
             else {
                 if(!estatep(agent)) eventTrainSkill("magic defense", pro, speed, 0, bonus);
-                return 1;
+                ret = 1;
             }
         }
         else {
             pro = GetDefenseChance(GetSkillLevel(def + " defense"));
             x = random(pro = pro/2);
-            if( x > speed ){
-                if(!estatep(agent)) eventTrainSkill(def + " defense", pro, speed, 1, bonus);
-                return 0;
+            if( !fail && x > speed ){
+                if(!estatep(agent)) 
+                    eventTrainSkill(def + " defense", pro, speed, 1, bonus);
+                ret = 0;
             }
             else {
-                if(!estatep(agent)) eventTrainSkill(def + " defense", pro, speed, 0, bonus);
-                return 1;
+                if(!fail && !estatep(agent)) 
+                    eventTrainSkill(def + " defense", pro, speed, 0, bonus);
+                ret = 1;
             }
         }
+        if(fail) ret = 1;
+        //tc("ret: "+ret,"red");
+        return ret;
     }
 
     void eventKillEnemy(object ob){
@@ -908,10 +948,8 @@ int eventExecuteAttack(mixed target){
 
         if( !ob ) return;
         level = ob->GetLevel();
-        //if(ob->GetCustomXP()) this_object()->AddExperiencePoints(ob->GetCustomXP());
-        //else this_object()->AddExperiencePoints(level * 80);
         if(ob->GetCustomXP()) reward = ob->GetCustomXP();
-        else reward = (level * 80);
+        else reward = (level * 99);
 
         if(this_object()->GetParty()){
             int spoils;
@@ -972,7 +1010,7 @@ int eventExecuteAttack(mixed target){
         }
 
         encumbrance = this_object()->GetEncumbrance();
-
+        //if(AttacksPerHB > MAX_ATTACKS_PER_HB) return 0;
         if(Dead) return 0;
         if(encumbrance > 200){
             if(GetInCombat()) tell_object(this_object(),"You try to dodge while weighed down.");
@@ -1060,6 +1098,7 @@ int eventExecuteAttack(mixed target){
 
     static void heart_beat(){
         race::heart_beat();
+        AttacksPerHB = 0;
         if( GetSleeping() || GetDying() ){
             return;
         }

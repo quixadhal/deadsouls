@@ -53,6 +53,7 @@ static void create() {
 
 int eventBeginPlay(){
     int run;
+    if(!clonep()) return 0;
     run = runs+1;
     firstchoice = "";
     response = "";

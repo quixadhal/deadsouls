@@ -13,7 +13,7 @@ static void create() {
       "accommodate dozens of cooks. It looks like nobody "
       "has prepared a meal here in quite some time.");
     SetExits( ([
-        "west" : "/domains/town/room/mansion_dhall3"
+        "west" : "/domains/town/room/mansion_dhall2.c",
       ]) );
     SetInventory( ([
         "/domains/town/obj/rack" : 1,

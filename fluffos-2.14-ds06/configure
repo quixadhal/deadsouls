@@ -102,4 +102,8 @@ fi
 #This will be blank if there is no Cygwin or MinGW:
 echo $WINDOWS >> local_options
 
+ulimit -n 2048
+export ULIMIT=`ulimit -n`
+echo "#define ULIMIT "$ULIMIT >> local_options
+
 echo "Configuration script complete."

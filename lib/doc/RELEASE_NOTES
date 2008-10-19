@@ -1,3 +1,43 @@
+---- 2.9a10 ---
+- Released 2008-10-19
+- Fixed peculiar problem in the get verb that sometimes made
+  it seem as though an open container was closed, for creators.
+- It is now exceedingly difficult to fight or
+  defend when not standing, or when your vision is poor.
+- Added command: gridconfig
+- Minor grid conflicts cleaned up.
+- Fixed a permissions issue that prevents doors from showing up
+  for players without read access to an area.
+- Value for meals now defaults to base cost.
+- Reaping tidied up: REAPER_D now fires up at boot time, and
+  reap_other() will scour for environmentless clones whether
+  the driver is FluffOS or not.
+- Players are now addressable by their race.
+- Added a "max attacks per heartbeat" throttle to combat.c to
+  avoid having creators in godmode with ludicrous stats causing
+  the mud to seize up fighting each other.
+- Fixed a too long eval in warmbooting.
+- LIB_COMMAND now handles multi-word bare exits ("foo bar" rather than
+  "go foo bar").
+- Added Kalinash's driver mod to override new() with clone_object() if the
+  clone_object() sefun exists.
+- valid_edit() in LIB_BOARD now works more sensibly and denies edit
+  and deletion access to people who should not have it.
+- "give all to X" now works like selling and putting: worn and wielded
+  items are not automatically surrendered.
+- Fixed some parsing issues with booby traps.
+- clone_object() is now overridden with a throttle to prevent
+  accidental cloning cascades from creator objects.
+- Added MEMUSE_SOFT_LIMIT and MEMUSE_HARD_LIMIT. These are disabled
+  by default. They are intended to provide some control over memory
+  usage, for folks on commercial hosting or resource-starved computers.
+  For details, see: help config
+- Added driver fix for check_memory() crasher.
+- Added max player limits in LIB_CONNECT based on compile-time-
+  detected file descriptor max.
+- Fixed a crasher in the driver that occurs under very rare
+  high-network-load stress.
+
 ---- 2.9a9 ---
 - Released 2008-09-24
 - Driver is now a slightly modified pre-release FluffOS 2.14v27.

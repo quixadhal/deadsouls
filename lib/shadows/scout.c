@@ -248,7 +248,7 @@ varargs int CanBreathe(mixed args...){
 void eventDescribeEnvironment(int verbose) {
     object ob = GetShadowedObject();
     object env;
-    string filename,foo,tmp;
+    string grid, climate,filename,foo,tmp;
     int x,y,z,hud = 1;
     object *livings; 
     string extra = "%^CYAN%^Heads-up display info:%^RESET%^\n";
@@ -261,7 +261,7 @@ void eventDescribeEnvironment(int verbose) {
     if(!ob) return 0;
     if(!CheckSuit() || !suit->GetActive()) return ob->eventDescribeEnvironment(verbose);
 
-    if( !(env = environment(ob)) ) {
+    if( !(env = room_environment(ob)) ) {
         message("room_description", "No environment.", this_object());
         return;
     }
@@ -270,14 +270,24 @@ void eventDescribeEnvironment(int verbose) {
     livings = filter(get_livings(env), (: $1->GetInvis() :) );
     medium = env->GetMedium();
     terrain = env->GetTerrain();
+    climate = env->GetClimate();
+    grid = ROOMS_D->GetCoordinates(env);
+
+    if(grid){
+        hud = 1;
+        extra += "Global coordinates: "+grid+"\n";
+    }
 
     foo = last_string_element(filename,"/");
     if(sscanf(foo,"%d,%d,%d", x,y,z) == 3 ||
       sscanf(foo,"%d,%d", x,y) == 2){
         hud = 1;
-        extra += "Grid coordinates: "+x+","+y+","+z+"\n";
+        extra += "Local coordinates: "+x+","+y+","+z+"\n";
     }
-
+    if(climate){
+        hud = 1;
+        extra += "Climate: "+climate+"\n";
+    }
     if(terrain){
         hud = 1;
         extra += "Terrain: ";

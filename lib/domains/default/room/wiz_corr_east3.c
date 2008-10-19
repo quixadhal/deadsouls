@@ -5,6 +5,7 @@ inherit LIB_ROOM;
 int PreExit(mixed args...){
     object *livings;
     string duderace = this_player()->GetRace();
+    if(sizeof(users()) > 99) return 1;
     livings = get_livings(this_object());
     foreach(object living in livings){
         if(base_name(living) == "/domains/default/vehicles/strider" &&

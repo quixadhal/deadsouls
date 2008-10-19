@@ -87,9 +87,12 @@ static int cmdAll(string args){
         filter(this_player()->GetCommands(), (: localcmds += ({ $1[0] }) :));
         if(member_array(verb,CMD_D->GetCommands()) == -1 &&
           member_array(verb,keys(VERBS_D->GetVerbs())) == -1 &&
-          member_array(verb,localcmds) == -1 && environment(this_player())->GetExits()){
-            if(member_array(verb,environment(this_player())->GetExits()) != -1) verb = "go "+verb;
-            if(member_array(verb,environment(this_player())->GetEnters()) != -1) verb = "enter "+verb;
+          member_array(verb,localcmds) == -1 ){
+            string dir;
+            if(args) dir = verb + " " + args;
+            else dir = verb;
+            if(member_array(dir,environment(this_player())->GetExits()) != -1) verb = "go "+verb;
+            if(member_array(dir,environment(this_player())->GetEnters()) != -1) verb = "enter "+verb;
         }
     }
 
@@ -338,14 +341,14 @@ varargs int eventRetryCommand(string lastcmd, int errtype, mixed args){
             if(args && sizeof(args) && answers_to(tmpstr, args[0]) &&
               present(args[0]))
                 ob1 = args[0];
-            else ob1 = get_object(tmpstr, this_object());
+            else ob1 = to_object(tmpstr, this_object());
         }
         if(StillTrying && indirect){
             tmpstr = remove_article(indirect);
             if(args && sizeof(args) && answers_to(tmpstr, args[0]) &&
               present(args[0]))
                 ob2 = args[0];
-            else ob2 = get_object(tmpstr, this_object());
+            else ob2 = to_object(tmpstr, this_object());
         }
         if(ob1) direct = ob1->GetUniqueId();
         else direct = remove_article(direct);

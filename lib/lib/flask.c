@@ -140,7 +140,9 @@ mixed eventFill(object who, object from){
         write("The "+this_object()->GetKeyName()+" is already full.");
         return 1;
     }
-    if(from->GetFlaskContents() != GetFlaskContents() && GetFlaskContents() != "empty"){
+    if((from->GetFlaskContents() != GetFlaskContents() 
+        || from->GetMealType() != GetMealType())
+      && GetFlaskContents() != "empty"){
         write("Those are incompatible fluids, and you cannot mix them.");
         return 1;
     }
@@ -154,6 +156,7 @@ mixed eventFill(object who, object from){
     write("You pour from "+from->GetShort()+" into "+this_object()->GetShort()+".");
     say(who->GetName()+" pours from "+from->GetShort()+
       " into "+this_object()->GetShort()+".");
+    SetMealType(from->GetMealType());
     FlaskContents = from->GetFlaskContents();
     FlaskStrength = from->GetStrength();
     if(member_array(FlaskContents, GetId()) == -1) 

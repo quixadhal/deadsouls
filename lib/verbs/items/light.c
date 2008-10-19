@@ -25,13 +25,11 @@ static void create() {
 }
 
 mixed can_light_obj() {
-    if(intp(check_light())) return this_player()->CanManipulate();
-    else return check_light();
+    return this_player()->CanManipulate();
 }
 
 mixed can_light_obj_with_obj() {
-    if(intp(check_light())) return this_player()->CanManipulate();
-    else return check_light();
+    return this_player()->CanManipulate();
 }
 
 mixed do_light_obj(object target) {
@@ -71,7 +69,6 @@ mixed do_light_obs(mixed *targs) {
 mixed do_light_obs_with_obj(mixed *targs, object source) {
     object *obs;
     string tmp;
-
     if( !sizeof(targs) ) {
         this_player()->eventPrint("There is no such thing to be lit.");
         return 1;

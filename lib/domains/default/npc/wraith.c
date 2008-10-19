@@ -14,7 +14,7 @@ int eventDrain(mixed args...){
     enemies = this_object()->GetEnemies();
     if(quarry && draining) enemies += ({ quarry });
     if(!sizeof(enemies)) return 1;
-    enemies = filter(enemies, (: environment($1) :));
+    enemies = filter(enemies, (: $1 && environment($1) :));
     enemies = filter(enemies, (: environment($1) == environment() :));
     if(!sizeof(enemies)) return 1;
     if(sizeof(enemies) > 5) enemies = scramble_array(enemies)[0..4];
@@ -131,7 +131,7 @@ void heart_beat(){
             }
         }
         if(!here){
-            dest = filter(enemies, (: environment($1) :));
+            dest = filter(enemies, (: $1 && environment($1) :));
             if(quarry) dest = (environment(quarry) ? ({ quarry }) : dest );
             if(sizeof(dest)){
                 eventMove(environment(dest[random(sizeof(dest)-1)]));

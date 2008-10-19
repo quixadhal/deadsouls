@@ -248,7 +248,7 @@ void eventCheckEnvironment(){
         if(restype != R_VACUUM){
             if(!this_object()->CanBreathe()){
                 eventPrint("You are asphyxiating.");
-                eventReceiveDamage("Outer space", ANOXIA, 200, 1);
+                this_object()->eventReceiveDamage("Outer space", ANOXIA, 200, 1);
             }
         }
     }
@@ -256,20 +256,20 @@ void eventCheckEnvironment(){
         if(restype != R_VACUUM && restype != R_WATER){
             if(!this_object()->CanBreathe()){
                 eventPrint("You are drowning.");
-                eventReceiveDamage("Water", ANOXIA, 100, 1);
+                this_object()->eventReceiveDamage("Water", ANOXIA, 100, 1);
             }
         }
     }
     else if(restype == R_WATER && env->GetMedium() != MEDIUM_WATER){
         if(!this_object()->CanBreathe()){
             eventPrint("You are asphyxiating.");
-            eventReceiveDamage("Air", ANOXIA, 100, 1);
+            this_object()->eventReceiveDamage("Air", ANOXIA, 100, 1);
         }
     }
     if( (i = env->GetPoisonGas()) > 0 ){
         if( GetResistance(GAS) != "immune" ){
             eventPrint("You choke on the poisonous gases.");
-            eventReceiveDamage("Poison gas", GAS, i, 1);
+            this_object()->eventReceiveDamage("Poison gas", GAS, i, 1);
         }
     }
 }
@@ -476,7 +476,7 @@ mixed eventFall(){
             int hp = GetHealthPoints(limb);
 
             p = random(hp);
-            eventReceiveDamage("Deceleration sickness", BLUNT, p, 0, ({ limb }));
+            this_object()->eventReceiveDamage("Deceleration sickness", BLUNT, p, 0, ({ limb }));
             if( Dying || (was_undead != GetUndead()) ){
                 break;
             }
@@ -735,7 +735,7 @@ mixed eventReceiveThrow(object who, object what){
         if( what->GetWeaponType() != "projectile" ){
             x = x/4;
         }
-        x = eventReceiveDamage(who, what->GetDamageType(), x, 0, 
+        x = this_object()->eventReceiveDamage(who, what->GetDamageType(), x, 0, 
           GetRandomLimb("torso"));
         if( x > 0 ){
             who->AddSkillPoints("projectile attack", x);
@@ -797,6 +797,8 @@ varargs int eventDie(mixed agent){
     else if(!this_object()->GetUndead())
         death_annc = killer + " has slain "+ this_object()->GetName()+".";
     else death_annc = killer + " has destroyed "+ this_object()->GetName()+".";
+
+    //tc("death_annc: "+death_annc,"white");
 
     CHAT_D->eventSendChannel("SYSTEM","death",death_annc,0);
 
@@ -1327,7 +1329,7 @@ varargs int eventDie(mixed agent){
      *
      * returns -1 on error, 0 on failure, 1 on success
      */
-    int RemoveLimb(string limb, mixed agent, int quiet){
+    varargs int RemoveLimb(string limb, mixed agent, int quiet){
         string *kiddies;
         string limbname,adjname,templimbname, agentname;
         int i;

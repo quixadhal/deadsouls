@@ -12,11 +12,12 @@ static void create() {
         ({"floor","ceiling"}) : "The floor and ceiling are, like the walls, made "+
         "of smooth cement." ]) );
     SetInventory(([
-        "/domains/default/obj/bbucket" : 1,
         "/domains/default/npc/fighter" : 1,
         "/domains/default/obj/locker" : 1,
         "/domains/default/npc/dummy" : 1,
+        "/domains/default/obj/case" : 1,
         "/domains/default/obj/abox" : 1,
+        "/domains/default/obj/javelin_bin" : 1,
         "/domains/default/obj/rack" : 1,
       ]));
     SetExits( ([ 

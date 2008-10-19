@@ -33,8 +33,9 @@ static void create() {
         "employee" : "An underpaid, unappreciated, and resentful state employee. "+
         "No surprise there.",
       ]));
-    SetExits( ([ "south" : "/domains/campus/room/corridor",
-      ]));
+    SetExits( ([
+        "south" : "/domains/campus/room/corridor3.c",
+      ]) );
     SetRead("menu", (: eventReadMenu :));
     SetInventory(([
         "/domains/campus/npc/gloria.c" : ({60, 1}) ]));

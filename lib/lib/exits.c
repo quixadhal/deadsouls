@@ -109,6 +109,10 @@ string array GetDoors(){
     return keys(Doors);
 }
 
+mapping GetDoorsMap(){
+    return copy(Doors);
+}
+
 string SetDoor(string dir, string file){
     object ob = GetDummyItem(dir);
 
@@ -116,7 +120,8 @@ string SetDoor(string dir, string file){
         ob->SetDoor(file);
     }
 
-    if(!file_exists(file) && !file_exists(file+".c")){
+    if(!unguarded( (: file_exists($(file)) :) ) && 
+      !unguarded( (: file_exists($(file)+".c") :) )){
         return "Door not found.";
     }
     file->eventRegisterSide(dir);

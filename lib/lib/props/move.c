@@ -3,6 +3,10 @@
 #include <position.h>
 #include <medium.h>
 
+#ifndef MAX_INVENTORY_SIZE
+#define MAX_INVENTORY_SIZE 2048
+#endif
+
 private static object LastEnvironment = 0;
 
 varargs int eventPrint(string str, mixed args...);
@@ -13,17 +17,17 @@ object GetLastEnvironment(){
 }
 
 int eventMove(mixed dest){
-    object ob,to,furn,prev;
+    object ob,me,furn,prev;
     int depth;
-    to=this_object();
+    me=this_object();
 
-    if( !this_object() ){
+    if( !me ){
         return 0;
     }
     if( environment() ){
         int x;
 
-        x = (int)environment()->CanRelease(this_object());
+        x = (int)environment()->CanRelease(me);
         if( !x && !archp() ){
             return 0;
         }
@@ -44,35 +48,37 @@ int eventMove(mixed dest){
     else {
         ob = dest;
     }
-    if( !ob || ob == this_object() ){
+    if( !ob || ob == me ){
         return 0;
     }
-    if( living(this_object()) && living(ob) ){
+    if( living(me) && living(ob) ){
         if(!ob->GetMount()) return 0;
     }
-    if( !ob->CanReceive(this_object()) ){
+    if( !ob->CanReceive(me) ){
         return 0;
     }
-    if( objectp(to) && LastEnvironment = environment() ){
-        environment()->eventReleaseObject(this_object());
-        if(!undefinedp(to->GetRecurseDepth()) && 
+    if(sizeof(deep_inventory(ob)) > MAX_INVENTORY_SIZE){
+        return 0;
+    }
+    if( objectp(me) && LastEnvironment = environment() ){
+        environment()->eventReleaseObject(me);
+        if(!undefinedp(me->GetRecurseDepth()) && 
           !undefinedp(environment()->GetRecurseDepth())){
-            //if(inherits(LIB_STORAGE,to) && inherits(LIB_STORAGE,environment() ) ){
-            depth = to->GetRecurseDepth();
+            depth = me->GetRecurseDepth();
             depth += 1;
             if(depth) environment()->AddRecurseDepth(-depth);
             if(environment()->GetRecurseDepth() < 1) environment()->SetRecurseDepth(1);
         }
     }
-    if(!objectp(to) ) return 0; 
+    if(!objectp(me) ) return 0; 
     prev = environment(ob);
     move_object(ob);
-    ob->eventReceiveObject(this_object());
+    ob->eventReceiveObject(me);
     if(environment() == prev) return 0;
     if( environment() ){
         foreach(object peer in all_inventory(environment())){
-            if( peer != this_object() ){
-                catch(peer->eventEncounter(this_object()));
+            if( peer != me ){
+                catch(peer->eventEncounter(me));
             }
         }
         if(OBJECT_MATCHING){ 
@@ -83,44 +89,42 @@ int eventMove(mixed dest){
         }
     }
 
-    if(living(this_object()) && furn = this_object()->GetProperty("furniture_object"))
-        if(objectp(furn)) furn->eventReleaseStand(this_object());
+    if(living(me) && furn = me->GetProperty("furniture_object"))
+        if(objectp(furn)) furn->eventReleaseStand(me);
 
-    if(living(this_object()) && !living(environment(this_object())) 
-      && furn = this_object()->GetProperty("mount"))
+    if(living(me) && !living(environment(me)) 
+      && furn = me->GetProperty("mount"))
         if(objectp(furn)){
-            this_object()->RemoveProperty("mount");
-            furn->eventDismount(this_object());
+            me->RemoveProperty("mount");
+            furn->eventDismount(me);
         }
     if(environment()->GetMedium() == MEDIUM_AIR &&
-      this_object()->GetPosition() != POSITION_FLYING){
-        if(!(this_object()->CanFly())) call_out("eventFall", 1);
-        else this_object()->eventFly();
+      me->GetPosition() != POSITION_FLYING){
+        if(!(me->CanFly())) call_out("eventFall", 1);
+        else me->eventFly();
     }
     if(environment()->GetMedium() == MEDIUM_LAND &&
-      (this_object()->GetPosition() == POSITION_FLOATING ||
-        this_object()->GetPosition() == POSITION_SWIMMING)){
+      (me->GetPosition() == POSITION_FLOATING ||
+        me->GetPosition() == POSITION_SWIMMING)){
         call_out("eventCollapse", 1, 1);
     }
     else if((environment()->GetMedium() == MEDIUM_WATER ||
         environment()->GetMedium() == MEDIUM_SURFACE) &&
-      this_object()->GetPosition() != POSITION_SWIMMING &&
-      this_object()->GetPosition() != POSITION_FLOATING){
-        if(living(this_object())){
-            //if(!(this_object()->CanSwim())) call_out("eventSink", 1);
-            //else this_object()->eventSwim();
-            if(!(this_object()->GetPosition() == POSITION_FLYING &&
+      me->GetPosition() != POSITION_SWIMMING &&
+      me->GetPosition() != POSITION_FLOATING){
+        if(living(me)){
+            if(!(me->GetPosition() == POSITION_FLYING &&
                 environment()->GetMedium() == MEDIUM_SURFACE)){
-                if(!(environment()->GetTerrainType() & (T_SEAFLOOR)) && this_object()->CanSwim()){
-                    if(this_object()->GetPosition() != POSITION_FLOATING){
-                        this_object()->eventSwim();
+                if(!(environment()->GetTerrainType() & (T_SEAFLOOR)) && me->CanSwim()){
+                    if(me->GetPosition() != POSITION_FLOATING){
+                        me->eventSwim();
                     }
                 }
                 else call_out("eventSink", 1);
             }
         }
         else {
-            if(!this_object()->GetProperty("buoyant")) call_out("eventSink", 1);
+            if(!me->GetProperty("buoyant")) call_out("eventSink", 1);
         }
     }
     return (LastEnvironment != environment());

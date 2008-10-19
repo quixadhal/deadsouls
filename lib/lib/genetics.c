@@ -265,11 +265,12 @@ varargs mixed GetEffectiveVision(mixed location, int raw_score){
 
     if(location){
         if(objectp(location)) env = location;
-        if(stringp(location)){
-            if(!file_exists(location)) location += ".c";
-            if(!file_exists(location)) return 0;
-            env = load_object(location);
-            if(!env) return 0;
+        else if(stringp(location)){
+            int err;
+            //if(!file_exists(location)) location += ".c";
+            //if(!file_exists(location)) return 0;
+            err = catch( env = load_object(location) );
+            if(err || !env) return 0;
         }
     }
     if( Blind && !raw_score){

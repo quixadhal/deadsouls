@@ -666,7 +666,7 @@ int flush_message (interactive_t * ip)
     /*
      * write ip->message_buf[] to socket.
      */
-    while (ip->message_length != 0) {
+    while (ip && !(ip->iflags & (NET_DEAD | CLOSING)) && ip->message_length != 0) {
         if (ip->message_consumer < ip->message_producer) {
             length = ip->message_producer - ip->message_consumer;
         } else {
@@ -680,6 +680,9 @@ int flush_message (interactive_t * ip)
           num_bytes = send_compressed(ip, (unsigned char *)ip->message_buf +
                                       ip->message_consumer,  length);
         } else {
+#endif
+#if 0
+        debug_message("flush_message: send(%d,<stuff>,%d, %d)\n", ip->fd, length,(ip->out_of_band | MSG_NOSIGNAL));
 #endif
         num_bytes = send(ip->fd, ip->message_buf + ip->message_consumer,
                          length, ip->out_of_band | MSG_NOSIGNAL);
@@ -2450,7 +2453,11 @@ int query_addr_number (const char * name, svalue_t * call_back)
 
     debug(connections, ("query_addr_number: sent address server %s\n", dbuf));
 
-    if (OS_socket_write(addr_server_fd, buf, msglen + sizeof(int) + sizeof(int)) == -1) {
+#if 0
+    debug_message("query_addr_number: send(%d,%s,%d,0)",addr_server_fd,dbuf,(msglen + sizeof(int) + sizeof(int)));
+#endif
+
+    if (addr_server_fd && OS_socket_write(addr_server_fd, buf, msglen + sizeof(int) + sizeof(int)) == -1) {
         switch (socket_errno) {
         case EBADF:
             debug_message("Address server has closed connection.\n");

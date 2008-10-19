@@ -65,14 +65,21 @@ This can be done conveniently with the "groupmod" command.
 #define DISABLE_INTERMUD         0
     If this is a nonzero integer, no intermud functions will work. Your
 intermud daemon will refuse to load, and you will therefore not be
-connected to the intermud network.
+connected to the intermud network. Note that disabling intermud here
+disables both Intermud-3 and IMC2.
+
+
+#define DISABLE_IMC2             0
+    IMC2 is an intermud protocol, like i3. Its packet syntax is
+different enough that it needs its own handler and subsystem. To use
+it, leave it enabled here and avail yourself of the imc2 command.    
 
 
 #define MINUTES_REBOOT_WARNING   20
     Self explanatory.
 
 
-#define TIME_TO_RESET            20000
+#define TIME_TO_RESET            3600
     The interval between calls to eventReset() in
 the master daemon. 20000 means that every 5 hours, the master
 daemon will call evetReset() in itself. This function will randomly
@@ -82,8 +89,8 @@ pick 25% of all loaded objects, and call reset() and clean_up() on them.
 #define RESET_ALL                0
     If this is a nonzero integer, eventReset() in MASTER_D will
 eventReset() 100% of all loaded objects, not 25%. Not recommended
-for large muds, as this can cause noticeable lag if objects
-are swapped out.
+for large muds, as this can cause noticeable lag if there are
+many loaded objects.
 
 
 #define GMT_OFFSET               -32000
@@ -121,9 +128,9 @@ where they stay until their link is re-established. If it doesn't happen in
 the specified number of seconds, their player object if force-quit.
 
 
-#define MIN_HISTORY_SIZE         10
+#define MIN_HISTORY_SIZE         20
 #define MAX_HISTORY_SIZE         30
-    The number of lines stored in a players command history buffer.
+    The number of lines stored in a player's command history buffer.
 
 
 #define LOGON_TIMEOUT            360
@@ -198,9 +205,14 @@ by default.
     Prevents new users from picking a race other than human.
 
 
-#define PINGING_MUDS             ({"Frontiers","Dead Souls"})
-    Defines the muds used by the ping daemon for its periodic intermud
-connection status check.
+#define PINGING_MUDS             ({})
+    Defines the muds used by the ping daemon for its periodic i3
+connection status check. If empty, you only ping yourself. It is
+recommended to leave it empty.
+
+
+#define PING_INTERVAL            290
+    The number of seconds between automated i3 pings. 
 
 
 #define ENABLE_ENCUMBRANCE       0
@@ -327,9 +339,152 @@ display them over the long desc in the form: [n, s, enter lodge]
 Obvious exits: north, south, enter lodge
 
 
-#define WEB_SOURCE               "149.152.218.102"
+#define WEB_SOURCE_IP               "204.209.44.12"
     Specifies the ip to use during liveupgrades. 
 
+
+#define WEB_SOURCE_NAME          "lpmuds.net"
+    Specifies the website used for liveupgrades. This is often
+necessary if the target webserver uses virtual hosts.
+
+
+#define DESTRUCT_LOGGING         0
+    If set to a nonzero integer, this enables the logging of
+the destruct() efun being called on objects. You are strongly
+advised not to enable this except in the most dire cases of
+things breaking.
+
+
+#define ROUTER_NAME              "Alpha"
+#define IRN_PASSWORD             "Alpha"
+#define IRN_PASSWORD1            "Bravo"
+#define IRN_PASSWORD2            "Charlie"
+#define IRN_PASSWORD3            "Delta"
+#define ROUTER_TESTING           1
+    Definitions specific to running an Intermud-3 router as
+a node in an IRN (Inter Router Network). It is a good idea to
+leave these settings alone unless you are 100% certain you
+need to change them.
+
+
+#define SEFUN_PLURALIZE          0
+    Indicates whether you wish to override the driver's
+built-in pluralize() efun with the sefun of the same name.
+
+
+#define LOG_REMOTE_CHANS         0
+    Controls the logging of remote (i.e. intermud) channels. Intermud
+channels can be extremely spammy and if you are paying for diskspace
+on a commercial host, logging them can lead to running out of room.
+
+
+#define LOG_LOCAL_CHANS          1
+    Controls the logging of channels local to your mud.
+
+
+#define IMC2_CLIENT_PW           "clientpass"
+#define IMC2_SERVER_PW           "serverpass"
+    Passwords for the IMC2 connection. These are automatically
+changed into random strings when you first install your mud. If
+you upgrade your mud, or reinstall, make sure you keep a copy of
+the old randomized passwords and put them in the new config.h.
+
+
+#define ENABLE_CGI               0
+    Determines whether the built-in webserver will accept CGI
+requests. This is required for CreWeb to work. Note that while
+CreWeb attempts to avoid obvious security problems, maintaining
+your mud's security is your responsibility.
+
+
+#define WWW_DIR_LIST             0
+    Determines whether directory listings are allowed on the
+built-in webserver. This is required for CreWeb to work. See the
+above note regarding security.
+
+
+#define ENABLE_CREWEB            0
+    Self explanatory.
+
+
+#define F_TERMINAL_COLOR         1
+    Old workaround to a strange FluffOS issue. May no longer
+be needed, but I can't be bothered to check.
+
+
+#define MAX_CALL_OUTS            750
+    The call_out() efun is a way to schedule events. In MudOS this
+efun's abuse could be the cause of grief, as overall mud performance
+could be severely impacted. On FluffOS this is less of a concern, but
+runaway callouts are still a threat to your mud's availability. The
+number defined here is the threshold at which the mud will stop
+accepting new callouts from unprivileged objects, such as things
+in /realms/. Privileged, lib, and domain objects can still issue
+callouts even if this threshold is reached.
+
+    
+#define REQUIRE_QUESTING         1
+    By default, Dead Souls muds require players not just to have
+enough XP to advance, but also to have been awarded quest points as
+specified in PLAYERS_D. This define controls whether that
+requirement is in force.
+
+
+#define AUTO_ADVANCE             1
+    Older versions of Dead Souls required that you visit a specific
+NPC in the Adventurers' Hall and request advancement. If this define
+is set to a nonzero integer, players will automatically advance when
+they achieve the XP/QP requirement for their next level as specified
+in PLAYERS_D, without having to go see Dirk.
+
+
+#define MAX_INVENTORY_SIZE       2048
+    If an object's inventory reaches this number of items, it will
+stop accepting additional objects. This is intended to prevent the
+accidental clogging of a mud through careless recursive coding.
+
+
+#define MAX_ATTACKS_PER_HB       40
+    If your creators have enabled godmode and have jacked up their
+stats and skills to astronomical levels and then try to PK each other,
+this define will prevent your mud from locking up as a result of
+their foolishness.
+
+
+#define MEMUSE_SOFT_LIMIT        0
+    If the mud's memory use hits this limit, it will enter a
+more aggressive posture regarding resets, garbage, and environmentless
+objects. Non-privileged objects will be restricted from cloning
+new objects until memory use is again below this limit.
+IMPORTANT NOTE: The mud's memory use is NOT the same thing as
+the memory allocated by the operating system. The actual amount
+of memory in use is usually much much lower than the memory
+allocation indicated in programs such as top. If you're going to
+experiment with this, start with a low number, such as 10000000
+(10 million bytes, aka 10 megs). 0 here disables the limit.
+
+
+#define MEMUSE_HARD_LIMIT        0
+    If the mud's memory use hits this limit, it will try to
+throw as much junk overboard as possible. If the memory use is
+still above this limit after that attempt, the mud will then
+schedule a reboot to occur within one minute. 0 here disables 
+the limit.
+
+
+#define MAX_USERS                0
+    LIB_CONNECT automatically determines how many players
+your mud is theoretically able to handle. Based on this,
+it establishes a maximum limit of players logged in simultaneously.
+In some cases this estimation is overly generous, and it may
+be necessary to limit maximum players to what your server
+can actually handle, not what it can theoretically do. The
+MAX_USERS define overrides the LIB_CONNECT calculated maximum.
+Setting it to 0 allows LIB_CONNECT to figure the max out on its own. 
+Note that users in the LOCKED_ACCESS_ALLOWED groups defined
+above are allowed to log in despite the player cap.
+    To find out the current limit:
+eval return LIB_CONNECT->GetMaxPlayers()
 
 #endif /* s_config_h */
     End configuration.

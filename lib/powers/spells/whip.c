@@ -39,12 +39,14 @@ varargs int eventCast(object who, int level, string limb, object array targs){
     whip->eventMove(this_player());
     limbs = filter(limbs, (: !(this_player()->GetWielded($1)) :) );
     if(sizeof(limbs)){
-        int weapclass = (this_player()->GetLevel()) + 20;
-        weapclass += this_player()->GetSkillLevel("magic attack");
-        weapclass += this_player()->GetSkillLevel("conjuring");
+        int weapclass = (this_player()->GetLevel());
+        weapclass += (this_player()->GetStatLevel("intelligence") / 4);
+        weapclass += (this_player()->GetSpellLevel("whip") / 10);
+        weapclass += (this_player()->GetSkillLevel("magic attack") / 3);
+        weapclass += (this_player()->GetSkillLevel("conjuring") / 3);
         whip->eventEquip(this_player(),limbs[0]);
         whip->SetClass(weapclass);
-        whip->SetDuration(weapclass * 5);
+        whip->SetDuration(this_player()->GetSkillLevel("conjuring") * 20);
     }
     return 1;
 }

@@ -165,7 +165,7 @@ string *AddRemoteChannel(mixed chan){
             chan -= ({ element });
         }
     }
-    return copy(remote_chans += chan);
+    return copy(distinct_array(remote_chans += chan));
 }
 
 string *RemoveRemoteChannel(mixed chan){
@@ -178,7 +178,7 @@ string *RemoveRemoteChannel(mixed chan){
             chan -= ({ element });
         }
     }
-    return copy(remote_chans -= chan);
+    return copy(distinct_array(remote_chans -= chan));
 }
 
 string *GetRemoteChannels(){
@@ -439,7 +439,7 @@ int cmdChannel(string verb, string str) {
     if(!strsrch(str,"^encode")) str = morse("(encoded):  "+str[7..]);
 
     if(find_object(INTERMUD_D) && !sizeof(remote_chans))
-        remote_chans = INTERMUD_D->GetChannels();
+        remote_chans = distinct_array(INTERMUD_D->GetChannels());
 
     if(member_array(GetRemoteChannel(verb), remote_chans) == -1 &&
       member_array(verb, local_chans) == -1) local_chans += ({ verb });
@@ -713,7 +713,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
         if( emote && sizeof(who)) msg = replace_string(msg, "$N", who);
     }
     else if( origin() != ORIGIN_LOCAL && previous_object() != master() &&
-      file_name(previous_object()) != PARTY_D && member_array(ch, syschans) == -1){
+      file_name(previous_object()) != PARTY_D && 
+      file_name(previous_object()) != UPDATE_D && 
+      member_array(ch, syschans) == -1){
         return;
     }
     if(!Channels[ch] && file_name(previous_object()) != SERVICES_D){
@@ -858,7 +860,7 @@ string *GetLocalChannels(){
 }
 
 string GetLocalChannel(string ch) {
-    if(!strsrch(ch,"server0")){
+    if(ch && !strsrch(ch,"server0")){
         ch = replace_string(ch, "server01", "Server01");
         ch = replace_string(ch, "server02", "Server02");
     }

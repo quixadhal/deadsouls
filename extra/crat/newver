@@ -41,13 +41,26 @@ mkdir /tmp/foo/next/lib/www/cgi
 mkdir /tmp/foo/next/lib/cmds/builders
 mkdir /tmp/foo/next/lib/secure/cmds/builders
 mkdir /tmp/foo/next/lib/verbs/builders
+mkdir /tmp/foo/next/lib/domains/cave
+mkdir /tmp/foo/next/lib/domains/cave/room
+mkdir /tmp/foo/next/lib/domains/cave/npc
+mkdir /tmp/foo/next/lib/domains/cave/weap
+mkdir /tmp/foo/next/lib/domains/cave/obj
+mkdir /tmp/foo/next/lib/domains/cave/meals
+mkdir /tmp/foo/next/lib/domains/cave/etc
+mkdir /tmp/foo/next/lib/domains/cave/doors
+mkdir /tmp/foo/next/lib/domains/cave/armor
+mkdir /tmp/foo/next/lib/domains/cave/adm
+mkdir /tmp/foo/next/lib/domains/cave/save
+mkdir /tmp/foo/next/lib/domains/cave/txt
+mkdir /tmp/foo/next/lib/domains/cave/virtual
 
 cd /tmp/foo
 
 \cp -f new/lib/secure/daemon/update.patch new/lib/secure/daemon/update.patch
 \mv -f new/lib/secure/lib/connect.c new/lib/secure/lib/connect.real
 \cp -f new/lib/secure/lib/connect.first.c new/lib/secure/lib/connect.c
-#\cp -f new/lib/secure/save/backup/imc2_old.c new/lib/secure/daemon/imc2_new.c
+\cp -f new/lib/secure/save/backup/config.orig new/lib/secure/include/config.h
 \rm -f next/lib/lib/remote.c
 \rm -f new/lib/lib/remote.c
 
@@ -69,8 +82,8 @@ perl -pi -e s/"Only\ in\ "/"\\\\cp\ \-rf\ "/g diff.txt
 perl -pi -e s/"Files\ "/"diff\ "/g diff.sh.1
 
 
-cat diff.txt | grep -v "lib/core" |grep -v CMD_EVAL_TMP_FILE|grep -v "lib/secure/tmp/"|grep -v "/lib/estates/"|grep -v "lib/secure/save"| grep -v "lib/save/"|grep -v "/mudos.cfg" |grep -v "/config.h"|grep -v "/groups.cfg" |grep -v "\.bak"|grep -v "\.swp"> diff2.txt
-cat diff.sh.1 | grep -v CMD_EVAL_TMP_FILE|grep -v "lib/secure/tmp/"|grep -v "/lib/estates/"|grep -v "lib/secure/save"| grep -v "lib/save/"|grep -v "/mudos.cfg" |grep -v "/config.h"|grep -v "/groups.cfg" |grep -v "\.bak"|grep -v "\.swp"> diff.sh
+cat diff.txt | grep -v "lib/core" |grep -v CMD_EVAL_TMP_FILE|grep -v "lib/secure/tmp/"|grep -v "/lib/estates/"|grep -v "lib/secure/save"| grep -v "lib/save/"|grep -v "/mudos.cfg" |grep -v "/groups.cfg" |grep -v "\.bak"|grep -v "\.swp"> diff2.txt
+cat diff.sh.1 | grep -v CMD_EVAL_TMP_FILE|grep -v "lib/secure/tmp/"|grep -v "/lib/estates/"|grep -v "lib/secure/save"| grep -v "lib/save/"|grep -v "/mudos.cfg" |grep -v "/groups.cfg" |grep -v "\.bak"|grep -v "\.swp"> diff.sh
 
 chmod 755 diff.sh
 

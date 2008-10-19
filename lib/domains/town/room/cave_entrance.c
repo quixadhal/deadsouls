@@ -25,6 +25,7 @@ void init(){
         door->SetItems( ([
             ({"inscription"}) : "Words in the language of the elves.",
           ]) );
+        SetClimate("indoors");
         door->SetRead( ([
             ({"inscription"}) : "Speak, friend, and enter.",
             "default" : "Try: read inscription on door"

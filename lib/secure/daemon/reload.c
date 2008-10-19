@@ -225,6 +225,7 @@ int ReloadDir(string dir, int passes){
     while(passes){
         reset_eval_cost();
         foreach(object ob in lib_obs){
+            reset_eval_cost();
             if(ob != this_object() && 
               member_array(base_name(ob), exceptions) == -1){
                 if(ob && inherits(LIB_ROOM,ob) && sizeof(livings(ob,1))){

@@ -284,7 +284,7 @@ mixed eventBuy(object who, object *obs){
             case "blunt": case "knife": case "blade": case "projectile":
             case "blunts": case "knives": case "blades": case "projectiles":
                 ok = ((string)obs2[ii]->GetWeaponType() == args) ||
-                (pluralize((string)obs2[ii]->GetWeaponType()) == args);
+                (pluralize(((string)obs2[ii]->GetWeaponType() || "")) == args);
                 break;
             default:
                 ok = (int)obs2[ii]->id(args);

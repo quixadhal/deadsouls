@@ -17,6 +17,7 @@ int GetClosed(){
 }
 
 int GetOpen(){
+    return !(Closed);
     if(GetClosed()) return 0;
     else return 1;
 }

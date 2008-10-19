@@ -200,6 +200,7 @@ void set_defaults (char * filename)
     CONFIG_STR(__LOG_DIR__) = alloc_cstring(tmp, "config file: ld");
     scan_config_line("include directories : %[^\n]", tmp, 1);
     CONFIG_STR(__INCLUDE_DIRS__) = alloc_cstring(tmp, "config file: id");
+    CONFIG_STR(__SAVE_BINARIES_DIR__) = alloc_cstring("", "config file: sbd");
     scan_config_line("master file : %[^\n]", tmp, 1);
     CONFIG_STR(__MASTER_FILE__) = alloc_cstring(tmp, "config file: mf");
     scan_config_line("simulated efun file : %[^\n]", tmp, 0);

@@ -310,6 +310,7 @@ string GetEmail(){
 
 varargs string array SetId(string *bogus){
     int i;
+    string tmp;
 
     UserId = ({ GetKeyName() });
     if(GetCapName()) UserId += ({ lower_case(GetCapName()) });
@@ -322,13 +323,19 @@ varargs string array SetId(string *bogus){
         }
     }
 
+    if(tmp = this_object()->GetRace()) UserId += ({ tmp });
+
+    if(OBJECT_MATCHING){
+        UserId = atomize_array(UserId);
+    }
+
     UserId = distinct_array(UserId);
 
     foreach(string sub in UserId){
         if(user_exists(sub) && GetKeyName() != sub){
-            if(member_array(sub,RACES_D->GetRaces()) == -1 || find_player(sub)){
-                UserId -= ({ sub });
-            }
+            //if(find_player(sub) && find_player(sub) != this_object()){
+            UserId -= ({ sub });
+            //}
         }
     }
     parse_init();

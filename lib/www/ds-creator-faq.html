@@ -405,7 +405,7 @@ back now please</a><br>
 move north, but 'north' doesn't work.</a><br>
 <br>
 <a href="#4.15">4.15 Why is there a
-bunch of stuff in ROOMS_FURNACE?</a><br>
+bunch of stuff in ROOM_FURNACE?</a><br>
 <a href="#4.16"><br>
 </a><a href="#4.16">4.16 How do I
 change my screen and terminal settings?</a><br>
@@ -4491,7 +4491,7 @@ arguments to it:<br>
 intergossip $*</span><br>
 <br>
 To remove an alias:<br>
-<span style="font-weight: bold;">alias ig<br>
+<span style="font-weight: bold;">unalias ig<br>
 <br>
 </span>After modifying aliases,
 make sure to type:<br>
@@ -4649,7 +4649,7 @@ will.<br>
 <span style="font-weight: bold; text-decoration: underline;"></span><br>
 <a name="4.15"></a> <span
  style="font-weight: bold; text-decoration: underline;">Why
-is there a bunch of stuff in ROOMS_FURNACE?</span><br>
+is there a bunch of stuff in ROOM_FURNACE?</span><br>
 <br>
 The QCS is
 designed to attempt the graceful handling<br>
@@ -4670,7 +4670,7 @@ immediately destruct objects when replacing them.<br>
 Instead, they
 are moved, along with whatever problems<br>
 they might
-have, to ROOMS_FURNACE. That is a room<br>
+have, to ROOM_FURNACE. That is a room<br>
 where things
 go to be destructed quietly. Every <br>
 second or so,

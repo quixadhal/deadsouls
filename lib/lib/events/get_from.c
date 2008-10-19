@@ -175,6 +175,8 @@ mixed indirect_get_obj_from_obj(object item, object container){
         return 0;
     }
 
+    if(!clonep(container)) return "#wat";
+
     if(environment(item) != this_object()) return 0;
 
     return CanGetFrom(this_player(), item);

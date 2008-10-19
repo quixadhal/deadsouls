@@ -13,3 +13,13 @@ float percent(mixed numerator, mixed denominator) {
     if((b < 1 && b > -1) || !b || b == 0 || b == 0.0 ) return 0.0;
     return ((a/b)*100);
 }
+
+float percent_of(mixed percent, mixed base){
+    float a, b;
+
+    a = (floatp(percent) ? percent : to_float(percent));
+    b = (floatp(base) ? base : to_float(base));
+    if((b < 1 && b > -1) || !b || b == 0 || b == 0.0 ) return 0.0;
+    return (a * b) / 100.0;
+}
+

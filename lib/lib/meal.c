@@ -206,7 +206,7 @@ mixed *GetMealMessages(){ return ({ MyMessage, OtherMessage }); }
 
 int GetValue(){
     int x;
-
+    if(x = this_object()->GetBaseCost("silver")) return x;
     x = GetStrength();
     return (x * (6 + x)) / 10 + 10;
 }

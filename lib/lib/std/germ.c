@@ -16,7 +16,7 @@ private int             Communicable  = 1;
 mixed    Cure          = 0;
 private static function Infect        = 0;
 private static int      LastHeartBeat = time();
-private int             LifeSpan      = 60;
+private mixed           LifeSpan      = 60;
 private int             CannotInfect  = 0;
 private string          Type          = "cold";
 private string          GermName      = "generic germ";
@@ -136,8 +136,12 @@ int GetLifeSpan(){
  *
  * returns the new life span
  */
-int SetLifeSpan(int x){
-    if( x > 600 ) x = 600;
+int SetLifeSpan(mixed x){
+    if(functionp(x)){
+        x = evaluate(x);
+    }
+    if(!intp(x)) x = 60;
+    //if( x > 600 ) x = 600;
     return (LifeSpan = x);
 }
 

@@ -21,15 +21,6 @@ int eventDestruct(){
 }
 
 string SetBookTitle(string path, string title){
-#if 0
-    if(!Books[path] || (base_name(previous_object()) !=
-        Books[path]["object"] && Books[path]["object"] != "null")){
-        //tc("prev: "+base_name(previous_object()),"red");
-        if(Books[path]) tc("ob: "+Books[path]["object"],"blue");
-        //tc("object fail. "+get_stack(1));
-        return 0;
-    }
-#endif
     if(Books[path]) Books[path]["title"] = title;
     return title;
 }

@@ -25,17 +25,18 @@ varargs void reap_other(string s1){
     // do not have an environment
     //
     string s2;
-    int reap_again, fail;
-#ifndef __FLUFFOS__
+    int fail;
+    object *garbage = ({});
     object *others = objects((: $1 && clonep($1) && !userp($1) &&
         !inherits(LIB_ROOM, $1) && !environment($1) &&
         !inherits(LIB_SHADOW, $1) &&
         member_array(base_name($1), ExemptArray) == -1 :))[0..6300];
-#else
-    object *others = get_garbage()[0..63000];
+#ifdef __FLUFFOS__
+    garbage = get_garbage()[0..63000];
 #endif
-    if(sizeof(others) > 62000){
-        reap_again = 1;
+
+    if(sizeof(others) > 62000 || sizeof(garbage) > 62000){
+        call_out("reap_other",5);
     }
 
     foreach(thingy in others){
@@ -43,7 +44,12 @@ varargs void reap_other(string s1){
         if(thingy) err = catch( unguarded( (: destruct(thingy) :) ) );
         if(thingy) fail = 1;
     }
-    if(reap_again) call_out("reap_other",5);
+
+    foreach(thingy in garbage){
+        int err;
+        if(thingy) err = catch( unguarded( (: destruct(thingy) :) ) );
+        if(thingy) fail = 1;
+    }
 }
 
 mixed reap_list(){

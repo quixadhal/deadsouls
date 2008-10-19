@@ -57,10 +57,11 @@ void read_callback(mixed fd, mixed info){
         packet_counter[info[2]]["count"] = 0;
         packet_counter[info[2]]["time"] = time();
     }
-    packet_counter[info[2]]["count"]++;
+    if(info[0] != "channel-listen"){
+        packet_counter[info[2]]["count"]++;
+    }
     //tc(info[2]+" count: "+packet_counter[info[2]]["count"]);
     if(packet_counter[info[2]]["count"] > 10 &&
-      info[0] != "channel-listen" &&
       member_array(fd, keys(ROUTER_D->query_irn_sockets())) == -1){
         if(true()){
             if(info[2] && member_array(info[2], keys(connected_muds)) != -1){

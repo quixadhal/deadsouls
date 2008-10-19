@@ -23,8 +23,8 @@ static void create(){
         "implements" : "Ink, paper, etc.",
         "instructions" : "Try reading them.",
         "counter" : "A counter folks use to lean on while writing messages." ]) );
-    SetExits( ([
-        "south" : "/domains/campus/room/corridor3" ]) );
+    SetExits( ([ 
+      ]) );
     SetProperty("no attack", 1);
 }
 void init(){

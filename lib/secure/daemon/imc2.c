@@ -522,7 +522,7 @@ private void send_text(string text){
 }
 
 void create(){
-    set_heart_beat(1);
+    set_heart_beat(10);
     counter = time();
     //tn("IMC2: created "+ctime(time()));
     if(unguarded( (: file_exists(SAVE_FILE) :) )) 
@@ -580,7 +580,8 @@ void Setup(){
 
 void heart_beat(){
     heart_count++;
-    if(heart_count > 30){
+    tn("IMC2 heartbeat.");
+    if(heart_count > 4){
         mixed sstat = socket_status(socket_num);
         heart_count = 0;
         if( (time() - counter) > 3600 
@@ -1676,4 +1677,9 @@ EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
     void keepalive(string args, object who){
         send_packet(who->GetName(), "keepalive-request", "*", "*", 0);
     }
+
+    int GetEnabled(){
+        return !(DISABLE_IMC2);
+    }
+
 

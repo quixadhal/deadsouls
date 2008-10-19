@@ -10,6 +10,7 @@ static void create() {
     room::create();
     SetClimate("outdoors");
     SetAmbientLight(30);
+    SetObviousExits("north, south");
     SetShort("South Saquivor Road");
     SetLong("This is a cobblestone road, leading north into town and south away from it. South of here appears to be some sort of University campus.");
     SetItems( ([
@@ -24,6 +25,10 @@ static void create() {
         "north" : "/domains/town/room/south_road1",
         "south" : "/domains/campus/room/npath2.c",
       ]) );
+    if(file_exists("/domains/campus/doors/grate.c")){
+        AddExit("down", "/domains/campus/room/sewer3");
+        SetDoor("down","/domains/campus/doors/grate");
+    }
     SetInventory(([
       ]));
     SetRead("sign", (: readSign :) );

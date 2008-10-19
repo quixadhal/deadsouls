@@ -69,7 +69,8 @@
 "kii-ateh","kii-ateh","kii-ateh","kii-ateh","kii-ateh",\
 "galanga","wanga","ivlivs","kokoh-chula","birichoto",\
 "bukkakke","santorum","habeebit","yotsuba", "obama",\
-"mccain","biden","palin",\
+"mccain","biden","palin","chitonw","wachovia","wamu",\
+"dogoodi","idoogod","yamaglonchi","hotchka","tacgnol",\
 })
 
 string translate(string str, int prof) {

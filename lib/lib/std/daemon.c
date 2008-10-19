@@ -24,7 +24,7 @@ static string SetSaveFile(string str){
 
 /* ********************* daemon.c events ************************* */
 int eventDestruct(){
-
+    //tc(identify(this_object())+" eventDestruct() stack: \n"+get_stack(),"red");
     if( !master()->valid_apply(({ PRIV_ASSIST })) ){
         return 0;
     }

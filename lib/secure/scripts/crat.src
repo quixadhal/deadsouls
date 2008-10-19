@@ -42,6 +42,16 @@ alias cweapon cd /domains/campus/weap
 alias cnpc cd /domains/campus/npc
 alias croom cd /domains/campus/room
 alias cdoor cd /domains/campus/doors
+alias cave cd /domains/cave/obj
+alias kobj cd /domains/cave/obj
+alias karm cd /domains/cave/armor
+alias karmor cd /domains/cave/armor
+alias kweap cd /domains/cave/weap
+alias kweapon cd /domains/cave/weap
+alias knpc cd /domains/cave/npc
+alias kroom cd /domains/cave/room
+alias kdoor cd /domains/cave/doors
+alias ketc cd /domains/cave/etc
 alias default cd /domains/default
 alias dobj cd /domains/default/obj
 alias darm cd /domains/default/armor
@@ -109,8 +119,10 @@ alias porch goto /domains/town/room/porch
 prompt %^BOLD%^%^BLUE%^$M%^RESET%^ %^BOLD%^$P%^RESET%^ > 
 alias crat source -q /secure/scripts/crat2.src
 alias crat3 source -q /secure/scripts/crat3.src
+alias testmud source -q /secure/scripts/testmud.src
 alias indentall source /secure/scripts/indent.src
 alias distclean source -q /secure/scripts/distclean.src
+alias shutdown say wat
 alias 1 dest bots
 alias 2 update /secure/obj/robot
 alias 3 clone /secure/obj/robot
@@ -138,3 +150,5 @@ history 30
 automap on
 showgrid on
 save
+mudconfig consoletrace on
+mudconfig logremote on

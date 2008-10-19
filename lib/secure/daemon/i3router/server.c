@@ -143,7 +143,7 @@ varargs void write_data(int fd, mixed data, int override){
               tmpsstat,"red");
             return;
         }
-        trr("%^B_YELLOW%^ATTENTION: IRN startup about to be sent to fd"+fd+":%^RESET%^ "+ identify(data),"red");
+        trr("%^B_YELLOW%^ATTENTION: IRN startup about to be sent to fd"+fd+":%^RESET%^ "+ identify(data)+", "+identify(socket_status(fd)),"red");
     }
     targetmud = this_object()->query_connected_fds()[fd];
     if(!sstat || sstat[1] != "DATA_XFER") return;

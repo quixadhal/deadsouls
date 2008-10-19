@@ -27,7 +27,10 @@ mixed object_file(string str){
     else return str;
 }
 
-int directory_exists(string str) { return (file_size(str) == -2); }
+int directory_exists(string str){ 
+    if(!str || (sizeof(str) < 2 && str != "/")) return 0;
+    return (file_size(str) == -2);
+}
 
 string save_file(string who) {
     if( !stringp(who) ) error("Bad argument 1 to save_file().");

@@ -22,6 +22,9 @@ mv $NEWLIB/*/* $NEWLIB/
 #\rm -f $OLDLIB/lib/secure/include/config.h
 #\rm -f $NEWLIB/lib/secure/include/config.h
 
+\rm -f $OLDLIB/lib/secure/cfg/*.cfg
+\rm -f $NEWLIB/lib/secure/cfg/*.cfg
+
 \rm -r $NEWLIB/lib/core  $OLDLIB/lib/core
 \rm -r $NEWLIB/lib/secure/sefun/native_version.c  $OLDLIB/lib/secure/sefun/native_version.c
 #\rm -r $NEWLIB/lib/secure/sefun/mud_info.c  $OLDLIB/lib/secure/sefun/mud_info.c
@@ -38,8 +41,22 @@ mkdir $OLDLIB/lib/lib/daemons
 mkdir $OLDLIB/lib/verbs/builders
 mkdir $OLDLIB/lib/cmds/builders
 mkdir $OLDLIB/lib/secure/cmds/builders
-mkdir $OLDLIB/lib/lib/daemons
-mkdir $OLDLIB/lib/lib/daemons/include
+mkdir $OLDLIB/lib/secure/daemon/imc2server
+mkdir $OLDLIB/lib/lib/daemon
+mkdir $OLDLIB/lib/lib/daemon/include
+mkdir $OLDLIB/lib/domains/cave
+mkdir $OLDLIB/lib/domains/cave/adm
+mkdir $OLDLIB/lib/domains/cave/armor
+mkdir $OLDLIB/lib/domains/cave/doors
+mkdir $OLDLIB/lib/domains/cave/etc
+mkdir $OLDLIB/lib/domains/cave/meals
+mkdir $OLDLIB/lib/domains/cave/npc
+mkdir $OLDLIB/lib/domains/cave/obj
+mkdir $OLDLIB/lib/domains/cave/room
+mkdir $OLDLIB/lib/domains/cave/save
+mkdir $OLDLIB/lib/domains/cave/txt
+mkdir $OLDLIB/lib/domains/cave/virtual
+mkdir $OLDLIB/lib/domains/cave/weap
 
 gdiff -rq $OLDLIB/lib $NEWLIB/lib > diff.txt
 

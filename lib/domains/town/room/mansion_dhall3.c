@@ -20,13 +20,12 @@ static void create() {
         "series of steps spiraling upward to the "
         "second floor. It is carved from marble."
       ]) );
-
-    SetExits( ([
+    SetExits( ([ 
         "north" : "/domains/town/room/mansion_dhall2",
+        "west" : "/domains/town/room/mansion_room8",
         "up" : "/domains/town/room/mansion_uhall3",
-        "east" : "/domains/town/room/mansion_room7",
-        "west" : "/domains/town/room/mansion_room8"
       ]) );
+
 }
 void init(){
     ::init();

@@ -79,6 +79,10 @@ varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixe
 }
 
 int RemoveLimb(string limb, object agent){
+    if(query_verb() == "eval" || query_verb() == "amputate" ||
+      query_verb() == "call"){
+        return ::RemoveLimb(limb, agent);
+    }
     eventForce("say My "+limb+" has received enough damage to sever it. "
       "However, since I am a training dummy, I'll be keeping it.");
     return 1;

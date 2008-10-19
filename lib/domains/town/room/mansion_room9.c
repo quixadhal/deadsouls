@@ -24,12 +24,12 @@ static void create() {
         "You see evidence of a refined aesthetic "
         "sensibility."
       ]) );
+    SetExits( ([
+        "west" : "/domains/town/room/mansion_int.c",
+      ]) );
     SetInventory( ([
         "/domains/town/obj/rug" :1,
         "/domains/town/npc/thief" :1
-      ]) );
-    SetExits( ([
-        "west" : "/domains/town/room/mansion_dhall2"
       ]) );
     revealed = 0;
 }

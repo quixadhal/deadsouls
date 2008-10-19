@@ -1,0 +1,15 @@
+unalias shutdown
+mudconfig pk on
+mudconfig autoadvance on
+mudconfig consoletrace on
+mudconfig http disable
+mudconfig cgi enable
+mudconfig dirlist enable
+mudconfig creweb enable
+mudconfig http enable
+mudconfig fastcombat on
+mudconfig questrequired on
+mudconfig logremote on
+mudconfig selectclass on
+mudconfig maxip 0
+#mudconfig monitor 1

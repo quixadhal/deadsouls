@@ -59,7 +59,7 @@ int GetRadiantLight(int ambient){
 }
 
 string GetShort(){
-    return item::GetShort() + light::GetShort();
+    return light::GetShort() + item::GetShort();
 }
 
 varargs string GetLong(string unused){

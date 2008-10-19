@@ -251,6 +251,21 @@ static void yyerrorp (const char *);
 #define LEXER
 #include "preprocess.c"
 
+int lookup_predef(char * name)
+{
+    int x;
+
+    for(x = 0; x < (sizeof(predefs) / sizeof(keyword_t)); x++)
+    {
+        if(strcmp(name, predefs[x].word) == 0)
+        {
+            return x;
+        }
+    }
+
+    return -1;
+}
+
 static void merge (char * name, char * dest)
 {
     char *from;
@@ -2113,10 +2128,19 @@ void add_predefines()
 #ifdef RUSAGE
     add_predefine("__HAS_RUSAGE__", -1, "");
 #endif
+#ifdef M64     
+    add_predefine("__M64__", -1, "");
+#endif
     get_version(save_buf);
     add_quoted_predefine("__VERSION__", save_buf);
     sprintf(save_buf, "%d", external_port[0].port);
     add_predefine("__PORT__", -1, save_buf);
+#ifdef FD_SETSIZE
+    sprintf(save_buf, "%d", FD_SETSIZE);
+#else
+    sprintf(save_buf, "%d", 64);
+#endif
+    add_predefine("__FD_SETSIZE__", -1, save_buf);
     for (i = 0; i < 2 * NUM_OPTION_DEFS; i += 2) {
         add_predefine(option_defs[i], -1, option_defs[i+1]);
     }

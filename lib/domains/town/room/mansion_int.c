@@ -19,8 +19,9 @@ static void create() {
         "on visible surfaces."
       ]) );
     SetExits( ([
-        "south" : "/domains/town/room/mansion_dhall2",
         "north" : "/domains/town/room/mansion_ext",
+        "south" : "/domains/town/room/mansion_dhall2",
+        "east" : "/domains/town/room/mansion_room9.c",
       ]) );
     SetDoor("north","/domains/town/doors/mansion");
 }

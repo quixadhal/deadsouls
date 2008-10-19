@@ -12,6 +12,7 @@
  */
 
 #include <lib.h>
+#include <daemons.h>
 
 inherit LIB_DAEMON;
 
@@ -19,12 +20,41 @@ static void eventReap() {
     call_out((: eventReap :), 300);
     reap_dummies();
     reap_other();
+    reclaim_objects();
+}
+
+static void CheckMem(){
+    call_out((: CheckMem :), 60);
+    if(MEMUSE_SOFT_LIMIT && memory_info() > MEMUSE_SOFT_LIMIT){
+        reap_dummies();
+        reset_eval_cost();
+        reap_other();
+        reset_eval_cost();
+        reclaim_objects();
+        reset_eval_cost();
+        MASTER_D->RequestReset();
+    }
+    if(MEMUSE_HARD_LIMIT && memory_info() > MEMUSE_HARD_LIMIT){
+        reap_dummies();
+        reset_eval_cost();
+        reap_other();
+        reset_eval_cost();
+        reclaim_objects();
+        reset_eval_cost();
+        MASTER_D->RequestReset();
+        if(memory_info() > MEMUSE_HARD_LIMIT){
+            if(!EVENTS_D->GetRebooting()){
+                EVENTS_D->eventReboot(MINUTES_REBOOT_WARNING);
+            }
+        }
+    }
 }
 
 static void create() {
     daemon::create();
     SetNoClean(1);
     call_out((: eventReap :), 300);
+    call_out((: CheckMem :), 60);
     set_heart_beat(5);
 }
 

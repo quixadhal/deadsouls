@@ -36,9 +36,14 @@ varargs static int eventSave(int ung) {
     else return save_object(SAVE_EVENTS);
 }
 
+int GetRebooting(){
+    return InReboot;
+}
+
 void eventReboot(int x) {
     if( previous_object() && !((int)master()->valid_apply(({ PRIV_ASSIST }))) )
         return;
+    InReboot = 1;
     if( x < 1 ) x = 1;
     x *= 60;
     message("broadcast", mud_name() + " will reboot in " +

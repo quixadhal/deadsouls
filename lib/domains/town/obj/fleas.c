@@ -28,7 +28,7 @@ void create(){
     SetCure(20);
     SetVendorType(VT_TREASURE);
     SetCommunicable(50);
-    SetLifeSpan(99999999);
+    SetLifeSpan(666);
     SetType("parasite");
     SetInfect((: InfectMess :));
 }

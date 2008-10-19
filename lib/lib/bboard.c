@@ -44,8 +44,10 @@ static private int valid_edit(string author){
     who = (string)this_player()->GetKeyName();
     if(who == author) return 1;
     if(archp(this_player())) return 1;
-    if(member_array(who, __EditOK) != -1) return 1;
-    return (int)master()->valid_apply(({}));
+    //if(member_array(who, __EditOK) != -1) return 1;
+    //return (int)master()->valid_apply(({}));
+    //write("You may not edit that.");
+    return 0;
 }
 
 int cmd_post(string str){
@@ -193,13 +195,14 @@ post, int mail){
 int cmd_remove(string str){
     mapping post;
     int x;
-
     if((x = to_int(str)) < 1 ||
       x > (int)BBOARD_D->query_number_posts(query_board_id()))
         return notify_fail("Invalid post number.\n");
     post = (mapping)BBOARD_D->query_post(query_board_id(), x-1);
-    if(!valid_edit(convert_name(post["author"])))
-      return notify_fail("You do not have permission to remove that!\n");
+    if(!valid_edit(convert_name(post["author"]))){
+      write("You do not have permission to remove that!\n");
+      return 1;
+    }
     BBOARD_D->remove_post(query_board_id(), x-1);
     message("system", "Post "+x+" removed.", this_player());
     return 1;
@@ -214,8 +217,10 @@ int cmd_edit(string str){
       x > (int)BBOARD_D->query_number_posts(query_board_id()))
         return notify_fail("Invalid post number.\n");
     post = (mapping)BBOARD_D->query_post(query_board_id(), x-1);
-    if(!valid_edit(convert_name(post["author"])))
-      return notify_fail("You do not have permission to edit that post!\n");
+    if(!valid_edit(convert_name(post["author"]))){
+      write("You do not have permission to edit that post!\n");
+      return 1;
+    }
     file = DIR_TMP+"/"+(string)this_player()->GetKeyName()+".bb";
     if(file_exists(file)) rm(file);
     write_file(file, post["post"]);

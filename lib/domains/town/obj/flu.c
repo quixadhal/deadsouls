@@ -28,7 +28,7 @@ void create(){
     SetLong("Test Flu version 2");
     SetCure(20);
     SetCommunicable(15);
-    SetLifeSpan(900000);
+    SetLifeSpan(900);
     SetType("viral");
     SetInfect((: InfectMess :));
 }

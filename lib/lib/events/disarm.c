@@ -5,6 +5,10 @@ mixed direct_boobytrap_obj_with_obj(){
 }
 
 mixed indirect_boobytrap_obj_with_obj(){
+    object env = environment();
+    if(!env || env != this_player()){
+        return "#You don't have that!";
+    }
     return 1;
 }
 

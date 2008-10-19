@@ -40,6 +40,7 @@ inherit LIB_FALL;
 inherit LIB_SINK;
 
 private int            	Fingers       	= 5;
+private int            	Size       	= 0;
 private mapping        	Protection    	= ([]);
 private string array   	RestrictLimbs 	= 0;
 private static mixed   	Wear          	= 0;
@@ -97,6 +98,14 @@ int GetFingers(){
 
 int SetFingers(int x){
     return (Fingers = x);
+}
+
+int GetSize(){
+    return Size;
+}
+
+int SetSize(int x){
+    return (Size = x);
 }
 
 /*  Just check the surface for blade/knife/blunt damage
@@ -200,6 +209,10 @@ mixed SetWear(mixed val){
 /* ****************** armor.c modals ********************* */ 
 mixed CanEquip(object who, string array limbs){
     mixed tmp;
+
+    if(Size && !( Size & who->GetSize() ) ){
+        return "It doesn't fit.";
+    }
 
     if( !limbs ){ /* let's try and guess */
         string array guess = who->GetLimbs();

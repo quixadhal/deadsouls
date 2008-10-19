@@ -7,10 +7,6 @@ static void create() {
     SetAmbientLight(30);
     SetShort("The Magic Shop Storeroom");
     SetLong("This is the storeroom where magical items are kept."); 
-    SetExits( ([
-        "east" : "/domains/town/room/magic_shop",
-        "up" : "/domains/town/room/magic_shop.c",
-      ]) );
     SetInventory(([
         "/domains/town/obj/scroll_raise_dead" : 5,
         "/domains/town/meals/potion_bigheal" : 2,
@@ -23,6 +19,9 @@ static void create() {
         "/domains/town/obj/pipe" : 5,
         "/domains/town/obj/d20" : 5,
       ]));
+    SetExits( ([
+        "down" : "/domains/town/room/magic_shop.c",
+      ]) );
 }
 int CanReceive(object sneak) {
     object *living_stack = get_livings(sneak);

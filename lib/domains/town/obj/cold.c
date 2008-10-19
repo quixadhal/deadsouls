@@ -29,7 +29,7 @@ void create(){
     SetCure(20);
     SetVendorType(VT_TREASURE);
     SetCommunicable(15);
-    SetLifeSpan(900000);
+    SetLifeSpan(1200);
     SetType("viral");
     SetInfect((: InfectMess :));
 }

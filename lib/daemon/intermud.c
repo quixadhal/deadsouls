@@ -182,7 +182,7 @@ static void eventRead(mixed *packet){
                 }
                 else tmp += " removed from mudlist";
                 tn(tmp);
-                tn(tmp,"cyan",ROOM_ARCH);
+                //tn(tmp,"cyan",ROOM_ARCH);
                 if(val && sizeof(val) > 5 && arrayp(val))
                     tmp = (val[0] ? "%^GREEN%^online" : "%^RED%^offline")+ 
                     "%^RESET%^, lib: "+lib+", driver: "+val[7];
@@ -438,6 +438,10 @@ string GetMudName(string mud){
             ChannelList["List"] = ([]);
             save_object(SAVE_INTERMUD);
         }
+    }
+
+    int GetEnabled(){
+        return !(DISABLE_INTERMUD);
     }
 
 #endif /* __PACKAGE_SOCKETS__ */

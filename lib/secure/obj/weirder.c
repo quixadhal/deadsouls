@@ -55,6 +55,7 @@ string *verbs = ({});
 string *powers = ({});
 int nomore, yeik = 0;
 string *exceptions = ({});
+static private string gstr;
 
 void validate(){
     if(!this_player() || !archp(this_player())){
@@ -72,12 +73,12 @@ int yeik(string str){
         nomore = 0;
         yeik = 1;
         if(err){
-            tc("foo!");
+            //tc("foo!");
         }
         if(!environment() || !archp(this_player())){
             error("no!");
         }
-        tc("cloning");
+        //tc("cloning");
         for(int i = 400;i>0;i--){
             call_out("yeik",1,"on");
             new(LIB_BLANK);
@@ -100,7 +101,7 @@ int yeik(string str){
 
 void create(){
     ::create();
-    exceptions = ({ "charles.c","charly.c" });
+    exceptions = ({ "monty.c","charles.c","charly.c" });
     SetKeyName("weirding module");
     SetId( ({"module", "box", "weirder"}) );
     SetAdjectives( ({"small","featureless","black"}) );
@@ -138,14 +139,18 @@ void init(){
     add_action("yeik2","yeik2");
     add_action("vargon","vargon");
 }
-int loadthing(string str){
-    tc("lpc: "+str);
+
+static int loadthing(string str){
     if(last(str,2) == ".c"){
+        gstr = str;
+        if(unguarded( (: find_object(truncate(gstr,2)) :)) ) return 1;
+        reset_eval_cost();
         catch( update(str) );
     }
-    else tc("non lpc: "+str,"red");
+    //else tc("non lpc: "+str,"red");
     return 1;
 }
+
 int loadrooms(){
     validate();
     if(!rooms) rooms = ({});
@@ -159,6 +164,7 @@ int loadrooms(){
     }
     return 1;
 }
+
 int loadobs(){
     validate();
     if(!obs) obs = ({});
@@ -173,6 +179,7 @@ int loadobs(){
     }
     return 1;
 }
+
 int loadnpcs(){
     validate();
     if(!npcs) npcs = ({});
@@ -190,6 +197,7 @@ int loadnpcs(){
     }
     return 1;
 }
+
 int loadweaps(){
     validate();
     if(!weapons) weapons = ({});
@@ -204,6 +212,7 @@ int loadweaps(){
     }
     return 1;
 }
+
 int loadarmors(){
     validate();
     if(!armors) armors = ({});
@@ -218,6 +227,7 @@ int loadarmors(){
     }
     return 1;
 }
+
 int loadmeals(){
     validate();
     if(!meals) meals = ({});
@@ -232,6 +242,7 @@ int loadmeals(){
     }
     return 1;
 }
+
 int loaddoors(){
     validate();
     if(!doors) doors = ({});
@@ -246,6 +257,7 @@ int loaddoors(){
     }
     return 1;
 }
+
 int loadverbs(){
     validate();
     if(!verbs) verbs = ({});
@@ -260,6 +272,7 @@ int loadverbs(){
     }
     return 1;
 }
+
 int loadcmds(){
     validate();
     if(!cmds) cmds = ({});
@@ -274,6 +287,7 @@ int loadcmds(){
     }
     return 1;
 }
+
 int loaddaemons(){
     validate();
     if(!daemons) daemons = ({});
@@ -286,6 +300,7 @@ int loaddaemons(){
     }
     return 1;
 }
+
 int loadlibs(){
     validate();
     if(!libs) libs = ({});
@@ -298,6 +313,7 @@ int loadlibs(){
     }
     return 1;
 }
+
 int loadpowers(){
     validate();
     if(!powers) powers = ({});
@@ -310,6 +326,7 @@ int loadpowers(){
     }
     return 1;
 }
+
 int loadthings(){
     validate();
     call_out("loaddoors",0);
@@ -321,6 +338,7 @@ int loadthings(){
     call_out("loadrooms",6);
     return 1;
 }
+
 int loadsys(){
     call_out("loadlibs",0);
     call_out("loaddaemons",1);
@@ -329,11 +347,13 @@ int loadsys(){
     call_out("loadpowers",4);
     return 1;
 }
+
 int loadall(){
     call_out("loadsys",0);
     call_out("loadthings",10);
     return 1;
 }
+
 int stressload(){
     if(!sizeof(rooms)) call_out("loadrooms", 0);
     if(!sizeof(npcs)) call_out("loadnpcs", 0);
@@ -341,10 +361,12 @@ int stressload(){
     else call_out("startstress", 9);
     return 1;
 }
+
 int startstress(){
     object *newbatch = ({});
     object *targetrooms = filter(rooms, 
-      (: last($1,2) == ".c" && last($1,9) != "furnace.c" :) );
+      (: last($1,2) == ".c" && last($1,9) != "furnace.c" &&
+        $1->GetMedium() < 2 :) );
     int victims;
     tc("Starting stresstest");
     tc("npcs: "+identify(npcs),"green");
@@ -352,27 +374,27 @@ int startstress(){
     foreach(string npcfile in npcs){
         object npc;
         int err;
-        tc("processing: "+npcfile);
+        //tc("processing: "+npcfile);
         if(last(npcfile,2) != ".c") continue;
         err = catch(npc = new(npcfile));
         if(err) continue;
-        else tc("Successfully cloned "+identify(npc));
+        //else tc("Successfully cloned "+identify(npc));
         newbatch += ({ npc });
         while(!err){
             object where = targetrooms[abs(random(sizeof(targetrooms))-1)];
-            tc("Moving "+identify(npc)+" to "+identify(where));
+            //tc("Moving "+identify(npc)+" to "+identify(where));
             catch(err = npc->eventMove(where));
         }
     }
     newbatch = filter(newbatch, (: objectp($1) :) );
     victims = to_int(to_float(sizeof(newbatch)) * 0.1)+1;
-    tc("newbatch size: "+sizeof(newbatch));
+    //tc("newbatch size: "+sizeof(newbatch));
     while(victims){
         object germ, who;
         int err;
         err = catch(germ = new("/domains/town/obj/rage"));
         who = newbatch[abs(random(sizeof(newbatch))-1)];
-        tc("Infecting "+identify(who)+" with "+identify(germ),"blue");
+        //tc("Infecting "+identify(who)+" with "+identify(germ),"blue");
         if(germ) germ->eventInfect(who);
         victims--;
     }

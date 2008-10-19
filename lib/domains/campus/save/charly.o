@@ -6,14 +6,14 @@ remote_mute 0
 local_gag 0
 remote_gag 0
 Paused 0
-CommandHist ({"say My win rate is 49.989033%.My switch rate is 50.053013%.","say I decide to stay.","say If successful, this will be run 54704.","say the winners have been: red: 18236 green: 18230 blue: 18237","push a button on a pedestal","say stats:switches: 27380stays: 27323wins: 27345losses: 27358runs: 54703","say I decide to stay.","say If successful, this will be run 54705.","say the winners have been: red: 18237 green: 18230 blue: 18237","say I've switched 50.051182% of the time. My win rate is 49.986290%.","push a button on a pedestal","say I am faced with choice 1.","say I randomly choose the green door","say I am faced with choice 2.","say stats:switches: 27380stays: 27324wins: 27345losses: 27359runs: 54704","say My win rate is 49.987202%.My switch rate is 50.051182%.","say I decide to stay.","say If successful, this will be run 54706.","say the winners have been: red: 18237 green: 18230 blue: 18238","say I've switched 50.050270% of the time. My win rate is 49.985374%.",})
+CommandHist ({"say stats:switches: 34229stays: 34216wins: 34261losses: 34184runs: 68445","say If successful, this will be run 68447.","say the winners have been: red: 22817 green: 22812 blue: 22817","say I've switched 50.008766% of the time. My win rate is 50.054787%.","say I am faced with choice 2.","say stats:switches: 34229stays: 34217wins: 34261losses: 34185runs: 68446","say My win rate is 50.055515%.My switch rate is 50.008766%.","say I decide to switch.","say If successful, this will be run 68448.","say the winners have been: red: 22818 green: 22812 blue: 22817","push a button on a pedestal","say I select the red door","say I am faced with choice 2.","say stats:switches: 34230stays: 34217wins: 34262losses: 34185runs: 68447","say My win rate is 50.056248%.My switch rate is 50.009495%.","say I decide to switch.","say If successful, this will be run 68449.","say the winners have been: red: 22818 green: 22812 blue: 22818","say I've switched 50.010227% of the time. My win rate is 50.056248%.",})
 localcmds ({"",})
 next_command ({})
 MaxCommandHistSize 20
 InternalDesc 0
 Opacity 0
 MaxCarry 0
-Position 2
+Position 8
 Undead 0
 UndeadType 0
 Mount 0
@@ -21,10 +21,10 @@ Riders ({})
 BodyMass 0
 SaveRecurse 1
 Saved ({})
-HealthPoints 440
-MagicPoints 770
+HealthPoints 450
+MagicPoints 610
 ExperiencePoints 50
-melee 0
+melee 1
 godmode 0
 Alcohol 0
 Caffeine 0
@@ -33,12 +33,12 @@ Drink 100
 Poison 0
 Sleeping 0
 DeathEvents 0
-StaminaPoints 530.000000
+StaminaPoints 390.000000
 Torso "torso"
 Biter 0
 keepalive 0
 Fingers (["right hand":5,"left hand":5,])
-Limbs (["left leg":(["children":({"left foot",}),"armors":1049761,"health":200,"class":2,"parent":"torso",]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"health":400,"class":1,"parent":0,]),"right foot":(["children":({}),"armors":241,"health":100,"class":4,"parent":"right leg",]),"right leg":(["children":({"right foot",}),"armors":1049761,"health":200,"class":2,"parent":"torso",]),"head":(["children":({}),"armors":262913,"health":400,"class":1,"parent":"neck",]),"right hand":(["children":({}),"armors":98319,"health":100,"class":4,"parent":"right arm",]),"neck":(["children":({"head",}),"armors":786433,"health":400,"class":1,"parent":"torso",]),"left arm":(["children":({"left hand",}),"armors":1253385,"health":200,"class":2,"parent":"torso",]),"left foot":(["children":({}),"armors":241,"health":100,"class":4,"parent":"left leg",]),"left hand":(["children":({}),"armors":98319,"health":100,"class":4,"parent":"left arm",]),"right arm":(["children":({"right hand",}),"armors":1253385,"health":200,"class":2,"parent":"torso",]),])
+Limbs (["left leg":(["children":({"left foot",}),"armors":1049761,"health":210,"class":2,"parent":"torso",]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"health":410,"class":1,"parent":0,]),"right foot":(["children":({}),"armors":241,"health":110,"class":4,"parent":"right leg",]),"right leg":(["children":({"right foot",}),"armors":1049761,"health":210,"class":2,"parent":"torso",]),"head":(["children":({}),"armors":262913,"health":410,"class":1,"parent":"neck",]),"right hand":(["children":({}),"armors":98319,"health":110,"class":4,"parent":"right arm",]),"neck":(["children":({"head",}),"armors":786433,"health":410,"class":1,"parent":"torso",]),"left arm":(["children":({"left hand",}),"armors":1253385,"health":210,"class":2,"parent":"torso",]),"left foot":(["children":({}),"armors":241,"health":110,"class":4,"parent":"left leg",]),"left hand":(["children":({}),"armors":98319,"health":110,"class":4,"parent":"left arm",]),"right arm":(["children":({"right hand",}),"armors":1253385,"health":210,"class":2,"parent":"torso",]),])
 MissingLimbs ([])
 rifleshot_wounds 0
 gunshot_wounds 0
@@ -48,7 +48,7 @@ Blind 0
 CustomStats 15
 LightSensitivity ({25,750,})
 Resistance (["low":0,"high":0,"immune":0,"medium":0,"none":4194302,])
-Stats (["wisdom":(["class":3,"points":0,"level":45,]),"agility":(["class":3,"points":0,"level":48,]),"speed":(["class":3,"points":0,"level":31,]),"strength":(["class":3,"points":0,"level":23,]),"intelligence":(["class":1,"points":0,"level":72,]),"durability":(["class":4,"points":0,"level":39,]),"charisma":(["class":2,"points":0,"level":47,]),"coordination":(["class":2,"points":0,"level":41,]),"luck":(["class":3,"points":0,"level":27,]),])
+Stats (["agility":(["class":3,"points":0,"level":34,]),"wisdom":(["class":3,"points":0,"level":45,]),"speed":(["class":3,"points":0,"level":39,]),"intelligence":(["class":1,"points":0,"level":56,]),"strength":(["class":3,"points":0,"level":39,]),"durability":(["class":4,"points":0,"level":40,]),"charisma":(["class":2,"points":0,"level":62,]),"coordination":(["class":2,"points":0,"level":38,]),"luck":(["class":3,"points":0,"level":35,]),])
 Polyglot 0
 Languages (["english":(["native":1,"name":"English","points":0,"level":100,]),])
 DefaultLanguage ""
@@ -74,7 +74,7 @@ QuestBook ([])
 isPK 1
 Attackable 1
 NoCondition 0
-Messages (["telin":"$N teleports in.","leave":"$N leaves $D.","telout":"$N teleports away.","vis":"$N appears.","home":"$N goes home.","invis":"$N disappears.","come":"$N enters.","dest":"$N dests $O.","clone":"$N clones $O.",])
+Messages (["telin":"$N teleports in.","telout":"$N teleports away.","leave":"$N leaves $D.","vis":"$N appears.","invis":"$N disappears.","home":"$N goes home.","dest":"$N dests $O.","come":"$N enters.","clone":"$N clones $O.",])
 ProperNoun 1
 Modify 1
 Short "Charly"
@@ -93,19 +93,19 @@ ActionChance 0
 CombatActionChance 0
 AutoStand 1
 MaximumHealth 0
-Encounter 0
-EnemyNames ({"avidryl","klingon","thief",})
+Encounter 100
+EnemyNames ({"avidryl","klingon","thief","dwarf","horse","zoe","balrog","deer","lynx","gate guard","oana",})
 VisibleRiders 1
 actions_enabled 1
-runs 54705
-switches 27380
-stays 27325
+runs 68448
+switches 34231
+stays 34217
 percent 0
-fred 2482
-fgreen 2510
-fblue 2496
-wins 27345
-losses 27360
-red_wins 18237
-green_wins 18230
-blue_wins 18238
+fred 3123
+fgreen 3099
+fblue 3114
+wins 34263
+losses 34185
+red_wins 22818
+green_wins 22812
+blue_wins 22818

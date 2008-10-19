@@ -15,10 +15,13 @@
 #include <daemons.h>
 #include <message_class.h>
 #include "include/connect.h"
+#ifndef MAX_USERS
+#define MAX_USERS 0
+#endif
 
 inherit LIB_PAGER;
 
-static private int CrackCount, NetDead; 
+static private int CrackCount, NetDead, MaxPlayers; 
 static private string name, Name, Terminal, raza, TrueName, trabajo; 
 static private string Passwort, Gendre, CapNamen, E_Mail; 
 static private object Player, pile; 
@@ -50,11 +53,35 @@ int CheckIp(){
     foreach(object jugador in users()){
         if(query_ip_number(jugador) == my_ip) ips++;
     }
-    if(ips >= SAME_IP_MAX && member_array(my_ip, ip_permitted) == -1) return 0;
-    else return 1;
+    if(member_array(my_ip, ip_permitted) != -1) return 1;
+    if(ips >= SAME_IP_MAX) return 0;
+    return 1;
 }
 
 static void create(int binary) {
+    if(query_windows()){
+        MaxPlayers = 50;
+    }
+    else {
+#ifdef __ULIMIT__
+        MaxPlayers = (__ULIMIT__ - 10);
+#else
+#if __FD_SETSIZE__
+        if(!MaxPlayers || MaxPlayers > __FD_SETSIZE__){
+            MaxPlayers = (__FD_SETSIZE__ - 10);
+        }
+#endif
+#endif
+    }
+    if(grepp(__ARCH__, "Solaris")){
+#ifndef __M64__
+        //Solaris has a problem with fd's over 256 in
+        //32-bit applications.
+        MaxPlayers = 200;
+#endif
+    }
+    if(!MaxPlayers) MaxPlayers = 1000;
+    if(MAX_USERS) MaxPlayers = MAX_USERS;
     CrackCount = 0;
     Name = "";
     Player = 0;
@@ -98,8 +125,12 @@ varargs static void logon(mixed foo) {
 static void InputName(string namen, string kill_me) {
     string temp_name, news;
     mixed tmp;
+    int toomany;
     name = namen;
-    //tc("namen: ("+identify(namen)+") kill_me: ("+identify(kill_me)+")");
+
+    if(sizeof(users()) >= MaxPlayers){
+        toomany = 1;
+    }
 
     if( !name || name == "" ) {
         if( kill_me ) {
@@ -120,8 +151,11 @@ static void InputName(string namen, string kill_me) {
     }
     Name = convert_name(name);
     name = capitalize(name);
-    if( (int)master()->is_locked() ) {
-        news = read_file(NEWS_LOCKED) || "No reason logged.";
+    if( (int)master()->is_locked() || toomany) {
+        if(toomany){
+            news = "Too many players logged in!";
+        }
+        else news = read_file(NEWS_LOCKED) || "No reason logged.";
         receive("\n" + mud_name() + " is locked.  Reason:\n" + news + "\n");
         if( CanLogin() ) receive("\n        >>> Access allowed <<<\n");
         else {
@@ -752,4 +786,8 @@ mapping GetLastError() {
     if( caller == "/secure/cmds/creator/dbxwhere" ||
       caller  == "/secure/cmds/player/dbxframe" ) return LastError;
     error("Privilege Violation: " + caller);
+}
+
+int GetMaxPlayers(){
+    return MaxPlayers;
 }

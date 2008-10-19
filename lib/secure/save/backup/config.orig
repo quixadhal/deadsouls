@@ -19,7 +19,7 @@
 #define EXTRA_TIME_OFFSET        0
 #define MAX_LOG_SIZE             150000
 #define MAX_NET_DEAD_TIME        1800
-#define MIN_HISTORY_SIZE         10
+#define MIN_HISTORY_SIZE         20
 #define MAX_HISTORY_SIZE         30
 #define LOGON_TIMEOUT            360
 #define IDLE_TIMEOUT             3600
@@ -32,8 +32,8 @@
 #define SUPPORTED_CLIENTS       ({ "amcp", "amcp/1.1" })
 #define HOUR_LENGTH              1200
 #define DAY_LENGTH               20
-#define MAX_NEWBIE_LEVEL         2
-#define AUTOSAVE_TIME            450
+#define MAX_NEWBIE_LEVEL         0
+#define AUTOSAVE_TIME            290
 #define MORTAL_POSITIONS         ({ "player", "high mortal", "ambassador" })
 #define DEFAULT_GRAVITY          1.0
 #define DEFAULT_ITEM_MESSAGE     "You do not see that here."
@@ -41,7 +41,7 @@
 #define ENGLISH_ONLY             0
 #define HUMANS_ONLY              0
 #define SEVERABLE_LIMBS          1
-#define CLASS_SELECTION          1
+#define CLASS_SELECTION          0
 #define PINGING_MUDS             ({})
 #define PING_INTERVAL            290
 #define ENABLE_ENCUMBRANCE       0
@@ -64,7 +64,8 @@
 #define CARRIAGE_RETURN          "\r"
 #define OLD_STYLE_PLURALS        1
 #define NM_STYLE_EXITS           0
-#define WEB_SOURCE               "149.152.218.102"
+#define WEB_SOURCE_IP            "204.209.44.12"
+#define WEB_SOURCE_NAME          "lpmuds.net"
 #define DESTRUCT_LOGGING         0
 #define ROUTER_NAME              "Alpha"
 #define IRN_PASSWORD             "Alpha"
@@ -84,5 +85,10 @@
 #define MAX_CALL_OUTS            750
 #define REQUIRE_QUESTING         1
 #define AUTO_ADVANCE             1
+#define MAX_INVENTORY_SIZE       2048
+#define MAX_ATTACKS_PER_HB       40
+#define MEMUSE_SOFT_LIMIT        0
+#define MEMUSE_HARD_LIMIT        0
+#define MAX_USERS                0
 
 #endif /* s_config_h */

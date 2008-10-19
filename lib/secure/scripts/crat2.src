@@ -11,10 +11,10 @@ get all from chest
 dest staff
 dest robe
 dest hat
-clone /domains/default/armor/robe
+clone /domains/default/armor/arbitersuit
 #clone /secure/obj/glasses
 #clone /realms/$N/area/obj/key
-wear robe
+wear arbiter suit
 wear first glasses
 clone /domains/town/obj/8ball
 clone /domains/town/obj/d20
@@ -29,6 +29,6 @@ clone /domains/town/obj/match
 clone /domains/town/obj/match
 clone /domains/town/obj/match
 #clone /domains/default/obj/gps
-put all in my robe
 clone /secure/obj/weirder.c
+put all in my arbiter suit
 save

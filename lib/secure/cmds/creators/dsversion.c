@@ -10,8 +10,8 @@
 
 inherit LIB_DAEMON;
 
-#define HTTP_ADDRESS "149.152.218.102"
-#define HTTP_HOST "www.dead-souls.net"
+#define HTTP_ADDRESS "204.209.44.12"
+#define HTTP_HOST "lpmuds.net"
 #define HTTP_PORT 80
 #define HTTP_PATH "/RELEASE_NOTES"
 #define NOTES_DELIM "----"
