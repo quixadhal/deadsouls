@@ -18,7 +18,7 @@ static void create() {
     SetLong("Yulia is typical of office assistants: she is a bit "+
       "arrogant, officious, and brusque; but she appears "+
       "to be a competent enough secretary. "+
-      "She is the person you will buy a treatment slips "+
+      "She is the person you will buy a treatment slip "+
       "from. Read the list on the wall for the slips "+
       "available.");
     SetGender("female");

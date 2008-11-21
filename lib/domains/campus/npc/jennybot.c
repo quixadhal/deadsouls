@@ -39,6 +39,7 @@ string LongDesc(){
 
 
 static void create(){
+    watchlist = ({});
     AddSave(({ "players" }) );
     ::create();
     restore_object(save_file);
@@ -78,6 +79,8 @@ static void create(){
     tipnumber = 16;
     greeting = 0;
     greetwait = 0;
+    SetLanguage("common",100);
+    SetDefaultLanguage("common");
 }
 
 varargs int eventGreet(string newbie){
@@ -141,8 +144,9 @@ int next_tip(string str){
 int refreshlist(){
     string playername;
     playername = this_player()->GetKeyName();
-    if(member_array(playername, watchlist) != -1) mooch = 1;
+    if(watchlist && member_array(playername, watchlist) != -1) mooch = 1;
     else {
+        if(!watchlist) watchlist = ({});
         watchlist += ({ playername });
         mooch = 0;
     }

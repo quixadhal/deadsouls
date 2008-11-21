@@ -5,6 +5,7 @@ inherit LIB_SENTIENT;
 int TalkFunc(){
     int rand1;
     string thing1, thing2, thing3, thing4, thing5;
+    if(!this_object() || !clonep() || !environment()) return 0;
 
     rand1 = random(5);
 

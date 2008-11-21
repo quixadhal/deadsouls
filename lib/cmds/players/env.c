@@ -52,6 +52,7 @@ mixed cmd(string args) {
         write("Godmode: \t\t"+ ( (this_player()->GetGodMode()) ? "on" : "off" ));
         write("Wizvision: \t\t"+ ( (this_player()->GetWizVision()) ? "on" : "off" ));
         write("Showgrid: \t\t"+ ( (this_player()->GetVisibleGrid()) ? "on" : "off" ));
+        write("Wizmap mode: \t\t"+ ( this_player()->GetProperty("wizmapping") ? "on" : "off" ));
     }
     return 1;
 }
@@ -59,7 +60,7 @@ mixed cmd(string args) {
 void help() {
     string de_bug;
     if(creatorp(this_player())) de_bug = ", debug, showgrid, "+
-        "wizvision, godmode.";
+        "wizvision, godmode, wizmap.";
     else de_bug = ".";
     message("help", "Syntax: <env>\n\n"
       "Displays some basic interface and play settings. " +

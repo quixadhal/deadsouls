@@ -473,6 +473,9 @@ int cmdChannel(string verb, string str) {
         return 1;
     }
 
+    //Channel doesn't exist, probably an emote typo
+    if(!Channels[verb]) return 0;
+
     //If not part of the channel, no chatting
     if( member_array(this_player(), Channels[verb]) == -1 ) return 0;
 

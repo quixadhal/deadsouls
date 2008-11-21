@@ -9,6 +9,7 @@
 
 #include <lib.h>
 #include <rooms.h>
+#include <daemons.h>
 
 inherit LIB_DAEMON;
 inherit LIB_HELP;
@@ -146,6 +147,10 @@ mixed cmd(string args) {
         if( args[<2..] == ".c" ) args = args[0..<3];
         ob = find_object(args);
         if(!ob) ob = load_object(args);
+        if(this_player() && inherits(LIB_ROOM,ob)){
+            string coords = ROOMS_D->GetCoordinates(ob);
+            MAP_D->RemoveCache(coords);
+        }
         if( ob ) {
             if( tmp = catch( ob->eventDestruct()) && this_player() )
                 this_player()->eventPrint(args + ": error in eventDestruct()");

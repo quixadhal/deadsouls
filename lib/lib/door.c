@@ -17,6 +17,21 @@ inherit LIB_SCRATCH;
 
 private mapping Sides;
 private static int Hidden = 1;
+private static int Opacity = 100;
+
+int GetOpacity(){
+    return Opacity;
+}
+
+int SetOpacity(int x){
+    Opacity = x;
+    return Opacity;
+}
+
+int CanPeer(){
+    if(!GetClosed() || !Opacity) return 1;
+    return 0;
+}
 
 int SetHiddenDoor(int i){
     if(i) Hidden = 1;

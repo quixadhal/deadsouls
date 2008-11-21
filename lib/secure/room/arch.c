@@ -53,13 +53,16 @@ string ReadScreen(){
     ret += "Pending callouts: "+sizeof(call_out_info())+"\n";
     ret += "File descriptors in use: "+
     (sizeof(explode(dump_file_descriptors(),"\n"))-3)+"\n";
-#if 0
-    meminf = memory_info();
-    if(meminf){
-        ret += "Memory in use (allocated memory will be higher): "+
-        meminf+"\n";
+    if(!strsrch(mud_name(),"Dead Souls")){
+        string tmp;
+        meminf = memory_info()/1000000;
+        if(!meminf) tmp = "less than 1 meg";
+        else tmp = meminf+" megs";
+        if(meminf){
+            ret += "Memory in use (allocated memory will be higher): "+
+            tmp+"\n";
+        }
     }
-#endif
     return ret;
 } 
 
@@ -69,24 +72,7 @@ string eventReadScreen(){
 }
 
 mixed eventReadPrintout(){
-    mapping MudMap2;
-    string *all_dead_souls = ({});
-    string ret = "";
-    MudMap2 = INTERMUD_D->GetMudList();
-    if(!sizeof(MudMap2)){
-        write("Intermud3 link down. Stats unavailable.");
-        return 1;
-    }
-    foreach(string key, mixed *val in MudMap2){
-        if(grepp(val[5],"Dead Souls")) all_dead_souls += ({ key });
-    }
-    ret += "%^RED%^Muds, alive or dead, test or production, that tried Dead Souls:%^RESET%^\n";
-    foreach(string mud in all_dead_souls){
-        ret += mud + "\t\t" +MudMap2[mud][5] + "%^RESET%^\n";
-    }
-    ret += "\nTotal: "+sizeof(all_dead_souls);
-    this_player()->eventPage( explode(ret,"\n") );
-    return "";
+    return read_file("/doc/old/the_beginning.txt");
 }
 
 void SetImud(int i){

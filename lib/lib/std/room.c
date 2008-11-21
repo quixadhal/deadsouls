@@ -1147,8 +1147,13 @@ string GetSinkRoom(){
 static void init(){
     object prev = previous_object();
     if(this_object()->GetProperty("indoors")) SetClimate("indoors");
-    if(!sizeof(GetObviousExits()) && DefaultExits > 0 && ObviousVisible) GenerateObviousExits();
-    if((Action && sizeof(Action)) || sizeof(ActionsMap)) set_heart_beat(tick_resolution);
+    if(!sizeof(GetObviousExits()) && DefaultExits > 0 && ObviousVisible){
+        GenerateObviousExits();
+    }
+    if((Action && (sizeof(Action) || functionp(Action)))
+      || sizeof(ActionsMap)){
+        set_heart_beat(tick_resolution);
+    }
     if(this_object() && prev && living(prev)){
         ROOMS_D->SetRoom(this_object(), prev);
     }

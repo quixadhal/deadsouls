@@ -18,6 +18,7 @@ string *query_names(object whom) {
     }
     if(sizeof(name)){
         foreach(mixed subst in name){
+            if(!subst) continue;
             if(arrayp(subst)) names += subst;
             else names += ({ lower_case(subst) });
         }

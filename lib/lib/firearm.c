@@ -326,12 +326,15 @@ int missed_shot(){
           "'s gun.\n");
     }
     if(!living(inv[i])){
+        string shortd = (inv[i]->GetShort() || "");
         arr=explode(inv[i]->GetKeyName(),"");
-        if(arr[sizeof(arr)-1] =="s"){
-            tell_room(environment(environment(this_object())),capitalize(inv[i]->GetShort())+" are struck by the stray bullet.");
+        if(sizeof(arr) && arr[sizeof(arr)-1] =="s"){
+            tell_room(environment(environment(this_object())), 
+              capitalize(shortd)+" are struck by the stray bullet.");
         }
         else
-            tell_room(environment(environment(this_object())),capitalize(inv[i]->GetShort())+" is struck by the stray bullet.");
+            tell_room(environment(environment(this_object())),
+              capitalize(shortd)+" is struck by the stray bullet.");
     }
     autohit=1;
     rounds++;

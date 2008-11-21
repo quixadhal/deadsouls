@@ -437,7 +437,9 @@ mixed eventBuy(object who, object *obs){
             return cmdShow(who, args);
 
         default:
-            eventForce("say I am not quite sure what you want from me");
+            //Thx Raudhrskal
+            if(!sentient::eventAsk(who,str))
+                eventForce("say I am not quite sure what you want from me");
         }
     }
 
@@ -480,10 +482,12 @@ mixed eventBuy(object who, object *obs){
                 foreach(object tempob in obs2) 
                     if(answers_to(what,tempob)) ob = tempob;
             if(!ob || userp(ob)){
-                eventForce("say I have nothing like that to sell");
+                eventForce("say I have nothing like that to sell you.");
                 return 1;
             }
         }
+        //tc("ob: "+identify(ob));
+        //tc("ob location: "+identify(environment(ob)));
         cost=to_int(ob->GetBaseCost(GetLocalCurrency()));
         if(!cost || cost < 0){
             cost = 0; 
@@ -501,7 +505,7 @@ mixed eventBuy(object who, object *obs){
         }
         eventForce("say here is " + (string)ob->GetShort() + " for " + to_int(cost) +
           " " + GetLocalCurrency() + "!");
-        eventForce("give " + (string)ob->GetKeyName() + " to " + (string)who->GetKeyName());
+        eventForce("give " + ob->GetUniqueId() + " to " + (string)who->GetKeyName());
         if( environment(ob) == this_object() ){
             eventForce("say you cannot carry that!");
             eventForce("drop " + (string)ob->GetKeyName());

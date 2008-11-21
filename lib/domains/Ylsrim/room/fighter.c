@@ -15,7 +15,6 @@ static void create() {
     SetAmbientLight(27);
     SetShort("the interior chamber of the Hall of Fighters");
     SetLong("Fighters sort of lounge around in here.");
-    SetObviousExits("s");
     SetExits( ([
         "south" : "/domains/Ylsrim/room/"+ "fighter_hall",
       ]) );

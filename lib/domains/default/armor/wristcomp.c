@@ -52,6 +52,7 @@ static void create() {
         ({ "panel", "default" }) :"Yautja tactical data system, version .09",
         //"panel": (: eventRead :),
       ]) );
+    SetMaxClones(2);
 }
 
 int eventInitialize(){

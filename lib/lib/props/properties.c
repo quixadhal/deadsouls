@@ -25,6 +25,7 @@ mixed GetProperty(string prop){
 }
 
 mapping GetProperties(){
+    if(!Properties) Properties = ([]);
     return Properties;
 }
 
@@ -39,6 +40,7 @@ int RemoveProperty(string prop){
 }
 
 mixed SetProperty(string prop, mixed val){
+    if(!Properties) Properties = ([]);
     return (Properties[prop] = val);
 }
 

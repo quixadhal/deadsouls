@@ -63,6 +63,7 @@ varargs static void create(int x, int y) {
 
     if(x == 24 && y == 1){
         RemoveExit("south");
+        RemoveExit("west");
         AddExit("south","/domains/town/room/forest_path1");
         RemoveExit("southeast");
         RemoveExit("southwest");

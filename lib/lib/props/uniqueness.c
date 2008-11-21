@@ -10,6 +10,7 @@
 
 private static int array Rarity = 0;
 private static int       Unique = 0;
+private static int       MaxClones = 0;
 
 int array GetRarity(){
     return Rarity;
@@ -31,3 +32,18 @@ int SetUnique(int x){
     }
     return Unique;
 }
+
+int GetMaxClones(){
+    return MaxClones;
+}
+
+int SetMaxClones(int x){
+    if(x > -1) MaxClones = x;
+    else MaxClones = 0;
+    if( MaxClones == 1 ){
+        this_object()->SetUnique(1);
+    }
+    if(MaxClones) this_object()->SetRetain(0);
+    return MaxClones;
+}
+

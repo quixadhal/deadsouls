@@ -5,7 +5,7 @@ inherit LIB_ITEM;
 inherit LIB_DRINK;
 
 private int FlaskUses, FlaskStrength, MaxFlask, EverFill;
-private int MealType;
+private int MealType, Tapped;
 private string FlaskContents;
 
 int direct_fill_obj_with_obj(){ return 1;}
@@ -57,6 +57,13 @@ int CanFillOther(){
     if(EverFill) return 99999;
     else return FlaskUses;
 }
+
+//Tapped is for being able to fill from something
+//without havingt to hold the source 
+
+int SetTapped(int x){ return (Tapped = x); }
+
+mixed GetTapped(){ return Tapped; }
 
 int SetStrength(int x){ return (FlaskStrength = x); }
 
@@ -115,7 +122,7 @@ varargs mixed eventEmpty(object who){
 mixed eventFill(object who, object from){
     int howmuch_me = CanFillMe();
     int howmuch_them = from->CanFillOther();
-    if(!from->isDummy() &&
+    if(!from->isDummy() && !from->GetTapped() &&
       environment(from) != this_player()){
         write("You aren't holding the "+from->GetKeyName()+".");
         return 1;

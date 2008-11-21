@@ -358,6 +358,10 @@ with channel rules and banning and whatnot?</a><br>
 <br>
 <a href="#3.13">3.13 How come people on IMC2 can't rwho me?</a><br>
 <br>
+</big><a href="#3.14"><big style="font-family: courier new;">3.14 How
+do I find someone on Intermud-3?</big></a><big
+ style="font-family: courier new;"><a href="#3.13">?</a><br>
+<br>
 <br>
 <span style="font-weight: bold;">Section 4:
 Miscellanea</span><br>
@@ -405,7 +409,7 @@ back now please</a><br>
 move north, but 'north' doesn't work.</a><br>
 <br>
 <a href="#4.15">4.15 Why is there a
-bunch of stuff in ROOM_FURNACE?</a><br>
+bunch of stuff in ROOMS_FURNACE?</a><br>
 <a href="#4.16"><br>
 </a><a href="#4.16">4.16 How do I
 change my screen and terminal settings?</a><br>
@@ -3351,18 +3355,14 @@ key rules to keep in mind when <br>
 doing this:<br>
 </big>
 <ol style="font-family: courier new;">
-  <small> </small><big> </big>
-  <li><big>Always inherit
+  <small> </small><big> </big> <li><big>Always inherit
 LIB_BASE_DUMMY first.</big></li>
-  <small> </small><big> </big>
-  <li><big>Always invoke
+  <small> </small><big> </big> <li><big>Always invoke
 dummy::create()
 before other ::creates()'s.</big></li>
-  <small> </small><big> </big>
-  <li><big>Make sure you have CanGet()
+  <small> </small><big> </big> <li><big>Make sure you have CanGet()
 return an error string.</big></li>
-  <small> </small><big> </big>
-  <li><big>Make sure the item is
+  <small> </small><big> </big> <li><big>Make sure the item is
 SetInvis(1).</big></li>
 </ol>
 <ol style="font-family: courier new;">
@@ -4282,6 +4282,13 @@ connecting and chatting on IMC2 channels.<br>
 There may be a few kinks remaining with the other functions<br>
 of IMC2 clients. This is something I hope to improve on<br>
 an ongoing basis.<br>
+<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"><a
+ name="3.14"></a>How do I find someone on Intermud-3?</span><br>
+<br>
+Type:<br>
+<span style="font-weight: bold;">locate joe</span><br>
 </big><big style="font-family: courier new;"><br>
 <br>
 </big>
@@ -4491,7 +4498,7 @@ arguments to it:<br>
 intergossip $*</span><br>
 <br>
 To remove an alias:<br>
-<span style="font-weight: bold;">unalias ig<br>
+<span style="font-weight: bold;">alias ig<br>
 <br>
 </span>After modifying aliases,
 make sure to type:<br>
@@ -4649,7 +4656,7 @@ will.<br>
 <span style="font-weight: bold; text-decoration: underline;"></span><br>
 <a name="4.15"></a> <span
  style="font-weight: bold; text-decoration: underline;">Why
-is there a bunch of stuff in ROOM_FURNACE?</span><br>
+is there a bunch of stuff in ROOMS_FURNACE?</span><br>
 <br>
 The QCS is
 designed to attempt the graceful handling<br>
@@ -4670,7 +4677,7 @@ immediately destruct objects when replacing them.<br>
 Instead, they
 are moved, along with whatever problems<br>
 they might
-have, to ROOM_FURNACE. That is a room<br>
+have, to ROOMS_FURNACE. That is a room<br>
 where things
 go to be destructed quietly. Every <br>
 second or so,

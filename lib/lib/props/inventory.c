@@ -13,35 +13,29 @@ mapping GetInventory(){
 
 static void eventLoadItem(string file, mixed args, int count){
     object ob;
+    int u;
+
+    if(functionp(args)) args = evaluate(args);
 
     if( intp(args) ){ 
-        if( args < 0 ){ 
-            foreach(object guy in findobs(file)){
-                if(environment(guy)) return;
+        if(args < 0){ 
+            args = 1;
+            u = 1;
+        }
+        args = args - count;
+        while( args > 0 ){
+            if(!u) u = file->GetUnique();
+            if(!u) u = file->GetMaxClones();
+            if( u ){
+                object *clones = filter(findobs(file),(: clonep($1) &&
+                    environment($1) :));
+                if(sizeof(clones) >= u) return;
             }
             ob = new(file);
             if( ob ){
                 ob->eventMove(this_object());
             }
-        }
-        else { 
-            args = args - count;
-            while( args > 0 ){
-                int u = file->GetUnique();
-                if( u ){
-                    foreach(object guy in findobs(file)){
-                        if(environment(guy)) return;
-                    }
-                    ob = new(file);
-                }
-                else {
-                    ob = new(file);
-                }
-                if( ob ){
-                    ob->eventMove(this_object());
-                }
-                args--;
-            }
+            args--;
         }
     }
 }
@@ -92,12 +86,13 @@ mapping SetInventory(mapping mp){
         }
         if(arrayp(val)){
             int howlong = 60;
-            int howmany = 1;
-            if(val[1] && intp(val[1])) Inventory[key] = val[1];
-            else Inventory[key] = 1;
-            if(val[0] && intp(val[0])) howlong = val[0];
+            mixed howmany = 1;
+            if(!sizeof(val)) val = ({ 60, 1 });
+            if(sizeof(val) < 2) val += ({ 1 });
+            howmany = ( val[1] || 1 );
+            Inventory[key] = howmany;
+            if(intp(val[0])) howlong = (val[0] || 1);
             else continue;
-            if(val[1] && intp(val[1])) howmany = val[1];
             if(!query_heart_beat()) set_heart_beat(1);
             SetInventoryCheck( ([ key : ([ "howlong" : howlong, "howmany" : howmany ]) ]) );
         }
@@ -113,7 +108,7 @@ varargs void reset(){
 }
 
 void heart_beat(){
-    int i;
+    int i,howmany;
     counter++;
     if(!InventoryCheck || !sizeof(InventoryCheck)) return;
     foreach(mixed key, mixed val in InventoryCheck){
@@ -122,9 +117,17 @@ void heart_beat(){
             string *obs;
             gkey = key;
             obs = filter(all_inventory(), (: base_name($1) == gkey :) );
-            if(sizeof(obs) < InventoryCheck[key]["howmany"]){
+
+            if(intp(InventoryCheck[key]["howmany"])){
+                howmany = InventoryCheck[key]["howmany"];
+            }
+            else {
+                howmany = evaluate( InventoryCheck[key]["howmany"] );
+            }
+
+            if(sizeof(obs) < howmany){
                 object ob;
-                for(i=(InventoryCheck[key]["howmany"] - sizeof(obs)); i > 0; i--){
+                for(i=(howmany - sizeof(obs)); i > 0; i--){
                     ob = new(key);
                     if(ob) ob->eventMove(this_object());
                 }

@@ -187,4 +187,7 @@ static void create(){
         ({ "list", "show", "browse" }) : (: eventList :),
         ({ "sell", "serve" }) : (: eventBuyItem :),
       ]) );
+    SetRequestResponses( ([
+        ({ "menu" }) : (: eventList :),
+      ]) );
 }

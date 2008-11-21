@@ -25,7 +25,6 @@ static void create(){
         "instructions" : "Try reading them.",
         "counter" : "A counter folks use to lean on while writing messages." ]) );
     SetExits( ([ 
-        "north" : "/domains/town/room/vill_road3",
       ]) );
     SetProperty("no attack", 1);
 }

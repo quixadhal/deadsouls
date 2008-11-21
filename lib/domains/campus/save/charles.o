@@ -6,7 +6,7 @@ remote_mute 0
 local_gag 0
 remote_gag 0
 Paused 0
-CommandHist ({"say If successful, this will be run 59633.","say the winners have been: red: 19878 green: 19878 blue: 19876","say I've switched 99.989937% of the time. My win rate is 66.734863%.","say I select the red door","say stats:switches: 59626stays: 6wins: 39796losses: 19836runs: 59632","say My win rate is 66.735985%.My switch rate is 99.989937%.","say If successful, this will be run 59634.","say the winners have been: red: 19878 green: 19879 blue: 19876","say I've switched 99.989937% of the time. My win rate is 66.735420%.","say If successful, this will be run 59634.","say the winners have been: red: 19878 green: 19879 blue: 19876","say I've switched 99.989937% of the time. My win rate is 66.735420%.","push a button on a pedestal","say I select the green door","say I am faced with choice 2.","say stats:switches: 59627stays: 6wins: 39797losses: 19836runs: 59633","say My win rate is 66.736534%.My switch rate is 99.989937%.","say If successful, this will be run 59635.","say the winners have been: red: 19878 green: 19879 blue: 19877","say I've switched 99.989937% of the time. My win rate is 66.735977%.",})
+CommandHist ({"say stats:switches: 104218stays: 6wins: 69477losses: 34747runs: 104224","say My win rate is 66.661224%.My switch rate is 99.994240%.","say If successful, this will be run 104226.","say the winners have been: red: 34742 green: 34741 blue: 34742","say I've switched 99.994240% of the time. My win rate is 66.659950%.","say I randomly choose the green door","say stats:switches: 104219stays: 6wins: 69477losses: 34748runs: 104225","say My win rate is 66.660591%.My switch rate is 99.994240%.","say I decide to switch.","say If successful, this will be run 104227.","say the winners have been: red: 34742 green: 34741 blue: 34743","say I've switched 99.994240% of the time. My win rate is 66.660271%.","say stats:switches: 104220stays: 6wins: 69478losses: 34748runs: 104226","say My win rate is 66.660912%.My switch rate is 99.994240%.","say I decide to switch.","say If successful, this will be run 104228.","say the winners have been: red: 34742 green: 34742 blue: 34743","say I've switched 99.994240% of the time. My win rate is 66.660591%.",})
 localcmds ({"",})
 next_command ({})
 MaxCommandHistSize 20
@@ -21,8 +21,8 @@ Riders ({})
 BodyMass 0
 SaveRecurse 1
 Saved ({})
-HealthPoints 370
-MagicPoints 570
+HealthPoints 430
+MagicPoints 770
 ExperiencePoints 50
 melee 1
 godmode 0
@@ -33,12 +33,12 @@ Drink 100
 Poison 0
 Sleeping 0
 DeathEvents 0
-StaminaPoints 390.000000
+StaminaPoints 436.000000
 Torso "torso"
 Biter 0
 keepalive 0
 Fingers (["right hand":5,"left hand":5,])
-Limbs (["left leg":(["children":({"left foot",}),"armors":1049761,"health":170,"class":2,"parent":"torso",]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"health":330,"class":1,"parent":0,]),"right foot":(["children":({}),"armors":241,"health":90,"class":4,"parent":"right leg",]),"right leg":(["children":({"right foot",}),"armors":1049761,"health":170,"class":2,"parent":"torso",]),"head":(["children":({}),"armors":262913,"health":330,"class":1,"parent":"neck",]),"right hand":(["children":({}),"armors":98319,"health":90,"class":4,"parent":"right arm",]),"neck":(["children":({"head",}),"armors":786433,"health":330,"class":1,"parent":"torso",]),"left arm":(["children":({"left hand",}),"armors":1253385,"health":170,"class":2,"parent":"torso",]),"left foot":(["children":({}),"armors":241,"health":90,"class":4,"parent":"left leg",]),"left hand":(["children":({}),"armors":98319,"health":90,"class":4,"parent":"left arm",]),"right arm":(["children":({"right hand",}),"armors":1253385,"health":170,"class":2,"parent":"torso",]),])
+Limbs (["left leg":(["children":({"left foot",}),"armors":1049761,"health":200,"class":2,"parent":"torso",]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"health":390,"class":1,"parent":0,]),"right foot":(["children":({}),"armors":241,"health":100,"class":4,"parent":"right leg",]),"right leg":(["children":({"right foot",}),"armors":1049761,"health":200,"class":2,"parent":"torso",]),"head":(["children":({}),"armors":262913,"health":390,"class":1,"parent":"neck",]),"right hand":(["children":({}),"armors":98319,"health":100,"class":4,"parent":"right arm",]),"neck":(["children":({"head",}),"armors":786433,"health":390,"class":1,"parent":"torso",]),"left arm":(["children":({"left hand",}),"armors":1253385,"health":200,"class":2,"parent":"torso",]),"left foot":(["children":({}),"armors":241,"health":100,"class":4,"parent":"left leg",]),"left hand":(["children":({}),"armors":98319,"health":100,"class":4,"parent":"left arm",]),"right arm":(["children":({"right hand",}),"armors":1253385,"health":200,"class":2,"parent":"torso",]),])
 MissingLimbs ([])
 rifleshot_wounds 0
 gunshot_wounds 0
@@ -48,7 +48,7 @@ Blind 0
 CustomStats 15
 LightSensitivity ({25,750,})
 Resistance (["low":0,"high":0,"immune":0,"medium":0,"none":4194302,])
-Stats (["wisdom":(["class":3,"points":0,"level":55,]),"agility":(["class":3,"points":0,"level":34,]),"speed":(["class":3,"points":0,"level":37,]),"strength":(["class":3,"points":0,"level":31,]),"intelligence":(["class":1,"points":0,"level":52,]),"durability":(["class":4,"points":0,"level":32,]),"charisma":(["class":2,"points":0,"level":47,]),"coordination":(["class":2,"points":0,"level":38,]),"luck":(["class":3,"points":0,"level":21,]),])
+Stats (["agility":(["class":3,"points":0,"level":40,]),"wisdom":(["class":3,"points":0,"level":55,]),"speed":(["class":3,"points":0,"level":49,]),"intelligence":(["class":1,"points":0,"level":72,]),"strength":(["class":3,"points":0,"level":21,]),"durability":(["class":4,"points":0,"level":38,]),"charisma":(["class":2,"points":0,"level":53,]),"coordination":(["class":2,"points":0,"level":50,]),"luck":(["class":3,"points":0,"level":29,]),])
 Polyglot 0
 Languages (["english":(["native":1,"name":"English","points":0,"level":100,]),])
 DefaultLanguage ""
@@ -74,7 +74,7 @@ QuestBook ([])
 isPK 1
 Attackable 1
 NoCondition 0
-Messages (["telin":"$N teleports in.","leave":"$N leaves $D.","telout":"$N teleports away.","vis":"$N appears.","home":"$N goes home.","invis":"$N disappears.","come":"$N enters.","dest":"$N dests $O.","clone":"$N clones $O.",])
+Messages (["telin":"$N teleports in.","telout":"$N teleports away.","leave":"$N leaves $D.","vis":"$N appears.","invis":"$N disappears.","home":"$N goes home.","dest":"$N dests $O.","come":"$N enters.","clone":"$N clones $O.",])
 ProperNoun 1
 Modify 1
 Short "Charles"
@@ -94,18 +94,18 @@ CombatActionChance 0
 AutoStand 1
 MaximumHealth 0
 Encounter 100
-EnemyNames ({"balrog","yattering","hans","jboa","iocla","foemo","lknb","fij","odjhcin","bmcnmmm","gbhfcbhfojh","ki","gjhfngiak","eloho","lamhnigcimg","bi","if","egjem","bgoefal","mjka","blmlehmcnn","dnkdjhgio","aiohdfckab","cngdekjdkae","floodaka","ihkcoflc","nkalmhelekedkg","aehonoffe","ajoa","flkgk","gmm","hkjbnhbcbb","dlkkgbgno","ceahkbi","klkjac","ehgfe","facijo","egfa","gccf","lgfbbdkig","fihh","hecec","ddogjdd","cow","nemnjmene","cobnfjlbehh","cenhoe","ekloboiko","ofb","dafhhlh","gnmil","inlk","nfi","efchnl","kgmacg","dfki","cegdlb","khekif","io","bnfbmdfhnij","geaa","aalnikgghadljj","newt","okmhlamgfj","fmmk","aeegaknk","elkimihg","lcbiolihmh","fbbobmc","acdchfceeeh","nihghfj","fen","oage","lnjbebhfk","bgcbdanjg","cf","mf","iangcn","ghdgeoinho","jfglgmej","db","nfm","kmekalfjclg","fcn","ee","lho","dbggdjen","kmmje","noge","aaloeedd","hfgjcojkkj","ij","ljob","fc","ijkiiacce","bboihgmnh","mha","khmfg","oclnig","hjhojfcbm","haciccfa","mnedoajn","aco","conan","jjjnbebh","fcfokioc","kmfieil","hdnlaiac","ln","afdgcljgi","fhnfklhkd","em","kblg","ocamgfibomc","koegolh","ldn","kcdefeahocl","cafgkfki","ehconlagd","nkihodnmibo","bjlfglnjg","cabmgjl","dhe","od","hlamlinjfd","bbooealnkm","mmaaiiogogd","djhjcikjm","kf","hkcgjeoojji","keilcnicl","aikdl","bknadcdkeli","kdnab","djbfkglfk","do","co","dkojk","dibkmcn","ljbejadkf","hkgbcm","clceh","onmhegieimdeoj","gemfnndmog","ailn","zookeeper bot","bat","a mangy little rat","artrell","lynx","slug","optis","bear","mock turtle","elemental","chimera","lemur","cratylus","algcojcb","dgedohlhlmm","illjd","kb","jlkk","ncgncgl","amih","chnmndcahfc","djbj","eglie","mkabfef","ckddmhc","kdlnjdh","gobbhjige","fkoacm","lfmejkoe","dc","nhfcg","faeelmg","no","fnf","cinhaaollg","hlhn","koij","ghoehjhef","jnkn","jalk","lem","famc","ghgol","gkecdhl","bbjgn","kkejiffhg","necendei","ig","fhlle","ohkb","eejll","de","aoj","cmoolhj","iaahje","alhdnddhgf","gcf","jdgooo","cfkohkcnb","ilme","abdn","one","ingrid","boar","satyr","gate guard","kleiner","kender","money tree","human champion","wim","winged horse","foochy",})
+EnemyNames ({"balrog","yattering","hans","jboa","iocla","foemo","lknb","fij","odjhcin","bmcnmmm","gbhfcbhfojh","ki","gjhfngiak","eloho","lamhnigcimg","bi","if","egjem","bgoefal","mjka","blmlehmcnn","dnkdjhgio","aiohdfckab","cngdekjdkae","floodaka","ihkcoflc","nkalmhelekedkg","aehonoffe","ajoa","flkgk","gmm","hkjbnhbcbb","dlkkgbgno","ceahkbi","klkjac","ehgfe","facijo","egfa","gccf","lgfbbdkig","fihh","hecec","ddogjdd","cow","nemnjmene","cobnfjlbehh","cenhoe","ekloboiko","ofb","dafhhlh","gnmil","inlk","nfi","efchnl","kgmacg","dfki","cegdlb","khekif","io","bnfbmdfhnij","geaa","aalnikgghadljj","newt","okmhlamgfj","fmmk","aeegaknk","elkimihg","lcbiolihmh","fbbobmc","acdchfceeeh","nihghfj","fen","oage","lnjbebhfk","bgcbdanjg","cf","mf","iangcn","ghdgeoinho","jfglgmej","db","nfm","kmekalfjclg","fcn","ee","lho","dbggdjen","kmmje","noge","aaloeedd","hfgjcojkkj","ij","ljob","fc","ijkiiacce","bboihgmnh","mha","khmfg","oclnig","hjhojfcbm","haciccfa","mnedoajn","aco","conan","jjjnbebh","fcfokioc","kmfieil","hdnlaiac","ln","afdgcljgi","fhnfklhkd","em","kblg","ocamgfibomc","koegolh","ldn","kcdefeahocl","cafgkfki","ehconlagd","nkihodnmibo","bjlfglnjg","cabmgjl","dhe","od","hlamlinjfd","bbooealnkm","mmaaiiogogd","djhjcikjm","kf","hkcgjeoojji","keilcnicl","aikdl","bknadcdkeli","kdnab","djbfkglfk","do","co","dkojk","dibkmcn","ljbejadkf","hkgbcm","clceh","onmhegieimdeoj","gemfnndmog","ailn","zookeeper bot","bat","slug","optis","bear","mock turtle","elemental","chimera","lemur","cratylus","algcojcb","dgedohlhlmm","illjd","kb","jlkk","ncgncgl","amih","chnmndcahfc","djbj","eglie","mkabfef","ckddmhc","kdlnjdh","gobbhjige","fkoacm","lfmejkoe","dc","nhfcg","faeelmg","no","fnf","cinhaaollg","hlhn","koij","ghoehjhef","jnkn","jalk","lem","famc","ghgol","gkecdhl","bbjgn","kkejiffhg","necendei","ig","fhlle","ohkb","eejll","de","aoj","cmoolhj","iaahje","alhdnddhgf","gcf","jdgooo","cfkohkcnb","ilme","abdn","one","ingrid","boar","gate guard","kleiner","kender","money tree","human champion","wim","winged horse","foochy","clepius","minotaur","gloria","drone","deer","fish","fighter","dwarf","dummy","centaur","ogre","gargoyle","dragon","kobold","oana","rain man","dodo","yulia","moth","jennybot","goblin","a mangy little rat","rat","gablbidc","ncen","lnbhgo","aiolbnbaonn","kbfjn","bngfbohdoc","nkkn","mbc","lamaoac","ojicnh","faaijkl","boekgo","hab","hhhgefialo","fkmloochl","ae","bfcomeokdj","hdbmigc","bhfkfolnf","elephant","gun turret","bubb","jdococed","cbej","lk","lciaahfelhj","feahhd","cgccflkl","troll","dbob","cfe","gjdmgogl","gnehinmfile","eh","oobjanf","ocjhoii","ai","mb","km","fil","bklhjhlfe","fm","jengoecg","dajiji","avidryl","golem","dryad","onajkmhf","cfm","jcglnblfml","jfhmddie","bhkedejnf","ahggn","okd","kfcoingmgjg","ld","cdgeoce","klaf","jchmgco","hjkikihlin","gnlimeo","dicblccnd","ofdjan","labekfbco","bdlkbnjfa","hdmbmfc","dafgfe","jlolce","kinih","fgnbei","enooc","clghoaahda","igc","hobbit","unicorn","bii","mkc","ljajaknell","naond","kbaa","fkmneg","age","ohhaj","bo","cjd","flkolij","gfjgmn","iijnam","onmibg","jifoleckmkg","ahkfcin","cgmijlbjnbl","adbhmfmin","onoal","nannglangj","imce","gjc","cdbdja","ghhhkgaoj","knjmogdol","gmabmebh","ommcgje","immgan","coidjhcbbnl","jaookkfmnn","lgf","eniekgfnoo","meimbmnok","knhbednhfed","kocdc","hjj","jgalgdn","omlbefb","lmahga","gjghadhohj","hhf","ioegf","lkjaiohdofoaeh","dam","fbmkgckcgl","mldn","eb","gbfj","mbjcchdibkd","ecnelahfhah","deeeh","fcjcdg","ebnddm","fojgehmenleljm","hnhajjfhnnjolh","mao","icbe","mm","nfcaahga","lbghlolhajmafa","cmcaibffdjfeli","nafe","dcdmb","celdglhhfcelag","olklh","bfndddk","chjekmldaf","oii","hnmg","lllao","mngklhjki","afakjnkk","aiibcglcfm","fhdaaicigf","mom","lon","mdnbfgb","hcmbbkmlmo","ogdbcdifgkajmd","jakfgnji","nhiafhofjo","fkkag","mcb","gmkji","jlann","jg","fgbfoilemmb","hgfe","en","bdl","hbch","fkabjb","fam","ehnenbgbh","ibohnikan","jloambfhghomoi","ijdehe","jikhf","gjhlbiaodgb","gdak","eaad","ifimljekmol","geokbckjlemjco","jkfckdho","hmghegke","niojokl","ndddgcfenlimdk","cmlac","cenne","jbchfoolblj","kcanjngaahf","lihmbkablcinic","iaenol","nmjlndjegkjece","jifbhefm","ebdcdibhb","gacgcjanbafkdm","kafeickf","ijhbmbklmconbe","femn","lmijamk","fncocgfingoaim","gnndibkco","ifjedcgbh","ohdbejamamj","cokch","enhhmgdf","bignog","hmm","jncmh","knhbojij","ngdmj","djm","jkl","obffi","bglamn","bcieeejch","fg","nko","baal","jnejh","eniffh","lebldhjimn","jdcejla","dirk","beiaoomea","noffdfeck","amfohonfdo","ng","idmchlkf","cjnadfihdiboco","knf","ldk","dmod","ennnoj","ncblkjhjkdkhog","oaodoh","jimclbln","egbbmeai","afdhbbladih","ajgflgcbd","oommldila","ngg","feinebim","dkm","gahldjgmendiko","emjalllbim","himfhbhan","kdacicanmmn","mchlnaian","jnlcniehhg","bog","gcgcjlmfod","jagihohj","elmaagnllaegcl","ncbmighj","kma","iiioihbom","hb","jgefg","fckfajlbac","bnkgnhjhcb","efhaaboge","cam","ofgao","bnlcfjjcfe","necnm","kjdloe","gknoncjbfm","kembjggd","ac","ke","fhand","kiglalobfe","ohdljdlm","bejkjh","cbfe","medodoe","bcnmcfilalcgkf","chmdgl","lme","fblbk","echema","nobm","fnakim","miicloofha","lbh","ioh","enkjlkm","indnoajbb","dahomcc","fjkoofgabo","ldejkaenegk","goojgdmfjef","ccl","gffhacmcocn","jen","oa","abnehflcled","maklhf","lejbmca","ghol","gccofgneo","jkojhefaho","jgnbagifbe","jdnji","gm","engie","fnceninaaf","jhdkjcdhjif","noocllnf","cdfdfbkak","getall","ggckfd","ldldeghgb","fojnblag","jn","gcigifdji","oklhoml","dabll","jaocmag","cncolimci","makldclee","jmlji","fkico","ffd","meljlical","elmf","ojj","ja","cjjmbgefijc","jod","gih","nfanagfok","lhanhbbfhj","gmjololkleh","njbo","kgadmnjf","nbiniamlec","gdf","lca","jnhfnmk","jjjkonbe","imkcbckbkgi","fngacca","kjgfalkokc","fmcokndfdo","eeib","bmehgkodo","jjohbknmck","oakchjbibi","gchfnojkgnfhkn","bjcnldf","kejc","aaoffo","aghkim","bolckf","kfimemnl","eflgcm","ckbanbjnk","go","hbb","cjnomfmk","olmmim","alhkmjkgfid","fbgah","fdk","lgfnamh","aildhal","mbkomhjmfcjanb","kji","kjihl","cigliiaf","spider","kohmklcc","kjljcogneaj","ncfoml","lbjn","bh","jbgodlbo","lbbadm","ajbhmgnefca","icciofjga","melhelhblb","nnhkiliiik","nkegi","maomhdnfmg","jnlfdmf","odfmjdknaeb","ajlfmbgg","jlmfji","dho","elgjjab","alihf","clebcdk","ohiinfhhai","bomfemcc","ejknigic","okhkkhhn","jgkehd","ndjigcbellb","dgfja","hfiig","gnii","keceidfo","bji","maajjhblofd","ea","hnghdmabmgo","lnbacgjkf","ckbbdhjjadn","hohg","lgm","radagast","gecko","viper","halfling","kim","orc","lynx",})
 VisibleRiders 1
 actions_enabled 1
-runs 59634
-switches 59628
+runs 104227
+switches 104221
 stays 6
 percent 0
-fred 4834
-fgreen 4756
-fblue 4901
-wins 39798
-losses 19836
-red_wins 19878
-green_wins 19879
-blue_wins 19877
+fred 8483
+fgreen 8573
+fblue 8591
+wins 69479
+losses 34748
+red_wins 34742
+green_wins 34742
+blue_wins 34743

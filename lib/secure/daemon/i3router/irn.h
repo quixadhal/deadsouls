@@ -24,6 +24,7 @@ static mapping routers = ([
 static int irn_enabled = 1;
 static int irn_ping_enabled = 1;
 static mapping routers = ([
+  "*wpr" : ([ "ip" : "195.242.99.94", "port" : 8080, "password" : IRN_PASSWORD4 ]),
   "*i4" : ([ "ip" : "204.209.44.3", "port" : 8080, "password" : IRN_PASSWORD4 ]),
   "*yatmim" : ([ "ip" : "149.152.218.102", "port" : 23, "password" : IRN_PASSWORD2 ]),
   "*dalet" : ([ "ip" : "204.209.44.3", "port" : 8787, "password" : IRN_PASSWORD3 ])

@@ -265,6 +265,7 @@ static void eventCreatePlayer(string cap) {
 
         news = read_file(NEWS_REGISTER) || "No registration info.\n";
         receive(news);
+        flush_messages();
         Destruct();
         return;
     }

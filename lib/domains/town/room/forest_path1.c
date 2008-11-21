@@ -8,7 +8,7 @@ static void create() {
     SetNightLight(10);
     SetDayLight(30);
     SetShort("Forest Path");
-    SetLong("You are in a forest outside the town. To the west the path continues toward a clearing. To the east it leads to a bridge over a river toward a town. Trees and bushes of various kinds border the path making it impossible to go south, but to the north the vegetation is less dense.");
+    SetLong("You are in a forest outside the town. To the southwest the path continues toward a clearing. To the east it leads to a bridge over a river toward a town. Trees and bushes of various kinds border the path making it impossible to go south but to the north the vegetation is less dense.");
     SetItems( ([
         "forest" : "You are on a path in a dark, creepy forest. The "
         "vegetation is thick and feels somehow oppressive.",
@@ -21,9 +21,9 @@ static void create() {
         "path" : "You are on a path in a forest."
       ]) );
     SetExits( ([
+        "north" : "/domains/town/virtual/forest/24,1",
         "east" : "/domains/town/room/bridge",
-        "west" : "/domains/town/room/clearing",
-        "north" : "/domains/town/virtual/forest/24,1" ,
+        "southwest" : "/domains/town/room/clearing.c",
       ]) );
     SetFlyRoom("/domains/town/virtual/sky/24,100000,1");
 }

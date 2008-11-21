@@ -20,15 +20,15 @@ static void create() {
         "green room" : "There's no green room here.",
         "blue room" : "There's no blue room here.",
       ]) );
+    SetExits( ([ 
+        "northeast" : "/domains/campus/room/wiz_lab",
+      ]) );
     SetInventory(([
         "/domains/campus/npc/charles" : 1,
         "/domains/campus/obj/pedestal2" : 1,
       ]));
     AddItem( ({"sign","sign on the wall"}), "A sign you can read.",({"large"}) );
 
-    SetExits( ([
-        "east" : "/domains/campus/room/wiz_lab"
-      ]) );
     SetEnters( ([
         "red room" : "/domains/campus/room/red_room2",
         "green room" : "/domains/campus/room/green_room2",
@@ -37,7 +37,6 @@ static void create() {
     SetDoor("red room","/domains/campus/doors/red_door2");
     SetDoor("green room","/domains/campus/doors/green_door2");
     SetDoor("blue room","/domains/campus/doors/blue_door2");
-    SetObviousExits("east");
     SetNoClean(1);
 }
 void init(){

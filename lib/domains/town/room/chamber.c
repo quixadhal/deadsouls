@@ -18,15 +18,14 @@ static void create() {
         "are the contents of the doctor's desk.",
         "corner" : "Location of the desk."
       ]) );
+    SetExits( ([ 
+        "east" : "/domains/town/room/healer",
+      ]) );
     SetRead( ({"notes","books","notes and books"}) , "That belongs to Clepius and it's private." ); 
     SetProperty("no attack", 1);
     SetInventory(([
         "/domains/town/obj/bbucket" :1,
         "/domains/town/npc/clepius" : ({60, 1})
-      ]) );
-    SetExits( ([
-        "east" : "/domains/town/room/healer",
-        "west" : "/domains/town/room/healer2",
       ]) );
     SetProperty("busy",0);
 

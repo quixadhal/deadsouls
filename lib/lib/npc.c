@@ -30,6 +30,7 @@ inherit LIB_OBJECT;
 inherit LIB_SAVE;
 inherit LIB_DOMESTICATE;
 inherit LIB_GUARD;
+inherit LIB_UNIQUENESS;
 
 private int CustomXP, ActionChance, CombatActionChance, AutoStand;
 private int MaximumHealth = 0;
@@ -102,7 +103,7 @@ void CheckEncounter(){
 }
 
 static void init(){
-    guard::init();
+    guard::CheckPending();
     CheckEncounter();
 }
 
@@ -281,6 +282,7 @@ void eventEnemyDied(object ob){
 int eventMove(mixed dest){
     int ret;
     ret = eventCompleteMove(dest);
+    guard::CheckPending();
     return ret;
 }
 
@@ -636,14 +638,6 @@ mixed GetCombatAction(){ return CombatAction; }
 int AddCarriedMass(int x){ return living::AddCarriedMass(x); }
 
 mixed *GetCommands(){ return commands(); }
-
-int SetUnique(int x){
-    Unique = x;
-    if( Unique ) UNIQUE_D->eventTouchObject();
-    return Unique;
-}
-
-int GetUnique(){ return Unique; }
 
 string GetCommandFail(){ return "What?"; }
 

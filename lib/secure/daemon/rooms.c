@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <daemons.h>
 #include <rooms.h>
 #include <save.h>
 #define ROOM_ZERO "/domains/campus/room/start"
@@ -87,11 +88,30 @@ void zero(){
     ROOM_ZERO->init();
 }
 
-mapping GetGridMap(){
-    return copy(WorldGrid);
+varargs mapping GetGridMap(string str){
+    mapping ret;
+    string prefix, room;
+    object ob;
+    if(!sizeof(str)) return copy(WorldGrid);
+    if(catch(ob = load_object(str))){
+        return 0;
+    }
+    prefix = path_prefix(str);
+    room = last_string_element(str, "/");
+    if(ob) ret = this_object()->GetGrid(this_object()->GetCoordinates(ob));
+    if(!ret) ret = ([]);
+    //tc("ret: "+identify(ret),"blue");
+    //tc("prefix: "+prefix);
+    //tc("room: "+room);
+    //tc("1: "+identify(WorldMap[prefix]));
+    if(WorldMap[prefix] && WorldMap[prefix][room]){
+        //tc("2: "+identify(WorldMap[prefix][room]),"red");
+        ret += WorldMap[prefix][room];
+    }
+    return ret;
 }
 
-mapping GetWorldMap(){
+varargs mapping GetWorldMap(string str){
     return copy(WorldMap);
 }
 
@@ -163,6 +183,7 @@ varargs mixed SetGrid(string arg_room, string coord, object player, int unset){
         if(global_manual || validate_last_room(room, player)){ 
             if(debugging) tc("Setting coord "+coord+" (aka "+hashed_coord+
                   ") as "+room, "green");
+            MAP_D->RemoveCache(coord);
             global_manual = 0;
             WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m][n] =
             ([ "room" : room, "coord" : coord ]);
@@ -203,7 +224,7 @@ mixed GetGrid(string str){
       !WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m] || 
       !WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m][n]){
         if(debugging) tc("No joy for "+str+" aka "+hashed_coord,"red");
-        return copy(WorldGrid[a]);
+        return ([]);
     }
     if(debugging) tc("Joy! "+str+" aka "+hashed_coord+" is "+
           identify(WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m][n]),"white");
@@ -225,6 +246,7 @@ int UnSetRoom(object arg_ob){
     name = base_name(ob);
     grid = this_object()->GetCoordinates(ob);
     if(grid && grid != "0,0,0"){
+        MAP_D->RemoveCache(grid);
         SetGrid(name, grid, this_player(), 1);
     }
     prefix = path_prefix(name);
@@ -258,6 +280,14 @@ varargs int SetRoom(object arg_ob, object player, string manual){
     }
     name = base_name(ob);
     prefix = path_prefix(name);
+
+    /* Still need to figure out exclusions for
+     * an island or continent perimeter :(
+     */
+    if(prefix == "/domains/town/virtual/surface"){
+        return 0;
+    }
+
     room_name = last_string_element(name, "/");
     if(!sizeof(WorldMap)){
         if(name == ROOM_FURNACE){

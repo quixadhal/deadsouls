@@ -336,7 +336,8 @@ int GetMagicResistance(){
 varargs int GetPenalty(object other){
     int other_penalty, ret = 0;
     if(other) other_penalty = other->GetPenalty();
-    if(GetBlind() || GetVisibility() < 1) ret += 10;
+    //Only players get a blindness penalty. 
+    if(interactive() && (GetBlind() || GetVisibility() < 1)) ret += 10;
     if(GetParalyzed()) ret += 10;
     switch(GetPosition()){
     case POSITION_LYING :
@@ -453,8 +454,8 @@ int CanWeapon(object target, string type, int hands, int num){
 
 
 int CanMelee(object target){
-    if(!this_object()->GetMelee()){
-
+    if(!this_object()->GetMelee() && 
+      this_object()->GetClass() != "fighter"){
         string limb = target->GetRandomLimb(TargetLimb);
         int chance = ( 6*this_object()->GetSkillLevel("melee attack") +
           2*GetStatLevel("coordination") )/20;
@@ -755,6 +756,8 @@ int eventExecuteAttack(mixed target){
     void eventMeleeAttack(object target, string limb){
         int pro, con;
         int chance, fail;
+        int canmelee = (this_object()->GetMelee() ||
+          this_object()->GetClass() == "fighter");
 
         if(AttacksPerHB > MAX_ATTACKS_PER_HB) return;
         if( target->GetDead() || Dead || target->GetDying() ){
@@ -791,7 +794,7 @@ int eventExecuteAttack(mixed target){
             // I hit, how hard?
             if(!estatep(target)) eventTrainSkill("melee attack", pro, con, 1,
                   GetCombatBonus(target->GetLevel()));
-            if(this_object()->GetMelee()) x = GetDamage(3*chance/4, "melee attack");
+            if(canmelee) x = GetDamage(3*chance/4, "melee attack");
             else x = GetDamage(3*chance/20, "melee attack");
             x -= encumbrance;
             if(x < 0) x = 0;
@@ -988,7 +991,7 @@ int eventExecuteAttack(mixed target){
         if( !ob ) return;
         level = ob->GetLevel();
         if(ob->GetCustomXP()) this_object()->AddExperiencePoints(ob->GetCustomXP());
-        else this_object()->AddExperiencePoints(level * 80);
+        else this_object()->AddExperiencePoints(level * 222);
         if(!estatep(ob)) eventTrainSkill("faith", GetLevel(), level, 1, GetCombatBonus(level));
     }
 

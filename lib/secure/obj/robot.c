@@ -9,7 +9,7 @@ inherit LIB_ITEM;
 static int observing = 0;
 static int counter = 0, attempting, connected, socket ;
 static int dud_count = 0, spawning, last_action, loop_count = 0;
-static int maxbox = 128;
+static int maxbox = 50;
 static int newbot = 1;
 static object person, player;
 static string preset, name, passwd, gender;
@@ -17,12 +17,12 @@ static string display_name, email, real_name, race;
 static string *exits, previous_command;
 static string travel = "go ";
 static int enable = 0;
-static string ip = "66.197.134.110 9999";
+static string ip = "192.168.0.224 6666";
 static string local_currency = "silver";
 static string watching = "";
 static int broadcast, onhand, open_account, balance, wander;
 static int pocket_money = 600;
-static int spent, in_combat;
+static int spent, in_combat, recursion_brake;
 static mixed *socks_array = ({});
 
 mapping AnsiMap1 =
@@ -68,9 +68,8 @@ static void create(mixed arg)
     item::create();
     AnsiMap2 = ([]);
     if(arg && stringp(arg)) ip = arg;
-    SetKeyName("gamebot");
     SetShort( "a gamebot" ) ;
-    SetId(({"bot","gamebot","module"}));
+    SetId(({"bot","gamebot","module",name}));
     SetLong( "A gamebot control module.");
     SetMass( 5 ) ;
     attempting = 0 ;
@@ -81,6 +80,7 @@ static void create(mixed arg)
     set_heart_beat(0);
     SetNoClean(1);
     if(!name) name = alpha_crypt(random(10)+2);
+    SetKeyName(name);
     if(!passwd) passwd = "password";
     if(!gender) gender = "male";
     if(!display_name) display_name = "Gamebot";
@@ -277,9 +277,9 @@ int think(string str){
             wander = 1;
         }
         if(grepp(str, "You may choose to regenerate into a new body here.")) ret = "regenerate";
-        if(grepp(str, "press enter:")) ret = "\n";
-        if(grepp(str, "%:")) ret = "\n";
-        if(grepp(str, "Press <return> to continue:")) ret = "\n";
+        if(grepp(str, "press enter:")) ret = "";
+        if(grepp(str, "%:")) ret = "";
+        if(grepp(str, "Press <return> to continue:")) ret = "";
         if(grepp(str, "stargate")){
             ret = eventStargate(str);
         }
@@ -299,10 +299,15 @@ int think(string str){
 }
 
 string eventBolo(string str){
-    string ret = "\n";
+    string ret = "";
     wander = 0;
 
     if(grepp(str, "You can't crawl in your current position")){
+        parse_comm("position");
+        parse_comm("look");
+    }
+
+    if(grepp(str, "fight unless you are up")){
         parse_comm("position");
         parse_comm("look");
     }
@@ -343,7 +348,7 @@ string eventBolo(string str){
 
     if(grepp(str, "press enter:") || grepp(str, "%:") ||
       grepp(str,"Press <return> to continue:" )){
-        parse_comm("\n");
+        parse_comm("");
     }
 
     if(grepp(str, "a portal forms")){
@@ -354,85 +359,88 @@ string eventBolo(string str){
         eventStargate(str);
     }
 
-    if(grepp(str, "table is here")){
-        parse_comm("get all from table");
-    }
-
-    if(grepp(str, "bag")){
-        parse_comm("open bag");
-        parse_comm("get all from bag");
-    }
-
-    if(grepp(str, "wardrobe")&& !grepp(str, "There is no ")) {
-        parse_comm("open a wardrobe");
-        parse_comm("get all from wardrobe");
-        parse_comm("wear all");
-    }
-
-    if(grepp(str, "chest")&& !grepp(str, "There is no ")) {
-        parse_comm("open a chest");
-        parse_comm("get all from a chest");
-        parse_comm("wear all");
-    }
-
-    if(grepp(str, "bag") && !grepp(str, "There is no ")){ 
-        parse_comm("open a bag");
-        parse_comm("get all from a bag");
-        parse_comm("wear all");
-    }
-
-    if(grepp(str, "box")&& !grepp(str, "There is no ")) {
-        parse_comm("open a box");
-        parse_comm("get all from a box");
-        parse_comm("wear all");
-    }
-
-    if(grepp(str, "a knife rack")){
-        parse_comm("get all from rack");
-        parse_comm("unwield all");
-        parse_comm("wield a carving knife in right hand");
-    }
-
-    if(grepp(str, "You get") && (grepp(str, "flesh") || grepp(str, "corpse"))){
-        parse_comm("get all from a corpse");
-        parse_comm("get all from my  a pile");
-    }
-
-    if(grepp(str, "large stove")&& !grepp(str, "There is no ")){
-        parse_comm("open stove");
-    }
-
-    if(grepp(str, "You swing at")){
-        if(!in_combat){
-            eventCombatPrep();
+    if(!recursion_brake){
+        if(grepp(str, "table")){
+            parse_comm("get all from table");
         }
-    }
 
-    if(grepp(str, " little rat ") ){
-        parse_comm("kill a rat");
-    }
+        if(grepp(str, "wardrobe")&& !grepp(str, "There is no ")) {
+            parse_comm("open a wardrobe");
+            parse_comm("get all from wardrobe");
+            parse_comm("wear all");
+        }
 
-    if(grepp(str, "newt")){
-        parse_comm("kill a newt");
-    }
+        if(grepp(str, "chest")&& !grepp(str, "There is no ")) {
+            parse_comm("open a chest");
+            parse_comm("get all from a chest");
+            parse_comm("wear all");
+        }
 
-    if(grepp(str, " orc") && ( grepp(str, "is standing here") || grepp(str, "are standing here")) ){
-        eventCombatPrep();
-        parse_comm("target first orc");
-    }
+        if(grepp(str, "bag") && !grepp(str, "There is no ")){ 
+            parse_comm("open a bag");
+            parse_comm("get all from a bag");
+            parse_comm("wear all");
+        }
 
-    if(grepp(str, "Mansion Garden")) {
-        parse_comm("drop ladder");
-        parse_comm("climb ladder");
-    }
+        if(grepp(str, "box")&& !grepp(str, "There is no ")) {
+            parse_comm("open a box");
+            parse_comm("get all from a box");
+            parse_comm("wear all");
+        }
 
-    if(grepp(str, "Otik, the keeper of the shop")){
-        parse_comm("wear all");
-        parse_comm("unwield all");
-        parse_comm("sell all to otik");
-        parse_comm("buy sword from otik");
-        parse_comm("wield sword in right hand");
-        ret = "say Thank you, Otesanek.";
+        if(grepp(str, "a knife rack")){
+            parse_comm("get all from rack");
+            parse_comm("unwield all");
+            parse_comm("wield a carving knife in right hand");
+        }
+
+        if(grepp(str, "large stove")&& !grepp(str, "There is no ")){
+            parse_comm("open stove");
+        }
+
+        if(grepp(str, "You get") && (grepp(str, "flesh") || grepp(str, "corpse"))){
+            parse_comm("get all from a corpse");
+            parse_comm("get all from my  a pile");
+        }
+
+        if(grepp(str, "You swing at")){
+            if(!in_combat){
+                eventCombatPrep();
+            }
+        }
+
+        if(grepp(str, " little rat ") ){
+            parse_comm("kill a rat");
+        }
+
+        if(grepp(str, "newt")){
+            parse_comm("kill a newt");
+        }
+
+        if(grepp(str, " orc") && ( grepp(str, "is standing here") || grepp(str, "are standing here")) ){
+            eventCombatPrep();
+            parse_comm("target first orc");
+        }
+
+        if(grepp(str, "Mansion Garden")) {
+            parse_comm("drop ladder");
+            parse_comm("climb ladder");
+        }
+
+        if(grepp(str, "Otik, the keeper of the shop")){
+            parse_comm("wear all");
+            parse_comm("unwield all");
+            parse_comm("sell all to otik");
+            parse_comm("buy sword from otik");
+            parse_comm("wield sword in right hand");
+            ret = "say Thank you, Otesanek.";
+        }
+
+        if(grepp(str, "Herkimer the kind wizard")){
+            parse_comm("ask herkimer to teach buffer");
+            parse_comm("ask herkimer to teach meditate");
+        }
+        recursion_brake = 10;
     }
 
     if(grepp(str,"You must create an account") ){ 
@@ -442,12 +450,6 @@ string eventBolo(string str){
     if(grepp(str, "Dirk the Tired")){
         parse_comm("ask dirk to advance");
     }
-
-    if(grepp(str, "Herkimer the kind wizard")){
-        parse_comm("ask herkimer to teach buffer");
-        parse_comm("ask herkimer to teach meditate");
-    }
-
 
     if(grepp(str, "Zoe the bank teller")){
         parse_comm("say hello, Zoe");
@@ -485,6 +487,7 @@ string eventBolo(string str){
 void heart_beat(){
     int bots;
     counter++;
+    if(recursion_brake) recursion_brake--;
 
     if(!environment(this_object())) return;
     if(!adminp(environment(this_object()))) return;
@@ -514,7 +517,7 @@ void init(){
 }
 
 int do_observe(string str){
-    if(str == name){
+    if(str == name ){
         if(!observing) observing = 1;
         else observing = 0;
         return 1;
@@ -538,6 +541,15 @@ int eventScanExits(string str){
     string *newexits = ({});
     string *dirs = ({});
     str = strip_colours(str);
+    if(grepp(str,"too dark to see") || grepp(str,"too bright to see") ||
+      grepp(str,"go nowhere at all")){
+        exits = ({});
+    }
+    if(!sizeof(exits) && grepp(str," leaves ")){
+        if(sscanf(str,"%s leaves %s.",s1,s2) == 2){
+            exits = ({travel+s2});
+        }
+    }
     if(sscanf(str,"%sObvious exit: %s\n%s",s1,s2,s3) == 3 ||
       sscanf(str,"%sObvious exits: %s\n%s",s1,s2,s3) == 3 ||    
       sscanf(str,"%sObvious exit: %s",s1,s2) == 2 ||
@@ -579,6 +591,7 @@ int eventScanExits(string str){
         }
     }
     if(!sizeof(exits)) exits = oldexits;
+    report("exits: "+identify(exits));
     return 1;
 }
 

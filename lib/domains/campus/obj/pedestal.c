@@ -31,13 +31,13 @@ int ResetGame(){
     string prize;
     prize = "/domains/campus/armor/silverring";
     objects = ({});
-    objects+=({ find_object("/domains/campus/room/red_room") });
-    objects+=({ find_object("/domains/campus/room/green_room") });
-    objects+=({ find_object("/domains/campus/room/blue_room") });
+    objects+=({ load_object("/domains/campus/room/red_room") });
+    objects+=({ load_object("/domains/campus/room/green_room") });
+    objects+=({ load_object("/domains/campus/room/blue_room") });
 
-    objects = ({ find_object("/domains/campus/doors/red_door") });
-    objects +=({ find_object("/domains/campus/doors/green_door") });
-    objects +=({ find_object("/domains/campus/doors/blue_door") });
+    objects = ({ load_object("/domains/campus/doors/red_door") });
+    objects +=({ load_object("/domains/campus/doors/green_door") });
+    objects +=({ load_object("/domains/campus/doors/blue_door") });
 
     foreach(object ding in objects){
         if(ding) ding->SetClosed(1);
@@ -47,7 +47,7 @@ int ResetGame(){
     if(sscanf(gagnant,"%s door",color)>0){
         string where;
         where="/domains/campus/room/"+color+"_room";
-        //new(prize)->eventMove(find_object(where));
+        //new(prize)->eventMove(load_object(where));
     }
 }
 int PushTheButton(){
@@ -126,8 +126,8 @@ int MontyMagic(string str){
     my_door = str;
     choices += ({ str });
     if(sscanf(removed_door,"%s door",color)>0) color = color;
-    find_object("/domains/campus/doors/"+color+"_door")->SetLocked(0);
-    find_object("/domains/campus/doors/"+color+"_door")->SetClosed(0);
+    load_object("/domains/campus/doors/"+color+"_door")->SetLocked(0);
+    load_object("/domains/campus/doors/"+color+"_door")->SetClosed(0);
     tell_room(environment(),"A voice from the pedestal says: "
       "I have opened the "+removed_door+"! \n"
       "You may enter the "+color+" room and see that it is empty.\n"
@@ -148,8 +148,8 @@ int CheckWin(string str){
         this_object()->WinFun();
         return 1;
     }
-    find_object("/domains/campus/doors/"+color+"_door")->SetLocked(0);
-    find_object("/domains/campus/doors/"+color+"_door")->SetClosed(0);
+    load_object("/domains/campus/doors/"+color+"_door")->SetLocked(0);
+    load_object("/domains/campus/doors/"+color+"_door")->SetClosed(0);
     tell_room(environment(),"A voice from the pedestal says: "
       "YOU LOOOOOSE!\n"
       "You may enter the "+color+" room to get your big "
@@ -174,8 +174,8 @@ int doSwitch(){
     return 1;
 }
 int WinFun(){
-    find_object("/domains/campus/doors/"+color+"_door")->SetLocked(0);
-    find_object("/domains/campus/doors/"+color+"_door")->SetClosed(0);
+    load_object("/domains/campus/doors/"+color+"_door")->SetLocked(0);
+    load_object("/domains/campus/doors/"+color+"_door")->SetClosed(0);
     tell_room(environment(),"A voice from the pedestal says: "
       "You win, kid. Congrats!\n"
       "You may enter the "+color+" room and claim your prize.\n\n"

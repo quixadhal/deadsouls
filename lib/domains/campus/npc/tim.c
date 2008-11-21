@@ -6,7 +6,7 @@ int DoSomething(){
     int rand;
     string thing1, thing2, thing3, thing4, thing5;
     string thing6, thing7, thing8, thing9, thing10;
-
+    if(!this_object() || !clonep() || !environment()) return 0;
     rand = random(10);
 
     thing1 = "I think the campus is still under serious construction.";
@@ -34,6 +34,7 @@ int DoSomething(){
     default : eventForce("smile");
     }
 }
+
 void create() {
     sentient::create();
     SetKeyName("Tim");
@@ -45,6 +46,7 @@ void create() {
     SetGender("male");
     SetAction(25, (: DoSomething :));
 }
+
 void init(){
     ::init();
 }

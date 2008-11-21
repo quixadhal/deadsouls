@@ -7,7 +7,7 @@ string pin_desc();
 string lev_desc();
 int detonated;
 int count, armed;
-string *limbs;
+string *limbs,domain;
 void analyze(string butt);
 int HitLivings(object munch);
 int radius = 0;
@@ -16,6 +16,7 @@ object *whom;
 void create(){
     item::create();
     SetKeyName("concussion hand grenade");
+    sscanf(base_name(this_object()),"/domains/%s/%*s",domain);
     SetId( ({"grenade","hand grenade","flash-bang grenade","concussion grenade"}) );
     SetAdjectives( ({"military","pineapple"}) );
     SetShort("a hand grenade");
@@ -37,25 +38,36 @@ void init(){
         if(detonated==1) this_object()->eventDestruct();
     }
 }
+
 mixed CanPull(object who, string target) {
-    if(!present(this_object()->GetKeyName(),who ) && target == "pin"){
-        return "You do not have the grenade.";
+    //tc("me: "+identify(this_object())+", who: "+identify(who)+", target: "+identify(target));
+    if(!environment() || environment() != who ){
+        return "#You do not have the grenade.";
     }
-    if(this_object()->GetId() == target){
-        return "You cannot pull that.";
+    if(answers_to(target,this_object())){
+        return "#You cannot pull that.";
+    }
+    if(armed){
+        return "#It is already armed.";
+    }
+    if(!GetItem(target)){
+        return "#That's not on the grenade.";
     }
     return 1;
 }
+
 mixed eventPull(object who, string target) {
+    string *tmpid;
     if(!environment() || (this_player() && environment() != this_player())){
         write("You are not holding it.");
         return 1;
     }
     if(target =="pin" || target == "pull-pin"){
+        tmpid = GetAdjectives();
         write("You pull the grenade's pin.\n");
         say(this_player()->GetName()+" pulls the pin from a hand grenade.\n");
-        new("/domains/campus/obj/pin")->eventMove(this_player());
-        new("/domains/campus/obj/lever")->eventMove(this_player());
+        new("/domains/"+domain+"/obj/pin")->eventMove(this_player());
+        new("/domains/"+domain+"/obj/lever")->eventMove(this_player());
         SetShort("a live hand grenade");
         SetLong("This is an olive-green military issue hand grenade. It is about the "+
           "size of an apple, and its round exterior is made of smooth metal. The pin and "+
@@ -65,6 +77,7 @@ mixed eventPull(object who, string target) {
         AddItem(({"pull pin","pull-pin","pin"}),"The grenade is armed. There is no pin in the fuse.");
         armed = 1;
         set_heart_beat(1);
+        SetAdjectives(tmpid + ({"armed","live","hissing"}));
         return 1;
     }
     write("Nothing happens.");

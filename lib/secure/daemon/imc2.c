@@ -159,7 +159,7 @@ mapping ping_requests; // Keeps track of who sent a ping request.
 string buf=""; // Buffer for incoming packets (aren't always sent 1 at a time)
 
 // Variables
-int xmit_to_network_room = 1; //enable this to make a lot of noise
+static int xmit_to_network_room = 1; //enable this to make a lot of noise
 static string hub_name, network_name;
 string server_pass, server_version;
 mapping chaninfo;
@@ -579,12 +579,18 @@ void Setup(){
 }
 
 void heart_beat(){
+    int lastmsg = time() - counter;
     heart_count++;
-    tn("IMC2 heartbeat.");
+    tn("IMC2 heartbeat. Last message "+time_elapsed(lastmsg)+" ago.");
     if(heart_count > 4){
         mixed sstat = socket_status(socket_num);
         heart_count = 0;
-        if( (time() - counter) > 3600 
+        if( lastmsg > 300 && lastmsg < 900){
+            tn("sending keepalive");
+            send_keepalive_request();
+            send_is_alive("*");
+        }
+        if( lastmsg > 400 
           ||!sstat || sstat[1] != "DATA_XFER"){
             socket_close(socket_num);
             tn("IMC2: reloading IMC2_D due to timeout");
@@ -1681,5 +1687,4 @@ EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
     int GetEnabled(){
         return !(DISABLE_IMC2);
     }
-
 

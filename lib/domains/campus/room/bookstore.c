@@ -6,11 +6,7 @@ static void create() {
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("the campus bookstore");
-    SetLong("This is the Virtual Campus Bookstore. It is a fairly small place, "+
-      "and in fact has few books available, since the campus is not open for classes yet. "+
-      "There is, however, a wide assortment of useful items available, which you can "+
-      "browse by typing the \"list\" command. There is a "+
-      "sign on the wall behind the counter.");
+    SetLong("This is the Virtual Campus Bookstore. It is a fairly small place, and in fact has few books available, since the campus is not open for classes yet. There is, however, a wide assortment of useful items available, which you can browse by typing the 'list' comamnd. The storeroom is above. There is a sign on the wall behind the counter.");
     SetItems(([
         ({"store","bookstore","place"}) : "This is the Virtual Campus bookstore.",
         "books" : "There aren't any yet. Weren't you paying attention?",
@@ -19,14 +15,16 @@ static void create() {
         "of your money more convenient.",
         "sign" : "A sign on the wall, meant for reading.",
       ]));
+    SetExits( ([
+        "south" : "/domains/campus/room/corridor4",
+        "up" : "/domains/campus/room/bookstore2.c",
+      ]) );
     SetInventory(([
         "/domains/campus/npc/kim" : 1,
         "/domains/campus/obj/bbucket" : 1,
         "/domains/campus/obj/register" : 1,
       ]));
     SetRead("sign", (: read_sign :) );
-    SetExits((["south" : "/domains/campus/room/corridor4"
-      ]));
     SetProperty("no attack", 1);
 }
 

@@ -31,11 +31,11 @@ inherit LIB_READ;
 inherit LIB_SELL;
 inherit LIB_SHOW;
 inherit LIB_STEAL;
-inherit LIB_UNIQUENESS;
 inherit LIB_VALUE;
 inherit LIB_WEAR;
 inherit LIB_FALL;
 inherit LIB_SINK;
+inherit LIB_UNIQUENESS;
 
 private int            Size          = 0;
 private int            Fingers       = 5;

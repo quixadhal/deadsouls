@@ -88,8 +88,16 @@ int cmd(string str) {
         else if( !master()->valid_read( file, this_player(), "cp" ) ) write( file+": Permission denied." );
         else if( !master()->valid_write( dest, this_player(), "cp" ) ) write( dest+": Permission denied." );
         else { 
-            write_file( dest, read_file(file), 1 );
-            write( "Copied: "+file+" to "+dest );
+            /* Dunno what this was about. Commenting rather
+             * than deleting, in case there was a good reason.
+             * write_file( dest, read_file(file), 1 );
+             */
+            if(cp(file, dest) > 0){
+                write( "Copied: "+file+" to "+dest );
+            }
+            else {
+                write("Copy failed.");
+            }
         }
     }
     return 1;

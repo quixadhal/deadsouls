@@ -36,7 +36,6 @@ static void create() {
     AddItem("candle", "They do not appear to make much light, but the "
       "church is very bright.", ({ "dim" }));
     AddItem(new("/domains/Ylsrim/etc/church_button"));
-    SetObviousExits("s, n");
     SetExits(([ 
         "south" : "/domains/Ylsrim/room/"+ "kaliid3"]));
     SetDoor("south", "/domains/Ylsrim/etc/church_door");

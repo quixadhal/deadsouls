@@ -49,8 +49,10 @@ int GetCoord(){
         "data about your location at the moment.";
     }
     else{
-        mixed foo = ROOMS_D->GetGridGridMap(ret);
-        if(foo) ret += "\n"+identify((foo || ""));
+        mixed foo = ROOMS_D->GetGrid(ret);
+        if(foo && creatorp(this_player())){
+            ret += " "+identify((foo["room"] || ""));
+        }
     }
     write(ret);
     return 1;

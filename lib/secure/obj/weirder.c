@@ -22,23 +22,24 @@ string *verb_dirs = ({ "/secure/verbs/creators", "/verbs/admins",
   "/verbs/builders", "/verbs/common", "/verbs/creators", "/verbs/items",
   "/verbs/players", "/verbs/rooms", "/verbs/spells", "/verbs/undead" });
 string *npc_dirs = ({ "/domains/default/npc", "/domains/town/npc",
-  "/domains/campus/npc" });
+  "/domains/campus/npc", "/domains/cave/npc" });
 string *room_dirs = ({ "/domains/campus/room", "/domains/default/room",
   "/domains/town/room", "/domains/Ylsrim/room", "/domains/Praxis",
+  "/domains/cave/room",
   "/secure/room", "/domains/town/virtual/sub", "/domains/town/virtual/sky", 
   "/domains/town/virtual/surface", "/domains/town/virtual/bottom",
   "/domains/town/virtual/forest", "/domains/town/space"  });
 string *obj_dirs = ({ "/domains/campus/obj", "/domains/default/obj",
   "/domains/town/obj", "/domains/Ylsrim/obj", "/obj", "/std", 
-  "/secure/obj", "/shadows", "/secure/modules"  });
+  "/secure/obj", "/shadows", "/secure/modules", "/domains/cave/obj"  });
 string *weap_dirs = ({ "/domains/campus/weap", "/domains/default/weap",
-  "/domains/town/weap", "/domains/Ylsrim/weap"  });
+  "/domains/town/weap", "/domains/Ylsrim/weap", "/domains/cave/weap"  });
 string *armor_dirs = ({ "/domains/campus/armor", "/domains/default/armor",
-  "/domains/town/armor", "/domains/Ylsrim/armor"  });
+  "/domains/town/armor", "/domains/Ylsrim/armor", "/domains/cave/armor"  });
 string *meals_dirs = ({ "/domains/campus/meals", "/domains/default/meals",
-  "/domains/town/meals", "/domains/Ylsrim/meals"  });
+  "/domains/town/meals", "/domains/Ylsrim/meals", "/domains/cave/meals"  });
 string *doors_dirs = ({ "/domains/campus/doors", "/domains/default/doors",
-  "/domains/town/doors", "/domains/Ylsrim/doors"  });
+  "/domains/town/doors", "/domains/Ylsrim/doors", "/domains/cave/doors"  });
 string *powers_dirs = ({ "/powers/spells", "/powers/psionics",
   "/powers/feats", "/powers/trades" });
 string *rooms = ({});
@@ -101,7 +102,7 @@ int yeik(string str){
 
 void create(){
     ::create();
-    exceptions = ({ "monty.c","charles.c","charly.c" });
+    exceptions = ({ "monty.c","charles.c","charly.c","tree.c" });
     SetKeyName("weirding module");
     SetId( ({"module", "box", "weirder"}) );
     SetAdjectives( ({"small","featureless","black"}) );
@@ -366,11 +367,11 @@ int startstress(){
     object *newbatch = ({});
     object *targetrooms = filter(rooms, 
       (: last($1,2) == ".c" && last($1,9) != "furnace.c" &&
-        $1->GetMedium() < 2 :) );
+        $1->GetMedium() < 2 && !$1->GetProperty("no attack") :) );
     int victims;
     tc("Starting stresstest");
-    tc("npcs: "+identify(npcs),"green");
-    tc("rooms: "+identify(rooms),"blue");
+    //tc("npcs: "+identify(npcs),"green");
+    //tc("rooms: "+identify(rooms),"blue");
     foreach(string npcfile in npcs){
         object npc;
         int err;
@@ -387,7 +388,7 @@ int startstress(){
         }
     }
     newbatch = filter(newbatch, (: objectp($1) :) );
-    victims = to_int(to_float(sizeof(newbatch)) * 0.1)+1;
+    victims = to_int(to_float(sizeof(newbatch)) * 0.01)+1;
     //tc("newbatch size: "+sizeof(newbatch));
     while(victims){
         object germ, who;

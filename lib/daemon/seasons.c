@@ -9,6 +9,7 @@
 #include <lib.h>
 #include <cfg.h>
 #include <config.h>
+#include <function.h>
 #include "include/seasons.h"
 
 inherit LIB_DAEMON;
@@ -197,7 +198,7 @@ static void eventTwilight() {
 
 static void eventNight() {
     object *obs;
-    int i;
+    int i,x;
 
     call_out( (: eventMidnight :),
       (DAY_LENGTH * HOUR_LENGTH) - GetCurrentTime() );
@@ -209,7 +210,12 @@ static void eventNight() {
     message("environment",
       "%^BOLD%^BLUE%^Night darkens all that is real.%^RESET%^", obs);
     i = sizeof(NightCalls);
-    while(i--) catch(evaluate(NightCalls[i]));
+    while(i--){
+        mixed f = NightCalls[i];
+        if((x = functionp(f)) && !(x & FP_OWNER_DESTED)){
+            catch(evaluate(f));
+        }
+    }
 }
 
 static void eventMidnight() {

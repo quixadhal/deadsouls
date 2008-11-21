@@ -104,8 +104,11 @@ done
 
 echo "mkdir next/lib/secure/log/intermud" >> copyfiles3
 echo "cp -f next/lib/log/open/foo.txt next/lib/secure/log/intermud/" >> copyfiles3
-
-
+echo "cp -f new/lib/save/rooms.o next/lib/save/" >> copyfiles3
+echo "cp -f new/lib/save/map.o next/lib/save/" >> copyfiles3
+#echo "cp -f new/lib/save/portal.o next/lib/save/" >> copyfiles3
+echo "cp -f /contrib/newver next/extra/crat/" >> copyfiles3
+echo "cp -f /contrib/newpatch next/extra/crat/" >> copyfiles3
 
 #BLAH BLAH COPY COPY
 

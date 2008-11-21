@@ -1,0 +1,6 @@
+eval return objects( (: inherits(LIB_ROOM, $1) :) )->SetPlayerKill(1)
+#eval return objects( (: inherits(LIB_ROOM, $1) :) )->SetAmbientLight(30)
+eval return objects( (: inherits(LIB_ROOM, $1) :) )->SetProperty("no attack",0)
+eval return users()->eventForce("pk on")
+eval return users()->eventForce("pk on")
+eval return users()->eventForce("kill all")

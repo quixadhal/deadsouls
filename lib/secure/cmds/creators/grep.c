@@ -46,14 +46,16 @@ int cmd(string str) {
     else output = 0;
     if(sscanf(str, "'%s' %s", exp, file) != 2 &&
       sscanf(str, "%s %s", exp, file) != 2) return 0;
-    if(!(max = sizeof(files = (string *)wild_card(file)))) {         message("system", "File not found.", this_player());
+    if(!(max = sizeof(files = (string *)wild_card(file)))) {         
+        message("system", "File not found.", this_player());
         return 1;
     }
 
     if(flags&GREP_NUMBERED_LINES){
         for(i=0, borg = ([]); i<max; i++) {
             if((file_size(files[i]) == -2)&&(flags&GREP_RECURSE_DIRECTORIES)){
-                r_files = (string *)wild_card(files[i]+"/"+file);
+                //r_files = (string *)wild_card(files[i]+"/"+file);
+                r_files = (string *)wild_card(files[i]+"/*");
                 if(max + sizeof(r_files) > max_files){
                     write("Too many files in the recurse. Aborting grep.");
                     return 1;
@@ -62,22 +64,29 @@ int cmd(string str) {
                 max += sizeof(r_files);
                 continue;
             }
+            //tc("file: "+identify(files[i]));
             if(file_size(files[i]) > MAX_FILE_SIZE){
                 write(files[i]+": too large. Skipping.");
                 continue;
             }
+#if 0
             if(member_array(last(files[i],2), allowed_types1) == -1 &&
               member_array(last(files[i],4), allowed_types3) == -1 &&
               grepp(files[i],".")){
                 write(files[i]+": unrecognized extension. Skipping.");
                 continue;
             }
+#endif
             err = catch(txt = read_file(files[i]));
             if(err){
                 if(file_exists(files[i])) write(files[i]+": corrupted file, or not text. Skipping.");
                 continue;
             }
-            lines = explode(txt, "\n");
+            if(txt) lines = explode(txt, "\n");
+            else {
+                write(files[i]+": unreadable file or directory. Skipping.");
+                continue;
+            }
             borg[files[i]] = ({});
             for(i_lines = 0, max_lines = sizeof(lines); i_lines<max_lines; i_lines++){
                 if(regexp(lines[i_lines], exp)){
@@ -89,9 +98,10 @@ int cmd(string str) {
     }
     else {
         for(i=0, borg = ([]); i<max; i++) {
-
+            //tc("thingy: "+identify(files[i]+"/"+file));
             if((file_size(files[i]) == -2)&&(flags&GREP_RECURSE_DIRECTORIES)){
-                r_files = (string *)wild_card(files[i]+"/"+file);
+                //r_files = (string *)wild_card(files[i]+"/"+file);
+                r_files = (string *)wild_card(files[i]+"/*");
                 if(max + sizeof(r_files) > max_files){
                     write("Too many files in the recurse. Aborting grep.");
                     return 1;
@@ -100,16 +110,19 @@ int cmd(string str) {
                 max += sizeof(r_files);
                 continue;
             }
+            //tc("FILE: "+identify(files[i]));
             if(file_size(files[i]) > MAX_FILE_SIZE){
                 write(files[i]+": too large. Skipping.");
                 continue;
             }
+#if 0
             if(member_array(last(files[i],2), allowed_types1) == -1 &&
               member_array(last(files[i],4), allowed_types3) == -1 &&
               grepp(files[i],".")){
                 write(files[i]+": unrecognized extension. Skipping.");
                 continue;
             }
+#endif
             err = catch(txt = read_file(files[i]));
             if(err || !txt){
                 if(file_exists(files[i])) write(files[i]+": corrupted file, or not text. Skipping.");

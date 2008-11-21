@@ -20,7 +20,6 @@ static void create() {
     SetRace("human");
     AddCurrency("silver", random(100));
     SetProperty("no bump", 1);
-    SetLocalCurrency("silver");
     SetBankName("First Village Bank");
     SetLocalCurrency("silver");
     SetLocalFee(1);

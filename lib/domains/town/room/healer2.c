@@ -7,16 +7,14 @@ static void create() {
     SetAmbientLight(30);
     SetShort("Healer's Guild Storeroom");
     SetLong("This blank room is where the guild keeps their junk.");
+    SetExits( ([ 
+      ]) );
     SetInventory(([
         "/domains/town/meals/claritin" : 20,
         "/domains/town/obj/slip_heal" : 100,
         "/domains/town/meals/potion_antidote" : 20,
         "/domains/town/obj/slip_regenerate" : 10,
       ]));
-    SetExits( ([
-        "east" : "/domains/town/room/chamber",
-      ]) );
-    SetObviousExits("e");
 
 }
 int CanReceive(object sneak) {

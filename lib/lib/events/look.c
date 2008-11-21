@@ -121,13 +121,14 @@ static mixed SetItem_func(mixed foo){
 }
 
 varargs mixed GetItem(string item, object who){
-    mixed val = mapping_member(Items, item);
+    //mixed val = mapping_member(Items, item);
+    mixed val = Items[item];
 
     if( !val ){
         return 0;
     }
     if( stringp(val) || arrayp(val)){
-        return Items[val];
+        return val;
     }
     else if( functionp(val) ){
         if( functionp(val) & FP_OWNER_DESTED ){

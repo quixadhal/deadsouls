@@ -36,7 +36,7 @@ mixed cmd(string str) {
         return "It is too bright to do that.";
     if( i < 3 )
         return "It is too dark to attempt that.";
-    if( env->GetDoor(str) && ((string)env->GetDoor(str))->GetClosed() ) {
+    if( env->GetDoor(str) && !(((string)env->GetDoor(str))->CanPeer()) ) {
         message("my_action", sprintf("%s is blocking your view %s.",
             (capitalize(env->GetDoor(str)->GetShort(str))), str),
           this_player() );

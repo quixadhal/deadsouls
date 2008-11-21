@@ -1,6 +1,7 @@
 /*    /daemon/create.c
  *    From Dead Souls LPMud
  *    Mediates requests to create and modify objects
+ *    You are not expected to understand this.
  */
 
 #include <lib.h>

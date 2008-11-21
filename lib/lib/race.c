@@ -217,7 +217,8 @@ int GetMaxMagicPoints(){
 }
 
 float GetMaxStaminaPoints(){
-    return (50.0 + (GetStatLevel("agility") * 10.0) );
+    return (50.0 + (GetStatLevel("agility") * 3.0) +
+      (GetStatLevel("durability") * 7.0) );
 }
 
 void NewBody(string race){

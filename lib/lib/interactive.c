@@ -257,7 +257,7 @@ int cmdQuit(){
           this_object());
         return 0;
     }
-    message("system", "Please come back another time!", this_object());
+    tell_object(this_object(),"Please come back another time!");
     if(!creatorp(this_object())){
         foreach(object ob in all_inventory(this_object())){
             if((!retain && !ob->GetRetain()) || !ob->GetRetain()) ob->eventMove(env);
@@ -280,6 +280,7 @@ int cmdQuit(){
         ed_cmd("x");
         ed_cmd("Q");
     }
+    flush_messages();
     this_object()->eventDestruct();
     return 1;
 }

@@ -34,7 +34,13 @@ void end_edit(string site) {
 
     tmpfile = read_file(DIR_TMP+"/"+this_player()->GetKeyName());
     rm(DIR_TMP+"/"+this_player()->GetKeyName());
-    tmpfile = replace_string(tmpfile, "\n", " ");
+    if(tmpfile){
+        tmpfile = replace_string(tmpfile, "\n", " ");
+    }
+    else {
+        write("Nothing written. Registration operation cancelled.");
+        return;
+    }
     num = sizeof(lines = explode(wrap(tmpfile, 60), "\n"));
     str = " - "+site+" placed on Registration\n";
     str += "   by "+(string)previous_object()->GetName()+": "+
@@ -64,5 +70,5 @@ void help() {
     write("    register 134.181.*                ok\n");
     write("    register 134.181.1.12             ok\n");
     write("    register orlith.bates.edu         BAD\n");
-    write("See also: unbanish, whobanished, wholetin, whoregistered, whowatched\n");
+    write("See also: unbanish, whobanished, whoregistered, whowatched\n");
 }

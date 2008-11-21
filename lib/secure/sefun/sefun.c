@@ -10,7 +10,7 @@
 #ifndef MAX_CALL_OUTS
 #define MAX_CALL_OUTS 500
 #endif
-#define MAX_DUMMIES 4098
+#define MAX_DUMMIES 8192
 #define MAX_OBJECT 1024
 
 #include <lib.h>

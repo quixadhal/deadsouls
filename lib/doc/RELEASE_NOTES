@@ -1,3 +1,47 @@
+---- 2.9a11 ---
+- Released 2008-11-20
+- Driver is now a slightly modified FluffOS 2.14.
+- Fixed a parser crasher in the driver that occurs under 
+  unusually heavy loads.
+- Parsing ambiguity in grenades fixed up a bit.
+- Bots now handle too-bright and too-dark rooms more sensibly.
+- Bots now handle paged displays more sensibly.
+- Room inventories will now accept a function for the number
+  of items. For an example of a random number of rats between
+  1 and 5, see /domains/town/room/mansion_room7.c
+- You can now limit the number of of clones of an npc or an item
+  that the mud will load as inventory. If a sword's base file
+  has SetMaxClones(15), then a room will not try to load the
+  sword in its inventory if the mud already has 15 of these swords
+  cloned somewhere. Note that SetMaxClones() in a base file
+  will cause the object not to be saved in a player's inventory
+  when they quit. For an example, see /domains/default/armor/wristcomp.c
+- Fixed a problem in CreWeb editing with wrapping and line numbering
+  that displayed incorrect line numbers.
+- Fixed a driver crasher involving the destruction of objects
+  while they are in a verb parsing loop.
+- Fixed a problem with passing functionals to SetAction() in rooms
+  (thx, Raudhrskal!).
+- Added a prototype overland map system. It's mostly in the testing
+  phase, as it tends to lag the mud somewhat. Creators can enable
+  automatic mapping with: wizmap on
+- Minor fixes of rooms with grid conflicts.
+- Added command: wizmap
+- Fixed a problem with the npc guard system that prevented more
+  than one guard from being able to guard in the same room.
+- Fixed what is essentially borken behavior in Set/GetItems
+  that have a functional. However, I suspect that this behavior has
+  actually been assimilated all over the place as being a standard,
+  so the effect here is a possible *slight* compat buster, with
+  SetItems that have functionals displaying output twice.
+- Added a portal generator, and cake to go along with it.
+- Added new domain: /domains/cave as an undergound orc stronghold.
+  It's mostly done, though I'll be adding more to it eventually.
+  Note that this is an example of "an area where normal creators and
+  overpowered players are not welcome". This is a feature I'm
+  testing to see how feasible it is to prevent casual-abuse type
+  creators from being too much of a nuisance on an open mud.
+
 ---- 2.9a10 ---
 - Released 2008-10-19
 - Fixed peculiar problem in the get verb that sometimes made

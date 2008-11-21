@@ -28,14 +28,14 @@ static void create() {
       "dangerous but more hostile. ");
     SetLevel(1);
     SetRace("orc");
-    //SetClass("fighter");
     SetGender("male");
     SetMaxHealthPoints(100);
     SetEncounter(  (: CheckOrc :) );
     SetInventory(([
         "/domains/town/weap/axe":"wield axe",
       ]) );
-    SetGuard("west","The orc bars your way!");
+    SetGuard("west", "An orc bars your way!" );
+    SetGuard("north", "An orc bars your way!");
 }
 void init(){
     ::init();

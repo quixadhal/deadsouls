@@ -20,7 +20,6 @@ static void create() {
       "act as a meeting place for all the fighters who come through "
       "Ylsrim.  In addition, it serves as a place to recruit new "
       "fighters into the fold.  A magnificent oak door stands north.");
-    SetObviousExits("s, n");
     SetExits( ([
         "north" : ({ "/domains/Ylsrim/room/"+ "fighter", (: CheckFighter :) }),
         "south" : "/domains/Ylsrim/room/"+ "kaliid5"

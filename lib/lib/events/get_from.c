@@ -92,6 +92,7 @@ mixed eventGetFrom(object who, object array what){
     mapping mp = ([]);
     string msg;
     int i, maxi;
+    mixed tmp;
 
     if((inherits(LIB_SIT,this_object()) && sizeof(this_object()->GetSitters())) || 
       (inherits(LIB_LIE,this_object()) && sizeof(this_object()->GetLiers()))){
@@ -103,9 +104,10 @@ mixed eventGetFrom(object who, object array what){
         if( environment(ob) != this_object() ){
             continue;
         }
-        if( ob->CanGet(who) != 1 ){
-            write("It would appear you can't get "+
-              (ob->GetShort() || "that") +" right now.");
+        if( (tmp = ob->CanGet(who)) != 1 ){
+            if(stringp(tmp)) write(tmp);
+            else write("It would appear you can't get "+
+                  (ob->GetShort() || "that") +" right now.");
             continue;
         }
         if( !who->CanCarry(ob->GetMass()) ){

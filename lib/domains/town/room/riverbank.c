@@ -25,7 +25,7 @@ static void create() {
         "/domains/town/obj/riverwater" : 1,
       ]));
     AddExit("up", "/domains/town/room/bridge");
-    if(file_exists("/domains/cave/room/cave.c")){
+    if(unguarded( (: file_exists("/domains/cave/room/cave.c") :) ) ){
         AddExit("east", "/domains/cave/room/cave");
     }
     SetChance(90);

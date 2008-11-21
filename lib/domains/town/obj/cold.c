@@ -16,7 +16,7 @@ int InfectMess(object ob){
     victim=ob;
     victimname=victim->GetName();
     tell_room(environment(victim), victimname+" looks pale and uncomfortable.",({victim}) );
-    tell_object(victim, "Your feel an unpleasant tickle in your throat.");
+    tell_object(victim, "You feel an unpleasant tickle in your throat.");
     return 1;
 }
 

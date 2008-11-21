@@ -239,3 +239,19 @@ int eventDie(mixed agent){
     }
     return ::eventDie(agent);
 }
+
+int eventReceiveObject(object foo){
+    int ret = ::eventReceiveObject(foo);
+    if(ret && GetProperty("inventory_monitoring"))
+        eventPrint("%^YELLOW%^NOTICE:%^RESET%^ "+identify(foo)+
+          " enters your inventory.");
+    return ret;
+}
+
+int eventReleaseObject(object foo2){
+    int ret = ::eventReleaseObject(foo2);
+    if(ret && GetProperty("inventory_monitoring"))
+        eventPrint("%^YELLOW%^NOTICE:%^RESET%^ "+identify(foo2)+
+          " leaves your inventory.");
+    return ret;
+}

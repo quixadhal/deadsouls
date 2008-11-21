@@ -1802,6 +1802,7 @@ varargs int eventDie(mixed agent){
     // I had to crank down unarmed combat for humanoids,
     // so if your npc's are, say, dumb animals, be sure
     // to include "SetMelee(1)" so they can fight
+    // Note that fighters are an exception to this.
     //
     int SetMelee(int i){ melee = i; return melee; }
 
