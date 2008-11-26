@@ -346,7 +346,8 @@ int Setup(){
 
         if(jeans) jeans->eventMove(this_object());
         if(shirt) shirt->eventMove(this_object());
-        if(book && !present("handbook",this_object()))  book->eventMove(this_object());
+        if(book && !present("handbook",this_object()))  
+            book->eventMove(this_object());
         else if(book) book->eventMove(ROOM_FURNACE);
 
         if(jeans) this_object()->eventForce("wear jeans");
@@ -359,7 +360,8 @@ int Setup(){
         string home;
 
         this_object()->SetTown("World");
-        this_object()->SetProperty("automapping", 1);
+        this_object()->SetProperty("automapping", 0);
+        this_object()->SetProperty("wizmapping", 1);
 
         robe = new("/domains/default/armor/robe");
         hat = new("/domains/default/armor/wizard_hat");
@@ -381,7 +383,7 @@ int Setup(){
         if(file_exists(home+".c")) 
             this_object()->eventMoveLiving(home);
 
-        this_object()->AddChannel( ({"admin", "error", "cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat","inews","ichat"}) );
+        this_object()->AddChannel( ({"admin", "error", "cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat"}) );
 
         SetShort("First Admin $N");
     }
@@ -501,7 +503,9 @@ int SetUndead(int x){
 }
 
 string GetName(){
-    if(GetInvis() && !this_player()->GetWizVision()) return "A shadow";
+    if(GetInvis() && (!this_player() ||!this_player()->GetWizVision())){
+        return "A shadow";
+    }
     else return interactive::GetName();
 }
 

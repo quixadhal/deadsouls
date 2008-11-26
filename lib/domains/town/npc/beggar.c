@@ -57,7 +57,8 @@ int GiveMap(object ob){
 }
 
 int SayHi(object ob){
-    if(present(ob->GetKeyName(),environment(this_object()))
+    if(this_object() && ob &&
+      present(ob->GetKeyName(),environment(this_object()))
       && !this_object()->GetInCombat() &&
       member_array(ob->GetRace(),RACES_D->GetRaces(1)) != -1)
         eventForce("say Hi, "+ob->GetName());

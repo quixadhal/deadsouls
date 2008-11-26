@@ -11,8 +11,13 @@ static void create() {
 }
 
 static void eventDecay() {
-    object *limbs = filter(findobs(LIB_LIMB), (: clonep($1) :) );
-    object *corpses = filter(findobs(LIB_CORPSE), (: clonep($1) :) );
+    object *limbs;
+    object *corpses;
+
+    call_out("eventDecay", 30);
+
+    limbs = filter(findobs(LIB_LIMB), (: clonep($1) :) );
+    corpses = filter(findobs(LIB_CORPSE), (: clonep($1) :) );
 
     corpses += find_inheritors(LIB_CORPSE);
     limbs += find_inheritors(LIB_LIMB);
@@ -20,6 +25,5 @@ static void eventDecay() {
     catch( limbs->eventDecay() );
     catch( corpses->eventDecay() );
 
-    call_out("eventDecay", 30);
     return;
 }

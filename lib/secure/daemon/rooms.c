@@ -30,6 +30,22 @@ void heart_beat(){
     unguarded( (: save_object(SAVE_ROOMS, 1) :) );
 }
 
+string GetRoomZero(){
+    return ROOM_ZERO;
+}
+
+mixed GenerateNames(int x){
+    int first, second, third;
+    third = (x & 32767);
+    second = (x & 536870911) - third;;
+    first = ((x >> 29) << 29);
+    //tc("first: "+first);
+    //tc("second: "+second);
+    //tc("third: "+third);
+    //tc("total: "+(first+second+third));
+    return ({ first, second, third });
+}
+
 int eventDestruct(){
     unguarded( (: save_object(SAVE_ROOMS, 1) :) );
     return daemon::eventDestruct();
@@ -123,8 +139,11 @@ string StrCoord(mapping TmpMap){
 }
 
 varargs mixed SetGrid(string arg_room, string coord, object player, int unset){
-    string room, a, b, c, d, e, f, g, h, i, j, k, l, m, n;
-    string hashed_coord = crypt(coord, "xyz");
+    string room; 
+    mixed a, b, c, d, e, f, g, h, i, j, k, l, m, n;
+    int p, q, x, y, z;
+    mixed xarr, yarr, zarr;
+    //string hashed_coord = crypt(coord, "xyz");
 
     if(this_player() && adminp(this_player())){
         room = arg_room;
@@ -138,20 +157,19 @@ varargs mixed SetGrid(string arg_room, string coord, object player, int unset){
         tc("SetGrid received: "+room+", "+coord+", "+
           identify(player)+", "+unset,"blue");
     }
-    a = hashed_coord[0..2];
-    b = hashed_coord[3..5];
-    c = hashed_coord[6..8];
-    d = hashed_coord[9..11];
-    e = hashed_coord[12..14];
-    f = hashed_coord[15..17];
-    g = hashed_coord[18..20];
-    h = hashed_coord[21..23];
-    i = hashed_coord[24..26];
-    j = hashed_coord[27..29];
-    k = hashed_coord[30..32];
-    l = hashed_coord[33..35];
-    m = hashed_coord[36..38];
-    n = hashed_coord[39..40];
+    sscanf(coord,"%d,%d,%d",x,y,z);
+    xarr = GenerateNames(x);
+    yarr = GenerateNames(y);
+    zarr = GenerateNames(z);
+    a = xarr[0];
+    b = xarr[1];
+    c = xarr[2];
+    d = yarr[0];
+    e = yarr[1];
+    f = yarr[2];
+    g = zarr[0];
+    h = zarr[1];
+    i = zarr[2];
     if(!WorldGrid[a]) WorldGrid[a] = ([]);
     if(!WorldGrid[a][b]) WorldGrid[a][b] = ([]);
     if(!WorldGrid[a][b][c]) WorldGrid[a][b][c] = ([]);
@@ -161,54 +179,50 @@ varargs mixed SetGrid(string arg_room, string coord, object player, int unset){
     if(!WorldGrid[a][b][c][d][e][f][g]) WorldGrid[a][b][c][d][e][f][g] = ([]);
     if(!WorldGrid[a][b][c][d][e][f][g][h]) WorldGrid[a][b][c][d][e][f][g][h] = ([]);
     if(!WorldGrid[a][b][c][d][e][f][g][h][i]) WorldGrid[a][b][c][d][e][f][g][h][i] = ([]);
-    if(!WorldGrid[a][b][c][d][e][f][g][h][i][j]) WorldGrid[a][b][c][d][e][f][g][h][i][j] = ([]);
-    if(!WorldGrid[a][b][c][d][e][f][g][h][i][j][k]) WorldGrid[a][b][c][d][e][f][g][h][i][j][k] = ([]);
-    if(!WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l]) WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l] = ([]);
-    if(!WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m]) WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m] = ([]);
-    if(!WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m][n]) WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m][n] = ([]);
-    if(unset && sizeof(WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m][n])){
+    if(unset && sizeof(WorldGrid[a][b][c][d][e][f][g][h][i])){
         if(debugging){
-            tc("Unsetting: "+identify(WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m][n]),"red");
+            tc("Unsetting: "+identify(WorldGrid[a][b][c][d][e][f][g][h][i]),"red");
         }
-        WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m][n] = 0;
+        WorldGrid[a][b][c][d][e][f][g][h][i] = 0;
         return 1;
     }
-    if(sizeof(WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m][n]) ||
+    if(sizeof(WorldGrid[a][b][c][d][e][f][g][h][i]) ||
       sizeof(this_object()->GetCoordinates(coord))){
-        if(debugging) tc("SetGrid coord "+coord+" (aka "+hashed_coord+
-              ") is already "+ identify(WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m][n]));
-        return WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m][n];
+        if(debugging) tc("SetGrid coord "+coord+
+              " is already "+ identify(WorldGrid[a][b][c][d][e][f][g][h][i]));
+        return WorldGrid[a][b][c][d][e][f][g][h][i];
     }
     else {
         if(global_manual || validate_last_room(room, player)){ 
-            if(debugging) tc("Setting coord "+coord+" (aka "+hashed_coord+
-                  ") as "+room, "green");
+            if(debugging) tc("Setting coord "+coord+
+                  " as "+room, "green");
             MAP_D->RemoveCache(coord);
             global_manual = 0;
-            WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m][n] =
+            WorldGrid[a][b][c][d][e][f][g][h][i] =
             ([ "room" : room, "coord" : coord ]);
         }
-        return WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m][n];
+        return WorldGrid[a][b][c][d][e][f][g][h][i];
     }
 }
 
 mixed GetGrid(string str){
-    string hashed_coord = crypt(str, "xyz");
-    string a, b, c, d, e, f, g, h, i, j, k, l, m, n;
-    a = hashed_coord[0..2];
-    b = hashed_coord[3..5];
-    c = hashed_coord[6..8];
-    d = hashed_coord[9..11];
-    e = hashed_coord[12..14];
-    f = hashed_coord[15..17];
-    g = hashed_coord[18..20];
-    h = hashed_coord[21..23];
-    i = hashed_coord[24..26];
-    j = hashed_coord[27..29];
-    k = hashed_coord[30..32];
-    l = hashed_coord[33..35];
-    m = hashed_coord[36..38];
-    n = hashed_coord[39..40];
+    mixed room, a, b, c, d, e, f, g, h, i, j, k, l, m, n;
+    string coord=str;
+    int p, q,x,y,z;
+    mixed xarr, yarr, zarr;
+    sscanf(coord,"%d,%d,%d",x,y,z);
+    xarr = GenerateNames(x);
+    yarr = GenerateNames(y);
+    zarr = GenerateNames(z);
+    a = xarr[0];
+    b = xarr[1];
+    c = xarr[2];
+    d = yarr[0];
+    e = yarr[1];
+    f = yarr[2];
+    g = zarr[0];
+    h = zarr[1];
+    i = zarr[2];
     if(!WorldGrid[a] ||
       !WorldGrid[a][b] ||
       !WorldGrid[a][b][c] ||
@@ -217,18 +231,13 @@ mixed GetGrid(string str){
       !WorldGrid[a][b][c][d][e][f] ||
       !WorldGrid[a][b][c][d][e][f][g] ||
       !WorldGrid[a][b][c][d][e][f][g][h] ||
-      !WorldGrid[a][b][c][d][e][f][g][h][i] || 
-      !WorldGrid[a][b][c][d][e][f][g][h][i][j] || 
-      !WorldGrid[a][b][c][d][e][f][g][h][i][j][k] || 
-      !WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l] || 
-      !WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m] || 
-      !WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m][n]){
-        if(debugging) tc("No joy for "+str+" aka "+hashed_coord,"red");
+      !WorldGrid[a][b][c][d][e][f][g][h][i]){
+        if(debugging) tc("No joy for "+str,"red");
         return ([]);
     }
-    if(debugging) tc("Joy! "+str+" aka "+hashed_coord+" is "+
-          identify(WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m][n]),"white");
-    return copy(WorldGrid[a][b][c][d][e][f][g][h][i][j][k][l][m][n]);
+    if(debugging) tc("Joy! "+str+" is "+
+          identify(WorldGrid[a][b][c][d][e][f][g][h][i]),"white");
+    return copy(WorldGrid[a][b][c][d][e][f][g][h][i]);
 }
 
 int UnSetRoom(object arg_ob){
@@ -262,7 +271,7 @@ int UnSetRoom(object arg_ob){
 
 varargs int SetRoom(object arg_ob, object player, string manual){
     string last_str, creator, name, prefix, room_name, coord;
-    mapping tmpexits, backup_direction;
+    mapping tmpexits, backup_direction, TmpMap = ([]);
     object ob;
 
     if(this_player() && adminp(this_player())){
@@ -275,7 +284,11 @@ varargs int SetRoom(object arg_ob, object player, string manual){
     if(clonep(ob)){
         return 0;
     }
+
+    //tc("ob: "+identify(ob));
+
     if(!(last_str = player->GetProperty("LastLocation"))){
+        //tc("fail 0");
         return 0;
     }
     name = base_name(ob);
@@ -295,11 +308,14 @@ varargs int SetRoom(object arg_ob, object player, string manual){
         }
     }
     if(!manual && WorldMap[prefix] && WorldMap[prefix][room_name]){
+        //tc("hmm");
         if(StrCoord(WorldMap[prefix][room_name]["coords"]) == "0,0,0" &&
           name != ROOM_ZERO){
+            //tc("HMM!");
             UnSetRoom(ob);
         }
         else{
+            //tc("fail 1");
             return 0;
         }
     }
@@ -307,6 +323,7 @@ varargs int SetRoom(object arg_ob, object player, string manual){
     foreach(string element in unsafes){
         if(!strsrch(last_str, element)){
             if(strsrch(name, element) && !creator)
+                //tc("fail 2");
                 return 0;
         }
     }
@@ -350,7 +367,72 @@ varargs int SetRoom(object arg_ob, object player, string manual){
             return 1;
         }
     }
-    if(!(backup_direction = validate_last_room(name, player))){
+
+    if(ob->GetVirtual() && WorldMap[prefix]) TmpMap = WorldMap[prefix];
+
+    // && (!WorldMap[prefix][room_name] ||
+    //!WorldMap[prefix][room_name]["date"])) TmpMap = WorldMap[prefix];
+
+    if( !(backup_direction = validate_last_room(name, player)) ||
+      sizeof(TmpMap)){ 
+        int a,b,c;
+        int a2,b2,c2;
+        int x,y,z;
+        int x2,y2,z2;
+        int xd,yd,zd;
+        //tc("sizeof TmpMap: "+sizeof(TmpMap));
+        foreach(mixed key, mixed val in TmpMap){
+            //tc("key: "+identify(key)+", cal: "+identify(val),"white");
+            if(val){
+                if(sscanf(key,"%d,%d,%d",a,b,c) != 3){
+                    if(sscanf(key,"%d,%d",a,b) != 2) continue;
+                    else c = 0;
+                }
+                if(!val["coords"]) continue;
+                else {
+                    x = val["coords"]["x"];
+                    y = val["coords"]["y"];
+                    z = val["coords"]["z"];
+                }
+                if(!x && !y && !z){
+                    map_delete(TmpMap,key);
+                    continue;
+                }
+                else break;
+            }
+            else map_delete(TmpMap,key);
+        }
+        if(!undefinedp(a)){
+            string roomname = last_string_element(base_name(ob),"/");
+            if(sscanf(roomname,"%d,%d,%d",a2,b2,c2) != 3){
+                if(sscanf(roomname,"%d,%d",a2,b2) != 2){
+                    //tc("fail 3");
+                    return 0;
+                }
+                else c2 = 0;
+            }
+            xd = a - a2;
+            yd = b - b2;
+            zd = c - c2;
+            x2 = x - xd;
+            y2 = y - yd;
+            z2 = z - zd;
+            //tc("I am "+roomname);
+            //tc("I found "+a+","+b+","+c);
+            //tc("which is "+x+","+y+","+z);
+            //tc("different by "+xd+","+yd+","+zd);
+            //tc("meaning I am "+x2+","+y2+","+z2);
+            WorldMap[prefix][room_name] = ([]);
+            WorldMap[prefix][room_name]["coords"] =
+            ([ "x" : x2, "y" :y2, "z" : z2 ]);
+            global_manual = 1;
+            manual = x2+","+y2+","+z2;
+            SetGrid(name, manual, player);
+            return 1;
+        }
+        else {
+            //tc(":(");
+        }
         if(debugging) tc("Unknown origin. Not mapping.","red");
         if(WorldMap[prefix] && WorldMap[prefix][room_name] &&
           StrCoord(WorldMap[prefix][room_name]["coords"]) == "0,0,0"){

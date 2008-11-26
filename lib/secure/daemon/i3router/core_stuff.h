@@ -1,6 +1,9 @@
 #include <network.h>
 #include <daemons.h>
 #include <save.h>
+#ifndef IMC2_SERVER_ENABLED
+#define IMC2_SERVER_ENABLED 0
+#endif
 
 int heart_count = 0;
 

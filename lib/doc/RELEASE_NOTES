@@ -1,3 +1,23 @@
+---- 2.9a12 ---
+- Released 2008-11-26
+- DECAY_D is now more resistant to runtime-error failures.
+- Minor improvements to stress testing.
+- At the advice of Silenus, switched the world grid from string based
+  multidimensional mappings to bitshifted integer based multidimensional
+  mappings, which not only cut down mapping depth by 35%, but also
+  increased lookup speed by more than an order of magnitude. Many
+  thanks to Silenus for holding my hand through figuring out how to
+  bash the bits.
+- Portals no longer fall or sink.
+- Warmboots deal more firmly now with situations where very many
+  rooms are loaded.
+- The imc2 channel "ichat" is no longer enabled by default due to
+  a change in their content policy making them no longer PG-13. To enable 
+  it for yourself, you would type: call me->AddChannel("ichat")
+- New creators now automatically "wizmap" rather than "automap".
+- Added Town Well quest.
+- Added LIB_FLOW as an example of a "flooding" type object.
+
 ---- 2.9a11 ---
 - Released 2008-11-20
 - Driver is now a slightly modified FluffOS 2.14.

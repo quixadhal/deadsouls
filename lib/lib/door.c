@@ -18,6 +18,7 @@ inherit LIB_SCRATCH;
 private mapping Sides;
 private static int Hidden = 1;
 private static int Opacity = 100;
+private static int Perforated = 0;
 
 int GetOpacity(){
     return Opacity;
@@ -26,6 +27,15 @@ int GetOpacity(){
 int SetOpacity(int x){
     Opacity = x;
     return Opacity;
+}
+
+int GetPerforated(){
+    return Perforated;
+}
+
+int SetPerforated(int x){
+    Perforated = x;
+    return Perforated;
 }
 
 int CanPeer(){

@@ -162,6 +162,14 @@ varargs mixed eventShowInterior(object who, object target){
     return 1;
 }
 
+mixed eventFall(){
+    return 0;
+}
+
+mixed eventSink(){
+    return 0;
+}
+
 void init(){
     ::init();
 }

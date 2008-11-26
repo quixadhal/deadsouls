@@ -94,6 +94,13 @@ int make_empties(){
     return 1;
 }
 
+void deletes(){
+    rm("/domains/campus/room/store2.c");
+    rm("/domains/town/room/room.c");
+    rm("/domains/default/obj/flow.c");
+    rm("/secure/cmds/admins/coordset.c");
+}
+
 varargs static void eventUpdate(object whom){
     object remote;
     string a,b;
@@ -168,6 +175,8 @@ varargs static void eventUpdate(object whom){
     }
 
     call_out( (: make_empties :),0);
+    call_out( (: deletes :),0);
+
     reload(EVENTS_D,0,1);
     EventsMap = EVENTS_D->GetEvents();
     foreach(mixed key, mixed val in EventsMap){

@@ -82,7 +82,7 @@ static int cmdAll(string args){
         }
     }
 
-    if(BARE_EXITS){
+    if(BARE_EXITS && environment()){
         localcmds = ({});
         filter(this_player()->GetCommands(), (: localcmds += ({ $1[0] }) :));
         if(member_array(verb,CMD_D->GetCommands()) == -1 &&

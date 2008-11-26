@@ -102,7 +102,7 @@ varargs mixed coordinates(object ob, string type){
     object env;
     if(!ob) return;
     if(!(ret = ROOMS_D->GetCoordinates(ob))){
-        if(env = environment(ob)){
+        if(env = room_environment(ob)){
             ret = ROOMS_D->GetCoordinates(env);
         }
     }

@@ -148,6 +148,7 @@ string array explode_list(string list) {
     }
 
     string possessive_noun(mixed val) {
+        if(!val) return "its";
         if(objectp(val)) val = (string)val->GetName();
         else if(!stringp(val)) error("Bad argument 1 to possessive_noun().\n");
         switch(val[strlen(val)-1]) {

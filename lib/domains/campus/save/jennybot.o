@@ -6,7 +6,7 @@ remote_mute 0
 local_gag 0
 remote_gag 0
 Paused 0
-CommandHist ({"wear white left glove","wear white left glove","say Hello, Four! I'm Jenny, the LPC University newbie guide bot. I'm an extremely simple android, so please don't expect a lot of interactivity.","smile Four","say I'm here to give you a few tips. To deactivate me, simply type: %^RED%^deactivate bot%^CYAN%^.","say To jump to the next tip, type: next tip","give note to Four","give map to Four","give cap to Four","give bag to Four","smile Four","give first apple to Four","give my apple to Four","smirk","yell DEDDA SORUZE: GETTO DA ZE!","wear necklace on neck","wear dress","wear hat","wear white left glove",})
+CommandHist ({"give map to Four","give cap to Four","give bag to Four","give first apple to Four","give my apple to Four","smirk","yell DEDDA SORUZE: GETTO DA ZE!","wear necklace on neck","wear dress","wear hat","wear necklace on neck","wear dress","wear white right glove","wear hat","wear white left glove","wear necklace on neck","wear dress","wear white right glove","wear hat","wear white left glove",})
 localcmds ({"",})
 next_command ({})
 MaxCommandHistSize 20
@@ -21,7 +21,7 @@ Riders ({})
 BodyMass 0
 SaveRecurse 1
 Saved ({"players",})
-HealthPoints 820
+HealthPoints 770
 MagicPoints 1050
 ExperiencePoints 50
 melee 1
@@ -33,12 +33,12 @@ Drink 100
 Poison 0
 Sleeping 0
 DeathEvents 0
-StaminaPoints 814.000000
+StaminaPoints 803.000000
 Torso "torso"
 Biter 0
 keepalive 0
 Fingers (["right hand":5,"left hand":5,])
-Limbs (["left leg":(["children":({"left foot",}),"armors":1049761,"health":390,"class":2,"parent":"torso",]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"health":780,"class":1,"parent":0,]),"right foot":(["children":({}),"armors":241,"health":200,"class":4,"parent":"right leg",]),"right leg":(["children":({"right foot",}),"armors":1049761,"health":390,"class":2,"parent":"torso",]),"head":(["children":({}),"armors":262913,"health":780,"class":1,"parent":"neck",]),"right hand":(["children":({}),"armors":98319,"health":200,"class":4,"parent":"right arm",]),"neck":(["children":({"head",}),"armors":786433,"health":780,"class":1,"parent":"torso",]),"left arm":(["children":({"left hand",}),"armors":1253385,"health":390,"class":2,"parent":"torso",]),"left foot":(["children":({}),"armors":241,"health":200,"class":4,"parent":"left leg",]),"left hand":(["children":({}),"armors":98319,"health":200,"class":4,"parent":"left arm",]),"right arm":(["children":({"right hand",}),"armors":1253385,"health":390,"class":2,"parent":"torso",]),])
+Limbs (["left leg":(["children":({"left foot",}),"armors":1049761,"health":370,"class":2,"parent":"torso",]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"health":730,"class":1,"parent":0,]),"right foot":(["children":({}),"armors":241,"health":190,"class":4,"parent":"right leg",]),"right leg":(["children":({"right foot",}),"armors":1049761,"health":370,"class":2,"parent":"torso",]),"head":(["children":({}),"armors":262913,"health":730,"class":1,"parent":"neck",]),"right hand":(["children":({}),"armors":98319,"health":190,"class":4,"parent":"right arm",]),"neck":(["children":({"head",}),"armors":786433,"health":730,"class":1,"parent":"torso",]),"left arm":(["children":({"left hand",}),"armors":1253385,"health":370,"class":2,"parent":"torso",]),"left foot":(["children":({}),"armors":241,"health":190,"class":4,"parent":"left leg",]),"left hand":(["children":({}),"armors":98319,"health":190,"class":4,"parent":"left arm",]),"right arm":(["children":({"right hand",}),"armors":1253385,"health":370,"class":2,"parent":"torso",]),])
 MissingLimbs ([])
 rifleshot_wounds 0
 gunshot_wounds 0
@@ -48,7 +48,7 @@ Blind 0
 CustomStats 15
 LightSensitivity ({25,750,})
 Resistance (["low":0,"high":0,"immune":0,"medium":0,"none":4194302,])
-Stats (["agility":(["class":3,"points":0,"level":75,]),"wisdom":(["class":3,"points":0,"level":77,]),"speed":(["class":3,"points":0,"level":89,]),"intelligence":(["class":1,"points":0,"level":100,]),"strength":(["class":4,"points":0,"level":69,]),"durability":(["class":4,"points":0,"level":77,]),"charisma":(["class":2,"points":0,"level":93,]),"coordination":(["class":2,"points":0,"level":100,]),"luck":(["class":3,"points":0,"level":35,]),])
+Stats (["agility":(["class":3,"points":0,"level":83,]),"wisdom":(["class":3,"points":0,"level":81,]),"speed":(["class":3,"points":0,"level":81,]),"intelligence":(["class":1,"points":0,"level":100,]),"strength":(["class":4,"points":0,"level":77,]),"durability":(["class":4,"points":0,"level":72,]),"charisma":(["class":2,"points":0,"level":100,]),"coordination":(["class":2,"points":0,"level":90,]),"luck":(["class":3,"points":0,"level":35,]),])
 Polyglot 1
 Languages (["english":(["native":1,"name":"English","points":0,"level":100,]),"common":(["native":0,"name":"common","points":0,"level":100,]),])
 DefaultLanguage "Common"
@@ -111,4 +111,4 @@ player
 bot 0
 ob 
 noobster 0
-watchlist ({"two","five","four",})
+watchlist ({"two","five","nine","four",})

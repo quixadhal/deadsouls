@@ -71,6 +71,7 @@ private int		Medium  	= MEDIUM_LAND;
 private mapping         ActionsMap      = ([]);
 private string          SinkRoom        = "";
 private string          FlyRoom         = "";
+private int             FlowLimit       = 0;
 
 
 string GetClimate();
@@ -217,16 +218,14 @@ function SetBury(function what){
 
 static string GetExtraLong(){
     int i;
-    string *l,*tmp;
+    string *l = ({}),*tmp;
     string ret;
     object array stuff;
     ret = "  ";
     tmp = ({});
     stuff=all_inventory(this_object()); 
     for(i=0; i<sizeof(stuff);i++){
-        if(tmp = ({ stuff[i]->GetAffectLong() }) && !sizeof(l)) l = tmp;
-        if( !sizeof(l) ) return 0;
-        if(tmp = ({ stuff[i]->GetAffectLong() }) ) l += tmp;
+        if(sizeof(tmp = ({ stuff[i]->GetRoomAffectLong() })) ) l += tmp;
     }
     if( !sizeof(l) ) return 0;
     ret += implode(l, "	 ");
@@ -1142,6 +1141,15 @@ string SetSinkRoom(string str){
 
 string GetSinkRoom(){
     return SinkRoom;
+}
+
+int SetFlowLimit(int i){
+    FlowLimit = i;
+    return FlowLimit;
+}
+
+int GetFlowLimit(){
+    return FlowLimit;
 }
 
 static void init(){

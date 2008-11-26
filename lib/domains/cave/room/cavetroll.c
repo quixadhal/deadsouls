@@ -23,6 +23,7 @@ void create() {
     SetClimate("indoors");
     SetDoor("southwest", "/domains/town/doors/gate.c");
     SetFlyRoom("/domains/cave/room/chieftain");
+    SetFlowLimit(2);
 }
 
 void init(){

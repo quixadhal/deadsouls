@@ -64,6 +64,8 @@ mixed cmd(string args) {
         rename(home_dir, homedir(cre_ob,1)+"/estate");
         cre_ob->eventForce("home");
         cre_ob->eventForce("cd");
+        cre_ob->SetProperty("wizmapping",1);
+        cre_ob->SetProperty("automapping",0);
         jeans = present("jeans",cre_ob);
         shirt = present("t-shirt",cre_ob);
         if(jeans) jeans->eventMove(ROOM_FURNACE);
@@ -81,7 +83,7 @@ mixed cmd(string args) {
         book = new("/domains/default/obj/manual");
         if(book && !present("manual",cre_ob))  book->eventMove(cre_ob);
         else if(book) book->eventMove(ROOM_FURNACE);
-        cre_ob->AddChannel(({"cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat","inews","ichat" }));
+        cre_ob->AddChannel(({"cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat" }));
         cre_ob->SetPolyglot(1);
         cre_ob->save_player((string)cre_ob->GetKeyName());
     }

@@ -47,8 +47,8 @@ void create(){
     SetId(({"rv2"}));
     SetLong("Rage Virus v2");
     SetCure(20);
-    SetCommunicable(50);
-    SetLifeSpan(9999);
+    SetCommunicable(30);
+    SetLifeSpan(999);
     SetType("viral");
     SetInfect((: InfectMess :));
 }

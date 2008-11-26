@@ -12,6 +12,7 @@ int query_carrying(object who, mixed thing){
 
 object *containers(object ob){
     object *ret =({});
+    if(!ob) ob = previous_object();
     while(environment(ob)){
         ret += ({ environment(ob) });
         ob = environment(ob);

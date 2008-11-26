@@ -15,6 +15,7 @@ static void create() {
         "haven" : "A nice place for vermin.",
         ({ "rock", "bedrock" }) : "This is dense, hard stuff deep underground.",
       ]));
+    SetFlowLimit(3);
     SetExits( ([
         "east" : "/domains/town/room/well2",
         "down" : "/domains/town/room/source.c",

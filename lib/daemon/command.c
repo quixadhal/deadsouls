@@ -72,5 +72,3 @@ varargs string *GetPaths(string cmd) {
     if( cmd ) return Commands[cmd];
     else return Paths;
 }
-
-

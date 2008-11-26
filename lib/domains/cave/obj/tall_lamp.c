@@ -18,8 +18,7 @@ void create(){
 
 void init(){
     ::init();
-}
-
-int GetLit(){
-    return 1;
+    if(!GetLit() && CanBurn(this_object())){
+        this_object()->eventBurn(0,0,1);
+    }
 }

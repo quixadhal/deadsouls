@@ -15,7 +15,7 @@ static void create() {
         "long" : "This is the west side of a door leading east.",
         "lockable" : 1 ]) );
 
-    SetClosed(1);
+    SetClosed(0);
     SetLocked(0);
     SetKeys("west", ({ "west key" }));
     SetKeys("east", ({ "east key" }));

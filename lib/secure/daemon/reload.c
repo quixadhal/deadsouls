@@ -7,9 +7,10 @@
 inherit LIB_DAEMON;
 mapping Reloadees = ([]);
 static int *reload_handles = ({});
-static int warm_boot_in_progress = 0;
+static int stage2, stilldirty, roomscleaned, warm_boot_in_progress = 0;
 string savefile = "/secure/save/reload";
 static string *exceptions = ({ RELOAD_D, RSOCKET_D });
+object *grooms = ({});
 
 varargs void validate(){
     if((!(int)master()->valid_apply(({ "SECURE", "ASSIST" })))){
@@ -24,25 +25,48 @@ static void create() {
     daemon::create();
     if(!file_exists(savefile+__SAVE_EXTENSION__)) 
         unguarded( (: save_object(savefile) :) );
-    else restore_object(savefile);
+    else unguarded( (: restore_object(savefile) :) );
     set_heart_beat(1);
 }
 
-void eventDestructEmptyRooms(object room){
+varargs void eventDestructEmptyRooms(object room, int last){
     validate();
-    if(room && objectp(room) && !sizeof(get_livings(room,1))){
-        object *npcs = get_livings(room,2);
-        if(sizeof(npcs)) npcs->eventDestruct();
-        catch( room->eventDestruct() );
+    if(last && !stilldirty) roomscleaned = 1;
+    else roomscleaned = 0;
+    if(room){
+        if(objectp(room) && !sizeof(get_livings(room,1))){
+            object *npcs = get_livings(room,2);
+            if(sizeof(npcs)) npcs->eventDestruct();
+            catch( room->eventDestruct() );
+        }
     }
 }
 
 void eventResetEmptyRooms(){
+    int i, j, k;
+    object *rooms = objects((: inherits(LIB_ROOM, $1) :))[0..64000];
+    object *rooms2;
     validate();
-    foreach(object foo in objects((: inherits(LIB_ROOM, $1) :))){
-        //tc("foo: "+identify(foo));
-        call_out( (: eventDestructEmptyRooms :), 0, foo );
+    grooms = rooms;
+    stilldirty = 1;
+    for(i = sizeof(rooms)-1; j < i;j++){
+        int last = (j > (i - 10) );
+        reset_eval_cost();
+        if(!rooms[j]) continue;
+        if(j < 10){
+            eventDestructEmptyRooms(rooms[j], last);
+        }
+        else {
+            k = call_out((: eventDestructEmptyRooms :), j/100, rooms[j], last);
+        }
+        if(k) reload_handles += ({ k });
     }
+    rooms2 =  objects((: inherits(LIB_ROOM, $1) :)) - rooms;
+    grooms = rooms2;
+    if(sizeof(rooms2)){
+        call_out( "eventResetEmptyRooms", ((j/100)+1));
+    }
+    else stilldirty = 0;
 }
 
 int ReloadBaseSystem(){
@@ -164,8 +188,12 @@ varargs int eventReload(mixed what, int when, int nodelay){
 }
 
 void heart_beat(){
+    if(warm_boot_in_progress && !stage2){
+        this_object()->ReloadMud2();
+    }
     if(warm_boot_in_progress){
         Reloadees = ([]);
+
         foreach(mixed element in reload_handles){
             if(!intp(element)){
                 reload_handles -= ({ element });
@@ -175,12 +203,23 @@ void heart_beat(){
                 reload_handles -= ({ element });
             }
         }
+
+        if(!sizeof(grooms)){
+            stilldirty = 0;
+            if(!sizeof(reload_handles)){
+                roomscleaned = 1;
+            }
+        }
+
+    }
+    if(warm_boot_in_progress && stage2){
         if(!sizeof(reload_handles)){
             shout("Reloading users...");
             flush_messages();
             this_object()->ReloadUsers();
             shout("Warm boot complete.");
             warm_boot_in_progress = 0;
+            stage2 = 0;
             eventSave();
         }
     }
@@ -221,6 +260,7 @@ int ReloadDir(string dir, int passes){
     validate();
     lib_obs = filter(lib_obs, (: !clonep($1) || 
         (clonep($1) && environment($1)) :));
+    debug("Size of ReloadDir("+dir+", "+passes+"): "+sizeof(lib_obs));
     if(!passes) passes = 3;
     while(passes){
         reset_eval_cost();
@@ -246,22 +286,41 @@ int ReloadUsers(){
     if(!mx) error("OHFUC-");
 
     foreach(object player in users()){
+        int invis = player->GetInvis();
+        string pstr = base_name(player);
         reset_eval_cost();
+        player->SetInvis(0);
         err = catch(RELOAD_D->ReloadPlayer(player));
-        if(err) ret = 0;
+        if(err){
+            debug("problem reloading "+pstr,"red");
+            ret = 0;
+        }
+        else find_object(pstr)->SetInvis(invis);
     }
     return ret;
 }
 
-int ReloadMud(){
-    string *dir2 = ({ "/lib/", "/secure/","/daemon/" });
-    string *dir1 = ({ "/cmds/", "/verbs/","/estates/", "/obj/", "/open/", "/shadows/", "/spells/", "/std/" });
+int ReloadMud1(){
     validate();
     shout("Warm boot initiated!");
     warm_boot_in_progress = 1;
-    eventResetEmptyRooms();
+    roomscleaned = 0;
     shout("Rooms resetting..."); 
     flush_messages();
+    eventResetEmptyRooms();
+    return 1;
+}
+
+int ReloadMud2(){
+    string *dir2;
+    string *dir1;
+    validate();
+    if(!roomscleaned || stilldirty) return 0;
+    dir2 = ({ "/lib/", "/secure/","/daemon/" });
+    dir1 = ({ "/cmds/", "/verbs/","/estates/", "/obj/", "/open/", 
+      "/shadows/", "/std/", "/powers/" });
+
+    stage2 = 1;
     ReloadBaseSystem();
     shout("Initializing base system...");
     flush_messages();
@@ -282,7 +341,7 @@ int ReloadMud(){
 
 int WarmBoot(){
     validate();
-    call_out( (: ReloadMud :), 0);
+    call_out( (: ReloadMud1 :), 0);
     return 1;
 }
 

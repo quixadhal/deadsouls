@@ -29,26 +29,32 @@ string ReadScreen(){
     string *base_names = ({});
     string ret = "Top loaded objects:\n";
     int rooms, npcs, meminf;
-    mixed *foo;
+    mixed *foo = ({});
     validate();
     ulist = ({});
     umap = ([]);
-    foo = objects( (: ReceiveObs($1) :) );
-    ulist = ({});
-    foreach(mixed key, mixed val in umap){
-        reset_eval_cost();
-        ulist += ({ ({ val, key }) });
+    if(sizeof(objects()) < 8192){
+        foo = objects( (: ReceiveObs($1) :) );
+        ulist = ({});
+        foreach(mixed key, mixed val in umap){
+            reset_eval_cost();
+            ulist += ({ ({ val, key }) });
+        }
+        ulist = sort_array(ulist, -1)[0..9];
+        if(sizeof(ulist)){
+            foreach(mixed element in ulist){
+                ret += element[1]+" "+element[0]+"\n";
+            }
+        }
     }
-    //tc("base_names: "+identify(base_names));
-    ulist = sort_array(ulist, -1)[0..9];
-    foreach(mixed element in ulist){
-        ret += element[1]+" "+element[0]+"\n";
+    else {
+        ret += "Too many objects to sort.\n";
     }
     rooms = sizeof(objects( (: inherits(LIB_ROOM, $1) :) ) );
-    npcs = sizeof(objects( (: inherits(LIB_NPC, $1) :) ) );
+    npcs = sizeof(objects( (: inherits(LIB_NPC, $1) && clonep($1):) ) );
     ret += "\nTotal number of loaded objects: "+sizeof(objects())+"\n";
     ret += "Loaded rooms: "+rooms+"\n";
-    ret += "Loaded NPC's: "+npcs+"\n\n";
+    ret += "Cloned NPC's: "+npcs+"\n\n";
     ret += "Total number of connected users: "+sizeof(users())+"\n";
     ret += "Pending callouts: "+sizeof(call_out_info())+"\n";
     ret += "File descriptors in use: "+

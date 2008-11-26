@@ -15,6 +15,7 @@ static void create() {
         "long" : "This is the northeast side of a gate leading southwest.",
         "lockable" : 1 ]) );
 
+    SetPerforated(1);
     SetClosed(1);
     SetLocked(1);
     SetLockStrength(90);

@@ -9,6 +9,7 @@
 #include <vendor_types.h>
 inherit LIB_ITEM;
 
+static int numstress = 1;
 string savefile = "/secure/save/weirder.o";
 string *lib_dirs = ({ "/lib/comp","/lib/daemons","/lib/events/",
   "/lib/lvs", "/lib/lvs", "/lib/props", "/lib/std", 
@@ -102,7 +103,8 @@ int yeik(string str){
 
 void create(){
     ::create();
-    exceptions = ({ "monty.c","charles.c","charly.c","tree.c" });
+    exceptions = ({ "monty.c","charles.c","charly.c","tree.c",
+      "wraith.c", "archwraith.c","drone2.c","beggar.c","drone.c"});
     SetKeyName("weirding module");
     SetId( ({"module", "box", "weirder"}) );
     SetAdjectives( ({"small","featureless","black"}) );
@@ -181,19 +183,28 @@ int loadobs(){
     return 1;
 }
 
-int loadnpcs(){
+int loadnpcs(mixed args){
+    int i;
     validate();
+    if(!args) i = 1;
+    if(intp(args)) i = args;
+    if(stringp(args)) i = atoi(args);
     if(!npcs) npcs = ({});
     foreach(string npcsdir in npc_dirs){
         foreach(string npcfile in get_dir(npcsdir+"/")){
             string loadee;
+            int x = i;
             if(member_array(npcfile, exceptions) != -1){
                 tc("skipping "+npcfile,"green");
                 continue;
             }
             loadee = npcsdir+"/"+npcfile;
             npcs += ({ loadee });
-            call_out("loadthing", 0, loadee);
+            while(x){
+                //tc("loading: "+loadee);
+                call_out("loadthing", 0, loadee);
+                x--;
+            }
         }
     }
     return 1;
@@ -355,7 +366,11 @@ int loadall(){
     return 1;
 }
 
-int stressload(){
+int stressload(string arg){
+    int i;
+    if(arg) i = atoi(arg);
+    numstress = i;
+    tc("numnstress: "+numstress);
     if(!sizeof(rooms)) call_out("loadrooms", 0);
     if(!sizeof(npcs)) call_out("loadnpcs", 0);
     if(sizeof(rooms) && sizeof(npcs)) this_object()->startstress();
@@ -369,26 +384,33 @@ int startstress(){
       (: last($1,2) == ".c" && last($1,9) != "furnace.c" &&
         $1->GetMedium() < 2 && !$1->GetProperty("no attack") :) );
     int victims;
-    tc("Starting stresstest");
+    tc("Starting stresstest, multiplier: "+numstress);
     //tc("npcs: "+identify(npcs),"green");
     //tc("rooms: "+identify(rooms),"blue");
     foreach(string npcfile in npcs){
         object npc;
-        int err;
+        int err, x = numstress;
         //tc("processing: "+npcfile);
         if(last(npcfile,2) != ".c") continue;
-        err = catch(npc = new(npcfile));
-        if(err) continue;
+        //err = catch(npc = new(npcfile));
+        //if(err) continue;
         //else tc("Successfully cloned "+identify(npc));
-        newbatch += ({ npc });
-        while(!err){
-            object where = targetrooms[abs(random(sizeof(targetrooms))-1)];
-            //tc("Moving "+identify(npc)+" to "+identify(where));
-            catch(err = npc->eventMove(where));
+        while(x){
+            err = 0;
+            npc = new(npcfile);
+            newbatch += ({ npc });
+            while(!err){
+                object where;
+                if(numstress < 11) reset_eval_cost();
+                where = targetrooms[abs(random(sizeof(targetrooms))-1)];
+                //tc(x+" Moving "+identify(npc)+" to "+identify(where));
+                catch(err = npc->eventMove(where));
+            }
+            x--;
         }
     }
     newbatch = filter(newbatch, (: objectp($1) :) );
-    victims = to_int(to_float(sizeof(newbatch)) * 0.01)+1;
+    victims = to_int(to_float(sizeof(newbatch)) * 0.005)+1;
     //tc("newbatch size: "+sizeof(newbatch));
     while(victims){
         object germ, who;

@@ -147,3 +147,10 @@ int HitLivings(object ob){
     }
     return 1;
 }
+
+int SetArmed(int x){
+    if(x) armed = 1;
+    else armed = 0;
+    if(armed) set_heart_beat(1);
+    return armed;
+}

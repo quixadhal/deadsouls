@@ -24,6 +24,7 @@ static void create() {
         "long" : "This is a standard drainage grate. You can see "+
         "light through it, and hear the sounds of the village above.",
         "lockable" : 0 ]) );
+    SetPerforated(1);
     SetClosed(1);
 }
 

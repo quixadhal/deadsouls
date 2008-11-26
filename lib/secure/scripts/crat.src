@@ -150,6 +150,7 @@ screen 80 30
 history 30
 automap on
 showgrid on
+debug on
 save
 mudconfig consoletrace on
 mudconfig logremote on

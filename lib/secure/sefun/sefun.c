@@ -544,8 +544,11 @@ string capitalize(mixed str) {
 
     if(objectp(str)) str = str->GetKeyName();
 
-    /* error condition, let it look like an efun */
-    if( !str || str == "" ) return efun::capitalize(str);
+    /* error condition, let it look like an efun 
+     * mmmm let's not
+     * if( !str || str == "" ) return efun::capitalize(str);
+     */
+    if(!str) str = "";
     /* most strings are not colour strings */
     if( strlen(str) < 2 || str[0..1] != "%^" ) return efun::capitalize(str);
     /* god help us */

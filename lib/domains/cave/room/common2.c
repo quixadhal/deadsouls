@@ -6,7 +6,7 @@ inherit "/domains/cave/etc/cave_room";
 void create() {
     ::create();
     SetAmbientLight(0);
-    SetShort("copy of cavepass7.c");
+    SetShort("underground room");
     SetLong("This is a dark underground passageway. The walls are rough and bare. The passageway continues west from here. There are rooms to the north, east, and south.");
     SetItems(([
         ({ "passage", "passageway", "This provides access to areas below the ground." }) : "This provides access to areas below the ground.",

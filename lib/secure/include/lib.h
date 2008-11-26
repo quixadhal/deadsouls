@@ -56,6 +56,7 @@
 #define LIB_FISHING        DIR_LIB        "/fishing"
 #define LIB_FLASHLIGHT     DIR_LIB        "/flashlight"
 #define LIB_FLASK          DIR_LIB        "/flask"
+#define LIB_FLOW           DIR_LIB        "/flow"
 #define LIB_FOLLOW         DIR_LIB        "/follow"
 #define LIB_FTP_DATA_CONN  DIR_SECURE_LIB "/net/ftp_data_connection"
 #define LIB_FUEL           DIR_LIB        "/fuel"

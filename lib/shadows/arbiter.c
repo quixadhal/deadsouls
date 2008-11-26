@@ -56,7 +56,7 @@ varargs string GetLong(object who){
 string GetName(){
     object ob = GetShadowedObject();
     if(!clonep()) return "";
-    if(CheckDisguised()) return "Arbiter";
+    if(CheckDisguised() || !ob) return "Arbiter";
     else return ob->GetName();
 }
 

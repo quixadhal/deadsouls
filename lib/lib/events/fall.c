@@ -25,6 +25,8 @@ mixed eventFall(){
         tmprumbo = rumbo;
         if(stringp(rumbo)) err = catch(rumbo = load_object(rumbo));
         if(err || !rumbo){
+            log_file("runtime","\n"+timestamp()+" "+identify(this_object())+
+              " could not load "+identify(rumbo)+" to fall into.\n");
             err = catch(rumbo = load_object(ROOM_VOID));
         }
         if(err || !rumbo){

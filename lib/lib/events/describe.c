@@ -60,10 +60,12 @@ void eventDescribeEnvironment(int brief){
         }
         else desc = "\n";
         if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM ){
-            if(this_object()->GetProperty("automapping")) 
+            if(this_object()->GetProperty("automapping")){ 
                 desc += simple_map(env)+"\n"; 
-            if(this_object()->GetProperty("wizmapping")) 
+            }
+            if(this_object()->GetProperty("wizmapping")){ 
                 desc += MAP_D->GetMap(environment(this_object()),6)+"\n"; 
+            }
             desc += (string)env->GetLong();
         }
         if(functionp(tmp = (mixed)env->GetSmell("default")))

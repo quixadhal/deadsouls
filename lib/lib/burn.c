@@ -7,6 +7,7 @@
  */
 
 #include <lib.h>
+#include <medium.h>
 
 inherit LIB_FUEL;
 inherit LIB_LIGHT;
@@ -77,9 +78,16 @@ static int SetMinHeat(int x){
 }
 
 mixed CanBurn(object who){
-    if( environment() != this_player() &&
-      environment() != environment(this_player()) ){
+    object env = room_environment();
+    if(!who && this_player()) who = this_player();
+    if(!env){
+        return "#That is nowhere!";
+    }
+    if( env != who && env != environment(who)){
         return "#That is not within your reach!";
+    }
+    if(env->GetMedium() > MEDIUM_SURFACE){
+        return "#There is insufficient air.";
     }
     if( FuelRequired && !GetFuelAmount() )
         return capitalize(GetShort()) + " is out of fuel.";
@@ -156,9 +164,14 @@ mixed eventBurnOut(){
     return 1;
 }
 
-varargs mixed eventBurn(object who, object what){
+varargs mixed eventBurn(object who, object what, int magic){
     int y;
-
+    if(magic){
+        Heat = MinHeat;
+        if( FuelRequired ) set_heart_beat(BurnRate);
+        SetLit(1);
+        return 1;
+    }
     if( !what ){
         if( Heat ) return 0;
         else y = MinHeat;
@@ -182,9 +195,12 @@ mixed eventLight(object who, object what){
 }
 
 static void heart_beat(){
+    object env = room_environment();
     if( FuelRequired ){
         eventDecreaseFuel(1);
         if( !GetFuelAmount() ) eventBurnOut();
     }
+    if(!env || env->GetMedium() > MEDIUM_SURFACE){
+        eventExtinguish();
+    }
 }
-

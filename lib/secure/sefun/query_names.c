@@ -3,7 +3,7 @@
 string *query_names(object whom) {
     string *name = ({});
     string *names = ({});
-    if(!whom) return name;
+    if(!whom || !objectp(whom)) return name;
     if(inherits(LIB_DOOR,whom) || base_name(whom) == LIB_DOOR) 
     {
         name = ({ "door" });
@@ -30,6 +30,7 @@ int answers_to(string name, object what){
     string *adjs, *names, *arg_arr, *tmp_arr;
     int i, j, arrsize;
     if(!name || !what) return 0;
+    if(!stringp(name) || !objectp(what)) return 0;
     adjs = filter((what->GetAdjectives() || ({})), (: lower_case($1) :));
     names = filter(query_names(what), (: lower_case($1) :));
     name = lower_case(name);

@@ -15,6 +15,7 @@ static void create() {
         "long" : "This is the down side of a grate leading up. It looks very heavy.",
         "lockable" : 0 ]) );
 
+    SetPerforated(1);
     SetClosed(1);
     SetLocked(0);
 }

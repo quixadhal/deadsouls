@@ -5,6 +5,10 @@ some lines can still be read:
 the old abandoned mansion south of the church.
 Quest Points: 2
 
+* Town Well: The town is thirsty! Nobody wants to venture to
+the river, but none can figure out why the well is dry.
+Quest Points: 7
+
 * Orcslayer: Find the famed Orcslayer sword and return it to
 Leo the archwizard. Leo was last seen going into the church.
 Quest Points: 10

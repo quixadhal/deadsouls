@@ -1,10 +1,11 @@
 #include <lib.h>
 #include <daemons.h>
 #include <save.h>
+#define FLOW_DEBUGGING 0
 
 inherit LIB_DAEMON;
 mapping MapMap, MapCache;
-int caching = 0;
+static int caching = 0;
 
 void create(){
     if( file_size( SAVE_MAP __SAVE_EXTENSION__ ) > 0 )
@@ -46,18 +47,20 @@ int GetCaching(){
 
 varargs mixed GetMap(mixed args, int size) {
     string ret = "";
-    int i,x,line,tempy,tmpres, res = 8;
+    int i,x,line,tempy,tmpres, res = size;
     mapping Lines = ([]);
     mapping myspot;
     string mycoords;
     mapping start;
+    //tc(identify(previous_object())+" asked for a map of "+identify(args),"cyan");
     if(!args) args = base_name(environment(this_player()));
     if(objectp(args)) args = base_name(args);
     myspot=ROOMS_D->GetGridMap(args);
     mycoords = myspot["coord"];
     if(size) res = size;
     if(!MapCache) MapCache = ([]);
-    if(!myspot["coords"]){
+    if(!myspot["coords"] || ( mycoords == "0,0,0" &&
+        ROOMS_D->GetRoomZero() != args )){
         ret = "%^RED%^Map unavailable.%^RESET%^";
         return ret;
     }
@@ -68,6 +71,7 @@ varargs mixed GetMap(mixed args, int size) {
       "y" : myspot["coords"]["y"] + (res/2),
       "z" : myspot["coords"]["z"] ]);
 if(!MapMap) MapMap = ([]);
+if(sizeof(MapMap) >= 64000) MapMap = ([]);
 for(tempy = start["y"]; tempy > start["y"] - res; tempy--){
     mapping ppos = ([]);
     int xcount;
@@ -82,18 +86,19 @@ for(tempy = start["y"]; tempy > start["y"] - res; tempy--){
         }
 
         if(!Lines[line]){
-            Lines[line] = line + repeat_string(" ",60);
+            string pre = (tempy > -1 ? " " : "");
+            Lines[line] = pre + (tempy % 10) + repeat_string(" ",60);
         }
         if(!Lines[line+1]){
-            Lines[line+1] = (line+1) + repeat_string(" ",60);
+            Lines[line+1] = " " + repeat_string(" ",60);
         }
         if(!Lines[line-1]){
-            Lines[line-1] = (line-1) + repeat_string(" ",60);
+            Lines[line-1] = " " + repeat_string(" ",60);
         }
-
         if(MapMap[coord]){
             mapping gridmap;
             mapping dirs;
+            object croom;
             if(!MapMap[coord]["name"]) continue;
             gridmap = ROOMS_D->GetGridMap(MapMap[coord]["name"]);
             if(!sizeof(gridmap)) continue;
@@ -102,7 +107,21 @@ for(tempy = start["y"]; tempy > start["y"] - res; tempy--){
                 Lines[line][xcount+2] = '@';
             }
             else {
-                Lines[line][xcount+2] = '#';  
+#if FLOW_DEBUGGING
+                object flow;
+                croom = find_object(MapMap[coord]["name"]);
+                if(croom && flow = present("flow",croom)){
+                    int press = flow->GetPressure();
+                    if(press == 1) Lines[line][xcount+2] = '1';
+                    if(press == 2) Lines[line][xcount+2] = '2';
+                    if(press == 3) Lines[line][xcount+2] = '3';
+                    if(press == 4) Lines[line][xcount+2] = '4';
+                    if(press > 4) Lines[line][xcount+2] = '5';
+                }
+                else Lines[line][xcount+2] = '#';  
+#else
+                Lines[line][xcount+2] = '#';
+#endif
             }
             Lines[line][xcount+3] = ' ';  
             if(sizeof(dirs)){
@@ -163,10 +182,35 @@ for(tempy = start["y"]; tempy > start["y"] - res; tempy--){
     }
     xcount = 0;
 }
-for(i = sizeof(Lines)-1, x = 0;x < i;x++){
+if(line == size * 2 ){
+    int xcount = size;
+    string pre;
+    x = start["x"]-1; 
+    Lines[line] = repeat_string(" ",60);
+    Lines[line+1] = "   ";
+    while(xcount){
+        x++;
+        if(x < 0) pre = "-";
+        else pre = " ";
+        Lines[line+1] += pre + abs((x % 10));
+        xcount--;
+    }
+    //Lines[line-0] = repeat_string("-0",30);
+    //Lines[line+1] = repeat_string("+1",30);
+    Lines[line+2] = repeat_string("+2",30);
+}
+
+for(i = sizeof(Lines), x = 0;x < i;x++){
     if(Lines[x]) ret += Lines[x]+"\n";
 }
 ret = replace_string(ret,"@","%^RED%^@%^RESET%^");
+#if FLOW_DEBUGGING
+ret = replace_string(ret,"1","%^GREEN%^A%^RESET%^");
+ret = replace_string(ret,"2","%^YELLOW%^B%^RESET%^");
+ret = replace_string(ret,"3","%^CYAN%^C%^RESET%^");
+ret = replace_string(ret,"4","%^BLUE%^D%^RESET%^");
+ret = replace_string(ret,"5","%^MAGENTA%^F%^RESET%^");
+#endif
 MapCache[mycoords] = ret;
 return ret; 
 }

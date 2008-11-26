@@ -5,7 +5,7 @@ static void create() {
     room::create();
     SetClimate("indoors");
     SetAmbientLight(0);
-    SetShort("copy of wtunnel2.c");
+    SetShort("a dark tunnel");
     SetLong("This tunnel has very smooth stone walls and runs northeast and west.");
     SetItems(([
         ({ "hole", "holes", "floor" }) : "These holes appear to be where spring water enters to flood the chamber and fill the well east of here. ",
@@ -15,6 +15,7 @@ static void create() {
         "haven" : "A nice place for vermin.",
         ({ "rock", "bedrock" }) : "This is dense, hard stuff deep underground.",
       ]));
+    SetFlowLimit(3);
     SetExits( ([
         "west" : "/domains/town/room/wtunnel2",
         "northeast" : "/domains/town/room/wtunnel4.c",
